@@ -163,6 +163,7 @@ class EventController extends Controller
 	public function actionClone($id)
 	{
         Yii::log("Clone EVENT ----- start. id = " . $id , CLogger::LEVEL_WARNING, 'system.test.kim');
+        $iDir = $this->getThumbDir();
         $model=$this->loadModel($id);
 		if ($model)
 		{
@@ -171,8 +172,13 @@ class EventController extends Controller
 			// Insert event record
 			unset($model->id);
 			$model->title = $model->title . " (copy)";
-			$model->thumb_path = "";
-			$model->description = "";
+			// Duplicate the thumbnail
+			if (strlen(trim($model->thumb_path)) > 0)
+			{
+				$newThumbPath = $model->thumb_path . "_" . rand(1, 99999);
+				copy($iDir . $model->thumb_path, $iDir . $newThumbPath);
+				$model->thumb_path = $newThumbPath;
+			}
 			$model->ticket_event_id = 0;
 			$model->isNewRecord = true;
 			if ($model->insert())
