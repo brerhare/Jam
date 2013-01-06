@@ -36,19 +36,20 @@ run tools/mkapp.py <templatedir> <where> to make from template _stdapp or _stdap
 	-> mkdir /home/[user]/dev/src/logs/[project]
 
 vi /etc/apache2/sites-available/[project]
-	# Example.dev (/etc/apache2/sites-available/example.dev)
-	# -----------
 	<VirtualHost *:80>
-	ServerAdmin webmaster@example.dev
-	ServerName example.dev
-	ServerAlias www.example.dev
-	# Indexes + Directory Root.
-	DirectoryIndex index.php
-	DocumentRoot /home/[user]/dev/src/www/yii/[project]/public_html
-	# Logfiles
-	ErrorLog /home/[user]/dev/src/www/yii/apache_logs/[project]/error.log
-	CustomLog /home/[user]/dev/src/www/yii/apache_logs/[project]/access.log combined
-	</VirtualHost>
+		ServerAdmin webmaster@glitzaratti.com.dev
+		ServerName glitzaratti.com.dev
+		ServerAlias www.glitzaratti.com.dev
+		# Indexes + Directory Root.
+		DirectoryIndex index.html index.htm index.php
+		DocumentRoot /home/kim/dev/src/www/yii/glitzaratti.com.dev
+		# Logfiles
+		ErrorLog /home/kim/dev/src/www/apache_logs/glitzaratti.com.dev/error.log
+		CustomLog /home/kim/dev/src/www/apache_logs/glitzaratti.com.dev/access.log combined
+	<Directory "/home/kim/dev/src/www/yii/glitzaratti.com.dev">
+	allow from all
+	</Directory>
+	</VirtualHost
 
 a2ensite [project]
 service apache2 restart

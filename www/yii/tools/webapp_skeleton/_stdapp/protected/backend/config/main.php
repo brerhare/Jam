@@ -23,7 +23,7 @@ return array(
 	'preload'=>array('log'),
 
 	// autoloading model and component classes
-	/ Note that the order is important - we want backend to overwrite frontend when theres a clash
+	// Note that the order is important - we want backend to overwrite frontend when theres a clash
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
