@@ -1,0 +1,79 @@
+Setting up your development environment
+---------------------------------------
+
+#Add to your .bashrc
+	export DEVROOT=$HOME/dev
+	export PATH=$PATH:$DEVROOT/extern/yii/framework
+
+Add 'Servername localhost' to /etc/apache2/conf.d/fqdn
+
+phpmyadmin
+	apt-get phpmyadmin
+	add 'Include /etc/phpmyadmin/apache.conf' to /etc/apache2/apache2.conf
+	versioning
+		apt-get install subversion (netbeans might need a newer version)
+		apt-get install git
+
+	basic prep
+		mkdir /home/[user]/dev/src/www
+		mkdir /home/[user]/dev/src/www/apache_logs
+		force dns for all .dev domains to be local
+			apt-get install dnsmasq
+			vi /etc/dnsmasq.conf
+				line 62: 'address=/dev/127.0.0.1'
+				line 90: 'listen-address=127.0.0.1'
+			vi /etc/dhcp/dhclient.conf ...OR... /etc/dhcp3/dhclient.conf
+				uncomment line that says '#prepend domain-name-servers 127.0.0.1;'
+			add 'nameserver 192.168.1.1' to /var/run/dnsmasq/resolv.conf
+			/etc/init.d/dnsmasq restart
+
+Setting up each project (eg dglink.dev)
+-----------------------
+
+run tools/mkapp.py <templatedir> <where> to make from template _stdapp or _stdappadmin
+	-> mkdir /home/[user]/dev/src/[project]
+	-> mkdir /home/[user]/dev/src/[project]/public_html
+	-> mkdir /home/[user]/dev/src/logs/[project]
+
+vi /etc/apache2/sites-available/[project]
+	# Example.dev (/etc/apache2/sites-available/example.dev)
+	# -----------
+	<VirtualHost *:80>
+	ServerAdmin webmaster@example.dev
+	ServerName example.dev
+	ServerAlias www.example.dev
+	# Indexes + Directory Root.
+	DirectoryIndex index.php
+	DocumentRoot /home/[user]/dev/src/www/yii/[project]/public_html
+	# Logfiles
+	ErrorLog /home/[user]/dev/src/www/yii/apache_logs/[project]/error.log
+	CustomLog /home/[user]/dev/src/www/yii/apache_logs/[project]/access.log combined
+	</VirtualHost>
+
+a2ensite [project]
+service apache2 restart
+include path /home/[user]/dev/src/yii in netbeans project
+
+
+Exporting projects
+------------------
+
+tools directory has push.py and dglink.push
+	src $SRCBASE/dglink.co.uk.dev/public_html
+	ssh dguser@www.dglink.co.uk:/home/dglink.co.uk/public_html
+	dbname dglink_co_uk
+	dbuser dglink.co.uk
+	dbpass dglink.co.uk,
+
+Example dev structure
+	dglink.co.uk.dev/public_html/<whatever> is a website
+	plugin.dev/public_html/booking
+	plugin.dev/public_html/boxoffice
+
+Example target locations
+	www.dglink.co.uk/public_html/				// a website
+	plugin.dglink.co.uk/public_html/booking			// booking plugin on dglink
+	secure.dglink.co.uk/public_html/boxoffice		// boxoffice on dglink and wirefly
+	secure.wireflydesign.com/public_html/boxoffice
+
+
