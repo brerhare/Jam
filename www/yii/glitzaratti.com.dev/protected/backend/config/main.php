@@ -66,11 +66,13 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=testdrive',
-			'emulatePrepare' => true,
-			'username' => 'root',
-			'password' => '',
-			'charset' => 'utf8',
+            'db'=>array(
+                'connectionString' => 'mysql:host=localhost;dbname=glitzaratti_com',
+                'emulatePrepare' => true,
+                'username' => 'glitzaratti.com',
+                'password' => 'glitzaratti.com,',
+                'charset' => 'utf8',
+            ),
 		),
 		/**/
 		'errorHandler'=>array(
