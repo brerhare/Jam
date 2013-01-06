@@ -50,7 +50,6 @@
 	<div id="footer">
 		Copyright &copy; <?php echo date('Y'); ?> <a href="http://www.wireflydesign.com" target="_blank">Wirefly Design</a><br/>
 		All Rights Reserved.<br/>
-		<?php echo Yii::powered(); ?>
 	</div><!-- footer -->
 
 </div><!-- page -->
