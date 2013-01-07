@@ -17,7 +17,7 @@ return array(
     'viewPath' => $backend.'/views',
     'runtimePath' => $backend.'/runtime',
 
-	'name'=>'My Web Application Backend',
+	'name'=>'Glitzaratti Backend',
 
 	// preloading 'log' component
 	'preload'=>array('log'),
