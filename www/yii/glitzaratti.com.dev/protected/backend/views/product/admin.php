@@ -12,7 +12,6 @@ $this->menu=array(
 	array('label'=>'Create Product', 'url'=>array('create')),
 );
 
-
 Yii::app()->clientScript->registerScript('search', "
 $('.search-button').click(function(){
 	$('.search-form').toggle();
@@ -34,10 +33,16 @@ $('.search-form form').submit(function(){
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
-		'id',
+        array(
+            'name'=>'id',
+            'htmlOptions'=>array('width'=>'40px'),
+        ),
 		'name',
-		'price',
 		'description',
+        array(
+            'name'=>'price',
+            'htmlOptions'=>array('width'=>'60px'),
+        ),
 /*
         'weight_kg',
         'pack_height_mm',
@@ -46,9 +51,10 @@ $('.search-form form').submit(function(){
 */
 
         array(
-            'header'=>'Category',
+            'header'=>'Size Category',
             'name'=>'category.name',
 //          'value'=>'',
+            'htmlOptions'=>array('width'=>'80px'),
         ),
 
 
