@@ -41,7 +41,21 @@ class Image extends CActiveRecord
 		return array(
 			array('product_id', 'required'),
 			array('product_id', 'numerical', 'integerOnly'=>true),
+
+            array('filename', 'file','on'=>'insert',
+                'types'=> 'jpg, jpeg, gif, png',
+                'maxSize' => 1024 * 1024 * 10, // 10MB
+                'tooLarge' => 'The file was bigger than 10MB. Please upload a smaller file.'
+            ),
+            array('filename', 'file','on'=>'update',
+                'types'=> 'jpg, jpeg, gif, png',
+                'allowEmpty' => true,
+                'maxSize' => 1024 * 1024 * 10, // 10MB
+                'tooLarge' => 'The file was larger than 10MB. Please upload a smaller file.'
+            ),
+            array('filename', 'unsafe'),
 			array('filename', 'length', 'max'=>255),
+
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, filename, product_id', 'safe', 'on'=>'search'),

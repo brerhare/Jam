@@ -8,6 +8,8 @@ class ImageController extends Controller
 	 */
 	public $layout='//layouts/column2';
 
+	private $_imageDir = '/../userdata/image/';
+
 	/**
 	 * @return array action filters
 	 */
@@ -70,8 +72,13 @@ class ImageController extends Controller
 		if(isset($_POST['Image']))
 		{
 			$model->attributes=$_POST['Image'];
+			$model->filename=CUploadedFile::getInstance($model, 'filename');
 			if($model->save())
+			{
+				if (strlen($model->filename) > 0)
+					$model->filename->saveAs(Yii::app()->basePath . $this->_imageDir . $model->filename);
 				$this->redirect(array('view','id'=>$model->id));
+			}
 		}
 
 		$this->render('create',array(
@@ -88,14 +95,28 @@ class ImageController extends Controller
 	{
 		$model=$this->loadModel($id);
 
+		$model->scenario = 'update';
+
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Image']))
 		{
 			$model->attributes=$_POST['Image'];
+			$file=CUploadedFile::getInstance($model, 'filename');
+			if(is_object($file) && get_class($file) === 'CUploadedFile')
+			{
+				if (file_exists(Yii::app()->basePath . $this->_imageDir . $model->filename))
+					unlink(Yii::app()->basePath . $this->_imageDir . $model->filename);
+				$model->filename = $file;
+			}
+
 			if($model->save())
+			{
+				if(is_object($file))
+					$model->filename->saveAs(Yii::app()->basePath . $this->_imageDir . $model->filename);
 				$this->redirect(array('view','id'=>$model->id));
+			}
 		}
 
 		$this->render('update',array(
@@ -110,6 +131,10 @@ class ImageController extends Controller
 	 */
 	public function actionDelete($id)
 	{
+		$oldfilename = $this->loadModel($id)->filename;
+		if (($oldfilename != '') && (file_exists(Yii::app()->basePath . $this->_imageDir . $oldfilename)))
+			unlink(Yii::app()->basePath . $this->_imageDir . $oldfilename);
+
 		$this->loadModel($id)->delete();
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
