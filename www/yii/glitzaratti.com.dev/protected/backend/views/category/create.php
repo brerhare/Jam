@@ -2,10 +2,10 @@
 /* @var $this CategoryController */
 /* @var $model Category */
 
-$this->breadcrumbs=array(
+/*$this->breadcrumbs=array(
 	'Categories'=>array('admin'),
 	'Create',
-);
+);*/
 
 $this->menu=array(
 //	array('label'=>'List Category', 'url'=>array('index')),

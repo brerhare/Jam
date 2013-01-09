@@ -2,10 +2,10 @@
 /* @var $this ProductController */
 /* @var $model Product */
 
-$this->breadcrumbs=array(
+/*$this->breadcrumbs=array(
 	'Products'=>array('admin'),
 	'Manage',
-);
+);*/
 
 $this->menu=array(
 //	array('label'=>'List Product', 'url'=>array('list')),
@@ -49,19 +49,24 @@ $('.search-form form').submit(function(){
         'pack_width_mm',
         'pack_depth_mm',
 */
-
         array(
             'header'=>'Size Category',
             'name'=>'category.name',
 //          'value'=>'',
             'htmlOptions'=>array('width'=>'80px'),
         ),
-
-
-
 /*      'category_id', */
 		array(
 			'class'=>'CButtonColumn',
+			'template'=>'{update}{images}{delete}',
+			'buttons'=>array(
+				'images' => array(
+					'label'=>'Images',
+					'imageUrl'=>Yii::app()->request->baseUrl.'/img/image.png',
+					'url'=>'Yii::app()->controller->createUrl("image/admin", array("product_id"=>$data->primaryKey))',
+				),
+			)
+
 		),
 	),
 )); ?>

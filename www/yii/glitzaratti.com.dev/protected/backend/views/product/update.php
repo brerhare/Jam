@@ -2,11 +2,11 @@
 /* @var $this ProductController */
 /* @var $model Product */
 
-$this->breadcrumbs=array(
+/*$this->breadcrumbs=array(
 	'Products'=>array('admin'),
 	$model->name=>array('view','id'=>$model->id),
 	'Update',
-);
+);*/
 
 $this->menu=array(
 //	array('label'=>'List Product', 'url'=>array('index')),

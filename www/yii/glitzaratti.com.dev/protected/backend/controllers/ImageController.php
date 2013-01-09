@@ -131,7 +131,8 @@ class ImageController extends Controller
 	/**
 	 * Manages all models.
 	 */
-	public function actionAdmin()
+	// $product_id supplied by the CButtonColumn in product/admin
+	public function actionAdmin($product_id)
 	{
 		$model=new Image('search');
 		$model->unsetAttributes();  // clear any default values

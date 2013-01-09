@@ -2,11 +2,11 @@
 /* @var $this CategoryController */
 /* @var $model Category */
 
-$this->breadcrumbs=array(
+/*$this->breadcrumbs=array(
 	'Categories'=>array('admin'),
 	$model->name=>array('view','id'=>$model->id),
 	'Update',
-);
+);*/
 
 $this->menu=array(
 //	array('label'=>'List Category', 'url'=>array('index')),

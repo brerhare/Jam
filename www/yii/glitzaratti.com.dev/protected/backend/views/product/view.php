@@ -2,10 +2,10 @@
 /* @var $this ProductController */
 /* @var $model Product */
 
-$this->breadcrumbs=array(
+/*$this->breadcrumbs=array(
 	'Products'=>array('index'),
 	$model->name,
-);
+);*/
 
 $this->menu=array(
 	array('label'=>'List Product', 'url'=>array('index')),

@@ -2,9 +2,9 @@
 /* @var $this CategoryController */
 /* @var $dataProvider CActiveDataProvider */
 
-$this->breadcrumbs=array(
+/*$this->breadcrumbs=array(
 	'Categories',
-);
+);*/
 
 $this->menu=array(
 	array('label'=>'Create Category', 'url'=>array('create')),
