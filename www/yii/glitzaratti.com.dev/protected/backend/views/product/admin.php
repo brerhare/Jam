@@ -58,12 +58,18 @@ $('.search-form form').submit(function(){
 /*      'category_id', */
 		array(
 			'class'=>'CButtonColumn',
-			'template'=>'{update}{images}{delete}',
+			'htmlOptions'=>array('width'=>'80px'),
+			'template'=>'{update}{images}{galleries}{delete}',
 			'buttons'=>array(
 				'images' => array(
 					'label'=>'Images',
 					'imageUrl'=>Yii::app()->request->baseUrl.'/img/image.png',
 					'url'=>'Yii::app()->controller->createUrl("image/session", array("product_id"=>$data->primaryKey))',
+				),
+				'galleries' => array(
+					'label'=>'Galleries',
+					'imageUrl'=>Yii::app()->request->baseUrl.'/img/camera.png',
+					'url'=>'Yii::app()->controller->createUrl("gallery/adminProduct", array("product_id"=>$data->primaryKey))',
 				),
 			)
 

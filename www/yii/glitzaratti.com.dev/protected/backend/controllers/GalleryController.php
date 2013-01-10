@@ -36,7 +36,7 @@ class GalleryController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','adminProduct'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -139,6 +139,23 @@ class GalleryController extends Controller
 			$model->attributes=$_GET['Gallery'];
 
 		$this->render('admin',array(
+			'model'=>$model,
+		));
+	}
+
+	/**
+	 * Entry point. Same as actionAdmin except first stores the passed product_id in the session
+	 */
+	// $product_id supplied by the CButtonColumn in product/admin
+	public function actionAdminProduct($product_id)
+	{
+		Yii::app()->session['product_id'] = $product_id;
+		$model=new Gallery('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Gallery']))
+			$model->attributes=$_GET['Gallery'];
+
+		$this->render('admin_product',array(
 			'model'=>$model,
 		));
 	}
