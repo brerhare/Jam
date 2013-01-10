@@ -8,7 +8,7 @@
 
 $this->menu=array(
 	array('label'=>'Create Category', 'url'=>array('create')),
-	array('label'=>'Manage Category', 'url'=>array('admin')),
+	array('label'=>'Manage Categories', 'url'=>array('admin')),
 );
 ?>
 

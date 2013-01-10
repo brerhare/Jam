@@ -44,6 +44,11 @@ $('.search-form form').submit(function(){
         ),
 		'filename',
 		'product_id',
+        array('name'=>'filename',
+            'type'=>'html',
+            'header'=>'Picture',
+            'value'=> 'CHtml::image("/userdata/image/" . $data->filename, "image", array("height"=>50))',
+        ),
 		array(
 			'class'=>'CButtonColumn',
             'template'=>'{update}{delete}',

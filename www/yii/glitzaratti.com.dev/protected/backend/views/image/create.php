@@ -9,7 +9,7 @@
 
 $this->menu=array(
 /*	array('label'=>'List Image', 'url'=>array('index')),*/
-	array('label'=>'Manage Image', 'url'=>array('admin')),
+	array('label'=>'Manage Images', 'url'=>array('admin')),
 );
 ?>
 

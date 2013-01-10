@@ -8,7 +8,7 @@
 
 $this->menu=array(
 	array('label'=>'Create Product', 'url'=>array('create')),
-	array('label'=>'Manage Product', 'url'=>array('admin')),
+	array('label'=>'Manage Products', 'url'=>array('admin')),
 );
 ?>
 
