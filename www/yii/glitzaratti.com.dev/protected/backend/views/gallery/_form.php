@@ -23,13 +23,13 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'carousel'); ?>
-		<?php echo $form->textField($model,'carousel'); ?>
+		<?php echo $form->checkBox($model,'carousel'); ?>
 		<?php echo $form->error($model,'carousel'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'filter'); ?>
-		<?php echo $form->textField($model,'filter'); ?>
+		<?php echo $form->checkBox($model,'filter'); ?>
 		<?php echo $form->error($model,'filter'); ?>
 	</div>
 
