@@ -63,7 +63,7 @@ $('.search-form form').submit(function(){
 				'images' => array(
 					'label'=>'Images',
 					'imageUrl'=>Yii::app()->request->baseUrl.'/img/image.png',
-					'url'=>'Yii::app()->controller->createUrl("image/admin", array("product_id"=>$data->primaryKey))',
+					'url'=>'Yii::app()->controller->createUrl("image/session", array("product_id"=>$data->primaryKey))',
 				),
 			)
 

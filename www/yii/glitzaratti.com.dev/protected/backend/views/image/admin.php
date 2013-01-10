@@ -26,18 +26,27 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1>Manage Images</h1>
+<h1>Manage Images for
+<?php
+    $model_product = Product::model()->findByPk(Yii::app()->session['product_id']);
+    echo $model_product->name;
+?>
+</h1>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'image-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
-		'id',
+		array(
+            'name'=>'id',
+            'htmlOptions'=>array('width'=>'40px'),
+        ),
 		'filename',
 		'product_id',
 		array(
 			'class'=>'CButtonColumn',
+            'template'=>'{update}{delete}',
 		),
 	),
 )); ?>

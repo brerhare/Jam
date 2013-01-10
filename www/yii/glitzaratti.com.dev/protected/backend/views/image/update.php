@@ -17,5 +17,6 @@ $this->menu=array(
 ?>
 
 <h1>Update Image <?php echo $model->id; ?></h1>
+<h2> <?php echo Yii::app()->session['product_id']; ?> </h2>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

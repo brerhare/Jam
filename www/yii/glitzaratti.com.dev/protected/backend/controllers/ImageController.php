@@ -38,7 +38,7 @@ class ImageController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','session'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -77,10 +77,12 @@ class ImageController extends Controller
 			{
 				if (strlen($model->filename) > 0)
 					$model->filename->saveAs(Yii::app()->basePath . $this->_imageDir . $model->filename);
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('admin','id'=>$model->id));
 			}
 		}
 
+        // Hard-wire this image to the session product
+        $model->product_id = Yii::app()->session['product_id'];
 		$this->render('create',array(
 			'model'=>$model,
 		));
@@ -93,6 +95,7 @@ class ImageController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
+
 		$model=$this->loadModel($id);
 
 		$model->scenario = 'update';
@@ -115,7 +118,7 @@ class ImageController extends Controller
 			{
 				if(is_object($file))
 					$model->filename->saveAs(Yii::app()->basePath . $this->_imageDir . $model->filename);
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('admin','id'=>$model->id));
 			}
 		}
 
@@ -153,14 +156,9 @@ class ImageController extends Controller
 		));
 	}
 
-	/**
-	 * Manages all models.
-	 */
-	// $product_id supplied by the CButtonColumn in product/admin
-	public function actionAdminNew($product_id)
-	{
-		actionAdmin();
-	}
+    /**
+     * Manages all models.
+     */
 	public function actionAdmin()
 	{
 		$model=new Image('search');
@@ -172,6 +170,23 @@ class ImageController extends Controller
 			'model'=>$model,
 		));
 	}
+
+    /**
+     * Entry point. Same as actionAdmin except first stores the passed product_id in the session
+     */
+    // $product_id supplied by the CButtonColumn in product/admin
+    public function actionSession($product_id)
+    {
+        Yii::app()->session['product_id'] = $product_id;
+        $model=new Image('search');
+        $model->unsetAttributes();  // clear any default values
+        if(isset($_GET['Image']))
+            $model->attributes=$_GET['Image'];
+
+        $this->render('admin',array(
+            'model'=>$model,
+        ));
+    }
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

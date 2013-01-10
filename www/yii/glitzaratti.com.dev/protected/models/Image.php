@@ -99,7 +99,8 @@ class Image extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('filename',$this->filename,true);
-		$criteria->compare('product_id',$this->product_id);
+//		$criteria->compare('product_id',$this->product_id);     kim modified as below, to use the session var product_id
+        $criteria->compare('product_id',Yii::app()->session['product_id']);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

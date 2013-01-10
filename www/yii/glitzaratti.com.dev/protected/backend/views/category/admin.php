@@ -40,6 +40,7 @@ $('.search-form form').submit(function(){
 		'name',
 		array(
 			'class'=>'CButtonColumn',
+            'template'=>'{update}{delete}',
 		),
 	),
 )); ?>

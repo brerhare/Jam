@@ -22,9 +22,9 @@
 		<?php echo $form->error($model,'filename'); ?>
 	</div>
 
+    <!-- hide the product_id although its included -->
 	<div class="row">
-		<?php echo $form->labelEx($model,'product_id'); ?>
-		<?php echo $form->textField($model,'product_id'); ?>
+		<?php echo $form->hiddenField($model,'product_id'); ?>
 		<?php echo $form->error($model,'product_id'); ?>
 	</div>
 
