@@ -43,7 +43,7 @@ $('.search-form form').submit(function(){
             'htmlOptions'=>array('width'=>'40px'),
         ),
 		'filename',
-		'product_id',
+/*		'product_id', */
         array('name'=>'filename',
             'type'=>'html',
             'header'=>'Picture',
