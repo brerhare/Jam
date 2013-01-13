@@ -37,17 +37,16 @@ run tools/mkapp.py <templatedir> <where> to make from template _stdapp or _stdap
 
 vi /etc/apache2/sites-available/[project]
 	<VirtualHost *:80>
-		ServerAdmin webmaster@glitzaratti.com.dev
 		ServerName glitzaratti.com.dev
 		ServerAlias www.glitzaratti.com.dev
 		# Indexes + Directory Root.
 		DirectoryIndex index.html index.htm index.php
-		DocumentRoot /home/kim/dev/src/www/yii/glitzaratti.com.dev
+		DocumentRoot /home/kim/dev/src/www/yii/glitzaratti.com
 		# Logfiles
-		ErrorLog /home/kim/dev/src/www/apache_logs/glitzaratti.com.dev/error.log
-		CustomLog /home/kim/dev/src/www/apache_logs/glitzaratti.com.dev/access.log combined
+		ErrorLog /home/kim/dev/src/www/apache_logs/glitzaratti.com/error.log
+		CustomLog /home/kim/dev/src/www/apache_logs/glitzaratti.com/access.log combined
 	<Directory "/home/kim/dev/src/www/yii/glitzaratti.com.dev">
-	allow from all
+		allow from all
 	</Directory>
 	</VirtualHost
 
