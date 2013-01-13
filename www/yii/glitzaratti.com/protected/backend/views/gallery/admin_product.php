@@ -9,7 +9,7 @@
 
 $this->menu=array(
 //	array('label'=>'List Gallery', 'url'=>array('index')),
-	array('label'=>'Create Gallery', 'url'=>array('create')),
+	array('label'=>'Manage Products', 'url'=>array('product/admin')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
@@ -30,7 +30,6 @@ $('.search-form form').submit(function(){
 	<?php
 	$model_product = Product::model()->findByPk(Yii::app()->session['product_id']);
 	echo $model_product->name;
-	echo '<p><p><b>Dont do anything on this page, its being worked on</b>'
 	?>
 </h1>
 
@@ -44,21 +43,13 @@ $('.search-form form').submit(function(){
 			'htmlOptions'=>array('width'=>'40px'),
 		),
 		'name',
+
 		array(
-			'name'=>'carousel',
-			'header'=>'Home page carousel?',
-			'filter'=>array('1'=>'Yes','0'=>'No'),
-			'value'=>'($data->carousel=="1")?("Yes"):("No")'
-		),
-		array(
-			'name'=>'filter',
-			'header'=>'Site product page??',
-			'filter'=>array('1'=>'Yes','0'=>'No'),
-			'value'=>'($data->filter=="1")?("Yes"):("No")'
-		),
-		array(
-			'class'=>'CButtonColumn',
-			'template'=>'{update}{delete}'
+			'class' => 'CCheckBoxColumn',
+			'checked'=>function($data, $row) use ($garray){
+				return in_array($data->id, $garray);}, /* garray is a list of attached galleries from controller */
+			'selectableRows' => '20',
+			'header'=>'Selected',
 		),
 	),
 )); ?>

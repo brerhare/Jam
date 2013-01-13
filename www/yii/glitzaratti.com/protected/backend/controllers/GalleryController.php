@@ -8,6 +8,7 @@ class GalleryController extends Controller
 	 */
 	public $layout='//layouts/column2';
 
+	public $garray = array();
 	/**
 	 * @return array action filters
 	 */
@@ -155,9 +156,24 @@ class GalleryController extends Controller
 		if(isset($_GET['Gallery']))
 			$model->attributes=$_GET['Gallery'];
 
+		// Build an array of galleries containing this product
+		$gm= GalleryHasProduct::model()->findAllByAttributes(array('product_id' => Yii::app()->session['product_id']));
+		$garray = array();
+		foreach($gm as $a){
+			array_push($garray, $a->gallery_id);
+		}
 		$this->render('admin_product',array(
 			'model'=>$model,
+			'garray'=>$garray,
 		));
+	}
+
+	public function isProductInGallery($gallery_id)
+	{
+		$modelGalleryHasProduct = GalleryHasProduct::model()->findByPk(array('gallery_id' => $gallery_id, 'product_id' => Yii::app()->session['product_id']));
+		if ($modelGalleryHasProduct)
+			return true;
+		return false;
 	}
 
 	/**
