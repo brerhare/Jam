@@ -22,15 +22,9 @@
 
 <div class="container" id="page">
 
-	<div id="header">
-        <div style="background-color:#000000;text-align:left;margin-left:auto;margin-right:auto;position:relative;width:960px;height:330px;">
-            <map id="map0" name="map0">
-                <area shape="poly" coords="97,279,125,278,153,278,209,279,209,214,217,216,222,208,223,206,219,197,210,188,209,181,211,173,213,174,217,165,217,154,214,155,209,152,209,0,0,0,0,280,84,280" href="listing.html" alt="">
-            </map>
-            <img src="<?php Yii::app()->request->baseUrl ?> /img/wp65d1b97d_06.png" width="234" height="313" border="0" alt="" onload="OnLoadPngFix()" usemap="#map0" style="position:absolute;left:650px;top:28px;">
-            <img src="<?php Yii::app()->request->baseUrl ?> /img/wp984d43e2_06.png" width="334" height="57" border="0" title="" alt="Glitzaratti Couture Design" onload="OnLoadPngFix()" style="position:absolute;left:217px;top:256px;">
-            <img src="<?php Yii::app()->request->baseUrl ?> /img/wpc84d212f_06.png" width="427" height="216" border="0" alt="" onload="OnLoadPngFix()" style="position:absolute;left:164px;top:32px;">
-        </div>
+	<div id="header" style="background-color:#000000;text-align:left;margin-left:auto;margin-right:auto;position:relative;width:960px;height:1000px;">
+		<img src="<?php Yii::app()->request->baseUrl ?> /img/wpb979b61f_06.png" width="100" height="44" border="0" title="" alt="&lt; Home" onload="OnLoadPngFix()" style="position:absolute;left:0px;top:58px;">
+		<img src="<?php Yii::app()->request->baseUrl ?> /img/wp7c4a6a70_06.png" width="298" height="95" border="0" alt="" onload="OnLoadPngFix()" style="position:absolute;left:562px;top:50px;">
 	</div><!-- header -->
 
 	<?php echo $content; ?>

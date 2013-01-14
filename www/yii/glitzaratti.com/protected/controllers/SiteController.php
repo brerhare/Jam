@@ -3,6 +3,11 @@
 class SiteController extends Controller
 {
 	/**
+	 * @var string the default layout for the views. Defaults to '//layouts/main'
+	 */
+	public $layout='//layouts/main2';
+
+	/**
 	 * Declares class-based actions.
 	 */
 	public function actions()
