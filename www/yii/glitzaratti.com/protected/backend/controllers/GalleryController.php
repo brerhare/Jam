@@ -37,7 +37,7 @@ class GalleryController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','adminProduct'),
+				'actions'=>array('admin','delete','adminProduct', 'updateGalleries'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -156,12 +156,19 @@ class GalleryController extends Controller
 		if(isset($_GET['Gallery']))
 			$model->attributes=$_GET['Gallery'];
 
+		if(isset($_POST['Gallery']))
+		{
+			$model->attributes=$_POST['Gallery'];
+				$this->redirect(array('product/admin','id'=>$model->id));
+		}
+
 		// Build an array of galleries containing this product
 		$gm= GalleryHasProduct::model()->findAllByAttributes(array('product_id' => Yii::app()->session['product_id']));
 		$garray = array();
 		foreach($gm as $a){
 			array_push($garray, $a->gallery_id);
 		}
+
 		$this->render('admin_product',array(
 			'model'=>$model,
 			'garray'=>$garray,
@@ -201,6 +208,14 @@ class GalleryController extends Controller
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
+		}
+	}
+
+	public function actionUpdateGalleries()
+	{
+		if(isset($_POST['theIds'])){
+			$arra=explode(',', $_POST['theIds']);
+			// now do something with the ids in $arra
 		}
 	}
 }

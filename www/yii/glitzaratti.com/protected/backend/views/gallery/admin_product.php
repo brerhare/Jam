@@ -33,6 +33,8 @@ $('.search-form form').submit(function(){
 	?>
 </h1>
 
+<?php echo CHtml::beginForm(); ?>
+
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'gallery-grid',
 	'dataProvider'=>$model->search(),
@@ -43,7 +45,6 @@ $('.search-form form').submit(function(){
 			'htmlOptions'=>array('width'=>'40px'),
 		),
 		'name',
-
 		array(
 			'class' => 'CCheckBoxColumn',
 			'id'=>'galleryCheckBoxes',
@@ -54,3 +55,7 @@ $('.search-form form').submit(function(){
 		),
 	),
 )); ?>
+
+<?php echo CHtml::submitButton('Save', array('name' => 'SaveButton')); ?>
+
+<?php echo CHtml::endForm(); ?>
