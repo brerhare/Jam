@@ -12,44 +12,33 @@
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/ie.css" media="screen, projection" />
 	<![endif]-->
 
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
+<!--	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" /> -->
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css" />
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 </head>
 
-<body>
+<body text="#000000" style="background-color:#000000; /*text-align:center;*/ height:1000px;">
 
 <div class="container" id="page">
 
 	<div id="header">
-		<div id="logo"><?php echo CHtml::encode(Yii::app()->name); ?></div>
+        <div style="background-color:#000000;text-align:left;margin-left:auto;margin-right:auto;position:relative;width:960px;height:330px;">
+            <map id="map0" name="map0">
+                <area shape="poly" coords="97,279,125,278,153,278,209,279,209,214,217,216,222,208,223,206,219,197,210,188,209,181,211,173,213,174,217,165,217,154,214,155,209,152,209,0,0,0,0,280,84,280" href="listing.html" alt="">
+            </map>
+            <img src="<?php Yii::app()->request->baseUrl ?> /img/wp65d1b97d_06.png" width="234" height="313" border="0" alt="" onload="OnLoadPngFix()" usemap="#map0" style="position:absolute;left:650px;top:28px;">
+            <img src="<?php Yii::app()->request->baseUrl ?> /img/wp984d43e2_06.png" width="334" height="57" border="0" title="" alt="Glitzaratti Couture Design" onload="OnLoadPngFix()" style="position:absolute;left:217px;top:256px;">
+            <img src="<?php Yii::app()->request->baseUrl ?> /img/wpc84d212f_06.png" width="427" height="216" border="0" alt="" onload="OnLoadPngFix()" style="position:absolute;left:164px;top:32px;">
+        </div>
 	</div><!-- header -->
-
-	<div id="mainmenu">
-		<?php $this->widget('zii.widgets.CMenu',array(
-			'items'=>array(
-				array('label'=>'Home', 'url'=>array('/site/index')),
-				array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
-				array('label'=>'Contact', 'url'=>array('/site/contact')),
-				array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
-				array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
-			),
-		)); ?>
-	</div><!-- mainmenu -->
-	<?php if(isset($this->breadcrumbs)):?>
-		<?php $this->widget('zii.widgets.CBreadcrumbs', array(
-			'links'=>$this->breadcrumbs,
-		)); ?><!-- breadcrumbs -->
-	<?php endif?>
 
 	<?php echo $content; ?>
 
 	<div class="clear"></div>
 
 	<div id="footer">
-		Copyright &copy; <?php echo date('Y'); ?> <a href="http://www.wireflydesign.com" target="_blank">Wirefly Design</a><br/>
-		All Rights Reserved.<br/>
+
 	</div><!-- footer -->
 
 </div><!-- page -->
