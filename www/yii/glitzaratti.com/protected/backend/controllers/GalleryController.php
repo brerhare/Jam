@@ -159,11 +159,26 @@ class GalleryController extends Controller
 		if(isset($_POST['Gallery']))
 		{
 			$model->attributes=$_POST['Gallery'];
-				$this->redirect(array('product/admin','id'=>$model->id));
+
+			// Update db to match checkbox selections
+			GalleryHasProduct::model()->deleteAllByAttributes(array('product_id' => Yii::app()->session['product_id']));
+			Yii::log('Checkbox selections for product ' . Yii::app()->session['product_id'], CLogger::LEVEL_INFO, 'system.test.kim');
+			if (isset($_POST['galleryCheckBoxes']))
+			{
+				while (($gallery_id = array_shift($_POST['galleryCheckBoxes'])) != null)
+				{
+					Yii::log("...belongs to gallery " . $gallery_id, CLogger::LEVEL_INFO, 'system.test.kim');
+					$gal = new GalleryHasProduct;
+					$gal->product_id = Yii::app()->session['product_id'];
+					$gal->gallery_id = $gallery_id;
+					$gal->save();
+				}
+			}
+			$this->redirect(array('product/admin','id'=>$model->id));
 		}
 
 		// Build an array of galleries containing this product
-		$gm= GalleryHasProduct::model()->findAllByAttributes(array('product_id' => Yii::app()->session['product_id']));
+		$gm = GalleryHasProduct::model()->findAllByAttributes(array('product_id' => Yii::app()->session['product_id']));
 		$garray = array();
 		foreach($gm as $a){
 			array_push($garray, $a->gallery_id);
@@ -208,14 +223,6 @@ class GalleryController extends Controller
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
-		}
-	}
-
-	public function actionUpdateGalleries()
-	{
-		if(isset($_POST['theIds'])){
-			$arra=explode(',', $_POST['theIds']);
-			// now do something with the ids in $arra
 		}
 	}
 }

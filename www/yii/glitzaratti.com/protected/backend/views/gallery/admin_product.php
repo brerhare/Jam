@@ -56,6 +56,8 @@ $('.search-form form').submit(function(){
 	),
 )); ?>
 
+<h6>Check the galleries this product appears in, and click Save</h6>
+<p></p>
 <?php echo CHtml::submitButton('Save', array('name' => 'SaveButton')); ?>
 
 <?php echo CHtml::endForm(); ?>
