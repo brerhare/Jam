@@ -46,8 +46,9 @@ $('.search-form form').submit(function(){
 
 		array(
 			'class' => 'CCheckBoxColumn',
-			'checked'=>function($data, $row) use ($garray){
-				return in_array($data->id, $garray);}, /* garray is a list of attached galleries from controller */
+			'id'=>'galleryCheckBoxes',
+			'checked'=>function($data, $row) use ($garray){ /* nb has to be an anonymous func */
+				return in_array($data->id, $garray);},      /* garray is a list of attached galleries from controller */
 			'selectableRows' => '20',
 			'header'=>'Selected',
 		),
