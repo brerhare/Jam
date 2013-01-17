@@ -8,7 +8,7 @@
 );*/
 
 $this->menu=array(
-//	array('label'=>'List Image', 'url'=>array('index')),
+	array('label'=>'Manage Products', 'url'=>array('product/admin')),
 	array('label'=>'Create Image', 'url'=>array('create')),
 );
 

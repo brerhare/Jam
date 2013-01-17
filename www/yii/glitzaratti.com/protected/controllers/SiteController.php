@@ -5,7 +5,7 @@ class SiteController extends Controller
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/main'
 	 */
-	public $layout='//layouts/main2';
+	 //public $layout='//layouts/main2';
 
 	/**
 	 * Declares class-based actions.
@@ -56,6 +56,7 @@ class SiteController extends Controller
 	 */
 	public function actionContact()
 	{
+		$this->layout='//layouts/main2'; // kim
 		$model=new ContactForm;
 		if(isset($_POST['ContactForm']))
 		{

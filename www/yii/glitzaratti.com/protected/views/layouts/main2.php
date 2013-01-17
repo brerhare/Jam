@@ -15,22 +15,6 @@
 <!--	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" /> -->
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css" />
 
-	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
-</head>
-
-<body text="#000000" style="background-color:#000000; /*text-align:center;*/ /*height:1000px;*/">
-
-<div class="container" id="page">
-
-	<div id="header" style="background-color:#000000;text-align:left;margin-left:auto;margin-right:auto;position:relative;width:960px;height:1000px;">
-		<img src="<?php Yii::app()->request->baseUrl ?> /img/wpb979b61f_06.png" width="100" height="44" border="0" title="" alt="&lt; Home" onload="OnLoadPngFix()" style="position:absolute;left:0px;top:58px;">
-		<img src="<?php Yii::app()->request->baseUrl ?> /img/wp7c4a6a70_06.png" width="298" height="95" border="0" alt="" onload="OnLoadPngFix()" style="position:absolute;left:562px;top:50px;">
-	</div><!-- header -->
-
-	<?php echo $content; ?>
-
-	<div class="clear"></div>
-
     <style type="text/css">
         footer {margin: 0px; padding: 0px;}
         .Normal-P
@@ -47,6 +31,22 @@
         .Button1:active{background-position:0px -37px;}
         .Button1 span,.Button1:link span,.Button1:visited span{color:#ffffff;font-family:Arial,sans-serif;font-weight:normal;text-decoration:none;text-align:center;text-transform:none;font-style:normal;left:1px;top:10px;width:92px;height:17px;font-size:13px;display:block;position:absolute;cursor:pointer;}
     </style>
+
+	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
+</head>
+
+<body text="#000000" style="background-color:#000000; /*text-align:center;*/ /*height:1000px;*/">
+
+<div class="container" id="page">
+
+	<div id="header" style="background-color:#000000;text-align:left;margin-left:auto;margin-right:auto;position:relative;width:960px;height:150px;">
+		<img src="<?php Yii::app()->request->baseUrl ?> /img/wpb979b61f_06.png" width="100" height="44" border="0" title="" alt="&lt; Home" onload="OnLoadPngFix()" style="position:absolute;left:0px;top:58px;">
+		<img src="<?php Yii::app()->request->baseUrl ?> /img/wp7c4a6a70_06.png" width="298" height="95" border="0" alt="" onload="OnLoadPngFix()" style="position:absolute;left:562px;top:50px;">
+	</div><!-- header -->
+
+	<?php echo $content; ?>
+
+	<div class="clear"></div>
 
 	<div id="footer" text="#000000" style="background-color:#000000; text-align:center; height:253px;">
         <div style="background-color:#000000;text-align:left;margin-left:auto;margin-right:auto;position:relative;width:960px;height:253px;">

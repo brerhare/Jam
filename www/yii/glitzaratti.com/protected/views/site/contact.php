@@ -9,7 +9,10 @@ $this->breadcrumbs=array(
 );
 ?>
 
-<h1>Contact Us</h1>
+
+<div style='left:50px; font-family:"Arial", sans-serif; color:#ffffff; font-size:16.0px; line-height:1.27em;'>
+<br></br>
+<h1 style="color:#ffffff">Contact Us</h1>
 
 <?php if(Yii::app()->user->hasFlash('contact')): ?>
 
@@ -20,7 +23,7 @@ $this->breadcrumbs=array(
 <?php else: ?>
 
 <p>
-If you have business inquiries or other questions, please fill out the following form to contact us. Thank you.
+If you have enquiries or other questions, please fill out the following form to contact us. Thank you.
 </p>
 
 <div class="form">
@@ -81,5 +84,8 @@ If you have business inquiries or other questions, please fill out the following
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+
+	</div> <!-- font -->
+
 
 <?php endif; ?>

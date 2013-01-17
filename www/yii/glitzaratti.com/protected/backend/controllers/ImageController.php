@@ -76,7 +76,11 @@ class ImageController extends Controller
 			if($model->save())
 			{
 				if (strlen($model->filename) > 0)
-					$model->filename->saveAs(Yii::app()->basePath . $this->_imageDir . $model->filename);
+				{
+					$fname = Yii::app()->basePath . $this->_imageDir . $model->filename;
+					$model->filename->saveAs($fname);
+					$this->_watermark($fname);
+				}
 				$this->redirect(array('admin','id'=>$model->id));
 			}
 		}
@@ -117,7 +121,12 @@ class ImageController extends Controller
 			if($model->save())
 			{
 				if(is_object($file))
-					$model->filename->saveAs(Yii::app()->basePath . $this->_imageDir . $model->filename);
+				{
+					$fname = Yii::app()->basePath . $this->_imageDir . $model->filename;
+					$model->filename->saveAs($fname);
+					$this->_watermark($fname);
+
+				}
 				$this->redirect(array('admin','id'=>$model->id));
 			}
 		}
@@ -214,5 +223,17 @@ class ImageController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+
+	/**
+	 * Add a watermark to the uploaded image
+	 * @param &$filename Address of filename to update with watermarked image
+	 */
+	private function _watermark(&$filename)
+	{
+		ImageUtils::watermark(
+			$filename,
+			Yii::app()->basePath . '/../img/watermark.png',
+			$filename);
 	}
 }
