@@ -31,12 +31,12 @@ domReady(function(){
             <img src="/userdata/image/heart.jpg" longdesc="http://finnrudolph.de/content/imageflow/example_1.png" width="400" height="300" alt="Image 5" />
             <img src="/userdata/image/ring clutch.jpg" longdesc="http://finnrudolph.de/content/imageflow/example_1.png" width="500" height="500" alt="Image 5" />
         </div>
-
+<!--
 		<div>
             <img src="/img/glassbutton.png" alt="Gall-1" style="position:absolute;top:720px;left:150px;z-index:1000"/>
             <img src="/img/glassbutton.png" alt="Gall-2" style="position:absolute;top:720px;left:300px;z-index:1000"/>
 		</div>
-
+-->
     </div>
 </center>
 

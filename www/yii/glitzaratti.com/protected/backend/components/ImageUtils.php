@@ -7,9 +7,9 @@ class ImageUtils extends CComponent
 {
 	/**
 	 * Add a watermark to an image
-	 * @param in_image
+	 * @param imagefile
 	 * @param watermark
-	 * @param out_image
+	 * @param out_imagefile
 	 */
 
 	public static function watermark($imagefile, $watermark, $out_imagefile)
