@@ -18,10 +18,21 @@ domReady(function(){
 	});
 </script>
 
-
 <center>
     <div class="left_col">
         <div id="myCarousel" class="imageflow">
+
+
+	        <?php foreach( new DirectoryIterator(Yii::app()->basePath . "/../userdata/image") as $file) {
+	        if ($file->isDot()) continue;
+	        if (substr($file, 0, 5) == "refl_") continue;
+	        if (substr($file, 0, 1) == ".") continue;
+	        if ($file->isFile() === TRUE) {
+		        echo '<img src="/userdata/image/' . $file . '" longdesc="" alt="' . $file . '" />';
+	        }
+        }?>
+
+<!--
             <img src="/userdata/image/AB large multi jewel.jpg" longdesc="" width="500" height="500" alt="A Shoe" />
             <img src="/userdata/image/apple clutch.jpg" longdesc="http://finnrudolph.de/content/imageflow/example_2.png" width="300" height="400" alt="Image 2" />
             <img src="/userdata/image/baby2.jpg" longdesc="http://finnrudolph.de/content/imageflow/example_3.png" width="400" height="500" alt="Image 3" />
@@ -30,6 +41,7 @@ domReady(function(){
             <img src="/userdata/image/encrusted.jpg" longdesc="http://finnrudolph.de/content/imageflow/example_1.png" width="400" height="300" alt="Image 5" />
             <img src="/userdata/image/heart.jpg" longdesc="http://finnrudolph.de/content/imageflow/example_1.png" width="400" height="300" alt="Image 5" />
             <img src="/userdata/image/ring clutch.jpg" longdesc="http://finnrudolph.de/content/imageflow/example_1.png" width="500" height="500" alt="Image 5" />
+            -->
         </div>
 <!--
 		<div>
