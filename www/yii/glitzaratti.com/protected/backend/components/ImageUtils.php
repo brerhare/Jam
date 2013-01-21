@@ -7,20 +7,20 @@ class ImageUtils extends CComponent
 {
 	/**
 	 * Add a watermark to an image
-	 * @param imagefile
-	 * @param watermark
-	 * @param out_imagefile
+	 * @param imageFile
+	 * @param watermark (must be a png)
+	 * @param outImageFile
 	 */
 
-	public static function watermark($imagefile, $watermark, $out_imagefile)
+	public static function watermark($imageFile, $watermarkPng, $outImageFile)
 	{
-		// Load image
-		$image = imagecreatefromjpeg($imagefile);
+		$image = _loadImage($imageFile);
+
 		$w = imagesx($image);
 		$h = imagesy($image);
 
 		// Load the watermark
-		$wmark = imagecreatefrompng($watermark);
+		$wmark = imagecreatefrompng($watermarkPng);
 		$ww = imagesx($wmark);
 		$wh = imagesy($wmark);
 
@@ -32,7 +32,30 @@ class ImageUtils extends CComponent
 
 		// Send the image
 		//header('Content-type: image/jpeg');
-		imagejpeg($image, $out_imagefile, 95);  // 2nd param could be 'null' to emit the image as a stream
+		imagejpeg($image, $outImageFile, 95);  // 2nd param could be 'null' to emit the image as a stream
 		imagedestroy($image);
+	}
+
+	/**
+	 * Load an image resource, figuring out its type
+	 * @param image file
+	 * @return image resource
+	 */
+	private static function _loadImage(&$imageFile)
+	{
+		list($source_width, $source_height, $source_type) = getimagesize($imageFile);
+
+		switch ($source_type)
+		{
+			case IMAGETYPE_GIF:
+				return imagecreatefromgif($imageFile);
+
+			case IMAGETYPE_JPEG:
+				return imagecreatefromjpeg($imageFile);
+
+			case IMAGETYPE_PNG:
+				return imagecreatefrompng($imageFile);
+		}
+
 	}
 }
