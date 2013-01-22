@@ -1,5 +1,8 @@
 <?php
 
+// Import the custom image kit
+Yii::import('application.vendors.wideimage.lib.WideImage');
+
 class ImageController extends Controller
 {
 	/**
@@ -231,9 +234,17 @@ class ImageController extends Controller
 	 */
 	private function _watermark(&$filename)
 	{
-		ImageUtils::watermark(
+
+		ImageUtils::cropToFit($filename, $filename, 100, 100);
+
+/*		ImageUtils::watermark(
 			$filename,
 			Yii::app()->basePath . '/../img/watermark.png',
-			$filename);
+			$filename);*/
+
+/*		$img = WideImage::load($filename);
+		$watermark = WideImage::load(Yii::app()->basePath . '/../img/watermark.png');
+		$new = $img->merge($watermark, 'center', 'center', 50);
+		$new->saveToFile($filename); */
 	}
 }
