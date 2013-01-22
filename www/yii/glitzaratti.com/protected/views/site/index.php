@@ -13,7 +13,7 @@ domReady(function(){
 	instanceOne.init({
 		ImageFlowID:'myCarousel',
 		reflectPath:'/scripts/imageflow/',
-		imagePath:'/home/kim/dev/src/www/yii/glitzaratti.com/',
+		imagePath: '<?php echo Yii::app()->basePath . '/../'?>',
 		circular:true});
 	});
 </script>
@@ -23,7 +23,7 @@ domReady(function(){
         <div id="myCarousel" class="imageflow">
 
 
-	        <?php foreach( new DirectoryIterator(Yii::app()->basePath . "/../userdata/image") as $file) {
+	        <?php foreach(new DirectoryIterator(Yii::app()->basePath . "/../userdata/image") as $file) {
 	        if ($file->isDot()) continue;
 	        if (substr($file, 0, 5) == "refl_") continue;
 	        if (substr($file, 0, 1) == ".") continue;
