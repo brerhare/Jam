@@ -47,25 +47,18 @@ class ImageUtils extends CComponent
 
 		if ($source_aspect_ratio > $desired_aspect_ratio)
 		{
-			//
 			// Triggered when source image is wider
-			//
 			$temp_height = $outHeight;
 			$temp_width = (int) ($outHeight * $source_aspect_ratio);
 		}
 		else
 		{
-			//
 			// Triggered otherwise (i.e. source image is similar or taller)
-			//
 			$temp_width = $outWidth;
 			$temp_height = (int) ($outWidth / $source_aspect_ratio);
 		}
 
-		//
 		// Resize the image into a temporary GD image
-		//
-
 		$temp_gdim = imagecreatetruecolor($temp_width, $temp_height);
 
 		// The following 2 lines fix transparent png's coming out with black backgrounds
@@ -81,10 +74,7 @@ class ImageUtils extends CComponent
 			$source_width, $source_height
 		);
 
-		//
 		// Copy cropped region from temporary image into the desired GD image
-		//
-
 		$x0 = ($temp_width - $outWidth) / 2;
 		$y0 = ($temp_height - $outHeight) / 2;
 
@@ -102,7 +92,19 @@ class ImageUtils extends CComponent
 			$outWidth, $outHeight
 		);
 
-		imagejpeg($desired_gdim, $outImageFile, 90);
+		// Create the resized file, of same type
+		switch ( $source_type )
+		{
+			case IMAGETYPE_GIF:
+				imagegif($desired_gdim, $outImageFile);
+				break;
+			case IMAGETYPE_JPEG:
+				imagejpeg($desired_gdim, $outImageFile, 90);
+				break;
+			case IMAGETYPE_PNG:
+				imagepng($desired_gdim, $outImageFile, 9);
+				break;
+		}
 		imagedestroy($desired_gdim);
 	}
 
@@ -110,11 +112,12 @@ class ImageUtils extends CComponent
 	/**
 	 * Add a watermark to an image
 	 * @param imageFile
-	 * @param watermark (must be a png)
+	 * @param watermarkPng (must be png, for transparency)
 	 * @param outImageFile
+	 * @param percentOfWidth watermark width as percentage of imageFile
 	 */
 
-	public static function watermark($imageFile, $watermarkPng, $outImageFile)
+	public static function watermark($imageFile, $watermarkPng, $outImageFile, $percentOfWidth = 50)
 	{
 		list($source_width, $source_height, $source_type) = getimagesize($imageFile);
 		switch ($source_type)
@@ -133,8 +136,20 @@ class ImageUtils extends CComponent
 		$w = imagesx($source_gdim);
 		$h = imagesy($source_gdim);
 
-		// Load the watermark
-		$wmark = imagecreatefrompng($watermarkPng);
+		// Size the watermark to % of file it will be merged with
+		$wmReqWidth = $source_width * ($percentOfWidth / 100);
+		// But dont increase its size!
+		list($wmark_width, $wmark_height, $wmark_type) = getimagesize($watermarkPng);
+		if ($wmReqWidth > $wmark_width)
+			$wmReqWidth = $wmark_width;
+		// And store it in a temp file
+		$tempName = tempnam('/tmp', 'watermark_');
+		ImageUtils::resize($watermarkPng, $tempName, $wmReqWidth, 0);
+
+		// Load the resized watermark
+		$wmark = imagecreatefrompng($tempName);
+		unlink($tempName);
+
 		$ww = imagesx($wmark);
 		$wh = imagesy($wmark);
 
