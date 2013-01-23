@@ -25,8 +25,8 @@ domReady(function(){
 
 	        <?php foreach(new DirectoryIterator(Yii::app()->basePath . "/../userdata/image") as $file) {
 	        if ($file->isDot()) continue;
-	        if (substr($file, 0, 5) == "refl_") continue;
-	        if (substr($file, 0, 1) == ".") continue;
+//	        if (substr($file, 0, 1) == ".") continue;
+	        if (substr($file, 0, 5) != "gall_") continue;
 	        if ($file->isFile() === TRUE) {
 		        echo '<img src="/userdata/image/' . $file . '" longdesc="" alt="' . $file . '" />';
 	        }

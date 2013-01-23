@@ -13,7 +13,7 @@ class ImageUtils extends CComponent
 	 * @param outHeight
 	 */
 
-	public static function cropToFit($imageFile, $outImageFile, $outWidth, $outHeight)
+	public static function resize($imageFile, $outImageFile, $outWidth, $outHeight)
 	{
 		list($source_width, $source_height, $source_type) = getimagesize($imageFile);
 		switch ( $source_type )
@@ -30,6 +30,19 @@ class ImageUtils extends CComponent
 		}
 
 		$source_aspect_ratio = $source_width / $source_height;
+
+		// Cater for missing height and/or width
+		if(!$outWidth && !$outHeight) {
+			$outWidth = $source_width;
+			$outHeight = $source_height;
+		}
+		if(!$outWidth) {
+			$outWidth = round($outHeight * $source_aspect_ratio);
+		}
+		if(!$outHeight) {
+			$outHeight = round($outWidth / $source_aspect_ratio);
+		}
+
 		$desired_aspect_ratio = $outWidth / $outHeight;
 
 		if ($source_aspect_ratio > $desired_aspect_ratio)

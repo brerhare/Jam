@@ -1,8 +1,5 @@
 <?php
 
-// Import the custom image kit
-Yii::import('application.vendors.wideimage.lib.WideImage');
-
 class ImageController extends Controller
 {
 	/**
@@ -148,7 +145,11 @@ class ImageController extends Controller
 	{
 		$oldfilename = $this->loadModel($id)->filename;
 		if (($oldfilename != '') && (file_exists(Yii::app()->basePath . $this->_imageDir . $oldfilename)))
+		{
 			unlink(Yii::app()->basePath . $this->_imageDir . $oldfilename);
+			unlink(Yii::app()->basePath . $this->_imageDir . 'gall_' . $oldfilename);
+			unlink(Yii::app()->basePath . $this->_imageDir . 'orig_' . $oldfilename);
+		}
 
 		$this->loadModel($id)->delete();
 
@@ -234,17 +235,24 @@ class ImageController extends Controller
 	 */
 	private function _watermark(&$filename)
 	{
+		// Save the original file as uploaded
+		copy($filename, dirname($filename) . '/orig_' . basename($filename));
 
-		ImageUtils::cropToFit($filename, $filename, 100, 100);
-
-/*		ImageUtils::watermark(
+		// Watermark it
+		ImageUtils::watermark(
 			$filename,
 			Yii::app()->basePath . '/../img/watermark.png',
-			$filename);*/
+			$filename);
 
-/*		$img = WideImage::load($filename);
-		$watermark = WideImage::load(Yii::app()->basePath . '/../img/watermark.png');
-		$new = $img->merge($watermark, 'center', 'center', 50);
-		$new->saveToFile($filename); */
+		// Make a copy of it with capped dimensions (for carousel, and thumbs)
+		list($width, $height, $type) = getimagesize($filename);
+		if ($width > $height) {
+			$width = rand(250, 400);
+			$height = 0;
+		} else {
+			$height = rand(250, 400);
+			$width = 0;
+		}
+		ImageUtils::resize($filename, dirname($filename) . '/gall_' . basename($filename), $width, $height);
 	}
 }
