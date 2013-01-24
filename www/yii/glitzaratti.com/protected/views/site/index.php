@@ -47,8 +47,8 @@ domReady(function(){
 
 
 		<div style="position: relative">
-            <img src="/img/glassbutton.png" alt="Gall-1" style="position:absolute;top:0px;left:0px;z-index:1000"/>
-            <img src="/img/glassbutton.png" alt="Gall-2" style="position:absolute;top:0px;left:0px;z-index:1000"/>
+            <img src="/img/carouselbutton.png" alt="Gall-1" style="position:absolute;top:-80px;left:0px;z-index:1000"/>
+            <img src="/img/carouselbutton.png" alt="Gall-2" style="position:absolute;top:-80px;left:150px;z-index:1000"/>
 		</div>
 
 
