@@ -1,5 +1,6 @@
 <?php
 /* @var $this SiteController */
+/* @var $galleries Gallery[] */
 
 /* $this->pageTitle=Yii::app()->name; */
 ?>
@@ -23,6 +24,20 @@ domReady(function(){
         <div id="myCarousel" class="imageflow">
 
 
+
+			<?php foreach ($galleries as $gallery): ?>
+	            <?php if ($gallery->carousel): ?>
+					<?php foreach ($gallery->products as $product): ?>
+						<?php foreach ($product->images as $image): ?>
+<!--							<?php echo 'image ' . $image->id . "      " . $image->filename . "<br>"; ?> -->
+								<img src="/userdata/image/gall_<?php echo $image->filename?>" longdesc="" alt="A Shoe" />
+						<?php endforeach; ?>
+					<?php endforeach; ?>
+				<?php endif; ?>
+			<?php endforeach; ?>
+
+
+<!--
 	        <?php foreach(new DirectoryIterator(Yii::app()->basePath . "/../userdata/image") as $file) {
 	        if ($file->isDot()) continue;
 //	        if (substr($file, 0, 1) == ".") continue;
@@ -31,6 +46,7 @@ domReady(function(){
 		        echo '<img src="/userdata/image/' . $file . '" longdesc="" alt="' . $file . '" />';
 	        }
         }?>
+-->
 
 <!--
             <img src="/userdata/image/AB large multi jewel.jpg" longdesc="" width="500" height="500" alt="A Shoe" />

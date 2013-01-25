@@ -34,7 +34,32 @@ class SiteController extends Controller
 	{
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
-		$this->render('index');
+		$this->actionIndexGallery(0);
+		//$this->render('index');
+	}
+
+	public function actionIndexGallery($galleryId)
+	{
+		$galleries = Gallery::model()->findAll();
+
+/*		foreach ($galleries as $gallery)
+		{
+			echo 'gallery ' . $gallery->id . "      " . $gallery->name . "<br/>";
+
+			foreach ($gallery->products as $product)
+			{
+				echo '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp';
+				echo 'product ' . $product->id . "      " . $product->name . "<br>";
+				foreach ($product->images as $image)
+				{
+					echo '&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp';
+					echo 'image ' . $image->id . "      " . $image->filename . "<br>";
+				}
+			}
+		}
+*/
+
+		$this->render('index', array('galleryId' => $galleryId, 'galleries' => $galleries));
 	}
 
 	/**
