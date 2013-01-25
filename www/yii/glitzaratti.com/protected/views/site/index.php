@@ -1,6 +1,9 @@
 <?php
 /* @var $this SiteController */
+
 /* @var $galleries Gallery[] */
+/* @var $galleryId selected gallery to show */
+
 
 /* $this->pageTitle=Yii::app()->name; */
 ?>
@@ -46,11 +49,13 @@ domReady(function(){
 		<div id="myCarousel" class="imageflow">
 			<?php foreach ($galleries as $gallery): ?>
 				<?php if ($gallery->carousel): ?>
-					<?php foreach ($gallery->products as $product): ?>
-						<?php foreach ($product->images as $image): ?>
-							<img src="/userdata/image/gall_<?php echo $image->filename?>" longdesc="<?php echo $this->createUrl('site/index?product_id=' . $product->id);?>" alt="<?php echo $product->name?>" />
+					<?php if (($gallery->id == $galleryId) || ($galleryId == 0)): ?>
+						<?php foreach ($gallery->products as $product): ?>
+							<?php foreach ($product->images as $image): ?>
+								<img src="/userdata/image/gall_<?php echo $image->filename?>" longdesc="<?php echo $this->createUrl('site/index?product_id=' . $product->id);?>" alt="<?php echo $product->name?>" />
+							<?php endforeach; ?>
 						<?php endforeach; ?>
-					<?php endforeach; ?>
+					<?php endif; ?>
 				<?php endif; ?>
 			<?php endforeach; ?>
 		</div>
@@ -60,7 +65,7 @@ domReady(function(){
 			<?php $left=0 ?>
 			<?php foreach ($galleries as $gallery): ?>
 				<?php if ($gallery->carousel): ?>
-					<div onclick="window.location='http://www.bbc.com'" class="gallerybutton" style="position:absolute;top:-80px;left:<?php echo $left; $left+=150; ?>px;z-index:1000"><?php echo $gallery->name?><a href="http://google.com"></a></div>
+					<div onclick="window.location='<?php echo $this->createUrl('site/indexGallery?galleryId=' . $gallery->id);?>'" class="gallerybutton" style="position:absolute;top:-80px;left:<?php echo $left; $left+=150; ?>px;z-index:1000"><?php echo $gallery->name?><a href="http://google.com"></a></div>
 				<?php endif; ?>
 			<?php endforeach; ?>
 		</div>
