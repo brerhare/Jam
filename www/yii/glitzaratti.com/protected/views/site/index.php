@@ -8,6 +8,10 @@
 <link rel="stylesheet" href="/scripts/imageflow/imageflow.css" type="text/css" />
 <script src="/scripts/imageflow/imageflow.js" type="text/javascript"></script>
 
+	<style>
+		.play, .pause {visibility:hidden}
+	</style>
+
 <script>
 domReady(function(){
 	var instanceOne = new ImageFlow();
@@ -15,6 +19,10 @@ domReady(function(){
 		ImageFlowID:'myCarousel',
 		reflectPath:'/scripts/imageflow/',
 		imagePath: '<?php echo Yii::app()->basePath . '/../'?>',
+		slideshow:true,
+        slideshowSpeed:5000,
+        slideshowAutoplay:true,
+        imageCursor:'pointer',
 		circular:true});
 	});
 </script>
@@ -26,13 +34,14 @@ domReady(function(){
 				<?php if ($gallery->carousel): ?>
 					<?php foreach ($gallery->products as $product): ?>
 						<?php foreach ($product->images as $image): ?>
-							<img src="/userdata/image/gall_<?php echo $image->filename?>" longdesc="<?php echo $this->createUrl('site/index');?>" alt="<?php echo $product->name?>" />
+							<img src="/userdata/image/gall_<?php echo $image->filename?>" longdesc="<?php echo $this->createUrl('site/index?product_id=' . $product->id);?>" alt="<?php echo $product->name?>" />
 						<?php endforeach; ?>
 					<?php endforeach; ?>
 				<?php endif; ?>
 			<?php endforeach; ?>
 		</div>
 
+		<!-- Gallery buttons -->
 		<div style="position: relative">
 			<?php $left=0 ?>
 			<?php foreach ($galleries as $gallery): ?>
