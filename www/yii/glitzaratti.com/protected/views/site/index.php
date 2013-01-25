@@ -9,7 +9,15 @@
 <script src="/scripts/imageflow/imageflow.js" type="text/javascript"></script>
 
 	<style>
-		.play, .pause {visibility:hidden}
+		.play, .pause {visibility:hidden}   /* Hide the carousel start and pause buttons */
+		.gallerybutton {
+            background-image:url(/img/carouselbutton.png);
+            background-repeat:no-repeat;
+            width:123px;
+			height:54px;
+			font-size:11px;
+			padding-top:20px;
+		}
 	</style>
 
 <script>
@@ -42,14 +50,15 @@ domReady(function(){
 		</div>
 
 		<!-- Gallery buttons -->
-		<div style="position: relative">
+		<div style="position:relative">
 			<?php $left=0 ?>
 			<?php foreach ($galleries as $gallery): ?>
 				<?php if ($gallery->carousel): ?>
-					<img src="/img/carouselbutton.png" alt="Gall-1" style="position:absolute;top:-80px;left:<?php echo $left; $left+=150; ?>px;z-index:1000"/>
+					<div class="gallerybutton" style="position:absolute;top:-80px;left:<?php echo $left; $left+=150; ?>px;z-index:1000"><?php echo $gallery->name?></div>
 				<?php endif; ?>
 			<?php endforeach; ?>
 		</div>
+
 	</div>
 </center>
 
