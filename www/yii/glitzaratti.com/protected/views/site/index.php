@@ -18,7 +18,8 @@
             background-repeat:no-repeat;
             width:123px;
 			height:54px;
-			font-size:11px;
+			font-size:12px;
+			font-weight:bold;
 			padding-top:20px;
 			cursor:pointer;
 		}
@@ -32,7 +33,7 @@ domReady(function(){
 		reflectPath:'/scripts/imageflow/',
 		imagePath: '<?php echo Yii::app()->basePath . '/../'?>',
 		slideshow:true,
-        slideshowSpeed:5000,
+        slideshowSpeed:2000,
         slideshowAutoplay:true,
         imageCursor:'pointer',
 		circular:true});
@@ -65,7 +66,7 @@ domReady(function(){
 			<?php $left=0 ?>
 			<?php foreach ($galleries as $gallery): ?>
 				<?php if ($gallery->carousel): ?>
-					<div onclick="window.location='<?php echo $this->createUrl('site/indexGallery?galleryId=' . $gallery->id);?>'" class="gallerybutton" style="position:absolute;top:-80px;left:<?php echo $left; $left+=150; ?>px;z-index:1000"><?php echo $gallery->name?><a href="http://google.com"></a></div>
+					<div onclick="window.location='<?php echo $this->createUrl('site/indexGallery?galleryId=' . $gallery->id);?>'" class="gallerybutton" style="position:absolute;top:-80px;left:<?php echo $left; $left+=130; ?>px;z-index:1000"><?php echo $gallery->name?><a href="http://google.com"></a></div>
 				<?php endif; ?>
 			<?php endforeach; ?>
 		</div>
