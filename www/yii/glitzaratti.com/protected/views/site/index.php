@@ -17,6 +17,7 @@
 			height:54px;
 			font-size:11px;
 			padding-top:20px;
+			cursor:pointer;
 		}
 	</style>
 
@@ -33,6 +34,11 @@ domReady(function(){
         imageCursor:'pointer',
 		circular:true});
 	});
+
+	$(".gallerybutton").click(function(){
+     window.location=$(this).find("a").attr("href");
+     return false;
+});
 </script>
 
 <center>
@@ -54,11 +60,10 @@ domReady(function(){
 			<?php $left=0 ?>
 			<?php foreach ($galleries as $gallery): ?>
 				<?php if ($gallery->carousel): ?>
-					<div class="gallerybutton" style="position:absolute;top:-80px;left:<?php echo $left; $left+=150; ?>px;z-index:1000"><?php echo $gallery->name?></div>
+					<div onclick="window.location='http://www.bbc.com'" class="gallerybutton" style="position:absolute;top:-80px;left:<?php echo $left; $left+=150; ?>px;z-index:1000"><?php echo $gallery->name?><a href="http://google.com"></a></div>
 				<?php endif; ?>
 			<?php endforeach; ?>
 		</div>
-
 	</div>
 </center>
 
