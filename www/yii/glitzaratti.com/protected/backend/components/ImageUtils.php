@@ -138,10 +138,6 @@ class ImageUtils extends CComponent
 
 		// Size the watermark to % of file it will be merged with
 		$wmReqWidth = $source_width * ($percentOfWidth / 100);
-		// But dont increase its size!
-		list($wmark_width, $wmark_height, $wmark_type) = getimagesize($watermarkPng);
-		if ($wmReqWidth > $wmark_width)
-			$wmReqWidth = $wmark_width;
 		// And store it in a temp file
 		$tempName = tempnam('/tmp', 'watermark_');
 		ImageUtils::resize($watermarkPng, $tempName, $wmReqWidth, 0);

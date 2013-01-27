@@ -2,6 +2,8 @@
 
 class ProductController extends Controller
 {
+	private $_imageDir = '/../userdata/image/';     // @@TODO See the product delete method for the reason for this
+
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
@@ -110,8 +112,20 @@ class ProductController extends Controller
 	 */
 	public function actionDelete($id)
 	{
+		$model=$this->loadModel($id);
+		// Delete all the link-table records for this product (@@TODO surely theres a way for this to happen automagically?)
+		GalleryHasProduct::model()->deleteAll('product_id=:id', array(':id' => $id));
+		// Delete all the Images for this product, and their disk files
+		foreach ($model->images as $image)
+		{
+			unlink(Yii::app()->basePath . $this->_imageDir . $image->filename);
+			unlink(Yii::app()->basePath . $this->_imageDir . 'gall_' . $image->filename);
+			unlink(Yii::app()->basePath . $this->_imageDir . 'orig_' . $image->filename);
+			$image->delete();
+		}
+//		Image::model()->deleteAll('product_id=:id', array(':id' => $id));
+		// And finally
 		$this->loadModel($id)->delete();
-
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
