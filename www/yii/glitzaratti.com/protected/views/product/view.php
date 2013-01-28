@@ -47,12 +47,12 @@ $(document).ready(function(){
 		$('#gallery-image').attr({src: $(this).attr('alt')});
 		$('#zoom-container').zoom();
 	});
-/*	var imgSwap = [];
+	var imgSwap = [];
     $("#gallery li img").each(function(){
-		imgUrl = this.src.replace('thumb/', '');
+		imgUrl = this.alt;
 		imgSwap.push(imgUrl);
 	});
-	$(imgSwap).preload(); */
+	$(imgSwap).preload();
     $('#zoom-container').zoom();
 });
 
@@ -68,15 +68,18 @@ $.fn.preload = function(){
 	<div id="gallery">
 		<span class='zoom' id='zoom-container'>
 			<p>Hover</p>
-			<img src='/userdata/image/18.jpg' xwidth='555' height='500' id='gallery-image'/>
+				<?php foreach ($model->images as $image): ?>
+					<img src="/userdata/image/<?php echo $image->filename;?>" height='500' id='gallery-image'/>
+					<?php break; ?>
+				<?php endforeach; ?>
+
 		</span>
 		<ul>
-			<li><img src="/userdata/image/gall_18.jpg" alt="/userdata/image/18.jpg" height='150'/></li>
-            <li><img src="/userdata/image/gall_26.jpg" alt="/userdata/image/26.jpg" height='150'/></li>
+			<?php foreach ($model->images as $image): ?>
+				<li><img src="/userdata/image/gall_<?php echo $image->filename;?>" alt="/userdata/image/<?php echo $image->filename;?>" height='150'/></li>
+			<?php endforeach; ?>
 		</ul>
 	</div>
-
-
 
 
 <h1>View Product #<?php echo $model->id; ?></h1>

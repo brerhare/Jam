@@ -54,6 +54,7 @@ domReady(function(){
 						<?php foreach ($gallery->products as $product): ?>
 							<?php foreach ($product->images as $image): ?>
 								<img src="/userdata/image/gall_<?php echo $image->filename?>" longdesc="<?php echo $this->createUrl('product/view?id=' . $product->id);?>" alt="<?php echo $product->name?>" />
+								<?php break; /* Only show 1 image for each product */ ?>
 							<?php endforeach; ?>
 						<?php endforeach; ?>
 					<?php endif; ?>
