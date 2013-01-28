@@ -53,7 +53,7 @@ domReady(function(){
 					<?php if (($gallery->id == $galleryId) || ($galleryId == 0)): ?>
 						<?php foreach ($gallery->products as $product): ?>
 							<?php foreach ($product->images as $image): ?>
-								<img src="/userdata/image/gall_<?php echo $image->filename?>" longdesc="<?php echo $this->createUrl('site/index?product_id=' . $product->id);?>" alt="<?php echo $product->name?>" />
+								<img src="/userdata/image/gall_<?php echo $image->filename?>" longdesc="<?php echo $this->createUrl('product/view?id=' . $product->id);?>" alt="<?php echo $product->name?>" />
 							<?php endforeach; ?>
 						<?php endforeach; ?>
 					<?php endif; ?>

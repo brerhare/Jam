@@ -3,10 +3,9 @@
 class ProductController extends Controller
 {
 	/**
-	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-	 * using two-column layout. See 'protected/views/layouts/column2.php'.
+	 * @var string The site's non front page layout
 	 */
-	public $layout='//layouts/column2';
+	public $layout='//layouts/main2'; // kim
 
 	/**
 	 * @return array action filters
