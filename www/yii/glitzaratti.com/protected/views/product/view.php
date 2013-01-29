@@ -47,13 +47,13 @@ $(document).ready(function(){
 		$('#gallery-image').attr({src: $(this).attr('alt')});
 		$('#zoom-container').zoom();
 	});
+    $('#zoom-container').zoom();
 	var imgSwap = [];
     $("#gallery li img").each(function(){
 		imgUrl = this.alt;
 		imgSwap.push(imgUrl);
 	});
 	$(imgSwap).preload();
-    $('#zoom-container').zoom();
 });
 
 $.fn.preload = function(){
