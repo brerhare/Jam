@@ -13,7 +13,7 @@ class ImageUtils extends CComponent
 	 * @param outHeight
 	 */
 
-	public static function resize($imageFile, $outImageFile, $outWidth, $outHeight)
+	public static function resize($imageFile, $outImageFile, $outWidth=0, $outHeight=0)
 	{
 		list($source_width, $source_height, $source_type) = getimagesize($imageFile);
 		switch ( $source_type )

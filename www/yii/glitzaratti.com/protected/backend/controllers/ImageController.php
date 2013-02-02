@@ -114,7 +114,11 @@ class ImageController extends Controller
 			if(is_object($file) && get_class($file) === 'CUploadedFile')
 			{
 				if (file_exists(Yii::app()->basePath . $this->_imageDir . $model->filename))
+				{
 					unlink(Yii::app()->basePath . $this->_imageDir . $model->filename);
+					unlink(Yii::app()->basePath . $this->_imageDir . 'gall_' . $model->filename);
+					unlink(Yii::app()->basePath . $this->_imageDir . 'orig_' . $model->filename);
+				}
 				$model->filename = $file;
 			}
 
@@ -238,13 +242,17 @@ class ImageController extends Controller
 		// Save the original file as uploaded
 		copy($filename, dirname($filename) . '/orig_' . basename($filename));
 
-		// Watermark it
+
+		// Resize the working copy
+		ImageUtils::resize($filename, $filename, 1000);
+
+		// Watermark the working copy
 		ImageUtils::watermark(
 			$filename,
 			Yii::app()->basePath . '/../img/watermark.png',
 			$filename);
 
-		// Make a copy of it with capped dimensions (for carousel, and thumbs)
+		// Make a smaller version for carousel, thumbs etc
 		list($width, $height, $type) = getimagesize($filename);
 		if ($width > $height) {
 			$width = rand(250, 400);
