@@ -85,7 +85,7 @@ $.fn.preload = function(){
 
             <ul>
 				<?php foreach ($model->images as $image): ?>
-                <li><img src="/userdata/image/gall_<?php echo $image->filename;?>" alt="/userdata/image/<?php echo $image->filename;?>" width='150'/></li>
+                <li><img src="/userdata/image/gall_<?php echo $image->filename;?>" alt="/userdata/image/<?php echo $image->filename;?>" style="padding:5px" width='150'/></li>
 				<?php endforeach; ?>
             </ul>
 

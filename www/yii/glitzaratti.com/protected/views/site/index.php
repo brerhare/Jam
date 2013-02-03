@@ -63,7 +63,7 @@ domReady(function(){
 		</div>
 
 		<!-- Gallery buttons -->
-		<div style="position:relative">
+		<div style="position:relative;">
 			<?php $left=0 ?>
 			<?php foreach ($galleries as $gallery): ?>
 				<?php if ($gallery->carousel): ?>
