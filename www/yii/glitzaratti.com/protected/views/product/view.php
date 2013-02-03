@@ -32,6 +32,17 @@
     }
 </style>
 
+<style>
+	/* Glitz specific */
+    .Normal-P
+    {
+        margin:0.0px 0.0px 0.0px 0.0px;
+	    width:600px;
+	    text-align:left;
+	    font-weight:400;
+	    color:#ede587;
+    }
+</style>
 
 <style type="text/css">
 ul {list-style:none;}
@@ -74,6 +85,9 @@ $.fn.preload = function(){
 				<?php endforeach; ?>
 
 		</span>
+		<p class="Normal-P">
+		<?php echo nl2br($model->description)?>
+		</p>
 		<ul>
 			<?php foreach ($model->images as $image): ?>
 				<li><img src="/userdata/image/gall_<?php echo $image->filename;?>" alt="/userdata/image/<?php echo $image->filename;?>" height='150'/></li>
