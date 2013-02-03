@@ -81,4 +81,12 @@ $.fn.preload = function(){
 		</ul>
 	</div>
 
-
+<!-- start of a thumbs-down-the-left container to replace the above
+<div class="grid">
+    <div style="width:100%; height:500px">
+        Sidebar
+    </div>
+    <div style="width:150px">
+        Main Content
+    </div>
+</div>         -->
