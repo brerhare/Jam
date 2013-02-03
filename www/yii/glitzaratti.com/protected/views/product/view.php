@@ -37,7 +37,7 @@
     .Normal-P
     {
         margin:0.0px 0.0px 0.0px 0.0px;
-	    width:600px;
+	    width:950px;
 	    text-align:left;
 	    font-weight:400;
 	    color:#ede587;
@@ -77,6 +77,20 @@ $.fn.preload = function(){
 
 	<h2 class="text-center">Product view</h2>
 	<div id="gallery">
+        <p class="Normal-P">
+			<?php echo nl2br($model->description)?>
+        </p>
+		<p></p>
+		<table><tr><td style="vertical-align:top; width:150px">
+
+            <ul>
+				<?php foreach ($model->images as $image): ?>
+                <li><img src="/userdata/image/gall_<?php echo $image->filename;?>" alt="/userdata/image/<?php echo $image->filename;?>" width='150'/></li>
+				<?php endforeach; ?>
+            </ul>
+
+			</td><td style="vertical-align:top">
+
 		<span class='zoom' id='zoom-container'>
 			<p>Hover</p>
 				<?php foreach ($model->images as $image): ?>
@@ -85,14 +99,7 @@ $.fn.preload = function(){
 				<?php endforeach; ?>
 
 		</span>
-		<p class="Normal-P">
-		<?php echo nl2br($model->description)?>
-		</p>
-		<ul>
-			<?php foreach ($model->images as $image): ?>
-				<li><img src="/userdata/image/gall_<?php echo $image->filename;?>" alt="/userdata/image/<?php echo $image->filename;?>" height='150'/></li>
-			<?php endforeach; ?>
-		</ul>
+			</td></tr></table>
 	</div>
 
 <!-- start of a thumbs-down-the-left container to replace the above
