@@ -25,7 +25,7 @@
 	<div id="header">
         <div style="background-color:#000000;text-align:left;margin-left:auto;margin-right:auto;position:relative;width:960px;height:330px;">
             <map id="map0" name="map0">
-                <area shape="poly" coords="97,279,125,278,153,278,209,279,209,214,217,216,222,208,223,206,219,197,210,188,209,181,211,173,213,174,217,165,217,154,214,155,209,152,209,0,0,0,0,280,84,280" href="<?php echo $this->createUrl('product/index');?>" alt="">
+                <area shape="poly" coords="97,279,125,278,153,278,209,279,209,214,217,216,222,208,223,206,219,197,210,188,209,181,211,173,213,174,217,165,217,154,214,155,209,152,209,0,0,0,0,280,84,280" href="<?php echo $this->createUrl('product/index?category_id=all');?>" alt="">
             </map>
             <img src="<?php Yii::app()->request->baseUrl ?> /img/wp65d1b97d_06.png" width="234" height="313" border="0" alt="" onload="OnLoadPngFix()" usemap="#map0" style="position:absolute;left:650px;top:28px;">
             <img src="<?php Yii::app()->request->baseUrl ?> /img/wp984d43e2_06.png" width="334" height="57" border="0" title="" alt="Glitzaratti Couture Design" onload="OnLoadPngFix()" style="position:absolute;left:217px;top:256px;">
@@ -80,9 +80,9 @@
                 <p class="Normal-P"><span class="Normal-C"><a href="http://www.wireflydesign.com"  target="_blank" style="color:#ffffff;text-decoration:none;">Designed and Hosted by Wirefly Design</a></span></p>
             </div>
             <div style="position:absolute;left:271px;top:42px;width:417px;height:47px; background-image:url('<?php Yii::app()->request->baseUrl ?> /img/wp83c3de7e_06.png');">
-                <a href="index.html" id="nav_418_B1" class="Button1" style="display:block;position:absolute;left:5px;top:5px;width:94px;height:37px;"><span>Home</span></a>
+                <a href="<?php echo $this->createUrl('site/index');?>" id="nav_418_B1" class="Button1" style="z-index:1000;display:block;position:absolute;left:5px;top:5px;width:94px;height:37px;"><span>Home</span></a>
                 <a href="custom.html" id="nav_418_B2" class="Button1" style="display:block;position:absolute;left:110px;top:5px;width:94px;height:37px;"><span>Your Design</span></a>
-                <a href="listing.html" id="nav_418_B3" class="Button1" style="display:block;position:absolute;left:214px;top:5px;width:94px;height:37px;"><span>Gallery</span></a>
+                <a href="<?php echo $this->createUrl('product/index?category_id=all');?>" id="nav_418_B3" class="Button1" style="z-index:1000;display:block;position:absolute;left:214px;top:5px;width:94px;height:37px;"><span>Gallery</span></a>
                 <a href="basket.html" id="nav_418_B4" class="Button1" style="display:block;position:absolute;left:319px;top:5px;width:94px;height:37px;"><span>My Basket</span></a>
             </div>
             <map id="map1" name="map1">

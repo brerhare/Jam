@@ -117,15 +117,17 @@ class ProductController extends Controller
 	}
 
 	/**
-	 * Lists all models.
+	 * Lists models by category. Default ('all') from the home page graphic means show all categories, else catid|catid|...
 	 */
-	public function actionIndex()
+	public function actionIndex($category_id=null)
 	{
 		$products = Product::model()->findAll();
 		$categories = Category::model()->findAll();
+		$cats = explode("|", $category_id);
 		$this->render('index',array(
 			'products'=>$products,
 			'categories'=>$categories,
+			'catArray'=>$cats,
 		));
 	}
 

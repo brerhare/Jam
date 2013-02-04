@@ -74,9 +74,9 @@
                 <p class="Normal-P"><span class="Normal-C"><a href="http://www.wireflydesign.com"  target="_blank" style="color:#ffffff;text-decoration:none;">Designed and Hosted by Wirefly Design</a></span></p>
             </div>
             <div style="position:absolute;left:271px;top:42px;width:417px;height:47px; background-image:url('<?php Yii::app()->request->baseUrl ?> /img/wp83c3de7e_06.png');">
-                <a href="index.html" id="nav_418_B1" class="Button1" style="display:block;position:absolute;left:5px;top:5px;width:94px;height:37px;"><span>Home</span></a>
+                <a href="<?php echo $this->createUrl('site/index');?>" id="nav_418_B1" class="Button1" style="z-index:1000;display:block;position:absolute;left:5px;top:5px;width:94px;height:37px;"><span>Home</span></a>
                 <a href="custom.html" id="nav_418_B2" class="Button1" style="display:block;position:absolute;left:110px;top:5px;width:94px;height:37px;"><span>Your Design</span></a>
-                <a href="listing.html" id="nav_418_B3" class="Button1" style="display:block;position:absolute;left:214px;top:5px;width:94px;height:37px;"><span>Gallery</span></a>
+                <a href="<?php echo $this->createUrl('product/index?category_id=all');?>" id="nav_418_B3" class="Button1" style="z-index:1000;display:block;position:absolute;left:214px;top:5px;width:94px;height:37px;"><span>Gallery</span></a>
                 <a href="basket.html" id="nav_418_B4" class="Button1" style="display:block;position:absolute;left:319px;top:5px;width:94px;height:37px;"><span>My Basket</span></a>
             </div>
             <map id="map1" name="map1">
