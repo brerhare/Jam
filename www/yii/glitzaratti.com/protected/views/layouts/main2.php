@@ -40,8 +40,8 @@
 <div class="container" id="page">
 
 	<div id="header" style="background-color:#000000;text-align:left;margin-left:auto;margin-right:auto;position:relative;width:960px;height:150px;">
-		<img src="<?php Yii::app()->request->baseUrl ?> /img/wpb979b61f_06.png" width="100" height="44" border="0" title="" alt="&lt; Home" onload="OnLoadPngFix()" style="position:absolute;left:0px;top:58px;">
-		<img src="<?php Yii::app()->request->baseUrl ?> /img/wp7c4a6a70_06.png" width="298" height="95" border="0" alt="" onload="OnLoadPngFix()" style="position:absolute;left:562px;top:50px;">
+		<a href="<?php echo $this->createUrl('site/index');?>"><img src="<?php Yii::app()->request->baseUrl ?> /img/wpb979b61f_06.png" width="100" height="44" border="0" title="" alt="&lt; Home" onload="OnLoadPngFix()" style="position:absolute;left:0px;top:58px;"></a>
+		<a href="<?php echo $this->createUrl('site/index');?>"><img src="<?php Yii::app()->request->baseUrl ?> /img/wp7c4a6a70_06.png" width="298" height="95" border="0" alt="" onload="OnLoadPngFix()" style="position:absolute;left:562px;top:50px;"></a>
 	</div><!-- header -->
 
 	<?php echo $content; ?>
