@@ -37,12 +37,12 @@
     .Normal-P
     {
         margin:0.0px 0.0px 0.0px 0.0px;
-	    width:950px;
+	    width:800px;
 	    text-align:left;
 	    font-weight:400;
 	    color:#ede587;
     }
-    .Normal-P:first-line { color:#4b482a; font-weight:800; font-size: 150%;}
+    .Normal-P:first-line { color:#4b482a; font-weight:800; font-size: 200%;}
 </style>
 
 <style type="text/css">
@@ -78,9 +78,11 @@ $.fn.preload = function(){
 
 	<h2 class="text-center">Product view</h2>
 	<div id="gallery">
+		<center>
         <p class="Normal-P">
-			<?php echo nl2br($model->name . '<br>' . $model->description)?>
+			<?php echo nl2br($model->name . ' - £' . $model->price .'<br>' . $model->description)?>
         </p>
+			</center>
 		<p></p>
 		<table><tr><td style="vertical-align:top; width:150px">
 
