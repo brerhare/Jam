@@ -121,9 +121,11 @@ class ProductController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Product');
+		$products = Product::model()->findAll();
+		$categories = Category::model()->findAll();
 		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
+			'products'=>$products,
+			'categories'=>$categories,
 		));
 	}
 
