@@ -85,8 +85,9 @@ class ImageController extends Controller
 			}
 		}
 
-        // Hard-wire this image to the session product
+        // Hard-wire this image to the product stored in our session
         $model->product_id = Yii::app()->session['product_id'];
+
 		$this->render('create',array(
 			'model'=>$model,
 		));

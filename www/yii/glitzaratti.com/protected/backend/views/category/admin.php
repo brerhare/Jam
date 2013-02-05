@@ -26,7 +26,7 @@ $('.search-form form').submit(function(){
 ");
 ?>
 
-<h1>Manage Categories</h1>
+<h1>Manage Size Categories</h1>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'category-grid',
@@ -40,7 +40,16 @@ $('.search-form form').submit(function(){
 		'name',
 		array(
 			'class'=>'CButtonColumn',
-            'template'=>'{update}{delete}',
+			'htmlOptions'=>array('width'=>'80px'),
+			'template'=>'{update}{sizes}{delete}',
+			'buttons'=>array(
+				'sizes' => array(
+					'label'=>'Sizes',
+					'imageUrl'=>Yii::app()->request->baseUrl.'/img/text_strikethrough.png',
+					'url'=>'Yii::app()->controller->createUrl("size/session", array("category_id"=>$data->primaryKey))',
+				),
+			)
+
 		),
 	),
 )); ?>

@@ -110,6 +110,11 @@ class CategoryController extends Controller
 	 */
 	public function actionDelete($id)
 	{
+		// Delete all the Size records for this Category
+		$this->loadModel($id);
+		Size::model()->deleteAll('category_id=:id', array(':id' => $id));
+
+		// Finally, delete this item
 		$this->loadModel($id)->delete();
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser

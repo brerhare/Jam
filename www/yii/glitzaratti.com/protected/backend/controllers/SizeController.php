@@ -36,7 +36,7 @@ class SizeController extends Controller
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','session'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -71,8 +71,11 @@ class SizeController extends Controller
 		{
 			$model->attributes=$_POST['Size'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('admin','id'=>$model->id));
 		}
+
+		// Hard-wire this size to the category stored in our session
+		$model->category_id = Yii::app()->session['category_id'];
 
 		$this->render('create',array(
 			'model'=>$model,
@@ -95,7 +98,7 @@ class SizeController extends Controller
 		{
 			$model->attributes=$_POST['Size'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('admin','id'=>$model->id));
 		}
 
 		$this->render('update',array(
@@ -133,6 +136,23 @@ class SizeController extends Controller
 	 */
 	public function actionAdmin()
 	{
+		$model=new Size('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Size']))
+			$model->attributes=$_GET['Size'];
+
+		$this->render('admin',array(
+			'model'=>$model,
+		));
+	}
+
+	/**
+	 * Entry point. Same as actionAdmin except first stores the passed category_id in the session
+	 */
+	// $category_id supplied by the CButtonColumn in category/admin
+	public function actionSession($category_id)
+	{
+		Yii::app()->session['category_id'] = $category_id;
 		$model=new Size('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Size']))

@@ -88,7 +88,8 @@ class Size extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('text',$this->text,true);
 		$criteria->compare('is_a_default',$this->is_a_default);
-		$criteria->compare('category_id',$this->category_id);
+		// $criteria->compare('category_id',$this->category_id);        kim modified as below, to use the session var category_id
+		$criteria->compare('category_id',Yii::app()->session['category_id']);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

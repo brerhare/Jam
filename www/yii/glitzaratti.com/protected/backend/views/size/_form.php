@@ -21,15 +21,17 @@
 		<?php echo $form->error($model,'text'); ?>
 	</div>
 
+	<!-- hide the is-a-default -->
 	<div class="row">
-		<?php echo $form->labelEx($model,'is_a_default'); ?>
-		<?php echo $form->textField($model,'is_a_default'); ?>
+		<?php /*echo $form->labelEx($model,'is_a_default');*/ ?>
+		<?php /*echo $form->textField($model,'is_a_default');*/ ?>
+		<?php echo $form->hiddenField($model,'is_a_default'); ?>
 		<?php echo $form->error($model,'is_a_default'); ?>
 	</div>
 
+    <!-- hide the category_id although its included -->
 	<div class="row">
-		<?php echo $form->labelEx($model,'category_id'); ?>
-		<?php echo $form->textField($model,'category_id'); ?>
+		<?php echo $form->hiddenField($model,'category_id'); ?>
 		<?php echo $form->error($model,'category_id'); ?>
 	</div>
 
