@@ -78,7 +78,43 @@ $.fn.preload = function(){
 
 	<h2 class="text-center">Product view</h2>
 	<div id="gallery">
-		<center>
+
+<p class=Normal-P">
+        <center>
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_xclick">
+<input type="hidden" name="business" value="dilbert@microboot.com">
+<input type="hidden" name="lc" value="GB">
+<input type="hidden" name="item_name" value="Clutch bag">
+<input type="hidden" name="item_number" value="123">
+<input type="hidden" name="button_subtype" value="services">
+<input type="hidden" name="no_note" value="0">
+<input type="hidden" name="shipping" value="0.00">
+<input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHostedGuest">
+	<center>
+<table>
+<tr><td><input type="hidden" name="on0" value="Bag size">Bag size</td></tr><tr><td><select name="os0">
+    <option value="Small">Small 0.01 GBP</option>
+    <option value="Medium">Medium 0.01 GBP</option>
+    <option value="Large">Large 0.01 GBP</option>
+</select> </td></tr>
+</table>
+		</center>
+<input type="hidden" name="currency_code" value="GBP">
+<input type="hidden" name="option_select0" value="Small">
+<input type="hidden" name="option_amount0" value="0.01">
+<input type="hidden" name="option_select1" value="Medium">
+<input type="hidden" name="option_amount1" value="0.01">
+<input type="hidden" name="option_select2" value="Large">
+<input type="hidden" name="option_amount2" value="0.01">
+<input type="hidden" name="option_index" value="0">
+<input type="image" src="http://www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
+
+</form>
+        </center>
+</p>
+
+        <center>
         <p class="Normal-P">
 			<?php echo nl2br($model->name . ' - £' . $model->price .'<br>' . $model->description)?>
         </p>
