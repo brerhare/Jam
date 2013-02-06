@@ -108,7 +108,7 @@ $.fn.preload = function(){
 
 				<?php if (count($model->category->sizes)):?>
                                     <p class="Buy-P">
-                                        <input type="hidden" name="on0" value="Size">Size &nbsp
+                                        <input type="hidden" name="on0" value="Size">
                                     </p>
 	                                    </td><td>
 									<select name="os0">
