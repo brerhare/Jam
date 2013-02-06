@@ -78,46 +78,53 @@ $.fn.preload = function(){
 
 <!-- <h2 class="text-center">Product view</h2> -->
 
-<p class=Normal-P">
-        <center>
-	        <!-- Paypal button integration -->
-            <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-                <input type="hidden" name="cmd" value="_xclick">
-                <input type="hidden" name="business" value="sales@glitzaratti.com">
-                <input type="hidden" name="lc" value="GB">
-                <input type="hidden" name="item_name" value="<?php echo $model->name?>">
-                <input type="hidden" name="item_number" value="<?php $model->id?>">
-                <input type="hidden" name="button_subtype" value="services">
-                <input type="hidden" name="no_note" value="0">
-                <input type="hidden" name="shipping" value="0.00">
-                <input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHostedGuest">
 
-	            <?php if (count($model->category->sizes)):?>
-                <center>
-                    <table>
-                        <tr><td><input type="hidden" name="on0" value="Size">Size</td></tr><tr><td><select name="os0">
-		                    <?php foreach ($model->category->sizes as $size): ?>
-								<option value="<?php echo $size->text;?>"><?php echo $size->text;?></option>
-							<?php endforeach; ?>
-	                        <?php $listItemCount=0;?>
-	                        <?php foreach ($model->category->sizes as $size): ?>
-								<input type="hidden" name="option_select<?php echo $listItemCount;?>" value="<?php echo $size->text;?>">
-								<input type="hidden" name="option_amount<?php echo $listItemCount++;?>" value="<?php echo $model->price;?>">
-		                    <?php endforeach; ?>
-                    </select> </td></tr>
-                    </table>
-                </center>
-	            <?php else:?>
-					<input type="hidden" name="amount" value="<?php echo $model->price;?>">
+		<center>
+			<!-- Paypal button integration -->
+			<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+				<input type="hidden" name="cmd" value="_xclick">
+				<input type="hidden" name="business" value="sales@glitzaratti.com">
+				<input type="hidden" name="lc" value="GB">
+				<!-- Default item_name and amount follow, but could be overridden by the dropdown list -->
+				<input type="hidden" name="item_name" value="<?php echo $model->name?>">
+				<input type="hidden" name="amount" value="<?php echo $model->price;?>">
+				<input type="hidden" name="item_number" value="<?php $model->id?>">
+				<input type="hidden" name="button_subtype" value="services">
+				<input type="hidden" name="no_note" value="0">
+				<input type="hidden" name="shipping" value="0.00">
+				<input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHostedGuest">
+
+				<?php if (count($model->category->sizes)):?>
+					<center>
+						<table>
+							<tr>
+								<td>
+									<input type="hidden" name="on0" value="Size">Size
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<select name="os0">
+										<?php foreach ($model->category->sizes as $size): ?>
+											<option value="<?php echo $size->text;?>"><?php echo $size->text;?></option>
+										<?php endforeach; ?>
+										<?php $listItemCount=0;?>
+										<?php foreach ($model->category->sizes as $size): ?>
+											<input type="hidden" name="option_select<?php echo $listItemCount;?>" value="<?php echo $size->text;?>">
+											<input type="hidden" name="option_amount<?php echo $listItemCount++;?>" value="<?php echo $model->price;?>">
+										<?php endforeach; ?>
+									</select>
+								</td>
+							</tr>
+						</table>
+					</center>
 				<?php endif;?>
+				<input type="hidden" name="currency_code" value="GBP">
+				<input type="hidden" name="option_index" value="0">
+				<input type="image" src="http://www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
+			</form>
+		</center>
 
-                <input type="hidden" name="currency_code" value="GBP">
-
-                <input type="hidden" name="option_index" value="0">
-                <input type="image" src="http://www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
-            </form>
-        </center>
-</p>
 
 
 
