@@ -49,7 +49,7 @@
         margin:0.0px 0.0px 0.0px 0.0px;        padding:0.0px 0.0px 0.0px 0.0px;
         text-align:left;
         font-weight:400;
-	    font-size:150%;
+	    font-size:130%;
         color:#ede587;
     }
 </style>
@@ -108,7 +108,7 @@ $.fn.preload = function(){
 
 				<?php if (count($model->category->sizes)):?>
                                     <p class="Buy-P">
-                                        <input type="hidden" name="on0" value="Size">
+                                        <input type="hidden" name="on0" value="Size">Size
                                     </p>
 	                                    </td><td>
 									<select name="os0">
