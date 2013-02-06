@@ -1,6 +1,7 @@
 <?php
 /* @var $this ProductController */
 /* @var $model Product */
+
 ?>
 
 <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
@@ -75,9 +76,7 @@ $.fn.preload = function(){
 }
 </script>
 
-
-	<h2 class="text-center">Product view</h2>
-
+<!-- <h2 class="text-center">Product view</h2> -->
 
 <p class=Normal-P">
         <center>
@@ -92,22 +91,28 @@ $.fn.preload = function(){
                 <input type="hidden" name="no_note" value="0">
                 <input type="hidden" name="shipping" value="0.00">
                 <input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHostedGuest">
+
+	            <?php if (count($model->category->sizes)):?>
                 <center>
                     <table>
                         <tr><td><input type="hidden" name="on0" value="Size">Size</td></tr><tr><td><select name="os0">
-                        <option value="Sm">Small</option>
-                        <option value="Me">Medium</option>
-                        <option value="La">Large</option>
+		                    <?php foreach ($model->category->sizes as $size): ?>
+								<option value="<?php echo $size->text;?>"><?php echo $size->text;?></option>
+							<?php endforeach; ?>
+	                        <?php $listItemCount=0;?>
+	                        <?php foreach ($model->category->sizes as $size): ?>
+								<input type="hidden" name="option_select<?php echo $listItemCount;?>" value="<?php echo $size->text;?>">
+								<input type="hidden" name="option_amount<?php echo $listItemCount++;?>" value="<?php echo $model->price;?>">
+		                    <?php endforeach; ?>
                     </select> </td></tr>
                     </table>
                 </center>
+	            <?php else:?>
+					<input type="hidden" name="amount" value="<?php echo $model->price;?>">
+				<?php endif;?>
+
                 <input type="hidden" name="currency_code" value="GBP">
-                <input type="hidden" name="option_select0" value="Sm">
-                <input type="hidden" name="option_amount0" value="<?php echo $model->price?>">
-                <input type="hidden" name="option_select1" value="Me">
-                <input type="hidden" name="option_amount1" value="<?php echo $model->price?>">
-                <input type="hidden" name="option_select2" value="La">
-                <input type="hidden" name="option_amount2" value="<?php echo $model->price?>">
+
                 <input type="hidden" name="option_index" value="0">
                 <input type="image" src="http://www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
             </form>
