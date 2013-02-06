@@ -44,12 +44,19 @@
 	    color:#ede587;
     }
     .Normal-P:first-line { color:#4b482a; font-weight:800; font-size: 200%;}
+    .Buy-P
+    {
+        margin:0.0px 0.0px 0.0px 0.0px;        padding:0.0px 0.0px 0.0px 0.0px;
+        text-align:left;
+        font-weight:400;
+	    font-size:150%;
+        color:#ede587;
+    }
 </style>
 
 <style type="text/css">
 ul {list-style:none;}
 .text-center {text-align: center; padding: 10px 0;}
-#gallery {Xwidth: 660px; margin: 0 auto;}
 #gallery ul {padding-right: 10px; padding-top:10px;}
 #gallery li {display: inline; margin-right: 3px;}
 </style>
@@ -79,8 +86,9 @@ $.fn.preload = function(){
 <!-- <h2 class="text-center">Product view</h2> -->
 
 
-		<center>
+
 			<!-- Paypal button integration -->
+			<div style="width:250px; display:block;">
 			<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
 				<input type="hidden" name="cmd" value="_xclick">
 				<input type="hidden" name="business" value="sales@glitzaratti.com">
@@ -94,16 +102,15 @@ $.fn.preload = function(){
 				<input type="hidden" name="shipping" value="0.00">
 				<input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHostedGuest">
 
+						<table >
+							<tr>
+								<td>
+
 				<?php if (count($model->category->sizes)):?>
-					<center>
-						<table>
-							<tr>
-								<td>
-									<input type="hidden" name="on0" value="Size">Size
-								</td>
-							</tr>
-							<tr>
-								<td>
+                                    <p class="Buy-P">
+                                        <input type="hidden" name="on0" value="Size">Size &nbsp
+                                    </p>
+	                                    </td><td>
 									<select name="os0">
 										<?php foreach ($model->category->sizes as $size): ?>
 											<option value="<?php echo $size->text;?>"><?php echo $size->text;?></option>
@@ -114,16 +121,17 @@ $.fn.preload = function(){
 											<input type="hidden" name="option_amount<?php echo $listItemCount++;?>" value="<?php echo $model->price;?>">
 										<?php endforeach; ?>
 									</select>
+										</td><td>
+				<?php endif;?>
+                                    <input type="image" src="http://www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
 								</td>
 							</tr>
 						</table>
-					</center>
-				<?php endif;?>
 				<input type="hidden" name="currency_code" value="GBP">
 				<input type="hidden" name="option_index" value="0">
-				<input type="image" src="http://www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
 			</form>
-		</center>
+				</div>
+
 
 
 
