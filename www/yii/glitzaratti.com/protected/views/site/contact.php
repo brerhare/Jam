@@ -3,16 +3,39 @@
 /* @var $model ContactForm */
 /* @var $form CActiveForm */
 
-$this->pageTitle=Yii::app()->name . ' - Contact Us';
+/*$this->pageTitle=Yii::app()->name . ' - Contact Us';
 $this->breadcrumbs=array(
 	'Contact',
-);
+); */
 ?>
 
+<style>
+        /* Glitz specific */
+    .Normal-P
+    {
+        margin:0.0px 0.0px 0.0px 0.0px;
+        /*width:800px;*/
+        font-size:100%;
+        text-align:left;
+        font-weight:400;
+        color:#ede587;
+    }
+    .Big-P {
+        color:#4b482a;
+        font-weight:800;
+        font-size: 175%;
+    }
+    .Medium-P {
+        color:#4b482a;
+        font-weight:800;
+        font-size: 120%;
+    }
+
+</style>
 
 <div style='left:50px; font-family:"Arial", sans-serif; color:#ffffff; font-size:16.0px; line-height:1.27em;'>
 <br></br>
-<h1 style="color:#ffffff">Contact Us</h1>
+<h3 class="Big-P">Contact Us</h3>
 
 <?php if(Yii::app()->user->hasFlash('contact')): ?>
 
@@ -22,7 +45,7 @@ $this->breadcrumbs=array(
 
 <?php else: ?>
 
-<p>
+<p class="Normal-P">
 If you have enquiries or other questions, please fill out the following form to contact us. Thank you.
 </p>
 
@@ -36,36 +59,40 @@ If you have enquiries or other questions, please fill out the following form to 
 	),
 )); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+<p></p>
+
+	<p class="note, Normal-P">Fields with <span class="required">*</span> are required.</p>
+
+<p></p>
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<div class="row">
+	<div class="row, Normal-P">
 		<?php echo $form->labelEx($model,'name'); ?>
 		<?php echo $form->textField($model,'name'); ?>
 		<?php echo $form->error($model,'name'); ?>
 	</div>
 
-	<div class="row">
+	<div class="row, Normal-P">
 		<?php echo $form->labelEx($model,'email'); ?>
 		<?php echo $form->textField($model,'email'); ?>
 		<?php echo $form->error($model,'email'); ?>
 	</div>
 
-	<div class="row">
+	<div class="row, Normal-P">
 		<?php echo $form->labelEx($model,'subject'); ?>
 		<?php echo $form->textField($model,'subject',array('size'=>60,'maxlength'=>128)); ?>
 		<?php echo $form->error($model,'subject'); ?>
 	</div>
 
-	<div class="row">
+	<div class="row, Normal-P">
 		<?php echo $form->labelEx($model,'body'); ?>
 		<?php echo $form->textArea($model,'body',array('rows'=>6, 'cols'=>50)); ?>
 		<?php echo $form->error($model,'body'); ?>
 	</div>
 
 	<?php if(CCaptcha::checkRequirements()): ?>
-	<div class="row">
+	<div class="row, Normal-P">
 		<?php echo $form->labelEx($model,'verifyCode'); ?>
 		<div>
 		<?php $this->widget('CCaptcha'); ?>
