@@ -119,4 +119,16 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
+
+	/**
+	 * Paypal return screen after the buyer hits 'Pay' from within paypal
+	 */
+	public function actionPaypalSuccess()
+	{
+		$this->layout='//layouts/main2'; // kim
+		$model=new Product('search');
+		$this->render('paypalSuccess', array(
+			'model'=>$model,
+		));
+	}
 }
