@@ -83,6 +83,9 @@
             </div>
             -->
 
+			<a href="<?php echo $this->createUrl('site/terms');?>" class="Button1" style="z-index:1000;display:block;position:absolute;left:320px;top:170px;width:94px;height:37px;"><span>Terms & Conditions</span></a>
+			<a href="<?php echo $this->createUrl('site/privacy');?>" class="Button1" style="z-index:1000;display:block;position:absolute;left:520px;top:170px;width:94px;height:37px;"><span>Privacy Policy</span></a>
+
             <map id="map1" name="map1">
                 <area shape="poly" coords="880,80,877,79,874,77,872,75,870,71,871,69,877,72,885,72,886,75,888,77,889,79,884,79" href="index.html" alt="">
                 <area shape="poly" coords="890,76,887,73,888,71,892,71,896,69,899,67,899,72,896,72,893,75,892,75" href="index.html" alt="">

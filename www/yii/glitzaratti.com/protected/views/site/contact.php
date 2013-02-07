@@ -59,7 +59,7 @@ If you have enquiries or other questions, please fill out the following form to 
 	),
 )); ?>
 
-<p></p>
+
 
 	<p class="note, Normal-P">Fields with <span class="required">*</span> are required.</p>
 
@@ -95,10 +95,10 @@ If you have enquiries or other questions, please fill out the following form to 
 	<div class="row, Normal-P">
 		<?php echo $form->labelEx($model,'verifyCode'); ?>
 		<div>
-		<?php $this->widget('CCaptcha'); ?>
+		<?php $this->widget('CCaptcha'); ?><br>
 		<?php echo $form->textField($model,'verifyCode'); ?>
 		</div>
-		<div class="hint">Please enter the letters as they are shown in the image above.
+		<div class="Normal-P" style="font-style:italic">Please enter the letters as they are shown in the image above.
 		<br/>Letters are not case-sensitive.</div>
 		<?php echo $form->error($model,'verifyCode'); ?>
 	</div>

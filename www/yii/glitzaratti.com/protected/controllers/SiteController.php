@@ -131,4 +131,28 @@ class SiteController extends Controller
 			'model'=>$model,
 		));
 	}
+
+	/**
+	 * T & C display
+	 */
+	public function actionTerms()
+	{
+		$this->layout='//layouts/main2'; // kim
+		$model=new Product('search');
+		$this->render('terms', array(
+			'model'=>$model,
+		));
+	}
+
+	/**
+	 * Privacy Policy display
+	 */
+	public function actionPrivacy()
+	{
+		$this->layout='//layouts/main2'; // kim
+		$model=new Product('search');
+		$this->render('privacy', array(
+			'model'=>$model,
+		));
+	}
 }
