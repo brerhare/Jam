@@ -33,7 +33,7 @@ $this->breadcrumbs=array(
 
 </style>
 
-<div style='left:50px; font-family:"Arial", sans-serif; color:#ffffff; font-size:16.0px; line-height:1.27em;'>
+<div style='left:50px; font-family:"Arial", sans-serif; font-size:16.0px; line-height:1.27em;'>
 <br></br>
 <h3 class="Big-P">Contact Us</h3>
 

@@ -74,7 +74,7 @@ domReady(function(){
 	</div>
 </center>
 
-<div style='font-family:"Arial", sans-serif; color:#ffffff; font-size:16.0px; line-height:1.27em;'>
+<div style='font-family:"Arial", sans-serif; color:#ede587; font-size:15.0px; line-height:1.27em;'>
 	<br><br>
 	<center>
 		<table>
