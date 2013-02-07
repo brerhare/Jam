@@ -15,9 +15,9 @@ $this->breadcrumbs=array(
     {
         margin:0.0px 0.0px 0.0px 0.0px;
         /*width:800px;*/
-        font-size:100%;
+        font-size:90%;
         text-align:left;
-        font-weight:400;
+        font-weight:100;
         color:#ede587;
     }
     .Big-P {
