@@ -95,7 +95,7 @@ $.fn.preload = function(){
 		<input type="hidden" name="item_number" value="<?php $model->id?>">
 		<input type="hidden" name="button_subtype" value="services">
 		<input type="hidden" name="no_note" value="0">
-		<input type="hidden" name="shipping" value="0.00">
+		<input type="hidden" name="shipping" value="7.00">
 		<input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHostedGuest">
 		<table >
 			<tr>
@@ -132,7 +132,7 @@ $.fn.preload = function(){
 <div id="gallery">
 	<center>
 		<p class="Normal-P">
-<?php echo nl2br($model->name . ' - £' . $model->price .'<br>' . $model->description)?>
+<?php echo nl2br($model->name . '&nbsp&nbsp&nbsp&nbsp £' . $model->price . '&nbsp&nbsp+ £7.00 UK p+p' . '<br>' . $model->description)?>
 		</p>
 	</center>
 	<p></p>
