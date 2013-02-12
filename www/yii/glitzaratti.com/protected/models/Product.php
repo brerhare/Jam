@@ -21,6 +21,17 @@
  */
 class Product extends CActiveRecord
 {
+	// kim added this override method @@EXAMPLE see view for the '$productlist = Product::model()->recently()->findAll();'
+	public function scopes($limit=25)
+	{
+		return array(
+			'recently'=>array(
+				'order'=>'id DESC',
+				'limit'=>$limit,
+			),
+		);
+	}
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.

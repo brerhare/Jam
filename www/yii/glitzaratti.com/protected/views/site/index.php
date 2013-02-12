@@ -48,18 +48,29 @@ domReady(function(){
 <center>
 	<div class="left_col">
 		<div id="myCarousel" class="imageflow">
-			<?php foreach ($galleries as $gallery): ?>
-				<?php if ($gallery->carousel): ?>
-					<?php if (($gallery->id == $galleryId) || ($galleryId == 0)): ?>
-						<?php foreach ($gallery->products as $product): ?>
-							<?php foreach ($product->images as $image): ?>
-								<img src="/userdata/image/gall_<?php echo $image->filename?>" longdesc="<?php echo $this->createUrl('product/view?id=' . $product->id);?>" alt="<?php echo $product->name?>" />
-								<?php break; /* Only show 1 image for each product */ ?>
+			<?php $method = 1;?>
+			<?php if ($method == 0):?>
+				<?php foreach ($galleries as $gallery): ?>
+					<?php if ($gallery->carousel): ?>
+						<?php if (($gallery->id == $galleryId) || ($galleryId == 0)): ?>
+							<?php foreach ($gallery->products as $product): ?>
+								<?php foreach ($product->images as $image): ?>
+									<img src="/userdata/image/gall_<?php echo $image->filename?>" longdesc="<?php echo $this->createUrl('product/view?id=' . $product->id);?>" alt="<?php echo $product->name?>" />
+									<?php break; /* Only show 1 image for each product */ ?>
+								<?php endforeach; ?>
 							<?php endforeach; ?>
-						<?php endforeach; ?>
+						<?php endif; ?>
 					<?php endif; ?>
-				<?php endif; ?>
-			<?php endforeach; ?>
+				<?php endforeach; ?>
+			<?php else:?>
+				<?php $productlist = Product::model()->recently()->findAll();?>
+				<?php foreach ($productlist as $product):?>
+					<?php foreach ($product->images as $image): ?>
+                        <img src="/userdata/image/gall_<?php echo $image->filename?>" longdesc="<?php echo $this->createUrl('product/view?id=' . $product->id);?>" alt="<?php echo $product->name?>" />
+						<?php break; /* Only show 1 image for each product */ ?>
+					<?php endforeach; ?>
+				<?php endforeach;?>
+			<?php endif;?>
 		</div>
 
 		<!-- Gallery buttons -->
