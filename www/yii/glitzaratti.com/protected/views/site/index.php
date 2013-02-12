@@ -48,11 +48,11 @@ domReady(function(){
 <center>
 	<div class="left_col">
 		<div id="myCarousel" class="imageflow">
-			<?php $method = 0;?>
-			<?php if ($method == 0): // --- List all products' images  in all galleries ?>
+			<?php $method = 1;?>
+			<?php if ($galleryId != 0): // --- List all products' images in selected gallery ?>
 				<?php foreach ($galleries as $gallery): ?>
 					<?php if ($gallery->carousel): ?>
-						<?php if (($gallery->id == $galleryId) || ($galleryId == 0)): ?>
+						<?php if ($gallery->id == $galleryId): ?>
 							<?php foreach ($gallery->products as $product): ?>
 								<?php foreach ($product->images as $image): ?>
 									<img src="/userdata/image/gall_<?php echo $image->filename?>" longdesc="<?php echo $this->createUrl('product/view?id=' . $product->id);?>" alt="<?php echo $product->name?>" />
@@ -62,7 +62,7 @@ domReady(function(){
 						<?php endif; ?>
 					<?php endif; ?>
 				<?php endforeach; ?>
-			<?php elseif ($method == 1): // --- List only the most recent products' images ?>
+			<?php else: // --- List only the most recent products' images ?>
 				<?php $productlist = Product::model()->recently()->findAll();?>
 				<?php foreach ($productlist as $product):?>
 					<?php foreach ($product->images as $image): ?>
