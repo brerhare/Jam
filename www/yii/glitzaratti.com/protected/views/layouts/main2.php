@@ -29,7 +29,7 @@
         .Button1:focus{outline-style:none;}
         .Button1:hover{background-position:0px -74px;}
         .Button1:active{background-position:0px -37px;}
-        .Button1 span,.Button1:link span,.Button1:visited span{color:#ffffff;font-family:Arial,sans-serif;font-weight:normal;text-decoration:none;text-align:center;text-transform:none;font-style:normal;left:1px;top:10px;width:92px;height:17px;font-size:13px;display:block;position:absolute;cursor:pointer;}
+        .Button1 span,.Button1:link span,.Button1:visited span{color:#ffffff;font-family:Arial,sans-serif;font-weight:normal;text-decoration:none;text-align:center;text-transform:none;font-style:normal;left:1px;top:10px;width:92px;height:17px;font-size:10px;display:block;position:absolute;cursor:pointer;}
     </style>
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
@@ -83,8 +83,11 @@
             </div>
             -->
 
-			<a href="<?php echo $this->createUrl('site/terms');?>" class="Button1" style="z-index:1000;display:block;position:absolute;left:320px;top:170px;width:94px;height:37px;"><span>Terms & Conditions</span></a>
-			<a href="<?php echo $this->createUrl('site/privacy');?>" class="Button1" style="z-index:1000;display:block;position:absolute;left:520px;top:170px;width:94px;height:37px;"><span>Privacy Policy</span></a>
+            <a href="<?php echo $this->createUrl('site/tandc');?>" class="Button1" style="z-index:1000;display:block;position:absolute;left:220px;top:170px;width:94px;height:37px;"><span>Terms & conditions</span></a>
+            <a href="<?php echo $this->createUrl('site/terms');?>" class="Button1" style="z-index:1000;display:block;position:absolute;left:360px;top:170px;width:94px;height:37px;"><span>Terms of use</span></a>
+            <a href="<?php echo $this->createUrl('site/privacy');?>" class="Button1" style="z-index:1000;display:block;position:absolute;left:480px;top:170px;width:94px;height:37px;"><span>Privacy Policy</span></a>
+            <a href="<?php echo $this->createUrl('site/deliverandreturn');?>" class="Button1" style="z-index:1000;display:block;position:absolute;left:600px;top:170px;width:94px;height:37px;"><span>Delivery & Returns</span></a>
+
 
             <map id="map1" name="map1">
                 <area shape="poly" coords="880,80,877,79,874,77,872,75,870,71,871,69,877,72,885,72,886,75,888,77,889,79,884,79" href="index.html" alt="">

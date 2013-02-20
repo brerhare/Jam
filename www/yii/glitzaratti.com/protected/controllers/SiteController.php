@@ -135,6 +135,18 @@ class SiteController extends Controller
 	/**
 	 * T & C display
 	 */
+	public function actionTandc()
+	{
+		$this->layout='//layouts/main2'; // kim
+		$model=new Product('search');
+		$this->render('tandc', array(
+			'model'=>$model,
+		));
+	}
+
+	/**
+	 * Terms of use display
+	 */
 	public function actionTerms()
 	{
 		$this->layout='//layouts/main2'; // kim
@@ -144,6 +156,7 @@ class SiteController extends Controller
 		));
 	}
 
+
 	/**
 	 * Privacy Policy display
 	 */
@@ -152,6 +165,18 @@ class SiteController extends Controller
 		$this->layout='//layouts/main2'; // kim
 		$model=new Product('search');
 		$this->render('privacy', array(
+			'model'=>$model,
+		));
+	}
+
+	/**
+	 * Delivery & Returns Policy display
+	 */
+	public function actionDeliverandreturn()
+	{
+		$this->layout='//layouts/main2'; // kim
+		$model=new Product('search');
+		$this->render('deliverandreturn', array(
 			'model'=>$model,
 		));
 	}
