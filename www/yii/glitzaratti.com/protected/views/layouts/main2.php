@@ -70,7 +70,7 @@
             </map>
             <img src="<?php Yii::app()->request->baseUrl ?> /img/wp10cd6580_06.png" width="100" height="101" border="0" title="" alt="Home" onload="OnLoadPngFix()" usemap="#map0" style="position:absolute;left:860px;top:0px;">
             <div id="txt_1" style="position:absolute;left:368px;top:131px;width:960px;height:82px;overflow:hidden;">
-                <p class="Normal-P"><span class="Normal-C">Copyright Glitzarratti Couture Designs 2013</span></p>
+                <p class="Normal-P"><span class="Normal-C">Copyright Glitzaratti Couture Designs 2013</span></p>
                 <p class="Normal-P"><span class="Normal-C"><a href="http://www.wireflydesign.com"  target="_blank" style="color:#ffffff;text-decoration:none;">Designed and Hosted by Wirefly Design</a></span></p>
             </div>
 
