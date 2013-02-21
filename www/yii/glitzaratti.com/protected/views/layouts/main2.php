@@ -29,7 +29,14 @@
         .Button1:focus{outline-style:none;}
         .Button1:hover{background-position:0px -74px;}
         .Button1:active{background-position:0px -37px;}
-        .Button1 span,.Button1:link span,.Button1:visited span{color:#ffffff;font-family:Arial,sans-serif;font-weight:normal;text-decoration:none;text-align:center;text-transform:none;font-style:normal;left:1px;top:10px;width:92px;height:17px;font-size:10px;display:block;position:absolute;cursor:pointer;}
+        .Button1 span,.Button1:link span,.Button1:visited span{color:#ffffff;font-family:Arial,sans-serif;font-weight:normal;text-decoration:none;text-align:center;text-transform:none;font-style:normal;left:1px;top:10px;width:92px;height:17px;font-size:13px;display:block;position:absolute;cursor:pointer;}
+
+        .ButtonF,.ButtonF:link,.ButtonF:visited{background-position:0px 0px;text-decoration:none;display:block;position:absolute;background-image:url(<?php Yii::app()->request->baseUrl ?>/img/wp3b737c37_06.png);}
+        .ButtonF:focus{outline-style:none;}
+        .ButtonF:hover{background-position:0px -74px;}
+        .ButtonF:active{background-position:0px -37px;}
+        .ButtonF span,.ButtonF:link span,.ButtonF:visited span{color:#ffffff;font-family:Arial,sans-serif;font-weight:normal;text-decoration:none;text-align:center;text-transform:none;font-style:normal;left:1px;top:10px;width:92px;height:17px;font-size:10px;display:block;position:absolute;cursor:pointer;}
+
     </style>
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
@@ -43,6 +50,15 @@
 		<a href="<?php echo $this->createUrl('site/index');?>"><img src="<?php Yii::app()->request->baseUrl ?> /img/wpb979b61f_06.png" width="100" height="44" border="0" title="" alt="&lt; Home" onload="OnLoadPngFix()" style="position:absolute;left:0px;top:58px;"></a>
 		<a href="<?php echo $this->createUrl('site/index');?>"><img src="<?php Yii::app()->request->baseUrl ?> /img/wp7c4a6a70_06.png" width="298" height="95" border="0" alt="" onload="OnLoadPngFix()" style="position:absolute;left:562px;top:50px;"></a>
 	</div><!-- header -->
+
+    <!-- Top menu -->
+    <div style="position:absolute;left:330px;top:00px;width:417px;height:47px; background-image:url('<?php /*Yii::app()->request->baseUrl;*/?> /img/wp83c3de7e_06.png');">
+        <a href="<?php echo $this->createUrl('site/index');?>" id="nav_418_B1" class="Button1" style="z-index:1000;display:block;position:absolute;left:5px;top:5px;width:94px;height:37px;"><span>Home</span></a>
+        <a href="<?php echo $this->createUrl('site/sendyourown');?>" id="nav_418_B2" class="Button1" style="display:block;position:absolute;left:110px;top:5px;width:94px;height:37px;"><span>Your Design</span></a>
+        <a href="<?php echo $this->createUrl('product/index?category_id=all');?>" id="nav_418_B3" class="Button1" style="z-index:1000;display:block;position:absolute;left:214px;top:5px;width:94px;height:37px;"><span>Gallery</span></a>
+        <a href="<?php echo $this->createUrl('site/links');?>" id="nav_418_B4" class="Button1" style="display:block;position:absolute;left:319px;top:5px;width:94px;height:37px;"><span>Links</span></a>
+<!--    <a href="<?php echo $this->createUrl('site/index');?>" id="nav_418_B4" class="Button1" style="display:block;position:absolute;left:319px;top:5px;width:94px;height:37px;"><span>My Basket</span></a> -->
+    </div>
 
 	<?php echo $content; ?>
 
@@ -69,25 +85,16 @@
                 <area shape="poly" coords="62,36,63,32,63,30,66,30,67,29,69,28,75,28,77,29,75,33,72,33,68,35,66,35" href="index.html" alt="">
             </map>
             <img src="<?php Yii::app()->request->baseUrl ?> /img/wp10cd6580_06.png" width="100" height="101" border="0" title="" alt="Home" onload="OnLoadPngFix()" usemap="#map0" style="position:absolute;left:860px;top:0px;">
-            <div id="txt_1" style="position:absolute;left:368px;top:131px;width:960px;height:82px;overflow:hidden;">
+            <div id="txt_1" style="position:absolute;left:368px;top:131px;width:960px;height:82px;overflow:hidden;z-index:1000">
                 <p class="Normal-P"><span class="Normal-C">Copyright Glitzaratti Couture Designs 2013</span></p>
                 <p class="Normal-P"><span class="Normal-C"><a href="http://www.wireflydesign.com"  target="_blank" style="color:#ffffff;text-decoration:none;">Designed and Hosted by Wirefly Design</a></span></p>
             </div>
 
-	        <!--
-            <div style="position:absolute;left:271px;top:42px;width:417px;height:47px; background-image:url('<?php /*Yii::app()->request->baseUrl*/ ?> /img/wp83c3de7e_06.png');">
-                <a href="<?/*php echo $this->createUrl('site/index');*/?>" id="nav_418_B1" class="Button1" style="z-index:1000;display:block;position:absolute;left:5px;top:5px;width:94px;height:37px;"><span>Home</span></a>
-                <a href="custom.html" id="nav_418_B2" class="Button1" style="display:block;position:absolute;left:110px;top:5px;width:94px;height:37px;"><span>Your Design</span></a>
-                <a href="<?php /*echo $this->createUrl('product/index?category_id=all');*/?>" id="nav_418_B3" class="Button1" style="z-index:1000;display:block;position:absolute;left:214px;top:5px;width:94px;height:37px;"><span>Gallery</span></a>
-                <a href="basket.html" id="nav_418_B4" class="Button1" style="display:block;position:absolute;left:319px;top:5px;width:94px;height:37px;"><span>My Basket</span></a>
-            </div>
-            -->
-
-            <a href="<?php echo $this->createUrl('site/tandc');?>" class="Button1" style="z-index:1000;display:block;position:absolute;left:220px;top:170px;width:94px;height:37px;"><span>Terms & conditions</span></a>
-            <a href="<?php echo $this->createUrl('site/terms');?>" class="Button1" style="z-index:1000;display:block;position:absolute;left:360px;top:170px;width:94px;height:37px;"><span>Terms of use</span></a>
-            <a href="<?php echo $this->createUrl('site/privacy');?>" class="Button1" style="z-index:1000;display:block;position:absolute;left:480px;top:170px;width:94px;height:37px;"><span>Privacy Policy</span></a>
-            <a href="<?php echo $this->createUrl('site/deliverandreturn');?>" class="Button1" style="z-index:1000;display:block;position:absolute;left:600px;top:170px;width:94px;height:37px;"><span>Delivery & Returns</span></a>
-
+            <!-- Footer menu -->
+            <a href="<?php echo $this->createUrl('site/tandc');?>" class="ButtonF" style="z-index:1000;display:block;position:absolute;left:220px;top:170px;width:94px;height:37px;"><span>Terms & conditions</span></a>
+            <a href="<?php echo $this->createUrl('site/terms');?>" class="ButtonF" style="z-index:1000;display:block;position:absolute;left:360px;top:170px;width:94px;height:37px;"><span>Terms of use</span></a>
+            <a href="<?php echo $this->createUrl('site/privacy');?>" class="ButtonF" style="z-index:1000;display:block;position:absolute;left:480px;top:170px;width:94px;height:37px;"><span>Privacy policy</span></a>
+            <a href="<?php echo $this->createUrl('site/deliverandreturn');?>" class="ButtonF" style="z-index:1000;display:block;position:absolute;left:600px;top:170px;width:94px;height:37px;"><span>Delivery & returns</span></a>
 
             <map id="map1" name="map1">
                 <area shape="poly" coords="880,80,877,79,874,77,872,75,870,71,871,69,877,72,885,72,886,75,888,77,889,79,884,79" href="index.html" alt="">

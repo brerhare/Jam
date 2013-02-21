@@ -180,4 +180,28 @@ class SiteController extends Controller
 			'model'=>$model,
 		));
 	}
+
+	/**
+	 * 'Send Your Own' page display
+	 */
+	public function actionSendyourown()
+	{
+		$this->layout='//layouts/main2'; // kim
+		$model=new Product('search');
+		$this->render('sendyourown', array(
+			'model'=>$model,
+		));
+	}
+
+	/**
+	 * Links page display
+	 */
+	public function actionLinks()
+	{
+		$this->layout='//layouts/main2'; // kim
+		$model=new Product('search');
+		$this->render('links', array(
+			'model'=>$model,
+		));
+	}
 }
