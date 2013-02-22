@@ -4,5 +4,7 @@ protected/runtime/*
 !protected/runtime/.gitignore
 protected/backend/runtime/*
 !protected/backend/runtime/.gitignore
+userdata/*
+!userdata/images
 
 *.bak

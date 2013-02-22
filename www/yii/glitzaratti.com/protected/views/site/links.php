@@ -30,7 +30,7 @@ ul {list-style:none;}
 
 
 
-<h4 class="Header-P"><<p class="Normal-P">Links</p></h4>
+<h4 class="Header-P"><<p class="Normal-P">About Us</p></h4>
 <p class='Normal-P'>
 Read about us
 <br>

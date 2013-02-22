@@ -38,9 +38,9 @@
     <!-- Top menu -->
     <div style="position:absolute;left:330px;top:00px;width:417px;height:47px; background-image:url('<?php /*Yii::app()->request->baseUrl;*/?> /img/wp83c3de7e_06.png');">
         <a href="<?php echo $this->createUrl('site/index');?>" id="nav_418_B1" class="Button1" style="z-index:1000;display:block;position:absolute;left:5px;top:5px;width:94px;height:37px;"><span>Home</span></a>
-        <a href="<?php echo $this->createUrl('site/sendyourown');?>" id="nav_418_B2" class="Button1" style="display:block;position:absolute;left:110px;top:5px;width:94px;height:37px;"><span>Your Design</span></a>
+        <a href="<?php echo $this->createUrl('site/sendyourown');?>" id="nav_418_B2" class="Button1" style="display:block;position:absolute;left:110px;top:5px;width:94px;height:37px;"><span>SYO</span></a>
         <a href="<?php echo $this->createUrl('product/index?category_id=all');?>" id="nav_418_B3" class="Button1" style="z-index:1000;display:block;position:absolute;left:214px;top:5px;width:94px;height:37px;"><span>Gallery</span></a>
-        <a href="<?php echo $this->createUrl('site/links');?>" id="nav_418_B4" class="Button1" style="display:block;position:absolute;left:319px;top:5px;width:94px;height:37px;"><span>Links</span></a>
+        <a href="<?php echo $this->createUrl('site/links');?>" id="nav_418_B4" class="Button1" style="display:block;position:absolute;left:319px;top:5px;width:94px;height:37px;"><span>About Us</span></a>
 <!--    <a href="<?php echo $this->createUrl('site/index');?>" id="nav_418_B4" class="Button1" style="display:block;position:absolute;left:319px;top:5px;width:94px;height:37px;"><span>My Basket</span></a> -->
     </div>
 
