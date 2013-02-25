@@ -74,6 +74,14 @@ $(document).ready(function(){
 		imgSwap.push(imgUrl);
 	});
 	$(imgSwap).preload();
+	// Paypal shipping selection change
+    $("#os1").change(function() {
+        if      ($(this).val() == "UK £7.00")             $('#shipping').val("7.00");
+        else if ($(this).val() == "Europe £15.00")        $('#shipping').val("15.00");
+        else if ($(this).val() == "USA/Canada £35.00")    $('#shipping').val("35.00");
+        else if ($(this).val() == "Rest of World £51.00") $('#shipping').val("51.00");
+	    else alert('Error - invalid shipping');
+    });
 });
 
 $.fn.preload = function(){
@@ -86,6 +94,7 @@ $.fn.preload = function(){
 <!-- Paypal button integration -->
 <div style="width:250px; display:block;">
 	<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+        <input type="hidden" name="charset" value="utf-8"> <!-- This gets rid of the weird A before the £ -->
 		<input type="hidden" name="cmd" value="_xclick">
 		<input type="hidden" name="business" value="sales@glitzaratti.com">
 		<input type="hidden" name="lc" value="GB">
@@ -95,10 +104,11 @@ $.fn.preload = function(){
 		<input type="hidden" name="item_number" value="<?php $model->id?>">
 		<input type="hidden" name="button_subtype" value="services">
 		<input type="hidden" name="no_note" value="0">
-		<input type="hidden" name="shipping" value="7.00">
+		<input type="hidden" name="shipping" id="shipping" value="7.00">
 		<input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHostedGuest">
 		<table >
 			<tr>
+				<!-- Size -->
 				<td>
 <?php if (count($model->category->sizes)):?>
 					<p class="Buy-P">
@@ -112,13 +122,36 @@ $.fn.preload = function(){
 	<?php endforeach; ?>
 	<?php $listItemCount=0;?>
 	<?php foreach ($model->category->sizes as $size): ?>
-							<input type="hidden" name="option_select<?php echo $listItemCount;?>" value="<?php echo $size->text;?>">
-							<input type="hidden" name="option_amount<?php echo $listItemCount++;?>" value="<?php echo $model->price;?>">
+						<input type="hidden" name="option_select<?php echo $listItemCount;?>" value="<?php echo $size->text;?>">
+						<input type="hidden" name="option_amount<?php echo $listItemCount++;?>" value="<?php echo $model->price;?>">
 	<?php endforeach; ?>
 					</select>
 				</td>
-				<td>
 <?php endif;?>
+
+				<!-- Shipping -->
+				<td>
+					<p class="Buy-P">
+						<input type="hidden" name="on1" value="Shipping">Shipping
+					</p>
+				</td>
+				<td>
+					<select name="os1" id="os1">
+						<option value="<?php echo "UK £7.00";?>"><?php echo "UK £7.00";?></option>
+						<option value="<?php echo "Europe £15.00";?>"><?php echo "Europe £15.00";?></option>
+						<option value="<?php echo "USA/Canada £35.00";?>"><?php echo "USA/Canada £35.00";?></option>
+						<option value="<?php echo "Rest of World £51.00";?>"><?php echo "Rest of World £51.00";?></option>
+	<?php $listItemCount=0;?>
+	<?php foreach ($model->category->sizes as $size): ?>
+						<input type="hidden" name="option_select<?php echo $listItemCount;?>" value="<?php echo $size->text;?>">
+						<input type="hidden" name="option_amount<?php echo $listItemCount++;?>" value="<?php echo $model->price;?>">
+	<?php endforeach; ?>
+					</select>
+				</td>
+
+
+				<!-- Button -->
+				<td>
 					<input type="image" src="http://www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!">
 				</td>
 			</tr>
