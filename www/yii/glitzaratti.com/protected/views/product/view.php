@@ -165,7 +165,7 @@ $.fn.preload = function(){
 <div id="gallery">
 	<center>
 		<p class="Normal-P">
-<?php echo nl2br($model->name . '&nbsp&nbsp&nbsp&nbsp £' . $model->price . '&nbsp&nbsp+ £7.00 UK p+p' . '<br>' . $model->description)?>
+<?php echo nl2br($model->name . '&nbsp&nbsp&nbsp&nbsp £' . $model->price . '<br>' . $model->description)?>
 		</p>
 	</center>
 	<p></p>
