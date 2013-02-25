@@ -117,7 +117,7 @@ $panel1->add($actionpanel);
 $paypalpanel = new JamHorzPanel();
 $actionpanel->add($paypalpanel);
 $paypalpanel->addHtmlOptions(array(
-	'style'=>'border: 5px solid gray; width:100px height: 100px; text-align: center; margin: 3px;'));
+	'style'=>'border: 5px solid gray; width:100px; height: 100px; text-align: center; margin: 3px;'));
 
 $thumbspanel = new JamHorzPanel();
 $actionpanel->add($thumbspanel);
