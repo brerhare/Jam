@@ -91,6 +91,55 @@ $.fn.preload = function(){
 }
 </script>
 
+
+
+<?php
+$mainpanel = new JamVertPanel();
+$mainpanel->addHtmlOption('style','width: 700px;');
+
+$title  = new JamElement("h1","Product Title");
+
+$panel1 = new JamHorzPanel();
+$panel2 = new JamHorzPanel();
+
+$mainpanel->add($title);
+$mainpanel->add($panel1);
+$mainpanel->add($panel2);
+
+$picpanel = new JamVertPanel();
+$picpanel->addHtmlOptions(array(
+	'style'=>'border: 1px solid gray; width: 300px; height: 300px; text-align: center; margin: 3px;'));
+$panel1->add($picpanel);
+
+$actionpanel = new JamVertPanel();
+$panel1->add($actionpanel);
+
+$paypalpanel = new JamHorzPanel();
+$actionpanel->add($paypalpanel);
+$paypalpanel->addHtmlOptions(array(
+	'style'=>'border: 5px solid gray; width:100px height: 100px; text-align: center; margin: 3px;'));
+
+$thumbspanel = new JamHorzPanel();
+$actionpanel->add($thumbspanel);
+$thumbspanel->addChildHtmlOptions(array(
+	'style'=>'border: 3px solid gray; width: 100px; height: 100px; text-align: center; margin: 3px;'));
+$thumbspanel->add(new JamElement("b","bold text"));
+$thumbspanel->add(CHtml::image('images/sample2.png'));
+$thumbspanel->add("simple raw text");
+
+$panel2->add(new JamElement("b","product desc"));
+
+//$lpanel->add(new JamImage('images/sample1.png'));
+//$lpanel->add(CHtml::textArea('text at left built using CHtml','demo text'));
+
+
+// calling 'render' without any argument will echo the result,
+// in order to return the output please use $mainpanel->render(false);
+$mainpanel->render();
+?>
+
+
+
 <!-- Paypal button integration -->
 <div style="width:250px; display:block;">
 	<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
