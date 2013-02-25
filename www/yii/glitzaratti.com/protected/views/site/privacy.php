@@ -46,17 +46,25 @@ Service you are interested in
 Enquiry title
 Enquiry message
 
-How we use information:
+<b>How we use information:</b>
 
 We use the information you give to provide the service(s) you request. We do not share information with outside parties except to the extent necessary to provide the requested services.
 
 We never use or share the information provided to us online in ways unrelated to the ones described above without your full written consent.
 
-Our Commitment to Data Security
+<b>Our Commitment to Data Security</b>
 
 To prevent unauthorized access, maintain data accuracy, and ensure the correct use of information, we have put in place appropriate physical, electronic,and managerial procedures to safeguard and secure the information we collect online.
-How to Contact Us
-Should you have other questions or concerns about these privacy policy procedures, please contact us by email");?>
+
+<b>How we use Cookies</b>
+
+We set a session cookie on your computer when you visit our website, as do most sites that offer any useful level of interaction. It expires when you close your browser window.
+The cookie contains only a simple randomly generated number. No personal information of any sort is stored in this cookie or transmitted over the internet.
+
+
+<b>How to Contact Us</b>
+
+Should you have other questions or concerns about these privacy policy procedures, please contact us by <a href=\"mailto:sales@glitzaratti.com?Subject=Website Enquiry\">email</a>");?>
 </p>
 </center>
 
