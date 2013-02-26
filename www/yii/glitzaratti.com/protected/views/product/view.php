@@ -93,7 +93,72 @@ $.fn.preload = function(){
 
 
 
-<?php
+<!--?php
+$main = new JamVertPanel();
+$header = new JamHorzPanel();
+$topbar = new JamHorzPanel();
+$bottombar = new JamHorzPanel();
+$bodybar = new JamHorzPanel();
+$panel1 = new JamVertPanel();
+$panel2 = new JamVertPanel();
+$panel3 = new JamVertPanel();
+
+$main->add($header);
+$main->add($topbar);
+$main->add($bodybar);
+$main->add($bottombar);
+
+$bodybar->add($panel1);
+$bodybar->add($panel2);
+$bodybar->add($panel3);
+
+$main->setAutoMargin();
+$main->setWidth('90%');
+
+$header->setWidth('auto');
+$header->addHtmlOption('style','background-color: lightblue; color: black;');
+$header->setBorderNone();
+$header->setHeight('50px');
+$header->addChildHtmlOptions(array(
+	'style'=>'margin-right: 20px;padding: 3px;border: none;'));
+$header->add("logo and carousel etc");
+
+$topbar->setWidth('auto');
+$topbar->addHtmlOption('style','background-color: darkred; color: white;');
+$topbar->setBorderNone();
+$topbar->addChildHtmlOptions(array(
+	'style'=>'margin-right: 20px;padding: 3px;border: none;'));
+$topbar->add("menu 1");
+$topbar->add("menu 2");
+$topbar->add("menu 3");
+$topbar->add("menu 4");
+
+$bodybar->addHtmlOption('style','background-color: #fec;');
+$bodybar->setWidth('auto');
+
+$panel1->addHtmlOption('style','background-color: #eee');
+$panel1->setWidth('150px');
+$panel1->setHeight('200px');
+$panel1->add("left sidebar");
+
+$panel2->setWidth('auto');
+$panel2->setWidth('520px');
+$panel2->add('main content');
+$panel2->setHeight('200px');
+
+$panel3->add('right sidebar');
+$panel3->setWidth('150px');
+$panel3->setHeight('200px');
+
+$bottombar->add('footer with wirefly copyright');
+$bottombar->addHtmlOption('style','background-color: #eee;');
+
+$main->render();
+?-->
+
+
+
+<!--?php
 $mainpanel = new JamVertPanel();
 $mainpanel->addHtmlOption('style','width: 700px;');
 
@@ -108,7 +173,7 @@ $mainpanel->add($panel2);
 
 $picpanel = new JamVertPanel();
 $picpanel->addHtmlOptions(array(
-	'style'=>'border: 1px solid gray; width: 300px; height: 300px; text-align: center; margin: 3px;'));
+	'style'=>'border: 1px solid gray; width: 300px; height: 300px; text-align: center; margin: 30px;'));
 $panel1->add($picpanel);
 
 $actionpanel = new JamVertPanel();
@@ -122,7 +187,7 @@ $paypalpanel->addHtmlOptions(array(
 $thumbspanel = new JamHorzPanel();
 $actionpanel->add($thumbspanel);
 $thumbspanel->addChildHtmlOptions(array(
-	'style'=>'border: 3px solid gray; width: 100px; height: 100px; text-align: center; margin: 3px;'));
+	'style'=>'border: 3px solid gray; width: 50px; height: 50px; text-align: center; margin: 3px;'));
 $thumbspanel->add(new JamElement("b","bold text"));
 $thumbspanel->add(CHtml::image('images/sample2.png'));
 $thumbspanel->add("simple raw text");
@@ -136,7 +201,7 @@ $panel2->add(new JamElement("b","product desc"));
 // calling 'render' without any argument will echo the result,
 // in order to return the output please use $mainpanel->render(false);
 $mainpanel->render();
-?>
+?-->
 
 
 
