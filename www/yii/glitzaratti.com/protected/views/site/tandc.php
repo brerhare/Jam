@@ -44,12 +44,14 @@ Please ensure you order your correct size at the time of ordering as once produc
 - Avoid unnecessary exposure to heat, direct sunlight and water, which could affect the adhesive used in the encrusting process and cause discolouration to the crystals.
 - Do not expose to perfume, hairspray or similar products which can leave a coating over the crystals and a loss of their 'sparkle' as a result.
 - Wipe over your item with a slightly damp cloth to revive the sparkle.  Do not immerse in water or use cleaning products.
-- In the unlikely event that one or two crystals do come away from the item,  we will repair them for free within the 1st year of purchase please note that delivery costs will be the customers responsibly our standard cost Is £7.00
-
--  after the year If required, we offers a 'Repair Service' chargeable at our discretion; please contact us for more information
+- In the unlikely event that one or two crystals do come away from the item,  we will repair them for free within the 1st year of purchase. Please note that delivery costs will be the customers responsibility. Our standard cost Is £7.00.
+- If required, we offer a 'Repair Service' chargeable at our discretion; please contact us for more information.
 
 <b>Returns:</b>
 All of our services and products are sold on a 'Made-to-Order' basis, therefore we are unable to offer a refund based on items being unsuitable.  A refund or exchange will be offered in the event of a damaged or faulty product being received, although this will not include wear and tear or damage caused by the customer.
+
+<b>Disclaimer:</b>
+Some of our shoes, particularly those with metal embellishments and real mirror fragments, may have sharp edges. While each individual piece is sanded by hand every and every effort is taken to reduce any sharp edges that may hitch or scratch Glitzaratti can offer no guarantee that all sharp edges or points have been entirely eliminated. Some of our designs are cat-walk inspirational and not necessarily designed for comfort, safety or the health of your feet and are therefore worn at your own risk.
 
 This does not affect your statutory rights. Please visit www.direct.gov.uk for information on your legal rights when buying online or contact Consumer Direct to discuss any concerns you may have.");
 ?>
