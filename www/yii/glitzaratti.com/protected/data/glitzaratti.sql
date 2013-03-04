@@ -119,6 +119,19 @@ CREATE  TABLE IF NOT EXISTS `glitzaratti_com`.`gallery_has_product` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `glitzaratti_com`.`contact`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `glitzaratti_com`.`contact` ;
+
+CREATE  TABLE IF NOT EXISTS `glitzaratti_com`.`contact` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(45) NULL ,
+  `email` VARCHAR(255) NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

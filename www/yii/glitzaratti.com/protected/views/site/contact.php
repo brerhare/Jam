@@ -35,18 +35,18 @@ $this->breadcrumbs=array(
 
 <div style='left:50px; font-family:"Arial", sans-serif; font-size:16.0px; line-height:1.27em;'>
 <br></br>
-<h3 class="Big-P">Contact Us</h3>
+<h3 class="Big-P">Sign up</h3>
 
 <?php if(Yii::app()->user->hasFlash('contact')): ?>
 
-<div class="flash-success">
+<div class="flash-success, Normal-P">
 	<?php echo Yii::app()->user->getFlash('contact'); ?>
 </div>
 
 <?php else: ?>
 
 <p class="Normal-P">
-If you have enquiries or other questions, please fill out the following form to contact us. Thank you.
+    Enter your email address and we'll keep you up to date. We will not pass on your details to any 3rd party.
 </p>
 
 <div class="form">
@@ -77,18 +77,6 @@ If you have enquiries or other questions, please fill out the following form to 
 		<?php echo $form->labelEx($model,'email'); ?>
 		<?php echo $form->textField($model,'email'); ?>
 		<?php echo $form->error($model,'email'); ?>
-	</div>
-
-	<div class="row, Normal-P">
-		<?php echo $form->labelEx($model,'subject'); ?>
-		<?php echo $form->textField($model,'subject',array('size'=>60,'maxlength'=>128)); ?>
-		<?php echo $form->error($model,'subject'); ?>
-	</div>
-
-	<div class="row, Normal-P">
-		<?php echo $form->labelEx($model,'body'); ?>
-		<?php echo $form->textArea($model,'body',array('rows'=>6, 'cols'=>50)); ?>
-		<?php echo $form->error($model,'body'); ?>
 	</div>
 
 	<?php if(CCaptcha::checkRequirements()): ?>
