@@ -85,20 +85,3 @@ domReady(function(){
 	</div>
 </center>
 
-<div style='font-family:"Arial", sans-serif; color:#ede587; font-size:15.0px; line-height:1.27em;'>
-	<br><br>
-	<center>
-		<table>
-			<tr>
-				<td>
-					Coming Soon - The new Glitzaratti Collection
-				</td>
-			</tr>
-			<tr>
-				<td>
-					Enter your details <?php echo CHtml::link('here', $this->createAbsoluteUrl('site/contact')); ?> and we shall notify you when the new collection has been made available
-				</td>
-			</tr>
-		</table>
-	</center>
-</div>

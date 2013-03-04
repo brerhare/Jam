@@ -70,6 +70,11 @@ class SiteController extends Controller
 			$model->attributes=$_POST['ContactForm'];
 			if($model->validate())
 			{
+				$modelC=new Contact;
+				$modelC->email = $model->email;
+				$modelC->name = $model->name;
+				$modelC->save();
+
 				// Fill these, as they are not filled by the form
 				$model->subject = $model->name . ' has signed up at glitzaratti.com';
 				$model->body = 'Email address: ' . $model->email;
