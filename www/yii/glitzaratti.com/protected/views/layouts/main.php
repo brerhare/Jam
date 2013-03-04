@@ -31,7 +31,8 @@
             <img src="<?php Yii::app()->request->baseUrl ?> /img/wp65d1b97d_06.png" width="234" height="313" border="0" alt="" onload="OnLoadPngFix()" usemap="#map0" style="position:absolute;left:650px;top:28px;">
             <img src="<?php Yii::app()->request->baseUrl ?> /img/wp984d43e2_06.png" width="334" height="57" border="0" title="" alt="Glitzaratti Couture Design" onload="OnLoadPngFix()" style="position:absolute;left:217px;top:266px;">
             <img src="<?php Yii::app()->request->baseUrl ?> /img/wpc84d212f_06.png" width="427" height="216" border="0" alt="" onload="OnLoadPngFix()" style="position:absolute;left:164px;top:52px;">
-            <a href="<?php echo $this->createUrl('site/contact');?>" id="nav_418_B3" class="Button1" style="z-index:1000;display:block;position:absolute;left:705px;top:280px;width:94px;height:37px;"><span style="color:#d2d29f">Sign up</span></a>
+            <a href="<?php echo $this->createUrl('site/contact');?>" id="nav_418_B3" class="Button1" style="z-index:1000;display:block;position:absolute;left:705px;top:280px;width:94px;height:37px;"><span style="height:54px; width:123px;font-size:12px;font-weight:bold;
+			padding-top:20px;background-image:url(/img/carouselbutton.png);background-repeat:no-repeat; color:#222224">Sign up</span></a>
         </div>
 	</div><!-- header -->
 
