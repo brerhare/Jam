@@ -85,7 +85,7 @@ function refreshDisplay()
 							<table>
 								<tr>
 									<td style="vertical-align:top; width:125px">
-										<a href="<?php $showName = str_replace(" ", "_", $product->name); echo $this->createUrl('product/view?id=' . $product->id) . '&name=' . $showName;?>"><img src="/userdata/image/gall_<?php echo $image->filename?>" longdesc="<?php echo $this->createUrl('product/view?id=' . $product->id);?>" alt="<?php echo $product->name?>" width=120/></a><br/>
+										<a href="<?php $showName = str_replace(" ", "-", $product->name); echo $this->createUrl('product/view?id=' . $product->id) . '&name=' . $showName;?>"><img src="/userdata/image/gall_<?php echo $image->filename?>" longdesc="<?php echo $this->createUrl('product/view?id=' . $product->id);?>" alt="<?php echo $product->name?>" width=120/></a><br/>
 									</td>
 									<td>
 										<div class=Medium-P><?php echo $product->name;?></div>
