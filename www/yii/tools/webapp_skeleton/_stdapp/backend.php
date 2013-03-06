@@ -1,7 +1,7 @@
 <?php
 
 // change the following paths if necessary
-$yii=dirname(__FILE__).'/../../../../extern/yii-1.1.13.e9e4a0/framework/yii.php';
+$yii=dirname(__FILE__).'/../../../../extern/yii/framework/yii.php';
 $config=dirname(__FILE__).'/protected/backend/config/main.php';
 
 // remove the following lines when in production mode
