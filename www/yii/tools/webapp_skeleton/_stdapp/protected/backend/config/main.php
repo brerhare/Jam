@@ -20,7 +20,8 @@ return array(
 	'name'=>'My Web Application Backend',
 
 	// preloading 'log' component
-	'preload'=>array('log'),
+	// preloading 'bootstrap' component
+	'preload'=>array('log', 'bootstrap'),
 
 	// autoloading model and component classes
 	// Note that the order is important - we want backend to overwrite frontend when theres a clash
@@ -39,12 +40,19 @@ return array(
 			'password'=>'kimlo,',
 			// If removed, Gii defaults to localhost only. Edit carefully to taste.
 			'ipFilters'=>array('127.0.0.1','::1'),
+			'generatorPaths' => array(
+				'bootstrap.gii'
+			),
 		),
 		/**/
 	),
 
 	// application components
 	'components'=>array(
+		'bootstrap'=>array(
+			'class' => 'ext.bootstrap.components.Bootstrap',
+			'responsiveCss' => true,
+		),
 		'user'=>array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,
