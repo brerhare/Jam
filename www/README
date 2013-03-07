@@ -7,6 +7,10 @@ Setting up your development environment
 
 Add 'Servername localhost' to /etc/apache2/conf.d/fqdn
 
+apt-get install apache2-mpm-itk
+	This allows apache to run as different users for each virtualhost
+	(enables use of the "AssignUserId USER GROUP" directive)
+
 phpmyadmin
 	apt-get phpmyadmin
 	add 'Include /etc/phpmyadmin/apache.conf' to /etc/apache2/apache2.conf
@@ -45,10 +49,13 @@ vi /etc/apache2/sites-available/[project]
 		# Logfiles
 		ErrorLog /home/kim/dev/src/www/apache_logs/glitzaratti.com/error.log
 		CustomLog /home/kim/dev/src/www/apache_logs/glitzaratti.com/access.log combined
-	<Directory "/home/kim/dev/src/www/yii/glitzaratti.com.dev">
-		allow from all
-	</Directory>
-	</VirtualHost
+		<Directory "/home/kim/dev/src/www/yii/glitzaratti.com.dev">
+			allow from all
+		</Directory>
+		<IfModule mpm_itk_module>
+			AssignUserId USER GROUP
+		</IfModule>
+	</VirtualHost>
 
 a2ensite [project]
 service apache2 restart

@@ -22,7 +22,9 @@
 		$baseUrl = Yii::app()->baseUrl;
 		$cs = Yii::app()->getClientScript();
 		//$cs->registerScriptFile($baseUrl.'/js/yourscript.js');
-		$cs->registerCssFile($baseUrl.'/css/bootstrap/springTones.css');
+		//$cs->registerCssFile($baseUrl.'/css/bootstrap/springTones.css');
+		//$cs->registerCssFile($baseUrl.'/css/bootstrap/cerulean.css');
+		$cs->registerCssFile($baseUrl.'/css/bootstrap/superhero.css');
 	?>
 
 </head>

@@ -31,7 +31,7 @@ class UserController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update', 'editable'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -147,6 +147,13 @@ class UserController extends Controller
 			'model'=>$model,
 		));
 	}
+
+    	public function actionEditable()
+        {
+            Yii::import('ext.bootstrap.widgets.TbEditableSaver'); //or you can add import 'ext.editable.*' to config
+            $es = new TbEditableSaver('User'); // 'User' is classname of model to be updated
+            $es->update();
+        }
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
