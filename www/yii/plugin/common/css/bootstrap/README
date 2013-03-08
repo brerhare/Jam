@@ -1,8 +1,10 @@
+css 'themes' here should generally be named in the format: url.whereifound.it_theme.css
+
 Put the following in your layout
 
 <?php
     $baseUrl = Yii::app()->baseUrl;
     $cs = Yii::app()->getClientScript();
     //$cs->registerScriptFile($baseUrl.'/js/yourscript.js');
-    $cs->registerCssFile($baseUrl.'/css/bootstrap/springTones.css');
+    $cs->registerCssFile($baseUrl.'/css/bootstrap/yourbadtaste.css');
 ?>
