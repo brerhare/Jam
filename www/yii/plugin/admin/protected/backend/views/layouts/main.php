@@ -22,9 +22,7 @@
 		$baseUrl = Yii::app()->baseUrl;
 		$cs = Yii::app()->getClientScript();
 		//$cs->registerScriptFile($baseUrl.'/js/yourscript.js');
-		//$cs->registerCssFile($baseUrl.'/css/bootstrap/springTones.css');
-		//$cs->registerCssFile($baseUrl.'/css/bootstrap/cerulean.css');
-		$cs->registerCssFile($baseUrl.'/css/bootstrap/superhero.css');
+		//$cs->registerCssFile($baseUrl.'/css/bootstrap/bootswatch.com_simplex.css');
 	?>
 
 </head>
@@ -34,22 +32,19 @@
 <div class="container" id="page">
 	<?php $this->widget('bootstrap.widgets.TbNavbar', array(
 	'type' => 'null', // null or 'inverse'
-	'brand' => 'Project name',
-	'brandUrl' => '#',
+	'brand' => 'Home',
+	'brandUrl' => array('/site/index'),
 	'collapse' => true, // requires bootstrap-responsive.css
 	'items' => array(
 		array(
 			'class' => 'bootstrap.widgets.TbMenu',
 			'items' => array(
-				array('label' => 'Home', 'url' => array('/site/index')),
 				array('label' => 'About', 'url' => array('/site/page', 'view' => 'about')),
 				array('label' => 'Contact', 'url' => array('/site/contact')),
 				array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
 				array('label' => 'Logout (' . Yii::app()->user->name . ')', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest)
 			),
 		),
-		'<form class="navbar-search pull-left" action=""><input type="text" class="search-query span2" placeholder="Search"></form>',
-		(!Yii::app()->user->isGuest) ? '<p class="navbar-text pull-right">Logged in as <a href="#">username</a></p>' : '',
 		array(
 			'class' => 'bootstrap.widgets.TbMenu',
 			'htmlOptions' => array('class' => 'pull-right'),
@@ -67,7 +62,7 @@
 		),
 	),
 )); ?>
-	<!-- mainmenu -->
+
 	<div class="container" style="margin-top:80px">
 		<?php if (isset($this->breadcrumbs)): ?>
 			<?php $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
