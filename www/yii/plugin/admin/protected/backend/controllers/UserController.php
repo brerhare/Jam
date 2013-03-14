@@ -148,12 +148,12 @@ class UserController extends Controller
 		));
 	}
 
-    	public function actionEditable()
-        {
-            Yii::import('ext.bootstrap.widgets.TbEditableSaver'); //or you can add import 'ext.editable.*' to config
-            $es = new TbEditableSaver('User'); // 'User' is classname of model to be updated
-            $es->update();
-        }
+	public function actionEditable()
+	{
+		Yii::import('ext.bootstrap.widgets.TbEditableSaver'); //or you can add import 'ext.editable.*' to config
+		$es = new TbEditableSaver('User'); // 'User' is classname of model to be updated
+		$es->update();
+	}
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
