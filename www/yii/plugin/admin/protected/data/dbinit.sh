@@ -1,1 +1,1 @@
-mysql -uplugin plugin -p"plugin," < schema.sql
+mysql -uplugin plugin -p"plugin," < plugin.sql
