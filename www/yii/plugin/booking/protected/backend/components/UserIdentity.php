@@ -19,7 +19,6 @@ class UserIdentity extends CUserIdentity
 	{
 		$users=array(
 			// username => password
-			'demo'=>'demo',
 			'admin'=>'backend',
 		);
 		if(!isset($users[$this->username]))
