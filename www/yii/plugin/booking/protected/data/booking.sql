@@ -12,10 +12,8 @@ DROP TABLE IF EXISTS `booking`.`occupancy_type` ;
 
 CREATE  TABLE IF NOT EXISTS `booking`.`occupancy_type` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `kid` INT NOT NULL ,
-  `description` VARCHAR(255) NOT NULL ,
-  PRIMARY KEY (`id`) ,
-  INDEX `kid` (`kid` ASC) )
+  `description` VARCHAR(255) NULL ,
+  PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
 
@@ -26,10 +24,8 @@ DROP TABLE IF EXISTS `booking`.`facility` ;
 
 CREATE  TABLE IF NOT EXISTS `booking`.`facility` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `kid` INT NOT NULL ,
   `description` VARCHAR(255) NOT NULL ,
-  PRIMARY KEY (`id`) ,
-  INDEX `kid` (`kid` ASC) )
+  PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
 
@@ -40,15 +36,13 @@ DROP TABLE IF EXISTS `booking`.`room` ;
 
 CREATE  TABLE IF NOT EXISTS `booking`.`room` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `kid` INT NOT NULL ,
   `title` VARCHAR(255) NOT NULL ,
-  `description` TEXT NOT NULL ,
-  `qty` INT NOT NULL ,
+  `description` TEXT NULL ,
+  `qty` INT NULL ,
   `max_adult` INT NULL ,
   `max_child` INT NULL ,
   `max_total` INT NULL ,
-  PRIMARY KEY (`id`) ,
-  INDEX `kid` (`kid` ASC) )
+  PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
 
@@ -60,7 +54,6 @@ DROP TABLE IF EXISTS `booking`.`room_has_occupancy_type` ;
 CREATE  TABLE IF NOT EXISTS `booking`.`room_has_occupancy_type` (
   `room_id` INT NOT NULL ,
   `occupancy_type_id` INT NOT NULL ,
-  `kid` INT NOT NULL ,
   `adult_rate` DECIMAL(10,2) NULL ,
   `child_rate` DECIMAL(10,2) NULL ,
   `single_rate` DECIMAL(10,2) NULL ,
@@ -68,7 +61,6 @@ CREATE  TABLE IF NOT EXISTS `booking`.`room_has_occupancy_type` (
   PRIMARY KEY (`room_id`, `occupancy_type_id`) ,
   INDEX `fk_room_has_occupancy_type_occupancy_type1` (`occupancy_type_id` ASC) ,
   INDEX `fk_room_has_occupancy_type_room` (`room_id` ASC) ,
-  INDEX `kid` (`kid` ASC) ,
   CONSTRAINT `fk_room_has_occupancy_type_room`
     FOREIGN KEY (`room_id` )
     REFERENCES `booking`.`room` (`id` )
@@ -90,11 +82,9 @@ DROP TABLE IF EXISTS `booking`.`room_has_facility` ;
 CREATE  TABLE IF NOT EXISTS `booking`.`room_has_facility` (
   `room_id` INT NOT NULL ,
   `facility_id` INT NOT NULL ,
-  `kid` INT NOT NULL ,
   PRIMARY KEY (`room_id`, `facility_id`) ,
   INDEX `fk_room_has_facility_facility1` (`facility_id` ASC) ,
   INDEX `fk_room_has_facility_room1` (`room_id` ASC) ,
-  INDEX `kid` (`kid` ASC) ,
   CONSTRAINT `fk_room_has_facility_room1`
     FOREIGN KEY (`room_id` )
     REFERENCES `booking`.`room` (`id` )
@@ -115,12 +105,10 @@ DROP TABLE IF EXISTS `booking`.`extra` ;
 
 CREATE  TABLE IF NOT EXISTS `booking`.`extra` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `kid` INT NOT NULL ,
   `description` VARCHAR(255) NOT NULL ,
   `daily_rate` DECIMAL(10,2) NULL ,
   `once_rate` DECIMAL(10,2) NULL ,
-  PRIMARY KEY (`id`) ,
-  INDEX `kid` (`kid` ASC) )
+  PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
 
@@ -132,11 +120,9 @@ DROP TABLE IF EXISTS `booking`.`room_has_extra` ;
 CREATE  TABLE IF NOT EXISTS `booking`.`room_has_extra` (
   `room_id` INT NOT NULL ,
   `extra_id` INT NOT NULL ,
-  `kid` INT NOT NULL ,
   PRIMARY KEY (`room_id`, `extra_id`) ,
   INDEX `fk_room_has_extra_extra1` (`extra_id` ASC) ,
   INDEX `fk_room_has_extra_room1` (`room_id` ASC) ,
-  INDEX `kid` (`kid` ASC) ,
   CONSTRAINT `fk_room_has_extra_room1`
     FOREIGN KEY (`room_id` )
     REFERENCES `booking`.`room` (`id` )
@@ -157,14 +143,12 @@ DROP TABLE IF EXISTS `booking`.`booking_calendar` ;
 
 CREATE  TABLE IF NOT EXISTS `booking`.`booking_calendar` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `kid` INT NOT NULL ,
   `date` DATE NOT NULL ,
   `ref` VARCHAR(255) NOT NULL ,
   `room_id` INT NOT NULL ,
   PRIMARY KEY (`id`, `room_id`) ,
   INDEX `fk_booking_calendar_room1` (`room_id` ASC) ,
   INDEX `date` (`date` ASC) ,
-  INDEX `kid` (`kid` ASC) ,
   CONSTRAINT `fk_booking_calendar_room1`
     FOREIGN KEY (`room_id` )
     REFERENCES `booking`.`room` (`id` )
@@ -180,7 +164,6 @@ DROP TABLE IF EXISTS `booking`.`booking_room` ;
 
 CREATE  TABLE IF NOT EXISTS `booking`.`booking_room` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `kid` INT NOT NULL ,
   `ref` VARCHAR(255) NOT NULL ,
   `start_date` DATE NOT NULL ,
   `end_date` DATE NOT NULL ,
@@ -190,7 +173,6 @@ CREATE  TABLE IF NOT EXISTS `booking`.`booking_room` (
   `room_id` INT NOT NULL ,
   PRIMARY KEY (`id`, `room_id`) ,
   INDEX `fk_booking_room_room1` (`room_id` ASC) ,
-  INDEX `kid` (`kid` ASC) ,
   CONSTRAINT `fk_booking_room_room1`
     FOREIGN KEY (`room_id` )
     REFERENCES `booking`.`room` (`id` )
@@ -206,13 +188,11 @@ DROP TABLE IF EXISTS `booking`.`booking_extra` ;
 
 CREATE  TABLE IF NOT EXISTS `booking`.`booking_extra` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `kid` INT NOT NULL ,
   `ref` VARCHAR(255) NOT NULL ,
   `booking_room_id` INT NOT NULL ,
   `booking_room_room_id` INT NOT NULL ,
   PRIMARY KEY (`id`, `booking_room_id`, `booking_room_room_id`) ,
   INDEX `fk_booking_extra_booking_room1` (`booking_room_id` ASC, `booking_room_room_id` ASC) ,
-  INDEX `kid` (`kid` ASC) ,
   CONSTRAINT `fk_booking_extra_booking_room1`
     FOREIGN KEY (`booking_room_id` , `booking_room_room_id` )
     REFERENCES `booking`.`booking_room` (`id` , `room_id` )
@@ -228,7 +208,6 @@ DROP TABLE IF EXISTS `booking`.`customer` ;
 
 CREATE  TABLE IF NOT EXISTS `booking`.`customer` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `kid` INT NOT NULL ,
   `ref` VARCHAR(255) NOT NULL ,
   `address_1` VARCHAR(255) NULL ,
   `address_2` VARCHAR(255) NULL ,
@@ -243,8 +222,7 @@ CREATE  TABLE IF NOT EXISTS `booking`.`customer` (
   `card_expiry_mm` INT NOT NULL ,
   `card_expiry_yy` INT NOT NULL ,
   `card_cvv` INT NOT NULL ,
-  PRIMARY KEY (`id`) ,
-  INDEX `kid` (`kid` ASC) )
+  PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
 
