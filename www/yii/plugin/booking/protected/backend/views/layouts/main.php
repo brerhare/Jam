@@ -34,6 +34,7 @@
 		array(
 			'class' => 'bootstrap.widgets.TbMenu',
 			'items' => array(
+				array('label' => 'Rooms', 'url' => array('/room/admin'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Extras', 'url' => array('/extra/admin'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Facilities', 'url' => array('/facility/admin'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Occupancy Types', 'url' => array('/occupancyType/admin'), 'visible' => !Yii::app()->user->isGuest),
