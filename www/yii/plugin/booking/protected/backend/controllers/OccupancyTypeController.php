@@ -1,6 +1,6 @@
 <?php
 
-class UserController extends Controller
+class OccupancyTypeController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -26,15 +26,15 @@ class UserController extends Controller
 	public function accessRules()
 	{
 		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
+			array('allow',  // allow all users
 				'actions'=>array('index','view'),
 				'users'=>array('*'),
 			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','editable'),
+			array('allow', // allow authenticated user
+				'actions'=>array('create','update', 'admin', 'delete'),
 				'users'=>array('@'),
 			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
+			array('allow', // allow admin user
 				'actions'=>array('admin','delete'),
 				'users'=>array('admin'),
 			),
@@ -61,18 +61,17 @@ class UserController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new User;
-		Yii::app()->getSession()->regenerateID(); 
-		$model->sid = Yii::app()->session->sessionID;
+		$model=new OccupancyType;
+		$model->uid = Yii::app()->session['uid'];
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['User']))
+		if(isset($_POST['OccupancyType']))
 		{
-			$model->attributes=$_POST['User'];
+			$model->attributes=$_POST['OccupancyType'];
 			if($model->save())
-				$this->redirect(array('admin','id'=>$model->id));
+				$this->redirect(array('admin'));
 		}
 
 		$this->render('create',array(
@@ -92,14 +91,14 @@ class UserController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['User']))
+		if(isset($_POST['OccupancyType']))
 		{
-			$model->attributes=$_POST['User'];
+			$model->attributes=$_POST['OccupancyType'];
 			if($model->save())
 				$this->redirect(array('admin'));
 		}
 
-		$this->renderPartial('update',array(
+		$this->render('update',array(
 			'model'=>$model,
 		));
 	}
@@ -129,7 +128,7 @@ class UserController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('User');
+		$dataProvider=new CActiveDataProvider('OccupancyType');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -140,21 +139,14 @@ class UserController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new User('search');
+		$model=new OccupancyType('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['User']))
-			$model->attributes=$_GET['User'];
+		if(isset($_GET['OccupancyType']))
+			$model->attributes=$_GET['OccupancyType'];
 
 		$this->render('admin',array(
 			'model'=>$model,
 		));
-	}
-
-	public function actionEditable()
-	{
-		Yii::import('ext.bootstrap.widgets.TbEditableSaver'); //or you can add import 'ext.editable.*' to config
-		$es = new TbEditableSaver('User'); // 'User' is classname of model to be updated
-		$es->update();
 	}
 
 	/**
@@ -164,7 +156,7 @@ class UserController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=User::model()->findByPk($id);
+		$model=OccupancyType::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -176,7 +168,7 @@ class UserController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='user-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='occupancy-type-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
