@@ -1,9 +1,9 @@
 <?php
 
 // change the following paths if necessary
-if (strstr(php_uname('n'), "wireflydesign"))
-	$yii=/opt/dev/extern/yii/framework/yii.php';
-else
+//if (strstr(php_uname('n'), "wireflydesign"))
+//	$yii=/opt/dev/extern/yii/framework/yii.php';
+//else
 	$yii=dirname(__FILE__).'/../../../../../extern/yii/framework/yii.php';
 
 $config=dirname(__FILE__).'/protected/backend/config/main.php';
