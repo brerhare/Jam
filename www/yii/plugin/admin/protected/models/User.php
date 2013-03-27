@@ -5,10 +5,10 @@
  *
  * The followings are the available columns in table 'admin_user':
  * @property integer $id
- * @property integer $kid
  * @property string $email_address
  * @property string $password
  * @property string $display_name
+ * @property string $sid
  *
  * The followings are the available model relations:
  * @property Plugin[] $adminPlugins
@@ -41,12 +41,12 @@ class User extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('kid, email_address, password, display_name', 'required'),
-			array('kid', 'numerical', 'integerOnly'=>true),
+			array('email_address, password, display_name, sid', 'required'),
 			array('email_address, password, display_name', 'length', 'max'=>128),
+			array('sid', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, kid, email_address, password, display_name', 'safe', 'on'=>'search'),
+			array('id, email_address, password, display_name, sid', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -69,10 +69,10 @@ class User extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'kid' => 'Kid',
 			'email_address' => 'Email Address',
 			'password' => 'Password',
 			'display_name' => 'Display Name',
+			'sid' => 'Sid',
 		);
 	}
 
@@ -88,10 +88,10 @@ class User extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('kid',$this->kid);
 		$criteria->compare('email_address',$this->email_address,true);
 		$criteria->compare('password',$this->password,true);
 		$criteria->compare('display_name',$this->display_name,true);
+		$criteria->compare('sid',$this->sid,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -46,11 +46,12 @@ DROP TABLE IF EXISTS `plugin`.`admin_user` ;
 
 CREATE  TABLE IF NOT EXISTS `plugin`.`admin_user` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `kid` INT NOT NULL ,
   `email_address` VARCHAR(128) NOT NULL ,
   `password` VARCHAR(128) NOT NULL ,
   `display_name` VARCHAR(128) NOT NULL ,
-  PRIMARY KEY (`id`) )
+  `sid` VARCHAR(255) NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `sid_UNIQUE` (`sid` ASC) )
 ENGINE = InnoDB;
 
 

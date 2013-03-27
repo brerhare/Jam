@@ -7,17 +7,35 @@ $this->breadcrumbs=array(
 $this->menu=array(
 	array('label'=>'List User','url'=>array('index')),
 	array('label'=>'Create User','url'=>array('create')),
-)?>
-
+);
+?>
 
 <h1>Manage Users</h1>
 
-<h4>Modal dialog for CRUD</h4>
+<!------------------
+
+
+< ?php $this->widget('bootstrap.widgets.TbGridView',array(
+	'id'=>'user-grid',
+	'dataProvider'=>$model->search(),
+	//'filter'=>$model,
+	'columns'=>array(
+		'id',
+		'email_address',
+		'password',
+		'display_name',
+		//'sid',
+		array(
+			'class'=>'bootstrap.widgets.TbButtonColumn',
+		),
+	),
+)); ? >
+
+-------------------------->
 
 <?php
-	$gridColumns=array(
+$gridColumns=array(
 	'id',
-	'kid',
 
 	array(
 		'class' => 'bootstrap.widgets.TbEditableColumn',
@@ -48,6 +66,8 @@ $this->menu=array(
 			'inputclass' => 'span3'
 		)
 	),
+
+	// 'sid',
 
 	array(
 		'header'=>'Options',
@@ -93,11 +113,11 @@ $this->widget('bootstrap.widgets.TbExtendedGridView', array(
 <?php $this->beginWidget('bootstrap.widgets.TbModal', array('id'=>'viewModal')); ?>
 <!-- Popup Header -->
 <div class="modal-header">
-    <h4>View Employee Details</h4>
+    <h4>View User Details</h4>
 </div>
 <!-- Popup Content -->
 <div class="modal-body">
-    <p>Employee Details</p>
+    <p>User Details</p>
 </div>
 <!-- Popup Footer -->
 <div class="modal-footer">

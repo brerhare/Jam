@@ -19,9 +19,9 @@ $this->menu=array(
 	'data'=>$model,
 	'attributes'=>array(
 		'id',
-		'kid',
 		'email_address',
 		'password',
 		'display_name',
+		'sid',
 	),
 )); ?>

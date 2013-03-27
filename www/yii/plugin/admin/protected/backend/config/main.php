@@ -17,7 +17,7 @@ return array(
     'viewPath' => $backend.'/views',
     'runtimePath' => $backend.'/runtime',
 
-	'name'=>'My Web Application Backend',
+	'name'=>'Application Backend',
 
 	// preloading 'log' component
 	// preloading 'bootstrap' component
