@@ -17,7 +17,7 @@ return array(
     'viewPath' => $backend.'/views',
     'runtimePath' => $backend.'/runtime',
 
-	'name'=>'Application Backend',
+	'name'=>'Booking Backend',
 
 	// preloading 'log' component
 	// preloading 'bootstrap' component
@@ -74,10 +74,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=plugin',
+			'connectionString' => 'mysql:host=localhost;dbname=testdrive',
 			'emulatePrepare' => true,
-			'username' => 'plugin',
-			'password' => 'plugin,',
+			'username' => 'root',
+			'password' => '',
 			'charset' => 'utf8',
 		),
 		/**/
