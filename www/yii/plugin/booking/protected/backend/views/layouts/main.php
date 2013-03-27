@@ -38,6 +38,7 @@
 				array('label' => 'Extras', 'url' => array('/extra/admin'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Facilities', 'url' => array('/facility/admin'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Occupancy Types', 'url' => array('/occupancyType/admin'), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'T&Cs', 'url' => array('/site/index'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
 				array('label' => 'Logout', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Contact', 'url' => array('/site/contact'), 'visible' => Yii::app()->user->isGuest),
