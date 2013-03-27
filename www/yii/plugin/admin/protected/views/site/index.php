@@ -10,4 +10,4 @@ $this->pageTitle=Yii::app()->name;
 
 <p>Did you not mean
 
-<a href="http://plugin.wireflydesign.com/backend.php">here</a>?
+<a href="http://plugin.wireflydesign.com/admin/backend.php">here</a>?
