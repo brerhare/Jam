@@ -8,8 +8,8 @@
 	<?php echo CHtml::encode($data->description); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('container_code')); ?>:</b>
-	<?php echo CHtml::encode($data->container_code); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('container_url')); ?>:</b>
+	<?php echo CHtml::encode($data->container_url); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('container_width')); ?>:</b>

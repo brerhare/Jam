@@ -12,8 +12,8 @@ DROP TABLE IF EXISTS `plugin`.`admin_plugin` ;
 
 CREATE  TABLE IF NOT EXISTS `plugin`.`admin_plugin` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `description` VARCHAR(128) NOT NULL ,
-  `container_code` TEXT NULL ,
+  `description` VARCHAR(256) NOT NULL ,
+  `container_url` VARCHAR(256) NULL ,
   `container_width` INT NULL ,
   `container_height` INT NULL ,
   PRIMARY KEY (`id`) )

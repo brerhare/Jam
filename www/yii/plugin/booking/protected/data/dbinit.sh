@@ -1,1 +1,1 @@
-mysql -ubooking booking -p"booking," < booking.sql
+mysql -uplugin plugin -p"plugin," < booking.sql

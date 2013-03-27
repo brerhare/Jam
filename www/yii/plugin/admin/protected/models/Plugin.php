@@ -6,7 +6,7 @@
  * The followings are the available columns in table 'admin_plugin':
  * @property integer $id
  * @property string $description
- * @property string $container_code
+ * @property string $container_url
  * @property integer $container_width
  * @property integer $container_height
  *
@@ -44,11 +44,10 @@ class Plugin extends CActiveRecord
 		return array(
 			array('description', 'required'),
 			array('container_width, container_height', 'numerical', 'integerOnly'=>true),
-			array('description', 'length', 'max'=>128),
-			array('container_code', 'safe'),
+			array('description, container_url', 'length', 'max'=>256),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, description, container_code, container_width, container_height', 'safe', 'on'=>'search'),
+			array('id, description, container_url, container_width, container_height', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -73,7 +72,7 @@ class Plugin extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'description' => 'Description',
-			'container_code' => 'Container Code',
+			'container_url' => 'Container Url',
 			'container_width' => 'Container Width',
 			'container_height' => 'Container Height',
 		);
@@ -92,7 +91,7 @@ class Plugin extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('description',$this->description,true);
-		$criteria->compare('container_code',$this->container_code,true);
+		$criteria->compare('container_url',$this->container_url,true);
 		$criteria->compare('container_width',$this->container_width);
 		$criteria->compare('container_height',$this->container_height);
 

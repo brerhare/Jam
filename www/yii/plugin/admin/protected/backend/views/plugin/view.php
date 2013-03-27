@@ -20,7 +20,7 @@ $this->menu=array(
 	'attributes'=>array(
 		'id',
 		'description',
-		'container_code',
+		'container_url',
 		'container_width',
 		'container_height',
 	),
