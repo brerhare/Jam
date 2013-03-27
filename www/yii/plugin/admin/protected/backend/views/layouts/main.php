@@ -34,8 +34,8 @@
 		array(
 			'class' => 'bootstrap.widgets.TbMenu',
 			'items' => array(
-				array('label' => 'Users', 'url' => array('/user/admin')),
 				array('label' => 'Plugins', 'url' => array('/plugin/admin')),
+				array('label' => 'Users', 'url' => array('/user/admin')),
 				array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
 				array('label' => 'Logout', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Contact', 'url' => array('/site/contact'), 'visible' => Yii::app()->user->isGuest),
