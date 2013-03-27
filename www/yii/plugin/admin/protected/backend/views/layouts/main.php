@@ -37,9 +37,9 @@
 				array('label' => 'Users', 'url' => array('/user/admin')),
 				array('label' => 'Plugins', 'url' => array('/plugin/admin')),
 				array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
-				array('label' => 'Logout (' . Yii::app()->user->name . ')', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),
-				array('label' => 'Contact', 'url' => array('/site/contact')),
-				array('label' => 'About', 'url' => array('/site/page', 'view' => 'about')),
+				array('label' => 'Logout', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'Contact', 'url' => array('/site/contact'), 'visible' => Yii::app()->user->isGuest),
+				array('label' => 'About', 'url' => array('/site/page', 'view' => 'about'), 'visible' => Yii::app()->user->isGuest),
 			),
 		),
 /*****
