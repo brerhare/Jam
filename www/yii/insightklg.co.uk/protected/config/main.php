@@ -7,7 +7,7 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'Application',
+	'name'=>'InsightKLG',
 
 	// preloading 'log' component
 	// preloading 'yiibooster' component
@@ -61,10 +61,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=testdrive',
+			'connectionString' => 'mysql:host=localhost;dbname=insightklg_co_uk',
 			'emulatePrepare' => true,
-			'username' => 'root',
-			'password' => '',
+			'username' => 'insightklg.co.uk',
+			'password' => 'fhfr7jhfh',
 			'charset' => 'utf8',
 		),
 		/**/

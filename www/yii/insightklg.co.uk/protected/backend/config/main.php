@@ -17,7 +17,7 @@ return array(
     'viewPath' => $backend.'/views',
     'runtimePath' => $backend.'/runtime',
 
-	'name'=>'Application Backend',
+	'name'=>'InsightKLG Backend',
 
 	// preloading 'log' component
 	// preloading 'bootstrap' component
@@ -74,10 +74,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=testdrive',
+			'connectionString' => 'mysql:host=localhost;dbname=insightklg_co_uk',
 			'emulatePrepare' => true,
-			'username' => 'root',
-			'password' => '',
+			'username' => 'insightklg.co.uk',
+			'password' => 'fhfr7jhfh',
 			'charset' => 'utf8',
 		),
 		/**/
