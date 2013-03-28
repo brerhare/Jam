@@ -49,8 +49,24 @@ body{margin:0;padding:0;}
 <img src="<?php Yii::app()->request->baseUrl ?> /img/heading_title2.png" border="0" width="554" height="106" alt="" usemap="#map1" style="position:absolute;left:334px;top:99px;">
 </div>
 
-<div id="content">
+<div style="background-color:transparent;margin-left:auto;margin-right:auto;position:relative;width:660px;height:100%;">
+
+<table>
+<tr>
+<td class="Body-C" style="width:100px;vertical-align:top">
+xxxx
+</td>
+<td>
+<div id="content" class="Body-C" style="padding-left:20px">
+<?php echo $content; ?>
 </div>
+</td>
+</tr>
+</table>
+
+</div>
+
+<div class="clear"></div>
 
 <div id="footer" text="#000000" style="background:transparent url('wpimages/wp8f23f5b6_06.jpg') repeat scroll top center; height:133px;">
     <div style="background-color:transparent;margin-left:auto;margin-right:auto;position:relative;width:960px;height:133px;">

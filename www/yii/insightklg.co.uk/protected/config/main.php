@@ -9,6 +9,9 @@ return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'InsightKLG',
 
+	// Override the default controller
+	'defaultController'=>'contentBlock',
+
 	// preloading 'log' component
 	// preloading 'yiibooster' component
 	'preload'=>array('log', 'bootstrap'),
