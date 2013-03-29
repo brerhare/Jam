@@ -45,6 +45,8 @@ class Extra extends CActiveRecord
 			array('uid', 'numerical', 'integerOnly'=>true),
 			array('description', 'length', 'max'=>255),
 			array('daily_rate, once_rate', 'length', 'max'=>10),
+			// @@EG money regexp in model rules. This works nicely for all known-to-me patterns
+			array('daily_rate, once_rate', 'match', 'pattern'=>'/([0-9]+(\.[0-9][0-9]?)?)/'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, uid, description, daily_rate, once_rate', 'safe', 'on'=>'search'),

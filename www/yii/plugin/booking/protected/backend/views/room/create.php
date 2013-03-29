@@ -15,13 +15,14 @@ $this->menu=array(
 
 	<?php
 	$this->widget('zii.widgets.jui.CJuiTabs', array(
+	//$this->widget('bootstrap.widgets.TbTabs', array(
 		'tabs' => array(
 			'Details' => $this->renderPartial('_form_basic', array('form' => $form, 'model' => $model), true),
 			'Pricing' => $this->renderPartial('_form_pricing', array('form' => $form, 'model' => $model), true),
 		),
-		'options' => array(
+		//'options' => array(
 			//'collapsible' => true,
-		),
+		//),
 	));
 	?>
 
