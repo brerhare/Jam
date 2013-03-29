@@ -26,16 +26,16 @@ class DocumentController extends Controller
 	public function accessRules()
 	{
 		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
+			array('allow',  // allow all users
 				'actions'=>array('index','view'),
 				'users'=>array('*'),
 			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+			array('allow', // allow authenticated user
+				'actions'=>array('create','update','tandc'),
 				'users'=>array('@'),
 			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+			array('allow', // allow admin user
+				'actions'=>array('admin','delete','tandc'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -43,6 +43,25 @@ class DocumentController extends Controller
 			),
 		);
 	}
+
+	/**
+	 * Updates Terms and Conditions
+	 */
+	public function actionTandc()
+	{
+		$model=Document::model()->findByAttributes(array('title'=>'terms_and_conditions', 'uid'=>Yii::app()->session['uid']));
+		if ($model === null)
+		{
+			$model=new Document;
+			$model->uid = Yii::app()->session['uid'];
+			$model->title = 'terms_and_conditions';
+			if (!($model->save()))
+				throw new CHttpException(500,'Internal error creating new T&C record.');
+		}
+		$this->redirect(array('update','id'=>$model->id));
+	}
+
+
 
 	/**
 	 * Displays a particular model.
@@ -94,7 +113,7 @@ class DocumentController extends Controller
 		{
 			$model->attributes=$_POST['Document'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('site/index'));
 		}
 
 		$this->render('update',array(

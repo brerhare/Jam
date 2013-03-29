@@ -37,9 +37,10 @@ class Document extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('uid, title, text', 'required'),
+			array('uid, title', 'required'),
 			array('uid', 'numerical', 'integerOnly'=>true),
 			array('title', 'length', 'max'=>255),
+			array('text', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, uid, title, text', 'safe', 'on'=>'search'),

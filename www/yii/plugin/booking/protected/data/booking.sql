@@ -255,9 +255,10 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`booking_document` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `uid` INT NOT NULL ,
   `title` VARCHAR(255) NOT NULL ,
-  `text` TEXT NOT NULL ,
+  `text` TEXT NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `uid` (`uid` ASC) )
+  INDEX `uid` (`uid` ASC) ,
+  INDEX `title` (`title` ASC) )
 ENGINE = InnoDB;
 
 
