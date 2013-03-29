@@ -246,6 +246,21 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`booking_customer` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `plugin`.`booking_document`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `plugin`.`booking_document` ;
+
+CREATE  TABLE IF NOT EXISTS `plugin`.`booking_document` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `uid` INT NOT NULL ,
+  `title` VARCHAR(255) NOT NULL ,
+  `text` TEXT NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `uid` (`uid` ASC) )
+ENGINE = InnoDB;
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
