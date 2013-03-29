@@ -83,7 +83,7 @@ class Room extends CActiveRecord
 			'uid' => 'Uid',
 			'title' => 'Title',
 			'description' => 'Description',
-			'qty' => 'Qty',
+			'qty' => 'Quantity Available',
 			'max_adult' => 'Max Adult',
 			'max_child' => 'Max Child',
 			'max_total' => 'Max Total',
