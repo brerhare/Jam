@@ -9,20 +9,18 @@ $this->menu=array(
 
 <div class="form">
 	<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-	'id'=>'room-form',
-	'enableAjaxValidation'=>false,
-)); ?>
+		'id'=>'room-form',
+		'enableAjaxValidation'=>false,
+		'type'=>'horizontal',
+	)); ?>
 
-	<?php
-	$this->widget('zii.widgets.jui.CJuiTabs', array(
-	//$this->widget('bootstrap.widgets.TbTabs', array(
+	<?php $this->widget('bootstrap.widgets.TbTabs',array(
+		'type'=>'tabs',
 		'tabs' => array(
-			'Details' => $this->renderPartial('_form_basic', array('form' => $form, 'model' => $model), true),
-			'Pricing' => $this->renderPartial('_form_pricing', array('form' => $form, 'model' => $model), true),
+			array('label'=>'Details', 'content' => $this->renderPartial('_form_basic', array('form' => $form, 'model' => $model), true), 'active'=>true),
+			array('label'=>'Extras', 'content' => $this->renderPartial('_form_pricing', array('form' => $form, 'model' => $model), true)),
+			array('label'=>'Pricing', 'content' => $this->renderPartial('_form_pricing', array('form' => $form, 'model' => $model), true)),
 		),
-		//'options' => array(
-			//'collapsible' => true,
-		//),
 	));
 	?>
 
