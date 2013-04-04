@@ -55,31 +55,22 @@
   </div>
 
 
-  <div style="background-color:transparent;margin-left:auto;margin-right:auto;position:relative;width:960px;kheight:556px;">
+  <div style="z-index:2000; background-color:transparent;margin-left:auto;margin-right:auto;position:relative;width:960px;kheight:556px;">
       <div style="/*background-color:#ffffff;*/position:absolute;left:127px;top:21px;width:131px;height:129px;background-image:url('wpimages/wp531e26d2_06.png');">
 
 	      <?php $toppos=-30;
 	      $menuitems = ContentBlock::model()->findAll(array('order'=>'sequence'));
-	      foreach ($menuitems as $menuitem):
-		      echo "XXXXXXXXXXXXX<br/>";
-	      endforeach;
-	      ?>
+	      foreach ($menuitems as $menuitem):?>
+            <a class="menuitem" href="<?php Yii::app()->request->baseUrl?>?r=site/<?php echo $menuitem->url;?>">
+              <img style="position:absolute;top:<?php echo $toppos; $toppos+=40;?>px;left:-20px" src="<?php Yii::app()->request->baseUrl ?>/img/menuline.png">
+	          <?php echo $menuitem->title;?>
+            </a>
+            <br/><br/>
+	      <?php endforeach;?>
 
-          <a class="menuitem" href="http://www.pageresource1.com">
-              <img style="position:absolute;top:-30px;left:-20px" src="<?php Yii::app()->request->baseUrl ?>/img/menuline.png">Home
-          </a>
-          <br/><br/>
-          <a class="menuitem" href="http://www.pageresource2.com">
-              <img style="position:absolute;top:10px;left:-20px" src="<?php Yii::app()->request->baseUrl ?>/img/menuline.png">Workshops
-          </a>
-          <br/><br/>
-          <a class="menuitem" href="http://www.pageresource3.com">
-              <img style="position:absolute;top:50px;left:-20px" src="<?php Yii::app()->request->baseUrl ?>/img/menuline.png">About
-          </a>
+
       </div>
   </div>
-
-
 
   <div style="background-color:transparent;margin-left:auto;margin-right:auto;position:relative;width:660px;height:100%;">
 
