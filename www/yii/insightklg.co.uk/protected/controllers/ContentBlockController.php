@@ -128,7 +128,7 @@ class ContentBlockController extends Controller
 	public function actionIndex()
 	{
 //$this->render('index');
-		$this->actionPage(0);
+		$this->actionPage('about');
 /*
 		$dataProvider=new CActiveDataProvider('ContentBlock');
 		$this->render('index',array(
@@ -137,20 +137,19 @@ class ContentBlockController extends Controller
 */
 	}
 
-	public function actionPage($id)
+	public function actionPage($url)
 	{
-		if ($id == 0)
+		if ($url == null)
 		{
 			$model = ContentBlock::model()->find(array('order'=>'sequence'));
 		}
 		else
 		{
-			//$model = ContentBlock::model()->findByAttributes(array('content' => ));
-			//$model = ContentBlock::mldel()->findAllByAttributes(array('id'=>1),array('order'=>'id DESC'));
+			$model = ContentBlock::model()->findByAttributes(array('url'=>$url));
 		}
 		$this->render('index', array(
 			'model'=>$model,
-			'id'=>$id,
+			'url'=>$url,
 		));
 	}
 
