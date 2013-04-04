@@ -15,28 +15,32 @@
 	));? >
 -->
 
-<!-- -->
-	 <?php echo $form->checkBoxListRow($model, 'uid', array(
+<!--
+	 < ?php echo $form->checkBoxListRow($model, 'uid', array(
 	'Option one is this and that—be sure to include why it\'s great',
 	'Option two can also be checked and included in form results',
 	'Option three can—yes, you guessed it—also be checked and included in form results',
-), array('hint'=>'<strong>Note:</strong> Labels surround all the options for much larger click areas.')); ?>
+), array('hint'=>'<strong>Note:</strong> Labels surround all the options for much larger click areas.')); ? >
+-->
+
+
+
+
+<!-- -->
+<div class="control-group ">
+  <label class="control-label" for="TestForm_checkboxes">Checkboxes</label>
+  <div class="controls">
+<?php echo CHtml::label('', 'interests'); ?>
+<?php echo CHtml::checkBoxList('interests', '',
+	array('PHP', 'MySQL', 'JavaScript', 'CSS', 'Yii Framework'),
+	  array('separator'=>' ', 'labelOptions'=>array('style'=>'display:inline'))
+); ?>
+  </div>
+</div>
 <!-- -->
 
 
 <!--
-<div class="control-group ">
-  <label class="control-label" for="TestForm_checkboxes">Checkboxes</label>
-  <div class="controls">
-< ?php echo CHtml::label('Your Interests:', 'interests'); ? >
-< ?php echo CHtml::checkBoxList('interests', '',
-	array('PHP', 'MySQL', 'JavaScript', 'CSS', 'Yii Framework')
-); ? >
-  </div>
-</div>
--->
-
-
 
 <br/>
 
@@ -61,6 +65,9 @@
 
   </div>
 </div>
+
+<br/>
+-->
 
 
 <!--
