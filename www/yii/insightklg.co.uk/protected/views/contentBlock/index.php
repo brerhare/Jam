@@ -8,7 +8,7 @@
         <!-- Menu -->
       </td>
       <td>
-        <div id="content" class="Body-C" style="padding-left:20px">
+        <div id="content" class="Body-C" style="padding-left:20px;width:600px">
           <?php echo $model->content; ?>
         </div>
       </td>

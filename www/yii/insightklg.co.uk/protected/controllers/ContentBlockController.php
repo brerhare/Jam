@@ -128,7 +128,7 @@ class ContentBlockController extends Controller
 	public function actionIndex()
 	{
 //$this->render('index');
-		$this->actionPage('about');
+		$this->actionPage('workshops');
 /*
 		$dataProvider=new CActiveDataProvider('ContentBlock');
 		$this->render('index',array(
