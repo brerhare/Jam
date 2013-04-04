@@ -1,6 +1,7 @@
 <?php
 ?>
 
+
 <div style="background-color:transparent;margin-left:auto;margin-right:auto;position:relative;width:660px;height:100%;">
   <table>
     <tr>

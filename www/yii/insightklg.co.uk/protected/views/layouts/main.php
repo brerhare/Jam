@@ -61,13 +61,12 @@
 	      <?php $toppos=-30;
 	      $menuitems = ContentBlock::model()->findAll(array('order'=>'sequence'));
 	      foreach ($menuitems as $menuitem):?>
-            <a class="menuitem" href="<?php Yii::app()->request->baseUrl?>?r=site/<?php echo $menuitem->url;?>">
+            <a class="menuitemx" href="<?php Yii::app()->request->baseUrl?>?r=site/<?php echo $menuitem->url;?>">
               <img style="position:absolute;top:<?php echo $toppos; $toppos+=40;?>px;left:-20px" src="<?php Yii::app()->request->baseUrl ?>/img/menuline.png">
 	          <?php echo $menuitem->title;?>
             </a>
             <br/><br/>
 	      <?php endforeach;?>
-
 
       </div>
   </div>
