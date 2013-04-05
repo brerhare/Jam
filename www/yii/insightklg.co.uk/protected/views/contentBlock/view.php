@@ -23,5 +23,6 @@ $this->menu=array(
 		'title',
 		'url',
 		'content',
+		'active',
 	),
 )); ?>

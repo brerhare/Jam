@@ -20,5 +20,9 @@
 	<?php echo CHtml::encode($data->content); ?>
 	<br />
 
+	<b><?php echo CHtml::encode($data->getAttributeLabel('active')); ?>:</b>
+	<?php echo CHtml::encode($data->active); ?>
+	<br />
+
 
 </div>

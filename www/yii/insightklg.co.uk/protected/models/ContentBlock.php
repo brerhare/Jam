@@ -9,6 +9,7 @@
  * @property string $title
  * @property string $url
  * @property string $content
+ * @property string $active
  */
 class ContentBlock extends CActiveRecord
 {
@@ -38,13 +39,14 @@ class ContentBlock extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title, url', 'required'),
+			array('title, url, active', 'required'),
 			array('sequence', 'numerical', 'integerOnly'=>true),
 			array('title, url', 'length', 'max'=>255),
+			array('active', 'length', 'max'=>1),
 			array('content', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, sequence, title, url, content', 'safe', 'on'=>'search'),
+			array('id, sequence, title, url, content, active', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -70,6 +72,7 @@ class ContentBlock extends CActiveRecord
 			'title' => 'Title',
 			'url' => 'Url',
 			'content' => 'Content',
+			'active' => 'Active',
 		);
 	}
 
@@ -89,6 +92,7 @@ class ContentBlock extends CActiveRecord
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('url',$this->url,true);
 		$criteria->compare('content',$this->content,true);
+		$criteria->compare('active',$this->active,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -41,21 +41,20 @@
             <div style="text-align:right;">
 	            <img src="<?php Yii::app()->request->baseUrl ?> /img/shell.png" border="0" width="229" height="327" >
 	        </div>
-            <!--Sidebar content-->
+            <!-- lhs menu content-->
 	        <br/>
             <div style="text-align:right;">
-
-
-
-	                   <?php $toppos=-30;
-          $menuitems = ContentBlock::model()->findAll(array('order'=>'sequence'));
-          foreach ($menuitems as $menuitem):?>
-            <a class="menuitemx" style="color:#b2b2da" href="<?php Yii::app()->request->baseUrl?>/index.php/contentBlock/page?url=<?php echo $menuitem->url;?>">
-<!--              <img style="position:absolute;top:<?php echo $toppos; $toppos+=40;?>px;left:-20px" src="<?php Yii::app()->request->baseUrl ?>/img/menuline.png"> -->
+	        <?php $toppos=-30;
+            $menuitems = ContentBlock::model()->findAll(array('order'=>'sequence'));
+            foreach ($menuitems as $menuitem):?>
+	            <?php if (strtoupper($menuitem->active == 'Y')):?>
+              <a class="menuitemx" style="color:#b2b2da" href="<?php Yii::app()->request->baseUrl?>/index.php/contentBlock/page?url=<?php echo $menuitem->url;?>">
+<!--          <img style="position:absolute;top:<?php echo $toppos; $toppos+=40;?>px;left:-20px" src="<?php Yii::app()->request->baseUrl ?>/img/menuline.png"> -->
               <?php echo $menuitem->title;?>
-            </a>
-            <br/><br/>
-          <?php endforeach;?>
+              </a>
+              <br/><br/>
+			            <?php endif;?>
+            <?php endforeach;?>
 
 
 
@@ -72,7 +71,9 @@
 <br/>
             <!--Body content-->
 	        <div style="height:50px"></div>
-	        <?php echo $content; ?>
+	        <div id="content">
+	            <?php echo $content; ?>
+		    </div>
 
         </div>
         <div class="span1"></div>
