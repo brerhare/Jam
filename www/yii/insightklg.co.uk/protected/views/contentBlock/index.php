@@ -15,7 +15,7 @@ border-radius: 10px;
 }
 </style>
 
-<div id="div1" class="xxxBody-C" style="width:650px; background-color: #ffffff;padding:5px 15px">
+<div id="div1" class="xxxBody-C" style="width:550px; background-color: #ffffff;padding:5px 15px">
 
   <?php echo $model->content; ?>
 
