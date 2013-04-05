@@ -16,6 +16,7 @@ CREATE  TABLE IF NOT EXISTS `insightklg_co_uk`.`content_block` (
   `title` VARCHAR(255) NOT NULL ,
   `url` VARCHAR(255) NOT NULL ,
   `content` TEXT NULL ,
+  `active` varchar(1) NOT NULL,
   PRIMARY KEY (`id`) ,
   INDEX `sequence` (`sequence` ASC) )
 ENGINE = InnoDB;
