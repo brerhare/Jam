@@ -100,5 +100,6 @@
 	include ("Templates/PaymentForm.tpl");
 	Log::msg("(PaymentForm) PAYMENT_FORM 3");
 
+echo "<h2>Thank you. Your ticket(s) will be emailed to you</h2>";
 	include ("Templates/FormFooter.tpl");
 ?>
