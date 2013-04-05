@@ -17,9 +17,6 @@ tr.spaceUnder > td
 <script>
 $(document).ready(function() {
   document.getElementById('numFriday').selectedIndex = 0;
-  document.getElementById('numSaturday').selectedIndex = 0;
-  document.getElementById('numWeekend').selectedIndex = 0;
-  document.getElementById('numVip').selectedIndex = 0;
   calculateTotals();
 });
 
@@ -27,47 +24,16 @@ function calculateTotals(){
   // Friday
   var selected = document.getElementById('numFriday').selectedIndex;
   var fridayCount = document.getElementById('numFriday').options[selected].value;
-  var fridayPrice = (fridayCount*1500);
-  var fridayFee = (fridayCount*30);
 
-  // Saturday
-  var selected = document.getElementById('numSaturday').selectedIndex;
-  var saturdayCount = document.getElementById('numSaturday').options[selected].value;
-  var saturdayPrice = (saturdayCount*1500);
-  var saturdayFee = (saturdayCount*30);
-
-  // Weekend
-  var selected = document.getElementById('numWeekend').selectedIndex;
-  var weekendCount = document.getElementById('numWeekend').options[selected].value;
-  var weekendPrice = (weekendCount*2500);
-  var weekendFee = (weekendCount*30);
-
-  // VIP Weekend
-  var selected = document.getElementById('numVip').selectedIndex;
-  var vipCount = document.getElementById('numVip').options[selected].value;
-  var vipPrice = (vipCount*4000);
-  var vipFee = (vipCount*30);
-
-  var dueTotal = (fridayPrice+fridayFee+saturdayPrice+saturdayFee+weekendPrice+weekendFee+vipPrice+vipFee);
-  document.getElementById('fridayTotal').innerHTML = "£ " + ((fridayPrice+fridayFee)/100).toFixed(2);
-  document.getElementById('saturdayTotal').innerHTML = "£ " + ((saturdayPrice+saturdayFee)/100).toFixed(2);
-  document.getElementById('weekendTotal').innerHTML = "£ " + ((weekendPrice+weekendFee)/100).toFixed(2);
-  document.getElementById('vipTotal').innerHTML = "£ " + ((vipPrice+vipFee)/100).toFixed(2);
-  document.getElementById('dueTotal').innerHTML = "£ " + (dueTotal/100).toFixed(2);
+  var dueTotal = 0;
 // kim added 3
 document.getElementById('FQty').value = fridayCount;
-document.getElementById('SQty').value = saturdayCount;
-document.getElementById('WQty').value = weekendCount;
-document.getElementById('VQty').value = vipCount;
-document.getElementById('ShoppingCartAmount').value = dueTotal;
+document.getElementById('ShoppingCartAmount').value = 0;
 }
 
 function validateInput(){
   var err = "";
   var tickets = document.getElementById('numFriday').selectedIndex;
-  tickets += document.getElementById('numSaturday').selectedIndex;
-  tickets += document.getElementById('numWeekend').selectedIndex;
-  tickets += document.getElementById('numVip').selectedIndex;
   var email1 = document.getElementById('Email1').value;
   var email2 = document.getElementById('Email2').value;
   if ((tickets < 1) || (tickets > 40))
@@ -139,9 +105,6 @@ document.getElementById('Email').value = email1;
 	</div>	<!-- /ContentBodyText -->
 
 	<input type="hidden" id="FQty" name="FQty" value="0" />
-	<input type="hidden" id="SQty" name="SQty" value="0" />
-	<input type="hidden" id="WQty" name="WQty" value="0" />
-	<input type="hidden" id="VQty" name="VQty" value="0" />
 	<input type="hidden" id="Email" name="Email" value="" />
 	<input type="hidden" id="ShoppingCartAmount" name="ShoppingCartAmount" value="0" />
 

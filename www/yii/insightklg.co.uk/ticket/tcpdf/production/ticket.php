@@ -4,8 +4,11 @@
 // File name   : example_050.php
 //============================================================+
 
-function generateTicket($friday, $saturday, $weekend, $vip, $orderNumber, &$ticketNumber)
+function generateTicket($friday, $orderNumber, &$ticketNumber)
 {
+$saturday=0;
+$weekend=0;
+$vip=0;
 //	require_once('../config/lang/eng.php');
 //	require_once('../tcpdf.php');
 
@@ -111,7 +114,7 @@ function generateTicket($friday, $saturday, $weekend, $vip, $orderNumber, &$tick
 
 		// groups 00000 00000 00000 00   000
 		//        vend# evnt# tick# type rand
-		$logo = "img/comlogo.jpg";
+		$logo = "img/shell.jpg";
 		$custId = "00001";
 		$eventId = "00001";
 		$seqNo = $ticketNum;	// from db
@@ -126,7 +129,7 @@ function generateTicket($friday, $saturday, $weekend, $vip, $orderNumber, &$tick
 
 		$tbl = '<br><br><br><table border="5" style="border-color:gray;" cellpadding="15">';
 		$tbl .= '	<tr valign="center">';
-		$tbl .= '		<td width="520px" height="99px" style="font-size:27;">';
+		$tbl .= '		<td width="520px" height="99px" style="font-size:22;">';
 		$tbl .=				$eventTitle;
 		$tbl .= '		</td>';
 		$tbl .= '		<td width="120px"rowspan="4">Logo</td>';
@@ -212,7 +215,7 @@ function generateTicket($friday, $saturday, $weekend, $vip, $orderNumber, &$tick
 
 		// Write Friday/Saturday/Weekend/Vip
 		$typedesc = "* Invalid *";
-		if ($type == 0) $typedesc = 'FRIDAY ENTRY'; 
+		if ($type == 0) $typedesc = 'FREE'; 
 		if ($type == 1) $typedesc = 'SATURDAY ENTRY';
 		if ($type == 2) $typedesc = 'WEEKEND ENTRY';
 		if ($type == 3) $typedesc = 'VIP WEEKEND ENTRY';
@@ -235,16 +238,10 @@ function generateTicket($friday, $saturday, $weekend, $vip, $orderNumber, &$tick
 	$pdf->writeHTML('<b>Venue: ' . $qe['address'], true, false, false, false, '');
 	$pdf->writeHTML('<b>Date: ' . $qe['start_date'], true, false, false, false, '');
 	$pdf->writeHTML('<b>Order number: ' . $orderNumber, true, false, false, false, '');
-	$pdf->writeHTML('<b>' . $friday . ' Friday entry tickets @ £15.00' );
-	$pdf->writeHTML('<b>' . $saturday . ' Saturday entry tickets @ £15.00' );
-	$pdf->writeHTML('<b>' . $weekend . ' Weekend entry tickets @ £25.00' );
-	$pdf->writeHTML('<b>' . $vip . ' Weekend VIP entry tickets @ £40.00' );
-	$pdf->writeHTML('<b>Booking fee £' . number_format((($friday+$saturday+$weekend+$vip)*0.30), 2, '.', ''));
 	$pdf->writeHTML('<b>Total ' . ($friday + $saturday + $weekend + $vip) . ' tickets on order ', true, false, false, false, '');
-	$pdf->writeHTML('<b>Order total, including booking fee: £ ' . $tot, true, false, false, false, '');
 	$pdf->writeHTML('<p><br><b>Additional information</b><br/>', true, false, false, false, '');
 	$pdf->SetFont('helvetica', '', 10);
-	$row = 85;
+	$row = 60;
 	foreach ($ticklines as $value)
 	{
 		$pdf->Text(13, $row, $value);
