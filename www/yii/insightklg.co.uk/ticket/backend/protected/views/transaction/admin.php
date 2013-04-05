@@ -35,23 +35,13 @@ $('.search-form form').submit(function(){
 	'columns'=>array(
 		'id',
 		'timeStamp',
-
-		array(
-			'name'=>'cardName',
-			'htmlOptions'=>array('width'=>'200px'),
-		),
-
-		/*'ip', */
+		'ip',
 		'email',
-		'friday',
-		'saturday',
-		'weekend',
-		'vip',
+		'adults',
 		/*
 		'telephone',
 		'orderNum',
 		'amount',
-		'cardName',
 		'address1',
 		'address2',
 		'address3',
@@ -71,9 +61,9 @@ $('.search-form form').submit(function(){
 			},
 		),
 
-		array(
+		/*array(
 			'class'=>'CButtonColumn',
             'template'=>'{view}',
-		),
+		),*/
 	),
 )); ?>

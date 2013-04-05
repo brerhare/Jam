@@ -28,27 +28,9 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'friday'); ?>
-		<?php echo $form->textField($model,'friday'); ?>
-		<?php echo $form->error($model,'friday'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'saturday'); ?>
-		<?php echo $form->textField($model,'saturday'); ?>
-		<?php echo $form->error($model,'saturday'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'weekend'); ?>
-		<?php echo $form->textField($model,'weekend'); ?>
-		<?php echo $form->error($model,'weekend'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'vip'); ?>
-		<?php echo $form->textField($model,'vip'); ?>
-		<?php echo $form->error($model,'vip'); ?>
+		<?php echo $form->labelEx($model,'adults'); ?>
+		<?php echo $form->textField($model,'adults'); ?>
+		<?php echo $form->error($model,'adults'); ?>
 	</div>
 
 	<div class="row">

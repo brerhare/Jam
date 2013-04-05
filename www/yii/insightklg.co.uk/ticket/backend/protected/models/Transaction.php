@@ -8,10 +8,8 @@
  * @property string $timeStamp
  * @property string $ip
  * @property string $email
- * @property integer $friday
- * @property integer $saturday
- * @property integer $weekend
- * @property integer $vip
+ * @property integer $adults
+ * @property integer $children
  * @property string $telephone
  * @property string $orderNum
  * @property integer $amount
@@ -53,13 +51,13 @@ class Transaction extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('friday, saturday, weekend, vip, amount', 'numerical', 'integerOnly'=>true),
+			array('adults, children amount', 'numerical', 'integerOnly'=>true),
 			array('ip', 'length', 'max'=>128),
 			array('email, telephone, orderNum, cardName, address1, address2, address3, address4, city, state, postCode, countryShort, message', 'length', 'max'=>255),
 			array('timeStamp', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, timeStamp, ip, email, friday, saturday, weekend, vip, telephone, orderNum, amount, cardName, address1, address2, address3, address4, city, state, postCode, countryShort, message', 'safe', 'on'=>'search'),
+			array('id, timeStamp, ip, email, adults, children, telephone, orderNum, amount, cardName, address1, address2, address3, address4, city, state, postCode, countryShort, message', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -84,10 +82,8 @@ class Transaction extends CActiveRecord
 			'timeStamp' => 'Time Stamp',
 			'ip' => 'Ip',
 			'email' => 'Email',
-			'friday' => 'Friday',
-			'saturday' => 'Saturday',
-			'weekend' => 'Weekend',
-			'vip' => 'VIP Weekend',
+			'adults' => 'Adults',
+			'children' => 'Children',
 			'telephone' => 'Telephone',
 			'orderNum' => 'Order Num',
 			'amount' => 'Amount',
@@ -123,13 +119,9 @@ class Transaction extends CActiveRecord
 
 		$criteria->compare('email',$this->email,true);
 
-		$criteria->compare('friday',$this->friday);
+		$criteria->compare('adults',$this->adults);
 
-		$criteria->compare('saturday',$this->saturday);
-
-		$criteria->compare('weekend',$this->weekend);
-
-		$criteria->compare('vip',$this->vip);
+		$criteria->compare('children',$this->children);
 
 		$criteria->compare('telephone',$this->telephone,true);
 

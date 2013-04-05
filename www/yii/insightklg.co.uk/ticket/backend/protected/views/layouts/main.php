@@ -32,7 +32,7 @@
 				array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
 				array('label'=>'Vendor details', 'url'=>array('/vendor/update/1'), 'visible'=>!Yii::app()->user->isGuest),
 				array('label'=>'Events', 'url'=>array('/event/admin'), 'visible'=>!Yii::app()->user->isGuest),
-/*				array('label'=>'Transactions', 'url'=>array('/transaction/admin'), 'visible'=>!Yii::app()->user->isGuest), */
+				array('label'=>'Transactions', 'url'=>array('/transaction/admin'), 'visible'=>!Yii::app()->user->isGuest),
 
 /*				array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
 				array('label'=>'Contact', 'url'=>array('/site/contact')),
