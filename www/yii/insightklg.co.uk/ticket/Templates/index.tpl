@@ -171,7 +171,7 @@ document.getElementById('Email').value = email1;
     </div>
 
 <p>&nbsp<p>
-* By using this service you are agreeing to our <a href="http://localhost/ticket/tandc.html" target="_blank">Terms & Conditions</a> as well as the conditions displayed below
+* By using this service you are agreeing to our <a href="http://www.insightKLG.co.uk/ticket/tandc.html" target="_blank">Terms & Conditions</a> as well as the conditions displayed below
 <p><hr><p>
 
     <input type="button" value="Cancel" style="float:left" onClick="javascript: window.top.location.href = 'http://www.insightklg.co.uk'; "/>
