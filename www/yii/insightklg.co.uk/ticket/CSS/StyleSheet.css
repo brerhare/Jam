@@ -9,7 +9,7 @@ body
 {
     float:left;
     clear:both;
-    width:700px;
+    width:600px;
 }
 .ContentHeader
 {
@@ -34,7 +34,7 @@ body
     font-size:12px;
     float:left;
 	clear:left;
-    width:670px;
+    width:570px;
     padding-left:22px;
     margin-bottom:12px;
     color:#1f4188;        

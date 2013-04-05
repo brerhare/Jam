@@ -3,7 +3,7 @@
     include ("Config.php");
     ///// include ("ISOCurrencies.php");
 
-    $Width = 800;
+    $Width = 600;
     $BodyAttributes = "";
     $FormAttributes = "";
     $FormAction = "Order.php";

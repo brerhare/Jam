@@ -63,12 +63,15 @@
 
 	        </div>
         </div>
-        <div class="span8">
+        <div class="span7">
+
 	        <div style="height:50px"></div>
-            <img src="<?php Yii::app()->request->baseUrl ?> /img/heading_title1.png" border="0" width="529" height="53" >
-	        <br/>
-            <img src="<?php Yii::app()->request->baseUrl ?> /img/heading_title2.png" border="0" width="554" height="106" >
-<br/>
+	        <div style="text-align:center">
+              <img src="<?php Yii::app()->request->baseUrl ?> /img/heading_title1.png" border="0" width="529" height="53" >
+	          <br/>
+              <img src="<?php Yii::app()->request->baseUrl ?> /img/heading_title2.png" border="0" width="554" height="106" >
+		    </div>
+
             <!--Body content-->
 	        <div style="height:50px"></div>
 	        <div id="content">
@@ -76,7 +79,14 @@
 		    </div>
 
         </div>
-        <div class="span1"></div>
+        <div class="span2">
+	        <br/>
+            <div >
+                <a href="<?php Yii::app()->request->baseUrl ?> /index.php/contentBlock/page?url=tickets">
+                <img src="<?php Yii::app()->request->baseUrl ?> /img/get_tickets.jpg" border="0" width="229" height="327" >
+	            </a>
+            </div>
+        </div>
     </div>
 </div>
 </body>

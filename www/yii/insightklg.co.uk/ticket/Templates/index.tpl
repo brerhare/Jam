@@ -175,7 +175,7 @@ document.getElementById('Email').value = email1;
 <p><hr><p>
 
     <input type="button" value="Cancel" style="float:left" onClick="javascript: window.top.location.href = 'http://www.insightklg.co.uk'; "/>
-			<input type="submit" value="Reserve ticket(s)" style="float:right;background-color:#cedf7b" onClick="validateInput();return false;" />
+			<input type="submit" value="Reserve" style="float:right;background-color:#cedf7b" onClick="validateInput();return false;" />
 
 
 <!--	<div class="FormItem">
