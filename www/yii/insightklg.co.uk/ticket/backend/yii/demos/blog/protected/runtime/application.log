@@ -1,0 +1,87 @@
+2012/10/09 13:22:33 [error] [exception.CDbException] could not find driver
+2012/10/09 13:22:33 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection.' in /home/kim/www/yii-1.1.12.b600af/framework/db/CDbConnection.php:388
+Stack trace:
+#0 /home/kim/www/yii-1.1.12.b600af/framework/db/CDbConnection.php(331): CDbConnection->open()
+#1 /home/kim/www/yii-1.1.12.b600af/framework/db/CDbConnection.php(309): CDbConnection->setActive(true)
+#2 /home/kim/www/yii-1.1.12.b600af/framework/base/CModule.php(388): CDbConnection->init()
+#3 /home/kim/www/yii-1.1.12.b600af/framework/base/CApplication.php(431): CModule->getComponent('db')
+#4 /home/kim/www/yii-1.1.12.b600af/framework/db/ar/CActiveRecord.php(624): CApplication->getDb()
+#5 /home/kim/www/yii-1.1.12.b600af/framework/db/ar/CActiveRecord.php(2311): CActiveRecord->getDbConnection()
+#6 /home/kim/www/yii-1.1.12.b600af/framework/db/ar/CActiveRecord.php(388): CActiveRecordMetaData->__construct(Object(Post))
+#7 /home/kim/www/yii-1.1.12.b600af/framework/web/CActiveDataProvider.php(75): CActiveRecord::model('Post')
+#8 /home/kim/www/yii-1.1.12.b600af/demos/blog/protected/controllers/PostController.php(132): CActiveDataProvider->__construct('Post', Array)
+#9 /home/kim/www/yii-1.1.12.b600af/framework/web/actions/CInlineAction.php(50): PostController->actionIndex()
+#10 /home/kim/www/yii-1.1.12.b600af/framework/web/CController.php(309): CInlineAction->runWithParams(Array)
+#11 /home/kim/www/yii-1.1.12.b600af/framework/web/filters/CFilterChain.php(134): CController->runAction(Object(CInlineAction))
+#12 /home/kim/www/yii-1.1.12.b600af/framework/web/filters/CFilter.php(41): CFilterChain->run()
+#13 /home/kim/www/yii-1.1.12.b600af/framework/web/CController.php(1146): CFilter->filter(Object(CFilterChain))
+#14 /home/kim/www/yii-1.1.12.b600af/framework/web/filters/CInlineFilter.php(59): CController->filterAccessControl(Object(CFilterChain))
+#15 /home/kim/www/yii-1.1.12.b600af/framework/web/filters/CFilterChain.php(131): CInlineFilter->filter(Object(CFilterChain))
+#16 /home/kim/www/yii-1.1.12.b600af/framework/web/CController.php(292): CFilterChain->run()
+#17 /home/kim/www/yii-1.1.12.b600af/framework/web/CController.php(266): CController->runActionWithFilters(Object(CInlineAction), Array)
+#18 /home/kim/www/yii-1.1.12.b600af/framework/web/CWebApplication.php(283): CController->run('')
+#19 /home/kim/www/yii-1.1.12.b600af/framework/web/CWebApplication.php(142): CWebApplication->runController('')
+#20 /home/kim/www/yii-1.1.12.b600af/framework/base/CApplication.php(162): CWebApplication->processRequest()
+#21 /home/kim/www/yii-1.1.12.b600af/demos/blog/index.php(11): CApplication->run()
+#22 {main}
+REQUEST_URI=/yii/demos/blog/
+HTTP_REFERER=http://www.widgets.dev/yii/demos/
+---
+2012/10/09 13:22:39 [error] [exception.CDbException] could not find driver
+2012/10/09 13:22:39 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection.' in /home/kim/www/yii-1.1.12.b600af/framework/db/CDbConnection.php:388
+Stack trace:
+#0 /home/kim/www/yii-1.1.12.b600af/framework/db/CDbConnection.php(331): CDbConnection->open()
+#1 /home/kim/www/yii-1.1.12.b600af/framework/db/CDbConnection.php(309): CDbConnection->setActive(true)
+#2 /home/kim/www/yii-1.1.12.b600af/framework/base/CModule.php(388): CDbConnection->init()
+#3 /home/kim/www/yii-1.1.12.b600af/framework/base/CApplication.php(431): CModule->getComponent('db')
+#4 /home/kim/www/yii-1.1.12.b600af/framework/db/ar/CActiveRecord.php(624): CApplication->getDb()
+#5 /home/kim/www/yii-1.1.12.b600af/framework/db/ar/CActiveRecord.php(2311): CActiveRecord->getDbConnection()
+#6 /home/kim/www/yii-1.1.12.b600af/framework/db/ar/CActiveRecord.php(388): CActiveRecordMetaData->__construct(Object(Post))
+#7 /home/kim/www/yii-1.1.12.b600af/framework/web/CActiveDataProvider.php(75): CActiveRecord::model('Post')
+#8 /home/kim/www/yii-1.1.12.b600af/demos/blog/protected/controllers/PostController.php(132): CActiveDataProvider->__construct('Post', Array)
+#9 /home/kim/www/yii-1.1.12.b600af/framework/web/actions/CInlineAction.php(50): PostController->actionIndex()
+#10 /home/kim/www/yii-1.1.12.b600af/framework/web/CController.php(309): CInlineAction->runWithParams(Array)
+#11 /home/kim/www/yii-1.1.12.b600af/framework/web/filters/CFilterChain.php(134): CController->runAction(Object(CInlineAction))
+#12 /home/kim/www/yii-1.1.12.b600af/framework/web/filters/CFilter.php(41): CFilterChain->run()
+#13 /home/kim/www/yii-1.1.12.b600af/framework/web/CController.php(1146): CFilter->filter(Object(CFilterChain))
+#14 /home/kim/www/yii-1.1.12.b600af/framework/web/filters/CInlineFilter.php(59): CController->filterAccessControl(Object(CFilterChain))
+#15 /home/kim/www/yii-1.1.12.b600af/framework/web/filters/CFilterChain.php(131): CInlineFilter->filter(Object(CFilterChain))
+#16 /home/kim/www/yii-1.1.12.b600af/framework/web/CController.php(292): CFilterChain->run()
+#17 /home/kim/www/yii-1.1.12.b600af/framework/web/CController.php(266): CController->runActionWithFilters(Object(CInlineAction), Array)
+#18 /home/kim/www/yii-1.1.12.b600af/framework/web/CWebApplication.php(283): CController->run('')
+#19 /home/kim/www/yii-1.1.12.b600af/framework/web/CWebApplication.php(142): CWebApplication->runController('')
+#20 /home/kim/www/yii-1.1.12.b600af/framework/base/CApplication.php(162): CWebApplication->processRequest()
+#21 /home/kim/www/yii-1.1.12.b600af/demos/blog/index.php(11): CApplication->run()
+#22 {main}
+REQUEST_URI=/yii/demos/blog/
+HTTP_REFERER=http://www.widgets.dev/yii/demos/
+---
+2012/10/09 13:22:42 [error] [exception.CDbException] could not find driver
+2012/10/09 13:22:42 [error] [exception.CDbException] exception 'CDbException' with message 'CDbConnection failed to open the DB connection.' in /home/kim/www/yii-1.1.12.b600af/framework/db/CDbConnection.php:388
+Stack trace:
+#0 /home/kim/www/yii-1.1.12.b600af/framework/db/CDbConnection.php(331): CDbConnection->open()
+#1 /home/kim/www/yii-1.1.12.b600af/framework/db/CDbConnection.php(309): CDbConnection->setActive(true)
+#2 /home/kim/www/yii-1.1.12.b600af/framework/base/CModule.php(388): CDbConnection->init()
+#3 /home/kim/www/yii-1.1.12.b600af/framework/base/CApplication.php(431): CModule->getComponent('db')
+#4 /home/kim/www/yii-1.1.12.b600af/framework/db/ar/CActiveRecord.php(624): CApplication->getDb()
+#5 /home/kim/www/yii-1.1.12.b600af/framework/db/ar/CActiveRecord.php(2311): CActiveRecord->getDbConnection()
+#6 /home/kim/www/yii-1.1.12.b600af/framework/db/ar/CActiveRecord.php(388): CActiveRecordMetaData->__construct(Object(Post))
+#7 /home/kim/www/yii-1.1.12.b600af/framework/web/CActiveDataProvider.php(75): CActiveRecord::model('Post')
+#8 /home/kim/www/yii-1.1.12.b600af/demos/blog/protected/controllers/PostController.php(132): CActiveDataProvider->__construct('Post', Array)
+#9 /home/kim/www/yii-1.1.12.b600af/framework/web/actions/CInlineAction.php(50): PostController->actionIndex()
+#10 /home/kim/www/yii-1.1.12.b600af/framework/web/CController.php(309): CInlineAction->runWithParams(Array)
+#11 /home/kim/www/yii-1.1.12.b600af/framework/web/filters/CFilterChain.php(134): CController->runAction(Object(CInlineAction))
+#12 /home/kim/www/yii-1.1.12.b600af/framework/web/filters/CFilter.php(41): CFilterChain->run()
+#13 /home/kim/www/yii-1.1.12.b600af/framework/web/CController.php(1146): CFilter->filter(Object(CFilterChain))
+#14 /home/kim/www/yii-1.1.12.b600af/framework/web/filters/CInlineFilter.php(59): CController->filterAccessControl(Object(CFilterChain))
+#15 /home/kim/www/yii-1.1.12.b600af/framework/web/filters/CFilterChain.php(131): CInlineFilter->filter(Object(CFilterChain))
+#16 /home/kim/www/yii-1.1.12.b600af/framework/web/CController.php(292): CFilterChain->run()
+#17 /home/kim/www/yii-1.1.12.b600af/framework/web/CController.php(266): CController->runActionWithFilters(Object(CInlineAction), Array)
+#18 /home/kim/www/yii-1.1.12.b600af/framework/web/CWebApplication.php(283): CController->run('')
+#19 /home/kim/www/yii-1.1.12.b600af/framework/web/CWebApplication.php(142): CWebApplication->runController('')
+#20 /home/kim/www/yii-1.1.12.b600af/framework/base/CApplication.php(162): CWebApplication->processRequest()
+#21 /home/kim/www/yii-1.1.12.b600af/demos/blog/index.php(11): CApplication->run()
+#22 {main}
+REQUEST_URI=/yii/demos/blog/
+HTTP_REFERER=http://www.widgets.dev/yii/demos/
+---

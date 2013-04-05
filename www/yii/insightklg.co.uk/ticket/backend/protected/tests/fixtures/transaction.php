@@ -1,0 +1,46 @@
+<?php
+
+return array(
+	/*
+	'sample1'=>array(
+		'timeStamp' => '',
+		'ip' => '',
+		'email' => '',
+		'adults' => '',
+		'children' => '',
+		'telephone' => '',
+		'orderNum' => '',
+		'amount' => '',
+		'cardName' => '',
+		'address1' => '',
+		'address2' => '',
+		'address3' => '',
+		'address4' => '',
+		'city' => '',
+		'state' => '',
+		'postCode' => '',
+		'countryShort' => '',
+		'message' => '',
+	),
+	'sample2'=>array(
+		'timeStamp' => '',
+		'ip' => '',
+		'email' => '',
+		'adults' => '',
+		'children' => '',
+		'telephone' => '',
+		'orderNum' => '',
+		'amount' => '',
+		'cardName' => '',
+		'address1' => '',
+		'address2' => '',
+		'address3' => '',
+		'address4' => '',
+		'city' => '',
+		'state' => '',
+		'postCode' => '',
+		'countryShort' => '',
+		'message' => '',
+	),
+	*/
+);

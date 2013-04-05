@@ -1,0 +1,57 @@
+05-04-13 09:21:18 127.0.0.1 Entrypoint index served initial page request
+05-04-13 09:22:20 127.0.0.1 Entrypoint index served initial page request
+05-04-13 09:22:46 127.0.0.1 Entrypoint index served initial page request
+05-04-13 09:22:48 127.0.0.1 Entrypoint index served initial page request
+05-04-13 09:23:22 127.0.0.1 Entrypoint index served initial page request
+05-04-13 09:23:24 127.0.0.1 Entrypoint index served initial page request
+05-04-13 09:24:13 127.0.0.1 Entrypoint index served initial page request
+05-04-13 09:36:58 127.0.0.1 Entrypoint index served initial page request
+05-04-13 09:37:13 127.0.0.1 Entrypoint index served initial page request
+05-04-13 09:37:34 127.0.0.1 Entrypoint index served initial page request
+05-04-13 09:40:19 127.0.0.1 Entrypoint index served initial page request
+05-04-13 10:25:21 127.0.0.1 Entrypoint index served initial page request
+05-04-13 10:26:47 127.0.0.1 Entrypoint index served initial page request
+05-04-13 10:26:53 127.0.0.1 Entrypoint index served initial page request
+05-04-13 10:36:18 127.0.0.1 Entrypoint index served initial page request
+05-04-13 10:45:45 127.0.0.1 Entrypoint index served initial page request
+05-04-13 10:46:26 127.0.0.1 Entrypoint index served initial page request
+05-04-13 10:46:39 127.0.0.1 Entrypoint index served initial page request
+05-04-13 10:46:41 127.0.0.1 Entrypoint index served initial page request
+05-04-13 10:47:30 127.0.0.1 Entrypoint index served initial page request
+05-04-13 10:48:08 127.0.0.1 Entrypoint index served initial page request
+05-04-13 10:48:59 127.0.0.1 Entrypoint index served initial page request
+05-04-13 10:49:23 127.0.0.1 Entrypoint index served initial page request
+05-04-13 10:49:38 127.0.0.1 Entrypoint index served initial page request
+05-04-13 10:52:00 127.0.0.1 Entrypoint index served initial page request
+05-04-13 10:53:00 127.0.0.1 Entrypoint index served initial page request
+05-04-13 10:59:36 127.0.0.1 Entrypoint index served initial page request
+05-04-13 11:00:52 127.0.0.1 Entrypoint index served initial page request
+05-04-13 11:02:55 127.0.0.1 Entrypoint index served initial page request
+05-04-13 11:03:32 127.0.0.1 Entrypoint index served initial page request
+05-04-13 11:03:38 127.0.0.1 Order got field - FQty -> 0
+05-04-13 11:03:38 127.0.0.1 Order got field - SQty -> 0
+05-04-13 11:03:38 127.0.0.1 Order got field - WQty -> 0
+05-04-13 11:03:38 127.0.0.1 Order got field - VQty -> 0
+05-04-13 11:03:38 127.0.0.1 Order got field - Email -> 
+05-04-13 11:03:38 127.0.0.1 Order got field - ShoppingCartAmount -> 0
+05-04-13 11:03:38 127.0.0.1 Order got field - Phone -> 
+05-04-13 11:03:38 127.0.0.1 Got a (potential) order number from table sequencenumber. Using 00001
+05-04-13 11:03:38 127.0.0.1 (post orderform) DELETE FROM orderform where ip = '127.0.0.1'
+05-04-13 11:03:38 127.0.0.1 Storing details from orderform: INSERT INTO orderform (ip, email, friday, saturday, weekend, vip, telephone, orderNum, amount, cardName, address1, address2, address3, address4, city, state, postCode, countryShort) values ('127.0.0.1','',0,0,0,0,'','00001',0,'','','','','','','','','');
+05-04-13 11:03:41 127.0.0.1 Entrypoint index served initial page request
+05-04-13 11:03:45 127.0.0.1 Entrypoint index served initial page request
+05-04-13 11:08:07 127.0.0.1 Entrypoint index served initial page request
+05-04-13 11:09:16 127.0.0.1 Entrypoint index served initial page request
+05-04-13 11:09:51 127.0.0.1 Entrypoint index served initial page request
+05-04-13 11:10:22 127.0.0.1 Entrypoint index served initial page request
+05-04-13 11:10:32 127.0.0.1 Order got field - FQty -> 0
+05-04-13 11:10:32 127.0.0.1 Order got field - SQty -> 0
+05-04-13 11:10:32 127.0.0.1 Order got field - WQty -> 0
+05-04-13 11:10:32 127.0.0.1 Order got field - VQty -> 0
+05-04-13 11:10:32 127.0.0.1 Order got field - Email -> 
+05-04-13 11:10:32 127.0.0.1 Order got field - ShoppingCartAmount -> 0
+05-04-13 11:10:32 127.0.0.1 Order got field - Phone -> 
+05-04-13 11:10:32 127.0.0.1 Got a (potential) order number from table sequencenumber. Using 00002
+05-04-13 11:10:32 127.0.0.1 (post orderform) DELETE FROM orderform where ip = '127.0.0.1'
+05-04-13 11:10:32 127.0.0.1 Storing details from orderform: INSERT INTO orderform (ip, email, friday, saturday, weekend, vip, telephone, orderNum, amount, cardName, address1, address2, address3, address4, city, state, postCode, countryShort) values ('127.0.0.1','',0,0,0,0,'','00002',0,'','','','','','','','','');
+05-04-13 11:10:34 127.0.0.1 Entrypoint index served initial page request
