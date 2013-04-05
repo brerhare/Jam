@@ -6,7 +6,7 @@
     $Width = 600;
     $BodyAttributes = "";
     $FormAttributes = "";
-    $FormAction = "Order.php";
+    $FormAction = "PaymentForm.php"; // "Order.php";
     include ("Templates/FormHeader.tpl");
 
     Log::msg("Entrypoint index served initial page request");
