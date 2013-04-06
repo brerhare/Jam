@@ -73,6 +73,8 @@
 
 	// delete the temp file
 	copy($pdf_filename, 'tkts/' . $orderNum . '.pdf');
+	$rnd = rand(10000,99999) . '_' . $orderNum;
+	copy($pdf_filename, 'tktp/' . $rnd . '.pdf');
 	unlink($pdf_filename);
 
 	// Create a transaction record from orderform
@@ -95,13 +97,14 @@
 	_dbfin($dbhandle);
 
 	// Make order number global for the Templates/FinalResultsPanel.tpl call (a few lines down) to access
-	$globalOrderNum = $orderNum;	// kim this is for the result form
+	$globalOrderNum = $rnd;	// kim this is for the result form
 	Log::msg("(PaymentForm) PAYMENT_FORM 2");
 	include ("Templates/PaymentForm.tpl");
 	Log::msg("(PaymentForm) PAYMENT_FORM 3");
 
 	echo "<h2>Thank you. Your ticket(s) will be emailed to you</h2>";
-	echo "<br/>Should you not receive it in a few minutes please check your junk folder";
+	echo "<p>Should you not receive it in a few minutes please check your junk folder</p>";
+	echo "<p>You may also print your tickets <a href='http://www.insightklg.co.uk/ticket/tktp/" . $globalOrderNum . ".pdf' target='_blank'>here</a> (if it does not open please use the refresh button)</p>";
 
 	include ("Templates/FormFooter.tpl");
 ?>
