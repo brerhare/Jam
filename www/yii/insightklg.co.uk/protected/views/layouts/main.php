@@ -75,7 +75,7 @@
 	        <br/>
             <div >
                 <a href="<?php Yii::app()->request->baseUrl ?> /index.php/contentBlock/page?url=tickets">
-                <img src="<?php Yii::app()->request->baseUrl ?> /img/get_tickets.jpg" border="0" width="229" height="327" >
+                <img src="<?php Yii::app()->request->baseUrl ?> /img/get_tickets.png" border="0" width="229" height="327" >
 	            </a>
             </div>
         </div>
