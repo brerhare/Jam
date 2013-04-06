@@ -55,16 +55,9 @@
               <br/><br/>
 			            <?php endif;?>
             <?php endforeach;?>
-
-
-
-
-
-
 	        </div>
         </div>
         <div class="span7">
-
 	        <div style="height:50px"></div>
 	        <div style="text-align:center">
               <img src="<?php Yii::app()->request->baseUrl ?> /img/heading_title1.png" border="0" width="529" height="53" >
@@ -77,7 +70,6 @@
 	        <div id="content">
 	            <?php echo $content; ?>
 		    </div>
-
         </div>
         <div class="span2">
 	        <br/>
@@ -88,6 +80,24 @@
             </div>
         </div>
     </div>
+
+	<!-- footer -->
+	<div class="row" style="height:60px"></div>
+	<div class="row">
+        <div class="span5"></div>
+        <div class="span4" style="position:relative">
+            <p class="Body-P"><span class="Body-C">Copyright &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Training, Coaching &amp; Media 2013 </span></p>
+
+            <div style="width:414px;height:51px;overflow:hidden;">
+                <p class="Body-P"><span class="Body-C">Contact Details info@insightKLG</span></p>
+                <p class="Body-P"><span class="Body-C">Hosted and Designed by <a href="http://www.wireflydesign.com" style="text-decoration:underline;">Wirefly Design</a></span></p>
+            </div>
+            <div style="position:absolute;left:66px;top:-43px;z-index:1">
+                <img src="<?php Yii::app()->request->baseUrl ?> /img/footer_shell.png" border="0" >
+            </div>
+        </div>
+        <div class="span3"></div>
+	</div>
 </div>
 </body>
 
