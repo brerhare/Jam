@@ -9,7 +9,7 @@ header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); // Date in the past
 <head>
     <title>Untitled Page</title>
     <link href="CSS/StyleSheet.css" rel="stylesheet" type="text/css" />
-<center>Should you have a query or experience any difficulty booking your tickets please <a href="mailto:info@insightKLG.co.uk?Subject=Booking%20enquiry">contact us </a></center>
+<center>Should you have a query or experience any difficulty booking your tickets please <a href="mailto:email@insightKLG.co.uk?Subject=Booking%20enquiry">contact us </a></center>
 <br>
 </head>
 
