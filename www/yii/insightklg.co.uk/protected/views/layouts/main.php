@@ -89,7 +89,7 @@
             <p class="Body-P"><span class="Body-C">Copyright &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Training, Coaching &amp; Media 2013 </span></p>
 
             <div style="width:414px;height:51px;overflow:hidden;">
-                <p class="Body-P"><span class="Body-C">Contact Details info@insightKLG</span></p>
+                <p class="Body-P"><span class="Body-C">Contact Details email@insightKLG</span></p>
                 <p class="Body-P"><span class="Body-C">Hosted and Designed by <a href="http://www.wireflydesign.com" style="text-decoration:underline;">Wirefly Design</a></span></p>
             </div>
             <div style="position:absolute;left:66px;top:-43px;z-index:1">

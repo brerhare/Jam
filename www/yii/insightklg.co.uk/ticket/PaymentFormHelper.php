@@ -350,8 +350,8 @@ $dbc_details = "";
 			$to      = 'k@microboot.com';
 			$subject = 'the subject2';
 			$message = 'hello';
-			$headers = 'From: info@insightKLG.co.uk' . "\r\n" .
-    			'Reply-To: info@insightKLG.co.uk' . "\r\n" .
+			$headers = 'From: email@insightKLG.co.uk' . "\r\n" .
+    			'Reply-To: email@insightKLG.co.uk' . "\r\n" .
     			'X-Mailer: PHP/' . phpversion();
 			mail($to, $subject, $message, $headers);
 	    }

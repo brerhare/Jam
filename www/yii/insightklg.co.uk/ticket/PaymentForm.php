@@ -47,7 +47,7 @@
 	Log::msg('(result) ' . $sql . " returned " . $result);
 
 	// Send email
-	$from = "admin@dglink.co.uk";
+	$from = "email@insightklg.co.uk";
 	$fromName = "Admin";
 	$to = $Email;
 	$subject = "Your tickets purchased at Insight";
@@ -100,6 +100,8 @@
 	include ("Templates/PaymentForm.tpl");
 	Log::msg("(PaymentForm) PAYMENT_FORM 3");
 
-echo "<h2>Thank you. Your ticket(s) will be emailed to you</h2>";
+	echo "<h2>Thank you. Your ticket(s) will be emailed to you</h2>";
+	echo "<br/>Should you not receive it in a few minutes please check your junk folder";
+
 	include ("Templates/FormFooter.tpl");
 ?>
