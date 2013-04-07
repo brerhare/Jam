@@ -39,7 +39,8 @@
     <div class="row">
         <div class="span3">
             <div style="text-align:right;">
-	            <img src="<?php Yii::app()->request->baseUrl ?> /img/shell.png" border="0" width="229" height="327" >
+				<br/>
+	            <img src="<?php Yii::app()->request->baseUrl ?> /img/shell.png" border="0" width="229" height="327" style="margin-right:-120px">
 	        </div>
             <!-- lhs menu content-->
 	        <br/>
@@ -59,21 +60,21 @@
         </div>
         <div class="span7">
 	        <div style="height:50px"></div>
-	        <div style="text-align:center">
-              <img src="<?php Yii::app()->request->baseUrl ?> /img/heading_title1.png" border="0" width="529" height="53" >
+	        <div style="text-align:center;margin-left:70px">
+              <img src="<?php Yii::app()->request->baseUrl ?> /img/heading_title1.png" border="0" width="529" height="53" style="margin-top:20px" >
 	          <br/>
-              <img src="<?php Yii::app()->request->baseUrl ?> /img/heading_title2.png" border="0" width="554" height="106" >
+              <img src="<?php Yii::app()->request->baseUrl ?> /img/heading_title2.png" border="0" width="554" height="106" style="margin-top:-20px">
 		    </div>
 
             <!--Body content-->
-	        <div style="height:50px"></div>
+	        <div style="height:50px; margin-top:-20px"></div>
 	        <div id="content">
 	            <?php echo $content; ?>
 		    </div>
         </div>
         <div class="span2">
 	        <br/>
-            <div >
+            <div style="margin-left:-30px">
                 <a href="<?php Yii::app()->request->baseUrl ?> /index.php/contentBlock/page?url=tickets">
                 <img src="<?php Yii::app()->request->baseUrl ?> /img/get_tickets.png" border="0" width="229" height="327" >
 	            </a>
