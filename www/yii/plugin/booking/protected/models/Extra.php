@@ -91,7 +91,8 @@ class Extra extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('uid',$this->uid);
+		//$criteria->compare('uid',$this->uid);
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('daily_rate',$this->daily_rate,true);
 		$criteria->compare('once_rate',$this->once_rate,true);

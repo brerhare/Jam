@@ -80,7 +80,8 @@ class RoomHasFacility extends CActiveRecord
 
 		$criteria->compare('room_id',$this->room_id);
 		$criteria->compare('facility_id',$this->facility_id);
-		$criteria->compare('uid',$this->uid);
+		//$criteria->compare('uid',$this->uid);
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

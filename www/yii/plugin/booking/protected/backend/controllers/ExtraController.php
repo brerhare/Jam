@@ -26,10 +26,12 @@ class ExtraController extends Controller
 	public function accessRules()
 	{
 		return array(
+/*
 			array('allow',  // allow all users
 				'actions'=>array('index','view'),
 				'users'=>array('*'),
 			),
+*/
 			array('allow', // allow authenticated user
 				'actions'=>array('create','update', 'admin','delete'),
 				'users'=>array('@'),
@@ -157,7 +159,7 @@ class ExtraController extends Controller
 	public function loadModel($id)
 	{
 		$model=Extra::model()->findByPk($id);
-		if($model===null)
+		if (($model===null) || ($model->uid != Yii::app()->session['uid']))
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
 	}

@@ -91,7 +91,8 @@ class RoomHasOccupancyType extends CActiveRecord
 
 		$criteria->compare('room_id',$this->room_id);
 		$criteria->compare('occupancy_type_id',$this->occupancy_type_id);
-		$criteria->compare('uid',$this->uid);
+		//$criteria->compare('uid',$this->uid);
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$criteria->compare('adult_rate',$this->adult_rate,true);
 		$criteria->compare('child_rate',$this->child_rate,true);
 		$criteria->compare('single_rate',$this->single_rate,true);

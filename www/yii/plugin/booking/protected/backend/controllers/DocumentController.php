@@ -26,12 +26,14 @@ class DocumentController extends Controller
 	public function accessRules()
 	{
 		return array(
+/*
 			array('allow',  // allow all users
 				'actions'=>array('index','view'),
 				'users'=>array('*'),
 			),
+*/
 			array('allow', // allow authenticated user
-				'actions'=>array('create','update','tandc'),
+				'actions'=>array('update','tandc'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user

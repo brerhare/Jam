@@ -84,7 +84,8 @@ class Facility extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('uid',$this->uid);
+		//$criteria->compare('uid',$this->uid);
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$criteria->compare('description',$this->description,true);
 
 		return new CActiveDataProvider($this, array(
