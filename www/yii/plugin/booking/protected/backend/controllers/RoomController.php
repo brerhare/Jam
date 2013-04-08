@@ -71,7 +71,11 @@ class RoomController extends Controller
 		{
 			$model->attributes=$_POST['Room'];
 			if($model->save())
+			{
+				$this->deleteRoomTabs($model->id);
+				$this->updateRoomTabs($model->id);
 				$this->redirect(array('admin'));
+			}
 		}
 
 		$this->render('create',array(
@@ -95,7 +99,12 @@ class RoomController extends Controller
 		{
 			$model->attributes=$_POST['Room'];
 			if($model->save())
+			{
+				// Update other tables
+				$this->deleteRoomTabs($model->id);
+				$this->updateRoomTabs($model->id);
 				$this->redirect(array('admin'));
+			}
 		}
 
 		$this->render('update',array(
@@ -113,6 +122,7 @@ class RoomController extends Controller
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
+			$this->deleteRoomTabs($id);
 			$this->loadModel($id)->delete();
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
@@ -147,6 +157,64 @@ class RoomController extends Controller
 		$this->render('admin',array(
 			'model'=>$model,
 		));
+	}
+
+	// Delete all room facilities and extras
+	public function deleteRoomTabs($id)
+	{
+		// Options
+		Yii::log("Deleting all facilities for room " . $id, CLogger::LEVEL_INFO, 'system.test.kim');
+		RoomHasFacility::model()->deleteAllByAttributes(array('room_id' => $id, 'uid' => Yii::app()->session['uid']));
+		Yii::log("Deleting all extras for room " . $id, CLogger::LEVEL_INFO, 'system.test.kim');
+		RoomHasExtra::model()->deleteAllByAttributes(array('room_id' => $id, 'uid' => Yii::app()->session['uid']));
+		// Pricing
+		Yii::log("Deleting all occupancy types for room " . $id, CLogger::LEVEL_INFO, 'system.test.kim');
+		RoomHasOccupancyType::model()->deleteAllByAttributes(array('room_id' => $id, 'uid' => Yii::app()->session['uid']));
+	}
+
+	// Update room facilities and extras checkboxes
+	public function updateRoomTabs($id)
+	{
+		// Option - facilities checkboxes
+		if (isset($_POST['facility']))
+		{
+			foreach ($_POST['facility'] as $facilityItem):
+				Yii::log("Creating facility item " . $facilityItem, CLogger::LEVEL_INFO, 'system.test.kim');
+				$fac = new RoomHasFacility;
+				$fac->room_id = $id;
+				$fac->facility_id = $facilityItem;
+				$fac->uid = Yii::app()->session['uid'];
+				$fac->save();
+			endforeach;
+		}
+		// Option - extras checkboxes
+		if (isset($_POST['extra']))
+		{
+			foreach ($_POST['extra'] as $extraItem):
+				Yii::log("Creating extra item " . $extraItem, CLogger::LEVEL_INFO, 'system.test.kim');
+				$ext = new RoomHasExtra;
+				$ext->room_id = $id;
+				$ext->extra_id = $extraItem;
+				$ext->uid = Yii::app()->session['uid'];
+				$ext->save();
+			endforeach;
+		}
+		// Pricing
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+		$occupancyTypes = OccupancyType::model()->findAll($criteria);
+		foreach ($occupancyTypes as $occupancyType):
+			$prc = new RoomHasOccupancyType;
+			$prc->room_id = $id;
+			$prc->occupancy_type_id = $occupancyType->id;
+			$prc->uid = Yii::app()->session['uid'];
+			$prc->single_rate = $_POST[$occupancyType->id . '_single'];
+			$prc->double_rate = $_POST[$occupancyType->id . '_double'];
+			$prc->any_rate    = $_POST[$occupancyType->id . '_any'];
+			$prc->adult_rate  = $_POST[$occupancyType->id . '_adult'];
+			$prc->child_rate  = $_POST[$occupancyType->id . '_child'];
+			$prc->save();
+		endforeach;
 	}
 
 	/**
