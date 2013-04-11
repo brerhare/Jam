@@ -8,7 +8,7 @@
 	<?php $this->widget('bootstrap.widgets.TbTabs',array(
 		'type'=>'tabs',
 		'tabs' => array(
-			array('label'=>'Room', 'content' => $this->renderPartial('_form_room', array('form' => $form, 'model' => $model), true), 'active'=>true),
+			array('label'=>'Room', 'content' => $this->renderPartial('_form_choose_rooms', array('form' => $form, 'model' => $model), true), 'active'=>true),
 //			array('label'=>'Room Options', 'content' => $this->renderPartial('_form_options', array('form' => $form, 'model' => $model),  true)),
 //			array('label'=>'Pricing', 'content' => $this->renderPartial('_form_pricing', array('form' => $form, 'model' => $model), true)),
 		),
