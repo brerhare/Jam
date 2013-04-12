@@ -4,25 +4,29 @@ function onChangeRoomCount(){
 }
 </script>
 
-	<div class='well span8'>
+	<div class='well span5'>
 
         <table>
             <tbody>
             <tr>
-                <td rowspan="3" class="search_item rooms_item">
-                    <div class="search_label rooms_label"># Rooms</div>
-                    <div class="search_dropdown rooms_dropdown">
-                        <select name="ctl05$ctl00$roomsServiced" id="ctl05_ctl00_roomsServiced">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                        </select>
+	            <th width=50px></th>
+                <th width=50px></th>
+                <th width=50px></th>
+                <th width=50px></th>
+            </tr>
+            <tr>
+                <td>
+                    <div>Rooms
+                    <select class="Xinput-small" name="numRooms" id="numRooms" style="width: 50px">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
                     </div>
                 </td>
-                <td class="search_dropdown adults1 rooms_count">Room 1</td>
-                <td class="search_item adults_item">
-                    <div class="search_label adults_label">Adults</div>
-                    <div class="search_input adults_dropdown">
+                <td>Room 1</td>
+                <td>
+                    <div>Adults</div>
                         <select name="ctl05$ctl00$adultsServiced1" id="ctl05_ctl00_adultsServiced1">
                             <option value="1">1</option>
                             <option value="2" selected="selected">2</option>
@@ -30,9 +34,8 @@ function onChangeRoomCount(){
                             <option value="4">4</option>
                             <option value="5">5</option>
                         </select>
-                    </div>
                 </td>
-                <td class="search_item child_item">
+                <td>
                     <div id="ctl05_ctl00_pnlChildren1">
                         <div class="search_label child_label">Children</div>
                         <div class="search_input child_dropdown">
