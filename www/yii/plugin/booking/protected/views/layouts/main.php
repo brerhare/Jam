@@ -20,60 +20,13 @@
 
 <body>
 
-<div class="container" id="page">
+<div class="kcontainer" id="page">
 
 
-<div style="margin-top:50px">
-
-	<?php $this->widget('bootstrap.widgets.TbNavbar', array(
-	'type' => 'null', // null or 'inverse'
-	'brand' => 'Home',
-	'brandUrl' => array('/site/index'),
-	'collapse' => true, // requires bootstrap-responsive.css
-	'items' => array(
-		array(
-			'class' => 'bootstrap.widgets.TbMenu',
-			'items' => array(
-				array('label' => 'About', 'url' => array('/site/page', 'view' => 'about')),
-				array('label' => 'Contact', 'url' => array('/site/contact')),
-				array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
-				array('label' => 'Logout (' . Yii::app()->user->name . ')', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest)
-			),
-		),
-		array(
-			'class' => 'bootstrap.widgets.TbMenu',
-			'htmlOptions' => array('class' => 'pull-right'),
-			'items' => array(
-				array('label' => 'Link', 'url' => '#'),
-				'---',
-				array('label' => 'Dropdown', 'url' => '#', 'items' => array(
-					array('label' => 'Action', 'url' => '#'),
-					array('label' => 'Another action', 'url' => '#'),
-					array('label' => 'Something else here', 'url' => '#'),
-					'---',
-					array('label' => 'Separated link', 'url' => '#'),
-				)),
-			),
-		),
-	),
-)); ?>
-
-
-        </div><!-- navbar margin adjust -->
-
-	<?php if (isset($this->breadcrumbs)): ?>
-		<?php $this->widget('bootstrap.widgets.TbBreadcrumbs', array(
-		'links' => $this->breadcrumbs,
-	)); ?><!-- breadcrumbs -->
-	<?php endif?>
+<div style="margin-top:50px"></div>
 
 	<?php echo $content; ?>
 	<div class="clear"></div>
-
-	<div id="footer">
-		Copyright &copy; <?php echo date('Y'); ?> by Wirefly Design.<br/>
-		All Rights Reserved.<br/>
-	</div><!-- footer -->
 
 </div><!-- page -->
 
