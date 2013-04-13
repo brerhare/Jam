@@ -11,7 +11,7 @@
  * @property string $child_rate
  * @property string $single_rate
  * @property string $double_rate
- * @property string $any_rate
+ * @property string $cap_rate
  */
 class RoomHasOccupancyType extends CActiveRecord
 {
@@ -43,10 +43,10 @@ class RoomHasOccupancyType extends CActiveRecord
 		return array(
 			array('room_id, occupancy_type_id, uid', 'required'),
 			array('room_id, occupancy_type_id, uid', 'numerical', 'integerOnly'=>true),
-			array('adult_rate, child_rate, single_rate, double_rate, any_rate', 'length', 'max'=>10),
+			array('adult_rate, child_rate, single_rate, double_rate, cap_rate', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('room_id, occupancy_type_id, uid, adult_rate, child_rate, single_rate, double_rate, any_rate', 'safe', 'on'=>'search'),
+			array('room_id, occupancy_type_id, uid, adult_rate, child_rate, single_rate, double_rate, cap_rate', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -74,7 +74,7 @@ class RoomHasOccupancyType extends CActiveRecord
 			'child_rate' => 'Child Rate',
 			'single_rate' => 'Single Rate',
 			'double_rate' => 'Double Rate',
-			'any_rate' => 'Any Rate',
+			'cap_rate' => 'Cap Rate',
 		);
 	}
 
@@ -91,13 +91,12 @@ class RoomHasOccupancyType extends CActiveRecord
 
 		$criteria->compare('room_id',$this->room_id);
 		$criteria->compare('occupancy_type_id',$this->occupancy_type_id);
-		//$criteria->compare('uid',$this->uid);
-		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+		$criteria->compare('uid',$this->uid);
 		$criteria->compare('adult_rate',$this->adult_rate,true);
 		$criteria->compare('child_rate',$this->child_rate,true);
 		$criteria->compare('single_rate',$this->single_rate,true);
 		$criteria->compare('double_rate',$this->double_rate,true);
-		$criteria->compare('any_rate',$this->any_rate,true);
+		$criteria->compare('cap_rate',$this->cap_rate,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

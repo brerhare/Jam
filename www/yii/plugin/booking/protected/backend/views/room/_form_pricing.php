@@ -13,9 +13,9 @@
 	        <th style="width:50%"></th>
             <th>Single</th>
             <th>Double</th>
-            <th>Any</th>
-            <th>Per Adult</th>
-            <th>Per Child</th>
+            <th>+Adult</th>
+            <th>+Child</th>
+            <th>Cap</th>
         </tr>
         </thead>
         <tbody>
@@ -36,19 +36,19 @@
 			$roomHasOccupancyTypes = $model->isNewRecord ? null : RoomHasOccupancyType::model()->find($criteria);
 			$single = ($roomHasOccupancyTypes == null) ? "" : " value='" . $roomHasOccupancyTypes->single_rate . "' ";
 			$double = ($roomHasOccupancyTypes == null) ? "" : " value='" . $roomHasOccupancyTypes->double_rate . "' ";
-			$any    = ($roomHasOccupancyTypes == null) ? "" : " value='" . $roomHasOccupancyTypes->any_rate . "' ";
 			$adult  = ($roomHasOccupancyTypes == null) ? "" : " value='" . $roomHasOccupancyTypes->adult_rate . "' ";
 			$child  = ($roomHasOccupancyTypes == null) ? "" : " value='" . $roomHasOccupancyTypes->child_rate . "' ";
+			$cap    = ($roomHasOccupancyTypes == null) ? "" : " value='" . $roomHasOccupancyTypes->cap_rate . "' ";
 			if ($single == " value='0.00' ") $single = "";
 			if ($double == " value='0.00' ") $double = "";
-			if ($any    == " value='0.00' ") $any    = "";
 			if ($adult  == " value='0.00' ") $adult  = "";
 			if ($child  == " value='0.00' ") $child  = "";
+			if ($cap    == " value='0.00' ") $cap    = "";
 	        echo "<td><input type='text' name='" . $occupancyType->id . "_single' " . $single . " style='width:45px;'></td>";
 			echo "<td><input type='text' name='" . $occupancyType->id . "_double' " . $double . " style='width:45px;'></td>";
-			echo "<td><input type='text' name='" . $occupancyType->id . "_any'    " . $any    . " style='width:45px;'></td>";
 			echo "<td><input type='text' name='" . $occupancyType->id . "_adult'  " . $adult  . " style='width:45px;'></td>";
 			echo "<td><input type='text' name='" . $occupancyType->id . "_child'  " . $child  . " style='width:45px;'></td>";
+			echo "<td><input type='text' name='" . $occupancyType->id . "_cap'    " . $cap    . " style='width:45px;'></td>";
 	        echo "</tr>";
 
 		endforeach; ?>

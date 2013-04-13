@@ -212,7 +212,7 @@ class RoomController extends Controller
 			$prc->uid = Yii::app()->session['uid'];
 			$prc->single_rate = $_POST[$occupancyType->id . '_single'];
 			$prc->double_rate = $_POST[$occupancyType->id . '_double'];
-			$prc->any_rate    = $_POST[$occupancyType->id . '_any'];
+			$prc->cap_rate    = $_POST[$occupancyType->id . '_cap'];
 			$prc->adult_rate  = $_POST[$occupancyType->id . '_adult'];
 			$prc->child_rate  = $_POST[$occupancyType->id . '_child'];
 			$prc->save();
