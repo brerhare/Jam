@@ -38,15 +38,15 @@ class SiteController extends Controller
 		//$this->render('index');
 	}
 
-public function actionTest()
-{
-	Yii::log("TEST AJAX CALL" , CLogger::LEVEL_WARNING, 'system.test.kim');
-	if(isset($_POST['polygon']))
-        $polygon = $_POST['polygon'];
-    else
-        $polygon = NULL;
-    echo CJSON::encode(array('polygon'=>$polygon));
-}
+	public function actionTest()
+	{
+		Yii::log("TEST AJAX CALL" , CLogger::LEVEL_WARNING, 'system.test.kim');
+/*		if(isset($_POST['polygon']))
+        	$polygon = $_POST['polygon'];
+    	else
+	        $polygon = NULL;
+	    echo CJSON::encode(array('polygon'=>$polygon));*/
+	}
 	
 	/**
 	 * This is the action to handle external exceptions.

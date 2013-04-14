@@ -29,15 +29,23 @@ echo "<script>var maxRooms=" . $maxRooms . ";</script>";
 <script>
 
 function aye() {
+<?php $url = '/booking/index.php/site/test'; // works ?>
+<?php $url = $this->createUrl('site/test') ?>
+<?php echo 'alert("sending to url: ' . $url . '");'; ?>
+
 <?php 
 	echo CHtml::ajax(array(
-		'url'=>Yii::app()->createUrl('site/test'),
+		//'url'=>Yii::app()->request->baseUrl,
+		//'url'=>Yii::app()->createUrl('site/test'),
+		//'url'=>Yii::app()->controller->createUrl('site/test'),
 		//'url'=>'localhost/booking/index.php/site/test',
+		'url'=>$url,
 		'data'=>array('polygon'=>'data'),
-		'type'=>'POST',
+		'type'=>'GET',
 		'dataType'=>'json',
  		//'success' : "function(data) { console.log(data.polygon) }",
- 		'success' => "showDays(data)",
+ 		//'success' => "showDays(data)",
+ 		'success' => 'function(){alert("bck");}',
 	));
 ?>
 }
