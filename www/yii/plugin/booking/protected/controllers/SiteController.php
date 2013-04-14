@@ -42,13 +42,61 @@ class SiteController extends Controller
 // @@EG Ajax (see site/_form_choose_rooms.php for client side
 	public function actionAjaxTest()
 	{
-		Yii::log("TEST AJAX CALL" , CLogger::LEVEL_WARNING, 'system.test.kim');
-		if(isset($_POST['name2server']))
-        	$value2server = $_POST['name2server'];
-    	else
-	        $value2server = NULL;
-	    $value2browser="[sending back " . $value2server . " ]";
-	    echo CJSON::encode(array('name2browser'=>$value2browser));
+		if (Yii::app()->request->isAjaxRequest)
+		{
+			Yii::log("TEST AJAX CALL: " . $_POST['date'] , CLogger::LEVEL_WARNING, 'system.test.kim');
+			if(isset($_POST['numRooms']))
+			{
+					$numRooms = $_POST['numRooms'];
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("uid = " . 3);
+					$rooms = Room::model()->findAll($criteria);
+					$roomNo = 0;
+					$roomData = array();
+					for ($i = 0; $i < $numRooms; $i++)
+					{
+						foreach ($rooms as $room)
+						{
+							$roomNo++;
+							$roomNoStr = 'room_' . $roomNo;
+							$roomData[$roomNoStr] = array();
+							$roomData[$roomNoStr]['id'] = $room->id;
+							$roomData[$roomNoStr]['title'] = $room->title;
+						}
+					}					
+					
+					
+					
+					
+/*					$model = Room::model()->findAll();
+					$roomData = array(
+						'room_1'=>array(
+							'id'=>'5',
+							'title'=>'Room One',
+							'price'=>array(
+								'p1'=>'11',
+								'p2'=>'22',
+								'p3'=>'33'
+							 ),
+						),
+						'room2'=>array(
+							'title'=>'R2',
+							'price'=>array(
+								'p101'=>'1100',
+								'p102'=>'2200',
+								'p103'=>'3003'
+							 )
+						)
+					);
+*/
+					echo CJSON::encode($roomData);
+			}
+//			echo CJSON::encode(array(
+//                    'name2browser' => 'trueekse',
+//                    'status' => 'HPI check failed, please enter a registration number '
+//                ));
+	    }
+		Yii::log("EXIT TEST AJAX CALL: " . $_POST['date'] , CLogger::LEVEL_WARNING, 'system.test.kim');
 	}
 	
 	/**
