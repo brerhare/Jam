@@ -31,8 +31,8 @@ echo "<script>var maxRooms=" . $maxRooms . ";</script>";
 function aye() {
 <?php 
 	echo CHtml::ajax(array(
-		//'url'=>Yii::app()->createUrl('site/test'),
-		'url'=>'localhost/booking/index.php/site/test',
+		'url'=>Yii::app()->createUrl('site/test'),
+		//'url'=>'localhost/booking/index.php/site/test',
 		'data'=>array('polygon'=>'data'),
 		'type'=>'POST',
 		'dataType'=>'json',
