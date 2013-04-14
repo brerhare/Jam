@@ -38,14 +38,17 @@ class SiteController extends Controller
 		//$this->render('index');
 	}
 
-	public function actionTest()
+
+// @@EG Ajax (see site/_form_choose_rooms.php for client side
+	public function actionAjaxTest()
 	{
 		Yii::log("TEST AJAX CALL" , CLogger::LEVEL_WARNING, 'system.test.kim');
-/*		if(isset($_POST['polygon']))
-        	$polygon = $_POST['polygon'];
+		if(isset($_POST['name2server']))
+        	$value2server = $_POST['name2server'];
     	else
-	        $polygon = NULL;
-	    echo CJSON::encode(array('polygon'=>$polygon));*/
+	        $value2server = NULL;
+	    $value2browser="[sending back " . $value2server . " ]";
+	    echo CJSON::encode(array('name2browser'=>$value2browser));
 	}
 	
 	/**

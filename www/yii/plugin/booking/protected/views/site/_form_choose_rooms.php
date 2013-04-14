@@ -28,34 +28,25 @@ echo "<script>var maxRooms=" . $maxRooms . ";</script>";
     
 <script>
 
-function aye() {
-<?php $url = '/booking/index.php/site/test'; // works ?>
-<?php $url = $this->createUrl('site/test') ?>
-<?php echo 'alert("sending to url: ' . $url . '");'; ?>
 
-<?php 
+function ajaxGetRoomData() {
+<?php // @@EG Ajax (see sitecontroller.php for server side
 	echo CHtml::ajax(array(
-		//'url'=>Yii::app()->request->baseUrl,
-		//'url'=>Yii::app()->createUrl('site/test'),
-		//'url'=>Yii::app()->controller->createUrl('site/test'),
-		//'url'=>'localhost/booking/index.php/site/test',
-		'url'=>$url,
-		'data'=>array('polygon'=>'data'),
-		'type'=>'GET',
+		'url'=>$this->createUrl('site/ajaxTest'),
+		'data'=>array('name2server'=>'value2server'),
+		'type'=>'POST',
 		'dataType'=>'json',
- 		//'success' : "function(data) { console.log(data.polygon) }",
- 		//'success' => "showDays(data)",
- 		'success' => 'function(){alert("bck");}',
+ 		'success' => 'function(val){ajaxShowRoomData(val);}',
 	));
 ?>
 }
 
-function showDays(data){
-    alert('days showed');
-    //alert(data.polygon);
+function ajaxShowRoomData(val){
+    alert(val.name2browser);
 }
+
 function searchRooms(){
-    alert('x');
+    alert('This button shouldnt be necessary');
 }
 // Show adult/child lines for however many room
 function showTopPickLines(){
@@ -68,7 +59,7 @@ function showTopPickLines(){
     	else
     		$("#roomLine_"+(i+1)).hide();
    	}
-   	aye();
+   	ajaxGetRoomData();
 }
 </script>
 
