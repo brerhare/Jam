@@ -24,7 +24,28 @@ echo "<script>var maxRooms=" . $maxRooms . ";</script>";
 
 </style>
 
+  
+    
 <script>
+
+function aye() {
+<?php 
+	echo CHtml::ajax(array(
+		//'url'=>Yii::app()->createUrl('site/test'),
+		'url'=>'localhost/booking/index.php/site/test',
+		'data'=>array('polygon'=>'data'),
+		'type'=>'POST',
+		'dataType'=>'json',
+ 		//'success' : "function(data) { console.log(data.polygon) }",
+ 		'success' => "showDays(data)",
+	));
+?>
+}
+
+function showDays(data){
+    alert('days showed');
+    //alert(data.polygon);
+}
 function searchRooms(){
     alert('x');
 }
@@ -39,6 +60,7 @@ function showTopPickLines(){
     	else
     		$("#roomLine_"+(i+1)).hide();
    	}
+   	aye();
 }
 </script>
 

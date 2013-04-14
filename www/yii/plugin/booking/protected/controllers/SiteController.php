@@ -27,6 +27,7 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
+		Yii::log("INDEX LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
         $model=Room::model()->findByPk(2);
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
@@ -37,6 +38,16 @@ class SiteController extends Controller
 		//$this->render('index');
 	}
 
+public function actionTest()
+{
+	Yii::log("TEST AJAX CALL" , CLogger::LEVEL_WARNING, 'system.test.kim');
+	if(isset($_POST['polygon']))
+        $polygon = $_POST['polygon'];
+    else
+        $polygon = NULL;
+    echo CJSON::encode(array('polygon'=>$polygon));
+}
+	
 	/**
 	 * This is the action to handle external exceptions.
 	 */
