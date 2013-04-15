@@ -49,7 +49,7 @@ class SiteController extends Controller
 			{
 					$numRooms = $_POST['numRooms'];
 					$criteria = new CDbCriteria;
-					$criteria->addCondition("uid = " . 3);
+					$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 					$rooms = Room::model()->findAll($criteria);
 					$roomNo = 0;
 					$roomData = array();

@@ -11,7 +11,7 @@ echo "<script>var showDays=" . $showDays . ";</script>";
 // Store the basic details for every room at startup
 <?php
 $criteria = new CDbCriteria;
-$criteria->addCondition("uid = " . 3); // @@TODO: Kim fix this!!!!!!
+$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 $rooms = Room::model()->findAll($criteria);
 echo "var roomData = [];";
 echo "var priceAvail = [];";
