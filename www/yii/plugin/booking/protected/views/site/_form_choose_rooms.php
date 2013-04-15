@@ -13,8 +13,8 @@ echo "<script>var showDays=" . $showDays . ";</script>";
 $criteria = new CDbCriteria;
 $criteria->addCondition("uid = " . Yii::app()->session['uid']);
 $rooms = Room::model()->findAll($criteria);
-echo "var roomData = [];";
-echo "var priceAvail = [];";
+echo "var roomData = [];"; // Array containing all the room objects
+echo "var priceAvail = [];"; // Array containing prices for each room
 foreach ($rooms as $room)
 {
 	echo "room = new Object();";
@@ -25,16 +25,12 @@ foreach ($rooms as $room)
 	echo "room.max_adult = '" . $room->max_adult . "';";
 	echo "room.max_child = '" . $room->max_child . "';";
 	echo "room.max_total = '" . $room->max_total . "';";
+	echo "room.prices = new Array();";
 	echo "roomData.push(room);";
 }
 ?>
-getRoomPrices();
-//alert(roomData.length);
-//mo = roomData[1];
-//alert(mo.max_total);
-
 </script>
-	
+
 <style>
     table td, table th {
         padding: 0px;
@@ -52,7 +48,7 @@ getRoomPrices();
 	}
 	.cweekend {
 		background-color: #1F2933;
-				background-color: #3d5266;
+		background-color: #3d5266;
 	}
 	.cline {
 		text-align:center;
@@ -193,26 +189,38 @@ $(document).ready(function() {
 	showRooms();
  });
 
-// Ajax call to build a simple array of room[][14] prices
+// Ajax call to get room prices for the 14 day period displayed
 // Called: startup + whenever the user changes the calendar dates
-function ajaxGetRoomPriceAvail() {
-<?php // @@EG Ajax (see sitecontroller.php for server side
-	echo CHtml::ajax(array(
-		'url'=>$this->createUrl('site/ajaxGetRoomPriceAvail'),
-		'data'=>array(
-			'date'=>date('Y-m-d', $timestamp),
-		),
-		'type'=>'POST',
-		'dataType'=>'json',
- 		'success' => 'function(val){ajaxShowRoomPriceAvail(val);}',
-	));
-?>
+function ajaxGetRoomPriceAvail()
+{
+	var x='123';
+	<?php
+	$criteria = new CDbCriteria;
+	$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+	$rooms = Room::model()->findAll($criteria);
+	foreach ($rooms as $room)
+	{
+		// @@EG Ajax (see sitecontroller.php for server side
+		echo CHtml::ajax(array(
+			'url'=>$this->createUrl('site/ajaxGetRoomPriceAvail'),
+			'data'=>array(
+				'numAdults'=>'JS:x',
+				//'numChildren'=>$('#numChildren').val(),
+				'roomId'=>$room->id,
+				'date'=>$timestamp
+			),
+			'type'=>'POST',
+			'dataType'=>'json',
+ 			'success' => 'function(val){ajaxShowRoomPriceAvail(val);}',
+		));
+	}
+	?>
 }
+	
 
-function ajaxShowRoomPriceAvail() {
-	mo = roomData[1];
-//alert(priceAvail);
 
+function ajaxShowRoomPriceAvail(val) {
+	//	alert(val[0]);
 }
 
 // Show all rooms suiting the top-box selections, whether available or not (greyed)
@@ -227,7 +235,7 @@ function showRooms() {
 	
 	var table = document.getElementById ("roomTbody");
 	var line = 0;
-		
+
 	// For the required number of rooms...
 	for (var i = 0; i < $('#numRooms').val(); i++)		// @@EG: Example of PHP yii referencing JS an html element by name 
 	{

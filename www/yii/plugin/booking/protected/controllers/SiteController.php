@@ -44,30 +44,45 @@ class SiteController extends Controller
 	{
 		if (Yii::app()->request->isAjaxRequest)
 		{
-			Yii::log("TEST AJAX CALL: " . $_POST['date'] , CLogger::LEVEL_WARNING, 'system.test.kim');
-			if(isset($_POST['numRooms']))
+			Yii::log("TEST AJAX CALL: date:" . $_POST['date'] . " room:" . $_POST['roomId'] . " numAdults:" . $_POST['numAdults'], CLogger::LEVEL_WARNING, 'system.test.kim');
+			if(isset($_POST['date']))
 			{
-					$numRooms = $_POST['numRooms'];
-					$criteria = new CDbCriteria;
-					$criteria->addCondition("uid = " . Yii::app()->session['uid']);
-					$rooms = Room::model()->findAll($criteria);
-					$roomNo = 0;
-					$roomData = array();
-					for ($i = 0; $i < $numRooms; $i++)
+				//$toDate = 
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+				$criteria->addCondition("room_id = " . $_POST['roomId']);
+				$criteria->addCondition("date >= '" . date('Y-m-d', $_POST['date']) . "'");
+				$criteria->addCondition("date <= '" . date('Y-m-d', ($_POST['date'] + (13 * (60 * 60 * 24)) )) . "'");
+				$days = Calendar::model()->findAll($criteria);
+				$dayData = array();
+				$i = 0;
+				foreach ($days as $day)
+				{
+					$dayData[$i] = 'AAA'; //($i + 5);
+					$i++;
+				}
+					
+/*				for ($i = 0; $i < $numRooms; $i++)
+				{
+					foreach ($rooms as $room)
 					{
-						foreach ($rooms as $room)
-						{
-							$roomNo++;
-							$roomNoStr = 'room_' . $roomNo;
-							$roomData[$roomNoStr] = array();
-							$roomData[$roomNoStr]['id'] = $room->id;
-							$roomData[$roomNoStr]['title'] = $room->title;
-						}
-					}					
-					
-					
-					
-					
+						$roomNo++;
+						$roomNoStr = 'room_' . $roomNo;
+						$roomData[$roomNoStr] = array();
+						$roomData[$roomNoStr]['id'] = $room->id;
+						$roomData[$roomNoStr]['title'] = $room->title;
+					}
+				}
+*/
+				echo CJSON::encode($dayData);
+			}
+//			echo CJSON::encode(array(
+//                    'name2browser' => 'trueks',
+//                    'status' => 'HPI check failed'
+//                ));
+	    }
+		Yii::log("EXIT TEST AJAX CALL: " . $_POST['date'] , CLogger::LEVEL_WARNING, 'system.test.kim');
+		
 /*					$model = Room::model()->findAll();
 					$roomData = array(
 						'room_1'=>array(
@@ -89,14 +104,6 @@ class SiteController extends Controller
 						)
 					);
 */
-					echo CJSON::encode($roomData);
-			}
-//			echo CJSON::encode(array(
-//                    'name2browser' => 'trueekse',
-//                    'status' => 'HPI check failed, please enter a registration number '
-//                ));
-	    }
-		Yii::log("EXIT TEST AJAX CALL: " . $_POST['date'] , CLogger::LEVEL_WARNING, 'system.test.kim');
 	}
 	
 	/**
