@@ -40,7 +40,7 @@ class SiteController extends Controller
 
 
 // @@EG Ajax (see site/_form_choose_rooms.php for client side
-	public function actionAjaxTest()
+	public function actionAjaxGetRoomPriceAvail()
 	{
 		if (Yii::app()->request->isAjaxRequest)
 		{

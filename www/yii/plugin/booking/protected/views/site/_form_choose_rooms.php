@@ -6,6 +6,34 @@ echo "<script>var maxRooms=" . $maxRooms . ";</script>";
 echo "<script>var showDays=" . $showDays . ";</script>";
 //-------------------
 ?>
+
+<script>
+// Store the basic details for every room at startup
+<?php
+$criteria = new CDbCriteria;
+$criteria->addCondition("uid = " . 3); // @@TODO: Kim fix this!!!!!!
+$rooms = Room::model()->findAll($criteria);
+echo "var roomData = [];";
+echo "var priceAvail = [];";
+foreach ($rooms as $room)
+{
+	echo "room = new Object();";
+	echo "room.id = '" . $room->id . "';";
+	echo "room.title = '" . $room->title . "';";
+	echo "room.description = '" . $room->description . "';";
+	echo "room.qty = '" . $room->qty . "';";
+	echo "room.max_adult = '" . $room->max_adult . "';";
+	echo "room.max_child = '" . $room->max_child . "';";
+	echo "room.max_total = '" . $room->max_total . "';";
+	echo "roomData.push(room);";
+}
+?>
+getRoomPrices();
+//alert(roomData.length);
+//mo = roomData[1];
+//alert(mo.max_total);
+
+</script>
 	
 <style>
     table td, table th {
@@ -14,6 +42,7 @@ echo "<script>var showDays=" . $showDays . ";</script>";
 	.cweekday {
 		text-align:center;
 		background-color: #3d5266;
+				background-color: #1F2933;
 		color:#cce6ff;
         border-left:1px solid white;
         border-right:1px solid white;
@@ -23,6 +52,7 @@ echo "<script>var showDays=" . $showDays . ";</script>";
 	}
 	.cweekend {
 		background-color: #1F2933;
+				background-color: #3d5266;
 	}
 	.cline {
 		text-align:center;
@@ -30,12 +60,12 @@ echo "<script>var showDays=" . $showDays . ";</script>";
 		font-size:12px;
 		height:30px;
 	}
-
+	.roomnoline {
+		display:block;
+		background-color: #fbedac;
+		padding:10px;
+	}
 </style>
-
-  
-    
-
 
 <div class="row">
 	<div class="span1"></div>
@@ -66,8 +96,6 @@ echo "<script>var showDays=" . $showDays . ";</script>";
                         <option value="1" selected="selected">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
                     </select>
                 </td>
                 <td>
@@ -76,8 +104,6 @@ echo "<script>var showDays=" . $showDays . ";</script>";
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
                     </select>
                 </td>
                 <td>
@@ -146,84 +172,7 @@ echo "<script>var showDays=" . $showDays . ";</script>";
 	</div>
 </div>
 
-<div class="row">
-	<div class="span8">
-		<div style="display:block;background-color: #fbedac; padding:10px">Choose a room</div>
-	</div>
-</div>
-
 <script>
-
-function ajaxGetRoomData() {
-<?php // @@EG Ajax (see sitecontroller.php for server side
-	echo CHtml::ajax(array(
-		'url'=>$this->createUrl('site/ajaxTest'),
-		'data'=>array(
-			'numRooms'=>'js:$(\'#numRooms\').val()',
-			'room1Adults'=>'js:$(\'#numAdults_1\').val()',
-			'room2Adults'=>'js:$(\'#numAdults_2\').val()',
-			'room3Adults'=>'js:$(\'#numAdults_3\').val()',
-			'room1Children'=>'js:$(\'#numChildren_1\').val()',
-			'room2Children'=>'js:$(\'#numChildren_2\').val()',
-			'room3Children'=>'js:$(\'#numChildren_3\').val()',
-			'date'=>date('Y-m-d', $timestamp),
-		),
-		'type'=>'POST',
-		'dataType'=>'json',
- 		'success' => 'function(val){ajaxShowRoomData(val);}',
-	));
-?>
-}
-
-function ajaxShowRoomData(val)
-{
-	//alert(val.room_1.title);
-	//alert(val.room2.price.p101);
-
-	// Wipe existing contents
-	var old_tbody = document.getElementById('roomTbody');
-	var new_tbody = document.createElement('tbody');
-	new_tbody.id = "roomTbody";
-	old_tbody.parentNode.replaceChild(new_tbody, old_tbody);
-
-    var table = document.getElementById ("roomTbody");
-    for (i = 0; i < $('#numRooms').val(); i++)		// @@EG JQuery: easy way to get the selected <select><option> 
-    {
-    	var row = table.insertRow(i);
-    	var cell = row.insertCell(0);
-    	cell.innerHTML = eval('val.room_' + (i+1) + '.title'); 
-    	for (j = 0; j < showDays; j++)
-    	{
-    		var cell = row.insertCell(j+1);
-    		cell.className = 'cline';
-    		cell.innerHTML = '75'; 
-    	}
-	}
-	alert(length(val));
-
-
-	/*				$roomData = array(
-						'room1'=>array(
-							'title'=>'R1',
-							'price'=>array(
-								'p1'=>'11',
-								'p2'=>'22',
-								'p3'=>'33'
-							 ),
-						),
-						'room2'=>array(
-							'title'=>'R2',
-							'price'=>array(
-								'p101'=>'1100',
-								'p102'=>'2200',
-								'p103'=>'3003'
-							 ),
-						),
-					);*/
-					
-    //alert(val.name2browser);
-    //    alert(val.status);
-}
 
 // Show adult/child lines for however many rooms
 function showTopPickLines(){
@@ -236,11 +185,94 @@ function showTopPickLines(){
     	else
     		$("#roomLine_"+(i+1)).hide();
    	}
-   	ajaxGetRoomData();
+	showRooms();
 }
 
 $(document).ready(function() {
-   ajaxGetRoomData();
+	ajaxGetRoomPriceAvail();
+	showRooms();
  });
+
+// Ajax call to build a simple array of room[][14] prices
+// Called: startup + whenever the user changes the calendar dates
+function ajaxGetRoomPriceAvail() {
+<?php // @@EG Ajax (see sitecontroller.php for server side
+	echo CHtml::ajax(array(
+		'url'=>$this->createUrl('site/ajaxGetRoomPriceAvail'),
+		'data'=>array(
+			'date'=>date('Y-m-d', $timestamp),
+		),
+		'type'=>'POST',
+		'dataType'=>'json',
+ 		'success' => 'function(val){ajaxShowRoomPriceAvail(val);}',
+	));
+?>
+}
+
+function ajaxShowRoomPriceAvail() {
+	mo = roomData[1];
+//alert(priceAvail);
+
+}
+
+// Show all rooms suiting the top-box selections, whether available or not (greyed)
+// Uses local data only
+// Called: startup + change of room count, or adult/child per room
+function showRooms() {
+	// Clear existing display
+	var old_tbody = document.getElementById('roomTbody');
+	var new_tbody = document.createElement('tbody');
+	new_tbody.id = "roomTbody";
+	old_tbody.parentNode.replaceChild(new_tbody, old_tbody);
+	
+	var table = document.getElementById ("roomTbody");
+	var line = 0;
+		
+	// For the required number of rooms...
+	for (var i = 0; i < $('#numRooms').val(); i++)		// @@EG: Example of PHP yii referencing JS an html element by name 
+	{
+		// Set to display blocks if theyre booking multiple rooms
+		var displayBlock = 1;
+
+		// Show every available room, that suits the requirements
+		for (var j = 0; j < roomData.length; j++)
+		{
+			var rData = roomData[j];
+
+			// Check adults/children for this list (i)
+			var ok = 1;
+			var a = parseInt($('#numAdults_' + (i+1)).val());
+			var c = parseInt($('#numChildren_' + (i+1)).val());  
+			if ((a > rData.max_adult) || (c > rData.max_child) || ((a+c) > rData.max_total))
+				ok = 0;
+			if (ok == 1)
+			{
+				// Checks pass - include in the list
+				
+				if (displayBlock == 1)
+				{
+					displayBlock = 0;
+					if ($('#numRooms').val() > 1)
+					{
+						var row = table.insertRow(line++);
+						var cell = row.insertCell(0);
+    					cell.innerHTML = 'Select room ' + (i+1);
+						cell.className = 'roomnoline';
+					}
+				}
+
+	    		var row = table.insertRow(line++);
+    			var cell = row.insertCell(0);
+    			cell.innerHTML = rData.title;
+    			for (k = 0; k < showDays; k++)
+    			{
+		    		var cell = row.insertCell(k+1);
+    				cell.className = 'cline';
+    				cell.innerHTML = '40'; 
+    			}
+    		}
+		}
+	}
+}
  
 </script>
