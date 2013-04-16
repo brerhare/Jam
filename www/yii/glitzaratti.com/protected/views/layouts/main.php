@@ -25,6 +25,16 @@
 
 	<div id="header">
         <div style="background-color:#000000;text-align:left;margin-left:auto;margin-right:auto;position:relative;width:960px;height:330px;">
+
+<div style="position:absolute; margin-left:-60px;margin-top:30px">
+<form name="WeddingIndustryExpertsAwards" 
+action="http://www.weddingindustryexperts.com/votes/zIyJR45Su.html" 
+method="POST"> <input type="hidden" name="Key" value="zIyJR45Su"> <input
+type="image" src="http://www.weddingindustryexperts.com/images/vote.png" 
+name="image" width="200" height="228"> </form>
+</div>
+
+
             <map id="map0" name="map0">
                 <area shape="poly" coords="97,279,125,278,153,278,209,279,209,214,217,216,222,208,223,206,219,197,210,188,209,181,211,173,213,174,217,165,217,154,214,155,209,152,209,0,0,0,0,280,84,280" href="<?php echo $this->createUrl('product/index?category_id=all');?>" alt="">
             </map>
@@ -37,7 +47,7 @@
 	</div><!-- header -->
 
     <!-- Top menu -->
-    <div style="position:absolute;left:330px;top:00px;width:417px;height:47px; background-image:url('<?php /*Yii::app()->request->baseUrl;*/?> /img/wp83c3de7e_06.png');">
+    <div style="position:absolute;left:300px;top:00px;width:417px;height:47px; background-image:url('<?php /*Yii::app()->request->baseUrl;*/?> /img/wp83c3de7e_06.png');">
         <a href="<?php echo $this->createUrl('site/index');?>" id="nav_418_B1" class="Button1" style="z-index:1000;display:block;position:absolute;left:5px;top:5px;width:94px;height:37px;"><span>Home</span></a>
         <a href="<?php echo $this->createUrl('site/sendyourown');?>" id="nav_418_B2" class="Button1" style="display:block;position:absolute;left:110px;top:5px;width:94px;height:37px;"><span>SYO</span></a>
         <a href="<?php echo $this->createUrl('product/index?category_id=all');?>" id="nav_418_B3" class="Button1" style="z-index:1000;display:block;position:absolute;left:214px;top:5px;width:94px;height:37px;"><span>Gallery</span></a>
