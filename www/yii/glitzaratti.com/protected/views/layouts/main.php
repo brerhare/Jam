@@ -55,8 +55,6 @@ name="image" width="200" height="228"> </form>
 <!--    <a href="<?php echo $this->createUrl('site/index');?>" id="nav_418_B4" class="Button1" style="display:block;position:absolute;left:319px;top:5px;width:94px;height:37px;"><span>My Basket</span></a> -->
     </div>
 
-	<?php echo $content; ?>
-
 	<div class="clear"></div>
 
     <style type="text/css">
