@@ -238,16 +238,17 @@ function ajaxGetRoomPriceAvail()
 			),
 			'type'=>'POST',
 			'dataType'=>'json',
- 			'success' => 'function(val){ajaxShowRoomPriceAvail(val);}',
+ 			'success' => 'function(val){alert(val[0]);ajaxShowRoomPriceAvail(val);}',
 		));
 	}
 	?>
 }
-	
-
 
 function ajaxShowRoomPriceAvail(val) {
-	//	alert(val[0]);
+	a = val.length;
+	alert(a);
+	
+	//alert(val[0]);
 }
 
 // Show all rooms suiting the top-box selections, whether available or not (greyed)

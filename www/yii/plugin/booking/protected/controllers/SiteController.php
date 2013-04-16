@@ -51,7 +51,7 @@ class SiteController extends Controller
 				$availDays = array();
 				for ($i = 0; $i < 14; $i++)
 				{
-					$availDays[date('Y-m-d', ($_POST['date'] + (13 * (60 * 60 * 24)) ))] = 1;
+					$availDays[date('Y-m-d', ($_POST['date'] + ($i * (60 * 60 * 24)) ))] = 0;
 					// Eg '2013-04-16'=>'1'
 				}
 				$criteria = new CDbCriteria;
@@ -62,11 +62,10 @@ class SiteController extends Controller
 				$days = Calendar::model()->findAll($criteria);
 				foreach ($days as $day)
 				{
-					$availDays[$day->date] = 0;
+					$availDays[$day->date] = 1;
 					// Eg '2013-04-16'=>'0'
 					$i++;
 				}
-					
 				echo CJSON::encode($availDays);
 			}
 //			echo CJSON::encode(array(
