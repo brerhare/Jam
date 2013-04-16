@@ -44,37 +44,30 @@ class SiteController extends Controller
 	{
 		if (Yii::app()->request->isAjaxRequest)
 		{
-			Yii::log("TEST AJAX CALL: date:" . $_POST['date'] . " room:" . $_POST['roomId'] . " numAdults:" . $_POST['numAdults'], CLogger::LEVEL_WARNING, 'system.test.kim');
+			Yii::log("TEST AJAX CALL: date:" . $_POST['date'] . " room:" . $_POST['roomId'], CLogger::LEVEL_WARNING, 'system.test.kim');
 			if(isset($_POST['date']))
 			{
-				//$toDate = 
+				// Init the array
+				$availDays = array();
+				for ($i = 0; $i < 14; $i++)
+				{
+					$availDays[date('Y-m-d', ($_POST['date'] + (13 * (60 * 60 * 24)) ))] = 1;
+					// Eg '2013-04-16'=>'1'
+				}
 				$criteria = new CDbCriteria;
 				$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 				$criteria->addCondition("room_id = " . $_POST['roomId']);
 				$criteria->addCondition("date >= '" . date('Y-m-d', $_POST['date']) . "'");
 				$criteria->addCondition("date <= '" . date('Y-m-d', ($_POST['date'] + (13 * (60 * 60 * 24)) )) . "'");
 				$days = Calendar::model()->findAll($criteria);
-				$dayData = array();
-				$i = 0;
 				foreach ($days as $day)
 				{
-					$dayData[$i] = 'AAA'; //($i + 5);
+					$availDays[$day->date] = 0;
+					// Eg '2013-04-16'=>'0'
 					$i++;
 				}
 					
-/*				for ($i = 0; $i < $numRooms; $i++)
-				{
-					foreach ($rooms as $room)
-					{
-						$roomNo++;
-						$roomNoStr = 'room_' . $roomNo;
-						$roomData[$roomNoStr] = array();
-						$roomData[$roomNoStr]['id'] = $room->id;
-						$roomData[$roomNoStr]['title'] = $room->title;
-					}
-				}
-*/
-				echo CJSON::encode($dayData);
+				echo CJSON::encode($availDays);
 			}
 //			echo CJSON::encode(array(
 //                    'name2browser' => 'trueks',
@@ -82,28 +75,6 @@ class SiteController extends Controller
 //                ));
 	    }
 		Yii::log("EXIT TEST AJAX CALL: " . $_POST['date'] , CLogger::LEVEL_WARNING, 'system.test.kim');
-		
-/*					$model = Room::model()->findAll();
-					$roomData = array(
-						'room_1'=>array(
-							'id'=>'5',
-							'title'=>'Room One',
-							'price'=>array(
-								'p1'=>'11',
-								'p2'=>'22',
-								'p3'=>'33'
-							 ),
-						),
-						'room2'=>array(
-							'title'=>'R2',
-							'price'=>array(
-								'p101'=>'1100',
-								'p102'=>'2200',
-								'p103'=>'3003'
-							 )
-						)
-					);
-*/
 	}
 	
 	/**

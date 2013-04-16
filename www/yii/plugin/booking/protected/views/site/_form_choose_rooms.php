@@ -25,7 +25,37 @@ foreach ($rooms as $room)
 	echo "room.max_adult = '" . $room->max_adult . "';";
 	echo "room.max_child = '" . $room->max_child . "';";
 	echo "room.max_total = '" . $room->max_total . "';";
+
+	// Get the cheapest price for this room
+	$s = 0; $d = 0; $a = 0; $c = 0; $cap = 0;
+	$criteria = new CDbCriteria;
+	$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+	$criteria->addCondition("room_id = " . $room->id);
+	$roomHasOccupancyTypes = RoomHasOccupancyType::model()->findAll($criteria);
+	foreach ($roomHasOccupancyTypes as $roomHasOccupancyType)
+	{
+		$chk_s = (float) $roomHasOccupancyType->single_rate;
+		$chk_d = (float) $roomHasOccupancyType->double_rate;
+		$chk_a = (float) $roomHasOccupancyType->adult_rate;
+		$chk_c = (float) $roomHasOccupancyType->child_rate;
+		$chk_cap = (float) $roomHasOccupancyType->cap_rate;
+		if (($chk_s > 0) && (($chk_s < $s) || ($s == 0)))
+			$s = $chk_s;
+		if (($chk_d > 0) && (($chk_d < $d) || ($d == 0)))
+			$d = $chk_d;
+		if (($chk_a > 0) && (($chk_a < $a) || ($a == 0)))
+			$a = $chk_a;
+		if (($chk_c > 0) && (($chk_c < $c) || ($c == 0)))
+			$c = $chk_c;
+		if (($chk_cap > 0) && (($chk_cap < $cap) || ($cap == 0)))
+			$cap = $chk_cap;
+	}
 	echo "room.prices = new Array();";
+	echo "room.prices[0]=" . $s . ";";
+	echo "room.prices[1]=" . $d . ";";
+	echo "room.prices[2]=" . $a . ";";
+	echo "room.prices[3]=" . $c . ";";
+	echo "room.prices[4]=" . $cap . ";";
 	echo "roomData.push(room);";
 }
 ?>
@@ -189,11 +219,10 @@ $(document).ready(function() {
 	showRooms();
  });
 
-// Ajax call to get room prices for the 14 day period displayed
+// Ajax call to get room availability for the 14 day period displayed
 // Called: startup + whenever the user changes the calendar dates
 function ajaxGetRoomPriceAvail()
 {
-	var x='123';
 	<?php
 	$criteria = new CDbCriteria;
 	$criteria->addCondition("uid = " . Yii::app()->session['uid']);
@@ -204,8 +233,6 @@ function ajaxGetRoomPriceAvail()
 		echo CHtml::ajax(array(
 			'url'=>$this->createUrl('site/ajaxGetRoomPriceAvail'),
 			'data'=>array(
-				'numAdults'=>'JS:x',
-				//'numChildren'=>$('#numChildren').val(),
 				'roomId'=>$room->id,
 				'date'=>$timestamp
 			),
@@ -238,7 +265,7 @@ function showRooms() {
 
 	// For the required number of rooms...
 	for (var i = 0; i < $('#numRooms').val(); i++)		// @@EG: Example of PHP yii referencing JS an html element by name 
-	{
+	{40	
 		// Set to display blocks if theyre booking multiple rooms
 		var displayBlock = 1;
 
@@ -249,9 +276,9 @@ function showRooms() {
 
 			// Check adults/children for this list (i)
 			var ok = 1;
-			var a = parseInt($('#numAdults_' + (i+1)).val());
-			var c = parseInt($('#numChildren_' + (i+1)).val());  
-			if ((a > rData.max_adult) || (c > rData.max_child) || ((a+c) > rData.max_total))
+			var numAdults = parseInt($('#numAdults_' + (i+1)).val());
+			var numChildren = parseInt($('#numChildren_' + (i+1)).val());  
+			if ((numAdults > rData.max_adult) || (numChildren > rData.max_child) || ((numAdults+numChildren) > rData.max_total))
 				ok = 0;
 			if (ok == 1)
 			{
@@ -276,7 +303,26 @@ function showRooms() {
     			{
 		    		var cell = row.insertCell(k+1);
     				cell.className = 'cline';
-    				cell.innerHTML = '40'; 
+    				if ((numAdults == 1) && (numChildren == 0))
+    					cell.innerHTML = rData.prices[0] == 0 ? rData.prices[2] : rData.prices[0];
+	    			else if ((numAdults == 2) && (numChildren == 0))
+	    			{
+	    				cell.innerHTML = rData.prices[1] == 0 ? (rData.prices[2] * 2) : rData.prices[1];
+	    			}
+	    			else
+	    			{
+	    				price = 0;
+	    				adults = numAdults;
+	    				children = numChildren;
+	    				if ((adults > 1) && (rData.prices[1] > 0))	// start with double price if >2 adults, and add extra to that
+	    				{
+	    					price = rData.prices[1];	// double
+	    					adults -= 2;
+	    				}
+	    				price += (adults * rData.prices[2]);	// +adult
+	    				price += (children * rData.prices[3]);	// +children
+	    				cell.innerHTML = price;
+	    			}
     			}
     		}
 		}
