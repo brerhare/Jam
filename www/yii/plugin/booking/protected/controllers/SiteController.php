@@ -48,11 +48,12 @@ class SiteController extends Controller
 			if(isset($_POST['date']))
 			{
 				$retArr = array();
-				$retArrIx = 0;
+				$roomCount = 0;
 				foreach ($_POST['roomList'] as $roomId)
 				{
 					// Init the array
 					$availDays = array();
+					$roomCount++;
 					for ($i = 0; $i < 14; $i++)
 					{
 						$availDays[date('Y-m-d', ($_POST['date'] + ($i * (60 * 60 * 24)) ))] = 0;
@@ -74,24 +75,20 @@ class SiteController extends Controller
 					$i = 0;
 					foreach ($availDays as $k => $v)
 						$arr[$i++] = $v;
-					
+
 					// Add this room and its datearray to the return array
-					$retArr[$retArrIx]['roomId'] = $roomId;
-					$retArr[$retArrIx]['dates'] = $arr;
-					$retArrIx++;
+					$retArr['room_' . $roomId] = $arr;
 				}
-				echo CJSON::encode($arr);
+				$retArr['numRooms'] = $roomCount;
+				
+				echo CJSON::encode($retArr);
+
+/*				echo CJSON::encode(array(
+					'numRooms' => '1',
+					'room_1' => array(11,22,33)
+				)); */
 			}
-/*
-			array(
-				'roomId' => '1',
-				'dates' => array()
-			}
-*/
-//			echo CJSON::encode(array(
-//                    'name2browser' => 'trueks',
-//                    'status' => 'HPI check failed'
-//                ));
+
 	    }
 		Yii::log("EXIT TEST AJAX CALL: " . $_POST['date'] , CLogger::LEVEL_WARNING, 'system.test.kim');
 	}

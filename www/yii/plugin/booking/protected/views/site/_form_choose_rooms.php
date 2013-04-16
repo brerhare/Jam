@@ -229,9 +229,8 @@ function ajaxGetRoomPriceAvail()
 	$rooms = Room::model()->findAll($criteria);
 	$roomList = array();
 	foreach ($rooms as $room)
-	{
 		array_push($roomList, $room->id);
-	}
+
 	// @@EG Ajax (see sitecontroller.php for server side
 	echo CHtml::ajax(array(
 		'url'=>$this->createUrl('site/ajaxGetRoomPriceAvail'),
@@ -248,7 +247,15 @@ function ajaxGetRoomPriceAvail()
 }
 
 function ajaxShowRoomPriceAvail(val) {
-alert(val.roomId[0]);
+	alert(val.numRooms);
+	alert(val.room_1[9]);
+	
+	//for (var i = 0; i < val.numRooms; i++)
+	//{
+		//alert('val.date_' + (
+	//}
+
+//alert(val.room_1.dates[0]);
 //	for (i = 0; i < 14; i++)
 //	{
 //alert(val[i]);
