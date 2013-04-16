@@ -66,7 +66,11 @@ class SiteController extends Controller
 					// Eg '2013-04-16'=>'0'
 					$i++;
 				}
-				echo CJSON::encode($availDays);
+				$arr = array();
+				$i = 0;
+				foreach ($availDays as $k => $v)
+					$arr[$i++] = $v;
+				echo CJSON::encode($arr);
 			}
 //			echo CJSON::encode(array(
 //                    'name2browser' => 'trueks',
