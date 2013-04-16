@@ -219,7 +219,7 @@ $(document).ready(function() {
 	showRooms();
  });
 
-// Ajax call to get room availability for the 14 day period displayed
+// Ajax call to room availability for the 14 day period displayed - all rooms at once
 // Called: startup + whenever the user changes the calendar dates
 function ajaxGetRoomPriceAvail()
 {
@@ -227,31 +227,32 @@ function ajaxGetRoomPriceAvail()
 	$criteria = new CDbCriteria;
 	$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 	$rooms = Room::model()->findAll($criteria);
+	$roomList = array();
 	foreach ($rooms as $room)
 	{
-		// @@EG Ajax (see sitecontroller.php for server side
-		echo CHtml::ajax(array(
-			'url'=>$this->createUrl('site/ajaxGetRoomPriceAvail'),
-			'data'=>array(
-				'roomId'=>$room->id,
-				'date'=>$timestamp
-			),
-			'type'=>'POST',
-			'dataType'=>'json',
- 			'success' => 'function(val){ajaxShowRoomPriceAvail(val);}',
-		));
+		array_push($roomList, $room->id);
 	}
+	// @@EG Ajax (see sitecontroller.php for server side
+	echo CHtml::ajax(array(
+		'url'=>$this->createUrl('site/ajaxGetRoomPriceAvail'),
+		'data'=>array(
+			'roomList'=>$roomList,
+			'date'=>$timestamp
+		),
+		'type'=>'POST',
+		'dataType'=>'json',
+ 		'success' => 'function(val){ajaxShowRoomPriceAvail(val);}',
+	));
+
 	?>
 }
 
 function ajaxShowRoomPriceAvail(val) {
-
-	for (i = 0; i < 14; i++)
-	{
-alert(val[i]);
-	//a = val.length;
-	//alert(a);
-	}
+alert(val.roomId[0]);
+//	for (i = 0; i < 14; i++)
+//	{
+//alert(val[i]);
+//	}
 }
 
 // Show all rooms suiting the top-box selections, whether available or not (greyed)

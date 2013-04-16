@@ -44,34 +44,50 @@ class SiteController extends Controller
 	{
 		if (Yii::app()->request->isAjaxRequest)
 		{
-			Yii::log("TEST AJAX CALL: date:" . $_POST['date'] . " room:" . $_POST['roomId'], CLogger::LEVEL_WARNING, 'system.test.kim');
+			Yii::log("TEST AJAX CALL: date:" . $_POST['date'] . " room:" . $_POST['roomList'], CLogger::LEVEL_WARNING, 'system.test.kim');
 			if(isset($_POST['date']))
 			{
-				// Init the array
-				$availDays = array();
-				for ($i = 0; $i < 14; $i++)
+				$retArr = array();
+				$retArrIx = 0;
+				foreach ($_POST['roomList'] as $roomId)
 				{
-					$availDays[date('Y-m-d', ($_POST['date'] + ($i * (60 * 60 * 24)) ))] = 0;
-					// Eg '2013-04-16'=>'1'
+					// Init the array
+					$availDays = array();
+					for ($i = 0; $i < 14; $i++)
+					{
+						$availDays[date('Y-m-d', ($_POST['date'] + ($i * (60 * 60 * 24)) ))] = 0;
+						// Eg '2013-04-16'=>'1'
+					}
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+					$criteria->addCondition("room_id = " . $roomId);
+					$criteria->addCondition("date >= '" . date('Y-m-d', $_POST['date']) . "'");
+					$criteria->addCondition("date <= '" . date('Y-m-d', ($_POST['date'] + (13 * (60 * 60 * 24)) )) . "'");
+					$days = Calendar::model()->findAll($criteria);
+					foreach ($days as $day)
+					{
+						$availDays[$day->date] = 1;
+						// Eg '2013-04-16'=>'0'
+						$i++;
+					}
+					$arr = array();
+					$i = 0;
+					foreach ($availDays as $k => $v)
+						$arr[$i++] = $v;
+					
+					// Add this room and its datearray to the return array
+					$retArr[$retArrIx]['roomId'] = $roomId;
+					$retArr[$retArrIx]['dates'] = $arr;
+					$retArrIx++;
 				}
-				$criteria = new CDbCriteria;
-				$criteria->addCondition("uid = " . Yii::app()->session['uid']);
-				$criteria->addCondition("room_id = " . $_POST['roomId']);
-				$criteria->addCondition("date >= '" . date('Y-m-d', $_POST['date']) . "'");
-				$criteria->addCondition("date <= '" . date('Y-m-d', ($_POST['date'] + (13 * (60 * 60 * 24)) )) . "'");
-				$days = Calendar::model()->findAll($criteria);
-				foreach ($days as $day)
-				{
-					$availDays[$day->date] = 1;
-					// Eg '2013-04-16'=>'0'
-					$i++;
-				}
-				$arr = array();
-				$i = 0;
-				foreach ($availDays as $k => $v)
-					$arr[$i++] = $v;
 				echo CJSON::encode($arr);
 			}
+/*
+			array(
+				'roomId' => '1',
+				'dates' => array()
+			}
+*/
 //			echo CJSON::encode(array(
 //                    'name2browser' => 'trueks',
 //                    'status' => 'HPI check failed'
