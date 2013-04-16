@@ -53,10 +53,9 @@ class SiteController extends Controller
 				{
 					// Init the array
 					$availDays = array();
-					$roomCount++;
 					for ($i = 0; $i < 14; $i++)
 					{
-						$availDays[date('Y-m-d', ($_POST['date'] + ($i * (60 * 60 * 24)) ))] = 0;
+						$availDays[date('Y-m-d', ($_POST['date'] + ($i * (60 * 60 * 24)) ))] = 1;
 						// Eg '2013-04-16'=>'1'
 					}
 					$criteria = new CDbCriteria;
@@ -67,7 +66,7 @@ class SiteController extends Controller
 					$days = Calendar::model()->findAll($criteria);
 					foreach ($days as $day)
 					{
-						$availDays[$day->date] = 1;
+						$availDays[$day->date] = 0;
 						// Eg '2013-04-16'=>'0'
 						$i++;
 					}
@@ -77,15 +76,26 @@ class SiteController extends Controller
 						$arr[$i++] = $v;
 
 					// Add this room and its datearray to the return array
-					$retArr['room_' . $roomId] = $arr;
+					$roomStr = 'room_' . $roomCount;
+					$retArr[$roomStr]['roomId'] = $roomId;
+					$retArr[$roomStr]['dates'] = $arr;
+
+					$roomCount++;
 				}
 				$retArr['numRooms'] = $roomCount;
 				
 				echo CJSON::encode($retArr);
 
 /*				echo CJSON::encode(array(
-					'numRooms' => '1',
-					'room_1' => array(11,22,33)
+					'numRooms' => '2',
+					'room_1' => array(
+						'roomId' => 23,
+						'dates' => array(1,1,1,1,1,1,1,1,1,1,1,1,1,1),
+					}
+					'room_2' => array(
+						'roomId' => 17,
+						'dates' => array(0,0,0,0,0,0,0,1,1,0,0,0,0,0)
+					)
 				)); */
 			}
 

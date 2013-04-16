@@ -14,7 +14,6 @@ $criteria = new CDbCriteria;
 $criteria->addCondition("uid = " . Yii::app()->session['uid']);
 $rooms = Room::model()->findAll($criteria);
 echo "var roomData = [];"; // Array containing all the room objects
-echo "var priceAvail = [];"; // Array containing prices for each room
 foreach ($rooms as $room)
 {
 	echo "room = new Object();";
@@ -56,6 +55,7 @@ foreach ($rooms as $room)
 	echo "room.prices[2]=" . $a . ";";
 	echo "room.prices[3]=" . $c . ";";
 	echo "room.prices[4]=" . $cap . ";";
+	echo "room.avail = new Array();";
 	echo "roomData.push(room);";
 }
 ?>
@@ -216,7 +216,6 @@ function showTopPickLines(){
 
 $(document).ready(function() {
 	ajaxGetRoomPriceAvail();
-	showRooms();
  });
 
 // Ajax call to room availability for the 14 day period displayed - all rooms at once
@@ -247,19 +246,34 @@ function ajaxGetRoomPriceAvail()
 }
 
 function ajaxShowRoomPriceAvail(val) {
-	alert(val.numRooms);
-	alert(val.room_1[9]);
-	
-	//for (var i = 0; i < val.numRooms; i++)
-	//{
-		//alert('val.date_' + (
-	//}
+/*				echo CJSON::encode(array(
+					'numRooms' => '2',
+					'room_1' => array(
+						'roomId' => 23,
+						'dates' => array(1,1,1,1,1,1,1,1,1,1,1,1,1,1),
+					}
+					'room_2' => array(
+						'roomId' => 17,
+						'dates' => array(0,0,0,0,0,0,0,1,1,0,0,0,0,0)
+					)
+				)); */
 
-//alert(val.room_1.dates[0]);
-//	for (i = 0; i < 14; i++)
-//	{
-//alert(val[i]);
-//	}
+	for (var i = 0; i < val.numRooms; i++)
+	{
+		var vRoomId = eval("val.room_" + i + ".roomId");
+		var vDates = eval("val.room_" + i + ".dates");
+		for (var j = 0; j < roomData.length; j++)
+		{
+			var rData = roomData[j];
+			if (rData.id == vRoomId)
+			{
+				for (var k = 0; k < 14; k++)
+					rData.avail[k] = vDates[k];
+				break;
+			}
+		}
+	}
+	showRooms();
 }
 
 // Show all rooms suiting the top-box selections, whether available or not (greyed)
@@ -335,6 +349,7 @@ function showRooms() {
 	    				price += (children * rData.prices[3]);	// +children
 	    				cell.innerHTML = price;
 	    			}
+	    			if (rData.avail[k] == 0) cell.innerHTML = 'x';
     			}
     		}
 		}
