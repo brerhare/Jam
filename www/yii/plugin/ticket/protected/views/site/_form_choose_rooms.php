@@ -358,4 +358,4 @@ function showRooms() {
  
 </script>
 
-<iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.co.uk/maps?f=q&amp;source=s_q&amp;hl=en&amp;geocode=&amp;q=g61+3dp&amp;aq=&amp;sll=54.798409,-4.08994&amp;sspn=0.004156,0.010375&amp;ie=UTF8&amp;hq=&amp;hnear=Bearsden+G61+3DP,+United+Kingdom&amp;t=m&amp;z=14&amp;ll=55.925769,-4.31754&amp;output=embed"></iframe><br /><small><a href="https://maps.google.co.uk/maps?f=q&amp;source=embed&amp;hl=en&amp;geocode=&amp;q=g61+3dp&amp;aq=&amp;sll=54.798409,-4.08994&amp;sspn=0.004156,0.010375&amp;ie=UTF8&amp;hq=&amp;hnear=Bearsden+G61+3DP,+United+Kingdom&amp;t=m&amp;z=14&amp;ll=55.925769,-4.31754" style="color:#0000FF;text-align:left">View Larger Map</a></small>
+
