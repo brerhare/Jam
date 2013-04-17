@@ -49,16 +49,29 @@
 	<div id="header" style="background-color:#000000;text-align:left;margin-left:auto;margin-right:auto;position:relative;width:960px;height:150px;">
 		<a href="<?php echo $this->createUrl('site/index');?>"><img src="<?php Yii::app()->request->baseUrl ?> /img/wpb979b61f_06.png" width="100" height="44" border="0" title="" alt="&lt; Home" onload="OnLoadPngFix()" style="position:absolute;left:0px;top:58px;"></a>
 		<a href="<?php echo $this->createUrl('site/index');?>"><img src="<?php Yii::app()->request->baseUrl ?> /img/wp7c4a6a70_06.png" width="298" height="95" border="0" alt="" onload="OnLoadPngFix()" style="position:absolute;left:562px;top:50px;"></a>
+
+<!-- Topmenu -->
+<a href="<?php echo $this->createUrl('site/index');?>" id="nav_418_B1" class="Button1" style="z-index:1000;display:block;position:absolute;left:250px;top:5px;width:94px;height:37px;"><span>Home</span></a>
+<a href="<?php echo $this->createUrl('site/sendyourown');?>" id="nav_418_B2" class="Button1" style="display:block;position:absolute;left:355px;top:5px;width:94px;height:37px;"><span>SYO</span></a>
+<a href="<?php echo $this->createUrl('product/index?category_id=all');?>" id="nav_418_B3" class="Button1" style="z-index:1000;display:block;position:absolute;left:460px;top:5px;width:94px;height:37px;"><span>Gallery</span></a>
+<a href="<?php echo $this->createUrl('site/links');?>" id="nav_418_B4" class="Button1" style="display:block;position:absolute;left:565px;top:5px;width:94px;height:37px;"><span>About Us</span></a>
+<!-- <a href="<?php echo $this->createUrl('site/index');?>" id="nav_418_B4" class="Button1" style="display:block;position:absolute;left:319px;top:5px;width:94px;height:37px;"><span>My Basket</span></a> -->
+<!-- Topmenu end -->
+
+
+
 	</div><!-- header -->
 
-    <!-- Top menu -->
+    <!-- Top menu
     <div style="position:absolute;left:330px;top:00px;width:417px;height:47px; background-image:url('<?php /*Yii::app()->request->baseUrl;*/?> /img/wp83c3de7e_06.png');">
         <a href="<?php echo $this->createUrl('site/index');?>" id="nav_418_B1" class="Button1" style="z-index:1000;display:block;position:absolute;left:5px;top:5px;width:94px;height:37px;"><span>Home</span></a>
         <a href="<?php echo $this->createUrl('site/sendyourown');?>" id="nav_418_B2" class="Button1" style="display:block;position:absolute;left:110px;top:5px;width:94px;height:37px;"><span>SYO</span></a>
         <a href="<?php echo $this->createUrl('product/index?category_id=all');?>" id="nav_418_B3" class="Button1" style="z-index:1000;display:block;position:absolute;left:214px;top:5px;width:94px;height:37px;"><span>Gallery</span></a>
         <a href="<?php echo $this->createUrl('site/links');?>" id="nav_418_B4" class="Button1" style="display:block;position:absolute;left:319px;top:5px;width:94px;height:37px;"><span>About Us</span></a>
-<!--    <a href="<?php echo $this->createUrl('site/index');?>" id="nav_418_B4" class="Button1" style="display:block;position:absolute;left:319px;top:5px;width:94px;height:37px;"><span>My Basket</span></a> -->
+<!==    <a href="<?php echo $this->createUrl('site/index');?>" id="nav_418_B4" class="Button1" style="display:block;position:absolute;left:319px;top:5px;width:94px;height:37px;"><span>My Basket</span></a> ===
     </div>
+
+   -->
 
 	<?php echo $content; ?>
 
