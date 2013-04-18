@@ -2,6 +2,8 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
+CREATE SCHEMA IF NOT EXISTS `plugin` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci ;
+USE `plugin` ;
 
 -- -----------------------------------------------------
 -- Table `plugin`.`ticket_vendor`
@@ -37,9 +39,12 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`ticket_event` (
   `date` VARCHAR(45) NOT NULL ,
   `address` TEXT NOT NULL ,
   `post_code` VARCHAR(45) NOT NULL ,
-  `text` TEXT NULL ,
-  `max_tickets` INT NOT NULL ,
+  `ticket_logo_path` VARCHAR(255) NULL ,
+  `ticket_text` TEXT NULL ,
+  `ticket_terms` TEXT NULL ,
   `active` INT NOT NULL ,
+  `active_start_date_time` DATETIME NULL ,
+  `active_end_date_time` DATETIME NULL ,
   `ticket_vendor_id` INT NOT NULL DEFAULT 0 ,
   PRIMARY KEY (`id`, `ticket_vendor_id`) ,
   INDEX `uid` (`uid` ASC) ,
@@ -47,6 +52,28 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`ticket_event` (
   CONSTRAINT `fk_ticket_event_ticket_vendor`
     FOREIGN KEY (`ticket_vendor_id` )
     REFERENCES `plugin`.`ticket_vendor` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `plugin`.`ticket_area`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `plugin`.`ticket_area` ;
+
+CREATE  TABLE IF NOT EXISTS `plugin`.`ticket_area` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `uid` INT NOT NULL ,
+  `description` VARCHAR(255) NOT NULL ,
+  `max_places` VARCHAR(45) NULL ,
+  `ticket_event_id` INT NOT NULL ,
+  `ticket_event_ticket_vendor_id` INT NOT NULL ,
+  PRIMARY KEY (`id`, `ticket_event_id`, `ticket_event_ticket_vendor_id`) ,
+  INDEX `fk_ticket_area_ticket_event1` (`ticket_event_id` ASC, `ticket_event_ticket_vendor_id` ASC) ,
+  CONSTRAINT `fk_ticket_area_ticket_event1`
+    FOREIGN KEY (`ticket_event_id` , `ticket_event_ticket_vendor_id` )
+    REFERENCES `plugin`.`ticket_event` (`id` , `ticket_vendor_id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -62,16 +89,17 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`ticket_ticket_type` (
   `uid` INT NOT NULL ,
   `description` VARCHAR(255) NOT NULL ,
   `price` DECIMAL(10,2) NULL ,
-  `max_tickets` INT NULL ,
+  `places_per_ticket` INT NULL ,
   `max_tickets_per_order` INT NULL ,
-  `ticket_event_id` INT NOT NULL ,
-  `ticket_event_ticket_vendor_id` INT NOT NULL ,
-  PRIMARY KEY (`id`, `ticket_event_id`, `ticket_event_ticket_vendor_id`) ,
+  `ticket_area_id` INT NOT NULL ,
+  `ticket_area_ticket_event_id` INT NOT NULL ,
+  `ticket_area_ticket_event_ticket_vendor_id` INT NOT NULL ,
+  PRIMARY KEY (`id`, `ticket_area_id`, `ticket_area_ticket_event_id`, `ticket_area_ticket_event_ticket_vendor_id`) ,
   INDEX `uid` (`uid` ASC) ,
-  INDEX `fk_ticket_ticket_type_ticket_event1` (`ticket_event_id` ASC, `ticket_event_ticket_vendor_id` ASC) ,
-  CONSTRAINT `fk_ticket_ticket_type_ticket_event1`
-    FOREIGN KEY (`ticket_event_id` , `ticket_event_ticket_vendor_id` )
-    REFERENCES `plugin`.`ticket_event` (`id` , `ticket_vendor_id` )
+  INDEX `fk_ticket_ticket_type_ticket_area1` (`ticket_area_id` ASC, `ticket_area_ticket_event_id` ASC, `ticket_area_ticket_event_ticket_vendor_id` ASC) ,
+  CONSTRAINT `fk_ticket_ticket_type_ticket_area1`
+    FOREIGN KEY (`ticket_area_id` , `ticket_area_ticket_event_id` , `ticket_area_ticket_event_ticket_vendor_id` )
+    REFERENCES `plugin`.`ticket_area` (`id` , `ticket_event_id` , `ticket_event_ticket_vendor_id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
