@@ -75,9 +75,10 @@
         <div class="span2">
 	        <br/>
             <div style="margin-left:-30px">
-                <a href="<?php Yii::app()->request->baseUrl ?> /index.php/contentBlock/page?url=tickets">
+<!--                <a href="<?php Yii::app()->request->baseUrl ?> /index.php/contentBlock/page?url=tickets">
                 <img src="<?php Yii::app()->request->baseUrl ?> /img/get_tickets.png" border="0" width="229" height="327" >
 	            </a>
+-->
             </div>
         </div>
     </div>
