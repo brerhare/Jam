@@ -34,15 +34,8 @@
 		array(
 			'class' => 'bootstrap.widgets.TbMenu',
 			'items' => array(
-				array('label' => 'Rooms', 'url' => array('/room/admin'), 'visible' => !Yii::app()->user->isGuest),
-				array('label' => 'Extras', 'url' => array('/extra/admin'), 'visible' => !Yii::app()->user->isGuest),
-				array('label' => 'Facilities', 'url' => array('/facility/admin'), 'visible' => !Yii::app()->user->isGuest),
-				array('label' => 'Occupancy Types', 'url' => array('/occupancyType/admin'), 'visible' => !Yii::app()->user->isGuest),
-				array('label' => 'T&Cs', 'url' => array('/document/tandc'), 'visible' => !Yii::app()->user->isGuest),
-				array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
-				array('label' => 'Logout', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),
-				array('label' => 'Contact', 'url' => array('/site/contact'), 'visible' => Yii::app()->user->isGuest),
-				array('label' => 'About', 'url' => array('/site/page', 'view' => 'about'), 'visible' => Yii::app()->user->isGuest),
+				array('label' => 'Vendor Details', 'url' => array('/vendor/createUpdate'), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'Events', 'url' => array('/event/admin'), 'visible' => !Yii::app()->user->isGuest),
 			),
 		),
 /*****
