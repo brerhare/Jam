@@ -85,7 +85,7 @@ class Event extends CActiveRecord
 			'id' => 'ID',
 			'uid' => 'Uid',
 			'title' => 'Title',
-			'date' => 'Event Date',
+			'date' => 'Event Date Text',
 			'address' => 'Address',
 			'post_code' => 'Post Code',
 			'ticket_logo_path' => 'Ticket Logo Path',

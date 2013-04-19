@@ -31,7 +31,7 @@ class EventController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin'),
+				'actions'=>array('create','update','admin','delete'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -63,6 +63,8 @@ class EventController extends Controller
 	{
 		$model=new Event;
 		$model->uid = Yii::app()->session['uid'];
+		$vId = $this->getVendorId();
+		$model->ticket_vendor_id = $vId;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -95,7 +97,7 @@ class EventController extends Controller
 		{
 			$model->attributes=$_POST['Event'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('admin'));
 		}
 
 		$this->render('update',array(
@@ -160,6 +162,19 @@ class EventController extends Controller
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
+	}
+
+	/**
+	 * Return the one-and-only Vendor id answering to session variable 'uid'
+	 */
+	public function getVendorId()
+	{
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+		$vendor = Vendor::model()->find($criteria);
+		if (($vendor === null) || ($vendor->id === null))
+			throw new CHttpException(400,'Invalid Vendor Id. Have you set up your vendor details yet?');
+		return $vendor->id;
 	}
 
 	/**

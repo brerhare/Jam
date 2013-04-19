@@ -1,9 +1,9 @@
 <?php
-$this->breadcrumbs=array(
+/*$this->breadcrumbs=array(
 	'Events'=>array('index'),
 	$model->title=>array('view','id'=>$model->id),
 	'Update',
-);
+);*/
 
 $this->menu=array(
 	array('label'=>'Manage Events','url'=>array('admin')),

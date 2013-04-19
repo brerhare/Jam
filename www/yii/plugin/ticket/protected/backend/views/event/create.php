@@ -1,8 +1,8 @@
 <?php
-$this->breadcrumbs=array(
+/*$this->breadcrumbs=array(
 	'Events'=>array('index'),
 	'Create',
-);
+);*/
 
 $this->menu=array(
 	array('label'=>'Manage Events','url'=>array('admin')),

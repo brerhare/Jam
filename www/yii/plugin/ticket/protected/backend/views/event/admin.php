@@ -17,21 +17,22 @@ $this->menu=array(
 //		'uid',
 		'title',
 		'date',
-		'active',
-		'active_start_date',
-		'active_start_time',
-		'active_end_date',
-		'active_end_time',
-		/*
+		'active:boolean',
+//		'active_start_date',
+//		'active_start_time',
+//		'active_end_date',
+//		'active_end_time',
+
 		'address',
 		'post_code',
-		'ticket_logo_path',
-		'ticket_text',
-		'ticket_terms',
-		'ticket_vendor_id',
-		*/
+//		'ticket_logo_path',
+//		'ticket_text',
+//		'ticket_terms',
+//		'ticket_vendor_id',
+
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
+			'template'=>'{update} {delete}',
 		),
 	),
 )); ?>
