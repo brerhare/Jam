@@ -69,8 +69,8 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`ticket_area` (
   `max_places` VARCHAR(45) NULL ,
   `ticket_event_id` INT NOT NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `fk_ticket_area_ticket_event1` (`ticket_event_id` ASC) ,
   INDEX `uid` (`uid` ASC) ,
+  INDEX `fk_ticket_area_ticket_event1` (`ticket_event_id` ASC) ,
   CONSTRAINT `fk_ticket_area_ticket_event1`
     FOREIGN KEY (`ticket_event_id` )
     REFERENCES `plugin`.`ticket_event` (`id` )
