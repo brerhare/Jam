@@ -1,25 +1,18 @@
 <?php
 
 /**
- * This is the model class for table "ticket_area".
+ * This is the model class for table "ticket_area_has_ticket_ticket_type".
  *
- * The followings are the available columns in table 'ticket_area':
- * @property integer $id
- * @property integer $uid
- * @property string $description
- * @property string $max_places
- * @property integer $ticket_event_id
- *
- * The followings are the available model relations:
- * @property Event $ticketEvent
- * @property TicketType[] $ticketTicketTypes
+ * The followings are the available columns in table 'ticket_area_has_ticket_ticket_type':
+ * @property integer $ticket_area_id
+ * @property integer $ticket_ticket_type_id
  */
-class Area extends CActiveRecord
+class AreaHasTicketType extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return Area the static model class
+	 * @return AreaHasTicketType the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -31,7 +24,7 @@ class Area extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'ticket_area';
+		return 'ticket_area_has_ticket_ticket_type';
 	}
 
 	/**
@@ -42,13 +35,11 @@ class Area extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('uid, description, ticket_event_id', 'required'),
-			array('uid, ticket_event_id', 'numerical', 'integerOnly'=>true),
-			array('description', 'length', 'max'=>255),
-			array('max_places', 'length', 'max'=>45),
+			array('ticket_area_id, ticket_ticket_type_id', 'required'),
+			array('ticket_area_id, ticket_ticket_type_id', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, description, max_places, ticket_event_id', 'safe', 'on'=>'search'),
+			array('ticket_area_id, ticket_ticket_type_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -60,8 +51,6 @@ class Area extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'ticketEvent' => array(self::BELONGS_TO, 'Event', 'ticket_event_id'),
-			'ticketTicketTypes' => array(self::MANY_MANY, 'TicketType', 'ticket_area_has_ticket_ticket_type(ticket_area_id, ticket_ticket_type_id)'),
 		);
 	}
 
@@ -71,11 +60,8 @@ class Area extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'uid' => 'Uid',
-			'description' => 'Description',
-			'max_places' => 'Max Places',
-			'ticket_event_id' => 'Ticket Event',
+			'ticket_area_id' => 'Ticket Area',
+			'ticket_ticket_type_id' => 'Ticket Ticket Type',
 		);
 	}
 
@@ -90,11 +76,8 @@ class Area extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('uid',$this->uid);
-		$criteria->compare('description',$this->description,true);
-		$criteria->compare('max_places',$this->max_places,true);
-		$criteria->compare('ticket_event_id',$this->ticket_event_id);
+		$criteria->compare('ticket_area_id',$this->ticket_area_id);
+		$criteria->compare('ticket_ticket_type_id',$this->ticket_ticket_type_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

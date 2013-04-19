@@ -1,96 +1,42 @@
-<?php
-/* @var $this EventController */
-/* @var $model Event */
-/* @var $form CActiveForm */
-?>
-
-<div class="form">
-
-<?php $form=$this->beginWidget('CActiveForm', array(
+<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'event-form',
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+	<p class="help-block">Fields with <span class="required">*</span> are required.</p>
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'uid'); ?>
-		<?php echo $form->textField($model,'uid'); ?>
-		<?php echo $form->error($model,'uid'); ?>
-	</div>
+	<?php echo $form->textFieldRow($model,'uid',array('class'=>'span5')); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'title'); ?>
-		<?php echo $form->textField($model,'title',array('size'=>60,'maxlength'=>255)); ?>
-		<?php echo $form->error($model,'title'); ?>
-	</div>
+	<?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>255)); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'date'); ?>
-		<?php echo $form->textField($model,'date',array('size'=>45,'maxlength'=>45)); ?>
-		<?php echo $form->error($model,'date'); ?>
-	</div>
+	<?php echo $form->textFieldRow($model,'date',array('class'=>'span5','maxlength'=>45)); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'address'); ?>
-		<?php echo $form->textArea($model,'address',array('rows'=>6, 'cols'=>50)); ?>
-		<?php echo $form->error($model,'address'); ?>
-	</div>
+	<?php echo $form->textAreaRow($model,'address',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'post_code'); ?>
-		<?php echo $form->textField($model,'post_code',array('size'=>45,'maxlength'=>45)); ?>
-		<?php echo $form->error($model,'post_code'); ?>
-	</div>
+	<?php echo $form->textFieldRow($model,'post_code',array('class'=>'span5','maxlength'=>45)); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'ticket_logo_path'); ?>
-		<?php echo $form->textField($model,'ticket_logo_path',array('size'=>60,'maxlength'=>255)); ?>
-		<?php echo $form->error($model,'ticket_logo_path'); ?>
-	</div>
+	<?php echo $form->textFieldRow($model,'ticket_logo_path',array('class'=>'span5','maxlength'=>255)); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'ticket_text'); ?>
-		<?php echo $form->textArea($model,'ticket_text',array('rows'=>6, 'cols'=>50)); ?>
-		<?php echo $form->error($model,'ticket_text'); ?>
-	</div>
+	<?php echo $form->textAreaRow($model,'ticket_text',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'ticket_terms'); ?>
-		<?php echo $form->textArea($model,'ticket_terms',array('rows'=>6, 'cols'=>50)); ?>
-		<?php echo $form->error($model,'ticket_terms'); ?>
-	</div>
+	<?php echo $form->textAreaRow($model,'ticket_terms',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'active'); ?>
-		<?php echo $form->textField($model,'active'); ?>
-		<?php echo $form->error($model,'active'); ?>
-	</div>
+	<?php echo $form->textFieldRow($model,'active',array('class'=>'span5')); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'active_start_date_time'); ?>
-		<?php echo $form->textField($model,'active_start_date_time'); ?>
-		<?php echo $form->error($model,'active_start_date_time'); ?>
-	</div>
+	<?php echo $form->textFieldRow($model,'active_start_date_time',array('class'=>'span5')); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'active_end_date_time'); ?>
-		<?php echo $form->textField($model,'active_end_date_time'); ?>
-		<?php echo $form->error($model,'active_end_date_time'); ?>
-	</div>
+	<?php echo $form->textFieldRow($model,'active_end_date_time',array('class'=>'span5')); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'ticket_vendor_id'); ?>
-		<?php echo $form->textField($model,'ticket_vendor_id'); ?>
-		<?php echo $form->error($model,'ticket_vendor_id'); ?>
-	</div>
+	<?php echo $form->textFieldRow($model,'ticket_vendor_id',array('class'=>'span5')); ?>
 
-	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+	<div class="form-actions">
+		<?php $this->widget('bootstrap.widgets.TbButton', array(
+			'buttonType'=>'submit',
+			'type'=>'primary',
+			'label'=>$model->isNewRecord ? 'Create' : 'Save',
+		)); ?>
 	</div>
 
 <?php $this->endWidget(); ?>
-
-</div><!-- form -->

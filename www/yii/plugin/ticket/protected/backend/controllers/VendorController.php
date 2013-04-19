@@ -44,32 +44,6 @@ class VendorController extends Controller
 		);
 	}
 
-	public function actionCreateUpdate()
-	{
-		$criteria = new CDbCriteria;
-		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
-		$model = Vendor::model()->find($criteria);
-		if($model===null)
-		{
-			$model = new Vendor;
-			$model->uid = Yii::app()->session['uid'];
-		}	
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Vendor']))
-		{
-			$model->attributes=$_POST['Vendor'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
-
-		$this->render('update',array(
-			'model'=>$model,
-		));
-	}
-
 	/**
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
@@ -78,6 +52,33 @@ class VendorController extends Controller
 	{
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
+		));
+	}
+
+	public function actionCreateUpdate()
+	{
+		$criteria = new CDbCriteria;
+
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+		$model = Vendor::model()->find($criteria);
+		if($model===null)
+		{
+			$model = new Vendor;
+			$model->uid = Yii::app()->session['uid'];
+		}   
+
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
+		if(isset($_POST['Vendor']))
+		{
+			$model->attributes=$_POST['Vendor'];
+			if($model->save())
+				$this->redirect(array('site/index'));
+		}
+
+		$this->render('update',array(
+			'model'=>$model,
 		));
 	}
 

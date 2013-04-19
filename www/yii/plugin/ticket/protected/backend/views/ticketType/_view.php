@@ -1,12 +1,7 @@
-<?php
-/* @var $this TicketTypeController */
-/* @var $data TicketType */
-?>
-
 <div class="view">
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('id')); ?>:</b>
-	<?php echo CHtml::link(CHtml::encode($data->id), array('view', 'id'=>$data->id)); ?>
+	<?php echo CHtml::link(CHtml::encode($data->id),array('view','id'=>$data->id)); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('uid')); ?>:</b>
@@ -27,10 +22,6 @@
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('max_tickets_per_order')); ?>:</b>
 	<?php echo CHtml::encode($data->max_tickets_per_order); ?>
-	<br />
-
-	<b><?php echo CHtml::encode($data->getAttributeLabel('ticket_area_id')); ?>:</b>
-	<?php echo CHtml::encode($data->ticket_area_id); ?>
 	<br />
 
 

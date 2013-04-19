@@ -1,8 +1,8 @@
 <?php
-$this->breadcrumbs=array(
+/*$this->breadcrumbs=array(
 	'Vendors'=>array('index'),
 	'Create',
-);
+);*/
 
 $this->menu=array(
 	array('label'=>'List Vendor','url'=>array('index')),
@@ -10,6 +10,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Create Vendor</h1>
+<h1>Vendor Details<eh1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

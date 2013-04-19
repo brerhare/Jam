@@ -46,10 +46,10 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`ticket_event` (
   `active_start_date_time` DATETIME NULL ,
   `active_end_date_time` DATETIME NULL ,
   `ticket_vendor_id` INT NOT NULL ,
-  PRIMARY KEY (`id`, `ticket_vendor_id`) ,
+  PRIMARY KEY (`id`) ,
   INDEX `uid` (`uid` ASC) ,
-  INDEX `fk_ticket_event_ticket_vendor1` (`ticket_vendor_id` ASC) ,
-  CONSTRAINT `fk_ticket_event_ticket_vendor1`
+  INDEX `fk_ticket_event_ticket_vendor` (`ticket_vendor_id` ASC) ,
+  CONSTRAINT `fk_ticket_event_ticket_vendor`
     FOREIGN KEY (`ticket_vendor_id` )
     REFERENCES `plugin`.`ticket_vendor` (`id` )
     ON DELETE NO ACTION
@@ -85,13 +85,12 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`ticket_area` (
   `description` VARCHAR(255) NOT NULL ,
   `max_places` VARCHAR(45) NULL ,
   `ticket_event_id` INT NOT NULL ,
-  `ticket_event_ticket_vendor_id` INT NOT NULL ,
-  PRIMARY KEY (`id`, `ticket_event_id`, `ticket_event_ticket_vendor_id`) ,
+  PRIMARY KEY (`id`) ,
   INDEX `uid` (`uid` ASC) ,
-  INDEX `fk_ticket_area_ticket_event1` (`ticket_event_id` ASC, `ticket_event_ticket_vendor_id` ASC) ,
+  INDEX `fk_ticket_area_ticket_event1` (`ticket_event_id` ASC) ,
   CONSTRAINT `fk_ticket_area_ticket_event1`
-    FOREIGN KEY (`ticket_event_id` , `ticket_event_ticket_vendor_id` )
-    REFERENCES `plugin`.`ticket_event` (`id` , `ticket_vendor_id` )
+    FOREIGN KEY (`ticket_event_id` )
+    REFERENCES `plugin`.`ticket_event` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -104,15 +103,13 @@ DROP TABLE IF EXISTS `plugin`.`ticket_area_has_ticket_ticket_type` ;
 
 CREATE  TABLE IF NOT EXISTS `plugin`.`ticket_area_has_ticket_ticket_type` (
   `ticket_area_id` INT NOT NULL ,
-  `ticket_area_ticket_event_id` INT NOT NULL ,
-  `ticket_area_ticket_event_ticket_vendor_id` INT NOT NULL ,
   `ticket_ticket_type_id` INT NOT NULL ,
-  PRIMARY KEY (`ticket_area_id`, `ticket_area_ticket_event_id`, `ticket_area_ticket_event_ticket_vendor_id`, `ticket_ticket_type_id`) ,
+  PRIMARY KEY (`ticket_area_id`, `ticket_ticket_type_id`) ,
   INDEX `fk_ticket_area_has_ticket_ticket_type_ticket_ticket_type1` (`ticket_ticket_type_id` ASC) ,
-  INDEX `fk_ticket_area_has_ticket_ticket_type_ticket_area1` (`ticket_area_id` ASC, `ticket_area_ticket_event_id` ASC, `ticket_area_ticket_event_ticket_vendor_id` ASC) ,
+  INDEX `fk_ticket_area_has_ticket_ticket_type_ticket_area1` (`ticket_area_id` ASC) ,
   CONSTRAINT `fk_ticket_area_has_ticket_ticket_type_ticket_area1`
-    FOREIGN KEY (`ticket_area_id` , `ticket_area_ticket_event_id` , `ticket_area_ticket_event_ticket_vendor_id` )
-    REFERENCES `plugin`.`ticket_area` (`id` , `ticket_event_id` , `ticket_event_ticket_vendor_id` )
+    FOREIGN KEY (`ticket_area_id` )
+    REFERENCES `plugin`.`ticket_area` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_ticket_area_has_ticket_ticket_type_ticket_ticket_type1`
