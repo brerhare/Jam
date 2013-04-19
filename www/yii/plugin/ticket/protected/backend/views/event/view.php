@@ -28,8 +28,10 @@ $this->menu=array(
 		'ticket_text',
 		'ticket_terms',
 		'active',
-		'active_start_date_time',
-		'active_end_date_time',
+		'active_start_date',
+		'active_start_time',
+		'active_end_date',
+		'active_end_time',
 		'ticket_vendor_id',
 	),
 )); ?>

@@ -1,5 +1,6 @@
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'event-form',
+	'type'=>'horizontal',
 	'enableAjaxValidation'=>false,
 )); ?>
 
@@ -7,15 +8,15 @@
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<?php echo $form->textFieldRow($model,'uid',array('class'=>'span5')); ?>
+	<?php // echo $form->textFieldRow($model,'uid',array('class'=>'span5')); ?>
 
 	<?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>255)); ?>
 
-	<?php echo $form->textFieldRow($model,'date',array('class'=>'span5','maxlength'=>45)); ?>
+	<?php echo $form->textFieldRow($model,'date',array('class'=>'span2','maxlength'=>45)); ?>
 
 	<?php echo $form->textAreaRow($model,'address',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 
-	<?php echo $form->textFieldRow($model,'post_code',array('class'=>'span5','maxlength'=>45)); ?>
+	<?php echo $form->textFieldRow($model,'post_code',array('class'=>'span2','maxlength'=>45)); ?>
 
 	<?php echo $form->textFieldRow($model,'ticket_logo_path',array('class'=>'span5','maxlength'=>255)); ?>
 
@@ -23,13 +24,23 @@
 
 	<?php echo $form->textAreaRow($model,'ticket_terms',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 
-	<?php echo $form->textFieldRow($model,'active',array('class'=>'span5')); ?>
+	<?php echo $form->textFieldRow($model,'active',array('class'=>'span1')); ?>
 
-	<?php echo $form->textFieldRow($model,'active_start_date_time',array('class'=>'span5')); ?>
+	<?php // echo $form->textFieldRow($model,'active_start_date',array('class'=>'span2')); ?>
+	<?php echo $form->datepickerRow($model, 'active_start_date', array('class'=>'span2', 'append'=>'<i class="icon-calendar"></i>')); ?>
 
-	<?php echo $form->textFieldRow($model,'active_end_date_time',array('class'=>'span5')); ?>
+	<?php // echo $form->textFieldRow($model,'active_start_time',array('class'=>'span2')); ?>
+	<?php echo $form->timepickerRow($model, 'active_start_time', array('class'=>'span1', 'append'=>'<i class="icon-time" style="cursor:pointer"></i>'));?>
 
-	<?php echo $form->textFieldRow($model,'ticket_vendor_id',array('class'=>'span5')); ?>
+	<?php // echo $form->textFieldRow($model,'active_end_date',array('class'=>'span2')); ?>
+	<?php echo $form->datepickerRow($model, 'active_end_date', array('class'=>'span2', 'append'=>'<i class="icon-calendar"></i>')); ?>
+
+	<?php // echo $form->textFieldRow($model,'active_end_time',array('class'=>'span2')); ?>
+	<?php echo $form->timepickerRow($model, 'active_end_time', array('class'=>'span1', 'append'=>'<i class="icon-time" style="cursor:pointer"></i>'));?>
+
+<!-- Hide the foreign key, although its included -->
+	<?php //echo $form->textFieldRow($model,'ticket_vendor_id',array('class'=>'span2')); ?>
+	<?php echo $form->hiddenField($model,'ticket_vendor_id'); ?>
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(

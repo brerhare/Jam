@@ -23,9 +23,13 @@
 
 	<?php echo $form->textFieldRow($model,'active',array('class'=>'span5')); ?>
 
-	<?php echo $form->textFieldRow($model,'active_start_date_time',array('class'=>'span5')); ?>
+	<?php echo $form->textFieldRow($model,'active_start_date',array('class'=>'span5')); ?>
 
-	<?php echo $form->textFieldRow($model,'active_end_date_time',array('class'=>'span5')); ?>
+	<?php echo $form->textFieldRow($model,'active_start_time',array('class'=>'span5')); ?>
+
+	<?php echo $form->textFieldRow($model,'active_end_date',array('class'=>'span5')); ?>
+
+	<?php echo $form->textFieldRow($model,'active_end_time',array('class'=>'span5')); ?>
 
 	<?php echo $form->textFieldRow($model,'ticket_vendor_id',array('class'=>'span5')); ?>
 

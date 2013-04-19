@@ -41,12 +41,20 @@
 	<?php echo CHtml::encode($data->active); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('active_start_date_time')); ?>:</b>
-	<?php echo CHtml::encode($data->active_start_date_time); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('active_start_date')); ?>:</b>
+	<?php echo CHtml::encode($data->active_start_date); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('active_end_date_time')); ?>:</b>
-	<?php echo CHtml::encode($data->active_end_date_time); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('active_start_time')); ?>:</b>
+	<?php echo CHtml::encode($data->active_start_time); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('active_end_date')); ?>:</b>
+	<?php echo CHtml::encode($data->active_end_date); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('active_end_time')); ?>:</b>
+	<?php echo CHtml::encode($data->active_end_time); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('ticket_vendor_id')); ?>:</b>
