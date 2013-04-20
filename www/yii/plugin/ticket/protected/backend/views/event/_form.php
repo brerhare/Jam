@@ -22,6 +22,14 @@
 
 	<?php echo $form->textAreaRow($model,'ticket_text',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 
+	
+	
+	<?php // echo $form->redactorRow($model, 'ticket_text', array('class'=>'span8', 'rows'=>5)); ?>
+
+
+
+
+
 	<?php echo $form->textAreaRow($model,'ticket_terms',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 
 	<?php // echo $form->textFieldRow($model,'active',array('class'=>'span1')); ?>

@@ -189,4 +189,51 @@ class EventController extends Controller
 			Yii::app()->end();
 		}
 	}
+
+// Redactor image handling -----------------------------------------------------
+
+    public function actionImageUpload()
+    {
+        $uploadedFile = CUploadedFile::getInstanceByName('file');
+        if (!empty($uploadedFile)) {
+            $rnd = rand();  // generate random number between 0-9999
+            $fileName = "{$rnd}.{$uploadedFile->extensionName}";  // random number + file name
+            if ($uploadedFile->saveAs(Yii::app()->basePath . '/../userdata/image/' . $fileName)) {
+
+                $array = array(
+                     'filelink' => Yii::app()->baseUrl . '/userdata/image/' . $fileName);
+               // echo CHtml::image(Yii::app()->baseUrl . '/userdata/image/' . $fileName);
+
+                echo stripslashes(json_encode($array));
+                Yii::app()->end();
+            }
+        }
+        throw new CHttpException(400, 'The request cannot be fulfilled due to bad syntax');
+    }
+
+// "ListImages" (used to browse images in the server)
+
+    public function actionImageList() {
+
+        $images = array();
+        $handler = opendir(Yii::app()->basePath . '/../userdata/image');
+        while ($file = readdir($handler)) {
+            if ($file != "." && $file != "..")
+                $images[] = $file;
+        }
+        closedir($handler);
+
+        $jsonArray = array();
+
+        foreach ($images as $image)
+            $jsonArray[] = array(
+                'thumb' => Yii::app()->baseUrl . '/userdata/image/' . $image,
+                'image' => Yii::app()->baseUrl . '/userdata/image/' . $image,
+            );
+
+        header('Content-type: application/json');
+        echo CJSON::encode($jsonArray);
+    }	
+	
+	
 }

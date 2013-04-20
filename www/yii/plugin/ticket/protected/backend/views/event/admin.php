@@ -23,8 +23,8 @@ $this->menu=array(
 //		'active_end_date',
 //		'active_end_time',
 
-		'address',
-		'post_code',
+//		'address',
+//		'post_code',
 //		'ticket_logo_path',
 //		'ticket_text',
 //		'ticket_terms',
