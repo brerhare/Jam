@@ -113,9 +113,11 @@ DROP TABLE IF EXISTS `plugin`.`ticket_area_has_ticket_ticket_type` ;
 CREATE  TABLE IF NOT EXISTS `plugin`.`ticket_area_has_ticket_ticket_type` (
   `ticket_area_id` INT NOT NULL ,
   `ticket_ticket_type_id` INT NOT NULL ,
+  `uid` INT NOT NULL ,
   PRIMARY KEY (`ticket_area_id`, `ticket_ticket_type_id`) ,
   INDEX `fk_ticket_area_has_ticket_ticket_type_ticket_ticket_type1` (`ticket_ticket_type_id` ASC) ,
   INDEX `fk_ticket_area_has_ticket_ticket_type_ticket_area1` (`ticket_area_id` ASC) ,
+  INDEX `uid` (`uid` ASC) ,
   CONSTRAINT `fk_ticket_area_has_ticket_ticket_type_ticket_area1`
     FOREIGN KEY (`ticket_area_id` )
     REFERENCES `plugin`.`ticket_area` (`id` )
