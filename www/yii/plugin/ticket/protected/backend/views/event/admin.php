@@ -6,7 +6,7 @@ $this->menu=array(
 
 ?>
 
-<h1>Manage Events</h1>
+<h2>Manage Events</h2>
 
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'event-grid',
