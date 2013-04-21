@@ -33,20 +33,21 @@ $this->menu=array(
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
 			'template'=>'{update} {delete}',
-/*            'template'=>'{update}{ticketTypes}{areas}{delete}',
+            'template'=>'{update}{ticketTypes}{areas}{delete}',
+			'htmlOptions'=>array('width'=>'80px'),
             'buttons'=>array(
                 'ticketTypes' => array(
-                    'label'=>'Images',
-                    'imageUrl'=>Yii::app()->request->baseUrl.'/img/image.png',
-                    'url'=>'Yii::app()->controller->createUrl("image/session", array("product_id"=>$data->primaryKey))',
+                    'label'=>'Ticket Types',
+                    'imageUrl'=>Yii::app()->request->baseUrl.'/img/ticketType.png',
+                    'url'=>'Yii::app()->controller->createUrl("ticketType/session", array("event_id"=>$data->primaryKey))',
                 ),
                 'areas' => array(
-                    'label'=>'Galleries',
-                    'imageUrl'=>Yii::app()->request->baseUrl.'/img/camera.png',
-                    'url'=>'Yii::app()->controller->createUrl("gallery/adminProduct", array("product_id"=>$data->primaryKey))',
+                    'label'=>'Areas',
+                    'imageUrl'=>Yii::app()->request->baseUrl.'/img/area.png',
+                    'url'=>'Yii::app()->controller->createUrl("area/adminProduct", array("event_id"=>$data->primaryKey))',
                 ),
             )
-*/
+
 
 		),
 	),

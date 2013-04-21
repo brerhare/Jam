@@ -31,11 +31,11 @@ class TicketTypeController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','session'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','session'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -147,6 +147,24 @@ class TicketTypeController extends Controller
 			'model'=>$model,
 		));
 	}
+
+    /**
+     * Entry point. Same as actionAdmin except first stores the passed event_id in the session
+     */
+    // $event_id supplied by the CButtonColumn in event/admin
+    public function actionSession($event_id)
+    {
+        Yii::app()->session['event_id'] = $event_id;
+        $model=new TicketType('search');
+        $model->unsetAttributes();  // clear any default values
+        if(isset($_GET['TicketType']))
+            $model->attributes=$_GET['TicketType'];
+
+        $this->render('admin',array(
+            'model'=>$model,
+        ));
+    }
+
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

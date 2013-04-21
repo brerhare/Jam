@@ -8,7 +8,7 @@ class EventController extends Controller
 	 */
 	public $layout='//layouts/column2';
 	
-	private $_imageDir = '/../userdata/';
+	private $_imageDir = '/../userdata/';	// Note this is only partial. Gets prepended base path and uid
 
 	/**
 	 * @return array action filters
@@ -63,7 +63,7 @@ class EventController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$iDir = Yii::app()->basePath . $this->_imageDir . Yii::app()->session['uid'] . '/';
+		$iDir = $this->getImageDir();
 		$model=new Event;
 		$model->uid = Yii::app()->session['uid'];
 		$vId = $this->getVendorId();
@@ -80,7 +80,7 @@ class EventController extends Controller
 			{
 				if (strlen($model->ticket_logo_path) > 0)
 				{
-					$fname = Yii::app()->basePath . $iDir . $model->ticket_logo_path;
+					$fname = $iDir . $model->ticket_logo_path;
 					$model->ticket_logo_path->saveAs($fname);
 				}
 				$this->redirect(array('admin'));
@@ -99,7 +99,7 @@ class EventController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		$iDir = $this->_imageDir . Yii::app()->session['uid'] . '/';
+		$iDir = $this->getImageDir();
 		$model=$this->loadModel($id);
 
 		// Uncomment the following line if AJAX validation is needed
@@ -115,12 +115,12 @@ class EventController extends Controller
 				// Delete old one
 				if (strlen($model->ticket_logo_path) > 0)
 				{
-					if (file_exists(Yii::app()->basePath . $iDir . $model->ticket_logo_path))
-						unlink(Yii::app()->basePath . $iDir . $model->ticket_logo_path);
+					if (file_exists($iDir . $model->ticket_logo_path))
+						unlink($iDir . $model->ticket_logo_path);
 				}
 				// Save new one
 				$model->ticket_logo_path = $file;
-				$fname = Yii::app()->basePath . $iDir . $model->ticket_logo_path;
+				$fname = $iDir . $model->ticket_logo_path;
 				$model->ticket_logo_path->saveAs($fname);
 			}
 			if($model->save())
@@ -139,13 +139,13 @@ class EventController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		$iDir = $this->_imageDir . Yii::app()->session['uid'] . '/';
+		$iDir = $this->getImageDir();
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
 			$oldfilename = $this->loadModel($id)->ticket_logo_path;
-			if (($oldfilename != '') && (file_exists(Yii::app()->basePath . $iDir . $oldfilename)))
-				unlink(Yii::app()->basePath . $iDir . $oldfilename);
+			if (($oldfilename != '') && (file_exists($iDir . $oldfilename)))
+				unlink($iDir . $oldfilename);
 			$this->loadModel($id)->delete();
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
