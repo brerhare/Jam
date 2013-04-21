@@ -24,5 +24,6 @@ $this->menu=array(
 		'price',
 		'places_per_ticket',
 		'max_tickets_per_order',
+		'ticket_event_id',
 	),
 )); ?>

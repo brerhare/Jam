@@ -71,8 +71,15 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`ticket_ticket_type` (
   `price` DECIMAL(10,2) NULL ,
   `places_per_ticket` INT NULL ,
   `max_tickets_per_order` INT NULL ,
+  `ticket_event_id` INT NOT NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `uid` (`uid` ASC) )
+  INDEX `uid` (`uid` ASC) ,
+  INDEX `fk_ticket_ticket_type_ticket_event1` (`ticket_event_id` ASC) ,
+  CONSTRAINT `fk_ticket_ticket_type_ticket_event1`
+    FOREIGN KEY (`ticket_event_id` )
+    REFERENCES `plugin`.`ticket_event` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 

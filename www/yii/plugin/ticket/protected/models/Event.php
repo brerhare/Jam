@@ -23,6 +23,7 @@
  * The followings are the available model relations:
  * @property Area[] $areas
  * @property Vendor $ticketVendor
+ * @property TicketType[] $ticketTypes
  */
 class Event extends CActiveRecord
 {
@@ -57,11 +58,6 @@ class Event extends CActiveRecord
 			array('title, ticket_logo_path', 'length', 'max'=>255),
 			array('date, post_code', 'length', 'max'=>45),
 			array('ticket_text, ticket_terms, active_start_date, active_start_time, active_end_date, active_end_time', 'safe'),
-
-			// @@EG: Image upload. Next two lines. See also controller create/update/delete and remember to set enctype in the view!!!!!
-			array('ticket_logo_path','unsafe'),
-			array('ticket_logo_path', 'file', 'types'=>'jpg, jpeg, gif, png','safe'=>true, 'maxSize'=>100*1024, 'allowEmpty'=>true, 'tooLarge'=>'{attribute} is too large to be uploaded. Maximum size is 100kB.'),
-
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, uid, title, date, address, post_code, ticket_logo_path, ticket_text, ticket_terms, active, active_start_date, active_start_time, active_end_date, active_end_time, ticket_vendor_id', 'safe', 'on'=>'search'),
@@ -78,6 +74,7 @@ class Event extends CActiveRecord
 		return array(
 			'areas' => array(self::HAS_MANY, 'Area', 'ticket_event_id'),
 			'ticketVendor' => array(self::BELONGS_TO, 'Vendor', 'ticket_vendor_id'),
+			'ticketTypes' => array(self::HAS_MANY, 'TicketType', 'ticket_event_id'),
 		);
 	}
 
@@ -90,17 +87,17 @@ class Event extends CActiveRecord
 			'id' => 'ID',
 			'uid' => 'Uid',
 			'title' => 'Title',
-			'date' => 'Event Date Text',
+			'date' => 'Date',
 			'address' => 'Address',
 			'post_code' => 'Post Code',
 			'ticket_logo_path' => 'Ticket Logo Path',
 			'ticket_text' => 'Ticket Text',
 			'ticket_terms' => 'Ticket Terms',
-			'active' => 'Sales Active',
-			'active_start_date' => 'Sales Start Date',
-			'active_start_time' => 'Sales Start Time',
-			'active_end_date' => 'Sales End Date',
-			'active_end_time' => 'Sales End Time',
+			'active' => 'Active',
+			'active_start_date' => 'Active Start Date',
+			'active_start_time' => 'Active Start Time',
+			'active_end_date' => 'Active End Date',
+			'active_end_time' => 'Active End Time',
 			'ticket_vendor_id' => 'Ticket Vendor',
 		);
 	}
@@ -117,7 +114,8 @@ class Event extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('uid',$this->uid);
+		//$criteria->compare('uid',$this->uid);
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('date',$this->date,true);
 		$criteria->compare('address',$this->address,true);

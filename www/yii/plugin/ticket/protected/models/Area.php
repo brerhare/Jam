@@ -91,10 +91,12 @@ class Area extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('uid',$this->uid);
+		//$criteria->compare('uid',$this->uid);
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('max_places',$this->max_places,true);
-		$criteria->compare('ticket_event_id',$this->ticket_event_id);
+		//$criteria->compare('ticket_event_id',$this->ticket_event_id);
+		$criteria->addCondition("ticket_event_id = " . Yii::app()->session['event_id']);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -10,9 +10,11 @@
  * @property string $price
  * @property integer $places_per_ticket
  * @property integer $max_tickets_per_order
+ * @property integer $ticket_event_id
  *
  * The followings are the available model relations:
  * @property Area[] $ticketAreas
+ * @property Event $ticketEvent
  */
 class TicketType extends CActiveRecord
 {
@@ -42,13 +44,13 @@ class TicketType extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('uid, description', 'required'),
-			array('uid, places_per_ticket, max_tickets_per_order', 'numerical', 'integerOnly'=>true),
+			array('uid, description, ticket_event_id', 'required'),
+			array('uid, places_per_ticket, max_tickets_per_order, ticket_event_id', 'numerical', 'integerOnly'=>true),
 			array('description', 'length', 'max'=>255),
 			array('price', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, description, price, places_per_ticket, max_tickets_per_order', 'safe', 'on'=>'search'),
+			array('id, uid, description, price, places_per_ticket, max_tickets_per_order, ticket_event_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -61,6 +63,7 @@ class TicketType extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'ticketAreas' => array(self::MANY_MANY, 'Area', 'ticket_area_has_ticket_ticket_type(ticket_ticket_type_id, ticket_area_id)'),
+			'ticketEvent' => array(self::BELONGS_TO, 'Event', 'ticket_event_id'),
 		);
 	}
 
@@ -76,6 +79,7 @@ class TicketType extends CActiveRecord
 			'price' => 'Price',
 			'places_per_ticket' => 'Places Per Ticket',
 			'max_tickets_per_order' => 'Max Tickets Per Order',
+			'ticket_event_id' => 'Ticket Event',
 		);
 	}
 
@@ -91,11 +95,14 @@ class TicketType extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('uid',$this->uid);
+		//$criteria->compare('uid',$this->uid);
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('price',$this->price,true);
 		$criteria->compare('places_per_ticket',$this->places_per_ticket);
 		$criteria->compare('max_tickets_per_order',$this->max_tickets_per_order);
+		//$criteria->compare('ticket_event_id',$this->ticket_event_id);
+		$criteria->addCondition("ticket_event_id = " . Yii::app()->session['event_id']);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

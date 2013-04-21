@@ -44,7 +44,7 @@ $this->menu=array(
                 'areas' => array(
                     'label'=>'Areas',
                     'imageUrl'=>Yii::app()->request->baseUrl.'/img/area.png',
-                    'url'=>'Yii::app()->controller->createUrl("area/adminProduct", array("event_id"=>$data->primaryKey))',
+                    'url'=>'Yii::app()->controller->createUrl("area/session", array("event_id"=>$data->primaryKey))',
                 ),
             )
 

@@ -31,11 +31,11 @@ class AreaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','session','admin'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','session'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -62,6 +62,8 @@ class AreaController extends Controller
 	public function actionCreate()
 	{
 		$model=new Area;
+		$model->uid = Yii::app()->session['uid'];
+		$model->ticket_event_id = Yii::app()->session['event_id'];
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -70,7 +72,7 @@ class AreaController extends Controller
 		{
 			$model->attributes=$_POST['Area'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('admin'));
 		}
 
 		$this->render('create',array(
@@ -94,7 +96,7 @@ class AreaController extends Controller
 		{
 			$model->attributes=$_POST['Area'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('admin'));
 		}
 
 		$this->render('update',array(
@@ -148,6 +150,23 @@ class AreaController extends Controller
 		));
 	}
 
+    /**
+     * Entry point. Same as actionAdmin except first stores the passed event_id in the session
+     */
+    // $event_id supplied by the CButtonColumn in event/admin
+    public function actionSession($event_id)
+    {
+        Yii::app()->session['event_id'] = $event_id;
+        $model=new Area('search');
+        $model->unsetAttributes();  // clear any default values
+        if(isset($_GET['Area']))
+            $model->attributes=$_GET['Area'];
+
+        $this->render('admin',array(
+            'model'=>$model,
+        ));
+    }
+
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
@@ -156,7 +175,7 @@ class AreaController extends Controller
 	public function loadModel($id)
 	{
 		$model=Area::model()->findByPk($id);
-		if($model===null)
+		if (($model===null) || ($model->uid != Yii::app()->session['uid']))
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
 	}

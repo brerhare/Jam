@@ -31,7 +31,7 @@ class TicketTypeController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','session'),
+				'actions'=>array('create','update','session','admin'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -62,6 +62,8 @@ class TicketTypeController extends Controller
 	public function actionCreate()
 	{
 		$model=new TicketType;
+		$model->uid = Yii::app()->session['uid'];
+		$model->ticket_event_id = Yii::app()->session['event_id'];
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -70,7 +72,7 @@ class TicketTypeController extends Controller
 		{
 			$model->attributes=$_POST['TicketType'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('admin'));
 		}
 
 		$this->render('create',array(
@@ -94,7 +96,7 @@ class TicketTypeController extends Controller
 		{
 			$model->attributes=$_POST['TicketType'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('admin'));
 		}
 
 		$this->render('update',array(
@@ -174,7 +176,7 @@ class TicketTypeController extends Controller
 	public function loadModel($id)
 	{
 		$model=TicketType::model()->findByPk($id);
-		if($model===null)
+		if (($model===null) || ($model->uid != Yii::app()->session['uid']))
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
 	}

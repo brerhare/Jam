@@ -24,5 +24,9 @@
 	<?php echo CHtml::encode($data->max_tickets_per_order); ?>
 	<br />
 
+	<b><?php echo CHtml::encode($data->getAttributeLabel('ticket_event_id')); ?>:</b>
+	<?php echo CHtml::encode($data->ticket_event_id); ?>
+	<br />
+
 
 </div>

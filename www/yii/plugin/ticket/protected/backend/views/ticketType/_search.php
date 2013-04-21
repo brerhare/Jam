@@ -15,6 +15,8 @@
 
 	<?php echo $form->textFieldRow($model,'max_tickets_per_order',array('class'=>'span5')); ?>
 
+	<?php echo $form->textFieldRow($model,'ticket_event_id',array('class'=>'span5')); ?>
+
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType' => 'submit',

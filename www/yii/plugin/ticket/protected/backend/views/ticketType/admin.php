@@ -47,6 +47,7 @@ $('.search-form form').submit(function(){
 		'max_tickets_per_order',
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
+			'template'=>'{update} {delete}',
 		),
 	),
 )); ?>

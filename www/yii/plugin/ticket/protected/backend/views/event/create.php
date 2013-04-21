@@ -9,6 +9,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Create Event</h1>
+<h2>Create Event</h2>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
