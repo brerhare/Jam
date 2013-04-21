@@ -63,7 +63,7 @@ class EventController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$iDir = $this->_imageDir . Yii::app()->session['uid'] . '/';
+		$iDir = Yii::app()->basePath . $this->_imageDir . Yii::app()->session['uid'] . '/';
 		$model=new Event;
 		$model->uid = Yii::app()->session['uid'];
 		$vId = $this->getVendorId();
@@ -172,9 +172,10 @@ class EventController extends Controller
 	 */
 	public function actionAdmin()
 	{
-//Yii::log("ADMIN START ", CLogger::LEVEL_WARNING, 'system.test.kim');
-//		if (!mkdir($this->_imageDir, 0, true))
-//			throw new CHttpException(400,'Failed to create user directory ' . $this->_imageDir);
+		$iDir = $this->getImageDir();
+//Yii::log("ADMIN START. CREATING " . $iDir, CLogger::LEVEL_WARNING, 'system.test.kim');
+		if ((!is_dir($iDir)) &&  (!mkdir($iDir, 0777, true)))
+			throw new CHttpException(400,'Failed to create user directory ' . $iDir);
 		$model=new Event('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Event']))
@@ -183,6 +184,11 @@ class EventController extends Controller
 		$this->render('admin',array(
 			'model'=>$model,
 		));
+	}
+
+	public function getImageDir()
+	{
+		return Yii::app()->basePath . $this->_imageDir . Yii::app()->session['uid'] . '/';
 	}
 
 	/**
