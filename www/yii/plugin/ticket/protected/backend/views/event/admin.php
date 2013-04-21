@@ -33,6 +33,21 @@ $this->menu=array(
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
 			'template'=>'{update} {delete}',
+/*            'template'=>'{update}{ticketTypes}{areas}{delete}',
+            'buttons'=>array(
+                'ticketTypes' => array(
+                    'label'=>'Images',
+                    'imageUrl'=>Yii::app()->request->baseUrl.'/img/image.png',
+                    'url'=>'Yii::app()->controller->createUrl("image/session", array("product_id"=>$data->primaryKey))',
+                ),
+                'areas' => array(
+                    'label'=>'Galleries',
+                    'imageUrl'=>Yii::app()->request->baseUrl.'/img/camera.png',
+                    'url'=>'Yii::app()->controller->createUrl("gallery/adminProduct", array("product_id"=>$data->primaryKey))',
+                ),
+            )
+*/
+
 		),
 	),
 )); ?>
