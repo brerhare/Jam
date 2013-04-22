@@ -63,7 +63,7 @@ class TicketTypeController extends Controller
 	{
 		$model=new TicketType;
 		$model->uid = Yii::app()->session['uid'];
-		$model->ticket_event_id = Yii::app()->session['event_id'];
+		$model->ticket_area_id = Yii::app()->session['area_id'];
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -154,9 +154,10 @@ class TicketTypeController extends Controller
      * Entry point. Same as actionAdmin except first stores the passed event_id in the session
      */
     // $event_id supplied by the CButtonColumn in event/admin
-    public function actionSession($event_id)
-    {
-        Yii::app()->session['event_id'] = $event_id;
+    public function actionSession($area_id)
+    { 
+    $model=null;
+        Yii::app()->session['area_id'] = $area_id;
         $model=new TicketType('search');
         $model->unsetAttributes();  // clear any default values
         if(isset($_GET['TicketType']))

@@ -44,9 +44,19 @@ $('.search-form form').submit(function(){
 		'description',
 		'max_places',
 		//'ticket_event_id',
+		
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
 			'template'=>'{update} {delete}',
+            'template'=>'{update}{ticketTypes}{delete}',
+			'htmlOptions'=>array('width'=>'80px'),
+            'buttons'=>array(
+                'ticketTypes' => array(
+                    'label'=>'Ticket Types',
+                    'imageUrl'=>Yii::app()->request->baseUrl.'/img/ticketType.png',
+                    'url'=>'Yii::app()->controller->createUrl("ticketType/session", array("area_id"=>$data->primaryKey))',
+                ),
+            )
 		),
 	),
 )); ?>

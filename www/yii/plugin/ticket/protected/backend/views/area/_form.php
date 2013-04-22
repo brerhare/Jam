@@ -16,36 +16,6 @@
 
 	<?php //echo $form->textFieldRow($model,'ticket_event_id',array('class'=>'span5')); ?>
 
-
-<!- @@EG Checkbox in view, can even be from different model. See controller update and create. -->
-
-<div class="row">
-    <div class="span3 well">
-        <h3>Permitted ticket types</h3>
-        <?php
-            $criteria = new CDbCriteria;
-            $criteria->addCondition("ticket_event_id = " . Yii::app()->session['event_id']);
-            $criteria->addCondition("uid = " . Yii::app()->session['uid']);
-            $ticketTypes = TicketType::model()->findAll($criteria);
-            foreach ($ticketTypes as $ticketType):
-                $criteria = new CDbCriteria;
-                $criteria->addCondition("ticket_area_id = $model->id");
-                $criteria->addCondition("ticket_ticket_type_id = $ticketType->id");
-                $criteria->addCondition("uid = " . Yii::app()->session['uid']);
-                $match = $model->isNewRecord ? 0 : AreaHasTicketType::model()->exists($criteria);
-        ?>
-        <label class="checkbox">
-            <input name="ticktock[]" <?php if ($match) echo ' checked="checked" '?> type="checkbox" value="<?php echo $ticketType->id; ?>"><?php echo $ticketType->description; ?>
-        </label>
-	        <?php endforeach; ?>
-    </div><!-- /span -->
-</div> <!-- /row -->
-
-
-
-
-
-
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',

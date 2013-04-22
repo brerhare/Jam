@@ -12,7 +12,7 @@
  *
  * The followings are the available model relations:
  * @property Event $ticketEvent
- * @property TicketType[] $ticketTicketTypes
+ * @property TicketType[] $ticketTypes
  */
 class Area extends CActiveRecord
 {
@@ -61,7 +61,7 @@ class Area extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'ticketEvent' => array(self::BELONGS_TO, 'Event', 'ticket_event_id'),
-			'ticketTicketTypes' => array(self::MANY_MANY, 'TicketType', 'ticket_area_has_ticket_ticket_type(ticket_area_id, ticket_ticket_type_id)'),
+			'ticketTypes' => array(self::HAS_MANY, 'TicketType', 'ticket_area_id'),
 		);
 	}
 

@@ -31,7 +31,7 @@ class AreaController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','session','admin'),
+				'actions'=>array('create','update','session','admin','delete'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -73,7 +73,6 @@ class AreaController extends Controller
 			$model->attributes=$_POST['Area'];
 			if($model->save())
 			{
-				$this->updateTicketTypesAvailable($model->id);
 				$this->redirect(array('admin'));
 			}
 		}
@@ -100,8 +99,6 @@ class AreaController extends Controller
 			$model->attributes=$_POST['Area'];
 			if($model->save())
 			{
-				$this->deleteTicketTypesAvailable($model->id);
-				$this->updateTicketTypesAvailable($model->id);
 				$this->redirect(array('admin'));
 			}
 		}
@@ -122,7 +119,6 @@ class AreaController extends Controller
 		{
 			// we only allow deletion via POST request
 			$this->loadModel($id)->delete();
-			$this->deleteTicketTypesAvailable($model->id);
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 			if(!isset($_GET['ajax']))
@@ -186,31 +182,6 @@ class AreaController extends Controller
 		if (($model===null) || ($model->uid != Yii::app()->session['uid']))
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
-	}
-
-    // Delete all ticket-types (checkboxes)
-    public function deleteTicketTypesAvailable($id)
-    {
-        // Options
-        Yii::log("Deleting all ticket types for area id " . $id, CLogger::LEVEL_INFO, 'system.test.kim');
-        AreaHasTicketType::model()->deleteAllByAttributes(array('ticket_area_id' => $id, 'uid' => Yii::app()->session['uid']));
-    }
-
-    // Update room facilities and extras checkboxes
-    public function updateTicketTypesAvailable($id)
-    {
-        // Option - ticket types checkboxes
-        if (isset($_POST['ticktock']))
-        {
-            foreach ($_POST['ticktock'] as $ttItem):
-                Yii::log("Creating ticktock item " . $ttItem, CLogger::LEVEL_INFO, 'system.test.kim');
-                $tt = new AreaHasTicketType;
-                $tt->ticket_area_id = $id;
-                $tt->ticket_ticket_type_id = $ttItem;
-                $tt->uid = Yii::app()->session['uid'];
-                $tt->save();
-            endforeach;
-        }
 	}
 
 	/**

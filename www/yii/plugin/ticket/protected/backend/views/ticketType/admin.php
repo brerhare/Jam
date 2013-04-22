@@ -7,7 +7,7 @@ $this->breadcrumbs=array(
 */
 
 $this->menu=array(
-	array('label'=>'Back to Manage Events', 'url'=>array('event/admin')),
+	array('label'=>'Back to Manage Areas', 'url'=>array('area/admin')),
 	array('label'=>'Create Ticket Type','url'=>array('create')),
 );
 
@@ -27,10 +27,10 @@ $('.search-form form').submit(function(){
 */
 ?>
 
-<h2>Manage Ticket Types for
+<h2>Manage Ticket Types for 
 <?php
-    $model_event = Event::model()->findByPk(Yii::app()->session['event_id']);
-    echo $model_event->title; 
+    $model_area = Area::model()->findByPk(Yii::app()->session['area_id']);
+    echo $model_area->description; 
 ?> 
 </h2>
 
