@@ -61,7 +61,7 @@ class Event extends CActiveRecord
 
 			// @@EG: Image upload. Next two lines. See also controller create/update/delete and remember to set enctype in the view!!!!!
 			array('ticket_logo_path','unsafe'),
-			array('ticket_logo_path', 'file', 'types'=>'jpg, jpeg, gif, png','safe'=>true, 'maxSize'=>100*1024, 'allowEmpty'=>true, 'tooLarge'=>'{attribute} is too large to be uploaded. Maximum size is 100kB.'),
+			array('ticket_logo_path', 'file', 'types'=>'jpg, jpeg, gif, png','safe'=>true, 'maxSize'=>1000*1024, 'allowEmpty'=>true, 'tooLarge'=>'{attribute} is too large to be uploaded. Maximum size is 1MB.'),
 
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
