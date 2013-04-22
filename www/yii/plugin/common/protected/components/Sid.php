@@ -15,7 +15,7 @@ class Sid extends CBehavior
 	{
 		Yii::log("Preprocess request started " , CLogger::LEVEL_WARNING, 'system.test.kim');
 		
-		Yii::app()->session['uid'] = 3;
+		//Yii::app()->session['uid'] = 3;
 		//unset(Yii::app()->session['uid']);
 
 		if (isset($_GET['sid']))
