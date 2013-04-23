@@ -16,7 +16,7 @@
 			$ticketTypes = TicketType::model()->findAll($criteria);
 			foreach ($ticketTypes as $ticketType):
 			?>
-			<tr>
+			<tr style="background-color:#EDE4F2">
 				<!-- blank -->
 				<td width="10%">
 				</td>
