@@ -1,7 +1,5 @@
 <!-- Display a list of events to pick from -->
 
-<!- @@EG Radio in view. See controller update and create. -->
-
 <div class="row">
     <div class="span3 well">
         <h3>Available Events</h3> 

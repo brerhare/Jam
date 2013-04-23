@@ -20,7 +20,7 @@
 
 <body>
 
-<div class="kcontainer" id="page">
+<div class="container" id="page">
 
 
 <div style="margin-top:50px"></div>

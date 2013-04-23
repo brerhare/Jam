@@ -1,3 +1,4 @@
+
 <div class="row">
 	<table>	
 		<?php
@@ -58,4 +59,21 @@
 			<?php endforeach;?>
 		<?php endforeach;?>
 	</table>
+</div>
+
+<div class="span5 well">
+	<div class="row">
+		<?php echo CHtml::textField('Text', '', array(
+			'id'=>'idTextField',
+			'width'=>'200px',
+			
+			'maxlength'=>100)); ?>
+	</div>
+		<div class="row">
+		<?php echo CHtml::textField('Text', '', array(
+			'id'=>'idTextField',
+			'width'=>'100px',
+			'maxlength'=>100)); ?>
+	</div>
+	style="width:150px;"
 </div>
