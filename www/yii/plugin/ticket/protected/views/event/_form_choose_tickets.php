@@ -38,11 +38,11 @@ array('style'=>'width:50px')
               );?>
 				</td>
 				<!-- unit price -->
-				<td width="20%">
+				<td width="20%" style="text-align:right">
 					<?php echo $ticketType->price;?>
 				</td>
 				<!-- line total -->
-				<td width="20%">
+				<td width="20%"  style="text-align:right">
 					<?php echo $ticketType->price;?>
 				</td>
 			</tr>
