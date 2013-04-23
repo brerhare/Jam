@@ -1,7 +1,7 @@
 <!-- Display a list of events to pick from -->
 
 <div class="row">
-    <div class="span3 well">
+    <div class="span6 well">
         <h3>Available Events</h3> 
         <table>
         <?php

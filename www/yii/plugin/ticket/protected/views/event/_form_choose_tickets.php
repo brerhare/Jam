@@ -1,4 +1,12 @@
 
+<style>
+
+.row {
+    margin-left: 3px;
+}
+
+</style>
+
 <div class="row">
 	<table>	
 		<?php
@@ -62,18 +70,40 @@
 </div>
 
 <div class="span5 well">
-	<div class="row">
-		<?php echo CHtml::textField('Text', '', array(
-			'id'=>'idTextField',
-			'width'=>'200px',
-			
-			'maxlength'=>100)); ?>
-	</div>
-		<div class="row">
-		<?php echo CHtml::textField('Text', '', array(
-			'id'=>'idTextField',
-			'width'=>'100px',
-			'maxlength'=>100)); ?>
-	</div>
-	style="width:150px;"
+	<table>
+		<tr class="row">
+			<td style="text-align:right">
+				Email Address
+			</td>
+			<td>
+				<input id="email1" value="" class="" MaxLength="50" />
+			</td>
+		</tr>
+		<tr class="row">
+			<td style="text-align:right">
+				Again
+			</td>
+			<td>
+				<input id="email2" value="" class="" MaxLength="50" />
+			</td>
+		</tr>
+		<tr class="row">
+			<td style="text-align:right">
+				Telephone Number
+			</td>
+			<td>
+				<input id="telephone" value="" class="" MaxLength="50" />
+			</td>
+		</tr>
+	</table>
 </div>
+
+<!--
+	<div class="row">
+		<input id="email2" value="" class="" MaxLength="50" />
+	</div>
+	<div class="row">
+		<input name="phone" value="" class="InputTextField" MaxLength="15" style="width:100px"/>
+	</div>
+-->
+
