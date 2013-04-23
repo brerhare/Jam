@@ -21,7 +21,7 @@
 				<td width="10%">
 				</td>
 				<!-- ticket type -->
-				<td width="50%">
+				<td width="40%">
 					<?php echo $ticketType->description;?>
 				</td>
 				<!-- num -->
@@ -38,11 +38,11 @@ array('style'=>'width:50px')
               );?>
 				</td>
 				<!-- unit price -->
-				<td width="15%">
+				<td width="20%">
 					<?php echo $ticketType->price;?>
 				</td>
 				<!-- line total -->
-				<td width="15%">
+				<td width="20%">
 					<?php echo $ticketType->price;?>
 				</td>
 			</tr>
