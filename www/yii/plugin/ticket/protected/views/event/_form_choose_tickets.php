@@ -1,14 +1,26 @@
 <div class="row">
-
+	<table>	
 		<?php
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("ticket_event_id = " . $model->id);
 		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$areas = Area::model()->findAll($criteria);
 		foreach ($areas as $area):
-			echo "<h5>$area->description</h5>";
 		?>
-		<table>	
+			<tr style="background-color:#745882; color:#ffffff">
+				<td colspan="2">
+					<h5><?php echo $area->description;?></h5>
+				</td>
+				<td>
+				Tickets
+				</td>
+				<td style="text-align:right">
+				Price Each
+				</td>
+				<td style="text-align:right">
+				Line Total
+				</td>
+			</tr>
 			<?php
 			$criteria = new CDbCriteria;
 			$criteria->addCondition("ticket_area_id = " . $area->id);
@@ -32,10 +44,7 @@
 					for ($x = 0; $x <= $ticketType->max_tickets_per_order; $x++)
 						array_push($arr, $x);
 					?>
-					<?php echo CHtml::dropDownList('listname', $select, 
-              /*array('1' => '1', '2' => '2')*/ $arr,
-array('style'=>'width:50px')             
-              );?>
+					<?php echo CHtml::dropDownList('listname', $select, $arr, array('style'=>'width:50px'));?>
 				</td>
 				<!-- unit price -->
 				<td width="20%" style="text-align:right">
@@ -47,7 +56,6 @@ array('style'=>'width:50px')
 				</td>
 			</tr>
 			<?php endforeach;?>
-		</table>
 		<?php endforeach;?>
-
+	</table>
 </div>
