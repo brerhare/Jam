@@ -20,7 +20,7 @@
         <i><?php echo $event->date; ?></i>
         </td>
         <td width="20%">
-			<?php echo CHtml::image(Yii::app()->baseUrl . '/userdata/' . Yii::app()->session['uid'] . '/' . $model->ticket_logo_path,
+			<?php echo CHtml::image(Yii::app()->baseUrl . '/userdata/' . Yii::app()->session['uid'] . '/' . $event->ticket_logo_path,
 				'My Image Name',
 				array('style'=>'height:80px;'));
 			?>
