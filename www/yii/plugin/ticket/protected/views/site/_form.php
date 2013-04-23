@@ -8,7 +8,7 @@
 
 <div class="form">
 	<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-		'id'=>'room-form',
+		'id'=>'event-form',
 		'enableAjaxValidation'=>false,
 		'type'=>'horizontal',
 	)); ?>

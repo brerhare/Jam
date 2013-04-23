@@ -28,16 +28,18 @@ class SiteController extends Controller
 	public function actionIndex()
 	{
 		Yii::log("INDEX LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
-        $model=Room::model()->findByPk(2);
-		// renders the view file 'protected/views/site/index.php'
-		// using the default layout 'protected/views/layouts/main.php'
-        $this->render('index',array(
-                        'model'=>$model,
-                        'roomdata'=>array(1,2,3),
-                ));
-		//$this->render('index');
+		$this->render('index');
 	}
 
+	/**
+	 * When an event is clicked.
+	 * Takes the user to the booking tabs
+	 */
+	public function actionBookEvent()
+	{
+		Yii::log("BOOKING TABS LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
+		$this->render('index');
+	}
 
 // @@EG Ajax (see site/_form_choose_rooms.php for client side
 	public function actionAjaxGetRoomPriceAvail()
