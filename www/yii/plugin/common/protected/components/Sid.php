@@ -40,7 +40,7 @@ class Sid extends CBehavior
 			Yii::log("Preprocess request - uid is not set. Aborting" , CLogger::LEVEL_WARNING, 'system.test.kim');
 			throw new CHttpException(500,'Cannot continue without a uid');
 		}
-//header(‘P3P:CP=”IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT”‘);
+header(‘P3P:CP=”IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT”‘);
 	}
 }
 ?>
