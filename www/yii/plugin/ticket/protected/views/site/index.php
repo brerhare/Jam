@@ -15,14 +15,14 @@
         ?>
         <tr>
         <td width="90%">
-        <?php echo $event->title; ?>
+        <b><?php echo $event->title; ?></b>
         <br>
-        <?php echo $event->date; ?>
+        <i><?php echo $event->date; ?></i>
         </td>
         <td width="10%">
 			<?php $this->widget('bootstrap.widgets.TbButton',array(
 				'label' => 'Book',
-				'url' => 'bookEvent',
+				'url' => $this->createUrl('event/index', array('id'=>$event->id)),
 				'type' => 'primary',
 				'size' => 'small'
 			));?>

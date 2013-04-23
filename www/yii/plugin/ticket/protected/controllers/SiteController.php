@@ -31,16 +31,6 @@ class SiteController extends Controller
 		$this->render('index');
 	}
 
-	/**
-	 * When an event is clicked.
-	 * Takes the user to the booking tabs
-	 */
-	public function actionBookEvent()
-	{
-		Yii::log("BOOKING TABS LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
-		$this->render('index');
-	}
-
 // @@EG Ajax (see site/_form_choose_rooms.php for client side
 	public function actionAjaxGetRoomPriceAvail()
 	{
