@@ -14,16 +14,16 @@
             foreach ($events as $event):
         ?>
         <tr>
-        <td width="70%">
-        <b><?php echo $event->title; ?></b>
-        <br>
-        <i><?php echo $event->date; ?></i>
-        </td>
         <td width="20%">
 			<?php echo CHtml::image(Yii::app()->baseUrl . '/userdata/' . Yii::app()->session['uid'] . '/' . $event->ticket_logo_path,
 				'My Image Name',
 				array('style'=>'height:80px;'));
 			?>
+        </td>
+        <td width="70%">
+        <b><?php echo $event->title; ?></b>
+        <br>
+        <i><?php echo $event->date; ?></i>
         </td>
         <td width="10%">
 			<?php $this->widget('bootstrap.widgets.TbButton',array(
