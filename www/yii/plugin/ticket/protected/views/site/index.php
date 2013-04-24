@@ -26,7 +26,7 @@
         <td width="10%">
 			<?php $this->widget('bootstrap.widgets.TbButton',array(
 				'label' => 'Book',
-				'url' => $this->createUrl('event/index', array('id'=>$event->id, 'sid'=>Yii::app()->session['sid'])),
+				'url' => $this->createUrl('bookTickets', array('id'=>$event->id, 'sid'=>Yii::app()->session['sid'])),
 				'type' => 'primary',
 				'size' => 'small'
 			));?>
