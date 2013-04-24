@@ -129,15 +129,15 @@ class EventController extends Controller
 	{
         Yii::log("EVENT INDEX LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
         $model=$this->loadModel($id);        
-
+/*
 echo "GET";
 print_r($_GET);
 echo "POST";
 print_r($_POST);
-
-		if(isset($_POST['Event']))
+*/
+		if(isset($_POST['ptotal']))
 		{
-			Yii::log("EVENT INDEX FORM FILLED: " . $_GET['total'], CLogger::LEVEL_WARNING, 'system.test.kim');
+			Yii::log("EVENT INDEX FORM FILLED: " . $_POST['ptotal'], CLogger::LEVEL_WARNING, 'system.test.kim');
 			$this->redirect(array('site/index',));
 		}
         // renders the view file 'protected/views/site/index.php'

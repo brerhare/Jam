@@ -62,12 +62,13 @@ function calcValues()
 		numTickets += num;
 
 		lineTotal = price * num;
-		document.getElementById(linePrefix + 'total').innerText = '£ ' + lineTotal.toFixed(2);
+		document.getElementById(linePrefix + 'total').innerText = lineTotal.toFixed(2);
+		document.getElementById('p'+linePrefix + 'total').value = lineTotal.toFixed(2);
 		
 		total += lineTotal;
 	}
 	document.getElementById('total').innerText = '£ ' + total.toFixed(2);
-	
+	document.getElementById('ptotal').value = total.toFixed(2);
 }
 
 $(document).ready(function() {
@@ -111,7 +112,9 @@ $(document).ready(function() {
 			<tr style="background-color:#EDE4F2">
 				<!-- blank -->
 				<td width="10%">
-				<?php echo "<div id='" . $linePrefix . "id_" . $ticketType->id . "'><div>";?>
+				<?php $tmp = $linePrefix . "id_" . $ticketType->id; ?>
+				<?php echo "<div id='" . $tmp . "'><div>";?>
+				<?php echo "<input type='hidden' id='p" . $tmp . "' name='p" . $tmp . "' value='0' />";?>
 				</td>
 				<!-- ticket type -->
 				<td width="40%">
@@ -130,10 +133,12 @@ $(document).ready(function() {
 				<!-- unit price -->
 				<td width="20%" style="text-align:right">
 					<?php echo "<div id='" . $linePrefix . "price'>" . $ticketType->price . "</div>";?>
+					<?php echo "<input type='hidden' id='p" . $linePrefix . "price' name='p" . $linePrefix . "price' value='" . $ticketType->price. "' />";?>
 				</td>
 				<!-- line total -->
 				<td width="20%"  style="text-align:right">
 					<?php echo "<div id='" . $linePrefix . "total'></div>";?>
+					<?php echo "<input type='hidden' id='p" . $linePrefix . "total' name='p" . $linePrefix . "total' value='0' />";?>
 				</td>
 			</tr>
 			<?php endforeach;?>
@@ -149,6 +154,7 @@ $(document).ready(function() {
 			</td>
 			<td style="text-align:right; background-color:#745882; color:#ffffff">
 				<?php echo "<div id='total'></div>";?>
+				<?php echo "<input type='hidden' id='ptotal' name='ptotal' value='0' />";?>
 			</td>
 		</tr>
 	</table>
