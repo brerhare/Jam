@@ -4,6 +4,9 @@
 .row {
     margin-left: 3px;
 }
+table td, table th {
+        padding: 0px 5px 0px 5px;
+    }
 
 </style>
 
@@ -35,11 +38,16 @@
 			$criteria->addCondition("ticket_area_id = " . $area->id);
 			$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 			$ticketTypes = TicketType::model()->findAll($criteria);
+			$lc = 0;
 			foreach ($ticketTypes as $ticketType):
+				$lId = $ticketType->id;
+				$lNum = 0;
+				$lPrice = 
 			?>
 			<tr style="background-color:#EDE4F2">
 				<!-- blank -->
 				<td width="10%">
+					<?php echo "<div id=lId_" . $ticketType->id . "><div>";?>
 				</td>
 				<!-- ticket type -->
 				<td width="40%">
@@ -64,6 +72,7 @@
 					<?php echo $ticketType->price;?>
 				</td>
 			</tr>
+				<?php $lc++; ?>
 			<?php endforeach;?>
 		<?php endforeach;?>
 	</table>

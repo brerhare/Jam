@@ -13,15 +13,6 @@
 		'type'=>'horizontal',
 	)); ?>
 
-	<?php $this->widget('bootstrap.widgets.TbTabs',array(
-		'type'=>'tabs',
-		'tabs' => array(
-			array('label'=>'Room Selection', 'content' => $this->renderPartial('_form_choose_rooms', array('form' => $form, 'model' => $model), true), 'active'=>true),
-
-		),
-	));
-	?>
-
 	<?php $this->endWidget(); ?>
 </div><!-- form -->
 
