@@ -1,6 +1,6 @@
 <div class="form">
 	<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-		'id'=>'room-form',
+		'id'=>'ticket-form',
 		'enableAjaxValidation'=>false,
 		'type'=>'horizontal',
 	)); ?>
@@ -125,7 +125,7 @@ $(document).ready(function() {
 					for ($x = 0; $x <= $ticketType->max_tickets_per_order; $x++)
 						array_push($arr, $x);
 					?>
-					<?php echo CHtml::dropDownList($linePrefix . 'select', $select, $arr, array('style'=>'width:50px', 'onchange'=>'calcValues()'));?>
+					<?php echo CHtml::dropDownList($linePrefix . 'select', $select, $arr, array('style'=>'width:55px', 'onchange'=>'calcValues()'));?>
 				</td>
 				<!-- unit price -->
 				<td width="20%" style="text-align:right">
