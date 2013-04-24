@@ -31,69 +31,6 @@ class SiteController extends Controller
 		$this->render('index');
 	}
 
-// @@EG Ajax (see site/_form_choose_rooms.php for client side
-	public function actionAjaxGetRoomPriceAvail()
-	{
-		if (Yii::app()->request->isAjaxRequest)
-		{
-			Yii::log("TEST AJAX CALL: date:" . $_POST['date'] . " room:" . $_POST['roomList'], CLogger::LEVEL_WARNING, 'system.test.kim');
-			if(isset($_POST['date']))
-			{
-				$retArr = array();
-				$roomCount = 0;
-				foreach ($_POST['roomList'] as $roomId)
-				{
-					// Init the array
-					$availDays = array();
-					for ($i = 0; $i < 14; $i++)
-					{
-						$availDays[date('Y-m-d', ($_POST['date'] + ($i * (60 * 60 * 24)) ))] = 1;
-						// Eg '2013-04-16'=>'1'
-					}
-					$criteria = new CDbCriteria;
-					$criteria->addCondition("uid = " . Yii::app()->session['uid']);
-					$criteria->addCondition("room_id = " . $roomId);
-					$criteria->addCondition("date >= '" . date('Y-m-d', $_POST['date']) . "'");
-					$criteria->addCondition("date <= '" . date('Y-m-d', ($_POST['date'] + (13 * (60 * 60 * 24)) )) . "'");
-					$days = Calendar::model()->findAll($criteria);
-					foreach ($days as $day)
-					{
-						$availDays[$day->date] = 0;
-						// Eg '2013-04-16'=>'0'
-						$i++;
-					}
-					$arr = array();
-					$i = 0;
-					foreach ($availDays as $k => $v)
-						$arr[$i++] = $v;
-
-					// Add this room and its datearray to the return array
-					$roomStr = 'room_' . $roomCount;
-					$retArr[$roomStr]['roomId'] = $roomId;
-					$retArr[$roomStr]['dates'] = $arr;
-
-					$roomCount++;
-				}
-				$retArr['numRooms'] = $roomCount;
-				
-				echo CJSON::encode($retArr);
-
-/*				echo CJSON::encode(array(
-					'numRooms' => '2',
-					'room_1' => array(
-						'roomId' => 23,
-						'dates' => array(1,1,1,1,1,1,1,1,1,1,1,1,1,1),
-					}
-					'room_2' => array(
-						'roomId' => 17,
-						'dates' => array(0,0,0,0,0,0,0,1,1,0,0,0,0,0)
-					)
-				)); */
-			}
-
-	    }
-		Yii::log("EXIT TEST AJAX CALL: " . $_POST['date'] , CLogger::LEVEL_WARNING, 'system.test.kim');
-	}
 	
 	/**
 	 * This is the action to handle external exceptions.
