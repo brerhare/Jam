@@ -1,0 +1,214 @@
+<?php
+
+//============================================================+
+// File name   : example_050.php
+//============================================================+
+
+function generateTicket($adults, $children, &$ticketNumber)
+{
+//	require_once('../config/lang/eng.php');
+//	require_once('../tcpdf.php');
+
+	require_once('tcpdf/config/lang/eng.php');
+	require_once('tcpdf/tcpdf.php');
+
+	// create new PDF document
+	$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+
+	// set document information
+	$pdf->SetCreator(PDF_CREATOR);
+	$pdf->SetAuthor('Wirefly Design');
+	$pdf->SetTitle('Your tickets');
+	$pdf->SetSubject('');
+	$pdf->SetKeywords('PDF, ticket');
+
+	// set default header data
+	//$pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 050', PDF_HEADER_STRING);
+
+	// set header and footer fonts
+	$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+	$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
+
+	// set default monospaced font
+	$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+	//set margins
+	$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+	$pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+	$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+	//set auto page breaks
+	$pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+	//set image scale factor
+	$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+	//set some language-dependent strings
+	$pdf->setLanguageArray($l);
+
+	// ---------------------------------------------------------
+
+	// NOTE: 2D barcode algorithms must be implemented on 2dbarcode.php class file.
+
+	for ($i = 0; $i < ($adults + $children); $i++)
+	{
+		// add a page
+		$pdf->AddPage();
+
+		// print a message
+		//$txt = "You can also export 2D barcodes in other formats (PNG, SVG, HTML). Check the source code documentation of TCPDF2DBarcode class for further information.";
+		//$pdf->MultiCell(70, 50, $txt, 0, 'J', false, 1, 125, 30, true, 0, false, true, 0, 'T', false);
+
+		$pdf->SetFont('helvetica', '', 12);
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		// 4 numeric groups 00000 00000 00000 000000
+		$logo = "img/comlogo.jpg";
+		$custId = "00001";
+		$eventId = "00001";
+		$seqNo = rand(10000,99999);
+		$rand = rand(10000,99999);
+		$ticketContent = $custId . $eventId . '-' . $seqno . $rand;
+
+		// Pick up the event record
+		$dbhandle="";
+    	_dbinit($dbhandle);
+    	$sql = "SELECT * FROM event where id = 1";
+    	$result = mysql_query($sql) or die(mysql_error());
+    	if (($qe = mysql_fetch_array($result, MYSQL_ASSOC)) == true)
+		{
+			$eventTitle = $qe['title'];
+			$startDate = $qe['start_date'];
+		}
+    	else
+		{
+        	$eventTitle = 'Undefined';
+			$startDate = 'Undefined';
+		}
+    	_dbfin($dbhandle);
+
+		$tbl = '<table border="5" style="border-color:gray;" cellpadding="15">';
+		$tbl .= '	<tr valign="center">';
+		$tbl .= '		<td width="380px" height="99px" style="font-size:27;">';
+		$tbl .=  $eventTitle;
+		$tbl .= '		</td>';
+		$tbl .= '		<td width="120px"rowspan="4">Logo</td>';
+		$tbl .= '	</tr>';
+		$tbl .= '	<tr>';
+		$tbl .= '		<td style="height:33px" >';
+		$tbl .= 'Date ' . $startDate;
+		$tbl .= '</td>';
+		$tbl .= '	</tr>';
+		$tbl .= '	<tr>';
+		$tbl .= '		<td style="height:33px" >Ticket type</td>';
+		$tbl .= '	</tr>';
+		$tbl .= '	<tr>';
+		$tbl .= '		<td style="height:33px" >Ticket number</td>';
+		$tbl .= '	</tr>';
+		$tbl .= ' </table>';
+
+		$pdf->writeHTML($tbl, true, false, false, false, '');
+
+		// - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+		// set style for barcode
+		$style = array(
+			'border' => 0,
+			'vpadding' => 'auto',
+			'hpadding' => 'auto',
+			'fgcolor' => array(0,0,0),
+			'bgcolor' => false, //array(255,255,255)
+			'module_width' => 1, // width of a single module in points
+			'module_height' => 1 // height of a single module in points
+		);
+
+		$pdf->Image($logo, 124, 29, 30, 30, 'JPG', '', '', false, 300, '', false, false, 0, $fitbox, false, false);
+
+		// QRCODE,L : QR-CODE Low error correction
+		//$pdf->write2DBarcode($ticketContent, 'QRCODE,L', 20, 30, 50, 50, $style, 'N');
+		//$pdf->Text(20, 25, 'QRCODE L');
+
+		// QRCODE,M : QR-CODE Medium error correction
+		//$pdf->write2DBarcode($ticketContent, 'QRCODE,M', 20, 90, 50, 50, $style, 'N');
+		//$pdf->Text(20, 85, 'QRCODE M');
+
+		// QRCODE,Q : QR-CODE Better error correction
+		$pdf->write2DBarcode($ticketContent, 'QRCODE,Q', 122, 66, 35, 35, $style, 'N');
+		//$pdf->Text(20, 145, 'QRCODE Q');
+
+		// QRCODE,H : QR-CODE Best error correction
+		//$pdf->write2DBarcode($ticketContent, 'QRCODE,H', 20, 210, 50, 50, $style, 'N');
+		//$pdf->Text(20, 205, 'QRCODE H');
+
+		// ---------------------------------------------------------
+
+		// Write the barcoded number
+		$pdf->Text(47, 91, $ticketContent);
+		$ticketNumber = $ticketContent;
+
+//		// Write Adult/Child
+		$type = 'ADULT 18+';
+		if ($i >= $adults)
+			$type = 'TEENAGER 14-17';
+		$pdf->Text(41, 77, $type);
+
+
+		// Embed the google map
+		//$mapLocation = '<iframe width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.co.uk/maps?hl=en&amp;ie=UTF8&amp;q=comlongon+castle&amp;fb=1&amp;gl=uk&amp;hq=comlongon+castle&amp;hnear=comlongon+castle&amp;cid=0,0,10091196723763314406&amp;ll=55.006046,-3.423636&amp;spn=0.006295,0.006295&amp;t=m&amp;output=embed"></iframe><br /><small><a href="https://maps.google.co.uk/maps?hl=en&amp;ie=UTF8&amp;q=comlongon+castle&amp;fb=1&amp;gl=uk&amp;hq=comlongon+castle&amp;hnear=comlongon+castle&amp;cid=0,0,10091196723763314406&amp;ll=55.006046,-3.423636&amp;spn=0.006295,0.006295&amp;t=m&amp;source=embed" style="color:#0000FF;text-align:left">View Larger Map</a></small>';
+		// $pdf->writeHTML($map, true, false, false, false, '');
+
+		$pdf->Image('img/map.jpg', 15, 120, 0, 0, 'JPG', '', '', true, 150, '', false, false, 1, false, false, false);
+	}
+
+
+	// Print the 'reciept' page
+	$pdf->AddPage();
+
+	//$pdf->Text(40, 30, '<Standard Card Receipt format>');
+	//$pdf->Text(40, 38, $adults . ' Adult tickets @ £15.00' );
+	//$pdf->Text(40, 46, $children . ' Child tickets @ £10.00' );
+	//$pdf->Text(40, 54, 'Total taken : £' . (($adults*1500) + ($children*1000) +  ($adults*30) + ($children*30)) );
+
+	$totTaken = (($adults*1500) + ($children*1000) +  ($adults*30) + ($children*30));
+$tot = number_format(($totTaken/100),2);
+
+	//$pdf->writeHTML('<b>Name: ' . $qe['title'], true, false, false, false, '');
+	$pdf->writeHTML('<b>Event: ' . $qe['title'], true, false, false, false, '');
+	$pdf->writeHTML('<b>Venue: ' . $qe['address'], true, false, false, false, '');
+	$pdf->writeHTML('<b>Date: ' . $qe['start_date'], true, false, false, false, '');
+	$pdf->writeHTML('<b>Number of tickets on order: ' . ($adults + $children), true, false, false, false, '');
+	$pdf->writeHTML('<br><p><b>Order total: £ ' . $tot, true, false, false, false, '');
+
+	//$pdf->Text(40, 30, 'Event: ' . $qe['title']);
+	//$pdf->Text(40, 38, 'Venue: ' . $qe['address']);
+
+	$tnc = '<br><p>Standard Terms & Conditions:<p>
+	If an event is cancelled your booking will be refunded directly by the Event Organiser. If details of the Event are significantly changed after a booking is placed or if an event is moved from its advertised venue or the date is changed tickets already purchased remain valid should you wish to attend the revised Event. If you do not wish to attend the revised Event your booking will be refunded in full by the Event Organiser.
+	<p>
+Some event organisers will explicitly stipulate that cancellations due to weather, act of God or any other unavoidable eventuality (force majeure) will not result in a refund. If such terms, or any other terms were applied at the time of booking and stated in the Additional Information section above and on the E-Ticket, they shall prevail over these Standard Terms & Conditions and may result in no refund being due.
+	<p>
+Tickets cannot be exchanged, refunded or replaced if lost as the varying exchange and refund policies set forth by individual Event Organisers prohibit DG Link or Wirefly Design Ltd from doing so. Where a refund is sought you should contact the Event Organiser directly as only they may reply to your request, and at their discretion.
+	<p>
+DG Link or Wirefly Design Ltd will under no circumstances be responsible for any remedy for inconvenience, consequential expenses incurred  or any other loss or damage resulting from the cancellation of or change to any Events.
+	<p>
+Booking Fees are VAT exempt as they are applied to cover card transaction fees. DG Link / Wirefly Design Ltd provides an online ticket booking service on behalf of the Event Organiser as stated on the Receipt and Ticket. Registered address for Wirefly Design Ltd: Crimond, Mavis Grove, Dumfries, DG2 8EP
+	<p>
+Debit and credit card payments are processed on behalf of DG Link by Wirefly Design Ltd. Ticket bookings will appear on your statement as Wirefly Design. If you would like to sell or give away tickets for your next event you can do this by uploading your event for free on www.dglink.co.uk. You will then have the option to use the box office facility. There are no fees for ticket reservations, please see www.dglink.co.uk for a full list of fees and Terms and Conditions.';
+
+	$pdf->writeHTML($tnc, true, false, false, false, '');
+
+	// ---------------------------------------------------------
+	//Close and output PDF document
+	unlink('tkts/ticket24390.pdf');
+	unlink('/tmp//ticket24390.pdf');
+	$pdf->Output('tkts/ticket24390.pdf', 'F');
+	$pdf->Output('/tmp/ticket24390.pdf', 'F');
+
+//============================================================+
+// END OF FILE
+//============================================================+
+
+}
+
+
