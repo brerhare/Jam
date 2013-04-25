@@ -66,7 +66,7 @@ print_r($_POST);
 		if(isset($_POST['ptotal']))
 		{
 			Yii::log("EVENT INDEX FORM FILLED: " . $_POST['ptotal'], CLogger::LEVEL_WARNING, 'system.test.kim');
-			$this->redirect(array('site/index',));
+			$this->redirect(array('index',));
 		}
         // renders the view file 'protected/views/site/index.php'
         // using the default layout 'protected/views/layouts/main.php'
