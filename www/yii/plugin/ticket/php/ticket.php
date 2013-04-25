@@ -1,6 +1,7 @@
 <?php
 
 function genTicket(
+	$order_number,
 	$vendor_id,
 	$event_id,
 	$ticket_type_area,
@@ -9,14 +10,14 @@ function genTicket(
 	$ticket_type_price,
 	$ticket_type_total,
 	$total,
-	&$ticketNumbers
+	&$ticket_numbers
 )
 {
 	require_once('../../../tcpdf/config/lang/eng.php');
 	require_once('../../../tcpdf/tcpdf.php');
 
-	$vendor = Vendor::model()->findByPk($vendor_id); 
-	$event = Event::model()->findByPk($event_id);
+	$vendorModel = Vendor::model()->findByPk($vendor_id); 
+	$eventModel = Event::model()->findByPk($event_id);
 
 	$dgLogo = CHtml::image(
 		Yii::app()->baseUrl . '/img/DGLink_Box_Office_plus_web_address.jpg',
@@ -25,13 +26,10 @@ function genTicket(
 	);
 
 	$ticketLogo = CHtml::image(
-		Yii::app()->baseUrl . '/userdata/' . Yii::app()->session['uid'] . '/' . $event->ticket_logo_path,
+		Yii::app()->baseUrl . '/userdata/' . Yii::app()->session['uid'] . '/' . $eventModel->ticket_logo_path,
 		'Logo Image',
 		array('style'=>'height:80px;')
 	);
-
-	$orderNumber = '111';
-	$startDate="12/23/4555";
 
 	// create new PDF document
 	$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -71,62 +69,68 @@ function genTicket(
 
 	// NOTE: 2D barcode algorithms must be implemented on 2dbarcode.php class file.
 
-	for ($type = 0; $type < $ticket_type_id; $type++)
+	$orderLines = count($ticket_type_id);
+	for ($type = 0; $type < $orderLines; $type++)
 	{
-		// add a page
-		$pdf->AddPage();
-		$pdf->SetFont('helvetica', '', 12);
+		for ($ticket = 0; $ticket < $ticket_type_qty[$type]; $ticket++)
+		{
+			$areaModel = Area::model()->findByPk($ticket_type_area[$type]); 
+			// add a page
+			$pdf->AddPage();
+			$pdf->SetFont('helvetica', '', 12);
 
 $tbl = <<<EOD
-	<table border="0">
-		<tr>
-			<td width="70%">
-				Tickets by: $vendor->name<br>
-				DG Link Box Office powered by Wirefly Design
-			</td>
-			<td width="30%" style="text-align:right">
-				$dgLogo
-			</td>
-		</tr>
-	</table>
-	<br/>
-		<table border="5" style="border-color:gray;" cellpadding="15">
-		<tr valign="center">
-			<td width="520px" height="99px" style="font-size:27;">
-				$event->title
-			</td>
-			<td width="120px"rowspan="4">
-				<table>
-					<tr>
-						<td>
-				$ticketLogo
-						</td>
-					</tr>
-					<tr>
-						<td>
-				$ticketLogo
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td style="height:33px" >
-				Date $startDate
-			</td>
-		</tr>
-		<tr>
-			<td style="height:33px" >Ticket type</td>
-		</tr>
-		<tr>
-			<td style="height:33px" >Ticket number</td>
-		</tr>
-	</table>
+		<table border="0">
+			<tr>
+				<td width="70%">
+					Tickets by: $vendorModel->name<br>
+					DG Link Box Office powered by Wirefly Design
+				</td>
+				<td width="30%" style="text-align:right">
+					$dgLogo
+				</td>
+			</tr>
+		</table>
+		<br/>
+			<table border="5" style="border-color:gray;" cellpadding="15">
+			<tr valign="center">
+				<td width="520px" height="99px" style="font-size:27;">
+					$eventModel->title
+				</td>
+				<td width="120px"rowspan="4">
+					<table>
+						<tr>
+							<td>
+					$ticketLogo
+							</td>
+						</tr>
+						<tr>
+							<td>
+					$ticketLogo
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td style="height:33px" >
+					$eventModel->date
+				</td>
+			</tr>
+			<tr>
+				<td style="height:33px" >
+					$areaModel->description</td>
+			</tr>
+			<tr>
+				<td style="height:33px" >Ticket number</td>
+			</tr>
+		</table>
 EOD;
 
-		$pdf->writeHTML($tbl, true, false, false, false, '');
+			$pdf->writeHTML($tbl, true, false, false, false, '');
+		}
 	}
-	$pdf->Output('/tmp/' . $orderNumber . '.pdf', 'F');
+	$pdf->Output('/tmp/' . $order_number . '.pdf', 'F');
 }
 
 //============================================================+
