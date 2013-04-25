@@ -114,7 +114,8 @@ $(document).ready(function() {
 				<td width="10%">
 				<?php $tmp = $linePrefix . "id_" . $ticketType->id; ?>
 				<?php echo "<div id='" . $tmp . "'><div>";?>
-				<?php echo "<input type='hidden' id='p" . $tmp . "' name='p" . $tmp . "' value='0' />";?>
+				<?php echo "<input type='hidden' [id='p" . $linePrefix . "id' name='p" . $linePrefix . "id' ] value='" . $ticketType->id . "' />";?>
+				<?php echo "<input type='hidden' [id='p" . $linePrefix . "area' name='p" . $linePrefix . "area' ] value='" . $area->id . "' />";?>
 				</td>
 				<!-- ticket type -->
 				<td width="40%">
@@ -208,8 +209,8 @@ $this->widget('zii.widgets.jui.CJuiButton', array(
 			var email1 = document.getElementById("email1").value;
 			var email2 = document.getElementById("email2").value;
 
-			if ((email1 != email2) || (!email1) || (email1.indexOf(".") == -1) || (email1.indexOf("@") == -1))
-				err += "Invalid email\n";
+	//		if ((email1 != email2) || (!email1) || (email1.indexOf(".") == -1) || (email1.indexOf("@") == -1))
+	//			err += "Invalid email\n";
 
 			if (err != "")
 			{
@@ -221,6 +222,8 @@ $this->widget('zii.widgets.jui.CJuiButton', array(
 ));
 ?>
 </div>
+<a href=<?php echo Yii::app()->request->baseUrl . '/';?>00002.pdf>PDF HERE </a>
+
 
 <!--
 	<div class="row">

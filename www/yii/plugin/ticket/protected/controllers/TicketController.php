@@ -1,5 +1,8 @@
 <?php
 
+// TCPDF ticket file
+require_once("php/ticket.php"); 
+
 class TicketController extends Controller
 {
 	/**
@@ -57,16 +60,49 @@ class TicketController extends Controller
 	{
         Yii::log("EVENT BOOKING PAGE LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
         $model=$this->loadModel($id);
-/*
-echo "GET";
-print_r($_GET);
-echo "POST";
-print_r($_POST);
-*/
-		if(isset($_POST['ptotal']))
+
+//echo "GET";
+//print_r($_GET);
+//echo "POST";
+//print_r($_POST);
+
+		if ((isset($_POST['ptotal'])) && ($_POST['ptotal'] != 0))
 		{
 			Yii::log("EVENT INDEX FORM FILLED: " . $_POST['ptotal'], CLogger::LEVEL_WARNING, 'system.test.kim');
-			$this->redirect(array('index',));
+			// Print the tickets
+			$ticket_type_area_arr = array();
+			$ticket_type_id_arr = array();
+			$ticket_type_qty_arr = array();
+			$ticket_type_price_arr = array();
+			$ticket_type_total_arr = array();
+			$ticketNumbers = array();
+			for ($x = 0; ; $x++)
+			{
+				if(!isset($_POST['line_' . $x . '_select']))	// ie no more lines
+					break;
+				$qty = $_POST['line_' . $x . '_select'];
+				if ($qty == 0)	// ie no tickets for this line
+					continue;
+				array_push($ticket_type_area_arr,  $_POST['pline_' . $x . '_area']);
+				array_push($ticket_type_id_arr,    $_POST['pline_' . $x . '_id']);
+				array_push($ticket_type_qty_arr,   $qty);
+				array_push($ticket_type_price_arr, $_POST['pline_' . $x . '_price']);
+				array_push($ticket_type_total_arr, $_POST['pline_' . $x . '_total']);
+			}
+
+			genTicket(
+				$model->ticket_vendor_id,
+				$model->id,
+				$ticket_type_area_arr,
+				$ticket_type_id_arr,
+				$ticket_type_qty_arr,
+				$ticket_type_price_arr,
+				$ticket_type_total_arr,
+				$_POST['ptotal'],
+				$ticketNumbers
+			);
+			// Update the db
+			//$this->redirect(array('index',));
 		}
         // renders the view file 'protected/views/site/index.php'
         // using the default layout 'protected/views/layouts/main.php'
