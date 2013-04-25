@@ -49,6 +49,9 @@ return array(
 
 	// application components
 	'components'=>array(
+		'session' => array(
+		'timeout' => 30000,	// @@EG @@TODO How to set session timeout
+		),
 		'bootstrap'=>array(
 			'class' => 'ext.bootstrap.components.Bootstrap',
 			'responsiveCss' => true,

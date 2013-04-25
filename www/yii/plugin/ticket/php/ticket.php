@@ -75,6 +75,7 @@ function genTicket(
 		for ($ticket = 0; $ticket < $ticket_type_qty[$type]; $ticket++)
 		{
 			$areaModel = Area::model()->findByPk($ticket_type_area[$type]); 
+			$ticketTypeModel = TicketType::model()->findByPk($ticket_type_id[$type]);
 			// add a page
 			$pdf->AddPage();
 			$pdf->SetFont('helvetica', '', 12);
@@ -119,7 +120,7 @@ $tbl = <<<EOD
 			</tr>
 			<tr>
 				<td style="height:33px" >
-					$areaModel->description</td>
+					$areaModel->description $ticketTypeModel->description</td>
 			</tr>
 			<tr>
 				<td style="height:33px" >Ticket number</td>
