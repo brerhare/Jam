@@ -125,7 +125,10 @@ $(document).ready(function() {
 					<?php
 					$select=0;
 					$arr = array();
-					for ($x = 0; $x <= $ticketType->max_tickets_per_order; $x++)
+					$arrNum = $ticketType->max_tickets_per_order;
+					if ($arrNum == 0)
+						$arrNum = 9;
+					for ($x = 0; $x <= $arrNum; $x++)
 						array_push($arr, $x);
 					?>
 					<?php echo CHtml::dropDownList($linePrefix . 'select', $select, $arr, array('style'=>'width:55px', 'onchange'=>'calcValues()'));?>
