@@ -1,6 +1,6 @@
 <?php
 
-class EventController extends Controller
+class TicketController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -27,7 +27,7 @@ class EventController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','book'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -44,9 +44,18 @@ class EventController extends Controller
 		);
 	}
 
-	public function actionIndex($id)
+	/**
+	 * Show the choice of events
+	 */	 
+	public function actionIndex()
 	{
-        Yii::log("EVENT INDEX LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
+		Yii::log("ARE WE DEFAULT? INDEX LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
+		$this->render('index');
+	}
+
+	public function actionBook($id)
+	{
+        Yii::log("EVENT BOOKING PAGE LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
         $model=$this->loadModel($id);
 /*
 echo "GET";
@@ -61,7 +70,7 @@ print_r($_POST);
 		}
         // renders the view file 'protected/views/site/index.php'
         // using the default layout 'protected/views/layouts/main.php'
-        $this->render('index',array(
+        $this->render('book',array(
                         'model'=>$model,
                         'somedata'=>array(1,2,3),
         ));

@@ -9,6 +9,9 @@ return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
 	'name'=>'Application',
 
+	// @@EG change default controller
+	'defaultController' =>  'ticket',
+
 	// preloading 'log' component
 	// preloading 'yiibooster' component
 	'preload'=>array('log', 'bootstrap'),
