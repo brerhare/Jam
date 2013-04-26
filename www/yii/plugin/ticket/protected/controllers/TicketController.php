@@ -30,7 +30,7 @@ class TicketController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','book'),
+				'actions'=>array('index','view','book','paid'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -121,64 +121,53 @@ class TicketController extends Controller
         ));
 	}
 
-	public function actionPaid($id)
+	public function actionPaid()
 	{
         Yii::log("PAID PAGE LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
-        $model=$this->loadModel($id);
 
-//echo "GET";
-//print_r($_GET);
-//echo "POST";
-//print_r($_POST);
+          $ip = "UNKNOWN";
+          if (getenv("HTTP_CLIENT_IP"))
+              $ip = getenv("HTTP_CLIENT_IP");
+          else if (getenv("HTTP_X_FORWARDED_FOR"))
+              $ip = getenv("HTTP_X_FORWARDED_FOR");
+          else if (getenv("REMOTE_ADDR"))
+              $ip = getenv("REMOTE_ADDR");
 
-		if ((isset($_POST['ptotal'])) && ($_POST['ptotal'] != 0))
-		{
-			Yii::log("EVENT INDEX FORM FILLED: " . $_POST['ptotal'], CLogger::LEVEL_WARNING, 'system.test.kim');
+        $ticket_type_area_arr = array();
+		$ticket_type_id_arr = array();
+		$ticket_type_qty_arr = array();
+		$ticket_type_price_arr = array();
+		$ticket_type_total_arr = array();
+		$ticketNumbers = array();
+		
+		$criteria = new CDbCriteria;
+        //$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+        $criteria->addCondition("ip = '" . $ip . "'");
 
-            $ip = "UNKNOWN";
-            if (getenv("HTTP_CLIENT_IP"))
-                $ip = getenv("HTTP_CLIENT_IP");
-            else if (getenv("HTTP_X_FORWARDED_FOR"))
-                $ip = getenv("HTTP_X_FORWARDED_FOR");
-            else if (getenv("REMOTE_ADDR"))
-                $ip = getenv("REMOTE_ADDR");
+        $orders = Order::model()->findAll($criteria);
+        foreach ($orders as $order)
+        {
+        	array_push($ticket_type_area_arr,  $order->http_ticket_type_area);
+			array_push($ticket_type_id_arr,    $order->http_ticket_type_id);
+			array_push($ticket_type_qty_arr,   $order->http_ticket_type_qty);
+			array_push($ticket_type_price_arr, $order->http_ticket_type_price);
+			array_push($ticket_type_total_arr, $order->http_ticket_type_total);
+        }
 
-			// Print the tickets
-			$ticket_type_area_arr = array();
-			$ticket_type_id_arr = array();
-			$ticket_type_qty_arr = array();
-			$ticket_type_price_arr = array();
-			$ticket_type_total_arr = array();
-			$ticketNumbers = array();
-			for ($x = 0; ; $x++)
-			{
-				if(!isset($_POST['line_' . $x . '_select']))	// ie no more lines
-					break;
-				$qty = $_POST['line_' . $x . '_select'];
-				if ($qty == 0)	// ie no tickets for this line
-					continue;
-				array_push($ticket_type_area_arr,  $_POST['pline_' . $x . '_area']);
-				array_push($ticket_type_id_arr,    $_POST['pline_' . $x . '_id']);
-				array_push($ticket_type_qty_arr,   $qty);
-				array_push($ticket_type_price_arr, $_POST['pline_' . $x . '_price']);
-				array_push($ticket_type_total_arr, $_POST['pline_' . $x . '_total']);
-			}
+		$ticketNumbers = array();
+		genTicket(
+			$order->order_number,
+			$order->vendor_id,
+			$order->event_id,
+			$ticket_type_area_arr,
+			$ticket_type_id_arr,
+			$ticket_type_qty_arr,
+			$ticket_type_price_arr,
+			$ticket_type_total_arr,
+			$order->http_total,
+			$ticketNumbers
+		);
 
-			genTicket(
-				"O-" . time(),
-				$model->ticket_vendor_id,
-				$model->id,
-				$ticket_type_area_arr,
-				$ticket_type_id_arr,
-				$ticket_type_qty_arr,
-				$ticket_type_price_arr,
-				$ticket_type_total_arr,
-				$_POST['ptotal'],
-				$ticketNumbers
-			);
-			// Update the db
-			//$this->redirect(array('index',));
-		}
         // renders the view file 'protected/views/site/index.php'
         // using the default layout 'protected/views/layouts/main.php'
         $this->render('book',array(
