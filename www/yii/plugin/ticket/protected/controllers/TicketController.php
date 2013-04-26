@@ -173,9 +173,9 @@ class TicketController extends Controller
 		);
 
 		// Send email
-		$from = "admin@dglink.co.uk";
+		$from = "kim@dglink.co.uk";
 		$fromName = "Admin";
-		$to = 'kim@wireflydesign.com';
+		$to = "kim@wireflydesign.com";
 		$subject = "Your tickets purchased at DG Link";
 		$message = '<b>Thank you for using the DG Link to order your ticket(s).</b> <br> The attached PDF file contains your ticket(s) and card receipt. Please print all pages and bring them with you to your event or activity. The barcode on each ticket can only be used once.<br> If you ever need to reprint your tickets you may login to the site and do so from your account page. If you have forgotten your log in details you can request a password reminder.<br> We hope you enjoy your event.  --  The DG Link Team';
 		$pdf_filename = '/tmp/' . $order->order_number . '.pdf';
@@ -186,14 +186,20 @@ class TicketController extends Controller
 		$mail->SetFrom($from, $fromName);
 		$mail->AddReplyTo($from, $fromName);
 
-		$mail->AddAttachment($pdf_filename);
+//		$mail->AddAttachment($pdf_filename);
 		$mail->Subject = $subject;
 
 		//$mail->Body = $message;
 		$mail->MsgHTML($message);
 
 		if (!$mail->Send())
+		{
+			Yii::log("PAID PAGE COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
 			echo "<div id=\"mailerrors\">Mailer Error: " . $mail->ErrorInfo . "</div>";
+		}
+		else
+			Yii::log("PAID PAGE COULD SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+		
 
             // delete the temp file
 //            copy($pdf_filename, 'tkts/' . $q['orderNum'] . '.pdf');
