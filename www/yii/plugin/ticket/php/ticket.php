@@ -138,16 +138,23 @@ $tbl = <<<EOD
 				</td>
 			</tr>
 			<tr>
-				<td style="height:33px" >
+
+				<td width="70px" rowspan="3">
+				</td>
+
+				<td width="450px" height="40px" style="height:35px" >
 					Date $eventModel->date
 				</td>
 			</tr>
 			<tr>
-				<td style="height:33px" >
-					$areaModel->description - $ticketTypeModel->description</td>
+				<td height="40px" style="height:35px" >
+					$areaModel->description
+<br/>					
+					$ticketTypeModel->description
+				</td>
 			</tr>
 			<tr>
-				<td style="height:33px" >
+				<td height="30px" style="height:35px" >
 					Ticket number $ticketContent
 				</td>
 			</tr>
@@ -160,7 +167,15 @@ $tbl = <<<EOD
 		$eventModel->ticket_terms
 EOD;
 			$pdf->writeHTML($tbl, true, false, false, false, '');
+
+			// QR
 			$pdf->write2DBarcode($ticketContent, 'QRCODE,Q', 163, 92, 35, 35, $style, 'N');
+			// EAN 13
+			$pdf->StartTransform();
+			$pdf->Rotate(-90);
+			//                                               U-D    L-R
+			$pdf->write1DBarcode($ticketContent, 'EAN13', -24, 105, '', 18, 0.4, $style, 'N');
+			$pdf->StopTransform();
 		}
 	}
 
