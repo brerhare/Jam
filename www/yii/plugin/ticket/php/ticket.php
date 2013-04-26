@@ -224,8 +224,7 @@ EOD;
 
 
 
-	//$pdf->Output('/tmp/' . $order_number . '.pdf', 'F');
-	$pdf->Output('/tmp/' . 'TICKET' . '.pdf', 'F');
+	$pdf->Output('/tmp/' . $order_number . '.pdf', 'F');
 }
 
 

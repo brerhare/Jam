@@ -2,6 +2,8 @@
 
 // TCPDF ticket file
 require_once("php/ticket.php"); 
+// PHPMailer
+require_once('php/PHPMailer/class.phpmailer.php');
 
 class TicketController extends Controller
 {
@@ -144,6 +146,7 @@ class TicketController extends Controller
         //$criteria->addCondition("uid = " . Yii::app()->session['uid']);
         $criteria->addCondition("ip = '" . $ip . "'");
 
+		// Retrieve the original order, now populated by paymentsense
         $orders = Order::model()->findAll($criteria);
         foreach ($orders as $order)
         {
@@ -154,6 +157,7 @@ class TicketController extends Controller
 			array_push($ticket_type_total_arr, $order->http_ticket_type_total);
         }
 
+		// Print tickets
 		$ticketNumbers = array();
 		genTicket(
 			$order->order_number,
@@ -167,6 +171,39 @@ class TicketController extends Controller
 			$order->http_total,
 			$ticketNumbers
 		);
+
+		// Send email
+		$from = "admin@dglink.co.uk";
+		$fromName = "Admin";
+		$to = 'kim@wireflydesign.com';
+		$subject = "Your tickets purchased at DG Link";
+		$message = '<b>Thank you for using the DG Link to order your ticket(s).</b> <br> The attached PDF file contains your ticket(s) and card receipt. Please print all pages and bring them with you to your event or activity. The barcode on each ticket can only be used once.<br> If you ever need to reprint your tickets you may login to the site and do so from your account page. If you have forgotten your log in details you can request a password reminder.<br> We hope you enjoy your event.  --  The DG Link Team';
+		$pdf_filename = '/tmp/' . $order->order_number . '.pdf';
+
+		// using the phpmailer class
+		$mail = new PHPMailer();
+		$mail->AddAddress($to);
+		$mail->SetFrom($from, $fromName);
+		$mail->AddReplyTo($from, $fromName);
+
+		$mail->AddAttachment($pdf_filename);
+		$mail->Subject = $subject;
+
+		//$mail->Body = $message;
+		$mail->MsgHTML($message);
+
+		if (!$mail->Send())
+			echo "<div id=\"mailerrors\">Mailer Error: " . $mail->ErrorInfo . "</div>";
+
+            // delete the temp file
+//            copy($pdf_filename, 'tkts/' . $q['orderNum'] . '.pdf');
+//            $rnd = rand(10000,99999) . '_' . $q['orderNum'];
+//            copy($pdf_filename, 'tktp/' . $rnd . '.pdf');
+//            unlink($pdf_filename);
+
+
+
+
 
         // renders the view file 'protected/views/site/index.php'
         // using the default layout 'protected/views/layouts/main.php'
