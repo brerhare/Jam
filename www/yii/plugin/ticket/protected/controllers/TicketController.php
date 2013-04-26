@@ -102,6 +102,7 @@ class TicketController extends Controller
 				$order->http_ticket_type_price = $_POST['pline_' . $x . '_price'];
 				$order->http_ticket_type_total = $_POST['pline_' . $x . '_total'];
 				$order->http_total = $_POST['ptotal'];
+				$order->return_url = Yii::app()->baseUrl;
 				if(!$order->save())
 				{
 					$this->redirect(array('admin'));

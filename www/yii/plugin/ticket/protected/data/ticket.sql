@@ -168,6 +168,7 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`ticket_order` (
   `http_ticket_type_total` VARCHAR(45) NULL ,
   `http_total` VARCHAR(45) NULL ,
   `auth_code` VARCHAR(45) NULL ,
+  `return_url` VARCHAR(255) NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `uid` (`uid` ASC) ,
   INDEX `ip` (`ip` ASC) )
