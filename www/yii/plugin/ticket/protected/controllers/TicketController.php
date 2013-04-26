@@ -201,9 +201,9 @@ class TicketController extends Controller
 			Yii::log("PAID PAGE COULD SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		
             // delete the temp file
-            copy($pdf_filename, Yii::app()->baseUrl . '/tkts/' . $order->order_number . '.pdf');
+            copy($pdf_filename, Yii::app()->basePath . '/tkts/' . $order->order_number . '.pdf');
             $rnd = rand(10000,99999) . '_' . $order->order_number;
-            copy($pdf_filename, Yii::app()->baseUrl . '/tktp/' . $rnd . '.pdf');
+            copy($pdf_filename, Yii::app()->basePath . '/tktp/' . $rnd . '.pdf');
             unlink($pdf_filename);
 
         // renders the view file 'protected/views/site/index.php'
