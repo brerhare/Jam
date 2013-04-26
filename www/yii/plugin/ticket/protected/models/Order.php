@@ -19,6 +19,8 @@
  * @property string $http_total
  * @property string $auth_code
  * @property string $return_url
+ * @property string $email_address
+ * @property string $telephone
  */
 class Order extends CActiveRecord
 {
@@ -50,11 +52,11 @@ class Order extends CActiveRecord
 		return array(
 			array('uid, ip, vendor_id, event_id', 'required'),
 			array('uid, vendor_id, event_id', 'numerical', 'integerOnly'=>true),
-			array('ip, sid, order_number, return_url', 'length', 'max'=>255),
+			array('ip, sid, order_number, return_url, email_address, telephone', 'length', 'max'=>255),
 			array('http_ticket_type_area, http_ticket_type_id, http_ticket_type_qty, http_ticket_type_price, http_ticket_type_total, http_total, auth_code', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, ip, sid, order_number, vendor_id, event_id, http_ticket_type_area, http_ticket_type_id, http_ticket_type_qty, http_ticket_type_price, http_ticket_type_total, http_total, auth_code, return_url', 'safe', 'on'=>'search'),
+			array('id, uid, ip, sid, order_number, vendor_id, event_id, http_ticket_type_area, http_ticket_type_id, http_ticket_type_qty, http_ticket_type_price, http_ticket_type_total, http_total, auth_code, return_url, email_address, telephone', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -90,6 +92,8 @@ class Order extends CActiveRecord
 			'http_total' => 'Http Total',
 			'auth_code' => 'Auth Code',
 			'return_url' => 'Return Url',
+			'email_address' => 'Email Address',
+			'telephone' => 'Telephone',
 		);
 	}
 
@@ -119,6 +123,8 @@ class Order extends CActiveRecord
 		$criteria->compare('http_total',$this->http_total,true);
 		$criteria->compare('auth_code',$this->auth_code,true);
 		$criteria->compare('return_url',$this->return_url,true);
+		$criteria->compare('email_address',$this->email_address,true);
+		$criteria->compare('telephone',$this->telephone,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -104,6 +104,9 @@ class TicketController extends Controller
 				$order->http_ticket_type_price = $_POST['pline_' . $x . '_price'];
 				$order->http_ticket_type_total = $_POST['pline_' . $x . '_total'];
 				$order->http_total = $_POST['ptotal'];
+				$order->email_address = $_POST['email1'];
+				$order->telephone = $_POST['telephone'];
+				
 				$order->return_url = Yii::app()->baseUrl;
 				if(!$order->save())
 				{
@@ -141,7 +144,7 @@ class TicketController extends Controller
 		$ticket_type_price_arr = array();
 		$ticket_type_total_arr = array();
 		$ticketNumbers = array();
-		
+
 		$criteria = new CDbCriteria;
         //$criteria->addCondition("uid = " . Yii::app()->session['uid']);
         $criteria->addCondition("ip = '" . $ip . "'");
@@ -175,7 +178,7 @@ class TicketController extends Controller
 		// Send email
 		$from = "admin@dglink.co.uk";
 		$fromName = "Admin";
-		$to = "kim@wireflydesign.com";
+		$to = $order->email_address;
 		$subject = "Your tickets purchased at DG Link";
 		$message = '<b>Thank you for using the DG Link to order your ticket(s).</b> <br> The attached PDF file contains your ticket(s) and card receipt. Please print all pages and bring them with you to your event or activity. The barcode on each ticket can only be used once.<br> If you ever need to reprint your tickets you may login to the site and do so from your account page. If you have forgotten your log in details you can request a password reminder.<br> We hope you enjoy your event.  --  The DG Link Team';
 		$pdf_filename = '/tmp/' . $order->order_number . '.pdf';
@@ -200,11 +203,13 @@ class TicketController extends Controller
 		else
 			Yii::log("PAID PAGE COULD SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		
-            // delete the temp file
-            copy($pdf_filename, Yii::app()->basePath . '/../tkts/' . $order->order_number . '.pdf');
-            $rnd = rand(10000,99999) . '_' . $order->order_number;
-            copy($pdf_filename, Yii::app()->basePath . '/../tktp/' . $rnd . '.pdf');
-            unlink($pdf_filename);
+		// delete the temp file
+		copy($pdf_filename, Yii::app()->basePath . '/../tkts/' . $order->order_number . '.pdf');
+		$rnd = rand(10000,99999) . '_' . $order->order_number;
+		copy($pdf_filename, Yii::app()->basePath . '/../tktp/' . $rnd . '.pdf');
+		unlink($pdf_filename);
+
+		
 
         // renders the view file 'protected/views/site/index.php'
         // using the default layout 'protected/views/layouts/main.php'

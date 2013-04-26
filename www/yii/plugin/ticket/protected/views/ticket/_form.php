@@ -171,7 +171,7 @@ $(document).ready(function() {
 				Email Address
 			</td>
 			<td>
-				<input id="email1" value="" class="" MaxLength="50" />
+				<input id="email1" name="email1" value="" class="" MaxLength="50" />
 			</td>
 		</tr>
 		<tr class="row">
@@ -179,7 +179,7 @@ $(document).ready(function() {
 				Again
 			</td>
 			<td>
-				<input id="email2" value="" class="" MaxLength="50" />
+				<input id="email2" name="email2" value="" class="" MaxLength="50" />
 			</td>
 		</tr>
 		<tr class="row">
@@ -187,7 +187,7 @@ $(document).ready(function() {
 				Telephone Number
 			</td>
 			<td>
-				<input id="telephone" value="" class="" MaxLength="50" />
+				<input id="telephone" name="telephone" value="" class="" MaxLength="50" />
 			</td>
 		</tr>
 	</table>
