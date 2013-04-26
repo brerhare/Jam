@@ -91,7 +91,7 @@ class TicketController extends Controller
 			}
 
 			genTicket(
-				"ordernum1",
+				"O-" . time(),
 				$model->ticket_vendor_id,
 				$model->id,
 				$ticket_type_area_arr,
