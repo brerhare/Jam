@@ -173,7 +173,7 @@ class TicketController extends Controller
 		);
 
 		// Send email
-		$from = "kim@dglink.co.uk";
+		$from = "admin@dglink.co.uk";
 		$fromName = "Admin";
 		$to = "kim@wireflydesign.com";
 		$subject = "Your tickets purchased at DG Link";
@@ -186,7 +186,7 @@ class TicketController extends Controller
 		$mail->SetFrom($from, $fromName);
 		$mail->AddReplyTo($from, $fromName);
 
-//		$mail->AddAttachment($pdf_filename);
+		$mail->AddAttachment($pdf_filename);
 		$mail->Subject = $subject;
 
 		//$mail->Body = $message;
@@ -200,11 +200,10 @@ class TicketController extends Controller
 		else
 			Yii::log("PAID PAGE COULD SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		
-
             // delete the temp file
-//            copy($pdf_filename, 'tkts/' . $q['orderNum'] . '.pdf');
-//            $rnd = rand(10000,99999) . '_' . $q['orderNum'];
-//            copy($pdf_filename, 'tktp/' . $rnd . '.pdf');
+            copy($pdf_filename, 'tkts/' . $q['orderNum'] . '.pdf');
+            $rnd = rand(10000,99999) . '_' . $q['orderNum'];
+            copy($pdf_filename, 'tktp/' . $rnd . '.pdf');
 //            unlink($pdf_filename);
 
 
