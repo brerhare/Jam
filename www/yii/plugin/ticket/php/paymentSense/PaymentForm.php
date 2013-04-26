@@ -1,8 +1,5 @@
 <?php
 	include ("PreProcessPaymentForm.php");
-	// @@TODO: Wirefly include added
-	include ("WireflyHelper.php");
-
 	$Width = 800;
 	include ("Templates/FormHeader.tpl");
 
@@ -15,7 +12,9 @@
 			{
 				$DuplicateTransaction = false;							
 			}
-			if ($TransactionSuccessful == false)
+			// @@TODO: Changed line below from a 1-condition check to a 2-condition check
+			//if ($TransactionSuccessful == false)
+			if (($TransactionSuccessful == false) || ($DuplicateTransaction == true))
 			{
 				$MessageClass = "ErrorMessage";
 			}

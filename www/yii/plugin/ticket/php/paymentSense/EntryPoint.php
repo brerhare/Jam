@@ -46,6 +46,11 @@
     $ShoppingCartOrderDescription = $qEvent['title'];
     $ShoppingCartHashDigest = "123";
 
+	// Update the (potential) order with the generated order number
+	//$sql = "UPDATE ticket_order set order_number = " . $ShoppingCartOrderID . " where ip = '" . getIP() . "'";
+	//logMsg("Updating order number using sql [" . $sql . "]");
+	//$result = mysql_query($sql) or die(mysql_error());
+
 include ("PaymentForm.php");
 
 ?>
