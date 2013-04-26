@@ -209,12 +209,22 @@ class TicketController extends Controller
 		copy($pdf_filename, Yii::app()->basePath . '/../tktp/' . $rnd . '.pdf');
 		unlink($pdf_filename);
 
-		
+		// Write a transaction
+		$transaction=new Transaction;
+		$transaction->uid = $order->uid;
+		$transaction->ip = $order->ip;
+		$transaction->order_number = $order->order_number;
+		$transaction->timestamp = date("Y-m-d H:i:s");
+		$transaction->email = $order->email_address;
+		$transaction->telephone = $order->telephone;
+		$transaction->save();
+
+
 
         // renders the view file 'protected/views/site/index.php'
         // using the default layout 'protected/views/layouts/main.php'
-        $this->render('book',array(
-                        'model'=>$model,
+        $this->render('thankyou',array(
+                        /*'model'=>$model,*/
                         'somedata'=>array(1,2,3),
         ));
 	}

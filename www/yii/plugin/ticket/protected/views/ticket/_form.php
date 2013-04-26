@@ -209,8 +209,8 @@ $this->widget('zii.widgets.jui.CJuiButton', array(
 			var email1 = document.getElementById("email1").value;
 			var email2 = document.getElementById("email2").value;
 
-	//		if ((email1 != email2) || (!email1) || (email1.indexOf(".") == -1) || (email1.indexOf("@") == -1))
-	//			err += "Invalid email\n";
+			if ((email1 != email2) || (!email1) || (email1.indexOf(".") == -1) || (email1.indexOf("@") == -1))
+				err += "Invalid email\n";
 
 			if (err != "")
 			{
