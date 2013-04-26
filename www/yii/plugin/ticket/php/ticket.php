@@ -173,8 +173,8 @@ EOD;
 			// EAN 13
 			$pdf->StartTransform();
 			$pdf->Rotate(-90);
-			//                                               U-D    L-R
-			$pdf->write1DBarcode($ticketContent, 'EAN13', -24, 105, '', 18, 0.4, $style, 'N');
+			//                                              U-D  L-R
+			$pdf->write1DBarcode($ticketContent, 'UPCA', -24, 105, '', 18, 0.4, $style, 'N');
 			$pdf->StopTransform();
 		}
 	}
