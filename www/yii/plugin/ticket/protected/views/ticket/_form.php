@@ -222,7 +222,7 @@ $this->widget('zii.widgets.jui.CJuiButton', array(
 ));
 ?>
 </div>
-<a href=<?php echo Yii::app()->request->baseUrl . '/';?>00002.pdf>PDF HERE </a>
+<!-- <a href=<?php echo Yii::app()->request->baseUrl . '/';?>00002.pdf>PDF HERE </a> -->
 
 
 <!--
