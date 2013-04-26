@@ -51,7 +51,7 @@ die();
 
 				// Redirect
 				//header('Location: ' . $q['return_url'] . '/index.php/ticket/paid' , true, 303);
-				header('Location: ' . https://plugin.wireflydesign.com/ticket/index.php/ticket/paid' , true, 303);
+				header('Location: ' . 'https://plugin.wireflydesign.com/ticket/index.php/ticket/paid' , true, 303);
 				die();
 				//@@ENDTODO
 
