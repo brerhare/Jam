@@ -47,10 +47,13 @@
     $ShoppingCartHashDigest = "123";
 
 	// Update the (potential) order with the generated order number
-	//$sql = "UPDATE ticket_order set order_number = " . $ShoppingCartOrderID . " where ip = '" . getIP() . "'";
-	//logMsg("Updating order number using sql [" . $sql . "]");
-	//$result = mysql_query($sql) or die(mysql_error());
+	$sql = "UPDATE ticket_order set order_number = '" . $ShoppingCartOrderID . "' where ip = '" . getIP() . "'";
+	logMsg("Updating order number using sql [" . $sql . "]");
+	$result = mysql_query($sql) or die(mysql_error());
 
+	// Set a variable so the next form knows whether our helper is already included
+	$NewEntry=1;
+	_dbfin($dbhandle);
 include ("PaymentForm.php");
 
 ?>

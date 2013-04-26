@@ -1,4 +1,7 @@
 <?php
+	if ($NewEntry != 1)
+		include("WireflyHelper.php");
+
 	include ("PreProcessPaymentForm.php");
 	$Width = 800;
 	include ("Templates/FormHeader.tpl");
@@ -22,9 +25,22 @@
 			{
 				$MessageClass = "SuccessMessage";
 
-				// @@TODO: Redirect inserted here
+				// @@TODO: Added everything until the @@ENDTODO tag
+				$dbhandle="";
+				_dbinit($dbhandle);
+
+				// Pick up the (not potential anymore) order record and record the auth number
+				$sql = "SELECT * FROM ticket_order where ip = '" . getIP() . "'";
+				logMsg("Retrieving (not potential anymore) order details using sql [" . $sql . "]");
+				$result = mysql_query($sql) or die(mysql_error());
+				$sql = "UPDATE ticket_order set auth_code = '" . $Message . "' where ip = '" . getIP() . "'";
+				logMsg("Updating auth number using sql [" . $sql . "]");
+				$result = mysql_query($sql) or die(mysql_error());
+
+				// Redirect
 				header('Location: ' . "http://www.google.com", true, 303);
 				die();
+				//@@ENDTODO
 
 			}
 			include ("Templates/FinalResultsPanel.tpl");
