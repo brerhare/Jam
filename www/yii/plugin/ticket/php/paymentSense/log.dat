@@ -1,0 +1,110 @@
+26-04-13 13:02:22 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:02:36 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:02:46 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:03:01 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:03:01 127.0.0.1 Retrieving Yii details using sql [SELECT * FROM ticket_order where ip = '127.0.0.1']
+26-04-13 13:04:40 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:04:40 127.0.0.1 Retrieving Yii details using sql [SELECT * FROM ticket_order where ip = '127.0.0.1']
+26-04-13 13:04:40 127.0.0.1 Success
+26-04-13 13:08:32 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:08:32 127.0.0.1 Retrieving Yii details using sql [SELECT * FROM ticket_order where ip = '127.0.0.1']
+26-04-13 13:08:32 127.0.0.1 Success
+26-04-13 13:08:54 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:08:54 127.0.0.1 Retrieving Yii details using sql [SELECT * FROM ticket_order where ip = '127.0.0.1']
+26-04-13 13:08:54 127.0.0.1 Success
+26-04-13 13:08:54 127.0.0.1 Matching passed sid [32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2]
+26-04-13 13:09:25 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:09:25 127.0.0.1 Retrieving Yii details using sql [SELECT * FROM ticket_order where ip = '127.0.0.1']
+26-04-13 13:09:25 127.0.0.1 Success
+26-04-13 13:09:25 127.0.0.1 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 13:12:48 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:12:48 127.0.0.1 Retrieving Yii details using sql [SELECT * FROM ticket_order where ip = '127.0.0.1']
+26-04-13 13:12:48 127.0.0.1 Success
+26-04-13 13:12:48 127.0.0.1 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 13:13:05 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:13:05 127.0.0.1 Retrieving Yii details using sql [SELECT * FROM ticket_order where ip = '127.0.0.1']
+26-04-13 13:13:05 127.0.0.1 Success
+26-04-13 13:13:05 127.0.0.1 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 13:16:29 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:16:29 127.0.0.1 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '127.0.0.1']
+26-04-13 13:16:29 127.0.0.1 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 13:16:29 127.0.0.1 Total amount is zero...aborting
+26-04-13 13:16:39 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:16:39 127.0.0.1 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '127.0.0.1']
+26-04-13 13:16:39 127.0.0.1 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 13:16:39 127.0.0.1 Total amount is zero...aborting
+26-04-13 13:17:05 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:17:05 127.0.0.1 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '127.0.0.1']
+26-04-13 13:17:05 127.0.0.1 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 13:17:55 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:17:55 127.0.0.1 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '127.0.0.1']
+26-04-13 13:17:55 127.0.0.1 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 13:17:55 127.0.0.1 Total amount is zero...aborting
+26-04-13 13:18:05 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:18:05 127.0.0.1 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '127.0.0.1']
+26-04-13 13:18:05 127.0.0.1 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 13:18:18 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:18:18 127.0.0.1 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '127.0.0.1']
+26-04-13 13:18:18 127.0.0.1 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 13:22:43 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:22:43 127.0.0.1 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '127.0.0.1']
+26-04-13 13:22:43 127.0.0.1 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 13:22:43 127.0.0.1 Total amount is zero...aborting
+26-04-13 13:23:52 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:23:52 127.0.0.1 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '127.0.0.1']
+26-04-13 13:23:52 127.0.0.1 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 13:23:52 127.0.0.1 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 13:23:52 127.0.0.1 Retrieved event record Made in Dumfries
+26-04-13 13:24:41 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:24:41 127.0.0.1 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '127.0.0.1']
+26-04-13 13:24:41 127.0.0.1 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 13:24:41 127.0.0.1 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 13:24:41 127.0.0.1 Retrieved event record Made in Dumfries
+26-04-13 13:26:59 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:26:59 127.0.0.1 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '127.0.0.1']
+26-04-13 13:26:59 127.0.0.1 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 13:26:59 127.0.0.1 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 13:26:59 127.0.0.1 Retrieved event record Made in Dumfries
+26-04-13 13:27:01 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:27:01 127.0.0.1 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '127.0.0.1']
+26-04-13 13:27:01 127.0.0.1 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 13:27:01 127.0.0.1 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 13:27:01 127.0.0.1 Retrieved event record Made in Dumfries
+26-04-13 13:27:20 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:27:20 127.0.0.1 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '127.0.0.1']
+26-04-13 13:27:20 127.0.0.1 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 13:27:20 127.0.0.1 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 13:27:20 127.0.0.1 Retrieved event record Made in Dumfries
+26-04-13 13:27:20 127.0.0.1 1366979240
+26-04-13 13:28:48 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:28:48 127.0.0.1 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '127.0.0.1']
+26-04-13 13:28:48 127.0.0.1 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 13:28:48 127.0.0.1 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 13:28:48 127.0.0.1 Retrieved event record Made in Dumfries
+26-04-13 13:28:48 127.0.0.1 Going with order number 1366979328 (based on time)
+26-04-13 13:28:52 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:28:52 127.0.0.1 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '127.0.0.1']
+26-04-13 13:28:52 127.0.0.1 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 13:28:52 127.0.0.1 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 13:28:52 127.0.0.1 Retrieved event record Made in Dumfries
+26-04-13 13:28:52 127.0.0.1 Going with order number 1366979332 (based on time)
+26-04-13 13:30:00 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:30:00 127.0.0.1 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '127.0.0.1']
+26-04-13 13:30:00 127.0.0.1 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 13:30:00 127.0.0.1 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 13:30:00 127.0.0.1 Retrieved event record Made in Dumfries
+26-04-13 13:30:00 127.0.0.1 Going with order number 61366979400 (based on uid-time)
+26-04-13 13:30:44 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 13:30:44 127.0.0.1 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '127.0.0.1']
+26-04-13 13:30:44 127.0.0.1 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 13:30:44 127.0.0.1 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 13:30:44 127.0.0.1 Retrieved event record Made in Dumfries
+26-04-13 13:30:44 127.0.0.1 Going with order number 6-1366979444 (based on uid-time)
+26-04-13 14:06:27 127.0.0.1 Entrypoint to PaymentSense
+26-04-13 14:06:27 127.0.0.1 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '127.0.0.1']
+26-04-13 14:06:27 127.0.0.1 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 14:06:27 127.0.0.1 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 14:06:27 127.0.0.1 Retrieved event record Made in Dumfries
+26-04-13 14:06:27 127.0.0.1 Going with order number 6-1366981587 (based on uid-time)
+26-04-13 14:21:22 127.0.0.1 (PaymentForm) Transaction message is Duplicate transaction
+26-04-13 14:21:38 127.0.0.1 (PaymentForm) Transaction message is Duplicate transaction

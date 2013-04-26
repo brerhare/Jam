@@ -69,6 +69,79 @@ class TicketController extends Controller
 		if ((isset($_POST['ptotal'])) && ($_POST['ptotal'] != 0))
 		{
 			Yii::log("EVENT INDEX FORM FILLED: " . $_POST['ptotal'], CLogger::LEVEL_WARNING, 'system.test.kim');
+
+            $ip = "UNKNOWN";
+            if (getenv("HTTP_CLIENT_IP"))
+                $ip = getenv("HTTP_CLIENT_IP");
+            else if (getenv("HTTP_X_FORWARDED_FOR"))
+                $ip = getenv("HTTP_X_FORWARDED_FOR");
+            else if (getenv("REMOTE_ADDR"))
+                $ip = getenv("REMOTE_ADDR");
+
+			Order::model()->deleteAllByAttributes(array('ip' => $ip, 'uid' => Yii::app()->session['uid']));
+
+			for ($x = 0; ; $x++)
+			{
+				if(!isset($_POST['line_' . $x . '_select']))	// ie no more lines
+					break;
+				$qty = $_POST['line_' . $x . '_select'];
+				if ($qty == 0)	// ie no tickets for this line
+					continue;
+
+			Yii::log("EVENT INDEX LINE ITEM: " . $_POST['pline_' . $x . '_price'], CLogger::LEVEL_WARNING, 'system.test.kim');
+
+				$order=new Order;
+				$order->uid = Yii::app()->session['uid'];
+				$order->sid = Yii::app()->session['sid'];
+				$order->ip = $ip;
+				$order->vendor_id = $model->ticket_vendor_id;
+				$order->event_id = $model->id;
+				$order->http_ticket_type_area = $_POST['pline_' . $x . '_area'];
+				$order->http_ticket_type_id = $_POST['pline_' . $x . '_id'];
+				$order->http_ticket_type_qty = $qty;
+				$order->http_ticket_type_price = $_POST['pline_' . $x . '_price'];
+				$order->http_ticket_type_total = $_POST['pline_' . $x . '_total'];
+				$order->http_total = $_POST['ptotal'];
+				if(!$order->save())
+				{
+					$this->redirect(array('admin'));
+				}
+			}
+
+			// Go to paymentsense
+			$this->redirect(Yii::app()->baseUrl . "/php/paymentSense/EntryPoint.php?sid=" . Yii::app()->session['sid'] . "&xid=" . rand(99999,999999));
+		}
+
+        // renders the view file 'protected/views/site/index.php'
+        // using the default layout 'protected/views/layouts/main.php'
+        $this->render('book',array(
+                        'model'=>$model,
+                        'somedata'=>array(1,2,3),
+        ));
+	}
+
+	public function actionPaid($id)
+	{
+        Yii::log("PAID PAGE LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
+        $model=$this->loadModel($id);
+
+//echo "GET";
+//print_r($_GET);
+//echo "POST";
+//print_r($_POST);
+
+		if ((isset($_POST['ptotal'])) && ($_POST['ptotal'] != 0))
+		{
+			Yii::log("EVENT INDEX FORM FILLED: " . $_POST['ptotal'], CLogger::LEVEL_WARNING, 'system.test.kim');
+
+            $ip = "UNKNOWN";
+            if (getenv("HTTP_CLIENT_IP"))
+                $ip = getenv("HTTP_CLIENT_IP");
+            else if (getenv("HTTP_X_FORWARDED_FOR"))
+                $ip = getenv("HTTP_X_FORWARDED_FOR");
+            else if (getenv("REMOTE_ADDR"))
+                $ip = getenv("REMOTE_ADDR");
+
 			// Print the tickets
 			$ticket_type_area_arr = array();
 			$ticket_type_id_arr = array();

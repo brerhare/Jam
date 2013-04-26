@@ -105,6 +105,75 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`ticket_ticket_type` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `plugin`.`ticket_transaction`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `plugin`.`ticket_transaction` ;
+
+CREATE  TABLE IF NOT EXISTS `plugin`.`ticket_transaction` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `uid` INT NOT NULL ,
+  `ip` VARCHAR(255) NULL ,
+  `order_number` VARCHAR(255) NULL ,
+  `timestamp` TIMESTAMP NULL ,
+  `email` VARCHAR(255) NULL ,
+  `telephone` VARCHAR(255) NULL ,
+  `amount` DECIMAL(10,2) NULL ,
+  `vendor_id` INT NULL ,
+  `event_id` INT NULL ,
+  `area_id` INT NULL ,
+  `ticket_type_id` INT NULL ,
+  `ticket_number` VARCHAR(255) NULL ,
+  `auth_code` VARCHAR(45) NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `uid` (`uid` ASC) ,
+  INDEX `vendor_id` (`vendor_id` ASC) ,
+  INDEX `event_id` (`event_id` ASC) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `plugin`.`ticket_scan`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `plugin`.`ticket_scan` ;
+
+CREATE  TABLE IF NOT EXISTS `plugin`.`ticket_scan` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `uid` INT NOT NULL ,
+  `order_number` VARCHAR(255) NOT NULL ,
+  `ticket_number` VARCHAR(255) NOT NULL ,
+  `timestamp` TIMESTAMP NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `uid` (`uid` ASC) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `plugin`.`ticket_order`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `plugin`.`ticket_order` ;
+
+CREATE  TABLE IF NOT EXISTS `plugin`.`ticket_order` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `uid` INT NOT NULL ,
+  `ip` VARCHAR(255) NOT NULL ,
+  `sid` VARCHAR(255) NULL ,
+  `order_number` VARCHAR(255) NULL ,
+  `vendor_id` INT NOT NULL ,
+  `event_id` INT NOT NULL ,
+  `http_ticket_type_area` VARCHAR(45) NULL ,
+  `http_ticket_type_id` VARCHAR(45) NULL ,
+  `http_ticket_type_qty` VARCHAR(45) NULL ,
+  `http_ticket_type_price` VARCHAR(45) NULL ,
+  `http_ticket_type_total` VARCHAR(45) NULL ,
+  `http_total` VARCHAR(45) NULL ,
+  `auth_code` VARCHAR(45) NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `uid` (`uid` ASC) ,
+  INDEX `ip` (`ip` ASC) )
+ENGINE = InnoDB;
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
