@@ -2,17 +2,6 @@
 	if ($NewEntry != 1)
 		include("WireflyHelper.php");
 
-
-$dbhandle="";
-_dbinit($dbhandle);
-$sql = "SELECT * FROM ticket_order where ip = '" . getIP() . "'";
-$result = mysql_query($sql) or die(mysql_error());
-$q = mysql_fetch_array($result, MYSQL_ASSOC);
-header('Location: ' . $q['return_url'] , true, 303);
-//header('Location: ' . "http://www.google.com", true, 303);
-die();
-
-
 	include ("PreProcessPaymentForm.php");
 	$Width = 800;
 	include ("Templates/FormHeader.tpl");
@@ -49,7 +38,7 @@ die();
 				$result = mysql_query($sql) or die(mysql_error());
 
 				// Redirect
-				header('Location: ' . "http://www.google.com", true, 303);
+				header('Location: ' . $q['return_url'] , true, 303);
 				die();
 				//@@ENDTODO
 
