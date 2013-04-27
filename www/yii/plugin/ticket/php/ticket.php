@@ -25,8 +25,14 @@ function genTicket(
 		array('style'=>'height:80px;')
 	);
 
+
+	if (strlen($model->ticket_logo_path) > 0)
+		$logo = Yii::app()->baseUrl . '/userdata/' . Yii::app()->session['uid'] . '/' . $model->ticket_logo_path;
+	else
+		$logo = Yii::app()->baseUrl . '/img/default_logo.jpg';
+	
 	$ticketLogo = CHtml::image(
-		Yii::app()->baseUrl . '/userdata/' . Yii::app()->session['uid'] . '/' . $eventModel->ticket_logo_path,
+		$logo,
 		'Logo Image',
 		array('style'=>'height:80px;')
 	);
