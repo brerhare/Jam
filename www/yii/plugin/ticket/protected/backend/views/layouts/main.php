@@ -37,7 +37,7 @@
 				array('label' => 'Vendor Details', 'url' => array('/vendor/createUpdate'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Events', 'url' => array('/event/admin'), 'visible' => !Yii::app()->user->isGuest),
 		/* @@TODO: Implement..		array('label' => 'Manual Tickets', 'url' => array('/ticket/index'), 'visible' => !Yii::app()->user->isGuest), */
-				array('label' => 'Transactions', 'url' => array('/event/transaction'), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'Report', 'url' => array('/event/report'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
                 array('label' => 'Logout', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Contact', 'url' => array('/site/contact'), 'visible' => Yii::app()->user->isGuest),

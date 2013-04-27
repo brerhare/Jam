@@ -1,5 +1,5 @@
 
-<h2>Event Transactions</h2>
+<h2>Event Report</h2>
 
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'event-grid',
@@ -10,7 +10,7 @@
 //		'uid',
 		'title',
 		'date',
-		'active:boolean',
+		'active:boolean', 
 //		'active_start_date',
 //		'active_start_time',
 //		'active_end_date',

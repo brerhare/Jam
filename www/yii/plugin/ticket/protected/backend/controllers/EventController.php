@@ -33,11 +33,11 @@ class EventController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','delete','transaction','showReport'),
+				'actions'=>array('create','update','admin','delete','report','showReport'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','transaction','showReport'),
+				'actions'=>array('admin','delete','report','showReport'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -189,14 +189,14 @@ class EventController extends Controller
 	/**
 	 * Choose an event to show transactions for
 	 */
-	public function actionTransaction()
+	public function actionReport()
 	{
 		$model=new Event('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Event']))
 			$model->attributes=$_GET['Event'];
 
-		$this->render('report',array(
+		$this->render('report1',array(
 			'model'=>$model,
 		));
 	}
@@ -210,8 +210,8 @@ class EventController extends Controller
 		if(isset($_GET['Event']))
 			$model->attributes=$_GET['Event'];
 
-		$this->render('reportshow',array(
-			'model'=>$model,
+		$this->render('report2',array(
+			'model'=>$this->loadModel($id),
 		));
 	}
 
