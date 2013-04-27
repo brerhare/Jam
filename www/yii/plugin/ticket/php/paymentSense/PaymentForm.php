@@ -2,7 +2,7 @@
 	if ($NewEntry != 1)
 		include("WireflyHelper.php");
 
-/**/
+/*
 $dbhandle="";
 _dbinit($dbhandle);
 $sql = "SELECT * FROM ticket_order where ip = '" . getIP() . "'";
@@ -11,7 +11,7 @@ $q = mysql_fetch_array($result, MYSQL_ASSOC);
 _dbfin($dbhandle);
 header('Location: ' . $q['return_url'] . '/index.php/ticket/paid?sid=' . $q['sid'] , true, 303);
 die();
-/**/
+*/
 
 
 	include ("PreProcessPaymentForm.php");
@@ -52,8 +52,8 @@ die();
 				_dbfin($dbhandle);
 
 				// Redirect
-				header('Location: ' . $q['return_url'] . '/index.php/ticket/paid?sid=' . $q['sid'] , true, 303);
-				//header('Location: ' . 'https://plugin.wireflydesign.com/ticket/index.php/ticket/paid?sid=' . $q['sid'] , true, 303);
+				//header('Location: ' . $q['return_url'] . '/index.php/ticket/paid?sid=' . $q['sid'] , true, 303);
+				header('Location: ' . 'https://plugin.wireflydesign.com/ticket/index.php/ticket/paid?sid=' . $q['sid'] , true, 303);
 				die();
 				//@@ENDTODO
 
