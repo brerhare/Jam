@@ -4,13 +4,13 @@
 
 // TEST gateway
 // ------------
-//	$MerchantID = "WIREFL-5188100";
-//	$Password = "391F3GWBZ0";
+	$MerchantID = "WIREFL-5188100";
+	$Password = "391F3GWBZ0";
 
 // PRODUCTION gateway
 // ------------------
-	$MerchantID = "WIREFL-5578222";
-	$Password = "Sbyzek538949";
+//	$MerchantID = "WIREFL-5578222";
+//	$Password = "Sbyzek538949";
 
 	// This is the domain (minus any host header or port number for your payment processor
 	// e.g. for "https://gwX.paymentsensegateway.com:4430/", this should be "paymentsensegateway.com"

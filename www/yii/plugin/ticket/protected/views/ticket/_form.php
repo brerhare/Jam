@@ -6,7 +6,7 @@
 	)); ?>
 
 	<div class="row">
-		<div class="span5 well">
+		<div class="span6 well">
 			<table>
 				<tr>
 					<td width="25%">

@@ -153,6 +153,26 @@ class TicketController extends Controller
         $orders = Order::model()->findAll($criteria);
         foreach ($orders as $order)
         {
+        	// Write a transaction
+			$transaction=new Transaction;
+			$transaction->uid = $order->uid;
+			$transaction->ip = $order->ip;
+			$transaction->timestamp = date("Y-m-d H:i:s");
+			$transaction->order_number = $order->order_number;
+			$transaction->auth_code = $order->auth_code;
+			$transaction->email = $order->email_address;
+			$transaction->telephone = $order->telephone;
+			$transaction->vendor_id = $order->vendor_id;
+			$transaction->event_id = $order->event_id;
+			$transaction->http_area_id = $order->http_ticket_type_area;
+			$transaction->http_ticket_type_id = $order->http_ticket_type_id;
+			$transaction->http_ticket_qty = $order->http_ticket_type_qty;
+			$transaction->http_ticket_price = $order->http_ticket_type_price;
+			$transaction->http_ticket_total = $order->http_ticket_type_total;
+			$transaction->http_total = $order->http_total;    
+			$transaction->save();
+
+			// Rebuild the array, for ticket printing
         	array_push($ticket_type_area_arr,  $order->http_ticket_type_area);
 			array_push($ticket_type_id_arr,    $order->http_ticket_type_id);
 			array_push($ticket_type_qty_arr,   $order->http_ticket_type_qty);
@@ -182,19 +202,14 @@ class TicketController extends Controller
 		$subject = "Your tickets purchased at DG Link";
 		$message = '<b>Thank you for using the DG Link to order your ticket(s).</b> <br> The attached PDF file contains your ticket(s) and card receipt. Please print all pages and bring them with you to your event or activity. The barcode on each ticket can only be used once.<br> If you ever need to reprint your tickets you may login to the site and do so from your account page. If you have forgotten your log in details you can request a password reminder.<br> We hope you enjoy your event.  --  The DG Link Team';
 		$pdf_filename = '/tmp/' . $order->order_number . '.pdf';
-
-		// using the phpmailer class
+		// phpmailer
 		$mail = new PHPMailer();
 		$mail->AddAddress($to);
 		$mail->SetFrom($from, $fromName);
 		$mail->AddReplyTo($from, $fromName);
-
 		$mail->AddAttachment($pdf_filename);
 		$mail->Subject = $subject;
-
-		//$mail->Body = $message;
 		$mail->MsgHTML($message);
-
 		if (!$mail->Send())
 		{
 			Yii::log("PAID PAGE COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
@@ -209,18 +224,17 @@ class TicketController extends Controller
 		copy($pdf_filename, Yii::app()->basePath . '/../tktp/' . $rnd . '.pdf');
 		unlink($pdf_filename);
 
-		// Write a transaction
-		$transaction=new Transaction;
-		$transaction->uid = $order->uid;
-		$transaction->ip = $order->ip;
-		$transaction->order_number = $order->order_number;
-		$transaction->timestamp = date("Y-m-d H:i:s");
-		$transaction->email = $order->email_address;
-		$transaction->telephone = $order->telephone;
-		$transaction->save();
-
-
-
+		// Write scan records
+		foreach ($ticketNumbers as $ticketNumber)
+		{
+			$scan=new Scan;
+			$scan->uid = $order->uid;
+			$scan->order_number = $order->order_number;
+			$scan->ticket_number = $ticketNumber;
+			$scan->timestamp = '0000-00-00 00:00:00';
+			$scan->save();
+		}
+        	
         // renders the view file 'protected/views/site/index.php'
         // using the default layout 'protected/views/layouts/main.php'
         $this->render('thankyou',array(

@@ -2,16 +2,16 @@
 	if ($NewEntry != 1)
 		include("WireflyHelper.php");
 
-/*
+/**/
 $dbhandle="";
 _dbinit($dbhandle);
 $sql = "SELECT * FROM ticket_order where ip = '" . getIP() . "'";
 $result = mysql_query($sql) or die(mysql_error());
 $q = mysql_fetch_array($result, MYSQL_ASSOC);
-header('Location: ' . $q['return_url'] . '/index.php/ticket/paid' , true, 303);
-//header('Location: ' . "http://www.google.com", true, 303);
+_dbfin($dbhandle);
+header('Location: ' . $q['return_url'] . '/index.php/ticket/paid?sid=' . $q['sid'] , true, 303);
 die();
-*/
+/**/
 
 
 	include ("PreProcessPaymentForm.php");
@@ -49,9 +49,11 @@ die();
 				logMsg("Updating auth number using sql [" . $sql . "]");
 				$result = mysql_query($sql) or die(mysql_error());
 
+				_dbfin($dbhandle);
+
 				// Redirect
-				//header('Location: ' . $q['return_url'] . '/index.php/ticket/paid' , true, 303);
-				header('Location: ' . 'https://plugin.wireflydesign.com/ticket/index.php/ticket/paid' , true, 303);
+				header('Location: ' . $q['return_url'] . '/index.php/ticket/paid?sid=' . $q['sid'] , true, 303);
+				//header('Location: ' . 'https://plugin.wireflydesign.com/ticket/index.php/ticket/paid?sid=' . $q['sid'] , true, 303);
 				die();
 				//@@ENDTODO
 
