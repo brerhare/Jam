@@ -5,14 +5,22 @@
 		'type'=>'horizontal',
 	)); ?>
 
+<?php // Get logo, or default
+if (strlen($model->ticket_logo_path) > 0)
+	$logo = Yii::app()->baseUrl . '/userdata/' . Yii::app()->session['uid'] . '/' . $model->ticket_logo_path;
+else
+	$logo = Yii::app()->baseUrl . '/img/default_logo.jpg';
+?>
+
 	<div class="row">
 		<div class="span6 well">
 			<table>
 				<tr>
 					<td width="25%">
 <?php Yii::log("TICKET FORM : image " . Yii::app()->session['uid'], CLogger::LEVEL_WARNING, 'system.test.kim'); ?>
-						<?php echo CHtml::image(Yii::app()->baseUrl . '/userdata/' . Yii::app()->session['uid'] . '/' . $model->ticket_logo_path,
-							'My Image Name',
+						<?php echo CHtml::image(
+							$logo,
+							'Event Image',
 							array('style'=>'height:80px;'));
 						?>
 					</td>
