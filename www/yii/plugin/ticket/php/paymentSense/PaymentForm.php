@@ -45,6 +45,8 @@ die();
 				$sql = "SELECT * FROM ticket_order where ip = '" . getIP() . "'";
 				logMsg("Retrieving (not potential anymore) order details using sql [" . $sql . "]");
 				$result = mysql_query($sql) or die(mysql_error());
+				$q = mysql_fetch_array($result, MYSQL_ASSOC);
+
 				$sql = "UPDATE ticket_order set auth_code = '" . $Message . "' where ip = '" . getIP() . "'";
 				logMsg("Updating auth number using sql [" . $sql . "]");
 				$result = mysql_query($sql) or die(mysql_error());
