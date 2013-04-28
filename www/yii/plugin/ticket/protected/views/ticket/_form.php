@@ -55,28 +55,27 @@ table td, table th {
 <script>
 var lc = 0;
 var numTickets = 0;
+
 function calcValues()
 {
-	var total = 0;
-	numTickets = 0;
-	for (var x = 0; x < lc; x++)
-	{
-		var linePrefix = 'line_' + x + '_';
-		price = parseFloat(document.getElementById(linePrefix + 'price').innerText);
+    var total = 0;
+    numTickets = 0;
+    for (var x = 0; x < lc; x++)
+    {
+        var linePrefix = 'line_' + x + '_';
+        price = parseFloat(document.getElementById(linePrefix + 'price').textContent);
+        var e = document.getElementById(linePrefix + 'select');
+        var num = parseInt(e.options[e.selectedIndex].value);
+        numTickets += num;
 
-		var e = document.getElementById(linePrefix + 'select');
-		var num = parseInt(e.options[e.selectedIndex].value);
-		
-		numTickets += num;
+        lineTotal = price * num;
+        document.getElementById(linePrefix + 'total').textContent = lineTotal.toFixed(2);
+        document.getElementById('p'+linePrefix + 'total').value = lineTotal.toFixed(2);
 
-		lineTotal = price * num;
-		document.getElementById(linePrefix + 'total').innerText = lineTotal.toFixed(2);
-		document.getElementById('p'+linePrefix + 'total').value = lineTotal.toFixed(2);
-		
-		total += lineTotal;
-	}
-	document.getElementById('total').innerText = '£ ' + total.toFixed(2);
-	document.getElementById('ptotal').value = total.toFixed(2);
+        total += lineTotal;
+    }
+    document.getElementById('total').textContent = '£ ' + total.toFixed(2);
+    document.getElementById('ptotal').value = total.toFixed(2);
 }
 
 $(document).ready(function() {

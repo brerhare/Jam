@@ -80,7 +80,7 @@ class TicketController extends Controller
             else if (getenv("REMOTE_ADDR"))
                 $ip = getenv("REMOTE_ADDR");
 
-			Order::model()->deleteAllByAttributes(array('ip' => $ip, 'uid' => Yii::app()->session['uid']));
+			Order::model()->deleteAllByAttributes(array('ip' => $ip));
 
 			for ($x = 0; ; $x++)
 			{
