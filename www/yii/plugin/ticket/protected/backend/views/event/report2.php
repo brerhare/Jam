@@ -27,7 +27,7 @@
 				<?php echo $transaction->ip?>
 			</td>
 			<td>
-				<?php echo '<a href="' . Yii::app()->baseUrl . '/tkts/' . $transaction->order_number . '">' . $transaction->order_number . '</a>'; ?>
+				<?php echo '<a href="' . Yii::app()->baseUrl . '/tkts/' . $transaction->order_number . '.pdf">' . $transaction->order_number . '</a>'; ?>
 			</td>
 			<td>
 				<?php $a = explode(":", $transaction->auth_code); echo $a[1];?>
