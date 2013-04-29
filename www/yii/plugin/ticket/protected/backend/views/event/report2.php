@@ -30,9 +30,7 @@
 				<?php echo '<a href="' . Yii::app()->baseUrl . '/tkts/' . $transaction->order_number . '.pdf">' . $transaction->order_number . '</a>'; ?>
 			</td>
 			<td>
-				<?php $a = explode(":", $transaction->auth_code);
-				is_array($a) == false ? echo $a : echo $a[1];
-				?>
+				<?php echo $transaction->auth_code;?>
 			</td>
 			<td style="text-align:right">
 				<?php echo $transaction->http_ticket_qty?>
