@@ -137,10 +137,7 @@
                 <p class="Body-P"><span class="Body-C">Hosted and Designed by <a href="http://www.wireflydesign.com" style="text-decoration:underline;">Wirefly Design</a></span></p>
             </div>
             <div style="position:absolute;left:125px;top:-44px;z-index:1">
-                <imgTraining
-Coaching
-Business Diagnostics
-Consultancy src="<?php Yii::app()->request->baseUrl ?> /img/footer_shell.png" border="0" >
+                <img src="<?php Yii::app()->request->baseUrl ?> /img/footer_shell.png" border="0" >
             </div>
         </div>
         <div class="span3"></div>
