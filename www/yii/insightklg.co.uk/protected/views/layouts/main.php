@@ -106,7 +106,7 @@
 			</div>
 
             <!--Body content-->
-	        <div style="height:50px; margin-top:-40px"></div>
+	        <div style="height:50px; margin-top:-20px; z-inde"></div>
 	        <div id="content" style="margin-left:-33px">
 	            <?php echo $content; ?>
 		    </div>
