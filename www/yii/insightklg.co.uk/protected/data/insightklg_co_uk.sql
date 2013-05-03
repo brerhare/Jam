@@ -16,7 +16,21 @@ CREATE  TABLE IF NOT EXISTS `insightklg_co_uk`.`content_block` (
   `title` VARCHAR(255) NOT NULL ,
   `url` VARCHAR(255) NOT NULL ,
   `content` TEXT NULL ,
-  `active` varchar(1) NOT NULL,
+  PRIMARY KEY (`id`) ,
+  INDEX `sequence` (`sequence` ASC) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `insightklg_co_uk`.`carousel_block`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `insightklg_co_uk`.`carousel_block` ;
+
+CREATE  TABLE IF NOT EXISTS `insightklg_co_uk`.`carousel_block` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `sequence` INT NULL ,
+  `title` VARCHAR(255) NOT NULL ,
+  `content` TEXT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `sequence` (`sequence` ASC) )
 ENGINE = InnoDB;

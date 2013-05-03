@@ -15,6 +15,7 @@
 <!--	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" /> -->
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css" />
 
+
 <!-- body style -->
 <style type="text/css">
   body{margin:0;padding:0;}
@@ -26,6 +27,19 @@
   {
     font-family:"Verdana", sans-serif; color:#ffffff; font-size:13.0px; line-height:1.23em;
   }
+
+/* Custom css for bxslider */
+.slider {
+    position:relative;
+    z-index:1;   
+} 
+.imgoverlay {
+    position: relative;   
+    width:100%;
+    margin-left:26px;
+    margin-top:-75px;
+    z-index:9999;
+}
 </style>
 
 
@@ -35,55 +49,83 @@
 <body text="#000000" style="background:transparent url(<?php Yii::app()->request->baseUrl ?>/img/blackboard_bg.jpg) repeat scroll top center">
 
 <div class="container">
-    <div class="row" style="height:30px"></div>
+    <div class="row" style="height:5px"></div>
     <div class="row">
-        <div class="span3">
-            <div style="text-align:right;">
-				<br/>
-	            <img src="<?php Yii::app()->request->baseUrl ?> /img/shell.png" border="0" width="229" height="327" style="margin-right:-120px">
+  
+<!-- LEFT COLUMN -->
+
+		<!-- Top shell logo -->
+        <div class="span2">
+            <div style="Xtext-align:right;">
+    	        <br/>
+	            <img src="<?php Yii::app()->request->baseUrl ?> /img/Logo.png" border="0" width="229" height="327" style="margin-right:-120px">
 	        </div>
-            <!-- lhs menu content-->
+
+            <!--  menu content-->
 	        <br/>
             <div style="text-align:right;">
 	        <?php $toppos=-30;
             $menuitems = ContentBlock::model()->findAll(array('order'=>'sequence'));
             foreach ($menuitems as $menuitem):?>
 	            <?php if (strtoupper($menuitem->active == 'Y')):?>
-              <a class="menuitemx" style="color:#b2b2da" href="<?php Yii::app()->request->baseUrl?>/index.php/contentBlock/page?url=<?php echo $menuitem->url;?>">
+                    <a class="menuitemx" style="color:#b2b2da" href="<?php Yii::app()->request->baseUrl?>/index.php/contentBlock/page?url=<?php echo $menuitem->url;?>">
 <!--          <img style="position:absolute;top:<?php echo $toppos; $toppos+=40;?>px;left:-20px" src="<?php Yii::app()->request->baseUrl ?>/img/menuline.png"> -->
-              <?php echo $menuitem->title;?>
-              </a>
-              <br/><br/>
-			            <?php endif;?>
+                    <?php echo $menuitem->title;?>
+                    </a>
+                <br/><br/>
+			    <?php endif;?>
             <?php endforeach;?>
 	        </div>
         </div>
+
+<!-- MIDDLE COLUMN -->
+
         <div class="span7">
-	        <div style="height:50px"></div>
-	        <div style="text-align:center;margin-left:70px">
-              <img src="<?php Yii::app()->request->baseUrl ?> /img/heading_title1.png" border="0" width="529" height="53" style="margin-top:20px" >
-	          <br/>
-              <img src="<?php Yii::app()->request->baseUrl ?> /img/heading_title2.png" border="0" width="554" height="106" style="margin-top:-20px">
-		    </div>
+	        
+			<!-- bxSlider Javascript file -->
+			<script src="/bxslider/jquery.bxslider.js"></script>
+			<!-- bxSlider CSS file -->
+			<link href="/bxslider/jquery.bxslider.css" rel="stylesheet" />    
+
+			<div class="slider">
+				<ul class="bxslider">
+				<?php
+//$criteria = new CDbCriteria;
+//$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+//$rooms = Room::model()->findAll($criteria);
+				$carouselItems = CarouselBlock::model()->findAll();
+				foreach ($carouselItems as $carouselItem):
+					echo "<li>" . $carouselItem->content . "</li>";
+				endforeach;
+				?>
+				</ul> 
+			</div>
+
+			<div class="imgoverlay" style="margin-top:-110px; margin-left:-7px">
+				<img style="z-index:10000" src="<?php Yii::app()->request->baseUrl ?> /img/CarouselShapedOverlay.png" border="0" >
+			</div>
 
             <!--Body content-->
-	        <div style="height:50px; margin-top:-20px"></div>
-	        <div id="content">
+	        <div style="height:50px; margin-top:-40px"></div>
+	        <div id="content" style="margin-left:-33px">
 	            <?php echo $content; ?>
 		    </div>
         </div>
-        <div class="span2">
+
+<!-- RIGHT COLUMN -->
+
+        <div class="span3">
 	        <br/>
-            <div style="margin-left:-30px">
-<!-->                <a href="<?php Yii::app()->request->baseUrl ?> /index.php/contentBlock/page?url=tickets">
-                <img src="<?php Yii::app()->request->baseUrl ?> /img/get_tickets.png" border="0" width="229" height="327" >
+            <div >
+                <a href="<?php Yii::app()->request->baseUrl ?> /index.php/contentBlock/page?url=tickets">
+                <img src="<?php Yii::app()->request->baseUrl ?> /img/book_now.jpg" border="0" width="150" >
 	            </a>
-<-->
             </div>
         </div>
     </div>
 
-	<!-- footer -->
+<!-- FOOTER -->
+
 	<div class="row" style="height:60px"></div>
 	<div class="row">
         <div class="span5"></div>
@@ -102,5 +144,22 @@
 	</div>
 </div>
 </body>
+
+<script>
+$(document).ready(function(){
+
+
+$('.bxslider').bxSlider({
+  auto: true,
+  slideWidth : 670,
+  pause: 4000,
+  autoControls: false,
+  
+  mode: 'fade'
+});
+
+
+});
+</script>
 
 </html>
