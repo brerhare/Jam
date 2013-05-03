@@ -129,7 +129,7 @@
             </div>
             <br/>
             <!-- Social media links -->
-			<div class="Body-C" style="margin-left:10px; margin-top:100px">
+			<div class="Body-C" style="margin-left:10px; margin-top:60px">
 			<div style="padding:5px"> <u>Keep in touch</u> </div>
 			<table id="socialMedia">
 				<tr>
