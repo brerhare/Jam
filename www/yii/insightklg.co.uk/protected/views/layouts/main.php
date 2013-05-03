@@ -28,6 +28,11 @@
     font-family:"Verdana", sans-serif; color:#ffffff; font-size:13.0px; line-height:1.23em;
   }
 
+<!-- Socaial media table style -->
+#socialMedia td {
+	padding: 3px 4px;
+}
+
 /* Custom css for bxslider */
 .slider {
     position:relative;
@@ -101,8 +106,8 @@
 				</ul> 
 			</div>
 
-			<div class="imgoverlay" style="margin-top:-110px; margin-left:-7px">
-				<img style="z-index:10000" src="<?php Yii::app()->request->baseUrl ?> /img/CarouselShapedOverlay.png" border="0" >
+			<div class="imgoverlay" style="margin-top:-110px; margin-left:-7px;">
+				<img style="max-width:none; z-index:10000" src="<?php Yii::app()->request->baseUrl ?> /img/CarouselShapedOverlay.png" border="0" >
 			</div>
 
             <!--Body content-->
@@ -116,11 +121,35 @@
 
         <div class="span3">
 	        <br/>
-            <div >
+	        <!-- Tickets logo/link -->
+            <div style="margin-left:10px">
                 <a href="<?php Yii::app()->request->baseUrl ?> /index.php/contentBlock/page?url=tickets">
-                <img src="<?php Yii::app()->request->baseUrl ?> /img/book_now.jpg" border="0" width="150" >
+                <img src="<?php Yii::app()->request->baseUrl ?> /img/book_now.png" border="0" width="150" >
 	            </a>
             </div>
+            <br/>
+            <!-- Social media links -->
+			<div class="Body-C" style="margin-left:10px; margin-top:100px">
+			<div style="padding:5px"> <u>Keep in touch</u> </div>
+			<table id="socialMedia">
+				<tr>
+					<td style="padding:1px" width="10%" ><img src="<?php Yii::app()->request->baseUrl ?> /img/FB_logo.png" border="0" ></td>
+					<td style="padding:1px" width="90%">/InsightKLG</td>
+				</tr>
+				<tr>
+					<td style="padding:1px" width="10%" ><img src="<?php Yii::app()->request->baseUrl ?> /img/Twitter_logo.png" border="0" ></td>
+					<td style="padding:1px" width="10%" >@SalonSenseKLG</td>
+				</tr>
+				<tr>
+					<td style="padding:1px" width="10%" ><img src="<?php Yii::app()->request->baseUrl ?> /img/InsightTwitter_logo.png" border="0" ></td>
+					<td style="padding:1px" width="10%" >@KathInsight</td>
+				</tr>
+				<tr>
+					<td style="padding:1px" width="10%" ><img src="<?php Yii::app()->request->baseUrl ?> /img/LinkedIn_logo.png" border="0" ></td>
+					<td style="padding:1px" width="10%" >/insightklg</td>
+				</tr>
+			</table>
+			</div>
         </div>
     </div>
 
