@@ -25,7 +25,8 @@ $this->widget('bootstrap.widgets.TbRedactorJs',
     ));
 ?>
 
-	<?php echo $form->textFieldRow($model,'active',array('class'=>'span1','maxlength'=>1)); ?>
+	<?php // echo $form->textFieldRow($model,'active',array('class'=>'span1','maxlength'=>1)); ?>
+	<?php echo $form->hiddenField($model,'active'); ?>
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(

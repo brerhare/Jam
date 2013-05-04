@@ -16,7 +16,7 @@ $this->menu=array(
 		// 'id',
 		'sequence',
 		'title',
-		'active',
+		// 'active',
 		// 'content',
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',

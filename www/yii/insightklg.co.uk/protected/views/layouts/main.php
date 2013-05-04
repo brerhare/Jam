@@ -28,7 +28,7 @@
     font-family:"Verdana", sans-serif; color:#ffffff; font-size:13.0px; line-height:1.23em;
   }
 
-<!-- Socaial media table style -->
+<!-- Social media table style -->
 #socialMedia td {
 	padding: 3px 4px;
 }
