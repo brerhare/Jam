@@ -45,7 +45,7 @@
 .bx-wrapper {
 max-height:250px;
 height:250px;
-overflow:hidden;
+overflow-y:hidden;
 }
 ul.bxslider>li {
 	left:-25px;
@@ -150,7 +150,7 @@ ul.bxslider>li {
             <!-- Social media links -->
 			<div class="Body-C" style="margin-left:10px; margin-top:38px">
 			<div style="padding:5px"> <u>Keep in touch</u> </div>
-			<table id="socialMedia">
+			<table id="socialMedia" style="z-index:-1">
 				<tr>
 					<td style="padding:1px" width="10%" >
 						<a href="https://www.facebook.com/InsightKLG" target="_blank"><img src="<?php Yii::app()->request->baseUrl ?> /img/FB_logo.png" border="0" ></a>
