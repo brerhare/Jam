@@ -28,6 +28,8 @@
     font-family:"Verdana", sans-serif; color:#ffffff; font-size:13.0px; line-height:1.23em;
   }
 
+<!-- Menu -->
+
 <!-- Social media table style -->
 #socialMedia td {
 	padding: 3px 4px;
@@ -73,12 +75,12 @@ overflow:hidden;
 
             <!--  menu content-->
 	        <br/>
-            <div style="text-align:right;">
+            <div style="margin-top:75px; margin-right:12px; background-color:#ffffff; border-radius: 15px; -moz-border-radius: 15px; -webkit-border-radius: 15px; padding: 10px 0 0 20px">
 	        <?php $toppos=-30;
             $menuitems = ContentBlock::model()->findAll(array('order'=>'sequence'));
             foreach ($menuitems as $menuitem):?>
 	            <?php if (strtoupper($menuitem->active == 'Y')):?>
-                    <a class="menuitemx" style="color:#b2b2da" href="<?php Yii::app()->request->baseUrl?>/index.php/contentBlock/page?url=<?php echo $menuitem->url;?>">
+                    <a class="menuitemx" style="color:#000000" href="<?php Yii::app()->request->baseUrl?>/index.php/contentBlock/page?url=<?php echo $menuitem->url;?>">
 <!--          <img style="position:absolute;top:<?php echo $toppos; $toppos+=40;?>px;left:-20px" src="<?php Yii::app()->request->baseUrl ?>/img/menuline.png"> -->
                     <?php echo $menuitem->title;?>
                     </a>
