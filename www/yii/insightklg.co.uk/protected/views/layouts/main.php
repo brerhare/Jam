@@ -45,7 +45,7 @@
 .bx-wrapper {
 max-height:250px;
 height:250px;
-overflow-y:hidden;
+overflow:hidden;
 }
 ul.bxslider>li {
 	left:-25px;
@@ -130,7 +130,7 @@ ul.bxslider>li {
 			</div>
 
             <!--Body content-->
-	        <div style="height:50px; margin-top:-20px; z-inde"></div>
+	        <div style="height:50px; margin-top:-20px;"></div>
 	        <div id="content" style="margin-left:-33px">
 	            <?php echo $content; ?>
 		    </div>
@@ -150,7 +150,8 @@ ul.bxslider>li {
             <!-- Social media links -->
 			<div class="Body-C" style="margin-left:10px; margin-top:38px">
 			<div style="padding:5px"> <u>Keep in touch</u> </div>
-			<table id="socialMedia" style="z-index:-1">
+
+			<table id="socialMedia">
 				<tr>
 					<td style="padding:1px" width="10%" >
 						<a href="https://www.facebook.com/InsightKLG" target="_blank"><img src="<?php Yii::app()->request->baseUrl ?> /img/FB_logo.png" border="0" ></a>
@@ -184,6 +185,7 @@ ul.bxslider>li {
 					</td>
 				</tr>
 			</table>
+
 			</div>
         </div>
     </div>
