@@ -60,10 +60,14 @@ ul.bxslider>li {
 <body text="#000000" style="background:transparent url(<?php Yii::app()->request->baseUrl ?>/img/blackboard_bg.jpg) repeat scroll top center">
 
 <div class="container">
+
     <div class="row" style="height:5px"></div>
+
+<!-- HEADER ROW -->
+
     <div class="row">
   
-<!-- LEFT COLUMN -->
+	<!-- LEFT COLUMN -->
 
 		<!-- Top shell logo -->
         <div class="span2">
@@ -71,10 +75,59 @@ ul.bxslider>li {
     	        <br/>
 	            <img src="<?php Yii::app()->request->baseUrl ?> /img/Logo.png" border="0" width="229" height="327" style="margin-right:-120px">
 	        </div>
+        </div>
+
+	<!-- MIDDLE COLUMN -->
+
+        <div class="span7">
+	        
+			<!-- bxSlider Javascript file -->
+			<script src="/bxslider/jquery.bxslider.js"></script>
+			<!-- bxSlider CSS file -->
+			<link href="/bxslider/jquery.bxslider.css" rel="stylesheet" />    
+
+			<div class="slider">
+				<ul class="bxslider">
+				<?php
+				$carouselItems = CarouselBlock::model()->findAll();
+				foreach ($carouselItems as $carouselItem):
+					echo "<li>" . $carouselItem->content . "</li>";
+				endforeach;
+				?>
+				</ul> 
+			</div>
+
+			<div class="imgoverlay" style="margin-top:-110px; margin-left:-2px;">
+				<img style="max-width:none; z-index:10000" src="<?php Yii::app()->request->baseUrl ?> /img/CarouselShapedOverlay.png" border="0" >
+			</div>
+        </div>
+
+	<!-- RIGHT COLUMN -->
+
+        <div class="span3">
+	        <br/>
+	        <!-- Tickets logo/link -->
+            <div style="margin-left:10px">
+                <a href="<?php Yii::app()->request->baseUrl ?> /index.php/contentBlock/page?url=tickets">
+                <img src="<?php Yii::app()->request->baseUrl ?> /img/book_now.png" border="0" width="150" >
+	            </a>
+            </div>
+        </div>
+
+    </div> <!-- /ROW -->
+
+
+<!-- BODY ROW -->
+
+    <div class="row">
+  
+	<!-- LEFT COLUMN -->
+
+        <div class="span2">
 
             <!--  menu content-->
 	        <br/>
-            <div style="position:relative; margin-top:75px; margin-right:12px; background-color:#ffffff; border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px; padding: 10px 0 0 20px">
+            <div style="position:relative; margin-right:12px; background-color:#ffffff; border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px; padding: 10px 0 0 20px">
 	        <?php $menuitems = ContentBlock::model()->findAll(array('order'=>'sequence'));
 	        $showFirst = 0;
 	        if (!isset($_GET['url']))
@@ -102,53 +155,22 @@ ul.bxslider>li {
 	        </div>
         </div>
 
-<!-- MIDDLE COLUMN -->
+	<!-- MIDDLE COLUMN -->
 
         <div class="span7">
-	        
-			<!-- bxSlider Javascript file -->
-			<script src="/bxslider/jquery.bxslider.js"></script>
-			<!-- bxSlider CSS file -->
-			<link href="/bxslider/jquery.bxslider.css" rel="stylesheet" />    
-
-			<div class="slider">
-				<ul class="bxslider">
-				<?php
-//$criteria = new CDbCriteria;
-//$criteria->addCondition("uid = " . Yii::app()->session['uid']);
-//$rooms = Room::model()->findAll($criteria);
-				$carouselItems = CarouselBlock::model()->findAll();
-				foreach ($carouselItems as $carouselItem):
-					echo "<li>" . $carouselItem->content . "</li>";
-				endforeach;
-				?>
-				</ul> 
-			</div>
-
-			<div class="imgoverlay" style="margin-top:-110px; margin-left:-2px;">
-				<img style="max-width:none; z-index:10000" src="<?php Yii::app()->request->baseUrl ?> /img/CarouselShapedOverlay.png" border="0" >
-			</div>
-
             <!--Body content-->
-	        <div style="height:50px; margin-top:-20px;"></div>
-	        <div id="content" style="margin-left:-33px">
+	    <!--    <div style="height:50px; margin-top:-20px;"></div> -->
+	        <div id="content" style="margin-left:-33px; margin-top:20px;">
 	            <?php echo $content; ?>
 		    </div>
         </div>
 
-<!-- RIGHT COLUMN -->
+	<!-- RIGHT COLUMN -->
 
         <div class="span3">
-	        <br/>
-	        <!-- Tickets logo/link -->
-            <div style="margin-left:10px">
-                <a href="<?php Yii::app()->request->baseUrl ?> /index.php/contentBlock/page?url=tickets">
-                <img src="<?php Yii::app()->request->baseUrl ?> /img/book_now.png" border="0" width="150" >
-	            </a>
-            </div>
-            <br/>
+
             <!-- Social media links -->
-			<div class="Body-C" style="margin-left:10px; margin-top:38px">
+			<div class="Body-C" style="margin-left:10px; margin-top:15px">
 			<div style="padding:5px"> <u>Keep in touch</u> </div>
 
 			<table id="socialMedia">
@@ -188,7 +210,9 @@ ul.bxslider>li {
 
 			</div>
         </div>
-    </div>
+        
+    </div> <!-- /ROW -->
+
 
 <!-- FOOTER -->
 
