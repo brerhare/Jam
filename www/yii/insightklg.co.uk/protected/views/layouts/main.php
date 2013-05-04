@@ -53,8 +53,6 @@ ul.bxslider>li {
 }
 </style>
 
-
-
 </head>
 
 <body text="#000000" style="background:transparent url(<?php Yii::app()->request->baseUrl ?>/img/blackboard_bg.jpg) repeat scroll top center">
@@ -85,13 +83,22 @@ ul.bxslider>li {
 			<script src="/bxslider/jquery.bxslider.js"></script>
 			<!-- bxSlider CSS file -->
 			<link href="/bxslider/jquery.bxslider.css" rel="stylesheet" />
-
+			
+<style type="text/css">
+.bx-wrapper img {
+	height: 260px;
+}
+.bx-wrapper .bx-viewport {
+	border: none;
+	left: 0px;
+}
+</style>
 			<div class="slider">
 				<ul class="bxslider">
 				<?php
 				$carouselItems = CarouselBlock::model()->findAll();
 				foreach ($carouselItems as $carouselItem):
-					echo "<li>" . $carouselItem->content . "</li>";
+					echo "<li>" . "<div style='height:260px'>" . $carouselItem->content . "</div>" . "</li>";
 				endforeach;
 				?>
 				</ul> 
