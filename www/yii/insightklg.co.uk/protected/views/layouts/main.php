@@ -84,7 +84,7 @@ ul.bxslider>li {
 			<!-- bxSlider Javascript file -->
 			<script src="/bxslider/jquery.bxslider.js"></script>
 			<!-- bxSlider CSS file -->
-			<link href="/bxslider/jquery.bxslider.css" rel="stylesheet" />    
+			<link href="/bxslider/jquery.bxslider.css" rel="stylesheet" />
 
 			<div class="slider">
 				<ul class="bxslider">
@@ -173,7 +173,7 @@ ul.bxslider>li {
 			<div class="Body-C" style="margin-left:10px; margin-top:15px">
 			<div style="padding:5px"> <u>Keep in touch</u> </div>
 
-			<table id="socialMedia">
+			<table >
 				<tr>
 					<td style="padding:1px" width="10%" >
 						<a href="https://www.facebook.com/InsightKLG" target="_blank"><img src="<?php Yii::app()->request->baseUrl ?> /img/FB_logo.png" border="0" ></a>
@@ -246,10 +246,8 @@ $('.bxslider').bxSlider({
   controls: false,
   pager: true,
   autoControls: false,
-  
   mode: 'fade'
 });
-
 
 });
 </script>
