@@ -6,5 +6,6 @@ protected/backend/runtime/*
 !protected/backend/runtime/.gitignore
 userdata/*
 !userdata/image/.gitignore
+!userdata/frontpage/*
 
 *.bak
