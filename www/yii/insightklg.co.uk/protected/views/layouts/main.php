@@ -133,19 +133,27 @@
 			<div style="padding:5px"> <u>Keep in touch</u> </div>
 			<table id="socialMedia">
 				<tr>
-					<td style="padding:1px" width="10%" ><img src="<?php Yii::app()->request->baseUrl ?> /img/FB_logo.png" border="0" ></td>
+					<td style="padding:1px" width="10%" >
+						<a href="https://www.facebook.com/InsightKLG" target="_blank"><img src="<?php Yii::app()->request->baseUrl ?> /img/FB_logo.png" border="0" ></a>
+					</td>
 					<td style="padding:1px" width="90%">/InsightKLG</td>
 				</tr>
 				<tr>
-					<td style="padding:1px" width="10%" ><img src="<?php Yii::app()->request->baseUrl ?> /img/Twitter_logo.png" border="0" ></td>
+					<td style="padding:1px" width="10%" >
+						<a href="https://twitter.com/SalonSenseKLG" target="_blank"><img src="<?php Yii::app()->request->baseUrl ?> /img/Twitter_logo.png" border="0" ></a>
+					</td>
 					<td style="padding:1px" width="10%" >@SalonSenseKLG</td>
 				</tr>
 				<tr>
-					<td style="padding:1px" width="10%" ><img src="<?php Yii::app()->request->baseUrl ?> /img/InsightTwitter_logo.png" border="0" ></td>
+					<td style="padding:1px" width="10%" >
+						<a href="https://twitter.com/KathInsight" target="_blank"><img src="<?php Yii::app()->request->baseUrl ?> /img/InsightTwitter_logo.png" border="0" ></a>
+					</td>
 					<td style="padding:1px" width="10%" >@KathInsight</td>
 				</tr>
 				<tr>
-					<td style="padding:1px" width="10%" ><img src="<?php Yii::app()->request->baseUrl ?> /img/LinkedIn_logo.png" border="0" ></td>
+					<td style="padding:1px" width="10%" >
+						<a href="http://uk.linkedin.com/in/insightklg" target="_blank"><img src="<?php Yii::app()->request->baseUrl ?> /img/LinkedIn_logo.png" border="0" ></a>
+					</td>
 					<td style="padding:1px" width="10%" >/insightklg</td>
 				</tr>
 			</table>
