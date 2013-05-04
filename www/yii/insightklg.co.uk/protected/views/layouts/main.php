@@ -130,7 +130,7 @@ ul.bxslider>li {
 			</div>
 
             <!--Body content-->
-	        <div style="height:50px; margin-top:-50px; z-inde"></div>
+	        <div style="height:50px; margin-top:-20px; z-inde"></div>
 	        <div id="content" style="margin-left:-33px">
 	            <?php echo $content; ?>
 		    </div>
@@ -148,7 +148,7 @@ ul.bxslider>li {
             </div>
             <br/>
             <!-- Social media links -->
-			<div class="Body-C" style="margin-left:10px; margin-top:60px">
+			<div class="Body-C" style="margin-left:10px; margin-top:38px">
 			<div style="padding:5px"> <u>Keep in touch</u> </div>
 			<table id="socialMedia">
 				<tr>
@@ -218,7 +218,7 @@ $('.bxslider').bxSlider({
   slideWidth : 675,
   pause: 4000,
   controls: false,
-  pager: false,
+  pager: true,
   autoControls: false,
   
   mode: 'fade'
