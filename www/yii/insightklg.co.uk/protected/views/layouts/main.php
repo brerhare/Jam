@@ -30,11 +30,6 @@
 
 <!-- Menu -->
 
-<!-- Social media table style -->
-#socialMedia td {
-	padding: 3px 4px;
-}
-
 /* Custom css for bxslider */
 .slider {
     position:relative;
@@ -43,14 +38,18 @@
 .imgoverlay {
     position: relative;   
     width:100%;
-    margin-left:26px;
-    margin-top:-75px;
+/*    margin-left:26px;
+    margin-top:-75px;*/
     z-index:9999;
 }
 .bx-wrapper {
 max-height:250px;
 height:250px;
 overflow:hidden;
+}
+ul.bxslider>li {
+	left:-25px;
+	top:-5px
 }
 </style>
 
@@ -128,7 +127,7 @@ overflow:hidden;
 			</div>
 
             <!--Body content-->
-	        <div style="height:50px; margin-top:-20px; z-inde"></div>
+	        <div style="height:50px; margin-top:-50px; z-inde"></div>
 	        <div id="content" style="margin-left:-33px">
 	            <?php echo $content; ?>
 		    </div>
@@ -153,25 +152,33 @@ overflow:hidden;
 					<td style="padding:1px" width="10%" >
 						<a href="https://www.facebook.com/InsightKLG" target="_blank"><img src="<?php Yii::app()->request->baseUrl ?> /img/FB_logo.png" border="0" ></a>
 					</td>
-					<td style="padding:1px" width="90%">/InsightKLG</td>
+					<td style="padding:1px" width="90%">
+						<a style="color:#ffffff" href="https://www.facebook.com/InsightKLG" target="_blank">/InsightKLG</a>
+					</td>
 				</tr>
 				<tr>
 					<td style="padding:1px" width="10%" >
 						<a href="https://twitter.com/SalonSenseKLG" target="_blank"><img src="<?php Yii::app()->request->baseUrl ?> /img/Twitter_logo.png" border="0" ></a>
 					</td>
-					<td style="padding:1px" width="10%" >@SalonSenseKLG</td>
+					<td style="padding:1px" width="10%" >
+						<a style="color:#ffffff" href="https://twitter.com/SalonSenseKLG" target="_blank">@SalonSenseKLG</a>
+					</td>
 				</tr>
 				<tr>
 					<td style="padding:1px" width="10%" >
 						<a href="https://twitter.com/KathInsight" target="_blank"><img src="<?php Yii::app()->request->baseUrl ?> /img/InsightTwitter_logo.png" border="0" ></a>
 					</td>
-					<td style="padding:1px" width="10%" >@KathInsight</td>
+					<td style="padding:1px" width="10%" >
+						<a style="color:#ffffff" href="https://twitter.com/KathInsight" target="_blank">@KathInsight</a>
+					</td>
 				</tr>
 				<tr>
 					<td style="padding:1px" width="10%" >
 						<a href="http://uk.linkedin.com/in/insightklg" target="_blank"><img src="<?php Yii::app()->request->baseUrl ?> /img/LinkedIn_logo.png" border="0" ></a>
 					</td>
-					<td style="padding:1px" width="10%" >/insightklg</td>
+					<td style="padding:1px" width="10%" >
+						<a style="color:#ffffff" href="http://uk.linkedin.com/in/insightklg" target="_blank">/insightklg</a>
+					</td>
 				</tr>
 			</table>
 			</div>
@@ -187,7 +194,7 @@ overflow:hidden;
             <p class="Body-P"><span class="Body-C">Copyright &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Training, Coaching &amp; Media 2013 </span></p>
 
             <div style="width:414px;height:51px;overflow:hidden;">
-                <p class="Body-P"><span class="Body-C">Contact Details email@insightKLG</span></p>
+                <p class="Body-P"><span class="Body-C">Contact Details email@insightKLG.co.uk</span></p>
                 <p class="Body-P"><span class="Body-C">Hosted and Designed by <a href="http://www.wireflydesign.com" style="text-decoration:underline;">Wirefly Design</a></span></p>
             </div>
             <div style="position:absolute;left:125px;top:-44px;z-index:1">
@@ -205,9 +212,10 @@ $(document).ready(function(){
 
 $('.bxslider').bxSlider({
   auto: true,
-  slideWidth : 670,
+  slideWidth : 675,
   pause: 4000,
   controls: false,
+  pager: false,
   autoControls: false,
   
   mode: 'fade'
