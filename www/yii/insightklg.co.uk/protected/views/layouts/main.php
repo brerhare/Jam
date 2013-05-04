@@ -111,7 +111,7 @@ overflow:hidden;
 				</ul> 
 			</div>
 
-			<div class="imgoverlay" style="margin-top:-110px; margin-left:-7px;">
+			<div class="imgoverlay" style="margin-top:-110px; margin-left:-2px;">
 				<img style="max-width:none; z-index:10000" src="<?php Yii::app()->request->baseUrl ?> /img/CarouselShapedOverlay.png" border="0" >
 			</div>
 
