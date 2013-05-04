@@ -45,6 +45,11 @@
     margin-top:-75px;
     z-index:9999;
 }
+.bx-wrapper {
+max-height:250px;
+height:250px;
+overflow:hidden;
+}
 </style>
 
 
