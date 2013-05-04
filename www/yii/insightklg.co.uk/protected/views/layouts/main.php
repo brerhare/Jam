@@ -75,12 +75,19 @@ overflow:hidden;
 
             <!--  menu content-->
 	        <br/>
-            <div style="margin-top:75px; margin-right:12px; background-color:#ffffff; border-radius: 15px; -moz-border-radius: 15px; -webkit-border-radius: 15px; padding: 10px 0 0 20px">
+            <div style="margin-top:75px; margin-right:12px; background-color:#ffffff; border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px; padding: 10px 0 0 20px">
 	        <?php $toppos=-30;
             $menuitems = ContentBlock::model()->findAll(array('order'=>'sequence'));
             foreach ($menuitems as $menuitem):?>
-	            <?php if (strtoupper($menuitem->active == 'Y')):?>
-                    <a class="menuitemx" style="color:#000000" href="<?php Yii::app()->request->baseUrl?>/index.php/contentBlock/page?url=<?php echo $menuitem->url;?>">
+	            <?php if (strtoupper($menuitem->active == 'Y')):
+	            	$menuclass = "menuitemx";
+	            	$menustyle = "color:#000000;";
+	            	if (!strcmp($menuitem->url, $_GET['url']))
+	            	{
+	            		$menuclass = "menuitemsel";
+	            		$menustyle .= " text-decoration:underline;";
+	            	}
+	            	echo "<a class='" . $menuclass . "' style='" . $menustyle . "' href='" . Yii::app()->request->baseUrl . "/index.php/contentBlock/page?url=" . $menuitem->url . "'>";?>  
 <!--          <img style="position:absolute;top:<?php echo $toppos; $toppos+=40;?>px;left:-20px" src="<?php Yii::app()->request->baseUrl ?>/img/menuline.png"> -->
                     <?php echo $menuitem->title;?>
                     </a>
