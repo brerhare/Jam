@@ -75,8 +75,10 @@ ul.bxslider>li {
             <!--  menu content-->
 	        <br/>
             <div style="position:relative; margin-top:75px; margin-right:12px; background-color:#ffffff; border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px; padding: 10px 0 0 20px">
-	        <?php $toppos=-30;
-            $menuitems = ContentBlock::model()->findAll(array('order'=>'sequence'));
+	        <?php $menuitems = ContentBlock::model()->findAll(array('order'=>'sequence'));
+	        $showFirst = 0;
+	        if (!isset($_GET['url']))
+	        	$showFirst = 1;
             foreach ($menuitems as $menuitem):?>
 	            <?php if (strtoupper($menuitem->active == 'Y')):
 	            	$menuclass = "menuitemx";
@@ -84,16 +86,17 @@ ul.bxslider>li {
 	            	if ((isset($_GET['url'])) && (!strcmp($menuitem->url, $_GET['url'])))
 	            	{
 	            		$menuclass = "menuitemsel";
-	            		$menustyle .= " text-decoration:underline;";
+	            		$menustyle .= " text-decoration:none;";
 	            	}
 	            	echo "<a class='" . $menuclass . "' style='" . $menustyle . "' href='" . Yii::app()->request->baseUrl . "/index.php/contentBlock/page?url=" . $menuitem->url . "'>";?>
-                    <?php echo $menuitem->title;
-                    if ((isset($_GET['url'])) && (!strcmp($menuitem->url, $_GET['url']))):?>
-<!--						<img style="position:absolute;top:<?php echo $toppos; $toppos+=40;?>px;left:-20px" src="<?php Yii::app()->request->baseUrl ?>/img/menuline.png"> -->
-					<!---	<img style="position:absolute;top:<?php echo $toppos; $toppos+=40;?>px;left:20px" src="<?php Yii::app()->request->baseUrl ?>/img/Menu_line.png"> -->
+                    <?php echo $menuitem->title . "</a>";
+                    if (($showFirst==1) || ((isset($_GET['url'])) && (!strcmp($menuitem->url, $_GET['url'])))):?>
+						<img src="<?php Yii::app()->request->baseUrl ?>/img/Menu_line.png"/>
+						<div style="height:4px;"></div>
+					<?php else:?>
+						<div style="height:8px;"></div>
                     <?php endif;?>
-                    </a>
-                <br/><br/>
+                    <?php $showFirst = 0;?>
 			    <?php endif;?>
             <?php endforeach;?>
 	        </div>
