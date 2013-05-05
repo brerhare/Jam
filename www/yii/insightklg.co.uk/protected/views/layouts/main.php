@@ -116,7 +116,7 @@ ul.bxslider>li {
 	        <br/>
 	        <!-- Tickets logo/link -->
             <div style="margin-left:10px">
-                <a href="<?php Yii::app()->request->baseUrl ?> /index.php/contentBlock/page?url=tickets">
+                <a href="<?php Yii::app()->request->baseUrl ?> /index.php/contentBlock/page?url=book">
                 <img src="<?php Yii::app()->request->baseUrl ?> /img/book_now.png" border="0" width="150" >
 	            </a>
             </div>
@@ -190,13 +190,36 @@ img.frontpage{
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
 }
+
+#cf {
+  position:relative;
+  height:281px;
+  width:450px;
+  margin:0 auto;
+}
+
+#cf img {
+  position:absolute;
+  left:0;
+  -webkit-transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -o-transition: opacity 1s ease-in-out;
+  transition: opacity 1s ease-in-out;
+}
+
+#cf img.top:hover {
+  opacity:0;
+}
 </style>
 
 <table border="0" cellpadding="10">
 <tr>
-<td style="width:320px">
-<img class="frontpage" src="<?php Yii::app()->request->baseUrl ?>/userdata/frontpage/topleft.jpg"/>
-<img style="width:320px;margin-top:-40px" src="<?php Yii::app()->request->baseUrl ?>/img/L_line.png"/>
+<td>
+<div id="cf" style="width:320px;height:175px">
+<img class="frontpage bottom top" src="<?php Yii::app()->request->baseUrl ?>/userdata/frontpage/topleft.jpg"/>
+<img class="frontpage top" src="<?php Yii::app()->request->baseUrl ?>/userdata/frontpage/topleft.jpg"/>
+<img style="width:320px;margin-top:134px;margin-left:-1px" src="<?php Yii::app()->request->baseUrl ?>/img/L_line.png"/>
+</div>
 </td>
 <td style="width:320px">
 <img class="frontpage" src="<?php Yii::app()->request->baseUrl ?>/userdata/frontpage/topright.jpg"/>
