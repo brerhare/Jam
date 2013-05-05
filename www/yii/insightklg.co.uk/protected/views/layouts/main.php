@@ -137,9 +137,11 @@ ul.bxslider>li {
 	        <br/>
             <div style="position:relative; margin-right:12px; background-color:#ffffff; border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px; padding: 10px 0 0 20px">
 	        <?php $menuitems = ContentBlock::model()->findAll(array('order'=>'sequence'));
-	        $showFirst = 0;
+	        $first = true;
+	        $showFirst = false;
+	        $isHomePage = false;
 	        if (!isset($_GET['url']))
-	        	$showFirst = 1;
+	        	$showFirst = true;
             foreach ($menuitems as $menuitem):?>
 	            <?php if (strtoupper($menuitem->active == 'Y')):
 	            	$menuclass = "menuitemx";
@@ -151,13 +153,16 @@ ul.bxslider>li {
 	            	}
 	            	echo "<a class='" . $menuclass . "' style='" . $menustyle . "' href='" . Yii::app()->request->baseUrl . "/index.php/contentBlock/page?url=" . $menuitem->url . "'>";?>
                     <?php echo $menuitem->title . "</a>";
-                    if (($showFirst==1) || ((isset($_GET['url'])) && (!strcmp($menuitem->url, $_GET['url'])))):?>
+                    if (($showFirst) || ((isset($_GET['url'])) && (!strcmp($menuitem->url, $_GET['url'])))):?>
 						<img src="<?php Yii::app()->request->baseUrl ?>/img/Menu_line.png"/>
 						<div style="height:4px;"></div>
+					<?php if ($first)
+							$isHomePage = true; ?>
 					<?php else:?>
 						<div style="height:8px;"></div>
                     <?php endif;?>
-                    <?php $showFirst = 0;?>
+                    <?php $showFirst = false; ?>
+                    <?php $first = false; ?>
 			    <?php endif;?>
             <?php endforeach;?>
 	        </div>
@@ -166,6 +171,52 @@ ul.bxslider>li {
 	<!-- MIDDLE COLUMN -->
 
         <div class="span7">
+        	<!-- Front page block images -->
+			<?php if ($isHomePage): ?>
+
+<style>
+img.frontpage{
+	border:1px solid #;
+	-webkit-border-radius: 20px;
+	-moz-border-radius: 20px;
+	border-radius: 20px;
+	width:320px;
+	height:175px;
+	/* Now unround the bottom corners */
+    -webkit-border-bottom-left-radius: 0px;
+    -webkit-border-bottom-right-radius: 0px;
+    -moz-border-radius-bottomleft: 0px;
+    -moz-border-radius-bottomright: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+</style>
+
+<table border="0" cellpadding="10">
+<tr>
+<td style="width:320px">
+<img class="frontpage" src="<?php Yii::app()->request->baseUrl ?>/userdata/frontpage/topleft.jpg"/>
+<img style="width:320px;margin-top:-40px" src="<?php Yii::app()->request->baseUrl ?>/img/L_line.png"/>
+</td>
+<td style="width:320px">
+<img class="frontpage" src="<?php Yii::app()->request->baseUrl ?>/userdata/frontpage/topright.jpg"/>
+<img style="width:320px;margin-top:-40px" src="<?php Yii::app()->request->baseUrl ?>/img/R_line.png"/>
+</td>
+</tr>
+<tr>
+<td style="width:320px">
+<img class="frontpage" src="<?php Yii::app()->request->baseUrl ?>/userdata/frontpage/bottomleft.jpg"/>
+<img style="width:320px;margin-top:-40px" src="<?php Yii::app()->request->baseUrl ?>/img/L_line.png"/>
+</td>
+<td style="width:320px">
+<img class="frontpage" src="<?php Yii::app()->request->baseUrl ?>/userdata/frontpage/bottomright.jpg"/>
+<img style="width:320px;margin-top:-40px" src="<?php Yii::app()->request->baseUrl ?>/img/R_line.png"/>
+</td >
+</tr>
+</table>
+
+			<?php endif; ?>
+
             <!--Body content-->
 	    <!--    <div style="height:50px; margin-top:-20px;"></div> -->
 	        <div id="content" style="margin-left:-33px; margin-top:20px;">
