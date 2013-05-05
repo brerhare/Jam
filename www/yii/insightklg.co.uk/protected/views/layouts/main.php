@@ -83,16 +83,17 @@ ul.bxslider>li {
 			<script src="/bxslider/jquery.bxslider.js"></script>
 			<!-- bxSlider CSS file -->
 			<link href="/bxslider/jquery.bxslider.css" rel="stylesheet" />
-			
-<style type="text/css">
-.bx-wrapper img {
-	height: 260px;
-}
-.bx-wrapper .bx-viewport {
-	border: none;
-	left: 0px;
-}
-</style>
+
+			<style type="text/css">
+			.bx-wrapper img {
+				height: 260px;
+			}
+			.bx-wrapper .bx-viewport {
+				border: none;
+				left: 0px;
+			}
+			</style>
+
 			<div class="slider">
 				<ul class="bxslider">
 				<?php
