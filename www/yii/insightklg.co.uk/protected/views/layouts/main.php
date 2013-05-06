@@ -114,12 +114,46 @@ ul.bxslider>li {
 
         <div class="span3">
 	        <br/>
-	        <!-- Tickets logo/link -->
-            <div style="margin-left:10px">
-                <a href="<?php Yii::app()->request->baseUrl ?> /index.php/contentBlock/page?url=book">
-                <img src="<?php Yii::app()->request->baseUrl ?> /img/book_now.png" border="0" width="150" >
-	            </a>
-            </div>
+            <!-- Social media links -->
+			<div class="Body-C" style="margin-left:10px; margin-top:15px">
+			<div style="padding:5px"> <u>Keep in touch</u> </div>
+
+			<table >
+				<tr>
+					<td style="padding:1px" width="10%" >
+						<a href="https://www.facebook.com/InsightKLG" target="_blank"><img src="<?php Yii::app()->request->baseUrl ?> /img/FB_logo.png" border="0" ></a>
+					</td>
+					<td style="padding:1px" width="90%">
+						<a style="color:#ffffff" href="https://www.facebook.com/InsightKLG" target="_blank">/InsightKLG</a>
+					</td>
+				</tr>
+				<tr>
+					<td style="padding:1px" width="10%" >
+						<a href="https://twitter.com/SalonSenseKLG" target="_blank"><img src="<?php Yii::app()->request->baseUrl ?> /img/Twitter_logo.png" border="0" ></a>
+					</td>
+					<td style="padding:1px" width="10%" >
+						<a style="color:#ffffff" href="https://twitter.com/SalonSenseKLG" target="_blank">@SalonSenseKLG</a>
+					</td>
+				</tr>
+				<tr>
+					<td style="padding:1px" width="10%" >
+						<a href="https://twitter.com/KathInsight" target="_blank"><img src="<?php Yii::app()->request->baseUrl ?> /img/InsightTwitter_logo.png" border="0" ></a>
+					</td>
+					<td style="padding:1px" width="10%" >
+						<a style="color:#ffffff" href="https://twitter.com/KathInsight" target="_blank">@KathInsight</a>
+					</td>
+				</tr>
+				<tr>
+					<td style="padding:1px" width="10%" >
+						<a href="http://uk.linkedin.com/in/insightklg" target="_blank"><img src="<?php Yii::app()->request->baseUrl ?> /img/LinkedIn_logo.png" border="0" ></a>
+					</td>
+					<td style="padding:1px" width="10%" >
+						<a style="color:#ffffff" href="http://uk.linkedin.com/in/insightklg" target="_blank">/insightklg</a>
+					</td>
+				</tr>
+			</table>
+
+			</div>
         </div>
 
     </div> <!-- /ROW -->
@@ -251,46 +285,6 @@ img.frontpage{
 
         <div class="span3">
 
-            <!-- Social media links -->
-			<div class="Body-C" style="margin-left:10px; margin-top:15px">
-			<div style="padding:5px"> <u>Keep in touch</u> </div>
-
-			<table >
-				<tr>
-					<td style="padding:1px" width="10%" >
-						<a href="https://www.facebook.com/InsightKLG" target="_blank"><img src="<?php Yii::app()->request->baseUrl ?> /img/FB_logo.png" border="0" ></a>
-					</td>
-					<td style="padding:1px" width="90%">
-						<a style="color:#ffffff" href="https://www.facebook.com/InsightKLG" target="_blank">/InsightKLG</a>
-					</td>
-				</tr>
-				<tr>
-					<td style="padding:1px" width="10%" >
-						<a href="https://twitter.com/SalonSenseKLG" target="_blank"><img src="<?php Yii::app()->request->baseUrl ?> /img/Twitter_logo.png" border="0" ></a>
-					</td>
-					<td style="padding:1px" width="10%" >
-						<a style="color:#ffffff" href="https://twitter.com/SalonSenseKLG" target="_blank">@SalonSenseKLG</a>
-					</td>
-				</tr>
-				<tr>
-					<td style="padding:1px" width="10%" >
-						<a href="https://twitter.com/KathInsight" target="_blank"><img src="<?php Yii::app()->request->baseUrl ?> /img/InsightTwitter_logo.png" border="0" ></a>
-					</td>
-					<td style="padding:1px" width="10%" >
-						<a style="color:#ffffff" href="https://twitter.com/KathInsight" target="_blank">@KathInsight</a>
-					</td>
-				</tr>
-				<tr>
-					<td style="padding:1px" width="10%" >
-						<a href="http://uk.linkedin.com/in/insightklg" target="_blank"><img src="<?php Yii::app()->request->baseUrl ?> /img/LinkedIn_logo.png" border="0" ></a>
-					</td>
-					<td style="padding:1px" width="10%" >
-						<a style="color:#ffffff" href="http://uk.linkedin.com/in/insightklg" target="_blank">/insightklg</a>
-					</td>
-				</tr>
-			</table>
-
-			</div>
         </div>
         
     </div> <!-- /ROW -->
