@@ -11,17 +11,19 @@ echo "<script>var showDays=" . $showDays . ";</script>";
 
 <script>
 
-function doit(){
-	var v = document.getElementById("datepicker");
-	alert(v.value);
-}
-
-
 // Set the starting display date to today (epoch format)
 var timeStamp = Math.floor(new Date().getTime() / 1000);
 
 function changeDate(days) {
 	timeStamp += (days * 86400);
+	ajaxGetRoomPriceAvail();
+}
+function setDate(){
+	var v = document.getElementById("datepicker");
+	dd = v.value.substr(0, 2);
+	mm = v.value.substr(3, 2);
+	yyyy = v.value.substr(6, 4);
+	timeStamp = new Date(yyyy, mm-1, dd).getTime() / 1000;
 	ajaxGetRoomPriceAvail();
 }
 
@@ -245,7 +247,7 @@ table td, table th {
 /* Turn off annoying datepicker tooltips */
 .ui-tooltip {width:0px; height:0px}
 </style>
-					<input type="text" id="datepicker" size="30" onChange="doit()"/>
+					<input type="text" id="datepicker" size="30" style="width:70px" onChange="setDate()"/>
 				</td>
 				<td width="20%" style="text-align:right">
 					<a href="javascript:changeDate(1)" class="button gray">day ></a>
@@ -280,10 +282,6 @@ function showTopPickLines(){
    	}
 	showRooms();
 }
-
-$(document).ready(function() {
-	ajaxGetRoomPriceAvail();
- });
 
 // Ajax call to room availability for the 14 day period displayed - all rooms at once
 // Called: startup + whenever the user changes the calendar dates
@@ -474,18 +472,21 @@ function showRooms() {
 	}
 }
 
+ 
 $(document).ready(function() {
 
-  $(function() {
-    $( "#datepicker" ).datepicker({
-    	dateFormat: 'dd/mm/yy',
-      onChange: 'doit2()',
-      showButtonPanel: true
-    });
-  });
-$('#datepicker').datepicker().datepicker('setDate',new Date());
+	ajaxGetRoomPriceAvail();
 
+	$(function() {
+		$( "#datepicker" ).datepicker({
+	    });
+	});
+  
+	$(function() {
+		$("#datepicker").datepicker( "option", "dateFormat", "dd/mm/yy" );
+	});
 
+	$('#datepicker').datepicker().datepicker('setDate',new Date());
 
  });
 </script>
