@@ -1,3 +1,5 @@
+<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
 <?php // Control variables
 $maxRooms = 3; // How many rooms can be booked
 $showDays = 14; // How many days to show on calendar grid
@@ -8,6 +10,13 @@ echo "<script>var showDays=" . $showDays . ";</script>";
 ?>
 
 <script>
+
+function doit(){
+	var v = document.getElementById("datepicker");
+	alert(v.value);
+}
+
+
 // Set the starting display date to today (epoch format)
 var timeStamp = Math.floor(new Date().getTime() / 1000);
 
@@ -75,9 +84,8 @@ table td, table th {
 }
 .cweekday, .cweekend {
 	text-align:center;
-	background-color: #3d5266;
-	background-color: #1F2933;
-	color:#cce6ff;
+	background-color: #434a50;
+	color:#ffffff;
 	border-left:1px solid white;
 	border-right:1px solid white;
 	font-family:Helvetica, Arial, sans-serif;
@@ -86,22 +94,28 @@ table td, table th {
 	width:5%;
 }
 .cweekend {
-	color: #ffffff;
-	background-color: #1F2933;
-	background-color: #3d5266;
+	background-color: #2a2f34;
 	width:5%;
 }
 .cline {
 	background-color: #ECF8FA;
+	background-color: #46679C;
 	text-align:center;
+	color:#ffffff;
 	font-weight:light;
 	font-size:12px;
 	height:30px;
 }
-.roomnoline {
+.roomnocell1 {
 	display:block;
 	background-color: #fbedac;
-	padding:10px;
+	background-color: #A9BAD6;
+	padding:2px 10px;
+}
+.roomnocell2 {
+
+	background-color: #fbedac;
+	background-color: #A9BAD6;
 }
 </style>
 
@@ -163,6 +177,7 @@ table td, table th {
     background: -ms-linear-gradient(top,  #d3d3d3 0%,#8a8a8a 100%); /* IE10+ */
     background: linear-gradient(top,  #d3d3d3 0%,#8a8a8a 100%); /* W3C */
 }
+.row {margin:0px;padding:0px}
 </style>
 
 <div class="row">
@@ -221,11 +236,18 @@ table td, table th {
 		<table>
 			<tr>
 				<td width="30%"></td>
-				<td width="35">
+				<td width="20%">
 					<a href="javascript:changeDate(-7);" class="button gray"><< week</a>
 					<a href="javascript:changeDate(-1)" class="button gray">< day</a>
 				</td>
-				<td width="35" style="text-align:right">
+				<td width="30%" style="text-align:center">View date 
+<style>
+/* Turn off annoying datepicker tooltips */
+.ui-tooltip {width:0px; height:0px}
+</style>
+					<input type="text" id="datepicker" size="30" onChange="doit()"/>
+				</td>
+				<td width="20%" style="text-align:right">
 					<a href="javascript:changeDate(1)" class="button gray">day ></a>
 					<a href="javascript:changeDate(7)" class="button gray">week >></a>
 				</td>
@@ -409,8 +431,12 @@ function showRooms() {
 					{
 						var row = table.insertRow(line++);
 						var cell = row.insertCell(0);
-    					cell.innerHTML = 'Select room ' + (i+1);
-						cell.className = 'roomnoline';
+    					cell.innerHTML = 'Choose Room ' + (i+1);
+						cell.className = 'roomnocell1';
+						cell = row.insertCell(1);
+						cell.className = 'roomnocell2';
+						cell.colSpan = 14;
+						cell.innerHTML = '';
 					}
 				}
 
@@ -423,7 +449,7 @@ function showRooms() {
     				cell.className = 'cline';
     				if ((numAdults == 1) && (numChildren == 0))
     					cell.innerHTML = rData.prices[0] == 0 ? rData.prices[2] : rData.prices[0];
-	    			else if ((numAdults == 2) && (numChildren == 0))
+	    			else if (((numAdults == 2) && (numChildren == 0)) || ((numAdults == 1) && (numChildren == 1)))
 	    			{
 	    				cell.innerHTML = rData.prices[1] == 0 ? (rData.prices[2] * 2) : rData.prices[1];
 	    			}
@@ -441,11 +467,25 @@ function showRooms() {
 	    				price += (children * rData.prices[3]);	// +children
 	    				cell.innerHTML = price;
 	    			}
-	    			if (rData.avail[k] == 0) cell.innerHTML = 'x';
+	    			if (rData.avail[k] == 0) cell.innerHTML = 'Sold';
     			}
     		}
 		}
 	}
 }
- 
+
+$(document).ready(function() {
+
+  $(function() {
+    $( "#datepicker" ).datepicker({
+    	dateFormat: 'dd/mm/yy',
+      onChange: 'doit2()',
+      showButtonPanel: true
+    });
+  });
+$('#datepicker').datepicker().datepicker('setDate',new Date());
+
+
+
+ });
 </script>
