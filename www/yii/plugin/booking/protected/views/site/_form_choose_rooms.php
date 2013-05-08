@@ -8,6 +8,14 @@ echo "<script>var showDays=" . $showDays . ";</script>";
 ?>
 
 <script>
+// Set the starting display date to today (epoch format)
+var timeStamp = Math.floor(new Date().getTime() / 1000);
+
+function changeDate(days) {
+	timeStamp += (days * 86400);
+	ajaxGetRoomPriceAvail();
+}
+
 // Store the basic details for every room at startup
 <?php
 $criteria = new CDbCriteria;
@@ -62,39 +70,103 @@ foreach ($rooms as $room)
 </script>
 
 <style>
-    table td, table th {
-        padding: 0px;
-    }
-	.cweekday {
-		text-align:center;
-		background-color: #3d5266;
-				background-color: #1F2933;
-		color:#cce6ff;
-        border-left:1px solid white;
-        border-right:1px solid white;
-        font-family:Helvetica, Arial, sans-serif;
-        font-weight:100;
-        font-size:13px;
-	}
-	.cweekend {
-		background-color: #1F2933;
-		background-color: #3d5266;
-	}
-	.cline {
-		text-align:center;
-		font-weight:100;
-		font-size:12px;
-		height:30px;
-	}
-	.roomnoline {
-		display:block;
-		background-color: #fbedac;
-		padding:10px;
-	}
+table td, table th {
+	padding: 0px;
+}
+.cweekday, .cweekend {
+	text-align:center;
+	background-color: #3d5266;
+	background-color: #1F2933;
+	color:#cce6ff;
+	border-left:1px solid white;
+	border-right:1px solid white;
+	font-family:Helvetica, Arial, sans-serif;
+	font-weight:100;
+	font-size:13px;
+	width:5%;
+}
+.cweekend {
+	color: #ffffff;
+	background-color: #1F2933;
+	background-color: #3d5266;
+	width:5%;
+}
+.cline {
+	background-color: #ECF8FA;
+	text-align:center;
+	font-weight:light;
+	font-size:12px;
+	height:30px;
+}
+.roomnoline {
+	display:block;
+	background-color: #fbedac;
+	padding:10px;
+}
+</style>
+
+<style>
+/* Pretty buttons. Source: http://designmodo.com/create-css3-buttons/#ixzz2Sbk1NSMl */
+.button {
+    display: inline-block;
+    position: relative;
+    margin: 1px;
+    padding: 0 10px;
+    text-align: center;
+    text-decoration: none;
+    font: bold 12px/25px Arial, sans-serif;
+    text-shadow: 1px 1px 1px rgba(255,255,255, .22);
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    border-radius: 30px;
+    -webkit-box-shadow: 1px 1px 1px rgba(0,0,0, .29), inset 1px 1px 1px rgba(255,255,255, .44);
+    -moz-box-shadow: 1px 1px 1px rgba(0,0,0, .29), inset 1px 1px 1px rgba(255,255,255, .44);
+    box-shadow: 1px 1px 1px rgba(0,0,0, .29), inset 1px 1px 1px rgba(255,255,255, .44);
+    -webkit-transition: all 0.15s ease;
+    -moz-transition: all 0.15s ease;
+    -o-transition: all 0.15s ease;
+    -ms-transition: all 0.15s ease;
+    transition: all 0.15s ease;
+}
+.button:hover {
+    -webkit-box-shadow: 1px 1px 1px rgba(0,0,0,.29), inset 0px 0px 2px rgba(0,0,0, .5);
+    -moz-box-shadow: 1px 1px 1px rgba(0,0,0,.29), inset 0px 0px 2px rgba(0,0,0, .5);
+    box-shadow: 1px 1px 1px rgba(0,0,0,.29), inset 0px 0px 2px rgba(0,0,0, .5);
+}
+.green {
+    color: #3e5706;
+    background: #a5cd4e; /* Old browsers */
+    background: -moz-linear-gradient(top,  #a5cd4e 0%, #6b8f1a 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#a5cd4e), color-stop(100%,#6b8f1a)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #a5cd4e 0%,#6b8f1a 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #a5cd4e 0%,#6b8f1a 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #a5cd4e 0%,#6b8f1a 100%); /* IE10+ */
+    background: linear-gradient(top,  #a5cd4e 0%,#6b8f1a 100%); /* W3C */
+}
+.blue {
+    color: #19667d;
+    background: #70c9e3; /* Old browsers */
+    background: -moz-linear-gradient(top,  #70c9e3 0%, #39a0be 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#70c9e3), color-stop(100%,#39a0be)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #70c9e3 0%,#39a0be 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #70c9e3 0%,#39a0be 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #70c9e3 0%,#39a0be 100%); /* IE10+ */
+    background: linear-gradient(top,  #70c9e3 0%,#39a0be 100%); /* W3C */
+}
+.gray {
+    color: #515151;
+    background: #d3d3d3; /* Old browsers */
+    background: -moz-linear-gradient(top,  #d3d3d3 0%, #8a8a8a 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#d3d3d3), color-stop(100%,#8a8a8a)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #d3d3d3 0%,#8a8a8a 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #d3d3d3 0%,#8a8a8a 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #d3d3d3 0%,#8a8a8a 100%); /* IE10+ */
+    background: linear-gradient(top,  #d3d3d3 0%,#8a8a8a 100%); /* W3C */
+}
 </style>
 
 <div class="row">
-	<div class="span1"></div>
+	<div class="span2"></div>
 	<div class='well span6'>
         <table id="topPick">
         <tbody>
@@ -144,56 +216,29 @@ foreach ($rooms as $room)
 	</div>
 </div>
 
+<div class="row">
+	<div class="span8">
+		<table>
+			<tr>
+				<td width="30%"></td>
+				<td width="35">
+					<a href="javascript:changeDate(-7);" class="button gray"><< week</a>
+					<a href="javascript:changeDate(-1)" class="button gray">< day</a>
+				</td>
+				<td width="35" style="text-align:right">
+					<a href="javascript:changeDate(1)" class="button gray">day ></a>
+					<a href="javascript:changeDate(7)" class="button gray">week >></a>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
 
 <div class="row">
 	<div class="span8">
 		<table id="roomTable">
-			<thead>
-			<tr>
-				<th style="width:30%;"></th>
-				<?php
-				$str = '+1 week';
-				$str = '+2 week';
-				$str = 'today';
-				$timestamp = strtotime($str);
-				for ($i = 0; $i < $showDays; $i++)
-				{
-					$day = date('D', $timestamp + ($i * (60 * 60 * 24)));
-					$dayClass = ' cweekday ';
-					if (($day == 'Sat') || ($day == 'Sun'))
-						$dayClass .= ' cweekend ';
-					echo "<th class='" . $dayClass . "' style='width:5%'>";
-					echo $day;
-					echo '</th>';
-				}
-				?>
-			</tr>
-			<tr>
-				<th style="width:30%"></th>
-				<?php
-				for ($i = 0; $i < $showDays; $i++)
-				{
-					echo "<th class='" . $dayClass . "' style='width:5%'>";
-					echo date('j', $timestamp + ($i * (60 * 60 * 24)));
-					echo '</th>';
-				}
-				?>
-            </tr>
-            <tr>
-                <th style="width:30%"></th>
-				<?php
-				for ($i = 0; $i < $showDays; $i++)
-				{
-					echo "<th class='" . $dayClass . "' style='width:5%'>";
-					echo date('M', $timestamp + ($i * (60 * 60 * 24)));
-					echo '</th>';
-				}
-				?>
-            </tr>
-			</thead>
-
-			<tbody id="roomTbody">
-			</tbody>
+			<thead id="roomThead"></thead>
+			<tbody id="roomTbody"></tbody>
 		</table>
 	</div>
 </div>
@@ -235,7 +280,7 @@ function ajaxGetRoomPriceAvail()
 		'url'=>$this->createUrl('site/ajaxGetRoomPriceAvail'),
 		'data'=>array(
 			'roomList'=>$roomList,
-			'date'=>$timestamp
+			'date'=>'js:timeStamp'
 		),
 		'type'=>'POST',
 		'dataType'=>'json',
@@ -273,7 +318,54 @@ function ajaxShowRoomPriceAvail(val) {
 			}
 		}
 	}
+	showDates();
 	showRooms();
+}
+
+function showDates() {
+	// Clear existing display
+	var old_thead = document.getElementById('roomThead');
+	var new_thead = document.createElement('thead');
+	new_thead.id = "roomThead";
+	old_thead.parentNode.replaceChild(new_thead, old_thead);
+	
+	var table = document.getElementById ("roomThead");
+
+	var rowWeekDay = table.insertRow(0);
+	var rowMonthDay = table.insertRow(1);
+	var rowMonth = table.insertRow(2);
+
+	var cell = rowWeekDay.insertCell(0);
+	cell = rowMonthDay.insertCell(0);
+	cell = rowMonth.insertCell(0);
+
+	var d = new Date(0); // The 0 sets the date to the epoch
+	d.setUTCSeconds(timeStamp);
+
+	for (var i = 0; i < 14; i++)
+	{
+		// Day of week
+		cell = rowWeekDay.insertCell(i+1);
+		var wday = d.toString().substr(0,3);
+		var className = 'cweekday';
+		if ((wday == 'Sat') || (wday == 'Sun'))
+			className = 'cweekend';
+		cell.innerHTML = wday;
+		cell.className = className;
+		cell.style = 'width:5%';
+
+		// Day of month
+		cell = rowMonthDay.insertCell(i+1);
+		cell.innerHTML = d.toString().substr(8,2);
+		cell.className = className;
+
+		// Month
+		cell = rowMonth.insertCell(i+1);
+		cell.innerHTML = d.toString().substr(4,3);
+		cell.className = className;
+
+		d.setDate(d.getDate()+1);
+	}
 }
 
 // Show all rooms suiting the top-box selections, whether available or not (greyed)
@@ -291,7 +383,7 @@ function showRooms() {
 
 	// For the required number of rooms...
 	for (var i = 0; i < $('#numRooms').val(); i++)		// @@EG: Example of PHP yii referencing JS an html element by name 
-	{40	
+	{
 		// Set to display blocks if theyre booking multiple rooms
 		var displayBlock = 1;
 
