@@ -9,6 +9,11 @@ echo "<script>var showDays=" . $showDays . ";</script>";
 //-------------------
 ?>
 
+<style>
+/* Turn off annoying datepicker tooltips */
+.ui-tooltip {width:0px; height:0px}
+</style>
+
 <script>
 
 // Set the starting display date to today (epoch format)
@@ -81,6 +86,22 @@ foreach ($rooms as $room)
 </script>
 
 <style>
+
+.well {
+	padding:10px 20px 0px 20px;
+}
+.boxy {
+	background-color: #e3e3e3;
+	padding:0px 10px 0px 10px;
+	/*width:550px;*/
+
+}
+.krow, .kspan8 {padding: 10px;}
+
+table#topPick {
+	padding:5px;
+}
+ 
 table td, table th {
 	padding: 0px;
 }
@@ -183,29 +204,44 @@ table td, table th {
 </style>
 
 <div class="row">
-	<div class="span2"></div>
-	<div class='well span6'>
-        <table id="topPick">
-        <tbody>
-            <tr>
-                <th>Rooms</th>
-                <th></th>
-                <th>Adults</th>
-                <th>Children</th>
-	            <th></th>
-            </tr>
-            <?php for ($i = 0; $i < $maxRooms; $i++): ?>
-            <tr id="roomLine_<?php echo ($i+1);?>" <?php if ($i>0) echo " style='display:none' ";?>   >
-                <td>
-                <?php if ($i == 0): ?>
+	<div class='well span8'>
+		<table style="width:650px">
+			<tr>
+				<td style="width:130px">Arrival date
+					<input type="text" id="arrivedate" size="30" style="width:70px" onChange="setDate()"/>
+				</td>
+				<td style="width:150px">Departure date
+					<input type="text" id="departdate" size="30" style="width:70px" onChange="setDate()"/>
+				</td>
+                <td style="width:150px">Number of rooms
                     <select name="numRooms" id="numRooms" style="width: 50px" onchange="showTopPickLines()">
                         <option value="1" selected="selected">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
                     </select>
-                <?php endif;?>
                 </td>
-                <td>Room <?php echo ($i + 1); ?> </td>
+			</tr>
+		</table>
+
+<div class="boxy">
+<!--
+		< ?php $this->beginWidget('bootstrap.widgets.TbBox', array(
+		    'title' => 'Occupancy',
+    		'headerIcon' => 'icon-home',
+			'htmlOptions' => array('class'=>'bootstrap-widget-table')
+		));? >
+-->
+        <table id="topPick">
+        <tbody>
+            <tr>
+                <th>Room</th>
+                <th>Adults</th>
+                <th>Children</th>
+	            <th>Choose Occupancy Type</th>
+            </tr>
+            <?php for ($i = 0; $i < $maxRooms; $i++): ?>
+            <tr id="roomLine_<?php echo ($i+1);?>" <?php if ($i>0) echo " style='display:none' ";?>   >
+                <td><?php echo ($i + 1); ?> </td>
                 <td>
                     <select name="numAdults_<?php echo ($i+1)?>" id="numAdults_<?php echo ($i+1)?>" style="width: 50px" onchange="showTopPickLines()">
                         <option value="1" selected="selected">1</option>
@@ -222,34 +258,44 @@ table td, table th {
                     </select>
                 </td>
                 <td>
-                <?php if ($i == 0): ?>
-                    <?php //echo CHtml::button("Search rooms",array('onclick'=>'js:searchRooms();')); ?>
-                <?php endif; ?>
+                    <select name="occupancyType_<?php echo ($i+1)?>" id="occupancyType_<?php echo ($i+1)?>" style="width: 200px" onchange="showTopPickLines()">
+                    <?php $criteria = new CDbCriteria;
+					$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+                    $occupancyTypes=OccupancyType::model()->findAll($criteria);
+                    $fst = 1;
+                    foreach ($occupancyTypes as $occupancyType):
+                    	$sel = "";
+                    	if ($fst == 1) $sel = " selected='selected'";
+                    	echo "<option value='" . $occupancyType->id . "'" . $sel . ">" . $occupancyType->description . "</option>";
+						$fst = 0;
+					endforeach;
+					?>
+                    </select>
                 </td>
 	        </tr>
 	        <?php endfor; ?>
         </tbody>
 	    </table>
+
+<!--		< ?php $this->endWidget(); ? >  -->
+</div>
+
 	</div>
 </div>
 
 <div class="row">
 	<div class="span8">
-		<table>
+		<table style="margin-bottom:0px;">
 			<tr>
-				<td width="30%"></td>
+				<td width="32%"></td>
 				<td width="20%">
 					<a href="javascript:changeDate(-7);" class="button gray"><< week</a>
 					<a href="javascript:changeDate(-1)" class="button gray">< day</a>
 				</td>
-				<td width="30%" style="text-align:center">View date 
-<style>
-/* Turn off annoying datepicker tooltips */
-.ui-tooltip {width:0px; height:0px}
-</style>
+				<td width="28%" style="text-align:center">View date 
 					<input type="text" id="datepicker" size="30" style="width:70px" onChange="setDate()"/>
 				</td>
-				<td width="20%" style="text-align:right">
+				<td width="20%" style="text-align:right; padding-right:10px;">
 					<a href="javascript:changeDate(1)" class="button gray">day ></a>
 					<a href="javascript:changeDate(7)" class="button gray">week >></a>
 				</td>
@@ -477,6 +523,7 @@ $(document).ready(function() {
 
 	ajaxGetRoomPriceAvail();
 
+	// 1
 	$(function() {
 		$( "#datepicker" ).datepicker({
 	    });
@@ -489,6 +536,34 @@ $(document).ready(function() {
 	});
 
 	$('#datepicker').datepicker().datepicker('setDate',new Date());
+
+	// 2
+	$(function() {
+		$( "#arrivedater" ).datepicker({
+	    });
+	});
+  
+	$(function() {
+		$("#arrivedate").datepicker( "option", "dateFormat", "dd/mm/yy" );
+		$("#arrivedate").datepicker( "option", "minDate", 0 );
+
+	});
+
+	$('#arrivedate').datepicker().datepicker('setDate',new Date());
+
+	// 3
+	$(function() {
+		$( "#departdate" ).datepicker({
+	    });
+	});
+  
+	$(function() {
+		$("#departdate").datepicker( "option", "dateFormat", "dd/mm/yy" );
+		$("#departdate").datepicker( "option", "minDate", 0 );
+
+	});
+
+	$('#departdate').datepicker().datepicker('setDate',new Date());
 
  });
 </script>
