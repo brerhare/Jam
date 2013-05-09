@@ -44,13 +44,15 @@ class SiteController extends Controller
 	{
 		if (Yii::app()->request->isAjaxRequest)
 		{
-			Yii::log("TEST AJAX CALL: date:" . $_POST['date'] . " room:" . $_POST['roomList'], CLogger::LEVEL_WARNING, 'system.test.kim');
+			Yii::log("TEST AJAX CALL: date:" . $_POST['date'] . " arrival:" . $_POST['arrival'] . " departure:" . $_POST['departure'] . " room:" . $_POST['roomList'], CLogger::LEVEL_WARNING, 'system.test.kim');
 			if(isset($_POST['date']))
 			{
 				$retArr = array();
 				$roomCount = 0;
 				foreach ($_POST['roomList'] as $roomId)
 				{
+					// GENERATE THE 14-DAY AVAILABILITY DISPLAY
+
 					// Init the array
 					$availDays = array();
 					for ($i = 0; $i < 14; $i++)
@@ -75,9 +77,25 @@ class SiteController extends Controller
 					foreach ($availDays as $k => $v)
 						$arr[$i++] = $v;
 
-					// Add this room and its datearray to the return array
+					// CHECK IF THIS ROOM IS AVAILABLE FOR THE ARRIVE-DEPART DATES (for the buttons)
+
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+					$criteria->addCondition("room_id = " . $roomId);
+					$criteria->addCondition("date >= '" . date('Y-m-d', $_POST['arrival']) . "'");
+					$criteria->addCondition("date <= '" . date('Y-m-d', ($_POST['departure'] - (1 * (60 * 60 * 24)) )) . "'");
+					$days = Calendar::model()->findAll($criteria);
+					$roomIsAvailToBook = 1;
+					foreach ($days as $day)
+					{
+						$roomIsAvailToBook = 0;
+						break;
+					}
+
+					// Add this room, its datearray and booking-availability to the return array
 					$roomStr = 'room_' . $roomCount;
 					$retArr[$roomStr]['roomId'] = $roomId;
+					$retArr[$roomStr]['bookAvail'] = $roomIsAvailToBook;
 					$retArr[$roomStr]['dates'] = $arr;
 
 					$roomCount++;
@@ -90,6 +108,7 @@ class SiteController extends Controller
 					'numRooms' => '2',
 					'room_1' => array(
 						'roomId' => 23,
+						'bookAvail' => 1,
 						'dates' => array(1,1,1,1,1,1,1,1,1,1,1,1,1,1),
 					}
 					'room_2' => array(

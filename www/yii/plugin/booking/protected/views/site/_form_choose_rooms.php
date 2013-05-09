@@ -23,6 +23,8 @@ echo "<script>var showDays=" . $showDays . ";</script>";
 
 // Set the starting display date to today (epoch format)
 var timeStamp = Math.floor(new Date().getTime() / 1000);
+var arrivalStamp = timeStamp;
+var departureStamp = timeStamp + 86400;
 
 function changeDate(days) {
 	timeStamp += (days * 86400);
@@ -53,11 +55,19 @@ function onArrivalDateChange()
 	$('#datepicker').datepicker().datepicker('setDate', dt);
 	$('#departdate').datepicker().datepicker('setDate', dt2);
 	$("#departdate").datepicker( "option", "minDate", dt2 );
+	arrivalStamp = dt.getTime()/1000;
+	departureStamp = dt2.getTime()/1000;
 	ajaxGetRoomPriceAvail();
 }
 
 function onDepartureDateChange()
 {
+	var v = document.getElementById("departdate");
+	dd = v.value.substr(0, 2);
+	mm = v.value.substr(3, 2);
+	yyyy = v.value.substr(6, 4);
+	dt = new Date(yyyy, mm-1, dd);
+	departureStamp = dt.getTime()/1000;
 	ajaxGetRoomPriceAvail();
 }
 
@@ -71,6 +81,7 @@ foreach ($rooms as $room)
 {
 	echo "room = new Object();";
 	echo "room.id = '" . $room->id . "';";
+	echo "room.bookAvail = 0;";
 	echo "room.title = '" . $room->title . "';";
 	echo "room.description = '" . $room->description . "';";
 	echo "room.qty = '" . $room->qty . "';";
@@ -366,7 +377,9 @@ function ajaxGetRoomPriceAvail()
 		'url'=>$this->createUrl('site/ajaxGetRoomPriceAvail'),
 		'data'=>array(
 			'roomList'=>$roomList,
-			'date'=>'js:timeStamp'
+			'date'=>'js:timeStamp',
+			'arrival'=>'js:arrivalStamp',
+			'departure'=>'js:departureStamp',
 		),
 		'type'=>'POST',
 		'dataType'=>'json',
@@ -381,10 +394,12 @@ function ajaxShowRoomPriceAvail(val) {
 					'numRooms' => '2',
 					'room_1' => array(
 						'roomId' => 23,
+						'bookAvail' => 1,
 						'dates' => array(1,1,1,1,1,1,1,1,1,1,1,1,1,1),
 					}
 					'room_2' => array(
 						'roomId' => 17,
+						'bookAvail' => 0,
 						'dates' => array(0,0,0,0,0,0,0,1,1,0,0,0,0,0)
 					)
 				)); */
@@ -392,6 +407,7 @@ function ajaxShowRoomPriceAvail(val) {
 	for (var i = 0; i < val.numRooms; i++)
 	{
 		var vRoomId = eval("val.room_" + i + ".roomId");
+		var vBookAvail = eval("val.room_" + i + ".bookAvail");
 		var vDates = eval("val.room_" + i + ".dates");
 		for (var j = 0; j < roomData.length; j++)
 		{
@@ -400,6 +416,7 @@ function ajaxShowRoomPriceAvail(val) {
 			{
 				for (var k = 0; k < 14; k++)
 					rData.avail[k] = vDates[k];
+				rData.bookAvail = vBookAvail;
 				break;
 			}
 		}
@@ -511,7 +528,13 @@ function showRooms() {
 	    		var row = table.insertRow(line++);
     			var cell = row.insertCell(0);
     			var tbl = "<table style='margin-bottom:0px'><tr><td class='roomline'>" + rData.title + "</td><td style='text-align:right;padding-right:10px'><div style='top:5px; left:-50px'>";
-    			tbl += "<a href='javascript:roomSelect();' class='button blue'>Book</a>";
+    			if (rData.bookAvail == 1)
+    				tbl += "<a href='javascript:roomSelect();' class='button blue'>Book</a>";
+    			else
+{
+//tbl += '<a data-toggle="modal" data-target="#myModal" class="btn btn-primary" id="yw2">Click me</a>';
+}
+
     			tbl += "</div></td></tr></table>";
     			cell.innerHTML = tbl;
     			for (k = 0; k < showDays; k++)
