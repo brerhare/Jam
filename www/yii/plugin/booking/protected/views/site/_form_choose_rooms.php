@@ -55,6 +55,12 @@ function onArrivalDateChange()
 	$("#departdate").datepicker( "option", "minDate", dt2 );
 	ajaxGetRoomPriceAvail();
 }
+
+function onDepartureDateChange()
+{
+	ajaxGetRoomPriceAvail();
+}
+
 // Store the basic details for every room at startup
 <?php
 $criteria = new CDbCriteria;
@@ -249,7 +255,7 @@ td:first-child+td.cline {
 					<input type="text" id="arrivedate" size="30" style="width:70px" onChange="onArrivalDateChange()"/>
 				</td>
 				<td style="width:150px">Departure date
-					<input type="text" id="departdate" size="30" style="width:70px"/>
+					<input type="text" id="departdate" size="30" style="width:70px" onChange="onDepartureDateChange()"/>
 				</td>
                 <td style="width:150px; padding-right:15px">Number of rooms
                     <select name="numRooms" id="numRooms" style="width: 50px" onchange="showTopPickLines()">
