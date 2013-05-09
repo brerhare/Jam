@@ -35,6 +35,10 @@ function setDate(){
 	yyyy = v.value.substr(6, 4);
 	timeStamp = new Date(yyyy, mm-1, dd).getTime() / 1000;
 	ajaxGetRoomPriceAvail();
+	// Also set the arrival/departure dates
+	dt = new Date(yyyy, mm-1, dd);
+	$('#arrivedate').datepicker().datepicker('setDate', dt);
+	onArrivalDateChange();
 }
 
 function onArrivalDateChange()
@@ -48,8 +52,7 @@ function onArrivalDateChange()
 	timeStamp = new Date(yyyy, mm-1, dd).getTime() / 1000;
 	$('#datepicker').datepicker().datepicker('setDate', dt);
 	$('#departdate').datepicker().datepicker('setDate', dt2);
-//alert(dt);
-//alert(dt.getDate()+1);
+	$("#departdate").datepicker( "option", "minDate", dt2 );
 	ajaxGetRoomPriceAvail();
 }
 // Store the basic details for every room at startup
@@ -540,7 +543,6 @@ $(document).ready(function() {
 		$("#datepicker").datepicker( "option", "minDate", 0 );
 
 	});
-
 	$('#datepicker').datepicker().datepicker('setDate',new Date());
 
 	// 2
@@ -548,13 +550,11 @@ $(document).ready(function() {
 		$( "#arrivedater" ).datepicker({
 	    });
 	});
-  
 	$(function() {
 		$("#arrivedate").datepicker( "option", "dateFormat", "dd/mm/yy" );
 		$("#arrivedate").datepicker( "option", "minDate", 0 );
 
 	});
-
 	$('#arrivedate').datepicker().datepicker('setDate',new Date());
 
 	// 3
@@ -562,14 +562,21 @@ $(document).ready(function() {
 		$( "#departdate" ).datepicker({
 	    });
 	});
-  
 	$(function() {
 		$("#departdate").datepicker( "option", "dateFormat", "dd/mm/yy" );
-		$("#departdate").datepicker( "option", "minDate", 0 );
+		//$("#departdate").datepicker( "option", "minDate", 0 );
+
+	var v = document.getElementById("arrivedate");
+	dd = v.value.substr(0, 2);
+	mm = v.value.substr(3, 2);
+	yyyy = v.value.substr(6, 4);
+	dt = new Date(yyyy, mm-1, dd);
+	dt2 = new Date(yyyy, mm-1, dt.getDate()+1);
+	$('#departdate').datepicker().datepicker('setDate', dt2);
+	$("#departdate").datepicker( "option", "minDate", dt2 );
+	//$('#departdate').datepicker().datepicker('setDate',new Date());
 
 	});
-
-	$('#departdate').datepicker().datepicker('setDate',new Date());
 
  });
 </script>
