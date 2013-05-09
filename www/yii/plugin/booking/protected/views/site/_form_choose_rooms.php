@@ -484,6 +484,8 @@ $(document).ready(function() {
   
 	$(function() {
 		$("#datepicker").datepicker( "option", "dateFormat", "dd/mm/yy" );
+		$("#datepicker").datepicker( "option", "minDate", 0 );
+
 	});
 
 	$('#datepicker').datepicker().datepicker('setDate',new Date());
