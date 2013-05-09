@@ -166,6 +166,10 @@ td:first-child+td.cline {
 	background-color: #fbedac;
 	background-color: #A9BAD6;
 }
+.roomline {
+	color:#46679c;
+	font-weight:bold; 
+}
 </style>
 
 <style>
@@ -444,6 +448,9 @@ function showDates() {
 	}
 }
 
+function roomSelect() {
+}
+
 // Show all rooms suiting the top-box selections, whether available or not (greyed)
 // Uses local data only
 // Called: startup + change of room count, or adult/child per room
@@ -483,6 +490,7 @@ function showRooms() {
 					displayBlock = 0;
 					if ($('#numRooms').val() > 1)
 					{
+						// Room choice header line
 						var row = table.insertRow(line++);
 						var cell = row.insertCell(0);
     					cell.innerHTML = 'Your choices for room ' + (i+1);
@@ -496,7 +504,10 @@ function showRooms() {
 
 	    		var row = table.insertRow(line++);
     			var cell = row.insertCell(0);
-    			cell.innerHTML = rData.title;
+    			var tbl = "<table style='margin-bottom:0px'><tr><td class='roomline'>" + rData.title + "</td><td style='text-align:right;padding-right:10px'><div style='top:5px; left:-50px'>";
+    			tbl += "<a href='javascript:roomSelect();' class='button blue'>Book</a>";
+    			tbl += "</div></td></tr></table>";
+    			cell.innerHTML = tbl;
     			for (k = 0; k < showDays; k++)
     			{
 		    		var cell = row.insertCell(k+1);
@@ -564,18 +575,14 @@ $(document).ready(function() {
 	});
 	$(function() {
 		$("#departdate").datepicker( "option", "dateFormat", "dd/mm/yy" );
-		//$("#departdate").datepicker( "option", "minDate", 0 );
-
-	var v = document.getElementById("arrivedate");
-	dd = v.value.substr(0, 2);
-	mm = v.value.substr(3, 2);
-	yyyy = v.value.substr(6, 4);
-	dt = new Date(yyyy, mm-1, dd);
-	dt2 = new Date(yyyy, mm-1, dt.getDate()+1);
-	$('#departdate').datepicker().datepicker('setDate', dt2);
-	$("#departdate").datepicker( "option", "minDate", dt2 );
-	//$('#departdate').datepicker().datepicker('setDate',new Date());
-
+		var v = document.getElementById("arrivedate");
+		dd = v.value.substr(0, 2);
+		mm = v.value.substr(3, 2);
+		yyyy = v.value.substr(6, 4);
+		dt = new Date(yyyy, mm-1, dd);
+		dt2 = new Date(yyyy, mm-1, dt.getDate()+1);
+		$('#departdate').datepicker().datepicker('setDate', dt2);
+		$("#departdate").datepicker( "option", "minDate", dt2 );
 	});
 
  });
