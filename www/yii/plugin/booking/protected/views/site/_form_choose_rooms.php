@@ -1,4 +1,9 @@
-<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<?php
+$baseUrl = Yii::app()->baseUrl;
+$cs = Yii::app()->getClientScript();
+$cs->registerCoreScript('jquery');
+$cs->registerScriptFile($baseUrl.'/js/jquery-ui.min.js');
+?>
 
 <?php // Control variables
 $maxRooms = 3; // How many rooms can be booked
