@@ -37,6 +37,21 @@ function setDate(){
 	ajaxGetRoomPriceAvail();
 }
 
+function onArrivalDateChange()
+{
+	var v = document.getElementById("arrivedate");
+	dd = v.value.substr(0, 2);
+	mm = v.value.substr(3, 2);
+	yyyy = v.value.substr(6, 4);
+	dt = new Date(yyyy, mm-1, dd);
+	dt2 = new Date(yyyy, mm-1, dt.getDate()+1);
+	timeStamp = new Date(yyyy, mm-1, dd).getTime() / 1000;
+	$('#datepicker').datepicker().datepicker('setDate', dt);
+	$('#departdate').datepicker().datepicker('setDate', dt2);
+//alert(dt);
+//alert(dt.getDate()+1);
+	ajaxGetRoomPriceAvail();
+}
 // Store the basic details for every room at startup
 <?php
 $criteria = new CDbCriteria;
@@ -98,7 +113,7 @@ foreach ($rooms as $room)
 .boxy {
 	background-color: #e3e3e3;
 	padding:0px 10px 0px 10px;
-	/*width:550px;*/
+	width:550px;*/
 
 }
 .krow, .kspan8 {padding: 10px;}
@@ -133,6 +148,9 @@ table td, table th {
 	font-weight:light;
 	font-size:12px;
 	height:30px;
+}
+td:first-child+td.cline {
+	border-left:1px solid white;
 }
 .roomnocell1 {
 	display:block;
@@ -209,16 +227,24 @@ table td, table th {
 </style>
 
 <div class="row">
-	<div class='well span8'>
+	<div class="span3">
+		<h3 style="color:#46679c">Step 1 - room details</h3>
+	</div>
+</div>
+
+
+<div class="row">
+<div class="span1"></div>
+	<div class='well span6'>
 		<table style="width:650px">
 			<tr>
 				<td style="width:130px">Arrival date
-					<input type="text" id="arrivedate" size="30" style="width:70px" onChange="setDate()"/>
+					<input type="text" id="arrivedate" size="30" style="width:70px" onChange="onArrivalDateChange()"/>
 				</td>
 				<td style="width:150px">Departure date
-					<input type="text" id="departdate" size="30" style="width:70px" onChange="setDate()"/>
+					<input type="text" id="departdate" size="30" style="width:70px"/>
 				</td>
-                <td style="width:150px">Number of rooms
+                <td style="width:150px; padding-right:15px">Number of rooms
                     <select name="numRooms" id="numRooms" style="width: 50px" onchange="showTopPickLines()">
                         <option value="1" selected="selected">1</option>
                         <option value="2">2</option>
@@ -228,68 +254,44 @@ table td, table th {
 			</tr>
 		</table>
 
-<div class="boxy">
-<!--
-		< ?php $this->beginWidget('bootstrap.widgets.TbBox', array(
-		    'title' => 'Occupancy',
-    		'headerIcon' => 'icon-home',
-			'htmlOptions' => array('class'=>'bootstrap-widget-table')
-		));? >
--->
-        <table id="topPick">
-        <tbody>
-            <tr>
-                <th>Room</th>
-                <th>Adults</th>
-                <th>Children</th>
-	            <th>Choose Occupancy Type</th>
-            </tr>
-            <?php for ($i = 0; $i < $maxRooms; $i++): ?>
-            <tr id="roomLine_<?php echo ($i+1);?>" <?php if ($i>0) echo " style='display:none' ";?>   >
-                <td><?php echo ($i + 1); ?> </td>
-                <td>
-                    <select name="numAdults_<?php echo ($i+1)?>" id="numAdults_<?php echo ($i+1)?>" style="width: 50px" onchange="showTopPickLines()">
-                        <option value="1" selected="selected">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                </td>
-                <td>
-                    <select name="numChildren_<?php echo ($i+1)?>" id="numChildren_<?php echo ($i+1)?>" style="width: 50px" onchange="showTopPickLines()">
-                        <option value="0" selected="selected">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                </td>
-                <td>
-                    <select name="occupancyType_<?php echo ($i+1)?>" id="occupancyType_<?php echo ($i+1)?>" style="width: 200px" onchange="showTopPickLines()">
-                    <?php $criteria = new CDbCriteria;
-					$criteria->addCondition("uid = " . Yii::app()->session['uid']);
-                    $occupancyTypes=OccupancyType::model()->findAll($criteria);
-                    $fst = 1;
-                    foreach ($occupancyTypes as $occupancyType):
-                    	$sel = "";
-                    	if ($fst == 1) $sel = " selected='selected'";
-                    	echo "<option value='" . $occupancyType->id . "'" . $sel . ">" . $occupancyType->description . "</option>";
-						$fst = 0;
-					endforeach;
-					?>
-                    </select>
-                </td>
-	        </tr>
-	        <?php endfor; ?>
-        </tbody>
-	    </table>
-
-<!--		< ?php $this->endWidget(); ? >  -->
-</div>
-
+		<div class="boxy">
+			<table id="topPick">
+		        <tbody>
+		            <tr>
+		                <th>Room</th>
+		                <th>Adults</th>
+		                <th>Children</th>
+		            </tr>
+		            <?php for ($i = 0; $i < $maxRooms; $i++): ?>
+		            <tr id="roomLine_<?php echo ($i+1);?>" <?php if ($i>0) echo " style='display:none' ";?>   >
+		                <td><?php echo ($i + 1); ?> </td>
+		                <td>
+		                    <select name="numAdults_<?php echo ($i+1)?>" id="numAdults_<?php echo ($i+1)?>" style="width: 50px" onchange="showTopPickLines()">
+		                        <option value="1" selected="selected">1</option>
+		                        <option value="2">2</option>
+		                        <option value="3">3</option>
+		                    </select>
+		                </td>
+		                <td>
+		                    <select name="numChildren_<?php echo ($i+1)?>" id="numChildren_<?php echo ($i+1)?>" style="width: 50px" onchange="showTopPickLines()">
+		                        <option value="0" selected="selected">0</option>
+		                        <option value="1">1</option>
+		                        <option value="2">2</option>
+		                        <option value="3">3</option>
+		                    </select>
+		                </td>
+			        </tr>
+			        <?php endfor; ?>
+		        </tbody>
+		    </table>
+		</div>
 	</div>
+<div class="span1"></div>
 </div>
 
+<div class="well span8">
 <div class="row">
-	<div class="span8">
+	<div class="span8" style="margin-left:0px">
 		<table style="margin-bottom:0px;">
 			<tr>
 				<td width="32%"></td>
@@ -310,14 +312,14 @@ table td, table th {
 </div>
 
 <div class="row">
-	<div class="span8">
+	<div class="span8" style="margin-left:-0px">
 		<table id="roomTable">
 			<thead id="roomThead"></thead>
 			<tbody id="roomTbody"></tbody>
 		</table>
 	</div>
 </div>
-
+</div>
 <script>
 
 // Show adult/child lines for however many rooms
@@ -480,7 +482,7 @@ function showRooms() {
 					{
 						var row = table.insertRow(line++);
 						var cell = row.insertCell(0);
-    					cell.innerHTML = 'Choose Room ' + (i+1);
+    					cell.innerHTML = 'Your choices for room ' + (i+1);
 						cell.className = 'roomnocell1';
 						cell = row.insertCell(1);
 						cell.className = 'roomnocell2';
@@ -523,7 +525,6 @@ function showRooms() {
 	}
 }
 
- 
 $(document).ready(function() {
 
 	ajaxGetRoomPriceAvail();
