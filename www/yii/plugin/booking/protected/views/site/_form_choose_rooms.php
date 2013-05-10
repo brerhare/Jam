@@ -14,8 +14,10 @@
 	)); ?>
 
 
-
-<input type="hidden" id="isok" name="isok" value="0"/>
+<!-- POST variables -->
+<input type="hidden" id="room_1_selection" name="room_1_selection" value="0"/>
+<input type="hidden" id="room_2_selection" name="room_2_selection" value="0"/>
+<input type="hidden" id="room_3_selection" name="room_3_selection" value="0"/>
 
 
 <?php
@@ -297,10 +299,10 @@ td:first-child+td.cline {
 		<table style="width:650px">
 			<tr>
 				<td style="width:130px">Arrival date
-					<input type="text" id="arrivedate" size="30" style="width:70px" onChange="onArrivalDateChange()"/>
+					<input type="text" id="arrivedate" name="arrivedate" size="30" style="width:70px" onChange="onArrivalDateChange()"/>
 				</td>
 				<td style="width:150px">Departure date
-					<input type="text" id="departdate" size="30" style="width:70px" onChange="onDepartureDateChange()"/>
+					<input type="text" id="departdate" name="departdate" size="30" style="width:70px" onChange="onDepartureDateChange()"/>
 				</td>
                 <td style="width:150px; padding-right:15px">Number of rooms
                     <select name="numRooms" id="numRooms" style="width: 50px" onchange="showTopPickLines()">
@@ -506,7 +508,6 @@ function showDates() {
 }
 
 function buttonClick() {
-return false;
 	classes = document.getElementById("continueButton").className;
 	if (classes.indexOf('disabled') !== -1)
 		return false;
@@ -514,7 +515,10 @@ return false;
 		return true;
 }
 
-function roomRadio(roomNo, roomId) {
+function roomRadio(roomNo, roomId)
+{
+	// First set the POST variable for this room
+	document.getElementById("room_" + roomNo + "_selection").value = roomId;
     var e = document.getElementById("numRooms");
     var rooms = e.options[e.selectedIndex].value;
     
@@ -528,7 +532,7 @@ function roomRadio(roomNo, roomId) {
 				document.getElementById(searchId).checked = false;
 		}
 	}
-	
+
 	// Check if we're all done and can activate the continue button
 	roomsChosen = 0;
 	for (var i = 0; i < rooms; i++)
@@ -606,14 +610,7 @@ function showRooms() {
     			var cell = row.insertCell(0);
     			var tbl = "<table style='margin-bottom:0px'><tr><td class='roomline'>" + rData.title + "</td><td style='text-align:right;padding-right:10px'><div style='top:5px; left:-50px'>";
     			if (rData.bookAvail == 1)
-    			{
     				tbl += '<input type="radio" id="' + 'room_' + (i+1) + '_' + rData.id + '" name="room_' + (i+1) + '" value="Book" onClick=roomRadio(' +  (i+1) + "," + rData.id  + ')>   <span style="font-weight:bold"> Book</span><br>';
-    				//tbl += "<a href='javascript:roomSelect();' class='button blue'>Book</a>";
-    			}
-    			else
-				{
-					//tbl += '<a data-toggle="modal" data-target="#myModal" class="btn btn-primary" id="yw2">Click me</a>';
-				}
 
     			tbl += "</div></td></tr></table>";
     			cell.innerHTML = tbl;

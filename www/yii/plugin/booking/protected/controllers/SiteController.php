@@ -22,8 +22,7 @@ class SiteController extends Controller
 	}
 
 	/**
-	 * This is the default 'index' action that is invoked
-	 * when an action is not explicitly requested by users.
+	 * Show the 1st screen - choose a room(s)
 	 */
 	public function actionIndex()
 	{
@@ -32,7 +31,7 @@ class SiteController extends Controller
 		if(isset($_POST['numRooms']))
 		{
 				Yii::log("INDEX COMPLETE. GOING TO INDEX2" , CLogger::LEVEL_WARNING, 'system.test.kim');
-				//$this->redirect(array('index2'));
+				$this->redirect(array('index2'));
 		}
         $model=Room::model()->findByPk(2);
 		// renders the view file 'protected/views/site/index.php'
@@ -41,9 +40,11 @@ class SiteController extends Controller
                         'model'=>$model,
                         'roomdata'=>array(1,2,3),
                 ));
-		//$this->render('index');
 	}
 
+	/*
+	 * Show the 2nd screen - occupancy type and options selections
+	 */
 	public function actionIndex2() {
 		Yii::log("PAGE 2 LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
         $model=Room::model()->findByPk(2);
