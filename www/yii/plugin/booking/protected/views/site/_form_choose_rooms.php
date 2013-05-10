@@ -472,6 +472,17 @@ function showDates() {
 }
 
 function roomRadio(roomNo, roomId) {
+    var e = document.getElementById("numRooms");
+    var rooms = e.options[e.selectedIndex].value;
+	for (var i = 0; i < rooms; i++)
+	{
+		if ((i+1) != roomNo)
+		{
+			searchId = 'room_' + (i+1) + '_' + roomId;
+			if (document.getElementById(searchId).checked)
+				document.getElementById(searchId).checked = false;
+		}
+	}
 //	alert('fm: ' + roomNo + roomId);
 }
 
