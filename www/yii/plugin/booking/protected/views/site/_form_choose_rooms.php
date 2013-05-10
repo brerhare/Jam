@@ -507,10 +507,7 @@ function roomRadio(roomNo, roomId) {
 		for (var j = 0, length = radios.length; j < length; j++)
 		{
 			if (radios[j].checked)
-			{
-				//alert(radios[j].value);
 				roomsChosen++;
-			}
 		}
 	}
 	if (roomsChosen == rooms)
@@ -520,7 +517,14 @@ function roomRadio(roomNo, roomId) {
 // Show all rooms suiting the top-box selections, whether available or not (greyed)
 // Uses local data only
 // Called: startup + change of room count, or adult/child per room
+
 function showRooms() {
+
+	// Disable the continue button
+	document.getElementById("continueButton").className = document.getElementById("continueButton").className.replace(/\bdisabled\b/,'');
+	var d = document.getElementById("continueButton");
+	d.className = d.className + " disabled";
+
 	// Clear existing display
 	var old_tbody = document.getElementById('roomTbody');
 	var new_tbody = document.createElement('tbody');
