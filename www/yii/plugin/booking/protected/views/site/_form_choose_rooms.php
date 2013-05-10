@@ -254,8 +254,21 @@ td:first-child+td.cline {
 	<div class="span3">
 		<h3 style="color:#46679c">Step 1 - room details</h3>
 	</div>
+	<div class="span4">
+	</div>
+	<div class="span1" style="vertical-align:middle">
+		<?php
+		$this->widget('bootstrap.widgets.TbButton',array(
+			'label' => 'Continue',
+			'type' => 'primary',
+			'size' => 'large',
+			'htmlOptions' => array(
+				'class' => 'disabled',
+				'id'=> 'continueButton'
+			),
+		));?>
+	</div>
 </div>
-
 
 <div class="row">
 <div class="span1"></div>
@@ -474,16 +487,34 @@ function showDates() {
 function roomRadio(roomNo, roomId) {
     var e = document.getElementById("numRooms");
     var rooms = e.options[e.selectedIndex].value;
+    
+    // Make sure only one of each is selected
 	for (var i = 0; i < rooms; i++)
 	{
+		searchId = 'room_' + (i+1) + '_' + roomId;
 		if ((i+1) != roomNo)
 		{
-			searchId = 'room_' + (i+1) + '_' + roomId;
 			if (document.getElementById(searchId).checked)
 				document.getElementById(searchId).checked = false;
 		}
 	}
-//	alert('fm: ' + roomNo + roomId);
+	
+	// Check if we're all done and can activate the continue button
+	roomsChosen = 0;
+	for (var i = 0; i < rooms; i++)
+	{
+		var radios = document.getElementsByName('room_' + (i+1));
+		for (var j = 0, length = radios.length; j < length; j++)
+		{
+			if (radios[j].checked)
+			{
+				//alert(radios[j].value);
+				roomsChosen++;
+			}
+		}
+	}
+	if (roomsChosen == rooms)
+		document.getElementById("continueButton").className = document.getElementById("continueButton").className.replace(/\bdisabled\b/,'');
 }
 
 // Show all rooms suiting the top-box selections, whether available or not (greyed)
@@ -542,7 +573,7 @@ function showRooms() {
     			var tbl = "<table style='margin-bottom:0px'><tr><td class='roomline'>" + rData.title + "</td><td style='text-align:right;padding-right:10px'><div style='top:5px; left:-50px'>";
     			if (rData.bookAvail == 1)
     			{
-    				tbl += '<input type="radio" id="' + 'room_' + (i+1) + '_' + rData.id + '" name="room_' + (i+1) + '" value="Book" onClick=roomRadio(' +  (i+1) + "," + rData.id  + ')>   <b>Book</b><br>';
+    				tbl += '<input type="radio" id="' + 'room_' + (i+1) + '_' + rData.id + '" name="room_' + (i+1) + '" value="Book" onClick=roomRadio(' +  (i+1) + "," + rData.id  + ')>   <span style="font-weight:bold"> Book</span><br>';
     				//tbl += "<a href='javascript:roomSelect();' class='button blue'>Book</a>";
     			}
     			else
