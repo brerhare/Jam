@@ -1,3 +1,23 @@
+<!--
+<style>
+	body {width:520px;overflow: hidden;}
+	div.form .form-horizontal {width:520px;}
+	#content {width:520px;}
+</style>
+-->
+
+<div class="form">
+	<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+		'id'=>'room-form',
+		'enableAjaxValidation'=>false,
+		'type'=>'horizontal',
+	)); ?>
+
+
+
+<input type="hidden" id="isok" name="isok" value="0"/>
+
+
 <?php
 $baseUrl = Yii::app()->baseUrl;
 $cs = Yii::app()->getClientScript();
@@ -259,12 +279,13 @@ td:first-child+td.cline {
 		<?php
 		$this->widget('bootstrap.widgets.TbButton',array(
 			'label' => 'Continue',
+			'buttonType'=>'submit',
 			'type' => 'primary',
 			'size' => 'large',
 			'htmlOptions' => array(
 				'class' => 'disabled',
 				'id'=> 'continueButton',
-				'onclick'=>'js:buttonClick()',
+				'onclick'=>'js:return buttonClick()',
 			),
 		));?>
 	</div>
@@ -485,16 +506,12 @@ function showDates() {
 }
 
 function buttonClick() {
+return false;
 	classes = document.getElementById("continueButton").className;
 	if (classes.indexOf('disabled') !== -1)
-		return;
-		alert('ok');
-		<?php
-		$this->createUrl('sid=d0t03dunosthcl7gv2a1q3fr57#tab_2');
-	//$this->render('/index?sid=d0t03dunosthcl7gv2a1q3fr57#tab_2');
-	?>
-	//$this->createUrl('sid=d0t03dunosthcl7gv2a1q3fr57#tab_2');
-//http://localhost/booking/?sid=d0t03dunosthcl7gv2a1q3fr57#tab_2
+		return false;
+	else
+		return true;
 }
 
 function roomRadio(roomNo, roomId) {
@@ -679,3 +696,7 @@ $(document).ready(function() {
 
  });
 </script>
+
+
+<?php $this->endWidget(); ?>
+</div><!-- form -->

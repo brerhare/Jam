@@ -1,1 +1,1 @@
-<?php echo $this->renderPartial('_form', array('model'=>$model, 'roomdata'=>$roomdata)); ?>
+<?php echo $this->renderPartial('_form_choose_rooms', array('model'=>$model, 'roomdata'=>$roomdata)); ?>
