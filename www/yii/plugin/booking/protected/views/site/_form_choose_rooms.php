@@ -273,21 +273,22 @@ td:first-child+td.cline {
 </style>
 
 <div class="row">
-	<div class="span3">	</div>
-	<div class="span4">
+	<div class="span2" style="vertical-align:middle; text-align:right">
+	</div>
+	<div class="span4" style="vertical-align:middle; text-align:center">
 		<h3 style="color:#46679c">Step 1 - Choose Room</h3>
 	</div>
-	<div class="span1" style="vertical-align:middle">
+	<div class="span2" style="vertical-align:middle; text-align:left">
 		<?php
 		$this->widget('bootstrap.widgets.TbButton',array(
-			'label' => 'Continue',
+			'label' => 'Next',
 			'buttonType'=>'submit',
 			'type' => 'primary',
 			'size' => 'large',
 			'htmlOptions' => array(
 				'class' => 'disabled',
-				'id'=> 'continueButton',
-				'onclick'=>'js:return buttonClick()',
+				'id'=> 'nextButton',
+				'onclick'=>'js:return nextButtonClick()',
 			),
 		));?>
 	</div>
@@ -507,8 +508,8 @@ function showDates() {
 	}
 }
 
-function buttonClick() {
-	classes = document.getElementById("continueButton").className;
+function nextButtonClick() {
+	classes = document.getElementById("nextButton").className;
 	if (classes.indexOf('disabled') !== -1)
 		return false;
 	else
@@ -533,7 +534,7 @@ function roomRadio(roomNo, roomId)
 		}
 	}
 
-	// Check if we're all done and can activate the continue button
+	// Check if we're all done and can activate the next button
 	roomsChosen = 0;
 	for (var i = 0; i < rooms; i++)
 	{
@@ -545,7 +546,7 @@ function roomRadio(roomNo, roomId)
 		}
 	}
 	if (roomsChosen == rooms)
-		document.getElementById("continueButton").className = document.getElementById("continueButton").className.replace(/\bdisabled\b/,'');
+		document.getElementById("nextButton").className = document.getElementById("nextButton").className.replace(/\bdisabled\b/,'');
 }
 
 // Show all rooms suiting the top-box selections, whether available or not (greyed)
@@ -554,9 +555,9 @@ function roomRadio(roomNo, roomId)
 
 function showRooms() {
 
-	// Disable the continue button
-	document.getElementById("continueButton").className = document.getElementById("continueButton").className.replace(/\bdisabled\b/,'');
-	var d = document.getElementById("continueButton");
+	// Disable the next button
+	document.getElementById("nextButton").className = document.getElementById("nextButton").className.replace(/\bdisabled\b/,'');
+	var d = document.getElementById("nextButton");
 	d.className = d.className + " disabled";
 
 	// Clear existing display
