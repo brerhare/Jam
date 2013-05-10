@@ -251,10 +251,9 @@ td:first-child+td.cline {
 </style>
 
 <div class="row">
-	<div class="span3">
-		<h3 style="color:#46679c">Step 1 - room details</h3>
-	</div>
+	<div class="span3">	</div>
 	<div class="span4">
+		<h3 style="color:#46679c">Step 1 - Choose Room</h3>
 	</div>
 	<div class="span1" style="vertical-align:middle">
 		<?php
@@ -264,7 +263,8 @@ td:first-child+td.cline {
 			'size' => 'large',
 			'htmlOptions' => array(
 				'class' => 'disabled',
-				'id'=> 'continueButton'
+				'id'=> 'continueButton',
+				'onclick'=>'js:buttonClick()',
 			),
 		));?>
 	</div>
@@ -482,6 +482,19 @@ function showDates() {
 
 		d.setDate(d.getDate()+1);
 	}
+}
+
+function buttonClick() {
+	classes = document.getElementById("continueButton").className;
+	if (classes.indexOf('disabled') !== -1)
+		return;
+		alert('ok');
+		<?php
+		$this->createUrl('sid=d0t03dunosthcl7gv2a1q3fr57#tab_2');
+	//$this->render('/index?sid=d0t03dunosthcl7gv2a1q3fr57#tab_2');
+	?>
+	//$this->createUrl('sid=d0t03dunosthcl7gv2a1q3fr57#tab_2');
+//http://localhost/booking/?sid=d0t03dunosthcl7gv2a1q3fr57#tab_2
 }
 
 function roomRadio(roomNo, roomId) {
