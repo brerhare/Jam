@@ -471,7 +471,8 @@ function showDates() {
 	}
 }
 
-function roomSelect() {
+function roomRadio(roomNo, roomId) {
+//	alert('fm: ' + roomNo + roomId);
 }
 
 // Show all rooms suiting the top-box selections, whether available or not (greyed)
@@ -483,7 +484,7 @@ function showRooms() {
 	var new_tbody = document.createElement('tbody');
 	new_tbody.id = "roomTbody";
 	old_tbody.parentNode.replaceChild(new_tbody, old_tbody);
-	
+
 	var table = document.getElementById ("roomTbody");
 	var line = 0;
 
@@ -529,11 +530,14 @@ function showRooms() {
     			var cell = row.insertCell(0);
     			var tbl = "<table style='margin-bottom:0px'><tr><td class='roomline'>" + rData.title + "</td><td style='text-align:right;padding-right:10px'><div style='top:5px; left:-50px'>";
     			if (rData.bookAvail == 1)
-    				tbl += "<a href='javascript:roomSelect();' class='button blue'>Book</a>";
+    			{
+    				tbl += '<input type="radio" id="' + 'room_' + (i+1) + '_' + rData.id + '" name="room_' + (i+1) + '" value="Book" onClick=roomRadio(' +  (i+1) + "," + rData.id  + ')>   <b>Book</b><br>';
+    				//tbl += "<a href='javascript:roomSelect();' class='button blue'>Book</a>";
+    			}
     			else
-{
-//tbl += '<a data-toggle="modal" data-target="#myModal" class="btn btn-primary" id="yw2">Click me</a>';
-}
+				{
+					//tbl += '<a data-toggle="modal" data-target="#myModal" class="btn btn-primary" id="yw2">Click me</a>';
+				}
 
     			tbl += "</div></td></tr></table>";
     			cell.innerHTML = tbl;
