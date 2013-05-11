@@ -12,6 +12,7 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`booking_occupancy_type` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `uid` INT NOT NULL ,
   `description` VARCHAR(255) NOT NULL ,
+  `is_default` INT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `uid` (`uid` ASC) )
 ENGINE = InnoDB;

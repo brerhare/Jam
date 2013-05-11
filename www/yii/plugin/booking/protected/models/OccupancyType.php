@@ -7,6 +7,7 @@
  * @property integer $id
  * @property integer $uid
  * @property string $description
+ * @property integer $is_default
  *
  * The followings are the available model relations:
  * @property Room[] $bookingRooms
@@ -40,11 +41,11 @@ class OccupancyType extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('uid, description', 'required'),
-			array('uid', 'numerical', 'integerOnly'=>true),
+			array('uid, is_default', 'numerical', 'integerOnly'=>true),
 			array('description', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, description', 'safe', 'on'=>'search'),
+			array('id, uid, description, is_default', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -69,6 +70,7 @@ class OccupancyType extends CActiveRecord
 			'id' => 'ID',
 			'uid' => 'Uid',
 			'description' => 'Description',
+			'is_default' => 'Is Default',
 		);
 	}
 
@@ -87,6 +89,7 @@ class OccupancyType extends CActiveRecord
 		//$criteria->compare('uid',$this->uid);
 		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$criteria->compare('description',$this->description,true);
+		$criteria->compare('is_default',$this->is_default);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

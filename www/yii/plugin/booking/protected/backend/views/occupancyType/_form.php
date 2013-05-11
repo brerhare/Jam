@@ -12,6 +12,9 @@
 
 	<?php echo $form->textFieldRow($model,'description',array('class'=>'span5','maxlength'=>255)); ?>
 
+	<?php //echo $form->textFieldRow($model,'is_default',array('class'=>'span5')); ?>
+	<?php echo $form->toggleButtonRow($model, 'is_default'); ?>
+
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',

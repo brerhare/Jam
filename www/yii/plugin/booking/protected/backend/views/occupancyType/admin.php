@@ -16,6 +16,7 @@ $this->menu=array(
 		'id',
 		// 'uid',
 		'description',
+		'is_default:boolean',	// @@EG: show 'Yes/No' for an INT field
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
 			'template'=>'{update}{delete}',
