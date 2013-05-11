@@ -18,6 +18,7 @@
 <input type="hidden" id="room_1_selection" name="room_1_selection" value="0"/>
 <input type="hidden" id="room_2_selection" name="room_2_selection" value="0"/>
 <input type="hidden" id="room_3_selection" name="room_3_selection" value="0"/>
+<input type="hidden" id="occupancytype" name="occupancytype" value="0"/>
 
 
 <?php
@@ -272,11 +273,16 @@ td:first-child+td.cline {
 .row {margin:0px;padding:0px}
 </style>
 
+<style>
+/* @@TODO Fix this to hide disabled nav buttons */
+.disabled#bi#nextButton {visible:none;}
+</style>
+
 <div class="row">
 	<div class="span2" style="vertical-align:middle; text-align:right">
 	</div>
 	<div class="span4" style="vertical-align:middle; text-align:center">
-		<h3 style="color:#46679c">Step 1 - Choose Room</h3>
+		<h3 style="color:#46679c">Step 1 - Choose your room</h3>
 	</div>
 	<div class="span2" style="vertical-align:middle; text-align:left">
 		<?php
