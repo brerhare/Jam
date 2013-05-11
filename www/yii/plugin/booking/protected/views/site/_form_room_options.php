@@ -178,10 +178,6 @@ color: #46679c;
 						echo "</tr>";
 						$occupancyTypeIx++;
 					endforeach;	
-					echo "<tr>";
-					echo "<td>";
-					echo "<hr>";
-					echo "<b>Add any required extra items</b><br>";
 
 
 					// Extras
@@ -196,6 +192,13 @@ color: #46679c;
 						$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 						$criteria->addCondition("id = " . $roomHasExtra->extra_id);
 						$extra=Extra::model()->find($criteria);
+						if ($extrasCount == 0)
+						{
+							echo "<tr>";
+							echo "<td>";
+							echo "<hr>";
+							echo "<b>Extra items are available for this room</b><br>";
+						}
 						echo "<tr>";
 						echo "<td>";
 							echo $extra->description;
@@ -206,8 +209,6 @@ color: #46679c;
 						echo "</tr>";
 						$extrasCount++;
 					endforeach;
-					if ($extrasCount == 0)
-						echo "<tr><td>None available for this room</td></tr>";
 
 
 					echo "<script> var occupancyTypeMaxIx = " . $occupancyTypeIx . ";</script>";
