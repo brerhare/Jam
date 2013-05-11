@@ -174,7 +174,7 @@ color: #46679c;
 						echo " <td id='roomprice_" . ($roomIx+1) . '_' . ($occupancyTypeIx+1) . "' style='text-align:right'>";
 						if ($occupancyType->is_default)
 							echo sprintf("%.2f", $price);
-						echo " </td>";
+						echo "</td>";
 						echo "</tr>";
 						$occupancyTypeIx++;
 					endforeach;
@@ -231,6 +231,11 @@ function nextButtonClick() {
 	else
 		return true;
 }
+
+$(document).ready(function() {
+	calcTotal();
+})
+
 </script>
 
 <!-------------------------------------------------------------------->
