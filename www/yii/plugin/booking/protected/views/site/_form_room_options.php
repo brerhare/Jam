@@ -132,7 +132,7 @@ color: #46679c;
 		        <Xthead>
 		            <tr>
 		                <th style="width:80%; padding:5px;"><?php echo $headCount;?></th>
-		                <th style="width:20%; text-align:right;">Price £</th>
+		                <th style="width:20%; text-align:right;">Price</th>
 		            </tr>
 		        </Xthead>
 		        <tbody>
@@ -177,14 +177,22 @@ color: #46679c;
 						echo "</td>";
 						echo "</tr>";
 						$occupancyTypeIx++;
-					endforeach;
+					endforeach;	
+					echo "<tr>";
+					echo "<td>";
+					echo "<hr>";
+					echo "<b>Add any required extras</b><br>";
+					echo "<br>";
+					echo "</td>";
+					echo "</tr>";
+
 					echo "<script> var occupancyTypeMaxIx = " . $occupancyTypeIx . ";</script>";
 					?>
 		        </tbody>
 		    </table>
 		</div>
 
-<?php endfor;?>
+		<?php endfor;?>
 
 		<?php echo "<script> var roomMaxIx = " . $roomIx . ";</script>"; ?>
 
@@ -221,7 +229,7 @@ function calcTotal()
 				total += (parseFloat(val));
 		}
 	}
-	document.getElementById('total').innerHTML = total.toFixed(2);
+	document.getElementById('total').innerHTML = "<b>£ " + total.toFixed(2) + "</b>";
 }
 
 function nextButtonClick() {
