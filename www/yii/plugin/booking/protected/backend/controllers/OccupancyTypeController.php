@@ -72,6 +72,8 @@ class OccupancyTypeController extends Controller
 		if(isset($_POST['OccupancyType']))
 		{
 			$model->attributes=$_POST['OccupancyType'];
+			if ($model->is_default)
+				$this->noDefaults();
 			if($model->save())
 				$this->redirect(array('admin'));
 		}
@@ -96,6 +98,8 @@ class OccupancyTypeController extends Controller
 		if(isset($_POST['OccupancyType']))
 		{
 			$model->attributes=$_POST['OccupancyType'];
+			if ($model->is_default)
+				$this->noDefaults();
 			if($model->save())
 				$this->redirect(array('admin'));
 		}
@@ -162,6 +166,18 @@ class OccupancyTypeController extends Controller
 		if (($model===null) || ($model->uid != Yii::app()->session['uid']))
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
+	}
+
+	public function noDefaults()
+	{
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+		$occupancyTypes = OccupancyType::model()->findAll($criteria);
+		foreach ($occupancyTypes as $occupancyType)
+		{
+			$occupancyType->is_default = 0;
+			$occupancyType->save();
+		}
 	}
 
 	/**

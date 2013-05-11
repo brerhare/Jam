@@ -112,29 +112,27 @@ foreach ($rooms as $room)
 	echo "room.max_child = '" . $room->max_child . "';";
 	echo "room.max_total = '" . $room->max_total . "';";
 
-	// Get the cheapest price for this room
-	$s = 0; $d = 0; $a = 0; $c = 0; $cap = 0;
+	// Get the default prices for this room
 	$criteria = new CDbCriteria;
 	$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 	$criteria->addCondition("room_id = " . $room->id);
 	$roomHasOccupancyTypes = RoomHasOccupancyType::model()->findAll($criteria);
+	$fst = 1;
 	foreach ($roomHasOccupancyTypes as $roomHasOccupancyType)
 	{
-		$chk_s = (float) $roomHasOccupancyType->single_rate;
-		$chk_d = (float) $roomHasOccupancyType->double_rate;
-		$chk_a = (float) $roomHasOccupancyType->adult_rate;
-		$chk_c = (float) $roomHasOccupancyType->child_rate;
-		$chk_cap = (float) $roomHasOccupancyType->cap_rate;
-		if (($chk_s > 0) && (($chk_s < $s) || ($s == 0)))
-			$s = $chk_s;
-		if (($chk_d > 0) && (($chk_d < $d) || ($d == 0)))
-			$d = $chk_d;
-		if (($chk_a > 0) && (($chk_a < $a) || ($a == 0)))
-			$a = $chk_a;
-		if (($chk_c > 0) && (($chk_c < $c) || ($c == 0)))
-			$c = $chk_c;
-		if (($chk_cap > 0) && (($chk_cap < $cap) || ($cap == 0)))
-			$cap = $chk_cap;
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+		$criteria->addCondition("id = " . $roomHasOccupancyType->occupancy_type_id);
+		$occupancyType = OccupancyType::model()->find($criteria);
+		if (($fst) || ($occupancyType->is_default))
+		{
+			$s = (float) $roomHasOccupancyType->single_rate;
+			$d = (float) $roomHasOccupancyType->double_rate;
+			$a = (float) $roomHasOccupancyType->adult_rate;
+			$c = (float) $roomHasOccupancyType->child_rate;
+			$cap = (float) $roomHasOccupancyType->cap_rate;
+			$fst = 0;
+		}
 	}
 	echo "room.prices = new Array();";
 	echo "room.prices[0]=" . $s . ";";
