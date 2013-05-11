@@ -627,9 +627,7 @@ function showRooms() {
     				if ((numAdults == 1) && (numChildren == 0))
     					cell.innerHTML = rData.prices[0] == 0 ? rData.prices[2] : rData.prices[0];
 	    			else if (((numAdults == 2) && (numChildren == 0)) || ((numAdults == 1) && (numChildren == 1)))
-	    			{
 	    				cell.innerHTML = rData.prices[1] == 0 ? (rData.prices[2] * 2) : rData.prices[1];
-	    			}
 	    			else
 	    			{
 	    				price = 0;

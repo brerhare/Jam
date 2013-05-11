@@ -21,6 +21,11 @@ echo "<script>var showDays=" . $showDays . ";</script>";
 //-------------------
 ?>
 
+<script>
+// Some globals
+var total = 0;	// The booking total price
+</script>
+
 <style>
 
 .well {
@@ -69,7 +74,7 @@ color: #46679c;
 		));?>
 	</div>
 	<div class="span4" style="vertical-align:middle; text-align:center">
-		<h3 style="color:#46679c">Step 2 - Choose your options</h3>
+		<h3 style="color:#46679c">Step 2 - Choose room options</h3>
 	</div>
 	<div class="span2" style="vertical-align:middle; text-align:left">
 		<?php
@@ -112,39 +117,68 @@ color: #46679c;
 			echo "<div class='roomline'>" . $room->title . "</div>";
 			echo "<div class='roomsubline'>" . $room->description . "</div>";
 
-			$adult = ' adult';
-			if (Yii::app()->session['numAdults_' . ($roomIx+1)] > 1)
-				$adult = 'adults';
-			if (Yii::app()->session['numChildren_' . ($roomIx+1)] == 0)
-				$child = "";
-			else if (Yii::app()->session['numChildren_' . ($roomIx+1)] == 1)
-				$child = " and 1 child" ;
-			else
-				$child = " and " . Yii::app()->session['numChildren_' . ($roomIx+1)] . " children" ;
-			$headCount = Yii::app()->session['numAdults_' . ($roomIx+1)] . $adult . $child;
+			$adults = Yii::app()->session['numAdults_' . ($roomIx+1)];
+			$children = Yii::app()->session['numChildren_' . ($roomIx+1)];
+
+			$adultStr = ' adult';
+			if ($adults > 1) $adultStr = ' adults';
+			if ($children == 0) $childStr = "";
+			else if ($children == 1) $childStr = " and 1 child" ;
+			else $childStr = " and " . $children . " children" ;
+			$headCount = $adults . $adultStr . $childStr;
 			?>
 
 			<table id="topPick" border=1>
 		        <Xthead>
 		            <tr>
 		                <th style="width:80%; padding:5px;"><?php echo $headCount;?></th>
-		                <th style="width:20%"></th>
+		                <th style="width:20%; text-align:right;">Price £</th>
 		            </tr>
 		        </Xthead>
 		        <tbody>
 					<?php
+					$occupancyTypeIx = 0;
 					$criteria = new CDbCriteria;
 					$criteria->addCondition("uid = " . Yii::app()->session['uid']);
-					$occupancyTypes=OccupancyType::model()->findAll($criteria);
-					foreach ($occupancyTypes as $occupancyType):
+					$criteria->addCondition("room_id = " . $room->id);
+					$roomHasOccupancyTypes=RoomHasOccupancyType::model()->findAll($criteria);
+					foreach ($roomHasOccupancyTypes as $roomHasOccupancyType):
+						$criteria = new CDbCriteria;
+						$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+						$criteria->addCondition("id = " . $roomHasOccupancyType->occupancy_type_id);
+						$occupancyType=OccupancyType::model()->find($criteria);
 						echo "<tr>";
 						echo " <td>";
-						echo '  <input type="radio" id="' . 'room_' . ($roomIx+1) . '_' . $room->id . '" name="room_' . ($roomIx+1) . '" value="' . $occupancyType->id . '" onClick=roomRadio(' .  ($roomIx+1) . "," . $room->id  . ')>   <span style="font-weight:normal">' . $occupancyType->description . '</span><br>';
+
+						// Calculate price for this occupancy type based on numAdults and numChildren
+		    			$price = 0;
+		    			$adultCount = $adults;
+		    			$childrenCount = $children;
+    					if (($adultCount == 1) && ($childrenCount == 0))
+    						$price = $roomHasOccupancyType->single_rate == 0 ? $roomHasOccupancyType->adult_rate : $roomHasOccupancyType->single_rate;
+	    				else if ((($adultCount == 2) && ($childrenCount == 0)) || (($adultCount == 1) && ($childrenCount == 1)))
+	    					$price = $roomHasOccupancyType->double_rate == 0 ? ($roomHasOccupancyType->adult_rate * 2) : $roomHasOccupancyType->double_rate;
+		    			else
+	    				{
+	    					if (($adultCount > 1) && ($roomHasOccupancyType->double_rate > 0))	// start with double price if >2 adults, and add extra to that
+	    					{
+	    						$price = $roomHasOccupancyType->double_rate;	// double
+		    					$adultCount -= 2;
+		    				}
+	    					$price += ($adultCount * $roomHasOccupancyType->adult_rate);	// +adult
+	    					$price += ($childrenCount * $roomHasOccupancyType->child_rate);	// +children
+	    				}
+						$occupancyType->is_default ? $checked = " checked " : $checked = "";
+						echo '  <input type="radio" id="' . 'room_' . ($roomIx+1) . '_' . $room->id . '" name="room_' . ($roomIx+1) . '" value="' . $price . '"' . $checked . ' onClick=roomRadio(' .  ($roomIx+1) . "," . $room->id  . "," . $price . "," . ($occupancyTypeIx+1) . ')>   <span style="font-weight:normal">' . $occupancyType->description . '</span> (£' . $price . ')<br>';
 						echo " </td>";
-						echo " <td>";
+						echo " <td id='roomprice_" . ($roomIx+1) . '_' . ($occupancyTypeIx+1) . "' style='text-align:right'>";
+						if ($occupancyType->is_default)
+							echo sprintf("%.2f", $price);
 						echo " </td>";
 						echo "</tr>";
+						$occupancyTypeIx++;
 					endforeach;
+					echo "<script> var occupancyTypeMaxIx = " . $occupancyTypeIx . ";</script>";
 					?>
 		        </tbody>
 		    </table>
@@ -152,12 +186,44 @@ color: #46679c;
 
 <?php endfor;?>
 
+		<?php echo "<script> var roomMaxIx = " . $roomIx . ";</script>"; ?>
+
+		<div class="boxy">
+			<table>
+		        <tr>
+		            <td style="width:80%; padding:5px; text-align:right"><b>Total to pay</b></td>
+		            <td id="total" name="total" style="width:20%; text-align:right;"></td>
+		         </tr>
+			</table>
+		</div>
+
 	</div>
 <div class="span1"></div>
 </div>
 
-
 <script>
+function roomRadio(roomNo, roomId, price, occupancyTypeIx) {
+	for (var i = 0; i < occupancyTypeMaxIx; i++)
+		document.getElementById('roomprice_' + roomNo + '_' + (i+1)).innerHTML = '';
+	document.getElementById('roomprice_' + roomNo + '_' + occupancyTypeIx).innerHTML = price.toFixed(2);
+	calcTotal();
+}
+
+function calcTotal()
+{
+	total = 0;
+	for (var room = 0; room < roomMaxIx; room++)
+	{
+		for (var occ = 0; occ < occupancyTypeMaxIx; occ++)
+		{
+			val = document.getElementById('roomprice_' + (room+1) + '_' + (occ+1)).innerHTML;
+			if (val != '')
+				total += (parseFloat(val));
+		}
+	}
+	document.getElementById('total').innerHTML = total.toFixed(2);
+}
+
 function nextButtonClick() {
 	classes = document.getElementById("nextButton").className;
 	if (classes.indexOf('disabled') !== -1)
