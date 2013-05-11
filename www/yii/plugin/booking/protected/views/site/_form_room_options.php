@@ -14,9 +14,10 @@
 			'type' => 'primary',
 			'size' => 'large',
 			'htmlOptions' => array(
-				'class' => 'disabled',
+				//'class' => 'disabled',
 				'id'=> 'backButton',
-				'onclick'=>'js:return backButtonClick()',
+				'name' => 'backButton',
+				//'onclick'=>'js:return backButtonClick()',
 			),
 		));?>
 	</div>
@@ -33,6 +34,7 @@
 			'htmlOptions' => array(
 				'class' => 'disabled',
 				'id'=> 'nextButton',
+				'name' => 'nextButton',
 				'onclick'=>'js:return nextButtonClick()',
 			),
 		));?>

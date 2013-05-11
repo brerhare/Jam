@@ -288,6 +288,7 @@ td:first-child+td.cline {
 			'htmlOptions' => array(
 				'class' => 'disabled',
 				'id'=> 'nextButton',
+				'name' => 'nextButton',
 				'onclick'=>'js:return nextButtonClick()',
 			),
 		));?>
