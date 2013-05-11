@@ -198,10 +198,12 @@ color: #46679c;
 							echo "<td>";
 							echo "<hr>";
 							echo "<b>Extra items are available for this room</b><br>";
+							echo "</td></tr>";
 						}
 						echo "<tr>";
 						echo "<td>";
-							echo $extra->description;
+							echo "<input type='checkbox' name='extra' value='extra'>";
+							echo " " . $extra->description;
 						echo "</td>";
 						echo "<td style='text-align:right;'>";
 							echo 'cost';
