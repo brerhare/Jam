@@ -181,10 +181,34 @@ color: #46679c;
 					echo "<tr>";
 					echo "<td>";
 					echo "<hr>";
-					echo "<b>Add any required extras</b><br>";
-					echo "<br>";
-					echo "</td>";
-					echo "</tr>";
+					echo "<b>Add any required extra items</b><br>";
+
+
+					// Extras
+					$extraTypeIx = 0;
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+					$criteria->addCondition("room_id = " . $room->id);
+					$roomHasExtras=RoomHasExtra::model()->findAll($criteria);
+					$extrasCount = 0;
+					foreach ($roomHasExtras as $roomHasExtra):
+						$criteria = new CDbCriteria;
+						$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+						$criteria->addCondition("id = " . $roomHasExtra->extra_id);
+						$extra=Extra::model()->find($criteria);
+						echo "<tr>";
+						echo "<td>";
+							echo $extra->description;
+						echo "</td>";
+						echo "<td style='text-align:right;'>";
+							echo 'cost';
+						echo "</td>";
+						echo "</tr>";
+						$extrasCount++;
+					endforeach;
+					if ($extrasCount == 0)
+						echo "<tr><td>None available for this room</td></tr>";
+
 
 					echo "<script> var occupancyTypeMaxIx = " . $occupancyTypeIx . ";</script>";
 					?>
@@ -199,7 +223,7 @@ color: #46679c;
 		<div class="boxy">
 			<table>
 		        <tr>
-		            <td style="width:80%; padding:5px; text-align:right"><b>Total to pay</b></td>
+		            <td style="width:80%; padding:5px; text-align:right"><b>Total</b></td>
 		            <td id="total" name="total" style="width:20%; text-align:right;"></td>
 		         </tr>
 			</table>
