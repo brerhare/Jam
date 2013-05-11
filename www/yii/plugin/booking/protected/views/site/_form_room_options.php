@@ -137,6 +137,9 @@ color: #46679c;
 		        </Xthead>
 		        <tbody>
 					<?php
+
+					// Room portion of the order
+
 					$occupancyTypeIx = 0;
 					$criteria = new CDbCriteria;
 					$criteria->addCondition("uid = " . Yii::app()->session['uid']);
@@ -179,8 +182,8 @@ color: #46679c;
 						$occupancyTypeIx++;
 					endforeach;	
 
+					// Extras portion of the order
 
-					// Extras
 					$extraTypeIx = 0;
 					$criteria = new CDbCriteria;
 					$criteria->addCondition("uid = " . Yii::app()->session['uid']);
