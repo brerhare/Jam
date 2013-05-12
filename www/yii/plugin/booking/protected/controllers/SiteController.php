@@ -85,7 +85,7 @@ class SiteController extends Controller
 		{
 			$this->redirect(array('index2'));
 		}
-		$model=Room::model()->findByPk(2);
+		$model=Customer::model()->findByPk(2);
 			$this->render('index3',array(
 			'model'=>$model,
 			'roomdata'=>array(1,2,3),

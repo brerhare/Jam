@@ -177,6 +177,7 @@ color: #46679c;
 	    					$price += ($adultCount * $roomHasOccupancyType->adult_rate);	// +adult
 	    					$price += ($childrenCount * $roomHasOccupancyType->child_rate);	// +children
 	    				}
+	    				$price *= Yii::app()->session['nights'];
 						$occupancyType->is_default ? $checked = " checked " : $checked = "";
 						echo '  <input type="radio" id="' . 'room_' . ($roomIx+1) . '_' . $room->id . '" name="room_' . ($roomIx+1) . '_' . $room->id . '" value="' . $price . '"' . $checked . ' onClick=roomRadio(' .  ($roomIx+1) . "," . $room->id  . "," . $price . "," . ($occupancyTypeIx+1) . ')>   <span style="font-weight:normal">' . $occupancyType->description . '</span> (£' . $price . ')<br>';
 						echo " </td>";
@@ -311,6 +312,7 @@ function calcTotal()
 }
 
 function nextButtonClick() {
+	return false;
 	classes = document.getElementById("nextButton").className;
 	if (classes.indexOf('disabled') !== -1)
 		return false;
