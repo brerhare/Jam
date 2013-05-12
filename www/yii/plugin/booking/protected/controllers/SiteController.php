@@ -28,7 +28,7 @@ class SiteController extends Controller
 	{
 		Yii::log("INDEX LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
 //var_dump($_POST);
-		if(isset($_POST['numRooms']))
+		if(isset($_POST['nextButton']))
 		{
 				Yii::log("INDEX COMPLETE. GOING TO INDEX2. POSTED ROOMS=" . $_POST['numRooms'] , CLogger::LEVEL_WARNING, 'system.test.kim');
 				foreach ($_POST as $field => $value)
@@ -52,10 +52,23 @@ class SiteController extends Controller
 	 */
 	public function actionIndex2() {
 		Yii::log("INDEX 2 LOADING", CLogger::LEVEL_WARNING, 'system.test.kim');
+//var_dump($_POST);
 		if (isset($_POST['backButton']))
 		{
 			$this->redirect(array('index'));
 		}
+
+		if(isset($_POST['nextButton']))
+		{
+				Yii::log("INDEX 2  COMPLETE. GOING TO INDEX3. POSTED TOTALS=" . '@@TODO: fix' , CLogger::LEVEL_WARNING, 'system.test.kim');
+				foreach ($_POST as $field => $value)
+				{
+					Yii::app()->session[$field] = $value;
+					Yii::log("GIVING INDEX3 VALUES FOR " . Yii::app()->session[$field] . " = " . $value , CLogger::LEVEL_WARNING, 'system.test.kim');
+				}
+				$this->redirect(array('index3'));
+		}
+
 		$model=Room::model()->findByPk(2);
 			$this->render('index2',array(
 			'model'=>$model,

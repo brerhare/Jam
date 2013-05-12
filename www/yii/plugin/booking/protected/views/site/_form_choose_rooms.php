@@ -19,6 +19,7 @@
 <input type="hidden" id="room_2_selection" name="room_2_selection" value="0"/>
 <input type="hidden" id="room_3_selection" name="room_3_selection" value="0"/>
 <input type="hidden" id="occupancytype" name="occupancytype" value="0"/>
+<input type="hidden" id="nights" name="nights" value="0"/>
 
 
 <?php
@@ -91,6 +92,8 @@ function onDepartureDateChange()
 	yyyy = v.value.substr(6, 4);
 	dt = new Date(yyyy, mm-1, dd);
 	departureStamp = dt.getTime()/1000;
+	var nights = Math.ceil((departureStamp - arrivalStamp) / 86400);
+	document.getElementById("nights").value = nights;
 	ajaxGetRoomPriceAvail();
 }
 
@@ -693,6 +696,8 @@ $(document).ready(function() {
 		dt2 = new Date(yyyy, mm-1, dt.getDate()+1);
 		$('#departdate').datepicker().datepicker('setDate', dt2);
 		$("#departdate").datepicker( "option", "minDate", dt2 );
+		var nights = Math.ceil((departureStamp - arrivalStamp) / 86400);
+		document.getElementById("nights").value = nights;
 	});
 
  });

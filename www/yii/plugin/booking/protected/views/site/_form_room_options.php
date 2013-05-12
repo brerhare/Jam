@@ -21,6 +21,12 @@ echo "<script>var showDays=" . $showDays . ";</script>";
 //-------------------
 ?>
 
+<!-- POST variables -->
+<input type="hidden" id="bTotal" name="bTotal" value="9"/>
+
+<!-- Accessible value -->
+<input type="hidden" id="nights" name="nights" value="<?php echo Yii::app()->session['nights']?>"/>
+
 <script>
 // Some globals
 var total = 0;	// The booking total price
@@ -84,7 +90,7 @@ color: #46679c;
 			'type' => 'primary',
 			'size' => 'large',
 			'htmlOptions' => array(
-				'class' => 'disabled',
+				//'class' => 'disabled',
 				'id'=> 'nextButton',
 				'name' => 'nextButton',
 				'onclick'=>'js:return nextButtonClick()',
@@ -172,7 +178,7 @@ color: #46679c;
 	    					$price += ($childrenCount * $roomHasOccupancyType->child_rate);	// +children
 	    				}
 						$occupancyType->is_default ? $checked = " checked " : $checked = "";
-						echo '  <input type="radio" id="' . 'room_' . ($roomIx+1) . '_' . $room->id . '" name="room_' . ($roomIx+1) . '" value="' . $price . '"' . $checked . ' onClick=roomRadio(' .  ($roomIx+1) . "," . $room->id  . "," . $price . "," . ($occupancyTypeIx+1) . ')>   <span style="font-weight:normal">' . $occupancyType->description . '</span> (£' . $price . ')<br>';
+						echo '  <input type="radio" id="' . 'room_' . ($roomIx+1) . '_' . $room->id . '" name="room_' . ($roomIx+1) . '_' . $room->id . '" value="' . $price . '"' . $checked . ' onClick=roomRadio(' .  ($roomIx+1) . "," . $room->id  . "," . $price . "," . ($occupancyTypeIx+1) . ')>   <span style="font-weight:normal">' . $occupancyType->description . '</span> (£' . $price . ')<br>';
 						echo " </td>";
 						echo " <td id='roomprice_" . ($roomIx+1) . '_' . ($occupancyTypeIx+1) . "' style='text-align:right'>";
 						if ($occupancyType->is_default)
@@ -189,13 +195,13 @@ color: #46679c;
 					$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 					$criteria->addCondition("room_id = " . $room->id);
 					$roomHasExtras=RoomHasExtra::model()->findAll($criteria);
-					$extrasCount = 0;
+					$roomExtraCount = 0;
 					foreach ($roomHasExtras as $roomHasExtra):
 						$criteria = new CDbCriteria;
 						$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 						$criteria->addCondition("id = " . $roomHasExtra->extra_id);
 						$extra=Extra::model()->find($criteria);
-						if ($extrasCount == 0)
+						if ($roomExtraCount == 0)
 						{
 							echo "<tr>";
 							echo "<td>";
@@ -205,18 +211,27 @@ color: #46679c;
 						}
 						echo "<tr>";
 						echo "<td>";
-							echo "<input type='checkbox' name='extra' value='extra'>";
+							$extraVal = $extra->once_rate;
+							$extraStr = " (" . $extra->once_rate . ")";
+							if ($extra->daily_rate != "0.00")
+							{
+								$extraVal = $extra->daily_rate . "pd";
+								$extraStr = " (" . $extra->daily_rate . " per day)";
+							}
+							echo "<input type='checkbox' onClick='extraCheckbox(" . $room->id . "," . $extra->id . ")' name='extra_roomid_" . $room->id . "_extraid_" . $extra->id . "' id='extra_roomid_" . $room->id . "_extraid_" . $extra->id . "' value='" . $extraVal . "'>";
 							echo " " . $extra->description;
+							echo $extraStr;
+							//echo $extra->daily_rate;
+							//echo $extra->once_rate;
 						echo "</td>";
-						echo "<td style='text-align:right;'>";
-							echo 'cost';
+						echo "<td name='extra_roomid_" . $room->id . "_extraid_" . $extra->id . "_value' id='extra_roomid_" . $room->id . "_extraid_" . $extra->id . "_value' style='text-align:right;'>";
 						echo "</td>";
 						echo "</tr>";
-						$extrasCount++;
+						$roomExtraCount++;
 					endforeach;
 
-
 					echo "<script> var occupancyTypeMaxIx = " . $occupancyTypeIx . ";</script>";
+
 					?>
 		        </tbody>
 		    </table>
@@ -230,7 +245,7 @@ color: #46679c;
 			<table>
 		        <tr>
 		            <td style="width:80%; padding:5px; text-align:right"><b>Total</b></td>
-		            <td id="total" name="total" style="width:20%; text-align:right;"></td>
+		            <td id="bookingTotal" name="bookingTotal" style="width:20%; text-align:right;"></td>
 		         </tr>
 			</table>
 		</div>
@@ -247,9 +262,28 @@ function roomRadio(roomNo, roomId, price, occupancyTypeIx) {
 	calcTotal();
 }
 
+function extraCheckbox(room_id, extra_id) {
+	var item = document.getElementById('extra_roomid_' + room_id + '_extraid_' + extra_id);
+	var itemValue = document.getElementById('extra_roomid_' + room_id + '_extraid_' + extra_id + '_value');
+	if (item.checked)
+		itemValue.innerHTML = calcCheckbox(item.value).toFixed(2);
+	else
+		itemValue.innerHTML = '';
+	calcTotal();
+}
+
+function calcCheckbox(string)
+{
+	val = parseFloat(string);
+	if (string.substr(-2) == 'pd')
+		val = (string.substr(0, (string.length-2)) * parseFloat(document.getElementById('nights').value));
+	return val;
+}
+
 function calcTotal()
 {
 	total = 0;
+	// Add up the room prices
 	for (var room = 0; room < roomMaxIx; room++)
 	{
 		for (var occ = 0; occ < occupancyTypeMaxIx; occ++)
@@ -259,7 +293,21 @@ function calcTotal()
 				total += (parseFloat(val));
 		}
 	}
-	document.getElementById('total').innerHTML = "<b>£ " + total.toFixed(2) + "</b>";
+	// Add up the extras
+	inputs = document.getElementsByTagName('input');
+	for (index = 0; index < inputs.length; ++index)
+	{
+		var fld = inputs[index].id; 
+		if (fld.substr(0,6)=='extra_')
+		{
+			if (document.getElementById(fld).checked)
+			{
+				total += calcCheckbox(document.getElementById(fld).value);
+			}
+    	}
+	}
+	document.getElementById('bookingTotal').innerHTML = "<b>£ " + total.toFixed(2) + "</b>";
+	document.getElementById('bTotal').value = total.toFixed(2);
 }
 
 function nextButtonClick() {
