@@ -324,8 +324,8 @@ $(document).ready(function() {
 
 </script>
 
-<!-------------------------------------------------------------------->
-<?php
+<!--------------------------------------------------------------------
+< ?php
 echo "<p>";
 				foreach (Yii::app()->session as $field => $value)
 				{
@@ -333,8 +333,8 @@ echo "<p>";
 					//Yii::app()->session[$field] = $value;
 					//Yii::log("GIVING INDEX2 VALUES FOR " . Yii::app()->session[$field] . " = " . $value , CLogger::LEVEL_WARNING, 'system.test.kim');
 				}
-?>
-<!-------------------------------------------------------------------->
+? >
+------------------------------------------------------------------->
 
 
 <?php $this->endWidget(); ?>

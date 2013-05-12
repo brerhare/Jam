@@ -81,6 +81,10 @@ class SiteController extends Controller
 	 */
 	public function actionIndex3() {
 		Yii::log("PAGE 3 LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
+		if (isset($_POST['backButton']))
+		{
+			$this->redirect(array('index2'));
+		}
 		$model=Room::model()->findByPk(2);
 			$this->render('index3',array(
 			'model'=>$model,
