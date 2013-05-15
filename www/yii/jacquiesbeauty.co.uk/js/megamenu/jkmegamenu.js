@@ -8,8 +8,8 @@ jQuery.noConflict();
 
 var jkmegamenu={
 
-effectduration: 300, //duration of animation, in milliseconds
-delaytimer: 200, //delay after mouseout before menu should be hidden, in milliseconds
+effectduration: 0, //duration of animation, in milliseconds
+delaytimer: 1000, //delay after mouseout before menu should be hidden, in milliseconds
 
 //No need to edit beyond here
 megamenulabels: [],
