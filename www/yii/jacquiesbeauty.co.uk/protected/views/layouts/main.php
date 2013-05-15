@@ -73,6 +73,7 @@ jkmegamenu.definemenu("megaanchor", "megamenu1", "mouseover");
 					
 						<br style="clear: left" /> <!--Break after 3rd column. Move this if desired-->
 						<br style="clear: left" /> <!--Break after 3rd column. Move this if desired-->
+						<br style="clear: left" /> <!--Break after 3rd column. Move this if desired-->
 										    
 					    <div class="column">
 	 				       <h3>Home</h3>
@@ -120,6 +121,14 @@ jkmegamenu.definemenu("megaanchor", "megamenu1", "mouseover");
 					    <div class="column">
 					        <h3>Treatment</h3>
 					        <ul>
+					            <li><a href="http://www.javascriptkit.com">JavaScript Kit</a></li>
+					            <li><a href="http://www.dynamicdrive.com/">Dynamic Drive</a></li>
+	            				<li><a href="http://www.cssdrive.com">CSS Drive</a></li>
+					            <li><a href="http://www.javascriptkit.com/domref/">DOM Reference</a></li>
+					            <li><a href="http://www.javascriptkit.com">JavaScript Kit</a></li>
+					            <li><a href="http://www.dynamicdrive.com/">Dynamic Drive</a></li>
+	            				<li><a href="http://www.cssdrive.com">CSS Drive</a></li>
+					            <li><a href="http://www.javascriptkit.com/domref/">DOM Reference</a></li>
 					            <li><a href="http://www.javascriptkit.com">JavaScript Kit</a></li>
 					            <li><a href="http://www.dynamicdrive.com/">Dynamic Drive</a></li>
 	            				<li><a href="http://www.cssdrive.com">CSS Drive</a></li>
