@@ -1,0 +1,10 @@
+assets/*
+!assets/.gitignore
+protected/runtime/*
+!protected/runtime/.gitignore
+protected/backend/runtime/*
+!protected/backend/runtime/.gitignore
+userdata/image/*
+!userdata/image/.gitignore
+*.bfproject
+*.bak
