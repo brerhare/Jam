@@ -61,7 +61,7 @@ div#fixed-header  {/*background:#000;*/ height:75px; /*opacity:0.8*/}
 //jkmegamenu.definemenu("anchorid", "menuid", "mouseover|click");
 jkmegamenu.definemenu("megaanchor", "megamenu1", "mouseover");
 </script>
-	
+
 				<div class="span2" style="position:relative; z-index:20000;">
 					<div style="position:absolute; left:388px; top:30px">
 						<!--Mega Menu Anchor-->
@@ -69,7 +69,7 @@ jkmegamenu.definemenu("megaanchor", "megamenu1", "mouseover");
 					</div>
 			
 					<!--Mega Menu Dropdown HTML-->
-					<div id="megamenu1" class="megamenu" style="margin-top:30px;opacity:0.925">
+					<div id="megamenu1" class="megamenu" style="margin-top:30px; margin-left:-190px; opacity:0.925">
 					
 						<br style="clear: left" /> <!--Break after 3rd column. Move this if desired-->
 										    
