@@ -67,7 +67,7 @@ return array(
 			'connectionString' => 'mysql:host=localhost;dbname=jacquiesbeauty_co_uk',
 			'emulatePrepare' => true,
 			'username' => 'jacquiesbeauty.c',
-			'password' => 'jacquiesbeauty.co.uk,',
+			'password' => 'kimlo,',
 			'charset' => 'utf8',
 		),
 		/**/
