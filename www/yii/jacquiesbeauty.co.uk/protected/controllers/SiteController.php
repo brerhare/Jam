@@ -35,8 +35,34 @@ class SiteController extends Controller
 	{
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
-		$this->render('index');
+
+//$this->render('index');
+
+		$this->actionPage('');
+/*
+        $dataProvider=new CActiveDataProvider('ContentBlock');
+        $this->render('index',array(
+            'dataProvider'=>$dataProvider,
+        ));
+*/
 	}
+
+    public function actionPage($url)
+    {
+        if ($url == null)
+        {
+            $model = ContentBlock::model()->find(array('order'=>'sequence'));
+        }
+        else
+        {
+            $model = ContentBlock::model()->findByAttributes(array('url'=>$url));
+        }
+        $this->render('index', array(
+            'model'=>$model,
+            'url'=>$url,
+        ));
+    }
+
 
 	/**
 	 * This is the action to handle external exceptions.

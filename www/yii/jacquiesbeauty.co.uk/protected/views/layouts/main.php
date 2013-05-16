@@ -70,11 +70,11 @@ jkmegamenu.definemenu("megaanchor", "megamenu1", "mouseover");
 			
 					<!--Mega Menu Dropdown HTML-->
 					<div id="megamenu1" class="megamenu" style="position: fixed; margin-top:20px; margin-left:-190px; opacity:0.925">
-					
+
 						<br style="clear: left" /> <!--Break after 3rd column. Move this if desired-->
 						<br style="clear: left" /> <!--Break after 3rd column. Move this if desired-->
 						<br style="clear: left" /> <!--Break after 3rd column. Move this if desired-->
-										    
+
 					    <div class="column">
 	 				       <h3>Home</h3>
 					        <ul>
@@ -84,7 +84,7 @@ jkmegamenu.definemenu("megaanchor", "megamenu1", "mouseover");
 					            <li><a href="http://www.codingforums.com">Coding Forums</a></li>
 	        				</ul>
 					    </div>
-	
+
 					    <div class="column">
 					        <h3>Team</h3>
 					        <ul>
@@ -256,8 +256,15 @@ jkmegamenu.definemenu("megaanchor", "megamenu1", "mouseover");
 
 		<div class="span10" style="margin-left: 160px; width:908px; background-color:#ffffff;">
 
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-k
+
+            <!--Body content-->
+        <!--    <div style="height:50px; margin-top:-20px;"></div> -->
+            <div id="content" style="margin-left:-33px; margin-top:20px;">
+                <?php echo $content; ?>
+            </div>
+
+
+
 		</div>
 
 	</div>

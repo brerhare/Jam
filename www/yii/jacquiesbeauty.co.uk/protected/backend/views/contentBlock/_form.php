@@ -30,6 +30,9 @@
 
 	<?php echo $form->textFieldRow($model,'url',array('class'=>'span5','maxlength'=>255)); ?>
 
+	<?php //echo $form->textFieldRow($model,'active',array('class'=>'span1','maxlength'=>1)); ?>
+	<?php echo $form->toggleButtonRow($model, 'active'); ?>
+
 <?php 
 $this->widget('bootstrap.widgets.TbRedactorJs',
     array(
@@ -43,8 +46,6 @@ $this->widget('bootstrap.widgets.TbRedactorJs',
        )
     ));
 ?>
-
-	<?php echo $form->textFieldRow($model,'active',array('class'=>'span1','maxlength'=>1)); ?>
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(

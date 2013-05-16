@@ -10,7 +10,7 @@ return array(
 	'name'=>'Jacquies Beauty',
 
 	// Override the default controller
-	'defaultController'=>'contentBlock',
+	//'defaultController'=>'contentBlock',
 
 	// preloading 'log' component
 	// preloading 'yiibooster' component
