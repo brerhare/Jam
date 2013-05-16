@@ -5,11 +5,12 @@
  *
  * The followings are the available columns in table 'content_block':
  * @property integer $id
+ * @property integer $parent_id
  * @property integer $sequence
  * @property string $title
  * @property string $url
  * @property string $content
- * @property string $active
+ * @property integer $active
  */
 class ContentBlock extends CActiveRecord
 {
@@ -39,14 +40,13 @@ class ContentBlock extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title, url, active', 'required'),
-			array('sequence', 'numerical', 'integerOnly'=>true),
+			array('title, url', 'required'),
+			array('parent_id, sequence, active', 'numerical', 'integerOnly'=>true),
 			array('title, url', 'length', 'max'=>255),
-			array('active', 'length', 'max'=>1),
 			array('content', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, sequence, title, url, content, active', 'safe', 'on'=>'search'),
+			array('id, parent_id, sequence, title, url, content, active', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -68,6 +68,7 @@ class ContentBlock extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
+			'parent_id' => 'Parent',
 			'sequence' => 'Sequence',
 			'title' => 'Title',
 			'url' => 'Url',
@@ -88,11 +89,12 @@ class ContentBlock extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
+		$criteria->compare('parent_id',$this->parent_id);
 		$criteria->compare('sequence',$this->sequence);
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('url',$this->url,true);
 		$criteria->compare('content',$this->content,true);
-		$criteria->compare('active',$this->active,true);
+		$criteria->compare('active',$this->active);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

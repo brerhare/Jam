@@ -7,7 +7,7 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'InsightKLG',
+	'name'=>'Jacquies Beauty',
 
 	// Override the default controller
 	'defaultController'=>'contentBlock',
@@ -64,10 +64,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=insightklg_co_uk',
+			'connectionString' => 'mysql:host=localhost;dbname=jacquiesbeauty_co_uk',
 			'emulatePrepare' => true,
-			'username' => 'insightklg.co.uk',
-			'password' => 'fhfr7jhfh',
+			'username' => 'jacquiesbeauty.c',
+			'password' => 'jacquiesbeauty.co.uk,',
 			'charset' => 'utf8',
 		),
 		/**/

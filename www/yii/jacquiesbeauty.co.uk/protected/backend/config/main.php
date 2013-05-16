@@ -17,7 +17,7 @@ return array(
     'viewPath' => $backend.'/views',
     'runtimePath' => $backend.'/runtime',
 
-	'name'=>'InsightKLG Backend',
+	'name'=>'Jacquies Beauty website Backend',
 
 	// preloading 'log' component
 	// preloading 'bootstrap' component
@@ -74,10 +74,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=insightklg_co_uk',
+			'connectionString' => 'mysql:host=localhost;dbname=jacquiesbeauty_co_uk',
 			'emulatePrepare' => true,
-			'username' => 'insightklg.co.uk',
-			'password' => 'fhfr7jhfh',
+			'username' => 'jacquiesbeauty.c',
+			'password' => 'jacquiesbeauty.co.uk,',
 			'charset' => 'utf8',
 		),
 		/**/

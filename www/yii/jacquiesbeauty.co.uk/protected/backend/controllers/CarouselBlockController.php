@@ -183,11 +183,11 @@ class CarouselBlockController extends Controller
         if (!empty($uploadedFile)) {
             $rnd = rand();  // generate random number between 0-9999
             $fileName = "{$rnd}.{$uploadedFile->extensionName}";  // random number + file name
-            if ($uploadedFile->saveAs(Yii::app()->basePath . '/../userdata/image/' . $fileName)) {
+            if ($uploadedFile->saveAs(Yii::app()->basePath . '/../userdata/carousel/' . $fileName)) {
                 
                 $array = array(
-                     'filelink' => Yii::app()->baseUrl . '/userdata/image/' . $fileName);
-               // echo CHtml::image(Yii::app()->baseUrl . '/userdata/image/' . $fileName);
+                     'filelink' => Yii::app()->baseUrl . '/userdata/carousel/' . $fileName);
+               // echo CHtml::image(Yii::app()->baseUrl . '/userdata/carousel/' . $fileName);
                 
                 echo stripslashes(json_encode($array));
                 Yii::app()->end();
@@ -201,7 +201,7 @@ class CarouselBlockController extends Controller
     public function actionImageList() {
 
         $images = array();
-        $handler = opendir(Yii::app()->basePath . '/../userdata/image');
+        $handler = opendir(Yii::app()->basePath . '/../userdata/carousel');
         while ($file = readdir($handler)) {
             if ($file != "." && $file != "..")
                 $images[] = $file;
@@ -212,8 +212,8 @@ class CarouselBlockController extends Controller
 
         foreach ($images as $image)
             $jsonArray[] = array(
-                'thumb' => Yii::app()->baseUrl . '/userdata/image/' . $image,
-                'image' => Yii::app()->baseUrl . '/userdata/image/' . $image,
+                'thumb' => Yii::app()->baseUrl . '/userdata/carousel/' . $image,
+                'image' => Yii::app()->baseUrl . '/userdata/carousel/' . $image,
             );
 
         header('Content-type: application/json');

@@ -14,10 +14,10 @@ $this->menu=array(
 	// 'filter'=>$model,
 	'columns'=>array(
 		// 'id',
-		'sequence',
+		//'sequence',
 		'title',
 		'url',
-		'active',
+		'active:boolean',
 		// 'content',
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',

@@ -19,9 +19,11 @@ $this->menu=array(
 	'data'=>$model,
 	'attributes'=>array(
 		'id',
+		'parent_id',
 		'sequence',
 		'title',
 		'url',
 		'content',
+		'active',
 	),
 )); ?>
