@@ -7,7 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.Ringtone;
@@ -62,25 +64,55 @@ public class Main extends Activity {
 	      switch(arg0.getId()){
 	        case R.id.butQR:
 	          intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+		      startActivityForResult(intent, 0);    //Barcode Scanner to scan for us
 	        break;
 	        case R.id.butProd:
-	        	// Reset the ticket file
-	        	Log.i("KIM", "RESETTING ALL TICKETS -----------");
-	        	ar.clear();
-	        	try {
-	        		// Write a String
-	        		DataOutputStream out = new DataOutputStream(openFileOutput(filename, Context.MODE_PRIVATE));
-	        		out.close();
-	        	} catch (IOException e) {
-	        		Log.i("Data Reset Ticket", "I/O Error");
-	        	}
-	          //intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
+
+	        	
+	        	
+	        	
+	        	
+	      	  DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+	  		    @Override
+	  		    public void onClick(DialogInterface dialog, int which) {
+	  		        switch (which){
+	  		        case DialogInterface.BUTTON_POSITIVE:
+	  		            //Yes button clicked
+	  		        	
+	  		        	
+	  		        	// Reset the ticket file
+	  		        	Log.i("KIM", "RESETTING ALL TICKETS -----------");
+	  		        	ar.clear();
+	  		        	try {
+	  		        		// Write a String
+	  		        		DataOutputStream out = new DataOutputStream(openFileOutput(filename, Context.MODE_PRIVATE));
+	  		        		out.close();
+	  		        	} catch (IOException e) {
+	  		        		Log.i("Data Reset Ticket", "I/O Error");
+	  		        	}
+	  		          //intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
+	  		        	
+	  		        	
+	  		            break;
+
+	  		        case DialogInterface.BUTTON_NEGATIVE:
+	  		            //No button clicked
+	  		            break;
+	  		        }
+	  		    }
+	  		};	  
+	        	
+	        	AlertDialog.Builder builder = new AlertDialog.Builder(Main.this);
+	        	builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+	        	    .setNegativeButton("No", dialogClickListener).show();
+	        	
+	       
 	        break;
 	        case R.id.butOther:
 	          //intent.putExtra("SCAN_FORMATS", "CODE_39,CODE_93,CODE_128,DATA_MATRIX,ITF");
 	        break;
 	      }
-	      startActivityForResult(intent, 0);    //Barcode Scanner to scan for us
+	      //startActivityForResult(intent, 0);    //Barcode Scanner to scan for us
 	    }
 	  }
 	  
@@ -155,5 +187,9 @@ else
 	  super.onRestoreInstanceState(savedInstanceState);
 	  ((TextView)findViewById(R.id.tvResult)).setText(savedInstanceState.getString("SCAN_RESULT"));
 	  }
-	
-	}
+
+	  
+
+	  
+	  
+}
