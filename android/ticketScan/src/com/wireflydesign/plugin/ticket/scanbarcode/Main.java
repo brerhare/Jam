@@ -1,14 +1,20 @@
 package com.wireflydesign.plugin.ticket.scanbarcode;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.EOFException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
@@ -16,10 +22,32 @@ import biz.tekeye.scanbarcode.R;
 
 public class Main extends Activity {
 	public String[] s;
+	String filename = "ticket.dat";
 	ArrayList<String> ar = new ArrayList<String>();
-	
+
 	  @Override
 	  public void onCreate(Bundle savedInstanceState) {
+
+		  try {
+			  // Read in all tickets
+			  Log.i("KIM", "READING IN ALL TICKETS -----------");
+			  DataInputStream in = new DataInputStream(openFileInput(filename));
+			    try {
+			        for (;;) {
+			        	String str = in.readUTF();
+			          Log.i("GOT DATA : ", str);
+			          ar.add(str);
+			        }
+			    } catch (EOFException e) {
+			        Log.i("Data Input Ticket", "End of file reached");
+			    }
+			    in.close();
+			} catch (IOException e) {
+			    Log.i("Data Input Ticket", "I/O Error");
+			}		  
+		  
+		  
+		  
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.main);
 	    HandleClick hc = new HandleClick();
@@ -36,10 +64,20 @@ public class Main extends Activity {
 	          intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
 	        break;
 	        case R.id.butProd:
-	          intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
+	        	// Reset the ticket file
+	        	Log.i("KIM", "RESETTING ALL TICKETS -----------");
+	        	ar.clear();
+	        	try {
+	        		// Write a String
+	        		DataOutputStream out = new DataOutputStream(openFileOutput(filename, Context.MODE_PRIVATE));
+	        		out.close();
+	        	} catch (IOException e) {
+	        		Log.i("Data Reset Ticket", "I/O Error");
+	        	}
+	          //intent.putExtra("SCAN_MODE", "PRODUCT_MODE");
 	        break;
 	        case R.id.butOther:
-	          intent.putExtra("SCAN_FORMATS", "CODE_39,CODE_93,CODE_128,DATA_MATRIX,ITF");
+	          //intent.putExtra("SCAN_FORMATS", "CODE_39,CODE_93,CODE_128,DATA_MATRIX,ITF");
 	        break;
 	      }
 	      startActivityForResult(intent, 0);    //Barcode Scanner to scan for us
@@ -61,6 +99,17 @@ if (ar.indexOf(intent.getStringExtra("SCAN_RESULT")) == -1)
 	tvResult.setText("Ticket OK");
 	tvResult.setBackgroundColor(0xFF00FF00 );
 
+	// Write out the ticket
+	Log.i("KIM", "WRITING OUT THIS TICKET -----------");
+	try {
+		// Write a String
+		DataOutputStream out = new DataOutputStream(openFileOutput(filename, Context.MODE_APPEND));
+		out.writeUTF(intent.getStringExtra("SCAN_RESULT"));
+		//out.writeUTF("My Word!".toString());
+		out.close();
+	} catch (IOException e) {
+		Log.i("Data Write Ticket", "I/O Error");
+	}
 	
 	// Beep!
     try {
