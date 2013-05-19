@@ -28,6 +28,7 @@
   {
     font-family:"Verdana", sans-serif; color:#ffffff; font-size:13.0px; line-height:1.23em;
   }
+
 </style>
 
 
@@ -40,7 +41,7 @@ div#fixed-header  {/*background:#000;*/ height:75px; /*opacity:0.8*/}
 
 </head>
 
-<body text="#000000" style="overflow-x:hidden; background:transparent url(<?php Yii::app()->request->baseUrl ?>/img/bg.jpg) repeat scroll top center">
+<body text="#000000" style="overflow-x:hidden; background:transparent url(<?php Yii::app()->request->baseUrl ?>/img/bg.jpg); background-attachment: fixed; background-position: top center">
 
 <div class="container">
 
@@ -76,9 +77,8 @@ jkmegamenu.definemenu("megaanchor", "megamenu1", "mouseover");
 						<br style="clear: left" /> <!--Break after 3rd column. Move this if desired-->
 
 					    <div class="column">
-	 				       <h3>Home</h3>
 					        <ul>
-					            <li><a href="http://www.javascriptkit.com">JavaScript Kit</a></li>
+					            <li><h3><a href="http://www.javascriptkit.com">JavaScript Kit</a></h3></li>
 					            <li><a href="http://www.dynamicdrive.com/">Dynamic Drive</a></li>
 					            <li><a href="http://www.cssdrive.com">CSS Drive</a></li>
 					            <li><a href="http://www.codingforums.com">Coding Forums</a></li>
