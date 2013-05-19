@@ -167,30 +167,15 @@ jkmegamenu.definemenu("megaanchor", "megamenu1", "mouseover");
 			<!--Flex Slider-->
 			<div class="flexslider">
 				<ul class="slides">
-					<li>
-						<img src="/userdata/carousel/0.jpg" />
-					</li>
-					<li>
-						<img src="/userdata/carousel/1.jpg" />
-					</li>
-					<li>
-						<img src="/userdata/carousel/2.jpg" />
-					</li>
-					<li>
-						<img src="/userdata/carousel/3.jpg" />
-					</li>
-					<li>
-						<img src="/userdata/carousel/4.jpg" />
-					</li>
-					<li>
-						<img src="/userdata/carousel/5.jpg" />
-					</li>
-					<li>
-						<img src="/userdata/carousel/6.jpg" />
-					</li>
-					<li>
-						<img src="/userdata/carousel/7.jpg" />
-					</li>
+
+					<?php
+					$carouselItems = CarouselBlock::model()->findAll(array('order'=>'sequence'));
+					foreach ($carouselItems as $carouselItem):
+						echo "<li>";
+						echo $carouselItem->content;
+						echo "</li>";
+					endforeach;
+					?>
 				</ul>
 			</div>
 
