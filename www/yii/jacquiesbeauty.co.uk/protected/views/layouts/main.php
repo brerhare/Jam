@@ -91,6 +91,7 @@ jkmegamenu.definemenu("megaanchor", "megamenu1", "mouseover");
 							{
 					    		echo "<br style='clear: left' />";
 					    		echo "<br style='clear: left' />";
+					    		$blockCount = 0;
 							}
 							echo "<div class='column'>";
 							echo " <ul>";
