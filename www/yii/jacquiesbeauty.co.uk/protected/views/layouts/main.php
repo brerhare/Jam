@@ -87,7 +87,7 @@ jkmegamenu.definemenu("megaanchor", "megamenu1", "mouseover");
 						foreach ($menuHeaders as $menuHeader):
 							if ($menuHeader->parent_id)
 								continue;
-							if (++$blockCount == 4)
+							if (++$blockCount > 4)
 							{
 					    		echo "<br style='clear: left' />";
 					    		echo "<br style='clear: left' />";
