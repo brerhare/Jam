@@ -68,6 +68,10 @@ jkmegamenu.definemenu("megaanchor", "megamenu1", "mouseover");
 						<!--Mega Menu Anchor-->
 						<a href="http://www.wireflydesign.com" id="megaanchor" style="color:#000000;">Menu</a>
 					</div>
+					<div style="position:absolute; left:740px; top:30px">
+						<!--Login-->
+						<a href="http://217.41.65.149:8080/clients/login.asp" style="color:#000000;">Login</a>
+					</div>
 			
 					<!--Mega Menu Dropdown HTML-->
 					<div id="megamenu1" class="megamenu" style="position: fixed; margin-top:20px; margin-left:-190px; opacity:0.925">
