@@ -76,74 +76,31 @@ jkmegamenu.definemenu("megaanchor", "megamenu1", "mouseover");
 						<br style="clear: left" /> <!--Break after 3rd column. Move this if desired-->
 						<br style="clear: left" /> <!--Break after 3rd column. Move this if desired-->
 
-					    <div class="column">
-					        <ul>
-					            <li><h3><a href="http://www.javascriptkit.com">JavaScript Kit</a></h3></li>
-					            <li><a href="http://www.dynamicdrive.com/">Dynamic Drive</a></li>
-					            <li><a href="http://www.cssdrive.com">CSS Drive</a></li>
-					            <li><a href="http://www.codingforums.com">Coding Forums</a></li>
-	        				</ul>
-					    </div>
 
-					    <div class="column">
-					        <h3>Team</h3>
-					        <ul>
-					            <li><a href="http://www.cnn.com/">CNN</a></li>
-					            <li><a href="http://www.msnbc.com">MSNBC</a></li>
-					            <li><a href="http://www.google.com">Google</a></li>
-					            <li><a href="http://news.bbc.co.uk">BBC News</a></li>
-					        </ul>
-					    </div>
-	
-					    <div class="column">
-					        <h3>News</h3>
-					        <ul>
-					            <li><a href="http://www.news.com/">News.com</a></li>
-					            <li><a href="http://www.slashdot.com">SlashDot</a></li>
-					            <li><a href="http://www.digg.com">Digg</a></li>
-					            <li><a href="http://www.techcrunch.com">Tech Crunch</a></li>
-					        </ul>
-					    </div>
-	
-						<div class="column">
-					    	<h3>Health</h3>
-					    	<ul>
-					    	    <li><a href="http://www.news.com/">News.com</a></li>
-					    	    <li><a href="http://www.slashdot.com">SlashDot</a></li>
-					    	    <li><a href="http://www.digg.com">Digg</a></li>
-					    	    <li><a href="http://www.techcrunch.com">Tech Crunch</a></li>
-					    	</ul>
-					    </div>
-					    
-					    <br style="clear: left" /> <!--Break after 3rd column. Move this if desired-->
-					    <br style="clear: left" /> <!--Break after 3rd column. Move this if desired-->
-	
-					    <div class="column">
-					        <h3>Treatment</h3>
-					        <ul>
-					            <li><a href="http://www.javascriptkit.com">JavaScript Kit</a></li>
-					            <li><a href="http://www.dynamicdrive.com/">Dynamic Drive</a></li>
-	            				<li><a href="http://www.cssdrive.com">CSS Drive</a></li>
-					            <li><a href="http://www.javascriptkit.com/domref/">DOM Reference</a></li>
-					            <li><a href="http://www.javascriptkit.com">JavaScript Kit</a></li>
-					            <li><a href="http://www.dynamicdrive.com/">Dynamic Drive</a></li>
-	            				<li><a href="http://www.cssdrive.com">CSS Drive</a></li>
-					            <li><a href="http://www.javascriptkit.com/domref/">DOM Reference</a></li>
-					            <li><a href="http://www.javascriptkit.com">JavaScript Kit</a></li>
-					            <li><a href="http://www.dynamicdrive.com/">Dynamic Drive</a></li>
-	            				<li><a href="http://www.cssdrive.com">CSS Drive</a></li>
-					            <li><a href="http://www.javascriptkit.com/domref/">DOM Reference</a></li>
-					        </ul>
-					    </div>
-	
-					    <div class="column">
-					        <h3>Products</h3>
-					        <ul>
-					            <li><a href="http://www.cnn.com/">CNN</a></li>
-					            <li><a href="http://www.msnbc.com">MSNBC</a></li>
-					            <li><a href="http://www.google.com">Google</a></li>
-					        </ul>
-					    </div>
+						<?php
+						$menuHeaders = ContentBlock::model()->findAll(array('order'=>'sequence'));
+						$blockCount = 0;
+						foreach ($menuHeaders as $menuHeader):
+							if ($menuHeader->parent_id)
+								continue;
+							if (++$blockCount == 4)
+							{
+					    		echo "<br style='clear: left' />";
+					    		echo "<br style='clear: left' />";
+							}
+							echo "<div class='column'>";
+							echo " <ul>";
+							echo "<li><h3><a href='" . Yii::app()->request->baseUrl . "/index.php/site/page?url=" . $menuHeader->url . "'>" . $menuHeader->title . "</a></h3></li>";
+							$criteria = new CDbCriteria;
+							$criteria->addCondition("parent_id = " . $menuHeader->id);
+							$menuItems = ContentBlock::model()->findAll($criteria);
+							foreach ($menuItems as $menuItem):
+								echo "<li><a href='" . Yii::app()->request->baseUrl . "/index.php/site/page?url=" . $menuItem->url . "'>" . $menuItem->title . "</a></li>";
+							endforeach;
+							echo " </ul>";
+							echo "</div>";
+						endforeach;
+						?>
 	
 					</div>
 	
