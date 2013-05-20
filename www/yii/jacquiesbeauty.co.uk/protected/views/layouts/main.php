@@ -100,7 +100,7 @@ jkmegamenu.definemenu("megaanchor", "megamenu1", "mouseover");
 							$criteria->addCondition("parent_id = " . $menuHeader->id);
 							$menuItems = ContentBlock::model()->findAll($criteria);
 							foreach ($menuItems as $menuItem):
-								if ($menuHeader->active)
+								if ($menuItem->active)
 									echo "<li><a href='" . Yii::app()->request->baseUrl . "/index.php/site/page?url=" . $menuItem->url . "'>" . $menuItem->title . "</a></li>";
 							endforeach;
 							echo " </ul>";
