@@ -85,7 +85,7 @@ jkmegamenu.definemenu("megaanchor", "megamenu1", "mouseover");
 						$menuHeaders = ContentBlock::model()->findAll(array('order'=>'sequence'));
 						$blockCount = 0;
 						foreach ($menuHeaders as $menuHeader):
-							if ($menuHeader->parent_id)
+							if (($menuHeader->parent_id) || (!$menuheader->active))
 								continue;
 							if (++$blockCount > 4)
 							{
@@ -100,7 +100,8 @@ jkmegamenu.definemenu("megaanchor", "megamenu1", "mouseover");
 							$criteria->addCondition("parent_id = " . $menuHeader->id);
 							$menuItems = ContentBlock::model()->findAll($criteria);
 							foreach ($menuItems as $menuItem):
-								echo "<li><a href='" . Yii::app()->request->baseUrl . "/index.php/site/page?url=" . $menuItem->url . "'>" . $menuItem->title . "</a></li>";
+								if ($menuheader->active)
+									echo "<li><a href='" . Yii::app()->request->baseUrl . "/index.php/site/page?url=" . $menuItem->url . "'>" . $menuItem->title . "</a></li>";
 							endforeach;
 							echo " </ul>";
 							echo "</div>";
