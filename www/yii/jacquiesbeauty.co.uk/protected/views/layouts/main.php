@@ -223,11 +223,11 @@ jkmegamenu.definemenu("megaanchor", "megamenu1", "mouseover");
 <!-- FOOTER -->
 
 	<div class="row" style="height:60px">
-		<div class="span12" style="margin-left: 160px;">
+<!--		<div class="span12" style="margin-left: 160px;">
 Jacquies Beauty Salon, 34 Whitesands, Dumfries, United Kingdom DG1 2RS
 tel: 01387 269 077 e: reception@jacquiesbeauty.co.uk
 Sitemap | Terms and Conditions | Privacy | Cookies	
-		</div>
+		</div> -->
 	</div>
 
 </div>
