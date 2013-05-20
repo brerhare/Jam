@@ -66,11 +66,11 @@ jkmegamenu.definemenu("megaanchor", "megamenu1", "mouseover");
 				<div class="span2" style="position:relative; z-index:20000;">
 					<div style="position:absolute; left:388px; top:30px">
 						<!--Mega Menu Anchor-->
-						<a href="http://www.wireflydesign.com" id="megaanchor" style="color:#000000;">Menu</a>
+						<a href=<?php echo "'" . Yii::app()->request->baseUrl . "/index.php/'"?> id="megaanchor" style="color:#000000;">Menu</a>
 					</div>
 					<div style="position:absolute; left:740px; top:30px">
 						<!--Login-->
-						<a href="http://217.41.65.149:8080/clients/login.asp" style="color:#000000;">Login</a>
+						<a href="http://217.41.65.149:8080/clients/login.asp" target="_blank" style="color:#000000;">Login</a>
 					</div>
 			
 					<!--Mega Menu Dropdown HTML-->
@@ -116,7 +116,9 @@ jkmegamenu.definemenu("megaanchor", "megamenu1", "mouseover");
 	
 				<div class="span8">
 		        	<div style="text-align:center;">
+		        		<a href=<?php echo "'" . Yii::app()->request->baseUrl . "/index.php/'"?> id="megaanchor" style="color:#000000;">
 						<img src="<?php Yii::app()->request->baseUrl ?> /img/header.png" border="0" style="margin-right:0px; padding:0">
+						</a>
 					</div>
 				</div>
 	
