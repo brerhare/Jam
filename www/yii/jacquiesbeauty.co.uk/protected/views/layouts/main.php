@@ -209,7 +209,7 @@ jkmegamenu.definemenu("megaanchor", "megamenu1", "mouseover");
 
             <!--Body content-->
         <!--    <div style="height:50px; margin-top:-20px;"></div> -->
-            <div id="content" style="margin-left:-33px; margin-top:20px; padding:0 15pxpx">
+            <div id="content" style="margin-left:-33px; margin-top:20px; padding:0 15px">
                 <?php echo $content; ?>
             </div>
 
