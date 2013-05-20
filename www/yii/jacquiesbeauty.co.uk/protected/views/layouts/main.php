@@ -85,7 +85,7 @@ jkmegamenu.definemenu("megaanchor", "megamenu1", "mouseover");
 						$menuHeaders = ContentBlock::model()->findAll(array('order'=>'sequence'));
 						$blockCount = 0;
 						foreach ($menuHeaders as $menuHeader):
-							if (($menuHeader->parent_id) || (!$menuHeader->active))
+							if (($menuHeader->parent_id) || ($menuHeader->active == 0))
 								continue;
 							if (++$blockCount > 4)
 							{
