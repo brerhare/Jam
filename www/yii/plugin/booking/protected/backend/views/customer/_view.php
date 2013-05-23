@@ -45,10 +45,6 @@
 	<?php echo CHtml::encode($data->card_name); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('card_type')); ?>:</b>
-	<?php echo CHtml::encode($data->card_type); ?>
-	<br />
-
 	<b><?php echo CHtml::encode($data->getAttributeLabel('card_number')); ?>:</b>
 	<?php echo CHtml::encode($data->card_number); ?>
 	<br />

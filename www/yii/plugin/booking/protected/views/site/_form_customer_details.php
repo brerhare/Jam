@@ -22,14 +22,11 @@ echo "<script>var showDays=" . $showDays . ";</script>";
 ?>
 
 <style>
-/* None of this works */
-.form-horizontal {
-margin-bottom: 1px;
+.form-horizontal .control-group {
+margin-bottom: 0px;
 }
-.control-group {
-margin-bottom: 1px;
-}
-div.control-group {margin-bottom:1px;}
+
+
 </style>
 
 <div class="row">
@@ -88,13 +85,11 @@ div.control-group {margin-bottom:1px;}
 
 	<?php echo $form->textFieldRow($model,'post_code',array('class'=>'span1','maxlength'=>255)); ?>
 
-	<?php echo $form->textFieldRow($model,'telephone',array('class'=>'span1','maxlength'=>255)); ?>
+	<?php echo $form->textFieldRow($model,'telephone',array('class'=>'span2','maxlength'=>255)); ?>
 
 	<?php echo $form->textFieldRow($model,'email',array('class'=>'span3','maxlength'=>255)); ?>
 
 	<?php echo $form->textFieldRow($model,'card_name',array('class'=>'span3','maxlength'=>255)); ?>
-
-	<?php echo $form->textFieldRow($model,'card_type',array('class'=>'span2','maxlength'=>255)); ?>
 
 	<?php echo $form->textFieldRow($model,'card_number',array('class'=>'span2','maxlength'=>255)); ?>
 
@@ -104,22 +99,6 @@ div.control-group {margin-bottom:1px;}
 
 	<?php echo $form->textFieldRow($model,'card_cvv',array('class'=>'span1')); ?>
 
-	<div class="form-actions">
-
-	</div>
-		<?php
-		$this->widget('bootstrap.widgets.TbButton',array(
-			'label' => 'Make Booking',
-			'buttonType'=>'submit',
-			'type' => 'primary',
-			'size' => 'large',
-			'htmlOptions' => array(
-				//'class' => 'disabled',
-				'id'=> 'nextButton3',
-				'name' => 'nextButton3',
-				//'onclick'=>'js:return nextButtonClick()',
-			),
-		));?>
 	</div> <!-- well -->
 </div> <!-- row -->
 

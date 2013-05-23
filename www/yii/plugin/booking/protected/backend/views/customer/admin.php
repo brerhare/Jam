@@ -54,7 +54,6 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		'telephone',
 		'email',
 		'card_name',
-		'card_type',
 		'card_number',
 		'card_expiry_mm',
 		'card_expiry_yy',

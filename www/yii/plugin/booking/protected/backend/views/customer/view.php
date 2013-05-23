@@ -29,7 +29,6 @@ $this->menu=array(
 		'telephone',
 		'email',
 		'card_name',
-		'card_type',
 		'card_number',
 		'card_expiry_mm',
 		'card_expiry_yy',

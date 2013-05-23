@@ -15,7 +15,6 @@
  * @property string $telephone
  * @property string $email
  * @property string $card_name
- * @property string $card_type
  * @property string $card_number
  * @property integer $card_expiry_mm
  * @property integer $card_expiry_yy
@@ -49,12 +48,12 @@ class Customer extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('uid, ref, post_code, email, card_name, card_type, card_number, card_expiry_mm, card_expiry_yy, card_cvv', 'required'),
+			array('uid, ref, address_1, address_2, post_code, telephone, email, card_name, card_number, card_expiry_mm, card_expiry_yy, card_cvv', 'required'),
 			array('uid, card_expiry_mm, card_expiry_yy, card_cvv', 'numerical', 'integerOnly'=>true),
-			array('ref, address_1, address_2, town, county, post_code, telephone, email, card_name, card_type, card_number', 'length', 'max'=>255),
+			array('ref, address_1, address_2, town, county, post_code, telephone, email, card_name, card_number', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, ref, address_1, address_2, town, county, post_code, telephone, email, card_name, card_type, card_number, card_expiry_mm, card_expiry_yy, card_cvv', 'safe', 'on'=>'search'),
+			array('id, uid, ref, address_1, address_2, town, county, post_code, telephone, email, card_name, card_number, card_expiry_mm, card_expiry_yy, card_cvv', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -80,17 +79,16 @@ class Customer extends CActiveRecord
 			'ref' => 'Ref',
 			'address_1' => 'Address 1',
 			'address_2' => 'Address 2',
-			'town' => 'Town',
-			'county' => 'County',
+			'town' => 'Address 3',
+			'county' => 'Address 4',
 			'post_code' => 'Post Code',
 			'telephone' => 'Telephone',
 			'email' => 'Email',
 			'card_name' => 'Card Name',
-			'card_type' => 'Card Type',
 			'card_number' => 'Card Number',
-			'card_expiry_mm' => 'Card Expiry Mm',
-			'card_expiry_yy' => 'Card Expiry Yy',
-			'card_cvv' => 'Card Cvv',
+			'card_expiry_mm' => 'Card Expiry MM',
+			'card_expiry_yy' => 'Card Expiry YY',
+			'card_cvv' => 'Last 3 Digits on back',
 		);
 	}
 
@@ -116,7 +114,6 @@ class Customer extends CActiveRecord
 		$criteria->compare('telephone',$this->telephone,true);
 		$criteria->compare('email',$this->email,true);
 		$criteria->compare('card_name',$this->card_name,true);
-		$criteria->compare('card_type',$this->card_type,true);
 		$criteria->compare('card_number',$this->card_number,true);
 		$criteria->compare('card_expiry_mm',$this->card_expiry_mm);
 		$criteria->compare('card_expiry_yy',$this->card_expiry_yy);

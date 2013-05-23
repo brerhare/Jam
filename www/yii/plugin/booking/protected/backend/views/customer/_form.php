@@ -27,8 +27,6 @@
 
 	<?php echo $form->textFieldRow($model,'card_name',array('class'=>'span5','maxlength'=>255)); ?>
 
-	<?php echo $form->textFieldRow($model,'card_type',array('class'=>'span5','maxlength'=>255)); ?>
-
 	<?php echo $form->textFieldRow($model,'card_number',array('class'=>'span5','maxlength'=>255)); ?>
 
 	<?php echo $form->textFieldRow($model,'card_expiry_mm',array('class'=>'span5')); ?>
