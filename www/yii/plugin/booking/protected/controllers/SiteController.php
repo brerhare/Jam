@@ -70,7 +70,7 @@ class SiteController extends Controller
 		}
 
 		$model=Room::model()->findByPk(2);
-			$this->render('index2',array(
+		$this->render('index2',array(
 			'model'=>$model,
 			'roomdata'=>array(1,2,3),
 		));
@@ -85,8 +85,18 @@ class SiteController extends Controller
 		{
 			$this->redirect(array('index2'));
 		}
-		$model=Customer::model()->findByPk(2);
-			$this->render('index3',array(
+
+		$model=new Customer;
+
+		//if(isset($_POST['nextButton3']))
+var_dump($_POST);
+        if(isset($_POST['Customer']))
+        {
+            $model->attributes=$_POST['Customer'];
+            if($model->save())
+                $this->redirect(array('index2'));
+        }
+		$this->render('index3',array(
 			'model'=>$model,
 			'roomdata'=>array(1,2,3),
 		));

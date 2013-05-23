@@ -21,6 +21,17 @@ echo "<script>var showDays=" . $showDays . ";</script>";
 //-------------------
 ?>
 
+<style>
+/* None of this works */
+.form-horizontal {
+margin-bottom: 1px;
+}
+.control-group {
+margin-bottom: 1px;
+}
+div.control-group {margin-bottom:1px;}
+</style>
+
 <div class="row">
 	<div class="span2" style="vertical-align:middle; text-align:right">
 		<?php
@@ -48,15 +59,14 @@ echo "<script>var showDays=" . $showDays . ";</script>";
 			'type' => 'primary',
 			'size' => 'large',
 			'htmlOptions' => array(
-				'class' => 'disabled',
-				'id'=> 'nextButton',
-				'name' => 'nextButton',
-				'onclick'=>'js:return nextButtonClick()',
+				//'class' => 'disabled',
+				'id'=> 'nextButton3',
+				'name' => 'nextButton3',
+				//'onclick'=>'js:return nextButtonClick()',
 			),
 		));?>
 	</div>
 </div>
-
 
 <div class="row">
 	<div class="span1"></div>
@@ -64,45 +74,52 @@ echo "<script>var showDays=" . $showDays . ";</script>";
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<?php echo $form->textFieldRow($model,'uid',array('class'=>'span5')); ?>
+	<?php //echo $form->textFieldRow($model,'uid',array('class'=>'span5')); ?>
 
-	<?php echo $form->textFieldRow($model,'ref',array('class'=>'span5','maxlength'=>255)); ?>
+	<?php //echo $form->textFieldRow($model,'ref',array('class'=>'span5','maxlength'=>255)); ?>
 
-	<?php echo $form->textFieldRow($model,'address_1',array('class'=>'span5','maxlength'=>255)); ?>
+	<?php echo $form->textFieldRow($model,'address_1',array('class'=>'span4','maxlength'=>255)); ?>
 
-	<?php echo $form->textFieldRow($model,'address_2',array('class'=>'span5','maxlength'=>255)); ?>
+	<?php echo $form->textFieldRow($model,'address_2',array('class'=>'span4','maxlength'=>255)); ?>
 
-	<?php echo $form->textFieldRow($model,'town',array('class'=>'span5','maxlength'=>255)); ?>
+	<?php echo $form->textFieldRow($model,'town',array('class'=>'span4','maxlength'=>255)); ?>
 
-	<?php echo $form->textFieldRow($model,'county',array('class'=>'span5','maxlength'=>255)); ?>
+	<?php echo $form->textFieldRow($model,'county',array('class'=>'span4','maxlength'=>255)); ?>
 
-	<?php echo $form->textFieldRow($model,'post_code',array('class'=>'span5','maxlength'=>255)); ?>
+	<?php echo $form->textFieldRow($model,'post_code',array('class'=>'span1','maxlength'=>255)); ?>
 
-	<?php echo $form->textFieldRow($model,'telephone',array('class'=>'span5','maxlength'=>255)); ?>
+	<?php echo $form->textFieldRow($model,'telephone',array('class'=>'span1','maxlength'=>255)); ?>
 
-	<?php echo $form->textFieldRow($model,'email',array('class'=>'span5','maxlength'=>255)); ?>
+	<?php echo $form->textFieldRow($model,'email',array('class'=>'span3','maxlength'=>255)); ?>
 
-	<?php echo $form->textFieldRow($model,'card_name',array('class'=>'span5','maxlength'=>255)); ?>
+	<?php echo $form->textFieldRow($model,'card_name',array('class'=>'span3','maxlength'=>255)); ?>
 
-	<?php echo $form->textFieldRow($model,'card_type',array('class'=>'span5','maxlength'=>255)); ?>
+	<?php echo $form->textFieldRow($model,'card_type',array('class'=>'span2','maxlength'=>255)); ?>
 
-	<?php echo $form->textFieldRow($model,'card_number',array('class'=>'span5','maxlength'=>255)); ?>
+	<?php echo $form->textFieldRow($model,'card_number',array('class'=>'span2','maxlength'=>255)); ?>
 
-	<?php echo $form->textFieldRow($model,'card_expiry_mm',array('class'=>'span5')); ?>
+	<?php echo $form->textFieldRow($model,'card_expiry_mm',array('class'=>'span1')); ?>
 
-	<?php echo $form->textFieldRow($model,'card_expiry_yy',array('class'=>'span5')); ?>
+	<?php echo $form->textFieldRow($model,'card_expiry_yy',array('class'=>'span1')); ?>
 
-	<?php echo $form->textFieldRow($model,'card_cvv',array('class'=>'span5')); ?>
+	<?php echo $form->textFieldRow($model,'card_cvv',array('class'=>'span1')); ?>
 
 	<div class="form-actions">
-		<?php $this->widget('bootstrap.widgets.TbButton', array(
-			'buttonType'=>'submit',
-			'type'=>'primary',
-			'label'=>$model->isNewRecord ? 'Create' : 'Save',
-		)); ?>
+
 	</div>
-
-
+		<?php
+		$this->widget('bootstrap.widgets.TbButton',array(
+			'label' => 'Make Booking',
+			'buttonType'=>'submit',
+			'type' => 'primary',
+			'size' => 'large',
+			'htmlOptions' => array(
+				//'class' => 'disabled',
+				'id'=> 'nextButton3',
+				'name' => 'nextButton3',
+				//'onclick'=>'js:return nextButtonClick()',
+			),
+		));?>
 	</div> <!-- well -->
 </div> <!-- row -->
 

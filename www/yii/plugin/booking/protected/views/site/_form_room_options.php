@@ -312,7 +312,6 @@ function calcTotal()
 }
 
 function nextButtonClick() {
-	return false;
 	classes = document.getElementById("nextButton").className;
 	if (classes.indexOf('disabled') !== -1)
 		return false;
