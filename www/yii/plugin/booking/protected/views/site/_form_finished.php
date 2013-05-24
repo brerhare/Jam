@@ -23,7 +23,7 @@ margin-bottom: 0px;
 <div class="row">
 	<div class="span1"></div>
 	<div class='well span6'>
-	<h4>Thank you for your booking.</h4>
+	<h4>Thank you for your reservation.</h4>
 	<h5>A confirmation email has been sent to you.<br>
 	Should you not receive it within a few minutes please check your junk folder</h5>
 	<br/><br/>
