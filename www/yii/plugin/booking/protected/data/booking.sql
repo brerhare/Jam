@@ -2,6 +2,8 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
+CREATE SCHEMA IF NOT EXISTS `plugin` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci ;
+USE `plugin` ;
 
 -- -----------------------------------------------------
 -- Table `plugin`.`booking_occupancy_type`
@@ -165,6 +167,7 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`booking_calendar` (
   INDEX `fk_booking_calendar_room1` (`room_id` ASC) ,
   INDEX `date` (`date` ASC) ,
   INDEX `uid` (`uid` ASC) ,
+  INDEX `ref` (`uid` ASC, `ref` ASC) ,
   CONSTRAINT `fk_booking_calendar_room1`
     FOREIGN KEY (`room_id` )
     REFERENCES `plugin`.`booking_room` (`id` )
@@ -184,13 +187,17 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`booking_reservation_room` (
   `ref` VARCHAR(255) NOT NULL ,
   `start_date` DATE NOT NULL ,
   `end_date` DATE NOT NULL ,
+  `num_nights` INT NULL ,
   `num_adult` INT NULL ,
   `num_child` INT NULL ,
-  `total` DECIMAL(10,2) NULL ,
+  `room_total` DECIMAL(10,2) NULL ,
+  `occupancy_type_id` INT NULL ,
+  `occupancy_type_description` VARCHAR(255) NULL ,
   `room_id` INT NOT NULL ,
   PRIMARY KEY (`id`, `room_id`) ,
   INDEX `fk_booking_room_room1` (`room_id` ASC) ,
   INDEX `uid` (`uid` ASC) ,
+  INDEX `ref` (`uid` ASC, `ref` ASC) ,
   CONSTRAINT `fk_booking_room_room1`
     FOREIGN KEY (`room_id` )
     REFERENCES `plugin`.`booking_room` (`id` )
@@ -208,13 +215,17 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`booking_reservation_extra` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `uid` INT NOT NULL ,
   `ref` VARCHAR(255) NOT NULL ,
-  `booking_room_id` INT NOT NULL ,
-  `booking_room_room_id` INT NOT NULL ,
-  PRIMARY KEY (`id`, `booking_room_id`, `booking_room_room_id`) ,
-  INDEX `fk_booking_extra_booking_room1` (`booking_room_id` ASC, `booking_room_room_id` ASC) ,
+  `extra_id` INT NULL ,
+  `extra_description` VARCHAR(255) NULL ,
+  `extra_total` DECIMAL(10,2) NULL ,
+  `reservation_room_id` INT NOT NULL ,
+  `reservation_room_room_id` INT NOT NULL ,
+  PRIMARY KEY (`id`, `reservation_room_id`, `reservation_room_room_id`) ,
   INDEX `uid` (`uid` ASC) ,
-  CONSTRAINT `fk_booking_extra_booking_room1`
-    FOREIGN KEY (`booking_room_id` , `booking_room_room_id` )
+  INDEX `fk_booking_reservation_extra_booking_reservation_room1` (`reservation_room_id` ASC, `reservation_room_room_id` ASC) ,
+  INDEX `ref` (`ref` ASC, `uid` ASC) ,
+  CONSTRAINT `fk_booking_reservation_extra_booking_reservation_room1`
+    FOREIGN KEY (`reservation_room_id` , `reservation_room_room_id` )
     REFERENCES `plugin`.`booking_reservation_room` (`id` , `room_id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -242,8 +253,10 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`booking_customer` (
   `card_expiry_mm` INT NOT NULL ,
   `card_expiry_yy` INT NOT NULL ,
   `card_cvv` INT NOT NULL ,
+  `reservation_total` DECIMAL(10,2) NOT NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `uid` (`uid` ASC) )
+  INDEX `uid` (`uid` ASC) ,
+  INDEX `ref` (`uid` ASC, `ref` ASC) )
 ENGINE = InnoDB;
 
 

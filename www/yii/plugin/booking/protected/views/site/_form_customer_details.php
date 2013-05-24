@@ -66,6 +66,17 @@ margin-bottom: 0px;
 </div>
 
 <div class="row">
+	<div class="span2"></div>
+	<div class="span6">
+	Arriving <?php echo Yii::app()->session['arrivedate']; ?> and Departing <?php echo Yii::app()->session['departdate']; ?>
+	<br/>
+	Number of rooms : <?php echo Yii::app()->session['numRooms']; ?>
+	<br>
+	Total due : <b> £<?php echo Yii::app()->session['bTotal']; ?> </b>
+	</div>
+</div>
+
+<div class="row">
 	<div class="span1"></div>
 	<div class='well span6'>
 
@@ -120,7 +131,15 @@ margin-bottom: 0px;
 
 
 <!-------------------------------------------------------------------->
-
+<?php
+echo "<p>";
+				foreach (Yii::app()->session as $field => $value)
+				{
+					echo $field . ":" . $value . "<br>";
+					//Yii::app()->session[$field] = $value;
+					//Yii::log("GIVING INDEX2 VALUES FOR " . Yii::app()->session[$field] . " = " . $value , CLogger::LEVEL_WARNING, 'system.test.kim');
+				}
+?>
 <!-------------------------------------------------------------------->
 
 

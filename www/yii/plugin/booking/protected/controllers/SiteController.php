@@ -83,10 +83,11 @@ class SiteController extends Controller
 		Yii::log("PAGE 3 LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		if (isset($_POST['backButton']))
 			$this->redirect(array('index2'));
-
+//var_dump($_POST);
 		$model=new Customer;
 		$model->uid = Yii::app()->session['uid'];
 		$model->ref = date('U');
+		$model->reservation_total = Yii::app()->session['bTotal'];
         if(isset($_POST['Customer']))
         {
             $model->attributes=$_POST['Customer'];
