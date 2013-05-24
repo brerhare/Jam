@@ -100,6 +100,7 @@ Yii::log("INDEX 3 found a room", CLogger::LEVEL_WARNING, 'system.test.kim');
             		if (Yii::app()->session['room_' . ($roomIx+1) . '_selection'] == '0')
             			continue;
 Yii::log("INDEX 3     using a room", CLogger::LEVEL_WARNING, 'system.test.kim');
+
 	            	// Create reservation_room record(s)
 					$modelResRm=new ReservationRoom;
 					$modelResRm->uid = Yii::app()->session['uid'];
@@ -115,7 +116,6 @@ Yii::log("INDEX 3     using a room", CLogger::LEVEL_WARNING, 'system.test.kim');
 					$modelResRm->num_child = Yii::app()->session['numChildren_' . ($roomIx+1)];
 					$modelResRm->room_total = Yii::app()->session['bRoomTotal_' . ($roomIx+1)];
 					$modelResRm->occupancy_type_id = Yii::app()->session['occupancyType_' . ($roomIx+1)];
-
 					$criteria = new CDbCriteria;
 					$criteria->addCondition("id = " . $modelResRm->occupancy_type_id);
 					$criteria->addCondition("uid = " . Yii::app()->session['uid']);
@@ -123,9 +123,51 @@ Yii::log("INDEX 3     using a room", CLogger::LEVEL_WARNING, 'system.test.kim');
 					$modelResRm->occupancy_type_description = $occupancyType->description;
 					$modelResRm->room_id = Yii::app()->session['room_' . ($roomIx+1) . '_selection'];
 					$modelResRm->save();
-				}
 
-            	// Artificial pause in lieue of processing payment
+					// Potentially create reservation extra record(s) for this room
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+					$criteria->addCondition("room_id = " . $modelResRm->room_id);
+					$roomHasExtras=RoomHasExtra::model()->findAll($criteria);
+					foreach ($roomHasExtras as $roomHasExtra)
+					{
+						$criteria = new CDbCriteria;
+						$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+						$criteria->addCondition("id = " . $roomHasExtra->extra_id);
+						$extra=Extra::model()->find($criteria);
+						$thisExtra = 'bExtra_roomid_' . $modelResRm->room_id . '_extraid_' . $extra->id;
+						if (Yii::app()->session[$thisExtra] != '0')
+						{
+							// Create the extra record
+							$modelResEx=new ReservationExtra;
+							$modelResEx->uid = Yii::app()->session['uid'];
+							$modelResEx->ref = $model->ref;	
+							$modelResEx->extra_id = $extra->id;
+							$modelResEx->extra_description = $extra->description;
+							$modelResEx->extra_total = Yii::app()->session[$thisExtra];
+							$modelResEx->reservation_room_id = $modelResRm->id;
+							$modelResEx->reservation_room_room_id = $modelResRm->room_id;
+							$modelResEx->save();
+						}
+					}
+					
+					// Now block off the calendar for this room
+					$dat = Yii::app()->session['arrivedate'];
+					$dt = substr($dat,6,4) .'-'. substr($dat,3,2) .'-'. substr($dat,0,2);
+					for ($cal = 0; $cal < Yii::app()->session['nights']; $cal++)
+					{
+						$modelCalendar=new Calendar;
+						$modelCalendar->uid = Yii::app()->session['uid'];	
+						$modelCalendar->ref = $model->ref;
+						$modelCalendar->room_id = $modelResRm->room_id;
+						$modelCalendar->date = $dt;
+						$modelCalendar->save();
+						$tmpdt = strtotime("+1 day", strtotime($dt));
+						$dt = date("Y-m-d", $tmpdt);
+					}
+				} /* next room */
+
+            	// Artificial pause in lieue of actually processing payment :/
             	sleep(5);
                 $this->redirect(array('index4'));
             }
