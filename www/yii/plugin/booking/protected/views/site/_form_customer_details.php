@@ -83,19 +83,35 @@ margin-bottom: 0px;
 
 	<?php echo $form->textFieldRow($model,'county',array('class'=>'span4','maxlength'=>255)); ?>
 
-	<?php echo $form->textFieldRow($model,'post_code',array('class'=>'span1','maxlength'=>255)); ?>
+	<?php echo $form->textFieldRow($model,'post_code',array('class'=>'span2','maxlength'=>255)); ?>
 
 	<?php echo $form->textFieldRow($model,'telephone',array('class'=>'span2','maxlength'=>255)); ?>
 
 	<?php echo $form->textFieldRow($model,'email',array('class'=>'span3','maxlength'=>255)); ?>
-
+<hr>
 	<?php echo $form->textFieldRow($model,'card_name',array('class'=>'span3','maxlength'=>255)); ?>
 
 	<?php echo $form->textFieldRow($model,'card_number',array('class'=>'span2','maxlength'=>255)); ?>
 
-	<?php echo $form->textFieldRow($model,'card_expiry_mm',array('class'=>'span1')); ?>
+	<?php //echo $form->textFieldRow($model,'card_expiry_mm',array('class'=>'span1')); ?>
+    <?php
+    // @@EG Dropdowns
+    $mths = array('--'=>'--', '1'=>'01', '2'=>'02', '3'=>'03', '4'=>'04', '5'=>'05', '6'=>'06', '7'=>'07', '8'=>'08', '9'=>'09', '10'=>'10', '11'=>'11', '12'=>'12');
+    echo $form->dropDownListRow($model, 'card_expiry_mm', $mths, array('style'=>'width:60px'));
+    ?>
 
-	<?php echo $form->textFieldRow($model,'card_expiry_yy',array('class'=>'span1')); ?>
+	<?php //echo $form->textFieldRow($model,'card_expiry_yy',array('class'=>'span1')); ?>
+    <?php
+    $yr = date('Y');
+    $yrs = array();
+    $yrs['----'] = '----';
+    for ($x = 0; $x < 10; $x++)
+    {
+    	$yrs[($yr + $x)] = ($yr + $x);
+		//array_push($yrs, ($yr + $x));
+	}
+	echo $form->dropDownListRow($model, 'card_expiry_yy', $yrs, array('style'=>'width:80px'));
+    ?>
 
 	<?php echo $form->textFieldRow($model,'card_cvv',array('class'=>'span1')); ?>
 

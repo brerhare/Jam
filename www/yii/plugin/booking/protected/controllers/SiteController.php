@@ -87,6 +87,8 @@ class SiteController extends Controller
 		}
 
 		$model=new Customer;
+		$model->uid = Yii::app()->session['uid'];
+		$model->ref = date('U');
 
 		//if(isset($_POST['nextButton3']))
 var_dump($_POST);
