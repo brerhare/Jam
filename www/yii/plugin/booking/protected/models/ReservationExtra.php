@@ -7,12 +7,15 @@
  * @property integer $id
  * @property integer $uid
  * @property string $ref
- * @property integer $booking_room_id
- * @property integer $booking_room_room_id
+ * @property integer $extra_id
+ * @property string $extra_description
+ * @property string $extra_total
+ * @property integer $reservation_room_id
+ * @property integer $reservation_room_room_id
  *
  * The followings are the available model relations:
- * @property ReservationRoom $bookingRoom
- * @property ReservationRoom $bookingRoomRoom
+ * @property ReservationRoom $reservationRoom
+ * @property ReservationRoom $reservationRoomRoom
  */
 class ReservationExtra extends CActiveRecord
 {
@@ -42,12 +45,13 @@ class ReservationExtra extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('uid, ref, booking_room_id, booking_room_room_id', 'required'),
-			array('uid, booking_room_id, booking_room_room_id', 'numerical', 'integerOnly'=>true),
-			array('ref', 'length', 'max'=>255),
+			array('uid, ref, reservation_room_id, reservation_room_room_id', 'required'),
+			array('uid, extra_id, reservation_room_id, reservation_room_room_id', 'numerical', 'integerOnly'=>true),
+			array('ref, extra_description', 'length', 'max'=>255),
+			array('extra_total', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, ref, booking_room_id, booking_room_room_id', 'safe', 'on'=>'search'),
+			array('id, uid, ref, extra_id, extra_description, extra_total, reservation_room_id, reservation_room_room_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -59,8 +63,8 @@ class ReservationExtra extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'bookingRoom' => array(self::BELONGS_TO, 'ReservationRoom', 'booking_room_id'),
-			'bookingRoomRoom' => array(self::BELONGS_TO, 'ReservationRoom', 'booking_room_room_id'),
+			'reservationRoom' => array(self::BELONGS_TO, 'ReservationRoom', 'reservation_room_id'),
+			'reservationRoomRoom' => array(self::BELONGS_TO, 'ReservationRoom', 'reservation_room_room_id'),
 		);
 	}
 
@@ -73,8 +77,11 @@ class ReservationExtra extends CActiveRecord
 			'id' => 'ID',
 			'uid' => 'Uid',
 			'ref' => 'Ref',
-			'booking_room_id' => 'Booking Room',
-			'booking_room_room_id' => 'Booking Room Room',
+			'extra_id' => 'Extra',
+			'extra_description' => 'Extra Description',
+			'extra_total' => 'Extra Total',
+			'reservation_room_id' => 'Reservation Room',
+			'reservation_room_room_id' => 'Reservation Room Room',
 		);
 	}
 
@@ -92,8 +99,11 @@ class ReservationExtra extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('uid',$this->uid);
 		$criteria->compare('ref',$this->ref,true);
-		$criteria->compare('booking_room_id',$this->booking_room_id);
-		$criteria->compare('booking_room_room_id',$this->booking_room_room_id);
+		$criteria->compare('extra_id',$this->extra_id);
+		$criteria->compare('extra_description',$this->extra_description,true);
+		$criteria->compare('extra_total',$this->extra_total,true);
+		$criteria->compare('reservation_room_id',$this->reservation_room_id);
+		$criteria->compare('reservation_room_room_id',$this->reservation_room_room_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

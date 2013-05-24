@@ -83,16 +83,48 @@ class SiteController extends Controller
 		Yii::log("PAGE 3 LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		if (isset($_POST['backButton']))
 			$this->redirect(array('index2'));
-//var_dump($_POST);
+
 		$model=new Customer;
 		$model->uid = Yii::app()->session['uid'];
-		$model->ref = date('U');
-		$model->reservation_total = Yii::app()->session['bTotal'];
         if(isset($_POST['Customer']))
         {
+        	// Create customer record
+        	$model->ref = date('U');
+			$model->reservation_total = Yii::app()->session['bTotal'];
             $model->attributes=$_POST['Customer'];
             if($model->save())
             {
+            	for ($roomIx = 0; $roomIx < 3; $roomIx++)
+            	{
+Yii::log("INDEX 3 found a room", CLogger::LEVEL_WARNING, 'system.test.kim');
+            		if (Yii::app()->session['room_' . ($roomIx+1) . '_selection'] == '0')
+            			continue;
+Yii::log("INDEX 3     using a room", CLogger::LEVEL_WARNING, 'system.test.kim');
+	            	// Create reservation_room record(s)
+					$modelResRm=new ReservationRoom;
+					$modelResRm->uid = Yii::app()->session['uid'];
+					$modelResRm->ref = $model->ref;
+					$dat = Yii::app()->session['arrivedate'];
+					$dt = substr($dat,6,4) .'-'. substr($dat,3,2) .'-'. substr($dat,0,2);
+					$modelResRm->start_date = $dt;
+					$dat = Yii::app()->session['departdate'];
+					$dt = substr($dat,6,4) .'-'. substr($dat,3,2) .'-'. substr($dat,0,2);
+					$modelResRm->end_date = $dt;
+					$modelResRm->num_nights = Yii::app()->session['nights'];
+					$modelResRm->num_adult = Yii::app()->session['numAdults_' . ($roomIx+1)];
+					$modelResRm->num_child = Yii::app()->session['numChildren_' . ($roomIx+1)];
+					$modelResRm->room_total = Yii::app()->session['bRoomTotal_' . ($roomIx+1)];
+					$modelResRm->occupancy_type_id = Yii::app()->session['occupancyType_' . ($roomIx+1)];
+
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("id = " . $modelResRm->occupancy_type_id);
+					$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+					$occupancyType=OccupancyType::model()->find($criteria);
+					$modelResRm->occupancy_type_description = $occupancyType->description;
+					$modelResRm->room_id = Yii::app()->session['room_' . ($roomIx+1) . '_selection'];
+					$modelResRm->save();
+				}
+
             	// Artificial pause in lieue of processing payment
             	sleep(5);
                 $this->redirect(array('index4'));

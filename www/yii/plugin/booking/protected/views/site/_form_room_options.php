@@ -23,6 +23,12 @@ echo "<script>var showDays=" . $showDays . ";</script>";
 
 <!-- POST variables -->
 <input type="hidden" id="bTotal" name="bTotal" value="9"/>
+<input type="hidden" id="bRoomTotal_1" name="bRoomTotal_1" value="0"/>
+<input type="hidden" id="bRoomTotal_2" name="bRoomTotal_2" value="0"/>
+<input type="hidden" id="bRoomTotal_3" name="bRoomTotal_3" value="0"/>
+<input type="hidden" id="occupancyType_1" name="occupancyType_1" value="0"/>
+<input type="hidden" id="occupancyType_2" name="occupancyType_2" value="0"/>
+<input type="hidden" id="occupancyType_3" name="occupancyType_3" value="0"/>
 
 <!-- Accessible value -->
 <input type="hidden" id="nights" name="nights" value="<?php echo Yii::app()->session['nights']?>"/>
@@ -179,7 +185,12 @@ color: #46679c;
 	    				}
 	    				$price *= Yii::app()->session['nights'];
 						$occupancyType->is_default ? $checked = " checked " : $checked = "";
-						echo '  <input type="radio" id="' . 'room_' . ($roomIx+1) . '_' . $room->id . '" name="room_' . ($roomIx+1) . '_' . $room->id . '" value="' . $price . '"' . $checked . ' onClick=roomRadio(' .  ($roomIx+1) . "," . $room->id  . "," . $price . "," . ($occupancyTypeIx+1) . ')>   <span style="font-weight:normal">' . $occupancyType->description . '</span> (£' . $price . ')<br>';
+						echo '  <input type="radio" id="' . 'room_' . ($roomIx+1) . '_' . $room->id . '" name="room_' . ($roomIx+1) . '_' . $room->id . '" value="' . $price . '"' . $checked . ' onClick=roomRadio(' .  ($roomIx+1) . "," . $room->id  . "," . $price . "," . ($occupancyTypeIx+1) . "," . $roomHasOccupancyType->occupancy_type_id . ')>   <span style="font-weight:normal">' . $occupancyType->description . '</span> (£' . $price . ')<br>';
+						if ($checked != "")
+						{
+							// hidden field
+							echo "<script>document.getElementById('occupancyType_" . ($roomIx+1) . "').value =" . $roomHasOccupancyType->occupancy_type_id . ";</script>";
+						}
 						echo " </td>";
 						echo " <td id='roomprice_" . ($roomIx+1) . '_' . ($occupancyTypeIx+1) . "' style='text-align:right'>";
 						if ($occupancyType->is_default)
@@ -220,6 +231,7 @@ color: #46679c;
 								$extraStr = " (" . $extra->daily_rate . " per day)";
 							}
 							echo "<input type='checkbox' onClick='extraCheckbox(" . $room->id . "," . $extra->id . ")' name='extra_roomid_" . $room->id . "_extraid_" . $extra->id . "' id='extra_roomid_" . $room->id . "_extraid_" . $extra->id . "' value='" . $extraVal . "'>";
+							echo "<input type='hidden' name='bExtra_roomid_" . $room->id . "_extraid_" . $extra->id . "' id='bExtra_roomid_" . $room->id . "_extraid_" . $extra->id . "' value='" . 0 . "'>";
 							echo " " . $extra->description;
 							echo $extraStr;
 							//echo $extra->daily_rate;
@@ -256,10 +268,11 @@ color: #46679c;
 </div>
 
 <script>
-function roomRadio(roomNo, roomId, price, occupancyTypeIx) {
+function roomRadio(roomNo, roomId, price, occupancyTypeIx, occupancyType_id) {
 	for (var i = 0; i < occupancyTypeMaxIx; i++)
 		document.getElementById('roomprice_' + roomNo + '_' + (i+1)).innerHTML = '';
 	document.getElementById('roomprice_' + roomNo + '_' + occupancyTypeIx).innerHTML = price.toFixed(2);
+	document.getElementById('occupancyType_' + roomNo).value = occupancyType_id; 
 	calcTotal();
 }
 
@@ -267,9 +280,17 @@ function extraCheckbox(room_id, extra_id) {
 	var item = document.getElementById('extra_roomid_' + room_id + '_extraid_' + extra_id);
 	var itemValue = document.getElementById('extra_roomid_' + room_id + '_extraid_' + extra_id + '_value');
 	if (item.checked)
+	{
 		itemValue.innerHTML = calcCheckbox(item.value).toFixed(2);
+		// update hidden field
+		document.getElementById('bExtra_roomid_' + room_id + '_extraid_' + extra_id).value = calcCheckbox(item.value).toFixed(2);
+	}
 	else
+	{
 		itemValue.innerHTML = '';
+		//update hidden
+		document.getElementById('bExtra_roomid_' + room_id + '_extraid_' + extra_id).value = 0;
+	}
 	calcTotal();
 }
 
@@ -291,7 +312,11 @@ function calcTotal()
 		{
 			val = document.getElementById('roomprice_' + (room+1) + '_' + (occ+1)).innerHTML;
 			if (val != '')
-				total += (parseFloat(val));
+			{
+				tmp = (parseFloat(val))
+				total += tmp;
+				document.getElementById('bRoomTotal_' + (room+1)).value = tmp.toFixed(2);
+			}
 		}
 	}
 	// Add up the extras
