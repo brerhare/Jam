@@ -120,15 +120,7 @@ margin-bottom: 0px;
 
 
 <!-------------------------------------------------------------------->
-<?php
-echo "<p>";
-				foreach (Yii::app()->session as $field => $value)
-				{
-					echo $field . ":" . $value . "<br>";
-					//Yii::app()->session[$field] = $value;
-					//Yii::log("GIVING INDEX2 VALUES FOR " . Yii::app()->session[$field] . " = " . $value , CLogger::LEVEL_WARNING, 'system.test.kim');
-				}
-?>
+
 <!-------------------------------------------------------------------->
 
 

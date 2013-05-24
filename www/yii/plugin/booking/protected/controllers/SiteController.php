@@ -82,27 +82,40 @@ class SiteController extends Controller
 	public function actionIndex3() {
 		Yii::log("PAGE 3 LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		if (isset($_POST['backButton']))
-		{
 			$this->redirect(array('index2'));
-		}
 
 		$model=new Customer;
 		$model->uid = Yii::app()->session['uid'];
 		$model->ref = date('U');
-
-		//if(isset($_POST['nextButton3']))
-var_dump($_POST);
         if(isset($_POST['Customer']))
         {
             $model->attributes=$_POST['Customer'];
             if($model->save())
-                $this->redirect(array('index2'));
+            {
+            	// Artificial pause in lieue of processing payment
+            	sleep(5);
+                $this->redirect(array('index4'));
+            }
         }
 		$this->render('index3',array(
 			'model'=>$model,
 			'roomdata'=>array(1,2,3),
 		));
 	}
+
+	/*
+	 * Show the 4th screen - finished
+	 */
+	public function actionIndex4() {
+		Yii::log("PAGE 4 LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
+		if (isset($_POST['finishedButton']))
+			$this->redirect(array('index'));
+
+		$this->render('index4',array(
+			'roomdata'=>array(1,2,3),
+		));
+	}
+
 
 // @@EG Ajax (see site/_form_choose_rooms.php for client side
 	public function actionAjaxGetRoomPriceAvail()

@@ -23,11 +23,27 @@ margin-bottom: 0px;
 <div class="row">
 	<div class="span1"></div>
 	<div class='well span6'>
-	<h3>Thank you for your booking.</h3>
-	<h4>A confirmation email has been sent to you.<br>
-	Should you not receive it within a few minutes please check your junk folder</h4>
+	<h4>Thank you for your booking.</h4>
+	<h5>A confirmation email has been sent to you.<br>
+	Should you not receive it within a few minutes please check your junk folder</h5>
 	<br/><br/>
 
+	<div class="span2" style="vertical-align:middle; text-align:left">
+		<?php
+		$this->widget('bootstrap.widgets.TbButton',array(
+			'label' => 'Close',
+			'buttonType'=>'submit',
+			'type' => 'primary',
+			'size' => 'large',
+			'htmlOptions' => array(
+				//'class' => 'disabled',
+				'id'=> 'finishedButton',
+				'name' => 'finishedButton',
+				//'onclick'=>'js:return nextButtonClick()',
+			),
+		));?>
+	</div>
+	
 	</div> <!-- well -->
 </div> <!-- row -->
 
