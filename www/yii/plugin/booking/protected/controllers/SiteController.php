@@ -1,5 +1,8 @@
 <?php
 
+// PHPMailer
+require_once('php/PHPMailer/class.phpmailer.php');
+
 class SiteController extends Controller
 {
 	/**
@@ -167,7 +170,33 @@ Yii::log("INDEX 3     using a room", CLogger::LEVEL_WARNING, 'system.test.kim');
 					}
 				} /* next room */
 
-            	// Artificial pause in lieue of actually processing payment :/
+				// Send email
+				$from = "enquiries@starhoteltwynholm.org.uk";
+				$fromName = "Reception";
+				$to = 'k@microboot.com';
+				$subject = "Your Reservation";
+				$message = '
+					<b> Thank you for your booking </b><br>
+					
+				';
+				//$pdf_filename = '/tmp/' . $order->order_number . '.pdf';
+				// phpmailer
+				$mail = new PHPMailer();
+				$mail->AddAddress($to);
+				$mail->SetFrom($from, $fromName);
+				$mail->AddReplyTo($from, $fromName);
+				//$mail->AddAttachment($pdf_filename);
+				$mail->Subject = $subject;
+				$mail->MsgHTML($message);
+				if (!$mail->Send())
+				{
+					Yii::log("COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
+					echo "<div id=\"mailerrors\">Mailer Error: " . $mail->ErrorInfo . "</div>";
+				}
+				else
+					Yii::log("SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+
+            	// Add an artificial pause in lieue of actually processing payment :/
             	sleep(5);
                 $this->redirect(array('index4'));
             }
