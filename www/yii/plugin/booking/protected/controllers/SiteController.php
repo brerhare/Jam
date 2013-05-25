@@ -97,12 +97,19 @@ class SiteController extends Controller
             $model->attributes=$_POST['Customer'];
             if($model->save())
             {
+            	$msgRoom = "";
             	for ($roomIx = 0; $roomIx < 3; $roomIx++)
             	{
-Yii::log("INDEX 3 found a room", CLogger::LEVEL_WARNING, 'system.test.kim');
             		if (Yii::app()->session['room_' . ($roomIx+1) . '_selection'] == '0')
             			continue;
-Yii::log("INDEX 3     using a room", CLogger::LEVEL_WARNING, 'system.test.kim');
+					$roomId = Yii::app()->session['room_' . ($roomIx+1) . '_selection'];
+
+					// Pick up the room record for title and description in email
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("id = " . $roomId);
+					$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+					$modelRoom=Room::model()->find($criteria);
+					$msgRoom .= "<b>" . $modelRoom->title . "</b><br>";
 
 	            	// Create reservation_room record(s)
 					$modelResRm=new ReservationRoom;
@@ -124,13 +131,16 @@ Yii::log("INDEX 3     using a room", CLogger::LEVEL_WARNING, 'system.test.kim');
 					$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 					$occupancyType=OccupancyType::model()->find($criteria);
 					$modelResRm->occupancy_type_description = $occupancyType->description;
-					$modelResRm->room_id = Yii::app()->session['room_' . ($roomIx+1) . '_selection'];
+					$modelResRm->room_id = $roomId;
 					$modelResRm->save();
+
+					$msgRoom .= $modelResRm->num_adult . " adults and " . $modelResRm->num_child . " children<br>";
+					$msgRoom .= $modelResRm->occupancy_type_description . "<br>";
 
 					// Potentially create reservation extra record(s) for this room
 					$criteria = new CDbCriteria;
 					$criteria->addCondition("uid = " . Yii::app()->session['uid']);
-					$criteria->addCondition("room_id = " . $modelResRm->room_id);
+					$criteria->addCondition("room_id = " . $roomId);
 					$roomHasExtras=RoomHasExtra::model()->findAll($criteria);
 					foreach ($roomHasExtras as $roomHasExtra)
 					{
@@ -138,7 +148,7 @@ Yii::log("INDEX 3     using a room", CLogger::LEVEL_WARNING, 'system.test.kim');
 						$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 						$criteria->addCondition("id = " . $roomHasExtra->extra_id);
 						$extra=Extra::model()->find($criteria);
-						$thisExtra = 'bExtra_roomid_' . $modelResRm->room_id . '_extraid_' . $extra->id;
+						$thisExtra = 'bExtra_roomid_' . $roomId . '_extraid_' . $extra->id;
 						if (Yii::app()->session[$thisExtra] != '0')
 						{
 							// Create the extra record
@@ -151,8 +161,12 @@ Yii::log("INDEX 3     using a room", CLogger::LEVEL_WARNING, 'system.test.kim');
 							$modelResEx->reservation_room_id = $modelResRm->id;
 							$modelResEx->reservation_room_room_id = $modelResRm->room_id;
 							$modelResEx->save();
+							
+							$msgRoom .= $modelResEx->extra_description . "<br>";
 						}
 					}
+
+					$msgRoom .= "<hr><br>";
 					
 					// Now block off the calendar for this room
 					$dat = Yii::app()->session['arrivedate'];
@@ -172,13 +186,16 @@ Yii::log("INDEX 3     using a room", CLogger::LEVEL_WARNING, 'system.test.kim');
 
 				// Send email
 				$from = "enquiries@starhoteltwynholm.org.uk";
-				$fromName = "Reception";
+				$fromName = "Star Hotel";
 				$to = 'k@microboot.com';
 				$subject = "Your Reservation";
-				$message = '
-					<b> Thank you for your booking </b><br>
-					
-				';
+				$msg  = "<b> Thank you for your booking with us.</b><br><br>";
+				$msg .= "Arriving " . Yii::app()->session['arrivedate'] . " and departing " . Yii::app()->session['departdate'] . "<br>";
+				$msg .= $msgRoom;
+				$msg .= "<br><b>Booking total : £ " . $model->reservation_total . "</b><br>";
+
+Yii::log($msg , CLogger::LEVEL_WARNING, 'system.test.kim');
+
 				//$pdf_filename = '/tmp/' . $order->order_number . '.pdf';
 				// phpmailer
 				$mail = new PHPMailer();
@@ -187,7 +204,7 @@ Yii::log("INDEX 3     using a room", CLogger::LEVEL_WARNING, 'system.test.kim');
 				$mail->AddReplyTo($from, $fromName);
 				//$mail->AddAttachment($pdf_filename);
 				$mail->Subject = $subject;
-				$mail->MsgHTML($message);
+				$mail->MsgHTML($msg);
 				if (!$mail->Send())
 				{
 					Yii::log("COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
