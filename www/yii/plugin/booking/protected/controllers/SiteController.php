@@ -162,7 +162,7 @@ class SiteController extends Controller
 							$modelResEx->reservation_room_room_id = $modelResRm->room_id;
 							$modelResEx->save();
 							
-							$msgRoom .= $modelResEx->extra_description . "<br>";
+							$msgRoom .= $modelResEx->extra_description . " included<br>";
 						}
 					}
 
@@ -185,16 +185,16 @@ class SiteController extends Controller
 				} /* next room */
 
 				// Send email
-				$from = "enquiries@starhoteltwynholm.org.uk";
-				$fromName = "Star Hotel";
-				$to = 'k@microboot.com';
+				$from = Yii::app()->session['uid_email'];
+				$fromName = Yii::app()->session['uid_name'];
+				$to = $model->email;
 				$subject = "Your Reservation";
 				$msg  = "<b> Thank you for your booking with us.</b><br><br>";
-				$msg .= "Arriving " . Yii::app()->session['arrivedate'] . " and departing " . Yii::app()->session['departdate'] . "<br>";
+				$msg .= "Arriving " . Yii::app()->session['arrivedate'] . " and departing " . Yii::app()->session['departdate'] . "<br><br>";
 				$msg .= $msgRoom;
 				$msg .= "<br><b>Booking total : £ " . $model->reservation_total . "</b><br>";
 
-Yii::log($msg , CLogger::LEVEL_WARNING, 'system.test.kim');
+//Yii::log($msg , CLogger::LEVEL_WARNING, 'system.test.kim');
 
 				//$pdf_filename = '/tmp/' . $order->order_number . '.pdf';
 				// phpmailer
@@ -204,6 +204,7 @@ Yii::log($msg , CLogger::LEVEL_WARNING, 'system.test.kim');
 				$mail->AddReplyTo($from, $fromName);
 				//$mail->AddAttachment($pdf_filename);
 				$mail->Subject = $subject;
+				$mail->CharSet = 'UTF-8';
 				$mail->MsgHTML($msg);
 				if (!$mail->Send())
 				{
