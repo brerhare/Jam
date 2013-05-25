@@ -521,7 +521,36 @@ function nextButtonClick() {
 	if (classes.indexOf('disabled') !== -1)
 		return false;
 	else
-		return true;
+	{
+		if (roomsAreAvailableForDates() == true)
+			return true;
+		else
+			return false;
+	}
+}
+
+// Called on 'next' button click. Check the room(s) selected are available for the chosen dates 
+// @@TODO: This function is actually N/U, just returns true always
+function roomsAreAvailableForDates() {
+	
+return true;
+
+	ret = true;
+	var e = document.getElementById("numRooms");
+	var rooms = e.options[e.selectedIndex].value;
+	for (var i = 0; i < rooms; i++)
+	{
+		var radios = document.getElementsByName('room_' + (i+1));
+		for (var j = 0, length = radios.length; j < length; j++)
+		{
+			if (radios[j].checked)
+			{
+				var id = radios[j].id.split('_');
+				//alert(id[2]);
+			}
+		}
+	}
+	return ret;
 }
 
 function roomRadio(roomNo, roomId)
@@ -618,7 +647,7 @@ function showRooms() {
 	    		var row = table.insertRow(line++);
     			var cell = row.insertCell(0);
     			var tbl = "<table style='margin-bottom:0px'><tr><td class='roomline'>" + rData.title + "</td><td style='text-align:right;padding-right:10px'><div style='top:5px; left:-50px'>";
-    			if (rData.bookAvail == 1)
+    			if ((rData.bookAvail == 1) /*|| (1==2)*/ ) // @@TODO FIX!!!!!
     				tbl += '<input type="radio" id="' + 'room_' + (i+1) + '_' + rData.id + '" name="room_' + (i+1) + '" value="Book" onClick=roomRadio(' +  (i+1) + "," + rData.id  + ')>   <span style="font-weight:bold"> Book</span><br>';
 
     			tbl += "</div></td></tr></table>";
@@ -627,6 +656,8 @@ function showRooms() {
     			{
 		    		var cell = row.insertCell(k+1);
     				cell.className = 'cline';
+    				if (k == 0)
+    					cell.style.background = '#086DA4';
     				if ((numAdults == 1) && (numChildren == 0))
     					cell.innerHTML = rData.prices[0] == 0 ? rData.prices[2] : rData.prices[0];
 	    			else if (((numAdults == 2) && (numChildren == 0)) || ((numAdults == 1) && (numChildren == 1)))

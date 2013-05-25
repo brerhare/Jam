@@ -276,6 +276,23 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`booking_document` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `plugin`.`booking_coupon`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `plugin`.`booking_coupon` ;
+
+CREATE  TABLE IF NOT EXISTS `plugin`.`booking_coupon` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `uid` INT NOT NULL ,
+  `code` VARCHAR(255) NOT NULL ,
+  `description` VARCHAR(255) NULL ,
+  `amount` DECIMAL(10,2) NULL ,
+  `percent` DECIMAL(10,2) NULL ,
+  `input` VARCHAR(45) NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
