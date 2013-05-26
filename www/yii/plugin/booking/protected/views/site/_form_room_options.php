@@ -393,15 +393,15 @@ function couponClick() {
 	{
 		if (couponCode[x] == code)
 		{
-			if (couponType[x] == '0k')										// Amount
+			if (couponType[x] == '0')										// Amount
 				cAmount = (-1 * parseFloat(couponValue[x])).toFixed(2);
-			else if (couponType[x] == '1k')									// Percentage
+			else if (couponType[x] == '1')									// Percentage
 			{
 				bAmount = document.getElementById("bTotal").value;
 				perc = (-1 * parseFloat(couponValue[x]));
 				cAmount = parseFloat((bAmount) * perc / 100 ).toFixed(2);
 			}
-			else if (couponType[x] == '0')
+			else if (couponType[x] == '2')
 			{
 				cAmount = prompt('Amount', couponValue[x]);
 				cAmount *= -1;
