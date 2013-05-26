@@ -95,6 +95,10 @@ class SiteController extends Controller
         	$model->ref = date('U');
 			$model->reservation_total = Yii::app()->session['bTotal'];
             $model->attributes=$_POST['Customer'];
+            $model->coupon_code = Yii::app()->session['cCode'];
+            $model->coupon_description = Yii::app()->session['cDescription'];
+            $model->coupon_type = Yii::app()->session['cType'];
+            $model->coupon_value = Yii::app()->session['cValue'];
             if($model->save())
             {
             	$msgRoom = "";

@@ -254,6 +254,10 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`booking_customer` (
   `card_expiry_yy` INT NOT NULL ,
   `card_cvv` INT NOT NULL ,
   `reservation_total` DECIMAL(10,2) NOT NULL ,
+  `coupon_code` VARCHAR(255) NULL ,
+  `coupon_description` VARCHAR(255) NULL ,
+  `coupon_type` INT NULL ,
+  `coupon_value` DECIMAL(10,2) NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `uid` (`uid` ASC) ,
   INDEX `ref` (`uid` ASC, `ref` ASC) )

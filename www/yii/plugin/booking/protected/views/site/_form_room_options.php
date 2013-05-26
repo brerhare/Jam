@@ -22,7 +22,12 @@ echo "<script>var showDays=" . $showDays . ";</script>";
 ?>
 
 <!-- POST variables -->
-<input type="hidden" id="bTotal" name="bTotal" value="9"/>
+<input type="hidden" id="bTotal" name="bTotal" value="0"/>
+<input type="hidden" id="cTotal" name="cTotal" value="0"/>
+<input type="hidden" id="cCode" name="cCode" value=""/>
+<input type="hidden" id="cDescription" name="cDescription" value=""/>
+<input type="hidden" id="cType" name="cType" value=""/>
+<input type="hidden" id="cValue" name="cValue" value=""/>
 <input type="hidden" id="bRoomTotal_1" name="bRoomTotal_1" value="0"/>
 <input type="hidden" id="bRoomTotal_2" name="bRoomTotal_2" value="0"/>
 <input type="hidden" id="bRoomTotal_3" name="bRoomTotal_3" value="0"/>
@@ -32,6 +37,32 @@ echo "<script>var showDays=" . $showDays . ";</script>";
 
 <!-- Accessible value -->
 <input type="hidden" id="nights" name="nights" value="<?php echo Yii::app()->session['nights']?>"/>
+
+<script>
+<?php
+// Store all the coupons at startup
+$couponCount = 0;
+$criteria = new CDbCriteria;
+$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+$coupons = Coupon::model()->findAll($criteria);
+echo "var couponId = [];";
+echo "var couponCode = [];";
+echo "var couponDescription = [];";
+echo "var couponType = [];";
+echo "var couponValue = [];";
+foreach ($coupons as $coupon)
+{
+	echo "couponId["          . $couponCount . "]='" . $coupon->id . "';";
+	echo "couponCode["        . $couponCount . "]='" . $coupon->code . "';";
+	echo "couponDescription[" . $couponCount . "]='" . $coupon->description . "';";
+	echo "couponType["        . $couponCount . "]='" . $coupon->type . "';";
+	echo "couponValue["       . $couponCount . "]='" . $coupon->value . "';";
+	$couponCount++;
+}
+echo "var numCoupons = '" . $couponCount . "';";
+?>
+</script>
+
 
 <script>
 // Some globals
@@ -246,6 +277,7 @@ color: #46679c;
 					echo "<script> var occupancyTypeMaxIx = " . $occupancyTypeIx . ";</script>";
 
 					?>
+
 		        </tbody>
 		    </table>
 		</div>
@@ -256,6 +288,15 @@ color: #46679c;
 
 		<div class="boxy">
 			<table>
+				<tr>
+					<td>
+						Got a coupon code?
+						<input type="text" id="couponCode" name="couponCode" style="width:80px">
+						<input type="button" id="couponButton" name="couponButton" value = "Apply" style="width:60px" onClick="couponClick()">
+					</td>
+					<td id="couponAmount" name="couponAmount" style="width:20%; text-align:right;"></td>
+				</tr>
+
 		        <tr>
 		            <td style="width:80%; padding:5px; text-align:right"><b>Total</b></td>
 		            <td id="bookingTotal" name="bookingTotal" style="width:20%; text-align:right;"></td>
@@ -332,6 +373,7 @@ function calcTotal()
 			}
     	}
 	}
+	total += parseFloat(document.getElementById('cTotal').value);
 	document.getElementById('bookingTotal').innerHTML = "<b>£ " + total.toFixed(2) + "</b>";
 	document.getElementById('bTotal').value = total.toFixed(2);
 }
@@ -342,6 +384,36 @@ function nextButtonClick() {
 		return false;
 	else
 		return true;
+}
+
+function couponClick() {
+	var code = document.getElementById("couponCode").value;
+	var cAmount = '0';
+	for (var x = 0; x < numCoupons; x++)
+	{
+		if (couponCode[x] == code)
+		{
+			if (couponType[x] == '0')										// Amount
+				cAmount = (-1 * parseFloat(couponValue[x])).toFixed(2);
+			else if (couponType[x] == '1')									// Percentage
+			{
+				bAmount = document.getElementById("bTotal").value;
+				perc = (-1 * parseFloat(couponValue[x]));
+				cAmount = parseFloat((bAmount) * perc / 100 ).toFixed(2);
+			}
+			document.getElementById("cCode").value = couponCode[x];
+			document.getElementById("cDescription").value = couponDescription[x];
+			document.getElementById("cType").value = couponType[x];
+			document.getElementById("cValue").value = couponValue[x];
+			break;
+		}
+	}
+	document.getElementById('cTotal').value = cAmount;
+	if (cAmount != '0')
+		document.getElementById('couponAmount').innerHTML = cAmount;
+	else
+		document.getElementById('couponAmount').innerHTML = '';
+	calcTotal();
 }
 
 $(document).ready(function() {
