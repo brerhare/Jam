@@ -1,7 +1,7 @@
 <?php
 
 $this->menu=array(
-	array('label'=>'Manage Extra','url'=>array('admin')),
+	array('label'=>'Manage Extras','url'=>array('admin')),
 );
 ?>
 

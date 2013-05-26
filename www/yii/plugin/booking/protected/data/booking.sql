@@ -286,10 +286,10 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`booking_coupon` (
   `uid` INT NOT NULL ,
   `code` VARCHAR(255) NOT NULL ,
   `description` VARCHAR(255) NULL ,
-  `amount` DECIMAL(10,2) NULL ,
-  `percent` DECIMAL(10,2) NULL ,
-  `input` VARCHAR(45) NULL ,
-  PRIMARY KEY (`id`) )
+  `type` INT NOT NULL ,
+  `value` DECIMAL(10,2) NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `uid` (`uid` ASC) )
 ENGINE = InnoDB;
 
 
