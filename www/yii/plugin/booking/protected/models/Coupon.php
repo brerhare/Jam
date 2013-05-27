@@ -98,7 +98,8 @@ class Coupon extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('uid',$this->uid);
+		//$criteria->compare('uid',$this->uid);
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$criteria->compare('code',$this->code,true);
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('type',$this->type);
