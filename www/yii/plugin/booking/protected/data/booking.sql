@@ -297,6 +297,21 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`booking_coupon` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `plugin`.`booking_param`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `plugin`.`booking_param` ;
+
+CREATE  TABLE IF NOT EXISTS `plugin`.`booking_param` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `uid` INT NOT NULL ,
+  `cc_email_address` VARCHAR(255) NULL ,
+  `deposit_percent` DECIMAL(10,2) NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `uid` (`uid` ASC) )
+ENGINE = InnoDB;
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
