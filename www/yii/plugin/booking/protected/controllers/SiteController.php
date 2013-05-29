@@ -213,7 +213,8 @@ class SiteController extends Controller
 				// Pick up params to find out if we must bcc ourselves
 				$criteria = new CDbCriteria;
 				$criteria->addCondition("uid = " . Yii::app()->session['uid']);
-				$criteria->addCondition("id = " . 1);
+				$criteria->addCondition("id = 1");
+				Yii::log("MAIL Going to try pick up param " . $param->cc_email_address, CLogger::LEVEL_WARNING, 'system.test.kim'); 
 				$param=Param::model()->find($criteria);
 				if ($param)
 				{
