@@ -214,7 +214,7 @@ class SiteController extends Controller
 				$criteria = new CDbCriteria;
 				$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 				$criteria->addCondition("id = 1");
-				Yii::log("MAIL Going to try pick up param " . $param->cc_email_address, CLogger::LEVEL_WARNING, 'system.test.kim'); 
+				Yii::log("MAIL Going to try pick up param " , CLogger::LEVEL_WARNING, 'system.test.kim'); 
 				$param=Param::model()->find($criteria);
 				if ($param)
 				{
