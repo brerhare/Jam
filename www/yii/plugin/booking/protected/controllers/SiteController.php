@@ -217,10 +217,13 @@ class SiteController extends Controller
 				$param=Param::model()->find($criteria);
 				if ($param)
 				{
+					Yii::log("MAIL picked up param " . $param->cc_email_address, CLogger::LEVEL_WARNING, 'system.test.kim'); 
 					$pos = strpos($param->cc_email_address, "@");
+					Yii::log("MAIL param email has a @" . $param->cc_email_address, CLogger::LEVEL_WARNING, 'system.test.kim'); 
 					if ($pos !== false)
 					{
-						$mail->AddBCC($param->cc_email_address);     
+						$mail->AddBCC($param->cc_email_address);   
+						Yii::log("MAIL added bcc " . $param->cc_email_address, CLogger::LEVEL_WARNING, 'system.test.kim');  
 					}
 				}
 				// Send
