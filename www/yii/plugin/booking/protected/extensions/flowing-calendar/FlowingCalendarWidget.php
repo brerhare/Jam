@@ -321,7 +321,6 @@ class FlowingCalendarWidget extends CWidget
 
 
 				$this->calendar.= '<div id="slot-' . $list_day . '-' . $this->month . '-' . $this->year . '" class="'. $this->style .'-text"><a href="">' . 'LOCAL day='.$list_day.' mth='.$this->month.' year='.$this->year . '</a></div>';
-
 				$this->calendar.= '<div class="'. $this->style .'-text"><a href="">Event 1</a></div>';
 				$this->calendar.= '<div class="'. $this->style .'-text"><a href="">Event 2</a></div>';
 				////$this->calendar.= str_repeat('<p> </p>',2);
