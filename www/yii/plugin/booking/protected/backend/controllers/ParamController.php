@@ -8,8 +8,6 @@ class ParamController extends Controller
 	 */
 	public $layout='//layouts/column2';
 	
-	public $key = 1;
-
 	/**
 	 * @return array action filters
 	 */
@@ -85,9 +83,9 @@ class ParamController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
+	public function actionUpdate($uid)
 	{
-		$model=$this->loadModel($id);
+		$model=$this->loadModel($uid);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -129,14 +127,16 @@ class ParamController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$model=Param::model()->findByPk($this->key);
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+		$model=Param::model()->find($criteria);
 		if (!$model)
 		{
 			$model=new Param;
 			$model->uid = Yii::app()->session['uid'];
 			$model->save();
 		}
-		$this->redirect(array('update','id'=>$this->key));
+		$this->redirect(array('update','uid'=>Yii::app()->session['uid']));
 	}
 
 	/**
@@ -159,9 +159,11 @@ class ParamController extends Controller
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the ID of the model to be loaded
 	 */
-	public function loadModel($id)
+	public function loadModel($uid)
 	{
-		$model=Param::model()->findByPk($id);
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+		$model=Param::model()->find($criteria);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
