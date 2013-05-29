@@ -210,6 +210,20 @@ class SiteController extends Controller
 				$mail->Subject = $subject;
 				$mail->CharSet = 'UTF-8';
 				$mail->MsgHTML($msg);
+				// Pick up params to find out if we must bcc ourselves
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+				$criteria->addCondition("id = " . 1);
+				$param=Param::model()->find($criteria);
+				if ($param)
+				{
+					$pos = strpos($param->cc_email_address, "@");
+					if ($pos !== false)
+					{
+						$mail->AddBCC($param->cc_email_address);     
+					}
+				}
+				// Send
 				if (!$mail->Send())
 				{
 					Yii::log("COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');

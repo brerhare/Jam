@@ -317,12 +317,27 @@ class FlowingCalendarWidget extends CWidget
 
 // ---------------------------------
 
+				$lookupDate = $this->year . sprintf("%02d", $this->month) . sprintf("%02d", $list_day);
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+				$criteria->addCondition("date = " . $lookupDate);
+				$criteria->order = 'room_id ASC';
+				$calendars=Calendar::model()->findAll($criteria);
+				foreach ($calendars as $calendar):
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+					$criteria->addCondition("ref = " . $calendar->ref);
+					$customers=Customer::model()->findAll($criteria);
+					foreach ($customers as $customer):
+						$this->calendar .= '<div id="slot-' . $list_day . '-' . $this->month . '-' . $this->year . '" class="'. $this->style .'-text"><a href="">' . $customer->card_name . '</a></div>'; 
+					endforeach;
+				endforeach;
+
 // ---------------------------------
 
 
-				$this->calendar.= '<div id="slot-' . $list_day . '-' . $this->month . '-' . $this->year . '" class="'. $this->style .'-text"><a href="">' . 'LOCAL day='.$list_day.' mth='.$this->month.' year='.$this->year . '</a></div>';
-				$this->calendar.= '<div class="'. $this->style .'-text"><a href="">Event 1</a></div>';
-				$this->calendar.= '<div class="'. $this->style .'-text"><a href="">Event 2</a></div>';
+				//$this->calendar.= '<div class="'. $this->style .'-text"><a href="">Event 1</a></div>';
+				//$this->calendar.= '<div class="'. $this->style .'-text"><a href="">Event 2</a></div>';
 				////$this->calendar.= str_repeat('<p> </p>',2);
 			 
 			$this->calendar.= '</td>';

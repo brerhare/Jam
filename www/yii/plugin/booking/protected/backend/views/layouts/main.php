@@ -25,16 +25,46 @@
 
 <div style="margin-top:50px">
 
+
+	<?php
+	$sid = "";
+	// If not logged in (ie just viewing the calendar) we need a SID
+	if (Yii::app()->user->isGuest)
+	{
+		if (isset($_GET['sid']))
+		{
+			$sid = "/?sid=" . $_GET['sid'];
+            unset(Yii::app()->session['uid']);
+            Yii::log("Preprocess request - We have been given new sid " . $_GET['sid'], CLogger::LEVEL_WARNING, 'system.test.kim');
+
+            $criteria = new CDbCriteria;
+            $criteria->addCondition("sid = '" . $_GET['sid'] . "'");
+            $user = User::model()->find($criteria);
+            if ($user == null)
+            {
+                Yii::log("Preprocess request - This sid is invalid. Aborting" , CLogger::LEVEL_WARNING, 'system.test.kim');
+                throw new CHttpException(500,'Cannot continue without a valid sid');
+            }
+            Yii::app()->session['uid'] = $user->id;
+            Yii::app()->session['uid_email'] = $user->email_address;
+            Yii::app()->session['uid_name'] = $user->display_name;
+            Yii::app()->session['sid'] = $_GET['sid'];  // @@ Set sid too 'cos iframes not trusted. Google 'P3P'
+            Yii::log("Preprocess request - sid validated. Setting uid to " . Yii::app()->session['uid'], CLogger::LEVEL_WARNING, 'system.test.kim');
+        }
+
+	}
+	?>
+
 	<?php $this->widget('bootstrap.widgets.TbNavbar', array(
 	'type' => 'null', // null or 'inverse'
 	'brand' => 'Home',
-	'brandUrl' => array('/site/index'),
+	'brandUrl' => array('/site/index' . $sid),
 	'collapse' => true, // requires bootstrap-responsive.css
 	'items' => array(
 		array(
 			'class' => 'bootstrap.widgets.TbMenu',
 			'items' => array(
-				array('label' => 'Calendar', 'url' => array('/site/calendar'), ),
+				array('label' => 'Calendar', 'url' => array('/site/calendar' . $sid), ),
 				array('label' => 'Rooms', 'url' => array('/room/admin'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Extras', 'url' => array('/extra/admin'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Facilities', 'url' => array('/facility/admin'), 'visible' => !Yii::app()->user->isGuest),
@@ -42,10 +72,10 @@
 				array('label' => 'Coupons', 'url' => array('/coupon/admin'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Settings', 'url' => array('/param/index'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'T&Cs', 'url' => array('/document/tandc'), 'visible' => !Yii::app()->user->isGuest),
-				array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
+				array('label' => 'Login', 'url' => array('/site/login' . $sid), 'visible' => Yii::app()->user->isGuest),
 				array('label' => 'Logout', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),
-				array('label' => 'Contact', 'url' => array('/site/contact'), 'visible' => Yii::app()->user->isGuest),
-				array('label' => 'About', 'url' => array('/site/page', 'view' => 'about'), 'visible' => Yii::app()->user->isGuest),
+				array('label' => 'Contact', 'url' => array('/site/contact' . $sid), 'visible' => Yii::app()->user->isGuest),
+				//array('label' => 'About', 'url' => array('/site/page', 'view' => 'about'), 'visible' => Yii::app()->user->isGuest),
 			),
 		),
 /*****
