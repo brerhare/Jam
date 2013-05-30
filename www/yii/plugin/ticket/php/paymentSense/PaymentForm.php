@@ -1,6 +1,13 @@
 <?php
+// @@NB: inserted until @@ENDNB tag
 	if ($NewEntry != 1)
 		include("WireflyHelper.php");
+
+foreach ($_POST as $field => $value)
+{
+	$$field = $value;
+	logMsg("(PaymentForm) got field - " . $field . " -> " . $value);
+}
 
 /*
 $dbhandle="";
@@ -13,6 +20,7 @@ header('Location: ' . $q['return_url'] . '/index.php/ticket/paid?sid=' . $q['sid
 die();
 */
 
+// @@ENDNB
 
 	include ("PreProcessPaymentForm.php");
 	$Width = 800;
@@ -21,7 +29,7 @@ die();
 	switch ($NextFormMode)
 	{
 		case "RESULTS":
-			// @@ TODO: Logging added
+			// @@ NB: Logging added
 			logMsg("(PaymentForm) Transaction message is " . $Message);
 			if (isset($DuplicateTransaction) != true)
 			{
