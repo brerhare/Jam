@@ -213,4 +213,18 @@ class SiteController extends Controller
 			'model'=>$model,
 		));
 	}
+
+	/**
+	 * All page display (replaces the individual static page displays)
+	 */
+	public function actionPage()
+	{
+		$url = $_GET['page'];
+		$this->layout='//layouts/main2';
+		$model=new Product('search');
+		$this->render('page', array(
+			'model'=>$model,
+			'url'=>$url,
+		));
+	}
 }
