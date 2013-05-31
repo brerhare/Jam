@@ -4,6 +4,12 @@
 
 	logMsg("Entrypoint to PaymentSense");
 
+	foreach ($_POST as $field => $value)
+	{
+		$$field = $value;
+		logMsg("(PaymentForm) got field - " . $field . " -> " . $value);
+	}
+
 	$dbhandle="";
 	_dbinit($dbhandle);
 
