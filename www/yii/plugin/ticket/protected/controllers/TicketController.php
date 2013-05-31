@@ -216,7 +216,7 @@ class TicketController extends Controller
 			echo "<div id=\"mailerrors\">Mailer Error: " . $mail->ErrorInfo . "</div>";
 		}
 		else
-			Yii::log("PAID PAGE COULD SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+			Yii::log("PAID PAGE SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		
 		// delete the temp file
 		copy($pdf_filename, Yii::app()->basePath . '/../tkts/' . $order->order_number . '.pdf');

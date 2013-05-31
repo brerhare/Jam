@@ -3,6 +3,7 @@
 	if ($NewEntry != 1)
 		include("WireflyHelper.php");
 
+logMsg("(PaymentForm) ------------------------------------------");
 foreach ($_POST as $field => $value)
 {
 	$$field = $value;
@@ -57,6 +58,28 @@ die();
 
 				$sql = "UPDATE ticket_order set auth_code = '" . $Message . "' where ip = '" . getIP() . "'";
 				logMsg("Updating auth number using sql [" . $sql . "]");
+				$result = mysql_query($sql) or die(mysql_error());
+
+				$sql = "INSERT into ticket_auth (uid, order_number, card_name, card_number, expiry_month, expiry_year, cv2, address1, address2, address3, address4, city, state, post_code, country_short, amount, currency_short, auth_code) VALUES (" .
+				"'" . $q['uid'] . "'," .
+				"'" . $q['order_number'] . "'," .
+				"'" . $_POST['CardName'] . "'," .
+				"'" . $_POST['CardNumber'] . "'," .
+				"'" . $_POST['ExpiryDateMonth'] . "'," .
+				"'" . $_POST['ExpiryDateYear'] . "'," .
+				"'" . $_POST['CV2'] . "'," .
+				"'" . $_POST['Address1'] . "'," .
+				"'" . $_POST['Address2'] . "'," .
+				"'" . $_POST['Address3'] . "'," .
+				"'" . $_POST['Address4'] . "'," .
+				"'" . $_POST['City'] . "'," .
+				"'" . $_POST['State'] . "'," .
+				"'" . $_POST['PostCode'] . "'," .
+				"'" . $_POST['CountryShort'] . "'," .
+				"'" . $_POST['Amount'] . "'," .
+				"'" . $_POST['CurrencyShort'] . "'," .
+				"'" . $Message. "')";
+				logMsg("Creating Auth record using sql [" . $sql . "]");
 				$result = mysql_query($sql) or die(mysql_error());
 
 				_dbfin($dbhandle);

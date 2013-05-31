@@ -179,6 +179,35 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`ticket_order` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `plugin`.`ticket_auth`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `plugin`.`ticket_auth` ;
+
+CREATE  TABLE IF NOT EXISTS `plugin`.`ticket_auth` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `uid` INT NOT NULL ,
+  `order_number` VARCHAR(255) NULL ,
+  `card_name` VARCHAR(255) NULL ,
+  `card_number` VARCHAR(255) NULL ,
+  `expiry_month` VARCHAR(45) NULL ,
+  `expiry_year` VARCHAR(45) NULL ,
+  `cv2` VARCHAR(45) NULL ,
+  `address1` VARCHAR(255) NULL ,
+  `address2` VARCHAR(255) NULL ,
+  `address3` VARCHAR(255) NULL ,
+  `address4` VARCHAR(255) NULL ,
+  `city` VARCHAR(255) NULL ,
+  `state` VARCHAR(255) NULL ,
+  `post_code` VARCHAR(255) NULL ,
+  `country_short` VARCHAR(255) NULL ,
+  `amount` VARCHAR(45) NULL ,
+  `currency_short` VARCHAR(45) NULL ,
+  `auth_code` VARCHAR(255) NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
