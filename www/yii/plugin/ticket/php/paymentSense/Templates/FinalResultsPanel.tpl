@@ -23,7 +23,9 @@
 		</div>
 	</div>
 <?php } ?>
+<!--
 	<div style="margin-top:10px">
 		<a href="StartHere.php">Process Another</a>
 	</div>
+-->
 </div>
