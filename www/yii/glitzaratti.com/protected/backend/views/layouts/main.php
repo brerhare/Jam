@@ -36,6 +36,7 @@
                 array('label'=>'Galleries', 'url'=>array('/gallery/admin'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Size Categories', 'url'=>array('/category/admin'), 'visible'=>!Yii::app()->user->isGuest),
                 array('label'=>'Products', 'url'=>array('/product/admin'), 'visible'=>!Yii::app()->user->isGuest),
+                array('label'=>'Static pages', 'url'=>array('/page/admin'), 'visible'=>!Yii::app()->user->isGuest),
 				array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
 			),
 		)); ?>

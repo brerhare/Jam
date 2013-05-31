@@ -120,14 +120,15 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `glitzaratti_com`.`contact`
+-- Table `glitzaratti_com`.`page`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `glitzaratti_com`.`contact` ;
+DROP TABLE IF EXISTS `glitzaratti_com`.`page` ;
 
-CREATE  TABLE IF NOT EXISTS `glitzaratti_com`.`contact` (
+CREATE  TABLE IF NOT EXISTS `glitzaratti_com`.`page` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(45) NULL ,
-  `email` VARCHAR(255) NULL ,
+  `title` VARCHAR(255) NOT NULL ,
+  `url` VARCHAR(255) NOT NULL ,
+  `content` TEXT NOT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 

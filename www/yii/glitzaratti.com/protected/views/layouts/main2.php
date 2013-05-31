@@ -52,9 +52,9 @@
 
 <!-- Topmenu -->
 <a href="<?php echo $this->createUrl('site/index');?>" id="nav_418_B1" class="Button1" style="z-index:1000;display:block;position:absolute;left:250px;top:5px;width:94px;height:37px;"><span>Home</span></a>
-<a href="<?php echo $this->createUrl('site/sendyourown');?>" id="nav_418_B2" class="Button1" style="display:block;position:absolute;left:355px;top:5px;width:94px;height:37px;"><span>SYO</span></a>
+<a href="<?php echo $this->createUrl('site/page/?page=site/sendyourown');?>" id="nav_418_B2" class="Button1" style="display:block;position:absolute;left:355px;top:5px;width:94px;height:37px;"><span>SYO</span></a>
 <a href="<?php echo $this->createUrl('product/index?category_id=all');?>" id="nav_418_B3" class="Button1" style="z-index:1000;display:block;position:absolute;left:460px;top:5px;width:94px;height:37px;"><span>Gallery</span></a>
-<a href="<?php echo $this->createUrl('site/links');?>" id="nav_418_B4" class="Button1" style="display:block;position:absolute;left:565px;top:5px;width:94px;height:37px;"><span>About Us</span></a>
+<a href="<?php echo $this->createUrl('site/page/?page=site/links');?>" id="nav_418_B4" class="Button1" style="display:block;position:absolute;left:565px;top:5px;width:94px;height:37px;"><span>About Us</span></a>
 <!-- <a href="<?php echo $this->createUrl('site/index');?>" id="nav_418_B4" class="Button1" style="display:block;position:absolute;left:319px;top:5px;width:94px;height:37px;"><span>My Basket</span></a> -->
 <!-- Topmenu end -->
 
@@ -62,16 +62,6 @@
 
 	</div><!-- header -->
 
-    <!-- Top menu
-    <div style="position:absolute;left:330px;top:00px;width:417px;height:47px; background-image:url('<?php /*Yii::app()->request->baseUrl;*/?> /img/wp83c3de7e_06.png');">
-        <a href="<?php echo $this->createUrl('site/index');?>" id="nav_418_B1" class="Button1" style="z-index:1000;display:block;position:absolute;left:5px;top:5px;width:94px;height:37px;"><span>Home</span></a>
-        <a href="<?php echo $this->createUrl('site/sendyourown');?>" id="nav_418_B2" class="Button1" style="display:block;position:absolute;left:110px;top:5px;width:94px;height:37px;"><span>SYO</span></a>
-        <a href="<?php echo $this->createUrl('product/index?category_id=all');?>" id="nav_418_B3" class="Button1" style="z-index:1000;display:block;position:absolute;left:214px;top:5px;width:94px;height:37px;"><span>Gallery</span></a>
-        <a href="<?php echo $this->createUrl('site/links');?>" id="nav_418_B4" class="Button1" style="display:block;position:absolute;left:319px;top:5px;width:94px;height:37px;"><span>About Us</span></a>
-<!==    <a href="<?php echo $this->createUrl('site/index');?>" id="nav_418_B4" class="Button1" style="display:block;position:absolute;left:319px;top:5px;width:94px;height:37px;"><span>My Basket</span></a> ===
-    </div>
-
-   -->
 
 	<?php echo $content; ?>
 
@@ -104,10 +94,10 @@
             </div>
 
             <!-- Footer menu -->
-            <a href="<?php echo $this->createUrl('site/tandc');?>" class="ButtonF" style="z-index:1000;display:block;position:absolute;left:220px;top:170px;width:94px;height:37px;"><span>Terms & conditions</span></a>
-            <a href="<?php echo $this->createUrl('site/terms');?>" class="ButtonF" style="z-index:1000;display:block;position:absolute;left:360px;top:170px;width:94px;height:37px;"><span>Terms of use</span></a>
-            <a href="<?php echo $this->createUrl('site/privacy');?>" class="ButtonF" style="z-index:1000;display:block;position:absolute;left:480px;top:170px;width:94px;height:37px;"><span>Privacy policy</span></a>
-            <a href="<?php echo $this->createUrl('site/deliverandreturn');?>" class="ButtonF" style="z-index:1000;display:block;position:absolute;left:600px;top:170px;width:94px;height:37px;"><span>Delivery & returns</span></a>
+            <a href="<?php echo $this->createUrl('site/page/?page=site/tandc');?>" class="ButtonF" style="z-index:1000;display:block;position:absolute;left:220px;top:170px;width:94px;height:37px;"><span>Terms & conditions</span></a>
+            <a href="<?php echo $this->createUrl('site/page/?page=site/terms');?>" class="ButtonF" style="z-index:1000;display:block;position:absolute;left:360px;top:170px;width:94px;height:37px;"><span>Terms of use</span></a>
+            <a href="<?php echo $this->createUrl('site/page/?page=site/privacy');?>" class="ButtonF" style="z-index:1000;display:block;position:absolute;left:480px;top:170px;width:94px;height:37px;"><span>Privacy policy</span></a>
+            <a href="<?php echo $this->createUrl('site/page/?page=site/deliverandreturn');?>" class="ButtonF" style="z-index:1000;display:block;position:absolute;left:600px;top:170px;width:94px;height:37px;"><span>Delivery & returns</span></a>
 
             <map id="map1" name="map1">
                 <area shape="poly" coords="880,80,877,79,874,77,872,75,870,71,871,69,877,72,885,72,886,75,888,77,889,79,884,79" href="index.html" alt="">
