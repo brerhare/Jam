@@ -141,6 +141,8 @@ $(document).ready(function() {
 					$arrNum = $ticketType->max_tickets_per_order;
 					if ($arrNum == 0)
 						$arrNum = 9;
+					if ($arrNum > $area->available_places)
+						$arrNum = $area->available_places;
 					for ($x = 0; $x <= $arrNum; $x++)
 						array_push($arr, $x);
 					?>
