@@ -272,6 +272,14 @@ $(document).ready(function() {
 
 <div style="float:right">
 <?php
+
+$a1 = ''; $a2 = ''; $a3 = '';
+if ($isFreeEvent)
+{
+	$a1 = ' if (document.getElementById("free_name").value == "") err += "Invalid name\n"; ';
+	$a2 = ' if (document.getElementById("free_address1").value == "") err += "Invalid address\n"; ';
+	$a3 = ' if (document.getElementById("free_post_code").value == "") err += "Invalid postcode\n"; ';
+} 
 $this->widget('zii.widgets.jui.CJuiButton', array(
 	'name'=>'submit',
 	'caption'=>'Continue',
@@ -289,6 +297,7 @@ $this->widget('zii.widgets.jui.CJuiButton', array(
 			if ((email1 != email2) || (!email1) || (email1.indexOf(".") == -1) || (email1.indexOf("@") == -1))
 				err += "Invalid email\n";
 
+' . $a1 . $a2 . $a3 . '
 			if (err != "")
 			{
 				alert(err);
