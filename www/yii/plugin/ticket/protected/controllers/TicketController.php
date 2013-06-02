@@ -134,7 +134,7 @@ class TicketController extends Controller
 			else
 			{
 				$this->actionPaid();
-				// It wont return from there
+				return;
 			}
 		}
 
