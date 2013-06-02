@@ -10,6 +10,7 @@ if (strlen($model->ticket_logo_path) > 0)
 	$logo = Yii::app()->baseUrl . '/userdata/' . Yii::app()->session['uid'] . '/' . $model->ticket_logo_path;
 else
 	$logo = Yii::app()->baseUrl . '/img/default_logo.jpg';
+$isFreeEvent = 1;
 ?>
 
 	<div class="row">
@@ -42,13 +43,16 @@ else
 	margin-left: 3px;
 }
 table td, table th {
-	padding: 0px 10px 0px 10px;
+	padding: 0px 5px 0px 5px;
 }
 .hide {
 	display:none;
 }
 .show {
 	display:visible;
+}
+div.form input, div.form textarea, div.form select {
+margin: 0.2em 0 0.2em 0;
 }
 </style>
 
@@ -145,6 +149,7 @@ $(document).ready(function() {
 				<!-- unit price -->
 				<td width="20%" style="text-align:right">
 					<?php echo "<div id='" . $linePrefix . "price'>" . $ticketType->price . "</div>";?>
+					<?php if ($ticketType->price != 0) $isFreeEvent = 0;?>
 					<?php echo "<input type='hidden' id='p" . $linePrefix . "price' name='p" . $linePrefix . "price' value='" . $ticketType->price. "' />";?>
 				</td>
 				<!-- line total -->
@@ -176,6 +181,14 @@ $(document).ready(function() {
 <div class="span7 well" style="margin-left:0px;padding-bottom:0px">
 	<table>
 		<tr class="row">
+<?php if ($isFreeEvent): ?>
+			<td style="text-align:right">
+				Address
+			</td>
+			<td>
+				<input id="free_address1" name="free_address1" value="" class="" MaxLength="90" style="width:240px"/>
+			</td>
+<?php endif; ?>
 			<td style="text-align:right">
 				Email Address
 			</td>
@@ -184,6 +197,13 @@ $(document).ready(function() {
 			</td>
 		</tr>
 		<tr class="row">
+<?php if ($isFreeEvent): ?>
+			<td style="text-align:right">
+			</td>
+			<td>
+				<input id="free_address2" name="free_address2" value="" class="" MaxLength="90" style="width:240px"/>
+			</td>
+<?php endif; ?>
 			<td style="text-align:right">
 				Again
 			</td>
@@ -192,11 +212,32 @@ $(document).ready(function() {
 			</td>
 		</tr>
 		<tr class="row">
+<?php if ($isFreeEvent): ?>
+			<td style="text-align:right">
+			</td>
+			<td>
+				<input id="free_address3" name="free_address3" value="" class="" MaxLength="90" style="width:240px"/>
+			</td>
+<?php endif; ?>
 			<td style="text-align:right">
 				Telephone
 			</td>
 			<td>
 				<input id="telephone" name="telephone" value="" class="" MaxLength="50" />
+			</td>
+		</tr>
+		<tr class="row">
+<?php if ($isFreeEvent): ?>
+			<td style="text-align:right">
+				Postcode
+			</td>
+			<td>
+				<input id="free_post_code" name="free_post_code" value="" class="" MaxLength="90" style="width:80px"/>
+			</td>
+<?php endif; ?>
+			<td style="text-align:right">
+			</td>
+			<td>
 			</td>
 		</tr>
 	</table>
