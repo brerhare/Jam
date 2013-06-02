@@ -71,6 +71,7 @@ class AreaController extends Controller
 		if(isset($_POST['Area']))
 		{
 			$model->attributes=$_POST['Area'];
+			$model->available_places = $model->max_places;
 			if($model->save())
 			{
 				$this->redirect(array('admin'));

@@ -21,6 +21,12 @@
  * @property string $return_url
  * @property string $email_address
  * @property string $telephone
+ * @property string $free_address1
+ * @property string $free_address2
+ * @property string $free_address3
+ * @property string $free_address4
+ * @property string $free_post_code
+ * @property string $free_name
  */
 class Order extends CActiveRecord
 {
@@ -52,11 +58,11 @@ class Order extends CActiveRecord
 		return array(
 			array('uid, ip, vendor_id, event_id', 'required'),
 			array('uid, vendor_id, event_id', 'numerical', 'integerOnly'=>true),
-			array('ip, sid, order_number, return_url, email_address, telephone', 'length', 'max'=>255),
+			array('ip, sid, order_number, return_url, email_address, telephone, free_address1, free_address2, free_address3, free_address4, free_post_code, free_name', 'length', 'max'=>255),
 			array('http_ticket_type_area, http_ticket_type_id, http_ticket_type_qty, http_ticket_type_price, http_ticket_type_total, http_total, auth_code', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, ip, sid, order_number, vendor_id, event_id, http_ticket_type_area, http_ticket_type_id, http_ticket_type_qty, http_ticket_type_price, http_ticket_type_total, http_total, auth_code, return_url, email_address, telephone', 'safe', 'on'=>'search'),
+			array('id, uid, ip, sid, order_number, vendor_id, event_id, http_ticket_type_area, http_ticket_type_id, http_ticket_type_qty, http_ticket_type_price, http_ticket_type_total, http_total, auth_code, return_url, email_address, telephone, free_address1, free_address2, free_address3, free_address4, free_post_code, free_name', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -94,6 +100,12 @@ class Order extends CActiveRecord
 			'return_url' => 'Return Url',
 			'email_address' => 'Email Address',
 			'telephone' => 'Telephone',
+			'free_address1' => 'Free Address1',
+			'free_address2' => 'Free Address2',
+			'free_address3' => 'Free Address3',
+			'free_address4' => 'Free Address4',
+			'free_post_code' => 'Free Post Code',
+			'free_name' => 'Free Name',
 		);
 	}
 
@@ -109,7 +121,8 @@ class Order extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('uid',$this->uid);
+		//$criteria->compare('uid',$this->uid);
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$criteria->compare('ip',$this->ip,true);
 		$criteria->compare('sid',$this->sid,true);
 		$criteria->compare('order_number',$this->order_number,true);
@@ -125,6 +138,12 @@ class Order extends CActiveRecord
 		$criteria->compare('return_url',$this->return_url,true);
 		$criteria->compare('email_address',$this->email_address,true);
 		$criteria->compare('telephone',$this->telephone,true);
+		$criteria->compare('free_address1',$this->free_address1,true);
+		$criteria->compare('free_address2',$this->free_address2,true);
+		$criteria->compare('free_address3',$this->free_address3,true);
+		$criteria->compare('free_address4',$this->free_address4,true);
+		$criteria->compare('free_post_code',$this->free_post_code,true);
+		$criteria->compare('free_name',$this->free_name,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

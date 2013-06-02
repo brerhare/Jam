@@ -12,6 +12,7 @@ class TicketController extends Controller
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
 	public $layout='//layouts/column2';
+	public $isFreeEvent = false;
 
 	/**
 	 * @return array action filters
@@ -80,6 +81,10 @@ class TicketController extends Controller
             else if (getenv("REMOTE_ADDR"))
                 $ip = getenv("REMOTE_ADDR");
 
+			$this->isFreeEvent = false;
+			if (isset($_POST['is_free_event']))
+				$this->isFreeEvent = true;
+
 			Order::model()->deleteAllByAttributes(array('ip' => $ip));
 
 			for ($x = 0; ; $x++)
@@ -106,6 +111,15 @@ class TicketController extends Controller
 				$order->http_total = $_POST['ptotal'];
 				$order->email_address = $_POST['email1'];
 				$order->telephone = $_POST['telephone'];
+				if ($this->isFreeEvent)
+				{
+					if (isset($_POST['free_name'])) $order->free_name = $_POST['free_name'];
+					if (isset($_POST['free_address1'])) $order->free_address1 = $_POST['free_address1'];
+					if (isset($_POST['free_address2'])) $order->free_address2 = $_POST['free_address2'];
+					if (isset($_POST['free_address3'])) $order->free_address3 = $_POST['free_address3'];
+					if (isset($_POST['free_address4'])) $order->free_address4 = $_POST['free_address4'];
+					if (isset($_POST['free_post_code'])) $order->free_post_code = $_POST['free_post_code'];
+				}
 				
 				$order->return_url = Yii::app()->baseUrl;
 				if(!$order->save())
@@ -114,8 +128,14 @@ class TicketController extends Controller
 				}
 			}
 
-			// Go to paymentsense
-			$this->redirect(Yii::app()->baseUrl . "/php/gw/EntryPoint.php?sid=" . Yii::app()->session['sid'] . "&xid=" . rand(99999,999999));
+			// Go to paymentsense for payment
+			if (!($this->isFreeEvent))
+				$this->redirect(Yii::app()->baseUrl . "/php/gw/EntryPoint.php?sid=" . Yii::app()->session['sid'] . "&xid=" . rand(99999,999999));
+			else
+			{
+				$this->actionPaid();
+				// It wont return from there
+			}
 		}
 
         // renders the view file 'protected/views/ticket/book.php'
@@ -151,6 +171,7 @@ class TicketController extends Controller
 
 		// Retrieve the original order, now populated by paymentsense
         $orders = Order::model()->findAll($criteria);
+        $orderCount = 0;
         foreach ($orders as $order)
         {
         	// Write a transaction
@@ -169,8 +190,23 @@ class TicketController extends Controller
 			$transaction->http_ticket_qty = $order->http_ticket_type_qty;
 			$transaction->http_ticket_price = $order->http_ticket_type_price;
 			$transaction->http_ticket_total = $order->http_ticket_type_total;
-			$transaction->http_total = $order->http_total;    
+			$transaction->http_total = $order->http_total;
 			$transaction->save();
+
+			if (($this->isFreeEvent) && ($orderCount == 0))
+			{
+				// Record one 'auth' record with the address details. (Paymentsense script writes the Auth for pay events)
+				$auth=new Auth;
+				$auth->uid = $order->uid;
+				$auth->order_number = $order->order_number;
+				$auth->card_name = $order->free_name;
+				$auth->address1 = $order->free_address1;
+				$auth->address2 = $order->free_address2;
+				$auth->address3 = $order->free_address3;
+				$auth->address4 = $order->free_address4;
+				$auth->post_code = $order->free_post_code;
+				$auth->save();
+			}
 
 			// Rebuild the array, for ticket printing
         	array_push($ticket_type_area_arr,  $order->http_ticket_type_area);
@@ -178,6 +214,8 @@ class TicketController extends Controller
 			array_push($ticket_type_qty_arr,   $order->http_ticket_type_qty);
 			array_push($ticket_type_price_arr, $order->http_ticket_type_price);
 			array_push($ticket_type_total_arr, $order->http_ticket_type_total);
+			
+			$orderCount++;
         }
 
 		// Print tickets

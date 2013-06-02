@@ -15,6 +15,8 @@
 	<?php echo $form->textFieldRow($model,'max_places',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right')); ?>
 
 	<?php //echo $form->textFieldRow($model,'ticket_event_id',array('class'=>'span5')); ?>
+	
+	<?php //echo $form->textFieldRow($model,'available_places',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right')); ?>
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(

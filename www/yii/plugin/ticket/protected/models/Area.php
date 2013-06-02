@@ -7,8 +7,9 @@
  * @property integer $id
  * @property integer $uid
  * @property string $description
- * @property string $max_places
+ * @property integer $max_places
  * @property integer $ticket_event_id
+ * @property integer $available_places
  *
  * The followings are the available model relations:
  * @property Event $ticketEvent
@@ -43,12 +44,11 @@ class Area extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('uid, description, ticket_event_id', 'required'),
-			array('uid, ticket_event_id', 'numerical', 'integerOnly'=>true),
+			array('uid, max_places, ticket_event_id, available_places', 'numerical', 'integerOnly'=>true),
 			array('description', 'length', 'max'=>255),
-			array('max_places', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, description, max_places, ticket_event_id', 'safe', 'on'=>'search'),
+			array('id, uid, description, max_places, ticket_event_id, available_places', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -76,6 +76,7 @@ class Area extends CActiveRecord
 			'description' => 'Description',
 			'max_places' => 'Max Places',
 			'ticket_event_id' => 'Ticket Event',
+			'available_places' => 'Available Places',
 		);
 	}
 
@@ -94,9 +95,10 @@ class Area extends CActiveRecord
 		//$criteria->compare('uid',$this->uid);
 		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$criteria->compare('description',$this->description,true);
-		$criteria->compare('max_places',$this->max_places,true);
+		$criteria->compare('max_places',$this->max_places);
 		//$criteria->compare('ticket_event_id',$this->ticket_event_id);
 		$criteria->addCondition("ticket_event_id = " . Yii::app()->session['event_id']);
+		$criteria->compare('available_places',$this->available_places);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

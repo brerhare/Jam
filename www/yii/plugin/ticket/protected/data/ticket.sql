@@ -174,6 +174,7 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`ticket_order` (
   `return_url` VARCHAR(255) NULL ,
   `email_address` VARCHAR(255) NULL ,
   `telephone` VARCHAR(255) NULL ,
+  `free_name` VARCHAR(255) NULL ,
   `free_address1` VARCHAR(255) NULL ,
   `free_address2` VARCHAR(255) NULL ,
   `free_address3` VARCHAR(255) NULL ,

@@ -243,6 +243,10 @@ $(document).ready(function() {
 	</table>
 </div>
 
+<?php if ($isFreeEvent):?>
+<input type="hidden" id="is_free_event" name="is_free_event" value="" class="" MaxLength="90"/>
+<?php endif;?>
+
 <div style="float:right">
 <?php
 $this->widget('zii.widgets.jui.CJuiButton', array(
