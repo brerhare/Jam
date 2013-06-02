@@ -13,7 +13,7 @@ else
 ?>
 
 	<div class="row">
-		<div class="span6 well">
+		<div class="span7 well" style="margin-left:0px; padding-bottom:0px">
 			<table>
 				<tr>
 					<td width="25%">
@@ -76,6 +76,7 @@ function calcValues()
     }
     document.getElementById('total').textContent = '£ ' + total.toFixed(2);
     document.getElementById('ptotal').value = total.toFixed(2);
+    document.getElementById('ttotal').value = numTickets;
 }
 
 $(document).ready(function() {
@@ -166,12 +167,13 @@ $(document).ready(function() {
 			<td style="text-align:right; background-color:#745882; color:#ffffff">
 				<?php echo "<div id='total'></div>";?>
 				<?php echo "<input type='hidden' id='ptotal' name='ptotal' value='0' />";?>
+				<?php echo "<input type='hidden' id='ttotal' name='ttotal' value='0' />";?>
 			</td>
 		</tr>
 	</table>
 </div>
 
-<div class="span5 well">
+<div class="span7 well" style="margin-left:0px;padding-bottom:0px">
 	<table>
 		<tr class="row">
 			<td style="text-align:right">
@@ -191,7 +193,7 @@ $(document).ready(function() {
 		</tr>
 		<tr class="row">
 			<td style="text-align:right">
-				Telephone Number
+				Telephone
 			</td>
 			<td>
 				<input id="telephone" name="telephone" value="" class="" MaxLength="50" />

@@ -68,7 +68,7 @@ class TicketController extends Controller
 //echo "POST";
 //print_r($_POST);
 
-		if ((isset($_POST['ptotal'])) && ($_POST['ptotal'] != 0))
+		if ((isset($_POST['ttotal'])) && ($_POST['ttotal'] != 0))
 		{
 			Yii::log("EVENT INDEX FORM FILLED: " . $_POST['ptotal'], CLogger::LEVEL_WARNING, 'system.test.kim');
 
@@ -115,10 +115,10 @@ class TicketController extends Controller
 			}
 
 			// Go to paymentsense
-			$this->redirect(Yii::app()->baseUrl . "/php/paymentSense/EntryPoint.php?sid=" . Yii::app()->session['sid'] . "&xid=" . rand(99999,999999));
+			$this->redirect(Yii::app()->baseUrl . "/php/gw/EntryPoint.php?sid=" . Yii::app()->session['sid'] . "&xid=" . rand(99999,999999));
 		}
 
-        // renders the view file 'protected/views/site/index.php'
+        // renders the view file 'protected/views/ticket/book.php'
         // using the default layout 'protected/views/layouts/main.php'
         $this->render('book',array(
                         'model'=>$model,
