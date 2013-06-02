@@ -183,10 +183,10 @@ $(document).ready(function() {
 		<tr class="row">
 <?php if ($isFreeEvent): ?>
 			<td style="text-align:right">
-				Address
+				Name
 			</td>
 			<td>
-				<input id="free_address1" name="free_address1" value="" class="" MaxLength="255" style="width:240px"/>
+				<input id="free_name" name="free_name" value="" class="" MaxLength="255" style="width:240px"/>
 			</td>
 <?php endif; ?>
 			<td style="text-align:right">
@@ -199,9 +199,10 @@ $(document).ready(function() {
 		<tr class="row">
 <?php if ($isFreeEvent): ?>
 			<td style="text-align:right">
+				Address
 			</td>
 			<td>
-				<input id="free_address2" name="free_address2" value="" class="" MaxLength="255" style="width:240px"/>
+				<input id="free_address1" name="free_address1" value="" class="" MaxLength="255" style="width:240px"/>
 			</td>
 <?php endif; ?>
 			<td style="text-align:right">
@@ -216,7 +217,7 @@ $(document).ready(function() {
 			<td style="text-align:right">
 			</td>
 			<td>
-				<input id="free_address3" name="free_address3" value="" class="" MaxLength="255" style="width:240px"/>
+				<input id="free_address2" name="free_address2" value="" class="" MaxLength="255" style="width:240px"/>
 			</td>
 <?php endif; ?>
 			<td style="text-align:right">
@@ -227,6 +228,17 @@ $(document).ready(function() {
 			</td>
 		</tr>
 <?php if ($isFreeEvent): ?>
+		<tr class="row">
+			<td style="text-align:right">
+			</td>
+			<td>
+				<input id="free_address3" name="free_address3" value="" class="" MaxLength="255" style="width:240px"/>
+			</td>
+			<td style="text-align:right">
+			</td>
+			<td>
+			</td>
+		</tr>
 		<tr class="row">
 			<td style="text-align:right">
 			</td>
