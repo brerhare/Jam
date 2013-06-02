@@ -210,9 +210,12 @@ class TicketController extends Controller
 
 			// Update the available seating number
 			$area = Area::model()->findByPk($order->http_ticket_type_area);
-			$area->uid = $order->uid;
-			$area->available_places -= $order->http_ticket_type_qty;
-			$area->save();
+			if ($area)
+			{
+				$area->uid = $order->uid;
+				$area->available_places -= $order->http_ticket_type_qty;
+				$area->save();
+			}
 
 			// Rebuild the array, for ticket printing
         	array_push($ticket_type_area_arr,  $order->http_ticket_type_area);
