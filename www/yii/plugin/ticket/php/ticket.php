@@ -2,6 +2,8 @@
 
 function genTicket(
 	$order_number,
+	$order_name,
+	$order_card,
 	$vendor_id,
 	$event_id,
 	$ticket_type_area,
@@ -197,6 +199,8 @@ EOD;
 	$pdf->writeHTML("<b>Event Date: " . $eventModel->date);
 	$pdf->writeHTML("<b>Order Number: " . $order_number);
 	$pdf->writeHTML("<b>Number of tickets on order: " . $totalTickets);
+	$pdf->writeHTML("<b>Name: " . $order_name);
+	$pdf->writeHTML("<b>Card number: " . $order_card);
 	$pdf->writeHTML("<b>Order Total: " . $total);
 		$pdf->writeHTML("<p/>");
 	

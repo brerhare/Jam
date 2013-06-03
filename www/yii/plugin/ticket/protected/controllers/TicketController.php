@@ -201,6 +201,7 @@ class TicketController extends Controller
 				$auth->uid = $order->uid;
 				$auth->order_number = $order->order_number;
 				$auth->card_name = $order->free_name;
+				$auth->card_number = 'No card required';
 				$auth->address1 = $order->free_address1;
 				$auth->address2 = $order->free_address2;
 				$auth->address3 = $order->free_address3;
@@ -235,10 +236,21 @@ class TicketController extends Controller
 			$orderCount++;
         }
 
+		// Pick up the Auth record (either create by Paymentsense or by 'free' above) for ticket name and card number printing
+		$criteria = new CDbCriteria;
+        $criteria->addCondition("uid = " . Yii::app()->session['uid']);
+        $criteria->addCondition("order_number = '" . $order->order_number . "'");
+        $auth = Auth::model()->find($criteria);
+		$crdNum = '************ ' . substr($auth->card_number, 12, 4);
+		if ($this->isFreeEvent)
+			$crdNum = $auth->card_number;
+  
 		// Print tickets
 		$ticketNumbers = array();
 		genTicket(
 			$order->order_number,
+			$auth->card_name,
+			$crdNum,
 			$order->vendor_id,
 			$order->event_id,
 			$ticket_type_area_arr,
