@@ -141,10 +141,15 @@ $(document).ready(function() {
 					$arrNum = $ticketType->max_tickets_per_order;
 					if ($arrNum == 0)
 						$arrNum = 9;
-					if ($arrNum > $area->available_places)
-						$arrNum = $area->available_places;
+					$multiplier = 1;
+					if ($ticketType->places_per_ticket > 0)
+						$multiplier = $ticketType->places_per_ticket;
 					for ($x = 0; $x <= $arrNum; $x++)
+					{
+						if (($x * $multiplier) > $area->available_places)
+							break;
 						array_push($arr, $x);
+					}
 					?>
 					<?php echo CHtml::dropDownList($linePrefix . 'select', $select, $arr, array('style'=>'width:55px', 'onchange'=>'calcValues()'));?>
 				</td>
@@ -275,13 +280,13 @@ $(document).ready(function() {
 <div style="float:right">
 <?php
 
-$a1 = ''; $a2 = ''; $a3 = '';
+$free1 = ''; $free2 = ''; $free3 = '';
 if ($isFreeEvent)
 {
-	$a1 = ' if (document.getElementById("free_name").value == "") err += "Invalid name\n"; ';
-	$a2 = ' if (document.getElementById("free_address1").value == "") err += "Invalid address\n"; ';
-	$a3 = ' if (document.getElementById("free_post_code").value == "") err += "Invalid postcode\n"; ';
-} 
+	$free1 = ' if (document.getElementById("free_name").value == "") err += "Invalid name\n"; ';
+	$free2 = ' if (document.getElementById("free_address1").value == "") err += "Invalid address\n"; ';
+	$free3 = ' if (document.getElementById("free_post_code").value == "") err += "Invalid postcode\n"; ';
+}
 $this->widget('zii.widgets.jui.CJuiButton', array(
 	'name'=>'submit',
 	'caption'=>'Continue',
@@ -299,7 +304,7 @@ $this->widget('zii.widgets.jui.CJuiButton', array(
 			if ((email1 != email2) || (!email1) || (email1.indexOf(".") == -1) || (email1.indexOf("@") == -1))
 				err += "Invalid email\n";
 
-' . $a1 . $a2 . $a3 . '
+' . $free1 . $free2 . $free3 . '
 			if (err != "")
 			{
 				alert(err);

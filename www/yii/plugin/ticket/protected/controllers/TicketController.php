@@ -113,6 +113,7 @@ class TicketController extends Controller
 				$order->telephone = $_POST['telephone'];
 				if ($this->isFreeEvent)
 				{
+					$order->order_number = Yii::app()->session['uid'] . '-' . time();
 					if (isset($_POST['free_name'])) $order->free_name = $_POST['free_name'];
 					if (isset($_POST['free_address1'])) $order->free_address1 = $_POST['free_address1'];
 					if (isset($_POST['free_address2'])) $order->free_address2 = $_POST['free_address2'];
@@ -209,12 +210,19 @@ class TicketController extends Controller
 			}
 
 			// Update the available seating number
-			$area = Area::model()->findByPk($order->http_ticket_type_area);
-			if ($area)
+			$ticketType = TicketType::model()->findByPk($order->http_ticket_type_id);
+			if ($ticketType)
 			{
-				$area->uid = $order->uid;
-				$area->available_places -= $order->http_ticket_type_qty;
-				$area->save();
+				$area = Area::model()->findByPk($order->http_ticket_type_area);
+				if ($area)
+				{
+					$area->uid = $order->uid;
+					$multiplier = 1;
+					if ($ticketType->places_per_ticket > 0)
+						$multiplier = $ticketType->places_per_ticket;
+					$area->available_places -= ($order->http_ticket_type_qty * $multiplier);
+					$area->save();
+				}
 			}
 
 			// Rebuild the array, for ticket printing
