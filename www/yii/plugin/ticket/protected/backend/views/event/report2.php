@@ -20,7 +20,7 @@
 		foreach ($transactions as $transaction):
 		 	$criteria = new CDbCriteria;
 			$criteria->addCondition("uid = " . Yii::app()->session['uid']);
-			$criteria->addCondition("order_number = " . $transaction->order_number);
+			$criteria->addCondition("order_number = '" . $transaction->order_number . "'");
 			$auth = Auth::model()->find($criteria);
 		?>
 		<tr>
