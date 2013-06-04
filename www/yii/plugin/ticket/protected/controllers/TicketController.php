@@ -236,7 +236,7 @@ class TicketController extends Controller
 			$orderCount++;
         }
 
-		// Pick up the Auth record (either create by Paymentsense or by 'free' above) for ticket name and card number printing
+		// Pick up the Auth record (either created by Paymentsense or by 'free' above) for ticket name and card number printing
 		$criteria = new CDbCriteria;
         $criteria->addCondition("uid = " . Yii::app()->session['uid']);
         $criteria->addCondition("order_number = '" . $order->order_number . "'");

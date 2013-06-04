@@ -96,6 +96,7 @@ function genTicket(
 			$rand = rand(10000,999999);
 			$ticketRand = sprintf('%03d', $rand);
 			$ticketContent = $vendorModel->id . $eventModel->id . $ticketRand;
+			$ticketName = '     ' . substr($order_name, 0, 5);
 
 			// set style for barcode
 			$style = array(
@@ -163,7 +164,16 @@ $tbl = <<<EOD
 			</tr>
 			<tr>
 				<td height="30px" style="height:35px" >
-					Ticket number $ticketContent
+					<table>
+						<tr>
+							<td>
+								Ticket number $ticketContent
+							</td>
+							<td>
+								$ticketName
+							</td>
+						</tr>
+					</table>
 				</td>
 			</tr>
 		</table>
