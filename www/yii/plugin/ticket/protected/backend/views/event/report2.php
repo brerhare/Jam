@@ -3,8 +3,11 @@
 
 <style>
 table td, table th {
-padding: 0;
+	padding: 0;
 }
+table tr {
+	background-color:#f8f8f8;
+	padding: 2px;
 </style>
 
 <div class="row">
@@ -38,7 +41,7 @@ padding: 0;
 				<?php echo '<a href="' . Yii::app()->baseUrl . '/tkts/' . $transaction->order_number . '.pdf">' . $transaction->order_number . '</a>'; ?>
 			</td>
 			<td>
-				<?php if ($auth) echo $auth->card_name;?>
+				<?php if ($auth) echo $auth->card_name; else echo 'Name not available';?>
 			</td>
 			<td>
 				<?php if ($auth) echo $auth->address1;?>
