@@ -5,9 +5,9 @@
 	<table>
 		<tr style="background-color:#c3d9ff; color:#0088cc;">
 			<td>Timestamp</td>
-			<td>IP</td>
 			<td>Order Number</td>
-			<td>Auth Code</td>
+			<td>Name</td>
+			<td>Email</td>
 			<td style="text-align:right">Tickets</td>
 			<td style="text-align:right">Each</td>
 			<td style="text-align:right">Total</td>
@@ -18,19 +18,23 @@
 		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$transactions = Transaction::model()->findAll($criteria);
 		foreach ($transactions as $transaction):
+		 	$criteria = new CDbCriteria;
+			$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+			$criteria->addCondition("order_number = " . $transaction->order_number);
+			$auth = Auth::model()->find($criteria);
 		?>
 		<tr>
 			<td>
 				<?php echo $transaction->timestamp?>
 			</td>
 			<td>
-				<?php echo $transaction->ip?>
-			</td>
-			<td>
 				<?php echo '<a href="' . Yii::app()->baseUrl . '/tkts/' . $transaction->order_number . '.pdf">' . $transaction->order_number . '</a>'; ?>
 			</td>
 			<td>
-				<?php echo $transaction->auth_code;?>
+				<?php if ($auth) echo $auth->card_name;?>
+			</td>
+			<td>
+				<?php echo $transaction->email;?>
 			</td>
 			<td style="text-align:right">
 				<?php echo $transaction->http_ticket_qty?>
