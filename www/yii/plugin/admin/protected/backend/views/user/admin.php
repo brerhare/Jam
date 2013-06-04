@@ -76,7 +76,7 @@ $gridColumns=array(
 $this->widget('bootstrap.widgets.TbExtendedGridView', array(
 	'type'=>'bordered',
 	'dataProvider'=>$model->search(),
-	'template'=>"{items}",
+	'template'=>"{items}{pager}",
 	'columns'=>$gridColumns,
 ));
 ?>
