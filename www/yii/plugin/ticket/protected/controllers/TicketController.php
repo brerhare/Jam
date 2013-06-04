@@ -306,6 +306,7 @@ class TicketController extends Controller
         // using the default layout 'protected/views/layouts/main.php'
         $this->render('thankyou',array(
                         /*'model'=>$model,*/
+                        'myticket'=>Yii::app()->basePath . '/../tktp/' . $rnd . '.pdf',
                         'somedata'=>array(1,2,3),
         ));
 	}

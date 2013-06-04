@@ -86,6 +86,7 @@ die();
 
 				// Redirect
 				//header('Location: ' . $q['return_url'] . '/index.php/ticket/paid?sid=' . $q['sid'] , true, 303);
+				//@@TODO:BUG: sort out the redirect...why hard coded???
 				header('Location: ' . 'https://plugin.wireflydesign.com/ticket/index.php/ticket/paid?sid=' . $q['sid'] , true, 303);
 				die();
 				//@@ENDTODO

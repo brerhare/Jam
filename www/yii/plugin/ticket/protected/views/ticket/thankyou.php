@@ -1,1 +1,1 @@
-<?php echo $this->renderPartial('_formthankyou', array(/*'model'=>$model,*/ 'somedata'=>$somedata)); ?>
+<?php echo $this->renderPartial('_formthankyou', array(/*'model'=>$model,*/ 'myticket'=>$myticket, 'somedata'=>$somedata)); ?>
