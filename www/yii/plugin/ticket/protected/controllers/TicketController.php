@@ -304,7 +304,7 @@ class TicketController extends Controller
         	
         // renders the view file 'protected/views/site/index.php'
         // using the default layout 'protected/views/layouts/main.php'
-        Yii::log("PAID PAGE TICKET PRINT URL IS " . Yii::app()->baseUrl . '/../tktp/' . $rnd . '.pdf', CLogger::LEVEL_WARNING, 'system.test.kim');
+        Yii::log("PAID PAGE TICKET PRINT URL IS " . Yii::app()->baseUrl . '/tktp/' . $rnd . '.pdf', CLogger::LEVEL_WARNING, 'system.test.kim');
         $this->render('thankyou',array(
                         /*'model'=>$model,*/
                         'myticket'=>Yii::app()->baseUrl . '/../tktp/' . $rnd . '.pdf',
