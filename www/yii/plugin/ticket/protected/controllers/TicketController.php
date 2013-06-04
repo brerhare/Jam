@@ -307,7 +307,7 @@ class TicketController extends Controller
         Yii::log("PAID PAGE TICKET PRINT URL IS " . Yii::app()->baseUrl . '/tktp/' . $rnd . '.pdf', CLogger::LEVEL_WARNING, 'system.test.kim');
         $this->render('thankyou',array(
                         /*'model'=>$model,*/
-                        'myticket'=>Yii::app()->baseUrl . '/../tktp/' . $rnd . '.pdf',
+                        'myticket'=>Yii::app()->baseUrl . '/tktp/' . $rnd . '.pdf',
                         'somedata'=>array(1,2,3),
         ));
 	}
