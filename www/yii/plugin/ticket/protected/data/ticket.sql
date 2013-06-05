@@ -70,7 +70,7 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`ticket_area` (
   `description` VARCHAR(255) NOT NULL ,
   `max_places` INT NULL ,
   `ticket_event_id` INT NOT NULL ,
-  `available_places` INT NULL ,
+  `used_places` INT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `uid` (`uid` ASC) ,
   INDEX `fk_ticket_area_ticket_event1` (`ticket_event_id` ASC) ,
@@ -147,7 +147,8 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`ticket_scan` (
   `ticket_number` VARCHAR(255) NOT NULL ,
   `timestamp` TIMESTAMP NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `uid` (`uid` ASC) )
+  INDEX `uid` (`uid` ASC) ,
+  INDEX `ticket_number` (`uid` ASC, `ticket_number` ASC) )
 ENGINE = InnoDB;
 
 
@@ -211,7 +212,9 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`ticket_auth` (
   `amount` VARCHAR(45) NULL ,
   `currency_short` VARCHAR(45) NULL ,
   `auth_code` VARCHAR(255) NULL ,
-  PRIMARY KEY (`id`) )
+  PRIMARY KEY (`id`) ,
+  INDEX `uid` (`uid` ASC) ,
+  INDEX `order_number` (`order_number` ASC, `uid` ASC) )
 ENGINE = InnoDB;
 
 

@@ -77,6 +77,8 @@
         <div class="FormLabel">CV2:</div>
         <div class="FormInput">
             <input name="CV2" value="<?= $CV2 ?>" class="InputTextField" MaxLength="4" style="width:50px" />
+<!-- @@NB Added next line -->
+			&nbsp(last 3 digits on the back)
         </div>
     </div>
 </div>
