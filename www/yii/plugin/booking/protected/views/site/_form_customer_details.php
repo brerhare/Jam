@@ -72,7 +72,17 @@ margin-bottom: 0px;
 	<br/>
 	Number of rooms : <?php echo Yii::app()->session['numRooms']; ?>
 	<br>
-	Total due : <b> £<?php echo Yii::app()->session['bTotal']; ?> </b>
+	Total due : <b> £<?php echo Yii::app()->session['bTotal'];
+
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+		$param=Param::model()->find($criteria);
+		if (($param) && ($param->deposit_percent > 0))
+		{
+			echo ' </b> &nbsp (£' . sprintf("%.2f", Yii::app()->session['bTotal']  * $param->deposit_percent / 100) . ' payable today, £' . sprintf("%.2f", Yii::app()->session['bTotal']  * (100 - $param->deposit_percent) / 100) . ' on arrival)';
+		}
+	
+	?> </b>
 	</div>
 </div>
 

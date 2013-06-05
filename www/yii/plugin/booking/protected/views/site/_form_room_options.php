@@ -304,6 +304,22 @@ color: #46679c;
 			</table>
 		</div>
 
+		<?php
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+		$param=Param::model()->find($criteria);
+		if (($param) && ($param->deposit_percent > 0))
+		{
+			echo '<table style="width:650px">';
+			echo '	<tr>';
+			echo '		<td style="width:130px">';
+			echo '			NB: A ' . $param->deposit_percent . '% deposit is payable when making a booking. Balance due on arrival';
+			echo '		</td>';
+			echo '	</tr>';
+			echo '</table>';
+		}
+		?>
+
 	</div>
 <div class="span1"></div>
 </div>
