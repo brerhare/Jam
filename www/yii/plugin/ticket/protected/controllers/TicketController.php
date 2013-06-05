@@ -210,7 +210,7 @@ class TicketController extends Controller
 				$auth->save();
 			}
 
-			// Update the available seating number
+			// Update the used seating number
 			$ticketType = TicketType::model()->findByPk($order->http_ticket_type_id);
 			if ($ticketType)
 			{
@@ -221,7 +221,7 @@ class TicketController extends Controller
 					$multiplier = 1;
 					if ($ticketType->places_per_ticket > 0)
 						$multiplier = $ticketType->places_per_ticket;
-					$area->available_places -= ($order->http_ticket_type_qty * $multiplier);
+					$area->used_places += ($order->http_ticket_type_qty * $multiplier);
 					$area->save();
 				}
 			}

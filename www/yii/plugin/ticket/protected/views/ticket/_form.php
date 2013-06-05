@@ -142,11 +142,12 @@ $(document).ready(function() {
 					if ($arrNum == 0)
 						$arrNum = 9;
 					$multiplier = 1;
+					$avail_places = ($area->max_places - $area->used_places);
 					if ($ticketType->places_per_ticket > 0)
 						$multiplier = $ticketType->places_per_ticket;
 					for ($x = 0; $x <= $arrNum; $x++)
 					{
-						if (($x * $multiplier) > $area->available_places)
+						if (($x * $multiplier) > $avail_places)
 							break;
 						array_push($arr, $x);
 					}

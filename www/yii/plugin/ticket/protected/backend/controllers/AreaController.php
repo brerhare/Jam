@@ -64,6 +64,7 @@ class AreaController extends Controller
 		$model=new Area;
 		$model->uid = Yii::app()->session['uid'];
 		$model->ticket_event_id = Yii::app()->session['event_id'];
+		$model->used_places = 0;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -71,7 +72,6 @@ class AreaController extends Controller
 		if(isset($_POST['Area']))
 		{
 			$model->attributes=$_POST['Area'];
-			$model->available_places = $model->max_places;
 			if($model->save())
 			{
 				$this->redirect(array('admin'));
