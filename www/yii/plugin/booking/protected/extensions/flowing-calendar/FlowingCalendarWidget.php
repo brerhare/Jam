@@ -321,16 +321,18 @@ class FlowingCalendarWidget extends CWidget
 				$criteria = new CDbCriteria;
 				$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 				$criteria->addCondition("date = " . $lookupDate);
-				$criteria->order = 'room_id ASC';
+				$criteria->order = 'ref, room_id ASC';
 				$calendars=Calendar::model()->findAll($criteria);
 				foreach ($calendars as $calendar):
 					$criteria = new CDbCriteria;
 					$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 					$criteria->addCondition("ref = " . $calendar->ref);
-					$customers=Customer::model()->findAll($criteria);
-					foreach ($customers as $customer):
-						$this->calendar .= '<div id="slot-' . $list_day . '-' . $this->month . '-' . $this->year . '" class="'. $this->style .'-text"><a href="">' . $customer->card_name . '</a></div>'; 
-					endforeach;
+					$customer=Customer::model()->find($criteria);
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+					$criteria->addCondition("id = " . $calendar->room_id);
+					$room=Room::model()->find($criteria);
+					$this->calendar .= '<div id="slot-' . $list_day . '-' . $this->month . '-' . $this->year . '" class="'. $this->style .'-text"><a href="http://xyz.com/?ref=xxxxx">' . $customer->card_name . ': ' . $room->title . '</a></div>'; 
 				endforeach;
 
 // ---------------------------------
@@ -342,7 +344,7 @@ class FlowingCalendarWidget extends CWidget
 			 
 			$this->calendar.= '</td>';
 			if($running_day == 6):
-				$this->calendar.= '</tr>';
+				$this->calendar.= '</tr>'; 
 				if(($day_counter+1) != $days_in_month):
 				 $this->calendar.= '<tr class="'. $this->style .'-row">';
 				endif;
