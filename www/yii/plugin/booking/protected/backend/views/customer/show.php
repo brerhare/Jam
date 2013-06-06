@@ -56,7 +56,7 @@ $criteria->addCondition("uid = " . Yii::app()->session['uid']);
 $param=Param::model()->find($criteria);
 if (($param) && ($param->deposit_percent > 0))
 {
-	echo ' </b>£' . sprintf("%.2f", $model->reservation_total  * $param->deposit_percent / 100) . ' paid on booking, <b>£' . sprintf("%.2f", $model->reservation_total  * (100 - $param->deposit_percent) / 100) . ' now due</b>';
+	echo ' </b>£' . sprintf("%.2f", $model->reservation_total  * $param->deposit_percent / 100) . ' paid on booking, <b>£' . sprintf("%.2f", $model->reservation_total  * (100 - $param->deposit_percent) / 100) . ' due on arrival</b>';
 }
 
 
