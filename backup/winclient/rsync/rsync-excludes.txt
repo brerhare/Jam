@@ -1,0 +1,34 @@
+#
+# Directories must have a trailing slash
+# Dont quote directories containing spaces - rather use a backslash eg: My\ Documents
+#
+# HANDLING TOP-LEVEL DIRECTORIES
+# ------------------------------
+#
+# Note that this wont work because the '- /*' prevents /Users being parsed at all
+# -------------------------------------------------------------------------------
+#
+# + /Users/kim/
+# - /*				<--- ignore all in root directory (including 'Users')
+#
+# Rather do this
+# --------------
+#
+# + /Users/			<--- add /Users implicitly
+# + /Users/kim/			<--- add /Users/kim
+# - /Users/*			<--- remove all Users except kim
+# - /*
+
+
+# + /Users/
+# + /Users/kim/
+# + /Users/kim/Library/
+# - /Users/kim/*
+# - /Users/*
+
+
+# Ignore everything by default
+
+- /*
+
+

@@ -1,0 +1,2 @@
+Create a working directory, and into it copy the contents of both these directories.
+One is a stripped down cygwin, the other the rsync utilities for windows clients
