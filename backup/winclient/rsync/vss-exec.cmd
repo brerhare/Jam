@@ -9,8 +9,8 @@ set id_rsa=id_rsa
 set ssh_command=./ssh
 set r_user=backupclient
 set r_host=wireflydesign.com
-set r_path=/home/backupclient/jacquiesbeauty.co.uk.reception.dhh3aaajki75b6jbodcueoj560
-goto TEST1
+set r_path=/home/backupclient/company.co.uk.machinename.32digithash
+:goto TEST1
 
 call vss-setvar.cmd
 dosdev B: %SHADOW_DEVICE_1%
@@ -57,7 +57,7 @@ echo %rotate_cmd% >> log.dat
 
 %rotate_cmd%
 
-goto TEST2
+:goto TEST2
 
 :: release VSS snapshot
 dosdev -r -d B:

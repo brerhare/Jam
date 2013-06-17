@@ -1,6 +1,6 @@
 #
 # Directories must have a trailing slash
-# Dont quote directories containing spaces - rather use a backslash eg: My\ Documents
+# Dont quote directories containing spaces - rather use an asterisk eg: My*Documents
 #
 # HANDLING TOP-LEVEL DIRECTORIES
 # ------------------------------
@@ -14,17 +14,14 @@
 # Rather do this
 # --------------
 #
-# + /Users/			<--- add /Users implicitly
-# + /Users/kim/			<--- add /Users/kim
-# - /Users/*			<--- remove all Users except kim
-# - /*
-
-
 # + /Users/
 # + /Users/kim/
 # + /Users/kim/Library/
-# - /Users/kim/*
-# - /Users/*
+# + /Users/kim/Documents/
+# + /Users/kim/Documents/Outlook*Files/
+# - /Users/kim/Documents/*		<--- exclude all else in Documents/
+# - /Users/kim/*			<--- exclude all else in kim/
+# - /Users/*				<--- exclude all else in Users/
 
 
 # Ignore everything by default
