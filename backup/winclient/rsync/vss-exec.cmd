@@ -24,11 +24,11 @@ dosdev B: %SHADOW_DEVICE_1%
 set yyyy=%date:~-4%
 set mm=%date:~-7,2%
 set dd=%date:~-10,2%
-set hh=%time:~0,2%
-set mm=%time:~3,2%
-set ss=%time:~6,2%
+set hour=%time:~0,2%
+set min=%time:~3,2%
+set sec=%time:~6,2%
 
-set timest=%yyyy%-%mm%-%dd%_%hh%.%mm%.%ss%
+set timest=%yyyy%-%mm%-%dd%_%hour%.%min%.%sec%
 
 echo Backing up to %timest%/
 
