@@ -9,7 +9,7 @@ set id_rsa=id_rsa
 set ssh_command=./ssh
 set r_user=backupclient
 set r_host=wireflydesign.com
-set r_path=/home/backupclient/company.co.uk.machinename.32digithash
+set r_path=/home/backupclient/jacquiesbeauty.co.uk.reception.19b0b4f51c6b12164e55a6611b1a7d31
 :goto TEST1
 
 call vss-setvar.cmd
@@ -24,13 +24,19 @@ dosdev B: %SHADOW_DEVICE_1%
 set yyyy=%date:~-4%
 set mm=%date:~-7,2%
 set dd=%date:~-10,2%
-set hour=%time:~0,2%
+set hr=%time:~0,2%
 set min=%time:~3,2%
 set sec=%time:~6,2%
 
-set timest=%yyyy%-%mm%-%dd%_%hour%.%min%.%sec%
+if "%mm:~0,1%" equ " " set mm=0%hr:~1,1%
+if "%dd:~0,1%" equ " " set dd=0%hr:~1,1%
+if "%hr:~0,1%" equ " " set hr=0%hr:~1,1%
+if "%min:~0,1%" equ " " set min=0%hr:~1,1%
+if "%sec:~0,1%" equ " " set sec=0%hr:~1,1%
 
-echo Backing up to %timest%/
+set timest=%yyyy%-%mm%-%dd%_%hr%.%min%.%sec%
+
+echo Timestamp for this backup is [%timest%]
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::
 ::start rsync

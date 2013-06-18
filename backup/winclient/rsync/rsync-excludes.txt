@@ -1,31 +1,45 @@
 #
+# First matching pattern applies
 # Directories must have a trailing slash
-# Dont quote directories containing spaces - rather use an asterisk eg: My*Documents
+# Dont quote or backslash items containing spaces - rather use an asterisk eg: My*Documents
 #
-# HANDLING TOP-LEVEL DIRECTORIES
-# ------------------------------
+# LINUX must always exclude these machine-specific items
 #
-# Note that this wont work because the '- /*' prevents /Users being parsed at all
-# -------------------------------------------------------------------------------
+# - /boot/
+# - /lib/modules
+# - /etc/modules
+# - /etc/lilo.conf
+# - /etc/fstab
+# - /etc/mtab
+# - /proc
+# - /dev
+# - lost+found/
+# - /var/log
+# - /etc/network/interfaces
+# - /root
 #
-# + /Users/kim/
-# - /*				<--- ignore all in root directory (including 'Users')
-#
-# Rather do this
-# --------------
+# WINDOWS sample to include only named items and exlude all else
 #
 # + /Users/
 # + /Users/kim/
-# + /Users/kim/Library/
 # + /Users/kim/Documents/
-# + /Users/kim/Documents/Outlook*Files/
-# - /Users/kim/Documents/*		<--- exclude all else in Documents/
-# - /Users/kim/*			<--- exclude all else in kim/
-# - /Users/*				<--- exclude all else in Users/
+# + /Users/kim/Documents/DVDFab/
+# + /Users/kim/Documents/My*Books/
+# - /Users/kim/Documents/*
+# + /Users/kim/Library/
+# - /Users/kim/*
+# - /Users/*
+# - /*
+#
+#########################################################################
 
-
-# Ignore everything by default
-
++ /Users/
++ /Users/kim/
++ /Users/kim/Documents/
++ /Users/kim/Documents/DVDFab/
++ /Users/kim/Documents/My*Books/
+- /Users/kim/Documents/*
++ /Users/kim/Library/
+- /Users/kim/*
+- /Users/*
 - /*
-
-
