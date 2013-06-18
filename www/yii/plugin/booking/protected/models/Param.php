@@ -87,7 +87,7 @@ class Param extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('uid',$this->uid);
+		//$criteria->compare('uid',$this->uid);
 		$criteria->compare('sender_name',$this->sender_name,true);
 		$criteria->compare('sender_email_address',$this->sender_email_address,true);
 		$criteria->compare('cc_email_address',$this->cc_email_address,true);

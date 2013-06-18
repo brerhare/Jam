@@ -188,6 +188,12 @@ class SiteController extends Controller
 					}
 				} /* next room */
 
+				// Pick up params
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+				Yii::log("MAIL Going to try pick up param " , CLogger::LEVEL_WARNING, 'system.test.kim'); 
+				$param=Param::model()->find($criteria);
+
 				// Send email
 				$from = Yii::app()->session['uid_email'];
 				$fromName = Yii::app()->session['uid_name'];
@@ -197,6 +203,8 @@ class SiteController extends Controller
 				$msg .= "Arriving " . Yii::app()->session['arrivedate'] . " and departing " . Yii::app()->session['departdate'] . "<br><br>";
 				$msg .= $msgRoom;
 				$msg .= "<br><b>Booking total : £ " . $model->reservation_total . "</b><br>";
+				if ($param)
+					$msg .= "£" . sprintf("%.2f", $model->reservation_total  * $param->deposit_percent / 100) . " payable on booking, <b>£" . sprintf("%.2f", $model->reservation_total  * (100 - $param->deposit_percent) / 100) . " due on arrival</b><br>";
 
 //Yii::log($msg , CLogger::LEVEL_WARNING, 'system.test.kim');
 
@@ -209,11 +217,6 @@ class SiteController extends Controller
 				$mail->CharSet = 'UTF-8';
 				$mail->MsgHTML($msg);
 
-				// Pick up params for sender email, and to find out if we must bcc ourselves
-				$criteria = new CDbCriteria;
-				$criteria->addCondition("uid = " . Yii::app()->session['uid']);
-				Yii::log("MAIL Going to try pick up param " , CLogger::LEVEL_WARNING, 'system.test.kim'); 
-				$param=Param::model()->find($criteria);
 				if ($param)
 				{
 					$mail->SetFrom($param->sender_email_address, $param->sender_name);

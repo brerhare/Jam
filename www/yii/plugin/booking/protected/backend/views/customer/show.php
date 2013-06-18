@@ -1,7 +1,7 @@
 <?php
 
 $this->menu=array(
-	array('label'=>'Back to Calendar','url'=>array('index')),
+	array('label'=>'Back to Calendar','url'=>array('site/calendar/?sid='.Yii::app()->session['sid'])),
 	//array('label'=>'Back to Calendar','url'=>array('index')),
 	//array('label'=>'Delete Customer','url'=>'#','linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this booking?')),
 );
