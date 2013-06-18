@@ -204,26 +204,24 @@ class SiteController extends Controller
 				// phpmailer
 				$mail = new PHPMailer();
 				$mail->AddAddress($to);
-				$mail->SetFrom($from, $fromName);
-				$mail->AddReplyTo($from, $fromName);
 				//$mail->AddAttachment($pdf_filename);
 				$mail->Subject = $subject;
 				$mail->CharSet = 'UTF-8';
 				$mail->MsgHTML($msg);
-				// Pick up params to find out if we must bcc ourselves
+
+				// Pick up params for sender email, and to find out if we must bcc ourselves
 				$criteria = new CDbCriteria;
 				$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 				Yii::log("MAIL Going to try pick up param " , CLogger::LEVEL_WARNING, 'system.test.kim'); 
 				$param=Param::model()->find($criteria);
 				if ($param)
 				{
-					Yii::log("MAIL picked up param " . $param->cc_email_address, CLogger::LEVEL_WARNING, 'system.test.kim'); 
+					$mail->SetFrom($param->sender_email_address, $fromName);
+					$mail->AddReplyTo($param->sender_email_address, $fromName);
 					$pos = strpos($param->cc_email_address, "@");
-					Yii::log("MAIL param email has a @" . $param->cc_email_address, CLogger::LEVEL_WARNING, 'system.test.kim'); 
 					if ($pos !== false)
 					{
 						$mail->AddBCC($param->cc_email_address);   
-						Yii::log("MAIL added bcc " . $param->cc_email_address, CLogger::LEVEL_WARNING, 'system.test.kim');  
 					}
 				}
 				// Send

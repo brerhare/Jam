@@ -8,6 +8,8 @@
 
 	<?php //echo $form->textFieldRow($model,'uid',array('class'=>'span5')); ?>
 
+	<?php echo $form->textFieldRow($model,'sender_name',array('class'=>'span5','maxlength'=>255)); ?>
+
 	<?php echo $form->textFieldRow($model,'sender_email_address',array('class'=>'span5','maxlength'=>255)); ?>
 
 	<?php echo $form->textFieldRow($model,'cc_email_address',array('class'=>'span5','maxlength'=>255)); ?>
