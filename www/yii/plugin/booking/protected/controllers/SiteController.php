@@ -203,7 +203,7 @@ class SiteController extends Controller
 				$msg .= "Arriving " . Yii::app()->session['arrivedate'] . " and departing " . Yii::app()->session['departdate'] . "<br><br>";
 				$msg .= $msgRoom;
 				$msg .= "<br><b>Booking total : £ " . $model->reservation_total . "</b><br>";
-				if ($param)
+				if (($param) && ($param->deposit_percent > 0))
 					$msg .= "£" . sprintf("%.2f", $model->reservation_total  * $param->deposit_percent / 100) . " payable on booking, <b>£" . sprintf("%.2f", $model->reservation_total  * (100 - $param->deposit_percent) / 100) . " due on arrival</b><br>";
 
 //Yii::log($msg , CLogger::LEVEL_WARNING, 'system.test.kim');
