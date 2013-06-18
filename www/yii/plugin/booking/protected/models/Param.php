@@ -6,6 +6,7 @@
  * The followings are the available columns in table 'booking_param':
  * @property integer $id
  * @property integer $uid
+ * @property string $sender_email_address
  * @property string $cc_email_address
  * @property string $deposit_percent
  */
@@ -37,13 +38,13 @@ class Param extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('uid', 'required'),
+			array('uid, sender_email_address', 'required'),
 			array('uid', 'numerical', 'integerOnly'=>true),
-			array('cc_email_address', 'length', 'max'=>255),
+			array('sender_email_address, cc_email_address', 'length', 'max'=>255),
 			array('deposit_percent', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, cc_email_address, deposit_percent', 'safe', 'on'=>'search'),
+			array('id, uid, sender_email_address, cc_email_address, deposit_percent', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -66,8 +67,9 @@ class Param extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'uid' => 'Uid',
-			'cc_email_address' => 'Booking Bcc Email',
-			'deposit_percent' => 'Deposit %',
+			'sender_email_address' => 'Sender Email Address',
+			'cc_email_address' => 'Cc Email Address',
+			'deposit_percent' => 'Deposit Percent',
 		);
 	}
 
@@ -83,7 +85,8 @@ class Param extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('uid',$this->uid);
+		//$criteria->compare('uid',$this->uid);
+		$criteria->compare('sender_email_address',$this->sender_email_address,true);
 		$criteria->compare('cc_email_address',$this->cc_email_address,true);
 		$criteria->compare('deposit_percent',$this->deposit_percent,true);
 

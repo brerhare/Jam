@@ -134,6 +134,7 @@ class ParamController extends Controller
 		{
 			$model=new Param;
 			$model->uid = Yii::app()->session['uid'];
+			$model->sender_email_address = "email address required";
 			$model->save();
 		}
 		$this->redirect(array('update','uid'=>Yii::app()->session['uid']));
