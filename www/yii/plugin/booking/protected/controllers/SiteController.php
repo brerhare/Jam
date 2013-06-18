@@ -216,8 +216,8 @@ class SiteController extends Controller
 				$param=Param::model()->find($criteria);
 				if ($param)
 				{
-					$mail->SetFrom($param->sender_email_address, $fromName);
-					$mail->AddReplyTo($param->sender_email_address, $fromName);
+					$mail->SetFrom($param->sender_email_address, $param->sender_name);
+					$mail->AddReplyTo($param->sender_email_address, $param->sender_name);
 					$pos = strpos($param->cc_email_address, "@");
 					if ($pos !== false)
 					{
