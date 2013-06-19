@@ -187,21 +187,6 @@ class EventController extends Controller
 	}
 
 	/**
-	 * Choose an event to show transactions for
-	 */
-	public function actionReport()
-	{
-		$model=new Event('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Event']))
-			$model->attributes=$_GET['Event'];
-
-		$this->render('report1',array(
-			'model'=>$model,
-		));
-	}
-
-	/**
 	 * Show report for event $id (called by above function's view)
 	 */
 	public function actionShowReport($id)
@@ -210,7 +195,7 @@ class EventController extends Controller
 		if(isset($_GET['Event']))
 			$model->attributes=$_GET['Event'];
 
-		$this->render('report2',array(
+		$this->render('report',array(
 			'model'=>$this->loadModel($id),
 		));
 	}
