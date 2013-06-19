@@ -1,5 +1,8 @@
 <?php
 
+// PHPMailer
+require_once('php/PHPMailer/class.phpmailer.php');
+
 class CustomerController extends Controller
 {
 	/**
@@ -31,11 +34,11 @@ class CustomerController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','show'),
+				'actions'=>array('create','update','show','delete','deposit'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','show'),
+				'actions'=>array('admin','delete','show','deposit'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -120,6 +123,19 @@ class CustomerController extends Controller
 	}
 
 	/**
+	 * Deposit taken on a particular model.
+	 * If update is successful, the browser will be redirected to the 'view' page.
+	 * @param integer $id the ID of the model to be updated
+	 */
+	public function actionDeposit($id)
+	{
+		$model=$this->loadModel($id);
+		$model->deposit_taken_flag = true;
+		$model->save();
+		$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('site/calendar'));
+	}
+
+	/**
 	 * Deletes a particular model.
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
@@ -128,12 +144,67 @@ class CustomerController extends Controller
 	{
 		if(Yii::app()->request->isPostRequest)
 		{
-			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+			$model = $this->loadModel($id);
+			$ref = $model->ref;
+
+			// Delete this ref from the booking calendar
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+			$criteria->addCondition("ref = " . $ref);
+			Calendar::model()->deleteAll($criteria);
+
+			// Update the customer record with cancellation details
+			$model->cancel_flag = true;
+			$model->cancel_reason = "Cancelled";
+			$model->save();
+
+			// Pick up params
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+			Yii::log("MAIL Going to try pick up param " , CLogger::LEVEL_WARNING, 'system.test.kim'); 
+			$param=Param::model()->find($criteria);
+
+			// Send email
+			$from = Yii::app()->session['uid_email'];
+			$fromName = Yii::app()->session['uid_name'];
+			$to = $model->email;
+			$subject = "Reservation Cancelled";
+			$msg  = "<b> This is confirmation that your reservation for the following dates has been cancelled.</b><br><br>";
+			$msg .= Yii::app()->session['arrivedate'] . " to " . Yii::app()->session['departdate'] . "<br><br>";
+
+
+			// phpmailer
+			$mail = new PHPMailer();
+			$mail->AddAddress($to);
+			//$mail->AddAttachment($pdf_filename);
+			$mail->Subject = $subject;
+			$mail->CharSet = 'UTF-8';
+			$mail->MsgHTML($msg);
+
+			if ($param)
+			{
+				$mail->SetFrom($param->sender_email_address, $param->sender_name);
+				$mail->AddReplyTo($param->sender_email_address, $param->sender_name);
+				$pos = strpos($param->cc_email_address, "@");
+				if ($pos !== false)
+				{
+					$mail->AddBCC($param->cc_email_address);   
+				}
+			}
+			// Send
+			if (!$mail->Send())
+			{
+				Yii::log("COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
+				echo "<div id=\"mailerrors\">Mailer Error: " . $mail->ErrorInfo . "</div>";
+			}
+			else
+				Yii::log("SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+			// @@EG: Redirect from one controller/action to a different controller
 			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('site/calendar'));
 		}
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');

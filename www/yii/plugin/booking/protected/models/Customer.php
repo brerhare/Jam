@@ -53,9 +53,9 @@ class Customer extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('uid, ref, address_1, address_2, post_code, telephone, email, card_name, card_number, card_expiry_mm, card_expiry_yy, card_cvv', 'required'),
+			array('name, uid, ref, address_1, address_2, post_code, telephone, email, card_name, card_number, card_expiry_mm, card_expiry_yy, card_cvv', 'required'),
 			array('uid, card_expiry_mm, card_expiry_yy, card_cvv', 'numerical', 'integerOnly'=>true),
-			array('ref, address_1, address_2, town, county, post_code, telephone, email, card_name, card_number', 'length', 'max'=>255),
+			array('name, ref, address_1, address_2, town, county, post_code, telephone, email, card_name, card_number', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, uid, ref, address_1, address_2, town, county, post_code, telephone, email, card_name, card_number, card_expiry_mm, card_expiry_yy, card_cvv', 'safe', 'on'=>'search'),
