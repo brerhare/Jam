@@ -9,7 +9,7 @@ set id_rsa=id_rsa
 set ssh_command=./ssh
 set r_user=backupclient
 set r_host=wireflydesign.com
-set r_path=/home/backupclient/jacquiesbeauty.co.uk.reception.19b0b4f51c6b12164e55a6611b1a7d31
+set r_path=/home/backupclient/domain.co.uk.whospc.19b0b3f51c3b12164e55a9611b1a7d31
 :goto TEST1
 
 call vss-setvar.cmd
