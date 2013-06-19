@@ -88,7 +88,7 @@ class Calendar extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('uid',$this->uid);
+		//$criteria->compare('uid',$this->uid);
 		$criteria->compare('date',$this->date,true);
 		$criteria->compare('ref',$this->ref,true);
 		$criteria->compare('room_id',$this->room_id);

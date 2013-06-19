@@ -97,7 +97,7 @@ class ReservationExtra extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('uid',$this->uid);
+		//$criteria->compare('uid',$this->uid);
 		$criteria->compare('ref',$this->ref,true);
 		$criteria->compare('extra_id',$this->extra_id);
 		$criteria->compare('extra_description',$this->extra_description,true);

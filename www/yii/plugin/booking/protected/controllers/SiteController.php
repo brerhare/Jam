@@ -188,6 +188,12 @@ class SiteController extends Controller
 					}
 				} /* next room */
 
+				// Pick up params
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+				Yii::log("MAIL Going to try pick up param " , CLogger::LEVEL_WARNING, 'system.test.kim'); 
+				$param=Param::model()->find($criteria);
+
 				// Send email
 				$from = Yii::app()->session['uid_email'];
 				$fromName = Yii::app()->session['uid_name'];
@@ -197,6 +203,8 @@ class SiteController extends Controller
 				$msg .= "Arriving " . Yii::app()->session['arrivedate'] . " and departing " . Yii::app()->session['departdate'] . "<br><br>";
 				$msg .= $msgRoom;
 				$msg .= "<br><b>Booking total : £ " . $model->reservation_total . "</b><br>";
+				if (($param) && ($param->deposit_percent > 0))
+					$msg .= "£" . sprintf("%.2f", $model->reservation_total  * $param->deposit_percent / 100) . " payable on booking, <b>£" . sprintf("%.2f", $model->reservation_total  * (100 - $param->deposit_percent) / 100) . " due on arrival</b><br>";
 
 //Yii::log($msg , CLogger::LEVEL_WARNING, 'system.test.kim');
 
@@ -204,26 +212,19 @@ class SiteController extends Controller
 				// phpmailer
 				$mail = new PHPMailer();
 				$mail->AddAddress($to);
-				$mail->SetFrom($from, $fromName);
-				$mail->AddReplyTo($from, $fromName);
 				//$mail->AddAttachment($pdf_filename);
 				$mail->Subject = $subject;
 				$mail->CharSet = 'UTF-8';
 				$mail->MsgHTML($msg);
-				// Pick up params to find out if we must bcc ourselves
-				$criteria = new CDbCriteria;
-				$criteria->addCondition("uid = " . Yii::app()->session['uid']);
-				Yii::log("MAIL Going to try pick up param " , CLogger::LEVEL_WARNING, 'system.test.kim'); 
-				$param=Param::model()->find($criteria);
+
 				if ($param)
 				{
-					Yii::log("MAIL picked up param " . $param->cc_email_address, CLogger::LEVEL_WARNING, 'system.test.kim'); 
+					$mail->SetFrom($param->sender_email_address, $param->sender_name);
+					$mail->AddReplyTo($param->sender_email_address, $param->sender_name);
 					$pos = strpos($param->cc_email_address, "@");
-					Yii::log("MAIL param email has a @" . $param->cc_email_address, CLogger::LEVEL_WARNING, 'system.test.kim'); 
 					if ($pos !== false)
 					{
 						$mail->AddBCC($param->cc_email_address);   
-						Yii::log("MAIL added bcc " . $param->cc_email_address, CLogger::LEVEL_WARNING, 'system.test.kim');  
 					}
 				}
 				// Send

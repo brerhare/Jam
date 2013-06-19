@@ -19,6 +19,11 @@
  * @property integer $card_expiry_mm
  * @property integer $card_expiry_yy
  * @property integer $card_cvv
+	 * @property string $reservation_total
+ * @property string $coupon_code
+ * @property string $coupon_description
+ * @property integer $coupon_type
+ * @property string $coupon_value
  */
 class Customer extends CActiveRecord
 {
@@ -48,9 +53,9 @@ class Customer extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('uid, ref, address_1, address_2, post_code, telephone, email, card_name, card_number, card_expiry_mm, card_expiry_yy, card_cvv', 'required'),
+			array('name, uid, ref, address_1, address_2, post_code, telephone, email, card_name, card_number, card_expiry_mm, card_expiry_yy, card_cvv', 'required'),
 			array('uid, card_expiry_mm, card_expiry_yy, card_cvv', 'numerical', 'integerOnly'=>true),
-			array('ref, address_1, address_2, town, county, post_code, telephone, email, card_name, card_number', 'length', 'max'=>255),
+			array('name, ref, address_1, address_2, town, county, post_code, telephone, email, card_name, card_number', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, uid, ref, address_1, address_2, town, county, post_code, telephone, email, card_name, card_number, card_expiry_mm, card_expiry_yy, card_cvv', 'safe', 'on'=>'search'),
@@ -89,6 +94,11 @@ class Customer extends CActiveRecord
 			'card_expiry_mm' => 'Card Expiry MM',
 			'card_expiry_yy' => 'Card Expiry YY',
 			'card_cvv' => 'Last 3 Digits on back',
+			'reservation_total' => 'Reservation Total',
+			'coupon_code' => 'Coupon Code',
+			'coupon_description' => 'Coupon Description',
+			'coupon_type' => 'Coupon Type',
+			'coupon_value' => 'Coupon Value',
 		);
 	}
 
@@ -104,7 +114,7 @@ class Customer extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('uid',$this->uid);
+		//$criteria->compare('uid',$this->uid);
 		$criteria->compare('ref',$this->ref,true);
 		$criteria->compare('address_1',$this->address_1,true);
 		$criteria->compare('address_2',$this->address_2,true);
@@ -118,6 +128,13 @@ class Customer extends CActiveRecord
 		$criteria->compare('card_expiry_mm',$this->card_expiry_mm);
 		$criteria->compare('card_expiry_yy',$this->card_expiry_yy);
 		$criteria->compare('card_cvv',$this->card_cvv);
+/*
+		$criteria->compare('reservation_total',$this->reservation_total,true);
+		$criteria->compare('coupon_code',$this->coupon_code,true);
+		$criteria->compare('coupon_description',$this->coupon_description,true);
+		$criteria->compare('coupon_type',$this->coupon_type);
+		$criteria->compare('coupon_value',$this->coupon_value,true);
+*/
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -51,7 +51,6 @@
             Yii::app()->session['sid'] = $_GET['sid'];  // @@ Set sid too 'cos iframes not trusted. Google 'P3P'
             Yii::log("Preprocess request - sid validated. Setting uid to " . Yii::app()->session['uid'], CLogger::LEVEL_WARNING, 'system.test.kim');
         }
-
 	}
 	?>
 
