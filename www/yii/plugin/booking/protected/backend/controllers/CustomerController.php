@@ -153,6 +153,12 @@ class CustomerController extends Controller
 			$criteria->addCondition("ref = " . $ref);
 			Calendar::model()->deleteAll($criteria);
 
+			// Get this ref from the booking room(s) for dates - any one will do
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+			$criteria->addCondition("ref = " . $ref);
+			$reservationRoom = ReservationRoom::model()->Find($criteria);
+
 			// Update the customer record with cancellation details
 			$model->cancel_flag = true;
 			$model->cancel_reason = "Cancelled";
@@ -169,8 +175,9 @@ class CustomerController extends Controller
 			$fromName = Yii::app()->session['uid_name'];
 			$to = $model->email;
 			$subject = "Reservation Cancelled";
-			$msg  = "<b> This is confirmation that your reservation for the following dates has been cancelled.</b><br><br>";
-			$msg .= Yii::app()->session['arrivedate'] . " to " . Yii::app()->session['departdate'] . "<br><br>";
+			$msg  = "<b> This is confirmation that your reservation for the following dates has been cancelled.</b><br><br/>";
+			$msg .= $reservationRoom->start_date . " to " . $reservationRoom->start_date . "<br><br>";
+			Yii::log("SENDING CANCELLATION MAIL: " . $msg, CLogger::LEVEL_WARNING, 'system.test.kim');
 
 
 			// phpmailer
