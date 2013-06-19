@@ -334,7 +334,7 @@ class FlowingCalendarWidget extends CWidget
 					$room=Room::model()->find($criteria);
 					$url = 'customer/show' . '?ref=' . $customer->ref . '&sid=' . Yii::app()->session['sid'];
 					$name = $customer->name;
-					if (strlen(trim($name) == 0))
+					if (strlen(trim($name)) == 0)
 						$name = $customer->card_name;
 					$this->calendar .= '<div id="slot-' . $list_day . '-' . $this->month . '-' . $this->year . '" class="'. $this->style .'-text">' . CHtml::link($name . ': ' . $room->title,array($url)) . '</div>';
 				endforeach;
