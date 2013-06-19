@@ -336,7 +336,10 @@ class FlowingCalendarWidget extends CWidget
 					$name = $customer->name;
 					if (strlen(trim($name)) == 0)
 						$name = $customer->card_name;
-					$this->calendar .= '<div id="slot-' . $list_day . '-' . $this->month . '-' . $this->year . '" class="'. $this->style .'-text">' . CHtml::link($name . ': ' . $room->title,array($url)) . '</div>';
+					$itemcolor = 'black';
+					if ($customer->deposit_taken == 0)
+						$itemcolor = 'red';
+					$this->calendar .= '<div id="slot-' . $list_day . '-' . $this->month . '-' . $this->year . '" class="'. $this->style .'-text">' . CHtml::link($name . ': ' . $room->title,array($url),array("style"=>"color: $itemcolor;")) . '</div>';
 				endforeach;
 
 // ---------------------------------

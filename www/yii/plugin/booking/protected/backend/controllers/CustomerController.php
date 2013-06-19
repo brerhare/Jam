@@ -130,7 +130,15 @@ class CustomerController extends Controller
 	public function actionDeposit($id)
 	{
 		$model=$this->loadModel($id);
-		$model->deposit_taken_flag = true;
+		$deposit_amount = 0;
+
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+		$param=Param::model()->find($criteria);
+		if (($param) && ($param->deposit_percent > 0))
+			$deposit_amount = ($model->reservation_total  * $param->deposit_percent / 100);
+
+		$model->deposit_taken = $deposit_amount;
 		$model->save();
 		$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('site/calendar'));
 	}

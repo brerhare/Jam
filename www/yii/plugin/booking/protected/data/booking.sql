@@ -259,7 +259,7 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`booking_customer` (
   `coupon_description` VARCHAR(255) NULL ,
   `coupon_type` INT NULL ,
   `coupon_value` DECIMAL(10,2) NULL ,
-  `deposit_taken_flag` TINYINT(1) NULL ,
+  `deposit_taken` DECIMAL(10,2) NULL ,
   `cancel_flag` TINYINT(1) NULL ,
   `cancel_reason` VARCHAR(255) NULL ,
   PRIMARY KEY (`id`) ,
