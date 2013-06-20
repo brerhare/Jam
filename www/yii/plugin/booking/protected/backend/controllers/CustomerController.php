@@ -53,6 +53,82 @@ class CustomerController extends Controller
 	 */
 	public function actionShow($ref, $sid)
 	{
+		if(Yii::app()->request->isPostRequest)
+		{
+			// Cancellation button doubles as a form submit here
+			Yii::log("CANCELLATION ID: " . $_POST['id'], CLogger::LEVEL_WARNING, 'system.test.kim');
+			Yii::log("CANCELLATION REASON: " . $_POST['cancelreason'], CLogger::LEVEL_WARNING, 'system.test.kim');
+			$model = $this->loadModel($_POST['id']);
+			$ref = $model->ref;
+
+			// Delete this ref from the booking calendar
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+			$criteria->addCondition("ref = " . $ref);
+			Calendar::model()->deleteAll($criteria);
+
+			// Get this ref from the booking room(s) for dates - any one will do
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+			$criteria->addCondition("ref = " . $ref);
+			$reservationRoom = ReservationRoom::model()->Find($criteria);
+
+			// Update the customer record with cancellation details
+			$model->cancel_flag = true;
+			$model->cancel_reason = $_POST['cancelreason'];
+			$model->save();
+
+			// Pick up params
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+			Yii::log("MAIL Going to try pick up param " , CLogger::LEVEL_WARNING, 'system.test.kim'); 
+			$param=Param::model()->find($criteria);
+
+			// Send email
+			$from = Yii::app()->session['uid_email'];
+			$fromName = Yii::app()->session['uid_name'];
+			$to = $model->email;
+			$subject = "Reservation Cancelled";
+			$msg  = "<b> This is confirmation that your reservation for the following dates has been cancelled.</b><br><br/>";
+			$msg .= $reservationRoom->start_date . " to " . $reservationRoom->start_date . "<br><br>";
+			$msg .= "Reason: " . $_POST['cancelreason'] . "<br><br>";
+			Yii::log("SENDING CANCELLATION MAIL: " . $msg, CLogger::LEVEL_WARNING, 'system.test.kim');
+
+
+			// phpmailer
+			$mail = new PHPMailer();
+			$mail->AddAddress($to);
+			//$mail->AddAttachment($pdf_filename);
+			$mail->Subject = $subject;
+			$mail->CharSet = 'UTF-8';
+			$mail->MsgHTML($msg);
+
+			if ($param)
+			{
+				$mail->SetFrom($param->sender_email_address, $param->sender_name);
+				$mail->AddReplyTo($param->sender_email_address, $param->sender_name);
+				$pos = strpos($param->cc_email_address, "@");
+				if ($pos !== false)
+				{
+					$mail->AddBCC($param->cc_email_address);   
+				}
+			}
+			// Send
+			if (!$mail->Send())
+			{
+				Yii::log("COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
+				echo "<div id=\"mailerrors\">Mailer Error: " . $mail->ErrorInfo . "</div>";
+			}
+			else
+				Yii::log("SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+
+
+			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+			// @@EG: Redirect from one controller/action to a different controller
+			if(!isset($_GET['ajax']))
+				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('site/calendar'));
+		}
+
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$criteria->addCondition("ref = " . $ref);
@@ -148,86 +224,8 @@ class CustomerController extends Controller
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
-	public function actionDelete($id)
+	public function actionDelete()
 	{
-					Yii::log("ID: " . $id, CLogger::LEVEL_WARNING, 'system.test.kim');
-
-
-		if(Yii::app()->request->isPostRequest)
-		{
-					Yii::log("ISPOSTREQUEST: " . $id, CLogger::LEVEL_WARNING, 'system.test.kim');
-			$model = $this->loadModel($id);
-			$ref = $model->ref;
-
-			// Delete this ref from the booking calendar
-			$criteria = new CDbCriteria;
-			$criteria->addCondition("uid = " . Yii::app()->session['uid']);
-			$criteria->addCondition("ref = " . $ref);
-			Calendar::model()->deleteAll($criteria);
-
-			// Get this ref from the booking room(s) for dates - any one will do
-			$criteria = new CDbCriteria;
-			$criteria->addCondition("uid = " . Yii::app()->session['uid']);
-			$criteria->addCondition("ref = " . $ref);
-			$reservationRoom = ReservationRoom::model()->Find($criteria);
-
-			// Update the customer record with cancellation details
-			$model->cancel_flag = true;
-			$model->cancel_reason = "Cancelled";
-			$model->save();
-
-			// Pick up params
-			$criteria = new CDbCriteria;
-			$criteria->addCondition("uid = " . Yii::app()->session['uid']);
-			Yii::log("MAIL Going to try pick up param " , CLogger::LEVEL_WARNING, 'system.test.kim'); 
-			$param=Param::model()->find($criteria);
-
-			// Send email
-			$from = Yii::app()->session['uid_email'];
-			$fromName = Yii::app()->session['uid_name'];
-			$to = $model->email;
-			$subject = "Reservation Cancelled";
-			$msg  = "<b> This is confirmation that your reservation for the following dates has been cancelled.</b><br><br/>";
-			$msg .= $reservationRoom->start_date . " to " . $reservationRoom->start_date . "<br><br>";
-			$msg .= "Reason: " . $_POST['cancelreason'] . "<br><br>";
-			Yii::log("SENDING CANCELLATION MAIL: " . $msg, CLogger::LEVEL_WARNING, 'system.test.kim');
-
-
-			// phpmailer
-			$mail = new PHPMailer();
-			$mail->AddAddress($to);
-			//$mail->AddAttachment($pdf_filename);
-			$mail->Subject = $subject;
-			$mail->CharSet = 'UTF-8';
-			$mail->MsgHTML($msg);
-
-			if ($param)
-			{
-				$mail->SetFrom($param->sender_email_address, $param->sender_name);
-				$mail->AddReplyTo($param->sender_email_address, $param->sender_name);
-				$pos = strpos($param->cc_email_address, "@");
-				if ($pos !== false)
-				{
-					$mail->AddBCC($param->cc_email_address);   
-				}
-			}
-			// Send
-			if (!$mail->Send())
-			{
-				Yii::log("COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
-				echo "<div id=\"mailerrors\">Mailer Error: " . $mail->ErrorInfo . "</div>";
-			}
-			else
-				Yii::log("SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
-
-
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			// @@EG: Redirect from one controller/action to a different controller
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('site/calendar'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
 	}
 
 	/**

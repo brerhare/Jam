@@ -1,11 +1,14 @@
 <?php
 
-$this->menu=array(
+$form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+    'id'=>'extra-form',
+    'enableAjaxValidation'=>false,
+    'type'=>'horizontal',
+)); ?>
+
+<?php $this->menu=array(
 	array('label'=>'Back to Calendar','url'=>array('site/calendar/?sid='.Yii::app()->session['sid'])),
 	array('label'=>'Mark as Deposit taken','visible' => !Yii::app()->user->isGuest,'url'=>'#','htmlOptions'=>array('style'=>'color: cc433c'),'linkOptions'=>array('submit'=>array('deposit','id'=>$model->id),'confirm'=>'Deposit taken?')),
-	array('label'=>'------------------------------------',),
-//	array('label'=>'Cancel this booking','visible' => !Yii::app()->user->isGuest,'url'=>'#','htmlOptions'=>array('style'=>'color: cc433c'),'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'THIS WILL CANCEL THE BOOKING! Are you sure you want proceed?')),
-	array('label'=>'Cancel this booking', 'url' => array('/customer/delete?id=' . $model->id)),
 );
 ?>
 
@@ -13,8 +16,18 @@ $this->menu=array(
 div.portlet-content {
 	margin: 0 0 0 0;
 }
+#page {
+	border: 0;
+}
+#footer {
+	margin-top:450px;
+}
 #undermenu {
+	padding:15px 0;
 	background-color:#effdff;
+	width:170px;
+	margin-left:770px;
+	margin-top:-450px;
 }
 #cancelreason {
 	margin: 0 15px 10px;
@@ -73,18 +86,28 @@ $criteria->addCondition("uid = " . Yii::app()->session['uid']);
 $param=Param::model()->find($criteria);
 if (($param) && ($param->deposit_percent > 0))
 {
-	echo ' </b>£' . sprintf("%.2f", $model->reservation_total  * $param->deposit_percent / 100) . ' payable on booking, <b>£' . sprintf("%.2f", $model->reservation_total  * (100 - $param->deposit_percent) / 100) . ' due on arrival</b>';
+	if ($model->deposit_taken > 0)
+	{
+		echo ' </b>£' . sprintf("%.2f", $model->deposit_taken) . ' deposit was paid on booking, <b>£' . sprintf("%.2f", $model->reservation_total  - $model->deposit_taken) . ' is due on arrival</b>';
+	}
+	else
+	{
+		echo ' </b>£' . sprintf("%.2f", $model->reservation_total  * $param->deposit_percent / 100) . ' is payable on booking. Deposit has <b>not</b> been taken<br>';
+	}
 }
 
-if ($model->deposit_taken > 0)
-	echo "<br><br>Deposit <b>has</b> been taken<br>";
-else
-	echo "<br><br>Deposit has <b>not</b> been taken<br>";
 ?>
 
-<script>
-
-$(document).ready(function() {alert('xx');}
-window.onload=function(){alert('yy');}
-
-</script>
+<div id="undermenu">
+	<input type="hidden" id="id" name="id" value="<?php echo $model->id;?>"/>
+	<input type="text" name="cancelreason" id="cancelreason" value="Reason">
+	<div style="margin-left:25px">
+    <?php $this->widget('bootstrap.widgets.TbButton', array(
+        'buttonType'=>'submit',
+	    'type'=>'primary',
+    	'label'=>'Cancel booking',
+    )); ?>
+    </div>
+</div>
+        
+<?php $this->endWidget(); ?>

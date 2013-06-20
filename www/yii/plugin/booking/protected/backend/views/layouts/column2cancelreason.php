@@ -17,9 +17,6 @@
 		));
 		$this->endWidget();
 	?>
-		<div id="undermenu">
-			<input type="text" name="cancelreason" id="cancelreason" value="Reason">
-		</div>
 	</div><!-- sidebar -->
 </div>
 <?php $this->endContent(); ?>

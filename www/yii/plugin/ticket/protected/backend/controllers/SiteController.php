@@ -21,6 +21,11 @@ class SiteController extends Controller
 		);
 	}
 
+	public function actionManualTicket()
+	{
+		$this->render('ticket');
+	}
+
 	/**
 	 * This is the default 'index' action that is invoked
 	 * when an action is not explicitly requested by users.

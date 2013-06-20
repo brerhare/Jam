@@ -607,7 +607,7 @@ function showRooms() {
 	var line = 0;
 
 	// For the required number of rooms...
-	for (var i = 0; i < $('#numRooms').val(); i++)		// @@EG: Example of PHP yii referencing JS an html element by name 
+	for (var i = 0; i < $('#numRooms').val(); i++)
 	{
 		// Set to display blocks if theyre booking multiple rooms
 		var displayBlock = 1;
