@@ -13,6 +13,7 @@ class TicketController extends Controller
 	 */
 	public $layout='//layouts/column2';
 	public $isFreeEvent = false;
+	public $isBackend = false;
 
 	/**
 	 * @return array action filters
@@ -81,9 +82,13 @@ class TicketController extends Controller
             else if (getenv("REMOTE_ADDR"))
                 $ip = getenv("REMOTE_ADDR");
 
+			// Is this order is online-paid, online-free, or backend manual? This determines whether the payment page is shown.
 			$this->isFreeEvent = false;
 			if (isset($_POST['is_free_event']))
 				$this->isFreeEvent = true;
+			$this->isBackend = false;
+			if (isset($_POST['is_backend']))
+				$this->isBackend = true;
 
 			Order::model()->deleteAllByAttributes(array('ip' => $ip));
 
@@ -111,7 +116,7 @@ class TicketController extends Controller
 				$order->http_total = $_POST['ptotal'];
 				$order->email_address = $_POST['email1'];
 				$order->telephone = $_POST['telephone'];
-				if ($this->isFreeEvent)
+				if (($this->isFreeEvent) || ($this->isBackend))
 				{
 					$order->order_number = Yii::app()->session['uid'] . '-' . time();
 					if (isset($_POST['free_name'])) $order->free_name = $_POST['free_name'];
@@ -130,7 +135,7 @@ class TicketController extends Controller
 			}
 
 			// Go to paymentsense for payment
-			if (!($this->isFreeEvent))
+			if (!($this->isFreeEvent) && !($this->isBackend))
 				$this->redirect(Yii::app()->baseUrl . "/php/gw/EntryPoint.php?sid=" . Yii::app()->session['sid'] . "&xid=" . rand(99999,999999));
 			else
 			{
@@ -194,20 +199,23 @@ class TicketController extends Controller
 			$transaction->http_total = $order->http_total;
 			$transaction->save();
 
-			if (($this->isFreeEvent) && ($orderCount == 0))
+			if ($orderCount == 0)
 			{
-				// Record one 'auth' record with the address details. (Paymentsense script writes the Auth for pay events)
-				$auth=new Auth;
-				$auth->uid = $order->uid;
-				$auth->order_number = $order->order_number;
-				$auth->card_name = $order->free_name;
-				$auth->card_number = 'No card required';
-				$auth->address1 = $order->free_address1;
-				$auth->address2 = $order->free_address2;
-				$auth->address3 = $order->free_address3;
-				$auth->address4 = $order->free_address4;
-				$auth->post_code = $order->free_post_code;
-				$auth->save();
+				if (($this->isFreeEvent) || ($this->isBackend))
+				{
+					// Record one 'auth' record with the address details. (Paymentsense script writes the Auth for pay events)
+					$auth=new Auth;
+					$auth->uid = $order->uid;
+					$auth->order_number = $order->order_number;
+					$auth->card_name = $order->free_name;
+					$auth->card_number = 'N/A';
+					$auth->address1 = $order->free_address1;
+					$auth->address2 = $order->free_address2;
+					$auth->address3 = $order->free_address3;
+					$auth->address4 = $order->free_address4;
+					$auth->post_code = $order->free_post_code;
+					$auth->save();
+				}
 			}
 
 			// Update the used seating number
@@ -262,29 +270,33 @@ class TicketController extends Controller
 			$ticketNumbers
 		);
 
-		// Send email
-		$from = "admin@dglink.co.uk";
-		$fromName = "Admin";
-		$to = $order->email_address;
-		$subject = "Your tickets purchased at DG Link";
-		$message = '<b>Thank you for using the DG Link to order your ticket(s).</b> <br> The attached PDF file contains your ticket(s) and card receipt. Please print all pages and bring them with you to your event or activity. The barcode on each ticket can only be used once.<br> If you ever need to reprint your tickets you may login to the site and do so from your account page. If you have forgotten your log in details you can request a password reminder.<br> We hope you enjoy your event.  --  The DG Link Team';
 		$pdf_filename = '/tmp/' . $order->order_number . '.pdf';
-		// phpmailer
-		$mail = new PHPMailer();
-		$mail->AddAddress($to);
-		$mail->SetFrom($from, $fromName);
-		$mail->AddReplyTo($from, $fromName);
-		$mail->AddAttachment($pdf_filename);
-		$mail->Subject = $subject;
-		$mail->MsgHTML($message);
-		if (!$mail->Send())
+
+		// Send email
+		$to = $order->email_address;
+		if (strlen($to) > 0)
 		{
-			Yii::log("PAID PAGE COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
-			echo "<div id=\"mailerrors\">Mailer Error: " . $mail->ErrorInfo . "</div>";
+			$from = "admin@dglink.co.uk";
+			$fromName = "Admin";
+			$subject = "Your tickets purchased at DG Link";
+			$message = '<b>Thank you for using the DG Link to order your ticket(s).</b> <br> The attached PDF file contains your ticket(s) and card receipt. Please print all pages and bring them with you to your event or activity. The barcode on each ticket can only be used once.<br> If you ever need to reprint your tickets you may login to the site and do so from your account page. If you have forgotten your log in details you can request a password reminder.<br> We hope you enjoy your event.  --  The DG Link Team';
+			// phpmailer
+			$mail = new PHPMailer();
+			$mail->AddAddress($to);
+			$mail->SetFrom($from, $fromName);
+			$mail->AddReplyTo($from, $fromName);
+			$mail->AddAttachment($pdf_filename);
+			$mail->Subject = $subject;
+			$mail->MsgHTML($message);
+			if (!$mail->Send())
+			{
+				Yii::log("PAID PAGE COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
+				echo "<div id=\"mailerrors\">Mailer Error: " . $mail->ErrorInfo . "</div>";
+			}
+			else
+				Yii::log("PAID PAGE SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
-		else
-			Yii::log("PAID PAGE SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
-		
+
 		// delete the temp file
 		copy($pdf_filename, Yii::app()->basePath . '/../tkts/' . $order->order_number . '.pdf');
 		$rnd = rand(10000,99999) . '_' . $order->order_number;

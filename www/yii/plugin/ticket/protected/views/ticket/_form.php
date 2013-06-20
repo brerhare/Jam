@@ -288,22 +288,37 @@ $(document).ready(function() {
 <input type="hidden" id="is_free_event" name="is_free_event" value="" class="" MaxLength="90"/>
 <?php endif;?>
 <?php if ($isBackend):?>
-<input type="hidden" id="is_back_end" name="is_back_end" value="" class="" MaxLength="90"/>
+<input type="hidden" id="is_backend" name="is_backend" value="" class="" MaxLength="90"/>
 <?php endif;?>
 
 <div style="float:right">
 <?php
 
-$free1 = ''; $free2 = ''; $free3 = '';
+$free1 = ''; $free2 = ''; $free3 = ''; $notBackend = '';
 if ($isFreeEvent)
 {
 	$free1 = ' if (document.getElementById("free_name").value == "") err += "Invalid name\n"; ';
 	$free2 = ' if (document.getElementById("free_address1").value == "") err += "Invalid address\n"; ';
 	$free3 = ' if (document.getElementById("free_post_code").value == "") err += "Invalid postcode\n"; ';
 }
+if (!($isBackend))
+{
+	$notBackend = '
+				var email1 = document.getElementById("email1").value;
+				var email2 = document.getElementById("email2").value;
+				if ((email1 != email2) || (!email1) || (email1.indexOf(".") == -1) || (email1.indexOf("@") == -1))
+				err += "Invalid email\n";
+				';
+}
+
+$caption = "Continue";
+if ($isFreeEvent)
+	$caption = "Reserve";
+if ($isBackend)
+	$caption = "Buy";
 $this->widget('zii.widgets.jui.CJuiButton', array(
 	'name'=>'submit',
-	'caption'=>'Continue',
+	'caption'=>$caption,
 	'htmlOptions' => array('class'=>'ui-button-success'),
 	'onclick'=>new CJavaScriptExpression(
 		'function(){
@@ -312,13 +327,8 @@ $this->widget('zii.widgets.jui.CJuiButton', array(
 			if (numTickets < 1)
 				err += "No tickets selected\n";
 
-			var email1 = document.getElementById("email1").value;
-			var email2 = document.getElementById("email2").value;
+' . $free1 . $free2 . $free3 . $notBackend . '
 
-			if ((email1 != email2) || (!email1) || (email1.indexOf(".") == -1) || (email1.indexOf("@") == -1))
-				err += "Invalid email\n";
-
-' . $free1 . $free2 . $free3 . '
 			if (err != "")
 			{
 				alert(err);
