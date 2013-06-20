@@ -88,11 +88,11 @@ if (($param) && ($param->deposit_percent > 0))
 {
 	if ($model->deposit_taken > 0)
 	{
-		echo ' </b>£' . sprintf("%.2f", $model->deposit_taken) . ' deposit was paid on booking, <b>£' . sprintf("%.2f", $model->reservation_total  - $model->deposit_taken) . ' is due on arrival</b>';
+		echo ' </b>£' . sprintf("%.2f", $model->deposit_taken) . ' deposit was paid on booking, <b>£' . sprintf("%.2f", $model->reservation_total  - $model->deposit_taken) . ' due on arrival</b>';
 	}
 	else
 	{
-		echo ' </b>£' . sprintf("%.2f", $model->reservation_total  * $param->deposit_percent / 100) . ' is payable on booking. Deposit has <b>not</b> been taken<br>';
+		echo ' </b>£' . sprintf("%.2f", $model->reservation_total  * $param->deposit_percent / 100) . ' deposit was <b>not</b> paid on booking. <b>Full amount</b> due on arrival<br>';
 	}
 }
 
