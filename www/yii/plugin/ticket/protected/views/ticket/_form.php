@@ -5,12 +5,16 @@
 		'type'=>'horizontal',
 	)); ?>
 
-<?php // Get logo, or default
+<?php
+// Get logo, or default
 if (strlen($model->ticket_logo_path) > 0)
 	$logo = Yii::app()->baseUrl . '/userdata/' . Yii::app()->session['uid'] . '/' . $model->ticket_logo_path;
 else
 	$logo = Yii::app()->baseUrl . '/img/default_logo.jpg';
+	
+// Set global flags
 $isFreeEvent = 1;
+(isset($_GET['ref']) && ($_GET['ref'] == 'bktji5308')) ? $isBackend = 1 : $isBackend = 0;
 ?>
 
 <style>
@@ -195,7 +199,7 @@ $(document).ready(function() {
 <div class="span7 well" style="margin-left:0px;padding-bottom:0px">
 	<table>
 		<tr class="row">
-<?php if ($isFreeEvent): ?>
+<?php if (($isFreeEvent) || ($isBackend)): ?>
 			<td style="text-align:right">
 				Name
 			</td>
@@ -211,7 +215,7 @@ $(document).ready(function() {
 			</td>
 		</tr>
 		<tr class="row">
-<?php if ($isFreeEvent): ?>
+<?php if (($isFreeEvent) || ($isBackend)): ?>
 			<td style="text-align:right">
 				Address
 			</td>
@@ -227,7 +231,7 @@ $(document).ready(function() {
 			</td>
 		</tr>
 		<tr class="row">
-<?php if ($isFreeEvent): ?>
+<?php if (($isFreeEvent) || ($isBackend)): ?>
 			<td style="text-align:right">
 			</td>
 			<td>
@@ -241,7 +245,7 @@ $(document).ready(function() {
 				<input id="telephone" name="telephone" value="" class="" MaxLength="50" />
 			</td>
 		</tr>
-<?php if ($isFreeEvent): ?>
+<?php if (($isFreeEvent) || ($isBackend)): ?>
 		<tr class="row">
 			<td style="text-align:right">
 			</td>
@@ -282,6 +286,9 @@ $(document).ready(function() {
 
 <?php if ($isFreeEvent):?>
 <input type="hidden" id="is_free_event" name="is_free_event" value="" class="" MaxLength="90"/>
+<?php endif;?>
+<?php if ($isBackend):?>
+<input type="hidden" id="is_back_end" name="is_back_end" value="" class="" MaxLength="90"/>
 <?php endif;?>
 
 <div style="float:right">

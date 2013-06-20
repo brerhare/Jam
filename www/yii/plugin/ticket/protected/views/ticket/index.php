@@ -37,9 +37,14 @@
         <i><?php echo $event->date; ?></i>
         </td>
         <td width="10%">
+        	<?php
+        	$ref="none";
+        	if ((isset($_GET['ref'])) && ($_GET['ref'] == 'bktji5308'))
+        		$ref=$_GET['ref'];
+        	?>
 			<?php $this->widget('bootstrap.widgets.TbButton',array(
 				'label' => 'Book',
-				'url' => $this->createUrl('ticket/book', array('id'=>$event->id, 'sid'=>Yii::app()->session['sid'])),
+				'url' => $this->createUrl('ticket/book', array('id'=>$event->id, 'sid'=>Yii::app()->session['sid'], 'ref'=>$ref)),
 				'type' => 'primary',
 				'size' => 'small'
 			));?>
