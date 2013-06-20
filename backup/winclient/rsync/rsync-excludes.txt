@@ -20,6 +20,8 @@
 #
 # WINDOWS sample to include only named items and exlude all else
 #
+# Win7 style
+# ----------
 # + /Users/
 # + /Users/kim/
 # + /Users/kim/Documents/
@@ -31,15 +33,15 @@
 # - /Users/*
 # - /*
 #
+# XP style
+# --------
+# + /Documents*and*Settings/
+# + /Documents*and*Settings/Administrator/
+# + /Documents*and*Settings/Administrator/My*Documents/
+# + /Documents*and*Settings/Administrator/My*Documents/My*Music/
+# - /Documents*and*Settings/Administrator/My*Documents/*
+# - /Documents*and*Settings/Administrator/*
+# - /Documents*and*Settings/*
+# - /*
+#
 #########################################################################
-
-+ /Users/
-+ /Users/kim/
-+ /Users/kim/Documents/
-+ /Users/kim/Documents/DVDFab/
-+ /Users/kim/Documents/My*Books/
-- /Users/kim/Documents/*
-+ /Users/kim/Library/
-- /Users/kim/*
-- /Users/*
-- /*
