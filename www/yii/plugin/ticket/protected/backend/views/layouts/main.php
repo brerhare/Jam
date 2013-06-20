@@ -35,7 +35,6 @@
 			'class' => 'bootstrap.widgets.TbMenu',
 			'items' => array(
 				array('label' => 'Manual Tickets', 'url' => array('/site/manualTicket'), 'visible' => !Yii::app()->user->isGuest),
-				//array('label' => 'Manual Tickets', 'url' => array('/site/manualTicket'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Vendor Details', 'url' => array('/vendor/createUpdate'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Events', 'url' => array('/event/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),

@@ -1,7 +1,4 @@
 <?php
-$this->breadcrumbs=array(
-	'Vendors',
-);
 
 $this->menu=array(
 	array('label'=>'Create Vendor','url'=>array('create')),

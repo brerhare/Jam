@@ -10,19 +10,8 @@ $this->pageTitle=Yii::app()->name;
 }
 </style>
 
-<h1>Manual Tickets</h1>
+<?php
+$url = str_replace("backend.php", "index.php", Yii::app()->getHomeUrl());
+?>
 
-<p>
-<?php //echo "Session id: " . Yii::app()->session->sessionID . "<br>";?>
-<?php //echo "uid: " . Yii::app()->session['uid'] . "<br>";?>
-</p>
-
-<iframe src="<?php echo Yii::app()->getHomeUrl();?>/ticket?sid=<?php echo Yii::app()->session['sid'];?>&mode=manual" width="1220" height="800"></iframe>
-
-<!--
-<iframe src="http://localhost/ticket?sid=<?php echo Yii::app()->session['sid'];?>&mode=manual" width="1220" height="800"></iframe>
--->
-
-<!--
-<iframe src="https://plugin.wireflydesign.com/ticket?sid=<?php echo Yii::app()->session['sid'];?>&mode=manual" width="1220" height="800"></iframe>
--->
+<iframe src="<?php echo $url;?>/ticket?sid=<?php echo Yii::app()->session['sid'];?>&mode=manual" width="1220" height="700"></iframe>
