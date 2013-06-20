@@ -1,5 +1,11 @@
 <!-- Display a list of events to pick from -->
 
+<style>
+#page {
+	border:0;
+}
+</style>
+
 <div class="row">
     <div class="span6 well">
         <h3>Available Events</h3> 

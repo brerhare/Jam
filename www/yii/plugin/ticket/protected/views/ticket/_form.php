@@ -13,6 +13,12 @@ else
 $isFreeEvent = 1;
 ?>
 
+<style>
+#page {
+	border:0;
+}
+</style>
+
 	<div class="row">
 		<div class="span7 well" style="margin-left:0px; padding-bottom:0px">
 			<table>
