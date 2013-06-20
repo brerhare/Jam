@@ -4,9 +4,24 @@ $this->menu=array(
 	array('label'=>'Back to Calendar','url'=>array('site/calendar/?sid='.Yii::app()->session['sid'])),
 	array('label'=>'Mark as Deposit taken','visible' => !Yii::app()->user->isGuest,'url'=>'#','htmlOptions'=>array('style'=>'color: cc433c'),'linkOptions'=>array('submit'=>array('deposit','id'=>$model->id),'confirm'=>'Deposit taken?')),
 	array('label'=>'------------------------------------',),
-	array('label'=>'Cancel this booking','visible' => !Yii::app()->user->isGuest,'url'=>'#','htmlOptions'=>array('style'=>'color: cc433c'),'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'THIS WILL CANCEL THE BOOKING! Are you sure you want proceed?')),
+//	array('label'=>'Cancel this booking','visible' => !Yii::app()->user->isGuest,'url'=>'#','htmlOptions'=>array('style'=>'color: cc433c'),'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'THIS WILL CANCEL THE BOOKING! Are you sure you want proceed?')),
+	array('label'=>'Cancel this booking', 'url' => array('/customer/delete?id=' . $model->id)),
 );
 ?>
+
+<style>
+div.portlet-content {
+	margin: 0 0 0 0;
+}
+#undermenu {
+	background-color:#effdff;
+}
+#cancelreason {
+	margin: 0 15px 10px;
+	padding: 0 0 0 5px;
+	width:135px;
+}
+</style>
 
 <h2>View Booking for ref <?php echo $ref; ?></h2>
 
@@ -67,3 +82,9 @@ else
 	echo "<br><br>Deposit has <b>not</b> been taken<br>";
 ?>
 
+<script>
+
+$(document).ready(function() {alert('xx');}
+window.onload=function(){alert('yy');}
+
+</script>

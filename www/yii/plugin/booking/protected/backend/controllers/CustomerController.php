@@ -9,7 +9,7 @@ class CustomerController extends Controller
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='//layouts/column2';
+	public $layout='//layouts/column2cancelreason';
 
 	/**
 	 * @return array action filters
@@ -150,8 +150,12 @@ class CustomerController extends Controller
 	 */
 	public function actionDelete($id)
 	{
+					Yii::log("ID: " . $id, CLogger::LEVEL_WARNING, 'system.test.kim');
+
+
 		if(Yii::app()->request->isPostRequest)
 		{
+					Yii::log("ISPOSTREQUEST: " . $id, CLogger::LEVEL_WARNING, 'system.test.kim');
 			$model = $this->loadModel($id);
 			$ref = $model->ref;
 
@@ -185,6 +189,7 @@ class CustomerController extends Controller
 			$subject = "Reservation Cancelled";
 			$msg  = "<b> This is confirmation that your reservation for the following dates has been cancelled.</b><br><br/>";
 			$msg .= $reservationRoom->start_date . " to " . $reservationRoom->start_date . "<br><br>";
+			$msg .= "Reason: " . $_POST['cancelreason'] . "<br><br>";
 			Yii::log("SENDING CANCELLATION MAIL: " . $msg, CLogger::LEVEL_WARNING, 'system.test.kim');
 
 
