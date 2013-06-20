@@ -19,8 +19,8 @@ table tr {
 			<td>Name/Email/Phone</td>
 			<td>Address</td>
 			<td style="text-align:right">Tickets</td>
-			<td style="text-align:right">Each</td>
-			<td style="text-align:right">Total</td>
+			<td style="text-align:right; width:60px">Each</td>
+			<td style="text-align:right; width:60px">Total</td>
 		</tr>
 		<?php
 		$criteria = new CDbCriteria;
