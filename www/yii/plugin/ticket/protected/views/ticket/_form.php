@@ -312,10 +312,10 @@ if (!($isBackend))
 }
 
 $caption = "Continue";
-if ($isFreeEvent)
-	$caption = "Reserve";
 if ($isBackend)
 	$caption = "Buy";
+if ($isFreeEvent)
+	$caption = "Reserve";
 $this->widget('zii.widgets.jui.CJuiButton', array(
 	'name'=>'submit',
 	'caption'=>$caption,
