@@ -126,7 +126,7 @@ class TicketController extends Controller
 					if (isset($_POST['free_address4'])) $order->free_address4 = $_POST['free_address4'];
 					if (isset($_POST['free_post_code'])) $order->free_post_code = $_POST['free_post_code'];
 				}
-				
+
 				$order->return_url = Yii::app()->baseUrl;
 				if(!$order->save())
 				{
@@ -208,7 +208,7 @@ class TicketController extends Controller
 					$auth->uid = $order->uid;
 					$auth->order_number = $order->order_number;
 					$auth->card_name = $order->free_name;
-					$auth->card_number = 'N/A';
+					$auth->card_number = '';
 					$auth->address1 = $order->free_address1;
 					$auth->address2 = $order->free_address2;
 					$auth->address3 = $order->free_address3;
@@ -240,7 +240,7 @@ class TicketController extends Controller
 			array_push($ticket_type_qty_arr,   $order->http_ticket_type_qty);
 			array_push($ticket_type_price_arr, $order->http_ticket_type_price);
 			array_push($ticket_type_total_arr, $order->http_ticket_type_total);
-			
+
 			$orderCount++;
         }
 
@@ -250,8 +250,8 @@ class TicketController extends Controller
         $criteria->addCondition("order_number = '" . $order->order_number . "'");
         $auth = Auth::model()->find($criteria);
 		$crdNum = '************ ' . substr($auth->card_number, 12, 4);
-		if ($this->isFreeEvent)
-			$crdNum = $auth->card_number;
+		if (($this->isFreeEvent) || ($this-isBackend))
+			$crdNum = 'No card details';
   
 		// Print tickets
 		$ticketNumbers = array();
