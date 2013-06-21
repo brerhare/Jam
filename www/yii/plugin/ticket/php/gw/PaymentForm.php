@@ -40,21 +40,21 @@ die();
 
 			logMsg("Updating order details with payment info, using sql [" . $sql . "]");
 			$sql = "UPDATE ticket_order set
-				card_name = $_POST['CardName'],
-				card_number = $_POST['CardNumber'],
-				card_expiry_month = $_POST['ExpiryDateMonth'],
-				card_expiry_year = $_POST['ExpiryDateYear'],
-				card_cv2 = $_POST['CV2'],
-				card_address1 = $_POST['Address1'],
-				card_address2 = $_POST['Address2'],
-				card_address3 = $_POST['Address3'],
-				card_address4 = $_POST['Address4'],
-				card_city = $_POST['City'],
-				card_state = $_POST['State'],
-				card_post_code = $_POST['PostCode'],
-				card_country_short = $_POST['CountryShort'],
-				card_currency_short = $_POST['CurrencyShort'],
-				card_amount = $_POST['Amount']
+				card_name = " . $_POST['CardName'] . ",
+				card_number = " . $_POST['CardNumber'] . ",
+				card_expiry_month = " . $_POST['ExpiryDateMonth'] . ",
+				card_expiry_year = " . $_POST['ExpiryDateYear'] . ",
+				card_cv2 = " . $_POST['CV2'] . ",
+				card_address1 = " . $_POST['Address1'] . ",
+				card_address2 = " . $_POST['Address2'] . ",
+				card_address3 = " . $_POST['Address3'] . ",
+				card_address4 = " . $_POST['Address4'] . ",
+				card_city = " . $_POST['City'] . ",
+				card_state = " . $_POST['State'] . ",
+				card_post_code = " . $_POST['PostCode'] . ",
+				card_country_short = " . $_POST['CountryShort'] . ",
+				card_currency_short = " . $_POST['CurrencyShort'] . ",
+				card_amount = " . $_POST['Amount'] . "
 				where ip = '" . getIP() . "'";
 			$result = mysql_query($sql) or die(mysql_error());
 
