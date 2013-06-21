@@ -250,7 +250,7 @@ class TicketController extends Controller
         $criteria->addCondition("order_number = '" . $order->order_number . "'");
         $auth = Auth::model()->find($criteria);
 		$crdNum = '************ ' . substr($auth->card_number, 12, 4);
-		if (($this->isFreeEvent) || ($this-isBackend))
+		if (($this->isFreeEvent) || ($this->isBackend))
 			$crdNum = 'No card details';
   
 		// Print tickets

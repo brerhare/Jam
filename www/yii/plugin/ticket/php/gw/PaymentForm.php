@@ -3,12 +3,13 @@
 	if ($NewEntry != 1)
 		include("WireflyHelper.php");
 
-logMsg("(PaymentForm) ------------------------------------------");
+logMsg("(PaymentForm) Start dump -------------------------------");
 foreach ($_POST as $field => $value)
 {
 	$$field = $value;
 	logMsg("(PaymentForm) got field - " . $field . " -> " . $value);
 }
+logMsg("(PaymentForm) End dump ---------------------------------");
 
 /*
 $dbhandle="";
@@ -26,6 +27,44 @@ die();
 	include ("PreProcessPaymentForm.php");
 	$Width = 800;
 	include ("Templates/FormHeader.tpl");
+
+
+	// @@TODO: Added everything until the @@ENDTODO tag
+	// Whenever we see card details, record them on the order. Regardless of anything else
+	if ((isset($_POST['FormMode'])) && ($_POST['FormMode'] == 'PAYMENT_FORM'))
+	{
+		if (isset($_POST['CardNumber']))
+		{
+			$dbhandle="";
+			_dbinit($dbhandle);
+
+			logMsg("Updating order details with payment info, using sql [" . $sql . "]");
+			$sql = "UPDATE ticket_order set
+				card_name = $_POST['CardName'],
+				card_number = $_POST['CardNumber'],
+				card_expiry_month = $_POST['ExpiryDateMonth'],
+				card_expiry_year = $_POST['ExpiryDateYear'],
+				card_cv2 = $_POST['CV2'],
+				card_address1 = $_POST['Address1'],
+				card_address2 = $_POST['Address2'],
+				card_address3 = $_POST['Address3'],
+				card_address4 = $_POST['Address4'],
+				card_city = $_POST['City'],
+				card_state = $_POST['State'],
+				card_post_code = $_POST['PostCode'],
+				card_country_short = $_POST['CountryShort'],
+				card_currency_short = $_POST['CurrencyShort'],
+				card_amount = $_POST['Amount']
+				where ip = '" . getIP() . "'";
+			$result = mysql_query($sql) or die(mysql_error());
+
+			_dbfin($dbhandle);
+		}
+	}
+	// @@ENDTODO
+
+
+
 
 	switch ($NextFormMode)
 	{
@@ -63,21 +102,21 @@ die();
 				$sql = "INSERT into ticket_auth (uid, order_number, card_name, card_number, expiry_month, expiry_year, cv2, address1, address2, address3, address4, city, state, post_code, country_short, amount, currency_short, auth_code) VALUES (" .
 				"'" . $q['uid'] . "'," .
 				"'" . $q['order_number'] . "'," .
-				"'" . $_POST['CardName'] . "'," .
-				"'" . $_POST['CardNumber'] . "'," .
-				"'" . $_POST['ExpiryDateMonth'] . "'," .
-				"'" . $_POST['ExpiryDateYear'] . "'," .
-				"'" . $_POST['CV2'] . "'," .
-				"'" . $_POST['Address1'] . "'," .
-				"'" . $_POST['Address2'] . "'," .
-				"'" . $_POST['Address3'] . "'," .
-				"'" . $_POST['Address4'] . "'," .
-				"'" . $_POST['City'] . "'," .
-				"'" . $_POST['State'] . "'," .
-				"'" . $_POST['PostCode'] . "'," .
-				"'" . $_POST['CountryShort'] . "'," .
-				"'" . $_POST['Amount'] . "'," .
-				"'" . $_POST['CurrencyShort'] . "'," .
+				"'" . $q['card_name'] . "'," .
+				"'" . $q['card_number'] . "'," .
+				"'" . $q['card_expiry_month'] . "'," .
+				"'" . $q['card_expiry_year'] . "'," .
+				"'" . $q['card_cv2'] . "'," .
+				"'" . $q['card_address1'] . "'," .
+				"'" . $q['card_address2'] . "'," .
+				"'" . $q['card_address3'] . "'," .
+				"'" . $q['card_address4'] . "'," .
+				"'" . $q['card_city'] . "'," .
+				"'" . $q['card_state'] . "'," .
+				"'" . $q['card_post_code'] . "'," .
+				"'" . $q['card_country_short'] . "'," .
+				"'" . $q['card_amount'] . "'," .
+				"'" . $q['card_currency_short'] . "'," .
 				"'" . $Message. "')";
 				logMsg("Creating Auth record using sql [" . $sql . "]");
 				$result = mysql_query($sql) or die(mysql_error());
