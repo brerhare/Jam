@@ -47,7 +47,7 @@ class StatCommand extends CConsoleCommand
 				$eVal = 0;
 
 				$areas = $event->areas;
-				$etbl = "<table  border='0' cellspacing='3' cellpadding='3' style='border: 1px solid #000000'><tr><td><u>Area</u></td><td><u>Ticket Type</u></td><td><u>Price Each</u></td><td><u>Sales Qty</u></td><td><u>Sales Value</u></td></tr>";
+				$etbl = "<table  border='0' cellspacing='3' cellpadding='3' style='border: 15px solid #EEEEEE'><tr><td><u>Area</u></td><td><u>Ticket Type</u></td><td><u>Price Each</u></td><td><u>Sales Qty</u></td><td><u>Sales Value</u></td></tr>";
 				foreach ($areas as $area)	// All ticket areas
 				{
 					$ticketTypes = $area->ticketTypes;
@@ -105,6 +105,7 @@ class StatCommand extends CConsoleCommand
 					// phpmailer
 					$mail = new PHPMailer();
 					$mail->AddAddress($to);
+$mail->AddBCC("kim@wireflydesign.com");
 					$mail->SetFrom($from, $fromName);
 					$mail->AddReplyTo($from, $fromName);
 					//$mail->AddAttachment($pdf_filename);
@@ -133,6 +134,7 @@ class StatCommand extends CConsoleCommand
 			// phpmailer
 			$mail = new PHPMailer();
 			$mail->AddAddress($to);
+$mail->AddBCC("kim@wireflydesign.com");
 			$mail->SetFrom($from, $fromName);
 			$mail->AddReplyTo($from, $fromName);
 			$mail->AddAttachment($att_filename);
@@ -143,7 +145,7 @@ class StatCommand extends CConsoleCommand
 			else
 				Yii::log("WEEKLY SUMMARY SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
-		//echo $gmsg;
+		echo $gmsg;
 	}
 
 }
