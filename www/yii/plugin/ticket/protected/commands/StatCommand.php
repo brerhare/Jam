@@ -95,7 +95,7 @@ class StatCommand extends CConsoleCommand
 			if ($hasActiveEvent)
 			{
 				// Send email to vendor
-				$to = "k@microboot.com"; //$vendor->email;
+				$to = $vendor->email;
 				if (strlen($to) > 0)
 				{
 					$from = "admin@dglink.co.uk";
@@ -122,7 +122,7 @@ class StatCommand extends CConsoleCommand
 		}
 
 		// Send summary email to jo
-		$to = "kim@wireflydesign.com";
+		$to = "jo@wireflydesign.com";
 		$att_filename = "/tmp/ticketSales.csv";
 		if (strlen($to) > 0)
 		{
