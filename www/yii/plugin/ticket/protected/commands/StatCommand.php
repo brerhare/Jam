@@ -95,7 +95,7 @@ class StatCommand extends CConsoleCommand
 			if ($hasActiveEvent)
 			{
 				// Send email to vendor
-				$to = "kim@microboot.com"; //$vendor->email;
+				$to = "k@microboot.com"; //$vendor->email;
 				if (strlen($to) > 0)
 				{
 					$from = "admin@dglink.co.uk";
@@ -143,7 +143,7 @@ class StatCommand extends CConsoleCommand
 			else
 				Yii::log("WEEKLY SUMMARY SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
-		echo $gmsg;
+		//echo $gmsg;
 	}
 
 }
