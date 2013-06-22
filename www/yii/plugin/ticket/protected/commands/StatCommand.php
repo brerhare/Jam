@@ -91,20 +91,43 @@ class StatCommand extends CConsoleCommand
 			$umsg .= $cr . "<hr>" . $cr;
 			if ($hasActiveEvent)
 			{
+				// Send email
+				$to = "jo@wireflydesign.com";
+				if (strlen($to) > 0)
+				{
+					$from = "admin@dglink.co.uk";
+					$fromName = "Admin";
+					$subject = "Your weekly event report (Redirected to jo for testing)";
+					$message = $umsg; 
+					// phpmailer
+					$mail = new PHPMailer();
+					$mail->AddAddress($to);
+					$mail->SetFrom($from, $fromName);
+					$mail->AddReplyTo($from, $fromName);
+					//$mail->AddAttachment($pdf_filename);
+					$mail->Subject = $subject;
+					$mail->MsgHTML($message);
+					if (!$mail->Send())
+					{
+						Yii::log("WEEKLY REPORT COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
+					}
+					else
+						Yii::log("WEEKLY SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+				}
 
-
-
-
-		//$pdf_filename = '/tmp/' . $order->order_number . '.pdf';
+				// Accumulate to global
+				$gmsg .= $umsg;
+			}
+		}
 
 		// Send email
-		$to = "k@microboot.com";
+		$to = "jo@wireflydesign.com";
 		if (strlen($to) > 0)
 		{
 			$from = "admin@dglink.co.uk";
 			$fromName = "Admin";
-			$subject = "Your weekly event report";
-			$message = $umsg; 
+			$subject = "Weekly event vendor summary";
+			$message = $gmsg; 
 			// phpmailer
 			$mail = new PHPMailer();
 			$mail->AddAddress($to);
@@ -115,20 +138,13 @@ class StatCommand extends CConsoleCommand
 			$mail->MsgHTML($message);
 			if (!$mail->Send())
 			{
-				Yii::log("WEEKLY REPORT COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
+				Yii::log("WEEKLY SUMMARY REPORT COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
 			}
 			else
-				Yii::log("WEEKLY SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+				Yii::log("WEEKLY SUMMARY SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
-
-
-
-
-				//echo $umsg;
-				$gmsg .= $umsg;
-			}
-		}
-		echo $gmsg;
+		
+		//echo $gmsg;
 	}
 
 
