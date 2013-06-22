@@ -9,6 +9,13 @@ return array(
 	// preloading 'log' component
 	'preload'=>array('log'),
 
+	//@@EG Had to add the next 'import' to load the db
+	// autoloading model and component classes
+	'import'=>array(
+		'application.models.*',
+		'application.components.*',
+	),
+
 	// application components
 	'components'=>array(
 		'db'=>array(
