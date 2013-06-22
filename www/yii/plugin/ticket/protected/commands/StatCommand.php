@@ -14,33 +14,34 @@ class StatCommand extends CConsoleCommand
 	public function run($args)
 	{
 		$cr = "<br>";
-
+		$fp = fopen('/tmp/ticketSales.csv', 'w');
+		$heading = array('vendor', 'event', 'area', 'ticket_type', 'price_each', 'sales_qty', 'sales_value', 'timestamp');
+		fputcsv($fp, $heading);
+		
 		// Report date range
 		$fromdate = new DateTime('8 days ago');
 		$todate = new DateTime('1 days ago');
 
 		$gmsg = "";
 		$criteria = new CDbCriteria;
-		$criteria->order = 'display_name ASC';
-		$users = User::model()->findAll($criteria);
+		$criteria->order = 'name ASC';
+		$vendors = Vendor::model()->findAll($criteria);
 
-		// All users
-		foreach ($users as $user)
+		// All vendors
+		foreach ($vendors as $vendor)
 		{
 			$umsg = "";	
 			$hasActiveEvent = false;
-			$umsg .= "<b><u>Event transactions for " . $user->display_name . ". Period " . $fromdate->format('l d F Y') . " to " . $todate->format('l d F Y') . "</u></b>" . $cr;
+			$umsg .= "<b><u>Event transactions for " . $vendor->name . ". Period " . $fromdate->format('l d F Y') . " to " . $todate->format('l d F Y') . "</u></b>" . $cr;
 			$uQty = 0;
 			$uVal = 0;
 
-			$criteria = new CDbCriteria;
-			$criteria->addCondition("uid = " . $user->id);
-			$criteria->addCondition("active = 1");
-			$criteria->order = 'date ASC';
-			$events = Event::model()->findAll($criteria);
+			$events = $vendor->events;
 			foreach ($events as $event)	// All active events
 			{
-				$umsg .= "<i>" . $cr . $event->title . " on " . $event->date . "</i>" . $cr;
+				if (!($event->active))
+					continue;
+				$umsg .= "<i>" . $cr . $event->title . " : " . $event->date . "</i>" . $cr;
 				$hasActiveEvent = true;
 				$eQty = 0;
 				$eVal = 0;
@@ -60,7 +61,7 @@ class StatCommand extends CConsoleCommand
 						$val = 0;
 
 						$criteria = new CDbCriteria;
-						$criteria->addCondition("uid = " . $user->id);
+						$criteria->addCondition("vendor_id = " . $vendor->id);
 						$criteria->addCondition("event_id = " . $event->id);
 						$criteria->addCondition("http_area_id = " . $area->id);
 						$criteria->addCondition("http_ticket_type_id = " . $ticketType->id);
@@ -76,6 +77,8 @@ class StatCommand extends CConsoleCommand
 							$eVal += $transaction->http_ticket_total;
 							$uQty += $transaction->http_ticket_qty;
 							$uVal += $transaction->http_ticket_total;
+							$line = array($vendor->name, $event->title, $area->description, $ticketType->description, $ticketType->price, $qty, sprintf("%01.2f", $val), $transaction->timestamp);
+							fputcsv($fp, $line);
 						}
 						$etbl .= "<td style='text-align:right'>" . $qty . "</td>";
 						$etbl .= "<td style='text-align:right'>" . sprintf("%01.2f", $val) . "</td>";
@@ -91,13 +94,13 @@ class StatCommand extends CConsoleCommand
 			$umsg .= $cr . "<hr>" . $cr;
 			if ($hasActiveEvent)
 			{
-				// Send email
-				$to = "jo@wireflydesign.com";
+				// Send email to vendor
+				$to = "kim@microboot.com"; //$vendor->email;
 				if (strlen($to) > 0)
 				{
 					$from = "admin@dglink.co.uk";
 					$fromName = "Admin";
-					$subject = "Your weekly event report (Redirected to jo for testing)";
+					$subject = "Your weekly event sales report";
 					$message = $umsg; 
 					// phpmailer
 					$mail = new PHPMailer();
@@ -108,9 +111,7 @@ class StatCommand extends CConsoleCommand
 					$mail->Subject = $subject;
 					$mail->MsgHTML($message);
 					if (!$mail->Send())
-					{
 						Yii::log("WEEKLY REPORT COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
-					}
 					else
 						Yii::log("WEEKLY SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
 				}
@@ -120,82 +121,30 @@ class StatCommand extends CConsoleCommand
 			}
 		}
 
-		// Send email
-		$to = "jo@wireflydesign.com";
+		// Send summary email to jo
+		$to = "kim@wireflydesign.com";
+		$att_filename = "/tmp/ticketSales.csv";
 		if (strlen($to) > 0)
 		{
 			$from = "admin@dglink.co.uk";
 			$fromName = "Admin";
-			$subject = "Weekly event vendor summary";
+			$subject = "Weekly vendor event sales summary";
 			$message = $gmsg; 
 			// phpmailer
 			$mail = new PHPMailer();
 			$mail->AddAddress($to);
 			$mail->SetFrom($from, $fromName);
 			$mail->AddReplyTo($from, $fromName);
-			//$mail->AddAttachment($pdf_filename);
+			$mail->AddAttachment($att_filename);
 			$mail->Subject = $subject;
 			$mail->MsgHTML($message);
 			if (!$mail->Send())
-			{
 				Yii::log("WEEKLY SUMMARY REPORT COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
-			}
 			else
 				Yii::log("WEEKLY SUMMARY SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
-		
-		//echo $gmsg;
+		echo $gmsg;
 	}
 
-
-
-	public function lrun($args)
-	{
-		$criteria = new CDbCriteria;
-		//$criteria->addCondition("event_id = " . $model->id);
-		$criteria->addCondition("uid = " . 4);
-		$transactions = Transaction::model()->findAll($criteria);
-		foreach ($transactions as $transaction)
-		{
-		 	$criteria = new CDbCriteria;
-			$criteria->addCondition("uid = " . 4);
-			$criteria->addCondition("order_number = '" . $transaction->order_number . "'");
-			$auth = Auth::model()->find($criteria);
-			if ($auth)
-				echo $transaction->id . " - " . $auth->id . " - " . $transaction->timestamp . "\n";;
-
-
-
-		// Send email
-		$to = $order->email_address;
-		if (strlen($to) > 0)
-		{
-			$from = "admin@dglink.co.uk";
-			$fromName = "Admin";
-			$subject = "Your tickets purchased at DG Link";
-			$message = '<b>Thank you for using the DG Link to order your ticket(s).</b> <br> The attached PDF file contains your ticket(s) and card receipt. Please print all pages and bring them with you to your event or activity. The barcode on each ticket can only be used once.<br> If you ever need to reprint your tickets you may login to the site and do so from your account page. If you have forgotten your log in details you can request a password reminder.<br> We hope you enjoy your event.  --  The DG Link Team';
-			// phpmailer
-			$mail = new PHPMailer();
-			$mail->AddAddress($to);
-			$mail->SetFrom($from, $fromName);
-			$mail->AddReplyTo($from, $fromName);
-			$mail->AddAttachment($pdf_filename);
-			$mail->Subject = $subject;
-			$mail->MsgHTML($message);
-			if (!$mail->Send())
-			{
-				Yii::log("PAID PAGE COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
-				echo "<div id=\"mailerrors\">Mailer Error: " . $mail->ErrorInfo . "</div>";
-			}
-			else
-				Yii::log("PAID PAGE SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
-		}
-
-
-
-
-
-		}
-	}
 }
 ?>
