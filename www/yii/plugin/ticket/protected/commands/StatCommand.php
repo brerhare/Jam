@@ -19,7 +19,7 @@ class StatCommand extends CConsoleCommand
 		fputcsv($fp, $heading);
 		
 		// Report date range
-		$fromdate = new DateTime('8 days ago');
+		$fromdate = new DateTime('7 days ago');
 		$todate = new DateTime('1 days ago');
 
 		$gmsg = "";
@@ -90,7 +90,7 @@ class StatCommand extends CConsoleCommand
 			}
 
 			// Accumulate to global msg
-			$umsg .= $cr . "<b>" .  sprintf("%01.2f", $uVal) . " total sales, all events for the period (" . $uQty . " tickets)</b>" . $cr;
+			$umsg .= $cr . "<b>Total sales for the period: " .  sprintf("%01.2f", $uVal) . "</b>" . $cr;
 			$umsg .= $cr . "<hr>" . $cr;
 			if ($hasActiveEvent)
 			{
