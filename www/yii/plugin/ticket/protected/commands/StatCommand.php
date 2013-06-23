@@ -75,7 +75,8 @@ class StatCommand extends CConsoleCommand
 							$val += $transaction->http_ticket_total;
 							$eQty += $transaction->http_ticket_qty;
 							$eVal += $transaction->http_ticket_total;
-							$uQty += $transaction->http_ticket_qty;
+							if (strlen(trim($transaction->http_ticket_total)) > 0)
+								$uQty += $transaction->http_ticket_qty;
 							$uVal += $transaction->http_ticket_total;
 							$line = array($vendor->name, $event->title, $area->description, $ticketType->description, $ticketType->price, $qty, sprintf("%01.2f", $val), $transaction->timestamp);
 							fputcsv($fp, $line);
@@ -90,7 +91,15 @@ class StatCommand extends CConsoleCommand
 			}
 
 			// Accumulate to global msg
-			$umsg .= $cr . "<b>Total sales for the period: " .  sprintf("%01.2f", $uVal) . "</b>" . $cr;
+			$umsg .= $cr . "<b>Total sales: " .  sprintf("%01.2f", $uVal) . "</b>" . $cr;
+			$umsg .= "<b>Total paid tickets: " . $uQty . "</b>" . $cr;
+			$umsg .= "</b>";
+			if ($uVal != 0)
+			{
+				$umsg .= $cr . "2.5% of Total sales = <b>" . sprintf("%01.2f",($uVal * 2.5 / 100)) . "</b>" . $cr;
+				$umsg .= "0.50p per (paid) ticket = <b>" . sprintf("%01.2f",($uQty * 0.5)) . "</b>" . $cr;
+				$umsg .= "Amount to be invoiced using reference " . $event->uid . "-" . $todate->format('Ymd') . ": <b>" . sprintf("%01.2f", ($uVal * 2.5 / 100) + ($uQty * 0.5) ) . "</b" . $cr;
+			}
 			$umsg .= $cr . "<hr>" . $cr;
 			if ($hasActiveEvent)
 			{
@@ -108,7 +117,6 @@ class StatCommand extends CConsoleCommand
 $mail->AddBCC("kim@wireflydesign.com");
 					$mail->SetFrom($from, $fromName);
 					$mail->AddReplyTo($from, $fromName);
-					//$mail->AddAttachment($pdf_filename);
 					$mail->Subject = $subject;
 					$mail->MsgHTML($message);
 					if (!$mail->Send())
