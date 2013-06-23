@@ -15,7 +15,7 @@ class StatCommand extends CConsoleCommand
 	{
 		$cr = "<br>";
 		$fp = fopen('/tmp/ticketSales.csv', 'w');
-		$heading = array('vendor', 'event', 'area', 'ticket_type', 'price_each', 'sales_qty', 'sales_value', 'timestamp');
+		$heading = array('vendor', 'event', 'area', 'ticket_type', 'price_each', 'sales_qty', 'sales_value');
 		fputcsv($fp, $heading);
 		
 		// Report date range
@@ -78,7 +78,10 @@ class StatCommand extends CConsoleCommand
 							if (strlen(trim($transaction->http_ticket_total)) > 0)
 								$uQty += $transaction->http_ticket_qty;
 							$uVal += $transaction->http_ticket_total;
-							$line = array($vendor->name, $event->title, $area->description, $ticketType->description, $ticketType->price, $qty, sprintf("%01.2f", $val), $transaction->timestamp);
+						}
+						if ($qty != 0)
+						{
+							$line = array($vendor->name, $event->title, $area->description, $ticketType->description, $ticketType->price, $qty, sprintf("%01.2f", $val));
 							fputcsv($fp, $line);
 						}
 						$etbl .= "<td style='text-align:right'>" . $qty . "</td>";
@@ -97,8 +100,8 @@ class StatCommand extends CConsoleCommand
 			if ($uVal != 0)
 			{
 				$umsg .= $cr . "2.5% of Total sales = <b>" . sprintf("%01.2f",($uVal * 2.5 / 100)) . "</b>" . $cr;
-				$umsg .= "0.50p per (paid) ticket = <b>" . sprintf("%01.2f",($uQty * 0.5)) . "</b>" . $cr;
-				$umsg .= "Amount to be invoiced using reference " . $event->uid . "-" . $todate->format('Ymd') . ": <b>" . sprintf("%01.2f", ($uVal * 2.5 / 100) + ($uQty * 0.5) ) . "</b" . $cr;
+				$umsg .= "Add 0.50p per (paid) ticket = <b>" . sprintf("%01.2f",($uQty * 0.5)) . "</b>" . $cr;
+				$umsg .= "Amount to be invoiced, using reference " . $event->uid . "-" . $todate->format('Ymd') . ": <b>" . sprintf("%01.2f", ($uVal * 2.5 / 100) + ($uQty * 0.5) ) . "</b" . $cr;
 			}
 			$umsg .= $cr . "<hr>" . $cr;
 			if ($hasActiveEvent)
