@@ -77,7 +77,7 @@ var total = 0;	// The booking total price
 .boxy {
 	background-color: #e3e3e3;
 	padding:0px 10px 0px 10px;
-	width:550px;*/
+	/*width:550px;*/
 
 }
 .krow, .kspan8 {padding: 10px;}
@@ -116,7 +116,7 @@ color: #46679c;
 			),
 		));?>
 	</div>
-	<div class="span4" style="vertical-align:middle; text-align:center">
+	<div class="span8" style="vertical-align:middle; text-align:center">
 		<h3 style="color:#46679c">Step 2 - Choose room options</h3>
 	</div>
 	<div class="span2" style="vertical-align:middle; text-align:left">
@@ -138,7 +138,7 @@ color: #46679c;
 
 <div class="row">
 <div class="span1"></div>
-	<div class='well span6'>
+	<div class='well span10'>
 		<table style="width:650px">
 			<tr>
 				<td style="width:130px">
@@ -341,7 +341,7 @@ color: #46679c;
 			),
 		));?>
 	</div>
-	<div class="span4" style="vertical-align:middle; text-align:center">
+	<div class="span8" style="vertical-align:middle; text-align:center">
 		<h3 style="color:#46679c"></h3>
 	</div>
 	<div class="span2" style="vertical-align:middle; text-align:left">

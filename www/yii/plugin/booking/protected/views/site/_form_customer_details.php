@@ -45,7 +45,7 @@ margin-bottom: 0px;
 			),
 		));?>
 	</div>
-	<div class="span4" style="vertical-align:middle; text-align:center">
+	<div class="span8" style="vertical-align:middle; text-align:center">
 		<h3 style="color:#46679c">Step 3 - Payment details</h3>
 	</div>
 	<div class="span2" style="vertical-align:middle; text-align:left">
@@ -67,7 +67,7 @@ margin-bottom: 0px;
 
 <div class="row">
 	<div class="span2"></div>
-	<div class="span6">
+	<div class="span10">
 	Arriving <?php echo Yii::app()->session['arrivedate']; ?> and Departing <?php echo Yii::app()->session['departdate']; ?>
 	<br/>
 	Number of rooms : <?php echo Yii::app()->session['numRooms']; ?>
@@ -88,7 +88,7 @@ margin-bottom: 0px;
 
 <div class="row">
 	<div class="span1"></div>
-	<div class='well span6'>
+	<div class='well span10'>
 
 	<?php echo $form->errorSummary($model); ?>
 
@@ -158,7 +158,7 @@ margin-bottom: 0px;
 			),
 		));?>
 	</div>
-	<div class="span4" style="vertical-align:middle; text-align:center">
+	<div class="span8" style="vertical-align:middle; text-align:center">
 		<h3 style="color:#46679c"></h3>
 	</div>
 	<div class="span2" style="vertical-align:middle; text-align:left">

@@ -157,7 +157,7 @@ foreach ($rooms as $room)
 .boxy {
 	background-color: #e3e3e3;
 	padding:0px 10px 0px 10px;
-	width:550px;*/
+	/*width:550px;*/
 
 }
 .krow, .kspan8 {padding: 10px;}
@@ -282,7 +282,7 @@ td:first-child+td.cline {
 <div class="row">
 	<div class="span2" style="vertical-align:middle; text-align:right">
 	</div>
-	<div class="span4" style="vertical-align:middle; text-align:center">
+	<div class="span8" style="vertical-align:middle; text-align:center">
 		<h3 style="color:#46679c">Step 1 - Choose your room</h3>
 	</div>
 	<div class="span2" style="vertical-align:middle; text-align:left">
@@ -304,7 +304,7 @@ td:first-child+td.cline {
 
 <div class="row">
 <div class="span1"></div>
-	<div class='well span6'>
+	<div class='well span10'>
 		<table style="width:650px">
 			<tr>
 				<td style="width:130px">Arrival date
@@ -358,9 +358,9 @@ td:first-child+td.cline {
 <div class="span1"></div>
 </div>
 
-<div class="well span8">
+<div class="well span12">
 <div class="row">
-	<div class="span8" style="margin-left:0px">
+	<div class="span12" style="margin-left:0px">
 		<table style="margin-bottom:0px;">
 			<tr>
 				<td width="32%"></td>
@@ -381,7 +381,7 @@ td:first-child+td.cline {
 </div>
 
 <div class="row">
-	<div class="span8" style="margin-left:-0px">
+	<div class="span12" style="margin-left:-0px">
 		<table id="roomTable">
 			<thead id="roomThead"></thead>
 			<tbody id="roomTbody"></tbody>
