@@ -28,24 +28,8 @@ margin-bottom: 0px;
 	Should you not receive it within a few minutes please check your junk folder</h5>
 	<br/><br/>
 	<h4>You may now close this window</h4>
-	<br><br>
+	<br/><br/>
 
-	<div class="span2" style="vertical-align:middle; text-align:left">
-		<?php
-		$this->widget('bootstrap.widgets.TbButton',array(
-			'label' => 'Close',
-			'buttonType'=>'submit',
-			'type' => 'primary',
-			'size' => 'large',
-			'htmlOptions' => array(
-				//'class' => 'disabled',
-				'id'=> 'finishedButton',
-				'name' => 'finishedButton',
-				'onclick'=>'js:void();',
-			),
-		));?>
-	</div>
-	
 	</div> <!-- well -->
 </div> <!-- row -->
 
