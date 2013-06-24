@@ -39,7 +39,7 @@ margin-bottom: 0px;
 				//'class' => 'disabled',
 				'id'=> 'finishedButton',
 				'name' => 'finishedButton',
-				//'onclick'=>'js:return nextButtonClick()',
+				'onclick'=>'js:parent.closeIFrame();',	/* @@NB: parent has: functioncloseIFrame(){ $('#idOfIframe').remove(); } */
 			),
 		));?>
 	</div>
