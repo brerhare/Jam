@@ -75,7 +75,7 @@ class StatCommand extends CConsoleCommand
 							$val += $transaction->http_ticket_total;
 							$eQty += $transaction->http_ticket_qty;
 							$eVal += $transaction->http_ticket_total;
-							if (strlen(trim($transaction->http_ticket_total)) > 0)
+							if ($transaction->http_ticket_price != "0.00")
 								$uQty += $transaction->http_ticket_qty;
 							$uVal += $transaction->http_ticket_total;
 						}
@@ -117,7 +117,7 @@ class StatCommand extends CConsoleCommand
 					// phpmailer
 					$mail = new PHPMailer();
 					$mail->AddAddress($to);
-$mail->AddBCC("kim@wireflydesign.com");
+//$mail->AddBCC("kim@wireflydesign.com");
 					$mail->SetFrom($from, $fromName);
 					$mail->AddReplyTo($from, $fromName);
 					$mail->Subject = $subject;
@@ -145,7 +145,7 @@ $mail->AddBCC("kim@wireflydesign.com");
 			// phpmailer
 			$mail = new PHPMailer();
 			$mail->AddAddress($to);
-$mail->AddBCC("kim@wireflydesign.com");
+//$mail->AddBCC("kim@wireflydesign.com");
 			$mail->SetFrom($from, $fromName);
 			$mail->AddReplyTo($from, $fromName);
 			$mail->AddAttachment($att_filename);
