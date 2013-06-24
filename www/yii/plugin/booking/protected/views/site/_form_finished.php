@@ -27,6 +27,8 @@ margin-bottom: 0px;
 	<h5>A confirmation email has been sent to you.<br>
 	Should you not receive it within a few minutes please check your junk folder</h5>
 	<br/><br/>
+	<h4>You may now close this window</h4>
+	<br><br>
 
 	<div class="span2" style="vertical-align:middle; text-align:left">
 		<?php
@@ -39,7 +41,7 @@ margin-bottom: 0px;
 				//'class' => 'disabled',
 				'id'=> 'finishedButton',
 				'name' => 'finishedButton',
-				'onclick'=>'js:parent.closeIFrame();',	/* @@NB: parent has: functioncloseIFrame(){ $('#idOfIframe').remove(); } */
+				'onclick'=>'js:void();',
 			),
 		));?>
 	</div>

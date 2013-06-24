@@ -101,7 +101,7 @@ class StatCommand extends CConsoleCommand
 			{
 				$umsg .= $cr . "2.5% of Total sales = <b>" . sprintf("%01.2f",($uVal * 2.5 / 100)) . "</b>" . $cr;
 				$umsg .= "Add 0.50p per (paid) ticket = <b>" . sprintf("%01.2f",($uQty * 0.5)) . "</b>" . $cr;
-				$umsg .= "Amount to be invoiced, using reference " . $event->uid . "-" . $todate->format('Ymd') . ": <b>" . sprintf("%01.2f", ($uVal * 2.5 / 100) + ($uQty * 0.5) ) . "</b" . $cr;
+				$umsg .= "Amount to be invoiced, using reference " . $event->uid . "-" . $todate->format('Ymd') . ": <b>" . sprintf("%01.2f", $uVal - ($uVal * 2.5 / 100) + ($uQty * 0.5) ) . "</b" . $cr;
 			}
 			$umsg .= $cr . "<hr>" . $cr;
 			if ($hasActiveEvent)
