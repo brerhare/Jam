@@ -20,10 +20,13 @@
 
 <body>
 
+<style>
+#content {
+padding: 0;
+}
+</style>
+
 <div class="kcontainer" id="page">
-
-
-<div style="margin-top:50px"></div>
 
 	<?php echo $content; ?>
 	<div class="clear"></div>
