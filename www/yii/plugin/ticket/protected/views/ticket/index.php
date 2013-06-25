@@ -7,8 +7,10 @@
 </style>
 
 <div class="row">
-    <div class="span6 well">
+    <div class="span6 well" style="padding-top:0px;padding-bottom:0px">
+<center>
         <h4 style="color:#a6a6a6">Available Events</h4> 
+</center>
         <table>
         <?php
             $criteria = new CDbCriteria;
@@ -23,15 +25,16 @@
 				$logo = Yii::app()->baseUrl . '/img/default_logo.jpg';
 	
         ?>
-        <tr>
-        <td width="30%">
+        <tr style="height:120px">
+        <td width="30%" style="text-align:center">
 			<?php
 			$imgdim = getimagesize(Yii::app()->basePath . "/../../" . $logo);
 			$imgw=$imgdim[0];
 			$imgh=$imgdim[1];
-			$imgstr="width:120px";
-			if ($imgh>120)
-				$imgstr="height:120px";
+			$imgstr="height:100px;";
+			if ($imgh<=100)
+			if ($imgw>100)
+				$imgstr="width:100%;";
 			echo CHtml::image(
 				$logo,
 				'Event Image',

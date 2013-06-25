@@ -27,15 +27,15 @@ $isFreeEvent = 1;
 		<div class="span7 well" style="margin-left:0px; padding-bottom:0px">
 			<table>
 				<tr>
-					<td width="25%" height="120px">
+					<td width="25%" >
 <?php Yii::log("TICKET FORM : image " . Yii::app()->session['uid'], CLogger::LEVEL_WARNING, 'system.test.kim'); ?>
 						<?php
 						$imgdim = getimagesize(Yii::app()->basePath . "/../../" . $logo);
 						$imgw=$imgdim[0];
 						$imgh=$imgdim[1];
-						//$imgstr="width:120px";
-						//if ($imgh>120)
-						$imgstr="height:120px";
+						$imgstr="width:120px";
+						if ($imgh>120)
+							$imgstr="height:120px";
 						echo CHtml::image(
 							$logo,
 							'Event Image',
