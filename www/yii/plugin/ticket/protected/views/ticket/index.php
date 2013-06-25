@@ -24,14 +24,21 @@
 	
         ?>
         <tr>
-        <td width="20%">
-			<?php echo CHtml::image(
+        <td width="30%">
+			<?php
+			$imgdim = getimagesize(Yii::app()->basePath . "/../../" . $logo);
+			$imgw=$imgdim[0];
+			$imgh=$imgdim[1];
+			$imgstr="width:120px";
+			if ($imgh>120)
+				$imgstr="height:120px";
+			echo CHtml::image(
 				$logo,
 				'Event Image',
-				array('style'=>'height:80px;'));
+				array('style'=>$imgstr));
 			?>
         </td>
-        <td width="70%">
+        <td width="60%">
         <b><?php echo $event->title; ?></b>
         <br>
         <i><?php echo $event->date; ?></i>
