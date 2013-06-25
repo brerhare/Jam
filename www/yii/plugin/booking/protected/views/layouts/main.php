@@ -24,6 +24,12 @@
 #content {
 padding: 0;
 }
+#page {
+margin-top: 0px;
+margin-bottom: 0px;
+background: white;
+border: 0;
+}
 </style>
 
 <div class="kcontainer" id="page">
