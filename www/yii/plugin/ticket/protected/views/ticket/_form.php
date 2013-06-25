@@ -106,7 +106,7 @@ $(document).ready(function() {
  
 </script>
 
-<div class="row">
+<div class="row" style="padding-right:5px">
 	<table>	
 		<?php
 		$lc = 0;
