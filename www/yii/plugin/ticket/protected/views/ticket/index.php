@@ -8,7 +8,7 @@
 
 <div class="row">
     <div class="span6 well">
-        <h3>Available Events</h3> 
+        <h4 style="color:#a6a6a6">Available Events</h4> 
         <table>
         <?php
             $criteria = new CDbCriteria;
