@@ -27,7 +27,7 @@ $isFreeEvent = 1;
 		<div class="span7 well" style="margin-left:0px; padding-bottom:0px">
 			<table>
 				<tr>
-					<td width="25%">
+					<td width="25%" height="120px">
 <?php Yii::log("TICKET FORM : image " . Yii::app()->session['uid'], CLogger::LEVEL_WARNING, 'system.test.kim'); ?>
 						<?php
 						$imgdim = getimagesize(Yii::app()->basePath . "/../../" . $logo);
