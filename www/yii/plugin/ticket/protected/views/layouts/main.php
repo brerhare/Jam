@@ -21,12 +21,28 @@
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 </head>
 
+<style>
+body {
+	padding: 0;
+}
+#sidebar {
+	padding: 0;
+}
+#content {
+	padding: 0;
+}
+#page {
+	margin: 0;
+}
+div.form .row {
+	margin: 0;
+}
+</style>
+
 <body>
 
 <div class="container" id="page">
 
-
-<div style="margin-top:50px"></div>
 
 	<?php echo $content; ?>
 	<div class="clear"></div>
