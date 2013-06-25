@@ -33,8 +33,8 @@ $isFreeEvent = 1;
 						$imgdim = getimagesize(Yii::app()->basePath . "/../../" . $logo);
 						$imgw=$imgdim[0];
 						$imgh=$imgdim[1];
-						$imgstr="width:120px";
-						if ($imgh>120)
+						//$imgstr="width:120px";
+						//if ($imgh>120)
 						$imgstr="height:120px";
 						echo CHtml::image(
 							$logo,
