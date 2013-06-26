@@ -207,15 +207,19 @@ class CustomerController extends Controller
 	{
 		$model=$this->loadModel($id);
 		$deposit_amount = 0;
+Yii::log("DEPOSIT ID: " . $id, CLogger::LEVEL_WARNING, 'system.test.kim');
+Yii::log("DEPOSIT AMT INITIALLY: " . $deposit_amount,  CLogger::LEVEL_WARNING, 'system.test.kim');
 
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$param=Param::model()->find($criteria);
 		if (($param) && ($param->deposit_percent > 0))
 			$deposit_amount = ($model->reservation_total  * $param->deposit_percent / 100);
+Yii::log("DEPOSIT AMT FINALLY: " . $deposit_amount,  CLogger::LEVEL_WARNING, 'system.test.kim');
 
 		$model->deposit_taken = $deposit_amount;
-		$model->save();
+Yii::log("DEPOSIT AMT IN MODEL: " . $model->deposit_taken,  CLogger::LEVEL_WARNING, 'system.test.kim');
+		$model->save(false);	// @@EG: 'false' means save even if a validation rule fails
 		$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('site/calendar'));
 	}
 
