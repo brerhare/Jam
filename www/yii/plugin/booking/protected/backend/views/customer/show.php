@@ -106,8 +106,18 @@ if (($param) && ($param->deposit_percent > 0))
         'buttonType'=>'submit',
 	    'type'=>'primary',
     	'label'=>'Cancel booking',
+    	'htmlOptions'=>array(
+			'onClick'=>'js:return cancelButtonClick()',
+		)
     )); ?>
     </div>
 </div>
-        
+
+<script>
+function cancelButtonClick()
+{
+	return confirm('Do you really want to DELETE this booking?');
+}
+</script>
+
 <?php $this->endWidget(); ?>
