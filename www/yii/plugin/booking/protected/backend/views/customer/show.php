@@ -98,6 +98,37 @@ if (($param) && ($param->deposit_percent > 0))
 
 ?>
 
+<hr>
+
+<?php	// Show the reservation details (rooms, extras)
+echo "<b>Reservation details</b><br>";
+$criteria = new CDbCriteria;
+$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+$criteria->addCondition("ref = '" . $model->ref . "'");
+$reservationRooms=ReservationRoom::model()->findAll($criteria);
+foreach ($reservationRooms as $reservationRoom)
+{
+	$criteria = new CDbCriteria;
+	$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+	$criteria->addCondition("id = " . $reservationRoom->room_id);
+	$room=Room::model()->find($criteria);
+	echo $room->title . " - " . $reservationRoom->num_adult . " adults, " . $reservationRoom->num_child . " children. ";
+	echo $reservationRoom->occupancy_type_description . "<br>";
+	$criteria = new CDbCriteria;
+	$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+	$criteria->addCondition("ref = '" . $model->ref . "'");
+	$reservationExtras=ReservationExtra::model()->findAll($criteria);
+	$hasExtras = false;
+	foreach ($reservationExtras as $reservationExtra)
+	{
+		echo "Extra - " . $reservationExtra->extra_description . "<br>";
+		$hasExtras = true;
+	}
+	if ($hasExtras)
+		echo "<br>";
+}
+?>
+
 <div id="undermenu">
 	<input type="hidden" id="id" name="id" value="<?php echo $model->id;?>"/>
 	<input type="text" name="cancelreason" id="cancelreason" value="Reason">
