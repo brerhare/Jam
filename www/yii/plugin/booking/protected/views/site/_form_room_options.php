@@ -211,6 +211,12 @@ color: #46679c;
 	    						$price = $roomHasOccupancyType->double_rate;	// double
 		    					$adultCount -= 2;
 		    				}
+		    				else if (($adultCount == 1) && ($childrenCount > 0) && ($roomHasOccupancyType->double_rate  > 0))	// start with double price if (adults+children)>=2, and add extra to that
+		    				{
+	    						$price = $roomHasOccupancyType->double_rate;	// double
+		    					$adultCount -= 1;
+		    					$childrenCount -= 1;
+	    					}
 	    					$price += ($adultCount * $roomHasOccupancyType->adult_rate);	// +adult
 	    					$price += ($childrenCount * $roomHasOccupancyType->child_rate);	// +children
 	    				}

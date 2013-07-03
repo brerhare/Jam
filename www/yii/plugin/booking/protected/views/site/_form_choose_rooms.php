@@ -672,6 +672,12 @@ function showRooms() {
 	    					price = rData.prices[1];	// double
 	    					adults -= 2;
 	    				}
+	    				else if ((adults == 1) && (children > 0) && (rData.prices[1] > 0))	// start with double price if (adults+children)>=2, and add extra to that
+	    				{
+	    					price = rData.prices[1];	// double
+	    					adults -= 1;
+	    					children -= 1;
+	    				}
 	    				price += (adults * rData.prices[2]);	// +adult
 	    				price += (children * rData.prices[3]);	// +children
 	    				cell.innerHTML = price;
