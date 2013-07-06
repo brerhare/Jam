@@ -42,10 +42,14 @@ $isFreeEvent = 1;
 							array('style'=>$imgstr));
 						?>
 					</td>
-					<td width="75%">
+					<td width="3%"></td>
+					<td width="72%">
 						<b><?php echo $model->title; ?></b>
 						<br>
 						<i><?php echo $model->date; ?></i>
+						<div style="padding:0; margin:0; color:#696d6e; font-size:95%">
+							<?php echo nl2br($model->banner_text); ?>
+						</div>
 					</td>
 				</tr>
 			</table>

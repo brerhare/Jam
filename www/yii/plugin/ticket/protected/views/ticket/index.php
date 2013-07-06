@@ -26,7 +26,7 @@
 	
         ?>
         <tr style="height:120px">
-        <td width="30%" style="text-align:center">
+        <td width="30%" style="text-align:center;">
 			<?php
 			$imgdim = getimagesize(Yii::app()->basePath . "/../../" . $logo);
 			$imgw=$imgdim[0];
@@ -42,9 +42,14 @@
 			?>
         </td>
         <td width="60%">
-        <b><?php echo $event->title; ?></b>
-        <br>
-        <i><?php echo $event->date; ?></i>
+        	<div style="margin:0; padding:0; width:100%;height:100px;overflow:hidden;">
+                <b><?php echo $event->title; ?></b>
+                <br>
+                <i><?php echo $event->date; ?></i>
+                <div style="padding:0; margin:0; color:#696d6e; font-size:95%">
+                    <?php echo nl2br($event->banner_text); ?>
+                </div>
+        	</div>
         </td>
         <td width="10%">
         	<?php

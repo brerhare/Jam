@@ -19,6 +19,8 @@
 
 	<?php echo $form->textFieldRow($model,'post_code',array('class'=>'span2','maxlength'=>45)); ?>
 
+	<?php echo $form->textAreaRow($model,'banner_text',array('rows'=>3, 'cols'=>50, 'class'=>'span5')); ?>
+
 	<?php //echo $form->textFieldRow($model,'ticket_logo_path',array('class'=>'span5','maxlength'=>255)); ?>
 	<?php echo $form->fileFieldRow($model, 'ticket_logo_path'); ?>
 

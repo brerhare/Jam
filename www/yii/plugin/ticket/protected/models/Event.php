@@ -10,6 +10,7 @@
  * @property string $date
  * @property string $address
  * @property string $post_code
+ * @property string $banner_text
  * @property string $ticket_logo_path
  * @property string $ticket_text
  * @property string $ticket_terms
@@ -57,7 +58,7 @@ class Event extends CActiveRecord
 			array('uid, active, ticket_vendor_id', 'numerical', 'integerOnly'=>true),
 			array('title, ticket_logo_path', 'length', 'max'=>255),
 			array('date, post_code', 'length', 'max'=>45),
-			array('ticket_text, ticket_terms, active_start_date, active_start_time, active_end_date, active_end_time', 'safe'),
+			array('banner_text, ticket_text, ticket_terms, active_start_date, active_start_time, active_end_date, active_end_time', 'safe'),
 
 			// @@EG: Image upload. Next two lines. See also controller create/update/delete and remember to set enctype in the view!!!!!
 			array('ticket_logo_path','unsafe'),
@@ -65,7 +66,7 @@ class Event extends CActiveRecord
 
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, title, date, address, post_code, ticket_logo_path, ticket_text, ticket_terms, active, active_start_date, active_start_time, active_end_date, active_end_time, ticket_vendor_id', 'safe', 'on'=>'search'),
+			array('id, uid, title, date, address, post_code, banner_text, ticket_logo_path, ticket_text, ticket_terms, active, active_start_date, active_start_time, active_end_date, active_end_time, ticket_vendor_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -95,6 +96,7 @@ class Event extends CActiveRecord
 			'date' => 'Date',
 			'address' => 'Address',
 			'post_code' => 'Post Code',
+			'banner_text' => 'Banner Text',
 			'ticket_logo_path' => 'Ticket Logo Path',
 			'ticket_text' => 'Ticket Text',
 			'ticket_terms' => 'Ticket Terms',
@@ -125,6 +127,7 @@ class Event extends CActiveRecord
 		$criteria->compare('date',$this->date,true);
 		$criteria->compare('address',$this->address,true);
 		$criteria->compare('post_code',$this->post_code,true);
+		$criteria->compare('banner_text',$this->banner_text,true);
 		$criteria->compare('ticket_logo_path',$this->ticket_logo_path,true);
 		$criteria->compare('ticket_text',$this->ticket_text,true);
 		$criteria->compare('ticket_terms',$this->ticket_terms,true);
