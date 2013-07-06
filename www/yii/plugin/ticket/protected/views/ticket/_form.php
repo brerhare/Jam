@@ -42,8 +42,8 @@ $isFreeEvent = 1;
 							array('style'=>$imgstr));
 						?>
 					</td>
-					<td width="3%"></td>
-					<td width="72%">
+					<td width="1%"></td>
+					<td width="74%">
 						<b><?php echo $model->title; ?></b>
 						<br>
 						<i><?php echo $model->date; ?></i>
