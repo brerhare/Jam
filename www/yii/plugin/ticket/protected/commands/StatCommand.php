@@ -15,7 +15,7 @@ class StatCommand extends CConsoleCommand
 	{
 		$cr = "<br>";
 		$fp = fopen('/tmp/ticketSales.csv', 'w');
-		$heading = array('vendor', 'event', 'area', 'ticket_type', 'date', 'price_each', 'sales_qty', 'sales_value');
+		$heading = array('vendor', 'event', 'area', 'ticket_type', 'date', 'order_number', 'auth_code', 'email', 'telephone', 'price_each', 'sales_qty', 'sales_value');
 		fputcsv($fp, $heading);
 		
 		// Report date range
@@ -70,9 +70,9 @@ class StatCommand extends CConsoleCommand
 						$transactions = Transaction::model()->findAll($criteria);
 						foreach ($transactions as $transaction)	// All event transactions for the period
 						{
-							if ($transaction->auth_code == NULL)
-								continue;	// We only want paymentsense sales (not manual)
-							$line = array($vendor->name, $event->title, $area->description, $ticketType->description, $transaction->timestamp, sprintf("%01.2f", $transaction->http_ticket_price), $transaction->http_ticket_qty, sprintf("%01.2f", $transaction->http_ticket_total));
+							//if ($transaction->auth_code == NULL)
+								//continue;	// We only want paymentsense sales (not manual)
+							$line = array($vendor->name, $event->title, $area->description, $ticketType->description, $transaction->timestamp, $transaction->order_number, $transaction->auth_code, $transaction->email, $transaction->telephone, sprintf("%01.2f", $transaction->http_ticket_price), $transaction->http_ticket_qty, sprintf("%01.2f", $transaction->http_ticket_total));
 							fputcsv($fp, $line);
 
 							$qty += $transaction->http_ticket_qty;
@@ -102,7 +102,6 @@ class StatCommand extends CConsoleCommand
 				$umsg .= "Add 0.50p per (paid) ticket = <b>" . sprintf("%01.2f",($uQty * 0.5)) . "</b>" . $cr;
 				$umsg .= "Transaction fees = <b>" . sprintf("%01.2f", ($uVal * 2.5 / 100) + ($uQty * 0.5) ) . "</b>" . $cr;
 				$umsg .= "Amount to be invoiced, using reference <b>" . $event->uid . "-" . $todate->format('Ymd') . "</b> = <b>" . sprintf("%01.2f", $uVal - (($uVal * 2.5 / 100) + ($uQty * 0.5) )) . "</b>" . $cr;
-
 			}
 			$umsg .= $cr . "<hr>" . $cr;
 			if ($hasActiveEvent)
