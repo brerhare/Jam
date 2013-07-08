@@ -70,6 +70,8 @@ class StatCommand extends CConsoleCommand
 						$transactions = Transaction::model()->findAll($criteria);
 						foreach ($transactions as $transaction)	// All event transactions for the period
 						{
+							if ($transaction->auth_code == NULL)
+								continue;	// We only want paymentsense sales (not manual)
 							$line = array($vendor->name, $event->title, $area->description, $ticketType->description, $transaction->timestamp, sprintf("%01.2f", $transaction->http_ticket_price), $transaction->http_ticket_qty, sprintf("%01.2f", $transaction->http_ticket_total));
 							fputcsv($fp, $line);
 
