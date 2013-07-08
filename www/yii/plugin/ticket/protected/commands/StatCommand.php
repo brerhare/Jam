@@ -15,7 +15,7 @@ class StatCommand extends CConsoleCommand
 	{
 		$cr = "<br>";
 		$fp = fopen('/tmp/ticketSales.csv', 'w');
-		$heading = array('vendor', 'event', 'area', 'ticket_type', 'date', 'order_number', 'auth_code', 'email', 'telephone', 'address1', 'address2', 'address3', 'address4', 'city', 'county', 'post_code', 'price_each', 'sales_qty', 'sales_value');
+		$heading = array('vendor', 'event', 'area', 'ticket_type', 'date', 'order_number', 'auth_code', 'name', 'email', 'telephone', 'address1', 'address2', 'address3', 'address4', 'city', 'county', 'post_code', 'price_each', 'sales_qty', 'sales_value');
 		fputcsv($fp, $heading);
 		
 		// Report date range
@@ -71,8 +71,9 @@ class StatCommand extends CConsoleCommand
 						foreach ($transactions as $transaction)	// All event transactions for the period
 						{
 							$criteria = new CDbCriteria;
-							$criteria->addCondition("order_number = " . $transaction->order_number);
+							$criteria->addCondition("order_number = '" . $transaction->order_number . "'");
 							$auth = Auth::model()->find($criteria);
+							$name = "";
 							$a1 = "";
 							$a2 = "";
 							$a3 = "";
@@ -91,7 +92,7 @@ class StatCommand extends CConsoleCommand
 								$pc = $auth->post_code;
 							}
 
-							$line = array($vendor->name, $event->title, $area->description, $ticketType->description, $transaction->timestamp, $transaction->order_number, $transaction->auth_code, $transaction->email, $transaction->telephone, $a1, $a2, $a3, $a4, $city, $state, $pc, sprintf("%01.2f", $transaction->http_ticket_price), $transaction->http_ticket_qty, sprintf("%01.2f", $transaction->http_ticket_total));
+							$line = array($vendor->name, $event->title, $area->description, $ticketType->description, $transaction->timestamp, $transaction->order_number, $transaction->auth_code, $name, $transaction->email, $transaction->telephone, $a1, $a2, $a3, $a4, $city, $state, $pc, sprintf("%01.2f", $transaction->http_ticket_price), $transaction->http_ticket_qty, sprintf("%01.2f", $transaction->http_ticket_total));
 							fputcsv($fp, $line);
 
 							//if ($transaction->auth_code == NULL)
