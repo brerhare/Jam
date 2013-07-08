@@ -15,7 +15,7 @@ class StatCommand extends CConsoleCommand
 	{
 		$cr = "<br>";
 		$fp = fopen('/tmp/ticketSales.csv', 'w');
-		$heading = array('vendor', 'event', 'area', 'ticket_type', 'date', 'order_number', 'auth_code', 'email', 'telephone', 'price_each', 'sales_qty', 'sales_value');
+		$heading = array('vendor', 'event', 'area', 'ticket_type', 'date', 'order_number', 'auth_code', 'email', 'telephone', 'address1', 'address2', 'address3', 'address4', 'city', 'county', 'post_code', 'price_each', 'sales_qty', 'sales_value');
 		fputcsv($fp, $heading);
 		
 		// Report date range
@@ -70,10 +70,32 @@ class StatCommand extends CConsoleCommand
 						$transactions = Transaction::model()->findAll($criteria);
 						foreach ($transactions as $transaction)	// All event transactions for the period
 						{
+							$criteria = new CDbCriteria;
+							$criteria->addCondition("order_number = " . $transaction->order_number);
+							$auth = Auth::model()->find($criteria);
+							$a1 = "";
+							$a2 = "";
+							$a3 = "";
+							$a4 = "";
+							$city = "";
+							$state = "";
+							$pc = "";
+							if ($auth != null)
+							{
+								$a1 = $auth->address1;
+								$a2 = $auth->address2;
+								$a3 = $auth->address3;
+								$a4 = $auth->address4;
+								$city = $auth->city;
+								$state = $auth->state;
+								$pc = $auth->post_code;
+							}
+
+							$line = array($vendor->name, $event->title, $area->description, $ticketType->description, $transaction->timestamp, $transaction->order_number, $transaction->auth_code, $transaction->email, $transaction->telephone, $a1, $a2, $a3, $a4, $city, $state, $pc, sprintf("%01.2f", $transaction->http_ticket_price), $transaction->http_ticket_qty, sprintf("%01.2f", $transaction->http_ticket_total));
+							fputcsv($fp, $line);
+
 							//if ($transaction->auth_code == NULL)
 								//continue;	// We only want paymentsense sales (not manual)
-							$line = array($vendor->name, $event->title, $area->description, $ticketType->description, $transaction->timestamp, $transaction->order_number, $transaction->auth_code, $transaction->email, $transaction->telephone, sprintf("%01.2f", $transaction->http_ticket_price), $transaction->http_ticket_qty, sprintf("%01.2f", $transaction->http_ticket_total));
-							fputcsv($fp, $line);
 
 							$qty += $transaction->http_ticket_qty;
 							$val += $transaction->http_ticket_total;
