@@ -15,7 +15,7 @@ class StatCommand extends CConsoleCommand
 	{
 		$cr = "<br>";
 		$fp = fopen('/tmp/ticketSales.csv', 'w');
-		$heading = array('vendor', 'event', 'area', 'ticket_type', 'price_each', 'sales_qty', 'sales_value');
+		$heading = array('vendor', 'event', 'area', 'ticket_type', 'date', 'price_each', 'sales_qty', 'sales_value');
 		fputcsv($fp, $heading);
 		
 		// Report date range
@@ -47,7 +47,7 @@ class StatCommand extends CConsoleCommand
 				$eVal = 0;
 
 				$areas = $event->areas;
-				$etbl = "<table  border='0' cellspacing='3' cellpadding='3' style='border: 15px solid #EEEEEE'><tr><td><u>Area</u></td><td><u>Ticket Type</u></td><td><u>Price Each</u></td><td><u>Sales Qty</u></td><td><u>Sales Value</u></td></tr>";
+				$etbl = "<table  border='0' cellspacing='3' cellpadding='3' style='border: 15px solid #EEEEEE'><tr><td><u>Area</u></td><td><u>Ticket Type</u></td><td><u>Sales Qty</u></td><td><u>Sales Value</u></td></tr>";
 				foreach ($areas as $area)	// All ticket areas
 				{
 					$ticketTypes = $area->ticketTypes;
@@ -56,7 +56,6 @@ class StatCommand extends CConsoleCommand
 						$etbl .= "<tr>";
 						$etbl .= "<td>" . $area->description . "</td>";	
 						$etbl .= "<td>" . $ticketType->description . "</td>";
-						$etbl .= "<td style='text-align:right'>" . $ticketType->price . "</td>";
 						$qty = 0;
 						$val = 0;
 
@@ -71,6 +70,9 @@ class StatCommand extends CConsoleCommand
 						$transactions = Transaction::model()->findAll($criteria);
 						foreach ($transactions as $transaction)	// All event transactions for the period
 						{
+							$line = array($vendor->name, $event->title, $area->description, $ticketType->description, $transaction->date, sprintf("%01.2f", $transaction->http_ticket_price), $transaction->http_ticket_qty, sprintf("%01.2f", $transaction->http_ticket_total));
+							fputcsv($fp, $line);
+
 							$qty += $transaction->http_ticket_qty;
 							$val += $transaction->http_ticket_total;
 							$eQty += $transaction->http_ticket_qty;
@@ -79,17 +81,12 @@ class StatCommand extends CConsoleCommand
 								$uQty += $transaction->http_ticket_qty;
 							$uVal += $transaction->http_ticket_total;
 						}
-						if ($qty != 0)
-						{
-							$line = array($vendor->name, $event->title, $area->description, $ticketType->description, $ticketType->price, $qty, sprintf("%01.2f", $val));
-							fputcsv($fp, $line);
-						}
 						$etbl .= "<td style='text-align:right'>" . $qty . "</td>";
 						$etbl .= "<td style='text-align:right'>" . sprintf("%01.2f", $val) . "</td>";
 						$etbl .= "</tr>";
 					}
 				}
-				$etbl .= "<tr><td></td><td></td><td style='text-align:right'><i>Total</i></td><td style='text-align:right'><i>" . $eQty . "</i></td><td style='text-align:right'><i>" . sprintf("%01.2f", $eVal) . "</i></td></table>";
+				$etbl .= "<tr><td></td><td style='text-align:right'><i>Total</i></td><td style='text-align:right'><i>" . $eQty . "</i></td><td style='text-align:right'><i>" . sprintf("%01.2f", $eVal) . "</i></td></table>";
 				$umsg .= $etbl;
 			}
 
@@ -102,7 +99,7 @@ class StatCommand extends CConsoleCommand
 				$umsg .= $cr . "2.5% of Total sales = <b>" . sprintf("%01.2f",($uVal * 2.5 / 100)) . "</b>" . $cr;
 				$umsg .= "Add 0.50p per (paid) ticket = <b>" . sprintf("%01.2f",($uQty * 0.5)) . "</b>" . $cr;
 				$umsg .= "Transaction fees = <b>" . sprintf("%01.2f", ($uVal * 2.5 / 100) + ($uQty * 0.5) ) . "</b>" . $cr;
-				$umsg .= "Amount to be invoiced, using reference <b>" . $event->uid . "-" . $todate->format('Ymd') . "</b> = <b>" . sprintf("%01.2f", $uVal - (($uVal * 2.5 / 100) + ($uQty * 0.5) )) . "</b" . $cr;
+				$umsg .= "Amount to be invoiced, using reference <b>" . $event->uid . "-" . $todate->format('Ymd') . "</b> = <b>" . sprintf("%01.2f", $uVal - (($uVal * 2.5 / 100) + ($uQty * 0.5) )) . "</b>" . $cr;
 
 			}
 			$umsg .= $cr . "<hr>" . $cr;
@@ -124,10 +121,12 @@ class StatCommand extends CConsoleCommand
 					$mail->AddReplyTo($from, $fromName);
 					$mail->Subject = $subject;
 					$mail->MsgHTML($message);
+/*
 					if (!$mail->Send())
 						Yii::log("WEEKLY REPORT COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
 					else
 						Yii::log("WEEKLY SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+*/
 				}
 
 				// Accumulate to global
@@ -136,7 +135,7 @@ class StatCommand extends CConsoleCommand
 		}
 
 		// Send summary email to jo
-		$to = "jo@wireflydesign.com";
+		$to = "kim@wireflydesign.com";
 		$att_filename = "/tmp/ticketSales.csv";
 		if (strlen($to) > 0)
 		{
