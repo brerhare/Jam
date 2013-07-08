@@ -70,7 +70,7 @@ class StatCommand extends CConsoleCommand
 						$transactions = Transaction::model()->findAll($criteria);
 						foreach ($transactions as $transaction)	// All event transactions for the period
 						{
-							$line = array($vendor->name, $event->title, $area->description, $ticketType->description, $transaction->date, sprintf("%01.2f", $transaction->http_ticket_price), $transaction->http_ticket_qty, sprintf("%01.2f", $transaction->http_ticket_total));
+							$line = array($vendor->name, $event->title, $area->description, $ticketType->description, $transaction->timestamp, sprintf("%01.2f", $transaction->http_ticket_price), $transaction->http_ticket_qty, sprintf("%01.2f", $transaction->http_ticket_total));
 							fputcsv($fp, $line);
 
 							$qty += $transaction->http_ticket_qty;
