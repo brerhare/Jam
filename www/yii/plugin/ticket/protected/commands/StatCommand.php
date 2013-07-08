@@ -95,8 +95,8 @@ class StatCommand extends CConsoleCommand
 							$line = array($vendor->name, $event->title, $area->description, $ticketType->description, $transaction->timestamp, $transaction->order_number, $transaction->auth_code, $name, $transaction->email, $transaction->telephone, $a1, $a2, $a3, $a4, $city, $state, $pc, sprintf("%01.2f", $transaction->http_ticket_price), $transaction->http_ticket_qty, sprintf("%01.2f", $transaction->http_ticket_total));
 							fputcsv($fp, $line);
 
-							//if ($transaction->auth_code == NULL)
-								//continue;	// We only want paymentsense sales (not manual)
+							if ($transaction->auth_code == NULL)
+								continue;	// We only want paymentsense sales on the report (not manual)
 
 							$qty += $transaction->http_ticket_qty;
 							$val += $transaction->http_ticket_total;
@@ -145,12 +145,10 @@ class StatCommand extends CConsoleCommand
 					$mail->AddReplyTo($from, $fromName);
 					$mail->Subject = $subject;
 					$mail->MsgHTML($message);
-/*
 					if (!$mail->Send())
 						Yii::log("WEEKLY REPORT COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
 					else
 						Yii::log("WEEKLY SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
-*/
 				}
 
 				// Accumulate to global
@@ -159,7 +157,7 @@ class StatCommand extends CConsoleCommand
 		}
 
 		// Send summary email to jo
-		$to = "kim@wireflydesign.com";
+		$to = "jo@wireflydesign.com";
 		$att_filename = "/tmp/ticketSales.csv";
 		if (strlen($to) > 0)
 		{
