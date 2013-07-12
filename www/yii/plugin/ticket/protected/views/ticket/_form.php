@@ -302,53 +302,66 @@ $(document).ready(function() {
 <input type="hidden" id="is_backend" name="is_backend" value="" class="" MaxLength="90"/>
 <?php endif;?>
 
-<div style="float:right">
-<?php
+<div class="row">
 
-$free1 = ''; $free2 = ''; $free3 = ''; $notBackend = '';
-if ($isFreeEvent)
-{
-	$free1 = ' if (document.getElementById("free_name").value == "") err += "Invalid name\n"; ';
-	$free2 = ' if (document.getElementById("free_address1").value == "") err += "Invalid address\n"; ';
-	$free3 = ' if (document.getElementById("free_post_code").value == "") err += "Invalid postcode\n"; ';
-}
-if (!($isBackend))
-{
-	$notBackend = '
-				var email1 = document.getElementById("email1").value;
-				var email2 = document.getElementById("email2").value;
-				if ((email1 != email2) || (!email1) || (email1.indexOf(".") == -1) || (email1.indexOf("@") == -1))
-				err += "Invalid email\n";
-				';
-}
+	<div style="float:left">
+	By using this service you agree to our <a href="https://secure.dglink.co.uk/cboxoffice/tandc.html" target="_blank">Terms & Conditions</a> as well as the conditions displayed below
+	</div>
 
-$caption = "Continue";
-if ($isBackend)
-	$caption = "Buy";
-if ($isFreeEvent)
-	$caption = "Reserve";
-$this->widget('zii.widgets.jui.CJuiButton', array(
-	'name'=>'submit',
-	'caption'=>$caption,
-	'htmlOptions' => array('class'=>'ui-button-success'),
-	'onclick'=>new CJavaScriptExpression(
-		'function(){
+	<div style="float:right">
+	<?php
 
-			var err = "";
-			if (numTickets < 1)
-				err += "No tickets selected\n";
+	$free1 = ''; $free2 = ''; $free3 = ''; $notBackend = '';
+	if ($isFreeEvent)
+	{
+		$free1 = ' if (document.getElementById("free_name").value == "") err += "Invalid name\n"; ';
+		$free2 = ' if (document.getElementById("free_address1").value == "") err += "Invalid address\n"; ';
+		$free3 = ' if (document.getElementById("free_post_code").value == "") err += "Invalid postcode\n"; ';
+	}
+	if (!($isBackend))
+	{
+		$notBackend = '
+					var email1 = document.getElementById("email1").value;
+					var email2 = document.getElementById("email2").value;
+					if ((email1 != email2) || (!email1) || (email1.indexOf(".") == -1) || (email1.indexOf("@") == -1))
+					err += "Invalid email\n";
+					';
+	}
 
-' . $free1 . $free2 . $free3 . $notBackend . '
+	$caption = "Continue";
+	if ($isBackend)
+		$caption = "Buy";
+	if ($isFreeEvent)
+		$caption = "Reserve";
+	$this->widget('zii.widgets.jui.CJuiButton', array(
+		'name'=>'submit',
+		'caption'=>$caption,
+		'htmlOptions' => array('class'=>'ui-button-success'),
+		'onclick'=>new CJavaScriptExpression(
+			'function(){
+	
+				var err = "";
+				if (numTickets < 1)
+					err += "No tickets selected\n";
+	
+	' . $free1 . $free2 . $free3 . $notBackend . '
+	
+				if (err != "")
+				{
+					alert(err);
+					return false;
+				}
+			}'
+		),
+	));
+	?>
+	</div>
 
-			if (err != "")
-			{
-				alert(err);
-				return false;
-			}
-		}'
-	),
-));
-?>
+</div> <!-- row -->
+
+<div>
+<br>
+<?php echo $model->ticket_terms; ?>
 </div>
 <!-- <a href=<?php echo Yii::app()->request->baseUrl . '/';?>00002.pdf>PDF HERE </a> -->
 
