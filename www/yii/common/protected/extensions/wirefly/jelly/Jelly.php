@@ -11,7 +11,7 @@ class Jelly
      */
 
 
-	//$DEBUG = true;
+	//public $DEBUG = true;
 	public $DEBUG = false;
 
 	private $beginHeader = <<<END_OF_BEGINHEADER
@@ -263,34 +263,30 @@ END_OF_FOOTER;
 
 	private function logMsg($msg, $indentLevel=0)
 	{
-		GLOBAL $DEBUG;
-		if ($DEBUG)
+		if ($this->DEBUG)
 		{
 			$indent = "";
 			while ($indentLevel--)
 				$indent .= "    ";
-			echo $indent . $msg;
+			echo  nl2br($indent . $msg);
 		}
 	}
 
 	private function genDivCSS($content)
 	{
-		//GLOBAL $DEBUG, $cssDivArray;
-		//if (!$DEBUG)
+		if (!$this->DEBUG)
 			array_push($this->cssDivArray, $content);
 	}
 
 	private function genGlobalCSS($content)
 	{
-		//GLOBAL $DEBUG, $cssGlobalArray;
-		//if (!$DEBUG)
+		if (!$this->DEBUG)
 			array_push($this->cssGlobalArray, $content);
 	}
 
 	private function genBody($content, $indentLevel=0)
 	{
-		//GLOBAL $DEBUG, $bodyArray;
-		//if (!$DEBUG)
+		if (!$this->DEBUG)
 		{
 			$indent = "";
 			while ($indentLevel--)
@@ -301,8 +297,7 @@ END_OF_FOOTER;
 
 	private function emit($content)
 	{
-		GLOBAL $DEBUG;
-		if (!$DEBUG)
+		if (!$this->DEBUG)
 			echo $content;
 	}
 

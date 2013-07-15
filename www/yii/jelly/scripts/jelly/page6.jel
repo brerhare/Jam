@@ -1,0 +1,55 @@
+[some_sensible_values]
+css.display = none 
+css.width = 100%
+css.height = 100%
+css.border = 0px solid black
+css.margin = 0px auto
+css.padding = 0px
+css.font = 15px/2 Georgia, Serif; kmargin: 0 0 30px 0; text-indent: 40px;
+style.transparency = 0%
+style.rounding = 0px
+
+; Every blob inherits these before adding/overriding
+[* : some_sensible_values]
+
+[screen]
+fx.wallpaper-image = /img/trees.jpg
+child = webtop, webpage
+css.display = block
+
+	[webtop]
+	css.display = block
+	css.height = 10px
+
+	[webpage]
+	fx.shadow = default
+	css.display = block
+	css.background-color = white
+	css.padding = 20px
+	jcss.margin = 50px auto
+	css.width = 500px
+	; We dont want the height to be set to anything, so unset whatever we inherited
+	css.height = 
+	html.h1 = This is heading1 for the page
+	html.h2 = This is heading2 for the page
+	html.h3 = This is heading3 for the page
+	html.h4 = This is heading4 for the page
+	html.h5 = This is heading5 for the page
+	html.h6 = This is heading6 for the page
+	; Any kind of html is valid here
+	html.p = A paragraph of stuff. Has a <i>horrible</i> font. Has a nice <b>shadow</b> effect<br>Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blahblah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah
+
+; Blobs dont need to be part of any parent/child hierarchy
+[noticeblock]
+css.display = block
+fx.opacity = 80%
+fx.rounding = 10px
+css.background-color = #185d5c
+css.color = white
+css.padding = 20px
+css.height =
+css.width = 200px
+; Blobs can be placed at any wacky place using css 'margin'
+css.margin-top = -600px
+css.margin-left = 50px
+html.p = This block sticks to the left even when full-screened, has rounded corners and has a transparent effect

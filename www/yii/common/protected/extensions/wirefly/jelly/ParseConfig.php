@@ -44,6 +44,7 @@ class ParseConfig
 	        }
 	    }
 	    for( $j=0; $j<$i; $j++ ) {
+	    	if ($j < count($values))
 	        $result[ $sections[ $j ] ] = $values[ $j ];
 	    }
 	    return $result + $globals;
@@ -69,13 +70,13 @@ public $multiInclude = array();
     {
 
 		$ini = $this->parse_ini($filename);
-		//$ini = parse_ini_file($filename, $process_sections = true, $section = null);
+//$ini = parse_ini_file($filename, $process_sections = true, $section = null);
 
         if ($ini === false)
             throw new Exception('Unable to parse ini file.');
-echo "------------------------FIRST START-------------------------->\n";
-var_dump($ini);
-echo "<------------------------FIRST END----------------------------\n";
+//echo "------------------------FIRST START-------------------------->\n";
+//var_dump($ini);
+//echo "<------------------------FIRST END----------------------------\n";
         if (!$process_sections && $section)
 		{
             $values = $process_sections ? $ini[$section] : $ini;
