@@ -184,8 +184,6 @@ END_OF_FOOTER;
 				// body,html.margin = 0   -->   body,html { margin : 0 ; }
 				foreach ($value as $cssName => $cssValue)
 				{
-					if (($cssName == "display") && (!$cssValue))
-						$cssValue = "none";
 					$this->genDivCSS($cssName . ":" . $cssValue . ";\n");
 				}
 				break;

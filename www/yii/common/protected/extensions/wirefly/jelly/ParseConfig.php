@@ -12,7 +12,7 @@ class ParseConfig
 	    $sections = array();
 	    $values = array();
 	    $globals = array();
-		$sectionHasItems = false;
+		$sectionHasItems = false;		// Allows empty sections
 	    $i = 0;
 	    foreach( $ini as $line ){
 	        $line = trim( $line );
