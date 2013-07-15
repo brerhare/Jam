@@ -12,6 +12,7 @@ class ParseConfig
 	    $sections = array();
 	    $values = array();
 	    $globals = array();
+		$sectionHasItems = false;
 	    $i = 0;
 	    foreach( $ini as $line ){
 	        $line = trim( $line );
@@ -20,7 +21,9 @@ class ParseConfig
 	        // Sections
 	        if ( $line{0} == '[' ) {
 	            $sections[] = substr( $line, 1, -1 );
+				if (($i != 0) && ($sectionHasItems==false)) $values[ $i - 1 ][] = '';       // Guarantee at least one item in each section
 	            $i++;
+				$sectionHasItems = false;
 	            continue;
 	        }
 	        // Key-value pair
@@ -35,6 +38,7 @@ class ParseConfig
 	                $globals[ $key ] = $value;
 	            }
 	        } else {
+				$sectionHasItems = true;
 	            // Array values
 	            if ( substr( $line, -1, 2 ) == '[]' ) {
 	                $values[ $i - 1 ][ $key ][] = $value;
@@ -44,7 +48,7 @@ class ParseConfig
 	        }
 	    }
 	    for( $j=0; $j<$i; $j++ ) {
-	    	if ($j < count($values))
+	    	if ($values[$j])
 	        $result[ $sections[ $j ] ] = $values[ $j ];
 	    }
 	    return $result + $globals;

@@ -5,7 +5,7 @@ css.height = 100%
 css.border = 0px solid black
 css.margin = 0px auto
 css.padding = 0px
-css.font = 15px/2 Georgia, Serif; kmargin: 0 0 30px 0; text-indent: 40px;
+css.font = { 15px/2 Georgia, Serif; margin: 0 0 30px 0; text-indent: 40px; }
 style.transparency = 0%
 style.rounding = 0px
 
@@ -26,7 +26,6 @@ css.display = block
 	css.display = block
 	css.background-color = white
 	css.padding = 20px
-	jcss.margin = 50px auto
 	css.width = 500px
 	; We dont want the height to be set to anything, so unset whatever we inherited
 	css.height = 
