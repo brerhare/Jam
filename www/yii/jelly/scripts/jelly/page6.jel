@@ -30,6 +30,7 @@ css.display = block
 	; We dont want the height to be set to anything, so unset whatever we inherited
 	css.height = 
 	html.h1 = This is heading1 for the page
+	html.h1 = This is heading1 for the page repeated
 	html.h2 = This is heading2 for the page
 	html.h3 = This is heading3 for the page
 	html.h4 = This is heading4 for the page

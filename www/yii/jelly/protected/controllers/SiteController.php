@@ -2,9 +2,12 @@
 
 class SiteController extends Controller
 {
-	private function getJellyDir()
+	/**
+	 * Get the path to the jelly config files (defined in /protected/config/main.php)
+	 */
+	private function getJellyRoot()
 	{
-		return $jellyDir = Yii::app()->getBasePath() . '/../scripts/jelly/';
+		return Yii::app()->params['jellyRoot'];
 	}
 
 	/**
@@ -33,7 +36,7 @@ class SiteController extends Controller
 	public function actionIndex()
 	{
 		$parseConfig = new ParseConfig();
-		$jellyArray = $parseConfig->parse($this->getJellyDir() . 'page6.jel');
+		$jellyArray = $parseConfig->parse($this->getJellyRoot() . 'page6.jel');
 		if (!($jellyArray))
 			throw new Exception('Aborting');
 

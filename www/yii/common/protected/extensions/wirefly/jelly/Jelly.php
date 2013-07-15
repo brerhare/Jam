@@ -177,11 +177,10 @@ END_OF_FOOTER;
 				//
 				// CSS lines can be either property=value or property.grouping=value
 				//
-				// No grouping example -
-				// 'value' gets appended a semicolon
+				// No grouping example -'value' gets appended a semicolon
 				// width = 100%           -->   width : 100% ;
 				//
-				// Grouping example -2013-07-04_21.00.12
+				// Grouping example - 'value' gets appended with a semicolon and wrapped in curly brackets
 				// body,html.margin = 0   -->   body,html { margin : 0 ; }
 				foreach ($value as $cssName => $cssValue)
 				{

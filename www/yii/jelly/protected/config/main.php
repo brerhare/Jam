@@ -7,7 +7,7 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'Jelly',
+	'name'=>'A Jelly Webapp',
 
 	// Override the default controller
 	//'defaultController'=>'contentBlock',
@@ -98,5 +98,6 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@wireflydesign.com',
+		'jellyRoot' => dirname(__FILE__).'/../../scripts/jelly/',
 	),
 );
