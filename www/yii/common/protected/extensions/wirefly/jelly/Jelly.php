@@ -165,6 +165,8 @@ END_OF_FOOTER;
 							$this->genDivCSS("background-image: url(" . $cssValue . ");\n
 							background-size: cover;"); 
 							break;
+						case ("html");
+							break;
 					}
 				}
 				break;
