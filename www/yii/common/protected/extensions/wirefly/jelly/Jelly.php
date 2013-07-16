@@ -187,10 +187,11 @@ END_OF_FOOTER;
 					$this->genDivCSS($cssName . ":" . $cssValue . ";\n");
 				}
 				break;
-			case "html":
+			case "html":	// DUPS ALLOWED
 				foreach ($value as $htmlTag => $htmlValue)
 				{
-					$this->genBody("<$htmlTag>$htmlValue</$htmlTag>");
+					$tag = $this->getDupName($htmlTag);
+					$this->genBody("<$tag>$htmlValue</$tag>");
 				}
 				break;
 			case "fx":
@@ -296,6 +297,12 @@ END_OF_FOOTER;
 	{
 		if (!$this->DEBUG)
 			echo $content;
+	}
+
+	private function getDupName($string)
+	{
+		$arr = explode("___", $string);
+		return $arr[0];
 	}
 
 }

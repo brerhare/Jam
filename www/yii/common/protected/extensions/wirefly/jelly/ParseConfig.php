@@ -43,7 +43,10 @@ class ParseConfig
 	            if ( substr( $line, -1, 2 ) == '[]' ) {
 	                $values[ $i - 1 ][ $key ][] = $value;
 	            } else {
-	                $values[ $i - 1 ][ $key ] = $value;
+					if (!isset($values[ $i - 1 ][ $key ]))
+	                	$values[ $i - 1 ][ $key ] = $value;
+					else
+						$values[ $i - 1 ][ $key . '___' . 2 ] = $value;
 	            }
 	        }
 	    }
