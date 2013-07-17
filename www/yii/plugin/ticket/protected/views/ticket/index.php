@@ -28,17 +28,21 @@
         <tr style="height:120px">
         <td width="30%" style="text-align:center;">
 			<?php
-			$imgdim = getimagesize(Yii::app()->basePath . "/../../" . $logo);
-			$imgw=$imgdim[0];
-			$imgh=$imgdim[1];
-			$imgstr="height:100px;";
-			if ($imgh<=100)
-			if ($imgw>100)
-				$imgstr="width:100%;";
-			echo CHtml::image(
-				$logo,
-				'Event Image',
-				array('style'=>$imgstr));
+			$thumbPath = Yii::app()->basePath . "/../../" . $logo;
+			if (file_exists($thumbPath)
+			{
+				$imgdim = getimagesize(Yii::app()->basePath . "/../../" . $logo);
+				$imgw=$imgdim[0];
+				$imgh=$imgdim[1];
+				$imgstr="height:100px;";
+				if ($imgh<=100)
+				if ($imgw>100)
+					$imgstr="width:100%;";
+				echo CHtml::image(
+					$logo,
+					'Event Image',
+					array('style'=>$imgstr));
+			}
 			?>
         </td>
         <td width="60%">
