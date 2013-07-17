@@ -29,7 +29,7 @@
         <td width="30%" style="text-align:center;">
 			<?php
 			$thumbPath = Yii::app()->basePath . "/../../" . $logo;
-			if (file_exists($thumbPath)
+			if (file_exists($thumbPath))
 			{
 				$imgdim = getimagesize(Yii::app()->basePath . "/../../" . $logo);
 				$imgw=$imgdim[0];
