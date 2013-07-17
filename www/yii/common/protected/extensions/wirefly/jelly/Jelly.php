@@ -123,7 +123,7 @@ END_OF_FOOTER;
 			else
 			{
 				if ($name[0] != "_")
-					$this->wordArrayHandler($name, $value);	// Called once for each top-level word, eg 'css'
+					$this->wordArrayHandler($blobName, $name, $value);	// Called once for each top-level word, eg 'css'
 			}
 		}
 		$this->genDivCSS("}\n");
@@ -151,25 +151,11 @@ END_OF_FOOTER;
 	/**
 	 * Each blob has a single array for each word, containing the name=>value pairs. Some values will be further arrays
  	*/
-	private function wordArrayHandler($word, $value)
+	private function wordArrayHandler($blobName, $word, $value)
 	{
 		$this->logMsg("Handling " . $word . " with value " . $value . "\n", 1);
 		switch ($word)
 		{
-			case "style":
-				foreach ($value as $cssName => $cssValue)
-				{
-					switch ($cssName)
-					{
-						case ("background-image"):
-							$this->genDivCSS("background-image: url(" . $cssValue . ");\n
-							background-size: cover;"); 
-							break;
-						case ("html");
-							break;
-					}
-				}
-				break;
 			case "css":
 				// Each blob has a div#blobname { } around ALL its css, and the name of the blob is the generated div's id
 				// For example <div id='xyz'> would have css defined as -
@@ -189,7 +175,32 @@ END_OF_FOOTER;
 					$this->genDivCSS($cssName . ":" . $cssValue . ";\n");
 				}
 				break;
-			case "html":	// DUPS ALLOWED
+			case "style":
+				foreach ($value as $cssName => $cssValue)
+				{
+					switch ($cssName)
+					{
+						case ("background-image"):
+							$this->genDivCSS("background-image: url(" . $cssValue . ");\n
+							background-size: cover;"); 
+							break;
+						case ("html");
+
+							// @@TODO: NB: This only caters for one sub-level, eg 'style.html.h1.color = red'
+							// @@TODO: Also, note the 2nd foreach - this is for syntax but only one nvp is ever expected
+							foreach ($cssValue as $htmlTag => $htmlValue)
+							{
+								$tag = $this->getDupName($htmlTag);
+								foreach ($htmlValue as $htmlSubTag => $htmlSubValue)
+									$this->genGlobalCSS("#" . $blobName . " " . $htmlTag . "{ " . $htmlSubTag . " : " . $htmlSubValue . "; }\n");
+							}
+
+
+							break;
+					}
+				}
+				break;
+			case "html":	// NB: DUPS ALLOWED
 				foreach ($value as $htmlTag => $htmlValue)
 				{
 					$tag = $this->getDupName($htmlTag);

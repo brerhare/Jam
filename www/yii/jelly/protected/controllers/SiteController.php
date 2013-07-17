@@ -36,7 +36,7 @@ class SiteController extends Controller
 	public function actionIndex()
 	{
 		$parseConfig = new ParseConfig();
-		$jellyArray = $parseConfig->parse($this->getJellyRoot() . 'page6.jel');
+		$jellyArray = $parseConfig->parse($this->getJellyRoot() . 'frontpage.jel');
 		if (!($jellyArray))
 			throw new Exception('Aborting');
 
