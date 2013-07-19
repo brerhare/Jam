@@ -1,13 +1,7 @@
 [some_sensible_values]
 css.display = none 
 css.width = 100%
-css.height = 100%
-css.border = 0px solid black
 css.margin = 0px auto
-css.padding = 0px
-css.font = { 15px/2 Georgia, Serif; margin: 0 0 30px 0; text-indent: 40px; }
-style.transparency = 0%
-style.rounding = 0px
 
 ; Every blob inherits these before adding/overriding
 [* : some_sensible_values]
@@ -28,8 +22,9 @@ css.display = block
 	css.padding = 20px
 	css.width = 500px
 	; We dont want the height to be set to anything, so unset whatever we inherited
-	css.height = 
+
 	html.h1 = First heading1 for the page
+	style.html.h1.color = blue;
 	html.h1 = Second heading1 for the page
 	html.h2 = This is heading2 for the page
 	html.h3 = This is heading3 for the page
@@ -42,6 +37,7 @@ css.display = block
 ; Blobs dont need to be part of any parent/child hierarchy
 [noticeblock]
 css.display = block
+style.html.h1.color = yellow
 fx.opacity = 80%
 fx.rounding = 10px
 css.background-color = #185d5c
@@ -52,4 +48,5 @@ css.width = 200px
 ; Blobs can be placed at any wacky place using css 'margin'
 css.margin-top = -600px
 css.margin-left = 50px
+html.h1 = Another H1
 html.p = This block sticks to the left even when full-screened, has rounded corners and has a transparent effect

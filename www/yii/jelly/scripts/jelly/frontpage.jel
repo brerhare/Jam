@@ -1,58 +1,67 @@
 [some_sensible_values]
+;;;;;;;;;; css.html * = { font-size: 1em; color: #000; font-family: Arial !important; }
 css.display = none 
 css.width = 100%
-css.height = 100%
-css.border = 0px solid black
+css.overflow = auto /* avoids position shift on no-margin containers */
 css.margin = 0px auto
-css.padding = 0px
-css.font = { 15px/2 Georgia, Serif; margin: 0 0 30px 0; text-indent: 40px; }
-style.transparency = 0%
-style.rounding = 0px
+;css.height = auto
+;css.border = 0px solid black
+;css.padding = 0px
+;css.font = { 15px/2 Georgia, Serif; margin: 0 0 30px 0; text-indent: 40px; }
+;style.transparency = 0%
+;style.rounding = 0px
 
 ; Every blob inherits these before adding/overriding
 [* : some_sensible_values]
 
+
 [screen]
 fx.wallpaper-image = /img/bg.jpg
-child = webtop, webpage
+child = header, carousel, tabs, contentcontainer
 css.display = block
 ; We dont want the height to be set to anything, so unset whatever we inherited
-css.height = 
+;css.height = 
 
-	[webtop]
+	[header]
+	child = menu
 	css.display = block
 	css.width = 500px
 	css.height = 114px
 	css.background-image = url(/img/header.png)
-	
-	;html.h1 = FRFR
 
-	[webpage]
-	fx.shadow = default
+		[menu]
+		css.display = block
+		css.margin-top = 30px 
+		css.margin-left = 20px
+		css.width = 100px
+		;style.html.color = red
+		html.link = Menu, 
+
+	[carousel]
 	css.display = block
-	css.background-color = white
-	css.padding = 20px
-	css.width = 910px
-	html.h1 = First heading1 for the page
-	html.h1 = Second heading1 for the page
-	html.h2 = This is heading2 for the page
-	html.h3 = This is heading3 for the page
-	html.h5 = This is heading5 for the page
-	html.h6 = This is heading6 for the page
-	html.p = A paragraph of stuff. Has a <i>horrible</i> font. Has a nice <b>shadow</b> effect
-	html.p = Another paragraph. Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blahblah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah
+	html.h1 = carousel
 
-; Blobs dont need to be part of any parent/child hierarchy
-[noticeblock]
-css.display = block
-fx.opacity = 50%
-fx.rounding = 10px
-css.background-color = #185d5c
-css.color = white
-css.padding = 20px
-css.height =
-css.width = 200px
-; Blobs can be placed at any wacky place using css 'margin'
-css.margin-top = -600px
-css.margin-left = 50px
-html.p = This block sticks to the left even when full-screened, has rounded corners and has a transparent effect
+	[tabs]
+	a=b
+
+	; [content] needs a container because we want a bit of space around the actual content.
+
+	[content-container]
+	child = content
+	fx.shadow = default
+	;css.height =
+	css.display = block
+	css.width = 910px
+	css.background-color = white
+
+		[content]
+		css.display = block
+		css.background-color = white
+		html.h1 = First heading1 for the page
+		html.h1 = Second heading1 for the page
+		html.h2 = This is heading2 for the page
+		html.h3 = This is heading3 for the page
+		html.h5 = This is heading5 for the page
+		html.h6 = This is heading6 for the page
+		html.p = A paragraph of stuff. Has a <i>horrible</i> font. Has a nice <b>shadow</b> effect
+		html.p = Another paragraph. Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blahblah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah

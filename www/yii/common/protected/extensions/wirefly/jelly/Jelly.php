@@ -10,6 +10,7 @@ class Jelly
      * @throws Exception
      */
 
+	public $ADDON_BASE = './addon';
 
 	//public $DEBUG = true;
 	public $DEBUG = false;
@@ -30,6 +31,7 @@ class Jelly
 		border: 0;
 	}
 	</style>
+
 END_OF_BEGINHEADER;
 
 	private $endHeader = <<<END_OF_ENDHEADER
@@ -201,10 +203,17 @@ END_OF_FOOTER;
 				}
 				break;
 			case "html":	// NB: DUPS ALLOWED
-				foreach ($value as $htmlTag => $htmlValue)
+				if (!is_array($value))
 				{
-					$tag = $this->getDupName($htmlTag);
-					$this->genBody("<$tag>$htmlValue</$tag>");
+					$this->genBody($value);
+				}
+				else
+				{
+					foreach ($value as $htmlTag => $htmlValue)
+					{
+						$tag = $this->getDupName($htmlTag);
+						$this->genBody("<$tag>$htmlValue</$tag>");
+					}
 				}
 				break;
 			case "fx":

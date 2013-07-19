@@ -1,7 +1,7 @@
 [some_sensible_values]
 css.display = none 
 css.width = 100%
-css.height = 100%
+;;;css.height = 100%
 css.border = 0px solid black
 css.margin = 0px auto
 css.padding = 0px
@@ -51,8 +51,10 @@ css.background-color = green
 css.background-color = gray
 
 			[leftcol]
+			html.p = 444
 			css.display = block
 			css.width = 25%
+
 ;css.background-color = lime
 css.background-image = url(/img/trees.jpg)
 			content.page = $main_content
@@ -60,9 +62,9 @@ css.background-image = url(/img/trees.jpg)
 			[midcol]
 			css.display = block
 			css.width = 50%
-			xcss.height = 300px
 css.background-color = maroon
 			content.page = $left_content
+						html.p = gtjijgrt<br>gjtigjti<br>gt<br>gtkgkto<br>gt<br>gtkgkto<br>gt<br>gtkgkto<br>gt<br>gtkgkto<br>gt<br>gtkgktogtjijgrt<br>gjtigjti<br>gt<br>gtkgkto<br>gt<br>gtkgkto<br>gt<br>gtkgkto
 
 			[rightcol]
 			css.display = block
