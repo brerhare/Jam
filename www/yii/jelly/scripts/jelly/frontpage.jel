@@ -1,15 +1,8 @@
 [some_sensible_values]
 ;;;;;;;;;; css.html * = { font-size: 1em; color: #000; font-family: Arial !important; }
 css.display = none 
-css.width = 100%
-css.overflow = auto /* avoids position shift on no-margin containers */
+css.overflow = hidden /* (or any type of overflow) avoids position shift on no-margin containers */
 css.margin = 0px auto
-;css.height = auto
-;css.border = 0px solid black
-;css.padding = 0px
-;css.font = { 15px/2 Georgia, Serif; margin: 0 0 30px 0; text-indent: 40px; }
-;style.transparency = 0%
-;style.rounding = 0px
 
 ; Every blob inherits these before adding/overriding
 [* : some_sensible_values]
@@ -19,8 +12,7 @@ css.margin = 0px auto
 fx.wallpaper-image = /img/bg.jpg
 child = header, carousel, tabs, contentcontainer
 css.display = block
-; We dont want the height to be set to anything, so unset whatever we inherited
-;css.height = 
+
 
 	[header]
 	child = menu
@@ -34,12 +26,13 @@ css.display = block
 		css.margin-top = 30px 
 		css.margin-left = 20px
 		css.width = 100px
-		;style.html.color = red
-		html.link = Menu, 
+		html.link = Menu
 
 	[carousel]
 	css.display = block
+	css.width = 100%
 	html.h1 = carousel
+
 
 	[tabs]
 	a=b

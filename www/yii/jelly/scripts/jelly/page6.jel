@@ -1,6 +1,5 @@
 [some_sensible_values]
 css.display = none 
-css.width = 100%
 css.margin = 0px auto
 
 ; Every blob inherits these before adding/overriding

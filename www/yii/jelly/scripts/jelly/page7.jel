@@ -1,7 +1,5 @@
 [some_sensible_values]
 css.display = none 
-css.width = 100%
-;;;css.height = 100%
 css.border = 0px solid black
 css.margin = 0px auto
 css.padding = 0px
