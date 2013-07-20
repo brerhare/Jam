@@ -1,0 +1,40 @@
+image source (db or dirpath)
+width 
+height (wins if conflict)
+
+
+
+
+// HTML to use
+        <div class="span12" style="margin-left: 160px;">
+            <!--Flex Slider-->
+            <link rel="stylesheet" href="/js/flexslider/flexslider.css" type="text/css">
+            <script src="/js/flexslider/jquery.flexslider.js"></script>
+
+            <!-- Flex Slider custom CSS to handle sizing/clipping-->
+            <style>
+            /* NOTE! height wins in case of conflict */
+            .flexslider {
+                width: 900px;   /* Setting this clips the calculated height */
+            }
+            .slides {
+                overflow:hidden;
+                height: 250px; /* Setting this clips the calculated width */
+            }
+            </style>
+
+            <!--Flex Slider-->
+            <div class="flexslider">
+                <ul class="slides">
+
+                    <?php
+                    $carouselItems = CarouselBlock::model()->findAll(array('order'=>'sequence'));
+                    foreach ($carouselItems as $carouselItem):
+                        echo "<li>";
+                        echo $carouselItem->content;
+                        echo "</li>";
+                    endforeach;
+                    ?>
+                </ul>
+            </div>
+        </div>

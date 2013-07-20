@@ -7,54 +7,63 @@ css.margin = 0px auto
 ; Every blob inherits these before adding/overriding
 [* : some_sensible_values]
 
-
 [screen]
+child = contentframe
 fx.wallpaper-image = /img/bg.jpg
-child = header, carousel, tabs, contentcontainer
 css.display = block
 
-
-	[header]
-	child = menu
+	[contentframe]
+	child = fixedheader, carousel, tabs, contentcontainer
 	css.display = block
-	css.width = 500px
-	css.height = 114px
-	css.background-image = url(/img/header.png)
+	css.width = 910px	/* if we give an explicit width here, child elements will by default set their width to it */
 
-		[menu]
+		[fixedheader]
+		child = menu
 		css.display = block
-		css.margin-top = 30px 
-		css.margin-left = 20px
-		css.width = 100px
-		html.link = Menu
+		css.position = fixed
+		css.top = 0px
+		css.left = 50%				/* centre it, part 1 - middle of the screen */
+		css.margin-left = -250px	/* centre it, part 2 - pull left by half the item's width */
+		css.width = 500px
+		css.height = 114px
+		css.background-image = url(/img/header.png)
 
-	[carousel]
-	css.display = block
-	css.width = 100%
-	html.h1 = carousel
+			[menu]
+			css.display = block
+			css.margin-top = 30px 
+			css.margin-left = 20px
+			html.link = Menu
 
-
-	[tabs]
-	a=b
-
-	; [content] needs a container because we want a bit of space around the actual content.
-
-	[content-container]
-	child = content
-	fx.shadow = default
-	;css.height =
-	css.display = block
-	css.width = 910px
-	css.background-color = white
-
-		[content]
+		[carousel]
 		css.display = block
+		css.margin-top = 80px
+		css.height = 258px
+		css.border = 1px solid black
+		html.h1 = carousel
+
+
+		[tabs]
+		a=b
+
+		; [content] needs a container because we want a bit of space around the actual content.
+
+		[contentcontainer]
+		child = content
+		fx.shadow = default
+		;css.height =
+		css.display = block
+		;css.overflow = auto
 		css.background-color = white
-		html.h1 = First heading1 for the page
-		html.h1 = Second heading1 for the page
-		html.h2 = This is heading2 for the page
-		html.h3 = This is heading3 for the page
-		html.h5 = This is heading5 for the page
-		html.h6 = This is heading6 for the page
-		html.p = A paragraph of stuff. Has a <i>horrible</i> font. Has a nice <b>shadow</b> effect
-		html.p = Another paragraph. Blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blahblah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah
+
+			[content]
+			css.display = block
+			css.background-color = white
+			html.h1 = First heading1 for the page
+			html.h1 = Second heading1 for the page
+			html.h2 = This is heading2 for the page
+			html.h3 = This is heading3 for the page
+			html.h5 = This is heading5 for the page
+			html.h6 = This is heading6 for the page
+			html.p = A paragraph of stuff. Has a <i>horrible</i> font. Has a nice <b>shadow</b> effect
+			html.p = Another paragraph. Blah blah blah <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blahblah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah
+
