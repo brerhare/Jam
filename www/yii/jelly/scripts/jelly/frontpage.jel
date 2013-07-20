@@ -20,9 +20,9 @@ css.display = block
 		[fixedheader]
 		child = menu
 		css.display = block
-		css.position = fixed
-		css.top = 0px
-		css.left = 50%				/* centre it, part 1 - middle of the screen */
+		css.position = fixed		/* position it, part 1 */
+		css.top = 0px				/* position it, part 2 */
+		css.left = 50%				/* centre it, part 1 - middle of the screen. margin-auto doesnt apply here because of 'fixed' */
 		css.margin-left = -250px	/* centre it, part 2 - pull left by half the item's width */
 		css.width = 500px
 		css.height = 114px

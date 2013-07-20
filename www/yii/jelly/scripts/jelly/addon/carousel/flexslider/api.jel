@@ -1,11 +1,12 @@
-image source (db or dirpath)
-width 
-height (wins if conflict)
+[flexslider]
+width = 900px		/* NB: clips height if nec */
+height = 250px		/* NB: clips width if nec. NB2: height wins over width if conflict */
+
+; @@TODO: datasource fixed to jacquies. Needs to be other db/tables, image directories, etc.
+; Thought: maybe all sites use a jelly db, and each has their own table prefix? Could avoid a lot of hassle
 
 
-
-
-// HTML to use
+// HTML
         <div class="span12" style="margin-left: 160px;">
             <!--Flex Slider-->
             <link rel="stylesheet" href="/js/flexslider/flexslider.css" type="text/css">

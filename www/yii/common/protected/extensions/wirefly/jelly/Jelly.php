@@ -10,8 +10,6 @@ class Jelly
      * @throws Exception
      */
 
-	public $ADDON_BASE = './addon';
-
 	//public $DEBUG = true;
 	public $DEBUG = false;
 
