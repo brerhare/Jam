@@ -41,7 +41,7 @@ class SiteController extends Controller
 			throw new Exception('Aborting');
 
 		$jelly = new Jelly;
-		$jelly->processData($jellyArray);
+		$jelly->processData($jellyArray,$this->getJellyRoot());
 		$jelly->outputData();
 
 		//$this->render('index');
