@@ -24,7 +24,7 @@ class Api
 	 * Apply options
 	 * Return an array containing [0]localContent [1]globalContent
 	 */
-	public function init($options)
+	public function init($options, $jellyRootUrl)
 	{
 //		var_dump( $options );
 
@@ -37,7 +37,9 @@ class Api
 			$content .= "</li>";
 		endforeach;
 
-		$localCode = str_replace("<substitute1>", $content, $this->apiLocalCode);
+		$tmp = str_replace("<substitute-path>", "/scripts/jelly/addon/carousel/flexslider/", $this->apiLocalCode);
+		$tmp = str_replace("<substitute-path>", $jellyRootUrl, $this->apiLocalCode);
+		$localCode = str_replace("<substitute-data>", $content, $tmp);
 		$globalCode = $this->apiGlobalCode;
 
 		$retArr = array();
@@ -53,8 +55,8 @@ class Api
 
         <div id="jelly-flexslider-container">
             <!--Flex Slider-->
-            <link rel="stylesheet" href="/js/flexslider/flexslider.css" type="text/css">
-            <script src="/js/flexslider/jquery.flexslider.js"></script>
+            <link rel="stylesheet" href="<substitute-path>/flexslider.css" type="text/css">
+            <script src="<substitute-path>/jquery.flexslider.js"></script>
 
             <!-- Flex Slider custom CSS to handle sizing/clipping-->
             <style>
@@ -72,7 +74,7 @@ class Api
             <div class="flexslider">
                 <ul class="slides">
 
-<substitute1>
+<substitute-data>
 
                 </ul>
             </div>

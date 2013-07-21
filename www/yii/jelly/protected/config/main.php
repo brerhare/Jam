@@ -98,6 +98,6 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@wireflydesign.com',
-		'jellyRoot' => dirname(__FILE__).'/../../scripts/jelly/',
+		'jellyRoot' => '/scripts/jelly/',
 	),
 );

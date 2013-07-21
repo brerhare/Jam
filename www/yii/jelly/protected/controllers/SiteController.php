@@ -3,7 +3,7 @@
 class SiteController extends Controller
 {
 	/**
-	 * Get the path to the jelly config files (defined in /protected/config/main.php)
+	 * Get the jelly script root (as defined in /protected/config/main.php)
 	 */
 	private function getJellyRoot()
 	{
@@ -36,7 +36,7 @@ class SiteController extends Controller
 	public function actionIndex()
 	{
 		$parseConfig = new ParseConfig();
-		$jellyArray = $parseConfig->parse($this->getJellyRoot() . 'frontpage.jel');
+		$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . 'frontpage.jel');
 		if (!($jellyArray))
 			throw new Exception('Aborting');
 
