@@ -14,7 +14,7 @@ return array(
 
 	// preloading 'log' component
 	// preloading 'yiibooster' component
-	//////////////////////////////'preload'=>array('log', 'bootstrap'),
+	'preload'=>array('log', 'bootstrap'),
 
 	// autoloading model and component classes
 	'import'=>array(
@@ -40,10 +40,10 @@ return array(
 
 	// application components
 	'components'=>array(
-		/////////////////////////'bootstrap'=>array(
-			/////////////////////////'class' => 'ext.bootstrap.components.Bootstrap',
-			/////////////////////////'responsiveCss' => true,
-		/////////////////////////),
+		'bootstrap'=>array(
+			'class' => 'ext.bootstrap.components.Bootstrap',
+			'responsiveCss' => true,
+		),
 		'user'=>array(
 			// enable cookie-based authentication
 			'allowAutoLogin'=>true,

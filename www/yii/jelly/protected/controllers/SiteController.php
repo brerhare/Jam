@@ -48,6 +48,25 @@ class SiteController extends Controller
 	}
 
 	/**
+	 * This is the default 'index' action that is invoked
+	 * when an action is not explicitly requested by users.
+	 */
+	public function actionPlay($page)
+	{
+		$parseConfig = new ParseConfig();
+		$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . $page . '.jel');
+		if (!($jellyArray))
+			throw new Exception('Aborting');
+
+		$jelly = new Jelly;
+		$jelly->processData($jellyArray,$this->getJellyRoot());
+		$jelly->outputData();
+
+	}
+
+
+
+	/**
 	 * This is the action to handle external exceptions.
 	 */
 	public function actionError()

@@ -27,12 +27,12 @@ css.display = block
 		css.width = 500px
 		css.height = 114px
 		css.background-image = url(/img/header.png)
-		css.z-index = 10000
+		css.z-index = 10000			/* keep it in front */
 
 			[menu]
 			css.display = block
-			css.margin-top = 30px 
-			css.margin-left = 20px
+			css.margin-top = 35px 
+			css.margin-left = 50px
 			html.link = Menu
 
 		[carousel]
@@ -51,21 +51,18 @@ css.display = block
 
 		[contentcontainer]
 		child = content
-		fx.shadow = default
-		;css.height =
 		css.display = block
-		;css.overflow = auto
 		css.background-color = white
 
 			[content]
 			css.display = block
 			css.background-color = white
-			html.h1 = First heading1 for the page
-			html.h1 = Second heading1 for the page
-			html.h2 = This is heading2 for the page
-			html.h3 = This is heading3 for the page
-			html.h5 = This is heading5 for the page
-			html.h6 = This is heading6 for the page
-			html.p = A paragraph of stuff. Has a <i>horrible</i> font. Has a nice <b>shadow</b> effect
-			html.p = Another paragraph. Blah blah blah <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blahblah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah
-
+			;html.h1 = First heading1 for the page
+			;html.h1 = Second heading1 for the page
+			;html.h2 = This is heading2 for the page
+			;html.h3 = This is heading3 for the page
+			;html.h5 = This is heading5 for the page
+			;html.h6 = This is heading6 for the page
+			;html.p = A paragraph of stuff. Has a <i>horrible</i> font. Has a nice <b>shadow</b> effect
+			;html.p = Another paragraph. Blah blah blah <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blahblah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah
+			html.p = $content

@@ -36,11 +36,16 @@ css.background-color = blue
 		css.html.h1.color = red
 		css.html.h2.color = blue
 css.background-color = green
-		addon.carousel.type = /addon/carousel/xyzcarousel
-		addon.carousel.height = 200px
-		addon.carousel.width = 600px
-		addon.carousel.speed = 3
-		addon.carousel.data = $carousel_content
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;; ---->
+		;css.display = block
+		;css.margin-top = 80px
+		;css.height = 250px			/* dont set the height - carousel will set it */
+		;addon.carousel.flexslider.animation = fade
+		;addon.carousel.flexslider.source = db
+		;addon.carousel.flexslider.sql = CarouselBlock::model()->findAll(array('order'=>'sequence'));
+		;addon.carousel.flexslider.column = content
+;;;;;;;;;;;;;;;;;;;;;;;;;;; ---->
 
 		[midder]
 		child = leftcol, midcol, rightcol, farrightcol
@@ -61,7 +66,8 @@ css.background-image = url(/img/trees.jpg)
 			css.display = block
 			css.width = 50%
 css.background-color = maroon
-			content.page = $left_content
+
+			;content.page = $left_content
 						html.p = gtjijgrt<br>gjtigjti<br>gt<br>gtkgkto<br>gt<br>gtkgkto<br>gt<br>gtkgkto<br>gt<br>gtkgkto<br>gt<br>gtkgktogtjijgrt<br>gjtigjti<br>gt<br>gtkgkto<br>gt<br>gtkgkto<br>gt<br>gtkgkto
 
 			[rightcol]

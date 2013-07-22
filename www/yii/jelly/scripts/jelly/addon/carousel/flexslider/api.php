@@ -10,13 +10,17 @@
 
 class Api
 {
+	private $defaultWidth = "900px";
+	private $defaultHeight = "250px";
+
 	public $apiOption = array(
-		//"width" => "900",			unimplemented
-		//"height" => "400",		unimplemented
+		"width" => "900",
+		"height" => "400",
 		//"animation" => "fade",	unimplemented
-		"source" => "db",
-		"sql" => "CarouselBlock::model()->findAll(array('order'=>'sequence'))",
-		"column" => "content",
+		"source" => "db | glob",
+		"(db) sql" => "CarouselBlock::model()->findAll(array('order'=>'sequence'))",
+		"(db) column" => "content",
+		"(glob) pattern" => "/userdata/images/*.jpg",
 	);
 
 	/*
@@ -28,30 +32,75 @@ class Api
 	{
 //		var_dump( $options );
 
-		// Generate the carousel content into the html, replacing any <substituteN> tags
+		// Generate the content into the html, replacing any <substituteN> tags
 		$content = "";
-		$carouselItems = CarouselBlock::model()->findAll(array('order'=>'sequence'));
-		foreach ($carouselItems as $carouselItem):
-			$content .= "<li>";
-			$content .= $carouselItem->content;
-			$content .= "</li>";
-		endforeach;
+		foreach ($options as $opt => $val)
+		{
+			switch ($opt)
+			{
+				case "source":
+					if ($val == "db")
+					{
+						// If db based content
+						// @@NB: OI! hardcoded to jacquies here
+						$carouselItems = CarouselBlock::model()->findAll(array('order'=>'sequence'));
+						foreach ($carouselItems as $carouselItem):
+							$content .= "<li>";
+							$content .= $carouselItem->content;
+							$content .= "</li>";
+						endforeach;
+					}
+					else if ($val == "glob")
+					{
+						// get pattern
+						$pattern = $options['pattern'];
+						foreach (glob(Yii::app()->basePath . "/../" . $pattern) as $filename)
+						{
+							$content .= "<li>";
+							$content .= "<img src='" . dirname($pattern) . "/". basename($filename) . "' style='float: none; margin: 0px;' alt=''>";
+							$content .= "</li>";
+						}
+					}
+					break;
+				case "width":
+					$tmp = str_replace("<substitute-width>", "width:" . $val . ";", $this->apiHtml);
+					$this->apiHtml = $tmp;
+					break;
+				case "height":
+					$tmp = str_replace("<substitute-height>", "height:" . $val . ";", $this->apiHtml);
+					$this->apiHtml = $tmp;
+					break;
+				default:
+					// Not all array items are action items
+			}
+		}
 
-		$tmp = str_replace("<substitute-path>", "/scripts/jelly/addon/carousel/flexslider/", $this->apiLocalCode);
-		$tmp = str_replace("<substitute-path>", $jellyRootUrl, $this->apiLocalCode);
-		$localCode = str_replace("<substitute-data>", $content, $tmp);
-		$globalCode = $this->apiGlobalCode;
+		// Apply defaults
+		if (strstr($this->apiHtml, "<substitute-width>"))
+		{
+			$tmp = str_replace("<substitute-width>", "width:" . $this->defaultWidth . ";", $this->apiHtml);
+			$this->apiHtml = $tmp;
+		}
+		if (strstr($this->apiHtml, "<substitute-height>"))
+		{
+			$tmp = str_replace("<substitute-height>", "height:" . $this->defaultHeight . ";", $this->apiHtml);
+			$this->apiHtml = $tmp;
+		}
+
+		$tmp = str_replace("<substitute-path>", $jellyRootUrl, $this->apiHtml);
+		$html = str_replace("<substitute-data>", $content, $tmp);
+		$js = $this->apiJs;
 
 		$retArr = array();
-		$retArr[0] = $localCode;
-		$retArr[1] = $globalCode;
+		$retArr[0] = $html;
+		$retArr[1] = $js;
 		return $retArr;
 	}
 
 	// @@TODO: 'source' needs to be extended - image directories, etc.
 	// Thought: maybe all sites use a jelly db, and each has their own table prefix? Could avoid a lot of hassle
 
-	private $apiLocalCode = <<<END_OF_API_LOCAL_CODE
+	private $apiHtml = <<<END_OF_API_HTML
 
         <div id="jelly-flexslider-container">
             <!--Flex Slider-->
@@ -62,11 +111,11 @@ class Api
             <style>
             /* NOTE! height wins in case of conflict */
             .flexslider {
-                width: 900px;   /* Setting this clips the calculated height */
+                <substitute-width>   /* Setting this clips the calculated height */
             }
             .slides {
                 overflow:hidden;
-                height: 250px; /* Setting this clips the calculated width */
+                <substitute-height> /* Setting this clips the calculated width */
             }
             </style>
 
@@ -80,9 +129,9 @@ class Api
             </div>
         </div>
 
-END_OF_API_LOCAL_CODE;
+END_OF_API_HTML;
 
-	private $apiGlobalCode = <<<END_OF_API_GLOBAL_CODE
+	private $apiJs = <<<END_OF_API_JS
 
 	jQuery(document).ready(function($){
 
@@ -96,7 +145,7 @@ END_OF_API_LOCAL_CODE;
 	    });
 	});
 
-END_OF_API_GLOBAL_CODE;
+END_OF_API_JS;
 
 }
 ?>
