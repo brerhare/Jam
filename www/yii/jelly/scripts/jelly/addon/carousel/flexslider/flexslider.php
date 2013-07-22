@@ -8,7 +8,7 @@
  * For best results dont set the height/width of your container
  */
 
-class Api
+class flexslider
 {
 	//Defaults
 	private $defaultWidth = "900px";

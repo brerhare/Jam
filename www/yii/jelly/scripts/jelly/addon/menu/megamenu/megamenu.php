@@ -8,7 +8,7 @@
  * None
  */
 
-class Api
+class megamenu
 {
 	//Defaults
 	private $defaultValue = "900px";
