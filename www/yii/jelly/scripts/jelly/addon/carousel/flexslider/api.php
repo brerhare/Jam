@@ -18,7 +18,7 @@ class Api
 	public $apiOption = array(
 		"width" => "900px",
 		"height" => "400px",
-		"animation" => "fade",
+		"animation" => "fade | slide",
 		"source" => "db | glob",
 		"(db) sql" => "CarouselBlock::model()->findAll(array('order'=>'sequence'))",
 		"(db) column" => "content",
@@ -73,7 +73,7 @@ class Api
 					$this->apiHtml = $tmp;
 					break;
 				case "animation":
-					$tmp = str_replace("<substitute-animation>", $val, $this->apiJs);
+					$tmp = str_replace("<substitute-animation>", "'" . $val . "'", $this->apiJs);
 					$this->apiJs = $tmp;
 					break;
 				default:
@@ -96,7 +96,7 @@ class Api
 		// JS
 		if (strstr($this->apiHtml, "<substitute-animation>"))
 		{
-			$tmp = str_replace("<substitute-animation>", $this->defaultAnimation, $this->apiJs);
+			$tmp = str_replace("<substitute-animation>", "'" . $this->defaultAnimation . "'", $this->apiJs);
 			$this->apiJs = $tmp;
 		}
 
