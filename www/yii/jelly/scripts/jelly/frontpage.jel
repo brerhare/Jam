@@ -33,7 +33,11 @@ css.display = block
 			css.display = block
 			css.margin-top = 35px 
 			css.margin-left = 50px
-			html.link = Menu
+			html.link = Menuk
+			;addon.menu.megamenu.someoption = somevalue
+			;addon.menu.megamenu.sql = CarouselBlock::model()->findAll(array('order'=>'sequence'));
+			;addon.menu.megamenu.column = content
+
 
 		[carousel]
 		css.display = block
