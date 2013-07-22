@@ -172,8 +172,8 @@ END_OF_API_HTML;
 	{
 		var rect = document.getElementById("megaanchor1").getBoundingClientRect();
 		//alert(rect.left);
-		val = rect.left -700;
-		//document.getElementById("megamenu1").setAttribute("style", "margin-left:" + val.toString() + "px");	
+		val = rect.left - 700;
+		document.getElementById("megamenu1").setAttribute("style", "margin-left:" + val.toString() + "px");	
 		///alert('ddd');
 	}
 END_OF_API_JS;
