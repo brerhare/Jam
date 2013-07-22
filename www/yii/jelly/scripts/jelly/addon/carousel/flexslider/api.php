@@ -5,18 +5,20 @@
  *
  * Notes
  * -----
- * Dont set the height of your container
+ * For best results dont set the height/width of your container
  */
 
 class Api
 {
+	//Defaults
 	private $defaultWidth = "900px";
 	private $defaultHeight = "250px";
+	private $defaultAnimation = "fade";
 
 	public $apiOption = array(
-		"width" => "900",
-		"height" => "400",
-		//"animation" => "fade",	unimplemented
+		"width" => "900px",
+		"height" => "400px",
+		"animation" => "fade",
 		"source" => "db | glob",
 		"(db) sql" => "CarouselBlock::model()->findAll(array('order'=>'sequence'))",
 		"(db) column" => "content",
@@ -63,19 +65,24 @@ class Api
 					}
 					break;
 				case "width":
-					$tmp = str_replace("<substitute-width>", "width:" . $val . ";", $this->apiHtml);
+					$tmp = str_replace("<substitute-width>", "width:" . $val . ";", $this->apiHtml);		// Optional field
 					$this->apiHtml = $tmp;
 					break;
 				case "height":
-					$tmp = str_replace("<substitute-height>", "height:" . $val . ";", $this->apiHtml);
+					$tmp = str_replace("<substitute-height>", "height:" . $val . ";", $this->apiHtml);	// Optional field
 					$this->apiHtml = $tmp;
+					break;
+				case "animation":
+					$tmp = str_replace("<substitute-animation>", $val, $this->apiJs);
+					$this->apiJs = $tmp;
 					break;
 				default:
 					// Not all array items are action items
 			}
 		}
 
-		// Apply defaults
+		// Apply all defaults that werent overridden
+		// HTML
 		if (strstr($this->apiHtml, "<substitute-width>"))
 		{
 			$tmp = str_replace("<substitute-width>", "width:" . $this->defaultWidth . ";", $this->apiHtml);
@@ -85,6 +92,12 @@ class Api
 		{
 			$tmp = str_replace("<substitute-height>", "height:" . $this->defaultHeight . ";", $this->apiHtml);
 			$this->apiHtml = $tmp;
+		}
+		// JS
+		if (strstr($this->apiHtml, "<substitute-animation>"))
+		{
+			$tmp = str_replace("<substitute-animation>", $this->defaultAnimation, $this->apiJs);
+			$this->apiJs = $tmp;
 		}
 
 		$tmp = str_replace("<substitute-path>", $jellyRootUrl, $this->apiHtml);
@@ -97,8 +110,7 @@ class Api
 		return $retArr;
 	}
 
-	// @@TODO: 'source' needs to be extended - image directories, etc.
-	// Thought: maybe all sites use a jelly db, and each has their own table prefix? Could avoid a lot of hassle
+	// @@TODO: Thought: maybe all sites use a jelly db, and each has their own table prefix? Could avoid a lot of hassle
 
 	private $apiHtml = <<<END_OF_API_HTML
 
@@ -122,9 +134,7 @@ class Api
             <!--Flex Slider-->
             <div class="flexslider">
                 <ul class="slides">
-
-<substitute-data>
-
+					<substitute-data>
                 </ul>
             </div>
         </div>
@@ -141,7 +151,7 @@ END_OF_API_HTML;
 	        itemMargin: 5,
 	        //minItems: 1,
 	        //maxItems: 1,
-	        animation: "fade",
+	        animation: <substitute-animation>,
 	    });
 	});
 
