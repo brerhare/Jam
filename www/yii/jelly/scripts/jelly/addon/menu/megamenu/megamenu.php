@@ -146,24 +146,19 @@ class megamenu
 		jkmegamenu.definemenu("megaanchor", "megamenu1", "mouseover");
 		</script>
 
-		<div class="span2" style="position:relative; z-index:20000;">
-			<div style="XXXXXXposition:absolute; XXXXXXleft:388px; XXXXXXtop:30px">
-				<!--Mega Menu Anchor-->
-				<a href=<substitute-path>"/index.php/'" id="megaanchor" style="color:#000000;">Menu</a>
-			</div>
-			
-			<!--Mega Menu Dropdown HTML-->
-			<div id="megamenu1" class="megamenu" style="position: fixed; margin-top:20px; margin-left:-190px; opacity:0.925">
+		<div id="megaanchor1" style="border:0px solid black; position:relative; z-index:20000">
+			<!--Mega Menu Anchor-->
+			<a onmouseover="javascript:recalcPos();" href=<substitute-path>"/index.php/'" id="megaanchor" style="color:#000000;">Menu</a>
+		</div>
 
+		<!--Mega Menu Dropdown HTML-->
+		<div id="megamenu1" class="megamenu" style="position: absolute; margin-top:20px; text-align:center; opacity:0.925">
 				<br style="clear: left" /> <!--Break after 3rd column. Move this if desired-->
 				<br style="clear: left" /> <!--Break after 3rd column. Move this if desired-->
 				<br style="clear: left" /> <!--Break after 3rd column. Move this if desired-->
-
-<substitute-data>
-	
+					<substitute-data>
 			</div>
 		</div>
-	</div>
 
 END_OF_API_HTML;
 
@@ -173,6 +168,13 @@ END_OF_API_HTML;
     	jkmegamenu.render($);
 	})
 
+	function recalcPos()
+	{
+		var rect = document.getElementById("megaanchor1").getBoundingClientRect();
+		val = rect.left -700;
+		document.getElementById("megamenu1").setAttribute("style", "margin-left:" + val.toString() + "px");	
+		///alert('ddd');
+	}
 END_OF_API_JS;
 
 }
