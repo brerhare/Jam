@@ -96,7 +96,7 @@ class Event extends CActiveRecord
 			'date' => 'Date',
 			'address' => 'Address',
 			'post_code' => 'Post Code',
-			'banner_text' => 'Banner Text',
+			'banner_text' => 'Online Description',
 			'ticket_logo_path' => 'Ticket Logo Path',
 			'ticket_text' => 'Ticket Text',
 			'ticket_terms' => 'Ticket Terms',
