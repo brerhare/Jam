@@ -1,12 +1,12 @@
 <?php
 
 $this->menu=array(
-	array('label'=>'Create Content Block','url'=>array('create')),
+	array('label'=>'Create Page Content','url'=>array('create')),
 );
 
 ?>
 
-<h1>Manage Content Blocks</h1>
+<h1>Manage Page Content</h1>
 
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'content-block-grid',

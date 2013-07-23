@@ -1,10 +1,9 @@
 <?php
-
 $this->menu=array(
-	array('label'=>'Manage Carousel Content','url'=>array('admin')),
+	array('label'=>'Manage Tab Content','url'=>array('admin')),
 );
 ?>
 
-<h1>Create Carousel Content</h1>
+<h1>Create Tab Content</h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

@@ -43,7 +43,7 @@ class rain
 						$content .= "<div id='rain-wrapper'>";
 						$content .= "<ul id='rain-tabs'>";
 						$cnt = 0;
-						$tabItems = CarouselBlock::model()->findAll(array('order'=>'sequence'));
+						$tabItems = TabBlock::model()->findAll(array('order'=>'sequence'));
 						foreach ($tabItems as $tabItem):
 							$content .= "<li><a href='#rain-tab" . ++$cnt . "'>" . $tabItem->title . "</a></li>";
 						endforeach;
@@ -51,8 +51,7 @@ class rain
 						$cnt = 0;
 						foreach ($tabItems as $tabItem):
 							$content .= "<div class='rain-tabcontent-container' id='rain-tab" . ++$cnt . "'>";
-							$content .= "XXXXX-".$cnt."-XXXXX";
-if ($cnt == 2) $content .= "<br>a<br>b<br>c<br>d<br>e<br>f";
+							$content .= $tabItem->content;
 							$content .= "</div>";
 						endforeach;
 						$content .= "</div>";

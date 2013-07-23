@@ -1,15 +1,15 @@
 <?php
 $this->breadcrumbs=array(
-	'Carousel Content',
+	'Tab Content',
 );
 
 $this->menu=array(
-	array('label'=>'Create Carousel Content','url'=>array('create')),
-	array('label'=>'Manage Carousel Content','url'=>array('admin')),
+	array('label'=>'Create Tab Content','url'=>array('create')),
+	array('label'=>'Manage Tab Content','url'=>array('admin')),
 );
 ?>
 
-<h1>Carousel Blocks</h1>
+<h1>Tab Content</h1>
 
 <?php $this->widget('bootstrap.widgets.TbListView',array(
 	'dataProvider'=>$dataProvider,
