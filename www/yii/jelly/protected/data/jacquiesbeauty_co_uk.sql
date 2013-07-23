@@ -37,6 +37,22 @@ CREATE  TABLE IF NOT EXISTS `jacquiesbeauty_co_uk`.`carousel_block` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `jacquiesbeauty_co_uk`.`tab_block`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `jacquiesbeauty_co_uk`.`tab_block` ;
+
+CREATE  TABLE IF NOT EXISTS `jacquiesbeauty_co_uk`.`tab_block` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `sequence` INT NULL ,
+  `title` VARCHAR(255) NOT NULL ,
+  `content` TEXT NULL ,
+  `image` VARCHAR(255) NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `sequence` (`sequence` ASC) )
+ENGINE = InnoDB;
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
