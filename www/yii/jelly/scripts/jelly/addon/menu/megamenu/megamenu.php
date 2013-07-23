@@ -174,10 +174,12 @@ END_OF_API_HTML;
 	{
 		var width4Col = 190;
 		var rectAnchor = document.getElementById("megaanchor1").getBoundingClientRect();
-		var adjust = (rectAnchor.left - width4Col);
-		//alert(adjust);
+		var adjustLeft = (rectAnchor.left - width4Col);
+		var adjustTop = (rectAnchor.bottom + 0);
+		//alert(adjustTop);
 		//document.getElementById("megamenu1").setAttribute("style", "left:" + (rectAnchor.left - width4Col) + "px;");
-		document.getElementById("megamenu1").style.left = adjust + "px";
+		document.getElementById("megamenu1").style.left = adjustLeft + "px";
+		document.getElementById("megamenu1").style.top = adjustTop + "px";
 	}
 END_OF_API_JS;
 

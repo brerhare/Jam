@@ -29,8 +29,8 @@ alignmenu:function($, e, megamenu_pos){
 	var menuleft=($(window).width()-(megamenu.offsetx-$(document).scrollLeft())>megamenu.actualwidth)? megamenu.offsetx : megamenu.offsetx-megamenu.actualwidth+megamenu.anchorwidth //get x coord of menu
 	//var menutop=($(window).height()-(megamenu.offsety-$(document).scrollTop()+megamenu.anchorheight)>megamenu.actualheight)? megamenu.offsety+megamenu.anchorheight : megamenu.offsety-megamenu.actualheight
 	var menutop=megamenu.offsety+megamenu.anchorheight  //get y coord of menu
-	$menu.css({top:menutop+"px"})
-	this.$shimobj.css({width:megamenu.actualwidth+"px", height:megamenu.actualheight+"px", top:menutop+"px", display:"block"})
+	//$menu.css({top:menutop+"px"})
+	this.$shimobj.css({width:megamenu.actualwidth+"px", height:megamenu.actualheight+"px", XXtop:menutop+"px", display:"block"})
 },
 
 showmenu:function(e, megamenu_pos){
@@ -73,7 +73,7 @@ render:function($){
 		megamenu.actualwidth=megamenu.$menuobj.outerWidth()
 		megamenu.actualheight=megamenu.$menuobj.outerHeight()
 		megamenu.offsetx=megamenu.$anchorobj.offset().left
-		megamenu.offsety=megamenu.$anchorobj.offset().top
+		megamenu.offsety=0; //megamenu.$anchorobj.offset().top
 		megamenu.anchorwidth=megamenu.$anchorobj.outerWidth()
 		megamenu.anchorheight=megamenu.$anchorobj.outerHeight()
 		$(document.body).append(megamenu.$menuobj) //move drop down menu to end of document
@@ -110,7 +110,7 @@ render:function($){
 				var $anchorisimg=(megamenu.$anchorobj.children().length==1 && megamenu.$anchorobj.children().eq(0).is('img'))? megamenu.$anchorobj.children().eq(0) : null
 				if ($anchorisimg){ //if anchor is an image link, get offsets and dimensions of image itself, instead of parent A
 					megamenu.offsetx=$anchorisimg.offset().left
-					megamenu.offsety=$anchorisimg.offset().top
+					//megamenu.offsety=$anchorisimg.offset().top
 					megamenu.anchorwidth=$anchorisimg.width()
 					megamenu.anchorheight=$anchorisimg.height()
 				}
@@ -122,7 +122,7 @@ render:function($){
 			for (var i=0; i<jkmegamenu.megamenus.length; i++){
 				var megamenu=jkmegamenu.megamenus[i]	
 				megamenu.offsetx=megamenu.$anchorobj.offset().left
-				megamenu.offsety=megamenu.$anchorobj.offset().top
+				//megamenu.offsety=megamenu.$anchorobj.offset().top
 			}
 		})
 	}
