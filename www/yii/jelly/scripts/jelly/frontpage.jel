@@ -13,7 +13,7 @@ fx.wallpaper-image = /img/bg.jpg
 css.display = block
 
 	[contentframe]
-	child = fixedheader, carousel, tabs, contentcontainer
+	child = fixedheader, carousel, tabscontainer, contentcontainer
 	css.display = block
 	css.width = 908px	/* if we give an explicit width here, child elements will by default set their width to it */
 
@@ -46,9 +46,15 @@ css.display = block
 		addon.carousel.flexslider.sql = CarouselBlock::model()->findAll(array('order'=>'sequence'));
 		addon.carousel.flexslider.column = content
 
+		[tabscontainer]
+		child = tabs
+		css.display = block
+		css.margin-bottom = -4px
+		css.background-color = white
+		fx.rounding = 4px
+
 		[tabs]
 		css.display = block
-		css.margin-top = 10px
 		;css.height = 250px
 		addon.tab.rain.source = db
 		addon.tab.rain.sql = TabBlock::model()->findAll(array('order'=>'sequence'));
@@ -59,7 +65,7 @@ css.display = block
 		[contentcontainer]
 		child = content
 		css.display = block
-		css.margin-top = 10px
+		;css.margin-top = 10px
 		css.background-color = white
 		fx.rounding = 4px
 
