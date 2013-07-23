@@ -60,12 +60,13 @@ css.display = block
 			[content]
 			css.display = block
 			css.background-color = white
-			;html.h1 = First heading1 for the page
-			;html.h1 = Second heading1 for the page
-			;html.h2 = This is heading2 for the page
-			;html.h3 = This is heading3 for the page
-			;html.h5 = This is heading5 for the page
-			;html.h6 = This is heading6 for the page
-			;html.p = A paragraph of stuff. Has a <i>horrible</i> font. Has a nice <b>shadow</b> effect
-			;html.p = Another paragraph. Blah blah blah <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blahblah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah
-			html.p = $content
+
+			html.h1 = First heading1 for the page
+			html.h1 = Second heading1 for the page
+			html.h2 = This is heading2 for the page
+			html.h3 = This is heading3 for the page
+			html.h5 = This is heading5 for the page
+			html.h6 = This is heading6 for the page
+			html.p = A paragraph of stuff. Has a <i>horrible</i> font. Has a nice <b>shadow</b> effect
+			html.p = Another paragraph. Blah blah blah <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blahblah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah
+			;html.p = $content
