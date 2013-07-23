@@ -282,10 +282,16 @@ $page = $_GET['page'];
 						case ("source"):
 							if ($val == "db")
 							{
+
+								if (isset($_GET['page']))
+									$page = $_GET['page'];
+								else
+									$page = 'Jacquies Beauty Dumfries Salon';
+								
 								// @@NB: OI! hardcoded to jacquies here
 								//$sql = "ContentBlock::model()->findByAttributes(array('url'=>'Massage'));";
 								$column = $value['column'];
-								$model = ContentBlock::model()->findByAttributes(array('url'=>$_GET['page']));
+								$model = ContentBlock::model()->findByAttributes(array('url'=>$page));
 								//eval("\$model = \"$sql\";");
 								if (!$model) die ('SQL returned nothing');
 								$this->genInlineHtml($model->content);
