@@ -32,6 +32,11 @@ class Jelly
 		margin: 0;
 		border: 0;
 	}
+html *
+{
+   /*font-size: 1em !important;*/
+   font-family: Arial !important;
+}
 	</style>
 
 END_OF_BEGINHEADER;
