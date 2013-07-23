@@ -146,13 +146,13 @@ class megamenu
 		jkmegamenu.definemenu("megaanchor", "megamenu1", "mouseover");
 		</script>
 
-		<div id="megaanchor1" style="border:0px solid black; position:absolute; z-index:20000">
+		<div id="megaanchor1" style="z-index:20000">
 			<!--Mega Menu Anchor-->
 			<a onmouseover="javascript:recalcPos();" href=<substitute-path>"/index.php/'" id="megaanchor" style="color:#000000;">Menu</a>
 		</div>
 
 		<!--Mega Menu Dropdown HTML-->
-		<div id="megamenu1" class="megamenu" style="position: absolute; left:0px; margin-top:20px; Xtext-align:center; opacity:0.925">
+		<div id="megamenu1" class="megamenu" style="margin-top:20px; opacity:0.925">
 				<br style="clear: left" /> <!--Break after 3rd column. Move this if desired-->
 				<br style="clear: left" /> <!--Break after 3rd column. Move this if desired-->
 				<br style="clear: left" /> <!--Break after 3rd column. Move this if desired-->
@@ -170,10 +170,14 @@ END_OF_API_HTML;
 
 	function recalcPos()
 	{
+		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 		var rect = document.getElementById("megaanchor1").getBoundingClientRect();
 		//alert(rect.left);
 		val = rect.left;
-		document.getElementById("megamenu1").setAttribute("style", "left:" + val.toString() + "px");	
+		if (isChrome)
+			document.getElementById("megamenu1").setAttribute("style", "margin-left:" + (val.toString() - 420) + "px");
+		else
+			document.getElementById("megamenu1").setAttribute("style", "left:" + val.toString() + "px");	
 		///alert('ddd');
 	}
 END_OF_API_JS;
