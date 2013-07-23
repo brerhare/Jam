@@ -1,17 +1,13 @@
-/*-------------------------*/
-/* Use this for general rules such as width, appropriate paddings etc
-
-.container{ 
-	clear:both; 	 	 
-	padding:10px 0px; 
-	width:664px; 
-	background-color:#ff0000; 
-	text-align:left; 	 
+#rain-wrapper {
+	width:665px; 
+	margin:0 auto; 
+	position:relative; 
+	top:15px; 
+	background:#fff; 
+	/*height:665px; */
+	padding:15px; 
 }
-
-/*-------------------------*/
-
-#tabs {
+#rain-tabs {
 	border:1px solid #ccc; 
 	height:28px; 
 	background:#eff5f9; 
@@ -23,7 +19,7 @@
 	border-top-left-radius:4px;  
 	border-top-right-radius:4px;
 }
-#tabs li {
+#rain-tabs li {
 	float:left; 
 	list-style:none; 
 	border-top:1px solid #ccc; 
@@ -36,7 +32,7 @@
 	-webkit-box-shadow:  0 -2px 2px #dadada;
 	box-shadow: 0 -2px 2px #dadada;
 }
-#tabs li a {
+#rain-tabs li a {
 	font-family:Arial, Helvetica, sans-serif; 
 	font-size:13px;
 	font-weight:bold; 
@@ -53,7 +49,11 @@
 	text-shadow:-1px -1px 0 #fff;
 	outline:none;
 }
-#tabs li a.inactive{
+#rain-tabs li a:hover, #rain-tabs li a.inactive:hover {
+	border-top: 1px solid #dedede;
+	color:#000000;
+}
+#rain-tabs li a.inactive{
 	padding-top:5px;
 	padding-bottom:5px;
 	color:#666666;
@@ -61,8 +61,10 @@
 	background: -webkit-gradient(linear, 0 0, 0 75%, from(#dedede), to(white));  
 	border-top: 1px solid white; 
 }
-#tabs li a:hover, #tabs li a.inactive:hover {
-	border-top: 1px solid #dedede;
-	color:#000000;
+.container{ 
+	clear:both; 	 	 
+	padding:10px 0px; 
+	width:664px; 
+	background-color:#fff; 
+	text-align:left; 	 
 }
-

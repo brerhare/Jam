@@ -40,19 +40,21 @@ class rain
 					{
 						// If db based content
 						// @@NB: OI! hardcoded to jacquies here
-						$content .= "<ul id='tabs'>";
+						$content .= "<div id='rain-wrapper'>";
+						$content .= "<ul id='rain-tabs'>";
 						$cnt = 0;
 						$tabItems = CarouselBlock::model()->findAll(array('order'=>'sequence'));
 						foreach ($tabItems as $tabItem):
-							$content .= "<li><a href='#tab" . ++$cnt . "'>" . $tabItem->title . "</a></li>";
+							$content .= "<li><a href='#rain-tab" . ++$cnt . "'>" . $tabItem->title . "</a></li>";
 						endforeach;
 						$content .= "</ul>";
 						$cnt = 0;
 						foreach ($tabItems as $tabItem):
-							$content .= "<div class='container' id='tab" . ++$cnt . "'>";
-							$content .= "XXXXX";
+							$content .= "<div class='container' id='rain-tab" . ++$cnt . "'>";
+							$content .= "XXXXX-".$cnt."-XXXXX";
 							$content .= "</div>";
 						endforeach;
+						$content .= "</div>";
 					}
 					else if ($val == "glob")
 					{
@@ -135,9 +137,6 @@ END_OF_API_HTML;
 			}			
 			return false;
 		}) //end click
-	
-	
-	
 });
 
 END_OF_API_JS;

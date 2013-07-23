@@ -47,13 +47,19 @@ css.display = block
 		addon.carousel.flexslider.column = content
 
 		[tabs]
-		a=b
+		css.display = block
+		css.margin-top = 10px
+		;css.height = 250px
+		addon.tab.rain.source = db
+		addon.tab.rain.sql = TabBlock::model()->findAll(array('order'=>'sequence'));
+		addon.tab.rain.column = content
 
 		; [content] needs a container because we want a bit of space around the actual content.
 
 		[contentcontainer]
 		child = content
 		css.display = block
+		css.margin-top = 10px
 		css.background-color = white
 		fx.rounding = 4px
 
