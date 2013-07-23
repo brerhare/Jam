@@ -55,7 +55,6 @@ css.display = block
 
 		[tabs]
 		css.display = block
-		;css.height = 250px
 		addon.tab.rain.source = db
 		addon.tab.rain.sql = TabBlock::model()->findAll(array('order'=>'sequence'));
 		addon.tab.rain.column = content

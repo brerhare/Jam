@@ -137,7 +137,6 @@ END_OF_API_HTML;
 			}			
 			return false;
 		}) //end click
-
 /* Fire the 'Equal Heights Plugin' for all items of class 'rain-tabcontent-container' */
 $(".rain-tabcontent-container").equalHeights();
 

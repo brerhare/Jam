@@ -4,7 +4,7 @@
 	position:relative; 
 	top:15px; 
 	background:#fff; 
-	/*height:665px; */
+	height:665px;
 	padding:15px; 
 }
 /* The tabs themselves, and the background */
@@ -13,7 +13,7 @@
 	height:28px; 
 	background:#fff; 
 	padding-left: 40px;
-	padding-top:45px;
+	/*padding-top:45px;*/
 	-moz-box-shadow: inset 0 -2px 2px #dadada;
 	-webkit-box-shadow:inset  0 -2px 2px #dadada;
 	box-shadow: inset 0 -2px 2px #dadada;
