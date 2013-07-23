@@ -156,6 +156,7 @@ class megamenu
 				<br style="clear: left" /> <!--Break after 3rd column. Move this if desired-->
 				<br style="clear: left" /> <!--Break after 3rd column. Move this if desired-->
 				<br style="clear: left" /> <!--Break after 3rd column. Move this if desired-->
+				<br style="clear: left" /> <!--Break after 3rd column. Move this if desired-->
 					<substitute-data>
 			</div>
 		</div>
@@ -170,15 +171,14 @@ END_OF_API_HTML;
 
 	function recalcPos()
 	{
+
+		var width4Col = 200;
+		var rectAnchor = document.getElementById("megaanchor1").getBoundingClientRect();
 		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-		var rect = document.getElementById("megaanchor1").getBoundingClientRect();
-		//alert(rect.left);
-		val = rect.left;
-		if (isChrome)
-			document.getElementById("megamenu1").setAttribute("style", "margin-left:" + (val.toString() - 420) + "px");
-		else
-			document.getElementById("megamenu1").setAttribute("style", "left:" + val.toString() + "px");	
-		///alert('ddd');
+		//if (isChrome)
+			//document.getElementById("megamenu1").setAttribute("style", "margin-left:" + (rectAnchor.left - 420 - width4Col) + "px");
+		//else
+			document.getElementById("megamenu1").setAttribute("style", "left:" + (rectAnchor.left - width4Col) + "px");
 	}
 END_OF_API_JS;
 

@@ -18,7 +18,7 @@ zIndexVal: 1000, //starting z-index value for drop down menu
 $shimobj: null,
 
 addshim:function($){
-	$(document.body).append('<IFRAME id="outlineiframeshim" src="'+(location.protocol=="https:"? 'blank.htm' : 'about:blank')+'" style="display:none; left:0; top:0; z-index:999; position:absolute; filter:progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0)" frameBorder="0" scrolling="no"></IFRAME>')
+	$(document.body).append('<IFRAME id="outlineiframeshim" src="'+(location.protocol=="https:"? 'blank.htm' : 'about:blank')+'" style="display:none; top:0; z-index:999; position:absolute; filter:progid:DXImageTransform.Microsoft.Alpha(style=0,opacity=0)" frameBorder="0" scrolling="no"></IFRAME>')
 	this.$shimobj=$("#outlineiframeshim")
 },
 
@@ -29,8 +29,8 @@ alignmenu:function($, e, megamenu_pos){
 	var menuleft=($(window).width()-(megamenu.offsetx-$(document).scrollLeft())>megamenu.actualwidth)? megamenu.offsetx : megamenu.offsetx-megamenu.actualwidth+megamenu.anchorwidth //get x coord of menu
 	//var menutop=($(window).height()-(megamenu.offsety-$(document).scrollTop()+megamenu.anchorheight)>megamenu.actualheight)? megamenu.offsety+megamenu.anchorheight : megamenu.offsety-megamenu.actualheight
 	var menutop=megamenu.offsety+megamenu.anchorheight  //get y coord of menu
-	$menu.css({left:menuleft+"px", top:menutop+"px"})
-	this.$shimobj.css({width:megamenu.actualwidth+"px", height:megamenu.actualheight+"px", left:menuleft+"px", top:menutop+"px", display:"block"})
+	$menu.css({top:menutop+"px"})
+	this.$shimobj.css({width:megamenu.actualwidth+"px", height:megamenu.actualheight+"px", top:menutop+"px", display:"block"})
 },
 
 showmenu:function(e, megamenu_pos){
@@ -55,7 +55,7 @@ hidemenu:function(e, megamenu_pos){
 	var $menu=megamenu.$menuobj
 	var $menuinner=megamenu.$menuinner
 	$menuinner.css('visibility', 'hidden')
-	this.$shimobj.css({display:"none", left:0, top:0})
+	this.$shimobj.css({display:"none", top:0})
 	$menu.hide(this.effectduration)
 },
 
