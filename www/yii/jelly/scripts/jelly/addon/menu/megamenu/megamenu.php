@@ -172,12 +172,8 @@ END_OF_API_HTML;
 	function recalcPos()
 	{
 
-		var width4Col = 200;
+		var width4Col = 190;
 		var rectAnchor = document.getElementById("megaanchor1").getBoundingClientRect();
-		var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-		//if (isChrome)
-			//document.getElementById("megamenu1").setAttribute("style", "margin-left:" + (rectAnchor.left - 420 - width4Col) + "px");
-		//else
 			document.getElementById("megamenu1").setAttribute("style", "left:" + (rectAnchor.left - width4Col) + "px");
 	}
 END_OF_API_JS;
