@@ -15,7 +15,7 @@ css.display = block
 	[contentframe]
 	child = fixedheader, carousel, tabs, contentcontainer
 	css.display = block
-	css.width = 910px	/* if we give an explicit width here, child elements will by default set their width to it */
+	css.width = 908px	/* if we give an explicit width here, child elements will by default set their width to it */
 
 		[fixedheader]
 		child = menu
@@ -60,7 +60,7 @@ css.display = block
 			[content]
 			css.display = block
 			css.background-color = white
-			css.margin = 10px
+			css.margin = 15px
 
 			html.h1 = First heading1 for the page
 			html.h1 = Second heading1 for the page
@@ -70,4 +70,6 @@ css.display = block
 			html.h6 = This is heading6 for the page
 			html.p = A paragraph of stuff. Has a <i>horrible</i> font. Has a nice <b>shadow</b> effect
 			html.p = Another paragraph. Blah blah blah <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blahblah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah
-			;html.p = $content
+			content.source = db
+			content.sql = ContentBlock::model()->findByAttributes(array('url'=>$GET['page']))
+			content.column = content

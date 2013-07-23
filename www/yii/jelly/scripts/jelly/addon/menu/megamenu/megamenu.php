@@ -95,31 +95,31 @@ class megamenu
 
 
 		// Insert the data
-				$content = "";
-				$menuHeaders = ContentBlock::model()->findAll(array('order'=>'sequence'));
-				$blockCount = 0;
-				foreach ($menuHeaders as $menuHeader):
-					if (($menuHeader->parent_id) || (!$menuHeader->active))
-						continue;
-					if (++$blockCount > 4)
-					{
-			    		$content .= "<br style='clear: left' />";
-			    		$content .= "<br style='clear: left' />";
-			    		$blockCount = 0;
-					}
-					$content .= "<div class='column'>";
-					$content .= " <ul>";
-					$content .= "<li><h3><a href='" . Yii::app()->request->baseUrl . "/index.php/site/page?url=" . $menuHeader->url . "'>" . $menuHeader->title . "</a></h3></li>";
-					$criteria = new CDbCriteria;
-					$criteria->addCondition("parent_id = " . $menuHeader->id);
-					$menuItems = ContentBlock::model()->findAll($criteria);
-					foreach ($menuItems as $menuItem):
-						if ($menuItem->active)
-							$content .= "<li><a href='" . Yii::app()->request->baseUrl . "/index.php/site/page?url=" . $menuItem->url . "'>" . $menuItem->title . "</a></li>";
-					endforeach;
-					$content .= " </ul>";
-					$content .= "</div>";
-				endforeach;
+		$content = "";
+		$menuHeaders = ContentBlock::model()->findAll(array('order'=>'sequence'));
+		$blockCount = 0;
+		foreach ($menuHeaders as $menuHeader):
+			if (($menuHeader->parent_id) || (!$menuHeader->active))
+				continue;
+			if (++$blockCount > 4)
+			{
+	    		$content .= "<br style='clear: left' />";
+	    		$content .= "<br style='clear: left' />";
+	    		$blockCount = 0;
+			}
+			$content .= "<div class='column'>";
+			$content .= " <ul>";
+			$content .= "<li><h3><a href='" . Yii::app()->request->baseUrl . "/index.php/site/page?url=" . $menuHeader->url . "'>" . $menuHeader->title . "</a></h3></li>";
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("parent_id = " . $menuHeader->id);
+			$menuItems = ContentBlock::model()->findAll($criteria);
+			foreach ($menuItems as $menuItem):
+				if ($menuItem->active)
+					$content .= "<li><a href='" . Yii::app()->request->baseUrl . "/index.php/site/page?url=" . $menuItem->url . "'>" . $menuItem->title . "</a></li>";
+			endforeach;
+			$content .= " </ul>";
+			$content .= "</div>";
+		endforeach;
 
 
 

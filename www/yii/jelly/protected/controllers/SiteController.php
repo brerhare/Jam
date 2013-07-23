@@ -35,8 +35,11 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
+		$page = "frontpage";
+		if (isset($_GET['layout']))
+			$page = $_GET['layout'];
 		$parseConfig = new ParseConfig();
-		$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . 'frontpage.jel');
+		$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . $page . ".jel");
 		if (!($jellyArray))
 			throw new Exception('Aborting');
 

@@ -170,6 +170,8 @@ END_OF_FOOTER;
  	*/
 	private function wordArrayHandler($blobName, $word, $value)
 	{
+if (isset($_GET['page']))
+$page = $_GET['page'];
 		$this->logMsg("Handling " . $word . " with value " . $value . "\n", 1);
 		switch ($word)
 		{
@@ -269,6 +271,29 @@ END_OF_FOOTER;
 									-webkit-border-radius: " . $cssValue . ";
 									border-radius: " . $cssValue . "; /* future proofing */
 									-khtml-border-radius: " . $cssValue . "; /* for old Konqueror browsers */\n");
+					}
+				}
+				break;
+			case "content":
+				foreach ($value as $option => $val)
+				{
+					switch ($option)
+					{
+						case ("source"):
+							if ($val == "db")
+							{
+								// @@NB: OI! hardcoded to jacquies here
+								$sql = $value['sql'];
+								$sql = "ContentBlock::model()->findByAttributes(array('url'=>'Massage'));";
+								$column = $value['column'];
+								//$model = ContentBlock::model()->findByAttributes(array('url'=>'Massage'));
+								$model = ContentBlock::model()->findAll(array('order'=>'sequence'));
+								if (!$model) die ($sql);
+								foreach ($model as $i)
+									$this->genInlineHtml($i->content);
+								break;
+							}
+						break;
 					}
 				}
 				break;
