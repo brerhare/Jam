@@ -7,10 +7,11 @@
 	/*height:665px; */
 	padding:15px; 
 }
+/* The tabs themselves, and the background */
 #rain-tabs {
-	border:1px solid #ccc; 
+	border:0px solid #ccc; 
 	height:28px; 
-	background:#eff5f9; 
+	background:#fff; 
 	padding-left: 40px;
 	padding-top:45px;
 	-moz-box-shadow: inset 0 -2px 2px #dadada;
@@ -61,10 +62,10 @@
 	background: -webkit-gradient(linear, 0 0, 0 75%, from(#dedede), to(white));  
 	border-top: 1px solid white; 
 }
-.container{ 
+.rain-tabcontent-container{ 
 	clear:both; 	 	 
 	padding:10px 0px; 
-	width:664px; 
+	width:100%;
 	background-color:#fff; 
 	text-align:left; 	 
 }

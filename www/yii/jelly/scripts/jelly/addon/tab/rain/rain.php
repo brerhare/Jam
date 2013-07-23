@@ -50,8 +50,9 @@ class rain
 						$content .= "</ul>";
 						$cnt = 0;
 						foreach ($tabItems as $tabItem):
-							$content .= "<div class='container' id='rain-tab" . ++$cnt . "'>";
+							$content .= "<div class='rain-tabcontent-container' id='rain-tab" . ++$cnt . "'>";
 							$content .= "XXXXX-".$cnt."-XXXXX";
+if ($cnt == 2) $content .= "<br>a<br>b<br>c<br>d<br>e<br>f";
 							$content .= "</div>";
 						endforeach;
 						$content .= "</div>";
@@ -125,19 +126,57 @@ END_OF_API_HTML;
 
 	jQuery(document).ready(function($){
 		$('#tabs li a:not(:first)').addClass('inactive');
-		$('.container:not(:first)').hide();	
+		$('.rain-tabcontent-container:not(:first)').hide();	
 	
 		$('#tabs li a').click(function(){		
 			var t = $(this).attr('href');
 			if($(this).hasClass('inactive')){ //added to not animate when active
 				$('#tabs li a').addClass('inactive');		
 				$(this).removeClass('inactive');
-				$('.container').hide();
+				$('.rain-tabcontent-container').hide();
 				$(t).fadeIn('slow');	
 			}			
 			return false;
 		}) //end click
+
+/* Fire the 'Equal Heights Plugin' for all items of class 'rain-tabcontent-container' */
+$(".rain-tabcontent-container").equalHeights();
+
 });
+
+/**
+ * Equal Heights Plugin
+ * Equalize the heights of elements. Great for columns or any elements
+ * that need to be the same size (floats, etc).
+ * 
+ * Version 1.0
+ * Updated 12/10/2008
+ *
+ * Copyright (c) 2008 Rob Glazebrook (cssnewbie.com) 
+ *
+ * Usage: $(object).equalHeights([minHeight], [maxHeight]);
+ * 
+ * Example 1: $(".cols").equalHeights(); Sets all columns to the same height.
+ * Example 2: $(".cols").equalHeights(400); Sets all cols to at least 400px tall.
+ * Example 3: $(".cols").equalHeights(100,300); Cols are at least 100 but no more
+ * than 300 pixels tall. Elements with too much content will gain a scrollbar.
+ * 
+ */
+(function($) {
+	$.fn.equalHeights = function(minHeight, maxHeight) {
+		tallest = (minHeight) ? minHeight : 0;
+		this.each(function() {
+			if($(this).height() > tallest) {
+				tallest = $(this).height();
+			}
+		});
+		if((maxHeight) && tallest > maxHeight) tallest = maxHeight;
+		return this.each(function() {
+			$(this).height(tallest).css("overflow","auto");
+		});
+	}
+})(jQuery);
+/* End Equal Heights plugin */
 
 END_OF_API_JS;
 
