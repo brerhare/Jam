@@ -283,14 +283,12 @@ $page = $_GET['page'];
 							if ($val == "db")
 							{
 								// @@NB: OI! hardcoded to jacquies here
-								$sql = $value['sql'];
-								$sql = "ContentBlock::model()->findByAttributes(array('url'=>'Massage'));";
+								//$sql = "ContentBlock::model()->findByAttributes(array('url'=>'Massage'));";
 								$column = $value['column'];
-								//$model = ContentBlock::model()->findByAttributes(array('url'=>'Massage'));
-								$model = ContentBlock::model()->findAll(array('order'=>'sequence'));
-								if (!$model) die ($sql);
-								foreach ($model as $i)
-									$this->genInlineHtml($i->content);
+								$model = ContentBlock::model()->findByAttributes(array('url'=>$_GET['page']));
+								//eval("\$model = \"$sql\";");
+								if (!$model) die ('SQL returned nothing');
+								$this->genInlineHtml($model->content);
 								break;
 							}
 						break;

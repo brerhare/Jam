@@ -109,13 +109,13 @@ class megamenu
 			}
 			$content .= "<div class='column'>";
 			$content .= " <ul>";
-			$content .= "<li><h3><a href='" . Yii::app()->request->baseUrl . "/index.php/site/page?url=" . $menuHeader->url . "'>" . $menuHeader->title . "</a></h3></li>";
+			$content .= "<li><h3><a href='" . Yii::app()->request->baseUrl . "?layout=frontpage&page=" . $menuHeader->url . "'>" . $menuHeader->title . "</a></h3></li>";
 			$criteria = new CDbCriteria;
 			$criteria->addCondition("parent_id = " . $menuHeader->id);
 			$menuItems = ContentBlock::model()->findAll($criteria);
 			foreach ($menuItems as $menuItem):
 				if ($menuItem->active)
-					$content .= "<li><a href='" . Yii::app()->request->baseUrl . "/index.php/site/page?url=" . $menuItem->url . "'>" . $menuItem->title . "</a></li>";
+					$content .= "<li><a href='" . Yii::app()->request->baseUrl . "?layout=frontpage&page=" . $menuItem->url . "'>" . $menuItem->title . "</a></li>";
 			endforeach;
 			$content .= " </ul>";
 			$content .= "</div>";
