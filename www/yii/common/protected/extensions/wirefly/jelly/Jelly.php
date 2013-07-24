@@ -121,6 +121,15 @@ END_OF_FOOTER;
 	 */
 	private function blobProcess($jellyArray, $blobName, $array, $float, $indentLevel = 0)
 	{
+if (isset($_GET['page']))
+{
+ if ($_GET['page'] != 'Jacquies Beauty Dumfries Salon')
+ {
+  if (($blobName == 'tabs') || ($blobName == 'tabscontainer'))
+   return;
+  }
+}
+ 
 		$this->logMsg("Processing tagged blob '" . $blobName . "'\n");
 		$this->genInlineHtml("<div id='" . $blobName . "'>\n", $indentLevel);
 		$this->genDivCSS("div#" . $blobName ." {\n");
