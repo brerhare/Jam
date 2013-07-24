@@ -161,6 +161,7 @@ $(".rain-tabcontent-container").equalHeights();
  * 
  */
 (function($) {
+	return;		// KIM! @@TODO!!!!!
 	$.fn.equalHeights = function(minHeight, maxHeight) {
 		tallest = (minHeight) ? minHeight : 0;
 		this.each(function() {

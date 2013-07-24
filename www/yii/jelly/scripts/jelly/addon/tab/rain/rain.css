@@ -1,10 +1,11 @@
 #rain-wrapper {
-	width:665px; 
+	/*width:665px; */
+	/*height:665px;*/
+	height:400px;
 	margin:0 auto; 
 	position:relative; 
-	top:15px; 
+	/*top:15px; */
 	background:#fff; 
-	height:665px;
 	padding:15px; 
 }
 /* The tabs themselves, and the background */
@@ -64,8 +65,8 @@
 }
 .rain-tabcontent-container{ 
 	clear:both; 	 	 
-	padding:10px 0px; 
-	width:100%;
+	/*padding:10px 0px; */
+	/*width:100%;*/
 	background-color:#fff; 
 	text-align:left; 	 
 }
