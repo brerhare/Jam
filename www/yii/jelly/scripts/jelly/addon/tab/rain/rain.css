@@ -59,8 +59,8 @@
 	padding-top:5px;
 	padding-bottom:5px;
 	color:#666666;
-	background: -moz-linear-gradient(top, #dedede, white 75%);  
-	background: -webkit-gradient(linear, 0 0, 0 75%, from(#dedede), to(white));  
+	background: -moz-linear-gradient(top, #bb9eb2, white 75%);  
+	background: -webkit-gradient(linear, 0 0, 0 75%, from(#bb9eb2), to(white));  
 	border-top: 1px solid white; 
 }
 .rain-tabcontent-container{ 
