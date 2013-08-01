@@ -2,6 +2,9 @@
 class ParseConfig
 {
 
+	public $DEBUG = true;
+	//public $DEBUG = false;
+
 	/**
 	 * Source lifted from http://php.net/manual/en/function.parse-ini-file.php
 	 */
@@ -17,7 +20,13 @@ class ParseConfig
 	    foreach( $ini as $line ){
 	        $line = trim( $line );
 	        // Comments
-	        if ( $line == '' || $line{0} == ';' ) { continue; }
+	        if ( $line == '' || $line{0} == ';' || $line{0} == '#')
+	        	continue;
+	        // Includes
+	        $incl = explode('=', $line, 2);
+	        if (trim($incl[0]) == 'include') {
+	        	array_merge($globals, parse_ini($incl[1]));
+	        } 
 	        // Sections
 	        if ( $line{0} == '[' ) {
 	            $sections[] = substr( $line, 1, -1 );
@@ -81,9 +90,10 @@ public $multiInclude = array();
 
         if ($ini === false)
             throw new Exception('Unable to parse ini file.');
-//echo "------------------------FIRST START-------------------------->\n";
-//var_dump($ini);
-//echo "<------------------------FIRST END----------------------------\n";
+
+			$this->logMsg("... Raw array after parsing ...\n\n");
+			$this->logMsg('<pre>' . var_dump($ini) . '</pre>');
+
         if (!$process_sections && $section)
 		{
             $values = $process_sections ? $ini[$section] : $ini;
@@ -120,6 +130,10 @@ public $multiInclude = array();
             }
             $result += $ini;
         }
+
+		$this->logMsg("... Depandancy-merged array ...\n\n");
+		$this->logMsg('<pre>' . var_dump($result) . '</pre>');
+
         return $result;
     }
 
@@ -207,5 +221,17 @@ public $multiInclude = array();
         }
         return $left;
     }
+
+	private function logMsg($msg, $indentLevel=0)
+	{
+		if ($this->DEBUG)
+		{
+			$indent = "";
+			while ($indentLevel--)
+				$indent .= "&nbsp&nbsp&nbsp&nbsp";
+			echo  nl2br($indent . $msg);
+		}
+	}
+
 }
 ?>

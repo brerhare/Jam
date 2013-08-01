@@ -10,8 +10,8 @@ class Jelly
      * @throws Exception
      */
 
-	//public $DEBUG = true;
-	public $DEBUG = false;
+	public $DEBUG = true;
+	//public $DEBUG = false;
 
 	private $jellyRootPath = "/";
 	private $jellyRootUrl = "/";
@@ -64,14 +64,13 @@ END_OF_FOOTER;
 		$this->jellyRootPath = Yii::app()->basePath . "/../" . $jellyRoot;
 		$this->jellyRootUrl  = Yii::app()->baseUrl . $jellyRoot;
 
-		$this->logMsg("-------------------------\n", 0);
-		$this->logMsg("Tagging all top-level orphan blobs\n", 0);
+		$this->logMsg("... Looking for blobs ...\n\n", 0);
 		foreach ($jellyArray as $name => $value)
 		{
-			$this->logMsg($name . "\n", 1);
+			$this->logMsg('Found ' . $name . "\n", 1);
 			if ((is_array($value)) && (array_key_exists("child", $value)))
 			{
-				$this->logMsg("child : " . $value['child'] . "\n", 2);
+				//$this->logMsg("child : " . $value['child'] . "\n", 2);
 				$arrChild = explode(",", $value['child']);
 				foreach ($arrChild as $child)
 				{
@@ -82,7 +81,8 @@ END_OF_FOOTER;
 				}
 			}
 		}
-		$this->logMsg("-------------------------\n");
+		//$this->logMsg("-------------------------\n");
+		$this->logMsg("\n... Digging through top-level orphan entrypoints ...\n\n", 0);
 		array_push($this->scriptArray, "<script>\n");
 
 		foreach ($jellyArray as $name => $value)
@@ -93,7 +93,7 @@ END_OF_FOOTER;
 			}
 			else
 			{
-				$this->logMsg("Skipping blob '" . $name . "'\n");
+				$this->logMsg("Skipping " . $name . "\n");
 			}
 		}
 		array_push($this->scriptArray, "</script>\n");
@@ -121,6 +121,8 @@ END_OF_FOOTER;
 	 */
 	private function blobProcess($jellyArray, $blobName, $array, $float, $indentLevel = 0)
 	{
+
+// @@TODO: remove this hardcoding
 if (isset($_GET['page']))
 {
  if ($_GET['page'] != 'Jacquies Beauty Dumfries Salon')
@@ -130,7 +132,7 @@ if (isset($_GET['page']))
   }
 }
  
-		$this->logMsg("Processing tagged blob '" . $blobName . "'\n");
+		$this->logMsg($blobName . "\n", $indentLevel);
 		$this->genInlineHtml("<div id='" . $blobName . "'>\n", $indentLevel);
 		$this->genDivCSS("div#" . $blobName ." {\n");
 		if ($float)
@@ -160,7 +162,7 @@ if (isset($_GET['page']))
 		// Now recurse for each child
 		foreach ($children as $child)
 		{
-			//logMsg("Processing child blob " . $child . "\n");
+			//$this->logMsg("Processing child blob " . $child . "\n", $indentLevel);
 			foreach ($jellyArray as $name => $value)
 			{
 				if ($name == $child)
@@ -182,9 +184,12 @@ if (isset($_GET['page']))
  	*/
 	private function wordArrayHandler($blobName, $word, $value)
 	{
+
+// @TODO: eh wot?
 if (isset($_GET['page']))
 $page = $_GET['page'];
-		$this->logMsg("Handling " . $word . " with value " . $value . "\n", 1);
+
+		//$this->logMsg("Handling " . $word . " with value " . $value . "\n", 1);
 		switch ($word)
 		{
 			case "css":
@@ -378,7 +383,7 @@ $page = $_GET['page'];
 		{
 			$indent = "";
 			while ($indentLevel--)
-				$indent .= "    ";
+				$indent .= "&nbsp&nbsp&nbsp&nbsp";
 			echo  nl2br($indent . $msg);
 		}
 	}
