@@ -390,44 +390,35 @@ $page = $_GET['page'];
 
 	private function genDivCSS($content)
 	{
-		if (!$this->DEBUG)
-			array_push($this->cssDivArray, $content);
+		array_push($this->cssDivArray, $content);
 	}
 
 	private function genGlobalCSS($content)
 	{
-		if (!$this->DEBUG)
-			array_push($this->cssGlobalArray, $content);
+		array_push($this->cssGlobalArray, $content);
 	}
 
 	private function genInlineHtml($content, $indentLevel=0)
 	{
-		if (!$this->DEBUG)
-		{
-			$indent = "";
-			while ($indentLevel--)
-				$indent .= "    ";
-			array_push($this->bodyArray, $indent . $content);
-		}
+		$indent = "";
+		while ($indentLevel--)
+			$indent .= "    ";
+		array_push($this->bodyArray, $indent . $content);
 	}
 
 	// Any js goes here. It will be wrapped in <script> tags when emitted.
 	// Use this for stuff like jQuery(document).ready etc
 	private function genScript($content, $indentLevel=0)
 	{
-		if (!$this->DEBUG)
-		{
-			$indent = "";
-			while ($indentLevel--)
-				$indent .= "    ";
-			array_push($this->scriptArray, $indent . $content);
-		}
+		$indent = "";
+		while ($indentLevel--)
+			$indent .= "    ";
+		array_push($this->scriptArray, $indent . $content);
 	}
 
 	private function emit($content)
 	{
-		if (!$this->DEBUG)
-			echo $content;
+		echo $content;
 	}
 
 	private function getDupName($string)

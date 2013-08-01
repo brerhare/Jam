@@ -25,7 +25,9 @@ class ParseConfig
 	        // Includes
 	        $incl = explode('=', $line, 2);
 	        if (trim($incl[0]) == 'include') {
-	        	array_merge($globals, parse_ini($incl[1]));
+	        	$fileToInclude = dirname($filepath) . '/' . trim($incl[1]);
+	        	//die($fileToInclude);
+	        	array_merge($globals, parse_ini($fileToInclude));
 	        } 
 	        // Sections
 	        if ( $line{0} == '[' ) {
@@ -91,8 +93,8 @@ public $multiInclude = array();
         if ($ini === false)
             throw new Exception('Unable to parse ini file.');
 
-			$this->logMsg("... Raw array after parsing ...\n\n");
-			$this->logMsg('<pre>' . var_dump($ini) . '</pre>');
+		$this->logMsg("... Raw array after parsing ...\n\n");
+		if ($this->DEBUG) var_dump($ini);
 
         if (!$process_sections && $section)
 		{
@@ -132,7 +134,7 @@ public $multiInclude = array();
         }
 
 		$this->logMsg("... Depandancy-merged array ...\n\n");
-		$this->logMsg('<pre>' . var_dump($result) . '</pre>');
+		if ($this->DEBUG) var_dump($result);
 
         return $result;
     }
