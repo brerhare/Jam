@@ -81,7 +81,7 @@ $(document).ready(function(){
         else if ($(this).val() == "USA/Canada £35.00")            $('#shipping').val("35.00");
         else if ($(this).val() == "Rest of World £51.00")         $('#shipping').val("51.00");
         else if ($(this).val() == "Youth Beatz Collection £0.00") $('#shipping').val("0.00");
-        else if ($(this).val() == "Dress Postage £3.00")          $('#shipping').val("3.00");
+        else if ($(this).val() == "Clothing £3.00")               $('#shipping').val("3.00");
 	    else alert('Error - invalid shipping');
     });
 });
@@ -258,7 +258,7 @@ $mainpanel->render();
 						<option value="<?php echo "USA/Canada £35.00";?>"><?php echo "USA/Canada £35.00";?></option>
 						<option value="<?php echo "Rest of World £51.00";?>"><?php echo "Rest of World £51.00";?></option>
 						<option value="<?php echo "Youth Beatz Collection £0.00";?>"><?php echo "Youth Beatz Collection £0.00";?></option>
-						<option value="<?php echo "Dress Postage £3.00";?>"><?php echo "Dress Postage £3.00";?></option>
+						<option value="<?php echo "Clothing £3.00";?>"><?php echo "Clothing £3.00";?></option>
 	<?php $listItemCount=0;?>
 	<?php foreach ($model->category->sizes as $size): ?>
 						<input type="hidden" name="option_select<?php echo $listItemCount;?>" value="<?php echo $size->text;?>">
