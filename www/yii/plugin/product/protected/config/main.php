@@ -61,10 +61,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=testdrive',
+			'connectionString' => 'mysql:host=localhost;dbname=plugin',
 			'emulatePrepare' => true,
-			'username' => 'root',
-			'password' => '',
+			'username' => 'plugin',
+			'password' => 'plugin,',
 			'charset' => 'utf8',
 		),
 		/**/
@@ -93,6 +93,15 @@ return array(
 	// using Yii::app()->params['paramName']
 	'params'=>array(
 		// this is used in contact page
-		'adminEmail'=>'webmaster@wireflydesign.com',
+		'adminEmail'=>'webmaster@example.com',
 	),
+	
+	// @@EG: Event handler. Here we do something before a controller is called. See Sid.php in protected/controllers
+	'behaviors' => array(
+		'onBeginRequest' => array(
+			'class' => 'application.components.Sid'
+		)
+	),
+
 );
+
