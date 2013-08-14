@@ -17,6 +17,7 @@ $this->menu=array(
 		'product_department_id',
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
+			'template'=>'{update}{delete}',
 		),
 	),
 )); ?>
