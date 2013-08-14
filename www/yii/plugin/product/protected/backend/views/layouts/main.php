@@ -40,6 +40,7 @@
 				array('label' => 'Logout (' . Yii::app()->user->name . ')', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest)
 			),
 		),
+/*****
 		array(
 			'class' => 'bootstrap.widgets.TbMenu',
 			'htmlOptions' => array('class' => 'pull-right'),
@@ -55,6 +56,7 @@
 				)),
 			),
 		),
+*****/
 	),
 )); ?>
 
