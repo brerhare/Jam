@@ -1,12 +1,6 @@
 <?php
-$this->breadcrumbs=array(
-	'Departments'=>array('index'),
-	'Create',
-);
-
 $this->menu=array(
-	array('label'=>'List Department','url'=>array('index')),
-	array('label'=>'Manage Department','url'=>array('admin')),
+	array('label'=>'List Departments','url'=>array('index')),
 );
 ?>
 

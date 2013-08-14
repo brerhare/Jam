@@ -36,7 +36,12 @@
 			'items' => array(
 				array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
 				array('label' => 'Contact', 'url' => array('/site/contact'), 'visible' => Yii::app()->user->isGuest),
-				array('label' => 'Logout' , 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest)
+				array('label' => 'Products' , 'url' => array('/product/admin'), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'Options & Prices' , 'url' => array('/option/admin'), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'Features' , 'url' => array('/feature/admin'), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'Departments' , 'url' => array('/department/admin'), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'Vat Rates' , 'url' => array('/vat/admin'), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'Logout' , 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),
 			),
 		),
 /*****

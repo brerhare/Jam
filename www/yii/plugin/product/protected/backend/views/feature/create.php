@@ -1,12 +1,6 @@
 <?php
-$this->breadcrumbs=array(
-	'Features'=>array('index'),
-	'Create',
-);
-
 $this->menu=array(
-	array('label'=>'List Feature','url'=>array('index')),
-	array('label'=>'Manage Feature','url'=>array('admin')),
+	array('label'=>'Manage Features','url'=>array('admin')),
 );
 ?>
 
