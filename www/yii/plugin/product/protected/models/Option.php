@@ -7,11 +7,11 @@
  * @property integer $id
  * @property integer $uid
  * @property string $name
- * @property integer $department_id
+ * @property integer $product_department_id
  *
  * The followings are the available model relations:
- * @property Department $department
- * @property Product[] $productProducts
+ * @property ProductDepartment $productDepartment
+ * @property ProductProduct[] $productProducts
  */
 class Option extends CActiveRecord
 {
@@ -41,12 +41,12 @@ class Option extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('uid, name, department_id', 'required'),
-			array('uid, department_id', 'numerical', 'integerOnly'=>true),
+			array('uid, name, product_department_id', 'required'),
+			array('uid, product_department_id', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, name, department_id', 'safe', 'on'=>'search'),
+			array('id, uid, name, product_department_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -58,8 +58,8 @@ class Option extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'department' => array(self::BELONGS_TO, 'Department', 'department_id'),
-			'productProducts' => array(self::MANY_MANY, 'Product', 'product_product_has_option(option_id, product_id)'),
+			'productDepartment' => array(self::BELONGS_TO, 'ProductDepartment', 'product_department_id'),
+			'productProducts' => array(self::MANY_MANY, 'ProductProduct', 'product_product_has_product_option(product_option_id, product_product_id)'),
 		);
 	}
 
@@ -72,7 +72,7 @@ class Option extends CActiveRecord
 			'id' => 'ID',
 			'uid' => 'Uid',
 			'name' => 'Name',
-			'department_id' => 'Department',
+			'product_department_id' => 'Product Department',
 		);
 	}
 
@@ -90,7 +90,7 @@ class Option extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('uid',$this->uid);
 		$criteria->compare('name',$this->name,true);
-		$criteria->compare('department_id',$this->department_id);
+		$criteria->compare('product_department_id',$this->product_department_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -13,13 +13,13 @@
  * @property string $width
  * @property string $depth
  * @property string $volume
- * @property integer $department_id
- * @property integer $vat_id
+ * @property integer $product_department_id
+ * @property integer $product_vat_id
  *
  * The followings are the available model relations:
  * @property Image[] $images
- * @property Department $department
- * @property Vat $vat
+ * @property Department $productDepartment
+ * @property Vat $productVat
  * @property Feature[] $productFeatures
  * @property Option[] $productOptions
  */
@@ -51,14 +51,14 @@ class Product extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('uid, name, department_id, vat_id', 'required'),
-			array('uid, department_id, vat_id', 'numerical', 'integerOnly'=>true),
+			array('uid, name, product_department_id, product_vat_id', 'required'),
+			array('uid, product_department_id, product_vat_id', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>255),
 			array('weight, height, width, depth, volume', 'length', 'max'=>10),
 			array('description', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, name, description, weight, height, width, depth, volume, department_id, vat_id', 'safe', 'on'=>'search'),
+			array('id, uid, name, description, weight, height, width, depth, volume, product_department_id, product_vat_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -71,10 +71,10 @@ class Product extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'images' => array(self::HAS_MANY, 'Image', 'product_product_id'),
-			'department' => array(self::BELONGS_TO, 'Department', 'department_id'),
-			'vat' => array(self::BELONGS_TO, 'Vat', 'vat_id'),
-			'productFeatures' => array(self::MANY_MANY, 'Feature', 'product_product_has_feature(product_id, feature_id)'),
-			'productOptions' => array(self::MANY_MANY, 'Option', 'product_product_has_option(product_id, option_id)'),
+			'productDepartment' => array(self::BELONGS_TO, 'Department', 'product_department_id'),
+			'productVat' => array(self::BELONGS_TO, 'Vat', 'product_vat_id'),
+			'productFeatures' => array(self::MANY_MANY, 'Feature', 'product_product_has_product_feature(product_product_id, product_feature_id)'),
+			'productOptions' => array(self::MANY_MANY, 'Option', 'product_product_has_product_option(product_product_id, product_option_id)'),
 		);
 	}
 
@@ -93,8 +93,8 @@ class Product extends CActiveRecord
 			'width' => 'Width',
 			'depth' => 'Depth',
 			'volume' => 'Volume',
-			'department_id' => 'Department',
-			'vat_id' => 'Vat',
+			'product_department_id' => 'Product Department',
+			'product_vat_id' => 'Product Vat',
 		);
 	}
 
@@ -118,8 +118,8 @@ class Product extends CActiveRecord
 		$criteria->compare('width',$this->width,true);
 		$criteria->compare('depth',$this->depth,true);
 		$criteria->compare('volume',$this->volume,true);
-		$criteria->compare('department_id',$this->department_id);
-		$criteria->compare('vat_id',$this->vat_id);
+		$criteria->compare('product_department_id',$this->product_department_id);
+		$criteria->compare('product_vat_id',$this->product_vat_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

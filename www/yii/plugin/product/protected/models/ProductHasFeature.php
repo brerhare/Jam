@@ -1,11 +1,11 @@
 <?php
 
 /**
- * This is the model class for table "product_product_has_feature".
+ * This is the model class for table "product_product_has_product_feature".
  *
- * The followings are the available columns in table 'product_product_has_feature':
- * @property integer $product_id
- * @property integer $feature_id
+ * The followings are the available columns in table 'product_product_has_product_feature':
+ * @property integer $product_product_id
+ * @property integer $product_feature_id
  */
 class ProductHasFeature extends CActiveRecord
 {
@@ -24,7 +24,7 @@ class ProductHasFeature extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'product_product_has_feature';
+		return 'product_product_has_product_feature';
 	}
 
 	/**
@@ -35,11 +35,11 @@ class ProductHasFeature extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('product_id, feature_id', 'required'),
-			array('product_id, feature_id', 'numerical', 'integerOnly'=>true),
+			array('product_product_id, product_feature_id', 'required'),
+			array('product_product_id, product_feature_id', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('product_id, feature_id', 'safe', 'on'=>'search'),
+			array('product_product_id, product_feature_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -60,8 +60,8 @@ class ProductHasFeature extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'product_id' => 'Product',
-			'feature_id' => 'Feature',
+			'product_product_id' => 'Product Product',
+			'product_feature_id' => 'Product Feature',
 		);
 	}
 
@@ -76,8 +76,8 @@ class ProductHasFeature extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('product_id',$this->product_id);
-		$criteria->compare('feature_id',$this->feature_id);
+		$criteria->compare('product_product_id',$this->product_product_id);
+		$criteria->compare('product_feature_id',$this->product_feature_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

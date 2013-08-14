@@ -9,6 +9,7 @@
  * @property string $name
  *
  * The followings are the available model relations:
+ * @property Feature[] $features
  * @property Option[] $options
  * @property Product[] $products
  */
@@ -57,8 +58,9 @@ class Department extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'options' => array(self::HAS_MANY, 'Option', 'department_id'),
-			'products' => array(self::HAS_MANY, 'Product', 'department_id'),
+			'features' => array(self::HAS_MANY, 'Feature', 'product_department_id'),
+			'options' => array(self::HAS_MANY, 'Option', 'product_department_id'),
+			'products' => array(self::HAS_MANY, 'Product', 'product_department_id'),
 		);
 	}
 

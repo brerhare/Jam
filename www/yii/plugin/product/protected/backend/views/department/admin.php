@@ -6,7 +6,7 @@ $this->menu=array(
 ?>
 
 
-<h1>Manage Departments</h1>
+<h2>Manage Departments</h2>
 
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'department-grid',

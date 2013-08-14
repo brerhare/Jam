@@ -12,8 +12,8 @@
 	<?php echo CHtml::encode($data->name); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('department_id')); ?>:</b>
-	<?php echo CHtml::encode($data->department_id); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('product_department_id')); ?>:</b>
+	<?php echo CHtml::encode($data->product_department_id); ?>
 	<br />
 
 

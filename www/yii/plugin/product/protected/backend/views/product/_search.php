@@ -21,9 +21,9 @@
 
 	<?php echo $form->textFieldRow($model,'volume',array('class'=>'span5','maxlength'=>10)); ?>
 
-	<?php echo $form->textFieldRow($model,'department_id',array('class'=>'span5')); ?>
+	<?php echo $form->textFieldRow($model,'product_department_id',array('class'=>'span5')); ?>
 
-	<?php echo $form->textFieldRow($model,'vat_id',array('class'=>'span5')); ?>
+	<?php echo $form->textFieldRow($model,'product_vat_id',array('class'=>'span5')); ?>
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(

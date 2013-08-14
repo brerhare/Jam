@@ -6,7 +6,7 @@ $this->menu=array(
 
 ?>
 
-<h1>Manage Vat Rates</h1>
+<h2>Manage Vat Rates</h2>
 
 
 <?php $this->widget('bootstrap.widgets.TbGridView',array(

@@ -7,11 +7,11 @@
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<?php echo $form->textFieldRow($model,'uid',array('class'=>'span5')); ?>
+	<?php //echo $form->textFieldRow($model,'uid',array('class'=>'span5')); ?>
 
 	<?php echo $form->textFieldRow($model,'name',array('class'=>'span5','maxlength'=>255)); ?>
 
-	<?php echo $form->textFieldRow($model,'department_id',array('class'=>'span5')); ?>
+	<?php echo $form->textFieldRow($model,'product_department_id',array('class'=>'span5')); ?>
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(

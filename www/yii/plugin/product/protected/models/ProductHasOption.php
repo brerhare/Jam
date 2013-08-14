@@ -1,11 +1,11 @@
 <?php
 
 /**
- * This is the model class for table "product_product_has_option".
+ * This is the model class for table "product_product_has_product_option".
  *
- * The followings are the available columns in table 'product_product_has_option':
- * @property integer $product_id
- * @property integer $option_id
+ * The followings are the available columns in table 'product_product_has_product_option':
+ * @property integer $product_product_id
+ * @property integer $product_option_id
  * @property string $price
  */
 class ProductHasOption extends CActiveRecord
@@ -25,7 +25,7 @@ class ProductHasOption extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'product_product_has_option';
+		return 'product_product_has_product_option';
 	}
 
 	/**
@@ -36,12 +36,12 @@ class ProductHasOption extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('product_id, option_id', 'required'),
-			array('product_id, option_id', 'numerical', 'integerOnly'=>true),
+			array('product_product_id, product_option_id', 'required'),
+			array('product_product_id, product_option_id', 'numerical', 'integerOnly'=>true),
 			array('price', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('product_id, option_id, price', 'safe', 'on'=>'search'),
+			array('product_product_id, product_option_id, price', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -62,8 +62,8 @@ class ProductHasOption extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'product_id' => 'Product',
-			'option_id' => 'Option',
+			'product_product_id' => 'Product Product',
+			'product_option_id' => 'Product Option',
 			'price' => 'Price',
 		);
 	}
@@ -79,8 +79,8 @@ class ProductHasOption extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('product_id',$this->product_id);
-		$criteria->compare('option_id',$this->option_id);
+		$criteria->compare('product_product_id',$this->product_product_id);
+		$criteria->compare('product_option_id',$this->product_option_id);
 		$criteria->compare('price',$this->price,true);
 
 		return new CActiveDataProvider($this, array(

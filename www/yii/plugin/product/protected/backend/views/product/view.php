@@ -27,7 +27,7 @@ $this->menu=array(
 		'width',
 		'depth',
 		'volume',
-		'department_id',
-		'vat_id',
+		'product_department_id',
+		'product_vat_id',
 	),
 )); ?>

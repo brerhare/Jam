@@ -37,12 +37,12 @@
 	<?php echo CHtml::encode($data->volume); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('department_id')); ?>:</b>
-	<?php echo CHtml::encode($data->department_id); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('product_department_id')); ?>:</b>
+	<?php echo CHtml::encode($data->product_department_id); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('vat_id')); ?>:</b>
-	<?php echo CHtml::encode($data->vat_id); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('product_vat_id')); ?>:</b>
+	<?php echo CHtml::encode($data->product_vat_id); ?>
 	<br />
 
 	*/ ?>

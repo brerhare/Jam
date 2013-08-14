@@ -12,5 +12,9 @@
 	<?php echo CHtml::encode($data->name); ?>
 	<br />
 
+	<b><?php echo CHtml::encode($data->getAttributeLabel('product_department_id')); ?>:</b>
+	<?php echo CHtml::encode($data->product_department_id); ?>
+	<br />
+
 
 </div>

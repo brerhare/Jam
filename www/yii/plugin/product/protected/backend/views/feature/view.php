@@ -21,5 +21,6 @@ $this->menu=array(
 		'id',
 		'uid',
 		'name',
+		'product_department_id',
 	),
 )); ?>

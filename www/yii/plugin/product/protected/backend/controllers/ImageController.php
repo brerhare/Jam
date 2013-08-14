@@ -62,6 +62,7 @@ class ImageController extends Controller
 	public function actionCreate()
 	{
 		$model=new Image;
+		$model->uid = Yii::app()->session['uid'];
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -156,7 +157,7 @@ class ImageController extends Controller
 	public function loadModel($id)
 	{
 		$model=Image::model()->findByPk($id);
-		if($model===null)
+		if (($model===null) || ($model->uid != Yii::app()->session['uid']))
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
 	}
