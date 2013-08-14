@@ -4,6 +4,10 @@
 	<?php echo CHtml::link(CHtml::encode($data->id),array('view','id'=>$data->id)); ?>
 	<br />
 
+	<b><?php echo CHtml::encode($data->getAttributeLabel('uid')); ?>:</b>
+	<?php echo CHtml::encode($data->uid); ?>
+	<br />
+
 	<b><?php echo CHtml::encode($data->getAttributeLabel('filename')); ?>:</b>
 	<?php echo CHtml::encode($data->filename); ?>
 	<br />

@@ -6,6 +6,7 @@
  * The followings are the available columns in table 'product_product_has_option':
  * @property integer $product_id
  * @property integer $option_id
+ * @property string $price
  */
 class ProductHasOption extends CActiveRecord
 {
@@ -37,9 +38,10 @@ class ProductHasOption extends CActiveRecord
 		return array(
 			array('product_id, option_id', 'required'),
 			array('product_id, option_id', 'numerical', 'integerOnly'=>true),
+			array('price', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('product_id, option_id', 'safe', 'on'=>'search'),
+			array('product_id, option_id, price', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -62,6 +64,7 @@ class ProductHasOption extends CActiveRecord
 		return array(
 			'product_id' => 'Product',
 			'option_id' => 'Option',
+			'price' => 'Price',
 		);
 	}
 
@@ -78,6 +81,7 @@ class ProductHasOption extends CActiveRecord
 
 		$criteria->compare('product_id',$this->product_id);
 		$criteria->compare('option_id',$this->option_id);
+		$criteria->compare('price',$this->price,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -5,6 +5,7 @@
  *
  * The followings are the available columns in table 'product_image':
  * @property integer $id
+ * @property integer $uid
  * @property string $filename
  * @property integer $product_product_id
  *
@@ -39,12 +40,12 @@ class Image extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('filename, product_product_id', 'required'),
-			array('product_product_id', 'numerical', 'integerOnly'=>true),
+			array('uid, filename, product_product_id', 'required'),
+			array('uid, product_product_id', 'numerical', 'integerOnly'=>true),
 			array('filename', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, filename, product_product_id', 'safe', 'on'=>'search'),
+			array('id, uid, filename, product_product_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -67,6 +68,7 @@ class Image extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
+			'uid' => 'Uid',
 			'filename' => 'Filename',
 			'product_product_id' => 'Product Product',
 		);
@@ -84,6 +86,7 @@ class Image extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
+		$criteria->compare('uid',$this->uid);
 		$criteria->compare('filename',$this->filename,true);
 		$criteria->compare('product_product_id',$this->product_product_id);
 

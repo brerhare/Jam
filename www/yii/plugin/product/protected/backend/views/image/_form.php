@@ -7,6 +7,8 @@
 
 	<?php echo $form->errorSummary($model); ?>
 
+	<?php echo $form->textFieldRow($model,'uid',array('class'=>'span5')); ?>
+
 	<?php echo $form->textFieldRow($model,'filename',array('class'=>'span5','maxlength'=>255)); ?>
 
 	<?php echo $form->textFieldRow($model,'product_product_id',array('class'=>'span5')); ?>

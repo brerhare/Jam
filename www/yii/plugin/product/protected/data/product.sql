@@ -12,7 +12,8 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`product_department` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `uid` INT NOT NULL ,
   `name` VARCHAR(255) NOT NULL ,
-  PRIMARY KEY (`id`) )
+  PRIMARY KEY (`id`) ,
+  INDEX `uid` (`uid` ASC) )
 ENGINE = InnoDB;
 
 
@@ -25,8 +26,9 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`product_vat` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `uid` INT NOT NULL ,
   `description` VARCHAR(255) NOT NULL ,
-  `rate` VARCHAR(45) NULL ,
-  PRIMARY KEY (`id`) )
+  `rate` DECIMAL(10,2) NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `uid` (`uid` ASC) )
 ENGINE = InnoDB;
 
 
@@ -50,6 +52,7 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`product_product` (
   PRIMARY KEY (`id`) ,
   INDEX `fk_product_department1` (`department_id` ASC) ,
   INDEX `fk_product_vat1` (`vat_id` ASC) ,
+  INDEX `uid` (`uid` ASC) ,
   CONSTRAINT `fk_product_department1`
     FOREIGN KEY (`department_id` )
     REFERENCES `plugin`.`product_department` (`id` )
@@ -72,10 +75,10 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`product_option` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `uid` INT NOT NULL ,
   `name` VARCHAR(255) NOT NULL ,
-  `price` VARCHAR(255) NULL ,
   `department_id` INT NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_option_department1` (`department_id` ASC) ,
+  INDEX `uid` (`uid` ASC) ,
   CONSTRAINT `fk_option_department1`
     FOREIGN KEY (`department_id` )
     REFERENCES `plugin`.`product_department` (`id` )
@@ -92,6 +95,7 @@ DROP TABLE IF EXISTS `plugin`.`product_product_has_option` ;
 CREATE  TABLE IF NOT EXISTS `plugin`.`product_product_has_option` (
   `product_id` INT NOT NULL ,
   `option_id` INT NOT NULL ,
+  `price` DECIMAL(10,2) NULL ,
   PRIMARY KEY (`product_id`, `option_id`) ,
   INDEX `fk_product_has_option_option1` (`option_id` ASC) ,
   INDEX `fk_product_has_option_product1` (`product_id` ASC) ,
@@ -117,7 +121,8 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`product_feature` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `uid` INT NOT NULL ,
   `name` VARCHAR(255) NOT NULL ,
-  PRIMARY KEY (`id`) )
+  PRIMARY KEY (`id`) ,
+  INDEX `uid` (`uid` ASC) )
 ENGINE = InnoDB;
 
 
@@ -152,10 +157,12 @@ DROP TABLE IF EXISTS `plugin`.`product_image` ;
 
 CREATE  TABLE IF NOT EXISTS `plugin`.`product_image` (
   `id` INT NOT NULL AUTO_INCREMENT ,
+  `uid` INT NOT NULL ,
   `filename` VARCHAR(255) NOT NULL ,
   `product_product_id` INT NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_image_product_product1` (`product_product_id` ASC) ,
+  INDEX `uid` (`uid` ASC) ,
   CONSTRAINT `fk_image_product_product1`
     FOREIGN KEY (`product_product_id` )
     REFERENCES `plugin`.`product_product` (`id` )

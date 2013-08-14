@@ -12,10 +12,6 @@
 	<?php echo CHtml::encode($data->name); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('price')); ?>:</b>
-	<?php echo CHtml::encode($data->price); ?>
-	<br />
-
 	<b><?php echo CHtml::encode($data->getAttributeLabel('department_id')); ?>:</b>
 	<?php echo CHtml::encode($data->department_id); ?>
 	<br />

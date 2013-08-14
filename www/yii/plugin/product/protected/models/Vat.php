@@ -43,7 +43,7 @@ class Vat extends CActiveRecord
 			array('uid, description', 'required'),
 			array('uid', 'numerical', 'integerOnly'=>true),
 			array('description', 'length', 'max'=>255),
-			array('rate', 'length', 'max'=>45),
+			array('rate', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, uid, description, rate', 'safe', 'on'=>'search'),

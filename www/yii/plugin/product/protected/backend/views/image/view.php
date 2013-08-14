@@ -19,6 +19,7 @@ $this->menu=array(
 	'data'=>$model,
 	'attributes'=>array(
 		'id',
+		'uid',
 		'filename',
 		'product_product_id',
 	),

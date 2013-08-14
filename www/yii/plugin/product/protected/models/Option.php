@@ -7,7 +7,6 @@
  * @property integer $id
  * @property integer $uid
  * @property string $name
- * @property string $price
  * @property integer $department_id
  *
  * The followings are the available model relations:
@@ -44,10 +43,10 @@ class Option extends CActiveRecord
 		return array(
 			array('uid, name, department_id', 'required'),
 			array('uid, department_id', 'numerical', 'integerOnly'=>true),
-			array('name, price', 'length', 'max'=>255),
+			array('name', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, name, price, department_id', 'safe', 'on'=>'search'),
+			array('id, uid, name, department_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -73,7 +72,6 @@ class Option extends CActiveRecord
 			'id' => 'ID',
 			'uid' => 'Uid',
 			'name' => 'Name',
-			'price' => 'Price',
 			'department_id' => 'Department',
 		);
 	}
@@ -92,7 +90,6 @@ class Option extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('uid',$this->uid);
 		$criteria->compare('name',$this->name,true);
-		$criteria->compare('price',$this->price,true);
 		$criteria->compare('department_id',$this->department_id);
 
 		return new CActiveDataProvider($this, array(

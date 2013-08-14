@@ -21,7 +21,6 @@ $this->menu=array(
 		'id',
 		'uid',
 		'name',
-		'price',
 		'department_id',
 	),
 )); ?>
