@@ -10,7 +10,7 @@ class ParseConfig
 	 */
  
 	private function parse_ini ( $filepath ) {
-	    $ini = file( $filepath );
+	    $ini = $this->preprocess_file( $filepath );
 	    if ( count( $ini ) == 0 ) { return array(); }
 	    $sections = array();
 	    $values = array();
@@ -28,9 +28,9 @@ class ParseConfig
 	        	$fileToInclude = dirname($filepath) . '/' . trim($incl[1]);
 	        	//die($fileToInclude);
 	        	array_merge($globals, parse_ini($fileToInclude));
-	        } 
+	        }
 	        // Sections
-	        if ( $line{0} == '[' ) {
+	        if ( $line{0} == '[' ) { 
 	            $sections[] = substr( $line, 1, -1 );
 				if (($i != 0) && ($sectionHasItems==false)) $values[ $i - 1 ][] = '';       // Guarantee at least one item in each section
 	            $i++;
@@ -66,6 +66,19 @@ class ParseConfig
 	        $result[ $sections[ $j ] ] = $values[ $j ];
 	    }
 	    return $result + $globals;
+	}
+
+	/**
+	 * Preprocess an ini file
+	 * 1) Expand includes
+	 * 2) ...
+	 */
+
+	private function preprocess_file($filepath)
+	{
+		$ini = file( $filepath );
+		return $ini;
+		//die('xxx');
 	}
 
     /**
