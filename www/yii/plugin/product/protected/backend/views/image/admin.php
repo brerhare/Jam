@@ -13,6 +13,10 @@ $this->menu=array(
 ?>  
 </h2>
 
+<style>
+img { height:50px;}
+</style>
+
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'image-grid',
 	'dataProvider'=>$model->search(),
@@ -24,7 +28,7 @@ $this->menu=array(
         array('name'=>'filename',
             'type'=>'html',
             'header'=>'Picture',
-            'value'=> 'CHtml::image("/userdata/image/" . $data->filename, "image", array("height"=>50))',
+            'value'=> 'CHtml::image("/product/userdata/image/" . $data->filename, "image", array("height"=>"50"))',
         ),
 		//'product_product_id',
 		array(
