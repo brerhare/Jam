@@ -31,11 +31,11 @@ class ImageController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','delete'),
+				'actions'=>array('create','update','admin','delete','session'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','admin'),
+				'actions'=>array('admin','delete','admin','session'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -148,6 +148,23 @@ class ImageController extends Controller
 			'model'=>$model,
 		));
 	}
+
+    /**
+     * Entry point. Same as actionAdmin except first stores the passed product_id in the session
+     */
+    // $product_id supplied by the CButtonColumn in product/admin
+    public function actionSession($product_id)
+    {
+        Yii::app()->session['product_id'] = $product_id;
+        $model=new Image('search');
+        $model->unsetAttributes();  // clear any default values
+        if(isset($_GET['Image']))
+            $model->attributes=$_GET['Image'];
+
+        $this->render('admin',array(
+            'model'=>$model,
+        ));
+    }
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
