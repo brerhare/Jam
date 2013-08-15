@@ -4,7 +4,7 @@
         <?php
             $criteria = new CDbCriteria;
             $criteria->addCondition("uid = " . Yii::app()->session['uid']);
-            $criteria->addCondition("product_department_id = " . $model->product_department_id);
+            //$criteria->addCondition("product_department_id = " . $model->product_department_id);
             $features = Feature::model()->findAll($criteria);
             foreach ($features as $feature):
                 $criteria = new CDbCriteria;
