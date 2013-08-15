@@ -1,15 +1,10 @@
 <?php
-$this->breadcrumbs=array(
-	'Options'=>array('index'),
-	'Create',
-);
 
 $this->menu=array(
-	array('label'=>'List Option','url'=>array('index')),
-	array('label'=>'Manage Option','url'=>array('admin')),
+	array('label'=>'Manage Options','url'=>array('admin')),
 );
 ?>
 
-<h1>Create Option</h1>
+<h2>Create Option</h2>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

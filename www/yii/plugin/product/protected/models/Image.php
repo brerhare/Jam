@@ -86,7 +86,8 @@ class Image extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('uid',$this->uid);
+		//$criteria->compare('uid',$this->uid);
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$criteria->compare('filename',$this->filename,true);
 		$criteria->compare('product_product_id',$this->product_product_id);
 

@@ -5,6 +5,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Update Feature</h1>
+<h2>Update Feature</h2>
 
 <?php echo $this->renderPartial('_form',array('model'=>$model)); ?>

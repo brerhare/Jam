@@ -4,6 +4,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Create Vat Rate</h1>
+<h2>Create Vat Rate</h2>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

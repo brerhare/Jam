@@ -4,6 +4,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Create Feature</h1>
+<h2>Create Feature</h2>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

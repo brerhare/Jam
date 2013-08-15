@@ -88,9 +88,11 @@ class Option extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('uid',$this->uid);
+		//$criteria->compare('uid',$this->uid);
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$criteria->compare('name',$this->name,true);
-		$criteria->compare('product_department_id',$this->product_department_id);
+		//$criteria->compare('product_department_id',$this->product_department_id);
+		$criteria->addCondition("product_department_id = " . Yii::app()->session['department_id']);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

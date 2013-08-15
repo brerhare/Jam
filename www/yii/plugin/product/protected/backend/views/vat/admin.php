@@ -21,6 +21,27 @@ $this->menu=array(
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
 			'template'=>'{update}{delete}',
+			'htmlOptions'=>array('width'=>'80px'),
+
+/*
+            'buttons'=>array(           
+                'update' => array(
+                    //'label'=>'Update item',	// Hover text
+                    //'icon'=>'plus',			// Change from default icon
+                    'options'=>array(
+                        'class'=>'btn btn-medium',
+                    ),
+                ),
+                'delete' => array(
+                	//'imageUrl'=>false,  // No image, use text on button
+                    //'label'=>'delete item',
+                    'options'=>array(
+                        'class'=>'btn btn-medium',
+                    ),
+                ), 
+            ),
+*/
+
 		),
 	),
 )); ?>

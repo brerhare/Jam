@@ -31,11 +31,11 @@ class OptionController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin'),
+				'actions'=>array('create','update','admin','delete','session'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','admin'),
+				'actions'=>array('admin','delete','admin','session'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -63,7 +63,7 @@ class OptionController extends Controller
 	{
 		$model=new Option;
 		$model->uid = Yii::app()->session['uid'];
-
+		$model->product_department_id = Yii::app()->session['department_id'];
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -71,7 +71,7 @@ class OptionController extends Controller
 		{
 			$model->attributes=$_POST['Option'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('admin'));
 		}
 
 		$this->render('create',array(
@@ -95,7 +95,7 @@ class OptionController extends Controller
 		{
 			$model->attributes=$_POST['Option'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('admin'));
 		}
 
 		$this->render('update',array(
@@ -148,6 +148,23 @@ class OptionController extends Controller
 			'model'=>$model,
 		));
 	}
+
+    /**
+     * Entry point. Same as actionAdmin except first stores the passed department_id in the session
+     */
+    // $department_id supplied by the CButtonColumn in department/admin
+    public function actionSession($department_id)
+    {
+        Yii::app()->session['department_id'] = $department_id;
+        $model=new Option('search');
+        $model->unsetAttributes();  // clear any default values
+        if(isset($_GET['Option']))
+            $model->attributes=$_GET['Option'];
+
+        $this->render('admin',array(
+            'model'=>$model,
+        ));
+    }
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

@@ -93,8 +93,8 @@ class Product extends CActiveRecord
 			'width' => 'Width',
 			'depth' => 'Depth',
 			'volume' => 'Volume',
-			'product_department_id' => 'Product Department',
-			'product_vat_id' => 'Product Vat',
+			'product_department_id' => 'Department',
+			'product_vat_id' => 'Vat Rate',
 		);
 	}
 
@@ -110,7 +110,8 @@ class Product extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('uid',$this->uid);
+		//$criteria->compare('uid',$this->uid);
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('weight',$this->weight,true);
