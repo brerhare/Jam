@@ -16,12 +16,19 @@
 
 
 	<?php //echo $form->textFieldRow($model,'product_department_id',array('class'=>'span5')); ?>
+
 <!-- @@EG: Dropdowns -->
-	<?php echo $form->dropDownListRow($model,'product_department_id', CHtml::listData(Department::model()->findAll(), 'id', 'name'), array('empty'=>'Choose')); ?>
+
+<?php
+$criteria = new CDbCriteria;
+ $criteria->addCondition("uid = " . Yii::app()->session['uid']);
+?>
+
+	<?php echo $form->dropDownListRow($model,'product_department_id', CHtml::listData(Department::model()->findAll($criteria), 'id', 'name'), array('empty'=>'Choose')); ?>
 
 	<?php //echo $form->textFieldRow($model,'product_vat_id',array('class'=>'span5')); ?>
 
-	<?php echo $form->dropDownListRow($model,'product_vat_id', CHtml::listData(Vat::model()->findAll(), 'id', 'description'), array('empty'=>'Choose')); ?>
+	<?php echo $form->dropDownListRow($model,'product_vat_id', CHtml::listData(Vat::model()->findAll($criteria), 'id', 'description'), array('empty'=>'Choose')); ?>
 
 
 	<?php echo $form->textFieldRow($model,'weight',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right')); ?>
