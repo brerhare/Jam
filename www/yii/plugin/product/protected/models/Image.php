@@ -40,9 +40,23 @@ class Image extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('uid, filename, product_product_id', 'required'),
+			array('uid, product_product_id', 'required'),
 			array('uid, product_product_id', 'numerical', 'integerOnly'=>true),
+
+            array('filename', 'file','on'=>'insert',
+                'types'=> 'jpg, jpeg, gif, png',
+                'maxSize' => 1024 * 1024 * 10, // 10MB
+                'tooLarge' => 'The file was bigger than 10MB. Please upload a smaller file.'
+            ),
+            array('filename', 'file','on'=>'update',
+                'types'=> 'jpg, jpeg, gif, png',
+                'allowEmpty' => true,
+                'maxSize' => 1024 * 1024 * 10, // 10MB
+                'tooLarge' => 'The file was larger than 10MB. Please upload a smaller file.'
+            ),
+            array('filename', 'unsafe'),
 			array('filename', 'length', 'max'=>255),
+
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, uid, filename, product_product_id', 'safe', 'on'=>'search'),
@@ -89,7 +103,8 @@ class Image extends CActiveRecord
 		//$criteria->compare('uid',$this->uid);
 		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$criteria->compare('filename',$this->filename,true);
-		$criteria->compare('product_product_id',$this->product_product_id);
+		//$criteria->compare('product_product_id',$this->product_product_id);
+		$criteria->compare('product_product_id',Yii::app()->session['product_id']);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

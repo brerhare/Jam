@@ -8,6 +8,8 @@ class ImageController extends Controller
 	 */
 	public $layout='//layouts/column2';
 
+	private $_imageDir = '/../userdata/image/';
+
 	/**
 	 * @return array action filters
 	 */
@@ -61,22 +63,34 @@ class ImageController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Image;
+        $model=new Image;
 		$model->uid = Yii::app()->session['uid'];
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+        // Uncomment the following line if AJAX validation is needed
+        // $this->performAjaxValidation($model);
 
-		if(isset($_POST['Image']))
-		{
-			$model->attributes=$_POST['Image'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
+        if(isset($_POST['Image']))
+        {
+            $model->attributes=$_POST['Image'];
+            $model->filename=CUploadedFile::getInstance($model, 'filename');
+            if($model->save())
+            {
+                if (strlen($model->filename) > 0)
+                {
+                    $fname = Yii::app()->basePath . $this->_imageDir . $model->filename;
+                    $model->filename->saveAs($fname);
+                    //$this->_watermark($fname);
+                }
+                $this->redirect(array('admin','id'=>$model->product_product_id));
+            }
+        }
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
+        // Hard-wire this image to the product stored in our session
+        $model->product_product_id = Yii::app()->session['product_id'];
+
+        $this->render('create',array(
+            'model'=>$model,
+        ));
 	}
 
 	/**
@@ -86,21 +100,44 @@ class ImageController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		$model=$this->loadModel($id);
+        $model=$this->loadModel($id);
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+        $model->scenario = 'update';
 
-		if(isset($_POST['Image']))
-		{
-			$model->attributes=$_POST['Image'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
+        // Uncomment the following line if AJAX validation is needed
+        // $this->performAjaxValidation($model);
 
-		$this->render('update',array(
-			'model'=>$model,
-		));
+        if(isset($_POST['Image']))
+        {
+            $model->attributes=$_POST['Image'];
+            $file=CUploadedFile::getInstance($model, 'filename');
+            if(is_object($file) && get_class($file) === 'CUploadedFile')
+            {
+                if (file_exists(Yii::app()->basePath . $this->_imageDir . $model->filename))
+                {
+                    unlink(Yii::app()->basePath . $this->_imageDir . $model->filename);
+                    //unlink(Yii::app()->basePath . $this->_imageDir . 'gall_' . $model->filename);
+                    //unlink(Yii::app()->basePath . $this->_imageDir . 'orig_' . $model->filename);
+                }
+                $model->filename = $file;
+            }
+
+            if($model->save())
+            {
+                if(is_object($file))
+                {
+                    $fname = Yii::app()->basePath . $this->_imageDir . $model->filename;
+                    $model->filename->saveAs($fname);
+                    //$this->_watermark($fname);
+
+                }
+                $this->redirect(array('admin','id'=>$model->id));
+            }
+        }
+
+        $this->render('update',array(
+            'model'=>$model,
+        ));
 	}
 
 	/**
@@ -110,17 +147,20 @@ class ImageController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		if(Yii::app()->request->isPostRequest)
-		{
-			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+        $oldfilename = $this->loadModel($id)->filename;
+        if (($oldfilename != '') && (file_exists(Yii::app()->basePath . $this->_imageDir . $oldfilename)))
+        {
+            unlink(Yii::app()->basePath . $this->_imageDir . $oldfilename);
+            //unlink(Yii::app()->basePath . $this->_imageDir . 'gall_' . $oldfilename);
+            //unlink(Yii::app()->basePath . $this->_imageDir . 'orig_' . $oldfilename);
+        }
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
-		}
-		else
-			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+        $this->loadModel($id)->delete();
+
+        // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+        if(!isset($_GET['ajax']))
+            $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+
 	}
 
 	/**

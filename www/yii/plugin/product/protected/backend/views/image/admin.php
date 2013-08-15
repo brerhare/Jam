@@ -16,12 +16,17 @@ $this->menu=array(
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'image-grid',
 	'dataProvider'=>$model->search(),
-	'filter'=>$model,
+	//'filter'=>$model,
 	'columns'=>array(
-		'id',
-		'uid',
+		//'id',
+		//'uid',
 		'filename',
-		'product_product_id',
+        array('name'=>'filename',
+            'type'=>'html',
+            'header'=>'Picture',
+            'value'=> 'CHtml::image("/userdata/image/" . $data->filename, "image", array("height"=>50))',
+        ),
+		//'product_product_id',
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
 			'template'=>'{update}{delete}',

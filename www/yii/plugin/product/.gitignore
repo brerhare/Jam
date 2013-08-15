@@ -5,8 +5,8 @@ protected/runtime/*
 protected/backend/runtime/*
 !protected/backend/runtime/.gitignore
 userdata/*
-!userdata/images
-userdata/images/*
-!userdata/images/.gitignore
+!userdata/image
+userdata/image/*
+!userdata/image/.gitignore
 *.bfproject
 *.bak
