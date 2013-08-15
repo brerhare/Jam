@@ -119,7 +119,8 @@ class Product extends CActiveRecord
 		$criteria->compare('width',$this->width,true);
 		$criteria->compare('depth',$this->depth,true);
 		$criteria->compare('volume',$this->volume,true);
-		$criteria->compare('product_department_id',$this->product_department_id);
+		//$criteria->compare('product_department_id',$this->product_department_id);
+		$criteria->addCondition("product_department_id = " . Yii::app()->session['department_id']);
 		$criteria->compare('product_vat_id',$this->product_vat_id);
 
 		return new CActiveDataProvider($this, array(

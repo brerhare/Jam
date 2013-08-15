@@ -18,11 +18,11 @@ $this->menu=array(
 		'name',
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
-			'template'=>'{update}{options}{features}{delete}',
-			'htmlOptions'=>array('width'=>'190px'),
+			'template'=>'{update}{options}{features}{products}{delete}',
+			'htmlOptions'=>array('width'=>'250px'),
 
 // @@EG: buttons!
-            'buttons'=>array(           
+            'buttons'=>array( 
 /*              'update' => array(
                     'options'=>array(
                         'class'=>'btn btn-medium',
@@ -40,6 +40,14 @@ $this->menu=array(
                 	'imageUrl'=>false,
                     'label'=>'Features',
                     'url'=>'Yii::app()->createUrl("feature/session", array("department_id"=>$data->id))',
+                    'options'=>array(
+                        'class'=>'btn btn-small',
+                    ),
+                ), 
+                'products' => array(
+                	'imageUrl'=>false,
+                    'label'=>'Products',
+                    'url'=>'Yii::app()->createUrl("product/session", array("department_id"=>$data->id))',
                     'options'=>array(
                         'class'=>'btn btn-small',
                     ),

@@ -31,11 +31,11 @@ class ProductController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','delete'),
+				'actions'=>array('create','update','admin','delete','session'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','admin'),
+				'actions'=>array('admin','delete','admin','session'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -63,6 +63,7 @@ class ProductController extends Controller
 	{
 		$model=new Product;
 		$model->uid = Yii::app()->session['uid'];
+		$model->product_department_id = Yii::app()->session['department_id'];
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -71,7 +72,11 @@ class ProductController extends Controller
 		{
 			$model->attributes=$_POST['Product'];
 			if($model->save())
+			{
+                $this->deleteProductTabs($model->id);
+                $this->updateProductTabs($model->id);
 				$this->redirect(array('admin'));
+			}
 		}
 
 		$this->render('create',array(
@@ -95,7 +100,11 @@ class ProductController extends Controller
 		{
 			$model->attributes=$_POST['Product'];
 			if($model->save())
+			{
+                $this->deleteProductTabs($model->id);
+                $this->updateProductTabs($model->id);
 				$this->redirect(array('admin'));
+			}
 		}
 
 		$this->render('update',array(
@@ -113,6 +122,7 @@ class ProductController extends Controller
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
+			 $this->deleteProductTabs($id);
 			$this->loadModel($id)->delete();
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
@@ -147,6 +157,65 @@ class ProductController extends Controller
 		$this->render('admin',array(
 			'model'=>$model,
 		));
+	}
+
+    /**
+     * Entry point. Same as actionAdmin except first stores the passed department_id in the session
+     */
+    // $department_id supplied by the CButtonColumn in department/admin
+    public function actionSession($department_id)
+    {
+        Yii::app()->session['department_id'] = $department_id;
+        $model=new Product('search');
+        $model->unsetAttributes();  // clear any default values
+        if(isset($_GET['Product']))
+            $model->attributes=$_GET['Product'];
+
+        $this->render('admin',array(
+            'model'=>$model,
+        ));
+    }
+
+    // Delete all product features (checkboxes) and options
+    public function deleteProductTabs($id)
+    {
+        // Features
+        Yii::log("Deleting all features for product " . $id, CLogger::LEVEL_INFO, 'system.test.kim');
+        ProductHasFeature::model()->deleteAllByAttributes(array('product_product_id' => $id));
+		// Options
+        Yii::log("Deleting all options for product " . $id, CLogger::LEVEL_INFO, 'system.test.kim');
+        ProductHasOption::model()->deleteAllByAttributes(array('product_product_id' => $id, ));
+    }
+
+    // Update product features (checkboxes) and options
+    public function updateProductTabs($id)
+    {
+        // Features
+        if (isset($_POST['feature']))
+        {
+            foreach ($_POST['feature'] as $featureItem):
+                Yii::log("Creating feature item " . $featureItem, CLogger::LEVEL_INFO, 'system.test.kim');
+                $feat = new ProductHasFeature;
+                $feat->product_product_id = $id;
+                $feat->product_feature_id = $featureItem;
+                $feat->save();
+            endforeach;
+        }
+
+        // Pricing
+        $criteria = new CDbCriteria;
+        $criteria->addCondition("uid = " . Yii::app()->session['uid']);
+        $criteria->addCondition("product_department_id = " . Yii::app()->session['department_id']);
+        $options = Option::model()->findAll($criteria);
+        foreach ($options as $option):
+           	$prc = new ProductHasOption;
+           	$prc->product_product_id = $id;
+           	$prc->product_option_id = $option->id;
+           	$prc->price = $_POST[$option->id . '_price'];
+			if ($prc->price != 0)
+           		$prc->save();
+        endforeach;
+
 	}
 
 	/**

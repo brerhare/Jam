@@ -4,13 +4,12 @@
         <?php
             $criteria = new CDbCriteria;
             $criteria->addCondition("uid = " . Yii::app()->session['uid']);
-            //$criteria->addCondition("product_department_id = " . $model->product_department_id);
+            $criteria->addCondition("product_department_id = " . Yii::app()->session['department_id']);
             $features = Feature::model()->findAll($criteria);
             foreach ($features as $feature):
                 $criteria = new CDbCriteria;
                 $criteria->addCondition("product_product_id = $model->id");
                 $criteria->addCondition("product_feature_id = $feature->id");
-                //$criteria->addCondition("uid = " . Yii::app()->session['uid']);
                 $match = $model->isNewRecord ? 0 : ProductHasFeature::model()->exists($criteria);
         ?>
         <label class="checkbox">
