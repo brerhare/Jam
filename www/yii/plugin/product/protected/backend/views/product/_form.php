@@ -14,6 +14,16 @@
 
 	<?php echo $form->textAreaRow($model,'description',array('rows'=>6, 'cols'=>50, 'class'=>'span5')); ?>
 
+
+	<?php //echo $form->textFieldRow($model,'product_department_id',array('class'=>'span5')); ?>
+<!-- @@EG: Dropdowns -->
+	<?php echo $form->dropDownListRow($model,'product_department_id', CHtml::listData(Department::model()->findAll(), 'id', 'name'), array('empty'=>'Choose')); ?>
+
+	<?php //echo $form->textFieldRow($model,'product_vat_id',array('class'=>'span5')); ?>
+
+	<?php echo $form->dropDownListRow($model,'product_vat_id', CHtml::listData(Vat::model()->findAll(), 'id', 'description'), array('empty'=>'Choose')); ?>
+
+
 	<?php echo $form->textFieldRow($model,'weight',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right')); ?>
 
 	<?php echo $form->textFieldRow($model,'height',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right')); ?>
@@ -24,9 +34,6 @@
 
 	<?php echo $form->textFieldRow($model,'volume',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right')); ?>
 
-	<?php echo $form->textFieldRow($model,'product_department_id',array('class'=>'span5')); ?>
-
-	<?php echo $form->textFieldRow($model,'product_vat_id',array('class'=>'span5')); ?>
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
