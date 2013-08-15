@@ -5,6 +5,6 @@ $this->menu=array(
 );
 ?>
 
-<h2>Update Product <?php echo $model->id; ?></h2>
+<h2>Update Product <?php echo $model->name; ?></h2>
 
 <?php echo $this->renderPartial('_form',array('model'=>$model)); ?>

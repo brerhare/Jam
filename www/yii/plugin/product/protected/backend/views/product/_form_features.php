@@ -1,46 +1,25 @@
-<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-	'id'=>'product-form',
-	'enableAjaxValidation'=>false,
-	'type'=>'horizontal',
-)); ?>
+<?php echo $form->errorSummary($model); ?>
+<div class="row">
+    <div class="span2 well">
+        <?php
+            $criteria = new CDbCriteria;
+            $criteria->addCondition("uid = " . Yii::app()->session['uid']);
+            $criteria->addCondition("product_department_id = " . $model->product_department_id);
+            $features = Feature::model()->findAll($criteria);
+            foreach ($features as $feature):
+                $criteria = new CDbCriteria;
+                $criteria->addCondition("product_product_id = $model->id");
+                $criteria->addCondition("product_feature_id = $feature->id");
+                //$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+                $match = $model->isNewRecord ? 0 : ProductHasFeature::model()->exists($criteria);
+        ?>
+        <label class="checkbox">
+            <input name="feature[]" <?php if ($match) echo ' checked="checked" '?> type="checkbox" value="<?php echo $feature->id; ?>"><?php echo $feature->name; ?>
+            </label>
+        <?php endforeach; ?>
+    </div><!-- /span -->
 
-	<p class="help-block">Fields with <span class="required">*</span> are required.</p>
-
-	<?php echo $form->errorSummary($model); ?>
-
-	<?php //echo $form->textFieldRow($model,'uid',array('class'=>'span5')); ?>
-
-	<?php echo $form->textFieldRow($model,'name',array('class'=>'span5','maxlength'=>255)); ?>
-
-	<?php echo $form->textAreaRow($model,'description',array('rows'=>6, 'cols'=>50, 'class'=>'span5')); ?>
-
-
-	<?php //echo $form->textFieldRow($model,'product_department_id',array('class'=>'span5')); ?>
-
-<!-- @@EG: Dropdowns -->
-
-<?php
-$criteria = new CDbCriteria;
- $criteria->addCondition("uid = " . Yii::app()->session['uid']);
-?>
-
-	<?php echo $form->dropDownListRow($model,'product_department_id', CHtml::listData(Department::model()->findAll($criteria), 'id', 'name'), array('empty'=>'Choose')); ?>
-
-	<?php //echo $form->textFieldRow($model,'product_vat_id',array('class'=>'span5')); ?>
-
-	<?php echo $form->dropDownListRow($model,'product_vat_id', CHtml::listData(Vat::model()->findAll($criteria), 'id', 'description'), array('empty'=>'Choose')); ?>
-
-
-	<?php echo $form->textFieldRow($model,'weight',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right')); ?>
-
-	<?php echo $form->textFieldRow($model,'height',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right')); ?>
-
-	<?php echo $form->textFieldRow($model,'width',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right')); ?>
-
-	<?php echo $form->textFieldRow($model,'depth',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right')); ?>
-
-	<?php echo $form->textFieldRow($model,'volume',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right')); ?>
-
+</div><!-- /row -->
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
@@ -49,5 +28,3 @@ $criteria = new CDbCriteria;
 			'label'=>$model->isNewRecord ? 'Create' : 'Save',
 		)); ?>
 	</div>
-
-<?php $this->endWidget(); ?>
