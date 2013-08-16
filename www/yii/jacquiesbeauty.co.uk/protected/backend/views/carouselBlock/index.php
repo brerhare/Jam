@@ -1,11 +1,11 @@
 <?php
 $this->breadcrumbs=array(
-	'Carousel Blocks',
+	'Carousel Content',
 );
 
 $this->menu=array(
-	array('label'=>'Create CarouselBlock','url'=>array('create')),
-	array('label'=>'Manage CarouselBlock','url'=>array('admin')),
+	array('label'=>'Create Carousel Content','url'=>array('create')),
+	array('label'=>'Manage Carousel Content','url'=>array('admin')),
 );
 ?>
 

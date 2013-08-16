@@ -1,12 +1,12 @@
 <?php
 
 $this->menu=array(
-	array('label'=>'Create Carousel Block','url'=>array('create')),
+	array('label'=>'Create Carousel Content','url'=>array('create')),
 );
 
 ?>
 
-<h1>Manage Carousel Blocks</h1>
+<h1>Manage Carousel Content</h1>
 
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'carousel-block-grid',

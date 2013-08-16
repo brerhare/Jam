@@ -76,10 +76,12 @@ $(document).ready(function(){
 	$(imgSwap).preload();
 	// Paypal shipping selection change
     $("#os1").change(function() {
-        if      ($(this).val() == "UK £7.00")             $('#shipping').val("7.00");
-        else if ($(this).val() == "Europe £15.00")        $('#shipping').val("15.00");
-        else if ($(this).val() == "USA/Canada £35.00")    $('#shipping').val("35.00");
-        else if ($(this).val() == "Rest of World £51.00") $('#shipping').val("51.00");
+        if      ($(this).val() == "UK £7.00")                     $('#shipping').val("7.00");
+        else if ($(this).val() == "Europe £15.00")                $('#shipping').val("15.00");
+        else if ($(this).val() == "USA/Canada £35.00")            $('#shipping').val("35.00");
+        else if ($(this).val() == "Rest of World £51.00")         $('#shipping').val("51.00");
+        else if ($(this).val() == "Youth Beatz Collection £0.00") $('#shipping').val("0.00");
+        else if ($(this).val() == "Clothing £3.00")               $('#shipping').val("3.00");
 	    else alert('Error - invalid shipping');
     });
 });
@@ -255,6 +257,8 @@ $mainpanel->render();
 						<option value="<?php echo "Europe £15.00";?>"><?php echo "Europe £15.00";?></option>
 						<option value="<?php echo "USA/Canada £35.00";?>"><?php echo "USA/Canada £35.00";?></option>
 						<option value="<?php echo "Rest of World £51.00";?>"><?php echo "Rest of World £51.00";?></option>
+						<option value="<?php echo "Youth Beatz Collection £0.00";?>"><?php echo "Youth Beatz Collection £0.00";?></option>
+						<option value="<?php echo "Clothing £3.00";?>"><?php echo "Clothing £3.00";?></option>
 	<?php $listItemCount=0;?>
 	<?php foreach ($model->category->sizes as $size): ?>
 						<input type="hidden" name="option_select<?php echo $listItemCount;?>" value="<?php echo $size->text;?>">

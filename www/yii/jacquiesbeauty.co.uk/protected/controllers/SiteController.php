@@ -2,11 +2,13 @@
 
 class SiteController extends Controller
 {
-    /**
-     * Specifies the access control rules.
-     * This method is used by the 'accessControl' filter.
-     * @return array access control rules
-     */
+	/**
+	 * Get the jelly script root (as defined in /protected/config/main.php)
+	 */
+	private function getJellyRoot()
+	{
+		return Yii::app()->params['jellyRoot'];
+	}
 
 	/**
 	 * Declares class-based actions.
@@ -33,35 +35,38 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-		// renders the view file 'protected/views/site/index.php'
-		// using the default layout 'protected/views/layouts/main.php'
+		$layout = "frontpage";
+		if (isset($_GET['layout']))
+			$layout = $_GET['layout'];
+		$parseConfig = new ParseConfig();
+		$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . $layout . ".jel");
+		if (!($jellyArray))
+			throw new Exception('Aborting');
 
-//$this->render('index');
+		$jelly = new Jelly;
+		$jelly->processData($jellyArray,$this->getJellyRoot());
+		$jelly->outputData();
 
-		$this->actionPage('');
-/*
-        $dataProvider=new CActiveDataProvider('ContentBlock');
-        $this->render('index',array(
-            'dataProvider'=>$dataProvider,
-        ));
-*/
+		//$this->render('index');
 	}
 
-    public function actionPage($url)
-    {
-        if ($url == null)
-        {
-            $model = ContentBlock::model()->find(array('order'=>'sequence'));
-        }
-        else
-        {
-            $model = ContentBlock::model()->findByAttributes(array('url'=>$url));
-        }
-        $this->render('index', array(
-            'model'=>$model,
-            'url'=>$url,
-        ));
-    }
+	/**
+	 * This is the default 'index' action that is invoked
+	 * when an action is not explicitly requested by users.
+	 */
+	public function actionPlay($page)
+	{
+		$parseConfig = new ParseConfig();
+		$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . $page . '.jel');
+		if (!($jellyArray))
+			throw new Exception('Aborting');
+
+		$jelly = new Jelly;
+		$jelly->processData($jellyArray,$this->getJellyRoot());
+		$jelly->outputData();
+
+	}
+
 
 
 	/**

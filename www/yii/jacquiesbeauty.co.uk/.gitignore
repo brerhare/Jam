@@ -4,7 +4,14 @@ protected/runtime/*
 !protected/runtime/.gitignore
 protected/backend/runtime/*
 !protected/backend/runtime/.gitignore
+userdata/*
+!userdata/image
 userdata/image/*
 !userdata/image/.gitignore
-*.bfproject
+!userdata/carousel
+userdata/carousel/*
+!userdata/carousel/.gitignore
+!userdata/tab
+userdata/tab/*
+!userdata/tab/.gitignore
 *.bak

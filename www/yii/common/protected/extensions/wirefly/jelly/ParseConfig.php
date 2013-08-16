@@ -2,12 +2,15 @@
 class ParseConfig
 {
 
+	//public $DEBUG = true;
+	public $DEBUG = false;
+
 	/**
 	 * Source lifted from http://php.net/manual/en/function.parse-ini-file.php
 	 */
  
 	private function parse_ini ( $filepath ) {
-	    $ini = file( $filepath );
+	    $ini = $this->preprocess_file( $filepath );
 	    if ( count( $ini ) == 0 ) { return array(); }
 	    $sections = array();
 	    $values = array();
@@ -17,9 +20,17 @@ class ParseConfig
 	    foreach( $ini as $line ){
 	        $line = trim( $line );
 	        // Comments
-	        if ( $line == '' || $line{0} == ';' ) { continue; }
+	        if ( $line == '' || $line{0} == ';' || $line{0} == '#')
+	        	continue;
+	        // Includes
+	        $incl = explode('=', $line, 2);
+	        if (trim($incl[0]) == 'include') {
+	        	$fileToInclude = dirname($filepath) . '/' . trim($incl[1]);
+	        	//die($fileToInclude);
+	        	array_merge($globals, parse_ini($fileToInclude));
+	        }
 	        // Sections
-	        if ( $line{0} == '[' ) {
+	        if ( $line{0} == '[' ) { 
 	            $sections[] = substr( $line, 1, -1 );
 				if (($i != 0) && ($sectionHasItems==false)) $values[ $i - 1 ][] = '';       // Guarantee at least one item in each section
 	            $i++;
@@ -57,6 +68,19 @@ class ParseConfig
 	    return $result + $globals;
 	}
 
+	/**
+	 * Preprocess an ini file
+	 * 1) Expand includes
+	 * 2) ...
+	 */
+
+	private function preprocess_file($filepath)
+	{
+		$ini = file( $filepath );
+		return $ini;
+		//die('xxx');
+	}
+
     /**
      * Loads in the ini file specified in filename, and returns the settings in
      * it as an associative multi-dimensional array
@@ -81,9 +105,10 @@ public $multiInclude = array();
 
         if ($ini === false)
             throw new Exception('Unable to parse ini file.');
-//echo "------------------------FIRST START-------------------------->\n";
-//var_dump($ini);
-//echo "<------------------------FIRST END----------------------------\n";
+
+		$this->logMsg("... Raw array after parsing ...\n\n");
+		if ($this->DEBUG) var_dump($ini);
+
         if (!$process_sections && $section)
 		{
             $values = $process_sections ? $ini[$section] : $ini;
@@ -120,6 +145,10 @@ public $multiInclude = array();
             }
             $result += $ini;
         }
+
+		$this->logMsg("... Depandancy-merged array ...\n\n");
+		if ($this->DEBUG) var_dump($result);
+
         return $result;
     }
 
@@ -207,5 +236,17 @@ public $multiInclude = array();
         }
         return $left;
     }
+
+	private function logMsg($msg, $indentLevel=0)
+	{
+		if ($this->DEBUG)
+		{
+			$indent = "";
+			while ($indentLevel--)
+				$indent .= "&nbsp&nbsp&nbsp&nbsp";
+			echo  nl2br($indent . $msg);
+		}
+	}
+
 }
 ?>
