@@ -10,8 +10,8 @@ class Jelly
      * @throws Exception
      */
 
-	public $DEBUG = true;
-	//public $DEBUG = false;
+	//public $DEBUG = true;
+	public $DEBUG = false;
 
 	private $jellyRootPath = "/";
 	private $jellyRootUrl = "/";

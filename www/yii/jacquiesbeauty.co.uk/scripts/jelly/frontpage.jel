@@ -1,0 +1,75 @@
+[some_sensible_values]
+;;;;;;;;;; css.html * = { font-size: 1em; color: #000; font-family: Arial !important; }
+css.display = none 
+css.overflow = hidden /* (or any type of overflow) avoids position shift on no-margin containers */
+css.margin = 0px auto
+
+; Every blob inherits these before adding/overriding
+[* : some_sensible_values]
+
+[screen]
+child = contentframe
+fx.wallpaper-image = /img/bg.jpg
+css.display = block
+
+	[contentframe]
+	child = fixedheader, carousel, tabscontainer, contentcontainer
+	css.display = block
+	css.width = 908px	/* if we give an explicit width here, child elements will by default set their width to it */
+
+		[fixedheader]
+		child = menu
+		css.display = block
+		css.position = fixed		/* position it, part 1 */
+		css.top = 0px				/* position it, part 2 */
+		css.left = 50%				/* centre it, part 1 - middle of the screen. margin-auto doesnt apply here because of 'fixed' */
+		css.margin-left = -250px	/* centre it, part 2 - pull left by half the item's width */
+		css.width = 500px
+		css.height = 114px
+		css.background-image = url(/img/header.png)
+		css.z-index = 10000			/* keep it in front */
+
+			[menu]
+			css.display = block
+			css.margin-top = 35px 
+			css.margin-left = 50px
+			addon.menu.megamenu.anchortext = Manu
+
+		[carousel]
+		css.display = block
+		css.margin-top = 80px
+		;css.height = 250px			/* dont set the height - carousel will set it */
+		addon.carousel.flexslider.animation = fade
+		addon.carousel.flexslider.source = db
+		addon.carousel.flexslider.sql = CarouselBlock::model()->findAll(array('order'=>'sequence'));
+		addon.carousel.flexslider.column = content
+
+		[tabscontainer]
+		child = tabs
+		css.display = block
+		css.margin-bottom = -4px
+		css.background-color = white
+		fx.rounding = 4px
+
+		[tabs]
+		css.display = block
+		addon.tab.rain.source = db
+		addon.tab.rain.sql = TabBlock::model()->findAll(array('order'=>'sequence'));
+		addon.tab.rain.column = content
+
+		; [content] needs a container because we want a bit of space around the actual content.
+
+		[contentcontainer]
+		child = content
+		css.display = block
+		;css.margin-top = 10px
+		css.background-color = white
+		fx.rounding = 4px
+
+			[content]
+			css.display = block
+			css.background-color = white
+			css.margin = 15px
+			content.source = db
+			content.sql = ContentBlock::model()->findByAttributes(array('url'=>$GET['page']))
+			content.column = content

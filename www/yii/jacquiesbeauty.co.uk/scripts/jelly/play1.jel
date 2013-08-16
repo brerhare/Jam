@@ -1,0 +1,61 @@
+[some_sensible_values]
+;;;;;;;;;; css.html * = { font-size: 1em; color: #000; font-family: Arial !important; }
+css.display = none 
+css.overflow = hidden /* (or any type of overflow) avoids position shift on no-margin containers */
+css.margin = 0px auto
+
+; Every blob inherits these before adding/overriding
+[* : some_sensible_values]
+
+[screen]
+child = contentframe
+fx.wallpaper-color = #e6fcff
+css.display = block
+
+	[contentframe]
+	child = header, carousel, menu, contentcontainer, footer
+	css.display = block
+	css.width = 1024px	/* if we give an explicit width here, child elements will by default set their width to it */
+
+		[header]
+		css.display = block
+		css.margin-top = 20px
+		fx.rounding = default
+		css.height = 114px
+		css.background-color = #00ccff
+
+		[carousel]
+		css.display = block
+		css.margin = 20px
+		css.width = 500px
+		;css.background-color = #0099ff
+		addon.carousel.flexslider.height = 100px
+		addon.carousel.flexslider.width = 300px
+		addon.carousel.flexslider.animation = fade
+		addon.carousel.flexslider.source = glob
+		addon.carousel.flexslider.pattern = /play/image1/*
+
+		[menu]
+		css.display = block
+		css.background-color = orange
+		css.height = 35px 
+
+		; [content] needs a container because we want a bit of space around the actual content.
+
+		[contentcontainer]
+		child = content
+		css.display = block
+		css.background-color = white
+
+			[content]
+			css.display = block
+			css.background-color = cyan
+			html.h1 = First heading1 for the page
+			html.h1 = Second heading1 for the page
+			html.h2 = This is heading2 for the page
+			html.h3 = This is heading3 for the page
+			html.h5 = This is heading5 for the page
+			html.h6 = This is heading6 for the page
+			html.p = A paragraph of stuff. Has a <i>horrible</i> font. Has a nice <b>shadow</b> effect
+			html.p = Another paragraph. Blah blah blah <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blahblah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah
+

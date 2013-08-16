@@ -2,8 +2,8 @@
 class ParseConfig
 {
 
-	public $DEBUG = true;
-	//public $DEBUG = false;
+	//public $DEBUG = true;
+	public $DEBUG = false;
 
 	/**
 	 * Source lifted from http://php.net/manual/en/function.parse-ini-file.php
