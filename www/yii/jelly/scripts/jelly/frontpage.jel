@@ -59,7 +59,7 @@ css.display = block
 		addon.tab.rain.sql = TabBlock::model()->findAll(array('order'=>'sequence'));
 		addon.tab.rain.column = content
 
-		; [content] needs a container because we want a bit of space around the actual content.
+		; [content] needs a container because we want a bit of space (margin) around the actual content.
 
 		[contentcontainer]
 		child = content
