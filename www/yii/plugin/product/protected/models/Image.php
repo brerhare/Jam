@@ -45,14 +45,14 @@ class Image extends CActiveRecord
 
             array('filename', 'file','on'=>'insert',
                 'types'=> 'jpg, jpeg, gif, png',
-                'maxSize' => 1024 * 1024 * 10, // 10MB
-                'tooLarge' => 'The file was bigger than 10MB. Please upload a smaller file.'
+                'maxSize' => 1024 * 1024 * 20, // 20MB
+                'tooLarge' => 'The file was bigger than 20MB. Please upload a smaller file.'
             ),
             array('filename', 'file','on'=>'update',
                 'types'=> 'jpg, jpeg, gif, png',
                 'allowEmpty' => true,
-                'maxSize' => 1024 * 1024 * 10, // 10MB
-                'tooLarge' => 'The file was larger than 10MB. Please upload a smaller file.'
+                'maxSize' => 1024 * 1024 * 20, // 20MB
+                'tooLarge' => 'The file was larger than 20MB. Please upload a smaller file.'
             ),
             array('filename', 'unsafe'),
 			array('filename', 'length', 'max'=>255),
