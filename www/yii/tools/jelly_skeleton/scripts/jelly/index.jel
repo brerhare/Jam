@@ -1,0 +1,17 @@
+[some_sensible_values]
+;;;;;;;;;; css.html * = { font-size: 1em; color: #000; font-family: Arial !important; }
+css.display = none 
+css.overflow = hidden /* (or any type of overflow) avoids position shift on no-margin containers */
+css.margin = 0px auto
+
+; Every blob inherits these before adding/overriding
+[* : some_sensible_values]
+
+[screen]
+child = contentframe
+fx.wallpaper-image = /img/background.jpg
+css.display = block
+
+	[contentframe]
+	css.display = block
+	css.width = 908px	/* if we give an explicit width here, child elements will by default set their width to it */
