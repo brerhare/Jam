@@ -1,5 +1,12 @@
+Setup
+-----
 Edit index.php, backend.php and index-test for the Yii extern path (probably needs an extra '/..')
 Edit scripts/jelly/addon soflink (probably needs an extra '/..')
 Edit protected/extensions/<whatever> softlinks (probably needs an extra '/..')
 Edit protected/config/main.php - database
+
+Choosing A Jelly version
+------------------------
+The scripts/jelly/addon soflink points to the current version. Change it to scripts/jelly-n.n.n/addon
+The protected/extensions/jelly softlink does the same. Change it to protected/extensions/jelly-n.n.n
 
