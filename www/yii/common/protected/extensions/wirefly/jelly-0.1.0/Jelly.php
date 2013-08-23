@@ -270,12 +270,6 @@ $page = $_GET['page'];
 										-o-background-size: cover;
 										background-size: cover;			
 										\n}\n"); 
-/*							$this->genGlobalCSS("html { background: url(" . $cssValue . ") no-repeat center center fixed;
-										-webkit-background-size: cover;
-										-moz-background-size: cover;
-										-o-background-size: cover;
-										background-size: cover;			
-										\n}\n"); */ 
 							break;
 						case "shadow":
 							if ((!$cssValue) || ($cssValue == "default"))
