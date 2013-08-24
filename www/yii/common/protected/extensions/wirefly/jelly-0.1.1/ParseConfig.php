@@ -22,13 +22,6 @@ class ParseConfig
 	        // Comments
 	        if ( $line == '' || $line{0} == ';' || $line{0} == '#')
 	        	continue;
-	        // Includes
-	        $incl = explode('=', $line, 2);
-	        if (trim($incl[0]) == 'include') {
-	        	$fileToInclude = dirname($filepath) . '/' . trim($incl[1]);
-	        	//die($fileToInclude);
-	        	array_merge($globals, parse_ini($fileToInclude));
-	        }
 	        // Sections
 	        if ( $line{0} == '[' ) { 
 	            $sections[] = substr( $line, 1, -1 );
@@ -76,9 +69,33 @@ class ParseConfig
 
 	private function preprocess_file($filepath)
 	{
-		$ini = file( $filepath );
+		// Read the ini into an array
+		$ini = file($filepath);
+		if (count($ini) == 0) { return array(); }
+
+		// Merge any includes into the array
+		$newIni = array();
+		foreach( $ini as $line )	
+		{
+			array_push($newIni, $line);
+			$line = trim( $line );
+	        // Comments
+	        if ( $line == '' || $line{0} == ';' || $line{0} == '#')
+	        	continue;
+	        // Includes
+	        $incl = explode('=', $line, 2);
+	        if (trim($incl[0]) == 'include')
+			{
+				array_pop($newIni);
+				$fileToInclude = dirname($filepath) . '/' . trim($incl[1]) . '.jel';
+				$ini2 = file($fileToInclude);
+				foreach( $ini2 as $line2 )	
+					array_push($newIni, $line2);
+			}
+		}
+		$ini = $newIni;
+
 		return $ini;
-		//die('xxx');
 	}
 
     /**

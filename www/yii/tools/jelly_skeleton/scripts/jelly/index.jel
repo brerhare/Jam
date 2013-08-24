@@ -1,10 +1,8 @@
-[some_sensible_values]
-css.display = none 
-css.overflow = hidden /* (or any type of overflow) avoids position shift on no-margin containers */
-css.margin = 0px auto
+[default-values]
+include = default-values
 
 ; Every blob inherits these before adding/overriding
-[* : some_sensible_values]
+[* : default-values]
 
 [screen]
 child = contentframe
@@ -18,5 +16,5 @@ css.display = block
 	style.html.h1.color = yellow
 	style.html.h1.background-color = black
 	style.html.h1.padding = 10px
-	html.h1 = Jelly
+	html.h1 = jelly
 
