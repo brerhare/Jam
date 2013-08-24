@@ -1,4 +1,4 @@
-[default-values]
+[defaults]
 include = default-values
 
 ; Every blob inherits these before adding/overriding
