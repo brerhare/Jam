@@ -2,7 +2,7 @@
 include = default-values
 
 ; Every blob inherits these before adding/overriding
-[* : default-values]
+[* : defaults]
 
 [screen]
 child = contentframe
