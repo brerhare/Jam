@@ -76,6 +76,8 @@ class EventController extends Controller
 		{
 			$model->attributes=$_POST['Event'];
 			$model->ticket_logo_path=CUploadedFile::getInstance($model, 'ticket_logo_path');
+			// Initialise the ticket numbering
+			$model->optional_next_ticket_number = $model->optional_start_ticket_number;
 			if($model->save())
 			{
 				if (strlen($model->ticket_logo_path) > 0)

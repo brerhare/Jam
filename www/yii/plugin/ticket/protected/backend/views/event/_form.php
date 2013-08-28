@@ -36,6 +36,13 @@
 	<?php //echo $form->textAreaRow($model,'ticket_terms',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 	<?php echo $form->html5EditorRow($model, 'ticket_terms', array('class'=>'span8', 'rows'=>5, 'height'=>'200px', 'options'=>array('color'=>true)));?>
 
+	<?php
+	if ($model->isNewRecord) 
+		echo $form->textFieldRow($model,'optional_start_ticket_number',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right'));
+	else
+		echo $form->textFieldRow($model,'optional_start_ticket_number',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right', 'readonly'=>true));
+	?>
+
 	<?php // echo $form->textFieldRow($model,'active',array('class'=>'span1')); ?>
 	<?php echo $form->toggleButtonRow($model, 'active'); ?>
 

@@ -8,6 +8,7 @@
  * @property integer $uid
  * @property string $title
  * @property string $date
+ * @property string $time
  * @property string $address
  * @property string $post_code
  * @property string $banner_text
@@ -19,6 +20,8 @@
  * @property string $active_start_time
  * @property string $active_end_date
  * @property string $active_end_time
+ * @property integer $optional_start_ticket_number
+ * @property integer $optional_next_ticket_number
  * @property integer $ticket_vendor_id
  *
  * The followings are the available model relations:
@@ -55,9 +58,9 @@ class Event extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('uid, title, date, address, post_code, active, ticket_vendor_id', 'required'),
-			array('uid, active, ticket_vendor_id', 'numerical', 'integerOnly'=>true),
+			array('uid, active, optional_start_ticket_number, optional_next_ticket_number, ticket_vendor_id', 'numerical', 'integerOnly'=>true),
 			array('title, ticket_logo_path', 'length', 'max'=>255),
-			array('date, post_code', 'length', 'max'=>45),
+			array('date, time, post_code', 'length', 'max'=>45),
 			array('banner_text, ticket_text, ticket_terms, active_start_date, active_start_time, active_end_date, active_end_time', 'safe'),
 
 			// @@EG: Image upload. Next two lines. See also controller create/update/delete and remember to set enctype in the view!!!!!
@@ -66,7 +69,7 @@ class Event extends CActiveRecord
 
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, title, date, address, post_code, banner_text, ticket_logo_path, ticket_text, ticket_terms, active, active_start_date, active_start_time, active_end_date, active_end_time, ticket_vendor_id', 'safe', 'on'=>'search'),
+			array('id, uid, title, date, time. address, post_code, banner_text, ticket_logo_path, ticket_text, ticket_terms, active, active_start_date, active_start_time, active_end_date, active_end_time, optional_start_ticket_number, optional_next_ticket_number, ticket_vendor_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -94,6 +97,7 @@ class Event extends CActiveRecord
 			'uid' => 'Uid',
 			'title' => 'Title',
 			'date' => 'Date',
+			'time' => 'Time',
 			'address' => 'Address',
 			'post_code' => 'Post Code',
 			'banner_text' => 'Online Description',
@@ -105,6 +109,8 @@ class Event extends CActiveRecord
 			'active_start_time' => 'Active Start Time',
 			'active_end_date' => 'Active End Date',
 			'active_end_time' => 'Active End Time',
+			'optional_start_ticket_number' => 'Optional Start Ticket Number',
+			'optional_next_ticket_number' => 'Optional Next Ticket Number',
 			'ticket_vendor_id' => 'Ticket Vendor',
 		);
 	}
@@ -125,6 +131,7 @@ class Event extends CActiveRecord
 		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('date',$this->date,true);
+		$criteria->compare('time',$this->time,true);
 		$criteria->compare('address',$this->address,true);
 		$criteria->compare('post_code',$this->post_code,true);
 		$criteria->compare('banner_text',$this->banner_text,true);
@@ -136,6 +143,8 @@ class Event extends CActiveRecord
 		$criteria->compare('active_start_time',$this->active_start_time,true);
 		$criteria->compare('active_end_date',$this->active_end_date,true);
 		$criteria->compare('active_end_time',$this->active_end_time,true);
+		$criteria->compare('optional_start_ticket_number',$this->optional_start_ticket_number);
+		$criteria->compare('optional_next_ticket_number',$this->optional_next_ticket_number);
 		$criteria->compare('ticket_vendor_id',$this->ticket_vendor_id);
 
 		return new CActiveDataProvider($this, array(

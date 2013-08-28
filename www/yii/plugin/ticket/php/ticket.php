@@ -95,7 +95,14 @@ function genTicket(
 			//        vend# evnt# tick# type rand
 			$rand = rand(10000,999999);
 			$ticketRand = sprintf('%03d', $rand);
-			$ticketContent = $vendorModel->id . $eventModel->id . $ticketRand;
+			if ($eventModel->optional_start_ticket_number == 0)
+				$ticketContent = $vendorModel->id . $eventModel->id . $ticketRand;
+			else
+			{
+				$ticketContent = $eventModel->optional_next_ticket_number;
+				$eventModel->optional_next_ticket_number++;
+				$eventModel->save();
+			}
 			$ticketName = '     ' . substr($order_name, 0, 5);
 
 			// set style for barcode
