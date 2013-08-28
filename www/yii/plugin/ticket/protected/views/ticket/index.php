@@ -62,7 +62,7 @@
         		$ref=$_GET['ref'];
         	?>
 			<?php $this->widget('bootstrap.widgets.TbButton',array(
-				'label' => 'Book',
+				'label' => 'Buy',
 				'url' => $this->createUrl('ticket/book', array('id'=>$event->id, 'sid'=>Yii::app()->session['sid'], 'ref'=>$ref)),
 				'type' => 'primary',
 				'size' => 'small'
