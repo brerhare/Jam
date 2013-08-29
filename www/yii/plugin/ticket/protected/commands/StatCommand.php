@@ -137,8 +137,7 @@ class StatCommand extends CConsoleCommand
 			if ($hasActiveEvent)
 			{
 				// Send email to vendor
-				// KIM $to = $vendor->email;
-$to = "kim@wireflydesign.com"; // KIM
+				$to = $vendor->email;
 				$att_filename = "/tmp/ticketVendorSales.csv";
 				if (strlen($to) > 0)
 				{
@@ -167,7 +166,7 @@ $to = "kim@wireflydesign.com"; // KIM
 		}
 
 		// Send summary email to jo
-		// KIM $to = "jo@wireflydesign.com";
+		$to = "jo@wireflydesign.com";
 		$att_filename = "/tmp/ticketSales.csv";
 		if (strlen($to) > 0)
 		{
