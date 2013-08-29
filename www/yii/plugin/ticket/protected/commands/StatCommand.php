@@ -30,6 +30,9 @@ class StatCommand extends CConsoleCommand
 		// All vendors
 		foreach ($vendors as $vendor)
 		{
+			unlink('/tmp/ticketVendorSales.csv');
+			$fp2 = fopen('/tmp/ticketVendorSales.csv', 'w');
+			fputcsv($fp2, $heading);
 			$umsg = "";	
 			$hasActiveEvent = false;
 			$umsg .= "<b><u>Event transactions for " . $vendor->name . ". Period " . $fromdate->format('l d F Y') . " to " . $todate->format('l d F Y') . "</u></b>" . $cr;
@@ -94,6 +97,7 @@ class StatCommand extends CConsoleCommand
 
 							$line = array($vendor->name, $event->title, $area->description, $ticketType->description, $transaction->timestamp, $transaction->order_number, $transaction->auth_code, $name, $transaction->email, $transaction->telephone, $a1, $a2, $a3, $a4, $city, $state, $pc, sprintf("%01.2f", $transaction->http_ticket_price), $transaction->http_ticket_qty, sprintf("%01.2f", $transaction->http_ticket_total));
 							fputcsv($fp, $line);
+							fputcsv($fp2, $line);
 
 							if ($transaction->auth_code == NULL)
 								continue;	// We only want paymentsense sales on the report (not manual)
@@ -115,6 +119,8 @@ class StatCommand extends CConsoleCommand
 				$umsg .= $etbl;
 			}
 
+			fclose($fp2);
+
 			// Accumulate to global msg
 			$umsg .= $cr . "<b>Total sales: " .  sprintf("%01.2f", $uVal) . "</b>" . $cr;
 			$umsg .= "<b>Total paid tickets: " . $uQty . "</b>" . $cr;
@@ -130,7 +136,9 @@ class StatCommand extends CConsoleCommand
 			if ($hasActiveEvent)
 			{
 				// Send email to vendor
-				$to = $vendor->email;
+				// KIM $to = $vendor->email;
+$to = "kim@wireflydesign.com"; // KIM
+				$att_filename = "/tmp/ticketVendorSales.csv";
 				if (strlen($to) > 0)
 				{
 					$from = "admin@dglink.co.uk";
@@ -143,6 +151,7 @@ class StatCommand extends CConsoleCommand
 //$mail->AddBCC("kim@wireflydesign.com");
 					$mail->SetFrom($from, $fromName);
 					$mail->AddReplyTo($from, $fromName);
+					$mail->AddAttachment($att_filename);
 					$mail->Subject = $subject;
 					$mail->MsgHTML($message);
 					if (!$mail->Send())
@@ -157,7 +166,7 @@ class StatCommand extends CConsoleCommand
 		}
 
 		// Send summary email to jo
-		$to = "jo@wireflydesign.com";
+		// KIM $to = "jo@wireflydesign.com";
 		$att_filename = "/tmp/ticketSales.csv";
 		if (strlen($to) > 0)
 		{
@@ -168,7 +177,7 @@ class StatCommand extends CConsoleCommand
 			// phpmailer
 			$mail = new PHPMailer();
 			$mail->AddAddress($to);
-//$mail->AddBCC("kim@wireflydesign.com");
+$mail->AddBCC("kim@wireflydesign.com");
 			$mail->SetFrom($from, $fromName);
 			$mail->AddReplyTo($from, $fromName);
 			$mail->AddAttachment($att_filename);

@@ -1,0 +1,16 @@
+[defaults]
+include = default-values
+
+# Every blob inherits these before adding/overriding
+[* : defaults]
+
+[screen]
+# Being an iframe, we want to use the full width of whatever was specified by the parent page
+child = productlist
+fx.wallpaper-color = #3f1f35
+css.display = block
+
+	[productlist]
+	css.display = block
+	
+
