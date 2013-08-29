@@ -30,7 +30,8 @@ class StatCommand extends CConsoleCommand
 		// All vendors
 		foreach ($vendors as $vendor)
 		{
-			unlink('/tmp/ticketVendorSales.csv');
+			if (file_exists('/tmp/ticketVendorSales.csv'))
+				unlink('/tmp/ticketVendorSales.csv');
 			$fp2 = fopen('/tmp/ticketVendorSales.csv', 'w');
 			fputcsv($fp2, $heading);
 			$umsg = "";	
