@@ -3,6 +3,14 @@
 class SiteController extends Controller
 {
 	/**
+	 * Get the jelly script root (as defined in /protected/config/main.php)
+	 */
+	private function getJellyRoot()
+	{
+		return Yii::app()->params['jellyRoot'];
+	}
+
+	/**
 	 * Declares class-based actions.
 	 */
 	public function actions()
@@ -27,10 +35,39 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-		// renders the view file 'protected/views/site/index.php'
-		// using the default layout 'protected/views/layouts/main.php'
-		$this->render('index');
+		$layout = "index";
+		if (isset($_GET['layout']))
+			$layout = $_GET['layout'];
+		$parseConfig = new ParseConfig();
+		$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . $layout . ".jel");
+		if (!($jellyArray))
+			throw new Exception('Aborting');
+
+		$jelly = new Jelly;
+		$jelly->processData($jellyArray,$this->getJellyRoot());
+		$jelly->outputData();
+
+		//$this->render('index');
 	}
+
+	/**
+	 * This is the default 'index' action that is invoked
+	 * when an action is not explicitly requested by users.
+	 */
+	public function actionPlay($page)
+	{
+		$parseConfig = new ParseConfig();
+		$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . $page . '.jel');
+		if (!($jellyArray))
+			throw new Exception('Aborting');
+
+		$jelly = new Jelly;
+		$jelly->processData($jellyArray,$this->getJellyRoot());
+		$jelly->outputData();
+
+	}
+
+
 
 	/**
 	 * This is the action to handle external exceptions.

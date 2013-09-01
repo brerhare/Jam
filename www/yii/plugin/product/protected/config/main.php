@@ -17,6 +17,7 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
+		'application.extensions.jelly.*',
 	),
 
 	'modules'=>array(
@@ -94,6 +95,7 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@example.com',
+		'jellyRoot' => '/scripts/jelly/',
 	),
 	
 	// @@EG: Event handler. Here we do something before a controller is called. See Sid.php in protected/controllers
