@@ -318,6 +318,32 @@ $page = $_GET['page'];
 					}
 				}
 				break;
+			case "db":
+				foreach ($value as $dbAction => $dbValue)
+				{
+					switch ($dbAction)
+					{
+						case ("sql"):
+							$q = "return " . $dbValue;
+							$query = eval($q);
+							if ($query)
+							{
+								foreach ($query as $q)
+									echo $q->name . "<br>";
+							}
+							break;
+						case ("output"):
+							$q = "return " . $dbValue;
+							$query = eval($q);
+							if ($query)
+							{
+								foreach ($query as $q)
+									echo $q->name . "<br>";
+							}
+							break;
+					}
+				}
+				break;
 			case "addon":
 				$this->addonHandler($value);
 				break;

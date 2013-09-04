@@ -11,16 +11,9 @@
 class megamenu
 {
 	//Defaults
-	private $defaultValue = "900px";
+	private $defaultAnchorText = "Menu";
 
 	public $apiOption = array(
-		"width" => "900px",
-		"height" => "400px",
-		"animation" => "fade | slide",
-		"source" => "db | glob",
-		"(db) sql" => "CarouselBlock::model()->findAll(array('order'=>'sequence'))",
-		"(db) column" => "content",
-		"(glob) pattern" => "/userdata/images/*.jpg",
 	);
 
 	/*
@@ -38,41 +31,9 @@ class megamenu
 		{
 			switch ($opt)
 			{
-				case "source":
-					if ($val == "db")
-					{
-						// If db based content
-						// @@NB: OI! hardcoded to jacquies here
-						$carouselItems = CarouselBlock::model()->findAll(array('order'=>'sequence'));
-						foreach ($carouselItems as $carouselItem):
-							$content .= "<li>";
-							$content .= $carouselItem->content;
-							$content .= "</li>";
-						endforeach;
-					}
-					else if ($val == "glob")
-					{
-						// get pattern
-						$pattern = $options['pattern'];
-						foreach (glob(Yii::app()->basePath . "/../" . $pattern) as $filename)
-						{
-							$content .= "<li>";
-							$content .= "<img src='" . dirname($pattern) . "/". basename($filename) . "' style='float: none; margin: 0px;' alt=''>";
-							$content .= "</li>";
-						}
-					}
-					break;
-				case "width":
-					$tmp = str_replace("<substitute-width>", "width:" . $val . ";", $this->apiHtml);		// Optional field
+				case "anchortext":
+					$tmp = str_replace("<substitute-anchortext>", $val, $this->apiHtml);
 					$this->apiHtml = $tmp;
-					break;
-				case "height":
-					$tmp = str_replace("<substitute-height>", "height:" . $val . ";", $this->apiHtml);	// Optional field
-					$this->apiHtml = $tmp;
-					break;
-				case "animation":
-					$tmp = str_replace("<substitute-animation>", "'" . $val . "'", $this->apiJs);
-					$this->apiJs = $tmp;
 					break;
 				default:
 					// Not all array items are action items
@@ -81,9 +42,9 @@ class megamenu
 
 		// Apply all defaults that werent overridden
 		// HTML
-		if (strstr($this->apiHtml, "<substitute-something>"))
+		if (strstr($this->apiHtml, "<substitute-anchortext>"))
 		{
-			$tmp = str_replace("<substitute-something>", $this->defaultValue, $this->apiHtml);
+			$tmp = str_replace("<substitute-anchortext>", $this->defaultAnchorText, $this->apiHtml);
 			$this->apiHtml = $tmp;
 		}
 		// JS
@@ -91,8 +52,6 @@ class megamenu
 		// Substitute paths for includes
 		$tmp = str_replace("<substitute-path>", $jellyRootUrl, $this->apiHtml);
 		$this->apiHtml = $tmp;
-
-
 
 		// Insert the data
 		$content = "";
@@ -149,7 +108,7 @@ class megamenu
 		<div style="position:relative; z-index:20000;">
 			<div id="megaanchor1" style="z-index:20000">
 				<!--Mega Menu Anchor-->
-				<a onmouseover="javascript:recalcPos();" href=<substitute-path>"/index.php/'" id="megaanchor" style="color:#000000;">Menu</a>
+				<a onmouseover="javascript:recalcPos();" href=<substitute-path>"/index.php/'" id="megaanchor" style="color:#000000;"><substitute-anchortext></a>
 			</div>
 
 			<!--Mega Menu Dropdown HTML-->

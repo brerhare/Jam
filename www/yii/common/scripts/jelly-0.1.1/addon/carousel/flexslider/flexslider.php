@@ -59,7 +59,7 @@ class flexslider
 						foreach (glob(Yii::app()->basePath . "/../" . $pattern) as $filename)
 						{
 							$content .= "<li>";
-							$content .= "<img src='" . dirname($pattern) . "/". basename($filename) . "' style='float: none; margin: 0px;' alt=''>";
+							$content .= "<img src='" . Yii::app()->baseUrl . dirname($pattern) . "/". basename($filename) . "' style='float: none; margin: 0px;' alt=''>";
 							$content .= "</li>";
 						}
 					}

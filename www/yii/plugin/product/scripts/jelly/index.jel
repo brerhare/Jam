@@ -6,11 +6,49 @@ include = default-values
 
 [screen]
 # Being an iframe, we want to use the full width of whatever was specified by the parent page
-child = productlist
-fx.wallpaper-color = #3f1f35
+child = grid
+fx.wallpaper-color = #00000
 css.display = block
 
-	[productlist]
+	[grid]
+	stacking = horizontal
 	css.display = block
-	
+	css.width = 700px
+	css.height = 600px
+	css.background-color = #dbdbdb
+	child = product, p2, p3, p4
 
+	[product]
+	css.display = block
+	# CSS Width and height are here only for running in non-iframe testing mode
+	# Omitting both will cause it to fill the whole iframe space
+	css.width = 200px
+	css.height = 150px
+	css.margin = 10px
+	css.background-color = #ffffff
+	html.p = aaa<br>bbb
+	html.p = ccc
+	db.sql = Department::model()->findAllByAttributes(array('id'=>$_GET['department']));
+	db.output = Department.name
+
+	[p2]
+	css.display = block
+	css.width = 200px
+	css.height = 150px
+	css.margin = 10px
+	html.h1 = p2
+	
+	[p3]
+	css.display = block
+	css.width = 200px
+	css.height = 150px
+	css.margin = 10px
+	html.h1 = p3
+	
+	[p4]
+	css.display = block
+	css.width = 200px
+	css.height = 150px
+	css.margin = 10px
+	html.h1 = p4
+	

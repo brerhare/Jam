@@ -33,7 +33,7 @@ css.display = block
 			css.display = block
 			css.margin-top = 35px 
 			css.margin-left = 50px
-			addon.menu.megamenu.anchortext = Manu
+			addon.menu.megamenu.anchortext = Menu
 
 		[carousel]
 		css.display = block
@@ -41,8 +41,6 @@ css.display = block
 		;css.height = 250px			/* dont set the height - carousel will set it */
 		addon.carousel.flexslider.animation = fade
 		addon.carousel.flexslider.source = db
-		addon.carousel.flexslider.sql = CarouselBlock::model()->findAll(array('order'=>'sequence'));
-		addon.carousel.flexslider.column = content
 
 		[tabscontainer]
 		child = tabs
@@ -54,8 +52,6 @@ css.display = block
 		[tabs]
 		css.display = block
 		addon.tab.rain.source = db
-		addon.tab.rain.sql = TabBlock::model()->findAll(array('order'=>'sequence'));
-		addon.tab.rain.column = content
 
 		; [content] needs a container because we want a bit of space around the actual content.
 
