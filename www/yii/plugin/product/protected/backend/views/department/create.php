@@ -1,6 +1,6 @@
 <?php
 $this->menu=array(
-	array('label'=>'List Departments','url'=>array('index')),
+	array('label'=>'Manage Departments','url'=>array('admin')),
 );
 ?>
 
