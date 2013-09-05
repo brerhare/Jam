@@ -1,0 +1,1 @@
+http://www.yiiframework.com/wiki/33/organize-directories-for-applications-with-front-end-and-back-end/

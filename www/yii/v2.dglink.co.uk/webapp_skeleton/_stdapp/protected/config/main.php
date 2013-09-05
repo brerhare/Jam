@@ -3,33 +3,20 @@
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
 
-// Set backend and frontend paths
-$backend=dirname(dirname(__FILE__));
-$frontend=dirname($backend);
-Yii::setPathOfAlias('backend', $backend);
-
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
 return array(
-    // Set base of both to frontend (backend reuses frontend code), and backend c, v and r
-    'basePath'=> $frontend,
-    'controllerPath' => $backend.'/controllers',
-    'viewPath' => $backend.'/views',
-    'runtimePath' => $backend.'/runtime',
-
-	'name'=>'Website Backend',
+	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
+	'name'=>'Application',
 
 	// preloading 'log' component
-	// preloading 'bootstrap' component
+	// preloading 'yiibooster' component
 	'preload'=>array('log', 'bootstrap'),
 
 	// autoloading model and component classes
-	// Note that the order is important - we want backend to overwrite frontend when theres a clash
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
-		'backend.models.*',
-		'backend.components.*',
 	),
 
 	'modules'=>array(
@@ -74,10 +61,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=mydb_co_uk',
+			'connectionString' => 'mysql:host=localhost;dbname=testdrive',
 			'emulatePrepare' => true,
-			'username' => 'mydb.co.uk',
-			'password' => 'mydb.co.uk,',
+			'username' => 'root',
+			'password' => '',
 			'charset' => 'utf8',
 		),
 		/**/

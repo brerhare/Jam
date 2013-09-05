@@ -74,10 +74,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=mydb_co_uk',
+			'connectionString' => 'mysql:host=localhost;dbname=dglink_co_uk',
 			'emulatePrepare' => true,
-			'username' => 'mydb.co.uk',
-			'password' => 'mydb.co.uk,',
+			'username' => 'dglink.co.uk',
+			'password' => 'dglink.co.uk,',
 			'charset' => 'utf8',
 		),
 		/**/

@@ -3,36 +3,31 @@
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
 
-// Set backend and frontend paths
-$backend=dirname(dirname(__FILE__));
-$frontend=dirname($backend);
-Yii::setPathOfAlias('backend', $backend);
-
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
 return array(
-    // Set base of both to frontend (backend reuses frontend code), and backend c, v and r
-    'basePath'=> $frontend,
-    'controllerPath' => $backend.'/controllers',
-    'viewPath' => $backend.'/views',
-    'runtimePath' => $backend.'/runtime',
+	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
+	'name'=>'A Jelly Webapp',
 
-	'name'=>'Website Backend',
+	// Override the default controller
+	//'defaultController'=>'contentBlock',
 
 	// preloading 'log' component
-	// preloading 'bootstrap' component
+	// preloading 'yiibooster' component
 	'preload'=>array('log', 'bootstrap'),
 
 	// autoloading model and component classes
-	// Note that the order is important - we want backend to overwrite frontend when theres a clash
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
-		'backend.models.*',
-		'backend.components.*',
+		'application.extensions.jelly.*',
 	),
 
 	'modules'=>array(
+// kim added this next
+		'usr'=>array(
+			'userIdentityClass' => 'UserIdentity',
+		),
 		// uncomment the following to enable the Gii tool
 		/**/
 		'gii'=>array(
@@ -49,6 +44,16 @@ return array(
 
 	// application components
 	'components'=>array(
+
+/*
+ 		'urlManager'=>array(
+        	'urlFormat'=>'path',
+        	'rules'=>array(
+            	'usr/<action:(login|logout|reset|recovery|register|profile)>'=>'usr/default/<action>',
+			)
+		)
+*/
+
 		'bootstrap'=>array(
 			'class' => 'ext.bootstrap.components.Bootstrap',
 			'responsiveCss' => true,
@@ -65,6 +70,7 @@ return array(
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
+'usr/<action:(login|logout|reset|recovery|register|profile)>'=>'usr/default/<action>',
 			),
 		),
 		/**/
@@ -74,10 +80,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=mydb_co_uk',
+			'connectionString' => 'mysql:host=localhost;dbname=dglink_co_uk',
 			'emulatePrepare' => true,
-			'username' => 'mydb.co.uk',
-			'password' => 'mydb.co.uk,',
+			'username' => 'dglink.co.uk',
+			'password' => 'dglink.co.uk,',
 			'charset' => 'utf8',
 		),
 		/**/
@@ -107,5 +113,6 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@wireflydesign.com',
+		'jellyRoot' => '/scripts/jelly/',
 	),
 );

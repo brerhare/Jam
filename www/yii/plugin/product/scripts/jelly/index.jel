@@ -16,7 +16,7 @@ css.display = block
 	css.width = 700px
 	css.height = 600px
 	css.background-color = #dbdbdb
-	child = product, p2, p3, p4
+	child = product
 
 	[product]
 	css.display = block
