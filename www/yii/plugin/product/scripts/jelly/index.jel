@@ -5,7 +5,7 @@ include = default-values
 [* : defaults]
 
 [screen]
-# Being an iframe, we want to use the full width of whatever was specified by the parent page
+# Being an iframe, we want to use the full width of whatever was specified by the parent page - so we dont specify any
 child = grid
 fx.wallpaper-color = #00000
 #fx.wallpaper-image = /img/trees.jpg
@@ -14,10 +14,9 @@ fx.wallpaper-color = #00000
 	stacking = horizontal
 	css.width = 700px
 	css.height = 600px
-	#css.background-color = #f2f2f2
+	css.background-color = #f2f2f2
 	db.table = Department
-	db.filter = 'id'=$_GET['department']
-	db.fetch = single
+	db.filter = 'id' = $_GET['department']
 	html.h3 = Department.name
 	child = product
 
@@ -31,8 +30,10 @@ fx.wallpaper-color = #00000
 		css.border-width = 3px
 		css.border-color = #dcdcdc
 
-		#db.table = Product
-		#db.filter = 'product_department_id'=>12
+		db.table = Product
+		db.filter = 'product_department_id' = Department.id
+		db.fetch = multiple
+		html.p = Product.name
 		
 		#db.sql = Product::model()->findAllByAttributes(array('product_department_id'=>12));
 		#db.show = Product::name
