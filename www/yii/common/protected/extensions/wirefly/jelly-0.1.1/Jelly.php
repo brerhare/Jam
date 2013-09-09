@@ -257,7 +257,7 @@ $page = $_GET['page'];
 					switch ($cssName)
 					{
 						case ("background-image"):
-							$this->genDivCSS("background-image: url(" . $cssValue . ");\n
+							$this->genDivCSS("background-image: url(" . Yii::app()->baseUrl . $cssValue . ");\n
 							background-size: cover;"); 
 							break;
 						case ("html");

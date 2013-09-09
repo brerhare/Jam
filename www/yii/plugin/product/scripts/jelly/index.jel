@@ -8,12 +8,14 @@ include = default-values
 # Being an iframe, we want to use the full width of whatever was specified by the parent page
 child = grid
 fx.wallpaper-color = #00000
+#fx.wallpaper-image = /img/trees.jpg
 
 	[grid]
+	style.background-image = /img/trees.jpg
 	stacking = horizontal
 	css.width = 700px
 	css.height = 600px
-	css.background-color = #dbdbdb
+	#css.background-color = #dbdbdb
 	#db.table = Department
 	#db.filter = 'id'= $_GET['department']
 	db.sql = Department::model()->findByAttributes(array('id'=>$_GET['department']));
