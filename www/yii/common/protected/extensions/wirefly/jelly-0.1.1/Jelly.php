@@ -128,27 +128,50 @@ END_OF_FOOTER;
 		$hasRepeatingField = false;
 		foreach ($array as $name => $value)
 		{
+			// @@TODO: The following code needs to reuse the (almost) same code in the jelly-word processing switch/case
 			if (trim($name) == 'db')
 			{
-				foreach ($value as $sql => $str)
-				if (trim($sql) == 'sql')
+				$dbTable = '';
+				$fltArr = array();
+				foreach ($value as $dbAction => $dbValue)
 				{
-					if (strstr($str, "findAll"))
+					switch ($dbAction)
 					{
-						$hasRepeatingField = true;
-						$q = "return " . $str . ";";
-						$query = eval($q);
-						if ($query)
-						{
-							$x = explode("::", $str);
-							// Generate blobs for each iteration
-							foreach ($query as $q)
+						case ("fetch"):
+							if ($dbValue == "multiple")
+								$hasRepeatingField = true;
+							break;
+						case ("table"):
+							$dbTable = $dbValue;
+							break;
+						case ("filter"):
+							$fltCommaArr = explode(",", $dbValue);
+							foreach ($fltCommaArr as $elemComma)
 							{
-								// Store the handle for this record
-								$this->dbTable[$x[0]] = $q;
-								$this->blobProcess2($jellyArray, $blobName, $array, $float, $indentLevel);
-								echo $q->name . "<br>";
+								$fltEqArr = explode("=", $elemComma);
+								$fltArr[$fltEqArr[0]] = $fltEqArr[1];
 							}
+							break;
+					}
+				}
+				if ($hasRepeatingField)
+				{
+					// Build the query from the collected args
+					$query = $dbTable . "::model()->findAllByAttributes(array(";
+					foreach ($fltArr as $flt1 => $flt2)
+						$query .= trim($flt1) . "=>" . $this->dbExpand(trim($flt2)) . ", ";
+					$query .= "));";
+					// Do the query
+					$q = "return " . $query . ";";
+					$resp = eval($q);
+					if ($resp)
+					{
+						// Generate blobs for each iteration
+						foreach ($resp as $r)
+						{
+							// Store the handle for this record
+							$this->dbTable[$dbTable] = $r;
+							$this->blobProcess2($jellyArray, $blobName, $array, $float, $indentLevel);
 						}
 					}
 				}
@@ -363,8 +386,6 @@ $page = $_GET['page'];
 				$fltArr = array();
 				foreach ($value as $dbAction => $dbValue)
 				{
-					if (strstr($dbValue, "findAll"))
-						continue;
 					switch ($dbAction)
 					{
 						case ("fetch"):
@@ -382,37 +403,6 @@ $page = $_GET['page'];
 								$fltArr[$fltEqArr[0]] = $fltEqArr[1];
 							}
 							break;
-						case ("sql"):
-							$q = "return " . $dbValue . ";";
-							$query = eval($q);
-							if ($query)
-							{
-								$x = explode("::", $dbValue);
-								$this->dbTable[$x[0]] = $query;
-								//echo $this->dbTable['Department']->name;
-								//var_dump($x);
-								//echo '<br>';
-								//echo $query->id;
-								//echo $query->name;
-								//foreach ($query as $q)
-									//$this->genInlineHtml($q->name. "<br>");
-									//echo $dbValue. "<br>";
-							}
-							break;
-						case ("show"):
-							$x = explode("::", $dbValue);
-							$handle = $this->dbTable[$x[0]];
-							$this->genInlineHtml($handle->name . "<br>");
-							//echo $handle->name;
-							break;
-							$q = "return " . $dbValue;
-							$query = eval($q);
-							if ($query)
-							{
-								foreach ($query as $q)
-									echo $q->name . "<br>";
-							}
-							break;
 					}
 				}
 				// Build the query from the collected args
@@ -427,8 +417,6 @@ $page = $_GET['page'];
 					$this->dbTable[$dbTable] = $resp;
 //				echo $this->dbTable['Department']->id;
 				break;
-
-
 			case "addon":
 				$this->addonHandler($value);
 				break;
