@@ -54,6 +54,8 @@ END_OF_ENDHEADER;
 	</html>\n
 END_OF_FOOTER;
 
+	private $dbTable = array();
+
 	private $cssGlobalArray = array();
 	private $cssDivArray = array();
 	private $bodyArray = array();
@@ -89,6 +91,7 @@ END_OF_FOOTER;
 		{
 			if (is_array($value) && (!(array_key_exists("_parent", $value))))
 			{
+
 				$this->blobProcess($jellyArray, $name, $value, false);
 			}
 			else
@@ -120,6 +123,43 @@ END_OF_FOOTER;
 	 * Process (usually display) a blob
 	 */
 	private function blobProcess($jellyArray, $blobName, $array, $float, $indentLevel = 0)
+	{
+		// Search array for repeating fields - we'll generate an instance of this blob for each
+		$hasRepeatingField = false;
+		foreach ($array as $name => $value)
+		{
+			if (trim($name) == 'db')
+			{
+				foreach ($value as $sql => $str)
+				if (trim($sql) == 'sql')
+				{
+					if (strstr($str, "findAll"))
+					{
+						$hasRepeatingField = true;
+						$q = "return " . $str;
+						$query = eval($q);
+						if ($query)
+						{
+							$x = explode("::", $str);
+							// Generate blobs for each iteration
+							foreach ($query as $q)
+							{
+								// Store the handle for this record
+								$this->dbTable[$x[0]] = $q;
+								$this->blobProcess2($jellyArray, $blobName, $array, $float, $indentLevel);
+								echo $q->name . "<br>";
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if (!($hasRepeatingField))
+			$this->blobProcess2($jellyArray, $blobName, $array, $float, $indentLevel);
+	}
+
+	private function blobProcess2($jellyArray, $blobName, $array, $float, $indentLevel = 0)
 	{
 
 // @@TODO: remove this hardcoding
@@ -328,11 +368,24 @@ $page = $_GET['page'];
 							$query = eval($q);
 							if ($query)
 							{
-								foreach ($query as $q)
-									$this->genInlineHtml($q->name)  . "<br>";
+								$x = explode("::", $dbValue);
+								$this->dbTable[$x[0]] = $query;
+								//echo $this->dbTable['Department']->name;
+								//var_dump($x);
+								//echo '<br>';
+								//echo $query->id;
+								//echo $query->name;
+								//foreach ($query as $q)
+									//$this->genInlineHtml($q->name. "<br>");
+									//echo $dbValue. "<br>";
 							}
 							break;
-						case ("Xshow"):
+						case ("show"):
+							$x = explode("::", $dbValue);
+							$handle = $this->dbTable[$x[0]];
+							$this->genInlineHtml($handle->name . "<br>");
+							//echo $handle->name;
+							break;
 							$q = "return " . $dbValue;
 							$query = eval($q);
 							if ($query)
