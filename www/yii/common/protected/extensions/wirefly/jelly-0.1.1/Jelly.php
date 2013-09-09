@@ -329,10 +329,10 @@ $page = $_GET['page'];
 							if ($query)
 							{
 								foreach ($query as $q)
-									echo $q->name . "<br>";
+									$this->genInlineHtml($q->name)  . "<br>";
 							}
 							break;
-						case ("output"):
+						case ("Xshow"):
 							$q = "return " . $dbValue;
 							$query = eval($q);
 							if ($query)

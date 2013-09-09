@@ -1,1 +1,1 @@
-mysql -u jacquiesbeauty.c jacquiesbeauty_co_uk -p"kimlo," < jacquiesbeauty_co_uk.sql
+mysql -u dglink.co.uk dglink_co_uk -p"dglink.co.uk," < dglink_co_uk.sql
