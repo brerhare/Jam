@@ -5,4 +5,4 @@ css.overflow = hidden /* (or any type of overflow) avoids position shift on no-m
 css.margin = 0px auto
 
 stacking = vertical
-# css.border = 1px solid black
+css.border = 1px solid black
