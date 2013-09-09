@@ -11,16 +11,14 @@ fx.wallpaper-color = #00000
 #fx.wallpaper-image = /img/trees.jpg
 
 	[grid]
-	style.background-image = /img/trees.jpg
 	stacking = horizontal
 	css.width = 700px
 	css.height = 600px
-	#css.background-color = #dbdbdb
-	#db.table = Department
-	#db.filter = 'id'= $_GET['department']
-	db.sql = Department::model()->findByAttributes(array('id'=>$_GET['department']));
-	db.show = Department::name
-	html.p = Department::name
+	#css.background-color = #f2f2f2
+	db.table = Department
+	db.filter = 'id'=$_GET['department']
+	db.fetch = single
+	html.h3 = Department.name
 	child = product
 
 		[product]
@@ -30,7 +28,13 @@ fx.wallpaper-color = #00000
 		css.height = 150px
 		css.margin = 10px
 		css.background-color = #ffffff
-		db.sql = Product::model()->findAllByAttributes(array('product_department_id'=>12));
-		db.show = Product::name
-		html.p = Product::name
+		css.border-width = 3px
+		css.border-color = #dcdcdc
+
+		#db.table = Product
+		#db.filter = 'product_department_id'=>12
+		
+		#db.sql = Product::model()->findAllByAttributes(array('product_department_id'=>12));
+		#db.show = Product::name
+		#html.p = Product::name
 		html.h4 = Now only

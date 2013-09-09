@@ -359,12 +359,29 @@ $page = $_GET['page'];
 				}
 				break;
 			case "db":
+				$dbTable = '';
+				$fltArr = array();
 				foreach ($value as $dbAction => $dbValue)
 				{
 					if (strstr($dbValue, "findAll"))
 						continue;
 					switch ($dbAction)
 					{
+						case ("fetch"):
+							if ($dbValue == "multiple")
+								return;							// NB we break right out of here if we find its a multiple
+							break;
+						case ("table"):
+							$dbTable = $dbValue;
+							break;
+						case ("filter"):
+							$fltCommaArr = explode(",", $dbValue);
+							foreach ($fltCommaArr as $elemComma)
+							{
+								$fltEqArr = explode("=", $elemComma);
+								$fltArr[$fltEqArr[0]] = $fltEqArr[1];
+							}
+							break;
 						case ("sql"):
 							$q = "return " . $dbValue . ";";
 							$query = eval($q);
@@ -398,7 +415,20 @@ $page = $_GET['page'];
 							break;
 					}
 				}
+				// Build the query from the collected args
+				$query = $dbTable . "::model()->findByAttributes(array(";
+				foreach ($fltArr as $flt1 => $flt2)
+					$query .= trim($flt1) . "=>" . trim($flt2) . ", ";
+				$query .= "));";
+				// Do the query
+				$q = "return " . $query . ";";
+				$resp = eval($q);
+				if ($resp)
+					$this->dbTable[$dbTable] = $resp;
+//				echo $this->dbTable['Department']->id;
 				break;
+
+
 			case "addon":
 				$this->addonHandler($value);
 				break;
@@ -438,25 +468,20 @@ $page = $_GET['page'];
 		}
 	}
 
+	// Convert a 'Department.name' to the actual value, using the table-handle table
 	private function dbExpand($str)
 	{
-return $str;
-		//$this->dbTable[$x[0]] = $query;
-		if (!(strstr($str, "::")))
-			return $str;
-		$x = explode("::", $str);
-		if (substr($x[1], 0, 7) == 'model()')
-			return $str;
-		$validChar = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
-		$res = '';
-		for ($i = 0; $i < strlen($str); $i++)
+		$val = explode(".", $str);
+		if (count($val) > 1)
 		{
-			if ((!(is_numeric($str[$i]))) && (!(ctype_alpha($str[$i]))) && ($str[$i] != '_'))
-				break;
-			$res .= $str[$i];
+			if (array_key_exists($val[0], $this->dbTable))
+			{
+				$query = 'return ' . '$this->dbTable["' . $val[0] . '"]->' . $val[1] . ';';
+				$resp = eval($query);
+				return $resp;
+			}
 		}
-echo '<br>['.$str.']=['.$res.']<br>';
-		//if (array_key_exists(
+		return $str;
 	}
 
 	/**
