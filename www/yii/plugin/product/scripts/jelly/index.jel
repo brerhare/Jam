@@ -14,8 +14,11 @@ fx.wallpaper-color = #00000
 	css.width = 700px
 	css.height = 600px
 	css.background-color = #dbdbdb
+	#db.table = Department
+	#db.filter = 'id'= $_GET['department']
 	db.sql = Department::model()->findByAttributes(array('id'=>$_GET['department']));
 	db.show = Department::name
+	html.p = Department::name
 	child = product
 
 		[product]
@@ -25,7 +28,7 @@ fx.wallpaper-color = #00000
 		css.height = 150px
 		css.margin = 10px
 		css.background-color = #ffffff
-		html.p = aaa<br>bbb
-		html.p = ccc
-		db.sql = Product::model()->findAllByAttributes(array('product_department_id'=>29));
-		#db.show = Product::name
+		db.sql = Product::model()->findAllByAttributes(array('product_department_id'=>12));
+		db.show = Product::name
+		html.p = Product::name
+		html.h4 = Now only
