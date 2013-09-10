@@ -1,4 +1,5 @@
 <?php
+$old_error_handler = set_error_handler("myErrorHandler");
 class Jelly
 {
     /**
@@ -149,7 +150,7 @@ END_OF_FOOTER;
 							foreach ($fltCommaArr as $elemComma)
 							{
 								$fltEqArr = explode("=", $elemComma);
-								$fltArr[$fltEqArr[0]] = $fltEqArr[1];
+								$fltArr[$fltEqArr[0]] = $this->dbExpand($fltEqArr[1]);
 							}
 							break;
 					}
@@ -163,7 +164,12 @@ END_OF_FOOTER;
 					$query .= "));";
 					// Do the query
 					$q = "return " . $query . ";";
+Yii::log("REPEATING EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
+ob_start();
 					$resp = eval($q);
+if ('' !== $error = ob_get_clean()) {
+    // output the error somehow to the client
+}
 					if ($resp)
 					{
 						// Generate blobs for each iteration
@@ -400,7 +406,7 @@ $page = $_GET['page'];
 							foreach ($fltCommaArr as $elemComma)
 							{
 								$fltEqArr = explode("=", $elemComma);
-								$fltArr[$fltEqArr[0]] = $fltEqArr[1];
+								$fltArr[$fltEqArr[0]] = $this->dbExpand($fltEqArr[1]);
 							}
 							break;
 					}
@@ -412,6 +418,7 @@ $page = $_GET['page'];
 				$query .= "));";
 				// Do the query
 				$q = "return " . $query . ";";
+Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				$resp = eval($q);
 				if ($resp)
 					$this->dbTable[$dbTable] = $resp;
@@ -544,4 +551,37 @@ $page = $_GET['page'];
 
 }
 
+// error handler function
+function myErrorHandler($errno, $errstr, $errfile, $errline)
+{
+    if (!(error_reporting() & $errno)) {
+        // This error code is not included in error_reporting
+        return;
+    }
+
+    switch ($errno) {
+    case E_USER_ERROR:
+        echo "<b>My ERROR</b> [$errno] $errstr<br />\n";
+        echo "  Fatal error on line $errline in file $errfile";
+        echo ", PHP " . PHP_VERSION . " (" . PHP_OS . ")<br />\n";
+        echo "Aborting...<br />\n";
+        exit(1);
+        break;
+
+    case E_USER_WARNING:
+        echo "<b>My WARNING</b> [$errno] $errstr<br />\n";
+        break;
+
+    case E_USER_NOTICE:
+        echo "<b>My NOTICE</b> [$errno] $errstr<br />\n";
+        break;
+
+    default:
+        echo "Unknown error type: [$errno] $errstr<br />\n";
+        break;
+    }
+
+    /* Don't execute PHP internal error handler */
+    return true;
+}
 ?>

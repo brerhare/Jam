@@ -9,15 +9,20 @@ include = default-values
 child = grid
 fx.wallpaper-color = #00000
 
+# Get the uid from the sid
+db.table = User
+db.filter = 'sid'=$_GET['sid']
+
 	[grid]
+	child = product
 	stacking = horizontal
-	css.width = 680px
+	css.width = 700px
 	css.height = 600px
 	css.background-color = #f2f2f2
+	css.overflow = auto
 	db.table = Department
-	db.filter = 'id' = $_GET['department']
+	db.filter = 'id'=$_GET['department'],'uid'=User.id
 	html.h3 = Department.name
-	child = product
 
 		[product]
 		# CSS Width and height are here only for running in non-iframe testing mode
@@ -29,7 +34,7 @@ fx.wallpaper-color = #00000
 		css.border-width = 3px
 		css.border-color = #dcdcdc
 		db.table = Product
-		db.filter = 'product_department_id' = Department.id
+		db.filter = 'product_department_id'=Department.id
 		db.fetch = multiple
 		html.p = Product.name
 		html.h4 = Now only
