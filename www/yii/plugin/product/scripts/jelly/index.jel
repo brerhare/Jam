@@ -16,7 +16,7 @@ db.filter = 'sid'=$_GET['sid']
 	[grid]
 	child = product
 	stacking = horizontal
-	css.width = 700px
+	css.width = 670px
 	css.height = 600px
 	css.background-color = #f2f2f2
 	css.overflow = auto
@@ -25,16 +25,32 @@ db.filter = 'sid'=$_GET['sid']
 	html.h3 = Department.name
 
 		[product]
-		# CSS Width and height are here only for running in non-iframe testing mode
-		# Omitting both will cause it to fill the whole iframe space
+		child = product_image, product_text
 		css.width = 200px
-		css.height = 150px
-		css.margin = 10px
+		css.height = 170px
+//		css.margin = 10px
+		css.margin-left = 10px
+		css.margin-bottom = 10px
 		css.background-color = #ffffff
 		css.border-width = 3px
 		css.border-color = #dcdcdc
 		db.table = Product
 		db.filter = 'product_department_id'=Department.id
 		db.fetch = multiple
-		html.p = Product.name
-		html.h4 = Now only
+
+			[product_image]
+			css.border = none
+			css.width = 180px
+			css.height = 100px
+			css.margin = 10px
+			db.table = Image
+			db.filter = 'product_product_id'=Product.id
+			style.background-image = /userdata/image/WB\ Embrace.jpg
+			html.p = Image.filename
+
+			[product_text]
+			css.border = none
+			css.padding = 5px
+			css.color = #a60404
+			html.raw = <b>Product.name</b>
+			html.raw = <br>Now only £

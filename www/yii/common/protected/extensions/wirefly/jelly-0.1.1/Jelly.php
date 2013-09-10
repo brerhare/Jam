@@ -286,7 +286,8 @@ $page = $_GET['page'];
 					switch ($cssName)
 					{
 						case ("background-image"):
-							$this->genDivCSS("background-image: url(" . Yii::app()->baseUrl . $cssValue . ");\n
+						//echo $cssValue;
+							$this->genDivCSS("background-image: url(" . Yii::app()->baseUrl . $this->dbExpand($cssValue) . ");\n
 							background-size: cover;"); 
 							break;
 						case ("html");
@@ -315,7 +316,10 @@ $page = $_GET['page'];
 					foreach ($value as $htmlTag => $htmlValue)
 					{
 						$tag = $this->getDupName($htmlTag);
-						$this->genInlineHtml("<$tag>" . $this->dbExpand($htmlValue) . "</$tag>");
+						if ($tag != 'raw')
+							$this->genInlineHtml("<$tag>" . $this->dbExpand($htmlValue) . "</$tag>");
+						else
+							$this->genInlineHtml($this->dbExpand($htmlValue));
 					}
 				}
 				break;

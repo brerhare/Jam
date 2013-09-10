@@ -165,7 +165,6 @@ public $multiInclude = array();
 
 		$this->logMsg("... Depandancy-merged array ...\n\n");
 		if ($this->DEBUG) var_dump($result);
-
         return $result;
     }
 
