@@ -300,7 +300,6 @@ $page = $_GET['page'];
 					switch ($cssName)
 					{
 						case ("background-image"):
-							//$imgPath = $this->escapeSpaces($cssValue);
 							$this->genDivCSS("background-image: url('" . Yii::app()->baseUrl . $this->dbExpand($cssValue) . "');\n
 							background-size: cover;"); 
 							break;
@@ -595,12 +594,6 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 	{
 		$arr = explode("___", $string);
 		return $arr[0];
-	}
-
-	private function escapeSpaces($string)
-	{
-		$ret = str_replace(" ", "\\ ", $string);
-		echo $ret;
 	}
 }
 

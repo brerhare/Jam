@@ -47,7 +47,6 @@ db.filter = 'sid'=$_GET['sid']
 			db.table = Image
 			db.filter = 'product_product_id'=Product.id
 			style.background-image = /userdata/image/Image.filename
-			html.p = Image.filename
 
 			[product_text]
 			css.border = none
