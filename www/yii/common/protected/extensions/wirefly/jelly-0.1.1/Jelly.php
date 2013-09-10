@@ -17,6 +17,8 @@ class Jelly
 	//public $DEBUG = true;
 	public $DEBUG = false;
 
+	private $blobUniqueId = 0;
+
 	private $jellyRootPath = "/";
 	private $jellyRootUrl = "/";
 
@@ -128,6 +130,8 @@ END_OF_FOOTER;
 	 */
 	private function blobProcess($jellyArray, $blobName, $array, $float, $indentLevel = 0)
 	{
+		$blobName .= $this->blobUniqueId++;
+
 		// Search array for repeating fields - we'll generate an instance of this blob for each
 		$hasRepeatingField = false;
 		foreach ($array as $name => $value)
@@ -296,12 +300,11 @@ $page = $_GET['page'];
 					switch ($cssName)
 					{
 						case ("background-image"):
-						//echo $cssValue;
-							$this->genDivCSS("background-image: url(" . Yii::app()->baseUrl . $this->dbExpand($cssValue) . ");\n
+							//$imgPath = $this->escapeSpaces($cssValue);
+							$this->genDivCSS("background-image: url('" . Yii::app()->baseUrl . $this->dbExpand($cssValue) . "');\n
 							background-size: cover;"); 
 							break;
 						case ("html");
-
 							// @@TODO: NB: This only caters for one sub-level, eg 'style.html.h1.color = red'
 							// @@TODO: Also, note the 2nd foreach - this is for syntax but only one nvp is ever expected
 							foreach ($cssValue as $htmlTag => $htmlValue)
@@ -310,8 +313,6 @@ $page = $_GET['page'];
 								foreach ($htmlValue as $htmlSubTag => $htmlSubValue)
 									$this->genGlobalCSS("#" . $blobName . " " . $htmlTag . "{ " . $htmlSubTag . " : " . $htmlSubValue . "; }\n");
 							}
-
-
 							break;
 					}
 				}
@@ -596,6 +597,11 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 		return $arr[0];
 	}
 
+	private function escapeSpaces($string)
+	{
+		$ret = str_replace(" ", "\\ ", $string);
+		echo $ret;
+	}
 }
 
 // error handler function
