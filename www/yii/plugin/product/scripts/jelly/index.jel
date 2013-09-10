@@ -20,6 +20,7 @@ db.filter = 'sid'=$_GET['sid']
 	css.height = 600px
 	css.background-color = #f2f2f2
 	css.overflow = auto
+	css.border = none
 	db.table = Department
 	db.filter = 'id'=$_GET['department'],'uid'=User.id
 	html.h3 = Department.name
@@ -28,7 +29,6 @@ db.filter = 'sid'=$_GET['sid']
 		child = product_image, product_text
 		css.width = 200px
 		css.height = 170px
-//		css.margin = 10px
 		css.margin-left = 10px
 		css.margin-bottom = 10px
 		css.background-color = #ffffff
@@ -45,12 +45,14 @@ db.filter = 'sid'=$_GET['sid']
 			css.margin = 10px
 			db.table = Image
 			db.filter = 'product_product_id'=Product.id
-			style.background-image = /userdata/image/WB\ Embrace.jpg
+			style.background-image = /userdata/image/Image.filename
 			html.p = Image.filename
 
 			[product_text]
 			css.border = none
 			css.padding = 5px
 			css.color = #a60404
-			html.raw = <b>Product.name</b>
-			html.raw = <br>Now only £
+			db.table = ProductHasOption
+			db.filter = 'product_product_id'=Product.id
+			html.raw = <b>Product.name
+			html.raw = </b><br>Now only £ProductHasOption.price

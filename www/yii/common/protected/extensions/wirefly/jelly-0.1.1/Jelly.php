@@ -1,4 +1,7 @@
 <?php
+
+header("Content-Type: text/html; charset=UTF-8");
+
 $old_error_handler = set_error_handler("myErrorHandler");
 class Jelly
 {
@@ -165,11 +168,7 @@ END_OF_FOOTER;
 					// Do the query
 					$q = "return " . $query . ";";
 Yii::log("REPEATING EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
-ob_start();
 					$resp = eval($q);
-if ('' !== $error = ob_get_clean()) {
-    // output the error somehow to the client
-}
 					if ($resp)
 					{
 						// Generate blobs for each iteration
@@ -470,6 +469,26 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 	// Convert a 'Department.name' to the actual value, using the table-handle table
 	private function dbExpand($str)
 	{
+
+		foreach ($this->dbTable as $table => $handle)
+		{
+			if ($tableData = strstr($str, $table))
+			{
+				$val = explode(".", $tableData);
+				if (count($val) != 2)
+					return $str;
+				$query = 'return ' . '$this->dbTable["' . $val[0] . '"]->' . $val[1] . ';';
+				//echo 'query ' . $query . '<br>';
+				$resp = eval($query);
+				$ret = str_replace($tableData, $resp, $str);
+				//echo 'Matched tabledata ' . $val[0] . '.' . $val[1] . ' with ' . $str . ' giving ' . $ret . '<br>';
+				return $ret;
+			}
+			
+		}
+		return $str;
+
+/*
 		$val = explode(".", $str);
 		if (count($val) > 1)
 		{
@@ -477,10 +496,12 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 			{
 				$query = 'return ' . '$this->dbTable["' . $val[0] . '"]->' . $val[1] . ';';
 				$resp = eval($query);
+				echo $resp . '<br>';
 				return $resp;
 			}
 		}
 		return $str;
+*/
 	}
 
 	/**
