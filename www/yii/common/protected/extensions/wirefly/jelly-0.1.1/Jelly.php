@@ -137,6 +137,7 @@ END_OF_FOOTER;
 			{
 				$dbTable = '';
 				$fltArr = array();
+				$orderArr = array();
 				foreach ($value as $dbAction => $dbValue)
 				{
 					switch ($dbAction)
@@ -156,14 +157,24 @@ END_OF_FOOTER;
 								$fltArr[$fltEqArr[0]] = $this->dbExpand($fltEqArr[1]);
 							}
 							break;
+						case ("order"):
+							$orderCommaArr = explode(",", $dbValue);
+							foreach ($orderCommaArr as $elemComma)
+								array_push($orderArr, $elemComma);
+							break;
 					}
 				}
 				if ($hasRepeatingField)
 				{
 					// Build the query from the collected args
 					$query = $dbTable . "::model()->findAllByAttributes(array(";
+					// Add filters
 					foreach ($fltArr as $flt1 => $flt2)
 						$query .= trim($flt1) . "=>" . $this->dbExpand(trim($flt2)) . ", ";
+					$query .= "),array(";
+					// Add order
+					foreach ($orderArr as $ord)
+						$query .= "'order'=>'" . $this->dbExpand(trim($ord)) . "', ";
 					$query .= "));";
 					// Do the query
 					$q = "return " . $query . ";";
@@ -393,6 +404,7 @@ $page = $_GET['page'];
 			case "db":
 				$dbTable = '';
 				$fltArr = array();
+				$orderArr = array();
 				foreach ($value as $dbAction => $dbValue)
 				{
 					switch ($dbAction)
@@ -412,12 +424,22 @@ $page = $_GET['page'];
 								$fltArr[$fltEqArr[0]] = $this->dbExpand($fltEqArr[1]);
 							}
 							break;
+						case ("order"):
+							$orderCommaArr = explode(",", $dbValue);
+							foreach ($orderCommaArr as $elemComma)
+								array_push($orderArr, $elemComma);
+							break;
 					}
 				}
 				// Build the query from the collected args
 				$query = $dbTable . "::model()->findByAttributes(array(";
+				// Add filters
 				foreach ($fltArr as $flt1 => $flt2)
 					$query .= trim($flt1) . "=>" . trim($flt2) . ", ";
+				$query .= "),array(";
+				// Add order
+				foreach ($orderArr as $ord)
+					$query .= "'order'=>'" . $this->dbExpand(trim($ord)) . "', ";
 				$query .= "));";
 				// Do the query
 				$q = "return " . $query . ";";

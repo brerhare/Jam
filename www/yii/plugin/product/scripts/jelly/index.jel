@@ -28,7 +28,7 @@ db.filter = 'sid'=$_GET['sid']
 		[product]
 		child = product_image, product_text
 		css.width = 200px
-		css.height = 170px
+		css.height = 185px
 		css.margin-left = 10px
 		css.margin-bottom = 10px
 		css.background-color = #ffffff
@@ -36,6 +36,7 @@ db.filter = 'sid'=$_GET['sid']
 		css.border-color = #dcdcdc
 		db.table = Product
 		db.filter = 'product_department_id'=Department.id
+		db.order = name
 		db.fetch = multiple
 
 			[product_image]
@@ -54,5 +55,6 @@ db.filter = 'sid'=$_GET['sid']
 			css.color = #a60404
 			db.table = ProductHasOption
 			db.filter = 'product_product_id'=Product.id
+			db.order = price
 			html.raw = <b>Product.name
 			html.raw = </b><br>Now only £ProductHasOption.price
