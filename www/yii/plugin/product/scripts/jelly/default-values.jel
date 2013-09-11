@@ -6,3 +6,8 @@ css.margin = 0px auto
 
 stacking = vertical
 css.border = 1px solid black
+
+# Limitations
+# -----------
+# Table.field refs on RHS of the '=' MUST be at the end of a line, cannot be embedded anywhere else
+
