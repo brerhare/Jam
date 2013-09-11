@@ -404,7 +404,22 @@ $page = $_GET['page'];
 								$model = ContentBlock::model()->findByAttributes(array('url'=>$page));
 								//eval("\$model = \"$sql\";");
 								if (!$model) die ('SQL returned nothing');
-								$this->genInlineHtml($model->content);
+
+//	{{department 27 Guinot}}
+$p1 = strstr($model->content, "{{");
+$p2 = strstr(substr($p1, 2), "}}", true);
+$pOrig = "{{" . $p2 . "}}";
+$vals = explode(" ", $p2);
+$type = $vals[0];
+if (count($vals) > 1)
+{
+	$value = $vals[1];
+	$iframe = '<iframe height="600" width="690" style="border:medium double rgb(255,255,255)" scrolling="no" src="https://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;department=' . $value . '"></iframe>';
+	$this->genInlineHtml(str_replace($pOrig, $iframe, $model->content));
+}
+else
+	$this->genInlineHtml($model->content);
+
 								break;
 							}
 						break;
