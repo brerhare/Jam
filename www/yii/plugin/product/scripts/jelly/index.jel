@@ -20,7 +20,6 @@ db.filter = 'sid'=$_GET['sid']
 	css.height = 670px
 	css.background-color = #f2f2f2
 	css.overflow = auto
-	css.border = none
 	db.table = Department
 	db.filter = 'id'=$_GET['department'],'uid'=User.id
 	html.h3 = Department.name
@@ -38,9 +37,10 @@ db.filter = 'sid'=$_GET['sid']
 		db.filter = 'product_department_id'=Department.id
 		db.order = name
 		db.fetch = multiple
+		#click = $_GET['sid']/Product.name
+		click = /show-product/Product.name
 
 			[product_image]
-			css.border = none
 			css.width = 180px
 			css.height = 100px
 			css.margin = 10px
@@ -49,7 +49,6 @@ db.filter = 'sid'=$_GET['sid']
 			style.background-image = /userdata/image/Image.filename
 
 			[product_text]
-			css.border = none
 			css.padding = 5px
 			css.color = #a60404
 			db.table = ProductHasOption

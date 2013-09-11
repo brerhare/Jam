@@ -217,6 +217,11 @@ if (isset($_GET['page']))
 }
 */
 		$this->logMsg($blobName . "\n", $indentLevel);
+
+		// Is this entire blob clickable?
+		if (array_key_exists("click", $array))
+			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['click'])) . ">\n", $indentLevel);
+
 		$this->genInlineHtml("<div id='" . $blobName . "'>\n", $indentLevel);
 		$this->genDivCSS("div#" . $blobName ." {\n");
 		if ($float)
@@ -259,6 +264,10 @@ if (isset($_GET['page']))
 		}
 
 		$this->genInlineHtml("</div> <!-- " . $blobName . " -->\n", $indentLevel);
+
+		if (array_key_exists("click", $array))
+			$this->genInlineHtml("</a>\n", $indentLevel);
+
 		if ($floatChildren)
 			$this->genInlineHtml("<div style='clear: both;'></div>");
 	}
@@ -510,21 +519,6 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 			
 		}
 		return $str;
-
-/*
-		$val = explode(".", $str);
-		if (count($val) > 1)
-		{
-			if (array_key_exists($val[0], $this->dbTable))
-			{
-				$query = 'return ' . '$this->dbTable["' . $val[0] . '"]->' . $val[1] . ';';
-				$resp = eval($query);
-				echo $resp . '<br>';
-				return $resp;
-			}
-		}
-		return $str;
-*/
 	}
 
 	/**
