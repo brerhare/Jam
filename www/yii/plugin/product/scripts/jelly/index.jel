@@ -38,7 +38,7 @@ db.filter = 'sid'=$_GET['sid']
 		db.order = name
 		db.fetch = multiple
 		#click = $_GET['sid']/Product.name
-		click = /show-product/Product.name
+		click = /show-product/Product.id
 
 			[product_image]
 			css.width = 180px
