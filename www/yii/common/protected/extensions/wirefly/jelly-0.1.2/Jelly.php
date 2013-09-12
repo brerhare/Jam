@@ -130,7 +130,7 @@ END_OF_FOOTER;
 	 */
 	private function blobProcess($jellyArray, $blobName, $array, $float, $indentLevel = 0)
 	{
-		$blobName .= $this->blobUniqueId++;
+//		$blobName .= $this->blobUniqueId++;
 
 		// Search array for repeating fields - we'll generate an instance of this blob for each
 		$hasRepeatingField = false;
@@ -204,7 +204,7 @@ Yii::log("REPEATING EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim
 
 	private function blobProcess2($jellyArray, $blobName, $array, $float, $indentLevel = 0)
 	{
-
+		$blobName .= $this->blobUniqueId++;
 // @@TODO: remove this hardcoding
 /*
 if (isset($_GET['page']))
