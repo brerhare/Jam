@@ -74,10 +74,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=mydb_co_uk',
+			'connectionString' => 'mysql:host=localhost;dbname=dumfriesfurniture_com',
 			'emulatePrepare' => true,
-			'username' => 'domainname.co.uk',
-			'password' => 'password',
+			'username' => 'dumfriesfurnitur',
+			'password' => 'ey746hs',
 			'charset' => 'utf8',
 		),
 		/**/

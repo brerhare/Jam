@@ -46,13 +46,8 @@ css.display = block
 			html.raw = Product filter
 
 			[product-grid]
-			#html.raw = Product grid
-			html.raw = {{department 5 Guinot}}
-
-html.raw = <iframe height="670" width="690" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=hrhgr5ko21gn08a3e22jeaers5&amp;department=27"></iframe>
-
-#html.raw = <iframe height="670" width="690" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid='3hjc1rcpa5todru774o45q6v16'&amp;department='5'"></iframe>';
-
+			#html.raw = {{department 5 Guinot}}
+			html.raw = <iframe height="670" width="690" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=hrhgr5ko21gn08a3e22jeaers5&amp;department=27"></iframe>
 
 		[footer]
 		css.height = 30px
