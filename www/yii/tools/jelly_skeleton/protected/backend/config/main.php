@@ -17,7 +17,7 @@ return array(
     'viewPath' => $backend.'/views',
     'runtimePath' => $backend.'/runtime',
 
-	'name'=>'Website Backend',
+	'name'=>'A Jelly Backend',
 
 	// preloading 'log' component
 	// preloading 'bootstrap' component
@@ -37,7 +37,7 @@ return array(
 		/**/
 		'gii'=>array(
 			'class'=>'system.gii.GiiModule',
-			'password'=>'kimlo,',
+			'password'=>'password',
 			// If removed, Gii defaults to localhost only. Edit carefully to taste.
 			'ipFilters'=>array('127.0.0.1','::1'),
 			'generatorPaths' => array(
@@ -74,10 +74,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=mydb_co_uk',
+			'connectionString' => 'mysql:host=localhost;dbname=domainname_co_uk',
 			'emulatePrepare' => true,
-			'username' => 'mydb.co.uk',
-			'password' => 'mydb.co.uk,',
+			'username' => 'domainname.co.uk',
+			'password' => 'password',
 			'charset' => 'utf8',
 		),
 		/**/

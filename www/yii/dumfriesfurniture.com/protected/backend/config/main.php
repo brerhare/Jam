@@ -3,24 +3,33 @@
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
 
+// Set backend and frontend paths
+$backend=dirname(dirname(__FILE__));
+$frontend=dirname($backend);
+Yii::setPathOfAlias('backend', $backend);
+
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
 return array(
-	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'A Jelly Webapp',
+    // Set base of both to frontend (backend reuses frontend code), and backend c, v and r
+    'basePath'=> $frontend,
+    'controllerPath' => $backend.'/controllers',
+    'viewPath' => $backend.'/views',
+    'runtimePath' => $backend.'/runtime',
 
-	// Override the default controller
-	//'defaultController'=>'contentBlock',
+	'name'=>'A Jelly Backend',
 
 	// preloading 'log' component
-	// preloading 'yiibooster' component
+	// preloading 'bootstrap' component
 	'preload'=>array('log', 'bootstrap'),
 
 	// autoloading model and component classes
+	// Note that the order is important - we want backend to overwrite frontend when theres a clash
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
-		'application.extensions.jelly.*',
+		'backend.models.*',
+		'backend.components.*',
 	),
 
 	'modules'=>array(
@@ -28,7 +37,7 @@ return array(
 		/**/
 		'gii'=>array(
 			'class'=>'system.gii.GiiModule',
-			'password'=>'kimlo,',
+			'password'=>'password',
 			// If removed, Gii defaults to localhost only. Edit carefully to taste.
 			'ipFilters'=>array('127.0.0.1','::1'),
 			'generatorPaths' => array(
@@ -65,10 +74,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=domainname_co_uk',
+			'connectionString' => 'mysql:host=localhost;dbname=dumfriesfurniture_com',
 			'emulatePrepare' => true,
-			'username' => 'domainname.co.uk',
-			'password' => 'password',
+			'username' => 'dumfriesfurnitur',
+			'password' => 'ey746hs',
 			'charset' => 'utf8',
 		),
 		/**/
@@ -98,7 +107,5 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@wireflydesign.com',
-		'jellyRoot' => '/scripts/jelly/',
-		'sid' => '',
 	),
 );
