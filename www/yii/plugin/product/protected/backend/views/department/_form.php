@@ -12,7 +12,7 @@
 
 	<?php //echo $form->textFieldRow($model,'name',array('class'=>'span5','maxlength'=>255)); ?>
 
-	<?php $jellyEmbed = "To embed this department in pages use {{department 27 " . $model->name . "}}"; ?>
+	<?php $jellyEmbed = "To embed this department in pages use <b><i>{{department 27 " . $model->name . "}}</b></i>"; ?>
 
 	<?php echo $form->textFieldRow($model,'name',array('class'=>'span5','maxlength'=>255, 'hint'=>$jellyEmbed)); ?>
 
