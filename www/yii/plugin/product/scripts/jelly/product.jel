@@ -33,7 +33,7 @@ fx.wallpaper-color = #00000
 		stacking = horizontal
 
 			[thumb]
-			css.width = 100px
+			css.width = 200px
 			css.margin = 10px
 			db.table = Image
 			db.filter = 'product_product_id'=Product.id
