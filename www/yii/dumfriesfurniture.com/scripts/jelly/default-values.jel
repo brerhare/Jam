@@ -2,3 +2,5 @@ css.display = block
 css.overflow = hidden /* (or any type of overflow) avoids position shift on no-margin containers */
 css.margin = 0px auto
 
+#css.border = 1px solid black
+

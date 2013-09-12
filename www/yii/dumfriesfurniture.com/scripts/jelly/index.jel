@@ -1,0 +1,61 @@
+[defaults]
+include = default-values
+
+; Every blob inherits these before adding/overriding
+[* : defaults]
+
+[screen]
+child = contentframe
+fx.wallpaper-color = #ffffff
+css.display = block
+
+	[contentframe]
+	css.width = 1024px
+	child = header, contact-details, product, footer
+
+		[header]
+		stacking = horizontal
+		child = header-logo, header-venetian-blinds
+
+			[header-logo]
+			css.width = 40%
+			css.height = 190px
+			css.margin-top = 10px
+			css.background-repeat = no-repeat
+			css.background-image = url(/img/dfd_logo.jpg)
+
+			[header-venetian-blinds]
+			css.height = 200px
+			css.width = 60%
+			css.background-color = #f8f9d7
+			html.raw = Department selector
+
+		[contact-details]
+		css.height = 30px
+		css.background-color = #eedf3c
+		html.raw = Contact details
+
+		[product]
+		stacking = horizontal
+		child = product-filter, product-grid
+
+			[product-filter]
+			css.width = 25%
+			css.height = 670px
+			css.background-color = #f8f9d7
+			html.raw = Product filter
+
+			[product-grid]
+			#html.raw = Product grid
+			html.raw = {{department 5 Guinot}}
+
+html.raw = <iframe height="670" width="690" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=hrhgr5ko21gn08a3e22jeaers5&amp;department=27"></iframe>
+
+#html.raw = <iframe height="670" width="690" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid='3hjc1rcpa5todru774o45q6v16'&amp;department='5'"></iframe>';
+
+
+		[footer]
+		css.height = 30px
+		css.background-color = #eedf3c
+		html.raw = Footer menu
+
