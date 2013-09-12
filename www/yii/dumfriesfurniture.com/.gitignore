@@ -15,3 +15,4 @@ userdata/carousel/*
 userdata/tab/*
 !userdata/tab/.gitignore
 *.bak
+*.swp
