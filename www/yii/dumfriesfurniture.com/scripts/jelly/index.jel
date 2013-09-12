@@ -19,7 +19,7 @@ css.display = block
 		child = header-logo, header-venetian-blinds
 
 			[header-logo]
-			css.width = 40%
+			css.width = 45%
 			css.height = 190px
 			css.margin-top = 10px
 			css.background-repeat = no-repeat
@@ -27,7 +27,7 @@ css.display = block
 
 			[header-venetian-blinds]
 			css.height = 200px
-			css.width = 60%
+			css.width = 55%
 			css.background-color = #f8f9d7
 			html.raw = Department selector
 
@@ -47,7 +47,7 @@ css.display = block
 			html.raw = Product filter
 
 			[product-grid]
-			#html.raw = {{department 5 Guinot}}
+			#html.raw = {{department 6 Corona Occasional}}
 			html.raw = <iframe height="670" width="690" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=3hjc1rcpa5todru774o45q6v16&amp;department=6"></iframe>
 
 		[footer]
