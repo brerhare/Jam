@@ -34,6 +34,7 @@ fx.wallpaper-color = #00000
 
 			[thumb]
 			css.width = 200px
+			css.height = 150px
 			css.margin = 10px
 			db.table = Image
 			db.filter = 'product_product_id'=Product.id
