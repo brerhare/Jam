@@ -10,7 +10,12 @@
 
 	<?php //echo $form->textFieldRow($model,'uid',array('class'=>'span5')); ?>
 
-	<?php echo $form->textFieldRow($model,'name',array('class'=>'span5','maxlength'=>255)); ?>
+	<?php //echo $form->textFieldRow($model,'name',array('class'=>'span5','maxlength'=>255)); ?>
+
+	$jellyEmbed = "{{department 27 Goonut}}";
+
+	<?php echo $form->textFieldRow($model,'name',array('class'=>'span5','maxlength'=>255, 'hint'=>$jellyEmbed)); ?>
+
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
