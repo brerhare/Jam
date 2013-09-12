@@ -67,8 +67,8 @@ return array(
 		'db'=>array(
 			'connectionString' => 'mysql:host=localhost;dbname=jacquiesbeauty_co_uk',
 			'emulatePrepare' => true,
-			'username' => 'jacquiesbeauty.c',
-			'password' => 'kimlo,',
+			'username' => 'domainname.co.uk',
+			'password' => 'password',
 			'charset' => 'utf8',
 		),
 		/**/
@@ -99,5 +99,6 @@ return array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@wireflydesign.com',
 		'jellyRoot' => '/scripts/jelly/',
+		'sid' => '',
 	),
 );
