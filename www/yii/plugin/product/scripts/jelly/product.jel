@@ -79,7 +79,7 @@ fx.wallpaper-color = #00000
 					db.filter = 'product_product_id'=Product.id
 					db.order = price
 					db.fetch = multiple
-					html.raw = ProductHasOption.price
+					html.raw = £ProductHasOption.price
 
 				[features]
 				child = feature
