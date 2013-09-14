@@ -47,7 +47,7 @@ fx.wallpaper-color = #00000
 					[mainpic]
 					css.height = 300px
 					css.margin = 10px
-					css.border = 3px solid purple
+					css.border = 2px solid purple
 					db.table = Image
 					db.filter = 'product_product_id'=Product.id
 					style.background-image = /userdata/image/Image.filename
@@ -67,12 +67,43 @@ fx.wallpaper-color = #00000
 						style.background-image = /userdata/image/Image.filename
 
 				[options]
+				child = option
 				css.width = 30%
-				html.raw = options
+				#####db.table = Option
+				#####db.filter = 'product_department_id'=Product.product_department_id
+
+					[option]
+					db.table = ProductHasOption
+					db.filter = 'product_product_id'=Product.id
+					db.order = price
+					db.fetch = multiple
+					html.raw = ProductHasOption.price
 
 				[features]
+				child = feature
 				css.width = 30%
-				html.raw = features
+
+					[feature]
+					stacking = horizontal
+					child = feature-image, feature-text
+					db.table =  ProductHasFeature
+					db.filter = 'product_product_id'=Product.id
+					db.fetch = multiple
+
+						[feature-image]
+						css.width = 10%
+						css.height = 25px
+						style.background-image = /img/features_tick.png
+						html.p = .
+	
+						[feature-text]
+						css.margin-top = 6px
+						css.margin-left = 6px
+						db.table = Feature
+						db.filter = 'id'=ProductHasFeature.product_feature_id
+						html.raw = Feature.name
+						css.width = 80%
+
 
 			[bottom-half]
 			html.p = Product.description
