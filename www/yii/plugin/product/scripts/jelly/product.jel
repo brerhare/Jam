@@ -45,6 +45,7 @@ fx.wallpaper-color = #00000
 				css.width = 40%
 
 					[mainpic]
+					css.width = 350px
 					css.height = 300px
 					css.margin = 10px
 					css.border = 2px solid purple
@@ -91,7 +92,7 @@ fx.wallpaper-color = #00000
 					db.fetch = multiple
 
 						[feature-image]
-						css.width = 10%
+						css.width = 30px
 						css.height = 25px
 						style.background-image = /img/features_tick.png
 						html.p = .
