@@ -413,7 +413,7 @@ $type = $vals[0];
 if (count($vals) > 1)
 {
 	$value = $vals[1];
-	$iframe = '<iframe height="670" width="690" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;department=' . $value . '"></iframe>';
+	$iframe = '<iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;department=' . $value . '"></iframe>';
 	$this->genInlineHtml(str_replace($pOrig, $iframe, $model->content));
 }
 else
