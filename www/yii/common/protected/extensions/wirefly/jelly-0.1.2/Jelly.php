@@ -515,22 +515,34 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 	// Convert a 'Department.name' to the actual value, using the table-handle table
 	private function dbExpand($str)
 	{
-
-		foreach ($this->dbTable as $table => $handle)
+		foreach ($this->dbTable as $table => $handle)		// finds table 'x'
 		{
-			if ($tableData = strstr($str, $table))
+			$keepTrying = true;
+			while ($keepTrying)
 			{
-				$val = explode(".", $tableData);
-				if (count($val) != 2)
-					return $str;
-				$query = 'return ' . '$this->dbTable["' . $val[0] . '"]->' . $val[1] . ';';
-				//echo 'query ' . $query . '<br>';
-				$resp = eval($query);
-				$ret = str_replace($tableData, $resp, $str);
-				//echo 'Matched tabledata ' . $val[0] . '.' . $val[1] . ' with ' . $str . ' giving ' . $ret . '<br>';
-				return $ret;
+				if ($tableData = strstr($str, $table . "."))		// [matches] stuff like 'my [Product.]id=1 and blah'
+				{													// returns 'Product.id=1 and blah'
+					$val = explode(".", $tableData);				// array{'Product', 'id=1 and blah'}
+					if (count($val) < 2)	// ie no dots
+						return $str;
+					if (strstr($val[1], " "))
+					{
+						$v = explode(" ", $val[1]);
+						$val[1] = $v[0];							// 'id'
+					}
+					$query = 'return ' . '$this->dbTable["' . $val[0] . '"]->' . $val[1] . ';';
+					$resp = eval($query);
+	
+					// Embedded table.name's must have a trailing space unless theyre at end of line
+					$tData = explode(" ", $tableData);
+					if (count($tData > 1))
+					$tableData = $tData[0];
+	
+					$str = str_replace($tableData, $resp, $str);
+				}
+				else
+					$keepTrying = false;
 			}
-			
 		}
 		return $str;
 	}

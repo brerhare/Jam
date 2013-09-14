@@ -10,5 +10,5 @@ css.border = 0px
 
 # Limitations
 # -----------
-# Table.field refs on RHS of the '=' MUST be at the end of a line, cannot be embedded anywhere else
-
+# Table.field refs on RHS of the '=' MUST have a trailing space if not at end of the line
+#	eg: '(£Product.price)' is invalid but '(£Product.price )' is valid
