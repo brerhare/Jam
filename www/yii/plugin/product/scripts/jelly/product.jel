@@ -6,39 +6,79 @@ include = default-values
 
 [screen]
 # Being an iframe, we want to use the full width of whatever was specified by the parent page - so we dont specify any
-child = product
+child = page-container
 fx.wallpaper-color = #00000
 
 # Get the uid from the sid
 #db.table = User
 #db.filter = 'sid'=$_GET['sid']
 
-	[product]
-	child = mainpic, thumbnails
-	db.table = Product
-	db.filter = 'id'=$_GET['product']
-	html.h4 = Product.name
-	html.p = Product.description
+	[page-container]
+	child = breadcrumbs, graphic, main-content,
 
-		[mainpic]
-		css.width = 100%
-		css.height = 300px
-		css.margin = 10px
-		db.table = Image
-		db.filter = 'product_product_id'=Product.id
-		style.background-image = /userdata/image/Image.filename
+		[breadcrumbs]
+		css.margin-top = 10px
+		css.height = 30px
+		html.raw = breadcrumbs
 
-		[thumbnails]
-		child = thumb
+		[graphic]
+		css.height = 4px
+		css.background-color = purple
+	
+		[main-content]
 		stacking = horizontal
+		child = product-content, linked-products
 
-			[thumb]
-			css.width = 200px
-			css.height = 150px
-			css.margin = 10px
-			db.table = Image
-			db.filter = 'product_product_id'=Product.id
-			db.fetch = multiple
-html.p = .
-			style.background-image = /userdata/image/Image.filename
+		[product-content]
+		child = top-half, bottom-half
+		css.width = 80%
+		db.table = Product
+		db.filter = 'id'=$_GET['product']
+		html.h4 = Product.name
+
+			[top-half]
+			child = pics, options, features
+			stacking = horizontal
+
+				[pics]
+				child = mainpic, thumbs
+				css.width = 40%
+
+					[mainpic]
+					css.height = 300px
+					css.margin = 10px
+					css.border = 3px solid purple
+					db.table = Image
+					db.filter = 'product_product_id'=Product.id
+					style.background-image = /userdata/image/Image.filename
+
+					[thumbs]
+					child = thumb
+					stacking = horizontal
+	
+						[thumb]
+						css.width = 80px
+						css.height = 60px
+						css.margin = 10px
+						css.border = 1px solid purple
+						db.table = Image
+						db.filter = 'product_product_id'=Product.id
+						db.fetch = multiple
+						style.background-image = /userdata/image/Image.filename
+
+				[options]
+				css.width = 30%
+				html.raw = options
+
+				[features]
+				css.width = 30%
+				html.raw = features
+
+			[bottom-half]
+			html.p = Product.description
+
+		[linked-products]
+		css.background-color = yellow;
+		html.raw = Linked
+
 
