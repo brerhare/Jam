@@ -45,8 +45,9 @@ fx.wallpaper-color = #00000
 				css.width = 40%
 
 					[mainpic]
-					#css.width = 100%
-					css.height = 250px
+					css.width = 200px
+					css.height = 180px
+					#css.height = 250px
 					css.margin = 10px
 					css.border = 2px solid purple
 					db.table = Image
