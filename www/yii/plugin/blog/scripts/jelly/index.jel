@@ -1,0 +1,59 @@
+[defaults]
+include = default-values
+
+# Every blob inherits these before adding/overriding
+[* : defaults]
+
+[screen]
+# Being an iframe, we want to use the full width of whatever was specified by the parent page - so we dont specify any
+child = grid
+fx.wallpaper-color = #00000
+
+# Get the uid from the sid
+db.table = User
+db.filter = 'sid'=$_GET['sid']
+
+	[grid]
+	child = product
+	stacking = horizontal
+	css.width = 670px
+	css.height = 670px
+	css.background-color = #f2f2f2
+	css.overflow = auto
+	db.table = Department
+	db.filter = 'id'=$_GET['department'],'uid'=User.id
+	html.h3 = Department.name
+
+		[product]
+		child = product_image, product_text
+		css.width = 200px
+		css.height = 185px
+		css.margin-left = 10px
+		css.margin-bottom = 10px
+		css.background-color = #ffffff
+		css.border-width = 3px
+		css.border-color = #dcdcdc
+		db.table = Product
+		db.filter = 'product_department_id'=Department.id
+		db.order = name
+		db.fetch = multiple
+		#click = $_GET['sid']/Product.name
+#click = index.php/?layout=product&sid=3hjc1rcpa5todru774o45q6v16&product=Product.id
+click = index.php/?layout=product&product=Product.id
+
+			[product_image]
+			css.width = 180px
+			css.height = 100px
+			css.margin = 10px
+			db.table = Image
+			db.filter = 'product_product_id'=Product.id
+			style.background-image = /userdata/image/Image.filename
+
+			[product_text]
+			css.padding = 5px
+			css.color = #a60404
+			db.table = ProductHasOption
+			db.filter = 'product_product_id'=Product.id
+			db.order = price
+			html.raw = <b>Product.name
+			html.raw = </b><br>Now only £ProductHasOption.price

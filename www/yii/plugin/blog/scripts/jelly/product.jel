@@ -1,0 +1,117 @@
+[defaults]
+include = default-values
+
+# Every blob inherits these before adding/overriding
+[* : defaults]
+
+[screen]
+# Being an iframe, we want to use the full width of whatever was specified by the parent page - so we dont specify any
+child = page-container
+fx.wallpaper-color = #00000
+
+# Get the uid from the sid
+#db.table = User
+#db.filter = 'sid'=$_GET['sid']
+
+	[page-container]
+	child = breadcrumbs, graphic, main-content,
+
+		[breadcrumbs]
+		css.margin-top = 10px
+		css.height = 30px
+		html.raw = breadcrumbs
+
+		[graphic]
+		css.height = 4px
+		css.background-color = purple
+	
+		[main-content]
+		stacking = horizontal
+		child = product-content, linked-products
+
+		[product-content]
+		child = top-half, bottom-half
+		css.width = 80%
+		db.table = Product
+		db.filter = 'id'=$_GET['product']
+		html.h4 = Product.name
+
+			[top-half]
+			child = pics, options, features
+			stacking = horizontal
+
+				[pics]
+				child = mainpic, thumbs
+				css.width = 40%
+
+					[mainpic]
+					css.width = 200px
+					css.height = 180px
+					#css.height = 250px
+					css.margin = 10px
+					css.border = 2px solid purple
+					db.table = Image
+					db.filter = 'product_product_id'=Product.id
+					style.background-image = /userdata/image/Image.filename
+
+					[thumbs]
+					child = thumb
+					stacking = horizontal
+	
+						[thumb]
+						css.width = 80px
+						css.height = 60px
+						css.margin = 10px
+						css.border = 1px solid purple
+						db.table = Image
+						db.filter = 'product_product_id'=Product.id
+						db.fetch = multiple
+						style.background-image = /userdata/image/Image.filename
+
+				[options]
+				child = option
+				css.width = 30%
+				#####db.table = Option
+				#####db.filter = 'product_department_id'=Product.product_department_id
+
+					[option]
+					db.table = ProductHasOption
+					db.filter = 'product_product_id'=Product.id
+					db.order = price
+					db.fetch = multiple
+					html.raw = £ProductHasOption.price
+
+				[features]
+				child = feature
+				css.width = 30%
+
+					[feature]
+					stacking = horizontal
+					child = feature-image, feature-text
+					db.table =  ProductHasFeature
+					db.filter = 'product_product_id'=Product.id
+					db.fetch = multiple
+
+						[feature-image]
+						css.width = 30px
+						css.height = 25px
+						style.background-image = /img/features_tick.png
+						html.p = .
+	
+						[feature-text]
+						css.margin-top = 6px
+						css.margin-left = 6px
+						db.table = Feature
+						db.filter = 'id'=ProductHasFeature.product_feature_id
+						html.raw = Feature.name
+						css.width = 80%
+
+
+			[bottom-half]
+			html.p = Product.description
+
+		[linked-products]
+		css.background-color = yellow;
+		html.raw = Linked
+
+
