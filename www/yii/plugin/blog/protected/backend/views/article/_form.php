@@ -7,7 +7,13 @@
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<?php echo $form->textFieldRow($model,'uid',array('class'=>'span5')); ?>
+	<?php //echo $form->textFieldRow($model,'uid',array('class'=>'span5')); ?>
+
+	<?php
+		//echo $form->textFieldRow($model,'blog_category_id',array('class'=>'span5'));
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+		echo $form->dropDownListRow($model,'blog_category_id', CHtml::listData(Category::model()->findAll($criteria), 'id', 'name'), array('empty'=>'Choose')); ?>
 
 	<?php echo $form->textFieldRow($model,'date',array('class'=>'span5')); ?>
 
@@ -16,8 +22,6 @@
 	<?php echo $form->textAreaRow($model,'intro',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 
 	<?php echo $form->textAreaRow($model,'content',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
-
-	<?php echo $form->textFieldRow($model,'blog_category_id',array('class'=>'span5')); ?>
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(

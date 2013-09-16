@@ -89,7 +89,8 @@ class Article extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('uid',$this->uid);
+		//$criteria->compare('uid',$this->uid);
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$criteria->compare('date',$this->date,true);
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('intro',$this->intro,true);
