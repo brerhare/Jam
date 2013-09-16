@@ -52,6 +52,7 @@ db.filter = 'sid'=$_GET['sid']
 					child = most-recent-title, most-recent-intro
 					
 						[most-recent-title]
+css.margin-top = -10px
 						css.height = 50px
 						css.margin-left = 10px
 						css.width = 100%
