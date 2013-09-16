@@ -53,14 +53,14 @@ db.filter = 'sid'=$_GET['sid']
 					
 						[most-recent-title]
 css.margin-top = -10px
-						css.height = 50px
+						css.height = 70px
 						css.margin-left = 10px
 						css.width = 100%
 						html.h4 = Article.title
 						
 						[most-recent-intro]
 						css.margin = 10px
-						css.height = 130px
+						css.height = 110px
 						css.width = 100%
 						html.raw = Article.intro
 
