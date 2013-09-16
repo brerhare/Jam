@@ -53,14 +53,15 @@ db.filter = 'sid'=$_GET['sid']
 					
 						[most-recent-title]
 css.margin-top = -10px
-						css.height = 70px
+						css.height = 60px
 						css.margin-left = 10px
+						css.margin-bottom = 1px
 						css.width = 100%
 						html.h4 = Article.title
 						
 						[most-recent-intro]
 						css.margin = 10px
-						css.height = 110px
+						css.height = 120px
 						css.width = 100%
 						html.raw = Article.intro
 
@@ -86,9 +87,10 @@ css.margin-top = -10px
 						style.background-image = /userdata/19/Article.thumbnail_path
 
 						[blog-title]
-						css.height = 30px
+						css.height = 40px
 						css.width = 100%
 						css.margin = 10px
+						css.margin-bottom = 1px
 						html.raw = Article.title
 						
 						[blog-intro]
