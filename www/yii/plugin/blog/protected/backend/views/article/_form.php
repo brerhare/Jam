@@ -45,6 +45,8 @@ Date *
 
 	<?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>255)); ?>
 
+	<?php //echo $form->textFieldRow($model,'thumbnail_path',array('class'=>'span5','maxlength'=>255)); ?>
+
 	<?php echo $form->textAreaRow($model,'intro',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 
 	<?php //echo $form->textAreaRow($model,'content',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
@@ -57,8 +59,8 @@ Free format content
       	'model'=>$model,
       	'attribute'=>'content',
       	'editorOptions'=>array(
-          	'imageUpload' => $this->createUrl('contentBlock/imageUpload'),
-          	'imageGetJson' => $this->createUrl('contentBlock/imageList'),
+          	'imageUpload' => $this->createUrl('article/imageUpload'),
+          	'imageGetJson' => $this->createUrl('article/imageList'),
           	'width'=>'100%',
           	'height'=>'400px'
        	)

@@ -10,6 +10,7 @@
  * @property string $title
  * @property string $intro
  * @property string $content
+ * @property string $thumbnail_path
  * @property integer $blog_category_id
  */
 class Article extends CActiveRecord
@@ -42,11 +43,11 @@ class Article extends CActiveRecord
 		return array(
 			array('uid, date, title, blog_category_id', 'required'),
 			array('uid, blog_category_id', 'numerical', 'integerOnly'=>true),
-			array('title', 'length', 'max'=>255),
+			array('title, thumbnail_path', 'length', 'max'=>255),
 			array('intro, content', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, date, title, intro, content, blog_category_id', 'safe', 'on'=>'search'),
+			array('id, uid, date, title, thumbnail_path, intro, content, blog_category_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -73,6 +74,7 @@ class Article extends CActiveRecord
 			'title' => 'Title',
 			'intro' => 'Intro',
 			'content' => 'Content',
+			'thumbnail_path' => 'Thumbnail Path',
 			'blog_category_id' => 'Blog Category',
 		);
 	}
@@ -95,6 +97,7 @@ class Article extends CActiveRecord
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('intro',$this->intro,true);
 		$criteria->compare('content',$this->content,true);
+		$criteria->compare('thumbnail_path',$this->thumbnail_path,true);
 		$criteria->compare('blog_category_id',$this->blog_category_id);
 
 		return new CActiveDataProvider($this, array(

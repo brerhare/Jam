@@ -8,6 +8,8 @@ class ArticleController extends Controller
 	 */
 	public $layout='//layouts/column2';
 
+	private $_imageDir = '/../userdata/';   // Note this is only partial. Gets prepended base path and uid
+
 	/**
 	 * @return array action filters
 	 */
@@ -31,7 +33,7 @@ class ArticleController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','delete'),
+				'actions'=>array('create','update','admin','delete','imageUpload','imageList'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -61,6 +63,7 @@ class ArticleController extends Controller
 	 */
 	public function actionCreate()
 	{
+		$iDir = $this->getImageDir();
 		$model=new Article;
 		$model->uid = Yii::app()->session['uid'];
 
@@ -71,7 +74,15 @@ class ArticleController extends Controller
 		{
 			$model->attributes=$_POST['Article'];
 			if($model->save())
+			{
+				if (strlen($model->thumbnail_path) > 0)
+                {
+                    $fname = $iDir . $model->thumbnail_path;
+                    $model->thumbnail_path->saveAs($fname);
+                }
+
 				$this->redirect(array('admin'));
+			}
 		}
 
 		$this->render('create',array(
@@ -86,6 +97,7 @@ class ArticleController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
+		$iDir = $this->getImageDir();
 		$model=$this->loadModel($id);
 
 		// Uncomment the following line if AJAX validation is needed
@@ -94,6 +106,20 @@ class ArticleController extends Controller
 		if(isset($_POST['Article']))
 		{
 			$model->attributes=$_POST['Article'];
+            $file=CUploadedFile::getInstance($model, 'thumbnail_path');
+            if (is_object($file) && get_class($file) === 'CUploadedFile')
+            {
+                // Delete old one
+                if (strlen($model->thumbnail_path) > 0)
+                {
+                    if (file_exists($iDir . $model->thumbnail_path))
+                        unlink($iDir . $model->thumbnail_path);
+                }
+                // Save new one
+                $model->thumbnail_path = $file;
+                $fname = $iDir . $model->thumbnail_path;
+                $model->thumbnail_path->saveAs($fname);
+            }
 			if($model->save())
 				$this->redirect(array('admin'));
 		}
@@ -110,9 +136,14 @@ class ArticleController extends Controller
 	 */
 	public function actionDelete($id)
 	{
+		$iDir = $this->getImageDir();
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
+            $oldfilename = $this->loadModel($id)->thumbnail_path;
+            if (($oldfilename != '') && (file_exists($iDir . $oldfilename)))
+                unlink($iDir . $oldfilename);
+
 			$this->loadModel($id)->delete();
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
@@ -174,4 +205,58 @@ class ArticleController extends Controller
 			Yii::app()->end();
 		}
 	}
+
+// Image SID directory ---------------------------------------------------------
+
+    public function getImageDir()
+    {
+        return Yii::app()->basePath . $this->_imageDir . Yii::app()->session['uid'] . '/';
+    }
+
+
+// Redactor image handling -----------------------------------------------------
+
+    public function actionImageUpload()
+    {
+        $uploadedFile = CUploadedFile::getInstanceByName('file');
+        if (!empty($uploadedFile)) {
+            $rnd = rand();  // generate random number between 0-9999
+            $fileName = "{$rnd}.{$uploadedFile->extensionName}";  // random number + file name
+            if ($uploadedFile->saveAs(Yii::app()->basePath . '/../userdata/image/' . $fileName)) {
+
+                $array = array(
+                     'filelink' => Yii::app()->baseUrl . '/userdata/image/' . $fileName);
+               // echo CHtml::image(Yii::app()->baseUrl . '/userdata/image/' . $fileName);
+
+                echo stripslashes(json_encode($array));
+                Yii::app()->end();
+            }
+        }
+        throw new CHttpException(400, 'The request cannot be fulfilled due to bad syntax');
+    }
+
+// "ListImages" (used to browse images in the server)
+
+    public function actionImageList() {
+
+        $images = array();
+        $handler = opendir(Yii::app()->basePath . '/../userdata/image');
+        while ($file = readdir($handler)) {
+            if ($file != "." && $file != "..")
+                $images[] = $file;
+        }
+        closedir($handler);
+
+        $jsonArray = array();
+
+        foreach ($images as $image)
+            $jsonArray[] = array(
+                'thumb' => Yii::app()->baseUrl . '/userdata/image/' . $image,
+                'image' => Yii::app()->baseUrl . '/userdata/image/' . $image,
+            );
+
+        header('Content-type: application/json');
+        echo CJSON::encode($jsonArray);
+    }
+
 }

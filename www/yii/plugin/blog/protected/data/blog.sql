@@ -31,6 +31,7 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`blog_article` (
   `title` VARCHAR(255) NOT NULL ,
   `intro` TEXT NULL ,
   `content` LONGTEXT NULL ,
+  `thumbnail_path` VARCHAR(255) NULL ,
   `blog_category_id` INT NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_article_blog_category` (`blog_category_id` ASC) ,
