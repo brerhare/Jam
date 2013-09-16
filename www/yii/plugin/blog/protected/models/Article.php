@@ -45,6 +45,11 @@ class Article extends CActiveRecord
 			array('uid, blog_category_id', 'numerical', 'integerOnly'=>true),
 			array('title, thumbnail_path', 'length', 'max'=>255),
 			array('intro, content', 'safe'),
+
+            // @@EG: Image upload. Next two lines. See also controller create/update/delete and remember to set enctype in the view!!!!!
+            array('thumbnail_path','unsafe'),
+            array('thumbnail_path', 'file', 'types'=>'jpg, jpeg, gif, png','safe'=>true, 'maxSize'=>10000*1024, 'allowEmpty'=>true, 'tooLarge'=>'{attribute} is too large to be uploaded. Maximum size is 10MB.'),
+
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, uid, date, title, thumbnail_path, intro, content, blog_category_id', 'safe', 'on'=>'search'),
