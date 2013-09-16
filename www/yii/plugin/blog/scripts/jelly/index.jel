@@ -82,7 +82,7 @@ db.filter = 'sid'=$_GET['sid']
 						css.height = 130px
 						css.width = 100%
 						css.margin = 10px
-						style.background-image = /userdata/4/Article.thumbnail_path
+						style.background-image = /userdata/19/Article.thumbnail_path
 
 						[blog-title]
 						css.height = 30px
