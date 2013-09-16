@@ -73,6 +73,7 @@ class ArticleController extends Controller
 		if(isset($_POST['Article']))
 		{
 			$model->attributes=$_POST['Article'];
+            $model->thumbnail_path=CUploadedFile::getInstance($model, 'thumbnail_path');
 			if($model->save())
 			{
 				if (strlen($model->thumbnail_path) > 0)
@@ -170,6 +171,10 @@ class ArticleController extends Controller
 	 */
 	public function actionAdmin()
 	{
+		$iDir = $this->getImageDir();
+	if ((!is_dir($iDir)) &&  (!mkdir($iDir, 0777, true)))
+            throw new CHttpException(400,'Failed to create user directory ' . $iDir);
+
 		$model=new Article('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Article']))
