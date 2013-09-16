@@ -47,7 +47,26 @@ Date *
 
 	<?php echo $form->textAreaRow($model,'intro',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 
-	<?php echo $form->textAreaRow($model,'content',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
+	<?php //echo $form->textAreaRow($model,'content',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
+	<div id="row">
+Free format content
+	<div style="width:908px">
+	<?php
+	$this->widget('bootstrap.widgets.TbRedactorJs',
+    	array(
+      	'model'=>$model,
+      	'attribute'=>'content',
+      	'editorOptions'=>array(
+          	'imageUpload' => $this->createUrl('contentBlock/imageUpload'),
+          	'imageGetJson' => $this->createUrl('contentBlock/imageList'),
+          	'width'=>'100%',
+          	'height'=>'400px'
+       	)
+    	));
+	?>
+	</div>
+	</div>
+
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
