@@ -6,54 +6,102 @@ include = default-values
 
 [screen]
 # Being an iframe, we want to use the full width of whatever was specified by the parent page - so we dont specify any
-child = grid
+child = page-container
 fx.wallpaper-color = #00000
 
 # Get the uid from the sid
 db.table = User
 db.filter = 'sid'=$_GET['sid']
 
-	[grid]
-	child = product
-	stacking = horizontal
-	css.width = 670px
-	css.height = 670px
-	css.background-color = #f2f2f2
-	css.overflow = auto
-	db.table = Department
-	db.filter = 'id'=$_GET['department'],'uid'=User.id
-	html.h3 = Department.name
+	[page-container]
+	child = breadcrumbs, graphic, main-content
+	css.width = 900px
 
-		[product]
-		child = product_image, product_text
-		css.width = 200px
-		css.height = 185px
-		css.margin-left = 10px
-		css.margin-bottom = 10px
-		css.background-color = #ffffff
-		css.border-width = 3px
-		css.border-color = #dcdcdc
-		db.table = Product
-		db.filter = 'product_department_id'=Department.id
-		db.order = name
-		db.fetch = multiple
-		#click = $_GET['sid']/Product.name
-#click = index.php/?layout=product&sid=3hjc1rcpa5todru774o45q6v16&product=Product.id
-click = index.php/?layout=product&product=Product.id
+		[breadcrumbs]
+		css.margin-top = 10px
+##		css.height = 30px
+##		html.raw = breadcrumbs
 
-			[product_image]
-			css.width = 180px
-			css.height = 100px
+		[graphic]
+		css.height = 4px
+		css.background-color = purple
+
+		[main-content]
+		stacking = horizontal
+		child = blog-items, category-list
+
+			[blog-items]
+			css.width = 75%
+			child = most-recent-blog, older-blog-grid
+			
+				[most-recent-blog]
+				stacking = horizontal
+				child = most-recent-image, most-recent-other
+				
+					[most-recent-image]
+					css.margin = 10px
+					css.height = 180px
+					css.width = 240px
+					db.table = Article
+					db.filter = 'uid'=User.id
+					db.order = date
+					style.background-image = /userdata/4/Article.thumbnail_path
+					
+					[most-recent-other]
+					css.width = 400px
+					child = most-recent-title, most-recent-intro
+					
+						[most-recent-title]
+						css.height = 50px
+						css.margin-left = 10px
+						css.width = 100%
+						html.h4 = Article.title
+						
+						[most-recent-intro]
+						css.margin = 10px
+						css.height = 130px
+						css.width = 100%
+						html.raw = Article.intro
+
+				[older-blog-grid]
+				child = older-blog
+				stacking = horizontal
+				css.width = 100%
+				css.background-color = #f2f2f2
+				css.overflow = auto
+				
+					[older-blog]
+					css.width = 30%
+					child = blog-thumb, blog-title, blog-intro
+					db.table = Article
+					db.filter = 'uid'=User.id
+					db.order = date
+					db.fetch = multiple
+					
+						[blog-thumb]
+						css.height = 130px
+						css.width = 100%
+						css.margin = 10px
+						style.background-image = /userdata/4/Article.thumbnail_path
+
+						[blog-title]
+						css.height = 30px
+						css.width = 100%
+						css.margin = 10px
+						html.raw = Article.title
+						
+						[blog-intro]
+						css.height = 80px
+						css.width = 100%
+						css.margin = 10px
+						html.raw = Article.intro
+						
+			[category-list]
+			stacking = vertical
 			css.margin = 10px
-			db.table = Image
-			db.filter = 'product_product_id'=Product.id
-			style.background-image = /userdata/image/Image.filename
-
-			[product_text]
-			css.padding = 5px
-			css.color = #a60404
-			db.table = ProductHasOption
-			db.filter = 'product_product_id'=Product.id
-			db.order = price
-			html.raw = <b>Product.name
-			html.raw = </b><br>Now only £ProductHasOption.price
+			db.table = Category
+			db.order = name
+			db.fetch = multiple
+			html.raw = Category.name
+			
+			
