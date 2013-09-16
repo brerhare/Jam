@@ -15,7 +15,33 @@
 		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		echo $form->dropDownListRow($model,'blog_category_id', CHtml::listData(Category::model()->findAll($criteria), 'id', 'name'), array('empty'=>'Choose')); ?>
 
-	<?php echo $form->textFieldRow($model,'date',array('class'=>'span5')); ?>
+	<?php //echo $form->textFieldRow($model,'date',array('class'=>'span5')); ?>
+
+
+<div id = "row">
+Date *
+</div>
+<div id = "row">
+
+	<?php
+// @@EG CJuiDatePicker. See also the model for the before/after function I added to support this
+
+		$this->widget('zii.widgets.jui.CJuiDatePicker',array(
+			'name'=>'publishDate',
+			'model' => $model,
+			'attribute' => 'date',
+			// additional javascript options for the date picker plugin
+			'options'=>array(
+				'showAnim'=>'fold',
+				'dateFormat' => 'dd-mm-yy', // save to db format
+			),
+			'htmlOptions'=>array(
+				'style'=>'height:20px;'
+			),
+		));
+	?>
+</div>
+
 
 	<?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>255)); ?>
 
