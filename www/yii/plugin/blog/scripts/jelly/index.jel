@@ -11,7 +11,7 @@ fx.wallpaper-color = #00000
 
 # Get the uid from the sid
 db.table = User
-db.filter = 'sid'=$_GET['sid']
+db.filter = sid=$_GET['sid']
 
 	[page-container]
 	child = breadcrumbs, graphic, main-content
@@ -35,7 +35,7 @@ db.filter = 'sid'=$_GET['sid']
 			child = most-recent-blog, older-blog-grid
 #@@ array parsing order isnt the same as defined? If this db, stuff is in the next block where it belongs it doesnt work
 				db.table = Article
-				db.filter = 'uid'=User.id
+				db.filter = uid=User.id
 				db.order = date DESC
 			
 				[most-recent-blog]

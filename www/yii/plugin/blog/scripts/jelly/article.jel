@@ -34,13 +34,14 @@ fx.wallpaper-color = #00000
 			css.width = 50%
 			child = date-and-category, title, intro, image
 			db.table = Article
-			db.filter = 'id'=$_GET['id']
+			#db.filter = id=$_GET['id']
+			db.filter = id=1
 
 				[date-and-category]
 				css.height = 30px
 				css.font-size = 14px
 				db.table = Category
-				db.filter = 'id'=Article.blog_category_id
+				db.filter = id=Article.blog_category_id
 				html.p = Article.date Category.name
 
 				[title]

@@ -164,7 +164,15 @@ END_OF_FOOTER;
 						case ("filter"):
 							$fltCommaArr = explode(",", $dbValue);
 							foreach ($fltCommaArr as $elemComma)
+							{
+								$tmpArr = explode("=", $elemComma);
+								if (count($tmpArr)>1)
+								{
+									if (strstr($elemComma, '$_GET')) // Expand possible $_xxx['yyy']
+										$elemComma = $tmpArr[0] . "='" . eval("return $tmpArr[1];") . "'";
+								}
 								array_push($fltArr, $elemComma);
+							}
 							break;
 						case ("order"):
 							$orderCommaArr = explode(",", $dbValue);
@@ -458,7 +466,15 @@ else
 						case ("filter"):
 							$fltCommaArr = explode(",", $dbValue);
 							foreach ($fltCommaArr as $elemComma)
+							{
+								$tmpArr = explode("=", $elemComma);
+								if (count($tmpArr)>1)
+								{
+									if (strstr($elemComma, '$_GET')) // Expand possible $_xxx['yyy']
+										$elemComma = $tmpArr[0] . "='" . eval("return $tmpArr[1];") . "'";
+								}
 								array_push($fltArr, $elemComma);
+							}
 							break;
 						case ("order"):
 							$orderCommaArr = explode(",", $dbValue);
@@ -480,7 +496,7 @@ else
 				$cri->order = $this->dbExpand(trim($ord));
                 // Do the query
                 $q = "return " . $query . ";";
-Yii::log("REPEATING EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
+Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
                 $resp = eval($q);
                 if ($resp)
 					$this->dbTable[$dbTable] = $resp;
