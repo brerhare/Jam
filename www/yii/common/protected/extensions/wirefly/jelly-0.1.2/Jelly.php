@@ -200,33 +200,6 @@ Yii::log("REPEATING EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim
                         }
                     }
                 }
-
-					
-/*
-// Works!
-$cri=new CDbCriteria;$cri->addCondition("uid=19");
-$qcri = 'Article::model()->findAll($cri);';
-$q = "return " . $qcri . ";";
-echo $q . "<br>";
-$resp = eval($q);
-var_dump( $resp);
-*/
-
-/*
-$cri=new CDbCriteria;
-foreach ($fltArr as $flt)
-{
-	echo "filter: " . $flt . "<br>";
-	$cri->addCondition($flt);
-}
-$qcri = 'Article::model()->findAll($cri);';
-$q = "return " . $qcri . ";";
-echo $q . "<br>";
-$resp = eval($q);
-var_dump( $resp);
-die('dying');
-*/
-
 			}
 		}
 
@@ -445,25 +418,20 @@ $p2 = strstr(substr($p1, 2), "}}", true);
 $pOrig = "{{" . $p2 . "}}";
 $vals = explode(" ", $p2);
 $type = $vals[0];
-//if (count($vals) => 1)
-//{
-	if (stristr($vals[0], "department"))
-	{
-		$value = $vals[1];
-		$iframe = '<iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;department=' . $value . '"></iframe>';
-		$this->genInlineHtml(str_replace($pOrig, $iframe, $model->content));
-	}
-	else if (stristr($vals[0], "blog"))
-	{
-		$value = $vals[1];
-		$iframe = '<iframe height="900" width="900" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/blog/?sid=' . Yii::app()->params['sid'] . '"></iframe>';
-		$this->genInlineHtml(str_replace($pOrig, $iframe, $model->content));
-	}
-	else
-		$this->genInlineHtml($model->content);
-//}
-//else
-//	$this->genInlineHtml($model->content);
+
+if (stristr($vals[0], "department"))
+{
+	$value = $vals[1];
+	$iframe = '<iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;department=' . $value . '"></iframe>';
+	$this->genInlineHtml(str_replace($pOrig, $iframe, $model->content));
+}
+else if (stristr($vals[0], "blog"))
+{
+	$iframe = '<iframe height="900" width="900" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/blog/?sid=' . Yii::app()->params['sid'] . '"></iframe>';
+	$this->genInlineHtml(str_replace($pOrig, $iframe, $model->content));
+}
+else
+	$this->genInlineHtml($model->content);
 // --------------------------------------------------------------------------------------
 
 								break;
@@ -490,10 +458,7 @@ $type = $vals[0];
 						case ("filter"):
 							$fltCommaArr = explode(",", $dbValue);
 							foreach ($fltCommaArr as $elemComma)
-							{
-								$fltEqArr = explode("=", trim($elemComma));
-								$fltArr[$fltEqArr[0]] = $this->dbExpand($fltEqArr[1]);
-							}
+								array_push($fltArr, $elemComma);
 							break;
 						case ("order"):
 							$orderCommaArr = explode(",", $dbValue);
@@ -502,24 +467,23 @@ $type = $vals[0];
 							break;
 					}
 				}
-				// Build the query from the collected args
-				$query = $dbTable . "::model()->findByAttributes(array(";
-				// Add filters
-				foreach ($fltArr as $flt1 => $flt2)
-					$query .= trim($flt1) . "=>" . trim($flt2) . ", ";
-				$query .= "),array(";
-				// Add order
-				foreach ($orderArr as $ord)
-					$query .= "'order'=>'" . $this->dbExpand(trim($ord)) . "', ";
-				$query .= "));";
-//echo "Queryx: " . $query . "<br>";
-				// Do the query
-				$q = "return " . $query . ";";
-Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
-				$resp = eval($q);
-				if ($resp)
+
+
+                // Build the query from the collected args
+                $query = $dbTable . '::model()->find($cri);';
+                // Add filters
+				$cri=new CDbCriteria;
+				foreach ($fltArr as $flt)
+					$cri->addCondition($this->dbExpand(trim($flt)));
+                // Add order
+                foreach ($orderArr as $ord)
+				$cri->order = $this->dbExpand(trim($ord));
+                // Do the query
+                $q = "return " . $query . ";";
+Yii::log("REPEATING EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
+                $resp = eval($q);
+                if ($resp)
 					$this->dbTable[$dbTable] = $resp;
-//				echo $this->dbTable['Department']->id;
 				break;
 			case "addon":
 				$this->addonHandler($value);
