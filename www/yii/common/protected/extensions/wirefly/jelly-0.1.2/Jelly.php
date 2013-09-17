@@ -43,6 +43,16 @@ html *
    /*font-size: 1em !important;*/
    font-family: Arial !important;
 }
+
+
+a { color:#000000 } /* Globally */
+a:visited { text-decoration: none; color:#000000; }
+a:hover { text-decoration: none; color:#000000; }
+a:focus { text-decoration: none; color:#000000; }
+a:hover, a:active { text-decoration: none; color:0###000 }
+
+
+
 <!-- @@TODO: Hardcoded for jacquies! -->
 h2 {color: #5c194c; }
 h4 {color: #5c194c; }

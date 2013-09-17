@@ -33,18 +33,20 @@ db.filter = 'sid'=$_GET['sid']
 			[blog-items]
 			css.width = 75%
 			child = most-recent-blog, older-blog-grid
+#@@ array parsing order isnt the same as defined? If this db, stuff is in the next block where it belongs it doesnt work
+				db.table = Article
+				db.filter = 'uid'=User.id
+				db.order = date
 			
 				[most-recent-blog]
 				stacking = horizontal
 				child = most-recent-image, most-recent-other
+				click = index.php/?layout=article&id=Article.id
 				
 					[most-recent-image]
 					css.margin = 10px
 					css.height = 180px
 					css.width = 240px
-					db.table = Article
-					db.filter = 'uid'=User.id
-					db.order = date
 					style.background-image = /userdata/19/Article.thumbnail_path
 					
 					[most-recent-other]
@@ -65,6 +67,7 @@ css.margin-top = -10px
 						css.width = 100%
 						css.font-size = 15px
 						html.raw = Article.intro
+						
 
 				[older-blog-grid]
 				child = older-blog
@@ -80,6 +83,7 @@ css.margin-top = -10px
 					db.filter = 'uid'=User.id
 					db.order = date
 					db.fetch = multiple
+					click = index.php/?layout=article&id=Article.id
 					
 						[blog-thumb]
 						css.height = 130px
