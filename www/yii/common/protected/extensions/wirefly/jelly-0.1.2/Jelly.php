@@ -438,20 +438,33 @@ $page = $_GET['page'];
 								//eval("\$model = \"$sql\";");
 								if (!$model) die ('SQL returned nothing');
 
+// --------------------------------------------------------------------------------------
 //	{{department 27 Guinot}}
 $p1 = strstr($model->content, "{{");
 $p2 = strstr(substr($p1, 2), "}}", true);
 $pOrig = "{{" . $p2 . "}}";
 $vals = explode(" ", $p2);
 $type = $vals[0];
-if (count($vals) > 1)
-{
-	$value = $vals[1];
-	$iframe = '<iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;department=' . $value . '"></iframe>';
-	$this->genInlineHtml(str_replace($pOrig, $iframe, $model->content));
-}
-else
-	$this->genInlineHtml($model->content);
+//if (count($vals) => 1)
+//{
+	if (stristr($vals[0], "department"))
+	{
+		$value = $vals[1];
+		$iframe = '<iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;department=' . $value . '"></iframe>';
+		$this->genInlineHtml(str_replace($pOrig, $iframe, $model->content));
+	}
+	else if (stristr($vals[0], "blog"))
+	{
+		$value = $vals[1];
+		$iframe = '<iframe height="670" width="900" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/blog/?sid=' . Yii::app()->params['sid'] . '"></iframe>';
+		$this->genInlineHtml(str_replace($pOrig, $iframe, $model->content));
+	}
+	else
+		$this->genInlineHtml($model->content);
+//}
+//else
+//	$this->genInlineHtml($model->content);
+// --------------------------------------------------------------------------------------
 
 								break;
 							}
