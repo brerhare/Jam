@@ -230,7 +230,7 @@ class ArticleController extends Controller
             if ($uploadedFile->saveAs(Yii::app()->basePath . '/../userdata/' .  Yii::app()->session['uid'] . '/image/' . $fileName)) {
 
                 $array = array(
-                     'filelink' => Yii::app()->baseUrl . '/../userdata/' .  Yii::app()->session['uid'] . '/image/' . $fileName);
+                     'filelink' => Yii::app()->baseUrl . '/blog/../userdata/' .  Yii::app()->session['uid'] . '/image/' . $fileName);
 
                 echo stripslashes(json_encode($array));
                 Yii::app()->end();
@@ -254,8 +254,8 @@ class ArticleController extends Controller
 
         foreach ($images as $image)
             $jsonArray[] = array(
-                'thumb' => Yii::app()->baseUrl . '/userdata/' . Yii::app()->session['uid'] . '/image/' . $image,
-                'image' => Yii::app()->baseUrl . '/userdata/' . Yii::app()->session['uid'] . '/image/' . $image,
+                'thumb' => Yii::app()->baseUrl . '/blog/userdata/' . Yii::app()->session['uid'] . '/image/' . $image,
+                'image' => Yii::app()->baseUrl . '/blog/userdata/' . Yii::app()->session['uid'] . '/image/' . $image,
             );
 
         header('Content-type: application/json');
