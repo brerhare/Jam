@@ -164,10 +164,7 @@ END_OF_FOOTER;
 						case ("filter"):
 							$fltCommaArr = explode(",", $dbValue);
 							foreach ($fltCommaArr as $elemComma)
-							{
-								$fltEqArr = explode("=", $elemComma);
-								$fltArr[$fltEqArr[0]] = $this->dbExpand($fltEqArr[1]);
-							}
+								array_push($fltArr, $elemComma);
 							break;
 						case ("order"):
 							$orderCommaArr = explode(",", $dbValue);
@@ -176,33 +173,60 @@ END_OF_FOOTER;
 							break;
 					}
 				}
-				if ($hasRepeatingField)
-				{
-					// Build the query from the collected args
-					$query = $dbTable . "::model()->findAllByAttributes(array(";
-					// Add filters
-					foreach ($fltArr as $flt1 => $flt2)
-						$query .= trim($flt1) . "=>" . $this->dbExpand(trim($flt2)) . ", ";
-					$query .= "),array(";
-					// Add order
-					foreach ($orderArr as $ord)
-						$query .= "'order'=>'" . $this->dbExpand(trim($ord)) . "', ";
-					$query .= "));";
-					// Do the query
-					$q = "return " . $query . ";";
+
+                if ($hasRepeatingField)
+                {
+                    // Build the query from the collected args
+                    $query = $dbTable . '::model()->findAll($cri);';
+                    // Add filters
+					$cri=new CDbCriteria;
+					foreach ($fltArr as $flt)
+						$cri->addCondition($this->dbExpand(trim($flt)));
+                    // Add order
+                    foreach ($orderArr as $ord)
+						$cri->order = $this->dbExpand(trim($ord));
+                    // Do the query
+                    $q = "return " . $query . ";";
 Yii::log("REPEATING EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
-					$resp = eval($q);
-					if ($resp)
-					{
-						// Generate blobs for each iteration
-						foreach ($resp as $r)
-						{
-							// Store the handle for this record
-							$this->dbTable[$dbTable] = $r;
-							$this->blobProcess2($jellyArray, $blobName, $array, $float, $indentLevel);
-						}
-					}
-				}
+                    $resp = eval($q);
+                    if ($resp)
+                    {
+                        // Generate blobs for each iteration
+                        foreach ($resp as $r)
+                        {
+                            // Store the handle for this record
+                            $this->dbTable[$dbTable] = $r;
+                            $this->blobProcess2($jellyArray, $blobName, $array, $float, $indentLevel);
+                        }
+                    }
+                }
+
+					
+/*
+// Works!
+$cri=new CDbCriteria;$cri->addCondition("uid=19");
+$qcri = 'Article::model()->findAll($cri);';
+$q = "return " . $qcri . ";";
+echo $q . "<br>";
+$resp = eval($q);
+var_dump( $resp);
+*/
+
+/*
+$cri=new CDbCriteria;
+foreach ($fltArr as $flt)
+{
+	echo "filter: " . $flt . "<br>";
+	$cri->addCondition($flt);
+}
+$qcri = 'Article::model()->findAll($cri);';
+$q = "return " . $qcri . ";";
+echo $q . "<br>";
+$resp = eval($q);
+var_dump( $resp);
+die('dying');
+*/
+
 			}
 		}
 
@@ -454,7 +478,7 @@ else
 							$fltCommaArr = explode(",", $dbValue);
 							foreach ($fltCommaArr as $elemComma)
 							{
-								$fltEqArr = explode("=", $elemComma);
+								$fltEqArr = explode("=", trim($elemComma));
 								$fltArr[$fltEqArr[0]] = $this->dbExpand($fltEqArr[1]);
 							}
 							break;
@@ -475,6 +499,7 @@ else
 				foreach ($orderArr as $ord)
 					$query .= "'order'=>'" . $this->dbExpand(trim($ord)) . "', ";
 				$query .= "));";
+//echo "Queryx: " . $query . "<br>";
 				// Do the query
 				$q = "return " . $query . ";";
 Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');

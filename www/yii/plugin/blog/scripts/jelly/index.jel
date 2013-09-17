@@ -36,7 +36,7 @@ db.filter = 'sid'=$_GET['sid']
 #@@ array parsing order isnt the same as defined? If this db, stuff is in the next block where it belongs it doesnt work
 				db.table = Article
 				db.filter = 'uid'=User.id
-				db.order = date
+				db.order = date DESC
 			
 				[most-recent-blog]
 				stacking = horizontal
@@ -80,8 +80,8 @@ css.margin-top = -10px
 					css.width = 33%
 					child = blog-thumb, blog-title, blog-intro
 					db.table = Article
-					db.filter = 'uid'=User.id
-					db.order = date
+					db.filter = uid=User.id, id!=Article.id
+					db.order = date DESC
 					db.fetch = multiple
 					click = index.php/?layout=article&id=Article.id
 					
