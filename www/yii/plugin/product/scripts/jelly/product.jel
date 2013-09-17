@@ -33,7 +33,7 @@ fx.wallpaper-color = #00000
 		child = top-half, bottom-half
 		css.width = 80%
 		db.table = Product
-		db.filter = 'id'=$_GET['product']
+		db.filter = id=$_GET['product']
 		html.h4 = Product.name
 
 			[top-half]
@@ -51,7 +51,7 @@ fx.wallpaper-color = #00000
 					css.margin = 10px
 					css.border = 2px solid purple
 					db.table = Image
-					db.filter = 'product_product_id'=Product.id
+					db.filter = product_product_id=Product.id
 					style.background-image = /userdata/image/Image.filename
 
 					[thumbs]
@@ -64,7 +64,7 @@ fx.wallpaper-color = #00000
 						css.margin = 10px
 						css.border = 1px solid purple
 						db.table = Image
-						db.filter = 'product_product_id'=Product.id
+						db.filter = product_product_id=Product.id, id!=Image.id
 						db.fetch = multiple
 						style.background-image = /userdata/image/Image.filename
 
@@ -76,7 +76,7 @@ fx.wallpaper-color = #00000
 
 					[option]
 					db.table = ProductHasOption
-					db.filter = 'product_product_id'=Product.id
+					db.filter = product_product_id=Product.id
 					db.order = price
 					db.fetch = multiple
 					html.raw = £ProductHasOption.price
@@ -89,7 +89,7 @@ fx.wallpaper-color = #00000
 					stacking = horizontal
 					child = feature-image, feature-text
 					db.table =  ProductHasFeature
-					db.filter = 'product_product_id'=Product.id
+					db.filter = product_product_id=Product.id
 					db.fetch = multiple
 
 						[feature-image]
@@ -102,7 +102,7 @@ fx.wallpaper-color = #00000
 						css.margin-top = 6px
 						css.margin-left = 6px
 						db.table = Feature
-						db.filter = 'id'=ProductHasFeature.product_feature_id
+						db.filter = id=ProductHasFeature.product_feature_id
 						html.raw = Feature.name
 						css.width = 80%
 
