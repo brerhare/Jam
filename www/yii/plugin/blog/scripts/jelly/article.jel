@@ -34,8 +34,7 @@ fx.wallpaper-color = #00000
 			css.width = 50%
 			child = date-and-category, title, intro, image
 			db.table = Article
-			#db.filter = id=$_GET['id']
-			db.filter = id=1
+			db.filter = id=$_GET['id']
 
 				[date-and-category]
 				css.height = 30px
