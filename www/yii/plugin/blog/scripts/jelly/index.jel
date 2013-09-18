@@ -106,11 +106,9 @@ css.margin-top = -10px
 						html.raw = Article.intro
 						
 			[category-list]
-			stacking = vertical
 			css.margin = 10px
 			db.table = Category
 			db.order = name
 			db.fetch = multiple
 			html.raw = Category.name
-			
-			
+

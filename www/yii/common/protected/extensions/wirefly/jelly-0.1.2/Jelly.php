@@ -458,7 +458,7 @@ else
 					{
 						case ("fetch"):
 							if ($dbValue == "multiple")
-								return;							// NB we break right out of here if we find its a multiple
+								return;		// We break right out of here if we find its a multiple
 							break;
 						case ("table"):
 							$dbTable = $dbValue;
@@ -509,7 +509,7 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
 	}
 
-	// @@TODO: This has been separated from the switch-case as it is intended for it to be recursive.
+	// @@TODO: This has been separated from the switch-case as it is intended to be recursive.
 	// At the moment it has a fixed depth and structure of hierarchy, very limited
 	private function addonHandler($value)
 	{
