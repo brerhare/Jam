@@ -64,7 +64,7 @@ class megamenu
 			{
 	    		$content .= "<br style='clear: left' />";
 	    		$content .= "<br style='clear: left' />";
-	    		$blockCount = 0;
+	    		$blockCount = 1;
 			}
 			$content .= "<div class='column'>";
 			$content .= " <ul>";
