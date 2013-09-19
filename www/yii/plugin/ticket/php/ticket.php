@@ -27,11 +27,13 @@ function genTicket(
 		array('style'=>'height:80px;')
 	);
 
-
 	if (strlen($eventModel->ticket_logo_path) > 0)
-		$logo = Yii::app()->baseUrl . '/userdata/' . Yii::app()->session['uid'] . '/' . $eventModel->ticket_logo_path;
-	else
-		$logo = Yii::app()->baseUrl . '/img/default_logo.jpg';
+	{
+		if (file_exists(Yii::app()->baseUrl . '/userdata/' . Yii::app()->session['uid'] . '/' . $eventModel->ticket_logo_path))
+			$logo = Yii::app()->baseUrl . '/userdata/' . Yii::app()->session['uid'] . '/' . $eventModel->ticket_logo_path;
+		else
+			$logo = Yii::app()->baseUrl . '/img/default_logo.jpg';
+	}
 	
 	$ticketLogo = CHtml::image(
 		$logo,
@@ -187,11 +189,18 @@ $tbl = <<<EOD
 		<br>
 		<b>$eventModel->address $eventModel->post_code</b>
 		<br/><br/>
-		$eventModel->ticket_text
+
+		<pre>$eventModel->ticket_text</pre>
+
 		<p/>
 		$eventModel->ticket_terms
 EOD;
-			$pdf->writeHTML($tbl, true, false, false, false, '');
+
+		$deadlink =  '<img alt="" src="http://">';
+		if (strstr($tbl, $deadlink))
+			$tbl = str_replace($deadlink, "", $tbl);
+
+		$pdf->writeHTML($tbl, true, false, false, false, '');
 
 			// QR
 			$pdf->write2DBarcode($ticketContent, 'QRCODE,Q', 163, 92, 35, 35, $style, 'N');
