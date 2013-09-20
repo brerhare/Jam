@@ -100,9 +100,9 @@ return array(
 	
 	// @@EG: Event handler. Here we do something before a controller is called. See Sid.php in protected/controllers
 	'behaviors' => array(
-		'onBeginRequest' => array(
-			'class' => 'application.components.Sid'
-		)
+//		'onBeginRequest' => array(
+//			'class' => 'application.components.Sid'
+//		)
 	),
 
 );

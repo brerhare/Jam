@@ -191,11 +191,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `plugin`.`event_feature`
+-- Table `plugin`.`event_facility`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `plugin`.`event_feature` ;
+DROP TABLE IF EXISTS `plugin`.`event_facility` ;
 
-CREATE  TABLE IF NOT EXISTS `plugin`.`event_feature` (
+CREATE  TABLE IF NOT EXISTS `plugin`.`event_facility` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(255) NOT NULL ,
   `icon_path` VARCHAR(255) NULL ,
@@ -204,24 +204,24 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `plugin`.`event_event_has_event_feature`
+-- Table `plugin`.`event_event_has_event_facility`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `plugin`.`event_event_has_event_feature` ;
+DROP TABLE IF EXISTS `plugin`.`event_event_has_event_facility` ;
 
-CREATE  TABLE IF NOT EXISTS `plugin`.`event_event_has_event_feature` (
+CREATE  TABLE IF NOT EXISTS `plugin`.`event_event_has_event_facility` (
   `event_event_id` INT NOT NULL ,
-  `event_feature_id` INT NOT NULL ,
-  PRIMARY KEY (`event_event_id`, `event_feature_id`) ,
-  INDEX `fk_event_event_has_event_feature_event_feature1` (`event_feature_id` ASC) ,
-  INDEX `fk_event_event_has_event_feature_event_event1` (`event_event_id` ASC) ,
-  CONSTRAINT `fk_event_event_has_event_feature_event_event1`
+  `event_facility_id` INT NOT NULL ,
+  PRIMARY KEY (`event_event_id`, `event_facility_id`) ,
+  INDEX `fk_event_event_has_event_facility_event_facility1` (`event_facility_id` ASC) ,
+  INDEX `fk_event_event_has_event_facility_event_event1` (`event_event_id` ASC) ,
+  CONSTRAINT `fk_event_event_has_event_facility_event_event1`
     FOREIGN KEY (`event_event_id` )
     REFERENCES `plugin`.`event_event` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_event_event_has_event_feature_event_feature1`
-    FOREIGN KEY (`event_feature_id` )
-    REFERENCES `plugin`.`event_feature` (`id` )
+  CONSTRAINT `fk_event_event_has_event_facility_event_facility1`
+    FOREIGN KEY (`event_facility_id` )
+    REFERENCES `plugin`.`event_facility` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
