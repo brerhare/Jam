@@ -18,7 +18,8 @@ css.display = block
 	css.width = 908px	/* if we give an explicit width here, child elements will by default set their width to it */
 
 		[fixedheader]
-		child = menu
+		child = menu, millenium
+		stacking = horizontal
 		css.display = block
 		css.position = fixed		/* position it, part 1 */
 		css.top = 0px				/* position it, part 2 */
@@ -34,6 +35,14 @@ css.display = block
 			css.margin-top = 35px 
 			css.margin-left = 50px
 			addon.menu.megamenu.anchortext = Menu
+
+			[millenium]
+			css.display = block
+			css.height = 20px
+			css.margin-top = -18px 
+			css.margin-left = 400px
+			html.raw = <u>Login</u>
+			click = http://217.41.65.149:8080/clients/login.asp
 
 		[carousel]
 		css.display = block
