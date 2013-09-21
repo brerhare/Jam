@@ -45,6 +45,7 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`event_program` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(255) NOT NULL ,
   `thumb_path` VARCHAR(255) NULL ,
+  `icon_path` VARCHAR(255) NULL ,
   `event_program_fields_id` INT NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_event_program_event_program_fields1` (`event_program_fields_id` ASC) ,
@@ -69,15 +70,19 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`event_event` (
   `address` TEXT NULL ,
   `post_code` VARCHAR(255) NULL ,
   `web` VARCHAR(255) NULL ,
-  `price_band` VARCHAR(255) NOT NULL ,
   `contact` TEXT NULL ,
   `description` TEXT NOT NULL ,
   `thumb_path` VARCHAR(255) NULL ,
+  `approved` INT NULL ,
   `member_id` INT NOT NULL ,
   `program_id` INT NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_event_program` (`program_id` ASC) ,
   INDEX `fk_event_member1` (`member_id` ASC) ,
+  INDEX `start` (`start` ASC) ,
+  INDEX `end` (`end` ASC) ,
+  INDEX `post_code` (`post_code` ASC) ,
+  INDEX `approved` (`approved` ASC) ,
   CONSTRAINT `fk_event_program`
     FOREIGN KEY (`program_id` )
     REFERENCES `plugin`.`event_program` (`id` )
@@ -224,6 +229,66 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`event_event_has_event_facility` (
     REFERENCES `plugin`.`event_facility` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `plugin`.`event_price_band`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `plugin`.`event_price_band` ;
+
+CREATE  TABLE IF NOT EXISTS `plugin`.`event_price_band` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(255) NOT NULL ,
+  `icon_path` VARCHAR(255) NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `plugin`.`event_event_has_event_price_band`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `plugin`.`event_event_has_event_price_band` ;
+
+CREATE  TABLE IF NOT EXISTS `plugin`.`event_event_has_event_price_band` (
+  `event_event_id` INT NOT NULL ,
+  `event_price_band_id` INT NOT NULL ,
+  PRIMARY KEY (`event_event_id`, `event_price_band_id`) ,
+  INDEX `fk_event_event_has_event_price_band_event_price_band1` (`event_price_band_id` ASC) ,
+  INDEX `fk_event_event_has_event_price_band_event_event1` (`event_event_id` ASC) ,
+  CONSTRAINT `fk_event_event_has_event_price_band_event_event1`
+    FOREIGN KEY (`event_event_id` )
+    REFERENCES `plugin`.`event_event` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_event_event_has_event_price_band_event_price_band1`
+    FOREIGN KEY (`event_price_band_id` )
+    REFERENCES `plugin`.`event_price_band` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `plugin`.`event-ws`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `plugin`.`event-ws` ;
+
+CREATE  TABLE IF NOT EXISTS `plugin`.`event-ws` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `event_id` INT NOT NULL ,
+  `os_grid_ref` VARCHAR(255) NOT NULL ,
+  `grade` VARCHAR(255) NOT NULL ,
+  `booking_essential` INT NULL ,
+  `min_age` INT NULL ,
+  `max_ageI` INT NULL ,
+  `child_ages_restrictions` VARCHAR(255) NULL ,
+  `additional_venue_info` VARCHAR(255) NULL ,
+  `full_price_notes` VARCHAR(255) NULL ,
+  `short_description` VARCHAR(255) NULL ,
+  `wheelchair_accessible` INT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `index2` (`event_id` ASC) )
 ENGINE = InnoDB;
 
 
