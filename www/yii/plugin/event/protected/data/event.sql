@@ -270,11 +270,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `plugin`.`event-ws`
+-- Table `plugin`.`event_ws`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `plugin`.`event-ws` ;
+DROP TABLE IF EXISTS `plugin`.`event_ws` ;
 
-CREATE  TABLE IF NOT EXISTS `plugin`.`event-ws` (
+CREATE  TABLE IF NOT EXISTS `plugin`.`event_ws` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `event_id` INT NOT NULL ,
   `os_grid_ref` VARCHAR(255) NOT NULL ,
