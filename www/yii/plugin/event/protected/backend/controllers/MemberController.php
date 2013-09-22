@@ -93,15 +93,17 @@ class MemberController extends Controller
 			{
 
 				// Send email
-                $name='=?UTF-8?B?'.base64_encode($model->user_name).'?=';
+				$from_email_address=Yii::app()->params['adminEmail'];
+                $from_name='=?UTF-8?B?'.base64_encode("Admin at DG Link").'?=';
+                $to_email_address=$model->email_address;
                 $subject='=?UTF-8?B?'.base64_encode("You are registered at DG Link").'?=';
-                $headers="From: $name <{$model->email_address}>\r\n".
-                    "Reply-To: {$model->email_address}\r\n".
+                $headers="From: $from_name <{$from_email_address}>\r\n".
+                    "Reply-To: {$from_email_address}\r\n".
                     "MIME-Version: 1.0\r\n".
                     "Content-type: text/plain; charset=UTF-8";
                 $body = "Thank you for joining us!";
 
-                mail(Yii::app()->params['adminEmail'],$subject,$body,$headers);
+                mail($to_email_address,$subject,$body,$headers);
 
 
 				Yii::app()->session['uid'] = $model->id;
