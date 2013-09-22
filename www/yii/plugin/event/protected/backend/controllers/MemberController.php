@@ -27,7 +27,7 @@ class MemberController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','create'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -69,6 +69,8 @@ class MemberController extends Controller
 		if(isset($_POST['Member']))
 		{
 			$model->attributes=$_POST['Member'];
+			$model->join_date = new CDbExpression('NOW()');
+			$model->last_login_date = new CDbExpression('NOW()');
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}

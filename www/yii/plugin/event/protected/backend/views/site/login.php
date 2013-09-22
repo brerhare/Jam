@@ -47,6 +47,8 @@ $this->pageTitle=Yii::app()->name . ' - Login';
 	<div class="row buttons">
 		<?php echo CHtml::submitButton('Login'); ?>
 	</div>
+Not a member yet?
+<?php echo CHtml::button('Register', array('submit' => array('member/create'))); ?>
 
 <?php $this->endWidget(); ?>
 </div><!-- form -->

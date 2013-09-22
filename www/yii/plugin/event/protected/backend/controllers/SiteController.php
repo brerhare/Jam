@@ -27,6 +27,8 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
+		if (Yii::app()->user->isGuest)
+			$this->redirect(array('site/login'));
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
 		$this->render('index');
