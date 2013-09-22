@@ -35,4 +35,30 @@
 		)); ?>
 	</div>
 
+	<div class = "row">
+		<div class = "well">
+			<h3>Member permissions for <?php echo $model->name;?></h3>
+			<table>
+			<thead><tr><th style='width:30%'>Username</th>
+			<th style='width:14%'>Admin</th>
+			<th style='width:14%'>Moderator</th>
+			<th style='width:14%'>Trusted</th>
+			<th style='width:14'>Member</th>
+			<th style='width:14%'>None</th>
+			</thead>
+			<tbody>
+			<?php
+			$members = Member::model()->findAll();
+			foreach($members as $member)
+			{
+				echo "<tr>";
+				echo "<td>" . $member->user_name . "<td>";
+				echo "</tr>";
+			}
+			?>
+			</tbody>
+			</table>
+		</div>
+	</div>
+
 <?php $this->endWidget(); ?>
