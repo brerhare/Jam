@@ -91,6 +91,19 @@ class MemberController extends Controller
 			$model->last_login_date = new CDbExpression('NOW()');
 			if($model->save())
 			{
+
+				// Send email
+                $name='=?UTF-8?B?'.base64_encode($model->user_name).'?=';
+                $subject='=?UTF-8?B?'.base64_encode("You are registered at DG Link").'?=';
+                $headers="From: $name <{$model->email_address}>\r\n".
+                    "Reply-To: {$model->email_address}\r\n".
+                    "MIME-Version: 1.0\r\n".
+                    "Content-type: text/plain; charset=UTF-8";
+                $body = "Thank you for joining us!";
+
+                mail(Yii::app()->params['adminEmail'],$subject,$body,$headers);
+
+
 				Yii::app()->session['uid'] = $model->id;
 				$identity = new UserIdentity($model->user_name, $model->password);
 				$duration = 3600*24*14; // 14 days
