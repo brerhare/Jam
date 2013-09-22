@@ -46,6 +46,38 @@ class Program extends CActiveRecord
 			array('name, event_program_fields_id', 'required'),
 			array('event_program_fields_id', 'numerical', 'integerOnly'=>true),
 			array('name, thumb_path, icon_path', 'length', 'max'=>255),
+
+            array('thumb_path', 'file','on'=>'insert',
+                'types'=> 'jpg, jpeg, gif, png',
+                'allowEmpty' => true,
+                'maxSize' => 1024 * 1024 * 20, // 1MB
+                'tooLarge' => 'The file was bigger than 1MB. Please upload a smaller file.'
+            ),
+            array('thumb_path', 'file','on'=>'update',
+                'types'=> 'jpg, jpeg, gif, png',
+                'allowEmpty' => true,
+                'maxSize' => 1024 * 1024 * 20, // 1MB
+                'tooLarge' => 'The file was larger than 1MB. Please upload a smaller file.'
+            ),
+            array('thumb_path', 'unsafe'),
+            array('thumb_path', 'length', 'max'=>255),
+
+            array('icon_path', 'file','on'=>'insert',
+                'types'=> 'jpg, jpeg, gif, png',
+                'allowEmpty' => true,
+                'maxSize' => 1024 * 1024 * 20, // 1MB
+                'tooLarge' => 'The file was bigger than 1MB. Please upload a smaller file.'
+            ),
+            array('icon_path', 'file','on'=>'update',
+                'types'=> 'jpg, jpeg, gif, png',
+                'allowEmpty' => true,
+                'maxSize' => 1024 * 1024 * 20, // 1MB
+                'tooLarge' => 'The file was larger than 1MB. Please upload a smaller file.'
+            ),
+            array('icon_path', 'unsafe'),
+            array('icon_path', 'length', 'max'=>255),
+
+
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, name, thumb_path, icon_path, event_program_fields_id', 'safe', 'on'=>'search'),

@@ -8,6 +8,9 @@ class ProgramController extends Controller
 	 */
 	public $layout='//layouts/column2';
 
+	private $_thumbDir = '/../userdata/program/thumb/';
+	private $_iconDir  = '/../userdata/program/icon/';
+
 	/**
 	 * @return array action filters
 	 */
@@ -31,7 +34,7 @@ class ProgramController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','admin','delete'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -62,6 +65,7 @@ class ProgramController extends Controller
 	public function actionCreate()
 	{
 		$model=new Program;
+		$programFields = new ProgramFields;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -69,8 +73,29 @@ class ProgramController extends Controller
 		if(isset($_POST['Program']))
 		{
 			$model->attributes=$_POST['Program'];
+			$model->thumb_path=CUploadedFile::getInstance($model, 'thumb_path');
+			$model->icon_path=CUploadedFile::getInstance($model, 'icon_path');
+
+			// Save linked tables (custom fields)
+			$programFields->save();
+			$model->event_program_fields_id = $programFields->id;
+
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			{
+				if (strlen($model->thumb_path) > 0)
+				{
+					$fname = Yii::app()->basePath . $this->_thumbDir . $model->thumb_path;
+					$model->thumb_path->saveAs($fname);
+					//$this->_watermark($fname);
+				}
+				if (strlen($model->icon_path) > 0)
+				{
+					$fname = Yii::app()->basePath . $this->_iconDir . $model->icon_path;
+					$model->icon_path->saveAs($fname);
+					//$this->_watermark($fname);
+				}
+				$this->redirect(array('admin'));
+			}
 		}
 
 		$this->render('create',array(
@@ -86,6 +111,7 @@ class ProgramController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
+		$model->scenario = 'update';
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -93,8 +119,45 @@ class ProgramController extends Controller
 		if(isset($_POST['Program']))
 		{
 			$model->attributes=$_POST['Program'];
+
+            $fileT=CUploadedFile::getInstance($model, 'thumb_path');
+            if(is_object($fileT) && get_class($fileT) === 'CUploadedFile')
+            {
+                if (file_exists(Yii::app()->basePath . $this->_thumbDir . $model->thumb_path))
+                	if (substr(Yii::app()->basePath . $this->_thumbDir . $model->thumb_path, -1) != '/')
+                    	unlink(Yii::app()->basePath . $this->_thumbDir . $model->thumb_path);
+                $model->thumb_path = $fileT;
+            }
+
+            $fileI=CUploadedFile::getInstance($model, 'icon_path');
+            if(is_object($fileI) && get_class($fileI) === 'CUploadedFile')
+            {
+                if (file_exists(Yii::app()->basePath . $this->_iconDir . $model->icon_path))
+                    if (substr(Yii::app()->basePath . $this->_iconDir . $model->thumb_path, -1) != '/')
+                    	unlink(Yii::app()->basePath . $this->_iconDir . $model->icon_path);
+                $model->icon_path = $fileI;
+            }
+           
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			{
+
+                if(is_object($fileT))
+                {
+                    $fname = Yii::app()->basePath . $this->_thumbDir . $model->thumb_path;
+                    $model->thumb_path->saveAs($fname);
+                    //$this->_watermark($fname);
+                }
+
+                if(is_object($fileI))
+                {
+                    $fname = Yii::app()->basePath . $this->_iconDir . $model->icon_path;
+                    $model->icon_path->saveAs($fname);
+                    //$this->_watermark($fname);
+                }
+                
+				$this->redirect(array('admin'));
+			}
+
 		}
 
 		$this->render('update',array(
@@ -112,7 +175,21 @@ class ProgramController extends Controller
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
+
+	        $oldthumbname = $this->loadModel($id)->thumb_path;
+    	    if (($oldthumbname != '') && (file_exists(Yii::app()->basePath . $this->_thumbDir . $oldthumbname)))
+           		unlink(Yii::app()->basePath . $this->_thumbDir . $oldthumbname);
+
+	        $oldiconname = $this->loadModel($id)->icon_path;
+    	    if (($oldiconname != '') && (file_exists(Yii::app()->basePath . $this->_iconDir . $oldiconname)))
+           		unlink(Yii::app()->basePath . $this->_iconDir . $oldiconname);
+
+			$linked_id = $this->loadModel($id)->event_program_fields_id; 
 			$this->loadModel($id)->delete();
+
+			// Delete linked tables (custom fields)
+			$programFields = ProgramFields::model()->findByPk($linked_id);
+			$programFields->delete();
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 			if(!isset($_GET['ajax']))

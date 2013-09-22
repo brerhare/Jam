@@ -18,6 +18,9 @@ userdata/program/*
 !userdata/program/thumb
 userdata/program/thumb/*
 !userdata/program/thumb/.gitignore
+!userdata/program/icon
+userdata/program/icon/*
+!userdata/program/icon/.gitignore
 *.bfproject
 *.bak
 *.swp
