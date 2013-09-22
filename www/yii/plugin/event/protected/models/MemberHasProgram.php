@@ -10,6 +10,12 @@
  */
 class MemberHasProgram extends CActiveRecord
 {
+		public $PRIVILEGE_ADMIN = 4;
+		public $PRIVILEGE_MOD = 3;
+		public $PRIVILEGE_TRUSTED = 2;
+		public $PRIVILEGE_MEMBER = 1;
+		public $PRIVILEGE_NONE = 0;
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.

@@ -94,6 +94,14 @@ class ProgramController extends Controller
 					$model->icon_path->saveAs($fname);
 					//$this->_watermark($fname);
 				}
+				
+				// Create the privilege link - creator is Admin
+				$memberHasProgram = new MemberHasProgram;
+				$memberHasProgram->event_member_id = Yii::app()->session['uid'];
+				$memberHasProgram->event_program_id = $model->id;
+				$memberHasProgram->privilege_level = $memberHasProgram->PRIVILEGE_ADMIN;
+				$memberHasProgram->save();
+				
 				$this->redirect(array('admin'));
 			}
 		}
@@ -183,6 +191,9 @@ class ProgramController extends Controller
 	        $oldiconname = $this->loadModel($id)->icon_path;
     	    if (($oldiconname != '') && (file_exists(Yii::app()->basePath . $this->_iconDir . $oldiconname)))
            		unlink(Yii::app()->basePath . $this->_iconDir . $oldiconname);
+
+			// Delete all privilege links for this program
+			MemberHasProgram::model()->deleteAll('event_program_id=' . $id);
 
 			$linked_id = $this->loadModel($id)->event_program_fields_id; 
 			$this->loadModel($id)->delete();

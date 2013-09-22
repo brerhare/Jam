@@ -8,6 +8,17 @@ class MemberController extends Controller
 	 */
 	public $layout='//layouts/column2';
 
+	public function actions()
+	{
+	    return array(
+    	    // captcha action renders the CAPTCHA image displayed on the contact page
+	        'captcha'=>array(
+	            'class'=>'CCaptchaAction',
+    	        'backColor'=>0xFFFFFF,
+        	),
+	    );
+	}
+
 	/**
 	 * @return array action filters
 	 */
@@ -27,11 +38,11 @@ class MemberController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','create'),
+				'actions'=>array('index','view','create','update','captcha'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -80,18 +91,10 @@ class MemberController extends Controller
 			$model->last_login_date = new CDbExpression('NOW()');
 			if($model->save())
 			{
-        $identity = new UserIdentity($model->user_name, $model->password);
-                $duration = 3600*24*14; // 14 days
-                Yii::app()->user->login($identity, $duration);
-                
-//Yii::app()->user->isGuest = 0;
-        //$this->setState('id', $model->id);            
-        //$this->username = $model->user_name;
-        //$this->errorCode=self::ERROR_NONE;
-
-
-
-
+				Yii::app()->session['uid'] = $model->id;
+				$identity = new UserIdentity($model->user_name, $model->password);
+				$duration = 3600*24*14; // 14 days
+				Yii::app()->user->login($identity, $duration);
 				$this->redirect(array('site/index'));
 			}
 		}
@@ -106,9 +109,10 @@ class MemberController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
+	public function actionUpdate()
 	{
-		$model=$this->loadModel($id);
+
+		$model=$this->loadModel(Yii::app()->session['uid']);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -117,7 +121,7 @@ class MemberController extends Controller
 		{
 			$model->attributes=$_POST['Member'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('site/index'));
 		}
 
 		$this->render('update',array(
