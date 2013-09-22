@@ -62,17 +62,38 @@ class MemberController extends Controller
 	public function actionCreate()
 	{
 		$model=new Member;
-
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['Member']))
 		{
 			$model->attributes=$_POST['Member'];
+
+			// Check username doesnt already exist
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("user_name = '" . $model->user_name . "'");
+			$exists = Member::model()->find($criteria);
+			if ($exists)
+				throw new CHttpException(400,'Sorry, this username is already taken');
+
 			$model->join_date = new CDbExpression('NOW()');
 			$model->last_login_date = new CDbExpression('NOW()');
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			{
+        $identity = new UserIdentity($model->user_name, $model->password);
+                $duration = 3600*24*14; // 14 days
+                Yii::app()->user->login($identity, $duration);
+                
+//Yii::app()->user->isGuest = 0;
+        //$this->setState('id', $model->id);            
+        //$this->username = $model->user_name;
+        //$this->errorCode=self::ERROR_NONE;
+
+
+
+
+				$this->redirect(array('site/index'));
+			}
 		}
 
 		$this->render('create',array(
