@@ -127,6 +127,33 @@ class ProgramController extends Controller
 		if(isset($_POST['Program']))
 		{
 			$model->attributes=$_POST['Program'];
+//var_dump($_POST);die();
+$crap = "";
+			// Update privileges
+			foreach ($_POST as $key => $val)
+			{
+				if (is_array($val))
+					continue;
+				if (substr($key, 0, 3) == 'od_')
+				{
+					//die ('id_' . substr($key, 3) );
+					if (($_POST['id_' . substr($key, 3)]) != $val)
+					{
+						$crap .= 'old ' . $key . ':' . $val . "<br>";
+						$criteria = new CDbCriteria;
+						$criteria->addCondition("event_member_id = " . substr($key, 3));
+						$criteria->addCondition("event_program_id = " . $model->id);
+						$memberHasProgram = MemberHasProgram::model()->find($criteria);
+						if (!($memberHasProgram))
+							$memberHasProgram = new MemberHasProgram;
+						$memberHasProgram->event_member_id = substr($key, 3);
+						$memberHasProgram->event_program_id = $model->id;
+						$memberHasProgram->privilege_level = $_POST['id_' . substr($key, 3)];
+						$memberHasProgram->save();
+					}
+				}
+			}
+			//die($crap);
 
             $fileT=CUploadedFile::getInstance($model, 'thumb_path');
             if(is_object($fileT) && get_class($fileT) === 'CUploadedFile')
@@ -261,4 +288,17 @@ class ProgramController extends Controller
 			Yii::app()->end();
 		}
 	}
+
+// @@ NOT USED
+    public function actionAjaxUpdatePrivilege()
+    {       
+        if (Yii::app()->request->isAjaxRequest)
+        {           
+			if(isset($_POST['id']))
+			{
+				die('id='. $_POST['id']);
+			}
+		}
+	}
+
 }
