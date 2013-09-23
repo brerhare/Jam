@@ -102,7 +102,8 @@ class megamenu
 		<script>
 		<!--Mega Menu-->
 		//jkmegamenu.definemenu("anchorid", "menuid", "mouseover|click");
-		jkmegamenu.definemenu("megaanchor", "megamenu1", "mouseover");
+		//jkmegamenu.definemenu("megaanchor", "megamenu1", "mouseover");
+		jkmegamenu.definemenu("megaanchor", "megamenu1", "click");
 		</script>
 
 		<div style="position:relative; z-index:20000;">
