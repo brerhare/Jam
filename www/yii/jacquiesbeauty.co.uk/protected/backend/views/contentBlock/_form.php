@@ -1,7 +1,7 @@
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'content-block-form',
 	'enableAjaxValidation'=>false,
-'type'=>'horizontal',
+	'type'=>'horizontal',
 )); ?>
 
 	<p class="help-block">Fields with <span class="required">*</span> are required.</p>
@@ -28,7 +28,11 @@
 
 <?php //echo $form->dropDownListRow($model, 'user2gradeGroups',CHtml::listData(User::model()->getUsers(),'id', 'profile.fullname'), array('multiple'=>true, 'size' => 10));?>
 
-	<?php echo $form->textFieldRow($model,'url',array('class'=>'span5','maxlength'=>255)); ?>
+    <?php $urlEmbed = "";
+    if (!($model->isNewRecord))
+        $urlEmbed = "<i>http://jacquies.wireflydesign.com/?layout=frontpage&page=" . $model->url . "</i>"; ?>
+
+	<?php echo $form->textFieldRow($model,'url',array('class'=>'span5','maxlength'=>255, 'hint'=>$urlEmbed)); ?>
 
 	<?php //echo $form->textFieldRow($model,'active',array('class'=>'span1','maxlength'=>1)); ?>
 	<?php echo $form->toggleButtonRow($model, 'active'); ?>
