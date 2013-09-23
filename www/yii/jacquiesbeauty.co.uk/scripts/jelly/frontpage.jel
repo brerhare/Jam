@@ -53,16 +53,17 @@ css.display = block
 
 		[tabscontainer]
 css.display = none
-		#child = tabs
-		#css.display = block
-		#css.margin-bottom = -4px
-		#css.background-color = white
-		#fx.rounding = 4px
+#css.display = block
+		child = tabs
+		css.display = block
+		css.margin-bottom = -4px
+		css.background-color = white
+		fx.rounding = 4px
 
 		[tabs]
 css.display = none
-		#css.display = block
-		#addon.tab.rain.source = db
+#css.display = block
+		addon.tab.rain.source = db
 
 		; [content] needs a container because we want a bit of space around the actual content.
 

@@ -220,7 +220,7 @@ Yii::log("REPEATING EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim
 		$blobName .= $this->blobUniqueId++;
 
 // @@TODO: remove this hardcoding
-/*
+/*****************************************************************/
 if (isset($_GET['page']))
 {
  if ($_GET['page'] != 'Jacquies Beauty Dumfries Salon')
@@ -229,7 +229,7 @@ if (isset($_GET['page']))
    return;
   }
 }
-*/
+/*****************************************************************/
 		$this->logMsg($blobName . "\n", $indentLevel);
 
 		// Is this entire blob clickable?

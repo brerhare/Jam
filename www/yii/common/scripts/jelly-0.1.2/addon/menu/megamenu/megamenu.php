@@ -108,7 +108,15 @@ class megamenu
 		<div style="position:relative; z-index:20000;">
 			<div id="megaanchor1" style="z-index:20000">
 				<!--Mega Menu Anchor-->
+
+
+<!--
 				<a onmouseover="javascript:recalcPos();" href=<substitute-path>"/index.php/'" id="megaanchor" style="color:#000000;"><substitute-anchortext></a>
+-->
+				<a onmouseover="javascript:recalcPos();" id="megaanchor" style="color:#000000;"><substitute-anchortext></a>
+
+
+
 			</div>
 
 			<!--Mega Menu Dropdown HTML-->
