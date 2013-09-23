@@ -55,10 +55,11 @@ class Product extends CActiveRecord
 			array('uid, product_department_id, product_vat_id', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>255),
 			array('weight, height, width, depth, volume', 'length', 'max'=>10),
+			array('duration', 'length', 'max'=>45),
 			array('description', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, name, description, weight, height, width, depth, volume, product_department_id, product_vat_id', 'safe', 'on'=>'search'),
+			array('id, uid, name, description, weight, height, width, depth, volume, duration, product_department_id, product_vat_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -93,6 +94,7 @@ class Product extends CActiveRecord
 			'width' => 'Width',
 			'depth' => 'Depth',
 			'volume' => 'Volume',
+			'duration' => 'Duration',
 			'product_department_id' => 'Department',
 			'product_vat_id' => 'Vat Rate',
 		);
@@ -119,6 +121,7 @@ class Product extends CActiveRecord
 		$criteria->compare('width',$this->width,true);
 		$criteria->compare('depth',$this->depth,true);
 		$criteria->compare('volume',$this->volume,true);
+		$criteria->compare('duration',$this->duration,true);
 		//$criteria->compare('product_department_id',$this->product_department_id);
 		$criteria->addCondition("product_department_id = " . Yii::app()->session['department_id']);
 		$criteria->compare('product_vat_id',$this->product_vat_id);

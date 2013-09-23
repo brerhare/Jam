@@ -49,6 +49,7 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`product_product` (
   `width` DECIMAL(10,2) NULL ,
   `depth` DECIMAL(10,2) NULL ,
   `volume` DECIMAL(10,2) NULL ,
+  `duration` INT NULL ,
   `product_department_id` INT NOT NULL ,
   `product_vat_id` INT NOT NULL ,
   PRIMARY KEY (`id`) ,

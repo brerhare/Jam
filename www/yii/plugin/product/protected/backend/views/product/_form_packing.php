@@ -11,6 +11,8 @@
 
 	<?php echo $form->textFieldRow($model,'volume',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right')); ?>
 
+	<?php echo $form->textFieldRow($model,'duration',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right')); ?>
+
 	</div>
 </div>
 
