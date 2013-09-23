@@ -16,6 +16,7 @@ CREATE  TABLE IF NOT EXISTS `jacquiesbeauty_co_uk`.`content_block` (
   `url` VARCHAR(255) NOT NULL ,
   `content` TEXT NULL ,
   `active` INT NULL ,
+  `home` INT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `sequence` (`sequence` ASC) ,
   INDEX `parent_id` (`parent_id` ASC) )

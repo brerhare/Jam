@@ -11,6 +11,7 @@
  * @property string $url
  * @property string $content
  * @property integer $active
+ * @property integer $home
  */
 class ContentBlock extends CActiveRecord
 {
@@ -41,12 +42,12 @@ class ContentBlock extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('title, url', 'required'),
-			array('parent_id, sequence, active', 'numerical', 'integerOnly'=>true),
+			array('parent_id, sequence, active, home', 'numerical', 'integerOnly'=>true),
 			array('title, url', 'length', 'max'=>255),
 			array('content', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, parent_id, sequence, title, url, content, active', 'safe', 'on'=>'search'),
+			array('id, parent_id, sequence, title, url, content, active, home', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -74,6 +75,7 @@ class ContentBlock extends CActiveRecord
 			'url' => 'Url',
 			'content' => 'Content',
 			'active' => 'Active',
+			'home' => 'Is Home Page',
 		);
 	}
 
@@ -95,6 +97,7 @@ class ContentBlock extends CActiveRecord
 		$criteria->compare('url',$this->url,true);
 		$criteria->compare('content',$this->content,true);
 		$criteria->compare('active',$this->active);
+		$criteria->compare('home',$this->home);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

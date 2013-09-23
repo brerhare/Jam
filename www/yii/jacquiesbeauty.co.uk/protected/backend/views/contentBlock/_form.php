@@ -34,6 +34,9 @@
 
 	<?php echo $form->textFieldRow($model,'url',array('class'=>'span5','maxlength'=>255, 'hint'=>$urlEmbed)); ?>
 
+	<?php //echo $form->textFieldRow($model,'home',array('class'=>'span1','maxlength'=>1)); ?>
+	<?php echo $form->toggleButtonRow($model, 'home'); ?>
+
 	<?php //echo $form->textFieldRow($model,'active',array('class'=>'span1','maxlength'=>1)); ?>
 	<?php echo $form->toggleButtonRow($model, 'active'); ?>
 
