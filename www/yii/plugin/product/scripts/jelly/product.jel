@@ -19,7 +19,7 @@ fx.wallpaper-color = #00000
 		[breadcrumbs]
 		css.margin-top = 10px
 		css.height = 30px
-		html.raw = breadcrumbs
+		########## html.raw = breadcrumbs
 
 		[graphic]
 		css.height = 4px
@@ -111,7 +111,7 @@ fx.wallpaper-color = #00000
 			html.p = Product.description
 
 		[linked-products]
-		css.background-color = yellow;
-		html.raw = Linked
+		####css.background-color = yellow;
+		html.raw = Linked products
 
 
