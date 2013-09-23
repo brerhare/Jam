@@ -21,6 +21,15 @@ $this->menu=array(
 		//'event_program_fields_id',
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
+			'template'=>'{update}{images}{delete}',
+            'buttons'=>array(
+                'images' => array(
+                    'label'=>'Assign privileges',
+                    'imageUrl'=>Yii::app()->request->baseUrl.'/img/lock.png',
+                    //'url'=>'Yii::app()->controller->createUrl("program/privilege", array("product_id"=>$data->primaryKey))',
+                    'url'=>'Yii::app()->controller->createUrl("program/privilege/" . $data->primaryKey)',
+                ),
+			),
 		),
 	),
 )); ?>

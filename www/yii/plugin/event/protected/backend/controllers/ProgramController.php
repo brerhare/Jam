@@ -34,7 +34,7 @@ class ProgramController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','delete'),
+				'actions'=>array('create','update','privilege','admin','delete'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -94,14 +94,15 @@ class ProgramController extends Controller
 					$model->icon_path->saveAs($fname);
 					//$this->_watermark($fname);
 				}
-				
+
 				// Create the privilege link - creator is Admin
 				$memberHasProgram = new MemberHasProgram;
 				$memberHasProgram->event_member_id = Yii::app()->session['uid'];
 				$memberHasProgram->event_program_id = $model->id;
-				$memberHasProgram->privilege_level = $memberHasProgram->PRIVILEGE_ADMIN;
+// @@TODO: These privilege levels should be constants from the MemberHasProgram model
+				$memberHasProgram->privilege_level = 4;
 				$memberHasProgram->save();
-				
+
 				$this->redirect(array('admin'));
 			}
 		}
@@ -127,33 +128,6 @@ class ProgramController extends Controller
 		if(isset($_POST['Program']))
 		{
 			$model->attributes=$_POST['Program'];
-//var_dump($_POST);die();
-$crap = "";
-			// Update privileges
-			foreach ($_POST as $key => $val)
-			{
-				if (is_array($val))
-					continue;
-				if (substr($key, 0, 3) == 'od_')
-				{
-					//die ('id_' . substr($key, 3) );
-					if (($_POST['id_' . substr($key, 3)]) != $val)
-					{
-						$crap .= 'old ' . $key . ':' . $val . "<br>";
-						$criteria = new CDbCriteria;
-						$criteria->addCondition("event_member_id = " . substr($key, 3));
-						$criteria->addCondition("event_program_id = " . $model->id);
-						$memberHasProgram = MemberHasProgram::model()->find($criteria);
-						if (!($memberHasProgram))
-							$memberHasProgram = new MemberHasProgram;
-						$memberHasProgram->event_member_id = substr($key, 3);
-						$memberHasProgram->event_program_id = $model->id;
-						$memberHasProgram->privilege_level = $_POST['id_' . substr($key, 3)];
-						$memberHasProgram->save();
-					}
-				}
-			}
-			//die($crap);
 
             $fileT=CUploadedFile::getInstance($model, 'thumb_path');
             if(is_object($fileT) && get_class($fileT) === 'CUploadedFile')
@@ -196,6 +170,51 @@ $crap = "";
 		}
 
 		$this->render('update',array(
+			'model'=>$model,
+		));
+	}
+
+	/**
+	 * Assign member privileges
+	 */
+	public function actionPrivilege($id)
+	{
+		$model=$this->loadModel($id);
+
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
+		if(isset($_POST['privilege-entered']))
+		{
+			// Update privileges
+			foreach ($_POST as $key => $val)
+			{
+				if (is_array($val))
+					continue;
+				if (substr($key, 0, 3) == 'od_')
+				{
+					//die ('id_' . substr($key, 3) );
+					if (($_POST['id_' . substr($key, 3)]) != $val)
+					{
+						$criteria = new CDbCriteria;
+						$criteria->addCondition("event_member_id = " . substr($key, 3));
+						$criteria->addCondition("event_program_id = " . $id);
+						$memberHasProgram = MemberHasProgram::model()->find($criteria);
+						if (!($memberHasProgram))
+							$memberHasProgram = new MemberHasProgram;
+						$memberHasProgram->event_member_id = substr($key, 3);
+						$memberHasProgram->event_program_id = $id;
+						$memberHasProgram->privilege_level = $_POST['id_' . substr($key, 3)];
+						$memberHasProgram->save();
+					}
+				}
+			}
+         
+			$this->redirect(array('admin'));
+
+		}
+
+		$this->render('privilege',array(
 			'model'=>$model,
 		));
 	}
