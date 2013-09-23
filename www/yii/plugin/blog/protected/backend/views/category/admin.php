@@ -17,7 +17,7 @@ $this->menu=array(
 		//'uid',
         array(
             'name'  => 'name',
-            'value' => 'CHtml::link($data->name, Yii::app()->createUrl("contentBlock/update",array("id"=>$data->primaryKey)))',
+            'value' => 'CHtml::link($data->name, Yii::app()->createUrl("category/update",array("id"=>$data->primaryKey)))',
             'type'  => 'raw',
         ),
 
