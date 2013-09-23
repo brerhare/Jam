@@ -15,8 +15,17 @@ $this->menu=array(
 	'columns'=>array(
 		// 'id',
 		//'sequence',
-		'title',
-		'url',
+// @@EG Clickable rows in grid view!
+		array(
+			'name'  => 'title',
+			'value' => 'CHtml::link($data->title, Yii::app()->createUrl("contentBlock/update",array("id"=>$data->primaryKey)))',
+			'type'  => 'raw',
+		),
+		array(
+			'name'  => 'url',
+			'value' => 'CHtml::link($data->url, Yii::app()->createUrl("contentBlock/update",array("id"=>$data->primaryKey)))',
+			'type'  => 'raw',
+		),
 		'active:boolean',
 		// 'content',
 		array(

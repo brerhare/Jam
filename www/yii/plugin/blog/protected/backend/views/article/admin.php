@@ -16,7 +16,12 @@ $this->menu=array(
 		//'id',
 		//'uid',
 		'date',
-		'title',
+        array(
+            'name'  => 'title',
+            'value' => 'CHtml::link($data->title, Yii::app()->createUrl("article/update",array("id"=>$data->primaryKey)))',
+            'type'  => 'raw',
+        ),
+
 		//'intro',
 		//'content',
 		/*
