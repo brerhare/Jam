@@ -20,8 +20,17 @@ $this->menu=array(
 	'columns'=>array(
 		//'id',
 		//'uid',
-		'name',
-		'description',
+        array(
+            'name'  => 'name',
+            'value' => 'CHtml::link($data->name, Yii::app()->createUrl("product/update",array("id"=>$data->primaryKey)))',
+            'type'  => 'raw',
+        ),
+        array(
+            'name'  => 'description',
+            'value' => 'CHtml::link($data->description, Yii::app()->createUrl("product/update",array("id"=>$data->primaryKey)))',
+            'type'  => 'raw',
+        ),
+
 		/*
 		'weight',
 		'height',

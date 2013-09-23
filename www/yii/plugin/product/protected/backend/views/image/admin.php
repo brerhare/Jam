@@ -24,7 +24,12 @@ img { height:50px;}
 	'columns'=>array(
 		//'id',
 		//'uid',
-		'filename',
+        array(
+            'name'  => 'filename',
+            'value' => 'CHtml::link($data->filename, Yii::app()->createUrl("image/update",array("id"=>$data->primaryKey)))',
+            'type'  => 'raw',
+        ),
+
         array('name'=>'filename',
             'type'=>'html',
             'header'=>'Picture',

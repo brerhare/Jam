@@ -16,7 +16,12 @@ $this->menu=array(
 	'columns'=>array(
 		//id',
 		//'uid',
-		'description',
+        array(
+            'name'  => 'description',
+            'value' => 'CHtml::link($data->description, Yii::app()->createUrl("vat/update",array("id"=>$data->primaryKey)))',
+            'type'  => 'raw',
+        ),
+
 		'rate',
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',

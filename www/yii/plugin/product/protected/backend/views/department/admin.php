@@ -15,7 +15,13 @@ $this->menu=array(
 	'columns'=>array(
 		//'id',
 		//'uid',
-		'name',
+		//'name',
+        array(
+            'name'  => 'name',
+            'value' => 'CHtml::link($data->name, Yii::app()->createUrl("department/update",array("id"=>$data->primaryKey)))',
+            'type'  => 'raw',
+        ),
+
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
 			'template'=>'{update}{options}{features}{products}{delete}',
