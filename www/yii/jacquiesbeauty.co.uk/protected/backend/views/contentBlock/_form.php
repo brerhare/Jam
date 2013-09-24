@@ -13,19 +13,6 @@
 
 	<?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>255)); ?>
 
-	<?php
-	// @@EG Dropdowns
-	$possibleParents = array('0'=>'None');
-	$criteria = new CDbCriteria;
-	if (!$model->isNewRecord)
-		$criteria->addCondition("id != " . $model->id);
-	$contentBlocks = ContentBlock::model()->findAll($criteria);
-	foreach ($contentBlocks as $contentBlock):
-		$possibleParents[$contentBlock->id] = $contentBlock->title;
-	endforeach;
-	echo $form->dropDownListRow($model, 'parent_id', $possibleParents);
-	?>
-
 <?php //echo $form->dropDownListRow($model, 'user2gradeGroups',CHtml::listData(User::model()->getUsers(),'id', 'profile.fullname'), array('multiple'=>true, 'size' => 10));?>
 
     <?php $urlEmbed = "";
