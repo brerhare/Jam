@@ -223,7 +223,7 @@ Yii::log("REPEATING EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim
 /*****************************************************************/
 if (isset($_GET['page']))
 {
- if ($_GET['page'] != 'Jacquies Beauty Dumfries Salon')
+ if ($_GET['page'] != 'Jacquies-Beauty-Dumfries-Salon')
  {
   if (($blobName == 'tabs') || ($blobName == 'tabscontainer'))
    return;
@@ -411,7 +411,7 @@ $page = $_GET['page'];
 								if (isset($_GET['page']))
 									$page = $_GET['page'];
 								else
-									$page = 'Jacquies Beauty Dumfries Salon';
+									$page = 'Jacquies-Beauty-Dumfries-Salon';
 								
 								// @@NB: OI! hardcoded to jacquies here
 								//$sql = "ContentBlock::model()->findByAttributes(array('url'=>'Massage'));";
