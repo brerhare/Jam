@@ -411,14 +411,15 @@ $page = $_GET['page'];
 								if (isset($_GET['page']))
 									$page = $_GET['page'];
 								else
-									$page = 'Jacquies-Beauty-Dumfries-Salon';
+								{
+									$model = ContentBlock::model()->findByAttributes(array('home'=>1));
+									if (!$model) die ('No page specified in request and no home page is designated - cant continue');
+									$page = $model->url;
+								}
 								
-								// @@NB: OI! hardcoded to jacquies here
-								//$sql = "ContentBlock::model()->findByAttributes(array('url'=>'Massage'));";
 								$column = $value['column'];
 								$model = ContentBlock::model()->findByAttributes(array('url'=>$page));
-								//eval("\$model = \"$sql\";");
-								if (!$model) die ('SQL returned nothing');
+								if (!$model) die ('Sorry, I could not find that page. You requested "' . $page . '"');
 
 // --------------------------------------------------------------------------------------
 //	{{department 27 Guinot}}
