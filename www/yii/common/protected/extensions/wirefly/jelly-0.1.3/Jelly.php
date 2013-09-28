@@ -34,6 +34,7 @@ class Jelly
 
 <link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Life+Savers' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Raleway:500' rel='stylesheet' type='text/css'>
 
 	<style type="text/css">
 		html, body {
@@ -46,8 +47,9 @@ html *
 {
    /*font-size: 1em !important;*/
    /*font-family: Arial !important;*/
-   font-family: 'Quattrocento Sans', sans-serif !important;
+   /*font-family: 'Quattrocento Sans', sans-serif !important;*/
    /*font-family: 'Life Savers', cursive !important;*/
+	font-family: 'Raleway', sans-serif;
 }
 
 
