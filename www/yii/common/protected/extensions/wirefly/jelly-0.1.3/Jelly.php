@@ -34,7 +34,7 @@ class Jelly
 
 <link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans' rel='stylesheet' type='text/css'>
 <link href='http://fonts.googleapis.com/css?family=Life+Savers' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Raleway:500' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Raleway:300' rel='stylesheet' type='text/css'>
 
 	<style type="text/css">
 		html, body {
@@ -49,7 +49,7 @@ html *
    /*font-family: Arial !important;*/
    /*font-family: 'Quattrocento Sans', sans-serif !important;*/
    /*font-family: 'Life Savers', cursive !important;*/
-	font-family: 'Raleway', sans-serif;
+	font-family: 'Raleway', sans-serif !important;
 }
 
 
@@ -62,8 +62,10 @@ a:hover, a:active { text-decoration: none; color:0###000 }
 
 
 <!-- @@TODO: Hardcoded for jacquies! -->
-h2 {color: #5c194c; }
-h4 {color: #5c194c; }
+h1 {color: #ff0000; }
+h2 {color: #787878; }
+h3 {color: #5b1a4a; }
+h4 {color: #787878; }
 	</style>
 
 END_OF_BEGINHEADER;
