@@ -46,10 +46,10 @@ class Jelly
 html *
 {
    /*font-size: 1em !important;*/
-   /*font-family: Arial !important;*/
+   font-family: Arial !important;
    /*font-family: 'Quattrocento Sans', sans-serif !important;*/
    /*font-family: 'Life Savers', cursive !important;*/
-	font-family: 'Raleway', sans-serif !important;
+	/*font-family: 'Raleway', sans-serif !important;*/
 }
 
 
