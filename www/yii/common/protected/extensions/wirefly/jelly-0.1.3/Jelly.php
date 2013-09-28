@@ -46,10 +46,10 @@ class Jelly
 html *
 {
    /*font-size: 1em !important;*/
-   font-family: Arial !important;
+   /*font-family: Arial !important;*/
    /*font-family: 'Quattrocento Sans', sans-serif !important;*/
    /*font-family: 'Life Savers', cursive !important;*/
-	/*font-family: 'Raleway', sans-serif !important;*/
+	font-family: 'Raleway', sans-serif !important;
 }
 
 
@@ -62,7 +62,7 @@ a:hover, a:active { text-decoration: none; color:0###000 }
 
 
 <!-- @@TODO: Hardcoded for jacquies! -->
-h1 {color: #ff0000; }
+h1 {color: #5b1a4a; }
 h2 {color: #787878; }
 h3 {color: #5b1a4a; }
 h4 {color: #787878; }
