@@ -31,6 +31,10 @@ class Jelly
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
 	<link rel="shortcut icon" href="http://resources.news.com.au/cs/newscomau/images/favicon.ico" type="image/x-icon" />
 	<link rel="icon" href="http://resources.news.com.au/cs/newscomau/images/favicon.ico" type="image/x-icon" />
+
+<link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Life+Savers' rel='stylesheet' type='text/css'>
+
 	<style type="text/css">
 		html, body {
 		height: 100%;
@@ -41,7 +45,9 @@ class Jelly
 html *
 {
    /*font-size: 1em !important;*/
-   font-family: Arial !important;
+   /*font-family: Arial !important;*/
+   font-family: 'Quattrocento Sans', sans-serif !important;
+   /*font-family: 'Life Savers', cursive !important;*/
 }
 
 
