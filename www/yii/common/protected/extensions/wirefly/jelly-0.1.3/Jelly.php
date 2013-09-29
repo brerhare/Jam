@@ -32,9 +32,11 @@ class Jelly
 	<link rel="shortcut icon" href="http://resources.news.com.au/cs/newscomau/images/favicon.ico" type="image/x-icon" />
 	<link rel="icon" href="http://resources.news.com.au/cs/newscomau/images/favicon.ico" type="image/x-icon" />
 
-<link href='http://fonts.googleapis.com/css?family=Quattrocento+Sans' rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Life+Savers' rel='stylesheet' type='text/css'>
+<!-- Google fonts -->
+<!--
 <link href='http://fonts.googleapis.com/css?family=Raleway:300' rel='stylesheet' type='text/css'>
+-->
+<link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
 
 	<style type="text/css">
 		html, body {
@@ -47,9 +49,8 @@ html *
 {
    /*font-size: 1em !important;*/
    /*font-family: Arial !important;*/
-   /*font-family: 'Quattrocento Sans', sans-serif !important;*/
-   /*font-family: 'Life Savers', cursive !important;*/
 	font-family: 'Raleway', sans-serif !important;
+	/*color:#00ff00 !important;*/
 }
 
 
@@ -62,10 +63,12 @@ a:hover, a:active { text-decoration: none; color:0###000 }
 
 
 <!-- @@TODO: Hardcoded for jacquies! -->
+<!--
 h1 {color: #5b1a4a; }
 h2 {color: #787878; }
 h3 {color: #5b1a4a; }
 h4 {color: #787878; }
+-->
 	</style>
 
 END_OF_BEGINHEADER;
