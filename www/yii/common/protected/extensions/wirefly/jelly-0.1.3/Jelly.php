@@ -484,6 +484,7 @@ if (isset($_GET['page']))
 Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
                 $resp = eval($q);
                 $this->dbTable[$dbTable] = $resp;
+				$this->dbError[$dbTable] = '';
                 if (!($resp))
 				{
 					if ($error != '')
@@ -547,6 +548,7 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 						$v = explode(" ", $val[1]);
 						$val[1] = $v[0];							// 'id'
 					}
+					$resp = null;
 					if ($handle)
 					{
 						$query = 'return ' . '$this->dbTable["' . $val[0] . '"]->' . $val[1] . ';';
