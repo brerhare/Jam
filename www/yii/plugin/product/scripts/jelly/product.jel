@@ -112,7 +112,7 @@ fx.wallpaper-color = #00000
 
 		[linked-products]
 		css.display = none
-		####css.background-color = yellow;
+		css.background-color = yellow;
 		html.raw = Linked products
 
 
