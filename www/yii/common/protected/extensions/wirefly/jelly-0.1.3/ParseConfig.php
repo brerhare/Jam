@@ -31,6 +31,8 @@ class ParseConfig
 	            continue;
 	        }
 	        // Key-value pair
+	        if (strstr($line, '$_GET'))
+		        $line = $this->expandGlobals($line);					// Expand all the $_GET['xyz']
 	        list( $key, $value ) = explode( '=', $line, 2 );
 	        $key = trim( $key );
 	        $value = trim( $value );
@@ -252,6 +254,30 @@ public $multiInclude = array();
         }
         return $left;
     }
+
+	private function expandGlobals($line)
+	{
+		$check = explode('$_GET', $line);
+		$firstPart = $check[0];
+		$check = explode(']', $line);
+		$secondPart = '';
+		if (count($check > 0))
+			$secondPart = $check[1];
+
+		$p1 = strstr($line, '$_GET');
+		$p2 = explode('[', $p1, 2);
+		$p3 = explode(']', $p2[1], 2);
+		$p4 = str_replace('"', "", $p3[0]);
+		$key = str_replace("'", "", $p4);
+
+		if (!(isset($_GET[$key])))
+			return $line;								// Bail if the global isnt set. In which case it remains in the jelly as is
+
+		$seed = '$_GET[' . "'" . $key . "'" . ']';
+		$cmd = "return " . $seed . ";";
+		$resp = eval($cmd);
+		return $firstPart . '"' . $resp . '"' . $secondPart;
+	}
 
 	private function logMsg($msg, $indentLevel=0)
 	{

@@ -84,6 +84,7 @@ END_OF_ENDHEADER;
 END_OF_FOOTER;
 
 	private $dbTable = array();
+	private $dbError = array();
 
 	private $cssGlobalArray = array();
 	private $cssDivArray = array();
@@ -181,8 +182,15 @@ END_OF_FOOTER;
 								$tmpArr = explode("=", $elemComma);
 								if (count($tmpArr)>1)
 								{
-									if (strstr($elemComma, '$_GET')) // Expand possible $_xxx['yyy']
-										$elemComma = $tmpArr[0] . "='" . eval("return $tmpArr[1];") . "'";
+									if (strstr($elemComma, '$_GET'))
+									{
+										if (strstr($tmpArr[1], "page"))
+										{
+											$fltArr = array();
+											$fltArr[0]='home=1';
+											break;
+										}
+									}
 								}
 								array_push($fltArr, $elemComma);
 							}
@@ -191,6 +199,9 @@ END_OF_FOOTER;
 							$orderCommaArr = explode(",", $dbValue);
 							foreach ($orderCommaArr as $elemComma)
 								array_push($orderArr, $elemComma);
+							break;
+						case ("error"):
+							$error = $dbValue;
 							break;
 					}
 				}
@@ -219,6 +230,10 @@ Yii::log("REPEATING EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim
                             $this->dbTable[$dbTable] = $r;
                             $this->blobProcess2($jellyArray, $blobName, $array, $float, $indentLevel);
                         }
+                    }
+                    else
+                    {
+                    	// error is a currently no-op for 'findAll()'
                     }
                 }
 			}
@@ -304,11 +319,6 @@ if (isset($_GET['page']))
  	*/
 	private function wordArrayHandler($blobName, $word, $value)
 	{
-
-// @TODO: eh wot?
-if (isset($_GET['page']))
-$page = $_GET['page'];
-
 		//$this->logMsg("Handling " . $word . " with value " . $value . "\n", 1);
 		switch ($word)
 		{
@@ -412,61 +422,11 @@ $page = $_GET['page'];
 					}
 				}
 				break;
-			case "content":
-				foreach ($value as $option => $val)
-				{
-					switch ($option)
-					{
-						case ("source"):
-							if ($val == "db")
-							{
-
-								if (isset($_GET['page']))
-									$page = $_GET['page'];
-								else
-								{
-									$model = ContentBlock::model()->findByAttributes(array('home'=>1));
-									if (!$model) die ('No page specified in request and no home page is designated - cant continue');
-									$page = $model->url;
-								}
-								
-								$column = $value['column'];
-								$model = ContentBlock::model()->findByAttributes(array('url'=>$page));
-								if (!$model) die ('Sorry, I could not find that page. You requested "' . $page . '"');
-
-// --------------------------------------------------------------------------------------
-//	{{department 27 Guinot}}
-$p1 = strstr($model->content, "{{");
-$p2 = strstr(substr($p1, 2), "}}", true);
-$pOrig = "{{" . $p2 . "}}";
-$vals = explode(" ", $p2);
-$type = $vals[0];
-
-if (stristr($vals[0], "department"))
-{
-	$value = $vals[1];
-	$iframe = '<iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;department=' . $value . '"></iframe>';
-	$this->genInlineHtml(str_replace($pOrig, $iframe, $model->content));
-}
-else if (stristr($vals[0], "blog"))
-{
-	$iframe = '<iframe height="900" width="900" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/blog/?sid=' . Yii::app()->params['sid'] . '"></iframe>';
-	$this->genInlineHtml(str_replace($pOrig, $iframe, $model->content));
-}
-else
-	$this->genInlineHtml($model->content);
-// --------------------------------------------------------------------------------------
-
-								break;
-							}
-						break;
-					}
-				}
-				break;
 			case "db":
 				$dbTable = '';
 				$fltArr = array();
 				$orderArr = array();
+				$error = '';
 				foreach ($value as $dbAction => $dbValue)
 				{
 					switch ($dbAction)
@@ -485,8 +445,15 @@ else
 								$tmpArr = explode("=", $elemComma);
 								if (count($tmpArr)>1)
 								{
-									if (strstr($elemComma, '$_GET')) // Expand possible $_xxx['yyy']
-										$elemComma = $tmpArr[0] . "='" . eval("return $tmpArr[1];") . "'";
+									if (strstr($elemComma, '$_GET'))
+									{
+										if (strstr($tmpArr[1], "page"))
+										{
+											$fltArr = array();
+											$fltArr[0]='home=1';
+											break;
+										}
+									}
 								}
 								array_push($fltArr, $elemComma);
 							}
@@ -495,6 +462,9 @@ else
 							$orderCommaArr = explode(",", $dbValue);
 							foreach ($orderCommaArr as $elemComma)
 								array_push($orderArr, $elemComma);
+							break;
+						case ("error"):
+							$error = $dbValue;
 							break;
 					}
 				}
@@ -513,8 +483,12 @@ else
                 $q = "return " . $query . ";";
 Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
                 $resp = eval($q);
-                if ($resp)
-					$this->dbTable[$dbTable] = $resp;
+                $this->dbTable[$dbTable] = $resp;
+                if (!($resp))
+				{
+					if ($error != '')
+						$this->dbError[$dbTable] = $error;
+				}
 				break;
 			case "addon":
 				$this->addonHandler($value);
@@ -573,9 +547,19 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 						$v = explode(" ", $val[1]);
 						$val[1] = $v[0];							// 'id'
 					}
-					$query = 'return ' . '$this->dbTable["' . $val[0] . '"]->' . $val[1] . ';';
-					$resp = eval($query);
-	
+					if ($handle)
+					{
+						$query = 'return ' . '$this->dbTable["' . $val[0] . '"]->' . $val[1] . ';';
+						$resp = eval($query);
+					}
+					else
+					{
+						if ($this->dbError[$table] != '')
+						{
+							$resp = $this->dbError[$table];
+							$keepTrying = false;
+						}
+					}
 					// Embedded table.name's must have a trailing space unless theyre at end of line
 					$tData = explode(" ", $tableData);
 					if (count($tData > 1))
@@ -633,6 +617,25 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 
 	private function genInlineHtml($content, $indentLevel=0)
 	{
+		// Translate any curly wurleys.	Eg: {{department 27 Guinot}}
+		$p1 = strstr($content, "{{");
+		$p2 = strstr(substr($p1, 2), "}}", true);
+		$pOrig = "{{" . $p2 . "}}";
+		$vals = explode(" ", $p2);
+		$type = $vals[0];
+
+		if (stristr($vals[0], "department"))
+		{
+			$value = $vals[1];
+			$iframe = '<iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;department=' . $value . '"></iframe>';
+			$content = str_replace($pOrig, $iframe, $content);
+		}
+		else if (stristr($vals[0], "blog"))
+		{
+			$iframe = '<iframe height="900" width="900" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/blog/?sid=' . Yii::app()->params['sid'] . '"></iframe>';
+			$content = str_replace($pOrig, $iframe, $content);
+		}
+
 		$indent = "";
 		while ($indentLevel--)
 			$indent .= "    ";
