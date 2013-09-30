@@ -80,6 +80,5 @@ css.display = none
 			css.margin = 15px
 			db.table = ContentBlock
 			db.filter = url=$_GET['page']
-			#db.filter = home=1
 			db.error = Sorry, I could not find that page. You requested $_GET['page']
 			html.raw = ContentBlock.content
