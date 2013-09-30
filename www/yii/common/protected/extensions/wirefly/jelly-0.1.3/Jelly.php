@@ -489,6 +489,8 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				{
 					if ($error != '')
 						$this->dbError[$dbTable] = $error;
+					else
+						$this->dbError[$dbTable] = '0';
 				}
 				break;
 			case "addon":
