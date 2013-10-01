@@ -35,7 +35,7 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$layout = "frontpage";
+		$layout = "index";
 		if (isset($_GET['layout']))
 			$layout = $_GET['layout'];
 		$parseConfig = new ParseConfig();
