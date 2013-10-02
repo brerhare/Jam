@@ -1,0 +1,165 @@
+[defaults]
+include = default-values
+css.color = white
+
+; Every blob inherits these before adding/overriding
+[* : defaults]
+
+[screen]
+child = contentframe
+#css.background-color = #000000
+#style.background-image = /img/StyleBackground.png
+fx.wallpaper-image = /img/FullBackground.jpg
+css.display = block
+
+	[contentframe]
+	child = header, menu, slider, line, contentcontainer, footer
+	css.width = 960px
+
+	[header]
+	child = logo, contact, icons
+	stacking = horizontal
+
+	[logo]
+	child = logo-pic
+	css.height = 200px
+	css.width = 40%
+
+		[logo-pic]
+		css.margin-top = 30px
+		css.height = 140px
+		#css.width = 40%
+		#style.background-image = /img/Header Logo.png
+		css.background-image = url('/img/Header Logo.png')
+
+	[contact]
+	child = contact-text
+	css.height = 200px
+	css.width = 30%
+
+		[contact-text]
+		css.margin-top = 40px
+		css.margin-left = 5px
+		css.height = 140px
+		html.p = Short Description / Tag Line etc ...
+		html.p = 07868 840894 
+		#html.p = Email: a@b.co.uk
+
+	[icons]
+	child = cart, news, social
+	css.width = 25%
+
+		[cart]
+		child = cart-pic, cart-text
+		stacking = horizontal
+		css.margin-top = 50px
+		css.height = 30px
+		click = http://www.google.com
+
+			[cart-pic]
+			css.width = 20%
+			css.background-image = url('/img/Shopping Cart.png')
+			css.height = 30px
+
+			[cart-text]
+			css.width = 75%
+			html.raw = Shopping Cart
+
+		[news]
+		child = news-pic, news-text
+		stacking = horizontal
+		css.height = 30px
+		click = http://www.google.com
+
+			[news-pic]
+			css.width = 20%
+			css.background-image = url('/img/News Letter.png')
+			css.height = 30px
+
+			[news-text]
+			css.width = 75%
+			html.raw = Newsletter
+
+		[social]
+		child = social-fb, social-twitter
+		stacking = horizontal
+		css.height = 30px
+		click = http://www.google.com
+
+			[social-fb]
+			css.width = 10%
+			css.background-image = url('/img/Facebook.png')
+			css.height = 30px
+
+			[social-twitter]
+			css.width = 10%
+			css.background-image = url('/img/Twitter.png')
+			css.height = 30px
+
+	[menu]
+	css.height = 50px
+	css.overflow = visible
+	addon.menu.basic.orientation = horizontal
+
+	[slider]
+    #css.margin-top = 80px
+    ;css.height = 250px         /* dont set the height - carousel will set it */
+    addon.carousel.flexslider.animation = fade
+    addon.carousel.flexslider.source = db
+
+	[line]
+    css.height = 4px
+    css.background-color = #ff00ff
+
+    [contentcontainer]
+    child = content
+    #css.background-color = white
+    fx.rounding = 4px
+
+        [content]
+#        css.background-color = white
+#		css.color = black
+        css.margin = 15px
+        db.table = ContentBlock
+        db.filter = url=$_GET['page']
+        db.error = Sorry, I could not find that page. You requested $_GET['page']
+        html.raw = ContentBlock.content
+
+
+	[footer]
+	child = footer-menu, wirefly-details
+	#css.height = 40px
+	css.width = 60%
+
+		[footer-menu]
+		stacking = horizontal
+		child = footer-cookies, footer-tandc, footer-contact
+		css.height = 20px
+
+			[footer-cookies]
+			html.raw = Cookie Policy
+			css.width = 33%
+			css.text-align = left
+			click = www.bbc.com
+
+			[footer-tandc]
+			html.raw = Terms & Conditions
+			css.width = 33%
+			css.text-align = center
+			click = www.bbc.com
+
+			[footer-contact]
+			html.raw = Contact Us
+			css.text-align = right
+			css.width = 30%
+			click = www.bbc.com
+
+		[wirefly-details]
+		css.margin-top = 20px
+		css.height = 20px
+		css.text-align = center
+		html.raw = Site by Wirefly Design
+		click = www.wireflydesign.com
+
+
+
