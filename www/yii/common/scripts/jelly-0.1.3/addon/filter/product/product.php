@@ -11,9 +11,7 @@
 class product
 {
 	//Defaults
-	private $defaultWidth = "900px";
-	private $defaultHeight = "250px";
-	private $defaultAnimation = "fade";
+	private $department = "";
 
 // Not used ...
 	public $apiOption = array(
@@ -41,44 +39,11 @@ class product
 		{
 			switch ($opt)
 			{
-				case "source":
-					if ($val == "db")
-					{
-						// If db based content
-						// @@NB: OI! hardcoded to jacquies here
-						$carouselItems = CarouselBlock::model()->findAll(array('order'=>'sequence'));
-						foreach ($carouselItems as $carouselItem):
-							$content .= "<li>";
-							$content .= $carouselItem->content;
-							$content .= "</li>";
-						endforeach;
-					}
-					else if ($val == "glob")
-					{
-						// get pattern
-						$pattern = $options['pattern'];
-						foreach (glob(Yii::app()->basePath . "/../" . $pattern) as $filename)
-						{
-							$content .= "<li>";
-							$content .= "<img src='" . Yii::app()->baseUrl . dirname($pattern) . "/". basename($filename) . "' style='float: none; margin: 0px;' alt=''>";
-							$content .= "</li>";
-						}
-					}
-					break;
-				case "width":
-					$tmp = str_replace("<substitute-width>", "width:" . $val . ";", $this->apiHtml);		// Optional field
-					$this->apiHtml = $tmp;
-					break;
-				case "height":
-					$tmp = str_replace("<substitute-height>", "height:" . $val . ";", $this->apiHtml);	// Optional field
-					$this->apiHtml = $tmp;
-					break;
-				case "animation":
-					$tmp = str_replace("<substitute-animation>", "'" . $val . "'", $this->apiJs);
-					$this->apiJs = $tmp;
+				case "department":
+					$department = $val;
 					break;
 				default:
-					// Not all array items are action items
+					break;
 			}
 		}
 
