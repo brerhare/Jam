@@ -68,7 +68,7 @@ return array(
 			'connectionString' => 'mysql:host=localhost;dbname=play_wireflydesign_com',
 			'emulatePrepare' => true,
 			'username' => 'wireflydesign.co',
-			'password' => 'wireflydesign,',
+			'password' => 'wireflydesign.com,',
 			'charset' => 'utf8',
 		),
 		/**/
