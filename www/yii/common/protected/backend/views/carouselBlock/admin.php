@@ -15,7 +15,12 @@ $this->menu=array(
 	'columns'=>array(
 		// 'id',
 		'sequence',
-		'title',
+        array(
+            'name'  => 'title',
+            'value' => 'CHtml::link($data->title, Yii::app()->createUrl("carouselBlock/update",array("id"=>$data->primaryKey)))',
+            'type'  => 'raw',
+        ),
+
 		// 'active',
 		// 'content',
 		array(
