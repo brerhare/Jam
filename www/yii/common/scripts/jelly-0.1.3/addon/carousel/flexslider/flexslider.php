@@ -94,7 +94,7 @@ class flexslider
 			$this->apiHtml = $tmp;
 		}
 		// JS
-		if (strstr($this->apiHtml, "<substitute-animation>"))
+		if (strstr($this->apiJs, "<substitute-animation>"))
 		{
 			$tmp = str_replace("<substitute-animation>", "'" . $this->defaultAnimation . "'", $this->apiJs);
 			$this->apiJs = $tmp;
