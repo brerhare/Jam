@@ -283,7 +283,7 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`event_ws` (
   `grade` VARCHAR(255) NOT NULL ,
   `booking_essential` INT NULL ,
   `min_age` INT NULL ,
-  `max_ageI` INT NULL ,
+  `max_age` INT NULL ,
   `child_ages_restrictions` VARCHAR(255) NULL ,
   `additional_venue_info` VARCHAR(255) NULL ,
   `full_price_notes` VARCHAR(255) NULL ,

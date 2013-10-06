@@ -37,6 +37,7 @@
 				array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
 				array('label' => 'Register', 'url' => array('/member/create'), 'visible' => Yii::app()->user->isGuest),
 				array('label' => 'Programs', 'url' => array('/program/admin'), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'Import CSV', 'url' => array('/event/import'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'My Details', 'url' => array('/member/update'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Logout', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),
 			),

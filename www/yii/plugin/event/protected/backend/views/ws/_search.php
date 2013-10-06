@@ -15,7 +15,7 @@
 
 	<?php echo $form->textFieldRow($model,'min_age',array('class'=>'span5')); ?>
 
-	<?php echo $form->textFieldRow($model,'max_ageI',array('class'=>'span5')); ?>
+	<?php echo $form->textFieldRow($model,'max_age',array('class'=>'span5')); ?>
 
 	<?php echo $form->textFieldRow($model,'child_ages_restrictions',array('class'=>'span5','maxlength'=>255)); ?>
 

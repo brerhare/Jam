@@ -10,7 +10,7 @@
  * @property string $grade
  * @property integer $booking_essential
  * @property integer $min_age
- * @property integer $max_ageI
+ * @property integer $max_age
  * @property string $child_ages_restrictions
  * @property string $additional_venue_info
  * @property string $full_price_notes
@@ -46,11 +46,11 @@ class Ws extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('event_id, os_grid_ref, grade', 'required'),
-			array('event_id, booking_essential, min_age, max_ageI, wheelchair_accessible', 'numerical', 'integerOnly'=>true),
+			array('event_id, booking_essential, min_age, max_age, wheelchair_accessible', 'numerical', 'integerOnly'=>true),
 			array('os_grid_ref, grade, child_ages_restrictions, additional_venue_info, full_price_notes, short_description', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, event_id, os_grid_ref, grade, booking_essential, min_age, max_ageI, child_ages_restrictions, additional_venue_info, full_price_notes, short_description, wheelchair_accessible', 'safe', 'on'=>'search'),
+			array('id, event_id, os_grid_ref, grade, booking_essential, min_age, max_age, child_ages_restrictions, additional_venue_info, full_price_notes, short_description, wheelchair_accessible', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -77,7 +77,7 @@ class Ws extends CActiveRecord
 			'grade' => 'Grade',
 			'booking_essential' => 'Booking Essential',
 			'min_age' => 'Min Age',
-			'max_ageI' => 'Max Age I',
+			'max_age' => 'Max Age',
 			'child_ages_restrictions' => 'Child Ages Restrictions',
 			'additional_venue_info' => 'Additional Venue Info',
 			'full_price_notes' => 'Full Price Notes',
@@ -103,7 +103,7 @@ class Ws extends CActiveRecord
 		$criteria->compare('grade',$this->grade,true);
 		$criteria->compare('booking_essential',$this->booking_essential);
 		$criteria->compare('min_age',$this->min_age);
-		$criteria->compare('max_ageI',$this->max_ageI);
+		$criteria->compare('max_age',$this->max_age);
 		$criteria->compare('child_ages_restrictions',$this->child_ages_restrictions,true);
 		$criteria->compare('additional_venue_info',$this->additional_venue_info,true);
 		$criteria->compare('full_price_notes',$this->full_price_notes,true);

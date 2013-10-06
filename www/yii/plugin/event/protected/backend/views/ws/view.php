@@ -24,7 +24,7 @@ $this->menu=array(
 		'grade',
 		'booking_essential',
 		'min_age',
-		'max_ageI',
+		'max_age',
 		'child_ages_restrictions',
 		'additional_venue_info',
 		'full_price_notes',

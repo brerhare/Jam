@@ -24,8 +24,8 @@
 	<?php echo CHtml::encode($data->min_age); ?>
 	<br />
 
-	<b><?php echo CHtml::encode($data->getAttributeLabel('max_ageI')); ?>:</b>
-	<?php echo CHtml::encode($data->max_ageI); ?>
+	<b><?php echo CHtml::encode($data->getAttributeLabel('max_age')); ?>:</b>
+	<?php echo CHtml::encode($data->max_age); ?>
 	<br />
 
 	<?php /*
