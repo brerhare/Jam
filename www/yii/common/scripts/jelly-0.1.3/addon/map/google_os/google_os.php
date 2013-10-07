@@ -13,6 +13,7 @@ class google_os
 	//Defaults
 	private $defaultWidth = "620px";
 	private $defaultHeight = "200px";
+	private $defaultZoom = "8";
 
 	public $apiOption = array(
 	);
@@ -32,6 +33,14 @@ class google_os
 		{
 			switch ($opt)
 			{
+				case "ref":
+					$tmp = str_replace("<substitute-ref>", $val, $this->apiJs);
+					$this->apiJs = $tmp;
+					break;
+				case "zoom":
+					$tmp = str_replace("<substitute-zoom>", $val, $this->apiJs);
+					$this->apiJs = $tmp;
+					break;
 				case "width":
 					$tmp = str_replace("<substitute-width>", $val, $this->apiHtml);
 					$this->apiHtml = $tmp;
@@ -58,6 +67,11 @@ class google_os
 			$this->apiHtml = $tmp;
 		}
 		// JS
+		if (strstr($this->apiJs, "<substitute-zoom>"))
+		{
+			$tmp = str_replace("<substitute-zoom>", $this->defaultZoom, $this->apiJs);
+			$this->apiJs = $tmp;
+		}
 
 		// Substitute paths for includes
 		$tmp = str_replace("<substitute-path>", $jellyRootUrl, $this->apiHtml);
@@ -79,11 +93,12 @@ class google_os
 	<div id="jelly-google-os-container">
 		<script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=false"></script>
 		<script type="text/javascript" src="<substitute-path>/latlong-gridref.js"></script>
-
+<!--
 		<label for="osgridref">OS Grid Reference:</label>
 		<input id="osgridref" type="text" style="width:200px;" />
 		<input id="lookup" type="button" value="Lookup" />
-		<div id="map" style="width:600px;height:600px;margin-top:10px;"></div>
+-->
+		<div id="map" style="width:<substitute-width>;height:<substitute-height>" border="1px solid black"></div>
 	</div>
 
 END_OF_API_HTML;
@@ -93,12 +108,12 @@ END_OF_API_HTML;
 		var map = null;
 		$(document).ready(function () {
 			// Set values for latitude and longitude
-			var latitude = parseFloat("51.515252");
-			var longitude = parseFloat("-0.189852");
+			var latitude = parseFloat("55.0091");
+			var longitude = parseFloat("-3.7628");
 			// Setup the Google map
 			loadMap(latitude, longitude);
 			// Add the marker
-			setupMarker(latitude, longitude);
+			/////////setupMarker(latitude, longitude);
 			// Setup the address lookup on the button click event
 			$('#lookup').click(function() {
 				var osgridref = $('#osgridref').val();
@@ -116,7 +131,7 @@ END_OF_API_HTML;
 	    loadMap = function (latitude, longitude) {
 			var latlng = new google.maps.LatLng(latitude, longitude);
 			var myOptions = {
-				zoom: 7,
+				zoom: <substitute-zoom>,
 				center: latlng,
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 			};
@@ -141,25 +156,6 @@ END_OF_API_HTML;
 				infowindow.open(map, marker);
 			});
 		}
-
-/*------------------------
-
-	jQuery(document).ready(function($){
-    	jkmegamenu.render($);
-	})
-
-	function recalcPos()
-	{
-		var width4Col = 190;
-		var rectAnchor = document.getElementById("megaanchor1").getBoundingClientRect();
-		var adjustLeft = (rectAnchor.left - width4Col);
-		var adjustTop = (rectAnchor.bottom + 0);
-		//alert(adjustTop);
-		//document.getElementById("megamenu1").setAttribute("style", "left:" + (rectAnchor.left - width4Col) + "px;");
-		document.getElementById("megamenu1").style.left = adjustLeft + "px";
-		document.getElementById("megamenu1").style.top = adjustTop + "px";
-	}
--------------------------*/
 
 END_OF_API_JS;
 

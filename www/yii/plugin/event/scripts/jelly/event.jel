@@ -28,7 +28,9 @@ fx.wallpaper-color = #00000
             css.background-color = #d3d3d3
             css.border-width = 3px
             css.border-color = #dcdcdc
-            html.h4 = Google map
+            addon.map.google_os.width = 620px
+            addon.map.google_os.height = 200px
+            addon.map.google_os.zoom = 10
 
             [header-text]
             child = format, website, contact, booking, grade, suitable, osref
