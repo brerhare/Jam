@@ -17,6 +17,7 @@ fx.wallpaper-color = #00000
     css.overflow = auto
     addon.map.google_os.width = 620px
     addon.map.google_os.height = 200px
+    addon.map.google_os.type = terrain
 
     [spacer]
     css.height = 10px

@@ -14,6 +14,7 @@ class google_os
 	private $defaultWidth = "620px";
 	private $defaultHeight = "200px";
 	private $defaultZoom = "8";
+	private $defaultType = "roadmap";	// "roadmap", "terrain", "satellite", "hybrid"
 
 	public $apiOption = array(
 	);
@@ -35,6 +36,10 @@ class google_os
 			{
 				case "ref":
 					$tmp = str_replace("<substitute-ref>", $val, $this->apiJs);
+					$this->apiJs = $tmp;
+					break;
+				case "type":
+					$tmp = str_replace("<substitute-type>", strtoupper($val), $this->apiJs);
 					$this->apiJs = $tmp;
 					break;
 				case "zoom":
@@ -67,6 +72,11 @@ class google_os
 			$this->apiHtml = $tmp;
 		}
 		// JS
+		if (strstr($this->apiJs, "<substitute-type>"))
+		{
+			$tmp = str_replace("<substitute-type>", strtoupper($this->defaultType), $this->apiJs);
+			$this->apiJs = $tmp;
+		}
 		if (strstr($this->apiJs, "<substitute-zoom>"))
 		{
 			$tmp = str_replace("<substitute-zoom>", $this->defaultZoom, $this->apiJs);
@@ -106,7 +116,9 @@ END_OF_API_HTML;
 	private $apiJs = <<<END_OF_API_JS
 
 		var map = null;
-		$(document).ready(function () {
+
+		$(document).ready(function ()
+		{
 			// Set values for latitude and longitude
 			var latitude = parseFloat("55.0091");
 			var longitude = parseFloat("-3.7628");
@@ -127,18 +139,22 @@ END_OF_API_HTML;
 				}
 			});
 		});
-		// Loads the maps
-	    loadMap = function (latitude, longitude) {
+
+		// Loads the map
+	    loadMap = function (latitude, longitude)
+		{
 			var latlng = new google.maps.LatLng(latitude, longitude);
 			var myOptions = {
 				zoom: <substitute-zoom>,
+				mapTypeId: google.maps.MapTypeId.<substitute-type>,
 				center: latlng,
-				mapTypeId: google.maps.MapTypeId.ROADMAP
 			};
 			map = new google.maps.Map(document.getElementById("map"), myOptions);
 		}
+
 		// Setups a marker and info window on the map at the latitude and longitude specified
-		setupMarker = function(latitude, longitude) {
+		setupMarker = function(latitude, longitude)
+		{
 			// Generate the position from the given latitude and longitude values
 			var pos = new google.maps.LatLng(latitude, longitude);
 			// Define the marker on the map in the specified location
@@ -148,7 +164,7 @@ END_OF_API_HTML;
 				title: name
 			});
 			// Add a listener to this marker to display the information window on click
-			var info = "This is a marker for the event at co-ordinates:<br />latitude: " + latitude + "<br/>longitude: " + longitude;
+			var info = "Event at co-ordinates:<br />latitude: " + latitude + "<br/>longitude: " + longitude;
 			google.maps.event.addListener(marker, 'click', function () {
 				var infowindow = new google.maps.InfoWindow({
 					content: info

@@ -29,6 +29,7 @@ fx.wallpaper-color = #00000
             addon.map.google_os.width = 300px
             addon.map.google_os.height = 150px
             addon.map.google_os.zoom = 9
+            addon.map.google_os.type = terrain
 
             [header-text]
             child = format, website, contact, booking, grade, suitable, osref
