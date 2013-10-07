@@ -20,24 +20,22 @@ fx.wallpaper-color = #00000
         html.h4 = Event.title
 
             [header-map]
-            css.width = 200px
+            css.width = 300px
             css.height = 150px
-            css.padding = 5px
-            #css.margin-left = 10px
-            #css.margin-bottom = 10px
+            #css.padding = 5px
             css.background-color = #d3d3d3
             css.border-width = 3px
             css.border-color = #dcdcdc
-            addon.map.google_os.width = 620px
-            addon.map.google_os.height = 200px
-            addon.map.google_os.zoom = 10
+            addon.map.google_os.width = 300px
+            addon.map.google_os.height = 150px
+            addon.map.google_os.zoom = 9
 
             [header-text]
             child = format, website, contact, booking, grade, suitable, osref
-            css.width = 500px
+            css.width = 400px
             css.height = 150px
-            css.padding = 5px
-            css.margin-left = 10px
+            #css.padding = 5px
+            css.margin-left = 20px
             css.margin-bottom = 10px
             css.border-width = 3px
             css.border-color = #dcdcdc

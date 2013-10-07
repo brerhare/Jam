@@ -53,7 +53,7 @@ fx.wallpaper-color = #00000
 		click = index.php/?layout=event&event=Event.id
 
         [header-text]
-        css.width = 500px
+        css.width = 400px
         css.height = 130px
         css.padding = 5px
         css.margin-left = 10px
@@ -65,7 +65,7 @@ fx.wallpaper-color = #00000
         html.raw = Start: Event.start   End: Event.end <br> Event.address    Event.post_code
 
         [header-thumb]
-        css.width = 105px
+        css.width = 205px
         css.height = 130px
         css.padding = 5px
         #css.margin-left = 10px

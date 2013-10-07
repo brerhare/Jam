@@ -148,7 +148,7 @@ END_OF_API_HTML;
 				title: name
 			});
 			// Add a listener to this marker to display the information window on click
-			var info = "This is a marker for the following co-ordinates:<br />latitude: " + latitude + "<br/>longitude: " + longitude;
+			var info = "This is a marker for the event at co-ordinates:<br />latitude: " + latitude + "<br/>longitude: " + longitude;
 			google.maps.event.addListener(marker, 'click', function () {
 				var infowindow = new google.maps.InfoWindow({
 					content: info
