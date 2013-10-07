@@ -1,0 +1,47 @@
+[defaults]
+include = default-values
+
+# Every blob inherits these before adding/overriding
+[* : defaults]
+
+[screen]
+# Being an iframe, we want to use the full width of whatever was specified by the parent page - so we dont specify any
+child = event
+fx.wallpaper-color = #00000
+
+
+		[event]
+        css.width = 850px
+        css.height = 670px
+        css.background-color = #ffffff
+        child = header-map, header-text
+        stacking = horizontal
+        db.table = Event
+        db.filter = id=$_GET['event']
+        html.h4 = Event.title
+
+        [header-map]
+        css.width = 300px
+        css.height = 250px
+        css.padding = 5px
+        #css.margin-left = 10px
+        #css.margin-bottom = 10px
+        css.background-color = #d3d3d3
+        css.border-width = 3px
+        css.border-color = #dcdcdc
+        html.h4 = Google map
+        #click = index.php/?layout=product&product=Product.id
+
+        [header-text]
+        css.width = 500px
+        css.height = 130px
+        css.padding = 5px
+        css.margin-left = 10px
+        css.margin-bottom = 10px
+        css.border-width = 3px
+        css.border-color = #dcdcdc
+        html.h4 = Event.title
+        html.raw = Start: Event.start   End: Event.end <br> Event.address    Event.post_code
+
+
+

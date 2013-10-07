@@ -1,20 +1,75 @@
 [defaults]
 include = default-values
 
-; Every blob inherits these before adding/overriding
+# Every blob inherits these before adding/overriding
 [* : defaults]
 
 [screen]
-child = contentframe
-fx.wallpaper-image = /img/background.jpg
-css.display = block
+# Being an iframe, we want to use the full width of whatever was specified by the parent page - so we dont specify any
+child = googlemap, grid
+fx.wallpaper-color = #00000
 
-	[contentframe]
-	css.display = block
-	css.width = 100px
-	css.margin-top = 400px
-	style.html.h1.color = yellow
-	style.html.h1.background-color = black
-	style.html.h1.padding = 10px
-	html.h1 = jelly
+    [googlemap]
+    css.width = 650px
+    css.height = 200px
+    css.background-color = #c4e1b1
+    css.overflow = auto
+    html.raw = Combined Google map
+
+
+	[grid]
+	child = filter, eventcontainer
+	stacking = horizontal
+	css.width = 850px
+	css.height = 670px
+	css.background-color = #f2f2f2
+	css.overflow = auto
+	db.table = Program
+	#db.filter = id=$_GET['department'],uid=User.id
+    #db.filter = id=10;
+	html.h3 = Program.name
+
+		[filter]
+		css.width = 180px
+        css.background-color = #c4e1b1
+        css.height = 90%
+		html.raw = Selection filter
+		#addon.filter.product.department = $_GET['department']
+		
+		[eventcontainer]
+		css.width = 650px
+		child = event, thumb
+
+		[event]
+        child = header-text, header-thumb
+        stacking = horizontal
+		db.table = Event
+		#db.filter = product_department_id=Department.id
+		db.order = start
+		db.fetch = multiple
+		click = index.php/?layout=event&event=Event.id
+
+        [header-text]
+        css.width = 500px
+        css.height = 130px
+        css.padding = 5px
+        css.margin-left = 10px
+        css.margin-bottom = 10px
+        css.background-color = #c4e1b1
+        css.border-width = 3px
+        css.border-color = #dcdcdc
+                html.h4 = Event.title
+        html.raw = Start: Event.start   End: Event.end <br> Event.address    Event.post_code
+
+        [header-thumb]
+        css.width = 105px
+        css.height = 130px
+        css.padding = 5px
+        #css.margin-left = 10px
+        #css.margin-bottom = 10px
+        css.background-color = #5b5656
+        css.border-width = 3px
+        css.border-color = #dcdcdc
+        html.h4 = Thumbnail
+        #click = index.php/?layout=product&product=Product.id
 
