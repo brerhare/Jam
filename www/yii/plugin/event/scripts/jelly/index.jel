@@ -6,16 +6,19 @@ include = default-values
 
 [screen]
 # Being an iframe, we want to use the full width of whatever was specified by the parent page - so we dont specify any
-child = googlemap, grid
+child = googlemap, spacer, grid
 fx.wallpaper-color = #00000
 
     [googlemap]
-    css.width = 650px
+    css.width = 620px
+    css.margin-left = 400px
     css.height = 200px
-    css.background-color = #c4e1b1
+    css.background-color = #d2d2d2
     css.overflow = auto
     html.raw = Combined Google map
 
+    [spacer]
+    css.height = 10px
 
 	[grid]
 	child = filter, eventcontainer
@@ -25,8 +28,7 @@ fx.wallpaper-color = #00000
 	css.background-color = #f2f2f2
 	css.overflow = auto
 	db.table = Program
-	#db.filter = id=$_GET['department'],uid=User.id
-    #db.filter = id=10;
+    db.filter = id=6
 	html.h3 = Program.name
 
 		[filter]

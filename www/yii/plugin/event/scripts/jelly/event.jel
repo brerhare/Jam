@@ -6,13 +6,12 @@ include = default-values
 
 [screen]
 # Being an iframe, we want to use the full width of whatever was specified by the parent page - so we dont specify any
-child = event
+child = event-top, event-bottom, event-freeform
 fx.wallpaper-color = #00000
 
 
-		[event]
+		[event-top]
         css.width = 850px
-        css.height = 670px
         css.background-color = #ffffff
         child = header-map, header-text
         stacking = horizontal
@@ -20,28 +19,60 @@ fx.wallpaper-color = #00000
         db.filter = id=$_GET['event']
         html.h4 = Event.title
 
-        [header-map]
-        css.width = 300px
-        css.height = 250px
+            [header-map]
+            css.width = 200px
+            css.height = 150px
+            css.padding = 5px
+            #css.margin-left = 10px
+            #css.margin-bottom = 10px
+            css.background-color = #d3d3d3
+            css.border-width = 3px
+            css.border-color = #dcdcdc
+            html.h4 = Google map
+
+            [header-text]
+            child = format, website, contact, booking, grade, suitable, osref
+            css.width = 500px
+            css.height = 130px
+            css.padding = 5px
+            css.margin-left = 10px
+            css.margin-bottom = 10px
+            css.border-width = 3px
+            css.border-color = #dcdcdc
+            db.table = Ws
+            db.filter = event_id=Event.id
+
+                [format]
+                html.raw = Format:
+
+                [website]
+                html.raw = Website: Event.web
+
+                [contact]
+                html.raw = Contact: Event.contact
+
+                [booking]
+                html.raw = Booking: Ws.booking_essential
+
+                [grade]
+                html.raw = Grade: Ws.grade
+
+                [suitable]
+                html.raw = Suitable for ages: Ws.min_age - Ws.max_age
+
+                [osref]
+                html.raw = OS Ref: Ws.os_grid_ref
+
+
+        [event-bottom]
+        css.width = 850px
+        html.p = Event.description
+
+        [event-freeform]
+        css.width = 850px
+        css.height = 400px
         css.padding = 5px
-        #css.margin-left = 10px
-        #css.margin-bottom = 10px
         css.background-color = #d3d3d3
         css.border-width = 3px
         css.border-color = #dcdcdc
-        html.h4 = Google map
-        #click = index.php/?layout=product&product=Product.id
-
-        [header-text]
-        css.width = 500px
-        css.height = 130px
-        css.padding = 5px
-        css.margin-left = 10px
-        css.margin-bottom = 10px
-        css.border-width = 3px
-        css.border-color = #dcdcdc
-        html.h4 = Event.title
-        html.raw = Start: Event.start   End: Event.end <br> Event.address    Event.post_code
-
-
-
+        html.h4 = Freeform text, images, video (HTML)
