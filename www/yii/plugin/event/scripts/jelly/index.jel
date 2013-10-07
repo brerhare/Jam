@@ -6,16 +6,19 @@ include = default-values
 
 [screen]
 # Being an iframe, we want to use the full width of whatever was specified by the parent page - so we dont specify any
-child = googlemap, spacer, grid
+child = bodycontainer
 fx.wallpaper-color = #00000
 
+    [bodycontainer]
+    css.width = 850px
+    child = googlemap, spacer, grid
+
     [googlemap]
-    css.width = 620px
-    css.margin-left = 400px
+    css.margin-left = 190px
     css.height = 200px
     css.background-color = #d2d2d2
     css.overflow = auto
-    addon.map.google_os.width = 620px
+    addon.map.google_os.width = 660px
     addon.map.google_os.height = 200px
     addon.map.google_os.type = terrain
 
@@ -25,11 +28,11 @@ fx.wallpaper-color = #00000
 	[grid]
 	child = filter, eventcontainer
 	stacking = horizontal
-	css.width = 850px
 	css.height = 670px
 	css.background-color = #f2f2f2
 	css.overflow = auto
 	db.table = Program
+# @@TODO Fix next line
     db.filter = id=6
 	html.h3 = Program.name
 

@@ -152,7 +152,7 @@ END_OF_API_HTML;
 			map = new google.maps.Map(document.getElementById("map"), myOptions);
 		}
 
-		// Setups a marker and info window on the map at the latitude and longitude specified
+		// Sets up a marker and info window on the map at the latitude and longitude specified
 		setupMarker = function(latitude, longitude)
 		{
 			// Generate the position from the given latitude and longitude values
