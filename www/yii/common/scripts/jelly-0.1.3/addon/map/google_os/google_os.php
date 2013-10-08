@@ -56,8 +56,8 @@ class google_os
 					$tmp = str_replace("<substitute-height>", $val, $this->apiHtml);
 					$this->apiHtml = $tmp;
 					break;
-				case "center":
-					$this->apiJs .= " centerByOs('" . $val . "'); ";
+				case "center": // @@TODO this is hardcoded to 'os' only
+					$this->apiJs .= " centerByOs('" . $val . "'); "	;
 					break;
 				default:
 					// Not all array items are action items
