@@ -31,7 +31,8 @@ class google_os
 //		var_dump( $options );
 
 		// Generate the content into the html, replacing any <substituteN> tags
-		$content = "";
+		$onReady = "";
+		$inputMode = "";
 		foreach ($options as $opt => $val)
 		{
 			switch ($opt)
@@ -39,6 +40,7 @@ class google_os
 				case "inputmode":
 					$tmp = str_replace("<substitute-inputmode>", strtoupper($val), $this->apiJs);
 					$this->apiJs = $tmp;
+					$inputMode = $val;
 					break;
 				case "maptype":
 					$tmp = str_replace("<substitute-maptype>", strtoupper($val), $this->apiJs);
@@ -57,7 +59,26 @@ class google_os
 					$this->apiHtml = $tmp;
 					break;
 				case "center": // @@TODO this is hardcoded to 'os' only
-					$this->apiJs .= " centerByOs('" . $val . "'); "	;
+					$onReady .= '$(document).ready(function (){';
+					if ($inputMode == "os")
+						$onReady .= " centerByOs('" . $val . "');";
+					else if ($inputMode == "latlong")
+					{
+						$ll = explode(',', $val);
+						$onReady .= " centerByLatLong('" . $ll[0] . "','" . $ll[1] . "');";
+					}
+					$onReady .= '});';
+					break;
+				case "mark":
+					$onReady .= '$(document).ready(function (){';
+					if ($inputMode == "os")
+						$onReady .= " markerByOs('" . $val . "');";
+					else if ($inputMode == "latlong")
+					{
+						$ll = explode(',', $val);
+						$onReady .= " markerByLatLong('" . $ll[0] . "','" . $ll[1] . "');";
+					}
+					$onReady .= '});';
 					break;
 				default:
 					// Not all array items are action items
@@ -93,6 +114,10 @@ class google_os
 		{
 			$tmp = str_replace("<substitute-zoom>", $this->defaultZoom, $this->apiJs);
 			$this->apiJs = $tmp;
+		}
+		if ($onReady != "")
+		{
+			$this->apiJs .= $onReady;
 		}
 
 		// Substitute paths for includes
@@ -132,122 +157,99 @@ END_OF_API_HTML;
 
 		$(document).ready(function ()
 		{
-markerByOs('NY052657');
-markerByOs('NY052657');
-markerByOs('NY052657');
-markerByOs('NY052657');
-markerByOs('NY052657');
-markerByOs('NY052657');
-markerByOs('NY052657');
-markerByOs('NY052657');
-markerByOs('NY052657');
-markerByOs('NX371785');
-markerByOs('NX970757');
-markerByOs('NX928566');
-markerByOs('NX685703');
-markerByOs('NY193665');
-markerByOs('NX442530');
-markerByOs('NX970757');
-markerByOs('NX928566');
-markerByOs('NX699684');
-markerByOs('NX928566');
-markerByOs('NY193665');
-markerByOs('NX689652');
-markerByOs('NX928566');
-markerByOs('NX442530');
-markerByOs('NX689652');
-markerByOs('NX745617');
-markerByOs('NX745617');
-markerByOs('NX745617');
-markerByOs('NX745617');
-markerByOs('NX745617');
-markerByOs('NX745617');
-markerByOs('NX745617');
-markerByOs('NX745617');
-markerByOs('NX745617');
-markerByOs('NY052657');
-markerByOs('NY052657');
-markerByOs('NY052657');
-markerByOs('NY052657');
-markerByOs('NX600520');
-markerByOs('NX600520');
-markerByOs('NX600520');
-markerByOs('NX600520');
-markerByOs('NX600520');
-markerByOs('NX600520');
-markerByOs('NX600520');
-markerByOs('NX600520');
-markerByOs('NX600520');
-markerByOs('NX600520');
-markerByOs('NX600520');
-markerByOs('NX600520');
-markerByOs('NX600520');
-markerByOs('NX552764');
-markerByOs('NX372786');
-markerByOs('NX452646');
-markerByOs('NX452646');
-markerByOs('NX657735');
-markerByOs('NX657735');
-markerByOs('NX657735');
-markerByOs('NX657735');
-markerByOs('NY126804');
-markerByOs('NY126804');
-markerByOs('NY126804');
-markerByOs('NY126804');
-markerByOs('NY126804');
-markerByOs('NY126804');
-markerByOs('NY126804');
-markerByOs('NY126804');
-markerByOs('NX682708');
-markerByOs('NX682708');
-markerByOs('NX682708');
-markerByOs('NX852993');
-markerByOs('NX852993');
-markerByOs('NX852993');
-markerByOs('NX521731');
-markerByOs('NX521731');
-markerByOs('NX452646');
-markerByOs('NX552764');
-markerByOs('NX754605');
-markerByOs('NX754605');
-markerByOs('NX754605');
-markerByOs('NX754605');
-markerByOs('NX754605');
-markerByOs('NX754605');
-markerByOs('NX754605');
-markerByOs('NX754605');
-markerByOs('NX974758');
-markerByOs('NT085055');
-markerByOs('NY019652');
-markerByOs('NY041658');
-centerByLatLong('55.0091','-3.7628');
-return;
-			// Set values for latitude and longitude
-			var latitude = parseFloat("55.0091");
-			var longitude = parseFloat("-3.7628");
-			// Setup the Google map
-			loadMap(latitude, longitude);
-			// Add the marker
-			/////////setupMarker(latitude, longitude);
-			// Setup the address lookup on the button click event
-			$('#lookup').click(function() {
-				var osgridref = $('#osgridref').val();
-				if (osgridref.length > 0) {
-					if (osgridref.indexOf(',') != -1) {
-						var eastnorth = osgridref.split(',');
-						osgridref = gridrefNumToLet(eastnorth[0], eastnorth[1], 10);
-					}				
-					var latlong = OSGridToLatLong(osgridref);
-					setupMarker(latlong.lat, latlong.lng);
-				}
-			});
-markerByOs('NX689652');
-markerByOs('NY193665');
-markerByLatLong('55.0091','-3.7628');
-
+			markerByOs('NY052657');
+			markerByOs('NY052657');
+			markerByOs('NY052657');
+			markerByOs('NY052657');
+			markerByOs('NY052657');
+			markerByOs('NY052657');
+			markerByOs('NY052657');
+			markerByOs('NY052657');
+			markerByOs('NY052657');
+			markerByOs('NX371785');
+			markerByOs('NX970757');
+			markerByOs('NX928566');
+			markerByOs('NX685703');
+			markerByOs('NY193665');
+			markerByOs('NX442530');
+			markerByOs('NX970757');
+			markerByOs('NX928566');
+			markerByOs('NX699684');
+			markerByOs('NX928566');
+			markerByOs('NY193665');
+			markerByOs('NX689652');
+			markerByOs('NX928566');
+			markerByOs('NX442530');
+			markerByOs('NX689652');
+			markerByOs('NX745617');
+			markerByOs('NX745617');
+			markerByOs('NX745617');
+			markerByOs('NX745617');
+			markerByOs('NX745617');
+			markerByOs('NX745617');
+			markerByOs('NX745617');
+			markerByOs('NX745617');
+			markerByOs('NX745617');
+			markerByOs('NY052657');
+			markerByOs('NY052657');
+			markerByOs('NY052657');
+			markerByOs('NY052657');
+			markerByOs('NX600520');
+			markerByOs('NX600520');
+			markerByOs('NX600520');
+			markerByOs('NX600520');
+			markerByOs('NX600520');
+			markerByOs('NX600520');
+			markerByOs('NX600520');
+			markerByOs('NX600520');
+			markerByOs('NX600520');
+			markerByOs('NX600520');
+			markerByOs('NX600520');
+			markerByOs('NX600520');
+			markerByOs('NX600520');
+			markerByOs('NX552764');
+			markerByOs('NX372786');
+			markerByOs('NX452646');
+			markerByOs('NX452646');
+			markerByOs('NX657735');
+			markerByOs('NX657735');
+			markerByOs('NX657735');
+			markerByOs('NX657735');
+			markerByOs('NY126804');
+			markerByOs('NY126804');
+			markerByOs('NY126804');
+			markerByOs('NY126804');
+			markerByOs('NY126804');
+			markerByOs('NY126804');
+			markerByOs('NY126804');
+			markerByOs('NY126804');
+			markerByOs('NX682708');
+			markerByOs('NX682708');
+			markerByOs('NX682708');
+			markerByOs('NX852993');
+			markerByOs('NX852993');
+			markerByOs('NX852993');
+			markerByOs('NX521731');
+			markerByOs('NX521731');
+			markerByOs('NX452646');
+			markerByOs('NX552764');
+			markerByOs('NX754605');
+			markerByOs('NX754605');
+			markerByOs('NX754605');
+			markerByOs('NX754605');
+			markerByOs('NX754605');
+			markerByOs('NX754605');
+			markerByOs('NX754605');
+			markerByOs('NX754605');
+			markerByOs('NX974758');
+			markerByOs('NT085055');
+			markerByOs('NY019652');
+			markerByOs('NY041658');
+			//centerByLatLong('55.0091','-3.7628');
+			return;
 		});
 
-		function centerByOs(osgridref)
+		centerByOs = function(osgridref)
 		{
 			var latlong = OSGridToLatLong(osgridref);
 			var center = new google.maps.LatLng(latlong.lat, latlong.lng);
@@ -270,7 +272,7 @@ markerByLatLong('55.0091','-3.7628');
 		}
 
 
-		function centerByLatLong(lat, long)
+		centerByLatLong = function(lat, long)
 		{
 			var center = new google.maps.LatLng(lat, long);
     		map.panTo(center);

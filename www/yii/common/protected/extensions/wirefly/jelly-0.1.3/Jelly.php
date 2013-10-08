@@ -520,7 +520,7 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				$className = $k;
 				// We have reached the directory location
 				foreach ($v as $k => $v)	// multiple options
-					$optArr[$k] = $v;
+					$optArr[$k] = $this->dbExpand($v);
 
 				// Run the addon's API
 				require($path . "/" . $className . ".php");
