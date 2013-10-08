@@ -58,7 +58,7 @@ class google_os
 					$tmp = str_replace("<substitute-height>", $val, $this->apiHtml);
 					$this->apiHtml = $tmp;
 					break;
-				case "center": // @@TODO this is hardcoded to 'os' only
+				case "center": // @@TODO this works for 'os' only
 					$onReady .= '$(document).ready(function (){';
 					if ($inputMode == "os")
 						$onReady .= " centerByOs('" . $val . "');";
@@ -69,7 +69,7 @@ class google_os
 					}
 					$onReady .= '});';
 					break;
-				case "mark":
+				case "mark": // @TODO this works for 'os' only
 					$onReady .= '$(document).ready(function (){';
 					if ($inputMode == "os")
 						$onReady .= " markerByOs('" . $val . "');";
