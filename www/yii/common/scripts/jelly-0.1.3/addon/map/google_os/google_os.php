@@ -14,10 +14,12 @@ class google_os
 	private $defaultWidth = "620px";
 	private $defaultHeight = "200px";
 	private $defaultZoom = "8";
-	private $defaultType = "roadmap";	// "roadmap", "terrain", "satellite", "hybrid"
+	private $defaultMapType = "roadmap";	// "roadmap", "terrain", "satellite", "hybrid"
+	private $defaultInputMode = "os";	// "os", "latlong", "postcode"
 
 	public $apiOption = array(
 	);
+
 	/*
 	 * Set up any code pre-requisites (onload/document-ready reqs)
 	 * Apply options
@@ -34,12 +36,12 @@ class google_os
 		{
 			switch ($opt)
 			{
-				case "ref":
-					$tmp = str_replace("<substitute-ref>", $val, $this->apiJs);
+				case "inputmode":
+					$tmp = str_replace("<substitute-inputmode>", strtoupper($val), $this->apiJs);
 					$this->apiJs = $tmp;
 					break;
-				case "type":
-					$tmp = str_replace("<substitute-type>", strtoupper($val), $this->apiJs);
+				case "maptype":
+					$tmp = str_replace("<substitute-maptype>", strtoupper($val), $this->apiJs);
 					$this->apiJs = $tmp;
 					break;
 				case "zoom":
@@ -54,12 +56,16 @@ class google_os
 					$tmp = str_replace("<substitute-height>", $val, $this->apiHtml);
 					$this->apiHtml = $tmp;
 					break;
+				case "center":
+					$this->apiJs .= " centerByOs('" . $val . "'); ";
+					break;
 				default:
 					// Not all array items are action items
 			}
 		}
 
 		// Apply all defaults that werent overridden
+
 		// HTML
 		if (strstr($this->apiHtml, "<substitute-width>"))
 		{
@@ -71,10 +77,16 @@ class google_os
 			$tmp = str_replace("<substitute-height>", $this->defaultHeight, $this->apiHtml);
 			$this->apiHtml = $tmp;
 		}
+
 		// JS
-		if (strstr($this->apiJs, "<substitute-type>"))
+		if (strstr($this->apiJs, "<substitute-inputmode>"))
 		{
-			$tmp = str_replace("<substitute-type>", strtoupper($this->defaultType), $this->apiJs);
+			$tmp = str_replace("<substitute-inputmode>", strtoupper($this->defaultInputMode), $this->apiJs);
+			$this->apiJs = $tmp;
+		}
+		if (strstr($this->apiJs, "<substitute-maptype>"))
+		{
+			$tmp = str_replace("<substitute-maptype>", strtoupper($this->defaultMapType), $this->apiJs);
 			$this->apiJs = $tmp;
 		}
 		if (strstr($this->apiJs, "<substitute-zoom>"))
@@ -116,9 +128,100 @@ END_OF_API_HTML;
 	private $apiJs = <<<END_OF_API_JS
 
 		var map = null;
+		var inputMode = "<substitute-inputmode>";
 
 		$(document).ready(function ()
 		{
+markerByOs('NY052657');
+markerByOs('NY052657');
+markerByOs('NY052657');
+markerByOs('NY052657');
+markerByOs('NY052657');
+markerByOs('NY052657');
+markerByOs('NY052657');
+markerByOs('NY052657');
+markerByOs('NY052657');
+markerByOs('NX371785');
+markerByOs('NX970757');
+markerByOs('NX928566');
+markerByOs('NX685703');
+markerByOs('NY193665');
+markerByOs('NX442530');
+markerByOs('NX970757');
+markerByOs('NX928566');
+markerByOs('NX699684');
+markerByOs('NX928566');
+markerByOs('NY193665');
+markerByOs('NX689652');
+markerByOs('NX928566');
+markerByOs('NX442530');
+markerByOs('NX689652');
+markerByOs('NX745617');
+markerByOs('NX745617');
+markerByOs('NX745617');
+markerByOs('NX745617');
+markerByOs('NX745617');
+markerByOs('NX745617');
+markerByOs('NX745617');
+markerByOs('NX745617');
+markerByOs('NX745617');
+markerByOs('NY052657');
+markerByOs('NY052657');
+markerByOs('NY052657');
+markerByOs('NY052657');
+markerByOs('NX600520');
+markerByOs('NX600520');
+markerByOs('NX600520');
+markerByOs('NX600520');
+markerByOs('NX600520');
+markerByOs('NX600520');
+markerByOs('NX600520');
+markerByOs('NX600520');
+markerByOs('NX600520');
+markerByOs('NX600520');
+markerByOs('NX600520');
+markerByOs('NX600520');
+markerByOs('NX600520');
+markerByOs('NX552764');
+markerByOs('NX372786');
+markerByOs('NX452646');
+markerByOs('NX452646');
+markerByOs('NX657735');
+markerByOs('NX657735');
+markerByOs('NX657735');
+markerByOs('NX657735');
+markerByOs('NY126804');
+markerByOs('NY126804');
+markerByOs('NY126804');
+markerByOs('NY126804');
+markerByOs('NY126804');
+markerByOs('NY126804');
+markerByOs('NY126804');
+markerByOs('NY126804');
+markerByOs('NX682708');
+markerByOs('NX682708');
+markerByOs('NX682708');
+markerByOs('NX852993');
+markerByOs('NX852993');
+markerByOs('NX852993');
+markerByOs('NX521731');
+markerByOs('NX521731');
+markerByOs('NX452646');
+markerByOs('NX552764');
+markerByOs('NX754605');
+markerByOs('NX754605');
+markerByOs('NX754605');
+markerByOs('NX754605');
+markerByOs('NX754605');
+markerByOs('NX754605');
+markerByOs('NX754605');
+markerByOs('NX754605');
+markerByOs('NX974758');
+markerByOs('NT085055');
+markerByOs('NY019652');
+markerByOs('NY041658');
+centerByLatLong('55.0091','-3.7628');
+return;
 			// Set values for latitude and longitude
 			var latitude = parseFloat("55.0091");
 			var longitude = parseFloat("-3.7628");
@@ -138,15 +241,55 @@ END_OF_API_HTML;
 					setupMarker(latlong.lat, latlong.lng);
 				}
 			});
+markerByOs('NX689652');
+markerByOs('NY193665');
+markerByLatLong('55.0091','-3.7628');
+
 		});
+
+		function centerByOs(osgridref)
+		{
+			var latlong = OSGridToLatLong(osgridref);
+			var center = new google.maps.LatLng(latlong.lat, latlong.lng);
+    		map.panTo(center);
+		}
+
+		markerByOs = function(osgridref)
+		{
+			if (osgridref.length > 0)
+			{
+				if (osgridref.indexOf(',') != -1)
+				{
+					var eastnorth = osgridref.split(',');
+					osgridref = gridrefNumToLet(eastnorth[0], eastnorth[1], 10);
+				}				
+				var latlong = OSGridToLatLong(osgridref);
+				loadMap(latlong.lat, latlong.lng);
+				setupMarker(latlong.lat, latlong.lng);
+			}
+		}
+
+
+		function centerByLatLong(lat, long)
+		{
+			var center = new google.maps.LatLng(lat, long);
+    		map.panTo(center);
+		}
+
+		markerByLatLong = function(lat, long)
+		{
+			setupMarker(parseFloat(lat), parseFloat(long));
+		}
 
 		// Loads the map
 	    loadMap = function (latitude, longitude)
 		{
+			if (map)	// Already loaded
+				return;
 			var latlng = new google.maps.LatLng(latitude, longitude);
 			var myOptions = {
 				zoom: <substitute-zoom>,
-				mapTypeId: google.maps.MapTypeId.<substitute-type>,
+				mapTypeId: google.maps.MapTypeId.<substitute-maptype>,
 				center: latlng,
 			};
 			map = new google.maps.Map(document.getElementById("map"), myOptions);
