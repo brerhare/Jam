@@ -59,8 +59,8 @@ fx.wallpaper-color = #00000
             click = index.php/?layout=event&event=Event.id
 
                 [header-text]
-                child = header-icons
-                css.width = 400px
+                child = interest-icons, facility-icons
+                css.width = 440px
                 css.height = 100px
                 css.padding = 5px
                 css.margin-left = 10px
@@ -71,16 +71,25 @@ fx.wallpaper-color = #00000
                 html.h4 = Event.title
                 html.raw = Start: Event.start   End: Event.end <br> Event.address <br>   Event.post_code &nbsp
 
-                    [header-icons]
-                    css.width = 200px
+                    [interest-icons]
+                    css.width = 190px
                     css.height = 30px
                     css.margin-top = 5px
                     css.margin-left = 0px
                     # @@TODO Remove hardcoding and put in the rest of the icons
-                    html.raw = <img src="userdata/icon/Nature.png" height="26" width="26">
+                    html.raw = <img title="Nature" src="userdata/icon/Nature.png" height="26" width="26">
+
+                    [facility-icons]
+                    css.width = 190px
+                    css.height = 30px
+                    css.margin-top = -30px
+                    ###css.margin-left = 200px
+                    css.margin-left = 410px
+                    # @@TODO Remove hardcoding and put in the rest of the icons
+                    html.raw = <img title="Wild Seasons" src="userdata/icon/Wild Seasons x25.png" height="26" width="26">
 
                 [header-thumb]
-                css.width = 210px
+                css.width = 170px
                 css.height = 100px
                 css.padding = 5px
                 #css.margin-left = 10px
