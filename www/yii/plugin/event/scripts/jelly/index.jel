@@ -35,7 +35,7 @@ fx.wallpaper-color = #00000
 	css.overflow = auto
 	db.table = Program
 # @@TODO Fix next line Hardcoding
-    db.filter = id=10
+    db.filter = id=6
 	html.h3 = Program.name
 
 		[filter]
