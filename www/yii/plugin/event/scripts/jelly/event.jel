@@ -51,32 +51,32 @@ fx.wallpaper-color = #00000
 
                 [format]
                 css.margin = 5px
-                html.raw = <span style="padding:2px; margin:2px; background-color:#c4e1b1">Format</span>
+                html.raw = <span style="padding:5px; margin:2px; background-color:#eef2d1">Format</span>
 
                 [website]
                 css.margin = 5px
-                html.raw = <span style="padding:2px; margin:2px; background-color:#c4e1b1">Website</span> Event.web
+                html.raw = <span style="padding:5px; margin:2px; background-color:#eef2d1">Website</span> Event.web
                 click = http://Event.web
 
                 [contact]
                 css.margin = 5px
-                html.raw = <span style="padding:2px; margin:2px; background-color:#c4e1b1">Contact</span> Event.contact
+                html.raw = <span style="padding:5px; margin:2px; background-color:#eef2d1">Contact</span> Event.contact
 
                 [booking]
                 css.margin = 5px
-                html.raw = <span style="padding:2px; margin:2px; background-color:#c4e1b1">Booking</span> Ws.booking_essential
+                html.raw = <span style="padding:5px; margin:2px; background-color:#eef2d1">Booking</span> Ws.booking_essential
 
                 [grade]
                 css.margin = 5px
-                html.raw = <span style="padding:2px; margin:2px; background-color:#c4e1b1">Grade</span> Ws.grade
+                html.raw = <span style="padding:5px; margin:2px; background-color:#eef2d1">Grade</span> Ws.grade
 
                 [suitable]
                 css.margin = 5px
-                html.raw = <span style="padding:2px; margin:2px; background-color:#c4e1b1">Suitable for ages</span> Ws.min_age - Ws.max_age
+                html.raw = <span style="padding:5px; margin:2px; background-color:#eef2d1">Suitable for ages</span> Ws.min_age - Ws.max_age
 
                 [osref]
                 css.margin = 5px
-                html.raw = <span style="padding:2px; margin:2px; background-color:#c4e1b1">OS grid ref</span> Ws.os_grid_ref
+                html.raw = <span style="padding:5px; margin:2px; background-color:#eef2d1">OS grid ref</span> Ws.os_grid_ref
 
 
         #[event-bottom]
