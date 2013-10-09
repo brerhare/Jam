@@ -66,7 +66,7 @@ a:hover, a:active { text-decoration: none; color:0###000 }
 /* Jacquies */
 h1 {color: #5b1a4a; }
 h2 {color: #787878; }
-h3 {color: #5b1a4a; }
+h3 {color: #5b5656; /*#5b1a4a*/; margin-top:5px; margin-bottom:5px}
 h4 {color: #2E2E2E; margin-top:0px}
 
 html { font-size: 14px;}
