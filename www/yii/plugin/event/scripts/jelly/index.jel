@@ -22,6 +22,7 @@ fx.wallpaper-color = #00000
     addon.map.google_os.height = 200px
     addon.map.google_os.maptype = terrain
     addon.map.google_os.inputmode = os
+    #####addon.map.google_os.center = 55.0091,-3.7628       # this is latlong implementation (inputmode = latlong)
 
     [spacer]
     css.height = 10px
