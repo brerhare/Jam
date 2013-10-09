@@ -62,13 +62,26 @@ a:hover, a:active { text-decoration: none; color:0###000 }
 
 
 
-<!-- @@TODO: Hardcoded for jacquies! -->
-<!--
+/* @@TODO: Hardcoded! */
+/* Jacquies */
 h1 {color: #5b1a4a; }
 h2 {color: #787878; }
 h3 {color: #5b1a4a; }
-h4 {color: #787878; }
--->
+h4 {color: #787878; margin-top:0px}
+
+html { font-size: 15px;}
+
+/* WS */
+h4 {
+display: block;
+padding: 5px;
+-webkit-margin-before: 0.1em !important;
+-webkit-margin-after: 0.1em !important;
+-webkit-margin-start: 0px;
+-webkit-margin-end: 0px;
+font-weight: bold;
+}
+
 	</style>
 
 END_OF_BEGINHEADER;

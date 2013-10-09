@@ -49,7 +49,7 @@ fx.wallpaper-color = #00000
 		css.width = 650px
 		child = event
 
-    		[event]
+    		[event]                
             child = header-text, header-thumb
             stacking = horizontal
     		db.table = Event
@@ -71,7 +71,7 @@ fx.wallpaper-color = #00000
                 html.raw = Start: Event.start   End: Event.end <br> Event.address    Event.post_code
 
                 [header-thumb]
-                css.width = 205px
+                css.width = 210px
                 css.height = 130px
                 css.padding = 5px
                 #css.margin-left = 10px
