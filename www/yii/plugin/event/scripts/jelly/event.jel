@@ -34,8 +34,9 @@ fx.wallpaper-color = #00000
             addon.map.google_os.maptype = terrain
             addon.map.google_os.inputmode = os
             addon.map.google_os.markcolor = blue
-            #####addon.map.google_os.mark = Ws.os_grid_ref
+            addon.map.google_os.mark = Ws.os_grid_ref
             addon.map.google_os.center = Ws.os_grid_ref
+            addon.map.google_os.single = yes
 
             [header-text]
             child = format, website, contact, booking, grade, suitable, osref
@@ -77,7 +78,7 @@ fx.wallpaper-color = #00000
         css.width = 850px
         css.height = 400px
         css.padding = 5px
-        css.background-color = #d3d3d3
+        #css.background-color = #d3d3d3
         css.border-width = 3px
         css.border-color = #dcdcdc
         html.h4 = Event.description

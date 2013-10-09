@@ -17,6 +17,9 @@ class google_os
 	private $defaultMapType = "roadmap";	// "roadmap", "terrain", "satellite", "hybrid"
 	private $defaultInputMode = "os";	// "os", "latlong", "postcode"
 
+private $SINGLE = 0;
+
+
 	public $apiOption = array(
 	);
 
@@ -37,6 +40,9 @@ class google_os
 		{
 			switch ($opt)
 			{
+case "single":
+$this->SINGLE = 1;
+break;
 				case "inputmode":
 					$tmp = str_replace("<substitute-inputmode>", strtoupper($val), $this->apiJs);
 					$this->apiJs = $tmp;
@@ -115,6 +121,24 @@ class google_os
 			$tmp = str_replace("<substitute-zoom>", $this->defaultZoom, $this->apiJs);
 			$this->apiJs = $tmp;
 		}
+
+if (strstr($this->apiJs, "<SUBSTITUTE-SINGLE-1>"))
+{
+	if ($this->SINGLE == 1)
+	{
+		$tmp = str_replace("<SUBSTITUTE-SINGLE-1>", "if (1==2){", $this->apiJs);
+		$tm2 = str_replace("<SUBSTITUTE-SINGLE-2>", "}", $tmp);
+	}
+	else
+	{
+		$tmp = str_replace("<SUBSTITUTE-SINGLE-1>", "", $this->apiJs);
+		$tm2 = str_replace("<SUBSTITUTE-SINGLE-2>", "", $tmp);
+	}
+	$this->apiJs = $tm2;
+}
+
+
+
 		if ($onReady != "")
 		{
 			$this->apiJs .= $onReady;
@@ -157,6 +181,7 @@ END_OF_API_HTML;
 
 		$(document).ready(function ()
 		{
+<SUBSTITUTE-SINGLE-1>
 			markerByOs('NY052657');
 			markerByOs('NY052657');
 			markerByOs('NY052657');
@@ -245,6 +270,7 @@ END_OF_API_HTML;
 			markerByOs('NT085055');
 			markerByOs('NY019652');
 			markerByOs('NY041658');
+<SUBSTITUTE-SINGLE-2>
 			//centerByLatLong('55.0091','-3.7628');
 			return;
 		});
