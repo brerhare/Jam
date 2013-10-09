@@ -36,6 +36,7 @@ fx.wallpaper-color = #00000
             addon.map.google_os.markcolor = blue
             addon.map.google_os.mark = Ws.os_grid_ref
             addon.map.google_os.center = Ws.os_grid_ref
+            #@@TODO: Remove next hardcoding (and in addon...)
             addon.map.google_os.single = yes
 
             [header-text]

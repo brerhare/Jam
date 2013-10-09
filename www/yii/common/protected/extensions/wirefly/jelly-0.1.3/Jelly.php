@@ -67,16 +67,16 @@ a:hover, a:active { text-decoration: none; color:0###000 }
 h1 {color: #5b1a4a; }
 h2 {color: #787878; }
 h3 {color: #5b1a4a; }
-h4 {color: #787878; margin-top:0px}
+h4 {color: #2E2E2E; margin-top:0px}
 
-html { font-size: 15px;}
+html { font-size: 14px;}
 
 /* WS */
 h4 {
 display: block;
-padding: 5px;
--webkit-margin-before: 0.1em !important;
--webkit-margin-after: 0.1em !important;
+padding: 2px;
+-webkit-margin-before: 0.0em !important;
+-webkit-margin-after: 0.0em !important;
 -webkit-margin-start: 0px;
 -webkit-margin-end: 0px;
 font-weight: bold;

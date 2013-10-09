@@ -59,8 +59,9 @@ fx.wallpaper-color = #00000
             click = index.php/?layout=event&event=Event.id
 
                 [header-text]
+                child = header-icons
                 css.width = 400px
-                css.height = 130px
+                css.height = 100px
                 css.padding = 5px
                 css.margin-left = 10px
                 css.margin-bottom = 10px
@@ -68,17 +69,26 @@ fx.wallpaper-color = #00000
                 css.border-width = 3px
                 css.border-color = #dcdcdc
                 html.h4 = Event.title
-                html.raw = Start: Event.start   End: Event.end <br> Event.address    Event.post_code
+                html.raw = Start: Event.start   End: Event.end <br> Event.address <br>   Event.post_code &nbsp
+
+                    [header-icons]
+                    css.width = 200px
+                    css.height = 30px
+                    css.margin-top = 5px
+                    css.margin-left = 0px
+                    # @@TODO Remove hardcoding and put in the rest of the icons
+                    html.raw = <img src="userdata/icon/Nature.png" height="26" width="26">
 
                 [header-thumb]
                 css.width = 210px
-                css.height = 130px
+                css.height = 100px
                 css.padding = 5px
                 #css.margin-left = 10px
                 #css.margin-bottom = 10px
                 css.background-color = #5b5656
                 css.border-width = 3px
                 css.border-color = #dcdcdc
-                html.h4 = Thumbnail
+                css.color = #ffffff
+                html.raw = Thumbnail
                 #click = index.php/?layout=product&product=Product.id
 

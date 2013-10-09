@@ -17,6 +17,7 @@ class google_os
 	private $defaultMapType = "roadmap";	// "roadmap", "terrain", "satellite", "hybrid"
 	private $defaultInputMode = "os";	// "os", "latlong", "postcode"
 
+// @TODO: Remove $SINGLE and associated hardcoding
 private $SINGLE = 0;
 
 
