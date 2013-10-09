@@ -51,7 +51,7 @@ fx.wallpaper-color = #00000
 
                 [format]
                 css.margin = 5px
-                html.raw = <span style="padding:5px; margin:2px; background-color:#eef2d1">Format</span>
+                html.raw = <span style="padding:5px; margin:2px; background-color:#eef2d1">Format</span> Outdoors
 
                 [website]
                 css.margin = 5px

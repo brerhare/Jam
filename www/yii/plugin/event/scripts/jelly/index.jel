@@ -77,7 +77,7 @@ fx.wallpaper-color = #00000
                     css.margin-top = 5px
                     css.margin-left = 0px
                     # @@TODO Remove hardcoding and put in the rest of the icons
-                    html.raw = <img title="Nature" src="userdata/icon/Nature.png" height="26" width="26">
+                    html.raw = <img title="Nature" src="userdata/icon/Nature.png" width="20" height="20">
 
                     [facility-icons]
                     css.width = 190px
@@ -86,7 +86,7 @@ fx.wallpaper-color = #00000
                     ###css.margin-left = 200px
                     css.margin-left = 410px
                     # @@TODO Remove hardcoding and put in the rest of the icons
-                    html.raw = <img title="Wild Seasons" src="userdata/icon/Wild Seasons x25.png" height="26" width="26">
+                    html.raw = <img title="Wild Seasons" src="userdata/icon/Wild Seasons x20.png" width="20" height="20">
 
                 [header-thumb]
                 css.width = 170px
@@ -98,6 +98,7 @@ fx.wallpaper-color = #00000
                 css.border-width = 3px
                 css.border-color = #dcdcdc
                 css.color = #ffffff
-                html.raw = Thumbnail
+                html.raw = <img title="Wild Seasons" src="userdata/icon/Wild Seasons x20.png" width="170" height="100" 
+                #html.raw = Thumbnail
                 #click = index.php/?layout=product&product=Product.id
 
