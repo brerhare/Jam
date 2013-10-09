@@ -259,8 +259,9 @@ class EventController extends Controller
 						break;
 				}
 			}
-			$event->member_id = 1;
-			$event->program_id = 10;
+// @@TODO: REMOVE HARD CODING!
+			$event->member_id = 7;
+			$event->program_id = 6;
 			if (!($event->save()))
 				die("Event save failed on line " . $row);
 			$ws->event_id = $event->id;
