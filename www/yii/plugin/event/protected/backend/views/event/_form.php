@@ -82,34 +82,30 @@
 	<?php echo $form->fileFieldRow($model, 'thumb_path'); ?>
 
 	<?php //echo $form->textAreaRow($model,'description',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
-	<br>&nbsp
-	<div id="row">
-		Free format description
-		<div style="width:650px">
-		<?php
-		$this->widget('bootstrap.widgets.TbRedactorJs',
-	    	array(
-	      	'model'=>$model,
-	      	'attribute'=>'description',
-	      	'editorOptions'=>array(
-	          	'imageUpload' => $this->createUrl('event/imageUpload'),
-	          	'imageGetJson' => $this->createUrl('event/imageList'),
-	          	'width'=>'100%',
-	          	'height'=>'400px'
-	       	)
-	    	));
-		?>
+	<div class="control-group "><label class="control-label" for="Event_start">Description</label>
+		<div class="controls">
+			<div style="width:650px">
+			<?php
+			$this->widget('bootstrap.widgets.TbRedactorJs',
+		    	array(
+		      	'model'=>$model,
+		      	'attribute'=>'description',
+		      	'editorOptions'=>array(
+		          	'imageUpload' => $this->createUrl('event/imageUpload'),
+		          	'imageGetJson' => $this->createUrl('event/imageList'),
+		          	'width'=>'100%',
+		          	'height'=>'400px'
+		       	)
+		    	));
+			?>
+			</div>
 		</div>
 	</div>
 	<br>&nbsp
 
+	<?php //echo $form->textFieldRow($model,'approved',array('class'=>'span5')); ?>
 
-
-
-
-	<?php echo $form->textFieldRow($model,'approved',array('class'=>'span5')); ?>
-
-	<?php echo $form->textFieldRow($model,'member_id',array('class'=>'span5')); ?>
+	<?php //echo $form->textFieldRow($model,'member_id',array('class'=>'span5')); ?>
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(

@@ -15,6 +15,9 @@ userdata/event/*
 !userdata/event/thumb
 userdata/event/thumb/*
 !userdata/event/thumb/.gitignore
+!userdata/event/image
+userdata/event/image/*
+!userdata/event/image/.gitignore
 !userdata/program
 userdata/program/*
 !userdata/program/.gitignore

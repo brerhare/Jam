@@ -67,6 +67,7 @@ class EventController extends Controller
         $model=new Event;
         $model2=new Ws;
         $model->member_id = Yii::app()->session['uid'];
+        $model->approved = 1;	// @@TODO: Hard coded!!!
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
@@ -74,7 +75,7 @@ class EventController extends Controller
         if(isset($_POST['Event']))
         {
             $model->attributes=$_POST['Event'];
-            $model->thumbnail_path=CUploadedFile::getInstance($model, 'thumb_path');
+            $model->thumb_path=CUploadedFile::getInstance($model, 'thumb_path');
             if($model->save())
             {
             	// @@TODO Populate Ws fields
@@ -105,8 +106,8 @@ class EventController extends Controller
         $iDir = $this->getThumbDir();
         $model=$this->loadModel($id);
         $model2=Ws::model()->findByPk($id);
-        if (!($model2))
-        	die('Couldnt find event matching Ws record for update');
+        //if (!($model2))
+        //	die('Couldnt find event matching Ws record for update');
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
@@ -124,7 +125,7 @@ class EventController extends Controller
                         unlink($iDir . $model->thumb_path);
                 }
                 // Save new one
-                $model->thumbnail_path = $file;
+                $model->thumb_path = $file;
                 $fname = $iDir . $model->thumb_path;
                 $model->thumb_path->saveAs($fname);
             }
@@ -414,10 +415,10 @@ class EventController extends Controller
         if (!empty($uploadedFile)) {
             $rnd = rand();  // generate random number between 0-9999
             $fileName = "{$rnd}.{$uploadedFile->extensionName}";  // random number + file name
-            if ($uploadedFile->saveAs(Yii::app()->basePath . '/../userdata/event/thumb/' . $fileName)) {
+            if ($uploadedFile->saveAs(Yii::app()->basePath . '/../userdata/event/image/' . $fileName)) {
 
                 $array = array(
-                     'filelink' => Yii::app()->baseUrl . '/event/../userdata/event/thumb' . $fileName);
+                     'filelink' => Yii::app()->baseUrl . '/event/../userdata/event/image/' . $fileName);
 
                 echo stripslashes(json_encode($array));
                 Yii::app()->end();
@@ -430,7 +431,7 @@ class EventController extends Controller
 
     public function actionImageList() {
         $images = array();
-        $handler = opendir(Yii::app()->basePath . '/../userdata/event/thumb');
+        $handler = opendir(Yii::app()->basePath . '/../userdata/event/image');
         while ($file = readdir($handler)) {
             if ($file != "." && $file != "..")
                 $images[] = $file;
@@ -441,7 +442,8 @@ class EventController extends Controller
 
         foreach ($images as $image)
             $jsonArray[] = array(
-                'thumb' => Yii::app()->baseUrl . '/event/userdata/event/thumb/' . $image,
+                'thumb' => Yii::app()->baseUrl . '/event/userdata/event/image/' . $image,
+                'image' => Yii::app()->baseUrl . '/event/userdata/event/image/' . $image,
             );
 
         header('Content-type: application/json');
