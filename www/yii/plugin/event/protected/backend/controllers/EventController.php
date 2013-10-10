@@ -33,11 +33,11 @@ class EventController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','import','admin'),
+				'actions'=>array('create','update','import','admin','delete'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','import','admin'),
+				'actions'=>array('admin','delete','import'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -78,8 +78,11 @@ class EventController extends Controller
             $model->thumb_path=CUploadedFile::getInstance($model, 'thumb_path');
             if($model->save())
             {
-            	// @@TODO Populate Ws fields
-            	//
+            	// Save Ws fields too
+            	$model2->attributes=$_POST['Ws'];
+            	$model2->event_id = $model->id;
+            	$model2->save();
+
                 if (strlen($model->thumb_path) > 0)
                 {
                     $fname = $iDir . $model->thumb_path;
@@ -105,9 +108,12 @@ class EventController extends Controller
 	{
         $iDir = $this->getThumbDir();
         $model=$this->loadModel($id);
-        $model2=Ws::model()->findByPk($id);
-        //if (!($model2))
-        //	die('Couldnt find event matching Ws record for update');
+
+		$criteria = new CDbCriteria;
+		$criteria->condition="event_id = $model->id";
+        $model2=Ws::model()->find($criteria);
+        if (!($model2))
+        	die('Couldnt find event matching Ws record for update');
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
@@ -131,8 +137,11 @@ class EventController extends Controller
             }
             if($model->save())
             {
-            	// @@TODO Populate Ws fields
-            	//
+            	// Save Ws fields too
+            	$model2->attributes=$_POST['Ws'];
+            	$model2->event_id = $model->id;
+            	$model2->save();
+
                 $this->redirect(array('admin'));
             }
         }
@@ -155,7 +164,9 @@ class EventController extends Controller
 			// we only allow deletion via POST request
 			$this->loadModel($id)->delete();
 
-	        $model2=Ws::model()->findByPk($id);
+			$criteria = new CDbCriteria;
+			$criteria->condition="event_id = $id";
+   			$model2=Ws::model()->find($criteria);
     	    if (!($model2))
         		die('Couldnt find event matching Ws record for delete');
         	$model2->delete();
