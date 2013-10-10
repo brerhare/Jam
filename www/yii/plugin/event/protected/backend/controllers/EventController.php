@@ -169,7 +169,7 @@ class EventController extends Controller
 | last_login_date | date         | NO   |     | NULL    |                |
 | captcha         | varchar(45)  | YES  |     | NULL    |                |
 +-----------------+--------------+------+-----+---------+----------------+
-*/
+
 		$file = "/tmp/ws-member.csv";
 		$row = 0;
 		if (($handle = fopen($file, "r")) === FALSE)
@@ -203,13 +203,7 @@ class EventController extends Controller
 				die("Member save failed on line " . $row);
 		}
 		return;
-
-
-
-
-
-
-
+*/
 
 		$file = "/tmp/ws.csv";
 		$row = 0;
@@ -304,9 +298,12 @@ class EventController extends Controller
 						$ws->child_ages_restrictions = $data[$c];
 						break;
 					case 20:
-						if ($data[$c] == 'WWT')
-						die(Yii::app()->session['uid']);
-						// @@ TODO : ORGANISATION
+						$criteria = new CDbCriteria;
+						$criteria->addCondition("organisation = '" . $data[$c] . "'");
+						$member = Member::model()->find($criteria);
+						if (!($member))
+							die("Organisation field could not identify a member");
+						$event->member_id = $member->id;
 						break;
 					case 21:
 						$ws->full_price_notes = $data[$c];
@@ -320,7 +317,7 @@ class EventController extends Controller
 				}
 			}
 // @@TODO: REMOVE HARD CODING!
-			$event->member_id = 7;
+			//$event->member_id = 7;
 			$event->program_id = 6;
 			if (!($event->save()))
 				die("Event save failed on line " . $row);
