@@ -51,7 +51,7 @@ class Member extends CActiveRecord
 			array('user_name, password, first_name, last_name, email_address, join_date, last_login_date', 'required'),
 			array('user_name, password, first_name, last_name, email_address, organisation', 'length', 'max'=>255),
 			array('telephone, captcha', 'length', 'max'=>45),
-			array('captcha', 'captcha', 'allowEmpty'=>!CCaptcha::checkRequirements()),
+			//array('captcha', 'captcha', 'allowEmpty'=>!CCaptcha::checkRequirements()),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, user_name, password, first_name, last_name, telephone, email_address, organisation, join_date, last_login_date, captcha', 'safe', 'on'=>'search'),

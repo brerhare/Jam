@@ -153,6 +153,64 @@ class EventController extends Controller
 	 */
 	public function actionImport()
 	{
+/*
++-----------------+--------------+------+-----+---------+----------------+
+| Field           | Type         | Null | Key | Default | Extra          |
++-----------------+--------------+------+-----+---------+----------------+
+| id              | int(11)      | NO   | PRI | NULL    | auto_increment |
+| user_name       | varchar(255) | NO   | UNI | NULL    |                |
+| password        | varchar(255) | NO   |     | NULL    |                |
+| first_name      | varchar(255) | NO   |     | NULL    |                |
+| last_name       | varchar(255) | NO   |     | NULL    |                |
+| telephone       | varchar(45)  | YES  |     | NULL    |                |
+| email_address   | varchar(255) | NO   |     | NULL    |                |
+| organisation    | varchar(255) | YES  |     | NULL    |                |
+| join_date       | date         | NO   |     | NULL    |                |
+| last_login_date | date         | NO   |     | NULL    |                |
+| captcha         | varchar(45)  | YES  |     | NULL    |                |
++-----------------+--------------+------+-----+---------+----------------+
+*/
+		$file = "/tmp/ws-member.csv";
+		$row = 0;
+		if (($handle = fopen($file, "r")) === FALSE)
+			die("Cant open $file");
+		while (($data = fgetcsv($handle, 1000, ",")) !== FALSE)
+		{
+	// Ignore header line
+        	if ($row == 0)
+        	{
+            	$row++;
+           		continue;
+        	}
+        	if ($row == 1)
+        	{
+        		$row++;
+        		continue;
+        	}
+			$member = new Member;
+			$member->user_name = $data[1];
+			$member->password = $data[1];
+			$member->first_name = $data[2];
+			$member->last_name = $data[2];
+			$member->telephone = $data[4];
+			$member->email_address = $data[3];
+			$member->organisation = $data[1];
+			$member->join_date = '2013-10-10';
+			$member->last_login_date = '2013-10-10';
+			$member->captcha = '';
+
+			if (!($member->save()))
+				die("Member save failed on line " . $row);
+		}
+		return;
+
+
+
+
+
+
+
+
 		$file = "/tmp/ws.csv";
 		$row = 0;
 		if (($handle = fopen($file, "r")) === FALSE)
@@ -246,6 +304,8 @@ class EventController extends Controller
 						$ws->child_ages_restrictions = $data[$c];
 						break;
 					case 20:
+						if ($data[$c] == 'WWT')
+						die(Yii::app()->session['uid']);
 						// @@ TODO : ORGANISATION
 						break;
 					case 21:
