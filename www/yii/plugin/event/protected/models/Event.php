@@ -58,6 +58,10 @@ class Event extends CActiveRecord
 			array('approved, member_id, program_id', 'numerical', 'integerOnly'=>true),
 			array('title, post_code, web, thumb_path', 'length', 'max'=>255),
 			array('end, address, contact', 'safe'),
+
+            array('thumb_path','unsafe'),
+            array('thumb_path', 'file', 'types'=>'jpg, jpeg, gif, png','safe'=>true, 'maxSize'=>10000*1024, 'allowEmpty'=>true, 'tooLarge'=>'{attribute} is too large to be uploaded. Maximum size is 10MB.'),
+
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, title, start, end, address, post_code, web, contact, description, thumb_path, approved, member_id, program_id', 'safe', 'on'=>'search'),
@@ -91,7 +95,7 @@ class Event extends CActiveRecord
 			'title' => 'Title',
 			'start' => 'Start',
 			'end' => 'End',
-			'address' => 'Address',
+			'address' => 'Venue',
 			'post_code' => 'Post Code',
 			'web' => 'Web',
 			'contact' => 'Contact',
@@ -125,11 +129,31 @@ class Event extends CActiveRecord
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('thumb_path',$this->thumb_path,true);
 		$criteria->compare('approved',$this->approved);
-		$criteria->compare('member_id',$this->member_id);
+		//$criteria->compare('member_id',$this->member_id);
+		$criteria->addCondition("member_id = " . Yii::app()->session['uid']);
 		$criteria->compare('program_id',$this->program_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
+
+// @@EG CJuiDatePicker. See also the form where the widget is applied
+
+    protected function afterFind(){
+        parent::afterFind();
+        $this->start=date('d-m-Y', strtotime(str_replace("-", "", $this->start)));
+        $this->end=date('d-m-Y', strtotime(str_replace("-", "", $this->end)));
+    }
+
+    protected function beforeSave(){
+    if(parent::beforeSave()){
+        $this->start=date('Y-m-d', strtotime(str_replace(",", "", $this->start)));
+        $this->end=date('Y-m-d', strtotime(str_replace(",", "", $this->end)));
+        return TRUE;
+    }
+    else
+        return false;
+	}
+
 }
