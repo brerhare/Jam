@@ -8,6 +8,8 @@ class EventController extends Controller
 	 */
 	public $layout='//layouts/column2';
 
+    private $_thumbDir = '/../userdata/event/thumb/';   // Note this is only partial. Gets prepended base path
+
 	/**
 	 * @return array action filters
 	 */
@@ -31,11 +33,11 @@ class EventController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','import'),
+				'actions'=>array('create','update','import','admin'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','import'),
+				'actions'=>array('admin','delete','import','admin'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -61,21 +63,37 @@ class EventController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Event;
+        $iDir = $this->getThumbDir();
+        $model=new Event;
+        $model2=new Ws;
+        $model->member_id = Yii::app()->session['uid'];
+        $model->approved = 1;	// @@TODO: Hard coded!!!
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+        // Uncomment the following line if AJAX validation is needed
+        // $this->performAjaxValidation($model);
 
-		if(isset($_POST['Event']))
-		{
-			$model->attributes=$_POST['Event'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
+        if(isset($_POST['Event']))
+        {
+            $model->attributes=$_POST['Event'];
+            $model->thumb_path=CUploadedFile::getInstance($model, 'thumb_path');
+            if($model->save())
+            {
+            	// @@TODO Populate Ws fields
+            	//
+                if (strlen($model->thumb_path) > 0)
+                {
+                    $fname = $iDir . $model->thumb_path;
+                    $model->thumb_path->saveAs($fname);
+                }
 
-		$this->render('create',array(
-			'model'=>$model,
-		));
+                $this->redirect(array('admin'));
+            }
+        }
+
+        $this->render('create',array(
+            'model'=>$model,
+            'model2'=>$model2,
+        ));
 	}
 
 	/**
@@ -85,21 +103,44 @@ class EventController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		$model=$this->loadModel($id);
+        $iDir = $this->getThumbDir();
+        $model=$this->loadModel($id);
+        $model2=Ws::model()->findByPk($id);
+        //if (!($model2))
+        //	die('Couldnt find event matching Ws record for update');
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+        // Uncomment the following line if AJAX validation is needed
+        // $this->performAjaxValidation($model);
 
-		if(isset($_POST['Event']))
-		{
-			$model->attributes=$_POST['Event'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
-		}
+        if(isset($_POST['Event']))
+        {
+            $model->attributes=$_POST['Event'];
+            $file=CUploadedFile::getInstance($model, 'thumb_path');
+            if (is_object($file) && get_class($file) === 'CUploadedFile')
+            {
+                // Delete old one
+                if (strlen($model->thumb_path) > 0)
+                {
+                    if (file_exists($iDir . $model->thumb_path))
+                        unlink($iDir . $model->thumb_path);
+                }
+                // Save new one
+                $model->thumb_path = $file;
+                $fname = $iDir . $model->thumb_path;
+                $model->thumb_path->saveAs($fname);
+            }
+            if($model->save())
+            {
+            	// @@TODO Populate Ws fields
+            	//
+                $this->redirect(array('admin'));
+            }
+        }
 
-		$this->render('update',array(
-			'model'=>$model,
-		));
+        $this->render('update',array(
+            'model'=>$model,
+            'model2'=>$model2,
+        ));
 	}
 
 	/**
@@ -113,6 +154,11 @@ class EventController extends Controller
 		{
 			// we only allow deletion via POST request
 			$this->loadModel($id)->delete();
+
+	        $model2=Ws::model()->findByPk($id);
+    	    if (!($model2))
+        		die('Couldnt find event matching Ws record for delete');
+        	$model2->delete();
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 			if(!isset($_GET['ajax']))
@@ -354,4 +400,58 @@ class EventController extends Controller
 			Yii::app()->end();
 		}
 	}
+
+    public function getThumbDir()
+    {
+        return Yii::app()->basePath . $this->_thumbDir;
+    }
+
+
+// Redactor image handling -----------------------------------------------------
+
+    public function actionImageUpload()
+    {
+        $uploadedFile = CUploadedFile::getInstanceByName('file');
+        if (!empty($uploadedFile)) {
+            $rnd = rand();  // generate random number between 0-9999
+            $fileName = "{$rnd}.{$uploadedFile->extensionName}";  // random number + file name
+            if ($uploadedFile->saveAs(Yii::app()->basePath . '/../userdata/event/image/' . $fileName)) {
+
+                $array = array(
+                     'filelink' => Yii::app()->baseUrl . '/event/../userdata/event/image/' . $fileName);
+
+                echo stripslashes(json_encode($array));
+                Yii::app()->end();
+            }
+        }
+        throw new CHttpException(400, 'The request cannot be fulfilled due to bad syntax');
+    }
+
+// "ListImages" (used to browse images in the server)
+
+    public function actionImageList() {
+        $images = array();
+        $handler = opendir(Yii::app()->basePath . '/../userdata/event/image');
+        while ($file = readdir($handler)) {
+            if ($file != "." && $file != "..")
+                $images[] = $file;
+        }
+        closedir($handler);
+
+        $jsonArray = array();
+
+        foreach ($images as $image)
+            $jsonArray[] = array(
+                'thumb' => Yii::app()->baseUrl . '/event/userdata/event/image/' . $image,
+                'image' => Yii::app()->baseUrl . '/event/userdata/event/image/' . $image,
+            );
+
+        header('Content-type: application/json');
+        echo CJSON::encode($jsonArray);
+    }
+
+
+
+
+
 }
