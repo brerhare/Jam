@@ -33,11 +33,11 @@ class EventController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','import','admin','delete'),
+				'actions'=>array('create','update','import','admin','delete','imageUpload','imageList'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','import'),
+				'actions'=>array('admin','delete','import','imageUpload','imageList'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -81,7 +81,11 @@ class EventController extends Controller
             	// Save Ws fields too
             	$model2->attributes=$_POST['Ws'];
             	$model2->event_id = $model->id;
-            	$model2->save();
+            	if (!($model2->save()))
+            	{
+            		$model->delete();
+            		die('Couldnt save WS record');
+            	}
 
                 if (strlen($model->thumb_path) > 0)
                 {
@@ -460,9 +464,5 @@ class EventController extends Controller
         header('Content-type: application/json');
         echo CJSON::encode($jsonArray);
     }
-
-
-
-
 
 }
