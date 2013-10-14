@@ -14,15 +14,26 @@ db.table = User
 db.filter = sid=$_GET['sid']
 
 	[grid]
-	child = product
+	child = filter, productcontainer
 	stacking = horizontal
-	css.width = 670px
+	css.width = 850px
 	css.height = 670px
 	css.background-color = #f2f2f2
 	css.overflow = auto
 	db.table = Department
 	db.filter = id=$_GET['department'],uid=User.id
 	html.h3 = Department.name
+
+		[filter]
+		css.width = 180px
+		html.raw = filter
+		addon.filter.product.department = $_GET['department']
+		
+		[productcontainer]
+		css.width = 650px
+		child = product
+		stacking = horizontal
+		
 
 		[product]
 		child = product_image, product_text
