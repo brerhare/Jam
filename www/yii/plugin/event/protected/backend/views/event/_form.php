@@ -3,6 +3,7 @@
 	'id'=>'event-form',
 	'enableAjaxValidation'=>false,
 	'type'=>'horizontal',
+	'htmlOptions'=>array('enctype'=>'multipart/form-data'),
 )); ?>
 
 <?php $this->widget('bootstrap.widgets.TbTabs',array(

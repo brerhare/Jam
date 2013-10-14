@@ -91,7 +91,6 @@ class EventController extends Controller
         			));
         			return;
             	}
-
                 if (strlen($model->thumb_path) > 0)
                 {
                     $fname = $iDir . $model->thumb_path;
