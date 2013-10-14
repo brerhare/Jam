@@ -81,7 +81,7 @@ fx.wallpaper-color = #00000
         [event-freeform]
         css.width = 650px
         css.height = 400px
-        css.padding = 5px
+        #css.padding = 5px
         css.background-color = #ffffff
         css.border-width = 3px
         css.border-color = #dcdcdc
