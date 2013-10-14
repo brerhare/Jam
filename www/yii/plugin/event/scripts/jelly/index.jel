@@ -10,11 +10,11 @@ child = bodycontainer
 fx.wallpaper-color = #00000
 
     [bodycontainer]
-    css.width = 850px
+    css.width = 700px
     child = googlemap, spacer, grid
 
     [googlemap]
-    css.margin-left = 190px
+    css.margin-left = 150px
     css.height = 200px
     css.background-color = #d2d2d2
     css.overflow = auto
@@ -30,7 +30,7 @@ fx.wallpaper-color = #00000
 	[grid]
 	child = filter, eventcontainer
 	stacking = horizontal
-	css.height = 670px
+	css.height = 550px
 	css.background-color = #f2f2f2
 	css.overflow = auto
 	db.table = Program
@@ -39,14 +39,14 @@ fx.wallpaper-color = #00000
 	html.h3 = Program.name
 
 		[filter]
-		css.width = 180px
+		css.width = 140px
         css.background-color = #c4e1b1
         css.height = 90%
 		html.raw = Selection filter
 		#addon.filter.product.department = $_GET['department']
 		
 		[eventcontainer]
-		css.width = 650px
+		css.width = 540px
 		child = event
 
     		[event]                
@@ -60,7 +60,7 @@ fx.wallpaper-color = #00000
 
                 [header-text]
                 child = interest-icons, facility-icons
-                css.width = 440px
+                css.width = 400px
                 css.height = 100px
                 css.padding = 5px
                 css.margin-left = 10px
@@ -72,7 +72,7 @@ fx.wallpaper-color = #00000
                 html.raw = Start: Event.start   End: Event.end <br> Event.address <br>   Event.post_code &nbsp
 
                     [interest-icons]
-                    css.width = 190px
+                    css.width = 200px
                     css.height = 30px
                     css.margin-top = 5px
                     css.margin-left = 0px
@@ -80,25 +80,25 @@ fx.wallpaper-color = #00000
                     html.raw = <img title="Nature" src="userdata/icon/Nature.png" width="20" height="20">
 
                     [facility-icons]
-                    css.width = 190px
+                    css.width = 150px
                     css.height = 30px
                     css.margin-top = -30px
                     ###css.margin-left = 200px
-                    css.margin-left = 410px
+                    css.margin-left = 300px
                     # @@TODO Remove hardcoding and put in the rest of the icons
                     html.raw = <img title="Wild Seasons" src="userdata/icon/Wild Seasons x20.png" width="20" height="20">
 
                 [header-thumb]
-                css.width = 170px
+                css.width = 100px
                 css.height = 100px
                 css.padding = 5px
                 #css.margin-left = 10px
                 #css.margin-bottom = 10px
-                css.background-color = #5b5656
+                css.background-color = #c4e1b1
                 css.border-width = 3px
                 css.border-color = #dcdcdc
                 css.color = #ffffff
-                html.raw = <img title="Wild Seasons" src="userdata/icon/Wild Seasons x20.png" width="170" height="100" 
+                html.raw = <img title="Wild Seasons" src="userdata/icon/Wild Seasons x20.png" width="100" height="100 style="margin-top:20px"
                 #html.raw = Thumbnail
                 #click = index.php/?layout=product&product=Product.id
 

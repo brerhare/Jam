@@ -32,11 +32,9 @@ class Jelly
 	<link rel="shortcut icon" href="//resources.news.com.au/cs/newscomau/images/favicon.ico" type="image/x-icon" />
 	<link rel="icon" href="//resources.news.com.au/cs/newscomau/images/favicon.ico" type="image/x-icon" />
 
-<!-- Google fonts -->
-<!--
-<link href='//fonts.googleapis.com/css?family=Raleway:300' rel='stylesheet' type='text/css'>
--->
+<!-- Google fonts
 <link href='//fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+-->
 
 	<style type="text/css">
 		html, body {
