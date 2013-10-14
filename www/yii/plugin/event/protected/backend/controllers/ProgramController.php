@@ -120,7 +120,7 @@ class ProgramController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-		$oldthumbname = $model=->thumb_path;
+		$oldthumbname = $model->thumb_path;
 		$oldiconname = $model->icon_path;
 
 		$model->scenario = 'update';
