@@ -14,15 +14,16 @@ fx.wallpaper-color = #00000
     child = googlemap, spacer, grid
 
     [googlemap]
-    css.margin-left = 150px
-    css.height = 200px
+    ##css.margin-left = 150px
+    css.height = 400px
     css.background-color = #d2d2d2
     css.overflow = auto
-    addon.map.google_os.width = 660px
-    addon.map.google_os.height = 200px
+    addon.map.google_os.width = 700px
+    addon.map.google_os.height = 400px
     addon.map.google_os.maptype = terrain
     addon.map.google_os.inputmode = os
-    #####addon.map.google_os.center = 55.0091,-3.7628       # this is latlong implementation (inputmode = latlong)
+    addon.map.google_os.center =  NX691857
+    addon.map.google_os.zoom = 9
 
     [spacer]
     css.height = 10px
