@@ -35,8 +35,6 @@ fx.wallpaper-color = #00000
 	css.background-color = #f2f2f2
 	css.overflow = auto
 	db.table = Program
-# @@TODO Fix next line Hardcoding for Wild Seasons
-    ###db.filter = id=6
 	html.h3 = Program.name
 
 		[filter]
@@ -56,7 +54,8 @@ fx.wallpaper-color = #00000
             child = header-text, header-thumb
             stacking = horizontal
     		db.table = Event
-    		db.filter = program_id=6
+            # @@TODO Fix next line Hardcoding for Wild Seasons
+    	   ####d#b.filter = program_id=6
         	db.order = start
     		db.fetch = multiple
             click = index.php/?layout=event&event=Event.id
@@ -72,8 +71,6 @@ fx.wallpaper-color = #00000
                 css.background-color = #c4e1b1
                 css.border-width = 3px
                 css.border-color = #dcdcdc
-                #html.h4 = Event.title
-                #html.raw = Start: Event.start   End: Event.end <br> Event.address <br>   Event.post_code &nbsp
 
                     [header-heading]
                     css.width = 400px
@@ -121,6 +118,11 @@ fx.wallpaper-color = #00000
                 css.border-width = 3px
                 css.border-color = #dcdcdc
                 css.color = #ffffff
-                html.raw = <img title="Wild Seasons" src="userdata/icon/Wild Seasons x20.png" width="100" height="100 style="margin-top:20px"
+                #html.raw = <img title="Wild Seasons" src="userdata/event/thumb/Event.thumb_path " width="100" height="100 style="margin-top:20px"
+                image.url = userdata/event/thumb/Event.thumb_path
+                image.width = 100px
+                image.height = 100px
+
+
                 #click = index.php/?layout=product&product=Product.id
 
