@@ -78,16 +78,11 @@ fx.wallpaper-color = #00000
                 css.margin = 5px
                 html.raw = <span style="padding:5px; margin:2px; background-color:#eef2d1">OS grid ref</span> Ws.os_grid_ref
 
-
-        #[event-bottom]
-        #css.width = 850px
-        #html.p = Event.description
-
         [event-freeform]
         css.width = 650px
         css.height = 400px
         css.padding = 5px
-        #css.background-color = #d3d3d3
+        css.background-color = #ffffff
         css.border-width = 3px
         css.border-color = #dcdcdc
         html.h4 = Event.description
