@@ -91,7 +91,6 @@ class MemberController extends Controller
 			$model->last_login_date = new CDbExpression('NOW()');
 			if($model->save())
 			{
-
 				// Send email
 				$from_email_address=Yii::app()->params['adminEmail'];
                 $from_name='=?UTF-8?B?'.base64_encode("Admin at DG Link").'?=';
@@ -101,12 +100,11 @@ class MemberController extends Controller
                     "Reply-To: {$from_email_address}\r\n".
                     "MIME-Version: 1.0\r\n".
                     "Content-type: text/plain; charset=UTF-8";
-                $body = "Thank you for joining us!";
-
+                $body = "Welcome, and thank you for joining us!";
                 mail($to_email_address,$subject,$body,$headers);
 
-
 				Yii::app()->session['uid'] = $model->id;
+				Yii::app()->session['has_program'] = 0;		// New members cant possibly be program admins yet
 				$identity = new UserIdentity($model->user_name, $model->password);
 				$duration = 3600*24*14; // 14 days
 				Yii::app()->user->login($identity, $duration);
@@ -128,6 +126,7 @@ class MemberController extends Controller
 	{
 
 		$model=$this->loadModel(Yii::app()->session['uid']);
+		$model->captcha = '';
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);

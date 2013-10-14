@@ -29,18 +29,19 @@
 
 	<?php //echo $form->textFieldRow($model,'last_login_date',array('class'=>'span5')); ?>
 
-
-    <?php if(CCaptcha::checkRequirements()): ?>
-    <div class="row">
-        <?php echo $form->labelEx($model,'captcha'); ?>
-        <div>
-        <?php $this->widget('CCaptcha'); ?>
-        <?php echo $form->textField($model,'captcha'); ?>
-        </div>
-        <div class="hint">Please enter the letters as they are shown in the image above.
-        <br/>Letters are not case-sensitive.</div>
-        <?php echo $form->error($model,'captcha'); ?>
-    </div>
+    <?php if ($model->isNewRecord): ?>
+        <?php if(CCaptcha::checkRequirements()): ?>
+            <div class="row">
+            <?php echo $form->labelEx($model,'captcha'); ?>
+            <div>
+            <?php $this->widget('CCaptcha'); ?>
+            <?php echo $form->textField($model,'captcha'); ?>
+            </div>
+            <div class="hint">Please enter the letters as they are shown in the image above.
+            <br/>Letters are not case-sensitive.</div>
+            <?php echo $form->error($model,'captcha'); ?>
+            </div>
+        <?php endif; ?>
     <?php endif; ?>
 
 
