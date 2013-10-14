@@ -13,7 +13,7 @@
 
 	<?php //echo $form->textFieldRow($model,'start',array('class'=>'span5')); ?>
 	<?php /// @@EG How to line up custom content ?>
-	<div class="control-group "><label class="control-label" for="Event_start">Start Date</label>
+	<div class="control-group "><label class="control-label" for="Event_start">Start Date <span class="required">*</span></label>
 		<div class="controls">
 		<?php
 // @@EG CJuiDatePicker. See also the model for the before/after function I added to support this
@@ -75,7 +75,7 @@
 	<?php echo $form->fileFieldRow($model, 'thumb_path'); ?>
 
 	<?php //echo $form->textAreaRow($model,'description',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
-	<div class="control-group "><label class="control-label" for="Event_start">Description</label>
+	<div class="control-group "><label class="control-label" for="Event_start">Description <span class="required">*</span></label>
 		<div class="controls">
 			<div style="width:500px">
 			<?php
