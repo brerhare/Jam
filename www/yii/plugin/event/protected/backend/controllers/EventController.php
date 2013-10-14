@@ -84,7 +84,12 @@ class EventController extends Controller
             	if (!($model2->save()))
             	{
             		$model->delete();
-            		die('Couldnt save WS record');
+            		//die('Couldnt save WS record');
+            		$this->render('create',array(
+            			'model'=>$model,
+            			'model2'=>$model2,
+        			));
+        			return;
             	}
 
                 if (strlen($model->thumb_path) > 0)
@@ -409,6 +414,7 @@ class EventController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
+		die('x');
 		if(isset($_POST['ajax']) && $_POST['ajax']==='event-form')
 		{
 			echo CActiveForm::validate($model);
