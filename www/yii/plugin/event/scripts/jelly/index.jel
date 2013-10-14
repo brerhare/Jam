@@ -15,14 +15,14 @@ fx.wallpaper-color = #00000
 
     [googlemap]
     ##css.margin-left = 150px
-    css.height = 400px
+    css.height = 370px
     css.background-color = #d2d2d2
     css.overflow = auto
     addon.map.google_os.width = 700px
-    addon.map.google_os.height = 400px
+    addon.map.google_os.height = 370px
     addon.map.google_os.maptype = terrain
     addon.map.google_os.inputmode = os
-    addon.map.google_os.center =  NX691857
+    addon.map.google_os.center =  NX696834
     addon.map.google_os.zoom = 9
 
     [spacer]
@@ -36,7 +36,7 @@ fx.wallpaper-color = #00000
 	css.overflow = auto
 	db.table = Program
 # @@TODO Fix next line Hardcoding for Wild Seasons
-    db.filter = id=6
+    ###db.filter = id=6
 	html.h3 = Program.name
 
 		[filter]
@@ -100,6 +100,5 @@ fx.wallpaper-color = #00000
                 css.border-color = #dcdcdc
                 css.color = #ffffff
                 html.raw = <img title="Wild Seasons" src="userdata/icon/Wild Seasons x20.png" width="100" height="100 style="margin-top:20px"
-                #html.raw = Thumbnail
                 #click = index.php/?layout=product&product=Product.id
 

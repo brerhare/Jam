@@ -32,6 +32,59 @@ class Jelly
 	<link rel="shortcut icon" href="//resources.news.com.au/cs/newscomau/images/favicon.ico" type="image/x-icon" />
 	<link rel="icon" href="//resources.news.com.au/cs/newscomau/images/favicon.ico" type="image/x-icon" />
 
+
+
+<style>		/* This style block is for the CSS reset */
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+</style>
+
+
 <!-- Google fonts
 <link href='//fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
 -->
@@ -65,7 +118,7 @@ a:hover, a:active { text-decoration: none; color:0###000 }
 h1 {color: #5b1a4a; }
 h2 {color: #787878; }
 h3 {color: #5b5656; /*#5b1a4a*/; margin-top:5px; margin-bottom:5px}
-h4 {color: #2E2E2E; margin-top:0px}
+h4 {color: #2E2E2E; margin-top:0px; margin-bottom:0px}
 
 html { font-size: 14px;}
 
