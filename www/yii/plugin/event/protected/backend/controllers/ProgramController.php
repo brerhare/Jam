@@ -120,6 +120,9 @@ class ProgramController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
+		$oldthumbname = $model=->thumb_path;
+		$oldiconname = $model->icon_path;
+
 		$model->scenario = 'update';
 
 		// Uncomment the following line if AJAX validation is needed
@@ -132,18 +135,16 @@ class ProgramController extends Controller
             $fileT=CUploadedFile::getInstance($model, 'thumb_path');
             if(is_object($fileT) && get_class($fileT) === 'CUploadedFile')
             {
-                if (file_exists(Yii::app()->basePath . $this->_thumbDir . $model->thumb_path))
-                	if (substr(Yii::app()->basePath . $this->_thumbDir . $model->thumb_path, -1) != '/')
-                    	unlink(Yii::app()->basePath . $this->_thumbDir . $model->thumb_path);
+	    		if (($oldthumbname != '') && (file_exists(Yii::app()->basePath . $this->_thumbDir . $oldthumbname)))
+					unlink(Yii::app()->basePath . $this->_thumbDir . $oldthumbname);
                 $model->thumb_path = $fileT;
             }
 
             $fileI=CUploadedFile::getInstance($model, 'icon_path');
             if(is_object($fileI) && get_class($fileI) === 'CUploadedFile')
             {
-                if (file_exists(Yii::app()->basePath . $this->_iconDir . $model->icon_path))
-                    if (substr(Yii::app()->basePath . $this->_iconDir . $model->thumb_path, -1) != '/')
-                    	unlink(Yii::app()->basePath . $this->_iconDir . $model->icon_path);
+            	if (($oldiconname != '') && (file_exists(Yii::app()->basePath . $this->_iconDir . $oldiconname)))
+					unlink(Yii::app()->basePath . $this->_iconDir . $oldiconname);
                 $model->icon_path = $fileI;
             }
            
