@@ -112,17 +112,13 @@ fx.wallpaper-color = #00000
                 css.width = 100px
                 css.height = 100px
                 css.padding = 5px
-                #css.margin-left = 10px
-                #css.margin-bottom = 10px
                 css.background-color = #c4e1b1
                 css.border-width = 3px
                 css.border-color = #dcdcdc
                 css.color = #ffffff
-                #html.raw = <img title="Wild Seasons" src="userdata/event/thumb/Event.thumb_path " width="100" height="100 style="margin-top:20px"
                 image.url = userdata/event/thumb/Event.thumb_path
+                image.alt = userdata/program/thumb/Program.thumb_path
                 image.width = 100px
                 image.height = 100px
 
-
-                #click = index.php/?layout=product&product=Product.id
 

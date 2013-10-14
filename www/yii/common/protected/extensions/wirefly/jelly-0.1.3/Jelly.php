@@ -447,6 +447,7 @@ if (isset($_GET['page']))
 				break;
 			case "image":
 				$url = "";
+				$alt = "";
 				$width = "0";
 				$height = "0";
 				$tip = "";
@@ -457,6 +458,9 @@ if (isset($_GET['page']))
 						case ("url"):
 							$url = $val;
 							break;
+						case ("alt"):
+							$alt = $val;
+							break;
 						case ("width"):
 							$width = $val;
 							break;
@@ -465,8 +469,10 @@ if (isset($_GET['page']))
 							break;
 					}
 				}
-				//$this->genInlineHtml('<img title="' . $tip . '" src="' . $this->dbExpand($url) . '" width="' . $width . '" height="' . $height . '">');
-				$this->genInlineHtml('<img title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.style.display=\'none\'" . " width="' . $width . '" height="' . $height . '">');
+				if ($alt == "")
+					$this->genInlineHtml('<img title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.style.display=\'none\'" . " width="' . $width . '" height="' . $height . '">');
+				else
+					$this->genInlineHtml('<img title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.onerror=null;this.src=\'' . $this->dbExpand($alt) . '\'" width="' . $width . '" height="' . $height . '">');
 				break;
 			case "fx":
 				foreach ($value as $cssName => $cssValue)
