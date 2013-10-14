@@ -34,7 +34,7 @@ fx.wallpaper-color = #00000
 	css.background-color = #f2f2f2
 	css.overflow = auto
 	db.table = Program
-# @@TODO Fix next line Hardcoding
+# @@TODO Fix next line Hardcoding for Wild Seasons
     db.filter = id=6
 	html.h3 = Program.name
 
@@ -53,7 +53,7 @@ fx.wallpaper-color = #00000
             child = header-text, header-thumb
             stacking = horizontal
     		db.table = Event
-    		#db.filter = product_department_id=Department.id
+    		db.filter = program_id=6
         	db.order = start
     		db.fetch = multiple
             click = index.php/?layout=event&event=Event.id
