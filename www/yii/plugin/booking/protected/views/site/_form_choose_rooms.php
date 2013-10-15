@@ -86,13 +86,21 @@ function onArrivalDateChange()
 
 function onDepartureDateChange()
 {
+	var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+
 	var v = document.getElementById("departdate");
 	dd = v.value.substr(0, 2);
 	mm = v.value.substr(3, 2);
 	yyyy = v.value.substr(6, 4);
-	dt = new Date(yyyy, mm-1, dd);
-	departureStamp = dt.getTime()/1000;
-	var nights = Math.ceil((departureStamp - arrivalStamp) / 86400);
+	var firstDate = new Date(yyyy,(mm-1),dd);
+
+	v = document.getElementById("arrivedate");
+	dd = v.value.substr(0, 2);
+	mm = v.value.substr(3, 2);
+	yyyy = v.value.substr(6, 4);
+	var secondDate = new Date(yyyy,(mm-1),dd);
+
+	var nights = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
 	document.getElementById("nights").value = nights;
 	ajaxGetRoomPriceAvail();
 }
