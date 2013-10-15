@@ -75,7 +75,7 @@ class basic
 					$l2 = true;
 				}
 				if ($menuItem->active)
-					$content .= "<li><a href='" . Yii::app()->request->baseUrl . "?layout=index&page=" . $menuItem->url . "'>" . $menuItem->title . "</a></li>";
+					$content .= "<li style='z-index:11000'><a href='" . Yii::app()->request->baseUrl . "?layout=index&page=" . $menuItem->url . "'>" . $menuItem->title . "</a></li>";
 			endforeach;
 			if ($l2 == true)
 				$content .= "</ul>";

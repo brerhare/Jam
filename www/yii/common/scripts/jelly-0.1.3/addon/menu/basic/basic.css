@@ -21,6 +21,7 @@ nav ul {
 	list-style: none;
 	position: relative;
 	display: inline-table;
+z-index:11000;
 }
 	nav ul:after {
 		content: ""; clear: both; display: block;
