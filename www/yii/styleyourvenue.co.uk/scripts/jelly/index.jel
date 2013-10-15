@@ -129,7 +129,8 @@ css.background-color = #000000
 	css.height = 200px
 	css.margin-top = -200px
 	css.margin-left = 450px
-	css.z-index = 1000
+	css.position = relative
+	css.z-index = 10000
 	css.background-image = url('/img/Watermark.png')
 	
 
