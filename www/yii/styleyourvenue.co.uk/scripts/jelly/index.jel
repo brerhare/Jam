@@ -1,3 +1,4 @@
+#Style Your Venue
 [defaults]
 include = default-values
 css.color = white
@@ -6,95 +7,112 @@ css.color = white
 [* : defaults]
 
 [screen]
-child = contentframe
+child = backgd
 #css.background-color = #000000
 #style.background-image = /img/StyleBackground.png
 fx.wallpaper-image = /img/FullBackground.jpg
 css.display = block
 
+[backgd]
+child = contentframe
+css.width = 1000px
+css.background-color = #000000
+
 	[contentframe]
-	child = header, menu, slider, line, contentcontainer, footer
+	child = header, menu, slider, watermark, line, contentcontainer, footer
 	css.width = 960px
 
 	[header]
 	child = logo, contact, icons
+	css.margin-top = 20px
+	css.height = 104px
 	stacking = horizontal
 
 	[logo]
 	child = logo-pic
-	css.height = 200px
+	css.height = 104px
 	css.width = 40%
 
 		[logo-pic]
-		css.margin-top = 30px
-		css.height = 140px
+		css.height = 104px
 		#css.width = 40%
 		#style.background-image = /img/Header Logo.png
 		css.background-image = url('/img/Header Logo.png')
 
 	[contact]
 	child = contact-text
-	css.height = 200px
+	css.height = 104px
 	css.width = 30%
 
 		[contact-text]
-		css.margin-top = 40px
-		css.margin-left = 5px
-		css.height = 140px
+		css.margin-top = 30px
+		#css.margin-left = 5px
+		css.height = 104px
 		html.p = Short Description / Tag Line etc ...
 		html.p = 07868 840894 
 		#html.p = Email: a@b.co.uk
 
 	[icons]
 	child = cart, news, social
-	css.width = 25%
+	css.margin-left = 50px
+	css.width = 200px
 
 		[cart]
 		child = cart-pic, cart-text
 		stacking = horizontal
-		css.margin-top = 50px
-		css.height = 30px
+		css.margin-top = 20px
+		css.height = 18px
+		
 		click = http://www.google.com
 
 			[cart-pic]
-			css.width = 20%
-			css.background-image = url('/img/Shopping Cart.png')
-			css.height = 30px
+			css.width = 25px
+			css.background-image = url('/img/cart.jpg')
+			css.height = 17px
 
 			[cart-text]
-			css.width = 75%
+			css.width = 80%
+			css.margin-top = 4px
+			css.margin-left = 4px
+			css.font-size = 12px
 			html.raw = Shopping Cart
 
 		[news]
 		child = news-pic, news-text
 		stacking = horizontal
-		css.height = 30px
+		css.height = 18px
 		click = http://www.google.com
 
 			[news-pic]
-			css.width = 20%
-			css.background-image = url('/img/News Letter.png')
-			css.height = 30px
+			css.width = 25px
+			css.background-image = url('/img/news.jpg')
+			css.height = 17px
 
 			[news-text]
-			css.width = 75%
+			css.width = 80%
+			css.margin-top = 4px
+			css.margin-left = 4px
+			css.font-size = 12px
 			html.raw = Newsletter
 
 		[social]
 		child = social-fb, social-twitter
 		stacking = horizontal
-		css.height = 30px
+		css.margin-top = 4px
+		css.height = 22px
 		click = http://www.google.com
 
 			[social-fb]
-			css.width = 10%
-			css.background-image = url('/img/Facebook.png')
-			css.height = 30px
+			css.width = 22px
+			css.margin-left = 2px
+			css.background-image = url('/img/FB.jpg')
+			css.height = 22px
 
 			[social-twitter]
-			css.width = 10%
-			css.background-image = url('/img/Twitter.png')
-			css.height = 30px
+			css.width = 22px
+			css.margin-left = 4px
+			css.background-image = url('/img/Twitter.jpg')
+			css.height = 22px
 
 	[menu]
 	css.height = 50px
@@ -103,9 +121,17 @@ css.display = block
 
 	[slider]
     #css.margin-top = 80px
-    ;css.height = 250px         /* dont set the height - carousel will set it */
-    addon.carousel.flexslider.animation = fade
+    #css.height = 250px         /* dont set the height - carousel will set it */
+	addon.carousel.flexslider.width = 950px
     addon.carousel.flexslider.source = db
+
+	[watermark]
+	css.height = 200px
+	css.margin-top = -200px
+	css.margin-left = 450px
+	css.z-index = 1000
+	css.background-image = url('/img/Watermark.png')
+	
 
 	[line]
     css.height = 4px
@@ -117,8 +143,6 @@ css.display = block
     fx.rounding = 4px
 
         [content]
-#        css.background-color = white
-#		css.color = black
         css.margin = 15px
         db.table = ContentBlock
         db.filter = url=$_GET['page']
