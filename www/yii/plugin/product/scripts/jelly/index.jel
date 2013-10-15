@@ -27,7 +27,7 @@ db.filter = sid=$_GET['sid']
 		[filter]
 		css.width = 180px
 		html.raw = filter
-		addon.filter.product.department = $_GET['department']
+		##############################addon.filter.product.department = $_GET['department']
 		
 		[productcontainer]
 		css.width = 650px
