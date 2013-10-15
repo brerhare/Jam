@@ -15,10 +15,16 @@ $this->menu=array(
 	//'filter'=>$model,
 	'columns'=>array(
 		//'id',
-		'name',
+		//'name',
 		//'thumb_path',
 		//'icon_path',
 		//'event_program_fields_id',
+        array(
+            'name'  => 'name',
+            'value' => 'CHtml::link($data->name, Yii::app()->createUrl("program/update",array("id"=>$data->primaryKey)))',
+            'type'  => 'raw',
+        ),
+
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
 			'template'=>'{update}{images}{delete}',

@@ -12,7 +12,7 @@ css.display = block
 	[contentframe]
 	#css.width = 1120px
 	css.width = 930px
-	child = header, contact-details, product, footer
+	child = header, contact-details, product-grid, footer
 
 		[header]
 		stacking = horizontal
@@ -36,19 +36,9 @@ css.display = block
 		css.background-color = #eedf3c
 		html.raw = Contact details
 
-		[product]
-		stacking = horizontal
-		child = product-filter, product-grid
-
-			[product-filter]
-			css.width = 25%
-			css.height = 670px
-			css.background-color = #f8f9d7
-			html.raw = Product filter
-
-			[product-grid]
-			#html.raw = {{department 6 Corona Occasional}}
-			html.raw = <iframe height="670" width="690" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=3hjc1rcpa5todru774o45q6v16&amp;department=5"></iframe>
+		[product-grid]
+		#html.raw = {{department 6 Corona Occasional}}
+		html.raw = <iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=3hjc1rcpa5todru774o45q6v16&amp;department=5"></iframe>
 
 		[footer]
 		css.height = 30px

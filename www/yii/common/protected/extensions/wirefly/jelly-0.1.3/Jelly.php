@@ -29,14 +29,65 @@ class Jelly
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="language" content="en" />
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
-	<link rel="shortcut icon" href="http://resources.news.com.au/cs/newscomau/images/favicon.ico" type="image/x-icon" />
-	<link rel="icon" href="http://resources.news.com.au/cs/newscomau/images/favicon.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="//resources.news.com.au/cs/newscomau/images/favicon.ico" type="image/x-icon" />
+	<link rel="icon" href="//resources.news.com.au/cs/newscomau/images/favicon.ico" type="image/x-icon" />
 
-<!-- Google fonts -->
-<!--
-<link href='http://fonts.googleapis.com/css?family=Raleway:300' rel='stylesheet' type='text/css'>
+
+
+<style>		/* This style block is for the CSS reset */
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+</style>
+
+
+<!-- Google fonts
+<link href='//fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
 -->
-<link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
 
 	<style type="text/css">
 		html, body {
@@ -62,13 +113,26 @@ a:hover, a:active { text-decoration: none; color:0###000 }
 
 
 
-<!-- @@TODO: Hardcoded for jacquies! -->
-<!--
+/* @@TODO: Hardcoded! */
+/* Jacquies */
 h1 {color: #5b1a4a; }
 h2 {color: #787878; }
-h3 {color: #5b1a4a; }
-h4 {color: #787878; }
--->
+h3 {color: #5b5656; /*#5b1a4a*/; margin-top:5px; margin-bottom:5px}
+h4 {color: #2E2E2E; margin-top:0px; margin-bottom:0px}
+
+html { font-size: 14px;}
+
+/* WS */
+h4 {
+display: block;
+padding: 2px;
+-webkit-margin-before: 0.0em !important;
+-webkit-margin-after: 0.0em !important;
+-webkit-margin-start: 0px;
+-webkit-margin-end: 0px;
+font-weight: bold;
+}
+
 	</style>
 
 END_OF_BEGINHEADER;
@@ -381,6 +445,35 @@ if (isset($_GET['page']))
 					}
 				}
 				break;
+			case "image":
+				$url = "";
+				$alt = "";
+				$width = "0";
+				$height = "0";
+				$tip = "";
+				foreach ($value as $prop => $val)
+				{
+					switch ($prop)
+					{
+						case ("url"):
+							$url = $val;
+							break;
+						case ("alt"):
+							$alt = $val;
+							break;
+						case ("width"):
+							$width = $val;
+							break;
+						case ("height"):
+							$height = $val;
+							break;
+					}
+				}
+				if ($alt == "")
+					$this->genInlineHtml('<img title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.style.display=\'none\'" . " width="' . $width . '" height="' . $height . '">');
+				else
+					$this->genInlineHtml('<img title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.onerror=null;this.src=\'' . $this->dbExpand($alt) . '\'" width="' . $width . '" height="' . $height . '">');
+				break;
 			case "fx":
 				foreach ($value as $cssName => $cssValue)
 				{
@@ -520,7 +613,7 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				$className = $k;
 				// We have reached the directory location
 				foreach ($v as $k => $v)	// multiple options
-					$optArr[$k] = $v;
+					$optArr[$k] = $this->dbExpand($v);
 
 				// Run the addon's API
 				require($path . "/" . $className . ".php");

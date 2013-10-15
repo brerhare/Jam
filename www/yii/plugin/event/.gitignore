@@ -6,12 +6,18 @@ protected/backend/runtime/*
 !protected/backend/runtime/.gitignore
 userdata/*
 !userdata/.gitignore
+!userdata/icon
+userdata/icon/*
+!userdata/icon/.gitignore
 !userdata/event
 userdata/event/*
 !userdata/event/.gitignore
 !userdata/event/thumb
 userdata/event/thumb/*
 !userdata/event/thumb/.gitignore
+!userdata/event/image
+userdata/event/image/*
+!userdata/event/image/.gitignore
 !userdata/program
 userdata/program/*
 !userdata/program/.gitignore
@@ -24,3 +30,4 @@ userdata/program/icon/*
 *.bfproject
 *.bak
 *.swp
+

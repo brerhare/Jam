@@ -65,10 +65,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=jacquiesbeauty_co_uk',
+			'connectionString' => 'mysql:host=localhost;dbname=play_wireflydesign_com',
 			'emulatePrepare' => true,
-			'username' => 'jacquiesbeauty.c',
-			'password' => 'kimlo,',
+			'username' => 'wireflydesign.co',
+			'password' => 'wireflydesign.com,',
 			'charset' => 'utf8',
 		),
 		/**/
@@ -99,5 +99,6 @@ return array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@wireflydesign.com',
 		'jellyRoot' => '/scripts/jelly/',
+		'sid' => '',
 	),
 );

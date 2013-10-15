@@ -51,6 +51,18 @@ class LoginForm extends CFormModel
 			$this->_identity=new UserIdentity($this->username,$this->password);
 			if(!$this->_identity->authenticate())
 				$this->addError('password','Incorrect username or password.');
+			else
+			{
+				Yii::app()->session['has_program'] = 0;
+				// Determine if 'My Programs' is shown on the menu for this member
+				// Criteria is - is admin on any program
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("event_member_id = " . Yii::app()->session['uid']);
+				$criteria->addCondition("privilege_level = 4");	//@TODO Hardcoded privilege level
+				$memberHasProgram = MemberHasProgram::model()->findAll($criteria);
+				if ($memberHasProgram)
+					Yii::app()->session['has_program'] = 1;
+			}
 		}
 	}
 

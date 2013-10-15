@@ -138,6 +138,8 @@ class ContentBlockController extends Controller
 	 */
 	public function actionAdmin()
 	{
+//$this->actionTreeView();
+//return;
 		$model=new ContentBlock('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['ContentBlock']))
@@ -147,6 +149,43 @@ class ContentBlockController extends Controller
 			'model'=>$model,
 		));
 	}
+
+
+public function actionTreeView() {
+		$model=new ContentBlock('search');
+		$model->unsetAttributes();  // clear any default values
+
+	$dataTree=array(
+		array(
+			'text'=>'Grampa', //must using 'text' key to show the text
+			'children'=>array(//using 'children' key to indicate there are children
+				array(
+					'text'=>'Father',
+					'children'=>array(
+						array('text'=>'me'),
+						array('text'=>'big sis'),
+						array('text'=>'little brother'),
+					)
+				),
+				array(
+					'text'=>'Uncle',
+					'children'=>array(
+						array('text'=>'Ben'),
+						array('text'=>'Sally'),
+					)
+				),
+				array(
+					'text'=>'Aunt',
+				)
+			)
+		)
+	);
+
+	$this->render('admin', array('dataTree'=>$dataTree, 'model'=>$model));
+}
+
+
+
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

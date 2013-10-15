@@ -49,7 +49,7 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 		'booking_essential',
 		'min_age',
 		/*
-		'max_ageI',
+		'max_age',
 		'child_ages_restrictions',
 		'additional_venue_info',
 		'full_price_notes',
