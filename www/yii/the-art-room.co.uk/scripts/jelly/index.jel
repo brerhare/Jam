@@ -91,6 +91,8 @@ css.display = block
 		css.height = 50px
 		css.margin-top = 50px
 		css.overflow = visible
+		css.z-index = 1000
+		css.position = relative
 		addon.menu.basic.orientation = horizontal
 
 			[menu-bg]
