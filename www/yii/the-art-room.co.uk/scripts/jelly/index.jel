@@ -1,20 +1,221 @@
+#The Art Room
 [defaults]
 include = default-values
+# Nb: Needs Cutive Mono Google font http://www.google.com/fonts/specimen/Cutive+Mono
+# Pair with Source Sans Pro http://www.google.com/fonts/specimen/Source+Sans+Pro
 
 ; Every blob inherits these before adding/overriding
 [* : defaults]
 
 [screen]
-child = contentframe
-fx.wallpaper-image = /img/background.jpg
+child = site
+fx.wallpaper-image = /img/shop-bg.jpg
 css.display = block
 
-	[contentframe]
-	css.display = block
-	css.width = 100px
-	css.margin-top = 400px
-	style.html.h1.color = yellow
-	style.html.h1.background-color = black
-	style.html.h1.padding = 10px
-	html.h1 = jelly
+	[site]
+	child = header, slider, page, footer
+	css.width = 960px
+	#css.margin-top = 20px
 
+		[header]
+		child = logo, header-dt
+		stacking = horizontal
+
+			[logo]
+			css.margin-top = 20px
+			css.margin-left = 50px
+			css.height = 110px
+			css.width = 400px
+			css.background-image = url('/img/logo.png')
+
+			[header-dt]
+			child = icons, menu
+			css.width = 500px
+
+				[icons]
+				child = icon-content
+				css.height = 45px
+				css.width = 400px
+				css.margin-left = 150px
+				css.background-image = url('/img/icon-background.png')
+
+					[icon-content]
+					child = cart, news
+					css.height = 50px
+					css.width = 470px
+					css.margin-top = 10px
+					css.margin-left = 50px
+					#css.colour = white
+
+						[cart]
+						child = cart-pic, cart-text
+						stacking = horizontal
+						css.width = 180px
+						css.height = 22px
+						css.margin-left = 0px
+						click = http://www.wireflydesign.com
+
+							[cart-pic]
+							css.width = 25px
+							css.height = 20px
+							css.background-image = url('/img/cart.png')
+
+							[cart-text]
+							css.width = 100px
+							css.font-size = 12px
+							css.margin-top = 4px
+							css.colour = white
+							html.raw = Shopping Cart
+
+						[news]
+						child = news-pic, news-text
+						stacking = horizontal
+						css.width = 180px
+						css.height = 19px
+						css.margin-top = -18px
+						css.margin-left = 140px
+						click = http://www.wireflydesign.com
+
+							[news-pic]
+							css.width = 25px
+							css.height = 17px
+							css.background-image = url('/img/news.png')
+
+							[news-text]
+							css.width = 100px
+							css.font-size = 12px
+							html.raw = Newsletter
+
+		[menu]
+		child = menu-bg
+		css.height = 50px
+		css.margin-top = 50px
+		css.overflow = visible
+		addon.menu.basic.orientation = horizontal
+
+			[menu-bg]
+			css.width = 455px
+			css.height = 50px
+			css.margin-top = -50px
+			css.margin-left = 0px
+			css.background-image = url('/img/menu-bg.png')
+
+
+
+	[slider]
+   css.margin-top = -80px
+	css.margin-left = 30px
+  	;css.height = 250px
+		addon.carousel.flexslider.animation = fade
+   	addon.carousel.flexslider.source = db
+
+	#[static-tabs]
+	# These are not tied to the tab backend
+	#child = gallery, gifts, workshops
+	#stacking = horizontal
+	#css.heights = 
+
+
+
+	[page]
+	child = content
+	#css.background-color = white
+	#fx.rounding = 4px
+
+		[content]
+		#css.background-color = white
+		#css.color = black
+		#css.margin = 15px
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find that page. You requested $_GET['page']
+	html.raw = ContentBlock.content
+
+
+	[footer]
+	child = footer-content
+	css.height = 200px
+	css.width = 960px
+	css.margin-top = 20px
+	css.background-image = url('/img/footer-background.png')
+
+		[footer-content]
+		child = typewriter, address, social-fb, social-tw, footer-menu, rabbit
+		css.height = 195px
+		css.width = 955px
+		#css.margin-top = -120px
+		stacking = horizontal
+
+			[typewriter]
+			css.width = 150px
+			css.height = 155px
+			css.margin-top = 30px
+			css.margin-left = 5px
+			css.background-image = url('/img/typewriter.png')
+			click = http://www.the-art-room.co.uk/?layout=index&page=blog
+
+
+			[address]
+			css.width = 100px
+			css.height = 100px
+			css.margin-top = 60px
+			css.margin-left = 50px
+			css.background-image = url('/img/address-text.png')
+			click = http://www.the-art-room.co.uk/?layout=index&page=contact
+			
+			[social-fb]
+			css.width = 60px
+			css.height = 60px
+			css.margin-top = 90px
+			css.margin-left = 100px
+			css.background-image = url('/img/facebook.png')
+			click = http://www.wireflydesign.com
+
+
+			[social-tw]
+			css.width = 60px
+			css.height = 60px
+			css.margin-top = 90px
+			#css.margin-left = 10px
+			css.background-image = url('/img/twitter.png')
+			click = http://www.wireflydesign.com
+
+			[footer-menu]
+			child = footer-contact, footer-cookies, footer-tandc, wirefly
+			css.width = 165px
+			css.height = 100px
+			css.margin-top = 60px
+			css.margin-left = 73px
+
+				[footer-contact]
+				css.width = 160px
+				css.height = 20px	
+				css.background-image = url('/img/contact-text.png')
+				click = http://www.the-art-room.co.uk/?layout=index&page=contact
+
+
+				[footer-cookies]
+				css.width = 160px
+				css.height = 20px	
+				css.background-image = url('/img/cookie-text.png')
+				click = http://www.the-art-room.co.uk/?layout=index&page=contact
+
+				[footer-tandc]
+				css.width = 160px
+				css.height = 20px	
+				css.background-image = url('/img/tc-text.png')
+				click = http://www.the-art-room.co.uk/?layout=index&page=contact
+
+				[wirefly]
+				css.width = 160px
+				css.height = 20px	
+				css.background-image = url('/img/wirefly-text.png')
+				click = http://www.wireflydesign.com
+
+			[rabbit]
+			css.width = 100px
+			css.height = 100px
+			css.margin-top = 80px
+			css.margin-left = 90px
+			css.background-image = url('/img/Louis 2.png')
+			click = http://www.the-art-room.co.uk/?layout=index&page=blog
