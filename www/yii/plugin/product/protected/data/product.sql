@@ -181,6 +181,34 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`product_product_has_product_option` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `plugin`.`product_price_band`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `plugin`.`product_price_band` ;
+
+CREATE  TABLE IF NOT EXISTS `plugin`.`product_price_band` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `uid` INT NOT NULL ,
+  `max` DECIMAL(10,2) NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `uid` (`uid` ASC) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `plugin`.`product_duration_band`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `plugin`.`product_duration_band` ;
+
+CREATE  TABLE IF NOT EXISTS `plugin`.`product_duration_band` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `uid` INT NOT NULL ,
+  `max` INT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `uid` (`uid` ASC) )
+ENGINE = InnoDB;
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
