@@ -13,7 +13,14 @@ $this->menu=array(
 	'columns'=>array(
 		//'id',
 		//'uid',
-		'max',
+		//'max',
+
+        array(
+            'name'  => 'max',
+            'value' => 'CHtml::link($data->max, Yii::app()->createUrl("priceBand/update",array("id"=>$data->primaryKey)))',
+            'type'  => 'raw',
+        ),
+
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
 			'template'=>'{update}{delete}'),

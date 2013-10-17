@@ -83,7 +83,7 @@ class PriceBand extends CActiveRecord
 		//$criteria->compare('uid',$this->uid);
 		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$criteria->compare('max',$this->max,true);
-
+//@@ EG: Ordering model records on the admin crud
 		$criteria->order = "max ASC";
 
 		return new CActiveDataProvider($this, array(
