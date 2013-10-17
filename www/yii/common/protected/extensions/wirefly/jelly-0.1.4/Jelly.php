@@ -1,5 +1,10 @@
 <?php
 
+/*********************/
+ini_set('display_errors',1);
+error_reporting(E_ALL);
+/*********************/
+
 header("Content-Type: text/html; charset=UTF-8");
 
 $old_error_handler = set_error_handler("myErrorHandler");

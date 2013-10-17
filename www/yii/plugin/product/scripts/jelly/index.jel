@@ -19,21 +19,20 @@ db.filter = sid=$_GET['sid']
 	css.width = 850px
 	css.height = 670px
 	css.background-color = #f2f2f2
-	css.overflow = auto
+	childss.overflow = auto
 	db.table = Department
 	db.filter = id=$_GET['department'],uid=User.id
 	html.h3 = Department.name
 
 		[filter]
 		css.width = 180px
-		html.raw = filter
-		##############################addon.filter.product.department = $_GET['department']
-		
+		html.raw = filterK
+		addon.filter.products.department = $_GET['department']
+
 		[productcontainer]
 		css.width = 650px
 		child = product
 		stacking = horizontal
-		
 
 		[product]
 		child = product_image, product_text
@@ -52,7 +51,7 @@ db.filter = sid=$_GET['sid']
 
 			[product_image]
 			css.width = 180px
-			css.height = 100px
+			css.height = 112px
 			css.margin = 10px
 			db.table = Image
 			db.filter = product_product_id=Product.id
