@@ -4,7 +4,21 @@ $this->menu=array(
 	array('label'=>'Create Page Content','url'=>array('create')),
 );
 
+
+Yii::app()->clientScript->registerScript('search', "
+$('.search-button').click(function(){
+    $('.search-form').toggle();
+    return false;
+});
+$('.search-form form').submit(function(){
+    $('#gallery-grid').yiiGridView('update', {
+        data: $(this).serialize()
+    });
+    return false;
+});
+");
 ?>
+
 
 <h1>Manage Page Content</h1>
 
@@ -28,7 +42,7 @@ $this->widget('CTreeView',array(
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'content-block-grid',
 	'dataProvider'=>$model->search(),
-	// 'filter'=>$model,
+	'filter'=>$model,
 	'columns'=>array(
 		// 'id',
 		//'sequence',
