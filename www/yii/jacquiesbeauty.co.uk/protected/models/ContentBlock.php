@@ -99,6 +99,9 @@ class ContentBlock extends CActiveRecord
 		$criteria->compare('active',$this->active);
 		$criteria->compare('home',$this->home);
 
+//@@ EG: Ordering model records on the admin crud
+        $criteria->order = "title ASC";
+
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
