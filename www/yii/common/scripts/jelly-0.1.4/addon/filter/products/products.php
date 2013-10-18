@@ -76,6 +76,7 @@ class products
         }
 
         // Price band (always shown if exists)
+        $lastShown = 0;
         $prices  = PriceBand::model()->findAll(array('order'=>'max', 'condition'=>'uid=' . $uid));
         if ($prices)
         {
@@ -87,7 +88,8 @@ class products
                 $content .= "<label class='checkbox'> ";
                 $content .= "<input name='price[]' "; 
                 if ($match) $content .= " checked='checked' ";
-                $content .= "type='checkbox' value='" . $price->id . "'> £" . $price->max;
+                $content .= "type='checkbox' value='" . $price->id . "'> £" . $lastShown . " - £" . $price->max;
+                $lastShown = $price->max;
                 $content .= "</label><br>";
             endforeach;
             $content .= "</div>";
