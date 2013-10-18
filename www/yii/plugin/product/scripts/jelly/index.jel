@@ -17,7 +17,7 @@ db.filter = sid=$_GET['sid']
 	child = filter, productcontainer
 	stacking = horizontal
 	css.width = 850px
-	css.height = 670px
+	#css.height = 670px
 	css.background-color = #f2f2f2
 	childss.overflow = auto
 	db.table = Department
@@ -26,7 +26,6 @@ db.filter = sid=$_GET['sid']
 
 		[filter]
 		css.width = 180px
-		html.raw = filterK
 		addon.filter.products.department = $_GET['department']
 
 		[productcontainer]

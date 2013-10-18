@@ -10,72 +10,139 @@
 
 class products
 {
-	//Defaults
-	private $defaultDepartment = "";
+    //Defaults
+    private $defaultDepartment = "";
     private $defaultWidth = "100%";
 
 // Not used ...
-	public $apiOption = array(
-	);
+    public $apiOption = array(
+    );
 
-	/*
-	 * Set up any code pre-requisites (onload/document-ready reqs)
-	 * Apply options
-	 * Return an array containing [0]localContent [1]globalContent
-	 */
-	public function init($options, $jellyRootUrl)
-	{
-//		var_dump( $options );
+    /*
+     * Set up any code pre-requisites (onload/document-ready reqs)
+     * Apply options
+     * Return an array containing [0]localContent [1]globalContent
+     */
+    public function init($options, $jellyRootUrl)
+    {
+//      var_dump( $options );
 
-		// Generate the content into the html, replacing any <substituteN> tags
-		$content = "";
-		foreach ($options as $opt => $val)
-		{
-			switch ($opt)
-			{
-				case "department":
-					$department = $val;
-					break;
-				default:
-					break;
-			}
-		}
+        // Generate the content into the html, replacing any <substituteN> tags
+        $content = "";
+        foreach ($options as $opt => $val)
+        {
+            switch ($opt)
+            {
+                case "department":
+                    $department = $val;
+                    break;
+                default:
+                    break;
+            }
+        }
 
-		// Apply all defaults that werent overridden
+        // Apply all defaults that werent overridden
 
-		// HTML
+        // HTML
 
         // JS
-		if (strstr($this->apiJs, "<substitute-department>"))
-		{
-			$tmp = str_replace("<substitute-department>", $this->defaultDepartment, $this->apiJs);
-			$this->apiJs = $tmp;
-		}
+        if (strstr($this->apiJs, "<substitute-department>"))
+        {
+            $tmp = str_replace("<substitute-department>", $this->defaultDepartment, $this->apiJs);
+            $this->apiJs = $tmp;
+        }
+
+        // Insert the data
+        $content = "<div style='color:#575757;'>";      // Your basic solemn grey font color
+
+        // Duration band (always shown if exists)
+        $durations = DurationBand::model()->findAll(array('order'=>'max'));
+        if ($durations)
+        {
+            $content .= "<br>";
+            $content .= "<div class='filter-header'>Duration<br>";
+            $content .= "<div class='filter-detail'>";
+            foreach ($durations as $duration):
+                $match = false;
+                $content .= "<label class='checkbox'> ";
+                $content .= "<input name='duration[]' "; 
+                if ($match) $content .= " checked='checked' ";
+                $content .= "type='checkbox' value='" . $duration->id . "'>" . $duration->max . " mins";
+                $content .= "</label><br>";
+            endforeach;
+            $content .= "</div>";
+            $content .= "</div>";
+        }
+
+        // Price band (always shown if exists)
+        $prices  = PriceBand::model()->findAll(array('order'=>'max'));
+        if ($prices)
+        {
+            $content .= "<br>";
+            $content .= "<div class='filter-header'>Price<br>";
+            $content .= "<div class='filter-detail'>";
+            foreach ($prices as $price):
+                $match = false;
+                $content .= "<label class='checkbox'> ";
+                $content .= "<input name='price[]' "; 
+                if ($match) $content .= " checked='checked' ";
+                $content .= "type='checkbox' value='" . $price->id . "'> £" . $price->max;
+                $content .= "</label><br>";
+            endforeach;
+            $content .= "</div>";
+            $content .= "</div>";
+        }
+/*
+       // Departments with features 
+        $departments  = Department::model()->findAll(array('order'=>'name'));
+        if ($departments)
+        {
+            $content .= "<br>";
+            foreach ($departments as $department):
+                $content .= "<div class='filter-header'>" . $department->name . "<br>";
+                $features  = Department::model()->findAll(array('order'=>'name'));
+                //$content .= "<div class='filter-detail'>";
+                //$match = false;
+                //$content .= "<label class='checkbox'> ";
+                //$content .= "<input name='price[]' "; 
+                //if ($match) $content .= " checked='checked' ";
+                //$content .= "type='checkbox' value='" . $price->id . "'>" . $price->max;
+                //$content .= "</label><br>";
+            endforeach;
+            //$content .= "</div>";
+            $content .= "</div>";
+        }
+*/
+        $content .= "</div>";
+        $html = str_replace("<substitute-data>", $content, $this->apiHtml);
+        $this->apiHtml = $html;
+
 
         // This is kind of a standard replace
-		$tmp = str_replace("<substitute-path>", $jellyRootUrl, $this->apiHtml);
-        $this->apiHtml = $tmp;
+        $this->apiHtml = str_replace("<substitute-path>", $jellyRootUrl, $this->apiHtml);
 
-		$retArr = array();
-		$retArr[0] = $this->apiHtml;
-		$retArr[1] = $this->apiJs;;
-		return $retArr;
-	}
-	// @@TODO: Thought: maybe all sites use a jelly db, and each has their own table prefix? Could avoid a lot of hassle
+        $retArr = array();
+        $retArr[0] = $this->apiHtml;
+        $retArr[1] = $this->apiJs;
+        return $retArr;
+    }
+    // @@TODO: Thought: maybe all sites use a jelly db, and each has their own table prefix? Could avoid a lot of hassle
 
-	private $apiHtml = <<<END_OF_API_HTML
+    private $apiHtml = <<<END_OF_API_HTML
 
-        <div id="jelly-product-filter-container">
-kkkkkk
+        <div id="jelly-products-filter-container">
+            <!--Products Filter-->
+            <link rel="stylesheet" type="text/css" href="<substitute-path>/products.css" />
+            <substitute-data>
         </div>
 
 END_OF_API_HTML;
 
-	private $apiJs = <<<END_OF_API_JS
+    private $apiJs = <<<END_OF_API_JS
 
-	jQuery(document).ready(function($){
-
-	});
+    jQuery(document).ready(function($){
+//alert('xx');
+    });
 
 END_OF_API_JS;
 
