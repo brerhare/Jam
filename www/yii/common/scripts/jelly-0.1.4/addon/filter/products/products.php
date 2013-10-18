@@ -102,9 +102,9 @@ class products
         {
             foreach ($departments as $department):
                 $content .= "<br>";
-                $content .= "<div class='filter-header'>" . $department->name . "<br>";
+                $content .= "<div id='h' class='filter-header'> <a href='#' >" . $department->name . "</a><br>";
                 $features  = Feature::model()->findAll(array('order'=>'name', 'condition'=>'product_department_id=' . $department->id));
-                $content .= "<div class='filter-detail'>";
+                $content .= "<div id='d' class='filter-detail'>";
                 foreach ($features as $feature):
                     $match = false;
                     $content .= "<label class='checkbox'> ";
@@ -146,8 +146,30 @@ END_OF_API_HTML;
 
     private $apiJs = <<<END_OF_API_JS
 
+    var isDet = 0;
+
     jQuery(document).ready(function($){
-//alert('xx');
+    });
+
+
+
+    $('.filter-detail').click(function(){
+isDet = 1;
+        $('.filter-detail', this).toggle(); // p00f
+    });
+
+
+
+    $('.filter-header').click(function(){
+if (isDet == 1)
+{
+    isDet = 0;
+    return; 
+}
+
+
+        $('.filter-detail', this).toggle(); // p00f
+
     });
 
 END_OF_API_JS;
