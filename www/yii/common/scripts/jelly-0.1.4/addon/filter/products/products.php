@@ -54,9 +54,10 @@ class products
 
         // Insert the data
         $content = "<div style='color:#575757;'>";      // Your basic solemn grey font color
+        $uid = Yii::app()->session['uid'];
 
         // Duration band (always shown if exists)
-        $durations = DurationBand::model()->findAll(array('order'=>'max'));
+        $durations = DurationBand::model()->findAll(array('order'=>'max', 'condition'=>'uid=' . $uid));
         if ($durations)
         {
             $content .= "<br>";
@@ -75,7 +76,7 @@ class products
         }
 
         // Price band (always shown if exists)
-        $prices  = PriceBand::model()->findAll(array('order'=>'max'));
+        $prices  = PriceBand::model()->findAll(array('order'=>'max', 'condition'=>'uid=' . $uid));
         if ($prices)
         {
             $content .= "<br>";
@@ -92,27 +93,30 @@ class products
             $content .= "</div>";
             $content .= "</div>";
         }
-/*
+
        // Departments with features 
-        $departments  = Department::model()->findAll(array('order'=>'name'));
+        $departments  = Department::model()->findAll(array('order'=>'name', 'condition'=>'uid=' . $uid));
         if ($departments)
         {
-            $content .= "<br>";
             foreach ($departments as $department):
+                $content .= "<br>";
                 $content .= "<div class='filter-header'>" . $department->name . "<br>";
-                $features  = Department::model()->findAll(array('order'=>'name'));
-                //$content .= "<div class='filter-detail'>";
-                //$match = false;
-                //$content .= "<label class='checkbox'> ";
-                //$content .= "<input name='price[]' "; 
-                //if ($match) $content .= " checked='checked' ";
-                //$content .= "type='checkbox' value='" . $price->id . "'>" . $price->max;
-                //$content .= "</label><br>";
+                $features  = Feature::model()->findAll(array('order'=>'name', 'condition'=>'product_department_id=' . $department->id));
+                $content .= "<div class='filter-detail'>";
+                foreach ($features as $feature):
+                    $match = false;
+                    $content .= "<label class='checkbox'> ";
+                    $content .= "<input name='feature[]' "; 
+                    if ($match) $content .= " checked='checked' ";
+                    $content .= "type='checkbox' value='" . $feature->id . "'>" . $feature->name;
+                    $content .= "</label><br>";
+                endforeach;
+                $content .= "</div>";
+                $content .= "</div>";
             endforeach;
             //$content .= "</div>";
-            $content .= "</div>";
         }
-*/
+
         $content .= "</div>";
         $html = str_replace("<substitute-data>", $content, $this->apiHtml);
         $this->apiHtml = $html;
