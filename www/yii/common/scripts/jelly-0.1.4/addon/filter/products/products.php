@@ -152,24 +152,18 @@ END_OF_API_HTML;
     });
 
 
-
     $('.filter-detail').click(function(){
-isDet = 1;
+        isDet = 1;
         $('.filter-detail', this).toggle(); // p00f
     });
 
-
-
     $('.filter-header').click(function(){
-if (isDet == 1)
-{
-    isDet = 0;
-    return; 
-}
-
-
+        if (isDet == 1)
+        {
+            isDet = 0;
+            return;
+        }
         $('.filter-detail', this).toggle(); // p00f
-
     });
 
 END_OF_API_JS;
