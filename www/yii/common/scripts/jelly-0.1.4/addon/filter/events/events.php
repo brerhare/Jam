@@ -93,6 +93,32 @@ class events
             $content .= "</div>";
             $content .= "</div>";
         }
+
+        // Wild Seasons fields start here
+        // ------------------------------
+
+    // echo $form->dropDownListRow($model2,'grade', array('Easy'=>'Easy', 'Medium'=>'Medium', 'Family'=>'Family'),  array('empty'=>'Choose') );
+
+        // Grade
+        $grades = array("Easy", "Medium", "Family");
+        if ($grades)
+        {   
+            $content .= "<br>";
+            $content .= "<div class='filter-header'>grade<br>";
+            $content .= "<div class='filter-detail'>";
+            foreach ($grades as $grade):
+                $match = false;
+                $content .= "<label class='checkbox'> ";
+                $content .= "<input name='grade[]' "; 
+                if ($match) $content .= " checked='checked' ";
+                $content .= "type='checkbox' value='" . $grade . "'>" . $grade;
+                $content .= "</label><br>";
+            endforeach;
+            $content .= "</div>";
+            $content .= "</div>";
+        }
+
+
 /*
        // Departments with features 
         $departments  = Department::model()->findAll(array('order'=>'name', 'condition'=>'uid=' . $uid));
