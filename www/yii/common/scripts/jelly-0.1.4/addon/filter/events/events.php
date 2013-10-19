@@ -55,26 +55,9 @@ class events
         // Insert the data
         $content = "<div style='color:#575757;'>";      // Your basic solemn grey font color
         $uid = Yii::app()->session['uid'];
-/*
-        // Duration band (always shown if exists)
-        $durations = DurationBand::model()->findAll(array('order'=>'max', 'condition'=>'uid=' . $uid));
-        if ($durations)
-        {
-            $content .= "<br>";
-            $content .= "<div class='filter-header'>Duration<br>";
-            $content .= "<div class='filter-detail'>";
-            foreach ($durations as $duration):
-                $match = false;
-                $content .= "<label class='checkbox'> ";
-                $content .= "<input name='duration[]' "; 
-                if ($match) $content .= " checked='checked' ";
-                $content .= "type='checkbox' value='" . $duration->id . "'>" . $duration->max . " mins";
-                $content .= "</label><br>";
-            endforeach;
-            $content .= "</div>";
-            $content .= "</div>";
-        }
-*/
+
+
+
         // Price band (always shown if exists)
         $prices  = PriceBand::model()->findAll(array('order'=>'id'));
         if ($prices)
@@ -97,9 +80,7 @@ class events
         // Wild Seasons fields start here
         // ------------------------------
 
-    // echo $form->dropDownListRow($model2,'grade', array('Easy'=>'Easy', 'Medium'=>'Medium', 'Family'=>'Family'),  array('empty'=>'Choose') );
-
-        // Grade
+         // Grade
         $grades = array("Easy", "Medium", "Family");
         if ($grades)
         {   
