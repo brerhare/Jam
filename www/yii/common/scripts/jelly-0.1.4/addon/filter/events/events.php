@@ -56,7 +56,19 @@ class events
         $content = "<div style='color:#575757;'>";      // Your basic solemn grey font color
         $uid = Yii::app()->session['uid'];
 
+        // Datepicker
+        $content .= "<br>";
+        $content .= "<div class='filter-header'>Date<br>";
+        $content .= "<div class='filter-detail'>";
 
+
+
+        $content .= "<input type='text' id='datepicker' style='width:70px'/>";
+
+
+
+        $content .= "</div>";
+        $content .= "</div>";              
 
         // Price band (always shown if exists)
         $prices  = PriceBand::model()->findAll(array('order'=>'id'));
@@ -144,6 +156,14 @@ class events
         <div id="jelly-products-filter-container">
             <!--Products Filter-->
             <link rel="stylesheet" type="text/css" href="<substitute-path>/events.css" />
+
+            <!-- Date support -->
+            <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+            <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+            <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+            <link rel="stylesheet" href="/resources/demos/style.css" />
+
+
             <substitute-data>
         </div>
 
@@ -154,6 +174,10 @@ END_OF_API_HTML;
     var isDet = 0;
 
     jQuery(document).ready(function($){
+
+        // datepicker with UK date format
+        $( "#datepicker" ).datepicker({ dateFormat: 'dd/mm/yy' })
+
     });
 
 
@@ -170,6 +194,13 @@ END_OF_API_HTML;
         }
         $('.filter-detail', this).toggle(); // p00f
     });
+
+    //Datepicker
+    $(function() {
+        $( "#datepicker" ).datepicker();
+    });
+
+
 
 END_OF_API_JS;
 
