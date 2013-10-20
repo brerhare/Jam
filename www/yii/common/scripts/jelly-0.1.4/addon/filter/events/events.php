@@ -158,10 +158,9 @@ class events
             <link rel="stylesheet" type="text/css" href="<substitute-path>/events.css" />
 
             <!-- Date support -->
-            <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/smoothness/jquery-ui.css" />
+            <link rel="stylesheet" href="//code.jquery.com/ui/1.9.1/themes/smoothness/jquery-ui.css" />
             
-            <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
-            <link rel="stylesheet" href="/resources/demos/style.css" />
+            <script src="//code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
 
 
             <substitute-data>
@@ -174,12 +173,9 @@ END_OF_API_HTML;
     var isDet = 0;
 
     jQuery(document).ready(function($){
-
         // datepicker with UK date format
-//        $( "#datepicker" ).datepicker({ dateFormat: 'dd/mm/yy' })
-
+        $( "#datepicker" ).datepicker({ dateFormat: 'dd/mm/yy' })
     });
-
 
     $('.filter-detail').click(function(){
         isDet = 1;
@@ -198,10 +194,7 @@ END_OF_API_HTML;
     //Datepicker
     $(function() {
         $( "#datepicker" ).datepicker();
-        alert('xxx');
     });
-
-
 
 END_OF_API_JS;
 
