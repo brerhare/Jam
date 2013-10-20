@@ -198,6 +198,7 @@ END_OF_API_HTML;
     //Datepicker
     $(function() {
         $( "#datepicker" ).datepicker();
+        alert('xxx');
     });
 
 
