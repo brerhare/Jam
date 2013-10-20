@@ -159,7 +159,9 @@ class events
 
             <!-- Date support -->
             <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/smoothness/jquery-ui.css" />
-			<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script
+            
+            <script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
+            <link rel="stylesheet" href="/resources/demos/style.css" />
 
 
             <substitute-data>
@@ -174,7 +176,8 @@ END_OF_API_HTML;
     jQuery(document).ready(function($){
 
         // datepicker with UK date format
-        $( "#datepicker" ).datepicker({ dateFormat: 'dd/mm/yy' })
+//        $( "#datepicker" ).datepicker({ dateFormat: 'dd/mm/yy' })
+
     });
 
 
@@ -195,6 +198,7 @@ END_OF_API_HTML;
     //Datepicker
     $(function() {
         $( "#datepicker" ).datepicker();
+        alert('xxx');
     });
 
 
