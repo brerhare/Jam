@@ -168,7 +168,7 @@ END_OF_API_HTML;
     selDate = '';
 
     function makeSel() {
-        sel = 'index.php/?layout=index&date=' + selDate;
+        sel = '?layout=index&date=' + selDate;
 window.location.href = sel;
     }
 
