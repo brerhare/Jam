@@ -266,6 +266,22 @@ END_OF_FOOTER;
 								array_push($fltArr, $elemComma);
 							}
 							break;
+
+
+
+
+						case ("filtercomplex"):
+						// THIS IS THE EVENT TABLE
+							if (isset($_GET['date']))
+							{
+								$dtArr = explode('-', $_GET['date']);
+								$dt = $dtArr[2] . '-' . $dtArr[1] . '-' . $dtArr[0];
+								array_push($fltArr, "start >= '" . $dt . "'");
+								//die(var_dump($fltArr));
+							}
+
+							break;
+
 						case ("order"):
 							$orderCommaArr = explode(",", $dbValue);
 							foreach ($orderCommaArr as $elemComma)
@@ -558,6 +574,20 @@ if (isset($_GET['page']))
 								array_push($fltArr, $elemComma);
 							}
 							break;
+
+
+
+						case ("filtercomplex"):
+						// THIS IS THE WS TABLE
+							if (isset($_GET['pb']))
+							{
+								//array_push($fltArr, "price_band=1");
+															//die(var_dump($fltArr));
+							}
+
+							break;
+
+
 						case ("order"):
 							$orderCommaArr = explode(",", $dbValue);
 							foreach ($orderCommaArr as $elemComma)
