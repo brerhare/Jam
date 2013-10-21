@@ -57,10 +57,13 @@ class events
         $uid = Yii::app()->session['uid'];
 
         // Datepicker
+        $dt = '';
+        if (isset($_GET['date']))
+            $dt = $_GET['date'];
         $content .= "<br>";
         $content .= "<div class='filter-header'>Date<br>";
         $content .= "<div class='filter-detail'>";
-        $content .= "<input type='text' id='datepicker' style='width:70px'/>";
+        $content .= "<input type='text' id='datepicker' style='width:70px' value='" . $dt . "'>";
         $content .= "</div>";
         $content .= "</div>";              
 
@@ -68,11 +71,16 @@ class events
         $prices  = PriceBand::model()->findAll(array('order'=>'id'));
         if ($prices)
         {
+            $pbSel = array();
+            if (isset($_GET['pb']))
+                $pbSel = explode('|', $_GET['pb']);
             $content .= "<br>";
             $content .= "<div class='filter-header'>Price Band<br>";
             $content .= "<div class='filter-detail'>";
             foreach ($prices as $price):
                 $match = false;
+                if (in_array($price->id, $pbSel))
+                    $match = true;
                 $content .= "<label class='checkbox'> ";
                 $content .= "<input name='price[]' "; 
                 if ($match) $content .= " checked='checked' ";
@@ -90,46 +98,26 @@ class events
         $grades = array( "Family", "Easy", "Medium", "Hard", "Task");
         if ($grades)
         {   
+            $gradeSel = array();
+            if (isset($_GET['grade']))
+                $gradeSel = explode('|', $_GET['grade']);
             $content .= "<br>";
             $content .= "<div class='filter-header'>grade<br>";
             $content .= "<div class='filter-detail'>";
             foreach ($grades as $grade):
                 $match = false;
+                if (in_array($grade, $gradeSel))
+                    $match = true;
                 $content .= "<label class='checkbox'> ";
                 $content .= "<input name='grade[]' "; 
                 if ($match) $content .= " checked='checked' ";
-                $content .= "type='checkbox' value='" . $grade . "'>" . $grade;
+                $content .= "type='checkbox' value='" . $grade . "' onClick=makeSel()>" . $grade;
                 $content .= "</label><br>";
             endforeach;
             $content .= "</div>";
             $content .= "</div>";
         }
 
-
-/*
-       // Departments with features 
-        $departments  = Department::model()->findAll(array('order'=>'name', 'condition'=>'uid=' . $uid));
-        if ($departments)
-        {
-            foreach ($departments as $department):
-                $content .= "<br>";
-                $content .= "<div id='h' class='filter-header'> <a href='#' >" . $department->name . "</a><br>";
-                $features  = Feature::model()->findAll(array('order'=>'name', 'condition'=>'product_department_id=' . $department->id));
-                $content .= "<div id='d' class='filter-detail'>";
-                foreach ($features as $feature):
-                    $match = false;
-                    $content .= "<label class='checkbox'> ";
-                    $content .= "<input name='feature[]' "; 
-                    if ($match) $content .= " checked='checked' ";
-                    $content .= "type='checkbox' value='" . $feature->id . "'>" . $feature->name;
-                    $content .= "</label><br>";
-                endforeach;
-                $content .= "</div>";
-                $content .= "</div>";
-            endforeach;
-            //$content .= "</div>";
-        }
-*/
         $content .= "</div>";
         $html = str_replace("<substitute-data>", $content, $this->apiHtml);
         $this->apiHtml = $html;
@@ -188,15 +176,27 @@ END_OF_API_HTML;
             }
             sel += '&pb=' + str; 
         }
-
-//alert(sel);
-//return;
-
+        // Grade
+        av=document.getElementsByName("grade[]");
+        if (av.length > 0)
+        {
+            var str = '';
+           for (var i = 0; i < av.length; i++)
+           {
+               if (av[i].checked)
+                {
+                    if (str != '') str += '|';
+                    str += av[i].value;
+                }
+            }
+            sel += '&grade=' + str; 
+        }
         // Activate the link
         window.location.href = sel;
     }
 
     jQuery(document).ready(function($){
+        selDate = document.getElementById("datepicker").value;
     });
 
     $('.filter-detail').click(function(){
