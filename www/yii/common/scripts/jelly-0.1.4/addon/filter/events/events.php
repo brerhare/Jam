@@ -60,13 +60,7 @@ class events
         $content .= "<br>";
         $content .= "<div class='filter-header'>Date<br>";
         $content .= "<div class='filter-detail'>";
-
-
-
         $content .= "<input type='text' id='datepicker' style='width:70px'/>";
-
-
-
         $content .= "</div>";
         $content .= "</div>";              
 
@@ -93,7 +87,7 @@ class events
         // ------------------------------
 
          // Grade
-        $grades = array("Easy", "Medium", "Family");
+        $grades = array( "Family", "Easy", "Medium", "Hard", "Task");
         if ($grades)
         {   
             $content .= "<br>";
@@ -171,10 +165,14 @@ END_OF_API_HTML;
     private $apiJs = <<<END_OF_API_JS
 
     var isDet = 0;
+    selDate = '';
+
+    function makeSel() {
+        sel = 'index.php/?layout=index&date=' + selDate;
+window.location.href = sel;
+    }
 
     jQuery(document).ready(function($){
-        // datepicker with UK date format
-        $( "#datepicker" ).datepicker({ dateFormat: 'dd/mm/yy' })
     });
 
     $('.filter-detail').click(function(){
@@ -192,9 +190,15 @@ END_OF_API_HTML;
     });
 
     //Datepicker
-    $(function() {
-        $( "#datepicker" ).datepicker();
+    $('#datepicker').datepicker({
+        dateFormat: 'dd-mm-yy',
+        onSelect: function(
+        dateText, inst) {
+            selDate = dateText;
+            makeSel();
+        }
     });
+
 
 END_OF_API_JS;
 

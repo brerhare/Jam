@@ -54,10 +54,18 @@ fx.wallpaper-color = #00000
             stacking = horizontal
     		db.table = Event
             # @@TODO Fix next line Hardcoding for Wild Seasons
-    	   ####d#b.filter = program_id=6
+            ####db.filter = program_id=6
         	db.order = start
     		db.fetch = multiple
+            db.filtercomplex = whateva
             click = index.php/?layout=event&event=Event.id
+            //click = [detail]
+
+                [detail]
+                css.display = none    
+                onclick = index.php/?layout=event&event=Event.id
+                css.width = 650px
+                html.raw = ONCLICK
 
                 [header-text]
                 child = header-heading, header-date, header-desc, header-icons
