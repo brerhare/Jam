@@ -76,7 +76,7 @@ class events
                 $content .= "<label class='checkbox'> ";
                 $content .= "<input name='price[]' "; 
                 if ($match) $content .= " checked='checked' ";
-                $content .= "type='checkbox' value='" . $price->id . "'>" . $price->name;
+                $content .= "type='checkbox' value='" . $price->id . "' onClick=makeSel()>" . $price->name;
                 $content .= "</label><br>";
             endforeach;
             $content .= "</div>";
@@ -166,10 +166,34 @@ END_OF_API_HTML;
 
     var isDet = 0;
     selDate = '';
+    priceBand = '';
+    grade = '';
 
-    function makeSel() {
+    function makeSel()
+    {
+        // Date
         sel = '?layout=index&date=' + selDate;
-window.location.href = sel;
+        // Price band
+        av=document.getElementsByName("price[]");
+        if (av.length > 0)
+        {
+            var str = '';
+           for (var i = 0; i < av.length; i++)
+           {
+               if (av[i].checked)
+                {
+                    if (str != '') str += '|';
+                    str += av[i].value;
+                }
+            }
+            sel += '&pb=' + str; 
+        }
+
+//alert(sel);
+//return;
+
+        // Activate the link
+        window.location.href = sel;
     }
 
     jQuery(document).ready(function($){
