@@ -80,7 +80,6 @@ fx.wallpaper-color = #00000
                 css.border-color = #dcdcdc
 
                 db.table = Ws
-                html.raw = Ws.grade
                 db.filter = event_id=Event.id
                 db.filtercomplex = @@TODO
 
