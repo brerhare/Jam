@@ -271,14 +271,14 @@ END_OF_FOOTER;
 
 
 						case ("filtercomplex"):
-						// THIS IS THE EVENT TABLE
-							if (isset($_GET['date']))
+						// @@TODO WILD SEASONS. THIS IS THE EVENT TABLE
+							if ((isset($_GET['date'])) && ($_GET['date'] != ''))
 							{
 								$dtArr = explode('-', $_GET['date']);
 								$dt = $dtArr[2] . '-' . $dtArr[1] . '-' . $dtArr[0];
 								array_push($fltArr, "start >= '" . $dt . "'");
-								//die(var_dump($fltArr));
 							}
+
 
 							break;
 
@@ -304,6 +304,7 @@ END_OF_FOOTER;
                     // Add order
                     foreach ($orderArr as $ord)
 						$cri->order = $this->dbExpand(trim($ord));
+
                     // Do the query
                     $q = "return " . $query . ";";
 Yii::log("REPEATING EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
@@ -313,6 +314,27 @@ Yii::log("REPEATING EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim
                         // Generate blobs for each iteration
                         foreach ($resp as $r)
                         {
+
+
+
+							// @@TODO WILD SEASONS hardcoding
+							if ((isset($_GET['grade'])) && ($_GET['grade'] != ''))
+							{
+    							$criteria = new CDbCriteria;
+								$criteria->addCondition("event_id = " . $r->id);
+								$Ws = Ws::model()->find($criteria);
+								if (!($Ws))
+									continue;
+								$gradeArr = explode('|', $_GET['grade']);
+								//die(count($gradeArr));
+								if (count($gradeArr) > 0)
+									if (!in_array($Ws->grade, $gradeArr))
+										continue;
+
+							}
+
+
+
                             // Store the handle for this record
                             $this->dbTable[$dbTable] = $r;
                             $this->blobProcess2($jellyArray, $blobName, $array, $float, $indentLevel);
@@ -579,10 +601,10 @@ if (isset($_GET['page']))
 
 						case ("filtercomplex"):
 						// THIS IS THE WS TABLE
-							if (isset($_GET['pb']))
+							if (isset($_GET['grade']))
 							{
-								//array_push($fltArr, "price_band=1");
-															//die(var_dump($fltArr));
+								//array_push($fltArr, "gradex='" . $_GET['grade'] . "'");
+															//	die(var_dump($fltArr));
 							}
 
 							break;
