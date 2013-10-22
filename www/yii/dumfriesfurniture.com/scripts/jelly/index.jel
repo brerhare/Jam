@@ -27,10 +27,9 @@ css.display = block
 			#addon.accordion.elegant.default-width = 200px
 
 			[header-venetian-blinds]
-css.margin-left = 370px
 			css.width = 650px
-			#css.background-color = #f8f9d7
-			#html.raw = Department selector
+			# The accordion needs positioning by setting a margin on the containing block
+			css.margin-left = 370px
 			addon.accordion.elegant.default-width = 200px
 
 		[contact-details]
