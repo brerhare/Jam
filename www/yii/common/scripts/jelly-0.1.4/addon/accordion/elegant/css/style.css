@@ -27,6 +27,9 @@ ul.accordion li{
     -webkit-box-shadow:1px 3px 15px #555;
     box-shadow:1px 3px 15px #555;
 }
+ul.accordion li.bg{
+    background-image:url(../images/1.jpg);
+}
 ul.accordion li.bg1{
     background-image:url(../images/1.jpg);
 }

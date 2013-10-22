@@ -67,8 +67,24 @@ class elegant
         $tmp = str_replace("<substitute-path>", $jellyRootUrl, $this->apiHtml);
         $this->apiHtml = $tmp;
 
+		// Generate the HTML
+		$data = "";
+		$data .= "<ul class='accordion' id='accordion'>";
+		$accordionBlocks = AccordionBlock::model()->findAll(array('order'=>'sequence'));
+		foreach ($accordionBlocks as $accordionBlock):
+			//$data .= "<li style='background-image:url('" . Yii::app()->basePath . "/../userdata/accordion/" . $accordionBlock->image . "');'>";
+			$data .= "<li style='background-image:url(/userdata/accordion/" . $accordionBlock->image . ");'>";
+            $data .= "<div class='heading'>" . $accordionBlock->title . "</div>";
+            $data .= "<div class='bgDescription'></div>";
+            $data .= "<div class='description'>";
+            $data .= "<h2>" . $accordionBlock->title . "</h2>";
+            $data .= "<p>" . $accordionBlock->content . "</p>";
+            //$data .= "<a href='" . "'>" . $accordionBlock->url . "</a>";
+            $data .= "</div>";
+            $data .= "</li>";
+		endforeach;
 
-		$html = $this->apiHtml;
+		$html = str_replace("<substitute-data>", $data, $this->apiHtml);
 		$js   = $this->apiJs;
 
 		$retArr = array();
@@ -83,72 +99,7 @@ class elegant
 
 	<div id="jelly-elegant-accordion-container">
 		<link rel="stylesheet" href="<substitute-path>/css/style.css" type="text/css" media="screen"/>
-
-
-
-			<ul class="accordion" id="accordion">
-                <li class="bg1">
-                    <div class="heading">Guler2</div>
-                    <div class="bgDescription"></div>
-                    <div class="description">
-                        <h2>Guler22</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-                            ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                            reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                            nulla pariatur.</p>
-                        <a href="#">more &rarr;</a>
-                    </div>
-                </li>
-                <li class="bg2">
-                    <div class="heading">Phillips</div>
-                    <div class="bgDescription"></div>
-                    <div class="description">
-                        <h2>Phillips</h2>
-                        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-                            accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-                            quae ab illo inventore veritatis et quasi architecto beatae vitae
-                            dicta sunt explicabo. </p>
-                        <a href="#">more &rarr;</a>
-                    </div>
-
-                </li>
-                <li class="bg3">
-                    <div class="heading">Diamanti</div>
-                    <div class="bgDescription"></div>
-                    <div class="description">
-                        <h2>Diamanti</h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi
-                            ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                            reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                            nulla pariatur.</p>
-                        <a href="#">more &rarr;</a>
-                    </div>
-
-                </li>
-                <li class="bg4 bleft">
-                    <div class="heading">Meiklejohn</div>
-                    <div class="bgDescription"></div>
-                    <div class="description">
-                        <h2>Meiklejohn</h2>
-                        <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-                            accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-                            quae ab illo inventore veritatis et quasi architecto beatae vitae
-                            dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
-                            sit aspernatur aut odit aut fugit, sed quia consequuntur magni
-                            dolores eos qui ratione voluptatem sequi nesciunt.</p>
-                        <a href="#">more &rarr;</a>
-                    </div>
-
-                </li>
-            </ul>
-
-
-
-
+		<substitute-data>
 	</div>
 
 END_OF_API_HTML;
