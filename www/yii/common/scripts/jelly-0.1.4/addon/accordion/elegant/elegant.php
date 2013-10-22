@@ -123,7 +123,7 @@ END_OF_API_HTML;
                 function () {
                     var \$this = $(this);
 /*kim 115px - to align with the css*/
-                    \$this.stop().animate({'width':'75px'},1000);
+                    \$this.stop().animate({'width':'95px'},1000);
                     $('.heading',\$this).stop(true,true).fadeIn();
                     $('.description',\$this).stop(true,true).fadeOut(500);
                     $('.bgDescription',\$this).stop(true,true).slideUp(700);

@@ -11,7 +11,7 @@ ul.accordion{
 ul.accordion li{
     float:right;
 /*kim 115px*/
-    width:75px;
+    width:95px;
 /*kim 480px*/
     height:200px;
     display:block;
@@ -26,24 +26,6 @@ ul.accordion li{
     -moz-box-shadow:1px 3px 15px #555;
     -webkit-box-shadow:1px 3px 15px #555;
     box-shadow:1px 3px 15px #555;
-}
-ul.accordion li.bg{
-    background-image:url(../images/1.jpg);
-}
-ul.accordion li.bg1{
-    background-image:url(../images/1.jpg);
-}
-ul.accordion li.bg2{
-    background-image:url(../images/2.jpg);
-}
-ul.accordion li.bg3{
-    background-image:url(../images/3.jpg);
-}
-ul.accordion li.bg4{
-    background-image:url(../images/4.jpg);
-}
-ul.accordion li.bleft{
-    border-left:2px solid #fff;
 }
 ul.accordion li .heading{
     background-color:#fff;
