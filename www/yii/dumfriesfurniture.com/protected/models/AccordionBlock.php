@@ -43,6 +43,10 @@ class AccordionBlock extends CActiveRecord
 			array('sequence', 'numerical', 'integerOnly'=>true),
 			array('title, url, image', 'length', 'max'=>255),
 			array('content', 'safe'),
+
+            array('image','unsafe'),
+            array('image', 'file', 'types'=>'jpg, jpeg, gif, png','safe'=>true, 'maxSize'=>10000*1024, 'allowEmpty'=>true, 'tooLarge'=>'{attribute} is too large to be uploaded. Maximum size is 10MB.'),
+
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, sequence, title, url, content, image', 'safe', 'on'=>'search'),

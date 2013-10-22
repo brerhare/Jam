@@ -1,15 +1,10 @@
 <?php
-$this->breadcrumbs=array(
-	'Accordion Blocks'=>array('index'),
-	'Create',
-);
 
 $this->menu=array(
-	array('label'=>'List AccordionBlock','url'=>array('index')),
-	array('label'=>'Manage AccordionBlock','url'=>array('admin')),
+	array('label'=>'Manage Accordion Blocks','url'=>array('admin')),
 );
 ?>
 
-<h1>Create AccordionBlock</h1>
+<h1>Create Accordion Block</h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

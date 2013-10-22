@@ -14,5 +14,8 @@ userdata/carousel/*
 !userdata/tab
 userdata/tab/*
 !userdata/tab/.gitignore
+!userdata/accordion
+userdata/accordion/*
+!userdata/accordion/.gitignore
 *.bak
 *.swp

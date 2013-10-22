@@ -8,6 +8,8 @@ class AccordionBlockController extends Controller
 	 */
 	public $layout='//layouts/column2';
 
+    private $_thumbDir = '/../userdata/accordion/';   // Note this is only partial. Gets prepended base path
+
 	/**
 	 * @return array action filters
 	 */
@@ -31,7 +33,7 @@ class AccordionBlockController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('admin','create','update','delete','imageUpload','imageList'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -61,6 +63,7 @@ class AccordionBlockController extends Controller
 	 */
 	public function actionCreate()
 	{
+		$iDir = $this->getThumbDir();
 		$model=new AccordionBlock;
 
 		// Uncomment the following line if AJAX validation is needed
@@ -69,8 +72,16 @@ class AccordionBlockController extends Controller
 		if(isset($_POST['AccordionBlock']))
 		{
 			$model->attributes=$_POST['AccordionBlock'];
+			$model->image=CUploadedFile::getInstance($model, 'image');
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			{
+				if (strlen($model->image) > 0)
+                {
+                    $fname = $iDir . $model->image;
+                    $model->image->saveAs($fname);
+                }
+				$this->redirect(array('admin'));
+			}
 		}
 
 		$this->render('create',array(
@@ -85,6 +96,7 @@ class AccordionBlockController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
+	    $iDir = $this->getThumbDir();
 		$model=$this->loadModel($id);
 
 		// Uncomment the following line if AJAX validation is needed
@@ -93,8 +105,22 @@ class AccordionBlockController extends Controller
 		if(isset($_POST['AccordionBlock']))
 		{
 			$model->attributes=$_POST['AccordionBlock'];
+			$file=CUploadedFile::getInstance($model, 'image');
+            if (is_object($file) && get_class($file) === 'CUploadedFile')
+            {
+                // Delete old one
+                if (strlen($model->image) > 0)
+                {
+                    if (file_exists($iDir . $model->image))
+                        unlink($iDir . $model->image);
+                }
+                // Save new one
+                $model->image = $file;
+                $fname = $iDir . $model->image;
+                $model->image->saveAs($fname);
+            }
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('admin'));
 		}
 
 		$this->render('update',array(
@@ -111,7 +137,15 @@ class AccordionBlockController extends Controller
 	{
 		if(Yii::app()->request->isPostRequest)
 		{
+			$iDir = $this->getThumbDir();
+			$model=$this->loadModel($id);
 			// we only allow deletion via POST request
+			// Delete image
+            if (strlen($model->image) > 0)
+            {
+                if (file_exists($iDir . $model->image))
+                    unlink($iDir . $model->image);
+            }
 			$this->loadModel($id)->delete();
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
@@ -147,6 +181,11 @@ class AccordionBlockController extends Controller
 			'model'=>$model,
 		));
 	}
+
+    public function getThumbDir()
+    {
+        return Yii::app()->basePath . $this->_thumbDir;
+    }
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
