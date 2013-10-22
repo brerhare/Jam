@@ -85,6 +85,32 @@ class SiteController extends Controller
         $this->redirect(array('site/index'));
     }
 
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR STYLE ---------- REMOVE
+    public function actionSDirect()
+    {
+        Yii::app()->session['uid'] = 22;
+        $identity = new UserIdentity('nancy@styleyourvenue.co.uk', 'cu62mg6');
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR THE-ART-ROOM ---------- REMOVE
+    public function actionADirect()
+    {
+        Yii::app()->session['uid'] = 24;
+        $identity = new UserIdentity('rachel@the-art-room.co.uk', 'oldschool');
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
 	/**
 	 * Displays the login page
 	 */
