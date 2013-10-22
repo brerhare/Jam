@@ -124,13 +124,13 @@ END_OF_API_HTML;
 	private $apiJs = <<<END_OF_API_JS
 
 	jQuery(document).ready(function($){
-		$('#tabs li a:not(:first)').addClass('inactive');
+		$('#rain-tabs li a:not(:first)').addClass('inactive');
 		$('.rain-tabcontent-container:not(:first)').hide();	
 	
-		$('#tabs li a').click(function(){		
+		$('#rain-tabs li a').click(function(){		
 			var t = $(this).attr('href');
 			if($(this).hasClass('inactive')){ //added to not animate when active
-				$('#tabs li a').addClass('inactive');		
+				$('#rain-tabs li a').addClass('inactive');		
 				$(this).removeClass('inactive');
 				$('.rain-tabcontent-container').hide();
 				$(t).fadeIn('slow');	

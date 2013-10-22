@@ -362,8 +362,8 @@ if (isset($_GET['page']))
 {
  if ($_GET['page'] != 'Jacquies-Beauty-Dumfries-Salon')
  {
-  if (($blobName == 'tabs') || ($blobName == 'tabscontainer'))
-   return;
+  //if (($blobName == 'tabs') || ($blobName == 'tabscontainer'))
+   //return;
   }
 }
 /*****************************************************************/
