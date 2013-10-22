@@ -65,6 +65,7 @@ css.display = block
 		[tabs]
 #css.display = none
 css.display = block
+css.width = 680px
 		addon.tab.rain.source = db
 
 		; [content] needs a container because we want a bit of space around the actual content.
