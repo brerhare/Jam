@@ -1,6 +1,7 @@
 [some_sensible_values]
-;;;;;;;;;; css.html * = { font-size: 1em; color: #000; font-family: Arial !important; }
-css.display = none 
+;;;;;;;;;; css.html * = { font-size: 1em; color: #000; font-family: Verdana !important; }
+css.line-height = 180%
+css.display = block 
 css.overflow = hidden /* (or any type of overflow) avoids position shift on no-margin containers */
 css.margin = 0px auto
 
@@ -13,7 +14,7 @@ fx.wallpaper-image = /img/bg.jpg
 css.display = block
 
 	[contentframe]
-	child = fixedheader, carousel, tabscontainer, contentcontainer
+	child = fixedheader, carousel, tabscontainer, contentcontainer, footer, bottom
 	css.display = block
 	css.width = 908px	/* if we give an explicit width here, child elements will by default set their width to it */
 
@@ -52,8 +53,9 @@ css.display = block
 		addon.carousel.flexslider.source = db
 
 		[tabscontainer]
-css.display = none
-#css.display = block
+#css.display = none
+css.display = block
+#css.height = 300px
 		child = tabs
 		css.display = block
 		css.margin-bottom = -4px
@@ -61,8 +63,8 @@ css.display = none
 		fx.rounding = 4px
 
 		[tabs]
-css.display = none
-#css.display = block
+#css.display = none
+css.display = block
 		addon.tab.rain.source = db
 
 		; [content] needs a container because we want a bit of space around the actual content.
@@ -82,3 +84,64 @@ css.display = none
 			db.filter = url=$_GET['page']
 			db.error = Sorry, I could not find that page. You requested $_GET['page']
 			html.raw = ContentBlock.content
+
+	[footer]
+	child = footer-menu, address, wirefly-details
+	css.background-color = white
+	#css.width = 908px
+	css.height = 90px
+	fx.rounding = 4px
+	css.margin-top = 15px
+
+
+		[footer-menu]
+		stacking = horizontal
+		child = footer-cookies, footer-tandc, footer-contact
+		css.margin-top = 20px
+		css.width = 800
+		css.height = 20px
+
+			[footer-cookies]
+			html.raw = Cookie Policy
+			css.width = 100px
+			css.font-size = 10px
+			css.margin-left = 300px
+			click = http://jacquies.wireflydesign.com/?layout=index&page=cookies
+
+			[footer-tandc]
+			html.raw = Terms & Conditions
+			css.width = 100px
+			css.font-size = 10px
+			css.margin-left = 10px
+			click = http://jacquies.wireflydesign.com/?layout=index&page=t-and-c
+
+			[footer-contact]
+			html.raw = Privacy Policy
+			css.width = 100px
+			css.font-size = 10px
+			css.margin-left = 40px
+			click = http://jacquies.wireflydesign.com/?layout=index&page=privacy-policy
+
+		[address]
+		css.width = 420px
+		#css.height = 25px
+		css.font-size = 12px
+		#css.margin-left = 40px
+		css.text-align = centre
+		html.raw = Jacquies Beauty, 34 Whitesands, Dumfries, Uk, DG1 2RS - 01387 269077
+		click = ?layout=index&page=contact-jacquies-beauty-salon-dumfries
+
+		[wirefly-details]
+		css.margin-top = 15px
+		css.width = 200px
+		css.font-size = 10px
+		#css.margin-left = 350px
+		css.text-align = centre
+		#image.url = /img/site-tag-black.png
+		#image.width = 100px
+		#image.height = 15px
+		html.raw = Site by Wirefly Design copyright 2013
+		click = http://www.wireflydesign.com
+
+[bottom]
+css.height = 20px
