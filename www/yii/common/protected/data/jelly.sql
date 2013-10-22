@@ -6,9 +6,9 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 -- -----------------------------------------------------
 -- Table ``.`accordian_block`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS ``.`accordian_block` ;
+DROP TABLE IF EXISTS `accordian_block` ;
 
-CREATE  TABLE IF NOT EXISTS ``.`accordian_block` (
+CREATE  TABLE IF NOT EXISTS `accordian_block` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `sequence` INT NULL ,
   `title` VARCHAR(255) NOT NULL ,
