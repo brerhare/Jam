@@ -72,7 +72,7 @@ class elegant
 		$data .= "<ul class='accordion' id='accordion'>";
 		$accordionBlocks = AccordionBlock::model()->findAll(array('order'=>'sequence'));
 		foreach ($accordionBlocks as $accordionBlock):
-			$data .= "<li style='background-image:url(/userdata/accordion/" . $accordionBlock->image . ");  background-size: 100% ;  '>";
+			$data .= "<li style='background-image:url(/userdata/accordion/" . $accordionBlock->image . ");  background-size: cover ;  '>";
             $data .= "<div class='heading'>" . $accordionBlock->title . "</div>";
             $data .= "<div class='bgDescription'></div>";
             $data .= "<div class='description'>";
