@@ -1,1 +1,1 @@
-mysql -u jacquiesbeauty.c jacquiesbeauty_co_uk -p"kimlo," < jacquiesbeauty_co_uk.sql
+mysql -u dumfriesfurnitur dumfriesfurniture_com -p"ey746hs" < jelly.sql
