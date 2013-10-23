@@ -332,8 +332,23 @@ Yii::log("REPEATING EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim
 										continue;
 
 							}
+							/* @@TODO THIS IS HALF DONE. CANT WORK LIKE GRADE ABOVE AS IS MANY-MANY
+							          SO ITS COMMENTED OUT FOR NOW
+							if ((isset($_GET['pb'])) && ($_GET['pb'] != ''))
+							{
+    							$criteria = new CDbCriteria;
+								$criteria->addCondition("event_id = " . $r->id);
+								$Ws = Ws::model()->find($criteria);
+								if (!($Ws))
+									continue;
+								$gradeArr = explode('|', $_GET['pb']);
+								//die(count($gradeArr));
+								if (count($gradeArr) > 0)
+									if (!in_array($Ws->grade, $gradeArr))
+										continue;
 
-
+							}
+							*/
 
                             // Store the handle for this record
                             $this->dbTable[$dbTable] = $r;
