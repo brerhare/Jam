@@ -55,7 +55,8 @@ class products
         }
 
         // Insert the data
-        $content = "<div style='color:#575757;'>";      // Your basic solemn grey font color
+        $content = "<script> var SID = '" . $_GET['sid'] . "'; </script>";
+        $content .= "<div style='color:#575757;'>";      // Your basic solemn grey font color
         $uid = Yii::app()->session['uid'];
 
         // Duration band (always shown if exists)
@@ -75,7 +76,7 @@ class products
                 $content .= "<label class='checkbox'> ";
                 $content .= "<input name='duration[]' "; 
                 if ($match) $content .= " checked='checked' ";
-                $content .= "type='checkbox' value='" . $duration->id . "' onClick=makeSel('" . $_GET['sid'] . "')>" . $duration->max . " mins";
+                $content .= "type='checkbox' value='" . $duration->id . "' onClick=makeSel()>" . $duration->max . " mins";
                 $content .= "</label><br>";
             endforeach;
             $content .= "</div>";
@@ -100,7 +101,7 @@ class products
                 $content .= "<label class='checkbox'> ";
                 $content .= "<input name='price[]' "; 
                 if ($match) $content .= " checked='checked' ";
-                $content .= "type='checkbox' value='" . $price->id . "' onClick=makeSel('" . $_GET['sid'] . "')> £" . $lastShown . " - £" . $price->max;
+                $content .= "type='checkbox' value='" . $price->id . "' onClick=makeSel()> £" . $lastShown . " - £" . $price->max;
                 $lastShown = $price->max;
                 $content .= "</label><br>";
             endforeach;
@@ -132,9 +133,9 @@ class products
                     if (in_array($department->id . "." . $feature->id, $featureSel))
                         $match = true;
                     $content .= "<label class='checkbox'> ";
-                    $content .= "<input name='feature[]' ";
+                    $content .= "<input id='crap' name='feature[]' ";
                     if ($match) $content .= " checked='checked' ";
-                    $content .= "type='checkbox' value='" . $department->id . '.' . $feature->id . "' onClick=makeSel('" . $_GET['sid'] . "')>" . $feature->name;
+                    $content .= "type='checkbox' value='" . $department->id . '.' . $feature->id . "' onClick=makeSel()>" . $feature->name;
                     $content .= "</label><br>";
                 endforeach;
                 $content .= "</div>";
@@ -151,8 +152,11 @@ class products
         $cStr = "";
         for ($i = 0; $i < count($departmentSel); $i++)
         {
+            if ($departmentSel[$i] == "")
+                continue;
             if ($cStr != "") $cStr .= " or ";
             $cStr .= "product_department_id=" . $departmentSel[$i];
+            $doSearch = true;
         }
         $criteria->addCondition($cStr);
         $products = Product::model()->findAll($criteria);
@@ -206,12 +210,14 @@ END_OF_API_HTML;
 
     var isDet = 0;
 
-    durationBand = '';
+    durationAll = '';
+    priceAll = '';
+
     department = Array();
 
-    function makeSel(sid)
+    function makeSel()
     {
-        sel = '?layout=index&sid=' + sid;
+        sel = '?layout=index&sid=' + SID;
 
         // Duration
         av=document.getElementsByName("duration[]");
@@ -273,7 +279,7 @@ END_OF_API_HTML;
     });
 
     $('.filter-detail').click(function(){
-        isDet = 1;
+            isDet = 1;
         $('.filter-detail', this).toggle(); // p00f
     });
 
@@ -284,6 +290,20 @@ END_OF_API_HTML;
             return;
         }
         $('.filter-detail', this).toggle(); // p00f
+        if ($('.filter-detail', this).is(":visible"))
+        {
+            var divElem = $("div.filter-detail", this).children();
+            var cbElem = divElem.find(':checkbox');
+            cbElem.prop('checked', true);
+            makeSel();
+        }
+        else
+        {
+            var divElem = $("div.filter-detail", this).children();
+            var cbElem = divElem.find(':checkbox');
+            cbElem.prop('checked', false);
+            makeSel();
+        }
     });
 
 END_OF_API_JS;
