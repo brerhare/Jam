@@ -101,10 +101,13 @@ class products
         if ($departments)
         {
             foreach ($departments as $department):
+                $vis = "";
+                if ($department->id != $_GET['department'])
+                    $vis = " style='display:none;' ";
                 $content .= "<br>";
                 $content .= "<div id='h' class='filter-header'> <a href='#' >" . $department->name . "</a><br>";
                 $features  = Feature::model()->findAll(array('order'=>'name', 'condition'=>'product_department_id=' . $department->id));
-                $content .= "<div id='d' class='filter-detail'>";
+                $content .= "<div id='d' class='filter-detail'" . $vis . ">";
                 foreach ($features as $feature):
                     $match = false;
                     $content .= "<label class='checkbox'> ";
