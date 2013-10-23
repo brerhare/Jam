@@ -59,10 +59,10 @@ class products
         $uid = Yii::app()->session['uid'];
 
         // Duration band (always shown if exists)
+        $durationSel = array();
         $durations = DurationBand::model()->findAll(array('order'=>'max', 'condition'=>'uid=' . $uid));
         if ($durations)
         {
-            $durationSel = array();
             if (isset($_GET['duration']))
                 $durationSel = explode('|', $_GET['duration']);
             $content .= "<br>";
@@ -83,11 +83,11 @@ class products
         }
 
         // Price band (always shown if exists)
+        $priceSel = array();
         $lastShown = 0;
         $prices  = PriceBand::model()->findAll(array('order'=>'max', 'condition'=>'uid=' . $uid));
         if ($prices)
         {
-            $priceSel = array();
             if (isset($_GET['price']))
                 $priceSel = explode('|', $_GET['price']);
             $content .= "<br>";
@@ -109,10 +109,13 @@ class products
         }
 
        // Departments with features
+        $featureSel = array();
+        $departmentSel = array();
         $departments  = Department::model()->findAll(array('order'=>'name', 'condition'=>'uid=' . $uid));
         if ($departments)
         {
-            $featureSel = array();
+            if (isset($_GET['department']))
+                $departmentSel = explode('|', $_GET['department']);
             if (isset($_GET['feature']))
                 $featureSel = explode('|', $_GET['feature']);
             foreach ($departments as $department):
@@ -142,8 +145,24 @@ class products
         $html = str_replace("<substitute-data>", $content, $this->apiHtml);
         $this->apiHtml = $html;
 
-        $this->clipBoard = '2|22|222|4|5|6';
+        // Finally produce the list of product id's from all the selections
+        //$this->clipBoard = '2|22|222|4|5|6';
+        $criteria = new CDbCriteria;
+        $cStr = "";
+        for ($i = 0; $i < count($departmentSel); $i++)
+        {
+            if ($cStr != "") $cStr .= " or ";
+            $cStr .= "product_department_id=" . $departmentSel[$i];
+        }
+        $criteria->addCondition($cStr);
+        $products = Product::model()->findAll($criteria);
+        $oStr = "";
+        foreach ($products as $product):
+            if ($oStr != "") $oStr .= "|";
+            $oStr .= $product->id;
+        endforeach;
 
+        $this->clipBoard = $oStr;
 
         // This is kind of a standard replace
         $this->apiHtml = str_replace("<substitute-path>", $jellyRootUrl, $this->apiHtml);
@@ -158,12 +177,15 @@ class products
     // Is the department in the request list? If so we want to 'open' it
     private function selectDept($dept)
     {
-        $deptArr = explode("|", $_GET['department']);
-        foreach ($deptArr as $department)
+        if (isset($_GET['department']))
         {
-            $featArr = explode("+", $department);
-            if ($dept == $department)
-                return true;
+            $deptArr = explode("|", $_GET['department']);
+            foreach ($deptArr as $department)
+            {
+                $featArr = explode("+", $department);
+                if ($dept == $department)
+                    return true;
+           }
         }
         return false;
     }
