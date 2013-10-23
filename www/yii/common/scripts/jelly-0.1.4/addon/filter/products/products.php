@@ -146,9 +146,11 @@ class products
         $html = str_replace("<substitute-data>", $content, $this->apiHtml);
         $this->apiHtml = $html;
 
-        // Finally produce the list of product id's from all the selections
+        //----------  Finally produce the list of product id's from all the selections
         //$this->clipBoard = '2|22|222|4|5|6';
+
         $criteria = new CDbCriteria;
+        $criteria->addCondition("uid=" . $uid);
         $cStr = "";
         for ($i = 0; $i < count($departmentSel); $i++)
         {
