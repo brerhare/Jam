@@ -112,6 +112,9 @@ class products
         $departments  = Department::model()->findAll(array('order'=>'name', 'condition'=>'uid=' . $uid));
         if ($departments)
         {
+            $featureSel = array();
+            if (isset($_GET['feature']))
+                $featureSel = explode('|', $_GET['feature']);
             foreach ($departments as $department):
                 $vis = "";
                 if (!($this->selectDept($department->id)))
@@ -122,10 +125,13 @@ class products
                 $content .= "<div id='d' class='filter-detail'" . $vis . ">";
                 foreach ($features as $feature):
                     $match = false;
+//echo "looking for [" . $department->id . "+" . $feature->id . "] in " . $featureSel[0] . "<br>";
+                    if (in_array($department->id . "." . $feature->id, $featureSel))
+                        $match = true;
                     $content .= "<label class='checkbox'> ";
-                    $content .= "<input name='feature[]' "; 
+                    $content .= "<input name='feature[]' ";
                     if ($match) $content .= " checked='checked' ";
-                    $content .= "type='checkbox' value='" . $department->id . '+' . $feature->id . "' onClick=makeSel('" . $_GET['sid'] . "')>" . $feature->name;
+                    $content .= "type='checkbox' value='" . $department->id . '.' . $feature->id . "' onClick=makeSel('" . $_GET['sid'] . "')>" . $feature->name;
                     $content .= "</label><br>";
                 endforeach;
                 $content .= "</div>";
@@ -179,7 +185,7 @@ END_OF_API_HTML;
     var isDet = 0;
 
     durationBand = '';
-    department = '';
+    department = Array();
 
     function makeSel(sid)
     {
@@ -224,20 +230,19 @@ END_OF_API_HTML;
             var str = '';
            for (var i = 0; i < av.length; i++)
            {
-               if (av[i].checked)
+                if (av[i].checked)
                 {
                     if (str != '') str += '|';
                     str += av[i].value;
-                    d = av[i].value.split("+");
-                    if (department != '') department += '|';
-                    department += d[0];
+                    d = av[i].value.split(".");
+                    if (department.indexOf(d[0]) == -1)
+                        department.push(d[0]);
                 }
             }
             sel += '&feature=' + str; 
         }
+        sel+='&department=' + department.join('|');
 
-        sel+='&department='+department;
-//alert(sel);
         // Activate the link
         window.location.href = sel;
     }
