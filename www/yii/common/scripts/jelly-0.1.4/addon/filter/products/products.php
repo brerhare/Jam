@@ -160,7 +160,8 @@ class products
             $cStr .= "product_department_id=" . $departmentSel[$i];
             $doSearch = true;
         }
-        $criteria->addCondition($cStr);
+        if ($cStr)
+            $criteria->addCondition($cStr);
         $products = Product::model()->findAll($criteria);
         $oStr = "";
         foreach ($products as $product):
