@@ -40,7 +40,7 @@ css.display = block
 
 		[product-grid]
 		#html.raw = {{department 6 Corona Occasional}}
-		html.raw = <iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=3hjc1rcpa5todru774o45q6v16&amp;department=5"></iframe>
+		html.raw = <iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=3hjc1rcpa5todru774o45q6v16&amp;department=8"></iframe>
 
 		[footer]
 		css.height = 30px
