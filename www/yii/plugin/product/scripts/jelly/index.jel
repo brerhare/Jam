@@ -20,12 +20,13 @@ db.filter = sid=$_GET['sid']
 	#css.height = 670px
 	css.background-color = #f2f2f2
 	childss.overflow = auto
-	#db.table = Department
-	#db.filter = id=$_GET['department'],uid=User.id
-	#html.h3 = Department.name
+	#####db.table = Department
+	#####db.filter = id=$_GET['department'],uid=User.id
+	#####html.h3 = Department.name
 
 		[filter]
 		css.width = 180px
+		# This addon puts a list of product id's onto the clipboard for later use
 		addon.filter.products.department = $_GET['department']
 
 		[productcontainer]
@@ -44,7 +45,8 @@ db.filter = sid=$_GET['sid']
 		css.border-color = #dcdcdc
 		db.table = Product
 		######################################################## db.filter = product_department_id=Department.id
-		db.filter = product_department_id=$_GET['department']
+		#db.filter = id=2 or id=1 or id=80
+		db.filter = id=@CLIPBOARD
 		db.order = name
 		db.fetch = multiple
 		click = index.php/?layout=product&product=Product.id

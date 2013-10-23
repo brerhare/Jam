@@ -10,6 +10,8 @@
 
 class products
 {
+    private $clipBoard = "";
+
     //Defaults
     private $defaultDepartment = "";
     private $defaultWidth = "100%";
@@ -60,15 +62,20 @@ class products
         $durations = DurationBand::model()->findAll(array('order'=>'max', 'condition'=>'uid=' . $uid));
         if ($durations)
         {
+            $durationSel = array();
+            if (isset($_GET['duration']))
+                $durationSel = explode('|', $_GET['duration']);
             $content .= "<br>";
             $content .= "<div class='filter-header'>Duration<br>";
             $content .= "<div class='filter-detail'>";
             foreach ($durations as $duration):
                 $match = false;
+                if (in_array($duration->id, $durationSel))
+                    $match = true;
                 $content .= "<label class='checkbox'> ";
                 $content .= "<input name='duration[]' "; 
                 if ($match) $content .= " checked='checked' ";
-                $content .= "type='checkbox' value='" . $duration->id . "'>" . $duration->max . " mins";
+                $content .= "type='checkbox' value='" . $duration->id . "' onClick=makeSel('" . $_GET['sid'] . "')>" . $duration->max . " mins";
                 $content .= "</label><br>";
             endforeach;
             $content .= "</div>";
@@ -80,15 +87,20 @@ class products
         $prices  = PriceBand::model()->findAll(array('order'=>'max', 'condition'=>'uid=' . $uid));
         if ($prices)
         {
+            $priceSel = array();
+            if (isset($_GET['price']))
+                $priceSel = explode('|', $_GET['price']);
             $content .= "<br>";
             $content .= "<div class='filter-header'>Price<br>";
             $content .= "<div class='filter-detail'>";
             foreach ($prices as $price):
                 $match = false;
+                if (in_array($price->id, $priceSel))
+                    $match = true;
                 $content .= "<label class='checkbox'> ";
                 $content .= "<input name='price[]' "; 
                 if ($match) $content .= " checked='checked' ";
-                $content .= "type='checkbox' value='" . $price->id . "'> £" . $lastShown . " - £" . $price->max;
+                $content .= "type='checkbox' value='" . $price->id . "' onClick=makeSel('" . $_GET['sid'] . "')> £" . $lastShown . " - £" . $price->max;
                 $lastShown = $price->max;
                 $content .= "</label><br>";
             endforeach;
@@ -96,13 +108,13 @@ class products
             $content .= "</div>";
         }
 
-       // Departments with features 
+       // Departments with features
         $departments  = Department::model()->findAll(array('order'=>'name', 'condition'=>'uid=' . $uid));
         if ($departments)
         {
             foreach ($departments as $department):
                 $vis = "";
-                if ($department->id != $_GET['department'])
+                if (!($this->selectDept($department->id)))
                     $vis = " style='display:none;' ";
                 $content .= "<br>";
                 $content .= "<div id='h' class='filter-header'> <a href='#' >" . $department->name . "</a><br>";
@@ -113,18 +125,18 @@ class products
                     $content .= "<label class='checkbox'> ";
                     $content .= "<input name='feature[]' "; 
                     if ($match) $content .= " checked='checked' ";
-                    $content .= "type='checkbox' value='" . $feature->id . "'>" . $feature->name;
+                    $content .= "type='checkbox' value='" . $department->id . '+' . $feature->id . "' onClick=makeSel('" . $_GET['sid'] . "')>" . $feature->name;
                     $content .= "</label><br>";
                 endforeach;
                 $content .= "</div>";
                 $content .= "</div>";
             endforeach;
-            //$content .= "</div>";
         }
-
         $content .= "</div>";
         $html = str_replace("<substitute-data>", $content, $this->apiHtml);
         $this->apiHtml = $html;
+
+        $this->clipBoard = '2|22|222|4|5|6';
 
 
         // This is kind of a standard replace
@@ -133,8 +145,23 @@ class products
         $retArr = array();
         $retArr[0] = $this->apiHtml;
         $retArr[1] = $this->apiJs;
+        $retArr[2] = $this->clipBoard;
         return $retArr;
     }
+
+    // Is the department in the request list? If so we want to 'open' it
+    private function selectDept($dept)
+    {
+        $deptArr = explode("|", $_GET['department']);
+        foreach ($deptArr as $department)
+        {
+            $featArr = explode("+", $department);
+            if ($dept == $department)
+                return true;
+        }
+        return false;
+    }
+
     // @@TODO: Thought: maybe all sites use a jelly db, and each has their own table prefix? Could avoid a lot of hassle
 
     private $apiHtml = <<<END_OF_API_HTML
@@ -151,9 +178,72 @@ END_OF_API_HTML;
 
     var isDet = 0;
 
+    durationBand = '';
+    department = '';
+
+    function makeSel(sid)
+    {
+        sel = '?layout=index&sid=' + sid;
+
+        // Duration
+        av=document.getElementsByName("duration[]");
+        if (av.length > 0)
+        {
+            var str = '';
+           for (var i = 0; i < av.length; i++)
+           {
+               if (av[i].checked)
+                {
+                    if (str != '') str += '|';
+                    str += av[i].value;
+                }
+            }
+            sel += '&duration=' + str; 
+        }
+
+        // Price
+        av=document.getElementsByName("price[]");
+        if (av.length > 0)
+        {
+            var str = '';
+           for (var i = 0; i < av.length; i++)
+           {
+               if (av[i].checked)
+                {
+                    if (str != '') str += '|';
+                    str += av[i].value;
+                }
+            }
+            sel += '&price=' + str; 
+        }
+
+        // Feature
+        av=document.getElementsByName("feature[]");
+        if (av.length > 0)
+        {
+            var str = '';
+           for (var i = 0; i < av.length; i++)
+           {
+               if (av[i].checked)
+                {
+                    if (str != '') str += '|';
+                    str += av[i].value;
+                    d = av[i].value.split("+");
+                    if (department != '') department += '|';
+                    department += d[0];
+                }
+            }
+            sel += '&feature=' + str; 
+        }
+
+        sel+='&department='+department;
+//alert(sel);
+        // Activate the link
+        window.location.href = sel;
+    }
+
     jQuery(document).ready(function($){
     });
-
 
     $('.filter-detail').click(function(){
         isDet = 1;
