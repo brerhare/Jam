@@ -209,6 +209,21 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`product_duration_band` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `plugin`.`product_filter`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `plugin`.`product_filter` ;
+
+CREATE  TABLE IF NOT EXISTS `plugin`.`product_filter` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `uid` INT NOT NULL ,
+  `text` VARCHAR(255) NOT NULL ,
+  `url` VARCHAR(255) NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `uid` (`uid` ASC) )
+ENGINE = InnoDB;
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
