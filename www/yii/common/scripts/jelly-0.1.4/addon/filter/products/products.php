@@ -366,11 +366,10 @@ END_OF_API_HTML;
         sel+='&department=' + department.join('|');
 
 		// If we're in the backend, pop up the url and keep the 'showurl' going
-		chkUrl = document.URL;
+		chkUrl = document.URL;    // Old url we came in with (currently displayed in browser)
 		if (chkUrl.indexOf("&showurl") != -1)
 		{
-			chkUrl = chkUrl.substring(0, chkUrl.length - 13);
-			alert(chkUrl);
+			alert(sel);           // New url (we're going to)
 			sel += "&showurl=true";
 		}
 
