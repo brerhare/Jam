@@ -66,7 +66,7 @@ class Filter extends CActiveRecord
 			'id' => 'ID',
 			'uid' => 'Uid',
 			'text' => 'Text',
-			'url' => 'Url',
+			'url' => 'Filter string',
 		);
 	}
 
