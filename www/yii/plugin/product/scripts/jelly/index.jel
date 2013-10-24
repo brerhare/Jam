@@ -45,7 +45,7 @@ db.filter = sid=$_GET['sid']
 		css.border-color = #dcdcdc
 		db.table = Product
 		######################################################## db.filter = product_department_id=Department.id
-		#db.filter = id=2 or id=1 or id=80
+		###db.filter = id=2 or id=1 or id=80
 		db.filter = id=@CLIPBOARD
 		db.order = name
 		db.fetch = multiple

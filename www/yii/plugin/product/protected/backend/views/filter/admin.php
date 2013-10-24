@@ -13,7 +13,14 @@ $this->menu=array(
 	'columns'=>array(
 		//'id',
 		//'uid',
-		'text',
+		//'text',
+
+        array(
+            'name'  => 'text',
+            'value' => 'CHtml::link($data->text, Yii::app()->createUrl("filter/update",array("id"=>$data->primaryKey)))',
+            'type'  => 'raw',
+        ),
+
 		'url',
 
 		array(
