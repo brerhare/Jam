@@ -308,12 +308,18 @@ END_OF_FOOTER;
 
                 if ($hasRepeatingField)
                 {
+                	$validQuery = true;
                     // Build the query from the collected args
                     $query = $dbTable . '::model()->findAll($cri);';
-                    // Add filters
+                    // Add filters, checking for validity
 					$cri=new CDbCriteria;
 					foreach ($fltArr as $flt)
+					{
+						$chkArr = explode("=", trim($flt));
+						if ($chkArr[1] ==  '')
+							$validQuery = false;
 						$cri->addCondition($this->dbExpand(trim($flt)));
+					}
                     // Add order
                     foreach ($orderArr as $ord)
 						$cri->order = $this->dbExpand(trim($ord));
@@ -321,7 +327,10 @@ END_OF_FOOTER;
                     // Do the query
                     $q = "return " . $query . ";";
 Yii::log("REPEATING EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
-                    $resp = eval($q);
+					if ($validQuery)
+	                    $resp = eval($q);
+	                else
+	                	$resp = null;
                     if ($resp)
                     {
                         // Generate blobs for each iteration
