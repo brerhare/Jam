@@ -69,7 +69,8 @@ class products
         if (isset($_GET['showurl']))
             $data .= "<button type='button' onClick='showUrl()' style='color:#ffffff; background-color:#0064cc;'>Show filter string</button><br/>";
 
-        $data .= $this->buildUserInputs();                // The twistys and their checkboxes
+        // Generate twistys and their checkboxes for user input. Default to current $_GET
+        $data .= $this->buildUserInputs();
         $this->apiHtml = str_replace("<substitute-data>", $data, $this->apiHtml);
         // This is kind of a standard replace
         $this->apiHtml = str_replace("<substitute-path>", $jellyRootUrl, $this->apiHtml);
