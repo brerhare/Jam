@@ -55,8 +55,11 @@ class products
         }
 
         // Insert the data
-        $content = "<script> var SID = '" . $_GET['sid'] . "'; </script>";
+        $content = '';
+        $content .= "<script> var SID = '" . $_GET['sid'] . "'; </script>";
         $content .= "<div style='color:#575757;'>";      // Your basic solemn grey font color
+        if (isset($_GET['showurl']))
+            $content .= "<button type='button' onClick='showUrl()'>Show filter string</button><br/>";
         $uid = Yii::app()->session['uid'];
 
         // Duration band (always shown if exists)
@@ -366,29 +369,25 @@ END_OF_API_HTML;
         sel+='&department=' + department.join('|');
 
 
-		// If we're in the backend, pop up the url and keep the 'showurl' going
+		// If we're in the backend keep the 'showurl' going
 		chkUrl = document.URL;    // Old url we came in with (currently displayed in browser)
 		if (chkUrl.indexOf("&showurl") != -1)
-		{
-//alert(document.URL);
 			sel += "&showurl=true";
-		}
 
         // Activate the link
         window.location.href = sel;
     }
 
     jQuery(document).ready(function($){
-        // If we're in the backend, pop up the url at startup (would be displayed in browser if werent an iframe)
-        chkUrl = document.URL;
-        if ((chkUrl.indexOf("&showurl") != -1) && (chkUrl.indexOf("&department") != -1))
-        {
-            chkUrl = chkUrl.substring(0, chkUrl.length - 13);
-            alert(chkUrl);
-        }
-
-
     });
+
+    function showUrl()
+    {
+        // If we're in the backend we can pop up the url (would be displayed in browser if werent an iframe)
+        chkUrl = document.URL;
+        chkUrl = chkUrl.substring(0, chkUrl.length - 13);   // Chop off the 'showurl=true' at the end
+        alert(chkUrl);
+    }
 
     $('.filter-detail').click(function(){
             isDet = 1;
