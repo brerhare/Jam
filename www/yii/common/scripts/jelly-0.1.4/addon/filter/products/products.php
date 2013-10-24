@@ -149,27 +149,67 @@ class products
         //----------  Finally produce the list of product id's from all the selections
         //$this->clipBoard = '2|22|222|4|5|6';
 
-        $criteria = new CDbCriteria;
-        $criteria->addCondition("uid=" . $uid);
-        $cStr = "";
+        // Each selected department one at a time
+        $deptStr = "";
+        $deptFeatureStr = "";
         for ($i = 0; $i < count($departmentSel); $i++)
         {
+            $deptStr = "";
             if ($departmentSel[$i] == "")
                 continue;
-            if ($cStr != "") $cStr .= " or ";
-            $cStr .= "product_department_id=" . $departmentSel[$i];
-            $doSearch = true;
+            if ($deptStr != "")
+                $deptStr .= " or ";
+            $deptStr .= "product_department_id=" . $departmentSel[$i];
+
+            // Get all the products for this department
+            $criteria = new CDbCriteria;
+            $criteria->addCondition("uid=" . $uid);
+            $criteria->addCondition($deptStr);
+            $products = Product::model()->findAll($criteria);
+            foreach ($products as $product)
+            {
+                // Each selected feature for this particular department (to match against this particular product)
+                $deptFeatureStr = "";
+                for ($j = 0; $j < count($featureSel); $j++)
+                {
+                    //echo 'a';   
+                    if ($featureSel[$j] == "")
+                        continue;
+                    // The feature is listed as dept.feature eg 5.9 so we only want the '9' part
+                    $f = explode('.', $featureSel[$j]);
+                    if ($f[0] != $departmentSel[$i])
+                        continue;
+                    // Is there a feature record for this product?
+                    $criteria = new CDbCriteria;
+                    $criteria->addCondition("product_product_id = " . $product->id);
+                    $criteria->addCondition("product_feature_id = " . $f[1]);
+                    $feature = ProductHasFeature::model()->find($criteria);
+                    if ($feature)
+                    {
+                        // Found a matching product. Still duration anc cost to sort
+                        if ($this->clipBoard != "")
+                            $this->clipBoard .= "|";
+                        $this->clipBoard .= $product->id;
+
+                    }
+                }
+            }
         }
-        if ($cStr)
-            $criteria->addCondition($cStr);
+        echo $this->clipBoard . '<br>';
+        /*
+        $criteria = new CDbCriteria;
+        $criteria->addCondition("uid=" . $uid);
+        if ($deptStr)
+            $criteria->addCondition($deptStr);
         $products = Product::model()->findAll($criteria);
         $oStr = "";
         foreach ($products as $product):
             if ($oStr != "") $oStr .= "|";
             $oStr .= $product->id;
         endforeach;
+*/
 
-        $this->clipBoard = $oStr;
+        //$this->clipBoard = '1|2|3';  // $oStr;
 
         // This is kind of a standard replace
         $this->apiHtml = str_replace("<substitute-path>", $jellyRootUrl, $this->apiHtml);
