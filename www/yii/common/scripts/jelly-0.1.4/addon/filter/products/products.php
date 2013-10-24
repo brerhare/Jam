@@ -69,6 +69,9 @@ class products
         if (isset($_GET['showurl']))
             $data .= "<button type='button' onClick='showUrl()' style='color:#ffffff; background-color:#0064cc;'>Show filter string</button><br/>";
 
+        // Generate the advice questions if in 'preset' mode
+        $data .= $this->buildAdviceInputs();
+
         // Generate twistys and their checkboxes for user input. Default to current $_GET
         $data .= $this->buildUserInputs();
         $this->apiHtml = str_replace("<substitute-data>", $data, $this->apiHtml);
@@ -84,9 +87,34 @@ class products
         return $retArr;
     }
 
+    private function buildAdviceInputs()
+    {
+        $content = "";
+        $content .= "<center><table>";
+        $filters = Filter::model()->findAll(array('order'=>'id', 'condition'=>'uid=' . $this->uid));
+        if ($filters)
+        {
+            foreach ($filters as $filter):
+                $content .= "<tr>";
+                $content .=   "<td width=20%></td>";
+                $content .=   "<td width=50%>" . $filter->text . "</td>";
+                $content .=   "<td width=10%>";
+                $content .=     "<input name='advice[]' "; 
+                $match = false;
+                if ($match) $content .= " checked='checked' ";
+                $content .=       "type='checkbox' value='" . $filter->id . "' onClick=makeAdviceSel()>" . $filter->text;
+                $content .=   "</td>";
+                $content .=   "<td width=20%></td>";
+                $content .= "</tr>";
+            endforeach;
+        }
+        $content .= "</table></center>";
+        return $content;
+    }
+
     private function buildUserInputs()
     {
-        $content ="";   
+        $content = "";
         // Duration band (always shown if exists)
         $lastShown = 0;
         $durations = DurationBand::model()->findAll(array('order'=>'max', 'condition'=>'uid=' . $this->uid));
