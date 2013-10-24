@@ -119,9 +119,11 @@ class products
                 $departmentSel = explode('|', $_GET['department']);
             if (isset($_GET['feature']))
                 $featureSel = explode('|', $_GET['feature']);
+            else
+                array_push($featureSel, '*');
             foreach ($departments as $department):
                 $vis = "";
-                if (!($this->selectDept($department->id)))
+                if (!(in_array($department->id, $departmentSel)))
                     $vis = " style='display:none;' ";
                 $content .= "<br>";
                 $content .= "<div id='h' class='filter-header'> <a href='#' >" . $department->name . "</a><br>";
@@ -130,7 +132,9 @@ class products
                 foreach ($features as $feature):
                     $match = false;
 //echo "looking for [" . $department->id . "+" . $feature->id . "] in " . $featureSel[0] . "<br>";
-                    if (in_array($department->id . "." . $feature->id, $featureSel))
+                    if ((in_array($department->id . "." . $feature->id, $featureSel)) /*|| ($featureSel[0] == '*')*/)
+                        $match = true;
+                    if ((in_array($department->id, $departmentSel)) &&(!(isset($_GET['feature']))))
                         $match = true;
                     $content .= "<label class='checkbox'> ";
                     $content .= "<input id='crap' name='feature[]' ";
@@ -214,7 +218,7 @@ class products
                 }
             }
         }
-        echo $_SERVER['QUERY_STRING'];
+//echo $_SERVER['QUERY_STRING'];
 //echo $this->clipBoard . '<br>';
 
         /*
@@ -250,7 +254,7 @@ class products
             $deptArr = explode("|", $_GET['department']);
             foreach ($deptArr as $department)
             {
-                $featArr = explode("+", $department);
+                $featArr = explode(".", $department);
                 if ($dept == $department)
                     return true;
            }
