@@ -365,11 +365,12 @@ END_OF_API_HTML;
         }
         sel+='&department=' + department.join('|');
 
+
 		// If we're in the backend, pop up the url and keep the 'showurl' going
 		chkUrl = document.URL;    // Old url we came in with (currently displayed in browser)
 		if (chkUrl.indexOf("&showurl") != -1)
 		{
-			alert(sel);           // New url (we're going to)
+//alert(document.URL);
 			sel += "&showurl=true";
 		}
 
@@ -378,6 +379,17 @@ END_OF_API_HTML;
     }
 
     jQuery(document).ready(function($){
+
+
+        // If we're in the backend, pop up the url at startup
+        chkUrl = document.URL;    // Old url we came in with (currently displayed in browser)
+        if (chkUrl.indexOf("&showurl") != -1)
+        {
+alert(document.URL);
+            sel += "&showurl=true";
+        }
+
+
     });
 
     $('.filter-detail').click(function(){
