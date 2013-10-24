@@ -61,11 +61,15 @@ class products
 
         // Duration band (always shown if exists)
         $durationSel = array();
+        $durationCheck = array();
+        $lastShown = 0;
         $durations = DurationBand::model()->findAll(array('order'=>'max', 'condition'=>'uid=' . $uid));
         if ($durations)
         {
             if (isset($_GET['duration']))
                 $durationSel = explode('|', $_GET['duration']);
+            else
+                array_push($durationSel, '*');
             $content .= "<br>";
             $content .= "<div class='filter-header'>Duration<br>";
             $content .= "<div class='filter-detail'>";
@@ -73,10 +77,14 @@ class products
                 $match = false;
                 if (in_array($duration->id, $durationSel))
                     $match = true;
+                if (!(isset($_GET['duration'])))
+                    $match = true;
                 $content .= "<label class='checkbox'> ";
                 $content .= "<input name='duration[]' "; 
                 if ($match) $content .= " checked='checked' ";
-                $content .= "type='checkbox' value='" . $duration->id . "' onClick=makeSel()>" . $duration->max . " mins";
+                $content .= "type='checkbox' value='" . $duration->id . "' onClick=makeSel()>" . $lastShown . " - " . $duration->max . " mins";
+                array_push($durationCheck, $duration->id . '_' . $lastShown . '_' . $duration->max);
+                $lastShown = $duration->max;
                 $content .= "</label><br>";
             endforeach;
             $content .= "</div>";
@@ -85,12 +93,15 @@ class products
 
         // Price band (always shown if exists)
         $priceSel = array();
+        $priceCheck = array();
         $lastShown = 0;
         $prices  = PriceBand::model()->findAll(array('order'=>'max', 'condition'=>'uid=' . $uid));
         if ($prices)
         {
             if (isset($_GET['price']))
                 $priceSel = explode('|', $_GET['price']);
+            else
+                array_push($priceSel, '*');
             $content .= "<br>";
             $content .= "<div class='filter-header'>Price<br>";
             $content .= "<div class='filter-detail'>";
@@ -98,10 +109,13 @@ class products
                 $match = false;
                 if (in_array($price->id, $priceSel))
                     $match = true;
+                if (!(isset($_GET['price'])))
+                    $match = true;
                 $content .= "<label class='checkbox'> ";
                 $content .= "<input name='price[]' "; 
                 if ($match) $content .= " checked='checked' ";
                 $content .= "type='checkbox' value='" . $price->id . "' onClick=makeSel()> £" . $lastShown . " - £" . $price->max;
+                array_push($priceCheck, $price->id . '_' . $lastShown . '_' . $price->max);                
                 $lastShown = $price->max;
                 $content .= "</label><br>";
             endforeach;
@@ -194,6 +208,52 @@ class products
                     $feature = ProductHasFeature::model()->find($criteria);
                     if ($feature)
                     {
+                        // Now check duration range
+                        $found = false;
+                        for ($k = 0; $k < count($durationCheck); $k++)
+                        {
+                            $arr = explode('_', $durationCheck[$k]);
+                            if (((int)$product->duration >= (int)$arr[1]) && ((int)$product->duration <= (int)$arr[2]))
+                            {
+                                if ((in_array($arr[0], $durationSel)) || (!(isset($_GET['duration']))))
+                                {
+                                    $found = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!($found))
+                            continue;
+/*****
+                        // Now check price range
+                        $found = false;
+                        for ($k = 0; $k < count($priceCheck); $k++)
+                        {
+                            $arr = explode('_', $priceCheck[$k]);
+
+
+                    $criteria = new CDbCriteria;
+                    $criteria->addCondition("product_product_id = " . $product->id);
+                    if ($featureSel[$j] != '*')
+                        $criteria->addCondition("product_feature_id = " . $f[1]);
+                    $feature = ProductHasFeature::model()->find($criteria);
+                    if ($feature)
+
+
+                            if (((int)$product->duration >= (int)$arr[1]) && ((int)$product->duration <= (int)$arr[2]))
+                            {
+                                if ((in_array($arr[0], $durationSel)) || (!(isset($_GET['price']))))
+                                {
+                                    $found = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!($found))
+                            continue;
+*****/
+
+
                         if ($this->clipBoard != "")
                             $this->clipBoard .= "|";
                         $this->clipBoard .= $product->id;
