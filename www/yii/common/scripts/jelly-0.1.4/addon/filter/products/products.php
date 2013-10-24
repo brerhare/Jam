@@ -178,7 +178,6 @@ class products
                 for ($j = 0; $j < count($featureSel); $j++)
                 {
 //echo 'feature<br>';
-
                     if ($featureSel[$j] == "")
                         continue;
 //echo $departmentSel[$i] . ':' . $featureSel[$j] . '<br>';
@@ -193,7 +192,6 @@ class products
                     if ($featureSel[$j] != '*')
                         $criteria->addCondition("product_feature_id = " . $f[1]);
                     $feature = ProductHasFeature::model()->find($criteria);
-                    echo 'f';
                     if ($feature)
                     {
                         if ($this->clipBoard != "")
