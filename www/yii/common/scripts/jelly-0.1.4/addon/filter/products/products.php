@@ -94,7 +94,7 @@ class products
     private function buildPrefixInputs()
     {
         $content = "";
-        $content .= "<center><table>";
+        $content .= "<br/><center><table>";
         $filters = Filter::model()->findAll(array('order'=>'id', 'condition'=>'uid=' . $this->uid));
         if ($filters)
         {
@@ -112,7 +112,7 @@ class products
                 $content .= "</tr>";
             endforeach;
         }
-        $content .= "</table></center>";
+        $content .= "</table></center><br/>";
         return $content;
     }
 
@@ -344,10 +344,14 @@ END_OF_API_HTML;
 
     department = Array();
 
-	function makeAdViceSel()
+	function makePrefixSel()
 	{
         sel = '?layout=preset&sid=' + SID;
-alert('preset!');
+
+sel += '&department=27';
+
+        // Activate the link
+        window.location.href = sel;
 	}
 
     function makeSel()
