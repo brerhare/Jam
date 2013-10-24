@@ -841,12 +841,15 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 		if (stristr($vals[0], "department"))
 		{
 			// Eg: {{department 27 Guinot}}
+			// ----------------------------
 			$value = $vals[1];
 			$iframe = '<iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;department=' . $value . '"></iframe>';
 			$content = str_replace($pOrig, $iframe, $content);
 		}
 		else if (stristr($vals[0], "blog"))
 		{
+			// Eg: {{blog}}
+			// ------------
 			$iframe = '<iframe height="900" width="900" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/blog/?sid=' . Yii::app()->params['sid'] . '"></iframe>';
 			$content = str_replace($pOrig, $iframe, $content);
 		}
