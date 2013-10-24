@@ -14,8 +14,8 @@ db.table = User
 db.filter = sid=$_GET['sid']
 
 	[grid]
-	child = filter, productcontainer
-	stacking = horizontal
+	child = preset, productcontainer
+	###stacking = horizontal
 	css.width = 850px
 	#css.height = 670px
 	css.background-color = #f2f2f2
@@ -24,10 +24,10 @@ db.filter = sid=$_GET['sid']
 	#####db.filter = id=$_GET['department'],uid=User.id
 	#####html.h3 = Department.name
 
-		[filter]
-		css.width = 180px
+		[preset]
+		css.width = 650px
 		# This addon puts a list of product id's onto the clipboard for later use
-		addon.filter.products.mode = filter
+		addon.filter.products.mode = preset
 
 		[productcontainer]
 		css.width = 650px

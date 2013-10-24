@@ -96,15 +96,15 @@ class products
         {
             foreach ($filters as $filter):
                 $content .= "<tr>";
-                $content .=   "<td width=20%></td>";
-                $content .=   "<td width=50%>" . $filter->text . "</td>";
+                $content .=   "<td width=5%></td>";
+                $content .=   "<td width=80%>" . $filter->text . "</td>";
                 $content .=   "<td width=10%>";
                 $content .=     "<input name='advice[]' "; 
                 $match = false;
                 if ($match) $content .= " checked='checked' ";
-                $content .=       "type='checkbox' value='" . $filter->id . "' onClick=makeAdviceSel()>" . $filter->text;
+                $content .=       "type='checkbox' value='" . $filter->id . "' onClick=makeAdviceSel()>";
                 $content .=   "</td>";
-                $content .=   "<td width=20%></td>";
+                $content .=   "<td width=5%></td>";
                 $content .= "</tr>";
             endforeach;
         }
