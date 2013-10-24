@@ -132,7 +132,7 @@ class products
                 foreach ($features as $feature):
                     $match = false;
 //echo "looking for [" . $department->id . "+" . $feature->id . "] in " . $featureSel[0] . "<br>";
-                    if ((in_array($department->id . "." . $feature->id, $featureSel)) /*|| ($featureSel[0] == '*')*/)
+                    if ((in_array($department->id . "." . $feature->id, $featureSel)))
                         $match = true;
                     if ((in_array($department->id, $departmentSel)) &&(!(isset($_GET['feature']))))
                         $match = true;
@@ -181,17 +181,19 @@ class products
 
                     if ($featureSel[$j] == "")
                         continue;
-
+//echo $departmentSel[$i] . ':' . $featureSel[$j] . '<br>';
                     // The feature is listed as dept.feature eg 5.9 so we only want the '9' part
                     $f = explode('.', $featureSel[$j]);
 //echo 'lookup' . $f[1] . '<br>';
-                    if ($f[0] != $departmentSel[$i])
+                    if (($f[0] != $departmentSel[$i]) && (isset($_GET['feature'])))
                         continue;
                     // Is there a feature record for this product?
                     $criteria = new CDbCriteria;
                     $criteria->addCondition("product_product_id = " . $product->id);
-                    $criteria->addCondition("product_feature_id = " . $f[1]);
+                    if ($featureSel[$j] != '*')
+                        $criteria->addCondition("product_feature_id = " . $f[1]);
                     $feature = ProductHasFeature::model()->find($criteria);
+                    echo 'f';
                     if ($feature)
                     {
                         if ($this->clipBoard != "")
