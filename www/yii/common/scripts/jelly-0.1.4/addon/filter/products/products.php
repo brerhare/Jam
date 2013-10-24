@@ -260,7 +260,8 @@ class products
         }
 
         if (isset($_GET['showurl']))
-            echo $_SERVER['QUERY_STRING'];
+            echo $_SERVER['REQUEST_URI'].
+
 
 //echo $this->clipBoard . '<br>';
 //$this->clipBoard = '1|2|3';  // $oStr;
