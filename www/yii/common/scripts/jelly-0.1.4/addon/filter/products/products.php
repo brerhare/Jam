@@ -224,36 +224,33 @@ class products
                         }
                         if (!($found))
                             continue;
-/*****
+
                         // Now check price range
                         $found = false;
-                        for ($k = 0; $k < count($priceCheck); $k++)
+                        for ($l = 0; $l < count($priceCheck); $l++)
                         {
-                            $arr = explode('_', $priceCheck[$k]);
+                            $arr = explode('_', $priceCheck[$l]);
 
-
-                    $criteria = new CDbCriteria;
-                    $criteria->addCondition("product_product_id = " . $product->id);
-                    if ($featureSel[$j] != '*')
-                        $criteria->addCondition("product_feature_id = " . $f[1]);
-                    $feature = ProductHasFeature::model()->find($criteria);
-                    if ($feature)
-
-
-                            if (((int)$product->duration >= (int)$arr[1]) && ((int)$product->duration <= (int)$arr[2]))
+                            $criteria = new CDbCriteria;
+                            $criteria->addCondition("product_product_id = " . $product->id);
+                            $options = ProductHasOption::model()->findAll($criteria);
+                            foreach ($options as $option)
                             {
-                                if ((in_array($arr[0], $durationSel)) || (!(isset($_GET['price']))))
+//echo $product->name . ' price='.(int)$option->price.' min='.(int)$arr[1].' max='.(int)$arr[2].'<br>';
+                                if (((int)$option->price >= (int)$arr[1]) && ((int)$option->price <= (int)$arr[2]))
                                 {
-                                    $found = true;
-                                    break;
+                                    if ((in_array($arr[0], $priceSel)) || (!(isset($_GET['price']))))
+                                    {
+                                        $found = true;
+                                        break;
+                                    }
                                 }
                             }
                         }
                         if (!($found))
                             continue;
-*****/
 
-
+                        // We have a winner
                         if ($this->clipBoard != "")
                             $this->clipBoard .= "|";
                         $this->clipBoard .= $product->id;
