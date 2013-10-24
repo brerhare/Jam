@@ -59,7 +59,7 @@ class products
         $content .= "<script> var SID = '" . $_GET['sid'] . "'; </script>";
         $content .= "<div style='color:#575757;'>";      // Your basic solemn grey font color
         if (isset($_GET['showurl']))
-            $content .= "<button type='button' onClick='showUrl()'>Show filter string</button><br/>";
+            $content .= "<button type='button' onClick='showUrl()' style='color:#ffffff; background-color:#0064cc;'>Show filter string</button><br/>";
         $uid = Yii::app()->session['uid'];
 
         // Duration band (always shown if exists)
