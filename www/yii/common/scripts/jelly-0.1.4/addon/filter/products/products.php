@@ -11,10 +11,17 @@
 class products
 {
     private $clipBoard = "";
+    private $uid = "";//Yii::app()->session['uid'];
 
     //Defaults
     private $defaultDepartment = "";
     private $defaultWidth = "100%";
+    private $departmentSel = array();
+    private $featureSel = array();
+    private $durationCheck = array();
+    private $durationSel = array();
+    private $priceCheck = array();
+    private $priceSel = array();
 
 // Not used ...
     public $apiOption = array(
@@ -28,6 +35,7 @@ class products
     public function init($options, $jellyRootUrl)
     {
 //      var_dump( $options );
+        $this->uid = Yii::app()->session['uid'];
 
         // Generate the content into the html, replacing any <substituteN> tags
         $content = "";
@@ -55,30 +63,44 @@ class products
         }
 
         // Insert the data
-        $content = '';
-        $content .= "<script> var SID = '" . $_GET['sid'] . "'; </script>";
-        $content .= "<div style='color:#575757;'>";      // Your basic solemn grey font color
+        $data = '';
+        $data .= "<script> var SID = '" . $_GET['sid'] . "'; </script>";
+        $data .= "<div style='color:#575757;'>";      // Your basic solemn grey font color
         if (isset($_GET['showurl']))
-            $content .= "<button type='button' onClick='showUrl()' style='color:#ffffff; background-color:#0064cc;'>Show filter string</button><br/>";
-        $uid = Yii::app()->session['uid'];
+            $data .= "<button type='button' onClick='showUrl()' style='color:#ffffff; background-color:#0064cc;'>Show filter string</button><br/>";
 
+        $data .= $this->buildUserInputs();                // The twistys and their checkboxes
+        $this->apiHtml = str_replace("<substitute-data>", $data, $this->apiHtml);
+        // This is kind of a standard replace
+        $this->apiHtml = str_replace("<substitute-path>", $jellyRootUrl, $this->apiHtml);
+
+        $this->clipBoard = $this->selectMatchingProducts();     // Eg '2|22|222|4|5|6'
+
+        $retArr = array();
+        $retArr[0] = $this->apiHtml;
+        $retArr[1] = $this->apiJs;
+        $retArr[2] = $this->clipBoard;
+        return $retArr;
+    }
+
+    private function buildUserInputs()
+    {
+        $content ="";   
         // Duration band (always shown if exists)
-        $durationSel = array();
-        $durationCheck = array();
         $lastShown = 0;
-        $durations = DurationBand::model()->findAll(array('order'=>'max', 'condition'=>'uid=' . $uid));
+        $durations = DurationBand::model()->findAll(array('order'=>'max', 'condition'=>'uid=' . $this->uid));
         if ($durations)
         {
             if (isset($_GET['duration']))
-                $durationSel = explode('|', $_GET['duration']);
+                $this->durationSel = explode('|', $_GET['duration']);
             else
-                array_push($durationSel, '*');
+                array_push($this->durationSel, '*');
             $content .= "<br>";
             $content .= "<div class='filter-header'>Duration<br>";
             $content .= "<div class='filter-detail'>";
             foreach ($durations as $duration):
                 $match = false;
-                if (in_array($duration->id, $durationSel))
+                if (in_array($duration->id, $this->durationSel))
                     $match = true;
                 if (!(isset($_GET['duration'])))
                     $match = true;
@@ -86,7 +108,7 @@ class products
                 $content .= "<input name='duration[]' "; 
                 if ($match) $content .= " checked='checked' ";
                 $content .= "type='checkbox' value='" . $duration->id . "' onClick=makeSel()>" . $lastShown . " - " . $duration->max . " mins";
-                array_push($durationCheck, $duration->id . '_' . $lastShown . '_' . $duration->max);
+                array_push($this->durationCheck, $duration->id . '_' . $lastShown . '_' . $duration->max);
                 $lastShown = $duration->max;
                 $content .= "</label><br>";
             endforeach;
@@ -95,22 +117,20 @@ class products
         }
 
         // Price band (always shown if exists)
-        $priceSel = array();
-        $priceCheck = array();
         $lastShown = 0;
-        $prices  = PriceBand::model()->findAll(array('order'=>'max', 'condition'=>'uid=' . $uid));
+        $prices  = PriceBand::model()->findAll(array('order'=>'max', 'condition'=>'uid=' . $this->uid));
         if ($prices)
         {
             if (isset($_GET['price']))
-                $priceSel = explode('|', $_GET['price']);
+                $this->priceSel = explode('|', $_GET['price']);
             else
-                array_push($priceSel, '*');
+                array_push($this->priceSel, '*');
             $content .= "<br>";
             $content .= "<div class='filter-header'>Price<br>";
             $content .= "<div class='filter-detail'>";
             foreach ($prices as $price):
                 $match = false;
-                if (in_array($price->id, $priceSel))
+                if (in_array($price->id, $this->priceSel))
                     $match = true;
                 if (!(isset($_GET['price'])))
                     $match = true;
@@ -118,7 +138,7 @@ class products
                 $content .= "<input name='price[]' "; 
                 if ($match) $content .= " checked='checked' ";
                 $content .= "type='checkbox' value='" . $price->id . "' onClick=makeSel()> £" . $lastShown . " - £" . $price->max;
-                array_push($priceCheck, $price->id . '_' . $lastShown . '_' . $price->max);                
+                array_push($this->priceCheck, $price->id . '_' . $lastShown . '_' . $price->max);                
                 $lastShown = $price->max;
                 $content .= "</label><br>";
             endforeach;
@@ -127,20 +147,18 @@ class products
         }
 
        // Departments with features
-        $featureSel = array();
-        $departmentSel = array();
-        $departments  = Department::model()->findAll(array('order'=>'name', 'condition'=>'uid=' . $uid));
+        $departments  = Department::model()->findAll(array('order'=>'name', 'condition'=>'uid=' . $this->uid));
         if ($departments)
         {
             if (isset($_GET['department']))
-                $departmentSel = explode('|', $_GET['department']);
+                $this->departmentSel = explode('|', $_GET['department']);
             if (isset($_GET['feature']))
-                $featureSel = explode('|', $_GET['feature']);
+                $this->featureSel = explode('|', $_GET['feature']);
             else
-                array_push($featureSel, '*');
+                array_push($this->featureSel, '*');
             foreach ($departments as $department):
                 $vis = "";
-                if (!(in_array($department->id, $departmentSel)))
+                if (!(in_array($department->id, $this->departmentSel)))
                     $vis = " style='display:none;' ";
                 $content .= "<br>";
                 $content .= "<div id='h' class='filter-header'> <a href='#' >" . $department->name . "</a><br>";
@@ -148,10 +166,10 @@ class products
                 $content .= "<div id='d' class='filter-detail'" . $vis . ">";
                 foreach ($features as $feature):
                     $match = false;
-//echo "looking for [" . $department->id . "+" . $feature->id . "] in " . $featureSel[0] . "<br>";
-                    if ((in_array($department->id . "." . $feature->id, $featureSel)))
+//echo "looking for [" . $department->id . "+" . $feature->id . "] in " . $this->featureSel[0] . "<br>";
+                    if ((in_array($department->id . "." . $feature->id, $this->featureSel)))
                         $match = true;
-                    if ((in_array($department->id, $departmentSel)) &&(!(isset($_GET['feature']))))
+                    if ((in_array($department->id, $this->departmentSel)) &&(!(isset($_GET['feature']))))
                         $match = true;
                     $content .= "<label class='checkbox'> ";
                     $content .= "<input id='crap' name='feature[]' ";
@@ -164,61 +182,62 @@ class products
             endforeach;
         }
         $content .= "</div>";
-        $html = str_replace("<substitute-data>", $content, $this->apiHtml);
-        $this->apiHtml = $html;
+        return $content;
+    }
 
-        //----------  Finally produce the list of product id's from all the selections
-        //$this->clipBoard = '2|22|222|4|5|6';
+    private function selectMatchingProducts()
+    {
+        $productList = "";
 
         // Each selected department one at a time
         $deptStr = "";
         $deptFeatureStr = "";
-        for ($i = 0; $i < count($departmentSel); $i++)
+        for ($i = 0; $i < count($this->departmentSel); $i++)
         {
             $deptStr = "";
-            if ($departmentSel[$i] == "")
+            if ($this->departmentSel[$i] == "")
                 continue;
             if ($deptStr != "")
                 $deptStr .= " or ";
-            $deptStr .= "product_department_id=" . $departmentSel[$i];
+            $deptStr .= "product_department_id=" . $this->departmentSel[$i];
 
             // Get all the products for this department
             $criteria = new CDbCriteria;
-            $criteria->addCondition("uid=" . $uid);
+            $criteria->addCondition("uid=" . $this->uid);
             $criteria->addCondition($deptStr);
             $products = Product::model()->findAll($criteria);
             foreach ($products as $product)
             {
-//echo 'dept ' . $departmentSel[$i] . ' product ' . $product->id . '<br>';
+//echo 'dept ' . $this->departmentSel[$i] . ' product ' . $product->id . '<br>';
                 // Each selected feature for this particular department (to match against this particular product)
                 $deptFeatureStr = "";
-                for ($j = 0; $j < count($featureSel); $j++)
+                for ($j = 0; $j < count($this->featureSel); $j++)
                 {
 //echo 'feature<br>';
-                    if ($featureSel[$j] == "")
+                    if ($this->featureSel[$j] == "")
                         continue;
-//echo $departmentSel[$i] . ':' . $featureSel[$j] . '<br>';
+//echo $this->departmentSel[$i] . ':' . $this->featureSel[$j] . '<br>';
                     // The feature is listed as dept.feature eg 5.9 so we only want the '9' part
-                    $f = explode('.', $featureSel[$j]);
+                    $f = explode('.', $this->featureSel[$j]);
 //echo 'lookup' . $f[1] . '<br>';
-                    if (($f[0] != $departmentSel[$i]) && (isset($_GET['feature'])))
+                    if (($f[0] != $this->departmentSel[$i]) && (isset($_GET['feature'])))
                         continue;
                     // Is there a feature record for this product?
                     $criteria = new CDbCriteria;
                     $criteria->addCondition("product_product_id = " . $product->id);
-                    if ($featureSel[$j] != '*')
+                    if ($this->featureSel[$j] != '*')
                         $criteria->addCondition("product_feature_id = " . $f[1]);
                     $feature = ProductHasFeature::model()->find($criteria);
                     if ($feature)
                     {
                         // Now check duration range
                         $found = false;
-                        for ($k = 0; $k < count($durationCheck); $k++)
+                        for ($k = 0; $k < count($this->durationCheck); $k++)
                         {
-                            $arr = explode('_', $durationCheck[$k]);
+                            $arr = explode('_', $this->durationCheck[$k]);
                             if (((int)$product->duration >= (int)$arr[1]) && ((int)$product->duration <= (int)$arr[2]))
                             {
-                                if ((in_array($arr[0], $durationSel)) || (!(isset($_GET['duration']))))
+                                if ((in_array($arr[0], $this->durationSel)) || (!(isset($_GET['duration']))))
                                 {
                                     $found = true;
                                     break;
@@ -230,9 +249,9 @@ class products
 
                         // Now check price range
                         $found = false;
-                        for ($l = 0; $l < count($priceCheck); $l++)
+                        for ($l = 0; $l < count($this->priceCheck); $l++)
                         {
-                            $arr = explode('_', $priceCheck[$l]);
+                            $arr = explode('_', $this->priceCheck[$l]);
 
                             $criteria = new CDbCriteria;
                             $criteria->addCondition("product_product_id = " . $product->id);
@@ -242,7 +261,7 @@ class products
 //echo $product->name . ' price='.(int)$option->price.' min='.(int)$arr[1].' max='.(int)$arr[2].'<br>';
                                 if (((int)$option->price >= (int)$arr[1]) && ((int)$option->price <= (int)$arr[2]))
                                 {
-                                    if ((in_array($arr[0], $priceSel)) || (!(isset($_GET['price']))))
+                                    if ((in_array($arr[0], $this->priceSel)) || (!(isset($_GET['price']))))
                                     {
                                         $found = true;
                                         break;
@@ -254,44 +273,15 @@ class products
                             continue;
 
                         // We have a winner
-                        if ($this->clipBoard != "")
-                            $this->clipBoard .= "|";
-                        $this->clipBoard .= $product->id;
+                        if ($productList != "")
+                            $productList .= "|";
+                        $productList .= $product->id;
                     }
                 }
             }
         }
-
-//echo $this->clipBoard . '<br>';
-//$this->clipBoard = '1|2|3';  // $oStr;
-
-        // This is kind of a standard replace
-        $this->apiHtml = str_replace("<substitute-path>", $jellyRootUrl, $this->apiHtml);
-
-        $retArr = array();
-        $retArr[0] = $this->apiHtml;
-        $retArr[1] = $this->apiJs;
-        $retArr[2] = $this->clipBoard;
-        return $retArr;
+        return $productList;
     }
-
-    // Is the department in the request list? If so we want to 'open' it
-    private function selectDept($dept)
-    {
-        if (isset($_GET['department']))
-        {
-            $deptArr = explode("|", $_GET['department']);
-            foreach ($deptArr as $department)
-            {
-                $featArr = explode(".", $department);
-                if ($dept == $department)
-                    return true;
-           }
-        }
-        return false;
-    }
-
-    // @@TODO: Thought: maybe all sites use a jelly db, and each has their own table prefix? Could avoid a lot of hassle
 
     private $apiHtml = <<<END_OF_API_HTML
 
