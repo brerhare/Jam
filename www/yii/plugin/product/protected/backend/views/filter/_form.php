@@ -23,3 +23,6 @@
 	</div>
 
 <?php $this->endWidget(); ?>
+
+<iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=<?php echo Yii::app()->session['sid'];?>&showurl=true"></iframe>
+

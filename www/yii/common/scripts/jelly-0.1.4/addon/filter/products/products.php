@@ -258,10 +258,12 @@ class products
                 }
             }
         }
-//echo $_SERVER['QUERY_STRING'];
-//echo $this->clipBoard . '<br>';
 
-        //$this->clipBoard = '1|2|3';  // $oStr;
+        if (isset($_GET['showurl']))
+            echo $_SERVER['QUERY_STRING'];
+
+//echo $this->clipBoard . '<br>';
+//$this->clipBoard = '1|2|3';  // $oStr;
 
         // This is kind of a standard replace
         $this->apiHtml = str_replace("<substitute-path>", $jellyRootUrl, $this->apiHtml);
