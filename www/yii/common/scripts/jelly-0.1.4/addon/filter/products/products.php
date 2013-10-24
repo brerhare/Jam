@@ -10,10 +10,13 @@
 
 class products
 {
-    private $clipBoard = "";
-    private $uid = "";//Yii::app()->session['uid'];
 
     //Defaults
+    $mode = 'filter';
+
+    // Globals
+    private $clipBoard = "";
+    private $uid = "";//Yii::app()->session['uid'];
     private $defaultDepartment = "";
     private $defaultWidth = "100%";
     private $departmentSel = array();
@@ -43,8 +46,8 @@ class products
         {
             switch ($opt)
             {
-                case "department":
-                    $department = $val;
+                case "mode":
+                    $this->mode = $val;
                     break;
                 default:
                     break;
@@ -70,7 +73,8 @@ class products
             $data .= "<button type='button' onClick='showUrl()' style='color:#ffffff; background-color:#0064cc;'>Show filter string</button><br/>";
 
         // Generate the advice questions if in 'preset' mode
-        $data .= $this->buildAdviceInputs();
+        if ($this->mode == 'preset')
+            $data .= $this->buildAdviceInputs();
 
         // Generate twistys and their checkboxes for user input. Default to current $_GET
         $data .= $this->buildUserInputs();
