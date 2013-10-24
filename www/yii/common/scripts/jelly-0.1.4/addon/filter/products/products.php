@@ -214,6 +214,7 @@ class products
                 }
             }
         }
+        echo $_SERVER['QUERY_STRING'];
 //echo $this->clipBoard . '<br>';
 
         /*
