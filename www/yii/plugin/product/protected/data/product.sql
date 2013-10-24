@@ -218,7 +218,7 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`product_filter` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `uid` INT NOT NULL ,
   `text` VARCHAR(255) NOT NULL ,
-  `url` VARCHAR(255) NOT NULL ,
+  `filter_string` TEXT NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `uid` (`uid` ASC) )
 ENGINE = InnoDB;

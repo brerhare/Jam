@@ -21,7 +21,7 @@ $this->menu=array(
             'type'  => 'raw',
         ),
 
-		'url',
+		//'filter_string',
 
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',

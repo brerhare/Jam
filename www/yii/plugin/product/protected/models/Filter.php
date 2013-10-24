@@ -7,7 +7,7 @@
  * @property integer $id
  * @property integer $uid
  * @property string $text
- * @property string $url
+ * @property string $filter_string
  */
 class Filter extends CActiveRecord
 {
@@ -37,12 +37,12 @@ class Filter extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('uid, text, url', 'required'),
+			array('uid, text, filter_string', 'required'),
 			array('uid', 'numerical', 'integerOnly'=>true),
-			array('text, url', 'length', 'max'=>255),
+			array('text', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, text, url', 'safe', 'on'=>'search'),
+			array('id, uid, text, filter_string', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -66,7 +66,7 @@ class Filter extends CActiveRecord
 			'id' => 'ID',
 			'uid' => 'Uid',
 			'text' => 'Text',
-			'url' => 'Filter string',
+			'filter_string' => 'Filter String',
 		);
 	}
 
@@ -85,7 +85,7 @@ class Filter extends CActiveRecord
 		//$criteria->compare('uid',$this->uid);
 		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$criteria->compare('text',$this->text,true);
-		$criteria->compare('url',$this->url,true);
+		$criteria->compare('filter_string',$this->filter_string,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
