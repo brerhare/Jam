@@ -153,10 +153,6 @@ class products
         //----------  Finally produce the list of product id's from all the selections
         //$this->clipBoard = '2|22|222|4|5|6';
 
-        // Set un-input things to '*'
-        if (!(isset($_GET['feature'])))
-            array_push($featureSel, '*');
-
         // Each selected department one at a time
         $deptStr = "";
         $deptFeatureStr = "";
@@ -188,28 +184,15 @@ class products
 
                     // The feature is listed as dept.feature eg 5.9 so we only want the '9' part
                     $f = explode('.', $featureSel[$j]);
-
-                    $foundFeature = false;
-
-                    if ($featureSel[$j] == '*')
-                    {
-                        $foundFeature = true;
-//echo 'wildcard<br>';
-                    }
-                    else
-                    {
 //echo 'lookup' . $f[1] . '<br>';
-                        if ($f[0] != $departmentSel[$i])
-                            continue;
-                        // Is there a feature record for this product?
-                        $criteria = new CDbCriteria;
-                        $criteria->addCondition("product_product_id = " . $product->id);
-                        $criteria->addCondition("product_feature_id = " . $f[1]);
-                        $feature = ProductHasFeature::model()->find($criteria);
-                        if ($feature)
-                            $foundFeature = true;
-                    }
-                    if ($foundFeature)
+                    if ($f[0] != $departmentSel[$i])
+                        continue;
+                    // Is there a feature record for this product?
+                    $criteria = new CDbCriteria;
+                    $criteria->addCondition("product_product_id = " . $product->id);
+                    $criteria->addCondition("product_feature_id = " . $f[1]);
+                    $feature = ProductHasFeature::model()->find($criteria);
+                    if ($feature)
                     {
                         if ($this->clipBoard != "")
                             $this->clipBoard .= "|";
@@ -220,19 +203,6 @@ class products
         }
 //echo $_SERVER['QUERY_STRING'];
 //echo $this->clipBoard . '<br>';
-
-        /*
-        $criteria = new CDbCriteria;
-        $criteria->addCondition("uid=" . $uid);
-        if ($deptStr)
-            $criteria->addCondition($deptStr);
-        $products = Product::model()->findAll($criteria);
-        $oStr = "";
-        foreach ($products as $product):
-            if ($oStr != "") $oStr .= "|";
-            $oStr .= $product->id;
-        endforeach;
-*/
 
         //$this->clipBoard = '1|2|3';  // $oStr;
 
