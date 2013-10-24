@@ -379,14 +379,12 @@ END_OF_API_HTML;
     }
 
     jQuery(document).ready(function($){
-
-
-        // If we're in the backend, pop up the url at startup
-        chkUrl = document.URL;    // Old url we came in with (currently displayed in browser)
+        // If we're in the backend, pop up the url at startup (would be displayed in browser if werent an iframe)
+        chkUrl = document.URL;
         if (chkUrl.indexOf("&showurl") != -1)
         {
-alert(document.URL);
-            sel += "&showurl=true";
+            chkUrl = chkUrl.substring(0, chkUrl.length - 13);
+            alert(chkUrl);
         }
 
 
