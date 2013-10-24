@@ -259,10 +259,6 @@ class products
             }
         }
 
-        if (isset($_GET['showurl']))
-            echo $_SERVER['REQUEST_URI'].
-
-
 //echo $this->clipBoard . '<br>';
 //$this->clipBoard = '1|2|3';  // $oStr;
 
@@ -368,6 +364,15 @@ END_OF_API_HTML;
             sel += '&feature=' + str; 
         }
         sel+='&department=' + department.join('|');
+
+		// If we're in the backend, pop up the url and keep the 'showurl' going
+		chkUrl = document.URL;
+		if (chkUrl.indexOf("&showurl") != -1)
+		{
+			chkUrl = chkUrl.substring(0, chkUrl.length - 13);
+			alert(chkUrl);
+			sel += "&showurl=true";
+		}
 
         // Activate the link
         window.location.href = sel;
