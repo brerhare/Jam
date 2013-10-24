@@ -12,7 +12,7 @@ class products
 {
 
     //Defaults
-    $mode = 'filter';
+    private $mode = 'filter';
 
     // Globals
     private $clipBoard = "";
@@ -72,9 +72,9 @@ class products
         if (isset($_GET['showurl']))
             $data .= "<button type='button' onClick='showUrl()' style='color:#ffffff; background-color:#0064cc;'>Show filter string</button><br/>";
 
-        // Generate the advice questions if in 'preset' mode
+        // Generate the preset questions if in 'preset' mode
         if ($this->mode == 'preset')
-            $data .= $this->buildAdviceInputs();
+            $data .= $this->buildPrefixInputs();
 
         // Generate twistys and their checkboxes for user input. Default to current $_GET
         $data .= $this->buildUserInputs();
@@ -91,7 +91,7 @@ class products
         return $retArr;
     }
 
-    private function buildAdviceInputs()
+    private function buildPrefixInputs()
     {
         $content = "";
         $content .= "<center><table>";
@@ -103,10 +103,10 @@ class products
                 $content .=   "<td width=5%></td>";
                 $content .=   "<td width=80%>" . $filter->text . "</td>";
                 $content .=   "<td width=10%>";
-                $content .=     "<input name='advice[]' "; 
+                $content .=     "<input name='prefix[]' "; 
                 $match = false;
                 if ($match) $content .= " checked='checked' ";
-                $content .=       "type='checkbox' value='" . $filter->id . "' onClick=makeAdviceSel()>";
+                $content .=       "type='checkbox' value='" . $filter->id . "' onClick=makePrefixSel()>";
                 $content .=   "</td>";
                 $content .=   "<td width=5%></td>";
                 $content .= "</tr>";
@@ -119,6 +119,11 @@ class products
     private function buildUserInputs()
     {
         $content = "";
+
+		// If we are in 'preset' mode this still needs to run to build the lists, but we hide it
+		if ($this->mode == 'preset')
+			$content .= "<div id='filter-hidden-in-preset-mode' style='display:none'>";
+
         // Duration band (always shown if exists)
         $lastShown = 0;
         $durations = DurationBand::model()->findAll(array('order'=>'max', 'condition'=>'uid=' . $this->uid));
@@ -215,6 +220,10 @@ class products
             endforeach;
         }
         $content .= "</div>";
+
+		if ($this->mode == 'preset')
+			$content .= "<div>";
+
         return $content;
     }
 
@@ -334,6 +343,12 @@ END_OF_API_HTML;
     priceAll = '';
 
     department = Array();
+
+	function makeAdViceSel()
+	{
+        sel = '?layout=preset&sid=' + SID;
+alert('preset!');
+	}
 
     function makeSel()
     {
