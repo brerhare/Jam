@@ -185,8 +185,8 @@ class ProductController extends Controller
 		// Options
         Yii::log("Deleting all options for product " . $id, CLogger::LEVEL_INFO, 'system.test.kim');
         ProductHasOption::model()->deleteAllByAttributes(array('product_product_id' => $id, ));
-        Yii::log("Deleting all images for product " . $id, CLogger::LEVEL_INFO, 'system.test.kim');
-        Image::model()->deleteAllByAttributes(array('product_product_id' => $id, ));
+        //////////Yii::log("Deleting all images for product " . $id, CLogger::LEVEL_INFO, 'system.test.kim');
+        //////////Image::model()->deleteAllByAttributes(array('product_product_id' => $id, ));
     }
 
     // Update product features (checkboxes) and options

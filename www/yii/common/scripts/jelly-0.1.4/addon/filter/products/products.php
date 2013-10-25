@@ -69,8 +69,13 @@ class products
         $data = '';
         $data .= "<script> var SID = '" . $_GET['sid'] . "'; </script>";
         $data .= "<div style='color:#575757;'>";      // Your basic solemn grey font color
+
+		// The 'show filter string' button and div
         if (isset($_GET['showurl']))
+		{
             $data .= "<button type='button' onClick='showUrl()' style='color:#ffffff; background-color:#0064cc;'>Show filter string</button><br/>";
+			$data .= "<center><div id='showFilterString' style='display:none; border:1px solid black; width:160px; padding:5px; white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; '></div></center>";
+		}
 
         // Generate the preset questions if in 'preset' mode
         if ($this->mode == 'preset')
@@ -639,7 +644,10 @@ END_OF_API_HTML;
         // If we're in the backend we can pop up the url (would be displayed in browser if werent an iframe)
         chkUrl = document.URL;
         chkUrl = chkUrl.substring(0, chkUrl.length - 13);   // Chop off the 'showurl=true' at the end
-        alert(chkUrl);
+		box = document.getElementById("showFilterString");
+		box.innerHTML = chkUrl;
+		box.style.display = "block";
+        //alert(chkUrl);
     }
 
     $('.filter-detail').click(function(){
