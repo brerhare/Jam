@@ -99,6 +99,10 @@ class products
         if ($filters)
         {
             foreach ($filters as $filter):
+                // Store the preset values
+                //$content .= "<script>";
+                //$content .= ""
+
                 $content .= "<tr>";
                 $content .=   "<td width=5%></td>";
                 $content .=   "<td width=80%>" . $filter->text . "</td>";
@@ -346,10 +350,14 @@ END_OF_API_HTML;
 
 	function makePrefixSel()
 	{
-        sel = '?layout=preset&sid=' + SID;
-
+        // Presets
+        //av=document.getElementsByName("prefix[]");
+        //if (av.length > 0)
+        //{
+        //}
+sel = '?layout=preset&sid=' + SID;
 sel += '&department=27';
-
+alert(sel);
         // Activate the link
         window.location.href = sel;
 	}
