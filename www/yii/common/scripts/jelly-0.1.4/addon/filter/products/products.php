@@ -10,10 +10,13 @@
 
 class products
 {
-    private $clipBoard = "";
-    private $uid = "";//Yii::app()->session['uid'];
 
     //Defaults
+    private $mode = 'filter';
+
+    // Globals
+    private $clipBoard = "";
+    private $uid = "";//Yii::app()->session['uid'];
     private $defaultDepartment = "";
     private $defaultWidth = "100%";
     private $departmentSel = array();
@@ -43,8 +46,8 @@ class products
         {
             switch ($opt)
             {
-                case "department":
-                    $department = $val;
+                case "mode":
+                    $this->mode = $val;
                     break;
                 default:
                     break;
@@ -66,11 +69,17 @@ class products
         $data = '';
         $data .= "<script> var SID = '" . $_GET['sid'] . "'; </script>";
         $data .= "<div style='color:#575757;'>";      // Your basic solemn grey font color
-        if (isset($_GET['showurl']))
-            $data .= "<button type='button' onClick='showUrl()' style='color:#ffffff; background-color:#0064cc;'>Show filter string</button><br/>";
 
-        // Generate the advice questions if in 'preset' mode
-        $data .= $this->buildAdviceInputs();
+		// The 'show filter string' button and div
+        if (isset($_GET['showurl']))
+		{
+            $data .= "<button type='button' onClick='showUrl()' style='color:#ffffff; background-color:#0064cc;'>Show filter string</button><br/>";
+			$data .= "<center><div id='showFilterString' style='display:none; border:1px solid black; width:160px; padding:5px; white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word; '></div></center>";
+		}
+
+        // Generate the preset questions if in 'preset' mode
+        if ($this->mode == 'preset')
+            $data .= $this->buildPrefixInputs();
 
         // Generate twistys and their checkboxes for user input. Default to current $_GET
         $data .= $this->buildUserInputs();
@@ -87,34 +96,48 @@ class products
         return $retArr;
     }
 
-    private function buildAdviceInputs()
+    private function buildPrefixInputs()
     {
+		$filterSel = array();
         $content = "";
-        $content .= "<center><table>";
+		$content .= "<script>presetArr = [];</script>";
+        $content .= "<br/><center><table>";
         $filters = Filter::model()->findAll(array('order'=>'id', 'condition'=>'uid=' . $this->uid));
         if ($filters)
         {
+			if (isset($_GET['filter']))
+				$filterSel = explode('|', $_GET['filter']);
             foreach ($filters as $filter):
+                // Store the preset values
+                $content .= '<script>presetArr.push("' . $filter->filter_string . '");</script>';
+
                 $content .= "<tr>";
-                $content .=   "<td width=20%></td>";
-                $content .=   "<td width=50%>" . $filter->text . "</td>";
+                $content .=   "<td width=5%></td>";
+                $content .=   "<td width=80%>" . $filter->text . "</td>";
                 $content .=   "<td width=10%>";
-                $content .=     "<input name='advice[]' "; 
+                $content .=     "<input name='preset[]' "; 
                 $match = false;
+				if (in_array($filter->id, $filterSel))
+					$match = true;
                 if ($match) $content .= " checked='checked' ";
-                $content .=       "type='checkbox' value='" . $filter->id . "' onClick=makeAdviceSel()>" . $filter->text;
+                $content .=       "type='checkbox' value='" . $filter->id . "' onClick=makePrefixSel()>";
                 $content .=   "</td>";
-                $content .=   "<td width=20%></td>";
+                $content .=   "<td width=5%></td>";
                 $content .= "</tr>";
             endforeach;
         }
-        $content .= "</table></center>";
+        $content .= "</table></center><br/>";
         return $content;
     }
 
     private function buildUserInputs()
     {
         $content = "";
+
+		// If we are in 'preset' mode this still needs to run to build the lists, but we hide it
+		if ($this->mode == 'preset')
+			$content .= "<div id='filter-hidden-in-preset-mode' style='display:none'>";
+
         // Duration band (always shown if exists)
         $lastShown = 0;
         $durations = DurationBand::model()->findAll(array('order'=>'max', 'condition'=>'uid=' . $this->uid));
@@ -211,6 +234,10 @@ class products
             endforeach;
         }
         $content .= "</div>";
+
+		if ($this->mode == 'preset')
+			$content .= "<div>";
+
         return $content;
     }
 
@@ -331,6 +358,218 @@ END_OF_API_HTML;
 
     department = Array();
 
+	function makePrefixSel()
+	{
+		// 1D arrays
+		mastDuration = Array();
+		mastPrice = Array();
+		mastDepartment = Array();
+		mastFeature = Array();
+		// 2D arrays (each preset)
+		checkDuration = Array();
+		checkPrice = Array();
+		checkDepartment = Array();
+		checkFeature = Array();
+		av = document.getElementsByName("preset[]");
+        // Presets
+        if (av.length > 0)
+        {
+			for (i = 0; i < av.length; i++)
+			{
+				if (av[i].checked)
+				{
+					checkDuration[i] = Array();
+					checkPrice[i] = Array();
+					checkDepartment[i] = Array();
+					checkFeature[i] = Array();
+//					alert(presetArr[i]);
+					strArr = presetArr[i].split("&");
+					for (j = 0; j < strArr.length; j++)
+					{
+						// Eg duration=6|7|8
+						//    price=1|2|3
+						//    feature=29.209|29.210|30.50
+						//    department=29|30
+						//alert(strArr[j]);
+						itemArr = strArr[j].split("=");
+
+//alert(itemArr[0]); //department
+//alert(itemArr[1]); //27|30
+
+						itemValueArr = itemArr[1].split("|");
+						for (k = 0; k < itemValueArr.length; k++)
+						{
+							if (itemArr[0] == 'duration')
+								checkDuration[i][k] = itemValueArr[k];
+							else if (itemArr[0] == 'price')
+								checkPrice[i][k] = itemValueArr[k];
+							else if (itemArr[0] == 'department')
+								checkDepartment[i][k] = itemValueArr[k];
+							else if (itemArr[0] == 'feature')
+								checkFeature[i][k] = itemValueArr[k];
+						}
+					}
+				}
+			}
+			// Now build the master list
+			// Duration
+			for (i = 0; i < checkDuration.length; i++)
+			{
+				if (av[i].checked == false)
+					continue;
+				for (j = 0; j < checkDuration[i].length; j++)
+				{
+					reject = 0;
+					for (ii = 0; ii < checkDuration.length; ii++)
+					{
+						if (av[ii].checked == false)
+							continue;
+						if (checkDuration[ii].indexOf(checkDuration[i][j]) == -1)
+						{
+							reject = 1;
+							break;
+						}
+					}
+					if (reject == 0)
+					{
+						if (mastDuration.indexOf(checkDuration[i][j]) == -1)
+							mastDuration.push(checkDuration[i][j]);
+					}
+				}
+			}
+			// Price
+			for (i = 0; i < checkPrice.length; i++)
+			{
+				if (av[i].checked == false)
+					continue;
+				for (j = 0; j < checkPrice[i].length; j++)
+				{
+					reject = 0;
+					for (ii = 0; ii < checkPrice.length; ii++)
+					{
+						if (av[ii].checked == false)
+							continue;
+						if (checkPrice[ii].indexOf(checkPrice[i][j]) == -1)
+						{
+							reject = 1;
+							break;
+						}
+					}
+					if (reject == 0)
+					{
+						if (mastPrice.indexOf(checkPrice[i][j]) == -1)
+							mastPrice.push(checkPrice[i][j]);
+					}
+				}
+			}
+			// Department
+			for (i = 0; i < checkDepartment.length; i++)
+			{
+				if (av[i].checked == false)
+					continue;
+				for (j = 0; j < checkDepartment[i].length; j++)
+				{
+					reject = 0;
+					for (ii = 0; ii < checkDepartment.length; ii++)
+					{
+						if (av[ii].checked == false)
+							continue;
+						if (checkDepartment[ii].indexOf(checkDepartment[i][j]) == -1)
+						{
+							reject = 1;
+							break;
+						}
+					}
+					if (reject == 0)
+					{
+						if (mastDepartment.indexOf(checkDepartment[i][j]) == -1)
+							mastDepartment.push(checkDepartment[i][j]);
+					}
+				}
+			}
+			// Feature
+			for (i = 0; i < checkFeature.length; i++)
+			{
+				if (av[i].checked == false)
+					continue;
+				for (j = 0; j < checkFeature[i].length; j++)
+				{
+					reject = 0;
+					for (ii = 0; ii < checkFeature.length; ii++)
+					{
+						if (av[ii].checked == false)
+							continue;
+						if (checkFeature[ii].indexOf(checkFeature[i][j]) == -1)
+						{
+							reject = 1;
+							break;
+						}
+					}
+					if (reject == 0)
+					{
+						if (mastFeature.indexOf(checkFeature[i][j]) == -1)
+							mastFeature.push(checkFeature[i][j]);
+					}
+				}
+			}
+		}
+
+		sel = '?layout=preset&sid=' + SID;
+
+		// Store preset selections
+		var str = '';
+		for (i = 0; i < av.length; i++)
+		{
+			if (av[i].checked)
+			{
+				if (str != '') str += '|';
+				str += av[i].value;
+			}
+		}
+		sel += '&filter=' + str;
+
+		// Duration
+		str = '';
+		for (i = 0; i < mastDuration.length; i++)
+		{
+			if (str != '') str += '|';
+			str += mastDuration[i];
+		}
+		sel += '&duration=' + str;
+
+		// Price
+		str = '';
+		for (i = 0; i < mastPrice.length; i++)
+		{
+			if (str != '') str += '|';
+			str += mastPrice[i];
+		}
+		sel += '&price=' + str;
+
+		// Department
+		str = '';
+		for (i = 0; i < mastDepartment.length; i++)
+		{
+			if (str != '') str += '|';
+			str += mastDepartment[i];
+		}
+		sel += '&department=' + str;
+
+		// Feature
+		str = '';
+		for (i = 0; i < mastFeature.length; i++)
+		{
+			if (str != '') str += '|';
+			str += mastFeature[i];
+		}
+		sel += '&feature=' + str;
+
+//		alert(sel);
+
+        // Activate the link
+        window.location.href = sel;
+	}
+
     function makeSel()
     {
         sel = '?layout=index&sid=' + SID;
@@ -405,7 +644,10 @@ END_OF_API_HTML;
         // If we're in the backend we can pop up the url (would be displayed in browser if werent an iframe)
         chkUrl = document.URL;
         chkUrl = chkUrl.substring(0, chkUrl.length - 13);   // Chop off the 'showurl=true' at the end
-        alert(chkUrl);
+		box = document.getElementById("showFilterString");
+		box.innerHTML = chkUrl;
+		box.style.display = "block";
+        //alert(chkUrl);
     }
 
     $('.filter-detail').click(function(){
