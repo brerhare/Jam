@@ -4,6 +4,9 @@ css.line-height = 180%
 css.display = block 
 css.overflow = hidden /* (or any type of overflow) avoids position shift on no-margin containers */
 css.margin = 0px auto
+#html.raw = <head><link href='http://fonts.googleapis.com/css?family=Condiment|Oxygen:400,700' rel='stylesheet' type='text/css'></head>
+#html.raw = <style>h1 {font-family: 'Condiment', serif; font-size: 24px; text-shadow: 4px 4px 4px #aaa;}</style>
+#html.raw = <style type="text/css">h1 {color:red;} p{color:blue;}</style>
 
 ; Every blob inherits these before adding/overriding
 [* : some_sensible_values]
@@ -40,7 +43,7 @@ css.display = block
 			[millenium]
 			css.display = block
 			css.height = 20px
-			css.margin-top = -18px 
+			css.margin-top = -24px 
 			css.margin-left = 400px
 			html.raw = <u>Login</u>
 			click = http://217.41.65.149:8080/clients/login.asp

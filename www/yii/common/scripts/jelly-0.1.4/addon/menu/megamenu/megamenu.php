@@ -107,7 +107,7 @@ class megamenu
 		</script>
 
 		<div style="position:relative; z-index:20000;">
-			<div id="megaanchor1" style="z-index:20000">
+			<div id="megaanchor1" style="z-index:20000; cursor: pointer; cursor: hand;">
 				<!--Mega Menu Anchor-->
 
 
