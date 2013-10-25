@@ -482,6 +482,31 @@ END_OF_API_HTML;
 					}
 				}
 			}
+			// Feature
+			for (i = 0; i < checkFeature.length; i++)
+			{
+				if (av[i].checked == false)
+					continue;
+				for (j = 0; j < checkFeature[i].length; j++)
+				{
+					reject = 0;
+					for (ii = 0; ii < checkFeature.length; ii++)
+					{
+						if (av[ii].checked == false)
+							continue;
+						if (checkFeature[ii].indexOf(checkFeature[i][j]) == -1)
+						{
+							reject = 1;
+							break;
+						}
+					}
+					if (reject == 0)
+					{
+						if (mastFeature.indexOf(checkFeature[i][j]) == -1)
+							mastFeature.push(checkFeature[i][j]);
+					}
+				}
+			}
 		}
 
 		sel = '?layout=preset&sid=' + SID;
@@ -525,7 +550,15 @@ END_OF_API_HTML;
 		}
 		sel += '&department=' + str;
 
-		//sel += '&department=27';
+		// Feature
+		str = '';
+		for (i = 0; i < mastFeature.length; i++)
+		{
+			if (str != '') str += '|';
+			str += mastFeature[i];
+		}
+		sel += '&feature=' + str;
+
 //		alert(sel);
 
         // Activate the link
