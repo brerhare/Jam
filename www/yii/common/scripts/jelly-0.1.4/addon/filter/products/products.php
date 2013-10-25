@@ -377,7 +377,7 @@ END_OF_API_HTML;
 					checkPrice[i] = Array();
 					checkDepartment[i] = Array();
 					checkFeature[i] = Array();
-					alert(presetArr[i]);
+//					alert(presetArr[i]);
 					strArr = presetArr[i].split("&");
 					for (j = 0; j < strArr.length; j++)
 					{
@@ -410,11 +410,15 @@ END_OF_API_HTML;
 			// Duration
 			for (i = 0; i < checkDuration.length; i++)
 			{
+				if (av[i].checked == false)
+					continue;
 				for (j = 0; j < checkDuration[i].length; j++)
 				{
 					reject = 0;
 					for (ii = 0; ii < checkDuration.length; ii++)
 					{
+						if (av[ii].checked == false)
+							continue;
 						if (checkDuration[ii].indexOf(checkDuration[i][j]) == -1)
 						{
 							reject = 1;
@@ -431,11 +435,15 @@ END_OF_API_HTML;
 			// Price
 			for (i = 0; i < checkPrice.length; i++)
 			{
+				if (av[i].checked == false)
+					continue;
 				for (j = 0; j < checkPrice[i].length; j++)
 				{
 					reject = 0;
 					for (ii = 0; ii < checkPrice.length; ii++)
 					{
+						if (av[ii].checked == false)
+							continue;
 						if (checkPrice[ii].indexOf(checkPrice[i][j]) == -1)
 						{
 							reject = 1;
@@ -452,11 +460,15 @@ END_OF_API_HTML;
 			// Department
 			for (i = 0; i < checkDepartment.length; i++)
 			{
+				if (av[i].checked == false)
+					continue;
 				for (j = 0; j < checkDepartment[i].length; j++)
 				{
 					reject = 0;
 					for (ii = 0; ii < checkDepartment.length; ii++)
 					{
+						if (av[ii].checked == false)
+							continue;
 						if (checkDepartment[ii].indexOf(checkDepartment[i][j]) == -1)
 						{
 							reject = 1;
@@ -514,7 +526,7 @@ END_OF_API_HTML;
 		sel += '&department=' + str;
 
 		//sel += '&department=27';
-		alert(sel);
+//		alert(sel);
 
         // Activate the link
         window.location.href = sel;
