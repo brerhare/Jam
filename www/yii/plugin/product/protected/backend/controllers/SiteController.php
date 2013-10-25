@@ -80,6 +80,7 @@ class SiteController extends Controller
     {
         Yii::app()->session['uid'] = 19;
         $identity = new UserIdentity('wendy@jacquiesbeauty.co.uk', 'guinot');
+		$identity->authenticate();
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);
         $this->redirect(array('site/index'));
@@ -93,6 +94,7 @@ class SiteController extends Controller
     {
         Yii::app()->session['uid'] = 22;
         $identity = new UserIdentity('nancy@styleyourvenue.co.uk', 'cu62mg6');
+		$identity->authenticate();
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);
         $this->redirect(array('site/index'));
@@ -106,6 +108,7 @@ class SiteController extends Controller
     {
         Yii::app()->session['uid'] = 24;
         $identity = new UserIdentity('rachel@the-art-room.co.uk', 'oldschool');
+		$identity->authenticate();
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);
         $this->redirect(array('site/index'));
