@@ -34,11 +34,11 @@ class ProgramController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','privilege','admin','delete'),
+				'actions'=>array('create','update','privilege','admin','delete','export'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','export'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -255,6 +255,14 @@ class ProgramController extends Controller
 		}
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+	}
+
+	/**
+	 * Export all events for this program
+	 */
+	public function actionExport()
+	{
+		die('');
 	}
 
 	/**
