@@ -26,8 +26,8 @@ $this->menu=array(
 
 		'start',
 		'end',
-		'address',
-		'post_code',
+		//'address',
+		//'post_code',
 		/*
 		'web',
 		'contact',
