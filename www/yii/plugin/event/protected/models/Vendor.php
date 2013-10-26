@@ -1,0 +1,1 @@
+../../../ticket/protected/models/Vendor.php

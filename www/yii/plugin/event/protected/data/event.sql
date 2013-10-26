@@ -22,6 +22,7 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`event_member` (
   `join_date` DATE NOT NULL ,
   `last_login_date` DATE NOT NULL ,
   `captcha` VARCHAR(45) NULL ,
+  `sid` VARCHAR(255) NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `user_name_UNIQUE` (`user_name` ASC) )
 ENGINE = InnoDB;

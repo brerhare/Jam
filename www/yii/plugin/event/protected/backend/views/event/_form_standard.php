@@ -66,6 +66,11 @@
 	<?php //echo $form->textFieldRow($model,'thumb_path',array('class'=>'span5','maxlength'=>255)); ?>
 	<?php echo $form->fileFieldRow($model, 'thumb_path'); ?>
 
+	<?php
+		if ($model->isNewRecord)
+			echo $form->toggleButtonRow($model, 'ticket_event_id' , array('options'=>array('enabledLabel'=>'Yes' , 'disabledLabel'=>'No')));
+	?>		
+
 	<?php //echo $form->textAreaRow($model,'description',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 	<div class="control-group "><label class="control-label" for="Event_start">Description <span class="required">*</span></label>
 		<div class="controls">

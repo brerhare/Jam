@@ -56,7 +56,7 @@ class Event extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title, start, description, member_id, program_id, event_price_band_id', 'required'),
+			array('title, start, description, member_id, program_id, event_price_band_id, address, post_code', 'required'),
 			array('approved, ticket_event_id, member_id, program_id, event_price_band_id', 'numerical', 'integerOnly'=>true),
 			array('title, post_code, web, thumb_path', 'length', 'max'=>255),
 			array('end, address, contact', 'safe'),
@@ -104,7 +104,7 @@ class Event extends CActiveRecord
 			'description' => 'Description',
 			'thumb_path' => 'Thumb Path',
 			'approved' => 'Approved',
-			'ticket_event_id' => 'Ticket Event',
+			'ticket_event_id' => 'Create Ticket Event?',
 			'member_id' => 'Member',
 			'program_id' => 'Program',
 			'event_price_band_id' => 'Event Price Band',

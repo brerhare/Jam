@@ -76,6 +76,42 @@ class EventController extends Controller
         {
             $model->attributes=$_POST['Event'];
             $model->thumb_path=CUploadedFile::getInstance($model, 'thumb_path');
+
+            // Do we need to create a ticket event too?
+            // @@EG Check softlink name for model, this is our standard naming
+            if ($model->ticket_event_id == 1)
+            {
+				$member=Member::model()->findByPk(Yii::app()->session['uid']);
+            	if ($member != null)
+            	{
+	            	// Pick up the User to translate the SID to a id/uid
+	            	$criteria = new CDbCriteria;
+		            $criteria->addCondition("sid = '" . $member->sid . "'");
+    		        $user = User::model()->find($criteria);
+        		    if ($user != null)
+            		{
+		            	// Pick up the ticket vendor, its id is needed for the ticket event
+    		        	$criteria = new CDbCriteria;
+						$criteria->condition="uid = " . $user->id;
+        				$ticketVendor = Vendor::model()->find($criteria);
+	        			if ($ticketVendor != null)
+	        			{
+			            	// Create ticket event record
+			            	$ticketEvent = new ticket_Event;
+    			        	$ticketEvent->uid = $user->id;
+        			    	$ticketEvent->title = $model->title;
+            				$ticketEvent->date = substr($model->start, 0, 10);  // 0000-00-00 00:00;00
+            				$ticketEvent->time = substr($model->start, 11, 8);
+		            		$ticketEvent->address = $model->address;
+	    		        	$ticketEvent->post_code = $model->post_code;
+    	    		    	$ticketEvent->active = 0;
+        	    			$ticketEvent->ticket_vendor_id = $ticketVendor->id;
+	        	    		if (!($ticketEvent->save()))
+    	        				die('Couldnt write ticket event record');
+        	    		}
+        	    	}
+            	}
+            }
             if($model->save())
             {
             	// Save Ws fields too

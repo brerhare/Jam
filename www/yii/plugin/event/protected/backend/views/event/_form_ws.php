@@ -10,7 +10,8 @@
     <?php echo $form->dropDownListRow($model2,'grade', array('Easy'=>'Easy', 'Medium'=>'Medium', 'Family'=>'Family'),  array('empty'=>'Choose') ); ?>
 
 
-	<?php echo $form->toggleButtonRow($model2, 'booking_essential'); ?>
+	<?php // @@EG: Change on/off labels on togglebutton ?>
+	<?php echo $form->toggleButtonRow($model2, 'booking_essential' , array('options'=>array('enabledLabel'=>'Yes' , 'disabledLabel'=>'No'))); ?>
 
 	<?php echo $form->textFieldRow($model2,'min_age',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right')); ?>
 

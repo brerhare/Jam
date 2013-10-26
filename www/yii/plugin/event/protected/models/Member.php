@@ -15,10 +15,11 @@
  * @property string $join_date
  * @property string $last_login_date
  * @property string $captcha
+ * @property string $sid
  *
  * The followings are the available model relations:
- * @property Event[] $events
- * @property Program[] $eventPrograms
+ * @property EventEvent[] $eventEvents
+ * @property EventProgram[] $eventPrograms
  */
 class Member extends CActiveRecord
 {
@@ -49,12 +50,11 @@ class Member extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('user_name, password, first_name, last_name, email_address, join_date, last_login_date', 'required'),
-			array('user_name, password, first_name, last_name, email_address, organisation', 'length', 'max'=>255),
+			array('user_name, password, first_name, last_name, email_address, organisation, sid', 'length', 'max'=>255),
 			array('telephone, captcha', 'length', 'max'=>45),
-			//array('captcha', 'captcha', 'allowEmpty'=>!CCaptcha::checkRequirements()),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, user_name, password, first_name, last_name, telephone, email_address, organisation, join_date, last_login_date, captcha', 'safe', 'on'=>'search'),
+			array('id, user_name, password, first_name, last_name, telephone, email_address, organisation, join_date, last_login_date, captcha, sid', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -66,8 +66,8 @@ class Member extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'events' => array(self::HAS_MANY, 'Event', 'member_id'),
-			'eventPrograms' => array(self::MANY_MANY, 'Program', 'event_member_has_event_program(event_member_id, event_program_id)'),
+			'eventEvents' => array(self::HAS_MANY, 'EventEvent', 'member_id'),
+			'eventPrograms' => array(self::MANY_MANY, 'EventProgram', 'event_member_has_event_program(event_member_id, event_program_id)'),
 		);
 	}
 
@@ -87,7 +87,8 @@ class Member extends CActiveRecord
 			'organisation' => 'Organisation',
 			'join_date' => 'Join Date',
 			'last_login_date' => 'Last Login Date',
-			'captcha' => 'Verification Code',
+			'captcha' => 'Captcha',
+			'sid' => 'SID for Ticketing',
 		);
 	}
 
@@ -113,6 +114,7 @@ class Member extends CActiveRecord
 		$criteria->compare('join_date',$this->join_date,true);
 		$criteria->compare('last_login_date',$this->last_login_date,true);
 		$criteria->compare('captcha',$this->captcha,true);
+		$criteria->compare('sid',$this->sid,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
