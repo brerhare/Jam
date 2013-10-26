@@ -15,22 +15,18 @@
 	<?php /// @@EG How to line up custom content ?>
 	<div class="control-group "><label class="control-label" for="Event_start">Start Date <span class="required">*</span></label>
 		<div class="controls">
-		<?php
-// @@EG CJuiDatePicker. See also the model for the before/after function I added to support this
-		$this->widget('zii.widgets.jui.CJuiDatePicker',array(
-			'name'=>'startDate',
-			'model' => $model,
-			'attribute' => 'start',
-			// additional javascript options for the date picker plugin
-			'options'=>array(
-				'showAnim'=>'fold',
-				'dateFormat' => 'dd-mm-yy', // save to db format
-			),
-			'htmlOptions'=>array(
-				'style'=>'height:20px;'
-			),
-		));
-	?>
+<?php Yii::import('application.extensions.CJuiDateTimePicker.CJuiDateTimePicker');
+    $this->widget('CJuiDateTimePicker',array(
+        'model'=>$model, //Model object
+        'attribute'=>'start', //attribute name
+        'mode'=>'datetime', //use "time","date" or "datetime" (default)
+        'language' => '',
+        'options'=>array( // jquery plugin options
+        	'showAnim'=>'fold',
+        	'dateFormat'=>'dd-mm-yy',
+        ),
+    ));
+?>
 		</div>
 	</div>
 
@@ -38,22 +34,18 @@
 	<?php //echo $form->textFieldRow($model,'end',array('class'=>'span5')); ?>
 	<div class="control-group "><label class="control-label" for="Event_end">End Date</label>
 		<div class="controls">
-		<?php
-// @@EG CJuiDatePicker. See also the model for the before/after function I added to support this
-		$this->widget('zii.widgets.jui.CJuiDatePicker',array(
-			'name'=>'endDate',
-			'model' => $model,
-			'attribute' => 'end',
-			// additional javascript options for the date picker plugin
-			'options'=>array(
-				'showAnim'=>'fold',
-				'dateFormat' => 'dd-mm-yy', // save to db format
-			),
-			'htmlOptions'=>array(
-				'style'=>'height:20px;'
-			),
-		));
-	?>
+<?php Yii::import('application.extensions.CJuiDateTimePicker.CJuiDateTimePicker');
+    $this->widget('CJuiDateTimePicker',array(
+        'model'=>$model, //Model object
+        'attribute'=>'end', //attribute name
+        'mode'=>'datetime', //use "time","date" or "datetime" (default)
+        'language' => '',
+        'options'=>array( // jquery plugin options
+        	'showAnim'=>'fold',
+        	'dateFormat'=>'dd-mm-yy',
+        )
+    ));
+?>
 		</div>
 	</div>
 

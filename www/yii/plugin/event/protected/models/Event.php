@@ -141,19 +141,21 @@ class Event extends CActiveRecord
 // @@EG CJuiDatePicker. See also the form where the widget is applied
 
     protected function afterFind(){
+    	//return;
         parent::afterFind();
-        $this->start=date('d-m-Y', strtotime(str_replace("-", "", $this->start)));
-        $this->end=date('d-m-Y', strtotime(str_replace("-", "", $this->end)));
+        $this->start=date('d-m-Y H:i', strtotime(str_replace("-", "", $this->start)));
+        $this->end=date('d-m-Y H:i', strtotime(str_replace("-", "", $this->end)));
     }
 
     protected function beforeSave(){
-    if(parent::beforeSave()){
-        $this->start=date('Y-m-d', strtotime(str_replace(",", "", $this->start)));
-        $this->end=date('Y-m-d', strtotime(str_replace(",", "", $this->end)));
-        return TRUE;
-    }
-    else
-        return false;
+    	//return;
+	    if(parent::beforeSave()){
+    	    $this->start=date('Y-m-d H:i:s', strtotime(str_replace(",", "", $this->start)));
+       		$this->end=date('Y-m-d H:i:s', strtotime(str_replace(",", "", $this->end)));
+        	return TRUE;
+	    }
+ 	   else
+    	    return false;
 	}
 
 }
