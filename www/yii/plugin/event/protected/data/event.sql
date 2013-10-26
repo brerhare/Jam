@@ -60,6 +60,19 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `plugin`.`event_price_band`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `plugin`.`event_price_band` ;
+
+CREATE  TABLE IF NOT EXISTS `plugin`.`event_price_band` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(255) NOT NULL ,
+  `icon_path` VARCHAR(255) NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `plugin`.`event_event`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `plugin`.`event_event` ;
@@ -76,8 +89,10 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`event_event` (
   `description` TEXT NOT NULL ,
   `thumb_path` VARCHAR(255) NULL ,
   `approved` INT NULL ,
+  `ticket_event_id` INT NULL ,
   `member_id` INT NOT NULL ,
   `program_id` INT NOT NULL ,
+  `event_price_band_id` INT NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_event_program` (`program_id` ASC) ,
   INDEX `fk_event_member1` (`member_id` ASC) ,
@@ -85,6 +100,7 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`event_event` (
   INDEX `end` (`end` ASC) ,
   INDEX `post_code` (`post_code` ASC) ,
   INDEX `approved` (`approved` ASC) ,
+  INDEX `fk_event_event_event_price_band1` (`event_price_band_id` ASC) ,
   CONSTRAINT `fk_event_program`
     FOREIGN KEY (`program_id` )
     REFERENCES `plugin`.`event_program` (`id` )
@@ -93,6 +109,11 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`event_event` (
   CONSTRAINT `fk_event_member1`
     FOREIGN KEY (`member_id` )
     REFERENCES `plugin`.`event_member` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_event_event_event_price_band1`
+    FOREIGN KEY (`event_price_band_id` )
+    REFERENCES `plugin`.`event_price_band` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -229,43 +250,6 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`event_event_has_event_facility` (
   CONSTRAINT `fk_event_event_has_event_facility_event_facility1`
     FOREIGN KEY (`event_facility_id` )
     REFERENCES `plugin`.`event_facility` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `plugin`.`event_price_band`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `plugin`.`event_price_band` ;
-
-CREATE  TABLE IF NOT EXISTS `plugin`.`event_price_band` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(255) NOT NULL ,
-  `icon_path` VARCHAR(255) NULL ,
-  PRIMARY KEY (`id`) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `plugin`.`event_event_has_event_price_band`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `plugin`.`event_event_has_event_price_band` ;
-
-CREATE  TABLE IF NOT EXISTS `plugin`.`event_event_has_event_price_band` (
-  `event_event_id` INT NOT NULL ,
-  `event_price_band_id` INT NOT NULL ,
-  PRIMARY KEY (`event_event_id`, `event_price_band_id`) ,
-  INDEX `fk_event_event_has_event_price_band_event_price_band1` (`event_price_band_id` ASC) ,
-  INDEX `fk_event_event_has_event_price_band_event_event1` (`event_event_id` ASC) ,
-  CONSTRAINT `fk_event_event_has_event_price_band_event_event1`
-    FOREIGN KEY (`event_event_id` )
-    REFERENCES `plugin`.`event_event` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_event_event_has_event_price_band_event_price_band1`
-    FOREIGN KEY (`event_price_band_id` )
-    REFERENCES `plugin`.`event_price_band` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

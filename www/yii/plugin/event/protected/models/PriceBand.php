@@ -9,7 +9,7 @@
  * @property string $icon_path
  *
  * The followings are the available model relations:
- * @property Event[] $eventEvents
+ * @property Event[] $events
  */
 class PriceBand extends CActiveRecord
 {
@@ -55,7 +55,7 @@ class PriceBand extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'eventEvents' => array(self::MANY_MANY, 'Event', 'event_event_has_event_price_band(event_price_band_id, event_event_id)'),
+			'events' => array(self::HAS_MANY, 'Event', 'event_price_band_id'),
 		);
 	}
 

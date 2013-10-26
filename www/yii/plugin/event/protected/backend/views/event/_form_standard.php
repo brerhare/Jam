@@ -55,10 +55,10 @@
 
 	<?php echo $form->textFieldRow($model,'web',array('class'=>'span5','maxlength'=>255)); ?>
 
-	<?php // Price band
-		//$criteria = new CDbCriteria;
+	<?php
+		$criteria = new CDbCriteria;
 		//$criteria->addCondition("uid = " . Yii::app()->session['uid']);
-		//echo $form->dropDownListRow($model,'blog_category_id', CHtml::listData(Category::model()->findAll($criteria), 'id', 'name'), array('empty'=>'Choose'));
+		echo $form->dropDownListRow($model,'event_price_band_id', CHtml::listData(PriceBand::model()->findAll($criteria), 'id', 'name'), array('empty'=>'Choose'));
 	?>
 
 	<?php echo $form->textAreaRow($model,'contact',array('rows'=>6, 'cols'=>50, 'class'=>'span5')); ?>

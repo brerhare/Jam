@@ -15,16 +15,18 @@
  * @property string $description
  * @property string $thumb_path
  * @property integer $approved
+ * @property integer $ticket_event_id
  * @property integer $member_id
  * @property integer $program_id
+ * @property integer $event_price_band_id
  *
  * The followings are the available model relations:
- * @property Program $program
+ * @property PriceBand $eventPriceBand
  * @property Member $member
+ * @property Program $program
  * @property Facility[] $eventFacilities
  * @property Format[] $eventFormats
  * @property Interest[] $eventInterests
- * @property PriceBand[] $eventPriceBands
  */
 class Event extends CActiveRecord
 {
@@ -54,8 +56,8 @@ class Event extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title, start, description, member_id, program_id', 'required'),
-			array('approved, member_id, program_id', 'numerical', 'integerOnly'=>true),
+			array('title, start, description, member_id, program_id, event_price_band_id', 'required'),
+			array('approved, ticket_event_id, member_id, program_id, event_price_band_id', 'numerical', 'integerOnly'=>true),
 			array('title, post_code, web, thumb_path', 'length', 'max'=>255),
 			array('end, address, contact', 'safe'),
 
@@ -64,7 +66,7 @@ class Event extends CActiveRecord
 
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, title, start, end, address, post_code, web, contact, description, thumb_path, approved, member_id, program_id', 'safe', 'on'=>'search'),
+			array('id, title, start, end, address, post_code, web, contact, description, thumb_path, approved, ticket_event_id, member_id, program_id, event_price_band_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -76,12 +78,12 @@ class Event extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'program' => array(self::BELONGS_TO, 'Program', 'program_id'),
+			'eventPriceBand' => array(self::BELONGS_TO, 'PriceBand', 'event_price_band_id'),
 			'member' => array(self::BELONGS_TO, 'Member', 'member_id'),
+			'program' => array(self::BELONGS_TO, 'Program', 'program_id'),
 			'eventFacilities' => array(self::MANY_MANY, 'Facility', 'event_event_has_event_facility(event_event_id, event_facility_id)'),
 			'eventFormats' => array(self::MANY_MANY, 'Format', 'event_event_has_event_format(event_event_id, event_format_id)'),
 			'eventInterests' => array(self::MANY_MANY, 'Interest', 'event_event_has_event_interest(event_event_id, event_interest_id)'),
-			'eventPriceBands' => array(self::MANY_MANY, 'PriceBand', 'event_event_has_event_price_band(event_event_id, event_price_band_id)'),
 		);
 	}
 
@@ -102,8 +104,10 @@ class Event extends CActiveRecord
 			'description' => 'Description',
 			'thumb_path' => 'Thumb Path',
 			'approved' => 'Approved',
+			'ticket_event_id' => 'Ticket Event',
 			'member_id' => 'Member',
 			'program_id' => 'Program',
+			'event_price_band_id' => 'Event Price Band',
 		);
 	}
 
@@ -129,9 +133,11 @@ class Event extends CActiveRecord
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('thumb_path',$this->thumb_path,true);
 		$criteria->compare('approved',$this->approved);
+		$criteria->compare('ticket_event_id',$this->ticket_event_id);
 		//$criteria->compare('member_id',$this->member_id);
 		$criteria->addCondition("member_id = " . Yii::app()->session['uid']);
 		$criteria->compare('program_id',$this->program_id);
+		$criteria->compare('event_price_band_id',$this->event_price_band_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -147,15 +153,15 @@ class Event extends CActiveRecord
     }
 
     protected function beforeSave(){
-	    if(parent::beforeSave()){
-	    	if (empty($this->end))
-	    		$this->end = $this->start;
-    	    $this->start=date('Y-m-d H:i:s', strtotime(str_replace(",", "", $this->start)));
-       		$this->end=date('Y-m-d H:i:s', strtotime(str_replace(",", "", $this->end)));
-        	return TRUE;
-	    }
- 	   else
-    	    return false;
-	}
+        if(parent::beforeSave()){
+            if (empty($this->end))
+                $this->end = $this->start;
+            $this->start=date('Y-m-d H:i:s', strtotime(str_replace(",", "", $this->start)));
+            $this->end=date('Y-m-d H:i:s', strtotime(str_replace(",", "", $this->end)));
+            return TRUE;
+        }
+       else
+            return false;
+    }
 
 }
