@@ -108,6 +108,16 @@
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',
 			'type'=>'primary',
-			'label'=>$model->isNewRecord ? 'Create' : 'Save',
+
+            'htmlOptions' => array(
+                'class' => $model->isNewRecord ? 'disabled' : '',
+                'disabled'=>$model->isNewRecord ? 'true' : '',
+                //'id'=> 'nextButton',
+                //'name' => 'nextButton',
+                //'onclick'=>'js:return nextButtonClick()',
+            ),
+
+			//'label'=>$model->isNewRecord ? 'Create' : 'Save',
+			'label'=>$model->isNewRecord ? 'Save on next tab' : 'Save',
 		)); ?>
 	</div>

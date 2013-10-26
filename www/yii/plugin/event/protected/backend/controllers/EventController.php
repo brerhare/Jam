@@ -167,10 +167,18 @@ class EventController extends Controller
 	 */
 	public function actionDelete($id)
 	{
+		$iDir = $this->getThumbDir();
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+			$model = $this->loadModel($id);
+
+            if (strlen($model->thumb_path) > 0)
+            {
+                if (file_exists($iDir . $model->thumb_path))
+                    unlink($iDir . $model->thumb_path);
+            }
+			$model->delete();
 
 			$criteria = new CDbCriteria;
 			$criteria->condition="event_id = $id";
