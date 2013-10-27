@@ -103,7 +103,7 @@ class MemberController extends Controller
                 $body = "Welcome, and thank you for joining us!";
                 mail($to_email_address,$subject,$body,$headers);
 
-				Yii::app()->session['uid'] = $model->id;
+				Yii::app()->session['eid'] = $model->id;
 				Yii::app()->session['has_program'] = 0;		// New members cant possibly be program admins yet
 				$identity = new UserIdentity($model->user_name, $model->password);
 				$duration = 3600*24*14; // 14 days
@@ -125,7 +125,7 @@ class MemberController extends Controller
 	public function actionUpdate()
 	{
 
-		$model=$this->loadModel(Yii::app()->session['uid']);
+		$model=$this->loadModel(Yii::app()->session['eid']);
 		$model->captcha = '';
 
 		// Uncomment the following line if AJAX validation is needed

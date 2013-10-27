@@ -7,7 +7,6 @@
 	<?php //echo $form->textFieldRow($model,'program_id',array('class'=>'span5')); ?>
 	<?php
 		$criteria = new CDbCriteria;
-		//$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		echo $form->dropDownListRow($model,'program_id', CHtml::listData(Program::model()->findAll($criteria), 'id', 'name'), array('empty'=>'Choose'));
 	?>
 
@@ -56,7 +55,6 @@
 
 	<?php
 		$criteria = new CDbCriteria;
-		//$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		echo $form->dropDownListRow($model,'event_price_band_id', CHtml::listData(PriceBand::model()->findAll($criteria), 'id', 'name'), array('empty'=>'Choose'));
 	?>
 

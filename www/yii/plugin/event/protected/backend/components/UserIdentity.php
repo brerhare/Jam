@@ -20,7 +20,7 @@ class UserIdentity extends CUserIdentity
 		//$this->errorCode=self::ERROR_NONE;
 		//return !$this->errorCode;
 
-		unset(Yii::app()->session['uid']);
+		unset(Yii::app()->session['eid']);
 		$model=Member::model()->find('(user_name)=?',array($this->username));
 		if ($model===null)
 			$this->errorCode=self::ERROR_USERNAME_INVALID;
@@ -28,7 +28,7 @@ class UserIdentity extends CUserIdentity
 			$this->errorCode=self::ERROR_PASSWORD_INVALID;
 		else
 		{
-			Yii::app()->session['uid'] = $model->id;
+			Yii::app()->session['eid'] = $model->id;
 			echo $model->id;
 			$this->errorCode=self::ERROR_NONE;
 		}

@@ -135,7 +135,7 @@ class Event extends CActiveRecord
 		$criteria->compare('approved',$this->approved);
 		$criteria->compare('ticket_event_id',$this->ticket_event_id);
 		//$criteria->compare('member_id',$this->member_id);
-		$criteria->addCondition("member_id = " . Yii::app()->session['uid']);
+		$criteria->addCondition("member_id = " . Yii::app()->session['eid']);
 		$criteria->compare('program_id',$this->program_id);
 		$criteria->compare('event_price_band_id',$this->event_price_band_id);
 

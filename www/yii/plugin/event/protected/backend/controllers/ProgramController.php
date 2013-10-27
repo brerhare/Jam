@@ -97,7 +97,7 @@ class ProgramController extends Controller
 
 				// Create the privilege link - creator is Admin
 				$memberHasProgram = new MemberHasProgram;
-				$memberHasProgram->event_member_id = Yii::app()->session['uid'];
+				$memberHasProgram->event_member_id = Yii::app()->session['eid'];
 				$memberHasProgram->event_program_id = $model->id;
 // @@TODO: These privilege levels should be constants from the MemberHasProgram model
 				$memberHasProgram->privilege_level = 4;
@@ -263,13 +263,13 @@ class ProgramController extends Controller
 	public function actionExport()
 	{
 		$cr = "<br>";
-		$member=Member::model()->findByPk(Yii::app()->session['uid']);
+		$member=Member::model()->findByPk(Yii::app()->session['eid']);
         if ($member == null)
         	throw new CHttpException(500,'Cant export because there is no member record');
         if (trim($member->email_address) == '')
         	throw new CHttpException(500,'Please fill in your email address details before exporting');
 
-		$fileName = '/tmp/Events_' . Yii::app()->session['uid'] . '.csv';
+		$fileName = '/tmp/Events_' . Yii::app()->session['eid'] . '.csv';
 		$fp = fopen($fileName, 'w');
 		if (!($fp))
 			throw new CHttpException(500,'Cant create CSV export file' . $fileName);

@@ -66,7 +66,7 @@ class EventController extends Controller
         $iDir = $this->getThumbDir();
         $model=new Event;
         $model2=new Ws;
-        $model->member_id = Yii::app()->session['uid'];
+        $model->member_id = Yii::app()->session['eid'];
         $model->approved = 1;	// @@TODO: Hard coded!!!
         $model->ticket_event_id = 1;	// Default to 'yes'
         $model2->booking_essential = 1;
@@ -128,12 +128,12 @@ class EventController extends Controller
         	    			$ticketEvent->ticket_vendor_id = $ticketVendor->id;
 	        	    		if (!($ticketEvent->save()))
     	        				throw new CHttpException(500,'Couldnt write ticket event record');
+    		            	// Update the Event model with the ticket reference
+	            			$model=$this->loadModel($modelId);
+	            			$model->ticket_event_id = $ticketEvent->id;
+			            	$model->save();
 	        	    	}
 	            	}
-	            	// Update the Event model with the ticket reference
-	            	$model=$this->loadModel($modelId);
-	            	$model->ticket_event_id = $ticketEvent->id;
-	            	$model->save();
 	            }
 
                 $this->redirect(array('admin'));
@@ -473,7 +473,7 @@ class EventController extends Controller
 	// Check whether this member has a valid SID on their member profile
 	public function getTicketUidFromEventSid()
 	{
-		$member=Member::model()->findByPk(Yii::app()->session['uid']);
+		$member=Member::model()->findByPk(Yii::app()->session['eid']);
 		if ($member != null)
 		{
 			// Pick up the User to translate the SID to a id/uid

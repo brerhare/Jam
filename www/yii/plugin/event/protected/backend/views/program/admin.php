@@ -35,7 +35,7 @@ $isAdmin = new CActiveDataProvider('Student', array('criteria'=>$criteria));
 
 /*
 $criteria=new CDbCriteria;
-$criteria->addCondition("event_member_id = " . Yii::app()->session['uid']);
+$criteria->addCondition("event_member_id = " . Yii::app()->session['eid']);
 $criteria->addCondition("privilege_level = 4");	//@@TODO Privilege hardcoded
 $isAdmin = new CActiveDataProvider('MemberHasProgram', array('criteria'=>$criteria));
 $c = 0;
