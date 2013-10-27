@@ -262,7 +262,53 @@ class ProgramController extends Controller
 	 */
 	public function actionExport()
 	{
-		die('');
+		$cr = "<br>";
+		$member=Member::model()->findByPk(Yii::app()->session['uid']);
+        if ($member == null)
+        	throw new CHttpException(500,'Cant export because there is no member record');
+        if (trim($member->email_address) == '')
+        	throw new CHttpException(500,'Please fill in your email address details before exporting');
+
+		$fileName = '/tmp/ticketSales_' . Yii::app()->session['uid'] . '.csv';
+		$fp = fopen($fileName, 'w');
+		if (!($fp))
+			throw new CHttpException(500,'Cant create CSV export file' . $fileName);
+		$standardHeading = array('id', 'title', 'start', 'end', 'address', 'post_code', 'web address', 'contact', 'decription', 'approved');
+		$wsHeading = array('', '');
+		$heading = array_merge($standardHeading, $wsHeading);
+		fputcsv($fp, $heading);
+		
+		$criteria = new CDbCriteria;
+		$criteria->order = 'id ASC';
+		$events = Event::model()->findAll($criteria);
+		foreach ($events as $event)
+		{
+			$line = array($event->id, $event->title, $event->start, $event->end, $event->address, $event->post_code, $event->web, $event->contact, $event->description, $event->approved == 0 ? 'N' : 'Y');
+			fputcsv($fp, $line);
+		}
+
+		// Send email to member
+		$to = $member->email_address;
+		$att_filename = $fileName;
+		if (strlen($to) > 0)
+		{
+			$from = "admin@dglink.co.uk";
+			$fromName = "Admin";
+			$subject = "Database export";
+			$message = "<b><u>All Events in CSV format, requested by " . $member->first_name . "</u></b>" . $cr;
+			// phpmailer
+			$mail = new PHPMailer();
+			$mail->AddAddress($to);
+			$mail->SetFrom($from, $fromName);
+			$mail->AddReplyTo($from, $fromName);
+			$mail->AddAttachment($att_filename);
+			$mail->Subject = $subject;
+			$mail->MsgHTML($message);
+			if (!$mail->Send())
+				Yii::log("WEEKLY REPORT COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
+			else
+				Yii::log("WEEKLY SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+		}
 	}
 
 	/**

@@ -11,25 +11,41 @@
 
 	<?php echo $form->textFieldRow($model,'name',array('class'=>'span5','maxlength'=>255)); ?>
 
-	<?php //echo $form->textFieldRow($model,'thumb_path',array('class'=>'span5','maxlength'=>255)); ?>
+
     <div class="control-group">
-        <?php echo $form->labelEx($model,'thumb_path'); ?>
-        <?php echo CHtml::activeFileField($model,'thumb_path',array('size'=>60,'maxlength'=>255)); ?>
-        <?php echo $form->error($model,'thumb_path'); ?>
+    	<label class="control-label" for="thumb_path">Thumb Path</label>
+           	<div class="controls">
+        	<?php echo CHtml::activeFileField($model,'thumb_path',array('size'=>60,'maxlength'=>255)); ?>
+        	<?php echo $form->error($model,'thumb_path'); ?>
+        </div>
     </div>
 
-	<?php //echo $form->textFieldRow($model,'icon_path',array('class'=>'span5','maxlength'=>255)); ?>
     <div class="control-group">
-        <?php echo $form->labelEx($model,'icon_path'); ?>
-        <?php echo CHtml::activeFileField($model,'icon_path',array('size'=>60,'maxlength'=>255)); ?>
-        <?php echo $form->error($model,'icon_path'); ?>
+    	<label class="control-label" for="icon_path">Icon Path</label>
+           	<div class="controls">
+	        <?php echo CHtml::activeFileField($model,'icon_path',array('size'=>60,'maxlength'=>255)); ?>
+    	    <?php echo $form->error($model,'icon_path'); ?>
+    	</div>
     </div>
 
-	<?php //echo $form->textFieldRow($model,'event_program_fields_id',array('class'=>'span5')); ?>
+    <?php if (!($model->isNewRecord)): ?>
+        <div class="control-group">
+    	<label class="control-label" for="icon_path">Database Events</label>
+           	<div class="controls">
+           		<?php
+    			// @@EG TbButton to redirect to another url. If you leave off the 'array()' you can put in any external url
+				$this->widget('bootstrap.widgets.TbButton', array(
+					'type'=>'primary',
+					'label'=>'Export',
+					'url'=> array('/program/export'),
+				)); ?>
+			</div>
+		</div>
+	<?php endif; ?>
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
-			'buttonType'=>'submit',
+			//'buttonType'=>'submit',
 			'type'=>'primary',
 			'label'=>$model->isNewRecord ? 'Create' : 'Save',
 		)); ?>

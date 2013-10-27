@@ -107,7 +107,7 @@ class EventController extends Controller
     	    		    	$ticketEvent->active = 0;
         	    			$ticketEvent->ticket_vendor_id = $ticketVendor->id;
 	        	    		if (!($ticketEvent->save()))
-    	        				die('Couldnt write ticket event record');
+    	        				throw new CHttpException(500,'Couldnt write ticket event record');
         	    		}
         	    	}
             	}
