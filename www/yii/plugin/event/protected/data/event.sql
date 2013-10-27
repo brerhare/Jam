@@ -23,6 +23,7 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`event_member` (
   `last_login_date` DATE NOT NULL ,
   `captcha` VARCHAR(45) NULL ,
   `sid` VARCHAR(255) NULL ,
+  `avatar_path` VARCHAR(255) NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `user_name_UNIQUE` (`user_name` ASC) )
 ENGINE = InnoDB;

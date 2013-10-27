@@ -30,9 +30,9 @@ userdata/program/icon/*
 !userdata/member
 userdata/member/*
 !userdata/member/.gitignore
-!userdata/member/icon
-userdata/member/icon/*
-!userdata/member/icon/.gitignore
+!userdata/member/avatar
+userdata/member/avatar/*
+!userdata/member/avatar/.gitignore
 *.bfproject
 *.bak
 *.swp

@@ -16,6 +16,7 @@
  * @property string $last_login_date
  * @property string $captcha
  * @property string $sid
+ * @property string $avatar_path
  *
  * The followings are the available model relations:
  * @property EventEvent[] $eventEvents
@@ -50,11 +51,27 @@ class Member extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('user_name, password, first_name, last_name, email_address, join_date, last_login_date', 'required'),
-			array('user_name, password, first_name, last_name, email_address, organisation, sid', 'length', 'max'=>255),
+			array('user_name, password, first_name, last_name, email_address, organisation, sid, avatar_path', 'length', 'max'=>255),
 			array('telephone, captcha', 'length', 'max'=>45),
+
+            array('avatar_path', 'file','on'=>'insert',
+                'types'=> 'jpg, jpeg, gif, png',
+                'allowEmpty' => true,
+                'maxSize' => 1024 * 1024 * 20, // 1MB
+                'tooLarge' => 'The file was bigger than 1MB. Please upload a smaller file.'
+            ),
+            array('avatar_path', 'file','on'=>'update',
+                'types'=> 'jpg, jpeg, gif, png',
+                'allowEmpty' => true,
+                'maxSize' => 1024 * 1024 * 20, // 1MB
+                'tooLarge' => 'The file was larger than 1MB. Please upload a smaller file.'
+            ),
+            array('avatar_path', 'unsafe'),
+            array('avatar_path', 'length', 'max'=>255),
+
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, user_name, password, first_name, last_name, telephone, email_address, organisation, join_date, last_login_date, captcha, sid', 'safe', 'on'=>'search'),
+			array('id, user_name, password, first_name, last_name, telephone, email_address, organisation, join_date, last_login_date, captcha, sid, avatar_path', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -89,6 +106,7 @@ class Member extends CActiveRecord
 			'last_login_date' => 'Last Login Date',
 			'captcha' => 'Captcha',
 			'sid' => 'SID for Ticketing',
+			'avatar_path' => 'Icon Path',
 		);
 	}
 
@@ -115,6 +133,7 @@ class Member extends CActiveRecord
 		$criteria->compare('last_login_date',$this->last_login_date,true);
 		$criteria->compare('captcha',$this->captcha,true);
 		$criteria->compare('sid',$this->sid,true);
+		$criteria->compare('avatar_path',$this->avatar_path,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

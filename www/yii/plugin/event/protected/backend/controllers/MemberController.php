@@ -8,6 +8,8 @@ class MemberController extends Controller
 	 */
 	public $layout='//layouts/column2';
 
+	private $_avatarDir  = '/../userdata/member/avatar/';
+
 	public function actions()
 	{
 	    return array(
@@ -79,6 +81,7 @@ class MemberController extends Controller
 		if(isset($_POST['Member']))
 		{
 			$model->attributes=$_POST['Member'];
+			$model->avatar_path=CUploadedFile::getInstance($model, 'avatar_path');
 
 			// Check username doesnt already exist
 			$criteria = new CDbCriteria;
@@ -91,6 +94,12 @@ class MemberController extends Controller
 			$model->last_login_date = new CDbExpression('NOW()');
 			if($model->save())
 			{
+				if (strlen($model->avatar_path) > 0)
+				{
+					$fname = Yii::app()->basePath . $this->_avatarDir . $model->avatar_path;
+					$model->avatar_path->saveAs($fname);
+					//$this->_watermark($fname);
+				}
 				// Send email
 				$from_email_address=Yii::app()->params['adminEmail'];
                 $from_name='=?UTF-8?B?'.base64_encode("Admin at DG Link").'?=';
@@ -127,6 +136,7 @@ class MemberController extends Controller
 
 		$model=$this->loadModel(Yii::app()->session['eid']);
 		$model->captcha = '';
+		$oldavatarname = $model->avatar_path;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -134,7 +144,24 @@ class MemberController extends Controller
 		if(isset($_POST['Member']))
 		{
 			$model->attributes=$_POST['Member'];
+
+			$file=CUploadedFile::getInstance($model, 'avatar_path');
+            if(is_object($file) && get_class($file) === 'CUploadedFile')
+            {
+            	if (($oldavatarname != '') && (file_exists(Yii::app()->basePath . $this->_avatarDir . $oldavatarname)))
+					unlink(Yii::app()->basePath . $this->_avatarDir . $oldavatarname);
+                $model->avatar_path = $file;
+            }
+
 			if($model->save())
+
+			    if(is_object($file))
+                {
+                    $fname = Yii::app()->basePath . $this->_avatarDir . $model->avatar_path;
+                    $model->avatar_path->saveAs($fname);
+                    //$this->_watermark($fname);
+                }
+
 				$this->redirect(array('site/index'));
 		}
 
@@ -152,6 +179,10 @@ class MemberController extends Controller
 	{
 		if(Yii::app()->request->isPostRequest)
 		{
+			$oldavatarname = $this->loadModel($id)->avatar_path;
+    	    if (($oldavatarname != '') && (file_exists(Yii::app()->basePath . $this->_avatarDir . $oldavatarname)))
+           		unlink(Yii::app()->basePath . $this->_avatarDir . $oldavatarname);
+
 			// we only allow deletion via POST request
 			$this->loadModel($id)->delete();
 

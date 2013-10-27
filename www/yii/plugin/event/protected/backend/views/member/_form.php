@@ -1,6 +1,7 @@
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'member-form',
 	'enableAjaxValidation'=>false,
+	'htmlOptions'=>array('enctype'=>'multipart/form-data'),
 	'type'=>'horizontal',
 )); ?>
 
@@ -28,6 +29,14 @@
 	<?php if (!($model->isNewRecord))
 		echo $form->textFieldRow($model,'sid',array('class'=>'span3','maxlength'=>255));
 	?>
+
+	    <div class="control-group">
+    	<label class="control-label" for="avatar_path">Icon Path</label>
+           	<div class="controls">
+	        <?php echo CHtml::activeFileField($model,'avatar_path',array('size'=>60,'maxlength'=>255)); ?>
+    	    <?php echo $form->error($model,'avatar_path'); ?>
+    	</div>
+    </div>
 
 	<?php //echo $form->textFieldRow($model,'join_date',array('class'=>'span5')); ?>
 
