@@ -9,7 +9,7 @@
  * @property string $icon_path
  *
  * The followings are the available model relations:
- * @property Event[] $eventEvents
+ * @property EventEvent[] $eventEvents
  */
 class Format extends CActiveRecord
 {
@@ -55,7 +55,7 @@ class Format extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'eventEvents' => array(self::MANY_MANY, 'Event', 'event_event_has_event_format(event_format_id, event_event_id)'),
+			'eventEvents' => array(self::MANY_MANY, 'EventEvent', 'event_event_has_event_format(event_format_id, event_event_id)'),
 		);
 	}
 

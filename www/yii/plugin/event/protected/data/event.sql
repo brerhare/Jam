@@ -142,7 +142,6 @@ DROP TABLE IF EXISTS `plugin`.`event_format` ;
 CREATE  TABLE IF NOT EXISTS `plugin`.`event_format` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(255) NOT NULL ,
-  `icon_path` VARCHAR(255) NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 

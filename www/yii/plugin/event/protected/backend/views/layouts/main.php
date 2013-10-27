@@ -23,7 +23,6 @@
 <div class="container" id="page">
 
 <div style="margin-top:50px">
-
 	<?php $this->widget('bootstrap.widgets.TbNavbar', array(
 	'type' => 'null', // null or 'inverse'
 	'brand' => 'Home',
@@ -39,6 +38,8 @@
                 array('label' => 'My Programs', 'url' => array('/program/admin'), 'visible' => !Yii::app()->user->isGuest),
 				//array('label' => 'Import CSV', 'url' => array('/event/import'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'My Details', 'url' => array('/member/update'), 'visible' => !Yii::app()->user->isGuest),
+// @@EG layout/main tbmenu to external site in new tab/window
+				array('label' => 'Ticketing', 'url' => 'https://plugin.wireflydesign.com/ticket/backend.php/site/login', 'linkOptions' => array('target' => '_blank'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Logout', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),
 			),
 		),
