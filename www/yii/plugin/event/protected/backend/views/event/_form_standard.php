@@ -66,8 +66,14 @@
 	<?php echo $form->fileFieldRow($model, 'thumb_path'); ?>
 
 	<?php
-		if (($model->isNewRecord) && ($ticketUid != -1))
-			echo $form->toggleButtonRow($model, 'ticket_event_id' , array('options'=>array('enabledLabel'=>'Yes' , 'disabledLabel'=>'No')));
+		if ($model->isNewRecord)
+		{
+			if ($ticketUid == -1)
+			// @@EG Disable any cactiveform field
+				echo $form->toggleButtonRow($model, 'ticket_event_id' , array('disabled'=>'true','options'=>array('enabledLabel'=>'Yes' , 'disabledLabel'=>'No')));
+			else
+				echo $form->toggleButtonRow($model, 'ticket_event_id' , array('options'=>array('enabledLabel'=>'Yes' , 'disabledLabel'=>'No')));
+			}
 	?>
 
 	<?php //echo $form->textAreaRow($model,'description',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
