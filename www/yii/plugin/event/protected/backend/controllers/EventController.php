@@ -68,6 +68,7 @@ class EventController extends Controller
         $model2=new Ws;
         $model->member_id = Yii::app()->session['uid'];
         $model->approved = 1;	// @@TODO: Hard coded!!!
+        $model->ticket_event_id = 1;	// Default to 'yes'
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
@@ -77,10 +78,11 @@ class EventController extends Controller
             $model->attributes=$_POST['Event'];
             $model->thumb_path=CUploadedFile::getInstance($model, 'thumb_path');
 			$model2->attributes=$_POST['Ws'];
-			$model2->event_id = $model->id;
+			//$model2->event_id = $model->id;
 
             if($model->save())
             {
+            	$modelId = $model->id;	// Store for later
             	// Save Ws fields too
             	$model2->attributes=$_POST['Ws'];
             	$model2->event_id = $model->id;
@@ -127,6 +129,10 @@ class EventController extends Controller
     	        				throw new CHttpException(500,'Couldnt write ticket event record');
 	        	    	}
 	            	}
+	            	// Update the Event model with the ticket reference
+	            	$model=$this->loadModel($modelId);
+	            	$model->ticket_event_id = $ticketEvent->id;
+	            	$model->save();
 	            }
 
                 $this->redirect(array('admin'));
