@@ -21,6 +21,7 @@ return array(
 		'application.models.*',
 		'application.components.*',
 		'application.extensions.jelly.*',
+		'application.extensions.PHPMailer.*',
 	),
 
 	'modules'=>array(
