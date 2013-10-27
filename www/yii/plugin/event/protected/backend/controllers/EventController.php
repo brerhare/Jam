@@ -69,6 +69,7 @@ class EventController extends Controller
         $model->member_id = Yii::app()->session['uid'];
         $model->approved = 1;	// @@TODO: Hard coded!!!
         $model->ticket_event_id = 1;	// Default to 'yes'
+        $model2->booking_essential = 1;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
