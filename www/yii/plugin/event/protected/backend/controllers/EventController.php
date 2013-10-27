@@ -136,6 +136,7 @@ class EventController extends Controller
         $this->render('create',array(
             'model'=>$model,
             'model2'=>$model2,
+            'ticketUid'=>$this->getTicketUidFromEventSid(),	// Either a valid uid or -1
         ));
 	}
 
@@ -189,6 +190,7 @@ class EventController extends Controller
         $this->render('update',array(
             'model'=>$model,
             'model2'=>$model2,
+            'ticketUid'=>$this->getTicketUidFromEventSid(),	// Either a valid uid or -1
         ));
 	}
 

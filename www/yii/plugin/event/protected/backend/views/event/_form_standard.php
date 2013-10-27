@@ -67,7 +67,7 @@
 	<?php echo $form->fileFieldRow($model, 'thumb_path'); ?>
 
 	<?php
-		if ($model->isNewRecord)
+		if (($model->isNewRecord) && ($ticketUid != -1))
 			echo $form->toggleButtonRow($model, 'ticket_event_id' , array('options'=>array('enabledLabel'=>'Yes' , 'disabledLabel'=>'No')));
 	?>		
 
@@ -94,12 +94,7 @@
 	<br>&nbsp
 
 	<?php //echo $form->textFieldRow($model,'approved',array('class'=>'span5')); ?>
-
 	<?php //echo $form->textFieldRow($model,'member_id',array('class'=>'span5')); ?>
-
-
-
-
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
