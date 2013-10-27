@@ -27,6 +27,12 @@ userdata/program/thumb/*
 !userdata/program/icon
 userdata/program/icon/*
 !userdata/program/icon/.gitignore
+!userdata/member
+userdata/member/*
+!userdata/member/.gitignore
+!userdata/member/icon
+userdata/member/icon/*
+!userdata/member/icon/.gitignore
 *.bfproject
 *.bak
 *.swp

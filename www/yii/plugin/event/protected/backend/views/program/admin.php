@@ -9,8 +9,58 @@ $this->menu=array(
 
 <h1>Manage Programs</h1>
 
+<?php
+/************************************************************************************/
+// @@KIM
+/*$isAdmin = new CActiveDataProvider('Program', array(
+    'criteria'=>array(
+    	'condition'=>'id=7',
+    )
+));*/
+
+// $teacher is a CActiveRecord object representing one row in the teacher table,
+// for the currently logged-in teacher:
+/*$criteria=new CDbCriteria;
+$criteria->compare('teacher_id', $teacher->id, false);
+$isAdmin = new CActiveDataProvider('Student', array('criteria'=>$criteria));
+?>*/
+
+/*$isAdmin=new CActiveDataProvider('Member',array(
+  'criteria'=>array(
+    'with'=>array('member'),
+    'condition'=>"member_id='$id'",
+    'together'=>true,
+  )
+));*/
+
+/*
+$criteria=new CDbCriteria;
+$criteria->addCondition("event_member_id = " . Yii::app()->session['uid']);
+$criteria->addCondition("privilege_level = 4");	//@@TODO Privilege hardcoded
+$isAdmin = new CActiveDataProvider('MemberHasProgram', array('criteria'=>$criteria));
+$c = 0;
+$memberHasPrograms = MemberHasProgram::model()->findAll($criteria);
+*/
+
+/*$isAdmin = new CActiveDataProvider('Program', array(
+    'criteria'=>array(
+        'with' => array('eventMembers'),
+        'condition' => 'event_member_id=:id', 
+    ),
+));*/
+/*$isAdmin = new CActiveDataProvider('Program', array(
+    'criteria'=>array(
+        'with' => array('eventMembers'),
+        'condition' => 'event_program_id=:id', 
+        'params' => array("id" => $model->id) 
+    ),
+));*/
+/************************************************************************************/
+?>
+
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'program-grid',
+	/////////////////////////////'dataProvider'=>$model->search(),
 	'dataProvider'=>$model->search(),
 	//'filter'=>$model,
 	'columns'=>array(

@@ -87,10 +87,10 @@ class EventController extends Controller
             	if (!($model2->save()))
             	{
             		$model->delete();
-            		//die('Couldnt save WS record');
             		$this->render('create',array(
             			'model'=>$model,
             			'model2'=>$model2,
+            			'ticketUid'=>$this->getTicketUidFromEventSid(),	// Either a valid uid or -1
         			));
         			return;
             	}
