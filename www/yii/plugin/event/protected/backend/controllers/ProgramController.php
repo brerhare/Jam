@@ -310,6 +310,7 @@ class ProgramController extends Controller
 			else
 				Yii::log("WEEKLY SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
+		$this->redirect(array('admin'));
 	}
 
 	/**
