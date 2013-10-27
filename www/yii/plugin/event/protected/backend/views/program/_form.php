@@ -38,7 +38,7 @@
 					'type'=>'primary',
 					'label'=>'Export',
 					'url'=> array('/program/export'),
-				)); ?>
+				)); ?> &nbsp&nbsp&nbsp&nbspThe report will be emailed to you
 			</div>
 		</div>
 	<?php endif; ?>

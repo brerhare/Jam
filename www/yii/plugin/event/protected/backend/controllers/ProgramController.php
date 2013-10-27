@@ -269,7 +269,7 @@ class ProgramController extends Controller
         if (trim($member->email_address) == '')
         	throw new CHttpException(500,'Please fill in your email address details before exporting');
 
-		$fileName = '/tmp/ticketSales_' . Yii::app()->session['uid'] . '.csv';
+		$fileName = '/tmp/Events_' . Yii::app()->session['uid'] . '.csv';
 		$fp = fopen($fileName, 'w');
 		if (!($fp))
 			throw new CHttpException(500,'Cant create CSV export file' . $fileName);
@@ -280,6 +280,7 @@ class ProgramController extends Controller
 		
 		$criteria = new CDbCriteria;
 		$criteria->order = 'id ASC';
+		$criteria->addCondition("program_id = 7");
 		$events = Event::model()->findAll($criteria);
 		foreach ($events as $event)
 		{
