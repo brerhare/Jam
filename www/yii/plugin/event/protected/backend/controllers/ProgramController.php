@@ -292,7 +292,7 @@ class ProgramController extends Controller
 			if (!($ws))
 				throw new CHttpException(500,'Cant export because there is no wild-seasons matching event record');
 			if (trim($ws->short_description) == '')
-				$ws->short_description = substr($event->description, 0, 100);
+				$ws->short_description = substr($event->description, 0, 97) . "...";
 
 			$standardLine = array($event->id, $event->title, $event->start, $event->end, $event->address, $event->post_code, $event->web, $event->contact, $event->description, $event->approved == 0 ? 'N' : 'Y');
 			$wsLine = array($ws->os_grid_ref, $ws->grade, $ws->booking_essential == 0 ? 'N' : 'Y', $ws->min_age, $ws->max_age, $ws->child_ages_restrictions, $ws->additional_venue_info, $ws->full_price_notes, $ws->short_description, $ws->wheelchair_accessible == 0 ? 'N' : 'Y');
