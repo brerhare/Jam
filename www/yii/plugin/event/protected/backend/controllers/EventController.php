@@ -83,6 +83,9 @@ class EventController extends Controller
 
             if($model->save())
             {
+            	$this->deleteProductCheckboxes($model->id);
+                $this->updateProductCheckboxes($model->id);
+
             	$modelId = $model->id;	// Store for later
             	// Save Ws fields too
             	$model2->attributes=$_POST['Ws'];
@@ -185,6 +188,9 @@ class EventController extends Controller
             }
             if($model->save())
             {
+            	$this->deleteProductCheckboxes($model->id);
+                $this->updateProductCheckboxes($model->id);
+
             	// Save Ws fields too
             	$model2->attributes=$_POST['Ws'];
             	$model2->event_id = $model->id;
@@ -219,6 +225,7 @@ class EventController extends Controller
                 if (file_exists($iDir . $model->thumb_path))
                     unlink($iDir . $model->thumb_path);
             }
+            $this->deleteProductCheckboxes($model->id);
 			$model->delete();
 
 			$criteria = new CDbCriteria;
@@ -462,7 +469,6 @@ class EventController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		die('x');
 		if(isset($_POST['ajax']) && $_POST['ajax']==='event-form')
 		{
 			echo CActiveForm::validate($model);
@@ -491,6 +497,55 @@ class EventController extends Controller
         return Yii::app()->basePath . $this->_thumbDir;
     }
 
+    public function deleteProductCheckboxes($id)
+    {
+        // Interests
+        Yii::log("Deleting all interests for event " . $id, CLogger::LEVEL_INFO, 'system.test.kim');
+        EventHasInterest::model()->deleteAllByAttributes(array('event_event_id' => $id));
+		// Formats
+        Yii::log("Deleting all formats for event " . $id, CLogger::LEVEL_INFO, 'system.test.kim');
+        EventHasFormat::model()->deleteAllByAttributes(array('event_event_id' => $id, ));
+		// Facilities
+        Yii::log("Deleting all facilities for event " . $id, CLogger::LEVEL_INFO, 'system.test.kim');
+        EventHasFacility::model()->deleteAllByAttributes(array('event_event_id' => $id, ));
+    }
+
+	public function updateProductCheckboxes($id)
+	{
+    	// Interests
+        if (isset($_POST['interest']))
+        {
+            foreach ($_POST['interest'] as $item):
+                Yii::log("Creating interest item " . $item, CLogger::LEVEL_INFO, 'system.test.kim');
+                $data = new EventHasInterest;
+                $data->event_event_id = $id;
+                $data->event_interest_id = $item;
+                $data->save();
+            endforeach;
+        }
+    	// Formats
+        if (isset($_POST['format']))
+        {
+            foreach ($_POST['format'] as $item):
+                Yii::log("Creating format item " . $item, CLogger::LEVEL_INFO, 'system.test.kim');
+                $data = new EventHasFormat;
+                $data->event_event_id = $id;
+                $data->event_format_id = $item;
+                $data->save();
+            endforeach;
+        }
+    	// Facilities
+        if (isset($_POST['facility']))
+        {
+            foreach ($_POST['facility'] as $item):
+                Yii::log("Creating facility item " . $item, CLogger::LEVEL_INFO, 'system.test.kim');
+                $data = new EventHasFacility;
+                $data->event_event_id = $id;
+                $data->event_facility_id = $item;
+                $data->save();
+            endforeach;
+        }
+	}
 
 // Redactor image handling -----------------------------------------------------
 

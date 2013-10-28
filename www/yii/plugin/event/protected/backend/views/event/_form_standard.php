@@ -60,7 +60,61 @@
 
 	<?php echo $form->textAreaRow($model,'contact',array('rows'=>6, 'cols'=>50, 'class'=>'span5')); ?>
 
-	<?php //echo $form->textFieldRow($model,'thumb_path',array('class'=>'span5','maxlength'=>255)); ?>
+	<div class="row">
+		<div class="span2"></div>
+	    <div class="xspan2 well" style="margin-left:-20px">
+	    	<center><h4>Interest</h4></center>
+	        <?php
+	            $criteria = new CDbCriteria;
+	            $criteria->order = 'id ASC';
+	            $interests = Interest::model()->findAll($criteria);
+	            foreach ($interests as $interest):
+	                $criteria = new CDbCriteria;
+	                $criteria->addCondition("event_event_id = $model->id");
+	                $criteria->addCondition("event_interest_id = $interest->id");
+	                $match = $model->isNewRecord ? 0 : EventHasInterest::model()->exists($criteria);
+	        ?>
+	        <label class="checkbox">
+	            <input name="interest[]" <?php if ($match) echo ' checked="checked" '?> type="checkbox" value="<?php echo $interest->id; ?>"><?php echo $interest->name; ?>
+	            </label>
+	        <?php endforeach; ?>
+	    </div>
+	    <div class="xspan2 well">
+	    	<center><h4>Format</h4></center>
+	        <?php
+	            $criteria = new CDbCriteria;
+	            $criteria->order = 'id ASC';
+	            $formats = Format::model()->findAll($criteria);
+	            foreach ($formats as $format):
+	                $criteria = new CDbCriteria;
+	                $criteria->addCondition("event_event_id = $model->id");
+	                $criteria->addCondition("event_format_id = $format->id");
+	                $match = $model->isNewRecord ? 0 : EventHasFormat::model()->exists($criteria);
+	        ?>
+	        <label class="checkbox">
+	            <input name="format[]" <?php if ($match) echo ' checked="checked" '?> type="checkbox" value="<?php echo $format->id; ?>"><?php echo $format->name; ?>
+	            </label>
+	        <?php endforeach; ?>
+	    </div>
+	    <div class="xspan2 well">
+	    	<center><h4>Facilities</h4></center>
+	        <?php
+	            $criteria = new CDbCriteria;
+	            $criteria->order = 'id ASC';
+	            $facilities = Facility::model()->findAll($criteria);
+	            foreach ($facilities as $facility):
+	                $criteria = new CDbCriteria;
+	                $criteria->addCondition("event_event_id = $model->id");
+	                $criteria->addCondition("event_facility_id = $facility->id");
+	                $match = $model->isNewRecord ? 0 : EventHasFacility::model()->exists($criteria);
+	        ?>
+	        <label class="checkbox">
+	            <input name="facility[]" <?php if ($match) echo ' checked="checked" '?> type="checkbox" value="<?php echo $facility->id; ?>"><?php echo $facility->name; ?>
+	            </label>
+	        <?php endforeach; ?>
+	    </div>
+	</div>
+
 	<?php echo $form->fileFieldRow($model, 'thumb_path'); ?>
 
 	<?php
