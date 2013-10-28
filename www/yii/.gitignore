@@ -2,3 +2,5 @@
 *.bfproject
 *.sublime-project
 *.sublime-workspace
+*.bak
+*.swp
