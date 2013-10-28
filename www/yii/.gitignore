@@ -1,2 +1,4 @@
 .idea
 *.bfproject
+*.sublime-project
+*.sublime-workspace

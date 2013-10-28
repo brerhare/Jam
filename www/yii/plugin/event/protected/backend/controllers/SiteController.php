@@ -94,7 +94,19 @@ class SiteController extends Controller
 			$model->attributes=$_POST['LoginForm'];
 			// validate user input and redirect to the previous page if valid
 			if($model->validate() && $model->login())
+			{
+				// Set the admin session var if is an admin on ANY project (shows the 'Project' menu option)
+				unset(Yii::app()->session['isAnyAdmin']);
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("event_member_id = " . Yii::app()->session['eid']);
+				$criteria->addCondition("privilege_level = 4");	//@@TODO Privilege hardcoded
+				$memberHasProgram = MemberHasProgram::model()->findAll($criteria);
+				if ($memberHasProgram)
+					Yii::app()->session['isAnyAdmin'] = 1;
+
+				// And carry on...
 				$this->redirect(Yii::app()->user->returnUrl);
+			}
 		}
 		// display the login form
 		$this->render('login',array('model'=>$model));

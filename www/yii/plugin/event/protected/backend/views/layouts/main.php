@@ -35,7 +35,7 @@
 				array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
 				array('label' => 'Register', 'url' => array('/member/create'), 'visible' => Yii::app()->user->isGuest),
 				array('label' => 'My Events', 'url' => array('/event/admin'), 'visible' => !Yii::app()->user->isGuest),
-                array('label' => 'My Programs', 'url' => array('/program/admin'), 'visible' => !Yii::app()->user->isGuest),
+                array('label' => 'My Programs', 'url' => array('/program/admin'), 'visible' =>  ((!Yii::app()->user->isGuest) && (Yii::app()->session['isAnyAdmin']==1))  ),
 				//array('label' => 'Import CSV', 'url' => array('/event/import'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'My Details', 'url' => array('/member/update'), 'visible' => !Yii::app()->user->isGuest),
 // @@EG layout/main tbmenu to external site in new tab/window
