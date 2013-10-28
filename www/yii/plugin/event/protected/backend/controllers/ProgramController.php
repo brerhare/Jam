@@ -281,7 +281,7 @@ class ProgramController extends Controller
 		
 		$criteria = new CDbCriteria;
 		$criteria->order = 'id ASC';
-		$criteria->addCondition("program_id = 7");
+		$criteria->addCondition("program_id = 6");
 		$events = Event::model()->findAll($criteria);
 
 		foreach ($events as $event)
