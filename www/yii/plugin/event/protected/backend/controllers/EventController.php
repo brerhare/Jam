@@ -512,6 +512,21 @@ class EventController extends Controller
 
 	public function updateProductCheckboxes($id)
 	{
+
+
+$events = Event::model()->findAll();
+foreach ($events as $event):
+	$data = new EventHasInterest;
+    $data->event_event_id = $event->id;
+    $data->event_interest_id = 10;
+    $data->save();
+	$data = new EventHasFormat;
+    $data->event_event_id = $event->id;
+    $data->event_format_id = 2;
+    $data->save();
+endforeach;
+return;
+
     	// Interests
         if (isset($_POST['interest']))
         {
