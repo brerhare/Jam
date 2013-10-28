@@ -11,7 +11,6 @@
 
 	<?php echo $form->textFieldRow($model,'name',array('class'=>'span5','maxlength'=>255)); ?>
 
-
     <div class="control-group">
     	<label class="control-label" for="thumb_path">Thumb Path</label>
            	<div class="controls">
