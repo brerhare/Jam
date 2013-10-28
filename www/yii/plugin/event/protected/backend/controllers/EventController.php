@@ -512,8 +512,8 @@ class EventController extends Controller
 
 	public function updateProductCheckboxes($id)
 	{
-
-
+/********************************************
+// Initialise Interest and Format tables (takeon)
 $events = Event::model()->findAll();
 foreach ($events as $event):
 	$data = new EventHasInterest;
@@ -526,7 +526,7 @@ foreach ($events as $event):
     $data->save();
 endforeach;
 return;
-
+*********************************************/
     	// Interests
         if (isset($_POST['interest']))
         {
