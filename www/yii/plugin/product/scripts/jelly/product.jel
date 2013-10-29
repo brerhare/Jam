@@ -75,11 +75,11 @@ fx.wallpaper-color = #00000
 				#####db.filter = 'product_department_id'=Product.product_department_id
 
 					[option]
-					db.table = ProductHasOption
-					db.filter = product_product_id=Product.id
-					db.order = price
-					db.fetch = multiple
-					html.raw = £ProductHasOption.price
+					#db.table = ProductHasOption
+					#db.filter = product_product_id=Product.id
+					#db.order = price
+					#db.fetch = multiple
+					addon.custom.products.product_page_options_dropdown = Product.id
 
 				[features]
 				child = feature
