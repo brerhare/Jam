@@ -43,6 +43,7 @@
 					array('label' => 'Durations', 'url' => array('/durationBand/admin'), 'visible' => !Yii::app()->user->isGuest),
 					array('label' => 'Presets', 'url' => array('/filter/admin'), 'visible' => !Yii::app()->user->isGuest),
 				)),
+				array('label' => 'Shipping', 'url' => array('/shippingOption/admin'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Vat Rates' , 'url' => array('/vat/admin'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Logout' , 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),
 			),

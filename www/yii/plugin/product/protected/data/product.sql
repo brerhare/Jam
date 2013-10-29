@@ -225,11 +225,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `plugin`.`product_shipping_options`
+-- Table `plugin`.`product_shipping_option`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `plugin`.`product_shipping_options` ;
+DROP TABLE IF EXISTS `plugin`.`product_shipping_option` ;
 
-CREATE  TABLE IF NOT EXISTS `plugin`.`product_shipping_options` (
+CREATE  TABLE IF NOT EXISTS `plugin`.`product_shipping_option` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `uid` INT NOT NULL ,
   `description` VARCHAR(255) NOT NULL ,
