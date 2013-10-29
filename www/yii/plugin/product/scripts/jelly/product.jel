@@ -75,11 +75,8 @@ fx.wallpaper-color = #00000
 				#####db.filter = 'product_department_id'=Product.product_department_id
 
 					[option]
-					#db.table = ProductHasOption
-					#db.filter = product_product_id=Product.id
-					#db.order = price
-					#db.fetch = multiple
 					addon.custom.products.product_page_options_dropdown = Product.id
+					html.raw = <br><br><a href="some/page.php"><img src="/product/img/add_to_cart.png" alt="appropriate alternative text goes here">
 
 				[features]
 				child = feature
