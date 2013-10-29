@@ -76,7 +76,7 @@ fx.wallpaper-color = #00000
 
 					[option]
 					addon.custom.products.product_page_options_dropdown = Product.id
-					html.raw = <br><br><a href="some/page.php"><img src="/product/img/add_to_cart.png" alt="appropriate alternative text goes here">
+					html.raw = <br><br><a href="#"><img src="/product/img/add_to_cart.png">
 
 				[features]
 				child = feature
