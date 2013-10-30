@@ -17,12 +17,8 @@ db.filter = sid=$_GET['sid']
 	child = filter, productcontainer
 	stacking = horizontal
 	css.width = 850px
-	#css.height = 670px
 	css.background-color = #f2f2f2
 	childss.overflow = auto
-	#####db.table = Department
-	#####db.filter = id=$_GET['department'],uid=User.id
-	#####html.h3 = Department.name
 
 		[filter]
 		css.width = 180px
@@ -44,7 +40,6 @@ db.filter = sid=$_GET['sid']
 		css.border-width = 3px
 		css.border-color = #dcdcdc
 		db.table = Product
-		######################################################## db.filter = product_department_id=Department.id
 		###db.filter = id=2 or id=1 or id=80
 		db.filter = id=@CLIPBOARD
 		db.order = name
