@@ -81,9 +81,8 @@ class products
 			}
 		}
 		$content .= "</select>";
-
 		$content .= "<br/><br/>";
-		$content .= "<a href='#' onClick=buy('" . $product->id . "','" . $product->name . "','" . $option->id . "','" . $option->name . "','" . $productHasOption->price . "')	>" . "<img src=/product/img/add_to_cart.png></a>";
+		$content .= "<a href='#' onClick=\"buy('" . $product->id . "','" . $product->name . "','" . $option->id . "','" . $option->name . "','" . $productHasOption->price . "')\"	>" . "<img src=/product/img/add_to_cart.png></a>";
 		$apiHtml = $content;
 		$apiJs = "";
 
