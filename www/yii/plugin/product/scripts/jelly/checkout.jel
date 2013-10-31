@@ -9,13 +9,8 @@ include = default-values
 child = checkout
 fx.wallpaper-color = #00000
 
-# Get the uid from the sid
-db.table = User
-db.filter = sid=$_GET['sid']
-
 	[checkout]
 	css.width = 850px
 	css.background-color = #f2f2f2
-	html.raw = Checkout
-	addon.custom.products.product_checkout = something_or_other
+	addon.custom.products.checkout = something_or_other
 
