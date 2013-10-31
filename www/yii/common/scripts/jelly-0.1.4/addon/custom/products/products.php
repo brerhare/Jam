@@ -104,7 +104,6 @@ class products
 				{
 					// Pre-populate cookieString with existing details, and append '|'
 					cookieString += oldCookie + '|';
-
 				}
 				cookieString += productId + '_' + optVal + '_' + 1;	// qty=1
 				setCookie(cookieName, cookieString, 1);	// name, value, days=1
