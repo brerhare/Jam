@@ -67,7 +67,7 @@ css.overflow = visible
 			image.url = /img/cart.png
 			image.width = 120px
 			image.height = 20px
-			click = '#'
+			click = index.php/?layout=checkout
 
 		[carousel]
 		css.display = block
