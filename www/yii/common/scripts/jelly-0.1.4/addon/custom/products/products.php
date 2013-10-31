@@ -150,6 +150,8 @@ END_OF_API_JS_product_page_options_dropdown;
 		// Pick up the Cart cookie
 		$cookieValue = (string)Yii::app()->request->cookies['wfcart'];
 echo 'cookie=' . $cookieValue . '<br>';
+		if (!$cookieValue)
+			die('no cookie');
 		$cartArr = explode('|', $cookieValue);
 		if (count($cartArr) == 0)
 		{
