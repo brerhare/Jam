@@ -82,35 +82,40 @@ class products
 		}
 		$content .= "</select>";
 		$content .= "<br/><br/>";
-		$content .= "<a href='#' onClick=\"buy('" . $product->id . "','" . $product->name . "','" . $option->id . "','" . $option->name . "','" . $productHasOption->price . "')\"	>" . "<img src=/product/img/add_to_cart.png></a>";
+		$content .= "<a href='#' onClick=\"buy('" . $product->id . "','" . $product->name . "','" . "')\"	>" . "<img src=/product/img/add_to_cart.png></a>";
 		$apiHtml = $content;
 		$apiJs = "";
 
 		$apiJs = <<<END_OF_API_JS_product_page_options_dropdown
 
-			function buy(productId, productName, optionId, optionName, optionPrice)
+			function buy(productId, productName)
 			{
 				// Get the selected price option
 				var e = document.getElementById("choose_product_option");
 				var optVal  = e.options[e.selectedIndex].value;
 				var optText = e.options[e.selectedIndex].text;
 
-				//alert(productId + ':' + productName + ':' + optionId + ':' + optionName + ':' + optionPrice + " was added to your cart");
 				alert(productName+ ', ' + optText + " was added to your cart");
-				cookieName = 'wfcart_' + productId + '_' + optVal;
-				setCookie(cookieName, 1, 1);	// name, value, days
+
+				cookieName = 'wfcart';
+				cookieString = '';
+				oldCookie = readCookie(cookieName);
+				if (oldCookie)
+				{
+					// Pre-populate cookieString with existing details, and append '|'
+					cookieString += oldCookie + '|';
+
+				}
+				cookieString += productId + '_' + optVal + '_' + 1;	// qty=1
+				setCookie(cookieName, cookieString, 1);	// name, value, days=1
 			}
 
 			function setCookie(c_name,value,exdays)
 			{
-				cookieValue = parseInt(value);
-				oldCookieValue = readCookie(c_name);
-				if (oldCookieValue)
-					cookieValue = parseInt(oldCookieValue) + parseInt(value);
 				var exdate=new Date();
 				exdate.setDate(exdate.getDate() + exdays);
 				var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
-				document.cookie=c_name + "=" + cookieValue;
+				document.cookie=c_name + "=" + value;
 			}
 
 			function readCookie(name)
@@ -120,7 +125,11 @@ class products
 				for(var i=0;i < ca.length;i++) {
 					var c = ca[i];
 					while (c.charAt(0)==' ') c = c.substring(1,c.length);
-					if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+					if (c.indexOf(nameEQ) == 0)
+					{
+						alert('fnd:'+c.substring(nameEQ.length,c.length));
+						return c.substring(nameEQ.length,c.length);
+					}
 				}
 				return null;
 			}
