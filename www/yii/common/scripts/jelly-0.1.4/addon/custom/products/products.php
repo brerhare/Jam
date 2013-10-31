@@ -191,12 +191,13 @@ END_OF_API_JS_product_page_options_dropdown;
 		// Generate the product lines
 		foreach ($productOptionArr as $key => $value)
 		{
+echo('1<br>');
 			$cArr = explode('_', $key);
 			$cProduct = $cArr[0];
 			$cOption = $cArr[1];
 			$cQty = $productOptionArr[$key];
 //die( 'p='.$cProduct . ' o='.$cOption . ' q='.$cQty . '<br>' );	
-
+echo('2<br>');
 			// Pick up the product record
 			$criteria = new CDbCriteria;
 			$criteria->addCondition("id = " . $cProduct);
@@ -205,6 +206,7 @@ END_OF_API_JS_product_page_options_dropdown;
 			$product = Product::model()->find($criteria);	
 			if ($product)
 			{
+echo('3<br>');
 				$content .= "<tr><tbody>";
 				// Image
 				$content .= "<td>";
@@ -231,7 +233,7 @@ END_OF_API_JS_product_page_options_dropdown;
 				$content .= "<td>" . $cQty . "</td>";
 				// Total
 				$content .= "<td>" . ($cQty * $productHasOption->price). "</td>";
-
+echo('99<br>');
 
 
 				//$content .= "<td>" . $product->name . "</td>";
@@ -242,7 +244,7 @@ END_OF_API_JS_product_page_options_dropdown;
 		}
 		$content .= "</table>";
 		$content .= "</div>";
-
+echo('100<br>');
 
 die($content);
 
