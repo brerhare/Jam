@@ -195,7 +195,7 @@ END_OF_API_JS_product_page_options_dropdown;
 			$cProduct = $cArr[0];
 			$cOption = $cArr[1];
 			$cQty = $productOptionArr[$key];
-die( 'p='.$cProduct . ' o='.$cOption . ' q='.$cQty . '<br>' );	
+//die( 'p='.$cProduct . ' o='.$cOption . ' q='.$cQty . '<br>' );	
 
 			// Pick up the product record
 			$criteria = new CDbCriteria;
