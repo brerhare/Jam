@@ -227,6 +227,8 @@ END_OF_API_JS_product_page_options_dropdown;
 				$content .= "<td>" . $productHasOption->price . "</td>";
 				// Qty
 				$content .= "<td>" . $cQty . "</td>";
+				// Total
+				$content .= "<td>" . ($cQty * $productHasOption->price). "</td>";
 
 
 
