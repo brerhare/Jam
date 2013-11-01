@@ -126,54 +126,6 @@ Yii::app()->session['cart'] = $cartContent;
 				window.location.href = sel;
 			}
 
-
-
-
-
-			function buyViaCookie(productId, productName)
-			{
-				// Get the selected price option
-				var e = document.getElementById("choose_product_option");
-				var optVal  = e.options[e.selectedIndex].value;
-				var optText = e.options[e.selectedIndex].text;
-
-				alert(productName+ ', ' + optText + " was added to your cart");
-
-				cookieName = 'wfcart';
-				cookieString = '';
-				oldCookie = readCookie(cookieName);
-				if (oldCookie)
-				{
-					// Pre-populate cookieString with existing details, and append '|'
-					cookieString += oldCookie + '|';
-				}
-				cookieString += productId + '_' + optVal + '_' + 1;	// qty=1
-				setCookie(cookieName, cookieString, 1);	// name, value, days=1
-			}
-
-			function setCookie(c_name,value,exdays)
-			{
-				var exdate=new Date();
-				exdate.setDate(exdate.getDate() + exdays);
-				var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
-				document.cookie=c_name + "=" + value;
-			}
-
-			function readCookie(name)
-			{
-				var nameEQ = name + "=";
-				var ca = document.cookie.split(';');
-				for(var i=0;i < ca.length;i++) {
-					var c = ca[i];
-					while (c.charAt(0)==' ') c = c.substring(1,c.length);
-					if (c.indexOf(nameEQ) == 0)
-					{
-						return c.substring(nameEQ.length,c.length);
-					}
-				}
-				return null;
-			}
-
 END_OF_API_JS_product_page_options_dropdown;
 
 		$clipBoard = "";
@@ -194,11 +146,11 @@ END_OF_API_JS_product_page_options_dropdown;
 		$content = "";
 
 		// Pick up the Cart cookie
-		$cookieValue = (string)Yii::app()->request->cookies['wfcart'];
-echo 'cookie=' . $cookieValue . '<br>';
-		if (!$cookieValue)
-			die('no cookie');
-		$cartArr = explode('|', $cookieValue);
+		$cartContent = Yii::app()->session['cart'];
+echo 'cart=' . $cartContent . '<br>';
+		if (!$cartContent)
+			die('nothing in cart');
+		$cartArr = explode('|', $cartContent);
 		if (count($cartArr) == 0)
 		{
 			$retArr = array();
@@ -239,13 +191,11 @@ echo 'cookie=' . $cookieValue . '<br>';
 		// Generate the product lines
 		foreach ($productOptionArr as $key => $value)
 		{
-echo('1<br>');
 			$cArr = explode('_', $key);
 			$cProduct = $cArr[0];
 			$cOption = $cArr[1];
 			$cQty = $productOptionArr[$key];
 //die( 'p='.$cProduct . ' o='.$cOption . ' q='.$cQty . '<br>' );	
-echo('2<br>');
 			// Pick up the product record
 			$criteria = new CDbCriteria;
 			$criteria->addCondition("id = " . $cProduct);
@@ -254,7 +204,6 @@ echo('2<br>');
 			$product = Product::model()->find($criteria);	
 			if ($product)
 			{
-echo('3<br>');
 				$content .= "<tr><tbody>";
 				// Image
 				$content .= "<td>";
@@ -282,7 +231,6 @@ echo('3<br>');
 				// Total
 				$content .= "<td>" . ($cQty * $productHasOption->price). "</td>";
 
-
 				//$content .= "<td>" . $product->name . "</td>";
 
 				$content .= "</tbody></tr>";
@@ -291,7 +239,6 @@ echo('3<br>');
 		}
 		$content .= "</table>";
 		$content .= "</div>";
-echo('100<br>');
 
 die($content);
 
