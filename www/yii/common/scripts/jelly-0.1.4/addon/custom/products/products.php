@@ -344,7 +344,7 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 
 		$content .= "</table>";
 
-			$content .= "</div>";
+		$content .= "</div>";
 
 		// Customer contact details
 		$content .= "<div style=padding:20px; position:relative>";
