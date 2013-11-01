@@ -57,30 +57,35 @@ class products
 
 		// Confirm added to cart
 		$cartConfirm = "";
-		if ((isset($_GET['cartproduct'])) && (isset($_GET['cartoption'])) && (isset($_GET['cartqty'])))
+		if ((isset($_GET['cartproduct'])) && (isset($_GET['cartoption'])) && (isset($_GET['cartqty'])) && (isset($_GET['cartref'])))
 		{
+
 			$cartContent = Yii::app()->session['cart'];
 //echo('original cart=['.$cartContent.']<br>');
 
-			// Pick up the product record
-			$criteria = new CDbCriteria;
-			$criteria->addCondition("id = " . $_GET['cartproduct']);
-			$product = Product::model()->find($criteria);
-			if ($product)
+			if (!(strstr($cartContent, '_' . $_GET['cartref'])))
 			{
+				// Add this item to the cart
+				// Pick up the product record
 				$criteria = new CDbCriteria;
-				$criteria->addCondition("id = " . $_GET['cartoption']);
-				$option = Option::model()->find($criteria);
-				if ($option)
+				$criteria->addCondition("id = " . $_GET['cartproduct']);
+				$product = Product::model()->find($criteria);
+				if ($product)
 				{
-					if ($cartContent != '')
-						$cartContent .= '|';
-					$cartContent .= $product->id . '_' . $option->id . '_' . $_GET['cartqty'];
-					$cartConfirm = "<div style='color:gray'>" . $_GET['cartqty'] . " " . $product->name . " " . $option->name . " added to your cart</div>";
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("id = " . $_GET['cartoption']);
+					$option = Option::model()->find($criteria);
+					if ($option)
+					{
+						if ($cartContent != '')
+							$cartContent .= '|';
+						$cartContent .= $product->id . '_' . $option->id . '_' . $_GET['cartqty'] . '_' . $_GET['cartref'];
+						$cartConfirm = "<div style='color:gray'>" . $_GET['cartqty'] . " " . $product->name . " " . $option->name . " added to your cart</div>";
+					}
 				}
-			}	
 //echo('new cart=['.$cartContent.']<br>');
 			Yii::app()->session['cart'] = $cartContent;
+			}
 		}
 
 		// Pick up the product record
@@ -121,8 +126,12 @@ class products
 				var optText = e.options[e.selectedIndex].text;
 
 				selWithHash = document.URL;
-				sel = selWithHash.replace('#', '');
-				sel += '&cartproduct=' + productId + '&cartoption=' + optVal + '&cartqty=1';
+				selWithDups = selWithHash.replace('#', '');
+				selArr = selWithDups.split("&cartproduct=");
+				sel = selArr[0];
+
+				sel += '&cartproduct=' + productId + '&cartoption=' + optVal + '&cartqty=1' + '&cartref=' + Math.floor((Math.random()*128000)+1);
+//alert(sel);
 				window.location.href = sel;
 			}
 
@@ -142,16 +151,49 @@ END_OF_API_JS_product_page_options_dropdown;
 	private function checkout($val)
 	{
 		$_imageDir = '/product/userdata/image/';
-		$_imgDir = '/product/img/';
 
 		$content = "";
 
-		// Pick up the Cart cookie
+
+if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))
+	Yii::app()->session['cart'] = '';
+
+
+		// Pick up the Cart info
 		$cartContent = Yii::app()->session['cart'];
-//echo 'cart=' . $cartContent . '<br>';
-		if (!$cartContent)
-			die('nothing in cart');
-		$cartArr = explode('|', $cartContent);
+//echo 'cart=[' . $cartContent . ']<br>';
+		if ($cartContent == '')
+			$cartArr = array();
+		else
+			$cartArr = explode('|', $cartContent);
+
+		if ( (isset($_GET['cartref'])) && (!(strstr($cartContent, '_' . $_GET['cartref']))) )
+		{
+			// Check for deletion (qty=0)
+			if ((isset($_GET['cartqty'])) && ($_GET['cartqty'] == '0'))
+			{
+				$newArr = array();
+				for ($i = 0; $i < count($cartArr); $i++)
+				{
+					$itemArr = explode('_', $cartArr[$i]);
+					if (($itemArr[0] == $_GET['cartproduct']) && ($itemArr[1] == $_GET['cartoption']))
+						continue;	// Skip this one (exclude)
+					array_push($newArr, $cartArr[$i]);
+				}
+				$cartArr = $newArr;
+//echo 'deleted='.$cartArr[$i].". There are now " . count($cartArr) . " items in cart<br>";
+				// now save the modified cart array back to the session variable
+				$cartContent = "";
+				for ($i = 0; $i < count($cartArr); $i++)
+				{
+					if ($cartContent != "")
+							$cartContent .= '|';
+					$cartContent .= $cartArr[$i];
+				}
+				Yii::app()->session['cart'] = $cartContent;
+			}
+		}
+
 		if (count($cartArr) == 0)
 		{
 			$retArr = array();
@@ -241,9 +283,9 @@ END_OF_API_JS_product_page_options_dropdown;
 				$content .= "<td>" . ($cQty * $productHasOption->price). "</td>";
 
 				$content .= "<td>";
-				$content .= "<img border=0 src='" . $_imgDir . 'remove_from_cart.jpg' . "' style='height:40px; width:40px'>";
-
-				//$content .= "<td>" . $product->name . "</td>";
+				//$content .= "<img border=0 src='" . $_imgDir . 'remove_from_cart.jpg' . "' style='height:40px; width:40px'>";
+				$content .= "<a href='#' onClick=\"deleteItem('" . $product->id . "','" . $option->id . "','" . "')\"	>" . "<img src=/product/img/remove_from_cart.jpg height=40px width=40px></a>";
+				$content .= "</td>";
 
 				$content .= "</tbody></tr>";
 			}
@@ -256,6 +298,16 @@ END_OF_API_JS_product_page_options_dropdown;
 		$apiJs = "";
 
 		$apiJs = <<<END_OF_API_JS_checkout
+
+			function deleteItem(productId, optionId)
+			{
+				selWithHash = document.URL;
+				selWithDups = selWithHash.replace('#', '');
+				selArr = selWithDups.split("&cartproduct=");
+				sel = selArr[0];
+				sel += '&cartproduct=' + productId + '&cartoption=' + optionId + '&cartqty=0' + '&cartref=' + Math.floor((Math.random()*128000)+1);
+				window.location.href = sel;
+			}
 
 END_OF_API_JS_checkout;
 
