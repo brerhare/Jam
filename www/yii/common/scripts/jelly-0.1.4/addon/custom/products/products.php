@@ -396,7 +396,6 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 
 			function proceed()
 			{
-				//alert('payment page');
 				window.location.href = '/product/index.php/site/pay';
 			}
 END_OF_API_JS_checkout;
