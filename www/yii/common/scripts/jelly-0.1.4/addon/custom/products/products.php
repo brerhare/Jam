@@ -152,10 +152,14 @@ END_OF_API_JS_product_page_options_dropdown;
 	{
 		$_imageDir = '/product/userdata/image/';
 
+		$totalGoods = 0.00;
+
 		$content = "";
+
 
 // For debugging - empty the cart
 if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['cart'] = '';
+
 
 		// Pick up the Cart info
 		$cartContent = Yii::app()->session['cart'];
@@ -217,17 +221,16 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 		$content .= "<style> table.itemgrid {  border-collapse: collapse;} .itemgrid tr {   border: solid;  border-width: 1px 0;}</style>";
 		//$content .= "<style>tr:first-child {  border-top: none;}tr:last-child {  border-bottom: none;} </style>";
 		$content .= '<center><h3>Shopping cart</h3><center>';	
-		$content .= "<table class='itemgrid' style='width:100%'>";
-		$content .= "<thead>";
-		$content .= "<tr>";
+		$content .= "<table class='itemgrid' style='width:80%'>";
+		$content .= "<thead><tr>";
 		$content .= "<th width=10%></th>";	// Image
 		$content .= "<th align='left' width=35%>Description</th>";	// Description
 		$content .= "<th align='left' width=25%>Option/Size</th>";	// Option/Size
-		$content .= "<th align='left' width=10%>Each</th>";	// Price
-		$content .= "<th align='left' width=5%>Qty</th>";	// Qty
-		$content .= "<th align='left' width=10%>Total</th>";	// Total
-		$content .= "<th align='left' width=5%></th>";	// Total
-		$content .= "</tr>";
+		$content .= "<th align='right' width=7%>Each</th>";	// Price
+		$content .= "<th align='right' width=5%>Qty</th>";	// Qty
+		$content .= "<th align='right' width=10%>Total</th>";	// Total
+		$content .= "<th align='rght' width=8%></th>";	// Total
+		$content .= "</tr></thead>";
 
 		// Generate the product lines
 		foreach ($productOptionArr as $key => $value)
@@ -268,13 +271,14 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 				$criteria->addCondition("product_product_id = " . $cProduct);
 				$criteria->addCondition("product_option_id = " . $cOption);
 				$productHasOption = ProductHasOption::model()->find($criteria);
-				$content .= "<td>" . $productHasOption->price . "</td>";
+				$content .= "<td align='right'>" . $productHasOption->price . "</td>";
 				// Qty
-				$content .= "<td>" . $cQty . "</td>";
+				$content .= "<td align='right'>" . $cQty . "</td>";
 				// Total
-				$content .= "<td>" . ($cQty * $productHasOption->price). "</td>";
+				$content .= "<td align='right'>" . ($cQty * $productHasOption->price) . "</td>";
+				$totalGoods += ($cQty * $productHasOption->price);
 				// Delete
-				$content .= "<td>";
+				$content .= "<td align='right'>";
 				//$content .= "<img border=0 src='" . $_imgDir . 'remove_from_cart.jpg' . "' style='height:40px; width:40px'>";
 				$content .= "<a href='#' onClick=\"deleteItem('" . $product->id . "','" . $option->id . "','" . "')\"	>" . "<img src=/product/img/remove_from_cart.jpg height=40px width=40px></a>";
 				$content .= "</td>";
@@ -283,54 +287,62 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 		}
 		$content .= "</table>";
 
-
 		// Now the middle bit
-		$content .= "<table style='width:100%'>";
-		$content .= "<thead>";
-		$content .= "<tr>";
-		$content .= "<th width=10%></th>";
-		$content .= "<th width=25%></th>";	// Buttons
-		$content .= "<th width=20%></th>";
-		$content .= "<th width=30%></th>";	// Delivery dropdown
-		$content .= "<th width=10%></th>";	// Total
-		$content .= "<th width=5%></th>";
-		$content .= "</tr>";
+		$content .= "<table style='width:80%'>";
+		$content .= "<thead><tr>";
+		$content .= "<th align='left' width=10%></th>";
+		$content .= "<th align='left' width=25%></th>";	// Buttons
+		$content .= "<th align='left' width=25%></th>";
+		$content .= "<th align='left' width=19%></th>";	// Delivery dropdown
+		$content .= "<th align='right' width=10%></th>";	// Total
+		$content .= "<th align='right' width=7%></th>";
+		$content .= "</tr></thead>";
+
+		$content .= "<tr><td>&nbsp</td></tr>";
 
 		$content .= "<tr><tbody>";
 		$content .= "<td></td>";
 		$content .= "<td>Button</td>";
 		$content .= "<td>Choose delivery method</td>";
 		$content .= "<td>";
-		$content .= "<select id='choose_product_option'>";
+
+		$content .= "<script> totalShipping = 0; totalGoods = " . $totalGoods . ";</script>";
+		$content .= "<select id='choose_shipping_option' onChange=updateTotal()>";
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("uid = " . $this->uid);
 		$criteria->order = 'price ASC';
 		$shippings = ShippingOption::model()->findall($criteria);	
 		if ($shippings)
 		{
+			$done = 0;
+			$totalShipping = 0.00;
 			foreach ($shippings as $shipping)
 			{
-				$content .= "<option value='" . $shipping->id . "'>" . $shipping->description . "&nbsp&nbsp&nbsp&nbsp£" . $shipping->price . "</option>";
+				if ($done++ == 0)
+				{
+					$totalShipping = $shipping->price;
+					$content .= "<script> totalShipping = " . $shipping->price . "; </script>";
+				}
+				$content .= "<option value='" . $shipping->id . "'>" . $shipping->description . "&nbsp&nbsp&nbsp&nbsp" . '£ ' . $shipping->price . "</option>";
 			}
 		}
 		$content .= "</select>";
+
 		$content .= "</td>";
 		$content .= "<td></td>";
 		$content .= "<td></td>";
 		$content .= "</tbody></tr>";
 
 		$content .= "<tr><tbody>";
-		$content .= "<td></td>";
-		$content .= "<td>Button</td>";
-		$content .= "<td></td>";
+		$content .= "<td><br/><br/><br/></td>";
 		$content .= "<td></td>";
 		$content .= "<td></td>";
+		$content .= "<td align='right'><b>Total to pay</b></td>";
+		$content .= "<td align='right' id='showTotal' style='font-weight:bold'>£ " . ($totalGoods + $totalShipping) . "</td>";
 		$content .= "<td></td>";
 		$content .= "</tbody></tr>";
 
 		$content .= "</table>";
-
-
 
 
 		$content .= "</div>";
@@ -339,6 +351,19 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 		$apiJs = "";
 
 		$apiJs = <<<END_OF_API_JS_checkout
+
+			// var totalGoods
+			// var totalShipping
+
+			function updateTotal()
+			{
+				var e = document.getElementById("choose_shipping_option");
+				var optVal  = e.options[e.selectedIndex].value;
+				var optText = e.options[e.selectedIndex].text;
+				var val = optText.split('£');
+				totalShipping = parseFloat(totalGoods) + parseFloat(val[1]);
+				document.getElementById("showTotal").innerHTML = '£ ' + totalShipping.toFixed(2);
+			}
 
 			function deleteItem(productId, optionId)
 			{
@@ -351,7 +376,6 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 			}
 
 END_OF_API_JS_checkout;
-
 
 		$clipBoard = "";
 
