@@ -55,6 +55,34 @@ class products
 		$productId = $val;
 		$content = "";
 
+		// Confirm added to cart
+		$cartConfirm = "";
+		if ((isset($_GET['cartproduct'])) && (isset($_GET['cartoption'])) && (isset($_GET['cartqty'])))
+		{
+			$cartContent = Yii::app()->session['cart'];
+echo('original cart=['.$cartContent.']<br>');
+
+			// Pick up the product record
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("id = " . $_GET['cartproduct']);
+			$product = Product::model()->find($criteria);
+			if ($product)
+			{
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("id = " . $_GET['cartoption']);
+				$option = Option::model()->find($criteria);
+				if ($option)
+				{
+					if ($cartContent != '')
+						$cartContent .= '|';
+					$cartContent .= $product->id . '_' . $option->id . '_' . $_GET['cartqty'];
+					$cartConfirm = "<div style='color:gray'>" . $_GET['cartqty'] . " " . $product->name . " " . $option->name . " added to your cart</div>";
+				}
+			}	
+echo('new cart=['.$cartContent.']<br>');
+Yii::app()->session['cart'] = $cartContent;
+		}
+
 		// Pick up the product record
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("id = " . $productId);
@@ -79,12 +107,30 @@ class products
 		$content .= "</select>";
 		$content .= "<br/><br/>";
 		$content .= "<a href='#' onClick=\"buy('" . $product->id . "','" . $product->name . "','" . "')\"	>" . "<img src=/product/img/add_to_cart.png></a>";
+		$content .= $cartConfirm;
 		$apiHtml = $content;
 		$apiJs = "";
 
 		$apiJs = <<<END_OF_API_JS_product_page_options_dropdown
 
 			function buy(productId, productName)
+			{
+				// Get the selected price option
+				var e = document.getElementById("choose_product_option");
+				var optVal  = e.options[e.selectedIndex].value;
+				var optText = e.options[e.selectedIndex].text;
+
+				selWithHash = document.URL;
+				sel = selWithHash.replace('#', '');
+				sel += '&cartproduct=' + productId + '&cartoption=' + optVal + '&cartqty=1';
+				window.location.href = sel;
+			}
+
+
+
+
+
+			function buyViaCookie(productId, productName)
 			{
 				// Get the selected price option
 				var e = document.getElementById("choose_product_option");
@@ -235,7 +281,6 @@ echo('3<br>');
 				$content .= "<td>" . $cQty . "</td>";
 				// Total
 				$content .= "<td>" . ($cQty * $productHasOption->price). "</td>";
-echo('99<br>');
 
 
 				//$content .= "<td>" . $product->name . "</td>";
