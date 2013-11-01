@@ -60,7 +60,7 @@ class products
 		if ((isset($_GET['cartproduct'])) && (isset($_GET['cartoption'])) && (isset($_GET['cartqty'])))
 		{
 			$cartContent = Yii::app()->session['cart'];
-echo('original cart=['.$cartContent.']<br>');
+//echo('original cart=['.$cartContent.']<br>');
 
 			// Pick up the product record
 			$criteria = new CDbCriteria;
@@ -79,8 +79,8 @@ echo('original cart=['.$cartContent.']<br>');
 					$cartConfirm = "<div style='color:gray'>" . $_GET['cartqty'] . " " . $product->name . " " . $option->name . " added to your cart</div>";
 				}
 			}	
-echo('new cart=['.$cartContent.']<br>');
-Yii::app()->session['cart'] = $cartContent;
+//echo('new cart=['.$cartContent.']<br>');
+			Yii::app()->session['cart'] = $cartContent;
 		}
 
 		// Pick up the product record
@@ -147,7 +147,7 @@ END_OF_API_JS_product_page_options_dropdown;
 
 		// Pick up the Cart cookie
 		$cartContent = Yii::app()->session['cart'];
-echo 'cart=' . $cartContent . '<br>';
+//echo 'cart=' . $cartContent . '<br>';
 		if (!$cartContent)
 			die('nothing in cart');
 		$cartArr = explode('|', $cartContent);
@@ -177,6 +177,11 @@ echo 'cart=' . $cartContent . '<br>';
 //	echo $key .':'. $value . '<br>';
 //}
 		$content .= "<div>";
+
+$content .= "<style>table {  border-collapse: collapse;}tr {   border: solid;  border-width: 1px 0;}</style>";
+//$content .= "<style>tr:first-child {  border-top: none;}tr:last-child {  border-bottom: none;} </style>";
+
+
 		$content .= "<table>";
 		$content .= "<thead>";
 		$content .= "<tr>";
@@ -207,11 +212,13 @@ echo 'cart=' . $cartContent . '<br>';
 				$content .= "<tr><tbody>";
 				// Image
 				$content .= "<td>";
+				$content .= '<br>&nbsp';
 				$criteria = new CDbCriteria;
 				$criteria->addCondition("product_product_id = " . $cProduct);
 				$image = Image::model()->find($criteria);	
 				if ($image)
-					$content .= "<img src='" . $_imageDir . $image->filename . "' style='height:40px; width:50px'>";
+					$content .= "<img border=0 src='" . $_imageDir . $image->filename . "' style='height:40px; width:50px'>";
+				$content .= '<br>&nbsp';
 				$content .= "</td>";
 				// Description
 				$content .= "<td>" . $product->name . "</td>";
