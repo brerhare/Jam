@@ -11,6 +11,6 @@ fx.wallpaper-color = #00000
 
 	[checkout]
 	css.width = 850px
-	css.background-color = #f2f2f2
+	#####css.background-color = #f2f2f2
 	addon.custom.products.checkout = something_or_other
 

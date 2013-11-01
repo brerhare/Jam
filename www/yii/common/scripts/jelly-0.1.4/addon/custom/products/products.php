@@ -302,7 +302,7 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 
 		$content .= "<tr><tbody>";
 		$content .= "<td></td>";
-		$content .= "<td>Button</td>";
+		$content .= "<td></td>";
 		$content .= "<td>Choose delivery method</td>";
 		$content .= "<td>";
 
@@ -346,8 +346,8 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 
 			$content .= "</div>";
 
-		// Contact details
-		$content .= "<div style=padding:20px>";
+		// Customer contact details
+		$content .= "<div style=padding:20px; position:relative>";
 		$content .= "Please enter your delivery address<br />";
 		$content .= "<input id='address1' type='text' value='' size='40'/> <br />";
 		$content .= "<input id='address2' type='text' value='' size='40'/> <br />";		
@@ -359,6 +359,10 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 		$content .= "<input id='email2' type='text' value='' size='30'/> <br /><br/>";
 		$content .= " Phone number (recommended)<br />";
 		$content .= "<input id='telephone' type='text' value='' size='20'/> <br />";
+		$content .= "<span style='position:absolute; margin-left:400px; margin-top:-270px'>Notes</span>";
+		$content .= "<textarea style='position:absolute; margin-left:400px;margin-top:-254px' name='message' rows='7' cols='30'> </textarea> <br />";
+		$content .= "<a style='position:absolute; margin-left:400px; margin-top:-57px' href='#' onClick=\"proceed()\"	>" . "<img src=/product/img/proceed_to_checkout.png></a>";
+
 		$content .= "</div>";
 
 		$apiHtml = $content;
@@ -389,6 +393,10 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 				window.location.href = sel;
 			}
 
+			function proceed()
+			{
+				alert('payment page');
+			}
 END_OF_API_JS_checkout;
 
 		$clipBoard = "";

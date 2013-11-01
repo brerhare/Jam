@@ -17,7 +17,7 @@ db.filter = sid=$_GET['sid']
 	child = filter, productcontainer
 	stacking = horizontal
 	css.width = 850px
-	css.background-color = #f2f2f2
+	#####css.background-color = #f2f2f2
 	childss.overflow = auto
 
 		[filter]
