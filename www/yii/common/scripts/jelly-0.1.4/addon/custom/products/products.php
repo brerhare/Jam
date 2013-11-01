@@ -154,10 +154,8 @@ END_OF_API_JS_product_page_options_dropdown;
 
 		$content = "";
 
-
-if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))
-	Yii::app()->session['cart'] = '';
-
+// For debugging - empty the cart
+if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['cart'] = '';
 
 		// Pick up the Cart info
 		$cartContent = Yii::app()->session['cart'];
@@ -215,22 +213,16 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))
 				$productOptionArr[$chkProductOption] = $chkQty;
 		}
 
-//echo '<br>';
-//foreach ($productOptionArr as $key => $value) {
-//	echo $key .':'. $value . '<br>';
-//}
 		$content .= "<div>";
-
-		$content .= "<style>table {  border-collapse: collapse;}tr {   border: solid;  border-width: 1px 0;}</style>";
+		$content .= "<style> table.itemgrid {  border-collapse: collapse;} .itemgrid tr {   border: solid;  border-width: 1px 0;}</style>";
 		//$content .= "<style>tr:first-child {  border-top: none;}tr:last-child {  border-bottom: none;} </style>";
-
 		$content .= '<center><h3>Shopping cart</h3><center>';	
-		$content .= "<table style='width:100%'>";
+		$content .= "<table class='itemgrid' style='width:100%'>";
 		$content .= "<thead>";
 		$content .= "<tr>";
 		$content .= "<th width=10%></th>";	// Image
 		$content .= "<th align='left' width=35%>Description</th>";	// Description
-		$content .= "<th align='left' width=20%>Option/Size</th>";	// Option/Size
+		$content .= "<th align='left' width=25%>Option/Size</th>";	// Option/Size
 		$content .= "<th align='left' width=10%>Each</th>";	// Price
 		$content .= "<th align='left' width=5%>Qty</th>";	// Qty
 		$content .= "<th align='left' width=10%>Total</th>";	// Total
@@ -281,17 +273,66 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))
 				$content .= "<td>" . $cQty . "</td>";
 				// Total
 				$content .= "<td>" . ($cQty * $productHasOption->price). "</td>";
-
+				// Delete
 				$content .= "<td>";
 				//$content .= "<img border=0 src='" . $_imgDir . 'remove_from_cart.jpg' . "' style='height:40px; width:40px'>";
 				$content .= "<a href='#' onClick=\"deleteItem('" . $product->id . "','" . $option->id . "','" . "')\"	>" . "<img src=/product/img/remove_from_cart.jpg height=40px width=40px></a>";
 				$content .= "</td>";
-
 				$content .= "</tbody></tr>";
 			}
-
 		}
 		$content .= "</table>";
+
+
+		// Now the middle bit
+		$content .= "<table style='width:100%'>";
+		$content .= "<thead>";
+		$content .= "<tr>";
+		$content .= "<th width=10%></th>";
+		$content .= "<th width=25%></th>";	// Buttons
+		$content .= "<th width=20%></th>";
+		$content .= "<th width=30%></th>";	// Delivery dropdown
+		$content .= "<th width=10%></th>";	// Total
+		$content .= "<th width=5%></th>";
+		$content .= "</tr>";
+
+		$content .= "<tr><tbody>";
+		$content .= "<td></td>";
+		$content .= "<td>Button</td>";
+		$content .= "<td>Choose delivery method</td>";
+		$content .= "<td>";
+		$content .= "<select id='choose_product_option'>";
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("uid = " . $this->uid);
+		$criteria->order = 'price ASC';
+		$shippings = ShippingOption::model()->findall($criteria);	
+		if ($shippings)
+		{
+			foreach ($shippings as $shipping)
+			{
+				$content .= "<option value='" . $shipping->id . "'>" . $shipping->description . "&nbsp&nbsp&nbsp&nbsp£" . $shipping->price . "</option>";
+			}
+		}
+		$content .= "</select>";
+		$content .= "</td>";
+		$content .= "<td></td>";
+		$content .= "<td></td>";
+		$content .= "</tbody></tr>";
+
+		$content .= "<tr><tbody>";
+		$content .= "<td></td>";
+		$content .= "<td>Button</td>";
+		$content .= "<td></td>";
+		$content .= "<td></td>";
+		$content .= "<td></td>";
+		$content .= "<td></td>";
+		$content .= "</tbody></tr>";
+
+		$content .= "</table>";
+
+
+
+
 		$content .= "</div>";
 
 		$apiHtml = $content;
