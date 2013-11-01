@@ -34,7 +34,7 @@
 		array(
 			'class' => 'bootstrap.widgets.TbMenu',
 			'items' => array(
-                //array('label' => 'Page Content', 'url' => array('/contentBlock/admin'), 'visible' => !Yii::app()->user->isGuest),
+                array('label' => 'Page Content', 'url' => array('/contentBlock/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Accordion Content', 'url' => array('/accordionBlock/admin'), 'visible' => !Yii::app()->user->isGuest),                      
                 //array('label' => 'Carousel Content', 'url' => array('/carouselBlock/admin'), 'visible' => !Yii::app()->user->isGuest),
                 //array('label' => 'Tab Content', 'url' => array('/tabBlock/admin'), 'visible' => !Yii::app()->user->isGuest),                      
