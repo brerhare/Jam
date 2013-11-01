@@ -221,7 +221,7 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 		$content .= "<style> table.itemgrid {  border-collapse: collapse;} .itemgrid tr {   border: solid;  border-width: 1px 0;}</style>";
 		//$content .= "<style>tr:first-child {  border-top: none;}tr:last-child {  border-bottom: none;} </style>";
 		$content .= '<center><h3>Shopping cart</h3><center>';	
-		$content .= "<table class='itemgrid' style='width:80%'>";
+		$content .= "<table class='itemgrid' style='width:80%; float:left'>";
 		$content .= "<thead><tr>";
 		$content .= "<th width=10%></th>";	// Image
 		$content .= "<th align='left' width=35%>Description</th>";	// Description
@@ -288,7 +288,7 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 		$content .= "</table>";
 
 		// Now the middle bit
-		$content .= "<table style='width:80%'>";
+		$content .= "<table style='width:80%; float:left'>";
 		$content .= "<thead><tr>";
 		$content .= "<th align='left' width=10%></th>";
 		$content .= "<th align='left' width=25%></th>";	// Buttons
@@ -345,6 +345,7 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 		$content .= "</table>";
 
 		$content .= "</div>";
+		$content .= "<div style='clear:both'></div>";
 
 		// Customer contact details
 		$content .= "<div style=padding:20px; position:relative>";
