@@ -344,7 +344,21 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 
 		$content .= "</table>";
 
+			$content .= "</div>";
 
+		// Contact details
+		$content .= "<div style=padding:20px>";
+		$content .= "Please enter your delivery address<br />";
+		$content .= "<input id='address1' type='text' value='' size='40'/> <br />";
+		$content .= "<input id='address2' type='text' value='' size='40'/> <br />";		
+		$content .= "<input id='address3' type='text' value='' size='40'/> <br />";
+		$content .= "<input id='address4' type='text' value='' size='40'/> <br />";
+		$content .= "<input id='post_code' type='text' value='' size='15'/> <br /><br/>";
+		$content .= " An email address is required for your order confirmation<br />";
+		$content .= "<input id='email1' type='text' value='' size='30'/> <br />";
+		$content .= "<input id='email2' type='text' value='' size='30'/> <br /><br/>";
+		$content .= " Phone number (recommended)<br />";
+		$content .= "<input id='telephone' type='text' value='' size='20'/> <br />";
 		$content .= "</div>";
 
 		$apiHtml = $content;
