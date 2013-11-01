@@ -275,7 +275,7 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 				// Qty
 				$content .= "<td align='right'>" . $cQty . "</td>";
 				// Total
-				$content .= "<td align='right'>" . ($cQty * $productHasOption->price) . "</td>";
+				$content .= "<td align='right'>" . number_format(($cQty * $productHasOption->price), 2, '.', '') . "</td>";
 				$totalGoods += ($cQty * $productHasOption->price);
 				// Delete
 				$content .= "<td align='right'>";
