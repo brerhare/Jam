@@ -178,11 +178,11 @@ END_OF_API_JS_product_page_options_dropdown;
 //}
 		$content .= "<div>";
 
-$content .= "<style>table {  border-collapse: collapse;}tr {   border: solid;  border-width: 1px 0;}</style>";
-//$content .= "<style>tr:first-child {  border-top: none;}tr:last-child {  border-bottom: none;} </style>";
+		$content .= "<style>table {  border-collapse: collapse;}tr {   border: solid;  border-width: 1px 0;}</style>";
+		//$content .= "<style>tr:first-child {  border-top: none;}tr:last-child {  border-bottom: none;} </style>";
 
-
-		$content .= "<table>";
+		$content .= '<br>';
+		$content .= "<table style='width:100%'>";
 		$content .= "<thead>";
 		$content .= "<tr>";
 		$content .= "<th width=10%></th>";	// Image
@@ -247,85 +247,12 @@ $content .= "<style>table {  border-collapse: collapse;}tr {   border: solid;  b
 		$content .= "</table>";
 		$content .= "</div>";
 
-die($content);
-
-
-
-
-		// Pick up the product record
-		$criteria = new CDbCriteria;
-		$criteria->addCondition("id = " . $productId);
-		$product = Product::model()->find($criteria);
-
-		// each product option
-		$criteria = new CDbCriteria;
-		$criteria->addCondition("product_product_id = " . $productId);
-		$productHasOptions = ProductHasOption::model()->findAll($criteria);
-
-		$content .= "<select id='choose_product_option'>";
-		foreach ($productHasOptions as $productHasOption)
-		{
-			$criteria = new CDbCriteria;
-			$criteria->addCondition("id = " . $productHasOption->product_option_id);
-			$option = Option::model()->find($criteria);
-			if ($option)
-			{
-				$content .= "<option value='" . $option->id . "'>£" . $productHasOption->price . "&nbsp" . $option->name . "</option>";
-			}
-		}
-		$content .= "</select>";
-		$content .= "<br/><br/>";
-		$content .= "<a href='#' onClick=\"buy('" . $product->id . "','" . $product->name . "','" . "')\"	>" . "<img src=/product/img/add_to_cart.png></a>";
 		$apiHtml = $content;
 		$apiJs = "";
 
-		$apiJs = <<<END_OF_API_JS_product_page_options_dropdown
+		$apiJs = <<<END_OF_API_JS_checkout
 
-			function buy(productId, productName)
-			{
-				// Get the selected price option
-				var e = document.getElementById("choose_product_option");
-				var optVal  = e.options[e.selectedIndex].value;
-				var optText = e.options[e.selectedIndex].text;
-
-				alert(productName+ ', ' + optText + " was added to your cart");
-
-				cookieName = 'wfcart';
-				cookieString = '';
-				oldCookie = readCookie(cookieName);
-				if (oldCookie)
-				{
-					// Pre-populate cookieString with existing details, and append '|'
-					cookieString += oldCookie + '|';
-				}
-				cookieString += productId + '_' + optVal + '_' + 1;	// qty=1
-				setCookie(cookieName, cookieString, 1);	// name, value, days=1
-			}
-
-			function setCookie(c_name,value,exdays)
-			{
-				var exdate=new Date();
-				exdate.setDate(exdate.getDate() + exdays);
-				var c_value=escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
-				document.cookie=c_name + "=" + value;
-			}
-
-			function readCookie(name)
-			{
-				var nameEQ = name + "=";
-				var ca = document.cookie.split(';');
-				for(var i=0;i < ca.length;i++) {
-					var c = ca[i];
-					while (c.charAt(0)==' ') c = c.substring(1,c.length);
-					if (c.indexOf(nameEQ) == 0)
-					{
-						return c.substring(nameEQ.length,c.length);
-					}
-				}
-				return null;
-			}
-
-END_OF_API_JS_product_page_options_dropdown;
+END_OF_API_JS_checkout;
 
 
 		$clipBoard = "";
