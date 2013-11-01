@@ -142,6 +142,7 @@ END_OF_API_JS_product_page_options_dropdown;
 	private function checkout($val)
 	{
 		$_imageDir = '/product/userdata/image/';
+		$_imgDir = '/product/img/';
 
 		$content = "";
 
@@ -181,16 +182,17 @@ END_OF_API_JS_product_page_options_dropdown;
 		$content .= "<style>table {  border-collapse: collapse;}tr {   border: solid;  border-width: 1px 0;}</style>";
 		//$content .= "<style>tr:first-child {  border-top: none;}tr:last-child {  border-bottom: none;} </style>";
 
-		$content .= '<br>';
+		$content .= '<center><h3>Shopping cart</h3><center>';	
 		$content .= "<table style='width:100%'>";
 		$content .= "<thead>";
 		$content .= "<tr>";
 		$content .= "<th width=10%></th>";	// Image
-		$content .= "<th align='left' width=40%>Description</th>";	// Description
+		$content .= "<th align='left' width=35%>Description</th>";	// Description
 		$content .= "<th align='left' width=20%>Option/Size</th>";	// Option/Size
 		$content .= "<th align='left' width=10%>Each</th>";	// Price
-		$content .= "<th align='left' width=10%>Qty</th>";	// Qty
+		$content .= "<th align='left' width=5%>Qty</th>";	// Qty
 		$content .= "<th align='left' width=10%>Total</th>";	// Total
+		$content .= "<th align='left' width=5%></th>";	// Total
 		$content .= "</tr>";
 
 		// Generate the product lines
@@ -237,6 +239,9 @@ END_OF_API_JS_product_page_options_dropdown;
 				$content .= "<td>" . $cQty . "</td>";
 				// Total
 				$content .= "<td>" . ($cQty * $productHasOption->price). "</td>";
+
+				$content .= "<td>";
+				$content .= "<img border=0 src='" . $_imgDir . 'remove_from_cart.jpg' . "' style='height:40px; width:40px'>";
 
 				//$content .= "<td>" . $product->name . "</td>";
 
