@@ -67,7 +67,12 @@ class SiteController extends Controller
 
 	}
 
-
+	// Invoke the Paymentsense module
+	public function actionPay()
+	{
+		Yii::log("PAYMENT PAGE LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
+        die('pay');
+	}
 
 	/**
 	 * This is the action to handle external exceptions.
