@@ -22,9 +22,10 @@ css.display = block
 	css.width = 908px	/* if we give an explicit width here, child elements will by default set their width to it */
 
 		[fixedheader]
-		child = menu, millenium
+		child = menu, millenium, fb, checkout
 		stacking = horizontal
 		css.display = block
+css.overflow = visible
 		css.position = fixed		/* position it, part 1 */
 		css.top = 0px				/* position it, part 2 */
 		css.left = 50%				/* centre it, part 1 - middle of the screen. margin-auto doesnt apply here because of 'fixed' */
@@ -47,6 +48,26 @@ css.display = block
 			css.margin-left = 400px
 			html.raw = Login
 			click = http://217.41.65.149:8080/clients/login.asp
+
+			[fb]
+			css.display = block
+			css.height = 20px
+			css.margin-top = -50px 
+			css.margin-left = 510px
+			image.url = /img/facebook.png
+			image.width = 20px
+			image.height = 20px
+			click = https://www.facebook.com/JacquiesBeauty?fref=ts
+
+			[checkout]
+			css.display = block
+			css.height = 20px
+			css.margin-top = -50px 
+			css.margin-left = 540px
+			image.url = /img/cart.png
+			image.width = 120px
+			image.height = 20px
+			click = ?layout=index&page=checkout
 
 		[carousel]
 		css.display = block

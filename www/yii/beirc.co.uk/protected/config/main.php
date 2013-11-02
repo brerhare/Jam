@@ -65,10 +65,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=domainname_co_uk',
+			'connectionString' => 'mysql:host=localhost;dbname=beirc_co_uk',
 			'emulatePrepare' => true,
-			'username' => 'domainname.co.uk',
-			'password' => 'password',
+			'username' => 'beirc.co.uk',
+			'password' => 'beirc,',
 			'charset' => 'utf8',
 		),
 		/**/

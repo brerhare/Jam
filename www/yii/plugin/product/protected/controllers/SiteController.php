@@ -67,7 +67,16 @@ class SiteController extends Controller
 
 	}
 
+	// Invoke the Paymentsense module
+	public function actionPay()
+	{
+		Yii::log("PAYMENT PAGE LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
 
+		// Record the order in the Order
+
+		// Go to paymentsense for payment
+		$this->redirect(Yii::app()->baseUrl . "/php/gw/EntryPoint.php?sid=" . Yii::app()->session['sid'] . "&xid=" . rand(99999,999999));
+	}
 
 	/**
 	 * This is the action to handle external exceptions.

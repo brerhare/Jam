@@ -224,6 +224,21 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`product_filter` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `plugin`.`product_shipping_option`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `plugin`.`product_shipping_option` ;
+
+CREATE  TABLE IF NOT EXISTS `plugin`.`product_shipping_option` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `uid` INT NOT NULL ,
+  `description` VARCHAR(255) NOT NULL ,
+  `price` DECIMAL(10,2) NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `uid` (`uid` ASC) )
+ENGINE = InnoDB;
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
