@@ -643,15 +643,10 @@ if (isset($_GET['page']))
 										}
 										$elemComma = $prodList;
 									}
-
-
 								}
-
 								array_push($fltArr, $elemComma);
 							}
 							break;
-
-
 
 						case ("filtercomplex"):
 						// THIS IS THE WS TABLE
