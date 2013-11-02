@@ -12,7 +12,7 @@ css.display = block
 	[contentframe]
 	#css.width = 1120px
 	css.width = 1000px
-	child = header, contact-details, product-grid, footer
+	child = header, contact-details, content, footer
 
 		[header]
 		stacking = horizontal
@@ -38,9 +38,14 @@ css.display = block
 		css.width = 1000px
 		html.raw = Contact details
 
-		[product-grid]
-		html.raw = {{department 7 Corona Occasional}}
-		#html.raw = <iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=3hjc1rcpa5todru774o45q6v16&amp;department=8"></iframe>
+		[content]
+        css.margin = 15px
+        db.table = ContentBlock
+        db.filter = url=$_GET['page']
+        db.error = Sorry, I could not find that page. You requested $_GET['page']
+        html.raw = ContentBlock.content
+        ##### The next line shows how you could hard-code a product grid directly into a jelly file
+		##### html.raw = {{department 7 Corona Occasional}}
 
 		[footer]
 		css.height = 30px
