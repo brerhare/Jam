@@ -27,7 +27,9 @@ class Jelly
 	private $jellyRootPath = "/";
 	private $jellyRootUrl = "/";
 
+	// The @ things - clipboard and array of others
 	private $clipBoard = "";
+	private $atArray = Array();
 
 	private $beginHeader = <<<END_OF_BEGINHEADER
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
