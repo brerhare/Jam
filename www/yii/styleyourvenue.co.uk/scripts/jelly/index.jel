@@ -115,8 +115,9 @@ css.background-color = #000000
 			css.height = 22px
 
 	[menu]
-	css.height = 50px
+	css.height = 34px
 	css.overflow = visible
+	css.margin-top = 15px
 	addon.menu.basic.orientation = horizontal
 
 	[slider]
@@ -127,8 +128,8 @@ css.background-color = #000000
 
 	[watermark]
 	css.height = 200px
-	css.margin-top = -200px
-	css.margin-left = 450px
+	css.margin-top = -190px
+	css.margin-left = 650px
 	css.position = relative
 	css.z-index = 10000
 	css.background-image = url('/img/Watermark.png')
@@ -136,6 +137,7 @@ css.background-color = #000000
 
 	[line]
     css.height = 4px
+	css.margin-top = -30px
     css.background-color = #ff00ff
 
     [contentcontainer]
