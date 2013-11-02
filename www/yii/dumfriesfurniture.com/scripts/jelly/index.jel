@@ -10,7 +10,6 @@ fx.wallpaper-color = #ffffff
 css.display = block
 
 	[contentframe]
-	#css.width = 1120px
 	css.width = 1000px
 	child = header, contact-details, content, footer
 
@@ -24,7 +23,7 @@ css.display = block
 			css.margin-top = 10px
 			css.background-repeat = no-repeat
 			css.background-image = url(/img/dfd_logo.jpg)
-			#addon.accordion.elegant.default-width = 200px
+			click = http://www.dumfriesfurniture.com
 
 			[header-venetian-blinds]
 			css.width = 650px
