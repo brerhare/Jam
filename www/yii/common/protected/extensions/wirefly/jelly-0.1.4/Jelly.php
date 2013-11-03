@@ -48,7 +48,7 @@ class Jelly
 */
 /**************/
 html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+Xh1, Xh2, Xh3, Xh4, Xh5, Xh6, Xp, Xblockquote, Xpre,
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var,
