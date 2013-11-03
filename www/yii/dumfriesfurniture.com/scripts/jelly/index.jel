@@ -1,3 +1,4 @@
+#Dumfries Furniture
 [defaults]
 include = default-values
 
@@ -11,55 +12,192 @@ css.display = block
 
 	[contentframe]
 	css.width = 1000px
-	child = header, homepage-only, contact-details, content, footer
+	child = header, contact-details, body, footer
+
+###########################################
 
 		[header]
 		stacking = horizontal
-		child = header-logo, header-venetian-blinds
+		child = header-venetian-blinds, header-logo
+
+			[header-venetian-blinds]
+			css.width = 650px
+			# The accordion needs positioning by setting a margin on the containing block
+			#css.margin-left = -40px
+			addon.accordion.elegant.default-width = 200px
 
 			[header-logo]
 			css.width = 45%
 			css.height = 220px
 			css.margin-top = 10px
+			css.margin-left = 600px
 			css.background-repeat = no-repeat
 			css.background-image = url(/img/dfd_logo.jpg)
 			click = http://www.dumfriesfurniture.com
 
-			[header-venetian-blinds]
-			css.width = 650px
-			# The accordion needs positioning by setting a margin on the containing block
-			css.margin-left = 370px
-			addon.accordion.elegant.default-width = 200px
-
-		[homepage-only]
-		child = homepage-only-child
-		condition = @HOMEPAGE
-		css.height = 30px
-		css.background-color = orange
-		html.raw = This orange block and all its little green children are only run for the home page
-
-			[homepage-only-child]
-			css.height = 20px
-			css.background-color = green
-			html.raw = A little green child block
+############################################
 
 		[contact-details]
-		css.height = 30px
-		css.background-color = #eedf3c
-		css.width = 1000px
-		html.raw = Contact details
+		child = background, contact-text
 
-		[content]
-		css.margin = 15px
-		db.table = ContentBlock
-		db.filter = url=$_GET['page']
-		db.error = Sorry, I could not find that page. You requested $_GET['page']
-		html.raw = ContentBlock.content
-		##### The next line shows how you could hard-code a product grid directly into a jelly file
-		##### html.raw = {{department 7 Corona Occasional}}
+			[background]
+			css.height = 30px
+			css.width = 1000px
+			css.background-color = #ffe900
+
+			[contact-text]
+			css.width = 1000px
+			css.height = 40px
+			css.margin-left = 30px
+			css.margin-top = -22px
+			html.raw = Dumfries Furniture Direct - 01387 256544
+
+###### body #############################################
+
+
+		[body]
+		child = static-menu, homepage-content, content
+		stacking = horizontal
+
+
+########body: column 1 #################################
+
+			[static-menu]
+			child = bedroom, dining, living, occasional, carpets
+			css.width = 150px
+			css.height = 300px
+			css.margin-left = -20px
+			css.padding = 20px
+                #css.border-width = 3px
+                #css.border-color = #dcdcdc
+                #css.color = #ffffff
+
+				[bedroom]
+				image.url = /img/Bedroom.png
+				image.width = 150px
+				image.height = 33px
+				click = http://www.dumfriesfurniture.com/?layout=index&page=bedroom-furniture-beds-wardrobes-dumfries
+
+				[dining]
+				css.margin-top = 5px
+				image.url = /img/Dining.png
+				image.width = 150px
+				image.height = 33px
+				click = http://www.dumfriesfurniture.com/?layout=index&page=dining-room-furniture-dumfries
+
+				[living]
+				css.margin-top = 5px
+				image.url = /img/Living.png
+				image.width = 150px
+				image.height = 33px
+				click = http://www.dumfriesfurniture.com/?layout=index&page=living-room-furniture-dumfries
+
+				[occasional]
+				css.margin-top = 5px
+				image.url = /img/Occasional.png
+				image.width = 150px
+				image.height = 33px
+				click = http://www.dumfriesfurniture.com/?layout=index&page=occasional-furniture-dumfries
+
+				[carpets]
+				css.margin-top = 5px
+				image.url = /img/Carpets.png
+				image.width = 150px
+				image.height = 33px
+				click = http://www.dumfriesfurniture.com/?layout=index&page=carpet-flooring-dumfries
+
+
+#####body: column 2 - home page only ########################
+
+			[homepage-content]
+			child = middle, home-right 
+			condition = @HOMEPAGE
+			stacking = horizontal
+
+				[middle]
+				child = slider, middle-content
+				#css.height = 600px
+				css.width = 600px
+				#css.background-color = orange
+
+					[slider]
+					css.margin-left = 50px
+					css.width = 500px
+					css.height = 300px
+					addon.carousel.flexslider.animation = fade
+   					addon.carousel.flexslider.source = db
+
+
+					[middle-content]
+					css.margin = 15px
+					db.table = ContentBlock
+					db.filter = url=$_GET['page']
+					db.error = Sorry, I could not find that page. You requested $_GET['page']
+
+
+			[home-right]
+			child = top, bottom
+			css.width = 200px
+			#css.height = 500px
+			css.margin-left = 30px
+			
+				[top]
+				image.url = /img/home-page-top-block.png
+				image.width = 200px
+				image.height = 180px
+
+				[bottom]
+				css.margin-top = 5px
+				image.url = /img/home-page-bottom-block.png
+				image.width = 200px
+				image.height = 180px
+
+
+#####body: column 2 - other pages ########################
+
+
+			[content]
+			#condition != @HOMEPAGE
+			css.margin = 15px
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find that page. You requested $_GET['page']
+			html.raw = ContentBlock.content
+			##### The next line shows how you could hard-code a product grid directly into a jelly file
+			##### html.raw = {{department 7 Corona Occasional}}
+
+
+########################################
 
 		[footer]
-		css.height = 30px
-		css.background-color = #eedf3c
-		html.raw = Footer menu
+		child = f-background, f-text
 
+			[f-background]
+			css.height = 30px
+			css.width = 1000px
+			css.background-color = #ffe900
+
+			[f-text]
+			child = Cookie, TCs, Policy
+			css.width = 1000px
+			css.height = 40px
+			css.margin-left = 30px
+			css.margin-top = -22px
+			stacking = horizontal
+
+				[Cookie]
+				css.margin-left = 300px
+				html.raw = Cookies
+				click = http://www.dumfriesfurniture.com/?layout=index&page=dumfrie-furniture-cookies
+
+				[TCs]
+				css.margin-left = 50px
+				html.raw = Terms & Conditions
+				click = http://www.dumfriesfurniture.com/?layout=index&page=dumfrie-furniture-terms
+
+
+
+				[Policy]
+				css.margin-left = 50px
+				html.raw = Policy
+				click = http://www.dumfriesfurniture.com/?layout=index&page=dumfrie-furniture-policy
