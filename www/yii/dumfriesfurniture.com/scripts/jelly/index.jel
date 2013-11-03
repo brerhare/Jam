@@ -11,7 +11,7 @@ fx.wallpaper-color = #ffffff
 css.display = block
 
 	[contentframe]
-	css.width = 1000px
+	css.width = 1020px
 	child = header, contact-details, body, footer
 
 ###########################################
@@ -23,7 +23,6 @@ css.display = block
 			[header-venetian-blinds]
 			css.width = 650px
 			# The accordion needs positioning by setting a margin on the containing block
-			#css.margin-left = -40px
 			addon.accordion.elegant.default-width = 200px
 
 			[header-logo]
@@ -42,11 +41,11 @@ css.display = block
 
 			[background]
 			css.height = 30px
-			css.width = 1000px
+			css.width = 1020px
 			css.background-color = #ffe900
 
 			[contact-text]
-			css.width = 1000px
+			css.width = 1020px
 			css.height = 40px
 			css.margin-left = 30px
 			css.margin-top = -22px
@@ -57,6 +56,7 @@ css.display = block
 
 		[body]
 		child = static-menu, homepage-content, content
+		css.width = 1250px
 		stacking = horizontal
 
 
@@ -64,53 +64,53 @@ css.display = block
 
 			[static-menu]
 			child = bedroom, dining, living, occasional, carpets
-			css.width = 150px
+			css.width = 130px
 			css.height = 300px
-			css.margin-left = -20px
-			css.padding = 20px
+			css.margin-left = -10px
+			css.padding = 10px
                 #css.border-width = 3px
                 #css.border-color = #dcdcdc
                 #css.color = #ffffff
 
 				[bedroom]
 				image.url = /img/Bedroom.png
-				image.width = 150px
-				image.height = 33px
+				image.width = 130px
+				image.height = 30px
 				click = http://www.dumfriesfurniture.com/?layout=index&page=bedroom-furniture-beds-wardrobes-dumfries
 
 				[dining]
 				css.margin-top = 5px
 				image.url = /img/Dining.png
-				image.width = 150px
-				image.height = 33px
+				image.width = 130px
+				image.height = 30px
 				click = http://www.dumfriesfurniture.com/?layout=index&page=dining-room-furniture-dumfries
 
 				[living]
 				css.margin-top = 5px
 				image.url = /img/Living.png
-				image.width = 150px
-				image.height = 33px
+				image.width = 130px
+				image.height = 30px
 				click = http://www.dumfriesfurniture.com/?layout=index&page=living-room-furniture-dumfries
 
 				[occasional]
 				css.margin-top = 5px
 				image.url = /img/Occasional.png
-				image.width = 150px
-				image.height = 33px
+				image.width = 130px
+				image.height = 30px
 				click = http://www.dumfriesfurniture.com/?layout=index&page=occasional-furniture-dumfries
 
 				[carpets]
 				css.margin-top = 5px
 				image.url = /img/Carpets.png
-				image.width = 150px
-				image.height = 33px
+				image.width = 130px
+				image.height = 30px
 				click = http://www.dumfriesfurniture.com/?layout=index&page=carpet-flooring-dumfries
 
 
 #####body: column 2 - home page only ########################
 
 			[homepage-content]
-			child = middle, home-right 
+			child = middle, home-right
 			condition = @HOMEPAGE=1
 			stacking = horizontal
 
@@ -157,7 +157,7 @@ css.display = block
 
 
 			[content]
-			#condition = @HOMEPAGE=0
+			condition = @HOMEPAGE=0
 			css.margin = 15px
 			db.table = ContentBlock
 			db.filter = url=$_GET['page']
@@ -201,4 +201,3 @@ css.display = block
 				css.margin-left = 50px
 				html.raw = Policy
 				click = http://www.dumfriesfurniture.com/?layout=index&page=dumfrie-furniture-policy
-
