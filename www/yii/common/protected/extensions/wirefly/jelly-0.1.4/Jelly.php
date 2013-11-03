@@ -29,7 +29,7 @@ class Jelly
 
 	// The @ things - clipboard and array of others
 	private $clipBoard = "";
-	private $homePage = "";
+	private $homePage = 0;
 
 	private $beginHeader = <<<END_OF_BEGINHEADER
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -205,12 +205,12 @@ END_OF_FOOTER;
 							$criteria->addCondition("home = " . 1);
 							$contentBlock = ContentBlock::model()->find($criteria);
 							if ($contentBlock)
-								$this->homePage = "1";
+								$this->homePage = 1;
 						}
 					}
 					else
 						// No page asked - we will serve up the home page
-						$this->homePage = "1";
+						$this->homePage = 1;
 //				echo $this->homePage;
 				}
 			}
@@ -275,8 +275,17 @@ END_OF_FOOTER;
 		// Skip over 'condition' blobs that fail their condition @@TODO only @HOMEPAGE presently checked
 		if (array_key_exists("condition", $array))
 		{
-			if ($this->homePage != "1")
-				return;
+			//die('x='.$array['condition']);
+			if (strstr($array['condition'], "=1"))
+			{
+				if ($this->homePage == "0")
+					return;
+			}
+			else if (strstr($array['condition'], "=0"))
+			{
+				if ($this->homePage == "1")
+					return;	
+			}
 		}
 
 		foreach ($array as $name => $value)
