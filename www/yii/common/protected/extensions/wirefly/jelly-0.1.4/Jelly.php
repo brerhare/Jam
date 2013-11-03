@@ -29,7 +29,7 @@ class Jelly
 
 	// The @ things - clipboard and array of others
 	private $clipBoard = "";
-	private $atArray = Array();
+	private $homePage = "";
 
 	private $beginHeader = <<<END_OF_BEGINHEADER
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -175,6 +175,34 @@ END_OF_FOOTER;
 		foreach ($jellyArray as $name => $value)
 		{
 			$this->logMsg('Found ' . $name . "\n", 1);
+
+			// Check if we have a contentBlock page anywhere in the file, and if so determine if its a homepage
+			// If so, set @HOMEPAGE ($this->homePage) variable
+			if ((is_array($value)) && (array_key_exists("db", $value)))
+			{
+				$arrDb = $value['db'];
+				if (array_key_exists("filter", $arrDb))
+				{
+					if (isset($_GET['page']))
+					{
+						if ((array_key_exists("table", $arrDb)) && ($arrDb['table'] == 'ContentBlock'))
+						{
+							// Determine whether its the home page
+							$criteria = new CDbCriteria;
+							$criteria->addCondition("url = '" . $_GET['page'] . "'");
+							$criteria->addCondition("home = " . 1);
+							$contentBlock = ContentBlock::model()->find($criteria);
+							if ($contentBlock)
+								$this->homePage = "1";
+						}
+					}
+					else
+						// No page asked - we will serve up the home page
+						$this->homePage = "1";
+//				echo $this->homePage;
+				}
+			}
+
 			if ((is_array($value)) && (array_key_exists("child", $value)))
 			{
 				//$this->logMsg("child : " . $value['child'] . "\n", 2);
@@ -188,6 +216,7 @@ END_OF_FOOTER;
 				}
 			}
 		}
+
 		//$this->logMsg("-------------------------\n");
 		$this->logMsg("\n... Digging through top-level orphan entrypoints ...\n\n", 0);
 		array_push($this->scriptArray, "<script>\n");
@@ -196,8 +225,7 @@ END_OF_FOOTER;
 		{
 			if (is_array($value) && (!(array_key_exists("_parent", $value))))
 			{
-
-				$this->blobProcess($jellyArray, $name, $value, false);
+					$this->blobProcess($jellyArray, $name, $value, false);
 			}
 			else
 			{
@@ -231,6 +259,14 @@ END_OF_FOOTER;
 	{
 		// Search array for repeating fields - we'll generate an instance of this blob for each
 		$hasRepeatingField = false;
+
+		// Skip over 'condition' blobs that fail their condition @@TODO only @HOMEPAGE presently checked
+		if (array_key_exists("condition", $array))
+		{
+			if ($this->homePage != "1")
+				return;
+		}
+
 		foreach ($array as $name => $value)
 		{
 			// @@TODO: The following code needs to reuse the (almost) same code in the jelly-word processing switch/case

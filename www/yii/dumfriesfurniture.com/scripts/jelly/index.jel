@@ -11,7 +11,7 @@ css.display = block
 
 	[contentframe]
 	css.width = 1000px
-	child = header, contact-details, content, footer
+	child = header, homepage-only, contact-details, content, footer
 
 		[header]
 		stacking = horizontal
@@ -30,6 +30,18 @@ css.display = block
 			# The accordion needs positioning by setting a margin on the containing block
 			css.margin-left = 370px
 			addon.accordion.elegant.default-width = 200px
+
+		[homepage-only]
+		child = homepage-only-child
+		condition = @HOMEPAGE
+		css.height = 30px
+		css.background-color = orange
+		html.raw = This orange block and all its little green children are only run for the home page
+
+			[homepage-only-child]
+			css.height = 20px
+			css.background-color = green
+			html.raw = A little green child block
 
 		[contact-details]
 		css.height = 30px

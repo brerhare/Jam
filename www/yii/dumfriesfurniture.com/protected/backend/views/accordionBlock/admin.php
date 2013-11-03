@@ -12,9 +12,15 @@ $this->menu=array(
 	'dataProvider'=>$model->search(),
 	//'filter'=>$model,
 	'columns'=>array(
-		'id',
+		//'id',
+
+		array(
+			'name'  => 'title',
+			'value' => 'CHtml::link($data->title, Yii::app()->createUrl("contentBlock/update",array("id"=>$data->primaryKey)))',
+			'type'  => 'raw',
+		),
+
 		'sequence',
-		'title',
 		'url',
 		'content',
 		'image',
