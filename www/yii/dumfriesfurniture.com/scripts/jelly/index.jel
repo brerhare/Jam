@@ -127,13 +127,13 @@ css.display = block
 					addon.carousel.flexslider.animation = fade
    					addon.carousel.flexslider.source = db
 
-
 					[middle-content]
-					css.margin = 15px
+					css.margin-left = 50px
+					css.width = 500px
 					db.table = ContentBlock
 					db.filter = url=$_GET['page']
 					db.error = Sorry, I could not find that page. You requested $_GET['page']
-
+					html.raw = ContentBlock.content
 
 			[home-right]
 			child = top, bottom
