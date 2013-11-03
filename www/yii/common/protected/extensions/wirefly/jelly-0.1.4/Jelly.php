@@ -303,6 +303,7 @@ END_OF_FOOTER;
 											break;
 										}
 									}
+
 									// Look for clipboard. NB this is id=1 or id=2 or ... etc
 									if (strstr(trim($elemComma) ,'@CLIPBOARD'))
 									{
@@ -316,6 +317,7 @@ END_OF_FOOTER;
 										}
 										$elemComma = $prodList;
 									}
+
 								}
 								array_push($fltArr, $elemComma);
 							}
@@ -668,6 +670,7 @@ if (isset($_GET['page']))
 											break;
 										}
 									}
+
 									// Look for clipboard. NB this is id=1 or id=2 or ... etc
 									if (strstr(trim($elemComma) ,'@CLIPBOARD'))
 									{
@@ -681,6 +684,7 @@ if (isset($_GET['page']))
 										}
 										$elemComma = $prodList;
 									}
+
 								}
 								array_push($fltArr, $elemComma);
 							}
