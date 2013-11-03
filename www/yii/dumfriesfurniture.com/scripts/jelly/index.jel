@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #Dumfries Furniture
 [defaults]
 include = default-values
@@ -201,3 +202,70 @@ css.display = block
 				css.margin-left = 50px
 				html.raw = Policy
 				click = http://www.dumfriesfurniture.com/?layout=index&page=dumfrie-furniture-policy
+=======
+[defaults]
+include = default-values
+
+; Every blob inherits these before adding/overriding
+[* : defaults]
+
+[screen]
+child = contentframe
+fx.wallpaper-color = #ffffff
+css.display = block
+
+	[contentframe]
+	css.width = 1000px
+	child = header, homepage-only, contact-details, content, footer
+
+		[header]
+		stacking = horizontal
+		child = header-logo, header-venetian-blinds
+
+			[header-logo]
+			css.width = 45%
+			css.height = 220px
+			css.margin-top = 10px
+			css.background-repeat = no-repeat
+			css.background-image = url(/img/dfd_logo.jpg)
+			click = http://www.dumfriesfurniture.com
+
+			[header-venetian-blinds]
+			css.width = 650px
+			# The accordion needs positioning by setting a margin on the containing block
+			css.margin-left = 370px
+			addon.accordion.elegant.default-width = 200px
+
+		[homepage-only]
+		child = homepage-only-child
+		condition = @HOMEPAGE=1
+		css.height = 30px
+		css.background-color = orange
+		html.raw = This orange block and all its little green children are only run for the home page
+
+			[homepage-only-child]
+			css.height = 20px
+			css.background-color = green
+			html.raw = A little green child block
+
+		[contact-details]
+		css.height = 30px
+		css.background-color = #eedf3c
+		css.width = 1000px
+		html.raw = Contact details
+
+		[content]
+		css.margin = 15px
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find that page. You requested $_GET['page']
+		html.raw = ContentBlock.content
+		##### The next line shows how you could hard-code a product grid directly into a jelly file
+		##### html.raw = {{department 7 Corona Occasional}}
+
+		[footer]
+		css.height = 30px
+		css.background-color = #eedf3c
+		html.raw = Footer menu
+
+>>>>>>> 6f2e3296506bb4c040ecee51b7f4d9f50da06518
