@@ -1,12 +1,12 @@
 <?php
 
 $this->menu=array(
-	array('label'=>'Create Carousel Content','url'=>array('create')),
+	array('label'=>'Create Slider Content','url'=>array('create')),
 );
 
 ?>
 
-<h1>Manage Carousel Content</h1>
+<h1>Manage Slider Content</h1>
 
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'carousel-block-grid',
@@ -14,8 +14,15 @@ $this->menu=array(
 	// 'filter'=>$model,
 	'columns'=>array(
 		// 'id',
+
+		array(
+			'name'  => 'title',
+			'value' => 'CHtml::link($data->title, Yii::app()->createUrl("carouselBlock/update",array("id"=>$data->primaryKey)))',
+			'type'  => 'raw',
+		),
+
 		'sequence',
-		'title',
+
 		// 'active',
 		// 'content',
 		array(

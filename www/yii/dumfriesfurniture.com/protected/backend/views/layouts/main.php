@@ -36,7 +36,7 @@
 			'items' => array(
                 array('label' => 'Page Content', 'url' => array('/contentBlock/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Accordion Content', 'url' => array('/accordionBlock/admin'), 'visible' => !Yii::app()->user->isGuest),                      
-                //array('label' => 'Carousel Content', 'url' => array('/carouselBlock/admin'), 'visible' => !Yii::app()->user->isGuest),
+                array('label' => 'Slider Content', 'url' => array('/carouselBlock/admin'), 'visible' => !Yii::app()->user->isGuest),
                 //array('label' => 'Tab Content', 'url' => array('/tabBlock/admin'), 'visible' => !Yii::app()->user->isGuest),                      
                 array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
                 array('label' => 'Logout', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),                 

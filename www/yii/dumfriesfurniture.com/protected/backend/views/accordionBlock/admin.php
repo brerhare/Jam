@@ -16,7 +16,7 @@ $this->menu=array(
 
 		array(
 			'name'  => 'title',
-			'value' => 'CHtml::link($data->title, Yii::app()->createUrl("contentBlock/update",array("id"=>$data->primaryKey)))',
+			'value' => 'CHtml::link($data->title, Yii::app()->createUrl("accordionBlock/update",array("id"=>$data->primaryKey)))',
 			'type'  => 'raw',
 		),
 
