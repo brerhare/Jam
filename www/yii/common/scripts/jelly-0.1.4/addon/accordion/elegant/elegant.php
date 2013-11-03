@@ -72,7 +72,7 @@ class elegant
 		$data .= "<ul class='accordion' id='accordion'>";
 		$accordionBlocks = AccordionBlock::model()->findAll(array('order'=>'sequence'));
 		foreach ($accordionBlocks as $accordionBlock):
-			$data .= "<a href='" . $accordionBlock->url . "'>";
+			//$data .= "<a href='" . $accordionBlock->url . "'>";
 			$data .= "<li style='background-image:url(/userdata/accordion/" . $accordionBlock->image . ");  background-size: cover ;  '>";
             $data .= "<div class='heading'>" . $accordionBlock->title . "</div>";
             $data .= "<div class='bgDescription'></div>";
@@ -81,7 +81,7 @@ class elegant
             $data .= "<p>" . $accordionBlock->content . "</p>";
             $data .= "</div>";
             $data .= "</li>";
-			$data .= "</a>";
+			//$data .= "</a>";
 		endforeach;
 
 		$html = str_replace("<substitute-data>", $data, $this->apiHtml);
