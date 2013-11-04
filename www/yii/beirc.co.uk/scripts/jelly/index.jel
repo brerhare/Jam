@@ -1,3 +1,4 @@
+#BEIRC
 [defaults]
 include = default-values
 
@@ -5,16 +6,75 @@ include = default-values
 [* : defaults]
 
 [screen]
-child = contentframe
-fx.wallpaper-image = /img/background.jpg
+child = site
+#fx.wallpaper-image = /img/background.jpg
 css.display = block
 
-	[contentframe]
+	[site]
+	child = header, menu, page, footer
+	css.width = 960px
 	css.display = block
-	css.width = 100px
-	css.margin-top = 400px
-	style.html.h1.color = yellow
-	style.html.h1.background-color = black
-	style.html.h1.padding = 10px
-	html.h1 = jelly
+	css.background-color = #e3ffb9
+		
+		[header]
+		child = logo, details
+		css.width = 950px
+		css.height = 200px
+		stacking = horizontal
+
+			[logo]
+			css.width = 410px
+                css.height = 160px
+                css.padding = 20px
+                #css.background-color = #c4e1b1
+                #css.border-width = 3px
+                #css.border-color = #dcdcdc
+                #css.color = #ffffff
+                image.url = /img/Logo.png
+                image.width = 400px
+                image.height = 150px
+
+
+			#css.margin-top = 20px
+			#css.margin-left = 50px
+			#css.height = 160px
+			#css.width = 410px
+			#css.z-index = 1001
+			#css.position = relative
+			#css.background-image = url('/img/Logo.png')
+
+			[details]
+			css.height = 100px
+			css.width = 400px
+			css.margin-top = 50px
+			html.raw = additonal details			
+
+		[menu]	
+		css.height = 50px
+		css.overflow = visible
+		css.z-index = 1000
+		css.position = relative
+		addon.menu.basic.orientation = horizontal
+
+
+		[page]
+		child = content
+		#css.background-color = white
+		#fx.rounding = 4px
+
+			[content]
+			#css.background-color = white
+			#css.color = black
+			#css.margin = 15px
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find that page. You requested $_GET['page']
+		html.raw = ContentBlock.content
+
+
+		[footer]
+		child = footer-content
+		css.height = 200px
+	css.width = 960px
+		css.margin-top = 20px
 

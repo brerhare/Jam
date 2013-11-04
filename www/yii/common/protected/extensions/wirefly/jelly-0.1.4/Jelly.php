@@ -46,7 +46,7 @@ class Jelly
 	   v2.0 | 20110126
 	   License: none (public domain)
 	*/
-	/**************/
+	/*************/
 	html, body, div, span, applet, object, iframe,
 	Xh1, Xh2, Xh3, Xh4, Xh5, Xh6, Xp, Xblockquote, Xpre,
 	a, abbr, acronym, address, big, cite, code,
@@ -75,7 +75,7 @@ class Jelly
 	body {
 		line-height: 1;
 	}
-	ol, ul {
+	Xol, Xul {
 		list-style: none;
 	}
 	Xblockquote, Xq {
