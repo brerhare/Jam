@@ -1,7 +1,6 @@
 @ variables are not case sensitive
 
 @CLIPBOARD	Set by the product filter addon and used elsewhere in the jelly file
-@HOMEPAGE	Only exists if is a home page in ContentBlock.
-		Set by the db jellyword during preprocess.
-		Hardcoded specifically to reads of 'ContentBlock' and dependant on the field 'home' whether it is set or not
-		Designed to be used in conjunction with condition=@HOMEPAGE but can be used elsewhere
+@HOMEPAGE	Set by the db jellyword during preprocess. Always 0 or 1
+			Hardcoded specifically to sense reads of 'ContentBlock' and dependant on the field 'home'.
+			Designed to be used in conjunction with 'condition = @HOMEPAGE=1' (or 0) but can be used elsewhere

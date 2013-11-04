@@ -105,7 +105,7 @@ fx.wallpaper-color = #00000
 
 
 			[bottom-half]
-			html.p = Product.description
+			html.raw = Product.description
 
 		[linked-products]
 		css.display = none
