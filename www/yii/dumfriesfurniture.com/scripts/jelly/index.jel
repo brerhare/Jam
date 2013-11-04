@@ -37,11 +37,12 @@ css.display = block
 ############################################
 
 		[contact-details]
-		child = background, contact-text
+		child = background, contact-text, cart
 
 			[background]
 			css.height = 30px
-			css.width = 1020px
+			css.width = 1000px
+			css.margin-left = 0px
 			css.background-color = #ffe900
 
 			[contact-text]
@@ -50,6 +51,17 @@ css.display = block
 			css.margin-left = 30px
 			css.margin-top = -22px
 			html.raw = Dumfries Furniture Direct - 01387 256544
+
+			[cart]
+			css.width = 150px
+			css.height = 40px
+			css.margin-left = 800px
+			css.margin-top = -42px
+			image.url = /img/cart.png
+			image.width = 120px
+			image.height = 18px
+			click = ?layout=index&page=checkout
+			
 
 ###### body #############################################
 
@@ -127,13 +139,13 @@ css.display = block
 					addon.carousel.flexslider.animation = fade
    					addon.carousel.flexslider.source = db
 
-
 					[middle-content]
-					css.margin = 15px
+					css.margin-left = 50px
+					css.width = 500px
 					db.table = ContentBlock
 					db.filter = url=$_GET['page']
 					db.error = Sorry, I could not find that page. You requested $_GET['page']
-
+					html.raw = ContentBlock.content
 
 			[home-right]
 			child = top, bottom
@@ -147,7 +159,8 @@ css.display = block
 				image.height = 180px
 
 				[bottom]
-				css.margin-top = 5px
+				css.margin-top = 10px
+				css.margin-bottom = 10px
 				image.url = /img/home-page-bottom-block.png
 				image.width = 200px
 				image.height = 180px
