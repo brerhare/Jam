@@ -52,8 +52,8 @@ class Jelly
 	a, abbr, acronym, address, big, cite, code,
 	del, dfn, em, img, ins, kbd, q, s, samp,
 	small, strike, strong, sub, sup, tt, var,
-	b, u, i, center,
-	dl, dt, dd, ol, ul, li,
+	Xb, Xu, Xi, Xcenter,
+	dl, dt, dd, Xol, Xul, Xli,
 	fieldset, form, label, legend,
 	Xtable, caption, Xtbody, Xtfoot, Xthead, Xtr, Xth, Xtd,
 	article, aside, canvas, details, embed, 
@@ -78,11 +78,11 @@ class Jelly
 	ol, ul {
 		list-style: none;
 	}
-	blockquote, q {
+	Xblockquote, Xq {
 		quotes: none;
 	}
-	blockquote:before, blockquote:after,
-	q:before, q:after {
+	Xblockquote:before, Xblockquote:after,
+	Xq:before, Xq:after {
 		content: '';
 		content: none;
 	}
