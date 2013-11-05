@@ -290,7 +290,7 @@ class ProgramController extends Controller
 			$criteria->addCondition("event_id = " . $event->id);
 			$ws = Ws::model()->find($criteria);
 			if (!($ws))
-				throw new CHttpException(500,'Cant export because there is no wild-seasons matching event record');
+				throw new CHttpException(500,'Cant export because there is no wild-seasons matching event record. Event id = ' . $event->id);
 			if (trim($ws->short_description) == '')
 				$ws->short_description = substr($event->description, 0, 97) . "...";
 
