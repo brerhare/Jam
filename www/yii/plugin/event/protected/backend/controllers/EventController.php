@@ -63,7 +63,7 @@ class EventController extends Controller
 	 */
 	public function actionCreate()
 	{
-        Yii::log("CREATE EVENT ----- start " . CLogger::LEVEL_INFO, 'system.test.kim');
+        Yii::log("CREATE EVENT ----- start " . CLogger::LEVEL_WARNING, 'system.test.kim');
         $iDir = $this->getThumbDir();
         $model=new Event;
         $model2=new Ws;
@@ -77,7 +77,7 @@ class EventController extends Controller
 
         if(isset($_POST['Event']))
         {
-        	Yii::log("CREATE EVENT ----- POST happened " . CLogger::LEVEL_INFO, 'system.test.kim');
+        	Yii::log("CREATE EVENT ----- POST happened " . CLogger::LEVEL_WARNING, 'system.test.kim');
             $model->attributes=$_POST['Event'];
             $model->thumb_path=CUploadedFile::getInstance($model, 'thumb_path');
 			$model2->attributes=$_POST['Ws'];
@@ -85,7 +85,7 @@ class EventController extends Controller
 
             if($model->save())
             {
-        		Yii::log("CREATE EVENT ----- successful model->save() " . CLogger::LEVEL_INFO, 'system.test.kim');
+        		Yii::log("CREATE EVENT ----- successful model->save() " . CLogger::LEVEL_WARNING, 'system.test.kim');
             	$this->deleteProductCheckboxes($model->id);
                 $this->updateProductCheckboxes($model->id);
 
@@ -95,7 +95,7 @@ class EventController extends Controller
             	$model2->event_id = $model->id;
             	if (!($model2->save()))
             	{
-        			Yii::log("CREATE EVENT ----- UNsuccessful model2->save() " . CLogger::LEVEL_INFO, 'system.test.kim');
+        			Yii::log("CREATE EVENT ----- UNsuccessful model2->save() " . CLogger::LEVEL_WARNING, 'system.test.kim');
 	            	$this->deleteProductCheckboxes($model->id);
             		$model->delete();
             		$this->render('create',array(
@@ -105,7 +105,7 @@ class EventController extends Controller
         			));
         			return;
             	}
-        		Yii::log("CREATE EVENT ----- successful model2->save() " . CLogger::LEVEL_INFO, 'system.test.kim');
+        		Yii::log("CREATE EVENT ----- successful model2->save() " . CLogger::LEVEL_WARNING, 'system.test.kim');
                 if (strlen($model->thumb_path) > 0)
                 {
                     $fname = $iDir . $model->thumb_path;
@@ -144,7 +144,7 @@ class EventController extends Controller
 	        	    	}
 	            	}
 	            }
-        		Yii::log("CREATE EVENT ----- end of create " . CLogger::LEVEL_INFO, 'system.test.kim');
+        		Yii::log("CREATE EVENT ----- end of create " . CLogger::LEVEL_WARNING, 'system.test.kim');
                 $this->redirect(array('admin'));
             }
         }
@@ -163,7 +163,7 @@ class EventController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-        Yii::log("UPDATE EVENT ----- start. id = " . $id . CLogger::LEVEL_INFO, 'system.test.kim');
+        Yii::log("UPDATE EVENT ----- start. id = " . $id . CLogger::LEVEL_WARNING, 'system.test.kim');
         $iDir = $this->getThumbDir();
         $model=$this->loadModel($id);
 
@@ -172,7 +172,7 @@ class EventController extends Controller
         $model2=Ws::model()->find($criteria);
         if (!($model2))
         {
-        	Yii::log("UPDATE EVENT ----- loading up. id = " . $id . " no model2. Dying " . CLogger::LEVEL_INFO, 'system.test.kim');
+        	Yii::log("UPDATE EVENT ----- loading up. id = " . $id . " no model2. Dying " . CLogger::LEVEL_WARNING, 'system.test.kim');
         	die('Couldnt find event matching Ws record for update');
         }
 
@@ -181,7 +181,7 @@ class EventController extends Controller
 
         if(isset($_POST['Event']))
         {
-        	Yii::log("UPDATE EVENT ----- post happened " . CLogger::LEVEL_INFO, 'system.test.kim');
+        	Yii::log("UPDATE EVENT ----- post happened " . CLogger::LEVEL_WARNING, 'system.test.kim');
             $model->attributes=$_POST['Event'];
             $file=CUploadedFile::getInstance($model, 'thumb_path');
             if (is_object($file) && get_class($file) === 'CUploadedFile')
@@ -197,19 +197,19 @@ class EventController extends Controller
                 $fname = $iDir . $model->thumb_path;
                 $model->thumb_path->saveAs($fname);
             }
-            Yii::log("UPDATE EVENT ----- about to do model->save() " . CLogger::LEVEL_INFO, 'system.test.kim');
+            Yii::log("UPDATE EVENT ----- about to do model->save() " . CLogger::LEVEL_WARNING, 'system.test.kim');
             if($model->save())
             {
-            	Yii::log("UPDATE EVENT ----- successful model->save() " . CLogger::LEVEL_INFO, 'system.test.kim');
+            	Yii::log("UPDATE EVENT ----- successful model->save() " . CLogger::LEVEL_WARNING, 'system.test.kim');
             	$this->deleteProductCheckboxes($model->id);
                 $this->updateProductCheckboxes($model->id);
 
             	// Save Ws fields too
             	$model2->attributes=$_POST['Ws'];
             	$model2->event_id = $model->id;
-            	Yii::log("UPDATE EVENT ----- about to do model2->save() " . CLogger::LEVEL_INFO, 'system.test.kim');
+            	Yii::log("UPDATE EVENT ----- about to do model2->save() " . CLogger::LEVEL_WARNING, 'system.test.kim');
             	$model2->save();
-            	Yii::log("UPDATE EVENT ----- did model2->save(). Finished " . CLogger::LEVEL_INFO, 'system.test.kim');
+            	Yii::log("UPDATE EVENT ----- did model2->save(). Finished " . CLogger::LEVEL_WARNING, 'system.test.kim');
                 $this->redirect(array('admin'));
             }
         }
@@ -228,11 +228,11 @@ class EventController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-        Yii::log("DELETE EVENT ----- start " . CLogger::LEVEL_INFO, 'system.test.kim');
+        Yii::log("DELETE EVENT ----- start " . CLogger::LEVEL_WARNING, 'system.test.kim');
 		$iDir = $this->getThumbDir();
 		if(Yii::app()->request->isPostRequest)
 		{
-			Yii::log("DELETE EVENT ----- POST received " . CLogger::LEVEL_INFO, 'system.test.kim');
+			Yii::log("DELETE EVENT ----- POST received " . CLogger::LEVEL_WARNING, 'system.test.kim');
 			// we only allow deletion via POST request
 			$model = $this->loadModel($id);
 
@@ -241,22 +241,22 @@ class EventController extends Controller
                 if (file_exists($iDir . $model->thumb_path))
                     unlink($iDir . $model->thumb_path);
             }
-			Yii::log("DELETE EVENT ----- about to delete productcheckboxes " . CLogger::LEVEL_INFO, 'system.test.kim');
+			Yii::log("DELETE EVENT ----- about to delete productcheckboxes " . CLogger::LEVEL_WARNING, 'system.test.kim');
             $this->deleteProductCheckboxes($model->id);
-           	Yii::log("DELETE EVENT ----- about to delete model() " . CLogger::LEVEL_INFO, 'system.test.kim');
+           	Yii::log("DELETE EVENT ----- about to delete model() " . CLogger::LEVEL_WARNING, 'system.test.kim');
 			$model->delete();
 
 			$criteria = new CDbCriteria;
 			$criteria->condition="event_id = $id";
    			$model2=Ws::model()->find($criteria);
     	    if (!($model2))
-    	    	Yii::log("DELETE EVENT ----- NO MATCHINV WS RECORD TO DELETE (ignoring this error)" . CLogger::LEVEL_INFO, 'system.test.kim');
+    	    	Yii::log("DELETE EVENT ----- NO MATCHINV WS RECORD TO DELETE (ignoring this error)" . CLogger::LEVEL_WARNING, 'system.test.kim');
     	    else
     	    {
 	        	$model2->delete();
-	        	Yii::log("DELETE EVENT ----- deleteing matching WS record " . CLogger::LEVEL_INFO, 'system.test.kim');
+	        	Yii::log("DELETE EVENT ----- deleteing matching WS record " . CLogger::LEVEL_WARNING, 'system.test.kim');
     	    }
-			Yii::log("DELETE EVENT ----- finished " . CLogger::LEVEL_INFO, 'system.test.kim');
+			Yii::log("DELETE EVENT ----- finished " . CLogger::LEVEL_WARNING, 'system.test.kim');
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 			if(!isset($_GET['ajax']))
@@ -523,13 +523,13 @@ class EventController extends Controller
     public function deleteProductCheckboxes($id)
     {
         // Interests
-        Yii::log("Deleting all interests for event " . $id, CLogger::LEVEL_INFO, 'system.test.kim');
+        Yii::log("Deleting all interests for event " . $id, CLogger::LEVEL_WARNING, 'system.test.kim');
         EventHasInterest::model()->deleteAllByAttributes(array('event_event_id' => $id));
 		// Formats
-        Yii::log("Deleting all formats for event " . $id, CLogger::LEVEL_INFO, 'system.test.kim');
+        Yii::log("Deleting all formats for event " . $id, CLogger::LEVEL_WARNING, 'system.test.kim');
         EventHasFormat::model()->deleteAllByAttributes(array('event_event_id' => $id, ));
 		// Facilities
-        Yii::log("Deleting all facilities for event " . $id, CLogger::LEVEL_INFO, 'system.test.kim');
+        Yii::log("Deleting all facilities for event " . $id, CLogger::LEVEL_WARNING, 'system.test.kim');
         EventHasFacility::model()->deleteAllByAttributes(array('event_event_id' => $id, ));
     }
 
@@ -554,7 +554,7 @@ return;
         if (isset($_POST['interest']))
         {
             foreach ($_POST['interest'] as $item):
-                Yii::log("Creating interest item " . $item, CLogger::LEVEL_INFO, 'system.test.kim');
+                Yii::log("Creating interest item " . $item, CLogger::LEVEL_WARNING, 'system.test.kim');
                 $data = new EventHasInterest;
                 $data->event_event_id = $id;
                 $data->event_interest_id = $item;
@@ -565,7 +565,7 @@ return;
         if (isset($_POST['format']))
         {
             foreach ($_POST['format'] as $item):
-                Yii::log("Creating format item " . $item, CLogger::LEVEL_INFO, 'system.test.kim');
+                Yii::log("Creating format item " . $item, CLogger::LEVEL_WARNING, 'system.test.kim');
                 $data = new EventHasFormat;
                 $data->event_event_id = $id;
                 $data->event_format_id = $item;
@@ -576,7 +576,7 @@ return;
         if (isset($_POST['facility']))
         {
             foreach ($_POST['facility'] as $item):
-                Yii::log("Creating facility item " . $item, CLogger::LEVEL_INFO, 'system.test.kim');
+                Yii::log("Creating facility item " . $item, CLogger::LEVEL_WARNING, 'system.test.kim');
                 $data = new EventHasFacility;
                 $data->event_event_id = $id;
                 $data->event_facility_id = $item;
