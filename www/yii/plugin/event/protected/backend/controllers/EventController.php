@@ -92,6 +92,7 @@ class EventController extends Controller
             	$model2->event_id = $model->id;
             	if (!($model2->save()))
             	{
+	            	$this->deleteProductCheckboxes($model->id);
             		$model->delete();
             		$this->render('create',array(
             			'model'=>$model,
