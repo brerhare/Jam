@@ -58,14 +58,22 @@ class eventcode
 		$events = Event::model()->findAll($criteria);
 		foreach ($events as $event)
 		{
+			// Pick up the program
+			$criteria = new CDbCriteria;
+			$criteria->condition = 'id = ' . $event->program_id;
+			$program = Program::model()->find($criteria);
+
 			// The header block
 			$content .= "<div>";
-			$content .= "<table><tr><td width=80%>";
+			$content .= "<table><tr><td width=80% height=90px>";
 			$content .= "<b>" . $event->title . "</b><br>";
 			$content .= "<i>Start: " . $event->start . "&nbsp&nbsp&nbsp&nbspEnd:" . $event->end . "</i><br><br>";
 			$content .= $event->address . " " . $event->post_code . "<br>";
 			$content .= "</td><td>";
-			$content .= "xxxxx";
+			if (trim($event->thumb_path) != '')
+				$content .= "<img style='margin-top:-10px; margin-right:-5px' title='Event Thumb' src='userdata/event/thumb/" . $event->thumb_path . "' width='120' height='95'>";
+			else if ($program)
+				$content .= "<img style='margin-top:-10px; margin-right:-5px' title='Program Thumb' src='userdata/program/thumb/" . $program->thumb_path . "' width='120' height='95'>";
 			$content .= "</td></tr></table>";
 			$content .= "</div>";
 

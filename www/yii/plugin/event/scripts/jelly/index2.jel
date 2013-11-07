@@ -41,7 +41,7 @@ fx.wallpaper-color = #00000
 		css.width = 120px
         css.background-color = #c4e1b1
         css.height = 90%
-        css.margin-left = 10px
+        #css.margin-left = 10px
         css.padding = 5px
 		addon.filter.events.department = $_GET['department']
 		

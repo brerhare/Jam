@@ -6,15 +6,16 @@
 #accordion .ui-accordion-header {  
 	border: 1px solid #a9b68b;
     background-color: #c4e1b1;  
-	height:100px;
-	margin-bottom:3px;
-	padding:3px;
-	/*-moz-border-radius: 10px;*/
-	/*border-radius: 10px;*/
-    -moz-border-radius-bottomright: 10px;
+	height:90px;
+	margin-bottom:10px;
+	/*padding:3px;*/
+	-moz-border-radius: 6px;
+	border-radius: 6px;
+    overflow:hidden;
+/*    -moz-border-radius-bottomright: 10px;
     border-bottom-right-radius: 10px;
     -moz-border-radius-topright: 10px;
-    border-top-right-radius: 10px;
+    border-top-right-radius: 10px;*/
 }
 #accordion .ui-accordion-header a {  
     color: #fff;  
