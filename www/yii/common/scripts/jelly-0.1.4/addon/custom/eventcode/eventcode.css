@@ -41,15 +41,22 @@
     color: #777;  
 }
 
+/* Header sizing info */
+
 #header-title {
     font-size: 11pt;  
     font-weight: bold;
     padding:2px;
+    height:24px;
+    overflow:hidden;
+    line-height: 25px;
 }
 #header-date {
     font-size: 10pt;  
     font-style: italic;
     padding:2px;
+    height:18px;
+    overflow:hidden;
 }
 #header-venue {
     font-size: 10pt;  
