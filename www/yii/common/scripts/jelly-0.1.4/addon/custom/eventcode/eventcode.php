@@ -58,6 +58,11 @@ class eventcode
 		$events = Event::model()->findAll($criteria);
 		foreach ($events as $event)
 		{
+			// Pick up the member
+			$criteria = new CDbCriteria;
+			$criteria->condition = 'id = ' . $event->member_id;
+			$member = Member::model()->find($criteria);
+
 			// Pick up the program
 			$criteria = new CDbCriteria;
 			$criteria->condition = 'id = ' . $event->program_id;
@@ -70,10 +75,10 @@ class eventcode
 			$content .= "    <div style=float:left>";
 
 			$content .= "      <div id='header-title'>";	
-			if ($program)
+			if ($member)
 			{
-				if (trim($program->icon_path) != '')
-					$content .= "<img style='padding-right:5px;margin-top:0px; margin-right:0px' title='Program Icon' src='userdata/program/icon/" . $program->icon_path . "' width='20' height='20'>";
+				if (trim($member->avatar_path) != '')
+					$content .= "<img style='padding-right:5px;margin-top:0px; margin-right:0px' title='Member Avatar' src='userdata/member/avatar/" . $member->avatar_path . "' width='20' height='20'>";
 
 			}
 			$content .= $event->title;
