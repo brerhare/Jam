@@ -140,7 +140,7 @@ class events
             <link rel="stylesheet" type="text/css" href="<substitute-path>/events.css" />
 
             <!-- Date support -->
-            <link rel="stylesheet" href="//code.jquery.com/ui/1.9.1/themes/smoothness/jquery-ui.css" />
+<!-- @@TODO!! @@FIX!!           <link rel="stylesheet" href="//code.jquery.com/ui/1.9.1/themes/smoothness/jquery-ui.css" />  -->
             
             <script src="//code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
 
