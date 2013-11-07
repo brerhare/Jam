@@ -164,7 +164,7 @@ class eventcode
 			$content .= "  </div>	<!-- /float left -->";
 
 
-			$content .= "  <div style=float:right;width:120px;height:100%>";
+			$content .= "  <div class='aContent' style=float:right;width:120px;height:100%>";
 			if (trim($event->thumb_path) != '')
 			{
 				if (file_exists('userdata/event/thumb/' . $event->thumb_path))
@@ -176,32 +176,15 @@ class eventcode
 
 			$content .= "</div> <!-- /header -->";
 
-
-
-/*
-			$content .= "<table><tr><td width=80% height=90px>";
-			$content .= "<b>" . $event->title . "</b><br>";
-			$content .= "<i>Start: " . $event->start . "&nbsp&nbsp&nbsp&nbspEnd:" . $event->end . "</i><br><br>";
-			$content .= $event->address . " " . $event->post_code . "<br>";
-			$content .= "</td><td>";
-			if (trim($event->thumb_path) != '')
-				$content .= "<img style='margin-top:-10px; margin-right:-5px' title='Event Thumb' src='userdata/event/thumb/" . $event->thumb_path . "' width='120' height='95'>";
-			else if ($program)
-				$content .= "<img style='margin-top:-10px; margin-right:-5px' title='Program Thumb' src='userdata/program/thumb/" . $program->thumb_path . "' width='120' height='95'>";
-			$content .= "</td></tr></table>";
-*/
-
-
 			// The content block
-			$content .= "<div>";
-			$content .= 'Content from server<br><br>';
+			$content .= "<div class='aContent'>";
+			$content .= '...<br>';
 			$content .= "</div>";
 		}
 		$content .= "</div>";
 
 		//$apiHtml = str_replace("<substitute-path>", $this->jellyRootUrl, $apiHtml);
         //$apiHtml = str_replace("<substitute-data>", $content, $apiHtml);
-
 
 		$apiHtml = <<<END_OF_API_HTML_fill_headers
 
@@ -211,7 +194,6 @@ class eventcode
 			</div>
 
 END_OF_API_HTML_fill_headers;
-
 
 		$apiJs = <<<END_OF_API_JS_fill_headers
 
@@ -224,16 +206,18 @@ END_OF_API_HTML_fill_headers;
         			active: true,
 			        /*activate: function (event, ui) { alert("activate"); }, */
         			beforeActivate: function (event, ui) {
-            			if($('.accordion_header').hasClass('ui-state-active')) {
-            			    //alert('open');
-			            }
-            			else {
-                			//alert('closed');
-			            }
-            			//alert("before activate");
+						if (ui.newHeader[0])
+						{
+							var a = (ui.newHeader[0].id);
+							getEvent(ui.newPanel[0].id);
+						}
 			        }
 			    });
 			});
+
+			var getEvent = function(paneId) {
+				$('#' + paneId).html('My dog\'s breath smells awful');
+			};
 
 			$( document ).ready(function() {
 			});
