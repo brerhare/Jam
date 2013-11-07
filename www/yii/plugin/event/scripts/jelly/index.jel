@@ -48,10 +48,8 @@ fx.wallpaper-color = #00000
 		[eventcontainer]
 		css.width = 540px
 		child = event
-        addon.custom.eventcode.fill_headers = true  
 
-    		[event] 
-css.display = none               
+    		[event]                
             child = header-text, header-thumb
             stacking = horizontal
     		db.table = Event
