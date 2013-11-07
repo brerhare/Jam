@@ -86,7 +86,7 @@ class Jelly
 		content: '';
 		content: none;
 	}
-	table {
+	Xtable {
 		border-collapse: collapse;
 		border-spacing: 0;
 	}
