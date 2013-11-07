@@ -64,7 +64,61 @@ class eventcode
 			$program = Program::model()->find($criteria);
 
 			// The header block
-			$content .= "<div>";
+			$content .= "<div> <!-- header -->";
+
+			$content .= "  <div>";
+			$content .= "    <div style=float:left>";
+
+			$content .= "      <div id='header-title'>";	
+			if ($program)
+			{
+				if (trim($program->icon_path) != '')
+					$content .= "<img style='padding-right:5px;margin-top:0px; margin-right:0px' title='Program Icon' src='userdata/program/icon/" . $program->icon_path . "' width='20' height='20'>";
+
+			}
+			$content .= $event->title;
+			$content .= "      </div>";
+
+			$content .= "      <div id='header-date'>";	
+			//$content .= '['.$event->start . "]" . '['.$event->end . "]<br>";
+			$start = strtotime($event->start);
+			$end = strtotime($event->end);
+			$dateString = date( 'l d/m/y', $start);
+			if (date('H:i', $start) != '00:00')
+				$dateString .= " " . date('H:i', $start);
+			if ($event->end != $event->start)
+			{
+				$dateString .= " until ";
+				if (date( 'l d/m/y', $start) != date( 'l d/m/y', $end))
+					$dateString .= date( 'l d/m/y', $end);
+				if (date('H:i', $end) != '00:00')
+					$dateString .= " " . date('H:i', $end);
+			}
+			$content .= $dateString;
+			$content .= "      </div>";
+
+			$content .= "      <div id='header-venue'>";	
+			$content .= $event->address;
+			$content .= "      </div>";
+
+			$content .= "      <div id='header-icons'>";	
+			$content .= "        icons";
+			$content .= "      </div>";
+			$content .= "    </div>";
+			$content .= "    <div style=float:right;width:120px;height:100%>";
+
+			if (trim($event->thumb_path) != '')
+				$content .= "<img style='margin-top:-10px; margin-left:-20px' title='Event Thumb' src='userdata/event/thumb/" . $event->thumb_path . "' width='140' height='115'>";
+			else if ($program)
+				$content .= "<img style='margin-top:-10px; margin-left:-20px' title='Program Thumb' src='userdata/program/thumb/" . $program->thumb_path . "' width='140' height='115'>";
+
+			$content .= "    </div>";
+
+			$content .= "  </div> <!-- /header -->";
+
+
+
+/*
 			$content .= "<table><tr><td width=80% height=90px>";
 			$content .= "<b>" . $event->title . "</b><br>";
 			$content .= "<i>Start: " . $event->start . "&nbsp&nbsp&nbsp&nbspEnd:" . $event->end . "</i><br><br>";
@@ -75,6 +129,8 @@ class eventcode
 			else if ($program)
 				$content .= "<img style='margin-top:-10px; margin-right:-5px' title='Program Thumb' src='userdata/program/thumb/" . $program->thumb_path . "' width='120' height='95'>";
 			$content .= "</td></tr></table>";
+*/
+
 			$content .= "</div>";
 
 			// The content block
