@@ -122,6 +122,27 @@ class eventcode
 						$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . $interest->name . "' src='userdata/icon/" . $interest->icon_path . "' width='20' height='20'>";
 				}
 			}
+			// Price Band icons
+			if ($event->event_price_band_id == 1)	// Free
+				$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Free' . "' src='userdata/icon/" . 'Free x20.png' . "' width='20' height='20'>";
+			else
+			{
+				// 1st Price
+				if ($event->event_price_band_id == 2)	// 1st price
+					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Under £5' . "' src='userdata/icon/" . 'Pound x20.png' . "' width='20' height='20'>";
+				if ($event->event_price_band_id == 3)	// 2nd price
+				{
+					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . '£5 - £10' . "' src='userdata/icon/" . 'Pound x20.png' . "' width='20' height='20'>";
+					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . '£5 - £10' . "' src='userdata/icon/" . 'Pound x20.png' . "' width='20' height='20'>";
+				}
+				if ($event->event_price_band_id == 4)	// 3rd price
+				{
+					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Over £10' . "' src='userdata/icon/" . 'Pound x20.png' . "' width='20' height='20'>";
+					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Over £10' . "' src='userdata/icon/" . 'Pound x20.png' . "' width='20' height='20'>";
+					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Over £10' . "' src='userdata/icon/" . 'Pound x20.png' . "' width='20' height='20'>";
+				}
+			}
+
 			// Facility icons
 			$criteria = new CDbCriteria;
 			$criteria->condition = 'event_event_id = ' . $event->id;
