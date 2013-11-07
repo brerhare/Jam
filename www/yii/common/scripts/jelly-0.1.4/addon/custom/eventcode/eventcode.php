@@ -71,10 +71,9 @@ class eventcode
 			// The header block
 			$content .= "<div> <!-- header -->";
 
-			$content .= "  <div>";
-			$content .= "    <div style=float:left>";
+			$content .= "  <div style=float:left>";
 
-			$content .= "      <div id='header-title'>";	
+			$content .= "    <div id='header-title'>";	
 			if ($member)
 			{
 				if (trim($member->avatar_path) != '')
@@ -82,9 +81,9 @@ class eventcode
 
 			}
 			$content .= $event->title;
-			$content .= "      </div>";
+			$content .= "    </div>";
 
-			$content .= "      <div id='header-date'>";	
+			$content .= "    <div id='header-date'>";	
 			//$content .= '['.$event->start . "]" . '['.$event->end . "]<br>";
 			$start = strtotime($event->start);
 			$end = strtotime($event->end);
@@ -100,26 +99,54 @@ class eventcode
 					$dateString .= " " . date('H:i', $end);
 			}
 			$content .= $dateString;
-			$content .= "      </div>";
+			$content .= "    </div>";
 
-			$content .= "      <div id='header-venue'>";	
+			$content .= "    <div id='header-venue'>";	
 			$content .= $event->address;
-			$content .= "      </div>";
-
-			$content .= "      <div id='header-icons'>";	
-			$content .= "        icons";
-			$content .= "      </div>";
 			$content .= "    </div>";
-			$content .= "    <div style=float:right;width:120px;height:100%>";
 
+			$content .= "    <div id='header-icons' style=float:left>";	
+			// Interest icons
+			$criteria = new CDbCriteria;
+			$criteria->condition = 'event_event_id = ' . $event->id;
+			$criteria->order = 'event_interest_id ASC';
+			$eventHasInterests = EventHasInterest::model()->findAll($criteria);
+			foreach ($eventHasInterests as $eventHasInterest)
+			{
+				// Pick up the Icon
+				$criteria = new CDbCriteria;
+				$criteria->condition = 'id = ' . $eventHasInterest->event_interest_id;
+				$interest = Interest::model()->find($criteria);
+				{
+					if ($interest)
+					{
+						$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . $interest->name . "' src='userdata/icon/" . $interest->icon_path . "' width='20' height='20'>";
+					}
+				}
+			}
+
+/*
+			$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . $eventInterest->icon_path . "' src='userdata/icon/" . $eventInterest->icon_path . "' width='20' height='20'>";
+			$content .= "      <img style='margin-top:0px; margin-left:0px' title='Event Thumb' src='userdata/event/thumb/" . $event->thumb_path . "' width='20' height='20'>";
+			$content .= "      <img style='margin-top:0px; margin-left:0px' title='Event Thumb' src='userdata/event/thumb/" . $event->thumb_path . "' width='20' height='20'>";
+			$content .= "      <img style='margin-top:0px; margin-left:0px' title='Event Thumb' src='userdata/event/thumb/" . $event->thumb_path . "' width='20' height='20'>";
+*/
+
+			$content .= "    </div>";
+			$content .= "  </div>	<!-- /float left -->";
+
+
+			$content .= "  <div style=float:right;width:120px;height:100%>";
 			if (trim($event->thumb_path) != '')
-				$content .= "<img style='margin-top:-10px; margin-left:-20px' title='Event Thumb' src='userdata/event/thumb/" . $event->thumb_path . "' width='140' height='115'>";
+			{
+				if (file_exists('userdata/event/thumb/' . $event->thumb_path))
+					$content .= "<img style='margin-top:-10px; margin-left:-20px' title='" . $event->thumb_path . "' src='userdata/event/thumb/" . $event->thumb_path . "' width='140' height='115'>";
+			}
 			else if ($program)
-				$content .= "<img style='margin-top:-10px; margin-left:-20px' title='Program Thumb' src='userdata/program/thumb/" . $program->thumb_path . "' width='140' height='115'>";
+				$content .= "<img style='margin-top:-10px; margin-left:-20px' title='" . $program->thumb_path . "' src='userdata/program/thumb/" . $program->thumb_path . "' width='140' height='115'>";
+			$content .= "  </div>";
 
-			$content .= "    </div>";
-
-			$content .= "  </div> <!-- /header -->";
+			$content .= "</div> <!-- /header -->";
 
 
 
@@ -136,7 +163,6 @@ class eventcode
 			$content .= "</td></tr></table>";
 */
 
-			$content .= "</div>";
 
 			// The content block
 			$content .= "<div>";
