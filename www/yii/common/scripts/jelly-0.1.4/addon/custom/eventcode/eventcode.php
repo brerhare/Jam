@@ -119,18 +119,25 @@ class eventcode
 				$interest = Interest::model()->find($criteria);
 				{
 					if ($interest)
-					{
 						$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . $interest->name . "' src='userdata/icon/" . $interest->icon_path . "' width='20' height='20'>";
-					}
 				}
 			}
-
-/*
-			$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . $eventInterest->icon_path . "' src='userdata/icon/" . $eventInterest->icon_path . "' width='20' height='20'>";
-			$content .= "      <img style='margin-top:0px; margin-left:0px' title='Event Thumb' src='userdata/event/thumb/" . $event->thumb_path . "' width='20' height='20'>";
-			$content .= "      <img style='margin-top:0px; margin-left:0px' title='Event Thumb' src='userdata/event/thumb/" . $event->thumb_path . "' width='20' height='20'>";
-			$content .= "      <img style='margin-top:0px; margin-left:0px' title='Event Thumb' src='userdata/event/thumb/" . $event->thumb_path . "' width='20' height='20'>";
-*/
+			// Facility icons
+			$criteria = new CDbCriteria;
+			$criteria->condition = 'event_event_id = ' . $event->id;
+			$criteria->order = 'event_facility_id ASC';
+			$eventHasFacilities = EventHasFacility::model()->findAll($criteria);
+			foreach ($eventHasFacilities as $eventHasFacility)
+			{
+				// Pick up the Icon
+				$criteria = new CDbCriteria;
+				$criteria->condition = 'id = ' . $eventHasFacility->event_facility_id;
+				$facility = Facility::model()->find($criteria);
+				{
+					if ($facility)
+						$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . $facility->name . "' src='userdata/icon/" . $facility->icon_path . "' width='20' height='20'>";
+				}
+			}
 
 			$content .= "    </div>";
 			$content .= "  </div>	<!-- /float left -->";
