@@ -230,6 +230,7 @@ END_OF_API_HTML_fill_headers;
 			}
 
 			$( document ).ready(function() {
+				ajaxGetEvent(0);
 			});
 
 END_OF_API_JS_fill_headers;
