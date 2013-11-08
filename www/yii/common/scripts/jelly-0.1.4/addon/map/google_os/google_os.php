@@ -11,6 +11,7 @@
 class google_os
 {
 	//Defaults
+	private $defaultId = "myMap";
 	private $defaultWidth = "620px";
 	private $defaultHeight = "200px";
 	private $defaultZoom = "8";
@@ -57,6 +58,12 @@ break;
 					$tmp = str_replace("<substitute-zoom>", $val, $this->apiJs);
 					$this->apiJs = $tmp;
 					break;
+				case "id":
+					$tmp = str_replace("<substitute-id>", $val, $this->apiHtml);
+					$this->apiHtml = $tmp;
+					$tmp = str_replace("<substitute-id>", $val, $this->apiJs);
+					$this->apiJs = $tmp;
+					break;
 				case "width":
 					$tmp = str_replace("<substitute-width>", $val, $this->apiHtml);
 					$this->apiHtml = $tmp;
@@ -100,6 +107,18 @@ break;
 			$tmp = str_replace("<substitute-width>", $this->defaultWidth, $this->apiHtml);
 			$this->apiHtml = $tmp;
 		}
+
+		if (strstr($this->apiHtml, "<substitute-id>"))
+		{
+			$tmp = str_replace("<substitute-id>", $this->defaultId, $this->apiHtml);
+			$this->apiHtml = $tmp;
+		}
+		if (strstr($this->apiJs, "<substitute-id>"))
+		{
+			$tmp = str_replace("<substitute-id>", $this->defaultId, $this->apiJs);
+			$this->apiJs = $tmp;
+		}
+
 		if (strstr($this->apiHtml, "<substitute-height>"))
 		{
 			$tmp = str_replace("<substitute-height>", $this->defaultHeight, $this->apiHtml);
@@ -143,6 +162,7 @@ if (strstr($this->apiJs, "<SUBSTITUTE-SINGLE-1>"))
 		if ($onReady != "")
 		{
 			$this->apiJs .= $onReady;
+			Yii::log("GOOGLE MAPS: OnReady= [" . $onReady . "]", CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
 
 		// Substitute paths for includes
@@ -155,6 +175,13 @@ if (strstr($this->apiJs, "<SUBSTITUTE-SINGLE-1>"))
 		$retArr = array();
 		$retArr[0] = $html;
 		$retArr[1] = $js;
+/*
+		if ($this->SINGLE)
+{
+			Yii::log("GOOGLE MAPS: SINGLE [" . $retArr[0] . "]", CLogger::LEVEL_WARNING, 'system.test.kim');
+			Yii::log("GOOGLE MAPS: SINGLE [" . $retArr[1] . "]", CLogger::LEVEL_WARNING, 'system.test.kim');
+}
+*/
 		return $retArr;
 	}
 
@@ -162,7 +189,9 @@ if (strstr($this->apiJs, "<SUBSTITUTE-SINGLE-1>"))
 
 	private $apiHtml = <<<END_OF_API_HTML
 
-	<div id="jelly-google-os-container">
+	<!-- <div id="jelly-google-os-container"> -->
+	<div id="<substitute-Xid>">
+
 		<script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=false"></script>
 		<script type="text/javascript" src="<substitute-path>/latlong-gridref.js"></script>
 <!--
@@ -170,7 +199,7 @@ if (strstr($this->apiJs, "<SUBSTITUTE-SINGLE-1>"))
 		<input id="osgridref" type="text" style="width:200px;" />
 		<input id="lookup" type="button" value="Lookup" />
 -->
-		<div id="map" style="width:<substitute-width>;height:<substitute-height>" border="1px solid black"></div>
+		<div id="<substitute-id>-map" style="width:<substitute-width>;height:<substitute-height>" border="1px solid black"></div>
 	</div>
 
 END_OF_API_HTML;
@@ -313,6 +342,7 @@ END_OF_API_HTML;
 		// Loads the map
 	    loadMap = function (latitude, longitude)
 		{
+			//alert('load');
 			if (map)	// Already loaded
 				return;
 			var latlng = new google.maps.LatLng(latitude, longitude);
@@ -321,7 +351,7 @@ END_OF_API_HTML;
 				mapTypeId: google.maps.MapTypeId.<substitute-maptype>,
 				center: latlng,
 			};
-			map = new google.maps.Map(document.getElementById("map"), myOptions);
+			map = new google.maps.Map(document.getElementById("<substitute-id>-map"), myOptions);
 		}
 
 		// Sets up a marker and info window on the map at the latitude and longitude specified

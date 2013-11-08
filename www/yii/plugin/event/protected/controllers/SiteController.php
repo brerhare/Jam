@@ -2,6 +2,7 @@
 
 class SiteController extends Controller
 {
+
 	/**
 	 * Get the jelly script root (as defined in /protected/config/main.php)
 	 */
@@ -148,7 +149,7 @@ class SiteController extends Controller
     {
 		if (Yii::app()->request->isAjaxRequest)
 		{
-			//require(Yii::app()->basePath . "/../scripts/jelly/addon/map/google_os/google_os.php");
+			require(Yii::app()->basePath . "/../scripts/jelly/addon/map/google_os/google_os.php");
 
 			$paneId = $_POST['paneId'];
 			$eventId = $_POST['eventId'];
@@ -168,24 +169,33 @@ class SiteController extends Controller
 				{
 					$content .= $ws->short_description . "..." . "<br>";
 					$content .= "<table width=100%><tr><td style='width:40%'>";
-/*
+
+
 $addon = new google_os;
 $optArr = array();
+$optArr['single'] = '1';
+$optArr['id'] = 'detailMap';
 $optArr['width'] = '200px';
 $optArr['height'] = '200px';
 $optArr['maptype'] = 'terrain';
 $optArr['inputmode'] = 'os';
-$optArr['center'] = 'NX696834';
+$optArr['center'] = $ws->os_grid_ref;
 $optArr['zoom'] = '9';
-$optArr['single'] = '1';
-$code = $addon->init($optArr, '/event/scripts/jelly/addon/map/google_os');
-*/
+Yii::log("GOOGLE MAP CALL", CLogger::LEVEL_WARNING, 'system.test.kim');
+$ret = $addon->init($optArr, '/event/scripts/jelly/addon/map/google_os');
+Yii::log("GOOGLE MAP RETURN", CLogger::LEVEL_WARNING, 'system.test.kim');
+Yii::log("GOOGLE MAP RETURN: SINGLE HTML [" . $ret[0] . "]", CLogger::LEVEL_WARNING, 'system.test.kim');
+Yii::log("GOOGLE MAP RETURN: SINGLE JS [" . $ret[1] . "]", CLogger::LEVEL_WARNING, 'system.test.kim');
 
-//$content .= $code[0];
+
+$content .= $ret[0];
+$content .= '<script>' . $ret[1] . '</script>';
+$content .= "<script>/*alert('xyzzy');*/ markerByOs('" . $ws->os_grid_ref . "'); </script>";
+//die('x='.$content);
 //$content .= "<script>" . $code[1] . "<script>";
 //die('code='.$code[0]);
 
-					$content .= "googlemap";
+					$content .= "googlemaps";
 					$content .= "</td><td style='width:60%'>";
 					// Booking
 					$content .= "Booking ";
