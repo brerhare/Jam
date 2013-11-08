@@ -50,6 +50,7 @@ class eventcode
 	private function fill_headers($val)
 	{
 		$content = "";
+		$jsEvents = "var jsEvents=[";
 
 		$content .= "<div id='accordion'>";
 
@@ -58,6 +59,7 @@ class eventcode
 		$events = Event::model()->findAll($criteria);
 		foreach ($events as $event)
 		{
+			$jsEvents .= '"' . $event->id . '",';
 			// Pick up the member
 			$criteria = new CDbCriteria;
 			$criteria->condition = 'id = ' . $event->member_id;
@@ -164,7 +166,7 @@ class eventcode
 			$content .= "  </div>	<!-- /float left -->";
 
 
-			$content .= "  <div class='aContent' style=float:right;width:120px;height:100%>";
+			$content .= "  <div style=float:right;width:120px;height:100%>";
 			if (trim($event->thumb_path) != '')
 			{
 				if (file_exists('userdata/event/thumb/' . $event->thumb_path))
@@ -177,12 +179,12 @@ class eventcode
 			$content .= "</div> <!-- /header -->";
 
 			// The content block
-			$content .= "<div class='aContent'>";
-			$content .= '...<br>';
+			$content .= "<div>";
+			//$content .= $event->id;
 			$content .= "</div>";
 		}
 		$content .= "</div>";
-
+		$jsEvents = substr($jsEvents, 0, -1) . "];";
 
 		$apiHtml = <<<END_OF_API_HTML_fill_headers
 
@@ -195,6 +197,8 @@ END_OF_API_HTML_fill_headers;
 
 		$apiJs = <<<END_OF_API_JS_fill_headers
 
+			<substitute-eventarray>
+
 			$(function() {
 			    $( "#accordion" ).accordion({
 					//header: 'a' ,
@@ -202,11 +206,8 @@ END_OF_API_HTML_fill_headers;
 					heightStyle: 'content',
 			        collapsible: true,
         			active: true,
-			        /*activate: function (event, ui) { alert("activate"); }, */
         			beforeActivate: function (event, ui) {
-						if (ui.newHeader[0])
-						{
-							var a = (ui.newHeader[0].id);
+						if (ui.newHeader[0]) {
 							ajaxGetEvent(ui.newPanel[0].id);
 						}
 			        }
@@ -215,13 +216,18 @@ END_OF_API_HTML_fill_headers;
 
 			// Ajax call to get the event details when a header is clicked
 			var ajaxGetEvent = function(paneId) {
-
-//jQuery.ajax({'url':'/booking/index.php/site/ajaxGetRoomPriceAvail','data':{'roomList':['1','2','3'],'date':timeStamp,'arrival':arrivalStamp,'departure':departureStamp},'type':'POST','dataType':'json','success':function(val){ajaxShowRoomPriceAvail(val);},'cache':false});
-//alert('x');
-jQuery.ajax({'url':'<substitute-ajaxurl>','data':{'id':paneId},'type':'POST','dataType':'json','success':function(val){ajaxShowEvent(val);},'cache':false});
-//alert('y');
-				//! $('#' + paneId).html('My dog\'s breath smells awful');
+				var ev = paneId.split("-");
+				var evIx = ev[ev.length - 1];
+				evId = jsEvents[evIx];
+//alert('paneId='+paneId+ 'evId='+evId);
+				jQuery.ajax({'url':'<substitute-ajaxurl>','data':{'paneId':paneId, 'eventId':evId},'type':'POST','dataType':'json','success':function(val){ajaxShowEvent(val);},'cache':false});
 			};
+
+			// Return from Ajax call with event details
+			var ajaxShowEvent = function(val) {
+				//alert('Server sent ' + val.paneId + ' and ' + val.eventId);
+				$('#' + val.paneId).html(val.content);
+			}
 
 			$( document ).ready(function() {
 			});
@@ -230,8 +236,10 @@ END_OF_API_JS_fill_headers;
 
 		$apiHtml = str_replace("<substitute-path>", $this->jellyRootUrl, $apiHtml);
         $apiHtml = str_replace("<substitute-data>", $content, $apiHtml);
-		//$apiJs = str_replace("<substitute-ajaxurl>", 'localhost/event/?layout=index2', $apiJs);
-		$apiJs = str_replace("<substitute-ajaxurl>", 'https://plugin.wireflydesign.com/event/?r=site/ajaxGetEvent', $apiJs);
+
+		$apiJs = str_replace("<substitute-eventarray>", $jsEvents, $apiJs);
+		$apiJs = str_replace("<substitute-ajaxurl>", 'http://localhost/event/index.php/site/ajaxGetEvent', $apiJs);
+		//$apiJs = str_replace("<substitute-ajaxurl>", 'https://plugin.wireflydesign.com/event/index.php/site/ajaxGetEvent', $apiJs);
 
 		$clipBoard = "";
 
@@ -241,6 +249,20 @@ END_OF_API_JS_fill_headers;
 		$retArr[2] = $clipBoard;
 		return $retArr;
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	private function product_stuff($val)
 	{

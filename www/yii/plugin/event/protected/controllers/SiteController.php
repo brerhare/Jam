@@ -148,15 +148,68 @@ class SiteController extends Controller
     {
 		if (Yii::app()->request->isAjaxRequest)
 		{
-			Yii::log("AJAX CALL: id:", CLogger::LEVEL_WARNING, 'system.test.kim');
-			//die('ok!');
+			$paneId = $_POST['paneId'];
+			$eventId = $_POST['eventId'];
+			Yii::log("AJAX CALL: paneId:" . $paneId . " and eventId:" . $eventId, CLogger::LEVEL_WARNING, 'system.test.kim');
 
+			$content = "";
+
+			$criteria = new CDbCriteria;
+			$criteria->condition = 'id = ' . $eventId;
+			$event = Event::model()->find($criteria);
+			if ($event)
+			{
+				$criteria = new CDbCriteria;
+				$criteria->condition = 'event_id = ' . $eventId;
+				$ws = Ws::model()->find($criteria);
+				if ($ws)
+				{
+					$content .= $ws->short_description . "..." . "<br>";
+					$content .= "<table width=100%><tr><td style='width:40%'>";
+					$content .= "googlemap";
+					$content .= "</td><td style='width:60%'>";
+					// Booking
+					$content .= "Booking ";
+					if ($ws->booking_essential)
+						$content .= "<b>essential</b>";
+					else
+						$content .= "not essential";
+					$content .= "<br/>";
+					// Organisation
+					$criteria = new CDbCriteria;
+					$criteria->condition = 'id = ' . $event->member_id;
+					$member = Member::model()->find($criteria);
+					if ($member)
+						if (trim($member->organisation) != '')
+							$content .= "Organization: " . $member->organisation . "<br>";
+					// Contact details
+					$content .= "Contact details: " . $event->contact . "<br>";
+					// Website
+					$content .= "Website: " . $event->web . "<br>";
+					// Suitable ages
+					if (($ws->min_age == 0) && ($ws->max_age == 0))
+						$content .= "Suitable for all ages" . "<br>";
+					else if (($ws->min_age != 0) && ($ws->max_age != 0))
+						$content .= "Suitable for ages" . $ws->min_age . " to " . $ws_max_age . "<br>";
+					else if (($ws->min_age != 0) && ($ws->max_age == 0))
+						$content .= "Suitable for ages " . $ws->min_age . " and older" . "<br>";
+					else if (($ws->min_age == 0) && ($ws->max_age != 0))
+						$content .= "Suitable for ages up to " . $ws->max_age . "<br>";
+					// Grade
+					$content .= "Grade: " . $ws->grade;
+					$content .= "</td></tr></table>";
+				}
+				else 
+					$content .= "No Ws record";
+			}
+			else 
+				$content .= "No event record";
+//$content = 'xx';
 			echo CJSON::encode(array(
-				'data1' => '1',
-				'data2' => '2',
+				'paneId' => $paneId ,
+				'eventId' => $eventId,
+				'content' => $content,
                 	));
-
-        	Yii::log("EXIT TEST AJAX CALL: " , CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
     }
 }
