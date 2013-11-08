@@ -230,7 +230,7 @@ END_OF_API_JS_fill_headers;
 
 		$apiHtml = str_replace("<substitute-path>", $this->jellyRootUrl, $apiHtml);
         $apiHtml = str_replace("<substitute-data>", $content, $apiHtml);
-		$apiJs = str_replace("<substitute-ajaxurl>", 'localhost/event/?layout=index2', $apiJs);
+		//$apiJs = str_replace("<substitute-ajaxurl>", 'localhost/event/?layout=index2', $apiJs);
 		$apiJs = str_replace("<substitute-ajaxurl>", 'https://plugin.wireflydesign.com/event/site/ajaxGetEvent', $apiJs);
 
 		$clipBoard = "";
