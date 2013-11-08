@@ -183,8 +183,6 @@ class eventcode
 		}
 		$content .= "</div>";
 
-		//$apiHtml = str_replace("<substitute-path>", $this->jellyRootUrl, $apiHtml);
-        //$apiHtml = str_replace("<substitute-data>", $content, $apiHtml);
 
 		$apiHtml = <<<END_OF_API_HTML_fill_headers
 
@@ -209,14 +207,20 @@ END_OF_API_HTML_fill_headers;
 						if (ui.newHeader[0])
 						{
 							var a = (ui.newHeader[0].id);
-							getEvent(ui.newPanel[0].id);
+							ajaxGetEvent(ui.newPanel[0].id);
 						}
 			        }
 			    });
 			});
 
-			var getEvent = function(paneId) {
-				$('#' + paneId).html('My dog\'s breath smells awful');
+			// Ajax call to get the event details when a header is clicked
+			var ajaxGetEvent = function(paneId) {
+
+//jQuery.ajax({'url':'/booking/index.php/site/ajaxGetRoomPriceAvail','data':{'roomList':['1','2','3'],'date':timeStamp,'arrival':arrivalStamp,'departure':departureStamp},'type':'POST','dataType':'json','success':function(val){ajaxShowRoomPriceAvail(val);},'cache':false});
+//alert('x');
+jQuery.ajax({'url':'<substitute-ajaxurl>','data':{'id':paneId},'type':'POST','dataType':'json','success':function(val){ajaxShowEvent(val);},'cache':false});
+//alert('y');
+				//! $('#' + paneId).html('My dog\'s breath smells awful');
 			};
 
 			$( document ).ready(function() {
@@ -226,6 +230,8 @@ END_OF_API_JS_fill_headers;
 
 		$apiHtml = str_replace("<substitute-path>", $this->jellyRootUrl, $apiHtml);
         $apiHtml = str_replace("<substitute-data>", $content, $apiHtml);
+		$apiJs = str_replace("<substitute-ajaxurl>", 'localhost/event/?layout=index2', $apiJs);
+		$apiJs = str_replace("<substitute-ajaxurl>", 'https://plugin.wireflydesign.com/event/site/ajaxGetEvent', $apiJs);
 
 		$clipBoard = "";
 

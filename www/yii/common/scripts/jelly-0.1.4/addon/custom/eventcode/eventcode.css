@@ -12,10 +12,11 @@
 	-moz-border-radius: 6px;
 	border-radius: 6px;
     overflow:hidden;
-/*    -moz-border-radius-bottomright: 10px;
-    border-bottom-right-radius: 10px;
-    -moz-border-radius-topright: 10px;
-    border-top-right-radius: 10px;*/
+
+    -moz-border-radius-bottomleft: 3px;
+    border-bottom-left-radius: 3px;
+    -moz-border-radius-topleft: 3px;
+    border-top-left-radius: 3px;
 }
 #accordion .ui-accordion-header a {  
     color: #fff;  

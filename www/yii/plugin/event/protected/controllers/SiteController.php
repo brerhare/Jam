@@ -143,4 +143,17 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
+
+	public function actionAjaxGetEvent()
+    {
+		Yii::log("AJAX CALL: id:", CLogger::LEVEL_WARNING, 'system.test.kim');
+die('ok!');
+
+		echo CJSON::encode(array(
+			'data1' => '1',
+			'data2' => '2',
+                ));
+
+        Yii::log("EXIT TEST AJAX CALL: " . $_POST['date'] , CLogger::LEVEL_WARNING, 'system.test.kim');
+    }
 }
