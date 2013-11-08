@@ -190,14 +190,24 @@ class SiteController extends Controller
 					if (($ws->min_age == 0) && ($ws->max_age == 0))
 						$content .= "Suitable for all ages" . "<br>";
 					else if (($ws->min_age != 0) && ($ws->max_age != 0))
-						$content .= "Suitable for ages" . $ws->min_age . " to " . $ws_max_age . "<br>";
+						$content .= "Suitable for ages " . $ws->min_age . " to " . $ws->max_age . "<br>";
 					else if (($ws->min_age != 0) && ($ws->max_age == 0))
 						$content .= "Suitable for ages " . $ws->min_age . " and older" . "<br>";
 					else if (($ws->min_age == 0) && ($ws->max_age != 0))
 						$content .= "Suitable for ages up to " . $ws->max_age . "<br>";
 					// Grade
-					$content .= "Grade: " . $ws->grade;
+					$content .= "Grade: " . $ws->grade . "<br>";
+					// OS Grid Ref
+					$content .= "OS grid ref : " . $ws->os_grid_ref . "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(" . $event->post_code . ")" . "<br>";
 					$content .= "</td></tr></table>";
+
+					// Description
+					$content .= $event->description . "<br>";
+					// Additional Venue Info
+					if (trim($ws->additional_venue_info) != '')
+						$content .= "Additional venue info: " . $ws->additional_venue_info . "<br>";
+					if (trim($ws->full_price_notes) != '')
+						$content .= "Full price notes: " . $ws->full_price_notes . "<br>";
 				}
 				else 
 					$content .= "No Ws record";

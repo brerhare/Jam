@@ -238,8 +238,10 @@ END_OF_API_JS_fill_headers;
         $apiHtml = str_replace("<substitute-data>", $content, $apiHtml);
 
 		$apiJs = str_replace("<substitute-eventarray>", $jsEvents, $apiJs);
-		$apiJs = str_replace("<substitute-ajaxurl>", 'http://localhost/event/index.php/site/ajaxGetEvent', $apiJs);
-		//$apiJs = str_replace("<substitute-ajaxurl>", 'https://plugin.wireflydesign.com/event/index.php/site/ajaxGetEvent', $apiJs);
+		if (gethostname() == 'spleen')
+			$apiJs = str_replace("<substitute-ajaxurl>", 'http://localhost/event/index.php/site/ajaxGetEvent', $apiJs);
+		else
+			$apiJs = str_replace("<substitute-ajaxurl>", 'https://plugin.wireflydesign.com/event/index.php/site/ajaxGetEvent', $apiJs);
 
 		$clipBoard = "";
 
