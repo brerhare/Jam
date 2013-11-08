@@ -148,6 +148,8 @@ class SiteController extends Controller
     {
 		if (Yii::app()->request->isAjaxRequest)
 		{
+			//require(Yii::app()->basePath . "/../scripts/jelly/addon/map/google_os/google_os.php");
+
 			$paneId = $_POST['paneId'];
 			$eventId = $_POST['eventId'];
 			Yii::log("AJAX CALL: paneId:" . $paneId . " and eventId:" . $eventId, CLogger::LEVEL_WARNING, 'system.test.kim');
@@ -166,6 +168,23 @@ class SiteController extends Controller
 				{
 					$content .= $ws->short_description . "..." . "<br>";
 					$content .= "<table width=100%><tr><td style='width:40%'>";
+/*
+$addon = new google_os;
+$optArr = array();
+$optArr['width'] = '200px';
+$optArr['height'] = '200px';
+$optArr['maptype'] = 'terrain';
+$optArr['inputmode'] = 'os';
+$optArr['center'] = 'NX696834';
+$optArr['zoom'] = '9';
+$optArr['single'] = '1';
+$code = $addon->init($optArr, '/event/scripts/jelly/addon/map/google_os');
+*/
+
+//$content .= $code[0];
+//$content .= "<script>" . $code[1] . "<script>";
+//die('code='.$code[0]);
+
 					$content .= "googlemap";
 					$content .= "</td><td style='width:60%'>";
 					// Booking

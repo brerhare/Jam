@@ -16,7 +16,7 @@ fx.wallpaper-color = #00000
     [googlemap]
     ##css.margin-left = 150px
     css.height = 370px
-    css.background-color = #d2d2d2
+#    css.background-color = #d2d2d2
     css.overflow = auto
     addon.map.google_os.width = 700px
     addon.map.google_os.height = 370px
@@ -32,7 +32,7 @@ fx.wallpaper-color = #00000
 	child = filter, eventcontainer
 	stacking = horizontal
 	css.height = 550px
-	css.background-color = #f2f2f2
+#	css.background-color = #f2f2f2
 	css.overflow = auto
 	db.table = Program
 	html.h3 = Program.name
@@ -41,95 +41,12 @@ fx.wallpaper-color = #00000
 		css.width = 120px
         css.background-color = #c4e1b1
         css.height = 90%
-        css.margin-left = 10px
+        #css.margin-left = 10px
         css.padding = 5px
 		addon.filter.events.department = $_GET['department']
 		
 		[eventcontainer]
 		css.width = 540px
 		child = event
-
-    		[event]                
-            child = header-text, header-thumb
-            stacking = horizontal
-    		db.table = Event
-            # @@TODO Fix next line Hardcoding for Wild Seasons
-            ####db.filter = program_id=6
-        	db.order = start
-    		db.fetch = multiple
-            db.filtercomplex = @@TODO
-            click = index.php/?layout=event&event=Event.id
-            //click = [detail]
-
-                [detail]
-                css.display = none    
-                onclick = index.php/?layout=event&event=Event.id
-                css.width = 650px
-                html.raw = ONCLICK
-
-                [header-text]
-                child = header-heading, header-date, header-desc, header-icons
-                child = interest-icons, facility-icons
-                css.width = 400px
-                css.height = 100px
-                css.padding = 5px
-                css.margin-left = 10px
-                css.margin-bottom = 10px
-                css.background-color = #c4e1b1
-                css.border-width = 3px
-                css.border-color = #dcdcdc
-
-                db.table = Ws
-                db.filter = event_id=Event.id
-                db.filtercomplex = @@TODO
-
-                    [header-heading]
-                    css.width = 400px
-                    css.height = 20px
-                    html.h4 = Event.title
-
-                    [header-date]
-                    css.width = 400px
-                    css.height = 20px
-                    html.raw = Start: Event.start   End: Event.end
-
-                    [header-desc]
-                    css.width = 400px
-                    css.height = 34px
-                    html.raw = Event.address Event.post_code
-
-                    [header-icons]
-                    css.width = 400px
-                    css.height = 30px
-                    child = interest-icons, facility-icons
-
-                        [interest-icons]
-                        css.width = 200px
-                        css.height = 30px
-                        css.margin-top = 5px
-                        css.margin-left = 0px
-                        # @@TODO Remove hardcoding and put in the rest of the icons
-                        html.raw = <img title="Nature" src="userdata/icon/Nature.png" width="20" height="20">
-
-                        [facility-icons]
-                        css.width = 200px
-                        css.height = 30px
-                        css.margin-top = -30px
-                        css.margin-left = 300px
-                        # @@TODO Remove hardcoding and put in the rest of the icons
-                        html.raw = <img title="Wild Seasons" src="userdata/icon/Wild Seasons x20.png" width="20" height="20">
-
-                [header-thumb]
-                css.width = 100px
-                css.height = 100px
-                css.padding = 5px
-                css.background-color = #c4e1b1
-                css.border-width = 3px
-                css.border-color = #dcdcdc
-                css.color = #ffffff
-                image.url = userdata/event/thumb/Event.thumb_path
-                image.alt = userdata/program/thumb/Program.thumb_path
-                image.width = 100px
-                image.height = 100px
-
+        addon.custom.eventcode.fill_headers = true  
 
