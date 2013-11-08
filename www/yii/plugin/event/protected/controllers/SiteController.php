@@ -146,14 +146,17 @@ class SiteController extends Controller
 
 	public function actionAjaxGetEvent()
     {
-		Yii::log("AJAX CALL: id:", CLogger::LEVEL_WARNING, 'system.test.kim');
-die('ok!');
+		if (Yii::app()->request->isAjaxRequest)
+		{
+			Yii::log("AJAX CALL: id:", CLogger::LEVEL_WARNING, 'system.test.kim');
+			//die('ok!');
 
-		echo CJSON::encode(array(
-			'data1' => '1',
-			'data2' => '2',
-                ));
+			echo CJSON::encode(array(
+				'data1' => '1',
+				'data2' => '2',
+                	));
 
-        Yii::log("EXIT TEST AJAX CALL: " . $_POST['date'] , CLogger::LEVEL_WARNING, 'system.test.kim');
+        	Yii::log("EXIT TEST AJAX CALL: " , CLogger::LEVEL_WARNING, 'system.test.kim');
+		}
     }
 }
