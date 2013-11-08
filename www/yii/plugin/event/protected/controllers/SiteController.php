@@ -168,13 +168,12 @@ class SiteController extends Controller
 				if ($ws)
 				{
 					$content .= $ws->short_description . "..." . "<br>";
-					$content .= "<table width=100%><tr><td style='width:40%'>";
-
+					$content .= "<table width=100% style='padding:10px 10px 10px 0px'><tr><td style='padding:0px; width:40%'>";
 
 $addon = new google_os;
 $optArr = array();
 $optArr['single'] = '1';
-$optArr['id'] = 'detailMap';
+$optArr['id'] = 'detailMap-' . $eventId;
 $optArr['width'] = '200px';
 $optArr['height'] = '200px';
 $optArr['maptype'] = 'terrain';
@@ -187,16 +186,11 @@ Yii::log("GOOGLE MAP RETURN", CLogger::LEVEL_WARNING, 'system.test.kim');
 Yii::log("GOOGLE MAP RETURN: SINGLE HTML [" . $ret[0] . "]", CLogger::LEVEL_WARNING, 'system.test.kim');
 Yii::log("GOOGLE MAP RETURN: SINGLE JS [" . $ret[1] . "]", CLogger::LEVEL_WARNING, 'system.test.kim');
 
-
 $content .= $ret[0];
 $content .= '<script>' . $ret[1] . '</script>';
-$content .= "<script>/*alert('xyzzy');*/ markerByOs('" . $ws->os_grid_ref . "'); </script>";
-//die('x='.$content);
-//$content .= "<script>" . $code[1] . "<script>";
-//die('code='.$code[0]);
+$content .= "<script> markerByOs('" . $ws->os_grid_ref . "'); </script>";
 
-					$content .= "googlemaps";
-					$content .= "</td><td style='width:60%'>";
+					$content .= "</td><td style='width:60%; padding:10px'>";
 					// Booking
 					$content .= "Booking ";
 					if ($ws->booking_essential)
