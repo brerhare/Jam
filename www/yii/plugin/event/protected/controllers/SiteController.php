@@ -209,7 +209,7 @@ $content .= "<script> markerByOs('" . $ws->os_grid_ref . "'); </script>";
 					$http = "http://";
 					if (strstr("http://", $event->web))
 						$http = "";
-					$content .= "Website: " . "<a href='" . $http . $event->web . "''>" . $event->web . "</a>" . "<br>";
+					$content .= "Website: " . "<a href='" . $http . $event->web . "'' target='_blank'>" . $event->web . "</a>" . "<br>";
 					// Suitable ages
 					if (($ws->min_age == 0) && ($ws->max_age == 0))
 						$content .= "Suitable for all ages" . "<br>";
@@ -238,7 +238,7 @@ $content .= "<script> markerByOs('" . $ws->os_grid_ref . "'); </script>";
 			}
 			else 
 				$content .= "No event record";
-//$content = 'xx';
+
 			echo CJSON::encode(array(
 				'paneId' => $paneId ,
 				'eventId' => $eventId,
