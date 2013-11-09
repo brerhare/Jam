@@ -90,7 +90,6 @@ class eventcode
 				}
 			}
 
-
 			// From this point we're committed to adding this record, because of the jsEvents table syncing
 
 			$jsEvents .= '"' . $event->id . '",';

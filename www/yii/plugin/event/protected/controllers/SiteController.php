@@ -193,6 +193,8 @@ $content .= "<script> markerByOs('" . $ws->os_grid_ref . "'); </script>";
 						$content .= "<b>essential</b>";
 					else
 						$content .= "not essential";
+					if ($event->ticket_event_id != 0)
+						$content .= "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" . "<a href='#'> <img style='margin-top:0px; margin-left:0px' title='Book' src='img/book-s.jpg'></a>";
 					$content .= "<br/>";
 					// Organisation
 					$criteria = new CDbCriteria;
@@ -204,7 +206,10 @@ $content .= "<script> markerByOs('" . $ws->os_grid_ref . "'); </script>";
 					// Contact details
 					$content .= "Contact details: " . $event->contact . "<br>";
 					// Website
-					$content .= "Website: " . $event->web . "<br>";
+					$http = "http://";
+					if (strstr("http://", $event->web))
+						$http = "";
+					$content .= "Website: " . "<a href='" . $http . $event->web . "''>" . $event->web . "</a>" . "<br>";
 					// Suitable ages
 					if (($ws->min_age == 0) && ($ws->max_age == 0))
 						$content .= "Suitable for all ages" . "<br>";
