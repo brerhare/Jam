@@ -205,9 +205,8 @@ END_OF_API_HTML;
 	// @@EG Datepicker styling - has no effect anywhere else
 	// Roll your own themeroller with css scope of .hasDatepicker
 	// Make the datepicker container div class .hasDatepicker (see above)
-	// The next 2 lines do it all...
-	$('#datepicker').datepicker();
-	$('#ui-datepicker-div').wrap('<div class="hasDatepicker"></div>');
+	// The next line must be added right after the $('#datepicker').datepicker({ etc up till the });
+	// $('#ui-datepicker-div').wrap('<div class="hasDatepicker"></div>');
 
 
     $('.filter-detail').click(function(){
@@ -233,6 +232,8 @@ END_OF_API_HTML;
             makeSel();
         }
     });
+	// @@EG next line applies to the Datepicker styling about 30 lines up
+	$('#ui-datepicker-div').wrap('<div class="hasDatepicker"></div>');
 
 
 END_OF_API_JS;
