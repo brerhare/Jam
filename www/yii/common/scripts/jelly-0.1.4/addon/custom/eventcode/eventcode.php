@@ -75,13 +75,15 @@ class eventcode
 
 			$content .= "  <div style=float:left>";
 
-			$content .= "    <div id='header-title'>";	
+			$content .= "    <div id='header-title'>";
+/*
 			if ($member)
 			{
 				if (trim($member->avatar_path) != '')
 					$content .= "<img style='padding-right:5px;margin-top:0px; margin-right:0px' title='Member Avatar' src='userdata/member/avatar/" . $member->avatar_path . "' width='20' height='20'>";
 
 			}
+*/
 			$content .= $event->title;
 			$content .= "    </div>";
 
@@ -160,6 +162,14 @@ class eventcode
 					if ($facility)
 						$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . $facility->name . "' src='userdata/icon/" . $facility->icon_path . "' width='20' height='20'>";
 				}
+			}
+
+			// Member avatar (aka Organisation icon)
+			if ($member)
+			{
+				if (trim($member->avatar_path) != '')
+					$content .= "<img style='margin-top:0px; margin-left:0px' title='Organisation' src='userdata/member/avatar/" . $member->avatar_path . "' width='20' height='20'>";
+
 			}
 
 			$content .= "    </div>";

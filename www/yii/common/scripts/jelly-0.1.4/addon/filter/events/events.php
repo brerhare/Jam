@@ -140,8 +140,8 @@ class events
             <link rel="stylesheet" type="text/css" href="<substitute-path>/events.css" />
 
             <!-- Date support -->
-<!-- @@TODO!! @@FIX!!           <link rel="stylesheet" href="//code.jquery.com/ui/1.9.1/themes/smoothness/jquery-ui.css" />  -->
 
+            <!-- @@NB This is a themeroller cookup of the smoothness theme -->
             <link rel="stylesheet" href="<substitute-path>/jquery-ui-1.9.2.custom.css">
             
             <script src="//code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
@@ -226,6 +226,7 @@ END_OF_API_HTML;
     //Datepicker
     $('#datepicker').datepicker({
         dateFormat: 'dd-mm-yy',
+        timeFormat: "hh:mm",    // HH is 24 hour clock, hh is 12 hour clock
         onSelect: function(
         dateText, inst) {
             selDate = dateText;
