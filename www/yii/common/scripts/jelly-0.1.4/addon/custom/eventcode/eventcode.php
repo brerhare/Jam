@@ -54,8 +54,8 @@ class eventcode
 
 		$content .= "<div id='accordion'>";
 
-		// Check date (dd-mm-yyyy)
-		if (isset($_GET['date']))
+		// Check date filter (dd-mm-yyyy)
+		if ((isset($_GET['date'])) && trim($_GET['date'] != ''))
 			$dt = $_GET['date'];
 		else
 			$dt = $myDate = date('d-m-Y');
@@ -67,6 +67,32 @@ class eventcode
 		$events = Event::model()->findAll($criteria);
 		foreach ($events as $event)
 		{
+			// Check Price band filter
+			if ((isset($_GET['pb'])) && trim($_GET['pb'] != ''))
+			{
+				$arr = explode('|', $_GET['pb']);
+				if (!(in_array($event->event_price_band_id, $arr)))
+					continue;
+			}
+
+			// Check Grade filter
+			if ((isset($_GET['grade'])) && trim($_GET['grade'] != ''))
+			{
+				// Pick up the Ws record
+				$criteria = new CDbCriteria;
+				$criteria->condition = "event_id = " . $event->id;
+				$ws = Ws::model()->find($criteria);
+				if ($ws)
+				{
+					$arr = explode('|', $_GET['grade']);
+					if (!(in_array($ws->grade, $arr)))
+						continue;
+				}
+			}
+
+
+			// From this point we're committed to adding this record, because of the jsEvents table syncing
+
 			$jsEvents .= '"' . $event->id . '",';
 			// Pick up the member
 			$criteria = new CDbCriteria;
