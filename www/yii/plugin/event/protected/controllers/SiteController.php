@@ -193,23 +193,31 @@ $content .= "<script> markerByOs('" . $ws->os_grid_ref . "'); </script>";
 						$content .= "<b>essential</b>";
 					else
 						$content .= "not essential";
-					if ($event->ticket_event_id != 0)
-						$content .= "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" . "<a href='#'><img style='margin-top:0px; margin-left:0px' title='Book' src='img/book-s.jpg'></a>";
-					$content .= "<br/>";
-					// Organisation
+					// Pick up the member record
 					$criteria = new CDbCriteria;
 					$criteria->condition = 'id = ' . $event->member_id;
 					$member = Member::model()->find($criteria);
+					// Ticketing info (if applicable)
+					if (($event->ticket_event_id != 0) && ($member))
+					{
+						$ticketUrl = "https://plugin.wireflydesign.com/ticket/index.php/ticket/book/" . $event->ticket_event_id . "?sid=" . $member->sid . "&ref=event";
+						$content .= "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" . "<a href='" . $ticketUrl . "'><img style='margin-top:0px; margin-left:0px' title='Book' src='img/book-s.jpg'></a>";
+					}
+					$content .= "<br/>";
+					// Organisation
 					if ($member)
 						if (trim($member->organisation) != '')
 							$content .= "Organization: " . $member->organisation . "<br>";
 					// Contact details
 					$content .= "Contact details: " . $event->contact . "<br>";
 					// Website
-					$http = "http://";
-					if (strstr("http://", $event->web))
-						$http = "";
-					$content .= "Website: " . "<a href='" . $http . $event->web . "'' target='_blank'>" . $event->web . "</a>" . "<br>";
+					if (trim($event->web) != '')
+					{
+						$http = "http://";
+						if (strstr("http://", $event->web))
+							$http = "";
+						$content .= "Website: " . "<a href='" . $http . $event->web . "'' target='_blank'>" . $event->web . "</a>" . "<br>";
+					}
 					// Suitable ages
 					if (($ws->min_age == 0) && ($ws->max_age == 0))
 						$content .= "Suitable for all ages" . "<br>";
