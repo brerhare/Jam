@@ -135,6 +135,7 @@ Moved Tom Henry's icon to the end of the regular icons on the bottom line
 						$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . $interest->name . "' src='userdata/icon/" . $interest->icon_path . "' width='20' height='20'>";
 				}
 			}
+			// @@TODO: These are hardcoded. Neednt be anymore now that theres 1 icon per band
 			// Price Band icons
 			if ($event->event_price_band_id == 1)	// Free
 				$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Free' . "' src='userdata/icon/" . 'Free x20.png' . "' width='20' height='20'>";
@@ -145,14 +146,11 @@ Moved Tom Henry's icon to the end of the regular icons on the bottom line
 					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Under £5' . "' src='userdata/icon/" . 'Pound x20.png' . "' width='20' height='20'>";
 				if ($event->event_price_band_id == 3)	// 2nd price
 				{
-					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . '£5 - £10' . "' src='userdata/icon/" . 'Pound x20.png' . "' width='20' height='20'>";
-					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . '£5 - £10' . "' src='userdata/icon/" . 'Pound x20.png' . "' width='20' height='20'>";
+					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . '£5 - £10' . "' src='userdata/icon/" . '2pound.png' . "' width='20' height='20'>";
 				}
 				if ($event->event_price_band_id == 4)	// 3rd price
 				{
-					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Over £10' . "' src='userdata/icon/" . 'Pound x20.png' . "' width='20' height='20'>";
-					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Over £10' . "' src='userdata/icon/" . 'Pound x20.png' . "' width='20' height='20'>";
-					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Over £10' . "' src='userdata/icon/" . 'Pound x20.png' . "' width='20' height='20'>";
+					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Over £10' . "' src='userdata/icon/" . '3pound.png' . "' width='20' height='20'>";
 				}
 			}
 
