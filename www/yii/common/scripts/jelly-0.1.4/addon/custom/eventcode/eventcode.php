@@ -230,7 +230,7 @@ END_OF_API_HTML_fill_headers;
 			}
 
 			$( document ).ready(function() {
-				ajaxGetEvent(0);
+				ajaxGetEvent(0);	// Dummy first ajax to 'initialise' the google map (who knows why its needed...)
 			});
 
 END_OF_API_JS_fill_headers;

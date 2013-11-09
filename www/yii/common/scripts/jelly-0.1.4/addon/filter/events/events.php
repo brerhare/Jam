@@ -62,7 +62,7 @@ class events
             $dt = $_GET['date'];
         $content .= "<br>";
         $content .= "<div class='filter-header'>Date<br>";
-        $content .= "<div class='filter-detail'>";
+        $content .= "<div class='filter-detail hasDatepicker'>";
         $content .= "<input type='text' id='datepicker' style='width:70px' value='" . $dt . "'>";
         $content .= "</div>";
         $content .= "</div>";              
@@ -141,6 +141,8 @@ class events
 
             <!-- Date support -->
 <!-- @@TODO!! @@FIX!!           <link rel="stylesheet" href="//code.jquery.com/ui/1.9.1/themes/smoothness/jquery-ui.css" />  -->
+
+            <link rel="stylesheet" href="<substitute-path>/jquery-ui-1.9.2.custom.css">
             
             <script src="//code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
 
@@ -198,6 +200,15 @@ END_OF_API_HTML;
     jQuery(document).ready(function($){
         selDate = document.getElementById("datepicker").value;
     });
+
+
+	// @@EG Datepicker styling - has no effect anywhere else
+	// Roll your own themeroller with css scope of .hasDatepicker
+	// Make the datepicker container div class .hasDatepicker (see above)
+	// The next 2 lines do it all...
+	$('#datepicker').datepicker();
+	$('#ui-datepicker-div').wrap('<div class="hasDatepicker"></div>');
+
 
     $('.filter-detail').click(function(){
         isDet = 1;

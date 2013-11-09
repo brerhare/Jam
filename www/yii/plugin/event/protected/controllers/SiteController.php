@@ -170,6 +170,7 @@ class SiteController extends Controller
 					$content .= $ws->short_description . "..." . "<br>";
 					$content .= "<table width=100% style='padding:10px 10px 10px 0px'><tr><td style='padding:0px; width:40%'>";
 
+// @@EG: Calling a jelly addon directly, from outside the jelly
 $addon = new google_os;
 $optArr = array();
 $optArr['single'] = '1';
@@ -180,12 +181,7 @@ $optArr['maptype'] = 'terrain';
 $optArr['inputmode'] = 'os';
 $optArr['center'] = $ws->os_grid_ref;
 $optArr['zoom'] = '9';
-Yii::log("GOOGLE MAP CALL", CLogger::LEVEL_WARNING, 'system.test.kim');
 $ret = $addon->init($optArr, '/event/scripts/jelly/addon/map/google_os');
-Yii::log("GOOGLE MAP RETURN", CLogger::LEVEL_WARNING, 'system.test.kim');
-Yii::log("GOOGLE MAP RETURN: SINGLE HTML [" . $ret[0] . "]", CLogger::LEVEL_WARNING, 'system.test.kim');
-Yii::log("GOOGLE MAP RETURN: SINGLE JS [" . $ret[1] . "]", CLogger::LEVEL_WARNING, 'system.test.kim');
-
 $content .= $ret[0];
 $content .= '<script>' . $ret[1] . '</script>';
 $content .= "<script> markerByOs('" . $ws->os_grid_ref . "'); </script>";
