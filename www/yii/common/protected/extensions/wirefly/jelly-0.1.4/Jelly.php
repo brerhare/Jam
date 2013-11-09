@@ -342,10 +342,11 @@ Yii::log("REPEATING EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim
                         {
 
 
-/*******************
+/*******************/
 							// @@TODO WILD SEASONS hardcoding
 							if ((isset($_GET['grade'])) && ($_GET['grade'] != ''))
 							{
+								die('x');
     							$criteria = new CDbCriteria;
 								$criteria->addCondition("event_id = " . $r->id);
 								$Ws = Ws::model()->find($criteria);
@@ -358,7 +359,7 @@ Yii::log("REPEATING EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim
 										continue;
 
 							}
-********************/
+/********************/
 							/* @@TODO THIS IS HALF DONE. CANT WORK LIKE GRADE ABOVE AS IS MANY-MANY
 							          SO ITS COMMENTED OUT FOR NOW
 							if ((isset($_GET['pb'])) && ($_GET['pb'] != ''))
