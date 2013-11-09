@@ -194,7 +194,7 @@ $content .= "<script> markerByOs('" . $ws->os_grid_ref . "'); </script>";
 					else
 						$content .= "not essential";
 					if ($event->ticket_event_id != 0)
-						$content .= "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" . "<a href='#'> <img style='margin-top:0px; margin-left:0px' title='Book' src='img/book-s.jpg'></a>";
+						$content .= "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" . "<a href='#'><img style='margin-top:0px; margin-left:0px' title='Book' src='img/book-s.jpg'></a>";
 					$content .= "<br/>";
 					// Organisation
 					$criteria = new CDbCriteria;

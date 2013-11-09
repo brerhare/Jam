@@ -143,7 +143,7 @@ Moved Tom Henry's icon to the end of the regular icons on the bottom line
 			$content .= $event->address;
 			$content .= "    </div>";
 
-			$content .= "    <div id='header-icons' style=float:left>";	
+			$content .= "    <div id='header-icons' style='float:left; padding-left:7px;'>";	
 			// Interest icons
 			$criteria = new CDbCriteria;
 			$criteria->condition = 'event_event_id = ' . $event->id;
@@ -200,7 +200,7 @@ Moved Tom Henry's icon to the end of the regular icons on the bottom line
 			if ($member)
 			{
 				if (trim($member->avatar_path) != '')
-					$content .= "<img style='margin-top:0px; margin-left:0px' title='Organisation' src='userdata/member/avatar/" . $member->avatar_path . "' width='20' height='20'>";
+					$content .= "<img style='margin-top:0px; margin-left:0px' title='" . $member->organisation . "' src='userdata/member/avatar/" . $member->avatar_path . "' width='20' height='20'>";
 
 			}
 
