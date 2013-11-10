@@ -201,7 +201,7 @@ $content .= "<script> markerByOs('" . $ws->os_grid_ref . "'); </script>";
 					if (($event->ticket_event_id != 0) && ($member))
 					{
 						$ticketUrl = "https://plugin.wireflydesign.com/ticket/index.php/ticket/book/" . $event->ticket_event_id . "?sid=" . $member->sid . "&ref=event";
-						$content .= "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" . "<a href='" . $ticketUrl . "'><img style='margin-top:0px; margin-left:0px' title='Book' src='img/book-s.jpg'></a>";
+						$content .= "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" . "<a target='_blank' href='" . $ticketUrl . "'><img style='margin-top:0px; margin-left:0px' title='Book' src='img/book-s.jpg'></a>";
 					}
 					$content .= "<br/>";
 					// Organisation
