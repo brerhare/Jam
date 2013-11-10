@@ -112,9 +112,9 @@ class megamenu
 
 
 <!--
-				<a onmouseover="javascript:recalcPos();" href=<substitute-path>"/index.php/'" id="megaanchor" style="color:#000000;"><substitute-anchortext></a>
+				<a onmouseover="javascript:recalcPos();" href=<substitute-path>"/index.php/'" id="megaanchor" ><substitute-anchortext></a>
 -->
-				<a onmouseover="javascript:recalcPos();" id="megaanchor" style="color:#000000;"><substitute-anchortext></a>
+				<a onmouseover="javascript:recalcPos();" id="megaanchor" ><substitute-anchortext></a>
 
 
 

@@ -39,7 +39,7 @@ css.overflow = visible
 			css.display = block
 			css.margin-top = 35px 
 			css.margin-left = 50px
-			addon.menu.megamenu.anchortext = Menu
+			addon.menu.megamenu.anchortext = <h4>Menu</h4>
 
 			[millenium]
 			css.display = block
