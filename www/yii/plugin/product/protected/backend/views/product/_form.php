@@ -5,6 +5,17 @@
         'type'=>'horizontal',
     )); ?>
 
+    <?php
+    // The original default price option, overridden if changed on the pricing screen. Sent back to server
+    $criteria = new CDbCriteria;
+    $criteria->addCondition("product_product_id = " . $model->id);
+    $criteria->addCondition("is_default = " . 1);
+    $productHasOption = $model->isNewRecord ? null : ProductHasOption::model()->find($criteria);
+    if ($productHasOption) echo " HAS "; else echo " HASNT ";
+    $def = ($productHasOption == null) ? 0 : $productHasOption->product_option_id;
+    echo "<input type='hidden' name='defaultOption' id='defaultOption' value='" . $def . "'>";
+    ?>
+
     <?php $this->widget('bootstrap.widgets.TbTabs',array(
         'type'=>'tabs',
         'tabs' => array(

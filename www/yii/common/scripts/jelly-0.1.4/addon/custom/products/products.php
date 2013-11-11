@@ -106,7 +106,10 @@ class products
 			$option = Option::model()->find($criteria);
 			if ($option)
 			{
-				$content .= "<option value='" . $option->id . "'>£" . $productHasOption->price . "&nbsp" . $option->name . "</option>";
+				$selected = "";
+				if ($productHasOption->is_default)
+					$selected = " selected ";
+				$content .= "<option " . $selected . " value='" . $option->id . "'>£" . $productHasOption->price . "&nbsp" . $option->name . "</option>";
 			}
 		}
 		$content .= "</select>";

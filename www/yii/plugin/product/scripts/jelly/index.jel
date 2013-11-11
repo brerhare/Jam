@@ -61,4 +61,4 @@ db.filter = sid=$_GET['sid']
 			db.filter = product_product_id=Product.id
 			db.order = price
 			html.raw = <b>Product.name
-			html.raw = </b><br>Price £ProductHasOption.price
+			html.raw = </b><br>From £ProductHasOption.price

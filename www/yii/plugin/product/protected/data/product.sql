@@ -165,6 +165,7 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`product_product_has_product_option` (
   `product_product_id` INT NOT NULL ,
   `product_option_id` INT NOT NULL ,
   `price` DECIMAL(10,2) NULL ,
+  `is_default` INT NULL ,
   PRIMARY KEY (`product_product_id`, `product_option_id`) ,
   INDEX `fk_product_product_has_product_option_product_option1` (`product_option_id` ASC) ,
   INDEX `fk_product_product_has_product_option_product_product1` (`product_product_id` ASC) ,
