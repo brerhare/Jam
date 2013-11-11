@@ -57,7 +57,7 @@ class productcode
 		$criteria->addCondition("product_product_id = " . $val);
     	$criteria->addCondition("is_default = " . 1);
 		$productHasOption = ProductHasOption::model()->find($criteria);
-		if ($productHasOptions)
+		if ($productHasOption)
 			$defaultOption = $productHasOption->price;
 	
 		$apiHtml = "";
