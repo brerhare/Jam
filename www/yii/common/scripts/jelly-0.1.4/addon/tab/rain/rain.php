@@ -171,7 +171,8 @@ $(".rain-tabcontent-container").equalHeights();
 		});
 		if((maxHeight) && tallest > maxHeight) tallest = maxHeight;
 		return this.each(function() {
-			$(this).height(tallest).css("overflow","auto");
+			// @@NBs 'auto'->'hidden-> to hide scrollbars        $(this).height(tallest).css("overflow","auto");
+			$(this).height(tallest).css("overflow","hidden");
 		});
 	}
 })(jQuery);
