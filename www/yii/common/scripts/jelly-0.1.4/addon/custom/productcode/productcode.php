@@ -50,7 +50,7 @@ class productcode
 	// Invoked by index.jel to get the default product price option
 	private function grid_display_get_default_option($val)
 	{
-		$defaultOption = "";
+		$defaultOption = " Not set";
 
 		// Find the default product option
 		$criteria = new CDbCriteria;
@@ -59,7 +59,16 @@ class productcode
 		$productHasOption = ProductHasOption::model()->find($criteria);
 		if ($productHasOption)
 			$defaultOption = $productHasOption->price;
-
+		else
+		{
+			// Find the cheapest product option
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("product_product_id = " . $val);
+    		$criteria->order("price");
+			$productHasOption = ProductHasOption::model()->findAll($criteria);
+			if ($productHasOption)
+				$defaultOption = $productHasOption->price;
+		}
 		$apiHtml = "";
 		$apiJs = "";
 		$clipBoard = $defaultOption;
