@@ -8,7 +8,7 @@
  * None
  */
 
-class products
+class productcode
 {
 	// Globals
 	private $uid = "";

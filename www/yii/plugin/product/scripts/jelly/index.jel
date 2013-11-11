@@ -58,5 +58,5 @@ db.filter = sid=$_GET['sid']
 			css.padding = 5px
 			css.color = #a60404
 			html.raw = <b>Product.name
-			addon.custom.products.grid_display_get_default_option = Product.id
+			addon.custom.productcode.grid_display_get_default_option = Product.id
 			html.raw = </b><br>From £@CLIPBOARD

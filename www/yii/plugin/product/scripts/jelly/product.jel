@@ -75,7 +75,7 @@ fx.wallpaper-color = #00000
 				#####db.filter = 'product_department_id'=Product.product_department_id
 
 					[option]
-					addon.custom.products.product_page_options_dropdown = Product.id
+					addon.custom.productcode.product_page_options_dropdown = Product.id
 					# this is now done in the addon... : html.raw = <br><br><a href="#"><img src="/product/img/add_to_cart.png">Product.id </a>
 
 				[features]
