@@ -57,8 +57,6 @@ db.filter = sid=$_GET['sid']
 			[product_text]
 			css.padding = 5px
 			css.color = #a60404
-			db.table = ProductHasOption
-			db.filter = product_product_id=Product.id
-			db.order = price
 			html.raw = <b>Product.name
-			html.raw = </b><br>From £ProductHasOption.price
+			addon.custom.products.grid_display_get_default_option = Product.id
+			html.raw = </b><br>From £@CLIPBOARD

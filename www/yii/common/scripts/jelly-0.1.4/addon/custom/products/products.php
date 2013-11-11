@@ -33,6 +33,9 @@ class products
 				case "product_page_options_dropdown":
 					return $this->product_page_options_dropdown($val);
 					break;
+				case "grid_display_get_default_option":
+					return $this->grid_display_get_default_option($val);
+					break;
 				case "checkout":
 					return $this->checkout($val);
 					break;
@@ -41,6 +44,31 @@ class products
 			}
 		}
 		return array("","");
+	}
+
+	/*********************************************************************************************************/
+	// Invoked by index.jel to get the default product price option
+	private function grid_display_get_default_option($val)
+	{
+		$defaultOption = "";
+
+		// Find the default product option
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("product_product_id = " . $val);
+    	$criteria->addCondition("is_default = " . 1);
+		$productHasOption = ProductHasOption::model()->find($criteria);
+		if ($productHasOptions)
+			$defaultOption = $productHasOption->price;
+	
+		$apiHtml = "";
+		$apiJs = "";
+		$clipBoard = $defaultOption;
+
+		$retArr = array();
+		$retArr[0] = $apiHtml;
+		$retArr[1] = $apiJs;
+		$retArr[2] = $clipBoard;
+		return $retArr;
 	}
 
 	/*********************************************************************************************************/

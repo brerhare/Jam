@@ -189,7 +189,6 @@ class products
                 $content .= "<label class='checkbox'> ";
                 $content .= "<input name='price[]' "; 
                 if ($match) $content .= " checked='checked' ";
-                //die('a='.str_replace(".00", "", $price->max))
                 $content .= "type='checkbox' value='" . $price->id . "' onClick=makeSel()> £" . str_replace(".00", "", $lastShown) . " - £" . str_replace(".00", "", $price->max);
                 array_push($this->priceCheck, $price->id . '_' . $lastShown . '_' . $price->max);                
                 $lastShown = $price->max;
