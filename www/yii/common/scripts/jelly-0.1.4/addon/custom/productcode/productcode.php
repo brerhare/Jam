@@ -59,7 +59,7 @@ class productcode
 		$productHasOption = ProductHasOption::model()->find($criteria);
 		if ($productHasOption)
 			$defaultOption = $productHasOption->price;
-	
+
 		$apiHtml = "";
 		$apiJs = "";
 		$clipBoard = $defaultOption;

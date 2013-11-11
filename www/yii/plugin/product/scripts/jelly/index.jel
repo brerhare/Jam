@@ -59,4 +59,4 @@ db.filter = sid=$_GET['sid']
 			css.color = #a60404
 			html.raw = <b>Product.name
 			addon.custom.productcode.grid_display_get_default_option = Product.id
-			html.raw = </b><br>From £@CLIPBOARD
+			html.raw = </b><br>Price £@CLIPBOARD

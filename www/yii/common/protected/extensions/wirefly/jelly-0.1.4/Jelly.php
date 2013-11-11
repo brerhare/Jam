@@ -741,6 +741,7 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				{
 					$this->clipBoard = $code[2];
 				}
+				// Important! unset the class, as multiple records will re-declare it, otherwise crashing
 				unset($addon);
 			}
 		}
