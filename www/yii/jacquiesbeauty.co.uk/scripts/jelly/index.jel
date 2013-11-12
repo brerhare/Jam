@@ -45,7 +45,7 @@ css.display = block
 			css.margin-top = -87px 
 			css.margin-left = 380px
 			html.h4 = Log-In
-			click = http://217.41.65.149:8080/clients/login.asp
+			click = http://217.41.65.149:8080/clients/login.asp target="_blank"
 
 			[fb]
 			css.display = block
