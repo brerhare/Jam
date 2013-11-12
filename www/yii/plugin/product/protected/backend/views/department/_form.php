@@ -18,6 +18,11 @@
 
 	<?php echo $form->textFieldRow($model,'name',array('class'=>'span5','maxlength'=>255, 'hint'=>$jellyEmbed)); ?>
 
+	<?php if (!($model->isNewRecord)): ?>
+		<a class="btn btn-small" title="Options" rel="tooltip" href="/product/backend.php/option/session?department_id=<?php echo $model->id; ?>">Options</a>
+		<a class="btn btn-small" title="Features" rel="tooltip" href="/product/backend.php/feature/session?department_id=<?php echo $model->id; ?>">Features</a>
+		<a class="btn btn-small" title="Products" rel="tooltip" href="/product/backend.php/product/session?department_id=<?php echo $model->id; ?>">Products</a>
+	<?php endif;?>
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
