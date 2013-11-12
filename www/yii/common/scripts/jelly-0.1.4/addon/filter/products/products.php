@@ -189,11 +189,34 @@ class products
                 $content .= "<label class='checkbox'> ";
                 $content .= "<input name='price[]' "; 
                 if ($match) $content .= " checked='checked' ";
-                $content .= "type='checkbox' value='" . $price->id . "' onClick=makeSel()> £" . str_replace(".00", "", $lastShown) . " - £" . str_replace(".00", "", $price->max);
+
+                if ($lastShown == 0)
+                {
+                    $from = "";
+                    $range = "Under £";
+                }
+                else
+                {
+                    $from = "£" . str_replace(".00", "", $lastShown);
+                    $range = " - £";
+                }
+                $to = str_replace(".00", "", $price->max);
+                $content .= "type='checkbox' value='" . $price->id . "' onClick=makeSel()> " . $from . $range . $to;
                 array_push($this->priceCheck, $price->id . '_' . $lastShown . '_' . $price->max);                
                 $lastShown = $price->max;
                 $content .= "</label><br>";
             endforeach;
+            // Handle over max
+            $match = false;
+            if (in_array(99999, $this->priceSel))
+                $match = true;
+            if (!(isset($_GET['price'])))
+                $match = true;
+            $content .= "<label class='checkbox'> ";
+            $content .= "<input name='price[]' "; 
+            if ($match) $content .= " checked='checked' ";
+            $content .= "type='checkbox' value='" . 99999 . "' onClick=makeSel()> " . "Over £" . $lastShown;
+            array_push($this->priceCheck, 99999 . '_' . $lastShown . '_' . 9999999.99);      
             $content .= "</div>";
             $content .= "</div>";
         }
