@@ -20,7 +20,7 @@ css.display = block
 	css.width = 908px	/* if we give an explicit width here, child elements will by default set their width to it */
 
 		[fixedheader]
-		child = menu, millenium, fb, checkout
+		child = menu, millenium, fb, checkout, home
 		stacking = horizontal
 		css.display = block
 		css.overflow = visible
@@ -66,6 +66,12 @@ css.display = block
 			image.width = 120px
 			image.height = 20px
 			click = ?layout=index&page=checkout
+
+			[home]
+			css.display = block
+			css.margin-top = -51px 
+			css.margin-left = 135px
+			html.raw = <a style="display:block" href="http://jacquies.wireflydesign.com"><div style='height:75px;width:218px;'></div></a>
 
 		[carousel]
 		css.display = block
