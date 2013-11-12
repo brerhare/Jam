@@ -55,7 +55,7 @@ css.display = block
 			image.url = /img/facebook.png
 			image.width = 20px
 			image.height = 20px
-			click = https://www.facebook.com/JacquiesBeauty?fref=ts
+			click = https://www.facebook.com/JacquiesBeauty?fref=ts target="_blank"
 
 			[checkout]
 			css.display = block
