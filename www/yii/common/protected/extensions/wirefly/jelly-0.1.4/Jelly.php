@@ -836,6 +836,10 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 
 	private function genInlineHtml($content, $indentLevel=0)
 	{
+		// Translate any @CLIPBOARD's
+		if (strstr($content, "@CLIPBOARD"))
+			$content = str_replace("@CLIPBOARD", $this->clipBoard, $content);
+
 		// Translate any curly wurleys
 		$p1 = strstr($content, "{{");
 		$p2 = strstr(substr($p1, 2), "}}", true);

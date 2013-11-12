@@ -64,10 +64,13 @@ class productcode
 			// Find the cheapest product option
 			$criteria = new CDbCriteria;
 			$criteria->addCondition("product_product_id = " . $val);
-    		$criteria->order("price");
-			$productHasOption = ProductHasOption::model()->findAll($criteria);
-			if ($productHasOption)
+    		//$criteria->order("price");
+			$productHasOptions = ProductHasOption::model()->findAll($criteria);
+			foreach ($productHasOptions as $productHasOption)
+			{
 				$defaultOption = $productHasOption->price;
+				break;
+			}
 		}
 		$apiHtml = "";
 		$apiJs = "";

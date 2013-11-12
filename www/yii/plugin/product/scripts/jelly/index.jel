@@ -44,6 +44,7 @@ db.filter = sid=$_GET['sid']
 		db.filter = id=@CLIPBOARD
 		db.order = name
 		db.fetch = multiple
+		addon.custom.productcode.grid_display_get_default_option = Product.id
 		click = index.php/?layout=product&product=Product.id
 
 			[product_image]
@@ -58,5 +59,5 @@ db.filter = sid=$_GET['sid']
 			css.padding = 5px
 			css.color = #a60404
 			html.raw = <b>Product.name
-			addon.custom.productcode.grid_display_get_default_option = Product.id
 			html.raw = </b><br>Price £@CLIPBOARD
+
