@@ -1,11 +1,9 @@
 [some_sensible_values]
 ;;;;;;;;;; css.html * = { font-size: 1em; color: #000; font-family: Verdana !important; }
-css.line-height = 180%
+css.line-height = 160%
 css.display = block 
 css.overflow = hidden /* (or any type of overflow) avoids position shift on no-margin containers */
 css.margin = 0px auto
-#html.raw = <head><link href='http://fonts.googleapis.com/css?family=Condiment|Oxygen:400,700' rel='stylesheet' type='text/css'></head>
-#html.raw = <style>h1 {font-family: 'Condiment', serif; font-size: 24px; text-shadow: 4px 4px 4px #aaa;}</style>
 #html.raw = <style type="text/css">h1 {color:red;} p{color:blue;}</style>
 
 ; Every blob inherits these before adding/overriding
@@ -25,10 +23,10 @@ css.display = block
 		child = menu, millenium, fb, checkout
 		stacking = horizontal
 		css.display = block
-css.overflow = visible
+		css.overflow = visible
 		css.position = fixed		/* position it, part 1 */
-		css.top = 0px				/* position it, part 2 */
-		css.left = 50%				/* centre it, part 1 - middle of the screen. margin-auto doesnt apply here because of 'fixed' */
+		css.top = 0px			/* position it, part 2 */
+		css.left = 50%			/* centre it, part 1 - middle of the screen. margin-auto doesnt apply here because of 'fixed' */
 		css.margin-left = -250px	/* centre it, part 2 - pull left by half the item's width */
 		css.width = 500px
 		css.height = 114px
@@ -37,22 +35,22 @@ css.overflow = visible
 
 			[menu]
 			css.display = block
-			css.margin-top = 35px 
+			css.margin-top = -10px 
 			css.margin-left = 50px
 			addon.menu.megamenu.anchortext = <h4>Menu</h4>
 
 			[millenium]
 			css.display = block
-			css.height = 20px
-			css.margin-top = -24px 
-			css.margin-left = 400px
-			html.h4 = Login
+			css.height = 70px
+			css.margin-top = -87px 
+			css.margin-left = 380px
+			html.h4 = Log-In
 			click = http://217.41.65.149:8080/clients/login.asp
 
 			[fb]
 			css.display = block
 			css.height = 20px
-			css.margin-top = -50px 
+			css.margin-top = -76px 
 			css.margin-left = 510px
 			image.url = /img/facebook.png
 			image.width = 20px
@@ -62,7 +60,7 @@ css.overflow = visible
 			[checkout]
 			css.display = block
 			css.height = 20px
-			css.margin-top = -50px 
+			css.margin-top = -76px 
 			css.margin-left = 540px
 			image.url = /img/cart.png
 			image.width = 120px
@@ -128,14 +126,14 @@ css.width = 680px
 
 			[footer-cookies]
 			html.raw = Cookie Policy
-			css.width = 100px
+			css.width = 120px
 			css.font-size = 10px
 			css.margin-left = 300px
 			click = http://jacquies.wireflydesign.com/?layout=index&page=cookies
 
 			[footer-tandc]
 			html.raw = Terms & Conditions
-			css.width = 100px
+			css.width = 120px
 			css.font-size = 10px
 			css.margin-left = 10px
 			click = http://jacquies.wireflydesign.com/?layout=index&page=t-and-c
@@ -148,17 +146,17 @@ css.width = 680px
 			click = http://jacquies.wireflydesign.com/?layout=index&page=privacy-policy
 
 		[address]
-		css.width = 420px
+		css.width = 500px
 		#css.height = 25px
 		css.font-size = 12px
-		#css.margin-left = 40px
+		css.margin-left = 230px
 		css.text-align = centre
 		html.raw = Jacquies Beauty, 34 Whitesands, Dumfries, Uk, DG1 2RS - 01387 269077
 		click = ?layout=index&page=contact-jacquies-beauty-salon-dumfries
 
 		[wirefly-details]
 		css.margin-top = 15px
-		css.width = 200px
+		css.width = 220px
 		css.font-size = 10px
 		#css.margin-left = 350px
 		css.text-align = centre
