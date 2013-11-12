@@ -13,6 +13,8 @@
  * @property string $width
  * @property string $depth
  * @property string $volume
+ * @property integer $duration
+ * @property integer $display_priority
  * @property integer $product_department_id
  * @property integer $product_vat_id
  *
@@ -52,14 +54,14 @@ class Product extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('uid, name, product_department_id, product_vat_id', 'required'),
-			array('uid, product_department_id, product_vat_id', 'numerical', 'integerOnly'=>true),
+			array('uid, duration, display_priority, product_department_id, product_vat_id', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>255),
 			array('weight, height, width, depth, volume', 'length', 'max'=>10),
 			array('duration', 'length', 'max'=>45),
 			array('description', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, name, description, weight, height, width, depth, volume, duration, product_department_id, product_vat_id', 'safe', 'on'=>'search'),
+			array('id, uid, name, description, weight, height, width, depth, volume, duration, display_priority, product_department_id, product_vat_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -97,6 +99,7 @@ class Product extends CActiveRecord
 			'duration' => 'Duration',
 			'product_department_id' => 'Department',
 			'product_vat_id' => 'Vat Rate',
+			'display_priority' => 'Display Priority',
 		);
 	}
 
@@ -121,7 +124,8 @@ class Product extends CActiveRecord
 		$criteria->compare('width',$this->width,true);
 		$criteria->compare('depth',$this->depth,true);
 		$criteria->compare('volume',$this->volume,true);
-		$criteria->compare('duration',$this->duration,true);
+		$criteria->compare('duration',$this->duration);
+		$criteria->compare('display_priority',$this->display_priority);
 		//$criteria->compare('product_department_id',$this->product_department_id);
 		$criteria->addCondition("product_department_id = " . Yii::app()->session['department_id']);
 		$criteria->compare('product_vat_id',$this->product_vat_id);
