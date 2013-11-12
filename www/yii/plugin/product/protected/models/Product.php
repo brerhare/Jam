@@ -134,4 +134,21 @@ class Product extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+    protected function afterFind(){
+        parent::afterFind();
+		if ($this->display_priority == 99999)
+			$this->display_priority = 0;
+    }
+
+    protected function beforeSave(){
+        if(parent::beforeSave()){
+            if ((empty($this->display_priority)) || ($this->display_priority == 0))
+                $this->display_priority = 99999;
+            return TRUE;
+        }
+       else
+            return false;
+    }
+
 }

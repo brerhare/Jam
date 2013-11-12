@@ -42,7 +42,7 @@ db.filter = sid=$_GET['sid']
 		db.table = Product
 		###db.filter = id=2 or id=1 or id=80
 		db.filter = id=@CLIPBOARD
-		db.order = display_priority ASC, name
+		db.order = display_priority
 		db.fetch = multiple
 		addon.custom.productcode.grid_display_get_default_option = Product.id
 		click = index.php/?layout=product&product=Product.id
