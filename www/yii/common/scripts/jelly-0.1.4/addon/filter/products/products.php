@@ -215,7 +215,7 @@ class products
             $content .= "<label class='checkbox'> ";
             $content .= "<input name='price[]' "; 
             if ($match) $content .= " checked='checked' ";
-            $content .= "type='checkbox' value='" . 99999 . "' onClick=makeSel()> " . "Over £" . $lastShown;
+            $content .= "type='checkbox' value='" . 99999 . "' onClick=makeSel()> " . "Over £" . str_replace(".00", "", $lastShown);
             array_push($this->priceCheck, 99999 . '_' . $lastShown . '_' . 9999999.99);      
             $content .= "</div>";
             $content .= "</div>";
