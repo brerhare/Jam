@@ -37,7 +37,7 @@ color: #555;
 } 
 #accordion .ui-accordion-content > * {  
     margin: 0;  
-    padding: 20px;  
+    /*padding: 20px;  */
 } 
 #accordion .ui-accordion-content a {  
     color: #777;  
