@@ -91,6 +91,54 @@ class events
             $content .= "</div>";
         }
 
+        // Format
+        $formats  = Format::model()->findAll(array('order'=>'id'));
+        if ($formats)
+        {
+            $formatSel = array();
+            if (isset($_GET['format']))
+                $formatSel = explode('|', $_GET['format']);
+            $content .= "<br>";
+            $content .= "<div class='filter-header'>Format<br>";
+            $content .= "<div class='filter-detail'>";
+            foreach ($formats as $format):
+                $match = false;
+                if (in_array($format->id, $formatSel))
+                    $match = true;
+                $content .= "<label class='checkbox'> ";
+                $content .= "<input name='format[]' "; 
+                if ($match) $content .= " checked='checked' ";
+                $content .= "type='checkbox' value='" . $format->id . "' onClick=makeSel()>" . $format->name;
+                $content .= "</label><br>";
+            endforeach;
+            $content .= "</div>";
+            $content .= "</div>";
+        }
+
+        // Facility
+        $facilities  = Facility::model()->findAll(array('order'=>'id'));
+        if ($facilities)
+        {
+            $facilitySel = array();
+            if (isset($_GET['facility']))
+                $facilitySel = explode('|', $_GET['facility']);
+            $content .= "<br>";
+            $content .= "<div class='filter-header'>Facility<br>";
+            $content .= "<div class='filter-detail'>";
+            foreach ($facilities as $facility):
+                $match = false;
+                if (in_array($facility->id, $facilitySel))
+                    $match = true;
+                $content .= "<label class='checkbox'> ";
+                $content .= "<input name='facility[]' "; 
+                if ($match) $content .= " checked='checked' ";
+                $content .= "type='checkbox' value='" . $facility->id . "' onClick=makeSel()>" . $facility->name;
+                $content .= "</label><br>";
+            endforeach;
+            $content .= "</div>";
+            $content .= "</div>";
+        }
+
         // Price band (always shown if exists)
         $prices  = PriceBand::model()->findAll(array('order'=>'id'));
         if ($prices)
@@ -202,6 +250,38 @@ END_OF_API_HTML;
                 }
             }
             sel += '&interest=' + str; 
+        }
+
+        // Format
+        av=document.getElementsByName("format[]");
+        if (av.length > 0)
+        {
+            var str = '';
+           for (var i = 0; i < av.length; i++)
+           {
+               if (av[i].checked)
+                {
+                    if (str != '') str += '|';
+                    str += av[i].value;
+                }
+            }
+            sel += '&format=' + str; 
+        }
+
+        // Facility
+        av=document.getElementsByName("facility[]");
+        if (av.length > 0)
+        {
+            var str = '';
+           for (var i = 0; i < av.length; i++)
+           {
+               if (av[i].checked)
+                {
+                    if (str != '') str += '|';
+                    str += av[i].value;
+                }
+            }
+            sel += '&facility=' + str; 
         }
 
         // Price band

@@ -87,6 +87,46 @@ class eventcode
 					continue;
 			}
 
+			// Check Format filter
+			if ((isset($_GET['format'])) && trim($_GET['format'] != ''))
+			{
+				$arr = explode('|', $_GET['format']);
+				// See if there are any format record matches
+				$criteria = new CDbCriteria;
+				$criteria->addCondition ("event_event_id = " . $event->id);
+				$cond = "";
+				foreach ($arr as $arrItem)
+				{
+					if ($cond != "")
+						$cond .= " or ";
+					$cond .= " event_format_id = " . $arrItem;
+				}
+				$criteria->addCondition($cond);
+				$eventHasFormats = EventHasFormat::model()->findAll($criteria);
+				if (count($eventHasFormats) != count($arr))
+					continue;
+			}
+
+			// Check Facility filter
+			if ((isset($_GET['facility'])) && trim($_GET['facility'] != ''))
+			{
+				$arr = explode('|', $_GET['facility']);
+				// See if there are any facility record matches
+				$criteria = new CDbCriteria;
+				$criteria->addCondition ("event_event_id = " . $event->id);
+				$cond = "";
+				foreach ($arr as $arrItem)
+				{
+					if ($cond != "")
+						$cond .= " or ";
+					$cond .= " event_facility_id = " . $arrItem;
+				}
+				$criteria->addCondition($cond);
+				$eventHasFacilities = EventHasFacility::model()->findAll($criteria);
+				if (count($eventHasFacilities) != count($arr))
+					continue;
+			}
+
 			// Check Price band filter
 			if ((isset($_GET['pb'])) && trim($_GET['pb'] != ''))
 			{
