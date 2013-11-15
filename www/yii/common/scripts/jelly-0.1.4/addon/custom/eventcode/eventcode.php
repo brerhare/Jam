@@ -50,8 +50,8 @@ class eventcode
 	private function fill_headers($val)
 	{
 		$content = "";
-		
-					$content .= "<style>#hdr { cursor: pointer; cursor: hand; } </style>";
+
+		$content .= "<style>#hdr { cursor: pointer; cursor: hand; } </style>";	// Hover on header shows hand
 
 		$jsEvents = "var jsEvents=[";
 

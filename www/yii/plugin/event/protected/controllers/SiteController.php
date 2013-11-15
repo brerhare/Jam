@@ -239,7 +239,7 @@ $content .= "<script> markerByOs('" . $ws->os_grid_ref . "'); </script>";
 					if (trim($ws->additional_venue_info) != '')
 						$content .= "Additional venue info: " . $ws->additional_venue_info . "<br>";
 					if (trim($ws->full_price_notes) != '')
-						$content .= "Full price notes: " . $ws->full_price_notes . "<br>";
+						$content .= "Full price notes: " . $ws->full_price_notes . "<br><br>";
 				}
 				else 
 					$content .= "No Ws record";
