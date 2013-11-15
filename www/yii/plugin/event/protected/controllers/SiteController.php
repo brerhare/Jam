@@ -197,12 +197,7 @@ $content .= "<script> markerByOs('" . $ws->os_grid_ref . "'); </script>";
 					$criteria = new CDbCriteria;
 					$criteria->condition = 'id = ' . $event->member_id;
 					$member = Member::model()->find($criteria);
-					// Ticketing info (if applicable)
-					if (($event->ticket_event_id != 0) && ($member))
-					{
-						$ticketUrl = "https://plugin.wireflydesign.com/ticket/index.php/ticket/book/" . $event->ticket_event_id . "?sid=" . $member->sid . "&ref=event";
-						$content .= "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp" . "<a target='_blank' href='" . $ticketUrl . "'><img style='margin-top:0px; margin-left:0px' title='Book' src='img/book-s.jpg'></a>";
-					}
+
 					$content .= "<br/>";
 					// Organisation
 					if ($member)
@@ -239,7 +234,15 @@ $content .= "<script> markerByOs('" . $ws->os_grid_ref . "'); </script>";
 					if (trim($ws->additional_venue_info) != '')
 						$content .= "Additional venue info: " . $ws->additional_venue_info . "<br>";
 					if (trim($ws->full_price_notes) != '')
-						$content .= "Full price notes: " . $ws->full_price_notes . "<br><br>";
+						$content .= "Full price notes: " . $ws->full_price_notes . "<br>";
+
+					// Ticketing info (if applicable)
+					if (($event->ticket_event_id != 0) && ($member))
+					{
+						$ticketUrl = "https://plugin.wireflydesign.com/ticket/index.php/ticket/book/" . $event->ticket_event_id . "?sid=" . $member->sid . "&ref=event";
+						$content .= "<div style='float:right'><a target='_blank' href='" . $ticketUrl . "'><img style='margin-top:0px; margin-left:0px' title='Book' src='img/book-s.jpg'></a></div><br/>";
+					}
+					$content .= "<br><br>";
 				}
 				else 
 					$content .= "No Ws record";

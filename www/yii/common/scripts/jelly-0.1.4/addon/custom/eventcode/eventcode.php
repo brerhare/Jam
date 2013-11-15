@@ -183,6 +183,15 @@ Moved Tom Henry's icon to the end of the regular icons on the bottom line
 			}
 */
 			$content .= $event->title;
+
+			// Ticketing info (if applicable)
+			if (($event->ticket_event_id != 0) && ($member))
+			{
+				$ticketUrl = "https://plugin.wireflydesign.com/ticket/index.php/ticket/book/" . $event->ticket_event_id . "?sid=" . $member->sid . "&ref=event";
+				$content .= "<script>function goBook(where){window.open(where, '_blank');}</script>";
+				$content .= "<div style='float:right'><a target='_blank' href='" . $ticketUrl . "'><img style='margin-top:0px; margin-left:0px' onClick=goBook('" . $ticketUrl . "') title='Book' src='img/book-s.jpg'></a></div><br/>";
+			}
+
 			$content .= "    </div>";
 
 			$content .= "    <div id='header-date'>";	
