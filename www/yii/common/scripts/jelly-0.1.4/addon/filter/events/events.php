@@ -67,6 +67,30 @@ class events
         $content .= "</div>";
         $content .= "</div>";              
 
+        // Interest
+        $interests  = Interest::model()->findAll(array('order'=>'id'));
+        if ($interests)
+        {
+            $interestSel = array();
+            if (isset($_GET['interest']))
+                $interestSel = explode('|', $_GET['interest']);
+            $content .= "<br>";
+            $content .= "<div class='filter-header'>Interest<br>";
+            $content .= "<div class='filter-detail'>";
+            foreach ($interests as $interest):
+                $match = false;
+                if (in_array($interest->id, $interestSel))
+                    $match = true;
+                $content .= "<label class='checkbox'> ";
+                $content .= "<input name='interest[]' "; 
+                if ($match) $content .= " checked='checked' ";
+                $content .= "type='checkbox' value='" . $interest->id . "' onClick=makeSel()>" . $interest->name;
+                $content .= "</label><br>";
+            endforeach;
+            $content .= "</div>";
+            $content .= "</div>";
+        }
+
         // Price band (always shown if exists)
         $prices  = PriceBand::model()->findAll(array('order'=>'id'));
         if ($prices)
@@ -163,6 +187,23 @@ END_OF_API_HTML;
     {
         // Date
         sel = '?layout=index&date=' + selDate;
+
+        // Interest
+        av=document.getElementsByName("interest[]");
+        if (av.length > 0)
+        {
+            var str = '';
+           for (var i = 0; i < av.length; i++)
+           {
+               if (av[i].checked)
+                {
+                    if (str != '') str += '|';
+                    str += av[i].value;
+                }
+            }
+            sel += '&interest=' + str; 
+        }
+
         // Price band
         av=document.getElementsByName("price[]");
         if (av.length > 0)
@@ -178,6 +219,7 @@ END_OF_API_HTML;
             }
             sel += '&pb=' + str; 
         }
+
         // Grade
         av=document.getElementsByName("grade[]");
         if (av.length > 0)

@@ -67,6 +67,26 @@ class eventcode
 		$events = Event::model()->findAll($criteria);
 		foreach ($events as $event)
 		{
+			// Check Interest filter
+			if ((isset($_GET['interest'])) && trim($_GET['interest'] != ''))
+			{
+				$arr = explode('|', $_GET['interest']);
+				// See if there are any interest record matches
+				$criteria = new CDbCriteria;
+				$criteria->addCondition ("event_event_id = " . $event->id);
+				$cond = "";
+				foreach ($arr as $arrItem)
+				{
+					if ($cond != "")
+						$cond .= " or ";
+					$cond .= " event_interest_id = " . $arrItem;
+				}
+				$criteria->addCondition($cond);
+				$eventHasInterests = EventHasInterest::model()->findAll($criteria);
+				if (count($eventHasInterests) != count($arr))
+					continue;
+			}
+
 			// Check Price band filter
 			if ((isset($_GET['pb'])) && trim($_GET['pb'] != ''))
 			{
