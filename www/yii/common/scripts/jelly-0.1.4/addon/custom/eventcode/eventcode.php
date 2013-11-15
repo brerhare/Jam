@@ -50,6 +50,9 @@ class eventcode
 	private function fill_headers($val)
 	{
 		$content = "";
+		
+					$content .= "<style>#hdr { cursor: pointer; cursor: hand; } </style>";
+
 		$jsEvents = "var jsEvents=[";
 
 		$content .= "<div id='accordion'>";
@@ -165,7 +168,7 @@ class eventcode
 
 
 			// The header block
-			$content .= "<div> <!-- header -->";
+			$content .= "<div id='hdr'> <!-- header -->";
 
 			$content .= "  <div style=float:left>";
 
