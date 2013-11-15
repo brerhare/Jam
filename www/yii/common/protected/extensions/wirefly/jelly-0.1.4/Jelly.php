@@ -112,6 +112,8 @@ END_OF_FOOTER;
 	private $dbTable = array();
 	private $dbError = array();
 
+	private $headerArray = array();	// Anything for header goes in here
+
 	private $cssGlobalArray = array();
 	private $cssDivArray = array();
 	private $bodyArray = array();
@@ -193,6 +195,9 @@ END_OF_FOOTER;
 		if (file_exists($this->jellyRootPath . 'header.html'))
 			$this->emit(file_get_contents($this->jellyRootPath . 'header.html'));
 
+		foreach ($this->headerArray as $hdr)
+			$this->emit($hdr);
+
 		$this->emit("\n<!-- CSS start -->\n<style type='text/css'>\n");
 		foreach ($this->cssGlobalArray as $css)
 			$this->emit($css);
@@ -200,6 +205,7 @@ END_OF_FOOTER;
 			$this->emit($css);
 		$this->emit("</style>\n<!-- CSS end -->\n");
 		$this->emit($this->endHeader);
+
 		foreach ($this->bodyArray as $body)
 			$this->emit($body);
 		foreach ($this->scriptArray as $script)
@@ -740,6 +746,10 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				if (count($code) == 3)				// Clipboard content returned by the addon
 				{
 					$this->clipBoard = $code[2];
+				}
+				if (count($code) == 4)				// Header content returned by the addon
+				{
+					array_push($this->headerArray, $code[3]);
 				}
 				// Important! unset the class, as multiple records will re-declare it, otherwise crashing
 				unset($addon);
