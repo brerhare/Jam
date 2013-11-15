@@ -45,7 +45,7 @@ db.filter = sid=$_GET['sid']
 		db.order = display_priority
 		db.fetch = multiple
 		addon.custom.productcode.grid_display_get_default_option = Product.id
-		click = index.php/?layout=product&product=Product.id&sid=$_GET['sid']
+		click = index.php/?layout=product&sid=$_GET['sid']&product=Product.id
 
 
 			[product_image]
