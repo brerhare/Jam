@@ -186,7 +186,7 @@ $content .= $ret[0];
 $content .= '<script>' . $ret[1] . '</script>';
 $content .= "<script> markerByOs('" . $ws->os_grid_ref . "'); </script>";
 
-					$content .= "</td><td style='width:60%; padding:10px'>";
+					$content .= "</td><td style='width:60%; padding-left:10px; vertical-align:top'>";
 					// Booking
 					$content .= "Booking ";
 					if ($ws->booking_essential)
