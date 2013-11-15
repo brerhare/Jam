@@ -163,6 +163,7 @@ class eventcode
 			$criteria->condition = 'id = ' . $event->program_id;
 			$program = Program::model()->find($criteria);
 
+
 			// The header block
 			$content .= "<div> <!-- header -->";
 
@@ -203,7 +204,11 @@ Moved Tom Henry's icon to the end of the regular icons on the bottom line
 			$content .= $event->address;
 			$content .= "    </div>";
 
-			$content .= "    <div id='header-icons' style='float:left; padding-left:7px;'>";	
+			$content .= "    <div id='header-icons' style='float:left; padding-left:7px;'>";
+
+			// Twisty
+			$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Show more' . "' src='img/" . 'open-twisty.png' . "' >";
+
 			// Interest icons
 			$criteria = new CDbCriteria;
 			$criteria->condition = 'event_event_id = ' . $event->id;

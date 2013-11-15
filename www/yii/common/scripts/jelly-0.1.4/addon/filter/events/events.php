@@ -61,7 +61,7 @@ class events
         if (isset($_GET['date']))
             $dt = $_GET['date'];
         $content .= "<br>";
-        $content .= "<div class='filter-header'>Date<br>";
+        $content .= "<a href='#'><div class='filter-header'>Date</a><br>";
         $content .= "<div class='filter-detail hasDatepicker'>";
         $content .= "<input type='text' id='datepicker' style='width:70px' value='" . $dt . "'>";
         $content .= "</div>";
@@ -69,18 +69,22 @@ class events
 
         // Interest
         $interests  = Interest::model()->findAll(array('order'=>'id'));
+        $openInterest = false;
         if ($interests)
         {
             $interestSel = array();
             if (isset($_GET['interest']))
                 $interestSel = explode('|', $_GET['interest']);
             $content .= "<br>";
-            $content .= "<div class='filter-header'>Interest<br>";
-            $content .= "<div class='filter-detail'>";
+            $content .= "<a href='#'></img><div class='filter-header'>Interest</a><br>";
+            $content .= "<div id='interest-detail' class='filter-detail'>";
             foreach ($interests as $interest):
                 $match = false;
                 if (in_array($interest->id, $interestSel))
+                {
                     $match = true;
+                    $openInterest = true;
+                }
                 $content .= "<label class='checkbox'> ";
                 $content .= "<input name='interest[]' "; 
                 if ($match) $content .= " checked='checked' ";
@@ -93,18 +97,22 @@ class events
 
         // Format
         $formats  = Format::model()->findAll(array('order'=>'id'));
+        $openFormat = false;
         if ($formats)
         {
             $formatSel = array();
             if (isset($_GET['format']))
                 $formatSel = explode('|', $_GET['format']);
             $content .= "<br>";
-            $content .= "<div class='filter-header'>Format<br>";
-            $content .= "<div class='filter-detail'>";
+            $content .= "<a href='#'><div class='filter-header'>Format</a><br>";
+            $content .= "<div id='format-detail' class='filter-detail'>";
             foreach ($formats as $format):
                 $match = false;
                 if (in_array($format->id, $formatSel))
+                {
                     $match = true;
+                    $openFormat = true;
+                }
                 $content .= "<label class='checkbox'> ";
                 $content .= "<input name='format[]' "; 
                 if ($match) $content .= " checked='checked' ";
@@ -117,18 +125,22 @@ class events
 
         // Facility
         $facilities  = Facility::model()->findAll(array('order'=>'id'));
+        $openFacility = false;
         if ($facilities)
         {
             $facilitySel = array();
             if (isset($_GET['facility']))
                 $facilitySel = explode('|', $_GET['facility']);
             $content .= "<br>";
-            $content .= "<div class='filter-header'>Facility<br>";
-            $content .= "<div class='filter-detail'>";
+            $content .= "<a href='#'><div class='filter-header'>Facility</a><br>";
+            $content .= "<div id='facility-detail' class='filter-detail'>";
             foreach ($facilities as $facility):
                 $match = false;
                 if (in_array($facility->id, $facilitySel))
+                {
                     $match = true;
+                    $openFacility = true;
+                }
                 $content .= "<label class='checkbox'> ";
                 $content .= "<input name='facility[]' "; 
                 if ($match) $content .= " checked='checked' ";
@@ -141,18 +153,22 @@ class events
 
         // Price band (always shown if exists)
         $prices  = PriceBand::model()->findAll(array('order'=>'id'));
+        $openPrice = false;
         if ($prices)
         {
             $pbSel = array();
             if (isset($_GET['pb']))
                 $pbSel = explode('|', $_GET['pb']);
             $content .= "<br>";
-            $content .= "<div class='filter-header'>Price Band<br>";
-            $content .= "<div class='filter-detail'>";
+            $content .= "<a href='#'><div class='filter-header'>Price Band</a><br>";
+            $content .= "<div id='price-detail' class='filter-detail'>";
             foreach ($prices as $price):
                 $match = false;
                 if (in_array($price->id, $pbSel))
+                {
                     $match = true;
+                    $openPrice = true;
+                }
                 $content .= "<label class='checkbox'> ";
                 $content .= "<input name='price[]' "; 
                 if ($match) $content .= " checked='checked' ";
@@ -168,18 +184,22 @@ class events
 
          // Grade
         $grades = array( "Family", "Easy", "Medium", "Hard", "Task");
+        $openGrade = false;
         if ($grades)
         {   
             $gradeSel = array();
             if (isset($_GET['grade']))
                 $gradeSel = explode('|', $_GET['grade']);
             $content .= "<br>";
-            $content .= "<div class='filter-header'>grade<br>";
-            $content .= "<div class='filter-detail'>";
+            $content .= "<a href='#'><div class='filter-header'>grade</a><br>";
+            $content .= "<div id='grade-detail' class='filter-detail'>";
             foreach ($grades as $grade):
                 $match = false;
                 if (in_array($grade, $gradeSel))
+                {
                     $match = true;
+                    $openGrade = true;
+                }
                 $content .= "<label class='checkbox'> ";
                 $content .= "<input name='grade[]' "; 
                 if ($match) $content .= " checked='checked' ";
@@ -189,6 +209,20 @@ class events
             $content .= "</div>";
             $content .= "</div>";
         }
+
+        // Open twisty any selected groups of filters
+        $content .= "<script>";
+        if (!($openInterest))
+            $content .= "document.getElementById('interest-detail').style.display='none';";
+        if (!($openFormat))
+           $content .= "document.getElementById('format-detail').style.display='none';";
+        if (!($openFacility))
+            $content .= "document.getElementById('facility-detail').style.display='none';";
+        if (!($openPrice))
+            $content .= "document.getElementById('price-detail').style.display='none';";
+        if (!($openGrade))
+            $content .= "document.getElementById('grade-detail').style.display='none';";
+        $content .= "</script>";
 
         $content .= "</div>";
         $html = str_replace("<substitute-data>", $content, $this->apiHtml);
