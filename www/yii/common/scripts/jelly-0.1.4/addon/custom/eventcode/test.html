@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>jQuery UI Accordion - Collapse content</title>
+<!-- <link rel="stylesheet" href="http://code.jquery.com/ui/1.9.1/themes/smoothness/jquery-ui.css" /> -->
+<script src="//code.jquery.com/jquery-1.9.1.js"></script>
+<script src="//code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
+<!-- <script src="//code.jquery.com/jquery.ui.effect.js"></script> -->
+
+<style>
+#accordion {
+	width: 520px;
+	margin: 50px auto;
+}
+
+#accordion .ui-accordion-header {  
+	border: 1px solid #a9b68b;
+    background-color: #c4e1b1;  
+	height:100px;
+	margin-bottom:3px;
+	padding:3px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+} 
+#accordion .ui-accordion-header a {  
+    color: #fff;  
+    line-height: 42px;  
+    display: block;  
+    font-size: 12pt;  
+    width: 100%;  
+    text-indent: 10px;  
+}  
+#accordion .ui-accordion-content {  
+    width: 100%;  
+    background-color: #f3f3f3;  
+//background-color: #00ff00;  
+    color: #777;  
+    font-size: 10pt;  
+    line-height: 16pt;  
+} 
+#accordion .ui-accordion-content > * {  
+    margin: 0;  
+    padding: 20px;  
+} 
+#accordion .ui-accordion-content a {  
+    color: #777;  
+}
+</style>
+
+<script>
+$(function() {
+	$( "#accordion" ).accordion({
+//header: 'a' ,
+//header: '> div.wrap' ,
+heightStyle: 'content',
+
+		collapsible: true,
+		active: true,
+    	/*activate: function (event, ui) { alert("activate"); }, */
+    	beforeActivate: function (event, ui) {
+			if($('.accordion_header').hasClass('ui-state-active')) {
+				//alert('open');
+			}
+			else {
+				//alert('closed');
+			}
+			//alert("before activate");
+		}
+	});
+});
+
+$( document ).ready(function() {
+});
+
+</script>
+
+</head>
+<body>
+
+
+<div id="accordion">
+
+	<div>
+		Xection 91
+	</div>
+	<div>
+		ddd
+	</div>
+
+	<div>
+		S2
+	</div>
+		<div>Sed non urna</div>
+
+	<div>
+		Section 3<br>ddd
+	</div>
+	<div>
+		<ul>
+		<li>List item one</li>
+		<li>List item two</li>
+		<li>List item three</li>
+		</ul>
+	</div>
+
+	<div>
+	 DDD
+	</div>
+		<div>
+		<p>Cras dictum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia mauris vel est. </p><p>Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
+		<p>Cras dictum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia mauris vel est. </p><p>Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
+		<p>Cras dictum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia mauris vel est. </p><p>Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
+		<p>Cras dictum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia mauris vel est. </p><p>Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
+		<p>Cras dictum. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia mauris vel est. </p><p>Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
+	</div>
+	</div>
+
+
+
+</body>
+</html>

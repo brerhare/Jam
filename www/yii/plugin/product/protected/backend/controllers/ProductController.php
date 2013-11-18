@@ -209,11 +209,17 @@ class ProductController extends Controller
         $criteria->addCondition("uid = " . Yii::app()->session['uid']);
         $criteria->addCondition("product_department_id = " . Yii::app()->session['department_id']);
         $options = Option::model()->findAll($criteria);
+//        var_dump($_POST); die();
         foreach ($options as $option):
            	$prc = new ProductHasOption;
            	$prc->product_product_id = $id;
            	$prc->product_option_id = $option->id;
            	$prc->price = $_POST[$option->id . '_price'];
+           	if (isset($_POST['defaultOption']))
+           	{
+           		if ($prc->product_option_id == $_POST['defaultOption'])
+           			$prc->is_default = 1;
+            }
 			if ($prc->price != 0)
            		$prc->save();
         endforeach;

@@ -20,11 +20,12 @@ class Sid extends CBehavior
 
 		if (isset($_GET['sid']))
 		{
+			$sid = str_replace('"', '', $_GET['sid']);
 			unset(Yii::app()->session['uid']);
-			Yii::log("Preprocess request - We have been given new sid " . $_GET['sid'], CLogger::LEVEL_WARNING, 'system.test.kim');
+			Yii::log("Preprocess request - We have been given new sid " . $sid, CLogger::LEVEL_WARNING, 'system.test.kim');
 
 			$criteria = new CDbCriteria;
-			$criteria->addCondition("sid = '" . $_GET['sid'] . "'");
+			$criteria->addCondition("sid = '" . $sid . "'");
 			$user = User::model()->find($criteria);
 			if ($user == null)
 			{
@@ -34,7 +35,7 @@ class Sid extends CBehavior
 			Yii::app()->session['uid'] = $user->id;
 			Yii::app()->session['uid_email'] = $user->email_address;
 			Yii::app()->session['uid_name'] = $user->display_name;
-			Yii::app()->session['sid'] = $_GET['sid'];	// @@ Set sid too 'cos iframes not trusted. Google 'P3P'
+			Yii::app()->session['sid'] = $sid;	// @@ Set sid too 'cos iframes not trusted. Google 'P3P'
 			Yii::log("Preprocess request - sid validated. Setting uid to " . Yii::app()->session['uid'], CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
 

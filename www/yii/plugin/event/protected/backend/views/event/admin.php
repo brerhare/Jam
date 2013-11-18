@@ -39,7 +39,15 @@ $this->menu=array(
 		*/
 		array(
             'class'=>'bootstrap.widgets.TbButtonColumn',
-            'template'=>'{update}{delete}',
+            'template'=>'{update}{clone}{delete}',
+            'buttons'=>array(
+            	'clone' => array(
+                	'label'=>'Clone',
+                	'imageUrl'=>Yii::app()->request->baseUrl.'/img/copy.png',
+                	'url'=>'Yii::app()->controller->createUrl("event/clone", array("id"=>$data->primaryKey))',
+            	),
+			),
+
         ),
 	),
 )); ?>

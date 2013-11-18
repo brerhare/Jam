@@ -8,7 +8,7 @@
  * None
  */
 
-class products
+class productcode
 {
 	// Globals
 	private $uid = "";
@@ -33,6 +33,9 @@ class products
 				case "product_page_options_dropdown":
 					return $this->product_page_options_dropdown($val);
 					break;
+				case "grid_display_get_default_option":
+					return $this->grid_display_get_default_option($val);
+					break;
 				case "checkout":
 					return $this->checkout($val);
 					break;
@@ -41,6 +44,43 @@ class products
 			}
 		}
 		return array("","");
+	}
+
+	/*********************************************************************************************************/
+	// Invoked by index.jel to get the default product price option
+	private function grid_display_get_default_option($val)
+	{
+		$defaultOption = " Not set";
+
+		// Find the default product option
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("product_product_id = " . $val);
+    	$criteria->addCondition("is_default = " . 1);
+		$productHasOption = ProductHasOption::model()->find($criteria);
+		if ($productHasOption)
+			$defaultOption = $productHasOption->price;
+		else
+		{
+			// Find the cheapest product option
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("product_product_id = " . $val);
+    		//$criteria->order("price");
+			$productHasOptions = ProductHasOption::model()->findAll($criteria);
+			foreach ($productHasOptions as $productHasOption)
+			{
+				$defaultOption = $productHasOption->price;
+				break;
+			}
+		}
+		$apiHtml = "";
+		$apiJs = "";
+		$clipBoard = $defaultOption;
+
+		$retArr = array();
+		$retArr[0] = $apiHtml;
+		$retArr[1] = $apiJs;
+		$retArr[2] = $clipBoard;
+		return $retArr;
 	}
 
 	/*********************************************************************************************************/
@@ -106,7 +146,10 @@ class products
 			$option = Option::model()->find($criteria);
 			if ($option)
 			{
-				$content .= "<option value='" . $option->id . "'>£" . $productHasOption->price . "&nbsp" . $option->name . "</option>";
+				$selected = "";
+				if ($productHasOption->is_default)
+					$selected = " selected ";
+				$content .= "<option " . $selected . " value='" . $option->id . "'>£" . $productHasOption->price . "&nbsp" . $option->name . "</option>";
 			}
 		}
 		$content .= "</select>";

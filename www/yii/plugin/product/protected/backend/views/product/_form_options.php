@@ -12,6 +12,7 @@
         <tr>
 	        <th style="width:50%">Option</th>
             <th>Price</th>
+            <th>Default?</th>
         </tr>
         </thead>
         <tbody>
@@ -33,6 +34,10 @@
 			$price = ($productHasOption == null) ? "" : " value='" . $productHasOption->price . "' ";
 			if ($price == " value='0.00' ") $price = "";
 	        echo "<td><input style='text-align:right;width:75px;' type='text' name='" . $option->id . "_price' " . $price . " ></td>";
+	        $checked ="";
+	        if (($productHasOption) && ($productHasOption->is_default == 1))
+	        	$checked = " checked='checked' ";
+	        echo "<td><input style='text-align:right' type='radio' name='default' onChange=setDefault('" . $option->id . "');" . $checked . " ></td>";
 	        echo "</tr>";
 
 		endforeach; ?>
@@ -50,3 +55,10 @@
 		)); ?>
 	</div>
 
+<script>
+function setDefault(optionId)
+{
+	document.getElementById('defaultOption').value = optionId;
+	//alert(document.getElementById('defaultOption').value);
+}
+</script>

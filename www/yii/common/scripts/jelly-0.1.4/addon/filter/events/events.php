@@ -61,26 +61,114 @@ class events
         if (isset($_GET['date']))
             $dt = $_GET['date'];
         $content .= "<br>";
-        $content .= "<div class='filter-header'>Date<br>";
-        $content .= "<div class='filter-detail'>";
+        $content .= "<a href='#'><div class='filter-header'>Date</a><br>";
+        $content .= "<div class='filter-detail hasDatepicker'>";
         $content .= "<input type='text' id='datepicker' style='width:70px' value='" . $dt . "'>";
         $content .= "</div>";
         $content .= "</div>";              
 
+        // Interest
+        $interests  = Interest::model()->findAll(array('order'=>'id'));
+        $openInterest = false;
+        if ($interests)
+        {
+            $interestSel = array();
+            if (isset($_GET['interest']))
+                $interestSel = explode('|', $_GET['interest']);
+            $content .= "<br>";
+            $content .= "<a href='#'></img><div class='filter-header'>Interest</a><br>";
+            $content .= "<div id='interest-detail' class='filter-detail'>";
+            foreach ($interests as $interest):
+                $match = false;
+                if (in_array($interest->id, $interestSel))
+                {
+                    $match = true;
+                    $openInterest = true;
+                }
+                $content .= "<label class='checkbox'> ";
+                $content .= "<input name='interest[]' "; 
+                if ($match) $content .= " checked='checked' ";
+                $content .= "type='checkbox' value='" . $interest->id . "' onClick=makeSel()>" . $interest->name;
+                $content .= "</label><br>";
+            endforeach;
+            $content .= "</div>";
+            $content .= "</div>";
+        }
+
+        // Format
+        $formats  = Format::model()->findAll(array('order'=>'id'));
+        $openFormat = false;
+        if ($formats)
+        {
+            $formatSel = array();
+            if (isset($_GET['format']))
+                $formatSel = explode('|', $_GET['format']);
+            $content .= "<br>";
+            $content .= "<a href='#'><div class='filter-header'>Format</a><br>";
+            $content .= "<div id='format-detail' class='filter-detail'>";
+            foreach ($formats as $format):
+                $match = false;
+                if (in_array($format->id, $formatSel))
+                {
+                    $match = true;
+                    $openFormat = true;
+                }
+                $content .= "<label class='checkbox'> ";
+                $content .= "<input name='format[]' "; 
+                if ($match) $content .= " checked='checked' ";
+                $content .= "type='checkbox' value='" . $format->id . "' onClick=makeSel()>" . $format->name;
+                $content .= "</label><br>";
+            endforeach;
+            $content .= "</div>";
+            $content .= "</div>";
+        }
+
+        // Facility
+        $facilities  = Facility::model()->findAll(array('order'=>'id'));
+        $openFacility = false;
+        if ($facilities)
+        {
+            $facilitySel = array();
+            if (isset($_GET['facility']))
+                $facilitySel = explode('|', $_GET['facility']);
+            $content .= "<br>";
+            $content .= "<a href='#'><div class='filter-header'>Facility</a><br>";
+            $content .= "<div id='facility-detail' class='filter-detail'>";
+            foreach ($facilities as $facility):
+                $match = false;
+                if (in_array($facility->id, $facilitySel))
+                {
+                    $match = true;
+                    $openFacility = true;
+                }
+                $content .= "<label class='checkbox'> ";
+                $content .= "<input name='facility[]' "; 
+                if ($match) $content .= " checked='checked' ";
+                $content .= "type='checkbox' value='" . $facility->id . "' onClick=makeSel()>" . $facility->name;
+                $content .= "</label><br>";
+            endforeach;
+            $content .= "</div>";
+            $content .= "</div>";
+        }
+
         // Price band (always shown if exists)
         $prices  = PriceBand::model()->findAll(array('order'=>'id'));
+        $openPrice = false;
         if ($prices)
         {
             $pbSel = array();
             if (isset($_GET['pb']))
                 $pbSel = explode('|', $_GET['pb']);
             $content .= "<br>";
-            $content .= "<div class='filter-header'>Price Band<br>";
-            $content .= "<div class='filter-detail'>";
+            $content .= "<a href='#'><div class='filter-header'>Price Band</a><br>";
+            $content .= "<div id='price-detail' class='filter-detail'>";
             foreach ($prices as $price):
                 $match = false;
                 if (in_array($price->id, $pbSel))
+                {
                     $match = true;
+                    $openPrice = true;
+                }
                 $content .= "<label class='checkbox'> ";
                 $content .= "<input name='price[]' "; 
                 if ($match) $content .= " checked='checked' ";
@@ -96,18 +184,22 @@ class events
 
          // Grade
         $grades = array( "Family", "Easy", "Medium", "Hard", "Task");
+        $openGrade = false;
         if ($grades)
         {   
             $gradeSel = array();
             if (isset($_GET['grade']))
                 $gradeSel = explode('|', $_GET['grade']);
             $content .= "<br>";
-            $content .= "<div class='filter-header'>grade<br>";
-            $content .= "<div class='filter-detail'>";
+            $content .= "<a href='#'><div class='filter-header'>grade</a><br>";
+            $content .= "<div id='grade-detail' class='filter-detail'>";
             foreach ($grades as $grade):
                 $match = false;
                 if (in_array($grade, $gradeSel))
+                {
                     $match = true;
+                    $openGrade = true;
+                }
                 $content .= "<label class='checkbox'> ";
                 $content .= "<input name='grade[]' "; 
                 if ($match) $content .= " checked='checked' ";
@@ -117,6 +209,20 @@ class events
             $content .= "</div>";
             $content .= "</div>";
         }
+
+        // Open twisty any selected groups of filters
+        $content .= "<script>";
+        if (!($openInterest))
+            $content .= "document.getElementById('interest-detail').style.display='none';";
+        if (!($openFormat))
+           $content .= "document.getElementById('format-detail').style.display='none';";
+        if (!($openFacility))
+            $content .= "document.getElementById('facility-detail').style.display='none';";
+        if (!($openPrice))
+            $content .= "document.getElementById('price-detail').style.display='none';";
+        if (!($openGrade))
+            $content .= "document.getElementById('grade-detail').style.display='none';";
+        $content .= "</script>";
 
         $content .= "</div>";
         $html = str_replace("<substitute-data>", $content, $this->apiHtml);
@@ -140,7 +246,9 @@ class events
             <link rel="stylesheet" type="text/css" href="<substitute-path>/events.css" />
 
             <!-- Date support -->
-            <link rel="stylesheet" href="//code.jquery.com/ui/1.9.1/themes/smoothness/jquery-ui.css" />
+
+            <!-- @@NB This is a themeroller cookup of the smoothness theme -->
+            <link rel="stylesheet" href="<substitute-path>/jquery-ui-1.9.2.custom.css">
             
             <script src="//code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
 
@@ -161,6 +269,55 @@ END_OF_API_HTML;
     {
         // Date
         sel = '?layout=index&date=' + selDate;
+
+        // Interest
+        av=document.getElementsByName("interest[]");
+        if (av.length > 0)
+        {
+            var str = '';
+           for (var i = 0; i < av.length; i++)
+           {
+               if (av[i].checked)
+                {
+                    if (str != '') str += '|';
+                    str += av[i].value;
+                }
+            }
+            sel += '&interest=' + str; 
+        }
+
+        // Format
+        av=document.getElementsByName("format[]");
+        if (av.length > 0)
+        {
+            var str = '';
+           for (var i = 0; i < av.length; i++)
+           {
+               if (av[i].checked)
+                {
+                    if (str != '') str += '|';
+                    str += av[i].value;
+                }
+            }
+            sel += '&format=' + str; 
+        }
+
+        // Facility
+        av=document.getElementsByName("facility[]");
+        if (av.length > 0)
+        {
+            var str = '';
+           for (var i = 0; i < av.length; i++)
+           {
+               if (av[i].checked)
+                {
+                    if (str != '') str += '|';
+                    str += av[i].value;
+                }
+            }
+            sel += '&facility=' + str; 
+        }
+
         // Price band
         av=document.getElementsByName("price[]");
         if (av.length > 0)
@@ -176,6 +333,7 @@ END_OF_API_HTML;
             }
             sel += '&pb=' + str; 
         }
+
         // Grade
         av=document.getElementsByName("grade[]");
         if (av.length > 0)
@@ -199,6 +357,14 @@ END_OF_API_HTML;
         selDate = document.getElementById("datepicker").value;
     });
 
+
+	// @@EG Datepicker styling - has no effect anywhere else
+	// Roll your own themeroller with css scope of .hasDatepicker
+	// Make the datepicker container div class .hasDatepicker (see above)
+	// The next line must be added right after the $('#datepicker').datepicker({ etc up till the });
+	// $('#ui-datepicker-div').wrap('<div class="hasDatepicker"></div>');
+
+
     $('.filter-detail').click(function(){
         isDet = 1;
         $('.filter-detail', this).toggle(); // p00f
@@ -216,12 +382,16 @@ END_OF_API_HTML;
     //Datepicker
     $('#datepicker').datepicker({
         dateFormat: 'dd-mm-yy',
+		showButtonPanel:  true,
+        timeFormat: "hh:mm",    // HH is 24 hour clock, hh is 12 hour clock
         onSelect: function(
         dateText, inst) {
             selDate = dateText;
             makeSel();
         }
     });
+	// @@EG next line applies to the Datepicker styling about 30 lines up
+	$('#ui-datepicker-div').wrap('<div class="hasDatepicker"></div>');
 
 
 END_OF_API_JS;

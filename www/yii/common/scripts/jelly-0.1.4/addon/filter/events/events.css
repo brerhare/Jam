@@ -5,6 +5,10 @@
     margin-top: -10px;
 }
 
+a {
+	text-decoration: none;
+}
+
 .filter-detail  {
 font-weight:normal
 }

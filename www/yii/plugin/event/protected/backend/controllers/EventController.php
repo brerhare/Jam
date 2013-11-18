@@ -33,11 +33,11 @@ class EventController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','import','admin','delete','imageUpload','imageList'),
+				'actions'=>array('create','update','import','admin','delete','clone','imageUpload','imageList'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','import','imageUpload','imageList'),
+				'actions'=>array('admin','delete','import','clone','imageUpload','imageList'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -157,23 +157,63 @@ class EventController extends Controller
 	}
 
 	/**
+	 * Clones a particular model.
+	 * @param integer $id the ID of the model to be updated
+	 */
+	public function actionClone($id)
+	{
+        Yii::log("Clone EVENT ----- start. id = " . $id , CLogger::LEVEL_WARNING, 'system.test.kim');
+        $model=$this->loadModel($id);
+		if ($model)
+		{
+			$originalId = $model->id;
+
+			// Insert event record
+			unset($model->id);
+			$model->title = $model->title . " (copy)";
+			$model->thumb_path = "";
+			$model->description = "";
+			$model->ticket_event_id = 0;
+			$model->isNewRecord = true;
+			if ($model->insert())
+			{
+				$criteria = new CDbCriteria;
+				$criteria->condition="event_id = $originalId";
+        		$model2=Ws::model()->find($criteria);
+        		if ($model2)
+				{
+					// Insert ws record
+					unset($model2->id);
+            		$model2->event_id = $model->id;
+					$model2->isNewRecord = true;
+					if (!($model2->insert()))
+					{
+						$model->delete();
+						die("Internal error copying event (ws record)");
+					}
+				}
+			}
+		}
+		$this->redirect(array('admin'));
+	}
+
+	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
 	public function actionUpdate($id)
 	{
-        Yii::log("UPDATE EVENT ----- star  t. id = " . $id , CLogger::LEVEL_WARNING, 'system.test.kim');
+        Yii::log("UPDATE EVENT ----- start. id = " . $id , CLogger::LEVEL_WARNING, 'system.test.kim');
         $iDir = $this->getThumbDir();
         $model=$this->loadModel($id);
-
 		$criteria = new CDbCriteria;
 		$criteria->condition="event_id = $model->id";
         $model2=Ws::model()->find($criteria);
         if (!($model2))
         {
         	Yii::log("UPDATE EVENT ----- loading up. id = " . $id . " no model2. Dying " , CLogger::LEVEL_WARNING, 'system.test.kim');
-        	die('Couldnt find event matching Ws record for update');
+        	die('Couldnt find event matching Ws record for update for event id ' . $id . ' Please report this error');
         }
 
         // Uncomment the following line if AJAX validation is needed
