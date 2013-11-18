@@ -18,7 +18,7 @@ db.filter = sid=$_GET['sid']
 	###stacking = horizontal
 	css.width = 850px
 	#css.height = 670px
-	css.background-color = #f2f2f2
+	#css.background-color = #f2f2f2
 	childss.overflow = auto
 	#####db.table = Department
 	#####db.filter = id=$_GET['department'],uid=User.id
