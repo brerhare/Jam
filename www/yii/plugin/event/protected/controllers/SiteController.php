@@ -236,6 +236,9 @@ $content .= "<script> markerByOs('" . $ws->os_grid_ref . "'); </script>";
 					if (trim($ws->full_price_notes) != '')
 						$content .= "Full price notes: " . $ws->full_price_notes . "<br>";
 
+					// Facebook
+					$content .= "<div style='float:right;padding-left:10px;padding-top:1px' class='fb-share-button' data-href='http://www.wildseasons.co.uk' data-type='button'></div>";
+
 					// Ticketing info (if applicable)
 					if (($event->ticket_event_id != 0) && ($member))
 					{

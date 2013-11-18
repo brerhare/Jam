@@ -52,6 +52,15 @@ class eventcode
 
 		$jsEvents = "var jsEvents=[";
 
+		$content .= "<div id='fb-root'></div>";	// Facebook
+		$content .=	"<script>(function(d, s, id) {" .
+  						"var js, fjs = d.getElementsByTagName(s)[0];" .
+  						"if (d.getElementById(id)) return;" .
+  						"js = d.createElement(s); js.id = id;" .
+  						"js.src = '//connect.facebook.net/en_GB/all.js#xfbml=1&appId=503217659701725';" .
+  						"fjs.parentNode.insertBefore(js, fjs);" .
+					"}(document, 'script', 'facebook-jssdk'));</script>" ;
+
 		$content .= "<div id='accordion'>";
 
 		// Check date filter (dd-mm-yyyy)
@@ -350,6 +359,7 @@ END_OF_API_HTML_fill_headers;
 			var ajaxShowEvent = function(val) {
 				//alert('Server sent ' + val.paneId + ' and ' + val.eventId);
 				$('#' + val.paneId).html(val.content);
+				FB.XFBML.parse();
 			}
 
 			$( document ).ready(function() {
