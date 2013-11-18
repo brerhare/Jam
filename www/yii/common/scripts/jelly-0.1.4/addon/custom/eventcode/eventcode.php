@@ -35,9 +35,6 @@ class eventcode
 				case "fill_headers":
 					return $this->fill_headers($val);
 					break;
-				case "checkout":
-					return $this->checkout($val);
-					break;
 				default:
 					break;
 			}
@@ -46,7 +43,7 @@ class eventcode
 	}
 
 	/*********************************************************************************************************/
-	// Invoked by product.jel to show the product price options
+	// Invoked by index.jel to create the accordion headers according to the event filter which has just been run
 	private function fill_headers($val)
 	{
 		$content = "";
