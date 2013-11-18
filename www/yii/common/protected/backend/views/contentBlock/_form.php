@@ -30,7 +30,8 @@
 
     <?php $urlEmbed = "";
     if (!($model->isNewRecord))
-        $urlEmbed = "<i>http://jacquies.wireflydesign.com/?layout=index&page=" . $model->url . "</i>"; ?>
+        //$urlEmbed = "<i>http://www.beirc.co.uk/?layout=index&page=" . $model->url . "</i>";
+        $urlEmbed = "<i>" . Yii::app()->getBaseUrl(true) . "/?layout=index&page=" . $model->url . "</i>"; ?>
 
 	<?php echo $form->textFieldRow($model,'url',array('class'=>'span5','maxlength'=>255, 'hint'=>$urlEmbed)); ?>
 
