@@ -382,6 +382,7 @@ END_OF_API_HTML;
     //Datepicker
     $('#datepicker').datepicker({
         dateFormat: 'dd-mm-yy',
+		showButtonPanel:  true,
         timeFormat: "hh:mm",    // HH is 24 hour clock, hh is 12 hour clock
         onSelect: function(
         dateText, inst) {
