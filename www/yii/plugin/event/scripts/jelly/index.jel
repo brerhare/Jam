@@ -48,6 +48,6 @@ fx.wallpaper-color = #00000
 		
 		[eventcontainer]
 		css.width = 540px
-		child = event
+		#child = event
         addon.custom.eventcode.fill_headers = true  
 

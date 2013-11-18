@@ -65,6 +65,7 @@ class eventcode
 		$criteria->condition = "start >= '" . $date . "'";
 		$criteria->order = 'start ASC';
 		$events = Event::model()->findAll($criteria);
+		$hasEvents = false;
 		foreach ($events as $event)
 		{
 			// Check Interest filter
@@ -163,6 +164,7 @@ class eventcode
 			$criteria->condition = 'id = ' . $event->program_id;
 			$program = Program::model()->find($criteria);
 
+			$hasEvents = true;
 
 			// The header block
 			$content .= "<div id='hdr'> <!-- header -->";
@@ -300,8 +302,13 @@ Moved Tom Henry's icon to the end of the regular icons on the bottom line
 			$content .= "</div>";
 		}
 		$content .= "</div>";
-		$jsEvents = substr($jsEvents, 0, -1) . "];";
 
+		// Terminate the generated js array
+		if ($hasEvents)
+			$jsEvents = substr($jsEvents, 0, -1) . "];";
+		else
+			$jsEvents .= "];";
+	
 		$apiHtml = <<<END_OF_API_HTML_fill_headers
 
 			<div id="jelly-fill_headers-container">
