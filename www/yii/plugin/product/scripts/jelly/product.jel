@@ -49,7 +49,7 @@ fx.wallpaper-color = #00000
 					css.height = 180px
 					#css.height = 250px
 					css.margin = 10px
-					css.border = 2px solid purple
+					#css.border = 2px solid purple
 					db.table = Image
 					db.filter = product_product_id=Product.id
 					style.background-image = /userdata/image/Image.filename
