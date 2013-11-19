@@ -70,7 +70,14 @@ class SiteController extends Controller
 	// Invoke the Paymentsense module
 	public function actionPay()
 	{
+var_dump("wireflycart-" . Yii::app()->session['sid']);
+die();
 		Yii::log("PAYMENT PAGE LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
+		if (trim(Yii::app()->session['sid']) == "")
+		{
+			Yii::log("NOT LOADING PAYMENT PAGE because SID is unset!" , CLogger::LEVEL_WARNING, 'system.test.kim');
+			throw new CHttpException(400,'Cannot proceed to payment because SID is unset. Has this session been idle a long time?');
+		}
 
 		// Record the order in the Order
 
@@ -89,7 +96,7 @@ class SiteController extends Controller
 				echo $error['message'];
 			else
 				$this->render('error', $error);
-		}
+		}G
 	}
 
 	/**
