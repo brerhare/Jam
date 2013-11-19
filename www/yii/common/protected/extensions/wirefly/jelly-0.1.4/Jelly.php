@@ -507,7 +507,7 @@ if (isset($_GET['page']))
 						case ("background-image"):
 							$img = $this->dbExpand($cssValue);
 							$this->genDivCSS("background-image: url('" . Yii::app()->baseUrl . str_replace("'", "\'", $img) . "');\n
-							background-size: 100%;
+							background-size: contain;
 							background-repeat:no-repeat;
 							background-position:center;
 							"); 
@@ -515,7 +515,7 @@ if (isset($_GET['page']))
 						case ("background-image-bottom"):
 							$img = $this->dbExpand($cssValue);
 							$this->genDivCSS("background-image: url('" . Yii::app()->baseUrl . str_replace("'", "\'", $img) . "');\n
-							background-size: 100%;
+							background-size: contain;
 							background-repeat:no-repeat;
 							background-position:bottom;
 							"); 
