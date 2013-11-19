@@ -13,6 +13,7 @@ class productcode
 	// Globals
 	private $uid = "";
 	private $sid = "";
+	private $cartId = "";
 
 	/*
 	 * Set up any code pre-requisites (onload/document-ready reqs)
@@ -31,12 +32,18 @@ class productcode
 			switch ($opt)
 			{
 				case "product_page_options_dropdown":
+					$errStr = $this->setCartId();
+					if ($errStr != "")
+						return array($errStr, "");
 					return $this->product_page_options_dropdown($val);
 					break;
 				case "grid_display_get_default_option":
 					return $this->grid_display_get_default_option($val);
 					break;
 				case "checkout":
+					$errStr = $this->setCartId();
+					if ($errStr != "")
+						return array($errStr, "");
 					return $this->checkout($val);
 					break;
 				default:
@@ -88,8 +95,8 @@ class productcode
 	private function product_page_options_dropdown($val)
 	{
 		/*********************
-		// Check cookie
-		$cookieValue = (string)Yii::app()->request->cookies['wfcart'];
+		// Check cookie @@EG
+		$cookieValue = (string)Yii::app()->request->cookies['whatevername'];
 		*********************/
 
 		$productId = $val;
@@ -100,7 +107,7 @@ class productcode
 		if ((isset($_GET['cartproduct'])) && (isset($_GET['cartoption'])) && (isset($_GET['cartqty'])) && (isset($_GET['cartref'])))
 		{
 
-			$cartContent = Yii::app()->session['cart'];
+			$cartContent = Yii::app()->session[$this->cartId];
 //echo('original cart=['.$cartContent.']<br>');
 
 			if (!(strstr($cartContent, '_' . $_GET['cartref'])))
@@ -124,7 +131,7 @@ class productcode
 					}
 				}
 //echo('new cart=['.$cartContent.']<br>');
-			Yii::app()->session['cart'] = $cartContent;
+			Yii::app()->session[$this->cartId] = $cartContent;
 			}
 		}
 
@@ -205,7 +212,7 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 
 
 		// Pick up the Cart info
-		$cartContent = Yii::app()->session['cart'];
+		$cartContent = Yii::app()->session[$this->cartId];
 //echo 'cart=[' . $cartContent . ']<br>';
 		if ($cartContent == '')
 			$cartArr = array();
@@ -235,7 +242,7 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 							$cartContent .= '|';
 					$cartContent .= $cartArr[$i];
 				}
-				Yii::app()->session['cart'] = $cartContent;
+				Yii::app()->session[$this->cartId] = $cartContent;
 			}
 		}
 
@@ -452,6 +459,14 @@ END_OF_API_JS_checkout;
 		return $retArr;
 	}
 
+	// Set the cart id and make sure it is valid
+	private function setCartId()
+	{
+		if (!(isset($_GET['sid'])))
+			return "Missing sid parameter";
+		$this->cartId = "wireflycart-" . str_replace('"', '', $_GET['sid']);
+		return "";
+	}
 
 }
 
