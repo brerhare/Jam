@@ -244,6 +244,7 @@ $content .= "<script> markerByOs('" . $ws->os_grid_ref . "'); </script>";
 					{
 						$ticketUrl = "https://plugin.wireflydesign.com/ticket/index.php/ticket/book/" . $event->ticket_event_id . "?sid=" . $member->sid . "&ref=event";
 						$content .= "<div style='float:right'><a target='_blank' href='" . $ticketUrl . "'><img style='margin-top:0px; margin-left:0px' title='Book' src='img/book-s.jpg'></a></div><br/>";
+						$content .= "<div style='clear:both'></div>";
 					}
 					$content .= "<br><br>";
 				}
