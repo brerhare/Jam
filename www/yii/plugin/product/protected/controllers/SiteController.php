@@ -74,7 +74,7 @@ class SiteController extends Controller
 		if (trim(Yii::app()->session['sid']) == "")
 		{
 			Yii::log("NOT LOADING PAYMENT PAGE because SID is unset!" , CLogger::LEVEL_WARNING, 'system.test.kim');
-			throw new CHttpException(400,'Cannot proceed to payment because SID is not set or expired. Has this session been idle a long time?');
+			throw new CHttpException(400,'Cannot proceed to payment because SID is not set or expired. (Has this session been idle a long time?)');
 		}
 
 		// Record the order in the Order

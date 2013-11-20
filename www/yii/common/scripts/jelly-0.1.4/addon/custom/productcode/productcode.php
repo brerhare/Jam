@@ -206,6 +206,8 @@ END_OF_API_JS_product_page_options_dropdown;
 
 		$content = "";
 
+		$content .= "<script>var cartId='" . $this->cartId . "';</script>";
+
 
 // For debugging - empty the cart
 if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['cart'] = '';
@@ -446,7 +448,7 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 
 			function proceed()
 			{
-				window.location.href = '/product/index.php/site/pay';
+				window.location.href = '/product/index.php/site/pay&cartid='+cartId;
 			}
 END_OF_API_JS_checkout;
 
