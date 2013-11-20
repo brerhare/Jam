@@ -268,9 +268,9 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 		}
 
 		$content .= "<div>";
-		$content .= "<style> table.itemgrid {  border-collapse: collapse;} .itemgrid tr {   border: solid;  border-width: 1px 0;}</style>";
+		$content .= "<style> table.itemgrid {  border-collapse: collapse;} .itemgrid tr {   border: solid;  border-width: 1px 0; border-color:#bdbdbd}</style>";
 		//$content .= "<style>tr:first-child {  border-top: none;}tr:last-child {  border-bottom: none;} </style>";
-		$content .= '<center><h3>Shopping cart</h3><center>';	
+		$content .= "<center><h3 style='padding-bottom:10px;color:grey;'>Shopping cart</h3><center>";	
 		$content .= "<table class='itemgrid' style='width:80%; float:left'>";
 		$content .= "<thead><tr>";
 		$content .= "<th width=10%></th>";	// Image

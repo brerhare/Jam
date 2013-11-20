@@ -23,7 +23,7 @@ fx.wallpaper-color = #00000
 
 		[graphic]
 		css.height = 4px
-		css.background-color = purple
+		#css.background-color = purple
 	
 		[main-content]
 		stacking = horizontal
@@ -62,7 +62,7 @@ fx.wallpaper-color = #00000
 						css.width = 80px
 						css.height = 60px
 						css.margin = 10px
-						css.border = 1px solid purple
+						#css.border = 1px solid purple
 						db.table = Image
 						db.filter = product_product_id=Product.id, id!=Image.id
 						db.fetch = multiple
