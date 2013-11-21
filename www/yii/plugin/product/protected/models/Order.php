@@ -16,6 +16,7 @@
  * @property string $http_qty
  * @property string $http_price
  * @property string $http_line_total
+ * @property string $http_shipping
  * @property string $http_total
  * @property string $auth_code
  * @property string $return_url
@@ -74,11 +75,11 @@ class Order extends CActiveRecord
 			array('uid, ip, vendor_id, event_id', 'required'),
 			array('uid, vendor_id, event_id', 'numerical', 'integerOnly'=>true),
 			array('ip, sid, order_number, return_url, email_address, delivery_address1, delivery_address2, delivery_address3, delivery_address4, delivery_post_code, telephone, card_name, card_number, card_cv2, card_address1, card_address2, card_address3, card_address4, card_city, card_state', 'length', 'max'=>255),
-			array('http_product_id, http_option_id, http_qty, http_price, http_line_total, http_total, auth_code, card_expiry_month, card_expiry_year, card_post_code, card_country_short, card_currency_short, card_amount', 'length', 'max'=>45),
+			array('http_product_id, http_option_id, http_qty, http_price, http_line_total, http_shipping, http_total, auth_code, card_expiry_month, card_expiry_year, card_post_code, card_country_short, card_currency_short, card_amount', 'length', 'max'=>45),
 			array('notes', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, ip, sid, order_number, vendor_id, event_id, http_product_id, http_option_id, http_qty, http_price, http_line_total, http_total, auth_code, return_url, email_address, delivery_address1, delivery_address2, delivery_address3, delivery_address4, delivery_post_code, notes, telephone, card_name, card_number, card_expiry_month, card_expiry_year, card_cv2, card_address1, card_address2, card_address3, card_address4, card_city, card_state, card_post_code, card_country_short, card_currency_short, card_amount', 'safe', 'on'=>'search'),
+			array('id, uid, ip, sid, order_number, vendor_id, event_id, http_product_id, http_option_id, http_qty, http_price, http_line_total, http_shipping, http_total, auth_code, return_url, email_address, delivery_address1, delivery_address2, delivery_address3, delivery_address4, delivery_post_code, notes, telephone, card_name, card_number, card_expiry_month, card_expiry_year, card_cv2, card_address1, card_address2, card_address3, card_address4, card_city, card_state, card_post_code, card_country_short, card_currency_short, card_amount', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -111,6 +112,7 @@ class Order extends CActiveRecord
 			'http_qty' => 'Http Qty',
 			'http_price' => 'Http Price',
 			'http_line_total' => 'Http Line Total',
+			'http_shipping' => 'Http Shipping',
 			'http_total' => 'Http Total',
 			'auth_code' => 'Auth Code',
 			'return_url' => 'Return Url',
@@ -163,6 +165,7 @@ class Order extends CActiveRecord
 		$criteria->compare('http_qty',$this->http_qty,true);
 		$criteria->compare('http_price',$this->http_price,true);
 		$criteria->compare('http_line_total',$this->http_line_total,true);
+		$criteria->compare('http_shipping',$this->http_shipping,true);
 		$criteria->compare('http_total',$this->http_total,true);
 		$criteria->compare('auth_code',$this->auth_code,true);
 		$criteria->compare('return_url',$this->return_url,true);

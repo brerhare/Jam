@@ -17,6 +17,7 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`product_order` (
   `http_qty` VARCHAR(45) NULL ,
   `http_price` VARCHAR(45) NULL ,
   `http_line_total` VARCHAR(45) NULL ,
+  `http_shipping` VARCHAR(45) NULL ,
   `http_total` VARCHAR(45) NULL ,
   `auth_code` VARCHAR(45) NULL ,
   `return_url` VARCHAR(255) NULL ,
