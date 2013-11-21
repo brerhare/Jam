@@ -70,17 +70,140 @@ class SiteController extends Controller
 	// Invoke the Paymentsense module
 	public function actionPay()
 	{
-		Yii::log("PAYMENT PAGE LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
+		if (isset($_GET['shipid']))
+			$shipId = $_GET['shipid'];
+		else
+		{
+			Yii::log("Checkout - NOT LOADING PAYMENT PAGE because 'shipid' wasnt passed" , CLogger::LEVEL_WARNING, 'system.test.kim');
+			throw new CHttpException(400,'Cannot proceed to payment because shipid wasnt passed by caller');
+		}
+		if (isset($_GET['cartid']))
+			$cartId = $_GET['cartid'];
+		else
+		{
+			Yii::log("Checkout - NOT LOADING PAYMENT PAGE because 'cartid' wasnt passed" , CLogger::LEVEL_WARNING, 'system.test.kim');
+			throw new CHttpException(400,'Cannot proceed to payment because cartid wasnt passed by caller');
+		}
+		Yii::log("Checkout - PAYMENT PAGE LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		if (trim(Yii::app()->session['sid']) == "")
 		{
-			Yii::log("NOT LOADING PAYMENT PAGE because SID is unset!" , CLogger::LEVEL_WARNING, 'system.test.kim');
+			Yii::log("Checkout - NOT LOADING PAYMENT PAGE because SID is unset!" , CLogger::LEVEL_WARNING, 'system.test.kim');
 			throw new CHttpException(400,'Cannot proceed to payment because SID is not set or expired. (Has this session been idle a long time?)');
+		}
+		if (trim(Yii::app()->session['uid']) == "")
+		{
+			Yii::log("Checkout - NOT LOADING PAYMENT PAGE because UID is unset!" , CLogger::LEVEL_WARNING, 'system.test.kim');
+			throw new CHttpException(400,'Cannot proceed to payment because UID is not set or expired. (Has this session been idle a long time?)');
+		}
+
+		$cartContent = Yii::app()->session[$cartId];
+		if ((!($cartContent)) || ($cartContent == ''))
+		{
+			Yii::log("Checkout - NOT LOADING PAYMENT PAGE because 'cartid' " . $cartId . " although seemingly valid, did not return that session var" , CLogger::LEVEL_WARNING, 'system.test.kim');
+			throw new CHttpException(400,'Cannot proceed to payment because cart details werent accessible. (Has this session been idle a long time?)');
 		}
 
 		// Record the order in the Order
+		$ip = "UNKNOWN";
+		if (getenv("HTTP_CLIENT_IP"))
+			$ip = getenv("HTTP_CLIENT_IP");
+		else if (getenv("HTTP_X_FORWARDED_FOR"))
+			$ip = getenv("HTTP_X_FORWARDED_FOR");
+		else if (getenv("REMOTE_ADDR"))
+			$ip = getenv("REMOTE_ADDR");
+
+		Order::model()->deleteAllByAttributes(array('ip' => $ip));	
+
+		$totalGoods = 0.00;
+		$cartArr = explode('|', $cartContent);
+		if (count($cartArr) < 1)
+		{
+			Yii::log("Checkout - Nothing in cart array" , CLogger::LEVEL_WARNING, 'system.test.kim');
+			throw new CHttpException(400,'Cannot proceed to payment because cart has nothing in it');
+		}
+		for ($i = 0; $i < count($cartArr); $i++)
+		{
+			$itemArr = explode('_', $cartArr[$i]);
+			if (count($itemArr) != 4)
+			{
+				Yii::log("Checkout - ERROR! itemArr count is not 4" , CLogger::LEVEL_WARNING, 'system.test.kim');
+				continue;
+			}
+			// Get the values we will be using
+			$productId = $itemArr[0];
+			$optionId = $itemArr[1];
+			$qty = $itemArr[2];
+			// Pick up the product option for the price
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("product_product_id = " . $productId);
+			$criteria->addCondition("product_option_id = " . $optionId);
+			$productHasOption = ProductHasOption::model()->find($criteria);
+			if ($productHasOption)
+			{
+				$price = $productHasOption->price;
+			}
+			else
+			{
+				$price = 0.00;
+				Yii::log("Checkout - ERROR! product option " . $optionId . " does not exist" , CLogger::LEVEL_WARNING, 'system.test.kim');
+				continue;
+			}
+			// Create a (potential) order
+			$order=new Order;
+			$order->uid = Yii::app()->session['uid'];
+			$order->sid = Yii::app()->session['sid'];
+			$order->ip = $ip;
+			$order->vendor_gateway_id = "@@TODO gateway id";
+			$order->vendor_gateway_password = "@@TODO gateway password";
+			$order->http_product_id = $productId;
+			$order->http_option_id = $optionId;
+			$order->http_qty = $qty;
+			$order->http_price = $price;
+			$order->http_line_total = ($qty * $price);
+			$order->http_shipping_id = $shipId;
+			$totalGoods += ($qty * $price);
+			$order->return_url = Yii::app()->baseUrl;
+
+/*
+			$order->http_total = $_POST['ptotal'];
+			$order->email_address = $_POST['email1'];
+			$order->telephone = $_POST['telephone'];
+			$order->return_url = Yii::app()->baseUrl;
+*/
+			if(!$order->save())
+			{
+				Yii::log("Checkout - Write error on order reord!" , CLogger::LEVEL_WARNING, 'system.test.kim');
+				throw new CHttpException(400,'Error creating order');
+			}
+		}
+		// Add shipping
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("id = " . $shipId);
+		$shipping = ShippingOption::model()->find($criteria);
+		if ($shipping)
+			$totalGoods += $shipping->price;
+
+		// Update all the order records we just created with the total
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("ip = '" . $ip . "'");
+		$orders = Order::model()->findAll($criteria);
+		if ($order)
+		{
+			foreach ($orders as $order)
+			{
+				$order->http_total = $totalGoods;
+				$order->save();
+			}
+		}
 
 		// Go to paymentsense for payment
 		$this->redirect(Yii::app()->baseUrl . "/php/gw/EntryPoint.php?sid=" . Yii::app()->session['sid'] . "&xid=" . rand(99999,999999));
+	}
+
+	// Return from Paymentsense
+	public function actionPaid()
+	{
+		die('paid!');
 	}
 
 	/**

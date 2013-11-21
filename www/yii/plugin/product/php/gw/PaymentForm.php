@@ -14,11 +14,11 @@ logMsg("(PaymentForm) End dump ---------------------------------");
 /*
 $dbhandle="";
 _dbinit($dbhandle);
-$sql = "SELECT * FROM ticket_order where ip = '" . getIP() . "'";
+$sql = "SELECT * FROM product_order where ip = '" . getIP() . "'";
 $result = mysql_query($sql) or die(mysql_error());
 $q = mysql_fetch_array($result, MYSQL_ASSOC);
 _dbfin($dbhandle);
-header('Location: ' . $q['return_url'] . '/index.php/ticket/paid?sid=' . $q['sid'] , true, 303);
+header('Location: ' . $q['return_url'] . '/index.php/product/paid?sid=' . $q['sid'] , true, 303);
 die();
 */
 
@@ -38,7 +38,7 @@ die();
 			$dbhandle="";
 			_dbinit($dbhandle);
 
-			$sql = "UPDATE ticket_order set
+			$sql = "UPDATE product_order set
 				card_name = '" . $_POST['CardName'] . "',
 				card_number = '" . $_POST['CardNumber'] . "', 
 				card_expiry_month = '" . $_POST['ExpiryDateMonth'] . "',
@@ -90,16 +90,16 @@ die();
 				_dbinit($dbhandle);
 
 				// Pick up the (not potential anymore) order record and record the auth number
-				$sql = "SELECT * FROM ticket_order where ip = '" . getIP() . "'";
+				$sql = "SELECT * FROM product_order where ip = '" . getIP() . "'";
 				logMsg("Retrieving (not potential anymore) order details using sql [" . $sql . "]");
 				$result = mysql_query($sql) or die(mysql_error());
 				$q = mysql_fetch_array($result, MYSQL_ASSOC);
 
-				$sql = "UPDATE ticket_order set auth_code = '" . $Message . "' where ip = '" . getIP() . "'";
+				$sql = "UPDATE product_order set auth_code = '" . $Message . "' where ip = '" . getIP() . "'";
 				logMsg("Updating auth number using sql [" . $sql . "]");
 				$result = mysql_query($sql) or die(mysql_error());
 
-				$sql = "INSERT into ticket_auth (uid, order_number, card_name, card_number, expiry_month, expiry_year, cv2, address1, address2, address3, address4, city, state, post_code, country_short, amount, currency_short, auth_code) VALUES (" .
+				$sql = "INSERT into product_auth (uid, order_number, card_name, card_number, expiry_month, expiry_year, cv2, address1, address2, address3, address4, city, state, post_code, country_short, amount, currency_short, auth_code) VALUES (" .
 				"'" . $q['uid'] . "'," .
 				"'" . $q['order_number'] . "'," .
 				"'" . $q['card_name'] . "'," .
@@ -124,9 +124,9 @@ die();
 				_dbfin($dbhandle);
 
 				// Redirect
-				//header('Location: ' . $q['return_url'] . '/index.php/ticket/paid?sid=' . $q['sid'] , true, 303);
+				//header('Location: ' . $q['return_url'] . '/index.php/product/paid?sid=' . $q['sid'] , true, 303);
 				//@@TODO:BUG: sort out the redirect...why hard coded???
-				header('Location: ' . 'https://plugin.wireflydesign.com/ticket/index.php/ticket/paid?sid=' . $q['sid'] , true, 303);
+				header('Location: ' . 'https://plugin.wireflydesign.com/product/index.php/site/paid?sid=' . $q['sid'] , true, 303);
 				die();
 				//@@ENDTODO
 

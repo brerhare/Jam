@@ -358,97 +358,101 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 		$content .= "<td>Choose delivery method</td>";
 		$content .= "<td>";
 
-		$content .= "<script> totalShipping = 0; totalGoods = " . $totalGoods . ";</script>";
-		$content .= "<select id='choose_shipping_option' onChange=updateTotal()>";
-		$criteria = new CDbCriteria;
-		$criteria->addCondition("uid = " . $this->uid);
-		$criteria->order = 'price ASC';
-		$shippings = ShippingOption::model()->findall($criteria);	
-		if ($shippings)
-		{
-			$done = 0;
-			$totalShipping = 0.00;
-			foreach ($shippings as $shipping)
-			{
-				if ($done++ == 0)
+				$content .= "<script> var shipId = 0; var totalShipping = 0; var totalGoods = " . $totalGoods . ";</script>";
+				$content .= "<select id='choose_shipping_option' onChange=updateTotal()>";
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("uid = " . $this->uid);
+				$criteria->order = 'price ASC';
+				$shippings = ShippingOption::model()->findall($criteria);	
+				if ($shippings)
 				{
-					$totalShipping = $shipping->price;
-					$content .= "<script> totalShipping = " . $shipping->price . "; </script>";
+					$done = 0;
+					$totalShipping = 0.00;
+					foreach ($shippings as $shipping)
+					{
+						if ($done++ == 0)
+						{
+							$totalShipping = $shipping->price;
+							$content .= "<script> shipId = " . $shipping->id . "; totalShipping = " . $shipping->price . "; </script>";
+						}
+						$content .= "<option value='" . $shipping->id . "'>" . $shipping->description . "&nbsp&nbsp&nbsp&nbsp" . '£ ' . $shipping->price . "</option>";
+					}
 				}
-				$content .= "<option value='" . $shipping->id . "'>" . $shipping->description . "&nbsp&nbsp&nbsp&nbsp" . '£ ' . $shipping->price . "</option>";
-			}
-		}
-		$content .= "</select>";
+				$content .= "</select>";
 
-		$content .= "</td>";
-		$content .= "<td></td>";
-		$content .= "<td></td>";
-		$content .= "</tbody></tr>";
+				$content .= "</td>";
+				$content .= "<td></td>";
+				$content .= "<td></td>";
+				$content .= "</tbody></tr>";
 
-		$content .= "<tr><tbody>";
-		$content .= "<td><br/><br/><br/></td>";
-		$content .= "<td></td>";
-		$content .= "<td></td>";
-		$content .= "<td align='right'><b>Total to pay</b></td>";
-		$content .= "<td align='right' id='showTotal' style='font-weight:bold'>£ " . number_format(($totalGoods + $totalShipping), 2, '.','') . "</td>";
-		$content .= "<td></td>";
-		$content .= "</tbody></tr>";
+				$content .= "<tr><tbody>";
+				$content .= "<td><br/><br/><br/></td>";
+				$content .= "<td></td>";
+				$content .= "<td></td>";
+				$content .= "<td align='right'><b>Total to pay</b></td>";
+				$content .= "<td align='right' id='showTotal' style='font-weight:bold'>£ " . number_format(($totalGoods + $totalShipping), 2, '.','') . "</td>";
+				$content .= "<td></td>";
+				$content .= "</tbody></tr>";
 
-		$content .= "</table>";
+				$content .= "</table>";
 
-		$content .= "</div>";
-		$content .= "<div style='clear:both'></div>";
+				$content .= "</div>";
+				$content .= "<div style='clear:both'></div>";
 
-		// Customer contact details
-		$content .= "<div style=padding:20px; position:relative>";
-		$content .= "Please enter your delivery address<br />";
-		$content .= "<input id='address1' type='text' value='' size='40'/> <br />";
-		$content .= "<input id='address2' type='text' value='' size='40'/> <br />";		
-		$content .= "<input id='address3' type='text' value='' size='40'/> <br />";
-		$content .= "<input id='address4' type='text' value='' size='40'/> <br />";
-		$content .= "<input id='post_code' type='text' value='' size='15'/> <br /><br/>";
-		$content .= " An email address is required for your order confirmation<br />";
-		$content .= "<input id='email1' type='text' value='' size='30'/> <br />";
-		$content .= "<input id='email2' type='text' value='' size='30'/> <br /><br/>";
-		$content .= " Phone number (recommended)<br />";
-		$content .= "<input id='telephone' type='text' value='' size='20'/> <br />";
-		$content .= "<span style='position:absolute; margin-left:400px; margin-top:-270px'>Notes</span>";
-		$content .= "<textarea style='position:absolute; margin-left:400px;margin-top:-254px' name='message' rows='7' cols='30'> </textarea> <br />";
-		$content .= "<a style='position:absolute; margin-left:400px; margin-top:-57px' href='#' onClick=\"proceed()\"	>" . "<img src=/product/img/proceed_to_checkout.png></a>";
+				// Customer contact details
+				$content .= "<div style=padding:20px; position:relative>";
+				$content .= "Please enter your delivery address<br />";
+				$content .= "<input id='address1' type='text' value='' size='40'/> <br />";
+				$content .= "<input id='address2' type='text' value='' size='40'/> <br />";		
+				$content .= "<input id='address3' type='text' value='' size='40'/> <br />";
+				$content .= "<input id='address4' type='text' value='' size='40'/> <br />";
+				$content .= "<input id='post_code' type='text' value='' size='15'/> <br /><br/>";
+				$content .= " An email address is required for your order confirmation<br />";
+				$content .= "<input id='email1' type='text' value='' size='30'/> <br />";
+				$content .= "<input id='email2' type='text' value='' size='30'/> <br /><br/>";
+				$content .= " Phone number (recommended)<br />";
+				$content .= "<input id='telephone' type='text' value='' size='20'/> <br />";
+				$content .= "<span style='position:absolute; margin-left:400px; margin-top:-270px'>Notes</span>";
+				$content .= "<textarea style='position:absolute; margin-left:400px;margin-top:-254px' name='message' rows='7' cols='30'> </textarea> <br />";
+				$content .= "<a style='position:absolute; margin-left:400px; margin-top:-57px' href='#' onClick=\"proceed()\"	>" . "<img src=/product/img/proceed_to_checkout.png></a>";
 
-		$content .= "</div>";
+				$content .= "</div>";
 
-		$apiHtml = $content;
-		$apiJs = "";
+				$apiHtml = $content;
+				$apiJs = "";
 
-		$apiJs = <<<END_OF_API_JS_checkout
+				$apiJs = <<<END_OF_API_JS_checkout
 
-			// var totalGoods
-			// var totalShipping
+					// var totalGoods
+					// var totalShipping
 
-			function updateTotal()
-			{
-				var e = document.getElementById("choose_shipping_option");
-				var optVal  = e.options[e.selectedIndex].value;
-				var optText = e.options[e.selectedIndex].text;
-				var val = optText.split('£');
-				totalShipping = parseFloat(totalGoods) + parseFloat(val[1]);
-				document.getElementById("showTotal").innerHTML = '£ ' + totalShipping.toFixed(2);
-			}
+					function updateTotal()
+					{
+						var e = document.getElementById("choose_shipping_option");
+						var optVal  = e.options[e.selectedIndex].value;
+						var optText = e.options[e.selectedIndex].text;
+						var val = optText.split('£');
+						shipId = optVal;
+						totalShipping = parseFloat(totalGoods) + parseFloat(val[1]);
+						document.getElementById("showTotal").innerHTML = '£ ' + totalShipping.toFixed(2);
+					}
 
-			function deleteItem(productId, optionId)
-			{
-				selWithHash = document.URL;
-				selWithDups = selWithHash.replace('#', '');
-				selArr = selWithDups.split("&cartproduct=");
-				sel = selArr[0];
-				sel += '&cartproduct=' + productId + '&cartoption=' + optionId + '&cartqty=0' + '&cartref=' + Math.floor((Math.random()*128000)+1);
-				window.location.href = sel;
-			}
+					function deleteItem(productId, optionId)
+					{
+						selWithHash = document.URL;
+						selWithDups = selWithHash.replace('#', '');
+						selArr = selWithDups.split("&cartproduct=");
+						sel = selArr[0];
+						sel += '&cartproduct=' + productId + '&cartoption=' + optionId + '&cartqty=0' + '&cartref=' + Math.floor((Math.random()*128000)+1);
+						window.location.href = sel;
+					}
 
-			function proceed()
-			{
-				window.location.href = '/product/index.php/site/pay&cartid='+cartId;
+					function proceed()
+					{
+						var e = document.getElementById("choose_shipping_option");
+						shipId = e.options[e.selectedIndex].value;
+						window.location.href = '/product/index.php/site/pay?cartid='+cartId+'&shipid='+shipId;
+//alert(window.location.href);
 			}
 END_OF_API_JS_checkout;
 
