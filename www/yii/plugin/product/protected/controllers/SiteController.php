@@ -176,7 +176,7 @@ class SiteController extends Controller
 				throw new CHttpException(400,'Error creating order');
 			}
 		}
-		// Add shipping
+		// Add shipping to total
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("id = " . $shipId);
 		$shipping = ShippingOption::model()->find($criteria);
