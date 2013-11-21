@@ -9,7 +9,8 @@
  * @property string $ip
  * @property string $sid
  * @property string $order_number
- * @property integer $vendor_id
+ * @property string $vendor_gateway_id
+ * @property string $vendor_gateway_password
  * @property string $http_product_id
  * @property string $http_option_id
  * @property string $http_qty
@@ -71,14 +72,14 @@ class Order extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('uid, ip, vendor_id', 'required'),
-			array('uid, vendor_id', 'numerical', 'integerOnly'=>true),
-			array('ip, sid, order_number, return_url, email_address, delivery_address1, delivery_address2, delivery_address3, delivery_address4, delivery_post_code, telephone, card_name, card_number, card_cv2, card_address1, card_address2, card_address3, card_address4, card_city, card_state', 'length', 'max'=>255),
+			array('uid, ip', 'required'),
+			array('uid', 'numerical', 'integerOnly'=>true),
+			array('ip, sid, order_number, vendor_gateway_id, vendor_gateway_password, return_url, email_address, delivery_address1, delivery_address2, delivery_address3, delivery_address4, delivery_post_code, telephone, card_name, card_number, card_cv2, card_address1, card_address2, card_address3, card_address4, card_city, card_state', 'length', 'max'=>255),
 			array('http_product_id, http_option_id, http_qty, http_price, http_line_total, http_shipping_id, http_total, auth_code, card_expiry_month, card_expiry_year, card_post_code, card_country_short, card_currency_short, card_amount', 'length', 'max'=>45),
 			array('notes', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, ip, sid, order_number, vendor_id, http_product_id, http_option_id, http_qty, http_price, http_line_total, http_shipping_id, http_total, auth_code, return_url, email_address, delivery_address1, delivery_address2, delivery_address3, delivery_address4, delivery_post_code, notes, telephone, card_name, card_number, card_expiry_month, card_expiry_year, card_cv2, card_address1, card_address2, card_address3, card_address4, card_city, card_state, card_post_code, card_country_short, card_currency_short, card_amount', 'safe', 'on'=>'search'),
+			array('id, uid, ip, sid, order_number, vendor_gateway_id, vendor_gateway_password, http_product_id, http_option_id, http_qty, http_price, http_line_total, http_shipping_id, http_total, auth_code, return_url, email_address, delivery_address1, delivery_address2, delivery_address3, delivery_address4, delivery_post_code, notes, telephone, card_name, card_number, card_expiry_month, card_expiry_year, card_cv2, card_address1, card_address2, card_address3, card_address4, card_city, card_state, card_post_code, card_country_short, card_currency_short, card_amount', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -104,7 +105,8 @@ class Order extends CActiveRecord
 			'ip' => 'Ip',
 			'sid' => 'Sid',
 			'order_number' => 'Order Number',
-			'vendor_id' => 'Vendor',
+			'vendor_gateway_id' => 'Vendor Gateway',
+			'vendor_gateway_password' => 'Vendor Gateway Password',
 			'http_product_id' => 'Http Product',
 			'http_option_id' => 'Http Option',
 			'http_qty' => 'Http Qty',
@@ -156,7 +158,8 @@ class Order extends CActiveRecord
 		$criteria->compare('ip',$this->ip,true);
 		$criteria->compare('sid',$this->sid,true);
 		$criteria->compare('order_number',$this->order_number,true);
-		$criteria->compare('vendor_id',$this->vendor_id);
+		$criteria->compare('vendor_gateway_id',$this->vendor_gateway_id,true);
+		$criteria->compare('vendor_gateway_password',$this->vendor_gateway_password,true);
 		$criteria->compare('http_product_id',$this->http_product_id,true);
 		$criteria->compare('http_option_id',$this->http_option_id,true);
 		$criteria->compare('http_qty',$this->http_qty,true);
