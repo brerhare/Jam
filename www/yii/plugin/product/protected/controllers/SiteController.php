@@ -103,7 +103,22 @@ class SiteController extends Controller
 			throw new CHttpException(400,'Cannot proceed to payment because cart details werent accessible. (Has this session been idle a long time?)');
 		}
 
-		// Record the order in the Order
+		// Get the passed fields (This is a @@TODO as its crap comms between page and here...)
+		$a1 = "";
+		$a2 = "";
+		$a3 = "";
+		$a4 = "";
+		$pc = "";
+		$e = "";
+		$t = "";
+		if (isset($_GET['a1'])) $a1 = $_GET['a1'];
+		if (isset($_GET['a2'])) $a2 = $_GET['a2'];
+		if (isset($_GET['a3'])) $a3 = $_GET['a3'];
+		if (isset($_GET['a4'])) $a4 = $_GET['a4'];
+		if (isset($_GET['pc'])) $pc = $_GET['pc'];
+		if (isset($_GET['e'])) $e = $_GET['e'];
+		if (isset($_GET['t'])) $t = $_GET['t'];
+
 		$ip = "UNKNOWN";
 		if (getenv("HTTP_CLIENT_IP"))
 			$ip = getenv("HTTP_CLIENT_IP");
@@ -161,15 +176,15 @@ class SiteController extends Controller
 			$order->http_price = $price;
 			$order->http_line_total = ($qty * $price);
 			$order->http_shipping_id = $shipId;
+			$order->email_address = $e;
+			$order->delivery_address1 = $a1;
+			$order->delivery_address2 = $a2;
+			$order->delivery_address3 = $a3;
+			$order->delivery_address4 = $a4;
+			$order->delivery_post_code = $pc;
+			$order->telephone = $t;
 			$totalGoods += ($qty * $price);
 			$order->return_url = Yii::app()->baseUrl;
-
-/*
-			$order->http_total = $_POST['ptotal'];
-			$order->email_address = $_POST['email1'];
-			$order->telephone = $_POST['telephone'];
-			$order->return_url = Yii::app()->baseUrl;
-*/
 			if(!$order->save())
 			{
 				Yii::log("Checkout - Write error on order reord!" , CLogger::LEVEL_WARNING, 'system.test.kim');
@@ -203,6 +218,61 @@ class SiteController extends Controller
 	// Return from Paymentsense
 	public function actionPaid()
 	{
+		Yii::log("PAID PAGE LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
+
+		$ip = "UNKNOWN";
+		if (getenv("HTTP_CLIENT_IP"))
+			$ip = getenv("HTTP_CLIENT_IP");
+		else if (getenv("HTTP_X_FORWARDED_FOR"))
+			$ip = getenv("HTTP_X_FORWARDED_FOR");
+		else if (getenv("REMOTE_ADDR"))
+			$ip = getenv("REMOTE_ADDR");
+
+		if (trim(Yii::app()->session['uid']) == "")
+		{
+			Yii::log("Checkout - NOT LOADING PAID PAGE because UID is unset!" , CLogger::LEVEL_WARNING, 'system.test.kim');
+			throw new CHttpException(400,'Cannot proceed to paid page because UID is not set or expired. Please contact the supplier. (Has this session been idle a long time?)');
+		}
+
+		$criteria = new CDbCriteria;
+		//$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+		$criteria->addCondition("ip = '" . $ip . "'");
+
+		// Retrieve the original order, now populated by paymentsense
+		$orders = Order::model()->findAll($criteria);
+		$orderCount = 0;
+		foreach ($orders as $order)
+		{
+//die('ok');
+		}
+
+        // Send email
+        $to = $order->email_address;
+        if (strlen($to) > 0)
+        {
+            $from = "admin@dglink.co.uk";
+            $fromName = "Admin";
+            $subject = "Your order";
+            $message = "<b>Thank you for your order</b><br><br>";
+            // phpmailer
+            $mail = new PHPMailer();
+            $mail->AddAddress($to);
+//			$mail->AddBCC($param->cc_email_address);
+            $mail->SetFrom($from, $fromName);
+            $mail->AddReplyTo($from, $fromName);
+            $mail->AddAttachment($pdf_filename);
+            $mail->Subject = $subject;
+            $mail->MsgHTML($message);
+            if (!$mail->Send())
+            {
+                Yii::log("PAID PAGE COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
+                echo "<div id=\"mailerrors\">Mailer Error: " . $mail->ErrorInfo . "</div>";
+            }
+            else
+                Yii::log("PAID PAGE SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+        }
+
+
 		die('paid!');
 	}
 

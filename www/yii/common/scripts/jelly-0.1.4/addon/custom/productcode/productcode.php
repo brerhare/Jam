@@ -402,16 +402,16 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 				// Customer contact details
 				$content .= "<div style=padding:20px; position:relative>";
 				$content .= "Please enter your delivery address<br />";
-				$content .= "<input id='address1' type='text' value='' size='40'/> <br />";
-				$content .= "<input id='address2' type='text' value='' size='40'/> <br />";		
-				$content .= "<input id='address3' type='text' value='' size='40'/> <br />";
-				$content .= "<input id='address4' type='text' value='' size='40'/> <br />";
-				$content .= "<input id='post_code' type='text' value='' size='15'/> <br /><br/>";
+				$content .= "<input id='address1' name='address1' type='text' value='' size='40'/> <br />";
+				$content .= "<input id='address2' name='address2' type='text' value='' size='40'/> <br />";		
+				$content .= "<input id='address3' name='address3' type='text' value='' size='40'/> <br />";
+				$content .= "<input id='address4' name='address4' type='text' value='' size='40'/> <br />";
+				$content .= "<input id='post_code' name='post_code' type='text' value='' size='15'/> <br /><br/>";
 				$content .= " An email address is required for your order confirmation<br />";
-				$content .= "<input id='email1' type='text' value='' size='30'/> <br />";
-				$content .= "<input id='email2' type='text' value='' size='30'/> <br /><br/>";
+				$content .= "<input id='email1' name='email1' type='text' value='' size='30'/> <br />";
+				$content .= "<input id='email2' name='email2' type='text' value='' size='30'/> <br /><br/>";
 				$content .= " Phone number (recommended)<br />";
-				$content .= "<input id='telephone' type='text' value='' size='20'/> <br />";
+				$content .= "<input id='telephone' name='telephone' type='text' value='' size='20'/> <br />";
 				$content .= "<span style='position:absolute; margin-left:400px; margin-top:-270px'>Notes</span>";
 				$content .= "<textarea style='position:absolute; margin-left:400px;margin-top:-254px' name='message' rows='7' cols='30'> </textarea> <br />";
 				$content .= "<a style='position:absolute; margin-left:400px; margin-top:-57px' href='#' onClick=\"proceed()\"	>" . "<img src=/product/img/proceed_to_checkout.png></a>";
@@ -451,7 +451,15 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 					{
 						var e = document.getElementById("choose_shipping_option");
 						shipId = e.options[e.selectedIndex].value;
-						window.location.href = '/product/index.php/site/pay?cartid='+cartId+'&shipid='+shipId;
+						a1 = document.getElementById("address1").value;
+						a2 = document.getElementById("address2").value;
+						a3 = document.getElementById("address3").value;
+						a4 = document.getElementById("address4").value;
+						pc = document.getElementById("post_code").value;
+						e = document.getElementById("email1").value;
+						t = document.getElementById("telephone").value;
+						//window.location.href = '/product/index.php/site/pay?cartid='+cartId+'&shipid='+shipId;
+						window.location.href = '/product/index.php/site/pay?cartid='+cartId+'&shipid='+shipId+'&a1='+a1+'&a2='+a2+'&a3='+a3+'&a4='+a4+'&pc='+pc+'&t='+t;
 //alert(window.location.href);
 			}
 END_OF_API_JS_checkout;
