@@ -887,6 +887,11 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 		{
 			// Eg: {{checkout}}
 			// --------------
+			// Check required parameters are set up for gateway access
+			if ((trim(Yii::app()->params['checkoutEmail']) == "")
+			||  (trim(Yii::app()->params['xcheckoutGatewayUser']) == "")
+			||  (trim(Yii::app()->params['checkoutGatewayPassword']) == ""))
+				die("Checkout needs gateway access to be set up in the configuration file");
 			$iframe = '<iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=checkout&sid=' . Yii::app()->params['sid'] . '"></iframe>';
 			$content = str_replace($pOrig, $iframe, $content);
 		}
@@ -923,6 +928,18 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 	{
 		$arr = explode("___", $string);
 		return $arr[0];
+	}
+
+	private function encrypt($str)
+	{
+		$key = "password to (en/de)crypt";
+		return base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $str, MCRYPT_MODE_CBC, md5(md5($key))));
+	}
+
+	private function decrypt($str)
+	{
+		$key = "password to (en/de)crypt";
+		return rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($str), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
 	}
 }
 

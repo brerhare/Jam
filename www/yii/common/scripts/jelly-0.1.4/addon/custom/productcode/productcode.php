@@ -459,8 +459,7 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 						e = document.getElementById("email1").value;
 						t = document.getElementById("telephone").value;
 						//window.location.href = '/product/index.php/site/pay?cartid='+cartId+'&shipid='+shipId;
-						window.location.href = '/product/index.php/site/pay?cartid='+cartId+'&shipid='+shipId+'&a1='+a1+'&a2='+a2+'&a3='+a3+'&a4='+a4+'&pc='+pc+'&t='+t;
-//alert(window.location.href);
+						window.location.href = '/product/index.php/site/pay?cartid='+cartId+'&shipid='+shipId+'&a1='+a1+'&a2='+a2+'&a3='+a3+'&a4='+a4+'&e='+e+'&pc='+pc+'&t='+t;
 			}
 END_OF_API_JS_checkout;
 
