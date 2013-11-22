@@ -36,22 +36,22 @@ addon.analytics.google_analytics.ua = UA-20115178-1
 
 			[menu]
 			css.display = block
-			css.margin-top = -10px 
-			css.margin-left = 50px
-			addon.menu.megamenu.anchortext = <h4>Menu</h4>
+			css.margin-top = -20px 
+			css.margin-left = 43px
+			addon.menu.megamenu.anchortext = <h5>Menu </h5>
 
 			[millenium]
 			css.display = block
-			css.height = 70px
-			css.margin-top = -87px 
-			css.margin-left = 380px
-			html.h4 = Log-In
+			css.height = 75px
+			css.margin-top = -115px 
+			css.margin-left = 375px
+			html.h5 = Log-In
 			click = http://217.41.65.149:8080/clients/login.asp target="_blank"
 
 			[fb]
 			css.display = block
 			css.height = 20px
-			css.margin-top = -76px 
+			css.margin-top = -95px 
 			css.margin-left = 510px
 			image.url = /img/facebook.png
 			image.width = 20px
@@ -61,7 +61,7 @@ addon.analytics.google_analytics.ua = UA-20115178-1
 			[checkout]
 			css.display = block
 			css.height = 20px
-			css.margin-top = -76px 
+			css.margin-top = -95px 
 			css.margin-left = 540px
 			image.url = /img/cart.png
 			image.width = 120px
@@ -109,7 +109,8 @@ css.width = 680px
 			[content]
 			css.display = block
 			css.background-color = white
-			css.margin = 15px
+			css.margin-left = 30px
+			css.width = 850px
 			db.table = ContentBlock
 			db.filter = url=$_GET['page']
 			db.error = Sorry, I could not find that page. You requested $_GET['page']

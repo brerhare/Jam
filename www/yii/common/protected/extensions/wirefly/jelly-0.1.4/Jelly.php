@@ -889,10 +889,10 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 			// --------------
 			// Check required parameters are set up for gateway access
 			if ((trim(Yii::app()->params['checkoutEmail']) == "")
-			||  (trim(Yii::app()->params['xcheckoutGatewayUser']) == "")
+			||  (trim(Yii::app()->params['checkoutGatewayUser']) == "")
 			||  (trim(Yii::app()->params['checkoutGatewayPassword']) == ""))
 				die("Checkout needs gateway access to be set up in the configuration file");
-			$iframe = '<iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=checkout&sid=' . Yii::app()->params['sid'] . '"></iframe>';
+			$iframe = '<iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=checkout&sid=' . Yii::app()->params['sid'] . '&ge=' . Yii::app()->params['checkoutEmail'] . '&gu=' . urlencode($this->encrypt(Yii::app()->params['checkoutGatewayUser'])) . '&gp=' . urlencode($this->encrypt(Yii::app()->params['checkoutGatewayPassword'])) . '"></iframe>';
 			$content = str_replace($pOrig, $iframe, $content);
 		}
 		else if (stristr($vals[0], "blog"))
