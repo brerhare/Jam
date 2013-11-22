@@ -250,17 +250,17 @@ class SiteController extends Controller
         $to = $order->email_address;
         if (strlen($to) > 0)
         {
-            $from = "admin@dglink.co.uk";
-            $fromName = "Admin";
-            $subject = "Your order";
-            $message = "<b>Thank you for your order</b><br><br>";
+            $from = "reception@jacquiesbeauty.co.uk";
+            $fromName = "Jacquies Beauty";
+            $subject = "Your order from Jacquies Beauty";
+            $message = "<b>Thank you for your order, total £" . $order->http_total . "</b><br><br>";
             // phpmailer
             $mail = new PHPMailer();
             $mail->AddAddress($to);
 //			$mail->AddBCC($param->cc_email_address);
             $mail->SetFrom($from, $fromName);
             $mail->AddReplyTo($from, $fromName);
-            $mail->AddAttachment($pdf_filename);
+//            $mail->AddAttachment($pdf_filename);
             $mail->Subject = $subject;
             $mail->MsgHTML($message);
             if (!$mail->Send())
@@ -272,8 +272,7 @@ class SiteController extends Controller
                 Yii::log("PAID PAGE SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
         }
 
-
-		die('paid!');
+		die('Thank you');
 	}
 
 	/**
