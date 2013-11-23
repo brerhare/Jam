@@ -21,6 +21,8 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`product_order` (
   `http_total` VARCHAR(45) NULL ,
   `auth_code` VARCHAR(45) NULL ,
   `return_url` VARCHAR(255) NULL ,
+  `gu` VARCHAR(255) NULL ,
+  `gp` VARCHAR(255) NULL ,
   `email_address` VARCHAR(255) NULL ,
   `delivery_address1` VARCHAR(255) NULL ,
   `delivery_address2` VARCHAR(255) NULL ,
