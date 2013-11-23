@@ -64,19 +64,53 @@ class eventcode
 		$content .= "<div id='accordion'>";
 
 		// Check date filter (dd-mm-yyyy)
-		if ((isset($_GET['date'])) && trim($_GET['date'] != ''))
-			$dt = $_GET['date'];
+		if ((isset($_GET['sdate'])) && trim($_GET['sdate'] != ''))
+			$dt = $_GET['sdate'];
 		else
-			$dt = $myDate = date('d-m-Y');
-		$date = date("Y-m-d H:i:s", strtotime($dt));
+			$dt = date('d-m-Y');
+		$sdate = date("Y-m-d H:i:s", strtotime($dt));
+
+		// Check date filter (dd-mm-yyyy)
+		if ((isset($_GET['edate'])) && trim($_GET['edate'] != ''))
+			$dt = $_GET['edate'];
+		else
+			$dt = date('d-m-Y');
+		$edate = date("Y-m-d H:i:s", strtotime($dt));
+		$edate = str_replace("00:00:00", "23:59:59", $edate);
+
+//die('s='.$sdate . ' e='.$edate);
 
 		$criteria = new CDbCriteria;
-		$criteria->condition = "start >= '" . $date . "'";
+
+//		if (!(isset($_GET['edate'])))
+//			$criteria->condition = "start >= '" . $sdate . "'"; 
+//		else
+//			$criteria->condition = "start >= '" . $sdate . "'";
+
+		$criteria->addCondition("start >= '" . $sdate . "'");
+		if ((isset($_GET['edate'])) && trim($_GET['edate'] != ''))
+			$criteria->addCondition("start <= '" . $edate . "'");
+//$criteria->addCondition("ii <= '" . $edate . "'");
 		$criteria->order = 'start ASC';
 		$events = Event::model()->findAll($criteria);
 		$hasEvents = false;
 		foreach ($events as $event)
 		{
+			// Check text search
+			if ((isset($_GET['textsearch'])) && trim($_GET['textsearch'] != ''))
+			{
+				$needle = $_GET['textsearch'];
+				//if ($needle = "The Studio")
+				//echo $event->address;
+				if (((stripos($event->title, $needle)) === false)
+				&& ((stripos($event->description, $needle)) == false)
+				&& ((stripos($event->address, $needle)) === false)
+				&& ((strpos($event->post_code, $needle)) === false)
+				&& ((strpos($event->contact, $needle)) === false)
+				)
+					continue;
+			}
+
 			// Check Interest filter
 			if ((isset($_GET['interest'])) && trim($_GET['interest'] != ''))
 			{
@@ -181,15 +215,14 @@ class eventcode
 			$content .= "  <div style=float:left>";
 
 			$content .= "    <div id='header-title'>";
-/*
-Moved Tom Henry's icon to the end of the regular icons on the bottom line
+
 			if ($member)
 			{
 				if (trim($member->avatar_path) != '')
-					$content .= "<img style='padding-right:5px;margin-top:0px; margin-right:0px' title='Member Avatar' src='userdata/member/avatar/" . $member->avatar_path . "' width='20' height='20'>";
-
+					$content .= "<img style='padding-right:5px;margin-top:0px; margin-right:0px' title='" . $member->organisation . "' src='userdata/member/avatar/" . $member->avatar_path . "' width='20' height='20'>";
 			}
-*/
+
+
 			$content .= $event->title;
 
 			// Ticketing info (if applicable)
@@ -245,24 +278,6 @@ Moved Tom Henry's icon to the end of the regular icons on the bottom line
 						$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . $interest->name . "' src='userdata/icon/" . $interest->icon_path . "' width='20' height='20'>";
 				}
 			}
-			// @@TODO: These are hardcoded. Neednt be anymore now that theres 1 icon per band
-			// Price Band icons
-			if ($event->event_price_band_id == 1)	// Free
-				$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Free' . "' src='userdata/icon/" . 'Free x20.png' . "' width='20' height='20'>";
-			else
-			{
-				// 1st Price
-				if ($event->event_price_band_id == 2)	// 1st price
-					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Under £5' . "' src='userdata/icon/" . 'Pound x20.png' . "' width='20' height='20'>";
-				if ($event->event_price_band_id == 3)	// 2nd price
-				{
-					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . '£5 - £10' . "' src='userdata/icon/" . '2pound.png' . "' width='20' height='20'>";
-				}
-				if ($event->event_price_band_id == 4)	// 3rd price
-				{
-					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Over £10' . "' src='userdata/icon/" . '3pound.png' . "' width='20' height='20'>";
-				}
-			}
 
 			// Facility icons
 			$criteria = new CDbCriteria;
@@ -281,12 +296,23 @@ Moved Tom Henry's icon to the end of the regular icons on the bottom line
 				}
 			}
 
-			// Member avatar (aka Organisation icon)
-			if ($member)
+			// @@TODO: These are hardcoded. Neednt be anymore now that theres 1 icon per band
+			// Price Band icons
+			if ($event->event_price_band_id == 1)	// Free
+				$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Free' . "' src='userdata/icon/" . 'Free x20.png' . "' width='20' height='20'>";
+			else
 			{
-				if (trim($member->avatar_path) != '')
-					$content .= "<img style='margin-top:0px; margin-left:0px' title='" . $member->organisation . "' src='userdata/member/avatar/" . $member->avatar_path . "' width='20' height='20'>";
-
+				// 1st Price
+				if ($event->event_price_band_id == 2)	// 1st price
+					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Under £5' . "' src='userdata/icon/" . 'Pound x20.png' . "' width='20' height='20'>";
+				if ($event->event_price_band_id == 3)	// 2nd price
+				{
+					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . '£5 - £10' . "' src='userdata/icon/" . '2pound.png' . "' width='20' height='20'>";
+				}
+				if ($event->event_price_band_id == 4)	// 3rd price
+				{
+					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Over £10' . "' src='userdata/icon/" . '3pound.png' . "' width='20' height='20'>";
+				}
 			}
 
 			$content .= "    </div>";
