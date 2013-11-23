@@ -400,7 +400,13 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 				$content .= "<div style='clear:both'></div>";
 
 				// Customer contact details
-				$content .= "<div style=padding:20px; position:relative>";
+				$content .= "<table style='width:80%; float:left'>";
+				$content .= "<thead><tr>";
+				$content .= "<th align='left' width=45%></th>";
+				$content .= "<th align='left' width=10%></th>";
+				$content .= "<th align='left' width=45%></th>";
+				$content .= "</tr></thead>";
+				$content .= "<tbody><tr><td valign='top'>";
 				$content .= "Please enter your delivery address<br />";
 				$content .= "<input id='address1' name='address1' type='text' value='' size='40'/> <br />";
 				$content .= "<input id='address2' name='address2' type='text' value='' size='40'/> <br />";		
@@ -412,11 +418,14 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 				$content .= "<input id='email2' name='email2' type='text' value='' size='30'/> <br /><br/>";
 				$content .= " Phone number (recommended)<br />";
 				$content .= "<input id='telephone' name='telephone' type='text' value='' size='20'/> <br />";
-				$content .= "<span style='position:absolute; margin-left:400px; margin-top:-270px'>Notes</span>";
-				$content .= "<textarea style='position:absolute; margin-left:400px;margin-top:-254px' name='message' rows='7' cols='30'> </textarea> <br />";
-				$content .= "<a style='position:absolute; margin-left:400px; margin-top:-57px' href='#' onClick=\"proceed()\"	>" . "<img src=/product/img/proceed_to_checkout.png></a>";
+				$content .= "</td><td>&nbsp</td><td valign='top'>";
+				$content .= "Notes<br>";
+				$content .= "<textarea name='message' rows='7' cols='30'> </textarea> <br><br><br/>";
+				$content .= "<a href='#' onClick=\"proceed()\"	>" . "<img src=/product/img/proceed_to_checkout.png></a>";
+				$content .= "</td></tr></tbody>";
+				$content .= "</table>";
 
-				$content .= "</div>";
+				$content .= "<div style='clear:both'></div>";
 
 				$apiHtml = $content;
 				$apiJs = "";
