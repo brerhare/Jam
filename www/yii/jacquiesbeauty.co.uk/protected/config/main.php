@@ -99,6 +99,7 @@ return array(
 		// this is used in contact page
 		'adminEmail'=>'reception@jacquiesbeauty.co.uk',
 		'checkoutEmail'=>'reception@jacquiesbeauty.co.uk',
+		'checkoutName'=>'Jacquies Beauty',
 		'checkoutGatewayUser'=>'WIREFL-5188100',
 		'checkoutGatewayPassword'=>'391F3GWBZ0',
 		'jellyRoot' => '/scripts/jelly/',

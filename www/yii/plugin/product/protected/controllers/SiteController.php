@@ -38,6 +38,8 @@ class SiteController extends Controller
 		$util = new Util;
 		if (isset($_GET['ge']))
 			Yii::app()->session['checkoutEmail'] = $_GET['ge'];
+		if (isset($_GET['gn']))
+			Yii::app()->session['checkoutName'] = $_GET['gn'];
 		if (isset($_GET['gu']))
 			Yii::app()->session['checkoutGatewayUser'] = urldecode($util->decrypt($_GET['gu']));
 		if (isset($_GET['gp']))
@@ -79,6 +81,7 @@ class SiteController extends Controller
 	public function actionPay()
 	{
 		if ((trim(Yii::app()->session['checkoutEmail']) == "")
+		|| (trim(Yii::app()->session['checkoutName']) == "")
 		|| (trim(Yii::app()->session['checkoutGatewayUser']) == "")
 		|| (trim(Yii::app()->session['checkoutGatewayPassword']) == ""))
 		{
@@ -268,9 +271,9 @@ class SiteController extends Controller
         $to = $order->email_address;
         if (strlen($to) > 0)
         {
-            $from = "reception@jacquiesbeauty.co.uk";
-            $fromName = "Jacquies Beauty";
-            $subject = "Your order from Jacquies Beauty";
+            $from = Yii::app()->session['checkoutEmail'];
+            $fromName = Yii::app()->session['checkoutName'];
+            $subject = "Your order from " . Yii::app()->session['checkoutName'];
             $message = "<b>Thank you for your order, total £" . $order->http_total . "</b><br><br>";
             // phpmailer
             $mail = new PHPMailer();
