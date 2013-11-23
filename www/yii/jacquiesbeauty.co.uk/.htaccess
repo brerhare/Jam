@@ -1,0 +1,117 @@
+#
+#  mod_rewrite in use
+
+RewriteEngine On
+
+########## Begin - Rewrite rules to block out some common exploits
+## If you experience problems on your site block out the operations listed below
+## This attempts to block the most common type of exploit `attempts` to Joomla!
+#
+# Block out any script trying to set a mosConfig value through the URL
+RewriteCond %{QUERY_STRING} mosConfig_[a-zA-Z_]{1,21}(=|\%3D) [OR]
+# Block out any script trying to base64_encode crap to send via URL
+RewriteCond %{QUERY_STRING} base64_encode.*\(.*\) [OR]
+# Block out any script that includes a <script> tag in URL
+RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+# Block out any script trying to set a PHP GLOBALS variable via URL
+RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+# Block out any script trying to modify a _REQUEST variable via URL
+RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
+# Send all blocked request to homepage with 403 Forbidden error!
+RewriteRule ^(.*)$ index.php [F,L]
+# 301's from old html site - jbt 2010/12/08
+RewriteRule (.+\.html)$ / [R=301,L]
+#
+########## End - Rewrite rules to block out some common exploits
+
+#### Kim's 301's
+Redirect 301 /make-up-team http://www.jacquiesbeauty.co.uk/?layout=index&page=mii-cosmetics-tutorial-artist-bridal
+Redirect 301 /health-and-beauty http://www.jacquiesbeauty.co.uk/?layout=index&page=Dumfries-Beauty-Salon-Treatments-Health
+Redirect 301 /health-and-beauty/waxing http://www.jacquiesbeauty.co.uk/?layout=index&page=waxing-laser-stick-hair-removal
+Redirect 301 /health-and-beauty/eye-treatments http://www.jacquiesbeauty.co.uk/?layout=index&page=eyelash-eyebrow-tint-salon
+Redirect 301 /health-and-beauty/gelaration http://www.jacquiesbeauty.co.uk/?layout=index&page=geleration-everlasting-nail-polish
+Redirect 301 /health-and-beauty/manicure-and-pedicure http://www.jacquiesbeauty.co.uk/?layout=index&page=manicure-pedicure-luxury-salon-dumfries
+Redirect 301 /health-and-beauty/monu-sun-tanning http://www.jacquiesbeauty.co.uk/?layout=index&page=monu-sun-tan
+Redirect 301 /massage http://www.jacquiesbeauty.co.uk/?layout=index&page=massage-dumfries-salon
+Redirect 301 /massage/traditional-massage http://www.jacquiesbeauty.co.uk/?layout=index&page=massage-dumfries-salon
+Redirect 301 /massage/aromatherapy-massage http://www.jacquiesbeauty.co.uk/?layout=index&page=massage-dumfries-salon
+Redirect 301 /massage/hydratherm-massage http://www.jacquiesbeauty.co.uk/?layout=index&page=massage-dumfries-salon
+Redirect 301 /massage/hot-stones-massage http://www.jacquiesbeauty.co.uk/?layout=index&page=massage-dumfries-salon
+Redirect 301 /massage/indian-head-massage http://www.jacquiesbeauty.co.uk/?layout=index&page=massage-dumfries-salon
+Redirect 301 /massage/thai-massage http://www.jacquiesbeauty.co.uk/?layout=index&page=massage-dumfries-salon
+Redirect 301 /fabulous-feet- http://www.jacquiesbeauty.co.uk/?layout=index&page=Fabulous-Healthy-Feet-pedicure
+Redirect 301 /facial-treatments http://www.jacquiesbeauty.co.uk/?layout=index&page=Facial-treatments-dumfries
+Redirect 301 /facial-treatments/hydradermie-deluxe-and-lift http://www.jacquiesbeauty.co.uk/?layout=index&page=Facial-treatments-dumfries
+Redirect 301 /facial-treatments/hydradermie-and-lift http://www.jacquiesbeauty.co.uk/?layout=index&page=Facial-treatments-dumfries
+Redirect 301 /facial-treatments/the-lift http://www.jacquiesbeauty.co.uk/?layout=index&page=Facial-treatments-dumfries
+Redirect 301 /facial-treatments/liftosome http://www.jacquiesbeauty.co.uk/?layout=index&page=Facial-treatments-dumfries
+Redirect 301 /facial-treatments/the-aromatic http://www.jacquiesbeauty.co.uk/?layout=index&page=Facial-treatments-dumfries
+Redirect 301 /facial-treatments/hydradermie-delux http://www.jacquiesbeauty.co.uk/?layout=index&page=Facial-treatments-dumfries
+Redirect 301 /facial-treatments/hydradermie-facial http://www.jacquiesbeauty.co.uk/?layout=index&page=Facial-treatments-dumfries
+Redirect 301 /facial-treatments/organic-taster-facial http://www.jacquiesbeauty.co.uk/?layout=index&page=Facial-treatments-dumfries
+Redirect 301 /facial-treatments/luxury-organic-facial http://www.jacquiesbeauty.co.uk/?layout=index&page=Facial-treatments-dumfries
+Redirect 301 /facial-treatments/dermabrasion-facial http://www.jacquiesbeauty.co.uk/?layout=index&page=Facial-treatments-dumfries
+Redirect 301 /facial-treatments/hydraclean http://www.jacquiesbeauty.co.uk/?layout=index&page=Facial-treatments-dumfries
+Redirect 301 /inch-loss http://www.jacquiesbeauty.co.uk/?layout=index&page=inch-loss-treatments-salon-dumfries
+Redirect 301 /inch-loss/guinot-aromatic-body http://www.jacquiesbeauty.co.uk/?layout=index&page=inch-loss-treatments-salon-dumfries
+Redirect 301 /inch-loss/universal-contour-wrap http://www.jacquiesbeauty.co.uk/?layout=index&page=inch-loss-treatments-salon-dumfries
+Redirect 301 /inch-loss/lipolysis http://www.jacquiesbeauty.co.uk/?layout=index&page=inch-loss-treatments-salon-dumfries
+Redirect 301 /inch-loss/ionithermie http://www.jacquiesbeauty.co.uk/?layout=index&page=inch-loss-treatments-salon-dumfries
+Redirect 301 /inch-loss/vibraxis http://www.jacquiesbeauty.co.uk/?layout=index&page=inch-loss-treatments-salon-dumfries
+Redirect 301 /inch-loss/easystep http://www.jacquiesbeauty.co.uk/?layout=index&page=inch-loss-treatments-salon-dumfries
+Redirect 301 /laser-and-clinical http://www.jacquiesbeauty.co.uk/?layout=index&page=laser-hair-vein-milia-removal-skin-tags
+Redirect 301 /laser-and-clinical/skin-tags-milia-a-clinical-diathermy http://www.jacquiesbeauty.co.uk/?layout=index&page=laser-hair-vein-milia-removal-skin-tags
+Redirect 301 /laser-and-clinical/laser-hair-removal http://www.jacquiesbeauty.co.uk/?layout=index&page=laser-hair-vein-milia-removal-skin-tags
+Redirect 301 /laser-and-clinical/vein-removal http://www.jacquiesbeauty.co.uk/?layout=index&page=laser-hair-vein-milia-removal-skin-tags
+Redirect 301 /teen-treatments http://www.jacquiesbeauty.co.uk/?layout=index&page=Dumfries-Beauty-Salon-Treatments-Health
+Redirect 301 /teen-treatments/teen-facial-treatments http://www.jacquiesbeauty.co.uk/?layout=index&page=Facial-treatments-dumfries
+Redirect 301 /teen-treatments/teen-tan http://www.jacquiesbeauty.co.uk/?layout=index&page=monu-sun-tan
+Redirect 301 /teen-treatments/teen-hands-and-feet http://www.jacquiesbeauty.co.uk/?layout=index&page=manicure-pedicure-luxury-salon-dumfries
+Redirect 301 /teen-treatments/teen-hair-removal http://www.jacquiesbeauty.co.uk/?layout=index&page=waxing-laser-stick-hair-removal
+Redirect 301 /teen-treatments/teen-body http://www.jacquiesbeauty.co.uk/?layout=index&page=Dumfries-Beauty-Salon-Treatments-Health
+Redirect 301 /teen-treatments/teen-packages http://www.jacquiesbeauty.co.uk/?layout=index&page=gift-birthday-valentines-special-occasion
+Redirect 301 /men http://www.jacquiesbeauty.co.uk/?layout=index&page=grooming-men-salon-dumfries
+Redirect 301 /men/fix-it http://www.jacquiesbeauty.co.uk/?layout=index&page=20-minute-fix-it
+Redirect 301 /men/face-care-for-men http://www.jacquiesbeauty.co.uk/?layout=index&page=Facial-treatments-dumfries
+Redirect 301 /men/massage-for-men http://www.jacquiesbeauty.co.uk/?layout=index&page=massage-dumfries-salon
+Redirect 301 /men/waxing-for-men http://www.jacquiesbeauty.co.uk/?layout=index&page=waxing-laser-stick-hair-removal
+Redirect 301 /men/grooming-for-men http://www.jacquiesbeauty.co.uk/?layout=index&page=grooming-men-salon-dumfries
+Redirect 301 /men/facts-about-men http://www.jacquiesbeauty.co.uk/?layout=index&page=grooming-men-salon-dumfries
+Redirect 301 /news-and-events http://www.jacquiesbeauty.co.uk/?layout=index&page=news-events-awards-dumfries-salon
+Redirect 301 /the-gold-card http://www.jacquiesbeauty.co.uk/?layout=index&page=discount-salon-treatments
+Redirect 301 /xmasgiftcards http://www.jacquiesbeauty.co.uk/?layout=index&page=Gift-voucher
+Redirect 301 /about-jacquies http://www.jacquiesbeauty.co.uk/?layout=index&page=Best-Dumfries-Beauty-Salon
+Redirect 301 /contact http://www.jacquiesbeauty.co.uk/?layout=index&page=contact-jacquies-beauty-salon-dumfries
+Redirect 301 /opening-hours http://www.jacquiesbeauty.co.uk/?layout=index&page=contact-jacquies-beauty-salon-dumfries
+Redirect 301 /vip http://www.jacquiesbeauty.co.uk/?layout=index&page=book-online-salon-appointments-dumfries
+Redirect 301 /awards http://www.jacquiesbeauty.co.uk/?layout=index&page=news-events-awards-dumfries-salon
+Redirect 301 /book-now http://www.jacquiesbeauty.co.uk/?layout=index&page=book-online-salon-appointments-dumfries
+Redirect 301 /sitemap http://www.jacquiesbeauty.co.uk/?layout=index&page=contact-jacquies-beauty-salon-dumfries
+Redirect 301 /terms-and-conditions http://www.jacquiesbeauty.co.uk/?layout=index&page=t-and-c
+Redirect 301 /privacy http://www.jacquiesbeauty.co.uk/?layout=index&page=privacy-policy
+Redirect 301 /cookies http://www.jacquiesbeauty.co.uk/?layout=index&page=cookies
+
+#  Uncomment following line if your webserver's URL
+#  is not directly related to physical file paths.
+#  Update Your Joomla! Directory (just / for root)
+
+# RewriteBase /
+
+ErrorDocument 404 /index.php?qlue404=1
+
+########## Begin - Joomla! core SEF Section
+#
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !^/index.php
+RewriteCond %{REQUEST_URI} (/|\.php|\.html|\.htm|\.feed|\.pdf|\.raw|/[^.]*)$  [NC]
+RewriteRule (.*) index.php
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
+
+#
+########## End - Joomla! core SEF Section
+
+SetEnv DEFAULT_PHP_VERSION 53
+
+DirectoryIndex index.cgi index.php
+
