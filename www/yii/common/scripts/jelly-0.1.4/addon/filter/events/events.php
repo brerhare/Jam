@@ -56,6 +56,8 @@ class events
         $content = "<div style='color:#575757;'>";      // Your basic solemn grey font color
         $uid = Yii::app()->session['uid'];
 
+        $twistyIcon = "<img style='padding-right:3px' title='" . 'Show more' . "' src='img/" . 'open-twisty.png' . "' >";
+
         $content .= "<b>Search</b><br/>";
         $content .= "<div style='float:left'>";
         $content .= "<input type='text' id='textsearchbox' style='width:80px' title='Input text to search for' value='" . '' . "'>";
@@ -94,7 +96,8 @@ class events
             if (isset($_GET['interest']))
                 $interestSel = explode('|', $_GET['interest']);
             $content .= "<br>";
-            $content .= "<a href='#'></img><div class='filter-header'>Interest</a><br>";
+
+            $content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Interest</a><br>";
             $content .= "<div id='interest-detail' class='filter-detail'>";
             foreach ($interests as $interest):
                 $match = false;
@@ -122,7 +125,7 @@ class events
             if (isset($_GET['format']))
                 $formatSel = explode('|', $_GET['format']);
             $content .= "<br>";
-            $content .= "<a href='#'><div class='filter-header'>Format</a><br>";
+            $content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Format</a><br>";
             $content .= "<div id='format-detail' class='filter-detail'>";
             foreach ($formats as $format):
                 $match = false;
@@ -150,7 +153,7 @@ class events
             if (isset($_GET['facility']))
                 $facilitySel = explode('|', $_GET['facility']);
             $content .= "<br>";
-            $content .= "<a href='#'><div class='filter-header'>Facility</a><br>";
+            $content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Facility</a><br>";
             $content .= "<div id='facility-detail' class='filter-detail'>";
             foreach ($facilities as $facility):
                 $match = false;
@@ -178,7 +181,7 @@ class events
             if (isset($_GET['pb']))
                 $pbSel = explode('|', $_GET['pb']);
             $content .= "<br>";
-            $content .= "<a href='#'><div class='filter-header'>Price Band</a><br>";
+            $content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Price Band</a><br>";
             $content .= "<div id='price-detail' class='filter-detail'>";
             foreach ($prices as $price):
                 $match = false;
@@ -209,7 +212,7 @@ class events
             if (isset($_GET['grade']))
                 $gradeSel = explode('|', $_GET['grade']);
             $content .= "<br>";
-            $content .= "<a href='#'><div class='filter-header'>grade</a><br>";
+            $content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Grade</a><br>";
             $content .= "<div id='grade-detail' class='filter-detail'>";
             foreach ($grades as $grade):
                 $match = false;
