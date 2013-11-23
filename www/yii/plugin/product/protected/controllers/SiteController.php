@@ -193,7 +193,7 @@ class SiteController extends Controller
 			$order->http_option_id = $optionId;
 			$order->http_qty = $qty;
 			$order->http_price = $price;
-			$order->http_line_total = ($qty * $price);
+			$order->http_line_total = number_format(($qty * $price), 2, '.', '');
 			$order->http_shipping_id = $shipId;
 			$order->email_address = $e;
 			$order->delivery_address1 = $a1;
@@ -227,7 +227,7 @@ class SiteController extends Controller
 		{
 			foreach ($orders as $order)
 			{
-				$order->http_total = $totalGoods;
+				$order->http_total = number_format($totalGoods, 2, '.', '');
 				$order->save();
 			}
 		}
