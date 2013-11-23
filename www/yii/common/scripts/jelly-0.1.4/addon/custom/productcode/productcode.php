@@ -458,6 +458,26 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 
 					function proceed()
 					{
+						if (document.getElementById("address1").value == "")
+						{
+							alert('Address cant be empty');
+							return(false);
+						}
+						if (document.getElementById("post_code").value == "")
+						{
+							alert('Post code cant be empty');
+							return(false);
+						}
+						if (document.getElementById("email1").value == "")
+						{
+							alert('Email address cant be empty');
+							return(false);
+						}
+						if (document.getElementById("email1").value != document.getElementById("email2").value)
+						{
+							alert('Email addresses dont match');
+							return(false);
+						}
 						var e = document.getElementById("choose_shipping_option");
 						shipId = e.options[e.selectedIndex].value;
 						a1 = document.getElementById("address1").value;
