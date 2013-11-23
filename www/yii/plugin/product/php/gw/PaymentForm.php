@@ -1,7 +1,7 @@
 <?php
 // @@NB: inserted until @@ENDNB tag
-	if ($NewEntry != 1)
-		include("WireflyHelper.php");
+if ($NewEntry != 1)
+	include("WireflyHelper.php");
 
 logMsg("(PaymentForm) Start dump -------------------------------");
 foreach ($_POST as $field => $value)
@@ -11,16 +11,17 @@ foreach ($_POST as $field => $value)
 }
 logMsg("(PaymentForm) End dump ---------------------------------");
 
-/*
+// Set the gateway credentials
 $dbhandle="";
 _dbinit($dbhandle);
 $sql = "SELECT * FROM product_order where ip = '" . getIP() . "'";
 $result = mysql_query($sql) or die(mysql_error());
 $q = mysql_fetch_array($result, MYSQL_ASSOC);
+$MerchantID = $q['gu'];
+$Password = $q['gp'];
 _dbfin($dbhandle);
-header('Location: ' . $q['return_url'] . '/index.php/product/paid?sid=' . $q['sid'] , true, 303);
-die();
-*/
+//header('Location: ' . $q['return_url'] . '/index.php/product/paid?sid=' . $q['sid'] , true, 303);
+//die();
 
 // @@ENDNB
 

@@ -35,6 +35,14 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
+		$util = new Util;
+		if (isset($_GET['ge']))
+			Yii::app()->session['checkoutEmail'] = $_GET['ge'];
+		if (isset($_GET['gu']))
+			Yii::app()->session['checkoutGatewayUser'] = urldecode($util->decrypt($_GET['gu']));
+		if (isset($_GET['gp']))
+			Yii::app()->session['checkoutGatewayPassword'] = urldecode($util->decrypt($_GET['gp']));
+
 		$layout = "index";
 		if (isset($_GET['layout']))
 			$layout = $_GET['layout'];
@@ -70,6 +78,14 @@ class SiteController extends Controller
 	// Invoke the Paymentsense module
 	public function actionPay()
 	{
+		if ((trim(Yii::app()->session['checkoutEmail']) == "")
+		|| (trim(Yii::app()->session['checkoutGatewayUser']) == "")
+		|| (trim(Yii::app()->session['checkoutGatewayPassword']) == ""))
+		{
+			Yii::log("Checkout - NOT LOADING PAYMENT PAGE because gateway details arent present" , CLogger::LEVEL_WARNING, 'system.test.kim');
+			throw new CHttpException(400,'Cannot proceed to payment because Gateway details dont exist');
+		}
+
 		if (isset($_GET['shipid']))
 			$shipId = $_GET['shipid'];
 		else
@@ -185,6 +201,8 @@ class SiteController extends Controller
 			$order->telephone = $t;
 			$totalGoods += ($qty * $price);
 			$order->return_url = Yii::app()->baseUrl;
+			$order->gu = Yii::app()->session['checkoutGatewayUser'];
+			$order->gp = Yii::app()->session['checkoutGatewayPassword'];
 			if(!$order->save())
 			{
 				Yii::log("Checkout - Write error on order reord!" , CLogger::LEVEL_WARNING, 'system.test.kim');
@@ -212,7 +230,7 @@ class SiteController extends Controller
 		}
 
 		// Go to paymentsense for payment
-		$this->redirect(Yii::app()->baseUrl . "/php/gw/EntryPoint.php?sid=" . Yii::app()->session['sid'] . "&xid=" . rand(99999,999999));
+		$this->redirect(Yii::app()->baseUrl . "/php/gw/EntryPoint.php?sid=" . Yii::app()->session['sid'] . "&xid=" . rand(99999,999999) );
 	}
 
 	// Return from Paymentsense

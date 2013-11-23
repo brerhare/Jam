@@ -4,8 +4,8 @@
 
 // TEST gateway
 // ------------
-	$MerchantID = "WIREFL-5188100";
-	$Password = "391F3GWBZ0";
+//	$MerchantID = "WIREFL-5188100";
+//	$Password = "391F3GWBZ0";
 
 // PRODUCTION gateway
 // ------------------
