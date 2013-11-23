@@ -101,8 +101,12 @@ return array(
 		// These are used by the shopping cart checkout process
 		'checkoutEmail'=>'reception@jacquiesbeauty.co.uk',
 		'checkoutName'=>'Jacquies Beauty',
-		'checkoutGatewayUser'=>'WIREFL-5188100',
-		'checkoutGatewayPassword'=>'391F3GWBZ0',
+		// Test gateway
+		//'checkoutGatewayUser'=>'WIREFL-5188100',
+		//'checkoutGatewayPassword'=>'391F3GWBZ0',
+		// Live gateway. Note this is Jacquies own account
+		'checkoutGatewayUser'=>'merchant3708124',
+		'checkoutGatewayPassword'=>'6wikPYFj-9',
 		'jellyRoot' => '/scripts/jelly/',
 		'sid' => 'hrhgr5ko21gn08a3e22jeaers5',
 	),
