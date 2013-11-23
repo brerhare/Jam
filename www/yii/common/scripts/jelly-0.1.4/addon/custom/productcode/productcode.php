@@ -347,7 +347,7 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 		$content .= "<th align='left' width=25%></th>";
 		$content .= "<th align='left' width=19%></th>";	// Delivery dropdown
 		$content .= "<th align='right' width=10%></th>";	// Total
-		$content .= "<th align='right' width=7%></th>";
+		$content .= "<th align='right' width=11%></th>";
 		$content .= "</tr></thead>";
 
 		$content .= "<tr><td>&nbsp</td></tr>";
