@@ -183,7 +183,7 @@ css.display = block
 ########################################
 
 		[footer]
-		child = f-background, f-text
+		child = f-background, f-text, wirefly
 
 			[f-background]
 			css.height = 30px
@@ -214,3 +214,8 @@ css.display = block
 				css.margin-left = 50px
 				html.raw = Policy
 				click = http://www.dumfriesfurniture.com/?layout=index&page=dumfrie-furniture-policy
+
+			[wirefly]
+			css.margin-left = 335px
+			html.raw = Site hosted and Designed by Wirefly Design Ltd
+			click = http://www.wireflydesign.com

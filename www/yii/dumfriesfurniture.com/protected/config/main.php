@@ -96,8 +96,13 @@ return array(
 	// application-level parameters that can be accessed
 	// using Yii::app()->params['paramName']
 	'params'=>array(
-		// this is used in contact page
+		// This is used in contact page
 		'adminEmail'=>'webmaster@wireflydesign.com',
+        // These are used by the shopping cart checkout process
+        'checkoutEmail'=>'gordon@dumfriesfurniture.com',
+        'checkoutName'=>'Dumfries Furniture Direct',
+        'checkoutGatewayUser'=>'WIREFL-5188100',
+        'checkoutGatewayPassword'=>'391F3GWBZ0',
 		'jellyRoot' => '/scripts/jelly/',
 		'sid' => '3hjc1rcpa5todru774o45q6v16',
 	),
