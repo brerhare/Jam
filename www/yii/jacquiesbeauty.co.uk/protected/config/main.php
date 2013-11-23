@@ -96,8 +96,9 @@ return array(
 	// application-level parameters that can be accessed
 	// using Yii::app()->params['paramName']
 	'params'=>array(
-		// this is used in contact page
+		// This is used in contact page
 		'adminEmail'=>'reception@jacquiesbeauty.co.uk',
+		// These are used by the shopping cart checkout process
 		'checkoutEmail'=>'reception@jacquiesbeauty.co.uk',
 		'checkoutName'=>'Jacquies Beauty',
 		'checkoutGatewayUser'=>'WIREFL-5188100',
