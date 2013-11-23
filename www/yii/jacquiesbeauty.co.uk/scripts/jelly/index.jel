@@ -72,7 +72,7 @@ addon.analytics.google_analytics.ua = UA-20115178-1
 			css.display = block
 			css.margin-top = -51px 
 			css.margin-left = 135px
-			html.raw = <a style="display:block" href="http://jacquies.wireflydesign.com"><div style='height:75px;width:218px;'></div></a>
+			html.raw = <a style="display:block" href="http://jacquiesbeauty.co.uk"><div style='height:75px;width:218px;'></div></a>
 
 		[carousel]
 		css.display = block
@@ -137,21 +137,21 @@ css.width = 680px
 			css.width = 120px
 			css.font-size = 10px
 			css.margin-left = 300px
-			click = http://jacquies.wireflydesign.com/?layout=index&page=cookies
+			click = http://jacquiesbeauty.co.uk/?layout=index&page=cookies
 
 			[footer-tandc]
 			html.raw = Terms & Conditions
 			css.width = 120px
 			css.font-size = 10px
 			css.margin-left = 10px
-			click = http://jacquies.wireflydesign.com/?layout=index&page=t-and-c
+			click = http://jacquiesbeauty.co.uk/?layout=index&page=t-and-c
 
 			[footer-contact]
 			html.raw = Privacy Policy
 			css.width = 100px
 			css.font-size = 10px
 			css.margin-left = 40px
-			click = http://jacquies.wireflydesign.com/?layout=index&page=privacy-policy
+			click = http://jacquiesbeauty.co.uk/?layout=index&page=privacy-policy
 
 		[address]
 		css.width = 500px
