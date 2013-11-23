@@ -32,7 +32,6 @@
 		logMsg("Total amount is zero...aborting");
 		die("Cannot process payment for zero amount");
 	}
-	$ShoppingCartAmount = ($ShoppingCartAmount * 100);
 
     $ShoppingCartCurrencyShort = "GBP";
     $ShoppingCartOrderID = $qOrder['uid'] . "-" . time();

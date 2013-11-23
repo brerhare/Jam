@@ -158,7 +158,8 @@ class Order extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('uid',$this->uid);
+		//$criteria->compare('uid',$this->uid);
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$criteria->compare('ip',$this->ip,true);
 		$criteria->compare('sid',$this->sid,true);
 		$criteria->compare('order_number',$this->order_number,true);

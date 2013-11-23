@@ -113,7 +113,8 @@ class Auth extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('uid',$this->uid);
+		//$criteria->compare('uid',$this->uid);
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$criteria->compare('order_number',$this->order_number,true);
 		$criteria->compare('card_name',$this->card_name,true);
 		$criteria->compare('card_number',$this->card_number,true);

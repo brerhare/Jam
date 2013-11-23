@@ -97,7 +97,10 @@ class SiteController extends Controller
 			throw new CHttpException(400,'Cannot proceed to payment because shipid wasnt passed by caller');
 		}
 		if (isset($_GET['cartid']))
+		{
 			$cartId = $_GET['cartid'];
+			Yii::app()->session['cartid'] = $cartId;
+		}
 		else
 		{
 			Yii::log("Checkout - NOT LOADING PAYMENT PAGE because 'cartid' wasnt passed" , CLogger::LEVEL_WARNING, 'system.test.kim');
@@ -231,7 +234,8 @@ class SiteController extends Controller
 				$order->save();
 			}
 		}
-
+//$this->actionPaid();
+//die('done');
 		// Go to paymentsense for payment
 		$this->redirect(Yii::app()->baseUrl . "/php/gw/EntryPoint.php?sid=" . Yii::app()->session['sid'] . "&xid=" . rand(99999,999999) );
 	}
@@ -262,10 +266,60 @@ class SiteController extends Controller
 		// Retrieve the original order, now populated by paymentsense
 		$orders = Order::model()->findAll($criteria);
 		$orderCount = 0;
+		$message = "";
+		$message .= "<h2>Thank you for shopping with " . Yii::app()->session['checkoutName'] . "</h2><br>";
+		$message .= "<table style='border:1px solid black'><tr>";
+		$message .= "<b><td style='padding:15px' >Description</td><td style='padding:15px' >Option/Size</td><td style='padding:15px' >Each</td><td style='padding:15px' >Quantity</td><td style='padding:15px' >Total</td></b>";
+		$message .= "</tr>";
 		foreach ($orders as $order)
 		{
-//die('ok');
+			$message .= "<tr>";
+
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("id = " . $order->http_product_id);
+			$product = Product::model()->find($criteria);	
+			$name = "";
+			if ($product)
+				$name = $product->name;
+			$message .= "<td style='padding:15px' align='left'>" . $name . "</td>";
+
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("id = " . $order->http_option_id);
+			$option = Option::model()->find($criteria);
+			$optionDesc = "";
+			if ($option)
+				$optionDesc = $option->name;
+			$message .= "<td style='padding:15px' align='left'>" . $optionDesc . "</td>";
+
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("product_product_id = " . $order->http_product_id);
+			$criteria->addCondition("product_option_id = " . $order->http_option_id);
+			$productHasOption = ProductHasOption::model()->find($criteria);
+			$each = "0.00";
+			if ($productHasOption)
+				$each = $productHasOption->price;
+			$message .= "<td style='padding:15px' align='right'>" . $each . "</td>";
+
+			$message .= "<td style='padding:15px' align='right'>" . $order->http_qty . "</td>";
+
+			$message .= "<td style='padding:15px' align='right'>" . $order->http_line_total . "</td>";
+
+			$message .= "</tr>";
 		}
+		$message .= "</table>";
+
+		$message .= "<table>";
+
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("id = " . $order->http_shipping_id);
+		$shipping = ShippingOption::model()->find($criteria);
+		$shippingAmount = "0.00";
+		if ($shipping)
+			$shippingAmount = $shipping->price;
+		$message .= "<tr><td style='padding:15px'>Shipping: &pound " . $shippingAmount . "</td></tr>";
+		$message .= "<tr><td style='padding:15px'>Total Paid: &pound " . $order->http_total . "</td></tr>";
+
+		$message .= "</table>";
 
         // Send email
         $to = $order->email_address;
@@ -274,7 +328,7 @@ class SiteController extends Controller
             $from = Yii::app()->session['checkoutEmail'];
             $fromName = Yii::app()->session['checkoutName'];
             $subject = "Your order from " . Yii::app()->session['checkoutName'];
-            $message = "<b>Thank you for your order, total £" . $order->http_total . "</b><br><br>";
+            //$message = "<b>Thank you for your order, total &pound" . $order->http_total . "</b><br><br>";
             // phpmailer
             $mail = new PHPMailer();
             $mail->AddAddress($to);
@@ -293,7 +347,25 @@ class SiteController extends Controller
                 Yii::log("PAID PAGE SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
         }
 
-		die('Thank you');
+		$cartId = Yii::app()->session['cartid'];
+		Yii::app()->session[$cartId] = "";
+
+		// Update all the order records we just created with the 'x' in front of the ip
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("ip = '" . $ip . "'");
+		$orders = Order::model()->findAll($criteria);
+		if ($order)
+		{
+			foreach ($orders as $order)
+			{
+				$order->ip = 'x-' . $ip;
+				$order->save();
+			}
+		}
+
+		$thanks = "<h2>Thank you for shopping with " . Yii::app()->session['checkoutName'] . "</h2><br>";
+		$thanks .= "<p>An email will be sent to you shortly</p>";
+		die($thanks);
 	}
 
 	/**
