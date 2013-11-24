@@ -72,9 +72,21 @@ class SiteController extends Controller
 	/**
 	 * Prints an event
 	 */
-	public function actionPrint()
+	public function actionPrint($id)
 	{
-		die('x');
+		die('id='.$_GET('event'));
+/*
+		$content .= "<div id='accordion'>";
+		$criteria->addCondition("start >= '" . $sdate . "'");
+		if ((isset($_GET['edate'])) && trim($_GET['edate'] != ''))
+			$criteria->addCondition("start <= '" . $edate . "'");
+//$criteria->addCondition("ii <= '" . $edate . "'");
+		$criteria->order = 'start ASC';
+		$events = Event::model()->findAll($criteria);
+		$hasEvents = false;
+		foreach ($events as $event)
+		{
+*/
 		return;
 	}
 
@@ -196,7 +208,7 @@ class SiteController extends Controller
 
 					$content .= "</td><td style='width:60%; padding-left:10px; vertical-align:top'>";
 					// Booking
-					$content .= "Booking ";
+					$content .= "<a class='event-detail-label'>Booking</a> ";
 					if ($ws->booking_essential)
 						$content .= "<b>essential</b>";
 					else
@@ -210,30 +222,30 @@ class SiteController extends Controller
 					// Organisation
 					if ($member)
 						if (trim($member->organisation) != '')
-							$content .= "Organization: " . $member->organisation . "<br>";
+							$content .= "<a class='event-detail-label'>Organisation</a> " . $member->organisation . "<br>";
 					// Contact details
-					$content .= "Contact details: " . $event->contact . "<br>";
+					$content .= "<a class='event-detail-label'>Contact details</a> " . $event->contact . "<br>";
 					// Website
 					if (trim($event->web) != '')
 					{
 						$http = "http://";
 						if (strstr("http://", $event->web))
 							$http = "";
-						$content .= "Website: " . "<a href='" . $http . $event->web . "'' target='_blank'>" . $event->web . "</a>" . "<br>";
+						$content .= "<a class='event-detail-label'>Website</a> " . "<a href='" . $http . $event->web . "'' target='_blank'>" . $event->web . "</a>" . "<br>";
 					}
 					// Suitable ages
 					if (($ws->min_age == 0) && ($ws->max_age == 0))
-						$content .= "Suitable for all ages" . "<br>";
+						$content .= "<a class='event-detail-label'>Suitable for</a> all ages" . "<br>";
 					else if (($ws->min_age != 0) && ($ws->max_age != 0))
-						$content .= "Suitable for ages " . $ws->min_age . " to " . $ws->max_age . "<br>";
+						$content .= "<a class='event-detail-label'>Suitable for</a> ages " . $ws->min_age . " to " . $ws->max_age . "<br>";
 					else if (($ws->min_age != 0) && ($ws->max_age == 0))
-						$content .= "Suitable for ages " . $ws->min_age . " and older" . "<br>";
+						$content .= "<a class='event-detail-label'>Suitable for</a> ages " . $ws->min_age . " and older" . "<br>";
 					else if (($ws->min_age == 0) && ($ws->max_age != 0))
-						$content .= "Suitable for ages up to " . $ws->max_age . "<br>";
+						$content .= "<a class='event-detail-label'>Suitable for</a> ages up to " . $ws->max_age . "<br>";
 					// Grade
-					$content .= "Grade: " . $ws->grade . "<br>";
+					$content .= "<a class='event-detail-label'>Grade</a> " . $ws->grade . "<br>";
 					// OS Grid Ref
-					$content .= "OS grid ref : " . $ws->os_grid_ref . "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(" . $event->post_code . ")" . "<br>";
+					$content .= "<a class='event-detail-label'>OS grid ref</a> " . $ws->os_grid_ref . "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(" . $event->post_code . ")" . "<br>";
 					$content .= "</td></tr></table>";
 
 					// Description
@@ -248,7 +260,7 @@ class SiteController extends Controller
 					$content .= "<div style='float:right;padding-left:10px;padding-top:1px' class='fb-share-button' data-href='http://www.wildseasons.co.uk' data-type='button'></div>";
 
 					// print
-					$printUrl = "https://plugin.wireflydesign.com/event/index.php/site/print/" . $event->id . "?sid=" . $member->sid;
+					$printUrl = "https://plugin.wireflydesign.com/event/index.php/site/print/?event=" . $event->id . "?sid=" . $member->sid;
 					$content .= "<div style='float:right;padding-left:10px'><a target='_blank' href='" . $printUrl . "'><img style='margin-top:0px; margin-left:0px' title='Print' src='img/print.jpg'></a></div>";
 						//$content .= "<div style='clear:both'></div>";
 

@@ -77,3 +77,8 @@ color: #555;
     overflow:hidden;
     /*border: 1px solid black;*/
 }
+
+.event-detail-label {
+    color: #314d2e !important;
+    font-weight: bold;
+}
