@@ -142,23 +142,6 @@ break;
 			$this->apiJs = $tmp;
 		}
 
-if (strstr($this->apiJs, "<SUBSTITUTE-SINGLE-1>"))
-{
-	if ($this->SINGLE == 1)
-	{
-		$tmp = str_replace("<SUBSTITUTE-SINGLE-1>", "if (1==2){", $this->apiJs);
-		$tm2 = str_replace("<SUBSTITUTE-SINGLE-2>", "}", $tmp);
-	}
-	else
-	{
-		$tmp = str_replace("<SUBSTITUTE-SINGLE-1>", "", $this->apiJs);
-		$tm2 = str_replace("<SUBSTITUTE-SINGLE-2>", "", $tmp);
-	}
-	$this->apiJs = $tm2;
-}
-
-
-
 		if ($onReady != "")
 		{
 			$this->apiJs .= $onReady;
@@ -175,13 +158,7 @@ if (strstr($this->apiJs, "<SUBSTITUTE-SINGLE-1>"))
 		$retArr = array();
 		$retArr[0] = $html;
 		$retArr[1] = $js;
-/*
-		if ($this->SINGLE)
-{
-			Yii::log("GOOGLE MAPS: SINGLE [" . $retArr[0] . "]", CLogger::LEVEL_WARNING, 'system.test.kim');
-			Yii::log("GOOGLE MAPS: SINGLE [" . $retArr[1] . "]", CLogger::LEVEL_WARNING, 'system.test.kim');
-}
-*/
+
 		return $retArr;
 	}
 
@@ -266,42 +243,31 @@ END_OF_API_HTML;
 		// Sets up a marker and info window on the map at the latitude and longitude specified
 		setupMarker = function(latitude, longitude, iconpath, hovertip, content)
 		{
-			//usehovertip = decodeURIComponent(urlhovertip);
-			//usecontent = urldecode(content);
+			var usehovertip = "";
+			var usecontent = "";
+			if (hovertip != undefined)
+				usehovertip = urldecode(hovertip);
+			if (content != undefined)
+				usecontent = urldecode(content);
 
 			// Generate the position from the given latitude and longitude values
 			var pos = new google.maps.LatLng(latitude, longitude);
 
-			if (iconpath != undefined)
-			{
-				var myIcon = new google.maps.MarkerImage(iconpath, undefined, undefined, undefined, new google.maps.Size(20, 20));
-				var marker = new google.maps.Marker({
-					position: pos,
-					map: map_<substitute-id>,
-					//icon: image,
-					//icon: new google.maps.MarkerImage(iconpath, undefined, undefined, undefined, new google.maps.Size(20, 20)),
-					icon: myIcon,
-					title: name
-				});
-			}
-			else
-			{
-				var myIcon = '';
-				var marker = new google.maps.Marker({
-					position: pos,
-					map: map_<substitute-id>,
-					icon: myIcon,
-					title: name
-				});	
-			}
-
 			// Define the marker on the map in the specified location
+			var myIcon = '';
+			if (iconpath != undefined)
+				myIcon = new google.maps.MarkerImage(iconpath, undefined, undefined, undefined, new google.maps.Size(20, 20));
+			var marker = new google.maps.Marker({
+				position: pos,
+				map: map_<substitute-id>,
+				icon: myIcon,
+				title: usehovertip
+			});
 
 			// Add a listener to this marker to display the information window on click
-			var info = "Event at co-ordinates:<br />latitude: " + latitude + "<br/>longitude: " + longitude;
 			google.maps.event.addListener(marker, 'click', function () {
 				var infowindow = new google.maps.InfoWindow({
-					content: info
+					content: usecontent,
 				});
 				infowindow.open(map_<substitute-id>, marker);
 			});

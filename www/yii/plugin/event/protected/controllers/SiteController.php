@@ -170,21 +170,21 @@ class SiteController extends Controller
 					$content .= $ws->short_description . "..." . "<br>";
 					$content .= "<table width=100% style='padding:10px 10px 10px 0px'><tr><td style='padding:0px; width:40%'>";
 
-// @@EG: Calling a jelly addon directly, from outside the jelly
-$addon = new google_os;
-$optArr = array();
-$optArr['single'] = '1';
-$optArr['id'] = 'detailMap_' . $eventId;
-$optArr['width'] = '200px';
-$optArr['height'] = '200px';
-//$optArr['maptype'] = 'terrain';
-$optArr['inputmode'] = 'os';
-$optArr['center'] = $ws->os_grid_ref;
-$optArr['zoom'] = '9';
-$ret = $addon->init($optArr, '/event/scripts/jelly/addon/map/google_os');
-$content .= $ret[0];
-$content .= '<script>' . $ret[1] . '</script>';
-$content .= "<script> markerByOs('" . $ws->os_grid_ref . "'); </script>";
+					// @@EG: Calling a jelly addon directly, from outside the jelly
+					$addon = new google_os;
+					$optArr = array();
+					$optArr['single'] = '1';
+					$optArr['id'] = 'detailMap_' . $eventId;
+					$optArr['width'] = '200px';
+					$optArr['height'] = '200px';
+					//$optArr['maptype'] = 'terrain';
+					$optArr['inputmode'] = 'os';
+					$optArr['center'] = $ws->os_grid_ref;
+					$optArr['zoom'] = '9';
+					$ret = $addon->init($optArr, '/event/scripts/jelly/addon/map/google_os');
+					$content .= $ret[0];
+					$content .= '<script>' . $ret[1] . '</script>';
+					$content .= "<script> markerByOs('" . $ws->os_grid_ref . "'); </script>";
 
 					$content .= "</td><td style='width:60%; padding-left:10px; vertical-align:top'>";
 					// Booking

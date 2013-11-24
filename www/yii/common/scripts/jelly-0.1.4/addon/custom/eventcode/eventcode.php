@@ -114,8 +114,13 @@ class eventcode
 			if (!(in_array($osGridRef, $mapPoint)))
 			{
 				array_push($mapPoint, $osGridRef);
-				array_push($mapTip, $event->title);
-				array_push($mapContent, $event->address);
+				array_push($mapTip, $event->address);
+				$infoWindow = "<div style='height:150px; width:300px'>";
+				$infoWindow .= "<h3>" . $event->title . "</h3>";
+				$infoWindow .= "<i>" . $this->formatDateString($event->start, $event->end) . "</i><br><br>";
+				$infoWindow .= $ws->short_description;
+				$infoWindow .= "</div>";
+				array_push($mapContent, $infoWindow);
 				if (trim($member->avatar_path) != "")
 					array_push($mapIcon, 'userdata/member/avatar/' . trim($member->avatar_path));
 				else
@@ -337,22 +342,8 @@ class eventcode
 
 			$content .= "    </div>";
 
-			$content .= "    <div id='header-date'>";	
-			//$content .= '['.$event->start . "]" . '['.$event->end . "]<br>";
-			$start = strtotime($event->start);
-			$end = strtotime($event->end);
-			$dateString = date( 'l d/m/y', $start);
-			if (date('H:i', $start) != '00:00')
-				$dateString .= " " . date('H:i', $start);
-			if ($event->end != $event->start)
-			{
-				$dateString .= " until ";
-				if (date( 'l d/m/y', $start) != date( 'l d/m/y', $end))
-					$dateString .= date( 'l d/m/y', $end);
-				if (date('H:i', $end) != '00:00')
-					$dateString .= " " . date('H:i', $end);
-			}
-			$content .= $dateString;
+			$content .= "    <div id='header-date'>";
+			$content .= $this->formatDateString($event->start, $event->end);
 			$content .= "    </div>";
 
 			$content .= "    <div id='header-venue'>";	
@@ -512,6 +503,25 @@ END_OF_API_JS_fill_headers;
 		$retArr[1] = $apiJs;
 		$retArr[2] = $clipBoard;
 		return $retArr;
+	}
+
+	function formatDateString($startDate, $endDate)
+	{
+			//$content .= '['.$event->start . "]" . '['.$event->end . "]<br>";
+			$start = strtotime($startDate);
+			$end = strtotime($endDate);
+			$dateString = date( 'l d/m/y', $start);
+			if (date('H:i', $start) != '00:00')
+				$dateString .= " " . date('H:i', $start);
+			if ($endDate != $startDate)
+			{
+				$dateString .= " until ";
+				if (date( 'l d/m/y', $start) != date( 'l d/m/y', $end))
+					$dateString .= date( 'l d/m/y', $end);
+				if (date('H:i', $end) != '00:00')
+					$dateString .= " " . date('H:i', $end);
+			}
+			return $dateString;
 	}
 
 }
