@@ -71,7 +71,7 @@ class eventcode
 		$optArr['id'] = 'detailMap-' . $mapId;
 		$optArr['width'] = '700px';
 		$optArr['height'] = '370px';
-		$optArr['maptype'] = 'terrain';
+		//$optArr['maptype'] = 'terrain';
 		$optArr['inputmode'] = $val;
 		$optArr['center'] = $center;
 		$optArr['zoom'] = '8';
@@ -121,12 +121,11 @@ class eventcode
 				else
 					array_push($mapIcon, 'userdata/program/icon/' . trim($program->icon_path));
 			}
-			//$content .= "markerByOs('" . $ws->os_grid_ref . "');";
 		}
 		$content .= "<script>";
 		for ($i = 0; $i < count($mapPoint); $i++)
 		{
-			$content .= "markerByOs('" . $mapPoint[$i] . "', '" . $mapIcon[$i] . "');";
+			$content .= "markerByOs('" . $mapPoint[$i] . "', '" . $mapIcon[$i] . "', '" . urlencode($mapTip[$i]) . "', '"    . urlencode($mapContent[$i])     . "');";
 		}
 		$content .= "</script>";
 
