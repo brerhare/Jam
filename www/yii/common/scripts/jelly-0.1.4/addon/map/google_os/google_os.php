@@ -206,7 +206,7 @@ END_OF_API_HTML;
 
 	private $apiJs = <<<END_OF_API_JS
 
-		var map = null;
+		var map_<substitute-id> = null;
 		var inputMode = "<substitute-inputmode>";
 
 		$(document).ready(function ()
@@ -218,7 +218,7 @@ END_OF_API_HTML;
 		{
 			var latlong = OSGridToLatLong(osgridref);
 			var center = new google.maps.LatLng(latlong.lat, latlong.lng);
-    		map.panTo(center);
+    		map_<substitute-id>.panTo(center);
 		}
 
 		markerByOs = function(osgridref, iconpath, hovertip, content)
@@ -240,7 +240,7 @@ END_OF_API_HTML;
 		centerByLatLong = function(lat, long)
 		{
 			var center = new google.maps.LatLng(lat, long);
-    		map.panTo(center);
+    		map_<substitute-id>.panTo(center);
 		}
 
 		markerByLatLong = function(lat, long)
@@ -252,7 +252,7 @@ END_OF_API_HTML;
 	    loadMap = function (latitude, longitude)
 		{
 			//alert('load');
-			if (map)	// Already loaded
+			if (map_<substitute-id>)	// Already loaded
 				return;
 			var latlng = new google.maps.LatLng(latitude, longitude);
 			var myOptions = {
@@ -260,7 +260,7 @@ END_OF_API_HTML;
 				mapTypeId: google.maps.MapTypeId.<substitute-maptype>,
 				center: latlng,
 			};
-			map = new google.maps.Map(document.getElementById("<substitute-id>-map"), myOptions);
+			map_<substitute-id> = new google.maps.Map(document.getElementById("<substitute-id>-map"), myOptions);
 		}
 
 		// Sets up a marker and info window on the map at the latitude and longitude specified
@@ -277,7 +277,7 @@ END_OF_API_HTML;
 				var myIcon = new google.maps.MarkerImage(iconpath, undefined, undefined, undefined, new google.maps.Size(20, 20));
 				var marker = new google.maps.Marker({
 					position: pos,
-					map: map,
+					map: map_<substitute-id>,
 					//icon: image,
 					//icon: new google.maps.MarkerImage(iconpath, undefined, undefined, undefined, new google.maps.Size(20, 20)),
 					icon: myIcon,
@@ -289,7 +289,7 @@ END_OF_API_HTML;
 				var myIcon = '';
 				var marker = new google.maps.Marker({
 					position: pos,
-					map: map,
+					map: map_<substitute-id>,
 					icon: myIcon,
 					title: name
 				});	
@@ -303,11 +303,11 @@ END_OF_API_HTML;
 				var infowindow = new google.maps.InfoWindow({
 					content: info
 				});
-				infowindow.open(map, marker);
+				infowindow.open(map_<substitute-id>, marker);
 			});
 		}
 
-		// Utulity to decode PHP-encoded strings (messes up arguments to functions)
+		// Utility to decode PHP-encoded strings (messes up arguments to functions)
 		function urldecode(url) {
 			return decodeURIComponent(url.replace(/\+/g, ' '));
 		}

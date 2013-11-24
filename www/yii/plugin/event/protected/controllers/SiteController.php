@@ -174,7 +174,7 @@ class SiteController extends Controller
 $addon = new google_os;
 $optArr = array();
 $optArr['single'] = '1';
-$optArr['id'] = 'detailMap-' . $eventId;
+$optArr['id'] = 'detailMap_' . $eventId;
 $optArr['width'] = '200px';
 $optArr['height'] = '200px';
 //$optArr['maptype'] = 'terrain';

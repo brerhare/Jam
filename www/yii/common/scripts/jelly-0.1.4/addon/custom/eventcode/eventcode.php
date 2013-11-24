@@ -68,7 +68,7 @@ class eventcode
 		$addon = new google_os;
 		$optArr = array();
 		$optArr['single'] = '1';
-		$optArr['id'] = 'detailMap-' . $mapId;
+		$optArr['id'] = $mapId;
 		$optArr['width'] = '700px';
 		$optArr['height'] = '370px';
 		//$optArr['maptype'] = 'terrain';
