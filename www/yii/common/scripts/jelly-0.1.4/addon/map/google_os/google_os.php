@@ -232,7 +232,7 @@ END_OF_API_HTML;
 				}				
 				var latlong = OSGridToLatLong(osgridref);
 				loadMap(latlong.lat, latlong.lng);
-				setupMarker(latlong.lat, latlong.lng, iconpath);
+				setupMarker(latlong.lat, latlong.lng, iconpath, hovertip, content);
 			}
 		}
 
@@ -264,21 +264,13 @@ END_OF_API_HTML;
 		}
 
 		// Sets up a marker and info window on the map at the latitude and longitude specified
-		setupMarker = function(latitude, longitude, iconpath)
+		setupMarker = function(latitude, longitude, iconpath, hovertip, content)
 		{
+			//usehovertip = decodeURIComponent(urlhovertip);
+			//usecontent = urldecode(content);
+
 			// Generate the position from the given latitude and longitude values
 			var pos = new google.maps.LatLng(latitude, longitude);
-
-			// We can 'do' things with the icon
-			var image = {
-				url: 'userdata/program/icon/map_icon.jpg',
-				// This marker is 20 pixels wide by 20 pixels tall.
-				size: new google.maps.Size(20, 20),
-				// The origin for this image is 0,0.
-				origin: new google.maps.Point(0,0),
-				// The anchor for this image is the base of the flagpole at 0,20.
-				anchor: new google.maps.Point(0, 20)
-			}
 
 			if (iconpath != undefined)
 			{
@@ -313,6 +305,11 @@ END_OF_API_HTML;
 				});
 				infowindow.open(map, marker);
 			});
+		}
+
+		// Utulity to decode PHP-encoded strings (messes up arguments to functions)
+		function urldecode(url) {
+			return decodeURIComponent(url.replace(/\+/g, ' '));
 		}
 
 END_OF_API_JS;
