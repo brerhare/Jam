@@ -274,21 +274,19 @@ END_OF_API_HTML;
 				infowindow.open(map_<substitute-id>, marker);
 			});
 
+			/* This is an attempt to have a single open infowindow. Needs 'var infowindow = new google.maps.InfoWindow()' defined as global (not in the function) */
+			/******************
+			function attachListener(marker,content){
+			      google.maps.event.addListener(marker, "click", function () {
 
-/*
-function attachListener(marker,content){
-      google.maps.event.addListener(marker, "click", function () {
-
-      // marker.getPosition() already returns a google.maps.LatLng() object
-      map_<substitute-id>.setCenter(marker.getPosition());
-      infowindow.close();
-      infowindow.setContent(usecontent);
-      infowindow.open(map_<substitute-id>,this);
-      });
-    }    
-*/
-
-
+			      // marker.getPosition() already returns a google.maps.LatLng() object
+			      map_<substitute-id>.setCenter(marker.getPosition());
+			      infowindow.close();
+			      infowindow.setContent(usecontent);
+			      infowindow.open(map_<substitute-id>,this);
+			      });
+			    }    
+			*******************/
 
 		}
 
