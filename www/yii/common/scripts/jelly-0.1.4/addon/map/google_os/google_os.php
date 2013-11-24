@@ -211,98 +211,7 @@ END_OF_API_HTML;
 
 		$(document).ready(function ()
 		{
-<SUBSTITUTE-SINGLE-1>
-			markerByOs('NY052657');
-			markerByOs('NY052657');
-			markerByOs('NY052657');
-			markerByOs('NY052657');
-			markerByOs('NY052657');
-			markerByOs('NY052657');
-			markerByOs('NY052657');
-			markerByOs('NY052657');
-			markerByOs('NY052657');
-			markerByOs('NX371785');
-			markerByOs('NX970757');
-			markerByOs('NX928566');
-			markerByOs('NX685703');
-			markerByOs('NY193665');
-			markerByOs('NX442530');
-			markerByOs('NX970757');
-			markerByOs('NX928566');
-			markerByOs('NX699684');
-			markerByOs('NX928566');
-			markerByOs('NY193665');
-			markerByOs('NX689652');
-			markerByOs('NX928566');
-			markerByOs('NX442530');
-			markerByOs('NX689652');
-			markerByOs('NX745617');
-			markerByOs('NX745617');
-			markerByOs('NX745617');
-			markerByOs('NX745617');
-			markerByOs('NX745617');
-			markerByOs('NX745617');
-			markerByOs('NX745617');
-			markerByOs('NX745617');
-			markerByOs('NX745617');
-			markerByOs('NY052657');
-			markerByOs('NY052657');
-			markerByOs('NY052657');
-			markerByOs('NY052657');
-			markerByOs('NX600520');
-			markerByOs('NX600520');
-			markerByOs('NX600520');
-			markerByOs('NX600520');
-			markerByOs('NX600520');
-			markerByOs('NX600520');
-			markerByOs('NX600520');
-			markerByOs('NX600520');
-			markerByOs('NX600520');
-			markerByOs('NX600520');
-			markerByOs('NX600520');
-			markerByOs('NX600520');
-			markerByOs('NX600520');
-			markerByOs('NX552764');
-			markerByOs('NX372786');
-			markerByOs('NX452646');
-			markerByOs('NX452646');
-			markerByOs('NX657735');
-			markerByOs('NX657735');
-			markerByOs('NX657735');
-			markerByOs('NX657735');
-			markerByOs('NY126804');
-			markerByOs('NY126804');
-			markerByOs('NY126804');
-			markerByOs('NY126804');
-			markerByOs('NY126804');
-			markerByOs('NY126804');
-			markerByOs('NY126804');
-			markerByOs('NY126804');
-			markerByOs('NX682708');
-			markerByOs('NX682708');
-			markerByOs('NX682708');
-			markerByOs('NX852993');
-			markerByOs('NX852993');
-			markerByOs('NX852993');
-			markerByOs('NX521731');
-			markerByOs('NX521731');
-			markerByOs('NX452646');
-			markerByOs('NX552764');
-			markerByOs('NX754605');
-			markerByOs('NX754605');
-			markerByOs('NX754605');
-			markerByOs('NX754605');
-			markerByOs('NX754605');
-			markerByOs('NX754605');
-			markerByOs('NX754605');
-			markerByOs('NX754605');
-			markerByOs('NX974758');
-			markerByOs('NT085055');
-			markerByOs('NY019652');
-			markerByOs('NY041658');
-<SUBSTITUTE-SINGLE-2>
-			//centerByLatLong('55.0091','-3.7628');
-			return;
+
 		});
 
 		centerByOs = function(osgridref)
@@ -312,7 +221,7 @@ END_OF_API_HTML;
     		map.panTo(center);
 		}
 
-		markerByOs = function(osgridref)
+		markerByOs = function(osgridref, iconpath, hovertip, content)
 		{
 			if (osgridref.length > 0)
 			{

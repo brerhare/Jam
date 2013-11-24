@@ -59,7 +59,10 @@ class eventcode
 
 		// This is an array list we populate and map points for
 		// Contains 4 arrays (ref, icon, hovertip, content)
-		$points = array();
+		$mapPoint = array();
+		$mapIcon = array();
+		$mapTip = array();
+		$mapContent = array();
 
 		// @@EG: Calling a jelly addon directly, from outside the jelly
 		$addon = new google_os;
@@ -85,7 +88,6 @@ class eventcode
 		$criteria->addCondition("start >= '" . $sdate . "'");
 		$criteria->order = 'start ASC';
 		$events = Event::model()->findAll($criteria);
-		$content .= "<script>";
 		foreach ($events as $event)
 		{
 			// Pick up the Ws record
@@ -108,7 +110,23 @@ class eventcode
 			if (!($program))
 				continue;
 
-			$content .= "markerByOs('" . $ws->os_grid_ref . "');";
+			$osGridRef = str_replace(' ', '', $ws->os_grid_ref);
+			if (!(in_array($osGridRef, $mapPoint)))
+			{
+				array_push($mapPoint, $osGridRef);
+				array_push($mapTip, $event->title);
+				array_push($mapContent, $event->address);
+				if (trim($member->avatar_path) != "")
+					array_push($mapIcon, trim($member->avatar_path));
+				else
+					array_push($mapIcon, trim($program->icon_path));
+			}
+			//$content .= "markerByOs('" . $ws->os_grid_ref . "');";
+		}
+		$content .= "<script>";
+		foreach ($mapPoint as $point)
+		{
+			$content .= "markerByOs('" . $point . "');";
 		}
 		$content .= "</script>";
 
