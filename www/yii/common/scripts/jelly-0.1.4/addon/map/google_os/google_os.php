@@ -232,7 +232,7 @@ END_OF_API_HTML;
 				}				
 				var latlong = OSGridToLatLong(osgridref);
 				loadMap(latlong.lat, latlong.lng);
-				setupMarker(latlong.lat, latlong.lng);
+				setupMarker(latlong.lat, latlong.lng, iconpath);
 			}
 		}
 
@@ -264,7 +264,7 @@ END_OF_API_HTML;
 		}
 
 		// Sets up a marker and info window on the map at the latitude and longitude specified
-		setupMarker = function(latitude, longitude)
+		setupMarker = function(latitude, longitude, iconpath)
 		{
 			// Generate the position from the given latitude and longitude values
 			var pos = new google.maps.LatLng(latitude, longitude);
@@ -280,14 +280,31 @@ END_OF_API_HTML;
 				anchor: new google.maps.Point(0, 20)
 			}
 
+			if (iconpath != undefined)
+			{
+				var myIcon = new google.maps.MarkerImage(iconpath, undefined, undefined, undefined, new google.maps.Size(20, 20));
+				var marker = new google.maps.Marker({
+					position: pos,
+					map: map,
+					//icon: image,
+					//icon: new google.maps.MarkerImage(iconpath, undefined, undefined, undefined, new google.maps.Size(20, 20)),
+					icon: myIcon,
+					title: name
+				});
+			}
+			else
+			{
+				var myIcon = '';
+				var marker = new google.maps.Marker({
+					position: pos,
+					map: map,
+					icon: myIcon,
+					title: name
+				});	
+			}
+
 			// Define the marker on the map in the specified location
-			var marker = new google.maps.Marker({
-				position: pos,
-				map: map,
-				//icon: image,
-				icon: new google.maps.MarkerImage( 'userdata/program/icon/ws-logo-sm.jpg' , undefined, undefined, undefined, new google.maps.Size(20, 20)),
-				title: name
-			});
+
 			// Add a listener to this marker to display the information window on click
 			var info = "Event at co-ordinates:<br />latitude: " + latitude + "<br/>longitude: " + longitude;
 			google.maps.event.addListener(marker, 'click', function () {

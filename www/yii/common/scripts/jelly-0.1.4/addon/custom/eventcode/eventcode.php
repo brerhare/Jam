@@ -117,16 +117,16 @@ class eventcode
 				array_push($mapTip, $event->title);
 				array_push($mapContent, $event->address);
 				if (trim($member->avatar_path) != "")
-					array_push($mapIcon, trim($member->avatar_path));
+					array_push($mapIcon, 'userdata/member/avatar/' . trim($member->avatar_path));
 				else
-					array_push($mapIcon, trim($program->icon_path));
+					array_push($mapIcon, 'userdata/program/icon/' . trim($program->icon_path));
 			}
 			//$content .= "markerByOs('" . $ws->os_grid_ref . "');";
 		}
 		$content .= "<script>";
-		foreach ($mapPoint as $point)
+		for ($i = 0; $i < count($mapPoint); $i++)
 		{
-			$content .= "markerByOs('" . $point . "');";
+			$content .= "markerByOs('" . $mapPoint[$i] . "', '" . $mapIcon[$i] . "');";
 		}
 		$content .= "</script>";
 
