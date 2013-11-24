@@ -485,6 +485,18 @@ END_OF_API_HTML_fill_headers;
 				ajaxGetEvent(0);	// Dummy first ajax to 'initialise' the google map (who knows why its needed...)
 			});
 
+			function printDiv(divId) {
+				divId = 'accordion';
+
+				var prtContent = document.getElementById("hdr");
+				var WinPrint = window.open('', '', 'letf=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+				WinPrint.document.write(prtContent.innerHTML);
+				WinPrint.document.close();
+				WinPrint.focus();
+				WinPrint.print();
+				WinPrint.close();
+			}
+
 END_OF_API_JS_fill_headers;
 
 		$apiHtml = str_replace("<substitute-path>", $this->jellyRootUrl, $apiHtml);

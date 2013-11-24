@@ -68,145 +68,6 @@ class SiteController extends Controller
 
 	}
 
-
-	/**
-	 * Prints an event
-	 */
-	public function actionPrint()
-	{
-		$eventId = $_GET['event'];
-
-		$content = "<html><style>";
-		$css = file_get_contents(Yii::app()->basePath . "/../scripts/jelly/addon/custom/eventcode/eventcode.css");
-		$content .= $css;
-		$content .= "</style>";
-		$content .= "<div id='accordion' style='margin:0px auto'>";
-		$criteria = new CDbCriteria;
-		$criteria->addCondition("id = " . $eventId);
-		$event = Event::model()->find($criteria);
-		if ($event)
-		{
-			// Pick up the member
-			$criteria = new CDbCriteria;
-			$criteria->condition = "id = " . $event->member_id;
-			$member = Member::model()->find($criteria);
-
-			// Pick up the program
-			$criteria = new CDbCriteria;
-			$criteria->condition = 'id = ' . $event->program_id;
-			$program = Program::model()->find($criteria);
-
-			$hasEvents = true;
-
-			// The header block
-			$content .= "<div id='hdr'> <!-- header -->";
-
-			$content .= "  <div style=float:left>";
-
-			$content .= "    <div id='header-title'>";
-
-			if ($member)
-			{
-				if (trim($member->avatar_path) != '')
-					$content .= "<img style='padding-right:5px;margin-top:0px; margin-right:0px' title='" . $member->organisation . "' src='" . Yii::app()->baseUrl . "/userdata/member/avatar/" . $member->avatar_path . "' width='20' height='20'>";
-			}
-
-
-			$content .= $event->title;
-
-			$content .= "    </div>";
-
-			$content .= "    <div id='header-date'>";
-			$content .= $this->formatDateString($event->start, $event->end);
-			$content .= "    </div>";
-
-			$content .= "    <div id='header-venue'>";	
-			$content .= $event->address;
-			$content .= "    </div>";
-
-			$content .= "    <div id='header-icons' style='float:left; padding-left:7px;'>";
-
-			// Interest icons
-			$criteria = new CDbCriteria;
-			$criteria->condition = 'event_event_id = ' . $event->id;
-			$criteria->order = 'event_interest_id ASC';
-			$eventHasInterests = EventHasInterest::model()->findAll($criteria);
-			foreach ($eventHasInterests as $eventHasInterest)
-			{
-				// Pick up the Icon
-				$criteria = new CDbCriteria;
-				$criteria->condition = 'id = ' . $eventHasInterest->event_interest_id;
-				$interest = Interest::model()->find($criteria);
-				{
-					if ($interest)
-						$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . $interest->name . "' src='" . Yii::app()->baseUrl . "/userdata/icon/" . $interest->icon_path . "' width='20' height='20'>";
-				}
-			}
-
-			// Facility icons
-			$criteria = new CDbCriteria;
-			$criteria->condition = 'event_event_id = ' . $event->id;
-			$criteria->order = 'event_facility_id ASC';
-			$eventHasFacilities = EventHasFacility::model()->findAll($criteria);
-			foreach ($eventHasFacilities as $eventHasFacility)
-			{
-				// Pick up the Icon
-				$criteria = new CDbCriteria;
-				$criteria->condition = 'id = ' . $eventHasFacility->event_facility_id;
-				$facility = Facility::model()->find($criteria);
-				{
-					if ($facility)
-						$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . $facility->name . "' src='" . Yii::app()->baseUrl . "/userdata/icon/" . $facility->icon_path . "' width='20' height='20'>";
-				}
-			}
-
-			// @@TODO: These are hardcoded. Neednt be anymore now that theres 1 icon per band
-			// Price Band icons
-			if ($event->event_price_band_id == 1)	// Free
-				$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Free' . "' src='" . Yii::app()->baseUrl . "/userdata/icon/" . 'Free x20.png' . "' width='20' height='20'>";
-			else
-			{
-				// 1st Price
-				if ($event->event_price_band_id == 2)	// 1st price
-					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Under £5' . "' src='" . Yii::app()->baseUrl . "/userdata/icon/" . 'Pound x20.png' . "' width='20' height='20'>";
-				if ($event->event_price_band_id == 3)	// 2nd price
-				{
-					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . '£5 - £10' . "' src='" . Yii::app()->baseUrl . "/userdata/icon/" . '2pound.png' . "' width='20' height='20'>";
-				}
-				if ($event->event_price_band_id == 4)	// 3rd price
-				{
-					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Over £10' . "' src='" . Yii::app()->baseUrl . "/userdata/icon/" . '3pound.png' . "' width='20' height='20'>";
-				}
-			}
-
-			$content .= "    </div>";
-			$content .= "  </div>	<!-- /float left -->";
-
-
-			$content .= "  <div style=float:right;width:120px;height:100%>";
-			if (trim($event->thumb_path) != '')
-			{
-				if (file_exists('userdata/event/thumb/' . $event->thumb_path))
-					$content .= "<img style='margin-top:-10px; margin-left:-20px' title='" . $event->thumb_path . "' src='" . Yii::app()->baseUrl . "/userdata/event/thumb/" . $event->thumb_path . "' width='140' height='115'>";
-			}
-			else if ($program)
-				$content .= "<img style='margin-top:-10px; margin-left:-20px' title='" . $program->thumb_path . "' src='" . Yii::app()->baseUrl . "/userdata/program/thumb/" . $program->thumb_path . "' width='140' height='115'>";
-			$content .= "  </div>";
-
-			$content .= "</div> <!-- /header -->";
-
-			// The content block
-			$content .= "<div>";
-			//$content .= $event->id;
-			$content .= "</div>";
-		}
-		$content .= "</div>";
-		$content .= "</html>";
-die($content);
-die('ok2');
-		return;
-	}
-
 	/**
 	 * This is the action to handle external exceptions.
 	 */
@@ -376,7 +237,20 @@ die('ok2');
 					// Facebook
 					$content .= "<div style='float:right;padding-left:10px;padding-top:1px' class='fb-share-button' data-href='http://www.wildseasons.co.uk' data-type='button'></div>";
 
+					// print
+					$content .= "<div style='float:right;padding-left:10px'><a href=javascript:printDiv('" . $eventId . "')><b><img style='margin-top:0px; margin-left:0px' title='Print' src='img/print.jpg'></a></div>";
 
+					//$printUrl = "https://plugin.wireflydesign.com/event/index.php/site/print/?event=" . $event->id . "?sid=" . $member->sid;
+					//$content .= "<div style='float:right;padding-left:10px'><a target='_blank' href='" . $printUrl . "'><img style='margin-top:0px; margin-left:0px' title='Print' src='img/print.jpg'></a></div>";
+						//$content .= "<div style='clear:both'></div>";
+
+					// Ticketing info (if applicable)
+					if (($event->ticket_event_id != 0) && ($member))
+					{
+						$ticketUrl = "https://plugin.wireflydesign.com/ticket/index.php/ticket/book/" . $event->ticket_event_id . "?sid=" . $member->sid . "&ref=event";
+						$content .= "<div style='float:right'><a target='_blank' href='" . $ticketUrl . "'><img style='margin-top:0px; margin-left:0px' title='Book' src='img/book-s.jpg'></a></div><br/>";
+						$content .= "<div style='clear:both'></div>";
+					}
 					$content .= "<br><br>";
 				}
 				else 
@@ -392,25 +266,4 @@ die('ok2');
                 	));
 		}
     }
-
-	/* Used by the print function */
-	public function formatDateString($startDate, $endDate)
-	{
-			//$content .= '['.$event->start . "]" . '['.$event->end . "]<br>";
-			$start = strtotime($startDate);
-			$end = strtotime($endDate);
-			$dateString = date( 'l d/m/y', $start);
-			if (date('H:i', $start) != '00:00')
-				$dateString .= " " . date('H:i', $start);
-			if ($endDate != $startDate)
-			{
-				$dateString .= " until ";
-				if (date( 'l d/m/y', $start) != date( 'l d/m/y', $end))
-					$dateString .= date( 'l d/m/y', $end);
-				if (date('H:i', $end) != '00:00')
-					$dateString .= " " . date('H:i', $end);
-			}
-			return $dateString;
-	}
-
 }
