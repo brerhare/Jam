@@ -69,6 +69,14 @@ class SiteController extends Controller
 	}
 
 
+	/**
+	 * Prints an event
+	 */
+	public function actionPrint()
+	{
+		die('x');
+		return;
+	}
 
 	/**
 	 * This is the action to handle external exceptions.
@@ -238,6 +246,11 @@ class SiteController extends Controller
 
 					// Facebook
 					$content .= "<div style='float:right;padding-left:10px;padding-top:1px' class='fb-share-button' data-href='http://www.wildseasons.co.uk' data-type='button'></div>";
+
+					// print
+					$printUrl = "https://plugin.wireflydesign.com/event/index.php/site/print/" . $event->id . "?sid=" . $member->sid;
+					$content .= "<div style='float:right;padding-left:10px'><a target='_blank' href='" . $printUrl . "'><img style='margin-top:0px; margin-left:0px' title='Print' src='img/print.jpg'></a></div>";
+						//$content .= "<div style='clear:both'></div>";
 
 					// Ticketing info (if applicable)
 					if (($event->ticket_event_id != 0) && ($member))

@@ -18,10 +18,6 @@ class google_os
 	private $defaultMapType = "roadmap";	// "roadmap", "terrain", "satellite", "hybrid"
 	private $defaultInputMode = "os";	// "os", "latlong", "postcode"
 
-// @TODO: Remove $SINGLE and associated hardcoding
-private $SINGLE = 0;
-
-
 	public $apiOption = array(
 	);
 
@@ -42,9 +38,6 @@ private $SINGLE = 0;
 		{
 			switch ($opt)
 			{
-case "single":
-$this->SINGLE = 1;
-break;
 				case "inputmode":
 					$tmp = str_replace("<substitute-inputmode>", strtoupper($val), $this->apiJs);
 					$this->apiJs = $tmp;
