@@ -359,10 +359,23 @@ END_OF_API_HTML;
 		{
 			// Generate the position from the given latitude and longitude values
 			var pos = new google.maps.LatLng(latitude, longitude);
+
+			// We can 'do' things with the icon
+			var image = {
+				url: 'userdata/program/icon/map_icon.jpg',
+				// This marker is 20 pixels wide by 20 pixels tall.
+				size: new google.maps.Size(20, 20),
+				// The origin for this image is 0,0.
+				origin: new google.maps.Point(0,0),
+				// The anchor for this image is the base of the flagpole at 0,20.
+				anchor: new google.maps.Point(0, 20)
+			}
+
 			// Define the marker on the map in the specified location
 			var marker = new google.maps.Marker({
 				position: pos,
 				map: map,
+				icon: image,
 				title: name
 			});
 			// Add a listener to this marker to display the information window on click

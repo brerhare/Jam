@@ -16,12 +16,7 @@ fx.wallpaper-color = #00000
     [googlemap]
     css.height = 370px
     css.overflow = auto
-    addon.map.google_os.width = 700px
-    addon.map.google_os.height = 370px
-    addon.map.google_os.maptype = terrain
-    addon.map.google_os.inputmode = os
-    addon.map.google_os.center =  NX696834
-    addon.map.google_os.zoom = 9
+    addon.custom.eventcode.main_google_map = os;
 
     [spacer]
     css.height = 10px
