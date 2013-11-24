@@ -185,6 +185,7 @@ END_OF_API_HTML;
 
 		var map_<substitute-id> = null;
 		var inputMode = "<substitute-inputmode>";
+		//var infowindow = new google.maps.InfoWindow();
 
 		$(document).ready(function ()
 		{
@@ -264,6 +265,7 @@ END_OF_API_HTML;
 				title: usehovertip
 			});
 
+
 			// Add a listener to this marker to display the information window on click
 			google.maps.event.addListener(marker, 'click', function () {
 				var infowindow = new google.maps.InfoWindow({
@@ -271,6 +273,23 @@ END_OF_API_HTML;
 				});
 				infowindow.open(map_<substitute-id>, marker);
 			});
+
+
+/*
+function attachListener(marker,content){
+      google.maps.event.addListener(marker, "click", function () {
+
+      // marker.getPosition() already returns a google.maps.LatLng() object
+      map_<substitute-id>.setCenter(marker.getPosition());
+      infowindow.close();
+      infowindow.setContent(usecontent);
+      infowindow.open(map_<substitute-id>,this);
+      });
+    }    
+*/
+
+
+
 		}
 
 		// Utility to decode PHP-encoded strings (messes up arguments to functions)
