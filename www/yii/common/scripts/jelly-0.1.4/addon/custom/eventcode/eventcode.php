@@ -35,11 +35,105 @@ class eventcode
 				case "fill_headers":
 					return $this->fill_headers($val);
 					break;
+				case "main_google_map":
+					return $this->main_google_map($val);
+					break;
 				default:
 					break;
 			}
 		}
 		return array("","");
+	}
+
+	/*********************************************************************************************************/
+	// Invoked by index.jel to create the google map. Val is 'os' only at present
+	private function main_google_map($val)
+	{
+		require(Yii::app()->basePath . "/../scripts/jelly/addon/map/google_os/google_os.php");
+/*
+addon.map.google_os.width = 700px
+addon.map.google_os.height = 370px
+addon.map.google_os.maptype = terrain
+addon.map.google_os.inputmode = os
+addon.map.google_os.center =  NX696834
+addon.map.google_os.zoom = 9
+*/
+
+	$mapId = 'main_google_map';
+	$center = 'NX696834';
+	//$center = 'NX976762';
+
+	$content = "";
+
+	// This is an array list we populate and map points for
+	// Contains 4 arrays (ref, icon, hovertip, content)
+	$points = array();
+
+	// @@EG: Calling a jelly addon directly, from outside the jelly
+	$addon = new google_os;
+	$optArr = array();
+	$optArr['single'] = '1';
+	$optArr['id'] = 'detailMap-' . $mapId;
+	$optArr['width'] = '700px';
+	$optArr['height'] = '370px';
+	$optArr['maptype'] = 'terrain';
+	$optArr['inputmode'] = $val;
+	$optArr['center'] = $center;
+	$optArr['zoom'] = '8';
+	$ret = $addon->init($optArr, '/event/scripts/jelly/addon/map/google_os');
+	$content .= $ret[0];
+	$content .= '<script>' . $ret[1] . '</script>';
+
+	// @@NB: For mapping points we select all events from today onwards
+	// @@NB: (Future enhancement?) Should ideally only show pins for the searched results
+	// @@NB: This should ideally be kept in some sort of sync with the event filter used in fill_headers() (below)
+	$dt = date('d-m-Y');
+	$sdate = date("Y-m-d H:i:s", strtotime($dt));
+	$criteria = new CDbCriteria;
+	$criteria->addCondition("start >= '" . $sdate . "'");
+	$criteria->order = 'start ASC';
+	$events = Event::model()->findAll($criteria);
+	$content .= "<script>";
+	foreach ($events as $event)
+	{
+		// Pick up the Ws record
+		$criteria = new CDbCriteria;
+		$criteria->condition = "event_id = " . $event->id;
+		$ws = Ws::model()->find($criteria);
+		if (!($ws))
+			continue;
+		// Pick up the member
+		$criteria = new CDbCriteria;
+		$criteria->condition = "id = " . $event->member_id;
+		$member = Member::model()->find($criteria);
+		if (!($member))
+			continue;
+
+		// Pick up the program
+		$criteria = new CDbCriteria;
+		$criteria->condition = 'id = ' . $event->program_id;
+		$program = Program::model()->find($criteria);
+		if (!($program))
+			continue;
+
+		$content .= "markerByOs('" . $ws->os_grid_ref . "');";
+	}
+	$content .= "</script>";
+
+$content .= "<script> centerByOs('" . $center . "'); </script>";
+
+		$apiHtml = $content;
+		$apiJs = "";
+		$clipBoard = "";
+
+		$retArr = array();
+		$retArr[0] = $apiHtml;
+		$retArr[1] = $apiJs;
+		$retArr[2] = $clipBoard;
+		return $retArr;
+
+
+//		die('ok');
 	}
 
 	/*********************************************************************************************************/
@@ -80,6 +174,7 @@ class eventcode
 
 //die('s='.$sdate . ' e='.$edate);
 
+		// @@NB: Be aware that this should be kept in some kind of sync with the event filters used by main_google_map() (above)
 		$criteria = new CDbCriteria;
 
 //		if (!(isset($_GET['edate'])))
