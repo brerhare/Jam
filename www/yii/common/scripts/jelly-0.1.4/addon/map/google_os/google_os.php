@@ -375,7 +375,8 @@ END_OF_API_HTML;
 			var marker = new google.maps.Marker({
 				position: pos,
 				map: map,
-				icon: image,
+				//icon: image,
+				icon: new google.maps.MarkerImage( 'userdata/program/icon/ws-logo-sm.jpg' , undefined, undefined, undefined, new google.maps.Size(20, 20)),
 				title: name
 			});
 			// Add a listener to this marker to display the information window on click
