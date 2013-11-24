@@ -240,10 +240,6 @@ class SiteController extends Controller
 					// print
 					$content .= "<div style='float:right;padding-left:10px'><a href=javascript:printDiv('" . $eventId . "')><b><img style='margin-top:0px; margin-left:0px' title='Print' src='img/print.jpg'></a></div>";
 
-					//$printUrl = "https://plugin.wireflydesign.com/event/index.php/site/print/?event=" . $event->id . "?sid=" . $member->sid;
-					//$content .= "<div style='float:right;padding-left:10px'><a target='_blank' href='" . $printUrl . "'><img style='margin-top:0px; margin-left:0px' title='Print' src='img/print.jpg'></a></div>";
-						//$content .= "<div style='clear:both'></div>";
-
 					// Ticketing info (if applicable)
 					if (($event->ticket_event_id != 0) && ($member))
 					{

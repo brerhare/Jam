@@ -487,7 +487,7 @@ END_OF_API_HTML_fill_headers;
 
 			function printDiv(divId) {
 				divId = 'accordion';
-
+alert(divId);
 				var prtContent = document.getElementById("hdr");
 				var WinPrint = window.open('', '', 'letf=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
 				WinPrint.document.write(prtContent.innerHTML);
