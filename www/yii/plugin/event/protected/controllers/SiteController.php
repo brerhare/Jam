@@ -68,8 +68,6 @@ class SiteController extends Controller
 
 	}
 
-
-
 	/**
 	 * This is the action to handle external exceptions.
 	 */
@@ -170,25 +168,25 @@ class SiteController extends Controller
 					$content .= $ws->short_description . "..." . "<br>";
 					$content .= "<table width=100% style='padding:10px 10px 10px 0px'><tr><td style='padding:0px; width:40%'>";
 
-// @@EG: Calling a jelly addon directly, from outside the jelly
-$addon = new google_os;
-$optArr = array();
-$optArr['single'] = '1';
-$optArr['id'] = 'detailMap-' . $eventId;
-$optArr['width'] = '200px';
-$optArr['height'] = '200px';
-$optArr['maptype'] = 'terrain';
-$optArr['inputmode'] = 'os';
-$optArr['center'] = $ws->os_grid_ref;
-$optArr['zoom'] = '9';
-$ret = $addon->init($optArr, '/event/scripts/jelly/addon/map/google_os');
-$content .= $ret[0];
-$content .= '<script>' . $ret[1] . '</script>';
-$content .= "<script> markerByOs('" . $ws->os_grid_ref . "'); </script>";
+					// @@EG: Calling a jelly addon directly, from outside the jelly
+					$addon = new google_os;
+					$optArr = array();
+					$optArr['single'] = '1';
+					$optArr['id'] = 'detailMap_' . $eventId;
+					$optArr['width'] = '200px';
+					$optArr['height'] = '200px';
+					//$optArr['maptype'] = 'terrain';
+					$optArr['inputmode'] = 'os';
+					$optArr['center'] = $ws->os_grid_ref;
+					$optArr['zoom'] = '9';
+					$ret = $addon->init($optArr, '/event/scripts/jelly/addon/map/google_os');
+					$content .= $ret[0];
+					$content .= '<script>' . $ret[1] . '</script>';
+					$content .= "<script> markerByOs2('" . $ws->os_grid_ref . "', '" . $event->post_code . "'); </script>";
 
 					$content .= "</td><td style='width:60%; padding-left:10px; vertical-align:top'>";
 					// Booking
-					$content .= "Booking ";
+					$content .= "<a class='event-detail-label'>Booking</a> ";
 					if ($ws->booking_essential)
 						$content .= "<b>essential</b>";
 					else
@@ -202,30 +200,30 @@ $content .= "<script> markerByOs('" . $ws->os_grid_ref . "'); </script>";
 					// Organisation
 					if ($member)
 						if (trim($member->organisation) != '')
-							$content .= "Organization: " . $member->organisation . "<br>";
+							$content .= "<a class='event-detail-label'>Organisation</a> " . $member->organisation . "<br>";
 					// Contact details
-					$content .= "Contact details: " . $event->contact . "<br>";
+					$content .= "<a class='event-detail-label'>Contact details</a> " . $event->contact . "<br>";
 					// Website
 					if (trim($event->web) != '')
 					{
 						$http = "http://";
 						if (strstr("http://", $event->web))
 							$http = "";
-						$content .= "Website: " . "<a href='" . $http . $event->web . "'' target='_blank'>" . $event->web . "</a>" . "<br>";
+						$content .= "<a class='event-detail-label'>Website</a> " . "<a href='" . $http . $event->web . "'' target='_blank'>" . $event->web . "</a>" . "<br>";
 					}
 					// Suitable ages
 					if (($ws->min_age == 0) && ($ws->max_age == 0))
-						$content .= "Suitable for all ages" . "<br>";
+						$content .= "<a class='event-detail-label'>Suitable for</a> all ages" . "<br>";
 					else if (($ws->min_age != 0) && ($ws->max_age != 0))
-						$content .= "Suitable for ages " . $ws->min_age . " to " . $ws->max_age . "<br>";
+						$content .= "<a class='event-detail-label'>Suitable for</a> ages " . $ws->min_age . " to " . $ws->max_age . "<br>";
 					else if (($ws->min_age != 0) && ($ws->max_age == 0))
-						$content .= "Suitable for ages " . $ws->min_age . " and older" . "<br>";
+						$content .= "<a class='event-detail-label'>Suitable for</a> ages " . $ws->min_age . " and older" . "<br>";
 					else if (($ws->min_age == 0) && ($ws->max_age != 0))
-						$content .= "Suitable for ages up to " . $ws->max_age . "<br>";
+						$content .= "<a class='event-detail-label'>Suitable for</a> ages up to " . $ws->max_age . "<br>";
 					// Grade
-					$content .= "Grade: " . $ws->grade . "<br>";
+					$content .= "<a class='event-detail-label'>Grade</a> " . $ws->grade . "<br>";
 					// OS Grid Ref
-					$content .= "OS grid ref : " . $ws->os_grid_ref . "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(" . $event->post_code . ")" . "<br>";
+					$content .= "<a class='event-detail-label'>OS grid ref</a> " . $ws->os_grid_ref . "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(" . $event->post_code . ")" . "<br>";
 					$content .= "</td></tr></table>";
 
 					// Description
@@ -238,6 +236,9 @@ $content .= "<script> markerByOs('" . $ws->os_grid_ref . "'); </script>";
 
 					// Facebook
 					$content .= "<div style='float:right;padding-left:10px;padding-top:1px' class='fb-share-button' data-href='http://www.wildseasons.co.uk' data-type='button'></div>";
+
+					// print
+					$content .= "<div style='float:right;padding-left:10px'><a href=javascript:printDiv('" . $eventId . "')><b><img style='margin-top:0px; margin-left:0px' title='Print' src='img/print.jpg'></a></div>";
 
 					// Ticketing info (if applicable)
 					if (($event->ticket_event_id != 0) && ($member))

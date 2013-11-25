@@ -56,16 +56,36 @@ class events
         $content = "<div style='color:#575757;'>";      // Your basic solemn grey font color
         $uid = Yii::app()->session['uid'];
 
-        // Datepicker
-        $dt = '';
-        if (isset($_GET['date']))
-            $dt = $_GET['date'];
-        $content .= "<br>";
-        $content .= "<a href='#'><div class='filter-header'>Date</a><br>";
-        $content .= "<div class='filter-detail hasDatepicker'>";
-        $content .= "<input type='text' id='datepicker' style='width:70px' value='" . $dt . "'>";
+        $twistyIcon = "<img style='padding-right:3px' title='" . 'Show more' . "' src='img/" . 'open-twisty.png' . "' >";
+
+        $content .= "<b>Search</b><br/>";
+        $content .= "<div style='float:left'>";
+        $content .= "<input type='text' id='textsearchbox' style='width:80px' title='Input text to search for' value='" . '' . "'>";
+        $content .= "<input type='button' id='textsearchbutton' style='width:30px' onClick='searchEvents()' value='Go'>";
         $content .= "</div>";
-        $content .= "</div>";              
+        $content .= "<div style='clear:both'></div>";
+
+        // Start Datepicker
+        $dt = '';
+        if (isset($_GET['sdate']))
+            $dt = $_GET['sdate'];
+        $content .= "<br>";
+        $content .= "<a href='#'><div class='filter-header'>From</a><br>";
+        $content .= "<div class='filter-detail hasDatepicker'>";
+        $content .= "<input type='text' id='sdatepicker' style='width:80px' value='" . $dt . "'>";
+        $content .= "</div>";
+        $content .= "</div>";
+
+        // End Datepicker
+        $dt = '';
+        if (isset($_GET['edate']))
+            $dt = $_GET['edate'];
+        $content .= "<br>";
+        $content .= "<a href='#'><div class='filter-header'>Until</a><br>";
+        $content .= "<div class='filter-detail hasDatepicker'>";
+        $content .= "<input type='text' id='edatepicker' style='width:80px' value='" . $dt . "'>";
+        $content .= "</div>";
+        $content .= "</div>";
 
         // Interest
         $interests  = Interest::model()->findAll(array('order'=>'id'));
@@ -76,7 +96,8 @@ class events
             if (isset($_GET['interest']))
                 $interestSel = explode('|', $_GET['interest']);
             $content .= "<br>";
-            $content .= "<a href='#'></img><div class='filter-header'>Interest</a><br>";
+
+            $content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Interest</a><br>";
             $content .= "<div id='interest-detail' class='filter-detail'>";
             foreach ($interests as $interest):
                 $match = false;
@@ -104,7 +125,7 @@ class events
             if (isset($_GET['format']))
                 $formatSel = explode('|', $_GET['format']);
             $content .= "<br>";
-            $content .= "<a href='#'><div class='filter-header'>Format</a><br>";
+            $content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Format</a><br>";
             $content .= "<div id='format-detail' class='filter-detail'>";
             foreach ($formats as $format):
                 $match = false;
@@ -132,7 +153,7 @@ class events
             if (isset($_GET['facility']))
                 $facilitySel = explode('|', $_GET['facility']);
             $content .= "<br>";
-            $content .= "<a href='#'><div class='filter-header'>Facility</a><br>";
+            $content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Facility</a><br>";
             $content .= "<div id='facility-detail' class='filter-detail'>";
             foreach ($facilities as $facility):
                 $match = false;
@@ -160,7 +181,7 @@ class events
             if (isset($_GET['pb']))
                 $pbSel = explode('|', $_GET['pb']);
             $content .= "<br>";
-            $content .= "<a href='#'><div class='filter-header'>Price Band</a><br>";
+            $content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Price Band</a><br>";
             $content .= "<div id='price-detail' class='filter-detail'>";
             foreach ($prices as $price):
                 $match = false;
@@ -191,7 +212,7 @@ class events
             if (isset($_GET['grade']))
                 $gradeSel = explode('|', $_GET['grade']);
             $content .= "<br>";
-            $content .= "<a href='#'><div class='filter-header'>grade</a><br>";
+            $content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Grade</a><br>";
             $content .= "<div id='grade-detail' class='filter-detail'>";
             foreach ($grades as $grade):
                 $match = false;
@@ -261,14 +282,18 @@ END_OF_API_HTML;
     private $apiJs = <<<END_OF_API_JS
 
     var isDet = 0;
-    selDate = '';
+    selSDate = '';
+    selEDate = '';
     priceBand = '';
+    textSearch = '';
     grade = '';
 
     function makeSel()
     {
         // Date
-        sel = '?layout=index&date=' + selDate;
+        sel = '?layout=index&sdate=' + selSDate;
+        sel += '&edate=' + selEDate;
+        sel += '&textsearch=' + textSearch;
 
         // Interest
         av=document.getElementsByName("interest[]");
@@ -353,8 +378,15 @@ END_OF_API_HTML;
         window.location.href = sel;
     }
 
+    function searchEvents()
+    {
+        textSearch = document.getElementById('textsearchbox').value;
+        makeSel();
+    }
+
     jQuery(document).ready(function($){
-        selDate = document.getElementById("datepicker").value;
+        selSDate = document.getElementById("sdatepicker").value;
+        selEDate = document.getElementById("edatepicker").value;
     });
 
 
@@ -380,13 +412,24 @@ END_OF_API_HTML;
     });
 
     //Datepicker
-    $('#datepicker').datepicker({
+    $('#sdatepicker').datepicker({
         dateFormat: 'dd-mm-yy',
 		showButtonPanel:  true,
         timeFormat: "hh:mm",    // HH is 24 hour clock, hh is 12 hour clock
         onSelect: function(
         dateText, inst) {
-            selDate = dateText;
+            selSDate = dateText;
+            makeSel();
+        }
+    });
+    //Datepicker
+    $('#edatepicker').datepicker({
+        dateFormat: 'dd-mm-yy',
+        showButtonPanel:  true,
+        timeFormat: "hh:mm",    // HH is 24 hour clock, hh is 12 hour clock
+        onSelect: function(
+        dateText, inst) {
+            selEDate = dateText;
             makeSel();
         }
     });

@@ -35,11 +35,127 @@ class eventcode
 				case "fill_headers":
 					return $this->fill_headers($val);
 					break;
+				case "main_google_map":
+					return $this->main_google_map($val);
+					break;
 				default:
 					break;
 			}
 		}
 		return array("","");
+	}
+
+	/*********************************************************************************************************/
+	// Invoked by index.jel to create the google map. Val is 'os' only at present
+	private function main_google_map($val)
+	{
+		require(Yii::app()->basePath . "/../scripts/jelly/addon/map/google_os/google_os.php");
+
+		$mapId = 'main_google_map';
+		$center = 'NX696834';
+		//$center = 'NX976762';
+
+		$content = "";
+
+		// This is an array list we populate and map points for
+		// Contains 4 arrays (ref, icon, hovertip, content)
+		$mapPoint = array();
+		$mapIcon = array();
+		$mapTip = array();
+		$mapContent = array();
+
+		// @@EG: Calling a jelly addon directly, from outside the jelly
+		$addon = new google_os;
+		$optArr = array();
+		$optArr['single'] = '1';
+		$optArr['id'] = $mapId;
+		$optArr['width'] = '700px';
+		$optArr['height'] = '370px';
+		//$optArr['maptype'] = 'terrain';
+		$optArr['inputmode'] = $val;
+		$optArr['center'] = $center;
+		$optArr['zoom'] = '8';
+		$ret = $addon->init($optArr, '/event/scripts/jelly/addon/map/google_os');
+		$content .= $ret[0];
+		$content .= '<script>' . $ret[1] . '</script>';
+
+		// @@NB: For mapping points we select all events from today onwards
+		// @@NB: (Future enhancement?) Should ideally only show pins for the searched results
+		// @@NB: This should ideally be kept in some sort of sync with the event filter used in fill_headers() (below)
+		$dt = date('d-m-Y');
+		$sdate = date("Y-m-d H:i:s", strtotime($dt));
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("start >= '" . $sdate . "'");
+		$criteria->order = 'start ASC';
+		$events = Event::model()->findAll($criteria);
+		foreach ($events as $event)
+		{
+			// Pick up the Ws record
+			$criteria = new CDbCriteria;
+			$criteria->condition = "event_id = " . $event->id;
+			$ws = Ws::model()->find($criteria);
+			if (!($ws))
+				continue;
+			// Pick up the member
+			$criteria = new CDbCriteria;
+			$criteria->condition = "id = " . $event->member_id;
+			$member = Member::model()->find($criteria);
+			if (!($member))
+				continue;
+
+			// Pick up the program
+			$criteria = new CDbCriteria;
+			$criteria->condition = 'id = ' . $event->program_id;
+			$program = Program::model()->find($criteria);
+			if (!($program))
+				continue;
+
+			$osGridRef = str_replace(' ', '', $ws->os_grid_ref);
+			if (!(in_array($osGridRef, $mapPoint)))
+			{
+				array_push($mapPoint, $osGridRef);
+				array_push($mapTip, $event->address);
+				$infoWindow = "<div style='height:150px; width:300px'>";
+				$infoWindow .= "<h3>" . $event->title . "</h3>";
+				$infoWindow .= "<i>" . $this->formatDateString($event->start, $event->end) . "</i><br><br>";
+
+				if (trim($event->thumb_path) != "")
+				{
+					if (file_exists('userdata/event/thumb/' . $event->thumb_path))
+					{
+						$img = 'userdata/event/thumb/' . $event->thumb_path;
+						$infoWindow .= "<img style='padding-right:10px' align='left' title='" . $member->organisation . "' src='" . $img . "' width='140' height='115'>";
+					}
+				}
+
+				$infoWindow .= $ws->short_description;
+				$infoWindow .= "</div>";
+				array_push($mapContent, $infoWindow);
+				if (trim($member->avatar_path) != "")
+					array_push($mapIcon, 'userdata/member/avatar/' . trim($member->avatar_path));
+				else
+					array_push($mapIcon, 'userdata/program/icon/' . trim($program->icon_path));
+			}
+		}
+		$content .= "<script>";
+		for ($i = 0; $i < count($mapPoint); $i++)
+		{
+			$content .= "markerByOs('" . $mapPoint[$i] . "', '" . $mapIcon[$i] . "', '" . urlencode($mapTip[$i]) . "', '"    . urlencode($mapContent[$i])     . "');";
+		}
+		$content .= "</script>";
+
+		$content .= "<script> centerByOs('" . $center . "'); </script>";
+
+		$apiHtml = $content;
+		$apiJs = "";
+		$clipBoard = "";
+
+		$retArr = array();
+		$retArr[0] = $apiHtml;
+		$retArr[1] = $apiJs;
+		$retArr[2] = $clipBoard;
+		return $retArr;
+	//		die('ok');
 	}
 
 	/*********************************************************************************************************/
@@ -64,19 +180,54 @@ class eventcode
 		$content .= "<div id='accordion'>";
 
 		// Check date filter (dd-mm-yyyy)
-		if ((isset($_GET['date'])) && trim($_GET['date'] != ''))
-			$dt = $_GET['date'];
+		if ((isset($_GET['sdate'])) && trim($_GET['sdate'] != ''))
+			$dt = $_GET['sdate'];
 		else
-			$dt = $myDate = date('d-m-Y');
-		$date = date("Y-m-d H:i:s", strtotime($dt));
+			$dt = date('d-m-Y');
+		$sdate = date("Y-m-d H:i:s", strtotime($dt));
 
+		// Check date filter (dd-mm-yyyy)
+		if ((isset($_GET['edate'])) && trim($_GET['edate'] != ''))
+			$dt = $_GET['edate'];
+		else
+			$dt = date('d-m-Y');
+		$edate = date("Y-m-d H:i:s", strtotime($dt));
+		$edate = str_replace("00:00:00", "23:59:59", $edate);
+
+//die('s='.$sdate . ' e='.$edate);
+
+		// @@NB: Be aware that this should be kept in some kind of sync with the event filters used by main_google_map() (above)
 		$criteria = new CDbCriteria;
-		$criteria->condition = "start >= '" . $date . "'";
+
+//		if (!(isset($_GET['edate'])))
+//			$criteria->condition = "start >= '" . $sdate . "'"; 
+//		else
+//			$criteria->condition = "start >= '" . $sdate . "'";
+
+		$criteria->addCondition("start >= '" . $sdate . "'");
+		if ((isset($_GET['edate'])) && trim($_GET['edate'] != ''))
+			$criteria->addCondition("start <= '" . $edate . "'");
+//$criteria->addCondition("ii <= '" . $edate . "'");
 		$criteria->order = 'start ASC';
 		$events = Event::model()->findAll($criteria);
 		$hasEvents = false;
 		foreach ($events as $event)
 		{
+			// Check text search
+			if ((isset($_GET['textsearch'])) && trim($_GET['textsearch'] != ''))
+			{
+				$needle = $_GET['textsearch'];
+				//if ($needle = "The Studio")
+				//echo $event->address;
+				if (((stripos($event->title, $needle)) === false)
+				&& ((stripos($event->description, $needle)) == false)
+				&& ((stripos($event->address, $needle)) === false)
+				&& ((strpos($event->post_code, $needle)) === false)
+				&& ((strpos($event->contact, $needle)) === false)
+				)
+					continue;
+			}
+
 			// Check Interest filter
 			if ((isset($_GET['interest'])) && trim($_GET['interest'] != ''))
 			{
@@ -176,20 +327,19 @@ class eventcode
 			$hasEvents = true;
 
 			// The header block
-			$content .= "<div id='hdr'> <!-- header -->";
+			$content .= "<div id='hdr-" . $event->id . "'> <!-- header -->";
 
 			$content .= "  <div style=float:left>";
 
 			$content .= "    <div id='header-title'>";
-/*
-Moved Tom Henry's icon to the end of the regular icons on the bottom line
+
 			if ($member)
 			{
 				if (trim($member->avatar_path) != '')
-					$content .= "<img style='padding-right:5px;margin-top:0px; margin-right:0px' title='Member Avatar' src='userdata/member/avatar/" . $member->avatar_path . "' width='20' height='20'>";
-
+					$content .= "<img style='padding-right:5px;margin-top:0px; margin-right:0px' title='" . $member->organisation . "' src='userdata/member/avatar/" . $member->avatar_path . "' width='20' height='20'>";
 			}
-*/
+
+
 			$content .= $event->title;
 
 			// Ticketing info (if applicable)
@@ -202,22 +352,8 @@ Moved Tom Henry's icon to the end of the regular icons on the bottom line
 
 			$content .= "    </div>";
 
-			$content .= "    <div id='header-date'>";	
-			//$content .= '['.$event->start . "]" . '['.$event->end . "]<br>";
-			$start = strtotime($event->start);
-			$end = strtotime($event->end);
-			$dateString = date( 'l d/m/y', $start);
-			if (date('H:i', $start) != '00:00')
-				$dateString .= " " . date('H:i', $start);
-			if ($event->end != $event->start)
-			{
-				$dateString .= " until ";
-				if (date( 'l d/m/y', $start) != date( 'l d/m/y', $end))
-					$dateString .= date( 'l d/m/y', $end);
-				if (date('H:i', $end) != '00:00')
-					$dateString .= " " . date('H:i', $end);
-			}
-			$content .= $dateString;
+			$content .= "    <div id='header-date'>";
+			$content .= $this->formatDateString($event->start, $event->end);
 			$content .= "    </div>";
 
 			$content .= "    <div id='header-venue'>";	
@@ -245,24 +381,6 @@ Moved Tom Henry's icon to the end of the regular icons on the bottom line
 						$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . $interest->name . "' src='userdata/icon/" . $interest->icon_path . "' width='20' height='20'>";
 				}
 			}
-			// @@TODO: These are hardcoded. Neednt be anymore now that theres 1 icon per band
-			// Price Band icons
-			if ($event->event_price_band_id == 1)	// Free
-				$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Free' . "' src='userdata/icon/" . 'Free x20.png' . "' width='20' height='20'>";
-			else
-			{
-				// 1st Price
-				if ($event->event_price_band_id == 2)	// 1st price
-					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Under £5' . "' src='userdata/icon/" . 'Pound x20.png' . "' width='20' height='20'>";
-				if ($event->event_price_band_id == 3)	// 2nd price
-				{
-					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . '£5 - £10' . "' src='userdata/icon/" . '2pound.png' . "' width='20' height='20'>";
-				}
-				if ($event->event_price_band_id == 4)	// 3rd price
-				{
-					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Over £10' . "' src='userdata/icon/" . '3pound.png' . "' width='20' height='20'>";
-				}
-			}
 
 			// Facility icons
 			$criteria = new CDbCriteria;
@@ -281,12 +399,23 @@ Moved Tom Henry's icon to the end of the regular icons on the bottom line
 				}
 			}
 
-			// Member avatar (aka Organisation icon)
-			if ($member)
+			// @@TODO: These are hardcoded. Neednt be anymore now that theres 1 icon per band
+			// Price Band icons
+			if ($event->event_price_band_id == 1)	// Free
+				$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Free' . "' src='userdata/icon/" . 'Free x20.png' . "' width='20' height='20'>";
+			else
 			{
-				if (trim($member->avatar_path) != '')
-					$content .= "<img style='margin-top:0px; margin-left:0px' title='" . $member->organisation . "' src='userdata/member/avatar/" . $member->avatar_path . "' width='20' height='20'>";
-
+				// 1st Price
+				if ($event->event_price_band_id == 2)	// 1st price
+					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Under £5' . "' src='userdata/icon/" . 'Pound x20.png' . "' width='20' height='20'>";
+				if ($event->event_price_band_id == 3)	// 2nd price
+				{
+					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . '£5 - £10' . "' src='userdata/icon/" . '2pound.png' . "' width='20' height='20'>";
+				}
+				if ($event->event_price_band_id == 4)	// 3rd price
+				{
+					$content .= "      <img style='margin-top:0px; margin-left:0px' title='" . 'Over £10' . "' src='userdata/icon/" . '3pound.png' . "' width='20' height='20'>";
+				}
 			}
 
 			$content .= "    </div>";
@@ -366,6 +495,19 @@ END_OF_API_HTML_fill_headers;
 				ajaxGetEvent(0);	// Dummy first ajax to 'initialise' the google map (who knows why its needed...)
 			});
 
+			function printDiv(eventId) {
+//var css='<style>@media print { .ui-accordion .ui-accordion-content #ui-accordion-accordion-panel-0 { display:block !important; } } </style>'
+//var prtContent = document.getElementById('ui-accordion-accordion-panel-0');
+
+				var prtContent = document.getElementById('hdr-'+eventId);
+				var WinPrint = window.open('', '', 'letf=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+				WinPrint.document.write(prtContent.innerHTML);
+				WinPrint.document.close();
+				WinPrint.focus();
+				WinPrint.print();
+				WinPrint.close();
+			}
+
 END_OF_API_JS_fill_headers;
 
 		$apiHtml = str_replace("<substitute-path>", $this->jellyRootUrl, $apiHtml);
@@ -384,6 +526,25 @@ END_OF_API_JS_fill_headers;
 		$retArr[1] = $apiJs;
 		$retArr[2] = $clipBoard;
 		return $retArr;
+	}
+
+	function formatDateString($startDate, $endDate)
+	{
+			//$content .= '['.$event->start . "]" . '['.$event->end . "]<br>";
+			$start = strtotime($startDate);
+			$end = strtotime($endDate);
+			$dateString = date( 'l d/m/y', $start);
+			if (date('H:i', $start) != '00:00')
+				$dateString .= " " . date('H:i', $start);
+			if ($endDate != $startDate)
+			{
+				$dateString .= " until ";
+				if (date( 'l d/m/y', $start) != date( 'l d/m/y', $end))
+					$dateString .= date( 'l d/m/y', $end);
+				if (date('H:i', $end) != '00:00')
+					$dateString .= " " . date('H:i', $end);
+			}
+			return $dateString;
 	}
 
 }

@@ -18,10 +18,6 @@ class google_os
 	private $defaultMapType = "roadmap";	// "roadmap", "terrain", "satellite", "hybrid"
 	private $defaultInputMode = "os";	// "os", "latlong", "postcode"
 
-// @TODO: Remove $SINGLE and associated hardcoding
-private $SINGLE = 0;
-
-
 	public $apiOption = array(
 	);
 
@@ -42,9 +38,6 @@ private $SINGLE = 0;
 		{
 			switch ($opt)
 			{
-case "single":
-$this->SINGLE = 1;
-break;
 				case "inputmode":
 					$tmp = str_replace("<substitute-inputmode>", strtoupper($val), $this->apiJs);
 					$this->apiJs = $tmp;
@@ -142,23 +135,6 @@ break;
 			$this->apiJs = $tmp;
 		}
 
-if (strstr($this->apiJs, "<SUBSTITUTE-SINGLE-1>"))
-{
-	if ($this->SINGLE == 1)
-	{
-		$tmp = str_replace("<SUBSTITUTE-SINGLE-1>", "if (1==2){", $this->apiJs);
-		$tm2 = str_replace("<SUBSTITUTE-SINGLE-2>", "}", $tmp);
-	}
-	else
-	{
-		$tmp = str_replace("<SUBSTITUTE-SINGLE-1>", "", $this->apiJs);
-		$tm2 = str_replace("<SUBSTITUTE-SINGLE-2>", "", $tmp);
-	}
-	$this->apiJs = $tm2;
-}
-
-
-
 		if ($onReady != "")
 		{
 			$this->apiJs .= $onReady;
@@ -175,13 +151,7 @@ if (strstr($this->apiJs, "<SUBSTITUTE-SINGLE-1>"))
 		$retArr = array();
 		$retArr[0] = $html;
 		$retArr[1] = $js;
-/*
-		if ($this->SINGLE)
-{
-			Yii::log("GOOGLE MAPS: SINGLE [" . $retArr[0] . "]", CLogger::LEVEL_WARNING, 'system.test.kim');
-			Yii::log("GOOGLE MAPS: SINGLE [" . $retArr[1] . "]", CLogger::LEVEL_WARNING, 'system.test.kim');
-}
-*/
+
 		return $retArr;
 	}
 
@@ -206,113 +176,23 @@ END_OF_API_HTML;
 
 	private $apiJs = <<<END_OF_API_JS
 
-		var map = null;
+		var map_<substitute-id> = null;
 		var inputMode = "<substitute-inputmode>";
+		//var infowindow = new google.maps.InfoWindow();
 
 		$(document).ready(function ()
 		{
-<SUBSTITUTE-SINGLE-1>
-			markerByOs('NY052657');
-			markerByOs('NY052657');
-			markerByOs('NY052657');
-			markerByOs('NY052657');
-			markerByOs('NY052657');
-			markerByOs('NY052657');
-			markerByOs('NY052657');
-			markerByOs('NY052657');
-			markerByOs('NY052657');
-			markerByOs('NX371785');
-			markerByOs('NX970757');
-			markerByOs('NX928566');
-			markerByOs('NX685703');
-			markerByOs('NY193665');
-			markerByOs('NX442530');
-			markerByOs('NX970757');
-			markerByOs('NX928566');
-			markerByOs('NX699684');
-			markerByOs('NX928566');
-			markerByOs('NY193665');
-			markerByOs('NX689652');
-			markerByOs('NX928566');
-			markerByOs('NX442530');
-			markerByOs('NX689652');
-			markerByOs('NX745617');
-			markerByOs('NX745617');
-			markerByOs('NX745617');
-			markerByOs('NX745617');
-			markerByOs('NX745617');
-			markerByOs('NX745617');
-			markerByOs('NX745617');
-			markerByOs('NX745617');
-			markerByOs('NX745617');
-			markerByOs('NY052657');
-			markerByOs('NY052657');
-			markerByOs('NY052657');
-			markerByOs('NY052657');
-			markerByOs('NX600520');
-			markerByOs('NX600520');
-			markerByOs('NX600520');
-			markerByOs('NX600520');
-			markerByOs('NX600520');
-			markerByOs('NX600520');
-			markerByOs('NX600520');
-			markerByOs('NX600520');
-			markerByOs('NX600520');
-			markerByOs('NX600520');
-			markerByOs('NX600520');
-			markerByOs('NX600520');
-			markerByOs('NX600520');
-			markerByOs('NX552764');
-			markerByOs('NX372786');
-			markerByOs('NX452646');
-			markerByOs('NX452646');
-			markerByOs('NX657735');
-			markerByOs('NX657735');
-			markerByOs('NX657735');
-			markerByOs('NX657735');
-			markerByOs('NY126804');
-			markerByOs('NY126804');
-			markerByOs('NY126804');
-			markerByOs('NY126804');
-			markerByOs('NY126804');
-			markerByOs('NY126804');
-			markerByOs('NY126804');
-			markerByOs('NY126804');
-			markerByOs('NX682708');
-			markerByOs('NX682708');
-			markerByOs('NX682708');
-			markerByOs('NX852993');
-			markerByOs('NX852993');
-			markerByOs('NX852993');
-			markerByOs('NX521731');
-			markerByOs('NX521731');
-			markerByOs('NX452646');
-			markerByOs('NX552764');
-			markerByOs('NX754605');
-			markerByOs('NX754605');
-			markerByOs('NX754605');
-			markerByOs('NX754605');
-			markerByOs('NX754605');
-			markerByOs('NX754605');
-			markerByOs('NX754605');
-			markerByOs('NX754605');
-			markerByOs('NX974758');
-			markerByOs('NT085055');
-			markerByOs('NY019652');
-			markerByOs('NY041658');
-<SUBSTITUTE-SINGLE-2>
-			//centerByLatLong('55.0091','-3.7628');
-			return;
+
 		});
 
 		centerByOs = function(osgridref)
 		{
 			var latlong = OSGridToLatLong(osgridref);
 			var center = new google.maps.LatLng(latlong.lat, latlong.lng);
-    		map.panTo(center);
+    		map_<substitute-id>.panTo(center);
 		}
 
-		markerByOs = function(osgridref)
+		markerByOs = function(osgridref, iconpath, hovertip, content)
 		{
 			if (osgridref.length > 0)
 			{
@@ -323,15 +203,29 @@ END_OF_API_HTML;
 				}				
 				var latlong = OSGridToLatLong(osgridref);
 				loadMap(latlong.lat, latlong.lng);
-				setupMarker(latlong.lat, latlong.lng);
+				setupMarker(latlong.lat, latlong.lng, iconpath, hovertip, content);
 			}
 		}
 
+		markerByOs2 = function(osgridref, postcode)
+		{
+			if (osgridref.length > 0)
+			{
+				if (osgridref.indexOf(',') != -1)
+				{
+					var eastnorth = osgridref.split(',');
+					osgridref = gridrefNumToLet(eastnorth[0], eastnorth[1], 10);
+				}				
+				var latlong = OSGridToLatLong(osgridref);
+				loadMap(latlong.lat, latlong.lng);
+				setupMarker2(latlong.lat, latlong.lng, postcode);
+			}
+		}
 
 		centerByLatLong = function(lat, long)
 		{
 			var center = new google.maps.LatLng(lat, long);
-    		map.panTo(center);
+    		map_<substitute-id>.panTo(center);
 		}
 
 		markerByLatLong = function(lat, long)
@@ -343,7 +237,7 @@ END_OF_API_HTML;
 	    loadMap = function (latitude, longitude)
 		{
 			//alert('load');
-			if (map)	// Already loaded
+			if (map_<substitute-id>)	// Already loaded
 				return;
 			var latlng = new google.maps.LatLng(latitude, longitude);
 			var myOptions = {
@@ -351,28 +245,86 @@ END_OF_API_HTML;
 				mapTypeId: google.maps.MapTypeId.<substitute-maptype>,
 				center: latlng,
 			};
-			map = new google.maps.Map(document.getElementById("<substitute-id>-map"), myOptions);
+			map_<substitute-id> = new google.maps.Map(document.getElementById("<substitute-id>-map"), myOptions);
 		}
 
 		// Sets up a marker and info window on the map at the latitude and longitude specified
-		setupMarker = function(latitude, longitude)
+		setupMarker = function(latitude, longitude, iconpath, hovertip, content)
 		{
+			var usehovertip = "";
+			var usecontent = "";
+			if (hovertip != undefined)
+				usehovertip = urldecode(hovertip);
+			if (content != undefined)
+				usecontent = urldecode(content);
+
+			// Generate the position from the given latitude and longitude values
+			var pos = new google.maps.LatLng(latitude, longitude);
+
+			// Define the marker on the map in the specified location
+			var myIcon = '';
+			var url = '';
+			if (iconpath != undefined)
+				myIcon = new google.maps.MarkerImage(iconpath, undefined, undefined, undefined, new google.maps.Size(20, 20));
+			var marker = new google.maps.Marker({
+				position: pos,
+				map: map_<substitute-id>,
+				icon: myIcon,
+				title: usehovertip
+			});
+
+			// Add a listener to this marker to display the information window on click
+			google.maps.event.addListener(marker, 'click', function () {
+				var infowindow = new google.maps.InfoWindow({
+					content: usecontent,
+				});
+				infowindow.open(map_<substitute-id>, marker);
+			});
+
+			/* This is an attempt to have a single open infowindow. Needs 'var infowindow = new google.maps.InfoWindow()' defined as global (not in the function) */
+			/******************
+			function attachListener(marker,content){
+			      google.maps.event.addListener(marker, "click", function () {
+
+			      // marker.getPosition() already returns a google.maps.LatLng() object
+			      map_<substitute-id>.setCenter(marker.getPosition());
+			      infowindow.close();
+			      infowindow.setContent(usecontent);
+			      infowindow.open(map_<substitute-id>,this);
+			      });
+			    }    
+			*******************/
+
+		}
+
+		// Sets up a marker and info window on the map at the latitude and longitude specified
+		setupMarker2 = function(latitude, longitude, postcode)
+		{
+			var usepostcode = "";
+			if (postcode != undefined)
+				usepostcode = urldecode(postcode);
+
 			// Generate the position from the given latitude and longitude values
 			var pos = new google.maps.LatLng(latitude, longitude);
 			// Define the marker on the map in the specified location
+			var myIcon = '';
+			var url = '';
 			var marker = new google.maps.Marker({
 				position: pos,
-				map: map,
-				title: name
+				map: map_<substitute-id>,
+				icon: myIcon,
+url: 'http://maps.google.com/?daddr='+postcode,
+				title: 'Get directions to '+usepostcode
 			});
 			// Add a listener to this marker to display the information window on click
-			var info = "Event at co-ordinates:<br />latitude: " + latitude + "<br/>longitude: " + longitude;
 			google.maps.event.addListener(marker, 'click', function () {
-				var infowindow = new google.maps.InfoWindow({
-					content: info
-				});
-				infowindow.open(map, marker);
+window.open(marker.url,'_blank');
 			});
+		}
+
+		// Utility to decode PHP-encoded strings (messes up arguments to functions)
+		function urldecode(url) {
+			return decodeURIComponent(url.replace(/\+/g, ' '));
 		}
 
 END_OF_API_JS;
