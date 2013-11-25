@@ -317,7 +317,7 @@ class eventcode
 			$hasEvents = true;
 
 			// The header block
-			$content .= "<div id='hdr'> <!-- header -->";
+			$content .= "<div id='hdr-" . $event->id . "'> <!-- header -->";
 
 			$content .= "  <div style=float:left>";
 
@@ -485,10 +485,11 @@ END_OF_API_HTML_fill_headers;
 				ajaxGetEvent(0);	// Dummy first ajax to 'initialise' the google map (who knows why its needed...)
 			});
 
-			function printDiv(divId) {
-				divId = 'accordion';
-alert(divId);
-				var prtContent = document.getElementById("hdr");
+			function printDiv(eventId) {
+//var css='<style>@media print { .ui-accordion .ui-accordion-content #ui-accordion-accordion-panel-0 { display:block !important; } } </style>'
+//var prtContent = document.getElementById('ui-accordion-accordion-panel-0');
+
+				var prtContent = document.getElementById('hdr-'+eventId);
 				var WinPrint = window.open('', '', 'letf=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
 				WinPrint.document.write(prtContent.innerHTML);
 				WinPrint.document.close();
