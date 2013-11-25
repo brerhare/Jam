@@ -318,7 +318,7 @@ url: 'http://maps.google.com/?daddr='+postcode,
 			});
 			// Add a listener to this marker to display the information window on click
 			google.maps.event.addListener(marker, 'click', function () {
-window.location.href = marker.url;
+window.open(marker.url,'_blank');
 			});
 		}
 
