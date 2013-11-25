@@ -2,6 +2,8 @@
 
 class SiteController extends Controller
 {
+	// @@NB p3p example code here
+	private $p3p = 'P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"';
 	/**
 	 * Get the jelly script root (as defined in /protected/config/main.php)
 	 */
@@ -35,6 +37,7 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
+header($this->p3p);
 		$util = new Util;
 		if (isset($_GET['ge']))
 			Yii::app()->session['checkoutEmail'] = $_GET['ge'];
@@ -66,6 +69,7 @@ class SiteController extends Controller
 	 */
 	public function actionPlay($page)
 	{
+header($this->p3p);
 		$parseConfig = new ParseConfig();
 		$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . $page . '.jel');
 		if (!($jellyArray))
@@ -80,6 +84,7 @@ class SiteController extends Controller
 	// Invoke the Paymentsense module
 	public function actionPay()
 	{
+header($this->p3p);
 		if ((trim(Yii::app()->session['checkoutEmail']) == "")
 		|| (trim(Yii::app()->session['checkoutName']) == "")
 		|| (trim(Yii::app()->session['checkoutGatewayUser']) == "")
@@ -243,6 +248,7 @@ class SiteController extends Controller
 	// Return from Paymentsense
 	public function actionPaid()
 	{
+header($this->p3p);
 		Yii::log("PAID PAGE LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
 
 		$ip = "UNKNOWN";
