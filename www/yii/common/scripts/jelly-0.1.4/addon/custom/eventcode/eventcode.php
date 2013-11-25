@@ -119,7 +119,7 @@ class eventcode
 				$infoWindow .= "<h3>" . $event->title . "</h3>";
 				$infoWindow .= "<i>" . $this->formatDateString($event->start, $event->end) . "</i><br><br>";
 
-				if (trim($event->thumb_path)) != "")
+				if (trim($event->thumb_path) != "")
 				{
 					if (file_exists('userdata/event/thumb/' . $event->thumb_path))
 					{
