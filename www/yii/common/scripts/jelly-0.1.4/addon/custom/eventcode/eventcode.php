@@ -118,6 +118,16 @@ class eventcode
 				$infoWindow = "<div style='height:150px; width:300px'>";
 				$infoWindow .= "<h3>" . $event->title . "</h3>";
 				$infoWindow .= "<i>" . $this->formatDateString($event->start, $event->end) . "</i><br><br>";
+
+				if (trim($event->thumb_path)) != "")
+				{
+					if (file_exists('userdata/event/thumb/' . $event->thumb_path))
+					{
+						$img = 'userdata/event/thumb/' . $event->thumb_path;
+						$infoWindow .= "<img style='padding-right:10px' align='left' title='" . $member->organisation . "' src='" . $img . "' width='140' height='115'>";
+					}
+				}
+
 				$infoWindow .= $ws->short_description;
 				$infoWindow .= "</div>";
 				array_push($mapContent, $infoWindow);
