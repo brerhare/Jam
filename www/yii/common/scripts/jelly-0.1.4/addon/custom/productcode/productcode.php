@@ -355,7 +355,7 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 		$content .= "<tr><tbody>";
 		$content .= "<td></td>";
 		$content .= "<td></td>";
-		$content .= "<td>Choose delivery method</td>";
+		$content .= "<td>Delivery method</td>";
 		$content .= "<td>";
 
 				$content .= "<script> var shipId = 0; var totalShipping = 0; var totalGoods = " . $totalGoods . ";</script>";
@@ -403,8 +403,8 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 				$content .= "<table style='width:80%; float:left'>";
 				$content .= "<thead><tr>";
 				$content .= "<th align='left' width=45%></th>";
-				$content .= "<th align='left' width=10%></th>";
-				$content .= "<th align='left' width=45%></th>";
+				$content .= "<th align='left' width=5%></th>";
+				$content .= "<th align='left' width=50%></th>";
 				$content .= "</tr></thead>";
 				$content .= "<tbody><tr><td valign='top'>";
 				$content .= "Please enter your delivery address<br />";
@@ -412,15 +412,15 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 				$content .= "<input id='address2' name='address2' type='text' value='' size='40'/> <br />";		
 				$content .= "<input id='address3' name='address3' type='text' value='' size='40'/> <br />";
 				$content .= "<input id='address4' name='address4' type='text' value='' size='40'/> <br />";
-				$content .= "<input id='post_code' name='post_code' type='text' value='' size='15'/> <br /><br/>";
-				$content .= " An email address is required for your order confirmation<br />";
+				$content .= "<span>Post code </span><input id='post_code' name='post_code' type='text' value='' size='10'/> <br /><br/>";
+				$content .= "Enter your email address (twice please)<br />";
 				$content .= "<input id='email1' name='email1' type='text' value='' size='30'/> <br />";
 				$content .= "<input id='email2' name='email2' type='text' value='' size='30'/> <br /><br/>";
 				$content .= " Phone number (recommended)<br />";
 				$content .= "<input id='telephone' name='telephone' type='text' value='' size='20'/> <br />";
 				$content .= "</td><td>&nbsp</td><td valign='top'>";
 				$content .= "Notes<br>";
-				$content .= "<textarea name='message' rows='7' cols='30'> </textarea> <br><br><br/>";
+				$content .= "<textarea name='message' rows='7' cols='38'> </textarea> <br><br><br/>";
 				$content .= "<a href='#' onClick=\"proceed()\"	>" . "<img src=/product/img/proceed_to_checkout.png></a>";
 				$content .= "</td></tr></tbody>";
 				$content .= "</table>";
