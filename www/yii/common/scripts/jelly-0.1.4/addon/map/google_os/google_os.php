@@ -207,6 +207,20 @@ END_OF_API_HTML;
 			}
 		}
 
+		markerByOs2 = function(osgridref, postcode)
+		{
+			if (osgridref.length > 0)
+			{
+				if (osgridref.indexOf(',') != -1)
+				{
+					var eastnorth = osgridref.split(',');
+					osgridref = gridrefNumToLet(eastnorth[0], eastnorth[1], 10);
+				}				
+				var latlong = OSGridToLatLong(osgridref);
+				loadMap(latlong.lat, latlong.lng);
+				setupMarker2(latlong.lat, latlong.lng, postcode);
+			}
+		}
 
 		centerByLatLong = function(lat, long)
 		{
@@ -249,6 +263,7 @@ END_OF_API_HTML;
 
 			// Define the marker on the map in the specified location
 			var myIcon = '';
+			var url = '';
 			if (iconpath != undefined)
 				myIcon = new google.maps.MarkerImage(iconpath, undefined, undefined, undefined, new google.maps.Size(20, 20));
 			var marker = new google.maps.Marker({
@@ -257,7 +272,6 @@ END_OF_API_HTML;
 				icon: myIcon,
 				title: usehovertip
 			});
-
 
 			// Add a listener to this marker to display the information window on click
 			google.maps.event.addListener(marker, 'click', function () {
@@ -281,6 +295,31 @@ END_OF_API_HTML;
 			    }    
 			*******************/
 
+		}
+
+		// Sets up a marker and info window on the map at the latitude and longitude specified
+		setupMarker2 = function(latitude, longitude, postcode)
+		{
+			var usepostcode = "";
+			if (postcode != undefined)
+				usepostcode = urldecode(postcode);
+
+			// Generate the position from the given latitude and longitude values
+			var pos = new google.maps.LatLng(latitude, longitude);
+			// Define the marker on the map in the specified location
+			var myIcon = '';
+			var url = '';
+			var marker = new google.maps.Marker({
+				position: pos,
+				map: map_<substitute-id>,
+				icon: myIcon,
+url: 'http://maps.google.com/?daddr='+postcode,
+				title: 'Get directions to '+usepostcode
+			});
+			// Add a listener to this marker to display the information window on click
+			google.maps.event.addListener(marker, 'click', function () {
+window.location.href = marker.url;
+			});
 		}
 
 		// Utility to decode PHP-encoded strings (messes up arguments to functions)

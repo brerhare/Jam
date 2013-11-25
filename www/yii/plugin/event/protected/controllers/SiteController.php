@@ -182,7 +182,7 @@ class SiteController extends Controller
 					$ret = $addon->init($optArr, '/event/scripts/jelly/addon/map/google_os');
 					$content .= $ret[0];
 					$content .= '<script>' . $ret[1] . '</script>';
-					$content .= "<script> markerByOs('" . $ws->os_grid_ref . "'); </script>";
+					$content .= "<script> markerByOs2('" . $ws->os_grid_ref . "', '" . $event->post_code . "'); </script>";
 
 					$content .= "</td><td style='width:60%; padding-left:10px; vertical-align:top'>";
 					// Booking
