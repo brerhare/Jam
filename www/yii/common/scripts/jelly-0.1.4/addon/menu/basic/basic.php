@@ -38,9 +38,20 @@ class basic
 					break;
 
 				case "font-size":
-						$val = str_replace("px", "", $val);
+					$val = str_replace("px", "", $val);
 					$this->apiHtml = str_replace("<substitute-font-size>",
 						"nav ul li a {font-size: " . $val . "px;}",
+						$this->apiHtml);
+					break;
+				case "menu-rounding":
+					$val = str_replace("px", "", $val);
+					$this->apiHtml = str_replace("<substitute-menu-rounding>",
+						"nav ul {
+							-moz-border-radius: " . $val . "px;
+							-webkit-border-radius: " . $val . "px;
+							border-radius: " . $val . "px; /* future proofing */
+							-khtml-border-radius: " . $val . "px; /* for old Konqueror browsers */;
+						}",	
 						$this->apiHtml);
 					break;
 
@@ -94,28 +105,26 @@ class basic
 						$this->apiHtml);
 					break;
 
+				case "menu-text-color":
+					$this->apiHtml = str_replace("<substitute-menu-text-color>",
+						"nav ul li a {color: " . $val . " !important;}",
+						$this->apiHtml);
+					break;
+				case "item-text-color":
+					$this->apiHtml = str_replace("<substitute-item-text-color>",
+						"nav ul li:hover a {color: " . $val . " !important;}",
+						$this->apiHtml);
+					break;
+				case "subitem-text-color":
+					$this->apiHtml = str_replace("<substitute-subitem-text-color>",
+						"nav ul ul li a:hover {color: " . $val . " !important;}",
+						$this->apiHtml);
+					break;
 				case "subitem-separator-color":
 					$this->apiHtml = str_replace("<substitute-subitem-separator-color>",
 						"nav ul ul li {border-top: 1px solid " . $val . ";}",
 						$this->apiHtml);
 					break;
-
-
-//				case "text-color":
-//					break;
-
-
-				case "item-text-color":
-					$this->apiHtml = str_replace("<substitute-item-text-color>",
-						"nav ul li:hover a {color: " . $val . ";}",
-						$this->apiHtml);
-					break;
-				case "subitem-text-color":
-					$this->apiHtml = str_replace("<substitute-subitem-text-color>",
-						"nav ul ul li a:hover {color: " . $val . ";}",
-						$this->apiHtml);
-					break;
-
 				default:
 					// Not all array items are action items
 			}
@@ -185,20 +194,18 @@ class basic
 		<!--Basic Menu includes -->
 		<link rel="stylesheet" type="text/css" href="<substitute-path>/basic.css" />
 
-<style>
-<substitute-font-size>
-<substitute-menu-color>
-<substitute-submenu-color>
-<substitute-item-color>
-<substitute-item-text-color>
-<substitute-subitem-color>
-<substitute-subitem-text-color>
-<substitute-subitem-separator-color>
-</style>
-
-
-
-
+		<style>
+		<substitute-font-size>
+		<substitute-menu-rounding>
+		<substitute-menu-color>
+		<substitute-menu-text-color>
+		<substitute-submenu-color>
+		<substitute-item-color>
+		<substitute-item-text-color>
+		<substitute-subitem-color>
+		<substitute-subitem-text-color>
+		<substitute-subitem-separator-color>
+		</style>
 
 		<!--Basic Menu HTML-->
 		<div id="basicmenu">
