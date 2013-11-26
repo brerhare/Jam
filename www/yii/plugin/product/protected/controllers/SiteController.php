@@ -2,7 +2,7 @@
 
 class SiteController extends Controller
 {
-	// @@NB p3p example code here
+	// @@EG p3p example code here. Needed for IE
 	private $p3p = 'P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"';
 	/**
 	 * Get the jelly script root (as defined in /protected/config/main.php)
