@@ -43,6 +43,7 @@ class basic
 						"nav ul li a {font-size: " . $val . "px;}",
 						$this->apiHtml);
 					break;
+
 				case "menu-rounding":
 					$val = str_replace("px", "", $val);
 					$this->apiHtml = str_replace("<substitute-menu-rounding>",
@@ -52,6 +53,32 @@ class basic
 							border-radius: " . $val . "px; /* future proofing */
 							-khtml-border-radius: " . $val . "px; /* for old Konqueror browsers */;
 						}",	
+						$this->apiHtml);
+					break;
+
+				case "menu-opacity":
+					$this->apiHtml = str_replace("<substitute-menu-opacity>",
+						"nav ul {
+							zoom: 1; filter: alpha(opacity=" . $val . ");
+							opacity: " . ($val / 100) . ";
+						}",
+						$this->apiHtml);
+					break;
+
+				case "menu-tile":
+					$this->apiHtml = str_replace("<substitute-menu-tile>",
+						"nav ul {
+							background: url('" . Yii::app()->baseUrl . $val . "') repeat;
+						}",
+						$this->apiHtml);
+					break;
+
+				case "menu-stretch":
+					$this->apiHtml = str_replace("<substitute-menu-stretch>",
+						"nav ul {
+							background: url('" . Yii::app()->baseUrl . $val . "');
+							size: 100%;
+						}",
 						$this->apiHtml);
 					break;
 
@@ -137,7 +164,11 @@ class basic
 			$this->apiHtml = str_replace("<substitute-orientation>", $this->defaultOrientation, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-font-size>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-menu-color>", "", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-rounding>", "", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-opacity>", "", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-tile>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-submenu-color>", "", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-text-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-item-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-item-text-color>", "", $this->apiHtml);		
 		$this->apiHtml = str_replace("<substitute-subitem-color>", "", $this->apiHtml);
@@ -196,8 +227,11 @@ class basic
 
 		<style>
 		<substitute-font-size>
-		<substitute-menu-rounding>
 		<substitute-menu-color>
+		<substitute-menu-rounding>
+		<substitute-menu-opacity>
+		<substitute-menu-tile>
+		<substitute-menu-stretch>
 		<substitute-menu-text-color>
 		<substitute-submenu-color>
 		<substitute-item-color>
