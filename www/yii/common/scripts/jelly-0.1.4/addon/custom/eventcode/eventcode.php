@@ -496,12 +496,25 @@ END_OF_API_HTML_fill_headers;
 			});
 
 			function printDiv(eventId) {
-//var css='<style>@media print { .ui-accordion .ui-accordion-content #ui-accordion-accordion-panel-0 { display:block !important; } } </style>'
-//var prtContent = document.getElementById('ui-accordion-accordion-panel-0');
+				header = document.getElementById('hdr-'+eventId).innerHTML;
+				css = '<link rel="stylesheet" href="<substitute-path>/eventcode.css" type="text/css">';
+				separator = '<div style="clear:both"></div>';
 
-				var prtContent = document.getElementById('hdr-'+eventId);
+				pShortDesc = document.getElementById('pShortDesc-'+eventId).innerHTML;
+				pMap = document.getElementById('detailMap_'+eventId+'-map').innerHTML;	// Not currently used
+				pDetails = document.getElementById('pDetails-'+eventId).innerHTML;
+				pDesc = document.getElementById('pDesc-'+eventId).innerHTML;
+
+separator = "<div style='clear:both'></div>";
+separator = "<div><br><br><br><br><br><br><br></div>";
+
+				content = header + separator + pShortDesc + "<hr>" + pDetails + "<hr>" + pDesc;
+
+				//content = document.getElementById('main_google_map-map').innerHTML;			// WORKS!
+				//content = document.getElementById('detailMap_'+eventId+'-map').innerHTML;		// WORKS!
+
 				var WinPrint = window.open('', '', 'letf=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
-				WinPrint.document.write(prtContent.innerHTML);
+				WinPrint.document.write(content);
 				WinPrint.document.close();
 				WinPrint.focus();
 				WinPrint.print();
@@ -513,6 +526,7 @@ END_OF_API_JS_fill_headers;
 		$apiHtml = str_replace("<substitute-path>", $this->jellyRootUrl, $apiHtml);
         $apiHtml = str_replace("<substitute-data>", $content, $apiHtml);
 
+		$apiJs = str_replace("<substitute-path>", $this->jellyRootUrl, $apiJs);
 		$apiJs = str_replace("<substitute-eventarray>", $jsEvents, $apiJs);
 		if (gethostname() == 'spleen')
 			$apiJs = str_replace("<substitute-ajaxurl>", 'http://localhost/event/index.php/site/ajaxGetEvent', $apiJs);

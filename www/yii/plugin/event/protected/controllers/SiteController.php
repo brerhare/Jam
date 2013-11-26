@@ -165,7 +165,7 @@ class SiteController extends Controller
 				$ws = Ws::model()->find($criteria);
 				if ($ws)
 				{
-					$content .= $ws->short_description . "..." . "<br>";
+					$content .= "<div id='pShortDesc-" . $eventId. "'>" . $ws->short_description . "</div>";		// Printing start and end
 					$content .= "<table width=100% style='padding:10px 10px 10px 0px'><tr><td style='padding:0px; width:40%'>";
 
 					// @@EG: Calling a jelly addon directly, from outside the jelly
@@ -184,7 +184,10 @@ class SiteController extends Controller
 					$content .= '<script>' . $ret[1] . '</script>';
 					$content .= "<script> markerByOs2('" . $ws->os_grid_ref . "', '" . $event->post_code . "'); </script>";
 
-					$content .= "</td><td style='width:60%; padding-left:10px; vertical-align:top'>";
+					$content .= "</td> <div id='" . $optArr['id'] . "'></div> <td style='width:60%; padding-left:10px; vertical-align:top'>";
+
+					$content .= "<div id='pDetails-" . $eventId. "'>";		// Printing start
+
 					// Booking
 					$content .= "<a class='event-detail-label'>Booking</a> ";
 					if ($ws->booking_essential)
@@ -224,7 +227,12 @@ class SiteController extends Controller
 					$content .= "<a class='event-detail-label'>Grade</a> " . $ws->grade . "<br>";
 					// OS Grid Ref
 					$content .= "<a class='event-detail-label'>OS grid ref</a> " . $ws->os_grid_ref . "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp(" . $event->post_code . ")" . "<br>";
+
+					$content .= "</div>";	// pDetails.	Printing end
+
 					$content .= "</td></tr></table>";
+
+					$content .= "<div id='pDesc-" . $eventId. "'>";		// Printing start
 
 					// Description
 					$content .= $event->description . "<br>";
@@ -233,6 +241,8 @@ class SiteController extends Controller
 						$content .= "Additional venue info: " . $ws->additional_venue_info . "<br>";
 					if (trim($ws->full_price_notes) != '')
 						$content .= "Full price notes: " . $ws->full_price_notes . "<br>";
+
+					$content .= "</div>";	// pDetails.	Printing end
 
 					// Facebook
 					$content .= "<div style='float:right;padding-left:10px;padding-top:1px' class='fb-share-button' data-href='http://www.wildseasons.co.uk' data-type='button'></div>";
