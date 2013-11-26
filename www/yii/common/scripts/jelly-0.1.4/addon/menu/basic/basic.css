@@ -53,7 +53,7 @@ nav ul ul {
 	nav ul ul li {
 		float: none; 
 		border-top: 1px solid #6b727c;
-		border-bottom: 1px solid #575f6a;
+		/*border-bottom: 1px solid #575f6a;*/
 		position: relative;
 	}
 		nav ul ul li a {
