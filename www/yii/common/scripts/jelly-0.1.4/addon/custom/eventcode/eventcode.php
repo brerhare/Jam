@@ -115,7 +115,7 @@ class eventcode
 			{
 				array_push($mapPoint, $osGridRef);
 				array_push($mapTip, $event->address);
-				$infoWindow = "<div style='height:150px; width:300px'>";
+				$infoWindow = "<div style='height:150px; width:300px; '>";
 				$infoWindow .= "<h3>" . $event->title . "</h3>";
 				$infoWindow .= "<i>" . $this->formatDateString($event->start, $event->end) . "</i><br><br>";
 
@@ -333,14 +333,15 @@ class eventcode
 
 			$content .= "    <div id='header-title'>";
 
+			$content .= "      <span style='display:block;width:300px;height:1px;overflow:ellipsis'>";
 			if ($member)
 			{
 				if (trim($member->avatar_path) != '')
 					$content .= "<img style='padding-right:5px;margin-top:0px; margin-right:0px' title='" . $member->organisation . "' src='userdata/member/avatar/" . $member->avatar_path . "' width='20' height='20'>";
 			}
 
-
 			$content .= $event->title;
+			$content .= "      </span>";
 
 			// Ticketing info (if applicable)
 			if (($event->ticket_event_id != 0) && ($member))
@@ -439,7 +440,7 @@ class eventcode
 			//$content .= $event->id;
 			$content .= "</div>";
 		}
-		$content .= "</div>";
+		$content .= "</div>";	// 'accordion'
 
 		// Terminate the generated js array
 		if ($hasEvents)
@@ -505,13 +506,26 @@ END_OF_API_HTML_fill_headers;
 				pDetails = document.getElementById('pDetails-'+eventId).innerHTML;
 				pDesc = document.getElementById('pDesc-'+eventId).innerHTML;
 
-separator = "<div style='clear:both'></div>";
-separator = "<div><br><br><br><br><br><br><br></div>";
+				headerSeparator = "<div><br><br><br><br><br><br><br></div>";
 
-				content = header + separator + pShortDesc + "<hr>" + pDetails + "<hr>" + pDesc;
+				content = header + headerSeparator + pShortDesc + "<hr>" + pDetails + "<hr>" + pDesc;
 
 				//content = document.getElementById('main_google_map-map').innerHTML;			// WORKS!
 				//content = document.getElementById('detailMap_'+eventId+'-map').innerHTML;		// WORKS!
+
+/***** start testing ****
+
+content = document.getElementById('accordion').innerHTML;
+content = "";
+for (i = 0; i < jsEvents.length; i++)
+{
+	var evId = jsEvents[i];
+	var header = document.getElementById('hdr-'+evId).innerHTML;
+	content += header;
+	content += headerSeparator;
+}
+
+***** end testing ******/
 
 				var WinPrint = window.open('', '', 'letf=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
 				WinPrint.document.write(content);
