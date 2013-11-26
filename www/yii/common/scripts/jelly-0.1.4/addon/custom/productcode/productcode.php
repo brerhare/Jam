@@ -332,7 +332,7 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 				// Delete
 				$content .= "<td align='right'>";
 				//$content .= "<img border=0 src='" . $_imgDir . 'remove_from_cart.jpg' . "' style='height:40px; width:40px'>";
-				$content .= "<a href='#' onClick=\"deleteItem('" . $product->id . "','" . $option->id . "','" . "')\"	>" . "<img src=/product/img/delete-cross.png height=40px width=40px></a>";
+				$content .= "<a href='#' onClick=\"deleteItem('" . $product->id . "','" . $option->id . "','" . "')\"	>" . "<img src=/product/img/delete-cross.png height=25px width=25px></a>";
 				$content .= "</td>";
 				$content .= "</tbody></tr>";
 			}
