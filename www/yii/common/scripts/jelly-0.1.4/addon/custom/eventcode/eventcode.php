@@ -333,7 +333,7 @@ class eventcode
 
 			$content .= "    <div id='header-title'>";
 
-			$content .= "      <span style='display:block;width:300px;height:1px;overflow:ellipsis'>";
+			$content .= "      <span style='display:inline-block;width:300px;height:0px;text-overflow:ellipsis'>";
 			if ($member)
 			{
 				if (trim($member->avatar_path) != '')
