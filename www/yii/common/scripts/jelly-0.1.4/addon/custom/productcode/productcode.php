@@ -420,7 +420,7 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 				$content .= "<input id='telephone' name='telephone' type='text' value='' size='20'/> <br />";
 				$content .= "</td><td>&nbsp</td><td valign='top'>";
 				$content .= "Notes<br>";
-				$content .= "<textarea name='message' rows='7' cols='38'> </textarea> <br><br><br/>";
+				$content .= "<textarea id='message' name='message' rows='7' cols='38'> </textarea> <br><br><br/>";
 				$content .= "<a href='#' onClick=\"proceed()\"	>" . "<img src=/product/img/proceed_to_checkout.png></a>";
 				$content .= "</td></tr></tbody>";
 				$content .= "</table>";
@@ -485,10 +485,11 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 						a3 = document.getElementById("address3").value;
 						a4 = document.getElementById("address4").value;
 						pc = document.getElementById("post_code").value;
+						n = encodeURIComponent(document.getElementById("message").value);
 						e = document.getElementById("email1").value;
 						t = document.getElementById("telephone").value;
 						//window.location.href = '/product/index.php/site/pay?cartid='+cartId+'&shipid='+shipId;
-						window.location.href = '/product/index.php/site/pay?cartid='+cartId+'&shipid='+shipId+'&a1='+a1+'&a2='+a2+'&a3='+a3+'&a4='+a4+'&e='+e+'&pc='+pc+'&t='+t;
+						window.location.href = '/product/index.php/site/pay?cartid='+cartId+'&shipid='+shipId+'&a1='+a1+'&a2='+a2+'&a3='+a3+'&a4='+a4+'&e='+e+'&pc='+pc+'&n='+n+'&t='+t;
 			}
 END_OF_API_JS_checkout;
 

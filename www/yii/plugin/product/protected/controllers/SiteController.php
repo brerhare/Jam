@@ -84,6 +84,7 @@ header($this->p3p);
 	// Invoke the Paymentsense module
 	public function actionPay()
 	{
+
 header($this->p3p);
 		if ((trim(Yii::app()->session['checkoutEmail']) == "")
 		|| (trim(Yii::app()->session['checkoutName']) == "")
@@ -93,7 +94,6 @@ header($this->p3p);
 			Yii::log("Checkout - NOT LOADING PAYMENT PAGE because gateway details arent present" , CLogger::LEVEL_WARNING, 'system.test.kim');
 			throw new CHttpException(400,'Cannot proceed to payment because Gateway details dont exist');
 		}
-
 		if (isset($_GET['shipid']))
 			$shipId = $_GET['shipid'];
 		else
@@ -138,6 +138,7 @@ header($this->p3p);
 		$pc = "";
 		$e = "";
 		$t = "";
+		$n = "";
 		if (isset($_GET['a1'])) $a1 = $_GET['a1'];
 		if (isset($_GET['a2'])) $a2 = $_GET['a2'];
 		if (isset($_GET['a3'])) $a3 = $_GET['a3'];
@@ -145,6 +146,7 @@ header($this->p3p);
 		if (isset($_GET['pc'])) $pc = $_GET['pc'];
 		if (isset($_GET['e'])) $e = $_GET['e'];
 		if (isset($_GET['t'])) $t = $_GET['t'];
+		if (isset($_GET['n'])) $n = nl2br($_GET['n']);
 
 		$ip = "UNKNOWN";
 		if (getenv("HTTP_CLIENT_IP"))
@@ -210,6 +212,7 @@ header($this->p3p);
 			$order->delivery_address4 = $a4;
 			$order->delivery_post_code = $pc;
 			$order->telephone = $t;
+			$order->notes = $n;
 			$totalGoods += ($qty * $price);
 			$order->return_url = Yii::app()->baseUrl;
 			$order->gu = Yii::app()->session['checkoutGatewayUser'];
@@ -326,6 +329,28 @@ header($this->p3p);
 		$message .= "<tr><td style='padding:15px'>Total Paid: &pound " . $order->http_total . "</td></tr>";
 
 		$message .= "</table>";
+
+		$message .= "<br><hr><br>";	// Solid line separator
+
+		// Delivery address
+
+		$message .= "<b>Delivery address</b><br>";
+		if (trim($order->delivery_address1) != "")
+			$message .= $order->delivery_address1 . "<br>";
+		if (trim($order->delivery_address2) != "")
+			$message .= $order->delivery_address2 . "<br>";
+		if (trim($order->delivery_address3) != "")
+			$message .= $order->delivery_address3 . "<br>";
+		if (trim($order->delivery_address4) != "")
+			$message .= $order->delivery_address4 . "<br>";
+		if (trim($order->delivery_post_code) != "")
+			$message .= $order->delivery_post_code . "<br>";
+		$message .= "<br>";
+
+		// Notes
+
+		$message .= "<b>Notes</b><br>";
+		$message .= $order->notes . "<br>";
 
         // Send email
         $to = $order->email_address;
