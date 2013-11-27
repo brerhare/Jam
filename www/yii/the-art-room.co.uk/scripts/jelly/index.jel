@@ -1,8 +1,6 @@
 #The Art Room
 [defaults]
 include = default-values
-# Nb: Needs Cutive Mono Google font http://www.google.com/fonts/specimen/Cutive+Mono
-# Pair with Source Sans Pro http://www.google.com/fonts/specimen/Source+Sans+Pro
 
 ; Every blob inherits these before adding/overriding
 [* : defaults]
@@ -13,20 +11,25 @@ fx.wallpaper-image = /img/shop-bg.jpg
 css.display = block
 
 	[site]
-	child = header, slider, page, footer
+	child = header, slider, homegraphics, page, footer
 	css.width = 960px
 	#css.margin-top = 20px
+
+####Header#################################
 
 		[header]
 		child = logo, header-dt
 		stacking = horizontal
 
 			[logo]
-			css.margin-top = 20px
+			css.margin-top = 10px
 			css.margin-left = 50px
 			css.height = 110px
 			css.width = 400px
+			css.z-index = 1000
+			css.position = relative
 			css.background-image = url('/img/logo.png')
+			click = http://www.the-art-room.co.uk
 
 			[header-dt]
 			child = icons, menu
@@ -53,7 +56,7 @@ css.display = block
 						css.width = 180px
 						css.height = 22px
 						css.margin-left = 0px
-						click = http://www.wireflydesign.com
+						click = http://www.the-art-room.co.uk/?layout=index&page=checkout
 
 							[cart-pic]
 							css.width = 25px
@@ -74,7 +77,7 @@ css.display = block
 						css.height = 19px
 						css.margin-top = -18px
 						css.margin-left = 140px
-						click = http://www.wireflydesign.com
+						click = http://www.the-art-room.co.uk/?layout=index&page=blog
 
 							[news-pic]
 							css.width = 25px
@@ -89,7 +92,8 @@ css.display = block
 		[menu]
 		child = menu-bg
 		css.height = 50px
-		css.margin-top = 50px
+		css.margin-top = 40px
+		css.margin-left = 10px
 		css.overflow = visible
 		css.z-index = 1000
 		css.position = relative
@@ -98,17 +102,18 @@ css.display = block
 			[menu-bg]
 			css.width = 455px
 			css.height = 50px
-			css.margin-top = -50px
+			css.margin-top = -40px
 			css.margin-left = 0px
 			css.background-image = url('/img/menu-bg.png')
 
-
+####SLider###########################################
 
 	[slider]
-   css.margin-top = -80px
+	css.margin-top = -70px
 	css.margin-left = 30px
-  	;css.height = 250px
-		addon.carousel.flexslider.animation = fade
+	css.width = 960px
+  	css.height = 270px
+	addon.carousel.flexslider.animation = fade
    	addon.carousel.flexslider.source = db
 
 	#[static-tabs]
@@ -117,22 +122,85 @@ css.display = block
 	#stacking = horizontal
 	#css.heights = 
 
+########body#######################################
+			
 
+#######homepage only content############################
+
+	[homegraphics]
+	child = easel-icons, white-block, home-contentblock
+	condition = @HOMEPAGE=1
+	css.width = 960px
+
+		[easel-icons]
+		child = gallery, gifts, workshop
+		stacking = horizontal
+		css.height = 300px
+		css.margin-left = 100px
+
+			[gallery]
+			image.url = /img/Gallery.png
+			image.width = 250px
+			image.height = 295px
+			click = http://www.the-art-room.co.uk/?layout=index&page=gallery
+
+			[gifts]
+			image.url = /img/Gifts.png
+			image.width = 250px
+			image.height = 295px
+			click = http://www.the-art-room.co.uk/?layout=index&page=gifts
+
+			[workshop]
+			image.url = /img/Workshops.png
+			image.width = 250px
+			image.height = 295px
+			click = http://www.the-art-room.co.uk/?layout=index&page=gifts
+
+		[white-block]
+		css.width = 960px
+		css.height = 150px
+		css.background-color = white
+		fx.rounding = 4px
+		css.margin-top = -120px
+
+		[home-contentblock]
+		child = home-content
+		css.margin-top = -30px
+		css.background-color = white
+		fx.rounding = 4px
+
+			[home-content]
+			#css.background-color = white
+			#css.margin-top = 10px
+			css.color = black
+			css.margin = 30px
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find that page. You requested $_GET['page']
+			html.raw = ContentBlock.content
+
+
+
+
+######content for other pages##################################
 
 	[page]
 	child = content
-	#css.background-color = white
-	#fx.rounding = 4px
+	condition = @HOMEPAGE=0
+	css.margin-top = 20px
+	css.background-color = white
+	fx.rounding = 4px
 
 		[content]
 		#css.background-color = white
-		#css.color = black
-		#css.margin = 15px
+		css.color = black
+		css.margin = 15px
 		db.table = ContentBlock
 		db.filter = url=$_GET['page']
 		db.error = Sorry, I could not find that page. You requested $_GET['page']
-	html.raw = ContentBlock.content
+		html.raw = ContentBlock.content
 
+####footer##########################################
 
 	[footer]
 	child = footer-content
