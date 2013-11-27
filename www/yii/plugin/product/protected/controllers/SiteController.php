@@ -334,11 +334,10 @@ header($this->p3p);
             $from = Yii::app()->session['checkoutEmail'];
             $fromName = Yii::app()->session['checkoutName'];
             $subject = "Your order from " . Yii::app()->session['checkoutName'];
-            //$message = "<b>Thank you for your order, total &pound" . $order->http_total . "</b><br><br>";
             // phpmailer
             $mail = new PHPMailer();
             $mail->AddAddress($to);
-//			$mail->AddBCC($param->cc_email_address);
+			$mail->AddBCC($from);
             $mail->SetFrom($from, $fromName);
             $mail->AddReplyTo($from, $fromName);
 //            $mail->AddAttachment($pdf_filename);
