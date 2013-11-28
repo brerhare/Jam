@@ -17,4 +17,12 @@ userdata/carousel/*
 !userdata/tab
 userdata/tab/*
 !userdata/tab/.gitignore
+
+userdata/jelly/*
+!userdata/jelly/.gitignore
+userdata/jelly/sliderhtml/*
+!userdata/jelly/sliderhtml/.gitignore
+userdata/jelly/sliderimage/*
+!userdata/jelly/sliderimage/.gitignore
+
 *.bak

@@ -1,0 +1,40 @@
+<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+	'id'=>'jelly-slider-html-form',
+	'enableAjaxValidation'=>false,
+	'type'=>'horizontal',
+)); ?>
+
+	<p class="help-block">Fields with <span class="required">*</span> are required.</p>
+
+	<?php echo $form->errorSummary($model); ?>
+
+	<?php echo $form->textFieldRow($model,'sequence',array('class'=>'span1')); ?>
+
+	<?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>255)); ?>
+
+<?php 
+$this->widget('bootstrap.widgets.TbRedactorJs',
+    array(
+      'model'=>$model,
+      'attribute'=>'content',
+      'editorOptions'=>array(
+          'imageUpload' => $this->createUrl('jellySliderHtml/imageUpload'),
+          'imageGetJson' => $this->createUrl('jellySliderHtml/imageList'),
+          'width'=>'100%',
+          'height'=>'400px'
+       )
+    ));
+?>
+
+	<?php // echo $form->textFieldRow($model,'active',array('class'=>'span1','maxlength'=>1)); ?>
+	<?php //echo $form->hiddenField($model,'active'); ?>
+
+	<div class="form-actions">
+		<?php $this->widget('bootstrap.widgets.TbButton', array(
+			'buttonType'=>'submit',
+			'type'=>'primary',
+			'label'=>$model->isNewRecord ? 'Create' : 'Save',
+		)); ?>
+	</div>
+
+<?php $this->endWidget(); ?>
