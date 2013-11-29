@@ -170,7 +170,7 @@ var RLANG = {
 			observeImages: true,
 			overlay: true, // modal overlay
 
-			allowedTags: ["script", "style", "form", "input", "button", "select", "option", "datalist", "output", "textarea", "fieldset", "legend",
+			allowedTags: ["form", "input", "button", "select", "option", "datalist", "output", "textarea", "fieldset", "legend",
 					"section", "header", "hgroup", "aside", "footer", "article", "details", "nav", "progress", "time", "canvas",
 					"code", "span", "div", "label", "a", "br", "p", "b", "i", "del", "strike", "u",
 					"img", "video", "source", "track", "audio", "iframe", "object", "embed", "param", "blockquote",
