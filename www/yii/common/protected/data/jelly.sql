@@ -102,6 +102,21 @@ CREATE  TABLE IF NOT EXISTS `jelly_slider_html` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `jelly_download`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `jelly_download` ;
+
+CREATE  TABLE IF NOT EXISTS `jelly_download` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `sequence` INT NULL ,
+  `description` VARCHAR(255) NOT NULL ,
+  `file` VARCHAR(255) NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `sequence` (`sequence` ASC) )
+ENGINE = InnoDB;
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
