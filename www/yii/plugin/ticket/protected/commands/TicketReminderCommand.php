@@ -9,11 +9,20 @@
 // PHPMailer
 require_once('php/PHPMailer/class.phpmailer.php');
 
-class StatCommand extends CConsoleCommand
+class TicketReminderCommand extends CConsoleCommand
 {
 	public function run($args)
 	{
 		$cr = "<br>";
+
+
+
+
+
+$file = fopen("/tmp/cronkim.txt","w");
+echo fwrite($file,"Ticket Reminder3\n");
+fclose($file);
+return;
 		$fp = fopen('/tmp/ticketSales.csv', 'w');
 		$heading = array('vendor', 'event', 'area', 'ticket_type', 'date', 'order_number', 'auth_code', 'name', 'email', 'telephone', 'address1', 'address2', 'address3', 'address4', 'city', 'county', 'post_code', 'price_each', 'sales_qty', 'sales_value');
 		fputcsv($fp, $heading);

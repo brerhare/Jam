@@ -1,5 +1,6 @@
 # Ticket weekly report
-5 5 * * 1 cd /home/wireflydesign.com/domains/plugin.wireflydesign.com/dev/src/www/yii/plugin/ticket && php /home/wireflydesign.com/domains/plugin.wireflydesign.com/dev/src/www/yii/plugin/ticket/console.php Stat KronOS
+0 5 * * 1 cd /home/wireflydesign.com/domains/plugin.wireflydesign.com/dev/src/www/yii/plugin/ticket && php /home/wireflydesign.com/domains/plugin.wireflydesign.com/dev/src/www/yii/plugin/ticket/console.php VendorReport KronOS
 
 # Ticket daily upcoming event reminder
-* * * * * cd /home/kim/dev/src/www/yii/plugin/ticket && php /home/kim/dev/src/www/yii/plugin/ticket/console.php TicketReminder KronOS
+0 3 * * * cd /home/wireflydesign.com/domains/plugin.wireflydesign.com/dev/src/www/yii/plugin/ticket && php /home/wireflydesign.com/domains/plugin.wireflydesign.com/dev/src/www/yii/plugin/ticket/console.php TicketReminder KronOS
+
