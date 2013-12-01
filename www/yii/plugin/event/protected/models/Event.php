@@ -144,6 +144,26 @@ class Event extends CActiveRecord
 		));
 	}
 
+	public function searchAllProgramsImAdminFor()
+	{
+		// Add all my own events
+		$flt = "member_id = " . Yii::app()->session['eid'];
+
+		// Also add all events in all programs I'm admin on
+		$criteria=new CDbCriteria;
+		$criteria->addCondition("event_member_id = " . Yii::app()->session['eid']);
+		$criteria->addCondition("privilege_level = " . 4);	//@@TODO Privilege level hardcoding
+		$memberHasPrograms = MemberHasProgram::model()->findAll($criteria);
+		foreach ($memberHasPrograms as $memberHasProgram)
+			$flt .= " or program_id = " . $memberHasProgram->event_program_id;
+		// Now apply the conditions
+		$criteria=new CDbCriteria;
+		$criteria->addCondition($flt);
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+
 // @@EG CJuiDatePicker. See also the form where the widget is applied
 
     protected function afterFind(){

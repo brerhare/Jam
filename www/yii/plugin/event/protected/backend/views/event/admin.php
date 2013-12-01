@@ -13,7 +13,8 @@ $this->menu=array(
 
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'event-grid',
-	'dataProvider'=>$model->search(),
+	//'dataProvider'=>$model->search(),
+	'dataProvider'=>$model->searchAllProgramsImAdminFor(),
 	//'filter'=>$model,
 	'columns'=>array(
 		//'id',
