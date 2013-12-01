@@ -61,7 +61,8 @@ $memberHasPrograms = MemberHasProgram::model()->findAll($criteria);
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'program-grid',
 	/////////////////////////////'dataProvider'=>$model->search(),
-	'dataProvider'=>$model->search(),
+	//'dataProvider'=>$model->search(),
+	'dataProvider'=>$model->searchAllProgramsImAdminFor(),
 	//'filter'=>$model,
 	'columns'=>array(
 		//'id',

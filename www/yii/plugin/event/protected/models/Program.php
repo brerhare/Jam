@@ -133,4 +133,29 @@ class Program extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+	public function searchAllProgramsImAdminFor()
+	{
+		$flt = "";
+		// All programs I'm admin on
+		$criteria=new CDbCriteria;
+		$criteria->addCondition("event_member_id = " . Yii::app()->session['eid']);
+		$criteria->addCondition("privilege_level >= " . 4);	//@@TODO Privilege level hardcoding. This is admin
+		$memberHasPrograms = MemberHasProgram::model()->findAll($criteria);
+		foreach ($memberHasPrograms as $memberHasProgram)
+		{
+			if ($flt != "")
+				$flt .= " or ";
+			$flt .= "id = " . $memberHasProgram->event_program_id;
+		}
+		// Now apply the conditions
+		$criteria=new CDbCriteria;
+		$criteria->addCondition($flt);
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+		));
+	}
+
+
+
 }

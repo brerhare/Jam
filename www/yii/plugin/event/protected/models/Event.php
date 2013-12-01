@@ -144,7 +144,7 @@ class Event extends CActiveRecord
 		));
 	}
 
-	public function searchAllProgramsImAdminFor()
+	public function searchAllProgramsImAdminOrModFor()
 	{
 		// Add all my own events
 		$flt = "member_id = " . Yii::app()->session['eid'];
