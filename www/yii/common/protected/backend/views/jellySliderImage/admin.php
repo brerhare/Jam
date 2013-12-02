@@ -8,16 +8,27 @@ $this->menu=array(
 
 <h1>Manage Slider Content</h1>
 
+<style>
+img { height:50px;}
+</style>
+
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
-	'id'=>'jelly-slider-html-grid',
+	'id'=>'jelly-slider-image-grid',
 	'dataProvider'=>$model->search(),
 	// 'filter'=>$model,
 	'columns'=>array(
 		// 'id',
 		'sequence',
+
+        array('name'=>'image',
+            'type'=>'html',
+            'header'=>'Picture',
+            'value'=> 'CHtml::image("/userdata/jelly/sliderimage/" . $data->image, "image", array("height"=>"50"))',
+        ),
+
         array(
             'name'  => 'title',
-            'value' => 'CHtml::link($data->title, Yii::app()->createUrl("jellySliderHtml/update",array("id"=>$data->primaryKey)))',
+            'value' => 'CHtml::link($data->title, Yii::app()->createUrl("jellySliderImage/update",array("id"=>$data->primaryKey)))',
             'type'  => 'raw',
         ),
 

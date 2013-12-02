@@ -1,7 +1,8 @@
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-	'id'=>'jelly-slider-html-form',
+	'id'=>'jelly-slider-image-form',
 	'enableAjaxValidation'=>false,
 	'type'=>'horizontal',
+	'htmlOptions'=>array('enctype'=>'multipart/form-data'),
 )); ?>
 
 	<p class="help-block">Fields with <span class="required">*</span> are required.</p>
@@ -12,22 +13,11 @@
 
 	<?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>255)); ?>
 
-<?php 
-$this->widget('bootstrap.widgets.TbRedactorJs',
-    array(
-      'model'=>$model,
-      'attribute'=>'content',
-      'editorOptions'=>array(
-          'imageUpload' => $this->createUrl('jellySliderHtml/imageUpload'),
-          'imageGetJson' => $this->createUrl('jellySliderHtml/imageList'),
-          'width'=>'100%',
-          'height'=>'400px'
-       )
-    ));
-?>
-
-	<?php // echo $form->textFieldRow($model,'active',array('class'=>'span1','maxlength'=>1)); ?>
-	<?php //echo $form->hiddenField($model,'active'); ?>
+    <div class="row">
+        <?php echo $form->labelEx($model,'image`'); ?>
+        <?php echo CHtml::activeFileField($model,'image',array('size'=>60,'maxlength'=>255)); ?>
+        <?php echo $form->error($model,'image`'); ?>
+    </div>
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(

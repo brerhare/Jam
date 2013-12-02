@@ -41,7 +41,21 @@ class JellySliderImage extends CActiveRecord
 			array('title', 'required'),
 			array('sequence', 'numerical', 'integerOnly'=>true),
 			array('title', 'length', 'max'=>255),
-			array('image', 'safe'),
+
+            array('image', 'file','on'=>'insert',
+                'types'=> 'jpg, jpeg, gif, png',
+                'maxSize' => 1024 * 1024 * 20, // 20MB
+                'tooLarge' => 'The file was bigger than 20MB. Please upload a smaller file.'
+            ),
+            array('image', 'file','on'=>'update',
+                'types'=> 'jpg, jpeg, gif, png',
+                'allowEmpty' => true,
+                'maxSize' => 1024 * 1024 * 20, // 20MB
+                'tooLarge' => 'The file was larger than 20MB. Please upload a smaller file.'
+            ),
+            array('image', 'unsafe'),
+            array('image', 'length', 'max'=>255),
+
 			array('url', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.

@@ -8,6 +8,9 @@ class JellySliderImageController extends Controller
 	 */
 	public $layout='//layouts/column2';
 
+	private $_imageDir = '/../userdata/jelly/sliderimage/';
+
+
 	/**
 	 * @return array action filters
 	 */
@@ -31,7 +34,7 @@ class JellySliderImageController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user
-				'actions'=>array('create','update','imageUpload','imageList'),
+				'actions'=>array('create','update','admin','delete'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user
@@ -69,8 +72,17 @@ class JellySliderImageController extends Controller
 		if(isset($_POST['JellySliderImage']))
 		{
 			$model->attributes=$_POST['JellySliderImage'];
+			$model->image=CUploadedFile::getInstance($model, 'image');
 			if($model->save())
+			{
+                if (strlen($model->image) > 0)
+                {
+                    $fname = Yii::app()->basePath . $this->_imageDir . $model->image;
+                    $model->image->saveAs($fname);
+                    //$this->_watermark($fname);
+                }
 				$this->redirect(array('admin'));
+			}
 		}
 
 		$this->render('create',array(
@@ -87,14 +99,35 @@ class JellySliderImageController extends Controller
 	{
 		$model=$this->loadModel($id);
 
+		$model->scenario = 'update';
+
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['JellySliderImage']))
 		{
 			$model->attributes=$_POST['JellySliderImage'];
+            $file=CUploadedFile::getInstance($model, 'image');
+            if(is_object($file) && get_class($file) === 'CUploadedFile')
+            {
+                if (file_exists(Yii::app()->basePath . $this->_imageDir . $model->image))
+                {
+                    unlink(Yii::app()->basePath . $this->_imageDir . $model->image);
+                }
+                $model->image = $file;
+            }
+
 			if($model->save())
+			{
+                if(is_object($file))
+                {
+                    $fname = Yii::app()->basePath . $this->_imageDir . $model->image;
+                    $model->image->saveAs($fname);
+                    //$this->_watermark($fname);
+
+                }
 				$this->redirect(array('admin'));
+			}
 		}
 
 		$this->render('update',array(
@@ -112,6 +145,15 @@ class JellySliderImageController extends Controller
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
+
+        	$oldfilename = $this->loadModel($id)->image;
+        	if (($oldfilename != '') && (file_exists(Yii::app()->basePath . $this->_imageDir . $oldfilename)))
+        	{
+            	unlink(Yii::app()->basePath . $this->_imageDir . $oldfilename);
+        	}
+
+
+
 			$this->loadModel($id)->delete();
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
@@ -173,51 +215,5 @@ class JellySliderImageController extends Controller
 			Yii::app()->end();
 		}
 	}
-
-
-// Redactor image handling -----------------------------------------------------
-
-    public function actionImageUpload()
-    {
-        $uploadedFile = CUploadedFile::getInstanceByName('file');
-        if (!empty($uploadedFile)) {
-            $rnd = rand();  // generate random number between 0-9999
-            $fileName = "{$rnd}.{$uploadedFile->extensionName}";  // random number + file name
-            if ($uploadedFile->saveAs(Yii::app()->basePath . '/../userdata/jelly/sliderimage/' . $fileName)) {
-                
-                $array = array(
-                     'filelink' => Yii::app()->baseUrl . '/userdata/jelly/sliderimage/' . $fileName);
-               // echo CHtml::image(Yii::app()->baseUrl . '/userdata/jelly/sliderimage/' . $fileName);
-                
-                echo stripslashes(json_encode($array));
-                Yii::app()->end();
-            }
-        }
-        throw new CHttpException(400, 'The request cannot be fulfilled due to bad syntax');
-    }
-
-// "ListImages" (used to browse images in the server)
-
-    public function actionImageList() {
-
-        $images = array();
-        $handler = opendir(Yii::app()->basePath . '/../userdata/jelly/sliderimage');
-        while ($file = readdir($handler)) {
-            if ($file != "." && $file != "..")
-                $images[] = $file;
-        }
-        closedir($handler);
-
-        $jsonArray = array();
-
-        foreach ($images as $image)
-            $jsonArray[] = array(
-                'thumb' => Yii::app()->baseUrl . '/userdata/jelly/sliderimage/' . $image,
-                'image' => Yii::app()->baseUrl . '/userdata/jelly/sliderimage/' . $image,
-            );
-
-        header('Content-type: application/json');
-        echo CJSON::encode($jsonArray);
-    }
 
 }
