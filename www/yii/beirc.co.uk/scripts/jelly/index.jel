@@ -54,7 +54,9 @@ css.display = block
 				css.width = 375px
 	  			css.height = 250px
 				addon.carousel.flexslider.animation = fade
-   			addon.carousel.flexslider.source = db
+   			#addon.carousel.flexslider.source = db
+   			addon.slider.flexslider.mode = html
+   			addon.slider.flexslider.source = db
 			
 			[graphics]
 			image.width = 865px
