@@ -77,6 +77,8 @@ class basic
 					$this->apiHtml = str_replace("<substitute-menu-stretch>",
 						"nav ul {
 							background: url('" . Yii::app()->baseUrl . $val . "');
+							background-size: 100%;
+							background-repeat: no-repeat;
 							size: 100%;
 						}",
 						$this->apiHtml);
