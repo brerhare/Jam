@@ -42,17 +42,17 @@ class flexslider
 			switch ($opt)
 			{
 				case "width":
-					$this->defaultWidth = $opt;
+					$this->defaultWidth = $val;
 					break;
 				case "height":
-					$this->defaultHeight = $opt;
+					$this->defaultHeight = $val;
 					break;
 				case "mode":
-					if (strtoupper($opt) == "IMAGE")
+					if (strtoupper($val) == "IMAGE")
 						$this->defaultMode = 'image';
 					break;
 				case "source":
-					if ($this->defaultMode = 'image')
+					if ($this->defaultMode == 'image')
 					{
 						if ($val == "db")
 						{
@@ -60,9 +60,8 @@ class flexslider
 							$sliderItems = JellySliderImage::model()->findAll(array('order'=>'sequence'));
 							foreach ($sliderItems as $sliderItem):
 								$content .= "<li>";
-//$content .= "<img src='" . Yii::app()->baseUrl . "/userdata/jelly/sliderimage/" . $sliderItem->image . "' style='margin:0px; zheight:100%;' alt=''>";
-$content .= "<img src='" . Yii::app()->baseUrl . "/userdata/jelly/sliderimage/" . $sliderItem->image . "' style='margin:0px; width:" . $this->defaultWidth . "; height:" . $this->defaultHeight . "; background: url(/userdata/jelly/sliderimage/" . $sliderItem->image  . " no-repeat center center; background-size:cover;' alt=''>";
 
+$content .= "<img src='" . Yii::app()->baseUrl . "/userdata/jelly/sliderimage/" . $sliderItem->image . "' style='margin:0px; width:" . $this->defaultWidth . "; height:" . $this->defaultHeight . "; background: url(/userdata/jelly/sliderimage/" . $sliderItem->image  . " no-repeat center center; background-size:cover;' alt=''>";
 
 								$content .= "</li>";
 							endforeach;
