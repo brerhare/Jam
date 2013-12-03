@@ -53,10 +53,10 @@ css.display = block
 				css.margin-left = 30px
 				css.width = 375px
 	  			css.height = 250px
-				addon.carousel.flexslider.animation = fade
-   			#addon.carousel.flexslider.source = db
-   			addon.slider.flexslider.mode = html
-   			addon.slider.flexslider.source = db
+   				addon.slider.flexslider.width = 375px
+   				addon.slider.flexslider.height = 250px
+   				addon.slider.flexslider.mode = image
+   				addon.slider.flexslider.source = db
 			
 			[graphics]
 			image.width = 865px
