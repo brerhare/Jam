@@ -125,8 +125,8 @@ css.display = block
 	css.margin-left = 30px
 	css.width = 930px
   	css.height = 270px
-	addon.slider.flexslider.width = 930px
-	addon.slider.flexslider.height = 270px
+	addon.slider.flexslider.width = 920px
+	addon.slider.flexslider.height = 260px
 	addon.slider.flexslider.mode = image
 	addon.slider.flexslider.source = db
 
