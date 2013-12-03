@@ -123,10 +123,13 @@ css.display = block
 	[slider]
 	css.margin-top = -70px
 	css.margin-left = 30px
-	css.width = 960px
+	css.width = 930px
   	css.height = 270px
-	addon.carousel.flexslider.animation = fade
-   	addon.carousel.flexslider.source = db
+	addon.slider.flexslider.width = 930px
+	addon.slider.flexslider.height = 270px
+	addon.slider.flexslider.mode = image
+	addon.slider.flexslider.source = db
+
 
 	#[static-tabs]
 	# These are not tied to the tab backend
