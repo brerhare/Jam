@@ -116,15 +116,34 @@ css.background-color = #000000
 
 	[menu]
 	css.height = 34px
+	css.width = 600px
 	css.overflow = visible
-	css.margin-top = 15px
+	css.margin-top = 2px
 	addon.menu.basic.orientation = horizontal
+	addon.menu.basic.font-size = 20px
+	addon.menu.basic.menu-rounding = 0px
+	addon.menu.basic.menu-opacity = 100%
+	#addon.menu.basic.menu-tile = /img/menu-bar.jpg
+	#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
+	#addon.menu.basic.menu-color = blue green
+	#addon.menu.basic.menu-text-color = red
+	#addon.menu.basic.submenu-color = yellow red
+	#addon.menu.basic.item-color = black yellow
+	#addon.menu.basic.item-text-color = green
+	#addon.menu.basic.subitem-color = white black
+	#addon.menu.basic.subitem-text-color = purple
+	#addon.menu.basic.subitem-seperator-color = red 	
+
 
 	[slider]
-    #css.margin-top = 80px
-    #css.height = 250px         /* dont set the height - carousel will set it */
-	addon.carousel.flexslider.width = 950px
-    addon.carousel.flexslider.source = db
+    css.margin-top = 20px
+	css.width = 960px
+    css.height = 250px
+    addon.slider.flexslider.width = 950px
+    addon.slider.flexslider.height = 240px
+    addon.slider.flexslider.mode = image
+    addon.slider.flexslider.source = db
+
 
 	[watermark]
 	css.height = 200px
@@ -137,7 +156,7 @@ css.background-color = #000000
 
 	[line]
     css.height = 4px
-	css.margin-top = -30px
+	css.margin-top = 10px
     css.background-color = #ff00ff
 
     [contentcontainer]

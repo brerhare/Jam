@@ -90,14 +90,26 @@ css.display = block
 							html.raw = Newsletter
 
 		[menu]
-		child = menu-bg
 		css.height = 50px
-		css.margin-top = 40px
-		css.margin-left = 10px
+		css.margin-top = 30px
+		css.margin-left = 0px
 		css.overflow = visible
 		css.z-index = 1000
 		css.position = relative
 		addon.menu.basic.orientation = horizontal
+		addon.menu.basic.font-size = 14px
+		addon.menu.basic.menu-rounding = 4px
+		addon.menu.basic.menu-opacity = 70%
+			#addon.menu.basic.menu-tile = /img/menu-bar.jpg
+			#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
+		addon.menu.basic.menu-color = white
+	#addon.menu.basic.menu-text-color = red
+	#addon.menu.basic.submenu-color = yellow red
+	#addon.menu.basic.item-color = black yellow
+	#addon.menu.basic.item-text-color = green
+	#addon.menu.basic.subitem-color = white black
+	#addon.menu.basic.subitem-text-color = purple
+	#addon.menu.basic.subitem-seperator-color = red 
 
 			[menu-bg]
 			css.width = 455px
@@ -111,10 +123,13 @@ css.display = block
 	[slider]
 	css.margin-top = -70px
 	css.margin-left = 30px
-	css.width = 960px
+	css.width = 930px
   	css.height = 270px
-	addon.carousel.flexslider.animation = fade
-   	addon.carousel.flexslider.source = db
+	addon.slider.flexslider.width = 920px
+	addon.slider.flexslider.height = 260px
+	addon.slider.flexslider.mode = image
+	addon.slider.flexslider.source = db
+
 
 	#[static-tabs]
 	# These are not tied to the tab backend

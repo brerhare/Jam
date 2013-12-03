@@ -41,30 +41,65 @@ class flexslider
 		{
 			switch ($opt)
 			{
+				case "width":
+					$this->defaultWidth = $val;
+					break;
+				case "height":
+					$this->defaultHeight = $val;
+					break;
 				case "mode":
-					if (toupper($opt) == "IMAGE")
+					if (strtoupper($val) == "IMAGE")
 						$this->defaultMode = 'image';
 					break;
 				case "source":
-					if ($val == "db")
+					if ($this->defaultMode == 'image')
 					{
-						// If db based content
-						$sliderItems = JellySliderHtml::model()->findAll(array('order'=>'sequence'));
-						foreach ($sliderlItems as $sliderItem):
-							$content .= "<li>";
-							$content .= $sliderItem->content;
-							$content .= "</li>";
-						endforeach;
-					}
-					else if ($val == "glob")
-					{
-						// get pattern
-						$pattern = $options['pattern'];
-						foreach (glob(Yii::app()->basePath . "/../" . $pattern) as $filename)
+						if ($val == "db")
 						{
-							$content .= "<li>";
-							$content .= "<img src='" . Yii::app()->baseUrl . dirname($pattern) . "/". basename($filename) . "' style='float: none; margin: 0px;' alt=''>";
-							$content .= "</li>";
+							// If db based content
+							$sliderItems = JellySliderImage::model()->findAll(array('order'=>'sequence'));
+							foreach ($sliderItems as $sliderItem):
+								$content .= "<li>";
+
+$content .= "<img src='" . Yii::app()->baseUrl . "/userdata/jelly/sliderimage/" . $sliderItem->image . "' style='margin:0px; width:" . $this->defaultWidth . "; height:" . $this->defaultHeight . "; background: url(/userdata/jelly/sliderimage/" . $sliderItem->image  . " no-repeat center center; background-size:cover;' alt=''>";
+
+								$content .= "</li>";
+							endforeach;
+						}
+						else if ($val == "glob")
+						{
+							// get pattern
+							$pattern = $options['pattern'];
+							foreach (glob(Yii::app()->basePath . "/../" . $pattern) as $filename)
+							{
+								$content .= "<li>";
+								$content .= "<img src='" . Yii::app()->baseUrl . dirname($pattern) . "/". basename($filename) . "' style='float: none; margin: 0px;' alt=''>";
+								$content .= "</li>";
+							}
+						}
+					}
+					else	// HTML
+					{
+						if ($val == "db")
+						{
+							// If db based content
+							$sliderItems = JellySliderHtml::model()->findAll(array('order'=>'sequence'));
+							foreach ($sliderItems as $sliderItem):
+								$content .= "<li>";
+								$content .= $sliderItem->content;
+								$content .= "</li>";
+							endforeach;
+						}
+						else if ($val == "glob")
+						{
+							// get pattern
+							$pattern = $options['pattern'];
+							foreach (glob(Yii::app()->basePath . "/../" . $pattern) as $filename)
+							{
+								$content .= "<li>";
+								$content .= "<img src='" . Yii::app()->baseUrl . dirname($pattern) . "/". basename($filename) . "' style='float: none; margin: 0px;' alt=''>";
+								$content .= "</li>";
+							}
 						}
 					}
 					break;
