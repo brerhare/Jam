@@ -123,7 +123,9 @@ header($this->p3p);
 			throw new CHttpException(400,'Cannot proceed to payment because UID is not set or expired. (Has this session been idle a long time?)');
 		}
 
-		$cartContent = Yii::app()->session[$cartId];
+		//@@TODO: Remove the cookie stuff
+		//$cartContent = Yii::app()->session[$cartId];
+		$cartContent = $this->getCartByIP();
 		if ((!($cartContent)) || ($cartContent == ''))
 		{
 			Yii::log("Checkout - NOT LOADING PAYMENT PAGE because 'cartid' " . $cartId . " although seemingly valid, did not return that session var" , CLogger::LEVEL_WARNING, 'system.test.kim');
@@ -377,8 +379,12 @@ header($this->p3p);
                 Yii::log("PAID PAGE SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
         }
 
+		//@@ TODO: remove cookie stuff
 		$cartId = Yii::app()->session['cartid'];
 		Yii::app()->session[$cartId] = "";
+
+		// Delete all the cart info
+		Cart::model()->deleteAllByAttributes(array('ip' => $ip));
 
 		// Update all the order records we just created with the 'x' in front of the ip
 		$criteria = new CDbCriteria;
@@ -472,4 +478,23 @@ header($this->p3p);
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
+
+    private function getCartByIP()
+    {
+        $ip = "UNKNOWN";
+        if (getenv("HTTP_CLIENT_IP"))
+            $ip = getenv("HTTP_CLIENT_IP");
+        else if (getenv("HTTP_X_FORWARDED_FOR"))
+            $ip = getenv("HTTP_X_FORWARDED_FOR");
+        else if (getenv("REMOTE_ADDR"))
+            $ip = getenv("REMOTE_ADDR");
+        $criteria = new CDbCriteria;
+        $criteria->addCondition("ip = '" . $ip . "'");
+        $cart = Cart::model()->find($criteria);
+        if ($cart)
+            return $cart->content;
+        else
+            return "";
+    }
+
 }
