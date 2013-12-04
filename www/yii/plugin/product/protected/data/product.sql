@@ -241,6 +241,22 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`product_shipping_option` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `plugin`.`product_cart`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `plugin`.`product_cart` ;
+
+CREATE  TABLE IF NOT EXISTS `plugin`.`product_cart` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `uid` INT NULL ,
+  `ip` VARCHAR(255) NOT NULL ,
+  `timestamp` DATETIME NOT NULL ,
+  `content` TEXT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `uid` (`uid` ASC) )
+ENGINE = InnoDB;
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

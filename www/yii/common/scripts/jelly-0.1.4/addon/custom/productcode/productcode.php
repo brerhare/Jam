@@ -14,6 +14,7 @@ class productcode
 	private $uid = "";
 	private $sid = "";
 	private $cartId = "";
+	private $cookies = 0;
 
 	/*
 	 * Set up any code pre-requisites (onload/document-ready reqs)
@@ -106,8 +107,11 @@ class productcode
 		$cartConfirm = "";
 		if ((isset($_GET['cartproduct'])) && (isset($_GET['cartoption'])) && (isset($_GET['cartqty'])) && (isset($_GET['cartref'])))
 		{
+			if ($this->cookies)
+				$cartContent = Yii::app()->session[$this->cartId];
+			else
+				$cartContent = $this->getCartByIP();
 
-			$cartContent = Yii::app()->session[$this->cartId];
 //echo('original cart=['.$cartContent.']<br>');
 
 			if (!(strstr($cartContent, '_' . $_GET['cartref'])))
@@ -131,7 +135,10 @@ class productcode
 					}
 				}
 //echo('new cart=['.$cartContent.']<br>');
-			Yii::app()->session[$this->cartId] = $cartContent;
+			if ($this->cookies)
+				Yii::app()->session[$this->cartId] = $cartContent;
+			else
+				$this->SetCartByIP($cartContent);
 			}
 		}
 
@@ -214,7 +221,10 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 
 
 		// Pick up the Cart info
-		$cartContent = Yii::app()->session[$this->cartId];
+		if ($this->cookies)
+			$cartContent = Yii::app()->session[$this->cartId];
+		else
+			$cartContent = $this->getCartByIP();
 //echo 'cart=[' . $cartContent . ']<br>';
 		if ($cartContent == '')
 			$cartArr = array();
@@ -244,7 +254,10 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 							$cartContent .= '|';
 					$cartContent .= $cartArr[$i];
 				}
-				Yii::app()->session[$this->cartId] = $cartContent;
+				if ($this->cookies)
+					Yii::app()->session[$this->cartId] = $cartContent;
+				else
+					$this->setCartByIP($cartContent);
 			}
 		}
 
@@ -488,7 +501,6 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 						n = encodeURIComponent(document.getElementById("message").value);
 						e = document.getElementById("email1").value;
 						t = document.getElementById("telephone").value;
-						//window.location.href = '/product/index.php/site/pay?cartid='+cartId+'&shipid='+shipId;
 						window.location.href = '/product/index.php/site/pay?cartid='+cartId+'&shipid='+shipId+'&a1='+a1+'&a2='+a2+'&a3='+a3+'&a4='+a4+'&e='+e+'&pc='+pc+'&n='+n+'&t='+t;
 			}
 END_OF_API_JS_checkout;
@@ -502,6 +514,10 @@ END_OF_API_JS_checkout;
 		return $retArr;
 	}
 
+/**********************************************************************************************/
+/* Common functions */
+/* ---------------- */
+
 	// Set the cart id and make sure it is valid
 	private function setCartId()
 	{
@@ -511,6 +527,46 @@ END_OF_API_JS_checkout;
 		return "";
 	}
 
+	private function getCartByIP()
+	{
+		$ip = "UNKNOWN";
+		if (getenv("HTTP_CLIENT_IP"))
+			$ip = getenv("HTTP_CLIENT_IP");
+		else if (getenv("HTTP_X_FORWARDED_FOR"))
+			$ip = getenv("HTTP_X_FORWARDED_FOR");
+		else if (getenv("REMOTE_ADDR"))
+			$ip = getenv("REMOTE_ADDR");
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("ip = '" . $ip . "'");
+		$cart = Cart::model()->find($criteria);
+		if ($cart)
+			return $cart->content;
+		else
+			return "";
+	}
+
+	private function setCartByIP($cartContent)
+	{
+		$ip = "UNKNOWN";
+		if (getenv("HTTP_CLIENT_IP"))
+			$ip = getenv("HTTP_CLIENT_IP");
+		else if (getenv("HTTP_X_FORWARDED_FOR"))
+			$ip = getenv("HTTP_X_FORWARDED_FOR");
+		else if (getenv("REMOTE_ADDR"))
+			$ip = getenv("REMOTE_ADDR");
+
+		Cart::model()->deleteAllByAttributes(array('ip' => $ip));
+		$cart = new Cart;
+		$cart->uid = $this->uid;
+		$cart->ip = $ip;
+		$cart->timestamp = date('Y-m-d H:i:s');
+		$cart->content = $cartContent;
+		if (!$cart->save())
+		{
+			Yii::log("Could not save cart contents" , CLogger::LEVEL_WARNING, 'system.test.kim');
+			die("Could not save cart contents. This has been logged and will be fixed ASAP");
+		}
+	}
 }
 
 ?>
