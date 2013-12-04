@@ -225,7 +225,7 @@ class basic
 
 	<div id="jelly-basicmenu-container">
 		<!--Basic Menu includes -->
-		<link rel="stylesheet" type="text/css" href="<substitute-path>/basic.css" />
+		<link rel="stylesheet" type="text/css" href="<substitute-path>/basic_<substitute-orientation>.css" />
 
 		<style>
 		<substitute-font-size>
