@@ -13,6 +13,8 @@
 
 	<?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>255)); ?>
 
+	<?php echo $form->textFieldRow($model,'url',array('class'=>'span5','maxlength'=>255)); ?>
+
     <div class="row">
         <?php echo $form->labelEx($model,'image`'); ?>
         <?php echo CHtml::activeFileField($model,'image',array('size'=>60,'maxlength'=>255)); ?>
