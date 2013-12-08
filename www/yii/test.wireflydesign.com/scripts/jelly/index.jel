@@ -16,7 +16,7 @@ css.display = block
 [backgd]
 child = contentframe
 css.width = 1000px
-#css.background-color = #000000
+css.background-color = green
 
 	[contentframe]
 	child = header, menu, slider, watermark, line, contentcontainer, footer
@@ -116,24 +116,24 @@ css.width = 1000px
 
 	[menu]
 	css.height = 34px
-	css.width = 600px
+	#css.width = 600px
 	css.overflow = visible
 	css.margin-top = 2px
-	addon.menu.basic.orientation = vertical
+	#addon.menu.basic.orientation = vertical
+	addon.menu.basic.width = 960px
 	addon.menu.basic.font-size = 16px
 	addon.menu.basic.menu-rounding = 5px
 	addon.menu.basic.menu-opacity = 100%
-
 	addon.menu.basic.menu-tile = /img/menu-bar.jpg
 	#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
 	addon.menu.basic.menu-color = blue green
 	addon.menu.basic.menu-text-color = red
 	addon.menu.basic.submenu-color = yellow red
-	#addon.menu.basic.item-color = black yellow
-	#addon.menu.basic.item-text-color = green
-	#addon.menu.basic.subitem-color = white black
-	#addon.menu.basic.subitem-text-color = purple
-	#addon.menu.basic.subitem-seperator-color = red
+	addon.menu.basic.item-color = yellow orange
+	addon.menu.basic.item-text-color = green
+	addon.menu.basic.subitem-color = white black
+	addon.menu.basic.subitem-text-color = purple
+	addon.menu.basic.subitem-separator-color = blue
 
 	[slider]
     css.margin-top = 20px
