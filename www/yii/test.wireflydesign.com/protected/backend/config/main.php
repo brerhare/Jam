@@ -75,10 +75,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=domainname_co_uk',
+			'connectionString' => 'mysql:host=localhost;dbname=test_wireflydesign_com',
 			'emulatePrepare' => true,
-			'username' => 'domainname.co.uk',
-			'password' => 'password',
+			'username' => 'wireflydesign.co',
+			'password' => 'wireflydesign.com,',
 			'charset' => 'utf8',
 		),
 		/**/
