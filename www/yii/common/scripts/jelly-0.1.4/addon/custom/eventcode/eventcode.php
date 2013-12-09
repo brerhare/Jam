@@ -497,8 +497,11 @@ END_OF_API_HTML_fill_headers;
 			});
 
 			function printDiv(eventId) {
-				header = document.getElementById('hdr-'+eventId).innerHTML;
+				header = '<body>' + document.getElementById('hdr-'+eventId).innerHTML;
 				css = '<link rel="stylesheet" href="<substitute-path>/eventcode.css" type="text/css">';
+header += '<style> body { font-family: Sans-Serif; } </style>';
+
+
 				separator = '<div style="clear:both"></div>';
 
 				pShortDesc = document.getElementById('pShortDesc-'+eventId).innerHTML;
@@ -509,7 +512,7 @@ END_OF_API_HTML_fill_headers;
 				headerSeparator = "<div><br><br><br><br><br><br><br></div>";
 
 				content = header + headerSeparator + pShortDesc + "<hr>" + pDetails + "<hr>" + pDesc;
-
+content += '</body>';
 				//content = document.getElementById('main_google_map-map').innerHTML;			// WORKS!
 				//content = document.getElementById('detailMap_'+eventId+'-map').innerHTML;		// WORKS!
 
