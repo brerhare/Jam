@@ -499,7 +499,7 @@ END_OF_API_HTML_fill_headers;
 			function printDiv(eventId) {
 				header = '<body>' + document.getElementById('hdr-'+eventId).innerHTML;
 				css = '<link rel="stylesheet" href="<substitute-path>/eventcode.css" type="text/css">';
-header += '<style> body { font-family: Sans-Serif; } </style>';
+header += '<style> body { font-family: Sans-Serif; } #header-date {margin-top:40px;}</style>';
 
 
 				separator = '<div style="clear:both"></div>';
