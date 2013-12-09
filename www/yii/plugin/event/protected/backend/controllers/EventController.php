@@ -196,8 +196,34 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 					$criteria = new CDbCriteria;
 					$criteria->condition="event_event_id = $originalId";
         			$interests=EventHasInterest::model()->findAll($criteria);
-        			if ($model2)
+        			foreach ($interests as $interest)
 					{
+						$data = new EventHasInterest;
+						$data->event_event_id = $model->id;
+						$data->event_interest_id = $interest->event_interest_id;
+						$data->save();
+					}
+					// Copy formats
+					$criteria = new CDbCriteria;
+					$criteria->condition="event_event_id = $originalId";
+        			$formats=EventHasFormat::model()->findAll($criteria);
+        			foreach ($formats as $format)
+					{
+						$data = new EventHasFormat;
+						$data->event_event_id = $model->id;
+						$data->event_format_id = $format->event_format_id;
+						$data->save();
+					}
+					// Copy facilities
+					$criteria = new CDbCriteria;
+					$criteria->condition="event_event_id = $originalId";
+        			$facilities=EventHasFacility::model()->findAll($criteria);
+        			foreach ($facilities as $facility)
+					{
+						$data = new EventHasFacility;
+						$data->event_event_id = $model->id;
+						$data->event_facility_id = $facility->event_facility_id;
+						$data->save();
 					}
 				}
 			}
