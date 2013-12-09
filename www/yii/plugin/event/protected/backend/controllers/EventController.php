@@ -68,7 +68,8 @@ class EventController extends Controller
         $model=new Event;
         $model2=new Ws;
         $model->member_id = Yii::app()->session['eid'];
-        $model->approved = 1;	// @@TODO: Hard coded!!!
+		//$model->approved = $this->askApproval();
+$model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval line
         $model->ticket_event_id = 1;	// Default to 'yes'
         $model2->booking_essential = 1;
 
