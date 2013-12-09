@@ -191,6 +191,13 @@ class EventController extends Controller
 						$model->delete();
 						die("Internal error copying event (ws record)");
 					}
+					// Copy interests
+					$criteria = new CDbCriteria;
+					$criteria->condition="event_event_id = $originalId";
+        			$interests=EventHasInterest::model()->findAll($criteria);
+        			if ($model2)
+					{
+					}
 				}
 			}
 		}
