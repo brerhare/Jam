@@ -42,6 +42,8 @@ $c = 0;
 $memberHasPrograms = MemberHasProgram::model()->findAll($criteria);
 */
 
+$img = Yii::app()->request->baseUrl.'/userdata/program/icon/'.'ws-logo-sm.jpg';
+
 /*$isAdmin = new CActiveDataProvider('Program', array(
     'criteria'=>array(
         'with' => array('eventMembers'),
@@ -72,17 +74,18 @@ $memberHasPrograms = MemberHasProgram::model()->findAll($criteria);
 		//'event_program_fields_id',
         array(
             'name'  => 'name',
-            'value' => 'CHtml::link($data->name, Yii::app()->createUrl("program/update",array("id"=>$data->primaryKey)))',
+            'value' => 'CHtml::link($data->name, Yii::app()->createUrl("program/privilege",array("id"=>$data->primaryKey)))',
             'type'  => 'raw',
         ),
 
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
 			'template'=>'{update}{images}{delete}',
+'htmlOptions'=>array('width'=>'60px'),
             'buttons'=>array(
                 'images' => array(
                     'label'=>'Assign privileges',
-                    'imageUrl'=>Yii::app()->request->baseUrl.'/img/lock.png',
+                    'imageUrl'=>Yii::app()->request->baseUrl.'/img/members.jpg',
                     //'url'=>'Yii::app()->controller->createUrl("program/privilege", array("product_id"=>$data->primaryKey))',
                     'url'=>'Yii::app()->controller->createUrl("program/privilege/" . $data->primaryKey)',
                 ),
