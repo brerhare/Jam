@@ -19,7 +19,7 @@ css.width = 1000px
 css.background-color = green
 
 	[contentframe]
-	child = header, menu, slider, watermark, line, contentcontainer, footer
+	child = header, menu, slider, line, contentcontainer, footer
 	css.width = 960px
 
 	[header]
@@ -138,21 +138,15 @@ css.background-color = green
 	[slider]
     css.margin-top = 20px
 	css.width = 960px
-    css.height = 250px
+    #css.height = 250px ...... This is one way of hiding the dots!
     addon.slider.flexslider.width = 950px
+    addon.slider.flexslider.border-width = 2px
+    addon.slider.flexslider.border-color = red
     addon.slider.flexslider.height = 240px
     addon.slider.flexslider.mode = image
     addon.slider.flexslider.source = db
 
 
-	[watermark]
-	css.height = 200px
-	css.margin-top = -130px
-	css.margin-left = 650px
-	css.position = relative
-	css.z-index = 10000
-	css.background-image = url('/img/Watermark.png')
-	
 
 	[line]
     css.height = 4px
