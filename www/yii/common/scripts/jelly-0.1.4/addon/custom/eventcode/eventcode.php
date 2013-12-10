@@ -524,11 +524,13 @@ END_OF_API_HTML_fill_headers;
 			for (i = 0; i < jsEvents.length; i++)
 			{
 				header = "";
-				header += "<div style='height:150px;width:700px'>";
+				header += "<div style='height:100px;width:700px'>";
 				header += document.getElementById('hdr-'+jsEvents[i]).innerHTML;
 				header += "</div>";
 				content += header;
 content += "<div style='clear:both'></div>";
+				content +=  "<hr>";
+				content +=  "<br>";
 				content +=  "<br>";
 			}
 				content += "</body>";
@@ -544,9 +546,6 @@ content += "<div style='clear:both'></div>";
 
 
 			function printDiv(eventId) {
-printSelectedHeads();
-return;
-
 				header = '<body>' + document.getElementById('hdr-'+eventId).innerHTML;
 				css = '<link rel="stylesheet" href="<substitute-path>/eventcode.css" type="text/css">';
 header += '<style> body { font-family: Sans-Serif; } #header-date {margin-top:40px;}</style>';

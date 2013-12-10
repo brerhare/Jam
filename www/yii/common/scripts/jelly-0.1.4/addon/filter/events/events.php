@@ -274,6 +274,9 @@ class events
             $content .= "</div>";
         }
 
+		$content .= "<br/>";
+		$content .= "<div style='float:left;padding-left:40px'><a href=javascript:printSelectedHeads()><b><img style='margin-top:0px; margin-left:0px' title='Print' src='img/print.jpg'></a></div>";
+
         // Open twisty any selected groups of filters
         $content .= "<script>";
         if (!($openInterest))

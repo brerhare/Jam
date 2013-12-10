@@ -12,7 +12,7 @@ css.display = block
 
 	[site]
 	child = header, slider, homegraphics, page, footer
-	css.width = 960px
+	css.width = 970px
 	#css.margin-top = 20px
 
 ####Header#################################
@@ -122,10 +122,10 @@ css.display = block
 
 	[slider]
 	css.margin-top = -70px
-	css.margin-left = 30px
-	css.width = 930px
+	#css.margin-left = 30px
+	css.width = 960px
   	css.height = 270px
-	addon.slider.flexslider.width = 920px
+	addon.slider.flexslider.width = 950px
 	addon.slider.flexslider.height = 260px
 	addon.slider.flexslider.mode = image
 	addon.slider.flexslider.source = db
