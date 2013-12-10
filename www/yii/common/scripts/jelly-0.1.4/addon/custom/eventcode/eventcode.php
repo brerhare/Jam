@@ -524,11 +524,12 @@ END_OF_API_HTML_fill_headers;
 			for (i = 0; i < jsEvents.length; i++)
 			{
 				header = "";
-				header += '<div>'
+				header += "<div style='height:150px;width:700px'>";
 				header += document.getElementById('hdr-'+jsEvents[i]).innerHTML;
-				header += '</div>';
+				header += "</div>";
 				content += header;
-			content +=  "<br>";
+content += "<div style='clear:both'></div>";
+				content +=  "<br>";
 			}
 				content += "</body>";
 			
@@ -543,8 +544,8 @@ END_OF_API_HTML_fill_headers;
 
 
 			function printDiv(eventId) {
-//printSelectedHeads();
-//return;
+printSelectedHeads();
+return;
 
 				header = '<body>' + document.getElementById('hdr-'+eventId).innerHTML;
 				css = '<link rel="stylesheet" href="<substitute-path>/eventcode.css" type="text/css">';
