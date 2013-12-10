@@ -58,12 +58,11 @@ class events
 
         $twistyIcon = "<img style='padding-right:3px' title='" . 'Show more' . "' src='img/" . 'open-twisty.png' . "' >";
 
-        $content .= "<input type='button' id='textresetbutton' style='width:50px' onClick='resetEvents()' value='Reset'>";
-        $content .= "<span style='font-size:11px'>Search</span>";
-        $content .= "<input type='button' id='textsearchbutton' style='width:30px' onClick='searchEvents()' value='Go'>";
+        $content .= "<input type='button' id='textresetbutton' style='float:left;padding:3px; width:60px' onClick='resetEvents()' value='Reset'>";
+        $content .= "<input type='button' id='textsearchbutton' style='float:right;padding:3px; width:60px' onClick='searchEvents()' value='Search'>";
 		$content .= "<br/>";
         $content .= "<div style='float:left'>";
-        $content .= "<input type='text' id='textsearchbox' style='width:115px' title='Input text to search for' value='" . '' . "'>";
+        $content .= "<input type='text' id='textsearchbox' style='width:116px' title='Input text to search for' value='" . '' . "'>";
         $content .= "</div>";
         $content .= "<div style='clear:both'></div>";
 
