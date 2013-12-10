@@ -15,6 +15,8 @@ class flexslider
 	private $defaultWidth = "900px";
 	private $defaultHeight = "250px";
 	private $defaultAnimation = "fade";
+	private $defaultBorderWidth = "4";
+	private $defaultBorderColor = "#fff";
 
 	public $apiOption = array(
 		"width" => "900px",
@@ -50,6 +52,13 @@ class flexslider
 				case "mode":
 					if (strtoupper($val) == "IMAGE")
 						$this->defaultMode = 'image';
+					break;
+				case "border-width":
+					$val = str_replace("px", "", $val);
+					$this->apiHtml = str_replace("<substitute-border-width>", $val, $this->apiHtml);
+					break;
+				case "border-color":
+					$this->apiHtml = str_replace("<substitute-border-color>", $val, $this->apiHtml);
 					break;
 				case "source":
 					if ($this->defaultMode == 'image')
@@ -123,15 +132,12 @@ $content .= "<img src='" . Yii::app()->baseUrl . "/userdata/jelly/sliderimage/" 
 		// Apply all defaults that werent overridden
 		// HTML
 		if (strstr($this->apiHtml, "<substitute-width>"))
-		{
-			$tmp = str_replace("<substitute-width>", "width:" . $this->defaultWidth . ";", $this->apiHtml);
-			$this->apiHtml = $tmp;
-		}
+			$this->apiHtml = str_replace("<substitute-width>", "width:" . $this->defaultWidth . ";", $this->apiHtml);
 		if (strstr($this->apiHtml, "<substitute-height>"))
-		{
-			$tmp = str_replace("<substitute-height>", "height:" . $this->defaultHeight . ";", $this->apiHtml);
-			$this->apiHtml = $tmp;
-		}
+			$this->apiHtml = str_replace("<substitute-height>", "height:" . $this->defaultHeight . ";", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-border-width>", $this->defaultBorderWidth,  $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-border-color>", $this->defaultBorderColor,  $this->apiHtml);
+
 		// JS
 		if (strstr($this->apiJs, "<substitute-animation>"))
 		{
@@ -158,6 +164,7 @@ $content .= "<img src='" . Yii::app()->baseUrl . "/userdata/jelly/sliderimage/" 
             <link rel="stylesheet" href="<substitute-path>/flexslider.css" type="text/css">
             <script src="<substitute-path>/jquery.flexslider.js"></script>
 
+
             <!-- Flex Slider custom CSS to handle sizing/clipping-->
             <style>
             /* NOTE! height wins in case of conflict */
@@ -168,6 +175,12 @@ $content .= "<img src='" . Yii::app()->baseUrl . "/userdata/jelly/sliderimage/" 
                 overflow:hidden;
                 <substitute-height> /* Setting this clips the calculated width */
             }
+
+/* This is a direct override of flexslider css */
+.flexslider {margin: 0 0 60px; background: #fff; border: <substitute-border-width>px solid <substitute-border-color>; position: relative; -webkit-border-radius:<substitute-border-width>px; -moz-border-radius: <substitute-border-width>px; -o-border-radius: <substitute-border-width>px; border-radius: <substitute-border-width>px; box-shadow: 0 1px <substitute-border-width>px rgba(0,0,0,.2); -webkit-box-shadow: 0 1px <substitute-border-width>px rgba(0,0,0,.2); -moz-box-shadow: 0 1px <substitute-border-width>px rgba(0,0,0,.2); -o-box-shadow: 0 1px <substitute-border-width>px rgba(0,0,0,.2); zoom: 1;}
+
+			<substitute-border-width>
+
             </style>
 
             <!--Flex Slider-->

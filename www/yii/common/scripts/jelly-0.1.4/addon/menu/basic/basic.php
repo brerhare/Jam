@@ -33,8 +33,14 @@ class basic
 			switch ($opt)
 			{
 				case "orientation":		// vertical (default is horizontal)
-					$tmp = str_replace("<substitute-orientation>", $val, $this->apiHtml);
-					$this->apiHtml = $tmp;
+					$this->apiHtml = str_replace("<substitute-orientation>", $val, $this->apiHtml);
+					break;
+
+				case "width":
+					$val = str_replace("px", "", $val);
+					$this->apiHtml = str_replace("<substitute-width>",
+						"nav ul {width: " . $val . "px;}",
+						$this->apiHtml);
 					break;
 
 				case "font-size":
@@ -161,14 +167,15 @@ class basic
 
 		// Apply all defaults that werent overridden
 		// HTML
-//@@TODO: vertical isnt handled yet, only the default horiz
 		if (strstr($this->apiHtml, "<substitute-orientation>"))
 			$this->apiHtml = str_replace("<substitute-orientation>", $this->defaultOrientation, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-width>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-font-size>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-menu-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-menu-rounding>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-menu-opacity>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-menu-tile>", "", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-stretch>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-submenu-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-menu-text-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-item-color>", "", $this->apiHtml);
@@ -225,9 +232,10 @@ class basic
 
 	<div id="jelly-basicmenu-container">
 		<!--Basic Menu includes -->
-		<link rel="stylesheet" type="text/css" href="<substitute-path>/basic.css" />
+		<link rel="stylesheet" type="text/css" href="<substitute-path>/basic_<substitute-orientation>.css" />
 
 		<style>
+		<substitute-width>
 		<substitute-font-size>
 		<substitute-menu-color>
 		<substitute-menu-rounding>

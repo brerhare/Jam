@@ -139,8 +139,17 @@ class Event extends CActiveRecord
 		$criteria->compare('program_id',$this->program_id);
 		$criteria->compare('event_price_band_id',$this->event_price_band_id);
 
+//@@ EG: Ordering model records on the admin crud
+        $criteria->order = "title ASC";
+
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+
+            // @@EG: Change cgridview pagination
+            'pagination' => array(
+                'pageSize' => 50,
+            ),
+
 		));
 	}
 
@@ -151,6 +160,21 @@ class Event extends CActiveRecord
 
 		// Also add all events in all programs I'm admin on
 		$criteria=new CDbCriteria;
+/*
+		$criteria->compare('id',$this->id);
+		//$criteria->compare('title',$this->title,true);
+		$criteria->compare('start',$this->start,true);
+		$criteria->compare('end',$this->end,true);
+		$criteria->compare('address',$this->address,true);
+		$criteria->compare('post_code',$this->post_code,true);
+		$criteria->compare('web',$this->web,true);
+		$criteria->compare('contact',$this->contact,true);
+		$criteria->compare('description',$this->description,true);
+		$criteria->compare('thumb_path',$this->thumb_path,true);
+		$criteria->compare('approved',$this->approved);
+		$criteria->compare('ticket_event_id',$this->ticket_event_id);
+		//$criteria->compare('member_id',$this->member_id);
+*/
 		$criteria->addCondition("event_member_id = " . Yii::app()->session['eid']);
 		$criteria->addCondition("privilege_level = " . 4);	//@@TODO Privilege level hardcoding
 		$memberHasPrograms = MemberHasProgram::model()->findAll($criteria);
@@ -159,8 +183,18 @@ class Event extends CActiveRecord
 		// Now apply the conditions
 		$criteria=new CDbCriteria;
 		$criteria->addCondition($flt);
+
+//@@ EG: Ordering model records on the admin crud
+        $criteria->order = "title ASC";
+
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+
+            // @@EG: Change cgridview pagination
+            'pagination' => array(
+                'pageSize' => 50,
+            ),
+
 		));
 	}
 

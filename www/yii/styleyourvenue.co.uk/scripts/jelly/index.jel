@@ -120,10 +120,10 @@ css.background-color = #000000
 	css.overflow = visible
 	css.margin-top = 2px
 	addon.menu.basic.orientation = horizontal
-	addon.menu.basic.font-size = 20px
+	addon.menu.basic.font-size = 16px
 	addon.menu.basic.menu-rounding = 0px
 	addon.menu.basic.menu-opacity = 100%
-	#addon.menu.basic.menu-tile = /img/menu-bar.jpg
+	addon.menu.basic.menu-tile = /img/menu-bar.jpg
 	#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
 	#addon.menu.basic.menu-color = blue green
 	#addon.menu.basic.menu-text-color = red
@@ -147,7 +147,7 @@ css.background-color = #000000
 
 	[watermark]
 	css.height = 200px
-	css.margin-top = -190px
+	css.margin-top = -130px
 	css.margin-left = 650px
 	css.position = relative
 	css.z-index = 10000
