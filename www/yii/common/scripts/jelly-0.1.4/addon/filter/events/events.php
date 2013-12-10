@@ -58,10 +58,12 @@ class events
 
         $twistyIcon = "<img style='padding-right:3px' title='" . 'Show more' . "' src='img/" . 'open-twisty.png' . "' >";
 
-        $content .= "<b>Search</b><br/>";
-        $content .= "<div style='float:left'>";
-        $content .= "<input type='text' id='textsearchbox' style='width:80px' title='Input text to search for' value='" . '' . "'>";
+        $content .= "<input type='button' id='textresetbutton' style='width:50px' onClick='resetEvents()' value='Reset'>";
+        $content .= "<span style='font-size:11px'>Search</span>";
         $content .= "<input type='button' id='textsearchbutton' style='width:30px' onClick='searchEvents()' value='Go'>";
+		$content .= "<br/>";
+        $content .= "<div style='float:left'>";
+        $content .= "<input type='text' id='textsearchbox' style='width:115px' title='Input text to search for' value='" . '' . "'>";
         $content .= "</div>";
         $content .= "<div style='clear:both'></div>";
 
@@ -439,6 +441,12 @@ END_OF_API_HTML;
     function searchEvents()
     {
         textSearch = document.getElementById('textsearchbox').value;
+        makeSel();
+    }
+
+    function resetEvents()
+    {
+        document.getElementById('textsearchbox').value = "";
         makeSel();
     }
 
