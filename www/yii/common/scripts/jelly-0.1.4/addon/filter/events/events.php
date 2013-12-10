@@ -172,6 +172,47 @@ class events
             $content .= "</div>";
         }
 
+        // Location
+		$locations = array(
+			"DG1" => "Dumfries",
+			"DG2" => "Dumfries",
+			"DG3" => "Thornhill",
+			"DG4" => "Sanquhar",
+			"DG5" => "Dalbeattie",
+			"DG6" => "K'cudbright",
+			"DG7" => "C. Douglas",
+			"DG8" => "N. Stewart",
+			"DG9" => "Stranraer",
+			"DG10" => "Moffat",
+			"DG11" => "Lockerbie",
+			"DG12" => "Annan",
+			"DG13" => "Langholm",
+			"DG14" => "Canonbie",
+			"DG16" => "Gretna",
+		);
+        $openLocation = false;
+        $locationSel = array();
+        if (isset($_GET['location']))
+            $locationSel = explode('|', $_GET['location']);
+        $content .= "<br>";
+        $content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Location</a><br>";
+        $content .= "<div id='location-detail' class='filter-detail'>";
+        foreach ($locations as $location => $name):
+            $match = false;
+			if (in_array($location, $locationSel))
+            {
+                $match = true;
+                $openLocation = true;
+            }
+            $content .= "<label class='checkbox'> ";
+            $content .= "<input name='location[]' "; 
+            if ($match) $content .= " checked='checked' ";
+            $content .= "type='checkbox' value='" . $location . "' onClick=makeSel()>" . $location . ' ' . $name;
+            $content .= "</label><br>";
+        endforeach;
+        $content .= "</div>";
+        $content .= "</div>";
+
         // Price band (always shown if exists)
         $prices  = PriceBand::model()->findAll(array('order'=>'id'));
         $openPrice = false;
@@ -231,6 +272,9 @@ class events
             $content .= "</div>";
         }
 
+		$content .= "<br/>";
+		$content .= "<div style='float:left;padding-left:40px'><a href=javascript:printSelectedHeads()><b><img style='margin-top:0px; margin-left:0px' title='Print' src='img/print.jpg'></a></div>";
+
         // Open twisty any selected groups of filters
         $content .= "<script>";
         if (!($openInterest))
@@ -239,6 +283,8 @@ class events
            $content .= "document.getElementById('format-detail').style.display='none';";
         if (!($openFacility))
             $content .= "document.getElementById('facility-detail').style.display='none';";
+        if (!($openLocation))
+            $content .= "document.getElementById('location-detail').style.display='none';";
         if (!($openPrice))
             $content .= "document.getElementById('price-detail').style.display='none';";
         if (!($openGrade))
@@ -258,7 +304,6 @@ class events
         $retArr[1] = $this->apiJs;
         return $retArr;
     }
-    // @@TODO: Thought: maybe all sites use a jelly db, and each has their own table prefix? Could avoid a lot of hassle
 
     private $apiHtml = <<<END_OF_API_HTML
 
@@ -341,6 +386,22 @@ END_OF_API_HTML;
                 }
             }
             sel += '&facility=' + str; 
+        }
+
+        // Location
+        av=document.getElementsByName("location[]");
+        if (av.length > 0)
+        {
+            var str = '';
+           for (var i = 0; i < av.length; i++)
+           {
+               if (av[i].checked)
+                {
+                    if (str != '') str += '|';
+                    str += av[i].value;
+                }
+            }
+            sel += '&location=' + str; 
         }
 
         // Price band

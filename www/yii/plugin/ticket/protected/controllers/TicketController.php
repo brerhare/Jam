@@ -272,6 +272,15 @@ class TicketController extends Controller
 
 		$pdf_filename = '/tmp/' . $order->order_number . '.pdf';
 
+		// Pick up the vendor record to BCC them
+		$bcc = "";
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+		$criteria->addCondition("id = " . $order->vendor_id);
+		$vendor = Vendor::model()->find($criteria);
+		if (($vendor) && (trim($vendor->email) != ""))
+			$bcc = $vendor->email;
+
 		// Send email
 		$to = $order->email_address;
 		if (strlen($to) > 0)
@@ -286,6 +295,8 @@ class TicketController extends Controller
 			$mail->SetFrom($from, $fromName);
 			$mail->AddReplyTo($from, $fromName);
 			$mail->AddAttachment($pdf_filename);
+			if ($bcc != "")
+				$mail->AddBCC($bcc);
 			$mail->Subject = $subject;
 			$mail->MsgHTML($message);
 			if (!$mail->Send())

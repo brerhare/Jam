@@ -288,6 +288,25 @@ class eventcode
 					continue;
 			}
 
+			// Check Location filter
+			if ((isset($_GET['location'])) && trim($_GET['location'] != ''))
+			{
+				if (trim($event->post_code) == "")
+					continue;
+				$match = 0;
+				$arr = explode('|', $_GET['location']);
+				foreach ($arr as $loc)
+				{
+					if (stristr($event->post_code, $loc))
+					{
+						$match = 1;
+						break;
+					}
+				}
+				if ($match == 0)
+					continue;
+			}
+
 			// Check Price band filter
 			if ((isset($_GET['pb'])) && trim($_GET['pb'] != ''))
 			{
@@ -496,9 +515,42 @@ END_OF_API_HTML_fill_headers;
 				ajaxGetEvent(0);	// Dummy first ajax to 'initialise' the google map (who knows why its needed...)
 			});
 
+			function printSelectedHeads()
+			{
+				content = '<style> body { font-family: Sans-Serif; } #header-date {margin-top:40px;}</style>';
+				content += '<body>';
+
+				// For each
+			for (i = 0; i < jsEvents.length; i++)
+			{
+				header = "";
+				header += "<div style='height:100px;width:700px'>";
+				header += document.getElementById('hdr-'+jsEvents[i]).innerHTML;
+				header += "</div>";
+				content += header;
+content += "<div style='clear:both'></div>";
+				content +=  "<hr>";
+				content +=  "<br>";
+				content +=  "<br>";
+			}
+				content += "</body>";
+			
+			
+				var WinPrint = window.open('', '', 'letf=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+				WinPrint.document.write(content);
+				WinPrint.document.close();
+				WinPrint.focus();
+				WinPrint.print();
+				WinPrint.close();
+			}
+
+
 			function printDiv(eventId) {
-				header = document.getElementById('hdr-'+eventId).innerHTML;
+				header = '<body>' + document.getElementById('hdr-'+eventId).innerHTML;
 				css = '<link rel="stylesheet" href="<substitute-path>/eventcode.css" type="text/css">';
+header += '<style> body { font-family: Sans-Serif; } #header-date {margin-top:40px;}</style>';
+
+
 				separator = '<div style="clear:both"></div>';
 
 				pShortDesc = document.getElementById('pShortDesc-'+eventId).innerHTML;
@@ -509,7 +561,7 @@ END_OF_API_HTML_fill_headers;
 				headerSeparator = "<div><br><br><br><br><br><br><br></div>";
 
 				content = header + headerSeparator + pShortDesc + "<hr>" + pDetails + "<hr>" + pDesc;
-
+content += '</body>';
 				//content = document.getElementById('main_google_map-map').innerHTML;			// WORKS!
 				//content = document.getElementById('detailMap_'+eventId+'-map').innerHTML;		// WORKS!
 
