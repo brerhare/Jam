@@ -28,7 +28,7 @@ $this->widget('CTreeView',array(
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'content-block-grid',
 	'dataProvider'=>$model->search(),
-	// 'filter'=>$model,
+	'filter'=>$model,
 	'columns'=>array(
 		// 'id',
 		//'sequence',
