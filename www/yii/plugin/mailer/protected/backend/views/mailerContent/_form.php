@@ -14,13 +14,15 @@
 
 	<?php //echo $form->textFieldRow($model,'date',array('class'=>'span2')); ?>
 
+	<?php /// @@EG How to line up custom content ?>
+	<?php /// @@EG CJuiDate needs UK DATE formatting. See the model for before/after ?>
     <div class="control-group "><label class="control-label" for="MailerContent_date">Date <span class="required">*</span></label>
         <div class="controls">
             <?php Yii::import('application.extensions.CJuiDateTimePicker.CJuiDateTimePicker');
                 $this->widget('CJuiDateTimePicker',array(
                     'model'=>$model, //Model object
                     'attribute'=>'date', //attribute name
-                    'mode'=>'datetime', //use "time","date" or "datetime" (default)
+                    'mode'=>'date', //use "time","date" or "datetime" (default)
                     'language' => '',
                     'options'=>array( // jquery plugin options
                         'showAnim'=>'fold',
@@ -30,10 +32,6 @@
             ?>
         </div>
     </div>
-
-
-
-
 
 	<?php echo $form->textAreaRow($model,'content',array('rows'=>6, 'cols'=>50, 'class'=>'span6')); ?>
 

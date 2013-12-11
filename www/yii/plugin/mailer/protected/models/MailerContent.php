@@ -102,4 +102,23 @@ class MailerContent extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+// @@EG CJuiDatePicker. See also the form where the widget is applied
+
+    protected function afterFind(){
+        parent::afterFind();
+        $this->date=date('d-m-Y', strtotime(str_replace("-", "", $this->date)));
+    }
+
+    protected function beforeSave(){
+        if(parent::beforeSave()){
+            if (empty($this->date))
+                $this->end = $this->date;
+            $this->date=date('Y-m-d', strtotime(str_replace(",", "", $this->date)));
+            return TRUE;
+        }
+       else
+            return false;
+    }
+
 }
