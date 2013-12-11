@@ -1,12 +1,10 @@
 <?php
-/* @var $this MailerContentController */
-/* @var $model MailerContent */
 
 $this->menu=array(
-	array('label'=>'Manage Mail Content', 'url'=>array('admin')),
+	array('label'=>'Manage Mailing List Content','url'=>array('admin')),
 );
 ?>
 
-<h2>Update Mail Content</h2>
+<h2>Update Mailing List Content <?php echo $model->id; ?></h2>
 
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php echo $this->renderPartial('_form',array('model'=>$model)); ?>

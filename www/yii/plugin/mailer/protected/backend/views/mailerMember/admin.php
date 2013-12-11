@@ -1,16 +1,14 @@
 <?php
-/* @var $this MailerMemberController */
-/* @var $model MailerMember */
 
 $this->menu=array(
-	array('label'=>'Create Member', 'url'=>array('create')),
+	array('label'=>'Create list Member','url'=>array('create')),
 );
 
 ?>
 
-<h2>Manage Mailing List Members</h2>
+<h2>Manage List Members</h2>
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
+<?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'mailer-member-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
@@ -22,10 +20,10 @@ $this->menu=array(
 		'last_name',
 		//'telephone',
 		//'address',
+		//'active',
 		//'mailer_list_id',
-		'active',
 		array(
-			'class'=>'CButtonColumn',
+			'class'=>'bootstrap.widgets.TbButtonColumn',
 		),
 	),
 )); ?>

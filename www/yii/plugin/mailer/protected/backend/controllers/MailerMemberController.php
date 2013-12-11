@@ -15,7 +15,6 @@ class MailerMemberController extends Controller
 	{
 		return array(
 			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
 		);
 	}
 
@@ -32,7 +31,7 @@ class MailerMemberController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','delete'),
+				'actions'=>array('create','update','delete','admin','session'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -64,6 +63,7 @@ class MailerMemberController extends Controller
 	{
 		$model=new MailerMember;
 		$model->uid = Yii::app()->session['uid'];
+		$model->mailer_list_id = Yii::app()->session['list_id'];
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -72,7 +72,7 @@ class MailerMemberController extends Controller
 		{
 			$model->attributes=$_POST['MailerMember'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('admin'));
 		}
 
 		$this->render('create',array(
@@ -96,7 +96,7 @@ class MailerMemberController extends Controller
 		{
 			$model->attributes=$_POST['MailerMember'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('admin'));
 		}
 
 		$this->render('update',array(
@@ -111,11 +111,17 @@ class MailerMemberController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		$this->loadModel($id)->delete();
+		if(Yii::app()->request->isPostRequest)
+		{
+			// we only allow deletion via POST request
+			$this->loadModel($id)->delete();
 
-		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+			if(!isset($_GET['ajax']))
+				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+		}
+		else
+			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
 	}
 
 	/**
@@ -144,12 +150,27 @@ class MailerMemberController extends Controller
 		));
 	}
 
+    /**
+     * Entry point. Same as actionAdmin except first stores the passed list_id in the session
+     */
+    // $list_id supplied by the CButtonColumn in mailerList/admin
+    public function actionSession($list_id)
+    {
+        Yii::app()->session['list_id'] = $list_id;
+        $model=new MailerMember('search');
+        $model->unsetAttributes();  // clear any default values
+        if(isset($_GET['MailerMember']))
+            $model->attributes=$_GET['MailerMember'];
+
+        $this->render('admin',array(
+            'model'=>$model,
+        ));
+    }
+
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
-	 * @param integer $id the ID of the model to be loaded
-	 * @return MailerMember the loaded model
-	 * @throws CHttpException
+	 * @param integer the ID of the model to be loaded
 	 */
 	public function loadModel($id)
 	{
@@ -161,7 +182,7 @@ class MailerMemberController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param MailerMember $model the model to be validated
+	 * @param CModel the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{

@@ -1,12 +1,10 @@
 <?php
-/* @var $this MailerListController */
-/* @var $model MailerList */
 
 $this->menu=array(
-	array('label'=>'Manage Mailing Lists', 'url'=>array('admin')),
+	array('label'=>'Manage Mailing Lists','url'=>array('admin')),
 );
 ?>
 
-<h2>Update Mailing List</h2>
+<h2>Update Mailing List <?php echo $model->id; ?></h2>
 
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php echo $this->renderPartial('_form',array('model'=>$model)); ?>

@@ -1,65 +1,32 @@
-<?php
-/* @var $this MailerMemberController */
-/* @var $model MailerMember */
-/* @var $form CActiveForm */
-?>
-
-<div class="wide form">
-
-<?php $form=$this->beginWidget('CActiveForm', array(
+<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'action'=>Yii::app()->createUrl($this->route),
 	'method'=>'get',
 )); ?>
 
-	<div class="row">
-		<?php echo $form->label($model,'id'); ?>
-		<?php echo $form->textField($model,'id'); ?>
-	</div>
+	<?php echo $form->textFieldRow($model,'id',array('class'=>'span5')); ?>
 
-	<div class="row">
-		<?php echo $form->label($model,'uid'); ?>
-		<?php echo $form->textField($model,'uid'); ?>
-	</div>
+	<?php echo $form->textFieldRow($model,'uid',array('class'=>'span5')); ?>
 
-	<div class="row">
-		<?php echo $form->label($model,'email_address'); ?>
-		<?php echo $form->textField($model,'email_address',array('size'=>60,'maxlength'=>255)); ?>
-	</div>
+	<?php echo $form->textFieldRow($model,'email_address',array('class'=>'span5','maxlength'=>255)); ?>
 
-	<div class="row">
-		<?php echo $form->label($model,'first_name'); ?>
-		<?php echo $form->textField($model,'first_name',array('size'=>60,'maxlength'=>255)); ?>
-	</div>
+	<?php echo $form->textFieldRow($model,'first_name',array('class'=>'span5','maxlength'=>255)); ?>
 
-	<div class="row">
-		<?php echo $form->label($model,'last_name'); ?>
-		<?php echo $form->textField($model,'last_name',array('size'=>60,'maxlength'=>255)); ?>
-	</div>
+	<?php echo $form->textFieldRow($model,'last_name',array('class'=>'span5','maxlength'=>255)); ?>
 
-	<div class="row">
-		<?php echo $form->label($model,'telephone'); ?>
-		<?php echo $form->textField($model,'telephone',array('size'=>45,'maxlength'=>45)); ?>
-	</div>
+	<?php echo $form->textFieldRow($model,'telephone',array('class'=>'span5','maxlength'=>45)); ?>
 
-	<div class="row">
-		<?php echo $form->label($model,'address'); ?>
-		<?php echo $form->textArea($model,'address',array('rows'=>6, 'cols'=>50)); ?>
-	</div>
+	<?php echo $form->textAreaRow($model,'address',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 
-	<div class="row">
-		<?php echo $form->label($model,'active'); ?>
-		<?php echo $form->textField($model,'active'); ?>
-	</div>
+	<?php echo $form->textFieldRow($model,'active',array('class'=>'span5')); ?>
 
-	<div class="row">
-		<?php echo $form->label($model,'mailer_list_id'); ?>
-		<?php echo $form->textField($model,'mailer_list_id'); ?>
-	</div>
+	<?php echo $form->textFieldRow($model,'mailer_list_id',array('class'=>'span5')); ?>
 
-	<div class="row buttons">
-		<?php echo CHtml::submitButton('Search'); ?>
+	<div class="form-actions">
+		<?php $this->widget('bootstrap.widgets.TbButton', array(
+			'buttonType' => 'submit',
+			'type'=>'primary',
+			'label'=>'Search',
+		)); ?>
 	</div>
 
 <?php $this->endWidget(); ?>
-
-</div><!-- search-form -->

@@ -1,16 +1,14 @@
 <?php
-/* @var $this MailerListController */
-/* @var $model MailerList */
 
 $this->menu=array(
-	array('label'=>'Create Mailing List', 'url'=>array('create')),
+	array('label'=>'Create Mailing List','url'=>array('create')),
 );
 
 ?>
 
 <h2>Manage Mailing Lists</h2>
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
+<?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'mailer-list-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
@@ -19,7 +17,7 @@ $this->menu=array(
 		//'uid',
 		'name',
 		array(
-			'class'=>'CButtonColumn',
+			'class'=>'bootstrap.widgets.TbButtonColumn',
 		),
 	),
 )); ?>

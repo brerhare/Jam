@@ -1,9 +1,7 @@
 <?php
-/* @var $this MailerListController */
-/* @var $model MailerList */
 
 $this->menu=array(
-	array('label'=>'Manage Mailing Lists', 'url'=>array('admin')),
+	array('label'=>'Manage Mailing Lists','url'=>array('admin')),
 );
 ?>
 

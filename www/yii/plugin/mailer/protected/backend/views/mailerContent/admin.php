@@ -1,16 +1,13 @@
 <?php
-/* @var $this MailerContentController */
-/* @var $model MailerContent */
-
 $this->menu=array(
-	array('label'=>'Create Mail Content', 'url'=>array('create')),
+	array('label'=>'Create Mail Content','url'=>array('create')),
 );
 
 ?>
 
 <h2>Manage Mail Content</h2>
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
+<?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'mailer-content-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
@@ -22,7 +19,7 @@ $this->menu=array(
 		//'content',
 		'sent',
 		array(
-			'class'=>'CButtonColumn',
+			'class'=>'bootstrap.widgets.TbButtonColumn',
 		),
 	),
 )); ?>

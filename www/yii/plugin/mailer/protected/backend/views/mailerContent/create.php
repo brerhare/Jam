@@ -1,9 +1,7 @@
 <?php
-/* @var $this MailerContentController */
-/* @var $model MailerContent */
 
 $this->menu=array(
-	array('label'=>'Manage Mail Content', 'url'=>array('admin')),
+	array('label'=>'Manage Mail Content','url'=>array('admin')),
 );
 ?>
 
