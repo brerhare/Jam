@@ -33,7 +33,7 @@ class MailerContentController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','delete'),
+				'actions'=>array('create','update','admin','delete','imageUpload','imageList'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -143,6 +143,8 @@ class MailerContentController extends Controller
 	{
 		$iDir = $this->getImageDir();
 		if ((!is_dir($iDir)) &&  (!mkdir($iDir, 0777, true)))
+			throw new CHttpException(400,'Failed to create user directory ' . $iDir);
+		if ((!is_dir($iDir . '/image')) &&  (!mkdir($iDir . '/image', 0777, true)))
 			throw new CHttpException(400,'Failed to create user directory ' . $iDir);
 
 		$model=new MailerContent('search');
