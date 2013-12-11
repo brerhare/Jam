@@ -32,6 +32,9 @@ class productcode
 		{
 			switch ($opt)
 			{
+				case "set_sid":
+					$this->sid = $val;
+					break;
 				case "product_page_options_dropdown":
 					$errStr = $this->setCartId();
 					if ($errStr != "")
@@ -521,8 +524,8 @@ END_OF_API_JS_checkout;
 	// Set the cart id and make sure it is valid
 	private function setCartId()
 	{
-		if (!(isset($_GET['sid'])))
-			return "Missing sid parameter";
+		if (trim($this->sid) == "")
+			return "Missing sid parameter - cant continue";
 		$this->cartId = "wireflycart-" . str_replace('"', '', $_GET['sid']);
 		return "";
 	}
