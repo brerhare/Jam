@@ -172,8 +172,8 @@ class ArticleController extends Controller
 	public function actionAdmin()
 	{
 		$iDir = $this->getImageDir();
-	if ((!is_dir($iDir)) &&  (!mkdir($iDir, 0777, true)))
-            throw new CHttpException(400,'Failed to create user directory ' . $iDir);
+		if ((!is_dir($iDir)) &&  (!mkdir($iDir, 0777, true)))
+			throw new CHttpException(400,'Failed to create user directory ' . $iDir);
 
 		$model=new Article('search');
 		$model->unsetAttributes();  // clear any default values

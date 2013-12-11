@@ -2,6 +2,7 @@
 	'id'=>'mailer-content-form',
 	'enableAjaxValidation'=>false,
 	'type'=>'horizontal',
+	'htmlOptions'=>array('enctype'=>'multipart/form-data')
 )); ?>
 
 	<p class="help-block">Fields with <span class="required">*</span> are required.</p>
@@ -33,7 +34,26 @@
         </div>
     </div>
 
-	<?php echo $form->textAreaRow($model,'content',array('rows'=>6, 'cols'=>50, 'class'=>'span6')); ?>
+	<?php //echo $form->textAreaRow($model,'content',array('rows'=>6, 'cols'=>50, 'class'=>'span6')); ?>
+	<div id="row">
+Free format content
+	<div style="width:700px">
+	<?php
+	$this->widget('bootstrap.widgets.TbRedactorJs',
+    	array(
+      	'model'=>$model,
+      	'attribute'=>'content',
+      	'editorOptions'=>array(
+          	'imageUpload' => $this->createUrl('mailerContent/imageUpload'),
+          	'imageGetJson' => $this->createUrl('mailerContent/imageList'),
+          	'width'=>'100%',
+          	'height'=>'400px'
+       	)
+    	));
+	?>
+	</div>
+	</div>
+
 
 	<?php //echo $form->textFieldRow($model,'sent',array('class'=>'span1')); ?>
 

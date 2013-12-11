@@ -8,6 +8,8 @@ class MailerContentController extends Controller
 	 */
 	public $layout='//layouts/column2';
 
+	private $_imageDir = '/../userdata/';   // Note this is only partial. Gets prepended base path and uid
+
 	/**
 	 * @return array action filters
 	 */
@@ -139,6 +141,10 @@ class MailerContentController extends Controller
 	 */
 	public function actionAdmin()
 	{
+		$iDir = $this->getImageDir();
+		if ((!is_dir($iDir)) &&  (!mkdir($iDir, 0777, true)))
+			throw new CHttpException(400,'Failed to create user directory ' . $iDir);
+
 		$model=new MailerContent('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['MailerContent']))
@@ -174,4 +180,55 @@ class MailerContentController extends Controller
 			Yii::app()->end();
 		}
 	}
+
+// Image SID directory ---------------------------------------------------------
+
+    public function getImageDir()
+    {
+        return Yii::app()->basePath . $this->_imageDir . Yii::app()->session['uid'] . '/';
+    }
+
+// Redactor image handling -----------------------------------------------------
+
+    public function actionImageUpload()
+    {
+        $uploadedFile = CUploadedFile::getInstanceByName('file');
+        if (!empty($uploadedFile)) {
+            $rnd = rand();  // generate random number between 0-9999
+            $fileName = "{$rnd}.{$uploadedFile->extensionName}";  // random number + file name
+            if ($uploadedFile->saveAs(Yii::app()->basePath . '/../userdata/' .  Yii::app()->session['uid'] . '/image/' . $fileName)) {
+
+                $array = array(
+                     'filelink' => Yii::app()->baseUrl . '/mailer/../userdata/' .  Yii::app()->session['uid'] . '/image/' . $fileName);
+
+                echo stripslashes(json_encode($array));
+                Yii::app()->end();
+            }
+        }
+        throw new CHttpException(400, 'The request cannot be fulfilled due to bad syntax');
+    }
+
+// "ListImages" (used to browse images in the server)
+
+    public function actionImageList() {
+        $images = array();
+        $handler = opendir(Yii::app()->basePath . '/../userdata/' . Yii::app()->session['uid'] . '/image');
+        while ($file = readdir($handler)) {
+            if ($file != "." && $file != "..")
+                $images[] = $file;
+        }
+        closedir($handler);
+
+        $jsonArray = array();
+
+        foreach ($images as $image)
+            $jsonArray[] = array(
+                'thumb' => Yii::app()->baseUrl . '/mailer/userdata/' . Yii::app()->session['uid'] . '/image/' . $image,
+                'image' => Yii::app()->baseUrl . '/mailer/userdata/' . Yii::app()->session['uid'] . '/image/' . $image,
+            );
+
+        header('Content-type: application/json');
+        echo CJSON::encode($jsonArray);
+    }
+
 }
