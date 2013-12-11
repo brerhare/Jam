@@ -1,6 +1,7 @@
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'mailer-list-form',
 	'enableAjaxValidation'=>false,
+	'type'=>'horizontal',
 )); ?>
 
 	<p class="help-block">Fields with <span class="required">*</span> are required.</p>

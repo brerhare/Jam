@@ -81,7 +81,7 @@ class MailerMember extends CActiveRecord
 			'last_name' => 'Last Name',
 			'telephone' => 'Telephone',
 			'address' => 'Address',
-			'active' => 'Active',
+			'active' => 'Subscribed',
 			'mailer_list_id' => 'Mailer List',
 		);
 	}
@@ -106,8 +106,8 @@ class MailerMember extends CActiveRecord
 		$criteria->compare('telephone',$this->telephone,true);
 		$criteria->compare('address',$this->address,true);
 		$criteria->compare('active',$this->active);
-		$criteria->compare('mailer_list_id',$this->mailer_list_id);
-
+		//$criteria->compare('mailer_list_id',$this->mailer_list_id);
+		$criteria->addCondition("mailer_list_id = " . Yii::app()->session['list_id']);
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));

@@ -1,6 +1,7 @@
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'mailer-content-form',
 	'enableAjaxValidation'=>false,
+	'type'=>'horizontal',
 )); ?>
 
 	<p class="help-block">Fields with <span class="required">*</span> are required.</p>
@@ -9,7 +10,7 @@
 
 	<?php //echo $form->textFieldRow($model,'uid',array('class'=>'span5')); ?>
 
-	<?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>255)); ?>
+	<?php echo $form->textFieldRow($model,'title',array('class'=>'span3','maxlength'=>255)); ?>
 
 	<?php echo $form->textFieldRow($model,'date',array('class'=>'span2')); ?>
 

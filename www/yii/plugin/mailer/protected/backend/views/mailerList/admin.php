@@ -15,9 +15,41 @@ $this->menu=array(
 	'columns'=>array(
 		//'id',
 		//'uid',
-		'name',
+
+        array(
+            'name'  => 'name',
+            'value' => 'CHtml::link($data->name, Yii::app()->createUrl("mailerMember/session",array("list_id"=>$data->id)))',
+            'type'  => 'raw',
+        ),
+
+
+/****
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
 		),
+****/
+
+
+        Array(
+            'class'=>'bootstrap.widgets.TbButtonColumn',
+            'template'=>'{update}{members}{delete}',
+            'htmlOptions'=>array('width'=>'250px'),
+            'buttons'=>array(                               // @@EG: Buttons
+                'members' => array(
+                    'imageUrl'=>false,
+                    'label'=>'Members',
+                    'url'=>'Yii::app()->createUrl("mailerMember/session", array("list_id"=>$data->id))',
+                    'options'=>array(
+                        'class'=>'btn btn-small',
+                    ),
+                ),
+            ),                                              // End of @@EG
+
+
+        ),
+
+
+
+
 	),
 )); ?>

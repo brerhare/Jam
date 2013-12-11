@@ -14,12 +14,24 @@ $this->menu=array(
 	'columns'=>array(
 		//'id',
 		//'uid',
-		'title',
-		'date',
+
+        array(
+            'name'  => 'title',
+            'value' => 'CHtml::link($data->title, Yii::app()->createUrl("mailerContent/update",array("id"=>$data->primaryKey)))',
+            'type'  => 'raw',
+        ),
+
+        array(
+            'name'  => 'date',
+            'value' => 'CHtml::link($data->date, Yii::app()->createUrl("mailerContent/update",array("id"=>$data->primaryKey)))',
+            'type'  => 'raw',
+        ),
+
 		//'content',
 		'sent',
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
+			'template'=>'{update}{delete}',
 		),
 	),
 )); ?>

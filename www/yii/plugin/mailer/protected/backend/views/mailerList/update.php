@@ -5,6 +5,6 @@ $this->menu=array(
 );
 ?>
 
-<h2>Update Mailing List <?php echo $model->id; ?></h2>
+<h2>Update Mailing List</h2>
 
 <?php echo $this->renderPartial('_form',array('model'=>$model)); ?>
