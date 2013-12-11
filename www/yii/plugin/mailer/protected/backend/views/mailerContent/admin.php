@@ -28,7 +28,16 @@ $this->menu=array(
         ),
 
 		//'content',
-		'sent',
+
+		// @@EG: Show Yes/No in grid column for boolean fields
+		array(
+			'name' => 'sent',
+			'header' => "Sent?",
+			'value' => '$data->sent?Yii::t(\'app\',\'Yes\'):Yii::t(\'app\', \'No\')',
+			'filter' => array('0' => Yii::t('app', 'No'), '1' => Yii::t('app', 'Yes')),
+			'htmlOptions' => array('style' => "text-align:left;"),
+		),
+
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
 			'template'=>'{update}{delete}',
