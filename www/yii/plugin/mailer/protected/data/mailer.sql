@@ -30,6 +30,7 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`mailer_content` (
   `title` VARCHAR(255) NOT NULL ,
   `date` DATE NOT NULL ,
   `content` LONGTEXT NULL ,
+  `sent` INT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `uid` (`uid` ASC) )
 ENGINE = InnoDB;
@@ -50,10 +51,10 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`mailer_member` (
   `address` TEXT NULL ,
   `active` INT NULL ,
   `mailer_list_id` INT NOT NULL ,
-  PRIMARY KEY (`id`, `mailer_list_id`) ,
+  PRIMARY KEY (`id`) ,
   INDEX `uid` (`uid` ASC) ,
-  INDEX `fk_mailer_contact_mailer_list` (`mailer_list_id` ASC) ,
-  CONSTRAINT `fk_mailer_contact_mailer_list`
+  INDEX `fk_mailer_member_mailer_list1` (`mailer_list_id` ASC) ,
+  CONSTRAINT `fk_mailer_member_mailer_list1`
     FOREIGN KEY (`mailer_list_id` )
     REFERENCES `plugin`.`mailer_list` (`id` )
     ON DELETE NO ACTION
@@ -62,24 +63,24 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `plugin`.`mailer_list_has_mailer_content`
+-- Table `plugin`.`mailer_content_has_mailer_list`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `plugin`.`mailer_list_has_mailer_content` ;
+DROP TABLE IF EXISTS `plugin`.`mailer_content_has_mailer_list` ;
 
-CREATE  TABLE IF NOT EXISTS `plugin`.`mailer_list_has_mailer_content` (
-  `mailer_list_id` INT NOT NULL ,
+CREATE  TABLE IF NOT EXISTS `plugin`.`mailer_content_has_mailer_list` (
   `mailer_content_id` INT NOT NULL ,
-  PRIMARY KEY (`mailer_list_id`, `mailer_content_id`) ,
-  INDEX `fk_mailer_list_has_mailer_content_mailer_content1` (`mailer_content_id` ASC) ,
-  INDEX `fk_mailer_list_has_mailer_content_mailer_list1` (`mailer_list_id` ASC) ,
-  CONSTRAINT `fk_mailer_list_has_mailer_content_mailer_list1`
-    FOREIGN KEY (`mailer_list_id` )
-    REFERENCES `plugin`.`mailer_list` (`id` )
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_mailer_list_has_mailer_content_mailer_content1`
+  `mailer_list_id` INT NOT NULL ,
+  PRIMARY KEY (`mailer_content_id`, `mailer_list_id`) ,
+  INDEX `fk_mailer_content_has_mailer_list_mailer_list1` (`mailer_list_id` ASC) ,
+  INDEX `fk_mailer_content_has_mailer_list_mailer_content1` (`mailer_content_id` ASC) ,
+  CONSTRAINT `fk_mailer_content_has_mailer_list_mailer_content1`
     FOREIGN KEY (`mailer_content_id` )
     REFERENCES `plugin`.`mailer_content` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_mailer_content_has_mailer_list_mailer_list1`
+    FOREIGN KEY (`mailer_list_id` )
+    REFERENCES `plugin`.`mailer_list` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

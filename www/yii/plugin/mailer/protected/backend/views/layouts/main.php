@@ -36,8 +36,8 @@
 			'items' => array(
 				array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
 				array('label' => 'Contact', 'url' => array('/site/contact'), 'visible' => Yii::app()->user->isGuest),
-				array('label' => 'Articles', 'url' => array('/article/admin'), 'visible' => !Yii::app()->user->isGuest),
-				array('label' => 'Categories', 'url' => array('/category/admin'), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'Mailing Lists', 'url' => array('mailerList/admin'), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'Mail Content', 'url' => array('/mailerContent/admin'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Logout', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),
 			),
 		),
