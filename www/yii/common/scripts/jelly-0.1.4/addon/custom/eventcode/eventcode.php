@@ -64,7 +64,7 @@ class eventcode
 		$mapTip = array();
 		$mapContent = array();
 
-		// @@EG: Calling a jelly addon directly, from outside the jelly
+		// @@EG: Calling a jelly addon directly, not using a jelly script
 		$addon = new google_os;
 		$optArr = array();
 		$optArr['single'] = '1';

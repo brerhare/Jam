@@ -248,7 +248,7 @@ class SiteController extends Controller
 					$content .= "<div style='float:right;padding-left:10px;padding-top:1px' class='fb-share-button' data-href='http://www.wildseasons.co.uk' data-type='button'></div>";
 
 					// print
-					$content .= "<div style='float:right;padding-left:10px'><a href=javascript:printDiv('" . $eventId . "')><b><img style='margin-top:0px; margin-left:0px' title='Print' src='img/print.jpg'></a></div>";
+					$content .= "<div style='float:right;padding-left:10px'><a href=javascript:printDiv('" . $eventId . "')><img style='margin-top:0px; margin-left:0px' title='Print' src='img/print.jpg'></a></div>";
 
 					// Ticketing info (if applicable)
 					if (($event->ticket_event_id != 0) && ($member))
