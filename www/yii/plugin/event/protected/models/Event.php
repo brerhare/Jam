@@ -102,7 +102,7 @@ class Event extends CActiveRecord
 			'web' => 'Web',
 			'contact' => 'Contact',
 			'description' => 'Description',
-			'thumb_path' => 'Thumb Path',
+			'thumb_path' => 'Thumb (140w x 115h)',
 			'approved' => 'Approved',
 			'ticket_event_id' => 'Create Ticket Event?',
 			'member_id' => 'Member',

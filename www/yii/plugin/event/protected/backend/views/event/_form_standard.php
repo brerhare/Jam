@@ -118,7 +118,7 @@
 	<?php echo $form->fileFieldRow($model, 'thumb_path'); ?>
 
 	<?php
-		if ($model->isNewRecord)
+		if (($model->isNewRecord) || ($model->ticket_event_id == 0))
 		{
 			if ($ticketUid == -1)
 			// @@EG Disable any cactiveform field

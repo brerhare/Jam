@@ -32,13 +32,21 @@ $this->menu=array(
 
         Array(
             'class'=>'bootstrap.widgets.TbButtonColumn',
-            'template'=>'{update}{members}{delete}',
+            'template'=>'{update}{members}{import}{delete}',
             'htmlOptions'=>array('width'=>'250px'),
             'buttons'=>array(                               // @@EG: Buttons
                 'members' => array(
                     'imageUrl'=>false,
                     'label'=>'Members',
                     'url'=>'Yii::app()->createUrl("mailerMember/session", array("list_id"=>$data->id))',
+                    'options'=>array(
+                        'class'=>'btn btn-small',
+                    ),
+                ),
+                'import' => array(
+                    'imageUrl'=>false,
+                    'label'=>'Import',
+                    'url'=>'Yii::app()->createUrl("mailerList/import", array("list_id"=>$data->id))',
                     'options'=>array(
                         'class'=>'btn btn-small',
                     ),

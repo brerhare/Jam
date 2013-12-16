@@ -33,7 +33,7 @@ class MailerContentController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','delete','imageUpload','imageList'),
+				'actions'=>array('create','update','admin','delete','publish','imageUpload','imageList'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -72,8 +72,12 @@ class MailerContentController extends Controller
 		if(isset($_POST['MailerContent']))
 		{
 			$model->attributes=$_POST['MailerContent'];
-			if($model->save())
+		if($model->save())
+			{
+				$this->deleteLists($model->id);
+				$this->createLists($model->id);
 				$this->redirect(array('admin'));
+			}
 		}
 
 		$this->render('create',array(
@@ -97,7 +101,11 @@ class MailerContentController extends Controller
 		{
 			$model->attributes=$_POST['MailerContent'];
 			if($model->save())
+			{
+				$this->deleteLists($model->id);
+				$this->createLists($model->id);
 				$this->redirect(array('admin'));
+			}
 		}
 
 		$this->render('update',array(
@@ -115,6 +123,7 @@ class MailerContentController extends Controller
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
+			$this->deleteLists($id);
 			$this->loadModel($id)->delete();
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
@@ -158,6 +167,69 @@ class MailerContentController extends Controller
 	}
 
 	/**
+	 * Import mailing list contents
+	 */
+	public function actionPublish($content_id)
+	{
+		$model=$this->loadModel($content_id);
+		Yii::app()->session['content_id'] = $content_id;
+		if(Yii::app()->request->isPostRequest)
+		{
+			// Pick up each list this content must go out to
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("mailer_content_id = " . $model->id);
+			$mailerContentHasLists = MailerContentHasList::model()->findAll($criteria);
+			foreach ($mailerContentHasLists as $mailerContentHasList)
+			{
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("id = " . $mailerContentHasList->mailer_list_id);
+				$mailerList = MailerList::model()->find($criteria);
+				if ($mailerList)
+				{
+					// Generate an email for every list member
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("mailer_list_id = " . $mailerList->id);
+					$mailerMembers = MailerMember::model()->findAll($criteria);
+					foreach ($mailerMembers as $mailerMember)
+					{
+						if ($mailerMember->active == 0)
+							continue;
+						// phpmailer
+						$from = "no-reply@dglink.co.uk";
+						$fromName = "DG Link mailer";
+						$subject = "Sent by DG Link mailer. Please do not reply to this";
+						$mail = new PHPMailer();
+						$url = Yii::app()->getRequest()->getBaseUrl(true);
+						$css = "<style>* { font-family: Arial, Helvetica, Verdana, Tahoma, sans-serif !important; }</style>";
+						$msg = "<div style='max-width:700px'>";
+						$msg .= str_replace("/mailer/mailer/../", $url . "/", $model->content);
+						$msg .= "</div>";
+						$mail->AddAddress($mailerMember->email_address);
+//						$mail->AddBCC($from);
+						$mail->SetFrom($from, $fromName);
+						$mail->AddReplyTo($from, $fromName);
+//						$mail->AddAttachment($pdf_filename);
+						$mail->Subject = $subject;
+						$mail->MsgHTML($css . $msg);
+						if (!$mail->Send())
+						{
+    						Yii::log("MAILER COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
+    						echo "<div id=\"mailerrors\">Mailer Error: " . $mail->ErrorInfo . "</div>";
+						}
+						else
+    						Yii::log("MAILER SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+
+					}
+				}
+			}
+			$this->redirect(array('admin'));
+		}
+		$this->render('publish',array(
+			'model'=>$model,
+		));
+	}
+
+	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the ID of the model to be loaded
@@ -168,6 +240,28 @@ class MailerContentController extends Controller
 		if (($model===null) || ($model->uid != Yii::app()->session['uid']))
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
+	}
+
+	// Delete all attached lists
+	public function deleteLists($id)
+	{
+		Yii::log("Deleting all attached lists for content " . $id, CLogger::LEVEL_INFO, 'system.test.kim');
+		MailerContentHasList::model()->deleteAllByAttributes(array('mailer_content_id' => $id));
+	}
+
+	// Update all attached lists
+	public function createLists($id)
+	{
+		if (isset($_POST['list']))
+		{
+			foreach ($_POST['list'] as $listItem):
+				Yii::log("Creating list item " . $listItem, CLogger::LEVEL_INFO, 'system.test.kim');
+				$itm = new MailerContentHasList;
+				$itm->mailer_content_id = $id;
+				$itm->mailer_list_id = $listItem;
+				$itm->save();
+			endforeach;
+		}
 	}
 
 	/**
