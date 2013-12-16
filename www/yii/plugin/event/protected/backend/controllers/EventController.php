@@ -284,12 +284,58 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
             	$this->deleteProductCheckboxes($model->id);
                 $this->updateProductCheckboxes($model->id);
 
+            	$modelId = $model->id;	// Store for later
+
             	// Save Ws fields too
             	$model2->attributes=$_POST['Ws'];
             	$model2->event_id = $model->id;
             	Yii::log("UPDATE EVENT ----- about to do model2->save() " , CLogger::LEVEL_WARNING, 'system.test.kim');
             	$model2->save();
             	Yii::log("UPDATE EVENT ----- did model2->save(). Finished " , CLogger::LEVEL_WARNING, 'system.test.kim');
+
+
+
+
+	            // Do we need to create a ticket event too?
+	            // @@EG Check softlink name for model, this is our standard naming
+	            if ($model->ticket_event_id == 1)
+	            {
+	            	$ticketUid = $this->getTicketUidFromEventSid();
+	            	if ($ticketUid != -1)
+	            	{
+		            	// Pick up the ticket vendor, its id is needed for the ticket event
+    		        	$criteria = new CDbCriteria;
+						$criteria->condition="uid = " . $ticketUid;
+        				$ticketVendor = Vendor::model()->find($criteria);
+	        			if ($ticketVendor != null)
+	        			{
+			            	// Create ticket event record
+			            	$ticketEvent = new ticket_Event;
+    			        	$ticketEvent->uid = $ticketUid;
+        			    	$ticketEvent->title = $model->title;
+            				$ticketEvent->date = substr($model->start, 0, 10);  // 0000-00-00 00:00;00
+            				$ticketEvent->time = substr($model->start, 11, 8);
+		            		$ticketEvent->address = $model->address;
+	    		        	$ticketEvent->post_code = $model->post_code;
+    	    		    	$ticketEvent->active = 0;
+        	    			$ticketEvent->ticket_vendor_id = $ticketVendor->id;
+	        	    		if ($ticketEvent->save())
+							{
+    	        				//	throw new CHttpException(500,'Couldnt write ticket event record');
+    		            		// Update the Event model with the ticket reference
+	            				$model=$this->loadModel($modelId);
+	            				$model->ticket_event_id = $ticketEvent->id;
+			            		$model->save();
+							}
+	        	    	}
+	            	}
+	            }
+
+
+
+
+
+
                 $this->redirect(array('admin'));
             }
         }
