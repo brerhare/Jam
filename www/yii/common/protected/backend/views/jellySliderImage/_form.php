@@ -15,10 +15,12 @@
 
 	<?php echo $form->textFieldRow($model,'url',array('class'=>'span5','maxlength'=>255)); ?>
 
-    <div class="row">
-        <?php echo $form->labelEx($model,'image'); ?>
+    <?php /// @@EG How to line up custom content ?>
+    <div class="control-group "><label class="control-label" for="image">Image <span class="required">*</span></label>
+        <div class="controls">
         <?php echo CHtml::activeFileField($model,'image',array('size'=>60,'maxlength'=>255)); ?>
         <?php echo $form->error($model,'image`'); ?>
+        </div>
     </div>
 
 	<div class="form-actions">
