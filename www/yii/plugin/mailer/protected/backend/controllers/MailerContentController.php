@@ -33,7 +33,7 @@ class MailerContentController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','delete','imageUpload','imageList'),
+				'actions'=>array('create','update','admin','delete','publish','imageUpload','imageList'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -72,7 +72,7 @@ class MailerContentController extends Controller
 		if(isset($_POST['MailerContent']))
 		{
 			$model->attributes=$_POST['MailerContent'];
-			if($model->save())
+		if($model->save())
 			{
 				$this->deleteLists($model->id);
 				$this->createLists($model->id);
@@ -162,6 +162,23 @@ class MailerContentController extends Controller
 			$model->attributes=$_GET['MailerContent'];
 
 		$this->render('admin',array(
+			'model'=>$model,
+		));
+	}
+
+	/**
+	 * Import mailing list contents
+	 */
+	public function actionPublish($content_id)
+	{
+		$model=$this->loadModel($content_id);
+		Yii::app()->session['content_id'] = $content_id;
+		if(Yii::app()->request->isPostRequest)
+		{
+//die('sending');
+			$this->redirect(array('admin'));
+		}
+		$this->render('publish',array(
 			'model'=>$model,
 		));
 	}

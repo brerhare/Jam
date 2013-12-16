@@ -40,7 +40,19 @@ $this->menu=array(
 
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
-			'template'=>'{update}{delete}',
+            'template'=>'{update}{publish}{delete}',
+            'htmlOptions'=>array('width'=>'100px'),
+            'buttons'=>array(                               // @@EG: Buttons
+                'publish' => array(
+                    'imageUrl'=>false,
+                    'label'=>'Publish',
+                    'url'=>'Yii::app()->createUrl("mailerContent/publish", array("content_id"=>$data->id))',
+                    'options'=>array(
+                        'class'=>'btn btn-small',
+                    ),
+                ),
+            ),                                              // End of @@EG
 		),
+
 	),
 )); ?>
