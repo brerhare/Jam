@@ -192,6 +192,8 @@ class MailerContentController extends Controller
 					$mailerMembers = MailerMember::model()->findAll($criteria);
 					foreach ($mailerMembers as $mailerMember)
 					{
+						if ($mailerMember->active == 0)
+							continue;
 						// phpmailer
 						$from = "no-reply@dglink.co.uk";
 						$fromName = "DG Link mailer";
@@ -203,7 +205,7 @@ class MailerContentController extends Controller
 						$mail->AddReplyTo($from, $fromName);
 //						$mail->AddAttachment($pdf_filename);
 						$mail->Subject = $subject;
-						$mail->MsgHTML($message);
+						$mail->MsgHTML($model->content);
 						if (!$mail->Send())
 						{
     						Yii::log("MAILER COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
