@@ -175,7 +175,45 @@ class MailerContentController extends Controller
 		Yii::app()->session['content_id'] = $content_id;
 		if(Yii::app()->request->isPostRequest)
 		{
-//die('sending');
+			// Pick up each list this content must go out to
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("mailer_content_id = " . $model->id);
+			$mailerContentHasLists = MailerContentHasList::model()->findAll($criteria);
+			foreach ($mailerContentHasLists as $mailerContentHasList)
+			{
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("id = " . $mailerContentHasList->mailer_list_id);
+				$mailerList = MailerList::model()->find($criteria);
+				if ($mailerList)
+				{
+					// Generate an email for every list member
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("mailer_list_id = " . $mailerList->id);
+					$mailerMembers = MailerMember::model()->findAll($criteria);
+					foreach ($mailerMembers as $mailerMember)
+					{
+						// phpmailer
+						$from = "no-reply@dglink.co.uk";
+						$fromName = "DG Link mailer - please do not reply to this email";
+						$mail = new PHPMailer();
+						$mail->AddAddress($mailerMember->email_address);
+//						$mail->AddBCC($from);
+						$mail->SetFrom($from, $fromName);
+						$mail->AddReplyTo($from, $fromName);
+//						$mail->AddAttachment($pdf_filename);
+						$mail->Subject = $subject;
+						$mail->MsgHTML($message);
+						if (!$mail->Send())
+						{
+    						Yii::log("MAILER COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
+    						echo "<div id=\"mailerrors\">Mailer Error: " . $mail->ErrorInfo . "</div>";
+						}
+						else
+    						Yii::log("MAILER SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+
+					}
+				}
+			}
 			$this->redirect(array('admin'));
 		}
 		$this->render('publish',array(
