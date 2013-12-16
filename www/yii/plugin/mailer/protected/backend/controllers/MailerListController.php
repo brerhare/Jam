@@ -31,7 +31,7 @@ class MailerListController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','delete'),
+				'actions'=>array('create','update','admin','delete','import'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -160,6 +160,50 @@ class MailerListController extends Controller
 		if (($model===null) || ($model->uid != Yii::app()->session['uid']))
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
+	}
+
+	/**
+	 * Import mailing list contents
+	 */
+	public function actionImport($list_id)
+	{
+		$model=$this->loadModel($list_id);
+		Yii::app()->session['list_id'] = $list_id;
+
+		if(isset($_FILES['files']))
+		{
+			//upload new files
+			foreach($_FILES['files']['name'] as $key=>$filename)
+			{
+				$tmpName = '/tmp/import_' . rand();
+				move_uploaded_file($_FILES['files']['tmp_name'][$key],$tmpName);
+				// Do the import
+				if (($handle = fopen($tmpName, "r")) === FALSE)
+					die("Cant open $tmpName");
+				while (($data = fgetcsv($handle, 1000, ",")) !== FALSE)
+				{
+					if (!strstr($data[0], "@"))
+						continue;
+					$member = new MailerMember;
+					$member->uid = Yii::app()->session['uid'];
+					$member->email_address = $data[0];
+					$member->first_name = $data[1];
+					$member->last_name = $data[2];
+					$member->telephone = $data[3];
+					$member->address = $data[4];
+					$member->active = 1;
+					$member->mailer_list_id = Yii::app()->session['list_id'];
+					$member->save();
+				}
+
+				$this->redirect(array('admin'));
+			}
+		}
+
+		$this->render('import',array(
+			'id'=>$list_id,
+			'name'=>$model->name,
+		));
 	}
 
 	/**
