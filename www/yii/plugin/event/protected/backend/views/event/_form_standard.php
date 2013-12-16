@@ -118,9 +118,9 @@
 	<?php echo $form->fileFieldRow($model, 'thumb_path'); ?>
 
 	<?php
-		if ($model->isNewRecord)
+		/*if ($model->isNewRecord)*/
 		{
-			if ($ticketUid == -1)
+			if ($ticketUid != -1)
 			// @@EG Disable any cactiveform field
 				echo $form->toggleButtonRow($model, 'ticket_event_id' , array('disabled'=>'true','options'=>array('enabledLabel'=>'Yes' , 'disabledLabel'=>'No')));
 			else
