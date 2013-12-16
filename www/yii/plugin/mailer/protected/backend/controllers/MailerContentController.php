@@ -199,13 +199,18 @@ class MailerContentController extends Controller
 						$fromName = "DG Link mailer";
 						$subject = "Sent by DG Link mailer. Please do not reply to this";
 						$mail = new PHPMailer();
+						$url = Yii::app()->getRequest()->getBaseUrl(true);
+						$css = "<style>* { font-family: Arial, Helvetica, Verdana, Tahoma, sans-serif !important; }</style>";
+						$msg = "<div style='max-width:700px'>";
+						$msg .= str_replace("/mailer/mailer/../", $url . "/", $model->content);
+						$msg .= "</div>";
 						$mail->AddAddress($mailerMember->email_address);
 //						$mail->AddBCC($from);
 						$mail->SetFrom($from, $fromName);
 						$mail->AddReplyTo($from, $fromName);
 //						$mail->AddAttachment($pdf_filename);
 						$mail->Subject = $subject;
-						$mail->MsgHTML($model->content);
+						$mail->MsgHTML($css . $msg);
 						if (!$mail->Send())
 						{
     						Yii::log("MAILER COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
