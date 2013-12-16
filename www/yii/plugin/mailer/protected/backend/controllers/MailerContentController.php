@@ -194,7 +194,8 @@ class MailerContentController extends Controller
 					{
 						// phpmailer
 						$from = "no-reply@dglink.co.uk";
-						$fromName = "DG Link mailer - please do not reply to this email";
+						$fromName = "DG Link mailer";
+						$subject = "Sent by DG Link mailer. Please do not reply to this";
 						$mail = new PHPMailer();
 						$mail->AddAddress($mailerMember->email_address);
 //						$mail->AddBCC($from);
