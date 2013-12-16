@@ -73,7 +73,11 @@ class MailerContentController extends Controller
 		{
 			$model->attributes=$_POST['MailerContent'];
 			if($model->save())
+			{
+				$this->deleteLists($model->id);
+				$this->createLists($model->id);
 				$this->redirect(array('admin'));
+			}
 		}
 
 		$this->render('create',array(
@@ -97,7 +101,11 @@ class MailerContentController extends Controller
 		{
 			$model->attributes=$_POST['MailerContent'];
 			if($model->save())
+			{
+				$this->deleteLists($model->id);
+				$this->createLists($model->id);
 				$this->redirect(array('admin'));
+			}
 		}
 
 		$this->render('update',array(
@@ -115,6 +123,7 @@ class MailerContentController extends Controller
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
+			$this->deleteLists($id);
 			$this->loadModel($id)->delete();
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
@@ -168,6 +177,28 @@ class MailerContentController extends Controller
 		if (($model===null) || ($model->uid != Yii::app()->session['uid']))
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
+	}
+
+	// Delete all attached lists
+	public function deleteLists($id)
+	{
+		Yii::log("Deleting all attached lists for content " . $id, CLogger::LEVEL_INFO, 'system.test.kim');
+		MailerContentHasList::model()->deleteAllByAttributes(array('mailer_content_id' => $id));
+	}
+
+	// Update all attached lists
+	public function createLists($id)
+	{
+		if (isset($_POST['list']))
+		{
+			foreach ($_POST['list'] as $listItem):
+				Yii::log("Creating list item " . $listItem, CLogger::LEVEL_INFO, 'system.test.kim');
+				$itm = new MailerContentHasList;
+				$itm->mailer_content_id = $id;
+				$itm->mailer_list_id = $listItem;
+				$itm->save();
+			endforeach;
+		}
 	}
 
 	/**

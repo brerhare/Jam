@@ -37,22 +37,43 @@
 	<?php //echo $form->textAreaRow($model,'content',array('rows'=>6, 'cols'=>50, 'class'=>'span6')); ?>
 	<div id="row">
 Free format content
-	<div style="width:700px">
-	<?php
-	$this->widget('bootstrap.widgets.TbRedactorJs',
-    	array(
-      	'model'=>$model,
-      	'attribute'=>'content',
-      	'editorOptions'=>array(
-          	'imageUpload' => $this->createUrl('mailerContent/imageUpload'),
-          	'imageGetJson' => $this->createUrl('mailerContent/imageList'),
-          	'width'=>'100%',
-          	'height'=>'400px'
-       	)
-    	));
-	?>
+		<div style="width:700px">
+		<?php
+		$this->widget('bootstrap.widgets.TbRedactorJs',
+    		array(
+      		'model'=>$model,
+      		'attribute'=>'content',
+      		'editorOptions'=>array(
+          		'imageUpload' => $this->createUrl('mailerContent/imageUpload'),
+          		'imageGetJson' => $this->createUrl('mailerContent/imageList'),
+          		'width'=>'100%',
+          		'height'=>'400px'
+       		)
+    		));
+		?>
+		</div>
 	</div>
-	</div>
+
+<br>
+Attached mailing lists<br>
+<div class="row">
+    <div class="span2 well">
+        <?php
+            $criteria = new CDbCriteria;
+            $criteria->addCondition("uid = " . Yii::app()->session['uid']);
+            $lists = MailerList::model()->findAll($criteria);
+            foreach ($lists as $list):
+                $criteria = new CDbCriteria;
+                $criteria->addCondition("mailer_content_id = $model->id");
+                $criteria->addCondition("mailer_list_id = $list->id");
+                $match = $model->isNewRecord ? 0 : MailerContentHasList::model()->exists($criteria);
+        ?>
+        <label class="checkbox">
+            <input name="list[]" <?php if ($match) echo ' checked="checked" '?> type="checkbox" value="<?php echo $list->id; ?>"><?php echo $list->name; ?>
+            </label>
+        <?php endforeach; ?>
+    </div><!-- /span -->
+</div>
 
 
 	<?php //echo $form->textFieldRow($model,'sent',array('class'=>'span1')); ?>
