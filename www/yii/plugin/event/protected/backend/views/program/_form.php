@@ -12,7 +12,7 @@
 	<?php echo $form->textFieldRow($model,'name',array('class'=>'span5','maxlength'=>255)); ?>
 
     <div class="control-group">
-    	<label class="control-label" for="thumb_path">Thumb Path</label>
+    	<label class="control-label" for="thumb_path">Thumb (140w x 115h)</label>
            	<div class="controls">
         	<?php echo CHtml::activeFileField($model,'thumb_path',array('size'=>60,'maxlength'=>255)); ?>
         	<?php echo $form->error($model,'thumb_path'); ?>
@@ -20,7 +20,7 @@
     </div>
 
     <div class="control-group">
-    	<label class="control-label" for="icon_path">Icon Path</label>
+    	<label class="control-label" for="icon_path">Icon (20w x 20h)</label>
            	<div class="controls">
 	        <?php echo CHtml::activeFileField($model,'icon_path',array('size'=>60,'maxlength'=>255)); ?>
     	    <?php echo $form->error($model,'icon_path'); ?>

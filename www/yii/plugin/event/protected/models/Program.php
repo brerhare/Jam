@@ -106,8 +106,8 @@ class Program extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'name' => 'Name',
-			'thumb_path' => 'Thumb Path',
-			'icon_path' => 'Icon Path',
+			'thumb_path' => 'Thumb (140w x 115h)',
+			'icon_path' => 'Icon (20w x 20h)',
 			'event_program_fields_id' => 'Event Program Fields',
 		);
 	}
