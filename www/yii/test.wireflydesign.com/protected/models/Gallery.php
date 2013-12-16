@@ -1,1 +1,0 @@
-../../../common/protected/models/Gallery.php
