@@ -1,53 +1,57 @@
 <?php
-$this->breadcrumbs=array(
-	'Jelly Galleries'=>array('index'),
-	'Manage',
-);
-
 $this->menu=array(
-	array('label'=>'List JellyGallery','url'=>array('index')),
-	array('label'=>'Create JellyGallery','url'=>array('create')),
+	array('label'=>'Create Gallery','url'=>array('create')),
 );
 
-Yii::app()->clientScript->registerScript('search', "
-$('.search-button').click(function(){
-	$('.search-form').toggle();
-	return false;
-});
-$('.search-form form').submit(function(){
-	$.fn.yiiGridView.update('jelly-gallery-grid', {
-		data: $(this).serialize()
-	});
-	return false;
-});
-");
 ?>
 
-<h1>Manage Jelly Galleries</h1>
+<h2>Manage Galleries</h2>
 
-<p>
-You may optionally enter a comparison operator (<b>&lt;</b>, <b>&lt;=</b>, <b>&gt;</b>, <b>&gt;=</b>, <b>&lt;&gt;</b>
-or <b>=</b>) at the beginning of each of your search values to specify how the comparison should be done.
-</p>
+<style>
+Ximg { height:50px;}
+</style>
 
-<?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button btn')); ?>
-<div class="search-form" style="display:none">
-<?php $this->renderPartial('_search',array(
-	'model'=>$model,
-)); ?>
-</div><!-- search-form -->
 
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'jelly-gallery-grid',
 	'dataProvider'=>$model->search(),
-	'filter'=>$model,
+	//'filter'=>$model,
 	'columns'=>array(
-		'id',
-		'sequence',
-		'title',
-		'image',
+		//'id',
+
+        array(
+            'name'  => 'sequence',
+            'value' => 'CHtml::link($data->sequence, Yii::app()->createUrl("jellyGalleryImage/session",array("gallery_id"=>$data->primaryKey)))',
+            'type'  => 'raw',
+        ),
+
+        array(
+            'name'  => 'title',
+            'value' => 'CHtml::link($data->title, Yii::app()->createUrl("jellyGalleryImage/session",array("gallery_id"=>$data->primaryKey)))',
+            'type'  => 'raw',
+        ),
+
+		//'image',
+
+        array('name'=>'image',
+            'type'=>'html',
+			'htmlOptions'=>array('width'=>'60px'),
+            'header'=>'',
+            'value'=> 'CHtml::image("/userdata/jelly/gallery/" . $data->image, "image", array("height"=>"50"))',
+        ),
+
+
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
+			'template'=>'{update}{images}{delete}',
+            'buttons'=>array(
+                'images' => array(
+                    'label'=>'Images',
+                    'imageUrl'=>Yii::app()->request->baseUrl.'/img/image.png',
+                    'url'=>'Yii::app()->controller->createUrl("jellyGalleryImage/session", array("gallery_id"=>$data->primaryKey))',
+                ),
+            ),
+
 		),
 	),
 )); ?>

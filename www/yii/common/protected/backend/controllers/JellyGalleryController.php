@@ -8,6 +8,8 @@ class JellyGalleryController extends Controller
 	 */
 	public $layout='//layouts/column2';
 
+	private $_imageDir = '/../userdata/jelly/gallery/';
+
 	/**
 	 * @return array action filters
 	 */
@@ -31,7 +33,7 @@ class JellyGalleryController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','delete','admin'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -69,8 +71,17 @@ class JellyGalleryController extends Controller
 		if(isset($_POST['JellyGallery']))
 		{
 			$model->attributes=$_POST['JellyGallery'];
+			$model->image=CUploadedFile::getInstance($model, 'image');
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			{
+                if (strlen($model->image) > 0)
+                {
+                    $fname = Yii::app()->basePath . $this->_imageDir . $model->image;
+                    $model->image->saveAs($fname);
+                    //$this->_watermark($fname);
+                }
+				$this->redirect(array('admin'));
+			}
 		}
 
 		$this->render('create',array(
@@ -87,14 +98,36 @@ class JellyGalleryController extends Controller
 	{
 		$model=$this->loadModel($id);
 
+		$model->scenario = 'update';
+
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['JellyGallery']))
 		{
 			$model->attributes=$_POST['JellyGallery'];
+            $file=CUploadedFile::getInstance($model, 'image');
+            if(is_object($file) && get_class($file) === 'CUploadedFile')
+            {
+                if (file_exists(Yii::app()->basePath . $this->_imageDir . $model->image))
+                {
+                    unlink(Yii::app()->basePath . $this->_imageDir . $model->image);
+                    //unlink(Yii::app()->basePath . $this->_imageDir . 'gall_' . $model->filename);
+                    //unlink(Yii::app()->basePath . $this->_imageDir . 'orig_' . $model->filename);
+                }
+                $model->image = $file;
+            }
+
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			{
+                if(is_object($file))
+                {
+                    $fname = Yii::app()->basePath . $this->_imageDir . $model->image;
+                    $model->image->saveAs($fname);
+                    //$this->_watermark($fname);
+                }
+				$this->redirect(array('admin'));
+			}
 		}
 
 		$this->render('update',array(
@@ -112,11 +145,19 @@ class JellyGalleryController extends Controller
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
+        	$oldfilename = $this->loadModel($id)->image;
+        	if (($oldfilename != '') && (file_exists(Yii::app()->basePath . $this->_imageDir . $oldfilename)))
+        	{
+            	unlink(Yii::app()->basePath . $this->_imageDir . $oldfilename);
+            	//unlink(Yii::app()->basePath . $this->_imageDir . 'gall_' . $oldfilename);
+            	//unlink(Yii::app()->basePath . $this->_imageDir . 'orig_' . $oldfilename);
+        	}
+
 			$this->loadModel($id)->delete();
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+				$this->redirect(array('admin'));
 		}
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');

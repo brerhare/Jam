@@ -1,15 +1,10 @@
 <?php
-$this->breadcrumbs=array(
-	'Jelly Gallery Images'=>array('index'),
-	'Create',
-);
 
 $this->menu=array(
-	array('label'=>'List JellyGalleryImage','url'=>array('index')),
-	array('label'=>'Manage JellyGalleryImage','url'=>array('admin')),
+	array('label'=>'Manage Gallery Images','url'=>array('admin')),
 );
 ?>
 
-<h1>Create JellyGalleryImage</h1>
+<h2>Create Gallery Image</h2>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

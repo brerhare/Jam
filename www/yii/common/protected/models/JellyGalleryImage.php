@@ -44,6 +44,20 @@ class JellyGalleryImage extends CActiveRecord
 		return array(
 			array('image, jelly_gallery_id', 'required'),
 			array('sequence, jelly_gallery_id', 'numerical', 'integerOnly'=>true),
+
+            array('image', 'file','on'=>'insert',
+                'types'=> 'jpg, jpeg, gif, png',
+                'maxSize' => 1024 * 1024 * 20, // 20MB
+                'tooLarge' => 'The file was bigger than 20MB. Please upload a smaller file.'
+            ),
+            array('image', 'file','on'=>'update',
+                'types'=> 'jpg, jpeg, gif, png',
+                'allowEmpty' => true,
+                'maxSize' => 1024 * 1024 * 20, // 20MB
+                'tooLarge' => 'The file was larger than 20MB. Please upload a smaller file.'
+            ),
+            array('image', 'unsafe'),
+
 			array('image, url', 'length', 'max'=>255),
 			array('text', 'safe'),
 			// The following rule is used by search().
@@ -95,7 +109,7 @@ class JellyGalleryImage extends CActiveRecord
 		$criteria->compare('text',$this->text,true);
 		$criteria->compare('image',$this->image,true);
 		$criteria->compare('url',$this->url,true);
-		$criteria->compare('jelly_gallery_id',$this->jelly_gallery_id);
+		$criteria->compare('jelly_gallery_id',Yii::app()->session['gallery_id']);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
