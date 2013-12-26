@@ -155,7 +155,7 @@ css.background-color = green
 
     [contentcontainer]
     child = content
-    #css.background-color = white
+    css.background-color = red
     fx.rounding = 4px
 
         [content]
