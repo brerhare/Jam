@@ -27,6 +27,7 @@ class fancybox
 
 		// Generate the content into the html, replacing any <substituteN> tags
 		$content = "";
+		$galleryId = 0;
 		foreach ($options as $opt => $val)
 		{
 			switch ($opt)
@@ -38,9 +39,26 @@ class fancybox
 						$content .= "<table>";
 						$galleries = JellyGallery::model()->findAll(array('order'=>'sequence'));
 						foreach ($galleries as $gallery):
+							$galleryId++;
 							$content .= "<tr>";
 							$content .= "<td width='25%'>";
-							$content .= "<img src='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/thumb_" . $gallery->image . "' alt='' />";
+
+							$criteria = new CDbCriteria;
+							$criteria->addCondition("jelly_gallery_id = " . $gallery->id);
+							$galleryImages = JellyGalleryImage::model()->findAll($criteria);
+							$firstImage = 1;
+							foreach ($galleryImages as $galleryImage):
+								$thumb = $galleryImage->image;
+								$style = "display:none";
+								if ($firstImage == 1)
+								{
+									$firstImage = 0;
+									$thumb = $gallery->image;
+									$style = "";
+								}
+								$content .= "<a style='" . $style . "' class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/" . $galleryImage->image . "' title='" . $galleryImage->text . "'> <img src='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/thumb_" . $thumb . "' alt='' /> </a>";
+							endforeach;
+
 							$content .= "</td>";
 							$content .= "<td width='1%'></td>";
 							$content .= "<td width='74%'>";
