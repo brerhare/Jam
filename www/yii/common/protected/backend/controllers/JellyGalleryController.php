@@ -78,7 +78,7 @@ class JellyGalleryController extends Controller
                 {
                     $fname = Yii::app()->basePath . $this->_imageDir . $model->image;
                     $model->image->saveAs($fname);
-                    //$this->_watermark($fname);
+					$this->makeThumb($fname);
                 }
 				$this->redirect(array('admin'));
 			}
@@ -112,8 +112,7 @@ class JellyGalleryController extends Controller
                 if (file_exists(Yii::app()->basePath . $this->_imageDir . $model->image))
                 {
                     unlink(Yii::app()->basePath . $this->_imageDir . $model->image);
-                    //unlink(Yii::app()->basePath . $this->_imageDir . 'gall_' . $model->filename);
-                    //unlink(Yii::app()->basePath . $this->_imageDir . 'orig_' . $model->filename);
+					unlink(Yii::app()->basePath . $this->_imageDir . 'thumb_' . $model->image);
                 }
                 $model->image = $file;
             }
@@ -124,7 +123,7 @@ class JellyGalleryController extends Controller
                 {
                     $fname = Yii::app()->basePath . $this->_imageDir . $model->image;
                     $model->image->saveAs($fname);
-                    //$this->_watermark($fname);
+					$this->makeThumb($fname);
                 }
 				$this->redirect(array('admin'));
 			}
@@ -149,8 +148,7 @@ class JellyGalleryController extends Controller
         	if (($oldfilename != '') && (file_exists(Yii::app()->basePath . $this->_imageDir . $oldfilename)))
         	{
             	unlink(Yii::app()->basePath . $this->_imageDir . $oldfilename);
-            	//unlink(Yii::app()->basePath . $this->_imageDir . 'gall_' . $oldfilename);
-            	//unlink(Yii::app()->basePath . $this->_imageDir . 'orig_' . $oldfilename);
+				unlink(Yii::app()->basePath . $this->_imageDir . 'thumb_' . $oldfilename);
         	}
 
 			$this->loadModel($id)->delete();
@@ -214,4 +212,25 @@ class JellyGalleryController extends Controller
 			Yii::app()->end();
 		}
 	}
+
+    /**
+     * Add a watermark to the uploaded image
+     * @param &$filename Address of filename to update with watermarked image
+     */
+    private function makeThumb(&$filename)
+    {
+        // Make a thumbnail image of the filename
+        list($width, $height, $type) = getimagesize($filename);
+        if ($width > $height) {
+            $width = 150;
+            $height = 0;
+        } else {
+            $height = 150;
+            $width = 0;
+        }
+$width = 150; $height = 150;
+        ImageUtils::resize($filename, dirname($filename) . '/thumb_' . basename($filename), $width, $height);
+    }
+
+
 }
