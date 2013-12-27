@@ -37,9 +37,9 @@
                 array('label' => 'Page Content', 'url' => array('/contentBlock/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Slider Content', 'url' => array('/jellySliderImage/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Tab Content', 'url' => array('/tabBlock/admin'), 'visible' => !Yii::app()->user->isGuest),                      
+				array('label' => 'Galleries', 'url' => array('/jellyGallery/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Blog Backend', 'url' => 'https://plugin.wireflydesign.com/blog/backend.php/site/sDirect', 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Product Backend', 'url' => 'https://plugin.wireflydesign.com/product/backend.php/site/sDirect', 'visible' => !Yii::app()->user->isGuest),
-				array('label' => 'Galleries', 'url' => array('/jellyGallery/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
                 array('label' => 'Logout', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),                 
 
