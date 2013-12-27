@@ -878,7 +878,7 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 			$addon = array(
 				"gallery" => array(
 					"fancybox" => array(
-             			"foo" => "bar"
+             			"source" => "db"
 					)
 				)
 			);

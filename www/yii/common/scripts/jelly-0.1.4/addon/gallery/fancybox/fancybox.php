@@ -11,7 +11,7 @@
 class fancybox
 {
 	//Defaults
-	private $defaultSource = 'db';
+	private $defaultSomething = 'someval';
 
 	public $apiOption = array(
 	);
@@ -31,20 +31,15 @@ class fancybox
 		{
 			switch ($opt)
 			{
-				case "something":
-					$this->defaultSomething = $val;
-					break;
                 case "source":
 					if ($val == "db")
 					{
 						// If db based content
-						$sliderItems = JellySliderImage::model()->findAll(array('order'=>'sequence'));
-						foreach ($sliderItems as $sliderItem):
-							$content .= "<li>";
+						$galleryImages = JellyGalleryImage::model()->findAll(array('order'=>'sequence'));
+						foreach ($galleryImages as $galleryImage):
 
-$content .= "<img src='" . Yii::app()->baseUrl . "/userdata/jelly/sliderimage/" . $sliderItem->image . "' style='margin:0px; width:" . $this->defaultWidth . "; height:" . $this->defaultHeight . "; background: url(/userdata/jelly/sliderimage/" . $sliderItem->image  . " no-repeat center center; background-size:cover;' alt=''>";
+							$content .= "<a class='fancybox' rel='gallery1' href='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/" . $galleryImage->image . "' title='" . $galleryImage->text . "'> <img src='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . "' alt='' /> </a>";
 
-							$content .= "</li>";
 						endforeach;
 					}
 					else if ($val == "glob")
@@ -77,6 +72,7 @@ $content .= "<img src='" . Yii::app()->baseUrl . "/userdata/jelly/sliderimage/" 
 		}
 
 		$this->apiHtml = str_replace("<substitute-path>", $jellyRootUrl, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-data>", $content, $this->apiHtml);
 
 		$retArr = array();
 		$retArr[0] = $this->apiHtml;
@@ -85,6 +81,12 @@ $content .= "<img src='" . Yii::app()->baseUrl . "/userdata/jelly/sliderimage/" 
 	}
 
 	private $apiHtml = <<<END_OF_API_HTML
+
+<style>
+#element {
+    z-index: 12000;
+}
+</style>
 
 		<div id="jelly-fancybox-container">
 			<!--Fancybox-->
@@ -104,10 +106,7 @@ $content .= "<img src='" . Yii::app()->baseUrl . "/userdata/jelly/sliderimage/" 
 			<link rel="stylesheet" href="<substitute-path>/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7" type="text/css" media="screen" />
 			<script type="text/javascript" src="<substitute-path>/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7"></script>
 
-
-
-<a class="fancybox" rel="group" href="big_image_1.jpg"><img src="small_image_1.jpg" alt="" /></a>
-<a class="fancybox" rel="group" href="big_image_2.jpg"><img src="small_image_2.jpg" alt="" /></a>
+			<substitute-data>
 
 		</div>
 
