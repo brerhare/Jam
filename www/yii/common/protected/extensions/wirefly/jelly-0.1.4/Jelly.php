@@ -731,6 +731,9 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 	// At the moment it has a fixed depth and structure of hierarchy, very limited
 	private function addonHandler($value)
 	{
+//var_dump($value);
+//echo '<br><br>';
+
 		$path = $this->jellyRootPath . "addon";
 		$url = $this->jellyRootUrl . "addon";
 		$optArr = array();
@@ -867,6 +870,21 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 		$pOrig = "{{" . $p2 . "}}";
 		$vals = explode(" ", $p2);
 		$type = $vals[0];
+
+		if (stristr($vals[0], "gallery"))
+		{
+			// Eg: {{gallery}}
+			// ----------------------------
+			$addon = array(
+				"gallery" => array(
+					"fancybox" => array(
+             			"foo" => "bar"
+					)
+				)
+			);
+			$this->addonHandler($addon);
+			$content = str_replace($pOrig, "", $content);
+		}
 
 		if (stristr($vals[0], "department"))
 		{
