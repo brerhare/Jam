@@ -1,8 +1,8 @@
 <?php
 
 $this->menu=array(
-	array('label'=>'Back to Manage Galleries', 'url'=>array('jellyGallery/admin')),
-	array('label'=>'Create Gallery Image','url'=>array('create')),
+	array('label'=>'Back to Manage Albums', 'url'=>array('jellyGallery/admin')),
+	array('label'=>'Create Image','url'=>array('create')),
 );
 
 ?>
@@ -44,6 +44,7 @@ img { height:50px;}
 		//'jelly_gallery_id',
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
+			'template'=>'{update}{delete}',
 		),
 	),
 )); ?>

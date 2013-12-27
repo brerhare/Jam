@@ -7,6 +7,7 @@
  * @property integer $id
  * @property integer $sequence
  * @property string $title
+ * @property string $text
  * @property string $image
  *
  * The followings are the available model relations:
@@ -55,11 +56,12 @@ class JellyGallery extends CActiveRecord
                 'tooLarge' => 'The file was larger than 20MB. Please upload a smaller file.'
             ),
             array('image', 'unsafe'),
+			array('text', 'safe'),
 
 			array('title, image', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, sequence, title, image', 'safe', 'on'=>'search'),
+			array('id, sequence, title, text, image', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -84,6 +86,7 @@ class JellyGallery extends CActiveRecord
 			'id' => 'ID',
 			'sequence' => 'Sequence',
 			'title' => 'Title',
+			'text' => 'Text',
 			'image' => 'Image',
 		);
 	}
@@ -102,6 +105,7 @@ class JellyGallery extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('sequence',$this->sequence);
 		$criteria->compare('title',$this->title,true);
+		$criteria->compare('text',$this->text,true);
 		$criteria->compare('image',$this->image,true);
 
 		return new CActiveDataProvider($this, array(

@@ -1,11 +1,11 @@
 <?php
 $this->menu=array(
-	array('label'=>'Create Gallery','url'=>array('create')),
+	array('label'=>'Create Album','url'=>array('create')),
 );
 
 ?>
 
-<h2>Manage Galleries</h2>
+<h2>Manage Gallery Albums</h2>
 
 <style>
 Ximg { height:50px;}

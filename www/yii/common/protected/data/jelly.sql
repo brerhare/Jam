@@ -126,6 +126,7 @@ CREATE  TABLE IF NOT EXISTS `jelly_gallery` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `sequence` INT NULL ,
   `title` VARCHAR(255) NOT NULL ,
+  `text` TEXT NULL ,
   `image` VARCHAR(255) NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `sequence` (`sequence` ASC) )

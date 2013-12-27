@@ -1,10 +1,10 @@
 <?php
 
 $this->menu=array(
-	array('label'=>'Manage Galleries','url'=>array('admin')),
+	array('label'=>'Manage Albums','url'=>array('admin')),
 );
 ?>
 
-<h2>Update Gallery <?php echo $model->title; ?></h2>
+<h2>Update Gallery Album <?php echo $model->title; ?></h2>
 
 <?php echo $this->renderPartial('_form',array('model'=>$model)); ?>
