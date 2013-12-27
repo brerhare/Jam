@@ -58,6 +58,8 @@ class fancybox
 								}
 								$content .= "<a style='" . $style . "' class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/" . $galleryImage->image . "' title='" . $galleryImage->text . "'> <img src='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/thumb_" . $thumb . "' alt='' /> </a>";
 							endforeach;
+							if ($firstImage == 1)	// ie empty album
+								$content .= "<a class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/" . $gallery->image . "' title='" . $gallery->text . "'> <img src='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/thumb_" . $gallery->image . "' alt='' /> </a>";
 
 							$content .= "</td>";
 							$content .= "<td width='1%'></td>";
