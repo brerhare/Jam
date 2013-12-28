@@ -99,12 +99,22 @@ class ProductController extends Controller
 		if(isset($_POST['Product']))
 		{
 			$model->attributes=$_POST['Product'];
-			if($model->save())
+			if ((isset($_POST['departments'])) && ($_POST['departments'] != $model->product_department_id))
 			{
-                $this->deleteProductTabs($model->id);
-                $this->updateProductTabs($model->id);
-				$this->redirect(array('admin'));
+				//var_dump($_POST);die();
+				$model->product_department_id = $_POST['departments'];
+				if ($model->save())
+               		$this->deleteProductTabs($model->id);
 			}
+			else
+			{
+				if($model->save())
+				{
+               		$this->deleteProductTabs($model->id);
+               		$this->updateProductTabs($model->id);
+				}
+			}
+			$this->redirect(array('admin'));
 		}
 
 		$this->render('update',array(
@@ -185,8 +195,6 @@ class ProductController extends Controller
 		// Options
         Yii::log("Deleting all options for product " . $id, CLogger::LEVEL_INFO, 'system.test.kim');
         ProductHasOption::model()->deleteAllByAttributes(array('product_product_id' => $id, ));
-        //////////Yii::log("Deleting all images for product " . $id, CLogger::LEVEL_INFO, 'system.test.kim');
-        //////////Image::model()->deleteAllByAttributes(array('product_product_id' => $id, ));
     }
 
     // Update product features (checkboxes) and options

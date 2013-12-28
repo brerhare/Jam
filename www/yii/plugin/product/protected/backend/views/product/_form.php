@@ -15,15 +15,19 @@
     echo "<input type='hidden' name='defaultOption' id='defaultOption' value='" . $def . "'>";
     ?>
 
-    <?php $this->widget('bootstrap.widgets.TbTabs',array(
+    <?php
+		$tabs = array();
+		array_push($tabs, array('label'=>'Basic Details', 'content' => $this->renderPartial('_form_details', array('form' => $form, 'model' => $model), true), 'active'=>true));
+		array_push($tabs, array('label'=>'Order Options', 'content' => $this->renderPartial('_form_options', array('form' => $form, 'model' => $model),  true)));
+		array_push($tabs, array('label'=>'Features', 'content' => $this->renderPartial('_form_features', array('form' => $form, 'model' => $model), true)));
+		array_push($tabs, array('label'=>'Packing', 'content' => $this->renderPartial('_form_packing', array('form' => $form, 'model' => $model), true)));
+		// Only show the department move tab if its not a new record
+		if (!$model->isNewRecord)
+			array_push($tabs, array('label'=>'Change Department', 'content' => $this->renderPartial('_form_department', array('form' => $form, 'model' => $model), true)));
+
+		$this->widget('bootstrap.widgets.TbTabs',array(
         'type'=>'tabs',
-        'tabs' => array(
-            array('label'=>'Basic Details', 'content' => $this->renderPartial('_form_details', array('form' => $form, 'model' => $model), true), 'active'=>true),
-            array('label'=>'Order Options', 'content' => $this->renderPartial('_form_options', array('form' => $form, 'model' => $model),  true)),
-            array('label'=>'Features', 'content' => $this->renderPartial('_form_features', array('form' => $form, 'model' => $model), true)),
-            array('label'=>'Packing', 'content' => $this->renderPartial('_form_packing', array('form' => $form, 'model' => $model), true)),
-            array('label'=>'Change Department', 'content' => $this->renderPartial('_form_department', array('form' => $form, 'model' => $model), true)),
-        ),
+		'tabs' => $tabs,
     ));
     ?>
 

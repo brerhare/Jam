@@ -1,5 +1,6 @@
 	<div style='color:red'>
-	<b>NB: Moving a product to a different department requires Order Options and Features to be redone</b> 
+	<b>NB: Order Options and Features are specific to each department<br>
+	   Moving a product to another department will erase that information</b> 
 	</div>
 	<p>
 
