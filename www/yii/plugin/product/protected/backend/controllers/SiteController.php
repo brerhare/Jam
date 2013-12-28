@@ -89,6 +89,20 @@ class SiteController extends Controller
     /**
      * Displays the DIRECT login page
      */
+// @@TODO: HARDCODED FOR DFD ---------- REMOVE
+    public function actionDDirect()
+    {
+        Yii::app()->session['uid'] = 17;
+        $identity = new UserIdentity('gordon@dumfriesfurniture.com', 'gordon');
+		$identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
 // @@TODO: HARDCODED FOR STYLE ---------- REMOVE
     public function actionSDirect()
     {

@@ -38,6 +38,7 @@
                 array('label' => 'Accordion Content', 'url' => array('/accordionBlock/admin'), 'visible' => !Yii::app()->user->isGuest),                      
                 array('label' => 'Slider Content', 'url' => array('/carouselBlock/admin'), 'visible' => !Yii::app()->user->isGuest),
                 //array('label' => 'Tab Content', 'url' => array('/tabBlock/admin'), 'visible' => !Yii::app()->user->isGuest),                      
+array('label' => 'Product Backend', 'url' => 'https://plugin.wireflydesign.com/product/backend.php/site/dDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
                 array('label' => 'Logout', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),                 
                 array('label' => 'Contact', 'url' => array('/site/contact'), 'visible' => Yii::app()->user->isGuest),                
