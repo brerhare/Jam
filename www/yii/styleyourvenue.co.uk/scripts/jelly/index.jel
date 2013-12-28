@@ -19,7 +19,7 @@ css.width = 1000px
 css.background-color = #000000
 
 	[contentframe]
-	child = header, menu, slider, watermark, line, contentcontainer, footer
+	child = header, menu, slider, watermark, line, contentcontainer, footer-line, footer
 	css.width = 960px
 
 	[header]
@@ -116,11 +116,12 @@ css.background-color = #000000
 
 	[menu]
 	css.height = 34px
-	css.width = 600px
+	css.width = 960px
 	css.overflow = visible
 	css.margin-top = 2px
 	addon.menu.basic.orientation = horizontal
-	addon.menu.basic.font-size = 16px
+	addon.menu.basic.width = 960px
+	addon.menu.basic.font-size = 14px
 	addon.menu.basic.menu-rounding = 0px
 	addon.menu.basic.menu-opacity = 100%
 	addon.menu.basic.menu-tile = /img/menu-bar.jpg
@@ -136,13 +137,21 @@ css.background-color = #000000
 
 
 	[slider]
-    css.margin-top = 20px
+	css.margin-top = 13px
 	css.width = 960px
-    css.height = 250px
-    addon.slider.flexslider.width = 950px
-    addon.slider.flexslider.height = 240px
-    addon.slider.flexslider.mode = image
-    addon.slider.flexslider.source = db
+	css.height = 250px
+	addon.slider.flexslider.width = 960px
+	addon.slider.flexslider.height = 250px
+	addon.slider.flexslider.border-width = 0px
+	#addon.slider.flexslider.border-color = #
+	#addon.slider.flexslider.active-dotcolor = red
+	#addon.slider.flexslider.inactive-dotcolor = blue
+	#addon.slider.flexslider.dot-margin-top = -200px
+	#addon.slider.flexslider.dot-margin-bottom = 0px
+	#addon.slider.flexslider.dot-margin-left = 0px
+	#addon.slider.flexslider.dot-margin-right = 0px
+	addon.slider.flexslider.mode = image
+	addon.slider.flexslider.source = db
 
 
 	[watermark]
@@ -155,9 +164,9 @@ css.background-color = #000000
 	
 
 	[line]
-    css.height = 4px
-	css.margin-top = 10px
-    css.background-color = #ff00ff
+	css.height = 2px
+	css.margin-top = -50px
+	css.background-color = #ff00ff
 
     [contentcontainer]
     child = content
@@ -171,16 +180,22 @@ css.background-color = #000000
         db.error = Sorry, I could not find that page. You requested $_GET['page']
         html.raw = ContentBlock.content
 
+	[footer-line]
+	css.height = 2px
+	css.margin-top = 30px
+	css.background-color = #ff00ff
 
 	[footer]
 	child = footer-menu, wirefly-details
 	#css.height = 40px
 	css.width = 60%
 
+
 		[footer-menu]
 		stacking = horizontal
 		child = footer-cookies, footer-tandc, footer-contact
 		css.height = 20px
+		css.margin-top = 10px
 
 			[footer-cookies]
 			html.raw = Cookie Policy
