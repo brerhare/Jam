@@ -94,6 +94,12 @@ class Department extends CActiveRecord
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+
+            // @@EG: Change cgridview pagination
+            'pagination' => array(
+                'pageSize' => 50,
+            ),
+
 		));
 	}
 }

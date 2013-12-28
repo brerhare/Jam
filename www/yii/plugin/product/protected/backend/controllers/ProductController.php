@@ -31,11 +31,11 @@ class ProductController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','delete','session'),
+				'actions'=>array('create','update','admin','delete','session','changeDepartmentAll'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','admin','session'),
+				'actions'=>array('admin','delete','admin','session','changeDepartmentAll'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -141,6 +141,29 @@ class ProductController extends Controller
 		}
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+	}
+
+	/**
+	 * Changes department for all products in a department
+	 */
+	public function actionChangeDepartmentAll()
+	{
+		if ((isset($_POST['departments'])) && ($_POST['departments'] != Yii::app()->session['department_id']))
+		{
+			//var_dump($_POST);die();
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+			$criteria->addCondition("product_department_id = " . Yii::app()->session['department_id']);
+			$products = Product::model()->findAll($criteria);
+			foreach ($products as $product):
+				$product->product_department_id = $_POST['departments'];
+				$this->deleteProductTabs($product->id);
+				if (!$product->save())
+					throw new CHttpException(400,"Error saving new department product. id=" . $product->id);
+			endforeach;
+			$this->redirect(array('admin'));
+		}
+		$this->render('changeDepartmentAll',array());
 	}
 
 	/**

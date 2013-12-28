@@ -2,6 +2,7 @@
 $this->menu=array(
 	array('label'=>'Back to Manage Departments', 'url'=>array('department/admin')),
 	array('label'=>'Create Product','url'=>array('create')),
+	array('label'=>'Change Department All Products','url'=>array('changeDepartmentAll')),
 );
 
 ?>
