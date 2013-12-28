@@ -43,31 +43,22 @@ class fancybox
 							$content .= "<tr>";
 							$content .= "<td width='25%'>";
 
+							$content .= "<a class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/" . $gallery->image . "' title='" . $gallery->text . "'> <img src='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/thumb_" . $gallery->image . "' alt='' /> </a>";
+
 							$criteria = new CDbCriteria;
 							$criteria->addCondition("jelly_gallery_id = " . $gallery->id);
 							$galleryImages = JellyGalleryImage::model()->findAll($criteria);
-							$firstImage = 1;
 							foreach ($galleryImages as $galleryImage):
-								$thumb = $galleryImage->image;
-								$style = "display:none";
-								if ($firstImage == 1)
-								{
-									$firstImage = 0;
-									$thumb = $gallery->image;
-									$style = "";
-								}
-								$content .= "<a style='" . $style . "' class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/" . $galleryImage->image . "' title='" . $galleryImage->text . "'> <img src='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/thumb_" . $thumb . "' alt='' /> </a>";
+
+								$content .= "<a style='display:none' class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/" . $galleryImage->image . "' title='" . $galleryImage->text . "'> <img src='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . "' alt='' /> </a>";
+
 							endforeach;
-							if ($firstImage == 1)	// ie empty album
-								$content .= "<a class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/" . $gallery->image . "' title='" . $gallery->text . "'> <img src='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/thumb_" . $gallery->image . "' alt='' /> </a>";
 
 							$content .= "</td>";
 							$content .= "<td width='1%'></td>";
 							$content .= "<td width='74%'>";
 							$content .= "<b>" . $gallery->title . "</b><br>" . $gallery->text;
 							$content .= "</td></tr>";
-
-							//$content .= "<a class='fancybox' rel='gallery1' href='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/" . $galleryImage->image . "' title='" . $galleryImage->text . "'> <img src='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . "' alt='' /> </a>";
 
 						endforeach;
 						$content .= "</table>";

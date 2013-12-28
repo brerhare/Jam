@@ -144,6 +144,14 @@ class JellyGalleryController extends Controller
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
+
+			// Cant delete galleries for which there are images (user deletes all those first)
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("jelly_gallery_id = " . $id);
+			$galleryImages = JellyGalleryImage::model()->findAll($criteria);
+			if ($galleryImages)
+				throw new CHttpException(400,'Cant delete a gallery album that still has images.');
+
         	$oldfilename = $this->loadModel($id)->image;
         	if (($oldfilename != '') && (file_exists(Yii::app()->basePath . $this->_imageDir . $oldfilename)))
         	{
