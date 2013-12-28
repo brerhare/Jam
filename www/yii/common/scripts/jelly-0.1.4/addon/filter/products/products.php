@@ -323,7 +323,7 @@ class products
                                 }
                             }
                         }
-                        if (!($found))
+                        if ((!($found)) && (count($this->durationCheck) > 0))
                             continue;
 
                         // Now check price range
@@ -401,7 +401,7 @@ END_OF_API_HTML;
 			{
 				if (av[i].checked)
 				{
-					checkDuration[i] = Array();
+					checkduration[i] = Array();
 					checkPrice[i] = Array();
 					checkDepartment[i] = Array();
 					checkFeature[i] = Array();
