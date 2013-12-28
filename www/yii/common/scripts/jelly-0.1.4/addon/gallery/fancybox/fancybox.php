@@ -149,6 +149,16 @@ END_OF_API_HTML;
 
 	$(document).ready(function() {
 		$(".fancybox").fancybox();
+
+		/*$(".fancybox").fancybox({
+    		helpers:  {
+        		thumbs : {
+            		width: 50,
+            		height: 50
+        		}
+    		}
+		});*/
+
 	});
 
 END_OF_API_JS;
