@@ -22,6 +22,7 @@
             array('label'=>'Order Options', 'content' => $this->renderPartial('_form_options', array('form' => $form, 'model' => $model),  true)),
             array('label'=>'Features', 'content' => $this->renderPartial('_form_features', array('form' => $form, 'model' => $model), true)),
             array('label'=>'Packing', 'content' => $this->renderPartial('_form_packing', array('form' => $form, 'model' => $model), true)),
+            array('label'=>'Change Department', 'content' => $this->renderPartial('_form_department', array('form' => $form, 'model' => $model), true)),
         ),
     ));
     ?>
