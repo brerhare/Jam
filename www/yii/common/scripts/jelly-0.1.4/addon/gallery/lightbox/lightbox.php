@@ -11,8 +11,8 @@
 class lightbox
 {
 	//Defaults
-	private $defaultWidth = '100px';
-	private $defaultHeight = '100px';
+	//private $defaultWidth = '100px';
+	//private $defaultHeight = '100px';
 	private $defaultGroup = 'nogroup';
 
 	public $apiOption = array(
@@ -43,10 +43,12 @@ class lightbox
 					$this->apiHtml = str_replace("<substitute-group>", Yii::app()->baseUrl . $val, $this->apiHtml);
 					break;
                 case "width":
-					$this->defaultWidth = str_replace("px", "", $val) . "px";
+					$width = str_replace("px", "", $val) . "px";
+					$this->apiHtml = str_replace("<substitute-width>", " width $width ", $this->apiHtml);
 					break;
                 case "height":
-					$this->defaultHeight = str_replace("px", "", $val) . "px";
+					$height = str_replace("px", "", $val) . "px";
+					$this->apiHtml = str_replace("<substitute-height>", " height=$height ", $this->apiHtml);
 					break;
 				default:
 					// Not all array items are action items
@@ -91,7 +93,7 @@ class lightbox
 		<div id="jelly-lightbox2-container">
 			<!--Lightbox2-->
 
-			<a href="<substitute-image>" data-lightbox="<substitute-group>" title=""><img src="<substitute-thumb>" width="<substitute-width>" height="<substitute-height>"/></a>
+			<a href="<substitute-image>" data-lightbox="<substitute-group>" title=""><img src="<substitute-thumb>" <substitute-width> <substitute-height> /></a>
 		</div>
 
 END_OF_API_HTML;
