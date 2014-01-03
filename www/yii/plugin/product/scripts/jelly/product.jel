@@ -45,7 +45,7 @@ fx.wallpaper-color = #00000
 				css.width = 40%
 
 					[mainpic]
-					css.width = 200px
+					#css.width = 200px
 					css.height = 180px
 					css.margin = 10px
 					db.table = Image
@@ -54,7 +54,7 @@ fx.wallpaper-color = #00000
 					addon.gallery.lightbox.image = /userdata/image/Image.filename
 					addon.gallery.lightbox.thumb = /userdata/image/Image.filename
 					addon.gallery.lightbox.group = Image.filename
-					addon.gallery.lightbox.width = 200px
+					#addon.gallery.lightbox.width = 200px
 					addon.gallery.lightbox.height = 180
 
 					[thumbs]
@@ -62,7 +62,7 @@ fx.wallpaper-color = #00000
 					stacking = horizontal
 	
 						[thumb]
-						css.width = 80px
+						#css.width = 80px
 						css.height = 60px
 						css.margin = 10px
 						#css.border = 1px solid purple
@@ -73,7 +73,7 @@ fx.wallpaper-color = #00000
 						addon.gallery.lightbox.image = /userdata/image/Image.filename
 						addon.gallery.lightbox.thumb = /userdata/image/Image.filename
 						addon.gallery.lightbox.group = Image.filename
-						addon.gallery.lightbox.width = 80px
+						#addon.gallery.lightbox.width = 80px
 						addon.gallery.lightbox.height =  60px
 
 					[Xmainpic]
