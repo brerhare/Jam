@@ -47,6 +47,39 @@ fx.wallpaper-color = #00000
 					[mainpic]
 					css.width = 200px
 					css.height = 180px
+					css.margin = 10px
+					db.table = Image
+					db.filter = product_product_id=Product.id
+					#style.background-image = /userdata/image/Image.filename
+					addon.gallery.lightbox.image = /userdata/image/Image.filename
+					addon.gallery.lightbox.thumb = /userdata/image/Image.filename
+					addon.gallery.lightbox.group = Image.filename
+					addon.gallery.lightbox.width = 200px
+					addon.gallery.lightbox.height = 180
+
+					[thumbs]
+					child = thumb
+					stacking = horizontal
+	
+						[thumb]
+						css.width = 80px
+						css.height = 60px
+						css.margin = 10px
+						#css.border = 1px solid purple
+						db.table = Image
+						db.filter = product_product_id=Product.id, id!=Image.id
+						db.fetch = multiple
+						#style.background-image = /userdata/image/Image.filename
+						addon.gallery.lightbox.image = /userdata/image/Image.filename
+						addon.gallery.lightbox.thumb = /userdata/image/Image.filename
+						addon.gallery.lightbox.group = Image.filename
+						addon.gallery.lightbox.width = 80px
+						addon.gallery.lightbox.height =  60px
+
+					[Xmainpic]
+css.display = none
+					css.width = 200px
+					css.height = 180px
 					#css.height = 250px
 					css.margin = 10px
 					#css.border = 2px solid purple
@@ -54,11 +87,13 @@ fx.wallpaper-color = #00000
 					db.filter = product_product_id=Product.id
 					style.background-image = /userdata/image/Image.filename
 
-					[thumbs]
-					child = thumb
+					[Xthumbs]
+css.display = none
+					child = Xthumb
 					stacking = horizontal
 	
-						[thumb]
+						[Xthumb]
+css.display = none
 						css.width = 80px
 						css.height = 60px
 						css.margin = 10px
