@@ -73,7 +73,7 @@ css.margin-top = -10px
 				child = older-blog
 				stacking = horizontal
 				css.width = 100%
-				css.background-color = #f2f2f2
+				css.background-color = #ffffff
 				css.overflow = auto
 				
 					[older-blog]
