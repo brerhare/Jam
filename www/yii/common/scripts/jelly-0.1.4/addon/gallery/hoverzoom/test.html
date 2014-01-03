@@ -1,0 +1,33 @@
+<html>
+<head>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
+
+<script src="jquery.hoverZoom.js"></script>
+<link rel="stylesheet" href="jquery.hoverZoom.css">
+
+</head>
+<body>
+
+<ul class="thumb">
+	<li><a href="/userdata/jelly/gallery/Beach.jpg" /><img src="/userdata/jelly/gallery/thumb_Beach.jpg" /></a></li>
+</ul>
+
+<br clear="all"/><br/>
+
+<ul class="thumb">
+	<li><a href="/userdata/jelly/gallery/6081_pacman-cutters-on-black1.jpg" /><img src="/userdata/jelly/gallery/6081_pacman-cutters-on-black1.jpg" /></a></li>
+	<li><a href="/userdata/jelly/gallery/crazy-face.jpg" /><img src="/userdata/jelly/gallery/thumb_crazy-face.jpg" /></a></li>
+	<li><a href="/userdata/jelly/gallery/beer.jpg" /><img src="/userdata/jelly/gallery/thumb_beer.jpg" /></a></li>
+</ul>
+
+
+<script type="text/javascript">
+	$(document).ready(function(){
+	/*	$('.thumb img').hoverZoom();	*/
+		$('.thumb img').hoverZoom({speedView:600, speedRemove:400, showCaption:true, speedCaption:600, debug:true, hoverIntent: true, loadingIndicatorPos: 'center'});
+	});
+</script>
+
+</body>
+</html>

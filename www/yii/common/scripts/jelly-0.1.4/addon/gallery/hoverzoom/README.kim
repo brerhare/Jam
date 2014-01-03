@@ -1,0 +1,1 @@
+Doesnt use a modal window - uses same window. So it is restricted to the bounds of its container.
