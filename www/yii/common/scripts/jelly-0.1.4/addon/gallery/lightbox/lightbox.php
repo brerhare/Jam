@@ -59,6 +59,10 @@ class lightbox
 		// HTML
 		if (strstr($this->apiHtml, "<substitute-group>"))
 			$this->apiHtml = str_replace("<substitute-group>", $this->defaultGroup, $this->apiHtml);
+		if (strstr($this->apiHtml, "<substitute-width>"))
+			$this->apiHtml = str_replace("<substitute-width>", "", $this->apiHtml);
+		if (strstr($this->apiHtml, "<substitute-height>"))
+			$this->apiHtml = str_replace("<substitute-height>", "", $this->apiHtml);
 
 		// JS
 
