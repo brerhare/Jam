@@ -57,10 +57,6 @@ class lightbox
 
 		// Apply all defaults that werent overridden
 		// HTML
-		if (strstr($this->apiHtml, "<substitute-width>"))
-			$this->apiHtml = str_replace("<substitute-width>", $this->defaultWidth, $this->apiHtml);
-		if (strstr($this->apiHtml, "<substitute-height>"))
-			$this->apiHtml = str_replace("<substitute-height>", $this->defaultHeight, $this->apiHtml);
 		if (strstr($this->apiHtml, "<substitute-group>"))
 			$this->apiHtml = str_replace("<substitute-group>", $this->defaultGroup, $this->apiHtml);
 
