@@ -9,7 +9,7 @@
     'type'=>'tabs',
     'tabs' => array(
         array('label'=>'Standard', 'content' => $this->renderPartial('_form_standard', array('form' => $form, 'model' => $model), true), 'active'=>true),
-        array('label'=>'Meta', 'content' => $this->renderPartial('_form_meta', array('form' => $form, 'model' => $model),  true)),
+        array('label'=>'SEO', 'content' => $this->renderPartial('_form_meta', array('form' => $form, 'model' => $model),  true)),
     ),
 ));
 ?>
