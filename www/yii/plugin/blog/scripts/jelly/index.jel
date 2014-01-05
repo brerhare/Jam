@@ -48,7 +48,7 @@ db.filter = sid=$_GET['sid']
 					[most-recent-image]
 					css.height = 180px
 					css.width = 240px
-					css.padding = 10px
+					css.margin = 10px
 					style.background-image = /userdata/19/Article.thumbnail_path
 					
 					[most-recent-other]
