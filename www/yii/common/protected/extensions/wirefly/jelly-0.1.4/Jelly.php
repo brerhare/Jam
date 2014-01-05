@@ -138,35 +138,37 @@ END_OF_FOOTER;
 
 			// Metatags for SEO
 			// Get the requested page for its metadata
-			if (isset($_GET['page']))
+			if (1 == 2)
 			{
-				$criteria = new CDbCriteria;
-				$criteria->addCondition("url = '" . $_GET['page'] . "'");
-				$contentBlock = ContentBlock::model()->find($criteria);
-				if ($contentBlock)
+				if (isset($_GET['page']))
 				{
-					$this->metaTitle = trim($contentBlock->meta_title);
-					$this->metaDescription = trim($contentBlock->meta_description);
-					$this->metaKeywords = trim($contentBlock->meta_keywords);
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("url = '" . $_GET['page'] . "'");
+					$contentBlock = ContentBlock::model()->find($criteria);
+					if ($contentBlock)
+					{
+						$this->metaTitle = trim($contentBlock->meta_title);
+						$this->metaDescription = trim($contentBlock->meta_description);
+						$this->metaKeywords = trim($contentBlock->meta_keywords);
+					}
 				}
-			}
-			if (($this->metaTitle == "") && ($this->metaDescription == "") && ($this->metaKeywords == ""))
-			{
-				// Get the homepage for its default metadata
-				$criteria = new CDbCriteria;
-				$criteria->addCondition("home = " . 1);
-				$contentBlock = ContentBlock::model()->find($criteria);
-				if ($contentBlock)
+				if (($this->metaTitle == "") && ($this->metaDescription == "") && ($this->metaKeywords == ""))
 				{
-					$this->metaTitle = trim($contentBlock->meta_title);
-					$this->metaDescription = trim($contentBlock->meta_description);
-					$this->metaKeywords = trim($contentBlock->meta_keywords);
+					// Get the homepage for its default metadata
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("home = " . 1);
+					$contentBlock = ContentBlock::model()->find($criteria);
+					if ($contentBlock)
+					{
+						$this->metaTitle = trim($contentBlock->meta_title);
+						$this->metaDescription = trim($contentBlock->meta_description);
+						$this->metaKeywords = trim($contentBlock->meta_keywords);
+					}
 				}
-			}
-			$this->beginHeader = str_replace("<substitute-meta-title>", "<title>" . $this->metaTitle . "</title>", $this->beginHeader);;
-			$this->beginHeader = str_replace("<substitute-meta-description>", "<meta name='description' content='" . $this->metaDescription . "'>", $this->beginHeader);;
-			$this->beginHeader = str_replace("<substitute-meta-keywords>", "<meta name='keywords' content='" . $this->metaKeywords . "'>", $this->beginHeader);;
-
+				$this->beginHeader = str_replace("<substitute-meta-title>", "<title>" . $this->metaTitle . "</title>", $this->beginHeader);;
+				$this->beginHeader = str_replace("<substitute-meta-description>", "<meta name='description' content='" . $this->metaDescription . "'>", $this->beginHeader);;
+				$this->beginHeader = str_replace("<substitute-meta-keywords>", "<meta name='keywords' content='" . $this->metaKeywords . "'>", $this->beginHeader);;
+			}	
 
 			// Check if we have a contentBlock page anywhere in the file, and if so determine if its a homepage
 			// If so, set @HOMEPAGE ($this->homePage) variable
