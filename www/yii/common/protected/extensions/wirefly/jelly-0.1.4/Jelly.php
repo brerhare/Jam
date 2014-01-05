@@ -138,7 +138,7 @@ END_OF_FOOTER;
 
 			// Metatags for SEO
 			// Get the requested page for its metadata
-			if (1 == 2)
+			if (!strstr(Yii::app()->db->connectionString, "plugin"))	// We dont do this for plugins!
 			{
 				if (isset($_GET['page']))
 				{
@@ -169,6 +169,7 @@ END_OF_FOOTER;
 				$this->beginHeader = str_replace("<substitute-meta-description>", "<meta name='description' content='" . $this->metaDescription . "'>", $this->beginHeader);;
 				$this->beginHeader = str_replace("<substitute-meta-keywords>", "<meta name='keywords' content='" . $this->metaKeywords . "'>", $this->beginHeader);;
 			}	
+
 
 			// Check if we have a contentBlock page anywhere in the file, and if so determine if its a homepage
 			// If so, set @HOMEPAGE ($this->homePage) variable
