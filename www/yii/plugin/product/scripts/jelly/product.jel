@@ -53,7 +53,7 @@ fx.wallpaper-color = #00000
 					#style.background-image = /userdata/image/Image.filename
 					addon.gallery.lightbox.image = /userdata/image/Image.filename
 					addon.gallery.lightbox.thumb = /userdata/image/Image.filename
-					addon.gallery.lightbox.group = Image.filename
+					#addon.gallery.lightbox.group = Image.filename
 					#addon.gallery.lightbox.width = 200px
 					addon.gallery.lightbox.height = 180
 
@@ -72,7 +72,7 @@ fx.wallpaper-color = #00000
 						#style.background-image = /userdata/image/Image.filename
 						addon.gallery.lightbox.image = /userdata/image/Image.filename
 						addon.gallery.lightbox.thumb = /userdata/image/Image.filename
-						addon.gallery.lightbox.group = Image.filename
+						#addon.gallery.lightbox.group = Image.filename
 						#addon.gallery.lightbox.width = 80px
 						addon.gallery.lightbox.height =  60px
 
