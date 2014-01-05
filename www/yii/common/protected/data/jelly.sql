@@ -17,6 +17,9 @@ CREATE  TABLE IF NOT EXISTS `content_block` (
   `content` TEXT NULL ,
   `active` INT NULL ,
   `home` INT NULL ,
+  `meta_title` TEXT NULL ,
+  `meta_description` TEXT NULL ,
+  `meta_keywords` TEXT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `sequence` (`sequence` ASC) ,
   INDEX `parent_id` (`parent_id` ASC) )
