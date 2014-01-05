@@ -171,6 +171,7 @@ END_OF_FOOTER;
 									if (strstr($elemComma, '$_GET')) // Expand possible $_xxx['yyy']
 										$elemComma = $tmpArr[0] . "='" . eval("return $tmpArr[1];") . "'";
 								}
+//echo ($elemComma) . "<br>";
 								array_push($fltArr, $elemComma);
 							}
 							break;

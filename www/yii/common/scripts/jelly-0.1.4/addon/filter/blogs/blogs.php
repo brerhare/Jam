@@ -91,7 +91,7 @@ END_OF_API_HTML;
     function makeSel(id)
     {
 		sel = '?layout=index&sid=' + SID;
-        sel += '&category=' + id; 
+       	sel += '&category=' + id; 
 
         // Activate the link
         window.location.href = sel;

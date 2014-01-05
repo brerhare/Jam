@@ -35,6 +35,7 @@ db.filter = sid=$_GET['sid']
 			child = most-recent-blog, older-blog-grid
 #@@ array parsing order isnt the same as defined? If this db, stuff is in the next block where it belongs it doesnt work
 			db.table = Article
+			#db.filter = uid=User.id, blog_category_id=$_GET['category']
 			db.filter = uid=User.id
 			db.order = date DESC
 
@@ -80,6 +81,7 @@ db.filter = sid=$_GET['sid']
 					css.padding-top = 20px
 					child = blog-thumb, blog-title, blog-intro
 					db.table = Article
+					#db.filter = uid=User.id, id!=Article.id, blog_category_id=$_GET['category']
 					db.filter = uid=User.id, id!=Article.id
 					db.order = date DESC
 					db.fetch = multiple
