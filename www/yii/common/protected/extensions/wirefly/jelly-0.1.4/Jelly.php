@@ -424,6 +424,8 @@ if (isset($_GET['page']))
 		// Is this entire blob clickable?
 		if (array_key_exists("click", $array))
 			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['click'])) . ">\n", $indentLevel);
+		if (array_key_exists("clicknew", $array))
+			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['clicknew'])) . " target='_blank'>\n", $indentLevel);
 
 		$this->genInlineHtml("<div id='" . $blobName . "'>\n", $indentLevel);
 		$this->genDivCSS("div#" . $blobName ." {\n");
@@ -469,6 +471,8 @@ if (isset($_GET['page']))
 		$this->genInlineHtml("</div> <!-- " . $blobName . " -->\n", $indentLevel);
 
 		if (array_key_exists("click", $array))
+			$this->genInlineHtml("</a>\n", $indentLevel);
+		if (array_key_exists("clicknew", $array))
 			$this->genInlineHtml("</a>\n", $indentLevel);
 
 		if ($floatChildren)
