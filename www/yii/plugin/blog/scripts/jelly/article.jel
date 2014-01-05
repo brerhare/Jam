@@ -58,5 +58,6 @@ fx.wallpaper-color = #00000
 				style.background-image = /userdata/19/Article.thumbnail_path
 
 			[content]
+			css.width = 800px
 			html.raw = Article.content
 
