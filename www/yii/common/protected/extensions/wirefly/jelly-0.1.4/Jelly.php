@@ -30,6 +30,9 @@ class Jelly
 	// The @ things - clipboard and array of others
 	private $clipBoard = "";
 	private $homePage = 0;
+	private $metaTitle = "";
+	private $metaDescription = "";
+	private $metaKeywords = "";
 
 	// Addons used in multiple places will want only 1 copy of their js/css/whatever loaded. In this case they send it as global, and we need to make sure no addon globals are included more than once
 	private $addonHeaderPushes = array();
@@ -40,9 +43,9 @@ class Jelly
 	<head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="language" content="en" />
-
-
-
+	<substitute-meta-title>
+	<substitute-meta-description>
+	<substitute-meta-keywords>
 
 	<style>		/* This style block is for the CSS reset */
 	/* http://meyerweb.com/eric/tools/css/reset/ 
@@ -132,6 +135,39 @@ END_OF_FOOTER;
 		{
 			$this->logMsg('Found ' . $name . "\n", 1);
 
+
+			// Metatags for SEO
+			// Get the requested page for its metadata
+			if (isset($_GET['page']))
+			{
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("url = '" . $_GET['page'] . "'");
+				$contentBlock = ContentBlock::model()->find($criteria);
+				if ($contentBlock)
+				{
+					$this->metaTitle = trim($contentBlock->meta_title);
+					$this->metaDescription = trim($contentBlock->meta_description);
+					$this->metaKeywords = trim($contentBlock->meta_keywords);
+				}
+			}
+			if (($this->metaTitle == "") && ($this->metaDescription == "") && ($this->metaKeywords == ""))
+			{
+				// Get the homepage for its default metadata
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("home = " . 1);
+				$contentBlock = ContentBlock::model()->find($criteria);
+				if ($contentBlock)
+				{
+					$this->metaTitle = trim($contentBlock->meta_title);
+					$this->metaDescription = trim($contentBlock->meta_description);
+					$this->metaKeywords = trim($contentBlock->meta_keywords);
+				}
+			}
+			$this->beginHeader = str_replace("<substitute-meta-title>", "<title>" . $this->metaTitle . "</title>", $this->beginHeader);;
+			$this->beginHeader = str_replace("<substitute-meta-description>", "<meta name='description' content='" . $this->metaDescription . "'>", $this->beginHeader);;
+			$this->beginHeader = str_replace("<substitute-meta-keywords>", "<meta name='keywords' content='" . $this->metaKeywords . "'>", $this->beginHeader);;
+
+
 			// Check if we have a contentBlock page anywhere in the file, and if so determine if its a homepage
 			// If so, set @HOMEPAGE ($this->homePage) variable
 			if ((is_array($value)) && (array_key_exists("db", $value)))
@@ -153,11 +189,13 @@ END_OF_FOOTER;
 						}
 					}
 					else
+					{
 						// No page asked - we will serve up the home page
 						$this->homePage = 1;
-//				echo $this->homePage;
+					}
 				}
 			}
+
 
 			if ((is_array($value)) && (array_key_exists("child", $value)))
 			{

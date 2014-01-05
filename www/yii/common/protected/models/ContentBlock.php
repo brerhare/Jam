@@ -12,6 +12,9 @@
  * @property string $content
  * @property integer $active
  * @property integer $home
+ * @property integer $meta_title
+ * @property integer $meta_description
+ * @property integer $meta_keywords
  */
 class ContentBlock extends CActiveRecord
 {
@@ -44,10 +47,10 @@ class ContentBlock extends CActiveRecord
 			array('title, url', 'required'),
 			array('parent_id, sequence, active, home', 'numerical', 'integerOnly'=>true),
 			array('title, url', 'length', 'max'=>255),
-			array('content', 'safe'),
+			array('content, meta_title, meta_description, meta_keywords', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, parent_id, sequence, title, url, content, active, home', 'safe', 'on'=>'search'),
+			array('id, parent_id, sequence, title, url, content, active, home, meta_title, meta_description, meta_keywords', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -76,6 +79,9 @@ class ContentBlock extends CActiveRecord
 			'content' => 'Content',
 			'active' => 'Active',
 			'home' => 'Is Home Page',
+			'meta_title' => 'Title',
+			'meta_description' => 'Description',
+			'meta_keywords' => 'Keywords',
 		);
 	}
 
@@ -98,6 +104,9 @@ class ContentBlock extends CActiveRecord
 		$criteria->compare('content',$this->content,true);
 		$criteria->compare('active',$this->active);
 		$criteria->compare('home',$this->home);
+		$criteria->compare('meta_title',$this->meta_title);
+		$criteria->compare('meta_description',$this->meta_description);
+		$criteria->compare('meta_keywords',$this->meta_keywords);
 
 //@@ EG: Ordering model records on the admin crud
         $criteria->order = "title ASC";
