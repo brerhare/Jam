@@ -77,7 +77,7 @@ class lightbox
 		$retArr[0] = $this->apiHtml;
 		$retArr[1] = $this->apiJs;
 		$retArr[2] = "";	// Clipboard
-		$retArr[3] = "<script src=$jellyRootUrl/js/lightbox-2.6.min.js></script>";
+		$retArr[3] = "<script src=$jellyRootUrl/js/lightbox-2.6.js></script>";
 		$retArr[3] .= "<link href=$jellyRootUrl/css/lightbox.css rel='stylesheet' />";
 		return $retArr;
 	}

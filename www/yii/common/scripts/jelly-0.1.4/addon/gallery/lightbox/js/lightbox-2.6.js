@@ -23,7 +23,7 @@ Licensed under the Creative Commons Attribution 2.5 License - http://creativecom
       this.fitImagesInViewport = true;
       this.resizeDuration = 700;
       this.showImageNumberLabel = true;
-      this.wrapAround = false;
+      this.wrapAround = true;
     }
 
     LightboxOptions.prototype.albumLabel = function(curImageNum, albumSize) {
@@ -292,13 +292,15 @@ Licensed under the Creative Commons Attribution 2.5 License - http://creativecom
       if (keycode === KEYCODE_ESC || key.match(/x|o|c/)) {
         this.end();
       } else if (key === 'p' || keycode === KEYCODE_LEFTARROW) {
-        if (this.currentImageIndex !== 0) {
+        if (this.currentImageIndex !== 0)
           this.changeImage(this.currentImageIndex - 1);
-        }
+        else if (this.options.wrapAround)
+          this.changeImage(this.album.length - 1);
       } else if (key === 'n' || keycode === KEYCODE_RIGHTARROW) {
-        if (this.currentImageIndex !== this.album.length - 1) {
+        if (this.currentImageIndex !== this.album.length - 1)
           this.changeImage(this.currentImageIndex + 1);
-        }
+        else if (this.options.wrapAround)
+          this.changeImage(0);
       }
     };
 
