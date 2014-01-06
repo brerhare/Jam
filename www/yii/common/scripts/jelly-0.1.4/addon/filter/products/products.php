@@ -91,6 +91,8 @@ class products
 
         $retArr = array();
         $retArr[0] = $this->apiHtml;
+//file_put_contents('/tmp/xyz.txt', $retArr[0]);
+//die('xy='.strlen($retArr[0]));
         $retArr[1] = $this->apiJs;
         $retArr[2] = $this->clipBoard;
         return $retArr;
@@ -266,8 +268,8 @@ class products
 
     private function selectMatchingProducts()
     {
+//die('xx');
         $productList = "";
-
         // Each selected department one at a time
         $deptStr = "";
         $deptFeatureStr = "";
@@ -401,7 +403,7 @@ END_OF_API_HTML;
 			{
 				if (av[i].checked)
 				{
-					checkduration[i] = Array();
+					checkDuration[i] = Array();
 					checkPrice[i] = Array();
 					checkDepartment[i] = Array();
 					checkFeature[i] = Array();
@@ -418,7 +420,6 @@ END_OF_API_HTML;
 
 //alert(itemArr[0]); //department
 //alert(itemArr[1]); //27|30
-
 						itemValueArr = itemArr[1].split("|");
 						for (k = 0; k < itemValueArr.length; k++)
 						{
@@ -595,6 +596,7 @@ END_OF_API_HTML;
 
     function makeSel()
     {
+alert('c');
         sel = '?layout=index&sid=' + SID;
 
         // Duration
