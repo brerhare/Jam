@@ -46,11 +46,11 @@ class blogs
         // JS
 
         // Insert the data
-        $content = "<div style='color:#575757;'>";      // Your basic solemn grey font color
+        $content = "<div style='padding-left:20px; color:#575757;'>";      // Your basic solemn grey font color
         $uid = Yii::app()->session['uid'];
 
         // Category
-        $categories  = Category::model()->findAll(array('order'=>'name'));
+        $categories  = Category::model()->findAll(array('order'=>'name', 'condition'=>'uid=' . Yii::app()->session['uid']));
         if ($categories)
         {
 			$content .= "<br>";
