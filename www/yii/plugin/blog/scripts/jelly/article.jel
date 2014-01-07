@@ -48,7 +48,6 @@ fx.wallpaper-color = #00000
 				
 				[intro]
 				css.margin-top = -10px
-				css.font-size = 15px
 				html.raw = Article.intro
 				
 				[image]
@@ -58,6 +57,7 @@ fx.wallpaper-color = #00000
 				style.background-image = /userdata/19/Article.thumbnail_path
 
 			[content]
-			css.width = 800px
+			css.margin = 0px
+			css.width = 840px
 			html.raw = Article.content
 

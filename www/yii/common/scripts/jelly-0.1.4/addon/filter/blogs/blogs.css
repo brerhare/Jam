@@ -1,0 +1,14 @@
+.filter-header {
+    color:#012a1c;
+    font-weight:bold;
+    font-size: small;
+    margin-top: -10px;
+}
+
+a {
+	text-decoration: none;
+}
+
+.filter-detail  {
+font-weight:normal
+}

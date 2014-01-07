@@ -34,10 +34,11 @@ db.filter = sid=$_GET['sid']
 			css.width = 75%
 			child = most-recent-blog, older-blog-grid
 #@@ array parsing order isnt the same as defined? If this db, stuff is in the next block where it belongs it doesnt work
-				db.table = Article
-				db.filter = uid=User.id
-				db.order = date DESC
-			
+			db.table = Article
+			#db.filter = uid=User.id, blog_category_id=$_GET['category']
+			db.filter = uid=User.id
+			db.order = date DESC
+
 				[most-recent-blog]
 				stacking = horizontal
 				css.margin-bottom = 20px;
@@ -47,6 +48,7 @@ db.filter = sid=$_GET['sid']
 					[most-recent-image]
 					css.height = 180px
 					css.width = 240px
+					css.margin = 10px
 					style.background-image = /userdata/19/Article.thumbnail_path
 					
 					[most-recent-other]
@@ -80,6 +82,7 @@ db.filter = sid=$_GET['sid']
 					css.padding-top = 20px
 					child = blog-thumb, blog-title, blog-intro
 					db.table = Article
+					#db.filter = uid=User.id, id!=Article.id, blog_category_id=$_GET['category']
 					db.filter = uid=User.id, id!=Article.id
 					db.order = date DESC
 					db.fetch = multiple
@@ -88,6 +91,7 @@ db.filter = sid=$_GET['sid']
 						[blog-thumb]
 						css.height = 130px
 						css.width = 100%
+						css.margin-bottom = 5px
 						style.background-image = /userdata/19/Article.thumbnail_path
 
 						[blog-title]
@@ -98,13 +102,15 @@ db.filter = sid=$_GET['sid']
 						
 						[blog-intro]
 						css.font-size = 12px
-						css.height = 70px
+#						css.height = 70px
 						css.width = 200px
 						html.raw = Article.intro
 						
 			[category-list]
-			db.table = Category
-			db.order = name
-			db.fetch = multiple
-			html.raw = Category.name
+			addon.filter.blogs.category = $_GET['category']
+			css.width = 20%
+			#db.table = Category
+			#db.order = name
+			#db.fetch = multiple
+			#html.raw = Category.name
 

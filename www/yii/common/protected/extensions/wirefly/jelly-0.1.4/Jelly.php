@@ -715,7 +715,6 @@ if (isset($_GET['page']))
 										}
 										$elemComma = $prodList;
 									}
-
 								}
 								array_push($fltArr, $elemComma);
 							}
