@@ -596,7 +596,6 @@ END_OF_API_HTML;
 
     function makeSel()
     {
-alert('c');
         sel = '?layout=index&sid=' + SID;
 
         // Duration
