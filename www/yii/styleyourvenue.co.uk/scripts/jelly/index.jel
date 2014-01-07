@@ -48,9 +48,10 @@ css.background-color = #000000
 		css.margin-top = 30px
 		#css.margin-left = 5px
 		css.height = 104px
-		html.p = Short Description / Tag Line etc ...
-		html.p = 07868 840894 
-		#html.p = Email: a@b.co.uk
+		#html.p = Wedding & Event Decor for Hire
+		#html.p = 07868 840894 
+		html.raw = Wedding & Event Decor for Hire<br><br>
+		html.raw = 07868 840894 
 
 	[icons]
 	child = cart, news, social
