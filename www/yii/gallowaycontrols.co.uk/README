@@ -1,3 +1,9 @@
+Server
+------
+Create site via Virtualmin control panel
+Create a 'dev' directory at same level as public_html and into it git clone /opt/dev/src /opt/dev/extern
+Edit /etc/apache2/sites-available/<sitename> and change the 2 lines to reflect the location
+
 Setup
 -----
 Edit protected/config/main.php - appname, database, sid, displayname, email, gateway etc
@@ -5,7 +11,6 @@ Edit protected/backend/config/main.php - appname, database
 
 Edit protected/data/dbinit.sh - database connection details
 Run protected/data/dbinit.sh - create basic jelly tables
-
 
 Rarely needed - Website location
 --------------------------------
