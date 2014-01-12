@@ -399,16 +399,16 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 				$content .= "</td>";
 				$content .= "<td></td>";
 				$content .= "<td></td>";
-				$content .= "</tbody></tr>";
+				$content .= "</tr>";
 
-				$content .= "<tr><tbody>";
+				$content .= "<tr>";
 				$content .= "<td><br/><br/><br/></td>";
 				$content .= "<td></td>";
-				$content .= "<td></td>";
 				$content .= "<td align='right'><b>Total to pay</b></td>";
-				$content .= "<td align='right' id='showTotal' style='font-weight:bold'>£ " . number_format(($totalGoods + $totalShipping), 2, '.','') . "</td>";
+				$content .= "<td id='showTotal' style='font-weight:bold'>£ " . number_format(($totalGoods + $totalShipping), 2, '.','') . "</td>";
 				$content .= "<td></td>";
-				$content .= "</tbody></tr>";
+				$content .= "<td></td>";
+				$content .= "</tr>";
 
 				$content .= "</table>";
 
