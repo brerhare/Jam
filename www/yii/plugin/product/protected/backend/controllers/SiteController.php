@@ -128,6 +128,20 @@ class SiteController extends Controller
         $this->redirect(array('site/index'));
     }
 
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR GALLOWAY CONTROLS ---------- REMOVE
+    public function actionGCDirect()
+    {
+        Yii::app()->session['uid'] = 53;
+        $identity = new UserIdentity('neil@gallowaycontrols.co.uk', 'Neil~2#');
+		$identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
 	/**
 	 * Displays the login page
 	 */

@@ -1,5 +1,8 @@
 <?php
 
+// @@TODO: Addons like this one need to 'breakout' of their jelly containers, ie their size is dynamic and always wants to overlay subsequent page content. Need some mechanism to bubble up this notification to container(s) until height/width requirement is satisfied.
+
+
 /**
  * API for basic menu
  *
