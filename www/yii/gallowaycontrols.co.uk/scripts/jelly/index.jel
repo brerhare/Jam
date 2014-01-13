@@ -1,3 +1,5 @@
+#Galloway Controls
+
 [defaults]
 include = default-values
 
@@ -5,16 +7,179 @@ include = default-values
 [* : defaults]
 
 [screen]
-child = contentframe
-fx.wallpaper-image = /img/background.jpg
+child = site
+#css.background-color = #ffffff
+fx.wallpaper-image = /img/background-img.jpg
 css.display = block
 
-	[contentframe]
+	[site]
+	child = header, home, content-pages, footer
 	css.display = block
-	css.width = 100px
-	css.margin-top = 400px
-	style.html.h1.color = yellow
-	style.html.h1.background-color = black
-	style.html.h1.padding = 10px
-	html.h1 = jelly
+	css.width = 960px
+	css.background-color = white
+	css.opacity = 0.8
 
+	
+
+
+#######Universal Headar #########################
+
+[header]
+child = text, header-graphic, menu, links
+css.overflow = visible
+css.width = 960px
+css.margin-top = 30px
+css.opacity = 1
+
+[text]
+child = business, description
+stacking = horizontal
+css.height = 80px
+
+	[business]
+	css.width = 400px
+	css.margin-left = 80px
+#css.background-color = #d6d6d6
+	css.padding = 0px
+	css.border-width = 0px
+	#css.border-color = #ffffff
+	#css.color = #ffffff
+	image.url = img/name.png
+	#image.url = img/header-graphic.png
+	#image.alt = img/Program.thumb_path
+	image.width = 300px
+	image.height = 35px
+
+
+	[description]
+	css.width = 400px
+#css.background-color = #d6d6d6
+	css.font-size = 12px
+	css.margin-top = 10px
+	css.margin-left = 30px
+	css.colour = black
+	html.raw = PLC software development and online sales - contact details....
+
+[header-graphic]
+css.width = 960px
+css.height = 70px
+#css.background-color = #d6d6d6
+#html.raw = header-graphic
+css.margin-top = -60px
+image.url = img/header-graphic.png
+image.width = 960px
+image.height = 40px
+
+[menu]
+css.height = 40px
+css.width = 960px
+css.overflow = visible
+css.margin-top = -30px
+css.margin-left = 0px
+	css.position = relative
+	css.z-index = 1000
+#addon.menu.basic.orientation = vertical
+addon.menu.basic.width = 960px
+addon.menu.basic.height = 30px
+addon.menu.basic.font-size = 12px
+addon.menu.basic.menu-rounding = 0px
+addon.menu.basic.menu-opacity = 96%
+#addon.menu.basic.menu-tile = /img/menu-bar.jpg
+addon.menu.basic.menu-stretch = /img/menu-bar.jpg
+#addon.menu.basic.menu-color = white blue
+addon.menu.basic.menu-text-color = blue
+addon.menu.basic.submenu-color = #ffffff #bfffff
+addon.menu.basic.item-color = cyan
+addon.menu.basic.item-text-color = blue
+addon.menu.basic.subitem-color = cyan
+addon.menu.basic.subitem-text-color = blue
+addon.menu.basic.subitem-separator-color = white
+
+[links]
+css.width = 100px
+css.margin-left = 860px
+css.margin-top = -18px
+css.font-size = 12px
+css.color = blue
+css.position = relative
+css.z-index = 10000
+html.raw = Checkout
+click = http://www.gallowaycontrols.wireflydesign.com/?layout=index&page=checkout
+
+#######Home page Only#########################
+
+[home]
+child = main, side-panel
+condition = @HOMEPAGE=1
+css.width = 960px
+stacking = horizontal
+
+[main]
+child = slider, graphic, home-content
+css.width = 720px
+
+
+	[slider]
+	css.margin-top = 20px
+	css.width = 720px
+	css.height = 300px
+	css.opacity = 1
+	addon.slider.flexslider.width = 700px
+	addon.slider.flexslider.border-width = 0px
+	addon.slider.flexslider.border-color = red
+	addon.slider.flexslider.height = 250px
+	addon.slider.flexslider.mode = image
+	addon.slider.flexslider.source = db
+
+	[graphic]
+	css.width = 720px
+	css.height = 80px
+	css.z-index = 1001
+	css.position = relative
+	css.margin-top = -75px
+	css.opacity = 1
+	image.url = img/gallery-line.png
+	#image.alt = img/Program.thumb_path
+	image.width = 700px
+	image.height = 40px
+
+	[home-content]
+	css.margin = 15px
+	db.table = ContentBlock
+	db.filter = url=$_GET['page']
+	db.error = Sorry, I could not find that page. You requested $_GET['page']
+	html.raw = ContentBlock.content
+
+
+[side-panel]
+css.margin-top = 20px
+css.width = 240px
+css.height = 450px
+css.background-color = #d6d6d6
+css.opacity = 1
+
+#######All content pages#########################
+
+[content-pages]
+child = content
+condition = @HOMEPAGE=0
+css.margin-top = 20px
+
+	[content]
+	css.margin = 15px
+	db.table = ContentBlock
+	db.filter = url=$_GET['page']
+	db.error = Sorry, I could not find that page. You requested $_GET['page']
+	html.raw = ContentBlock.content
+
+
+
+#####################################################
+
+
+[footer]
+css.width = 960px
+css.height = 50px
+css.background-color = #e3adff
+css.opacity = 1
+html.raw = FOOTER
