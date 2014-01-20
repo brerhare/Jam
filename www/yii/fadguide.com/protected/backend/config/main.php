@@ -17,7 +17,7 @@ return array(
     'viewPath' => $backend.'/views',
     'runtimePath' => $backend.'/runtime',
 
-	'name'=>'Galloway Controls Backend',
+	'name'=>'FADGuide Backend',
 
 	// preloading 'log' component
 	// preloading 'bootstrap' component
@@ -75,10 +75,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=gallowaycontrols_co_uk',
+			'connectionString' => 'mysql:host=localhost;dbname=fadguide_com',
 			'emulatePrepare' => true,
-			'username' => 'gallowaycontrols',
-			'password' => 'Neil~2#',
+			'username' => 'fadguide.com',
+			'password' => 'wi6fhw5m9',
 			'charset' => 'utf8',
 		),
 		/**/
