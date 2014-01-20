@@ -67,56 +67,34 @@ css.display = block
 
 
 		[body]
-		child = static-menu, homepage-content, content
+		child = menu, homepage-content, content
 		css.width = 1250px
 		stacking = horizontal
 
 
 ########body: column 1 #################################
 
-			[static-menu]
-			child = bedroom, dining, living, occasional, carpets
-			css.width = 130px
-			css.height = 300px
-			css.margin-left = -10px
-			css.padding = 10px
-                #css.border-width = 3px
-                #css.border-color = #dcdcdc
-                #css.color = #ffffff
-
-				[bedroom]
-				image.url = /img/Bedroom.png
-				image.width = 130px
-				image.height = 30px
-				click = http://www.dumfriesfurniture.com/?layout=index&page=bedroom-furniture-beds-wardrobes-dumfries
-
-				[dining]
-				css.margin-top = 5px
-				image.url = /img/Dining.png
-				image.width = 130px
-				image.height = 30px
-				click = http://www.dumfriesfurniture.com/?layout=index&page=dining-room-furniture-dumfries
-
-				[living]
-				css.margin-top = 5px
-				image.url = /img/Living.png
-				image.width = 130px
-				image.height = 30px
-				click = http://www.dumfriesfurniture.com/?layout=index&page=living-room-furniture-dumfries
-
-				[occasional]
-				css.margin-top = 5px
-				image.url = /img/Occasional.png
-				image.width = 130px
-				image.height = 30px
-				click = http://www.dumfriesfurniture.com/?layout=index&page=occasional-furniture-dumfries
-
-				[carpets]
-				css.margin-top = 5px
-				image.url = /img/Carpets.png
-				image.width = 130px
-				image.height = 30px
-				click = http://www.dumfriesfurniture.com/?layout=index&page=carpet-flooring-dumfries
+	[menu]
+	#css.height = 34px
+	#css.width = 100px
+	css.overflow = visible
+	css.margin-left = -10px
+	css.margin-top = 20px
+	addon.menu.basic.orientation = vertical
+	addon.menu.basic.width = 170px
+	addon.menu.basic.font-size = 14px
+	addon.menu.basic.menu-rounding = 0px
+	addon.menu.basic.menu-opacity = 100%
+	addon.menu.basic.menu-tile = /img/menu-bkgd.jpg
+	#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
+	addon.menu.basic.menu-color = blue green
+	addon.menu.basic.menu-text-color = red
+	addon.menu.basic.submenu-color = yellow red
+	addon.menu.basic.item-color = yellow orange
+	addon.menu.basic.item-text-color = green
+	addon.menu.basic.subitem-color = white yellow
+	addon.menu.basic.subitem-text-color = red
+	addon.menu.basic.subitem-separator-color = white			
 
 
 #####body: column 2 - home page only ########################
