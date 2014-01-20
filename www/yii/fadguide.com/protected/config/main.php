@@ -7,7 +7,7 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'Galloway Controls',
+	'name'=>'FADGuide',
 
 	// Override the default controller
 	//'defaultController'=>'contentBlock',
@@ -66,10 +66,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=gallowaycontrols_co_uk',
+			'connectionString' => 'mysql:host=localhost;dbname=fadguide_com',
 			'emulatePrepare' => true,
-			'username' => 'gallowaycontrols',
-			'password' => 'Neil~2#',
+			'username' => 'fadguide.com',
+			'password' => 'wi6fhw5m9',
 			'charset' => 'utf8',
 		),
 		/**/
@@ -100,15 +100,15 @@ return array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@wireflydesign.com',
 		// These are used by the shopping cart checkout process
-		'checkoutEmail'=>'reception@jacquiesbeauty.co.uk',
-		'checkoutName'=>'Jacquies Beauty',
+		'checkoutEmail'=>'jo@fadguide.com',
+		'checkoutName'=>'FAD Guide',
 		// Test gateway
 		'checkoutGatewayUser'=>'WIREFL-5188100',
 		'checkoutGatewayPassword'=>'391F3GWBZ0',
 		// Live gateway
-		'checkoutGatewayUser'=>'LIVE_USER-1645722',
-		'checkoutGatewayPassword'=>'LIVE_PWORD',
+		//'checkoutGatewayUser'=>'LIVE_USER-1645722',
+		//'checkoutGatewayPassword'=>'LIVE_PWORD',
 		'jellyRoot' => '/scripts/jelly/',
-		'sid' => 'b7g4qnn1ei05hl2shd4f3fgr72',
+		'sid' => 'v9h530b458nshi7cth7kfr1kb6',
 	),
 );
