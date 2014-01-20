@@ -20,7 +20,7 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
-		'application.extensions.jelly.*',
+		'application.extensions.wirefly.jelly-current.*',
 	),
 
 	'modules'=>array(
