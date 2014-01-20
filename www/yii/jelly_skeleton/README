@@ -6,14 +6,16 @@ Edit /etc/apache2/sites-available/<sitename> and change the 2 lines to reflect t
 
 Setup
 -----
-Edit protected/config/main.php - appname, database, sid, displayname, email, gateway etc
-Edit protected/backend/config/main.php - appname, database
+Edit protected/config/main.php - appname, database, autoload-extensions, sid, displayname, email, gateway etc
+Edit protected/backend/config/main.php - appname, database, autload-extensions
+Edit protected/backend/views/layout/main.php - menu options
+Edit plugin(s) to accept direct logins
 
 Edit protected/data/dbinit.sh - database connection details
 Run protected/data/dbinit.sh - create basic jelly tables
 
-Rarely needed - Website location
---------------------------------
+Rarely needed - Yii location
+----------------------------
 Edit index.php, backend.php and index-test for the Yii extern path (maybe needs an extra '/..')
 Edit scripts/jelly/addon soflink (maybe needs an extra '/..')
 Edit protected/extensions/<whatever> softlinks (maybe needs an extra '/..')
