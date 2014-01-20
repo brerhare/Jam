@@ -17,7 +17,7 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
-		'application.extensions.jelly-current.*',
+		'application.extensions.wirefly.jelly-current.*',
 		'application.extensions.PHPMailer.*',
 	),
 
