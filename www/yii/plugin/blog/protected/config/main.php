@@ -17,7 +17,7 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
-		'application.extensions.wirefly.jelly-0.1.2.*',
+		'application.extensions.wirefly.jelly-old.*',
 	),
 
 	'modules'=>array(
