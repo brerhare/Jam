@@ -98,7 +98,7 @@ addon.menu.basic.subitem-separator-color = white
 [links]
 css.width = 100px
 css.margin-left = 860px
-css.margin-top = -18px
+css.margin-top = -16px
 css.font-size = 12px
 css.color = blue
 css.position = relative
@@ -121,7 +121,8 @@ css.width = 720px
 
 	[slider]
 	css.margin-top = 20px
-	css.width = 720px
+	css.margin-left = 10px
+	css.width = 700px
 	css.height = 300px
 	css.opacity = 1
 	addon.slider.flexslider.width = 700px
@@ -132,8 +133,9 @@ css.width = 720px
 	addon.slider.flexslider.source = db
 
 	[graphic]
-	css.width = 720px
+	css.width = 700px
 	css.height = 80px
+	css.margin-left = 10px
 	css.z-index = 1001
 	css.position = relative
 	css.margin-top = -75px

@@ -100,14 +100,14 @@ return array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@wireflydesign.com',
 		// These are used by the shopping cart checkout process
-		'checkoutEmail'=>'reception@jacquiesbeauty.co.uk',
-		'checkoutName'=>'Jacquies Beauty',
+		'checkoutEmail'=>'neil@gallowaycontrols.co.uk',
+		'checkoutName'=>'Galloway Controls',
 		// Test gateway
 		'checkoutGatewayUser'=>'WIREFL-5188100',
 		'checkoutGatewayPassword'=>'391F3GWBZ0',
 		// Live gateway
-		'checkoutGatewayUser'=>'LIVE_USER-1645722',
-		'checkoutGatewayPassword'=>'LIVE_PWORD',
+		//'checkoutGatewayUser'=>'LIVE_USER-1645722',
+		//'checkoutGatewayPassword'=>'LIVE_PWORD',
 		'jellyRoot' => '/scripts/jelly/',
 		'sid' => 'b7g4qnn1ei05hl2shd4f3fgr72',
 	),
