@@ -98,7 +98,10 @@ class events
                 $interestSel = explode('|', $_GET['interest']);
             $content .= "<br>";
 
-            $content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Interest</a><br>";
+            // $content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Interest</a><br>";
+            // $content .= "<a href='#'></a><div class='filter-header'>" . $twistyIcon . "Interest<br>";
+            $content .= "<div class='filter-header'>" . $twistyIcon . "<a href='#'>Interest</a><br>";
+
             $content .= "<div id='interest-detail' class='filter-detail'>";
             foreach ($interests as $interest):
                 $match = false;
@@ -126,7 +129,10 @@ class events
             if (isset($_GET['format']))
                 $formatSel = explode('|', $_GET['format']);
             $content .= "<br>";
-            $content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Format</a><br>";
+
+            //$content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Format</a><br>";
+            $content .= "<div class='filter-header'>" . $twistyIcon . "<a href='#'>Format</a><br>";
+
             $content .= "<div id='format-detail' class='filter-detail'>";
             foreach ($formats as $format):
                 $match = false;
@@ -154,7 +160,10 @@ class events
             if (isset($_GET['facility']))
                 $facilitySel = explode('|', $_GET['facility']);
             $content .= "<br>";
-            $content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Facility</a><br>";
+
+            //$content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Facility</a><br>";
+            $content .= "<div class='filter-header'>" . $twistyIcon . "<a href='#'>Facility</a><br>";
+
             $content .= "<div id='facility-detail' class='filter-detail'>";
             foreach ($facilities as $facility):
                 $match = false;
@@ -196,7 +205,10 @@ class events
         if (isset($_GET['location']))
             $locationSel = explode('|', $_GET['location']);
         $content .= "<br>";
-        $content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Location</a><br>";
+
+        //$content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Location</a><br>";
+        $content .= "<div class='filter-header'>" . $twistyIcon . "<a href='#'>Location</a><br>";
+
         $content .= "<div id='location-detail' class='filter-detail'>";
         foreach ($locations as $location => $name):
             $match = false;
@@ -223,7 +235,10 @@ class events
             if (isset($_GET['pb']))
                 $pbSel = explode('|', $_GET['pb']);
             $content .= "<br>";
-            $content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Price Band</a><br>";
+
+            //$content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Price Band</a><br>";
+            $content .= "<div class='filter-header'>" . $twistyIcon . "<a href='#'>Price Band</a><br>";
+
             $content .= "<div id='price-detail' class='filter-detail'>";
             foreach ($prices as $price):
                 $match = false;
@@ -254,7 +269,10 @@ class events
             if (isset($_GET['grade']))
                 $gradeSel = explode('|', $_GET['grade']);
             $content .= "<br>";
-            $content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Grade</a><br>";
+
+            //$content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Grade</a><br>";
+            $content .= "<div class='filter-header'>" . $twistyIcon . "<a href='#'>Grade</a><br>";
+
             $content .= "<div id='grade-detail' class='filter-detail'>";
             foreach ($grades as $grade):
                 $match = false;
