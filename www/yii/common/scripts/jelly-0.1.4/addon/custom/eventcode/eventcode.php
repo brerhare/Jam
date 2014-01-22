@@ -365,7 +365,7 @@ class eventcode
 			// Ticketing info (if applicable)
 			if (($event->ticket_event_id != 0) && ($member))
 			{
-				$ticketUrl = "https://plugin.wireflydesign.com/ticket/index.php/ticket/book/" . $event->ticket_event_id . "?sid=" . $member->sid . "&ref=event";
+				$ticketUrl = "http://plugin.wireflydesign.com/ticket/index.php/ticket/book/" . $event->ticket_event_id . "?sid=" . $member->sid . "&ref=event";
 				$content .= "<script>function goBook(where){window.open(where, '_blank');}</script>";
 				$content .= "<div style='float:right'><a target='_blank' href='" . $ticketUrl . "'><img style='margin-top:0px; margin-left:0px' onClick=goBook('" . $ticketUrl . "') title='Book' src='img/book-s.jpg'></a></div><br/>";
 			}
@@ -597,7 +597,7 @@ END_OF_API_JS_fill_headers;
 		if (gethostname() == 'spleen')
 			$apiJs = str_replace("<substitute-ajaxurl>", 'http://localhost/event/index.php/site/ajaxGetEvent', $apiJs);
 		else
-			$apiJs = str_replace("<substitute-ajaxurl>", 'https://plugin.wireflydesign.com/event/index.php/site/ajaxGetEvent', $apiJs);
+			$apiJs = str_replace("<substitute-ajaxurl>", 'http://plugin.wireflydesign.com/event/index.php/site/ajaxGetEvent', $apiJs);
 
 		$clipBoard = "";
 
