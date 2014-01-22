@@ -308,7 +308,11 @@ header($this->p3p);
 			$productHasOption = ProductHasOption::model()->find($criteria);
 			$each = "0.00";
 			if ($productHasOption)
+			{
 				$each = $productHasOption->price;
+				if ($productHasOption->is_poa)
+					$each = "POA";
+			}
 			$message .= "<td style='padding:15px' align='right'>" . $each . "</td>";
 
 			$message .= "<td style='padding:15px' align='right'>" . $order->http_qty . "</td>";
