@@ -12,6 +12,7 @@ class beirccode
 {
 	// Globals
 	private $beircid = "";
+	private $jellyRootUrl = "";
 
 	/*
 	 * Set up any code pre-requisites (onload/document-ready reqs)
@@ -23,6 +24,7 @@ class beirccode
 	  //var_dump( $options );
 
 		$this->beircid = Yii::app()->session['beircid'];
+		$this->jellyRootUrl = $jellyRootUrl;
 
 		foreach ($options as $opt => $val)
 		{
@@ -83,12 +85,73 @@ END_OF_API_JS_login;
 
 	private function calendar()
 	{
+ 		$apiHtml = <<<END_OF_API_HTML
 
-		$content = "";
-		$apiHtml = $content;
+			<div id="jelly-beirc-fullcalendar-container">
+				<link rel="stylesheet" href="<substitute-path>/fullcalendar/fullcalendar.css" type="text/css" media="screen"/>
+				<!-- <link rel="stylesheet" href="<substitute-path>/fullcalendar/fullcalendar.print.css" type="text/css" media="print"/> -->
+				<script src="<substitute-path>/fullcalendar/fullcalendar.js"></script>
+
+				<div style='/*border:1px solid #cfc497;*/ width:815px' id="mycalendar"></div>
+				<br><br>
+    		</div>
+
+END_OF_API_HTML;
 
 		$apiJs = <<<END_OF_API_JS_calendar
+
+			$('#mycalendar').fullCalendar(
+			{
+				header:
+				{
+					left: 'prev,next today',
+					center: 'title',
+					right: 'month,agendaWeek,agendaDay'
+				},
+				eventRender: function(event, element, view)
+				{
+					element.bind('click', function()
+					{
+						var day = ($.fullCalendar.formatDate( event.start, 'dd' ));
+						var month = ($.fullCalendar.formatDate( event.start, 'MM' ));
+						var year = ($.fullCalendar.formatDate( event.start, 'yyyy' ));
+						alert(year+'-'+month+'-'+day);
+					});
+				},
+				editable: true,        
+				defaultView: 'agendaWeek',
+				allDaySlot: false,
+				minTime: 7,
+				maxTime: 21,
+				slotMinutes: 60,
+				snapMinutes: 60,
+				events:
+				[
+					{
+						title  : 'event1',
+						start  : '2014-01-23'
+					},
+					{
+						title  : 'event2',
+						start  : '2014-01-24',
+						end    : '2014-01-25'
+					},
+					{
+						title  : 'event3',
+						start  : '2014-01-27 12:30:00',
+						allDay : false // will make the time show
+					}
+				]
+			}); 
+
 END_OF_API_JS_calendar;
+
+		$content = "";
+		//$apiHtml = $content;
+
+		// Substitute paths for includes
+		$apiHtml = str_replace("<substitute-path>", $this->jellyRootUrl, $apiHtml);
+
 
 		$clipBoard = "";
 
@@ -98,6 +161,13 @@ END_OF_API_JS_calendar;
 		$retArr[2] = $clipBoard;
 		return $retArr;
 	}
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	private function product_page_options_dropdown($val)
 	{
