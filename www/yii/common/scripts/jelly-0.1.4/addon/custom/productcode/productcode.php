@@ -166,7 +166,10 @@ class productcode
 				$selected = "";
 				if ($productHasOption->is_default)
 					$selected = " selected ";
-				$content .= "<option " . $selected . " value='" . $option->id . "'>£" . $productHasOption->price . "&nbsp" . $option->name . "</option>";
+				$showPrice = $productHasOption->price;
+				if ($productHasOption->is_poa)
+					$showPrice = "POA";
+				$content .= "<option " . $selected . " value='" . $option->id . "'>£" . $showPrice . "&nbsp" . $option->name . "</option>";
 			}
 		}
 		$content .= "</select>";
