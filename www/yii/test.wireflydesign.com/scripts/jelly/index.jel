@@ -1,7 +1,7 @@
-#Style Your Venue
+#Test file
 [defaults]
 include = default-values
-css.color = white
+css.color = black
 
 ; Every blob inherits these before adding/overriding
 [* : defaults]
@@ -16,28 +16,27 @@ css.display = block
 [backgd]
 child = contentframe
 css.width = 1000px
-css.background-color = green
+css.background-color = white
 
 	[contentframe]
-	child = header, menu, slider, line, contentcontainer, footer
+	child = header, menu, slider, contentcontainer, footer
 	css.width = 960px
 
+######################## Header ############################ 
+
 	[header]
-	child = logo, contact, icons
+	child = logo, contact, cart
 	css.margin-top = 20px
 	css.height = 104px
 	stacking = horizontal
 
 	[logo]
-	child = logo-pic
-	css.height = 104px
-	css.width = 40%
-
-		[logo-pic]
-		css.height = 104px
-		#css.width = 40%
-		#style.background-image = /img/Header Logo.png
-		css.background-image = url('/img/Header Logo.png')
+	css.width = 250px
+	css.height = 50px
+	css.margin-top = 40px
+	image.url = img/Logo small.png
+	image.width = 150px
+	image.height = 50px
 
 	[contact]
 	child = contact-text
@@ -49,21 +48,15 @@ css.background-color = green
 		#css.margin-left = 5px
 		css.height = 104px
 		html.p = Short Description / Tag Line etc ...
-		html.p = 07868 840894 
-		#html.p = Email: a@b.co.uk
+		html.p = Email: a@b.co.uk
 
-	[icons]
-	child = cart, news, social
-	css.margin-left = 50px
-	css.width = 200px
-
-		[cart]
-		child = cart-pic, cart-text
-		stacking = horizontal
-		css.margin-top = 20px
-		css.height = 18px
-		
-		click = http://www.google.com
+	
+	[cart]
+	child = cart-pic, cart-text
+	stacking = horizontal
+	css.margin-top = 20px
+	css.height = 18px
+	click = http://www.test.wireflydesign.com/?layout=index&page=basket
 
 			[cart-pic]
 			css.width = 25px
@@ -71,99 +64,66 @@ css.background-color = green
 			css.height = 17px
 
 			[cart-text]
-			css.width = 80%
+			css.width = 100px
 			css.margin-top = 4px
 			css.margin-left = 4px
 			css.font-size = 12px
 			html.raw = Shopping Cart
 
-		[news]
-		child = news-pic, news-text
-		stacking = horizontal
-		css.height = 18px
-		click = http://www.google.com
-
-			[news-pic]
-			css.width = 25px
-			css.background-image = url('/img/news.jpg')
-			css.height = 17px
-
-			[news-text]
-			css.width = 80%
-			css.margin-top = 4px
-			css.margin-left = 4px
-			css.font-size = 12px
-			html.raw = Newsletter
-
-		[social]
-		child = social-fb, social-twitter
-		stacking = horizontal
-		css.margin-top = 4px
-		css.height = 22px
-		click = http://www.google.com
-
-			[social-fb]
-			css.width = 22px
-			css.margin-left = 2px
-			css.background-image = url('/img/FB.jpg')
-			css.height = 22px
-
-			[social-twitter]
-			css.width = 22px
-			css.margin-left = 4px
-			css.background-image = url('/img/Twitter.jpg')
-			css.height = 22px
+######################## Menu ############################ 
 
 	[menu]
-	css.height = 34px
-	#css.width = 600px
+	#css.height = 34px
+	#css.width = 100px
 	css.overflow = visible
-	css.margin-top = 2px
+	css.margin-left = 0px
+	css.margin-top = 3px
 	#addon.menu.basic.orientation = vertical
 	addon.menu.basic.width = 960px
-	addon.menu.basic.font-size = 16px
-	addon.menu.basic.menu-rounding = 5px
+	addon.menu.basic.font-size = 14px
+	addon.menu.basic.menu-rounding = 0px
 	addon.menu.basic.menu-opacity = 100%
-	addon.menu.basic.menu-tile = /img/menu-bar.jpg
+	addon.menu.basic.menu-tile = /img/menu-bkgd.jpg
 	#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
 	addon.menu.basic.menu-color = blue green
 	addon.menu.basic.menu-text-color = red
 	addon.menu.basic.submenu-color = yellow red
 	addon.menu.basic.item-color = yellow orange
 	addon.menu.basic.item-text-color = green
-	addon.menu.basic.subitem-color = white black
-	addon.menu.basic.subitem-text-color = purple
-	addon.menu.basic.subitem-separator-color = blue
+	addon.menu.basic.subitem-color = white yellow
+	addon.menu.basic.subitem-text-color = red
+	addon.menu.basic.subitem-separator-color = white
+
+######################## Slider ############################ 
 
 	[slider]
     css.margin-top = 20px
 	css.width = 960px
     #css.height = 250px ...... This is one way of hiding the dots!
-    addon.slider.flexslider.width = 950px
-    addon.slider.flexslider.border-width = 2px
+    addon.slider.flexslider.width = 956px
+    addon.slider.flexslider.border-width = 0px
     addon.slider.flexslider.border-color = red
     addon.slider.flexslider.height = 240px
     addon.slider.flexslider.mode = image
     addon.slider.flexslider.source = db
 
 
-
-	[line]
-    css.height = 4px
-	css.margin-top = 10px
-    css.background-color = #ff00ff
+######################## Content ############################ 
 
     [contentcontainer]
     child = content
-    css.background-color = red
+    #css.background-color = white
     fx.rounding = 4px
 
         [content]
         css.margin = 15px
         db.table = ContentBlock
         db.filter = url=$_GET['page']
-        db.error = Sorry, I could not find that page. You requested $_GET['page']
+        db.error = Sorry, I could not find the page $_GET['page']
         html.raw = ContentBlock.content
+
+
+######################## Footer ############################ 
 
 
 	[footer]
@@ -200,6 +160,3 @@ css.background-color = green
 		css.text-align = center
 		html.raw = Site by Wirefly Design
 		click = www.wireflydesign.com
-
-
-
