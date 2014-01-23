@@ -95,9 +95,16 @@ END_OF_API_JS_login;
 				<!-- <link rel="stylesheet" href="<substitute-path>/fullcalendar/fullcalendar.print.css" type="text/css" media="print"/> -->
 				<script src="<substitute-path>/fullcalendar/fullcalendar.js"></script>
 
-				<div style='/*border:1px solid #cfc497;*/ width:815px' id="mycalendar"></div>
-				<div style='/*border:1px solid #cfc497;*/ width:85px' id="tooltip"></div>
-				<br><br>
+
+				<!-- Style overrides -->
+				<style>
+					/* Suppress time display on week and day views */
+					.fc-view-agendaWeek .fc-event-time{ display : none; }
+					.fc-view-agendaDay .fc-event-time{ display : none; }
+				</style>
+
+
+				<div style='/*border:1px solid #cfc497;*/ width:815px' id="mycalendar"></div> <br><br>
     		</div>
 
 END_OF_API_HTML;
@@ -123,6 +130,14 @@ END_OF_API_HTML;
 					right: 'month,agendaWeek,agendaDay'
 				},
 
+				// Date format
+				columnFormat:
+				{
+					month: 'ddd',    // Mon
+					week: 'ddd d/M', // Mon 9/7
+					day: 'dddd d/M', // Monday 9/7
+				},
+
 				// Hover
 				eventMouseover: function(calEvent, jsEvent) {
     				var tooltip = '<div class="tooltipevent" style="width:100px;height:100px;background:#ccc;position:absolute;z-index:10001;">' + calEvent.title + '</div>';
@@ -141,9 +156,12 @@ END_OF_API_HTML;
     				$('.tooltipevent').remove();
 				},
 
-				// Click
 				eventRender: function(event, element, view)
 				{
+					// This next line adds a second line (description) to each event display
+					element.find('.fc-event-title').append("<br/>" + event.description);
+
+					// Make each event a clicky
 					element.bind('click', function()
 					{
 						var day = ($.fullCalendar.formatDate( event.start, 'dd' ));
@@ -156,16 +174,28 @@ END_OF_API_HTML;
 				[
 					{
 						title  : 'event1',
-						start  : '2014-01-23'
+description: 'hack',
+						start  : '2014-01-23 07:00:00',
+						end    : '2014-01-23 08:00:00',
+						allDay : false,
+					},
+					{
+						title  : 'event1a',
+description: 'lesson',
+						start  : '2014-01-23 08:00:00',
+						end    : '2014-01-23 09:00:00',
+						allDay : false,
 					},
 					{
 						title  : 'event2',
+description: 'flatwork',
 						start  : '2014-01-24',
 						end    : '2014-01-25'
 					},
 					{
 						title  : 'event3',
-						start  : '2014-01-27 12:30:00',
+description: 'course',
+						start  : '2014-01-27 12:00:00',
 						allDay : false // will make the time show
 					}
 				]
