@@ -7,11 +7,11 @@
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<?php echo $form->textFieldRow($model,'username',array('class'=>'span5','maxlength'=>255)); ?>
+	<?php echo $form->textFieldRow($model,'username',array('class'=>'span2','maxlength'=>255)); ?>
 
-	<?php echo $form->passwordFieldRow($model,'password',array('class'=>'span5','maxlength'=>255)); ?>
+	<?php echo $form->passwordFieldRow($model,'password',array('class'=>'span2','maxlength'=>255)); ?>
 
-	<?php echo $form->textFieldRow($model,'email',array('class'=>'span5','maxlength'=>255)); ?>
+	<?php echo $form->textFieldRow($model,'email',array('class'=>'span3','maxlength'=>255)); ?>
 
 	<?php echo $form->textFieldRow($model,'member_type_id',array('class'=>'span5')); ?>
 

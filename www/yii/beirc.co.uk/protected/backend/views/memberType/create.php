@@ -1,15 +1,10 @@
 <?php
-$this->breadcrumbs=array(
-	'Member Types'=>array('index'),
-	'Create',
-);
 
 $this->menu=array(
-	array('label'=>'List MemberType','url'=>array('index')),
-	array('label'=>'Manage MemberType','url'=>array('admin')),
+	array('label'=>'Manage Member Types','url'=>array('admin')),
 );
 ?>
 
-<h1>Create MemberType</h1>
+<h2>Create MemberType</h2>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

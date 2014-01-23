@@ -9,9 +9,9 @@
 
 	<?php echo $form->textFieldRow($model,'description',array('class'=>'span5','maxlength'=>255)); ?>
 
-	<?php echo $form->textFieldRow($model,'slots',array('class'=>'span5')); ?>
+	<?php echo $form->textFieldRow($model,'slots',array('class'=>'span1')); ?>
 
-	<?php echo $form->textFieldRow($model,'days',array('class'=>'span5')); ?>
+	<?php echo $form->textFieldRow($model,'days',array('class'=>'span1')); ?>
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(

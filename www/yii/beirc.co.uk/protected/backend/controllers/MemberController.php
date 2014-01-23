@@ -31,7 +31,7 @@ class MemberController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','admin'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -70,7 +70,7 @@ class MemberController extends Controller
 		{
 			$model->attributes=$_POST['Member'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('admin'));
 		}
 
 		$this->render('create',array(
@@ -94,7 +94,7 @@ class MemberController extends Controller
 		{
 			$model->attributes=$_POST['Member'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('admin'));
 		}
 
 		$this->render('update',array(

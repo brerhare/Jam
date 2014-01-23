@@ -1,7 +1,4 @@
 <?php
-$this->breadcrumbs=array(
-	'Member Types',
-);
 
 $this->menu=array(
 	array('label'=>'Create MemberType','url'=>array('create')),
