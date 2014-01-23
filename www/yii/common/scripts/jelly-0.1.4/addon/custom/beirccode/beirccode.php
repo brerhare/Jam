@@ -88,11 +88,15 @@ END_OF_API_JS_login;
  		$apiHtml = <<<END_OF_API_HTML
 
 			<div id="jelly-beirc-fullcalendar-container">
+
+<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js" ></script>
+
 				<link rel="stylesheet" href="<substitute-path>/fullcalendar/fullcalendar.css" type="text/css" media="screen"/>
 				<!-- <link rel="stylesheet" href="<substitute-path>/fullcalendar/fullcalendar.print.css" type="text/css" media="print"/> -->
 				<script src="<substitute-path>/fullcalendar/fullcalendar.js"></script>
 
 				<div style='/*border:1px solid #cfc497;*/ width:815px' id="mycalendar"></div>
+				<div style='/*border:1px solid #cfc497;*/ width:85px' id="tooltip"></div>
 				<br><br>
     		</div>
 
@@ -102,22 +106,7 @@ END_OF_API_HTML;
 
 			$('#mycalendar').fullCalendar(
 			{
-				header:
-				{
-					left: 'prev,next today',
-					center: 'title',
-					right: 'month,agendaWeek,agendaDay'
-				},
-				eventRender: function(event, element, view)
-				{
-					element.bind('click', function()
-					{
-						var day = ($.fullCalendar.formatDate( event.start, 'dd' ));
-						var month = ($.fullCalendar.formatDate( event.start, 'MM' ));
-						var year = ($.fullCalendar.formatDate( event.start, 'yyyy' ));
-						alert(year+'-'+month+'-'+day);
-					});
-				},
+				// Defaults
 				editable: true,        
 				defaultView: 'agendaWeek',
 				allDaySlot: false,
@@ -125,6 +114,44 @@ END_OF_API_HTML;
 				maxTime: 21,
 				slotMinutes: 60,
 				snapMinutes: 60,
+
+				// Buttons etc
+				header:
+				{
+					left: 'prev,next today',
+					center: 'title',
+					right: 'month,agendaWeek,agendaDay'
+				},
+
+				// Hover
+				eventMouseover: function(calEvent, jsEvent) {
+    				var tooltip = '<div class="tooltipevent" style="width:100px;height:100px;background:#ccc;position:absolute;z-index:10001;">' + calEvent.title + '</div>';
+    				$("body").append(tooltip);
+    				$(this).mouseover(function(e) {
+        				$(this).css('z-index', 10000);
+        				$('.tooltipevent').fadeIn('500');
+        				$('.tooltipevent').fadeTo('10', 1.9);
+    				}).mousemove(function(e) {
+        				$('.tooltipevent').css('top', e.pageY + 10);
+        				$('.tooltipevent').css('left', e.pageX + 20);
+    				});
+				},
+				eventMouseout: function(calEvent, jsEvent) {
+    				$(this).css('z-index', 8);
+    				$('.tooltipevent').remove();
+				},
+
+				// Click
+				eventRender: function(event, element, view)
+				{
+					element.bind('click', function()
+					{
+						var day = ($.fullCalendar.formatDate( event.start, 'dd' ));
+						var month = ($.fullCalendar.formatDate( event.start, 'MM' ));
+						var year = ($.fullCalendar.formatDate( event.start, 'yyyy' ));
+						alert('pop ' + year+'-'+month+'-'+day);
+					});
+				},
 				events:
 				[
 					{
