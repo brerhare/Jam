@@ -14,7 +14,14 @@ $this->menu=array(
 	'filter'=>$model,
 	'columns'=>array(
 		//'id',
-		'username',
+
+// @@EG Clickable rows in grid view!
+        array(
+            'name'  => 'username',
+            'value' => 'CHtml::link($data->username, Yii::app()->createUrl("member/update",array("id"=>$data->primaryKey)))',
+			'type'  => 'raw',
+		),
+
 		'password',
 		'email',
 		'member_type_id',

@@ -14,7 +14,14 @@ $this->menu=array(
 	//'filter'=>$model,
 	'columns'=>array(
 		//'id',
-		'description',
+
+// @@EG Clickable rows in grid view!
+        array(
+            'name'  => 'description',
+            'value' => 'CHtml::link($data->description, Yii::app()->createUrl("memberType/update",array("id"=>$data->primaryKey)))',
+			'type'  => 'raw',
+		),
+
 		'slots',
 		'week',
 		'month',
