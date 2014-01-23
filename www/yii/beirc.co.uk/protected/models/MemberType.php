@@ -7,7 +7,8 @@
  * @property integer $id
  * @property string $description
  * @property integer $slots
- * @property integer $days
+ * @property integer $week
+ * @property integer $month
  *
  * The followings are the available model relations:
  * @property Member[] $members
@@ -40,12 +41,12 @@ class MemberType extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('description, slots, days', 'required'),
-			array('slots, days', 'numerical', 'integerOnly'=>true),
+			array('description, slots', 'required'),
+			array('slots, week, month', 'numerical', 'integerOnly'=>true),
 			array('description', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, description, slots, days', 'safe', 'on'=>'search'),
+			array('id, description, slots, week, month', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -70,7 +71,8 @@ class MemberType extends CActiveRecord
 			'id' => 'ID',
 			'description' => 'Description',
 			'slots' => 'Slots',
-			'days' => 'Days',
+			'week' => 'Per Week',
+			'month' => 'Per Month',
 		);
 	}
 
@@ -88,7 +90,8 @@ class MemberType extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('slots',$this->slots);
-		$criteria->compare('days',$this->days);
+		$criteria->compare('week',$this->week);
+		$criteria->compare('month',$this->month);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

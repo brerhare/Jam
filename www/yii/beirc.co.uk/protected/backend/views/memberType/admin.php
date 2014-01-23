@@ -16,7 +16,8 @@ $this->menu=array(
 		//'id',
 		'description',
 		'slots',
-		'days',
+		'week',
+		'month',
         array(
             'class'=>'bootstrap.widgets.TbButtonColumn',
             'template'=>'{update}{delete}',

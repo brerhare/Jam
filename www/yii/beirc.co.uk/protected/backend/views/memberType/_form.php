@@ -1,6 +1,7 @@
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'member-type-form',
 	'enableAjaxValidation'=>false,
+	'type'=>'horizontal',
 )); ?>
 
 	<p class="help-block">Fields with <span class="required">*</span> are required.</p>
@@ -11,7 +12,9 @@
 
 	<?php echo $form->textFieldRow($model,'slots',array('class'=>'span1')); ?>
 
-	<?php echo $form->textFieldRow($model,'days',array('class'=>'span1')); ?>
+	<?php echo $form->textFieldRow($model,'week',array('class'=>'span1')); ?>
+
+	<?php echo $form->textFieldRow($model,'month',array('class'=>'span1')); ?>
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
