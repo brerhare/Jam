@@ -17,8 +17,9 @@ $this->menu=array(
 		'description',
 		'slots',
 		'days',
-		array(
-			'class'=>'bootstrap.widgets.TbButtonColumn',
-		),
+        array(
+            'class'=>'bootstrap.widgets.TbButtonColumn',
+            'template'=>'{update}{delete}',
+        ),
 	),
 )); ?>

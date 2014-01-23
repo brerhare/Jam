@@ -19,7 +19,8 @@ $this->menu=array(
 		'email',
 		'member_type_id',
 		array(
-			'class'=>'bootstrap.widgets.TbButtonColumn',
-		),
+            'class'=>'bootstrap.widgets.TbButtonColumn',
+            'template'=>'{update}{delete}',
+        ),
 	),
 )); ?>
