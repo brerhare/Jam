@@ -23,8 +23,7 @@ $this->menu=array(
 		),
 
 		'slots',
-		'week',
-		'month',
+		'week_month',
         array(
             'class'=>'bootstrap.widgets.TbButtonColumn',
             'template'=>'{update}{delete}',
