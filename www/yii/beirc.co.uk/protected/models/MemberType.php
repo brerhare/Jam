@@ -71,8 +71,8 @@ class MemberType extends CActiveRecord
 			'id' => 'ID',
 			'description' => 'Description',
 			'slots' => 'Slots',
-			'week' => 'Per Week',
-			'month' => 'Per Month',
+			'week' => 'Per weeks',
+			'month' => 'Per months',
 		);
 	}
 
