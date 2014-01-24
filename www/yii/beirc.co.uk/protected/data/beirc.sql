@@ -14,8 +14,7 @@ CREATE  TABLE IF NOT EXISTS `beirc_co_uk`.`member_type` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `description` VARCHAR(255) NOT NULL ,
   `slots` INT NOT NULL ,
-  `week` INT NULL ,
-  `month` INT NULL ,
+  `week_month` INT NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `id_UNIQUE` (`id` ASC) )
 ENGINE = InnoDB;

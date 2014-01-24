@@ -21,8 +21,6 @@
 		echo $form->dropDownListRow($model,'member_type_id', CHtml::listData(MemberType::model()->findAll($criteria), 'id', 'description'), array('empty'=>'Choose'));
 	?>
 
-
-
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',

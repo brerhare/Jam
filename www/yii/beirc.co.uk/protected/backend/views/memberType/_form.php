@@ -12,9 +12,7 @@
 
 	<?php echo $form->textFieldRow($model,'slots',array('class'=>'span1')); ?>
 
-	<?php echo $form->textFieldRow($model,'week',array('class'=>'span1')); ?>
-
-	<?php echo $form->textFieldRow($model,'month',array('class'=>'span1')); ?>
+	<?php echo $form->radioButtonList($model,'week_month', $model->getSlotOptions()); ?>
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(

@@ -7,8 +7,7 @@
  * @property integer $id
  * @property string $description
  * @property integer $slots
- * @property integer $week
- * @property integer $month
+ * @property integer $week_month
  *
  * The followings are the available model relations:
  * @property Member[] $members
@@ -42,11 +41,11 @@ class MemberType extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('description, slots', 'required'),
-			array('slots, week, month', 'numerical', 'integerOnly'=>true),
+			array('slots, week_month', 'numerical', 'integerOnly'=>true),
 			array('description', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, description, slots, week, month', 'safe', 'on'=>'search'),
+			array('id, description, slots, week_month', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -71,8 +70,7 @@ class MemberType extends CActiveRecord
 			'id' => 'ID',
 			'description' => 'Description',
 			'slots' => 'Slots',
-			'week' => 'Per weeks',
-			'month' => 'Per months',
+			'week_month' => 'Week Month',
 		);
 	}
 
@@ -90,11 +88,22 @@ class MemberType extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('slots',$this->slots);
-		$criteria->compare('week',$this->week);
-		$criteria->compare('month',$this->month);
+		$criteria->compare('week_month',$this->week_month);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
+
+	public $WEEK = 1;
+	public $MONTH = 2;
+
+    public function getSlotOptions()
+    {
+        return array(
+            1=>'Week',
+            2=>'Month',
+        );
+    }
+
 }
