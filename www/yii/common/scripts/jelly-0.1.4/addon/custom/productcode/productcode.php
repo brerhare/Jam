@@ -69,7 +69,12 @@ class productcode
     	$criteria->addCondition("is_default = " . 1);
 		$productHasOption = ProductHasOption::model()->find($criteria);
 		if ($productHasOption)
-			$defaultOption = $productHasOption->price;
+		{
+			if ($productHasOption->is_poa == 1)
+				$defaultOption = ' POA';
+			else
+				$defaultOption = $productHasOption->price;
+		}
 		else
 		{
 			// Find the cheapest product option
