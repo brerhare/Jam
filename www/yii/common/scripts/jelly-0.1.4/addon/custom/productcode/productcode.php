@@ -85,6 +85,8 @@ class productcode
 			foreach ($productHasOptions as $productHasOption)
 			{
 				$defaultOption = $productHasOption->price;
+				if ($productHasOption->is_poa == 1)
+					$defaultOption = ' POA';
 				break;
 			}
 		}
