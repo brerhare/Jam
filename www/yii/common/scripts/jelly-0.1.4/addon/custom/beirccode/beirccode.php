@@ -99,12 +99,11 @@ END_OF_API_JS_login;
 
 			<div id="jelly-beirc-fullcalendar-container">
 
-<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js" ></script>
+				<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js" ></script>
 
 				<link rel="stylesheet" href="<substitute-path>/fullcalendar/fullcalendar.css" type="text/css" media="screen"/>
 				<!-- <link rel="stylesheet" href="<substitute-path>/fullcalendar/fullcalendar.print.css" type="text/css" media="print"/> -->
 				<script src="<substitute-path>/fullcalendar/fullcalendar.js"></script>
-
 
 				<!-- Style overrides -->
 				<style>
@@ -188,43 +187,53 @@ END_OF_API_HTML;
 				},
 				events:
 				[
-					{
-						title  : 'event1',
-description: 'hack',
-						start  : '2014-01-23 07:00:00',
-						end    : '2014-01-23 08:00:00',
-						allDay : false,
-					},
-					{
-						title  : 'event1a',
-description: 'lesson',
-						start  : '2014-01-23 08:00:00',
-						end    : '2014-01-23 09:00:00',
-						allDay : false,
-					},
-					{
-						title  : 'event2',
-description: 'flatwork',
-						start  : '2014-01-24',
-						end    : '2014-01-25'
-					},
-					{
-						title  : 'event3',
-description: 'course',
-						start  : '2014-01-27 12:00:00',
-						allDay : false // will make the time show
-					}
+					<substitute-events>
 				]
 			}); 
 
 END_OF_API_JS_calendar;
 
-		$content = "";
-		//$apiHtml = $content;
-
 		// Substitute paths for includes
 		$apiHtml = str_replace("<substitute-path>", $this->jellyRootUrl, $apiHtml);
 
+		// Populate events
+/*****
+{
+	title  : 'event1',
+	description: 'hack',
+	start  : '2014-01-23 07:00:00',
+	end    : '2014-01-23 08:00:00',
+	allDay : false,
+},
+*****/
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("arena = " . $_GET['arena']);
+		$events = Event::model()->findAll($criteria);
+		$eventList = "";
+		if ($events)
+		{
+			foreach ($events as $event)
+			{
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("password = " . $event->password);
+				$member = Member::model()->find($criteria);
+				if (!($member))
+				{
+					//die("Member " . $event->password . " not found for an event");
+					continue;
+				}
+				$desc = str_replace('"', '', $event->description);
+				$desc = str_replace("'", '', $desc);
+				$eventList .= "{\n";
+				$eventList .= "    title: '" . $member->username . "',\n";
+				$eventList .= "    description: '" . $desc . "',\n";
+				$eventList .= "    start: '" . $event->start . "',\n";
+				$eventList .= "    end: '" . $event->end . "',\n";
+				$eventList .= "    allDay: false,\n";
+				$eventList .= "},\n";
+			}
+		}
+		$apiJs = str_replace("<substitute-events>", $eventList, $apiJs);
 
 		$clipBoard = "";
 
