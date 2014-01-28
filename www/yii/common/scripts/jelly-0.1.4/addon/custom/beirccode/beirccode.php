@@ -11,7 +11,6 @@
 class beirccode
 {
 	// Globals
-	private $beircid = "";
 	private $jellyRootUrl = "";
 
 	/*
@@ -23,7 +22,6 @@ class beirccode
 	{
 	  //var_dump( $options );
 
-		$this->beircid = Yii::app()->session['beircid'];
 		$this->jellyRootUrl = $jellyRootUrl;
 
 		foreach ($options as $opt => $val)
@@ -48,17 +46,24 @@ class beirccode
 	private function login()
 	{
 		$content = "";
-		$content .= "<table><tr><td colspan=2>";
-		$content .= "<a style='font-weight:bold;color:#017572'> Members please login to make bookings</a><br>";
-		$content .= "</td></tr>";
-		$content .= "<tr><td>Surname</td><td>";
-		$content .= "<input id='surname' name='surname' type='text' value='' size='20'/> <br/>";
-		$content .= "</td></tr><tr><td>Member number</td><td>";
-		$content .= "<input id='memberno' name='memberno' type='text' value='' size='5'/> <br />";		
-		$content .= "</td></tr>";
-		$content .= "<tr><td>&nbsp</td><td>";
-		$content .= "<input type='button' id='submitbutton' style='float:left;padding:3px; width:60px' onClick='doLogin()' value='Login'>";
-		$content .= "</td></tr></table>";
+		if (trim(Yii::app()->session['beircid']) == "")
+		{
+			$content .= "<table><tr><td colspan=2>";
+			$content .= "<a style='font-weight:bold;color:#017572'> Members please login to make bookings</a><br>";
+			$content .= "</td></tr>";
+			$content .= "<tr><td>Surname</td><td>";
+			$content .= "<input id='username' name='username' type='text' value='' size='20'/> <br/>";
+			$content .= "</td></tr><tr><td>Member number</td><td>";
+			$content .= "<input id='password' name='password' type='text' value='' size='5'/> <br />";		
+			$content .= "</td></tr>";
+			$content .= "<tr><td>&nbsp</td><td>";
+			$content .= "<input type='button' id='submitbutton' style='float:left;padding:3px; width:60px' onClick='doLogin()' value='Login'>";
+			$content .= "</td></tr></table>";
+		}
+		else
+		{
+			$content .= "<a style='font-weight:bold;color:#017572'> You are logged in</a><br>";
+		}
 		$clipBoard = "";
 		$apiHtml = $content;
 
@@ -66,13 +71,18 @@ class beirccode
 
 			function doLogin()
 			{
-				var surname = document.getElementById('surname').value;
-				var memberno = document.getElementById('memberno').value;
-				var sel = "?layout=index";
-				sel += "&surname=" + surname;
-				sel += "&memberno=" + memberno;
+				var username = document.getElementById('username').value;
+				var password = document.getElementById('password').value;
+				var sel = "?layout=calendar&arena=" + get('arena');;
+				sel += "&username=" + username;
+				sel += "&password=" + password;
 				window.location.href = sel;
 			}
+
+function get(name){
+   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+      return decodeURIComponent(name[1]);
+}
 
 END_OF_API_JS_login;
 
@@ -101,6 +111,10 @@ END_OF_API_JS_login;
 					/* Suppress time display on week and day views */
 					.fc-view-agendaWeek .fc-event-time{ display : none; }
 					.fc-view-agendaDay .fc-event-time{ display : none; }
+
+					/* Set the height of each hourly slot 'cell' (month/week/day) */
+    				.fc-agenda-slots td div { height: 27px !important; }
+
 				</style>
 
 
@@ -115,6 +129,8 @@ END_OF_API_HTML;
 			{
 				// Defaults
 				editable: true,        
+				disableDragging: true,	// No dragging events around
+				disableResizing: true,	// Cant increase/decrease an event's duration 
 				defaultView: 'agendaWeek',
 				allDaySlot: false,
 				minTime: 7,
@@ -147,7 +163,7 @@ END_OF_API_HTML;
         				$('.tooltipevent').fadeIn('500');
         				$('.tooltipevent').fadeTo('10', 1.9);
     				}).mousemove(function(e) {
-        				$('.tooltipevent').css('top', e.pageY + 10);
+        				$('.tooltipevent').css('top', e.pageY + 27);
         				$('.tooltipevent').css('left', e.pageX + 20);
     				});
 				},
@@ -167,7 +183,7 @@ END_OF_API_HTML;
 						var day = ($.fullCalendar.formatDate( event.start, 'dd' ));
 						var month = ($.fullCalendar.formatDate( event.start, 'MM' ));
 						var year = ($.fullCalendar.formatDate( event.start, 'yyyy' ));
-						alert('pop ' + year+'-'+month+'-'+day);
+						alert('event ' + year+'-'+month+'-'+day);
 					});
 				},
 				events:

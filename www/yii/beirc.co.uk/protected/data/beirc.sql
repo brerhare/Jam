@@ -28,16 +28,37 @@ DROP TABLE IF EXISTS `beirc_co_uk`.`member` ;
 CREATE  TABLE IF NOT EXISTS `beirc_co_uk`.`member` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `username` VARCHAR(255) NOT NULL ,
-  `password` VARCHAR(255) NOT NULL ,
+  `password` INT(11) NOT NULL ,
+  `displayname` VARCHAR(255) NULL ,
   `email` VARCHAR(255) NULL ,
-  `member_type_id` INT NOT NULL ,
+  `member_type_id` INT(11) NOT NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `fk_member_member_type` (`member_type_id` ASC) ,
+  INDEX `fk_member_member_type` () ,
+  INDEX `PASSWORD` (`password` ASC) ,
   CONSTRAINT `fk_member_member_type`
-    FOREIGN KEY (`member_type_id` )
-    REFERENCES `beirc_co_uk`.`member_type` (`id` )
+    FOREIGN KEY ()
+    REFERENCES `beirc_co_uk`.`member_type` ()
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `beirc_co_uk`.`event`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `beirc_co_uk`.`event` ;
+
+CREATE  TABLE IF NOT EXISTS `beirc_co_uk`.`event` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `arena` INT NOT NULL ,
+  `description` VARCHAR(255) NOT NULL ,
+  `start` DATETIME NULL ,
+  `end` DATETIME NULL ,
+  `share` INT NULL ,
+  `confirmed` INT NULL ,
+  `password` INT(11) NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `password` (`password` ASC) )
 ENGINE = InnoDB;
 
 
