@@ -112,7 +112,7 @@ END_OF_API_JS_login;
 					.fc-view-agendaDay .fc-event-time{ display : none; }
 
 					/* Set the height of each hourly slot 'cell' (month/week/day) */
-    				.fc-agenda-slots td div { height: 27px !important; }
+    				.fc-agenda-slots td div { height: 26px !important; }
 
 				</style>
 
