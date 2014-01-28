@@ -225,7 +225,7 @@ END_OF_API_JS_calendar;
 				$desc = str_replace('"', '', $event->description);
 				$desc = str_replace("'", '', $desc);
 				$eventList .= "{\n";
-				$eventList .= "    title: '" . $member->username . "',\n";
+				$eventList .= "    title: '" . $member->displayname . "',\n";
 				$eventList .= "    description: '" . $desc . "',\n";
 				$eventList .= "    start: '" . $event->start . "',\n";
 				$eventList .= "    end: '" . $event->end . "',\n";
