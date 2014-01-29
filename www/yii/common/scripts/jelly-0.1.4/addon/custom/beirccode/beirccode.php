@@ -48,6 +48,7 @@ class beirccode
 		$content = "";
 		if (trim(Yii::app()->session['beircid']) == "")
 		{
+			$content .= "<h2>Arena " . $_GET['arena'] . "</h2>";
 			$content .= "<table><tr><td colspan=2>";
 			$content .= "<a style='font-weight:bold;color:#017572'> Members please login to make bookings</a><br>";
 			$content .= "</td></tr>";
@@ -74,15 +75,22 @@ class beirccode
 				var username = document.getElementById('username').value;
 				var password = document.getElementById('password').value;
 				var sel = "?layout=calendar&arena=" + get('arena');;
+				if ((username.trim() == '') || (password.trim() == ''))
+				{
+					alert('Please enter both a Surname and Member number');
+					return;
+				}
 				sel += "&username=" + username;
 				sel += "&password=" + password;
 				window.location.href = sel;
 			}
 
-function get(name){
-   if(name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
-      return decodeURIComponent(name[1]);
-}
+			// Return the GET[''] value of something
+			function get(name)
+			{
+				if (name=(new RegExp('[?&]'+encodeURIComponent(name)+'=([^&]*)')).exec(location.search))
+					return decodeURIComponent(name[1]);
+			}
 
 END_OF_API_JS_login;
 
@@ -155,14 +163,20 @@ END_OF_API_HTML;
 
 				// Hover
 				eventMouseover: function(calEvent, jsEvent) {
-    				var tooltip = '<div class="tooltipevent" style="width:100px;height:100px;background:#ccc;position:absolute;z-index:10001;">' + calEvent.title + '</div>';
+					var shared = 'Will share';
+					if (calEvent.share == 0)
+						shared = 'Wont share';
+					var confirmed = 'Confirmed';
+					if (calEvent.confirmed == 0)
+						confirmed = 'Not confirmed';
+    				var tooltip = '<div class="tooltipevent" style="border:1px solid black;padding:5px;background:#ccc;position:absolute;z-index:10001;">' + $.fullCalendar.formatDate(calEvent.start,'htt') + '-' + $.fullCalendar.formatDate(calEvent.end,'htt') + '<br>' + calEvent.title + '<br>' + calEvent.description + '<br>' + shared + '<br>' + confirmed + '<br></div>';
     				$("body").append(tooltip);
     				$(this).mouseover(function(e) {
         				$(this).css('z-index', 10000);
         				$('.tooltipevent').fadeIn('500');
         				$('.tooltipevent').fadeTo('10', 1.9);
     				}).mousemove(function(e) {
-        				$('.tooltipevent').css('top', e.pageY + 27);
+        				$('.tooltipevent').css('top', e.pageY + 25);
         				$('.tooltipevent').css('left', e.pageX + 20);
     				});
 				},
@@ -175,16 +189,43 @@ END_OF_API_HTML;
 				{
 					// This next line adds a second line (description) to each event display
 					element.find('.fc-event-title').append("<br/>" + event.description);
-
 					// Make each event a clicky
 					element.bind('click', function()
 					{
 						var day = ($.fullCalendar.formatDate( event.start, 'dd' ));
 						var month = ($.fullCalendar.formatDate( event.start, 'MM' ));
 						var year = ($.fullCalendar.formatDate( event.start, 'yyyy' ));
-						alert('event ' + year+'-'+month+'-'+day);
+						var title = event.title;
+						alert('event ' + year+'-'+month+'-'+day + ' ' + title);
 					});
 				},
+
+				dayClick: function(date, allDay, jsEvent, view)
+				{
+					alert('Clicked on the slot: ' + date);
+					//alert('Current view: ' + view.name);
+					// change the day's background color just for fun
+					//$(this).css('background-color', 'red');
+				},
+
+/***
+				selectable: true,
+				selectHelper: true,
+//					when user select timeslot this option code will execute.
+//					It has three arguments. Start,end and allDay.
+//					Start means starting time of event.
+//					End means ending time of event.
+//					allDay means if events is for entire day or not.
+				select: function(start, end, allDay)
+				{
+//						after selection user will be promted for enter title for event.
+					alert(start + '<br>' + end);
+					//var title = prompt('Event Title:');
+		},
+***/
+
+
+
 				events:
 				[
 					<substitute-events>
@@ -203,7 +244,7 @@ END_OF_API_JS_calendar;
 	description: 'hack',
 	start  : '2014-01-23 07:00:00',
 	end    : '2014-01-23 08:00:00',
-	allDay : false,
+	allDay : false,	// Will make the time show
 },
 *****/
 		$criteria = new CDbCriteria;
@@ -227,8 +268,14 @@ END_OF_API_JS_calendar;
 				$eventList .= "{\n";
 				$eventList .= "    title: '" . $member->displayname . "',\n";
 				$eventList .= "    description: '" . $desc . "',\n";
+				$eventList .= "    member_id: '" . $member->id . "',\n";
+				$eventList .= "    event_id: '" . $event->id . "',\n";
+				$eventList .= "    arena: '" . $event->arena . "',\n";
 				$eventList .= "    start: '" . $event->start . "',\n";
 				$eventList .= "    end: '" . $event->end . "',\n";
+				$eventList .= "    share: '" . $event->share . "',\n";
+				$eventList .= "    confirmed: '" . $event->confirmed . "',\n";
+				$eventList .= "    password: '" . $event->password . "',\n";
 				$eventList .= "    allDay: false,\n";
 				$eventList .= "},\n";
 			}
