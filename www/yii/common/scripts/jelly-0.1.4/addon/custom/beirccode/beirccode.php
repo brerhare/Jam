@@ -72,6 +72,11 @@ class beirccode
 
 			var loggedIn = 0;
 
+			var memberId = 0;
+			var memberPassword = "";
+			var memberDisplayName = "";
+
+
 			function doLogin()
 			{
 				var username = document.getElementById('username').value;
@@ -107,9 +112,12 @@ class beirccode
 				}
 				// Success
 				loggedIn = 1;
-				alert('Welcome ' + val.displayName);
+				//alert('Welcome ' + val.displayName);
 				document.getElementById("loggedinprompt").innerHTML="Logged in";
 				document.getElementById("loginbutton").value="Logout";
+				memberId = val.id;
+				memberPassword = val.password;
+				memberDisplayName = val.displayName;
 			}
 
 END_OF_API_JS_login;
@@ -177,6 +185,12 @@ END_OF_API_JS_login;
 				<!-- Edit dialog container -->
 				<div id="dialog" style="z-index:12000;/*border:1px solid #e2f0f8*/" title="Event">
 					<table>
+<!--
+						<tr>
+							<td>&nbsp</td>
+							<td><span id="editDate" style="color:#47a4cb" name="editDate" value=""></span></td>
+						</tr>
+-->
 						<tr>
 							<td> <label for="start">Start time</label> </td>
 							<td> <select id="editStart" name="editStart">
@@ -193,6 +207,7 @@ END_OF_API_JS_login;
 									<option value="17">5pm</option>
 									<option value="18">6pm</option>
 									<option value="19">7pm</option>
+									<option value="20">8pm</option>
 								</select>
 						</tr>
 						<tr>
@@ -211,6 +226,7 @@ END_OF_API_JS_login;
 									<option value="18">6pm</option>
 									<option value="19">7pm</option>
 									<option value="20">8pm</option>
+									<option value="21">9pm</option>
 								</select>
 						</tr>
 						<tr>
@@ -234,8 +250,10 @@ END_OF_API_JS_login;
 <hr/>
 					<table>
 						<tr>
-							<td> <input type='button' id='save' style='float:left;padding:3px; width:60px' onClick='saveDialog()' value='Save'> </td>
-							<td> <input type='button' id='cancel' style='float:left;padding:3px; width:60px' onClick='cancelDialog()' value='Cancel'> </td>
+							<td width="25%">
+							<td width="25%"> <input type='button' id='editSave' style='float:left;padding:3px; width:60px' onClick='saveDialog()' value='Save'> </td>
+							<td width="25%"> <input type='button' id='editCancel' style='float:left;padding:3px; width:60px' onClick='cancelDialog()' value='Cancel'> </td>
+							<td width="25%">
 						</tr>
 					</table>
 				</div>
@@ -248,8 +266,14 @@ END_OF_API_HTML;
 
 		function saveDialog()
 		{
-			var dlgstart = document.getElementById('start').value;
+			var dlgstart = document.getElementById('editStart').value;
 			alert('saved ' + dlgstart);
+			$( "#dialog" ).dialog('close');
+		}
+
+		function cancelDialog()
+		{
+			$( "#dialog" ).dialog('close');
 		}
 
 			$('#mycalendar').fullCalendar(
@@ -289,7 +313,7 @@ END_OF_API_HTML;
 					var confirmed = 'Confirmed';
 					if (calEvent.confirmed == 0)
 						confirmed = 'Not confirmed';
-    				var tooltip = '<div class="tooltipevent" style="border:1px solid black;padding:5px;background:#ccc;position:absolute;z-index:10001;">' + $.fullCalendar.formatDate(calEvent.start,'htt') + '-' + $.fullCalendar.formatDate(calEvent.end,'htt') + '<br>' + calEvent.title + '<br>' + calEvent.description + '<br>' + shared + '<br>' + confirmed + loggedIn + '<br></div>';
+    				var tooltip = '<div class="tooltipevent" style="border:1px solid black;padding:5px;background:#ccc;position:absolute;z-index:10001;">' + $.fullCalendar.formatDate(calEvent.start,'htt') + '-' + $.fullCalendar.formatDate(calEvent.end,'htt') + '<br>' + calEvent.title + '<br>' + calEvent.description + '<br>' + shared + '<br>' + confirmed + '<br></div>';
     				$("body").append(tooltip);
     				$(this).mouseover(function(e) {
         				$(this).css('z-index', 10000);
@@ -312,14 +336,19 @@ END_OF_API_HTML;
 					// Make each event a clicky
 					element.bind('click', function()
 					{
-						var day = ($.fullCalendar.formatDate( event.start, 'dd' ));
-						var month = ($.fullCalendar.formatDate( event.start, 'MM' ));
-						var year = ($.fullCalendar.formatDate( event.start, 'yyyy' ));
-						var title = event.title;
 						if (loggedIn)
 						{
-    						$( "#dialog" ).dialog();
-							//alert('event ' + year+'-'+month+'-'+day + ' ' + title);
+							var dt = $.fullCalendar.formatDate(event.start, "ddd dd/MM/yyyy");
+							var start = $.fullCalendar.formatDate(event.start, "H");
+							var end = $.fullCalendar.formatDate(event.end, "H");
+							$("#editDate").html(dt);
+							$("#editStart").val(start);
+							$("#editEnd").val(end);
+							$("#editDescription").val(event.description);
+							$("#editShare").val(event.share);
+							$("#editConfirmed").val(event.confirmed);
+    						$("#dialog").dialog();
+							$("#dialog").dialog('option', 'title', dt);
 						}
 					});
 				},
@@ -328,8 +357,16 @@ END_OF_API_HTML;
 				{
 					if (loggedIn)
 					{
-    					$( "#dialog" ).dialog();
-						//alert('Clicked on the slot: ' + date + '. loggedIn='+loggedIn);
+						var dt = $.fullCalendar.formatDate(date, "ddd dd/MM/yyyy");
+						var start = $.fullCalendar.formatDate(date, "H");
+						var end = (parseInt(start) + 1);
+						$("#editStart").val(start);
+						$("#editEnd").val(end);
+						$("#editDescription").val("");
+						$("#editShare").val("Yes");
+						$("#editConfirmed").val("yes");
+    					$("#dialog").dialog();
+						$("#dialog").dialog('option', 'title', dt);
 					}
 					//alert('Current view: ' + view.name);
 					// change the day's background color just for fun
