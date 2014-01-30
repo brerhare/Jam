@@ -174,14 +174,53 @@ END_OF_API_JS_login;
 				<div style='/*border:1px solid #cfc497;*/ width:815px' id="mycalendar"></div> <br><br>
 
 <div id="dialog" style="z-index:12000;/*border:1px solid #e2f0f8*/" title="Event">
-  <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+	<table>
+		<tr>
+    		<td> <label for="start">Start</label> </td>
+			<td> <input type="text" style="width:50px" name="start" id="start" class="text ui-widget-content ui-corner-all"> </td>
+		</tr>
+		<tr>
+    		<td> <label for="end">End</label> </td>
+    		<td> <input type="text" style="width:50px" name="end" id="end" class="text ui-widget-content ui-corner-all"> </td>
+		</tr>
+		<tr>
+			<td> <input type='button' id='save' style='float:left;padding:3px; width:60px' onClick='saveDialog()' value='Save'> </td>
+		</tr>
+	</table>
+<script>
+//alert('see');
+//window.parent.loggedIn = 2;
+</script>
 </div>
+
+<!--
+<div id="dialog-form" title="Create new user">
+  <p class="validateTips">All form fields are required.</p>
+  <form>
+  <fieldset>
+    <label for="name">Name</label>
+    <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all">
+    <label for="email">Email</label>
+    <input type="text" name="email" id="email" value="" class="text ui-widget-content ui-corner-all">
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all">
+  </fieldset>
+  </form>
+</div>
+-->
 
     		</div>
 
 END_OF_API_HTML;
 
 		$apiJs = <<<END_OF_API_JS_calendar
+
+function saveDialog()
+{
+	var dlgstart = document.getElementById('start').value;
+	alert('saved ' + dlgstart);
+	alert(loggedIn);
+}
 
   $(function() {
     $( "#dialog" ).dialog();
@@ -224,7 +263,7 @@ END_OF_API_HTML;
 					var confirmed = 'Confirmed';
 					if (calEvent.confirmed == 0)
 						confirmed = 'Not confirmed';
-    				var tooltip = '<div class="tooltipevent" style="border:1px solid black;padding:5px;background:#ccc;position:absolute;z-index:10001;">' + $.fullCalendar.formatDate(calEvent.start,'htt') + '-' + $.fullCalendar.formatDate(calEvent.end,'htt') + '<br>' + calEvent.title + '<br>' + calEvent.description + '<br>' + shared + '<br>' + confirmed + '<br></div>';
+    				var tooltip = '<div class="tooltipevent" style="border:1px solid black;padding:5px;background:#ccc;position:absolute;z-index:10001;">' + $.fullCalendar.formatDate(calEvent.start,'htt') + '-' + $.fullCalendar.formatDate(calEvent.end,'htt') + '<br>' + calEvent.title + '<br>' + calEvent.description + '<br>' + shared + '<br>' + confirmed + loggedIn + '<br></div>';
     				$("body").append(tooltip);
     				$(this).mouseover(function(e) {
         				$(this).css('z-index', 10000);
@@ -253,7 +292,8 @@ END_OF_API_HTML;
 						var title = event.title;
 						if (loggedIn)
 						{
-							alert('event ' + year+'-'+month+'-'+day + ' ' + title);
+$( "#dialog-form" ).dialog( "open" );
+							//alert('event ' + year+'-'+month+'-'+day + ' ' + title);
 						}
 					});
 				},
@@ -262,6 +302,7 @@ END_OF_API_HTML;
 				{
 					if (loggedIn)
 					{
+//$( "#dialog-form" ).dialog( "open" );
 						alert('Clicked on the slot: ' + date + '. loggedIn='+loggedIn);
 					}
 					alert('Current view: ' + view.name);
@@ -292,6 +333,32 @@ END_OF_API_HTML;
 					<substitute-events>
 				]
 			}); 
+
+
+    $( "#dialog-form" ).dialog({
+      autoOpen: false,
+      height: 300,
+      width: 350,
+      modal: true,
+      buttons: {
+        "Create an account": function() {
+          allFields.removeClass( "ui-state-error" );
+ 
+            $( "#users tbody" ).append( "<tr>" +
+              "<td>" + name.val() + "</td>" +
+              "<td>" + email.val() + "</td>" +
+              "<td>" + password.val() + "</td>" +
+            "</tr>" );
+            $( this ).dialog( "close" );
+        },
+        Cancel: function() {
+          $( this ).dialog( "close" );
+        }
+      },
+      close: function() {
+        allFields.val( "" ).removeClass( "ui-state-error" );
+      }
+    });
 
 END_OF_API_JS_calendar;
 
