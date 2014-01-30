@@ -171,43 +171,25 @@ END_OF_API_JS_login;
 				</style>
 
 
+				<!-- Calendar container -->
 				<div style='/*border:1px solid #cfc497;*/ width:815px' id="mycalendar"></div> <br><br>
 
-<div id="dialog" style="z-index:12000;/*border:1px solid #e2f0f8*/" title="Event">
-	<table>
-		<tr>
-    		<td> <label for="start">Start</label> </td>
-			<td> <input type="text" style="width:50px" name="start" id="start" class="text ui-widget-content ui-corner-all"> </td>
-		</tr>
-		<tr>
-    		<td> <label for="end">End</label> </td>
-    		<td> <input type="text" style="width:50px" name="end" id="end" class="text ui-widget-content ui-corner-all"> </td>
-		</tr>
-		<tr>
-			<td> <input type='button' id='save' style='float:left;padding:3px; width:60px' onClick='saveDialog()' value='Save'> </td>
-		</tr>
-	</table>
-<script>
-//alert('see');
-//window.parent.loggedIn = 2;
-</script>
-</div>
-
-<!--
-<div id="dialog-form" title="Create new user">
-  <p class="validateTips">All form fields are required.</p>
-  <form>
-  <fieldset>
-    <label for="name">Name</label>
-    <input type="text" name="name" id="name" class="text ui-widget-content ui-corner-all">
-    <label for="email">Email</label>
-    <input type="text" name="email" id="email" value="" class="text ui-widget-content ui-corner-all">
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" value="" class="text ui-widget-content ui-corner-all">
-  </fieldset>
-  </form>
-</div>
--->
+				<!-- Edit dialog container -->
+				<div id="dialog" style="z-index:12000;/*border:1px solid #e2f0f8*/" title="Event">
+					<table>
+						<tr>
+							<td> <label for="start">Start</label> </td>
+							<td> <input type="text" style="width:50px" name="start" id="start" class="text ui-widget-content ui-corner-all"> </td>
+						</tr>
+						<tr>
+							<td> <label for="end">End</label> </td>
+							<td> <input type="text" style="width:50px" name="end" id="end" class="text ui-widget-content ui-corner-all"> </td>
+						</tr>
+						<tr>
+							<td> <input type='button' id='save' style='float:left;padding:3px; width:60px' onClick='saveDialog()' value='Save'> </td>
+						</tr>
+					</table>
+				</div>
 
     		</div>
 
@@ -223,7 +205,7 @@ function saveDialog()
 }
 
   $(function() {
-    $( "#dialog" ).dialog();
+    //$( "#dialog" ).dialog();
   });
 
 			$('#mycalendar').fullCalendar(
@@ -292,7 +274,7 @@ function saveDialog()
 						var title = event.title;
 						if (loggedIn)
 						{
-$( "#dialog-form" ).dialog( "open" );
+    						$( "#dialog" ).dialog();
 							//alert('event ' + year+'-'+month+'-'+day + ' ' + title);
 						}
 					});
@@ -302,10 +284,10 @@ $( "#dialog-form" ).dialog( "open" );
 				{
 					if (loggedIn)
 					{
-//$( "#dialog-form" ).dialog( "open" );
-						alert('Clicked on the slot: ' + date + '. loggedIn='+loggedIn);
+    					$( "#dialog" ).dialog();
+						//alert('Clicked on the slot: ' + date + '. loggedIn='+loggedIn);
 					}
-					alert('Current view: ' + view.name);
+					//alert('Current view: ' + view.name);
 					// change the day's background color just for fun
 					//$(this).css('background-color', 'red');
 				},
@@ -326,39 +308,12 @@ $( "#dialog-form" ).dialog( "open" );
 		},
 ***/
 
-
-
 				events:
 				[
 					<substitute-events>
 				]
 			}); 
 
-
-    $( "#dialog-form" ).dialog({
-      autoOpen: false,
-      height: 300,
-      width: 350,
-      modal: true,
-      buttons: {
-        "Create an account": function() {
-          allFields.removeClass( "ui-state-error" );
- 
-            $( "#users tbody" ).append( "<tr>" +
-              "<td>" + name.val() + "</td>" +
-              "<td>" + email.val() + "</td>" +
-              "<td>" + password.val() + "</td>" +
-            "</tr>" );
-            $( this ).dialog( "close" );
-        },
-        Cancel: function() {
-          $( this ).dialog( "close" );
-        }
-      },
-      close: function() {
-        allFields.val( "" ).removeClass( "ui-state-error" );
-      }
-    });
 
 END_OF_API_JS_calendar;
 

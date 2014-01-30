@@ -11,6 +11,8 @@
 
 	<?php echo $form->textFieldRow($model,'username',array('class'=>'span2','maxlength'=>255, 'autocomplete'=>"off")); ?>
 
+	<?php echo $form->textFieldRow($model,'displayname',array('class'=>'span2','maxlength'=>255, 'autocomplete'=>"off")); ?>
+
 	<?php echo $form->passwordFieldRow($model,'password',array('class'=>'span2','maxlength'=>255)); ?>
 
 	<?php echo $form->textFieldRow($model,'email',array('class'=>'span3','maxlength'=>255)); ?>
