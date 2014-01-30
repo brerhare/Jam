@@ -178,15 +178,64 @@ END_OF_API_JS_login;
 				<div id="dialog" style="z-index:12000;/*border:1px solid #e2f0f8*/" title="Event">
 					<table>
 						<tr>
-							<td> <label for="start">Start</label> </td>
-							<td> <input type="text" style="width:50px" name="start" id="start" class="text ui-widget-content ui-corner-all"> </td>
+							<td> <label for="start">Start time</label> </td>
+							<td> <select id="editStart" name="editStart">
+									<option value="7">7am</option>
+									<option value="8">8am</option>
+									<option value="9">9am</option>
+									<option value="10">10am</option>
+									<option value="11">11am</option>
+									<option value="12">12am</option>
+									<option value="13">1pm</option>
+									<option value="14">2pm</option>
+									<option value="15">3pm</option>
+									<option value="16">4pm</option>
+									<option value="17">5pm</option>
+									<option value="18">6pm</option>
+									<option value="19">7pm</option>
+								</select>
 						</tr>
 						<tr>
-							<td> <label for="end">End</label> </td>
-							<td> <input type="text" style="width:50px" name="end" id="end" class="text ui-widget-content ui-corner-all"> </td>
+							<td> <label for="end">End time</label> </td>
+							<td> <select id="editEnd" name="editEnd">
+									<option value="8">8am</option>
+									<option value="9">9am</option>
+									<option value="10">10am</option>
+									<option value="11">11am</option>
+									<option value="12">12am</option>
+									<option value="13">1pm</option>
+									<option value="14">2pm</option>
+									<option value="15">3pm</option>
+									<option value="16">4pm</option>
+									<option value="17">5pm</option>
+									<option value="18">6pm</option>
+									<option value="19">7pm</option>
+									<option value="20">8pm</option>
+								</select>
 						</tr>
+						<tr>
+							<td> <label for="description">Description</label> </td>
+							<td> <input type="text" style="width:180px" name="editDescription" id="editDescription" class="text ui-widget-content ui-corner-all"> </td>
+						</tr>
+							<td> <label for="share">Share?</label> </td>
+							<td> <select id="editShare" name="editShare">
+									<option value="1">Yes</option>
+									<option value="0">No</option>
+								</select>
+						</tr>
+						<tr>
+							<td> <label for="confirmed">Confirmed?</label> </td>
+							<td> <select id="editConfirmed" name="editConfirmed">
+									<option value="1">Yes</option>
+									<option value="0">No</option>
+								</select>
+						</tr>
+					</table>
+<hr/>
+					<table>
 						<tr>
 							<td> <input type='button' id='save' style='float:left;padding:3px; width:60px' onClick='saveDialog()' value='Save'> </td>
+							<td> <input type='button' id='cancel' style='float:left;padding:3px; width:60px' onClick='cancelDialog()' value='Cancel'> </td>
 						</tr>
 					</table>
 				</div>
@@ -197,16 +246,11 @@ END_OF_API_HTML;
 
 		$apiJs = <<<END_OF_API_JS_calendar
 
-function saveDialog()
-{
-	var dlgstart = document.getElementById('start').value;
-	alert('saved ' + dlgstart);
-	alert(loggedIn);
-}
-
-  $(function() {
-    //$( "#dialog" ).dialog();
-  });
+		function saveDialog()
+		{
+			var dlgstart = document.getElementById('start').value;
+			alert('saved ' + dlgstart);
+		}
 
 			$('#mycalendar').fullCalendar(
 			{
