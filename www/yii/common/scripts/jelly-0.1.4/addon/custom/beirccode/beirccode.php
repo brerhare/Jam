@@ -231,14 +231,20 @@ END_OF_API_HTML;
 						var month = ($.fullCalendar.formatDate( event.start, 'MM' ));
 						var year = ($.fullCalendar.formatDate( event.start, 'yyyy' ));
 						var title = event.title;
-						alert('event ' + year+'-'+month+'-'+day + ' ' + title);
+						if (loggedIn)
+						{
+							alert('event ' + year+'-'+month+'-'+day + ' ' + title);
+						}
 					});
 				},
 
 				dayClick: function(date, allDay, jsEvent, view)
 				{
-					alert('Clicked on the slot: ' + date + '. loggedIn='+loggedIn);
-					//alert('Current view: ' + view.name);
+					if (loggedIn)
+					{
+						alert('Clicked on the slot: ' + date + '. loggedIn='+loggedIn);
+					}
+					alert('Current view: ' + view.name);
 					// change the day's background color just for fun
 					//$(this).css('background-color', 'red');
 				},
