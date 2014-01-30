@@ -338,7 +338,7 @@ END_OF_API_HTML;
 					{
 						if (loggedIn)
 						{
-							var dt = $.fullCalendar.formatDate(event.start, "ddd dd/MM/yyyy");
+							var dt = $.fullCalendar.formatDate(event.start, "dddd d MMMM yyyy");
 							var start = $.fullCalendar.formatDate(event.start, "H");
 							var end = $.fullCalendar.formatDate(event.end, "H");
 							$("#editDate").html(dt);
@@ -357,7 +357,7 @@ END_OF_API_HTML;
 				{
 					if (loggedIn)
 					{
-						var dt = $.fullCalendar.formatDate(date, "ddd dd/MM/yyyy");
+						var dt = $.fullCalendar.formatDate(date, "dddd d MMMM yyyy");
 						var start = $.fullCalendar.formatDate(date, "H");
 						var end = (parseInt(start) + 1);
 						$("#editStart").val(start);
