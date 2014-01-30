@@ -143,10 +143,21 @@ END_OF_API_JS_login;
 			<div id="jelly-beirc-fullcalendar-container">
 
 				<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js" ></script>
+<!--				<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/cupertino/jquery-ui.css" type="text/css" rel="stylesheet" /> -->
+<!--				<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/pepper-grinder/jquery-ui.css" type="text/css" rel="stylesheet" /> -->
+<!--				<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/redmond/jquery-ui.css" type="text/css" rel="stylesheet" /> -->
+<!--				<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/sunny/jquery-ui.css" type="text/css" rel="stylesheet" /> -->
+				<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/start/jquery-ui.css" type="text/css" rel="stylesheet" />
 
+				<!-- Fullcalendar -->
 				<link rel="stylesheet" href="<substitute-path>/fullcalendar/fullcalendar.css" type="text/css" media="screen"/>
 				<!-- <link rel="stylesheet" href="<substitute-path>/fullcalendar/fullcalendar.print.css" type="text/css" media="print"/> -->
 				<script src="<substitute-path>/fullcalendar/fullcalendar.js"></script>
+
+				<!-- Timepicker -->
+				<script type="text/javascript" src="<substitute-path>/timepicker/jquery.timepicker.js"></script>
+<!--			<link rel="stylesheet" type="text/css" href="<substitute-path>/timepicker/jquery.timepicker.css" /> -->
+				<script type="text/javascript" src="<substitute-path>/timepicker/lib/base.js"></script>
 
 				<!-- Style overrides -->
 				<style>
@@ -161,11 +172,20 @@ END_OF_API_JS_login;
 
 
 				<div style='/*border:1px solid #cfc497;*/ width:815px' id="mycalendar"></div> <br><br>
+
+<div id="dialog" style="z-index:12000;/*border:1px solid #e2f0f8*/" title="Event">
+  <p>This is the default dialog which is useful for displaying information. The dialog window can be moved, resized and closed with the 'x' icon.</p>
+</div>
+
     		</div>
 
 END_OF_API_HTML;
 
 		$apiJs = <<<END_OF_API_JS_calendar
+
+  $(function() {
+    $( "#dialog" ).dialog();
+  });
 
 			$('#mycalendar').fullCalendar(
 			{
