@@ -152,35 +152,57 @@ class SiteController extends Controller
 
 			$retArr = array();
 
-			if (!isset($_POST['username']))
-				throw new CHttpException(400, 'No username specified for login');
-			if (!isset($_POST['mid']))
-				throw new CHttpException(400, 'No member id specified for login');
+			$retArr['error'] = "";
+			$retArr['loggedOut'] = "";
 
-			$criteria = new CDbCriteria;
-			$criteria->addCondition("username = '" . $_POST['username'] . "'");
-			$member = Member::model()->find($criteria);
-			if (!($member))
-				throw new CHttpException(400, 'No username found for login');
-			if ($member->password != $_POST['mid'])
-				throw new CHttpException(400, 'Incorrect member id for login');
-			Yii::app()->session['mid'] = $member->id;
+			// Handle logout
+			if (!isset($_POST['loggedIn']))
+				$retArr['error'] = 'Internal error - logged in status not given';
+			if ($_POST['loggedIn'] == '1')
+			{
+				$retArr['loggedOut'] = '1';
+				unset(Yii::app()->session['mid']);
+				echo CJSON::encode($retArr);
+				return;
+			}
+
+			// Check passed parameters
+			if (!isset($_POST['username']))
+				$retArr['error'] = 'No username specified for login';
+			else if (!isset($_POST['password']))
+				$retArr['error'] = 'No member id specified for login';
+
+			// Check member credendials
+			if ($retArr['error'] == "");
+			{
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("username = '" . $_POST['username'] . "'");
+				$member = Member::model()->find($criteria);
+				if (!($member))
+					$retArr['error'] = 'No username found for login';
+				else if ($member->password != $_POST['password'])
+					$retArr['error'] = 'Incorrect member id for login';
+				if ($retArr['error'] == "")
+				{
+					$retArr['id'] = $member->id;
+					$retArr['password'] = $member->password;
+					$retArr['displayName'] = $member->displayname;
+					Yii::app()->session['mid'] = $member->id;
+				}
+			}
+			if ($retArr['error'] != "")
+				unset(Yii::app()->session['mid']);
 
 			echo CJSON::encode($retArr);
 
 
 /*              echo CJSON::encode(array(
-                    'numRooms' => '2',
-                    'room_1' => array(
-                        'roomId' => 23,
-                        'bookAvail' => 1,
-                        'dates' => array(1,1,1,1,1,1,1,1,1,1,1,1,1,1),
-                    }
-                    'room_2' => array(
-                        'roomId' => 17,
-                        'dates' => array(0,0,0,0,0,0,0,1,1,0,0,0,0,0)
-                    )
-                )); */
+                    'error' => '',
+                    'id' => '42',
+                    'password' => '237',
+                    'displayName' => 'Carla Milne',
+                ));
+*/
 
 		}
 		Yii::log("EXIT TEST AJAX CALL: " . $_POST['username'] , CLogger::LEVEL_WARNING, 'system.test.kim');

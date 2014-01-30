@@ -57,8 +57,8 @@ class beirccode
 			$content .= "</td></tr><tr><td>Member number</td><td>";
 			$content .= "<input id='password' name='password' type='text' value='' size='5'/> <br />";		
 			$content .= "</td></tr>";
-			$content .= "<tr><td>&nbsp</td><td>";
-			$content .= "<input type='button' id='submitbutton' style='float:left;padding:3px; width:60px' onClick='doLogin()' value='Login'>";
+			$content .= "<tr><td id='loggedinprompt'>&nbsp</td><td>";
+			$content .= "<input type='button' id='loginbutton' style='float:left;padding:3px; width:60px' onClick='doLogin()' value='Login'>";
 			$content .= "</td></tr></table>";
 		}
 		else
@@ -70,28 +70,14 @@ class beirccode
 
 		$apiJs = <<<END_OF_API_JS_login
 
+			var loggedIn = 0;
+
 			function doLogin()
 			{
 				var username = document.getElementById('username').value;
 				var password = document.getElementById('password').value;
 				var arena = getArgValue('arena');
-
 				<substitute-ajax-login-code>
-
-return;
-				//var sel = "?layout=calendar&arena=" + getArgValue('arena');
-				var sel = "<substitute-login-url>?";
-				if ((username.trim() == '') || (password.trim() == ''))
-				{
-					alert('Please enter both a Surname and Member number');
-					return;
-				}
-				sel += "&layout=calendar";
-				sel += "&username=" + username;
-				sel += "&mid=" + password;
-				sel += "&arena=" + arena;
-alert('log');
-				window.location.href = sel;
 			}
 
 			// Return the GET[''] value of something
@@ -102,26 +88,46 @@ alert('log');
 				return("");
 			}
 
+			function ajaxShowLogin(val)
+			{
+				if (val.error != "")
+				{
+					// Error
+					loggedIn = 0;
+					alert(val.error);
+					return;
+				}
+				if (val.loggedOut != "")
+				{
+					// Just logged out
+					loggedIn = 0;
+					document.getElementById("loggedinprompt").innerHTML="";
+					document.getElementById("loginbutton").value="Login";
+					return;
+				}
+				// Success
+				loggedIn = 1;
+				alert('Welcome ' + val.displayName);
+				document.getElementById("loggedinprompt").innerHTML="Logged in";
+				document.getElementById("loginbutton").value="Logout";
+			}
+
 END_OF_API_JS_login;
 
 		// Substitutes
-		$apiJs = str_replace("<substitute-login-url>", Yii::app()->createUrl('site/doLogin'), $apiJs);
-
-		$apiJs = str_replace("<substitute-ajax-login-code>",
-			    "<?php
-    			echo CHtml::ajax(array(
-        			'url'=>$this->createUrl('site/ajaxLogin'),
-        			'data'=>array(
-            			'username'=>'js:username',
-            			'password'=>'js:password',
-            			'arena'=>'js:arena',
-        			),
-        			'type'=>'POST',
-        			'dataType'=>'json',
-        			'success' => 'function(val){ajaxShowLogin(val);}',
-    			));"
-			,
-			$apiJs);
+		$xx = CHtml::ajax(array(
+   			'url'=>Yii::app()->createUrl('site/ajaxLogin'),
+   			'data'=>array(
+      			'loggedIn'=>'js:loggedIn',
+      			'username'=>'js:username',
+       			'password'=>'js:password',
+       			'arena'=>'js:arena',
+     			),
+   			'type'=>'POST',
+   			'dataType'=>'json',
+   			'success' => 'function(val){ajaxShowLogin(val);}',
+		));
+		$apiJs = str_replace("<substitute-ajax-login-code>", $xx, $apiJs);
 
 		$retArr = array();
 		$retArr[0] = $apiHtml;
@@ -231,7 +237,7 @@ END_OF_API_HTML;
 
 				dayClick: function(date, allDay, jsEvent, view)
 				{
-					alert('Clicked on the slot: ' + date);
+					alert('Clicked on the slot: ' + date + '. loggedIn='+loggedIn);
 					//alert('Current view: ' + view.name);
 					// change the day's background color just for fun
 					//$(this).css('background-color', 'red');
