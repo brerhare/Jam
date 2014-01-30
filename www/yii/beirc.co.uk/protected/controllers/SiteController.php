@@ -143,4 +143,48 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
+
+	public function actionAjaxLogin()
+	{
+		if (Yii::app()->request->isAjaxRequest)
+		{
+			Yii::log("TEST AJAX CALL: username:" . $_POST['username'] . " password:" . $_POST['password'], CLogger::LEVEL_WARNING, 'system.test.kim');
+
+			$retArr = array();
+
+			if (!isset($_POST['username']))
+				throw new CHttpException(400, 'No username specified for login');
+			if (!isset($_POST['mid']))
+				throw new CHttpException(400, 'No member id specified for login');
+
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("username = '" . $_POST['username'] . "'");
+			$member = Member::model()->find($criteria);
+			if (!($member))
+				throw new CHttpException(400, 'No username found for login');
+			if ($member->password != $_POST['mid'])
+				throw new CHttpException(400, 'Incorrect member id for login');
+			Yii::app()->session['mid'] = $member->id;
+
+			echo CJSON::encode($retArr);
+
+
+/*              echo CJSON::encode(array(
+                    'numRooms' => '2',
+                    'room_1' => array(
+                        'roomId' => 23,
+                        'bookAvail' => 1,
+                        'dates' => array(1,1,1,1,1,1,1,1,1,1,1,1,1,1),
+                    }
+                    'room_2' => array(
+                        'roomId' => 17,
+                        'dates' => array(0,0,0,0,0,0,0,1,1,0,0,0,0,0)
+                    )
+                )); */
+
+		}
+		Yii::log("EXIT TEST AJAX CALL: " . $_POST['username'] , CLogger::LEVEL_WARNING, 'system.test.kim');
+	}
+
+
 }
