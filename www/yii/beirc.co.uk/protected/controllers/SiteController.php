@@ -190,6 +190,23 @@ class SiteController extends Controller
 					Yii::app()->session['mid'] = $member->id;
 				}
 			}
+
+			// Pick up the member type
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("id = " . $member->member_type_id);
+			$memberType = MemberType::model()->find($criteria);
+			if (!($memberType))
+				$retArr['error'] = 'No membertype found for login';
+			else
+			{
+				$retArr['memberType'] = $member->member_type_id;
+				$retArr['slots'] = $memberType->slots;
+				if ($memberType->week_month == 2)
+					$retArr['period'] = 'month';
+				else
+					$retArr['period'] = 'week';
+			}
+
 			if ($retArr['error'] != "")
 				unset(Yii::app()->session['mid']);
 
@@ -200,6 +217,9 @@ class SiteController extends Controller
                     'id' => '42',
                     'password' => '237',
                     'displayName' => 'Carla Milne',
+                    'memberType' => '2',
+                    'slots' => '4',
+                    'period' => 'week',
                 ));
 */
 
@@ -220,7 +240,7 @@ class SiteController extends Controller
 			$deleting = 0;
 			$inserting = 0;
 
-			if ($_POST['eventId'] == '-1')
+			if ($_POST['action'] == 'delete')
 			{
 				$deleting = 1;
 				$retArr['action'] = "delete";
@@ -236,7 +256,7 @@ class SiteController extends Controller
 				$retArr['action'] = "edit";
 			}
 
-			$retArr['eventId'] = $_POST['eventId'];
+			$retArr['event_id'] = $_POST['eventId'];
 
 			Yii::log("  memberPassword=" . $_POST['memberPassword'], CLogger::LEVEL_WARNING, 'system.test.kim');
 			Yii::log("  arena=" . $_POST['arena'], CLogger::LEVEL_WARNING, 'system.test.kim');
@@ -322,6 +342,7 @@ Yii::log("EVENT AJAX CALL: " . $event->end, CLogger::LEVEL_WARNING, 'system.test
 	/* 0 = none, n = howmany, -1 = error */
 	public function getRemainingSlots($memberId)
 	{
+/*
 		// Pick up the member
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("id = " . $memberId);
@@ -336,12 +357,26 @@ Yii::log("EVENT AJAX CALL: " . $event->end, CLogger::LEVEL_WARNING, 'system.test
 		if (!($memberType))
 			return -1;
 
-		// Get base day for week-based members
+		// Get starting Sunday and ending Saturday for week-based members
+		var $start = "";
+		var $end = "";
 		if ($memberType->week_month = 1)
 		{
 			// Weekly
-			
+			$timestamp = time();
+			$weekDay = date( "w", $timestamp);
+			$date=date("Y-m-d");
+			if ($weekDay == 0)
+				$start = $date;
+			else
+				$start = date('Y-m-d', strtotime($date.'last sunday'));
+			$end = date('Y-m-d', strtotime($start.'next saturday'));
 		}
+		// Get first and last days of month for month-based members
+		if ($memberType->week_month = 2)
+		{
+		}
+*/
 	}
 
 }

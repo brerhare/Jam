@@ -55,7 +55,7 @@ class beirccode
 			$content .= "<tr><td>User name</td><td>";
 			$content .= "<input id='username' name='username' type='text' value='' size='20'/> <br/>";
 			$content .= "</td></tr><tr><td>Member number</td><td>";
-			$content .= "<input id='password' name='password' type='text' value='' size='5'/> <br />";		
+			$content .= "<input id='password' name='password' type='password' value='' size='5'/> <br />";		
 			$content .= "</td></tr>";
 			$content .= "<tr><td id='loggedinprompt'>&nbsp</td><td>";
 			$content .= "<input type='button' id='loginbutton' style='float:left;padding:3px; width:60px' onClick='doLogin()' value='Login'>";
@@ -73,6 +73,7 @@ class beirccode
 			var loggedIn = 0;
 
 			var memberId = 0;
+			var memberType = 0;
 			var memberPassword = "";
 			var memberDisplayName = "";
 			var arena = 0;
@@ -118,6 +119,7 @@ class beirccode
 				memberId = val.id;
 				memberPassword = val.password;
 				memberDisplayName = val.displayName;
+				memberType = val.memberType;
 			}
 
 END_OF_API_JS_login;
@@ -201,7 +203,7 @@ END_OF_API_JS_login;
 									<option value="9">9am</option>
 									<option value="10">10am</option>
 									<option value="11">11am</option>
-									<option value="12">12am</option>
+									<option value="12">12pm</option>
 									<option value="13">1pm</option>
 									<option value="14">2pm</option>
 									<option value="15">3pm</option>
@@ -219,7 +221,7 @@ END_OF_API_JS_login;
 									<option value="9">9am</option>
 									<option value="10">10am</option>
 									<option value="11">11am</option>
-									<option value="12">12am</option>
+									<option value="12">12pm</option>
 									<option value="13">1pm</option>
 									<option value="14">2pm</option>
 									<option value="15">3pm</option>
@@ -252,10 +254,11 @@ END_OF_API_JS_login;
 <hr/>
 					<table>
 						<tr>
-							<td width="25%">
-							<td width="25%"> <input type='button' id='editSave' style='float:left;padding:3px; width:60px' onClick='saveDialog()' value='Save'> </td>
-							<td width="25%"> <input type='button' id='editCancel' style='float:left;padding:3px; width:60px' onClick='cancelDialog()' value='Cancel'> </td>
-							<td width="25%">
+							<td width="20%">
+							<td width="20%"> <input type='button' id='editSave' style='float:left;padding:3px; width:60px' onClick='saveDialog("save")' value='Save'> </td>
+							<td width="20%"> <input type='button' id='editDelete' style='float:left;padding:3px; width:60px' onClick='saveDialog("delete")' value='Delete'> </td>
+							<td width="20%"> <input type='button' id='editCancel' style='float:left;padding:3px; width:60px' onClick='cancelDialog()' value='Cancel'> </td>
+							<td width="20%">
 						</tr>
 					</table>
 				</div>
@@ -272,7 +275,7 @@ END_OF_API_HTML;
 
 		$apiJs = <<<END_OF_API_JS_calendar
 
-		function saveDialog()
+		function saveDialog(saveType)	// 'save' or 'delete'
 		{
 			var start = document.getElementById('editStart').value;
 			var end = document.getElementById('editEnd').value;
@@ -281,6 +284,7 @@ END_OF_API_HTML;
 			var description = document.getElementById('editDescription').value;
 			var share = document.getElementById('editShare').value;
 			var confirmed = document.getElementById('editConfirmed').value;
+			var action = saveType;
 			$( "#dialog" ).dialog('close');
 			<substitute-ajax-event-code>
 		}
@@ -313,14 +317,6 @@ END_OF_API_HTML;
 					password: val.password,
 					allDay: false,
 					}, true );
-			}
-			if (val.action == "delete")
-			{
-				$('#mycalendar').fullCalendar('removeEvents', '1234');
-			}
-			if (val.action == "edit")
-			{
-				$('#mycalendar').fullCalendar('removeEvents', '1234');
 			}
 		}
 
@@ -391,6 +387,7 @@ END_OF_API_HTML;
 					{
 						if (loggedIn)
 						{
+							// Edit own events only
 							if (event.member_id != memberId)
 							{
 								return;
@@ -425,13 +422,16 @@ END_OF_API_HTML;
 						var titleDate = $.fullCalendar.formatDate(date, "dddd d MMMM yyyy");
 						var editDate = $.fullCalendar.formatDate(date, "yyyy-MM-dd HH:mm:ss");
 						// Check the day isnt more than 2 weeks ahead
-						var checkDate = $.fullCalendar.formatDate(date, "yyyy-MM-dd");
-						var fortnightAway = new Date(+new Date + 12096e5);
-						if (checkDate >= date2YMD(fortnightAway))
+						if (memberType != 5)
 						{
-							document.getElementById("msgText").innerHTML = "Cant book more than 14 days ahead";
-   							$("#dialogMsg").dialog();
-							return;
+							var checkDate = $.fullCalendar.formatDate(date, "yyyy-MM-dd");
+							var fortnightAway = new Date(+new Date + 12096e5);
+							if (checkDate >= date2YMD(fortnightAway))
+							{
+								document.getElementById("msgText").innerHTML = "Cant book more than 14 days ahead";
+   								$("#dialogMsg").dialog();
+								return;
+							}
 						}
 						// Check if theres already an event, and if so will they share the slot
 						var dayEvents = $('#mycalendar').fullCalendar('clientEvents', function(event) {
@@ -544,6 +544,7 @@ END_OF_API_JS_calendar;
        			'description'=>'js:description',
        			'share'=>'js:share',
        			'confirmed'=>'js:confirmed',
+       			'action'=>'js:action',
      			),
    			'type'=>'POST',
    			'dataType'=>'json',
