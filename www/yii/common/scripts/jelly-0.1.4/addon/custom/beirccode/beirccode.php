@@ -75,13 +75,13 @@ class beirccode
 			var memberId = 0;
 			var memberPassword = "";
 			var memberDisplayName = "";
-
+			var arena = 0;
 
 			function doLogin()
 			{
 				var username = document.getElementById('username').value;
 				var password = document.getElementById('password').value;
-				var arena = getArgValue('arena');
+				arena = getArgValue('arena');
 				<substitute-ajax-login-code>
 			}
 
@@ -123,7 +123,7 @@ class beirccode
 END_OF_API_JS_login;
 
 		// Substitutes
-		$xx = CHtml::ajax(array(
+		$ajaxLoginString = CHtml::ajax(array(
    			'url'=>Yii::app()->createUrl('site/ajaxLogin'),
    			'data'=>array(
       			'loggedIn'=>'js:loggedIn',
@@ -135,7 +135,7 @@ END_OF_API_JS_login;
    			'dataType'=>'json',
    			'success' => 'function(val){ajaxShowLogin(val);}',
 		));
-		$apiJs = str_replace("<substitute-ajax-login-code>", $xx, $apiJs);
+		$apiJs = str_replace("<substitute-ajax-login-code>", $ajaxLoginString, $apiJs);
 
 		$retArr = array();
 		$retArr[0] = $apiHtml;
@@ -183,7 +183,9 @@ END_OF_API_JS_login;
 				<div style='/*border:1px solid #cfc497;*/ width:815px' id="mycalendar"></div> <br><br>
 
 				<!-- Edit dialog container -->
-				<div id="dialog" style="z-index:12000;/*border:1px solid #e2f0f8*/" title="Event">
+				<div id="dialog" style="display:none;z-index:12000;/*border:1px solid #e2f0f8*/" title="Event">
+					<input type="hidden" name="editDate" id="editDate">
+					<input type="hidden" name="editEventId" id="editEventId">
 					<table>
 <!--
 						<tr>
@@ -266,9 +268,54 @@ END_OF_API_HTML;
 
 		function saveDialog()
 		{
-			var dlgstart = document.getElementById('editStart').value;
-			alert('saved ' + dlgstart);
+			var start = document.getElementById('editStart').value;
+			var end = document.getElementById('editEnd').value;
+			var date = document.getElementById('editDate').value;
+			var eventId = document.getElementById('editEventId').value;
+			var description = document.getElementById('editDescription').value;
+			var share = document.getElementById('editShare').value;
+			var confirmed = document.getElementById('editConfirmed').value;
 			$( "#dialog" ).dialog('close');
+			<substitute-ajax-event-code>
+		}
+
+		function ajaxShowEvent(val)
+		{
+			if (val.error != "")
+			{
+				// Error
+				alert(val.error);
+				return;
+			}
+			if ((val.action == 'edit') || (val.action == 'delete'))
+			{
+				$('#mycalendar').fullCalendar('removeEvents', val.event_id);
+			}
+			if ((val.action == "insert") || (val.action == 'edit'))
+			{
+				$('#mycalendar').fullCalendar('renderEvent', {
+					id: val.event_id,
+					title: val.title,
+					description: val.description,
+					member_id: val.member_id,
+					event_id: val.event_id,
+					arena: val.arena,
+					start: val.start,
+					end: val.end,
+					share: val.share,
+					confirmed: val.confirmed,
+					password: val.password,
+					allDay: false,
+					}, true );
+			}
+			if (val.action == "delete")
+			{
+				$('#mycalendar').fullCalendar('removeEvents', '1234');
+			}
+			if (val.action == "edit")
+			{
+				$('#mycalendar').fullCalendar('removeEvents', '1234');
+			}
 		}
 
 		function cancelDialog()
@@ -338,17 +385,19 @@ END_OF_API_HTML;
 					{
 						if (loggedIn)
 						{
-							var dt = $.fullCalendar.formatDate(event.start, "dddd d MMMM yyyy");
+							var titleDate = $.fullCalendar.formatDate(event.start, "dddd d MMMM yyyy");
+							var editDate = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd HH:mm:ss");
 							var start = $.fullCalendar.formatDate(event.start, "H");
 							var end = $.fullCalendar.formatDate(event.end, "H");
-							$("#editDate").html(dt);
+							$("#editDate").val(editDate);
+							$("#editEventId").val(event.event_id);
 							$("#editStart").val(start);
 							$("#editEnd").val(end);
 							$("#editDescription").val(event.description);
 							$("#editShare").val(event.share);
 							$("#editConfirmed").val(event.confirmed);
     						$("#dialog").dialog();
-							$("#dialog").dialog('option', 'title', dt);
+							$("#dialog").dialog('option', 'title', titleDate);
 						}
 					});
 				},
@@ -357,16 +406,19 @@ END_OF_API_HTML;
 				{
 					if (loggedIn)
 					{
-						var dt = $.fullCalendar.formatDate(date, "dddd d MMMM yyyy");
+						var titleDate = $.fullCalendar.formatDate(date, "dddd d MMMM yyyy");
+						var editDate = $.fullCalendar.formatDate(date, "yyyy-MM-dd HH:mm:ss");
 						var start = $.fullCalendar.formatDate(date, "H");
 						var end = (parseInt(start) + 1);
+						$("#editDate").val(editDate);
+						$("#editEventId").val(0);
 						$("#editStart").val(start);
 						$("#editEnd").val(end);
 						$("#editDescription").val("");
 						$("#editShare").val("Yes");
 						$("#editConfirmed").val("yes");
     					$("#dialog").dialog();
-						$("#dialog").dialog('option', 'title', dt);
+						$("#dialog").dialog('option', 'title', titleDate);
 					}
 					//alert('Current view: ' + view.name);
 					// change the day's background color just for fun
@@ -400,6 +452,27 @@ END_OF_API_JS_calendar;
 
 		// Substitute paths for includes
 		$apiHtml = str_replace("<substitute-path>", $this->jellyRootUrl, $apiHtml);
+
+		// Substitutes for ajax events
+		$ajaxEventString = CHtml::ajax(array(
+   			'url'=>Yii::app()->createUrl('site/ajaxEvent'),
+   			'data'=>array(
+      			'memberId'=>'js:memberId',
+      			'memberPassword'=>'js:memberPassword',
+       			'arena'=>'js:arena',
+       			'date'=>'js:date',
+       			'eventId'=>'js:eventId',
+       			'start'=>'js:start',
+       			'end'=>'js:end',
+       			'description'=>'js:description',
+       			'share'=>'js:share',
+       			'confirmed'=>'js:confirmed',
+     			),
+   			'type'=>'POST',
+   			'dataType'=>'json',
+   			'success' => 'function(val){ajaxShowEvent(val);}',
+		));
+		$apiJs = str_replace("<substitute-ajax-event-code>", $ajaxEventString, $apiJs);
 
 		// Populate events
 /*****
@@ -440,6 +513,7 @@ END_OF_API_JS_calendar;
 				$eventList .= "    share: '" . $event->share . "',\n";
 				$eventList .= "    confirmed: '" . $event->confirmed . "',\n";
 				$eventList .= "    password: '" . $event->password . "',\n";
+				$eventList .= "    id: '" . $event->id . "',\n";
 				$eventList .= "    allDay: false,\n";
 				$eventList .= "},\n";
 			}
