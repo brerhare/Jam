@@ -421,10 +421,10 @@ END_OF_API_HTML;
 					{
 						var titleDate = $.fullCalendar.formatDate(date, "dddd d MMMM yyyy");
 						var editDate = $.fullCalendar.formatDate(date, "yyyy-MM-dd HH:mm:ss");
+						var checkDate = $.fullCalendar.formatDate(date, "yyyy-MM-dd");
 						// Check the day isnt more than 2 weeks ahead
 						if (memberType != 5)
 						{
-							var checkDate = $.fullCalendar.formatDate(date, "yyyy-MM-dd");
 							var fortnightAway = new Date(+new Date + 12096e5);
 							if (checkDate >= date2YMD(fortnightAway))
 							{
@@ -436,7 +436,7 @@ END_OF_API_HTML;
 						// Check if theres already an event, and if so will they share the slot
 						var dayEvents = $('#mycalendar').fullCalendar('clientEvents', function(event) {
 							var dt = checkDate + ' 00:00:00';
-							var start = $.fullCalendar.formatDate(date, "H");
+							var start = $.fullCalendar.formatDate(date, "HH");
 							var end = (parseInt(start) + 1);
 							if (start.length == 1) start = "0" + start;
 							if (end.length == 1) end = "0" + end;
@@ -444,6 +444,7 @@ END_OF_API_HTML;
 							var edt = checkDate + ' ' + end + ':00:00';
 							var estart = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd HH:mm:ss");
 							var eend = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd HH:mm:ss");
+//alert('estart:'+estart+' eend:'+eend+' sdt:'+sdt+' edt:'+edt);
 							return sdt >= estart && edt <= eend;
 						});
 //alert('dayEvents='+dayEvents.length);
