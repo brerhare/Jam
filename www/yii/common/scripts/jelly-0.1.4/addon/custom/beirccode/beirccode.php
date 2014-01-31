@@ -455,7 +455,6 @@ END_OF_API_HTML;
 						}
 						if (dayEvents.length == 1)
 						{
-//alert('share='+dayEvents[0].share);
 							if (parseInt(dayEvents[0].share) == 0)
 							{
 								document.getElementById("msgText").innerHTML = "Sorry, " + dayEvents[0].title + " is not sharing this slot";
