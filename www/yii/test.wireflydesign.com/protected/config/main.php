@@ -7,7 +7,7 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'A Jelly Webapp',
+	'name'=>'Wirefly Test Site',
 
 	// Override the default controller
 	//'defaultController'=>'contentBlock',
@@ -20,7 +20,7 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
-		'application.extensions.jelly.*',
+		'application.extensions.wirefly.jelly-current.*',
 		'application.extensions.PHPMailer.*',
 	),
 
@@ -100,8 +100,8 @@ return array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@wireflydesign.com',
         // These are used by the shopping cart checkout process
-        'checkoutEmail'=>'k@microboot.com',
-        'checkoutName'=>'Demo account',
+        'checkoutEmail'=>'info@wireflydesign.com',
+        'checkoutName'=>'Wirefly Test',
         // Test gateway
         'checkoutGatewayUser'=>'WIREFL-5188100',
         'checkoutGatewayPassword'=>'391F3GWBZ0',

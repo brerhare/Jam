@@ -1,0 +1,104 @@
+#BEIRC
+[defaults]
+include = default-values
+
+; Every blob inherits these before adding/overriding
+[* : defaults]
+
+[screen]
+child = page-background
+css.background-color = #ede0ad
+css.display = block
+
+	[page-background]
+	child = left, site, right
+	css.width = 970px
+	stacking = horizontal
+
+		[left]
+		image.url = /img/shadow-left.png
+		image.width = 35px
+		image.height = 712px
+		css.margin-top = -20px
+
+###### main site area ##################################
+
+		[site]
+		child = header, menu, page, footer
+		css.width = 900px
+		css.background-color = #fff4cc
+		
+			[header]
+			child = logo, login
+			stacking = horizontal
+
+				[logo]
+				css.margin-left = 75px
+				css.margin-top = 20px
+				image.width = 340px
+				image.height = 134px
+				image.url = /img/Logo.png
+
+				[login]
+				css.margin-left = 50px
+				addon.custom.beirccode.run = login
+
+			[menu]	
+			css.margin-left = 40px
+			css.margin-top = 20px
+			css.height = 50px
+			css.overflow = visible
+			css.z-index = 1100
+			css.position = relative
+			addon.menu.basic.orientation = horizontal
+
+			[page]
+			css.margin-left = 40px
+			css.width = 900px
+			css.margin-top = 30px
+			addon.custom.beirccode.run = calendar
+
+			[footer]
+			child = footer-graphic, footer-content
+		
+				[footer-graphic]
+				css.width = 850px
+				image.width = 850px
+				image.height = 95px
+				image.url = /img/footer.png
+
+				[footer-content]
+				child = Cookie, TCs, Policy
+				css.width = 850px
+				css.height = 40px
+				css.background-color = #017572
+				css.z-index = 1100
+				css.position = relative
+				css.margin-top = -5px
+				stacking = horizontal
+
+					[Cookie]
+					css.margin-left = 250px
+					html.raw = Cookies
+					css.color = #ffffff
+					#click = http://www.dumfriesfurniture.com/?layout=index&page=dumfrie-furniture-cookies
+
+					[TCs]
+					css.margin-left = 70px
+					css.color = #ffffff
+					html.raw = Terms & Conditions
+					#click = http://www.dumfriesfurniture.com/?layout=index&page=dumfrie-furniture-terms
+
+					[Policy]
+					css.margin-left = 70px
+					css.color = #ffffff
+					html.raw = Policy
+					#click = http://www.dumfriesfurniture.com/?layout=index&page=dumfrie-furniture-policy
+
+#### end of main site area ################################
+		[right]
+		image.url = /img/shadow-right.png
+		image.width = 35px
+		image.height = 712px
+		css.margin-top = -20px
+

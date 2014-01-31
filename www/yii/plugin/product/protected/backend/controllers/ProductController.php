@@ -246,12 +246,17 @@ class ProductController extends Controller
            	$prc->product_product_id = $id;
            	$prc->product_option_id = $option->id;
            	$prc->price = $_POST[$option->id . '_price'];
+
+       		$prc->is_poa = 0;
+           	if ($_POST[$option->id . '_poa'] == 'on')
+           		$prc->is_poa = 1;
+
            	if (isset($_POST['defaultOption']))
            	{
            		if ($prc->product_option_id == $_POST['defaultOption'])
            			$prc->is_default = 1;
             }
-			if ($prc->price != 0)
+			if (($prc->price != 0) || ($prc->is_poa != 0))
            		$prc->save();
         endforeach;
 

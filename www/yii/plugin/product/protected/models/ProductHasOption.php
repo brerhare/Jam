@@ -8,6 +8,7 @@
  * @property integer $product_option_id
  * @property string $price
  * @property integer $is_default
+ * @property integer $is_poa
  */
 class ProductHasOption extends CActiveRecord
 {
@@ -38,11 +39,11 @@ class ProductHasOption extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('product_product_id, product_option_id', 'required'),
-			array('product_product_id, product_option_id, is_default', 'numerical', 'integerOnly'=>true),
+			array('product_product_id, product_option_id, is_default, is_poa', 'numerical', 'integerOnly'=>true),
 			array('price', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('product_product_id, product_option_id, price, is_default', 'safe', 'on'=>'search'),
+			array('product_product_id, product_option_id, price, is_default, is_poa', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -67,6 +68,7 @@ class ProductHasOption extends CActiveRecord
 			'product_option_id' => 'Product Option',
 			'price' => 'Price',
 			'is_default' => 'Is Default?',
+			'is_POA' => 'POA',
 		);
 	}
 
@@ -85,6 +87,7 @@ class ProductHasOption extends CActiveRecord
 		$criteria->compare('product_option_id',$this->product_option_id);
 		$criteria->compare('price',$this->price,true);
 		$criteria->compare('is_default',$this->is_default);
+		$criteria->compare('is_poa',$this->is_poa);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

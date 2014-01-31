@@ -597,7 +597,7 @@ END_OF_API_JS_fill_headers;
 		if (gethostname() == 'spleen')
 			$apiJs = str_replace("<substitute-ajaxurl>", 'http://localhost/event/index.php/site/ajaxGetEvent', $apiJs);
 		else
-			$apiJs = str_replace("<substitute-ajaxurl>", 'https://plugin.wireflydesign.com/event/index.php/site/ajaxGetEvent', $apiJs);
+			$apiJs = str_replace("<substitute-ajaxurl>", 'http://plugin.wireflydesign.com/event/index.php/site/ajaxGetEvent', $apiJs);
 
 		$clipBoard = "";
 

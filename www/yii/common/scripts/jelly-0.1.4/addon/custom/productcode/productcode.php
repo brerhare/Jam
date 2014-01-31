@@ -69,7 +69,12 @@ class productcode
     	$criteria->addCondition("is_default = " . 1);
 		$productHasOption = ProductHasOption::model()->find($criteria);
 		if ($productHasOption)
-			$defaultOption = $productHasOption->price;
+		{
+			if ($productHasOption->is_poa == 1)
+				$defaultOption = ' POA';
+			else
+				$defaultOption = $productHasOption->price;
+		}
 		else
 		{
 			// Find the cheapest product option
@@ -80,6 +85,8 @@ class productcode
 			foreach ($productHasOptions as $productHasOption)
 			{
 				$defaultOption = $productHasOption->price;
+				if ($productHasOption->is_poa == 1)
+					$defaultOption = ' POA';
 				break;
 			}
 		}
@@ -166,7 +173,10 @@ class productcode
 				$selected = "";
 				if ($productHasOption->is_default)
 					$selected = " selected ";
-				$content .= "<option " . $selected . " value='" . $option->id . "'>£" . $productHasOption->price . "&nbsp" . $option->name . "</option>";
+				$showPrice = "£" . $productHasOption->price;
+				if ($productHasOption->is_poa)
+					$showPrice = "POA";
+				$content .= "<option " . $selected . " value='" . $option->id . "'>" . $showPrice . "&nbsp" . $option->name . "</option>";
 			}
 		}
 		$content .= "</select>";
@@ -339,12 +349,20 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 				$criteria->addCondition("product_product_id = " . $cProduct);
 				$criteria->addCondition("product_option_id = " . $cOption);
 				$productHasOption = ProductHasOption::model()->find($criteria);
-				$content .= "<td align='right'>" . $productHasOption->price . "</td>";
+				// Each
+				if ($productHasOption->is_poa)
+					$content .= "<td align='right'>" . "POA" . "</td>";
+				else
+					$content .= "<td align='right'>" . $productHasOption->price . "</td>";
 				// Qty
 				$content .= "<td align='right'>" . $cQty . "</td>";
 				// Total
-				$content .= "<td align='right'>" . number_format(($cQty * $productHasOption->price), 2, '.', '') . "</td>";
-				$totalGoods += ($cQty * $productHasOption->price);
+				if ($productHasOption->is_poa)
+					$content .= "<td align='right'>" . "POA" . "</td>";
+				else
+					$content .= "<td align='right'>" . number_format(($cQty * $productHasOption->price), 2, '.', '') . "</td>";
+				if (!$productHasOption->is_poa)
+					$totalGoods += ($cQty * $productHasOption->price);
 				// Delete
 				$content .= "<td align='right'>";
 				//$content .= "<img border=0 src='" . $_imgDir . 'remove_from_cart.jpg' . "' style='height:40px; width:40px'>";

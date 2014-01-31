@@ -1,0 +1,30 @@
+Checkbox
+--------
+
+Addons		(page, slider, tab, gallery, ...)
+Plugins		(product, blog, event, booking, ailer, ticket)
+
+
+Input
+-----
+
+Site Name
+Plugin Sid
+Database	(name, username, password)
+Cart		(site-email, gateway-user, gateway-password)
+
+
+Process
+-------
+
+Create skeleton frontend - softlinks to selected Addons
+Create skeleton backend - menu options for selected Addons, jumpoffs for selected Plugins
+Register Plugin jumpoff logins with the selected plugins
+
+
+Notes
+-----
+
+Only softlink/register what is needed.
+Although this way requires a subscript for each Addon/Plugin it can be used to retrofit new items to sites which pre-dated them. This has been a major source of unbudgetted work lately.
+

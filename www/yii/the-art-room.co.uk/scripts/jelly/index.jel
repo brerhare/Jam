@@ -77,7 +77,7 @@ css.display = block
 						css.height = 19px
 						css.margin-top = -18px
 						css.margin-left = 140px
-						click = http://www.the-art-room.co.uk/?layout=index&page=blog
+						click = http://www.the-art-room.co.uk/?layout=index&page=news-arts-crafts-workshops-dumfries
 
 							[news-pic]
 							css.width = 25px
@@ -111,12 +111,7 @@ css.display = block
 	#addon.menu.basic.subitem-text-color = purple
 	#addon.menu.basic.subitem-seperator-color = red 
 
-			[menu-bg]
-			css.width = 455px
-			css.height = 50px
-			css.margin-top = -40px
-			css.margin-left = 0px
-			css.background-image = url('/img/menu-bg.png')
+
 
 ####SLider###########################################
 
@@ -125,17 +120,11 @@ css.display = block
 	#css.margin-left = 30px
 	css.width = 960px
   	css.height = 270px
-	addon.slider.flexslider.width = 950px
+	addon.slider.flexslider.width = 952px
 	addon.slider.flexslider.height = 260px
 	addon.slider.flexslider.mode = image
 	addon.slider.flexslider.source = db
 
-
-	#[static-tabs]
-	# These are not tied to the tab backend
-	#child = gallery, gifts, workshops
-	#stacking = horizontal
-	#css.heights = 
 
 ########body#######################################
 			
@@ -157,19 +146,19 @@ css.display = block
 			image.url = /img/Gallery.png
 			image.width = 250px
 			image.height = 295px
-			click = http://www.the-art-room.co.uk/?layout=index&page=gallery
+			click = http://www.the-art-room.co.uk/?layout=index&page=gallery-old-school-dumfries
 
 			[gifts]
 			image.url = /img/Gifts.png
 			image.width = 250px
 			image.height = 295px
-			click = http://www.the-art-room.co.uk/?layout=index&page=gifts
+			click = http://www.the-art-room.co.uk/?layout=index&page=art-gifts-dumfries-handmade-crafts
 
 			[workshop]
 			image.url = /img/Workshops.png
 			image.width = 250px
 			image.height = 295px
-			click = http://www.the-art-room.co.uk/?layout=index&page=gifts
+			click = http://www.the-art-room.co.uk/?layout=index&page=craft-workshops-children-dumfries
 
 		[white-block]
 		css.width = 960px
@@ -202,17 +191,17 @@ css.display = block
 	[page]
 	child = content
 	condition = @HOMEPAGE=0
-	css.margin-top = 20px
 	css.background-color = white
+	css.margin-top = 20px
 	fx.rounding = 4px
 
 		[content]
 		#css.background-color = white
 		css.color = black
-		css.margin = 15px
+		css.margin = 50px
 		db.table = ContentBlock
 		db.filter = url=$_GET['page']
-		db.error = Sorry, I could not find that page. You requested $_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
 		html.raw = ContentBlock.content
 
 ####footer##########################################
@@ -225,7 +214,7 @@ css.display = block
 	css.background-image = url('/img/footer-background.png')
 
 		[footer-content]
-		child = typewriter, address, social-fb, social-tw, footer-menu, rabbit
+		child = typewriter, address, social-fb, social-pt, social-insta, footer-menu, rabbit
 		css.height = 195px
 		css.width = 955px
 		#css.margin-top = -120px
@@ -237,11 +226,11 @@ css.display = block
 			css.margin-top = 30px
 			css.margin-left = 5px
 			css.background-image = url('/img/typewriter.png')
-			click = http://www.the-art-room.co.uk/?layout=index&page=blog
+			click = http://www.the-art-room.co.uk/?layout=index&page=news-arts-crafts-workshops-dumfries
 
 
 			[address]
-			css.width = 100px
+			css.width = 120px
 			css.height = 100px
 			css.margin-top = 60px
 			css.margin-left = 50px
@@ -252,25 +241,33 @@ css.display = block
 			css.width = 60px
 			css.height = 60px
 			css.margin-top = 90px
-			css.margin-left = 100px
+			css.margin-left = 80px
 			css.background-image = url('/img/facebook.png')
-			click = http://www.wireflydesign.com
+			clicknew = https://www.facebook.com/theartroomwithintheoldschool
 
 
-			[social-tw]
+			[social-pt]
 			css.width = 60px
 			css.height = 60px
 			css.margin-top = 90px
 			#css.margin-left = 10px
-			css.background-image = url('/img/twitter.png')
-			click = http://www.wireflydesign.com
+			css.background-image = url('/img/Pinterest.png')
+			clicknew = http://www.pinterest.com/artroomdumfries/
+
+			[social-insta]
+			css.width = 60px
+			css.height = 60px
+			css.margin-top = 90px
+			#css.margin-left = 10px
+			css.background-image = url('/img/insta.png')
+			clicknew = http://instagram.com/the_art_room_dumfries
 
 			[footer-menu]
 			child = footer-contact, footer-cookies, footer-tandc, wirefly
 			css.width = 165px
 			css.height = 100px
 			css.margin-top = 60px
-			css.margin-left = 73px
+			css.margin-left = 13px
 
 				[footer-contact]
 				css.width = 160px
@@ -283,13 +280,13 @@ css.display = block
 				css.width = 160px
 				css.height = 20px	
 				css.background-image = url('/img/cookie-text.png')
-				click = http://www.the-art-room.co.uk/?layout=index&page=contact
+				click = http://www.the-art-room.co.uk/?layout=index&page=cookie-policy
 
 				[footer-tandc]
 				css.width = 160px
 				css.height = 20px	
 				css.background-image = url('/img/tc-text.png')
-				click = http://www.the-art-room.co.uk/?layout=index&page=contact
+				click = http://www.the-art-room.co.uk/?layout=index&page=terms-conditions
 
 				[wirefly]
 				css.width = 160px
@@ -303,4 +300,4 @@ css.display = block
 			css.margin-top = 80px
 			css.margin-left = 90px
 			css.background-image = url('/img/Louis 2.png')
-			click = http://www.the-art-room.co.uk/?layout=index&page=blog
+			click = http://www.the-art-room.co.uk/?layout=index&page=news-arts-crafts-workshops-dumfries

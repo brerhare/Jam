@@ -143,4 +143,192 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
+
+	public function actionAjaxLogin()
+	{
+		if (Yii::app()->request->isAjaxRequest)
+		{
+			Yii::log("LOGIN AJAX CALL: username:" . $_POST['username'] . " password:" . $_POST['password'], CLogger::LEVEL_WARNING, 'system.test.kim');
+
+			$retArr = array();
+
+			$retArr['error'] = "";
+			$retArr['loggedOut'] = "";
+
+			// Handle logout
+			if (!isset($_POST['loggedIn']))
+				$retArr['error'] = 'Internal error - logged in status not given';
+			if ($_POST['loggedIn'] == '1')
+			{
+				$retArr['loggedOut'] = '1';
+				unset(Yii::app()->session['mid']);
+				echo CJSON::encode($retArr);
+				return;
+			}
+
+			// Check passed parameters
+			if (!isset($_POST['username']))
+				$retArr['error'] = 'No username specified for login';
+			else if (!isset($_POST['password']))
+				$retArr['error'] = 'No member id specified for login';
+
+			// Check member credendials
+			if ($retArr['error'] == "");
+			{
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("username = '" . $_POST['username'] . "'");
+				$member = Member::model()->find($criteria);
+				if (!($member))
+					$retArr['error'] = 'No username found for login';
+				else if ($member->password != $_POST['password'])
+					$retArr['error'] = 'Incorrect member id for login';
+				if ($retArr['error'] == "")
+				{
+					$retArr['id'] = $member->id;
+					$retArr['password'] = $member->password;
+					$retArr['displayName'] = $member->displayname;
+					Yii::app()->session['mid'] = $member->id;
+				}
+			}
+			if ($retArr['error'] != "")
+				unset(Yii::app()->session['mid']);
+
+			echo CJSON::encode($retArr);
+
+/*              echo CJSON::encode(array(
+                    'error' => '',
+                    'id' => '42',
+                    'password' => '237',
+                    'displayName' => 'Carla Milne',
+                ));
+*/
+
+		}
+		Yii::log("EXIT LOGIN AJAX CALL: " . $_POST['username'] , CLogger::LEVEL_WARNING, 'system.test.kim');
+	}
+
+	public function actionAjaxEvent()
+	{
+		if (Yii::app()->request->isAjaxRequest)
+		{
+			Yii::log("EVENT AJAX CALL: memberId=" . $_POST['memberId'], CLogger::LEVEL_WARNING, 'system.test.kim');
+			$retArr = array();
+			$retArr['error'] = "";
+			$retArr['action'] = "";
+
+			$editing = 0;
+			$deleting = 0;
+			$inserting = 0;
+
+			if ($_POST['eventId'] == '-1')
+			{
+				$deleting = 1;
+				$retArr['action'] = "delete";
+			}
+			if ($_POST['eventId'] == '0')
+			{
+				$inserting = 1;
+				$retArr['action'] = "insert";
+			}
+			if ($_POST['eventId'] > '0')
+			{
+				$editing = 1;
+				$retArr['action'] = "edit";
+			}
+
+			$retArr['eventId'] = $_POST['eventId'];
+
+			Yii::log("  memberPassword=" . $_POST['memberPassword'], CLogger::LEVEL_WARNING, 'system.test.kim');
+			Yii::log("  arena=" . $_POST['arena'], CLogger::LEVEL_WARNING, 'system.test.kim');
+			Yii::log("  date=" . $_POST['date'], CLogger::LEVEL_WARNING, 'system.test.kim');
+			Yii::log("  eventId=" . $_POST['eventId'], CLogger::LEVEL_WARNING, 'system.test.kim');
+			Yii::log("  start=" . $_POST['start'], CLogger::LEVEL_WARNING, 'system.test.kim');
+			Yii::log("  end=" . $_POST['end'], CLogger::LEVEL_WARNING, 'system.test.kim');
+			Yii::log("  description=" . $_POST['description'], CLogger::LEVEL_WARNING, 'system.test.kim');
+			Yii::log("  share=" . $_POST['share'], CLogger::LEVEL_WARNING, 'system.test.kim');
+			Yii::log("  confirmed=" . $_POST['confirmed'], CLogger::LEVEL_WARNING, 'system.test.kim');
+
+			// Pick up the member
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("id = " . $_POST['memberId']);
+			$member = Member::model()->find($criteria);
+			if (!($member))
+			{
+				$retArr['error'] = "Invalid member";
+				echo CJSON::encode($retArr);
+				return;
+			}
+
+			// Pick up the member type
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("id = " . $member->member_type_id);
+			$memberType = MemberType::model()->find($criteria);
+			if (!($memberType))
+			{
+				$retArr['error'] = "Invalid member type";
+				echo CJSON::encode($retArr);
+				return;
+			}
+
+			// Validate max slots (only if new)
+
+			// Validate 2 week ahead rule
+
+			// All ok, update the event
+			if (($editing) || ($deleting))
+			{
+				// Fetch original event
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("id = " . $_POST['eventId']);
+				$event = Event::model()->find($criteria);
+				if (!($event))
+				{
+					$retArr['error'] = "Cant retrieve event for editing";
+					echo CJSON::encode($retArr);
+					return;
+				}
+			}
+			if ($deleting)
+			{
+				$event->delete();
+				echo CJSON::encode($retArr);
+				return;
+			}
+			if (($inserting) || ($editing))
+			{
+				if ($inserting)
+	                $event = new Event;
+				$event->arena = $_POST['arena'];
+				$event->description = $_POST['description'];
+				$start = $_POST['start']; if (strlen($start) == 1) $start = "0" . $start;
+				$end = $_POST['end']; if (strlen($end) == 1) $end = "0" . $end;
+				$event->start = substr($_POST['date'], 0, 11) . $_POST['start'] . substr($_POST['date'], 13, 6);
+Yii::log("EVENT AJAX CALL: " . $event->start, CLogger::LEVEL_WARNING, 'system.test.kim');
+Yii::log("EVENT AJAX CALL: " . $event->end, CLogger::LEVEL_WARNING, 'system.test.kim');
+				$event->end = substr($_POST['date'], 0, 11) . $_POST['end'] . substr($_POST['date'], 13, 6);
+				$event->share = $_POST['share'];
+				$event->confirmed = $_POST['confirmed'];
+				$event->password = $member->password;
+				$event->save();
+
+				// Send the updated/new details
+				$retArr['title'] = $member->displayname;
+				$retArr['description'] = $event->description;
+				$retArr['member_id'] = $member->id;
+				$retArr['event_id'] = $event->id;
+				$retArr['arena'] = $event->arena;
+				$retArr['start'] = $event->start;
+				$retArr['end'] = $event->end;
+				$retArr['share'] = $event->share;
+				$retArr['confirmed'] = $event->confirmed;
+				$retArr['password'] = $event->password;
+			}
+
+			echo CJSON::encode($retArr);
+
+		}
+		Yii::log("EXIT EVENT AJAX CALL: ", CLogger::LEVEL_WARNING, 'system.test.kim');
+}
+
+
 }

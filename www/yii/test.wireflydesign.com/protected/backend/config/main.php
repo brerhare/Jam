@@ -17,7 +17,7 @@ return array(
     'viewPath' => $backend.'/views',
     'runtimePath' => $backend.'/runtime',
 
-	'name'=>'A Jelly Backend',
+	'name'=>'Wirefly Test Site Backend',
 
 	// preloading 'log' component
 	// preloading 'bootstrap' component

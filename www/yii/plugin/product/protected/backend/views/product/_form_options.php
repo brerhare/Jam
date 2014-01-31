@@ -10,8 +10,9 @@
     <table class="Xtable Xtable-bordered">
         <thead>
         <tr>
-	        <th style="width:50%">Option</th>
+	        <th style="width:40%">Option</th>
             <th>Price</th>
+            <th>POA</th>
             <th>Default?</th>
         </tr>
         </thead>
@@ -34,6 +35,15 @@
 			$price = ($productHasOption == null) ? "" : " value='" . $productHasOption->price . "' ";
 			if ($price == " value='0.00' ") $price = "";
 	        echo "<td><input style='text-align:right;width:75px;' type='text' name='" . $option->id . "_price' " . $price . " ></td>";
+
+
+echo "<input type='hidden' name='" . $option->id . "_poa' value='off'>";
+	        $checked ="none";
+	        if (($productHasOption) && ($productHasOption->is_poa == 1))
+	        	$checked = " checked='checked' ";
+	        echo "<td><input style='text-align:right' type='checkbox' name='" . $option->id . "_poa' " . $checked . " ></td>";
+
+
 	        $checked ="";
 	        if (($productHasOption) && ($productHasOption->is_default == 1))
 	        	$checked = " checked='checked' ";
