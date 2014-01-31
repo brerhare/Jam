@@ -35,7 +35,8 @@
 			'class' => 'bootstrap.widgets.TbMenu',
 			'items' => array(
                 array('label' => 'Page Content', 'url' => array('/contentBlock/admin'), 'visible' => !Yii::app()->user->isGuest),
-                array('label' => 'Slider Content', 'url' => array('/carouselBlock/admin'), 'visible' => !Yii::app()->user->isGuest),
+                array('label' => 'Slider HTML Content', 'url' => array('/carouselBlock/admin'), 'visible' => !Yii::app()->user->isGuest),
+                array('label' => 'Slider Image Content', 'url' => array('/jellySliderImage/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Tab Content', 'url' => array('/tabBlock/admin'), 'visible' => !Yii::app()->user->isGuest),                      
 // @@EG Open link in new tab/window
                 array('label' => 'Blog Backend', 'url' => 'https://plugin.wireflydesign.com/blog/backend.php/site/jDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
