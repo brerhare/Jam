@@ -260,6 +260,12 @@ END_OF_API_JS_login;
 					</table>
 				</div>
 
+				<!-- Message dialog container -->
+				<div id="dialogMsg" style="display:none;z-index:12000;/*border:1px solid #e2f0f8*/" title="Message">
+					<br>
+					<span id="msgText"></span>
+				</div>
+
     		</div>
 
 END_OF_API_HTML;
@@ -385,6 +391,10 @@ END_OF_API_HTML;
 					{
 						if (loggedIn)
 						{
+							if (event.member_id != memberId)
+							{
+								return;
+							}
 							var titleDate = $.fullCalendar.formatDate(event.start, "dddd d MMMM yyyy");
 							var editDate = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd HH:mm:ss");
 							var start = $.fullCalendar.formatDate(event.start, "H");
@@ -399,15 +409,61 @@ END_OF_API_HTML;
     						$("#dialog").dialog();
 							$("#dialog").dialog('option', 'title', titleDate);
 						}
+						else
+						{
+							document.getElementById("msgText").innerHTML = "Please login to create/edit bookings";
+    						$("#dialogMsg").dialog();
+						}
 					});
 				},
 
 				dayClick: function(date, allDay, jsEvent, view)
 				{
+					document.getElementById("msgText").innerHTML = "";
 					if (loggedIn)
 					{
 						var titleDate = $.fullCalendar.formatDate(date, "dddd d MMMM yyyy");
 						var editDate = $.fullCalendar.formatDate(date, "yyyy-MM-dd HH:mm:ss");
+						// Check the day isnt more than 2 weeks ahead
+						var checkDate = $.fullCalendar.formatDate(date, "yyyy-MM-dd");
+						var fortnightAway = new Date(+new Date + 12096e5);
+						if (checkDate >= date2YMD(fortnightAway))
+						{
+							document.getElementById("msgText").innerHTML = "Cant book more than 14 days ahead";
+   							$("#dialogMsg").dialog();
+							return;
+						}
+						// Check if theres already an event, and if so will they share the slot
+						var dayEvents = $('#mycalendar').fullCalendar('clientEvents', function(event) {
+							var dt = checkDate + ' 00:00:00';
+							var start = $.fullCalendar.formatDate(date, "H");
+							var end = (parseInt(start) + 1);
+							if (start.length == 1) start = "0" + start;
+							if (end.length == 1) end = "0" + end;
+							var sdt = checkDate + ' ' + start + ':00:00';
+							var edt = checkDate + ' ' + end + ':00:00';
+							var estart = $.fullCalendar.formatDate(event.start, "yyyy-MM-dd HH:mm:ss");
+							var eend = $.fullCalendar.formatDate(event.end, "yyyy-MM-dd HH:mm:ss");
+							return sdt >= estart && edt <= eend;
+						});
+//alert('dayEvents='+dayEvents.length);
+						if (dayEvents.length > 1)
+						{
+							document.getElementById("msgText").innerHTML = "This time slot has already been shared";
+    						$("#dialogMsg").dialog();
+							return;
+						}
+						if (dayEvents.length == 1)
+						{
+//alert('share='+dayEvents[0].share);
+							if (parseInt(dayEvents[0].share) == 0)
+							{
+								document.getElementById("msgText").innerHTML = "Sorry, " + dayEvents[0].title + " is not sharing this slot";
+    							$("#dialogMsg").dialog();
+								return;
+							}
+						}
+						// No-one has booked this slot
 						var start = $.fullCalendar.formatDate(date, "H");
 						var end = (parseInt(start) + 1);
 						$("#editDate").val(editDate);
@@ -419,6 +475,11 @@ END_OF_API_HTML;
 						$("#editConfirmed").val("yes");
     					$("#dialog").dialog();
 						$("#dialog").dialog('option', 'title', titleDate);
+					}
+					else
+					{
+						document.getElementById("msgText").innerHTML = "Please login to create/edit bookings";
+   						$("#dialogMsg").dialog();
 					}
 					//alert('Current view: ' + view.name);
 					// change the day's background color just for fun
@@ -447,6 +508,22 @@ END_OF_API_HTML;
 				]
 			}); 
 
+
+	/* Convert a Date object to '2014-12-31' format */
+    function date2YMD(date)
+	{
+        var year, month, day;
+        year = String(date.getFullYear());
+        month = String(date.getMonth() + 1);
+        if (month.length == 1) {
+            month = "0" + month;
+        }
+        day = String(date.getDate());
+        if (day.length == 1) {
+            day = "0" + day;
+        }
+        return year + "-" + month + "-" + day;
+    }
 
 END_OF_API_JS_calendar;
 

@@ -259,17 +259,6 @@ class SiteController extends Controller
 				return;
 			}
 
-			// Pick up the member type
-			$criteria = new CDbCriteria;
-			$criteria->addCondition("id = " . $member->member_type_id);
-			$memberType = MemberType::model()->find($criteria);
-			if (!($memberType))
-			{
-				$retArr['error'] = "Invalid member type";
-				echo CJSON::encode($retArr);
-				return;
-			}
-
 			// Validate max slots (only if new)
 
 			// Validate 2 week ahead rule
@@ -328,7 +317,31 @@ Yii::log("EVENT AJAX CALL: " . $event->end, CLogger::LEVEL_WARNING, 'system.test
 
 		}
 		Yii::log("EXIT EVENT AJAX CALL: ", CLogger::LEVEL_WARNING, 'system.test.kim');
-}
+	}
 
+	/* 0 = none, n = howmany, -1 = error */
+	public function getRemainingSlots($memberId)
+	{
+		// Pick up the member
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("id = " . $memberId);
+		$member = Member::model()->find($criteria);
+		if (!($member))
+			return -1;
+
+		// Pick up the member type
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("id = " . $member->member_type_id);
+		$memberType = MemberType::model()->find($criteria);
+		if (!($memberType))
+			return -1;
+
+		// Get base day for week-based members
+		if ($memberType->week_month = 1)
+		{
+			// Weekly
+			
+		}
+	}
 
 }
