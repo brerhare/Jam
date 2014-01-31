@@ -21,7 +21,7 @@ addon.analytics.google_analytics.ua = UA-20115178-1
 	css.width = 908px	/* if we give an explicit width here, child elements will by default set their width to it */
 
 		[fixedheader]
-		child = menu, millenium, fb, checkout, home
+		child = menu, millenium, salon, fb, checkout, home
 		stacking = horizontal
 		css.display = block
 		css.overflow = visible
@@ -36,23 +36,34 @@ addon.analytics.google_analytics.ua = UA-20115178-1
 
 			[menu]
 			css.display = block
-			css.margin-top = -20px 
-			css.margin-left = 43px
+			css.margin-top = -12px 
+			css.margin-left = 50px
 			addon.menu.megamenu.anchortext = <h5>Menu </h5>
 
 			[millenium]
 			css.display = block
 			css.height = 75px
-			css.margin-top = -115px 
-			css.margin-left = 375px
+			css.margin-top = -102px 
+			css.margin-left = 383px
 			html.h5 = Log-In
 			click = http://217.41.65.149:8080/clients/login.asp target="_blank"
+
+			[salon]
+			css.display = block
+			css.height = 20px
+			css.margin-top = -90px 
+			css.margin-left = -165px
+			image.url = /img/tour.png
+			image.width = 116px
+			image.height = 20px
+			click = ?layout=index&page=Best-Dumfries-Beauty-Salon
+
 
 			[fb]
 			css.display = block
 			css.height = 20px
-			css.margin-top = -95px 
-			css.margin-left = 510px
+			css.margin-top = -90px 
+			css.margin-left = -40px
 			image.url = /img/facebook.png
 			image.width = 20px
 			image.height = 20px
@@ -61,8 +72,8 @@ addon.analytics.google_analytics.ua = UA-20115178-1
 			[checkout]
 			css.display = block
 			css.height = 20px
-			css.margin-top = -95px 
-			css.margin-left = 540px
+			css.margin-top = -90px 
+			css.margin-left = 520px
 			image.url = /img/cart.png
 			image.width = 120px
 			image.height = 20px
@@ -77,9 +88,21 @@ addon.analytics.google_analytics.ua = UA-20115178-1
 		[carousel]
 		css.display = block
 		css.margin-top = 80px
-		;css.height = 250px			/* dont set the height - carousel will set it */
-		addon.carousel.flexslider.animation = fade
-		addon.carousel.flexslider.source = db
+		css.width = 908px
+css.height = 300px
+addon.slider.flexslider.width = 900px
+addon.slider.flexslider.height = 250px
+	addon.slider.flexslider.border-width = 4px
+	addon.slider.flexslider.border-color = white
+	addon.slider.flexslider.active-dotcolor = white
+	addon.slider.flexslider.inactive-dotcolor = #52025d
+	addon.slider.flexslider.dot-margin-top = -20px
+	addon.slider.flexslider.dot-margin-bottom = 0px
+	addon.slider.flexslider.dot-margin-left = 0px
+	addon.slider.flexslider.dot-margin-right = 0px
+addon.slider.flexslider.mode = image
+addon.slider.flexslider.source = db
+
 
 		[tabscontainer]
 #css.display = none
