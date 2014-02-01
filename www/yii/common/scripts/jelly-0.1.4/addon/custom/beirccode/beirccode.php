@@ -46,25 +46,19 @@ class beirccode
 	private function login()
 	{
 		$content = "";
-		if (trim(Yii::app()->session['beircid']) == "")
-		{
-			$content .= "<h2>Arena " . $_GET['arena'] . "</h2>";
-			$content .= "<table><tr><td colspan=2>";
-			$content .= "<a style='font-weight:bold;color:#017572'> Members please login to make bookings</a><br>";
-			$content .= "</td></tr>";
-			$content .= "<tr><td>User name</td><td>";
-			$content .= "<input id='username' name='username' type='text' value='' size='20'/> <br/>";
-			$content .= "</td></tr><tr><td>Member number</td><td>";
-			$content .= "<input id='password' name='password' type='password' value='' size='5'/> <br />";		
-			$content .= "</td></tr>";
-			$content .= "<tr><td id='loggedinprompt'>&nbsp</td><td>";
-			$content .= "<input type='button' id='loginbutton' style='float:left;padding:3px; width:60px' onClick='doLogin()' value='Login'>";
-			$content .= "</td></tr></table>";
-		}
-		else
-		{
-			$content .= "<a style='font-weight:bold;color:#017572'> You are logged in</a><br>";
-		}
+		$content .= "<h2>Arena " . $_GET['arena'] . "</h2>";
+		$content .= "<table><tr><td colspan=2>";
+		$content .= "<a style='font-weight:bold;color:#017572'> Members please login to make bookings</a><br>";
+		$content .= "</td></tr>";
+		$content .= "<tr><td>User name</td><td>";
+		$content .= "<input id='username' name='username' type='text' value='' size='20'/> <br/>";
+		$content .= "</td></tr><tr><td>Member number</td><td>";
+		$content .= "<input id='password' name='password' type='password' value='' size='5'/> <br />";		
+		$content .= "</td></tr>";
+		$content .= "<tr><td id='loggedinprompt'>&nbsp</td><td>";
+		$content .= "<input type='button' id='loginbutton' style='float:left;padding:3px; width:60px' onClick='doLogin()' value='Login'>";
+		$content .= "</td></tr></table>";
+
 		$clipBoard = "";
 		$apiHtml = $content;
 
@@ -408,7 +402,7 @@ END_OF_API_HTML;
 						}
 						else
 						{
-							document.getElementById("msgText").innerHTML = "Please login to create/edit bookings";
+							document.getElementById("msgText").innerHTML = "Please login to manage your bookings";
     						$("#dialogMsg").dialog();
 						}
 					});
@@ -477,7 +471,7 @@ END_OF_API_HTML;
 					}
 					else
 					{
-						document.getElementById("msgText").innerHTML = "Please login to create/edit bookings";
+						document.getElementById("msgText").innerHTML = "Please login to manage your bookings";
    						$("#dialogMsg").dialog();
 					}
 					//alert('Current view: ' + view.name);
