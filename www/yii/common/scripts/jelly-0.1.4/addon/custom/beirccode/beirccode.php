@@ -419,7 +419,7 @@ END_OF_API_HTML;
 						// Check the day isnt more than 2 weeks ahead
 						if (memberType != 5)
 						{
-							var fortnightAway = new Date(+new Date + 12096e5);
+							var fortnightAway = new Date(+new Date + 12096e5 + 86400000);
 							if (checkDate >= date2YMD(fortnightAway))
 							{
 								document.getElementById("msgText").innerHTML = "Cant book more than 14 days ahead";
