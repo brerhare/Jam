@@ -271,6 +271,7 @@ END_OF_API_HTML;
 
 		function saveDialog(saveType)	// 'save' or 'delete'
 		{
+//alert('sending to server: ' + saveType);
 			var start = document.getElementById('editStart').value;
 			var end = document.getElementById('editEnd').value;
 			var date = document.getElementById('editDate').value;
@@ -279,6 +280,7 @@ END_OF_API_HTML;
 			var share = document.getElementById('editShare').value;
 			var confirmed = document.getElementById('editConfirmed').value;
 			var action = saveType;
+//alert('sending start:' + start);
 			$( "#dialog" ).dialog('close');
 			<substitute-ajax-event-code>
 		}
@@ -297,8 +299,24 @@ END_OF_API_HTML;
 			}
 			if ((val.action == "insert") || (val.action == 'edit'))
 			{
+/*
+alert('server says action:' + val.action);
+alert('event_id:'+val.event_id);
+alert('title:'+val.title);
+alert('description:'+val.description);
+alert('member_id:'+val.member_id);
+alert('event_id:'+val.event_id);
+alert('arena:'+val.arena);
+alert('start:'+val.start);
+alert('end:'+val.end);
+alert('share:'+val.share);
+alert('confirmed:'+val.confirmed);
+*/
+
+//alert('server returned: start:'+val.start);
+//alert('server returned: end:'+val.end);
+
 				$('#mycalendar').fullCalendar('renderEvent', {
-					id: val.event_id,
 					title: val.title,
 					description: val.description,
 					member_id: val.member_id,
@@ -309,8 +327,12 @@ END_OF_API_HTML;
 					share: val.share,
 					confirmed: val.confirmed,
 					password: val.password,
-					allDay: false,
-					}, true );
+					id: val.event_id,
+					allDay: false
+					}, true);
+$('#mycalendar').fullCalendar('render');
+//$('#mycalendar').fullCalendar( 'refetchEvents' );
+//alert('done');
 			}
 		}
 
