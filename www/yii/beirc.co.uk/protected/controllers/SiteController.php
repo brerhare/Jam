@@ -148,7 +148,7 @@ class SiteController extends Controller
 	{
 		if (Yii::app()->request->isAjaxRequest)
 		{
-			Yii::log("LOGIN AJAX CALL: username:" . $_POST['username'] . " password:" . $_POST['password'], CLogger::LEVEL_WARNING, 'system.test.kim');
+			Yii::log("LOGIN AJAX CALL: username:" . $_POST['username'] . " password:" . $_POST['password'] . " loggedIn:" . $_POST['loggedIn'], CLogger::LEVEL_WARNING, 'system.test.kim');
 
 			$retArr = array();
 
@@ -172,7 +172,16 @@ class SiteController extends Controller
 			else if (!isset($_POST['password']))
 				$retArr['error'] = 'No member id specified for login';
 
-			// Check member credendials
+			// Check if this is a query for login status
+			if ($_POST['loggedIn'] == '?')
+			{
+				if (!(isset(Yii::app()->session['mid'])))
+					return;
+				$_POST['username'] = Yii::app()->session['username'];
+				$_POST['password'] = Yii::app()->session['password'];
+			}
+
+			// Check member credentials
 			if ($retArr['error'] == "");
 			{
 				$criteria = new CDbCriteria;
@@ -184,27 +193,30 @@ class SiteController extends Controller
 					$retArr['error'] = 'Incorrect member id for login';
 				if ($retArr['error'] == "")
 				{
-					$retArr['id'] = $member->id;
-					$retArr['password'] = $member->password;
-					$retArr['displayName'] = $member->displayname;
-					Yii::app()->session['mid'] = $member->id;
-				}
-			}
+					// Pick up the member type
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("id = " . $member->member_type_id);
+					$memberType = MemberType::model()->find($criteria);
+					if (!($memberType))
+						$retArr['error'] = 'No membertype found for login';
+					else
+					{
+						$retArr['id'] = $member->id;
+						$retArr['password'] = $member->password;
+						$retArr['displayName'] = $member->displayname;
+						$retArr['userName'] = $member->username;
+						Yii::app()->session['mid'] = $member->id;
+						Yii::app()->session['username'] = $member->username;	// Store for persistent session
+						Yii::app()->session['password'] = $member->password;	// Store for persistent session
 
-			// Pick up the member type
-			$criteria = new CDbCriteria;
-			$criteria->addCondition("id = " . $member->member_type_id);
-			$memberType = MemberType::model()->find($criteria);
-			if (!($memberType))
-				$retArr['error'] = 'No membertype found for login';
-			else
-			{
-				$retArr['memberType'] = $member->member_type_id;
-				$retArr['slots'] = $memberType->slots;
-				if ($memberType->week_month == 2)
-					$retArr['period'] = 'month';
-				else
-					$retArr['period'] = 'week';
+						$retArr['memberType'] = $member->member_type_id;
+						$retArr['slots'] = $memberType->slots;
+						if ($memberType->week_month == 2)
+							$retArr['period'] = 'month';
+						else
+							$retArr['period'] = 'week';
+					}
+				}
 			}
 
 			if ($retArr['error'] != "")
