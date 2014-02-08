@@ -257,12 +257,12 @@ class SiteController extends Controller
 				$deleting = 1;
 				$retArr['action'] = "delete";
 			}
-			if ($_POST['eventId'] == '0')
+			else if ($_POST['eventId'] == '0')
 			{
 				$inserting = 1;
 				$retArr['action'] = "insert";
 			}
-			if ($_POST['eventId'] > '0')
+			else if ($_POST['eventId'] > '0')
 			{
 				$editing = 1;
 				$retArr['action'] = "edit";
@@ -321,16 +321,23 @@ class SiteController extends Controller
 	                $event = new Event;
 				$event->arena = $_POST['arena'];
 				$event->description = $_POST['description'];
+				if (trim($event->description) == "")
+					$event->description = "-";
 				$start = $_POST['start']; if (strlen($start) == 1) $start = "0" . $start;
 				$end = $_POST['end']; if (strlen($end) == 1) $end = "0" . $end;
-				$event->start = substr($_POST['date'], 0, 11) . $_POST['start'] . substr($_POST['date'], 13, 6);
+				$event->start = substr($_POST['date'], 0, 11) . $start . substr($_POST['date'], 13, 6);
 Yii::log("EVENT AJAX CALL: " . $event->start, CLogger::LEVEL_WARNING, 'system.test.kim');
 Yii::log("EVENT AJAX CALL: " . $event->end, CLogger::LEVEL_WARNING, 'system.test.kim');
-				$event->end = substr($_POST['date'], 0, 11) . $_POST['end'] . substr($_POST['date'], 13, 6);
+				$event->end = substr($_POST['date'], 0, 11) . $end . substr($_POST['date'], 13, 6);
 				$event->share = $_POST['share'];
 				$event->confirmed = $_POST['confirmed'];
 				$event->password = $member->password;
-				$event->save();
+				if (!($event->save()))
+				{
+                    $retArr['error'] = "Cant create event";
+                    echo CJSON::encode($retArr);
+                    return;
+				}
 
 				// Send the updated/new details
 				$retArr['title'] = $member->displayname;
