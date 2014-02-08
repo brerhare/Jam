@@ -72,14 +72,27 @@ class beirccode
 			var memberDisplayName = "";
 			var arena = 0;
 
+			$( document ).ready(function() {
+				checkLogin();
+			});
+
+			function checkLogin()	// Are we already logged in?
+			{
+				var username = '?';
+				var password = '?';
+				var loggedIn = '?';	// NB this is NOT the global
+				<substitute-ajax-login-code>
+			}
+
 			function doLogin()
 			{
 				var username = document.getElementById('username').value;
 				var password = document.getElementById('password').value;
-				arena = getArgValue('arena');
+				//arena = getArgValue('arena');
 				<substitute-ajax-login-code>
 			}
 
+			// @@EG: JS retrieve page arg
 			// Return the GET[''] value of something
 			function getArgValue(name)
 			{
@@ -110,6 +123,10 @@ class beirccode
 				//alert('Welcome ' + val.displayName);
 				document.getElementById("loggedinprompt").innerHTML="Logged in";
 				document.getElementById("loginbutton").value="Logout";
+				// Show the login stuff in case this was a query
+				document.getElementById("username").value=val.userName;
+				document.getElementById("password").value=val.password;
+
 				memberId = val.id;
 				memberPassword = val.password;
 				memberDisplayName = val.displayName;
@@ -125,7 +142,6 @@ END_OF_API_JS_login;
       			'loggedIn'=>'js:loggedIn',
       			'username'=>'js:username',
        			'password'=>'js:password',
-       			'arena'=>'js:arena',
      			),
    			'type'=>'POST',
    			'dataType'=>'json',
