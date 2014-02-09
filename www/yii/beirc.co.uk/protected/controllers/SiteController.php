@@ -166,12 +166,6 @@ class SiteController extends Controller
 				return;
 			}
 
-			// Check passed parameters
-			if (!isset($_POST['username']))
-				$retArr['error'] = 'No username specified for login';
-			else if (!isset($_POST['password']))
-				$retArr['error'] = 'No member id specified for login';
-
 			// Check if this is a query for login status
 			if ($_POST['loggedIn'] == '?')
 			{
@@ -180,6 +174,12 @@ class SiteController extends Controller
 				$_POST['username'] = Yii::app()->session['username'];
 				$_POST['password'] = Yii::app()->session['password'];
 			}
+
+			// Check passed parameters
+			if (!isset($_POST['username']))
+				$retArr['error'] = 'No username specified for login';
+			else if (!isset($_POST['password']))
+				$retArr['error'] = 'No member id specified for login';
 
 			// Check member credentials
 			if ($retArr['error'] == "");
