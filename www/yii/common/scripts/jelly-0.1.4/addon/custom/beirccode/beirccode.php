@@ -49,8 +49,7 @@ class beirccode
 		$content .= "<h2 style='text-align:left;float:left;'>This is Arena " . $_GET['arena'] . "</h2>";
 		$otherArena = $_GET['arena']  == 1 ? 2 : 1;
 		$otherUrl = Yii::app()->createUrl('?layout=calendar&arena=' . $otherArena);
-		//$content .= "<h3 style='text-align:right;float:right;'><a href=" . $otherUrl . ">Go to Arena " . $otherArena . "</a></h3>";
-		$content .= "<a href=" . $otherUrl . "><h3 style='text-align:right;float:right;padding-top:2px'>Go to Arena " . $otherArena . "</h3></a>";
+		$content .= "<a href=" . $otherUrl . "><h3 style='text-decoration:underline;text-align:right;float:right;padding-top:2px'>Go to Arena " . $otherArena . "</h3></a>";
 		$content .= "<span style='float:clear both'></span>";
 		$content .= "<table><tr><td colspan=2>";
 		$content .= "<a style='font-weight:bold;color:#017572'> Members please login to make bookings</a><br>";
