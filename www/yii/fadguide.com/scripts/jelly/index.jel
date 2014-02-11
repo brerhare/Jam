@@ -9,7 +9,8 @@ include = default-values
 [screen]
 child = site
 #css.background-color = #ffffff
-fx.wallpaper-image = /img/small-bkg.jpg
+#fx.wallpaper-image = /img/straw_tile.jpg
+fx.wallpaper-image-tile = /img/straw_tile.jpg
 css.display = block
 
 	[site]
