@@ -1,7 +1,20 @@
+<?php
+/* @var $this MemberController */
+/* @var $data Member */
+?>
+
 <div class="view">
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('id')); ?>:</b>
-	<?php echo CHtml::link(CHtml::encode($data->id),array('view','id'=>$data->id)); ?>
+	<?php echo CHtml::link(CHtml::encode($data->id), array('view', 'id'=>$data->id)); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('username')); ?>:</b>
+	<?php echo CHtml::encode($data->username); ?>
+	<br />
+
+	<b><?php echo CHtml::encode($data->getAttributeLabel('password')); ?>:</b>
+	<?php echo CHtml::encode($data->password); ?>
 	<br />
 
 	<b><?php echo CHtml::encode($data->getAttributeLabel('approved')); ?>:</b>
@@ -20,6 +33,7 @@
 	<?php echo CHtml::encode($data->address2); ?>
 	<br />
 
+	<?php /*
 	<b><?php echo CHtml::encode($data->getAttributeLabel('address3')); ?>:</b>
 	<?php echo CHtml::encode($data->address3); ?>
 	<br />
@@ -28,7 +42,6 @@
 	<?php echo CHtml::encode($data->address4); ?>
 	<br />
 
-	<?php /*
 	<b><?php echo CHtml::encode($data->getAttributeLabel('postcode')); ?>:</b>
 	<?php echo CHtml::encode($data->postcode); ?>
 	<br />

@@ -36,6 +36,8 @@ DROP TABLE IF EXISTS `fadguide_com`.`member` ;
 
 CREATE  TABLE IF NOT EXISTS `fadguide_com`.`member` (
   `id` INT NOT NULL AUTO_INCREMENT ,
+  `username` VARCHAR(255) NOT NULL ,
+  `password` VARCHAR(255) NOT NULL ,
   `approved` INT NULL ,
   `business_name` VARCHAR(255) NOT NULL ,
   `address1` VARCHAR(255) NULL ,

@@ -5,6 +5,8 @@
  *
  * The followings are the available columns in table 'member':
  * @property integer $id
+ * @property string $username
+ * @property string $password
  * @property integer $approved
  * @property string $business_name
  * @property string $address1
@@ -56,14 +58,14 @@ class Member extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('business_name, category_id, food_type_id', 'required'),
+			array('username, password, business_name, category_id, food_type_id', 'required'),
 			array('approved, public, category_id, food_type_id', 'numerical', 'integerOnly'=>true),
-			array('business_name, address1, address2, address3, address4, contact, web, email, phone, opening_hours, logo_path, slider_image_path', 'length', 'max'=>255),
+			array('username, password, business_name, address1, address2, address3, address4, contact, web, email, phone, opening_hours, logo_path, slider_image_path', 'length', 'max'=>255),
 			array('postcode', 'length', 'max'=>10),
 			array('html_content', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, approved, business_name, address1, address2, address3, address4, postcode, contact, web, email, phone, opening_hours, html_content, logo_path, slider_image_path, public, category_id, food_type_id', 'safe', 'on'=>'search'),
+			array('id, username, password, approved, business_name, address1, address2, address3, address4, postcode, contact, web, email, phone, opening_hours, html_content, logo_path, slider_image_path, public, category_id, food_type_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -87,6 +89,8 @@ class Member extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
+			'username' => 'Username',
+			'password' => 'Password',
 			'approved' => 'Approved',
 			'business_name' => 'Business Name',
 			'address1' => 'Address1',
@@ -120,6 +124,8 @@ class Member extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
+		$criteria->compare('username',$this->username,true);
+		$criteria->compare('password',$this->password,true);
 		$criteria->compare('approved',$this->approved);
 		$criteria->compare('business_name',$this->business_name,true);
 		$criteria->compare('address1',$this->address1,true);
