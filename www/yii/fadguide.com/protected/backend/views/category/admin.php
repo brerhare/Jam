@@ -3,6 +3,7 @@
 $this->menu=array(
 	array('label'=>'Create Category','url'=>array('create')),
 );
+?>
 
 <h2>Manage Categories</h2>
 
@@ -12,9 +13,18 @@ $this->menu=array(
 	//'filter'=>$model,
 	'columns'=>array(
 		'id',
-		'name',
-		array(
-			'class'=>'bootstrap.widgets.TbButtonColumn',
-		),
+
+// @@EG Clickable rows in grid view!
+        array(
+            'name'  => 'username',
+            'value' => 'CHtml::link($data->name, Yii::app()->createUrl("category/update",array("id"=>$data->primaryKey)))',
+            'type'  => 'raw',
+        ),
+
+        array(
+            'class'=>'bootstrap.widgets.TbButtonColumn',
+            'template'=>'{update}{delete}',
+        ),
+
 	),
 )); ?>
