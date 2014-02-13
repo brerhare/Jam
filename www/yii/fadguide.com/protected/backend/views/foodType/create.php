@@ -1,15 +1,10 @@
 <?php
-$this->breadcrumbs=array(
-	'Food Types'=>array('index'),
-	'Create',
-);
 
 $this->menu=array(
-	array('label'=>'List FoodType','url'=>array('index')),
-	array('label'=>'Manage FoodType','url'=>array('admin')),
+	array('label'=>'Manage Food Types','url'=>array('admin')),
 );
 ?>
 
-<h1>Create FoodType</h1>
+<h2>Create Food Type</h2>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
