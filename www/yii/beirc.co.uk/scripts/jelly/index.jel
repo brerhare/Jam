@@ -73,6 +73,13 @@ css.display = block
 		css.margin-top = -55px
 		css.height = 50px
 		css.overflow = visible
+		addon.menu.basic.menu-text-color = #b1370f
+		addon.menu.basic.item-text-color = #ffffff
+		addon.menu.basic.item-color = #6d6d6d
+		addon.menu.basic.submenu-color = #979797
+		addon.menu.basic.subitem-color = #979797
+		addon.menu.basic.subitem-text-color = #eb4913
+		addon.menu.basic.subitem-separator-color = white
 		css.z-index = 1100
 		css.position = relative
 		addon.menu.basic.orientation = horizontal
@@ -89,45 +96,61 @@ css.display = block
 
 
 		[footer]
-		child = footer-graphic, footer-content
-		
+		child = footer-graphic, footer-block, footer-menu, wirefly
+
+				
 			[footer-graphic]
 			css.width = 850px
 			image.width = 850px
 			image.height = 95px
 			image.url = /img/footer.png
 
-
-			[footer-content]
-		child = Cookie, TCs, Policy
-		css.width = 850px
-		css.height = 40px
-		css.background-color = #017572
-		css.z-index = 1100
-		css.position = relative
-		css.margin-top = -5px
-		stacking = horizontal
-
-				[Cookie]
-				css.margin-left = 250px
-				html.raw = Cookies
-				css.color = #ffffff
-				#click = http://www.dumfriesfurniture.com/?layout=index&page=dumfrie-furniture-cookies
-
-				[TCs]
-				css.margin-left = 70px
-				css.color = #ffffff
-				html.raw = Terms & Conditions
-				#click = http://www.dumfriesfurniture.com/?layout=index&page=dumfrie-furniture-terms
+			[footer-block]
+			css.width = 850px
+			css.height = 60px
+			css.margin-top = -3px
+			css.background-color = #017572
 
 
+			[footer-menu]
+			child = footer-cookies, footer-tandc, footer-contact
+			css.width = 50%
+			css.margin-top = -65px
+			css.z-index = 1100
+			css.position = relative
+			css.margin-top = -5px
+			stacking = horizontal
+		
+			[footer-cookies]
+			css.color = #ffffff
+			html.raw = Cookie Policy
+			css.width = 33%
+			css.text-align = left
+			click = ?layout=index&page=cookies
 
-				[Policy]
-				css.margin-left = 70px
-				css.color = #ffffff
-				html.raw = Policy
-				#click = http://www.dumfriesfurniture.com/?layout=index&page=dumfrie-furniture-policy
+			[footer-tandc]
+			css.color = #ffffff
+			html.raw = Terms & Conditions
+			css.width = 33%
+			css.text-align = center
+			click = ?layout=index&page=terms-conditions
 
+			[footer-contact]
+			css.color = #ffffff
+			html.raw = Contact Us
+			css.text-align = right
+			css.width = 30%
+			click = ?layout=index&page=contact
+
+		[wirefly]
+		css.margin-top = 5px
+		css.margin-left = 700px
+		css.height = 50px
+		css.width = 200px
+		image.url = img/wirefly-link-white.png
+		image.width = 161px
+		image.height = 40px
+		clicknew = http://www.wireflydesign.com
 
 
 #### end of main site area ################################

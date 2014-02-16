@@ -1,0 +1,3 @@
+#RewriteEngine On
+#Redirect /calendar/default.asp http://www.dragondex.com/
+
