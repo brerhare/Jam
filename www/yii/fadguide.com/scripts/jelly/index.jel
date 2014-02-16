@@ -7,11 +7,15 @@ include = default-values
 # Every blob inherits these before adding/overriding
 
 [screen]
-child = site
+child = login, site
 #css.background-color = #ffffff
 #fx.wallpaper-image = /img/straw_tile.jpg
 fx.wallpaper-image-tile = /img/straw_tile.jpg
 css.display = block
+
+	[login]
+	css.width = 960px
+	addon.custom.fadguidecode.run = login
 
 	[site]
 	child = main, side 
@@ -21,16 +25,12 @@ css.display = block
 	fx.rounding = 4px
 	stacking = horizontal
 
-	
-
-
 ####### Main Panel #########################
 
 [main]
 child = slider, menu, content-container, footer
 css.overflow = visible
 css.width = 700px
-
 
 [slider]
 css.margin-top = 20px

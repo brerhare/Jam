@@ -143,4 +143,90 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
+
+    public function actionAjaxSignup()
+    {
+        if (Yii::app()->request->isAjaxRequest)
+        {
+            $retArr = array();
+			$retArr['error'] = "";
+
+            Yii::log("AJAX CALL (signup): username=" . $_POST['username'] . " password=" . $_POST['password'], CLogger::LEVEL_WARNING, 'system.test.kim');
+
+			// Ensure username is not already taken
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("username = '" . $_POST['username'] . "'");
+			$member = Member::model()->find($criteria);
+			if ($member)
+			{
+				$retArr['error'] = "Username already taken";
+				echo CJSON::encode($retArr);
+				return;
+			}
+
+			$retArr['mode'] = "signup";
+
+			$retArr['business_name'] = "";
+			$retArr['address1'] = "";
+			$retArr['address2'] = "";
+			$retArr['address3'] = "";
+			$retArr['address4'] = "";
+			$retArr['postcode'] = "";
+			$retArr['contact'] = "";
+			$retArr['web'] = "";
+			$retArr['email'] = "";
+			$retArr['phone'] = "";
+			$retArr['opening_hours'] = "";
+			$retArr['html_content'] = "";
+			$retArr['logo_path'] = "";
+			$retArr['slider_image_path'] = "";
+			$retArr['public'] = "";
+
+			echo CJSON::encode($retArr);
+		}
+	}
+
+    public function actionAjaxLogin()
+    {
+        if (Yii::app()->request->isAjaxRequest)
+        {
+            $retArr = array();
+			$retArr['error'] = "";
+
+            Yii::log("AJAX CALL (login): username=" . $_POST['username'] . " password=" . $_POST['password'], CLogger::LEVEL_WARNING, 'system.test.kim');
+
+			// Ensure user exists
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("username = '" . $_POST['username'] . "'");
+			$member = Member::model()->find($criteria);
+			if (!$member)
+			{
+				$retArr['error'] = "User does not exist";
+				echo CJSON::encode($retArr);
+				return;
+			}
+
+			$retArr['mode'] = "login";
+
+			$retArr['business_name'] = $member->business_name;
+			$retArr['address1'] = $member->address1;
+			$retArr['address2'] = $member->address2;
+			$retArr['address3'] = $member->address3;
+			$retArr['address4'] = $member->address4;
+			$retArr['postcode'] = $member->postcode;
+			$retArr['contact'] = $member->contact;
+			$retArr['web'] = $member->web;
+			$retArr['email'] = $member->email;
+			$retArr['phone'] = $member->phone;
+			$retArr['opening_hours'] = $member->opening_hours;
+			$retArr['html_content'] = $member->html_content;
+			$retArr['logo_path'] = $member->logo_path;
+			$retArr['slider_image_path'] = $member->slider_image_path;
+			$retArr['public'] = $member->public;
+
+			echo CJSON::encode($retArr);
+		}
+	}
+
+
 }
