@@ -648,6 +648,14 @@ if (isset($_GET['page']))
 										background-size: cover;			
 										\n}\n"); 
 							break;
+						case "wallpaper-image-tile":
+							$this->genGlobalCSS("html { background: url(" . Yii::app()->baseUrl  . $cssValue . ") repeat center center fixed;
+										/*-webkit-background-size: cover;
+										-moz-background-size: cover;
+										-o-background-size: cover;
+										background-size: cover;			*/
+										\n}\n"); 
+							break;
 						case "shadow":
 							if ((!$cssValue) || ($cssValue == "default"))
 								$cssValue = "0 0 20px black";

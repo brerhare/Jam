@@ -7,7 +7,7 @@ include = default-values
 [screen]
 # Being an iframe, we want to use the full width of whatever was specified by the parent page - so we dont specify any
 child = grid
-fx.wallpaper-color = #00000
+#@@ fx.wallpaper-color = #00000
 
 # Get the uid from the sid
 db.table = User
@@ -36,7 +36,7 @@ db.filter = sid=$_GET['sid']
 		css.height = 195px
 		css.margin-left = 10px
 		css.margin-bottom = 10px
-		css.background-color = #ffffff
+		#@@ css.background-color = #ffffff
 		css.border-width = 3px
 		css.border-color = #dcdcdc
 		db.table = Product
@@ -59,7 +59,7 @@ db.filter = sid=$_GET['sid']
 
 			[product_text]
 			css.padding = 5px
-			css.color = #a60404
+			#@@ css.color = #a60404
 			html.raw = <b>Product.name
 			html.raw = </b><br>£@CLIPBOARD
 
