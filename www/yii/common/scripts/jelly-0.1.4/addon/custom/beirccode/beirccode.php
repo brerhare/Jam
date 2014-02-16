@@ -46,16 +46,17 @@ class beirccode
 	private function login()
 	{
 		$content = "";
-		$content .= "<h2 style='text-align:left;float:left;'>This is Arena " . $_GET['arena'] . "</h2>";
+		$content .= "<br/>";
+		$content .= "<h2 style='display:inline; text-align:left;'>This is Arena " . $_GET['arena'] . "</h2>";
 		$otherArena = $_GET['arena']  == 1 ? 2 : 1;
 		$otherUrl = Yii::app()->createUrl('?layout=calendar&arena=' . $otherArena);
-		$content .= "<a href=" . $otherUrl . "><h3 style='text-decoration:underline;text-align:right;float:right;padding-top:2px'>Go to Arena " . $otherArena . "</h3></a>";
-		$content .= "<span style='float:clear both'></span>";
+		$content .= "<a href=" . $otherUrl . ">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<h3 style='display:inline; text-decoration:underline;text-align:right;padding-top:2px'>Go to Arena " . $otherArena . "</h3></a>";
+		$content .= "<br><br/>";
 		$content .= "<table><tr><td colspan=2>";
 		$content .= "<a style='font-weight:bold;color:#017572'> Members please login to make bookings</a><br>";
 		$content .= "</td></tr>";
 		$content .= "<tr><td>User name</td><td>";
-		$content .= "<input id='username' name='username' type='text' value='' size='20'/> <br/>";
+		$content .= "<input id='username' name='username' type='text' value='' size='25'/> <br/>";
 		$content .= "</td></tr><tr><td>Member number</td><td>";
 		$content .= "<input id='password' name='password' type='password' value='' size='5'/> <br />";		
 		$content .= "</td></tr>";
