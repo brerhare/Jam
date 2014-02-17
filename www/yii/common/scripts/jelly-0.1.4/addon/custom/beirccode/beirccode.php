@@ -193,6 +193,9 @@ END_OF_API_JS_login;
 					/* Set the height of each hourly slot 'cell' (month/week/day) */
     				.fc-agenda-slots td div { height: 26px !important; }
 
+					/* JQuery dialog needs to be higher (than the menu at least) */
+					.ui-dialog { z-index: 12000 !important ;}
+
 				</style>
 
 
@@ -200,7 +203,7 @@ END_OF_API_JS_login;
 				<div style='/*border:1px solid #cfc497;*/ width:815px' id="mycalendar"></div> <br><br>
 
 				<!-- Edit dialog container -->
-				<div id="dialog" style="display:none;z-index:12000;/*border:1px solid #e2f0f8*/" title="Event">
+				<div id="dialog" style="display:none;/*border:1px solid #e2f0f8*/" title="Event">
 					<input type="hidden" name="editDate" id="editDate">
 					<input type="hidden" name="editEventId" id="editEventId">
 					<table>
@@ -279,7 +282,7 @@ END_OF_API_JS_login;
 				</div>
 
 				<!-- Message dialog container -->
-				<div id="dialogMsg" style="display:none;z-index:12000;/*border:1px solid #e2f0f8*/" title="Message">
+				<div id="dialogMsg" style="display:none;/*border:1px solid #e2f0f8*/" title="Message">
 					<br>
 					<span id="msgText"></span>
 				</div>
