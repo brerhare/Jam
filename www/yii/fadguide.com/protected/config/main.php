@@ -109,6 +109,6 @@ return array(
 		//'checkoutGatewayUser'=>'LIVE_USER-1645722',
 		//'checkoutGatewayPassword'=>'LIVE_PWORD',
 		'jellyRoot' => '/scripts/jelly/',
-		'sid' => 'v9h530b458nshi7cth7kfr1kb6',
+		'sid' => '7la2ct0hmdlj74mdo98bfmoge2',
 	),
 );
