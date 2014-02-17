@@ -239,6 +239,23 @@ END_OF_API_HTML;
 		function showEditDialog(val)	/* Start editing */
 		{
 			$("#editMode").val(val.mode);
+
+			$("#editBusinessName").val(val.businessName);
+			$("#editAddress1").val(val.address1);
+			$("#editAddress2").val(val.address2);
+			$("#editAddress3").val(val.address3);
+			$("#editAddress4").val(val.address4);
+			$("#editPostCode").val(val.postCode);
+			$("#editContact").val(val.contact);
+			$("#editWeb").val(val.web);
+			$("#editEmail").val(val.email);
+			$("#editPhone").val(val.phone);
+			$("#editOpeningHours").val(val.openingHours);
+			$("#editHtmlContent").val(val.htmlContent);
+			$("#editLogoPath").val(val.logoPath);
+			$("#editSliderImagePath").val(val.sliderImagePath);
+			$("#editPublic").val(val.public);
+
 			$("#editDialog").dialog({width:'auto'});
 			$("#editDialog").dialog('option', 'title', 'Input Your Business Details');
 		}

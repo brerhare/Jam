@@ -166,20 +166,20 @@ class SiteController extends Controller
 
 			$retArr['mode'] = "signup";
 
-			$retArr['business_name'] = "";
-			$retArr['address1'] = "";
+			$retArr['businessName'] = "";
+			$retArr['address1'] =  "";
 			$retArr['address2'] = "";
 			$retArr['address3'] = "";
 			$retArr['address4'] = "";
-			$retArr['postcode'] = "";
+			$retArr['postCode'] = "";
 			$retArr['contact'] = "";
 			$retArr['web'] = "";
 			$retArr['email'] = "";
 			$retArr['phone'] = "";
-			$retArr['opening_hours'] = "";
-			$retArr['html_content'] = "";
-			$retArr['logo_path'] = "";
-			$retArr['slider_image_path'] = "";
+			$retArr['openingHours'] = "";
+			$retArr['htmlContent'] = "";
+			$retArr['logoPath'] = "";
+			$retArr['sliderImagePath'] = "";
 			$retArr['public'] = "";
 
 			echo CJSON::encode($retArr);
@@ -205,23 +205,29 @@ class SiteController extends Controller
 				echo CJSON::encode($retArr);
 				return;
 			}
+			if ($member->password != $_POST['password'])
+			{
+				$retArr['error'] = "Invalid username or password";
+				echo CJSON::encode($retArr);
+				return;
+			}
 
 			$retArr['mode'] = "login";
 
-			$retArr['business_name'] = $member->business_name;
+			$retArr['businessName'] = $member->business_name;
 			$retArr['address1'] = $member->address1;
 			$retArr['address2'] = $member->address2;
 			$retArr['address3'] = $member->address3;
 			$retArr['address4'] = $member->address4;
-			$retArr['postcode'] = $member->postcode;
+			$retArr['postCode'] = $member->postcode;
 			$retArr['contact'] = $member->contact;
 			$retArr['web'] = $member->web;
 			$retArr['email'] = $member->email;
 			$retArr['phone'] = $member->phone;
-			$retArr['opening_hours'] = $member->opening_hours;
-			$retArr['html_content'] = $member->html_content;
-			$retArr['logo_path'] = $member->logo_path;
-			$retArr['slider_image_path'] = $member->slider_image_path;
+			$retArr['openingHours'] = $member->opening_hours;
+			$retArr['htmlContent'] = $member->html_content;
+			$retArr['logoPath'] = $member->logo_path;
+			$retArr['sliderImagePath'] = $member->slider_image_path;
 			$retArr['public'] = $member->public;
 
 			echo CJSON::encode($retArr);
