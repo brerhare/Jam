@@ -102,8 +102,21 @@ class fadguidecode
 
 		<!-- Edit dialog container -->
 		<div id="editDialog" style="display:none;/*border:1px solid #e2f0f8*/" title="Event">
+		<form enctype="multipart/form-data">
 			<input type="hidden" name="mode" id="editMode"> <!-- 'signup' or 'login' -->
 			<table>
+
+
+
+
+<tr>
+<td> <label for="logo">Filename</label> </td>
+<td>
+	<input size="60" maxlength="255" name="logo" id="logo" type="file" />
+</td>
+</tr>
+
+
 				<tr>
 					<td> <label for="editBusinessName">Business name</label> </td>
 					<td> <input type="text" style="width:250px" name="editBusinessName" id="editBusinessName" class="text ui-widget-content"> </td>
@@ -151,7 +164,7 @@ class fadguidecode
 
 				<tr>
 					<td> <label for="editHtmlContent">Freeform content</label> </td>
-					<td> <input type="text" style="width:600px" name="editHtmlContent" id="editHtmlContent" class="text ui-widget-content"> </td>
+					<td> <textarea cols="40" rows="5" name="editHtmlContent" id="editHtmlContent" class="text ui-widget-content"></textarea> </td>
 				</tr>
 
 				<tr>
@@ -185,6 +198,7 @@ class fadguidecode
 				</tr>
 			</table>
 			</center>
+		</form>
 		</div>	<!-- Edit dialog container -->
 
 
@@ -259,6 +273,14 @@ END_OF_API_HTML;
 			$("#editDialog").dialog({width:'auto'});
 			$("#editDialog").dialog('option', 'title', 'Input Your Business Details');
 		}
+$('#logo').change(function(){
+    var file = this.files[0];
+    var name = file.name;
+    var size = file.size;
+    var type = file.type;
+    //Your validation
+alert('xx');
+});
 		function saveEditDialog()		/* Save */
 		{
 			//alert('preparing fields to send to server');
