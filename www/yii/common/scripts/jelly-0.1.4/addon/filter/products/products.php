@@ -238,7 +238,7 @@ class products
                 if (!(in_array($department->id, $this->departmentSel)))
                     $vis = " style='display:none;' ";
                 $content .= "<br>";
-                $content .= "<div id='h' class='filter-header'> <a href='#' >" . $department->name . "</a><br>";
+                $content .= "<div id='h' class='filter-header'> <a style='color:#575757;' href='#' >" . $department->name . "</a><br>";
                 $features  = Feature::model()->findAll(array('order'=>'name', 'condition'=>'product_department_id=' . $department->id));
                 $content .= "<div id='d' class='filter-detail'" . $vis . ">";
                 foreach ($features as $feature):

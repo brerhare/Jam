@@ -131,6 +131,8 @@ css.display = none
 						html.p = .
 	
 						[feature-text]
+# @@KIMkim
+css.color = #575757
 						css.margin-top = 6px
 						css.margin-left = 6px
 						db.table = Feature
@@ -140,6 +142,9 @@ css.display = none
 
 
 			[bottom-half]
+# @@KIMkim
+css.color = #575757
+css.margin-left = 6px
 			html.raw = Product.description
 
 		[linked-products]
