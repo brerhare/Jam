@@ -246,6 +246,8 @@ END_OF_API_HTML;
 		{
 			//alert('preparing fields to send to server');
             var editMode = document.getElementById('editMode').value;
+            var username = document.getElementById('username').value;	// Global
+            var password = document.getElementById('password').value;	// Global
             var businessName = document.getElementById('editBusinessName').value;
             var address1 = document.getElementById('editAddress1').value;
             var address2 = document.getElementById('editAddress2').value;
@@ -271,7 +273,10 @@ END_OF_API_HTML;
 		}
 		function ajaxShowEditResult(val)
 		{
-			alert('Saved');
+			if (val.error != "")
+				alert(val.error);
+			else
+				alert('Saved');
 		}
 
 END_OF_API_JS;
@@ -311,6 +316,8 @@ END_OF_API_JS;
             'url'=>Yii::app()->createUrl('site/ajaxEdit'),
             'data'=>array(
                 'editMode'=>'js:editMode',
+                'username'=>'js:username',
+                'password'=>'js:password',
                 'businessName'=>'js:businessName',
                 'address1'=>'js:address1',
                 'address2'=>'js:address2',

@@ -237,18 +237,54 @@ class SiteController extends Controller
 
             Yii::log("AJAX CALL (edit)", CLogger::LEVEL_WARNING, 'system.test.kim');
 
-			echo CJSON::encode($retArr);
-return;
-			// Ensure user exists
-			$criteria = new CDbCriteria;
-			$criteria->addCondition("username = '" . $_POST['username'] . "'");
-			$member = Member::model()->find($criteria);
-			if (!$member)
+			if (trim($_POST['editMode'] == ""))
 			{
-				$retArr['error'] = "User does not exist";
+				$retArr['error'] = "Internal error - no 'mode' given to actionAjaxEdit()";
 				echo CJSON::encode($retArr);
 				return;
 			}
+			if ($_POST['editMode'] == 'login')
+            {
+                // Fetch original member details
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("username = '" . $_POST['username'] . "'");
+				$member = Member::model()->find($criteria);
+				if (!$member)
+				{
+					$retArr['error'] = "User does not exist";
+					echo CJSON::encode($retArr);
+					return;
+				}
+            }
+			else
+				$member = new Member;
+
+			$member->username = $_POST['username'];
+			$member->password = $_POST['password'];
+			$member->business_name = $_POST['businessName'];
+			$member->address1 = $_POST['address1'];
+			$member->address2 = $_POST['address2'];
+			$member->address3 = $_POST['address3'];
+			$member->address4 = $_POST['address4'];
+			$member->postcode = $_POST['postCode'];
+			$member->contact = $_POST['contact'];
+			$member->web = $_POST['web'];
+			$member->email = $_POST['email'];
+			$member->phone = $_POST['phone'];
+			$member->opening_hours = $_POST['openingHours'];
+			$member->html_content = $_POST['htmlContent'];
+			$member->logo_path = $_POST['logoPath'];
+			$member->slider_image_path = $_POST['sliderImagePath'];
+			$member->public = $_POST['public'];
+
+			if (!$member->save())
+			{
+				$retArr['error'] = "Error saving member record";
+				echo CJSON::encode($retArr);
+				return;
+			}
+
+			echo CJSON::encode($retArr);
 		}
 	}
 
