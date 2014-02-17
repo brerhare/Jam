@@ -228,5 +228,29 @@ class SiteController extends Controller
 		}
 	}
 
+    public function actionAjaxEdit()
+    {
+        if (Yii::app()->request->isAjaxRequest)
+        {
+            $retArr = array();
+			$retArr['error'] = "";
+
+            Yii::log("AJAX CALL (edit)", CLogger::LEVEL_WARNING, 'system.test.kim');
+
+			echo CJSON::encode($retArr);
+return;
+			// Ensure user exists
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("username = '" . $_POST['username'] . "'");
+			$member = Member::model()->find($criteria);
+			if (!$member)
+			{
+				$retArr['error'] = "User does not exist";
+				echo CJSON::encode($retArr);
+				return;
+			}
+		}
+	}
+
 
 }

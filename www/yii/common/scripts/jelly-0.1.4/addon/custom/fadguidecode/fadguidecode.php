@@ -62,11 +62,21 @@ class fadguidecode
 		// Apply all defaults that werent overridden, if any
 
 		$apiHtml = <<<END_OF_API_HTML
+
+		<!-- JQuery UI for dialog -->
+		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js" ></script>
+		<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/sunny/jquery-ui.css" type="text/css" rel="stylesheet" />
+
 		<div class="login-container">
 			<link rel="stylesheet" type="text/css" href="<substitute-path>/fadguidecode.css" />
+
 			<style> /* overrides */
+				/* JQuery dialog needs to be higher (than the menu at least) */
+				.ui-dialog { z-index: 12000 !important ;}
+
 				.login-holder { background: #A70055; }
 			</style>
+
 			<div class="login-holder">
     			<div id="login-signup">
         			<ul>
@@ -89,11 +99,102 @@ class fadguidecode
     			</div>
 			</div>
 		</div>
+
+		<!-- Edit dialog container -->
+		<div id="editDialog" style="display:none;/*border:1px solid #e2f0f8*/" title="Event">
+			<input type="hidden" name="mode" id="editMode"> <!-- 'signup' or 'login' -->
+			<table>
+				<tr>
+					<td> <label for="editBusinessName">Business name</label> </td>
+					<td> <input type="text" style="width:250px" name="editBusinessName" id="editBusinessName" class="text ui-widget-content"> </td>
+				</tr>
+				<tr>
+					<td> <label for="editAddress1">Address 1</label> </td>
+					<td> <input type="text" style="width:300px" name="editAddress1" id="editAddress1" class="text ui-widget-content"> </td>
+				</tr>
+				<tr>
+					<td> <label for="editAddress2">Address 2</label> </td>
+					<td> <input type="text" style="width:300px" name="editAddress2" id="editAddress2" class="text ui-widget-content"> </td>
+				</tr>
+				<tr>
+					<td> <label for="editAddress3">Address 3</label> </td>
+					<td> <input type="text" style="width:300px" name="editAddress3" id="editAddress3" class="text ui-widget-content"> </td>
+				</tr>
+				<tr>
+					<td> <label for="editAddress4">Address 4</label> </td>
+					<td> <input type="text" style="width:300px" name="editAddress4" id="editAddress4" class="text ui-widget-content"> </td>
+				</tr>
+				<tr>
+					<td> <label for="editPostCode">Post code</label> </td>
+					<td> <input type="text" style="width:100px" name="editPostCode" id="editPostCode" class="text ui-widget-content"> </td>
+				</tr>
+				<tr>
+					<td> <label for="editContact">Contact</label> </td>
+					<td> <input type="text" style="width:250px" name="editContact" id="editContact" class="text ui-widget-content"> </td>
+				</tr>
+				<tr>
+					<td> <label for="editWeb">Web</label> </td>
+					<td> <input type="text" style="width:100px" name="editWeb" id="editWeb" class="text ui-widget-content"> </td>
+				</tr>
+				<tr>
+					<td> <label for="editEmail">Email Address</label> </td>
+					<td> <input type="text" style="width:100px" name="editEmail" id="editEmail" class="text ui-widget-content"> </td>
+				</tr>
+				<tr>
+					<td> <label for="editPhone">Telephone</label> </td>
+					<td> <input type="text" style="width:150px" name="editPhone" id="editPhone" class="text ui-widget-content"> </td>
+				</tr>
+				<tr>
+					<td> <label for="editOpeningHours">Opening Hours</label> </td>
+					<td> <input type="text" style="width:300px" name="editOpeningHours" id="editOpeningHours" class="text ui-widget-content"> </td>
+				</tr>
+
+				<tr>
+					<td> <label for="editHtmlContent">Freeform content</label> </td>
+					<td> <input type="text" style="width:600px" name="editHtmlContent" id="editHtmlContent" class="text ui-widget-content"> </td>
+				</tr>
+
+				<tr>
+					<td> <label for="editLogoPath">Upload logo file (150x150)</label> </td>
+					<td> <input type="text" style="width:100px" name="editLogoPath" id="editLogoPath" class="text ui-widget-content"> </td>
+				</tr>
+
+				<tr>
+					<td> <label for="editSliderImagePath">Upload slider image file (700x200)</label> </td>
+					<td> <input type="text" style="width:100px" name="editSliderImagePath" id="editSliderImagePath" class="text ui-widget-content"> </td>
+				</tr>
+
+				<tr>
+					<td> <label for="editPublic">Open to the public?</label> </td>
+					<td>
+						<select id="editPublic" name="editPublic">
+							<option value="1">Yes</option>
+							<option value="0">No</option>
+						</select>
+					</td>
+				</tr>
+
+			</table>
+			<center>
+			<table>
+				<tr>
+					<td width="25%">
+					<td width="25%"> <input type='button' id='editSave' style='float:left;padding:3px; width:60px' onClick='saveEditDialog("save")' value='Save'> </td>
+					<td width="25%"> <input type='button' id='editCancel' style='float:left;padding:3px; width:60px' onClick='cancelEditDialog()' value='Cancel'> </td>
+					<td width="25%">
+				</tr>
+			</table>
+			</center>
+		</div>	<!-- Edit dialog container -->
+
+
 END_OF_API_HTML;
 
 		$apiJs = <<<END_OF_API_JS
 
-		function signupClick()
+		/* Signup / login */
+		/* ---------------*/
+		function signupClick()	/* Ajax send */
 		{
 			var username = document.getElementById('username').value;
 			var password = document.getElementById('password').value;
@@ -105,16 +206,15 @@ END_OF_API_HTML;
 			//alert('sending signup to server: username='+username+' password='+password);
 			<substitute-ajax-signup-code>
 		}
-
-		function ajaxSignupForm(val)
+		function ajaxSignupForm(val)	/* Ajax return */
 		{
 			if (val.error != "")
 				alert(val.error);
 			else
-				inputForm(val);
+				showEditDialog(val);
 		} 
 
-		function loginClick()
+		function loginClick()	/* Ajax send */
 		{
 			var username = document.getElementById('username').value;
 			var password = document.getElementById('password').value;
@@ -126,18 +226,52 @@ END_OF_API_HTML;
 			//alert('sending login to server: username='+username+' password='+password);
 			<substitute-ajax-login-code>
 		}
-
-		function ajaxLoginForm(val)
+		function ajaxLoginForm(val)	/* Ajax return */
 		{
 			if (val.error != "")
 				alert(val.error);
 			else
-				inputForm(val);
+				showEditDialog(val);
 		} 
 
-		function inputForm(val)
+		/* Edit dialog form */
+		/* ---------------- */
+		function showEditDialog(val)	/* Start editing */
 		{
-			alert('form');
+			$("#editMode").val(val.mode);
+			$("#editDialog").dialog({width:'auto'});
+			$("#editDialog").dialog('option', 'title', 'Input Your Business Details');
+		}
+		function saveEditDialog()		/* Save */
+		{
+			//alert('preparing fields to send to server');
+            var editMode = document.getElementById('editMode').value;
+            var businessName = document.getElementById('editBusinessName').value;
+            var address1 = document.getElementById('editAddress1').value;
+            var address2 = document.getElementById('editAddress2').value;
+            var address3 = document.getElementById('editAddress3').value;
+            var address4 = document.getElementById('editAddress4').value;
+            var postCode = document.getElementById('editPostCode').value;
+            var contact = document.getElementById('editContact').value;
+            var web = document.getElementById('editWeb').value;
+            var email = document.getElementById('editEmail').value;
+            var phone = document.getElementById('editPhone').value;
+            var openingHours = document.getElementById('editOpeningHours').value;
+            var htmlContent = document.getElementById('editHtmlContent').value;
+            var logoPath = document.getElementById('editLogoPath').value;
+            var sliderImagePath = document.getElementById('editSliderImagePath').value;
+            var public = document.getElementById('editPublic').value;
+			//alert('sending to server');
+            $( "#editDialog" ).dialog('close');
+            <substitute-ajax-edit-code>
+		}
+		function cancelEditDialog()		/* Cancel */
+		{
+			$( "#editDialog" ).dialog('close');
+		}
+		function ajaxShowEditResult(val)
+		{
+			alert('Saved');
 		}
 
 END_OF_API_JS;
@@ -171,6 +305,33 @@ END_OF_API_JS;
             'success' => 'function(val){ajaxLoginForm(val);}',
         ));
         $apiJs = str_replace("<substitute-ajax-login-code>", $ajaxLoginString, $apiJs);
+
+        // Substitutes for ajax edit code
+        $ajaxEditString = CHtml::ajax(array(
+            'url'=>Yii::app()->createUrl('site/ajaxEdit'),
+            'data'=>array(
+                'editMode'=>'js:editMode',
+                'businessName'=>'js:businessName',
+                'address1'=>'js:address1',
+                'address2'=>'js:address2',
+                'address3'=>'js:address3',
+                'address4'=>'js:address4',
+                'postCode'=>'js:postCode',
+                'contact'=>'js:contact',
+                'web'=>'js:web',
+                'email'=>'js:email',
+                'phone'=>'js:phone',
+                'openingHours'=>'js:openingHours',
+                'htmlContent'=>'js:htmlContent',
+                'logoPath'=>'js:logoPath',
+                'sliderImagePath'=>'js:sliderImagePath',
+                'public'=>'js:public',
+                ),
+            'type'=>'POST',
+            'dataType'=>'json',
+            'success' => 'function(val){ajaxShowEditResult(val);}',
+        ));
+        $apiJs = str_replace("<substitute-ajax-edit-code>", $ajaxEditString, $apiJs);
 
 		// Wrapup
 		$clipBoard = "";
