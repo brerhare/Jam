@@ -54,19 +54,53 @@ CREATE  TABLE IF NOT EXISTS `fadguide_com`.`member` (
   `logo_path` VARCHAR(255) NULL ,
   `slider_image_path` VARCHAR(255) NULL ,
   `public` INT NULL ,
-  `category_id` INT NOT NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `fadguide_com`.`member_has_food_type`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `fadguide_com`.`member_has_food_type` ;
+
+CREATE  TABLE IF NOT EXISTS `fadguide_com`.`member_has_food_type` (
+  `member_id` INT NOT NULL ,
   `food_type_id` INT NOT NULL ,
-  PRIMARY KEY (`id`) ,
-  INDEX `fk_member_category` (`category_id` ASC) ,
-  INDEX `fk_member_food_type1` (`food_type_id` ASC) ,
-  CONSTRAINT `fk_member_category`
-    FOREIGN KEY (`category_id` )
-    REFERENCES `fadguide_com`.`category` (`id` )
+  PRIMARY KEY (`member_id`, `food_type_id`) ,
+  INDEX `fk_member_has_food_type_food_type1` (`food_type_id` ASC) ,
+  INDEX `fk_member_has_food_type_member` (`member_id` ASC) ,
+  CONSTRAINT `fk_member_has_food_type_member`
+    FOREIGN KEY (`member_id` )
+    REFERENCES `fadguide_com`.`member` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_member_food_type1`
+  CONSTRAINT `fk_member_has_food_type_food_type1`
     FOREIGN KEY (`food_type_id` )
     REFERENCES `fadguide_com`.`food_type` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `fadguide_com`.`member_has_category`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `fadguide_com`.`member_has_category` ;
+
+CREATE  TABLE IF NOT EXISTS `fadguide_com`.`member_has_category` (
+  `member_id` INT NOT NULL ,
+  `category_id` INT NOT NULL ,
+  PRIMARY KEY (`member_id`, `category_id`) ,
+  INDEX `fk_member_has_category_category1` (`category_id` ASC) ,
+  INDEX `fk_member_has_category_member1` (`member_id` ASC) ,
+  CONSTRAINT `fk_member_has_category_member1`
+    FOREIGN KEY (`member_id` )
+    REFERENCES `fadguide_com`.`member` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_member_has_category_category1`
+    FOREIGN KEY (`category_id` )
+    REFERENCES `fadguide_com`.`category` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

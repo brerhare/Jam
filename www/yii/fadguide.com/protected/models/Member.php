@@ -23,12 +23,10 @@
  * @property string $logo_path
  * @property string $slider_image_path
  * @property integer $public
- * @property integer $category_id
- * @property integer $food_type_id
  *
  * The followings are the available model relations:
- * @property Category $category
- * @property FoodType $foodType
+ * @property Category[] $categories
+ * @property FoodType[] $foodTypes
  */
 class Member extends CActiveRecord
 {
@@ -58,14 +56,14 @@ class Member extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('username, password, business_name, category_id, food_type_id', 'required'),
-			array('approved, public, category_id, food_type_id', 'numerical', 'integerOnly'=>true),
+			array('username, password, business_name', 'required'),
+			array('approved, public', 'numerical', 'integerOnly'=>true),
 			array('username, password, business_name, address1, address2, address3, address4, contact, web, email, phone, opening_hours, logo_path, slider_image_path', 'length', 'max'=>255),
 			array('postcode', 'length', 'max'=>10),
 			array('html_content', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, username, password, approved, business_name, address1, address2, address3, address4, postcode, contact, web, email, phone, opening_hours, html_content, logo_path, slider_image_path, public, category_id, food_type_id', 'safe', 'on'=>'search'),
+			array('id, username, password, approved, business_name, address1, address2, address3, address4, postcode, contact, web, email, phone, opening_hours, html_content, logo_path, slider_image_path, public', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -77,8 +75,8 @@ class Member extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'category' => array(self::BELONGS_TO, 'Category', 'category_id'),
-			'foodType' => array(self::BELONGS_TO, 'FoodType', 'food_type_id'),
+			'categories' => array(self::MANY_MANY, 'Category', 'member_has_category(member_id, category_id)'),
+			'foodTypes' => array(self::MANY_MANY, 'FoodType', 'member_has_food_type(member_id, food_type_id)'),
 		);
 	}
 
@@ -107,8 +105,6 @@ class Member extends CActiveRecord
 			'logo_path' => 'Logo Path',
 			'slider_image_path' => 'Slider Image Path',
 			'public' => 'Public',
-			'category_id' => 'Category',
-			'food_type_id' => 'Food Type',
 		);
 	}
 
@@ -142,8 +138,6 @@ class Member extends CActiveRecord
 		$criteria->compare('logo_path',$this->logo_path,true);
 		$criteria->compare('slider_image_path',$this->slider_image_path,true);
 		$criteria->compare('public',$this->public);
-		$criteria->compare('category_id',$this->category_id);
-		$criteria->compare('food_type_id',$this->food_type_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

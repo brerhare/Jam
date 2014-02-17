@@ -1,21 +1,18 @@
 <?php
 
 /**
- * This is the model class for table "food_type".
+ * This is the model class for table "member_has_category".
  *
- * The followings are the available columns in table 'food_type':
- * @property integer $id
- * @property string $name
- *
- * The followings are the available model relations:
- * @property Member[] $members
+ * The followings are the available columns in table 'member_has_category':
+ * @property integer $member_id
+ * @property integer $category_id
  */
-class FoodType extends CActiveRecord
+class MemberHasCategory extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return FoodType the static model class
+	 * @return MemberHasCategory the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -27,7 +24,7 @@ class FoodType extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return 'food_type';
+		return 'member_has_category';
 	}
 
 	/**
@@ -38,11 +35,11 @@ class FoodType extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name', 'required'),
-			array('name', 'length', 'max'=>255),
+			array('member_id, category_id', 'required'),
+			array('member_id, category_id', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name', 'safe', 'on'=>'search'),
+			array('member_id, category_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -54,7 +51,6 @@ class FoodType extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'members' => array(self::MANY_MANY, 'Member', 'member_has_food_type(food_type_id, member_id)'),
 		);
 	}
 
@@ -64,8 +60,8 @@ class FoodType extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'name' => 'Name',
+			'member_id' => 'Member',
+			'category_id' => 'Category',
 		);
 	}
 
@@ -80,8 +76,8 @@ class FoodType extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('name',$this->name,true);
+		$criteria->compare('member_id',$this->member_id);
+		$criteria->compare('category_id',$this->category_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

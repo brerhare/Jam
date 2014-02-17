@@ -54,7 +54,7 @@ class Category extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'members' => array(self::HAS_MANY, 'Member', 'category_id'),
+			'members' => array(self::MANY_MANY, 'Member', 'member_has_category(category_id, member_id)'),
 		);
 	}
 
