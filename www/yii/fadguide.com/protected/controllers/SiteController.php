@@ -2,6 +2,8 @@
 
 class SiteController extends Controller
 {
+	private $_imageDir = '/../userdata/image/';
+
 	/**
 	 * Get the jelly script root (as defined in /protected/config/main.php)
 	 */
@@ -412,17 +414,6 @@ Yii::log("AJAX CALL (fts)" . $list, CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
 	}
 
-    public function actionAjaxUploadLogo()
-    {
-        if (Yii::app()->request->isAjaxRequest)
-        {
-            $retArr = array();
-			$retArr['error'] = "";
-
-            Yii::log("AJAX CALL (uploadlogo)", CLogger::LEVEL_WARNING, 'system.test.kim');
-		}
-	}
-
     public function actionSubmit()
     {
             Yii::log("SUBMIT CALL (submit-start)", CLogger::LEVEL_WARNING, 'system.test.kim');
@@ -433,12 +424,35 @@ $output = ob_get_contents();
 ob_end_clean();
             Yii::log("SUBMIT CALL (submit-dump):" . $output, CLogger::LEVEL_WARNING, 'system.test.kim');
 
-			$retArr = array();
-
 			if (trim($_POST['editMode'] == ""))
 			{
-				$retArr['error'] = "Internal error - no 'mode' given to actionAjaxEdit()";
+				die("Internal error - no 'mode' given to actionAjaxEdit()");
 			}
+
+			// Handle any uploaded files
+			$fileLogoPath = "";
+			$fileSliderImagePath = "";
+			if (isset($_FILES['editLogoPath']))
+			{
+				$list = $_FILES['editLogoPath'];
+				if ($_FILES["editLogoPath"]["error"] == UPLOAD_ERR_OK)
+				{
+					$tmp_name = $_FILES["editLogoPath"]["tmp_name"];
+					$fileLogoPath = $_FILES["editLogoPath"]["name"];
+					move_uploaded_file($tmp_name, Yii::app()->basePath . $this->_imageDir . "logo/" . $fileLogoPath);
+				}
+			}
+			if (isset($_FILES['editSliderImagePath']))
+			{
+				$list = $_FILES['editSliderImagePath'];
+				if ($_FILES["editSliderImagePath"]["error"] == UPLOAD_ERR_OK)
+				{
+					$tmp_name = $_FILES["editSliderImagePath"]["tmp_name"];
+					$fileSliderImagePath = $_FILES["editSliderImagePath"]["name"];
+					move_uploaded_file($tmp_name, Yii::app()->basePath . $this->_imageDir . $fileSliderImagePath);
+				}
+			}
+
 			if ($_POST['editMode'] == 'login')
             {
                 // Fetch original member details
@@ -453,7 +467,6 @@ ob_end_clean();
 			else
 				$member = new Member;
 
-			$retArr['id'] = 0;
 			$member->username = Yii::app()->session['username'];
 			$member->password = Yii::app()->session['password'];
 			$member->business_name = $_POST['editBusinessName'];
@@ -469,6 +482,24 @@ ob_end_clean();
 			$member->opening_hours = $_POST['editOpeningHours'];
 			$member->html_content = $_POST['editHtmlContent'];
 			$member->public = $_POST['editPublic'];
+			if (trim($fileLogoPath) != "")
+			{
+				if (trim($member->logo_path) != "")
+				{
+					if (file_exists(Yii::app()->basePath . $this->_imageDir . "logo/" . $member->logo_path))
+						unlink(Yii::app()->basePath . $this->_imageDir . "logo/" . $member->logo_path);
+				}
+				$member->logo_path = $fileLogoPath;
+			}
+			if (trim($fileSliderImagePath) != "")
+			{
+				if (trim($member->slider_image_path) != "")
+				{
+					if (file_exists(Yii::app()->basePath . $this->_imageDir . $member->slider_image_path))
+						unlink(Yii::app()->basePath . $this->_imageDir . $member->slider_image_path);
+				}
+				$member->slider_image_path = $fileSliderImagePath;
+			}
 
 			if (!$member->save())
 			{
@@ -510,9 +541,6 @@ ob_end_clean();
            			}
 				}
 			}
-
-			// Handle any uploaded files
-
 
 
 			// @@NB: FIX THIS!!!!!! usual redirect goes to fadguide.wireflydesign.com/index.php/site/index which screws the jelly image location dir /img
