@@ -7,7 +7,7 @@ include = default-values
 [screen]
 # Being an iframe, we want to use the full width of whatever was specified by the parent page - so we dont specify any
 child = page-container
-fx.wallpaper-color = #00000
+#@@ fx.wallpaper-color = #000000
 
 # Get the uid from the sid
 db.table = User
