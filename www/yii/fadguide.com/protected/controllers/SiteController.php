@@ -230,6 +230,30 @@ class SiteController extends Controller
 			$retArr['sliderImagePath'] = $member->slider_image_path;
 			$retArr['public'] = $member->public;
 
+			$categories = Category::model()->findAll();
+			$catCount = 0;
+			foreach ($categories as $category)
+			{
+				$catStr = 'category_' . $catCount;
+				$retArr[$catStr]['id'] = $category->id;
+				$retArr[$catStr]['name'] = $category->name;
+				$retArr[$catStr]['checked'] = 0;
+				$catCount++;
+			}
+			$retArr['categoryCount'] = $catCount;
+
+			$foodtypes = FoodType::model()->findAll();
+			$ftCount = 0;
+			foreach ($foodtypes as $foodtype)
+			{
+				$ftStr = 'foodtype_' . $ftCount;
+				$retArr[$ftStr]['id'] = $foodtype->id;
+				$retArr[$ftStr]['name'] = $foodtype->name;
+				$retArr[$ftStr]['checked'] = 0;
+				$ftCount++;
+			}
+			$retArr['foodtypeCount'] = $ftCount;
+
 			echo CJSON::encode($retArr);
 		}
 	}
@@ -265,6 +289,7 @@ class SiteController extends Controller
 			else
 				$member = new Member;
 
+			$retArr['id'] = 0;
 			$member->username = $_POST['username'];
 			$member->password = $_POST['password'];
 			$member->business_name = $_POST['businessName'];
@@ -282,6 +307,8 @@ class SiteController extends Controller
 			$member->logo_path = $_POST['logoPath'];
 			$member->slider_image_path = $_POST['sliderImagePath'];
 			$member->public = $_POST['public'];
+
+			
 
 			if (!$member->save())
 			{

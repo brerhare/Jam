@@ -103,7 +103,7 @@ class fadguidecode
 		<!-- Edit dialog container -->
 		<div id="editDialog" style="display:none;/*border:1px solid #e2f0f8*/" title="Event">
 		<form enctype="multipart/form-data">
-			<input type="hidden" name="mode" id="editMode"> <!-- 'signup' or 'login' -->
+			<input type="hidden" name="editMode" id="editMode"> <!-- 'signup' or 'login' -->
 
 			<table style="display:inline-block">	<!-- Name/address TOP LHS -->
 				<tr>
@@ -171,7 +171,18 @@ class fadguidecode
 					<td> <input type="text" style="width:100px" name="editSliderImagePath" id="editSliderImagePath" class="text ui-widget-content"> </td>
 				</tr>
 			</table>
-<hr/>
+
+			<hr/>
+			<!-- Checkboxes for Category -->
+			<table style="display:inline-block;"><tr><td>
+				<div id='editCategories'></div>
+			</td></tr></table>
+
+			<!-- Checkboxes for Food Type -->
+			<table style="display:inline-block; padding-left:20px"><tr><td>
+				<div id='editFoodtypes'></div>
+			</td></tr></table>
+			<hr/>
 
 			<center>
 			<table>
@@ -265,6 +276,52 @@ END_OF_API_HTML;
 			$("#editSliderImagePath").val(val.sliderImagePath);
 			$("#editPublic").val(val.public);
 
+			// Categories
+			for (var i = 0; i < val.categoryCount; i++)
+			{
+				var vId = eval("val.category_" + i + ".id");
+				var vName = eval("val.category_" + i + ".name");
+				var vChecked = eval("val.category_" + i + ".checked");
+				var checkbox = document.createElement('input');
+				checkbox.type = "checkbox";
+				checkbox.name = "editCategory[]";
+				checkbox.value = vId;
+				checkbox.checked = vChecked;
+				//checkbox.id = "id";
+
+				var label = document.createElement('label')
+				label.htmlFor = "id";
+				label.appendChild(document.createTextNode(vName));
+
+				container = document.getElementById('editCategories');
+				container.appendChild(checkbox);
+				container.appendChild(label);
+				container.appendChild(document.createElement('br'));
+			}
+
+			// Food Types
+			for (var i = 0; i < val.foodtypeCount; i++)
+			{
+				var vId = eval("val.foodtype_" + i + ".id");
+				var vName = eval("val.foodtype_" + i + ".name");
+				var vChecked = eval("val.foodtype_" + i + ".checked");
+				var checkbox = document.createElement('input');
+				checkbox.type = "checkbox";
+				checkbox.name = "editFoodtype[]";
+				checkbox.value = vId;
+				checkbox.checked = vChecked;
+				//checkbox.id = "id";
+
+				var label = document.createElement('label')
+				label.htmlFor = "id";
+				label.appendChild(document.createTextNode(vName));
+
+				container = document.getElementById('editFoodtypes');
+				container.appendChild(checkbox);
+				container.appendChild(label);
+				container.appendChild(document.createElement('br'));
+			}
+
 			$("#editDialog").dialog({width:'auto'});
 			$("#editDialog").dialog('option', 'title', 'Input Your Business Details');
 		}
@@ -297,6 +354,31 @@ alert('xx');
             var logoPath = document.getElementById('editLogoPath').value;
             var sliderImagePath = document.getElementById('editSliderImagePath').value;
             var public = document.getElementById('editPublic').value;
+
+			// Category checkboxes
+			var cats = "";
+			var collection = document.getElementById('editCategories').getElementsByTagName('INPUT');
+			for (var x=0; x<collection.length; x++)
+			{
+				if (collection[x].type.toUpperCase()=='CHECKBOX')
+				{
+					if (cats != "") cats = "|";
+					cats += collection[x].value + "_" + collection[x].checked;;
+				}
+			}
+
+			// Foodtype checkboxes
+			var fts = "";
+			var collection = document.getElementById('editFoodtypes').getElementsByTagName('INPUT');
+			for (var x=0; x<collection.length; x++)
+			{
+				if (collection[x].type.toUpperCase()=='CHECKBOX')
+				{
+					if (fts != "") fts = "|";
+					fts += collection[x].value + "_" + collection[x].checked;;
+				}
+			}
+
 			//alert('sending to server');
             $( "#editDialog" ).dialog('close');
             <substitute-ajax-edit-code>
@@ -367,6 +449,8 @@ END_OF_API_JS;
                 'logoPath'=>'js:logoPath',
                 'sliderImagePath'=>'js:sliderImagePath',
                 'public'=>'js:public',
+                'cats'=>'js:cats',
+                'fts'=>'js:fts',
                 ),
             'type'=>'POST',
             'dataType'=>'json',
