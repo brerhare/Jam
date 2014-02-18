@@ -272,11 +272,6 @@ class SiteController extends Controller
 				$catCount++;
 			}
 			$retArr['categoryCount'] = $catCount;
-ob_start();
-var_dump($retArr);
-$contents = ob_get_contents();
-ob_end_clean();
-Yii::log("AJAX CALL (dump)" . $contents /*var_dump($retArr[$catStr])*/, CLogger::LEVEL_WARNING, 'system.test.kim');
 
 			$foodtypes = FoodType::model()->findAll();
 			$ftCount = 0;
@@ -406,6 +401,23 @@ Yii::log("AJAX CALL (fts)" . $list, CLogger::LEVEL_WARNING, 'system.test.kim');
 
 			echo CJSON::encode($retArr);
 		}
+	}
+
+    public function actionAjaxUploadLogo()
+    {
+        if (Yii::app()->request->isAjaxRequest)
+        {
+            $retArr = array();
+			$retArr['error'] = "";
+
+            Yii::log("AJAX CALL (uploadlogo)", CLogger::LEVEL_WARNING, 'system.test.kim');
+		}
+	}
+
+    public function actionSubmit()
+    {
+            Yii::log("AJAX CALL (submit)", CLogger::LEVEL_WARNING, 'system.test.kim');
+			$this->redirect(array('index'));
 	}
 
 

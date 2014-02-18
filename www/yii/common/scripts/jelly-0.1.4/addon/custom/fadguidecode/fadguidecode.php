@@ -102,7 +102,7 @@ class fadguidecode
 
 		<!-- Edit dialog container -->
 		<div id="editDialog" style="display:none;/*border:1px solid #e2f0f8*/" title="Event">
-		<form enctype="multipart/form-data">
+			<form enctype="multipart/form-data" class="form-vertical" id="image-form" action="/index.php/site/submit" method="post">
 			<input type="hidden" name="editMode" id="editMode"> <!-- 'signup' or 'login' -->
 
 			<table style="display:inline-block">	<!-- Name/address TOP LHS -->
@@ -162,14 +162,14 @@ class fadguidecode
 					<td> <label for="editOpeningHours">Opening Hours</label> </td>
 					<td> <input type="text" style="width:250px" name="editOpeningHours" id="editOpeningHours" class="text ui-widget-content"> </td>
 				</tr>
-				<tr>
-					<td> <label for="editLogoPath">Upload logo (150x150)</label> </td>
-					<td> <input type="text" style="width:100px" name="editLogoPath" id="editLogoPath" class="text ui-widget-content"> </td>
-				</tr>
-				<tr>
-					<td> <label for="editSliderImagePath">Upload slider (700x200)</label> </td>
-					<td> <input type="text" style="width:100px" name="editSliderImagePath" id="editSliderImagePath" class="text ui-widget-content"> </td>
-				</tr>
+                <tr>
+                    <td> <label for="editLogoPath">Upload logo (150x150)</label> </td>
+                    <td> <input type="file" name="editLogoPath" id="editLogo"/> </td>
+                </tr>
+                <tr>
+                    <td> <label for="editSliderImagePath">Upload Slider (700x200)</label> </td>
+                    <td> <input type="file" name="editSliderImagePath" id="editSlider"/> </td>
+                </tr>
 			</table>
 
 			<hr/>
@@ -201,7 +201,7 @@ class fadguidecode
 			<table>
 				<tr>
 					<td width="25%">
-					<td width="25%"> <input type='button' id='editSave' style='float:left;padding:3px; width:60px' onClick='saveEditDialog("save")' value='Save'> </td>
+					<td width="25%"> <input type='submit' id='editSave' style='float:left;padding:3px; width:60px' onClick='saveEditDialog("save")' value='Save'> </td>
 					<td width="25%"> <input type='button' id='editCancel' style='float:left;padding:3px; width:60px' onClick='cancelEditDialog()' value='Cancel'> </td>
 					<td width="25%">
 				</tr>
