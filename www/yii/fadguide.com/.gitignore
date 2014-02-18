@@ -19,8 +19,10 @@ userdata/tab/*
 !userdata/image
 !userdata/image/.gitignore
 !userdata/image/logo/.gitignore
+!userdata/image/slider/.gitignore
 userdata/image/*
 userdata/image/logo/*
+userdata/image/slider/*
 
 !userdata/jelly
 !userdata/jelly/.gitignore
