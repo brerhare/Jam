@@ -936,12 +936,29 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 
 		if (stristr($vals[0], "gallery"))
 		{
-			// Eg: {{gallery}}
-			// ----------------------------
+			// Eg: {{gallery}}  (hybrid)
+			// -------------------------
 			$addon = array(
 				"gallery" => array(
 					"fancybox" => array(
              			"source" => "db"
+					)
+				)
+			);
+			$this->addonHandler($addon, 1, $addonHtml);
+			$content = str_replace($pOrig, $addonHtml, $content);
+			//$content = str_replace($pOrig, "", $content);
+		}
+
+		if (stristr($vals[0], "category"))
+		{
+			// Eg: {{category Eating Out}}  (hybrid)
+			// -------------------------------------
+			$addon = array(
+				"custom" => array(
+					"fadguidecode" => array(
+             			"category" => $p2,
+						"run"      => "listMembers",
 					)
 				)
 			);

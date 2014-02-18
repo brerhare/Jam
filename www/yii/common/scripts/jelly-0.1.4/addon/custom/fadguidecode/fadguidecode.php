@@ -35,6 +35,7 @@ class fadguidecode
 		// Generate the content into the html, replacing any <substituteN> tags
 		$onReady = "";
 		$inputMode = "";
+		$listCategory = "";
 
 		$this->jellyRootUrl = $jellyRootUrl;
 
@@ -42,15 +43,60 @@ class fadguidecode
 		{
 			switch ($opt)
 			{
+				case "category":
+					$listCategory = $val;
+					break;
 				case "run":
 					if ($val == 'login')
 						return $this->login();
+					if ($val == 'listMembers')
+						return $this->listMembers($listCategory);
 					break;
 				default:
 					break;
 			}
 		}
 		return array("","");
+	}
+
+	/***************************************************************************************************/
+
+    private function listMembers($listCategory)
+    {
+		$content = "";
+
+		$apiHtml = <<<END_OF_API_HTML
+
+		<div class="listCategory-container">
+			<link rel="stylesheet" type="text/css" href="<substitute-path>/fadguidecode.css" />
+
+			<style> /* overrides */
+			</style>
+
+			<table>
+				<tr>
+					<td width="30%">&nbsp</td>
+					<td width="70">
+						<table>
+							<substitute-member-header>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</div>
+
+END_OF_API_HTML;
+
+		// Wrapup
+		$clipBoard = "";
+		$apiHeader = "";
+
+		$retArr = array();
+		$retArr[0] = $apiHtml;
+		$retArr[1] = $apiJs;
+		$retArr[2] = $clipBoard;
+		$retArr[3] = $apiHeader;
+		return $retArr;
 	}
 
 	/***************************************************************************************************/

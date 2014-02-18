@@ -449,7 +449,7 @@ ob_end_clean();
 				{
 					$tmp_name = $_FILES["editSliderImagePath"]["tmp_name"];
 					$fileSliderImagePath = $_FILES["editSliderImagePath"]["name"];
-					move_uploaded_file($tmp_name, Yii::app()->basePath . $this->_imageDir . $fileSliderImagePath);
+					move_uploaded_file($tmp_name, Yii::app()->basePath . $this->_imageDir . "slider/" . $fileSliderImagePath);
 				}
 			}
 
@@ -495,8 +495,8 @@ ob_end_clean();
 			{
 				if (trim($member->slider_image_path) != "")
 				{
-					if (file_exists(Yii::app()->basePath . $this->_imageDir . $member->slider_image_path))
-						unlink(Yii::app()->basePath . $this->_imageDir . $member->slider_image_path);
+					if (file_exists(Yii::app()->basePath . $this->_imageDir . "slider/" . $member->slider_image_path))
+						unlink(Yii::app()->basePath . $this->_imageDir . "slider/" . $member->slider_image_path);
 				}
 				$member->slider_image_path = $fileSliderImagePath;
 			}
