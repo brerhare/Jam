@@ -911,13 +911,32 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
 	}
 
+	private function checkLocalSubstitutions(&$content)
+	{
+		$userId = -1;
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("sid = '" . $_GET['sid'] . "'");
+		$user = User::model()->find($criteria);
+		if ($user)
+		{
+			$userId = $user->id;
+		}
+		$content = str_replace("<substitute-user>", $userId, $content);
+	}
+
 	private function genDivCSS($content)
 	{
+		// Translate any angle-brackets in the jelly file
+		$this->checkLocalSubstitutions($content);
+
 		array_push($this->cssDivArray, $content);
 	}
 
 	private function genGlobalCSS($content)
 	{
+		// Translate any angle-brackets in the jelly file
+		$content = $this->checkLocalSubstitutions($content);
+
 		array_push($this->cssGlobalArray, $content);
 	}
 
@@ -926,6 +945,17 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 		// Translate any @CLIPBOARD's
 		if (strstr($content, "@CLIPBOARD"))
 			$content = str_replace("@CLIPBOARD", $this->clipBoard, $content);
+
+		// Translate any angle-brackets in the jelly file
+		$content = $this->checkLocalSubstitutions($content);
+
+        // Trap any passed sids and flesh them out (this is actually a blog bug, passing sid from index.jel -> article.jel fucks up. Any yet the same for the product plugin index.jel -> product.jel works just fine (?!)
+        if (isset($_GET['sid']))
+        {
+            $sid = $_GET['sid'];
+            if (strstr($content, '$_GET[\'sid\']'))
+                $content = str_replace('$_GET[\'sid\']', $sid, $content);
+        }
 
 		// Translate any curly wurleys
 		$p1 = strstr($content, "{{");

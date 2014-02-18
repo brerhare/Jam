@@ -43,13 +43,13 @@ db.filter = sid=$_GET['sid']
 				stacking = horizontal
 				css.margin-bottom = 20px;
 				child = most-recent-image, most-recent-other
-				click = index.php/?layout=article&id=Article.id
+				click = index.php/?layout=article&sid=$_GET['sid']&id=Article.id
 				
 					[most-recent-image]
 					css.height = 180px
 					css.width = 240px
 					css.margin = 10px
-					style.background-image = /userdata/19/Article.thumbnail_path
+					style.background-image = /userdata/<substitute-user>/Article.thumbnail_path
 					
 					[most-recent-other]
 					css.width = 400px
@@ -86,13 +86,13 @@ db.filter = sid=$_GET['sid']
 					db.filter = uid=User.id, id!=Article.id
 					db.order = date DESC
 					db.fetch = multiple
-					click = index.php/?layout=article&id=Article.id
+					click = index.php/?layout=article&sid=$_GET['sid']&id=Article.id
 					
 						[blog-thumb]
 						css.height = 130px
 						css.width = 100%
 						css.margin-bottom = 5px
-						style.background-image = /userdata/19/Article.thumbnail_path
+						style.background-image = /userdata/<substitute-user>/Article.thumbnail_path
 
 						[blog-title]
 						css.height = 40px

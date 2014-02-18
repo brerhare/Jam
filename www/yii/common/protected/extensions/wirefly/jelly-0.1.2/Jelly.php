@@ -607,13 +607,35 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
 	}
 
+    private function checkLocalSubstitutions(&$content)
+    {
+        $userId = -1;
+        $criteria = new CDbCriteria;
+		if (isset($_GET['sid']))
+		{
+        	$criteria->addCondition("sid = '" . $_GET['sid'] . "'");
+        	$user = User::model()->find($criteria);
+        	if ($user)
+        	{
+            	$userId = $user->id;
+        	}
+		}
+        $content = str_replace("<substitute-user>", $userId, $content);
+    }
+
 	private function genDivCSS($content)
 	{
+        // Translate any angle-brackets in the jelly file
+        $this->checkLocalSubstitutions($content);
+
 		array_push($this->cssDivArray, $content);
 	}
 
 	private function genGlobalCSS($content)
 	{
+        // Translate any angle-brackets in the jelly file
+        $this->checkLocalSubstitutions($content);
+
 		array_push($this->cssGlobalArray, $content);
 	}
 
@@ -622,6 +644,18 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 		$indent = "";
 		while ($indentLevel--)
 			$indent .= "    ";
+
+		// Trap any passed sids and flesh them out
+		if (isset($_GET['sid']))
+		{
+			$sid = $_GET['sid'];
+			if (strstr($content, '$_GET[\'sid\']'))
+				$content = str_replace('$_GET[\'sid\']', $sid, $content);
+		}
+
+        // Translate any angle-brackets in the jelly file
+        $this->checkLocalSubstitutions($content);
+
 		array_push($this->bodyArray, $indent . $content);
 	}
 

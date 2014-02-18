@@ -21,6 +21,7 @@ class Sid extends CBehavior
 		if (isset($_GET['sid']))
 		{
 			$sid = str_replace('"', '', $_GET['sid']);
+			$sid = str_replace("'", '', $sid);
 			unset(Yii::app()->session['uid']);
 			Yii::log("Preprocess request - We have been given new sid " . $sid, CLogger::LEVEL_WARNING, 'system.test.kim');
 
@@ -29,7 +30,7 @@ class Sid extends CBehavior
 			$user = User::model()->find($criteria);
 			if ($user == null)
 			{
-				Yii::log("Preprocess request - This sid is invalid. Aborting" , CLogger::LEVEL_WARNING, 'system.test.kim');
+				Yii::log("Preprocess request - This sid (" . $sid . ") is invalid. Aborting" , CLogger::LEVEL_WARNING, 'system.test.kim');
 				throw new CHttpException(500,'Cannot continue without a valid sid');
 			}
 			Yii::app()->session['uid'] = $user->id;

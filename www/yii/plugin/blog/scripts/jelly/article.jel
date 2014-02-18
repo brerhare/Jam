@@ -7,7 +7,7 @@ include = default-values
 [screen]
 # Being an iframe, we want to use the full width of whatever was specified by the parent page - so we dont specify any
 child = page-container
-fx.wallpaper-color = #00000
+#fx.wallpaper-color = #000000
 
 # Get the uid from the sid
 #db.table = User
@@ -54,10 +54,10 @@ fx.wallpaper-color = #00000
 				css.margin = 10px
 				css.height = 280px
 				css.width = 420px
-				style.background-image = /userdata/19/Article.thumbnail_path
-
-			[content]
-			css.margin = 0px
-			css.width = 840px
+				style.background-image = /userdata/<substitute-user>/Article.thumbnail_path
+[content]
+			css.margin = 10px
+			#css.width = 840px
+			css.width = 660px
 			html.raw = Article.content
 
