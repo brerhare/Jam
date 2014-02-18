@@ -176,11 +176,11 @@ class fadguidecode
 			<!-- Checkboxes for Category -->
 			<table>
 				<tr>
-					<td><b>Categories&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b></td>
+					<td><b>Categories&nbsp&nbsp&nbsp&nbsp</b></td>
 					<td width="300px">
 						<div id='editCategories'></div>		<!-- Checkboxes for Category -->
 					</td>
-					<td><b>Food Types&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b></td>
+					<td><b>Food Types&nbsp&nbsp&nbsp&nbsp</b></td>
 					<td width="300px">
 						<div id='editFoodtypes'></div>		<!-- Checkboxes for Food Type -->
 					</td>
@@ -281,11 +281,15 @@ END_OF_API_HTML;
 			$("#editPublic").val(val.public);
 
 			// Categories
+			var container = document.getElementById("editCategories");
+			while (container.firstChild)
+				container.removeChild(container.firstChild);
 			for (var i = 0; i < val.categoryCount; i++)
 			{
 				var vId = eval("val.category_" + i + ".id");
 				var vName = eval("val.category_" + i + ".name");
 				var vChecked = eval("val.category_" + i + ".checked");
+//alert(vId+':'+vName+':'+vChecked);
 				var checkbox = document.createElement('input');
 				checkbox.type = "checkbox";
 				checkbox.name = "editCategory[]";
@@ -304,6 +308,9 @@ END_OF_API_HTML;
 			}
 
 			// Food Types
+			var container = document.getElementById("editFoodtypes");
+			while (container.firstChild)
+				container.removeChild(container.firstChild);
 			for (var i = 0; i < val.foodtypeCount; i++)
 			{
 				var vId = eval("val.foodtype_" + i + ".id");
@@ -366,8 +373,8 @@ alert('xx');
 			{
 				if (collection[x].type.toUpperCase()=='CHECKBOX')
 				{
-					if (cats != "") cats = "|";
-					cats += collection[x].value + "_" + collection[x].checked;;
+					if (cats != "") cats += "|";
+					cats += collection[x].value + "_" + collection[x].checked;
 				}
 			}
 
@@ -378,7 +385,7 @@ alert('xx');
 			{
 				if (collection[x].type.toUpperCase()=='CHECKBOX')
 				{
-					if (fts != "") fts = "|";
+					if (fts != "") fts += "|";
 					fts += collection[x].value + "_" + collection[x].checked;;
 				}
 			}

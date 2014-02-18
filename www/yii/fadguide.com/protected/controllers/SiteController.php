@@ -261,10 +261,22 @@ class SiteController extends Controller
 				$catStr = 'category_' . $catCount;
 				$retArr[$catStr]['id'] = $category->id;
 				$retArr[$catStr]['name'] = $category->name;
-				$retArr[$catStr]['checked'] = 0;
+				$criteria = new CDbCriteria;
+            	$criteria->addCondition("category_id = " . $category->id);
+            	$criteria->addCondition("member_id = " . $member->id);
+            	$memberHasCategory = MemberHasCategory::model()->find($criteria);
+            	if ($memberHasCategory)
+					$retArr[$catStr]['checked'] = 1;
+				else
+					$retArr[$catStr]['checked'] = 0;
 				$catCount++;
 			}
 			$retArr['categoryCount'] = $catCount;
+ob_start();
+var_dump($retArr);
+$contents = ob_get_contents();
+ob_end_clean();
+Yii::log("AJAX CALL (dump)" . $contents /*var_dump($retArr[$catStr])*/, CLogger::LEVEL_WARNING, 'system.test.kim');
 
 			$foodtypes = FoodType::model()->findAll();
 			$ftCount = 0;
@@ -273,7 +285,14 @@ class SiteController extends Controller
 				$ftStr = 'foodtype_' . $ftCount;
 				$retArr[$ftStr]['id'] = $foodtype->id;
 				$retArr[$ftStr]['name'] = $foodtype->name;
-				$retArr[$ftStr]['checked'] = 0;
+				$criteria = new CDbCriteria;
+            	$criteria->addCondition("food_type_id = " . $foodtype->id);
+            	$criteria->addCondition("member_id = " . $member->id);
+            	$memberHasFoodtype = MemberHasFoodType::model()->find($criteria);
+            	if ($memberHasFoodtype)
+					$retArr[$ftStr]['checked'] = 1;
+				else
+					$retArr[$ftStr]['checked'] = 0;
 				$ftCount++;
 			}
 			$retArr['foodtypeCount'] = $ftCount;
@@ -332,13 +351,57 @@ class SiteController extends Controller
 			$member->slider_image_path = $_POST['sliderImagePath'];
 			$member->public = $_POST['public'];
 
-			
-
 			if (!$member->save())
 			{
 				$retArr['error'] = "Error saving member record";
 				echo CJSON::encode($retArr);
 				return;
+			}
+
+			// Reconstruct all member categories
+			if ($_POST['editMode'] == 'login')
+				MemberHasCategory::model()->deleteAllByAttributes(array('member_id' => $member->id));
+			$list = $_POST['cats'];		// id_checked|1_0|23_0|7_1
+Yii::log("AJAX CALL (cats)" . $list, CLogger::LEVEL_WARNING, 'system.test.kim');
+			$pairs = explode("|", $list);
+			for ($i = 0; $i < count($pairs); $i++)
+			{
+				$item = explode("_", $pairs[$i]);
+				if ($item[1] == 'true')
+				{
+					$memberHasCategory = new MemberHasCategory;
+					$memberHasCategory->member_id = $member->id;
+					$memberHasCategory->category_id = $item[0];
+					if (!$memberHasCategory->save())
+            		{
+                		$retArr['error'] = "Error saving member category record";
+                		echo CJSON::encode($retArr);
+                		return;
+            		}
+				}
+			}
+
+			// Reconstruct all member food types
+			if ($_POST['editMode'] == 'login')
+				MemberHasFoodType::model()->deleteAllByAttributes(array('member_id' => $member->id));
+			$list = $_POST['fts'];		// id_checked|1_0|23_0|7_1
+Yii::log("AJAX CALL (fts)" . $list, CLogger::LEVEL_WARNING, 'system.test.kim');
+			$pairs = explode("|", $list);
+			for ($i = 0; $i < count($pairs); $i++)
+			{
+				$item = explode("_", $pairs[$i]);
+				if ($item[1] == 'true')
+				{
+					$memberHasFoodType = new MemberHasFoodType;
+					$memberHasFoodType->member_id = $member->id;
+					$memberHasFoodType->food_type_id = $item[0];
+					if (!$memberHasFoodType->save())
+            		{
+                		$retArr['error'] = "Error saving member food type record";
+                		echo CJSON::encode($retArr);
+                		return;
+            		}
+				}
 			}
 
 			echo CJSON::encode($retArr);
