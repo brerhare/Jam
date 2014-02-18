@@ -68,15 +68,14 @@ class fadguidecode
 		$apiHtml = <<<END_OF_API_HTML
 
 		<div class="listCategory-container">
-			<link rel="stylesheet" type="text/css" href="<substitute-path>/fadguidecode.css" />
 
 			<style> /* overrides */
 			</style>
 
-			<table>
+			<table style="width:100%">
 				<tr>
-					<td width="30%">&nbsp</td>
-					<td width="70">
+					<td width="30%">&nbsp</td>	<!-- filter -->
+					<td width="70%">				<!-- member header lines -->
 						<table>
 							<substitute-member-header>
 						</table>
@@ -86,6 +85,33 @@ class fadguidecode
 		</div>
 
 END_OF_API_HTML;
+
+		$apiJs = <<<END_OF_API_JS
+END_OF_API_JS;
+
+        // Substitute paths for includes
+        $apiHtml = str_replace("<substitute-path>", $this->jellyRootUrl, $apiHtml);
+        // This addon has no defaults that can be overridden
+
+		// Member headers displayed as a list
+		$content = "";
+		$criteria = new CDbCriteria;
+		//$criteria->addCondition("id != " . $model->id);
+		$members = Member::model()->findAll($criteria);
+		foreach ($members as $member):
+			$content .= "<tr>";
+			$content .= "<td width='75%'>";
+			$content .= "<i><p style='color:#A70055; font-weight:bold'>" . $member->business_name . "</p></i>";
+			$content .= "<i><p style=''>" . $member->address1 . "</p></i>";
+			$content .= "<a style='color:#A70055; text-decoration:underline' href='http://" . $member->web . " 'target='_blank''>Web site</a>";
+			$content .= "<br>" . $member->email . " / " . $member->phone;
+			$content .= "</td>";
+			$content .= "<td width='20%'>";
+			$content .= "<img src='userdata/image/logo/" . $member->logo_path . "' width='150px' height='150px'>";
+			$content .= "</td>";
+			$content .= "</tr>";
+		endforeach;
+		$apiHtml = str_replace("<substitute-member-header>", $content, $apiHtml);
 
 		// Wrapup
 		$clipBoard = "";
