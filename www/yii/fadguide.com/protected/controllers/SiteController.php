@@ -432,13 +432,14 @@ ob_end_clean();
 			// Handle any uploaded files
 			$fileLogoPath = "";
 			$fileSliderImagePath = "";
+			$fileRand = rand();
 			if (isset($_FILES['editLogoPath']))
 			{
 				$list = $_FILES['editLogoPath'];
 				if ($_FILES["editLogoPath"]["error"] == UPLOAD_ERR_OK)
 				{
 					$tmp_name = $_FILES["editLogoPath"]["tmp_name"];
-					$fileLogoPath = $_FILES["editLogoPath"]["name"];
+					$fileLogoPath = $fileRand . '_' . $_FILES["editLogoPath"]["name"];
 					move_uploaded_file($tmp_name, Yii::app()->basePath . $this->_imageDir . "logo/" . $fileLogoPath);
 				}
 			}
@@ -448,7 +449,7 @@ ob_end_clean();
 				if ($_FILES["editSliderImagePath"]["error"] == UPLOAD_ERR_OK)
 				{
 					$tmp_name = $_FILES["editSliderImagePath"]["tmp_name"];
-					$fileSliderImagePath = $_FILES["editSliderImagePath"]["name"];
+					$fileSliderImagePath = $fileRand . '_' . $_FILES["editSliderImagePath"]["name"];
 					move_uploaded_file($tmp_name, Yii::app()->basePath . $this->_imageDir . "slider/" . $fileSliderImagePath);
 				}
 			}

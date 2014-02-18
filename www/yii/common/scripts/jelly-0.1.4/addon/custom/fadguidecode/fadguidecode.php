@@ -94,20 +94,37 @@ END_OF_API_JS;
         // This addon has no defaults that can be overridden
 
 		// Member headers displayed as a list
+		$startLinkTag = "<a href='http://www.google.co.uk' target='_blank'>";
+		$endLinkTag = "</a>";
 		$content = "";
 		$criteria = new CDbCriteria;
 		//$criteria->addCondition("id != " . $model->id);
 		$members = Member::model()->findAll($criteria);
 		foreach ($members as $member):
-			$content .= "<tr>";
-			$content .= "<td width='75%'>";
+			$address = $member->address1 . ", " . $member->address2 . ", " . $member->address3 . ", " . $member->address4 . ", " . $member->postcode;
+			$address = rtrim($address, ", ");
+			for ($i = 0; $i < 4; $i++)
+				$address = str_replace(", , ", ", ", $address);
+			$content .= "<tr style='background-color:#FFECF8;' onClick='javascript:alert(" . "'x')" . ">";
+			$content .= "<td width='75%' style='padding:5px;'>";
+			$content .= $startLinkTag;
 			$content .= "<i><p style='color:#A70055; font-weight:bold'>" . $member->business_name . "</p></i>";
-			$content .= "<i><p style=''>" . $member->address1 . "</p></i>";
+			$content .= "<i><p style=''>" . $address . "</p></i>";
+$content .= $endLinkTag;
 			$content .= "<a style='color:#A70055; text-decoration:underline' href='http://" . $member->web . " 'target='_blank''>Web site</a>";
-			$content .= "<br>" . $member->email . " / " . $member->phone;
+$content .= $startLinkTag;
+			$content .= "<p style='font-size:small'>" . $member->email . " / " . $member->phone . "</p>";
+			$content .= $endLinkTag;
 			$content .= "</td>";
 			$content .= "<td width='20%'>";
+			$content .= $startLinkTag;
 			$content .= "<img src='userdata/image/logo/" . $member->logo_path . "' width='150px' height='150px'>";
+			$content .= $endLinkTag;
+			$content .= "</td>";
+			$content .= "</tr>";
+			$content .= "<tr height='10px'>";
+			$content .= "<td colspan='2'>";
+			$content .= "<hr style='height:2px; background-color:#A70055'/>";
 			$content .= "</td>";
 			$content .= "</tr>";
 		endforeach;
