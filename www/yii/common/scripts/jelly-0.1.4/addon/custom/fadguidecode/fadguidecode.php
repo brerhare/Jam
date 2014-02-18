@@ -102,7 +102,7 @@ class fadguidecode
 
 		<!-- Edit dialog container -->
 		<div id="editDialog" style="display:none;/*border:1px solid #e2f0f8*/" title="Event">
-			<form enctype="multipart/form-data" class="form-vertical" id="image-form" action="/index.php/site/submit" method="post">
+			<form enctype="multipart/form-data" class="form-vertical" id="image-form" action="/index.php/site/submit" method="POST">
 			<input type="hidden" name="editMode" id="editMode"> <!-- 'signup' or 'login' -->
 
 			<table style="display:inline-block">	<!-- Name/address TOP LHS -->
@@ -346,6 +346,7 @@ alert('xx');
 });
 		function saveEditDialog()		/* Save */
 		{
+return;
 			//alert('preparing fields to send to server');
             var editMode = document.getElementById('editMode').value;
             var username = document.getElementById('username').value;	// Global

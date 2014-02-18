@@ -153,6 +153,10 @@ class SiteController extends Controller
 
             Yii::log("AJAX CALL (signup): username=" . $_POST['username'] . " password=" . $_POST['password'], CLogger::LEVEL_WARNING, 'system.test.kim');
 
+			// Store details for the eventual submit
+			Yii::app()->session['username'] = $_POST['username'];
+			Yii::app()->session['password'] = $_POST['password'];
+
 			// Ensure username is not already taken
 			$criteria = new CDbCriteria;
 			$criteria->addCondition("username = '" . $_POST['username'] . "'");
@@ -218,6 +222,10 @@ class SiteController extends Controller
 			$retArr['error'] = "";
 
             Yii::log("AJAX CALL (login): username=" . $_POST['username'] . " password=" . $_POST['password'], CLogger::LEVEL_WARNING, 'system.test.kim');
+
+			// Store details for the eventual submit
+			Yii::app()->session['username'] = $_POST['username'];
+			Yii::app()->session['password'] = $_POST['password'];
 
 			// Ensure user exists
 			$criteria = new CDbCriteria;
@@ -300,6 +308,7 @@ class SiteController extends Controller
     {
         if (Yii::app()->request->isAjaxRequest)
         {
+return;
             $retArr = array();
 			$retArr['error'] = "";
 
@@ -416,8 +425,98 @@ Yii::log("AJAX CALL (fts)" . $list, CLogger::LEVEL_WARNING, 'system.test.kim');
 
     public function actionSubmit()
     {
-            Yii::log("AJAX CALL (submit)", CLogger::LEVEL_WARNING, 'system.test.kim');
-			$this->redirect(array('index'));
+            Yii::log("SUBMIT CALL (submit-start)", CLogger::LEVEL_WARNING, 'system.test.kim');
+ob_start();
+var_dump($_POST);
+var_dump($_FILES);
+$output = ob_get_contents();
+ob_end_clean();
+            Yii::log("SUBMIT CALL (submit-dump):" . $output, CLogger::LEVEL_WARNING, 'system.test.kim');
+
+			$retArr = array();
+
+			if (trim($_POST['editMode'] == ""))
+			{
+				$retArr['error'] = "Internal error - no 'mode' given to actionAjaxEdit()";
+			}
+			if ($_POST['editMode'] == 'login')
+            {
+                // Fetch original member details
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("username = '" . Yii::app()->session['username'] . "'");
+				$member = Member::model()->find($criteria);
+				if (!$member)
+				{
+					die("User does not exist");
+				}
+            }
+			else
+				$member = new Member;
+
+			$retArr['id'] = 0;
+			$member->username = Yii::app()->session['username'];
+			$member->password = Yii::app()->session['password'];
+			$member->business_name = $_POST['editBusinessName'];
+			$member->address1 = $_POST['editAddress1'];
+			$member->address2 = $_POST['editAddress2'];
+			$member->address3 = $_POST['editAddress3'];
+			$member->address4 = $_POST['editAddress4'];
+			$member->postcode = $_POST['editPostCode'];
+			$member->contact = $_POST['editContact'];
+			$member->web = $_POST['editWeb'];
+			$member->email = $_POST['editEmail'];
+			$member->phone = $_POST['editPhone'];
+			$member->opening_hours = $_POST['editOpeningHours'];
+			$member->html_content = $_POST['editHtmlContent'];
+			$member->public = $_POST['editPublic'];
+
+			if (!$member->save())
+			{
+				die("Error saving member record");
+			}
+
+			// Reconstruct all member categories
+			if ($_POST['editMode'] == 'login')
+				MemberHasCategory::model()->deleteAllByAttributes(array('member_id' => $member->id));
+			if (isset($_POST['editCategory']))
+			{
+				$list = $_POST['editCategory'];
+				foreach ($list as $n=>$v)
+				{
+					$memberHasCategory = new MemberHasCategory;
+					$memberHasCategory->member_id = $member->id;
+					$memberHasCategory->category_id = $v;
+					if (!$memberHasCategory->save())
+       				{
+              			die("Error saving member category record");
+					}
+				}
+			}
+
+			// Reconstruct all member food types
+			if ($_POST['editMode'] == 'login')
+				MemberHasFoodType::model()->deleteAllByAttributes(array('member_id' => $member->id));
+			if (isset($_POST['editFoodtype']))
+			{
+				$list = $_POST['editFoodtype'];
+				foreach ($list as $n=>$v)
+				{
+					$memberHasFoodType = new MemberHasFoodType;
+					$memberHasFoodType->member_id = $member->id;
+					$memberHasFoodType->food_type_id = $v;
+					if (!$memberHasFoodType->save())
+           			{
+               			die("Error saving member food type record");
+           			}
+				}
+			}
+
+			// Handle any uploaded files
+
+
+
+			// @@NB: FIX THIS!!!!!! usual redirect goes to fadguide.wireflydesign.com/index.php/site/index which screws the jelly image location dir /img
+			$this->redirect('http://fadguide.wireflydesign.com');
 	}
 
 
