@@ -336,14 +336,6 @@ END_OF_API_HTML;
 			$("#editDialog").dialog({width:'auto'});
 			$("#editDialog").dialog('option', 'title', 'Input Your Business Details');
 		}
-$('#logo').change(function(){
-    var file = this.files[0];
-    var name = file.name;
-    var size = file.size;
-    var type = file.type;
-    //Your validation
-alert('xx');
-});
 		function saveEditDialog()		/* Save */
 		{
 return;
