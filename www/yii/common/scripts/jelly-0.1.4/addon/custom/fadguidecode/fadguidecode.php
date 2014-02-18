@@ -174,14 +174,18 @@ class fadguidecode
 
 			<hr/>
 			<!-- Checkboxes for Category -->
-			<table style="display:inline-block;"><tr><td>
-				<div id='editCategories'></div>
-			</td></tr></table>
-
-			<!-- Checkboxes for Food Type -->
-			<table style="display:inline-block; padding-left:20px"><tr><td>
-				<div id='editFoodtypes'></div>
-			</td></tr></table>
+			<table>
+				<tr>
+					<td><b>Categories&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b></td>
+					<td width="300px">
+						<div id='editCategories'></div>		<!-- Checkboxes for Category -->
+					</td>
+					<td><b>Food Types&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</b></td>
+					<td width="300px">
+						<div id='editFoodtypes'></div>		<!-- Checkboxes for Food Type -->
+					</td>
+				</tr>
+			</table>
 			<hr/>
 
 			<center>
