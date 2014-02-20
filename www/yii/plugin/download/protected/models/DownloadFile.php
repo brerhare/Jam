@@ -5,6 +5,7 @@
  *
  * The followings are the available columns in table 'download_file':
  * @property integer $id
+ * @property integer $uid
  * @property string $filename
  * @property string $description
  * @property integer $download_collection_id
@@ -40,12 +41,12 @@ class DownloadFile extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('filename, download_collection_id', 'required'),
-			array('download_collection_id', 'numerical', 'integerOnly'=>true),
+			array('uid, filename, download_collection_id', 'required'),
+			array('uid, download_collection_id', 'numerical', 'integerOnly'=>true),
 			array('filename, description', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, filename, description, download_collection_id', 'safe', 'on'=>'search'),
+			array('id, uid, filename, description, download_collection_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -68,6 +69,7 @@ class DownloadFile extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
+			'uid' => 'Uid',
 			'filename' => 'Filename',
 			'description' => 'Description',
 			'download_collection_id' => 'Download Collection',
@@ -86,6 +88,7 @@ class DownloadFile extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
+		$criteria->compare('uid',$this->uid);
 		$criteria->compare('filename',$this->filename,true);
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('download_collection_id',$this->download_collection_id);

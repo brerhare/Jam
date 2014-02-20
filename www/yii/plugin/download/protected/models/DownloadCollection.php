@@ -5,6 +5,7 @@
  *
  * The followings are the available columns in table 'download_collection':
  * @property integer $id
+ * @property integer $uid
  * @property string $name
  *
  * The followings are the available model relations:
@@ -38,11 +39,12 @@ class DownloadCollection extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name', 'required'),
+			array('uid, name', 'required'),
+			array('uid', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name', 'safe', 'on'=>'search'),
+			array('id, uid, name', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -65,6 +67,7 @@ class DownloadCollection extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
+			'uid' => 'Uid',
 			'name' => 'Name',
 		);
 	}
@@ -81,6 +84,7 @@ class DownloadCollection extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
+		$criteria->compare('uid',$this->uid);
 		$criteria->compare('name',$this->name,true);
 
 		return new CActiveDataProvider($this, array(

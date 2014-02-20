@@ -102,6 +102,8 @@ class ImageController extends Controller
 	{
         $model=$this->loadModel($id);
 
+        $oldfilename = $model->filename;
+
         $model->scenario = 'update';
 
         // Uncomment the following line if AJAX validation is needed
@@ -113,9 +115,9 @@ class ImageController extends Controller
             $file=CUploadedFile::getInstance($model, 'filename');
             if(is_object($file) && get_class($file) === 'CUploadedFile')
             {
-                if (file_exists(Yii::app()->basePath . $this->_imageDir . $model->filename))
+                if (file_exists(Yii::app()->basePath . $this->_imageDir . $oldfilename))
                 {
-                    unlink(Yii::app()->basePath . $this->_imageDir . $model->filename);
+                    unlink(Yii::app()->basePath . $this->_imageDir . $oldfilename);
                     //unlink(Yii::app()->basePath . $this->_imageDir . 'gall_' . $model->filename);
                     //unlink(Yii::app()->basePath . $this->_imageDir . 'orig_' . $model->filename);
                 }

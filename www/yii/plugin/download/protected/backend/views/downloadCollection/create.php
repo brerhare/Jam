@@ -1,15 +1,12 @@
 <?php
-/* @var $this DownloadCollectionController */
-/* @var $model DownloadCollection */
-
 $this->breadcrumbs=array(
 	'Download Collections'=>array('index'),
 	'Create',
 );
 
 $this->menu=array(
-	array('label'=>'List DownloadCollection', 'url'=>array('index')),
-	array('label'=>'Manage DownloadCollection', 'url'=>array('admin')),
+	array('label'=>'List DownloadCollection','url'=>array('index')),
+	array('label'=>'Manage DownloadCollection','url'=>array('admin')),
 );
 ?>
 
