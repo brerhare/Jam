@@ -65,7 +65,6 @@ class DownloadFileController extends Controller
 	{
 		$model=new DownloadFile;
         $model->uid = Yii::app()->session['uid'];
-        $model->download_collection_id = 1;	// @@@@@@@@@@@@@@@@@@@@@@ !!!!!!!!!
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);

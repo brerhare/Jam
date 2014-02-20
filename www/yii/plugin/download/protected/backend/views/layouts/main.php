@@ -36,8 +36,8 @@
 			'items' => array(
 				array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
 				array('label' => 'Contact', 'url' => array('/site/contact'), 'visible' => Yii::app()->user->isGuest),
-				////////// array('label' => 'Download Collections', 'url' => array('/downloadCollection/admin'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Download Files', 'url' => array('/downloadFile/admin'), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'Download Collections', 'url' => array('/downloadCollection/admin'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Logout', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),
 			),
 		),

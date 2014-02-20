@@ -1,13 +1,14 @@
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'download-collection-form',
 	'enableAjaxValidation'=>false,
+	'type'=>'horizontal',
 )); ?>
 
 	<p class="help-block">Fields with <span class="required">*</span> are required.</p>
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<?php echo $form->textFieldRow($model,'uid',array('class'=>'span5')); ?>
+	<?php //echo $form->textFieldRow($model,'uid',array('class'=>'span5')); ?>
 
 	<?php echo $form->textFieldRow($model,'name',array('class'=>'span5','maxlength'=>255)); ?>
 

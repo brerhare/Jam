@@ -18,6 +18,13 @@
 
 	<?php echo $form->textFieldRow($model,'description',array('class'=>'span6','maxlength'=>255)); ?>
 
+<?php
+$criteria = new CDbCriteria;
+ $criteria->addCondition("uid = " . Yii::app()->session['uid']);
+?>
+
+    <?php echo $form->dropDownListRow($model,'download_collection_id', CHtml::listData(DownloadCollection::model()->findAll($criteria), 'id', 'name'), array('empty'=>'Choose')); ?>
+
 	<?php //echo $form->textFieldRow($model,'download_collection_id',array('class'=>'span5')); ?>
 
 	<div class="form-actions">
