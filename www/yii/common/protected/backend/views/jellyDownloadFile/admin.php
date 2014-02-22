@@ -14,9 +14,18 @@ $this->menu=array(
 	//'filter'=>$model,
 	'columns'=>array(
 		//'id',
-		'filename',
-		'description',
-		//'download_collection_id',
+
+        array(
+            'name'  => 'filename',
+            'value' => 'CHtml::link($data->filename, Yii::app()->createUrl("jellyDownloadFile/update",array("id"=>$data->primaryKey)))',
+            'type'  => 'raw',
+        ),
+
+        array(
+            'name'  => 'description',
+            'value' => 'CHtml::link($data->description, Yii::app()->createUrl("jellyDownloadFile/update",array("id"=>$data->primaryKey)))',
+            'type'  => 'raw',
+        ),
 
         array(
             'class'=>'bootstrap.widgets.TbButtonColumn',
