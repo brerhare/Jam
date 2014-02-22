@@ -785,6 +785,7 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 	// @@TODO: This has been separated from the switch-case as it is intended to be recursive.
 	// At the moment it has a fixed depth and structure of hierarchy, very limited
 	// arg 2 says whether output is generated inline or returned via arg 3
+
 	private function addonHandler($value, $htmlRequired = 0, &$htmlOutput = null)
 	{
 //var_dump($value);
@@ -808,7 +809,7 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 					$optArr[$k] = $this->dbExpand($v);
 
 				// Run the addon's API
-				include_once($path . "/" . $className . ".php");
+				include($path . "/" . $className . ".php");
 				$addon = new $className;
 				$code = $addon->init($optArr, $url);
 				if ($htmlRequired == 0)
@@ -966,6 +967,31 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 		$pOrig = "{{" . $p2 . "}}";
 		$vals = explode(" ", $p2);
 		$type = $vals[0];
+
+		if (stristr($vals[0], "download"))
+		{
+			// Eg: {{download}}  (hybrid)
+			// -------------------------
+			$optionMode = "all";
+			$optionValue = "";
+			if (count($vals) > 2)
+			{
+					$tmp = explode(' ', $p2, 3);	// Split on first space
+					$optionMode = $tmp[1];			// 'file' or 'collection'
+					$optionValue = $tmp[2];			// 'abc.pdf' or 'my file collection'
+			}
+			$addon = array(
+				"download" => array(
+					"jellybasic" => array(
+             			"mode" => $optionMode,
+						"value" => $optionValue,
+					)
+				)
+			);
+			$this->addonHandler($addon, 1, $addonHtml);
+			$content = str_replace($pOrig, $addonHtml, $content);
+			//$content = str_replace($pOrig, "", $content);
+		}
 
 		if (stristr($vals[0], "gallery"))
 		{
