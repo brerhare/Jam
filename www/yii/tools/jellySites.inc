@@ -1,6 +1,7 @@
 <?php
 
 $dbList = array (
+	'fadguide.com'                => '/home/kim/dev/src/www/yii/fadguide.com | /home/fadguide.com/dev/src/www/yii/fadguide.com',
 	'beirc.co.uk'                => '/home/kim/dev/src/www/yii/beirc.co.uk | /home/beirc.co.uk/dev/src/www/yii/beirc.co.uk',
 	'dumfriesfurniture.com'      => '/home/kim/dev/src/www/yii/dumfriesfurniture.com | /home/dumfriesfurniture.com/dev/src/www/yii/dumfriesfurniture.com',
 	//'glitzaratti.com'            => '/home/kim/dev/src/www/yii/glitzaratti.com | /home/glitzaratti.com/dev/src/www/yii/glitzaratti.com',
