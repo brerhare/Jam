@@ -159,6 +159,38 @@ CREATE  TABLE IF NOT EXISTS `jelly_gallery_image` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `jelly_download_collection`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `jelly_download_collection` ;
+
+CREATE  TABLE IF NOT EXISTS `jelly_download_collection` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(255) NOT NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `jelly_download_file`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `jelly_download_file` ;
+
+CREATE  TABLE IF NOT EXISTS `jelly_download_file` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `filename` VARCHAR(255) NOT NULL ,
+  `description` VARCHAR(255) NULL ,
+  `jelly_download_collection_id` INT NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_jelly_download_file_jelly_download_collection1` (`jelly_download_collection_id` ASC) ,
+  CONSTRAINT `fk_jelly_download_file_jelly_download_collection1`
+    FOREIGN KEY (`jelly_download_collection_id` )
+    REFERENCES `jelly_download_collection` (`id` )
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
