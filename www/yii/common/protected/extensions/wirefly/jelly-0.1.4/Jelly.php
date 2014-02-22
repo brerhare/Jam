@@ -809,7 +809,7 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 					$optArr[$k] = $this->dbExpand($v);
 
 				// Run the addon's API
-				include($path . "/" . $className . ".php");
+				include_once($path . "/" . $className . ".php");
 				$addon = new $className;
 				$code = $addon->init($optArr, $url);
 				if ($htmlRequired == 0)
