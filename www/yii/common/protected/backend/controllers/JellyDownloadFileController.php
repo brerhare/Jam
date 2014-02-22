@@ -8,6 +8,8 @@ class JellyDownloadFileController extends Controller
 	 */
 	public $layout='//layouts/column2';
 
+	private $_imageDir = '/../userdata/jelly/download/';   // Note this is only partial. Gets prepended base path
+
 	/**
 	 * @return array action filters
 	 */
@@ -15,7 +17,6 @@ class JellyDownloadFileController extends Controller
 	{
 		return array(
 			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
 		);
 	}
 
@@ -32,7 +33,7 @@ class JellyDownloadFileController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update', 'delete'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -70,8 +71,14 @@ class JellyDownloadFileController extends Controller
 		if(isset($_POST['JellyDownloadFile']))
 		{
 			$model->attributes=$_POST['JellyDownloadFile'];
+            $model->filename=CUploadedFile::getInstance($model, 'filename');
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			{
+				$fname =  $this->getImageDir() . $model->filename;
+				$model->filename->saveAs($fname);
+			}
+			$this->redirect(array('admin'));
+
 		}
 
 		$this->render('create',array(
@@ -88,14 +95,36 @@ class JellyDownloadFileController extends Controller
 	{
 		$model=$this->loadModel($id);
 
+		$oldfilename = $model->filename;
+
+		$model->scenario = 'update';
+
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['JellyDownloadFile']))
 		{
 			$model->attributes=$_POST['JellyDownloadFile'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+            $file=CUploadedFile::getInstance($model, 'filename');
+            if(is_object($file) && get_class($file) === 'CUploadedFile')
+            {
+                if (file_exists($this->getImageDir() . $oldfilename))
+                {
+                    unlink($this->getImageDir() . $oldfilename);
+                }
+                $model->filename = $file;
+			}
+
+            if($model->save())
+            {
+                if(is_object($file))
+                {
+                    $fname = $this->getImageDir() . $model->filename;
+                    $model->filename->saveAs($fname);
+
+                }
+				$this->redirect(array('admin'));
+            }
 		}
 
 		$this->render('update',array(
@@ -110,6 +139,13 @@ class JellyDownloadFileController extends Controller
 	 */
 	public function actionDelete($id)
 	{
+        $oldfilename = $this->loadModel($id)->filename;
+        if (($oldfilename != '') && (file_exists($this->getImageDir() . $oldfilename)))
+        {
+			if (file_exists($this->getImageDir() . $oldfilename))
+            	unlink($this->getImageDir() . $oldfilename);
+        }
+
 		$this->loadModel($id)->delete();
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
@@ -146,9 +182,7 @@ class JellyDownloadFileController extends Controller
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
-	 * @param integer $id the ID of the model to be loaded
-	 * @return JellyDownloadFile the loaded model
-	 * @throws CHttpException
+	 * @param integer the ID of the model to be loaded
 	 */
 	public function loadModel($id)
 	{
@@ -160,14 +194,30 @@ class JellyDownloadFileController extends Controller
 
 	/**
 	 * Performs the AJAX validation.
-	 * @param JellyDownloadFile $model the model to be validated
+	 * @param CModel the model to be validated
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='jelly-download-file-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='download-file-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
 	}
+
+// Image SID directory ---------------------------------------------------------
+
+    public function getImageDir()
+    {
+        // Create it if doesnt exist
+
+        $iDir = Yii::app()->basePath . $this->_imageDir . '/';
+
+        if ((!is_dir($iDir)) &&  (!mkdir($iDir, 0777, true)))
+            throw new CHttpException(400,'Failed to create user directory ' . $iDir);
+
+        return $iDir;
+    }
+
+
 }

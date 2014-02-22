@@ -5,9 +5,6 @@ protected/runtime/*
 protected/backend/runtime/*
 !protected/backend/runtime/.gitignore
 userdata/*
-!userdata/download
-userdata/download/*
-!userdata/download/.gitignore
 !userdata/image
 userdata/image/*
 !userdata/image/.gitignore

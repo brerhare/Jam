@@ -1,20 +1,17 @@
 <?php
-/* @var $this JellyDownloadFileController */
-/* @var $dataProvider CActiveDataProvider */
-
 $this->breadcrumbs=array(
-	'Jelly Download Files',
+	'Download Files',
 );
 
 $this->menu=array(
-	array('label'=>'Create JellyDownloadFile', 'url'=>array('create')),
-	array('label'=>'Manage JellyDownloadFile', 'url'=>array('admin')),
+	array('label'=>'Create DownloadFile','url'=>array('create')),
+	array('label'=>'Manage DownloadFile','url'=>array('admin')),
 );
 ?>
 
-<h1>Jelly Download Files</h1>
+<h1>Download Files</h1>
 
-<?php $this->widget('zii.widgets.CListView', array(
+<?php $this->widget('bootstrap.widgets.TbListView',array(
 	'dataProvider'=>$dataProvider,
 	'itemView'=>'_view',
 )); ?>

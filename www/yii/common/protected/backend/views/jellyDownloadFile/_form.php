@@ -1,42 +1,32 @@
-<?php
-/* @var $this JellyDownloadFileController */
-/* @var $model JellyDownloadFile */
-/* @var $form CActiveForm */
-?>
-
-<div class="form">
-
-<?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'jelly-download-file-form',
+<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+	'id'=>'download-file-form',
 	'enableAjaxValidation'=>false,
+	'htmlOptions'=>array('enctype'=>'multipart/form-data'),
+	'type'=>'horizontal',
 )); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+	<p class="help-block">Fields with <span class="required">*</span> are required.</p>
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'filename'); ?>
-		<?php echo $form->textField($model,'filename',array('size'=>60,'maxlength'=>255)); ?>
-		<?php echo $form->error($model,'filename'); ?>
-	</div>
+<br>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'description'); ?>
-		<?php echo $form->textField($model,'description',array('size'=>60,'maxlength'=>255)); ?>
-		<?php echo $form->error($model,'description'); ?>
-	</div>
+	<?php //echo $form->textFieldRow($model,'filename',array('class'=>'span2','maxlength'=>255)); ?>
+	<?php echo $form->fileFieldRow($model,'filename',array('size'=>60,'maxlength'=>255)); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'jelly_download_collection_id'); ?>
-		<?php echo $form->textField($model,'jelly_download_collection_id'); ?>
-		<?php echo $form->error($model,'jelly_download_collection_id'); ?>
-	</div>
 
-	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+	<?php echo $form->textFieldRow($model,'description',array('class'=>'span6','maxlength'=>255)); ?>
+
+    <?php echo $form->dropDownListRow($model,'jelly_download_collection_id', CHtml::listData(JellyDownloadCollection::model()->findAll(), 'id', 'name'), array('empty'=>'Choose')); ?>
+
+	<?php //echo $form->textFieldRow($model,'jelly_download_collection_id',array('class'=>'span5')); ?>
+
+	<div class="form-actions">
+		<?php $this->widget('bootstrap.widgets.TbButton', array(
+			'buttonType'=>'submit',
+			'type'=>'primary',
+			'label'=>$model->isNewRecord ? 'Create' : 'Save',
+		)); ?>
 	</div>
 
 <?php $this->endWidget(); ?>
-
-</div><!-- form -->
