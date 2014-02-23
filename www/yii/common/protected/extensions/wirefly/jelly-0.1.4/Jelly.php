@@ -961,112 +961,130 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
                 $content = str_replace('$_GET[\'sid\']', $sid, $content);
         }
 
-		// Translate any curly wurleys
-		$p1 = strstr($content, "{{");
-		$p2 = strstr(substr($p1, 2), "}}", true);
-		$pOrig = "{{" . $p2 . "}}";
-		$vals = explode(" ", $p2);
-		$type = $vals[0];
-
-		if (stristr($vals[0], "download"))
+		// Translate any curly wurlys
+		$moreCurlyWurlys = 1;
+$cnt=0;
+		while ($moreCurlyWurlys)
 		{
-			// Eg: {{download}}  (hybrid)
-			// -------------------------
-			$optionMode = "all";
-			$optionValue = "";
-			if (count($vals) > 2)
+			$moreCurlyWurlys = 0;
+			$addonHtml = "";
+			$p1 = strstr($content, "{{");
+			$p2 = strstr(substr($p1, 2), "}}", true);
+			$pOrig = "{{" . $p2 . "}}";
+			$vals = explode(" ", $p2);
+			$type = $vals[0];
+
+	 		if (stristr($vals[0], "download"))
 			{
-					$tmp = explode(' ', $p2, 3);	// Split on first space
-					$optionMode = $tmp[1];			// 'file' or 'collection'
-					$optionValue = $tmp[2];			// 'abc.pdf' or 'my file collection'
+$cnt++;
+echo "<br>". $cnt . ",";
+				// Eg: {{download}}  (hybrid)
+				// -------------------------
+				$moreCurlyWurlys = 1;
+				$optionMode = "all";
+				$optionValue = "";
+				if (count($vals) > 2)
+				{
+						$tmp = explode(' ', $p2, 3);	// Split on first space
+						$optionMode = $tmp[1];			// 'file' or 'collection'
+						$optionValue = $tmp[2];			// 'abc.pdf' or 'my file collection'
+				}
+				$addon = array(
+					"download" => array(
+						"jellybasic" => array(
+             				"mode" => $optionMode,
+							"value" => $optionValue,
+						)
+					)
+				);
+				$this->addonHandler($addon, 1, $addonHtml);
+				$content = str_replace($pOrig, $addonHtml, $content);
+//if ($cnt==2)
+//die($content);
+				//$content = str_replace($pOrig, "", $content);
 			}
-			$addon = array(
-				"download" => array(
-					"jellybasic" => array(
-             			"mode" => $optionMode,
-						"value" => $optionValue,
+
+			if (stristr($vals[0], "gallery"))
+			{
+				// Eg: {{gallery}}  (hybrid)
+				// -------------------------
+				$moreCurlyWurlys = 1;
+				$addon = array(
+					"gallery" => array(
+						"fancybox" => array(
+             				"source" => "db"
+						)
 					)
-				)
-			);
-			$this->addonHandler($addon, 1, $addonHtml);
-			$content = str_replace($pOrig, $addonHtml, $content);
-			//$content = str_replace($pOrig, "", $content);
-		}
+				);
+				$this->addonHandler($addon, 1, $addonHtml);
+				$content = str_replace($pOrig, $addonHtml, $content);
+				//$content = str_replace($pOrig, "", $content);
+			}
 
-		if (stristr($vals[0], "gallery"))
-		{
-			// Eg: {{gallery}}  (hybrid)
-			// -------------------------
-			$addon = array(
-				"gallery" => array(
-					"fancybox" => array(
-             			"source" => "db"
+			if (stristr($vals[0], "category"))
+			{
+				// Eg: {{category Eating Out}}  (hybrid)
+				// -------------------------------------
+				$moreCurlyWurlys = 1;
+				$addon = array(
+					"custom" => array(
+						"fadguidecode" => array(
+             				"category" => $p2,
+							"run"      => "listMembers",
+						)
 					)
-				)
-			);
-			$this->addonHandler($addon, 1, $addonHtml);
-			$content = str_replace($pOrig, $addonHtml, $content);
-			//$content = str_replace($pOrig, "", $content);
-		}
+				);
+				$this->addonHandler($addon, 1, $addonHtml);
+				$content = str_replace($pOrig, $addonHtml, $content);
+				//$content = str_replace($pOrig, "", $content);
+			}
 
-		if (stristr($vals[0], "category"))
-		{
-			// Eg: {{category Eating Out}}  (hybrid)
-			// -------------------------------------
-			$addon = array(
-				"custom" => array(
-					"fadguidecode" => array(
-             			"category" => $p2,
-						"run"      => "listMembers",
-					)
-				)
-			);
-			$this->addonHandler($addon, 1, $addonHtml);
-			$content = str_replace($pOrig, $addonHtml, $content);
-			//$content = str_replace($pOrig, "", $content);
-		}
+			if (stristr($vals[0], "department"))
+			{
+				// Eg: {{department 27 Guinot}}
+				// ----------------------------
+				$moreCurlyWurlys = 1;
+				$value = $vals[1];
+				$iframe = '<iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;department=' . $value . '"></iframe>';
+				$content = str_replace($pOrig, $iframe, $content);
+			}
 
-		if (stristr($vals[0], "department"))
-		{
-			// Eg: {{department 27 Guinot}}
-			// ----------------------------
-			$value = $vals[1];
-			$iframe = '<iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;department=' . $value . '"></iframe>';
-			$content = str_replace($pOrig, $iframe, $content);
-		}
-		if (stristr($vals[0], "preset"))
-		{
-			// Eg: {{preset}}
-			// --------------
-			$iframe = '<iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=preset&sid=' . Yii::app()->params['sid'] . '&amp;preset=true"></iframe>';
-			$content = str_replace($pOrig, $iframe, $content);
-		}
-		if (stristr($vals[0], "checkout"))
-		{
-			// Eg: {{checkout}}
-			// --------------
-			$util = new Util;;
-			// Check required parameters are set up for gateway access
-			if ((trim(Yii::app()->params['checkoutEmail']) == "")
-			||  (trim(Yii::app()->params['checkoutName']) == "")
-			||  (trim(Yii::app()->params['checkoutGatewayUser']) == "")
-			||  (trim(Yii::app()->params['checkoutGatewayPassword']) == ""))
-				die("Checkout needs gateway access to be set up in the configuration file");
-			$iframe = '<iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=checkout&sid=' . Yii::app()->params['sid'] . '&ge=' . Yii::app()->params['checkoutEmail'] . '&gn=' . Yii::app()->params['checkoutName'] . '&gu=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayUser'])) . '&gp=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayPassword'])) . '"></iframe>';
-			$content = str_replace($pOrig, $iframe, $content);
-		}
-		else if (stristr($vals[0], "blog"))
-		{
-			// Eg: {{blog}}
-			// ------------
-			$iframe = '<iframe height="900" width="900" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/blog/?sid=' . Yii::app()->params['sid'] . '"></iframe>';
-			$content = str_replace($pOrig, $iframe, $content);
-		}
+			if (stristr($vals[0], "preset"))
+			{
+				// Eg: {{preset}}
+				// --------------
+				$moreCurlyWurlys = 1;
+				$iframe = '<iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=preset&sid=' . Yii::app()->params['sid'] . '&amp;preset=true"></iframe>';
+				$content = str_replace($pOrig, $iframe, $content);
+			}
 
-		$indent = "";
-		while ($indentLevel--)
-			$indent .= "    ";
-		array_push($this->bodyArray, $indent . $content);
+			if (stristr($vals[0], "checkout"))
+			{
+				// Eg: {{checkout}}
+				// --------------
+				$moreCurlyWurlys = 1;
+				$util = new Util;;
+				// Check required parameters are set up for gateway access
+				if ((trim(Yii::app()->params['checkoutEmail']) == "")
+				||  (trim(Yii::app()->params['checkoutName']) == "")
+				||  (trim(Yii::app()->params['checkoutGatewayUser']) == "")
+				||  (trim(Yii::app()->params['checkoutGatewayPassword']) == ""))
+					die("Checkout needs gateway access to be set up in the configuration file");
+				$iframe = '<iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=checkout&sid=' . Yii::app()->params['sid'] . '&ge=' . Yii::app()->params['checkoutEmail'] . '&gn=' . Yii::app()->params['checkoutName'] . '&gu=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayUser'])) . '&gp=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayPassword'])) . '"></iframe>';
+				$content = str_replace($pOrig, $iframe, $content);
+			}
+
+			if (stristr($vals[0], "blog"))
+			{
+				// Eg: {{blog}}
+				// ------------
+				$moreCurlyWurlys = 1;
+				$iframe = '<iframe height="900" width="900" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/blog/?sid=' . Yii::app()->params['sid'] . '"></iframe>';
+				$content = str_replace($pOrig, $iframe, $content);
+			}
+		}
+		// push out the resulting html
+		array_push($this->bodyArray, $content);
 	}
 
 	// Any js goes here. It will be wrapped in <script> tags when emitted.

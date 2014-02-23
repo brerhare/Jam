@@ -35,41 +35,9 @@ class jellybasic
 				case "mode";
 					if (($val == "file") || ($val == "collection"))
 						$this->optionMode = $val;
-						break;
+					break;
 				case "value";
-						$this->optionValue = $val;
-						break;
-                case "source":
-					if ($val == "db")
-					{
-						// If db based content
-						$content .= "<table>";
-						$galleries = JellyGallery::model()->findAll(array('order'=>'sequence'));
-						foreach ($galleries as $gallery):
-							$galleryId++;
-							$content .= "<tr>";
-							$content .= "<td width='25%'>";
-
-							$content .= "<a class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/" . $gallery->image . "' title='" . $gallery->text . "'> <img src='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/thumb_" . $gallery->image . "' alt='' /> </a>";
-
-							$criteria = new CDbCriteria;
-							$criteria->addCondition("jelly_gallery_id = " . $gallery->id);
-							$galleryImages = JellyGalleryImage::model()->findAll($criteria);
-							foreach ($galleryImages as $galleryImage):
-
-								$content .= "<a style='display:none' class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/" . $galleryImage->image . "' title='" . $galleryImage->text . "'> <img src='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . "' alt='' /> </a>";
-
-							endforeach;
-
-							$content .= "</td>";
-							$content .= "<td width='1%'></td>";
-							$content .= "<td width='74%'>";
-							$content .= "<b>" . $gallery->title . "</b><br>" . $gallery->text;
-							$content .= "</td></tr>";
-
-						endforeach;
-						$content .= "</table>";
-					}
+					$this->optionValue = $val;
 					break;
 				default:
 					// Not all array items are action items
@@ -83,12 +51,13 @@ class jellybasic
 			$criteria->addCondition("description = '" . $this->optionValue . "'");
 			$jellyDownloadFile = JellyDownloadFile::model()->find($criteria);
 			if ($jellyDownloadFile)
-				$content = "<a style='text-decoration:underline' href='" . Yii::app()->baseUrl . "/userdata/jelly/download/" . $jellyDownloadFile->filename . "'>" . $jellyDownloadFile->description . "</a>";
+				$content .= "<a style='text-decoration:underline' href='" . Yii::app()->baseUrl . "/userdata/jelly/download/" . $jellyDownloadFile->filename . "'>" . $jellyDownloadFile->description . "</a>";
 			else
-				$content = "Missing link - " . $this->optionValue;
+				$content .= "Missing link - " . $this->optionValue;
 		}
 		else if ($this->optionMode == "collection")
 		{
+//die('d');
 			$criteria = new CDbCriteria;
 			$criteria->addCondition("name = '" . $this->optionValue . "'");
 			$jellyDownloadCollection = JellyDownloadCollection::model()->find($criteria);
@@ -101,14 +70,16 @@ class jellybasic
 				{
 					foreach ($jellyDownloadFiles as $jellyDownloadFile)
 					{
-						$content = "<a style='text-decoration:underline' href='" . Yii::app()->baseUrl . "/userdata/jelly/download/" . $jellyDownloadFile->filename . "'>" . $jellyDownloadFile->description . "</a>";
+//die('y');
+						$content .= "<a style='text-decoration:underline' href='" . Yii::app()->baseUrl . "/userdata/jelly/download/" . $jellyDownloadFile->filename . "'>" . $jellyDownloadFile->description . "</a>";
 					}
+//die('x');
 				}
 				else
-					$content = "Missing link - " . $this->optionValue;
+					$content .= "Missing link - " . $this->optionValue;
 			}
 			else
-				$content = "Missing collection - " . $this->optionValue;
+				$content .= "Missing collection - " . $this->optionValue;
 		}
 
 		// Apply all substitutions
