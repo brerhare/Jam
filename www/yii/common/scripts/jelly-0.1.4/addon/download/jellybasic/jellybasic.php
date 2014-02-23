@@ -57,7 +57,6 @@ class jellybasic
 		}
 		else if ($this->optionMode == "collection")
 		{
-//die('d');
 			$criteria = new CDbCriteria;
 			$criteria->addCondition("name = '" . $this->optionValue . "'");
 			$jellyDownloadCollection = JellyDownloadCollection::model()->find($criteria);
@@ -70,10 +69,8 @@ class jellybasic
 				{
 					foreach ($jellyDownloadFiles as $jellyDownloadFile)
 					{
-//die('y');
-						$content .= "<a style='text-decoration:underline' href='" . Yii::app()->baseUrl . "/userdata/jelly/download/" . $jellyDownloadFile->filename . "'>" . $jellyDownloadFile->description . "</a>";
+						$content .= "<a style='text-decoration:underline' href='" . Yii::app()->baseUrl . "/userdata/jelly/download/" . $jellyDownloadFile->filename . "'>" . $jellyDownloadFile->description . "</a><br/>";
 					}
-//die('x');
 				}
 				else
 					$content .= "Missing link - " . $this->optionValue;

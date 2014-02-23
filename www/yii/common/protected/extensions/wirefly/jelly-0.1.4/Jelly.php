@@ -963,7 +963,6 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 
 		// Translate any curly wurlys
 		$moreCurlyWurlys = 1;
-$cnt=0;
 		while ($moreCurlyWurlys)
 		{
 			$moreCurlyWurlys = 0;
@@ -976,8 +975,6 @@ $cnt=0;
 
 	 		if (stristr($vals[0], "download"))
 			{
-$cnt++;
-echo "<br>". $cnt . ",";
 				// Eg: {{download}}  (hybrid)
 				// -------------------------
 				$moreCurlyWurlys = 1;
@@ -999,8 +996,6 @@ echo "<br>". $cnt . ",";
 				);
 				$this->addonHandler($addon, 1, $addonHtml);
 				$content = str_replace($pOrig, $addonHtml, $content);
-//if ($cnt==2)
-//die($content);
 				//$content = str_replace($pOrig, "", $content);
 			}
 
