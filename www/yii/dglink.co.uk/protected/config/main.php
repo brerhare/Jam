@@ -7,7 +7,7 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'A Jelly Webapp',
+	'name'=>'DG Link V2',
 
 	// Override the default controller
 	//'defaultController'=>'contentBlock',
@@ -66,10 +66,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=domainname_co_uk',
+			'connectionString' => 'mysql:host=localhost;dbname=dglink_co_uk',
 			'emulatePrepare' => true,
-			'username' => 'domainname.co.uk',
-			'password' => 'password',
+			'username' => 'dglink.co.uk',
+			'password' => 'dglink.co.uk,',
 			'charset' => 'utf8',
 		),
 		/**/
@@ -99,7 +99,16 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@wireflydesign.com',
+		// These are used by the shopping cart checkout process
+		'checkoutEmail'=>'info@dglink.co.uk',
+		'checkoutName'=>'DG Link',
+		// Test gateway
+		'checkoutGatewayUser'=>'WIREFL-5188100',
+		'checkoutGatewayPassword'=>'391F3GWBZ0',
+		// Live gateway
+		//'checkoutGatewayUser'=>'xxxxx',
+		//'checkoutGatewayPassword'=>'xxxxx',
 		'jellyRoot' => '/scripts/jelly/',
-		'sid' => '',
+		'sid' => 'some-sid',
 	),
 );

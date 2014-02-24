@@ -1,1 +1,1 @@
-mysql -u username db_co_uk -p"password," < jelly.sql
+mysql -u dglink.co.uk dglink_co_uk -p"dglink.co.uk," < jelly.sql
