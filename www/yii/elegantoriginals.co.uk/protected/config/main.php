@@ -69,7 +69,7 @@ return array(
 			'connectionString' => 'mysql:host=localhost;dbname=elegantoriginals_co_uk',
 			'emulatePrepare' => true,
 			'username' => 'elegantoriginals',
-			'password' => 'elegantoriginals,',
+			'password' => 'elegantoriginals.co.uk,',
 			'charset' => 'utf8',
 		),
 		/**/

@@ -75,7 +75,7 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=elegantoroginals_co_uk',
+			'connectionString' => 'mysql:host=localhost;dbname=elegantoriginals_co_uk',
 			'emulatePrepare' => true,
 			'username' => 'elegantoriginals',
 			'password' => 'elegantoriginals.co.uk,',
