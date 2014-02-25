@@ -7,7 +7,7 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'A Jelly Webapp',
+	'name'=>'Elegant Originals',
 
 	// Override the default controller
 	//'defaultController'=>'contentBlock',
@@ -66,10 +66,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=domainname_co_uk',
+			'connectionString' => 'mysql:host=localhost;dbname=elegantoriginals_co_uk',
 			'emulatePrepare' => true,
-			'username' => 'domainname.co.uk',
-			'password' => 'password',
+			'username' => 'elegantoriginals',
+			'password' => 'elegantoriginals,',
 			'charset' => 'utf8',
 		),
 		/**/
@@ -102,7 +102,7 @@ return array(
 
 		// These are used by the shopping cart checkout process
 		'checkoutEmail'=>'vendor@email.co.uk',
-		'checkoutName'=>'Vendor Display Name',
+		'checkoutName'=>'Elegant Originals',
 		// Test gateway
 		'checkoutGatewayUser'=>'WIREFL-5188100',
 		'checkoutGatewayPassword'=>'391F3GWBZ0',

@@ -17,7 +17,7 @@ return array(
     'viewPath' => $backend.'/views',
     'runtimePath' => $backend.'/runtime',
 
-	'name'=>'A Jelly Backend',
+	'name'=>'Elegant Originals Backend',
 
 	// preloading 'log' component
 	// preloading 'bootstrap' component
@@ -75,10 +75,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=domainname_co_uk',
+			'connectionString' => 'mysql:host=localhost;dbname=elegantoroginals_co_uk',
 			'emulatePrepare' => true,
-			'username' => 'domainname.co.uk',
-			'password' => 'password',
+			'username' => 'elegantoriginals',
+			'password' => 'elegantoriginals.co.uk,',
 			'charset' => 'utf8',
 		),
 		/**/
