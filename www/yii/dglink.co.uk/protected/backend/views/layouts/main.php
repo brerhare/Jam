@@ -34,6 +34,9 @@
 		array(
 			'class' => 'bootstrap.widgets.TbMenu',
 			'items' => array(
+
+/***** ADDONS *****/
+
                 array('label' => 'Pages', 'url' => array('/contentBlock/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Image Sliders', 'url' => array('/jellySliderImage/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'HTML Sliders', 'url' => array('/jellySliderHtml/admin'), 'visible' => !Yii::app()->user->isGuest),
@@ -44,6 +47,20 @@
                     array('label' => 'Files', 'url' => array('/jellyDownloadFile/admin'), 'visible' => !Yii::app()->user->isGuest),
                     array('label' => 'Collections', 'url' => array('/jellyDownloadCollection/admin'), 'visible' => !Yii::app()->user->isGuest),
                 )),
+
+/***** PLUGINS *****/
+
+                array('label' => 'Plugins', 'url' => '#', 'visible' => !Yii::app()->user->isGuest,
+                'items' => array(
+                    array('label' => 'Blog', 'url' => 'https://plugin.wireflydesign.com/blog/backend.php/site/dglinkDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+                    array('label' => 'Product', 'url' => 'https://plugin.wireflydesign.com/product/backend.php/site/dglinkDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+                    array('label' => 'Event', 'url' => 'https://plugin.wireflydesign.com/event/backend.php/site/dglinkDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+                    array('label' => 'Ticket', 'url' => 'https://plugin.wireflydesign.com/ticket/backend.php/site/dglinkDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+                    array('label' => 'Mailer', 'url' => 'https://plugin.wireflydesign.com/mailer/backend.php/site/dglinkDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+                    array('label' => 'Booking', 'url' => 'https://plugin.wireflydesign.com/booking/backend.php/site/dglinkDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+                )),
+
+/***** OTHER *****/
 
                 array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
                 array('label' => 'Logout', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),                 

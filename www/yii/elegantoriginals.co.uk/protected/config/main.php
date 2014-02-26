@@ -110,6 +110,6 @@ return array(
 		//'checkoutGatewayUser'=>'xxxxx',
 		//'checkoutGatewayPassword'=>'xxxxx',
 		'jellyRoot' => '/scripts/jelly/',
-		'sid' => 'Vendor-SID',
+		'sid' => 'huf28g7ckbj45e1d8vc6ivutq1',
 	),
 );
