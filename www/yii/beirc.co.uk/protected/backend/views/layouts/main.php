@@ -37,6 +37,13 @@
                 array('label' => 'Page Content', 'url' => array('/contentBlock/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Slider Content', 'url' => array('/jellySliderImage/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Tab Content', 'url' => array('/tabBlock/admin'), 'visible' => !Yii::app()->user->isGuest),                      
+
+                array('label' => 'Downloads', 'url' => '#', 'visible' => !Yii::app()->user->isGuest,
+                'items' => array(
+                    array('label' => 'Files', 'url' => array('/jellyDownloadFile/admin'), 'visible' => !Yii::app()->user->isGuest),
+                    array('label' => 'Collections', 'url' => array('/jellyDownloadCollection/admin'), 'visible' => !Yii::app()->user->isGuest),
+                )),
+
                 array('label' => 'Members', 'url' => array('/member/admin'), 'visible' => !Yii::app()->user->isGuest),                      
                 array('label' => 'Member Types', 'url' => array('/memberType/admin'), 'visible' => !Yii::app()->user->isGuest),                      
                 array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
