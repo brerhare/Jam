@@ -111,6 +111,9 @@ END_OF_BEGINHEADER;
 END_OF_ENDHEADER;
 
 	private $stdFooter = <<<END_OF_FOOTER
+
+<script type="text/javascript" src="/js/iframeResizer.contentWindow.min.js"></script>
+
 	</body>
 	</html>\n
 END_OF_FOOTER;
