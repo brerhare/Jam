@@ -353,6 +353,14 @@ $page = $_GET['page'];
 							$this->genDivCSS("background-image: url('" . Yii::app()->baseUrl . $this->dbExpand($cssValue) . "');\n
 							background-size: cover;"); 
 							break;
+						case ("background-image-bottom"):
+							$img = $this->dbExpand($cssValue);
+							$this->genDivCSS("background-image: url('" . Yii::app()->baseUrl . str_replace("'", "\'", $img) . "');\n
+							background-size: contain;
+							background-repeat:no-repeat;
+							background-position:bottom;
+							"); 
+							break;
 						case ("html");
 							// @@TODO: NB: This only caters for one sub-level, eg 'style.html.h1.color = red'
 							// @@TODO: Also, note the 2nd foreach - this is for syntax but only one nvp is ever expected
