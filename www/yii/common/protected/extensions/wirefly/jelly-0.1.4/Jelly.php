@@ -111,6 +111,31 @@ END_OF_BEGINHEADER;
 END_OF_ENDHEADER;
 
 	private $stdFooter = <<<END_OF_FOOTER
+
+<script type="text/javascript" src="/js/iframeResizer.contentWindow.min.js"></script>
+	<!-- Iframe resizer -->
+	<script type="text/javascript" src="/js/jquery.iframeResizer.min.js"></script> 
+    <script type="text/javascript">
+        jQuery('iframe').iFrameSizer({ 
+            log                    : true,  // For development
+            autoResize             : true,  // Trigering resize on events in iFrame
+            contentWindowBodyMargin: 8,     // Set the default browser body margin style (in px)
+            doHeight               : true,  // Calculates dynamic height
+            doWidth                : false, // Calculates dynamic width 
+            enablePublicMethods    : true,  // Enable methods within iframe hosted page 
+            interval               : 0,     // interval in ms to recalculate body height, 0 to disable refreshing
+            scrolling              : false, // Enable the scrollbars in the iFrame
+            callback               : function(messageData){ // Callback fn when message is received
+                $('p#callback').html(
+                    '<b>Frame ID:</b> '    + messageData.iframe.id + 
+                    ' <b>Height:</b> '     + messageData.height +
+                    ' <b>Width:</b> '      + messageData.width + 
+                    ' <b>Event type:</b> ' + messageData.type
+                );
+            }
+        }); 
+        </script>
+
 	</body>
 	</html>\n
 END_OF_FOOTER;
@@ -1040,7 +1065,8 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				// ----------------------------
 				$moreCurlyWurlys = 1;
 				$value = $vals[1];
-				$iframe = '<iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;department=' . $value . '"></iframe>';
+				$iframe = '<iframe width="100%" scrolling="no" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="http://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;department=' . $value . '"></iframe>';
+				//$iframe = '<iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;department=' . $value . '"></iframe>';
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 
@@ -1049,7 +1075,7 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				// Eg: {{preset}}
 				// --------------
 				$moreCurlyWurlys = 1;
-				$iframe = '<iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=preset&sid=' . Yii::app()->params['sid'] . '&amp;preset=true"></iframe>';
+				$iframe = '<iframe width="100%" scrolling="no" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=preset&sid=' . Yii::app()->params['sid'] . '&amp;preset=true"></iframe>';
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 
@@ -1065,7 +1091,7 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				||  (trim(Yii::app()->params['checkoutGatewayUser']) == "")
 				||  (trim(Yii::app()->params['checkoutGatewayPassword']) == ""))
 					die("Checkout needs gateway access to be set up in the configuration file");
-				$iframe = '<iframe height="670" width="850" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=checkout&sid=' . Yii::app()->params['sid'] . '&ge=' . Yii::app()->params['checkoutEmail'] . '&gn=' . Yii::app()->params['checkoutName'] . '&gu=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayUser'])) . '&gp=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayPassword'])) . '"></iframe>';
+				$iframe = '<iframe width="100%" scrolling="no" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=checkout&sid=' . Yii::app()->params['sid'] . '&ge=' . Yii::app()->params['checkoutEmail'] . '&gn=' . Yii::app()->params['checkoutName'] . '&gu=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayUser'])) . '&gp=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayPassword'])) . '"></iframe>';
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 
@@ -1074,7 +1100,7 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				// Eg: {{blog}}
 				// ------------
 				$moreCurlyWurlys = 1;
-				$iframe = '<iframe height="900" width="900" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/blog/?sid=' . Yii::app()->params['sid'] . '"></iframe>';
+				$iframe = '<iframe width="100%" scrolling="no" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/blog/?sid=' . Yii::app()->params['sid'] . '"></iframe>';
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 		}

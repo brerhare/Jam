@@ -49,7 +49,8 @@ db.filter = sid=$_GET['sid']
 		db.filter = id=@CLIPBOARD
 		db.order = name
 		db.fetch = multiple
-		click = index.php/?layout=product&product=Product.id
+		#####click = index.php/?layout=product&product=Product.id
+		click = index.php/?layout=product&sid=$_GET['sid']&product=Product.id
 
 			[product_image]
 			css.width = 180px

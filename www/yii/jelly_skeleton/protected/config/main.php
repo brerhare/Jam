@@ -20,7 +20,7 @@ return array(
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
-		'application.extensions.jelly.*',
+		'application.extensions.wirefly.jelly-current.*',
 		'application.extensions.PHPMailer.*',
 	),
 
@@ -99,7 +99,17 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@wireflydesign.com',
+
+		// These are used by the shopping cart checkout process
+		'checkoutEmail'=>'vendor@email.co.uk',
+		'checkoutName'=>'Vendor Display Name',
+		// Test gateway
+		'checkoutGatewayUser'=>'WIREFL-5188100',
+		'checkoutGatewayPassword'=>'391F3GWBZ0',
+		// Live gateway
+		//'checkoutGatewayUser'=>'xxxxx',
+		//'checkoutGatewayPassword'=>'xxxxx',
 		'jellyRoot' => '/scripts/jelly/',
-		'sid' => '',
+		'sid' => 'Vendor-SID',
 	),
 );

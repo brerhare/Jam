@@ -54,7 +54,8 @@ child = page-container
 				css.margin = 10px
 				css.height = 280px
 				css.width = 420px
-				style.background-image = /userdata/<substitute-user>/Article.thumbnail_path
+				#####style.background-image = /userdata/<substitute-user>/Article.thumbnail_path
+				style.background-image-bottom = /userdata/<substitute-user>/Article.thumbnail_path
 [content]
 			css.margin = 10px
 			#css.width = 840px
