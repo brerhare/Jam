@@ -51,7 +51,7 @@ class jellybasic
 			$criteria->addCondition("description = '" . $this->optionValue . "'");
 			$jellyDownloadFile = JellyDownloadFile::model()->find($criteria);
 			if ($jellyDownloadFile)
-				$content .= "<a style='text-decoration:underline' href='" . Yii::app()->baseUrl . "/userdata/jelly/download/" . $jellyDownloadFile->filename . "'>" . $jellyDownloadFile->description . "</a>";
+				$content .= "<a style='text-decoration:none' href='" . Yii::app()->baseUrl . "/userdata/jelly/download/" . $jellyDownloadFile->filename . "'>" . $jellyDownloadFile->description . "</a>";
 			else
 				$content .= "Missing link - " . $this->optionValue;
 		}
@@ -69,7 +69,7 @@ class jellybasic
 				{
 					foreach ($jellyDownloadFiles as $jellyDownloadFile)
 					{
-						$content .= "<a style='text-decoration:underline' href='" . Yii::app()->baseUrl . "/userdata/jelly/download/" . $jellyDownloadFile->filename . "'>" . $jellyDownloadFile->description . "</a><br/>";
+						$content .= "<a style='text-decoration:none' href='" . Yii::app()->baseUrl . "/userdata/jelly/download/" . $jellyDownloadFile->filename . "'>" . $jellyDownloadFile->description . "</a><br/>";
 					}
 				}
 				else
