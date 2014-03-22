@@ -1,20 +1,120 @@
+#Absoluteclassics
+
 [defaults]
 include = default-values
 
-; Every blob inherits these before adding/overriding
 [* : defaults]
+# Every blob inherits these before adding/overriding
 
 [screen]
-child = contentframe
+child = site
+#css.background-color = #ffffff
 fx.wallpaper-image = /img/background.jpg
 css.display = block
 
-	[contentframe]
+	[site]
+	child = header, content, footer
 	css.display = block
-	css.width = 100px
-	css.margin-top = 400px
-	style.html.h1.color = yellow
-	style.html.h1.background-color = black
-	style.html.h1.padding = 10px
-	html.h1 = jelly
+	css.width = 960px
+	css.background-color = white
+	css.opacity = 0.8
 
+	
+
+
+####### Header #########################
+
+[header]
+child = slider, menu
+css.overflow = visible
+css.width = 960px
+css.margin-top = 30px
+
+[slider]
+css.margin-top = 20px
+css.margin-left = 10px
+css.width = 700px
+css.height = 300px
+css.opacity = 1
+addon.slider.flexslider.width = 700px
+addon.slider.flexslider.border-width = 0px
+addon.slider.flexslider.border-color = red
+addon.slider.flexslider.height = 250px
+addon.slider.flexslider.mode = image
+addon.slider.flexslider.source = db
+
+[menu]
+css.height = 40px
+css.width = 960px
+css.overflow = visible
+css.margin-top = -30px
+css.margin-left = 0px
+#addon.menu.basic.orientation = vertical
+addon.menu.basic.width = 960px
+addon.menu.basic.height = 30px
+addon.menu.basic.font-size = 12px
+addon.menu.basic.menu-rounding = 0px
+addon.menu.basic.menu-opacity = 96%
+#addon.menu.basic.menu-tile = /img/menu-bar.jpg
+addon.menu.basic.menu-stretch = /img/menu-bar.jpg
+#addon.menu.basic.menu-color = white blue
+addon.menu.basic.menu-text-color = blue
+addon.menu.basic.submenu-color = #ffffff #bfffff
+addon.menu.basic.item-color = cyan
+addon.menu.basic.item-text-color = blue
+addon.menu.basic.subitem-color = cyan
+addon.menu.basic.subitem-text-color = blue
+addon.menu.basic.subitem-separator-color = white
+
+
+###########################################################
+
+
+[content]
+css.margin = 15px
+db.table = ContentBlock
+db.filter = url=$_GET['page']
+db.error = Sorry, I could not find th page $_GET['page']
+html.raw = ContentBlock.content
+
+[footer]
+	child = footer-menu, wirefly
+	#css.height = 40px
+	#css.width = 60%
+
+
+		[footer-menu]
+		stacking = horizontal
+		child = footer-cookies, footer-tandc, footer-contact
+		css.height = 20px
+		css.margin-top = 10px
+		css.width = 60%
+
+			[footer-cookies]
+			html.raw = Cookie Policy
+			css.width = 33%
+			css.text-align = left
+			click = ?layout=index&page=cookie-policy
+
+			[footer-tandc]
+			html.raw = Terms & Conditions
+			css.width = 33%
+			css.text-align = center
+			click = ?layout=index&page=terms-conditions
+
+			[footer-contact]
+			html.raw = Contact Us
+			css.text-align = right
+			css.width = 30%
+			click = ?layout=index&page=contact-live-classical-music-dumfries
+
+
+		[wirefly]
+		css.margin-top = -10px
+		css.margin-left = 800px
+		css.height = 50px
+		css.width = 200px
+		image.url = img/wirefly-link-white.png
+		image.width = 161px
+		image.height = 40px
+		clicknew = http://www.wireflydesign.com
