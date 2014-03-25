@@ -31,6 +31,9 @@ nav a {
          -o-transition: all .55s ease;
             transition: all .55s ease;
 }
+
+nav a:visited {color:#A59A99;}
+
 nav li:hover a {
 color:#FFF;
 /*    background: #ff0000;*/

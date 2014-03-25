@@ -43,11 +43,14 @@ class optimo
 					break;
 
 				case "menu-color-1":
-					if (!strstr($val, "#"))
-						$vals = "#" . $val;
-					else
-						$vals = $val;
+					if (!strstr($val, "#")) $vals = "#" . $val;
+					else $vals = $val;
 					$this->apiHtml = str_replace("<substitute-menu-color-1>", $vals, $this->apiHtml);
+					break;
+				case "menu-color-2":
+					if (!strstr($val, "#")) $vals = "#" . $val;
+					else $vals = $val;
+					$this->apiHtml = str_replace("<substitute-menu-color-2>", $vals, $this->apiHtml);
 					break;
 
 				default:
@@ -58,16 +61,16 @@ class optimo
 		// Apply all defaults that werent overridden
 		// HTML
 		$this->apiHtml = str_replace("<substitute-width>", "", $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-menu-color-1>", "", $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-menu-color-2>", "", $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-menu-color-3>", "", $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-menu-color-4>", "", $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-menu-color-5>", "", $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-menu-color-6>", "", $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-menu-color-7>", "", $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-menu-color-8>", "", $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-menu-color-9>", "", $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-menu-color-10>", "", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-color-1>", "#2F9CC9", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-color-2>", "#2F9CC9", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-color-3>", "#2F9CC9", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-color-4>", "#2F9CC9", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-color-5>", "#2F9CC9", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-color-6>", "#2F9CC9", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-color-7>", "#2F9CC9", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-color-8>", "#2F9CC9", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-color-9>", "#2F9CC9", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-color-10>", "#2F9CC9", $this->apiHtml);
 
 		// JS
 
@@ -156,13 +159,14 @@ class optimo
 		<div id="optimomenu">
 
 			<div id="navdiv" onmouseover="document.getElementById('navdiv').style.backgroundColor = 'black';" onmouseout="document.getElementById('navdiv').style.backgroundColor = 'transparent';">
-				<nav style=margin-top:0px>
+				<nav>
 					<ul class="cf" onmouseover="">
 						<substitute-data>
 					</ul>
 				</nav>
 			</div>
 		</div>
+	</div>
 END_OF_API_HTML;
 
 	private $apiJs = <<<END_OF_API_JS

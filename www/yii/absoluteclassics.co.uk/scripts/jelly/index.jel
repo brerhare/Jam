@@ -44,22 +44,21 @@ css.width = 960px
 css.overflow = visible
 css.margin-top = 0px
 css.margin-left = 0px
-#addon.menu.basic.orientation = vertical
-addon.menu.basic.width = 960px
-addon.menu.basic.height = 30px
-addon.menu.basic.font-size = 12px
-addon.menu.basic.menu-rounding = 0px
-addon.menu.basic.menu-opacity = 96%
-#addon.menu.basic.menu-tile = /img/menu-bar.jpg
-addon.menu.basic.menu-stretch = /img/menu-bar.jpg
-#addon.menu.basic.menu-color = white blue
-addon.menu.basic.menu-text-color = blue
-addon.menu.basic.submenu-color = #ffffff #bfffff
-addon.menu.basic.item-color = cyan
-addon.menu.basic.item-text-color = blue
-addon.menu.basic.subitem-color = cyan
-addon.menu.basic.subitem-text-color = blue
-addon.menu.basic.subitem-separator-color = white
+addon.menu.optimo.width = 960px
+
+#addon.menu.basic.width = 960px
+#addon.menu.basic.height = 30px
+#addon.menu.basic.font-size = 12px
+#addon.menu.basic.menu-rounding = 0px
+#addon.menu.basic.menu-opacity = 96%
+#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
+#addon.menu.basic.menu-text-color = blue
+#addon.menu.basic.submenu-color = #ffffff #bfffff
+#addon.menu.basic.item-color = cyan
+#addon.menu.basic.item-text-color = blue
+#addon.menu.basic.subitem-color = cyan
+#addon.menu.basic.subitem-text-color = blue
+#addon.menu.basic.subitem-separator-color = white
 
 
 ###########################################################
@@ -78,9 +77,16 @@ css.width = 900px
 css.height = 700px
 css.opacity = 1
 addon.slider.flexslider.width = 900px
-addon.slider.flexslider.border-width = 0px
-addon.slider.flexslider.border-color = red
 addon.slider.flexslider.height = 600px
+	addon.slider.flexslider.border-width = 0px
+	addon.slider.flexslider.border-color = white
+	addon.slider.flexslider.active-dotcolor = #007e7e
+	addon.slider.flexslider.inactive-dotcolor = #4c4c4c
+	addon.slider.flexslider.dot-margin-top = -25px
+	addon.slider.flexslider.dot-margin-bottom = 0px
+	addon.slider.flexslider.dot-margin-left = 0px
+	addon.slider.flexslider.dot-margin-right = 0px
+	#addon.slider.flexslider.animation = fade
 addon.slider.flexslider.mode = image
 addon.slider.flexslider.source = db
 
@@ -88,50 +94,50 @@ addon.slider.flexslider.source = db
 
 
 [content]
-# kim commented this next line because it overrode the 'default.jel' margin setting that automatically centres everything
-# css.margin = 15px
-css.width = 960px
+css.margin-top = 15px
+css.width = 900px
 db.table = ContentBlock
 db.filter = url=$_GET['page']
 db.error = Sorry, I could not find th page $_GET['page']
 html.raw = ContentBlock.content
 
 	[footer]
-	child = footer-menu, wirefly
+	child = footer-menu
 	css.margin-top = 40px
 	css.height = 241px
-css.background-color = #000000
+	css.background-color = #000000
 	image.url = img/footer-img.jpg
 	image.width = 960px
 	image.height = 241px
 	image.align = centre
 	css.position = relative
-	css.z-index = -1000
+	css.z-index = -100
 
 
 
 		[footer-menu]
-# kim replaced the width with 960px instead of 60% (next 2 lines) . This allows 'default.jel' to centre the whole content within its parent, ie same as the content
-#css.width=960px
-#css.width = 60%
 		stacking = horizontal
-		child = footer-cookies, footer-tandc, footer-contact
-		css.height = 20px
+		child = footer-margin, footer-cookies, footer-tandc, footer-contact, wirefly
+		css.height = 200px
+		css.width = 960px
 		css.margin-top = -220px
 		css.position = relative
 		css.z-index = 100
-css.width=500px
+
+			[footer-margin]
+			css.width = 20%
+			css.height = 200px
 
 			[footer-cookies]
 			html.raw = Cookie Policy
-			css.width = 33%
+			css.width = 20%
 			css.color = #ffffff
 			css.text-align = left
 			click = ?layout=index&page=cookie-policy
 
 			[footer-tandc]
 			html.raw = Terms & Conditions
-			css.width = 33%
+			css.width = 20%
 			css.color = #ffffff
 			css.text-align = center
 			click = ?layout=index&page=terms-conditions
@@ -139,16 +145,15 @@ css.width=500px
 			[footer-contact]
 			html.raw = Contact Us
 			css.text-align = right
-			css.width = 33%
+			css.width = 20%
 			css.color = #ffffff
 			click = ?layout=index&page=contact-live-classical-music-dumfries
 
-		[wirefly]
-		css.margin-top = 50px
-		#css.margin-left = 780px
-		css.height = 50px
-		css.width = 200px
-		image.url = img/wirefly-link-white.png
-		image.width = 161px
-		image.height = 40px
-		clicknew = http://www.wireflydesign.com
+			[wirefly]
+			css.margin-top = 100px
+			css.height = 50px
+			css.width = 20%
+			image.url = img/wirefly-link-white.png
+			image.width = 161px
+			image.height = 40px
+			clicknew = http://www.wireflydesign.com
