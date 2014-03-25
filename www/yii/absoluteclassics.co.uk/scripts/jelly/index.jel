@@ -40,7 +40,7 @@ click = http://www.absoluteclassics.co.uk/
 
 [menu]
 css.height = 40px
-css.width = 960px
+#css.width = 960px
 css.overflow = visible
 css.margin-top = 0px
 css.margin-left = 0px

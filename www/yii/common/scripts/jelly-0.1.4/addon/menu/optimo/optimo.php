@@ -35,7 +35,7 @@ class optimo
 		{
 			switch ($opt)
 			{
-				case "xwidth":
+				case "Xwidth":
 					$val = str_replace("px", "", $val);
 					$this->apiHtml = str_replace("<substitute-width>",
 						"nav ul {width: " . $val . "px;}",
