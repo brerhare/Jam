@@ -27,7 +27,9 @@ css.display = block
 child = logo, menu
 css.background-color = #f9d194
 ###menu overlay #eb6200
+# When changing the height, also need to change it in css (adding 10px there)
 css.height = 200px
+css.overflow-y = visible;
 css.width = 100%
 
 [logo]
@@ -44,7 +46,8 @@ css.height = 40px
 css.overflow = visible
 css.margin-top = 0px
 css.margin-left = 0px
-addon.menu.optimo.width = 960px
+#addon.menu.optimo.height = 500px
+addon.menu.optimo.margin-top = 100px
 
 #addon.menu.basic.width = 960px
 #addon.menu.basic.height = 30px

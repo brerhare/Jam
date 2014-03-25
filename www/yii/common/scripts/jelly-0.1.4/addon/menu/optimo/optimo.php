@@ -35,10 +35,10 @@ class optimo
 		{
 			switch ($opt)
 			{
-				case "Xwidth":
+				case "height":
 					$val = str_replace("px", "", $val);
-					$this->apiHtml = str_replace("<substitute-width>",
-						"nav ul {width: " . $val . "px;}",
+					$this->apiHtml = str_replace("<substitute-height>",
+						"nav {height: " . $val . "px;}",
 						$this->apiHtml);
 					break;
 
@@ -58,10 +58,17 @@ class optimo
 			}
 		}
 
+/*
+nav {
+	margin-top: -100px;
+	height:300px;
+	padding-top:100px;
+}
+*/
 		// Apply all defaults that werent overridden
 		// HTML
-		$this->apiHtml = str_replace("<substitute-width>", "", $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-menu-color-1>", "#2F9CC9", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-height>", "", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-color-1>", "color: #2F9CC9", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-menu-color-2>", "#2F9CC9", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-menu-color-3>", "#2F9CC9", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-menu-color-4>", "#2F9CC9", $this->apiHtml);
@@ -142,7 +149,7 @@ class optimo
 		<link rel="stylesheet" type="text/css" href="<substitute-path>/optimo.css" />
 
 		<style>
-		<substitute-width>
+		<substitute-height>
 		<substitute-menu-color-1>
 		<substitute-menu-color-2>
 		<substitute-menu-color-3>
