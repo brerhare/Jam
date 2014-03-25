@@ -110,6 +110,7 @@ nav {
 **********/
 		// Insert the data
 		$menuHeaders = ContentBlock::model()->findAll(array('order'=>'sequence'));
+$content .= "<li> <a href='#'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</a><li>";
 		foreach ($menuHeaders as $menuHeader):
 			if (($menuHeader->parent_id) || (!$menuHeader->active))
 				continue;
@@ -131,6 +132,7 @@ nav {
 				$content .= "</ul>";
 			$content .= "</li>";
 		endforeach;
+$content .= "<li> <a href='#'>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</a><li>";
 
 		$html = str_replace("<substitute-data>", $content, $this->apiHtml);
 		$js = $this->apiJs;
