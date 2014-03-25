@@ -112,7 +112,7 @@ css.background-color = #000000
 
 		[footer-menu]
 # kim replaced the width with 960px instead of 60% (next 2 lines) . This allows 'default.jel' to centre the whole content within its parent, ie same as the content
-css.width=960px
+#css.width=960px
 #css.width = 60%
 		stacking = horizontal
 		child = footer-cookies, footer-tandc, footer-contact
@@ -120,6 +120,7 @@ css.width=960px
 		css.margin-top = -220px
 		css.position = relative
 		css.z-index = 100
+css.width=500px
 
 			[footer-cookies]
 			html.raw = Cookie Policy
@@ -138,14 +139,13 @@ css.width=960px
 			[footer-contact]
 			html.raw = Contact Us
 			css.text-align = right
-			css.width = 30%
+			css.width = 33%
 			css.color = #ffffff
 			click = ?layout=index&page=contact-live-classical-music-dumfries
 
-
 		[wirefly]
 		css.margin-top = 50px
-		css.margin-left = 780px
+		#css.margin-left = 780px
 		css.height = 50px
 		css.width = 200px
 		image.url = img/wirefly-link-white.png
