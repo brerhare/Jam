@@ -1,0 +1,102 @@
+/* http://cssdeck.com/labs/pure-css3-smooth-drop-down-menu */
+
+nav ul {
+	-webkit-font-smoothing:antialiased;
+	/*text-shadow:0 1px 0 #FFF;*/
+    /*background: #ddd;*/
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+nav li {
+    float: left;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    min-width: 25%;
+}
+nav a {
+    /*background: #ddd;*/
+    color: #A59A99;
+    display: block;
+    font: bold 40px/50px sans-serif;
+    padding: 0 25px;
+    text-align: center;
+    /*text-align: left;*/
+    text-decoration: none;
+    -webkit-transition: all .55s ease;
+       -moz-transition: all .55s ease;
+        -ms-transition: all .55s ease;
+         -o-transition: all .55s ease;
+            transition: all .55s ease;
+}
+nav li:hover a {
+color:#FFF;
+/*    background: #ff0000;*/
+}
+
+nav li:hover a #navdiv {
+    background-color: #0000ff;
+}
+
+nav li ul {
+    float: left;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    top: 35px;
+    visibility: hidden;
+    z-index: 1;
+    -webkit-transition: all .55s ease;
+       -moz-transition: all .55s ease;
+        -ms-transition: all .55s ease;
+         -o-transition: all .55s ease;
+            transition: all .55s ease;
+}
+nav li:hover ul {
+    opacity: 1;
+    top: 50px;
+    visibility: visible;
+}
+nav li ul li {
+    float: none;
+    width: 100%;
+}
+
+nav li ul a {
+	font-size: 0.8125em;
+	line-height: 14px;
+	font-weight: bold;
+	letter-spacing: 1px;
+	display: block;
+	text-align: center;
+	-webkit-transition: color 250ms ease-in-out;
+	-moz-transition: color 250ms ease-in-out;
+	transition: color 250ms ease-in-out;
+}
+
+nav li ul a:hover {
+    /*background: #ff0000;*/
+}
+
+/* Clearfix */
+
+.cf:after, .cf:before {
+    content:"";
+    display:table;
+}
+.cf:after {
+    clear:both;
+}
+.cf {
+    zoom:1;
+}
+
+#navdiv {
+display: block;
+height: 200px;
+/*margin-top:-200px;*/
+background-color: transparent;
+}
+
