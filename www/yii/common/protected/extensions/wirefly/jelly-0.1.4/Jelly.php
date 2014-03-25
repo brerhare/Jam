@@ -629,6 +629,7 @@ if (isset($_GET['page']))
 				$width = "0";
 				$height = "0";
 				$tip = "";
+				$align = "";
 				foreach ($value as $prop => $val)
 				{
 					switch ($prop)
@@ -645,12 +646,20 @@ if (isset($_GET['page']))
 						case ("height"):
 							$height = $val;
 							break;
+						case ("align"):
+							if (($val == 'center') || ($val == 'centre'))
+								$align = "style='display:block;margin-left:auto;margin-right:auto'";
+							if ($val == 'left')
+								$align = "style='display:block;margin-right:auto'";
+							if ($val == 'right')
+								$align = "style='display:block;margin-left:auto'";
+							break;
 					}
 				}
 				if ($alt == "")
-					$this->genInlineHtml('<img title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.style.display=\'none\'" . " width="' . $width . '" height="' . $height . '">');
+					$this->genInlineHtml('<img ' . $align . ' title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.style.display=\'none\'" . " width="' . $width . '" height="' . $height . '">');
 				else
-					$this->genInlineHtml('<img title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.onerror=null;this.src=\'' . $this->dbExpand($alt) . '\'" width="' . $width . '" height="' . $height . '">');
+					$this->genInlineHtml('<img ' . $align . ' title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.onerror=null;this.src=\'' . $this->dbExpand($alt) . '\'" width="' . $width . '" height="' . $height . '">');
 				break;
 			case "fx":
 				foreach ($value as $cssName => $cssValue)

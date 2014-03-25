@@ -15,7 +15,6 @@ css.display = block
 	[site]
 	child = header, home-content, content, footer
 	css.display = block
-	css.width = 960px
 	css.background-color = white
 	css.opacity = 0.8
 
@@ -36,6 +35,7 @@ css.width = 100%
 image.url = img/ac-logo.png
 image.width = 200px
 image.height = 91px
+image.align = center
 click = http://www.absoluteclassics.co.uk/
 
 [menu]
@@ -88,7 +88,9 @@ addon.slider.flexslider.source = db
 
 
 [content]
-css.margin = 15px
+# kim commented this next line because it overrode the 'default.jel' margin setting that automatically centres everything
+# css.margin = 15px
+css.width = 960px
 db.table = ContentBlock
 db.filter = url=$_GET['page']
 db.error = Sorry, I could not find th page $_GET['page']
@@ -98,21 +100,24 @@ html.raw = ContentBlock.content
 	child = footer-menu, wirefly
 	css.margin-top = 40px
 	css.height = 241px
-	css.width = 960px
+css.background-color = #000000
 	image.url = img/footer-img.jpg
 	image.width = 960px
 	image.height = 241px
+	image.align = centre
 	css.position = relative
 	css.z-index = -1000
 
 
 
 		[footer-menu]
+# kim replaced the width with 960px instead of 60% (next 2 lines) . This allows 'default.jel' to centre the whole content within its parent, ie same as the content
+css.width=960px
+#css.width = 60%
 		stacking = horizontal
 		child = footer-cookies, footer-tandc, footer-contact
 		css.height = 20px
 		css.margin-top = -220px
-		css.width = 60%
 		css.position = relative
 		css.z-index = 100
 
