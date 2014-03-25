@@ -35,7 +35,7 @@ class optimo
 		{
 			switch ($opt)
 			{
-				case "width":
+				case "xwidth":
 					$val = str_replace("px", "", $val);
 					$this->apiHtml = str_replace("<substitute-width>",
 						"nav ul {width: " . $val . "px;}",
@@ -47,8 +47,9 @@ class optimo
 						$vals = "#" . $val;
 					else
 						$vals = $val;
-					$this->apiHtml = str_replace("<substitute-menu-color-1>, $vals, $this->apiHtml),
+					$this->apiHtml = str_replace("<substitute-menu-color-1>", $vals, $this->apiHtml);
 					break;
+
 				default:
 					// Not all array items are action items
 			}
