@@ -66,6 +66,31 @@ END_OF_BEGINHEADER;
 END_OF_ENDHEADER;
 
 	private $stdFooter = <<<END_OF_FOOTER
+
+<script type="text/javascript" src="/js/iframeResizer.contentWindow.min.js"></script>
+	<!-- Iframe resizer -->
+	<script type="text/javascript" src="/js/jquery.iframeResizer.min.js"></script> 
+    <script type="text/javascript">
+        jQuery('iframe').iFrameSizer({ 
+            log                    : true,  // For development
+            autoResize             : true,  // Trigering resize on events in iFrame
+            contentWindowBodyMargin: 8,     // Set the default browser body margin style (in px)
+            doHeight               : true,  // Calculates dynamic height
+            doWidth                : false, // Calculates dynamic width 
+            enablePublicMethods    : true,  // Enable methods within iframe hosted page 
+            interval               : 0,     // interval in ms to recalculate body height, 0 to disable refreshing
+            scrolling              : false, // Enable the scrollbars in the iFrame
+            callback               : function(messageData){ // Callback fn when message is received
+                $('p#callback').html(
+                    '<b>Frame ID:</b> '    + messageData.iframe.id + 
+                    ' <b>Height:</b> '     + messageData.height +
+                    ' <b>Width:</b> '      + messageData.width + 
+                    ' <b>Event type:</b> ' + messageData.type
+                );
+            }
+        }); 
+        </script>
+
 	</body>
 	</html>\n
 END_OF_FOOTER;
@@ -327,6 +352,14 @@ $page = $_GET['page'];
 						case ("background-image"):
 							$this->genDivCSS("background-image: url('" . Yii::app()->baseUrl . $this->dbExpand($cssValue) . "');\n
 							background-size: cover;"); 
+							break;
+						case ("background-image-bottom"):
+							$img = $this->dbExpand($cssValue);
+							$this->genDivCSS("background-image: url('" . Yii::app()->baseUrl . str_replace("'", "\'", $img) . "');\n
+							background-size: contain;
+							background-repeat:no-repeat;
+							background-position:bottom;
+							"); 
 							break;
 						case ("html");
 							// @@TODO: NB: This only caters for one sub-level, eg 'style.html.h1.color = red'
