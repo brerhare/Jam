@@ -12,6 +12,8 @@ child = backgd
 #style.background-image = /img/StyleBackground.png
 fx.wallpaper-image = /img/FullBackground.jpg
 css.display = block
+#addon.analytics.google_analytics.ua = UA-48370894-1
+html.raw = <div id="fb-root"></div><script>(function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId259885860792535"; fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));</script>
 
 [backgd]
 child = contentframe
@@ -55,8 +57,8 @@ css.background-color = #000000
 
 	[icons]
 	child = cart, news, social
-	css.margin-left = 50px
-	css.width = 200px
+	css.margin-left = 30px
+	css.width = 250px
 
 		[cart]
 		child = cart-pic, cart-text
@@ -64,7 +66,7 @@ css.background-color = #000000
 		css.margin-top = 20px
 		css.height = 18px
 		
-		click = http://www.google.com
+		click = http://www.styleyourvenue.co.uk/?layout=index&page=checkout
 
 			[cart-pic]
 			css.width = 25px
@@ -82,7 +84,7 @@ css.background-color = #000000
 		child = news-pic, news-text
 		stacking = horizontal
 		css.height = 18px
-		click = http://www.google.com
+		click = http://www.styleyourvenue.co.uk/?layout=index&page=event-decor-dumfries-news
 
 			[news-pic]
 			css.width = 25px
@@ -97,44 +99,38 @@ css.background-color = #000000
 			html.raw = Newsletter
 
 		[social]
-		child = social-fb, social-twitter
-		stacking = horizontal
 		css.margin-top = 4px
-		css.height = 22px
-		click = http://www.google.com
+		css.margin-left = 1px
+		css.height = 100px
+		css.width = 240px
+		html.raw = <div class="fb-like" data-href="https://www.facebook.com/StyleYourVenue" data-layout="standard" data-action="like" data-show-faces="false" data-share="false" data-colorscheme="dark" height="80" width="240"></div>
 
-			[social-fb]
-			css.width = 22px
-			css.margin-left = 2px
-			css.background-image = url('/img/FB.jpg')
-			css.height = 22px
 
-			[social-twitter]
-			css.width = 22px
-			css.margin-left = 4px
-			css.background-image = url('/img/Twitter.jpg')
-			css.height = 22px
+		
 
 	[menu]
 	css.height = 34px
 	css.width = 960px
 	css.overflow = visible
 	css.margin-top = 2px
+
 	addon.menu.basic.orientation = horizontal
 	addon.menu.basic.width = 960px
-	addon.menu.basic.font-size = 14px
+	addon.menu.basic.font-size = 12px
 	addon.menu.basic.menu-rounding = 0px
 	addon.menu.basic.menu-opacity = 100%
+	
 	addon.menu.basic.menu-tile = /img/menu-bar.jpg
-	#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
-	#addon.menu.basic.menu-color = blue green
-	#addon.menu.basic.menu-text-color = red
-	#addon.menu.basic.submenu-color = yellow red
-	#addon.menu.basic.item-color = black yellow
-	#addon.menu.basic.item-text-color = green
-	#addon.menu.basic.subitem-color = white black
-	#addon.menu.basic.subitem-text-color = purple
-	#addon.menu.basic.subitem-seperator-color = red 	
+		#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
+		#addon.menu.basic.menu-color = blue green
+	addon.menu.basic.menu-text-color = black
+	addon.menu.basic.item-color = #7a7a7a
+	addon.menu.basic.item-text-color = white
+
+	addon.menu.basic.submenu-color = #d6d6d6
+		#addon.menu.basic.subitem-color = white black
+	addon.menu.basic.subitem-text-color = white
+		#addon.menu.basic.subitem-seperator-color = red 	
 
 
 	[slider]
@@ -189,7 +185,7 @@ css.background-color = #000000
 	[footer]
 	child = footer-menu, wirefly-details
 	#css.height = 40px
-	css.width = 60%
+	#css.width = 60%
 
 
 		[footer-menu]
@@ -197,31 +193,36 @@ css.background-color = #000000
 		child = footer-cookies, footer-tandc, footer-contact
 		css.height = 20px
 		css.margin-top = 10px
+		css.width = 60%
 
 			[footer-cookies]
 			html.raw = Cookie Policy
 			css.width = 33%
 			css.text-align = left
-			click = www.bbc.com
+			click = http://www.styleyourvenue.co.uk/?layout=index&page=event-decor-dumfries-cookies
 
 			[footer-tandc]
 			html.raw = Terms & Conditions
 			css.width = 33%
 			css.text-align = center
-			click = www.bbc.com
+			click = http://www.styleyourvenue.co.uk/?layout=index&page=event-decor-dumfries-terms
 
 			[footer-contact]
 			html.raw = Contact Us
 			css.text-align = right
 			css.width = 30%
-			click = www.bbc.com
+			click = http://www.styleyourvenue.co.uk/?layout=index&page=style-your-venue-dumfries-contact
 
 		[wirefly-details]
-		css.margin-top = 20px
-		css.height = 20px
-		css.text-align = center
-		html.raw = Site by Wirefly Design
-		click = www.wireflydesign.com
+		css.margin-top = -10px
+		css.margin-left = 800px
+		css.height = 50px
+		css.width = 200px
+		image.url = img/wirefly-link-white.png
+	image.width = 161px
+	image.height = 40px
+		clicknew = http://www.wireflydesign.com
 
+html.raw = <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
 
-
+ 
