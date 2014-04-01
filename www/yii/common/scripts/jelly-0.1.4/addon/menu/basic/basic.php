@@ -15,6 +15,7 @@ class basic
 {
 	//Defaults
 	private $defaultOrientation = "horizontal";
+	private $level = 0;
 
 	public $apiOption = array(
 	);
@@ -44,6 +45,10 @@ class basic
 					$this->apiHtml = str_replace("<substitute-width>",
 						"nav ul {width: " . $val . "px;}",
 						$this->apiHtml);
+					break;
+
+				case "level":
+					$this->level = $val;
 					break;
 
 				case "font-size":
@@ -194,12 +199,68 @@ class basic
 		$this->apiHtml = $tmp;
 
 		// Insert the data
+$this->level = 2;
+
+
+/*
+
+			if ($this->level == 2)
+			{
+				if (isset($_GET['page']))
+				{
+//die($_GET['page']);
+					// Get the requested URL
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("url = '" . $_GET['page'] . "'");
+					$menuItems = ContentBlock::model()->findAll($criteria);
+//die('x');
+//die($menuItems->parent_id);
+					if ($menuItems)
+					{
+						// Now get all children of that URL
+						$criteria = new CDbCriteria;
+						//$criteria->condition = "url = '" . $_GET['page'] . "' OR parent_id = " . $menuItems->id;
+						//$criteria->addCondition("parent_id = " . $menuItems->parent_id);
+//die($menuItems->parent_id);
+//die($criteria->condition);
+						$menuItems = ContentBlock::model()->findAll($criteria);
+						if (!$menuItems)
+						{
+							continue;
+							die('found');
+						}
+						else
+						{
+							//die('x');
+							//else die('nf');
+							$content .= "<li> <a href='" . Yii::app()->request->baseUrl . "?layout=index&page=" . $menuHeader->url . "'>" . $menuHeader->title . "</a>";
+							$content .= "</li>";
+						}
+					}
+				}
+				continue;
+			}
+*/
+
+
+
+
+
 		$content = "<nav>";
 		$content .= "<ul>";
 		$menuHeaders = ContentBlock::model()->findAll(array('order'=>'sequence'));
 		foreach ($menuHeaders as $menuHeader):
-			if (($menuHeader->parent_id) || (!$menuHeader->active))
+			if (!$menuHeader->active)
 				continue;
+			if ($this->level == 0)
+			{
+				if ($menuHeader->parent_id)
+					continue;
+			}
+			if ($this->level == 2)
+			{
+				//if 
+			}
 			$content .= "<li> <a href='" . Yii::app()->request->baseUrl . "?layout=index&page=" . $menuHeader->url . "'>" . $menuHeader->title . "</a>";
 			$criteria = new CDbCriteria;
 			$criteria->addCondition("parent_id = " . $menuHeader->id);

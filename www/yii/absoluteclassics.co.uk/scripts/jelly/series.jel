@@ -1,4 +1,4 @@
-#AbsoluteClassics
+#AbsoluteClassics - Series
 
 [defaults]
 include = default-values
@@ -25,8 +25,8 @@ css.display = block
 
 [header]
 child = logo, menu
-css.background-color = #f9d194
-###menu overlay #eb6200
+css.background-color = #a3d0d0
+###menu overlay #007e7e
 # When changing the height, also need to change it in css (adding 10px there)
 css.height = 200px
 css.width = 100%
@@ -154,10 +154,10 @@ css.width = 1000px
 	addon.menu.basic.menu-rounding = 0px
 	addon.menu.basic.menu-opacity = 100%
 	addon.menu.basic.width = 150px
-	addon.menu.basic.menu-color = #f9d194
+	addon.menu.basic.menu-color = #a3d0d0
 	addon.menu.basic.menu-text-color = white
 	addon.menu.basic.submenu-color = #b5b5b5
-	addon.menu.basic.item-color = #eb6200
+	addon.menu.basic.item-color = #007e7e
 	addon.menu.basic.item-text-color = white
 		#addon.menu.basic.subitem-color = #ff0092
 		#addon.menu.basic.subitem-text-color = #ffffff
@@ -233,3 +233,4 @@ css.width = 1000px
 			image.width = 161px
 			image.height = 40px
 			clicknew = http://www.wireflydesign.com
+
