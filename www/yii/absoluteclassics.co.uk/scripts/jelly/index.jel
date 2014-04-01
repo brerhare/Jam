@@ -13,7 +13,7 @@ css.background-color = #ffffff
 css.display = block
 
 	[site]
-	child = header, home-content, content, footer
+	child = header, home-page, other-content, footer
 	css.display = block
 	css.background-color = white
 	css.opacity = 0.8
@@ -29,7 +29,6 @@ css.background-color = #f9d194
 ###menu overlay #eb6200
 # When changing the height, also need to change it in css (adding 10px there)
 css.height = 200px
-css.overflow-y = visible;
 css.width = 100%
 
 [logo]
@@ -64,10 +63,10 @@ addon.menu.optimo.margin-top = 100px
 #addon.menu.basic.subitem-separator-color = white
 
 
-###########################################################
+########## Home page Only ###################################
 
-[home-content]
-child = slider
+[home-page]
+child = slider, home-content
 condition = @HOMEPAGE=1
 css.overflow = visible
 css.width = 960px
@@ -93,16 +92,58 @@ addon.slider.flexslider.height = 600px
 addon.slider.flexslider.mode = image
 addon.slider.flexslider.source = db
 
-########################################################
-
-
-[content]
+[home-content]
 css.margin-top = 15px
 css.width = 900px
 db.table = ContentBlock
 db.filter = url=$_GET['page']
 db.error = Sorry, I could not find th page $_GET['page']
 html.raw = ContentBlock.content
+
+######## Other Pages ###############################
+
+[other-content]
+child = second-menu, content
+condition = @HOMEPAGE=0
+stacking = horizontal
+css.width = 1000px
+
+	[second-menu]
+	css.height = 400px
+	css.width = 100px
+	css.margin-left = 0px
+	css.margin-top = 5px
+	css.overflow = visible
+		#css.margin-top = 2px
+	addon.menu.basic.orientation = vertical
+	addon.menu.basic.font-size = 16px
+	addon.menu.basic.menu-rounding = 0px
+	addon.menu.basic.menu-opacity = 100%
+		#addon.menu.basic.menu-tile = /img/menu-bar.jpg
+		#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
+	addon.menu.basic.menu-color = #f9d194
+	addon.menu.basic.menu-text-color = white
+		#addon.menu.basic.submenu-color = yellow red
+	addon.menu.basic.item-color = #eb6200
+	addon.menu.basic.item-text-color = white
+		#addon.menu.basic.subitem-color = white black
+		#addon.menu.basic.subitem-text-color = purple
+		#addon.menu.basic.subitem-seperator-color = red 
+### Need an item seperator colour, and to specify the height and width of the items. - Don't understand how the gap above the menu is as big.
+
+
+	[content]
+	css.margin-top = 60px
+	css.margin-left = 100px
+	css.width = 800px
+	db.table = ContentBlock
+	db.filter = url=$_GET['page']
+	db.error = Sorry, I could not find th page $_GET['page']
+	html.raw = ContentBlock.content
+
+
+########## Footer #################################
+
 
 	[footer]
 	child = footer-menu
