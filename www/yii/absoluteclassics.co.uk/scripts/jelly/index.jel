@@ -46,7 +46,7 @@ css.overflow = visible
 css.margin-top = 0px
 css.margin-left = 0px
 #addon.menu.optimo.height = 500px
-addon.menu.optimo.margin-top = 100px
+#addon.menu.optimo.margin-top = 100px
 
 #addon.menu.basic.width = 960px
 #addon.menu.basic.height = 30px
