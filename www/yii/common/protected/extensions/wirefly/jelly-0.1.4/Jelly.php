@@ -1037,7 +1037,10 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 			{
 				// Eg: {{gallery}}  (hybrid)
 				// -------------------------
-				$moreCurlyWurlys = 1;
+				//@@ TODO: TOFIX: BUG: Uncommenting next line causes memory exhaustion
+				//$moreCurlyWurlys = 1;
+//die($vals[0]);
+//die('x');
 				$addon = array(
 					"gallery" => array(
 						"fancybox" => array(
