@@ -14,6 +14,20 @@
 
 	<?php echo $form->textAreaRow($model,'text',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 
+
+
+	<div class="row">
+<br>
+    <?php $urlEmbed = "";
+    if (!($model->isNewRecord))
+        echo "To embed this in pages use <b>{{gallery " . $model->id . " " . $model->title . "}}</b>";
+	?>
+	</div>
+<br>
+
+
+
+
 	<?php //echo $form->textFieldRow($model,'image',array('class'=>'span5','maxlength'=>255)); ?>
 
     <div class="row">

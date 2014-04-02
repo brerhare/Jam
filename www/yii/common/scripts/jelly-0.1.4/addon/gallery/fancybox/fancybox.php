@@ -12,6 +12,7 @@ class fancybox
 {
 	//Defaults
 	private $defaultSomething = 'someval';
+	private $gallery = "";
 
 	public $apiOption = array(
 	);
@@ -32,6 +33,11 @@ class fancybox
 		{
 			switch ($opt)
 			{
+				case "gallery":
+				if (strlen($val) > 0)
+					$this->gallery = $val;
+//die('x='.$this->gallery);
+				break;
                 case "source":
 					if ($val == "db")
 					{
@@ -39,6 +45,12 @@ class fancybox
 						$content .= "<table>";
 						$galleries = JellyGallery::model()->findAll(array('order'=>'sequence'));
 						foreach ($galleries as $gallery):
+//die($this->gallery);
+							if (strlen($this->gallery) > 0)
+							{
+								if ($gallery->id != $this->gallery)
+									continue;
+							}
 							$galleryId++;
 							$content .= "<tr>";
 							$content .= "<td width='25%'>";

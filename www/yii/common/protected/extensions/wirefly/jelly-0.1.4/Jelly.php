@@ -1039,16 +1039,18 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 
 			if (stristr($vals[0], "gallery"))
 			{
-				// Eg: {{gallery}}  (hybrid)
+				// Eg: {{gallery 33 SomeTitle}}  (hybrid)
 				// -------------------------
 				//@@ TODO: TOFIX: BUG: Uncommenting next line causes memory exhaustion
 				//$moreCurlyWurlys = 1;
-//die($vals[0]);
-//die('x');
+				$galleries = "";
+				if (count($vals) > 1)
+					$galleries = $vals[1];
 				$addon = array(
 					"gallery" => array(
 						"fancybox" => array(
-             				"source" => "db"
+             				"gallery" => $galleries,
+             				"source" => "db",
 						)
 					)
 				);
