@@ -695,6 +695,10 @@ if (isset($_GET['page']))
 								$cssValue = "0 0 20px black";
 							$this->genDivCSS("-moz-box-shadow: " . $cssValue . "; -webkit-box-shadow: " . $cssValue . "; box-shadow: " . $cssValue . ";");
 							break;
+						case "hover-color":
+//@@TODO: impliment this
+							//$this->genDivCSS("hover { background-color:#FF0000;}\n");
+							break;
 						case "opacity":
 							if ((!$cssValue) || ($cssValue == "default"))
 								$cssValue = "80%";

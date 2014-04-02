@@ -15,6 +15,9 @@ class basic
 {
 	//Defaults
 	private $defaultOrientation = "horizontal";
+	private $default_item_separator_width = 1;
+	private $default_subitem_separator_width = 1;
+	private $level = 0;
 
 	public $apiOption = array(
 	);
@@ -44,6 +47,10 @@ class basic
 					$this->apiHtml = str_replace("<substitute-width>",
 						"nav ul {width: " . $val . "px;}",
 						$this->apiHtml);
+					break;
+
+				case "level":
+					$this->level = $val;
 					break;
 
 				case "font-size":
@@ -158,10 +165,23 @@ class basic
 						"nav ul ul li a:hover {color: " . $val . " !important;}",
 						$this->apiHtml);
 					break;
+				case "item-separator-color":
+					$this->apiHtml = str_replace("<substitute-item-separator-color>",
+						"nav ul li + li {border-top: <substitute-default-item-separator-width>px solid " . $val . ";}",
+						$this->apiHtml);
+					break;
 				case "subitem-separator-color":
 					$this->apiHtml = str_replace("<substitute-subitem-separator-color>",
-						"nav ul ul li {border-top: 1px solid " . $val . ";}",
+						"nav ul ul li {border-top: <substitute-default-subitem-separator-width>px solid " . $val . ";}",
 						$this->apiHtml);
+					break;
+				case "item-separator-width":
+					$val = str_replace("px", "", $val);
+					$this->default_item_separator_width = $val;
+					break;
+				case "subitem-separator-width":
+					$val = str_replace("px", "", $val);
+					$this->default_subitem_separator_width = $val;
 					break;
 				default:
 					// Not all array items are action items
@@ -185,6 +205,9 @@ class basic
 		$this->apiHtml = str_replace("<substitute-item-text-color>", "", $this->apiHtml);		
 		$this->apiHtml = str_replace("<substitute-subitem-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-subitem-text-color>", "", $this->apiHtml);		
+		$this->apiHtml = str_replace("<substitute-default-item-separator-width>", $this->default_item_separator_width, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-default-subitem-separator-width>", $this->default_subitem_separator_width, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-item-separator-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-subitem-separator-color>", "", $this->apiHtml);
 
 		// JS
@@ -194,12 +217,65 @@ class basic
 		$this->apiHtml = $tmp;
 
 		// Insert the data
+//$this->level = 2;
+
+
+/**/
+
+			if ($this->level == 2)
+			{
+				$content = "<nav>";
+				$content .= "<ul>";
+				if (isset($_GET['page']))
+				{
+					// Get the requested URL
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("url = '" . $_GET['page'] . "'");
+					$menuItems = ContentBlock::model()->find($criteria);
+					if ($menuItems)
+					{
+						$parent = $menuItems->id;
+						$layout = $_GET['layout'];
+						if ($menuItems->parent_id != 0)
+							$parent = $menuItems->parent_id;
+						// Now get all children
+						$criteria = new CDbCriteria;
+						//$criteria->condition = "url = '" . $_GET['page'] . "' OR parent_id = " . $menuItems->id;
+						$criteria->addCondition("parent_id = " . $parent);
+						$menuItems = ContentBlock::model()->findAll($criteria);
+						foreach ($menuItems as $menuItem):
+							if (!$menuItem->active)
+								continue;
+							$content .= "<li> <a href='" . Yii::app()->request->baseUrl . "?layout=" . $layout . "&page=" . $menuItem->url . "'>" . $menuItem->title . "</a>";
+							$content .= "</li>";
+						endforeach;
+					}
+				}
+				$content .= "</ul>";
+				$content .= "</nav>";
+			}
+/**/
+
+		else
+		{
+
+
+
 		$content = "<nav>";
 		$content .= "<ul>";
 		$menuHeaders = ContentBlock::model()->findAll(array('order'=>'sequence'));
 		foreach ($menuHeaders as $menuHeader):
-			if (($menuHeader->parent_id) || (!$menuHeader->active))
+			if (!$menuHeader->active)
 				continue;
+			if ($this->level == 0)
+			{
+				if ($menuHeader->parent_id)
+					continue;
+			}
+			if ($this->level == 2)
+			{
+				//if 
+			}
 			$content .= "<li> <a href='" . Yii::app()->request->baseUrl . "?layout=index&page=" . $menuHeader->url . "'>" . $menuHeader->title . "</a>";
 			$criteria = new CDbCriteria;
 			$criteria->addCondition("parent_id = " . $menuHeader->id);
@@ -220,6 +296,10 @@ class basic
 		endforeach;
 		$content .= "</ul>";
 		$content .= "</nav>";
+
+
+		}
+
 
 		$html = str_replace("<substitute-data>", $content, $this->apiHtml);
 		$js = $this->apiJs;
@@ -251,6 +331,7 @@ class basic
 		<substitute-item-text-color>
 		<substitute-subitem-color>
 		<substitute-subitem-text-color>
+		<substitute-item-separator-color>
 		<substitute-subitem-separator-color>
 		</style>
 
