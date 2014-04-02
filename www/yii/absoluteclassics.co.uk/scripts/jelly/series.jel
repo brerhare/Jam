@@ -26,6 +26,7 @@ css.display = block
 [header]
 child = logo, menu
 css.background-color = #a3d0d0
+fx.hover-color = #ff0000
 ###menu overlay #007e7e
 # When changing the height, also need to change it in css (adding 10px there)
 css.height = 200px
@@ -151,7 +152,9 @@ css.width = 1000px
 	css.overflow = visible
 	addon.menu.basic.orientation = vertical
 	addon.menu.basic.level = 2
-	addon.menu.basic.font-size = 16px
+	addon.menu.basic.item-separator-color = #ffffff
+	addon.menu.basic.item-separator-width = 8px
+	addon.menu.basic.font-size = 14px
 	addon.menu.basic.menu-rounding = 0px
 	addon.menu.basic.menu-opacity = 100%
 	addon.menu.basic.width = 150px
@@ -162,7 +165,7 @@ css.width = 1000px
 	addon.menu.basic.item-text-color = white
 		#addon.menu.basic.subitem-color = #ff0092
 		#addon.menu.basic.subitem-text-color = #ffffff
-		#addon.menu.basic.subitem-seperator-color = #ffffff 
+		#addon.menu.basic.subitem-separator-color = #ffffff 
 ### Need an item seperator colour, and to specify the height and width of the items.
 
 	[content]

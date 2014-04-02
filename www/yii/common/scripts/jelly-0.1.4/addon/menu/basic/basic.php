@@ -15,6 +15,8 @@ class basic
 {
 	//Defaults
 	private $defaultOrientation = "horizontal";
+	private $default_item_separator_width = 1;
+	private $default_subitem_separator_width = 1;
 	private $level = 0;
 
 	public $apiOption = array(
@@ -163,10 +165,23 @@ class basic
 						"nav ul ul li a:hover {color: " . $val . " !important;}",
 						$this->apiHtml);
 					break;
+				case "item-separator-color":
+					$this->apiHtml = str_replace("<substitute-item-separator-color>",
+						"nav ul li + li {border-top: <substitute-default-item-separator-width>px solid " . $val . ";}",
+						$this->apiHtml);
+					break;
 				case "subitem-separator-color":
 					$this->apiHtml = str_replace("<substitute-subitem-separator-color>",
-						"nav ul ul li {border-top: 1px solid " . $val . ";}",
+						"nav ul ul li {border-top: <substitute-default-subitem-separator-width>px solid " . $val . ";}",
 						$this->apiHtml);
+					break;
+				case "item-separator-width":
+					$val = str_replace("px", "", $val);
+					$this->default_item_separator_width = $val;
+					break;
+				case "subitem-separator-width":
+					$val = str_replace("px", "", $val);
+					$this->default_subitem_separator_width = $val;
 					break;
 				default:
 					// Not all array items are action items
@@ -190,6 +205,9 @@ class basic
 		$this->apiHtml = str_replace("<substitute-item-text-color>", "", $this->apiHtml);		
 		$this->apiHtml = str_replace("<substitute-subitem-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-subitem-text-color>", "", $this->apiHtml);		
+		$this->apiHtml = str_replace("<substitute-default-item-separator-width>", $this->default_item_separator_width, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-default-subitem-separator-width>", $this->default_subitem_separator_width, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-item-separator-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-subitem-separator-color>", "", $this->apiHtml);
 
 		// JS
@@ -313,6 +331,7 @@ class basic
 		<substitute-item-text-color>
 		<substitute-subitem-color>
 		<substitute-subitem-text-color>
+		<substitute-item-separator-color>
 		<substitute-subitem-separator-color>
 		</style>
 
