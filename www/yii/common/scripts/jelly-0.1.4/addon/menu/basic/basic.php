@@ -199,50 +199,50 @@ class basic
 		$this->apiHtml = $tmp;
 
 		// Insert the data
-$this->level = 2;
+//$this->level = 2;
 
 
-/*
+/**/
 
 			if ($this->level == 2)
 			{
+				$content = "<nav>";
+				$content .= "<ul>";
 				if (isset($_GET['page']))
 				{
 //die($_GET['page']);
 					// Get the requested URL
 					$criteria = new CDbCriteria;
 					$criteria->addCondition("url = '" . $_GET['page'] . "'");
-					$menuItems = ContentBlock::model()->findAll($criteria);
-//die('x');
-//die($menuItems->parent_id);
+					$menuItems = ContentBlock::model()->find($criteria);
+//die('id='.$menuItems->id.' pid='.$menuItems->parent_id);
 					if ($menuItems)
 					{
-						// Now get all children of that URL
+						$parent = $menuItems->id;
+						if ($menuItems->parent_id != 0)
+							$parent = $menuItems->parent_id;
+						// Now get all children
 						$criteria = new CDbCriteria;
 						//$criteria->condition = "url = '" . $_GET['page'] . "' OR parent_id = " . $menuItems->id;
-						//$criteria->addCondition("parent_id = " . $menuItems->parent_id);
+						$criteria->addCondition("parent_id = " . $parent);
 //die($menuItems->parent_id);
 //die($criteria->condition);
 						$menuItems = ContentBlock::model()->findAll($criteria);
-						if (!$menuItems)
-						{
-							continue;
-							die('found');
-						}
-						else
-						{
-							//die('x');
-							//else die('nf');
-							$content .= "<li> <a href='" . Yii::app()->request->baseUrl . "?layout=index&page=" . $menuHeader->url . "'>" . $menuHeader->title . "</a>";
+						foreach ($menuItems as $menuItem):
+							if (!$menuItem->active)
+								continue;
+							$content .= "<li> <a href='" . Yii::app()->request->baseUrl . "?layout=index&page=" . $menuItem->url . "'>" . $menuItem->title . "</a>";
 							$content .= "</li>";
-						}
+						endforeach;
 					}
 				}
-				continue;
+				$content .= "</ul>";
+				$content .= "</nav>";
 			}
-*/
+/**/
 
-
+		else
+		{
 
 
 
@@ -281,6 +281,10 @@ $this->level = 2;
 		endforeach;
 		$content .= "</ul>";
 		$content .= "</nav>";
+
+
+		}
+
 
 		$html = str_replace("<substitute-data>", $content, $this->apiHtml);
 		$js = $this->apiJs;
