@@ -12,6 +12,8 @@
 
 	<?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>255)); ?>
 
+	<?php echo $form->toggleButtonRow($model, 'active'); ?>
+
 	<?php echo $form->textAreaRow($model,'text',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 
 
@@ -35,8 +37,6 @@
         <?php echo CHtml::activeFileField($model,'image',array('size'=>60,'maxlength'=>255)); ?>
         <?php echo $form->error($model,'image'); ?>
     </div>
-
-	<?php echo $form->toggleButtonRow($model, 'active'); ?>
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
