@@ -297,8 +297,17 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 
 		$content .= "<div>";
 		$content .= "<style> table.itemgrid {  border-collapse: collapse;} .itemgrid tr {   border: solid;  border-width: 1px 0; border-color:#bdbdbd}</style>";
+
+
+
+// @@TODO: Need to do a proper css file for this for theming....
+
+$content .= "<style> * { color: grey;} </style>";
+
+
+
 		//$content .= "<style>tr:first-child {  border-top: none;}tr:last-child {  border-bottom: none;} </style>";
-		$content .= "<center><h3 style='padding-bottom:10px;color:grey;'>Shopping cart</h3><center>";	
+		$content .= "<center><h3 style='padding-bottom:10px;xcolor:grey;'>Shopping cart</h3><center>";	
 		$content .= "<table class='itemgrid' style='width:80%; float:left'>";
 		$content .= "<thead><tr>";
 		$content .= "<th width=10%></th>";	// Image
