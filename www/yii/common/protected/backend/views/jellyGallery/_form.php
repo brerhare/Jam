@@ -13,6 +13,7 @@
 	<?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>255)); ?>
 
 	<?php echo $form->toggleButtonRow($model, 'active'); ?>
+<br>
 
 	<?php echo $form->textAreaRow($model,'text',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 
