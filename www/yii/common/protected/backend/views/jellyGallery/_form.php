@@ -36,6 +36,8 @@
         <?php echo $form->error($model,'image'); ?>
     </div>
 
+	<?php echo $form->toggleButtonRow($model, 'active'); ?>
+
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',
