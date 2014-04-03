@@ -131,6 +131,7 @@ CREATE  TABLE IF NOT EXISTS `jelly_gallery` (
   `title` VARCHAR(255) NOT NULL ,
   `text` TEXT NULL ,
   `image` VARCHAR(255) NULL ,
+  `active` INT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `sequence` (`sequence` ASC) )
 ENGINE = InnoDB;
