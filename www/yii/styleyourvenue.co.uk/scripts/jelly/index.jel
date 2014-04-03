@@ -223,6 +223,6 @@ css.background-color = #000000
 	image.height = 40px
 		clicknew = http://www.wireflydesign.com
 
-html.raw = <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
+#html.raw = <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
 
  

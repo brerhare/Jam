@@ -45,6 +45,8 @@ class fancybox
 						$content .= "<table>";
 						$galleries = JellyGallery::model()->findAll(array('order'=>'sequence'));
 						foreach ($galleries as $gallery):
+							if (($gallery->active == 0) && (strlen($this->gallery) == 0))
+								continue;
 //die($this->gallery);
 							if (strlen($this->gallery) > 0)
 							{
