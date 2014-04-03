@@ -88,6 +88,19 @@ class SiteController extends Controller
 	/**
 	 * Displays the DIRECT login page
 	 */
+// @@TODO: HARDCODED FOR ELEGANT ORIGINALS ---------- REMOVE
+	public function actionElegantDirect()
+	{
+		Yii::app()->session['uid'] = 59;
+		$identity = new UserIdentity('caroline@elegantoriginals.co.uk', 'gothchick');
+		$duration = 3600*24*14; // 14 days
+		Yii::app()->user->login($identity, $duration);
+		$this->redirect(array('site/index'));
+	}
+
+	/**
+	 * Displays the DIRECT login page
+	 */
 // @@TODO: HARDCODED FOR JACQUIES ---------- REMOVE
 	public function actionJDirect()
 	{

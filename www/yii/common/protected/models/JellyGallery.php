@@ -9,6 +9,7 @@
  * @property string $title
  * @property string $text
  * @property string $image
+ * @property integer $active
  *
  * The followings are the available model relations:
  * @property JellyGalleryImage[] $jellyGalleryImages
@@ -42,7 +43,7 @@ class JellyGallery extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('title', 'required'),
-			array('sequence', 'numerical', 'integerOnly'=>true),
+			array('sequence, active', 'numerical', 'integerOnly'=>true),
 
             array('image', 'file','on'=>'insert',
                 'types'=> 'jpg, jpeg, gif, png',
@@ -61,7 +62,7 @@ class JellyGallery extends CActiveRecord
 			array('title, image', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, sequence, title, text, image', 'safe', 'on'=>'search'),
+			array('id, sequence, title, text, image, active', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -88,6 +89,7 @@ class JellyGallery extends CActiveRecord
 			'title' => 'Title',
 			'text' => 'Text',
 			'image' => 'Image',
+			'active' => 'Active',
 		);
 	}
 
@@ -107,6 +109,7 @@ class JellyGallery extends CActiveRecord
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('text',$this->text,true);
 		$criteria->compare('image',$this->image,true);
+		$criteria->compare('active',$this->active);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
