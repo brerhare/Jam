@@ -463,7 +463,8 @@ $content .= "<style> * { color: grey;} </style>";
 				$content .= "</td><td>&nbsp</td><td valign='top'>";
 				$content .= "Notes<br>";
 				$content .= "<textarea id='message' name='message' rows='7' cols='38'> </textarea> <br><br><br/>";
-				$content .= "<a href='#' onClick=\"proceed()\"	>" . "<img src=/product/img/proceed_to_checkout.png></a>";
+				$content .= "<a href='#' onClick=\"proceed(0)\"	>" . "<img src=/product/img/proceed_to_checkout.png></a>";
+				$content .= "<br><br><a href='#' onClick=\"proceed(1)\"	>" . "<img src=/product/img/paypal-checkout.png></a>";
 				$content .= "</td></tr></tbody>";
 				$content .= "</table>";
 
@@ -498,7 +499,7 @@ $content .= "<style> * { color: grey;} </style>";
 						window.location.href = sel;
 					}
 
-					function proceed()
+					function proceed(ptype) /* 0=payment gateway, 1=paypal */
 					{
 						if (document.getElementById("address1").value == "")
 						{
@@ -530,7 +531,7 @@ $content .= "<style> * { color: grey;} </style>";
 						n = encodeURIComponent(document.getElementById("message").value);
 						e = document.getElementById("email1").value;
 						t = document.getElementById("telephone").value;
-						window.location.href = '/product/index.php/site/pay?cartid='+cartId+'&shipid='+shipId+'&a1='+a1+'&a2='+a2+'&a3='+a3+'&a4='+a4+'&e='+e+'&pc='+pc+'&n='+n+'&t='+t;
+						window.location.href = '/product/index.php/site/pay?cartid='+cartId+'&shipid='+shipId+'&a1='+a1+'&a2='+a2+'&a3='+a3+'&a4='+a4+'&e='+e+'&pc='+pc+'&n='+n+'&t='+t+'&ptype='+ptype;
 			}
 END_OF_API_JS_checkout;
 
