@@ -84,8 +84,11 @@ header($this->p3p);
 	// Invoke the Paymentsense module
 	public function actionPay()
 	{
-
 header($this->p3p);
+		if (isset($_GET['ptype']))
+		{
+			Yii::log("Checkout - payment type requested is " . $_GET['ptype'] , CLogger::LEVEL_WARNING, 'system.test.kim');
+		}
 		if ((trim(Yii::app()->session['checkoutEmail']) == "")
 		|| (trim(Yii::app()->session['checkoutName']) == "")
 		|| (trim(Yii::app()->session['checkoutGatewayUser']) == "")
@@ -225,6 +228,7 @@ header($this->p3p);
 				throw new CHttpException(400,'Error creating order');
 			}
 		}
+		$subtotalGoods = $totalGoods;
 		// Add shipping to total
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("id = " . $shipId);
@@ -246,8 +250,27 @@ header($this->p3p);
 		}
 //$this->actionPaid();
 //die('done');
-		// Go to paymentsense for payment
-		$this->redirect(Yii::app()->baseUrl . "/php/gw/EntryPoint.php?sid=" . Yii::app()->session['sid'] . "&xid=" . rand(99999,999999) );
+
+		if ($_GET['ptype'] == 0)
+		{
+			// Go to paymentsense for payment
+			$this->redirect(Yii::app()->baseUrl . "/php/gw/EntryPoint.php?sid=" . Yii::app()->session['sid'] . "&xid=" . rand(99999,999999) );
+		}
+		else if  ($_GET['ptype'] == 1)
+		{
+			// Paypal
+			//$this->renderPartial('paypal');
+/**/
+$this->layout = "nosuchlayout";
+			$this->render('paypal',array(
+				'description'=>'Purchase from ' . Yii::app()->session['checkoutName'],
+            	'subtotal'=>$subtotalGoods,
+            	'shipping'=>$shipping->price,
+            	'total'=>$totalGoods,
+        	));
+/**/
+			//$this->redirect(Yii::app()->baseUrl . "/php/gw/EntryPoint.php?sid=" . Yii::app()->session['sid'] . "&xid=" . rand(99999,999999) );
+		}
 	}
 
 	// Return from Paymentsense
