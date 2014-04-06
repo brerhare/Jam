@@ -1,1 +1,2 @@
-mysql -u username db_co_uk -p"password," < jelly.sql
+mysql -u wireflydesign.co wildfoods_wireflydesign_com -p"wireflydesign.com," < jelly.sql
+
