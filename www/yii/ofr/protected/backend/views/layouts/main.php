@@ -45,6 +45,8 @@
                     array('label' => 'Collections', 'url' => array('/jellyDownloadCollection/admin'), 'visible' => !Yii::app()->user->isGuest),
                 )),
 
+				array('label' => 'Blog Backend', 'url' => 'https://plugin.wireflydesign.com/blog/backend.php/site/ofrDirect', 'visible' => !Yii::app()->user->isGuest),
+
                 array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
                 array('label' => 'Logout', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),                 
                 array('label' => 'Contact', 'url' => array('/site/contact'), 'visible' => Yii::app()->user->isGuest),                

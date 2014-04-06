@@ -34,24 +34,12 @@
 		array(
 			'class' => 'bootstrap.widgets.TbMenu',
 			'items' => array(
-                array('label' => 'Pages', 'url' => array('/contentBlock/admin'), 'visible' => !Yii::app()->user->isGuest),
-                array('label' => 'Image Sliders', 'url' => array('/jellySliderImage/admin'), 'visible' => !Yii::app()->user->isGuest),
-                //array('label' => 'HTML Sliders', 'url' => array('/jellySliderHtml/admin'), 'visible' => !Yii::app()->user->isGuest),
-                array('label' => 'Tabs', 'url' => array('/tabBlock/admin'), 'visible' => !Yii::app()->user->isGuest),                      
-				array('label' => 'Galleries', 'url' => array('/jellyGallery/admin'), 'visible' => !Yii::app()->user->isGuest),
-                array('label' => 'Downloads', 'url' => '#', 'visible' => !Yii::app()->user->isGuest,
-                'items' => array(
-                    array('label' => 'Files', 'url' => array('/jellyDownloadFile/admin'), 'visible' => !Yii::app()->user->isGuest),
-                    array('label' => 'Collections', 'url' => array('/jellyDownloadCollection/admin'), 'visible' => !Yii::app()->user->isGuest),
-                )),
-
-                array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
-                array('label' => 'Logout', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),                 
-                array('label' => 'Contact', 'url' => array('/site/contact'), 'visible' => Yii::app()->user->isGuest),                
-                array('label' => 'About', 'url' => array('/site/page', 'view' => 'about'), 'visible' => Yii::app()->user->isGuest),  
+				array('label' => 'About', 'url' => array('/site/page', 'view' => 'about')),
+				array('label' => 'Contact', 'url' => array('/site/contact')),
+				array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
+				array('label' => 'Logout (' . Yii::app()->user->name . ')', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest)
 			),
 		),
-/*****
 		array(
 			'class' => 'bootstrap.widgets.TbMenu',
 			'htmlOptions' => array('class' => 'pull-right'),
@@ -67,7 +55,6 @@
 				)),
 			),
 		),
-*****/
 	),
 )); ?>
 
