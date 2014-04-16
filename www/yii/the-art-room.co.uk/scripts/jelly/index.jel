@@ -158,7 +158,7 @@ css.display = block
 			image.url = /img/Workshops.png
 			image.width = 250px
 			image.height = 295px
-			click = http://www.the-art-room.co.uk/?layout=index&page=craft-workshops-children-dumfries
+			click = http://www.the-art-room.co.uk/?layout=index&page=art-craft-workshops-dumfries
 
 		[white-block]
 		css.width = 960px
