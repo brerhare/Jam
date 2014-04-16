@@ -98,12 +98,15 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@wireflydesign.com',
-        // These are used by the shopping cart checkout process
+        // Cart - vendor details
         'checkoutEmail'=>'nancy@styleyourvenue.co.uk',
         'checkoutName'=>'Style Your Venue',
-        // Test gateway
+        // Cart - test gateway
         'checkoutGatewayUser'=>'WIREFL-5188100',
         'checkoutGatewayPassword'=>'391F3GWBZ0',
+		// Cart - paypal
+		'checkoutPaypalUser'=>'nancydenholm8@gmail.com',
+		// Misc
 		'jellyRoot' => '/scripts/jelly/',
 		'sid' => 'f90789r8aqtlafco317cu62mg6',
 	),

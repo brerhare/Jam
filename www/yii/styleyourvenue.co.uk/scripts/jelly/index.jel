@@ -127,6 +127,8 @@ css.background-color = #000000
 	addon.menu.basic.item-color = #7a7a7a
 	addon.menu.basic.item-text-color = white
 
+addon.menu.basic.submenu-text-color = yellow
+
 	addon.menu.basic.submenu-color = #d6d6d6
 		#addon.menu.basic.subitem-color = white black
 	addon.menu.basic.subitem-text-color = white
