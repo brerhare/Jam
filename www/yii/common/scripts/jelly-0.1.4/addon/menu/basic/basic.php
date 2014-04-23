@@ -155,6 +155,12 @@ class basic
 						"nav ul li a {color: " . $val . " !important;}",
 						$this->apiHtml);
 					break;
+// NW!!!
+				case "submenu-text-color":
+					$this->apiHtml = str_replace("<substitute-submenu-text-color>",
+						"nav ul li ul li a {color: " . $val . " !important;}",
+						$this->apiHtml);
+					break;
 				case "item-text-color":
 					$this->apiHtml = str_replace("<substitute-item-text-color>",
 						"nav ul li:hover a {color: " . $val . " !important;}",
@@ -201,6 +207,7 @@ class basic
 		$this->apiHtml = str_replace("<substitute-menu-stretch>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-submenu-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-menu-text-color>", "", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-submenu-text-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-item-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-item-text-color>", "", $this->apiHtml);		
 		$this->apiHtml = str_replace("<substitute-subitem-color>", "", $this->apiHtml);
@@ -326,6 +333,7 @@ class basic
 		<substitute-menu-tile>
 		<substitute-menu-stretch>
 		<substitute-menu-text-color>
+		<substitute-submenu-text-color>
 		<substitute-submenu-color>
 		<substitute-item-color>
 		<substitute-item-text-color>
