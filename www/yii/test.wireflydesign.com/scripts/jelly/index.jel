@@ -100,12 +100,9 @@ css.background-color = white
     css.margin-top = 20px
 	css.width = 960px
     #css.height = 250px ...... This is one way of hiding the dots!
-    addon.slider.flexslider.width = 956px
-    addon.slider.flexslider.border-width = 0px
-    addon.slider.flexslider.border-color = red
-    addon.slider.flexslider.height = 240px
-    addon.slider.flexslider.mode = image
-    addon.slider.flexslider.source = db
+    addon.slider.glitz.width = 956px
+    addon.slider.glitz.mode = image
+    addon.slider.glitz.source = db
 
 
 ######################## Content ############################ 
