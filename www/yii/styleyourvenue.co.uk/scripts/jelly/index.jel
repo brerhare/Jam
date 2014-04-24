@@ -12,7 +12,7 @@ child = backgd
 #style.background-image = /img/StyleBackground.png
 fx.wallpaper-image = /img/FullBackground.jpg
 css.display = block
-#addon.analytics.google_analytics.ua = UA-48370894-1
+addon.analytics.google_analytics.ua = UA-48370894-1
 html.raw = <div id="fb-root"></div><script>(function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId259885860792535"; fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));</script>
 
 [backgd]
@@ -114,25 +114,37 @@ css.background-color = #000000
 	css.overflow = visible
 	css.margin-top = 2px
 
+#### Top level basic settings ###
 	addon.menu.basic.orientation = horizontal
 	addon.menu.basic.width = 960px
-	addon.menu.basic.font-size = 12px
 	addon.menu.basic.menu-rounding = 0px
 	addon.menu.basic.menu-opacity = 100%
-	
 	addon.menu.basic.menu-tile = /img/menu-bar.jpg
 		#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
 		#addon.menu.basic.menu-color = blue green
+
+#### Top level font ####
+	addon.menu.basic.font-size = 12px
 	addon.menu.basic.menu-text-color = black
-	addon.menu.basic.item-color = #7a7a7a
+	
+#### Top level hover effect ####
 	addon.menu.basic.item-text-color = white
+	addon.menu.basic.item-color = #8c8c8c black
+
+#### Second level basic settings ####
+	addon.menu.basic.submenu-color = #4d4d4d
+	addon.menu.basic.subitem-seperator-color = white
+
+#### Second level hover effect ####
+	addon.menu.basic.subitem-color = #696969 black
+	addon.menu.basic.subitem-text-color = white
+
 
 addon.menu.basic.submenu-text-color = yellow
 
-	addon.menu.basic.submenu-color = #d6d6d6
-		#addon.menu.basic.subitem-color = white black
-	addon.menu.basic.subitem-text-color = white
-		#addon.menu.basic.subitem-seperator-color = red 	
+
+	
+		
 
 
 	[slider]
