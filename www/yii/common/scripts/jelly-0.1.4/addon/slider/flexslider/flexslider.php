@@ -19,6 +19,7 @@ class flexslider
 	private $defaultBorderColor = "#fff";
 	private $defaultActiveDotColor = "rgba(0,0,0,0.9)";
 	private $defaultInactiveDotColor = "rgba(0,0,0,0.5)";
+	private $defaultSlider = -1;
 
 	public $apiOption = array(
 		"width" => "900px",
@@ -45,6 +46,9 @@ class flexslider
 		{
 			switch ($opt)
 			{
+				case "slider":
+					$this->defaultSlider = $val;
+					break;
 				case "width":
 					$this->defaultWidth = $val;
 					break;
@@ -92,6 +96,8 @@ class flexslider
 							// If db based content
 							$sliderItems = JellySliderImage::model()->findAll(array('order'=>'sequence'));
 							foreach ($sliderItems as $sliderItem):
+								if (($this->defaultSlider != -1) && ($sliderItem->slider != $this->defaultSlider))
+									continue;
 								$content .= "<li>";
 
 $content .= "<a href='" . $sliderItem->url . "'> <img src='" . Yii::app()->baseUrl . "/userdata/jelly/sliderimage/" . $sliderItem->image . "' style='margin:0px; width:" . $this->defaultWidth . "; height:" . $this->defaultHeight . "; background: url(/userdata/jelly/sliderimage/" . $sliderItem->image  . " no-repeat center center; background-size:cover;' alt=''></a>";
