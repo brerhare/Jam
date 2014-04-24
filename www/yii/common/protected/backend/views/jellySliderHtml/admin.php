@@ -14,6 +14,7 @@ $this->menu=array(
 	// 'filter'=>$model,
 	'columns'=>array(
 		// 'id',
+		'slider',
 		'sequence',
         array(
             'name'  => 'title',

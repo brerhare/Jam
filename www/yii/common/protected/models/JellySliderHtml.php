@@ -5,6 +5,7 @@
  *
  * The followings are the available columns in table 'jelly_slider_html':
  * @property integer $id
+ * @property integer $slider
  * @property integer $sequence
  * @property string $title
  * @property string $content
@@ -38,12 +39,12 @@ class JellySliderHtml extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('title', 'required'),
-			array('sequence', 'numerical', 'integerOnly'=>true),
+			array('slider, sequence', 'numerical', 'integerOnly'=>true),
 			array('title', 'length', 'max'=>255),
 			array('content', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, sequence, title, content', 'safe', 'on'=>'search'),
+			array('id, slider, sequence, title, content', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -65,6 +66,7 @@ class JellySliderHtml extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
+			'slider' => 'Slider Number',
 			'sequence' => 'Sequence',
 			'title' => 'Title',
 			'content' => 'HTML Content',
@@ -83,6 +85,7 @@ class JellySliderHtml extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
+		$criteria->compare('slider',$this->slider);
 		$criteria->compare('sequence',$this->sequence);
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('content',$this->content,true);
