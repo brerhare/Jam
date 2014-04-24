@@ -22,7 +22,7 @@ css.display = block
 		stacking = horizontal
 
 			[logo]
-			css.margin-top = 10px
+			css.margin-bottom = 10px
 			css.margin-left = 50px
 			css.height = 110px
 			css.width = 400px
@@ -95,7 +95,7 @@ css.display = block
 		css.margin-left = 0px
 		css.overflow = visible
 		css.z-index = 1000
-		css.position = relative
+		css.position = fixed
 		addon.menu.basic.orientation = horizontal
 		addon.menu.basic.font-size = 14px
 		addon.menu.basic.menu-rounding = 4px
@@ -158,7 +158,7 @@ css.display = block
 			image.url = /img/Workshops.png
 			image.width = 250px
 			image.height = 295px
-			click = http://www.the-art-room.co.uk/?layout=index&page=craft-workshops-children-dumfries
+			click = http://www.the-art-room.co.uk/?layout=index&page=art-craft-workshops-dumfries
 
 		[white-block]
 		css.width = 960px
