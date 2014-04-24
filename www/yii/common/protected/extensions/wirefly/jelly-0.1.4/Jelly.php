@@ -307,6 +307,13 @@ END_OF_FOOTER;
 						return;	
 				}
 			}
+			else if (strstr($array['condition'], "@PAGE"))
+			{
+				if (strstr($array['condition'], "="))
+				{
+					die('a='.$array['condition']);
+				}
+			}
 		}
 
 		foreach ($array as $name => $value)
