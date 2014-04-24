@@ -95,7 +95,7 @@ css.display = block
 		css.margin-left = 0px
 		css.overflow = visible
 		css.z-index = 1000
-		css.position = fixed
+		css.position = absolute
 		addon.menu.basic.orientation = horizontal
 		addon.menu.basic.font-size = 14px
 		addon.menu.basic.menu-rounding = 4px
@@ -146,13 +146,13 @@ css.display = block
 			image.url = /img/Gallery.png
 			image.width = 250px
 			image.height = 295px
-			click = http://www.the-art-room.co.uk/?layout=index&page=gallery-old-school-dumfries
+			click = http://www.the-art-room.co.uk/?layout=index&page=original-art-gallery-dumfries-old-school
 
 			[gifts]
 			image.url = /img/Gifts.png
 			image.width = 250px
 			image.height = 295px
-			click = http://www.the-art-room.co.uk/?layout=index&page=art-gifts-dumfries-handmade-crafts
+			click = http://www.the-art-room.co.uk/?layout=index&page=handmade-unique-unusual-gifts-dumfries
 
 			[workshop]
 			image.url = /img/Workshops.png
