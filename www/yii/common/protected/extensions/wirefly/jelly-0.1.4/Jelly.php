@@ -294,8 +294,9 @@ END_OF_FOOTER;
 		if (array_key_exists("condition", $array))
 		{
 			//die('x='.$array['condition']);
-			if (strstr($array['condition'], "@HOMEPAGE"))
+			if ((strstr($array['condition'], "@HOMEPAGE")) && !(strstr($array['condition'], "@PAGE")))
 			{
+				// Only show on homepage only (or not)
 				if (strstr($array['condition'], "=1"))
 				{
 					if ($this->homePage == "0")
@@ -309,9 +310,28 @@ END_OF_FOOTER;
 			}
 			else if (strstr($array['condition'], "@PAGE"))
 			{
+				// Only show on a particular page
 				if (strstr($array['condition'], "="))
 				{
-					die('a='.$array['condition']);
+					$first = strstr($array['condition'], "=");
+					$second = strstr($first, "=");
+					$pageForCondition = ltrim($second, "=");
+					$pageLoading = "";
+					if (isset($_GET['page']))
+					{
+						$pageLoading = $_GET['page'];
+						//die('template page='. $pageLoading . 'loading page = ' . $_GET['page']);
+					}
+					else
+						$pageLoading = "@HOMEPAGE";
+					if ($pageLoading != $pageForCondition)
+						return;
+					//if (!(isset($_GET['page'])))
+						//die('home');
+
+					//die($_GET['page']);
+					//die($use);
+					//die('a='.$array['condition']);
 				}
 			}
 		}

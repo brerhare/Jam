@@ -121,8 +121,21 @@ css.margin-top = -530px
 #css.background-image = url('/img/background.jpg')
 
 [home-content]
+child = glitz-slider]
 css.height = 480px
 condition = @HOMEPAGE=1
+
+	[glitz-slider]
+	#condition = @PAGE=@HOMEPAGE
+	condition = @PAGE=cookie-policy
+	css.backgroundcolor = black
+	css.margin-top = 20px
+	css.width = 960px
+	#css.height = 250px ...This is one way of hiding the dots!
+	addon.slider.glitz.slider = 2
+	addon.slider.glitz.width = 956px
+	addon.slider.glitz.mode = image
+	addon.slider.glitz.source = db
 
 
 [other-content]
