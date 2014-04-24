@@ -1,4 +1,4 @@
-#AbsoluteClassics
+#AbsoluteClassics - Festival
 
 [defaults]
 include = default-values
@@ -8,17 +8,15 @@ include = default-values
 
 [screen]
 child = site
-css.background-color = #000000
+css.background-color = #ffffff
 #fx.wallpaper-image = /img/background.jpg
 css.display = block
 
 	[site]
-	child = header, background, all-content, footer
+	child = header, home-page, other-content, footer
 	css.display = block
-	#css.width = 960px
-	#css.background-color = black
-	#css.background-image = url('/img/background.jpg')
-	#css.opacity = 0.8
+	css.background-color = white
+	css.opacity = 0.8
 
 	
 
@@ -27,24 +25,23 @@ css.display = block
 
 [header]
 child = logo, menu
-css.background-color = #000000
-###menu overlay #eb6200
+css.background-color = #7acda8
+###menu overlay #00a059
 # When changing the height, also need to change it in css (adding 10px there)
 css.height = 200px
 css.width = 100%
 
 [logo]
 css.width = 100%
-css.margin-top = 20px
 image.url = img/ac-logo.png
-image.width = 250px
-image.height = 114px
+image.width = 200px
+image.height = 91px
 image.align = center
 click = http://www.absoluteclassics.co.uk/
 
 [menu]
 child = margin, menu1, menu2, menu3
-css.margin-top = 20px
+css.margin-top = 40px
 css.height = 40px
 css.width = 1000px
 stacking = horizontal
@@ -78,97 +75,102 @@ css.margin-right= 0px auto
 	[menu1]
 	css.width = 25%
 	image.url = img/menu/series-white.png
-	image.width = 83px
-	image.height = 35px
+	image.width = 95px
+	image.height = 40px
 	image.align = centre
-	click = http://www.absoluteclassics.co.uk/?layout=index&page=classical-music-series
+	click = http://www.absoluteclassics.co.uk/?layout=series&page=classical-music-series
 
 	[menu2]
 	css.width = 25%
 	image.url = img/menu/festival-white.png
-	image.width = 115px
-	image.height = 35px
+	image.width = 132px
+	image.height = 40px
 	image.align = centre
-	click = http://www.absoluteclassics.co.uk/?layout=index&page=Internation-music-platform-festival
+	click = http://www.absoluteclassics.co.uk/?layout=festival&page=Internation-music-platform-festival
 
 	[menu3]
 	css.width = 25%
 	image.url = img/menu/events-white.png
-	image.width = 98px
-	image.height = 35px
+	image.width = 112px
+	image.height = 40px
 	image.align = centre
 	click = http://www.absoluteclassics.co.uk/?layout=index&page=classical-music-dumfries-live-performance
 	
-######## Background Image ###########################
 
-[background]
+
+########## Home page Only ###################################
+
+[home-page]
+child = slider, home-content
+condition = @HOMEPAGE=1
+css.overflow = visible
 css.width = 960px
-css.height = 500px
 css.margin-top = 30px
-css.background-color = black
-	image.url = img/centre-background.jpg
-	image.width = 600px
-	image.height = 462px
-	image.align = center
 
-
-######## Page Content ###############################
-
-[all-content]
-child = home-content, other-content
-css.width = 1200px
-css.margin-top = -530px
-#css.background-image = url('/img/background.jpg')
+[slider]
+css.margin-top = 20px
+css.margin-left = 10px
+css.width = 900px
+css.height = 700px
+css.opacity = 1
+addon.slider.flexslider.width = 900px
+addon.slider.flexslider.height = 600px
+	addon.slider.flexslider.border-width = 0px
+	addon.slider.flexslider.border-color = white
+	addon.slider.flexslider.active-dotcolor = #007e7e
+	addon.slider.flexslider.inactive-dotcolor = #4c4c4c
+	addon.slider.flexslider.dot-margin-top = -25px
+	addon.slider.flexslider.dot-margin-bottom = 0px
+	addon.slider.flexslider.dot-margin-left = 0px
+	addon.slider.flexslider.dot-margin-right = 0px
+	#addon.slider.flexslider.animation = fade
+addon.slider.flexslider.mode = image
+addon.slider.flexslider.source = db
 
 [home-content]
-css.height = 480px
-condition = @HOMEPAGE=1
+css.margin-top = 15px
+css.width = 900px
+db.table = ContentBlock
+db.filter = url=$_GET['page']
+db.error = Sorry, I could not find th page $_GET['page']
+html.raw = ContentBlock.content
 
+######## Other Pages ###############################
 
 [other-content]
-child = second-menu, content-block
+child = second-menu, content
 condition = @HOMEPAGE=0
 stacking = horizontal
+css.width = 1000px
 
 	[second-menu]
 	css.height = 400px
 	#css.width = 100px
 	css.margin-left = 0px
-	css.margin-top = 80px
+	css.margin-top = 100px
 	css.overflow = visible
 	addon.menu.basic.orientation = vertical
 	addon.menu.basic.level = 2
 	addon.menu.basic.item-separator-color = #ffffff
-	addon.menu.basic.item-separator-width = 1px
+	addon.menu.basic.item-separator-width = 8px
 	addon.menu.basic.font-size = 14px
 	addon.menu.basic.menu-rounding = 0px
 	addon.menu.basic.menu-opacity = 100%
 	addon.menu.basic.width = 150px
-	addon.menu.basic.menu-color = #000000
+	addon.menu.basic.menu-color = #7acda8
 	addon.menu.basic.menu-text-color = white
 	addon.menu.basic.submenu-color = #b5b5b5
-	addon.menu.basic.item-color = #eb6200
+	addon.menu.basic.item-color = #00a059
 	addon.menu.basic.item-text-color = white
 		#addon.menu.basic.subitem-color = #ff0092
 		#addon.menu.basic.subitem-text-color = #ffffff
 		#addon.menu.basic.subitem-seperator-color = #ffffff 
-### Need to specify the height and width of the items.
-
-	[content-block]
-	child = content
-	css.width = 800px
-	css.margin-left = 60px
-	css.margin-top = 30px
-	fx.rounding = 4px
-	fx.opacity = 95%
-	css.background-color = white
-	
+### Need an item seperator colour, and to specify the height and width of the items.
 
 	[content]
-	css.margin-top = 30px
-	css.margin-left = 50px
+	css.margin-top = 60px
+	css.margin-left = 100px
 	css.width = 700px
-	fx.opacity = 100%
 	db.table = ContentBlock
 	db.filter = url=$_GET['page']
 	db.error = Sorry, I could not find th page $_GET['page']
@@ -180,7 +182,7 @@ stacking = horizontal
 
 	[footer]
 	child = footer-menu
-	#css.margin-top = 40px
+	css.margin-top = 40px
 	css.height = 241px
 	css.background-color = #000000
 	image.url = img/footer-img.jpg
@@ -188,7 +190,7 @@ stacking = horizontal
 	image.height = 241px
 	image.align = centre
 	css.position = relative
-	css.z-index = 100
+	css.z-index = -100
 
 
 
@@ -197,7 +199,7 @@ stacking = horizontal
 		child = footer-margin, footer-cookies, footer-tandc, footer-contact, wirefly
 		css.height = 200px
 		css.width = 960px
-		css.margin-top = -160px
+		css.margin-top = -220px
 		css.position = relative
 		css.z-index = 100
 
@@ -234,3 +236,5 @@ stacking = horizontal
 			image.width = 161px
 			image.height = 40px
 			clicknew = http://www.wireflydesign.com
+
+
