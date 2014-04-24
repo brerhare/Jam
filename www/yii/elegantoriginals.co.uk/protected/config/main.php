@@ -101,7 +101,7 @@ return array(
 		'adminEmail'=>'webmaster@wireflydesign.com',
 
 		// These are used by the shopping cart checkout process
-		'checkoutEmail'=>'vendor@email.co.uk',
+		'checkoutEmail'=>'caroline@elegantoriginals.co.uk',
 		'checkoutName'=>'Elegant Originals',
 		// Test gateway
 		'checkoutGatewayUser'=>'WIREFL-5188100',

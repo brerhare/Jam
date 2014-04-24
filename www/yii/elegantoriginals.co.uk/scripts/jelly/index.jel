@@ -28,25 +28,28 @@ css.display = block
 [header-area]
 #css.height = 
 css.width = 1000px
-css.margin-left = 100px
+#css.margin-left = 100px
 image.url = img/logo-header.png
 image.width = 800px
 image.height = 148px
+image.align = center
+click = http://www.elegant.wireflydesign.com
 
 ###########################################################
 
 [middle]
 child = right-column, main-column
 stacking = horizontal
-css.overflow = visible
-css.width = 1000px
+css.width = 950px
 css.margin-top = 30px
-css.margin-left = 50px 
+css.margin-left = 25px 
+	#css.background-color = #fcffd9
 
 	[right-column]
 	child = menu
 	css.width = 150px
-css.overflow = visible
+	css.overflow = visible
+	#css.background-color = #f7d9ff
 
 	[menu]
 	#css.height = 40px
@@ -55,42 +58,44 @@ css.overflow = visible
 	css.margin-top = 20px
 	css.margin-left = 0px
 	addon.menu.basic.orientation = vertical
-	#addon.menu.basic.width = 60px
+	addon.menu.basic.item-separator-color = #000000
+	addon.menu.basic.item-separator-width = 1px
+		#addon.menu.basic.width = 60px
 		#addon.menu.basic.height = 30px
 	addon.menu.basic.font-size = 12px
 	addon.menu.basic.menu-rounding = 0px
 		#addon.menu.basic.menu-opacity = 96%
 		#addon.menu.basic.menu-tile = /img/menu-bar.jpg
 		#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
-		#addon.menu.basic.menu-color = white blue
-	addon.menu.basic.menu-text-color = blue
-	addon.menu.basic.submenu-color = #ffffff #bfffff
-	addon.menu.basic.item-color = cyan
-	addon.menu.basic.item-text-color = blue
-	addon.menu.basic.subitem-color = cyan
-	addon.menu.basic.subitem-text-color = blue
+	addon.menu.basic.menu-color = white
+	addon.menu.basic.menu-text-color = grey
+	addon.menu.basic.submenu-color = #d6d6d6
+	addon.menu.basic.item-color = white
+	addon.menu.basic.item-text-color = black
+	addon.menu.basic.subitem-color = grey
+	addon.menu.basic.subitem-text-color = white
 	addon.menu.basic.subitem-separator-color = white
 
 ###########################################################
 
 [main-column]
 child = slider, content
-css.width = 850px
+css.width = 750px
+css.margin-left = 15px
 
 	[slider]
 	condition = @HOMEPAGE=1
 	css.margin-top = 20px
-	css.margin-left = 10px
-	css.width = 700px
-	css.height = 500px
-	css.opacity = 1
-	addon.slider.flexslider.width = 600px
-	addon.slider.flexslider.height = 450px
+	css.width = 750px
+	css.height = 400px
+	#css.background-color = #f7d9ff
+	addon.slider.flexslider.width = 500px
+	addon.slider.flexslider.height = 375px
 	addon.slider.flexslider.border-width = 0px
-	addon.slider.flexslider.border-color = red
-	addon.slider.flexslider.active-dotcolor = red
-	addon.slider.flexslider.inactive-dotcolor = blue
-	addon.slider.flexslider.dot-margin-top = -200px
+	addon.slider.flexslider.border-color = white
+	addon.slider.flexslider.active-dotcolor = #9400c9 
+	addon.slider.flexslider.inactive-dotcolor = #cfcfcf
+	addon.slider.flexslider.dot-margin-top = -30px
 	addon.slider.flexslider.dot-margin-bottom = 0px
 	addon.slider.flexslider.dot-margin-left = 0px
 	addon.slider.flexslider.dot-margin-right = 0px
@@ -102,7 +107,7 @@ css.width = 850px
 
 
 	[content]
-	css.margin = 15px
+	#css.background-color = #e1ffd9
 	db.table = ContentBlock
 	db.filter = url=$_GET['page']
 	db.error = Sorry, I could not find th page $_GET['page']
@@ -113,56 +118,77 @@ css.width = 850px
 ##############################################################
 
 [footer]
-child = footer-menu, logo-footer
+child = footer-menu, logo-footer, footnote
 css.margin-top = 40px
-css.margin-left = 100px
-css.height = 300px
+css.margin-left = 20px
+css.height = 180px
 css.width = 960px
-css.background-color = #ffffff
+#css.background-color = #ffffff
+#css.background-color = #f7d9ff
 
 		[footer-menu]
 		stacking = horizontal
-		child = footer-margin, footer-cookies, footer-tandc, footer-contact, wirefly
-		css.height = 200px
+		child = footer-margin, footer-cookies, footer-tandc, footer-contact
+		css.height = 50px
 		css.width = 960px
 
 			[footer-margin]
 			css.width = 20%
-			css.height = 200px
+			css.height = 50px
 
 			[footer-cookies]
 			html.raw = Cookie Policy
 			css.width = 20%
 			css.color = #000000
-			css.text-align = left
+			css.font-size = 11px
+			css.text-align = right
 			click = ?layout=index&page=cookie-policy
 
 			[footer-tandc]
 			html.raw = Terms & Conditions
 			css.width = 20%
 			css.color = #000000
+			css.font-size = 11px
 			css.text-align = center
 			click = ?layout=index&page=terms-conditions
 
 			[footer-contact]
 			html.raw = Contact Us
-			css.text-align = right
+			css.text-align = left
 			css.width = 20%
 			css.color = #000000
+			css.font-size = 11px
 			click = ?layout=index&page=contact
 
-			[wirefly]
-			css.margin-top = 100px
-			css.height = 50px
-			css.width = 20%
-			image.url = img/wirefly-link-white.png
-			image.width = 161px
-			image.height = 40px
-			clicknew = http://www.wireflydesign.com
 
 	[logo-footer]
 	css.width = 100%
 	image.url = img/logo-footer.png
 	image.width = 800px
 	image.height = 85px
+	image.align = center
+	click = http://www.elegant.wireflydesign.com
+
+	[footnote]
+	child = copyright, wirefly
+	css.width = 100%
+	css.height = 50px
+	stacking = horizontal
+
+		[copyright]
+		css.width = 50%
+		css.margin-top = 10px
+		html.raw = Elegant Originals © 2014 All rights reserved
+		css.color = #000000
+		css.font-size = 11px
+		css.text-align = left
+
+	[wirefly]
+	css.margin-top = -10px
+	css.height = 50px
+	css.width = 50%
+	image.url = img/wirefly-weblink.png
+	image.width = 161px
+	image.height = 40px
 	image.align = right
+	clicknew = http://www.wireflydesign.com
