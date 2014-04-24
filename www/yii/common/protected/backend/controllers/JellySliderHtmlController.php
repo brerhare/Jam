@@ -62,6 +62,7 @@ class JellySliderHtmlController extends Controller
 	public function actionCreate()
 	{
 		$model=new JellySliderHtml;
+		$model->slider = 1;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);

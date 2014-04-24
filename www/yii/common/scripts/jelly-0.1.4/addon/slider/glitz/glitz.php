@@ -14,6 +14,7 @@ class glitz
 	private $defaultMode = 'html';		// html, image
 	private $defaultWidth = "900px";
 	private $defaultHeight = "250px";
+	private $defaultSlider = -1;
 
 	public $apiOption = array(
 		"width" => "900px",
@@ -40,6 +41,9 @@ class glitz
 		{
 			switch ($opt)
 			{
+				case "slider":
+					$this->defaultSlider = $val;
+					break;
 				case "width":
 					$this->defaultWidth = $val;
 					break;
@@ -59,6 +63,8 @@ class glitz
 							// If db based content
 							$sliderItems = JellySliderImage::model()->findAll(array('order'=>'sequence'));
 							foreach ($sliderItems as $sliderItem):
+								if (($this->defaultSlider != -1) && ($sliderItem->slider != $this->defaultSlider))
+									continue;
 								$content .= '<img src=' . Yii::app()->basePath . '/../userdata/jelly/sliderimage/' . $sliderItem->image . ' longdesc="http://' . $sliderItem->url . '" alt="' . $sliderItem->title . '" />';
 							endforeach;
 						}
