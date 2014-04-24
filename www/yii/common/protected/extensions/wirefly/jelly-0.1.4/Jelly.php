@@ -294,15 +294,18 @@ END_OF_FOOTER;
 		if (array_key_exists("condition", $array))
 		{
 			//die('x='.$array['condition']);
-			if (strstr($array['condition'], "=1"))
+			if (strstr($array['condition'], "@HOMEPAGE"))
 			{
-				if ($this->homePage == "0")
-					return;
-			}
-			else if (strstr($array['condition'], "=0"))
-			{
-				if ($this->homePage == "1")
-					return;	
+				if (strstr($array['condition'], "=1"))
+				{
+					if ($this->homePage == "0")
+						return;
+				}
+				else if (strstr($array['condition'], "=0"))
+				{
+					if ($this->homePage == "1")
+						return;	
+				}
 			}
 		}
 
