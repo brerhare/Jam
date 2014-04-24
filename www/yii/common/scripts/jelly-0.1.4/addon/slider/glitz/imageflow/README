@@ -1,0 +1,26 @@
+Usage
+-----
+"imageflow.js" has a function domReady (near the bottom) is the loader for the carousel.
+Duplicate this in your html (after the include) to override the original.
+You can then pass whatever params you need via your override.
+NB: Dont use 'myImageFlow' again for the id!
+
+Example
+-------
+domReady(function(){
+	var instanceOne = new ImageFlow();
+	instanceOne.init({
+		ImageFlowID:'myCarousel',
+		reflectPath:'/js/imageflow/',								<--- Path from website base to php script
+		imagePath:'/home/kim/dev/src/www/yii/glitzaratti.com/',		<--- Website base path
+		circular:true});
+	});
+
+<div id="myCarousel" class="imageflow">
+	<img src="/userdata/image/test/AB.jpg" longdesc="" width="500" height="500" alt="A Shoe" />
+</div>
+
+Documentation
+-------------
+http://finnrudolph.de/ImageFlow/Documentation
+

@@ -4,6 +4,10 @@
 	<?php echo CHtml::link(CHtml::encode($data->id),array('view','id'=>$data->id)); ?>
 	<br />
 
+	<b><?php echo CHtml::encode($data->getAttributeLabel('slider')); ?>:</b>
+	<?php echo CHtml::encode($data->slider); ?>
+	<br />
+
 	<b><?php echo CHtml::encode($data->getAttributeLabel('sequence')); ?>:</b>
 	<?php echo CHtml::encode($data->sequence); ?>
 	<br />
