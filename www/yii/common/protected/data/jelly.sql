@@ -81,6 +81,7 @@ DROP TABLE IF EXISTS `jelly_slider_image` ;
 
 CREATE  TABLE IF NOT EXISTS `jelly_slider_image` (
   `id` INT NOT NULL AUTO_INCREMENT ,
+  `slider` INT NULL ,
   `sequence` INT NULL ,
   `title` VARCHAR(255) NOT NULL ,
   `image` VARCHAR(255) NULL ,
@@ -97,6 +98,7 @@ DROP TABLE IF EXISTS `jelly_slider_html` ;
 
 CREATE  TABLE IF NOT EXISTS `jelly_slider_html` (
   `id` INT NOT NULL AUTO_INCREMENT ,
+  `slider` INT NULL ,
   `sequence` INT NULL ,
   `title` VARCHAR(255) NOT NULL ,
   `content` TEXT NULL ,
