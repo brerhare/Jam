@@ -18,6 +18,7 @@ img { height:50px;}
 	// 'filter'=>$model,
 	'columns'=>array(
 		// 'id',
+		'slider',
 		'sequence',
 
         array('name'=>'image',

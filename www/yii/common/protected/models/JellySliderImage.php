@@ -5,6 +5,7 @@
  *
  * The followings are the available columns in table 'jelly_slider_image':
  * @property integer $id
+ * @property integer $slider
  * @property integer $sequence
  * @property string $title
  * @property string $image
@@ -39,7 +40,7 @@ class JellySliderImage extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('title', 'required'),
-			array('sequence', 'numerical', 'integerOnly'=>true),
+			array('sequence, slider', 'numerical', 'integerOnly'=>true),
 			array('title', 'length', 'max'=>255),
 
             array('image', 'file','on'=>'insert',
@@ -59,7 +60,7 @@ class JellySliderImage extends CActiveRecord
 			array('url', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, sequence, title, image, url', 'safe', 'on'=>'search'),
+			array('id, slider, sequence, title, image, url', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -81,6 +82,7 @@ class JellySliderImage extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
+			'slider' => 'Slider Number',
 			'sequence' => 'Sequence',
 			'title' => 'Title',
 			'image' => 'Image',
@@ -100,6 +102,7 @@ class JellySliderImage extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
+		$criteria->compare('slider',$this->slider);
 		$criteria->compare('sequence',$this->sequence);
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('image',$this->image,true);
