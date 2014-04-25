@@ -13,7 +13,7 @@ css.background-color = #000000
 css.display = block
 
 	[site]
-	child = header, background, all-content, footer
+	child = header, all-content, footer
 	css.display = block
 	#css.width = 960px
 	#css.background-color = black
@@ -30,7 +30,7 @@ child = logo, menu
 css.background-color = #000000
 ###menu overlay #eb6200
 # When changing the height, also need to change it in css (adding 10px there)
-css.height = 200px
+css.height = 250px
 css.width = 100%
 
 [logo]
@@ -50,26 +50,6 @@ css.width = 1000px
 stacking = horizontal
 css.margin-left = 0px auto
 css.margin-right= 0px auto 
-	#how can we align things to centre automatically? Everything I have tried just doesn't seem to work?
-
-#css.overflow = visible
-#css.margin-top = 0px
-#css.margin-left = 0px
-#addon.menu.optimo.height = 500px
-#addon.menu.optimo.margin-top = 100px
-#addon.menu.basic.width = 200px
-#addon.menu.basic.height = 30px
-#addon.menu.basic.font-size = 12px
-#addon.menu.basic.menu-rounding = 0px
-#addon.menu.basic.menu-opacity = 96%
-#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
-#addon.menu.basic.menu-text-color = blue
-#addon.menu.basic.submenu-color = #ffffff #bfffff
-#addon.menu.basic.item-color = cyan
-#addon.menu.basic.item-text-color = blue
-#addon.menu.basic.subitem-color = cyan
-#addon.menu.basic.subitem-text-color = blue
-#addon.menu.basic.subitem-separator-color = white
 
 	[margin]
 	css.width = 13%
@@ -89,7 +69,7 @@ css.margin-right= 0px auto
 	image.width = 115px
 	image.height = 35px
 	image.align = centre
-	click = http://www.absoluteclassics.co.uk/?layout=index&page=Internation-music-platform-festival
+	click = http://www.absoluteclassics.co.uk/?layout=index&page=international-music-platform-festival
 
 	[menu3]
 	css.width = 25%
@@ -101,7 +81,18 @@ css.margin-right= 0px auto
 	
 ######## Background Image ###########################
 
-[background]
+
+
+
+######## Page Content ###############################
+
+[all-content]
+child = home-content, other-content
+css.width = 1200px
+
+[home-content]
+css.height = 480px
+condition = @HOMEPAGE=1
 css.width = 960px
 css.height = 500px
 css.margin-top = 30px
@@ -110,33 +101,6 @@ css.background-color = black
 	image.width = 600px
 	image.height = 462px
 	image.align = center
-
-
-######## Page Content ###############################
-
-[all-content]
-child = home-content, other-content
-css.width = 1200px
-css.margin-top = -530px
-#css.background-image = url('/img/background.jpg')
-
-[home-content]
-child = glitz-slider]
-css.height = 480px
-condition = @HOMEPAGE=1
-
-	[glitz-slider]
-	#condition = @PAGE=@HOMEPAGE
-	condition = @PAGE=cookie-policy
-	css.backgroundcolor = black
-	css.margin-top = 20px
-	css.width = 960px
-	#css.height = 250px ...This is one way of hiding the dots!
-	addon.slider.glitz.slider = 2
-	addon.slider.glitz.width = 956px
-	addon.slider.glitz.mode = image
-	addon.slider.glitz.source = db
-
 
 [other-content]
 child = second-menu, content-block
@@ -168,24 +132,59 @@ stacking = horizontal
 ### Need to specify the height and width of the items.
 
 	[content-block]
-	child = content
+	child = glitz-slider-series, glitz-slider-festival, image, content-background
 	css.width = 800px
 	css.margin-left = 60px
 	css.margin-top = 30px
-	fx.rounding = 4px
-	fx.opacity = 95%
-	css.background-color = white
-	
 
-	[content]
-	css.margin-top = 30px
-	css.margin-left = 50px
-	css.width = 700px
-	fx.opacity = 100%
-	db.table = ContentBlock
-	db.filter = url=$_GET['page']
-	db.error = Sorry, I could not find th page $_GET['page']
-	html.raw = ContentBlock.content
+
+		[glitz-slider-series]
+		#condition = @PAGE=@HOMEPAGE
+		condition = @PAGE=classical-music-series
+		css.backgroundcolor = black
+		css.margin-top = -100px
+		css.width = 795px
+		addon.slider.glitz.slider = 1
+		addon.slider.glitz.width = 790px
+		addon.slider.glitz.mode = image
+		addon.slider.glitz.source = db
+
+		[glitz-slider-festival]
+		#condition = @PAGE=@HOMEPAGE
+		condition = @PAGE=international-music-platform-festival
+		css.backgroundcolor = black
+		css.margin-top = -100px
+		css.width = 795px
+		addon.slider.glitz.slider = 2
+		addon.slider.glitz.width = 790px
+		addon.slider.glitz.mode = image
+		addon.slider.glitz.source = db
+
+		[image]
+		css.width = 800px
+		css.height = 500px
+		css.margin-left = -10px
+		image.url = img/centre-background.jpg
+		image.width = 600px
+		image.height = 462px
+		image.align = center
+
+
+		[content-background]
+		child = content
+		css.margin-top = -500px
+		fx.rounding = 4px
+		fx.opacity = 95%
+		css.background-color = white
+	
+			[content]
+			css.margin-left = 50px
+			css.width = 700px
+			fx.opacity = 100%
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find the page $_GET['page']
+			html.raw = ContentBlock.content
 
 
 ########## Footer #################################
