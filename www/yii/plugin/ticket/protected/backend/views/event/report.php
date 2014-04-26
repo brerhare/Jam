@@ -23,6 +23,8 @@ table tr {
 			<td style="text-align:right; width:60px">Total</td>
 		</tr>
 		<?php
+		$ticketTotal = 0;
+		$valueTotal = 0;
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("event_id = " . $model->id);
 		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
@@ -48,12 +50,14 @@ table tr {
 			</td>
 			<td style="text-align:right">
 				<?php echo $transaction->http_ticket_qty?>
+				<?php $ticketTotal += $transaction->http_ticket_qty?>
 			</td>
 			<td style="text-align:right">
 				<?php echo $transaction->http_ticket_price?>
 			</td>
 			<td style="text-align:right">
 				<?php echo $transaction->http_ticket_total?>
+				<?php $valueTotal += $transaction->http_ticket_total?>
 			</td>
 		</tr>
 		<tr>
@@ -83,6 +87,15 @@ table tr {
 			<td></td>
 		</tr>
 		<?php endforeach;?>
+		<tr style="background-color:#c3d9ff; color:#0088cc;">
+			<td>Totals</td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td style="text-align:right"><?php echo $ticketTotal?></td>
+			<td style="text-align:right; width:60px"></td>
+			<td style="text-align:right; width:60px"><?php echo $valueTotal?></td>
+		</tr>
 	</table>
 </div>
 </div>
