@@ -94,7 +94,7 @@ table tr {
 			<td></td>
 			<td style="text-align:right"><?php echo $ticketTotal?></td>
 			<td style="text-align:right; width:60px"></td>
-			<td style="text-align:right; width:60px"><?php echo $valueTotal?></td>
+			<td style="text-align:right; width:60px"><?php echo number_format((float)$valueTotal, 2, '.', '')?></td>
 		</tr>
 	</table>
 </div>
