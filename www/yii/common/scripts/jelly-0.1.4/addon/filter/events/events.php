@@ -29,7 +29,6 @@ class events
 //      var_dump( $options );
 
         // Generate the content into the html, replacing any <substituteN> tags
-        $content = "";
 
         // Check if any program has been selected in the iframe
         if (isset($_GET['programid']))
@@ -59,7 +58,9 @@ class events
         }
 
         // Insert the data
-        $content = "<div style='color:#575757;'>";      // Your basic solemn grey font color
+        $content = "";
+		$content .= "<script>var programId = " . $this->programId . ";</script>";
+        $content .= "<div style='color:#575757;'>";      // Your basic solemn grey font color
         $uid = Yii::app()->session['uid'];
 
         $twistyIcon = "<img style='padding-right:3px' title='" . 'Show more' . "' src='img/" . 'open-twisty.png' . "' >";
@@ -406,13 +407,13 @@ END_OF_API_HTML;
         sel = '?layout=index';
 
 		// Program lock?
-		//sel += '&sdate=' + selSDate;
+		sel += '&programid=' + programId;
 
         // Date
         sel += '&sdate=' + selSDate;
         sel += '&edate=' + selEDate;
         sel += '&textsearch=' + textSearch;
-/**/
+
         // Program
         av=document.getElementsByName("program[]");
         if (av.length > 0)
@@ -428,8 +429,6 @@ END_OF_API_HTML;
             }
             sel += '&program=' + str; 
         }
-        sel += '&program=0';
-/**/
 
         // Interest
         av=document.getElementsByName("interest[]");
@@ -526,6 +525,7 @@ END_OF_API_HTML;
             }
             sel += '&grade=' + str; 
         }
+alert(sel);
         // Activate the link
         window.location.href = sel;
     }

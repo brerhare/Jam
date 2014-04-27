@@ -31,7 +31,11 @@ class eventcode
 
 		// Check if any program has been selected in the iframe
         if (isset($_GET['programid']))
+		{
+//die('isset p='.$this->programId);
             $this->programId = (int) $_GET['programid'];
+		}
+//die('isNOTset p='.$this->programId);
 
 		foreach ($options as $opt => $val)
 		{
@@ -226,10 +230,17 @@ class eventcode
 		foreach ($events as $event)
 		{
 			// Check if we are filtering program
-			if ($this->programId != 0)
+			if ($this->programId == 0)
 			{
-				if ($event->program_id != $this->programId)
-					continue;
+//die('y');
+				if ((isset($_GET['program'])) && trim($_GET['program'] != ''))
+				{
+//die('x');
+					$showProgram = trim($_GET['program']);
+//die("eventprogramid=".$event->program_id . " and were looking for " . $showProgram);
+					if ($event->program_id != $showProgram)
+						continue;
+				}
 			}
 
 			// Check text search
