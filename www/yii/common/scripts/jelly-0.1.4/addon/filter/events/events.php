@@ -525,7 +525,7 @@ END_OF_API_HTML;
             }
             sel += '&grade=' + str; 
         }
-alert(sel);
+
         // Activate the link
         window.location.href = sel;
     }

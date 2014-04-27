@@ -105,6 +105,15 @@ class eventcode
 				if ($event->program_id != $this->programId)
 					continue;
 			}
+			else
+			{
+				if ((isset($_GET['program'])) && trim($_GET['program'] != ''))
+				{
+					$showProgram = trim($_GET['program']);
+					if ($event->program_id != $showProgram)
+						continue;
+				}
+			}
 
 			// Pick up the Ws record
 			$criteria = new CDbCriteria;
@@ -230,14 +239,16 @@ class eventcode
 		foreach ($events as $event)
 		{
 			// Check if we are filtering program
-			if ($this->programId == 0)
+			if ($this->programId != 0)
 			{
-//die('y');
+				if ($event->program_id != $this->programId)
+					continue;
+			}
+			else
+			{
 				if ((isset($_GET['program'])) && trim($_GET['program'] != ''))
 				{
-//die('x');
 					$showProgram = trim($_GET['program']);
-//die("eventprogramid=".$event->program_id . " and were looking for " . $showProgram);
 					if ($event->program_id != $showProgram)
 						continue;
 				}
