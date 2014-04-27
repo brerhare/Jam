@@ -13,6 +13,7 @@ class events
     //Defaults
     private $defaultDepartment = "";
     private $defaultWidth = "100%";
+	private $programId = 0;
 
 // Not used ...
     public $apiOption = array(
@@ -29,6 +30,11 @@ class events
 
         // Generate the content into the html, replacing any <substituteN> tags
         $content = "";
+
+        // Check if any program has been selected in the iframe
+        if (isset($_GET['programid']))
+            $this->programId = (int) $_GET['programid'];
+
         foreach ($options as $opt => $val)
         {
             switch ($opt)
@@ -87,6 +93,43 @@ class events
         $content .= "<input type='text' id='edatepicker' style='width:80px' value='" . $dt . "'>";
         $content .= "</div>";
         $content .= "</div>";
+
+/*****/
+       	$openProgram = false;
+		if ($this->programId == 0)
+		{
+        	// Program
+        	$programs = Program::model()->findAll(array('order'=>'id'));
+        	if ($programs)
+        	{
+            	$programSel = array();
+            	if (isset($_GET['program']))
+                	$programSel = explode('|', $_GET['program']);
+            	$content .= "<br>";
+	
+            	// $content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Program</a><br>";
+            	// $content .= "<a href='#'></a><div class='filter-header'>" . $twistyIcon . "Program<br>";
+            	$content .= "<div class='filter-header'>" . $twistyIcon . "<a href='#'>Program</a><br>";
+	
+            	$content .= "<div id='program-detail' class='filter-detail'>";
+            	foreach ($programs as $program):
+                	$match = false;
+                	if (in_array($program->id, $programSel))
+                	{
+                    	$match = true;
+                    	$openProgram = true;
+                	}
+                	$content .= "<label class='checkbox'> ";
+                	$content .= "<input name='program[]' "; 
+                	if ($match) $content .= " checked='checked' ";
+                	$content .= "type='checkbox' value='" . $program->id . "' onClick=makeSel()>" . $program->name;
+                	$content .= "</label><br>";
+            	endforeach;
+            	$content .= "</div>";
+            	$content .= "</div>";
+        	}
+		}
+/*****/
 
         // Interest
         $interests  = Interest::model()->findAll(array('order'=>'id'));
@@ -296,6 +339,11 @@ class events
 
         // Open twisty any selected groups of filters
         $content .= "<script>";
+		if ($this->programId == 0)
+		{
+        	if (!($openProgram))
+            	$content .= "document.getElementById('program-detail').style.display='none';";
+		}
         if (!($openInterest))
             $content .= "document.getElementById('interest-detail').style.display='none';";
         if (!($openFormat))
@@ -354,10 +402,34 @@ END_OF_API_HTML;
 
     function makeSel()
     {
+		// Basic start
+        sel = '?layout=index';
+
+		// Program lock?
+		//sel += '&sdate=' + selSDate;
+
         // Date
-        sel = '?layout=index&sdate=' + selSDate;
+        sel += '&sdate=' + selSDate;
         sel += '&edate=' + selEDate;
         sel += '&textsearch=' + textSearch;
+/**/
+        // Program
+        av=document.getElementsByName("program[]");
+        if (av.length > 0)
+        {
+            var str = '';
+           for (var i = 0; i < av.length; i++)
+           {
+               if (av[i].checked)
+                {
+                    if (str != '') str += '|';
+                    str += av[i].value;
+                }
+            }
+            sel += '&program=' + str; 
+        }
+        sel += '&program=0';
+/**/
 
         // Interest
         av=document.getElementsByName("interest[]");

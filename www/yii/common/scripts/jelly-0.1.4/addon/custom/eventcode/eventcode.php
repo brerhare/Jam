@@ -30,8 +30,8 @@ class eventcode
 		$this->sid = Yii::app()->session['sid'];
 
 		// Check if any program has been selected in the iframe
-        if (isset($_GET['program']))
-            $this->programId = (int) $_GET['program'];
+        if (isset($_GET['programid']))
+            $this->programId = (int) $_GET['programid'];
 
 		foreach ($options as $opt => $val)
 		{
