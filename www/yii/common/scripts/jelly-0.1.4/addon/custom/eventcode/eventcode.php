@@ -14,6 +14,7 @@ class eventcode
 	private $uid = "";
 	private $sid = "";
 	private $jellyRootUrl = "";
+	private $programId = 0;
 
 	/*
 	 * Set up any code pre-requisites (onload/document-ready reqs)
@@ -27,6 +28,10 @@ class eventcode
 
 		$this->uid = Yii::app()->session['uid'];
 		$this->sid = Yii::app()->session['sid'];
+
+		// Check if any program has been selected in the iframe
+        if (isset($_GET['program']))
+            $this->programId = (int) $_GET['program'];
 
 		foreach ($options as $opt => $val)
 		{
@@ -90,6 +95,13 @@ class eventcode
 		$events = Event::model()->findAll($criteria);
 		foreach ($events as $event)
 		{
+			// Check if we are filtering program
+			if ($this->programId != 0)
+			{
+				if ($event->program_id != $this->programId)
+					continue;
+			}
+
 			// Pick up the Ws record
 			$criteria = new CDbCriteria;
 			$criteria->condition = "event_id = " . $event->id;
@@ -213,6 +225,13 @@ class eventcode
 		$hasEvents = false;
 		foreach ($events as $event)
 		{
+			// Check if we are filtering program
+			if ($this->programId != 0)
+			{
+				if ($event->program_id != $this->programId)
+					continue;
+			}
+
 			// Check text search
 			if ((isset($_GET['textsearch'])) && trim($_GET['textsearch'] != ''))
 			{
