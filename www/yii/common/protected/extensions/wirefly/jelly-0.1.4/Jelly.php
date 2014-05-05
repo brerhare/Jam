@@ -290,14 +290,26 @@ END_OF_FOOTER;
 		// Search array for repeating fields - we'll generate an instance of this blob for each
 		$hasRepeatingField = false;
 
-		// Skip over 'condition' blobs that fail their condition @@TODO only @HOMEPAGE presently checked
+		// Skip over 'condition' blobs that fail their condition
 		if (array_key_exists("condition", $array))
 		{
-			//die('x='.$array['condition']);
 			if ((strstr($array['condition'], "@HOMEPAGE")) && !(strstr($array['condition'], "@PAGE")))
 			{
-				// Only show on homepage only (or not)
-				if (strstr($array['condition'], "=1"))
+				// condition = @HOMEPAGE=0
+				// condition = @HOMEPAGE=1
+				// condition = @HOMEPAGE!=0
+				// condition = @HOMEPAGE!=1
+				if (strstr($array['condition'], "!=1"))
+				{
+					if ($this->homePage == "1")
+						return;
+				}
+				else if (strstr($array['condition'], "!=0"))
+				{
+					if ($this->homePage == "0")
+						return;
+				}
+				else if (strstr($array['condition'], "=1"))
 				{
 					if ($this->homePage == "0")
 						return;
@@ -310,28 +322,33 @@ END_OF_FOOTER;
 			}
 			else if (strstr($array['condition'], "@PAGE"))
 			{
-				// Only show on a particular page
+				// condition = @PAGE=@HOMEPAGE
+				// condition = @PAGE!=@HOMEPAGE
+				// condition = @PAGE=classical-music-series
+				// condition = @PAGE!=classical-music-series
 				if (strstr($array['condition'], "="))
 				{
+					$not = 0;
+					if (strstr($array['condition'], "!"))
+						$not = 1;
 					$first = strstr($array['condition'], "=");
 					$second = strstr($first, "=");
 					$pageForCondition = ltrim($second, "=");
 					$pageLoading = "";
 					if (isset($_GET['page']))
-					{
 						$pageLoading = $_GET['page'];
-						//die('template page='. $pageLoading . 'loading page = ' . $_GET['page']);
-					}
 					else
 						$pageLoading = "@HOMEPAGE";
-					if ($pageLoading != $pageForCondition)
-						return;
-					//if (!(isset($_GET['page'])))
-						//die('home');
-
-					//die($_GET['page']);
-					//die($use);
-					//die('a='.$array['condition']);
+					if ($not == 0)
+					{
+						if ($pageLoading != $pageForCondition)
+							return;
+					}
+					else
+					{
+						if ($pageLoading == $pageForCondition)
+							return;
+					}
 				}
 			}
 		}

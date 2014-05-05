@@ -65,7 +65,10 @@ class glitz
 							foreach ($sliderItems as $sliderItem):
 								if (($this->defaultSlider != -1) && ($sliderItem->slider != $this->defaultSlider))
 									continue;
-								$content .= '<img src=' . Yii::app()->basePath . '/../userdata/jelly/sliderimage/' . $sliderItem->image . ' longdesc="http://' . $sliderItem->url . '" alt="' . $sliderItem->title . '" />';
+								$http = 'http://';
+								if (strstr($sliderItem->url, 'http://'))
+									$http = '';
+								$content .= '<img src=' . Yii::app()->basePath . '/../userdata/jelly/sliderimage/' . $sliderItem->image . ' longdesc= "' . $http . $sliderItem->url . '" alt="' . $sliderItem->title . '" />';
 							endforeach;
 						}
 						else if ($val == "glob")
