@@ -41,6 +41,7 @@
 		z-index:10000;
 	}
 	.imageflow .caption {
+color:white;
 		font-weight:bold;
 		position:relative; 
 		text-align:center;
