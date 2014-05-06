@@ -30,6 +30,7 @@ return array(
 		'application.components.*',
 		'backend.models.*',
 		'backend.components.*',
+		'application.extensions.PHPMailer.*',
 	),
 
 	'modules'=>array(
