@@ -5,6 +5,8 @@ $criteria->addCondition("uid = " . Yii::app()->session['uid']);
 $vendor = Vendor::model()->find($criteria);
 if ($vendor)
 	$vendorName = $vendor->name;
+$ticketArray = array();
+$valueArray = array();
 ?>
 
 <h4>
@@ -14,17 +16,20 @@ echo $model->title . " as at " . date("d/m/y") . ' (' . $vendorName . ' / ' . st
 </h4>
 
 <style>
+.background1 { background-color:#d7e3f9; }
+.background2 { background-color:#ffffff; }
 table td, table th {
 	padding: 0;
 }
 table tr {
 	background-color:#f8f8f8;
 	padding: 2px;
+}
 </style>
 
 <div class="row">
 <div class="span11">
-	<table>
+	<table id="reportTable">
 		<tr style="background-color:#c3d9ff; color:#0088cc;">
 			<td>Date</td>
 			<td>Order Number</td>
@@ -40,6 +45,7 @@ table tr {
 		$prevOrder = "";
 		$ticketTotal = 0;
 		$valueTotal = 0;
+		$lc = 0; 
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("event_id = " . $model->id);
 		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
@@ -49,9 +55,12 @@ table tr {
 			$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 			$criteria->addCondition("order_number = '" . $transaction->order_number . "'");
 			$auth = Auth::model()->find($criteria);
+			if ($prevOrder != $transaction->order_number)
+			$lc++; 
+			$class = ($lc%2 == 0)? 'background1': 'background2';
 		?>
-		<tr>
-<?php if ($prevOrder != $transaction->order_number): ?>
+		<?php echo "<tr class=" . $class . ">" ?>
+			<?php if ($prevOrder != $transaction->order_number) : ?>
 			<td>
 				<?php
 				$date = $transaction->timestamp;
@@ -96,16 +105,28 @@ table tr {
 				?>
 			</td>
 			<td style="text-align:right">
-				<?php echo $transaction->http_ticket_qty?>
-				<?php $ticketTotal += $transaction->http_ticket_qty?>
+				<?php
+				echo $transaction->http_ticket_qty;
+				$ticketTotal += $transaction->http_ticket_qty;
+				if (!(array_key_exists($ticketType->description, $ticketArray)))
+				{
+					$ticketArray[$ticketType->description] = 0;
+					$valueArray[$ticketType->description] = 0;
+				}
+				$ticketArray[$ticketType->description] += $transaction->http_ticket_qty;
+				$valueArray[$ticketType->description] += $transaction->http_ticket_total;
+				?>
 			</td>
 			<td style="text-align:right">
-				<?php echo $transaction->http_ticket_total?>
-				<?php $valueTotal += $transaction->http_ticket_total?>
+				<?php
+				echo $transaction->http_ticket_total;
+				$valueTotal += $transaction->http_ticket_total;
+				?>
 			</td>
 		</tr>
 		<?php $prevOrder = $transaction->order_number; ?>
 		<?php endforeach;?>
+
 		<tr style="background-color:#c3d9ff; color:#0088cc;">
 			<td>Totals</td>
 			<td></td>
@@ -117,6 +138,61 @@ table tr {
 			<td style="text-align:right"><?php echo $ticketTotal?></td>
 			<td style="text-align:right; width:60px"><?php echo number_format((float)$valueTotal, 2, '.', '')?></td>
 		</tr>
+
 	</table>
 </div>
 </div>
+
+<script>
+$(document).ready(function() {
+	var table = document.getElementById("reportTable");
+	<?php
+	$lc = 0;
+	$totalQ = 0;
+	$totalV = 0;
+	foreach ($ticketArray as $k => $v):
+		echo "var row = table.insertRow(" . $lc++ . ");\n";
+		for ($x = 0; $x < 6; $x++)
+			echo "row.insertCell(" . $x . ");";
+		echo "\n";
+
+		echo "var ticketType = row.insertCell(6);\n";
+		$clean = str_replace('"', "'", $k);
+		echo 'ticketType.innerHTML = "' . substr($clean, 0, 30) . '";' . "\n";
+
+		echo "var ticketQ = row.insertCell(7);\n";
+		echo 'ticketQ.innerHTML = "' . $v . '";' . "\n";
+		echo 'ticketQ.style.textAlign = "' . 'right' . '";' . "\n";
+
+		echo "var ticketV = row.insertCell(8);\n";
+		echo 'ticketV.innerHTML = "' . number_format((float)$valueArray[$k], 2, '.', '') . '";' . "\n";
+		echo 'ticketV.style.textAlign = "' . 'right' . '";' . "\n";
+
+		$totalQ += $v;
+		$totalV += $valueArray[$k];
+	endforeach;
+		echo "var row = table.insertRow(" . $lc++ . ");\n";
+		echo "dummy = row.insertCell(0);";
+		echo 'dummy.innerHTML = "&nbsp";';
+
+		// Finally the total at the top
+		echo "var row = table.insertRow(" . '0' . ");\n";
+		for ($x = 0; $x < 6; $x++)
+			echo "row.insertCell(" . $x . ");";
+		echo "var totalType = row.insertCell(6);\n";
+		echo "totalType.innerHTML = 'Total Tickets';\n";
+		echo "totalType.style.fontWeight = 'bold';\n";
+
+		echo "var totalQ = row.insertCell(7);\n";
+		echo 'totalQ.innerHTML = "' . $totalQ . '";' . "\n";
+		echo 'totalQ.style.textAlign = "' . 'right' . '";' . "\n";
+		echo "totalQ.style.fontWeight = 'bold';\n";
+
+		echo "var totalV = row.insertCell(8);\n";
+		echo 'totalV.innerHTML = "' . number_format((float)$totalV, 2, '.', '') . '";' . "\n";
+		echo 'totalV.style.textAlign = "' . 'right' . '";' . "\n";
+		echo "totalV.style.fontWeight = 'bold';\n";
+	?>
+});
+</script>
+
