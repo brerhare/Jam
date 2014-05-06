@@ -189,7 +189,7 @@ class EventController extends Controller
 	}
 
 	/**
-	 * Download .CSV for this event
+	 * Show the 'Download .CSV for this event' view
 	 */
 	public function actionDownload($id)
 	{
@@ -203,7 +203,7 @@ class EventController extends Controller
 	}
 
 	/**
-	 * Export CSV report
+	 * Export CSV report (called from the 'download' view)
 	 */
 	public function actionExportCSV($id)
 	{
@@ -211,6 +211,132 @@ class EventController extends Controller
 		$model=$this->loadModel($id);
 		if(isset($_GET['Event']))
 			$model->attributes=$_GET['Event'];
+
+		$cr = "<br>";
+		$heading = array('event', 'area', 'ticket_type', 'date', 'order_number', 'auth_code', 'name', 'email', 'telephone', 'address1', 'address2', 'address3', 'address4', 'city', 'county', 'post_code', 'price_each', 'sales_qty', 'sales_value');
+		
+		if (file_exists('/tmp/ticketVendorExport.csv'))
+			unlink('/tmp/ticketVendorExport.csv');
+		$fp2 = fopen('/tmp/ticketVendorExport.csv', 'w');
+		fputcsv($fp2, $heading);
+		$umsg = "";	
+		$hasActiveEvent = false;
+		$uQty = 0;
+		$uVal = 0;
+
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("id = " . $id);
+		$event = Event::model()->find($criteria);
+		if ($event)
+		{
+			if (!($event->active))
+				continue;
+
+			// Pick up the vendor record
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("id = " . $event->ticket_vendor_id);
+			$vendor = Vendor::model()->find($criteria);
+			if (!($vendor))
+				continue;
+
+			$umsg .= "<i>" . $cr . $event->title . " : " . $event->date . "</i>" . $cr;
+			$hasActiveEvent = true;
+			$eQty = 0;
+			$eVal = 0;
+
+			$areas = $event->areas; $etbl = "<table  border='0' cellspacing='3' cellpadding='3' style='border: 15px solid #EEEEEE'><tr><td><u>Area</u></td><td><u>Ticket Type</u></td><td><u>Sales Qty</u></td><td><u>Sales Value</u></td></tr>";
+			foreach ($areas as $area)	// All ticket areas
+			{
+				$ticketTypes = $area->ticketTypes;
+				foreach ($ticketTypes as $ticketType)	// All ticket types
+				{
+					$etbl .= "<tr>";
+					$etbl .= "<td>" . $area->description . "</td>";	
+					$etbl .= "<td>" . $ticketType->description . "</td>";
+					$qty = 0;
+					$val = 0;
+
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("vendor_id = " . $vendor->id);
+					$criteria->addCondition("event_id = " . $event->id);
+					$criteria->addCondition("http_area_id = " . $area->id);
+					$criteria->addCondition("http_ticket_type_id = " . $ticketType->id);
+						$transactions = Transaction::model()->findAll($criteria);
+					foreach ($transactions as $transaction)	// All event transactions for the period
+					{
+						$criteria = new CDbCriteria;
+						$criteria->addCondition("order_number = '" . $transaction->order_number . "'");
+						$auth = Auth::model()->find($criteria);
+						$name = "";
+						$a1 = "";
+						$a2 = "";
+						$a3 = "";
+						$a4 = "";
+						$city = "";
+						$state = "";
+						$pc = "";
+						if ($auth != null)
+						{
+							$a1 = $auth->address1;
+							$a2 = $auth->address2;
+							$a3 = $auth->address3;
+							$a4 = $auth->address4;
+							$city = $auth->city;
+							$state = $auth->state;
+							$pc = $auth->post_code;
+						}
+
+						$line = array($vendor->name, $event->title, $area->description, $ticketType->description, $transaction->timestamp, $transaction->order_number, $transaction->auth_code, $name, $transaction->email, $transaction->telephone, $a1, $a2, $a3, $a4, $city, $state, $pc, sprintf("%01.2f", $transaction->http_ticket_price), $transaction->http_ticket_qty, sprintf("%01.2f", $transaction->http_ticket_total));
+						fputcsv($fp2, $line);
+
+						if ($transaction->auth_code == NULL)
+							continue;	// We only want paymentsense sales on the report (not manual)
+
+						$qty += $transaction->http_ticket_qty;
+						$val += $transaction->http_ticket_total;
+						$eQty += $transaction->http_ticket_qty;
+						$eVal += $transaction->http_ticket_total;
+						if ($transaction->http_ticket_price != "0.00")
+							$uQty += $transaction->http_ticket_qty;
+						$uVal += $transaction->http_ticket_total;
+					}
+					$etbl .= "<td style='text-align:right'>" . $qty . "</td>";
+					$etbl .= "<td style='text-align:right'>" . sprintf("%01.2f", $val) . "</td>";
+					$etbl .= "</tr>";
+				}
+			}
+			$etbl .= "<tr><td></td><td style='text-align:right'><i>Total</i></td><td style='text-align:right'><i>" . $eQty . "</i></td><td style='text-align:right'><i>" . sprintf("%01.2f", $eVal) . "</i></td></table>";
+			$umsg .= $etbl;
+		}
+
+		fclose($fp2);
+
+		if ($hasActiveEvent)
+		{
+			// Send email to vendor
+			$to = $vendor->email;
+			$att_filename = "/tmp/ticketVendorSales.csv";
+			if (strlen($to) > 0)
+			{
+				$from = "admin@dglink.co.uk";
+				$fromName = "Admin";
+				$subject = "Your requested ticket sales report";
+				$message = $umsg; 
+				// phpmailer
+				$mail = new PHPMailer();
+				$mail->AddAddress($to);
+//$mail->AddBCC("kim@wireflydesign.com");
+				$mail->SetFrom($from, $fromName);
+				$mail->AddReplyTo($from, $fromName);
+				$mail->AddAttachment($att_filename);
+				$mail->Subject = $subject;
+				$mail->MsgHTML($message);
+				if (!$mail->Send())
+					Yii::log("WEEKLY REPORT COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
+				else
+					Yii::log("WEEKLY SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+			}
+		}
 
 		$this->redirect(array('admin'));
 	}
