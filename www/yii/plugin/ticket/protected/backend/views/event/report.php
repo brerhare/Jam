@@ -7,7 +7,11 @@ if ($vendor)
 	$vendorName = $vendor->name;
 ?>
 
-<h4><?php echo $model->title . " as at " . date("d/m/y") . ' (' . $vendorName . ' / ' . $model->date . ')'?></h4>
+<h4>
+<?php
+echo $model->title . " as at " . date("d/m/y") . ' (' . $vendorName . ' / ' . str_replace('-', '/', $model->date) . ')'
+?>
+</h4>
 
 <style>
 table td, table th {
