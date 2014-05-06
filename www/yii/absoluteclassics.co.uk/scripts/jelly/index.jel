@@ -139,7 +139,6 @@ stacking = horizontal
 
 
 		[glitz-slider-series]
-		#condition = @PAGE=@HOMEPAGE
 		condition = @PAGE=classical-music-series
 		css.backgroundcolor = black
 		css.margin-top = -100px
