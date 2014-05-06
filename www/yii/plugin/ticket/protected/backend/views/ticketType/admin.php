@@ -27,12 +27,12 @@ $('.search-form form').submit(function(){
 */
 ?>
 
-<h2>Manage Ticket Types for 
+<h4>Manage Ticket Types for 
 <?php
     $model_area = Area::model()->findByPk(Yii::app()->session['area_id']);
     echo $model_area->description; 
 ?> 
-</h2>
+</h4>
 
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'ticket-type-grid',

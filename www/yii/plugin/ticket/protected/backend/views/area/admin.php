@@ -27,12 +27,12 @@ $('.search-form form').submit(function(){
 */
 ?>
 
-<h2>Manage Areas for 
+<h4>Manage Areas for 
 <?php
     $model_event = Event::model()->findByPk(Yii::app()->session['event_id']);
     echo $model_event->title; 
 ?> 
-</h2>
+</h4>
 
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'area-grid',

@@ -13,6 +13,6 @@ $this->menu=array(
 );
 ?>
 
-<h2>Update TicketType <?php echo $model->description; ?></h2>
+<h4>Update TicketType <?php echo $model->description; ?></h4>
 
 <?php echo $this->renderPartial('_form',array('model'=>$model)); ?>

@@ -12,6 +12,6 @@ $this->menu=array(
 );
 ?>
 
-<h2>Create Area</h2>
+<h4>Create Area</h4>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
