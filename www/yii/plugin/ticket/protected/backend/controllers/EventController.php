@@ -33,11 +33,11 @@ class EventController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','delete','report','showReport'),
+				'actions'=>array('create','update','admin','delete','download','exportCSV','showReport'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','report','showReport'),
+				'actions'=>array('admin','delete','download','exportCSV','showReport'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -189,6 +189,33 @@ class EventController extends Controller
 	}
 
 	/**
+	 * Download .CSV for this event
+	 */
+	public function actionDownload($id)
+	{
+		$model=$this->loadModel($id);
+		if(isset($_GET['Event']))
+			$model->attributes=$_GET['Event'];
+
+		$this->render('download',array(
+			'model'=>$this->loadModel($id),
+		));
+	}
+
+	/**
+	 * Export CSV report
+	 */
+	public function actionExportCSV($id)
+	{
+//die('x='.$id);
+		$model=$this->loadModel($id);
+		if(isset($_GET['Event']))
+			$model->attributes=$_GET['Event'];
+
+		$this->redirect(array('admin'));
+	}
+
+	/**
 	 * Show report for event $id (called by above function's view)
 	 */
 	public function actionShowReport($id)
@@ -198,7 +225,7 @@ class EventController extends Controller
 			$model->attributes=$_GET['Event'];
 
 		$this->render('report',array(
-			'model'=>$this->loadModel($id),
+			'model'=>$model,
 		));
 	}
 
