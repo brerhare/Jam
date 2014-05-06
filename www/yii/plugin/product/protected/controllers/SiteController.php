@@ -89,14 +89,23 @@ header($this->p3p);
 		{
 			Yii::log("Checkout - payment type requested is " . $_GET['ptype'] , CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
+
+		// Check vendor cart details exist
 		if ((trim(Yii::app()->session['checkoutEmail']) == "")
-		|| (trim(Yii::app()->session['checkoutName']) == "")
-		|| (trim(Yii::app()->session['checkoutGatewayUser']) == "")
-		|| (trim(Yii::app()->session['checkoutGatewayPassword']) == ""))
+		|| (trim(Yii::app()->session['checkoutName']) == ""))
 		{
-			Yii::log("Checkout - NOT LOADING PAYMENT PAGE because gateway details arent present" , CLogger::LEVEL_WARNING, 'system.test.kim');
-			throw new CHttpException(400,'Cannot proceed to payment because Gateway details dont exist');
+			Yii::log("Checkout - NOT LOADING PAYMENT PAGE because vendor cart details arent present" , CLogger::LEVEL_WARNING, 'system.test.kim');
+			throw new CHttpException(400,'Cannot proceed to payment because vendor cart details dont exist');
 		}
+
+		// Check vendor has at least one payment type
+		if ((trim(Yii::app()->session['checkoutGatewayUser']) == "")
+		&& (trim(Yii::app()->session['checkoutPaypalUser']) == ""))
+		{
+			Yii::log("Checkout - NOT LOADING PAYMENT PAGE because no payment processor details are present" , CLogger::LEVEL_WARNING, 'system.test.kim');
+			throw new CHttpException(400,'Cannot proceed to payment because No payment processor details exist');
+		}
+
 		if (isset($_GET['shipid']))
 			$shipId = $_GET['shipid'];
 		else
@@ -260,8 +269,7 @@ header($this->p3p);
 		{
 			// Paypal
 			//$this->renderPartial('paypal');
-/**/
-$this->layout = "nosuchlayout";
+			$this->layout = "nosuchlayout";			// Needs this to connect to Paypal
 			$this->render('paypal',array(
 				'description'=>'Purchase from ' . Yii::app()->session['checkoutName'],
             	'subtotal'=>$subtotalGoods,

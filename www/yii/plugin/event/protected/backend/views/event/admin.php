@@ -7,7 +7,7 @@ $this->menu=array(
 
 ?>
 
-<h1>Manage Events</h1>
+<h4>Manage Events</h4>
 
 
 

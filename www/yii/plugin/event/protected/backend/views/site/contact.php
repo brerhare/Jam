@@ -6,7 +6,7 @@
 $this->pageTitle=Yii::app()->name . ' - Contact Us';
 ?>
 
-<h1>Contact Us</h1>
+<h4>Contact Us</h4>
 
 <?php if(Yii::app()->user->hasFlash('contact')): ?>
 

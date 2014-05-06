@@ -496,7 +496,10 @@ function showDates() {
 	cell = rowMonth.insertCell(0);
 
 	var d = new Date(0); // The 0 sets the date to the epoch
+//	var dTest = new Date(0); // The 0 sets the date to the epoch
 	d.setUTCSeconds(timeStamp);
+//	dTest.setSeconds(timeStamp);
+//alert('timestamp='+timeStamp + ', setUTCSeconds=' + d.toISOString() + ', setSeconds=' + dTest.toISOString());
 
 	for (var i = 0; i < 14; i++)
 	{

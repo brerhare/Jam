@@ -9,7 +9,7 @@ $this->menu=array(
 );
 ?>
 
-<h1>Price Bands</h1>
+<h4>Price Bands</h4>
 
 <?php $this->widget('bootstrap.widgets.TbListView',array(
 	'dataProvider'=>$dataProvider,
