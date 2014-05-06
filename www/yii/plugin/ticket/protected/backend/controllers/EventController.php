@@ -244,15 +244,12 @@ class EventController extends Controller
 			$eQty = 0;
 			$eVal = 0;
 
-			$areas = $event->areas; $etbl = "<table  border='0' cellspacing='3' cellpadding='3' style='border: 15px solid #EEEEEE'><tr><td><u>Area</u></td><td><u>Ticket Type</u></td><td><u>Sales Qty</u></td><td><u>Sales Value</u></td></tr>";
+			$areas = $event->areas;
 			foreach ($areas as $area)	// All ticket areas
 			{
 				$ticketTypes = $area->ticketTypes;
 				foreach ($ticketTypes as $ticketType)	// All ticket types
 				{
-					$etbl .= "<tr>";
-					$etbl .= "<td>" . $area->description . "</td>";	
-					$etbl .= "<td>" . $ticketType->description . "</td>";
 					$qty = 0;
 					$val = 0;
 
@@ -262,7 +259,7 @@ class EventController extends Controller
 					$criteria->addCondition("http_area_id = " . $area->id);
 					$criteria->addCondition("http_ticket_type_id = " . $ticketType->id);
 						$transactions = Transaction::model()->findAll($criteria);
-					foreach ($transactions as $transaction)	// All event transactions for the period
+					foreach ($transactions as $transaction)	// All event transactions for the event
 					{
 						$criteria = new CDbCriteria;
 						$criteria->addCondition("order_number = '" . $transaction->order_number . "'");
@@ -286,7 +283,7 @@ class EventController extends Controller
 							$pc = $auth->post_code;
 						}
 
-						$line = array($vendor->name, $event->title, $area->description, $ticketType->description, $transaction->timestamp, $transaction->order_number, $transaction->auth_code, $name, $transaction->email, $transaction->telephone, $a1, $a2, $a3, $a4, $city, $state, $pc, sprintf("%01.2f", $transaction->http_ticket_price), $transaction->http_ticket_qty, sprintf("%01.2f", $transaction->http_ticket_total));
+						$line = array($event->title, $area->description, $ticketType->description, $transaction->timestamp, $transaction->order_number, $transaction->auth_code, $name, $transaction->email, $transaction->telephone, $a1, $a2, $a3, $a4, $city, $state, $pc, sprintf("%01.2f", $transaction->http_ticket_price), $transaction->http_ticket_qty, sprintf("%01.2f", $transaction->http_ticket_total));
 						fputcsv($fp2, $line);
 
 						if ($transaction->auth_code == NULL)
@@ -300,13 +297,8 @@ class EventController extends Controller
 							$uQty += $transaction->http_ticket_qty;
 						$uVal += $transaction->http_ticket_total;
 					}
-					$etbl .= "<td style='text-align:right'>" . $qty . "</td>";
-					$etbl .= "<td style='text-align:right'>" . sprintf("%01.2f", $val) . "</td>";
-					$etbl .= "</tr>";
 				}
 			}
-			$etbl .= "<tr><td></td><td style='text-align:right'><i>Total</i></td><td style='text-align:right'><i>" . $eQty . "</i></td><td style='text-align:right'><i>" . sprintf("%01.2f", $eVal) . "</i></td></table>";
-			$umsg .= $etbl;
 		}
 
 		fclose($fp2);
@@ -315,7 +307,7 @@ class EventController extends Controller
 		{
 			// Send email to vendor
 			$to = $vendor->email;
-			$att_filename = "/tmp/ticketVendorSales.csv";
+			$att_filename = "/tmp/ticketVendorExport.csv";
 			if (strlen($to) > 0)
 			{
 				$from = "admin@dglink.co.uk";
