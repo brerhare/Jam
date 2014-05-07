@@ -229,8 +229,8 @@ class EventController extends Controller
 		$event = Event::model()->find($criteria);
 		if ($event)
 		{
-			if (!($event->active))
-				continue;
+			//if (!($event->active))
+				//continue;
 
 			// Pick up the vendor record
 			$criteria = new CDbCriteria;
