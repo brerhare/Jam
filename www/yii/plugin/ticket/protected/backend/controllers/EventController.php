@@ -237,7 +237,9 @@ class EventController extends Controller
 			$criteria->addCondition("id = " . $event->ticket_vendor_id);
 			$vendor = Vendor::model()->find($criteria);
 			if (!($vendor))
-				continue;
+				throw new CHttpException(400,'Vendor record missing');
+			if (trim($vendor->email) == "")
+				throw new CHttpException(400,'Please set up an email address in your vendor record');
 
 			$umsg .= "<i>" . $cr . $event->title . " : " . $event->date . "</i>" . $cr;
 			$hasActiveEvent = true;
