@@ -87,6 +87,7 @@ class VendorReportCommand extends CConsoleCommand
 							$pc = "";
 							if ($auth != null)
 							{
+								$name = $auth->card_name;
 								$a1 = $auth->address1;
 								$a2 = $auth->address2;
 								$a3 = $auth->address3;
