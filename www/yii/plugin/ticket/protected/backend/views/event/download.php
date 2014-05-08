@@ -17,7 +17,7 @@
 					'type'=>'primary',
 					'label'=>'Download',
 					'url'=> array('/event/exportCSV/?id='.$model->id),
-				)); ?> &nbsp&nbsp&nbsp&nbspThe CSV formatted file will be emailed to you
+				)); ?> &nbsp&nbsp&nbsp&nbspThe file is in CSV format
 			</div>
 		</div>
 	<?php endif; ?>

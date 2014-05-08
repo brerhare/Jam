@@ -308,6 +308,10 @@ class EventController extends Controller
 
 		if ($hasActiveEvent)
 		{
+			// Send file to user
+			Yii::app()->getRequest()->sendFile( "Export.csv" , file_get_contents( "/tmp/ticketVendorExport.csv" ) );
+
+/*****
 			// Send email to vendor
 			$to = $vendor->email;
 			$att_filename = "/tmp/ticketVendorExport.csv";
@@ -331,6 +335,7 @@ class EventController extends Controller
 				else
 					Yii::log("WEEKLY SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
 			}
+*****/
 		}
 
 		$this->redirect(array('admin'));
