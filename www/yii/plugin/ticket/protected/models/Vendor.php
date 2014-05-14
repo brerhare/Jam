@@ -10,6 +10,7 @@
  * @property string $address
  * @property string $post_code
  * @property string $email
+ * @property integer $notify_sale
  * @property string $telephone
  * @property string $vat_number
  * @property string $bank_account_name
@@ -48,13 +49,13 @@ class Vendor extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('uid, name', 'required'),
-			array('uid', 'numerical', 'integerOnly'=>true),
+			array('uid, notify_sale', 'numerical', 'integerOnly'=>true),
 			array('name, email, telephone, bank_account_name, bank_account_number', 'length', 'max'=>255),
 			array('post_code, vat_number, bank_sort_code', 'length', 'max'=>45),
 			array('address', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, name, address, post_code, email, telephone, vat_number, bank_account_name, bank_account_number, bank_sort_code', 'safe', 'on'=>'search'),
+			array('id, uid, name, address, post_code, email, notify_sale, telephone, vat_number, bank_account_name, bank_account_number, bank_sort_code', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -82,6 +83,7 @@ class Vendor extends CActiveRecord
 			'address' => 'Address',
 			'post_code' => 'Post Code',
 			'email' => 'Email',
+			'notify_sale' => 'Notify Sale',
 			'telephone' => 'Telephone',
 			'vat_number' => 'Vat Number',
 			'bank_account_name' => 'Bank Account Name',
@@ -108,6 +110,7 @@ class Vendor extends CActiveRecord
 		$criteria->compare('address',$this->address,true);
 		$criteria->compare('post_code',$this->post_code,true);
 		$criteria->compare('email',$this->email,true);
+		$criteria->compare('notify_sale',$this->notify_sale,true);
 		$criteria->compare('telephone',$this->telephone,true);
 		$criteria->compare('vat_number',$this->vat_number,true);
 		$criteria->compare('bank_account_name',$this->bank_account_name,true);

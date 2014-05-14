@@ -17,6 +17,7 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`ticket_vendor` (
   `address` TEXT NULL ,
   `post_code` VARCHAR(45) NULL ,
   `email` VARCHAR(255) NULL ,
+  `notify_sale` INT NULL ,
   `telephone` VARCHAR(255) NULL ,
   `vat_number` VARCHAR(45) NULL ,
   `bank_account_name` VARCHAR(255) NULL ,
