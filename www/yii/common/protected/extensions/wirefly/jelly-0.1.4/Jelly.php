@@ -224,7 +224,6 @@ END_OF_FOOTER;
 				}
 			}
 
-
 			if ((is_array($value)) && (array_key_exists("child", $value)))
 			{
 				//$this->logMsg("child : " . $value['child'] . "\n", 2);
@@ -289,7 +288,6 @@ END_OF_FOOTER;
 	{
 		// Search array for repeating fields - we'll generate an instance of this blob for each
 		$hasRepeatingField = false;
-
 		// Skip over 'condition' blobs that fail their condition
 		if (array_key_exists("condition", $array))
 		{
@@ -336,9 +334,14 @@ END_OF_FOOTER;
 					$pageForCondition = ltrim($second, "=");
 					$pageLoading = "";
 					if (isset($_GET['page']))
+					{
 						$pageLoading = $_GET['page'];
+						if ($this->homePage == 1)
+							$pageLoading = "@HOMEPAGE";
+					}
 					else
 						$pageLoading = "@HOMEPAGE";
+//die('blobname='.$blobName. ' not='.$not.' loading='.$pageLoading.' condition='.$pageForCondition);
 					if ($not == 0)
 					{
 						if ($pageLoading != $pageForCondition)
@@ -389,7 +392,6 @@ END_OF_FOOTER;
 											break;
 										}
 									}
-
 									// Look for clipboard. NB this is id=1 or id=2 or ... etc
 									if (strstr(trim($elemComma) ,'@CLIPBOARD'))
 									{
@@ -512,7 +514,6 @@ Yii::log("REPEATING EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim
                 }
 			}
 		}
-
 		if (!($hasRepeatingField))
 			$this->blobProcess2($jellyArray, $blobName, $array, $float, $indentLevel);
 	}
@@ -527,7 +528,7 @@ if (isset($_GET['page']))
 {
  if ($_GET['page'] != 'Jacquies-Beauty-Dumfries-Salon')
  {
-  if ((substr($blobName,0,4) == 'tabs') || (substr($blobName,0,13) == 'tabscontainer'))
+  if ((substr($blobName,0,4) == 'jtabs') || (substr($blobName,0,13) == 'tabscontainer'))
    return;
   }
 }
@@ -549,6 +550,7 @@ if (isset($_GET['page']))
 		$floatChildren = false;
 		if ((array_key_exists("stacking", $array)) && ($array["stacking"] == "horizontal"))
 			$floatChildren = true;
+
 
 		foreach ($array as $name => $value)
 		{
@@ -794,7 +796,6 @@ if (isset($_GET['page']))
 											break;
 										}
 									}
-
 									// Look for clipboard. NB this is id=1 or id=2 or ... etc
 									if (strstr(trim($elemComma) ,'@CLIPBOARD'))
 									{
