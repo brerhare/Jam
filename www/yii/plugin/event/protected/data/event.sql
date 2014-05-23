@@ -24,6 +24,7 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`event_member` (
   `captcha` VARCHAR(45) NULL ,
   `sid` VARCHAR(255) NULL ,
   `avatar_path` VARCHAR(255) NULL ,
+  `lock_event_program_id` INT NULL COMMENT 'If non-zero this member is locked to a single program' ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `user_name_UNIQUE` (`user_name` ASC) )
 ENGINE = InnoDB;
@@ -276,6 +277,19 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`event_ws` (
   `wheelchair_accessible` INT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `index2` (`event_id` ASC) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `plugin`.`event_absoluteclassics`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `plugin`.`event_absoluteclassics` ;
+
+CREATE  TABLE IF NOT EXISTS `plugin`.`event_absoluteclassics` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `event_id` INT NOT NULL ,
+  `type` INT NOT NULL COMMENT '1=festival\n2=series' ,
+  PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
 
