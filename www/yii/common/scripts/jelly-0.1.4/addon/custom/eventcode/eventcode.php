@@ -32,8 +32,8 @@ class eventcode
 		// Check if any program has been selected in the iframe
         if (isset($_GET['programid']))
 		{
-//die('isset p='.$this->programId);
             $this->programId = (int) $_GET['programid'];
+//die('isset p='.$this->programId);
 		}
 //die('isNOTset p='.$this->programId);
 

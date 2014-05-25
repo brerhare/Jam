@@ -160,6 +160,7 @@ class Event extends CActiveRecord
 
 		// Also add all events in all programs I'm admin on
 		$criteria=new CDbCriteria;
+	//$criteria->addCondition("lock_program_id = " . Yii::app()->session['pid']);
 /*
 		$criteria->compare('id',$this->id);
 		//$criteria->compare('title',$this->title,true);
@@ -179,7 +180,9 @@ class Event extends CActiveRecord
 		$criteria->addCondition("privilege_level = " . 4);	//@@TODO Privilege level hardcoding
 		$memberHasPrograms = MemberHasProgram::model()->findAll($criteria);
 		foreach ($memberHasPrograms as $memberHasProgram)
+		{
 			$flt .= " or program_id = " . $memberHasProgram->event_program_id;
+		}
 		// Now apply the conditions
 		$criteria=new CDbCriteria;
 		$criteria->addCondition($flt);

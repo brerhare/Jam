@@ -7,6 +7,7 @@
 	<?php //echo $form->textFieldRow($model,'program_id',array('class'=>'span5')); ?>
 	<?php
 		$criteria = new CDbCriteria;
+		$criteria->addCondition("id = " . Yii::app()->session['pid']);
 		echo $form->dropDownListRow($model,'program_id', CHtml::listData(Program::model()->findAll($criteria), 'id', 'name'), array('empty'=>'Choose'));
 	?>
 
