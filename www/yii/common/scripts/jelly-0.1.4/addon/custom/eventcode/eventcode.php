@@ -99,6 +99,9 @@ class eventcode
 		$events = Event::model()->findAll($criteria);
 		foreach ($events as $event)
 		{
+			if ($event->active != 1)
+				continue;
+
 			// Check if we are filtering program
 			if ($this->programId != 0)
 			{
@@ -238,6 +241,9 @@ class eventcode
 		$hasEvents = false;
 		foreach ($events as $event)
 		{
+			if ($event->active != 1)
+				continue;
+
 			// Check if we are filtering program
 			if ($this->programId != 0)
 			{

@@ -5,8 +5,7 @@
 
 #accordion .ui-accordion-header {  
 	border: 1px solid #a9b68b;
-    /*background-color: #c4e1b1;  */
-    ibackground-color: #ffffff;  
+    background-color: #c4e1b1;  
 	height:105px;
 	margin-bottom:10px;
 	/*padding:3px;*/

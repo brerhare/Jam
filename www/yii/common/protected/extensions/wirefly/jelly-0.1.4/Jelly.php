@@ -602,6 +602,7 @@ if (isset($_GET['page']))
 		//$this->logMsg("Handling " . $word . " with value " . $value . "\n", 1);
 		switch ($word)
 		{
+
 			case "css":
 				// Each blob has a div#blobname { } around ALL its css, and the name of the blob is the generated div's id
 				// For example <div id='xyz'> would have css defined as -
@@ -618,6 +619,14 @@ if (isset($_GET['page']))
 				// body,html.margin = 0   -->   body,html { margin : 0 ; }
 				foreach ($value as $cssName => $cssValue)
 				{
+
+// @@ TODO Fix this hardocoding for removing the big google map from the event page . Needs to be a conditional.
+if (strstr($blobName, "googlemap"))
+{
+	if ($_GET['programid'] == 12)
+		$cssValue = "0px";
+}
+
 					$this->genDivCSS($cssName . ":" . $cssValue . ";\n");
 				}
 				break;
