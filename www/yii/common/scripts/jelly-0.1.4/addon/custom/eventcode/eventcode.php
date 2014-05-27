@@ -513,6 +513,7 @@ class eventcode
 			<div id="jelly-fill_headers-container">
 				<link rel="stylesheet" href="<substitute-path>/eventcode.css" type="text/css">
 				<substitute-data>
+				<substitute-xcss>
 			</div>
 
 END_OF_API_HTML_fill_headers;
@@ -630,8 +631,15 @@ for (i = 0; i < jsEvents.length; i++)
 
 END_OF_API_JS_fill_headers;
 
+		$xcss = "";
+		if ($this->programId == 12)	// Absolute classics
+		{
+			$xcss .= "<style> #accordion .ui-accordion-header { border: 1px solid #a9b68b; background-color: #ffffff; </style>";
+		}
+
 		$apiHtml = str_replace("<substitute-path>", $this->jellyRootUrl, $apiHtml);
         $apiHtml = str_replace("<substitute-data>", $content, $apiHtml);
+        $apiHtml = str_replace("<substitute-xcss>", $xcss, $apiHtml);
 
 		$apiJs = str_replace("<substitute-path>", $this->jellyRootUrl, $apiJs);
 		$apiJs = str_replace("<substitute-eventarray>", $jsEvents, $apiJs);

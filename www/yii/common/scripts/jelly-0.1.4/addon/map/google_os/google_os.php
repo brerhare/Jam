@@ -29,6 +29,8 @@ class google_os
 
 	public function init($options, $jellyRootUrl)
 	{
+//if (isset($_GET['programid']))
+//die('x');
 //		var_dump( $options );
 
 		// Generate the content into the html, replacing any <substituteN> tags

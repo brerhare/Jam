@@ -315,6 +315,10 @@ class SiteController extends Controller
 								$http = "";
 							$content .= "<a class='event-detail-label'>Website</a> " . "<a href='" . $http . $event->web . "'' target='_blank'>" . $event->web . "</a>" . "<br>";
 						}
+						$etype = "Festival";
+						if ($ab->type == 2)
+							$etype = "Series";
+						$content .= "<a class='event-detail-label'>Type</a> " . $etype . "<br>";
 	
 						$content .= "</td></tr></table>";
 	

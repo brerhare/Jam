@@ -301,39 +301,43 @@ class events
             $content .= "</div>";
         }
 
-        // Wild Seasons fields start here
-        // ------------------------------
-
-         // Grade
-        $grades = array( "Family", "Easy", "Medium", "Hard", "Task");
         $openGrade = false;
-        if ($grades)
-        {   
-            $gradeSel = array();
-            if (isset($_GET['grade']))
-                $gradeSel = explode('|', $_GET['grade']);
-            $content .= "<br>";
+		if ($this->programId == 6)
+		{
 
-            //$content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Grade</a><br>";
-            $content .= "<div class='filter-header'>" . $twistyIcon . "<a href='#'>Grade</a><br>";
+        	// Wild Seasons fields start here
+        	// ------------------------------
 
-            $content .= "<div id='grade-detail' class='filter-detail'>";
-            foreach ($grades as $grade):
-                $match = false;
-                if (in_array($grade, $gradeSel))
-                {
-                    $match = true;
-                    $openGrade = true;
-                }
-                $content .= "<label class='checkbox'> ";
-                $content .= "<input name='grade[]' "; 
-                if ($match) $content .= " checked='checked' ";
-                $content .= "type='checkbox' value='" . $grade . "' onClick=makeSel()>" . $grade;
-                $content .= "</label><br>";
-            endforeach;
-            $content .= "</div>";
-            $content .= "</div>";
-        }
+         	// Grade
+        	$grades = array( "Family", "Easy", "Medium", "Hard", "Task");
+        	if ($grades)
+        	{   
+            	$gradeSel = array();
+            	if (isset($_GET['grade']))
+                	$gradeSel = explode('|', $_GET['grade']);
+            	$content .= "<br>";
+
+            	//$content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Grade</a><br>";
+            	$content .= "<div class='filter-header'>" . $twistyIcon . "<a href='#'>Grade</a><br>";
+
+            	$content .= "<div id='grade-detail' class='filter-detail'>";
+            	foreach ($grades as $grade):
+                	$match = false;
+                	if (in_array($grade, $gradeSel))
+                	{
+                    	$match = true;
+                    	$openGrade = true;
+                	}
+                	$content .= "<label class='checkbox'> ";
+                	$content .= "<input name='grade[]' "; 
+                	if ($match) $content .= " checked='checked' ";
+                	$content .= "type='checkbox' value='" . $grade . "' onClick=makeSel()>" . $grade;
+                	$content .= "</label><br>";
+            	endforeach;
+            	$content .= "</div>";
+            	$content .= "</div>";
+        	}
+		}
 
 		$content .= "<br/>";
 		$content .= "<div style='float:left;padding-left:40px'><a href=javascript:printSelectedHeads()><b><img style='margin-top:0px; margin-left:0px' title='Print' src='img/print.jpg'></a></div>";
