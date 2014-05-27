@@ -17,7 +17,7 @@ $this->menu=array(
 	'dataProvider'=>$model->searchAllProgramsImAdminOrModFor(),
 	//'filter'=>$model,
 	'columns'=>array(
-		//'id',
+		'id',
 
         array(
             'name'  => 'title',

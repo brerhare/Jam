@@ -74,6 +74,11 @@ class google_os
 						$ll = explode(',', $val);
 						$onReady .= " centerByLatLong('" . $ll[0] . "','" . $ll[1] . "');";
 					}
+					else if ($inputMode == "postcode")
+					{
+						$vc = "NX832613";
+						$onReady .= " centerByOs('" . $vc . "');";
+					}
 					$onReady .= '});';
 					break;
 				case "mark": // @TODO this works for 'os' only
