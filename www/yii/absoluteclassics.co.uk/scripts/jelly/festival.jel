@@ -1,5 +1,4 @@
-#AbsoluteClassics
-## - Remember this site has 3 layouts!!!
+#AbsoluteClassics - FESTIVAL layout
 
 [defaults]
 include = default-values
@@ -61,9 +60,9 @@ css.margin-right= 0px auto
 
 	[menu2]
 	css.width = 250px
-	image.url = img/menu/festival-white.png
+	image.url = img/menu/festival-underline.png
 	image.width = 115px
-	image.height = 35px
+	image.height = 37px
 	image.align = centre
 	click = http://www.absoluteclassics.co.uk/?layout=festival&page=international-music-platform-festival
 
@@ -74,29 +73,27 @@ css.margin-right= 0px auto
 	image.height = 35px
 	image.align = centre
 	click = http://www.absoluteclassics.co.uk/?layout=tickets&page=classical-music-dumfries-live-performance
-	
 
-######## Page Content ###############################
+
+######## Page Content (FESTIVAL) #########################
 
 [all-content]
-child = home-content, other-content
+child = slider, other-content
 css.width = 1200px
 
-[home-content]
-css.height = 480px
-condition = @HOMEPAGE=1
-css.width = 960px
-css.height = 500px
-css.margin-top = 30px
-css.background-color = black
-	image.url = img/centre-background.jpg
-	image.width = 600px
-	image.height = 462px
-	image.align = center
+[slider]
+condition = @PAGE=international-music-platform-festival
+css.width = 1200px
+css.backgroundcolor = black
+css.margin-left = 100px
+addon.slider.glitz.slider = 2
+addon.slider.glitz.width = 1000px
+addon.slider.glitz.mode = image
+addon.slider.glitz.source = db
 
 [other-content]
 child = second-menu, content-block
-condition = @HOMEPAGE=0
+condition = @PAGE!=international-music-platform-festival
 stacking = horizontal
 
 	[second-menu]
@@ -123,11 +120,13 @@ stacking = horizontal
 		#addon.menu.basic.subitem-seperator-color = #ffffff 
 ### Need to specify the height and width of the items.
 
+
 	[content-block]
 	child = image, content-background
 	css.width = 800px
 	css.margin-left = 60px
 	css.margin-top = 30px
+
 
 		[image]
 		css.width = 800px
@@ -270,3 +269,4 @@ stacking = horizontal
 			image.width = 161px
 			image.height = 40px
 			clicknew = http://www.wireflydesign.com
+

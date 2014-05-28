@@ -1,5 +1,4 @@
-#AbsoluteClassics
-## - Remember this site has 3 layouts!!!
+#AbsoluteClassics TICKETS LAYOUT
 
 [defaults]
 include = default-values
@@ -9,13 +8,13 @@ include = default-values
 
 [screen]
 child = site
-#css.background-color = #000000
-fx.wallpaper-image-tile = /img/black.jpg
+css.background-color = #000000
+#fx.wallpaper-image = /img/background.jpg
 css.display = block
 
 	[site]
 	child = header, all-content, footer
-	css.display = block
+	####css.display = block
 	css.width = 1200px
 
 
@@ -69,9 +68,9 @@ css.margin-right= 0px auto
 
 	[menu3]
 	css.width = 250px
-	image.url = img/menu/tickets-white.png
+	image.url = img/menu/tickets-underline.png
 	image.width = 100px
-	image.height = 35px
+	image.height = 37px
 	image.align = centre
 	click = http://www.absoluteclassics.co.uk/?layout=tickets&page=classical-music-dumfries-live-performance
 	
@@ -79,24 +78,8 @@ css.margin-right= 0px auto
 ######## Page Content ###############################
 
 [all-content]
-child = home-content, other-content
-css.width = 1200px
-
-[home-content]
-css.height = 480px
-condition = @HOMEPAGE=1
-css.width = 960px
-css.height = 500px
-css.margin-top = 30px
-css.background-color = black
-	image.url = img/centre-background.jpg
-	image.width = 600px
-	image.height = 462px
-	image.align = center
-
-[other-content]
 child = second-menu, content-block
-condition = @HOMEPAGE=0
+css.width = 1200px
 stacking = horizontal
 
 	[second-menu]
@@ -147,8 +130,8 @@ stacking = horizontal
 		css.background-color = white
 	
 			[content]
-			css.margin-left = 50px
-			css.width = 700px
+			css.margin-left = 20px
+			#css.width = 700px
 			fx.opacity = 100%
 			db.table = ContentBlock
 			db.filter = url=$_GET['page']
@@ -173,7 +156,7 @@ stacking = horizontal
 		#css.margin-left = 100px
 
 			[fmenu1]
-			child = education, support, twitter
+			child = education, support
 			#css.height = 200px
 			css.width = 200px
 			css.margin-left = 200px
@@ -194,17 +177,8 @@ stacking = horizontal
 				css.color = #ffffff
 				click = ?layout=index&page=support-classical-music
 
-				[twitter]
-				html.raw = Twitter
-				css.margin-top = 8px
-				css.text-align = left
-				css.color = #ffffff
-				clicknew = https://twitter.com/ABClassics
-
-
-
 			[fmenu2]
-			child = about, footer-contact, facebook
+			child = about, footer-contact
 			#css.height = 200px
 			css.width = 200px
 
@@ -220,13 +194,6 @@ stacking = horizontal
 				css.margin-top = 8px
 				css.color = #ffffff
 				click = ?layout=index&page=contact-live-classical-music-dumfries
-
-				[facebook]
-				html.raw = Facebook
-				css.margin-top = 8px
-				css.text-align = center
-				css.color = #ffffff
-				clicknew = https://www.facebook.com/absoluteclassicsconcerts
 
 
 			[fmenu3]
@@ -256,8 +223,8 @@ stacking = horizontal
 		css.width = 900px
 		css.margin-left = 160px
 		image.url = img/sponsor-logos.png
-		image.width = 650px
-		image.height = 135px
+		image.width = 700px
+		image.height = 145px
 		image.align = centre
 		css.position = relative
 		css.z-index = 100
@@ -270,3 +237,4 @@ stacking = horizontal
 			image.width = 161px
 			image.height = 40px
 			clicknew = http://www.wireflydesign.com
+
