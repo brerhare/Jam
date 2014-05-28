@@ -377,6 +377,24 @@ class eventcode
 				}
 			}
 
+			// Check AbType filter
+			if ((isset($_GET['abtype'])) && trim($_GET['abtype'] != ''))
+			{
+				// Pick up the AbsoluteClassics record
+				$criteria = new CDbCriteria;
+				$criteria->condition = "event_id = " . $event->id;
+				$ab = Absoluteclassics::model()->find($criteria);
+				if ($ab)
+				{
+					$arr = explode('|', $_GET['abtype']);
+					$text = "Festival";
+					if ($ab->type == 2)
+						$text = "Series";
+					if (!(in_array($text, $arr)))
+						continue;
+				}
+			}
+
 			// From this point we're committed to adding this record, because of the jsEvents table syncing
 
 			$jsEvents .= '"' . $event->id . '",';

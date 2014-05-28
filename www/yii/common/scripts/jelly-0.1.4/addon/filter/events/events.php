@@ -339,7 +339,6 @@ class events
         	}
 		}
 
-/*****
         $openAbType = false;
 		if ($this->programId == 12)
 		{
@@ -356,13 +355,13 @@ class events
                 	$abtypesel = explode('|', $_GET['abtype']);
             	$content .= "<br>";
 
-            	//$content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Grade</a><br>";
+            	//$content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Type</a><br>";
             	$content .= "<div class='filter-header'>" . $twistyIcon . "<a href='#'>Type</a><br>";
 
             	$content .= "<div id='abtype-detail' class='filter-detail'>";
             	foreach ($abtypes as $abtype):
                 	$match = false;
-                	if (in_array($grade, $gradeSel))
+                	if (in_array($abtype, $abtypesel))
                 	{
                     	$match = true;
                     	$openAbType = true;
@@ -377,7 +376,6 @@ class events
             	$content .= "</div>";
         	}
 		}
-*****/
 
 		$content .= "<br/>";
 		$content .= "<div style='float:left;padding-left:40px'><a href=javascript:printSelectedHeads()><b><img style='margin-top:0px; margin-left:0px' title='Print' src='img/print.jpg'></a></div>";
@@ -401,6 +399,8 @@ class events
             $content .= "document.getElementById('price-detail').style.display='none';";
         if (!($openGrade))
             $content .= "document.getElementById('grade-detail').style.display='none';";
+        if (!($openAbType))
+            $content .= "document.getElementById('abtype-detail').style.display='none';";
         $content .= "</script>";
 
         $content .= "</div>";
@@ -444,6 +444,7 @@ END_OF_API_HTML;
     priceBand = '';
     textSearch = '';
     grade = '';
+    abtype = '';
 
     function makeSel()
     {
@@ -570,7 +571,24 @@ END_OF_API_HTML;
             sel += '&grade=' + str; 
         }
 
+        // AbType
+        av=document.getElementsByName("abtype[]");
+        if (av.length > 0)
+        {
+            var str = '';
+           for (var i = 0; i < av.length; i++)
+           {
+               if (av[i].checked)
+                {
+                    if (str != '') str += '|';
+                    str += av[i].value;
+                }
+            }
+            sel += '&abtype=' + str; 
+        }
+
         // Activate the link
+//alert(sel);
         window.location.href = sel;
     }
 

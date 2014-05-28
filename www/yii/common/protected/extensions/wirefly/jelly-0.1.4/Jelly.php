@@ -623,8 +623,11 @@ if (isset($_GET['page']))
 // @@ TODO Fix this hardocoding for removing the big google map from the event page . Needs to be a conditional.
 if (strstr($blobName, "googlemap"))
 {
-	if ($_GET['programid'] == 12)
-		$cssValue = "0px";
+	if (isset($_GET['programid']))
+	{
+		if ($_GET['programid'] == 12)
+			$cssValue = "0px";
+	}
 }
 
 					$this->genDivCSS($cssName . ":" . $cssValue . ";\n");
