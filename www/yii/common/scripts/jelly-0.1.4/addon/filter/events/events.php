@@ -339,6 +339,46 @@ class events
         	}
 		}
 
+/*****
+        $openAbType = false;
+		if ($this->programId == 12)
+		{
+
+        	// Absolute Classics fields start here
+        	// -----------------------------------
+
+         	// Type
+        	$abtypes = array( "Festival", "Series");
+        	if ($abtypes)
+        	{   
+            	$abtypesel = array();
+            	if (isset($_GET['abtype']))
+                	$abtypesel = explode('|', $_GET['abtype']);
+            	$content .= "<br>";
+
+            	//$content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Grade</a><br>";
+            	$content .= "<div class='filter-header'>" . $twistyIcon . "<a href='#'>Type</a><br>";
+
+            	$content .= "<div id='abtype-detail' class='filter-detail'>";
+            	foreach ($abtypes as $abtype):
+                	$match = false;
+                	if (in_array($grade, $gradeSel))
+                	{
+                    	$match = true;
+                    	$openAbType = true;
+                	}
+                	$content .= "<label class='checkbox'> ";
+                	$content .= "<input name='abtype[]' "; 
+                	if ($match) $content .= " checked='checked' ";
+                	$content .= "type='checkbox' value='" . $abtype . "' onClick=makeSel()>" . $abtype;
+                	$content .= "</label><br>";
+            	endforeach;
+            	$content .= "</div>";
+            	$content .= "</div>";
+        	}
+		}
+*****/
+
 		$content .= "<br/>";
 		$content .= "<div style='float:left;padding-left:40px'><a href=javascript:printSelectedHeads()><b><img style='margin-top:0px; margin-left:0px' title='Print' src='img/print.jpg'></a></div>";
 
