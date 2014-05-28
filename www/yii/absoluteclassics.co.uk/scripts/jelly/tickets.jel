@@ -130,7 +130,7 @@ stacking = horizontal
 		css.background-color = white
 	
 			[content]
-			css.margin-left = 20px
+			css.margin-left = 0px
 			#css.width = 700px
 			fx.opacity = 100%
 			db.table = ContentBlock
