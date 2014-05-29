@@ -29,6 +29,8 @@ class google_os
 
 	public function init($options, $jellyRootUrl)
 	{
+//if (isset($_GET['programid']))
+//die('x');
 //		var_dump( $options );
 
 		// Generate the content into the html, replacing any <substituteN> tags
@@ -73,6 +75,11 @@ class google_os
 					{
 						$ll = explode(',', $val);
 						$onReady .= " centerByLatLong('" . $ll[0] . "','" . $ll[1] . "');";
+					}
+					else if ($inputMode == "postcode")
+					{
+						$vc = "NX832613";
+						$onReady .= " centerByOs('" . $vc . "');";
 					}
 					$onReady .= '});';
 					break;

@@ -10,6 +10,6 @@ $this->menu=array(
 */
 ?>
 
-<h1><?php echo $model->user_name;?>'s details</h1>
+<h4><?php echo $model->user_name;?>'s details</h4>
 
 <?php echo $this->renderPartial('_form',array('model'=>$model)); ?>

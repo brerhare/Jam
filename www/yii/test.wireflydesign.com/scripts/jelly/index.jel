@@ -1,159 +1,131 @@
 #Test file
 [defaults]
 include = default-values
-css.color = black
 
 ; Every blob inherits these before adding/overriding
 [* : defaults]
 
 [screen]
-child = backgd
-#css.background-color = #000000
-#style.background-image = /img/StyleBackground.png
-fx.wallpaper-image = /img/FullBackground.jpg
+child = site
+fx.wallpaper-image-tile = /img/straw-tile.jpg
 css.display = block
 
-[backgd]
-child = contentframe
-css.width = 1000px
-css.background-color = white
+	[site]
+	child = header, slider, pages
+	css.width = 970px
 
-	[contentframe]
-	child = header, menu, slider, contentcontainer, footer
-	css.width = 960px
+####  Header  #################################
 
-######################## Header ############################ 
+		[header]
+		child = header-dt, menu
+		
+			[header-dt]
+			child = logo, stat-link
+			stacking = horizontal
 
-	[header]
-	child = logo, contact, cart
-	css.margin-top = 20px
-	css.height = 104px
-	stacking = horizontal
+				[logo]
+				css.margin-left = 50px
+				css.margin-top = 25px
+				css.height = 120px
+				css.width = 500px
+				css.z-index = 1000
+				css.position = relative
+				image.url = img/Logo.png
+				image.width = 241px
+				image.height = 116px
+				click = http://www.test.wireflydesign.com
 
-	[logo]
-	css.width = 250px
-	css.height = 50px
-	css.margin-top = 40px
-	image.url = img/Logo small.png
-	image.width = 150px
-	image.height = 50px
+				[stat-link]
+				child = cart, news
+				css.height = 45px
+				css.width = 260px
+				css.margin-left = 160px
+				fx.rounding = 4px
+				css.background-color = white
+				stacking = horizontal
 
-	[contact]
-	child = contact-text
-	css.height = 104px
-	css.width = 30%
+					[cart]
+					css.width = 120px
+					css.height = 22px
+					css.margin-left = 40px
+					css.margin-top = 15px
+					html.raw = Shopping Cart
+					css.font-size = 12px
+					click = http://www.test.wireflydesign.com/?layout=index&page=checkout
+							
 
-		[contact-text]
-		css.margin-top = 30px
-		#css.margin-left = 5px
-		css.height = 104px
-		html.p = Short Description / Tag Line etc ...
-		html.p = Email: a@b.co.uk
+					[news]
+					css.width = 100px
+					css.height = 22px
+					css.margin-left = 0px
+					css.margin-top = 15px
+					html.raw = Newsletter
+					css.font-size = 12px
+					click = http://www.test.wireflydesign.com/?layout=index&page=text-blog
 
-	
-	[cart]
-	child = cart-pic, cart-text
-	stacking = horizontal
-	css.margin-top = 20px
-	css.height = 18px
-	click = http://www.test.wireflydesign.com/?layout=index&page=basket
 
-			[cart-pic]
-			css.width = 25px
-			css.background-image = url('/img/cart.jpg')
-			css.height = 17px
 
-			[cart-text]
-			css.width = 100px
-			css.margin-top = 4px
-			css.margin-left = 4px
-			css.font-size = 12px
-			html.raw = Shopping Cart
+		[menu]
+		css.height = 50px
+		css.margin-top = -30px
+		css.margin-left = 500px
+		css.overflow = visible
+		css.z-index = 1000
+		css.position = absolute
+		addon.menu.basic.orientation = horizontal
+		addon.menu.basic.font-size = 12px
+		addon.menu.basic.menu-rounding = 4px
+			#addon.menu.basic.menu-opacity = 70%
+			#addon.menu.basic.menu-tile = /img/menu-bar.jpg
+			#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
+		addon.menu.basic.menu-color = white
+	#addon.menu.basic.menu-text-color = red
+	#addon.menu.basic.submenu-color = yellow red
+	#addon.menu.basic.item-color = black yellow
+	#addon.menu.basic.item-text-color = green
+	#addon.menu.basic.subitem-color = white black
+	#addon.menu.basic.subitem-text-color = purple
+	#addon.menu.basic.subitem-seperator-color = red 
 
-######################## Menu ############################ 
 
-	[menu]
-	#css.height = 34px
-	#css.width = 100px
-	css.overflow = visible
-	css.margin-left = 0px
-	css.margin-top = 3px
-	#addon.menu.basic.orientation = vertical
-	addon.menu.basic.width = 960px
-	addon.menu.basic.font-size = 14px
-	addon.menu.basic.menu-rounding = 0px
-	addon.menu.basic.menu-opacity = 100%
-	addon.menu.basic.menu-tile = /img/menu-bkgd.jpg
-	#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
-	addon.menu.basic.menu-color = blue green
-	addon.menu.basic.menu-text-color = red
-	addon.menu.basic.submenu-color = yellow red
-	addon.menu.basic.item-color = yellow orange
-	addon.menu.basic.item-text-color = green
-	addon.menu.basic.subitem-color = white yellow
-	addon.menu.basic.subitem-text-color = red
-	addon.menu.basic.subitem-separator-color = white
 
-######################## Slider ############################ 
+#### Slider ###########################################
 
 	[slider]
-    css.margin-top = 20px
+	css.margin-top = -50px
+	#css.margin-left = 30px
 	css.width = 960px
-    #css.height = 250px ...... This is one way of hiding the dots!
-    addon.slider.glitz.width = 956px
-    addon.slider.glitz.mode = image
-    addon.slider.glitz.source = db
+  	css.height = 270px
+	addon.slider.flexslider.width = 952px
+	addon.slider.flexslider.height = 260px
+	addon.slider.flexslider.mode = image
+	addon.slider.flexslider.source = db
 
 
-######################## Content ############################ 
+######## body #######################################
+			
 
-    [contentcontainer]
-    child = content
-    #css.background-color = white
-    fx.rounding = 4px
+	[pages]
+	child = tabs, content 	
+	css.width = 960px
+	css.margin-top = 20px
+	css.background-color = white
+	fx.rounding = 4px
+	
+		[tabs]
+		condition = @PAGE=@HOMEPAGE
+		css.display = block
+		css.width = 680px
+		addon.tab.rain.source = db
 
-        [content]
-        css.margin = 15px
-        db.table = ContentBlock
-        db.filter = url=$_GET['page']
-        db.error = Sorry, I could not find the page $_GET['page']
-        html.raw = ContentBlock.content
+			
+		[content]
+		css.margin-top = 30px
+		css.margin = 30px
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
 
 
-######################## Footer ############################ 
-
-
-	[footer]
-	child = footer-menu, wirefly-details
-	#css.height = 40px
-	css.width = 60%
-
-		[footer-menu]
-		stacking = horizontal
-		child = footer-cookies, footer-tandc, footer-contact
-		css.height = 20px
-
-			[footer-cookies]
-			html.raw = Cookie Policy
-			css.width = 33%
-			css.text-align = left
-			click = www.bbc.com
-
-			[footer-tandc]
-			html.raw = Terms & Conditions
-			css.width = 33%
-			css.text-align = center
-			click = www.bbc.com
-
-			[footer-contact]
-			html.raw = Contact Us
-			css.text-align = right
-			css.width = 30%
-			click = www.bbc.com
-
-		[wirefly-details]
-		css.margin-top = 20px
-		css.height = 20px
-		css.text-align = center
-		html.raw = Site by Wirefly Design
-		click = www.wireflydesign.com
+####footer####################################

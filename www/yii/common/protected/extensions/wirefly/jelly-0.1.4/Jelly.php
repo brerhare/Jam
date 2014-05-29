@@ -224,7 +224,6 @@ END_OF_FOOTER;
 				}
 			}
 
-
 			if ((is_array($value)) && (array_key_exists("child", $value)))
 			{
 				//$this->logMsg("child : " . $value['child'] . "\n", 2);
@@ -289,14 +288,26 @@ END_OF_FOOTER;
 	{
 		// Search array for repeating fields - we'll generate an instance of this blob for each
 		$hasRepeatingField = false;
-
-		// Skip over 'condition' blobs that fail their condition @@TODO only @HOMEPAGE presently checked
+		// Skip over 'condition' blobs that fail their condition
 		if (array_key_exists("condition", $array))
 		{
-			//die('x='.$array['condition']);
-			if (strstr($array['condition'], "@HOMEPAGE"))
+			if ((strstr($array['condition'], "@HOMEPAGE")) && !(strstr($array['condition'], "@PAGE")))
 			{
-				if (strstr($array['condition'], "=1"))
+				// condition = @HOMEPAGE=0
+				// condition = @HOMEPAGE=1
+				// condition = @HOMEPAGE!=0
+				// condition = @HOMEPAGE!=1
+				if (strstr($array['condition'], "!=1"))
+				{
+					if ($this->homePage == "1")
+						return;
+				}
+				else if (strstr($array['condition'], "!=0"))
+				{
+					if ($this->homePage == "0")
+						return;
+				}
+				else if (strstr($array['condition'], "=1"))
 				{
 					if ($this->homePage == "0")
 						return;
@@ -305,6 +316,42 @@ END_OF_FOOTER;
 				{
 					if ($this->homePage == "1")
 						return;	
+				}
+			}
+			else if (strstr($array['condition'], "@PAGE"))
+			{
+				// condition = @PAGE=@HOMEPAGE
+				// condition = @PAGE!=@HOMEPAGE
+				// condition = @PAGE=classical-music-series
+				// condition = @PAGE!=classical-music-series
+				if (strstr($array['condition'], "="))
+				{
+					$not = 0;
+					if (strstr($array['condition'], "!"))
+						$not = 1;
+					$first = strstr($array['condition'], "=");
+					$second = strstr($first, "=");
+					$pageForCondition = ltrim($second, "=");
+					$pageLoading = "";
+					if (isset($_GET['page']))
+					{
+						$pageLoading = $_GET['page'];
+						if ($this->homePage == 1)
+							$pageLoading = "@HOMEPAGE";
+					}
+					else
+						$pageLoading = "@HOMEPAGE";
+//die('blobname='.$blobName. ' not='.$not.' loading='.$pageLoading.' condition='.$pageForCondition);
+					if ($not == 0)
+					{
+						if ($pageLoading != $pageForCondition)
+							return;
+					}
+					else
+					{
+						if ($pageLoading == $pageForCondition)
+							return;
+					}
 				}
 			}
 		}
@@ -345,7 +392,6 @@ END_OF_FOOTER;
 											break;
 										}
 									}
-
 									// Look for clipboard. NB this is id=1 or id=2 or ... etc
 									if (strstr(trim($elemComma) ,'@CLIPBOARD'))
 									{
@@ -468,7 +514,6 @@ Yii::log("REPEATING EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim
                 }
 			}
 		}
-
 		if (!($hasRepeatingField))
 			$this->blobProcess2($jellyArray, $blobName, $array, $float, $indentLevel);
 	}
@@ -483,7 +528,7 @@ if (isset($_GET['page']))
 {
  if ($_GET['page'] != 'Jacquies-Beauty-Dumfries-Salon')
  {
-  if ((substr($blobName,0,4) == 'tabs') || (substr($blobName,0,13) == 'tabscontainer'))
+  if ((substr($blobName,0,4) == 'jtabs') || (substr($blobName,0,13) == 'tabscontainer'))
    return;
   }
 }
@@ -505,6 +550,7 @@ if (isset($_GET['page']))
 		$floatChildren = false;
 		if ((array_key_exists("stacking", $array)) && ($array["stacking"] == "horizontal"))
 			$floatChildren = true;
+
 
 		foreach ($array as $name => $value)
 		{
@@ -556,6 +602,7 @@ if (isset($_GET['page']))
 		//$this->logMsg("Handling " . $word . " with value " . $value . "\n", 1);
 		switch ($word)
 		{
+
 			case "css":
 				// Each blob has a div#blobname { } around ALL its css, and the name of the blob is the generated div's id
 				// For example <div id='xyz'> would have css defined as -
@@ -572,6 +619,17 @@ if (isset($_GET['page']))
 				// body,html.margin = 0   -->   body,html { margin : 0 ; }
 				foreach ($value as $cssName => $cssValue)
 				{
+
+// @@ TODO Fix this hardocoding for removing the big google map from the event page . Needs to be a conditional.
+if (strstr($blobName, "googlemap"))
+{
+	if (isset($_GET['programid']))
+	{
+		if ($_GET['programid'] == 12)
+			$cssValue = "0px";
+	}
+}
+
 					$this->genDivCSS($cssName . ":" . $cssValue . ";\n");
 				}
 				break;
@@ -750,7 +808,6 @@ if (isset($_GET['page']))
 											break;
 										}
 									}
-
 									// Look for clipboard. NB this is id=1 or id=2 or ... etc
 									if (strstr(trim($elemComma) ,'@CLIPBOARD'))
 									{

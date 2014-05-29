@@ -6,7 +6,7 @@ $this->menu=array(
 );
 ?>
 
-<h1>Vendors</h1>
+<h4>Vendors</h4>
 
 <?php $this->widget('bootstrap.widgets.TbListView',array(
 	'dataProvider'=>$dataProvider,

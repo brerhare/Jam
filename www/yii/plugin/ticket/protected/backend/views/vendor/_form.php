@@ -18,6 +18,8 @@
 
 	<?php echo $form->textFieldRow($model,'email',array('class'=>'span5','maxlength'=>255)); ?>
 
+    <?php echo $form->toggleButtonRow($model, 'notify_sale'); ?>
+
 	<?php echo $form->textFieldRow($model,'telephone',array('class'=>'span3','maxlength'=>255)); ?>
 
 	<?php echo $form->textFieldRow($model,'vat_number',array('class'=>'span2','maxlength'=>45)); ?>

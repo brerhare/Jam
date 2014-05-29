@@ -106,6 +106,6 @@ return array(
         'checkoutGatewayUser'=>'WIREFL-5188100',
         'checkoutGatewayPassword'=>'391F3GWBZ0',
 		'jellyRoot' => '/scripts/jelly/',
-		'sid' => 'demo',
+		'sid' => 'test',
 	),
 );

@@ -33,11 +33,11 @@ class EventController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','delete','report','showReport'),
+				'actions'=>array('create','update','admin','delete','download','exportCSV','showReport'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','report','showReport'),
+				'actions'=>array('admin','delete','download','exportCSV','showReport'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -189,6 +189,159 @@ class EventController extends Controller
 	}
 
 	/**
+	 * Show the 'Download .CSV for this event' view
+	 */
+	public function actionDownload($id)
+	{
+		$model=$this->loadModel($id);
+		if(isset($_GET['Event']))
+			$model->attributes=$_GET['Event'];
+
+		$this->render('download',array(
+			'model'=>$this->loadModel($id),
+		));
+	}
+
+	/**
+	 * Export CSV report (called from the 'download' view)
+	 */
+	public function actionExportCSV($id)
+	{
+//die('x='.$id);
+		$model=$this->loadModel($id);
+		if(isset($_GET['Event']))
+			$model->attributes=$_GET['Event'];
+
+		$cr = "<br>";
+		$heading = array('event', 'area', 'ticket_type', 'date', 'order_number', 'auth_code', 'name', 'email', 'telephone', 'address1', 'address2', 'address3', 'address4', 'city', 'county', 'post_code', 'price_each', 'sales_qty', 'sales_value');
+		
+		if (file_exists('/tmp/ticketVendorExport.csv'))
+			unlink('/tmp/ticketVendorExport.csv');
+		$fp2 = fopen('/tmp/ticketVendorExport.csv', 'w');
+		fputcsv($fp2, $heading);
+		$umsg = "";	
+		$hasActiveEvent = false;
+		$uQty = 0;
+		$uVal = 0;
+
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("id = " . $id);
+		$event = Event::model()->find($criteria);
+		if ($event)
+		{
+			//if (!($event->active))
+				//continue;
+
+			// Pick up the vendor record
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("id = " . $event->ticket_vendor_id);
+			$vendor = Vendor::model()->find($criteria);
+			if (!($vendor))
+				throw new CHttpException(400,'Vendor record missing');
+			if (trim($vendor->email) == "")
+				throw new CHttpException(400,'Please set up an email address in your vendor record');
+
+			$umsg .= "<i>" . $cr . $event->title . " : " . $event->date . "</i>" . $cr;
+			$hasActiveEvent = true;
+			$eQty = 0;
+			$eVal = 0;
+
+			$areas = $event->areas;
+			foreach ($areas as $area)	// All ticket areas
+			{
+				$ticketTypes = $area->ticketTypes;
+				foreach ($ticketTypes as $ticketType)	// All ticket types
+				{
+					$qty = 0;
+					$val = 0;
+
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("vendor_id = " . $vendor->id);
+					$criteria->addCondition("event_id = " . $event->id);
+					$criteria->addCondition("http_area_id = " . $area->id);
+					$criteria->addCondition("http_ticket_type_id = " . $ticketType->id);
+						$transactions = Transaction::model()->findAll($criteria);
+					foreach ($transactions as $transaction)	// All event transactions for the event
+					{
+						$criteria = new CDbCriteria;
+						$criteria->addCondition("order_number = '" . $transaction->order_number . "'");
+						$auth = Auth::model()->find($criteria);
+						$name = "";
+						$a1 = "";
+						$a2 = "";
+						$a3 = "";
+						$a4 = "";
+						$city = "";
+						$state = "";
+						$pc = "";
+						if ($auth != null)
+						{
+							$name = $auth->card_name;
+							$a1 = $auth->address1;
+							$a2 = $auth->address2;
+							$a3 = $auth->address3;
+							$a4 = $auth->address4;
+							$city = $auth->city;
+							$state = $auth->state;
+							$pc = $auth->post_code;
+						}
+
+						$line = array($event->title, $area->description, $ticketType->description, $transaction->timestamp, $transaction->order_number, $transaction->auth_code, $name, $transaction->email, $transaction->telephone, $a1, $a2, $a3, $a4, $city, $state, $pc, sprintf("%01.2f", $transaction->http_ticket_price), $transaction->http_ticket_qty, sprintf("%01.2f", $transaction->http_ticket_total));
+						fputcsv($fp2, $line);
+
+						if ($transaction->auth_code == NULL)
+							continue;	// We only want paymentsense sales on the report (not manual)
+
+						$qty += $transaction->http_ticket_qty;
+						$val += $transaction->http_ticket_total;
+						$eQty += $transaction->http_ticket_qty;
+						$eVal += $transaction->http_ticket_total;
+						if ($transaction->http_ticket_price != "0.00")
+							$uQty += $transaction->http_ticket_qty;
+						$uVal += $transaction->http_ticket_total;
+					}
+				}
+			}
+		}
+
+		fclose($fp2);
+
+		if ($hasActiveEvent)
+		{
+			// Send file to user
+			Yii::app()->getRequest()->sendFile( "Export.csv" , file_get_contents( "/tmp/ticketVendorExport.csv" ) );
+
+/*****
+			// Send email to vendor
+			$to = $vendor->email;
+			$att_filename = "/tmp/ticketVendorExport.csv";
+			if (strlen($to) > 0)
+			{
+				$from = "admin@dglink.co.uk";
+				$fromName = "Admin";
+				$subject = "Your requested ticket sales report";
+				$message = $umsg; 
+				// phpmailer
+				$mail = new PHPMailer();
+				$mail->AddAddress($to);
+//$mail->AddBCC("kim@wireflydesign.com");
+				$mail->SetFrom($from, $fromName);
+				$mail->AddReplyTo($from, $fromName);
+				$mail->AddAttachment($att_filename);
+				$mail->Subject = $subject;
+				$mail->MsgHTML($message);
+				if (!$mail->Send())
+					Yii::log("WEEKLY REPORT COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
+				else
+					Yii::log("WEEKLY SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+			}
+*****/
+		}
+
+		$this->redirect(array('admin'));
+	}
+
+	/**
 	 * Show report for event $id (called by above function's view)
 	 */
 	public function actionShowReport($id)
@@ -198,7 +351,7 @@ class EventController extends Controller
 			$model->attributes=$_GET['Event'];
 
 		$this->render('report',array(
-			'model'=>$this->loadModel($id),
+			'model'=>$model,
 		));
 	}
 

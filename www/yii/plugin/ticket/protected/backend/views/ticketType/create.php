@@ -10,6 +10,6 @@ $this->menu=array(
 );
 ?>
 
-<h2>Create Ticket Type</h2>
+<h4>Create Ticket Type</h4>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

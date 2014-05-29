@@ -5,5 +5,5 @@ $this->menu=array(
 );
 ?>
 
-<h1>Update Event <?php echo $model->title; ?></h1>
+<h4>Update Event <?php echo $model->title; ?></h4>
 <?php echo $this->renderPartial('_form',array('model'=>$model, 'model2'=>$model2, 'ticketUid' => $ticketUid  )); ?>

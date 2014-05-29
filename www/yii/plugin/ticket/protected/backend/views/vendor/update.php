@@ -16,6 +16,6 @@ $this->menu=array(
 */
 ?>
 
-<h2>Vendor Details</h2>
+<h4>Vendor Details</h4>
 
 <?php echo $this->renderPartial('_form',array('model'=>$model)); ?>

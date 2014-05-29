@@ -14,6 +14,7 @@ class eventcode
 	private $uid = "";
 	private $sid = "";
 	private $jellyRootUrl = "";
+	private $programId = 0;
 
 	/*
 	 * Set up any code pre-requisites (onload/document-ready reqs)
@@ -27,6 +28,14 @@ class eventcode
 
 		$this->uid = Yii::app()->session['uid'];
 		$this->sid = Yii::app()->session['sid'];
+
+		// Check if any program has been selected in the iframe
+        if (isset($_GET['programid']))
+		{
+            $this->programId = (int) $_GET['programid'];
+//die('isset p='.$this->programId);
+		}
+//die('isNOTset p='.$this->programId);
 
 		foreach ($options as $opt => $val)
 		{
@@ -90,6 +99,25 @@ class eventcode
 		$events = Event::model()->findAll($criteria);
 		foreach ($events as $event)
 		{
+			if ($event->active != 1)
+				continue;
+
+			// Check if we are filtering program
+			if ($this->programId != 0)
+			{
+				if ($event->program_id != $this->programId)
+					continue;
+			}
+			else
+			{
+				if ((isset($_GET['program'])) && trim($_GET['program'] != ''))
+				{
+					$showProgram = trim($_GET['program']);
+					if ($event->program_id != $showProgram)
+						continue;
+				}
+			}
+
 			// Pick up the Ws record
 			$criteria = new CDbCriteria;
 			$criteria->condition = "event_id = " . $event->id;
@@ -213,6 +241,25 @@ class eventcode
 		$hasEvents = false;
 		foreach ($events as $event)
 		{
+			if ($event->active != 1)
+				continue;
+
+			// Check if we are filtering program
+			if ($this->programId != 0)
+			{
+				if ($event->program_id != $this->programId)
+					continue;
+			}
+			else
+			{
+				if ((isset($_GET['program'])) && trim($_GET['program'] != ''))
+				{
+					$showProgram = trim($_GET['program']);
+					if ($event->program_id != $showProgram)
+						continue;
+				}
+			}
+
 			// Check text search
 			if ((isset($_GET['textsearch'])) && trim($_GET['textsearch'] != ''))
 			{
@@ -326,6 +373,24 @@ class eventcode
 				{
 					$arr = explode('|', $_GET['grade']);
 					if (!(in_array($ws->grade, $arr)))
+						continue;
+				}
+			}
+
+			// Check AbType filter
+			if ((isset($_GET['abtype'])) && trim($_GET['abtype'] != ''))
+			{
+				// Pick up the AbsoluteClassics record
+				$criteria = new CDbCriteria;
+				$criteria->condition = "event_id = " . $event->id;
+				$ab = Absoluteclassics::model()->find($criteria);
+				if ($ab)
+				{
+					$arr = explode('|', $_GET['abtype']);
+					$text = "Festival";
+					if ($ab->type == 2)
+						$text = "Series";
+					if (!(in_array($text, $arr)))
 						continue;
 				}
 			}
@@ -472,6 +537,7 @@ class eventcode
 			<div id="jelly-fill_headers-container">
 				<link rel="stylesheet" href="<substitute-path>/eventcode.css" type="text/css">
 				<substitute-data>
+				<substitute-xcss>
 			</div>
 
 END_OF_API_HTML_fill_headers;
@@ -589,8 +655,15 @@ for (i = 0; i < jsEvents.length; i++)
 
 END_OF_API_JS_fill_headers;
 
+		$xcss = "";
+		if ($this->programId == 12)	// Absolute classics
+		{
+			$xcss .= "<style> #accordion .ui-accordion-header { border: 1px solid #a9b68b; background-color: #ffffff; </style>";
+		}
+
 		$apiHtml = str_replace("<substitute-path>", $this->jellyRootUrl, $apiHtml);
         $apiHtml = str_replace("<substitute-data>", $content, $apiHtml);
+        $apiHtml = str_replace("<substitute-xcss>", $xcss, $apiHtml);
 
 		$apiJs = str_replace("<substitute-path>", $this->jellyRootUrl, $apiJs);
 		$apiJs = str_replace("<substitute-eventarray>", $jsEvents, $apiJs);

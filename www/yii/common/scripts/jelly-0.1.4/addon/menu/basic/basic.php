@@ -238,6 +238,7 @@ class basic
 					// Get the requested URL
 					$criteria = new CDbCriteria;
 					$criteria->addCondition("url = '" . $_GET['page'] . "'");
+$criteria->order = "sequence ASC";
 					$menuItems = ContentBlock::model()->find($criteria);
 					if ($menuItems)
 					{
@@ -249,6 +250,7 @@ class basic
 						$criteria = new CDbCriteria;
 						//$criteria->condition = "url = '" . $_GET['page'] . "' OR parent_id = " . $menuItems->id;
 						$criteria->addCondition("parent_id = " . $parent);
+$criteria->order = "sequence ASC";
 						$menuItems = ContentBlock::model()->findAll($criteria);
 						foreach ($menuItems as $menuItem):
 							if (!$menuItem->active)

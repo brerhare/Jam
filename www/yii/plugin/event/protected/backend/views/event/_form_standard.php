@@ -7,6 +7,7 @@
 	<?php //echo $form->textFieldRow($model,'program_id',array('class'=>'span5')); ?>
 	<?php
 		$criteria = new CDbCriteria;
+		$criteria->addCondition("id = " . Yii::app()->session['pid']);
 		echo $form->dropDownListRow($model,'program_id', CHtml::listData(Program::model()->findAll($criteria), 'id', 'name'), array('empty'=>'Choose'));
 	?>
 
@@ -128,8 +129,19 @@
 			}
 	?>
 
+<br>
+<?php
+	echo $form->toggleButtonRow($model, 'active' , array('options'=>array('enabledLabel'=>'Yes' , 'disabledLabel'=>'No')));
+?>
+
+
+
 	<?php //echo $form->textAreaRow($model,'description',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 	<div class="control-group "><label class="control-label" for="Event_start">Description <span class="required">*</span></label>
+
+
+
+
 		<div class="controls">
 			<div style="width:500px">
 			<?php

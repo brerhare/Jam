@@ -1,4 +1,5 @@
 #AbsoluteClassics
+## - Remember this site has 3 layouts!!!
 
 [defaults]
 include = default-values
@@ -8,33 +9,27 @@ include = default-values
 
 [screen]
 child = site
-css.background-color = #000000
-#fx.wallpaper-image = /img/background.jpg
+#css.background-color = #000000
+fx.wallpaper-image-tile = /img/black.jpg
 css.display = block
 
 	[site]
-	child = header, background, all-content, footer
+	child = header, all-content, footer
 	css.display = block
-	#css.width = 960px
-	#css.background-color = black
-	#css.background-image = url('/img/background.jpg')
-	#css.opacity = 0.8
-
-	
+	css.width = 1200px
 
 
 ####### Header #########################
 
 [header]
 child = logo, menu
-css.background-color = #000000
-###menu overlay #eb6200
+#css.background-color = #000000
 # When changing the height, also need to change it in css (adding 10px there)
-css.height = 200px
-css.width = 100%
+css.height = 250px
+css.width = 1200px
 
 [logo]
-css.width = 100%
+css.width = 1200px
 css.margin-top = 20px
 image.url = img/ac-logo.png
 image.width = 250px
@@ -45,63 +40,51 @@ click = http://www.absoluteclassics.co.uk/
 [menu]
 child = margin, menu1, menu2, menu3
 css.margin-top = 20px
+css.margin-left = 100px
 css.height = 40px
 css.width = 1000px
 stacking = horizontal
 css.margin-left = 0px auto
 css.margin-right= 0px auto 
-	#how can we align things to centre automatically? Everything I have tried just doesn't seem to work?
-
-#css.overflow = visible
-#css.margin-top = 0px
-#css.margin-left = 0px
-#addon.menu.optimo.height = 500px
-#addon.menu.optimo.margin-top = 100px
-#addon.menu.basic.width = 200px
-#addon.menu.basic.height = 30px
-#addon.menu.basic.font-size = 12px
-#addon.menu.basic.menu-rounding = 0px
-#addon.menu.basic.menu-opacity = 96%
-#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
-#addon.menu.basic.menu-text-color = blue
-#addon.menu.basic.submenu-color = #ffffff #bfffff
-#addon.menu.basic.item-color = cyan
-#addon.menu.basic.item-text-color = blue
-#addon.menu.basic.subitem-color = cyan
-#addon.menu.basic.subitem-text-color = blue
-#addon.menu.basic.subitem-separator-color = white
 
 	[margin]
-	css.width = 13%
+	css.width = 125px
 	css.height = 20px
 
 	[menu1]
-	css.width = 25%
+	css.width = 250px
 	image.url = img/menu/series-white.png
 	image.width = 83px
 	image.height = 35px
 	image.align = centre
-	click = http://www.absoluteclassics.co.uk/?layout=index&page=classical-music-series
+	click = http://www.absoluteclassics.co.uk/?layout=series&page=classical-music-series
 
 	[menu2]
-	css.width = 25%
+	css.width = 250px
 	image.url = img/menu/festival-white.png
 	image.width = 115px
 	image.height = 35px
 	image.align = centre
-	click = http://www.absoluteclassics.co.uk/?layout=index&page=Internation-music-platform-festival
+	click = http://www.absoluteclassics.co.uk/?layout=festival&page=international-music-platform-festival
 
 	[menu3]
-	css.width = 25%
-	image.url = img/menu/events-white.png
-	image.width = 98px
+	css.width = 250px
+	image.url = img/menu/tickets-white.png
+	image.width = 100px
 	image.height = 35px
 	image.align = centre
-	click = http://www.absoluteclassics.co.uk/?layout=index&page=classical-music-dumfries-live-performance
+	click = http://www.absoluteclassics.co.uk/?layout=tickets&page=classical-music-dumfries-live-performance
 	
-######## Background Image ###########################
 
-[background]
+######## Page Content ###############################
+
+[all-content]
+child = home-content, other-content
+css.width = 1200px
+
+[home-content]
+css.height = 480px
+condition = @HOMEPAGE=1
 css.width = 960px
 css.height = 500px
 css.margin-top = 30px
@@ -110,20 +93,6 @@ css.background-color = black
 	image.width = 600px
 	image.height = 462px
 	image.align = center
-
-
-######## Page Content ###############################
-
-[all-content]
-child = home-content, other-content
-css.width = 1200px
-css.margin-top = -530px
-#css.background-image = url('/img/background.jpg')
-
-[home-content]
-css.height = 480px
-condition = @HOMEPAGE=1
-
 
 [other-content]
 child = second-menu, content-block
@@ -147,7 +116,7 @@ stacking = horizontal
 	addon.menu.basic.menu-color = #000000
 	addon.menu.basic.menu-text-color = white
 	addon.menu.basic.submenu-color = #b5b5b5
-	addon.menu.basic.item-color = #eb6200
+	addon.menu.basic.item-color = black white
 	addon.menu.basic.item-text-color = white
 		#addon.menu.basic.subitem-color = #ff0092
 		#addon.menu.basic.subitem-text-color = #ffffff
@@ -155,80 +124,147 @@ stacking = horizontal
 ### Need to specify the height and width of the items.
 
 	[content-block]
-	child = content
+	child = image, content-background
 	css.width = 800px
 	css.margin-left = 60px
 	css.margin-top = 30px
-	fx.rounding = 4px
-	fx.opacity = 95%
-	css.background-color = white
-	
 
-	[content]
-	css.margin-top = 30px
-	css.margin-left = 50px
-	css.width = 700px
-	fx.opacity = 100%
-	db.table = ContentBlock
-	db.filter = url=$_GET['page']
-	db.error = Sorry, I could not find th page $_GET['page']
-	html.raw = ContentBlock.content
+		[image]
+		css.width = 800px
+		css.height = 500px
+		css.margin-left = -10px
+		image.url = img/centre-background.jpg
+		image.width = 600px
+		image.height = 462px
+		image.align = center
+
+
+		[content-background]
+		child = content
+		css.margin-top = -500px
+		fx.rounding = 4px
+		fx.opacity = 95%
+		css.background-color = white
+	
+			[content]
+			css.margin-left = 50px
+			css.width = 700px
+			fx.opacity = 100%
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find the page $_GET['page']
+			html.raw = ContentBlock.content
 
 
 ########## Footer #################################
 
 
 	[footer]
-	child = footer-menu
-	#css.margin-top = 40px
-	css.height = 241px
+	child = footer-menus, footer-image
+	css.margin-top = 40px
+	css.width = 1200px
 	css.background-color = #000000
-	image.url = img/footer-img.jpg
-	image.width = 960px
-	image.height = 241px
-	image.align = centre
-	css.position = relative
-	css.z-index = 100
 
-
-
-		[footer-menu]
+		[footer-menus]
+		child = fmenu1, fmenu2, fmenu3
 		stacking = horizontal
-		child = footer-margin, footer-cookies, footer-tandc, footer-contact, wirefly
-		css.height = 200px
-		css.width = 960px
-		css.margin-top = -160px
+		css.width = 1000px
+		css.height = 125px
+		#css.margin-left = 100px
+
+			[fmenu1]
+			child = education, support, twitter
+			#css.height = 200px
+			css.width = 200px
+			css.margin-left = 200px
+
+
+				[education]
+				html.raw = Education
+				css.margin-top = 8px
+				css.text-align = left
+				css.color = #ffffff
+				click = ?layout=index&page=education-classical-music
+
+
+				[support]
+				html.raw = Support Us
+				css.margin-top = 8px
+				css.text-align = left
+				css.color = #ffffff
+				click = ?layout=index&page=support-classical-music
+
+				[twitter]
+				html.raw = Twitter
+				css.margin-top = 8px
+				css.text-align = left
+				css.color = #ffffff
+				clicknew = https://twitter.com/ABClassics
+
+
+
+			[fmenu2]
+			child = about, footer-contact, facebook
+			#css.height = 200px
+			css.width = 200px
+
+				[about]
+				html.raw = About Us
+				css.margin-top = 8px
+				css.text-align = center
+				css.color = #ffffff
+				click = ?layout=index&page=about-absolute-classics
+				[footer-contact]
+				html.raw = Contact Us
+				css.text-align = center
+				css.margin-top = 8px
+				css.color = #ffffff
+				click = ?layout=index&page=contact-live-classical-music-dumfries
+
+				[facebook]
+				html.raw = Facebook
+				css.margin-top = 8px
+				css.text-align = center
+				css.color = #ffffff
+				clicknew = https://www.facebook.com/absoluteclassicsconcerts
+
+
+			[fmenu3]
+			child = footer-tandc, footer-cookies
+			#css.height = 200px
+			css.width = 200px
+			#css.margin-left = 200px
+
+
+				[footer-cookies]
+				html.raw = Cookie Policy
+				css.margin-top = 8px
+				css.text-align = right
+				css.color = #ffffff
+				click = ?layout=index&page=cookie-policy
+
+				[footer-tandc]
+				html.raw = Site T&Cs
+				css.margin-top = 8px
+				css.text-align = right
+				css.color = #ffffff
+				click = ?layout=index&page=terms-conditions
+
+
+		[footer-image]
+		child = wirefly
+		css.width = 900px
+		css.margin-left = 160px
+		image.url = img/sponsor-logos.png
+		image.width = 650px
+		image.height = 135px
+		image.align = centre
 		css.position = relative
 		css.z-index = 100
 
-			[footer-margin]
-			css.width = 20%
-			css.height = 200px
-
-			[footer-cookies]
-			html.raw = Cookie Policy
-			css.width = 20%
-			css.color = #ffffff
-			css.text-align = left
-			click = ?layout=index&page=cookie-policy
-
-			[footer-tandc]
-			html.raw = Terms & Conditions
-			css.width = 20%
-			css.color = #ffffff
-			css.text-align = center
-			click = ?layout=index&page=terms-conditions
-
-			[footer-contact]
-			html.raw = Contact Us
-			css.text-align = right
-			css.width = 20%
-			css.color = #ffffff
-			click = ?layout=index&page=contact-live-classical-music-dumfries
-
 			[wirefly]
-			css.margin-top = 100px
-			css.height = 50px
+			css.margin-top = 40px
+			css.height = 60px
 			css.width = 20%
 			image.url = img/wirefly-link-white.png
 			image.width = 161px

@@ -7,7 +7,7 @@ $this->menu=array(
 
 ?>
 
-<h1>Manage Events</h1>
+<h4>Manage Events</h4>
 
 
 
@@ -17,7 +17,7 @@ $this->menu=array(
 	'dataProvider'=>$model->searchAllProgramsImAdminOrModFor(),
 	//'filter'=>$model,
 	'columns'=>array(
-		//'id',
+		'id',
 
         array(
             'name'  => 'title',
@@ -26,7 +26,8 @@ $this->menu=array(
         ),
 
 		'start',
-		'end',
+		'active',
+		//'end',
 		//'address',
 		//'post_code',
 		/*

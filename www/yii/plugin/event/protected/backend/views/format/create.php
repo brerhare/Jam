@@ -10,6 +10,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Create Format</h1>
+<h4>Create Format</h4>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

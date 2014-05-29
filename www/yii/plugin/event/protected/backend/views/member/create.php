@@ -8,6 +8,6 @@ $this->menu=array(
 */
 ?>
 
-<h1>Register</h1>
+<h4>Register</h4>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

@@ -10,6 +10,6 @@ $this->menu=array(
 */
 ?>
 
-<h1>Update Program <?php echo $model->name; ?></h1>
+<h4>Update Program <?php echo $model->name; ?></h4>
 
 <?php echo $this->renderPartial('_form',array('model'=>$model)); ?>

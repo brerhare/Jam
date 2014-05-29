@@ -278,7 +278,7 @@ class TicketController extends Controller
 		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$criteria->addCondition("id = " . $order->vendor_id);
 		$vendor = Vendor::model()->find($criteria);
-		if (($vendor) && (trim($vendor->email) != ""))
+		if (($vendor) && (trim($vendor->email) != "") && ($vendor->notify_sale == 1))
 			$bcc = $vendor->email;
 
 		// Send email

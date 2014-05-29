@@ -9,7 +9,7 @@
 
 	<div class = "row">
 		<div class = "well">
-			<h3>Member permissions for <?php echo $model->name;?></h3>
+			<h4>Member permissions for <?php echo $model->name;?></h4>
 			<table>
 			<thead><tr><th style='width:30%'>Username</th>
 			<th style='width:14%'>Admin</th>

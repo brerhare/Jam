@@ -6,6 +6,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Create Program</h1>
+<h4>Create Program</h4>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

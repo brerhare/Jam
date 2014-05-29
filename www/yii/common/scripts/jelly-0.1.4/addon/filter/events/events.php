@@ -13,6 +13,7 @@ class events
     //Defaults
     private $defaultDepartment = "";
     private $defaultWidth = "100%";
+	private $programId = 0;
 
 // Not used ...
     public $apiOption = array(
@@ -28,7 +29,11 @@ class events
 //      var_dump( $options );
 
         // Generate the content into the html, replacing any <substituteN> tags
-        $content = "";
+
+        // Check if any program has been selected in the iframe
+        if (isset($_GET['programid']))
+            $this->programId = (int) $_GET['programid'];
+
         foreach ($options as $opt => $val)
         {
             switch ($opt)
@@ -53,7 +58,9 @@ class events
         }
 
         // Insert the data
-        $content = "<div style='color:#575757;'>";      // Your basic solemn grey font color
+        $content = "";
+		$content .= "<script>var programId = " . $this->programId . ";</script>";
+        $content .= "<div style='color:#575757;'>";      // Your basic solemn grey font color
         $uid = Yii::app()->session['uid'];
 
         $twistyIcon = "<img style='padding-right:3px' title='" . 'Show more' . "' src='img/" . 'open-twisty.png' . "' >";
@@ -87,6 +94,43 @@ class events
         $content .= "<input type='text' id='edatepicker' style='width:80px' value='" . $dt . "'>";
         $content .= "</div>";
         $content .= "</div>";
+
+/*****/
+       	$openProgram = false;
+		if ($this->programId == 0)
+		{
+        	// Program
+        	$programs = Program::model()->findAll(array('order'=>'id'));
+        	if ($programs)
+        	{
+            	$programSel = array();
+            	if (isset($_GET['program']))
+                	$programSel = explode('|', $_GET['program']);
+            	$content .= "<br>";
+	
+            	// $content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Program</a><br>";
+            	// $content .= "<a href='#'></a><div class='filter-header'>" . $twistyIcon . "Program<br>";
+            	$content .= "<div class='filter-header'>" . $twistyIcon . "<a href='#'>Program</a><br>";
+	
+            	$content .= "<div id='program-detail' class='filter-detail'>";
+            	foreach ($programs as $program):
+                	$match = false;
+                	if (in_array($program->id, $programSel))
+                	{
+                    	$match = true;
+                    	$openProgram = true;
+                	}
+                	$content .= "<label class='checkbox'> ";
+                	$content .= "<input name='program[]' "; 
+                	if ($match) $content .= " checked='checked' ";
+                	$content .= "type='checkbox' value='" . $program->id . "' onClick=makeSel()>" . $program->name;
+                	$content .= "</label><br>";
+            	endforeach;
+            	$content .= "</div>";
+            	$content .= "</div>";
+        	}
+		}
+/*****/
 
         // Interest
         $interests  = Interest::model()->findAll(array('order'=>'id'));
@@ -257,45 +301,92 @@ class events
             $content .= "</div>";
         }
 
-        // Wild Seasons fields start here
-        // ------------------------------
-
-         // Grade
-        $grades = array( "Family", "Easy", "Medium", "Hard", "Task");
         $openGrade = false;
-        if ($grades)
-        {   
-            $gradeSel = array();
-            if (isset($_GET['grade']))
-                $gradeSel = explode('|', $_GET['grade']);
-            $content .= "<br>";
+		if ($this->programId == 6)
+		{
 
-            //$content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Grade</a><br>";
-            $content .= "<div class='filter-header'>" . $twistyIcon . "<a href='#'>Grade</a><br>";
+        	// Wild Seasons fields start here
+        	// ------------------------------
 
-            $content .= "<div id='grade-detail' class='filter-detail'>";
-            foreach ($grades as $grade):
-                $match = false;
-                if (in_array($grade, $gradeSel))
-                {
-                    $match = true;
-                    $openGrade = true;
-                }
-                $content .= "<label class='checkbox'> ";
-                $content .= "<input name='grade[]' "; 
-                if ($match) $content .= " checked='checked' ";
-                $content .= "type='checkbox' value='" . $grade . "' onClick=makeSel()>" . $grade;
-                $content .= "</label><br>";
-            endforeach;
-            $content .= "</div>";
-            $content .= "</div>";
-        }
+         	// Grade
+        	$grades = array( "Family", "Easy", "Medium", "Hard", "Task");
+        	if ($grades)
+        	{   
+            	$gradeSel = array();
+            	if (isset($_GET['grade']))
+                	$gradeSel = explode('|', $_GET['grade']);
+            	$content .= "<br>";
+
+            	//$content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Grade</a><br>";
+            	$content .= "<div class='filter-header'>" . $twistyIcon . "<a href='#'>Grade</a><br>";
+
+            	$content .= "<div id='grade-detail' class='filter-detail'>";
+            	foreach ($grades as $grade):
+                	$match = false;
+                	if (in_array($grade, $gradeSel))
+                	{
+                    	$match = true;
+                    	$openGrade = true;
+                	}
+                	$content .= "<label class='checkbox'> ";
+                	$content .= "<input name='grade[]' "; 
+                	if ($match) $content .= " checked='checked' ";
+                	$content .= "type='checkbox' value='" . $grade . "' onClick=makeSel()>" . $grade;
+                	$content .= "</label><br>";
+            	endforeach;
+            	$content .= "</div>";
+            	$content .= "</div>";
+        	}
+		}
+
+        $openAbType = false;
+		if ($this->programId == 12)
+		{
+
+        	// Absolute Classics fields start here
+        	// -----------------------------------
+
+         	// Type
+        	$abtypes = array( "Festival", "Series");
+        	if ($abtypes)
+        	{   
+            	$abtypesel = array();
+            	if (isset($_GET['abtype']))
+                	$abtypesel = explode('|', $_GET['abtype']);
+            	$content .= "<br>";
+
+            	//$content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Type</a><br>";
+            	$content .= "<div class='filter-header'>" . $twistyIcon . "<a href='#'>Type</a><br>";
+
+            	$content .= "<div id='abtype-detail' class='filter-detail'>";
+            	foreach ($abtypes as $abtype):
+                	$match = false;
+                	if (in_array($abtype, $abtypesel))
+                	{
+                    	$match = true;
+                    	$openAbType = true;
+                	}
+                	$content .= "<label class='checkbox'> ";
+                	$content .= "<input name='abtype[]' "; 
+                	if ($match) $content .= " checked='checked' ";
+                	$content .= "type='checkbox' value='" . $abtype . "' onClick=makeSel()>" . $abtype;
+                	$content .= "</label><br>";
+            	endforeach;
+            	$content .= "</div>";
+            	$content .= "</div>";
+        	}
+		}
 
 		$content .= "<br/>";
 		$content .= "<div style='float:left;padding-left:40px'><a href=javascript:printSelectedHeads()><b><img style='margin-top:0px; margin-left:0px' title='Print' src='img/print.jpg'></a></div>";
 
         // Open twisty any selected groups of filters
         $content .= "<script>";
+		if ($this->programId == 0)
+		{
+        	if (!($openProgram))
+            	$content .= "document.getElementById('program-detail').style.display='none';";
+		}
         if (!($openInterest))
             $content .= "document.getElementById('interest-detail').style.display='none';";
         if (!($openFormat))
@@ -308,6 +399,8 @@ class events
             $content .= "document.getElementById('price-detail').style.display='none';";
         if (!($openGrade))
             $content .= "document.getElementById('grade-detail').style.display='none';";
+        if (!($openAbType))
+            $content .= "document.getElementById('abtype-detail').style.display='none';";
         $content .= "</script>";
 
         $content .= "</div>";
@@ -351,13 +444,36 @@ END_OF_API_HTML;
     priceBand = '';
     textSearch = '';
     grade = '';
+    abtype = '';
 
     function makeSel()
     {
+		// Basic start
+        sel = '?layout=index';
+
+		// Program lock?
+		sel += '&programid=' + programId;
+
         // Date
-        sel = '?layout=index&sdate=' + selSDate;
+        sel += '&sdate=' + selSDate;
         sel += '&edate=' + selEDate;
         sel += '&textsearch=' + textSearch;
+
+        // Program
+        av=document.getElementsByName("program[]");
+        if (av.length > 0)
+        {
+            var str = '';
+           for (var i = 0; i < av.length; i++)
+           {
+               if (av[i].checked)
+                {
+                    if (str != '') str += '|';
+                    str += av[i].value;
+                }
+            }
+            sel += '&program=' + str; 
+        }
 
         // Interest
         av=document.getElementsByName("interest[]");
@@ -454,7 +570,25 @@ END_OF_API_HTML;
             }
             sel += '&grade=' + str; 
         }
+
+        // AbType
+        av=document.getElementsByName("abtype[]");
+        if (av.length > 0)
+        {
+            var str = '';
+           for (var i = 0; i < av.length; i++)
+           {
+               if (av[i].checked)
+                {
+                    if (str != '') str += '|';
+                    str += av[i].value;
+                }
+            }
+            sel += '&abtype=' + str; 
+        }
+
         // Activate the link
+//alert(sel);
         window.location.href = sel;
     }
 
