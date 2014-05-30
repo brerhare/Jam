@@ -288,6 +288,7 @@ $criteria->order = "sequence ASC";
 			$content .= "<li> <a href='" . Yii::app()->request->baseUrl . "?layout=index&page=" . $menuHeader->url . "'>" . $menuHeader->title . "</a>";
 			$criteria = new CDbCriteria;
 			$criteria->addCondition("parent_id = " . $menuHeader->id);
+$criteria->order = "sequence ASC";
 			$menuItems = ContentBlock::model()->findAll($criteria);
 			$l2 = false;
 			foreach ($menuItems as $menuItem):
