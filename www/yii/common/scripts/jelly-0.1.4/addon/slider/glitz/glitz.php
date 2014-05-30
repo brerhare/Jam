@@ -14,6 +14,8 @@ class glitz
 	private $defaultMode = 'html';		// html, image
 	private $defaultWidth = "900px";
 	private $defaultHeight = "250px";
+	private $defaultAnimationSpeed = 50;
+	private $defaultSlideshowSpeed = 1500;
 	private $defaultSlider = -1;
 
 	public $apiOption = array(
@@ -49,6 +51,12 @@ class glitz
 					break;
 				case "height":
 					$this->defaultHeight = $val;
+					break;
+				case "slideshowspeed":
+					$this->defaultSlideshowSpeed = $val;
+					break;
+				case "animationspeed":
+					$this->defaultAnimationSpeed = $val;
 					break;
 				case "mode":
 					if (strtoupper($val) == "IMAGE")
@@ -135,6 +143,8 @@ class glitz
 		$this->apiJs = str_replace("<substitute-path>", $jellyRootUrl, $this->apiJs);
 		//$this->apiJs = str_replace("<substitute-image-path>", Yii::app()->basePath , $this->apiJs);
 		$this->apiJs = str_replace("<substitute-image-path>", "" , $this->apiJs);
+		$this->apiJs = str_replace("<substitute-slideshowspeed>", $this->defaultSlideshowSpeed, $this->apiJs);
+		$this->apiJs = str_replace("<substitute-animationspeed>", $this->defaultAnimationSpeed, $this->apiJs);
 
 		$retArr = array();
 		$retArr[0] = $this->apiHtml;
@@ -182,7 +192,8 @@ domReady(function(){
         reflectPath:"<substitute-path>/imageflow/",
         imagePath: "<substitute-image-path>",
         slideshow:true,
-        slideshowSpeed:2000,
+        slideshowSpeed:<substitute-slideshowspeed>,
+        animationSpeed:<substitute-animationspeed>,
         slideshowAutoplay:true,
         imageCursor:'pointer',
         circular:true});
