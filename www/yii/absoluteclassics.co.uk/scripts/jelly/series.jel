@@ -90,8 +90,8 @@ addon.slider.glitz.slider = 1
 addon.slider.glitz.width = 1000px
 addon.slider.glitz.mode = image
 addon.slider.glitz.source = db
-addon.slider.glitz.slideshowspeed = 5000
-addon.slider.glitz.animationspeed = 70
+addon.slider.glitz.slideshowspeed = 2500
+addon.slider.glitz.animationspeed = 80
 
 
 [other-content]
