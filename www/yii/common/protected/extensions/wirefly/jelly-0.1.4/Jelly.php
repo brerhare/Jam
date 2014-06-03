@@ -276,8 +276,10 @@ END_OF_FOOTER;
 
 		foreach ($this->bodyArray as $body)
 			$this->emit($body);
+
 		foreach ($this->scriptArray as $script)
 			$this->emit($script);
+
 		$this->emit($this->stdFooter);
 	}
 
@@ -1135,6 +1137,19 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				$this->addonHandler($addon, 1, $addonHtml);
 				$content = str_replace($pOrig, $addonHtml, $content);
 				//$content = str_replace($pOrig, "", $content);
+			}
+
+//https://plugin.wireflydesign.com/ticket/index.php/ticket/book/189?sid=ebh8d8h7nvos82om9remsi8fc5&ref=event
+
+			if (stristr($vals[0], "ticket"))
+			{
+				// Eg: {{ticket 110 Jos Test event}}
+				// ---------------------------------
+				$moreCurlyWurlys = 1;
+				$value = $vals[1];
+				//$iframe = '<iframe width="705" height="560" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/ticket/index.php/ticket/book/' . $value . '?sid=' . Yii::app()->params['sid'] . '&amp;ref=none"></iframe>';
+				$iframe = '<iframe width="100%" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/ticket/index.php/ticket/book/' . $value . '?sid=' . Yii::app()->params['sid'] . '&amp;ref=none"></iframe>';
+				$content = str_replace($pOrig, $iframe, $content);
 			}
 
 			if (stristr($vals[0], "department"))

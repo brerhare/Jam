@@ -49,6 +49,7 @@ class jellybasic
 		{
 			$criteria = new CDbCriteria;
 			$criteria->addCondition("description = '" . $this->optionValue . "'");
+//die($this->optionValue);
 			$jellyDownloadFile = JellyDownloadFile::model()->find($criteria);
 			if ($jellyDownloadFile)
 				$content .= "<a style='text-decoration:none' href='" . Yii::app()->baseUrl . "/userdata/jelly/download/" . $jellyDownloadFile->filename . "'>" . $jellyDownloadFile->description . "</a>";
