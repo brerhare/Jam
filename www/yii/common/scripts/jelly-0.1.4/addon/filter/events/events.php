@@ -397,10 +397,21 @@ class events
             $content .= "document.getElementById('location-detail').style.display='none';";
         if (!($openPrice))
             $content .= "document.getElementById('price-detail').style.display='none';";
-        if (!($openGrade))
-            $content .= "document.getElementById('grade-detail').style.display='none';";
-        if (!($openAbType))
-            $content .= "document.getElementById('abtype-detail').style.display='none';";
+
+		// Wild Seasons
+		if ($this->programId == 6)
+		{
+        	if (!($openGrade))
+            	$content .= "document.getElementById('grade-detail').style.display='none';";
+		}
+
+		// Absolute Classics
+		if ($this->programId == 12)
+		{
+        	if (!($openAbType))
+            	$content .= "document.getElementById('abtype-detail').style.display='none';";
+		}
+
         $content .= "</script>";
 
         $content .= "</div>";
