@@ -90,6 +90,8 @@ addon.slider.glitz.slider = 2
 addon.slider.glitz.width = 1000px
 addon.slider.glitz.mode = image
 addon.slider.glitz.source = db
+addon.slider.glitz.slideshowspeed = 2500
+addon.slider.glitz.animationspeed = 80
 
 [other-content]
 child = second-menu, content-block
