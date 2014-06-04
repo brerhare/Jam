@@ -11,7 +11,12 @@
 
 	<?php // echo $form->textFieldRow($model,'uid',array('class'=>'span5')); ?>
 
-	<?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>255)); ?>
+
+    <?php $jellyEmbed = "";
+    if (!($model->isNewRecord))
+        $jellyEmbed = "To embed this in pages use <b><i>{{ticket " . $model->id . " " . $model->title . "}}<br></b></i>"; ?>
+	<?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>255, 'hint'=>$jellyEmbed)); ?>
+
 
 	<?php echo $form->textFieldRow($model,'date',array('class'=>'span3','maxlength'=>45)); ?>
 
