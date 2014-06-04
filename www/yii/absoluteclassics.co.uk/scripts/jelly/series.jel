@@ -232,7 +232,7 @@ stacking = horizontal
 
 
 			[fmenu3]
-			child = footer-tandc, footer-cookies
+			child = footer-tandc, footer-cookies, news
 			#css.height = 200px
 			css.width = 200px
 			#css.margin-left = 200px
@@ -251,6 +251,13 @@ stacking = horizontal
 				css.text-align = right
 				css.color = #ffffff
 				click = ?layout=index&page=terms-conditions
+
+				[news]
+				html.raw = Newsletter
+				css.margin-top = 8px
+				css.text-align = right
+				css.color = #ffffff
+				click = ?layout=index&page=classical-music-dumfries-news
 
 
 		[footer-image]
