@@ -21,6 +21,9 @@ $isFreeEvent = 1;
 #page {
 	border:0;
 }
+/* @@NB: This overrides the 30px left margin set by bootstrap */
+.span7 {width:90%; margin:0px auto}
+.span-19 {margin-left:1px}
 </style>
 
 	<div class="row">
