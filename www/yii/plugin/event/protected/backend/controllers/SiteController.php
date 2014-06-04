@@ -21,6 +21,17 @@ class SiteController extends Controller
 		);
 	}
 
+// @@TODO: HARDCODED FOR AbSOLUTE CLASSICS ---------- REMOVE
+    public function actionAbsoluteClassicsdirect()
+    {
+        Yii::app()->session['uid'] = 7;
+        $identity = new UserIdentity('mcquiston.concerts@gmail.com', 'greyfriars');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
 	/**
 	 * This is the default 'index' action that is invoked
 	 * when an action is not explicitly requested by users.
