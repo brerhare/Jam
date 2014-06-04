@@ -130,7 +130,7 @@ stacking = horizontal
 		css.background-color = white
 	
 			[content]
-			css.margin-left = 0px
+			css.margin-left = 30px
 			#css.width = 700px
 			fx.opacity = 100%
 			db.table = ContentBlock
@@ -156,7 +156,7 @@ stacking = horizontal
 		#css.margin-left = 100px
 
 			[fmenu1]
-			child = education, support
+			child = education, support, twitter
 			#css.height = 200px
 			css.width = 200px
 			css.margin-left = 200px
@@ -177,8 +177,17 @@ stacking = horizontal
 				css.color = #ffffff
 				click = ?layout=index&page=support-classical-music
 
+				[twitter]
+				html.raw = Twitter
+				css.margin-top = 8px
+				css.text-align = left
+				css.color = #ffffff
+				clicknew = https://twitter.com/ABClassics
+
+
+
 			[fmenu2]
-			child = about, footer-contact
+			child = about, footer-contact, facebook
 			#css.height = 200px
 			css.width = 200px
 
@@ -195,9 +204,16 @@ stacking = horizontal
 				css.color = #ffffff
 				click = ?layout=index&page=contact-live-classical-music-dumfries
 
+				[facebook]
+				html.raw = Facebook
+				css.margin-top = 8px
+				css.text-align = center
+				css.color = #ffffff
+				clicknew = https://www.facebook.com/absoluteclassicsconcerts
+
 
 			[fmenu3]
-			child = footer-tandc, footer-cookies
+			child = footer-tandc, footer-cookies, news
 			#css.height = 200px
 			css.width = 200px
 			#css.margin-left = 200px
@@ -216,6 +232,13 @@ stacking = horizontal
 				css.text-align = right
 				css.color = #ffffff
 				click = ?layout=index&page=terms-conditions
+
+				[news]
+				html.raw = Newsletter
+				css.margin-top = 8px
+				css.text-align = right
+				css.color = #ffffff
+				click = ?layout=index&page=classical-music-dumfries-news
 
 
 		[footer-image]
