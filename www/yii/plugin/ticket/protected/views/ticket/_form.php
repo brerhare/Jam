@@ -21,6 +21,9 @@ $isFreeEvent = 1;
 #page {
 	border:0;
 }
+/* @@NB: This overrides the some bootstrap settings */
+.span7 {width:94%}
+.span-19 {margin-left:1px}
 </style>
 
 	<div class="row">
@@ -377,6 +380,32 @@ $(document).ready(function() {
 		<input name="phone" value="" class="InputTextField" MaxLength="15" style="width:100px"/>
 	</div>
 -->
+
+<!-- @@NB iframe resizer hardcode here -->
+<script type="text/javascript" src="/js/iframeResizer.contentWindow.min.js"></script>
+    <!-- Iframe resizer -->
+    <script type="text/javascript" src="/js/jquery.iframeResizer.min.js"></script>
+    <script type="text/javascript">
+        jQuery('iframe').iFrameSizer({
+            log                    : true,  // For development
+            autoResize             : true,  // Trigering resize on events in iFrame
+            contentWindowBodyMargin: 8,     // Set the default browser body margin style (in px)
+            doHeight               : true,  // Calculates dynamic height
+            doWidth                : false, // Calculates dynamic width
+            enablePublicMethods    : true,  // Enable methods within iframe hosted page
+            interval               : 0,     // interval in ms to recalculate body height, 0 to disable refreshing
+            scrolling              : false, // Enable the scrollbars in the iFrame
+            callback               : function(messageData){ // Callback fn when message is received
+                $('p#callback').html(
+                    '<b>Frame ID:</b> '    + messageData.iframe.id +
+                    ' <b>Height:</b> '     + messageData.height +
+                    ' <b>Width:</b> '      + messageData.width +
+                    ' <b>Event type:</b> ' + messageData.type
+                );
+            }
+        });
+</script>
+
 
 	<?php $this->endWidget(); ?>
 </div><!-- form -->

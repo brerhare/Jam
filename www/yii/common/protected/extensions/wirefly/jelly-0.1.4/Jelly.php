@@ -1139,8 +1139,6 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				//$content = str_replace($pOrig, "", $content);
 			}
 
-//https://plugin.wireflydesign.com/ticket/index.php/ticket/book/189?sid=ebh8d8h7nvos82om9remsi8fc5&ref=event
-
 			if (stristr($vals[0], "ticket"))
 			{
 				// Eg: {{ticket 110 Jos Test event}}

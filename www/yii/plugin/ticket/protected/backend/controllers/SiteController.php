@@ -35,6 +35,17 @@ class SiteController extends Controller
         $this->redirect(array('site/index'));
     }
 
+// @@TODO: HARDCODED FOR AbSOLUTE CLASSICS ---------- REMOVE
+    public function actionAbsoluteClassicsdirect()
+    {
+        Yii::app()->session['uid'] = 7;
+        $identity = new UserIdentity('mcquiston.concerts@gmail.com', 'greyfriars');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
 	public function actionManualTicket()
 	{
 		$this->render('ticket');
