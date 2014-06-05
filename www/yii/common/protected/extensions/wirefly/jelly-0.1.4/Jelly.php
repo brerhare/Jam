@@ -1147,7 +1147,6 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				// ---------------------------------
 				$moreCurlyWurlys = 1;
 				$value = $vals[1];
-				//$iframe = '<iframe width="705" height="560" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/ticket/index.php/ticket/book/' . $value . '?sid=' . Yii::app()->params['sid'] . '&amp;ref=none"></iframe>';
 				$iframe = '<iframe width="100%" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/ticket/index.php/ticket/book/' . $value . '?sid=' . Yii::app()->params['sid'] . '&amp;ref=none"></iframe>';
 				$content = str_replace($pOrig, $iframe, $content);
 			}
