@@ -73,10 +73,16 @@ class basic
 					break;
 
 				case "menu-opacity":
-					$this->apiHtml = str_replace("<substitute-menu-opacity>",
+					$this->apiHtml = str_replace("<substitute-menu-opacity>",	/* First level menu */
 						"nav ul {
 							zoom: 1; filter: alpha(opacity=" . $val . ");
 							opacity: " . ($val / 100) . ";
+						}",
+						$this->apiHtml);
+					$this->apiHtml = str_replace("<substitute-submenu-opacity>",	/* Second level menu */
+						"nav ul ul {
+							zoom: 1; filter: alpha(opacity='100');
+							opacity: " . (100) . ";
 						}",
 						$this->apiHtml);
 					break;
@@ -122,6 +128,14 @@ class basic
 							background: -moz-linear-gradient(top, " . $vals[0] . " 0%, " . $vals[1] . " 100%); 
 							background: -webkit-linear-gradient(top, " . $vals[0] . " 0%, " . $vals[1] . " 100%); 
 						}",	
+						$this->apiHtml);
+					break;
+
+				case "Xsubmenu-opacity":
+					$this->apiHtml = str_replace("<substitute-submenu-opacity>",
+						"nav ul ul {
+							background-color: rgba(0,0,255,1.0);
+						}",
 						$this->apiHtml);
 					break;
 
@@ -206,6 +220,7 @@ class basic
 		$this->apiHtml = str_replace("<substitute-menu-tile>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-menu-stretch>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-submenu-color>", "", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-submenu-opacity>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-menu-text-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-submenu-text-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-item-color>", "", $this->apiHtml);
@@ -338,6 +353,7 @@ $criteria->order = "sequence ASC";
 		<substitute-menu-text-color>
 		<substitute-submenu-text-color>
 		<substitute-submenu-color>
+		<substitute-submenu-opacity>
 		<substitute-item-color>
 		<substitute-item-text-color>
 		<substitute-subitem-color>
