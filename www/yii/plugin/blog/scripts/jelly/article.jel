@@ -32,20 +32,26 @@ child = page-container
 
 			[blog-item]
 			css.width = 50%
-			child = date-and-category, title, intro, image
+			child = title, date-and-category, intro, image
 			db.table = Article
 			db.filter = id=$_GET['id']
 
+				[title]
+				css.margin-top = 5px;
+				css.color = #5c194c
+				css.margin-bottom = 0px;
+				css.font-size = 18px
+				html.raw = Article.title
+				
 				[date-and-category]
-				css.height = 30px
 				css.font-size = 14px
+				css.margin-top = -12px
+				css.margin-bottom = 15px
+				css.padding-top = 2px
 				db.table = Category
 				db.filter = id=Article.blog_category_id
 				html.p = Article.date Category.name
 
-				[title]
-				html.h4 = Article.title
-				
 				[intro]
 				css.margin-top = -10px
 				html.raw = Article.intro
