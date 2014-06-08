@@ -46,7 +46,7 @@ class blogs
         // JS
 
         // Insert the data
-        $content = "<div style='padding-left:20px; color:#575757;'>";      // Your basic solemn grey font color
+        $content = "<div style='padding-left:20px; font-size: 15px; background-color: #f2f2f2; color:#575757;'>";      // Your basic solemn grey font color
         $uid = Yii::app()->session['uid'];
 
         // Category
@@ -59,6 +59,7 @@ class blogs
             foreach ($categories as $category):
             	$content .= "<a onClick=makeSel(" . $category->id . ") href='#'>$category->name</a><br>";
             endforeach;
+			$content .= "<br/>";
 			$content .= "</b>";
         }
 
