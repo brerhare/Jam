@@ -15,7 +15,7 @@ db.filter = sid=$_GET['sid']
 
 	[page-container]
 	child = breadcrumbs, graphic, main-content
-	css.width = 900px
+	css.width = 750
 
 		[breadcrumbs]
 		css.margin-top = 10px
@@ -53,7 +53,7 @@ db.filter = sid=$_GET['sid']
 					style.background-image-bottom = /userdata/<substitute-user>/Article.thumbnail_path
 					
 					[most-recent-other]
-					css.width = 400px
+					css.width = 280px
 					child = most-recent-title, most-recent-intro
 					
 						[most-recent-title]
@@ -107,7 +107,7 @@ db.filter = sid=$_GET['sid']
 #						css.height = 70px
 						css.width = 200px
 						html.raw = Article.intro
-						
+
 			[category-list]
 			addon.filter.blogs.category = $_GET['category']
 			css.width = 20%
