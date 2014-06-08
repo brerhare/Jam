@@ -469,7 +469,7 @@ if (stristr($vals[0], "department"))
 }
 else if (stristr($vals[0], "blog"))
 {
-	$iframe = '<iframe height="900" width="100%" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/blog/?sid=' . Yii::app()->params['sid'] . '"></iframe>';
+	$iframe = '<iframe height="900" width="100%" style="border:medium double rgb(255,255,255)" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/blog/?sid=' . Yii::app()->params['sid'] . '&blogwidth=auto"></iframe>';
 	$this->genInlineHtml(str_replace($pOrig, $iframe, $model->content));
 }
 else if (stristr($vals[0], "blog750"))
