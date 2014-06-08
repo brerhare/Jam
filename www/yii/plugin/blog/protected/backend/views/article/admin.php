@@ -15,7 +15,11 @@ $this->menu=array(
 	'columns'=>array(
 		//'id',
 		//'uid',
-		'date',
+		array(
+		'name' => 'date',
+		'value' => '$data->date',
+		'htmlOptions'=>array('width'=>'80'),
+		),
         array(
             'name'  => 'title',
             'value' => 'CHtml::link($data->title, Yii::app()->createUrl("article/update",array("id"=>$data->primaryKey)))',

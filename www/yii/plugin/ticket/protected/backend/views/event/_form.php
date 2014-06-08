@@ -12,10 +12,7 @@
 	<?php // echo $form->textFieldRow($model,'uid',array('class'=>'span5')); ?>
 
 
-    <?php $jellyEmbed = "";
-    if (!($model->isNewRecord))
-        $jellyEmbed = "To embed this in pages use <b><i>{{ticket " . $model->id . " " . $model->title . "}}<br></b></i>"; ?>
-	<?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>255, 'hint'=>$jellyEmbed)); ?>
+	<?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>255, )); ?>
 
 
 	<?php echo $form->textFieldRow($model,'date',array('class'=>'span3','maxlength'=>45)); ?>
@@ -84,5 +81,66 @@
 			'label'=>$model->isNewRecord ? 'Create' : 'Save',
 		)); ?>
 	</div>
+
+<script>
+function embedWirefly()	/* Embed a wirefly hosted site curly wurly */
+{
+	var oArg = new Object();
+	var text = " <?php echo '{{ticket ' . $model->id . ' ' . $model->title . '}}' ?> ";
+	text = text.replace("'","");
+	text = text.replace('"',"");
+	text = text.replace('&',"");
+	oArg.Document = text;
+	prompt("Copy to clipboard: Ctrl+C", oArg.Document);
+}
+function embedExternal()	/* Embed a non-wirefly hosted site iframe */
+{
+	var oArg = new Object();
+
+
+	var text = "<iframe width='100%' scrolling='no' style='overflow-x:hidden; overflow-y:auto;' src='https://plugin.wireflydesign.com/ticket/index.php/ticket/book/207?sid=ebh8d8h7nvos82om9remsi8fc5&amp;ref=none'></iframe><br/>";
+
+	text += '<scr' + 'ipt type="text/javascript" src="https://plugin.wireflydesign.com/js/jquery.iframeResizerWrapper.js"></scr' + 'ipt>';
+
+    oArg.Document = text;
+    prompt("Copy to clipboard: Ctrl+C", oArg.Document);
+}
+</script>
+
+    <?php if (!($model->isNewRecord)): ?>
+        <div class="control-group">
+        <label class="control-label" for="icon_path">Wirefly Hosted site</label>
+            <div class="controls">
+                <?php
+                // @@EG TbButton to fire javascript
+                $this->widget('bootstrap.widgets.TbButton', array(
+                    'type'=>'primary',
+                    'label'=>'Get Embed Code',
+                        'htmlOptions'=>array(
+                            'onclick'=>'js:embedWirefly()',
+                         )
+
+                )); ?>
+            </div>
+        </div>
+    <?php endif; ?>
+
+    <?php if (!($model->isNewRecord)): ?>
+        <div class="control-group">
+        <label class="control-label" for="icon_path">External site</label>
+            <div class="controls">
+                <?php
+                // @@EG TbButton to fire javascript
+                $this->widget('bootstrap.widgets.TbButton', array(
+                    'type'=>'primary',
+                    'label'=>'Get Embed Code',
+                        'htmlOptions'=>array(
+                            'onclick'=>'js:embedExternal()',
+                         )
+
+                )); ?>&nbsp&nbsp&nbsp&nbsp(Note that this requires JQuery)
+            </div>
+        </div>
+    <?php endif; ?>
 
 <?php $this->endWidget(); ?>
