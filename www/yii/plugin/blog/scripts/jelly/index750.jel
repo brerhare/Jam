@@ -15,7 +15,7 @@ db.filter = sid=$_GET['sid']
 
 	[page-container]
 	child = breadcrumbs, graphic, main-content
-	css.width = 750
+	css.width = 750px
 
 		[breadcrumbs]
 		css.margin-top = 10px
@@ -24,7 +24,7 @@ db.filter = sid=$_GET['sid']
 
 		[graphic]
 		css.height = 4px
-		css.background-color = purple
+		css.background-color = grey
 
 		[main-content]
 		stacking = horizontal
@@ -43,7 +43,7 @@ db.filter = sid=$_GET['sid']
 				stacking = horizontal
 				css.margin-bottom = 20px;
 				child = most-recent-image, most-recent-other
-				click = index.php/?layout=article&sid=$_GET['sid']&id=Article.id
+				click = index.php/?layout=article750&sid=$_GET['sid']&id=Article.id
 				
 					[most-recent-image]
 					css.height = 180px
@@ -58,10 +58,13 @@ db.filter = sid=$_GET['sid']
 					
 						[most-recent-title]
 						css.height = 60px
+						css.margin-top = 10px
 						css.margin-left = 10px
 						css.margin-bottom = 1px
 						css.width = 100%
-						html.h4 = Article.title
+						css.font-size = 18px
+						css.color = grey
+						html.raw = Article.title
 						
 						[most-recent-intro]
 						css.height = 120px
@@ -87,7 +90,7 @@ db.filter = sid=$_GET['sid']
 					db.filter = uid=User.id, id!=Article.id
 					db.order = date DESC
 					db.fetch = multiple
-					click = index.php/?layout=article&sid=$_GET['sid']&id=Article.id
+					click = index.php/?layout=article750&sid=$_GET['sid']&id=Article.id
 					
 						[blog-thumb]
 						css.height = 130px
@@ -105,7 +108,7 @@ db.filter = sid=$_GET['sid']
 						[blog-intro]
 						css.font-size = 12px
 #						css.height = 70px
-						css.width = 200px
+						css.width = 170px
 						html.raw = Article.intro
 
 			[category-list]

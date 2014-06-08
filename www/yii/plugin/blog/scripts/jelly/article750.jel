@@ -24,7 +24,7 @@ child = page-container
 
 		[graphic]
 		css.height = 4px
-		css.background-color = purple
+		css.background-color = grey
 
 		[main-content]
 		stacking = horizontal
@@ -38,7 +38,7 @@ child = page-container
 
 				[title]
 				css.margin-top = 5px;
-				css.color = #5c194c
+				css.color = grey
 				css.margin-bottom = 0px;
 				css.font-size = 18px
 				html.raw = Article.title
