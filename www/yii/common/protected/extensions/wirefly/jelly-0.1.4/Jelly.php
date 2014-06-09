@@ -97,6 +97,7 @@ class Jelly
 		border-spacing: 0;
 	}
 	/**************************/
+
 	</style>
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
@@ -1018,7 +1019,13 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 		{
 			$userId = -1;
 			$criteria = new CDbCriteria;
-			$criteria->addCondition("sid = '" . $_GET['sid'] . "'");
+
+			// Strip any possible quotes (?!)
+			$sid = $_GET['sid'];
+			$sid = str_replace("'", "", $_GET['sid']);
+			$sid = str_replace('"', "", $_GET['sid']);
+
+			$criteria->addCondition("sid = '" . $sid . "'");
 			$user = User::model()->find($criteria);
 			if ($user)
 			{
@@ -1053,6 +1060,7 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 		// Translate any angle-brackets in the jelly file
 		$this->checkLocalSubstitutions($content);
 
+
         // Trap any passed sids and flesh them out (this is actually a blog bug, passing sid from index.jel -> article.jel fucks up. Any yet the same for the product plugin index.jel -> product.jel works just fine (?!)
         if (isset($_GET['sid']))
         {
@@ -1060,6 +1068,7 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
             if (strstr($content, '$_GET[\'sid\']'))
                 $content = str_replace('$_GET[\'sid\']', $sid, $content);
         }
+
 
 		// Translate any curly wurlys
 		$moreCurlyWurlys = 1;

@@ -29,6 +29,10 @@ db.filter = sid=$_GET['sid']
 		[main-content]
 		stacking = horizontal
 		child = blog-items, category-list
+# dummy lookup in case the next (using category fails)
+#db.table = Article
+#db.filter = uid=User.id
+#db.order = date DESC
 
 			[blog-items]
 			css.width = 75%
