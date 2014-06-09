@@ -36,7 +36,7 @@ db.filter = sid=$_GET['sid']
 #@@ array parsing order isnt the same as defined? If this db, stuff is in the next block where it belongs it doesnt work
 			db.table = Article
 			#db.filter = uid=User.id, blog_category_id=$_GET['category']
-			#db.filter = uid=User.id
+			db.filter = uid=User.id
 			db.order = date DESC
 
 				[most-recent-blog]
