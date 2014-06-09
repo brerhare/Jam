@@ -27,12 +27,16 @@ class blogs
         // Generate the content into the html, replacing any <substituteN> tags
         $content = "";
 		$category = "";
+		$blogwidth = "auto";
         foreach ($options as $opt => $val)
         {
             switch ($opt)
             {
                 case "category":
                     $category = $val;
+                    break;
+                case "blogwidth":
+                    $blogwidth = $val;
                     break;
                 default:
                     break;
@@ -46,7 +50,7 @@ class blogs
         // JS
 
         // Insert the data
-        $content = "<div style='padding-left:20px; font-size: 15px; background-color: #f2f2f2; color:#575757;'>";      // Your basic solemn grey font color
+        $content = "<div style='padding-left:20px; font-size: 15px; background-color: #f8f8f8; color:#575757;'>";      // Your basic solemn grey font color
         $uid = Yii::app()->session['uid'];
 
         // Category
@@ -64,7 +68,13 @@ class blogs
         }
 
 		$content .= "</div>";
+
+		// Insert SID into js
 		$content .= "<script> var SID = '" . $_GET['sid'] . "'; </script>";
+
+		// Insert blog width into js
+		$content .= "<script>var blogwidth='" . $blogwidth . "'; </script>";
+
         $html = str_replace("<substitute-data>", $content, $this->apiHtml);
         $this->apiHtml = $html;
 
@@ -91,7 +101,11 @@ END_OF_API_HTML;
 
     function makeSel(id)
     {
-		sel = '?layout=index&sid=' + SID;
+		sel = '?layout=index';
+		if (blogwidth == '750')
+			sel = '?layout=index750';
+
+		sel += '&sid=' + SID;
        	sel += '&category=' + id; 
 
         // Activate the link

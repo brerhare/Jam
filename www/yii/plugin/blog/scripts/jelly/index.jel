@@ -110,6 +110,7 @@ db.filter = sid=$_GET['sid']
 						
 			[category-list]
 			addon.filter.blogs.category = $_GET['category']
+			addon.filter.blogs.blogwidth = auto
 			css.width = 20%
 			#db.table = Category
 			#db.order = name
