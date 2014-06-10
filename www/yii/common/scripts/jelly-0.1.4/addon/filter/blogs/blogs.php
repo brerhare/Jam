@@ -27,11 +27,15 @@ class blogs
         // Generate the content into the html, replacing any <substituteN> tags
         $content = "";
 		$category = "";
+		$recent = "";
 		$blogwidth = "auto";
         foreach ($options as $opt => $val)
         {
             switch ($opt)
             {
+                case "recent":	// Get the most recent article for the applicable category (or all if 0)
+                    $recent = $val;
+                    break;
                 case "category":
                     $category = $val;
                     break;
@@ -53,9 +57,15 @@ class blogs
         $content = "<div style='padding-left:20px; font-size: 15px; background-color: #f8f8f8; color:#575757;'>";      // Your basic solemn grey font color
         $uid = Yii::app()->session['uid'];
 
-        // Category
-        $categories  = Category::model()->findAll(array('order'=>'name', 'condition'=>'uid=' . Yii::app()->session['uid']));
-        if ($categories)
+        // Most recent article?
+        $criteria = new CDbCriteria;
+        $criteria->addCondition("uid=" . $uid);
+		if (($category != "") && ($category != "0"))
+			$criteria->addCondition("blog_category_id=" . $category);
+        $articles = Article::model()->findAll($criteria);
+        //$articles  = Article::model()->findAll(array('order'=>'date DESC', 'condition'=>'uid=' . Yii::app()->session['uid'] . ' and ' ));
+/*
+        if ($articles)
         {
 			$content .= "<br>";
 			$content .= "<b>";
@@ -66,6 +76,24 @@ class blogs
 			$content .= "<br/>";
 			$content .= "</b>";
         }
+*/
+
+        // List of categories?
+		if ($category != "")
+		{
+        	$categories  = Category::model()->findAll(array('order'=>'name', 'condition'=>'uid=' . $uid));
+        	if ($categories)
+        	{
+				$content .= "<br>";
+				$content .= "<b>";
+          		$content .= "<a onClick=makeSel(0) href='#'>All Categories</a><br>";
+            	foreach ($categories as $category):
+            		$content .= "<a onClick=makeSel(" . $category->id . ") href='#'>$category->name</a><br>";
+            	endforeach;
+				$content .= "<br/>";
+				$content .= "</b>";
+        	}
+		}
 
 		$content .= "</div>";
 

@@ -37,6 +37,7 @@ db.filter = sid=$_GET['sid']
 			[blog-items]
 			css.width = 75%
 			child = most-recent-blog, older-blog-grid
+			addon.filter.blogs.get = recent
 #@@ array parsing order isnt the same as defined? If this db, stuff is in the next block where it belongs it doesnt work
 			db.table = Article
 			#db.filter = uid=User.id, blog_category_id=$_GET['category']
@@ -116,11 +117,8 @@ db.filter = sid=$_GET['sid']
 						html.raw = Article.intro
 
 			[category-list]
+			# Display the list of categories, make them clickies
 			addon.filter.blogs.category = $_GET['category']
 			addon.filter.blogs.blogwidth = 750
 			css.width = 20%
-			#db.table = Category
-			#db.order = name
-			#db.fetch = multiple
-			#html.raw = Category.name
 
