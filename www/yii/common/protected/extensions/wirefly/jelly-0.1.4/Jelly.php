@@ -1199,7 +1199,7 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				// Eg: {{blog750}}
 				// ------------
 				$moreCurlyWurlys = 1;
-				$iframe = '<iframe width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/blog/?layout=index750&sid=' . Yii::app()->params['sid'] . '&blogwidth=750"></iframe>';
+				$iframe = '<iframe width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/blog/?layout=index750&sid=' . Yii::app()->params['sid'] . '&blogwidth=750&category=0"></iframe>';
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 
@@ -1208,7 +1208,7 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				// Eg: {{blog}}
 				// ------------
 				$moreCurlyWurlys = 1;
-				$iframe = '<iframe width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/blog/?sid=' . Yii::app()->params['sid'] . '&blogwidth=auto"></iframe>';
+				$iframe = '<iframe width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/blog/?sid=' . Yii::app()->params['sid'] . '&blogwidth=auto&category=0"></iframe>';
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 
