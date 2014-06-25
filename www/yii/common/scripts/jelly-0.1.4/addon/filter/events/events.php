@@ -60,7 +60,7 @@ class events
         // Insert the data
         $content = "";
 		$content .= "<script>var programId = " . $this->programId . ";</script>";
-        $content .= "<div style='color:#575757;'>";      // Your basic solemn grey font color
+        $content .= "<div style='position:fixed; color:#575757;'>";      // Your basic solemn grey font color
         $uid = Yii::app()->session['uid'];
 
         $twistyIcon = "<img style='padding-right:3px' title='" . 'Show more' . "' src='img/" . 'open-twisty.png' . "' >";
