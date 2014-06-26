@@ -22,6 +22,8 @@ class VendorReportCommand extends CConsoleCommand
 		$fromdate = new DateTime('7 days ago');
 		$todate = new DateTime('1 days ago');
 
+		$ghtmlstart = "<html><style>html, table, div, tr, td, * { font-size: small !important; color: #3B0B0B !important; background-color: #F8ECE0 !important; font-family: Calibri, Verdana, Arial, Serif !important; } table td { border-left:solid 10px transparent; } table td:first-child { border-left:0; }</style>";
+		$ghtmlend = "</html>";
 		$gmsg = "";
 		$gsummary = "<table>";
 		$criteria = new CDbCriteria;
@@ -52,7 +54,7 @@ class VendorReportCommand extends CConsoleCommand
 				$eVal = 0;
 
 				$areas = $event->areas;
-				$etbl = "<table  border='0' cellspacing='3' cellpadding='3' style='border: 15px solid #EEEEEE'><tr><td><u>Area</u></td><td><u>Ticket Type</u></td><td><u>Sales Qty</u></td><td><u>Sales Value</u></td></tr>";
+				$etbl = "<table  border='0' cellspacing='3' cellpadding='3' style='border: 15px solid #3B0B0B'><tr><td><u>Area</u></td><td><u>Ticket Type</u></td><td><u>Sales Qty</u></td><td><u>Sales Value</u></td></tr>";
 				foreach ($areas as $area)	// All ticket areas
 				{
 					$ticketTypes = $area->ticketTypes;
@@ -137,9 +139,11 @@ class VendorReportCommand extends CConsoleCommand
 			}
 			$umsg .= $cr . "<hr>" . $cr;
 
-			$gsummary .= "<tr><td><b>" . $vendor->name . "</b></td><td>Ref: " . $event->uid . "-" . $todate->format('Ymd') . "</td></tr>";
-			$gsummary .= "<tr><td>Total sales " . sprintf("%01.2f", $uVal) . "</td><td>Total fees: " . sprintf("%01.2f", ($uVal * 2.5 / 100) + ($uQty * 0.5) ) . "</td></tr>";
-			$gsummary .= "<tr><td>Total due " . sprintf("%01.2f", $uVal - (($uVal * 2.5 / 100) + ($uQty * 0.5) )) . "</td><td>Paid: " . "???" . "</td></tr>";
+			$gsummary .= "<tr>";
+			$gsummary .= "<td>" . $vendor->name . "</td><td>Ref: " . $event->uid . "-" . $todate->format('Ymd') . "</td>";
+			$gsummary .= "<td>Total sales " . sprintf("%01.2f", $uVal) . "</td><td>Total fees: " . sprintf("%01.2f", ($uVal * 2.5 / 100) + ($uQty * 0.5) ) . "</td>";
+			$gsummary .= "<td>Total due " . sprintf("%01.2f", $uVal - (($uVal * 2.5 / 100) + ($uQty * 0.5) )) . "</td><td>Paid: </td>";
+			//$gsummary .= "<tr><td></td><td></td></tr>";
 
 			if ($hasActiveEvent)
 			{
@@ -161,10 +165,10 @@ class VendorReportCommand extends CConsoleCommand
 					$mail->AddAttachment($att_filename);
 					$mail->Subject = $subject;
 					$mail->MsgHTML($message);
-					/////if (!$mail->Send())
-						/////Yii::log("WEEKLY REPORT COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
-					/////else
-						/////Yii::log("WEEKLY SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+					if (!$mail->Send())
+						Yii::log("WEEKLY REPORT COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
+					else
+						Yii::log("WEEKLY SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
 				}
 
 				// Accumulate to global
@@ -173,21 +177,21 @@ class VendorReportCommand extends CConsoleCommand
 		}
 
 		$gsummary .= "</table><br/><hr/><br/>";
-		$gcontent = $gsummary . $gmsg;
+		$gcontent = $ghtmlstart . $gsummary . $gmsg . $ghtmlend;
 
 		// Send summary email to jo
-		$to = "kim@wireflydesign.com";
+		$to = "jo@wireflydesign.com";
 		$att_filename = "/tmp/ticketSales.csv";
 		if (strlen($to) > 0)
 		{
 			$from = "admin@dglink.co.uk";
 			$fromName = "Admin";
 			$subject = "Weekly vendor event sales summary";
-			$message = $gsummary; 
+			$message = $gcontent; 
 			// phpmailer
 			$mail = new PHPMailer();
 			$mail->AddAddress($to);
-//$mail->AddBCC("kim@wireflydesign.com");
+$mail->AddBCC("kim@wireflydesign.com");
 			$mail->SetFrom($from, $fromName);
 			$mail->AddReplyTo($from, $fromName);
 			$mail->AddAttachment($att_filename);
