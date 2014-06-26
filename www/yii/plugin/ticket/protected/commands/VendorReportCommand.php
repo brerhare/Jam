@@ -23,6 +23,7 @@ class VendorReportCommand extends CConsoleCommand
 		$todate = new DateTime('1 days ago');
 
 		$gmsg = "";
+		$gsummary = "<table>";
 		$criteria = new CDbCriteria;
 		$criteria->order = 'name ASC';
 		$vendors = Vendor::model()->findAll($criteria);
@@ -135,6 +136,11 @@ class VendorReportCommand extends CConsoleCommand
 				$umsg .= "Amount to be invoiced, using reference <b>" . $event->uid . "-" . $todate->format('Ymd') . "</b> = <b>" . sprintf("%01.2f", $uVal - (($uVal * 2.5 / 100) + ($uQty * 0.5) )) . "</b>" . $cr;
 			}
 			$umsg .= $cr . "<hr>" . $cr;
+
+			$gsummary .= "<tr><td><b>" . $vendor->name . "</b></td><td>Ref: " . $event->uid . "-" . $todate->format('Ymd') . "</td></tr>";
+			$gsummary .= "<tr><td>Total sales " . sprintf("%01.2f", $uVal) . "</td><td>Total fees: " . sprintf("%01.2f", ($uVal * 2.5 / 100) + ($uQty * 0.5) ) . "</td></tr>";
+			$gsummary .= "<tr><td>Total due " . sprintf("%01.2f", $uVal - (($uVal * 2.5 / 100) + ($uQty * 0.5) )) . "</td><td>Paid: " . "???" . "</td></tr>";
+
 			if ($hasActiveEvent)
 			{
 				// Send email to vendor
@@ -155,10 +161,10 @@ class VendorReportCommand extends CConsoleCommand
 					$mail->AddAttachment($att_filename);
 					$mail->Subject = $subject;
 					$mail->MsgHTML($message);
-					if (!$mail->Send())
-						Yii::log("WEEKLY REPORT COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
-					else
-						Yii::log("WEEKLY SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+					/////if (!$mail->Send())
+						/////Yii::log("WEEKLY REPORT COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
+					/////else
+						/////Yii::log("WEEKLY SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
 				}
 
 				// Accumulate to global
@@ -166,19 +172,22 @@ class VendorReportCommand extends CConsoleCommand
 			}
 		}
 
+		$gsummary .= "</table><br/><hr/><br/>";
+		$gcontent = $gsummary . $gmsg;
+
 		// Send summary email to jo
-		$to = "jo@wireflydesign.com";
+		$to = "kim@wireflydesign.com";
 		$att_filename = "/tmp/ticketSales.csv";
 		if (strlen($to) > 0)
 		{
 			$from = "admin@dglink.co.uk";
 			$fromName = "Admin";
 			$subject = "Weekly vendor event sales summary";
-			$message = $gmsg; 
+			$message = $gsummary; 
 			// phpmailer
 			$mail = new PHPMailer();
 			$mail->AddAddress($to);
-$mail->AddBCC("kim@wireflydesign.com");
+//$mail->AddBCC("kim@wireflydesign.com");
 			$mail->SetFrom($from, $fromName);
 			$mail->AddReplyTo($from, $fromName);
 			$mail->AddAttachment($att_filename);
