@@ -155,7 +155,7 @@ class VendorReportCommand extends CConsoleCommand
 					$from = "admin@dglink.co.uk";
 					$fromName = "Admin";
 					$subject = "Your weekly event sales report";
-					$message = $umsg; 
+					$message = $ghtmlstart . $umsg . $ghtmlend; 
 					// phpmailer
 					$mail = new PHPMailer();
 					$mail->AddAddress($to);
