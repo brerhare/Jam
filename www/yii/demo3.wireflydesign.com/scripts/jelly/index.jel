@@ -33,7 +33,7 @@ css.display = block
 				image.url = img/Logo.png
 				image.width = 241px
 				image.height = 116px
-				click = http://www.demo1.wireflydesign.com
+				click = http://www.demo3.wireflydesign.com
 
 				[stat-link]
 				child = cart, news
@@ -51,7 +51,7 @@ css.display = block
 					css.margin-top = 15px
 					html.raw = Shopping Cart
 					css.font-size = 12px
-					click = http://www.demo1.wireflydesign.com/?layout=index&page=checkout
+					click = http://www.demo3.wireflydesign.com/?layout=index&page=checkout
 							
 
 					[news]
@@ -61,7 +61,7 @@ css.display = block
 					css.margin-top = 15px
 					html.raw = Newsletter
 					css.font-size = 12px
-					click = http://www.demo1.wireflydesign.com/?layout=index&page=text-blog
+					click = http://www.demo3.wireflydesign.com/?layout=index&page=text-blog
 
 
 
