@@ -56,7 +56,7 @@ css.display = block
 						css.width = 180px
 						css.height = 22px
 						css.margin-left = 0px
-						click = http://www.the-art-room.co.uk/?layout=index&page=checkout
+						click = http://www.the-art-room.co.uk/?layout=index&page=handmade-unique-unusual-gifts-dumfries
 
 							[cart-pic]
 							css.width = 25px
@@ -99,16 +99,14 @@ css.display = block
 		addon.menu.basic.orientation = horizontal
 		addon.menu.basic.font-size = 14px
 		addon.menu.basic.menu-rounding = 4px
-		addon.menu.basic.menu-opacity = 70%
-			#addon.menu.basic.menu-tile = /img/menu-bar.jpg
-			#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
+		addon.menu.basic.menu-opacity = 90%
 		addon.menu.basic.menu-color = white
-	#addon.menu.basic.menu-text-color = red
-	#addon.menu.basic.submenu-color = yellow red
-	#addon.menu.basic.item-color = black yellow
-	#addon.menu.basic.item-text-color = green
-	#addon.menu.basic.subitem-color = white black
-	#addon.menu.basic.subitem-text-color = purple
+		addon.menu.basic.menu-text-color = black
+		#addon.menu.basic.submenu-color = white
+		addon.menu.basic.item-color = grey
+		addon.menu.basic.item-text-color = white
+		addon.menu.basic.subitem-color = black
+		addon.menu.basic.subitem-text-color = white
 	#addon.menu.basic.subitem-seperator-color = red 
 
 
