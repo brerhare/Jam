@@ -50,6 +50,7 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`ticket_event` (
   `active_end_time` TIME NULL ,
   `optional_start_ticket_number` INT NULL ,
   `optional_next_ticket_number` INT NULL ,
+  `booking_fee_per_ticket` DECIMAL(10,2) NULL ,
   `ticket_vendor_id` INT NOT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `uid` (`uid` ASC) ,
