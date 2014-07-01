@@ -1,0 +1,131 @@
+#Test file
+[defaults]
+include = default-values
+
+; Every blob inherits these before adding/overriding
+[* : defaults]
+
+[screen]
+child = site
+fx.wallpaper-image-tile = /img/straw-tile.jpg
+css.display = block
+
+	[site]
+	child = header, slider, pages
+	css.width = 970px
+
+####  Header  #################################
+
+		[header]
+		child = header-dt, menu
+		
+			[header-dt]
+			child = logo, stat-link
+			stacking = horizontal
+
+				[logo]
+				css.margin-left = 50px
+				css.margin-top = 25px
+				css.height = 120px
+				css.width = 500px
+				css.z-index = 1000
+				css.position = relative
+				image.url = img/Logo.png
+				image.width = 241px
+				image.height = 116px
+				click = http://www.demo.wireflydesign.com
+
+				[stat-link]
+				child = cart, news
+				css.height = 45px
+				css.width = 260px
+				css.margin-left = 160px
+				fx.rounding = 4px
+				css.background-color = white
+				stacking = horizontal
+
+					[cart]
+					css.width = 120px
+					css.height = 22px
+					css.margin-left = 40px
+					css.margin-top = 15px
+					html.raw = Shopping Cart
+					css.font-size = 12px
+					click = http://www.demo.wireflydesign.com/?layout=index&page=checkout
+							
+
+					[news]
+					css.width = 100px
+					css.height = 22px
+					css.margin-left = 0px
+					css.margin-top = 15px
+					html.raw = Newsletter
+					css.font-size = 12px
+					click = http://www.demo.wireflydesign.com/?layout=index&page=text-blog
+
+
+
+		[menu]
+		css.height = 50px
+		css.margin-top = -30px
+		css.margin-left = 465px
+		css.overflow = visible
+		css.z-index = 1000
+		css.position = absolute
+		addon.menu.basic.orientation = horizontal
+		addon.menu.basic.font-size = 12px
+		addon.menu.basic.menu-rounding = 4px
+			#addon.menu.basic.menu-opacity = 70%
+			#addon.menu.basic.menu-tile = /img/menu-bar.jpg
+			#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
+		addon.menu.basic.menu-color = white
+	#addon.menu.basic.menu-text-color = red
+	#addon.menu.basic.submenu-color = yellow red
+	#addon.menu.basic.item-color = black yellow
+	#addon.menu.basic.item-text-color = green
+	#addon.menu.basic.subitem-color = white black
+	#addon.menu.basic.subitem-text-color = purple
+	#addon.menu.basic.subitem-seperator-color = red 
+
+
+
+#### Slider ###########################################
+
+	[slider]
+	css.margin-top = -50px
+	#css.margin-left = 30px
+	css.width = 960px
+  	css.height = 320px
+	addon.slider.flexslider.width = 952px
+	addon.slider.flexslider.height = 310px
+	addon.slider.flexslider.mode = image
+	addon.slider.flexslider.source = db
+
+
+######## body #######################################
+			
+
+	[pages]
+	child = tabs, content 	
+	css.width = 960px
+	css.margin-top = 20px
+	css.background-color = white
+	fx.rounding = 4px
+	
+		[tabs]
+		condition = @PAGE=@HOMEPAGE
+		css.display = block
+		css.width = 680px
+		addon.tab.rain.source = db
+
+			
+		[content]
+		css.margin-top = 30px
+		css.margin = 30px
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
+
+
+####footer####################################
