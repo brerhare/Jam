@@ -39,9 +39,9 @@
                 array('label' => 'HTML Sliders', 'url' => array('/jellySliderHtml/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Tabs', 'url' => array('/tabBlock/admin'), 'visible' => !Yii::app()->user->isGuest),                      
                 array('label' => 'Galleries', 'url' => array('/jellyGallery/admin'), 'visible' => !Yii::app()->user->isGuest),                      
-				array('label' => 'Products', 'url' => 'https://plugin.wireflydesign.com/product/backend.php/site/demo1Direct', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
-				array('label' => 'Blog', 'url' => 'https://plugin.wireflydesign.com/blog/backend.php/site/demo1Direct', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
-				array('label' => 'Tickets', 'url' => 'https://plugin.wireflydesign.com/ticket/backend.php/site/demo1Direct', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'Products', 'url' => 'https://plugin.wireflydesign.com/product/backend.php/site/demoDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'Blog', 'url' => 'https://plugin.wireflydesign.com/blog/backend.php/site/demoDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'Tickets', 'url' => 'https://plugin.wireflydesign.com/ticket/backend.php/site/demoDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
 
 array('label' => 'Downloads', 'url' => '#', 'visible' => !Yii::app()->user->isGuest,

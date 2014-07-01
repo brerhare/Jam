@@ -75,7 +75,7 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=demo1_wireflydesign_com',
+			'connectionString' => 'mysql:host=localhost;dbname=demo_wireflydesign_com',
 			'emulatePrepare' => true,
 			'username' => 'wireflydesign.co',
 			'password' => 'wireflydesign.com,',
