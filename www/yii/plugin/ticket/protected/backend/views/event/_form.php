@@ -44,6 +44,8 @@
 		echo $form->textFieldRow($model,'optional_start_ticket_number',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right', 'readonly'=>true));
 	?>
 
+<?php echo $form->textFieldRow($model,'booking_fee_per_ticket',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right')); ?>
+
 	<?php // echo $form->textFieldRow($model,'active',array('class'=>'span1')); ?>
 	<?php echo $form->toggleButtonRow($model, 'active'); ?>
 
