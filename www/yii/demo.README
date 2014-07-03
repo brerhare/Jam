@@ -1,0 +1,34 @@
+To set up a new demo site
+-------------------------
+
+*) Copy any other demo site
+*) Make changes as per the 'Change' section below
+*) Use protected/data/dbcreate.sh to create your new demo db
+*) Mysqldump any other demo db content into your new demo db
+
+Note you will inherit
+	userdata/
+	scripts/jelly/*
+	img/
+
+
+To move one of these demo sites to a 'real' location'
+-----------------------------------------------------
+
+You only need some files. You DONT want all of the one-level-too-many softlinks
+
+*) Make a new jelly skeleton for the real site
+
+*) Take from your demo site -
+	userdata/
+	scripts/jelly/*
+	img/
+
+*) Change -
+	protected/data/dbinit.sh to name your real database and not a demo one
+	protected/backend/views/layout/main.php to reflect your 'straight-through' credentials and plugins
+	protected/config/main.php (db, SID, company name and email etc)
+	protected/backend/config/main.php (db)
+
+*) Clone your demo db to the real one (mysqldump etc)
+

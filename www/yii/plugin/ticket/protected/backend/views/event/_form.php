@@ -27,7 +27,6 @@
 	<?php echo $form->fileFieldRow($model, 'ticket_logo_path'); ?>
 
 
-
 	<?php // @@TODO @@EG usage of the various editors. Redactor still buggered ?>
 	<?php //echo $form->textAreaRow($model,'ticket_text',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 	<?php //echo $form->redactorRow($model, 'ticket_text', array('class'=>'span4', 'rows'=>5)); ?>
@@ -44,6 +43,8 @@
 	else
 		echo $form->textFieldRow($model,'optional_start_ticket_number',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right', 'readonly'=>true));
 	?>
+
+<?php echo $form->textFieldRow($model,'booking_fee_per_ticket',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right')); ?>
 
 	<?php // echo $form->textFieldRow($model,'active',array('class'=>'span1')); ?>
 	<?php echo $form->toggleButtonRow($model, 'active'); ?>
@@ -98,7 +99,7 @@ function embedExternal()	/* Embed a non-wirefly hosted site iframe */
 	var oArg = new Object();
 
 
-	var text = "<iframe width='100%' scrolling='no' style='overflow-x:hidden; overflow-y:auto;' src='https://plugin.wireflydesign.com/ticket/index.php/ticket/book/207?sid=ebh8d8h7nvos82om9remsi8fc5&amp;ref=none'></iframe><br/>";
+	var text = "<iframe width='100%' scrolling='no' style='overflow-x:hidden; overflow-y:auto;' src='https://plugin.wireflydesign.com/ticket/index.php/ticket/book/<?php echo $model->id?>?sid=<?php echo Yii::app()->session['sid'];?>&amp;ref=none'></iframe><br/>";
 
 	text += '<scr' + 'ipt type="text/javascript" src="https://plugin.wireflydesign.com/js/jquery.iframeResizerWrapper.js"></scr' + 'ipt>';
 

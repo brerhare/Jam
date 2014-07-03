@@ -22,6 +22,7 @@
  * @property string $active_end_time
  * @property integer $optional_start_ticket_number
  * @property integer $optional_next_ticket_number
+ * @property integer $booking_fee_per_ticket
  * @property integer $ticket_vendor_id
  *
  * The followings are the available model relations:
@@ -58,7 +59,7 @@ class Event extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('uid, title, date, address, post_code, active, ticket_vendor_id', 'required'),
-			array('uid, active, optional_start_ticket_number, optional_next_ticket_number, ticket_vendor_id', 'numerical', 'integerOnly'=>true),
+			array('uid, active, optional_start_ticket_number, optional_next_ticket_number, booking_fee_per_ticket, ticket_vendor_id', 'numerical', 'integerOnly'=>true),
 			array('title, ticket_logo_path', 'length', 'max'=>255),
 			array('date, time, post_code', 'length', 'max'=>45),
 			array('banner_text, ticket_text, ticket_terms, active_start_date, active_start_time, active_end_date, active_end_time', 'safe'),
@@ -69,7 +70,7 @@ class Event extends CActiveRecord
 
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, title, date, time. address, post_code, banner_text, ticket_logo_path, ticket_text, ticket_terms, active, active_start_date, active_start_time, active_end_date, active_end_time, optional_start_ticket_number, optional_next_ticket_number, ticket_vendor_id', 'safe', 'on'=>'search'),
+			array('id, uid, title, date, time. address, post_code, banner_text, ticket_logo_path, ticket_text, ticket_terms, active, active_start_date, active_start_time, active_end_date, active_end_time, optional_start_ticket_number, optional_next_ticket_number, booking_fee_per_ticket, ticket_vendor_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -111,6 +112,7 @@ class Event extends CActiveRecord
 			'active_end_time' => 'Active End Time',
 			'optional_start_ticket_number' => 'Optional Start Ticket Number',
 			'optional_next_ticket_number' => 'Optional Next Ticket Number',
+			'booking_fee_per_ticket' => 'Booking Fee Per Ticket',
 			'ticket_vendor_id' => 'Ticket Vendor',
 		);
 	}
@@ -145,6 +147,7 @@ class Event extends CActiveRecord
 		$criteria->compare('active_end_time',$this->active_end_time,true);
 		$criteria->compare('optional_start_ticket_number',$this->optional_start_ticket_number);
 		$criteria->compare('optional_next_ticket_number',$this->optional_next_ticket_number);
+		$criteria->compare('booking_fee_per_ticket',$this->booking_fee_per_ticket);
 		$criteria->compare('ticket_vendor_id',$this->ticket_vendor_id);
 
 		return new CActiveDataProvider($this, array(

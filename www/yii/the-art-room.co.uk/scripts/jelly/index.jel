@@ -56,7 +56,7 @@ css.display = block
 						css.width = 180px
 						css.height = 22px
 						css.margin-left = 0px
-						click = http://www.the-art-room.co.uk/?layout=index&page=checkout
+						click = http://www.the-art-room.co.uk/?layout=index&amp;page=handmade-unique-unusual-gifts-dumfries
 
 							[cart-pic]
 							css.width = 25px
@@ -77,7 +77,7 @@ css.display = block
 						css.height = 19px
 						css.margin-top = -18px
 						css.margin-left = 140px
-						click = http://www.the-art-room.co.uk/?layout=index&page=news-arts-crafts-workshops-dumfries
+						click = http://www.the-art-room.co.uk/?layout=index&amp;page=news-arts-crafts-workshops-dumfries
 
 							[news-pic]
 							css.width = 25px
@@ -99,16 +99,14 @@ css.display = block
 		addon.menu.basic.orientation = horizontal
 		addon.menu.basic.font-size = 14px
 		addon.menu.basic.menu-rounding = 4px
-		addon.menu.basic.menu-opacity = 70%
-			#addon.menu.basic.menu-tile = /img/menu-bar.jpg
-			#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
+		addon.menu.basic.menu-opacity = 90%
 		addon.menu.basic.menu-color = white
-	#addon.menu.basic.menu-text-color = red
-	#addon.menu.basic.submenu-color = yellow red
-	#addon.menu.basic.item-color = black yellow
-	#addon.menu.basic.item-text-color = green
-	#addon.menu.basic.subitem-color = white black
-	#addon.menu.basic.subitem-text-color = purple
+		addon.menu.basic.menu-text-color = black
+		#addon.menu.basic.submenu-color = white
+		addon.menu.basic.item-color = grey
+		addon.menu.basic.item-text-color = white
+		addon.menu.basic.subitem-color = black
+		addon.menu.basic.subitem-text-color = white
 	#addon.menu.basic.subitem-seperator-color = red 
 
 
@@ -146,19 +144,19 @@ css.display = block
 			image.url = /img/Gallery.png
 			image.width = 250px
 			image.height = 295px
-			click = http://www.the-art-room.co.uk/?layout=index&page=original-art-gallery-dumfries-old-school
+			click = http://www.the-art-room.co.uk/?layout=index&amp;page=original-art-gallery-dumfries-old-school
 
 			[gifts]
 			image.url = /img/Gifts.png
 			image.width = 250px
 			image.height = 295px
-			click = http://www.the-art-room.co.uk/?layout=index&page=handmade-unique-unusual-gifts-dumfries
+			click = http://www.the-art-room.co.uk/?layout=index&amp;page=handmade-unique-unusual-gifts-dumfries
 
 			[workshop]
 			image.url = /img/Workshops.png
 			image.width = 250px
 			image.height = 295px
-			click = http://www.the-art-room.co.uk/?layout=index&page=art-craft-workshops-dumfries
+			click = http://www.the-art-room.co.uk/?layout=index&amp;page=art-craft-workshops-dumfries
 
 		[white-block]
 		css.width = 960px
@@ -226,7 +224,7 @@ css.display = block
 			css.margin-top = 30px
 			css.margin-left = 5px
 			css.background-image = url('/img/typewriter.png')
-			click = http://www.the-art-room.co.uk/?layout=index&page=news-arts-crafts-workshops-dumfries
+			click = http://www.the-art-room.co.uk/?layout=index&amp;page=news-arts-crafts-workshops-dumfries
 
 
 			[address]
@@ -235,7 +233,7 @@ css.display = block
 			css.margin-top = 60px
 			css.margin-left = 50px
 			css.background-image = url('/img/address-text.png')
-			click = http://www.the-art-room.co.uk/?layout=index&page=contact
+			click = http://www.the-art-room.co.uk/?layout=index&amp;page=contact
 			
 			[social-fb]
 			css.width = 60px
@@ -273,20 +271,20 @@ css.display = block
 				css.width = 160px
 				css.height = 20px	
 				css.background-image = url('/img/contact-text.png')
-				click = http://www.the-art-room.co.uk/?layout=index&page=contact
+				click = http://www.the-art-room.co.uk/?layout=index&amp;page=contact
 
 
 				[footer-cookies]
 				css.width = 160px
 				css.height = 20px	
 				css.background-image = url('/img/cookie-text.png')
-				click = http://www.the-art-room.co.uk/?layout=index&page=cookie-policy
+				click = http://www.the-art-room.co.uk/?layout=index&amp;page=cookie-policy
 
 				[footer-tandc]
 				css.width = 160px
 				css.height = 20px	
 				css.background-image = url('/img/tc-text.png')
-				click = http://www.the-art-room.co.uk/?layout=index&page=terms-conditions
+				click = http://www.the-art-room.co.uk/?layout=index&amp;page=terms-conditions
 
 				[wirefly]
 				css.width = 160px
@@ -300,4 +298,4 @@ css.display = block
 			css.margin-top = 80px
 			css.margin-left = 90px
 			css.background-image = url('/img/Louis 2.png')
-			click = http://www.the-art-room.co.uk/?layout=index&page=news-arts-crafts-workshops-dumfries
+			click = http://www.the-art-room.co.uk/?layout=index&amp;page=news-arts-crafts-workshops-dumfries

@@ -76,6 +76,90 @@ class SiteController extends Controller
 	 * Displays the DIRECT login page
 	 */
 
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR DEMO ---------- REMOVE
+    public function actionDemoDirect()
+    {
+        Yii::app()->session['uid'] = 4;
+        $identity = new UserIdentity('demo', 'demo');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR DEMO1 ---------- REMOVE
+    public function actionDemo1Direct()
+    {
+        Yii::app()->session['uid'] = 64;
+        $identity = new UserIdentity('demo1', 'demo1');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR DEMO2 ---------- REMOVE
+    public function actionDemo2Direct()
+    {
+        Yii::app()->session['uid'] = 65;
+        $identity = new UserIdentity('demo2', 'demo2');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR DEMO3 ---------- REMOVE
+    public function actionDemo3Direct()
+    {
+        Yii::app()->session['uid'] = 66;
+        $identity = new UserIdentity('demo3', 'demo3');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR DEMO4 ---------- REMOVE
+    public function actionDemo4Direct()
+    {
+        Yii::app()->session['uid'] = 67;
+        $identity = new UserIdentity('demo4', 'demo4');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR DEMO5 ---------- REMOVE
+    public function actionDemo5Direct()
+    {
+        Yii::app()->session['uid'] = 68;
+        $identity = new UserIdentity('demo5', 'demo5');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
 // @@TODO: HARDCODED FOR TEST ---------- REMOVE
     public function actionTestDirect()
     {

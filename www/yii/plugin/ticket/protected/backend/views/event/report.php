@@ -28,10 +28,11 @@ table tr {
 </style>
 
 <div class="row">
-<div class="span11">
+<div class="span12">
 	<table id="reportTable">
 		<tr style="background-color:#c3d9ff; color:#0088cc;">
-			<td>Date</td>
+			<td>Resend</td>
+			<td style="text-align:center">Date</td>
 			<td>Order Number</td>
 			<td>Name</td>
 			<td>Phone</td>
@@ -39,7 +40,7 @@ table tr {
 			<td>Area</td>
 			<td>Ticket</td>
 			<td style="text-align:right">No</td>
-			<td style="text-align:right; width:60px">£</td>
+			<td style="text-align:right; width:70px">£</td>
 		</tr>
 		<?php
 		$prevOrder = "";
@@ -62,13 +63,16 @@ table tr {
 		<?php echo "<tr class=" . $class . ">" ?>
 			<?php if ($prevOrder != $transaction->order_number) : ?>
 			<td>
+				<?php echo '<a title="Email this customers tickets" href="' . Yii::app()->createUrl('event/remailConfirm', array('id' => $transaction->id, 'name' => $auth->card_name))  . '" target="_blank"><img src="/ticket/img/email.png" border="0" ></a>'; ?>
+			</td>
+			<td>
 				<?php
 				$date = $transaction->timestamp;
 				echo sprintf("%02s/%02s/%02s", substr($date,8,2),substr($date,5,2),substr($date,2,2));
 				?>
 			</td>
 			<td>
-				<?php echo '<a href="' . Yii::app()->baseUrl . '/tkts/' . $transaction->order_number . '.pdf">' . $transaction->order_number . '</a>'; ?>
+				<?php echo '<a title="View this customers tickets" href="' . Yii::app()->baseUrl . '/tkts/' . $transaction->order_number . '.pdf">' . $transaction->order_number . '</a>'; ?>
 			</td>
 			<td>
 				<?php if ($auth) echo substr($auth->card_name, 0, 30); else echo 'Name not available';?>
@@ -80,6 +84,7 @@ table tr {
 				<?php if ($auth) echo $auth->post_code; ?>
 			</td>
 <?php else: ?>
+			<td></td>
 			<td></td>
 			<td></td>
 			<td></td>
@@ -135,8 +140,9 @@ table tr {
 			<td></td>
 			<td></td>
 			<td></td>
+			<td></td>
 			<td style="text-align:right"><?php echo $ticketTotal?></td>
-			<td style="text-align:right; width:60px"><?php echo number_format((float)$valueTotal, 2, '.', '')?></td>
+			<td style="text-align:right; width:70px"><?php echo number_format((float)$valueTotal, 2, '.', '')?></td>
 		</tr>
 
 	</table>
@@ -152,19 +158,19 @@ $(document).ready(function() {
 	$totalV = 0;
 	foreach ($ticketArray as $k => $v):
 		echo "var row = table.insertRow(" . $lc++ . ");\n";
-		for ($x = 0; $x < 6; $x++)
+		for ($x = 0; $x < 7; $x++)
 			echo "row.insertCell(" . $x . ");";
 		echo "\n";
 
-		echo "var ticketType = row.insertCell(6);\n";
+		echo "var ticketType = row.insertCell(7);\n";
 		$clean = str_replace('"', "'", $k);
 		echo 'ticketType.innerHTML = "' . substr($clean, 0, 30) . '";' . "\n";
 
-		echo "var ticketQ = row.insertCell(7);\n";
+		echo "var ticketQ = row.insertCell(8);\n";
 		echo 'ticketQ.innerHTML = "' . $v . '";' . "\n";
 		echo 'ticketQ.style.textAlign = "' . 'right' . '";' . "\n";
 
-		echo "var ticketV = row.insertCell(8);\n";
+		echo "var ticketV = row.insertCell(9);\n";
 		echo 'ticketV.innerHTML = "' . number_format((float)$valueArray[$k], 2, '.', '') . '";' . "\n";
 		echo 'ticketV.style.textAlign = "' . 'right' . '";' . "\n";
 
@@ -177,18 +183,18 @@ $(document).ready(function() {
 
 		// Finally the total at the top
 		echo "var row = table.insertRow(" . '0' . ");\n";
-		for ($x = 0; $x < 6; $x++)
+		for ($x = 0; $x < 7; $x++)
 			echo "row.insertCell(" . $x . ");";
-		echo "var totalType = row.insertCell(6);\n";
+		echo "var totalType = row.insertCell(7);\n";
 		echo "totalType.innerHTML = 'Total Tickets';\n";
 		echo "totalType.style.fontWeight = 'bold';\n";
 
-		echo "var totalQ = row.insertCell(7);\n";
+		echo "var totalQ = row.insertCell(8);\n";
 		echo 'totalQ.innerHTML = "' . $totalQ . '";' . "\n";
 		echo 'totalQ.style.textAlign = "' . 'right' . '";' . "\n";
 		echo "totalQ.style.fontWeight = 'bold';\n";
 
-		echo "var totalV = row.insertCell(8);\n";
+		echo "var totalV = row.insertCell(9);\n";
 		echo 'totalV.innerHTML = "' . number_format((float)$totalV, 2, '.', '') . '";' . "\n";
 		echo 'totalV.style.textAlign = "' . 'right' . '";' . "\n";
 		echo "totalV.style.fontWeight = 'bold';\n";

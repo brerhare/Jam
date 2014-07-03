@@ -33,11 +33,11 @@ class EventController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','delete','download','exportCSV','showReport'),
+				'actions'=>array('create','update','admin','delete','download','exportCSV','showReport', 'remailConfirm', 'remailSend'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','download','exportCSV','showReport'),
+				'actions'=>array('admin','delete','download','exportCSV','showReport', 'remailConfirm', 'remailSend'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -260,7 +260,7 @@ class EventController extends Controller
 					$criteria->addCondition("event_id = " . $event->id);
 					$criteria->addCondition("http_area_id = " . $area->id);
 					$criteria->addCondition("http_ticket_type_id = " . $ticketType->id);
-						$transactions = Transaction::model()->findAll($criteria);
+					$transactions = Transaction::model()->findAll($criteria);
 					foreach ($transactions as $transaction)	// All event transactions for the event
 					{
 						$criteria = new CDbCriteria;
@@ -352,6 +352,67 @@ class EventController extends Controller
 
 		$this->render('report',array(
 			'model'=>$model,
+		));
+	}
+
+	/**
+	 * Ask to Send email (remail)
+	 */
+	public function actionRemailConfirm($id, $name)
+	{
+		$this->renderPartial('remailconfirm',array(
+			'id'=>$id,
+			'name'=>$name,
+		));
+	}
+
+	/**
+	 * Send email (remail)
+	 */
+	public function actionRemailSend($id)
+	{
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("id = " . $id);
+		$transaction = Transaction::model()->find($criteria);
+
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("order_number = '" . $transaction->order_number . "'");
+		$auth = Auth::model()->find($criteria);
+		$name = "";
+		if ($auth != null)
+		{
+			$name = $auth->card_name;
+		}
+
+		$to = $transaction->email;
+		$pdf_filename = Yii::app()->basePath . '/../tkts/' . $transaction->order_number . '.pdf';
+		if (strlen($to) > 0)
+		{
+			$from = "admin@dglink.co.uk";
+			$fromName = "Admin";
+			$subject = "COPY of your tickets purchased at DG Link";
+			$message = '<b>Thank you for using the DG Link to order your ticket(s).</b> <br> The attached PDF file contains your ticket(s) and card receipt. Please print all pages and bring them with you to your event or activity. The barcode on each ticket can only be used once.<br> If you ever need to reprint your tickets you may login to the site and do so from your account page. If you have forgotten your log in details you can request a password reminder.<br> We hope you enjoy your event.  --  The DG Link Team';
+			// phpmailer
+			$mail = new PHPMailer();
+			$mail->AddAddress($to);
+			$mail->SetFrom($from, $fromName);
+			$mail->AddReplyTo($from, $fromName);
+			$mail->AddAttachment($pdf_filename);
+//			if ($bcc != "")
+//				$mail->AddBCC($bcc);
+			$mail->Subject = $subject;
+			$mail->MsgHTML($message);
+			if (!$mail->Send())
+			{
+				Yii::log("RESEND PAGE COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
+				echo "<div id=\"mailerrors\">Mailer Error: " . $mail->ErrorInfo . "</div>";
+			}
+			else
+				Yii::log("RESEND PAGE SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+		}
+
+		$this->renderPartial('remailconfirm',array(
+			'id'=>'sent',
 		));
 	}
 
