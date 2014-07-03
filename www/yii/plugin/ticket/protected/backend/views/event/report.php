@@ -28,7 +28,7 @@ table tr {
 </style>
 
 <div class="row">
-<div class="span11">
+<div class="span12">
 	<table id="reportTable">
 		<tr style="background-color:#c3d9ff; color:#0088cc;">
 			<td>Date</td>
@@ -39,7 +39,7 @@ table tr {
 			<td>Area</td>
 			<td>Ticket</td>
 			<td style="text-align:right">No</td>
-			<td style="text-align:right; width:60px">£</td>
+			<td style="text-align:right; width:70px">£</td>
 		</tr>
 		<?php
 		$prevOrder = "";
@@ -136,7 +136,7 @@ table tr {
 			<td></td>
 			<td></td>
 			<td style="text-align:right"><?php echo $ticketTotal?></td>
-			<td style="text-align:right; width:60px"><?php echo number_format((float)$valueTotal, 2, '.', '')?></td>
+			<td style="text-align:right; width:70px"><?php echo number_format((float)$valueTotal, 2, '.', '')?></td>
 		</tr>
 
 	</table>
