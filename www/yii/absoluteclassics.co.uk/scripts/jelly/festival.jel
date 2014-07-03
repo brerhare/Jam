@@ -245,14 +245,14 @@ stacking = horizontal
 				click = ?layout=index&page=cookie-policy
 
 				[footer-tandc]
-				html.raw = Site T&Cs
+				#html.raw = Site T&Cs
 				css.margin-top = 8px
 				css.text-align = right
 				css.color = #ffffff
 				click = ?layout=index&page=terms-conditions
 
 				[news]
-				html.raw = Newsletter
+				#html.raw = Newsletter
 				css.margin-top = 8px
 				css.text-align = right
 				css.color = #ffffff
