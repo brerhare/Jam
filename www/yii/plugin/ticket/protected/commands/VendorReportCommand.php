@@ -26,6 +26,9 @@ class VendorReportCommand extends CConsoleCommand
 		$ghtmlend = "</html>";
 		$gmsg = "";
 		$gsummary = "<table>";
+		$gsummarytotalsales = 0;
+		$gsummarytotalfees = 0;
+		$gsummarytotaldue = 0;
 		$criteria = new CDbCriteria;
 		$criteria->order = 'name ASC';
 		$vendors = Vendor::model()->findAll($criteria);
@@ -144,6 +147,9 @@ class VendorReportCommand extends CConsoleCommand
 			$gsummary .= "<td>Total sales " . sprintf("%01.2f", $uVal) . "</td><td>Total fees: " . sprintf("%01.2f", ($uVal * 2.5 / 100) + ($uQty * 0.5) ) . "</td>";
 			$gsummary .= "<td>Total due " . sprintf("%01.2f", $uVal - (($uVal * 2.5 / 100) + ($uQty * 0.5) )) . "</td><td>Paid: </td>";
 			//$gsummary .= "<tr><td></td><td></td></tr>";
+			$gsummarytotalsales += $uVal;
+			$gsummarytotalfees += ($uVal * 2.5 / 100) + ($uQty * 0.5);
+			$gsummarytotaldue += $uVal - (($uVal * 2.5 / 100) + ($uQty * 0.5) );
 
 			if ($hasActiveEvent)
 			{
@@ -176,7 +182,12 @@ class VendorReportCommand extends CConsoleCommand
 			}
 		}
 
+		// Final summary total line
+		$gsummary .= "<tr><td></td><td>Total</td>";
+		$gsummary .= "<td>Total sales " . sprintf("%01.2f", $gsummarytotalsales) . "</td><td>Total fees: " . sprintf("%01.2f", $gsummarytotalfees ) . "</td>";
+        $gsummary .= "<td>Total due " . sprintf("%01.2f", $gsummarytotaldue) . "</td><td></td>";
 		$gsummary .= "</table><br/><hr/><br/>";
+
 		$gcontent = $ghtmlstart . $gsummary . $gmsg . $ghtmlend;
 
 		// Send summary email to jo
@@ -186,7 +197,7 @@ class VendorReportCommand extends CConsoleCommand
 		{
 			$from = "admin@dglink.co.uk";
 			$fromName = "Admin";
-			$subject = "Weekly vendor event sales summary";
+			$subject = "Vendor Sales " . $fromdate->format('d/m') . " - " . $todate->format('d/m');
 			$message = $gcontent; 
 			// phpmailer
 			$mail = new PHPMailer();
