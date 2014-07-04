@@ -362,6 +362,7 @@ class eventcode
 					continue;
 			}
 
+			// WS Wild Seasons filter
 			// Check Grade filter
 			if ((isset($_GET['grade'])) && trim($_GET['grade'] != ''))
 			{
@@ -373,24 +374,6 @@ class eventcode
 				{
 					$arr = explode('|', $_GET['grade']);
 					if (!(in_array($ws->grade, $arr)))
-						continue;
-				}
-			}
-
-			// Check AbType filter
-			if ((isset($_GET['abtype'])) && trim($_GET['abtype'] != ''))
-			{
-				// Pick up the AbsoluteClassics record
-				$criteria = new CDbCriteria;
-				$criteria->condition = "event_id = " . $event->id;
-				$ab = Absoluteclassics::model()->find($criteria);
-				if ($ab)
-				{
-					$arr = explode('|', $_GET['abtype']);
-					$text = "Festival";
-					if ($ab->type == 2)
-						$text = "Series";
-					if (!(in_array($text, $arr)))
 						continue;
 				}
 			}
@@ -656,6 +639,7 @@ for (i = 0; i < jsEvents.length; i++)
 END_OF_API_JS_fill_headers;
 
 		$xcss = "";
+		// The color of the header (WS is green, Ab wants white)
 		if ($this->programId == 12)	// Absolute classics
 		{
 			$xcss .= "<style> #accordion .ui-accordion-header { border: 1px solid #a9b68b; background-color: #ffffff; </style>";

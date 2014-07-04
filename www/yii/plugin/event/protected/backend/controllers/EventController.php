@@ -9,8 +9,6 @@ if ($member != null)
 	Yii::app()->session['pid'] = $member->lock_program_id;
 	if ($member->lock_program_id == 6)
 		require 'EventController_wildseasons_co_uk.php';
-	else if ($member->lock_program_id == 12)
-		require 'EventController_absoluteclassics_co_uk.php';
 	else
 		require 'EventController_default.php';
 }
