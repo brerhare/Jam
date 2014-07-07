@@ -7,7 +7,11 @@
 	<?php //echo $form->textFieldRow($model,'program_id',array('class'=>'span5')); ?>
 	<?php
 		$criteria = new CDbCriteria;
-		$criteria->addCondition("id = " . Yii::app()->session['pid']);
+		if (Yii::app()->session['pid'] == 6)
+			$criteria->addCondition("id = 6"); // All except WS Wild Seasons
+		else
+			$criteria->addCondition("id != 6"); // All except WS Wild Seasons
+
 		echo $form->dropDownListRow($model,'program_id', CHtml::listData(Program::model()->findAll($criteria), 'id', 'name'), array('empty'=>'Choose'));
 	?>
 

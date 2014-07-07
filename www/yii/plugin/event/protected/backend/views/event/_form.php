@@ -17,16 +17,6 @@ if (Yii::app()->session['pid'] == 6)	// Wild Seasons
     	),
 	));
 }
-else if (Yii::app()->session['pid'] == 12)	// Absolute classics
-{
-	$this->widget('bootstrap.widgets.TbTabs',array(
-    	'type'=>'tabs',
-    	'tabs' => array(
-        	array('label'=>'Standard', 'content' => $this->renderPartial('_form_standard', array('form' => $form, 'model' => $model, 'model2' => $model2, 'ticketUid' => $ticketUid), true), 'active'=>true),
-        	array('label'=>'Absolute Classics', 'content' => $this->renderPartial('_form_absoluteclassics', array('form' => $form, 'model' => $model, 'model2' => $model2, 'ticketUid' => $ticketUid),  true)),
-    	),
-	));
-}
 else	// Default (no lock)
 {
 	$this->widget('bootstrap.widgets.TbTabs',array(

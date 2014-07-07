@@ -133,6 +133,7 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 
         $this->render('create',array(
             'model'=>$model,
+            'model2'=>'',
             'ticketUid'=>$this->getTicketUidFromEventSid(),	// Either a valid uid or -1
         ));
 	}
@@ -253,6 +254,7 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 
         $this->render('update',array(
             'model'=>$model,
+            'model2'=>'',
             'ticketUid'=>$this->getTicketUidFromEventSid(),	// Either a valid uid or -1
         ));
 	}
