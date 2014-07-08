@@ -166,7 +166,7 @@ $content .= $startLinkTag;
 
 			<table style="width:100%">
 				<tr>
-					<td width="30%">&nbsp</td>	<!-- filter -->
+					<!-- <td width="30%">&nbsp</td>	--> <!-- filter -->
 					<td width="70%">				<!-- member header lines -->
 						<table>
 							<substitute-member-header>
@@ -186,32 +186,25 @@ END_OF_API_JS;
         // This addon has no defaults that can be overridden
 
 		// Member headers displayed as a list
-		$endLinkTag = "</a>";
 		$content = "";
 		$criteria = new CDbCriteria;
-		//$criteria->addCondition("id != " . $model->id);
-		$members = Member::model()->findAll($criteria);
-		foreach ($members as $member):
+		$criteria->addCondition("id = " . $id);
+		$member = Member::model()->find($criteria);
+		if ($member)
+		{
 			$address = $member->address1 . ", " . $member->address2 . ", " . $member->address3 . ", " . $member->address4 . ", " . $member->postcode;
 			$address = rtrim($address, ", ");
 			for ($i = 0; $i < 4; $i++)
 				$address = str_replace(", , ", ", ", $address);
 			$content .= "<tr style='background-color:#FFECF8;' onClick='javascript:alert(" . "'x')" . ">";
+			$content .= "<td width='20%'>";
+			$content .= "<img src='userdata/image/logo/" . $member->logo_path . "' width='150px' height='150px'>";
+			$content .= "</td>";
 			$content .= "<td width='75%' style='padding:5px;'>";
-			$startLinkTag = "<a href='http://www.fadguide.com/?layout=index&page=category-member&member=$member->id'>";
-			$content .= $startLinkTag;
 			$content .= "<i><p style='color:#A70055; font-weight:bold'>" . $member->business_name . "</p></i>";
 			$content .= "<i><p style=''>" . $address . "</p></i>";
-$content .= $endLinkTag;
 			$content .= "<a style='color:#A70055; text-decoration:underline' href='http://" . $member->web . " 'target='_blank''>Web site</a>";
-$content .= $startLinkTag;
 			$content .= "<p style='font-size:small'>" . $member->email . " / " . $member->phone . "</p>";
-			$content .= $endLinkTag;
-			$content .= "</td>";
-			$content .= "<td width='20%'>";
-			$content .= $startLinkTag;
-			$content .= "<img src='userdata/image/logo/" . $member->logo_path . "' width='150px' height='150px'>";
-			$content .= $endLinkTag;
 			$content .= "</td>";
 			$content .= "</tr>";
 			$content .= "<tr height='10px'>";
@@ -219,7 +212,10 @@ $content .= $startLinkTag;
 			$content .= "<hr style='height:2px; background-color:#A70055'/>";
 			$content .= "</td>";
 			$content .= "</tr>";
-		endforeach;
+$content .= "<tr><td colspan=2 style='color:#A70055'>";
+$content .= nl2br($member->html_content);
+$content .= "</td></tr>";
+		}
 		$apiHtml = str_replace("<substitute-member-header>", $content, $apiHtml);
 
 		// Wrapup
