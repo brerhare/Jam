@@ -94,19 +94,26 @@ END_OF_API_JS;
         // This addon has no defaults that can be overridden
 
 		// Member headers displayed as a list
-		$startLinkTag = "<a href='http://www.google.co.uk' target='_blank'>";
 		$endLinkTag = "</a>";
 		$content = "";
 		$criteria = new CDbCriteria;
 		//$criteria->addCondition("id != " . $model->id);
 		$members = Member::model()->findAll($criteria);
 		foreach ($members as $member):
+			// Is this member in the category being displayed?
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("member_id = " . $member->id);
+			$criteria->addCondition("category_id = " . $listCategory);
+			$memberHasCategory = MemberHasCategory::model()->find($criteria);
+			if (!($memberHasCategory))
+				continue;
 			$address = $member->address1 . ", " . $member->address2 . ", " . $member->address3 . ", " . $member->address4 . ", " . $member->postcode;
 			$address = rtrim($address, ", ");
 			for ($i = 0; $i < 4; $i++)
 				$address = str_replace(", , ", ", ", $address);
 			$content .= "<tr style='background-color:#FFECF8;' onClick='javascript:alert(" . "'x')" . ">";
 			$content .= "<td width='75%' style='padding:5px;'>";
+			$startLinkTag = "<a href='http://www.fadguide.com/?layout=index&page=member&member=$member->id'>";
 			$content .= $startLinkTag;
 			$content .= "<i><p style='color:#A70055; font-weight:bold'>" . $member->business_name . "</p></i>";
 			$content .= "<i><p style=''>" . $address . "</p></i>";

@@ -1130,15 +1130,16 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				//$content = str_replace($pOrig, "", $content);
 			}
 
+			// Fadguide specific
 			if (stristr($vals[0], "category"))
 			{
-				// Eg: {{category Eating Out}}  (hybrid)
-				// -------------------------------------
+				// Eg: {{category 1 Eating Out}}  (hybrid)
+				// ---------------------------------------
 				$moreCurlyWurlys = 1;
 				$addon = array(
 					"custom" => array(
 						"fadguidecode" => array(
-             				"category" => $p2,
+             				"category" => $vals[1],
 							"run"      => "listMembers",
 						)
 					)
