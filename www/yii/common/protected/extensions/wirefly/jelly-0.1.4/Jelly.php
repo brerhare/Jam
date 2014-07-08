@@ -1130,8 +1130,26 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				//$content = str_replace($pOrig, "", $content);
 			}
 
+			// Fadguide specific. See addon custom fadguidecode and the member page template for details
+			if (stristr($vals[0], "fadguide-member"))
+			{
+				// Eg: {{cat-member}}  (hybrid)
+				// ---------------------------------
+				$moreCurlyWurlys = 1;
+				$addon = array(
+					"custom" => array(
+						"fadguidecode" => array(
+							"run"      => "showMember",
+						)
+					)
+				);
+				$this->addonHandler($addon, 1, $addonHtml);
+				$content = str_replace($pOrig, $addonHtml, $content);
+				//$content = str_replace($pOrig, "", $content);
+			}
+
 			// Fadguide specific
-			if (stristr($vals[0], "category"))
+			if (stristr($vals[0], "fadguide-category"))
 			{
 				// Eg: {{category 1 Eating Out}}  (hybrid)
 				// ---------------------------------------
