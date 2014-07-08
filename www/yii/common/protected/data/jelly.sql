@@ -108,21 +108,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `jelly_download`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `jelly_download` ;
-
-CREATE  TABLE IF NOT EXISTS `jelly_download` (
-  `id` INT NOT NULL AUTO_INCREMENT ,
-  `sequence` INT NULL ,
-  `description` VARCHAR(255) NOT NULL ,
-  `file` VARCHAR(255) NULL ,
-  PRIMARY KEY (`id`) ,
-  INDEX `sequence` (`sequence` ASC) )
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `jelly_gallery`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `jelly_gallery` ;
@@ -183,7 +168,7 @@ CREATE  TABLE IF NOT EXISTS `jelly_download_file` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `filename` VARCHAR(255) NOT NULL ,
   `description` VARCHAR(255) NULL ,
-  `jelly_download_collection_id` INT NOT NULL ,
+  `jelly_download_collection_id` INT NULL ,
   PRIMARY KEY (`id`) ,
   INDEX `fk_jelly_download_file_jelly_download_collection1` (`jelly_download_collection_id` ASC) ,
   CONSTRAINT `fk_jelly_download_file_jelly_download_collection1`
