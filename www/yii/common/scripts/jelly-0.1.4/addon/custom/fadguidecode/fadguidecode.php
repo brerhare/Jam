@@ -51,6 +51,8 @@ class fadguidecode
 						return $this->login();
 					if ($val == 'listMembers')
 						return $this->listMembers($listCategory);
+					if ($val == 'showMember')
+						return $this->showMember($_GET['member']);
 					break;
 				default:
 					break;
@@ -94,19 +96,26 @@ END_OF_API_JS;
         // This addon has no defaults that can be overridden
 
 		// Member headers displayed as a list
-		$startLinkTag = "<a href='http://www.google.co.uk' target='_blank'>";
 		$endLinkTag = "</a>";
 		$content = "";
 		$criteria = new CDbCriteria;
 		//$criteria->addCondition("id != " . $model->id);
 		$members = Member::model()->findAll($criteria);
 		foreach ($members as $member):
+			// Is this member in the category being displayed?
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("member_id = " . $member->id);
+			$criteria->addCondition("category_id = " . $listCategory);
+			$memberHasCategory = MemberHasCategory::model()->find($criteria);
+			if (!($memberHasCategory))
+				continue;
 			$address = $member->address1 . ", " . $member->address2 . ", " . $member->address3 . ", " . $member->address4 . ", " . $member->postcode;
 			$address = rtrim($address, ", ");
 			for ($i = 0; $i < 4; $i++)
 				$address = str_replace(", , ", ", ", $address);
 			$content .= "<tr style='background-color:#FFECF8;' onClick='javascript:alert(" . "'x')" . ">";
 			$content .= "<td width='75%' style='padding:5px;'>";
+			$startLinkTag = "<a href='http://www.fadguide.com/?layout=index&page=category-member&member=$member->id'>";
 			$content .= $startLinkTag;
 			$content .= "<i><p style='color:#A70055; font-weight:bold'>" . $member->business_name . "</p></i>";
 			$content .= "<i><p style=''>" . $address . "</p></i>";
@@ -128,6 +137,85 @@ $content .= $startLinkTag;
 			$content .= "</td>";
 			$content .= "</tr>";
 		endforeach;
+		$apiHtml = str_replace("<substitute-member-header>", $content, $apiHtml);
+
+		// Wrapup
+		$clipBoard = "";
+		$apiHeader = "";
+
+		$retArr = array();
+		$retArr[0] = $apiHtml;
+		$retArr[1] = $apiJs;
+		$retArr[2] = $clipBoard;
+		$retArr[3] = $apiHeader;
+		return $retArr;
+	}
+
+	/***************************************************************************************************/
+
+    private function showMember($id)
+    {
+		$content = "";
+
+		$apiHtml = <<<END_OF_API_HTML
+
+		<div class="showCategoryMember-container">
+
+			<style> /* overrides */
+			</style>
+
+			<table style="width:100%">
+				<tr>
+					<!-- <td width="30%">&nbsp</td>	--> <!-- filter -->
+					<td width="70%">				<!-- member header lines -->
+						<table>
+							<substitute-member-header>
+						</table>
+					</td>
+				</tr>
+			</table>
+		</div>
+
+END_OF_API_HTML;
+
+		$apiJs = <<<END_OF_API_JS
+END_OF_API_JS;
+
+        // Substitute paths for includes
+        $apiHtml = str_replace("<substitute-path>", $this->jellyRootUrl, $apiHtml);
+        // This addon has no defaults that can be overridden
+
+		// Member headers displayed as a list
+		$content = "";
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("id = " . $id);
+		$member = Member::model()->find($criteria);
+		if ($member)
+		{
+			$address = $member->address1 . ", " . $member->address2 . ", " . $member->address3 . ", " . $member->address4 . ", " . $member->postcode;
+			$address = rtrim($address, ", ");
+			for ($i = 0; $i < 4; $i++)
+				$address = str_replace(", , ", ", ", $address);
+			$content .= "<tr style='background-color:#FFECF8;' onClick='javascript:alert(" . "'x')" . ">";
+			$content .= "<td width='20%'>";
+			$content .= "<img src='userdata/image/logo/" . $member->logo_path . "' width='150px' height='150px'>";
+			$content .= "</td>";
+			$content .= "<td width='75%' style='padding:5px;'>";
+			$content .= "<i><p style='color:#A70055; font-weight:bold'>" . $member->business_name . "</p></i>";
+			$content .= "<i><p style=''>" . $address . "</p></i>";
+			$content .= "<a style='color:#A70055; text-decoration:underline' href='http://" . $member->web . " 'target='_blank''>Web site</a>";
+			$content .= "<p style='font-size:small'>" . $member->email . " / " . $member->phone . "</p>";
+			$content .= "</td>";
+			$content .= "</tr>";
+			$content .= "<tr height='10px'>";
+			$content .= "<td colspan='2'>";
+			$content .= "<hr style='height:2px; background-color:#A70055'/>";
+			$content .= "</td>";
+			$content .= "</tr>";
+$content .= "<tr><td colspan=2 style='color:#A70055'>";
+$content .= nl2br($member->html_content);
+$content .= "</td></tr>";
+		}
 		$apiHtml = str_replace("<substitute-member-header>", $content, $apiHtml);
 
 		// Wrapup
