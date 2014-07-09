@@ -172,20 +172,50 @@ class SiteController extends Controller
 						$content .= "<table width=100% style='padding:10px 10px 10px 0px'><tr><td style='padding:0px; width:40%'>";
 	
 						// @@EG: Calling a jelly addon directly, from outside the jelly
-						$addon = new google_os;
-						$optArr = array();
-						$optArr['single'] = '1';
-						$optArr['id'] = 'detailMap_' . $eventId;
-						$optArr['width'] = '200px';
-						$optArr['height'] = '200px';
-						//$optArr['maptype'] = 'terrain';
-						$optArr['inputmode'] = 'os';
-						$optArr['center'] = $ws->os_grid_ref;
-						$optArr['zoom'] = '9';
-						$ret = $addon->init($optArr, '/event/scripts/jelly/addon/map/google_os');
-						$content .= $ret[0];
-						$content .= '<script>' . $ret[1] . '</script>';
-						$content .= "<script> markerByOs2('" . $ws->os_grid_ref . "', '" . $event->post_code . "'); </script>";
+
+						if (trim($ws->os_grid_ref) != "")
+						{
+							$addon = new google_os;
+							$optArr = array();
+							$optArr['single'] = '1';
+							$optArr['id'] = 'detailMap_' . $eventId;
+							$optArr['width'] = '200px';
+							$optArr['height'] = '200px';
+							//$optArr['maptype'] = 'terrain';
+							$optArr['inputmode'] = 'os';
+							$optArr['center'] = $ws->os_grid_ref;
+							$optArr['zoom'] = '9';
+							$ret = $addon->init($optArr, '/event/scripts/jelly/addon/map/google_os');
+							$content .= $ret[0];
+							$content .= '<script>' . $ret[1] . '</script>';
+							$content .= "<script> markerByOs2('" . $ws->os_grid_ref . "', '" . $event->post_code . "'); </script>";
+						}
+						else
+						{
+// GOOGLE MAPS POSTCODE TO LATLNG
+$address = $event->post_code;
+$coords = file_get_contents('http://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($address) . '&sensor=true');
+$coords = json_decode($coords);
+$lat = $coords->results[0]->geometry->location->lat;
+$lng = $coords->results[0]->geometry->location->lng;
+
+							$addon = new google_os;
+							$optArr = array();
+							$optArr['single'] = '1';
+							$optArr['id'] = 'detailMap_' . $eventId;
+							$optArr['width'] = '200px';
+							$optArr['height'] = '200px';
+							$optArr['lat'] = $lat;
+							$optArr['lng'] = $lng;
+							//$optArr['maptype'] = 'terrain';
+							$optArr['inputmode'] = 'latlong';
+							$optArr['center'] = $lat . "," . $lng;
+							$optArr['zoom'] = '9';
+							$ret = $addon->init($optArr, '/event/scripts/jelly/addon/map/google_os');
+							$content .= $ret[0];
+							$content .= '<script>' . $ret[1] . '</script>';
+							$content .= "<script> markerByLatLong('" . $lat . "', '" . $lng . "', '" . $event->post_code . "'); </script>";
+						}
 
 						$content .= "</td> <div id='" . $optArr['id'] . "'></div> <td style='width:60%; padding-left:10px; vertical-align:top'>";
 
