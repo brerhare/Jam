@@ -87,7 +87,6 @@ class eventcode
 		$ret = $addon->init($optArr, '/event/scripts/jelly/addon/map/google_os');
 		$content .= $ret[0];
 		$content .= '<script>' . $ret[1] . '</script>';
-
 		// @@NB: For mapping points we select all events from today onwards
 		// @@NB: (Future enhancement?) Should ideally only show pins for the searched results
 		// @@NB: This should ideally be kept in some sort of sync with the event filter used in fill_headers() (below)
@@ -117,7 +116,6 @@ class eventcode
 						continue;
 				}
 			}
-
 			// Pick up the Ws record
 			$criteria = new CDbCriteria;
 			$criteria->condition = "event_id = " . $event->id;

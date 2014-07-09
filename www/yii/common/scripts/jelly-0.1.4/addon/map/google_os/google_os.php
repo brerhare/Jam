@@ -36,36 +36,30 @@ class google_os
 		// Generate the content into the html, replacing any <substituteN> tags
 		$onReady = "";
 		$inputMode = "";
+		$mapId = "";
 		foreach ($options as $opt => $val)
 		{
 			switch ($opt)
 			{
 				case "inputmode":
-					$tmp = str_replace("<substitute-inputmode>", strtoupper($val), $this->apiJs);
-					$this->apiJs = $tmp;
+					$this->apiJs = str_replace("<substitute-inputmode>", strtoupper($val), $this->apiJs);
 					$inputMode = $val;
 					break;
 				case "maptype":
-					$tmp = str_replace("<substitute-maptype>", strtoupper($val), $this->apiJs);
-					$this->apiJs = $tmp;
+					$this->apiJs = str_replace("<substitute-maptype>", strtoupper($val), $this->apiJs);
 					break;
 				case "zoom":
-					$tmp = str_replace("<substitute-zoom>", $val, $this->apiJs);
-					$this->apiJs = $tmp;
+					$this->apiJs = str_replace("<substitute-zoom>", $val, $this->apiJs);
 					break;
 				case "id":
-					$tmp = str_replace("<substitute-id>", $val, $this->apiHtml);
-					$this->apiHtml = $tmp;
-					$tmp = str_replace("<substitute-id>", $val, $this->apiJs);
-					$this->apiJs = $tmp;
+					$this->apiHtml = str_replace("<substitute-id>", $val, $this->apiHtml);
+					$this->apiJs = str_replace("<substitute-id>", $val, $this->apiJs);
 					break;
 				case "width":
-					$tmp = str_replace("<substitute-width>", $val, $this->apiHtml);
-					$this->apiHtml = $tmp;
+					$this->apiHtml = str_replace("<substitute-width>", $val, $this->apiHtml);
 					break;
 				case "height":
-					$tmp = str_replace("<substitute-height>", $val, $this->apiHtml);
-					$this->apiHtml = $tmp;
+					$this->apiHtml = str_replace("<substitute-height>", $val, $this->apiHtml);
 					break;
 				case "center": // @@TODO this works for 'os' only
 					$onReady .= '$(document).ready(function (){';
@@ -183,6 +177,7 @@ END_OF_API_HTML;
 
 	private $apiJs = <<<END_OF_API_JS
 
+		var mapId = "<substitute-id>";
 		var map_<substitute-id> = null;
 		var inputMode = "<substitute-inputmode>";
 		//var infowindow = new google.maps.InfoWindow();
@@ -231,8 +226,16 @@ END_OF_API_HTML;
 
 		markerByLatLong = function(lat, long, postcode)
 		{
-			loadMap(lat, long);
-			setupMarker2(lat, long, postcode);
+			var id = mapId + "-map";
+			var map = L.map(id).setView([lat, long], 13);
+
+// LEAFLET leaflet
+			L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+				maxZoom: 18,
+				attribution: '',
+				id: 'examples.map-i86knfo3'
+			}).addTo(map);
+			var marker = L.marker([lat, long]).addTo(map);
 		}
 
 		centerByLatLong = function(lat, long)
@@ -302,7 +305,6 @@ END_OF_API_HTML;
 			      });
 			    }    
 			*******************/
-
 		}
 
 		// Sets up a marker and info window on the map at the latitude and longitude specified

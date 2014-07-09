@@ -108,6 +108,11 @@ END_OF_BEGINHEADER;
 
 	private $endHeader = <<<END_OF_ENDHEADER
 	</head>
+
+<!-- @@TODO Remove hardcoded LEAFLET leaflet -->
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
 	<body>\n
 END_OF_ENDHEADER;
 
@@ -628,7 +633,7 @@ if (strstr($blobName, "googlemap"))
 {
 	if (isset($_GET['programid']))
 	{
-		if ($_GET['programid'] == 12)
+		if ($_GET['programid'] == 12)	// Absolute Classics
 			$cssValue = "0px";
 	}
 }
