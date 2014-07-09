@@ -7,7 +7,7 @@
 )); ?>
 
 <?php
-if (Yii::app()->session['pid'] == 6)	// Wild Seasons
+if (Yii::app()->session['pid'] == 6)	// WS Wild Seasons
 {
 	$this->widget('bootstrap.widgets.TbTabs',array(
     	'type'=>'tabs',

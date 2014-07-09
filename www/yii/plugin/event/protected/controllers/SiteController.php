@@ -161,7 +161,7 @@ class SiteController extends Controller
 			if ($event)
 			{
 				Yii::log("AJAX CALL: program_id:" . $event->program_id, CLogger::LEVEL_WARNING, 'system.test.kim');
-				if ($event->program_id == 6)	// Wild Seasons
+				if ($event->program_id == 6)	// WS Wild Seasons
 				{
 					$criteria = new CDbCriteria;
 					$criteria->condition = 'event_id = ' . $eventId;
@@ -269,6 +269,13 @@ class SiteController extends Controller
 				else	// Standard fields only
 				{
 					$content .= "<table width=100% style='padding:10px 10px 10px 0px'><tr><td style='padding:0px; width:40%'>";
+
+$address = $event->post_code;
+$coords = file_get_contents('http://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($address) . '&sensor=true');
+$coords = json_decode($coords);
+$lat = $coords->results[0]->geometry->location->lat;
+$lng = $coords->results[0]->geometry->location->lng;
+
 					// @@EG: Calling a jelly addon directly, from outside the jelly
 					$addon = new google_os;
 					$optArr = array();
@@ -277,13 +284,17 @@ class SiteController extends Controller
 					$optArr['width'] = '200px';
 					$optArr['height'] = '200px';
 					//$optArr['maptype'] = 'terrain';
-					$optArr['inputmode'] = 'postcode';
+					//$optArr['inputmode'] = 'latlong';
+					$optArr['inputmode'] = 'os';
 					$optArr['center'] = $event->post_code;
+					$optArr['lat'] = $lat;
+					$optArr['lng'] = $lng;
 					$optArr['zoom'] = '9';
+//die('x='.$event->program_id);
 					$ret = $addon->init($optArr, '/event/scripts/jelly/addon/map/google_os');
 					$content .= $ret[0];
 					$content .= '<script>' . $ret[1] . '</script>';
-//****					$content .= "<script> markerByOs2('" . "NX832613" . "', '" . $event->post_code . "'); </script>";
+					$content .= "<script> markerByLatLong('" . $lat . "', '" . $lng . "', '" . $event->post_code . "'); </script>";
 					$content .= "</td> <div id='" . $optArr['id'] . "'></div> <td style='width:60%; padding-left:10px; vertical-align:top'>";
 
 					$content .= "<div id='pDetails-" . $eventId. "'>";		// Printing start

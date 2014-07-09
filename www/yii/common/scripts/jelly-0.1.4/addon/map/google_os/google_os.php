@@ -229,15 +229,16 @@ END_OF_API_HTML;
 			}
 		}
 
+		markerByLatLong = function(lat, long, postcode)
+		{
+			loadMap(lat, long);
+			setupMarker2(lat, long, postcode);
+		}
+
 		centerByLatLong = function(lat, long)
 		{
 			var center = new google.maps.LatLng(lat, long);
     		map_<substitute-id>.panTo(center);
-		}
-
-		markerByLatLong = function(lat, long)
-		{
-			setupMarker(parseFloat(lat), parseFloat(long));
 		}
 
 		// Loads the map
