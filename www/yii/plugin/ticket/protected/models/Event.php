@@ -22,7 +22,7 @@
  * @property string $active_end_time
  * @property integer $optional_start_ticket_number
  * @property integer $optional_next_ticket_number
- * @property integer $booking_fee_per_ticket
+ * @property string $booking_fee_per_ticket
  * @property integer $ticket_vendor_id
  *
  * The followings are the available model relations:
@@ -59,8 +59,9 @@ class Event extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('uid, title, date, address, post_code, active, ticket_vendor_id', 'required'),
-			array('uid, active, optional_start_ticket_number, optional_next_ticket_number, booking_fee_per_ticket, ticket_vendor_id', 'numerical', 'integerOnly'=>true),
+			array('uid, active, optional_start_ticket_number, optional_next_ticket_number, ticket_vendor_id', 'numerical', 'integerOnly'=>true),
 			array('title, ticket_logo_path', 'length', 'max'=>255),
+			array('booking_fee_per_ticket', 'length', 'max'=>10),
 			array('date, time, post_code', 'length', 'max'=>45),
 			array('banner_text, ticket_text, ticket_terms, active_start_date, active_start_time, active_end_date, active_end_time', 'safe'),
 
