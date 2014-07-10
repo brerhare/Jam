@@ -175,10 +175,13 @@
 	<?php //echo $form->textFieldRow($model,'member_id',array('class'=>'span5')); ?>
 
 	<div class="form-actions">
-		<?php $this->widget('bootstrap.widgets.TbButton', array(
+
+	<?php
+	if (Yii::app()->session['pid'] == 6)	// WS Wild Seasons
+	{
+		$this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',
 			'type'=>'primary',
-
             'htmlOptions' => array(
                 'class' => $model->isNewRecord ? 'disabled' : '',
                 'disabled'=>$model->isNewRecord ? 'true' : '',
@@ -189,5 +192,16 @@
 
 			//'label'=>$model->isNewRecord ? 'Create' : 'Save',
 			'label'=>$model->isNewRecord ? 'Save on next tab' : 'Save',
-		)); ?>
+		));
+	}
+	else
+	{
+		$this->widget('bootstrap.widgets.TbButton', array(
+			'buttonType'=>'submit',
+			'type'=>'primary',
+			'label'=>$model->isNewRecord ? 'Create' : 'Save',
+		));
+	}
+	?>
+
 	</div>
