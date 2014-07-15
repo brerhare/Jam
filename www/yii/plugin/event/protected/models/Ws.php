@@ -45,7 +45,7 @@ class Ws extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('event_id, os_grid_ref, grade', 'required'),
+			array('event_id, grade', 'required'),
 			array('event_id, booking_essential, min_age, max_age, wheelchair_accessible', 'numerical', 'integerOnly'=>true),
 			array('os_grid_ref, grade, child_ages_restrictions, additional_venue_info, full_price_notes, short_description', 'length', 'max'=>255),
 			// The following rule is used by search().

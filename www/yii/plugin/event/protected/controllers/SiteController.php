@@ -161,7 +161,7 @@ class SiteController extends Controller
 			if ($event)
 			{
 				Yii::log("AJAX CALL: program_id:" . $event->program_id, CLogger::LEVEL_WARNING, 'system.test.kim');
-				if ($event->program_id == 6)	// Wild Seasons
+				if ($event->program_id == 6)	// WS Wild Seasons
 				{
 					$criteria = new CDbCriteria;
 					$criteria->condition = 'event_id = ' . $eventId;
@@ -172,20 +172,50 @@ class SiteController extends Controller
 						$content .= "<table width=100% style='padding:10px 10px 10px 0px'><tr><td style='padding:0px; width:40%'>";
 	
 						// @@EG: Calling a jelly addon directly, from outside the jelly
-						$addon = new google_os;
-						$optArr = array();
-						$optArr['single'] = '1';
-						$optArr['id'] = 'detailMap_' . $eventId;
-						$optArr['width'] = '200px';
-						$optArr['height'] = '200px';
-						//$optArr['maptype'] = 'terrain';
-						$optArr['inputmode'] = 'os';
-						$optArr['center'] = $ws->os_grid_ref;
-						$optArr['zoom'] = '9';
-						$ret = $addon->init($optArr, '/event/scripts/jelly/addon/map/google_os');
-						$content .= $ret[0];
-						$content .= '<script>' . $ret[1] . '</script>';
-						$content .= "<script> markerByOs2('" . $ws->os_grid_ref . "', '" . $event->post_code . "'); </script>";
+
+						if (trim($ws->os_grid_ref) != "")
+						{
+							$addon = new google_os;
+							$optArr = array();
+							$optArr['single'] = '1';
+							$optArr['id'] = 'detailMap_' . $eventId;
+							$optArr['width'] = '200px';
+							$optArr['height'] = '200px';
+							//$optArr['maptype'] = 'terrain';
+							$optArr['inputmode'] = 'os';
+							$optArr['center'] = $ws->os_grid_ref;
+							$optArr['zoom'] = '9';
+							$ret = $addon->init($optArr, '/event/scripts/jelly/addon/map/google_os');
+							$content .= $ret[0];
+							$content .= '<script>' . $ret[1] . '</script>';
+							$content .= "<script> markerByOs2('" . $ws->os_grid_ref . "', '" . $event->post_code . "'); </script>";
+						}
+						else
+						{
+// GOOGLE MAPS POSTCODE TO LATLNG
+$address = $event->post_code;
+$coords = file_get_contents('http://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($address) . '&sensor=true');
+$coords = json_decode($coords);
+$lat = $coords->results[0]->geometry->location->lat;
+$lng = $coords->results[0]->geometry->location->lng;
+
+							$addon = new google_os;
+							$optArr = array();
+							$optArr['single'] = '1';
+							$optArr['id'] = 'detailMap_' . $eventId;
+							$optArr['width'] = '200px';
+							$optArr['height'] = '200px';
+							$optArr['lat'] = $lat;
+							$optArr['lng'] = $lng;
+							//$optArr['maptype'] = 'terrain';
+							$optArr['inputmode'] = 'latlong';
+							$optArr['center'] = $lat . "," . $lng;
+							$optArr['zoom'] = '9';
+							$ret = $addon->init($optArr, '/event/scripts/jelly/addon/map/google_os');
+							$content .= $ret[0];
+							$content .= '<script>' . $ret[1] . '</script>';
+							$content .= "<script> markerByLatLong('" . $lat . "', '" . $lng . "', '" . $event->post_code . "'); </script>";
+						}
 
 						$content .= "</td> <div id='" . $optArr['id'] . "'></div> <td style='width:60%; padding-left:10px; vertical-align:top'>";
 
@@ -266,88 +296,87 @@ class SiteController extends Controller
 						$content .= "No Ws record";
 				}
 
-				else if ($event->program_id == 12)	// Absolute Classics
+				else	// Standard fields only
 				{
+					$content .= "<table width=100% style='padding:10px 10px 10px 0px'><tr><td style='padding:0px; width:40%'>";
+
+// GOOGLE MAPS POSTCODE TO LATLNG
+$address = $event->post_code;
+$coords = file_get_contents('http://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($address) . '&sensor=true');
+$coords = json_decode($coords);
+$lat = $coords->results[0]->geometry->location->lat;
+$lng = $coords->results[0]->geometry->location->lng;
+
+// LEAFLET
+//$content .= '<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />';
+//$content .= '<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>';
+					// @@EG: Calling a jelly addon directly, from outside the jelly
+					$addon = new google_os;
+					$optArr = array();
+					$optArr['single'] = '1';
+					$optArr['id'] = 'detailMap_' . $eventId;
+					$optArr['width'] = '200px';
+					$optArr['height'] = '200px';
+					$optArr['lat'] = $lat;
+					$optArr['lng'] = $lng;
+					//$optArr['maptype'] = 'terrain';
+					$optArr['inputmode'] = 'latlong';
+					$optArr['center'] = $lat . "," . $lng;
+					$optArr['zoom'] = '9';
+//die('x='.$event->program_id);
+					$ret = $addon->init($optArr, '/event/scripts/jelly/addon/map/google_os');
+					$content .= $ret[0];
+					$content .= '<script>' . $ret[1] . '</script>';
+					$content .= "<script> markerByLatLong('" . $lat . "', '" . $lng . "', '" . $event->post_code . "'); </script>";
+					$content .= "</td> <div id='" . 'detailMap_' . $eventId . "'></div> <td style='width:60%; padding-left:10px; vertical-align:top'>";
+
+					$content .= "<div id='pDetails-" . $eventId. "'>";		// Printing start
+
+					// Pick up the member record
 					$criteria = new CDbCriteria;
-					$criteria->condition = 'event_id = ' . $eventId;
-					$ab = Absoluteclassics::model()->find($criteria);
-					if ($ab)
+					$criteria->condition = 'id = ' . $event->member_id;
+					$member = Member::model()->find($criteria);
+
+					$content .= "<br/>";
+					// Organisation
+					if ($member)
+						if (trim($member->organisation) != '')
+							$content .= "<a class='event-detail-label'>Organisation</a> " . $member->organisation . "<br>";
+					// Contact details
+					$content .= "<a class='event-detail-label'>Contact details</a> " . $event->contact . "<br>";
+					// Website
+					if (trim($event->web) != '')
 					{
-						$content .= "<table width=100% style='padding:10px 10px 10px 0px'><tr><td style='padding:0px; width:40%'>";
-	
-						// @@EG: Calling a jelly addon directly, from outside the jelly
-						$addon = new google_os;
-						$optArr = array();
-						$optArr['single'] = '1';
-						$optArr['id'] = 'detailMap_' . $eventId;
-						$optArr['width'] = '200px';
-						$optArr['height'] = '200px';
-						//$optArr['maptype'] = 'terrain';
-						$optArr['inputmode'] = 'postcode';
-						$optArr['center'] = $event->post_code;
-						$optArr['zoom'] = '9';
-						$ret = $addon->init($optArr, '/event/scripts/jelly/addon/map/google_os');
-						$content .= $ret[0];
-						$content .= '<script>' . $ret[1] . '</script>';
-//****					$content .= "<script> markerByOs2('" . "NX832613" . "', '" . $event->post_code . "'); </script>";
-
-						$content .= "</td> <div id='" . $optArr['id'] . "'></div> <td style='width:60%; padding-left:10px; vertical-align:top'>";
-
-						$content .= "<div id='pDetails-" . $eventId. "'>";		// Printing start
-
-						// Pick up the member record
-						$criteria = new CDbCriteria;
-						$criteria->condition = 'id = ' . $event->member_id;
-						$member = Member::model()->find($criteria);
-
-						$content .= "<br/>";
-						// Organisation
-						if ($member)
-							if (trim($member->organisation) != '')
-								$content .= "<a class='event-detail-label'>Organisation</a> " . $member->organisation . "<br>";
-						// Contact details
-						$content .= "<a class='event-detail-label'>Contact details</a> " . $event->contact . "<br>";
-						// Website
-						if (trim($event->web) != '')
-						{
-							$http = "http://";
-							if (strstr("http://", $event->web))
-								$http = "";
-							$content .= "<a class='event-detail-label'>Website</a> " . "<a href='" . $http . $event->web . "'' target='_blank'>" . $event->web . "</a>" . "<br>";
-						}
-						$etype = "Festival";
-						if ($ab->type == 2)
-							$etype = "Series";
-						$content .= "<a class='event-detail-label'>Type</a> " . $etype . "<br>";
-	
-						$content .= "</td></tr></table>";
-	
-						$content .= "<div id='pDesc-" . $eventId. "'>";		// Printing start
-	
-						// Description
-						$content .= $event->description . "<br>";
-
-						$content .= "</div>";	// pDetails.	Printing end
-	
-						// Facebook
-						$content .= "<div style='float:right;padding-left:10px;padding-top:1px' class='fb-share-button' data-href='http://www.wildseasons.co.uk' data-type='button'></div>";
-	
-						// print
-						$content .= "<div style='float:right;padding-left:10px'><a href=javascript:printDiv('" . $eventId . "')><img style='margin-top:0px; margin-left:0px' title='Print' src='img/print.jpg'></a></div>";
-	
-						// Ticketing info (if applicable)
-						if (($event->ticket_event_id != 0) && ($member))
-						{
-							$ticketUrl = "https://plugin.wireflydesign.com/ticket/index.php/ticket/book/" . $event->ticket_event_id . "?sid=" . $member->sid . "&ref=event";
-							$content .= "<div style='float:right'><a target='_blank' href='" . $ticketUrl . "'><img style='margin-top:0px; margin-left:0px' title='Book' src='img/book-s.jpg'></a></div><br/>";
-							$content .= "<div style='clear:both'></div>";
-						}
-						$content .= "<br><br>";
+						$http = "http://";
+						if (strstr("http://", $event->web))
+							$http = "";
+						$content .= "<a class='event-detail-label'>Website</a> " . "<a href='" . $http . $event->web . "'' target='_blank'>" . $event->web . "</a>" . "<br>";
 					}
-///					else 
-///*****
-				}
+	
+					$content .= "</td></tr></table>";
+	
+					$content .= "<div id='pDesc-" . $eventId. "'>";		// Printing start
+	
+					// Description
+					$content .= $event->description . "<br>";
 
+					$content .= "</div>";	// pDetails.	Printing end
+	
+					// Facebook
+					$content .= "<div style='float:right;padding-left:10px;padding-top:1px' class='fb-share-button' data-href='http://www.wildseasons.co.uk' data-type='button'></div>";
+	
+					// print
+					$content .= "<div style='float:right;padding-left:10px'><a href=javascript:printDiv('" . $eventId . "')><img style='margin-top:0px; margin-left:0px' title='Print' src='img/print.jpg'></a></div>";
+	
+					// Ticketing info (if applicable)
+					if (($event->ticket_event_id != 0) && ($member))
+					{
+						$ticketUrl = "https://plugin.wireflydesign.com/ticket/index.php/ticket/book/" . $event->ticket_event_id . "?sid=" . $member->sid . "&ref=event";
+						$content .= "<div style='float:right'><a target='_blank' href='" . $ticketUrl . "'><img style='margin-top:0px; margin-left:0px' title='Book' src='img/book-s.jpg'></a></div><br/>";
+						$content .= "<div style='clear:both'></div>";
+					}
+					$content .= "<br><br>";
+				}
 			}
 			else	// Error
 				$content .= "No event record - cant determine program";

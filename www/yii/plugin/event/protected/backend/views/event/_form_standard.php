@@ -7,8 +7,17 @@
 	<?php //echo $form->textFieldRow($model,'program_id',array('class'=>'span5')); ?>
 	<?php
 		$criteria = new CDbCriteria;
-		$criteria->addCondition("id = " . Yii::app()->session['pid']);
-		echo $form->dropDownListRow($model,'program_id', CHtml::listData(Program::model()->findAll($criteria), 'id', 'name'), array('empty'=>'Choose'));
+/***
+		if (Yii::app()->session['pid'] == 6)
+			$criteria->addCondition("id = 6"); // All except WS Wild Seasons
+		else
+			$criteria->addCondition("id != 6"); // All except WS Wild Seasons
+***/
+		$criteria->addCondition("id = "  . Yii::app()->session['pid']); // Ony see the lock_program program
+
+		//echo $form->dropDownListRow($model,'program_id', CHtml::listData(Program::model()->findAll($criteria), 'id', 'name'), array('empty'=>'Choose'));
+		echo $form->dropDownListRow($model,'program_id', CHtml::listData(Program::model()->findAll($criteria), 'id', 'name'));
+
 	?>
 
 	<?php //echo $form->textFieldRow($model,'start',array('class'=>'span5')); ?>
@@ -166,10 +175,13 @@
 	<?php //echo $form->textFieldRow($model,'member_id',array('class'=>'span5')); ?>
 
 	<div class="form-actions">
-		<?php $this->widget('bootstrap.widgets.TbButton', array(
+
+	<?php
+	if (Yii::app()->session['pid'] == 6)	// WS Wild Seasons
+	{
+		$this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',
 			'type'=>'primary',
-
             'htmlOptions' => array(
                 'class' => $model->isNewRecord ? 'disabled' : '',
                 'disabled'=>$model->isNewRecord ? 'true' : '',
@@ -180,5 +192,16 @@
 
 			//'label'=>$model->isNewRecord ? 'Create' : 'Save',
 			'label'=>$model->isNewRecord ? 'Save on next tab' : 'Save',
-		)); ?>
+		));
+	}
+	else
+	{
+		$this->widget('bootstrap.widgets.TbButton', array(
+			'buttonType'=>'submit',
+			'type'=>'primary',
+			'label'=>$model->isNewRecord ? 'Create' : 'Save',
+		));
+	}
+	?>
+
 	</div>

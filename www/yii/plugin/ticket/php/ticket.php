@@ -30,8 +30,10 @@ function genTicket(
 	$logo = Yii::app()->baseUrl . '/img/default_logo.jpg';
 	if (strlen($eventModel->ticket_logo_path) > 0)
 	{
-		if (file_exists(Yii::app()->baseUrl . '/userdata/' . Yii::app()->session['uid'] . '/' . $eventModel->ticket_logo_path))
+		if (file_exists(Yii::app()->basePath . '/../userdata/' . Yii::app()->session['uid'] . '/' . $eventModel->ticket_logo_path))
+		{
 			$logo = Yii::app()->baseUrl . '/userdata/' . Yii::app()->session['uid'] . '/' . $eventModel->ticket_logo_path;
+		}
 	}
 	
 	$ticketLogo = CHtml::image(
@@ -189,7 +191,7 @@ $tbl = <<<EOD
 		<b>$eventModel->address $eventModel->post_code</b>
 		<br/><br/>
 
-		<pre>$eventModel->ticket_text</pre>
+		$eventModel->ticket_text
 
 		<p/>
 		$eventModel->ticket_terms

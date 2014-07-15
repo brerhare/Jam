@@ -66,7 +66,7 @@ class events
         $twistyIcon = "<img style='padding-right:3px' title='" . 'Show more' . "' src='img/" . 'open-twisty.png' . "' >";
 
         $content .= "<input type='button' id='textresetbutton' style='float:left;padding:3px; width:60px' onClick='resetEvents()' value='Reset'>";
-        $content .= "<input type='button' id='textsearchbutton' style='float:right;padding:3px; width:60px' onClick='searchEvents()' value='Search'>";
+        $content .= "<input type='button' id='textsearchbutton' style='float:left; padding:3px; width:60px; ' onClick='searchEvents()' value='Search'>";
 		$content .= "<br/>";
         $content .= "<div style='float:left'>";
         $content .= "<input type='text' id='textsearchbox' style='width:116px' title='Input text to search for' value='" . '' . "'>";
@@ -339,46 +339,11 @@ class events
         	}
 		}
 
-        $openAbType = false;
-		if ($this->programId == 12)
-		{
-
-        	// Absolute Classics fields start here
-        	// -----------------------------------
-
-         	// Type
-        	$abtypes = array( "Festival", "Series");
-        	if ($abtypes)
-        	{   
-            	$abtypesel = array();
-            	if (isset($_GET['abtype']))
-                	$abtypesel = explode('|', $_GET['abtype']);
-            	$content .= "<br>";
-
-            	//$content .= "<a href='#'><div class='filter-header'>" . $twistyIcon . "Type</a><br>";
-            	$content .= "<div class='filter-header'>" . $twistyIcon . "<a href='#'>Type</a><br>";
-
-            	$content .= "<div id='abtype-detail' class='filter-detail'>";
-            	foreach ($abtypes as $abtype):
-                	$match = false;
-                	if (in_array($abtype, $abtypesel))
-                	{
-                    	$match = true;
-                    	$openAbType = true;
-                	}
-                	$content .= "<label class='checkbox'> ";
-                	$content .= "<input name='abtype[]' "; 
-                	if ($match) $content .= " checked='checked' ";
-                	$content .= "type='checkbox' value='" . $abtype . "' onClick=makeSel()>" . $abtype;
-                	$content .= "</label><br>";
-            	endforeach;
-            	$content .= "</div>";
-            	$content .= "</div>";
-        	}
-		}
-
 		$content .= "<br/>";
 		$content .= "<div style='float:left;padding-left:40px'><a href=javascript:printSelectedHeads()><b><img style='margin-top:0px; margin-left:0px' title='Print' src='img/print.jpg'></a></div>";
+
+
+		$content .= "<br/><br/><br/><br/><div style='float:left;padding-left:40px'><a href='http://plugin.wireflydesign.com/event/backend.php/event/index'>.</a></div>";
 
         // Open twisty any selected groups of filters
         $content .= "<script>";
@@ -403,13 +368,6 @@ class events
 		{
         	if (!($openGrade))
             	$content .= "document.getElementById('grade-detail').style.display='none';";
-		}
-
-		// Absolute Classics
-		if ($this->programId == 12)
-		{
-        	if (!($openAbType))
-            	$content .= "document.getElementById('abtype-detail').style.display='none';";
 		}
 
         $content .= "</script>";
@@ -580,22 +538,6 @@ END_OF_API_HTML;
                 }
             }
             sel += '&grade=' + str; 
-        }
-
-        // AbType
-        av=document.getElementsByName("abtype[]");
-        if (av.length > 0)
-        {
-            var str = '';
-           for (var i = 0; i < av.length; i++)
-           {
-               if (av[i].checked)
-                {
-                    if (str != '') str += '|';
-                    str += av[i].value;
-                }
-            }
-            sel += '&abtype=' + str; 
         }
 
         // Activate the link

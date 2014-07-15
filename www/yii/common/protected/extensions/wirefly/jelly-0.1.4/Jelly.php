@@ -108,6 +108,11 @@ END_OF_BEGINHEADER;
 
 	private $endHeader = <<<END_OF_ENDHEADER
 	</head>
+
+<!-- @@TODO Remove hardcoded LEAFLET leaflet -->
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
 	<body>\n
 END_OF_ENDHEADER;
 
@@ -628,7 +633,7 @@ if (strstr($blobName, "googlemap"))
 {
 	if (isset($_GET['programid']))
 	{
-		if ($_GET['programid'] == 12)
+		if ($_GET['programid'] == 12)	// Absolute Classics
 			$cssValue = "0px";
 	}
 }
@@ -1130,15 +1135,34 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				//$content = str_replace($pOrig, "", $content);
 			}
 
-			if (stristr($vals[0], "category"))
+			// Fadguide specific. See addon custom fadguidecode and the member page template for details
+			if (stristr($vals[0], "fadguide-member"))
 			{
-				// Eg: {{category Eating Out}}  (hybrid)
-				// -------------------------------------
+				// Eg: {{cat-member}}  (hybrid)
+				// ---------------------------------
 				$moreCurlyWurlys = 1;
 				$addon = array(
 					"custom" => array(
 						"fadguidecode" => array(
-             				"category" => $p2,
+							"run"      => "showMember",
+						)
+					)
+				);
+				$this->addonHandler($addon, 1, $addonHtml);
+				$content = str_replace($pOrig, $addonHtml, $content);
+				//$content = str_replace($pOrig, "", $content);
+			}
+
+			// Fadguide specific
+			if (stristr($vals[0], "fadguide-category"))
+			{
+				// Eg: {{category 1 Eating Out}}  (hybrid)
+				// ---------------------------------------
+				$moreCurlyWurlys = 1;
+				$addon = array(
+					"custom" => array(
+						"fadguidecode" => array(
+             				"category" => $vals[1],
 							"run"      => "listMembers",
 						)
 					)

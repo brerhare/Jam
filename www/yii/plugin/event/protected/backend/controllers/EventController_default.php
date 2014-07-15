@@ -66,12 +66,10 @@ class EventController extends Controller
         Yii::log("CREATE EVENT ----- start " , CLogger::LEVEL_WARNING, 'system.test.kim');
         $iDir = $this->getThumbDir();
         $model=new Event;
-        $model2=new Absoluteclassics;
         $model->member_id = Yii::app()->session['eid'];
 		//$model->approved = $this->askApproval();
 $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval line
         $model->ticket_event_id = 1;	// Default to 'yes'
-//        $model2->booking_essential = 1;
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
@@ -81,8 +79,6 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
         	Yii::log("CREATE EVENT ----- POST happened " , CLogger::LEVEL_WARNING, 'system.test.kim');
             $model->attributes=$_POST['Event'];
             $model->thumb_path=CUploadedFile::getInstance($model, 'thumb_path');
-			$model2->attributes=$_POST['Absoluteclassics'];
-			//$model2->event_id = $model->id;
 
             if($model->save())
             {
@@ -91,22 +87,7 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
                 $this->updateProductCheckboxes($model->id);
 
             	$modelId = $model->id;	// Store for later
-            	// Save Absoluteclassics fields too
-            	$model2->attributes=$_POST['Absoluteclassics'];
-            	$model2->event_id = $model->id;
-            	if (!($model2->save()))
-            	{
-        			Yii::log("CREATE EVENT ----- UNsuccessful model2->save() " , CLogger::LEVEL_WARNING, 'system.test.kim');
-	            	$this->deleteProductCheckboxes($model->id);
-            		$model->delete();
-            		$this->render('create',array(
-            			'model'=>$model,
-            			'model2'=>$model2,
-            			'ticketUid'=>$this->getTicketUidFromEventSid(),	// Either a valid uid or -1
-        			));
-        			return;
-            	}
-        		Yii::log("CREATE EVENT ----- successful model2->save() " , CLogger::LEVEL_WARNING, 'system.test.kim');
+
                 if (strlen($model->thumb_path) > 0)
                 {
                     $fname = $iDir . $model->thumb_path;
@@ -152,7 +133,7 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 
         $this->render('create',array(
             'model'=>$model,
-            'model2'=>$model2,
+            'model2'=>'',
             'ticketUid'=>$this->getTicketUidFromEventSid(),	// Either a valid uid or -1
         ));
 	}
@@ -186,52 +167,6 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 			{
 				$criteria = new CDbCriteria;
 				$criteria->condition="event_id = $originalId";
-        		$model2=Absoluteclassics::model()->find($criteria);
-        		if ($model2)
-				{
-					// Insert absolute classics record
-					unset($model2->id);
-            		$model2->event_id = $model->id;
-					$model2->isNewRecord = true;
-					if (!($model2->insert()))
-					{
-						$model->delete();
-						die("Internal error copying event (absolute classics record)");
-					}
-					// Copy interests
-					$criteria = new CDbCriteria;
-					$criteria->condition="event_event_id = $originalId";
-        			$interests=EventHasInterest::model()->findAll($criteria);
-        			foreach ($interests as $interest)
-					{
-						$data = new EventHasInterest;
-						$data->event_event_id = $model->id;
-						$data->event_interest_id = $interest->event_interest_id;
-						$data->save();
-					}
-					// Copy formats
-					$criteria = new CDbCriteria;
-					$criteria->condition="event_event_id = $originalId";
-        			$formats=EventHasFormat::model()->findAll($criteria);
-        			foreach ($formats as $format)
-					{
-						$data = new EventHasFormat;
-						$data->event_event_id = $model->id;
-						$data->event_format_id = $format->event_format_id;
-						$data->save();
-					}
-					// Copy facilities
-					$criteria = new CDbCriteria;
-					$criteria->condition="event_event_id = $originalId";
-        			$facilities=EventHasFacility::model()->findAll($criteria);
-        			foreach ($facilities as $facility)
-					{
-						$data = new EventHasFacility;
-						$data->event_event_id = $model->id;
-						$data->event_facility_id = $facility->event_facility_id;
-						$data->save();
-					}
-				}
 			}
 		}
 		$this->redirect(array('admin'));
@@ -247,14 +182,6 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
         Yii::log("UPDATE EVENT ----- start. id = " . $id , CLogger::LEVEL_WARNING, 'system.test.kim');
         $iDir = $this->getThumbDir();
         $model=$this->loadModel($id);
-		$criteria = new CDbCriteria;
-		$criteria->condition="event_id = $model->id";
-        $model2=Absoluteclassics::model()->find($criteria);
-        if (!($model2))
-        {
-        	Yii::log("UPDATE EVENT ----- loading up. id = " . $id . " no model2. Dying " , CLogger::LEVEL_WARNING, 'system.test.kim');
-        	die('Couldnt find event matching Absoluteclassics record for update for event id ' . $id . ' Please report this error');
-        }
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
@@ -285,16 +212,6 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
                 $this->updateProductCheckboxes($model->id);
 
             	$modelId = $model->id;	// Store for later
-
-            	// Save Absoluteclassics fields too
-            	$model2->attributes=$_POST['Absoluteclassics'];
-            	$model2->event_id = $model->id;
-            	Yii::log("UPDATE EVENT ----- about to do model2->save() " , CLogger::LEVEL_WARNING, 'system.test.kim');
-            	$model2->save();
-            	Yii::log("UPDATE EVENT ----- did model2->save(). Finished " , CLogger::LEVEL_WARNING, 'system.test.kim');
-
-
-
 
 	            // Do we need to create a ticket event too?
 	            // @@EG Check softlink name for model, this is our standard naming
@@ -331,18 +248,13 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 	            	}
 	            }
 
-
-
-
-
-
                 $this->redirect(array('admin'));
             }
         }
 
         $this->render('update',array(
             'model'=>$model,
-            'model2'=>$model2,
+            'model2'=>'',
             'ticketUid'=>$this->getTicketUidFromEventSid(),	// Either a valid uid or -1
         ));
 	}
@@ -374,14 +286,6 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 
 			$criteria = new CDbCriteria;
 			$criteria->condition="event_id = $id";
-   			$model2=Absoluteclassics::model()->find($criteria);
-    	    if (!($model2))
-    	    	Yii::log("DELETE EVENT ----- NO MATCHINV WS RECORD TO DELETE (ignoring this error)" , CLogger::LEVEL_WARNING, 'system.test.kim');
-    	    else
-    	    {
-	        	$model2->delete();
-	        	Yii::log("DELETE EVENT ----- deleteing matching WS record " , CLogger::LEVEL_WARNING, 'system.test.kim');
-    	    }
 			Yii::log("DELETE EVENT ----- finished " , CLogger::LEVEL_WARNING, 'system.test.kim');
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
@@ -440,7 +344,7 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 | captcha         | varchar(45)  | YES  |     | NULL    |                |
 +-----------------+--------------+------+-----+---------+----------------+
 
-		$file = "/tmp/absolute classics-member.csv";
+		$file = "/tmp/event-member.csv";
 		$row = 0;
 		if (($handle = fopen($file, "r")) === FALSE)
 			die("Cant open $file");
@@ -475,7 +379,7 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 		return;
 */
 
-		$file = "/tmp/absolute classics.csv";
+		$file = "/tmp/event-member.csv";
 		$row = 0;
 		if (($handle = fopen($file, "r")) === FALSE)
 			die("Cant open $file");
@@ -495,7 +399,6 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 
         	// Init db fields
         	$event = new Event;
-        	$absoluteclassics = new Absoluteclassics;
 
         	$num = count($data);
         	//echo "<p> $num fields in line $row: <br /></p>\n";
@@ -541,24 +444,12 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 					case 12: // description
 						$event->description = $data[$c];
 						break;
-// -----------------------------------------------------------------------------
-//					case 13:
-//						if ((strtoupper($data[$c]) == 'YES') || (strtoupper($data[$c]) == 'Y'))
-//							$absoluteclassics->booking_essential = 1;
-//						break;
-					case 13:
-						$absoluteclassics->type = $data[$c];
-						break;
 				}
 			}
 // @@TODO: REMOVE HARD CODING!
 			$event->program_id = Yii::app()->session['pid'];
 			if (!($event->save()))
 				die("Event save failed on line " . $row);
-			$absoluteclassics->event_id = $event->id;
-			echo $absoluteclassics->event_id . "<br>";
-			if (!($absoluteclassics->save()))
-				die("Event additional info save failed on line " . $row);
 			$row++;
 		}
 	}
