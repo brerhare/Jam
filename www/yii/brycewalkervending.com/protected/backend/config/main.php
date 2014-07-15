@@ -17,7 +17,7 @@ return array(
     'viewPath' => $backend.'/views',
     'runtimePath' => $backend.'/runtime',
 
-	'name'=>'Wirefly Demo Site Backend',
+	'name'=>'Bryce Walker Vending Backend',
 
 	// preloading 'log' component
 	// preloading 'bootstrap' component
@@ -75,10 +75,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=demo5_wireflydesign_com',
+			'connectionString' => 'mysql:host=localhost;dbname=brycewalkervending_com',
 			'emulatePrepare' => true,
-			'username' => 'wireflydesign.co',
-			'password' => 'wireflydesign.com,',
+			'username' => 'brycewalkervendi',
+			'password' => 'wufn352',
 			'charset' => 'utf8',
 		),
 		/**/

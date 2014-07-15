@@ -1,1 +1,1 @@
-mysql -u wireflydesign.co demo5_wireflydesign_com -p"wireflydesign.com," < jelly.sql
+mysql -ubrycewalkervendi brycewalkervending_com -p"wufn352" < jelly.sql

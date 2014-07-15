@@ -7,7 +7,7 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'Wirefly Test Site',
+	'name'=>'Bryce Walker Vending',
 
 	// Override the default controller
 	//'defaultController'=>'contentBlock',
@@ -66,10 +66,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=demo5_wireflydesign_com',
+			'connectionString' => 'mysql:host=localhost;dbname=brycewalkervending_com',
 			'emulatePrepare' => true,
-			'username' => 'wireflydesign.co',
-			'password' => 'wireflydesign.com,',
+			'username' => 'brycewalkervendi',
+			'password' => 'wufn352',
 			'charset' => 'utf8',
 		),
 		/**/
@@ -100,12 +100,12 @@ return array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@wireflydesign.com',
         // These are used by the shopping cart checkout process
-        'checkoutEmail'=>'info@wireflydesign.com',
-        'checkoutName'=>'Wirefly Demo5',
+        'checkoutEmail'=>'bryce@brycewalkervending.com',
+        'checkoutName'=>'Bryce Walker Vending',
         // Test gateway
         'checkoutGatewayUser'=>'WIREFL-5188100',
         'checkoutGatewayPassword'=>'391F3GWBZ0',
 		'jellyRoot' => '/scripts/jelly/',
-		'sid' => 'demo5',
+		'sid' => '6o893679b95udhfape3inl5dq0',
 	),
 );

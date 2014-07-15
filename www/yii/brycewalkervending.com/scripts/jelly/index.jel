@@ -31,7 +31,7 @@ css.display = block
 		image.url = img/Logo.png
 		image.width = 241px
 		image.height = 116px
-		click = http://www.demo5.wireflydesign.com
+		click = http://www.brycewalkervending.com
 
 		[menu]
 		css.height = 50px
