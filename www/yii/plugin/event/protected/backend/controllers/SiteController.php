@@ -25,7 +25,7 @@ class SiteController extends Controller
     public function actionAbsoluteClassicsdirect()
     {
         Yii::app()->session['uid'] = 7;
-        $identity = new UserIdentity('mcquiston.concerts@gmail.com', 'greyfriars');
+        $identity = new UserIdentity('Alex', 'greyfriars');
         $identity->authenticate();
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);
