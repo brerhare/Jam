@@ -114,7 +114,8 @@ class MailerListController extends Controller
 		{
 			// Dont allow deletion of the default list (This is used for public signups)
 			if ($id == 99999)
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+				throw new CHttpException(404,'This list is mandatory. It cannot be deleted.');
+				//$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 
 			// we only allow deletion via POST request
 			$this->loadModel($id)->delete();
