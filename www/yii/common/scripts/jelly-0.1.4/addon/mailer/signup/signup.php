@@ -99,6 +99,7 @@ class signup
 		}
 		.signup-button {
 			padding: 2px 2px 2px 2px;
+			cursor: pointer; cursor: hand;
 			border: 0px solid #666;
 			text-decoration:none;
 			background: #dcdcdc url(icon.png) no-repeat scroll 5px center;
