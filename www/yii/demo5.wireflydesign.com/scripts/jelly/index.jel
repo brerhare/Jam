@@ -38,13 +38,9 @@ css.display = block
 		click = http://www.demo5.wireflydesign.com
 
 		[signup]
-		# Vertical ..
-		#css.margin-left = 50px
-		#css.margin-top = 30px
-		# Horizontal ..
-		css.margin-left = 400px
-		css.margin-top = -50px
-		addon.mailer.signup.orientation = horizontal
+		css.margin-left = 50px
+		css.margin-top = 30px
+		addon.mailer.signup.orientation = vertical
 		addon.mailer.signup.buttoncolor = red
 		addon.mailer.signup.buttontextcolor = yellow
 		addon.mailer.signup.buttontext = Signup NOW
