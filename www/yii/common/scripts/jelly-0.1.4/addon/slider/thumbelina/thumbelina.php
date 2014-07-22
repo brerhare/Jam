@@ -63,8 +63,6 @@ class thumbelina
 		return $retArr;
 	}
 
-	// @@TODO: Thought: maybe all sites use a jelly db, and each has their own table prefix? Could avoid a lot of hassle
-
 	private $apiHtml = <<<END_OF_API_HTML
 
         <div id="jelly-thumbelina-container">
