@@ -112,6 +112,10 @@ class MailerListController extends Controller
 	{
 		if(Yii::app()->request->isPostRequest)
 		{
+			// Dont allow deletion of the default list (This is used for public signups)
+			if ($id == 99999)
+				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+
 			// we only allow deletion via POST request
 			$this->loadModel($id)->delete();
 
@@ -139,6 +143,17 @@ class MailerListController extends Controller
 	 */
 	public function actionAdmin()
 	{
+		// Create the default list if it doesnt exist
+		$model=MailerList::model()->findByPk(99999);
+		if ($model===null)
+		{
+			$model=new MailerList;
+			$model->id = 99999;
+			$model->uid = Yii::app()->session['uid'];
+			$model->name = "Public signup list";
+			$model->save();
+		}
+
 		$model=new MailerList('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['MailerList']))
