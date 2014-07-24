@@ -39,14 +39,10 @@ class signup
 					$this->optionOrientation = $val;
 					break;
 				case "buttoncolor":
-					$this->optionButtonColor = $val;
-					break;
 				case "buttoncolour":
 					$this->optionButtonColor = $val;
 					break;
 				case "buttontextcolor":
-					$this->optionButtonTextColor = $val;
-					break;
 				case "buttontextcolour":
 					$this->optionButtonTextColor = $val;
 					break;
@@ -59,6 +55,7 @@ class signup
 					break;
 				default:
 					// Not all array items are action items
+					break;
 			}
 		}
 
@@ -69,11 +66,12 @@ class signup
 
 		// Generate the content
 		$content = "<div>";
-		$content .= "<input class='signup-input' type='text' title='Name' />";
+		$content .= "<input id='signup-name' class='signup-input' type='text' title='Name' />";
 		$content .= $separator;
-		$content .= "<input class='signup-input' type='text' title='Email' />";
+		$content .= "<input id='signup-email' class='signup-input' type='text' title='Email' />";
 		$content .= $separator;
-		$content .= "<button style='background-color:" . $this->optionButtonColor . "; color:" . $this->optionButtonTextColor . "' class='signup-button' id='save'>" . $this->optionButtonText . "</button>";
+		$content .= "<button id='signup-button' class='signup-visible' onClick='js:addSignup()' style='background-color:" . $this->optionButtonColor . "; color:" . $this->optionButtonTextColor . "' class='signup-button' id='save'>" . $this->optionButtonText . "</button>";
+		$content .= "<span id='signup-message' class='signup-invisible'>XXX</span>";
 		$content .= "</div>";
 
 		// Apply all substitutions
@@ -94,8 +92,7 @@ class signup
 			position: absolute;
 			font-style: italic;
 			color: #aaa;
-			/*margin: 0.2em 0 0 0.5em;*/
-			margin:5px;
+			margin:6px;
 		}
 		.signup-button {
 			padding: 2px 2px 2px 2px;
@@ -103,6 +100,22 @@ class signup
 			border: 0px solid #666;
 			text-decoration:none;
 			background: #dcdcdc url(icon.png) no-repeat scroll 5px center;
+		}
+		.signup-visible {
+			display:inline;
+		}
+		.signup-invisible {
+			display:none;
+		}
+		.signup-error {
+			margin-left:5px;
+			font-weight:bold;
+			color: red;
+		}
+		.signup-noerror {
+			/*margin-left:5px;*/
+			font-weight:bold;
+			color: green;
 		}
 		</style>
 		<substitute-data>
@@ -133,6 +146,32 @@ $('.signup-input[type=text][title],.signup-input[type=password][title],textarea[
     });
   });
 });
+
+function addSignup()
+{
+	var name = document.getElementById('signup-name').value;
+	var email = document.getElementById('signup-email').value;
+	name = name.trim();
+	if (name.length == 0)
+	{
+		document.getElementById('signup-message').innerHTML = "Name is required";
+		document.getElementById('signup-message').setAttribute('class', 'signup-visible');
+		document.getElementById('signup-message').setAttribute('class', 'signup-error');
+		return;
+	}
+	if ((email.indexOf("@") == -1) || (email.indexOf(".") == -1))
+	{
+		document.getElementById('signup-message').innerHTML = "Invalid email";
+		document.getElementById('signup-message').setAttribute('class', 'signup-visible');
+		document.getElementById('signup-message').setAttribute('class', 'signup-error');
+		return;
+	}
+	document.getElementById('signup-button').setAttribute('class', 'signup-invisible');
+	document.getElementById('signup-message').innerHTML = "Ta very much";
+	document.getElementById('signup-message').setAttribute('class', 'signup-visible');
+	document.getElementById('signup-message').setAttribute('class', 'signup-noerror');
+}
+
 END_OF_API_JS;
 
 }
