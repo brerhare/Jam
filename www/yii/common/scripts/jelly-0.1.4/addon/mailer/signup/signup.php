@@ -65,17 +65,20 @@ class signup
 			$separator = "<span style='margin-left:" . $this->optionInputSpacing . "px'>&nbsp</span>";
 
 		// Generate the content
-		$content = "<div>";
+		$content = "<div ng-app>";
+		$content .= "<div ng-controller='signupController'>";
 		$content .= "<input id='signup-name' class='signup-input' type='text' title='Name' />";
 		$content .= $separator;
 		$content .= "<input id='signup-email' class='signup-input' type='text' title='Email' />";
 		$content .= $separator;
-		$content .= "<button id='signup-button' class='signup-visible' onClick='js:addSignup()' style='background-color:" . $this->optionButtonColor . "; color:" . $this->optionButtonTextColor . "' class='signup-button' id='save'>" . $this->optionButtonText . "</button>";
-		$content .= "<span id='signup-message' class='signup-invisible'>XXX</span>";
+		$content .= "<button ng-click='addSignup()' id='signup-button' class='signup-visible' onClick='js:XaddSignup()' style='background-color:" . $this->optionButtonColor . "; color:" . $this->optionButtonTextColor . "' class='signup-button' id='save'>" . $this->optionButtonText . "</button>";
+		$content .= "<span id='signup-message' class='signup-invisible'>Message Area</span>";
+		$content .= "</div>";
 		$content .= "</div>";
 
+/*
 		// Generate Ajax callback
-		$ajax = CHtml::ajax(array(
+		echo CHtml::ajax(array(
 			'url'=>$this->createUrl('site/ajaxGetRoomPriceAvail'),
 			'data'=>array(
 				'name'=>'js:name',
@@ -85,6 +88,7 @@ class signup
 			'dataType'=>'json',
 			'success' => 'function(val){ajaxShowRoomPriceAvail(val);}',
 		));
+*/
 
 		// Apply all substitutions
 		// HTML
@@ -99,6 +103,7 @@ class signup
 	}
 
 	private $apiHtml = <<<END_OF_API_HTML
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
 		<style>
 		.input-prompt {
 			position: absolute;
@@ -159,29 +164,40 @@ $('.signup-input[type=text][title],.signup-input[type=password][title],textarea[
   });
 });
 
-function addSignup()
+function signupController(\$scope, \$http)
 {
-	var name = document.getElementById('signup-name').value;
-	var email = document.getElementById('signup-email').value;
-	name = name.trim();
-	if (name.length == 0)
-	{
-		document.getElementById('signup-message').innerHTML = "Name is required";
-		document.getElementById('signup-message').setAttribute('class', 'signup-visible');
-		document.getElementById('signup-message').setAttribute('class', 'signup-error');
-		return;
+	\$scope.addSignup = function() {
+		var name = document.getElementById('signup-name').value;
+		var email = document.getElementById('signup-email').value;
+		name = name.trim();
+		if (name.length == 0)
+		{
+			document.getElementById('signup-message').innerHTML = "Name is required";
+			document.getElementById('signup-message').setAttribute('class', 'signup-visible');
+			document.getElementById('signup-message').setAttribute('class', 'signup-error');
+			return;
+		}
+		if ((email.indexOf("@") == -1) || (email.indexOf(".") == -1))
+		{
+			document.getElementById('signup-message').innerHTML = "Invalid email";
+			document.getElementById('signup-message').setAttribute('class', 'signup-visible');
+			document.getElementById('signup-message').setAttribute('class', 'signup-error');
+			return;
+		}
+		// All ok - register the user
+		\$http.get('data/posts.json').
+		success(function(data, status, headers, config) {
+			document.getElementById('signup-button').setAttribute('class', 'signup-invisible');
+			document.getElementById('signup-message').innerHTML = "Ta very much";
+			document.getElementById('signup-message').setAttribute('class', 'signup-visible');
+			document.getElementById('signup-message').setAttribute('class', 'signup-noerror');
+		}).
+		error(function(data, status, headers, config) {
+			document.getElementById('signup-message').innerHTML = "Invalid response";
+			document.getElementById('signup-message').setAttribute('class', 'signup-visible');
+			document.getElementById('signup-message').setAttribute('class', 'signup-error');
+		});
 	}
-	if ((email.indexOf("@") == -1) || (email.indexOf(".") == -1))
-	{
-		document.getElementById('signup-message').innerHTML = "Invalid email";
-		document.getElementById('signup-message').setAttribute('class', 'signup-visible');
-		document.getElementById('signup-message').setAttribute('class', 'signup-error');
-		return;
-	}
-	document.getElementById('signup-button').setAttribute('class', 'signup-invisible');
-	document.getElementById('signup-message').innerHTML = "Ta very much";
-	document.getElementById('signup-message').setAttribute('class', 'signup-visible');
-	document.getElementById('signup-message').setAttribute('class', 'signup-noerror');
 }
 
 END_OF_API_JS;
