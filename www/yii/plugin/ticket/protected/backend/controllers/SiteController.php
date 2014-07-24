@@ -134,7 +134,7 @@ class SiteController extends Controller
     }
 
 // @@TODO: HARDCODED FOR AbSOLUTE CLASSICS ---------- REMOVE
-    public function actionAbsoluteClassicsdirect()
+    public function actionAbsoluteClassicsDirect()
     {
         Yii::app()->session['uid'] = 7;
         $identity = new UserIdentity('mcquiston.concerts@gmail.com', 'greyfriars');

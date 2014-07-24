@@ -76,6 +76,18 @@ class signup
 		$content .= "<button style='background-color:" . $this->optionButtonColor . "; color:" . $this->optionButtonTextColor . "' class='signup-button' id='save'>" . $this->optionButtonText . "</button>";
 		$content .= "</div>";
 
+		// Generate Ajax callback
+		$ajax = CHtml::ajax(array(
+			'url'=>$this->createUrl('site/ajaxGetRoomPriceAvail'),
+			'data'=>array(
+				'name'=>'js:name',
+				'email'=>'js:email',
+			),
+			'type'=>'POST',
+			'dataType'=>'json',
+			'success' => 'function(val){ajaxShowRoomPriceAvail(val);}',
+		));
+
 		// Apply all substitutions
 		// HTML
 		$this->apiHtml = str_replace("<substitute-data>", $content, $this->apiHtml);
