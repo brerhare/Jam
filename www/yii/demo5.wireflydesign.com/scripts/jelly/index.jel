@@ -43,7 +43,7 @@ css.display = block
 		addon.mailer.signup.orientation = vertical
 		addon.mailer.signup.buttoncolor = red
 		addon.mailer.signup.buttontextcolor = yellow
-		addon.mailer.signup.buttontext = Signup NOW
+		addon.mailer.signup.buttontext = Signup
 		addon.mailer.signup.inputspacing = 5px
 
 		[menu]
