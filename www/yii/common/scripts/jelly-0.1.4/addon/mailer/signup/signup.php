@@ -64,6 +64,10 @@ class signup
 		if ($this->optionOrientation == "horizontal")
 			$separator = "<span style='margin-left:" . $this->optionInputSpacing . "px'>&nbsp</span>";
 
+		// Make the website sid available to js
+		$SID = Yii::app()->params['sid'];
+		$content .= "<script> var SID=" . $SID . "</script>";
+
 		// Generate the content
 		$content = "<div ng-app>";
 		$content .= "<div ng-controller='signupController'>";
@@ -71,24 +75,13 @@ class signup
 		$content .= $separator;
 		$content .= "<input id='signup-email' class='signup-input' type='text' title='Email' />";
 		$content .= $separator;
-		$content .= "<button ng-click='addSignup()' id='signup-button' class='signup-visible' onClick='js:XaddSignup()' style='background-color:" . $this->optionButtonColor . "; color:" . $this->optionButtonTextColor . "' class='signup-button' id='save'>" . $this->optionButtonText . "</button>";
+		$content .= "<button ng-click='addSignup()' id='signup-button' class='signup-visible' style='background-color:" . $this->optionButtonColor . "; color:" . $this->optionButtonTextColor . "' class='signup-button' id='save'>" . $this->optionButtonText . "</button>";
 		$content .= "<span id='signup-message' class='signup-invisible'>Message Area</span>";
 		$content .= "</div>";
 		$content .= "</div>";
 
-/*
-		// Generate Ajax callback
-		echo CHtml::ajax(array(
-			'url'=>$this->createUrl('site/ajaxGetRoomPriceAvail'),
-			'data'=>array(
-				'name'=>'js:name',
-				'email'=>'js:email',
-			),
-			'type'=>'POST',
-			'dataType'=>'json',
-			'success' => 'function(val){ajaxShowRoomPriceAvail(val);}',
-		));
-*/
+		// Get SID to send to plugin
+		$content .= "<script> var SID='" . Yii::app()->params['sid'] . "'</script>";
 
 		// Apply all substitutions
 		// HTML
@@ -103,7 +96,6 @@ class signup
 	}
 
 	private $apiHtml = <<<END_OF_API_HTML
-		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
 		<style>
 		.input-prompt {
 			position: absolute;
@@ -185,7 +177,12 @@ function signupController(\$scope, \$http)
 			return;
 		}
 		// All ok - register the user
-		\$http.get('data/posts.json').
+
+
+		var url = 'http://plugin.wireflydesign.com/mailer/index.php/site/ajaxAddSignupMember/?sid=' + SID + '&name=' + name + '&email=' + email;
+//alert(url);
+
+		\$http.get(url).
 		success(function(data, status, headers, config) {
 			document.getElementById('signup-button').setAttribute('class', 'signup-invisible');
 			document.getElementById('signup-message').innerHTML = "Ta very much";
