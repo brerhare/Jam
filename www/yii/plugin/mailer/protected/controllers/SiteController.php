@@ -143,4 +143,12 @@ class SiteController extends Controller
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
+
+    public function actionAjaxAddSignupMember()
+    {
+		Yii::log("AJAX CALL-0", CLogger::LEVEL_WARNING, 'system.test.kim');
+		Yii::log("AJAX2 CALL: name:" . $_GET['name'] . " email:" . $_GET['email'], CLogger::LEVEL_WARNING, 'system.test.kim');
+	}
+
+
 }

@@ -21,6 +21,14 @@ return array(
 		'application.extensions.PHPMailer.*',
 	),
 
+	// Allow CORS @@EG
+	'behaviors' => array(
+            array('class' => 'application.extensions.CorsBehavior',
+                'route' => array('site/ajaxAddSignupMember', 'siteController/ajaxAddSignupMember'),
+                'allowOrigin' => '*.com'
+                ),
+        ),
+
 	'modules'=>array(
 		// uncomment the following to enable the Gii tool
 		/**/
