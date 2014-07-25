@@ -46,6 +46,7 @@ class Jelly
 	<substitute-meta-title>
 	<substitute-meta-description>
 	<substitute-meta-keywords>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
 
 	<style>		/* This style block is for the CSS reset */
 	/* http://meyerweb.com/eric/tools/css/reset/ 
