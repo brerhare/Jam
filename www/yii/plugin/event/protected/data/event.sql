@@ -93,6 +93,7 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`event_event` (
   `thumb_path` VARCHAR(255) NULL ,
   `approved` INT NULL ,
   `ticket_event_id` INT NULL ,
+  `active` INT NULL ,
   `member_id` INT NOT NULL ,
   `program_id` INT NOT NULL ,
   `event_price_band_id` INT NOT NULL ,

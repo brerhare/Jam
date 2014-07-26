@@ -54,6 +54,7 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`mailer_member` (
   PRIMARY KEY (`id`) ,
   INDEX `uid` (`uid` ASC) ,
   INDEX `fk_mailer_member_mailer_list1` (`mailer_list_id` ASC) ,
+  INDEX `email` (`uid` ASC, `email_address` ASC) ,
   CONSTRAINT `fk_mailer_member_mailer_list1`
     FOREIGN KEY (`mailer_list_id` )
     REFERENCES `plugin`.`mailer_list` (`id` )
