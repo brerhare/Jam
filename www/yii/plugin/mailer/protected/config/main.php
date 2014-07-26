@@ -24,8 +24,9 @@ return array(
 	// Allow CORS @@EG
 	'behaviors' => array(
             array('class' => 'application.extensions.CorsBehavior',
-                'route' => array('site/ajaxAddSignupMember', 'siteController/ajaxAddSignupMember'),
-                'allowOrigin' => '*.com'
+                'route' => array('site/ajaxAddSignupMember', 'siteController/ajaxAddSignupMember', mailer/index.php/site/ajaxAddSignupMember),
+                //'allowOrigin' => '*.com'
+                'allowOrigin' => '*'
                 ),
         ),
 

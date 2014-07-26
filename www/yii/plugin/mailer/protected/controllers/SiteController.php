@@ -146,9 +146,34 @@ class SiteController extends Controller
 
     public function actionAjaxAddSignupMember()
     {
-		Yii::log("AJAX CALL-0", CLogger::LEVEL_WARNING, 'system.test.kim');
-		Yii::log("AJAX2 CALL: name:" . $_GET['name'] . " email:" . $_GET['email'], CLogger::LEVEL_WARNING, 'system.test.kim');
+		Yii::log("AJAX CALL TO ADD MEMBER: uid:" . Yii::app()->session['uid'] . " name:" . $_GET['name'] . " email:" . $_GET['email'], CLogger::LEVEL_WARNING, 'system.test.kim');
+
+        // Pick up the public signup list for this uid. Create it if it doesnt exist
+        $criteria = new CDbCriteria;
+        $criteria->addCondition("uid = " . Yii::app()->session['uid']);
+        $criteria->addCondition("name = 'Public Signup'");
+        $mailerList=MailerList::model()->find($criteria);
+        if ($mailerList===null)
+        {
+            $mailerList=new MailerList;
+            $mailerList->uid = Yii::app()->session['uid'];
+            $mailerList->name = "Public Signup";
+            $mailerList->save();
+        }
+
+        // Add the signup request if not already there
+        $criteria = new CDbCriteria;
+        $criteria->addCondition("uid = " . Yii::app()->session['uid']);
+        $criteria->addCondition("email_address = '" . $_GET['email'] . "'");
+        $member = MailerMember::model()->find($criteria);
+        if ($member===null)
+        {
+            $member=new MailerMember;
+            $member->uid = Yii::app()->session['uid'];
+            $member->first_name = $_GET['name'];
+            $member->email_address = $_GET['email'];
+            $member->mailer_list_id = $mailerList->id;
+            $member->save();
+        }
 	}
-
-
 }

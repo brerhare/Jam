@@ -112,8 +112,9 @@ class MailerListController extends Controller
 	{
 		if(Yii::app()->request->isPostRequest)
 		{
+			$model = $this->loadModel($id);
 			// Dont allow deletion of the default list (This is used for public signups)
-			if ($id == 99999)
+			if ($model->name == "Public Signup")
 				throw new CHttpException(404,'This list is mandatory. It cannot be deleted.');
 				//$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 
@@ -144,16 +145,18 @@ class MailerListController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		// Create the default list if it doesnt exist
-		$model=MailerList::model()->findByPk(99999);
-		if ($model===null)
-		{
-			$model=new MailerList;
-			$model->id = 99999;
-			$model->uid = Yii::app()->session['uid'];
-			$model->name = "Public signup list";
-			$model->save();
-		}
+		// Create the default list for this uid if it doesnt exist
+        $criteria = new CDbCriteria;
+        $criteria->addCondition("uid = " . Yii::app()->session['uid']);
+        $criteria->addCondition("name = 'Public Signup'");
+        $mailerList=MailerList::model()->find($criteria);
+        if ($mailerList===null)
+        {
+            $mailerList=new MailerList;
+            $mailerList->uid = Yii::app()->session['uid'];
+            $mailerList->name = "Public Signup";
+            $mailerList->save();
+        }
 
 		$model=new MailerList('search');
 		$model->unsetAttributes();  // clear any default values
