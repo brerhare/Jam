@@ -1,0 +1,70 @@
+[defaults]
+include = default-values
+
+# Every blob inherits these before adding/overriding
+[* : defaults]
+
+[screen]
+# Being an iframe, we want to use the full width of whatever was specified by the parent page - so we dont specify any
+child = page-container
+#fx.wallpaper-color = #000000
+
+# Get the uid from the sid
+#db.table = User
+#db.filter = 'sid'=$_GET['sid']
+
+	[page-container]
+	child = breadcrumbs, graphic, main-content, content
+	css.width = 900px
+
+		[breadcrumbs]
+		css.margin-top = 10px
+##		css.height = 30px
+##		html.raw = breadcrumbs
+
+		[graphic]
+		css.height = 4px
+		css.background-color = purple
+
+		[main-content]
+		stacking = horizontal
+		child = blog-item, previous-blogs, category-list
+
+			[blog-item]
+			css.width = 50%
+			child = title, date-and-category, intro, image
+			db.table = Article
+			db.filter = id=$_GET['id']
+
+				[title]
+				css.margin-top = 5px;
+				css.color = #5c194c
+				css.margin-bottom = 0px;
+				css.font-size = 18px
+				html.raw = Article.title
+				
+				[date-and-category]
+				css.font-size = 14px
+				css.margin-top = -12px
+				css.margin-bottom = 15px
+				css.padding-top = 2px
+				db.table = Category
+				db.filter = id=Article.blog_category_id
+				html.p = Article.date Category.name
+
+				[intro]
+				css.margin-top = -10px
+				html.raw = Article.intro
+				
+				[image]
+				css.margin = 10px
+				css.height = 280px
+				css.width = 420px
+				#####style.background-image = /userdata/<substitute-user>/Article.thumbnail_path
+				style.background-image-bottom = /userdata/<substitute-user>/Article.thumbnail_path
+[content]
+			css.margin = 10px
+			#css.width = 840px
+			css.width = 660px
+			html.raw = Article.content
+
