@@ -35,39 +35,14 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$layout = "index";
-		if (isset($_GET['layout']))
-			$layout = $_GET['layout'];
-		$parseConfig = new ParseConfig();
-		$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . $layout . ".jel");
-		if (!($jellyArray))
-			throw new Exception('Aborting');
-
-		$jelly = new Jelly;
-		$jelly->processData($jellyArray,$this->getJellyRoot());
-		$jelly->outputData();
-
-		//$this->render('index');
+/*
+		$this->render('index',array(
+			'model'=>$model,
+			'roomdata'=>array(1,2,3),
+		));
+*/
+		$this->renderPartial('index');
 	}
-
-	/**
-	 * This is the default 'index' action that is invoked
-	 * when an action is not explicitly requested by users.
-	 */
-	public function actionPlay($page)
-	{
-		$parseConfig = new ParseConfig();
-		$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . $page . '.jel');
-		if (!($jellyArray))
-			throw new Exception('Aborting');
-
-		$jelly = new Jelly;
-		$jelly->processData($jellyArray,$this->getJellyRoot());
-		$jelly->outputData();
-
-	}
-
-
 
 	/**
 	 * This is the action to handle external exceptions.
