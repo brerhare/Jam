@@ -35,13 +35,22 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-/*
-		$this->render('index',array(
-			'model'=>$model,
-			'roomdata'=>array(1,2,3),
+		$category = 0;
+		$this->renderPartial('index',array(
+			'showCat'=>$category,
 		));
-*/
-		$this->renderPartial('index');
+	}
+
+	/**
+	 * This is the 'index' action that is invoked
+	 * when a category is explicitly requested by users.
+	 */
+	public function actionPlay()
+	{
+		$category = $_GET['cat'];
+		$this->renderPartial('index',array(
+			'showCat'=>$category,
+		));
 	}
 
 	/**
