@@ -165,7 +165,7 @@ css.display = block
 
 		[blog]
 		condition = @PAGE=@HOMEPAGE
-html.raw = {{news left}}
+		html.raw = {{news left}}
 
 
 ####footer####################################
