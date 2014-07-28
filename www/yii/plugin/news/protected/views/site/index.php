@@ -1,14 +1,31 @@
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+
+<style type="text/css" media="screen">
+
+</style>
+<div style="width:100%" ng-app>
+
+<span style="background-color:pink; display:inline-block; width:23%">
 <?php
-/* @var $this SiteController */
-
-$this->pageTitle=Yii::app()->name;
+	$criteria = new CDbCriteria;
+	$criteria->addCondition("uid=" . Yii::app()->session['uid']);
+	$criteria->order = "name ASC";
+	$categories = Category::model()->findAll($criteria);
+	if ($categories)
+	{
+		foreach ($categories as $category)
+		{
+			echo "<a style='text-decoration:none' href='https://plugin.wireflydesign.com/news/play/?cat=" . $category->id . "'>" . $category->name . "</a><br>";
+		}
+	}
 ?>
+</span>
 
-<h1>Welcome to <i><?php echo CHtml::encode(Yii::app()->name); ?></i></h1>
+<span style="background-color:yellow; display:inline-block; width:75%">
 
-<p>You may change the content of this page by modifying the following two files:</p>
-<ul>
-	<li>View file: <code><?php echo __FILE__; ?></code></li>
-	<li>Layout file: <code><?php echo $this->getLayoutFile('main'); ?></code></li>
-</ul>
+</span>
+
+<?php //var_dump($_GET); ?>
+
+</div>
 
