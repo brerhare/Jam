@@ -7,7 +7,7 @@ font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
 </style>
 <div style="width:100%" ng-app>
 
-<span style="vertical-align:top; background-color:pink; display:inline-block; width:23%; ">
+<span style="vertical-align:top; background-color:FCFCFC; display:inline-block; width:23%; ">
 <?php
 	// Show the category list
 	$criteria = new CDbCriteria;
@@ -28,7 +28,7 @@ font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
 ?>
 </span>
 
-<span style="background-color:yellow; display:inline-block; width:75%">
+<span style="/*background-color:yellow;*/ display:inline-block; width:75%">
 <?php
 	// Show the most recent article
 	$criteria = new CDbCriteria;
@@ -65,7 +65,7 @@ font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
 		{
 			if ($article->id == $mainArticleId)
 				continue;
-			echo "<span style='width:30%; margin-right:3px; overflow:hidden; float:left'>";
+			echo "<span style='width:30%; margin-bottom:20px; margin-right:10px; overflow:hidden; float:left'>";
 			echo "<img src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' width='100%'>";
 			echo $article->intro . "<br/>";
 			echo "</span>";
@@ -73,6 +73,7 @@ font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
 	}
 ?>
 </span>
+<div style="float:clear"></div>
 
 <?php //var_dump($_GET); ?>
 
