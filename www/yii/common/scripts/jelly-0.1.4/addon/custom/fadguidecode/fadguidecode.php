@@ -357,7 +357,7 @@ $content .= "</td></tr>";
 					<td width="300px">
 						<div id='editCategories'></div>		<!-- Checkboxes for Category -->
 					</td>
-					<td><b>Food Types&nbsp&nbsp&nbsp&nbsp</b></td>
+					<td><b>Types&nbsp&nbsp&nbsp&nbsp</b></td>
 					<td width="300px">
 						<div id='editFoodtypes'></div>		<!-- Checkboxes for Food Type -->
 					</td>
@@ -484,7 +484,7 @@ END_OF_API_HTML;
 				container.appendChild(document.createElement('br'));
 			}
 
-			// Food Types
+			// Types
 			var container = document.getElementById("editFoodtypes");
 			while (container.firstChild)
 				container.removeChild(container.firstChild);

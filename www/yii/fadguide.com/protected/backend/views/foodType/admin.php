@@ -1,11 +1,11 @@
 <?php
 
 $this->menu=array(
-	array('label'=>'Create Food Type','url'=>array('create')),
+	array('label'=>'Create Type','url'=>array('create')),
 );
 ?>
 
-<h2>Manage Food Types</h2>
+<h2>Manage Types</h2>
 
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'food-type-grid',

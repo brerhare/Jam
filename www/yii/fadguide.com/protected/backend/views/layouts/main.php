@@ -37,9 +37,8 @@
                 array('label' => 'Pages', 'url' => array('/contentBlock/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Members', 'url' => array('/member/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Categories', 'url' => array('/category/admin'), 'visible' => !Yii::app()->user->isGuest),
-                array('label' => 'Food Types', 'url' => array('/foodType/admin'), 'visible' => !Yii::app()->user->isGuest),
+                array('label' => 'Types', 'url' => array('/foodType/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Image Sliders', 'url' => array('/jellySliderImage/admin'), 'visible' => !Yii::app()->user->isGuest),
-				array('label' => 'Blog Backend', 'url' => 'https://plugin.wireflydesign.com/blog/backend.php/site/fadDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
                 //array('label' => 'HTML Sliders', 'url' => array('/jellySliderHtml/admin'), 'visible' => !Yii::app()->user->isGuest),
                 //array('label' => 'Tabs', 'url' => array('/tabBlock/admin'), 'visible' => !Yii::app()->user->isGuest),                      
                 array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
@@ -48,23 +47,21 @@
                 array('label' => 'About', 'url' => array('/site/page', 'view' => 'about'), 'visible' => Yii::app()->user->isGuest),  
 			),
 		),
-/*****
+
+		// Plugin dropdown menu
 		array(
 			'class' => 'bootstrap.widgets.TbMenu',
 			'htmlOptions' => array('class' => 'pull-right'),
 			'items' => array(
-				array('label' => 'Link', 'url' => '#'),
-				'---',
-				array('label' => 'Dropdown', 'url' => '#', 'items' => array(
-					array('label' => 'Action', 'url' => '#'),
-					array('label' => 'Another action', 'url' => '#'),
-					array('label' => 'Something else here', 'url' => '#'),
-					'---',
-					array('label' => 'Separated link', 'url' => '#'),
+				array('label' => 'Plugins', 'url' => '#', 'items' => array(
+				array('label' => 'Blog', 'url' => 'https://plugin.wireflydesign.com/blog/backend.php/site/fadDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'Mailer', 'url' => 'https://plugin.wireflydesign.com/mailer/backend.php/site/fadDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+					//'---',
+					//array('label' => 'Separated link', 'url' => '#'),
 				)),
 			),
 		),
-*****/
+
 	),
 )); ?>
 

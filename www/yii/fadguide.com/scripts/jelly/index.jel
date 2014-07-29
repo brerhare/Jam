@@ -1,4 +1,5 @@
 #FADguide
+#Main colours are the wine - a70055, and the pale forest green 30a64f
 
 [defaults]
 include = default-values
@@ -14,7 +15,7 @@ fx.wallpaper-image-tile = /img/straw_tile.jpg
 css.display = block
 
 	[login]
-	css.width = 960px
+	css.width = 100%
 	addon.custom.fadguidecode.run = login
 
 	[site]
@@ -188,11 +189,36 @@ css.margin-left = 20px
 	fx.rounding = 4px
 
 		[newsletter]
-		css.width = 200
+		child = signup-text, signup
+		css.width = 200px
+		css.height = 300px
 		css.margin-left = 20px
 		css.margin-top = 20px
-	image.url = img/newsletter.jpg
-		image.width = 200px
-		image.height = 245px
+		css.background-color = #30a64f
+		fx.rounding = 10px
+
+		#image.url = img/newsletter.jpg
+		#image.width = 200px
+		#image.height = 245px
+
+		[signup-text]
+		css.width = 160px
+		css.height = 100px
+		css.margin-left = 20px
+		css.margin-top = 20px
+		css.text-align = center
+		css.color = white
+		html.raw = Sign-up now to hear the latest news for the launch. Your email address is very important to us and will not be shared.
+
+		
+
+		[signup]
+		css.margin-left = 20px
+		css.margin-top = 5px
+		#addon.mailer.signup.orientation = horizontal
+		addon.mailer.signup.buttoncolor = white
+		addon.mailer.signup.buttontextcolor = #a70055
+		addon.mailer.signup.buttontext = Add me
+		addon.mailer.signup.inputspacing = 5px
 
 	
