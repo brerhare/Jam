@@ -2,15 +2,13 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
-CREATE SCHEMA IF NOT EXISTS `fadguide_com` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci ;
-USE `fadguide_com` ;
 
 -- -----------------------------------------------------
--- Table `fadguide_com`.`category`
+-- Table `opendoorsart_com`.`category`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `fadguide_com`.`category` ;
+DROP TABLE IF EXISTS `opendoorsart_com`.`category` ;
 
-CREATE  TABLE IF NOT EXISTS `fadguide_com`.`category` (
+CREATE  TABLE IF NOT EXISTS `opendoorsart_com`.`category` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(255) NOT NULL ,
   PRIMARY KEY (`id`) )
@@ -18,11 +16,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `fadguide_com`.`food_type`
+-- Table `opendoorsart_com`.`food_type`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `fadguide_com`.`food_type` ;
+DROP TABLE IF EXISTS `opendoorsart_com`.`food_type` ;
 
-CREATE  TABLE IF NOT EXISTS `fadguide_com`.`food_type` (
+CREATE  TABLE IF NOT EXISTS `opendoorsart_com`.`food_type` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `name` VARCHAR(255) NOT NULL ,
   PRIMARY KEY (`id`) )
@@ -30,11 +28,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `fadguide_com`.`member`
+-- Table `opendoorsart_com`.`member`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `fadguide_com`.`member` ;
+DROP TABLE IF EXISTS `opendoorsart_com`.`member` ;
 
-CREATE  TABLE IF NOT EXISTS `fadguide_com`.`member` (
+CREATE  TABLE IF NOT EXISTS `opendoorsart_com`.`member` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `username` VARCHAR(255) NOT NULL ,
   `password` VARCHAR(255) NOT NULL ,
@@ -59,11 +57,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `fadguide_com`.`member_has_food_type`
+-- Table `opendoorsart_com`.`member_has_food_type`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `fadguide_com`.`member_has_food_type` ;
+DROP TABLE IF EXISTS `opendoorsart_com`.`member_has_food_type` ;
 
-CREATE  TABLE IF NOT EXISTS `fadguide_com`.`member_has_food_type` (
+CREATE  TABLE IF NOT EXISTS `opendoorsart_com`.`member_has_food_type` (
   `member_id` INT NOT NULL ,
   `food_type_id` INT NOT NULL ,
   PRIMARY KEY (`member_id`, `food_type_id`) ,
@@ -71,23 +69,23 @@ CREATE  TABLE IF NOT EXISTS `fadguide_com`.`member_has_food_type` (
   INDEX `fk_member_has_food_type_member` (`member_id` ASC) ,
   CONSTRAINT `fk_member_has_food_type_member`
     FOREIGN KEY (`member_id` )
-    REFERENCES `fadguide_com`.`member` (`id` )
+    REFERENCES `opendoorsart_com`.`member` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_member_has_food_type_food_type1`
     FOREIGN KEY (`food_type_id` )
-    REFERENCES `fadguide_com`.`food_type` (`id` )
+    REFERENCES `opendoorsart_com`.`food_type` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `fadguide_com`.`member_has_category`
+-- Table `opendoorsart_com`.`member_has_category`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `fadguide_com`.`member_has_category` ;
+DROP TABLE IF EXISTS `opendoorsart_com`.`member_has_category` ;
 
-CREATE  TABLE IF NOT EXISTS `fadguide_com`.`member_has_category` (
+CREATE  TABLE IF NOT EXISTS `opendoorsart_com`.`member_has_category` (
   `member_id` INT NOT NULL ,
   `category_id` INT NOT NULL ,
   PRIMARY KEY (`member_id`, `category_id`) ,
@@ -95,12 +93,12 @@ CREATE  TABLE IF NOT EXISTS `fadguide_com`.`member_has_category` (
   INDEX `fk_member_has_category_member1` (`member_id` ASC) ,
   CONSTRAINT `fk_member_has_category_member1`
     FOREIGN KEY (`member_id` )
-    REFERENCES `fadguide_com`.`member` (`id` )
+    REFERENCES `opendoorsart_com`.`member` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_member_has_category_category1`
     FOREIGN KEY (`category_id` )
-    REFERENCES `fadguide_com`.`category` (`id` )
+    REFERENCES `opendoorsart_com`.`category` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
