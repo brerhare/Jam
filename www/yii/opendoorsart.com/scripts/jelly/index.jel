@@ -1,4 +1,4 @@
-#FADguide
+#Open Doors Art
 #Main colours are the wine - a70055, and the pale forest green 30a64f
 
 [defaults]
@@ -16,7 +16,7 @@ css.display = block
 
 	[login]
 	css.width = 100%
-	addon.custom.fadguidecode.run = login
+	addon.custom.opendoorsartecode.run = login
 
 	[site]
 	child = main, side 
