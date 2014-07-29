@@ -16,7 +16,7 @@ css.display = block
 
 	[login]
 	css.width = 100%
-	addon.custom.opendoorsartecode.run = login
+	addon.custom.opendoorsartcode.run = login
 
 	[site]
 	child = main, side 
