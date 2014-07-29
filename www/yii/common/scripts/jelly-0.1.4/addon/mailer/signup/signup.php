@@ -185,14 +185,19 @@ function signupController(\$scope, \$http)
 		\$http.get(url).
 		success(function(data, status, headers, config) {
 			document.getElementById('signup-button').setAttribute('class', 'signup-invisible');
-			document.getElementById('signup-message').innerHTML = "Ta very much";
+			document.getElementById('signup-message').innerHTML = "Thank you";
 			document.getElementById('signup-message').setAttribute('class', 'signup-visible');
 			document.getElementById('signup-message').setAttribute('class', 'signup-noerror');
 		}).
 		error(function(data, status, headers, config) {
-			document.getElementById('signup-message').innerHTML = "Invalid response";
+			//document.getElementById('signup-message').innerHTML = "Invalid response";
+			//document.getElementById('signup-message').setAttribute('class', 'signup-visible');
+			//document.getElementById('signup-message').setAttribute('class', 'signup-error');
+			// We thank regardless...
+			document.getElementById('signup-button').setAttribute('class', 'signup-invisible');
+			document.getElementById('signup-message').innerHTML = "Thank you";
 			document.getElementById('signup-message').setAttribute('class', 'signup-visible');
-			document.getElementById('signup-message').setAttribute('class', 'signup-error');
+			document.getElementById('signup-message').setAttribute('class', 'signup-noerror');
 		});
 	}
 }
