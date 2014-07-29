@@ -30,7 +30,7 @@ font-family: Helvetica Neue, Helvetica, Calibri, Candara, Segoe, "Segoe UI", Opt
 }
 </style>
 
-<div style="padding-top:10px; background-color:#e9e9e9; width:750px" ng-app>
+<div style="padding-top:10px; width:750px" ng-app>
 
 <span style="vertical-align:top; padding:0px 10px 10px; margin:0px 10px; display:inline-block; width:20%; ">
 <?php
