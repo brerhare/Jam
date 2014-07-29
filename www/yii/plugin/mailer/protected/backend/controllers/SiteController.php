@@ -72,6 +72,16 @@ class SiteController extends Controller
 		$this->render('contact',array('model'=>$model));
 	}
 
+// @@TODO: HARDCODED FOR FAD ---------- REMOVE
+    public function actionFadDirect()
+    {
+        Yii::app()->session['uid'] = 57;
+        $identity = new UserIdentity('jo@fadguide.com', 'foodiefest');
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
 	/**
 	 * Displays the DIRECT login page
 	 */

@@ -38,6 +38,20 @@ class SiteController extends Controller
     /**
      * Displays the DIRECT login page
      */
+// @@TODO: HARDCODED FOR 1STAID4U ---------- REMOVE
+    public function action1staid4uDirect()
+    {
+        Yii::app()->session['uid'] = 71;
+        $identity = new UserIdentity('contact@1staid4u.co.uk', 'connor1611');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
 // @@TODO: HARDCODED FOR DEMO ---------- REMOVE
     public function actionDemoDirect()
     {

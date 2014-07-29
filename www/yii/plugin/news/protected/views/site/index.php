@@ -115,9 +115,15 @@ font-family: Helvetica Neue, Helvetica, Calibri, Candara, Segoe, "Segoe UI", Opt
 
 <!-- @@NB iframe resizer hardcode here -->
 <script type="text/javascript" src="/js/iframeResizer.contentWindow.min.js"></script>
-    <!-- Iframe resizer -->
-    <script type="text/javascript" src="/js/jquery.iframeResizer.min.js"></script>
-    <script type="text/javascript">
+<!-- Iframe resizer -->
+<!-- <script type="text/javascript" src="/js/jquery.iframeResizer.min.js"></script> -->
+<script>
+
+$( document ).ready(function() {
+    console.log( "ready!" );
+    alert( "ready!" );
+});
+
         jQuery('iframe').iFrameSizer({
             log                    : true,  // For development
             autoResize             : true,  // Trigering resize on events in iFrame
@@ -125,7 +131,7 @@ font-family: Helvetica Neue, Helvetica, Calibri, Candara, Segoe, "Segoe UI", Opt
             doHeight               : true,  // Calculates dynamic height
             doWidth                : false, // Calculates dynamic width
             enablePublicMethods    : true,  // Enable methods within iframe hosted page
-            interval               : 0,     // interval in ms to recalculate body height, 0 to disable refreshing
+            interval               : 1000,     // interval in ms to recalculate body height, 0 to disable refreshing
             scrolling              : false, // Enable the scrollbars in the iFrame
             callback               : function(messageData){ // Callback fn when message is received
                 $('p#callback').html(
@@ -136,4 +142,5 @@ font-family: Helvetica Neue, Helvetica, Calibri, Candara, Segoe, "Segoe UI", Opt
                 );
             }
         });
+
 </script>
