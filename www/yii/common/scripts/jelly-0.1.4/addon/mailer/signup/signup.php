@@ -16,6 +16,8 @@ class signup
 	private $optionButtonTextColor = "white";
 	private $optionButtonText = "Signup";
 	private $optionInputSpacing = "0px";
+	private $optionSuccessTextColor = "green";
+	private $optionFailureTextColor = "red";
 
 	public $apiOption = array(
 	);
@@ -49,6 +51,14 @@ class signup
 				case "buttontext":
 					$this->optionButtonText = $val;
 					break;
+				case "successtextcolor":
+				case "successtextcolour":
+					$this->optionSuccessTextColor = $val;
+					break;
+				case "failuretextcolor":
+				case "failuretextcolour":
+					$this->optionFailureTextColor = $val;
+					break;
 				case "inputspacing":
 					$val = str_replace("px", "", $val);
 					$this->optionInputSpacing = $val;
@@ -75,7 +85,7 @@ class signup
 		$content .= $separator;
 		$content .= "<input id='signup-email' class='signup-input' type='text' title='Email' />";
 		$content .= $separator;
-		$content .= "<button ng-click='addSignup()' id='signup-button' class='signup-visible' style='background-color:" . $this->optionButtonColor . "; color:" . $this->optionButtonTextColor . "' class='signup-button' id='save'>" . $this->optionButtonText . "</button>";
+		$content .= "<button ng-click='addSignup()' id='signup-send-button' class='signup-visible signup-send-button' style='background:" . $this->optionButtonColor . "; color:" . $this->optionButtonTextColor . "' class='signup-send-button' id='save'>" . $this->optionButtonText . "</button>";
 		$content .= "<span id='signup-message' class='signup-invisible'>Message Area</span>";
 		$content .= "</div>";
 		$content .= "</div>";
@@ -85,6 +95,8 @@ class signup
 
 		// Apply all substitutions
 		// HTML
+		$this->apiHtml = str_replace("<substitute-successtextcolor>", $this->optionSuccessTextColor, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-failuretextcolor>", $this->optionFailureTextColor, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-data>", $content, $this->apiHtml);
 
 		// JS
@@ -103,13 +115,27 @@ class signup
 			color: #aaa;
 			margin:6px;
 		}
-		.signup-button {
+		.signup-send-button {
 			padding: 2px 2px 2px 2px;
 			cursor: pointer; cursor: hand;
 			border: 0px solid #666;
 			text-decoration:none;
-			background: #dcdcdc url(icon.png) no-repeat scroll 5px center;
+			-webkit-box-shadow:none;
+			-moz-box-shadow:none;
+			box-shadow:none;
+			text-shadow:none;
+			//background: #dcdcdc url(icon.png) no-repeat scroll 5px center;
 		}
+		.signup-send-button:hover {
+			cursor: pointer; cursor: hand;
+			border: 0px solid #666;
+			text-decoration:none;
+			-webkit-box-shadow:none;
+			-moz-box-shadow:none;
+			box-shadow:none;
+			text-shadow:none;
+		}
+
 		.signup-visible {
 			display:inline;
 		}
@@ -119,12 +145,12 @@ class signup
 		.signup-error {
 			margin-left:5px;
 			font-weight:bold;
-			color: red;
+			color: <substitute-failuretextcolor>;
 		}
 		.signup-noerror {
 			/*margin-left:5px;*/
 			font-weight:bold;
-			color: green;
+			color: <substitute-successtextcolor>;
 		}
 		</style>
 		<substitute-data>
@@ -184,15 +210,20 @@ function signupController(\$scope, \$http)
 
 		\$http.get(url).
 		success(function(data, status, headers, config) {
-			document.getElementById('signup-button').setAttribute('class', 'signup-invisible');
-			document.getElementById('signup-message').innerHTML = "Ta very much";
+			document.getElementById('signup-send-button').setAttribute('class', 'signup-invisible');
+			document.getElementById('signup-message').innerHTML = "Thank you";
 			document.getElementById('signup-message').setAttribute('class', 'signup-visible');
 			document.getElementById('signup-message').setAttribute('class', 'signup-noerror');
 		}).
 		error(function(data, status, headers, config) {
-			document.getElementById('signup-message').innerHTML = "Invalid response";
+			//document.getElementById('signup-message').innerHTML = "Invalid response";
+			//document.getElementById('signup-message').setAttribute('class', 'signup-visible');
+			//document.getElementById('signup-message').setAttribute('class', 'signup-error');
+			// We thank regardless...
+			document.getElementById('signup-send-button').setAttribute('class', 'signup-invisible');
+			document.getElementById('signup-message').innerHTML = "Thank you";
 			document.getElementById('signup-message').setAttribute('class', 'signup-visible');
-			document.getElementById('signup-message').setAttribute('class', 'signup-error');
+			document.getElementById('signup-message').setAttribute('class', 'signup-noerror');
 		});
 	}
 }
