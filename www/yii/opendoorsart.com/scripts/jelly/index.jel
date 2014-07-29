@@ -1,5 +1,5 @@
 #Open Doors Art
-#Main colours are the wine - a70055, and the pale forest green 30a64f
+#Main colours are blue: 2e3a7a, and white
 
 [defaults]
 include = default-values
@@ -10,28 +10,86 @@ include = default-values
 [screen]
 child = login, site
 #css.background-color = #ffffff
-#fx.wallpaper-image = /img/straw_tile.jpg
-fx.wallpaper-image-tile = /img/straw_tile.jpg
+fx.wallpaper-image = /img/background.jpg
+#fx.wallpaper-image-tile = /img/straw_tile.jpg
 css.display = block
 
 	[login]
 	css.width = 100%
-	addon.custom.opendoorsartcode.run = login
+	#addon.custom.opendoorsartcode.run = login
 
 	[site]
-	child = main, side 
+	child = main 
 	css.display = block
 	css.margin-top = 20px
 	css.width = 960px
 	fx.rounding = 4px
-	stacking = horizontal
 
 ####### Main Panel #########################
 
 [main]
-child = slider, homepage-box, menu, content-container, footer
+child = header, slider, menu, content-container, footer
 css.overflow = visible
-css.width = 700px
+css.width = 100%
+
+[header]
+child = logo, email-signup
+css.height = 200px
+css.margin-top = 20px
+stacking = horizontal
+
+	[logo]
+	css.height = 200px
+	image.url = img/logo.png
+	image.width = 389px
+	image.height = 200px
+	
+
+
+
+		[email-signup]
+		child = signup-text, signup, assurance-text
+		css.width = 400px
+		css.height = 180px
+		css.margin-left = 20px
+		#css.margin-top = 20px
+		css.background-color = white
+		fx.rounding = 15px
+
+
+
+		[signup-text]
+		css.width = 360px
+		css.height = 25px
+		css.margin-left = 20px
+		css.margin-top = 20px
+		css.text-align = center
+		css.color = #2e3a7a
+		html.raw = Sign up for the latest news on our launch date.
+
+		
+
+		[signup]
+		css.margin-left = 10px
+		css.margin-top = 5px
+		addon.mailer.signup.orientation = horizontal
+		addon.mailer.signup.buttoncolor = #2e3a7a
+		addon.mailer.signup.buttontextcolor = white
+		addon.mailer.signup.buttontext = Add me
+		addon.mailer.signup.inputspacing = 5px
+
+		[assurance-text]
+		css.width = 360px
+		css.height = 25px
+		css.margin-left = 20px
+		css.margin-top = 5px
+		css.text-align = center
+		css.color = #2e3a7a
+		html.raw = Your email is very special so we will not share it with anyone
+
+	
+
+
 
 [slider]
 css.margin-top = 20px
@@ -51,41 +109,6 @@ addon.slider.flexslider.mode = image
 addon.slider.flexslider.source = glob
 addon.slider.flexslider.pattern = /userdata/image/slider/*.jpg
 
-####### Home Page Only section #########################
-
-[homepage-box]
-child = homepage-links
-condition = @HOMEPAGE=1
-css.width = 100%
-css.height = 190px
-css.background-color = white
-fx.rounding = 4px
-css.margin-top = -50px
-
-[homepage-links]
-child = about, people
-stacking = horizontal
-css.margin-top = 20px
-
-
-	[about]
-	css.width = 320px
-	css.margin-left = 20px
-	css.border = 1px solid black
-	image.url = img/book.jpg
-	image.width = 136px
-	image.height = 100px
-	click = ?layout=index&page=food-drink-guide-scotland
-
-	[people]
-	css.width = 320px
-	css.margin-left = 20px
-	css.border = 1px solid black
-	image.url = img/people.jpg
-	image.width = 136px
-	image.height = 100px
-	click = ?layout=index&page=who-is-behind-food-drink-guide
-
 
 ########################################################
 
@@ -93,14 +116,15 @@ css.margin-top = 20px
 css.height = 40px
 css.overflow = visible
 css.margin-top = -50px
+css.box-shadow = 10px, 20px, 1px
 
 addon.menu.basic.width = 700px
 addon.menu.basic.height = 30px
 addon.menu.basic.font-size = 12px
 addon.menu.basic.menu-rounding = 4px
 
-addon.menu.basic.menu-color = #a70055
-addon.menu.basic.menu-text-color = white
+addon.menu.basic.menu-color = white
+addon.menu.basic.menu-text-color = #2e3a7a
 addon.menu.basic.submenu-color = #ffffff
 addon.menu.basic.item-color = white
 addon.menu.basic.item-text-color = #a70055
@@ -167,58 +191,3 @@ css.font-size = 10px
 		image.height = 40px
 		clicknew = http://www.wireflydesign.com
 
-########Side Panel####################################
-
-[side]
-child = logo, side-content
-css.width = 240px
-css.margin-left = 20px
-
-	[logo]
-	css.margin-top = 40px
-	image.url = img/Logo.png
-	image.width = 240px
-	image.height = 200px
-
-	[side-content]
-	child = newsletter
-	css.width = 240px
-	css.height = 600px
-	css.margin-top = 30px
-	css.background-color = white
-	fx.rounding = 4px
-
-		[newsletter]
-		child = signup-text, signup
-		css.width = 200px
-		css.height = 200px
-		css.margin-left = 20px
-		css.margin-top = 20px
-		css.background-color = #30a64f
-		fx.rounding = 10px
-
-		#image.url = img/newsletter.jpg
-		#image.width = 200px
-		#image.height = 245px
-
-		[signup-text]
-		css.width = 160px
-		css.height = 70px
-		css.margin-left = 20px
-		css.margin-top = 20px
-		css.text-align = center
-		css.color = white
-		html.raw = Sign-up now to hear the latest news for the launch. Your email address is very important to us and will not be shared.
-
-		
-
-		[signup]
-		css.margin-left = 20px
-		css.margin-top = 5px
-		#addon.mailer.signup.orientation = horizontal
-		addon.mailer.signup.buttoncolor = white
-		addon.mailer.signup.buttontextcolor = #a70055
-		addon.mailer.signup.buttontext = Add me
-		addon.mailer.signup.inputspacing = 5px
-
-	
