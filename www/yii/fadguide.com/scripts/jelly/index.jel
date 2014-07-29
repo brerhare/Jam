@@ -183,7 +183,7 @@ css.margin-left = 20px
 	[side-content]
 	child = newsletter
 	css.width = 240px
-	css.height = 400px
+	css.height = 600px
 	css.margin-top = 30px
 	css.background-color = white
 	fx.rounding = 4px
@@ -191,7 +191,7 @@ css.margin-left = 20px
 		[newsletter]
 		child = signup-text, signup
 		css.width = 200px
-		css.height = 300px
+		css.height = 200px
 		css.margin-left = 20px
 		css.margin-top = 20px
 		css.background-color = #30a64f
@@ -203,7 +203,7 @@ css.margin-left = 20px
 
 		[signup-text]
 		css.width = 160px
-		css.height = 100px
+		css.height = 70px
 		css.margin-left = 20px
 		css.margin-top = 20px
 		css.text-align = center
