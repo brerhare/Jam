@@ -1,5 +1,5 @@
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
-<script src="/js/masonry.pkgd.min.js"></script>
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
+<!-- <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script> -->
 
 <style type="text/css" media="screen">
 * {
@@ -89,8 +89,8 @@ font-family: Helvetica Neue, Helvetica, Calibri, Candara, Segoe, "Segoe UI", Opt
 	$articles = Article::model()->findAll($criteria);
 	if ($articles)
 	{
-		//echo "<div id='container' class='js-masonry' data-masonry-options='{ \"columnWidth\": 50, \"itemSelector\": \".item\" }'>";
-		echo "<div id='container' style='padding:12px'; class='js-masonry' data-masonry-options='{ \"gutter\": 13,  \"itemSelector\": \".item\" }'>";
+		//echo "<div id='container' style='padding:12px'; class='js-masonry' data-masonry-options='{ \"gutter\": 13,  \"itemSelector\": \".item\" }'>";
+		echo "<div id='masonry-container' style='display:none; padding:12px'; >";
 		foreach ($articles as $article)
 		{
 			if ($article->id == $mainArticleId)
@@ -116,31 +116,24 @@ font-family: Helvetica Neue, Helvetica, Calibri, Candara, Segoe, "Segoe UI", Opt
 <!-- @@NB iframe resizer hardcode here -->
 <script type="text/javascript" src="/js/iframeResizer.contentWindow.min.js"></script>
 <!-- Iframe resizer -->
-<!-- <script type="text/javascript" src="/js/jquery.iframeResizer.min.js"></script> -->
 <script>
 
-$( document ).ready(function() {
-    console.log( "ready!" );
-    alert( "ready!" );
+$(document).ready(function() {
+
+	// initialize Masonry after all images have loaded
+	var container = document.querySelector('#masonry-container');
+	var msnry;
+	imagesLoaded( container, function() {
+		document.getElementById('masonry-container').style.display = 'block';
+  		msnry = new Masonry( container, {
+			// Options
+			itemSelector: '.item',
+			gutter: 13
+		});
+	});
+
 });
 
-        jQuery('iframe').iFrameSizer({
-            log                    : true,  // For development
-            autoResize             : true,  // Trigering resize on events in iFrame
-            contentWindowBodyMargin: 8,     // Set the default browser body margin style (in px)
-            doHeight               : true,  // Calculates dynamic height
-            doWidth                : false, // Calculates dynamic width
-            enablePublicMethods    : true,  // Enable methods within iframe hosted page
-            interval               : 1000,     // interval in ms to recalculate body height, 0 to disable refreshing
-            scrolling              : false, // Enable the scrollbars in the iFrame
-            callback               : function(messageData){ // Callback fn when message is received
-                $('p#callback').html(
-                    '<b>Frame ID:</b> '    + messageData.iframe.id +
-                    ' <b>Height:</b> '     + messageData.height +
-                    ' <b>Width:</b> '      + messageData.width +
-                    ' <b>Event type:</b> ' + messageData.type
-                );
-            }
-        });
-
 </script>
+<script src="/js/masonry.pkgd.min.js"></script>
+<script src="/js/imagesloaded.pkgd.min.js"></script>

@@ -75,6 +75,16 @@ class SiteController extends Controller
 	/**
 	 * Displays the DIRECT login page
 	 */
+// @@TODO: HARDCODED FOR OPEN DOORS ART ---------- REMOVE
+    public function actionOpenDoorsArtDirect()
+    {
+        Yii::app()->session['uid'] = 72;
+        $identity = new UserIdentity('office@opendoorsart.com', 'alternativeSF');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
 
     /**
      * Displays the DIRECT login page
