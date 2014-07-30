@@ -38,7 +38,7 @@
                 array('label' => 'Members', 'url' => array('/member/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Categories', 'url' => array('/category/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Types', 'url' => array('/foodType/admin'), 'visible' => !Yii::app()->user->isGuest),
-                array('label' => 'Image Sliders', 'url' => array('/jellySliderImage/admin'), 'visible' => !Yii::app()->user->isGuest),
+                //array('label' => 'Image Sliders', 'url' => array('/jellySliderImage/admin'), 'visible' => !Yii::app()->user->isGuest),
                 //array('label' => 'HTML Sliders', 'url' => array('/jellySliderHtml/admin'), 'visible' => !Yii::app()->user->isGuest),
                 //array('label' => 'Tabs', 'url' => array('/tabBlock/admin'), 'visible' => !Yii::app()->user->isGuest),                      
                 array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
