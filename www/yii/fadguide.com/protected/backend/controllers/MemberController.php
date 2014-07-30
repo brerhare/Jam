@@ -111,6 +111,12 @@ class MemberController extends Controller
 	{
 		if(Yii::app()->request->isPostRequest)
 		{
+            // Delete all Member Category entries for this member
+            MemberHasCategory::model()->deleteAll("member_id =" . $id);
+
+            // Delete all Member Food Type entries for this member
+            MemberHasFoodType::model()->deleteAll("member_id =" . $id);
+
 			// we only allow deletion via POST request
 			$this->loadModel($id)->delete();
 
