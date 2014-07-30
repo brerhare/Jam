@@ -16,7 +16,7 @@ css.display = block
 
 	[login]
 	css.width = 100%
-	addon.custom.fadguidecode.run = login
+	#addon.custom.fadguidecode.run = login
 
 	[site]
 	child = main, side 
@@ -220,5 +220,7 @@ css.margin-left = 20px
 		addon.mailer.signup.buttontextcolor = #a70055
 		addon.mailer.signup.buttontext = Add me
 		addon.mailer.signup.inputspacing = 5px
+		addon.mailer.signup.successtextcolor = white
+		addon.mailer.signup.failuretextcolor = red
 
 	
