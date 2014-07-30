@@ -16,6 +16,7 @@ css.display = block
 
 	[login]
 	css.width = 100%
+	condition = @PAGE=signup
 	addon.custom.opendoorsartcode.run = login
 
 	[site]
@@ -40,10 +41,10 @@ stacking = horizontal
 
 	[logo]
 	css.height = 200px
-	image.url = img/logo.png
+	image.url = img/logo-cutout.png
 	image.width = 389px
 	image.height = 200px
-	
+	click = ?layout=index&page=home
 
 
 
@@ -148,7 +149,7 @@ fx.rounding = 4px
 	html.raw = ContentBlock.content
 
 [footer]
-child = footer-menu, wirefly
+child = temp, footer-menu, wirefly
 stacking = horizontal
 fx.rounding = 4px
 css.width = 700px
@@ -156,6 +157,12 @@ css.height = 80px
 css.margin-top = 5px
 css.background-color = #2e3a7a
 css.font-size = 10px
+
+	[temp]
+	css.height = 70px
+	css.width = 5%
+	css.background-color = #2e3a7a
+	click = ?layout=index&page=signup
 
 		[footer-menu]
 		child = footer-cookies, footer-tandc, footer-contact
@@ -186,9 +193,11 @@ css.font-size = 10px
 		css.margin-top = -50px
 		css.margin-left = 500px
 		css.height = 50px
-		css.width = 60%
+		css.width = 55%
 		image.url = img/wirefly-link-white.png
 		image.width = 161px
 		image.height = 40px
 		clicknew = http://www.wireflydesign.com
+
+
 
