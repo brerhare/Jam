@@ -54,6 +54,18 @@ class SiteController extends Controller
 	}
 
 	/**
+	 * This is the 'detail' action that is invoked
+	 * when an article is requested by users.
+	 */
+	public function actionDetail()
+	{
+		$article = $_GET['art'];
+		$this->renderPartial('detail',array(
+			'showArt'=>$article,
+		));
+	}
+
+	/**
 	 * This is the action to handle external exceptions.
 	 */
 	public function actionError()
