@@ -54,8 +54,8 @@
 			'htmlOptions' => array('class' => 'pull-right'),
 			'items' => array(
 				array('label' => 'Plugins', 'url' => '#', 'items' => array(
-				array('label' => 'Blog', 'url' => 'https://plugin.wireflydesign.com/blog/backend.php/site/fadDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
-				array('label' => 'Mailer', 'url' => 'https://plugin.wireflydesign.com/mailer/backend.php/site/fadDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'Blog', 'url' => 'https://plugin.wireflydesign.com/blog/backend.php/site/opendoorsart', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'Mailer', 'url' => 'https://plugin.wireflydesign.com/mailer/backend.php/site/opendoorsartDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
 					//'---',
 					//array('label' => 'Separated link', 'url' => '#'),
 				)),

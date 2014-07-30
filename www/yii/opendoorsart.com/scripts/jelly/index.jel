@@ -16,7 +16,7 @@ css.display = block
 
 	[login]
 	css.width = 100%
-	#addon.custom.opendoorsartcode.run = login
+	addon.custom.opendoorsartcode.run = login
 
 	[site]
 	child = main 
@@ -49,7 +49,7 @@ stacking = horizontal
 
 		[email-signup]
 		child = signup-text, signup, assurance-text
-		css.width = 400px
+		css.width = 450px
 		css.height = 180px
 		css.margin-left = 20px
 		#css.margin-top = 20px
@@ -70,6 +70,7 @@ stacking = horizontal
 		
 
 		[signup]
+		css.width = 430px
 		css.margin-left = 10px
 		css.margin-top = 5px
 		addon.mailer.signup.orientation = horizontal
@@ -153,7 +154,7 @@ fx.rounding = 4px
 css.width = 700px
 css.height = 80px
 css.margin-top = 5px
-css.background-color = #a70055
+css.background-color = #2e3a7a
 css.font-size = 10px
 
 		[footer-menu]
