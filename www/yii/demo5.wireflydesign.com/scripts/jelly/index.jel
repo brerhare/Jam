@@ -121,7 +121,7 @@ css.display = block
 
 			
 		[content]
-		css.background-color = #FCE29B
+		css.background-color = #B8C0D3
 		css.margin-top = 30px
 		css.margin = 30px
 		db.table = ContentBlock
