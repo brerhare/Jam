@@ -1,0 +1,193 @@
+#Open Doors Art
+#Main colours are blue: 2e3a7a, and white
+
+[defaults]
+include = default-values
+
+[* : defaults]
+# Every blob inherits these before adding/overriding
+
+[screen]
+child = login, site
+#css.background-color = #ffffff
+fx.wallpaper-image = /img/background.jpg
+#fx.wallpaper-image-tile = /img/straw_tile.jpg
+css.display = block
+
+	[login]
+	css.width = 100%
+	#addon.custom.opendoorsartcode.run = login
+
+	[site]
+	child = main 
+	css.display = block
+	css.margin-top = 20px
+	css.width = 960px
+	fx.rounding = 4px
+
+####### Main Panel #########################
+
+[main]
+child = header, slider, menu, content-container, footer
+css.overflow = visible
+css.width = 100%
+
+[header]
+child = logo, email-signup
+css.height = 200px
+css.margin-top = 20px
+stacking = horizontal
+
+	[logo]
+	css.height = 200px
+	image.url = img/logo.png
+	image.width = 389px
+	image.height = 200px
+	
+
+
+
+		[email-signup]
+		child = signup-text, signup, assurance-text
+		css.width = 400px
+		css.height = 180px
+		css.margin-left = 20px
+		#css.margin-top = 20px
+		css.background-color = white
+		fx.rounding = 15px
+
+
+
+		[signup-text]
+		css.width = 360px
+		css.height = 25px
+		css.margin-left = 20px
+		css.margin-top = 20px
+		css.text-align = center
+		css.color = #2e3a7a
+		html.raw = Sign up for the latest news on our launch date.
+
+		
+
+		[signup]
+		css.margin-left = 10px
+		css.margin-top = 5px
+		addon.mailer.signup.orientation = horizontal
+		addon.mailer.signup.buttoncolor = #2e3a7a
+		addon.mailer.signup.buttontextcolor = white
+		addon.mailer.signup.buttontext = Add me
+		addon.mailer.signup.inputspacing = 5px
+
+		[assurance-text]
+		css.width = 360px
+		css.height = 25px
+		css.margin-left = 20px
+		css.margin-top = 5px
+		css.text-align = center
+		css.color = #2e3a7a
+		html.raw = Your email is very special so we will not share it with anyone
+
+	
+
+
+
+[slider]
+css.margin-top = 20px
+css.height = 300px
+css.opacity = 1
+addon.slider.flexslider.width = 698px
+addon.slider.flexslider.height = 200px
+addon.slider.flexslider.border-width = 1px
+	addon.slider.flexslider.border-color = white
+	addon.slider.flexslider.active-dotcolor = white
+	addon.slider.flexslider.inactive-dotcolor = #a70055
+	addon.slider.flexslider.dot-margin-top = -45px
+	addon.slider.flexslider.dot-margin-bottom = 0px
+	addon.slider.flexslider.dot-margin-left = 0px
+	addon.slider.flexslider.dot-margin-right = 0px
+addon.slider.flexslider.mode = image
+addon.slider.flexslider.source = glob
+addon.slider.flexslider.pattern = /userdata/image/slider/*.jpg
+
+
+########################################################
+
+[menu]
+css.height = 40px
+css.overflow = visible
+css.margin-top = -50px
+css.box-shadow = 10px, 20px, 1px
+
+addon.menu.basic.width = 700px
+addon.menu.basic.height = 30px
+addon.menu.basic.font-size = 12px
+addon.menu.basic.menu-rounding = 4px
+
+addon.menu.basic.menu-color = white
+addon.menu.basic.menu-text-color = #2e3a7a
+addon.menu.basic.submenu-color = #ffffff
+addon.menu.basic.item-color = white
+addon.menu.basic.item-text-color = #a70055
+addon.menu.basic.subitem-color = #a70055
+addon.menu.basic.subitem-text-color = white
+addon.menu.basic.subitem-separator-color = #a70055
+
+[content-container]
+child = content
+css.margin-top = 6px
+css.background-color = white
+fx.rounding = 4px
+
+	[content]
+	css.margin = 15px
+	css.width = 670px
+	db.table = ContentBlock
+	db.filter = url=$_GET['page']
+	db.error = Sorry, I could not find th page $_GET['page']
+	html.raw = ContentBlock.content
+
+[footer]
+child = footer-menu, wirefly
+stacking = horizontal
+fx.rounding = 4px
+css.width = 700px
+css.height = 80px
+css.margin-top = 5px
+css.background-color = #a70055
+css.font-size = 10px
+
+		[footer-menu]
+		child = footer-cookies, footer-tandc, footer-contact
+		css.height = 50px
+		css.margin-top = 20px
+		css.margin-left = 50px
+		css.width = 30%
+
+			[footer-cookies]
+			html.raw = Cookie Policy
+			css.color = white
+			click = ?layout=index&page=cookies
+
+			[footer-tandc]
+			html.raw = Terms & Conditions
+			css.margin-top = 5px
+			css.color = white
+			click = ?layout=index&page=terms-conditions
+
+			[footer-contact]
+			html.raw = Contact Us
+			css.margin-top = 5px
+			css.color = white
+			click = ?layout=index&page=contact
+
+
+		[wirefly]
+		css.margin-top = -50px
+		css.margin-left = 500px
+		css.height = 50px
+		css.width = 60%
+		image.url = img/wirefly-link-white.png
+		image.width = 161px
+		image.height = 40px
+		clicknew = http://www.wireflydesign.com
+
