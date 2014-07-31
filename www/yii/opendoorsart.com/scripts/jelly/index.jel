@@ -24,7 +24,7 @@ css.display = block
 	css.display = block
 	css.margin-top = 20px
 	css.width = 960px
-	fx.rounding = 4px
+	fx.rounding = 20px
 
 ####### Main Panel #########################
 
@@ -41,7 +41,7 @@ stacking = horizontal
 
 	[logo-block]
 	child = logo, email-signup
-	css.height = 380px
+	css.height = 400px
 	css.width = 300px
 
 		[logo]
@@ -60,7 +60,8 @@ stacking = horizontal
 		css.margin-left = 20px
 		#css.margin-top = 20px
 		css.background-color = white
-		fx.rounding = 15px
+		fx.rounding = 20px
+		css.box-shadow = 12px 8px 8px rgba(0,0,0,0.5)
 
 
 
@@ -100,13 +101,16 @@ stacking = horizontal
 
 [slider]
 css.height = 500px
+css.width = 660px
+fx.rounding = 20px
 addon.slider.flexslider.width = 660px
 addon.slider.flexslider.height = 440px
 addon.slider.flexslider.border-width = 1px
 	addon.slider.flexslider.border-color = white
+	addon.slider.flexslider.animation = slide
 	addon.slider.flexslider.active-dotcolor = white
 	addon.slider.flexslider.inactive-dotcolor = #a70055
-	addon.slider.flexslider.dot-margin-top = -45px
+	addon.slider.flexslider.dot-margin-top = -50px
 	addon.slider.flexslider.dot-margin-bottom = 0px
 	addon.slider.flexslider.dot-margin-left = 0px
 	addon.slider.flexslider.dot-margin-right = 0px
