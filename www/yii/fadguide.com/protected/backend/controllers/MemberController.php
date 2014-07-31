@@ -2,6 +2,8 @@
 
 class MemberController extends Controller
 {
+    private $_imageDir = '/../userdata/image/';
+
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
@@ -111,6 +113,16 @@ class MemberController extends Controller
 	{
 		if(Yii::app()->request->isPostRequest)
 		{
+
+            // Pick up the member record
+            $model = $this->loadModel($id);
+
+            // Delete logo and slider image
+            if (file_exists(Yii::app()->basePath . $this->_imageDir . "logo/" . $model->logo_path))
+                unlink(Yii::app()->basePath . $this->_imageDir . "logo/" . $model->logo_path);
+            if (file_exists(Yii::app()->basePath . $this->_imageDir . "slider/" . $model->slider_image_path))
+                unlink(Yii::app()->basePath . $this->_imageDir . "slider/" . $model->slider_image_path);
+
             // Delete all Member Category entries for this member
             MemberHasCategory::model()->deleteAll("member_id =" . $id);
 

@@ -49,6 +49,9 @@ class flexslider
 				case "slider":
 					$this->defaultSlider = $val;
 					break;
+				case "animation":
+					$this->defaultAnimation = $val;
+					break;
 				case "width":
 					$this->defaultWidth = $val;
 					break;
