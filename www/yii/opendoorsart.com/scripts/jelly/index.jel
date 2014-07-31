@@ -109,7 +109,7 @@ addon.slider.flexslider.border-width = 1px
 	addon.slider.flexslider.dot-margin-right = 0px
 addon.slider.flexslider.mode = image
 addon.slider.flexslider.source = glob
-addon.slider.flexslider.pattern = /userdata/image/slider/*.jpg
+addon.slider.flexslider.pattern = /userdata/image/slider/*
 
 
 ########################################################
