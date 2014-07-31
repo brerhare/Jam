@@ -29,28 +29,33 @@ css.display = block
 ####### Main Panel #########################
 
 [main]
-child = header, slider, menu, content-container, footer
+child = header, menu, content-container, footer
 css.overflow = visible
 css.width = 100%
 
 [header]
-child = logo, email-signup
-css.height = 200px
+child = logo-block, slider
+css.height = 500px
 css.margin-top = 20px
 stacking = horizontal
 
-	[logo]
-	css.height = 200px
-	image.url = img/logo-cutout.png
-	image.width = 389px
-	image.height = 200px
-	click = ?layout=index&page=home
+	[logo-block]
+	child = logo, email-signup
+	css.height = 380px
+	css.width = 300px
+
+		[logo]
+		css.height = 200px
+		image.url = img/logo-cutout.png
+		image.width = 300px
+		image.height = 154px
+		click = ?layout=index&page=home
 
 
 
 		[email-signup]
 		child = signup-text, signup, assurance-text
-		css.width = 450px
+		css.width = 200px
 		css.height = 180px
 		css.margin-left = 20px
 		#css.margin-top = 20px
@@ -59,46 +64,44 @@ stacking = horizontal
 
 
 
-		[signup-text]
-		css.width = 360px
-		css.height = 25px
-		css.margin-left = 20px
-		css.margin-top = 20px
-		css.text-align = center
-		css.color = #2e3a7a
-		html.raw = Sign up for the latest news on our launch date.
+			[signup-text]
+			css.width = 160px
+			css.height = 25px
+			css.margin-left = 20px
+			css.margin-top = 20px
+			css.text-align = center
+			css.color = #2e3a7a
+			html.raw = Sign up for the latest news on our launch date.
 
 		
 
-		[signup]
-		css.width = 430px
-		css.margin-left = 10px
-		css.margin-top = 5px
-		addon.mailer.signup.orientation = horizontal
-		addon.mailer.signup.buttoncolor = #2e3a7a
-		addon.mailer.signup.buttontextcolor = white
-		addon.mailer.signup.buttontext = Add me
-		addon.mailer.signup.inputspacing = 5px
+			[signup]
+			css.width = 160px
+			css.margin-left = 20px
+			css.margin-top = 5px
+			#addon.mailer.signup.orientation = horizontal
+			addon.mailer.signup.buttoncolor = #2e3a7a
+			addon.mailer.signup.buttontextcolor = white
+			addon.mailer.signup.buttontext = Add me
+			addon.mailer.signup.inputspacing = 5px
 
-		[assurance-text]
-		css.width = 360px
-		css.height = 25px
-		css.margin-left = 20px
-		css.margin-top = 5px
-		css.text-align = center
-		css.color = #2e3a7a
-		html.raw = Your email is very special so we will not share it with anyone
+			[assurance-text]
+			css.width = 160px
+			css.height = 25px
+			css.margin-left = 20px
+			css.margin-top = 5px
+			css.text-align = center
+			css.color = #2e3a7a
+			html.raw = Your email is very special so we will not share it with anyone
 
 	
 
 
 
 [slider]
-css.margin-top = 20px
-css.height = 300px
-css.opacity = 1
-addon.slider.flexslider.width = 698px
-addon.slider.flexslider.height = 200px
+css.height = 500px
+addon.slider.flexslider.width = 660px
+addon.slider.flexslider.height = 440px
 addon.slider.flexslider.border-width = 1px
 	addon.slider.flexslider.border-color = white
 	addon.slider.flexslider.active-dotcolor = white
