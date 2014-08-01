@@ -87,11 +87,13 @@ css.display = block
 		css.overflow = visible
 		css.z-index = 1000
 		css.position = absolute
+		addon.menu.basic.width = 780px
 		addon.menu.basic.orientation = horizontal
 		addon.menu.basic.font-size = 14px
 		addon.menu.basic.menu-color = #ed2922
 		addon.menu.basic.menu-text-color = white
-		addon.menu.basic.item-separator-color = #ffffff
+		addon.menu.basic.item-separator-width = 10px
+		#addon.menu.basic.item-separator-color = #ffffff
 
 	addon.menu.basic.submenu-color = lightgrey
 	addon.menu.basic.item-color = #ed2922 red
