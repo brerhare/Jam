@@ -185,16 +185,17 @@ class basic
 						"nav ul ul li a:hover {color: " . $val . " !important;}",
 						$this->apiHtml);
 					break;
-				case "item-separator-color":
-					$this->apiHtml = str_replace("<substitute-item-separator-color>",
-						"nav ul li + li {border-top: <substitute-default-item-separator-width>px solid " . $val . ";}",
-						$this->apiHtml);
-					break;
-				case "subitem-separator-color":
-					$this->apiHtml = str_replace("<substitute-subitem-separator-color>",
-						"nav ul ul li {border-top: <substitute-default-subitem-separator-width>px solid " . $val . ";}",
-						$this->apiHtml);
-					break;
+// For some  BIZARRE reason this doesnt work and causes an intermittent vanishing effect on the submenu (horiz mode)
+//				case "item-separator-color":
+//					$this->apiHtml = str_replace("<substitute-item-separator-color>",
+//						"nav ul li + li {border-top: <substitute-default-item-separator-width>px solid " . $val . ";}",
+//						$this->apiHtml);
+//					break;
+//				case "subitem-separator-color":
+//					$this->apiHtml = str_replace("<substitute-subitem-separator-color>",
+//						"nav ul ul li {border-top: <substitute-default-subitem-separator-width>px solid " . $val . ";}",
+//						$this->apiHtml);
+//					break;
 				case "item-separator-width":
 					$val = str_replace("px", "", $val);
 					$this->default_item_separator_width = $val;

@@ -545,7 +545,7 @@ ob_end_clean();
 
 
 			// @@NB: FIX THIS!!!!!! usual redirect goes to fadguide.wireflydesign.com/index.php/site/index which screws the jelly image location dir /img
-			$this->redirect('http://www.fadguide.com');
+			$this->redirect('http://www.opendoorsart.com');
 	}
 
 
