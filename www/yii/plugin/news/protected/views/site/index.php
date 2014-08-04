@@ -19,6 +19,9 @@ font-family: Helvetica Neue, Helvetica, Calibri, Candara, Segoe, "Segoe UI", Opt
 	-webkit-box-shadow: 1px 1px 0px 0px #c8c8c8;
 	box-shadow:         1px 1px 0px 0px #c8c8c8;
 }
+.item:hover {
+opacity:0.9;
+}
 
 .itemleadin {
 	display:block;
@@ -39,16 +42,14 @@ font-family: Helvetica Neue, Helvetica, Calibri, Candara, Segoe, "Segoe UI", Opt
 	margin: 0; padding: 0;
 }
 
-.item:hover {
-opacity:0.85;
-
-}
-
 .mainitem {
 	display:inline-block;
 	overflow:hidden;
 	padding:0px 12px;
 }
+/*.mainitem:hover {
+opacity:0.85;
+}*/
 </style>
 
 <div style="width:100%; border:0px solid black">	<!-- test container -->
