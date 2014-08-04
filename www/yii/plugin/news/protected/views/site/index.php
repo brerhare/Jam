@@ -75,7 +75,10 @@ opacity:0.85;
 echo "<hr>";
 		}
 		if ($showCat != "0")
+		{
 			echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0'>" . 'All' . "</a><br>";
+			echo "<hr>";
+		}
 	}
 ?>
 </span>
