@@ -65,12 +65,14 @@ opacity:0.85;
 	$categories = Category::model()->findAll($criteria);
 	if ($categories)
 	{
-		echo "<h3>Category</h3>";
+		//echo "<h3>Category</h3>";
+		echo "<hr>";
 		foreach ($categories as $category)
 		{
 			if ($category->id == $showCat)
 				continue;
 			echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=" . $category->id . "'>" . $category->name . "</a><br>";
+echo "<hr>";
 		}
 		if ($showCat != "0")
 			echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0'>" . 'All' . "</a><br>";
