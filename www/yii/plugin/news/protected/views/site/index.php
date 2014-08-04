@@ -19,13 +19,28 @@ font-family: Helvetica Neue, Helvetica, Calibri, Candara, Segoe, "Segoe UI", Opt
 	-webkit-box-shadow: 1px 1px 0px 0px #c8c8c8;
 	box-shadow:         1px 1px 0px 0px #c8c8c8;
 }
+
+.itemleadin {
+	display:block;
+	font-size: 0.7em;
+	padding:4px;
+	height:10px;
+	color: #989898;
+}
+
 .itemintro {
 	display:inline-block;
-	padding:10px 5px;
+	padding: 5px;
+}
+
+.wtf-did-this-hr-take-to-DO {
+	display: block; height: 1px;
+	border: 0; border-top: 1px solid #ccc;
+	margin: 0; padding: 0;
 }
 
 .item:hover {
-opacity:0.9;
+opacity:0.85;
 
 }
 
@@ -36,7 +51,7 @@ opacity:0.9;
 }
 </style>
 
-<div style="width:100%; border:1px solid black">	<!-- test container -->
+<div style="width:100%; border:0px solid black">	<!-- test container -->
 
 <div style="padding-top:10px; width:100%" ng-app>
 
@@ -108,6 +123,22 @@ opacity:0.9;
 			echo "<a href='https://plugin.wireflydesign.com/news/index.php/site/detail/?art=" . $article->id . "'>";
 			echo "<img src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' width='100%'>";
 			echo "</a>";
+
+			// Get the category name
+			$showCat = "Unknown";
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("uid=" . Yii::app()->session['uid']);
+			$criteria->addCondition("id=" . $article->blog_category_id);
+			$category = Category::model()->find($criteria);
+			if ($category)
+				$showCat = $category->name;
+
+			echo "<span class='itemleadin'>" . $showCat . "&nbsp&nbsp" . $article->date . "</span><hr class='wtf-did-this-hr-take-to-DO'/>";
+
+
+http://dailydishrecipes.com/bacon-egg-muffin-cups-src/
+
+
 			echo "<span class='itemintro'>" . $article->intro . "</span><br/>";
 			echo "</span>";
 		}
