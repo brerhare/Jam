@@ -83,7 +83,7 @@ echo "<hr>";
 ?>
 </span>
 
-<span class="mainitem" style="width:70%">
+<span class="mainitem" style="display:inline-block; width:70%">
 <?php
 	// Show the most recent article
 	$criteria = new CDbCriteria;
@@ -96,10 +96,14 @@ echo "<hr>";
 	{
 		foreach ($articles as $article)
 		{
-			echo "<a href='https://plugin.wireflydesign.com/news/index.php/site/detail/?art=" . $article->id . "'>";
-			echo "<img style='max:width:330px; /*max-height:220px*/' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' width='50%'>";
+			echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/detail/?art=" . $article->id . "'>";
+				echo "<span class='mainitem' style='width:45%'>";
+					echo "<img style='width:95%; height:auto' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' >";
+				echo "</span>";
+				echo "<span class='mainitem' style='width:45%; vertical-align:top; margin:0px;' >";
+					echo "<p class='item' style='width:95%; padding:10px'>" . $article->intro . "</p>";
+				echo "</span>";
 			echo "</a>";
-			echo "<br>" . $article->intro . "<br>";
 			$mainArticleId = $article->id;
 			break;
 		}

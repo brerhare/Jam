@@ -13,7 +13,7 @@ font-family: Helvetica Neue, Helvetica, Calibri, Candara, Segoe, "Segoe UI", Opt
 	<div style="/*padding-top:10px;*/ width:100%" ng-app>
 
 <?php
-	// Show the most recent article
+	// Show the selected article's detail
 	$criteria = new CDbCriteria;
 	$criteria->addCondition("uid=" . Yii::app()->session['uid']);
 	if ($showArt != "0")
