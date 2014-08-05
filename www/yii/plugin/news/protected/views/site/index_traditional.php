@@ -133,7 +133,7 @@ echo "<hr>";
 			echo "<span class='item' style='text-align:center;' >";
 			echo "<a href='https://plugin.wireflydesign.com/news/index.php/site/detail/?art=" . $article->id . "'>";
 			// This is centered, shrink-to-fit
-			echo "<img style='height:130px; overflow:hidden;' src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' Xwidth='100%'>";
+			echo "<img style='max-width:100%; height:140px; overflow:hidden;' src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' Xwidth='100%'>";
 			echo "</a>";
 
 			// Get the category name
