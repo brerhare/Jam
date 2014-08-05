@@ -65,7 +65,6 @@ opacity:0.85;
 	$categories = Category::model()->findAll($criteria);
 	if ($categories)
 	{
-		//echo "<h3>Category</h3>";
 		echo "<hr>";
 		foreach ($categories as $category)
 		{
@@ -122,13 +121,11 @@ echo "<hr>";
 	$articles = Article::model()->findAll($criteria);
 	if ($articles)
 	{
-		//echo "<div id='container' style='padding:12px'; class='js-masonry' data-masonry-options='{ \"gutter\": 13,  \"itemSelector\": \".item\" }'>";
 		echo "<div id='masonry-container' style='display:none; width:100%; padding:12px'; >";
 		foreach ($articles as $article)
 		{
 			if ($article->id == $mainArticleId)
 				continue;
-			//echo "<span style='font-size:15; display:inline-block; width:30%; vertical-align:bottom; margin-bottom:20px; margin-right:12px; overflow:hidden; '>";
 			echo "<span class='item' style='margin-bottom:13px;' >";
 			echo "<a href='https://plugin.wireflydesign.com/news/index.php/site/detail/?art=" . $article->id . "'>";
 			echo "<img src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' width='100%'>";
@@ -145,10 +142,6 @@ echo "<hr>";
 
 			echo "<span class='itemleadin'>" . $showCat . "&nbsp&nbsp" . $article->date . "</span><hr class='wtf-did-this-hr-take-to-DO'/>";
 
-
-http://dailydishrecipes.com/bacon-egg-muffin-cups-src/
-
-
 			echo "<span class='itemintro'>" . $article->intro . "</span><br/>";
 			echo "</span>";
 		}
@@ -156,9 +149,6 @@ http://dailydishrecipes.com/bacon-egg-muffin-cups-src/
 	}
 ?>
 </span>
-
-<?php //var_dump($_GET); ?>
-
 </div>
 
 

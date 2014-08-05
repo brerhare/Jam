@@ -7,11 +7,14 @@ font-family: Helvetica Neue, Helvetica, Calibri, Candara, Segoe, "Segoe UI", Opt
 .red { font-color:#661010; }
 }
 .item {
+/*float:left;*/
+display: inline-block; vertical-align: top;
 	width: 28%;
+margin:6px;
 	border: 1px solid #d7d7d7;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+	border-radius: 0px;
 	overflow:hidden;
 	font-size:14px;
 	background-color:white;
@@ -65,7 +68,6 @@ opacity:0.85;
 	$categories = Category::model()->findAll($criteria);
 	if ($categories)
 	{
-		//echo "<h3>Category</h3>";
 		echo "<hr>";
 		foreach ($categories as $category)
 		{
@@ -83,7 +85,7 @@ echo "<hr>";
 ?>
 </span>
 
-<span class="mainitem" style="width:70%">
+<span class="mainitem" style="display:inline-block; width:70%">
 <?php
 	// Show the most recent article
 	$criteria = new CDbCriteria;
@@ -96,10 +98,14 @@ echo "<hr>";
 	{
 		foreach ($articles as $article)
 		{
-			echo "<a href='https://plugin.wireflydesign.com/news/index.php/site/detail/?art=" . $article->id . "'>";
-			echo "<img style='max:width:330px; /*max-height:220px*/' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' width='50%'>";
+			echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/detail/?art=" . $article->id . "'>";
+				echo "<span class='mainitem' style='width:45%'>";
+					echo "<img style='width:95%; height:auto' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' >";
+				echo "</span>";
+				echo "<span class='mainitem' style='width:45%; vertical-align:top; margin:0px;' >";
+					echo "<p class='item' style='width:95%; padding:10px'>" . $article->intro . "</p>";
+				echo "</span>";
 			echo "</a>";
-			echo "<br>" . $article->intro . "<br>";
 			$mainArticleId = $article->id;
 			break;
 		}
@@ -118,16 +124,15 @@ echo "<hr>";
 	$articles = Article::model()->findAll($criteria);
 	if ($articles)
 	{
-		//echo "<div id='container' style='padding:12px'; class='js-masonry' data-masonry-options='{ \"gutter\": 13,  \"itemSelector\": \".item\" }'>";
-		echo "<div id='masonry-container' style='display:none; width:100%; padding:12px'; >";
+		echo "<div style='width:100%; padding:12px'; >";
 		foreach ($articles as $article)
 		{
 			if ($article->id == $mainArticleId)
 				continue;
-			//echo "<span style='font-size:15; display:inline-block; width:30%; vertical-align:bottom; margin-bottom:20px; margin-right:12px; overflow:hidden; '>";
-			echo "<span class='item' style='margin-bottom:13px;' >";
+			echo "<span class='item' style='text-align:center; margin-bottom:13px;' >";
 			echo "<a href='https://plugin.wireflydesign.com/news/index.php/site/detail/?art=" . $article->id . "'>";
-			echo "<img src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' width='100%'>";
+			// This is centered, shrink-to-fit
+			echo "<img style='height:150px; overflow:hidden;' src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' Xwidth='100%'>";
 			echo "</a>";
 
 			// Get the category name
@@ -141,10 +146,6 @@ echo "<hr>";
 
 			echo "<span class='itemleadin'>" . $showCat . "&nbsp&nbsp" . $article->date . "</span><hr class='wtf-did-this-hr-take-to-DO'/>";
 
-
-http://dailydishrecipes.com/bacon-egg-muffin-cups-src/
-
-
 			echo "<span class='itemintro'>" . $article->intro . "</span><br/>";
 			echo "</span>";
 		}
@@ -152,9 +153,6 @@ http://dailydishrecipes.com/bacon-egg-muffin-cups-src/
 	}
 ?>
 </span>
-
-<?php //var_dump($_GET); ?>
-
 </div>
 
 
@@ -164,21 +162,6 @@ http://dailydishrecipes.com/bacon-egg-muffin-cups-src/
 <script>
 
 $(document).ready(function() {
-
-	// initialize Masonry after all images have loaded
-	var container = document.querySelector('#masonry-container');
-	var msnry;
-	imagesLoaded( container, function() {
-		document.getElementById('masonry-container').style.display = 'block';
-  		msnry = new Masonry( container, {
-			// Options
-			itemSelector: '.item',
-			gutter: 13
-		});
-	});
-
 });
 
 </script>
-<script src="/js/masonry.pkgd.min.js"></script>
-<script src="/js/imagesloaded.pkgd.min.js"></script>
