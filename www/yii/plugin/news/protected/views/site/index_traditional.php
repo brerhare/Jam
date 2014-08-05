@@ -21,6 +21,7 @@ margin:6px;
 	-moz-box-shadow:    1px 1px 0px 0px #c8c8c8;
 	-webkit-box-shadow: 1px 1px 0px 0px #c8c8c8;
 	box-shadow:         1px 1px 0px 0px #c8c8c8;
+margin:0px 13px 13px 0px;
 }
 .item:hover {
 opacity:0.9;
@@ -129,10 +130,10 @@ echo "<hr>";
 		{
 			if ($article->id == $mainArticleId)
 				continue;
-			echo "<span class='item' style='text-align:center; margin-bottom:13px;' >";
+			echo "<span class='item' style='text-align:center;' >";
 			echo "<a href='https://plugin.wireflydesign.com/news/index.php/site/detail/?art=" . $article->id . "'>";
 			// This is centered, shrink-to-fit
-			echo "<img style='height:150px; overflow:hidden;' src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' Xwidth='100%'>";
+			echo "<img style='height:130px; overflow:hidden;' src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' Xwidth='100%'>";
 			echo "</a>";
 
 			// Get the category name
