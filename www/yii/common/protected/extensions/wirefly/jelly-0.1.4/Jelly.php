@@ -1224,7 +1224,8 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				// Eg: {{news left}}
 				// -----------------
 				$moreCurlyWurlys = 1;
-				$iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/news/?sid=' . Yii::app()->params['sid'] . '&newswidth=750&category=0"></iframe>';
+				$value = $vals[1];
+				$iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/news/?sid=' . Yii::app()->params['sid'] . '&newstype=' . $value . '&category=0"></iframe>';
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 
