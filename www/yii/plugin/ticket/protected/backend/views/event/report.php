@@ -43,6 +43,7 @@ table tr {
 			<td style="text-align:right; width:70px">£</td>
 		</tr>
 		<?php
+$authArr = array();
 		$prevOrder = "";
 		$ticketTotal = 0;
 		$valueTotal = 0;
@@ -50,12 +51,27 @@ table tr {
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("event_id = " . $model->id);
 		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+$criteria->order = 'order_number ASC';
 		$transactions = Transaction::model()->findAll($criteria);
 		foreach ($transactions as $transaction):
 		 	$criteria = new CDbCriteria;
 			$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 			$criteria->addCondition("order_number = '" . $transaction->order_number . "'");
+
+//if (in_array($transaction->order_number, $authArr))
+// continue;
+array_push($authArr, $transaction->order_number);
+//var_dump($authArr);
+
+
+// if (trim($transaction->auth_code) == "")
+//continue;
+
 			$auth = Auth::model()->find($criteria);
+
+//if (!($auth))
+//continue;
+
 			if ($prevOrder != $transaction->order_number)
 			$lc++; 
 			$class = ($lc%2 == 0)? 'background1': 'background2';

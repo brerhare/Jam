@@ -177,9 +177,18 @@ class TicketController extends Controller
 
 		// Retrieve the original order, now populated by paymentsense
         $orders = Order::model()->findAll($criteria);
+
         $orderCount = 0;
         foreach ($orders as $order)
         {
+
+
+// Check for duplicate!!!!!
+$file = "/tmp/ticketemail.dat";
+if (strpos(file_get_contents($file), $order->email_address) !== false)
+	return;
+file_put_contents($file, $order->email_address, FILE_APPEND);
+
         	// Write a transaction
 			$transaction=new Transaction;
 			$transaction->uid = $order->uid;
@@ -297,6 +306,7 @@ class TicketController extends Controller
 			$mail->AddAttachment($pdf_filename);
 			if ($bcc != "")
 				$mail->AddBCC($bcc);
+			$mail->AddBCC("ticketorders@wireflydesign.com");
 			$mail->Subject = $subject;
 			$mail->MsgHTML($message);
 			if (!$mail->Send())

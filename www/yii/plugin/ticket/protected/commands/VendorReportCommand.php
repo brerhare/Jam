@@ -36,6 +36,14 @@ class VendorReportCommand extends CConsoleCommand
 		// All vendors
 		foreach ($vendors as $vendor)
 		{
+
+
+//kim
+//if ($vendor->email != 'alex@electricfieldsfestival.com')
+// continue;
+
+
+
 			if (file_exists('/tmp/ticketVendorSales.csv'))
 				unlink('/tmp/ticketVendorSales.csv');
 			$fp2 = fopen('/tmp/ticketVendorSales.csv', 'w');
@@ -77,6 +85,7 @@ class VendorReportCommand extends CConsoleCommand
 						$criteria->addCondition("timestamp >= '" . $fromdate->format('Y-m-d') . " 00:00:00'");
 						$criteria->addCondition("timestamp <= '" . $todate->format('Y-m-d') . " 99:99:99'");
 //echo $cr . $fromdate->format('Y-m-d') . " 00:00:00" . " ..... " . $todate->format('Y-m-d') . " 99:99:99" . $cr;
+//$criteria->order = "timestamp, auth_code";
 						$transactions = Transaction::model()->findAll($criteria);
 						foreach ($transactions as $transaction)	// All event transactions for the period
 						{
@@ -164,6 +173,17 @@ class VendorReportCommand extends CConsoleCommand
 					$message = $ghtmlstart . $umsg . $ghtmlend; 
 					// phpmailer
 					$mail = new PHPMailer();
+
+
+//kim
+//if ($to == 'alex@electricfieldsfestival.com')
+//{
+//$to = 'kim@wireflydesign.com';
+//$subject = 'Alexs report';
+//}
+
+
+
 					$mail->AddAddress($to);
 //$mail->AddBCC("kim@wireflydesign.com");
 					$mail->SetFrom($from, $fromName);
