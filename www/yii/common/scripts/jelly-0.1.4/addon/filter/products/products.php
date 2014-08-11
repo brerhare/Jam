@@ -350,7 +350,7 @@ class products
                                 }
                             }
                         }
-                        if (!($found))
+                        if ((!($found)) && (count($this->priceCheck) > 0))
                             continue;
 
                         // We have a winner
