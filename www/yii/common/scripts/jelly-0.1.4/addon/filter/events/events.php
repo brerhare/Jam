@@ -69,7 +69,10 @@ class events
         $content .= "<input type='button' id='textsearchbutton' style='float:left; padding:3px; width:60px; ' onClick='searchEvents()' value='Search'>";
 		$content .= "<br/>";
         $content .= "<div style='float:left'>";
-        $content .= "<input type='text' id='textsearchbox' style='width:116px' title='Input text to search for' value='" . '' . "'>";
+		$srchStr = '';
+		if (isset($_GET['textsearch']))
+			$srchStr = " value='" . $_GET['textsearch'] . "' ";;
+        $content .= "<input type='text' " . $srchStr . " id='textsearchbox' style='width:116px' title='Input text to search for' value='" . '' . "'>";
         $content .= "</div>";
         $content .= "<div style='clear:both'></div>";
 
@@ -414,6 +417,7 @@ END_OF_API_HTML;
     textSearch = '';
     grade = '';
     abtype = '';
+	resetting = 0;
 
     function makeSel()
     {
@@ -435,7 +439,7 @@ END_OF_API_HTML;
             var str = '';
            for (var i = 0; i < av.length; i++)
            {
-               if (av[i].checked)
+               if ((av[i].checked) && (resetting == 0))
                 {
                     if (str != '') str += '|';
                     str += av[i].value;
@@ -451,7 +455,7 @@ END_OF_API_HTML;
             var str = '';
            for (var i = 0; i < av.length; i++)
            {
-               if (av[i].checked)
+               if ((av[i].checked) && (resetting == 0))
                 {
                     if (str != '') str += '|';
                     str += av[i].value;
@@ -467,7 +471,7 @@ END_OF_API_HTML;
             var str = '';
            for (var i = 0; i < av.length; i++)
            {
-               if (av[i].checked)
+               if ((av[i].checked) && (resetting == 0))
                 {
                     if (str != '') str += '|';
                     str += av[i].value;
@@ -483,7 +487,7 @@ END_OF_API_HTML;
             var str = '';
            for (var i = 0; i < av.length; i++)
            {
-               if (av[i].checked)
+               if ((av[i].checked) && (resetting == 0))
                 {
                     if (str != '') str += '|';
                     str += av[i].value;
@@ -499,7 +503,7 @@ END_OF_API_HTML;
             var str = '';
            for (var i = 0; i < av.length; i++)
            {
-               if (av[i].checked)
+               if ((av[i].checked) && (resetting == 0))
                 {
                     if (str != '') str += '|';
                     str += av[i].value;
@@ -515,7 +519,7 @@ END_OF_API_HTML;
             var str = '';
            for (var i = 0; i < av.length; i++)
            {
-               if (av[i].checked)
+               if ((av[i].checked) && (resetting == 0))
                 {
                     if (str != '') str += '|';
                     str += av[i].value;
@@ -531,7 +535,7 @@ END_OF_API_HTML;
             var str = '';
            for (var i = 0; i < av.length; i++)
            {
-               if (av[i].checked)
+               if ((av[i].checked) && (resetting == 0))
                 {
                     if (str != '') str += '|';
                     str += av[i].value;
@@ -554,6 +558,7 @@ END_OF_API_HTML;
     function resetEvents()
     {
         document.getElementById('textsearchbox').value = "";
+		resetting = 1;
         makeSel();
     }
 

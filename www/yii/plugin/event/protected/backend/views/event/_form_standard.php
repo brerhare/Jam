@@ -130,12 +130,22 @@
 	<?php
 		if (($model->isNewRecord) || ($model->ticket_event_id == 0))
 		{
-			if ($ticketUid == -1)
-			// @@EG Disable any cactiveform field
+			if ($ticketUid == -1) // @@EG Disable any cactiveform field
 				echo $form->toggleButtonRow($model, 'ticket_event_id' , array('disabled'=>'true','options'=>array('enabledLabel'=>'Yes' , 'disabledLabel'=>'No')));
 			else
 				echo $form->toggleButtonRow($model, 'ticket_event_id' , array('options'=>array('enabledLabel'=>'Yes' , 'disabledLabel'=>'No')));
-			}
+		}
+		else
+		{
+			echo "<div class='control-group'>";
+				echo $form->labelEx($model,'Ticket event id');
+				echo "<div style='margin-top:-30px' class='controls'>";
+					echo $form->textField($model,'ticket_event_id');
+				echo "</div>";
+			echo "</div>";
+			//echo $form->error($model,'Ticket event id'); 
+			//echo $form->textFieldRow($model,'ticket_event_id',array('class'=>'span1'));
+		}
 	?>
 
 <br>
