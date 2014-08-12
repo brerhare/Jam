@@ -154,7 +154,7 @@ class TicketController extends Controller
 
 	public function actionPaid()
 	{
-        Yii::log("PAID PAGE LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
+        Yii::log("PAID PAGE ENTRYPOINT LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
 
           $ip = "UNKNOWN";
           if (getenv("HTTP_CLIENT_IP"))
@@ -182,12 +182,17 @@ class TicketController extends Controller
         foreach ($orders as $order)
         {
 
-
 // Check for duplicate!!!!!
-$file = "/tmp/ticketemail.dat";
-if (strpos(file_get_contents($file), $order->email_address) !== false)
-	return;
-file_put_contents($file, $order->email_address, FILE_APPEND);
+if ($orderCount == 0)
+{
+	$file = "/tmp/ticketemail.dat";
+	if (strpos(file_get_contents($file), $order->auth_code) !== false)
+	{
+    	Yii::log("PAID PAGE BAILING - DETECTED DUPLICATE AUTH:" . $order->auth_code, CLogger::LEVEL_WARNING, 'system.test.kim');
+		return;
+	}
+	file_put_contents($file, $order->auth_code . "\n", FILE_APPEND);
+}
 
         	// Write a transaction
 			$transaction=new Transaction;
@@ -208,6 +213,8 @@ file_put_contents($file, $order->email_address, FILE_APPEND);
 			$transaction->http_total = $order->http_total;
 			$transaction->save();
 
+        	Yii::log("PAID PAGE WROTE TRANSACTION" , CLogger::LEVEL_WARNING, 'system.test.kim');
+
 			if ($orderCount == 0)
 			{
 				if (($this->isFreeEvent) || ($this->isBackend))
@@ -224,8 +231,11 @@ file_put_contents($file, $order->email_address, FILE_APPEND);
 					$auth->address4 = $order->free_address4;
 					$auth->post_code = $order->free_post_code;
 					$auth->save();
+        			Yii::log("PAID PAGE WROTE AUTH FOR FREE OR BACKEND ORDER" , CLogger::LEVEL_WARNING, 'system.test.kim');
 				}
 			}
+
+			Yii::log("PAID PAGE ABT TO UPDATE SEATING" , CLogger::LEVEL_WARNING, 'system.test.kim');
 
 			// Update the used seating number
 			$ticketType = TicketType::model()->findByPk($order->http_ticket_type_id);
@@ -243,6 +253,8 @@ file_put_contents($file, $order->email_address, FILE_APPEND);
 				}
 			}
 
+			Yii::log("PAID PAGE FINISHED UPDATING SEATING" , CLogger::LEVEL_WARNING, 'system.test.kim');
+
 			// Rebuild the array, for ticket printing
         	array_push($ticket_type_area_arr,  $order->http_ticket_type_area);
 			array_push($ticket_type_id_arr,    $order->http_ticket_type_id);
@@ -251,7 +263,11 @@ file_put_contents($file, $order->email_address, FILE_APPEND);
 			array_push($ticket_type_total_arr, $order->http_ticket_type_total);
 
 			$orderCount++;
+
+			Yii::log("PAID PAGE REBUILT TICKET ARRAY" , CLogger::LEVEL_WARNING, 'system.test.kim');
         }
+
+		Yii::log("PAID PAGE FINISHED WITH ORDER LOOP. ORDERITEMS:" . $orderCount, CLogger::LEVEL_WARNING, 'system.test.kim');
 
 		// Pick up the Auth record (either created by Paymentsense or by 'free' above) for ticket name and card number printing
 		$criteria = new CDbCriteria;
@@ -262,6 +278,8 @@ file_put_contents($file, $order->email_address, FILE_APPEND);
 		if (($this->isFreeEvent) || ($this->isBackend))
 			$crdNum = 'No card details';
   
+		Yii::log("PAID PAGE ABOUT TO GENERATE TICKETS" , CLogger::LEVEL_WARNING, 'system.test.kim');
+
 		// Print tickets
 		$ticketNumbers = array();
 		genTicket(
@@ -278,6 +296,8 @@ file_put_contents($file, $order->email_address, FILE_APPEND);
 			$order->http_total,
 			$ticketNumbers
 		);
+
+		Yii::log("PAID PAGE FINISHED GENERATING TICKETS" , CLogger::LEVEL_WARNING, 'system.test.kim');
 
 		$pdf_filename = '/tmp/' . $order->order_number . '.pdf';
 
