@@ -43,7 +43,6 @@ table tr {
 			<td style="text-align:right; width:70px">£</td>
 		</tr>
 		<?php
-$authArr = array();
 		$prevOrder = "";
 		$ticketTotal = 0;
 		$valueTotal = 0;
@@ -51,26 +50,29 @@ $authArr = array();
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("event_id = " . $model->id);
 		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
-$criteria->order = 'order_number ASC';
+		$criteria->order = 'order_number ASC';
+
+		$curOrder = '';
+
 		$transactions = Transaction::model()->findAll($criteria);
 		foreach ($transactions as $transaction):
+
+			// Check for dups. Cant have more than one record of the same ticket type per order
+			if ($curOrder != $transaction->order_number)
+			{
+				$orderArr = array();
+				$typeArr = array();
+				$curOrder = $transaction->order_number;
+			}
+			if ((in_array($transaction->order_number, $orderArr)) && (in_array($transaction->http_ticket_type_id, $typeArr)))
+				continue;
+			array_push($orderArr, $transaction->order_number);
+			array_push($typeArr, $transaction->http_ticket_type_id);
+
 		 	$criteria = new CDbCriteria;
 			$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 			$criteria->addCondition("order_number = '" . $transaction->order_number . "'");
-
-//if (in_array($transaction->order_number, $authArr))
-// continue;
-array_push($authArr, $transaction->order_number);
-//var_dump($authArr);
-
-
-// if (trim($transaction->auth_code) == "")
-//continue;
-
 			$auth = Auth::model()->find($criteria);
-
-//if (!($auth))
-//continue;
 
 			if ($prevOrder != $transaction->order_number)
 			$lc++; 
