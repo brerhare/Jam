@@ -138,7 +138,6 @@ class events
         // Interest
         $interests  = Interest::model()->findAll(array('order'=>'id'));
         $openInterest = false;
-        if ($interests)
         {
             $interestSel = array();
             if (isset($_GET['interest']))
@@ -307,7 +306,6 @@ class events
         $openGrade = false;
 		if ($this->programId == 6)
 		{
-
         	// Wild Seasons fields start here
         	// ------------------------------
 
@@ -366,11 +364,18 @@ class events
         if (!($openPrice))
             $content .= "document.getElementById('price-detail').style.display='none';";
 
-		// Wild Seasons
+		// Wild Seasons (nb '$this->programId' doesnt work anymore...)
 		if ($this->programId == 6)
 		{
         	if (!($openGrade))
             	$content .= "document.getElementById('grade-detail').style.display='none';";
+		}
+
+		// WS Wild Seasons (this works)
+		if ((isset($_GET['program'])) && (($_GET['program'] != 6) && ($_GET['program'] != 0)))
+		{
+			$content .= "document.getElementById('googlemap3').setAttribute('style','height:0px');";
+			$content .= "document.getElementById('googlemap3').style.height='0px';";
 		}
 
         $content .= "</script>";
