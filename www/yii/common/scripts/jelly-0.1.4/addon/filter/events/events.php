@@ -364,14 +364,24 @@ class events
         if (!($openPrice))
             $content .= "document.getElementById('price-detail').style.display='none';";
 
-		// Wild Seasons (nb '$this->programId' doesnt work anymore...)
+		// Wild Seasons (program lock in iframe)
 		if ($this->programId == 6)
 		{
         	if (!($openGrade))
             	$content .= "document.getElementById('grade-detail').style.display='none';";
 		}
 
-		// WS Wild Seasons (this works)
+		// These next 2 'if's cater for both the iframe lock ($this->programId) or dg link non-lock ($_GET['program'])
+		// They serve to hide/show the main map
+
+		// WS Wild Seasons or no program (program lock in iframe)
+		if (($this->programId != 6) && ($this->programId != 0))
+		{
+			$content .= "document.getElementById('googlemap3').setAttribute('style','height:0px');";
+			$content .= "document.getElementById('googlemap3').style.height='0px';";
+		}
+
+		// WS Wild Seasons from dg link (non lock in iframe)
 		if ((isset($_GET['program'])) && (($_GET['program'] != 6) && ($_GET['program'] != 0)))
 		{
 			$content .= "document.getElementById('googlemap3').setAttribute('style','height:0px');";
