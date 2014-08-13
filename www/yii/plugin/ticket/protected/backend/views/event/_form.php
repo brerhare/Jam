@@ -38,7 +38,13 @@
 	<?php echo $form->html5EditorRow($model, 'ticket_terms', array('class'=>'span8', 'rows'=>5, 'height'=>'200px', 'options'=>array('color'=>true)));?>
 
 	<?php
-	if ($model->isNewRecord) 
+	// THIS IS THE OPTIONAL SEQUENCE NUMBERING. MUST NOT BE CHANGED ONCE TICKETS FOR THE EVENT HAVE BEEN SOLD!!!!!
+	// See if there are any tickets for this event
+	$criteria = new CDbCriteria;
+	$criteria->addCondition("event_id = " . $model->id);
+	$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+	$transactions = Transaction::model()->findAll($criteria);
+	if ((!($transactions)) || ($model->isNewRecord))
 		echo $form->textFieldRow($model,'optional_start_ticket_number',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right'));
 	else
 		echo $form->textFieldRow($model,'optional_start_ticket_number',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right', 'readonly'=>true));

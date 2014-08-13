@@ -21,7 +21,7 @@ class SiteController extends Controller
 		);
 	}
 
-// @@TODO: HARDCODED FOR AbSOLUTE CLASSICS ---------- REMOVE
+// @@TODO: HARDCODED FOR ABSOLUTE CLASSICS ---------- REMOVE
     public function actionAbsoluteClassicsdirect()
     {
         Yii::app()->session['uid'] = 7;
