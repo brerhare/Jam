@@ -1,4 +1,4 @@
-#Demo 1 File - 1st Aid 4U
+#1st Aid 4U
 [defaults]
 include = default-values
 
@@ -167,7 +167,7 @@ css.display = block
 
 		[blog]
 		condition = @PAGE=@HOMEPAGE
-		html.raw = {{news left}}
+		html.raw = {{news pinterest}}
 
 
 ####footer####################################
