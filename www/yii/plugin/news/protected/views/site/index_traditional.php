@@ -1,5 +1,5 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
-<!-- <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script> -->
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
 
 <style type="text/css" media="screen">
 * {
@@ -80,9 +80,29 @@ echo "<hr>";
 		if ($showCat != "0")
 		{
 			echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0'>" . 'All' . "</a><br>";
-			echo "<hr>";
+			//echo "<hr>";
 		}
 	}
+	// Show the signup form (@@EG calling an addon directly, not via the jelly)
+	require(Yii::app()->basePath . "/../scripts/jelly/addon/mailer/signup/signup.php");
+	$addon = new signup;
+	$optArr = array();
+	$optArr['buttoncolor'] = 'white';
+	$optArr['buttontextcolor'] = '#a70055';
+	$optArr['buttontext'] = 'Sign up';
+	$optArr['inputspacing'] = '5px';
+	$optArr['successtextcolor'] = 'white';
+	$optArr['failuretextcolor'] = 'red';
+	$ret = $addon->init($optArr, '/news/scripts/jelly/addon/mailer/signup');
+	echo "<br/>";
+	echo "<div style='font-size:13px; padding:1px; background-color:lightgrey'>";
+	echo "Keep me informed<br/>";
+	echo $ret[0];
+	echo "</div>";
+	echo "<script>" . $ret[1] . "</script>";
+echo"<script>SID='" . $_GET['sid'] . "';</script>";
+
+
 ?>
 </span>
 
