@@ -125,6 +125,11 @@ $(document).ready(function() {
 		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$areas = Area::model()->findAll($criteria);
 		foreach ($areas as $area):
+
+// @@TODO Remove hardcoding for comlongon
+//if ($area->id == 59)
+////continue;
+
 		?>
 			<tr style="background-color:#745882; color:#ffffff">
 				<td colspan="2">
