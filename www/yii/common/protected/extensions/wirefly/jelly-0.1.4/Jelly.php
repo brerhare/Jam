@@ -1225,7 +1225,13 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				// -----------------
 				$moreCurlyWurlys = 1;
 				$value = $vals[1];
-				$iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/news/?sid=' . Yii::app()->params['sid'] . '&newstype=' . $value . '&category=0"></iframe>';
+
+                $deeplink = "";
+                if (isset($_GET['cat']))
+                    $deeplink .= "&cat=" . $_GET['cat'];
+                if (isset($_GET['art']))
+                    $deeplink .= "&art=" . $_GET['art'];
+                $iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/news/?sid=' . Yii::app()->params['sid'] . '&newstype=' . $value . '&category=0' . $deeplink . '"></iframe>';
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 
