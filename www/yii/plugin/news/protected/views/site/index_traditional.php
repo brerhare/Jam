@@ -61,6 +61,31 @@ opacity:0.85;
 <div style="padding-top:10px; width:100%" ng-app>
 
 <span style="vertical-align:top; padding:0px 10px 10px; margin:0px 10px; display:inline-block; width:20%; ">
+
+<?php
+	// Show the 3 most recent articles
+	echo "<div style='font-size:12px'>";
+	echo "<span style='padding:5px; background-color:#d3d3d3'>Recent&nbsp&nbsp<br/><br/></span>";
+	$criteria = new CDbCriteria;
+	$criteria->addCondition("uid=" . Yii::app()->session['uid']);
+	$criteria->order = "date DESC";
+	$articles = Article::model()->findAll($criteria);
+	$cnt = 0;
+	if ($articles)
+	{
+		foreach ($articles as $article)
+		{
+			echo "<a style='text-decoration:none;color:black' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
+			echo $article->title . "<br/>";
+			echo "</a>";
+			if ($cnt++ > 3)
+				break;
+		}
+	}
+	echo "</div>";
+	echo "<br/>";
+?>
+
 <?php
 	// Show the category list
 	$criteria = new CDbCriteria;
@@ -74,13 +99,13 @@ opacity:0.85;
 		{
 			if ($category->id == $showCat)
 				continue;
-			echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=" . $category->id . "'>" . $category->name . "</a><br>";
+			echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=" . $category->id . "&art='>" . $category->name . "</a><br>";
 echo "<hr>";
 		}
-		if ($showCat != "0")
+		if (($showCat != "0") || ((isset($_GET['art'])) && ($_GET['art'] != '')))
 		{
-			echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0'>" . 'All' . "</a><br>";
-			//echo "<hr>";
+			echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art='>" . 'All' . "</a><br>";
+			echo "<hr>";
 		}
 	}
 	// Show the signup form (@@EG calling an addon directly, not via the jelly)
@@ -100,7 +125,7 @@ echo "<hr>";
 	echo $ret[0];
 	echo "</div>";
 	echo "<script>" . $ret[1] . "</script>";
-echo"<script>SID='" . $_GET['sid'] . "';</script>";
+//echo"<script>SID='" . $_GET['sid'] . "';</script>";
 
 
 ?>
@@ -108,6 +133,8 @@ echo"<script>SID='" . $_GET['sid'] . "';</script>";
 
 <span class="mainitem" style="display:inline-block; width:70%">
 <?php
+if ((!isset($_GET['art'])) || ($_GET['art'] == ''))
+{
 	// Show the most recent article
 	$criteria = new CDbCriteria;
 	$criteria->addCondition("uid=" . Yii::app()->session['uid']);
@@ -119,7 +146,7 @@ echo"<script>SID='" . $_GET['sid'] . "';</script>";
 	{
 		foreach ($articles as $article)
 		{
-			echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/detail/?art=" . $article->id . "'>";
+			echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
 				echo "<span class='mainitem' style='width:45%'>";
 					echo "<img style='width:95%; height:auto' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' >";
 				echo "</span>";
@@ -131,11 +158,14 @@ echo"<script>SID='" . $_GET['sid'] . "';</script>";
 			break;
 		}
 	}
+}
 ?>
 
 <br/><br/>
 
 <?php
+if ((!isset($_GET['art'])) || ($_GET['art'] == ''))
+{
 	// Show all the other articles
 	$criteria = new CDbCriteria;
 	$criteria->addCondition("uid=" . Yii::app()->session['uid']);
@@ -151,7 +181,7 @@ echo"<script>SID='" . $_GET['sid'] . "';</script>";
 			if ($article->id == $mainArticleId)
 				continue;
 			echo "<span class='item' style='text-align:center;' >";
-			echo "<a href='https://plugin.wireflydesign.com/news/index.php/site/detail/?art=" . $article->id . "'>";
+			echo "<a href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
 			// This is centered, shrink-to-fit
 			echo "<img style='max-width:100%; height:140px; overflow:hidden;' src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' Xwidth='100%'>";
 			echo "</a>";
@@ -172,6 +202,20 @@ echo"<script>SID='" . $_GET['sid'] . "';</script>";
 		}
 		echo '</div>';
 	}
+}
+if ((isset($_GET['art'])) && ($_GET['art'] != ''))
+{
+    // Show the selected article's detail
+    $criteria = new CDbCriteria;
+    $criteria->addCondition("uid=" . Yii::app()->session['uid']);
+    $criteria->addCondition("id=" . $_GET['art']);
+    $article = Article::model()->find($criteria);
+    if ($article)
+    {
+        echo $article->content;
+    }
+
+}
 ?>
 </span>
 </div>

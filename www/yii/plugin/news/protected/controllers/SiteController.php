@@ -43,6 +43,7 @@ class SiteController extends Controller
 		$category = 0;
 		$this->renderPartial('index',array(
 			'showCat'=>$category,
+			'showArt'=>'',
 		));
 	}
 
@@ -55,18 +56,7 @@ class SiteController extends Controller
 		$category = $_GET['cat'];
 		$this->renderPartial('index',array(
 			'showCat'=>$category,
-		));
-	}
-
-	/**
-	 * This is the 'detail' action that is invoked
-	 * when an article is requested by users.
-	 */
-	public function actionDetail()
-	{
-		$article = $_GET['art'];
-		$this->renderPartial('detail',array(
-			'showArt'=>$article,
+			'showArt'=>'',
 		));
 	}
 
