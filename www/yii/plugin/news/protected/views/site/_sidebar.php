@@ -22,9 +22,25 @@
 	}
 	echo "</div>";
 	echo "<br/>";
-?>
 
-<?php
+	// Show the signup form (@@EG calling an addon directly, not via the jelly)
+	require(Yii::app()->basePath . "/../scripts/jelly/addon/mailer/signup/signup.php");
+	$addon = new signup;
+	$optArr = array();
+	$optArr['buttoncolor'] = 'white';
+	$optArr['buttontextcolor'] = '#a70055';
+	$optArr['buttontext'] = 'Sign up';
+	$optArr['inputspacing'] = '5px';
+	$optArr['successtextcolor'] = 'white';
+	$optArr['failuretextcolor'] = 'red';
+	$ret = $addon->init($optArr, '/news/scripts/jelly/addon/mailer/signup');
+	echo "<div style='font-size:13px; padding:1px; background-color:lightgrey'>";
+	echo "Keep me informed<br/>";
+	echo $ret[0];
+	echo "</div>";
+	echo "<script>" . $ret[1] . "</script>";
+//echo"<script>SID='" . $_GET['sid'] . "';</script>";
+
 	// Show the category list
 	$criteria = new CDbCriteria;
 	$criteria->addCondition("uid=" . Yii::app()->session['uid']);
@@ -32,7 +48,7 @@
 	$categories = Category::model()->findAll($criteria);
 	if ($categories)
 	{
-		echo "<hr>";
+		echo "<br/>";
 		foreach ($categories as $category)
 		{
 			if ($category->id == $showCat)
@@ -46,25 +62,6 @@ echo "<hr>";
 			echo "<hr>";
 		}
 	}
-	// Show the signup form (@@EG calling an addon directly, not via the jelly)
-	require(Yii::app()->basePath . "/../scripts/jelly/addon/mailer/signup/signup.php");
-	$addon = new signup;
-	$optArr = array();
-	$optArr['buttoncolor'] = 'white';
-	$optArr['buttontextcolor'] = '#a70055';
-	$optArr['buttontext'] = 'Sign up';
-	$optArr['inputspacing'] = '5px';
-	$optArr['successtextcolor'] = 'white';
-	$optArr['failuretextcolor'] = 'red';
-	$ret = $addon->init($optArr, '/news/scripts/jelly/addon/mailer/signup');
-	echo "<br/>";
-	echo "<div style='font-size:13px; padding:1px; background-color:lightgrey'>";
-	echo "Keep me informed<br/>";
-	echo $ret[0];
-	echo "</div>";
-	echo "<script>" . $ret[1] . "</script>";
-//echo"<script>SID='" . $_GET['sid'] . "';</script>";
-
 
 ?>
 
