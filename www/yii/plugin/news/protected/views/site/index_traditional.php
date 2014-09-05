@@ -11,16 +11,9 @@ font-family: Helvetica Neue, Helvetica, Calibri, Candara, Segoe, "Segoe UI", Opt
 display: inline-block; vertical-align: top;
 	width: 28%;
 margin:6px;
-	border: 1px solid #d7d7d7;
-	-moz-border-radius: 0px;
-	-webkit-border-radius: 0px;
-	border-radius: 0px;
 	overflow:hidden;
 	font-size:14px;
 	background-color:white;
-	-moz-box-shadow:    1px 1px 0px 0px #c8c8c8;
-	-webkit-box-shadow: 1px 1px 0px 0px #c8c8c8;
-	box-shadow:         1px 1px 0px 0px #c8c8c8;
 margin:0px 13px 13px 0px;
 }
 .item:hover {
@@ -41,9 +34,6 @@ opacity:0.9;
 }
 
 .wtf-did-this-hr-take-to-DO {
-	display: block; height: 1px;
-	border: 0; border-top: 1px solid #ccc;
-	margin: 0; padding: 0;
 }
 
 .mainitem {
@@ -130,7 +120,7 @@ if ((!isset($_GET['art'])) || ($_GET['art'] == ''))
 			if ($category)
 				$showCat = $category->name;
 
-			echo "<span class='itemleadin'>" . $showCat . "&nbsp&nbsp" . $article->date . "</span><hr class='wtf-did-this-hr-take-to-DO'/>";
+			echo "<span class='itemleadin'>" . $showCat . "&nbsp&nbsp" . $article->date . "</span>";
 
 			echo "<span class='itemintro'>" . $article->intro . "</span><br/>";
 			echo "</span>";
