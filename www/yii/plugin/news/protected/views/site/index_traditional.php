@@ -29,6 +29,7 @@ opacity:0.9;
 }
 
 .itemintro {
+text-align:left;
 	display:inline-block;
 	padding: 5px;
 }

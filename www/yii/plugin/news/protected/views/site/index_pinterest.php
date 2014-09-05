@@ -62,6 +62,8 @@ opacity:0.85;
 
 <span class="mainitem" style="display:inline-block; width:70%">
 <?php
+$mainArticleId = -1;
+/**************************************************************************
 if ((!isset($_GET['art'])) || ($_GET['art'] == ''))
 {
 	// Show the most recent article
@@ -89,6 +91,7 @@ if ((!isset($_GET['art'])) || ($_GET['art'] == ''))
 		}
 	}
 }
+***************************************************************************/
 ?>
 
 <br/><br/>
