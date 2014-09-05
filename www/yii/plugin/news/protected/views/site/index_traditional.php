@@ -71,11 +71,12 @@ if ((!isset($_GET['art'])) || ($_GET['art'] == ''))
 		{
 			echo "<a style='text-decoration:none;color:black' target='_top' href='http:/test.wireflydesign.com/?layout=index&page=news-traditional&cat=0&art=" . $article->id . "'>";
 			//echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
-				echo "<span class='mainitem' style='width:45%'>";
-					echo "<img style='width:95%; height:auto' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' >";
+				echo "<span class='mainitem' style='width:95%'>";
+					echo "<img style='width:90%; height:300px; width:auto' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' >";
 				echo "</span>";
-				echo "<span class='mainitem' style='width:45%; vertical-align:top; margin:0px;' >";
-					echo "<p class='item' style='width:95%; padding:10px'>" . $article->intro . "</p>";
+echo "<br/>";
+				echo "<span class='mainitem' style='width:95%; vertical-align:top; margin:0px;' >";
+					echo "<p class='item' style='width:90%; padding:10px'>" . $article->intro . "</p>";
 				echo "</span>";
 			echo "</a>";
 			$mainArticleId = $article->id;
