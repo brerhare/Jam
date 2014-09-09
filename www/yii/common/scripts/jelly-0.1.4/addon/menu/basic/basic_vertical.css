@@ -31,6 +31,7 @@ z-index:11000;
 nav ul li {
 	//float: left;
 position:relative;
+/*border-top: 2px solid black;*/
 }
 	nav ul li:hover {
 		background: #4b545f;

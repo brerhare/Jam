@@ -11,16 +11,9 @@ font-family: Helvetica Neue, Helvetica, Calibri, Candara, Segoe, "Segoe UI", Opt
 display: inline-block; vertical-align: top;
 	width: 28%;
 margin:6px;
-	border: 1px solid #d7d7d7;
-	-moz-border-radius: 0px;
-	-webkit-border-radius: 0px;
-	border-radius: 0px;
 	overflow:hidden;
 	font-size:14px;
 	background-color:white;
-	-moz-box-shadow:    1px 1px 0px 0px #c8c8c8;
-	-webkit-box-shadow: 1px 1px 0px 0px #c8c8c8;
-	box-shadow:         1px 1px 0px 0px #c8c8c8;
 margin:0px 13px 13px 0px;
 }
 .item:hover {
@@ -36,14 +29,12 @@ opacity:0.9;
 }
 
 .itemintro {
+text-align:left;
 	display:inline-block;
 	padding: 5px;
 }
 
 .wtf-did-this-hr-take-to-DO {
-	display: block; height: 1px;
-	border: 0; border-top: 1px solid #ccc;
-	margin: 0; padding: 0;
 }
 
 .mainitem {
@@ -61,74 +52,7 @@ opacity:0.85;
 <div style="padding-top:10px; width:100%" ng-app>
 
 <span style="vertical-align:top; padding:0px 10px 10px; margin:0px 10px; display:inline-block; width:20%; ">
-
-<?php
-	// Show the 3 most recent articles
-	echo "<div style='font-size:12px'>";
-	echo "<span style='padding:5px; background-color:#d3d3d3'>Recent&nbsp&nbsp<br/><br/></span>";
-	$criteria = new CDbCriteria;
-	$criteria->addCondition("uid=" . Yii::app()->session['uid']);
-	$criteria->order = "date DESC";
-	$articles = Article::model()->findAll($criteria);
-	$cnt = 0;
-	if ($articles)
-	{
-		foreach ($articles as $article)
-		{
-			echo "<a style='text-decoration:none;color:black' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
-			echo $article->title . "<br/>";
-			echo "</a>";
-			if ($cnt++ > 3)
-				break;
-		}
-	}
-	echo "</div>";
-	echo "<br/>";
-?>
-
-<?php
-	// Show the category list
-	$criteria = new CDbCriteria;
-	$criteria->addCondition("uid=" . Yii::app()->session['uid']);
-	$criteria->order = "name ASC";
-	$categories = Category::model()->findAll($criteria);
-	if ($categories)
-	{
-		echo "<hr>";
-		foreach ($categories as $category)
-		{
-			if ($category->id == $showCat)
-				continue;
-			echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=" . $category->id . "&art='>" . $category->name . "</a><br>";
-echo "<hr>";
-		}
-		if (($showCat != "0") || ((isset($_GET['art'])) && ($_GET['art'] != '')))
-		{
-			echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art='>" . 'All' . "</a><br>";
-			echo "<hr>";
-		}
-	}
-	// Show the signup form (@@EG calling an addon directly, not via the jelly)
-	require(Yii::app()->basePath . "/../scripts/jelly/addon/mailer/signup/signup.php");
-	$addon = new signup;
-	$optArr = array();
-	$optArr['buttoncolor'] = 'white';
-	$optArr['buttontextcolor'] = '#a70055';
-	$optArr['buttontext'] = 'Sign up';
-	$optArr['inputspacing'] = '5px';
-	$optArr['successtextcolor'] = 'white';
-	$optArr['failuretextcolor'] = 'red';
-	$ret = $addon->init($optArr, '/news/scripts/jelly/addon/mailer/signup');
-	echo "<br/>";
-	echo "<div style='font-size:13px; padding:1px; background-color:lightgrey'>";
-	echo "Keep me informed<br/>";
-	echo $ret[0];
-	echo "</div>";
-	echo "<script>" . $ret[1] . "</script>";
-//echo"<script>SID='" . $_GET['sid'] . "';</script>";
-
-
-?>
+<?php require('_sidebar.php'); ?>
 </span>
 
 <span class="mainitem" style="display:inline-block; width:70%">
@@ -146,12 +70,14 @@ if ((!isset($_GET['art'])) || ($_GET['art'] == ''))
 	{
 		foreach ($articles as $article)
 		{
-			echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
-				echo "<span class='mainitem' style='width:45%'>";
-					echo "<img style='width:95%; height:auto' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' >";
+			echo "<a style='text-decoration:none;color:black' target='_top' href='http:/test.wireflydesign.com/?layout=index&page=news-traditional&cat=0&art=" . $article->id . "'>";
+			//echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
+				echo "<span class='mainitem' style='width:95%'>";
+					echo "<img style='width:90%; height:300px; width:auto' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' >";
 				echo "</span>";
-				echo "<span class='mainitem' style='width:45%; vertical-align:top; margin:0px;' >";
-					echo "<p class='item' style='width:95%; padding:10px'>" . $article->intro . "</p>";
+echo "<br/>";
+				echo "<span class='mainitem' style='width:95%; vertical-align:top; margin:0px;' >";
+					echo "<p class='item' style='width:90%; padding:10px'>" . $article->intro . "</p>";
 				echo "</span>";
 			echo "</a>";
 			$mainArticleId = $article->id;
@@ -181,7 +107,8 @@ if ((!isset($_GET['art'])) || ($_GET['art'] == ''))
 			if ($article->id == $mainArticleId)
 				continue;
 			echo "<span class='item' style='text-align:center;' >";
-			echo "<a href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
+			echo "<a target='_top' href='http:/test.wireflydesign.com/?layout=index&page=news-traditional&cat=0&art=" . $article->id . "'>";
+			//echo "<a href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
 			// This is centered, shrink-to-fit
 			echo "<img style='max-width:100%; height:140px; overflow:hidden;' src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' Xwidth='100%'>";
 			echo "</a>";
@@ -195,7 +122,7 @@ if ((!isset($_GET['art'])) || ($_GET['art'] == ''))
 			if ($category)
 				$showCat = $category->name;
 
-			echo "<span class='itemleadin'>" . $showCat . "&nbsp&nbsp" . $article->date . "</span><hr class='wtf-did-this-hr-take-to-DO'/>";
+			echo "<span class='itemleadin'>" . $showCat . "&nbsp&nbsp" . $article->date . "</span>";
 
 			echo "<span class='itemintro'>" . $article->intro . "</span><br/>";
 			echo "</span>";
