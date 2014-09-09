@@ -61,37 +61,9 @@ opacity:0.85;
 </span>
 
 <span class="mainitem" style="display:inline-block; width:70%">
+
 <?php
 $mainArticleId = -1;
-/**************************************************************************
-if ((!isset($_GET['art'])) || ($_GET['art'] == ''))
-{
-	// Show the most recent article
-	$criteria = new CDbCriteria;
-	$criteria->addCondition("uid=" . Yii::app()->session['uid']);
-	$criteria->order = "date DESC";
-	if ($showCat != "0")
-		$criteria->addCondition("blog_category_id=" . $showCat);
-	$articles = Article::model()->findAll($criteria);
-	if ($articles)
-	{
-		foreach ($articles as $article)
-		{
-			echo "<a style='text-decoration:none;color:black' target='_top' href='http:/test.wireflydesign.com/?layout=index&page=news-traditional&cat=0&art=" . $article->id . "'>";
-			//echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
-				echo "<span class='mainitem' style='width:45%'>";
-					echo "<img style='width:95%; height:auto' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' >";
-				echo "</span>";
-				echo "<span class='mainitem' style='width:45%; vertical-align:top; margin:0px;' >";
-					echo "<p class='item' style='width:95%; padding:10px'>" . $article->intro . "</p>";
-				echo "</span>";
-			echo "</a>";
-			$mainArticleId = $article->id;
-			break;
-		}
-	}
-}
-***************************************************************************/
 ?>
 
 <br/><br/>
@@ -115,7 +87,6 @@ if ((!isset($_GET['art'])) || ($_GET['art'] == ''))
 				continue;
 			echo "<span class='item' style='margin-bottom:13px;' >";
 			echo "<a target='_top' href='http:/test.wireflydesign.com/?layout=index&page=news-traditional&cat=0&art=" . $article->id . "'>";
-			//echo "<a href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
 			echo "<img src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' width='100%'>";
 			echo "</a>";
 

@@ -52,6 +52,14 @@ class basic
 						$this->apiHtml);
 					break;
 
+				case "height":
+					$val = str_replace("px", "", $val);
+					$this->apiHtml = str_replace("<substitute-height>",
+						"nav ul li a {height: " . $val . "px; padding: 0px 15px;} " .
+						"nav ul ul li a {height: " . $val . "px; padding: 0px 15px;} ", 
+						$this->apiHtml);
+					break;
+
 				case "level":
 					$this->level = $val;
 					break;
@@ -218,6 +226,7 @@ class basic
 		if (strstr($this->apiHtml, "<substitute-orientation>"))
 			$this->apiHtml = str_replace("<substitute-orientation>", $this->defaultOrientation, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-width>", "", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-height>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-font-size>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-menu-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-menu-rounding>", "", $this->apiHtml);
@@ -353,6 +362,8 @@ $criteria->order = "sequence ASC";
 		<substitute-width>
 		/* font-size */
 		<substitute-font-size>
+		/* height */
+		<substitute-height>
 		/* menu-color */
 		<substitute-menu-color>
 		/* menu-rounding */
