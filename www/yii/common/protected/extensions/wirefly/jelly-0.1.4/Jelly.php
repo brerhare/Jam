@@ -1173,7 +1173,17 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				//$content = str_replace($pOrig, "", $content);
 			}
 
-			if (stristr($vals[0], "ticket"))
+			// Ticket or Ticket2
+			if (stristr($vals[0], "ticket2"))
+			{
+				// Eg: {{ticket2 110 Jos Test event}}
+				// ---------------------------------
+				$moreCurlyWurlys = 1;
+				$value = $vals[1];
+				$iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/ticket2/index.php/ticket/book/' . $value . '?sid=' . Yii::app()->params['sid'] . '&amp;ref=none"></iframe>';
+				$content = str_replace($pOrig, $iframe, $content);
+			}
+			else if (stristr($vals[0], "ticket"))
 			{
 				// Eg: {{ticket 110 Jos Test event}}
 				// ---------------------------------
