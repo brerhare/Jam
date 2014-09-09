@@ -28,9 +28,6 @@ z-index:11000;
 		content: ""; clear: both; display: block;
 	}
 
-nav ul li {
-	float: left;
-}
 	nav ul li:hover {
 		background: #4b545f;
 		background: linear-gradient(top, #4f5964 0%, #5f6975 40%);
@@ -47,12 +44,20 @@ nav ul li {
 font-size: 14px;
 	}
 
+/* start 
+nav ul li + li::before {
+    content: " | ";
+
+ end */
+
 nav ul ul {
 width:auto;
 	background: #5f6975; border-radius: 0px; padding: 0;
 	position: absolute; top: 100%;
 }
 	nav ul ul li {
+/*kim1 to avoid inheritance */
+border-left:0px;
 		float: none; 
 		border-top: 1px solid #6b727c;
 		/*border-bottom: 1px solid #575f6a;*/
