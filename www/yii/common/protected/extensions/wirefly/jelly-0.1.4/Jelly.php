@@ -1221,17 +1221,24 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 
 			if (stristr($vals[0], "news"))
 			{
-				// Eg: {{news left}}
+				// Eg: {{news traditional}} {{news pinterest}}
 				// -----------------
 				$moreCurlyWurlys = 1;
 				$value = $vals[1];
+
+				$color = '';
+				$backColor = '';
+				if (count($vals) > 2)
+					$color = $vals[2];
+				if (count($vals) > 3)
+					$backColor = $vals[3];
 
                 $deeplink = "";
                 if (isset($_GET['cat']))
                     $deeplink .= "&cat=" . $_GET['cat'];
                 if (isset($_GET['art']))
                     $deeplink .= "&art=" . $_GET['art'];
-                $iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/news/?sid=' . Yii::app()->params['sid'] . '&newstype=' . $value . '&category=0' . $deeplink . '"></iframe>';
+                $iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/news/?sid=' . Yii::app()->params['sid'] . '&newstype=' . $value . '&category=0' . '&color=' . $color . '&backcolor=' . $backColor . $deeplink . '"></iframe>';
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 

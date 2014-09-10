@@ -18,6 +18,8 @@ class signup
 	private $optionInputSpacing = "0px";
 	private $optionSuccessTextColor = "green";
 	private $optionFailureTextColor = "red";
+	private $optionTextColor = 'black';
+	private $optionBackColor = '#d3d3d3';
 
 	public $apiOption = array(
 	);
@@ -59,6 +61,14 @@ class signup
 				case "failuretextcolour":
 					$this->optionFailureTextColor = $val;
 					break;
+				case "textcolor":
+				case "textcolour":
+					$this->optionTextColor = $val;
+					break;
+				case "backcolor":
+				case "backcolour":
+					$this->optionBackColor = $val;
+					break;
 				case "inputspacing":
 					$val = str_replace("px", "", $val);
 					$this->optionInputSpacing = $val;
@@ -80,7 +90,7 @@ class signup
 
 		// Generate the content
 		$content = "<div ng-app>";
-		$content .= "<div ng-controller='signupController'>";
+		$content .= "<div style='background-color=" . $this->optionBackColor . "' ng-controller='signupController'>";
 		$content .= "<input id='signup-name' class='signup-input' type='text' title='Name' />";
 		$content .= $separator;
 		$content .= "<input id='signup-email' class='signup-input' type='text' title='Email' />";
@@ -97,6 +107,8 @@ class signup
 		// HTML
 		$this->apiHtml = str_replace("<substitute-successtextcolor>", $this->optionSuccessTextColor, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-failuretextcolor>", $this->optionFailureTextColor, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-textcolor>", $this->optionTextColor, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-backcolor>", $this->optionBackTextColor, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-data>", $content, $this->apiHtml);
 
 		// JS
