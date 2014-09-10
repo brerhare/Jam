@@ -88,6 +88,7 @@ css.display = block
 		css.z-index = 1000
 		css.position = absolute
 		addon.menu.basic.width = 780px
+		#addon.menu.basic.height = 60px
 		addon.menu.basic.orientation = horizontal
 		addon.menu.basic.font-size = 14px
 		addon.menu.basic.menu-color = #ed2922
