@@ -179,6 +179,20 @@ CREATE  TABLE IF NOT EXISTS `jelly_download_file` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `ticker`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `ticker` ;
+
+CREATE  TABLE IF NOT EXISTS `ticker` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `ticker` INT NULL ,
+  `heading` VARCHAR(255) NOT NULL ,
+  `text` TEXT NOT NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
