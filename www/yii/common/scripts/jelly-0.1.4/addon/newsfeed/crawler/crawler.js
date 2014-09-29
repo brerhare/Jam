@@ -12,7 +12,7 @@ $(function() {
 		align: false,
 		items: {
 			width: 'variable',
-			height: 35,
+			height: 30, //height of space for text
 			visible: 1
 		},
 		scroll: _scroll
@@ -21,10 +21,10 @@ $(function() {
 	$('#ticker-2').carouFredSel({
 		width: 1000,
 		align: false,
-		circular: false,
+		//circular: false,
 		items: {
 			width: 'variable',
-			height: 35,
+			height: 30, //height of space for text
 			visible: 2
 		},
 		scroll: _scroll
@@ -34,5 +34,5 @@ $(function() {
 	$('.caroufredsel_wrapper').css('width', '100%');
  
 	//	set a large width on the last DD so the ticker won't show the first item at the end
-	$('#ticker-2 dd:last').width(2000);
+	//$('#ticker-2 dd:last').width(2000);
 });
