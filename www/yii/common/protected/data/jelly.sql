@@ -180,11 +180,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ticker`
+-- Table `jelly_ticker`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `ticker` ;
+DROP TABLE IF EXISTS `jelly_ticker` ;
 
-CREATE  TABLE IF NOT EXISTS `ticker` (
+CREATE  TABLE IF NOT EXISTS `jelly_ticker` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `ticker` INT NULL ,
   `heading` VARCHAR(255) NOT NULL ,
