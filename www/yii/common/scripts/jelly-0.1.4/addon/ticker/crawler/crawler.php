@@ -26,7 +26,6 @@ class crawler
 		
 		// Generate the content into the HTML, replacing any <substituteN> tags
 		
-		$content = "";
 		foreach ($options as $opt => $val)
 		{
 			switch ($opt)
@@ -82,6 +81,15 @@ class crawler
 			}
 		}
 	
+		// Build up the ticker data
+		$content = "";
+		$tickerItems = JellyTicker::model()->findAll(array('order'=>'id'));
+		foreach ($tickerItems as $tickerItem):
+			$content .= "<dt>" . $tickerItem->heading . "</dt>";
+			$content .= "<dd>" . $tickerItem->text . "</dd>";
+		endforeach;
+		$this->apiHTML = str_replace("<substitute-data>", $content, $this->apiHTML);
+
 	
 //Apply all values to the HTML and/or JS
 	//HTML
@@ -160,39 +168,16 @@ body * {
 
 </style>
 
-            <div class="crawlerticker">
-				<!-- <substitute-data> -->
+	<div class="crawlerticker">
+		<div id="wrapper">
+    		<div class="first">
+        		<dl id="ticker-1">
+					<substitute-data>
+				</dl>
+    		</div>
+		</div>
+	</div>
 
-
-<div id="wrapper">
-    <div class="first">
-        <dl id="ticker-1">
-            <dt>News ticker</dt>
-                <dd>A news ticker (sometimes referred to as a &quot;crawler&quot;) resides in the lower third of the television screen space on television news networks dedicated to presenting headlines or minor pieces of news.</dd>
-
-            <dt>Scoreboard style</dt>
-                <dd>It may also refer to a long, thin scoreboard-style display seen around the front of some offices or public buildings.</dd>
-
-            <dt>WWW</dt>
-                <dd>Since the growth in usage of the World Wide Web, news tickers have largely syndicated news posts from the websites of the broadcasting services which produce the broadcasts.</dd>
-        </dl>
-    </div>
-    <div>
-        <dl id="ticker-2">
-            <dt>Back and forth</dt>
-                <dd>By simply setting the option <code>circular</code> to <code>false</code>, this news ticker will go back and forth.</dd>
-
-            <dt>PauseOnHover</dt>
-                <dd>Because the option <code>pauseOnHover</code> is set to <code>&quot;immediate&quot;</code>, these news tickers will immediately stop scrolling if you move your mouse over them.</dd>
-
-            <dt>Any kind of HTML</dt>
-                <dd>These news tickers may contain any kind of HTML, such as <a href="#">hyperlinks</a>, <em>formatted</em> <strong>text</strong> or even images.</dd>
-        </dl>
-    </div>
-</div>
-
-
-            </div>
 </div>
 
 END_OF_API_HTML;

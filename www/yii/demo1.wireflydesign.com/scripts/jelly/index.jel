@@ -19,16 +19,16 @@ css.position = fixed
 css.margin-top = 600px
 #css.margin-left = 0px
 css.background-color = yellow
-addon.newsfeed.crawler.width = 100%
-addon.newsfeed.crawler.font-size = 14px
-addon.newsfeed.crawler.text-space = 10
-addon.newsfeed.crawler.tape-color = lightgrey
-addon.newsfeed.crawler.tape-height = 30px
-addon.newsfeed.crawler.text-colour = blue
-addon.newsfeed.crawler.tape-border-width = 1px
-#addon.newsfeed.crawler.tape-border-color = red
-#addon.newsfeed.crawler.link-color = magenta
-#addon.newsfeed.crawler.link-text-color = yellow
+addon.ticker.crawler.width = 100%
+addon.ticker.crawler.font-size = 14px
+addon.ticker.crawler.text-space = 10
+addon.ticker.crawler.tape-color = lightgrey
+addon.ticker.crawler.tape-height = 30px
+addon.ticker.crawler.text-colour = blue
+addon.ticker.crawler.tape-border-width = 1px
+#addon.ticker.crawler.tape-border-color = red
+#addon.ticker.crawler.link-color = magenta
+#addon.ticker.crawler.link-text-color = yellow
 
 	[site]
 	child = main, right-column
