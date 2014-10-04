@@ -6,7 +6,7 @@ $this->menu=array(
 
 ?>
 
-<h1>Manage Slider Content</h1>
+<h2>Manage Slider Content</h2>
 
 <style>
 img { height:50px;}

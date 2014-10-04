@@ -7,7 +7,7 @@
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<?php echo $form->textFieldRow($model,'ticker',array('class'=>'span5')); ?>
+	<?php //echo $form->textFieldRow($model,'ticker',array('class'=>'span5')); ?>
 
 	<?php echo $form->textFieldRow($model,'heading',array('class'=>'span5','maxlength'=>255)); ?>
 

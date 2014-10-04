@@ -1,15 +1,10 @@
 <?php
-$this->breadcrumbs=array(
-	'Jelly Tickers'=>array('index'),
-	'Create',
-);
 
 $this->menu=array(
-	array('label'=>'List JellyTicker','url'=>array('index')),
-	array('label'=>'Manage JellyTicker','url'=>array('admin')),
+	array('label'=>'Manage Ticker','url'=>array('admin')),
 );
 ?>
 
-<h1>Create JellyTicker</h1>
+<h2>Create Ticker</h2>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

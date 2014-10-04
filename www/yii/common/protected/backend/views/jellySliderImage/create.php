@@ -5,6 +5,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Create Slider Content</h1>
+<h2>Create Slider Content</h2>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
