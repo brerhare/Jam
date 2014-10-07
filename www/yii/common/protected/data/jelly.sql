@@ -189,6 +189,7 @@ CREATE  TABLE IF NOT EXISTS `jelly_ticker` (
   `ticker` INT NULL ,
   `heading` VARCHAR(255) NOT NULL ,
   `text` TEXT NOT NULL ,
+  `url` VARCHAR(255) NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
