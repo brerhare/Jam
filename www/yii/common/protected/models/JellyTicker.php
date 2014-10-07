@@ -8,6 +8,7 @@
  * @property integer $ticker
  * @property string $heading
  * @property string $text
+ * @property string $url
  */
 class JellyTicker extends CActiveRecord
 {
@@ -40,9 +41,10 @@ class JellyTicker extends CActiveRecord
 			array('heading, text', 'required'),
 			array('ticker', 'numerical', 'integerOnly'=>true),
 			array('heading', 'length', 'max'=>255),
+			array('url', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, ticker, heading, text', 'safe', 'on'=>'search'),
+			array('id, ticker, heading, text, url', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -67,6 +69,7 @@ class JellyTicker extends CActiveRecord
 			'ticker' => 'Ticker',
 			'heading' => 'Heading',
 			'text' => 'Text',
+			'url' => 'URL',
 		);
 	}
 
@@ -85,6 +88,7 @@ class JellyTicker extends CActiveRecord
 		$criteria->compare('ticker',$this->ticker);
 		$criteria->compare('heading',$this->heading,true);
 		$criteria->compare('text',$this->text,true);
+		$criteria->compare('url',$this->url,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

@@ -24,7 +24,7 @@ addon.ticker.crawler.font-size = 14px
 addon.ticker.crawler.text-space = 10
 addon.ticker.crawler.tape-color = lightgrey
 addon.ticker.crawler.tape-height = 30px
-addon.ticker.crawler.text-colour = blue
+addon.ticker.crawler.text-colour = green
 addon.ticker.crawler.tape-border-width = 1px
 #addon.ticker.crawler.tape-border-color = red
 #addon.ticker.crawler.link-color = magenta
@@ -91,7 +91,7 @@ addon.ticker.crawler.tape-border-width = 1px
 
 	addon.menu.basic.orientation = horizontal
 	#addon.menu.basic.width = 780px
-	addon.menu.basic.height = 30px
+	addon.menu.basic.height = 50px
 
 	addon.menu.basic.menu-rounding = 0px
 	addon.menu.basic.menu-color = white
@@ -124,7 +124,7 @@ addon.ticker.crawler.tape-border-width = 1px
 		condition = @PAGE=@HOMEPAGE
 		css.display = block
 		css.width = 800px
-		html.raw = {{news pinterest}}
+		html.raw = {{news traditional}}
 
 			
 		[content]

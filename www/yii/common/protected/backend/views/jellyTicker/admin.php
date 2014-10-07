@@ -14,10 +14,23 @@ $this->menu=array(
 	'columns'=>array(
 		//'id',
 		//'ticker',
-		'heading',
-		'text',
-		array(
-			'class'=>'bootstrap.widgets.TbButtonColumn',
-		),
+
+        array(
+            'name'  => 'heading',
+            'value' => 'CHtml::link($data->heading, Yii::app()->createUrl("jellyTicker/update",array("id"=>$data->primaryKey)))',
+            'type'  => 'raw',
+        ),
+
+        array(
+            'name'  => 'text',
+            'value' => 'CHtml::link($data->text, Yii::app()->createUrl("jellyTicker/update",array("id"=>$data->primaryKey)))',
+            'type'  => 'raw',
+        ),
+
+        array(
+            'class'=>'bootstrap.widgets.TbButtonColumn',
+            'template'=>'{update}{delete}',
+        ),
+
 	),
 )); ?>
