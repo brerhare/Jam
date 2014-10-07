@@ -76,6 +76,10 @@ table tr {
 			if (!($auth))
 				continue;
 
+			// Suppress values for non-paymentsense tickets
+			if (!($transaction->auth_code))
+				$transaction->http_ticket_total = 0;
+
 			if ($prevOrder != $transaction->order_number)
 			$lc++; 
 			$class = ($lc%2 == 0)? 'background1': 'background2';
@@ -144,12 +148,14 @@ table tr {
 			</td>
 			<td style="text-align:right">
 				<?php
-				echo $transaction->http_ticket_total;
+				if ($transaction->http_ticket_total != 0)
+					echo $transaction->http_ticket_total;
 				$valueTotal += $transaction->http_ticket_total;
 				?>
 			</td>
 		</tr>
 		<?php $prevOrder = $transaction->order_number; ?>
+
 		<?php endforeach;?>
 
 		<tr style="background-color:#c3d9ff; color:#0088cc;">

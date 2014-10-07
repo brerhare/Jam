@@ -185,7 +185,7 @@ class TicketController extends Controller
 // Check for duplicate!!!!!
 if ($orderCount == 0)
 {
-	$file = "/tmp/ticketemail.dat";
+	$file = "/home/tmp/ticketemail.dat";
 	if (strpos(file_get_contents($file), $order->auth_code) !== false)
 	{
     	Yii::log("PAID PAGE BAILING - DETECTED DUPLICATE AUTH:" . $order->auth_code, CLogger::LEVEL_WARNING, 'system.test.kim');
