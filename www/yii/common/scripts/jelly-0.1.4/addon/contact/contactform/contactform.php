@@ -251,7 +251,7 @@ function contactController(\$scope, \$http)
 		// All ok, send the message for emailing
 
 		var url = 'http://plugin.wireflydesign.com/mailer/index.php/site/ajaxContactUs/?sid=' + SID + '&name=' + name + '&email=' + email + '&subject=' + subject + '&body=' + body;
-//alert(url);
+alert(url);
 
 		\$http.get(url).
 		success(function(data, status, headers, config) {
