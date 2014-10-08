@@ -85,8 +85,8 @@ class signup
 			$separator = "<span style='margin-left:" . $this->optionInputSpacing . "px'>&nbsp</span>";
 
 		// Make the website sid available to js
-		$SID = Yii::app()->params['sid'];
-		$content .= "<script> var SID=" . $SID . "</script>";
+		//$SID = Yii::app()->params['sid'];
+		//$content .= "<script> var SID=" . $SID . "</script>";
 
 		// Generate the content
 		$content = "<div ng-app>";
