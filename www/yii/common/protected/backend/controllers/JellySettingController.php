@@ -86,7 +86,6 @@ class JellySettingController extends Controller
 	 */
 	public function actionUpdate()
 	{
-
 		// Pick up our only record
 		$id = 1;
 		$model = $this->loadModel($id);
@@ -104,11 +103,7 @@ class JellySettingController extends Controller
 		{
 			$model->attributes=$_POST['JellySetting'];
 			if($model->save())
-			{
-$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
-				//http://demo1.wireflydesign.com/backend.php/site/index
-				//$this->redirect(array('view','id'=>$model->id));
-			}
+				$this->redirect(array('site/index'));
 		}
 
 		$this->render('update',array(
