@@ -106,7 +106,7 @@ css.display = block
 			
 
 	[pages]
-	child = tabs, content 	
+	child = tabs, content, contactus 	
 	css.width = 960px
 	css.margin-top = 20px
 	css.background-color = white
@@ -126,6 +126,22 @@ css.display = block
 		db.filter = url=$_GET['page']
 		db.error = Sorry, I could not find the page $_GET['page']
 		html.raw = ContentBlock.content
+
+        [contactus]
+		condition = @PAGE=@HOMEPAGE
+		css.width = 350px
+        css.margin-top = 30px
+        css.margin-bottom = 30px
+		css.background-color = purple
+        addon.contact.contactform.edgepadding = 30px
+        addon.contact.contactform.buttoncolor = pink
+        addon.contact.contactform.buttontextcolor = green
+        addon.contact.contactform.buttontext = Contact Us
+        addon.contact.contactform.successtextcolor = green
+        addon.contact.contactform.failuretextcolor = red
+        addon.contact.contactform.textcolor = blue
+        addon.contact.contactform.backcolor = pink
+        addon.contact.contactform.inputspacing = 10px
 
 
 ####footer####################################
