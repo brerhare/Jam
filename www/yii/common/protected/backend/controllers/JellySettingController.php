@@ -1,5 +1,6 @@
 <?php
 
+
 class JellySettingController extends Controller
 {
 	/**
@@ -83,9 +84,18 @@ class JellySettingController extends Controller
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($id)
+	public function actionUpdate()
 	{
-		$model=$this->loadModel($id);
+
+		// Pick up our only record
+		$id = 1;
+		$model = $this->loadModel($id);
+		if($model===null)
+		{
+			$model=new JellySetting;
+			$model->id = $id;
+			$model->save();
+		}
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -94,7 +104,11 @@ class JellySettingController extends Controller
 		{
 			$model->attributes=$_POST['JellySetting'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			{
+$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
+				//http://demo1.wireflydesign.com/backend.php/site/index
+				//$this->redirect(array('view','id'=>$model->id));
+			}
 		}
 
 		$this->render('update',array(
@@ -138,6 +152,10 @@ class JellySettingController extends Controller
 	 */
 	public function actionAdmin()
 	{
+		// @@NB: This is a single item entry, ie only one record in the db. So redirect to the form input immediately
+		//$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('update'));
+		$this->redirect('update');
+
 		$model=new JellySetting('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['JellySetting']))
@@ -156,8 +174,8 @@ class JellySettingController extends Controller
 	public function loadModel($id)
 	{
 		$model=JellySetting::model()->findByPk($id);
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
+		//if($model===null)
+			//throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
 	}
 
