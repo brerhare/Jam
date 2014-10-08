@@ -263,6 +263,10 @@ class EventController extends Controller
 					$transactions = Transaction::model()->findAll($criteria);
 					foreach ($transactions as $transaction)	// All event transactions for the event
 					{
+                        // Suppress values for non-paymentsense tickets
+                        if (!($transaction->auth_code))
+                            $transaction->http_ticket_total = 0;
+
 						$criteria = new CDbCriteria;
 						$criteria->addCondition("order_number = '" . $transaction->order_number . "'");
 						$auth = Auth::model()->find($criteria);
@@ -289,8 +293,8 @@ class EventController extends Controller
 						$line = array($event->title, $area->description, $ticketType->description, $transaction->timestamp, $transaction->order_number, $transaction->auth_code, $name, $transaction->email, $transaction->telephone, $a1, $a2, $a3, $a4, $city, $state, $pc, sprintf("%01.2f", $transaction->http_ticket_price), $transaction->http_ticket_qty, sprintf("%01.2f", $transaction->http_ticket_total));
 						fputcsv($fp2, $line);
 
-						if ($transaction->auth_code == NULL)
-							continue;	// We only want paymentsense sales on the report (not manual)
+						//if ($transaction->auth_code == NULL)
+							//continue;	// We only want paymentsense sales on the report (not manual)
 
 						$qty += $transaction->http_ticket_qty;
 						$val += $transaction->http_ticket_total;

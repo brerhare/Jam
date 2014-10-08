@@ -86,7 +86,8 @@ if ((!isset($_GET['art'])) || ($_GET['art'] == ''))
 			if ($article->id == $mainArticleId)
 				continue;
 			echo "<span class='item' style='margin-bottom:13px;' >";
-			echo "<a target='_top' href='http:/test.wireflydesign.com/?layout=index&page=news-traditional&cat=0&art=" . $article->id . "'>";
+			//echo "<a target='_top' href='http:/1staid4u.co.uk/?layout=index&page=news-traditional&cat=0&art=" . $article->id . "'>";
+			echo "<a href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
 			echo "<img src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' width='100%'>";
 			echo "</a>";
 

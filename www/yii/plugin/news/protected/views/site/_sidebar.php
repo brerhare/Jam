@@ -12,8 +12,8 @@
 	{
 		foreach ($articles as $article)
 		{
-			echo "<a style='text-decoration:none;color:black' target='_top' href='http:/test.wireflydesign.com/?layout=index&page=news-traditional&cat=0&art=" . $article->id . "'>";
-			//echo "<a style='text-decoration:none;color:black' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
+			//echo "<a style='text-decoration:none;color:black' target='_top' href='http:/1staid4u.co.uk/?layout=index&page=news-traditional&cat=0&art=" . $article->id . "'>";
+			echo "<a style='text-decoration:none;color:black' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
 			echo $article->title . "<br/>";
 			echo "</a>";
 			if ($cnt++ > 3)
@@ -23,10 +23,21 @@
 	echo "</div>";
 	echo "<br/>";
 
+	// Default styling for the signup form (can be changed by the iframe caller)
+	$color = '#000000';
+	$backColor = '#d3d3d3';
+
+	if ((isset($_GET['color'])) && (trim($_GET['color'] != '')))
+		$color = $_GET['color'];
+	if ((isset($_GET['backcolor'])) && (trim($_GET['backcolor'] != '')))
+		$backColor = $_GET['backcolor'];
+
 	// Show the signup form (@@EG calling an addon directly, not via the jelly)
 	require(Yii::app()->basePath . "/../scripts/jelly/addon/mailer/signup/signup.php");
 	$addon = new signup;
 	$optArr = array();
+	$optArr['textcolor'] = $color;
+	$optArr['backcolor'] = $backColor;
 	$optArr['buttoncolor'] = 'white';
 	$optArr['buttontextcolor'] = '#a70055';
 	$optArr['buttontext'] = 'Sign up';
