@@ -168,7 +168,7 @@ css.display = block
 
 		[blog]
 		condition = @PAGE=@HOMEPAGE
-		html.raw = {{news pinterest}}
+		html.raw = {{news traditional red blue}}
 
 
 ####footer####################################
