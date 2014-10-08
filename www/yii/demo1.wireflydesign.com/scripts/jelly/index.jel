@@ -13,10 +13,11 @@ css.display = block
 
 [ticker]
 css.width = 100%
-css.height = 100px
+######css.height = 100px
 css.position = fixed
+css.bottom = 0
+######css.margin-top = 600px
 #css.z-index = 1100
-css.margin-top = 600px
 #css.margin-left = 0px
 css.background-color = yellow
 addon.ticker.crawler.width = 100%
