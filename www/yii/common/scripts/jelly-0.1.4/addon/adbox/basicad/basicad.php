@@ -44,21 +44,16 @@ class basicad
 *****/
 
 
-$content = "";
-$content = "
-<style>
-tr:td:last-child { padding-bottom: none; }
-</style>
-";
-
+		$content = "";
         $pattern = "/img/*";
         $content .= "<table>";
 		$cnt = 0;
         foreach (glob(Yii::app()->basePath . "/../" . $pattern) as $filename)
         {
             $content .= "<tr><td  style='padding-bottom:10px' height='" . $this->defaultPicHeight . "px'>";
-            //$content .= "<img src='" . Yii::app()->baseUrl . dirname($pattern) . "/". basename($filename) . "' style='float: none; margin: 0px;' alt=''>";
+			$content .= "<a href='http://www.google.com' target='_blank'>";
             $content .= "<img src='" . Yii::app()->baseUrl . dirname($pattern) . "/". basename($filename) . "' style='width=" . $this->defaultPicWidth . "; height:" . $this->defaultPicHeight . "; border:0px solid black' alt=''>";
+			$content .= "</a>";
 
             $content .= "</td></tr>";
 			if (++$cnt >= $this->defaultNumPics)
