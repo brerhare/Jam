@@ -50,8 +50,8 @@ array('label' => 'Downloads', 'url' => '#', 'visible' => !Yii::app()->user->isGu
                     array('label' => 'Files', 'url' => array('/jellyDownloadFile/admin'), 'visible' => !Yii::app()->user->isGuest),
                     array('label' => 'Collections', 'url' => array('/jellyDownloadCollection/admin'), 'visible' => !Yii::app()->user->isGuest),
                 )),
+                array('label' => 'Ad Blocks', 'url' => array('/jellyAdblock/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Settings', 'url' => array('/jellySetting/admin'), 'visible' => !Yii::app()->user->isGuest),
-
 
                 array('label' => 'Logout', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),                 
                 array('label' => 'Contact', 'url' => array('/site/contact'), 'visible' => Yii::app()->user->isGuest),                

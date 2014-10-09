@@ -2,6 +2,9 @@
 
 class basicad
 {
+
+	private $_imageDir = '/../userdata/jelly/adblock/';
+
 	//Defaults
 	private $defaultPicWidth = "180";
 	private $defaultPicHeight = "180";
@@ -30,43 +33,23 @@ class basicad
 		}
 	
 		// Build up the html
-/*****
-		$content = "";
-		$tickerItems = JellyTicker::model()->findAll(array('order'=>'id'));
-		foreach ($tickerItems as $tickerItem):
-			$textLine = $tickerItem->text;
-			if (strlen($tickerItem->url) > 0)
-				$textLine = "<a href='" . $tickerItem->url . "' target='_blank'>" . $tickerItem->text . "</a>";
-			$content .= "<dt>" . $tickerItem->heading . "</dt>";
-			$content .= "<dd>" . $textLine . "</dd>";
-		endforeach;
-		$this->apiHTML = str_replace("<substitute-data>", $content, $this->apiHTML);
-*****/
-
 
 		$content = "";
-        $pattern = "/img/*";
         $content .= "<table>";
 		$cnt = 0;
-        foreach (glob(Yii::app()->basePath . "/../" . $pattern) as $filename)
-        {
+		$adBlocks = JellyAdblock::model()->findAll(array('order'=>'id'));
+		foreach ($adBlocks as $adBlock):
             $content .= "<tr><td  style='padding-bottom:10px' height='" . $this->defaultPicHeight . "px'>";
-			$content .= "<a href='http://www.google.com' target='_blank'>";
-            $content .= "<img src='" . Yii::app()->baseUrl . dirname($pattern) . "/". basename($filename) . "' style='width=" . $this->defaultPicWidth . "; height:" . $this->defaultPicHeight . "; border:0px solid black' alt=''>";
+			$content .= "<a href='" . $adBlock->url . "' target='_blank'>";
+            //$content .= "<img src='" . Yii::app()->baseUrl . dirname($pattern) . "/". basename($filename) . "' style='width=" . $this->defaultPicWidth . "; height:" . $this->defaultPicHeight . "; border:0px solid black' alt=''>";
+            $content .= "<img src='" . Yii::app()->baseUrl . $this->_imageDir . $adBlock->image . "' style='width=" . $this->defaultPicWidth . "; height:" . $this->defaultPicHeight . "; border:0px solid black' alt=''>";
 			$content .= "</a>";
-
             $content .= "</td></tr>";
 			if (++$cnt >= $this->defaultNumPics)
 				break;
-        }
+        endforeach;
         $content .= "</table>";
         $this->apiHTML = str_replace("<substitute-data>", $content, $this->apiHTML);
-
-
-
-
-
-
 
 		// HTML substitutions
 		if (strstr($this->apiHTML, "<substitute-width>"))

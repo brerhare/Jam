@@ -8,6 +8,8 @@ class JellyAdblockController extends Controller
 	 */
 	public $layout='//layouts/column2';
 
+	private $_imageDir = '/../userdata/jelly/adblock/';
+
 	/**
 	 * @return array action filters
 	 */
@@ -31,7 +33,7 @@ class JellyAdblockController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','admin','delete'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -66,11 +68,20 @@ class JellyAdblockController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['JellyAdblock']))
-		{
-			$model->attributes=$_POST['JellyAdblock'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+
+        if(isset($_POST['JellyAdblock']))
+        {
+            $model->attributes=$_POST['JellyAdblock'];
+            $model->image=CUploadedFile::getInstance($model, 'image');
+            if($model->save())
+            {
+                if (strlen($model->image) > 0)
+                {
+                    $fname = Yii::app()->basePath . $this->_imageDir . $model->image;
+                    $model->image->saveAs($fname);
+                }
+                $this->redirect(array('admin','id'=>$model->id));
+            }
 		}
 
 		$this->render('create',array(
@@ -87,14 +98,35 @@ class JellyAdblockController extends Controller
 	{
 		$model=$this->loadModel($id);
 
+		$model->scenario = 'update';
+
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
 		if(isset($_POST['JellyAdblock']))
 		{
-			$model->attributes=$_POST['JellyAdblock'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+            $model->attributes=$_POST['JellyAdblock'];
+            $file=CUploadedFile::getInstance($model, 'image');
+            if(is_object($file) && get_class($file) === 'CUploadedFile')
+            {
+                if (file_exists(Yii::app()->basePath . $this->_imageDir . $model->image))
+                {
+                    unlink(Yii::app()->basePath . $this->_imageDir . $model->image);
+                }
+                $model->image = $file;
+            }
+
+            if($model->save())
+            {
+                if(is_object($file))
+                {
+                    $fname = Yii::app()->basePath . $this->_imageDir . $model->image;
+                    $model->image->saveAs($fname);
+
+                }
+                $this->redirect(array('admin','id'=>$model->id));
+            }
+
 		}
 
 		$this->render('update',array(
@@ -111,12 +143,18 @@ class JellyAdblockController extends Controller
 	{
 		if(Yii::app()->request->isPostRequest)
 		{
-			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+            $oldfilename = $this->loadModel($id)->image;
+            if (($oldfilename != '') && (file_exists(Yii::app()->basePath . $this->_imageDir . $oldfilename)))
+            {
+                unlink(Yii::app()->basePath . $this->_imageDir . $oldfilename);
+            }
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+            // we only allow deletion via POST request
+            $this->loadModel($id)->delete();
+
+            // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+            if(!isset($_GET['ajax']))
+                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 		}
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
