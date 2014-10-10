@@ -215,10 +215,34 @@ class JellyAdblockController extends Controller
 	public function actionAjaxGetAds()
 	{
 			Yii::log("AJAX CALL: actionAjaxGetAds", CLogger::LEVEL_WARNING, 'system.test.kim');
+			$count = $_POST['count'];
+			$ids = $_POST['ids'];
+			Yii::log("AJAX CALL: actionAjaxGetAds got website ad count=" . $count . " and ids=" . $ids, CLogger::LEVEL_WARNING, 'system.test.kim');
+
+			$idArr = array();
+			$urlArr = array();
+			$imgArr = array();
+
+        	$adBlocks = JellyAdblock::model()->findAll(array('order'=>'RAND()'));
+			$recs = count($adBlocks);
+			Yii::log("AJAX CALL: actionAjaxGetAds found a total of " . $recs . " ads to choose from in the db", CLogger::LEVEL_WARNING, 'system.test.kim');
+			$toFind = $count;
+        	foreach ($adBlocks as $adBlock):
+				if (in_array($adBlock->id, $ids))
+					continue;
+				array_push($idArr, $adBlock->id);
+				array_push($urlArr, $adBlock->url);
+				array_push($imgArr, $adBlock->image);
+				$toFind--;
+				if (!($toFind))
+					break;
+			endforeach;
+
             echo CJSON::encode(array(
-                'paneId' => '1',
-                'eventId' => '2',
-                    ));
+                'id' => $idArr,
+                'url' => $urlArr,
+                'img' => $imgArr,
+                 ));
 	}
 
 }

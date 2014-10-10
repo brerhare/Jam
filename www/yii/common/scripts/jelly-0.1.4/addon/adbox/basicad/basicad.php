@@ -10,6 +10,7 @@ class basicad
 	private $defaultPicHeight = "180";
 	private $defaultPicSpacing = "5";
 	private $defaultNumPics = 3;
+	private $defaultInterval = 60;
 
 	Public function init ($options, $jellyRootUrl)
 	{
@@ -29,6 +30,9 @@ class basicad
 				case "numpics":
 					$this->defaultNumPics = $val;
 					break;
+				case "interval":
+					$this->defaultInterval = $val;
+					break;
 			}
 		}
 	
@@ -37,7 +41,7 @@ class basicad
 		$content = "";
         $content .= "<table style='border-spacing:0px; padding:0px; margin:0px; margin-left:-1px'>";
 		$cnt = 0;
-		$adBlocks = JellyAdblock::model()->findAll(array('order'=>'id'));
+		$adBlocks = JellyAdblock::model()->findAll(array('order'=>'RAND()'));
 		foreach ($adBlocks as $adBlock):
             $content .= "<tr><td  style='padding-bottom:10px' height='" . $this->defaultPicHeight . "'>";
 			$content .= "<input type=hidden id='id-" . $cnt . "' value='" . $adBlock->id . "'>";
@@ -50,8 +54,11 @@ class basicad
         endforeach;
         $content .= "</table>";
 
-		// Record the image dir for ajax calls
+		// Record the call dir for ajax calls
 		$content .= "<script> var ajaxUrl='" . Yii::app()->getBaseUrl(true) . "/backend.php/jellyAdblock/ajaxGetAds';</script>";
+
+		// Set the ad rotator timer
+		$content .= "<script> var ajaxInterval=" . ($this->defaultInterval * 1000) . ";</script>";
 
 		// Record the number of items for ajax calls
 		$content .= "<script> var ajaxCount='" . $cnt . "';</script>";
@@ -89,23 +96,41 @@ END_OF_API_HTML;
 
 private $apiJS = <<<END_OF_API_JS
 $(document).ready(function() {
-	document.getElementById("img-0").src = document.getElementById("img-1").src;
-	document.getElementById("url-0").href = 'ddddd';
-ajaxGetAds('1-2-3');
+//	document.getElementById("img-0").src = document.getElementById("img-1").src;
+//	document.getElementById("url-0").href = 'ddddd';
 });
 
+setInterval(ajaxGetAds, ajaxInterval);
+
 // Ajax call to get the event details when a header is clicked
-var ajaxGetAds = function(paneId) { 
-    var ev = paneId.split("-");
-    var evIx = ev[ev.length - 1];
-    jQuery.ajax({'url':ajaxUrl,'data':{'paneId':paneId, 'eventId':'111'},'type':'POST','dataType':'json','success':function(val){ajaxShowAds(val);},'cache':false});
-};
+function ajaxGetAds() { 
+	//alert('about to call for ad updates');
+	ids = [];
+	for (i = 0; i < ajaxCount; i++)
+		ids[i] = document.getElementById("id-" + i).value;
+//alert('sending ids ' + ids[0] + ' ' + ids[1] + ' ' + ids[2]);
+    jQuery.ajax({'url':ajaxUrl,'data':{'count':ajaxCount, 'ids':ids},'type':'POST','dataType':'json','success':function(val){ajaxShowAds(val);},'cache':false});
+}
+
+var nextChange = 0;
 
 // Return from Ajax call with event details
 var ajaxShowAds = function(val) {
-    //alert('Server sent ' + val.paneId + ' and ' + val.eventId);
-    //$('#' + val.paneId).html(val.content);
-    //FB.XFBML.parse();
+
+//alert('back. nextChange is ' + nextChange + '. ajaxCount is ' + ajaxCount + '. lengths are: id='+val.id.length+' url='+val.url.length+' img='+val.img.length );
+//alert('id that came back is ' + val.id[0]);
+	for (i = 0; i < val.id.length; i++)
+	{
+		tval = "id-" + nextChange;
+		document.getElementById(tval).value = val.id[i];
+		tval = "img-" + nextChange;
+		document.getElementById(tval).src = '/../userdata/jelly/adblock/' + val.img[i];
+		tval = "url-" + nextChange;
+		document.getElementById(tval).href = val.url[i];
+	}
+	nextChange++;
+	if (nextChange == (ajaxCount))
+		nextChange = 0;
 }
 
 END_OF_API_JS;
