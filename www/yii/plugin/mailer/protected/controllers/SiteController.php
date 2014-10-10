@@ -176,4 +176,34 @@ class SiteController extends Controller
             $member->save();
         }
 	}
+
+    public function actionAjaxContactUs()
+    {
+		Yii::log("AJAX CALL TO CONTACT US: uid:" . Yii::app()->session['uid'] . " name:" . $_GET['name'] . " email:" . $_GET['email'], CLogger::LEVEL_WARNING, 'system.test.kim');
+
+        // Send email to the address defined on system settings
+
+        // Pick up our only record
+		$to = $_GET['settingsemail'];
+        if (strlen(trim($to)) > 0)
+        {
+            $from =  $_GET['email'];
+            $fromName = $_GET['name'];
+            $subject = "[CONTACTFORM] " . $_GET['subject'];
+            $message = "<b><u>" . $_GET['body'] . "</u></b><br/>";
+            // phpmailer
+            $mail = new PHPMailer();
+            $mail->AddAddress($to);
+            $mail->SetFrom($from, $fromName);
+            $mail->AddReplyTo($from, $fromName);
+            $mail->Subject = $subject;
+            $mail->MsgHTML($message);
+            if (!$mail->Send())
+                Yii::log("CONTACT US COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
+            else
+                Yii::log("CONTACT US SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+        }
+	}
+
 }
+
