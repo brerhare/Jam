@@ -227,9 +227,11 @@ class JellyAdblockController extends Controller
 			$recs = count($adBlocks);
 			Yii::log("AJAX CALL: actionAjaxGetAds found a total of " . $recs . " ads to choose from in the db", CLogger::LEVEL_WARNING, 'system.test.kim');
 			$toFind = $count;
+			$selected = 0;
         	foreach ($adBlocks as $adBlock):
 				if (in_array($adBlock->id, $ids))
 					continue;
+				$selected++;
 				array_push($idArr, $adBlock->id);
 				array_push($urlArr, $adBlock->url);
 				array_push($imgArr, $adBlock->image);
@@ -237,6 +239,7 @@ class JellyAdblockController extends Controller
 				if (!($toFind))
 					break;
 			endforeach;
+			Yii::log("AJAX CALL: actionAjaxGetAds sending out a total of " . $selected . " new ads for display", CLogger::LEVEL_WARNING, 'system.test.kim');
 
             echo CJSON::encode(array(
                 'id' => $idArr,
