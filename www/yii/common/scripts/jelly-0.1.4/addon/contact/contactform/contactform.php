@@ -102,13 +102,16 @@ $content = "<style> input, textarea{
 		$content .= "<div ng-app>";
 $content .= "<center>";
 		$content .= "<div style='padding:" . $this->optionEdgePadding . "px' ; background-color=" . $this->optionBackColor . "' ng-controller='contactController'>";
-		$content .= "<input id='contact-name' class='contact-input' type='text' title='Name' />";
+		$content .= "<input id='contact-name' class='contact-input' type='text' title='Your Name' />";
 		$content .= $separator;
-		$content .= "<input id='contact-email' class='contact-input' type='text' title='Email' />";
+		$content .= "<input id='contact-email' class='contact-input' type='text' title='Your Email Address' />";
 		$content .= $separator;
 		$content .= "<input id='contact-subject' class='contact-input' type='text' title='Subject' />";
 		$content .= $separator;
+
 		$content .= "<textarea id='contact-body' class='contact-input' rows='5 type='text' title='Message''></textarea>";
+		$content .= "<div id='contact-body-div' style='display:none; white-space: pre-wrap;'></div>";
+
 		//$content .= "<input id='contact-body' class='contact-input' type='text' title='Message' />";
 		$content .= $separator;
 		$content .= "<button ng-click='addContact()' id='contact-send-button' class='contact-visible contact-send-button' style='padding:5px; background:" . $this->optionButtonColor . "; color:" . $this->optionButtonTextColor . "' class='contact-send-button' id='save'>" . $this->optionButtonText . "</button>";
@@ -116,6 +119,15 @@ $content .= "<center>";
 		$content .= "</div>";
 $content .= "</center>";
 		$content .= "</div>";
+
+
+        // Pick up our only record for the recipient email (from the backend)
+		$settingsEmail = "no recipient email";
+		$id = 1;
+		$jellySetting=JellySetting::model()->findByPk($id);
+        if($jellySetting!=null)
+        	$settingsEmail = $jellySetting->email;
+		$content .= "<script>var settingsemail = '" . $settingsEmail . "';</script>";
 
 		// Get SID to send to plugin
 		$content .= "<script> var SID='" . Yii::app()->params['sid'] . "'</script>";
@@ -211,6 +223,11 @@ $('.contact-input[type=text][title],.contact-input[type=password][title],textare
   });
 });
 
+// Handle newlines between textarea getting lost
+$( "#contact-body" ).keyup( function() {
+	$( "#contact-body-div" ).html( $( this ).val() );
+}); 
+
 function contactController(\$scope, \$http)
 {
 	\$scope.addContact = function() {
@@ -218,6 +235,7 @@ function contactController(\$scope, \$http)
 		var email = document.getElementById('contact-email').value;
 		var subject = document.getElementById('contact-subject').value;
 		var body = document.getElementById('contact-body').value;
+
 		name = name.trim();
 		if (name.length == 0)
 		{
@@ -250,8 +268,8 @@ function contactController(\$scope, \$http)
 
 		// All ok, send the message for emailing
 
-		var url = 'http://plugin.wireflydesign.com/mailer/index.php/site/ajaxContactUs/?sid=' + SID + '&name=' + name + '&email=' + email + '&subject=' + subject + '&body=' + body;
-alert(url);
+		var url = 'http://plugin.wireflydesign.com/mailer/index.php/site/ajaxContactUs/?sid=' + SID + '&name=' + name + '&email=' + email + '&subject=' + subject + '&body=' + body + '&settingsemail=' + settingsemail;
+//alert(url);
 
 		\$http.get(url).
 		success(function(data, status, headers, config) {

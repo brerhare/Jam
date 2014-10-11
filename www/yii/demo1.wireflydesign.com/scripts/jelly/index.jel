@@ -142,10 +142,14 @@ addon.ticker.crawler.tape-border-width = 1px
 
 	[right-column]
 	css.width = 180px
-	css.height = 200px
 	css.margin-left = 20px
 	css.margin-top = 20px
 	css.background-color = lightgrey
+	addon.adbox.basicad.picwidth = 180px
+	addon.adbox.basicad.picheight = 180px
+	addon.adbox.basicad.picspacing = 5px
+	addon.adbox.basicad.numpics = 4
+	addon.adbox.basicad.interval = 5
 
 ####footer####################################
 
