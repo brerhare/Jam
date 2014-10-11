@@ -85,11 +85,11 @@ class crawler
 		$content = "";
 		$tickerItems = JellyTicker::model()->findAll(array('order'=>'id'));
 		foreach ($tickerItems as $tickerItem):
-			$textLine = $tickerItem->text;
+			$textLine = $tickerItem->heading;
 			if (strlen($tickerItem->url) > 0)
-				$textLine = "<a href='" . $tickerItem->url . "' target='_blank'>" . $tickerItem->text . "</a>";
-			$content .= "<dt>" . $tickerItem->heading . "</dt>";
-			$content .= "<dd>" . $textLine . "</dd>";
+				$textLine = "<a href='" . $tickerItem->url . "' target='_blank'>" . $tickerItem->heading . "</a>";
+			$content .= "<dt>" . $textLine . "</dt>";
+			$content .= "<dd>" . $tickerItem->text . "</dd>";
 		endforeach;
 		$this->apiHTML = str_replace("<substitute-data>", $content, $this->apiHTML);
 
