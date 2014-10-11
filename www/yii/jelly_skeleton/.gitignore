@@ -21,11 +21,13 @@ userdata/tab/*
 !userdata/jelly/sliderhtml/.gitignore
 !userdata/jelly/sliderimage/.gitignore
 !userdata/jelly/gallery/.gitignore
+!userdata/jelly/adblock/.gitignore
 !userdata/jelly/download/.gitignore
 userdata/jelly/*
 userdata/jelly/sliderhtml/*
 userdata/jelly/sliderimage/*
 userdata/jelly/gallery/*
+userdata/jelly/adblock/*
 userdata/jelly/download/*
 
 *.bak

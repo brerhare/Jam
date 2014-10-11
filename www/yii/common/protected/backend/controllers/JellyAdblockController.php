@@ -1,6 +1,6 @@
 <?php
 
-class JellyGalleryImageController extends Controller
+class JellyAdblockController extends Controller
 {
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
@@ -8,7 +8,7 @@ class JellyGalleryImageController extends Controller
 	 */
 	public $layout='//layouts/column2';
 
-	private $_imageDir = '/../userdata/jelly/gallery/';
+	private $_imageDir = '/../userdata/jelly/adblock/';
 
 	/**
 	 * @return array action filters
@@ -29,15 +29,15 @@ class JellyGalleryImageController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view', 'ajaxGetAds'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','delete','admin','session'),
+				'actions'=>array('create','update','admin','delete'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','session'),
+				'actions'=>array('admin','delete'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -63,30 +63,26 @@ class JellyGalleryImageController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new JellyGalleryImage;
-
-		// Hard-wire this image to the gallery stored in our session
-		$model->jelly_gallery_id = Yii::app()->session['gallery_id'];
+		$model=new JellyAdblock;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['JellyGalleryImage']))
-		{
-			$model->attributes=$_POST['JellyGalleryImage'];
-			$model->image=CUploadedFile::getInstance($model, 'image');
-			if($model->save())
-			{
+
+        if(isset($_POST['JellyAdblock']))
+        {
+            $model->attributes=$_POST['JellyAdblock'];
+            $model->image=CUploadedFile::getInstance($model, 'image');
+            if($model->save())
+            {
                 if (strlen($model->image) > 0)
                 {
                     $fname = Yii::app()->basePath . $this->_imageDir . $model->image;
                     $model->image->saveAs($fname);
-                    $this->makeThumb($fname);
                 }
-				$this->redirect(array('admin','id'=>$model->jelly_gallery_id));
-			}
+                $this->redirect(array('admin','id'=>$model->id));
+            }
 		}
-
 
 		$this->render('create',array(
 			'model'=>$model,
@@ -107,31 +103,30 @@ class JellyGalleryImageController extends Controller
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['JellyGalleryImage']))
+		if(isset($_POST['JellyAdblock']))
 		{
-			$model->attributes=$_POST['JellyGalleryImage'];
+            $model->attributes=$_POST['JellyAdblock'];
             $file=CUploadedFile::getInstance($model, 'image');
             if(is_object($file) && get_class($file) === 'CUploadedFile')
             {
                 if (file_exists(Yii::app()->basePath . $this->_imageDir . $model->image))
                 {
                     unlink(Yii::app()->basePath . $this->_imageDir . $model->image);
-                    unlink(Yii::app()->basePath . $this->_imageDir . 'thumb_' . $model->image);
                 }
                 $model->image = $file;
             }
 
-			if($model->save())
-			{
+            if($model->save())
+            {
                 if(is_object($file))
                 {
                     $fname = Yii::app()->basePath . $this->_imageDir . $model->image;
                     $model->image->saveAs($fname);
-                    $this->makeThumb($fname);
 
                 }
                 $this->redirect(array('admin','id'=>$model->id));
             }
+
 		}
 
 		$this->render('update',array(
@@ -148,19 +143,18 @@ class JellyGalleryImageController extends Controller
 	{
 		if(Yii::app()->request->isPostRequest)
 		{
-			$oldfilename = $this->loadModel($id)->image;
-        	if (($oldfilename != '') && (file_exists(Yii::app()->basePath . $this->_imageDir . $oldfilename)))
-        	{
-            	unlink(Yii::app()->basePath . $this->_imageDir . $oldfilename);
-                unlink(Yii::app()->basePath . $this->_imageDir . 'thumb_' . $oldfilename);
-        	}
+            $oldfilename = $this->loadModel($id)->image;
+            if (($oldfilename != '') && (file_exists(Yii::app()->basePath . $this->_imageDir . $oldfilename)))
+            {
+                unlink(Yii::app()->basePath . $this->_imageDir . $oldfilename);
+            }
 
-			// we only allow deletion via POST request
-			$this->loadModel($id)->delete();
+            // we only allow deletion via POST request
+            $this->loadModel($id)->delete();
 
-			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-			if(!isset($_GET['ajax']))
-				$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+            // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+            if(!isset($_GET['ajax']))
+                $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 		}
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
@@ -171,7 +165,7 @@ class JellyGalleryImageController extends Controller
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('JellyGalleryImage');
+		$dataProvider=new CActiveDataProvider('JellyAdblock');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
@@ -182,32 +176,15 @@ class JellyGalleryImageController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new JellyGalleryImage('search');
+		$model=new JellyAdblock('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['JellyGalleryImage']))
-			$model->attributes=$_GET['JellyGalleryImage'];
+		if(isset($_GET['JellyAdblock']))
+			$model->attributes=$_GET['JellyAdblock'];
 
 		$this->render('admin',array(
 			'model'=>$model,
 		));
 	}
-
-    /**
-     * Entry point. Same as actionAdmin except first stores the passed product_id in the session
-     */
-    // $product_id supplied by the CButtonColumn in product/admin
-    public function actionSession($gallery_id)
-    {
-        Yii::app()->session['gallery_id'] = $gallery_id;
-        $model=new JellyGalleryImage('search');
-        $model->unsetAttributes();  // clear any default values
-        if(isset($_GET['JellyGalleryImage']))
-            $model->attributes=$_GET['JellyGalleryImage'];
-
-        $this->render('admin',array(
-            'model'=>$model,
-        ));
-    }
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
@@ -216,7 +193,7 @@ class JellyGalleryImageController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=JellyGalleryImage::model()->findByPk($id);
+		$model=JellyAdblock::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
@@ -228,30 +205,47 @@ class JellyGalleryImageController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='jelly-gallery-image-form')
+		if(isset($_POST['ajax']) && $_POST['ajax']==='jelly-adblock-form')
 		{
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
 	}
 
-	/**
-	 * Add a watermark to the uploaded image
-	 * @param &$filename Address of filename to update with watermarked image
-	 */
-	private function makeThumb(&$filename)
+	public function actionAjaxGetAds()
 	{
-		// Make a thumbnail image of the filename
-		list($width, $height, $type) = getimagesize($filename);
-		if ($width > $height) {
-			$width = 150;
-			$height = 0;
-		} else {
-			$height = 150;
-			$width = 0;
-		}
-$width = 150; $height = 150;
-		ImageUtils::resize($filename, dirname($filename) . '/thumb_' . basename($filename), $width, $height);
+			Yii::log("AJAX CALL: actionAjaxGetAds", CLogger::LEVEL_WARNING, 'system.test.kim');
+			$count = $_POST['count'];
+			$ids = $_POST['ids'];
+			Yii::log("AJAX CALL: actionAjaxGetAds got website ad count=" . $count . " and ids=" . $ids, CLogger::LEVEL_WARNING, 'system.test.kim');
+
+			$idArr = array();
+			$urlArr = array();
+			$imgArr = array();
+
+        	$adBlocks = JellyAdblock::model()->findAll(array('order'=>'RAND()'));
+			$recs = count($adBlocks);
+			Yii::log("AJAX CALL: actionAjaxGetAds found a total of " . $recs . " ads to choose from in the db", CLogger::LEVEL_WARNING, 'system.test.kim');
+			$toFind = $count;
+			$selected = 0;
+        	foreach ($adBlocks as $adBlock):
+				if (in_array($adBlock->id, $ids))
+					continue;
+				$selected++;
+				array_push($idArr, $adBlock->id);
+				array_push($urlArr, $adBlock->url);
+				array_push($imgArr, $adBlock->image);
+				$toFind--;
+				if (!($toFind))
+					break;
+			endforeach;
+			Yii::log("AJAX CALL: actionAjaxGetAds sending out a total of " . $selected . " new ads for display", CLogger::LEVEL_WARNING, 'system.test.kim');
+
+            echo CJSON::encode(array(
+                'id' => $idArr,
+                'url' => $urlArr,
+                'img' => $imgArr,
+                 ));
 	}
 
 }
