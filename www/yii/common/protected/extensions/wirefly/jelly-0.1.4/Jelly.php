@@ -1129,6 +1129,11 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 					if (trim($vals[2]) == "thumbnails")
 					$thumbnails = "1";
 				}
+				if (count($vals) > 3)
+				{
+					if (trim($vals[3]) == "thumbnails")
+					$thumbnails = "1";
+				}
 				$addon = array(
 					"gallery" => array(
 						"fancybox" => array(
