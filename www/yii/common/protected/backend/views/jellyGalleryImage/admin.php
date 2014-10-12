@@ -23,7 +23,7 @@ img { height:50px;}
 	'dataProvider'=>$model->search(),
 	//'filter'=>$model,
 	'columns'=>array(
-		'id',
+		//'id',
 
         array(
             'name'  => 'sequence',
