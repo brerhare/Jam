@@ -13,6 +13,7 @@ class fancybox
 	//Defaults
 	private $defaultSomething = 'someval';
 	private $gallery = "";
+	private $thumbnails = "0";
 
 	public $apiOption = array(
 	);
@@ -34,65 +35,67 @@ class fancybox
 			switch ($opt)
 			{
 				case "gallery":
-				if (strlen($val) > 0)
-					$this->gallery = $val;
-//die('x='.$this->gallery);
-				break;
-                case "source":
-					if ($val == "db")
+					if (strlen($val) > 0)
+						$this->gallery = $val;
+					break;
+				case "thumbnails":
+					$this->thumbnails = $val;
+					switch ($this->thumbnails)
 					{
-						// If db based content
-						$content .= "<table>";
-						$galleries = JellyGallery::model()->findAll(array('order'=>'sequence'));
-						foreach ($galleries as $gallery):
-							if (($gallery->active == 0) && (strlen($this->gallery) == 0))
-								continue;
-//die($this->gallery);
-							if (strlen($this->gallery) > 0)
-							{
-								if ($gallery->id != $this->gallery)
+						case "0":
+							$content .= "<table>";
+							$galleries = JellyGallery::model()->findAll(array('order'=>'sequence'));
+							foreach ($galleries as $gallery):
+								if (($gallery->active == 0) && (strlen($this->gallery) == 0))
 									continue;
-							}
-							$galleryId++;
-							$content .= "<tr>";
-							$content .= "<td width='25%'>";
-
-							$content .= "<a class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/" . $gallery->image . "' title='" . $gallery->text . "'> <img src='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/thumb_" . $gallery->image . "' alt='' /> </a>";
-
-							$criteria = new CDbCriteria;
-							$criteria->addCondition("jelly_gallery_id = " . $gallery->id);
-							$galleryImages = JellyGalleryImage::model()->findAll($criteria);
-							foreach ($galleryImages as $galleryImage):
-
-								$content .= "<a style='display:none' class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/" . $galleryImage->image . "' title='" . $galleryImage->text . "'> <img src='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . "' alt='' /> </a>";
-
+								if (strlen($this->gallery) > 0)
+								{
+									if ($gallery->id != $this->gallery)
+										continue;
+								}
+								$galleryId++;
+								$content .= "<tr>";
+								$content .= "<td width='25%'>";
+								$content .= "<a class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/" . $gallery->image . "' title='" . $gallery->text . "'> <img src='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/thumb_" . $gallery->image . "' alt='' /> </a>";
+								$criteria = new CDbCriteria;
+								$criteria->addCondition("jelly_gallery_id = " . $gallery->id);
+								$galleryImages = JellyGalleryImage::model()->findAll($criteria);
+								foreach ($galleryImages as $galleryImage):
+									$content .= "<a style='display:none' class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/" . $galleryImage->image . "' title='" . $galleryImage->text . "'> <img src='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . "' alt='' /> </a>";
+								endforeach;
+								$content .= "</td>";
+								$content .= "<td width='1%'></td>";
+								$content .= "<td width='74%'>";
+								$content .= "<b>" . $gallery->title . "</b><br>" . $gallery->text;
+								$content .= "</td></tr>";
 							endforeach;
-
-							$content .= "</td>";
-							$content .= "<td width='1%'></td>";
-							$content .= "<td width='74%'>";
-							$content .= "<b>" . $gallery->title . "</b><br>" . $gallery->text;
-							$content .= "</td></tr>";
-
-						endforeach;
-						$content .= "</table>";
-					}
-					else if ($val == "glob")
-					{
-						// get pattern
-						$pattern = $options['pattern'];
-						foreach (glob(Yii::app()->basePath . "/../" . $pattern) as $filename)
-						{
-							$content .= "<li>";
-							$content .= "<img src='" . Yii::app()->baseUrl . dirname($pattern) . "/". basename($filename) . "' style='float: none; margin: 0px;' alt=''>";
-							$content .= "</li>";
-						}
-					}
+							$content .= "</table>";
+							break;
+						case "1":
+							$galleries = JellyGallery::model()->findAll(array('order'=>'sequence'));
+							foreach ($galleries as $gallery):
+								if (($gallery->active == 0) && (strlen($this->gallery) == 0))
+									continue;
+								if (strlen($this->gallery) > 0)
+								{
+									if ($gallery->id != $this->gallery)
+										continue;
+								}
+								$criteria = new CDbCriteria;
+								$criteria->addCondition("jelly_gallery_id = " . $gallery->id);
+								$galleryImages = JellyGalleryImage::model()->findAll($criteria);
+								foreach ($galleryImages as $galleryImage):
+									//$content .= '<a class="fancybox" rel="gallery1" href="' . Yii::app()->baseUrl . "/userdata/jelly/gallery/" . $galleryImage->image . '" title="' . $galleryImage->text . '">';
+									//$content .= '<img src="' . Yii::app()->baseUrl . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . '" alt="" />';
+									$content .= '</a>';
+							endforeach;
+							break;
+						//default:
+					}						// END switch ($this->thumbnails)
 					break;
 				default:
-					// Not all array items are action items
-			}
-		}
+			}								// END switch (opt)
+		}									// END foreach ($options as $opt => $val)
 
 		// Apply all defaults that werent overridden
 		// HTML
