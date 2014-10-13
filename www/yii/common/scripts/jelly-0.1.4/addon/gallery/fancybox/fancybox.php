@@ -83,6 +83,7 @@ class fancybox
 							}
 							$criteria = new CDbCriteria;
 							$criteria->addCondition("jelly_gallery_id = " . $gallery->id);
+							$criteria->order = "sequence ASC";
 							$galleryImages = JellyGalleryImage::model()->findAll($criteria);
 							$content .= "<div style='margin-left:50px'>";
 							foreach ($galleryImages as $galleryImage):

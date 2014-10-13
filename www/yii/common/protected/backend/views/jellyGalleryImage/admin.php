@@ -3,6 +3,7 @@
 $this->menu=array(
 	array('label'=>'Back to Manage Albums', 'url'=>array('jellyGallery/admin')),
 	array('label'=>'Create Image','url'=>array('create')),
+	array('label'=>'Upload Multiple Images','url'=>array('multiCreate')),
 );
 
 ?>
