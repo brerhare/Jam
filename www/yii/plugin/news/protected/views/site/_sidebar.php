@@ -62,8 +62,8 @@
 		echo "<br/>";
 		foreach ($categories as $category)
 		{
-			if ($category->id == $showCat)
-				continue;
+//			if ($category->id == $showCat)
+//				continue;
 			echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=" . $category->id . "&art='>" . $category->name . "</a><br>";
 echo "<hr>";
 		}
