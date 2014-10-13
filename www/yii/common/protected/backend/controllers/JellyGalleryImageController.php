@@ -33,7 +33,7 @@ class JellyGalleryImageController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','delete','admin','session'),
+				'actions'=>array('create','multiCreate', 'update','delete','admin','session'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -87,10 +87,39 @@ class JellyGalleryImageController extends Controller
 			}
 		}
 
-
 		$this->render('create',array(
 			'model'=>$model,
 		));
+	}
+
+	/**
+	 * Multi-Creates a new model.
+	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 */
+	public function actionMultiCreate()
+	{
+		if(isset($_FILES['files']))
+		{
+			// upload new files
+			foreach($_FILES['files']['name'] as $key=>$filename)
+			{
+				$model=new JellyGalleryImage;
+				// Hard-wire this image to the gallery stored in our session
+				$model->jelly_gallery_id = Yii::app()->session['gallery_id'];
+				$model->sequence = 1;
+				$model->image = $filename;
+				// @@ EG: How to save a model bypassing the validation
+				if ($model->save(false))
+				{
+                    $fname = Yii::app()->basePath . $this->_imageDir . $model->image;
+					move_uploaded_file($_FILES['files']['tmp_name'][$key], $fname);
+                    $this->makeThumb($fname);
+				}
+			}
+			$this->redirect(array('admin','id'=>$model->jelly_gallery_id));
+		}
+		//$this->redirect(array('admin','id'=>$model->jelly_gallery_id));
+		$this->render('multicreate');
 	}
 
 	/**

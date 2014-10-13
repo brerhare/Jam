@@ -83,10 +83,11 @@ class fancybox
 							}
 							$criteria = new CDbCriteria;
 							$criteria->addCondition("jelly_gallery_id = " . $gallery->id);
+							$criteria->order = "sequence ASC";
 							$galleryImages = JellyGalleryImage::model()->findAll($criteria);
 							$content .= "<div style='margin-left:50px'>";
 							foreach ($galleryImages as $galleryImage):
-								$content .= '<a class="fancybox" rel="gallery1" href="' . Yii::app()->baseUrl . "/userdata/jelly/gallery/" . $galleryImage->image . '" title="' . $galleryImage->text . '">';
+								$content .= '<a class="fancybox item" rel="gallery1" href="' . Yii::app()->baseUrl . "/userdata/jelly/gallery/" . $galleryImage->image . '" title="' . $galleryImage->text . '">';
 								$content .= '<img style="padding:5px" src="' . Yii::app()->baseUrl . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . '" alt="" />';
 								$content .= '</a>';
 							endforeach;
@@ -143,6 +144,13 @@ class fancybox
 
 			<link rel="stylesheet" href="<substitute-path>/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7" type="text/css" media="screen" />
 			<script type="text/javascript" src="<substitute-path>/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7"></script>
+
+			<style>
+				.item:hover {
+				opacity:0.9;
+				}
+			</style>
+
 
 			<substitute-data>
 
