@@ -46,14 +46,11 @@ addon.ticker.crawler.tape-border-width = 1px
 	[slider]
 	css.width = 800px
   	css.height = 160px
-	#css.position = absolute
-	#css.z-index = 1000
 	addon.slider.flexslider.width = 800px
 	addon.slider.flexslider.height = 140px
 	addon.slider.flexslider.mode = image
 	addon.slider.flexslider.source = db
 	addon.slider.flexslider.border-width = 0px
-	
 	#addon.slider.flexslider.border-color = red
 	#addon.slider.flexslider.active-dotcolor = blue
 	#addon.slider.flexslider.inactive-dotcolor = red
@@ -62,6 +59,10 @@ addon.ticker.crawler.tape-border-width = 1px
 	#addon.slider.flexslider.dot-margin-left = 0px
 	#addon.slider.flexslider.dot-margin-right = 0px
 	#addon.slider.flexslider.animation = fade
+
+	###addon.slider.parallax.interval = 5
+	###addon.slider.parallax.imagewidth = 150
+	###addon.slider.parallax.imageheight = 100
 
 
 ####  Header  #################################

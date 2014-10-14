@@ -13,6 +13,9 @@ class parallax
 	//Defaults
 	private $defaultWidth = "900px";
 	private $defaultHeight = "250px";
+	private $defaultInterval = 10;
+	private $defaultImageWidth = 150;
+	private $defaultImageHeight = 150;
 
 	public function init($options, $jellyRootUrl)
 	{
@@ -30,6 +33,15 @@ class parallax
 				case "height":
 					$this->defaultHeight = $val;
 					break;
+				case "interval":
+					$this->defaultInterval = $val;
+					break;
+				case "imagewidth":
+					$this->defaultImageWidth = $val;
+					break;
+				case "imageheight":
+					$this->defaultImageHeight = $val;
+					break;
 				default:
 					// Not all array items are action items
 			}
@@ -43,7 +55,7 @@ class parallax
 			$content .= 	"<h2>" . $sliderItem->title . "</h2>";
 			$content .= 	"<p>" . $sliderItem->text . "</p>";
 			$content .= 	"<a href='" . $sliderItem->url . "' class='da-link'>Read more</a>";
-			$content .= 	"<div class='da-img'><img width='256px' height='256px' src='" . "/userdata/jelly/sliderimage/" . $sliderItem->image. "' alt='' /></div>";
+			$content .= 	"<div class='da-img'><img width='" . $this->defaultImageWidth . "' height='" . $this->defaultImageHeight . "' src='" . "/userdata/jelly/sliderimage/" . $sliderItem->image. "' alt='' /></div>";
 			$content .= "</div>";
 		endforeach;
 		$content .= 	"<nav class='da-arrows'>";
@@ -56,8 +68,9 @@ class parallax
 $content .= "<a href='" . $sliderItem->url . "'> <img src='" . Yii::app()->baseUrl . "/userdata/jelly/sliderimage/" . $sliderItem->image . "' style='margin:0px; width:" . $this->defaultWidth . "; height:" . $this->defaultHeight . "; background: url(/userdata/jelly/sliderimage/" . $sliderItem->image  . " no-repeat center center; background-size:cover;' alt=''></a>";
 ****/
 
-/******************
 		// Apply all defaults that werent overridden
+
+/******************
 		// HTML
 		if (strstr($this->apiHtml, "<substitute-width>"))
 			$this->apiHtml = str_replace("<substitute-width>", "width:" . $this->defaultWidth . ";", $this->apiHtml);
@@ -71,14 +84,14 @@ $content .= "<a href='" . $sliderItem->url . "'> <img src='" . Yii::app()->baseU
 		$this->apiHtml = str_replace("<substitute-dot-margin-bottom>", "0px",  $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-dot-margin-left>", "0px",  $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-dot-margin-right>", "0px",  $this->apiHtml);
+******************/
 
 		// JS
-		if (strstr($this->apiJs, "<substitute-animation>"))
+		if (strstr($this->apiJs, "<substitute-interval>"))
 		{
-			$tmp = str_replace("<substitute-animation>", "'" . $this->defaultAnimation . "'", $this->apiJs);
+			$tmp = str_replace("<substitute-interval>", ($this->defaultInterval * 1000), $this->apiJs);
 			$this->apiJs = $tmp;
 		}
-******************/
 
 		$tmp = str_replace("<substitute-path>", $jellyRootUrl, $this->apiHtml);
 		$html = str_replace("<substitute-data>", $content, $tmp);
@@ -109,8 +122,9 @@ END_OF_API_HTML;
 
 	});
 
-		$(function() {
-			$('#da-slider').cslider();
+			$('#da-slider').cslider({
+			autoplay : true,
+			interval : <substitute-interval>,
 		});
 
 
