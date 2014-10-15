@@ -7,7 +7,7 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'A Jelly Webapp',
+	'name'=>'Mosshead Preschool',
 
 	// Override the default controller
 	//'defaultController'=>'contentBlock',
@@ -65,12 +65,12 @@ return array(
 		),
 		// uncomment the following to use a MySQL database
 		/**/
-		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=domainname_co_uk',
-			'emulatePrepare' => true,
-			'username' => 'domainname.co.uk',
-			'password' => 'password',
-			'charset' => 'utf8',
+        'db'=>array(
+            'connectionString' => 'mysql:host=localhost;dbname=mossheadpreschool_co_uk',
+            'emulatePrepare' => true,
+            'username' => 'mossheadpreschoo',
+            'password' => 'sk84hf6',
+            'charset' => 'utf8',
 		),
 		/**/
 		'errorHandler'=>array(
@@ -101,8 +101,8 @@ return array(
 		'adminEmail'=>'webmaster@wireflydesign.com',
 
 		// These are used by the shopping cart checkout process
-		'checkoutEmail'=>'vendor@email.co.uk',
-		'checkoutName'=>'Vendor Display Name',
+		'checkoutEmail'=>'chairperson.mossheadpreschool.co.uk',
+		'checkoutName'=>'Mosshead Preschool',
 		// Test gateway
 		'checkoutGatewayUser'=>'WIREFL-5188100',
 		'checkoutGatewayPassword'=>'391F3GWBZ0',
@@ -110,6 +110,6 @@ return array(
 		//'checkoutGatewayUser'=>'xxxxx',
 		//'checkoutGatewayPassword'=>'xxxxx',
 		'jellyRoot' => '/scripts/jelly/',
-		'sid' => 'Vendor-SID',
+		'sid' => 'f5gp1d2s89s6hf9v5h752tfe97',
 	),
 );
