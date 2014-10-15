@@ -69,8 +69,8 @@ exec("chgrp -R " . $manifest['site'] . " " . $baseDirDev);
 // Create the apache conf file
 if (!($apache = file_get_contents($baseDirDev . "/src/www/yii/tools/createSite/apache.conf")))
 	die("Failed to read apache.conf file - aborting\n");
-$newApache = str_replace("<site>", "kim.com", $apache);
-if (!(file_put_contents("/etc/apache2/sites-available/" . $manifest['site'] . "conf", $newApache)))
+$newApache = str_replace("<site>", $manifest['site'], $apache);
+if (!(file_put_contents("/etc/apache2/sites-available/" . $manifest['site'] . ".conf", $newApache)))
 	die("Failed to move the apache conf file to the apache location - aborting\n");
 
 
