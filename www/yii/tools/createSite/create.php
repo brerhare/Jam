@@ -29,6 +29,8 @@ print_r($manifest);
 // The 'site' parameter must NOT be blank
 if (trim($manifest['site']) == "")
 	die("The 'site' entry in the manifest can not be blank - aborting\n");
+if (strstr(strtolower($manifest['site']), 'www'))
+	die("The site name should now have 'www' in it - aborting\n");
 
 // Check the target location is ok
 echo "Checking target location is ok...\n";
@@ -64,6 +66,12 @@ echo "Setting permissions...\n";
 exec("chown -R " . $manifest['site'] . " " . $baseDirDev);
 exec("chgrp -R " . $manifest['site'] . " " . $baseDirDev);
 
+// Create the apache conf file
+if (!($apache = file_get_contents($baseDirDev . "/src/www/yii/tools/createSite/apache.conf")))
+	die("Failed to read apache.conf file - aborting\n");
+$newApache = str_replace("<site>", "kim.com", $apache);
+if (!(file_put_contents("/etc/apache2/sites-available/" . $manifest['site'] . "conf", $newApache)))
+	die("Failed to move the apache conf file to the apache location - aborting\n");
 
 
 
@@ -71,33 +79,6 @@ exec("chgrp -R " . $manifest['site'] . " " . $baseDirDev);
 
 
 
-
-
-
-
-die;
-
-foreach ($dbList as $dbItem => $dbValue):
-	echo "Patching " . $dbItem . " ... ";
-	$dbInitPaths = explode("|", $dbValue);
-	if (gethostname() == "spleen")
-		$dbInitPath = trim($dbInitPaths[0]);	
-	else
-		$dbInitPath = trim($dbInitPaths[1]);
-	$dbInitFile = $dbInitPath . "/protected/data/dbinit.sh";
-	if (file_exists($dbInitFile))
-	{
-		$dbLine = file($dbInitFile);
-		$dbCommandArray = explode("<", $dbLine[0]);
-		$dbCommand = trim($dbCommandArray[0]) . " < " . $argv[1];
-		exec($dbCommand);
-		echo "done\n";
-	}
-	else
-	{
-		echo "cant find file ". $dbInitFile . "\n";
-	}
-endforeach;
 
 
 ?>
