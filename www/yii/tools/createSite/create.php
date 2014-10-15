@@ -67,18 +67,26 @@ exec("chown -R " . $manifest['site'] . " " . $baseDirDev);
 exec("chgrp -R " . $manifest['site'] . " " . $baseDirDev);
 
 // Create the apache conf file
+echo "Creating Apache config...\n";
 if (!($apache = file_get_contents($baseDirDev . "/src/www/yii/tools/createSite/apache.conf")))
 	die("Failed to read apache.conf file - aborting\n");
-$newApache = str_replace("<site>", $manifest['site'], $apache);
-if (!(file_put_contents("/etc/apache2/sites-available/" . $manifest['site'] . ".conf", $newApache)))
+$apache = str_replace("<site>", $manifest['site'], $apache);
+if (!(file_put_contents("/etc/apache2/sites-available/" . $manifest['site'] . ".conf", $apache)))
 	die("Failed to move the apache conf file to the apache location - aborting\n");
 
+// Edit protected/data/dbinit.sh
+$siteDir = $siteParentDir . "/" . $manifest['site'];
+if (!($dbInit = file_get_contents($siteDir . "/proteted/data/dbinit.sh")))
+	die("Failed to read dbinit.sh file - aborting\n");
+$dbInit = str_replace("<username>", $manifest['dbuser'], $dbInit);
+$dbInit = str_replace("<dbname>", $manifest['dbname'], $dbInit);
+$dbInit = str_replace("<password>", $manifest['dbpass'], $dbInit);
+if (!(file_put_contents("$siteDir . "/proteted/data/dbinit.sh", $dbInit)))
+    die("Failed to update dbinit.sh - aborting\n");
 
 
 
 
-
-
-
+echo "\nSuccess. Dont forget to restart Apache\n"
 
 ?>
