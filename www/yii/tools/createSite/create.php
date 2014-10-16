@@ -117,9 +117,7 @@ $main = str_replace("<dbpass>", $manifest['dbpass'], $main);
 if (!(file_put_contents($siteDir . "/protected/backend/config/main.php", $main)))
     die("Failed to update protect/backend/config/main.php - aborting\n");
 
-
-
-
 echo "\nDone. Dont forget to restart Apache\n"
+echo "Also dont forget to add this site into /root/setperms\n"
 
 ?>
