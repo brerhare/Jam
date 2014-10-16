@@ -75,6 +75,34 @@ class SiteController extends Controller
     /**
      * Displays the DIRECT login page
      */
+// @@TODO: HARDCODED FOR ROTARY PEACE PROJECT ---------- REMOVE
+    public function actionRotaryPeaceProjectDirect()
+    {
+        Yii::app()->session['uid'] = 56;
+        $identity = new UserIdentity('register@rotarypeaceproject.com', 'district1020');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR MOSSHEAD PRESCHOOL ---------- REMOVE
+    public function actionMossheadPreschoolDirect()
+    {
+        Yii::app()->session['uid'] = 73;
+        $identity = new UserIdentity('chairperson@mossheadpreschool.co.uk', 'earlyyears');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
 // @@TODO: HARDCODED FOR OPEN DOORS ART ---------- REMOVE
     public function actionOpenDoorsArtDirect()
     {
