@@ -66,13 +66,14 @@ echo "Setting permissions...\n";
 exec("chown -R " . $manifest['site'] . " " . $baseDirDev);
 exec("chgrp -R " . $manifest['site'] . " " . $baseDirDev);
 
-// Create the apache conf file
-echo "Creating Apache config...\n";
-if (!($apache = file_get_contents($baseDirDev . "/src/www/yii/tools/createSite/apache.conf")))
+// Patch the apache conf file to reflect the home location (in 2 places)
+echo "Patching Apache config...\n";
+if (!($apache = file_get_contents("/etc/apache2/sites-available/" . $manifest['site'] . ".conf")))
 	die("Failed to read apache.conf file - aborting\n");
-$apache = str_replace("<site>", $manifest['site'], $apache);
+$apache = str_replace("DocumentRoot /home/" . $manifest['site'] . "/public_html", "DocumentRoot /home/" . $manifest['site'] . "/dev/src/www/yii/" . $manifest['site'], $apache);
+$apache = str_replace("<Directory /home/" . $manifest['site'] . "/public_html>", "<Directory /home/" . $manifest['site'] . "/dev/src/www/yii/" . $manifest['site'] . ">", $apache);
 if (!(file_put_contents("/etc/apache2/sites-available/" . $manifest['site'] . ".conf", $apache)))
-	die("Failed to move the apache conf file to the apache location - aborting\n");
+	die("Failed to replace the patched apache conf file in the apache location - aborting\n");
 
 // Edit protected/data/dbinit.sh
 echo "Importing Jelly basics ...\n";
