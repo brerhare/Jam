@@ -5,4 +5,4 @@ dbuser = rotarypeaceproje
 dbpass = dg7wm6xh6
 sitetitle = Rotary Peace Project
 checkoutemail = admin@rotarypeaceproject.com
-checkoutName = Rotary Peace Project
+checkoutname = Rotary Peace Project

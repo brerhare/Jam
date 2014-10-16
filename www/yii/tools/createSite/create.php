@@ -75,18 +75,38 @@ if (!(file_put_contents("/etc/apache2/sites-available/" . $manifest['site'] . ".
 	die("Failed to move the apache conf file to the apache location - aborting\n");
 
 // Edit protected/data/dbinit.sh
-$siteDir = $siteParentDir . "/" . $manifest['site'];
-if (!($dbInit = file_get_contents($siteDir . "/proteted/data/dbinit.sh")))
+echo "Importing Jelly basics ...\n";
+$siteDir = $siteParentDir . $manifest['site'];
+if (!($dbInit = file_get_contents($siteDir . "/protected/data/dbinit.sh")))
 	die("Failed to read dbinit.sh file - aborting\n");
 $dbInit = str_replace("<username>", $manifest['dbuser'], $dbInit);
 $dbInit = str_replace("<dbname>", $manifest['dbname'], $dbInit);
 $dbInit = str_replace("<password>", $manifest['dbpass'], $dbInit);
-if (!(file_put_contents("$siteDir . "/proteted/data/dbinit.sh", $dbInit)))
+if (!(file_put_contents($siteDir . "/protected/data/dbinit.sh", $dbInit)))
     die("Failed to update dbinit.sh - aborting\n");
+$temp = getcwd();
+chdir($siteDir . "/protected/data/");
+exec("./dbinit.sh");
+chdir($temp);
+
+// Edit protected/config/main.php
+echo "Setting site parameters...\n";
+$siteDir = $siteParentDir . $manifest['site'];
+if (!($main = file_get_contents($siteDir . "/protected/config/main.php")))
+	die("Failed to read protected/config/main.php file - aborting\n");
+$main = str_replace("<sitetitle>", $manifest['sitetitle'], $main);
+$main = str_replace("<dbname>", $manifest['dbname'], $main);
+$main = str_replace("<dbuser>", $manifest['dbuser'], $main);
+$main = str_replace("<dbpass>", $manifest['dbpass'], $main);
+$main = str_replace("<sid>", $manifest['sid'], $main);
+$main = str_replace("<checkoutname>", $manifest['checkoutname'], $main);
+$main = str_replace("<checkoutemail>", $manifest['checkoutemail'], $main);
+if (!(file_put_contents($siteDir . "/protected/config/main.php", $main)))
+    die("Failed to update protect/config/main.php - aborting\n");
 
 
 
 
-echo "\nSuccess. Dont forget to restart Apache\n"
+echo "\nDone. Dont forget to restart Apache\n"
 
 ?>

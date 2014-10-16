@@ -11,8 +11,8 @@ Edit protected/backend/config/main.php - appname, database, autload-extensions
 Edit protected/backend/views/layout/main.php - menu options
 Edit plugin(s) to accept direct logins
 
-Edit protected/data/dbinit.sh - database connection details
-Run protected/data/dbinit.sh - create basic jelly tables
+script - Edit protected/data/dbinit.sh - database connection details
+script - Run protected/data/dbinit.sh - create basic jelly tables
 
 Rarely needed - Yii location
 ----------------------------
