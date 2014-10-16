@@ -1,1 +1,1 @@
-mysql -u username db_co_uk -p"password," < jelly.sql
+mysql -u <username> <dbname> -p"<password>" < jelly.sql

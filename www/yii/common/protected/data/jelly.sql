@@ -86,6 +86,7 @@ CREATE  TABLE IF NOT EXISTS `jelly_slider_image` (
   `title` VARCHAR(255) NOT NULL ,
   `image` VARCHAR(255) NULL ,
   `url` VARCHAR(255) NULL ,
+  `text` TEXT NULL COMMENT '	' ,
   PRIMARY KEY (`id`) ,
   INDEX `sequence` (`sequence` ASC) )
 ENGINE = InnoDB;
