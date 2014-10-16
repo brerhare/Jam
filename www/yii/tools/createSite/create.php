@@ -104,6 +104,18 @@ $main = str_replace("<checkoutemail>", $manifest['checkoutemail'], $main);
 if (!(file_put_contents($siteDir . "/protected/config/main.php", $main)))
     die("Failed to update protect/config/main.php - aborting\n");
 
+// Edit protected/backend/config/main.php
+echo "Setting backend site parameters...\n";
+$siteDir = $siteParentDir . $manifest['site'];
+if (!($main = file_get_contents($siteDir . "/protected/backend/config/main.php")))
+	die("Failed to read protected/backend/config/main.php file - aborting\n");
+$main = str_replace("<sitetitle>", $manifest['sitetitle'] . " Backend", $main);
+$main = str_replace("<dbname>", $manifest['dbname'], $main);
+$main = str_replace("<dbuser>", $manifest['dbuser'], $main);
+$main = str_replace("<dbpass>", $manifest['dbpass'], $main);
+if (!(file_put_contents($siteDir . "/protected/backend/config/main.php", $main)))
+    die("Failed to update protect/backend/config/main.php - aborting\n");
+
 
 
 
