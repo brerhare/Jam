@@ -172,6 +172,11 @@ class basic
 						$this->apiHtml);
 					break;
 
+				case "menu-text-weight":
+					$this->apiHtml = str_replace("<substitute-menu-text-weight>",
+						"nav ul li a {font-weight: " . $val . " !important;}",
+						$this->apiHtml);
+					break;
 				case "menu-text-color":
 					$this->apiHtml = str_replace("<substitute-menu-text-color>",
 						"nav ul li a {color: " . $val . " !important;}",
@@ -232,6 +237,7 @@ class basic
 		$this->apiHtml = str_replace("<substitute-submenu-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-submenu-opacity>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-menu-text-color>", "", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-text-weight>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-submenu-text-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-item-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-item-text-color>", "", $this->apiHtml);		
@@ -362,6 +368,7 @@ $criteria->order = "sequence ASC";
 		<substitute-menu-tile>
 		<substitute-menu-stretch>
 		<substitute-menu-text-color>
+		<substitute-menu-text-weight>
 		<substitute-submenu-text-color>
 		<substitute-submenu-color>
 		<substitute-submenu-opacity>

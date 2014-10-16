@@ -99,6 +99,7 @@ addon.ticker.crawler.tape-border-width = 1px
 
 	addon.menu.basic.font-size = 14px
 	addon.menu.basic.menu-text-color = black
+	addon.menu.basic.menu-text-weight = bold
 	addon.menu.basic.item-color = white red
 	#addon.menu.basic.item-text-color = green
 
