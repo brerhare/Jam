@@ -101,6 +101,8 @@ css.display = block
 	#addon.slider.flexslider.animation = fade
 	#addon.slider.flexslider.mode = HTML
 	#addon.slider.glitz.slider = 2
+	
+  
 
 
 ######## body #######################################
