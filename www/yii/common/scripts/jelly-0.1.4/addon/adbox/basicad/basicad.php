@@ -45,9 +45,11 @@ class basicad
 		foreach ($adBlocks as $adBlock):
             $content .= "<tr><td  style='padding-bottom:10px' height='" . $this->defaultPicHeight . "'>";
 			$content .= "<input type=hidden id='id-" . $cnt . "' value='" . $adBlock->id . "'>";
-			$content .= "<a id='url-" . $cnt . "' href='" . $adBlock->url . "' target='_blank'>";
+			if (trim($adBlock->url) != "")
+				$content .= "<a id='url-" . $cnt . "' href='" . $adBlock->url . "' target='_blank'>";
             $content .= "<img id='img-" . $cnt . "' src='" . Yii::app()->baseUrl . $this->_imageDir . $adBlock->image . "' style='width:" . $this->defaultPicWidth . "; height:" . $this->defaultPicHeight . "; border:0px solid black' alt=''>";
-			$content .= "</a>";
+			if (trim($adBlock->url) != "")
+				$content .= "</a>";
             $content .= "</td></tr>";
 			if (++$cnt >= $this->defaultNumPics)
 				break;

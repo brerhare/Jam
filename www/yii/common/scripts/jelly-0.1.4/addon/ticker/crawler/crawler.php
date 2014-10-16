@@ -1,7 +1,7 @@
 <?php
 
 /**
-*
+*Original source code found: http://coolcarousels.frebsite.nl/c/9/
 *
 *
 */
