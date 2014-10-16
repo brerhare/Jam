@@ -3,6 +3,7 @@ html, body {
 	padding: 0;
 	margin: 0;
 }
+/************
 body {
 	min-height: 300px;
 }
@@ -12,6 +13,7 @@ body * {
 	color: #333;
 	line-height: 22px;
 }
+************/
  
 #wrapper {
 	width: 100%;
@@ -22,6 +24,10 @@ body * {
 }
  
 #wrapper > div {
+	font-family: Arial, Geneva, SunSans-Regular, sans-serif;
+	font-size: 14px; /*font-size*/
+	color: #333;
+	line-height: 22px;
 	background-color: #eee; /*tape-color*/
 	border-style: solid none;
 	border-width: 1px; /*tape-border-width*/
