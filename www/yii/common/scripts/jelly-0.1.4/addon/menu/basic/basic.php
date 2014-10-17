@@ -14,9 +14,11 @@
 class basic
 {
 	//Defaults
-	private $defaultOrientation = "horizontal";
+	private $default_orientation = "horizontal";
 	private $default_item_separator_width = 1;
+	private $default_item_separator_color = "#d3d3d3";
 	private $default_subitem_separator_width = 1;
+	private $height = 0;
 	private $level = 0;
 
 	public $apiOption = array(
@@ -39,6 +41,7 @@ class basic
 			switch ($opt)
 			{
 				case "orientation":		// vertical (default is horizontal)
+					$this->default_orientation = $val;
 					$this->apiHtml = str_replace("<substitute-orientation>", $val, $this->apiHtml);
 					break;
 
@@ -51,6 +54,7 @@ class basic
 
 				case "height":
 					$val = str_replace("px", "", $val);
+					$this->height = $val;	// Store for later
 					$this->apiHtml = str_replace("<substitute-height>",
 						"nav ul li a {height: " . $val . "px; padding: 0px 15px;} " .
 						"nav ul ul li a {height: " . $val . "px; padding: 0px 15px;} ", 
@@ -115,6 +119,7 @@ class basic
 					break;
 
 				case "menu-color":
+				case "menu-colour":
 					$vals = explode(" ", $val);
 					if (count($vals == 1)) array_push($vals, $vals[0]);
 					$this->apiHtml = str_replace("<substitute-menu-color>",
@@ -127,6 +132,7 @@ class basic
 						$this->apiHtml);
 					break;
 				case "submenu-color":
+				case "submenu-colour":
 					$vals = explode(" ", $val);
 					if (count($vals == 1)) array_push($vals, $vals[0]);
 					$this->apiHtml = str_replace("<substitute-submenu-color>",
@@ -148,6 +154,7 @@ class basic
 					break;
 
 				case "item-color":
+				case "item-colour":
 					$vals = explode(" ", $val);
 					if (count($vals == 1)) array_push($vals, $vals[0]);
 					$this->apiHtml = str_replace("<substitute-item-color>",
@@ -160,6 +167,7 @@ class basic
 						$this->apiHtml);
 					break;
 				case "subitem-color":
+				case "subitem-colour":
 					$vals = explode(" ", $val);
 					if (count($vals == 1)) array_push($vals, $vals[0]);
 					$this->apiHtml = str_replace("<substitute-subitem-color>",
@@ -172,33 +180,40 @@ class basic
 						$this->apiHtml);
 					break;
 
+				case "menu-text-weight":
+					$this->apiHtml = str_replace("<substitute-menu-text-weight>",
+						"nav ul li a {font-weight: " . $val . " !important;}",
+						$this->apiHtml);
+					break;
 				case "menu-text-color":
+				case "menu-text-colour":
 					$this->apiHtml = str_replace("<substitute-menu-text-color>",
 						"nav ul li a {color: " . $val . " !important;}",
 						$this->apiHtml);
 					break;
 // NW!!!
 				case "submenu-text-color":
+				case "submenu-text-colour":
 					$this->apiHtml = str_replace("<substitute-submenu-text-color>",
 						"nav ul li ul li a {color: " . $val . " !important;}",
 						$this->apiHtml);
 					break;
 				case "item-text-color":
+				case "item-text-colour":
 					$this->apiHtml = str_replace("<substitute-item-text-color>",
 						"nav ul li:hover a {color: " . $val . " !important;}",
 						$this->apiHtml);
 					break;
 				case "subitem-text-color":
+				case "subitem-text-colour":
 					$this->apiHtml = str_replace("<substitute-subitem-text-color>",
 						"nav ul ul li a:hover {color: " . $val . " !important;}",
 						$this->apiHtml);
 					break;
+				case "item-separator-color":
+					$this->default_item_separator_color = $val;
+					break;
 // For some  BIZARRE reason this doesnt work and causes an intermittent vanishing effect on the submenu (horiz mode)
-//				case "item-separator-color":
-//					$this->apiHtml = str_replace("<substitute-item-separator-color>",
-//						"nav ul li + li {border-top: <substitute-default-item-separator-width>px solid " . $val . ";}",
-//						$this->apiHtml);
-//					break;
 //				case "subitem-separator-color":
 //					$this->apiHtml = str_replace("<substitute-subitem-separator-color>",
 //						"nav ul ul li {border-top: <substitute-default-subitem-separator-width>px solid " . $val . ";}",
@@ -217,10 +232,19 @@ class basic
 			}
 		}
 
+		// Apply all order-dependant options
+
+		if ($this->default_orientation == "horizontal")
+			$css = "nav ul li~li { border-left: " . $this->default_item_separator_width . "px solid " . $this->default_item_separator_color . "}";
+		else
+			$css = "nav ul li~li { border-top: " . $this->default_item_separator_width . "px solid " . $this->default_item_separator_color . "}";
+		$this->apiHtml = str_replace("<substitute-item-separator-width>", $css, $this->apiHtml);
+
+
 		// Apply all defaults that werent overridden
 		// HTML
 		if (strstr($this->apiHtml, "<substitute-orientation>"))
-			$this->apiHtml = str_replace("<substitute-orientation>", $this->defaultOrientation, $this->apiHtml);
+			$this->apiHtml = str_replace("<substitute-orientation>", $this->default_orientation, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-width>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-height>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-font-size>", "", $this->apiHtml);
@@ -232,14 +256,15 @@ class basic
 		$this->apiHtml = str_replace("<substitute-submenu-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-submenu-opacity>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-menu-text-color>", "", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-text-weight>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-submenu-text-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-item-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-item-text-color>", "", $this->apiHtml);		
 		$this->apiHtml = str_replace("<substitute-subitem-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-subitem-text-color>", "", $this->apiHtml);		
-		$this->apiHtml = str_replace("<substitute-default-item-separator-width>", $this->default_item_separator_width, $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-default-subitem-separator-width>", $this->default_subitem_separator_width, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-item-separator-width>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-item-separator-color>", "", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-subitem-separator-width>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-subitem-separator-color>", "", $this->apiHtml);
 
 		// JS
@@ -310,7 +335,7 @@ $criteria->order = "sequence ASC";
 			{
 				//if 
 			}
-			$content .= "<li> <a href='" . Yii::app()->request->baseUrl . "?layout=index&page=" . $menuHeader->url . "'>" . $menuHeader->title . "</a>";
+			$content .= "<li><div style='line-height:" . $this->height . "px'> <a href='" . Yii::app()->request->baseUrl . "?layout=index&page=" . $menuHeader->url . "'>" . $menuHeader->title . "</a></div>";
 			$criteria = new CDbCriteria;
 			$criteria->addCondition("parent_id = " . $menuHeader->id);
 $criteria->order = "sequence ASC";
@@ -323,7 +348,7 @@ $criteria->order = "sequence ASC";
 					$l2 = true;
 				}
 				if ($menuItem->active)
-					$content .= "<li style='z-index:11000'><a href='" . Yii::app()->request->baseUrl . "?layout=index&page=" . $menuItem->url . "'>" . $menuItem->title . "</a></li>";
+					$content .= "<li style='z-index:11000'><div style='line-height:" . $this->height . "px'> <a href='" . Yii::app()->request->baseUrl . "?layout=index&page=" . $menuItem->url . "'>" . $menuItem->title . "</a></div> </li>";
 			endforeach;
 			if ($l2 == true)
 				$content .= "</ul>";
@@ -362,6 +387,7 @@ $criteria->order = "sequence ASC";
 		<substitute-menu-tile>
 		<substitute-menu-stretch>
 		<substitute-menu-text-color>
+		<substitute-menu-text-weight>
 		<substitute-submenu-text-color>
 		<substitute-submenu-color>
 		<substitute-submenu-opacity>
@@ -370,7 +396,9 @@ $criteria->order = "sequence ASC";
 		<substitute-subitem-color>
 		<substitute-subitem-text-color>
 		<substitute-item-separator-color>
+		<substitute-item-separator-width>
 		<substitute-subitem-separator-color>
+		<substitute-subitem-separator-width>
 		</style>
 
 		<!--Basic Menu HTML-->

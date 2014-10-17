@@ -85,12 +85,11 @@ class crawler
 		$content = "";
 		$tickerItems = JellyTicker::model()->findAll(array('order'=>'id'));
 
-/*
+/**
 echo "<div id='wrapper'>";
 echo "<div class='second'>
         <dl id='ticker-1'>";
-*/
-
+**/
 		foreach ($tickerItems as $tickerItem):
 			$textLine = $tickerItem->heading;
 			if (strlen($tickerItem->url) > 0)
@@ -99,11 +98,11 @@ echo "<div class='second'>
 			$content .= "<dd>" . $tickerItem->text . "</dd>";
 		endforeach;
 
-/*
+/**
 echo "</dl>
     </div>";
 echo "</div>";
-*/
+**/
 
 		$this->apiHTML = str_replace("<substitute-data>", $content, $this->apiHTML);
 
@@ -158,15 +157,18 @@ echo "</div>";
 private $apiHTML = <<<END_OF_API_HTML
 <div id="jelly-crawler-container">
             <!--Crawler Ticker-->
-            <link rel="stylesheet" href="<substitute-path>/crawler.css" type="text/css" />
+            <link rel="stylesheet" href="<substitute-path>/crawler.css" type="text/css" /> 
             <script src="<substitute-path>/crawler.js"></script> 
             <script src="<substitute-path>/jquery.carouFredSel.js"></script>
 
 <style>
+/***
 body * {
 		<substitute-font-size>
 		}
 		
+**/
+
 #wrapper > div {
 		<substitute-tape-height>
 		<substitute-tape-color>
@@ -182,7 +184,6 @@ body * {
 	<substitute-link-color>
 	<substitute-link-text-color>
 	}
-
 </style>
 
 	<div class="crawlerticker">
@@ -204,6 +205,7 @@ private $apiJS = <<<END_OF_API_JS
 	// Any custom js and/or startup functions
 
 $(document).ready(function() {
+$('.caroufredsel_wrapper').css('width', '100%');
 /*****
     $('#ticker-1').carouFredSel({
         items               : <substitute-text-space>,
