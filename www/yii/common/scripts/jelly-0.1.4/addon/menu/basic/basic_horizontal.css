@@ -28,6 +28,9 @@ z-index:11000;
 		content: ""; clear: both; display: block;
 	}
 
+/* Separators */
+nav ul li~li { border-left: 1px solid #d3d3d3 }
+
 nav ul li {
 	float: left;
 }
