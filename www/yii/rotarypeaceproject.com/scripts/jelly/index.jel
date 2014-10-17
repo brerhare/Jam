@@ -3,98 +3,158 @@
 include = default-values
 
 # Every blob inherits these before adding/overriding
+# Site Colours: Main - Orange #ffd800, Secondary - Light Blue #cddff2
 
 [* : defaults]
 
 [screen]
 child = site
-fx.wallpaper-image-tile = /img/background.jpg
+#fx.wallpaper-image-tile = /img/background.jpg
 css.display = block
+css.background-color = white
 
 	[site]
-	child = header, slider, pages, footer
-	css.width = 970px
+	child = header, slider_area_home, slider_area, pages, footer
+	css.width = 100%
 
 ####  Header  #################################
 
 	[header]
-	child = logo, menu
-	css.height = 200px
+	child = header_left, header_right
+	stacking = horizontal
+	css.height = 250px
+	css.width = 960px
+	css.position = relative
+	css.z-index = 1000	
 	
-		[logo]
-		css.margin-left = 50px
-		css.margin-top = 25px
-		css.height = 120px
-		css.width = 500px
-		css.z-index = 1000
-		css.position = relative
-		image.url = img/Logo.png
-		image.width = 241px
-		image.height = 116px
-		click = http://www.demo5.wireflydesign.com
+		[header_left]
+		child = logo, menu
+		css.width = 480px
 
-		[menu]
-		css.height = 50px
-		#css.width = 250px
-		css.overflow = visible
-		css.z-index = 900
-		#css.position = absolute
-		css.position = relative
+			[logo]
+			css.margin-left = 50px
+			css.margin-top = 25px
+			css.height = 150px
+			css.width = 470px
+			image.url = img/logo.png
+			image.width = 352px
+			image.height = 147px
+			click = http://www.rotarypeaceproject.com
 
-		addon.menu.basic.orientation = horizontal
-		#addon.menu.basic.width = 960px
-		#addon.menu.basic.height = 30px
-		#addon.menu.basic.level = 2
+			[menu]
+			css.height = 65px
+			#css.width = 250px
+			css.overflow = visible
+			css.z-index = 900
+			#css.position = absolute
+			css.position = relative
 
-		addon.menu.basic.menu-rounding = 4px
-		#addon.menu.basic.menu-opacity = 70%
-		#addon.menu.basic.menu-tile = /img/menu-bar.jpg
-		#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
-		addon.menu.basic.menu-color = white
-		#addon.menu.basic.item-separator-color = #ffffff
-		#addon.menu.basic.item-separator-width = 3px
+			addon.menu.basic.orientation = horizontal
+				#addon.menu.basic.width = 960px
+			addon.menu.basic.height = 40px
+				#addon.menu.basic.level = 2
 
-		addon.menu.basic.font-size = 12px
-		#addon.menu.basic.menu-text-color = red
+			addon.menu.basic.menu-rounding = 20px
+			addon.menu.basic.menu-color = #ffd800
+				#addon.menu.basic.item-separator-color = #ffffff
+			addon.menu.basic.item-separator-width = 0px
 
-		#addon.menu.basic.item-color = black yellow
-		#addon.menu.basic.item-text-color = green
+			addon.menu.basic.font-size = 14px
+			addon.menu.basic.menu-text-color = black
+			addon.menu.basic.menu-text-weight = bold
 
-		#addon.menu.basic.submenu-color = yellow red
+				#addon.menu.basic.item-color = black yellow
+				#addon.menu.basic.item-text-color = green
+
+				#addon.menu.basic.submenu-color = yellow red
 	
-		#addon.menu.basic.subitem-color = white black
-		#addon.menu.basic.subitem-text-color = purple
-		#addon.menu.basic.subitem-seperator-color = red 
-
-
+				#addon.menu.basic.subitem-color = white black
+				#addon.menu.basic.subitem-text-color = purple
+				#addon.menu.basic.subitem-seperator-color = red 
+				
+		[header_right]
+		child = signup_container, quote
+		css.width = 480px
+				
+			[signup_container]
+			child = signup
+			css.height = 50px
+			css.width = 475px
+			css.margin-top = 20px
+			fx.rounding = 25px
+			css.background-color = #cddff2
+			
+				[signup]
+				css.margin-left = 25px
+				css.margin-top = 12px
+				addon.mailer.signup.orientation = horizontal
+				addon.mailer.signup.buttoncolor = #cddff2
+				addon.mailer.signup.buttontextcolor = black
+				addon.mailer.signup.buttontext = Sign Up
+				addon.mailer.signup.inputspacing = 5px
+				addon.mailer.signup.successtextcolor = green
+				addon.mailer.signup.failuretextcolor = red
+		
+			[quote]
+			css.margin-left = 50px
+			css.margin-top = 75px
+			css.height = 100px
+			css.width = 470px
+			image.url = img/quote.png
+			image.width = 422px
+			image.height = 95px
+			click = http://www.rotarypeaceproject.com
+		
+		
 #### Slider ###########################################
 
+	[slider_area_home]
+	child = slider_line, slider
+	condition = @PAGE=@HOMEPAGE
+	css.width = 100%
+	css.height = 320px
+	css.position = relative
+	css.z-index = 900
+	css.margin-top = -60px
+		
+	[slider_line]
+	css.height = 5px
+	css.width = 100%
+	css.background-color = #ffd800
+	
 	[slider]
-	css.width = 960px
-  	css.height = 320px
-	addon.slider.flexslider.width = 952px
-	addon.slider.flexslider.height = 310px
-	addon.slider.flexslider.mode = image
-	addon.slider.flexslider.source = db
+	css.width = 100%
+  	css.height = 300px
+	addon.slider.parallax.width = 100%
+	addon.slider.parallax.height = 250px
+	addon.slider.parallax.interval = 10
+	addon.slider.parallax.imagewidth = 150
+	addon.slider.parallax.imageheight = 150
+	addon.slider.parallax.title-text-color = #000000
+	addon.slider.parallax.source = db
 
-	#addon.slider.flexslider.border-width = 0px
-	#addon.slider.flexslider.border-color = red
-	#addon.slider.flexslider.active-dotcolor = red
-	#addon.slider.flexslider.inactive-dotcolor = blue
-	#addon.slider.flexslider.dot-margin-top = -200px
-	#addon.slider.flexslider.dot-margin-bottom = 0px
-	#addon.slider.flexslider.dot-margin-left = 0px
-	#addon.slider.flexslider.dot-margin-right = 0px
-	#addon.slider.flexslider.animation = fade
-	#addon.slider.flexslider.mode = HTML
-	#addon.slider.glitz.slider = 2
+	
+	
+	[slider_area]
+	child = slider_line_2
+	condition = @PAGE!=@HOMEPAGE
+	css.width = 100%
+	css.height = 40px
+	css.position = relative
+	css.z-index = 900
+	css.margin-top = -60px
+		
+	[slider_line_2]
+	css.height = 5px
+	css.width = 100%
+	css.background-color = #ffd800
 
 
 ######## body #######################################
 			
 
 	[pages]
-	child = tabs, content 	
+	child = tabs, content-home, content 	
 	css.width = 960px
 	css.margin-top = 20px
 	css.background-color = white
@@ -103,11 +163,24 @@ css.display = block
 		[tabs]
 		condition = @PAGE=@HOMEPAGE
 		css.display = block
-		css.width = 680px
+		css.margin-top = 5px
+		css.width = 700px
+		#css.height = 250px
 		addon.tab.rain.source = db
 
+		[content-home]
+		condition = @PAGE=@HOMEPAGE
+		css.margin-top = -20px
+		css.margin = 30px
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
 			
 		[content]
+		condition = @PAGE!=@HOMEPAGE
+		css.position = relative
+		css.z-index = 1100
 		css.margin-top = 30px
 		css.margin = 30px
 		db.table = ContentBlock
@@ -119,28 +192,49 @@ css.display = block
 ####footer####################################
 
 [footer]
-child = footer-menu, footnote
-css.margin-top = 40px
-css.margin-left = 20px
+child = footer-menu, footer-line, footnote
 css.height = 180px
-css.width = 960px
-#css.background-color = #ffffff
-#css.background-color = #f7d9ff
+css.width = 100%
 
-		[footer-menu]
-		stacking = horizontal
-		child = footer-margin, footer-cookies, footer-tandc, footer-contact
-		css.height = 50px
-		css.width = 960px
+	[footer-menu]
+	child = footer-contact
+	css.height = 50px
+	css.width = 960px
+	#css.margin-top = 0px
+	fx.rounding = 25px
+	css.background-color = #ffd800
+	css.position = relative
+	css.z-index = 950
+	
+		[footer-contact]
+			html.raw = Contact Us
+			css.text-align = left
+			css.width = 20%
+			css.color = #000000
+			css.font-size = 14px
+			click = ?layout=index&page=contact
+	
+	[footer-line]
+	css.height = 5px
+	css.margin-top = -25px
+	css.width = 100%
+	css.background-color = #ffd800
 
-			[footer-margin]
+	[footnote]
+	child = child = footer-margin, footer-cookies, footer-tandc, copyright, wirefly
+	css.width = 100%
+	css.position = relative
+	css.z-index = 800
+	css.background-color = #000000
+	
+				[footer-margin]
 			css.width = 20%
 			css.height = 50px
 
 			[footer-cookies]
 			html.raw = Cookie Policy
 			css.width = 20%
-			css.color = #000000
+			css.color = #ffffff
 			css.font-size = 11px
 			css.text-align = right
 			click = ?layout=index&page=cookie-policy
@@ -148,31 +242,16 @@ css.width = 960px
 			[footer-tandc]
 			html.raw = Terms & Conditions
 			css.width = 20%
-			css.color = #000000
+			css.color = #ffffff
 			css.font-size = 11px
 			css.text-align = center
 			click = ?layout=index&page=terms-conditions
-
-			[footer-contact]
-			html.raw = Contact Us
-			css.text-align = left
-			css.width = 20%
-			css.color = #000000
-			css.font-size = 11px
-			click = ?layout=index&page=contact
-
-
-	[footnote]
-	child = copyright, wirefly
-	css.width = 100%
-	css.height = 50px
-	stacking = horizontal
 
 		[copyright]
 		css.width = 50%
 		css.margin-top = 10px
 		html.raw = Customer &copy 2014 All rights reserved
-		css.color = #000000
+		css.color = #ffffff
 		css.font-size = 11px
 		css.text-align = left
 
