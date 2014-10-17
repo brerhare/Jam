@@ -17,7 +17,7 @@ return array(
     'viewPath' => $backend.'/views',
     'runtimePath' => $backend.'/runtime',
 
-	'name'=>'A Jelly Backend',
+	'name'=>'Mosshead Preschool',
 
 	// preloading 'log' component
 	// preloading 'bootstrap' component
@@ -74,12 +74,12 @@ return array(
 		),
 		// uncomment the following to use a MySQL database
 		/**/
-		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=domainname_co_uk',
-			'emulatePrepare' => true,
-			'username' => 'domainname.co.uk',
-			'password' => 'password',
-			'charset' => 'utf8',
+        'db'=>array(
+            'connectionString' => 'mysql:host=localhost;dbname=mossheadpreschool_co_uk',
+            'emulatePrepare' => true,
+            'username' => 'mossheadpreschoo',
+            'password' => 'sk84hf6',
+            'charset' => 'utf8',
 		),
 		/**/
 		'errorHandler'=>array(
