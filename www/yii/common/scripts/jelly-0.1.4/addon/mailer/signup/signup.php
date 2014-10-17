@@ -15,7 +15,8 @@ class signup
 	private $optionButtonColor = "grey";
 	private $optionButtonTextColor = "white";
 	private $optionButtonText = "Signup";
-	private $optionInputSpacing = "0px";
+	private $optionInputSpacing = "5";
+	private $optionInputWidth = "145";
 	private $optionSuccessTextColor = "green";
 	private $optionFailureTextColor = "red";
 	private $optionTextColor = 'black';
@@ -73,6 +74,10 @@ class signup
 					$val = str_replace("px", "", $val);
 					$this->optionInputSpacing = $val;
 					break;
+				case "inputwidth":
+					$val = str_replace("px", "", $val);
+					$this->optionInputWidth = $val;
+					break;
 				default:
 					// Not all array items are action items
 					break;
@@ -84,16 +89,12 @@ class signup
 		if ($this->optionOrientation == "horizontal")
 			$separator = "<span style='margin-left:" . $this->optionInputSpacing . "px'>&nbsp</span>";
 
-		// Make the website sid available to js
-		//$SID = Yii::app()->params['sid'];
-		//$content .= "<script> var SID=" . $SID . "</script>";
-
 		// Generate the content
 		$content = "<div ng-app>";
 		$content .= "<div style='background-color=" . $this->optionBackColor . "' ng-controller='signupController'>";
-		$content .= "<input id='signup-name' class='signup-input' type='text' title='Name' />";
+		$content .= "<input id='signup-name' class='signup-input' type='text' style='width:" . $this->optionInputWidth . "px' title='Name' />";
 		$content .= $separator;
-		$content .= "<input id='signup-email' class='signup-input' type='text' title='Email' />";
+		$content .= "<input id='signup-email' class='signup-input' type='text' style='width:" . $this->optionInputWidth . "px' title='Email' />";
 		$content .= $separator;
 		$content .= "<button ng-click='addSignup()' id='signup-send-button' class='signup-visible signup-send-button' style='background:" . $this->optionButtonColor . "; color:" . $this->optionButtonTextColor . "' class='signup-send-button' id='save'>" . $this->optionButtonText . "</button>";
 		$content .= "<span id='signup-message' class='signup-invisible'>Message Area</span>";
