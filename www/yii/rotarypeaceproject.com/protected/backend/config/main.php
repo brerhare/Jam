@@ -17,7 +17,7 @@ return array(
     'viewPath' => $backend.'/views',
     'runtimePath' => $backend.'/runtime',
 
-	'name'=>'Mosshead Preschool',
+	'name'=>'Rotary Peace Project Backend',
 
 	// preloading 'log' component
 	// preloading 'bootstrap' component
@@ -74,12 +74,12 @@ return array(
 		),
 		// uncomment the following to use a MySQL database
 		/**/
-        'db'=>array(
-            'connectionString' => 'mysql:host=localhost;dbname=mossheadpreschool_co_uk',
-            'emulatePrepare' => true,
-            'username' => 'mossheadpreschoo',
-            'password' => 'sk84hf6',
-            'charset' => 'utf8',
+		'db'=>array(
+			'connectionString' => 'mysql:host=localhost;dbname=rotarypeaceproject_com',
+			'emulatePrepare' => true,
+			'username' => 'rotarypeaceproje',
+			'password' => 'dg7wm6xh6',
+			'charset' => 'utf8',
 		),
 		/**/
 		'errorHandler'=>array(

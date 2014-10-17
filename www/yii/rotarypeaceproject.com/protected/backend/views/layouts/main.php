@@ -36,8 +36,12 @@
 			'items' => array(
                 array('label' => 'Pages', 'url' => array('/contentBlock/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Image Sliders', 'url' => array('/jellySliderImage/admin'), 'visible' => !Yii::app()->user->isGuest),
-				array('label' => 'Mailer', 'url' => 'https://plugin.wireflydesign.com/mailer/backend.php/site/mossheadPreschoolDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
-				array('label' => 'News', 'url' => 'https://plugin.wireflydesign.com/news/backend.php/site/mossheadPreschoolDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+
+				array('label' => 'Mailer', 'url' => 'https://plugin.wireflydesign.com/mailer/backend.php/site/rotaryPeaceProjectDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+
+				array('label' => 'News', 'url' => 'https://plugin.wireflydesign.com/news/backend.php/site/rotaryPeaceProjectDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+
+				array('label' => 'Tab Content', 'url' => array('/tabBlock/admin'), 'visible' => !Yii::app()->user->isGuest),
 
                 array('label' => 'Downloads', 'url' => '#', 'visible' => !Yii::app()->user->isGuest,
                 'items' => array(
@@ -45,10 +49,12 @@
                     array('label' => 'Collections', 'url' => array('/jellyDownloadCollection/admin'), 'visible' => !Yii::app()->user->isGuest),
                 )),
 
+				array('label' => 'Tickets', 'url' => 'https://plugin.wireflydesign.com/ticket/backend.php/site/rotaryPeaceProjectDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+
                 array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
                 array('label' => 'Logout', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),                 
-                //array('label' => 'Contact', 'url' => array('/site/contact'), 'visible' => Yii::app()->user->isGuest),                
-                //array('label' => 'About', 'url' => array('/site/page', 'view' => 'about'), 'visible' => Yii::app()->user->isGuest),  
+                array('label' => 'Contact', 'url' => array('/site/contact'), 'visible' => Yii::app()->user->isGuest),                
+                array('label' => 'About', 'url' => array('/site/page', 'view' => 'about'), 'visible' => Yii::app()->user->isGuest),  
 			),
 		),
 /*****
