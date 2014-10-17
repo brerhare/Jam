@@ -17,6 +17,7 @@ class basic
 	private $defaultOrientation = "horizontal";
 	private $default_item_separator_width = 1;
 	private $default_subitem_separator_width = 1;
+	private $height = 0;
 	private $level = 0;
 
 	public $apiOption = array(
@@ -51,6 +52,7 @@ class basic
 
 				case "height":
 					$val = str_replace("px", "", $val);
+					$this->height = $val;	// Store for later
 					$this->apiHtml = str_replace("<substitute-height>",
 						"nav ul li a {height: " . $val . "px; padding: 0px 15px;} " .
 						"nav ul ul li a {height: " . $val . "px; padding: 0px 15px;} ", 
@@ -316,7 +318,7 @@ $criteria->order = "sequence ASC";
 			{
 				//if 
 			}
-			$content .= "<li> <a href='" . Yii::app()->request->baseUrl . "?layout=index&page=" . $menuHeader->url . "'>" . $menuHeader->title . "</a>";
+			$content .= "<li><div style='line-height:" . $this->height . "px'> <a href='" . Yii::app()->request->baseUrl . "?layout=index&page=" . $menuHeader->url . "'>" . $menuHeader->title . "</a></div>";
 			$criteria = new CDbCriteria;
 			$criteria->addCondition("parent_id = " . $menuHeader->id);
 $criteria->order = "sequence ASC";
@@ -329,7 +331,7 @@ $criteria->order = "sequence ASC";
 					$l2 = true;
 				}
 				if ($menuItem->active)
-					$content .= "<li style='z-index:11000'><a href='" . Yii::app()->request->baseUrl . "?layout=index&page=" . $menuItem->url . "'>" . $menuItem->title . "</a></li>";
+					$content .= "<li style='z-index:11000'><div style='line-height:" . $this->height . "px'> <a href='" . Yii::app()->request->baseUrl . "?layout=index&page=" . $menuItem->url . "'>" . $menuItem->title . "</a></div> </li>";
 			endforeach;
 			if ($l2 == true)
 				$content .= "</ul>";
