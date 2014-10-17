@@ -36,7 +36,7 @@
 			'items' => array(
                 array('label' => 'Pages', 'url' => array('/contentBlock/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Image Sliders', 'url' => array('/jellySliderImage/admin'), 'visible' => !Yii::app()->user->isGuest),
-				array('label' => 'NewsLetters', 'url' => 'https://plugin.wireflydesign.com/mailer/backend.php/site/mossheadPreschoolDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'Mailer', 'url' => 'https://plugin.wireflydesign.com/mailer/backend.php/site/mossheadPreschoolDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'News', 'url' => 'https://plugin.wireflydesign.com/news/backend.php/site/mossheadPreschoolDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
 
                 array('label' => 'Downloads', 'url' => '#', 'visible' => !Yii::app()->user->isGuest,
