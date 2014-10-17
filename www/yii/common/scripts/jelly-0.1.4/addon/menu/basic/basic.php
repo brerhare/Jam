@@ -72,6 +72,15 @@ class basic
 						$this->apiHtml);
 					break;
 
+				case "edgepadding":
+					$val = str_replace("px", "", $val);
+					$this->apiHtml = str_replace("<substitute-edgepadding>",
+						"nav ul {
+							padding: 0px " . $val . "px;
+						}",	
+						$this->apiHtml);
+					break;
+
 				case "menu-rounding":
 					$val = str_replace("px", "", $val);
 					$this->apiHtml = str_replace("<substitute-menu-rounding>",
@@ -248,6 +257,7 @@ class basic
 		$this->apiHtml = str_replace("<substitute-width>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-height>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-font-size>", "", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-edgepadding>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-menu-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-menu-rounding>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-menu-opacity>", "", $this->apiHtml);
@@ -381,6 +391,7 @@ $criteria->order = "sequence ASC";
 		<substitute-width>
 		<substitute-height>
 		<substitute-font-size>
+		<substitute-edgepadding>
 		<substitute-menu-color>
 		<substitute-menu-rounding>
 		<substitute-menu-opacity>
