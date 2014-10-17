@@ -5,7 +5,7 @@
 	position: relative;
 	margin: 30px auto;
 	overflow: hidden;
-	background: transparent url(../images/waves.gif) repeat 0% 0%;
+	background: transparent url(../images/slider-background.jpg) repeat 0% 0%; /*slider-background*/
 	border-top: 8px solid #efc34a;
 	border-bottom: 8px solid #efc34a;
 	box-shadow: 0px 1px 1px rgba(0,0,0,0.2), 0px -2px 1px #fff;
@@ -52,7 +52,7 @@
 	opacity: 1;
 }
 .da-slide h2{
-	color: #fff;
+	color: #fff; /*title-text-color*/
 	font-size: 66px;
 	width: 50%;
 	top: 60px;

@@ -11,11 +11,12 @@
 class parallax
 {
 	//Defaults
-	private $defaultWidth = "900px";
+	private $defaultWidth = "960px";
 	private $defaultHeight = "250px";
 	private $defaultInterval = 10;
 	private $defaultImageWidth = 150;
 	private $defaultImageHeight = 150;
+	private $defaultTitleTextColor = "#ffffff";
 
 	public function init($options, $jellyRootUrl)
 	{
@@ -41,6 +42,9 @@ class parallax
 					break;
 				case "imageheight":
 					$this->defaultImageHeight = $val;
+					break;
+				case "title-text-color":
+					$this->defaultTitleTextColor = $val;
 					break;
 				default:
 					// Not all array items are action items
