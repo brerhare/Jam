@@ -283,12 +283,18 @@ class basic
 		$this->apiHtml = str_replace("<substitute-item-text-color>", "", $this->apiHtml);		
 		$this->apiHtml = str_replace("<substitute-subitem-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-subitem-text-color>", "", $this->apiHtml);		
-		//$this->apiHtml = str_replace("<substitute-default-item-separator-width>", $this->default_item_separator_width, $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-default-subitem-separator-width>", "", $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-default-item-separator-width>", $this->default_item_separator_width, $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-default-subitem-separator-width>", $this->default_subitem_separator_width, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-item-separator-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-subitem-separator-color>", "", $this->apiHtml);
+		if ($this->default_orientation == "horizontal")
+		{
+			$this->apiHtml = str_replace("<substitute-default-item-separator-width>", $this->default_item_separator_width, $this->apiHtml);
+			$this->apiHtml = str_replace("<substitute-default-subitem-separator-width>", $this->default_subitem_separator_width, $this->apiHtml);
+		}
+		else
+        {
+            $this->apiHtml = str_replace("<substitute-default-item-separator-width>", $this->default_item_separator_width, $this->apiHtml);
+            $this->apiHtml = str_replace("<substitute-default-subitem-separator-width>", $this->default_subitem_separator_width, $this->apiHtml);
+        }
 
 		// JS
 
