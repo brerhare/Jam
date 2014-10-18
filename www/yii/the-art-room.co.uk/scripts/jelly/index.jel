@@ -144,7 +144,7 @@ css.display = block
 			image.url = /img/Gallery.png
 			image.width = 250px
 			image.height = 295px
-			click = http://www.the-art-room.co.uk/?layout=index&amp;page=original-art-gallery-dumfries-old-school
+			click = http://www.the-art-room.co.uk/?layout=index&amp;page=original-art-gallery-exhibitions-dumfries
 
 			[gifts]
 			image.url = /img/Gifts.png
