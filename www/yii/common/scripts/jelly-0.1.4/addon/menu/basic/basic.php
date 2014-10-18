@@ -220,13 +220,11 @@ class basic
 					break;
 				case "item-separator-color":
                     $this->default_item_separator_color = $val;
-/******
-					if ($this->default_orientation == "horizontal")
-						$str = "nav ul li + li {border-top: 0px solid " . $val . ";}";
-					else
+					if ($this->default_orientation != "horizontal")
+					{
 						$str = "nav ul li + li {border-top: <substitute-default-item-separator-width>px solid " . $val . ";}";
-					$this->apiHtml = str_replace("<substitute-item-separator-color>", $str, $this->apiHtml);
-******/
+						$this->apiHtml = str_replace("<substitute-item-separator-color>", $str, $this->apiHtml);
+					}
 					break;
 				case "subitem-separator-color":
 					$this->apiHtml = str_replace("<substitute-subitem-separator-color>",
@@ -248,11 +246,19 @@ class basic
 
         // Apply all order-dependant options
 
+
+        if ($this->default_orientation == "horizontal")
+		{
+            $css = "nav ul li~li { border-left: " . $this->default_item_separator_width . "px solid " . $this->default_item_separator_color . "}";
+        	$this->apiHtml = str_replace("<substitute-item-separator-width>", $css, $this->apiHtml);
+		}
+/*****
         if ($this->default_orientation == "horizontal")
             $css = "nav ul li~li { border-left: " . $this->default_item_separator_width . "px solid " . $this->default_item_separator_color . "}";
         else
             $css = "nav ul li~li { border-top: " . $this->default_item_separator_width . "px solid " . $this->default_item_separator_color . "}";
         $this->apiHtml = str_replace("<substitute-item-separator-width>", $css, $this->apiHtml);
+*****/
 
 		// Apply all defaults that werent overridden
 		// HTML
