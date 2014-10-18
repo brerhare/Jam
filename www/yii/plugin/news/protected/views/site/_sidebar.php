@@ -42,6 +42,7 @@
 	$optArr['buttontextcolor'] = '#a70055';
 	$optArr['buttontext'] = 'Sign up';
 	$optArr['inputspacing'] = '5px';
+	$optArr['inputwidth'] = '155px';
 	$optArr['successtextcolor'] = 'white';
 	$optArr['failuretextcolor'] = 'red';
 	$ret = $addon->init($optArr, '/news/scripts/jelly/addon/mailer/signup');
