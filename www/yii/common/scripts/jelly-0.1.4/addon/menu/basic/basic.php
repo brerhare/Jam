@@ -19,7 +19,7 @@ class basic
 	private $default_separator_color = "#d3d3d3";
 	private $default_subitem_separator_width = 1;
 	private $default_item_separator_color = "#d3d3d3";
-	private $height = "14px";
+	private $height = "14";
 	private $level = 0;
 
 	public $apiOption = array(
