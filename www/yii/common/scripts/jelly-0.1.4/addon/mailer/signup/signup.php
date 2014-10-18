@@ -96,7 +96,8 @@ class signup
 
 
 		//@@TODO: This is temporarily to disable the background color until we can set it properly in {{name=value}}
-		$content .= "<div style='XXXbackground-color=" . $this->optionBackColor . "' ng-controller='signupController'>";
+		// Also need to remove the XXX in plugin/news/protected/views/site_sidebar.php
+		$content .= "<div style='XXXbackground-color:" . $this->optionBackColor . "' ng-controller='signupController'>";
 
 
 
