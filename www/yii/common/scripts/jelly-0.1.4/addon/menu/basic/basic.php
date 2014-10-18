@@ -18,7 +18,8 @@ class basic
 	private $default_item_separator_width = 1;
 	private $default_separator_color = "#d3d3d3";
 	private $default_subitem_separator_width = 1;
-	private $height = 0;
+	private $default_item_separator_color = "#d3d3d3";
+	private $height = "14";
 	private $level = 0;
 
 	public $apiOption = array(
@@ -282,6 +283,8 @@ class basic
 		$this->apiHtml = str_replace("<substitute-item-text-color>", "", $this->apiHtml);		
 		$this->apiHtml = str_replace("<substitute-subitem-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-subitem-text-color>", "", $this->apiHtml);		
+		//$this->apiHtml = str_replace("<substitute-default-item-separator-width>", $this->default_item_separator_width, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-default-subitem-separator-width>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-default-item-separator-width>", $this->default_item_separator_width, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-default-subitem-separator-width>", $this->default_subitem_separator_width, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-item-separator-color>", "", $this->apiHtml);
