@@ -18,6 +18,7 @@ class basic
 	private $default_item_separator_width = 1;
 	private $default_separator_color = "#d3d3d3";
 	private $default_subitem_separator_width = 1;
+	private $default_item_separator_color = "#d3d3d3";
 	private $height = 0;
 	private $level = 0;
 
