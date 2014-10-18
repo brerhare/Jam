@@ -58,10 +58,13 @@ css.margin-left = 25px
 	css.margin-top = 20px
 	css.margin-left = 0px
 	addon.menu.basic.orientation = vertical
+	#addon.menu.basic.edgepadding = 5px
+	#addon.menu.basic.menu-text-weight = bold
 	addon.menu.basic.item-separator-color = #000000
 	addon.menu.basic.item-separator-width = 1px
 		#addon.menu.basic.width = 60px
-		#addon.menu.basic.height = 30px
+	addon.menu.basic.height = 32px
+
 	addon.menu.basic.font-size = 12px
 	addon.menu.basic.menu-rounding = 0px
 		#addon.menu.basic.menu-opacity = 96%
