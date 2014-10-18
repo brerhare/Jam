@@ -50,7 +50,7 @@ css.display = block
 
 		addon.menu.basic.orientation = horizontal
 		#addon.menu.basic.width = 960px
-		#addon.menu.basic.height = 30px
+		#addon.menu.basic.height = 14px
 		#addon.menu.basic.level = 2
 
 		addon.menu.basic.menu-rounding = 4px
