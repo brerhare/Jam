@@ -120,6 +120,7 @@ css.background-color = #000000
 	addon.menu.basic.menu-rounding = 0px
 	addon.menu.basic.menu-opacity = 100%
 	addon.menu.basic.menu-tile = /img/menu-bar.jpg
+	addon.menu.basic.height = 30px
 		#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
 		#addon.menu.basic.menu-color = blue green
 

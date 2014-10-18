@@ -15,7 +15,7 @@ class basic
 {
 	//Defaults
 	private $default_orientation = "horizontal";
-	private $default_item_separator_width = 1;
+	private $default_item_separator_width = 0;
 	private $default_separator_color = "#d3d3d3";
 	private $default_subitem_separator_width = 1;
 	private $default_item_separator_color = "#d3d3d3";
