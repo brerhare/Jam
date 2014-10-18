@@ -80,9 +80,13 @@ css.display = block
 		css.z-index = 1000
 		css.position = absolute
 		addon.menu.basic.orientation = horizontal
-		#addon.menu.basic.height = 50px
-		addon.menu.basic.font-size = 12px
+		#addon.menu.basic.height = 30px
+		addon.menu.basic.font-size = 14px
+		addon.menu.basic.menu-text-weight = bold
 		addon.menu.basic.menu-rounding = 4px
+    addon.menu.basic.item-separator-color = #c4ae96
+    addon.menu.basic.item-separator-width = 2px
+
 			#addon.menu.basic.menu-opacity = 70%
 			#addon.menu.basic.menu-tile = /img/menu-bar.jpg
 			#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
