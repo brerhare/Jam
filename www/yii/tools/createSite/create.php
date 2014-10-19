@@ -19,16 +19,18 @@ while (!feof($handle))
 	$line = fgets($handle); 
 	if ($line[0] == '#')
 		continue;
+	if (!(strstr($line, "=")))
+		continue;
 	if ($line == "")
 		break;
 	$line = str_replace("\n", "", $line);
 	$temp = explode('=', $line); 
+	if (count($temp) == 0)
+		continue;
 	$manifest[trim($temp[0])] = trim($temp[1]); 
 } 
 fclose($handle); 
 print_r($manifest);
-
-die;
 
 // The 'site' parameter must NOT be blank
 if (trim($manifest['site']) == "")
