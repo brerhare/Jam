@@ -53,8 +53,8 @@
 
     <script type="text/javascript">
     CKEDITOR.replace( 'editor1', {
-        width: <?php echo Yii::app()->params['editorPageWidth'];?>,
-        height: <?php echo Yii::app()->params['editorPageHeight'];?>,
+        width: <?php echo Yii::app()->params['editorpagewidth'];?>,
+        height: <?php echo Yii::app()->params['editorpageheight'];?>,
         filebrowserUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/upload.php?type=files',
         filebrowserImageUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/upload.php?type=images',
         filebrowserFlashUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/upload.php?type=flash'
