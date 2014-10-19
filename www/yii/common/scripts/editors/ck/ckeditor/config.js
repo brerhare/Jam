@@ -35,4 +35,8 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
+
+	
+	// @@ NB: Added for Jelly
+	config.contentsCss = '/scripts/jelly/header.css';
 };

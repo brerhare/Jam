@@ -267,8 +267,14 @@ END_OF_FOOTER;
 	{
 		$this->emit($this->beginHeader);
 
-		if (file_exists($this->jellyRootPath . 'header.html'))
-			$this->emit(file_get_contents($this->jellyRootPath . 'header.html'));
+		if (file_exists($this->jellyRootPath . 'header.css'))
+			$this->emit(file_get_contents($this->jellyRootPath . 'header.css'));
+		else
+		{
+			// Backward compatibility - it used to be called header.html
+			if (file_exists($this->jellyRootPath . 'header.html'))
+				$this->emit(file_get_contents($this->jellyRootPath . 'header.html'));
+		}
 
 		foreach ($this->headerArray as $hdr)
 			$this->emit($hdr);
