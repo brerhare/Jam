@@ -17,10 +17,16 @@ $manifest = array();
 while (!feof($handle)) 
 { 
 	$line = fgets($handle); 
+	if ($line[0] == '#')
+		continue;
+	if (!(strstr($line, "=")))
+		continue;
 	if ($line == "")
 		break;
 	$line = str_replace("\n", "", $line);
 	$temp = explode('=', $line); 
+	if (count($temp) == 0)
+		continue;
 	$manifest[trim($temp[0])] = trim($temp[1]); 
 } 
 fclose($handle); 
@@ -114,10 +120,12 @@ $main = str_replace("<sitetitle>", $manifest['sitetitle'] . " Backend", $main);
 $main = str_replace("<dbname>", $manifest['dbname'], $main);
 $main = str_replace("<dbuser>", $manifest['dbuser'], $main);
 $main = str_replace("<dbpass>", $manifest['dbpass'], $main);
+$main = str_replace("<editorpagewidth>", $manifest['editorpagewidth'], $main);
+$main = str_replace("<editorpageheight>", $manifest['editorpageheight'], $main);
 if (!(file_put_contents($siteDir . "/protected/backend/config/main.php", $main)))
     die("Failed to update protect/backend/config/main.php - aborting\n");
 
-echo "\nDone. Dont forget to restart Apache\n"
-echo "Also dont forget to add this site into /root/setperms\n"
+echo "\nDone. Dont forget to restart Apache\n";
+echo "Also dont forget to add this site into /root/setperms\n";
 
 ?>

@@ -94,9 +94,14 @@ class ContentBlockController extends Controller
 		{
 			$model->attributes=$_POST['ContentBlock'];
 			if($model->save())
+			{
 				$this->redirect(array('admin'));
+			}
 		}
 
+		///$_SESSION['KCFINDER']['disabled'] = false; // enables the file browser in the admin
+		///$_SESSION['KCFINDER']['uploadURL'] = Yii::app()->baseUrl."/userdata/image2/"; // URL for the uploads folder
+		///$_SESSION['KCFINDER']['uploadDir'] = Yii::app()->basePath."/../userdata/image2/"; // path to the uploads folder
 		$this->render('update',array(
 			'model'=>$model,
 		));

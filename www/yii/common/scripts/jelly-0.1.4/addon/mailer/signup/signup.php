@@ -91,7 +91,17 @@ class signup
 
 		// Generate the content
 		$content = "<div ng-app>";
-		$content .= "<div style='background-color=" . $this->optionBackColor . "' ng-controller='signupController'>";
+
+
+
+
+		//@@TODO: This is temporarily to disable the background color until we can set it properly in {{name=value}}
+		// Also need to remove the XXX in plugin/news/protected/views/site_sidebar.php
+		$content .= "<div style='XXXbackground-color:" . $this->optionBackColor . "' ng-controller='signupController'>";
+
+
+
+
 		$content .= "<input id='signup-name' class='signup-input' type='text' style='width:" . $this->optionInputWidth . "px' title='Name' />";
 		$content .= $separator;
 		$content .= "<input id='signup-email' class='signup-input' type='text' style='width:" . $this->optionInputWidth . "px' title='Email' />";

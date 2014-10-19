@@ -95,7 +95,7 @@ css.overflow = visible
 css.margin-top = -50px
 
 addon.menu.basic.width = 700px
-addon.menu.basic.height = 30px
+addon.menu.basic.height = 32px
 addon.menu.basic.font-size = 12px
 addon.menu.basic.menu-rounding = 4px
 

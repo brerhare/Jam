@@ -42,10 +42,21 @@
 	$optArr['buttontextcolor'] = '#a70055';
 	$optArr['buttontext'] = 'Sign up';
 	$optArr['inputspacing'] = '5px';
+	$optArr['inputwidth'] = '155px';
 	$optArr['successtextcolor'] = 'white';
 	$optArr['failuretextcolor'] = 'red';
 	$ret = $addon->init($optArr, '/news/scripts/jelly/addon/mailer/signup');
-	echo "<div style='font-size:13px; padding:1px; background-color:lightgrey'>";
+
+
+
+
+	//@@TODO: This is temporarily to disable the background color until we can set it properly in {{name=value}}
+	// Also need to remove the XXX in plugin/news/scripts/jelly/addon/signup/signup.php
+	echo "<div style='font-size:13px; padding:1px; XXXbackground-color:lightgrey'>";
+
+
+
+
 	echo "Keep me informed<br/>";
 	echo $ret[0];
 	echo "</div>";
