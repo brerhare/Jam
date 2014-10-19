@@ -82,7 +82,7 @@ css.display = block
 
 		[menu]
 		css.height = 50px
-		css.margin-top = 24px
+		css.margin-top = 20px
 		css.margin-left = 70px
 		css.overflow = visible
 		css.z-index = 1000
