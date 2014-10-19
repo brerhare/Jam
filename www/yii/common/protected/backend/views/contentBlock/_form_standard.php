@@ -39,7 +39,7 @@
 
 <!-- CKEditor starts -->
 
-	<script src="<?php echo Yii::app()->baseUrl.'/scripts/editor/ck/ckeditor/ckeditor.js'; ?>"></script>
+	<script src="<?php echo Yii::app()->baseUrl.'/scripts/editors/ck/ckeditor/ckeditor.js'; ?>"></script>
 <?php
         $_SESSION['KCFINDER']['disabled'] = false; // enables the file browser in the admin
         $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->baseUrl."/userdata/image/"; // URL for the uploads folder
@@ -55,12 +55,12 @@
 		CKEDITOR.replace( 'editor1', {
 			width: 900,
 			height: 400,
-			//filebrowserBrowseUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editor/ck/kcfinder/browse.php?type=files',
-			//filebrowserImageBrowseUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editor/ck/kcfinder/browse.php?type=images',
-			//filebrowserFlashBrowseUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editor/ck/kcfinder/browse.php?type=flash',
-			filebrowserUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editor/ck/kcfinder/upload.php?type=files',
-			filebrowserImageUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editor/ck/kcfinder/upload.php?type=images',
-			filebrowserFlashUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editor/ck/kcfinder/upload.php?type=flash'
+			//filebrowserBrowseUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/browse.php?type=files',
+			//filebrowserImageBrowseUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/browse.php?type=images',
+			//filebrowserFlashBrowseUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/browse.php?type=flash',
+			filebrowserUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/upload.php?type=files',
+			filebrowserImageUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/upload.php?type=images',
+			filebrowserFlashUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/upload.php?type=flash'
 		});
 	</script>
 
