@@ -10,8 +10,10 @@
 
 class parallax
 {
-	//Defaults
-	private $defaultWidth = "960px";
+	// (A) Declare some sensible default values for all options
+	// --------------------------------------------------------
+
+	private $defaultWidth = "100%";
 	private $defaultHeight = "250px";
 	private $defaultInterval = 10;
 	private $defaultImageWidth = 150;
@@ -20,9 +22,9 @@ class parallax
 
 	public function init($options, $jellyRootUrl)
 	{
-//		var_dump( $options );
+		// (B) Override declared default values with any Jelly supplied values
+		// -------------------------------------------------------------------
 
-		// Generate the content into the html, replacing any <substituteN> tags
 		$content = "";
 		foreach ($options as $opt => $val)
 		{
@@ -52,6 +54,10 @@ class parallax
 		}
 
 
+		// (C) Construct some HTML (like the originally downloaded index.html) but with our own database content and declared/overridden defaults
+		//     (This will replace a <substitute-xxxxx> tag like any other substitutions)
+		// -------------------------------------------------------------------------------------------------------------------------------------
+
 		$sliderItems = JellySliderImage::model()->findAll(array('order'=>'sequence'));
 		$content .= "<div id='da-slider' class='da-slider'>";
 		foreach ($sliderItems as $sliderItem):
@@ -68,39 +74,23 @@ class parallax
 		$content .=		 "</nav>";
 		$content .= "</div>";
 
-/****
-$content .= "<a href='" . $sliderItem->url . "'> <img src='" . Yii::app()->baseUrl . "/userdata/jelly/sliderimage/" . $sliderItem->image . "' style='margin:0px; width:" . $this->defaultWidth . "; height:" . $this->defaultHeight . "; background: url(/userdata/jelly/sliderimage/" . $sliderItem->image  . " no-repeat center center; background-size:cover;' alt=''></a>";
-****/
+		// (D) Make sure all <substitute-xxxx> tags have been substituted in $apiHtml
+		// --------------------------------------------------------------------------
+		if (strstr($this->apiHtml, "<substitute-title-text-color>"))
+			$this->apiHtml = str_replace("<substitute-title-text-color>", $this->defaultTitleTextColor, $this->apiHtml);
 
-		// Apply all defaults that werent overridden
 
-/******************
-		// HTML
-		if (strstr($this->apiHtml, "<substitute-width>"))
-			$this->apiHtml = str_replace("<substitute-width>", "width:" . $this->defaultWidth . ";", $this->apiHtml);
-		if (strstr($this->apiHtml, "<substitute-height>"))
-			$this->apiHtml = str_replace("<substitute-height>", "height:" . $this->defaultHeight . ";", $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-border-width>", $this->defaultBorderWidth,  $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-border-color>", $this->defaultBorderColor,  $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-active-dotcolor>", $this->defaultActiveDotColor,  $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-inactive-dotcolor>", $this->defaultInactiveDotColor,  $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-dot-margin-top>", "0px",  $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-dot-margin-bottom>", "0px",  $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-dot-margin-left>", "0px",  $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-dot-margin-right>", "0px",  $this->apiHtml);
-******************/
+		// (E) Make sure all <substitute-xxxx> tags have been substituted in $apiJs
+		// --------------------------------------------------------------------------
 
-		// JS
 		if (strstr($this->apiJs, "<substitute-interval>"))
-		{
-			$tmp = str_replace("<substitute-interval>", ($this->defaultInterval * 1000), $this->apiJs);
-			$this->apiJs = $tmp;
-		}
+			$this->apiJs = str_replace("<substitute-interval>", ($this->defaultInterval * 1000), $this->apiJs);
 
+
+		// Send the html and js to the jelly processor
 		$tmp = str_replace("<substitute-path>", $jellyRootUrl, $this->apiHtml);
 		$html = str_replace("<substitute-data>", $content, $tmp);
 		$js = $this->apiJs;
-
 		$retArr = array();
 		$retArr[0] = $html;
 		$retArr[1] = $js;
@@ -115,6 +105,10 @@ $content .= "<a href='" . $sliderItem->url . "'> <img src='" . Yii::app()->baseU
 			<script type="text/javascript" src="<substitute-path>/js/jquery.cslider.js"></script>
 			<link rel="stylesheet" type="text/css" href="<substitute-path>/css/style.css" />
 
+			<script>
+				.da-slide h2 { color: <substitute-title-text-color>; }
+			</script>
+
 			<substitute-data>
         </div>
 
@@ -123,14 +117,13 @@ END_OF_API_HTML;
 	private $apiJs = <<<END_OF_API_JS
 
 	jQuery(document).ready(function($){
-
+		// Put any startup code in here
 	});
 
-			$('#da-slider').cslider({
-			autoplay : true,
-			interval : <substitute-interval>,
-		});
-
+	$('#da-slider').cslider({
+		autoplay : true,
+		interval : <substitute-interval>,
+	});
 
 END_OF_API_JS;
 

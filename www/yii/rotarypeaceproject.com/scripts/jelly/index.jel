@@ -116,6 +116,7 @@ addon.menu.basic.edgepadding = 30px
 	css.position = relative
 	css.z-index = 900
 	css.margin-top = -60px
+	css.background-color = pink
 		
 	[slider_line]
 	css.height = 5px
@@ -128,8 +129,8 @@ addon.menu.basic.edgepadding = 30px
 	addon.slider.parallax.width = 100%
 	addon.slider.parallax.height = 250px
 	addon.slider.parallax.interval = 10
-	addon.slider.parallax.imagewidth = 150
-	addon.slider.parallax.imageheight = 150
+	addon.slider.parallax.imagewidth = 252
+	addon.slider.parallax.imageheight = 180
 	addon.slider.parallax.title-text-color = #ffffff
 	addon.slider.parallax.source = db
 
