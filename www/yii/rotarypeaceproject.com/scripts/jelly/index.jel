@@ -1,4 +1,4 @@
-#Demo 5
+#Peace Project
 [defaults]
 include = default-values
 
@@ -57,7 +57,7 @@ css.background-color = white
 			addon.menu.basic.menu-rounding = 20px
 			addon.menu.basic.menu-color = #ffd800
 			addon.menu.basic.item-separator-width = 0px
-addon.menu.basic.edgepadding = 30px
+			addon.menu.basic.edgepadding = 30px
 			addon.menu.basic.font-size = 14px
 			addon.menu.basic.menu-text-color = black
 			addon.menu.basic.menu-text-weight = bold
@@ -112,10 +112,11 @@ addon.menu.basic.edgepadding = 30px
 	child = slider_line, slider
 	condition = @PAGE=@HOMEPAGE
 	css.width = 100%
-	css.height = 320px
+	css.height = 300px
 	css.position = relative
 	css.z-index = 900
-	css.margin-top = -60px
+	css.margin-top = -55px
+	css.background-color = #a5cae0
 		
 	[slider_line]
 	css.height = 5px
@@ -126,11 +127,32 @@ addon.menu.basic.edgepadding = 30px
 	css.width = 100%
   	css.height = 300px
 	addon.slider.parallax.width = 100%
-	addon.slider.parallax.height = 250px
-	addon.slider.parallax.interval = 10
-	addon.slider.parallax.imagewidth = 150
-	addon.slider.parallax.imageheight = 150
-	addon.slider.parallax.title-text-color = #ffffff
+	addon.slider.parallax.height = 400px
+	addon.slider.parallax.background-image = /img/slider-background.jpg
+	addon.slider.parallax.content-width = 80%
+	addon.slider.parallax.content-left = 10%
+	addon.slider.parallax.title-text-color = black
+	addon.slider.parallax.title-font-size = 36px
+	addon.slider.parallax.title-margin-top = 20px
+	addon.slider.parallax.title-shadow = 2px 2px 2px
+	addon.slider.parallax.title-shadow-opacity = 0.4
+	addon.slider.parallax.title-font = 'Baumans', Verdana, sans-serif
+	addon.slider.parallax.title-weight = 600
+	addon.slider.parallax.title-style = italic
+	addon.slider.parallax.blurb-margin-top = 105px
+	addon.slider.parallax.blurb-color = grey
+	addon.slider.parallax.blurb-size = 18px
+	addon.slider.parallax.blurb-line-height = 24px
+	addon.slider.parallax.blurb-height = 92px
+	#addon.slider.parallax.blurb-style = italic
+	addon.slider.parallax.blurb-font = 'Open Sans', Verdana, sans-serif
+	addon.slider.parallax.blurb-weight = 300
+	addon.slider.parallax.image-margin-top = 60px
+	addon.slider.parallax.imagewidth = 252
+	addon.slider.parallax.imageheight = 180
+	addon.slider.parallax.link-margin-top = 210px
+	
+	addon.slider.parallax.interval = 5
 	addon.slider.parallax.source = db
 
 	
@@ -142,7 +164,7 @@ addon.menu.basic.edgepadding = 30px
 	css.height = 40px
 	css.position = relative
 	css.z-index = 900
-	css.margin-top = -60px
+	css.margin-top = -55px
 		
 	[slider_line_2]
 	css.height = 5px
