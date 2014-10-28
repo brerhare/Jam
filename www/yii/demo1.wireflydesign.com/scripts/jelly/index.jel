@@ -66,7 +66,7 @@ addon.ticker.crawler.tape-border-width = 1px
 
 	[header]
 	child = logo
-	css.height = 90px
+	css.height = 110px
 	css.width = 800px
 	css.background-color = red
 	
@@ -83,19 +83,19 @@ addon.ticker.crawler.tape-border-width = 1px
 	[menu]
 	css.height = 50px
 	css.width = 780px
-	css.margin-top = -40px
+	css.margin-top = -52px
 	css.margin-left = 10px
 	css.overflow = visible
 	css.z-index = 900
 
 	addon.menu.basic.orientation = horizontal
 	#addon.menu.basic.width = 780px
-	addon.menu.basic.height = 50px
+	addon.menu.basic.height = 40px
 
 	addon.menu.basic.menu-rounding = 0px
 	addon.menu.basic.menu-color = white
 	addon.menu.basic.item-separator-color = red
-	addon.menu.basic.item-separator-width = 5px
+	addon.menu.basic.item-separator-width = 10px
 
 	addon.menu.basic.font-size = 14px
 	addon.menu.basic.menu-text-color = black
