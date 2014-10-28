@@ -1,13 +1,13 @@
 .da-slider{
 	width: 100%;
 	min-width: 520px;
-	height: 400px;
+	height: 400px; /*slider-height*/
 	position: relative;
-	/*margin: 30px auto;*/
+			/*margin: 30px auto;*/
 	overflow: hidden;
-	background: transparent url(../images/slider-background.jpg) repeat 0% 0%; /*slider-background*/
-	/*border-top: 8px solid #efc34a;*/
-	/*border-bottom: 8px solid #efc34a;*/
+	background: url(../images/slider-background.jpg) repeat 0% 0%; /*slider-background*/
+			/*border-top: 8px solid #efc34a;*/
+			/*border-bottom: 8px solid #efc34a;*/
 	box-shadow: 0px 1px 1px rgba(0,0,0,0.2), 0px -2px 1px #fff;
 	-webkit-transition: background-position 1.4s ease-in-out 0.3s;
 	-moz-transition: background-position 1.4s ease-in-out 0.3s;
@@ -17,11 +17,11 @@
 }
 .da-slide{
 	position: absolute;
-	width: 100%;
+	width: 90%; /*content-width*/	
 	height: 100%;
 	top: 0px;
-	left: 0px;
-	font-family: 'BebasNeueRegular', 'Arial Narrow', Arial, sans-serif;
+	left: 5%; /*content-left*/
+	/*font-family: 'BebasNeueRegular', 'Arial Narrow', Arial, sans-serif;*/
 	text-align: left;
 }
 .da-slide-current{
@@ -53,39 +53,42 @@
 }
 .da-slide h2{
 	color: #fff; /*title-text-color*/
-	font-size: 66px;
+	font-size: 50px; /*title-font-size*/
 	width: 50%;
-	top: 60px;
-	white-space: nowrap;
+	top: 0px; /*title-margin-top*/
+	/*white-space: nowrap;*/
 	z-index: 10;
-	text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
-	font-family: 'Economica', Arial, sans-serif;
-	font-weight: 700;
+	text-shadow: 3px 3px 1px rgba(0,0,0,0.5); /*title-shadow*/
+	font-family: 'Economica', Arial, sans-serif; /*font-family*/
+	font-weight: 400; /*title-weight*/
+	font-style: italic /*title-style*/
 }
 .da-slide p{
 	width: 45%;
-	top: 155px;
-	color: #916c05;
-	font-size: 18px;
-	line-height: 26px;
-	height: 80px;
+	top: 155px; /*blurb-margin-top*/
+	color: grey; /*blurb-color*/
+	font-size: 18px; /*blurb-size*/
+	line-height: 26px; /*blurb-line-height*/
+	height: 80px; /*blurb-height*/
 	overflow: hidden;
-	font-style: italic;
+	font-style: italic; /*blurb-style*/
 	font-family: 'Economica', Arial, sans-serif;
-	font-weight: 400;
-	font-style: italic;
+	font-weight: 400; /*blurb-weight*/
 }
 .da-slide .da-img{
 	text-align: center;
 	width: 30%;
-	top: 70px;
+	top: 70px; /*image-margin-top*/
 	height: 256px;
 	line-height: 320px;
 	left: 110%; /*60%*/
 }
 .da-slide .da-link{
-	top: 270px; /*depends on p height*/
-	border-radius: 30px;
+	top: 170px; /*link-margin-top*/
+	width: 150px;
+	height: 75px;
+	background: url(../images/link.png); /*link-img*/
+	/*border-radius: 30px;
 	box-shadow: 0px 1px 1px rgba(0,0,0,0.1);
 	color: #fff;
 	text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
@@ -93,12 +96,12 @@
 	padding: 2px 20px 0px;
 	font-size: 18px;
 	line-height: 30px;
-	width: 80px;
 	text-align: center;
-	background: rgba(255,255,255,0.2);
+	background: rgba(255,255,255,0.2);*/
 }
 .da-slide .da-link:hover{
-	background: rgba(255,255,255,0.3);
+	background: url(../images/link-hover.png);
+	/*background: rgba(255,255,255,0.3);*/
 }
 .da-dots{
 	width: 100%;
