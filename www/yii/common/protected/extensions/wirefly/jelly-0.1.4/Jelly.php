@@ -157,6 +157,24 @@ END_OF_FOOTER;
 	private $bodyArray = array();
 	private $scriptArray = array();
 
+// -------------------------- Entry points -----------------------------
+
+    // (1) Expand curly wurlies embedded in content (eg a plugin embeds an addon)
+
+    public function expandContent($content, $jellyRoot)
+    {
+        $this->jellyRootPath = Yii::app()->basePath . "/../" . $jellyRoot;
+        $this->jellyRootUrl  = Yii::app()->baseUrl . $jellyRoot;
+        $this->genInlineHtml($content, $indentLevel=0);
+		$retString = "";
+		foreach ($this->bodyArray as $body)
+			$retString .= $body;	
+//$retString = "OK";
+		return($retString);
+    }
+
+    // (2) Process a jelly file that has been parsed into an array (The general use case - handling entire jelly files)
+
 	public function processData($jellyArray, $jellyRoot)
 	{
 		$this->jellyRootPath = Yii::app()->basePath . "/../" . $jellyRoot;
