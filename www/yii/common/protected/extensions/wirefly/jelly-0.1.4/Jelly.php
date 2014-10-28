@@ -97,6 +97,7 @@ class Jelly
 		border-collapse: collapse;
 		border-spacing: 0;
 	}
+	strong { font-weight: bold; }		// @@ NB: Override for CKEditor
 	/**************************/
 
 	</style>

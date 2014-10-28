@@ -13,4 +13,4 @@ checkoutname = Rotary Peace Project
 
 # Backend page editor - we want to make this as close as possible to the frontend so it renders similarly
 editorpagewidth = 800
-editorpageheight = 600
+editorpageheight = 500
