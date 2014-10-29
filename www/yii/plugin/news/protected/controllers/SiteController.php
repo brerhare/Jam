@@ -55,7 +55,8 @@ class SiteController extends Controller
 	 */
 	public function actionPlay()
 	{
-		$artContent = $this->resolveParentSiteGalleryAddon();
+		if ((isset($_GET['art'])) && ($_GET['art'] != ""))
+			$this->actionResolveParentSiteGalleryAddon(0);
 
 		$category = $_GET['cat'];
 		$this->renderPartial('index',array(
@@ -66,43 +67,45 @@ class SiteController extends Controller
 
 
 	// ------------------------------------------------- Addon resolver code starts --------------------------------------->
-	public function resolveParentSiteGalleryAddon()
+	public function actionResolveParentSiteGalleryAddon($repeat, $repeatContent="")
 	{
-		// Stash the $_GETs
-		$cat = '';
-		$art = '';
-		if (isset($_GET['cat']))
-			$cat = $_GET['cat'];
-		if (isset($_GET['art']))
-			$art = $_GET['art'];
+		$content = $repeatContent;
 
-		Yii::app()->session['stash_cat'] = $cat;
-		Yii::app()->session['stash_art'] = $art;
-
-		$retVal = "";
-		if ($art != '')
+		if ($repeat == 0)
 		{
+			// Stash the $_GETs
+			$cat = '';
+			$art = '';
+			if (isset($_GET['cat']))
+				$cat = $_GET['cat'];
+			if (isset($_GET['art']))
+				$art = $_GET['art'];
+			Yii::app()->session['stash_cat'] = $cat;
+			Yii::app()->session['stash_art'] = $art;
+
     		// Show the selected article's detail
     		$criteria = new CDbCriteria;
     		$criteria->addCondition("uid=" . Yii::app()->session['uid']);
-    		$criteria->addCondition("id=" . $_GET['art']);
+    		$criteria->addCondition("id=" . Yii::app()->session['stash_art']);
     		$article = Article::model()->find($criteria);
     		if ($article)
     		{
-				//$url = Yii::app()->session['parenturl'] . "/index.php/site/pluginGalleryAddonCallback?cat=" . $_GET['cat'] . "&art=" . $_GET['art'] . "&content=" . $article->content;
-				$url = Yii::app()->session['parenturl'] . "/index.php/site/pluginGalleryAddonCallback?&content=" . $article->content;
-				$this->redirect($url);
-    		}
-		
+				$content = $article->content;
+			}
 		}
+		$url = Yii::app()->session['parenturl'] . "/index.php/site/pluginGalleryAddonCallback?&content=" . urlencode($content);
+		$this->redirect($url);
 	}
 
 	public function actionResolveParentSiteGalleryAddonReturn()
 	{
 		$content = $_GET['content'];
 
-$util = new Util;
-$content = $util->decrypt($content);
+		$util = new Util;
+		$content = $util->decrypt($content);
+
+		//if (strstr($content, "{{"))
+			//$this->redirect(array('resolveParentSiteGalleryAddon', 'repeat' => '1', 'repeatContent' => $content));
 
 		$this->renderPartial('index',array(
 			'showCat' => Yii::app()->session['stash_cat'],
@@ -130,7 +133,7 @@ $content = $util->decrypt($content);
 	/**
 	 * Displays the contact page
 	 */
-	public function actionContact()
+	public function actionContact($id)
 	{
 		$model=new ContactForm;
 		if(isset($_POST['ContactForm']))

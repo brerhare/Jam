@@ -78,7 +78,7 @@
 			echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=" . $category->id . "&art='>" . $category->name . "</a><br>";
 echo "<hr>";
 		}
-		if (($showCat != "0") || ((isset($_GET['art'])) && ($_GET['art'] != '')))
+		//if (($showCat != "0") || ((isset($_GET['art'])) && ($_GET['art'] != '')))
 		{
 			echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art='>" . 'All' . "</a><br>";
 			echo "<hr>";
