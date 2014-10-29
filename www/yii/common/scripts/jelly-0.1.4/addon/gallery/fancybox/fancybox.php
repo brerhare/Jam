@@ -165,8 +165,6 @@ END_OF_API_HTML;
 	});
 
 	$(document).ready(function() {
-		/*$(".fancybox").fancybox();*/
-
 		$(".fancybox").fancybox({
     		helpers:  {
         		thumbs : {
@@ -175,7 +173,6 @@ END_OF_API_HTML;
         		}
     		}
 		});
-
 	});
 
 END_OF_API_JS;
