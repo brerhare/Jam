@@ -39,6 +39,8 @@ class SiteController extends Controller
 		Yii::app()->session['news_type'] = 'traditional';
 		if (isset($_GET['newstype']))
 			Yii::app()->session['news_type'] = $_GET['newstype'];
+		if (isset($_GET['parenturl']))
+			Yii::app()->session['parenturl'] = $_GET['parenturl'];
 
 		$category = 0;
 		$this->renderPartial('index',array(
@@ -53,12 +55,63 @@ class SiteController extends Controller
 	 */
 	public function actionPlay()
 	{
+		$artContent = $this->resolveParentSiteGalleryAddon();
+
 		$category = $_GET['cat'];
 		$this->renderPartial('index',array(
 			'showCat'=>$category,
 			'showArt'=>'',
 		));
 	}
+
+
+	// ------------------------------------------------- Addon resolver code starts --------------------------------------->
+	public function resolveParentSiteGalleryAddon()
+	{
+		// Stash the $_GETs
+		$cat = '';
+		$art = '';
+		if (isset($_GET['cat']))
+			$cat = $_GET['cat'];
+		if (isset($_GET['art']))
+			$art = $_GET['art'];
+
+		Yii::app()->session['stash_cat'] = $cat;
+		Yii::app()->session['stash_art'] = $art;
+
+		$retVal = "";
+		if ($art != '')
+		{
+    		// Show the selected article's detail
+    		$criteria = new CDbCriteria;
+    		$criteria->addCondition("uid=" . Yii::app()->session['uid']);
+    		$criteria->addCondition("id=" . $_GET['art']);
+    		$article = Article::model()->find($criteria);
+    		if ($article)
+    		{
+				//$url = Yii::app()->session['parenturl'] . "/index.php/site/pluginGalleryAddonCallback?cat=" . $_GET['cat'] . "&art=" . $_GET['art'] . "&content=" . $article->content;
+				$url = Yii::app()->session['parenturl'] . "/index.php/site/pluginGalleryAddonCallback?&content=" . $article->content;
+				$this->redirect($url);
+    		}
+		
+		}
+	}
+
+	public function actionResolveParentSiteGalleryAddonReturn()
+	{
+		$content = $_GET['content'];
+
+$util = new Util;
+$content = $util->decrypt($content);
+
+		$this->renderPartial('index',array(
+			'showCat' => Yii::app()->session['stash_cat'],
+			'showArt' => Yii::app()->session['stash_art'],
+			'showContent' => $content,
+		));
+	}
+	// <------------------------------------------- Addon resolver code ends ----------------------------------------------
+
 
 	/**
 	 * This is the action to handle external exceptions.

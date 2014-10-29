@@ -57,7 +57,7 @@ opacity:0.85;
 
 <span class="mainitem" style="display:inline-block; width:70%">
 <?php
-if ((!isset($_GET['art'])) || ($_GET['art'] == ''))
+if ($showArt == '')
 {
 	// Show the most recent article
 	$criteria = new CDbCriteria;
@@ -90,7 +90,7 @@ echo "<br/>";
 <br/><br/>
 
 <?php
-if ((!isset($_GET['art'])) || ($_GET['art'] == ''))
+if ($showArt == '')
 {
 	// Show all the other articles
 	$criteria = new CDbCriteria;
@@ -130,18 +130,9 @@ if ((!isset($_GET['art'])) || ($_GET['art'] == ''))
 		echo '</div>';
 	}
 }
-if ((isset($_GET['art'])) && ($_GET['art'] != ''))
+if ($showArt != '')
 {
-    // Show the selected article's detail
-    $criteria = new CDbCriteria;
-    $criteria->addCondition("uid=" . Yii::app()->session['uid']);
-    $criteria->addCondition("id=" . $_GET['art']);
-    $article = Article::model()->find($criteria);
-    if ($article)
-    {
-        echo $article->content;
-    }
-
+	echo $showContent;
 }
 ?>
 </span>
