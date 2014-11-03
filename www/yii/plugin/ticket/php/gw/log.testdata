@@ -1,0 +1,439 @@
+21-06-13 14:41:55 81.107.132.83 Entrypoint to PaymentSense
+21-06-13 14:41:55 81.107.132.83 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '81.107.132.83']
+21-06-13 14:41:55 81.107.132.83 Matching passed sid 8ras9unv9mb6v92a7d8hqrj1d2 with db sid 8ras9unv9mb6v92a7d8hqrj1d2
+21-06-13 14:41:55 81.107.132.83 Retrieving event details using sql [SELECT * FROM ticket_event where id = 5]
+21-06-13 14:41:55 81.107.132.83 Retrieved event record My Test Event
+21-06-13 14:41:55 81.107.132.83 Going with order number 4-1371818515 (based on uid-time)
+21-06-13 14:41:55 81.107.132.83 Updating order number using sql [UPDATE ticket_order set order_number = '4-1371818515' where ip = '81.107.132.83']
+21-06-13 14:41:55 81.107.132.83 (PaymentForm) Start dump -------------------------------
+21-06-13 14:41:55 81.107.132.83 (PaymentForm) End dump ---------------------------------
+21-06-13 14:42:31 81.107.132.83 (PaymentForm) Start dump -------------------------------
+21-06-13 14:42:31 81.107.132.83 (PaymentForm) got field - FormMode -> PAYMENT_FORM
+21-06-13 14:42:31 81.107.132.83 (PaymentForm) got field - HashDigest -> da83b89b69e7a3ecbb5045b42369f0aa
+21-06-13 14:42:31 81.107.132.83 (PaymentForm) got field - Amount -> 3300
+21-06-13 14:42:31 81.107.132.83 (PaymentForm) got field - CurrencyShort -> GBP
+21-06-13 14:42:31 81.107.132.83 (PaymentForm) got field - OrderID -> 4-1371818515
+21-06-13 14:42:31 81.107.132.83 (PaymentForm) got field - OrderDescription -> My Test Event
+21-06-13 14:42:31 81.107.132.83 (PaymentForm) got field - CardName -> Geoff Wayne
+21-06-13 14:42:31 81.107.132.83 (PaymentForm) got field - CardNumber -> 4976350000006891
+21-06-13 14:42:31 81.107.132.83 (PaymentForm) got field - ExpiryDateMonth -> 12
+21-06-13 14:42:31 81.107.132.83 (PaymentForm) got field - ExpiryDateYear -> 15
+21-06-13 14:42:31 81.107.132.83 (PaymentForm) got field - StartDateMonth -> 
+21-06-13 14:42:31 81.107.132.83 (PaymentForm) got field - StartDateYear -> 
+21-06-13 14:42:31 81.107.132.83 (PaymentForm) got field - IssueNumber -> 
+21-06-13 14:42:31 81.107.132.83 (PaymentForm) got field - CV2 -> 341
+21-06-13 14:42:31 81.107.132.83 (PaymentForm) got field - Address1 -> 113 Glendower Road
+21-06-13 14:42:31 81.107.132.83 (PaymentForm) got field - Address2 -> 
+21-06-13 14:42:31 81.107.132.83 (PaymentForm) got field - Address3 -> 
+21-06-13 14:42:31 81.107.132.83 (PaymentForm) got field - Address4 -> 
+21-06-13 14:42:31 81.107.132.83 (PaymentForm) got field - City -> Birmingham
+21-06-13 14:42:31 81.107.132.83 (PaymentForm) got field - State -> West Midlands
+21-06-13 14:42:31 81.107.132.83 (PaymentForm) got field - PostCode -> B42 1SX
+21-06-13 14:42:31 81.107.132.83 (PaymentForm) got field - CountryShort -> GBR
+21-06-13 14:42:31 81.107.132.83 (PaymentForm) End dump ---------------------------------
+21-06-13 14:42:36 81.107.132.83 Updating order details with payment info, using sql [UPDATE ticket_order set
+				card_name = 'Geoff Wayne',
+				card_number = '4976350000006891', 
+				card_expiry_month = '12',
+				card_expiry_year = '15',
+				card_cv2 = '341',
+				card_address1 = '113 Glendower Road',
+				card_address2 = '',
+				card_address3 = '',
+				card_address4 = '', 
+				card_city = 'Birmingham',
+				card_state = 'West Midlands',
+				card_post_code = 'B42 1SX',
+				card_country_short = 'GBR',
+				card_currency_short = 'GBP',
+				card_amount = '3300'
+				where ip = '81.107.132.83']
+21-06-13 14:42:38 81.107.132.83 (PaymentForm) Start dump -------------------------------
+21-06-13 14:42:38 81.107.132.83 (PaymentForm) got field - CrossReference -> 130621124234987701706968
+21-06-13 14:42:38 81.107.132.83 (PaymentForm) got field - PaRES -> eJxlklFvgjAQx9+X7DsY3mcLhQrmqNEQow/qsmmmjwUa6CaggAz36Vc6py7rS6+/Xu/+d1cYtdm+14iykkXuG2YfGz2RR0Us88Q3Nuvpk2uM2OMDrNNSiOBVRKdSMFiIquKJ6MnYN57HL+JIMHYwcWxKDQYdqfSdPFLvzENPCIUvWZhK0rcA/R5VsDJKeV4z4NFxMl8y0yK2QwcuoAuATJTz4Mo9QD8A0O3t86mzKiWulTFbBR/2IkjaRbBpl8EOL98359V6/rn8inxAnQfEvBbMwibB1DJ7pjW0rSGxAWkOhy7cOCtOKjZR1QG6J6DaUKo+nZlrUUDXE4j2UORCeagCrzagm7gDz5ntDShxsF7U9UwVW1FYbxnUMvsvSmXQHKqa16eK7QBdLIh407CQ7NPQMmU4m5xDMrXD2aGJ35wm3m5UsdoFRCQZdpQotetX431SlLJOs07qXwCok4L0GHWP9bA7fP8JvgHB7bbB
+21-06-13 14:42:38 81.107.132.83 (PaymentForm) got field - FormMode -> THREE_D_SECURE
+21-06-13 14:42:38 81.107.132.83 (PaymentForm) got field - ShoppingCartHashDigest -> d41d8cd98f00b204e9800998ecf8427e
+21-06-13 14:42:38 81.107.132.83 (PaymentForm) End dump ---------------------------------
+21-06-13 14:42:42 81.107.132.83 (PaymentForm) Transaction message is AuthCode: 928348
+21-06-13 14:42:42 81.107.132.83 Retrieving (not potential anymore) order details using sql [SELECT * FROM ticket_order where ip = '81.107.132.83']
+21-06-13 14:42:42 81.107.132.83 Updating auth number using sql [UPDATE ticket_order set auth_code = 'AuthCode: 928348' where ip = '81.107.132.83']
+21-06-13 14:42:42 81.107.132.83 Creating Auth record using sql [INSERT into ticket_auth (uid, order_number, card_name, card_number, expiry_month, expiry_year, cv2, address1, address2, address3, address4, city, state, post_code, country_short, amount, currency_short, auth_code) VALUES ('4','4-1371818515','Geoff Wayne','4976350000006891','12','15','341','113 Glendower Road','','','','Birmingham','West Midlands','B42 1SX','GBR','3300','GBP','AuthCode: 928348')]
+21-06-13 14:46:23 81.107.132.83 Entrypoint to PaymentSense
+21-06-13 14:46:23 81.107.132.83 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '81.107.132.83']
+21-06-13 14:46:23 81.107.132.83 Matching passed sid 8ras9unv9mb6v92a7d8hqrj1d2 with db sid 8ras9unv9mb6v92a7d8hqrj1d2
+21-06-13 14:46:23 81.107.132.83 Retrieving event details using sql [SELECT * FROM ticket_event where id = 5]
+21-06-13 14:46:23 81.107.132.83 Retrieved event record My Test Event
+21-06-13 14:46:23 81.107.132.83 Going with order number 4-1371818783 (based on uid-time)
+21-06-13 14:46:23 81.107.132.83 Updating order number using sql [UPDATE ticket_order set order_number = '4-1371818783' where ip = '81.107.132.83']
+21-06-13 14:46:23 81.107.132.83 (PaymentForm) Start dump -------------------------------
+21-06-13 14:46:23 81.107.132.83 (PaymentForm) End dump ---------------------------------
+21-06-13 14:46:55 81.107.132.83 (PaymentForm) Start dump -------------------------------
+21-06-13 14:46:55 81.107.132.83 (PaymentForm) got field - FormMode -> PAYMENT_FORM
+21-06-13 14:46:55 81.107.132.83 (PaymentForm) got field - HashDigest -> 463d30d5d279c0ef8e6cca1ee2603797
+21-06-13 14:46:55 81.107.132.83 (PaymentForm) got field - Amount -> 2000
+21-06-13 14:46:55 81.107.132.83 (PaymentForm) got field - CurrencyShort -> GBP
+21-06-13 14:46:55 81.107.132.83 (PaymentForm) got field - OrderID -> 4-1371818783
+21-06-13 14:46:55 81.107.132.83 (PaymentForm) got field - OrderDescription -> My Test Event
+21-06-13 14:46:55 81.107.132.83 (PaymentForm) got field - CardName -> James Marshall
+21-06-13 14:46:55 81.107.132.83 (PaymentForm) got field - CardNumber -> 4921810000001909
+21-06-13 14:46:55 81.107.132.83 (PaymentForm) got field - ExpiryDateMonth -> 12
+21-06-13 14:46:55 81.107.132.83 (PaymentForm) got field - ExpiryDateYear -> 15
+21-06-13 14:46:55 81.107.132.83 (PaymentForm) got field - StartDateMonth -> 
+21-06-13 14:46:55 81.107.132.83 (PaymentForm) got field - StartDateYear -> 
+21-06-13 14:46:55 81.107.132.83 (PaymentForm) got field - IssueNumber -> 
+21-06-13 14:46:55 81.107.132.83 (PaymentForm) got field - CV2 -> 642
+21-06-13 14:46:55 81.107.132.83 (PaymentForm) got field - Address1 -> 109 Lister Lane
+21-06-13 14:46:55 81.107.132.83 (PaymentForm) got field - Address2 -> 
+21-06-13 14:46:55 81.107.132.83 (PaymentForm) got field - Address3 -> 
+21-06-13 14:46:55 81.107.132.83 (PaymentForm) got field - Address4 -> 
+21-06-13 14:46:55 81.107.132.83 (PaymentForm) got field - City -> Halifax
+21-06-13 14:46:55 81.107.132.83 (PaymentForm) got field - State -> West Yorkshire
+21-06-13 14:46:55 81.107.132.83 (PaymentForm) got field - PostCode -> HX1 5JZ
+21-06-13 14:46:55 81.107.132.83 (PaymentForm) got field - CountryShort -> GBR
+21-06-13 14:46:55 81.107.132.83 (PaymentForm) End dump ---------------------------------
+21-06-13 14:46:56 81.107.132.83 Updating order details with payment info, using sql [UPDATE ticket_order set
+				card_name = 'James Marshall',
+				card_number = '4921810000001909', 
+				card_expiry_month = '12',
+				card_expiry_year = '15',
+				card_cv2 = '642',
+				card_address1 = '109 Lister Lane',
+				card_address2 = '',
+				card_address3 = '',
+				card_address4 = '', 
+				card_city = 'Halifax',
+				card_state = 'West Yorkshire',
+				card_post_code = 'HX1 5JZ',
+				card_country_short = 'GBR',
+				card_currency_short = 'GBP',
+				card_amount = '2000'
+				where ip = '81.107.132.83']
+21-06-13 14:46:57 81.107.132.83 (PaymentForm) Start dump -------------------------------
+21-06-13 14:46:57 81.107.132.83 (PaymentForm) got field - CrossReference -> 130621124655079201055000
+21-06-13 14:46:57 81.107.132.83 (PaymentForm) got field - PaRES -> eJxlkttuwjAMhu8n7R1Q70cObaEgN6hTxcSkVjt0GuwuSiNaRFt6QsDTL8kYMC03cb7E9m87MDsU28FeNm1elb5FhtgayFJUaV6ufesjmT941ozd30GSNVKG71L0jWQQybblaznIU996Cd5kTRzb8xwy9hyLgSatuXPb2q7zuqC2wucsTCUZUkC/RxWsERkvOwZc1I+LmBFqO+5o7AE6AyhkswgvfALoBwC6+r702mqVuEOesmizwnGyOMWbgEZhQOOTOEShOMXhqw9Iv4CUd5JRTGw8omRA6NQZTV0XkOGw0+GCoupVbIoxBnRLQLWhUX06Mo+OAF1OIA+7qpTaB9DFBnQVt+MlcyaUeASbRSZYlaMpJEsGXV78F6UyGA5tx7u+ZStAZwsE3+8ZX86Psswq8fTc82LipJ9b98ueN3K5UsWaJyBFzrCqTu/GK9iuqybvskJL/QsAaSnIjNH02Axb49tP8A1RDLax
+21-06-13 14:46:57 81.107.132.83 (PaymentForm) got field - FormMode -> THREE_D_SECURE
+21-06-13 14:46:57 81.107.132.83 (PaymentForm) got field - ShoppingCartHashDigest -> d41d8cd98f00b204e9800998ecf8427e
+21-06-13 14:46:57 81.107.132.83 (PaymentForm) End dump ---------------------------------
+21-06-13 14:46:58 81.107.132.83 (PaymentForm) Transaction message is AuthCode: 674097
+21-06-13 14:46:58 81.107.132.83 Retrieving (not potential anymore) order details using sql [SELECT * FROM ticket_order where ip = '81.107.132.83']
+21-06-13 14:46:58 81.107.132.83 Updating auth number using sql [UPDATE ticket_order set auth_code = 'AuthCode: 674097' where ip = '81.107.132.83']
+21-06-13 14:46:58 81.107.132.83 Creating Auth record using sql [INSERT into ticket_auth (uid, order_number, card_name, card_number, expiry_month, expiry_year, cv2, address1, address2, address3, address4, city, state, post_code, country_short, amount, currency_short, auth_code) VALUES ('4','4-1371818783','James Marshall','4921810000001909','12','15','642','109 Lister Lane','','','','Halifax','West Yorkshire','HX1 5JZ','GBR','2000','GBP','AuthCode: 674097')]
+21-06-13 14:57:12 86.181.223.64 Entrypoint to PaymentSense
+21-06-13 14:57:12 86.181.223.64 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '86.181.223.64']
+21-06-13 14:57:12 86.181.223.64 Matching passed sid 8ras9unv9mb6v92a7d8hqrj1d2 with db sid 8ras9unv9mb6v92a7d8hqrj1d2
+21-06-13 14:57:12 86.181.223.64 Retrieving event details using sql [SELECT * FROM ticket_event where id = 6]
+21-06-13 14:57:12 86.181.223.64 Retrieved event record My Test Workshop
+21-06-13 14:57:12 86.181.223.64 Going with order number 4-1371819432 (based on uid-time)
+21-06-13 14:57:12 86.181.223.64 Updating order number using sql [UPDATE ticket_order set order_number = '4-1371819432' where ip = '86.181.223.64']
+21-06-13 14:57:12 86.181.223.64 (PaymentForm) Start dump -------------------------------
+21-06-13 14:57:12 86.181.223.64 (PaymentForm) End dump ---------------------------------
+21-06-13 14:59:34 86.181.223.64 (PaymentForm) Start dump -------------------------------
+21-06-13 14:59:34 86.181.223.64 (PaymentForm) got field - FormMode -> PAYMENT_FORM
+21-06-13 14:59:34 86.181.223.64 (PaymentForm) got field - HashDigest -> 10c7adac9e6362363ee80c998db25393
+21-06-13 14:59:34 86.181.223.64 (PaymentForm) got field - Amount -> 4500
+21-06-13 14:59:34 86.181.223.64 (PaymentForm) got field - CurrencyShort -> GBP
+21-06-13 14:59:34 86.181.223.64 (PaymentForm) got field - OrderID -> 4-1371819432
+21-06-13 14:59:34 86.181.223.64 (PaymentForm) got field - OrderDescription -> My Test Workshop
+21-06-13 14:59:34 86.181.223.64 (PaymentForm) got field - CardName -> Sam Burton
+21-06-13 14:59:34 86.181.223.64 (PaymentForm) got field - CardNumber -> 3528008035486208
+21-06-13 14:59:34 86.181.223.64 (PaymentForm) got field - ExpiryDateMonth -> 12
+21-06-13 14:59:34 86.181.223.64 (PaymentForm) got field - ExpiryDateYear -> 15
+21-06-13 14:59:34 86.181.223.64 (PaymentForm) got field - StartDateMonth -> 01
+21-06-13 14:59:34 86.181.223.64 (PaymentForm) got field - StartDateYear -> 07
+21-06-13 14:59:34 86.181.223.64 (PaymentForm) got field - IssueNumber -> 
+21-06-13 14:59:34 86.181.223.64 (PaymentForm) got field - CV2 -> 135
+21-06-13 14:59:34 86.181.223.64 (PaymentForm) got field - Address1 -> 32 Yarborough Road,
+21-06-13 14:59:34 86.181.223.64 (PaymentForm) got field - Address2 -> 
+21-06-13 14:59:34 86.181.223.64 (PaymentForm) got field - Address3 -> 
+21-06-13 14:59:34 86.181.223.64 (PaymentForm) got field - Address4 -> 
+21-06-13 14:59:34 86.181.223.64 (PaymentForm) got field - City -> Grimsby,
+21-06-13 14:59:34 86.181.223.64 (PaymentForm) got field - State -> South Humberside
+21-06-13 14:59:34 86.181.223.64 (PaymentForm) got field - PostCode -> DN34 4EH
+21-06-13 14:59:34 86.181.223.64 (PaymentForm) got field - CountryShort -> GBR
+21-06-13 14:59:34 86.181.223.64 (PaymentForm) End dump ---------------------------------
+21-06-13 14:59:34 86.181.223.64 Updating order details with payment info, using sql [UPDATE ticket_order set
+				card_name = 'Sam Burton',
+				card_number = '3528008035486208', 
+				card_expiry_month = '12',
+				card_expiry_year = '15',
+				card_cv2 = '135',
+				card_address1 = '32 Yarborough Road,',
+				card_address2 = '',
+				card_address3 = '',
+				card_address4 = '', 
+				card_city = 'Grimsby,',
+				card_state = 'South Humberside',
+				card_post_code = 'DN34 4EH',
+				card_country_short = 'GBR',
+				card_currency_short = 'GBP',
+				card_amount = '4500'
+				where ip = '86.181.223.64']
+21-06-13 15:00:19 86.181.223.64 (PaymentForm) Start dump -------------------------------
+21-06-13 15:00:19 86.181.223.64 (PaymentForm) got field - FormMode -> PAYMENT_FORM
+21-06-13 15:00:19 86.181.223.64 (PaymentForm) got field - HashDigest -> 10c7adac9e6362363ee80c998db25393
+21-06-13 15:00:19 86.181.223.64 (PaymentForm) got field - Amount -> 4500
+21-06-13 15:00:19 86.181.223.64 (PaymentForm) got field - CurrencyShort -> GBP
+21-06-13 15:00:19 86.181.223.64 (PaymentForm) got field - OrderID -> 4-1371819432
+21-06-13 15:00:19 86.181.223.64 (PaymentForm) got field - OrderDescription -> My Test Workshop
+21-06-13 15:00:19 86.181.223.64 (PaymentForm) got field - CardName -> Sam Burton
+21-06-13 15:00:19 86.181.223.64 (PaymentForm) got field - CardNumber -> 3528008035486208
+21-06-13 15:00:19 86.181.223.64 (PaymentForm) got field - ExpiryDateMonth -> 12
+21-06-13 15:00:19 86.181.223.64 (PaymentForm) got field - ExpiryDateYear -> 15
+21-06-13 15:00:19 86.181.223.64 (PaymentForm) got field - StartDateMonth -> 01
+21-06-13 15:00:19 86.181.223.64 (PaymentForm) got field - StartDateYear -> 07
+21-06-13 15:00:19 86.181.223.64 (PaymentForm) got field - IssueNumber -> 
+21-06-13 15:00:19 86.181.223.64 (PaymentForm) got field - CV2 -> 135
+21-06-13 15:00:19 86.181.223.64 (PaymentForm) got field - Address1 -> 32 Yarborough Road,
+21-06-13 15:00:19 86.181.223.64 (PaymentForm) got field - Address2 -> 
+21-06-13 15:00:19 86.181.223.64 (PaymentForm) got field - Address3 -> 
+21-06-13 15:00:19 86.181.223.64 (PaymentForm) got field - Address4 -> 
+21-06-13 15:00:19 86.181.223.64 (PaymentForm) got field - City -> Grimsby,
+21-06-13 15:00:19 86.181.223.64 (PaymentForm) got field - State -> South Humberside
+21-06-13 15:00:19 86.181.223.64 (PaymentForm) got field - PostCode -> DN34 4EH
+21-06-13 15:00:19 86.181.223.64 (PaymentForm) got field - CountryShort -> GBR
+21-06-13 15:00:19 86.181.223.64 (PaymentForm) End dump ---------------------------------
+21-06-13 15:00:20 86.181.223.64 Updating order details with payment info, using sql [UPDATE ticket_order set
+				card_name = 'Sam Burton',
+				card_number = '3528008035486208', 
+				card_expiry_month = '12',
+				card_expiry_year = '15',
+				card_cv2 = '135',
+				card_address1 = '32 Yarborough Road,',
+				card_address2 = '',
+				card_address3 = '',
+				card_address4 = '', 
+				card_city = 'Grimsby,',
+				card_state = 'South Humberside',
+				card_post_code = 'DN34 4EH',
+				card_country_short = 'GBR',
+				card_currency_short = 'GBP',
+				card_amount = '4500'
+				where ip = '86.181.223.64']
+21-06-13 15:03:04 86.181.223.64 (PaymentForm) Start dump -------------------------------
+21-06-13 15:03:04 86.181.223.64 (PaymentForm) got field - FormMode -> PAYMENT_FORM
+21-06-13 15:03:04 86.181.223.64 (PaymentForm) got field - HashDigest -> 10c7adac9e6362363ee80c998db25393
+21-06-13 15:03:04 86.181.223.64 (PaymentForm) got field - Amount -> 4500
+21-06-13 15:03:04 86.181.223.64 (PaymentForm) got field - CurrencyShort -> GBP
+21-06-13 15:03:04 86.181.223.64 (PaymentForm) got field - OrderID -> 4-1371819432
+21-06-13 15:03:04 86.181.223.64 (PaymentForm) got field - OrderDescription -> My Test Workshop
+21-06-13 15:03:04 86.181.223.64 (PaymentForm) got field - CardName -> John Watson
+21-06-13 15:03:04 86.181.223.64 (PaymentForm) got field - CardNumber -> 4976000000003436
+21-06-13 15:03:04 86.181.223.64 (PaymentForm) got field - ExpiryDateMonth -> 12
+21-06-13 15:03:04 86.181.223.64 (PaymentForm) got field - ExpiryDateYear -> 15
+21-06-13 15:03:04 86.181.223.64 (PaymentForm) got field - StartDateMonth -> 01
+21-06-13 15:03:04 86.181.223.64 (PaymentForm) got field - StartDateYear -> 07
+21-06-13 15:03:04 86.181.223.64 (PaymentForm) got field - IssueNumber -> 
+21-06-13 15:03:04 86.181.223.64 (PaymentForm) got field - CV2 -> 452
+21-06-13 15:03:04 86.181.223.64 (PaymentForm) got field - Address1 -> 32 Edward Street
+21-06-13 15:03:04 86.181.223.64 (PaymentForm) got field - Address2 -> 
+21-06-13 15:03:04 86.181.223.64 (PaymentForm) got field - Address3 -> 
+21-06-13 15:03:04 86.181.223.64 (PaymentForm) got field - Address4 -> 
+21-06-13 15:03:04 86.181.223.64 (PaymentForm) got field - City -> Camborne
+21-06-13 15:03:04 86.181.223.64 (PaymentForm) got field - State -> Cornwall
+21-06-13 15:03:04 86.181.223.64 (PaymentForm) got field - PostCode -> TR14 8PA
+21-06-13 15:03:04 86.181.223.64 (PaymentForm) got field - CountryShort -> GBR
+21-06-13 15:03:04 86.181.223.64 (PaymentForm) End dump ---------------------------------
+21-06-13 15:03:07 86.181.223.64 Updating order details with payment info, using sql [UPDATE ticket_order set
+				card_name = 'John Watson',
+				card_number = '4976000000003436', 
+				card_expiry_month = '12',
+				card_expiry_year = '15',
+				card_cv2 = '452',
+				card_address1 = '32 Edward Street',
+				card_address2 = '',
+				card_address3 = '',
+				card_address4 = '', 
+				card_city = 'Camborne',
+				card_state = 'Cornwall',
+				card_post_code = 'TR14 8PA',
+				card_country_short = 'GBR',
+				card_currency_short = 'GBP',
+				card_amount = '4500'
+				where ip = '86.181.223.64']
+21-06-13 15:05:48 86.181.223.64 Entrypoint to PaymentSense
+21-06-13 15:05:48 86.181.223.64 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '86.181.223.64']
+21-06-13 15:05:48 86.181.223.64 Matching passed sid 8ras9unv9mb6v92a7d8hqrj1d2 with db sid 8ras9unv9mb6v92a7d8hqrj1d2
+21-06-13 15:05:48 86.181.223.64 Retrieving event details using sql [SELECT * FROM ticket_event where id = 6]
+21-06-13 15:05:48 86.181.223.64 Retrieved event record My Test Workshop
+21-06-13 15:05:48 86.181.223.64 Going with order number 4-1371819948 (based on uid-time)
+21-06-13 15:05:48 86.181.223.64 Updating order number using sql [UPDATE ticket_order set order_number = '4-1371819948' where ip = '86.181.223.64']
+21-06-13 15:05:48 86.181.223.64 (PaymentForm) Start dump -------------------------------
+21-06-13 15:05:48 86.181.223.64 (PaymentForm) End dump ---------------------------------
+21-06-13 15:07:12 86.181.223.64 (PaymentForm) Start dump -------------------------------
+21-06-13 15:07:12 86.181.223.64 (PaymentForm) got field - FormMode -> PAYMENT_FORM
+21-06-13 15:07:12 86.181.223.64 (PaymentForm) got field - HashDigest -> dcc8d59782328e1fca6482386f026bd6
+21-06-13 15:07:12 86.181.223.64 (PaymentForm) got field - Amount -> 9000
+21-06-13 15:07:12 86.181.223.64 (PaymentForm) got field - CurrencyShort -> GBP
+21-06-13 15:07:12 86.181.223.64 (PaymentForm) got field - OrderID -> 4-1371819948
+21-06-13 15:07:12 86.181.223.64 (PaymentForm) got field - OrderDescription -> My Test Workshop
+21-06-13 15:07:12 86.181.223.64 (PaymentForm) got field - CardName -> Kate Rider
+21-06-13 15:07:12 86.181.223.64 (PaymentForm) got field - CardNumber -> 6767000000005462
+21-06-13 15:07:12 86.181.223.64 (PaymentForm) got field - ExpiryDateMonth -> 12
+21-06-13 15:07:12 86.181.223.64 (PaymentForm) got field - ExpiryDateYear -> 15
+21-06-13 15:07:12 86.181.223.64 (PaymentForm) got field - StartDateMonth -> 01
+21-06-13 15:07:12 86.181.223.64 (PaymentForm) got field - StartDateYear -> 07
+21-06-13 15:07:12 86.181.223.64 (PaymentForm) got field - IssueNumber -> 
+21-06-13 15:07:12 86.181.223.64 (PaymentForm) got field - CV2 -> 741
+21-06-13 15:07:12 86.181.223.64 (PaymentForm) got field - Address1 -> 17 Hilton Court,
+21-06-13 15:07:12 86.181.223.64 (PaymentForm) got field - Address2 -> Langshott,
+21-06-13 15:07:12 86.181.223.64 (PaymentForm) got field - Address3 -> 
+21-06-13 15:07:12 86.181.223.64 (PaymentForm) got field - Address4 -> 
+21-06-13 15:07:12 86.181.223.64 (PaymentForm) got field - City -> Horley,
+21-06-13 15:07:12 86.181.223.64 (PaymentForm) got field - State -> Surrey
+21-06-13 15:07:12 86.181.223.64 (PaymentForm) got field - PostCode -> RH6 9GS
+21-06-13 15:07:12 86.181.223.64 (PaymentForm) got field - CountryShort -> GBR
+21-06-13 15:07:12 86.181.223.64 (PaymentForm) End dump ---------------------------------
+21-06-13 15:07:13 86.181.223.64 Updating order details with payment info, using sql [UPDATE ticket_order set
+				card_name = 'Kate Rider',
+				card_number = '6767000000005462', 
+				card_expiry_month = '12',
+				card_expiry_year = '15',
+				card_cv2 = '741',
+				card_address1 = '17 Hilton Court,',
+				card_address2 = 'Langshott,',
+				card_address3 = '',
+				card_address4 = '', 
+				card_city = 'Horley,',
+				card_state = 'Surrey',
+				card_post_code = 'RH6 9GS',
+				card_country_short = 'GBR',
+				card_currency_short = 'GBP',
+				card_amount = '9000'
+				where ip = '86.181.223.64']
+21-06-13 15:07:13 86.181.223.64 (PaymentForm) Transaction message is SOLO cards no longer permitted
+21-06-13 15:07:52 86.181.223.64 Entrypoint to PaymentSense
+21-06-13 15:07:52 86.181.223.64 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '86.181.223.64']
+21-06-13 15:07:52 86.181.223.64 Matching passed sid 8ras9unv9mb6v92a7d8hqrj1d2 with db sid 8ras9unv9mb6v92a7d8hqrj1d2
+21-06-13 15:07:52 86.181.223.64 Retrieving event details using sql [SELECT * FROM ticket_event where id = 6]
+21-06-13 15:07:52 86.181.223.64 Retrieved event record My Test Workshop
+21-06-13 15:07:52 86.181.223.64 Going with order number 4-1371820072 (based on uid-time)
+21-06-13 15:07:52 86.181.223.64 Updating order number using sql [UPDATE ticket_order set order_number = '4-1371820072' where ip = '86.181.223.64']
+21-06-13 15:07:52 86.181.223.64 (PaymentForm) Start dump -------------------------------
+21-06-13 15:07:52 86.181.223.64 (PaymentForm) End dump ---------------------------------
+21-06-13 15:08:57 86.181.223.64 (PaymentForm) Start dump -------------------------------
+21-06-13 15:08:57 86.181.223.64 (PaymentForm) got field - FormMode -> PAYMENT_FORM
+21-06-13 15:08:57 86.181.223.64 (PaymentForm) got field - HashDigest -> 82a9c593a4e3b453ca002d704fad6329
+21-06-13 15:08:57 86.181.223.64 (PaymentForm) got field - Amount -> 9000
+21-06-13 15:08:57 86.181.223.64 (PaymentForm) got field - CurrencyShort -> GBP
+21-06-13 15:08:57 86.181.223.64 (PaymentForm) got field - OrderID -> 4-1371820072
+21-06-13 15:08:57 86.181.223.64 (PaymentForm) got field - OrderDescription -> My Test Workshop
+21-06-13 15:08:57 86.181.223.64 (PaymentForm) got field - CardName -> Sam Burton
+21-06-13 15:08:57 86.181.223.64 (PaymentForm) got field - CardNumber -> 3528008035486208
+21-06-13 15:08:57 86.181.223.64 (PaymentForm) got field - ExpiryDateMonth -> 12
+21-06-13 15:08:57 86.181.223.64 (PaymentForm) got field - ExpiryDateYear -> 15
+21-06-13 15:08:57 86.181.223.64 (PaymentForm) got field - StartDateMonth -> 01
+21-06-13 15:08:57 86.181.223.64 (PaymentForm) got field - StartDateYear -> 07
+21-06-13 15:08:57 86.181.223.64 (PaymentForm) got field - IssueNumber -> 
+21-06-13 15:08:57 86.181.223.64 (PaymentForm) got field - CV2 -> 135
+21-06-13 15:08:57 86.181.223.64 (PaymentForm) got field - Address1 -> 32 Yarborough Road,
+21-06-13 15:08:57 86.181.223.64 (PaymentForm) got field - Address2 -> 
+21-06-13 15:08:57 86.181.223.64 (PaymentForm) got field - Address3 -> 
+21-06-13 15:08:57 86.181.223.64 (PaymentForm) got field - Address4 -> 
+21-06-13 15:08:57 86.181.223.64 (PaymentForm) got field - City -> Grimsby,
+21-06-13 15:08:57 86.181.223.64 (PaymentForm) got field - State -> South Humberside
+21-06-13 15:08:57 86.181.223.64 (PaymentForm) got field - PostCode -> DN34 4EH
+21-06-13 15:08:57 86.181.223.64 (PaymentForm) got field - CountryShort -> GBR
+21-06-13 15:08:57 86.181.223.64 (PaymentForm) End dump ---------------------------------
+21-06-13 15:08:57 86.181.223.64 Updating order details with payment info, using sql [UPDATE ticket_order set
+				card_name = 'Sam Burton',
+				card_number = '3528008035486208', 
+				card_expiry_month = '12',
+				card_expiry_year = '15',
+				card_cv2 = '135',
+				card_address1 = '32 Yarborough Road,',
+				card_address2 = '',
+				card_address3 = '',
+				card_address4 = '', 
+				card_city = 'Grimsby,',
+				card_state = 'South Humberside',
+				card_post_code = 'DN34 4EH',
+				card_country_short = 'GBR',
+				card_currency_short = 'GBP',
+				card_amount = '9000'
+				where ip = '86.181.223.64']
+21-06-13 15:11:05 86.181.223.64 (PaymentForm) Start dump -------------------------------
+21-06-13 15:11:05 86.181.223.64 (PaymentForm) got field - FormMode -> PAYMENT_FORM
+21-06-13 15:11:05 86.181.223.64 (PaymentForm) got field - HashDigest -> 82a9c593a4e3b453ca002d704fad6329
+21-06-13 15:11:05 86.181.223.64 (PaymentForm) got field - Amount -> 9000
+21-06-13 15:11:05 86.181.223.64 (PaymentForm) got field - CurrencyShort -> GBP
+21-06-13 15:11:05 86.181.223.64 (PaymentForm) got field - OrderID -> 4-1371820072
+21-06-13 15:11:05 86.181.223.64 (PaymentForm) got field - OrderDescription -> My Test Workshop
+21-06-13 15:11:05 86.181.223.64 (PaymentForm) got field - CardName -> Jake Keaton
+21-06-13 15:11:05 86.181.223.64 (PaymentForm) got field - CardNumber -> 340000432128428
+21-06-13 15:11:05 86.181.223.64 (PaymentForm) got field - ExpiryDateMonth -> 12
+21-06-13 15:11:05 86.181.223.64 (PaymentForm) got field - ExpiryDateYear -> 15
+21-06-13 15:11:05 86.181.223.64 (PaymentForm) got field - StartDateMonth -> 01
+21-06-13 15:11:05 86.181.223.64 (PaymentForm) got field - StartDateYear -> 07
+21-06-13 15:11:05 86.181.223.64 (PaymentForm) got field - IssueNumber -> 
+21-06-13 15:11:05 86.181.223.64 (PaymentForm) got field - CV2 -> 3469
+21-06-13 15:11:05 86.181.223.64 (PaymentForm) got field - Address1 -> 45 Christchurch Avenue,
+21-06-13 15:11:05 86.181.223.64 (PaymentForm) got field - Address2 -> 
+21-06-13 15:11:05 86.181.223.64 (PaymentForm) got field - Address3 -> 
+21-06-13 15:11:05 86.181.223.64 (PaymentForm) got field - Address4 -> 
+21-06-13 15:11:05 86.181.223.64 (PaymentForm) got field - City -> London
+21-06-13 15:11:05 86.181.223.64 (PaymentForm) got field - State -> London
+21-06-13 15:11:05 86.181.223.64 (PaymentForm) got field - PostCode -> NW6 7BB
+21-06-13 15:11:05 86.181.223.64 (PaymentForm) got field - CountryShort -> GBR
+21-06-13 15:11:05 86.181.223.64 (PaymentForm) End dump ---------------------------------
+21-06-13 15:11:08 86.181.223.64 Updating order details with payment info, using sql [UPDATE ticket_order set
+				card_name = 'Jake Keaton',
+				card_number = '340000432128428', 
+				card_expiry_month = '12',
+				card_expiry_year = '15',
+				card_cv2 = '3469',
+				card_address1 = '45 Christchurch Avenue,',
+				card_address2 = '',
+				card_address3 = '',
+				card_address4 = '', 
+				card_city = 'London',
+				card_state = 'London',
+				card_post_code = 'NW6 7BB',
+				card_country_short = 'GBR',
+				card_currency_short = 'GBP',
+				card_amount = '9000'
+				where ip = '86.181.223.64']
+21-06-13 15:12:32 86.181.223.64 (PaymentForm) Start dump -------------------------------
+21-06-13 15:12:32 86.181.223.64 (PaymentForm) got field - FormMode -> PAYMENT_FORM
+21-06-13 15:12:32 86.181.223.64 (PaymentForm) got field - HashDigest -> 82a9c593a4e3b453ca002d704fad6329
+21-06-13 15:12:32 86.181.223.64 (PaymentForm) got field - Amount -> 9000
+21-06-13 15:12:32 86.181.223.64 (PaymentForm) got field - CurrencyShort -> GBP
+21-06-13 15:12:32 86.181.223.64 (PaymentForm) got field - OrderID -> 4-1371820072
+21-06-13 15:12:32 86.181.223.64 (PaymentForm) got field - OrderDescription -> My Test Workshop
+21-06-13 15:12:32 86.181.223.64 (PaymentForm) got field - CardName -> Patrick Smith
+21-06-13 15:12:32 86.181.223.64 (PaymentForm) got field - CardNumber -> 4508750000005461
+21-06-13 15:12:32 86.181.223.64 (PaymentForm) got field - ExpiryDateMonth -> 12
+21-06-13 15:12:32 86.181.223.64 (PaymentForm) got field - ExpiryDateYear -> 15
+21-06-13 15:12:32 86.181.223.64 (PaymentForm) got field - StartDateMonth -> 01
+21-06-13 15:12:32 86.181.223.64 (PaymentForm) got field - StartDateYear -> 07
+21-06-13 15:12:32 86.181.223.64 (PaymentForm) got field - IssueNumber -> 
+21-06-13 15:12:32 86.181.223.64 (PaymentForm) got field - CV2 -> 568
+21-06-13 15:12:32 86.181.223.64 (PaymentForm) got field - Address1 -> 29 Normanton Road,
+21-06-13 15:12:32 86.181.223.64 (PaymentForm) got field - Address2 -> 
+21-06-13 15:12:32 86.181.223.64 (PaymentForm) got field - Address3 -> 
+21-06-13 15:12:32 86.181.223.64 (PaymentForm) got field - Address4 -> 
+21-06-13 15:12:32 86.181.223.64 (PaymentForm) got field - City -> Basingstoke,
+21-06-13 15:12:32 86.181.223.64 (PaymentForm) got field - State -> Hampshire
+21-06-13 15:12:32 86.181.223.64 (PaymentForm) got field - PostCode -> RG21 5QP
+21-06-13 15:12:32 86.181.223.64 (PaymentForm) got field - CountryShort -> GBR
+21-06-13 15:12:32 86.181.223.64 (PaymentForm) End dump ---------------------------------
+21-06-13 15:12:33 86.181.223.64 Updating order details with payment info, using sql [UPDATE ticket_order set
+				card_name = 'Patrick Smith',
+				card_number = '4508750000005461', 
+				card_expiry_month = '12',
+				card_expiry_year = '15',
+				card_cv2 = '568',
+				card_address1 = '29 Normanton Road,',
+				card_address2 = '',
+				card_address3 = '',
+				card_address4 = '', 
+				card_city = 'Basingstoke,',
+				card_state = 'Hampshire',
+				card_post_code = 'RG21 5QP',
+				card_country_short = 'GBR',
+				card_currency_short = 'GBP',
+				card_amount = '9000'
+				where ip = '86.181.223.64']
+21-06-13 15:12:33 86.181.223.64 (PaymentForm) Transaction message is AuthCode: 966220
+21-06-13 15:12:33 86.181.223.64 Retrieving (not potential anymore) order details using sql [SELECT * FROM ticket_order where ip = '86.181.223.64']
+21-06-13 15:12:33 86.181.223.64 Updating auth number using sql [UPDATE ticket_order set auth_code = 'AuthCode: 966220' where ip = '86.181.223.64']
+21-06-13 15:12:33 86.181.223.64 Creating Auth record using sql [INSERT into ticket_auth (uid, order_number, card_name, card_number, expiry_month, expiry_year, cv2, address1, address2, address3, address4, city, state, post_code, country_short, amount, currency_short, auth_code) VALUES ('4','4-1371820072','Patrick Smith','4508750000005461','12','15','568','29 Normanton Road,','','','','Basingstoke,','Hampshire','RG21 5QP','GBR','9000','GBP','AuthCode: 966220')]

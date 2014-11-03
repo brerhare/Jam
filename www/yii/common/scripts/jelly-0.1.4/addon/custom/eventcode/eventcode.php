@@ -412,6 +412,19 @@ class eventcode
 			if (($event->ticket_event_id != 0) && ($member))
 			{
 				$ticketUrl = "https://plugin.wireflydesign.com/ticket/index.php/ticket/book/" . $event->ticket_event_id . "?sid=" . $member->sid . "&ref=event";
+
+
+
+
+
+if (isset($_GET['test']))
+	{
+				$ticketUrl = "https://plugin.wireflydesign.com/ticket/index.php/ticket/book/" . $event->ticket_event_id . "?sid=" . $member->sid . "&ref=event" . "&ticket_event_id=" . $event->ticket_event_id;
+	}
+
+
+
+
 				$content .= "<script>function goBook(where){window.open(where, '_blank');}</script>";
 				$content .= "<div style='float:right'><a target='_blank' href='" . $ticketUrl . "'><img style='margin-top:0px; margin-left:0px' onClick=goBook('" . $ticketUrl . "') title='Book' src='img/book-s.jpg'></a></div><br/>";
 			}

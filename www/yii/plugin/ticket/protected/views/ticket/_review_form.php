@@ -235,7 +235,7 @@ echo "<script>lc=$lc;</script>";
 		event = res[1];
 		area = res[3];
 		ttype = res[5];
-		jQuery.ajax({'url':'//plugin.wireflydesign.com/ticket2/index.php/ticket/ajaxDeleteTicket','data':{'id':id, 'event':event, 'area':area, 'ttype':ttype},'type':'POST','dataType':'json','success':function(val){ajaxDeleteReturn(val);},'cache':false});
+		jQuery.ajax({'url':'//plugin.wireflydesign.com/ticket/index.php/ticket/ajaxDeleteTicket','data':{'id':id, 'event':event, 'area':area, 'ttype':ttype},'type':'POST','dataType':'json','success':function(val){ajaxDeleteReturn(val);},'cache':false});
 	}
 
 	var ajaxDeleteReturn= function(val) {
