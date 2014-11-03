@@ -59,7 +59,7 @@ class JellyGalleryImageController extends Controller
 
 	/**
 	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 * Single-create entrypoint
 	 */
 	public function actionCreate()
 	{
@@ -93,7 +93,8 @@ class JellyGalleryImageController extends Controller
 	}
 
 	/**
-	 * Multi-Creates a new model.
+	 * Creates multiple new models.
+	 * Multi-create entrypoint
 	 */
 	public function actionMultiCreate()
 	{
@@ -104,6 +105,7 @@ class JellyGalleryImageController extends Controller
 
 
 	/**
+	 * This is a NON-USER call
 	 * Upload for multi-create. NOTE that this is called asynchronously for EACH file uploaded
 	 */
 	public function actionMultiCreateUpload()
