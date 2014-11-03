@@ -1,0 +1,360 @@
+<div class="form">
+	<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+		'id'=>'ticket-form',
+		'enableAjaxValidation'=>false,
+		'type'=>'horizontal',
+	)); ?>
+
+<style>
+#page {
+	border:0;
+}
+/* @@NB: This overrides the some bootstrap settings */
+.span7 {width:94%}
+.span-19 {margin-left:1px}
+</style>
+
+<!--- TICKET DIV ---------------------------------------------------------------------------------------------------->
+
+<style>
+
+.row {
+	margin-left: 3px;
+}
+table td, table th {
+	padding: 0px 5px 0px 5px;
+}
+.hide {
+	display:none;
+}
+.show {
+	display:visible;
+}
+div.form input, div.form textarea, div.form select {
+margin: 0.2em 0 0.2em 0;
+}
+</style>
+
+<script>
+var lc = 0;
+var numTickets = 0;
+
+function calcValues()
+{
+    var total = 0;
+    numTickets = 0;
+    for (var x = 0; x < lc; x++)
+    {
+        var linePrefix = 'line_' + x + '_';
+        price = parseFloat(document.getElementById(linePrefix + 'price').textContent);
+        var e = document.getElementById(linePrefix + 'select');
+        var num = parseInt(e.options[e.selectedIndex].value);
+        numTickets += num;
+
+        lineTotal = price * num;
+        document.getElementById(linePrefix + 'total').textContent = lineTotal.toFixed(2);
+        document.getElementById('p'+linePrefix + 'total').value = lineTotal.toFixed(2);
+
+        total += lineTotal;
+    }
+    document.getElementById('total').textContent = '£ ' + total.toFixed(2);
+    document.getElementById('ptotal').value = total.toFixed(2);
+    document.getElementById('ttotal').value = numTickets;
+}
+
+$(document).ready(function() {
+    calcValues();
+ });
+ 
+</script>
+
+<?php
+	$fst = 1;
+	$curEvent = -1;
+	$curArea = -1;
+	$curTicketType = -1;
+	$criteria = new CDbCriteria;
+//echo $ip . ':' . Yii::app()->session['uid'];
+	$criteria->addCondition("ip = '" . $ip . "'");
+	$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+	$criteria->order = "vendor_id ASC, event_id ASC, http_ticket_type_area ASC, http_ticket_type_id ASC";
+	$orders = Order::model()->findAll($criteria);
+	foreach ($orders as $order):
+		// First item? If so display the page header
+		if ($fst)
+		{
+			echo '<div class="row" style="margin-top:10px;">
+				<div class="span7 well" style="background-color:#ede4f2; margin-left:0px; margin-bottom:0px; padding-bottom:0px">
+					<center><p style="font-size:25px; color:#745882"><i>Please check your order details below before proceeding.<br/>&nbsp</center></i></p>
+				</div>
+			</div>';
+			$fst = 0;
+		}
+
+		// Event change?
+		if ($order->event_id != $curEvent)
+		{
+			$curEvent = $order->event_id;
+//echo 'New Event Starting';
+			// Pick up event
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+			$criteria->addCondition("id = " . $order->event_id);
+			$event = Event::model()->find($criteria);
+			if (!($event))
+				die("No event");
+			genHeading($event);
+		}
+		// Area change?
+		if ($order->http_ticket_type_area != $curArea)
+		{
+			$curArea = $order->http_ticket_type_area;
+//echo 'New Area Starting';
+        	$criteria = new CDbCriteria;
+        	$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+			$criteria->addCondition("id = " . $curArea);
+        	$area = Area::model()->find($criteria);
+			if (!($area))
+				die("No area");
+?>
+			<table style="margin:0px; margin-bottom:1px;">
+           		<tr style="background-color:#745882; color:#ffffff">
+               		<td width="50%">
+                   		<h5><?php echo $area->description;?></h5>
+               		</td>
+               		<td width="10%" style="text-align:right">
+               		Tickets
+               		</td>
+               		<td width="15%" style="text-align:right">
+               		Price Each
+               		</td>
+               		<td width="15%" style="text-align:right">
+               		Line Total
+               		</td>
+               		<td width="10%" style="text-align:right">
+               		Delete
+               		</td>
+           		</tr>
+			</table>
+<?php
+		}
+		// Ticket Type change?
+		if ($order->http_ticket_type_id != $curTicketType)
+		{
+			$curTicketType = $order->http_ticket_type_id;
+//echo 'New Ticket Type Starting';
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("ticket_area_id = " . $curArea);
+			$criteria->addCondition("id = " . $curTicketType);
+			$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+			$ticketType = TicketType::model()->find($criteria);
+			if (!($ticketType))
+				die("No ticket type");
+			$linePrefix = "event_" . $curEvent . "_area_" . $curArea . "_tickettype_" . $curTicketType;
+?>
+			<table style="margin:0px">
+			<tr style="background-color:#EDE4F2" id="<?php echo $linePrefix;?>">
+				<!-- ticket type -->
+				<td width="50%">
+					<?php echo $ticketType->description;?>
+				</td>
+				<!-- num -->
+				<td width="10%" style="text-align:right">
+					<?php echo $order->http_ticket_type_qty;?>
+				</td>
+				<!-- unit price -->
+				<td width="15%" style="text-align:right">
+					<?php echo $order->http_ticket_type_price;?>
+				</td>
+				<!-- line total -->
+				<td width="15%"  style="text-align:right">
+					<?php echo $order->http_ticket_type_total;?>
+				</td>
+				<!-- Delete -->
+				<td width="10%" style="text-align:center">
+					<a style="margin-left:15px; color:#745882; font-size:20px; text-decoration:none;" onClick="deleteFunction('<?echo $linePrefix;?>'); return false;" href="#"><b>X</b></a>
+				</td>
+			</tr>
+			</table>
+<?php
+		}
+	endforeach;		// foreach ($orders as $order):
+
+	// Were there no order items?
+	if ($fst)
+	{
+		echo '<div class="row">
+			<div class="span7 well" style="margin-left:0px; padding-bottom:0px">
+				<center>You have no tickets on order.<br/>&nbsp</center>
+			</div>
+		</div>';
+	}
+
+?>
+
+	<!-- grand total -->
+	<table>
+		<tr>
+		</tr>
+			<br/>
+		<tr>
+			<td width="75%">
+			</td>
+			<td width="15%" style="text-align:right; background-color:#745882; color:#ffffff">
+				<h5>Total Payable</h5>
+			</td>
+			<td width="10%" style="text-align:right; background-color:#745882; color:#ffffff">
+				<?php echo "<div id='total'></div>";?>
+				<?php echo "<input type='hidden' id='ptotal' name='ptotal' value='0' />";?>
+				<?php echo "<input type='hidden' id='ttotal' name='ttotal' value='0' />";?>
+			</td>
+		</tr>
+	</table>
+
+	<script>
+	function deleteFunction(id)
+	{
+		var row = document.getElementById(id);
+   		row.parentNode.removeChild(row);	
+	}
+	</script>
+<?php
+
+function genHeading($event)
+{
+    if (strlen($event->ticket_logo_path) > 0)
+        $logo = Yii::app()->baseUrl . '/userdata/' . Yii::app()->session['uid'] . '/' . $event->ticket_logo_path;
+    else
+        $logo = Yii::app()->baseUrl . '/img/default_logo.jpg';
+
+?>
+    <div class="row" style="margin:0px";>
+        <div class="span7 well" style="padding:0px; margin-bottom:5px; margin-top:20px; padding-bottom:0px">
+            <table style="margin-bottom:0px">
+                <tr>
+                    <td width="25%" >
+<?php Yii::log("TICKET FORM : image " . Yii::app()->session['uid'], CLogger::LEVEL_WARNING, 'system.test.kim'); ?>
+                        <?php
+                        if (file_exists(Yii::app()->basePath . "/../../" . $logo))
+                        {
+                            $imgdim = getimagesize(Yii::app()->basePath . "/../../" . $logo);
+                            $imgw=$imgdim[0];
+                            $imgh=$imgdim[1];
+                            $imgstr="width:40px";
+                            if ($imgh>120)
+                                $imgstr="height:40px";
+                            echo CHtml::image(
+                                $logo,
+                                'Event Image',
+                                array('style'=>$imgstr));
+                        }
+                        ?>
+                    </td>
+                    <td width="1%"></td>
+                    <td width="74%">
+                        <b><?php echo $event->title; ?></b>
+                        <br>
+                        <i><?php echo $event->date; ?></i>
+                        <div style="padding:0; margin:0; color:#696d6e; font-size:95%">
+                            <?php echo nl2br($event->banner_text); ?>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+<?php
+}
+
+?>
+
+
+<div class="row">
+
+<style>
+	#continue-shopping {
+		background: url(//plugin.wireflydesign.com/ticket/img/con-shop.png);
+		border: 0;
+		display: block;
+		height: 50px;
+		width: 125px;
+		outline:none;
+	}
+	#other-events {
+		background: url(//plugin.wireflydesign.com/ticket/img/other.png);
+		border: 0;
+		display: block;
+		height: 50px;
+		width: 125px;
+		outline:none;
+	}
+	input[type=submit] {
+		background: url(//plugin.wireflydesign.com/ticket/img/pay-now.png);
+		border: 0;
+		display: block;
+		height: 50px;
+		width: 125px;
+		outline:none;
+	}
+</style>
+
+	<?php
+	// Continue shopping
+	echo "<div style='float:left'>";
+	echo "<input type='button' id='continue-shopping' onclick='closeFunction()'></input>";
+	echo "</div>";
+	echo "<script>function closeFunction(){window.close()}</script>";
+
+	// Other events
+	echo "<div style='float:left'>";
+	echo "<input type='button' id='other-events' onclick='todglinkFunction()'></input>";
+	echo "</div>";
+	echo "<script>function todglinkFunction(){ window.href('http://dglink.co.uk/dumfries-galloway-whats-on-events.html')  }</script>";
+
+	echo "<div style='float:right'>";
+	$this->widget('zii.widgets.jui.CJuiButton', array(
+		'name'=>'submit',
+		'htmlOptions' => array('class'=>'ui-button-success'),
+		'onclick'=>new CJavaScriptExpression(
+			'function(){
+			}'
+		),
+	));
+
+	echo "</div>";
+	?>
+
+</div> <!-- row -->
+
+
+<!-- <a href=<?php echo Yii::app()->request->baseUrl . '/';?>00002.pdf>PDF HERE </a> -->
+
+
+<!-- @@NB iframe resizer hardcode here -->
+<script type="text/javascript" src="/js/iframeResizer.contentWindow.min.js"></script>
+    <!-- Iframe resizer -->
+    <script type="text/javascript" src="/js/jquery.iframeResizer.min.js"></script>
+    <script type="text/javascript">
+        jQuery('iframe').iFrameSizer({
+            log                    : true,  // For development
+            autoResize             : true,  // Trigering resize on events in iFrame
+            contentWindowBodyMargin: 8,     // Set the default browser body margin style (in px)
+            doHeight               : true,  // Calculates dynamic height
+            doWidth                : false, // Calculates dynamic width
+            enablePublicMethods    : true,  // Enable methods within iframe hosted page
+            interval               : 0,     // interval in ms to recalculate body height, 0 to disable refreshing
+            scrolling              : false, // Enable the scrollbars in the iFrame
+            callback               : function(messageData){ // Callback fn when message is received
+                $('p#callback').html(
+                    '<b>Frame ID:</b> '    + messageData.iframe.id +
+                    ' <b>Height:</b> '     + messageData.height +
+                    ' <b>Width:</b> '      + messageData.width +
+                    ' <b>Event type:</b> ' + messageData.type
+                );
+            }
+        });
+</script>
+
+
+	<?php $this->endWidget(); ?>
+</div><!-- form -->
