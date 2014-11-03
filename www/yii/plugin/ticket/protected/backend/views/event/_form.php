@@ -39,15 +39,20 @@
 
 	<?php
 	// THIS IS THE OPTIONAL SEQUENCE NUMBERING. MUST NOT BE CHANGED ONCE TICKETS FOR THE EVENT HAVE BEEN SOLD!!!!!
-	// See if there are any tickets for this event
-	$criteria = new CDbCriteria;
-	$criteria->addCondition("event_id = " . $model->id);
-	$criteria->addCondition("uid = " . Yii::app()->session['uid']);
-	$transactions = Transaction::model()->findAll($criteria);
-	if ((!($transactions)) || ($model->isNewRecord))
+	if ($model->isNewRecord)
 		echo $form->textFieldRow($model,'optional_start_ticket_number',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right'));
 	else
-		echo $form->textFieldRow($model,'optional_start_ticket_number',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right', 'readonly'=>true));
+	{
+		// See if there are any tickets for this event
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("event_id = " . $model->id);
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+		$transactions = Transaction::model()->findAll($criteria);
+		if (!($transactions))
+			echo $form->textFieldRow($model,'optional_start_ticket_number',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right'));
+		else
+			echo $form->textFieldRow($model,'optional_start_ticket_number',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right', 'readonly'=>true));
+	}
 	?>
 
 <?php echo $form->textFieldRow($model,'booking_fee_per_ticket',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right')); ?>
