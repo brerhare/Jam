@@ -34,7 +34,7 @@ addon.ticker.crawler.tape-border-width = 1px
 	stacking = horizontal
 		
 		[main]
-		child = slider, header, menu, pages
+		child = slider, header, menu, home-page, pages
 		css.width = 800px
 		css.margin-top = 20px
 
@@ -65,10 +65,11 @@ addon.ticker.crawler.tape-border-width = 1px
 ####  Header  #################################
 
 	[header]
-	child = logo
+	child = logo, fb-social, twitter-social
 	css.height = 110px
 	css.width = 800px
 	css.background-color = red
+	stacking = horizontal
 	
 		[logo]
 		css.margin-left = 8px
@@ -79,6 +80,26 @@ addon.ticker.crawler.tape-border-width = 1px
 		image.width = 330px
 		image.height = 58px
 		click = ?layout=index&page=index
+		
+		[fb-social]
+		css.height = 100px
+		css.width = 50px
+		css.margin-left = 180px
+		css.margin-top = 5px
+		image.url = img/fb-large.png
+		image.width = 40px
+		image.height = 40px
+		clicknew = https://www.facebook.com/DgnewsSport
+		
+		[twitter-social]
+		css.height = 100px
+		css.width = 50px
+		css.margin-top = 5px
+		image.url = img/twitter-large.png
+		image.width = 40px
+		image.height = 40px
+		clicknew = https://twitter.com/dgnewsSport
+		
 
 	[menu]
 	css.height = 50px
@@ -105,32 +126,51 @@ addon.ticker.crawler.tape-border-width = 1px
 
 	addon.menu.basic.submenu-color = white
 
-	addon.menu.basic.subitem-color = white
+	addon.menu.basic.subitem-color = white red
 	#addon.menu.basic.subitem-text-color = purple
 	#addon.menu.basic.subitem-seperator-color = red 
+
+
+######## home #######################################
+
+	[home-page]
+	child = color, home-content
+	condition = @PAGE=@HOMEPAGE
+	css.width = 800px
+	css.margin-top = 20px
+	css.background-color = white
+	fx.rounding = 4px
+	
+		[color]
+		css.width = 180px
+		css.height = 100px
+		css.background-color = #137feb
+		css.margin-top = 150px
+		css.margin-left = 20px
+		
+		[home-content]
+		child = blog, content
+		css.margin-top = -240px
+		
+			[blog]
+			css.display = block
+			css.width = 800px
+			html.raw = {{news traditional}}
 
 
 ######## body #######################################
 			
 
 	[pages]
-	child = blog, content 	
+	child = content 	
 	css.width = 800px
 	css.margin-top = 20px
 	css.background-color = white
 	fx.rounding = 4px
 	
-		[blog]
-		condition = @PAGE=@HOMEPAGE
-		css.display = block
-		css.width = 800px
-		html.raw = {{news traditional}}
-
-			
 		[content]
 		css.margin-top = 30px
 		css.margin = 30px
-		condition = @PAGE!=@HOMEPAGE
 		db.table = ContentBlock
 		db.filter = url=$_GET['page']
 		db.error = Sorry, I could not find the page $_GET['page']
