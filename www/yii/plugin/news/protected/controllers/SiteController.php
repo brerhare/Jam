@@ -67,6 +67,8 @@ class SiteController extends Controller
 		if (isset($_GET['art']))
 			$art = $_GET['art'];
 
+		$content = "";
+
         // Show the selected article's detail
 		if ($art != "")
 		{
@@ -75,7 +77,23 @@ class SiteController extends Controller
         	$criteria->addCondition("id=" . $art);
         	$article = Article::model()->find($criteria);
         	if ($article)
-            	$content = $article->content;
+			{
+				// Get the category name
+				$catDesc = "Unknown";
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("uid=" . Yii::app()->session['uid']);
+				$criteria->addCondition("id=" . $article->blog_category_id);
+				$category = Category::model()->find($criteria);
+				if ($category)
+					$catDesc = $category->name;
+
+				$content .= "<div style='background-color:#f2f2f2; padding:10px'>";
+				$content .= "<div style='font-size:1.2em; font-weight:bold; color:#424242'>" . $article->title . "</div>";
+				$content .= "<div style='font-size:0.9em; padding-top:5px; height:12px; color:#989898'>" . $catDesc . "&nbsp&nbsp" . $article->date . "</div>";
+				$content .= "</div>";
+
+            	$content .= $article->content;
+			}
 		}
 
 		$this->renderPartial('index',array(

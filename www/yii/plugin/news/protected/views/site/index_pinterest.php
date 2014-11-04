@@ -102,7 +102,10 @@ if ($showArt == '')
 
 			echo "<span class='itemleadin'>" . $showCat . "&nbsp&nbsp" . $article->date . "</span><hr class='wtf-did-this-hr-take-to-DO'/>";
 
-			echo "<span class='itemintro'>" . $article->intro . "</span><br/>";
+		//	echo "<p class='item' style='width:90%; padding:10px; padding-bottom:0px; margin-bottom:0px; font-weight:bold'>" . $article->title . "</p>";
+			//echo "<span class='item' style='padding:10px; padding-bottom:0px; margin-bottom:0px; font-weight:bold'>" . $article->title . "</span><br/>";
+			echo "<span class='itemintro' style='font-weight:bold; color:#424242'>" . $article->title . "</span><br/>";
+			echo "<span class='itemintro' style='padding-top:0px'>" . $article->intro . "</span><br/>";
 			echo "</span>";
 		}
 		echo '</div>';

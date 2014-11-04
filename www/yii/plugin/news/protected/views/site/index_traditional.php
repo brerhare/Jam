@@ -75,10 +75,22 @@ if ($showArt == '')
 				echo "<center>";
 					echo "<span class='mainitem' style='width:95%'>";
 						echo "<img style='width:90%; height:300px; width:auto' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' >";
+
+						// Get the category name
+						$catDesc = "Unknown";
+						$criteria = new CDbCriteria;
+						$criteria->addCondition("uid=" . Yii::app()->session['uid']);
+						$criteria->addCondition("id=" . $article->blog_category_id);
+						$category = Category::model()->find($criteria);
+						if ($category)
+							$catDesc = $category->name;
+						echo "<span class='itemleadin'>" . $catDesc . "&nbsp&nbsp" . $article->date . "</span>";
+
 					echo "</span>";
 echo "<br/>";
 					echo "<span class='mainitem' style='width:95%; vertical-align:top; margin:0px;' >";
-						echo "<p class='item' style='width:90%; padding:10px; padding-bottom:0px; margin-bottom:0px; font-weight:bold'>" . $article->title . "</p>";
+
+						echo "<p class='item' style='width:90%; padding:10px; padding-top: 2px; padding-bottom:0px; margin-bottom:0px; font-weight:bold; color:#424242'>" . $article->title . "</p>";
 						echo "<p class='item' style='width:90%; padding:10px; padding-top:5px'>" . $article->intro . "</p>";
 					echo "</span>";
 				echo "</center>";
@@ -89,8 +101,6 @@ echo "<br/>";
 	}
 }
 ?>
-
-<br/><br/>
 
 <?php
 if ($showArt == '')
@@ -117,17 +127,17 @@ if ($showArt == '')
 			echo "</a>";
 
 			// Get the category name
-			$showCat = "Unknown";
+			$catDesc = "Unknown";
 			$criteria = new CDbCriteria;
 			$criteria->addCondition("uid=" . Yii::app()->session['uid']);
 			$criteria->addCondition("id=" . $article->blog_category_id);
 			$category = Category::model()->find($criteria);
 			if ($category)
-				$showCat = $category->name;
+				$catDesc = $category->name;
 
-			echo "<span class='itemleadin'>" . $showCat . "&nbsp&nbsp" . $article->date . "</span>";
+			echo "<span class='itemleadin'>" . $catDesc . "&nbsp&nbsp" . $article->date . "</span>";
 
-			echo "<p class='itemintro' style='font-weight:bold'>" . $article->title . "</p>";
+			echo "<p class='itemintro' style='padding-top:2px; font-weight:bold; color:#424242'>" . $article->title . "</p>";
 			echo "<span class='itemintro'>" . $article->intro . "</span><br/>";
 			echo "</span>";
 		}
