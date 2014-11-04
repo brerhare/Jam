@@ -1,0 +1,16 @@
+site = dgnews-sport.co.uk
+sitetitle = DG News and Sport
+sid = f970k853h3fv8qpe0dg2or7a60
+
+# Database
+dbname = dgnews_sport_co_uk
+dbuser = dgnews-sport.co.
+dbpass = fhs54jqwj86g
+
+# Shopping cart order confirmation email
+checkoutemail = info@dgnews-sport.co.uk
+checkoutname = DG News Sport
+
+# Backend page editor - we want to make this as close as possible to the frontend so it renders similarly
+editorpagewidth = 800
+editorpageheight = 500
