@@ -58,10 +58,30 @@ class SiteController extends Controller
 		if ((isset($_GET['art'])) && ($_GET['art'] != ""))
 			$this->actionResolveParentSiteGalleryAddon(0);
 
-		$category = $_GET['cat'];
+		// If we get back here then there was no {{gallery}} curly
+		$cat = '';
+		$art = '';
+		$content = '';
+		if (isset($_GET['cat']))
+			$cat = $_GET['cat'];
+		if (isset($_GET['art']))
+			$art = $_GET['art'];
+
+        // Show the selected article's detail
+		if ($art != "")
+		{
+        	$criteria = new CDbCriteria;
+        	$criteria->addCondition("uid=" . Yii::app()->session['uid']);
+        	$criteria->addCondition("id=" . $art);
+        	$article = Article::model()->find($criteria);
+        	if ($article)
+            	$content = $article->content;
+		}
+
 		$this->renderPartial('index',array(
-			'showCat'=>$category,
-			'showArt'=>'',
+			'showCat'=>$cat,
+			'showArt'=>$art,
+			'showContent' => $content,
 		));
 	}
 
@@ -88,10 +108,12 @@ class SiteController extends Controller
     		$criteria->addCondition("uid=" . Yii::app()->session['uid']);
     		$criteria->addCondition("id=" . Yii::app()->session['stash_art']);
     		$article = Article::model()->find($criteria);
-    		if ($article)
-    		{
-				$content = $article->content;
-			}
+			if (!($article))
+				return;
+			if (!(strstr($article->content, "{{gallery")))
+				return;
+
+			$content = $article->content;
 		}
 		$url = Yii::app()->session['parenturl'] . "/index.php/site/pluginGalleryAddonCallback?&content=" . urlencode($content);
 		$this->redirect($url);
