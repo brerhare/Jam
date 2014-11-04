@@ -115,7 +115,17 @@ class SiteController extends Controller
 
 			$content = $article->content;
 		}
-		$url = Yii::app()->session['parenturl'] . "/index.php/site/pluginGalleryAddonCallback?&content=" . urlencode($content);
+
+		// Extract the {{...}} part of the content, storing the preceding and following strings for later reassembly
+		$pre = strstr($content, "{{", true);
+		$tag = strstr($content, "{{");
+		$tag = strstr($tag, "}}", true) . "}}";
+		$post = strstr($content, "}}");
+		$post = str_replace("}}", "", $post);
+		Yii::app()->session['stash_pre'] = $pre;
+		Yii::app()->session['stash_post'] = $post;
+
+		$url = Yii::app()->session['parenturl'] . "/index.php/site/pluginGalleryAddonCallback?&content=" . urlencode($tag);
 		$this->redirect($url);
 	}
 
@@ -126,6 +136,7 @@ class SiteController extends Controller
 		$util = new Util;
 		$content = $util->decrypt($content);
 
+		$content =  Yii::app()->session['stash_pre'] . $content .  Yii::app()->session['stash_post'];
 		//if (strstr($content, "{{"))
 			//$this->redirect(array('resolveParentSiteGalleryAddon', 'repeat' => '1', 'repeatContent' => $content));
 

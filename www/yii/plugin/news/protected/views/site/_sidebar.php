@@ -1,8 +1,19 @@
 <?php
 	// Show the 3 most recent articles
+	// -------------------------------
+	echo "<style>
+			 .uline {
+				color:black;
+				text-decoration: none;
+			 }
+			 .uline:hover {
+				text-decoration: underline;
+			 }
+		</style>";
+
 	echo "<div style='font-size:12px'>";
-//echo "<a style='color:black; text-decoration:none' gin.wireflydesign.com/news/index.php/site/play/?cat=" . $category->id . "&art='>" . $category->name . "</a><br>";
-	echo "<div style='font-size:16px; padding-bottom:5px;'>Recent</div>";
+//echo "<a style='color:black; text-decoration:none' href = plugin.wireflydesign.com/news/index.php/site/play/?cat=" . $category->id . "&art='>" . $category->name . "</a><br>";
+	echo "<div id=recent-articles style='font-size:16px; padding-bottom:5px;'>Recent</div>";
 	$criteria = new CDbCriteria;
 	$criteria->addCondition("uid=" . Yii::app()->session['uid']);
 	$criteria->order = "date DESC";
@@ -12,11 +23,10 @@
 	{
 		foreach ($articles as $article)
 		{
-			//echo "<a style='text-decoration:none;color:black' target='_top' href='http:/1staid4u.co.uk/?layout=index&page=news-traditional&cat=0&art=" . $article->id . "'>";
-			echo "<a style='text-decoration:none;color:black' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
+			echo "<a class='uline' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
 			echo $article->title . "<br/>";
 			echo "</a>";
-			if ($cnt++ > 3)
+			if ($cnt++ >= 2)
 				break;
 		}
 	}
