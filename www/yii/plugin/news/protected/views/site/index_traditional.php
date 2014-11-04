@@ -23,14 +23,16 @@ opacity:0.9;
 .itemleadin {
 	display:block;
 	font-size: 0.7em;
+	text-decoration:none;
 	padding:4px;
 	height:10px;
 	color: #989898;
 }
 
 .itemintro {
-text-align:left;
+	text-align:left;
 	display:inline-block;
+	text-decoration:none;
 	margin: 0px;
 	padding: 0px 5px 5px 5px;
 }
@@ -119,27 +121,26 @@ if ($showArt == '')
 		{
 			if ($article->id == $mainArticleId)
 				continue;
-			echo "<span class='item' style='text-align:center;' >";
-			//echo "<a target='_top' href='http:/1staid4u.co.uk.wireflydesign.com/?layout=index&page=news-traditional&cat=0&art=" . $article->id . "'>";
 			echo "<a href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
-			// This is centered, shrink-to-fit
-			echo "<img style='max-width:100%; height:140px; overflow:hidden;' src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' Xwidth='100%'>";
+				echo "<span class='item' style='text-align:center;' >";
+					// This is centered, shrink-to-fit
+					echo "<img style='max-width:100%; height:140px; overflow:hidden;' src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' Xwidth='100%'>";
+
+					// Get the category name
+					$catDesc = "Unknown";
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("uid=" . Yii::app()->session['uid']);
+					$criteria->addCondition("id=" . $article->blog_category_id);
+					$category = Category::model()->find($criteria);
+					if ($category)
+						$catDesc = $category->name;
+
+					echo "<span class='itemleadin'>" . $catDesc . "&nbsp&nbsp" . $article->date . "</span>";
+
+					echo "<p class='itemintro' style='padding-top:2px; font-weight:bold; color:#424242'>" . $article->title . "</p>";
+					echo "<span class='itemintro' style='padding-top:2px; color:#000000'>" . $article->intro . "</span>";
+				echo "</span>";
 			echo "</a>";
-
-			// Get the category name
-			$catDesc = "Unknown";
-			$criteria = new CDbCriteria;
-			$criteria->addCondition("uid=" . Yii::app()->session['uid']);
-			$criteria->addCondition("id=" . $article->blog_category_id);
-			$category = Category::model()->find($criteria);
-			if ($category)
-				$catDesc = $category->name;
-
-			echo "<span class='itemleadin'>" . $catDesc . "&nbsp&nbsp" . $article->date . "</span>";
-
-			echo "<p class='itemintro' style='padding-top:2px; font-weight:bold; color:#424242'>" . $article->title . "</p>";
-			echo "<span class='itemintro'>" . $article->intro . "</span><br/>";
-			echo "</span>";
 		}
 		echo '</div>';
 	}

@@ -24,7 +24,7 @@ opacity:0.9;
 }
 
 .itemleadin {
-	display:block;
+	display:inline-block;
 	font-size: 0.7em;
 	padding:4px;
 	height:10px;
@@ -85,28 +85,24 @@ if ($showArt == '')
 		{
 			if ($article->id == $mainArticleId)
 				continue;
-			echo "<span class='item' style='margin-bottom:13px;' >";
-			//echo "<a target='_top' href='http:/1staid4u.co.uk/?layout=index&page=news-traditional&cat=0&art=" . $article->id . "'>";
 			echo "<a href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
-			echo "<img src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' width='100%'>";
+				echo "<span class='item' style='margin-bottom:13px;' >";
+					echo "<img src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' width='100%'>";
+
+					// Get the category name
+					$showCat = "Unknown";
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("uid=" . Yii::app()->session['uid']);
+					$criteria->addCondition("id=" . $article->blog_category_id);
+					$category = Category::model()->find($criteria);
+					if ($category)
+						$showCat = $category->name;
+
+					echo "<span class='itemleadin'>" . $showCat . "&nbsp&nbsp" . $article->date . "</span><hr class='wtf-did-this-hr-take-to-DO'/>";
+					echo "<span class='itemintro' style='font-weight:bold; color:#424242'>" . $article->title . "</span><br/>";
+					echo "<span class='itemintro' style='padding-top:0px; color:#000000'>" . $article->intro . "</span><br/>";
+				echo "</span>";
 			echo "</a>";
-
-			// Get the category name
-			$showCat = "Unknown";
-			$criteria = new CDbCriteria;
-			$criteria->addCondition("uid=" . Yii::app()->session['uid']);
-			$criteria->addCondition("id=" . $article->blog_category_id);
-			$category = Category::model()->find($criteria);
-			if ($category)
-				$showCat = $category->name;
-
-			echo "<span class='itemleadin'>" . $showCat . "&nbsp&nbsp" . $article->date . "</span><hr class='wtf-did-this-hr-take-to-DO'/>";
-
-		//	echo "<p class='item' style='width:90%; padding:10px; padding-bottom:0px; margin-bottom:0px; font-weight:bold'>" . $article->title . "</p>";
-			//echo "<span class='item' style='padding:10px; padding-bottom:0px; margin-bottom:0px; font-weight:bold'>" . $article->title . "</span><br/>";
-			echo "<span class='itemintro' style='font-weight:bold; color:#424242'>" . $article->title . "</span><br/>";
-			echo "<span class='itemintro' style='padding-top:0px'>" . $article->intro . "</span><br/>";
-			echo "</span>";
 		}
 		echo '</div>';
 	}
