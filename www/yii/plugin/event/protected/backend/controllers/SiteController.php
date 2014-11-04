@@ -21,6 +21,17 @@ class SiteController extends Controller
 		);
 	}
 
+// @@TODO: HARDCODED FOR TEST ---------- REMOVE
+    public function actionTestdirect()
+    {
+        Yii::app()->session['uid'] = 55;
+        $identity = new UserIdentity('test', 'test');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
 // @@TODO: HARDCODED FOR ABSOLUTE CLASSICS ---------- REMOVE
     public function actionAbsoluteClassicsdirect()
     {
