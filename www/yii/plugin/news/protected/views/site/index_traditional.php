@@ -31,7 +31,8 @@ opacity:0.9;
 .itemintro {
 text-align:left;
 	display:inline-block;
-	padding: 5px;
+	margin: 0px;
+	padding: 0px 5px 5px 5px;
 }
 
 .wtf-did-this-hr-take-to-DO {
@@ -70,15 +71,17 @@ if ($showArt == '')
 	{
 		foreach ($articles as $article)
 		{
-			//echo "<a style='text-decoration:none;color:black' target='_top' href='http:/1staid4u.co.uk/?layout=index&page=news-traditional&cat=0&art=" . $article->id . "'>";
 			echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
-				echo "<span class='mainitem' style='width:95%'>";
-					echo "<img style='width:90%; height:300px; width:auto' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' >";
-				echo "</span>";
+				echo "<center>";
+					echo "<span class='mainitem' style='width:95%'>";
+						echo "<img style='width:90%; height:300px; width:auto' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' >";
+					echo "</span>";
 echo "<br/>";
-				echo "<span class='mainitem' style='width:95%; vertical-align:top; margin:0px;' >";
-					echo "<p class='item' style='width:90%; padding:10px'>" . $article->intro . "</p>";
-				echo "</span>";
+					echo "<span class='mainitem' style='width:95%; vertical-align:top; margin:0px;' >";
+						echo "<p class='item' style='width:90%; padding:10px; padding-bottom:0px; margin-bottom:0px; font-weight:bold'>" . $article->title . "</p>";
+						echo "<p class='item' style='width:90%; padding:10px; padding-top:5px'>" . $article->intro . "</p>";
+					echo "</span>";
+				echo "</center>";
 			echo "</a>";
 			$mainArticleId = $article->id;
 			break;
@@ -124,6 +127,7 @@ if ($showArt == '')
 
 			echo "<span class='itemleadin'>" . $showCat . "&nbsp&nbsp" . $article->date . "</span>";
 
+			echo "<p class='itemintro' style='font-weight:bold'>" . $article->title . "</p>";
 			echo "<span class='itemintro'>" . $article->intro . "</span><br/>";
 			echo "</span>";
 		}
