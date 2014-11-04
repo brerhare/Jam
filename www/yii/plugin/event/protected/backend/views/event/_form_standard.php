@@ -131,9 +131,15 @@
 		if (($model->isNewRecord) || ($model->ticket_event_id == 0))
 		{
 			if ($ticketUid == -1) // @@EG Disable any cactiveform field
-				echo $form->toggleButtonRow($model, 'ticket_event_id' , array('disabled'=>'true','options'=>array('enabledLabel'=>'Yes' , 'disabledLabel'=>'No')));
+			{
+				echo $form->toggleButtonRow($model, 'ticket_event_id');
+				//// @@NB: the 'options' buggers Yii although docs say its right: .. echo $form->toggleButtonRow($model, 'ticket_event_id' , array('disabled'=>'true','options'=>array('enabledLabel'=>'Yes' , 'disabledLabel'=>'No')));
+			}
 			else
-				echo $form->toggleButtonRow($model, 'ticket_event_id' , array('options'=>array('enabledLabel'=>'Yes' , 'disabledLabel'=>'No')));
+			{
+				echo $form->toggleButtonRow($model, 'ticket_event_id');
+				//// @@NB: the 'options' buggers Yii although docs say its right: .. echo $form->toggleButtonRow($model, 'ticket_event_id' , array('options'=>array('enabledLabel'=>'Yes' , 'disabledLabel'=>'No')));
+			}
 		}
 		else
 		{
@@ -150,7 +156,8 @@
 
 <br>
 <?php
-	echo $form->toggleButtonRow($model, 'active' , array('options'=>array('enabledLabel'=>'Yes' , 'disabledLabel'=>'No')));
+	echo $form->toggleButtonRow($model, 'active' );
+	///// @@NB: the 'options' buggers Yii although docs say its right: .. echo $form->toggleButtonRow($model, 'active' , array('options'=>array('enabledLabel'=>'Yes' , 'disabledLabel'=>'Yes')));
 ?>
 
 
