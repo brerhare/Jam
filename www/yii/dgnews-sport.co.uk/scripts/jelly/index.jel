@@ -1,4 +1,6 @@
-#Demo1 - DG News
+# DG News
+# ------
+
 [defaults]
 include = default-values
 
