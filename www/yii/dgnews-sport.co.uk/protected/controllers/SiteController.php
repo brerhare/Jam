@@ -68,6 +68,26 @@ class SiteController extends Controller
 	}
 
 
+    // Called directly from a plugin to expand an embedded {{gallery}} curlywurly (see the news plugin Sitecontroller for caller details)
+    // --------------------------------------------------------------------------
+    public function actionpluginGalleryAddonCallback()
+    {
+        $content = "";
+        if (isset($_GET['content']))
+            $content = $_GET['content'];
+
+        // Expand jelly addon {{curly wurlies}} (if any)
+        $jelly = new Jelly;
+        $content = $jelly->expandContent($content, Yii::app()->params['jellyRoot']);
+
+        $util = new Util;
+        $content = urlencode($util->encrypt($content));
+        //file_put_contents("/tmp/crap.html", $content);
+
+        $returnUrl = "https://plugin.wireflydesign.com/news/index.php/site/resolveParentSiteGalleryAddonReturn?content=" . $content;
+        $this->redirect($returnUrl);
+    }
+
 
 	/**
 	 * This is the action to handle external exceptions.
