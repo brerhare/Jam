@@ -121,7 +121,7 @@ class JellyGalleryImageController extends Controller
 			$fileTypes = array('jpg','jpeg','gif','png'); // File extensions
 			$fileParts = pathinfo($_FILES['Filedata']['name']);
 	
-			if (in_array($fileParts['extension'],$fileTypes))
+			if (in_array(strtolower($fileParts['extension']),$fileTypes))
 			{
 				$model=new JellyGalleryImage;
 
