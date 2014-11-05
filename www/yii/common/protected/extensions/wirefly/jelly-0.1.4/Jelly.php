@@ -488,7 +488,7 @@ END_OF_FOOTER;
 
                     // Do the query
                     $q = "return " . $query . ";";
-Yii::log("REPEATING EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
+//Yii::log("REPEATING EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 					if ($validQuery)
 	                    $resp = eval($q);
 	                else
@@ -894,7 +894,7 @@ if (strstr($blobName, "googlemap"))
 				$cri->order = $this->dbExpand(trim($ord));
                 // Do the query
                 $q = "return " . $query . ";";
-Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
+//Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
                 $resp = eval($q);
                 $this->dbTable[$dbTable] = $resp;
 				$this->dbError[$dbTable] = '';
