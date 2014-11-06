@@ -11,31 +11,36 @@
 			 }
 		</style>";
 
-	echo "<div style='font-size:12px'>";
-//echo "<a style='color:black; text-decoration:none' href = plugin.wireflydesign.com/news/index.php/site/play/?cat=" . $category->id . "&art='>" . $category->name . "</a><br>";
-	echo "<div id=recent-articles style='font-size:16px; padding-bottom:5px;'>Recent</div>";
-	$criteria = new CDbCriteria;
-	$criteria->addCondition("uid=" . Yii::app()->session['uid']);
-	$criteria->order = "date DESC";
-	$articles = Article::model()->findAll($criteria);
-	$cnt = 0;
-	if ($articles)
-	{
-		foreach ($articles as $article)
-		{
-			echo "<a class='uline' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
-			echo $article->title . "<br/>";
-			echo "</a>";
-			if ($cnt++ >= 2)
-				break;
-		}
-	}
+	echo "<div style='height:120px; padding-bottom:10px; overflow:hidden;  font-size:12px'>";
+	echo "<div id=recent-articles style='font-size:16px; padding-bottom:5px;'>";
+
+		echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art='>" . 'Recent' . "</a><br>";
 	echo "</div>";
-	echo "<br/>";
+
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("uid=" . Yii::app()->session['uid']);
+		$criteria->order = "date DESC";
+		$articles = Article::model()->findAll($criteria);
+		$cnt = 0;
+		if ($articles)
+		{
+			foreach ($articles as $article)
+			{
+				echo "<img src='/news/img/gray-circle.png' height='5px' width='5px' style='padding:0px 4px 2px 0px;'/>";
+				echo "<a class='uline' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
+				echo $article->title . "<br/>";
+				echo "</a>";
+				if ($cnt++ >= 2)
+					break;
+			}
+		}
+	echo "</div>";
+
+	echo "<div style='height:20px'></div>";
 
 	// Default styling for the signup form (can be changed by the iframe caller)
 	$color = '#000000';
-	$backColor = '#d3d3d3';
+	$backColor = '#137feb';
 
 	if ((isset($_GET['color'])) && (trim($_GET['color'] != '')))
 		$color = $_GET['color'];
@@ -52,24 +57,16 @@
 	$optArr['buttontextcolor'] = '#a70055';
 	$optArr['buttontext'] = 'Sign up';
 	$optArr['inputspacing'] = '5px';
-	$optArr['inputwidth'] = '155px';
+	$optArr['inputwidth'] = '147px';
 	$optArr['successtextcolor'] = 'white';
 	$optArr['failuretextcolor'] = 'red';
 	$ret = $addon->init($optArr, '/news/scripts/jelly/addon/mailer/signup');
 
-
-
-
-	//@@TODO: This is temporarily to disable the background color until we can set it properly in {{name=value}}
-	// Also need to remove the XXX in plugin/news/scripts/jelly/addon/signup/signup.php
-	echo "<div style='font-size:13px; padding:1px; XXXbackground-color:lightgrey'>";
-
-
-
-
-	echo "Keep me informed<br/>";
-	echo $ret[0];
+	echo "<div style='font-size:13px; padding:5px; background-color:" . $backColor  . "'>";
+		echo "Keep me informed<br/>";
+		echo $ret[0];
 	echo "</div>";
+
 	echo "<script>" . $ret[1] . "</script>";
 //echo"<script>SID='" . $_GET['sid'] . "';</script>";
 
