@@ -71,7 +71,8 @@ $mainArticleId = -1;
 <?php
 if ($showArt == '')
 {
-	// Show all the other articles
+	// Show all the articles
+	// ---------------------
 	$criteria = new CDbCriteria;
 	$criteria->addCondition("uid=" . Yii::app()->session['uid']);
 	$criteria->order = "date DESC";

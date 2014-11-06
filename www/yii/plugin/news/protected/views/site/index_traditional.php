@@ -63,6 +63,7 @@ opacity:0.85;
 if ($showArt == '')
 {
 	// Show the most recent article
+	// ----------------------------
 	$criteria = new CDbCriteria;
 	$criteria->addCondition("uid=" . Yii::app()->session['uid']);
 	$criteria->order = "date DESC";
@@ -108,6 +109,7 @@ echo "<br/>";
 if ($showArt == '')
 {
 	// Show all the other articles
+	// ---------------------------
 	$criteria = new CDbCriteria;
 	$criteria->addCondition("uid=" . Yii::app()->session['uid']);
 	$criteria->order = "date DESC";

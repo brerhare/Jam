@@ -87,9 +87,15 @@ class SiteController extends Controller
 				if ($category)
 					$catDesc = $category->name;
 
-				$content .= "<div style='background-color:#f2f2f2; padding:10px'>";
-				$content .= "<div style='font-size:1.2em; font-weight:bold; color:#424242'>" . $article->title . "</div>";
-				$content .= "<div style='font-size:0.9em; padding-top:5px; height:12px; color:#989898'>" . $catDesc . "&nbsp&nbsp" . $article->date . "</div>";
+				$content .= "<div>";
+					$content .= "<table><tr>";
+						$content .= "<td width='75%'>";
+							$content .= "<div style='font-size:1.2em; font-weight:bold; color:#424242'>" . $article->title . "</div>";
+							$content .= "<div style='font-size:0.9em; padding-top:5px; height:12px; color:#989898'>" . $catDesc . "&nbsp&nbsp" . $article->date . "</div>";
+						$content .= "</td><td width='25%'>";
+						$content .= "<img style='width:150px; height:auto' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' >";
+						$content .= "</td>";
+					$content .= "</tr></table>";
 				$content .= "</div>";
 
             	$content .= $article->content;
