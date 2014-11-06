@@ -66,7 +66,7 @@ if ($showArt == '')
 	// ----------------------------
 	$criteria = new CDbCriteria;
 	$criteria->addCondition("uid=" . Yii::app()->session['uid']);
-	$criteria->order = "date DESC";
+	$criteria->order = "date DESC, id DESC";
 	if ($showCat != "0")
 		$criteria->addCondition("blog_category_id=" . $showCat);
 	$articles = Article::model()->findAll($criteria);
@@ -112,7 +112,7 @@ if ($showArt == '')
 	// ---------------------------
 	$criteria = new CDbCriteria;
 	$criteria->addCondition("uid=" . Yii::app()->session['uid']);
-	$criteria->order = "date DESC";
+	$criteria->order = "date DESC, id DESC";
 	if ($showCat != "0")
 		$criteria->addCondition("blog_category_id=" . $showCat);
 	$articles = Article::model()->findAll($criteria);
