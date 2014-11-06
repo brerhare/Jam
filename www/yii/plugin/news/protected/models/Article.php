@@ -95,6 +95,8 @@ class Article extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
+		//@@EG grid sorting
+		$criteria->order = 'date DESC, id DESC';
 		$criteria->compare('id',$this->id);
 		//$criteria->compare('uid',$this->uid);
 		$criteria->addCondition("uid = " . Yii::app()->session['uid']);

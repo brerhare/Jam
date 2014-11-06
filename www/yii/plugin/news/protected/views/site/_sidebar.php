@@ -11,15 +11,15 @@
 			 }
 		</style>";
 
-	echo "<div style='height:120px; padding-bottom:10px; overflow:hidden;  font-size:12px'>";
+	echo "<div style='max-height:130px; padding-bottom:10px; overflow:hidden;  font-size:12px'>";
+
 	echo "<div id=recent-articles style='font-size:16px; padding-bottom:5px;'>";
-
-		echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art='>" . 'Recent' . "</a><br>";
-	echo "</div>";
-
+		//echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art='>" . 'Recent' . "</a><br>";
+		echo "<a class='uline' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art='>" . 'Recent' . "</a><br>";
+	echo "</div style='border:1px solid black;' >";
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("uid=" . Yii::app()->session['uid']);
-		$criteria->order = "date DESC";
+		$criteria->order = "date DESC, id DESC";
 		$articles = Article::model()->findAll($criteria);
 		$cnt = 0;
 		if ($articles)
@@ -36,7 +36,7 @@
 		}
 	echo "</div>";
 
-	echo "<div style='height:20px'></div>";
+	echo "<div style='height:8px'></div>";
 
 	// Default styling for the signup form (can be changed by the iframe caller)
 	$color = '#000000';
