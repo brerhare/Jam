@@ -1,4 +1,6 @@
-#Demo1 - DG News
+# DG News
+# ------
+
 [defaults]
 include = default-values
 
@@ -144,7 +146,7 @@ addon.ticker.crawler.tape-border-width = 1px
 		[color]
 		css.width = 180px
 		css.height = 100px
-		css.background-color = #137feb
+		#css.background-color = #137feb
 		css.margin-top = 150px
 		css.margin-left = 20px
 		
