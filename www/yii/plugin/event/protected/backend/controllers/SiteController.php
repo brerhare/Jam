@@ -51,6 +51,13 @@ class SiteController extends Controller
 	{
 		if (Yii::app()->user->isGuest)
 			$this->redirect(array('site/login'));
+
+        // Store the referer (hosting site) in a session cookie
+        $referer = "unknown http_referer";
+        if (isset($_SERVER['HTTP_REFERER']))
+            $referer = $_SERVER['HTTP_REFERER'];
+        Yii::app()->session['http_referer'] = str_replace("/backend.php", "", $referer);
+
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
 		$this->render('index');
