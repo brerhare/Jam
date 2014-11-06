@@ -11,7 +11,7 @@
 			 }
 		</style>";
 
-	echo "<div style='max-height:130px; padding-bottom:10px; overflow:hidden;  font-size:12px'>";
+	echo "<div style='max-height:130px; padding-bottom:0px; overflow:hidden;  font-size:12px'>";
 
 	echo "<div id=recent-articles style='font-size:16px; padding-bottom:5px;'>";
 		//echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art='>" . 'Recent' . "</a><br>";
@@ -36,7 +36,7 @@
 		}
 	echo "</div>";
 
-	echo "<div style='height:8px'></div>";
+	echo "<div style='height:18px'></div>";
 
 	// Default styling for the signup form (can be changed by the iframe caller)
 	$color = '#000000';

@@ -36,11 +36,15 @@ class SiteController extends Controller
 	public function actionIndex()
 	{
 		// Set the news type (blog format)
-		Yii::app()->session['news_type'] = 'traditional';
+		if (!(isset(Yii::app()->session['news_type'])))
+			Yii::app()->session['news_type'] = 'traditional';
 		if (isset($_GET['newstype']))
 			Yii::app()->session['news_type'] = $_GET['newstype'];
 		if (isset($_GET['parenturl']))
 			Yii::app()->session['parenturl'] = $_GET['parenturl'];
+
+if (isset($_GET['art']))
+	$this->actionPlay();
 
 		$category = 0;
 		$this->renderPartial('index',array(
