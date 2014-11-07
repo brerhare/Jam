@@ -71,8 +71,6 @@ if (isset($_GET['art']))
 		if (isset($_GET['art']))
 			$art = $_GET['art'];
 
-		$content = "";
-
         // Show the selected article's detail
 		if ($art != "")
 		{
@@ -81,29 +79,7 @@ if (isset($_GET['art']))
         	$criteria->addCondition("id=" . $art);
         	$article = Article::model()->find($criteria);
         	if ($article)
-			{
-				// Get the category name
-				$catDesc = "Unknown";
-				$criteria = new CDbCriteria;
-				$criteria->addCondition("uid=" . Yii::app()->session['uid']);
-				$criteria->addCondition("id=" . $article->blog_category_id);
-				$category = Category::model()->find($criteria);
-				if ($category)
-					$catDesc = $category->name;
-
-				$content .= "<div>";
-					$content .= "<table><tr>";
-						$content .= "<td width='75%'>";
-							$content .= "<div style='font-size:1.2em; font-weight:bold; color:#424242'>" . $article->title . "</div>";
-							$content .= "<div style='font-size:0.9em; padding-top:5px; height:12px; color:#989898'>" . $catDesc . "&nbsp&nbsp" . $article->date . "</div>";
-						$content .= "</td><td width='25%'>";
-						$content .= "<img style='width:150px; height:auto' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' >";
-						$content .= "</td>";
-					$content .= "</tr></table>";
-				$content .= "</div>";
-
-            	$content .= $article->content;
-			}
+            	$content = $this->populateArticleHeading($article) . $article->content;
 		}
 
 		$this->renderPartial('index',array(
@@ -141,7 +117,7 @@ if (isset($_GET['art']))
 			if (!(strstr($article->content, "{{gallery")))
 				return;
 
-			$content = $article->content;
+           	$content = $this->populateArticleHeading($article) . $article->content;
 		}
 
 		// Extract the {{...}} part of the content, storing the preceding and following strings for later reassembly
@@ -162,9 +138,9 @@ if (isset($_GET['art']))
 		$content = $_GET['content'];
 
 		$util = new Util;
-		$content = $util->decrypt($content);
+		$decryptedContent = $util->decrypt($content);
 
-		$content =  Yii::app()->session['stash_pre'] . $content .  Yii::app()->session['stash_post'];
+		$content =  Yii::app()->session['stash_pre'] . $decryptedContent .  Yii::app()->session['stash_post'];
 		//if (strstr($content, "{{"))
 			//$this->redirect(array('resolveParentSiteGalleryAddon', 'repeat' => '1', 'repeatContent' => $content));
 
@@ -251,4 +227,32 @@ if (isset($_GET['art']))
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
 	}
+
+	private function populateArticleHeading($article)
+	{
+		$content = "";
+
+		// Get the category name
+		$catDesc = "Unknown";
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("uid=" . Yii::app()->session['uid']);
+		$criteria->addCondition("id=" . $article->blog_category_id);
+		$category = Category::model()->find($criteria);
+		if ($category)
+			$catDesc = $category->name;
+
+		$content .= "<div>";
+			$content .= "<table><tr>";
+				$content .= "<td width='75%'>";
+					$content .= "<div style='font-size:1.2em; font-weight:bold; color:#424242'>" . $article->title . "</div>";
+					$content .= "<div style='font-size:0.9em; padding-top:5px; height:12px; color:#989898'>" . $catDesc . "&nbsp&nbsp" . $article->date . "</div>";
+				$content .= "</td><td width='25%'>";
+				$content .= "<img style='width:150px; height:auto' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' >";
+				$content .= "</td>";
+			$content .= "</tr></table>";
+		$content .= "</div>";
+
+		return $content;
+	}
+
 }
