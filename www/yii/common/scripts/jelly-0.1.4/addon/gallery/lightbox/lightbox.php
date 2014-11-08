@@ -104,8 +104,8 @@ class lightbox
 		$retArr[0] = $this->apiHtml;
 		$retArr[1] = $this->apiJs;
 		$retArr[2] = "";	// Clipboard
-		$retArr[3] = "<script src=$jellyRootUrl/js/lightbox-2.6.js></script>";
-		$retArr[3] .= "<link href=$jellyRootUrl/css/lightbox.css rel='stylesheet' />";
+//		$retArr[3] = "<script src=$jellyRootUrl/js/lightbox-2.6.js></script>";
+//		$retArr[3] .= "<link href=$jellyRootUrl/css/lightbox.css rel='stylesheet' />";
 		return $retArr;
 	}
 
@@ -121,9 +121,10 @@ class lightbox
 			<!--Lightbox2-->
 
 <!--			<script src="<substitute-path>/js/modernizr.custom.js"></script> -->
+			<script src="<substitute-path>/js/lightbox-2.6.js"></script>
 <!--			<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Karla:400,700"> -->
 <!--			<link rel="stylesheet" href="<substitute-path>/css/screen.css" media="screen"/> -->
-<!--			<link rel="stylesheet" href="<substitute-path>/css/lightbox.css" media="screen"/> -->
+			<link rel="stylesheet" href="<substitute-path>/css/lightbox.css" media="screen"/>
 
 			<substitute-data>
 
