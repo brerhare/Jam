@@ -54,7 +54,6 @@ class hoverzoom
 			$criteria->addCondition("jelly_gallery_id = " . $gallery->id);
 			$criteria->order = "sequence ASC";
 			$galleryImages = JellyGalleryImage::model()->findAll($criteria);
-//			$content .= "<center>";
 			$content .= "<ul class='thumb'>";
 			foreach ($galleryImages as $galleryImage):
 
@@ -62,7 +61,6 @@ class hoverzoom
 
 			endforeach;
 			$content .= "</ul>";
-//			$content .= "</center>";
 			$content .= "<br clear='all'/><br/>";
 		endforeach;
 
