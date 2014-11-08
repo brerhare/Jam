@@ -120,10 +120,10 @@ class lightbox
 		<div id="jelly-lightbox2-container">
 			<!--Lightbox2-->
 
-//			<script src="<substitute-path>/js/modernizr.custom.js"></script>
-//			<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Karla:400,700">
-//			<link rel="stylesheet" href="<substitute-path>/css/screen.css" media="screen"/>
-//			<link rel="stylesheet" href="<substitute-path>/css/lightbox.css" media="screen"/>
+<!--			<script src="<substitute-path>/js/modernizr.custom.js"></script> -->
+<!--			<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Karla:400,700"> -->
+<!--			<link rel="stylesheet" href="<substitute-path>/css/screen.css" media="screen"/> -->
+<!--			<link rel="stylesheet" href="<substitute-path>/css/lightbox.css" media="screen"/> -->
 
 			<substitute-data>
 
