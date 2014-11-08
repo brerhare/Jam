@@ -13,7 +13,7 @@ class lightbox
 	//Defaults
 	//private $defaultWidth = '100px';
 	//private $defaultHeight = '100px';
-	private $defaultGroup = 'nogroup';
+	private $gallery = "";
 
 	public $apiOption = array(
 	);
@@ -33,38 +33,65 @@ class lightbox
 		{
 			switch ($opt)
 			{
-                case "image":
-					$this->apiHtml = str_replace("<substitute-image>", Yii::app()->baseUrl . $val, $this->apiHtml);
+				case "gallery":
+					if (strlen($val) > 0)
+						$this->gallery = $val;
 					break;
-                case "thumb":
-					$this->apiHtml = str_replace("<substitute-thumb>", Yii::app()->baseUrl . $val, $this->apiHtml);
-					break;
-                case "group":
-					$this->apiHtml = str_replace("<substitute-group>", Yii::app()->baseUrl . $val, $this->apiHtml);
-					break;
-                case "width":
-					$width = str_replace("px", "", $val) . "px";
-					$this->apiHtml = str_replace("<substitute-width>", " width $width ", $this->apiHtml);
-					break;
-                case "height":
-					$height = str_replace("px", "", $val) . "px";
-					$this->apiHtml = str_replace("<substitute-height>", " height=$height ", $this->apiHtml);
-					break;
+				case "width":
+//					$width = str_replace("px", "", $val) . "px";
+//					$this->apiHtml = str_replace("<substitute-width>", " width $width ", $this->apiHtml);
+//					break;
+//				case "height":
+//					$height = str_replace("px", "", $val) . "px";
+//					$this->apiHtml = str_replace("<substitute-height>", " height=$height ", $this->apiHtml);
+//					break;
 				default:
 					// Not all array items are action items
 			}
 		}
 
+
+/******
+		<div class="image-row">
+			<div class="image-set">
+				<a class="example-image-link" href="img/demopage/image-3.jpg" data-lightbox="example-set" title="Click on the right side of the image to move forward."><img class="example-image" src="img/demopage/thumb-3.jpg" alt="Plants: image 1 0f 4 thumb" width="150" height="150"/></a>
+				<a class="example-image-link" href="img/demopage/image-4.jpg" data-lightbox="example-set" title="Or press the right arrow on your keyboard."><img class="example-image" src="img/demopage/thumb-4.jpg" alt="Plants: image 2 0f 4 thumb" width="150" height="150"/></a>
+				<a class="example-image-link" href="img/demopage/image-5.jpg" data-lightbox="example-set" title="The script preloads the next image in the set as you're viewing."><img class="example-image" src="img/demopage/thumb-5.jpg" alt="Plants: image 3 0f 4 thumb" width="150" height="150"/></a>
+				<a class="example-image-link" href="img/demopage/image-6.jpg" data-lightbox="example-set" title="Click anywhere outside the image or the X to the right to close."><img class="example-image" src="img/demopage/thumb-6.jpg" alt="Plants: image 4 0f 4 thumb" width="150" height="150"/></a>
+			</div>
+		</div>
+******/
+
+		$galleries = JellyGallery::model()->findAll(array('order'=>'sequence'));
+		foreach ($galleries as $gallery):
+			if (($gallery->active == 0) && (strlen($this->gallery) == 0))
+				continue;
+			if (strlen($this->gallery) > 0)
+			{
+				if ($gallery->id != $this->gallery)
+					continue;
+			}
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("jelly_gallery_id = " . $gallery->id);
+			$criteria->order = "sequence ASC";
+			$galleryImages = JellyGalleryImage::model()->findAll($criteria);
+			$content .= "<div class='image-row'>";
+			$content .= "<div class='image-set'>";
+			foreach ($galleryImages as $galleryImage):
+				$content .= '<a class="example-image-link" href="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $galleryImage->image . '" data-lightbox="gallery-' . $gallery->id . '" title="' . $galleryImage->text . '"><img class="example-image" src="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . '" alt="' . $galleryImage->text . '" width="100" height="100"/></a>';
+				$content .= '</a>';
+			endforeach;
+			$content .= "</div>";
+			$content .= "</div>";
+		endforeach;
+
+
 		// Apply all defaults that werent overridden
+
 		// HTML
-		if (strstr($this->apiHtml, "<substitute-group>"))
-			$this->apiHtml = str_replace("<substitute-group>", $this->defaultGroup, $this->apiHtml);
-		if (strstr($this->apiHtml, "<substitute-width>"))
-			$this->apiHtml = str_replace("<substitute-width>", "", $this->apiHtml);
-		if (strstr($this->apiHtml, "<substitute-height>"))
-			$this->apiHtml = str_replace("<substitute-height>", "", $this->apiHtml);
 
 		// JS
+
 
 		$this->apiHtml = str_replace("<substitute-path>", $jellyRootUrl, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-data>", $content, $this->apiHtml);
@@ -93,7 +120,13 @@ class lightbox
 		<div id="jelly-lightbox2-container">
 			<!--Lightbox2-->
 
-			<a href="<substitute-image>" data-lightbox="<substitute-group>" title=""><img src="<substitute-thumb>" <substitute-width> <substitute-height> /></a>
+//			<script src="<substitute-path>/js/modernizr.custom.js"></script>
+//			<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Karla:400,700">
+//			<link rel="stylesheet" href="<substitute-path>/css/screen.css" media="screen"/>
+//			<link rel="stylesheet" href="<substitute-path>/css/lightbox.css" media="screen"/>
+
+			<substitute-data>
+
 		</div>
 
 END_OF_API_HTML;

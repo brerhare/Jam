@@ -1170,7 +1170,29 @@ if (strstr($blobName, "googlemap"))
 				//$content = str_replace($pOrig, "", $content);
 			}
 
-			if (stristr($vals[0], "gallery"))
+			if (stristr($vals[0], "gallery-lightbox"))
+			{
+				// Eg: {{gallery-lightbox <33>}}  (hybrid)
+				// ---------------------------------------
+				//@@ TODO: TOFIX: BUG: Uncommenting next line causes memory exhaustion
+				//$moreCurlyWurlys = 1;
+				$galleries = "";
+				$thumbnails = "0";
+				if (count($vals) > 1)
+					$galleries = $vals[1];
+				$addon = array(
+					"gallery" => array(
+						"lightbox" => array(
+             				"gallery" => $galleries,
+						)
+					)
+				);
+				$this->addonHandler($addon, 1, $addonHtml);
+				$content = str_replace($pOrig, $addonHtml, $content);
+				//$content = str_replace($pOrig, "", $content);
+			}
+
+			if (stristr($vals[0], "gallery"))		// This will catch 'gallery-fancybox' and any others. ie its the default
 			{
 				// Eg: {{gallery <33 SomeTitle> <"thumbs">}}  (hybrid)
 				// ---------------------------------------------------
