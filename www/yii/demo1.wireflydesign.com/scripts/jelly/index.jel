@@ -151,7 +151,7 @@ addon.ticker.crawler.tape-border-width = 1px
 		css.margin-left = 20px
 		
 		[home-content]
-		child = blog, content
+		child = blog
 		css.margin-top = -240px
 		
 			[blog]
