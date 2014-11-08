@@ -11,8 +11,7 @@
 class hoverzoom
 {
 	//Defaults
-	private $defaultWidth = '100px';
-	private $defaultHeight = '100px';
+	private $gallery = "";
 
 	public $apiOption = array(
 	);
@@ -32,31 +31,49 @@ class hoverzoom
 		{
 			switch ($opt)
 			{
-                case "image":
-					$this->apiHtml = str_replace("<substitute-image>", Yii::app()->baseUrl . $val, $this->apiHtml);
-					break;
-                case "thumb":
-					$this->apiHtml = str_replace("<substitute-thumb>", Yii::app()->baseUrl . $val, $this->apiHtml);
-					break;
-                case "width":
-					$defaultWidth = str_replace("px", "", $val) . "px";
-					break;
-                case "height":
-					$defaultHeight = str_replace("px", "", $val) . "px";
+				case "gallery":
+					if (strlen($val) > 0)
+						$this->gallery = $val;
 					break;
 				default:
 					// Not all array items are action items
 			}
 		}
 
+
+		$galleries = JellyGallery::model()->findAll(array('order'=>'sequence'));
+		foreach ($galleries as $gallery):
+			if (($gallery->active == 0) && (strlen($this->gallery) == 0))
+				continue;
+			if (strlen($this->gallery) > 0)
+			{
+				if ($gallery->id != $this->gallery)
+					continue;
+			}
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("jelly_gallery_id = " . $gallery->id);
+			$criteria->order = "sequence ASC";
+			$galleryImages = JellyGalleryImage::model()->findAll($criteria);
+//			$content .= "<center>";
+			$content .= "<ul class='thumb'>";
+			foreach ($galleryImages as $galleryImage):
+
+				$content .= "<li><a href='" . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $galleryImage->image . "' /><img src='" . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . "' alt='' /> </a></li>";
+
+			endforeach;
+			$content .= "</ul>";
+//			$content .= "</center>";
+			$content .= "<br clear='all'/><br/>";
+		endforeach;
+
+
 		// Apply all defaults that werent overridden
 		// HTML
-		if (strstr($this->apiHtml, "<substitute-width>"))
-			$this->apiHtml = str_replace("<substitute-width>", $this->defaultWidth, $this->apiHtml);
-		if (strstr($this->apiHtml, "<substitute-height>"))
-			$this->apiHtml = str_replace("<substitute-height>", $this->defaultHeight, $this->apiHtml);
 
+
+		// none
 		// JS
+
 
 		$this->apiHtml = str_replace("<substitute-path>", $jellyRootUrl, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-data>", $content, $this->apiHtml);
@@ -81,9 +98,13 @@ class hoverzoom
 			<script src="<substitute-path>/jquery.hoverZoom.js"></script>
 			<link rel="stylesheet" href="<substitute-path>/jquery.hoverZoom.css">
 
-			<ul class="thumb">
-				<li><a href="<substitute-image>" /><img src="<substitute-thumb>" /></a></li>
-			</ul>
+			<style>
+				.item:hover {
+				opacity:0.9;
+				}
+			</style>
+
+			<substitute-data>
 
 		</div>
 
@@ -101,9 +122,6 @@ END_OF_API_HTML;
 
 
 $(document).ready(function() {
-
-       $.modal("<img src='/product/userdata/'>");
-alert('x');
 });
 
 
