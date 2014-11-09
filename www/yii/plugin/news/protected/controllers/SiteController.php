@@ -62,7 +62,7 @@ if (isset($_GET['art']))
 		if ((isset($_GET['art'])) && ($_GET['art'] != ""))
 			$this->actionResolveParentSiteGalleryAddon(0);
 
-		// If we get back here then there was no {{gallery}} curly
+		// If we get back here then there was no {{gallery-lightbox}} curly
 		$cat = '';
 		$art = '';
 		$content = '';
@@ -114,7 +114,7 @@ if (isset($_GET['art']))
     		$article = Article::model()->find($criteria);
 			if (!($article))
 				return;
-			if (!(strstr($article->content, "{{gallery")))
+			if (!(strstr($article->content, "{{gallery-lightbox")))
 				return;
 
            	$content = $this->populateArticleHeading($article) . $article->content;
