@@ -86,7 +86,8 @@ if ($showArt == '')
 		{
 			if ($article->id == $mainArticleId)
 				continue;
-			echo "<a href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
+			//echo "<a href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
+			echo "<a href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['http_referer'] . "/?art=" . $article->id     . '"' . ")'>";
 				echo "<span class='item' style='margin-bottom:13px;' >";
 					echo "<img src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' width='100%'>";
 
@@ -137,6 +138,13 @@ $(document).ready(function() {
 	});
 
 });
+
+// @@NB START POSTMESSAGE
+function pM(type, param)
+{
+	parent.postMessage(type + "^" + param, "*");
+}
+// @@NB END POSTMESSAGE
 
 </script>
 <script src="/js/masonry.pkgd.min.js"></script>

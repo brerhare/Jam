@@ -72,9 +72,19 @@ if ($showArt == '')
 	$articles = Article::model()->findAll($criteria);
 	if ($articles)
 	{
+
+//  wanting:      http://www.dgnews-sport.co.uk/?layout=index&page=home
+
+//  showing: http://www.dgnews-sport.co.uk/play/?art=105
+
 		foreach ($articles as $article)
 		{
-			echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
+			//echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
+			echo "<a style='color:black; text-decoration:none' href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['http_referer'] . "/?art=" . $article->id     . '"' . ")'>";
+
+//print_r(Yii::app()->session['http_referer']);
+//die;
+
 				echo "<center>";
 					echo "<span class='mainitem' style='width:95%'>";
 						echo "<img style='width:90%; height:300px; width:auto' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' >";
@@ -123,7 +133,8 @@ if ($showArt == '')
 		{
 			if ($article->id == $mainArticleId)
 				continue;
-			echo "<a href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
+			//echo "<a href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
+			echo "<a href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['http_referer'] . "/?art=" . $article->id     . '"' . ")'>";
 				echo "<span class='item' style='text-align:center;' >";
 					// This is centered, shrink-to-fit
 					echo "<img style='max-width:100%; height:140px; overflow:hidden;' src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' Xwidth='100%'>";
@@ -163,5 +174,12 @@ if ($showArt != '')
 
 $(document).ready(function() {
 });
+
+// @@NB START POSTMESSAGE
+function pM(type, param)
+{
+	parent.postMessage(type + "^" + param, "*");
+}
+// @@NB END POSTMESSAGE
 
 </script>

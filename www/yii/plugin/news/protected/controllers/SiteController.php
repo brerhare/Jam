@@ -35,6 +35,16 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
+		// Store the referer (hosting site) in a session cookie
+		$referer = "unknown http_referer";
+		if (isset($_SERVER['HTTP_REFERER']))
+			$referer = $_SERVER['HTTP_REFERER'];
+		$protoArr = explode(":", $referer);	// eg 'http' or 'https'
+		$referer = str_replace("https://", "", $referer);
+		$referer = str_replace("http://", "", $referer);
+        $refArr = explode("/", $referer);
+		Yii::app()->session['http_referer'] = $protoArr[0] . "://" . $refArr[0];
+
 		// Set the news type (blog format)
 		if (!(isset(Yii::app()->session['news_type'])))
 			Yii::app()->session['news_type'] = 'traditional';

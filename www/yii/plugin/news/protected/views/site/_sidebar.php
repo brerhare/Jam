@@ -27,7 +27,8 @@
 			foreach ($articles as $article)
 			{
 				echo "<img src='/news/img/gray-circle.png' height='5px' width='5px' style='padding:0px 4px 2px 0px;'/>";
-				echo "<a class='uline' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
+				//echo "<a class='uline' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
+				echo "<a class='uline' href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['http_referer'] . "/?art=" . $article->id     . '"' . ")'>";
 				echo $article->title . "<br/>";
 				echo "</a>";
 				if ($cnt++ >= 2)
