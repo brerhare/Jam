@@ -144,6 +144,26 @@ END_OF_ENDHEADER;
         }); 
         </script>
 
+// Handle postmessages
+// @@NB START POSTMESSAGE
+<script>
+	var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+	var eventer = window[eventMethod];
+	var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+
+	// Listen to message from child window
+	eventer(messageEvent,function(e) {
+  		console.log('parent received message!:  ',e.data);
+		var n = e.data.indexOf("^");
+		if (n == -1)
+			return;
+		msgArr = e.data.split("^");
+		if (msgArr[0] == "redirect")
+			window.location = msgArr[1];
+	},false);
+</script>
+// @@NB END POSTMESSAGE
+
 	</body>
 	</html>\n
 END_OF_FOOTER;
