@@ -1309,7 +1309,7 @@ if (strstr($blobName, "googlemap"))
 				// Eg: {{preset}}
 				// --------------
 				$moreCurlyWurlys = 1;
-				$iframe = '<iframe width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=preset&sid=' . Yii::app()->params['sid'] . '&amp;preset=true"></iframe>';
+				$iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=preset&sid=' . Yii::app()->params['sid'] . '&amp;preset=true"></iframe>';
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 
