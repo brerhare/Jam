@@ -144,6 +144,26 @@ END_OF_ENDHEADER;
         }); 
         </script>
 
+// Handle postmessages
+// @@NB START POSTMESSAGE
+<script>
+	var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+	var eventer = window[eventMethod];
+	var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+
+	// Listen to message from child window
+	eventer(messageEvent,function(e) {
+  		console.log('parent received message!:  ',e.data);
+		var n = e.data.indexOf("^");
+		if (n == -1)
+			return;
+		msgArr = e.data.split("^");
+		if (msgArr[0] == "redirect")
+			window.location = msgArr[1];
+	},false);
+</script>
+// @@NB END POSTMESSAGE
+
 	</body>
 	</html>\n
 END_OF_FOOTER;
@@ -1289,7 +1309,7 @@ if (strstr($blobName, "googlemap"))
 				// Eg: {{preset}}
 				// --------------
 				$moreCurlyWurlys = 1;
-				$iframe = '<iframe width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=preset&sid=' . Yii::app()->params['sid'] . '&amp;preset=true"></iframe>';
+				$iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=preset&sid=' . Yii::app()->params['sid'] . '&amp;preset=true"></iframe>';
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 
