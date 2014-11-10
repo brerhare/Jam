@@ -34,7 +34,7 @@ class TicketController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view','book','paid'),
+				'actions'=>array('index','view','book','review','paid', 'ajaxDeleteTicket'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -60,6 +60,7 @@ class TicketController extends Controller
 		$this->render('index');
 	}
 
+	// Display the ticket booking form for the selected event
 	public function actionBook($id)
 	{
         Yii::log("EVENT BOOKING PAGE LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
@@ -81,16 +82,6 @@ class TicketController extends Controller
                 $ip = getenv("HTTP_X_FORWARDED_FOR");
             else if (getenv("REMOTE_ADDR"))
                 $ip = getenv("REMOTE_ADDR");
-
-			// Is this order is online-paid, online-free, or backend manual? This determines whether the payment page is shown.
-			$this->isFreeEvent = false;
-			if (isset($_POST['is_free_event']))
-				$this->isFreeEvent = true;
-			$this->isBackend = false;
-			if (isset($_POST['is_backend']))
-				$this->isBackend = true;
-
-			Order::model()->deleteAllByAttributes(array('ip' => $ip));
 
 			for ($x = 0; ; $x++)
 			{
@@ -114,6 +105,100 @@ class TicketController extends Controller
 				$order->http_ticket_type_price = $_POST['pline_' . $x . '_price'];
 				$order->http_ticket_type_total = $_POST['pline_' . $x . '_total'];
 				$order->http_total = $_POST['ptotal'];
+
+				$order->return_url = Yii::app()->baseUrl;
+				if(!$order->save())
+				{
+					$this->redirect(array('admin'));
+				}
+			}
+
+			//$this->actionReview();
+			$this->redirect(array('review'));
+			return;
+		}
+
+        // renders the view file 'protected/views/ticket/book.php'
+        // using the default layout 'protected/views/layouts/main.php'
+        $this->render('book',array(
+                        'model'=>$model,
+                        'somedata'=>array(1,2,3),
+        ));
+	}
+
+	public function actionReview()
+	{
+        Yii::log("EVENT REVIEW PAGE LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
+
+        $ip = "UNKNOWN";
+        if (getenv("HTTP_CLIENT_IP"))
+            $ip = getenv("HTTP_CLIENT_IP");
+        else if (getenv("HTTP_X_FORWARDED_FOR"))
+            $ip = getenv("HTTP_X_FORWARDED_FOR");
+        else if (getenv("REMOTE_ADDR"))
+            $ip = getenv("REMOTE_ADDR");
+
+		if ( (isset($_POST['rtotal'])) && (($_POST['rtotal'] != 0) || (isset($_POST['is_free_event']))    ) )
+		{
+			Yii::log("EVENT REVIEW FORM FILLED: " . $_POST['rtotal'], CLogger::LEVEL_WARNING, 'system.test.kim');
+
+			// Is this order is online-paid, online-free, or backend manual? This determines whether the payment page is shown.
+			$this->isFreeEvent = false;
+			if (isset($_POST['is_free_event']))
+				$this->isFreeEvent = true;
+			$this->isBackend = false;
+			if (isset($_POST['is_backend']))
+				$this->isBackend = true;
+
+
+			////////////////////////////////////////Order::model()->deleteAllByAttributes(array('ip' => $ip));
+
+			// Update all the order records for this ip with the email and other contact details
+			$criteria = new CDbCriteria;
+        	//$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+        	$criteria->addCondition("ip = '" . $ip . "'");
+        	$orders = Order::model()->findAll($criteria);
+        	foreach ($orders as $order)
+        	{
+				$order->email_address = $_POST['email1'];
+				$order->telephone = $_POST['telephone'];
+				if (($this->isFreeEvent) || ($this->isBackend))
+				{
+					$order->order_number = Yii::app()->session['uid'] . '-' . time();
+					if (isset($_POST['free_name'])) $order->free_name = $_POST['free_name'];
+					if (isset($_POST['free_address1'])) $order->free_address1 = $_POST['free_address1'];
+					if (isset($_POST['free_address2'])) $order->free_address2 = $_POST['free_address2'];
+					if (isset($_POST['free_address3'])) $order->free_address3 = $_POST['free_address3'];
+					if (isset($_POST['free_address4'])) $order->free_address4 = $_POST['free_address4'];
+					if (isset($_POST['free_post_code'])) $order->free_post_code = $_POST['free_post_code'];
+				}
+				$order->save();
+			}
+
+
+/**********************
+			for ($x = 0; ; $x++)
+			{
+				if(!isset($_POST['line_' . $x . '_select']))	// ie no more lines
+					break;
+				$qty = $_POST['line_' . $x . '_select'];
+				if ($qty == 0)	// ie no tickets for this line
+					continue;
+
+			Yii::log("EVENT REVIEW LINE ITEM: " . $_POST['pline_' . $x . '_price'], CLogger::LEVEL_WARNING, 'system.test.kim');
+
+				$order=new Order;
+				$order->uid = Yii::app()->session['uid'];
+				$order->sid = Yii::app()->session['sid'];
+				$order->ip = $ip;
+				$order->vendor_id = $model->ticket_vendor_id;
+				$order->event_id = $model->id;
+				$order->http_ticket_type_area = $_POST['pline_' . $x . '_area'];
+				$order->http_ticket_type_id = $_POST['pline_' . $x . '_id'];
+				$order->http_ticket_type_qty = $qty;
+				$order->http_ticket_type_price = $_POST['pline_' . $x . '_price'];
+				$order->http_ticket_type_total = $_POST['pline_' . $x . '_total'];
+				$order->http_total = $_POST['rtotal'];
 				$order->email_address = $_POST['email1'];
 				$order->telephone = $_POST['telephone'];
 				if (($this->isFreeEvent) || ($this->isBackend))
@@ -133,12 +218,24 @@ class TicketController extends Controller
 					$this->redirect(array('admin'));
 				}
 			}
+**********************/
 
 			// Go to paymentsense for payment
 			if (!($this->isFreeEvent) && !($this->isBackend))
-				$this->redirect(Yii::app()->baseUrl . "/php/gw/EntryPoint.php?sid=" . Yii::app()->session['sid'] . "&xid=" . rand(99999,999999));
+			{
+        		Yii::log("GOING TO PAYMENTSENSE SCRIPT" , CLogger::LEVEL_WARNING, 'system.test.kim');
+
+/*
+$tmp = Yii::app()->baseUrl . "/php/gw/EntryPoint.php?sid=" . Yii::app()->session['sid'] . "&xid=" . rand(99999,999999) . "&rtotal=" . $_POST['rtotal'];
+$tmp2 = str_replace("http://", "https://", $tmp);
+$this->redirect($tmp2);
+*/
+
+				$this->redirect(Yii::app()->baseUrl . "/php/gw/EntryPoint.php?sid=" . Yii::app()->session['sid'] . "&xid=" . rand(99999,999999) . "&rtotal=" . $_POST['rtotal']);
+			}
 			else
 			{
+        		Yii::log("CALLING actionPaid()" , CLogger::LEVEL_WARNING, 'system.test.kim');
 				$this->actionPaid();
 				return;
 			}
@@ -146,9 +243,8 @@ class TicketController extends Controller
 
         // renders the view file 'protected/views/ticket/book.php'
         // using the default layout 'protected/views/layouts/main.php'
-        $this->render('book',array(
-                        'model'=>$model,
-                        'somedata'=>array(1,2,3),
+        $this->render('review',array(
+                        'ip'=>$ip,
         ));
 	}
 
@@ -164,12 +260,17 @@ class TicketController extends Controller
           else if (getenv("REMOTE_ADDR"))
               $ip = getenv("REMOTE_ADDR");
 
+        $ticket_type_event_arr = array();
         $ticket_type_area_arr = array();
 		$ticket_type_id_arr = array();
 		$ticket_type_qty_arr = array();
 		$ticket_type_price_arr = array();
 		$ticket_type_total_arr = array();
 		$ticketNumbers = array();
+		if (isset($_GET['card_amount']))
+			$ticket_card_amount = number_format( ($_GET['card_amount'] / 100), 2);
+		else
+			$ticket_card_amount = 0;
 
 		$criteria = new CDbCriteria;
         //$criteria->addCondition("uid = " . Yii::app()->session['uid']);
@@ -182,17 +283,17 @@ class TicketController extends Controller
         foreach ($orders as $order)
         {
 
-// Check for duplicate!!!!!
-if ($orderCount == 0)
-{
-	$file = "/home/tmp/ticketemail.dat";
-	if (strpos(file_get_contents($file), $order->auth_code) !== false)
-	{
-    	Yii::log("PAID PAGE BAILING - DETECTED DUPLICATE AUTH:" . $order->auth_code, CLogger::LEVEL_WARNING, 'system.test.kim');
-		return;
-	}
-	file_put_contents($file, $order->auth_code . "\n", FILE_APPEND);
-}
+			// Check for duplicate Auth Code!!!!!
+			if ($orderCount == 0)
+			{
+				$file = "/home/tmp/ticketemail.dat";
+				if (strpos(file_get_contents($file), $order->auth_code) !== false)
+				{
+    				Yii::log("PAID PAGE BAILING - DETECTED DUPLICATE AUTH:" . $order->auth_code, CLogger::LEVEL_WARNING, 'system.test.kim');
+					return;
+				}
+				file_put_contents($file, $order->auth_code . "\n", FILE_APPEND);
+			}
 
         	// Write a transaction
 			$transaction=new Transaction;
@@ -256,6 +357,7 @@ if ($orderCount == 0)
 			Yii::log("PAID PAGE FINISHED UPDATING SEATING" , CLogger::LEVEL_WARNING, 'system.test.kim');
 
 			// Rebuild the array, for ticket printing
+        	array_push($ticket_type_event_arr, $order->event_id);
         	array_push($ticket_type_area_arr,  $order->http_ticket_type_area);
 			array_push($ticket_type_id_arr,    $order->http_ticket_type_id);
 			array_push($ticket_type_qty_arr,   $order->http_ticket_type_qty);
@@ -274,6 +376,10 @@ if ($orderCount == 0)
         $criteria->addCondition("uid = " . Yii::app()->session['uid']);
         $criteria->addCondition("order_number = '" . $order->order_number . "'");
         $auth = Auth::model()->find($criteria);
+		if (!($auth))
+		{
+			Yii::log("PAID PAGE *** COULD NOT RETRIEVE AUTH RECORD ***" , CLogger::LEVEL_WARNING, 'system.test.kim');
+		}
 		$crdNum = '************ ' . substr($auth->card_number, 12, 4);
 		if (($this->isFreeEvent) || ($this->isBackend))
 			$crdNum = 'No card details';
@@ -287,13 +393,13 @@ if ($orderCount == 0)
 			$auth->card_name,
 			$crdNum,
 			$order->vendor_id,
-			$order->event_id,
+			$ticket_type_event_arr,
 			$ticket_type_area_arr,
 			$ticket_type_id_arr,
 			$ticket_type_qty_arr,
 			$ticket_type_price_arr,
 			$ticket_type_total_arr,
-			$order->http_total,
+			$ticket_card_amount,
 			$ticketNumbers
 		);
 
@@ -355,6 +461,9 @@ if ($orderCount == 0)
 			$scan->save();
 		}
         	
+		// Delete the order records
+		Order::model()->deleteAllByAttributes(array('ip' => $ip));
+
         // renders the view file 'protected/views/site/index.php'
         // using the default layout 'protected/views/layouts/main.php'
         Yii::log("PAID PAGE TICKET PRINT URL IS " . Yii::app()->baseUrl . '/tktp/' . $rnd . '.pdf', CLogger::LEVEL_WARNING, 'system.test.kim');
@@ -390,4 +499,42 @@ if ($orderCount == 0)
 			Yii::app()->end();
 		}
 	}
+
+    public function actionAjaxDeleteTicket()
+    {
+        if (Yii::app()->request->isAjaxRequest)
+        {
+			$status = 'false';
+
+            $ip = "UNKNOWN";
+            if (getenv("HTTP_CLIENT_IP"))
+                $ip = getenv("HTTP_CLIENT_IP");
+            else if (getenv("HTTP_X_FORWARDED_FOR"))
+                $ip = getenv("HTTP_X_FORWARDED_FOR");
+            else if (getenv("REMOTE_ADDR"))
+                $ip = getenv("REMOTE_ADDR");
+
+			$jsId = $_POST['id'];
+			$eventId = $_POST['event'];
+			$areaId = $_POST['area'];
+			$ticketTypeId = $_POST['ttype'];
+			Yii::log("AJAX CALL: EventId:" . $eventId . " and areaId:" . $areaId . " and ticketTypeID:" . $ticketTypeId, CLogger::LEVEL_WARNING, 'system.test.kim');
+
+			// Delete the selection
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("ip = '" . $ip . "'");
+			//$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+			$criteria->addCondition("event_id = " . $eventId);
+			$criteria->addCondition("http_ticket_type_area = " . $areaId);
+			$criteria->addCondition("http_ticket_type_id = " . $ticketTypeId);
+			$orders = Order::model()->deleteAll($criteria);
+			$status = 'true';
+
+            echo CJSON::encode(array(
+                'id' => $jsId,
+                'status' => $status,
+            ));
+		}
+	}
+
 }

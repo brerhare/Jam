@@ -26,6 +26,7 @@
 		die("Cannot retrieve order record");
 	}
 
+/****************************************************
 	// Pick up the event record
 	$sql = "SELECT * FROM ticket_event where id = " . $qOrder['event_id'];
 	logMsg("Retrieving event details using sql [" . $sql . "]");
@@ -38,8 +39,11 @@
 		logMsg("Unsuccessful...aborting");
 		die("Cannot retrieve event record");
 	}
+*****************************************************/
 
-    $ShoppingCartAmount = str_replace('.', '', $qOrder['http_total']);
+/********************    $ShoppingCartAmount = str_replace('.', '', $qOrder['http_total']); ********************/
+//$ShoppingCartAmount = str_replace('.', '', $qOrder['http_total']);
+														$ShoppingCartAmount = str_replace('.', '', $_GET['rtotal']);
 	if ($ShoppingCartAmount == 0)
 	{
 		logMsg("Total amount is zero...aborting");
@@ -49,7 +53,9 @@
     $ShoppingCartCurrencyShort = "GBP";
     $ShoppingCartOrderID = $qOrder['uid'] . "-" . time();
 	logMsg("Going with order number " . $ShoppingCartOrderID . " (based on uid-time)");
-    $ShoppingCartOrderDescription = $qEvent['title'];
+/*********************    $ShoppingCartOrderDescription = $qEvent['title']; ***********************/
+														$ShoppingCartOrderDescription = 'Ticket order';
+
     $ShoppingCartHashDigest = "123";
 
 	// Update the (potential) order with the generated order number

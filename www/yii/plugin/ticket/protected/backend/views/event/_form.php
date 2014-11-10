@@ -30,24 +30,66 @@
 	<?php // @@TODO @@EG usage of the various editors. Redactor still buggered ?>
 	<?php //echo $form->textAreaRow($model,'ticket_text',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 	<?php //echo $form->redactorRow($model, 'ticket_text', array('class'=>'span4', 'rows'=>5)); ?>
-	<?php echo $form->html5EditorRow($model, 'ticket_text', array('class'=>'span8', 'rows'=>5, 'height'=>'200px', 'options'=>array('color'=>true)));?>
+	<?php //echo $form->html5EditorRow($model, 'ticket_text', array('class'=>'span8', 'rows'=>5, 'height'=>'200px', 'options'=>array('color'=>true)));?>
 	<?php // echo $form->ckEditorRow($model, 'ticket_text', array('options'=>array('fullpage'=>'js:true', 'width'=>'640', 'resize_maxWidth'=>'640','resize_minWidth'=>'320')));?>
 
 
-	<?php //echo $form->textAreaRow($model,'ticket_terms',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
-	<?php echo $form->html5EditorRow($model, 'ticket_terms', array('class'=>'span8', 'rows'=>5, 'height'=>'200px', 'options'=>array('color'=>true)));?>
+<!-- CKEditor starts -->
+
+
+    <script src="<?php echo Yii::app()->baseUrl.'/scripts/editors/ck/ckeditor/ckeditor.js'; ?>"></script>
+    <?php
+        $_SESSION['KCFINDER']['disabled'] = false; // enables the file browser in the admin
+        $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->baseUrl."/userdata/image/"; // URL for the uploads folder
+        $_SESSION['KCFINDER']['uploadDir'] = Yii::app()->basePath."/../userdata/image/"; // path to the uploads folder
+    ?>
+    <!-- <div class="row"> -->
+
+<table><tr>
+<td width="155px" style="vertical-align:top; text-align:right;">
+    <?php echo $form->labelEx($model,'Ticket Text&nbsp&nbsp'); ?>
+</td>
+<td>
+    <?php echo $form->textArea($model, 'ticket_text', array('id'=>'editor1')); ?>
+    <?php echo $form->error($model,'ticket_text'); ?>
+</td>
+</tr></table>
+
+    <!-- </div> -->
+
+    <script type="text/javascript">
+    CKEDITOR.replace( 'editor1', {
+        width: <?php echo Yii::app()->params['editorpagewidth'];?>,
+        height: <?php echo Yii::app()->params['editorpageheight'];?>,
+        filebrowserUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/upload.php?type=files',
+        filebrowserImageUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/upload.php?type=images',
+        filebrowserFlashUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/upload.php?type=flash'
+    });
+    </script>
+
+<!-- CKEditor ends -->
+
+<br/>
+
+	<?php echo $form->textAreaRow($model,'ticket_terms',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
+	<?php //echo $form->html5EditorRow($model, 'ticket_terms', array('class'=>'span8', 'rows'=>5, 'height'=>'200px', 'options'=>array('color'=>true)));?>
 
 	<?php
 	// THIS IS THE OPTIONAL SEQUENCE NUMBERING. MUST NOT BE CHANGED ONCE TICKETS FOR THE EVENT HAVE BEEN SOLD!!!!!
-	// See if there are any tickets for this event
-	$criteria = new CDbCriteria;
-	$criteria->addCondition("event_id = " . $model->id);
-	$criteria->addCondition("uid = " . Yii::app()->session['uid']);
-	$transactions = Transaction::model()->findAll($criteria);
-	if ((!($transactions)) || ($model->isNewRecord))
+	if ($model->isNewRecord)
 		echo $form->textFieldRow($model,'optional_start_ticket_number',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right'));
 	else
-		echo $form->textFieldRow($model,'optional_start_ticket_number',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right', 'readonly'=>true));
+	{
+		// See if there are any tickets for this event
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("event_id = " . $model->id);
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+		$transactions = Transaction::model()->findAll($criteria);
+		if (!($transactions))
+			echo $form->textFieldRow($model,'optional_start_ticket_number',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right'));
+		else
+			echo $form->textFieldRow($model,'optional_start_ticket_number',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right', 'readonly'=>true));
+	}
 	?>
 
 <?php echo $form->textFieldRow($model,'booking_fee_per_ticket',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right')); ?>

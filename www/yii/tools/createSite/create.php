@@ -46,7 +46,7 @@ if (is_dir($baseDirDev))
 	die($baseDir . " already has a jelly site in it - aborting\n");
 
 // Copy the jelly skeleton to the location created by Virtualmin if it exists
-echo "Creating 'dev' and cloning git repositories 'src' and 'extern...'\n";
+echo "Creating ($baseDir)" . "/'dev' and cloning git repositories 'src' and 'extern...'\n";
 if (!(mkdir($baseDirDev)))
 	die("Couldnt create " . $baseDirDev . " - aborting\n");
 if (!(chdir($baseDirDev)))

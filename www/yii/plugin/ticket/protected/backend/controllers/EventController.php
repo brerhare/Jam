@@ -263,9 +263,10 @@ class EventController extends Controller
 					$transactions = Transaction::model()->findAll($criteria);
 					foreach ($transactions as $transaction)	// All event transactions for the event
 					{
-                        // Suppress values for non-paymentsense tickets
-                        if (!($transaction->auth_code))
-                            $transaction->http_ticket_total = 0;
+
+            			// Suppress values for non-paymentsense tickets
+            			if (!($transaction->auth_code))
+                			$transaction->http_ticket_total = 0;
 
 						$criteria = new CDbCriteria;
 						$criteria->addCondition("order_number = '" . $transaction->order_number . "'");

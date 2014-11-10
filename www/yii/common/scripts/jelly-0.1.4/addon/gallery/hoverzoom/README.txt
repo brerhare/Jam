@@ -1,3 +1,5 @@
+http://jmar.github.io/jquery-hoverZoom/
+
 One day i stumbled across http://www.sohtanaka.com/web-design/fancy-thumbnail-hover-effect-w-jquery/ and i liked the effect of the zooming images. But it has one big downside: When a zoomed image covers another thumbnail you can´t zoom that thumbnail. So i took my own attemp to create a jquery plugin that fixes this issue.
 Features
 

@@ -58,7 +58,17 @@ class VendorReportCommand extends CConsoleCommand
 			foreach ($events as $event)	// All active events
 			{
 				if (!($event->active))
-					continue;
+				{
+					// Even if this event is inactive, if there are recent transactions we still send the report
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("vendor_id = " . $vendor->id);
+					$criteria->addCondition("event_id = " . $event->id);
+					$criteria->addCondition("timestamp >= '" . $fromdate->format('Y-m-d') . " 00:00:00'");
+					$criteria->addCondition("timestamp <= '" . $todate->format('Y-m-d') . " 99:99:99'");
+					$transactions = Transaction::model()->findAll($criteria);
+					if (!($transactions))
+						continue;
+				}
 				$umsg .= "<i>" . $cr . $event->title . " : " . $event->date . "</i>" . $cr;
 				$hasActiveEvent = true;
 				$eQty = 0;
@@ -185,7 +195,7 @@ class VendorReportCommand extends CConsoleCommand
 
 
 					$mail->AddAddress($to);
-//$mail->AddBCC("kim@wireflydesign.com");
+//$mail->AddBCC("info@wireflydesign.com");
 					$mail->SetFrom($from, $fromName);
 					$mail->AddReplyTo($from, $fromName);
 					$mail->AddAttachment($att_filename);
@@ -211,7 +221,7 @@ class VendorReportCommand extends CConsoleCommand
 		$gcontent = $ghtmlstart . $gsummary . $gmsg . $ghtmlend;
 
 		// Send summary email to jo
-		$to = "jo@wireflydesign.com";
+		$to = "info@wireflydesign.com";
 		$att_filename = "/tmp/ticketSales.csv";
 		if (strlen($to) > 0)
 		{
@@ -222,7 +232,6 @@ class VendorReportCommand extends CConsoleCommand
 			// phpmailer
 			$mail = new PHPMailer();
 			$mail->AddAddress($to);
-$mail->AddBCC("kim@wireflydesign.com");
 			$mail->SetFrom($from, $fromName);
 			$mail->AddReplyTo($from, $fromName);
 			$mail->AddAttachment($att_filename);

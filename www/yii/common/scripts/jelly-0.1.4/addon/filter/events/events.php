@@ -63,6 +63,26 @@ class events
         $content .= "<div style='position:fixed; color:#575757;'>";      // Your basic solemn grey font color
         $uid = Yii::app()->session['uid'];
 
+		// Show 'Review order' button from ticketing
+		$reviewOrder = <<<END_OF_REVIEW_ORDER_HTML
+		<div>
+			<style>
+				#review-order {
+					background: url(//plugin.wireflydesign.com/ticket/img/rev-order.png);
+					border: 0;
+					display: block;
+					height: 50px;
+					width: 125px;
+					cursor:pointer;
+					outline:none;
+				}
+			</style>
+			<input type='button' id='review-order' onclick='revieworderFunction()'></input>
+		</div>
+		<script>function revieworderFunction(){ window.open("https://plugin.wireflydesign.com/ticket/index.php/ticket/review") }</script>
+END_OF_REVIEW_ORDER_HTML;
+		$content .= $reviewOrder;
+
         $twistyIcon = "<img style='padding-right:3px' title='" . 'Show more' . "' src='img/" . 'open-twisty.png' . "' >";
 
         $content .= "<input type='button' id='textresetbutton' style='float:left;padding:3px; width:60px' onClick='resetEvents()' value='Reset'>";

@@ -70,15 +70,15 @@ table tr {
 			array_push($typeArr, $transaction->http_ticket_type_id);
 
 		 	$criteria = new CDbCriteria;
-			$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+			//$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 			$criteria->addCondition("order_number = '" . $transaction->order_number . "'");
 			$auth = Auth::model()->find($criteria);
 			if (!($auth))
 				continue;
 
-			// Suppress values for non-paymentsense tickets
-			if (!($transaction->auth_code))
-				$transaction->http_ticket_total = 0;
+            // Suppress values for non-paymentsense tickets
+            if (!($transaction->auth_code))
+                $transaction->http_ticket_total = 0;
 
 			if ($prevOrder != $transaction->order_number)
 			$lc++; 
@@ -155,7 +155,6 @@ table tr {
 			</td>
 		</tr>
 		<?php $prevOrder = $transaction->order_number; ?>
-
 		<?php endforeach;?>
 
 		<tr style="background-color:#c3d9ff; color:#0088cc;">

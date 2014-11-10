@@ -214,10 +214,10 @@ class JellyAdblockController extends Controller
 
 	public function actionAjaxGetAds()
 	{
-			Yii::log("AJAX CALL: actionAjaxGetAds", CLogger::LEVEL_WARNING, 'system.test.kim');
+//			Yii::log("AJAX CALL: actionAjaxGetAds", CLogger::LEVEL_WARNING, 'system.test.kim');
 			$count = $_POST['count'];
 			$ids = $_POST['ids'];
-			Yii::log("AJAX CALL: actionAjaxGetAds got website ad count=" . $count . " and ids=" . $ids, CLogger::LEVEL_WARNING, 'system.test.kim');
+//			Yii::log("AJAX CALL: actionAjaxGetAds got website ad count=" . $count . " and ids=" . $ids, CLogger::LEVEL_WARNING, 'system.test.kim');
 
 			$idArr = array();
 			$urlArr = array();
@@ -225,7 +225,7 @@ class JellyAdblockController extends Controller
 
         	$adBlocks = JellyAdblock::model()->findAll(array('order'=>'RAND()'));
 			$recs = count($adBlocks);
-			Yii::log("AJAX CALL: actionAjaxGetAds found a total of " . $recs . " ads to choose from in the db", CLogger::LEVEL_WARNING, 'system.test.kim');
+//			Yii::log("AJAX CALL: actionAjaxGetAds found a total of " . $recs . " ads to choose from in the db", CLogger::LEVEL_WARNING, 'system.test.kim');
 			$toFind = $count;
 			$selected = 0;
         	foreach ($adBlocks as $adBlock):
@@ -239,7 +239,7 @@ class JellyAdblockController extends Controller
 				if (!($toFind))
 					break;
 			endforeach;
-			Yii::log("AJAX CALL: actionAjaxGetAds sending out a total of " . $selected . " new ads for display", CLogger::LEVEL_WARNING, 'system.test.kim');
+//			Yii::log("AJAX CALL: actionAjaxGetAds sending out a total of " . $selected . " new ads for display", CLogger::LEVEL_WARNING, 'system.test.kim');
 
             echo CJSON::encode(array(
                 'id' => $idArr,
