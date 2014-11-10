@@ -1,20 +1,199 @@
+#default Index file
+
 [defaults]
 include = default-values
 
-; Every blob inherits these before adding/overriding
 [* : defaults]
+# Every blob inherits these before adding/overriding
 
 [screen]
-child = contentframe
-fx.wallpaper-image = /img/background.jpg
+child = header-graphic, site
+fx.wallpaper-image-tile = /img/background.jpg
 css.display = block
+#addon.analytics.google_analytics.ua = UA-20115178-1
+	
+	[header-graphic]
+		css.margin-top = 20px
+		css.width = 1000px
+		css.height = 319px
+		image.url = img/header-graphic.png
+		image.width = 1000px
+		image.height = 319px
+	
+	[site]
+	child = backgd
+	css.width = 1000px
+	css.margin-top = -300px
+	css.background-color = #e5e5e5
+	fx.rounding = 10px
+			
+		[backgd]
+		child = middle, footer
+		css.background-color = white
+		css.width = 980px
+		fx.rounding = 8px
+		css.margin-bottom  = 10px
 
-	[contentframe]
-	css.display = block
-	css.width = 100px
-	css.margin-top = 400px
-	style.html.h1.color = yellow
-	style.html.h1.background-color = black
-	style.html.h1.padding = 10px
-	html.h1 = jelly
 
+####### Header #########################
+
+[middle]
+child = signup-backgd, main
+css.margin-top = 220px
+css.margin-left = 40px
+	
+	[signup-backgd]
+	child = signup, red-hand
+	css.height = 90px
+	css.width = 180px
+	css.margin-left = 0px
+	fx.rounding = 8px
+	css.background-color = #ffff00
+		
+		[signup]
+		css.margin = 10px
+		#addon.mailer.signup.orientation = horizontal
+		addon.mailer.signup.buttoncolor = red
+		addon.mailer.signup.buttontextcolor = yellow
+		addon.mailer.signup.buttontext = Submit
+		addon.mailer.signup.inputspacing = 5px
+		addon.mailer.signup.successtextcolor = green
+		addon.mailer.signup.failuretextcolor = red
+		addon.mailer.signup.inputwidth = 155px
+			
+		[red-hand]
+		css.margin-top = -45px
+		css.margin = 150px
+		css.width = 30px
+		css.height = 30px
+		image.url = img/red-hand.png
+		image.width = 30px
+		image.height = 30px
+		css.overflow = visible
+			
+
+			
+	[main]
+	child = left-column, content-block
+	stacking = horizontal
+	css.margin-top = 30px
+	
+			[left-column]
+			child = menu
+			css.width = 180px
+		
+				[menu]
+				#css.height = 40px
+				css.width = 180px
+				css.overflow = visible
+				css.position = relative
+				css.z-index = 1000
+
+				addon.menu.basic.orientation = vertical
+				addon.menu.basic.width = 160px
+				addon.menu.basic.height = 40px
+				#addon.menu.basic.level = 2
+
+####### Top level background settings (first colour is the top gradiation) ####
+				addon.menu.basic.menu-color = #ffff00
+				addon.menu.basic.item-separator-color = black
+				addon.menu.basic.item-separator-width = 1px
+				addon.menu.basic.edgepadding = 10px
+				addon.menu.basic.menu-rounding = 8px
+
+				addon.menu.basic.font-size = 14px
+				addon.menu.basic.menu-text-color = black
+
+
+####### Top level hover settings ####
+				addon.menu.basic.item-color = cyan
+				addon.menu.basic.item-text-color = blue
+
+####### Second level background settings ####
+				addon.menu.basic.submenu-color = #ffffff #bfffff
+				addon.menu.basic.subitem-separator-color = white
+
+####### Second level hover settings ####
+				addon.menu.basic.subitem-color = cyan
+				addon.menu.basic.subitem-text-color = blue
+
+
+###########################################################
+
+[content-block]
+child = slider, content
+css.width = 680px
+css.margin-left = 50px
+
+	[slider]
+	css.width = 680px
+	css.height = 390px
+	condition = @PAGE=@HOMEPAGE
+	addon.slider.flexslider.width = 660px
+	addon.slider.flexslider.height = 370px
+		addon.slider.flexslider.border-width = 10px
+		addon.slider.flexslider.border-color = #76f04e
+		addon.slider.flexslider.active-dotcolor = blue
+		addon.slider.flexslider.inactive-dotcolor = lightgrey
+		addon.slider.flexslider.dot-margin-top = -200px
+		addon.slider.flexslider.dot-margin-bottom = 0px
+		addon.slider.flexslider.dot-margin-left = 0px
+		addon.slider.flexslider.dot-margin-right = 0px
+		#addon.slider.flexslider.animation = fade
+	addon.slider.flexslider.mode = image
+		#addon.slider.flexslider.mode = HTML
+	addon.slider.flexslider.source = db
+		
+	[content]
+	css.margin-top = 15px
+	db.table = ContentBlock
+	db.filter = url=$_GET['page']
+	db.error = Sorry, I could not find th page $_GET['page']
+	html.raw = ContentBlock.content
+
+[footer]
+	child = footer-menu
+	css.margin-top = 40px
+	css.height = 200px
+	css.width = 960px
+	css.background-color = #ffffff
+
+		[footer-menu]
+		stacking = horizontal
+		child = footer-margin, footer-cookies, footer-tandc, footer-contact, wirefly
+		css.height = 200px
+		css.width = 960px
+
+			[footer-margin]
+			css.width = 20%
+			css.height = 200px
+
+			[footer-cookies]
+			html.raw = Cookie Policy
+			css.width = 20%
+			css.color = #000000
+			css.text-align = left
+			click = ?layout=index&page=cookie-policy
+
+			[footer-tandc]
+			html.raw = Terms & Conditions
+			css.width = 20%
+			css.color = #000000
+			css.text-align = center
+			click = ?layout=index&page=terms-conditions
+
+			[footer-contact]
+			html.raw = Contact Us
+			css.text-align = right
+			css.width = 20%
+			css.color = #000000
+			click = ?layout=index&page=contact
+
+			[wirefly]
+			css.margin-top = 100px
+			css.height = 50px
+			css.width = 20%
+			image.url = img/wirefly-link-white.png
+			image.width = 161px
+			image.height = 40px
+			clicknew = http://www.wireflydesign.com
