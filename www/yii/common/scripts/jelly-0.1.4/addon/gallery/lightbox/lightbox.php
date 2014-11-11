@@ -55,15 +55,16 @@ class lightbox
 
 				// Gallery options
 				case "gallery":
-					if (strlen($val) > 0)
-						$this->gallery = $val;
+					$val = str_replace("&nbsp;", " ", $val);
+					$val = str_replace("&nbsp", " ", $val);
+					$this->gallery = strstr($val, " ", true);
+$max = 12;
 					break;
 
 				default:
 					// Not all array items are action items
 			}
 		}
-
 
 /******
 		<div class="image-row">
@@ -103,6 +104,8 @@ class lightbox
 					$content .= '<a style="padding:5px 5px 0px 0px" class="example-image-link" href="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $galleryImage->image . '" data-lightbox="gallery-' . $gallery->id . '" title="' . $galleryImage->text . '"><img class="example-image" src="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . '" alt="' . $galleryImage->text . '" width="100" height="100"/></a>';
 
 					$content .= '</a>';
+$max--;
+if ($max == 0) break;
 				endforeach;
 				$content .= "</div>";
 				$content .= "</div>";
