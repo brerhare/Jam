@@ -11,9 +11,11 @@
 class lightbox
 {
 	//Defaults
-	//private $defaultWidth = '100px';
-	//private $defaultHeight = '100px';
+	private $width = 'auto';
+	private $height = 'auto';
 	private $gallery = "";
+	private $image = "";
+	private $thumb = "";
 
 	public $apiOption = array(
 	);
@@ -33,18 +35,30 @@ class lightbox
 		{
 			switch ($opt)
 			{
+				// Single image options - nor really a gallery
+				case "image":
+					if (strlen($val) > 0)
+						$this->image = $val;
+					break;
+				case "thumb":
+					if (strlen($val) > 0)
+						$this->thumb = $val;
+					break;
+				case "width":						//
+					$width = str_replace("px", "", $val) . "px";
+					$this->width = $val + "px";
+					break;
+				case "height":
+					$height = str_replace("px", "", $val) . "px";
+					$this->height = $val + "px";
+					break;
+
+				// Gallery options
 				case "gallery":
 					if (strlen($val) > 0)
 						$this->gallery = $val;
 					break;
-				case "width":
-//					$width = str_replace("px", "", $val) . "px";
-//					$this->apiHtml = str_replace("<substitute-width>", " width $width ", $this->apiHtml);
-//					break;
-//				case "height":
-//					$height = str_replace("px", "", $val) . "px";
-//					$this->apiHtml = str_replace("<substitute-height>", " height=$height ", $this->apiHtml);
-//					break;
+
 				default:
 					// Not all array items are action items
 			}
@@ -62,29 +76,38 @@ class lightbox
 		</div>
 ******/
 
-		$galleries = JellyGallery::model()->findAll(array('order'=>'sequence'));
-		foreach ($galleries as $gallery):
-			if (($gallery->active == 0) && (strlen($this->gallery) == 0))
-				continue;
-			if (strlen($this->gallery) > 0)
-			{
-				if ($gallery->id != $this->gallery)
+		if ($this->image != "")
+		{
+			$content .= "<a class='example-image-link' href='" . $this->image . "' data-lightbox='example-set' title=''><img class='example-image' src='" . $this->thumb . "' alt='' width='" . $this->width . "' height='" . $this->height . "'/></a>";
+		}
+		else
+		{
+			$galleries = JellyGallery::model()->findAll(array('order'=>'sequence'));
+			foreach ($galleries as $gallery):
+				if (($gallery->active == 0) && (strlen($this->gallery) == 0))
 					continue;
-			}
-			$criteria = new CDbCriteria;
-			$criteria->addCondition("jelly_gallery_id = " . $gallery->id);
-			$criteria->order = "sequence ASC";
-			$galleryImages = JellyGalleryImage::model()->findAll($criteria);
-			$content .= "<div class='image-row'>";
-			$content .= "<div class='image-set'>";
-			foreach ($galleryImages as $galleryImage):
-				$content .= '<a style="padding:5px 5px 0px 0px" class="example-image-link" href="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $galleryImage->image . '" data-lightbox="gallery-' . $gallery->id . '" title="' . $galleryImage->text . '"><img class="example-image" src="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . '" alt="' . $galleryImage->text . '" width="100" height="100"/></a>';
-				$content .= '</a>';
-			endforeach;
-			$content .= "</div>";
-			$content .= "</div>";
-		endforeach;
+				if (strlen($this->gallery) > 0)
+				{
+					if ($gallery->id != $this->gallery)
+						continue;
+				}
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("jelly_gallery_id = " . $gallery->id);
+				$criteria->order = "sequence ASC";
+				$galleryImages = JellyGalleryImage::model()->findAll($criteria);
+				$content .= "<div class='image-row'>";
+				$content .= "<div class='image-set'>";
+				foreach ($galleryImages as $galleryImage):
+					//$content .= '<a class="example-image-link" href="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $galleryImage->image . '" data-lightbox="gallery-' . $gallery->id . '" title="' . $galleryImage->text . '"><img class="example-image" src="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . '" alt="' . $galleryImage->text . '" width="100" height="100"/></a>';
 
+					$content .= '<a style="padding:5px 5px 0px 0px" class="example-image-link" href="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $galleryImage->image . '" data-lightbox="gallery-' . $gallery->id . '" title="' . $galleryImage->text . '"><img class="example-image" src="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . '" alt="' . $galleryImage->text . '" width="100" height="100"/></a>';
+
+					$content .= '</a>';
+				endforeach;
+				$content .= "</div>";
+				$content .= "</div>";
+			endforeach;
+		}
 
 		// Apply all defaults that werent overridden
 

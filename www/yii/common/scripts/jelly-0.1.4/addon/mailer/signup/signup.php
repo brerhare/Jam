@@ -20,7 +20,7 @@ class signup
 	private $optionSuccessTextColor = "green";
 	private $optionFailureTextColor = "red";
 	private $optionTextColor = 'black';
-	private $optionBackColor = '#d3d3d3';
+	private $optionBackColor = '';
 
 	public $apiOption = array(
 	);
@@ -91,7 +91,10 @@ class signup
 
 		// Generate the content
 		$content = "<div ng-app>";
-			$content .= "<div style='background-color:" . $this->optionBackColor . "' ng-controller='signupController'>";
+			$background = "";
+			if ($this->optionBackColor != '')
+				$background = " background-color:" . $this->optionBackColor . "; ";
+			$content .= "<div style='" . $background . "' ng-controller='signupController'>";
 				$content .= "<input id='signup-name' class='signup-input' type='text' style='width:" . $this->optionInputWidth . "px' title='Name' />";
 				$content .= $separator;
 				$content .= "<input id='signup-email' class='signup-input' type='text' style='width:" . $this->optionInputWidth . "px' title='Email' />";

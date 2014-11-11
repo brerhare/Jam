@@ -144,8 +144,8 @@ END_OF_ENDHEADER;
         }); 
         </script>
 
-// Handle postmessages
-// @@NB START POSTMESSAGE
+<!-- Handle postmessages -->
+<!--  @@NB START POSTMESSAGE -->
 <script>
 	var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
 	var eventer = window[eventMethod];
@@ -162,7 +162,7 @@ END_OF_ENDHEADER;
 			window.location = msgArr[1];
 	},false);
 </script>
-// @@NB END POSTMESSAGE
+<!-- @@NB END POSTMESSAGE -->
 
 	</body>
 	</html>\n
@@ -1182,6 +1182,34 @@ if (strstr($blobName, "googlemap"))
 					"gallery" => array(
 						"hoverzoom" => array(
              				"gallery" => $galleries,
+						)
+					)
+				);
+				$this->addonHandler($addon, 1, $addonHtml);
+				$content = str_replace($pOrig, $addonHtml, $content);
+				//$content = str_replace($pOrig, "", $content);
+			}
+
+			if (stristr($vals[0], "imageview-lightbox"))
+			{
+				// Eg: {{imageview-lightbox path_to_image path_to_thumb}}  (hybrid)
+				// ----------------------------------------------------------------
+				//@@ TODO: TOFIX: BUG: Uncommenting next line causes memory exhaustion
+				//$moreCurlyWurlys = 1;
+				$image = "";
+				$thumb = "";
+				if (count($vals) > 1)
+				{
+					$image = $vals[1];
+					$thumb = $vals[1];
+				}
+				if (count($vals) > 2)
+					$thumb = $vals[2];
+				$addon = array(
+					"gallery" => array(
+						"lightbox" => array(
+             				"image" => $image,
+             				"thumb" => $thumb,
 						)
 					)
 				);
