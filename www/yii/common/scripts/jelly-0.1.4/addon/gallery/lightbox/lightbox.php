@@ -78,7 +78,7 @@ class lightbox
 			$content .= "<div class='image-row'>";
 			$content .= "<div class='image-set'>";
 			foreach ($galleryImages as $galleryImage):
-				$content .= '<a class="example-image-link" href="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $galleryImage->image . '" data-lightbox="gallery-' . $gallery->id . '" title="' . $galleryImage->text . '"><img class="example-image" src="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . '" alt="' . $galleryImage->text . '" width="100" height="100"/></a>';
+				$content .= '<a style="padding:5px 5px 0px 0px" class="example-image-link" href="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $galleryImage->image . '" data-lightbox="gallery-' . $gallery->id . '" title="' . $galleryImage->text . '"><img class="example-image" src="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . '" alt="' . $galleryImage->text . '" width="100" height="100"/></a>';
 				$content .= '</a>';
 			endforeach;
 			$content .= "</div>";
