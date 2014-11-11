@@ -1,43 +1,59 @@
 <!-- Google fonts
-<link href='//fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Gloria+Hallelujah' rel='stylesheet' type='text/css'>
 -->
 
 <style type="text/css">
 
-html, body {
-	height: 100%;
-	padding: 0;
-	margin: 0;
-	border: 0;
-}
+html, body, p {	height: 110%;
+			line-height: 120%;}
 
-html * {
-   /*font-size: 1em !important;*/
-   /*font-family: Arial !important;*/
-	font-family: 'Raleway', sans-serif !important;
-	/*color:#00ff00 !important;*/
-}
+/* Global Hyperlink settings - will affect menu text colour if no text settings */ 
+/* Main: Blue #1cb9d9 / Second: Green 76f04e*/
 
-a { color:#000000 } /* Globally */
-a:visited { text-decoration: none; color:#000000; }
-a:hover { text-decoration: none; color:#000000; }
-a:focus { text-decoration: none; color:#000000; }
-a:hover, a:active { text-decoration: none; color:0###000 }
+a { text-decoration: none; color:#1cb9d9; }
+a:visited { text-decoration: none; color:#1cb9d9; }
+a:hover { text-decoration: none; color:#76f04e; }
+a:active { text-decoration: none; color:#76f04e; }
 
-/* Jacquies */
-h1 {color: #000000; }
-h2 {color: #000000; }
-h3 {
+
+
+h1 {	font-family: 'Gloria Hallelujah', Verdana, sans-serif !important;
+	color: #1cb9d9;
+	font-size: 28px;
+	font-weight: 400;
+	text-shadow: 1px 1px 2px lightgrey;}
+
+h2 {	font-family: 'Source Sans Pro', Verdana, sans-serif !important;
+	color: grey;
+	font-size: 18px;
+	font-weight: normal;
+	line-height: 110%;}
+
+
+h3 {	font-family: 'Gloria Hallelujah', Verdana, sans-serif !important;
+	color: #1cb9d9;
+	font-size: 20px;
+	font-weight: 400;}
+
+h4 {	font-family: 'Gloria Hallelujah', Verdana, sans-serif !important;
+	color: #1cb9d9;
+	font-size: 16px;
+	font-weight: 400;}
+
+p  {	font-family: 'Source Sans Pro', Verdana, sans-serif !important;
 	color: #000000;
-	margin-top:5px;
-	margin-bottom:5px
-}
-h4 {
-	color: #000000;
-	margin-top:0px;
-	margin-bottom:0px
-}
+	font-size: 14px;
+	font-weight: normal}
 
-html { font-size: 14px;}
+blockquote {font-family: 'Source Sans Pro', Verdana, sans-serif !important;
+	color: #5b5b5b;
+	font-size: 14px;
+	font-style: italic;
+	font-weight: normal}
+
+
+html { font-family: 'Source Sans Pro', Verdana, sans-serif !important;
+	font-size: 12px;
+	font-weight:normal}
 
 </style>
