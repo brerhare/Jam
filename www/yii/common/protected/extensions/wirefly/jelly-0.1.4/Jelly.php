@@ -1192,7 +1192,7 @@ if (strstr($blobName, "googlemap"))
 
 			if (stristr($vals[0], "gallery-lightbox"))
 			{
-				// Eg: {{gallery-lightbox <33>}}  (hybrid)
+				// Eg: {{gallery-lightbox <33>}}  (hybrid) - only used in embedded news articles
 				// ---------------------------------------
 				//@@ TODO: TOFIX: BUG: Uncommenting next line causes memory exhaustion
 				//$moreCurlyWurlys = 1;
@@ -1212,7 +1212,7 @@ if (strstr($blobName, "googlemap"))
 				//$content = str_replace($pOrig, "", $content);
 			}
 
-			if (stristr($vals[0], "gallery"))		// This will catch 'gallery-fancybox' and any others. ie its the default
+			if (stristr($vals[0], "gallery"))		// This is the default gallery, ie everywhere except in embedded news articles
 			{
 				// Eg: {{gallery <33 SomeTitle> <"thumbs">}}  (hybrid)
 				// ---------------------------------------------------
