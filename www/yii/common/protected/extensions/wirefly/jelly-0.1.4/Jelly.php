@@ -144,8 +144,8 @@ END_OF_ENDHEADER;
         }); 
         </script>
 
-// Handle postmessages
-// @@NB START POSTMESSAGE
+<!-- Handle postmessages -->
+<!--  @@NB START POSTMESSAGE -->
 <script>
 	var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
 	var eventer = window[eventMethod];
@@ -162,7 +162,7 @@ END_OF_ENDHEADER;
 			window.location = msgArr[1];
 	},false);
 </script>
-// @@NB END POSTMESSAGE
+<!-- @@NB END POSTMESSAGE -->
 
 	</body>
 	</html>\n
