@@ -145,10 +145,13 @@ if (isset($_GET['art']))
 
 	public function actionResolveParentSiteGalleryAddonReturn()
 	{
-		$content = $_GET['content'];
+		$fileName = $_GET['filename'];
+		$content = file_get_contents($fileName);
 
 		$util = new Util;
-		$decryptedContent = $util->decrypt($content);
+
+//		$decryptedContent = $util->decrypt($content);
+$decryptedContent = $content;
 
 		$content =  Yii::app()->session['stash_pre'] . $decryptedContent .  Yii::app()->session['stash_post'];
 		//if (strstr($content, "{{"))

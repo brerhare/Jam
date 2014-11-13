@@ -11,8 +11,8 @@
 class lightbox
 {
 	//Defaults
-	//private $defaultWidth = '100px';
-	//private $defaultHeight = '100px';
+	private $width = 'auto';
+	private $height = 'auto';
 	private $gallery = "";
 	private $image = "";
 	private $thumb = "";
@@ -35,31 +35,35 @@ class lightbox
 		{
 			switch ($opt)
 			{
-				case "image":						// Single image only. Not really a gallery operation
+				// Single image options - nor really a gallery
+				case "image":
 					if (strlen($val) > 0)
 						$this->image = $val;
 					break;
-				case "thumb":						// Single image only. Not really a gallery operation
+				case "thumb":
 					if (strlen($val) > 0)
 						$this->thumb = $val;
 					break;
-				case "gallery":
-					if (strlen($val) > 0)
-						$this->gallery = $val;
+				case "width":						//
+					$width = str_replace("px", "", $val) . "px";
+					$this->width = $val + "px";
 					break;
-				case "width":
-//					$width = str_replace("px", "", $val) . "px";
-//					$this->apiHtml = str_replace("<substitute-width>", " width $width ", $this->apiHtml);
-//					break;
-//				case "height":
-//					$height = str_replace("px", "", $val) . "px";
-//					$this->apiHtml = str_replace("<substitute-height>", " height=$height ", $this->apiHtml);
-//					break;
+				case "height":
+					$height = str_replace("px", "", $val) . "px";
+					$this->height = $val + "px";
+					break;
+
+				// Gallery options
+				case "gallery":
+					$val = str_replace("&nbsp;", " ", $val);
+					$val = str_replace("&nbsp", " ", $val);
+					$this->gallery = strstr($val, " ", true);
+					break;
+
 				default:
 					// Not all array items are action items
 			}
 		}
-
 
 /******
 		<div class="image-row">
@@ -72,9 +76,9 @@ class lightbox
 		</div>
 ******/
 
-		if ($this->image != !!)
+		if ($this->image != "")
 		{
-			$content .= "<a class='example-image-link' href='" . $this->image - "' data-lightbox='example-set' title=''><img class='example-image' src='" . $this->thumb . "' alt='' width='150' height='150'/></a>";
+			$content .= "<a class='example-image-link' href='" . $this->image . "' data-lightbox='example-set' title=''><img class='example-image' src='" . $this->thumb . "' alt='' width='" . $this->width . "' height='" . $this->height . "'/></a>";
 		}
 		else
 		{
@@ -94,7 +98,10 @@ class lightbox
 				$content .= "<div class='image-row'>";
 				$content .= "<div class='image-set'>";
 				foreach ($galleryImages as $galleryImage):
-					$content .= '<a class="example-image-link" href="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $galleryImage->image . '" data-lightbox="gallery-' . $gallery->id . '" title="' . $galleryImage->text . '"><img class="example-image" src="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . '" alt="' . $galleryImage->text . '" width="100" height="100"/></a>';
+					//$content .= '<a class="example-image-link" href="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $galleryImage->image . '" data-lightbox="gallery-' . $gallery->id . '" title="' . $galleryImage->text . '"><img class="example-image" src="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . '" alt="' . $galleryImage->text . '" width="100" height="100"/></a>';
+
+					$content .= '<a style="padding:5px 5px 0px 0px" class="example-image-link" href="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $galleryImage->image . '" data-lightbox="gallery-' . $gallery->id . '" title="' . $galleryImage->text . '"><img class="example-image" src="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . '" alt="' . $galleryImage->text . '" width="100" height="100"/></a>';
+
 					$content .= '</a>';
 				endforeach;
 				$content .= "</div>";

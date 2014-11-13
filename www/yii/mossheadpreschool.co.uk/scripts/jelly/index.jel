@@ -1,4 +1,4 @@
-#default Index file
+#Mosshead Preschool
 
 [defaults]
 include = default-values
@@ -106,8 +106,8 @@ css.margin-left = 40px
 
 
 ####### Top level hover settings ####
-				addon.menu.basic.item-color = cyan
-				addon.menu.basic.item-text-color = blue
+				addon.menu.basic.item-color =  white #ffff00
+				addon.menu.basic.item-text-color = #00ca00
 
 ####### Second level background settings ####
 				addon.menu.basic.submenu-color = #ffffff #bfffff
@@ -145,7 +145,6 @@ css.margin-left = 50px
 	addon.slider.flexslider.source = db
 		
 	[content]
-	css.margin-top = 15px
 	db.table = ContentBlock
 	db.filter = url=$_GET['page']
 	db.error = Sorry, I could not find th page $_GET['page']
