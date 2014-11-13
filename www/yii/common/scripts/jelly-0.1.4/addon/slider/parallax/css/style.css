@@ -100,7 +100,7 @@
 	background: rgba(255,255,255,0.2);*/
 }
 .da-slide .da-link:hover{
-	background: url(../images/link-hover.png);
+	background: url(../images/link-hover.png); 
 	/*background: rgba(255,255,255,0.3);*/
 }
 .da-dots{
@@ -108,7 +108,7 @@
 	position: absolute;
 	text-align: center;
 	left: 0px;
-	bottom: 20px;
+	top: 200px; /*dot-top*/
 	z-index: /*2000*/ 20;
 	-moz-user-select: none;
 	-webkit-user-select: none;
@@ -119,7 +119,7 @@
 	width: 12px;
 	height: 12px;
 	border-radius: 50%;
-	background: #e4b42d;
+	background: #e4b42d; /*dot-color*/
 	margin: 3px;
 	cursor: pointer;
 	box-shadow: 
@@ -149,17 +149,17 @@
 }
 .da-arrows span{
 	position: absolute;
-	top: 50%;
-	height: 30px;
-	width: 30px;
-	border-radius: 50%;
-	background: #e4b42d;
+	top: 20%; /*nav-height*/
+	height: 50px;
+	width: 50px;
+	/*border-radius: 50%;
+	background: lightgrey;
+	box-shadow: 
+		1px 1px 1px rgba(0,0,0,0.1) inset, 
+		1px 1px 1px rgba(255,255,255,0.1);*/
 	cursor: pointer;
 	z-index: /*2000*/ 20;
 	opacity: 0;
-	box-shadow: 
-		1px 1px 1px rgba(0,0,0,0.1) inset, 
-		1px 1px 1px rgba(255,255,255,0.1);
 	-webkit-transition: opacity 0.4s ease-in-out 0.2s;
 	-moz-transition: opacity 0.4s ease-in-out 0.2s;
 	-o-transition: opacity 0.4s ease-in-out 0.2s;
@@ -169,7 +169,28 @@
 .da-slider:hover .da-arrows span{
 	opacity: 1;
 }
-.da-arrows span:after{
+
+/* The next 4 sections replaced the 6 commented out (original) sections below to allow the upload of images for the navigation arrows*/
+
+.da-arrows span.da-arrows-prev{
+	left: 15px; /*nav-margin*/
+	background:  url(../images/arrow-left.png) no-repeat top left; /*nav-prev*/
+}
+
+.da-arrows span.da-arrows-prev:hover{
+	background:  url(../images/arrow-left-hover.png) no-repeat top left; /*nav-prev-hover*/
+}
+
+.da-arrows span.da-arrows-next{
+	right: 15px;/*nav-margin*/
+	background:  url(../images/arrow-right.png) no-repeat top left; /*nav-next*/
+}
+.da-arrows span.da-arrows-next:hover{
+	background:  url(../images/arrow-right-hover.png) no-repeat top right; /*nav-next-hover*/
+}
+
+
+/*.da-arrows span:after{
 	content: '';
 	position: absolute;
 	width: 20px;
@@ -190,10 +211,12 @@
 	background-position: top right;
 }
 .da-arrows span.da-arrows-prev{
-	left: 15px;
+	left: 15px; /*nav-margin*/
+	/*background: url(../images/link-hover.png);*/
 }
-.da-arrows span.da-arrows-next{
-	right: 15px;
+/*.da-arrows span.da-arrows-next{
+	right: 15px;/*nav-margin*/
+	/*background: url(../images/link-hover.png);*/
 }
 
 .da-slide-current h2,
