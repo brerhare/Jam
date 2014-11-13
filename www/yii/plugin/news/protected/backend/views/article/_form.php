@@ -86,6 +86,13 @@ Date *
 
 <!-- CKEditor ends -->
 
+<!-- http://www.dgnews-sport.co.uk/?art=90 -->
+
+	<?php // Show deep link
+	if (!($model->isNewRecord))
+		echo "<br/>To link directly to this article visit: <b> " . Yii::app()->session['http_referer'] .  "/?art=" . $model->id . "</b>";
+	?>
+
 	</div>
 
 	<div class="form-actions">

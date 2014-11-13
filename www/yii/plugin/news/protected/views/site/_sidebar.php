@@ -1,31 +1,47 @@
 <?php
 	// Show the 3 most recent articles
-	echo "<div style='font-size:12px'>";
-//echo "<a style='color:black; text-decoration:none' gin.wireflydesign.com/news/index.php/site/play/?cat=" . $category->id . "&art='>" . $category->name . "</a><br>";
-	echo "<div style='font-size:16px; padding-bottom:5px;'>Recent</div>";
-	$criteria = new CDbCriteria;
-	$criteria->addCondition("uid=" . Yii::app()->session['uid']);
-	$criteria->order = "date DESC";
-	$articles = Article::model()->findAll($criteria);
-	$cnt = 0;
-	if ($articles)
-	{
-		foreach ($articles as $article)
+	// -------------------------------
+	echo "<style>
+			 .uline {
+				color:black;
+				text-decoration: none;
+			 }
+			 .uline:hover {
+				text-decoration: underline;
+			 }
+		</style>";
+
+	echo "<div style='max-height:130px; padding-bottom:0px; overflow:hidden;  font-size:12px'>";
+
+	echo "<div id=recent-articles style='font-size:16px; padding-bottom:5px;'>";
+		//echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art='>" . 'Recent' . "</a><br>";
+		echo "<a class='uline' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art='>" . 'Recent' . "</a><br>";
+	echo "</div style='border:1px solid black;' >";
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("uid=" . Yii::app()->session['uid']);
+		$criteria->order = "date DESC, id DESC";
+		$articles = Article::model()->findAll($criteria);
+		$cnt = 0;
+		if ($articles)
 		{
-			//echo "<a style='text-decoration:none;color:black' target='_top' href='http:/1staid4u.co.uk/?layout=index&page=news-traditional&cat=0&art=" . $article->id . "'>";
-			echo "<a style='text-decoration:none;color:black' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
-			echo $article->title . "<br/>";
-			echo "</a>";
-			if ($cnt++ > 3)
-				break;
+			foreach ($articles as $article)
+			{
+				echo "<img src='/news/img/gray-circle.png' height='5px' width='5px' style='padding:0px 4px 2px 0px;'/>";
+				//echo "<a class='uline' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
+				echo "<a class='uline' href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['http_referer'] . "/?art=" . $article->id     . '"' . ")'>";
+				echo $article->title . "<br/>";
+				echo "</a>";
+				if ($cnt++ >= 2)
+					break;
+			}
 		}
-	}
 	echo "</div>";
-	echo "<br/>";
+
+	echo "<div style='height:18px'></div>";
 
 	// Default styling for the signup form (can be changed by the iframe caller)
 	$color = '#000000';
-	$backColor = '#d3d3d3';
+	$backColor = '#137feb';
 
 	if ((isset($_GET['color'])) && (trim($_GET['color'] != '')))
 		$color = $_GET['color'];
@@ -42,24 +58,16 @@
 	$optArr['buttontextcolor'] = '#a70055';
 	$optArr['buttontext'] = 'Sign up';
 	$optArr['inputspacing'] = '5px';
-	$optArr['inputwidth'] = '155px';
+	$optArr['inputwidth'] = '147px';
 	$optArr['successtextcolor'] = 'white';
 	$optArr['failuretextcolor'] = 'red';
 	$ret = $addon->init($optArr, '/news/scripts/jelly/addon/mailer/signup');
 
-
-
-
-	//@@TODO: This is temporarily to disable the background color until we can set it properly in {{name=value}}
-	// Also need to remove the XXX in plugin/news/scripts/jelly/addon/signup/signup.php
-	echo "<div style='font-size:13px; padding:1px; XXXbackground-color:lightgrey'>";
-
-
-
-
-	echo "Keep me informed<br/>";
-	echo $ret[0];
+	echo "<div style='font-size:13px; padding:5px; background-color:" . $backColor  . "'>";
+		echo "Keep me informed<br/>";
+		echo $ret[0];
 	echo "</div>";
+
 	echo "<script>" . $ret[1] . "</script>";
 //echo"<script>SID='" . $_GET['sid'] . "';</script>";
 

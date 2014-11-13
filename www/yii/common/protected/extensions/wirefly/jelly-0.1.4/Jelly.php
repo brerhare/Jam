@@ -144,6 +144,26 @@ END_OF_ENDHEADER;
         }); 
         </script>
 
+<!-- Handle postmessages -->
+<!--  @@NB START POSTMESSAGE -->
+<script>
+	var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+	var eventer = window[eventMethod];
+	var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+
+	// Listen to message from child window
+	eventer(messageEvent,function(e) {
+  		console.log('parent received message!:  ',e.data);
+		var n = e.data.indexOf("^");
+		if (n == -1)
+			return;
+		msgArr = e.data.split("^");
+		if (msgArr[0] == "redirect")
+			window.location = msgArr[1];
+	},false);
+</script>
+<!-- @@NB END POSTMESSAGE -->
+
 	</body>
 	</html>\n
 END_OF_FOOTER;
@@ -488,7 +508,7 @@ END_OF_FOOTER;
 
                     // Do the query
                     $q = "return " . $query . ";";
-Yii::log("REPEATING EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
+//Yii::log("REPEATING EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 					if ($validQuery)
 	                    $resp = eval($q);
 	                else
@@ -894,7 +914,7 @@ if (strstr($blobName, "googlemap"))
 				$cri->order = $this->dbExpand(trim($ord));
                 // Do the query
                 $q = "return " . $query . ";";
-Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
+//Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
                 $resp = eval($q);
                 $this->dbTable[$dbTable] = $resp;
 				$this->dbError[$dbTable] = '';
@@ -1148,7 +1168,51 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				//$content = str_replace($pOrig, "", $content);
 			}
 
-			if (stristr($vals[0], "gallery"))
+			if (stristr($vals[0], "gallery-hoverzoom"))
+			{
+				// Eg: {{gallery-hoverzoom <33>}}  (hybrid)
+				// ----------------------------------------
+				//@@ TODO: TOFIX: BUG: Uncommenting next line causes memory exhaustion
+				//$moreCurlyWurlys = 1;
+				$galleries = "";
+				$thumbnails = "0";
+				if (count($vals) > 1)
+					$galleries = $vals[1];
+				$addon = array(
+					"gallery" => array(
+						"hoverzoom" => array(
+             				"gallery" => $galleries,
+						)
+					)
+				);
+				$this->addonHandler($addon, 1, $addonHtml);
+				$content = str_replace($pOrig, $addonHtml, $content);
+				//$content = str_replace($pOrig, "", $content);
+			}
+
+			if (stristr($vals[0], "gallery-lightbox"))
+			{
+				// Eg: {{gallery-lightbox <33>}}  (hybrid) - only used in embedded news articles
+				// ---------------------------------------
+				//@@ TODO: TOFIX: BUG: Uncommenting next line causes memory exhaustion
+				//$moreCurlyWurlys = 1;
+				$galleries = "";
+				$thumbnails = "0";
+				if (count($vals) > 1)
+					$galleries = $vals[1];
+				$addon = array(
+					"gallery" => array(
+						"lightbox" => array(
+             				"gallery" => $galleries,
+						)
+					)
+				);
+				$this->addonHandler($addon, 1, $addonHtml);
+				$content = str_replace($pOrig, $addonHtml, $content);
+				//$content = str_replace($pOrig, "", $content);
+			}
+
+			if (stristr($vals[0], "gallery"))		// This is the default gallery, ie everywhere except in embedded news articles
 			{
 				// Eg: {{gallery <33 SomeTitle> <"thumbs">}}  (hybrid)
 				// ---------------------------------------------------
@@ -1245,7 +1309,7 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				// Eg: {{preset}}
 				// --------------
 				$moreCurlyWurlys = 1;
-				$iframe = '<iframe width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=preset&sid=' . Yii::app()->params['sid'] . '&amp;preset=true"></iframe>';
+				$iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=preset&sid=' . Yii::app()->params['sid'] . '&amp;preset=true"></iframe>';
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 

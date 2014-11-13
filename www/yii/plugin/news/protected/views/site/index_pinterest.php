@@ -24,7 +24,7 @@ opacity:0.9;
 }
 
 .itemleadin {
-	display:block;
+	display:inline-block;
 	font-size: 0.7em;
 	padding:4px;
 	height:10px;
@@ -71,10 +71,11 @@ $mainArticleId = -1;
 <?php
 if ($showArt == '')
 {
-	// Show all the other articles
+	// Show all the articles
+	// ---------------------
 	$criteria = new CDbCriteria;
 	$criteria->addCondition("uid=" . Yii::app()->session['uid']);
-	$criteria->order = "date DESC";
+	$criteria->order = "date DESC, id DESC";
 	if ($showCat != "0")
 		$criteria->addCondition("blog_category_id=" . $showCat);
 	$articles = Article::model()->findAll($criteria);
@@ -85,25 +86,25 @@ if ($showArt == '')
 		{
 			if ($article->id == $mainArticleId)
 				continue;
-			echo "<span class='item' style='margin-bottom:13px;' >";
-			//echo "<a target='_top' href='http:/1staid4u.co.uk/?layout=index&page=news-traditional&cat=0&art=" . $article->id . "'>";
-			echo "<a href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
-			echo "<img src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' width='100%'>";
+			//echo "<a href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
+			echo "<a href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['http_referer'] . "/?art=" . $article->id . "&title=" . str_replace(" ", "-", $article->title)    . '"' . ")'>";
+				echo "<span class='item' style='margin-bottom:13px;' >";
+					echo "<img src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' width='100%'>";
+
+					// Get the category name
+					$showCat = "Unknown";
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("uid=" . Yii::app()->session['uid']);
+					$criteria->addCondition("id=" . $article->blog_category_id);
+					$category = Category::model()->find($criteria);
+					if ($category)
+						$showCat = $category->name;
+
+					echo "<span class='itemleadin'>" . $showCat . "&nbsp&nbsp" . $article->date . "</span><hr class='wtf-did-this-hr-take-to-DO'/>";
+					echo "<span class='itemintro' style='font-weight:bold; color:#424242'>" . $article->title . "</span><br/>";
+					echo "<span class='itemintro' style='padding-top:0px; color:#000000'>" . $article->intro . "</span><br/>";
+				echo "</span>";
 			echo "</a>";
-
-			// Get the category name
-			$showCat = "Unknown";
-			$criteria = new CDbCriteria;
-			$criteria->addCondition("uid=" . Yii::app()->session['uid']);
-			$criteria->addCondition("id=" . $article->blog_category_id);
-			$category = Category::model()->find($criteria);
-			if ($category)
-				$showCat = $category->name;
-
-			echo "<span class='itemleadin'>" . $showCat . "&nbsp&nbsp" . $article->date . "</span><hr class='wtf-did-this-hr-take-to-DO'/>";
-
-			echo "<span class='itemintro'>" . $article->intro . "</span><br/>";
-			echo "</span>";
 		}
 		echo '</div>';
 	}
@@ -137,6 +138,13 @@ $(document).ready(function() {
 	});
 
 });
+
+// @@NB START POSTMESSAGE
+function pM(type, param)
+{
+	parent.postMessage(type + "^" + param, "*");
+}
+// @@NB END POSTMESSAGE
 
 </script>
 <script src="/js/masonry.pkgd.min.js"></script>

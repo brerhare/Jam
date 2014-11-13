@@ -23,15 +23,18 @@ opacity:0.9;
 .itemleadin {
 	display:block;
 	font-size: 0.7em;
+	text-decoration:none;
 	padding:4px;
 	height:10px;
 	color: #989898;
 }
 
 .itemintro {
-text-align:left;
+	text-align:left;
 	display:inline-block;
-	padding: 5px;
+	text-decoration:none;
+	margin: 0px;
+	padding: 0px 5px 5px 5px;
 }
 
 .wtf-did-this-hr-take-to-DO {
@@ -60,25 +63,50 @@ opacity:0.85;
 if ($showArt == '')
 {
 	// Show the most recent article
+	// ----------------------------
 	$criteria = new CDbCriteria;
 	$criteria->addCondition("uid=" . Yii::app()->session['uid']);
-	$criteria->order = "date DESC";
+	$criteria->order = "date DESC, id DESC";
 	if ($showCat != "0")
 		$criteria->addCondition("blog_category_id=" . $showCat);
 	$articles = Article::model()->findAll($criteria);
 	if ($articles)
 	{
+
+//  wanting:      http://www.dgnews-sport.co.uk/?layout=index&page=home
+
+//  showing: http://www.dgnews-sport.co.uk/play/?art=105
+
 		foreach ($articles as $article)
 		{
-			//echo "<a style='text-decoration:none;color:black' target='_top' href='http:/1staid4u.co.uk/?layout=index&page=news-traditional&cat=0&art=" . $article->id . "'>";
-			echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
-				echo "<span class='mainitem' style='width:95%'>";
-					echo "<img style='width:90%; height:300px; width:auto' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' >";
-				echo "</span>";
+			//echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
+			echo "<a style='color:black; text-decoration:none' href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['http_referer'] . "/?art=" . $article->id . "&title=" . str_replace(" ", "-", $article->title)    . '"' . ")'>";
+
+//print_r(Yii::app()->session['http_referer']);
+//die;
+
+				echo "<center>";
+					echo "<span class='mainitem' style='width:95%'>";
+						echo "<img style='width:90%; height:300px; width:auto' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' >";
+
+						// Get the category name
+						$catDesc = "Unknown";
+						$criteria = new CDbCriteria;
+						$criteria->addCondition("uid=" . Yii::app()->session['uid']);
+						$criteria->addCondition("id=" . $article->blog_category_id);
+						$category = Category::model()->find($criteria);
+						if ($category)
+							$catDesc = $category->name;
+						echo "<span class='itemleadin'>" . $catDesc . "&nbsp&nbsp" . $article->date . "</span>";
+
+					echo "</span>";
 echo "<br/>";
-				echo "<span class='mainitem' style='width:95%; vertical-align:top; margin:0px;' >";
-					echo "<p class='item' style='width:90%; padding:10px'>" . $article->intro . "</p>";
-				echo "</span>";
+					echo "<span class='mainitem' style='width:95%; vertical-align:top; margin:0px;' >";
+
+						echo "<p class='item' style='width:90%; padding:10px; padding-top: 2px; padding-bottom:0px; margin-bottom:0px; font-weight:bold; color:#424242'>" . $article->title . "</p>";
+						echo "<p class='item' style='width:90%; padding:10px; padding-top:5px'>" . $article->intro . "</p>";
+					echo "</span>";
+				echo "</center>";
 			echo "</a>";
 			$mainArticleId = $article->id;
 			break;
@@ -87,15 +115,14 @@ echo "<br/>";
 }
 ?>
 
-<br/><br/>
-
 <?php
 if ($showArt == '')
 {
 	// Show all the other articles
+	// ---------------------------
 	$criteria = new CDbCriteria;
 	$criteria->addCondition("uid=" . Yii::app()->session['uid']);
-	$criteria->order = "date DESC";
+	$criteria->order = "date DESC, id DESC";
 	if ($showCat != "0")
 		$criteria->addCondition("blog_category_id=" . $showCat);
 	$articles = Article::model()->findAll($criteria);
@@ -106,26 +133,27 @@ if ($showArt == '')
 		{
 			if ($article->id == $mainArticleId)
 				continue;
-			echo "<span class='item' style='text-align:center;' >";
-			//echo "<a target='_top' href='http:/1staid4u.co.uk.wireflydesign.com/?layout=index&page=news-traditional&cat=0&art=" . $article->id . "'>";
-			echo "<a href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
-			// This is centered, shrink-to-fit
-			echo "<img style='max-width:100%; height:140px; overflow:hidden;' src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' Xwidth='100%'>";
+			//echo "<a href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
+			echo "<a href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['http_referer'] . "/?art=" . $article->id . "&title=" . str_replace(" ", "-", $article->title)    . '"' . ")'>";
+				echo "<span class='item' style='text-align:center;' >";
+					// This is centered, shrink-to-fit
+					echo "<img style='max-width:100%; height:140px; overflow:hidden;' src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' Xwidth='100%'>";
+
+					// Get the category name
+					$catDesc = "Unknown";
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("uid=" . Yii::app()->session['uid']);
+					$criteria->addCondition("id=" . $article->blog_category_id);
+					$category = Category::model()->find($criteria);
+					if ($category)
+						$catDesc = $category->name;
+
+					echo "<span class='itemleadin'>" . $catDesc . "&nbsp&nbsp" . $article->date . "</span>";
+
+					echo "<p class='itemintro' style='padding-top:2px; font-weight:bold; color:#424242'>" . $article->title . "</p>";
+					echo "<span class='itemintro' style='padding-top:2px; color:#000000'>" . $article->intro . "</span>";
+				echo "</span>";
 			echo "</a>";
-
-			// Get the category name
-			$showCat = "Unknown";
-			$criteria = new CDbCriteria;
-			$criteria->addCondition("uid=" . Yii::app()->session['uid']);
-			$criteria->addCondition("id=" . $article->blog_category_id);
-			$category = Category::model()->find($criteria);
-			if ($category)
-				$showCat = $category->name;
-
-			echo "<span class='itemleadin'>" . $showCat . "&nbsp&nbsp" . $article->date . "</span>";
-
-			echo "<span class='itemintro'>" . $article->intro . "</span><br/>";
-			echo "</span>";
 		}
 		echo '</div>';
 	}
@@ -146,5 +174,12 @@ if ($showArt != '')
 
 $(document).ready(function() {
 });
+
+// @@NB START POSTMESSAGE
+function pM(type, param)
+{
+	parent.postMessage(type + "^" + param, "*");
+}
+// @@NB END POSTMESSAGE
 
 </script>

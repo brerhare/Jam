@@ -195,7 +195,7 @@ class VendorReportCommand extends CConsoleCommand
 
 
 					$mail->AddAddress($to);
-$mail->AddBCC("info@wireflydesign.com");
+//$mail->AddBCC("info@wireflydesign.com");
 					$mail->SetFrom($from, $fromName);
 					$mail->AddReplyTo($from, $fromName);
 					$mail->AddAttachment($att_filename);
@@ -221,7 +221,7 @@ $mail->AddBCC("info@wireflydesign.com");
 		$gcontent = $ghtmlstart . $gsummary . $gmsg . $ghtmlend;
 
 		// Send summary email to jo
-		$to = "jo@wireflydesign.com";
+		$to = "info@wireflydesign.com";
 		$att_filename = "/tmp/ticketSales.csv";
 		if (strlen($to) > 0)
 		{
@@ -232,7 +232,6 @@ $mail->AddBCC("info@wireflydesign.com");
 			// phpmailer
 			$mail = new PHPMailer();
 			$mail->AddAddress($to);
-$mail->AddBCC("kim@wireflydesign.com");
 			$mail->SetFrom($from, $fromName);
 			$mail->AddReplyTo($from, $fromName);
 			$mail->AddAttachment($att_filename);

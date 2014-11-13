@@ -23,6 +23,7 @@ $this->menu=array(
             'name'  => 'title',
             'value' => 'CHtml::link($data->title, Yii::app()->createUrl("event/update",array("id"=>$data->primaryKey)))',
             'type'  => 'raw',
+			'htmlOptions' => array('style'=>'width:390px'),
         ),
 
 		'start',

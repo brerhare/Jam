@@ -19,7 +19,7 @@ if (!empty($_FILES)) {
 	$fileTypes = array('jpg','jpeg','gif','png'); // File extensions
 	$fileParts = pathinfo($_FILES['Filedata']['name']);
 	
-	if (in_array($fileParts['extension'],$fileTypes)) {
+	if (in_array(strtolower($fileParts['extension']),$fileTypes)) {
 		move_uploaded_file($tempFile,$targetFile);
 		echo '1';
 	} else {

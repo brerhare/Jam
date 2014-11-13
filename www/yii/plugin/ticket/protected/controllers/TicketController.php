@@ -83,16 +83,6 @@ class TicketController extends Controller
             else if (getenv("REMOTE_ADDR"))
                 $ip = getenv("REMOTE_ADDR");
 
-			// Is this order is online-paid, online-free, or backend manual? This determines whether the payment page is shown.
-			$this->isFreeEvent = false;
-			if (isset($_POST['is_free_event']))
-				$this->isFreeEvent = true;
-			$this->isBackend = false;
-			if (isset($_POST['is_backend']))
-				$this->isBackend = true;
-
-			////////////////////////////////////////Order::model()->deleteAllByAttributes(array('ip' => $ip));
-
 			for ($x = 0; ; $x++)
 			{
 				if(!isset($_POST['line_' . $x . '_select']))	// ie no more lines
@@ -148,9 +138,9 @@ class TicketController extends Controller
         else if (getenv("REMOTE_ADDR"))
             $ip = getenv("REMOTE_ADDR");
 
-		if ((isset($_POST['rtotal'])) && ($_POST['rtotal'] != 0))
+		if ( (isset($_POST['rtotal'])) && (($_POST['rtotal'] != 0) || (isset($_POST['is_free_event']))    ) )
 		{
-			Yii::log("EVENT INDEX FORM FILLED: " . $_POST['rtotal'], CLogger::LEVEL_WARNING, 'system.test.kim');
+			Yii::log("EVENT REVIEW FORM FILLED: " . $_POST['rtotal'], CLogger::LEVEL_WARNING, 'system.test.kim');
 
 			// Is this order is online-paid, online-free, or backend manual? This determines whether the payment page is shown.
 			$this->isFreeEvent = false;
@@ -159,6 +149,7 @@ class TicketController extends Controller
 			$this->isBackend = false;
 			if (isset($_POST['is_backend']))
 				$this->isBackend = true;
+
 
 			////////////////////////////////////////Order::model()->deleteAllByAttributes(array('ip' => $ip));
 
@@ -173,6 +164,7 @@ class TicketController extends Controller
 				$order->telephone = $_POST['telephone'];
 				if (($this->isFreeEvent) || ($this->isBackend))
 				{
+					$order->order_number = Yii::app()->session['uid'] . '-' . time();
 					if (isset($_POST['free_name'])) $order->free_name = $_POST['free_name'];
 					if (isset($_POST['free_address1'])) $order->free_address1 = $_POST['free_address1'];
 					if (isset($_POST['free_address2'])) $order->free_address2 = $_POST['free_address2'];
@@ -183,6 +175,7 @@ class TicketController extends Controller
 				$order->save();
 			}
 
+
 /**********************
 			for ($x = 0; ; $x++)
 			{
@@ -192,7 +185,7 @@ class TicketController extends Controller
 				if ($qty == 0)	// ie no tickets for this line
 					continue;
 
-			Yii::log("EVENT INDEX LINE ITEM: " . $_POST['pline_' . $x . '_price'], CLogger::LEVEL_WARNING, 'system.test.kim');
+			Yii::log("EVENT REVIEW LINE ITEM: " . $_POST['pline_' . $x . '_price'], CLogger::LEVEL_WARNING, 'system.test.kim');
 
 				$order=new Order;
 				$order->uid = Yii::app()->session['uid'];
@@ -274,7 +267,10 @@ $this->redirect($tmp2);
 		$ticket_type_price_arr = array();
 		$ticket_type_total_arr = array();
 		$ticketNumbers = array();
-		$ticket_card_amount = number_format( ($_GET['card_amount'] / 100), 2);
+		if (isset($_GET['card_amount']))
+			$ticket_card_amount = number_format( ($_GET['card_amount'] / 100), 2);
+		else
+			$ticket_card_amount = 0;
 
 		$criteria = new CDbCriteria;
         //$criteria->addCondition("uid = " . Yii::app()->session['uid']);
@@ -380,6 +376,10 @@ $this->redirect($tmp2);
         $criteria->addCondition("uid = " . Yii::app()->session['uid']);
         $criteria->addCondition("order_number = '" . $order->order_number . "'");
         $auth = Auth::model()->find($criteria);
+		if (!($auth))
+		{
+			Yii::log("PAID PAGE *** COULD NOT RETRIEVE AUTH RECORD ***" , CLogger::LEVEL_WARNING, 'system.test.kim');
+		}
 		$crdNum = '************ ' . substr($auth->card_number, 12, 4);
 		if (($this->isFreeEvent) || ($this->isBackend))
 			$crdNum = 'No card details';

@@ -20,7 +20,7 @@ class signup
 	private $optionSuccessTextColor = "green";
 	private $optionFailureTextColor = "red";
 	private $optionTextColor = 'black';
-	private $optionBackColor = '#d3d3d3';
+	private $optionBackColor = '';
 
 	public $apiOption = array(
 	);
@@ -91,24 +91,17 @@ class signup
 
 		// Generate the content
 		$content = "<div ng-app>";
-
-
-
-
-		//@@TODO: This is temporarily to disable the background color until we can set it properly in {{name=value}}
-		// Also need to remove the XXX in plugin/news/protected/views/site_sidebar.php
-		$content .= "<div style='XXXbackground-color:" . $this->optionBackColor . "' ng-controller='signupController'>";
-
-
-
-
-		$content .= "<input id='signup-name' class='signup-input' type='text' style='width:" . $this->optionInputWidth . "px' title='Name' />";
-		$content .= $separator;
-		$content .= "<input id='signup-email' class='signup-input' type='text' style='width:" . $this->optionInputWidth . "px' title='Email' />";
-		$content .= $separator;
-		$content .= "<button ng-click='addSignup()' id='signup-send-button' class='signup-visible signup-send-button' style='background:" . $this->optionButtonColor . "; color:" . $this->optionButtonTextColor . "' class='signup-send-button' id='save'>" . $this->optionButtonText . "</button>";
-		$content .= "<span id='signup-message' class='signup-invisible'>Message Area</span>";
-		$content .= "</div>";
+			$background = "";
+			if ($this->optionBackColor != '')
+				$background = " background-color:" . $this->optionBackColor . "; ";
+			$content .= "<div style='" . $background . "' ng-controller='signupController'>";
+				$content .= "<input id='signup-name' class='signup-input' type='text' style='width:" . $this->optionInputWidth . "px' title='Name' />";
+				$content .= $separator;
+				$content .= "<input id='signup-email' class='signup-input' type='text' style='width:" . $this->optionInputWidth . "px' title='Email' />";
+				$content .= $separator;
+				$content .= "<button ng-click='addSignup()' id='signup-send-button' class='signup-visible signup-send-button' style='background:" . $this->optionButtonColor . "; color:" . $this->optionButtonTextColor . "' class='signup-send-button' id='save'>" . $this->optionButtonText . "</button>";
+				$content .= "<span id='signup-message' class='signup-invisible'>Message Area</span>";
+			$content .= "</div>";
 		$content .= "</div>";
 
 		// Get SID to send to plugin

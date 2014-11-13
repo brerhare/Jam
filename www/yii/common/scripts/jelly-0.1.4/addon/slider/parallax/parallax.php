@@ -20,7 +20,7 @@ class parallax
 	// --------------------------------------------------------
 
 	private $defaultSliderHeight = "400px";
-	private $defaultBackgroundImage =  "../images/slider-background.jpg";
+	private $defaultBackgroundImage =  "/scripts/jelly/addon/slider/parallax/images/slider-background.jpg";
 	private $defaultContentWidth = "90%";
 	private $defaultContentLeft = "5%";
 	private $defaultTitleTextColor = "#fff";
@@ -41,7 +41,15 @@ class parallax
 	private $defaultBlurbWeight = "400";
 	private $defaultImageMarginTop = "50px";
 	private $defaultLinkMarginTop = "220px";
-	private $defaultLinkImg = "../images/link.png";
+	private $defaultLinkImg = "/scripts/jelly/addon/slider/parallax/images/link.png";
+	private $defaultLinkHover = "/scripts/jelly/addon/slider/parallax/images/link-hover.png";
+	private $defaultDotTop = "200px";
+	private $defaultDotColor = "lightblue";
+	private $defaultNavMargin = "25px";
+	private $defaultNavPrev = "/scripts/jelly/addon/slider/parallax/images/arrow-left.png";
+	private $defaultNavNext = "/scripts/jelly/addon/slider/parallax/images/arrow-right.png";
+	private $defaultNavPrevHover = "/scripts/jelly/addon/slider/parallax/images/arrow-left-hover.png";
+	private $defaultNavNextHover = "/scripts/jelly/addon/slider/parallax/images/arrow-right-hover.png";
 	
 	private $defaultInterval = 10;
 	private $defaultImageWidth = 150;
@@ -140,6 +148,38 @@ class parallax
 				case "link-image":
 					$this->defaultLinkImg = $val;
 					break;
+			// .da-slide .da-link:hover
+				case "link-hover":
+					$this->defaultLinkHover = $val;
+					break;
+			// .da-dots
+				case "dot-top":
+					$this->defaultDotTop = $val;
+					break;
+			// .da-dots span
+				case "dot-color":
+					$this->defaultDotColor = $val;
+					break;
+				case "dot-colour":
+					$this->defaultDotColor = $val;
+					break;
+			//.da-arrows...
+				case "nav-prev":
+					$this->defaultNavPrev = $val;
+					break;
+				case "nav-next":
+					$this->defaultNavNext = $val;
+					break;
+				case "nav-margin":
+					$this->defaultNavMargin = $val;
+					break;
+				case "nav-prev-hover":
+					$this->defaultNavPrevHover = $val;
+					break;
+				case "nav-next-hover":
+					$this->defaultNavNextHover = $val;
+					break;
+			
 				
 				case "interval":
 					$this->defaultInterval = $val;
@@ -150,8 +190,8 @@ class parallax
 				case "imageheight":
 					$this->defaultImageHeight = $val;
 					break;
-				
 
+			
 			
 				default:
 					// Not all array items are action items
@@ -239,6 +279,28 @@ class parallax
 			$this->apiHtml = str_replace("<substitute-link-margin-top>", $this->defaultLinkMarginTop, $this->apiHtml);
 		if (strstr($this->apiHtml, "<substitute-link-image>"))
 			$this->apiHtml = str_replace("<substitute-link-image>", $this->defaultLinkImg, $this->apiHtml);	
+	
+	// .da-slide .da-link:hover
+		if (strstr($this->apiHtml, "<substitute-link-hover>"))
+			$this->apiHtml = str_replace("<substitute-link-hover>", $this->defaultLinkHover, $this->apiHtml);
+
+	// .da-dots
+		if (strstr($this->apiHtml, "<substitute-dot-top>"))
+			$this->apiHtml = str_replace("<substitute-dot-top>", $this->defaultDotTop, $this->apiHtml);	
+	// .da-dots span
+		if (strstr($this->apiHtml, "<substitute-dot-color>"))
+			$this->apiHtml = str_replace("<substitute-dot-color>", $this->defaultDotColor, $this->apiHtml);	
+	//.da-arrows...
+		if (strstr($this->apiHtml, "<substitute-nav-next>"))
+			$this->apiHtml = str_replace("<substitute-nav-next>", $this->defaultNavNext, $this->apiHtml);
+		if (strstr($this->apiHtml, "<substitute-nav-prev>"))
+			$this->apiHtml = str_replace("<substitute-nav-prev>", $this->defaultNavPrev, $this->apiHtml);
+		if (strstr($this->apiHtml, "<substitute-nav-margin>"))
+			$this->apiHtml = str_replace("<substitute-nav-margin>", $this->defaultNavMargin, $this->apiHtml);
+		if (strstr($this->apiHtml, "<substitute-nav-next-hover>"))
+			$this->apiHtml = str_replace("<substitute-nav-next-hover>", $this->defaultNavNextHover, $this->apiHtml);
+		if (strstr($this->apiHtml, "<substitute-nav-prev-hover>"))
+			$this->apiHtml = str_replace("<substitute-nav-prev-hover>", $this->defaultNavPrevHover, $this->apiHtml);
 			
 
 		// (E) Make sure all <substitute-xxxx> tags have been substituted in $apiJs
@@ -305,8 +367,39 @@ class parallax
 							
 				.da-slide .da-link{
 					top: <substitute-link-margin-top>;
-					background: url(<substitute-link-image>);
+					background: url(<substitute-link-image>) no-repeat top left;
 							}
+				
+				.da-slide .da-link:hover{
+					background: url(<substitute-link-hover>) no-repeat top left;
+							}
+				
+				.da-dots {
+					top: <substitute-dot-top>;
+							}
+							
+				.da-dots span {
+					background: <substitute-dot-color>;
+							}
+				
+				.da-arrows span.da-arrows-prev{
+					left: <substitute-nav-margin>;
+					background: url(<substitute-nav-prev>) no-repeat top left;
+							}
+				
+				.da-arrows span.da-arrows-prev:hover{
+					background:  url(<substitute-nav-prev-hover) no-repeat top left; 
+							}
+							
+				.da-arrows span.da-arrows-next{
+					right: <substitute-nav-margin>;
+					background: url(<substitute-nav-next>) no-repeat top right;
+							}
+				
+				.da-arrows span.da-arrows-next:hover{
+					background:  url(<substitute-nav-next-hover) no-repeat top right; 
+							}
+				
 			</style>
 
 			<substitute-data>

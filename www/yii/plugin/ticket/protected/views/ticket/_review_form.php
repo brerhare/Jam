@@ -64,6 +64,10 @@ $(document).ready(function() {
 </script>
 
 <?php
+	// Set global flags
+	$isFreeEvent = 1;
+	(isset($_GET['ref']) && ($_GET['ref'] == 'bktji5308')) ? $isBackend = 1 : $isBackend = 0;
+
 	$fst = 1;
 	$lc = 0;
 	$curEvent = -1;
@@ -179,6 +183,7 @@ $(document).ready(function() {
 				<!-- unit price -->
 				<td width="15%" style="text-align:right">
 					<?php echo ($order->http_ticket_type_price + $event->booking_fee_per_ticket);?>
+					<?php if (($order->http_ticket_type_price + $event->booking_fee_per_ticket) != 0) $isFreeEvent = 0;?>
 				</td>
 				<!-- line total -->
 				<td width="15%" id="line_<?php echo $lc++;?>" style="text-align:right">
@@ -203,6 +208,7 @@ $(document).ready(function() {
 			</div>
 		</div>';
 	}
+
 
 echo "<script>lc=$lc;</script>";
 ?>
@@ -304,7 +310,7 @@ function genHeading($event)
 <div class="span7 well" style="margin-left:0px;padding-bottom:0px">
 	<table>
 		<tr class="row">
-<?php if (($this->isFreeEvent) || ($this->isBackend)): ?>
+<?php if (($isFreeEvent) || ($isBackend)): ?>
 			<td style="text-align:right">
 				Name
 			</td>
@@ -320,7 +326,7 @@ function genHeading($event)
 			</td>
 		</tr>
 		<tr class="row">
-<?php if (($this->isFreeEvent) || ($this->isBackend)): ?>
+<?php if (($isFreeEvent) || ($isBackend)): ?>
 			<td style="text-align:right">
 				Address
 			</td>
@@ -336,7 +342,7 @@ function genHeading($event)
 			</td>
 		</tr>
 		<tr class="row">
-<?php if (($this->isFreeEvent) || ($this->isBackend)): ?>
+<?php if (($isFreeEvent) || ($isBackend)): ?>
 			<td style="text-align:right">
 			</td>
 			<td>
@@ -350,7 +356,7 @@ function genHeading($event)
 				<input id="telephone" name="telephone" value="" class="" MaxLength="50" />
 			</td>
 		</tr>
-<?php if (($this->isFreeEvent) || ($this->isBackend)): ?>
+<?php if (($isFreeEvent) || ($isBackend)): ?>
 		<tr class="row">
 			<td style="text-align:right">
 			</td>
@@ -389,10 +395,10 @@ function genHeading($event)
 	</table>
 </div>
 
-<?php if ($this->isFreeEvent):?>
+<?php if ($isFreeEvent):?>
 <input type="hidden" id="is_free_event" name="is_free_event" value="" class="" MaxLength="90"/>
 <?php endif;?>
-<?php if ($this->isBackend):?>
+<?php if ($isBackend):?>
 <input type="hidden" id="is_backend" name="is_backend" value="" class="" MaxLength="90"/>
 <?php endif;?>
 
@@ -406,13 +412,13 @@ function genHeading($event)
 	<?php
 
 	$free1 = ''; $free2 = ''; $free3 = ''; $notBackend = '';
-	if ($this->isFreeEvent)
+	if ($isFreeEvent)
 	{
 		$free1 = ' if (document.getElementById("free_name").value == "") err += "Invalid name\n"; ';
 		$free2 = ' if (document.getElementById("free_address1").value == "") err += "Invalid address\n"; ';
 		$free3 = ' if (document.getElementById("free_post_code").value == "") err += "Invalid postcode\n"; ';
 	}
-	if (!($this->isBackend))
+	if (!($isBackend))
 	{
 		$notBackend = '
 					var email1 = document.getElementById("email1").value;
@@ -423,9 +429,9 @@ function genHeading($event)
 	}
 
 	$caption = "Continue";
-	if ($this->isBackend)
+	if ($isBackend)
 		$caption = "Buy";
-	if ($this->isFreeEvent)
+	if ($isFreeEvent)
 		$caption = "Reserve";
 
 	?>
