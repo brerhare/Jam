@@ -81,10 +81,21 @@ class SiteController extends Controller
         $content = $jelly->expandContent($content, Yii::app()->params['jellyRoot']);
 
         $util = new Util;
-        $content = urlencode($util->encrypt($content));
-        //file_put_contents("/tmp/crap.html", $content);
+//        $content = urlencode($util->encrypt($content));
 
-        $returnUrl = "https://plugin.wireflydesign.com/news/index.php/site/resolveParentSiteGalleryAddonReturn?content=" . $content;
+		// Generate a filename for /tmp derived from the user's ip. This restricts the number of files to one per user
+        $ip = rand(0, 999999);
+        if (getenv("HTTP_CLIENT_IP"))
+            $ip = getenv("HTTP_CLIENT_IP");
+        else if (getenv("HTTP_X_FORWARDED_FOR"))
+            $ip = getenv("HTTP_X_FORWARDED_FOR");
+        else if (getenv("REMOTE_ADDR"))
+            $ip = getenv("REMOTE_ADDR");
+		$fileName = "/tmp/news_plugin_" . $ip . ".html";
+		
+        file_put_contents($fileName, $content);
+
+        $returnUrl = "https://plugin.wireflydesign.com/news/index.php/site/resolveParentSiteGalleryAddonReturn?filename=" . $fileName;
         $this->redirect($returnUrl);
     }
 

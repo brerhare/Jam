@@ -55,15 +55,15 @@ class lightbox
 
 				// Gallery options
 				case "gallery":
-					if (strlen($val) > 0)
-						$this->gallery = $val;
+					$val = str_replace("&nbsp;", " ", $val);
+					$val = str_replace("&nbsp", " ", $val);
+					$this->gallery = strstr($val, " ", true);
 					break;
 
 				default:
 					// Not all array items are action items
 			}
 		}
-
 
 /******
 		<div class="image-row">
