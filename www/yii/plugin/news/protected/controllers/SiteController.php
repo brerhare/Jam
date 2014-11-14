@@ -59,6 +59,8 @@ if (isset($_GET['art']))
 	$this->actionPlay();
 
 		$category = 0;
+		if (isset($_GET['cat']))
+			$category = $_GET['cat'];
 		$this->renderPartial('index',array(
 			'showCat'=>$category,
 			'showArt'=>'',
