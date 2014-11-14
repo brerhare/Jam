@@ -79,8 +79,7 @@ if ($showArt == '')
 
 		foreach ($articles as $article)
 		{
-			//echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
-			echo "<a style='color:black; text-decoration:none' href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['http_referer'] . "/?art=" . $article->id . "&title=" . str_replace(" ", "-", $article->title)    . '"' . ")'>";
+			echo "<a style='color:black; text-decoration:none' href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['http_referer'] . "/?art=" . $article->id . '&page=' . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", $article->title)    . '"' . ")'>";
 
 //print_r(Yii::app()->session['http_referer']);
 //die;
@@ -133,8 +132,7 @@ if ($showArt == '')
 		{
 			if ($article->id == $mainArticleId)
 				continue;
-			//echo "<a href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art=" . $article->id . "'>";
-			echo "<a href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['http_referer'] . "/?art=" . $article->id . "&title=" . str_replace(" ", "-", $article->title)    . '"' . ")'>";
+			echo "<a href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['http_referer'] . "/?art=" . $article->id . '&page=' . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", $article->title)    . '"' . ")'>";
 				echo "<span class='item' style='text-align:center;' >";
 					// This is centered, shrink-to-fit
 					echo "<img style='max-width:100%; height:140px; overflow:hidden;' src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' Xwidth='100%'>";
