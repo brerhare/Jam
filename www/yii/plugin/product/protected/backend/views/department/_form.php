@@ -17,6 +17,7 @@
 		$jellyEmbed = "To embed this in pages use <b><i>{{department " . $model->id . " " . $model->name . "}}</b></i>"; ?>
 
 	<?php echo $form->textFieldRow($model,'name',array('class'=>'span5','maxlength'=>255, 'hint'=>$jellyEmbed)); ?>
+	<?php echo $jellyEmbed . "<br/><br/>";?>
 
 	<?php if (!($model->isNewRecord)): ?>
 		<a class="btn btn-small" title="Options" rel="tooltip" href="/product/backend.php/option/session?department_id=<?php echo $model->id; ?>">Options</a>
