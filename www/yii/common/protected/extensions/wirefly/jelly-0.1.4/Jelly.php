@@ -1344,6 +1344,8 @@ if (strstr($blobName, "googlemap"))
 					$backColor = $vals[3];
 
                 $deeplink = "";
+                if (isset($_GET['page']))
+                    $deeplink .= "&page=" . $_GET['page'];
                 if (isset($_GET['cat']))
                     $deeplink .= "&cat=" . $_GET['cat'];
                 if (isset($_GET['art']))
