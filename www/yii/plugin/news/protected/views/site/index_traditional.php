@@ -72,11 +72,6 @@ if ($showArt == '')
 	$articles = Article::model()->findAll($criteria);
 	if ($articles)
 	{
-
-//  wanting:      http://www.dgnews-sport.co.uk/?layout=index&page=home
-
-//  showing: http://www.dgnews-sport.co.uk/play/?art=105
-
 		foreach ($articles as $article)
 		{
 			echo "<a style='color:black; text-decoration:none' href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['http_referer'] . "/?art=" . $article->id . '&page=' . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", $article->title)    . '"' . ")'>";
