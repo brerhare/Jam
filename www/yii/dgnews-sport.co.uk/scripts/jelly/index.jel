@@ -67,7 +67,7 @@ addon.ticker.crawler.tape-border-width = 1px
 ####  Header  #################################
 
 	[header]
-	child = logo, fb-social, twitter-social
+	child = logo, fb-social, twitter-social, header-text
 	css.height = 110px
 	css.width = 800px
 	css.background-color = red
@@ -77,30 +77,40 @@ addon.ticker.crawler.tape-border-width = 1px
 		css.margin-left = 8px
 		css.margin-top = -5px
 		css.height = 120px
-		css.width = 500px
+		css.width = 345px
 		image.url = img/dgnews-logo.png
 		image.width = 330px
 		image.height = 58px
 		click = ?layout=index&page=index
 		
 		[fb-social]
-		css.height = 100px
-		css.width = 50px
-		css.margin-left = 180px
-		css.margin-top = 5px
+		css.height = 35px
+		css.width = 35px
+		css.margin-top = 15px
 		image.url = img/fb-large.png
-		image.width = 40px
-		image.height = 40px
+		image.width = 28px
+		image.height = 28px
 		clicknew = https://www.facebook.com/DgnewsSport
 		
 		[twitter-social]
-		css.height = 100px
-		css.width = 50px
-		css.margin-top = 5px
+		css.height = 35px
+		css.width = 35px
+		css.margin-top = 15px
 		image.url = img/twitter-large.png
-		image.width = 40px
-		image.height = 40px
+		image.width = 30px
+		image.height = 30px
 		clicknew = https://twitter.com/dgnewsSport
+		
+		[header-text]
+		css.height = 50px
+		css.width = 370px
+		css.margin-top = 23px
+		css.margin-left = 5px
+		html.raw = Get the latest news & sport in Dumfries & Galloway
+		css.font-size = 14px
+		css.font-weight = 700
+		css.color = white
+		click = http://www.dgnews-sport.co.uk
 		
 
 	[menu]
