@@ -158,6 +158,21 @@ END_OF_API_HTML;
 	private $apiJs = <<<END_OF_API_JS
 
 	jQuery(document).ready(function($){
+
+		// Disable right click
+		$(document).on({
+			"contextmenu": function(e) {
+				console.log("ctx menu button:", e.which);
+				e.preventDefault();				// Stop the context menu
+			},
+			"mousedown": function(e) {
+				console.log("normal mouse down:", e.which);
+			},
+			"mouseup": function(e) {
+				console.log("normal mouse up:", e.which);
+			}
+		});
+
 	});
 
 END_OF_API_JS;

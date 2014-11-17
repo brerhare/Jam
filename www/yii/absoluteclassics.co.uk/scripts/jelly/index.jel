@@ -147,8 +147,8 @@ stacking = horizontal
 		css.background-color = white
 	
 			[content]
-			css.margin-left = 50px
-			css.width = 700px
+			css.margin-left = 25px
+			css.width = 750px
 			fx.opacity = 100%
 			db.table = ContentBlock
 			db.filter = url=$_GET['page']
@@ -214,6 +214,7 @@ stacking = horizontal
 				css.text-align = center
 				css.color = #ffffff
 				click = ?layout=index&page=about-absolute-classics
+				
 				[footer-contact]
 				html.raw = Contact Us
 				css.text-align = center
@@ -230,12 +231,18 @@ stacking = horizontal
 
 
 			[fmenu3]
-			child = footer-tandc, footer-cookies, news
+			child = news, footer-tandc, footer-cookies
 			#css.height = 200px
 			css.width = 200px
 			#css.margin-left = 200px
 
-
+				[news]
+				html.raw = Blog
+				css.margin-top = 8px
+				css.text-align = right
+				css.color = #ffffff
+				click = ?layout=index&page=latest-news-classical-music-dumfries-galloway
+				
 				[footer-cookies]
 				html.raw = Cookie Policy
 				css.margin-top = 8px
@@ -249,13 +256,6 @@ stacking = horizontal
 				css.text-align = right
 				css.color = #ffffff
 				click = ?layout=index&page=terms-conditions
-
-				[news]
-				#html.raw = Newsletter
-				css.margin-top = 8px
-				css.text-align = right
-				css.color = #ffffff
-				click = ?layout=index&page=classical-music-dumfries-news
 
 
 		[footer-image]
