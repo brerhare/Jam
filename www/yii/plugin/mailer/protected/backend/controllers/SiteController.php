@@ -95,6 +95,20 @@ class SiteController extends Controller
     /**
      * Displays the DIRECT login page
      */
+// @@TODO: HARDCODED FOR DGNEWS-SPORT ---------- REMOVE
+    public function actionDgnewsSportDirect()
+    {
+        Yii::app()->session['uid'] = 74;
+        $identity = new UserIdentity('info@dgnews-sport.co.uk', 'nicole500');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
 // @@TODO: HARDCODED FOR MOSSHEAD PRESCHOOL ---------- REMOVE
     public function actionMossheadPreschoolDirect()
     {
