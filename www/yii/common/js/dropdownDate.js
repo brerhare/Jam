@@ -8,6 +8,8 @@ String.prototype.pad=function(width, character) {
 
 
 /*
+ * Input date as dropdown select/options. "dd mth yyyy"
+ *
  * @param containerDivId		div (or span) to inject select/option tags
  * @param targetElementId		element id to read/write
  * @param templateStr			date format template eg "yyyy/mm/dd" or "dd-mm-yyyy 00:00", where dd, mm and yyyy are used and all non-whitespace replaced
@@ -16,12 +18,6 @@ String.prototype.pad=function(width, character) {
 function getDate(containerDivId, targetElementId, templateStr)
 {
 	var monthText=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sept','Oct','Nov','Dec'];
-
-	// Set defaults to today
-	var today=new Date();
-	dd = today.getDate();
-	mm = (today.getMonth() + 1);
-	yyyy = today.getFullYear();
 
 	// validate format string
 	ddPos = templateStr.indexOf("dd");
@@ -32,6 +28,13 @@ function getDate(containerDivId, targetElementId, templateStr)
 		alert("Invalid format string");
 		return;
 	}
+
+	// Set defaults to today
+	var today=new Date();
+	dd = today.getDate();
+	mm = (today.getMonth() + 1);
+	yyyy = today.getFullYear();
+
 	// Override default with input value
 	target = document.getElementById(targetElementId);
 	ddChk = parseInt(target.value.slice(ddPos, (ddPos+2)));
@@ -45,7 +48,7 @@ function getDate(containerDivId, targetElementId, templateStr)
 		yyyy = yyyyChk;
 
 	// Setup day
-	selectHTML="<select onChange='getDateSet(\"dd\", this, \"" + targetElementId + "\", \"" + templateStr + "\")'>";
+	selectHTML="<select onChange='getDateSet(\"dd\", this.value, \"" + targetElementId + "\", \"" + templateStr + "\")'>";
 	for (var i=0; i<31; i++)
 	{
 		selected = "";
@@ -56,7 +59,7 @@ function getDate(containerDivId, targetElementId, templateStr)
 	selectHTML += "</select>";
 
 	// Setup month
-	selectHTML += "<select onChange='getDateSet(\"mm\", this, \"" + targetElementId + "\", \"" + templateStr + "\")'>";
+	selectHTML += "<select onChange='getDateSet(\"mm\", this.value, \"" + targetElementId + "\", \"" + templateStr + "\")'>";
 	for (var i=0; i<12; i++)
 	{
 		selected = "";
@@ -67,7 +70,7 @@ function getDate(containerDivId, targetElementId, templateStr)
 	selectHTML += "</select>";
 
 	// Setup year
-	selectHTML += "<select onChange='getDateSet(\"yyyy\", this, \"" + targetElementId + "\", \"" + templateStr + "\")'>";
+	selectHTML += "<select onChange='getDateSet(\"yyyy\", this.value, \"" + targetElementId + "\", \"" + templateStr + "\")'>";
 	startYear = today.getFullYear();
 	for (var i=startYear; i<(startYear+10); i++)
 	{
@@ -79,21 +82,28 @@ function getDate(containerDivId, targetElementId, templateStr)
 	selectHTML += "</select>";
 
     document.getElementById(containerDivId).innerHTML = selectHTML;
+
+	// Apply the defaults to the data
+	getDateSet("dd", dd.toString(), targetElementId, templateStr);
+	getDateSet("mm", mm.toString(), targetElementId, templateStr);
+	getDateSet("yyyy", yyyy.toString(), targetElementId, templateStr);
 }
 
 // Respond to onChange of any of the <select>s
-function getDateSet(type, sel, targetElementId, templateStr)
+function getDateSet(type, value, targetElementId, templateStr)
 {
 	// Replace the date element
 	searchPos = templateStr.indexOf(type);
 	if ((type == "dd") || (type = "mm"))
-		newVal = sel.value.pad(2);
+		newVal = value.pad(2);
 	else
-		newVal = sel.value;
+		newVal = value;
 	target = document.getElementById(targetElementId);
 	target.value = target.value.replaceAt(searchPos, newVal);
 
 	// Literal characters
+	while (target.value.length < templateStr.length)
+		target.value = target.value + ' ';
 	for (i=0; i<templateStr.length; i++)
 	{
 		if ((templateStr.substr(i, 2) == "dd") || (templateStr.substr(i, 2) == "mm"))

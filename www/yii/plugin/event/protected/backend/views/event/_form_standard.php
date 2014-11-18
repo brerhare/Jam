@@ -22,7 +22,7 @@
 
 <!------------------------------------------ @@EG: dropdown date starts ------------------------------------------->
 
-	<script type="text/javascript" src="/js/getDate.js"></script>
+	<script type="text/javascript" src="/js/dropdownDate.js"></script>
 	<style>
 		span#startDate select {width:70px; margin-right:5px}
 		span#endDate select {width:70px; margin-right:5px}
@@ -42,10 +42,8 @@
 	</div>
 
 	<script>
-    jQuery(document).ready(function($){
-		getDate('startDate', 'Event_start', 'dd-mm-yyyy 00:00');
-		getDate('endDate', 'Event_end', 'dd-mm-yyyy 00:00');
-	});
+		dropdownDate('startDate', 'Event_start', 'dd-mm-yyyy 00:00');
+		dropdownDate('endDate', 'Event_end', 'dd-mm-yyyy 00:00');
 	</script>
 
 <!-------------------------------------------- dropdown date ends ------------------------------------------------>
