@@ -129,8 +129,12 @@ if ($showArt == '')
 				continue;
 			echo "<a href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['http_referer'] . "/?art=" . $article->id . '&page=' . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", $article->title)    . '"' . ")'>";
 				echo "<span class='item' style='text-align:center;' >";
-					// This is centered, shrink-to-fit
-					echo "<img style='max-width:100%; height:140px; overflow:hidden;' src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' Xwidth='100%'>";
+
+					// @@EG: vertically align img in div
+					echo "<div style='height:140px; width:154px; text-align: center; margin: 1em 0;'>";
+						echo "<span style='display: inline-block; height: 100%; vertical-align: middle;'></span>";
+						echo "<img style='max-width:154px; max-height:140px; vertical-align:bottom; overflow:hidden;' src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image'>";
+					echo "</div>";
 
 					// Get the category name
 					$catDesc = "Unknown";
