@@ -233,7 +233,8 @@ END_OF_API_HTML;
 			L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
 				maxZoom: 18,
 				attribution: '',
-				id: 'examples.map-i86knfo3'
+				/*id: 'examples.map-i86knfo3'*/
+				id: 'tekaweni.k8ngolij'
 			}).addTo(map);
 			var marker = L.marker([lat, long]).addTo(map);
 		}
