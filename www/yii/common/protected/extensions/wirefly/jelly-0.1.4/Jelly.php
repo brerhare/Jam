@@ -211,7 +211,7 @@ END_OF_FOOTER;
 			// Get the requested page for its metadata
 			if (!strstr(Yii::app()->db->connectionString, "plugin"))	// We dont do this for plugins!
 			{
-				if (isset($_GET['page']))
+				if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 				{
 					$criteria = new CDbCriteria;
 					$criteria->addCondition("url = '" . $_GET['page'] . "'");
@@ -249,7 +249,7 @@ END_OF_FOOTER;
 				$arrDb = $value['db'];
 				if (array_key_exists("filter", $arrDb))
 				{
-					if (isset($_GET['page']))
+					if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 					{
 						if ((array_key_exists("table", $arrDb)) && ($arrDb['table'] == 'ContentBlock'))
 						{
@@ -387,7 +387,7 @@ END_OF_FOOTER;
 					$second = strstr($first, "=");
 					$pageForCondition = ltrim($second, "=");
 					$pageLoading = "";
-					if (isset($_GET['page']))
+					if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 					{
 						$pageLoading = $_GET['page'];
 						if ($this->homePage == 1)
@@ -578,7 +578,7 @@ END_OF_FOOTER;
 
 // @@TODO: remove this hardcoding
 /*****************************************************************/
-if (isset($_GET['page']))
+if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 {
  if ($_GET['page'] != 'Jacquies-Beauty-Dumfries-Salon')
  {
@@ -1344,7 +1344,7 @@ if (strstr($blobName, "googlemap"))
 					$backColor = $vals[3];
 
                 $deeplink = "";
-                if (isset($_GET['page']))
+				if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
                     $deeplink .= "&page=" . $_GET['page'];
                 if (isset($_GET['cat']))
                     $deeplink .= "&cat=" . $_GET['cat'];
