@@ -85,8 +85,15 @@ class eventcode
 		$optArr['center'] = $center;
 		$optArr['zoom'] = '8';
 		$ret = $addon->init($optArr, '/event/scripts/jelly/addon/map/google_os');
+
+		// Suppress the big map if so requested
+		if ((isset($_GET['map'])) && ($_GET['map'] == "no"))
+			$content .= "<div style='display:none'>";
 		$content .= $ret[0];
 		$content .= '<script>' . $ret[1] . '</script>';
+		if ((isset($_GET['map'])) && ($_GET['map'] == "no"))
+			$content .= "</div>";
+
 		// @@NB: For mapping points we select all events from today onwards
 		// @@NB: (Future enhancement?) Should ideally only show pins for the searched results
 		// @@NB: This should ideally be kept in some sort of sync with the event filter used in fill_headers() (below)

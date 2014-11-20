@@ -29,9 +29,16 @@ class google_os
 
 	public function init($options, $jellyRootUrl)
 	{
-//if (isset($_GET['programid']))
-//die('x');
-//		var_dump( $options );
+		// Check for map suppression (from the event plugin)
+/*
+		if ((isset($_GET['map'])) && ($_GET['map'] == "no"))
+		{
+			$retArr = array();
+			$retArr[0] = "";
+			$retArr[1] = "";
+			return $retArr;
+		}
+*/
 
 		// Generate the content into the html, replacing any <substituteN> tags
 		$onReady = "";
@@ -152,7 +159,6 @@ class google_os
 		$retArr = array();
 		$retArr[0] = $html;
 		$retArr[1] = $js;
-
 		return $retArr;
 	}
 
