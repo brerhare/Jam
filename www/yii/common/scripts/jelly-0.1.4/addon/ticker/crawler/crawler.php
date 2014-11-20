@@ -9,7 +9,6 @@
 class crawler
 {
 	//Defaults
-	private $defaultMaxItems = 20;
 	private $defaultWidth = "100%";
 	private $defaultFontSize = "14px";
 	private $defaultTextSpace = "30";
@@ -34,9 +33,6 @@ class crawler
 //				case "jellyword":
 				case "width":
 					$this->defaultWidth = $val;
-					break;
-				case "max-items":
-					$this->defaultMaxItems = (int) $val;
 					break;
 				case "font-size":
 					$this->defaultFontSize = $val;
@@ -87,7 +83,6 @@ class crawler
 		$content = "";
 		$itemCount = 0;
 		$criteria = new CDbCriteria;
-//		$criteria->order = "date DESC, id DESC";
 		$criteria->order = "id DESC";
 		$tickerItems = JellyTicker::model()->findAll($criteria);
 		foreach ($tickerItems as $tickerItem):
@@ -96,8 +91,6 @@ class crawler
 				$textLine = "<a href='" . $tickerItem->url . "' target='_blank'>" . $tickerItem->heading . "</a>";
 			$content .= "<dt>" . $textLine . "</dt>";
 			$content .= "<dd>" . $tickerItem->text . "</dd>";
-			if (++$itemCount >= $this->defaultMaxItems)
-				break;
 		endforeach;
 		$this->apiHTML = str_replace("<substitute-data>", $content, $this->apiHTML);
 
