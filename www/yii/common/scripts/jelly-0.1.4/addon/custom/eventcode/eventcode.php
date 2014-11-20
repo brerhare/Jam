@@ -181,7 +181,6 @@ class eventcode
 		$retArr[1] = $apiJs;
 		$retArr[2] = $clipBoard;
 		return $retArr;
-	//		die('ok');
 	}
 
 	/*********************************************************************************************************/
@@ -219,8 +218,6 @@ class eventcode
 			$dt = date('d-m-Y');
 		$edate = date("Y-m-d H:i:s", strtotime($dt));
 		$edate = str_replace("00:00:00", "23:59:59", $edate);
-
-//die('s='.$sdate . ' e='.$edate);
 
 		// @@NB: Be aware that this should be kept in some kind of sync with the event filters used by main_google_map() (above)
 		$criteria = new CDbCriteria;
@@ -649,11 +646,16 @@ for (i = 0; i < jsEvents.length; i++)
 
 END_OF_API_JS_fill_headers;
 
+		// Handle 
 		$xcss = "";
 		// The color of the header (WS is green, Ab wants white)
 		if ($this->programId == 12)	// Absolute classics
 		{
-			$xcss .= "<style> #accordion .ui-accordion-header { border: 1px solid #a9b68b; background-color: #ffffff; </style>";
+			$xcss .= "<style> #accordion .ui-accordion-header { border: 1px solid #a9b68b; background-color: #ffffff;} </style>";
+		}
+		if ((Yii::app()->session['headercolor']) && (Yii::app()->session['headercolor'] != ""))
+		{
+			$xcss .= "<style> #accordion .ui-accordion-header { border: 1px solid #a9b68b; background-color: #" . Yii::app()->session['headercolor'] . ";} </style>";
 		}
 
 		$apiHtml = str_replace("<substitute-path>", $this->jellyRootUrl, $apiHtml);

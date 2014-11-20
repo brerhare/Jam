@@ -682,6 +682,10 @@ if (strstr($blobName, "googlemap"))
 		if ($_GET['programid'] == 12)	// Absolute Classics
 			$cssValue = "0px";
 	}
+	if ((Yii::app()->session['map']) && (Yii::app()->session['map'] == "no"))
+	{
+			$cssValue = "0px";			// map=no selected
+	}
 }
 
 					$this->genDivCSS($cssName . ":" . $cssValue . ";\n");
