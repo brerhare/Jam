@@ -1307,8 +1307,8 @@ if (strstr($blobName, "googlemap"))
                 $deeplink = "";
 				if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
                     $deeplink .= "&page=" . $_GET['page'];
-                if (isset($_GET['prod']))
-                    $deeplink .= "&prod=" . $_GET['prod'];
+                if ((isset($_GET['product'])) && (trim($_GET['product']) != ""))
+                    $deeplink .= "&product=" . $_GET['product'];
 
 				$iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="http://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;department=' . $value . $deeplink . '"></iframe>';
 				//$iframe = '<iframe height="670" width="850" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;department=' . $value . '"></iframe>';
