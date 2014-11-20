@@ -56,8 +56,7 @@ class lightbox
 				// Gallery options
 				case "gallery":
 					$val = str_replace("&nbsp;", " ", $val);
-					$val = str_replace("&nbsp", " ", $val);
-					$this->gallery = strstr($val, " ", true);
+					$this->gallery = str_replace("&nbsp", " ", $val);
 					break;
 
 				default:
