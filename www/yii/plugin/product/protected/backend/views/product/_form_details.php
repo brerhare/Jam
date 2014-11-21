@@ -6,7 +6,36 @@
 
 	<?php echo $form->textFieldRow($model,'name',array('class'=>'span5','maxlength'=>255)); ?>
 
-	<?php echo $form->textAreaRow($model,'description',array('rows'=>6, 'cols'=>50, 'class'=>'span5')); ?>
+	<?php //echo $form->textAreaRow($model,'description',array('rows'=>6, 'cols'=>50, 'class'=>'span5')); ?>
+
+
+<!-- CKEditor starts -->
+
+    <script src="<?php echo Yii::app()->baseUrl.'/scripts/editors/ck/ckeditor/ckeditor.js'; ?>"></script>
+	<?php
+        $_SESSION['KCFINDER']['disabled'] = false; // enables the file browser in the admin
+        $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->baseUrl."/userdata/image/"; // URL for the uploads folder
+        $_SESSION['KCFINDER']['uploadDir'] = Yii::app()->basePath."/../userdata/image/"; // path to the uploads folder
+	?>
+    <!-- <div class="row"> -->
+    <?php echo $form->labelEx($model,'description'); ?>
+    <?php echo $form->textArea($model, 'description', array('id'=>'editor1')); ?>
+    <?php echo $form->error($model,'description'); ?>
+    <!-- </div> -->
+
+    <script type="text/javascript">
+    CKEDITOR.replace( 'editor1', {
+		allowedContent : true,	// Allow potentially harmful tags: iframes, javascript etc
+        width: <?php echo Yii::app()->params['editorpagewidth'];?>,
+        height: <?php echo Yii::app()->params['editorpageheight'];?>,
+        filebrowserUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/upload.php?type=files',
+        filebrowserImageUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/upload.php?type=images',
+        filebrowserFlashUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/upload.php?type=flash'
+    });
+	</script>
+
+<!-- CKEditor ends -->
+
 
 	<?php //echo $form->textFieldRow($model,'product_department_id',array('class'=>'span5')); ?>
 
