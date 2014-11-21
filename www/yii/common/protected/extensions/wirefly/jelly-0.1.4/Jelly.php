@@ -906,13 +906,17 @@ if (strstr($blobName, "googlemap"))
 					}
 				}
 
-
                 // Build the query from the collected args
                 $query = $dbTable . '::model()->find($cri);';
                 // Add filters
 				$cri=new CDbCriteria;
 				foreach ($fltArr as $flt)
-					$cri->addCondition($this->dbExpand(trim($flt)));
+				{
+					$condition = $this->dbExpand(trim($flt));
+					$condition = str_replace('""', '"', $condition);
+					$condition = str_replace("''", "'", $condition);
+					$cri->addCondition($condition);
+				}
                 // Add order
                 foreach ($orderArr as $ord)
 				$cri->order = $this->dbExpand(trim($ord));

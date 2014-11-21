@@ -38,6 +38,8 @@ class SiteController extends Controller
 	public function actionIndex()
 	{
 header($this->p3p);
+
+		// Get hosting site's params
 		$util = new Util;
 		if (isset($_GET['ge']))
 			Yii::app()->session['checkoutEmail'] = $_GET['ge'];
@@ -48,24 +50,66 @@ header($this->p3p);
 		if (isset($_GET['gp']))
 			Yii::app()->session['checkoutGatewayPassword'] = urldecode($util->decrypt($_GET['gp']));
 
-		$layout = "index";
-		if (isset($_GET['layout']))
-			$layout = $_GET['layout'];
-		$parseConfig = new ParseConfig();
-		$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . $layout . ".jel");
-		if (!($jellyArray))
-			throw new Exception('Aborting');
+		// Get the hosting site (referer)
+		if (isset($_SERVER['HTTP_REFERER']))
+		{
+			if (!strstr($_SERVER['HTTP_REFERER'], "plugin.wireflydesign.com"))
+			{
+				$urlParts = explode("://", $_SERVER['HTTP_REFERER']);	// 0 = http or https
+				$urlSubParts = explode("/", $urlParts[1]);				// 0 = www.example.com
+				Yii::app()->session['http_referer'] = $urlParts[0] . "://" . $urlSubParts[0];
+			}
+		}
 
-		$jelly = new Jelly;
-		$jelly->processData($jellyArray,$this->getJellyRoot());
-		$jelly->outputData();
+		// Get iframe params
+		if (isset($_GET['sid']))
+			Yii::app()->session['sid'] = $_GET['sid'];
+		if (isset($_GET['page']))
+			Yii::app()->session['page'] = $_GET['page'];
+		if (isset($_GET['product']))
+			Yii::app()->session['product'] = $_GET['product'];
 
-		//$this->render('index');
+		if ((isset($_GET['show'])) && ($_GET['show'] == 'product'))
+		{
+			$target = Yii::app()->session['http_referer'] . "/?page=" . Yii::app()->session['page'] . "&product=" . Yii::app()->session['product'];
+			echo
+				"<html><script>
+				// @@NB START POSTMESSAGE
+	   				parent.postMessage('redirect^" . $target . "', '*');
+				// @@NB END POSTMESSAGE
+				</script></html>";
+		}
+else
+
+		// Are we going straight to a deeplink?
+		if ((isset($_GET['page'])) && (isset($_GET['product'])))
+		{
+			$parseConfig = new ParseConfig();
+			$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . "product" . '.jel');
+			if (!($jellyArray))
+				throw new Exception('Aborting');
+			$jelly = new Jelly;
+			$jelly->processData($jellyArray,$this->getJellyRoot());
+			$jelly->outputData();
+		}
+		else
+		{
+			// By default the initial call goes to here
+			$layout = "index";
+			if (isset($_GET['layout']))
+				$layout = $_GET['layout'];
+			$parseConfig = new ParseConfig();
+			$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . $layout . ".jel");
+			if (!($jellyArray))
+				throw new Exception('Aborting');
+			$jelly = new Jelly;
+			$jelly->processData($jellyArray,$this->getJellyRoot());
+			$jelly->outputData();
+		}
 	}
 
 	/**
-	 * This is the default 'index' action that is invoked
-	 * when an action is not explicitly requested by users.
+	 *
 	 */
 	public function actionPlay($page)
 	{
@@ -78,7 +122,16 @@ header($this->p3p);
 		$jelly = new Jelly;
 		$jelly->processData($jellyArray,$this->getJellyRoot());
 		$jelly->outputData();
+	}
 
+	//public function actionShowProductPage($product_id)
+	public function actionShowProductPage()
+	{
+		// Eg: http://jacquiesbeauty.co.uk/?product=201&page=massage-dumfries-salon&name=Aromatherapy-Massage
+		//Yii::log("Checkout - payment type requested is " . $_GET['ptype'] , CLogger::LEVEL_WARNING, 'system.test.kim');
+
+		Yii::log("AAAAAAAAAAAAAAAAAAAAAAAAA", CLogger::LEVEL_WARNING, 'system.test.kim');
+		$this->redirect("http://www.google.com");
 	}
 
 	// Invoke the Paymentsense module
