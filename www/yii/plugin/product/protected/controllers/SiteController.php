@@ -124,16 +124,6 @@ header($this->p3p);
 		$jelly->outputData();
 	}
 
-	//public function actionShowProductPage($product_id)
-	public function actionShowProductPage()
-	{
-		// Eg: http://jacquiesbeauty.co.uk/?product=201&page=massage-dumfries-salon&name=Aromatherapy-Massage
-		//Yii::log("Checkout - payment type requested is " . $_GET['ptype'] , CLogger::LEVEL_WARNING, 'system.test.kim');
-
-		Yii::log("AAAAAAAAAAAAAAAAAAAAAAAAA", CLogger::LEVEL_WARNING, 'system.test.kim');
-		$this->redirect("http://www.google.com");
-	}
-
 	// Invoke the Paymentsense module
 	public function actionPay()
 	{
