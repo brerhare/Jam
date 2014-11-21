@@ -36,6 +36,7 @@
 
 <!-- CKEditor ends -->
 
+<br/>
 
 	<?php //echo $form->textFieldRow($model,'product_department_id',array('class'=>'span5')); ?>
 
