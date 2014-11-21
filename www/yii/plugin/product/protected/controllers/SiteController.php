@@ -69,8 +69,10 @@ header($this->p3p);
 		if (isset($_GET['product']))
 			Yii::app()->session['product'] = $_GET['product'];
 
+		// Are we redirecting the parent to the product page?
 		if ((isset($_GET['show'])) && ($_GET['show'] == 'product'))
 		{
+// back button goes here
 			$target = Yii::app()->session['http_referer'] . "/?page=" . Yii::app()->session['page'] . "&product=" . Yii::app()->session['product'];
 			echo
 				"<html><script>
@@ -79,11 +81,11 @@ header($this->p3p);
 				// @@NB END POSTMESSAGE
 				</script></html>";
 		}
-else
 
-		// Are we going straight to a deeplink?
-		if ((isset($_GET['page'])) && (isset($_GET['product'])))
+		// Or is the parent sending us to the product page?
+		else if ((isset($_GET['page'])) && (isset($_GET['product'])))
 		{
+// back button goes here
 			$parseConfig = new ParseConfig();
 			$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . "product" . '.jel');
 			if (!($jellyArray))
@@ -92,9 +94,10 @@ else
 			$jelly->processData($jellyArray,$this->getJellyRoot());
 			$jelly->outputData();
 		}
+
+		// Otherwise by default the initial call goes to here
 		else
 		{
-			// By default the initial call goes to here
 			$layout = "index";
 			if (isset($_GET['layout']))
 				$layout = $_GET['layout'];
