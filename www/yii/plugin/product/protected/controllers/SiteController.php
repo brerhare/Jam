@@ -39,6 +39,10 @@ class SiteController extends Controller
 	{
 header($this->p3p);
 
+		// If unset, initialise the product page cookie (only way to tell if we're back-paging from it or going to it)
+		if (!isset(Yii::app()->session['productdetail']))
+			Yii::app()->session['productdetail'] = "0";
+
 		// Get hosting site's params
 		$util = new Util;
 		if (isset($_GET['ge']))
@@ -68,47 +72,66 @@ header($this->p3p);
 			Yii::app()->session['page'] = $_GET['page'];
 		if (isset($_GET['product']))
 			Yii::app()->session['product'] = $_GET['product'];
+		if (isset($_GET['department']))
+			Yii::app()->session['department'] = $_GET['department'];
 
 		// Are we redirecting the parent to the product page?
 		if ((isset($_GET['show'])) && ($_GET['show'] == 'product'))
 		{
-// back button goes here
-			$target = Yii::app()->session['http_referer'] . "/?page=" . Yii::app()->session['page'] . "&product=" . Yii::app()->session['product'];
-			echo
-				"<html><script>
-				// @@NB START POSTMESSAGE
-	   				parent.postMessage('redirect^" . $target . "', '*');
-				// @@NB END POSTMESSAGE
-				</script></html>";
+			if (Yii::app()->session['productdetail'] == "0")
+			{
+				$target = Yii::app()->session['http_referer'] . "/?page=" . Yii::app()->session['page'] . "&product=" . Yii::app()->session['product'];
+				echo
+					"<html><script>
+					// @@NB START POSTMESSAGE
+	   					parent.postMessage('redirect^" . $target . "', '*');
+					// @@NB END POSTMESSAGE
+					</script></html>";
+				return;
+			}
 		}
 
 		// Or is the parent sending us to the product page?
 		else if ((isset($_GET['page'])) && (isset($_GET['product'])))
 		{
-// back button goes here
-			$parseConfig = new ParseConfig();
-			$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . "product" . '.jel');
-			if (!($jellyArray))
-				throw new Exception('Aborting');
-			$jelly = new Jelly;
-			$jelly->processData($jellyArray,$this->getJellyRoot());
-			$jelly->outputData();
+			if (Yii::app()->session['productdetail'] == "0")
+			{
+				$parseConfig = new ParseConfig();
+				$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . "product" . '.jel');
+				if (!($jellyArray))
+					throw new Exception('Aborting');
+				$jelly = new Jelly;
+				$jelly->processData($jellyArray,$this->getJellyRoot());
+				$jelly->outputData();
+				return;
+			}
+		}
+
+		// We've just back-paged from the product page
+		if (Yii::app()->session['productdetail'] == "1")
+		{
+			Yii::app()->session['productdetail'] = "0";
+			$target = Yii::app()->session['http_referer'] . "/?page=" . Yii::app()->session['page'] . "&department=" . Yii::app()->session['department'];
+               echo
+                   "<html><script>
+                   // @@NB START POSTMESSAGE
+                        parent.postMessage('redirect^" . $target . "', '*');
+                    // @@NB END POSTMESSAGE
+                    </script></html>";
+			return;
 		}
 
 		// Otherwise by default the initial call goes to here
-		else
-		{
-			$layout = "index";
-			if (isset($_GET['layout']))
-				$layout = $_GET['layout'];
-			$parseConfig = new ParseConfig();
-			$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . $layout . ".jel");
-			if (!($jellyArray))
-				throw new Exception('Aborting');
-			$jelly = new Jelly;
-			$jelly->processData($jellyArray,$this->getJellyRoot());
-			$jelly->outputData();
-		}
+		$layout = "index";
+		if (isset($_GET['layout']))
+			$layout = $_GET['layout'];
+		$parseConfig = new ParseConfig();
+		$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . $layout . ".jel");
+		if (!($jellyArray))
+			throw new Exception('Aborting');
+		$jelly = new Jelly;
+		$jelly->processData($jellyArray,$this->getJellyRoot());
+		$jelly->outputData();
 	}
 
 	/**

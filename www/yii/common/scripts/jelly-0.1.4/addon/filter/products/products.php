@@ -229,10 +229,14 @@ class products
         {
             if (isset($_GET['department']))
                 $this->departmentSel = explode('|', $_GET['department']);
+			else if (isset(Yii::app()->session['department']))
+				$this->departmentSel = explode('|', Yii::app()->session['department']); 
+
             if (isset($_GET['feature']))
                 $this->featureSel = explode('|', $_GET['feature']);
             else
                 array_push($this->featureSel, '*');
+
             foreach ($departments as $department):
                 $vis = "";
                 if (!(in_array($department->id, $this->departmentSel)))
