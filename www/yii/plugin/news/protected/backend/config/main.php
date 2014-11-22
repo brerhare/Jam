@@ -110,6 +110,5 @@ return array(
 		// CKEditor size for page content editing
 		'editorpagewidth'=>'800',   
 		'editorpageheight'=>'500',  
-		'editorpageheight'=>'500',  
 	),
 );

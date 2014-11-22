@@ -155,28 +155,37 @@
 
 
 	<?php //echo $form->textAreaRow($model,'description',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
-	<div class="control-group "><label class="control-label" for="Event_start">Description <span class="required">*</span></label>
+<!--	<div class="control-group "><label class="control-label" for="Event_start">Description <span class="required">*</span></label> -->
 
 
 
+<!-- CKEditor starts -->
 
-		<div class="controls">
-			<div style="width:500px">
-			<?php
-			$this->widget('bootstrap.widgets.TbRedactorJs',
-		    	array(
-		      	'model'=>$model,
-		      	'attribute'=>'description',
-		      	'editorOptions'=>array(
-		          	'imageUpload' => $this->createUrl('event/imageUpload'),
-		          	'imageGetJson' => $this->createUrl('event/imageList'),
-		          	'width'=>'100%',
-		          	'height'=>'400px'
-		       	)
-		    	));
-			?>
-			</div>
-		</div>
+    <script src="<?php echo Yii::app()->baseUrl.'/scripts/editors/ck/ckeditor/ckeditor.js'; ?>"></script>
+    <?php
+        $_SESSION['KCFINDER']['disabled'] = false; // enables the file browser in the admin
+        $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->baseUrl."/userdata/image/"; // URL for the uploads folder
+        $_SESSION['KCFINDER']['uploadDir'] = Yii::app()->basePath."/../userdata/image/"; // path to the uploads folder
+    ?>
+    <!-- <div class="row"> -->
+    <?php echo $form->labelEx($model,'description'); ?>
+    <?php echo $form->textArea($model, 'description', array('id'=>'editor1')); ?>
+    <?php echo $form->error($model,'description'); ?>
+    <!-- </div> -->
+
+    <script type="text/javascript">
+    CKEDITOR.replace( 'editor1', {
+        width: <?php echo Yii::app()->params['editorpagewidth'];?>,
+        height: <?php echo Yii::app()->params['editorpageheight'];?>,
+        filebrowserUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/upload.php?type=files',
+        filebrowserImageUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/upload.php?type=images',
+        filebrowserFlashUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/upload.php?type=flash'
+    });
+    </script>
+
+<!-- CKEditor ends -->
+
+
 	</div>
 	<br>&nbsp
 
