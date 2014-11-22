@@ -10,6 +10,14 @@ class ParseConfig
 	 */
  
 	private function parse_ini ( $filepath ) {
+
+		// @@ NB: remove hardcoding for product deeplinks
+		if (strstr($filepath, "product.jel"))
+		{
+			Yii::app()->session['productdetail'] = "1";
+			Yii::log("***** PRODUCT - loading product page" , CLogger::LEVEL_WARNING, 'system.test.kim');
+		}
+
 	    $ini = $this->preprocess_file( $filepath );
 	    if ( count( $ini ) == 0 ) { return array(); }
 	    $sections = array();

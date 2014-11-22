@@ -38,6 +38,12 @@ class SiteController extends Controller
 	public function actionIndex()
 	{
 header($this->p3p);
+
+		// If unset, initialise the product page cookie (only way to tell if we're back-paging from it or going to it)
+		if (!isset(Yii::app()->session['productdetail']))
+			Yii::app()->session['productdetail'] = "0";
+
+		// Get hosting site's params
 		$util = new Util;
 		if (isset($_GET['ge']))
 			Yii::app()->session['checkoutEmail'] = $_GET['ge'];
@@ -48,6 +54,74 @@ header($this->p3p);
 		if (isset($_GET['gp']))
 			Yii::app()->session['checkoutGatewayPassword'] = urldecode($util->decrypt($_GET['gp']));
 
+		// Get the hosting site (referer)
+		if (isset($_SERVER['HTTP_REFERER']))
+		{
+			if (!strstr($_SERVER['HTTP_REFERER'], "plugin.wireflydesign.com"))
+			{
+				$urlParts = explode("://", $_SERVER['HTTP_REFERER']);	// 0 = http or https
+				$urlSubParts = explode("/", $urlParts[1]);				// 0 = www.example.com
+				Yii::app()->session['http_referer'] = $urlParts[0] . "://" . $urlSubParts[0];
+			}
+		}
+
+		// Get iframe params
+		if (isset($_GET['sid']))
+			Yii::app()->session['sid'] = $_GET['sid'];
+		if (isset($_GET['page']))
+			Yii::app()->session['page'] = $_GET['page'];
+		if (isset($_GET['product']))
+			Yii::app()->session['product'] = $_GET['product'];
+		if (isset($_GET['department']))
+			Yii::app()->session['department'] = $_GET['department'];
+
+		// Are we redirecting the parent to the product page?
+		if ((isset($_GET['show'])) && ($_GET['show'] == 'product'))
+		{
+			if (Yii::app()->session['productdetail'] == "0")
+			{
+				$target = Yii::app()->session['http_referer'] . "/?page=" . Yii::app()->session['page'] . "&product=" . Yii::app()->session['product'];
+				echo
+					"<html><script>
+					// @@NB START POSTMESSAGE
+	   					parent.postMessage('redirect^" . $target . "', '*');
+					// @@NB END POSTMESSAGE
+					</script></html>";
+				return;
+			}
+		}
+
+		// Or is the parent sending us to the product page?
+		else if ((isset($_GET['page'])) && (isset($_GET['product'])))
+		{
+			if (Yii::app()->session['productdetail'] == "0")
+			{
+				$parseConfig = new ParseConfig();
+				$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . "product" . '.jel');
+				if (!($jellyArray))
+					throw new Exception('Aborting');
+				$jelly = new Jelly;
+				$jelly->processData($jellyArray,$this->getJellyRoot());
+				$jelly->outputData();
+				return;
+			}
+		}
+
+		// We've just back-paged from the product page
+		if (Yii::app()->session['productdetail'] == "1")
+		{
+			Yii::app()->session['productdetail'] = "0";
+			$target = Yii::app()->session['http_referer'] . "/?page=" . Yii::app()->session['page'] . "&department=" . Yii::app()->session['department'];
+               echo
+                   "<html><script>
+                   // @@NB START POSTMESSAGE
+                        parent.postMessage('redirect^" . $target . "', '*');
+                    // @@NB END POSTMESSAGE
+                    </script></html>";
+			return;
+		}
+
+		// Otherwise by default the initial call goes to here
 		$layout = "index";
 		if (isset($_GET['layout']))
 			$layout = $_GET['layout'];
@@ -55,17 +129,13 @@ header($this->p3p);
 		$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . $layout . ".jel");
 		if (!($jellyArray))
 			throw new Exception('Aborting');
-
 		$jelly = new Jelly;
 		$jelly->processData($jellyArray,$this->getJellyRoot());
 		$jelly->outputData();
-
-		//$this->render('index');
 	}
 
 	/**
-	 * This is the default 'index' action that is invoked
-	 * when an action is not explicitly requested by users.
+	 *
 	 */
 	public function actionPlay($page)
 	{
@@ -78,7 +148,6 @@ header($this->p3p);
 		$jelly = new Jelly;
 		$jelly->processData($jellyArray,$this->getJellyRoot());
 		$jelly->outputData();
-
 	}
 
 	// Invoke the Paymentsense module

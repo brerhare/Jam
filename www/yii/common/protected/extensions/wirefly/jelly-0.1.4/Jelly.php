@@ -906,13 +906,17 @@ if (strstr($blobName, "googlemap"))
 					}
 				}
 
-
                 // Build the query from the collected args
                 $query = $dbTable . '::model()->find($cri);';
                 // Add filters
 				$cri=new CDbCriteria;
 				foreach ($fltArr as $flt)
-					$cri->addCondition($this->dbExpand(trim($flt)));
+				{
+					$condition = $this->dbExpand(trim($flt));
+					$condition = str_replace('""', '"', $condition);
+					$condition = str_replace("''", "'", $condition);
+					$cri->addCondition($condition);
+				}
                 // Add order
                 foreach ($orderArr as $ord)
 				$cri->order = $this->dbExpand(trim($ord));
@@ -1307,8 +1311,8 @@ if (strstr($blobName, "googlemap"))
                 $deeplink = "";
 				if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
                     $deeplink .= "&page=" . $_GET['page'];
-                if (isset($_GET['prod']))
-                    $deeplink .= "&prod=" . $_GET['prod'];
+                if ((isset($_GET['product'])) && (trim($_GET['product']) != ""))
+                    $deeplink .= "&product=" . $_GET['product'];
 
 				$iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="http://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;department=' . $value . $deeplink . '"></iframe>';
 				//$iframe = '<iframe height="670" width="850" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;department=' . $value . '"></iframe>';
