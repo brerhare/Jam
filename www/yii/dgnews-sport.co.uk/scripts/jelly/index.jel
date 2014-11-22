@@ -28,7 +28,7 @@ addon.ticker.crawler.text-colour = green
 addon.ticker.crawler.tape-border-width = 1px
 #addon.ticker.crawler.tape-border-color = red
 #addon.ticker.crawler.link-color = magenta
-#addon.ticker.crawler.link-text-color = yellow
+#addon.ticker.crawler.link-text-color = blue
 
 	[site]
 	child = main, right-column
