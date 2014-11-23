@@ -88,25 +88,43 @@ if ($showArt == '')
 			if ($article->id == $mainArticleId)
 				continue;
 
-			echo "<a href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['http_referer'] . "/?art=" . $article->id . '&page=' . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", urlencode($article->title))    . '"' . ")'>";
+			// Get the category name
+			$showCat = "No category";
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("uid=" . Yii::app()->session['uid']);
+			$criteria->addCondition("id=" . $article->blog_category_id);
+			$category = Category::model()->find($criteria);
+			if ($category)
+				$showCat = $category->name;
 
-				echo "<span class='item' style='margin-bottom:13px;' >";
-					echo "<img src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/thumb_" . $article->thumbnail_path .  "' alt='No Image' width='100%'>";
-
-					// Get the category name
-					$showCat = "Unknown";
-					$criteria = new CDbCriteria;
-					$criteria->addCondition("uid=" . Yii::app()->session['uid']);
-					$criteria->addCondition("id=" . $article->blog_category_id);
-					$category = Category::model()->find($criteria);
-					if ($category)
-						$showCat = $category->name;
-
-					echo "<span class='itemleadin'>" . $showCat . "&nbsp&nbsp" . $article->date . "</span><hr class='wtf-did-this-hr-take-to-DO'/>";
-					echo "<span class='itemintro' style='font-weight:bold; color:#424242'>" . $article->title . "</span><br/>";
-					echo "<span class='itemintro' style='padding-top:0px; color:#000000'>" . $article->intro . "</span><br/>";
-				echo "</span>";
-			echo "</a>";
+			if (!isset($_GET['archive']))
+			{
+				// Main page large grid format
+				// ---------------------------
+				echo "<a href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['http_referer'] . "/?art=" . $article->id . '&page=' . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", urlencode($article->title))    . '"' . ")'>";
+					echo "<span class='item' style='margin-bottom:13px;' >";
+						echo "<img src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/thumb_" . $article->thumbnail_path .  "' alt='No Image' width='100%'>";
+						echo "<span class='itemleadin'>" . $showCat . "&nbsp&nbsp" . $article->date . "</span><hr class='wtf-did-this-hr-take-to-DO'/>";
+						echo "<span class='itemintro' style='font-weight:bold; color:#424242'>" . $article->title . "</span><br/>";
+						echo "<span class='itemintro' style='padding-top:0px; color:#000000'>" . $article->intro . "</span><br/>";
+					echo "</span>";
+				echo "</a>";
+			}
+			else
+			{
+				// Archive page smaller grid format
+				// --------------------------------
+				echo "<a href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['http_referer'] . "/?art=" . $article->id . '&page=' . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", urlencode($article->title))    . '"' . ")'>";
+					echo "<table><tr>";
+						echo "<td width='80px' align=right>";
+							echo "<img style='max-width:65px; max-height:50px; vertical-align:bottom; overflow:hidden;' src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/thumb_" . $article->thumbnail_path .  "' alt='No Image'>";
+						echo "</td><td style='padding-left:10px'>";
+							echo "<span style='padding-top:15px; font-size:14; color:#000000'>" . $article->title . "</span>";
+							echo "<span style='padding-left:0px;' class='itemleadin'>" . $catDesc . "&nbsp&nbsp" . $article->date . "</span>";
+						echo "</td>";
+					echo "</tr></table>";
+				echo "</a>";
+			}
 		}
 		echo '</div>';
 		echo "<center><a href='#' class='oldernewsbutton'>Older news</a><center>";

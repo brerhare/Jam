@@ -58,8 +58,8 @@ class SiteController extends Controller
 		if ((isset($_GET['page'])) && ($_GET['page'] != ""))
 			Yii::app()->session['page'] = $_GET['page'];
 
-if (isset($_GET['art']))
-	$this->actionPlay();
+		if (isset($_GET['art']))
+			$this->actionPlay();
 
 		$category = 0;
 		if (isset($_GET['cat']))
@@ -72,7 +72,7 @@ if (isset($_GET['art']))
 
 	/**
 	 * This is the 'index' action that is invoked
-	 * when a category is explicitly requested by users.
+	 * when an article is explicitly requested by users.
 	 */
 	public function actionPlay()
 	{
