@@ -81,7 +81,7 @@ if ($showArt == '')
 
 				echo "<center>";
 					echo "<span class='mainitem' style='width:95%'>";
-						echo "<img style='width:90%; height:300px; width:auto' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' >";
+						echo "<img style='width:90%; height:300px; width:auto' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/thumb_" . $article->thumbnail_path .  "' alt='No Image' >";
 
 						// Get the category name
 						$catDesc = "Unknown";
@@ -133,7 +133,7 @@ if ($showArt == '')
 					// @@EG: vertically align img in div
 					echo "<div style='height:140px; width:154px; text-align: center; margin: 1em 0;'>";
 						echo "<span style='display: inline-block; height: 100%; vertical-align: middle;'></span>";
-						echo "<img style='max-width:154px; max-height:140px; vertical-align:bottom; overflow:hidden;' src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image'>";
+						echo "<img style='max-width:154px; max-height:140px; vertical-align:bottom; overflow:hidden;' src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/thumb_" . $article->thumbnail_path .  "' alt='No Image'>";
 					echo "</div>";
 
 					// Get the category name
