@@ -55,7 +55,7 @@ class SiteController extends Controller
 			Yii::app()->session['news_type'] = $_GET['newstype'];
 		if (isset($_GET['parenturl']))
 			Yii::app()->session['parenturl'] = $_GET['parenturl'];
-		if (isset($_GET['page']))
+		if ((isset($_GET['page'])) && ($_GET['page'] != ""))
 			Yii::app()->session['page'] = $_GET['page'];
 
 if (isset($_GET['art']))
