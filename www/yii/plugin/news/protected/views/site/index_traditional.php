@@ -1,5 +1,6 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
 <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+<link href="/news/css/oldernewsbutton.css" rel="stylesheet"/>
 
 <style type="text/css" media="screen">
 * {
@@ -153,6 +154,7 @@ if ($showArt == '')
 			echo "</a>";
 		}
 		echo '</div>';
+		echo "<center><a href='#' class='oldernewsbutton'>Older news</a><center>";
 	}
 }
 if ($showArt != '')
@@ -180,3 +182,4 @@ function pM(type, param)
 // @@NB END POSTMESSAGE
 
 </script>
+
