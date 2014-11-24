@@ -15,8 +15,7 @@
 	echo "<div style='max-height:130px; padding-bottom:0px; overflow:hidden;  font-size:12px'>";
 
 	echo "<div style='font-size:16px; padding-bottom:5px;'>";
-		//echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art='>" . 'Recent' . "</a><br>";
-		echo "<a class='uline' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art='>" . 'Recent' . "</a><br>";
+		echo "<a class='uline' href='http://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art='>" . 'Recent' . "</a><br>";
 	echo "</div style='border:1px solid black;' >";
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("uid=" . Yii::app()->session['uid']);
@@ -87,7 +86,7 @@
 echo "<hr>";
 
 		}
-		echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art='>" . 'All' . "</a><br>";
+		echo "<a style='color:black; text-decoration:none' href='http://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art='>" . 'All' . "</a><br>";
 		echo "<hr>";
 	}
 
