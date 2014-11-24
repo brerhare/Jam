@@ -153,7 +153,7 @@ END_OF_ENDHEADER;
 
 	// Listen to message from child window
 	eventer(messageEvent,function(e) {
-  		console.log('parent received message!:  ',e.data);
+  		//console.log('parent received message!:  ',e.data);
 		var n = e.data.indexOf("^");
 		if (n == -1)
 			return;

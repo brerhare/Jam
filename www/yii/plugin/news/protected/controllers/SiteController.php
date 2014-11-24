@@ -35,6 +35,8 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
+header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');
+
 		// Store the referer (hosting site) in a session cookie
 		if ((!isset(Yii::app()->session['http_referer'])) || (Yii::app()->session['http_referer'] == "unknown http_referer"))
 		{
