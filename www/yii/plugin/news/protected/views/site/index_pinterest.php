@@ -70,6 +70,8 @@ $mainArticleId = -1;
 <br/><br/>
 
 <?php
+$nextPageDate = "";
+$nextPageItem = "";
 if ($showArt == '')
 {
 	// Show all the articles
@@ -79,6 +81,18 @@ if ($showArt == '')
 	$criteria->order = "date DESC, id DESC";
 	if ($showCat != "0")
 		$criteria->addCondition("blog_category_id=" . $showCat);
+	if (isset($_GET['archive']))
+	{
+		$nextArr = explode("|", $_GET['archive']);
+		$id = $nextArr[0];
+		$date = date('Y-m-d', strtotime($nextArr[1]));
+		$criteria->addCondition("id <="  . $id);
+		$criteria->addCondition("date <='" . $date . "'");
+	}
+	$displayCount = 1;
+	$maxDisplay = $maxDisplayItems;
+	if (isset($_GET['archive']))
+		$maxDisplay = $maxDisplayArchiveItems;
 	$articles = Article::model()->findAll($criteria);
 	if ($articles)
 	{
@@ -87,6 +101,13 @@ if ($showArt == '')
 		{
 			if ($article->id == $mainArticleId)
 				continue;
+
+			if (++$displayCount > $maxDisplay)
+			{
+				$nextPageItem = $article->id;
+				$nextPageDate = $article->date;
+				break;
+			}
 
 			// Get the category name
 			$showCat = "No category";
@@ -127,7 +148,10 @@ if ($showArt == '')
 			}
 		}
 		echo '</div>';
-		echo "<center><a href='#' class='oldernewsbutton'>Older news</a><center>";
+
+		// Show 'older' button if any more
+		if ((!isset($_GET['archive'])) && ($nextPageItem != ""))
+			echo "<center><a href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=" . $showCat . "&art=" . $showArt . "&archive=" . $nextPageItem . "|" . $nextPageDate . "' class='oldernewsbutton'>Older news</a><center>";
 	}
 }
 if ($showArt != '')

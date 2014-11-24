@@ -99,7 +99,7 @@ class signup
 				$content .= $separator;
 				$content .= "<input id='signup-email' class='signup-input' type='text' style='width:" . $this->optionInputWidth . "px' title='Email' />";
 				$content .= $separator;
-				$content .= "<button ng-click='addSignup()' id='signup-send-button' class='signup-visible signup-send-button' style='background:" . $this->optionButtonColor . "; color:" . $this->optionButtonTextColor . "' class='signup-send-button' id='save'>" . $this->optionButtonText . "</button>";
+				$content .= "<center><button ng-click='addSignup()' id='signup-send-button' class='signup-visible signup-send-button' style='background:" . $this->optionButtonColor . "; color:" . $this->optionButtonTextColor . "' class='signup-send-button' id='save'>" . $this->optionButtonText . "</button></center>";
 				$content .= "<span id='signup-message' class='signup-invisible'>Message Area</span>";
 			$content .= "</div>";
 		$content .= "</div>";
