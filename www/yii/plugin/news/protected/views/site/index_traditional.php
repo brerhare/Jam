@@ -200,7 +200,7 @@ if ($showArt == '')
 
 		// Show 'older' button if any more
 		if ((!isset($_GET['archive'])) && ($nextPageItem != ""))
-			echo "<center><a href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=" . $showCat . "&art=" . $showArt . "&archive=" . $nextPageItem . "|" . $nextPageDate . "' class='oldernewsbutton'>Older news</a><center>";
+			echo "<center><a href='http://plugin.wireflydesign.com/news/index.php/site/play/?cat=" . $showCat . "&art=" . $showArt . "&archive=" . $nextPageItem . "|" . $nextPageDate . "' class='oldernewsbutton'>Older news</a><center>";
 	}
 }
 if ($showArt != '')
