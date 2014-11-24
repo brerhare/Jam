@@ -57,8 +57,21 @@ header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT
 			Yii::app()->session['news_type'] = $_GET['newstype'];
 		if (isset($_GET['parenturl']))
 			Yii::app()->session['parenturl'] = $_GET['parenturl'];
-		if ((isset($_GET['page'])) && ($_GET['page'] != ""))
-			Yii::app()->session['page'] = $_GET['page'];
+
+		// If page is there but null, we have to look up the home page
+		if (isset($_GET['page']))
+		{
+			if ($_GET['page'] != "")
+				Yii::app()->session['page'] = $_GET['page'];
+			else
+			{
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("home = " . 1);
+				$contentBlock = ContentBlock::model()->find($criteria);
+				if ($contentBlock)
+					Yii::app()->session['page'] = $contentBlock->url;
+			}
+		}
 
 		if (isset($_GET['art']))
 			$this->actionPlay();
