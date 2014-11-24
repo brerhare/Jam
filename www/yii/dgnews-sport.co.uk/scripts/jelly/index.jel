@@ -81,7 +81,7 @@ addon.ticker.crawler.tape-border-width = 1px
 		image.url = img/dgnews-logo.png
 		image.width = 330px
 		image.height = 58px
-		click = ?layout=index&page=index
+		click = ?layout=index&page=home
 		
 		[fb-social]
 		css.height = 35px
