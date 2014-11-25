@@ -1368,8 +1368,10 @@ if (strstr($blobName, "googlemap"))
 
 // @@NB This plugin gets passed the parent url - galleries may be embedded in its pages
 // ------------------------------------------------------------------------------------
-
-                $iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="http://plugin.wireflydesign.com/news/?sid=' . Yii::app()->params['sid'] . '&parenturl=' . Yii::app()->getBaseUrl(true)  . '&newstype=' . $value . '&category=0' . '&color=' . $color . '&backcolor=' . $backColor . $deeplink . '"></iframe>';
+				$page = "";
+				if (isset(Yii::app()->session['page']))
+					$page = Yii::app()->session['page'];
+                $iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="http://plugin.wireflydesign.com/news/?sid=' . Yii::app()->params['sid'] . '&parenturl=' . Yii::app()->getBaseUrl(true)  . '&page=' . $page . '&newstype=' . $value . '&category=0' . '&color=' . $color . '&backcolor=' . $backColor . $deeplink . '"></iframe>';
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 
