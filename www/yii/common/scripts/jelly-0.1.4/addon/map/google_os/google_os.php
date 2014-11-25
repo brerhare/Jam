@@ -29,9 +29,16 @@ class google_os
 
 	public function init($options, $jellyRootUrl)
 	{
-//if (isset($_GET['programid']))
-//die('x');
-//		var_dump( $options );
+		// Check for map suppression (from the event plugin)
+/*
+		if ((isset($_GET['map'])) && ($_GET['map'] == "no"))
+		{
+			$retArr = array();
+			$retArr[0] = "";
+			$retArr[1] = "";
+			return $retArr;
+		}
+*/
 
 		// Generate the content into the html, replacing any <substituteN> tags
 		$onReady = "";
@@ -152,7 +159,6 @@ class google_os
 		$retArr = array();
 		$retArr[0] = $html;
 		$retArr[1] = $js;
-
 		return $retArr;
 	}
 
@@ -233,7 +239,8 @@ END_OF_API_HTML;
 			L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
 				maxZoom: 18,
 				attribution: '',
-				id: 'examples.map-i86knfo3'
+				/*id: 'examples.map-i86knfo3'*/
+				id: 'tekaweni.k8ngolij'
 			}).addTo(map);
 			var marker = L.marker([lat, long]).addTo(map);
 		}

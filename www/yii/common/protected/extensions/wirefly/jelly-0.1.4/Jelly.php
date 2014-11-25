@@ -153,7 +153,7 @@ END_OF_ENDHEADER;
 
 	// Listen to message from child window
 	eventer(messageEvent,function(e) {
-  		console.log('parent received message!:  ',e.data);
+  		//console.log('parent received message!:  ',e.data);
 		var n = e.data.indexOf("^");
 		if (n == -1)
 			return;
@@ -211,7 +211,7 @@ END_OF_FOOTER;
 			// Get the requested page for its metadata
 			if (!strstr(Yii::app()->db->connectionString, "plugin"))	// We dont do this for plugins!
 			{
-				if (isset($_GET['page']))
+				if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 				{
 					$criteria = new CDbCriteria;
 					$criteria->addCondition("url = '" . $_GET['page'] . "'");
@@ -249,7 +249,7 @@ END_OF_FOOTER;
 				$arrDb = $value['db'];
 				if (array_key_exists("filter", $arrDb))
 				{
-					if (isset($_GET['page']))
+					if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 					{
 						if ((array_key_exists("table", $arrDb)) && ($arrDb['table'] == 'ContentBlock'))
 						{
@@ -387,7 +387,7 @@ END_OF_FOOTER;
 					$second = strstr($first, "=");
 					$pageForCondition = ltrim($second, "=");
 					$pageLoading = "";
-					if (isset($_GET['page']))
+					if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 					{
 						$pageLoading = $_GET['page'];
 						if ($this->homePage == 1)
@@ -578,7 +578,7 @@ END_OF_FOOTER;
 
 // @@TODO: remove this hardcoding
 /*****************************************************************/
-if (isset($_GET['page']))
+if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 {
  if ($_GET['page'] != 'Jacquies-Beauty-Dumfries-Salon')
  {
@@ -681,6 +681,10 @@ if (strstr($blobName, "googlemap"))
 	{
 		if ($_GET['programid'] == 12)	// Absolute Classics
 			$cssValue = "0px";
+	}
+	if ((Yii::app()->session['map']) && (Yii::app()->session['map'] == "no"))
+	{
+			$cssValue = "0px";			// map=no selected
 	}
 }
 
@@ -902,13 +906,17 @@ if (strstr($blobName, "googlemap"))
 					}
 				}
 
-
                 // Build the query from the collected args
                 $query = $dbTable . '::model()->find($cri);';
                 // Add filters
 				$cri=new CDbCriteria;
 				foreach ($fltArr as $flt)
-					$cri->addCondition($this->dbExpand(trim($flt)));
+				{
+					$condition = $this->dbExpand(trim($flt));
+					$condition = str_replace('""', '"', $condition);
+					$condition = str_replace("''", "'", $condition);
+					$cri->addCondition($condition);
+				}
                 // Add order
                 foreach ($orderArr as $ord)
 				$cri->order = $this->dbExpand(trim($ord));
@@ -1299,7 +1307,14 @@ if (strstr($blobName, "googlemap"))
 				// ----------------------------
 				$moreCurlyWurlys = 1;
 				$value = $vals[1];
-				$iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="http://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;department=' . $value . '"></iframe>';
+
+                $deeplink = "";
+				if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
+                    $deeplink .= "&page=" . $_GET['page'];
+                if ((isset($_GET['product'])) && (trim($_GET['product']) != ""))
+                    $deeplink .= "&product=" . $_GET['product'];
+
+				$iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="http://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;department=' . $value . $deeplink . '"></iframe>';
 				//$iframe = '<iframe height="670" width="850" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;department=' . $value . '"></iframe>';
 				$content = str_replace($pOrig, $iframe, $content);
 			}
@@ -1344,7 +1359,7 @@ if (strstr($blobName, "googlemap"))
 					$backColor = $vals[3];
 
                 $deeplink = "";
-                if (isset($_GET['page']))
+				if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
                     $deeplink .= "&page=" . $_GET['page'];
                 if (isset($_GET['cat']))
                     $deeplink .= "&cat=" . $_GET['cat'];
@@ -1353,8 +1368,10 @@ if (strstr($blobName, "googlemap"))
 
 // @@NB This plugin gets passed the parent url - galleries may be embedded in its pages
 // ------------------------------------------------------------------------------------
-
-                $iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/news/?sid=' . Yii::app()->params['sid'] . '&parenturl=' . Yii::app()->getBaseUrl(true)  . '&newstype=' . $value . '&category=0' . '&color=' . $color . '&backcolor=' . $backColor . $deeplink . '"></iframe>';
+				$page = "";
+				if (isset(Yii::app()->session['page']))
+					$page = Yii::app()->session['page'];
+                $iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="http://plugin.wireflydesign.com/news/?sid=' . Yii::app()->params['sid'] . '&parenturl=' . Yii::app()->getBaseUrl(true)  . '&page=' . $page . '&newstype=' . $value . '&category=0' . '&color=' . $color . '&backcolor=' . $backColor . $deeplink . '"></iframe>';
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 

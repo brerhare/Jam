@@ -1,4 +1,5 @@
 <?php
+
 	// Show the 3 most recent articles
 	// -------------------------------
 	echo "<style>
@@ -13,9 +14,8 @@
 
 	echo "<div style='max-height:130px; padding-bottom:0px; overflow:hidden;  font-size:12px'>";
 
-	echo "<div id=recent-articles style='font-size:16px; padding-bottom:5px;'>";
-		//echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art='>" . 'Recent' . "</a><br>";
-		echo "<a class='uline' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art='>" . 'Recent' . "</a><br>";
+	echo "<div style='font-size:16px; padding-bottom:5px;'>";
+		echo "<a class='uline' href='http://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art='>" . 'Recent' . "</a><br>";
 	echo "</div style='border:1px solid black;' >";
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("uid=" . Yii::app()->session['uid']);
@@ -28,7 +28,7 @@
 			{
 				echo "<img src='/news/img/gray-circle.png' height='5px' width='5px' style='padding:0px 4px 2px 0px;'/>";
 
-				echo "<a class='uline' href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['http_referer'] . "/?art=" . $article->id .       "&page=" . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", $article->title)          . '"' . ")'>";
+				echo "<a class='uline' href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['parenturl'] . "/?art=" . $article->id .       "&page=" . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", $article->title)          . '"' . ")'>";
 
 				echo $article->title . "<br/>";
 				echo "</a>";
@@ -70,7 +70,6 @@
 	echo "</div>";
 
 	echo "<script>" . $ret[1] . "</script>";
-//echo"<script>SID='" . $_GET['sid'] . "';</script>";
 
 	// Show the category list
 	$criteria = new CDbCriteria;
@@ -82,14 +81,12 @@
 		echo "<br/>";
 		foreach ($categories as $category)
 		{
-			//echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=" . $category->id . "&art='>" . $category->name . "</a><br>";
-
-			echo "<a style='color:black; text-decoration:none' href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['http_referer'] . "/?cat=" . $category->id .       "&page=" . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", $category->name)          . '"' . ")'>" . $category->name . "</a><br>";
+			echo "<a style='color:black; text-decoration:none' href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['parenturl'] . "/?cat=" . $category->id .       "&page=" . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", $category->name)          . '"' . ")'>" . $category->name . "</a><br>";
 
 echo "<hr>";
 
 		}
-		echo "<a style='color:black; text-decoration:none' href='https://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art='>" . 'All' . "</a><br>";
+		echo "<a style='color:black; text-decoration:none' href='http://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art='>" . 'All' . "</a><br>";
 		echo "<hr>";
 	}
 

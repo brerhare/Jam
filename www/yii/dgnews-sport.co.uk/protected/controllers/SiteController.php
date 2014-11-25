@@ -43,6 +43,18 @@ class SiteController extends Controller
 		if (!($jellyArray))
 			throw new Exception('Aborting');
 
+		// If page is there but null, we have to look up the home page
+		if ((isset($_GET['page'])) && ($_GET['page'] != ""))
+			Yii::app()->session['page'] = $_GET['page'];
+		else
+		{   
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("home = " . 1); 
+			$contentBlock = ContentBlock::model()->find($criteria);
+			if ($contentBlock)
+				Yii::app()->session['page'] = $contentBlock->url;
+		} 
+
 		$jelly = new Jelly;
 		$jelly->processData($jellyArray,$this->getJellyRoot());
 		$jelly->outputData();

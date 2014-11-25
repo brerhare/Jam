@@ -35,15 +35,20 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
+header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');
+
 		// Store the referer (hosting site) in a session cookie
-		$referer = "unknown http_referer";
-		if (isset($_SERVER['HTTP_REFERER']))
-			$referer = $_SERVER['HTTP_REFERER'];
-		$protoArr = explode(":", $referer);	// eg 'http' or 'https'
-		$referer = str_replace("https://", "", $referer);
-		$referer = str_replace("http://", "", $referer);
-        $refArr = explode("/", $referer);
-		Yii::app()->session['http_referer'] = $protoArr[0] . "://" . $refArr[0];
+		if ((!isset(Yii::app()->session['http_referer'])) || (Yii::app()->session['http_referer'] == "unknown http_referer"))
+		{
+			$referer = "unknown http_referer";
+			if (isset($_SERVER['HTTP_REFERER']))
+				$referer = $_SERVER['HTTP_REFERER'];
+			$protoArr = explode(":", $referer);	// eg 'http' or 'https'
+			$referer = str_replace("https://", "", $referer);
+			$referer = str_replace("http://", "", $referer);
+        	$refArr = explode("/", $referer);
+			Yii::app()->session['http_referer'] = $protoArr[0] . "://" . $refArr[0];
+		}
 
 		// Set the news type (blog format)
 		if (!(isset(Yii::app()->session['news_type'])))
@@ -52,11 +57,11 @@ class SiteController extends Controller
 			Yii::app()->session['news_type'] = $_GET['newstype'];
 		if (isset($_GET['parenturl']))
 			Yii::app()->session['parenturl'] = $_GET['parenturl'];
-		if (isset($_GET['page']))
+		if ((isset($_GET['page'])) && ($_GET['page'] != ""))
 			Yii::app()->session['page'] = $_GET['page'];
 
-if (isset($_GET['art']))
-	$this->actionPlay();
+		if (isset($_GET['art']))
+			$this->actionPlay();
 
 		$category = 0;
 		if (isset($_GET['cat']))
@@ -69,7 +74,7 @@ if (isset($_GET['art']))
 
 	/**
 	 * This is the 'index' action that is invoked
-	 * when a category is explicitly requested by users.
+	 * when an article is explicitly requested by users.
 	 */
 	public function actionPlay()
 	{
@@ -264,7 +269,7 @@ $decryptedContent = $content;
 					$content .= "<div style='font-size:1.2em; font-weight:bold; color:#424242'>" . $article->title . "</div>";
 					$content .= "<div style='font-size:0.9em; padding-top:5px; height:12px; color:#989898'>" . $catDesc . "&nbsp&nbsp" . $article->date . "</div>";
 				$content .= "</td><td width='25%'>";
-				$content .= "<img style='width:150px; height:auto' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/" . $article->thumbnail_path .  "' alt='No Image' >";
+				$content .= "<img style='width:150px; height:auto' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/thumb_" . $article->thumbnail_path .  "' alt='No Image' >";
 				$content .= "</td>";
 			$content .= "</tr></table>";
 		$content .= "</div>";
