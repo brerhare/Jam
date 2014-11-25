@@ -59,9 +59,7 @@ header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT
 			Yii::app()->session['parenturl'] = $_GET['parenturl'];
 
 		// If page is there but null, we have to look up the home page
-		if (isset($_GET['page']))
-		{
-			if ($_GET['page'] != "")
+		if ((isset($_GET['page'])) && ($_GET['page'] != ""))
 				Yii::app()->session['page'] = $_GET['page'];
 			else
 			{
