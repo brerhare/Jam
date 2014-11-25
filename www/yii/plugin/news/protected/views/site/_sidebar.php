@@ -28,7 +28,7 @@
 			{
 				echo "<img src='/news/img/gray-circle.png' height='5px' width='5px' style='padding:0px 4px 2px 0px;'/>";
 
-				echo "<a class='uline' href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['http_referer'] . "/?art=" . $article->id .       "&page=" . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", $article->title)          . '"' . ")'>";
+				echo "<a class='uline' href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['parenturl'] . "/?art=" . $article->id .       "&page=" . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", $article->title)          . '"' . ")'>";
 
 				echo $article->title . "<br/>";
 				echo "</a>";
@@ -81,7 +81,7 @@
 		echo "<br/>";
 		foreach ($categories as $category)
 		{
-			echo "<a style='color:black; text-decoration:none' href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['http_referer'] . "/?cat=" . $category->id .       "&page=" . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", $category->name)          . '"' . ")'>" . $category->name . "</a><br>";
+			echo "<a style='color:black; text-decoration:none' href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['parenturl'] . "/?cat=" . $category->id .       "&page=" . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", $category->name)          . '"' . ")'>" . $category->name . "</a><br>";
 
 echo "<hr>";
 
