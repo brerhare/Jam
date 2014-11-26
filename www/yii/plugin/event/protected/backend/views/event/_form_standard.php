@@ -4,24 +4,13 @@
 
 	<?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>255)); ?>
 
-	<?php //echo $form->textFieldRow($model,'program_id',array('class'=>'span5')); ?>
 	<?php
 		$criteria = new CDbCriteria;
-/***
-		if (Yii::app()->session['pid'] == 6)
-			$criteria->addCondition("id = 6"); // All except WS Wild Seasons
-		else
-			$criteria->addCondition("id != 6"); // All except WS Wild Seasons
-***/
 		$criteria->addCondition("id = "  . Yii::app()->session['pid']); // Ony see the lock_program program
-
-		//echo $form->dropDownListRow($model,'program_id', CHtml::listData(Program::model()->findAll($criteria), 'id', 'name'), array('empty'=>'Choose'));
 		echo $form->dropDownListRow($model,'program_id', CHtml::listData(Program::model()->findAll($criteria), 'id', 'name'));
-
 	?>
 
 <!------------------------------------------ @@EG: dropdown date starts ------------------------------------------->
-
 	<script type="text/javascript" src="/js/dropdownDate.js"></script>
 	<style>
 		span#startDate select {width:70px; margin-right:5px}
@@ -45,23 +34,16 @@
 		dropdownDate('startDate', 'Event_start', 'dd-mm-yyyy 00:00');
 		dropdownDate('endDate', 'Event_end', 'dd-mm-yyyy 00:00');
 	</script>
-
 <!-------------------------------------------- dropdown date ends ------------------------------------------------>
 
-
 	<?php echo $form->textAreaRow($model,'address',array('rows'=>6, 'cols'=>50, 'class'=>'span5')); ?>
-
 	<?php echo $form->textFieldRow($model,'post_code',array('class'=>'span2','maxlength'=>255)); ?>
-
 	<?php echo $form->textFieldRow($model,'web',array('class'=>'span5','maxlength'=>255)); ?>
-
 	<?php
 		$criteria = new CDbCriteria;
 		echo $form->dropDownListRow($model,'event_price_band_id', CHtml::listData(PriceBand::model()->findAll($criteria), 'id', 'name'), array('empty'=>'Choose'));
 	?>
-
 	<?php echo $form->textAreaRow($model,'contact',array('rows'=>6, 'cols'=>50, 'class'=>'span5')); ?>
-
 	<div class="row">
 		<div class="span2"></div>
 	    <div class="xspan2 well" style="margin-left:-20px">
@@ -116,9 +98,7 @@
 	        <?php endforeach; ?>
 	    </div>
 	</div>
-
 	<?php echo $form->fileFieldRow($model, 'thumb_path'); ?>
-
 	<?php
 		if (($model->isNewRecord) || ($model->ticket_event_id == 0))
 		{
@@ -141,8 +121,6 @@
 					echo $form->textField($model,'ticket_event_id');
 				echo "</div>";
 			echo "</div>";
-			//echo $form->error($model,'Ticket event id'); 
-			//echo $form->textFieldRow($model,'ticket_event_id',array('class'=>'span1'));
 		}
 	?>
 
@@ -151,13 +129,6 @@
 	echo $form->toggleButtonRow($model, 'active' );
 	///// @@NB: the 'options' buggers Yii although docs say its right: .. echo $form->toggleButtonRow($model, 'active' , array('options'=>array('enabledLabel'=>'Yes' , 'disabledLabel'=>'Yes')));
 ?>
-
-
-
-	<?php //echo $form->textAreaRow($model,'description',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
-<!--	<div class="control-group "><label class="control-label" for="Event_start">Description <span class="required">*</span></label> -->
-
-
 
 <!-- CKEditor starts -->
 
@@ -185,41 +156,35 @@
 
 <!-- CKEditor ends -->
 
-
-	</div>
 	<br>&nbsp
-
 	<?php //echo $form->textFieldRow($model,'approved',array('class'=>'span5')); ?>
 	<?php //echo $form->textFieldRow($model,'member_id',array('class'=>'span5')); ?>
-
 	<div class="form-actions">
+		<?php
+		if (Yii::app()->session['pid'] == 6)	// WS Wild Seasons
+		{
+			$this->widget('bootstrap.widgets.TbButton', array(
+				'buttonType'=>'submit',
+				'type'=>'primary',
+            	'htmlOptions' => array(
+                	'class' => $model->isNewRecord ? 'disabled' : '',
+                	'disabled'=>$model->isNewRecord ? 'true' : '',
+                	//'id'=> 'nextButton',
+                	//'name' => 'nextButton',
+                	//'onclick'=>'js:return nextButtonClick()',
+            	),
 
-	<?php
-	if (Yii::app()->session['pid'] == 6)	// WS Wild Seasons
-	{
-		$this->widget('bootstrap.widgets.TbButton', array(
-			'buttonType'=>'submit',
-			'type'=>'primary',
-            'htmlOptions' => array(
-                'class' => $model->isNewRecord ? 'disabled' : '',
-                'disabled'=>$model->isNewRecord ? 'true' : '',
-                //'id'=> 'nextButton',
-                //'name' => 'nextButton',
-                //'onclick'=>'js:return nextButtonClick()',
-            ),
-
-			//'label'=>$model->isNewRecord ? 'Create' : 'Save',
-			'label'=>$model->isNewRecord ? 'Save on next tab' : 'Save',
-		));
-	}
-	else
-	{
-		$this->widget('bootstrap.widgets.TbButton', array(
-			'buttonType'=>'submit',
-			'type'=>'primary',
-			'label'=>$model->isNewRecord ? 'Create' : 'Save',
-		));
-	}
-	?>
-
+				//'label'=>$model->isNewRecord ? 'Create' : 'Save',
+				'label'=>$model->isNewRecord ? 'Save on next tab' : 'Save',
+			));
+		}
+		else
+		{
+			$this->widget('bootstrap.widgets.TbButton', array(
+				'buttonType'=>'submit',
+				'type'=>'primary',
+				'label'=>$model->isNewRecord ? 'Create' : 'Save',
+			));
+		}
+		?>
 	</div>
