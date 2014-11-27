@@ -92,9 +92,9 @@ header($this->p3p);
 		}
 
 		// Or is the parent sending us to the product page?
-		else if ((isset($_GET['page'])) && (isset($_GET['product'])))
+		else if ((isset($_GET['page'])) && (isset($_GET['product']))) 
 		{
-			if (Yii::app()->session['productdetail'] == "0")
+			if ( (Yii::app()->session['productdetail'] == "0") || (isset($_GET['cartproduct'])) )
 			{
 				$parseConfig = new ParseConfig();
 				$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . "product" . '.jel');
