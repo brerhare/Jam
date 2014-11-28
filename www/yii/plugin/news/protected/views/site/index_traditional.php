@@ -34,7 +34,7 @@ opacity:0.9;
 	text-align:left;
 	display:inline-block;
 	text-decoration:none;
-	margin: 0px;
+	margin-top: 7px;
 	padding: 0px 5px 5px 5px;
 }
 
@@ -168,7 +168,7 @@ if ($showArt == '')
 					echo "<span class='item' style='text-align:center;' >";
 
 						// @@EG: vertically align img in div
-						echo "<div style='height:140px; width:154px; text-align: center; margin: 1em 0;'>";
+						echo "<div style='height:140px; width:154px; text-align: center; margin:1em 0; margin-bottom:0px'>";
 							echo "<span style='display: inline-block; height: 100%; vertical-align: middle;'></span>";
 							echo "<img style='max-width:154px; max-height:140px; vertical-align:bottom; overflow:hidden;' src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/thumb_" . $article->thumbnail_path .  "' alt='No Image'>";
 						echo "</div>";
