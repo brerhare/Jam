@@ -279,10 +279,10 @@ $this->redirect($tmp2);
 		// Retrieve the original order, now populated by paymentsense
         $orders = Order::model()->findAll($criteria);
 
+		$orderNum = "";
         $orderCount = 0;
         foreach ($orders as $order)
         {
-
 			// Check for duplicate Auth Code!!!!!
 			if ($orderCount == 0)
 			{
@@ -294,6 +294,9 @@ $this->redirect($tmp2);
 				}
 				file_put_contents($file, $order->auth_code . "\n", FILE_APPEND);
 			}
+
+			// Store this. Free and manual tickets dont come into this loop
+			$orderNum = $order->order_number;
 
         	// Write a transaction
 			$transaction=new Transaction;
@@ -371,18 +374,23 @@ $this->redirect($tmp2);
 
 		Yii::log("PAID PAGE FINISHED WITH ORDER LOOP. ORDERITEMS:" . $orderCount, CLogger::LEVEL_WARNING, 'system.test.kim');
 
-		// Pick up the Auth record (either created by Paymentsense or by 'free' above) for ticket name and card number printing
-		$criteria = new CDbCriteria;
-        $criteria->addCondition("uid = " . Yii::app()->session['uid']);
-        $criteria->addCondition("order_number = '" . $order->order_number . "'");
-        $auth = Auth::model()->find($criteria);
-		if (!($auth))
+		if ((!$this->isFreeEvent) && (!$this->isBackend))
 		{
-			Yii::log("PAID PAGE *** COULD NOT RETRIEVE AUTH RECORD ***" , CLogger::LEVEL_WARNING, 'system.test.kim');
+			// Pick up the Auth record (either created by Paymentsense or by 'free' above) for ticket name and card number printing
+			$criteria = new CDbCriteria;
+        	$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+        	$criteria->addCondition("order_number = '" . $orderNum . "'");
+        	$auth = Auth::model()->find($criteria);
+			if (!$auth)
+			{
+				Yii::log("PAID PAGE *** COULD NOT RETRIEVE AUTH RECORD ***" , CLogger::LEVEL_WARNING, 'system.test.kim');
+			}
+			$crdNum = '************ ' . substr($auth->card_number, 12, 4);
 		}
-		$crdNum = '************ ' . substr($auth->card_number, 12, 4);
-		if (($this->isFreeEvent) || ($this->isBackend))
+		else
+		{
 			$crdNum = 'No card details';
+		}
   
 		Yii::log("PAID PAGE ABOUT TO GENERATE TICKETS" , CLogger::LEVEL_WARNING, 'system.test.kim');
 

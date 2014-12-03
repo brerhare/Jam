@@ -66,7 +66,7 @@ $(document).ready(function() {
 <?php
 	// Set global flags
 	$isFreeEvent = 1;
-	(isset($_GET['ref']) && ($_GET['ref'] == 'bktji5308')) ? $isBackend = 1 : $isBackend = 0;
+	$isBackend = Yii::app()->session['isBackend'];	// This is set in _book_form.php
 
 	$fst = 1;
 	$lc = 0;

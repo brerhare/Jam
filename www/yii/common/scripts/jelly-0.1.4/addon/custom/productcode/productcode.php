@@ -450,6 +450,7 @@ $content .= "<style> * { color: grey;} </style>";
 				$content .= "</tr></thead>";
 				$content .= "<tbody><tr><td valign='top'>";
 				$content .= "Please enter your delivery address<br />";
+				$content .= "Your billing address will be used if left blank<br />";
 				$content .= "<input id='address1' name='address1' type='text' value='' size='40'/> <br />";
 				$content .= "<input id='address2' name='address2' type='text' value='' size='40'/> <br />";		
 				$content .= "<input id='address3' name='address3' type='text' value='' size='40'/> <br />";
@@ -501,6 +502,7 @@ $content .= "<style> * { color: grey;} </style>";
 
 					function proceed(ptype) /* 0=payment gateway, 1=paypal */
 					{
+/*****
 						if (document.getElementById("address1").value == "")
 						{
 							alert('Address cant be empty');
@@ -511,6 +513,7 @@ $content .= "<style> * { color: grey;} </style>";
 							alert('Post code cant be empty');
 							return(false);
 						}
+*****/
 						if (document.getElementById("email1").value == "")
 						{
 							alert('Email address cant be empty');
