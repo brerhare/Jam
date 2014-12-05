@@ -78,6 +78,10 @@ if ( ($showArt == '') && (!isset($_GET['archive'])) )
 	{
 		foreach ($articles as $article)
 		{
+			// Ignore future dates
+			if (date("Y-m-d", strtotime($article->date)) > date("Y-m-d"))
+				continue;
+
 			echo "<a style='color:black; text-decoration:none' href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['parenturl'] . "/?art=" . $article->id . '&page=' . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", urlencode($article->title))    . '"' . ")'>";
 
 //print_r(Yii::app()->session['parenturl']);
@@ -142,6 +146,10 @@ if ($showArt == '')
 		foreach ($articles as $article)
 		{
 			if ($article->id == $mainArticleId)
+				continue;
+
+			// Ignore future dates
+			if (date("Y-m-d", strtotime($article->date)) > date("Y-m-d"))
 				continue;
 
 			if (++$displayCount > $maxDisplay)

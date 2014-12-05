@@ -102,6 +102,10 @@ if ($showArt == '')
 			if ($article->id == $mainArticleId)
 				continue;
 
+			// Ignore future dates
+			if (date("Y-m-d", strtotime($article->date)) > date("Y-m-d"))
+				continue;
+
 			if (++$displayCount > $maxDisplay)
 			{
 				$nextPageItem = $article->id;
