@@ -1349,14 +1349,31 @@ if (strstr($blobName, "googlemap"))
 				// Eg: {{news traditional}} {{news pinterest}}
 				// -----------------
 				$moreCurlyWurlys = 1;
-				$value = $vals[1];
 
+				$newsType = 'traditional';
+				$sidebar = 'left';
 				$color = '';
 				$backColor = '';
-				if (count($vals) > 2)
-					$color = $vals[2];
-				if (count($vals) > 3)
-					$backColor = $vals[3];
+				if (stristr($vals[1], "="))	// nvp-style args
+				{
+					foreach ($vals as $nvps)
+					{
+						if (!stristr($nvps, "=")) continue;	// first arg obviously wont have
+						$nvp = explode("=", $nvps);
+						if (trim($nvp[0]) == "newstype") $newsType = trim($nvp[1]);
+						if (trim($nvp[0]) == "sidebar") $sidebar = trim($nvp[1]);
+						if ((trim($nvp[0]) == "colour") || (trim($nvp[0]) == "color")) $color = trim($nvp[1]);
+						if ((trim($nvp[0]) == "backcolour") || (trim($nvp[0]) == "backcolor")) $backColor = trim($nvp[1]);
+					}
+				}
+				else						// old-style args
+				{
+					$newsType = $vals[1];
+					if (count($vals) > 2)
+						$color = $vals[2];
+					if (count($vals) > 3)
+						$backColor = $vals[3];
+				}
 
                 $deeplink = "";
 				if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
@@ -1371,7 +1388,7 @@ if (strstr($blobName, "googlemap"))
 				$page = "";
 				if (isset(Yii::app()->session['page']))
 					$page = Yii::app()->session['page'];
-                $iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="http://plugin.wireflydesign.com/news/?sid=' . Yii::app()->params['sid'] . '&parenturl=' . Yii::app()->getBaseUrl(true)  . '&page=' . $page . '&newstype=' . $value . '&category=0' . '&color=' . $color . '&backcolor=' . $backColor . $deeplink . '"></iframe>';
+                $iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="http://plugin.wireflydesign.com/news/?sid=' . Yii::app()->params['sid'] . '&parenturl=' . Yii::app()->getBaseUrl(true)  . '&page=' . $page . '&sidebar=' . $sidebar . '&newstype=' . $newsType . '&category=0' . '&color=' . $color . '&backcolor=' . $backColor . $deeplink . '"></iframe>';
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 
