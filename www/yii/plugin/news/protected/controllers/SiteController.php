@@ -55,6 +55,8 @@ header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT
 			Yii::app()->session['news_type'] = 'traditional';
 		if (isset($_GET['newstype']))
 			Yii::app()->session['news_type'] = $_GET['newstype'];
+		if (isset($_GET['sidebar']))
+			Yii::app()->session['sidebar'] = $_GET['sidebar'];
 		if (isset($_GET['parenturl']))
 			Yii::app()->session['parenturl'] = $_GET['parenturl'];
 		if ((isset($_GET['page'])) && ($_GET['page'] != ""))

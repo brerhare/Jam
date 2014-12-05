@@ -57,9 +57,21 @@ opacity:0.85;
 
 <div style="padding-top:10px; width:100%" ng-app>
 
-<span style="vertical-align:top; padding:0px 10px 10px; margin:0px 10px; display:inline-block; width:20%; ">
-<?php require('_sidebar.php'); ?>
-</span>
+<?php
+// The sidebar is initially invisible
+require('_sidebar.php');
+if (!isset(Yii::app()->session['sidebar']))
+    Yii::app()->session['sidebar'] = "left";
+?>
+
+<?php
+if (Yii::app()->session['sidebar'] == 'left')
+{
+	echo "<span id='sideleft' style='vertical-align:top; padding:0px 10px 10px; margin:0px 10px; display:inline-block; width:20%; '>";
+	echo "</span>";
+	echo "<script> document.getElementById('sideleft').innerHTML = document.getElementById('sidebar').innerHTML; </script>";
+}
+?>
 
 <span class="mainitem" style="display:inline-block; width:70%">
 
@@ -164,8 +176,17 @@ if ($showArt != '')
 }
 ?>
 </span>
-</div>
 
+<?php
+if (Yii::app()->session['sidebar'] == 'right')
+{
+	echo "<span id='sideright' style='vertical-align:top; padding:0px 10px 10px; margin:0px 10px; display:inline-block; width:20%; '>";
+	echo "</span>";
+	echo "<script> document.getElementById('sideright').innerHTML = document.getElementById('sidebar').innerHTML; </script>";
+}
+?>
+
+</div>
 
 </div> <!-- test container -->
 

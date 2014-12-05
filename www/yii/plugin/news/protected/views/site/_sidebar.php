@@ -12,6 +12,8 @@
 			 }
 		</style>";
 
+echo "<div id='sidebar' style='display:none'>";
+
 	echo "<div style='max-height:130px; padding-bottom:0px; overflow:hidden;  font-size:12px'>";
 
 	echo "<div style='font-size:16px; padding-bottom:5px;'>";
@@ -89,6 +91,7 @@ echo "<hr>";
 		echo "<a style='color:black; text-decoration:none' href='http://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art='>" . 'All' . "</a><br>";
 		echo "<hr>";
 	}
+echo "</div>";
 
 ?>
 
