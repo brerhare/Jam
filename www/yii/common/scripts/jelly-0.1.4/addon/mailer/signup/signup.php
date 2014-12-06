@@ -19,7 +19,7 @@ class signup
 	private $optionInputWidth = "145";
 	private $optionSuccessTextColor = "green";
 	private $optionFailureTextColor = "red";
-	private $optionTextColor = 'black';
+	private $optionTextColor = 'black';	// NOT USED
 	private $optionBackColor = '';
 
 	public $apiOption = array(
@@ -94,6 +94,7 @@ class signup
 			$background = "";
 			if ($this->optionBackColor != '')
 				$background = " background-color:" . $this->optionBackColor . "; ";
+			$color = " color:" . $this->optionTextColor . "; ";
 			$content .= "<div style='" . $background . "' ng-controller='signupController'>";
 				$content .= "<input id='signup-name' class='signup-input' type='text' style='width:" . $this->optionInputWidth . "px' title='Name' />";
 				$content .= $separator;
@@ -111,8 +112,6 @@ class signup
 		// HTML
 		$this->apiHtml = str_replace("<substitute-successtextcolor>", $this->optionSuccessTextColor, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-failuretextcolor>", $this->optionFailureTextColor, $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-textcolor>", $this->optionTextColor, $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-backcolor>", $this->optionBackColor, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-data>", $content, $this->apiHtml);
 
 		// JS

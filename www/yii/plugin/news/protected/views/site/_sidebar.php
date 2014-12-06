@@ -55,7 +55,7 @@ echo "<div id='sidebar' style='display:none'>";
 	require(Yii::app()->basePath . "/../scripts/jelly/addon/mailer/signup/signup.php");
 	$addon = new signup;
 	$optArr = array();
-	$optArr['textcolor'] = $color;
+	$optArr['textcolor'] = $color;	// not used in the addon - see usage 10 lines down...
 	$optArr['backcolor'] = $backColor;
 	$optArr['buttoncolor'] = 'white';
 	$optArr['buttontextcolor'] = '#a70055';
@@ -66,7 +66,7 @@ echo "<div id='sidebar' style='display:none'>";
 	$optArr['failuretextcolor'] = 'red';
 	$ret = $addon->init($optArr, '/news/scripts/jelly/addon/mailer/signup');
 
-	echo "<div style='font-size:13px; padding:5px; background-color:" . $backColor  . "'>";
+	echo "<div style='font-size:13px; padding:5px; color:" . $color . "; background-color:" . $backColor  . "'>";
 		echo "Keep me informed<br/>";
 		echo $ret[0];
 	echo "</div>";
