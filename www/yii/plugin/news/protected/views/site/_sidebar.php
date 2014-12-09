@@ -24,7 +24,7 @@ echo "<div id='sidebar' style='display:none'>";
 			 }
 		</style>";
 
-	echo "<div style='margin-top: " . $pushRecentDown . "; max-height:130px; padding-bottom:0px; overflow:hidden;  font-size:12px'>";
+	echo "<div style='margin-top: " . $pushRecentDown . "; /*max-*/ height:130px; padding-bottom:0px; overflow:hidden;  font-size:12px'>";
 
 	echo "<div style='font-size:16px; padding-bottom:5px;'>";
 		echo "<a class='uline' href='http://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art='>" . 'Recent' . "</a><br>";
