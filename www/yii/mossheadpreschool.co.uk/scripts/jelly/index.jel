@@ -121,8 +121,8 @@ css.margin-left = 40px
 ###########################################################
 
 [content-block]
-child = slider, slider-hand, content, contact
-css.width = 680px
+child = slider, slider-hand, content, contact, blog
+css.width = 710px
 css.margin-left = 50px
 css.margin-top=6px
 
@@ -193,6 +193,12 @@ css.margin-top=6px
 		css.margin-top = 80px
 		css.font = 12px
 		html.raw = Please fill in the form and someone will get back to you as soon as possible.
+		
+	[blog]
+	condition = @PAGE=mosshead-preschool-news-articles
+	#html.raw = {{news newstype=pinterest sidebar=right color=blue backcolor=#49eb13}}
+	html.raw = {{news newstype=pinterest sidebar=right pushrecentdown=0 pushcategoriesdown=0}}
+	
 
 
 [footer]
