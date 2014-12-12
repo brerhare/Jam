@@ -34,7 +34,7 @@ opacity:0.9;
 	text-align:left;
 	display:inline-block;
 	text-decoration:none;
-	margin: 0px;
+	margin-top: 7px;
 	padding: 0px 5px 5px 5px;
 }
 
@@ -55,11 +55,24 @@ opacity:0.85;
 
 <div style="padding-top:10px; width:100%" ng-app>
 
-<span style="vertical-align:top; padding:0px 10px 10px; margin:0px 10px; display:inline-block; width:20%; ">
-<?php require('_sidebar.php'); ?>
-</span>
+<?php
+// The sidebar is initially invisible
+require('_sidebar.php');
+if (!isset(Yii::app()->session['sidebar']))
+    Yii::app()->session['sidebar'] = "left";
+?>
+
+<?php
+if (Yii::app()->session['sidebar'] == 'left')
+{
+	echo "<span id='sideleft' style='vertical-align:top; padding:0px 10px 10px; margin:0px 10px; display:inline-block; width:20%; '>";
+	echo "</span>";
+	echo "<script> document.getElementById('sideleft').innerHTML = document.getElementById('sidebar').innerHTML; </script>";
+}
+?>
 
 <span class="mainitem" style="display:inline-block; width:70%">
+
 <?php
 $nextPageDate = "";
 $nextPageItem = "";
@@ -78,6 +91,10 @@ if ( ($showArt == '') && (!isset($_GET['archive'])) )
 	{
 		foreach ($articles as $article)
 		{
+			// Ignore future dates
+			if (date("Y-m-d", strtotime($article->date)) > date("Y-m-d"))
+				continue;
+
 			echo "<a style='color:black; text-decoration:none' href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['parenturl'] . "/?art=" . $article->id . '&page=' . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", urlencode($article->title))    . '"' . ")'>";
 
 //print_r(Yii::app()->session['parenturl']);
@@ -144,9 +161,13 @@ if ($showArt == '')
 			if ($article->id == $mainArticleId)
 				continue;
 
+			// Ignore future dates
+			if (date("Y-m-d", strtotime($article->date)) > date("Y-m-d"))
+				continue;
+
 			if (++$displayCount > $maxDisplay)
 			{
-				$nextPageItem = $article->id;
+				$nextPageItem = strval($article->id);
 				$nextPageDate = $article->date;
 				break;
 			}
@@ -168,7 +189,7 @@ if ($showArt == '')
 					echo "<span class='item' style='text-align:center;' >";
 
 						// @@EG: vertically align img in div
-						echo "<div style='height:140px; width:154px; text-align: center; margin: 1em 0;'>";
+						echo "<div style='height:140px; width:154px; text-align: center; margin:1em 0; margin-bottom:0px'>";
 							echo "<span style='display: inline-block; height: 100%; vertical-align: middle;'></span>";
 							echo "<img style='max-width:154px; max-height:140px; vertical-align:bottom; overflow:hidden;' src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/thumb_" . $article->thumbnail_path .  "' alt='No Image'>";
 						echo "</div>";
@@ -200,7 +221,7 @@ if ($showArt == '')
 
 		// Show 'older' button if any more
 		if ((!isset($_GET['archive'])) && ($nextPageItem != ""))
-			echo "<center><a href='http://plugin.wireflydesign.com/news/index.php/site/play/?cat=" . $showCat . "&art=" . $showArt . "&archive=" . $nextPageItem . "|" . $nextPageDate . "' class='oldernewsbutton'>Older news</a><center>";
+			echo "<center><a href='http://plugin.wireflydesign.com/news/index.php/site/play/?cat=" . $showCat . "&art=" . $showArt . "&archive=" . $nextPageItem . "|" . $nextPageDate . "' class='oldernewsbutton'>Older news</a></center>";
 	}
 }
 if ($showArt != '')
@@ -209,6 +230,16 @@ if ($showArt != '')
 }
 ?>
 </span>
+
+<?php
+if (Yii::app()->session['sidebar'] == 'right')
+{
+	echo "<span id='sideright' style='vertical-align:top; padding:0px 10px 10px; margin:0px 10px; display:inline-block; width:20%; '>";
+	echo "</span>";
+	echo "<script> document.getElementById('sideright').innerHTML = document.getElementById('sidebar').innerHTML; </script>";
+}
+?>
+
 </div>
 
 

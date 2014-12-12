@@ -1,5 +1,17 @@
 <?php
 
+	// User supplied pushdown for the sidebar
+	$pushRecentDown = "0px";
+	$pushCategoriesDown = "0px";
+	if ((isset($_GET['pushrecentdown'])) && (trim($_GET['pushrecentdown'] != '')))
+		$pushRecentDown = $_GET['pushrecentdown'];
+	if ((isset($_GET['pushcategoriesdown'])) && (trim($_GET['pushcategoriesdown'] != '')))
+		$pushCategoriesDown = $_GET['pushcategoriesdown'];
+	$pushRecentDown = str_replace("px", "", $pushRecentDown) . "px";
+	$pushCategoriesDown = str_replace("px", "", $pushCategoriesDown) . "px";
+
+echo "<div id='sidebar' style='display:none'>";
+
 	// Show the 3 most recent articles
 	// -------------------------------
 	echo "<style>
@@ -12,7 +24,7 @@
 			 }
 		</style>";
 
-	echo "<div style='max-height:130px; padding-bottom:0px; overflow:hidden;  font-size:12px'>";
+	echo "<div style='margin-top: " . $pushRecentDown . "; /*max-*/ height:130px; padding-bottom:0px; overflow:hidden;  font-size:12px'>";
 
 	echo "<div style='font-size:16px; padding-bottom:5px;'>";
 		echo "<a class='uline' href='http://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art='>" . 'Recent' . "</a><br>";
@@ -44,16 +56,12 @@
 	$color = '#000000';
 	$backColor = '#137feb';
 
-	if ((isset($_GET['color'])) && (trim($_GET['color'] != '')))
-		$color = $_GET['color'];
-	if ((isset($_GET['backcolor'])) && (trim($_GET['backcolor'] != '')))
-		$backColor = $_GET['backcolor'];
-
+/**********
 	// Show the signup form (@@EG calling an addon directly, not via the jelly)
 	require(Yii::app()->basePath . "/../scripts/jelly/addon/mailer/signup/signup.php");
 	$addon = new signup;
 	$optArr = array();
-	$optArr['textcolor'] = $color;
+	$optArr['textcolor'] = $color;	// not used in the addon - see usage 10 lines down...
 	$optArr['backcolor'] = $backColor;
 	$optArr['buttoncolor'] = 'white';
 	$optArr['buttontextcolor'] = '#a70055';
@@ -63,15 +71,15 @@
 	$optArr['successtextcolor'] = 'white';
 	$optArr['failuretextcolor'] = 'red';
 	$ret = $addon->init($optArr, '/news/scripts/jelly/addon/mailer/signup');
-
-	echo "<div style='font-size:13px; padding:5px; background-color:" . $backColor  . "'>";
+	echo "<div style='font-size:13px; padding:5px; color:" . $color . "; background-color:" . $backColor  . "'>";
 		echo "Keep me informed<br/>";
 		echo $ret[0];
 	echo "</div>";
-
 	echo "<script>" . $ret[1] . "</script>";
+**********/
 
 	// Show the category list
+	echo "<div style='margin-top:" . $pushCategoriesDown . ";'>";
 	$criteria = new CDbCriteria;
 	$criteria->addCondition("uid=" . Yii::app()->session['uid']);
 	$criteria->order = "name ASC";
@@ -89,6 +97,9 @@ echo "<hr>";
 		echo "<a style='color:black; text-decoration:none' href='http://plugin.wireflydesign.com/news/index.php/site/play/?cat=0&art='>" . 'All' . "</a><br>";
 		echo "<hr>";
 	}
+	echo "</div>";
+
+echo "</div>";	// sidebar
 
 ?>
 

@@ -206,7 +206,7 @@ fx.rounding = 8px
 
 		[footer-menu]
 		child = footer-contact, footer-cookies, footer-tandc
-		css.height = 50px
+		css.height = 60px
 		css.margin = 20px
 		css.width = 25%
 
@@ -215,7 +215,7 @@ fx.rounding = 8px
 			css.color = #000000
 			css.font-size = 12px
 			css.font-weight = bold
-			css.margin-top = 3px
+			css.margin-top = 8px
 			click = ?layout=index&page=cookie-policy
 
 			[footer-tandc]
@@ -223,7 +223,7 @@ fx.rounding = 8px
 			css.color = #000000
 			css.font-size = 12px
 			css.font-weight = bold
-			css.margin-top = 3px
+			css.margin-top = 8px
 			click = ?layout=index&page=terms-conditions
 
 			[footer-contact]
@@ -231,7 +231,7 @@ fx.rounding = 8px
 			css.color = #000000
 			css.font-size = 12px
 			css.font-weight = bold
-			css.margin-top = 3px
+			css.margin-top = 2px
 			click = ?layout=index&page=contact
 
 	[white-hand]
