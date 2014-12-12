@@ -591,9 +591,9 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 
 		// Is this entire blob clickable?
 		if (array_key_exists("click", $array))
-			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['click'])) . ">\n", $indentLevel);
+			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['click'])) . "&click=true>\n", $indentLevel);
 		if (array_key_exists("clicknew", $array))
-			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['clicknew'])) . " target='_blank'>\n", $indentLevel);
+			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['clicknew'])) . "&click=true target='_blank'>\n", $indentLevel);
 
 		$this->genInlineHtml("<div id='" . $blobName . "'>\n", $indentLevel);
 		$this->genDivCSS("div#" . $blobName ." {\n");
@@ -1340,7 +1340,10 @@ if (strstr($blobName, "googlemap"))
 				||  ((trim(Yii::app()->params['checkoutGatewayUser']) == "") && (trim(Yii::app()->params['checkoutPaypalUser']) == ""))
 				)
 					die("Checkout needs gateway access to be set up in the configuration file");
-				$iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=checkout&sid=' . Yii::app()->params['sid'] . '&ge=' . Yii::app()->params['checkoutEmail'] . '&gn=' . Yii::app()->params['checkoutName'] . '&gu=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayUser'])) . '&gp=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayPassword'])) . '"></iframe>';
+				$click = '';
+                if ((isset($_GET['click'])) && (trim($_GET['click']) != ""))
+                    $click .= "&click=" . $_GET['click'];
+				$iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=checkout&sid=' . Yii::app()->params['sid'] . '&ge=' . Yii::app()->params['checkoutEmail'] . '&gn=' . Yii::app()->params['checkoutName'] . '&gu=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayUser'])) . '&gp=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayPassword'])) . $click . '"></iframe>';
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 
