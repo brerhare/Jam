@@ -39,6 +39,10 @@ class SiteController extends Controller
 	{
 header($this->p3p);
 
+$clk='off';
+if (isset($_GET['click'])) $clk='true';
+Yii::log("In at top.................. click=".$clk , CLogger::LEVEL_WARNING, 'system.test.kim');
+
 		// If unset, initialise the product page cookie (only way to tell if we're back-paging from it or going to it)
 		if (!isset(Yii::app()->session['productdetail']))
 			Yii::app()->session['productdetail'] = "0";
@@ -80,6 +84,7 @@ header($this->p3p);
 		{
 			if (Yii::app()->session['productdetail'] == "0")
 			{
+Yii::log("redirecting parent to product page.................. " , CLogger::LEVEL_WARNING, 'system.test.kim');
 				$target = Yii::app()->session['http_referer'] . "/?page=" . Yii::app()->session['page'] . "&product=" . Yii::app()->session['product'];
 				echo
 					"<html><script>
@@ -96,6 +101,7 @@ header($this->p3p);
 		{
 			if ( (Yii::app()->session['productdetail'] == "0") || (isset($_GET['cartproduct'])) )
 			{
+Yii::log("parent is sending us to product page.................. " , CLogger::LEVEL_WARNING, 'system.test.kim');
 				$parseConfig = new ParseConfig();
 				$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . "product" . '.jel');
 				if (!($jellyArray))
@@ -109,7 +115,9 @@ header($this->p3p);
 
 		// We've just back-paged from the product page
 		if (Yii::app()->session['productdetail'] == "1")
+if (!isset($_GET['click']))
 		{
+Yii::log("we've just back-paged from product page. redirecting parent.................. " , CLogger::LEVEL_WARNING, 'system.test.kim');
 			Yii::app()->session['productdetail'] = "0";
 			$target = Yii::app()->session['http_referer'] . "/?page=" . Yii::app()->session['page'] . "&department=" . Yii::app()->session['department'];
                echo
@@ -120,6 +128,13 @@ header($this->p3p);
                     </script></html>";
 			return;
 		}
+
+
+$pageParam = '';
+if (isset($_GET['page']))
+ $pageParam = $_GET['page'];
+Yii::log("Still here.................. page is " . $pageParam , CLogger::LEVEL_WARNING, 'system.test.kim');
+	
 
 		// Otherwise by default the initial call goes to here
 		$layout = "index";

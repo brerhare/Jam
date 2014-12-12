@@ -15,7 +15,7 @@ class ParseConfig
 		if (strstr($filepath, "product.jel"))
 		{
 			Yii::app()->session['productdetail'] = "1";
-			Yii::log("***** PRODUCT - loading product page" , CLogger::LEVEL_WARNING, 'system.test.kim');
+			Yii::log("***** JellyParse: PRODUCT - loading product page" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
 
 	    $ini = $this->preprocess_file( $filepath );
