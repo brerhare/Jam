@@ -31,8 +31,8 @@
 	</div>
 
 	<script>
-		dropdownDate('startDate', 'Event_start', 'dd-mm-yyyy 00:00');
-		dropdownDate('endDate', 'Event_end', 'dd-mm-yyyy 00:00');
+		dropdownDate('startDate', 'Event_start', 'dd-mm-yyyy hr:mn');
+		dropdownDate('endDate', 'Event_end', 'dd-mm-yyyy hr:mn');
 	</script>
 <!-------------------------------------------- dropdown date ends ------------------------------------------------>
 
