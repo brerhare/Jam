@@ -74,7 +74,7 @@ function dropdownDate(containerDivId, targetElementId, templateStr)
 	}
 
 	// Setup day
-	selectHTML = "<select style='width:50px' onChange='dropdownDateSet(\"dd\", this.value, \"" + targetElementId + "\", \"" + templateStr + "\")'>";
+	selectHTML = "<select style='width:60px' onChange='dropdownDateSet(\"dd\", this.value, \"" + targetElementId + "\", \"" + templateStr + "\")'>";
 	for (var i=0; i<31; i++)
 	{
 		selected = "";
@@ -110,7 +110,7 @@ function dropdownDate(containerDivId, targetElementId, templateStr)
 	// Setup hour
 	if (hrPos != -1)
 	{
-		selectHTML += "&nbsp at &nbsp<select style='width:50px' onChange='dropdownDateSet(\"hr\", this.value, \"" + targetElementId + "\", \"" + templateStr + "\")'>";
+		selectHTML += "&nbsp at &nbsp<select style='width:60px' onChange='dropdownDateSet(\"hr\", this.value, \"" + targetElementId + "\", \"" + templateStr + "\")'>";
 		for (var i=0; i<24; i++)
 		{
 			selected = "";
@@ -124,7 +124,7 @@ function dropdownDate(containerDivId, targetElementId, templateStr)
 	// Setup minutes
 	if (mnPos != -1)
 	{
-		selectHTML += "&nbsp : &nbsp<select style='width:50px' onChange='dropdownDateSet(\"mn\", this.value, \"" + targetElementId + "\", \"" + templateStr + "\")'>";
+		selectHTML += ":&nbsp<select style='width:60px' onChange='dropdownDateSet(\"mn\", this.value, \"" + targetElementId + "\", \"" + templateStr + "\")'>";
 		mnVal = 0;
 		for (var i=0; i<4; i++)
 		{
