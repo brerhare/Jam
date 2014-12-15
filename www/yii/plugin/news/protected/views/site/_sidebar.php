@@ -38,6 +38,10 @@ echo "<div id='sidebar' style='display:none'>";
 		{
 			foreach ($articles as $article)
 			{
+				// Ignore future dates
+				if (date("Y-m-d", strtotime($article->date)) > date("Y-m-d"))
+					continue;
+
 				echo "<img src='/news/img/gray-circle.png' height='5px' width='5px' style='padding:0px 4px 2px 0px;'/>";
 
 				echo "<a class='uline' href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['parenturl'] . "/?art=" . $article->id .       "&page=" . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", $article->title)          . '"' . ")'>";
