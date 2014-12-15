@@ -72,11 +72,15 @@ class google_os
 					$onReady .= '$(document).ready(function (){';
 					if ($inputMode == "os")
 						$onReady .= " centerByOs('" . $val . "');";
+
+/* Commented because leaflet also uses this and its hardcoded to google maps */
 					else if ($inputMode == "latlong")
 					{
 						$ll = explode(',', $val);
-						$onReady .= " centerByLatLong('" . $ll[0] . "','" . $ll[1] . "');";
+						//$onReady .= " centerByLatLong('" . $ll[0] . "','" . $ll[1] . "');";
+						$onReady .= " markerByLatLong('" . $ll[0] . "','" . $ll[1] . "');";
 					}
+/**/
 					else if ($inputMode == "postcode")
 					{
 						$vc = "NX832613";
@@ -171,6 +175,10 @@ class google_os
 
 		<script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=false"></script>
 		<script type="text/javascript" src="<substitute-path>/latlong-gridref.js"></script>
+
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
 <!--
 		<label for="osgridref">OS Grid Reference:</label>
 		<input id="osgridref" type="text" style="width:200px;" />
@@ -236,6 +244,7 @@ END_OF_API_HTML;
 			var map = L.map(id).setView([lat, long], 13);
 
 // LEAFLET leaflet
+
 			L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
 				maxZoom: 18,
 				attribution: '',
