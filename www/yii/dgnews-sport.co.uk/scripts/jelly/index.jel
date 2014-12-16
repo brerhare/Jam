@@ -13,10 +13,12 @@ child = ticker, site
 fx.wallpaper-image-tile = /img/white-tile.jpg
 css.display = block
 
+
 [ticker]
 css.width = 100%
 ######css.height = 100px
 css.position = fixed
+css.z-index = 1000
 css.bottom = 0
 css.background-color = yellow
 addon.ticker.crawler.width = 100%
@@ -167,7 +169,7 @@ addon.ticker.crawler.tape-border-width = 1px
 			[blog]
 			css.display = block
 			css.width = 800px
-			html.raw = {{news traditional}}
+			html.raw = {{news newstype=traditional sidebar=left pushcategoriesdown=0px pushrecentdown=0px}}
 
 
 ######## body #######################################
