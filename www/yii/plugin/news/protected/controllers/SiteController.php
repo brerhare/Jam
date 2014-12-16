@@ -37,6 +37,8 @@ class SiteController extends Controller
 	{
 header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');
 
+Yii::log("In at top................." , CLogger::LEVEL_WARNING, 'system.test.kim');
+
 		// Store the referer (hosting site) in a session cookie
 		if ((!isset(Yii::app()->session['http_referer'])) || (Yii::app()->session['http_referer'] == "unknown http_referer"))
 		{
@@ -64,14 +66,16 @@ header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT
 
 		if (isset($_GET['art']))
 			$this->actionPlay();
-
-		$category = 0;
-		if (isset($_GET['cat']))
-			$category = $_GET['cat'];
-		$this->renderPartial('index',array(
-			'showCat'=>$category,
-			'showArt'=>'',
-		));
+		else
+		{
+			$category = 0;
+			if (isset($_GET['cat']))
+				$category = $_GET['cat'];
+			$this->renderPartial('index',array(
+				'showCat'=>$category,
+				'showArt'=>'',
+			));
+		}
 	}
 
 	/**
