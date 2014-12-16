@@ -415,22 +415,34 @@ class eventcode
 			// Ticketing info (if applicable)
 			if (($event->ticket_event_id != 0) && ($member))
 			{
-				$ticketUrl = "https://plugin.wireflydesign.com/ticket/index.php/ticket/book/" . $event->ticket_event_id . "?sid=" . $member->sid . "&ref=event";
-
-
-
-
+				// Check this event has any tickets to sell before showing a clickable book button!
+		        $eventHasTickets = 0;
+        		$criteria = new CDbCriteria;
+        		$criteria->addCondition("ticket_event_id = " . $event->ticket_event_id);
+        		$areas = Area::model()->findAll($criteria);
+        		foreach ($areas as $area):
+            		$criteria = new CDbCriteria;
+            		$criteria->addCondition("ticket_area_id = " . $area->id);
+            		$ticketTypes = TicketType::model()->findAll($criteria);
+            		if ($ticketTypes)
+						$eventHasTickets = 1;
+				endforeach;
+				if (($eventHasTickets) && ($event->ticket_event_id != 1))  // Ticket event has tickets set up and its not Test Event 1 (BUG - ppl can generate ticket events without a SID. @@FIX!)
+				{
+					$ticketUrl = "https://plugin.wireflydesign.com/ticket/index.php/ticket/book/" . $event->ticket_event_id . "?sid=" . $member->sid . "&ref=event";
 
 if (isset($_GET['test']))
-	{
-				$ticketUrl = "https://plugin.wireflydesign.com/ticket/index.php/ticket/book/" . $event->ticket_event_id . "?sid=" . $member->sid . "&ref=event" . "&ticket_event_id=" . $event->ticket_event_id;
-	}
+{
+  $ticketUrl = "https://plugin.wireflydesign.com/ticket/index.php/ticket/book/" . $event->ticket_event_id . "?sid=" . $member->sid . "&ref=event" . "&ticket_event_id=" . $event->ticket_event_id;
+}
 
-
-
-
-				$content .= "<script>function goBook(where){window.open(where, '_blank');}</script>";
-				$content .= "<div style='float:right'><a target='_blank' href='" . $ticketUrl . "'><img style='margin-top:0px; margin-left:0px' onClick=goBook('" . $ticketUrl . "') title='Book' src='img/book-s.jpg'></a></div><br/>";
+					$content .= "<script>function goBook(where){window.open(where, '_blank');}</script>";
+					$content .= "<div style='float:right'><a target='_blank' href='" . $ticketUrl . "'><img style='margin-top:0px; margin-left:0px' onClick=goBook('" . $ticketUrl . "') title='Click to book' src='img/book-s.jpg'></a></div><br/>";
+				}
+				else	// Ticket event hasn't tickets set up
+				{
+					$content .= "<div style='float:right'><a target='_blank' href='#'><img style='opacity:0.4; filter: alpha(opacity=40); margin-top:0px; margin-left:0px' title='Booking not yet available for this event.\nVendor has still to set up ticketing.\nPlease check back later.' src='img/book-s.jpg'></a></div><br/>";
+				}
 			}
 
 			$content .= "    </div>";
