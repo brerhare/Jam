@@ -148,28 +148,46 @@ addon.ticker.crawler.tape-border-width = 1px
 ######## home #######################################
 
 	[home-page]
-	child = color, home-content
+	child = signup-box, home-content
 	condition = @PAGE=@HOMEPAGE
 	css.width = 800px
 	css.margin-top = 20px
 	css.background-color = white
 	fx.rounding = 4px
+
+		[signup-box]
+		child = signup
+		css.width = 150px
+		css.height = 120px
+		css.background-color = #137feb
+#		css.margin-top = 160px
+#		css.margin-left = 20px
+css.position = absolute
+css.top = 465px
+css.left = 240px
+		css.padding = 10px
+		html.raw = Get the DG-News right to your inbox
+		css.font-size = 12px
+		css.font-weight = 700
+		css.color = white
+		
+					
+			[signup]
+			css.margin-top = 5px
+			addon.mailer.signup.orientation = vertical
+			addon.mailer.signup.buttoncolor = white
+			addon.mailer.signup.buttontextcolor = red
+			addon.mailer.signup.buttontext = sign up
+			addon.mailer.signup.inputspacing = 5px
+			addon.mailer.signup.successtextcolor = green
+			addon.mailer.signup.failuretextcolor = black
+			addon.mailer.signup.inputwidth = 130px
+		
 	
-		[color]
-		css.width = 180px
-		css.height = 100px
-		#css.background-color = #137feb
-		css.margin-top = 150px
-		css.margin-left = 20px
-		
 		[home-content]
-		child = blog
-		css.margin-top = -240px
-		
-			[blog]
-			css.display = block
-			css.width = 800px
-			html.raw = {{news newstype=traditional sidebar=left pushcategoriesdown=0px pushrecentdown=0px}}
+		css.display = block
+		css.width = 800px
+		html.raw = {{news newstype=traditional sidebar=left pushcategoriesdown=120px pushrecentdown=0px}}
 
 
 ######## body #######################################
