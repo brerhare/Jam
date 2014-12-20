@@ -2,6 +2,7 @@ index.html
 app/
 	app.module.js
 	app.routes.js
+	app.scss
 
 	components/			// each component is like a mini Angular app
 		customer/
@@ -21,8 +22,8 @@ app/
 
 assets/
 	img/      // Images and icons for your app
-	css/      // All styles and style related files (SCSS or LESS files)
-	js/       // JavaScript files written for your app that are not for angular
+NOT	css/      // All styles and style related files (SCSS or LESS files)
+NOT	js/       // JavaScript files written for your app that are not for angular
 	libs/     // Third-party libraries such as jQuery, Moment, Underscore, etc.
 
 ----------------------------------------------------------------------------------
@@ -31,19 +32,3 @@ assets/
 <slider id="article-slider" ng-repeat="picture in pictures" size="large" type="square">
 </slider>
 
-/app
-/app/main
-/app/customer
-/app/customer/maintain
-/app/customer/return
-/app/customer/invoice
-/app/stock
-/app/stock/list
-/assets
-/assets/libs
-/assets/libs/css
-/assets/libs/css/bootstrap-docs
-/assets/libs/css/bootstrap-docs/src
-/assets/images
-/components
-./components/navbar
