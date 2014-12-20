@@ -591,9 +591,9 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 
 		// Is this entire blob clickable?
 		if (array_key_exists("click", $array))
-			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['click'])) . "&click=true>\n", $indentLevel);
+			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['click'])) . "?click=true>\n", $indentLevel);
 		if (array_key_exists("clicknew", $array))
-			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['clicknew'])) . "&click=true target='_blank'>\n", $indentLevel);
+			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['clicknew'])) . "?click=true target='_blank'>\n", $indentLevel);
 
 		$this->genInlineHtml("<div id='" . $blobName . "'>\n", $indentLevel);
 		$this->genDivCSS("div#" . $blobName ." {\n");
