@@ -591,9 +591,28 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 
 		// Is this entire blob clickable?
 		if (array_key_exists("click", $array))
-			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['click'])) . "&click=true>\n", $indentLevel);
+		{
+			if (strpos($array['click'], "?") === false)
+				$sep = "?";
+			else
+				$sep = "&";
+			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['click'])) . $sep . "click=true>\n", $indentLevel);
+		}
 		if (array_key_exists("clicknew", $array))
-			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['clicknew'])) . "&click=true target='_blank'>\n", $indentLevel);
+		{
+			if (strpos($array['clicknew'], "?") === false)
+				$sep = "?";
+			else
+				$sep = "&";
+			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['clicknew'])) . $sep . "click=true target='_blank'>\n", $indentLevel);
+		}
+
+// original 4 lines follow
+//		if (array_key_exists("click", $array))
+//			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['click'])) . "&click=true>\n", $indentLevel);
+//		if (array_key_exists("clicknew", $array))
+//			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['clicknew'])) . "&click=true target='_blank'>\n", $indentLevel);
+
 
 		$this->genInlineHtml("<div id='" . $blobName . "'>\n", $indentLevel);
 		$this->genDivCSS("div#" . $blobName ." {\n");
