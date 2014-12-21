@@ -101,28 +101,20 @@ def npm_install(manifest):
 
 npm_install(skeletonDir + "/npm.manifest")
 
-
-
-# shared
-# ------
-# <!-- user a slider directive to loop over something -->
-# <slider id="article-slider" ng-repeat="picture in pictures" size="large" type="square">
-# </slider>
-
-# assets
-# ------
-# img/      // Images and icons for your app
-# css/      // All styles and style related files (SCSS or LESS files)
-# js/       // JavaScript files written for your app that are not for angular
-# libs/     // Third-party libraries such as jQuery, Moment, Underscore, etc.
-
-def str2File(path, str):
-	file = open(path, "w")
-	file.write(str + "\n")
-	file.close()
+#-------------------------------------------------------------------------------------------
+# Wrapup
 
 print
 print "bower installed bower.manifest.core and updated /src/app/app.module.js"
 print "bower installed bower.manifest.additional but did NOT update /src/app/app.module.js. Do it yourself. Now"
 sys.exit("Fin")
+
+
+#-------------------------------------------------------------------------------------------
+#
+# shared
+# ------
+# <!-- user a slider directive to loop over something -->
+# <slider id="article-slider" ng-repeat="picture in pictures" size="large" type="square">
+# </slider>
 

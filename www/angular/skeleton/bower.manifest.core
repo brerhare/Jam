@@ -8,8 +8,7 @@
     "angular-touch": "",
     "angular-sanitize": "",
     "angular-resource": "",
-    "angular-ui-router": "",
-    "bootstrap-sass-official": ""
+    "angular-ui-router": ""
   },
   "devDependencies": {
     "angular-mocks": ""
