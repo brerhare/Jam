@@ -37,6 +37,11 @@ buffer = open(baseDir + "/bower.json", 'rU').read()
 buffer = buffer.replace("newbuild", baseDir)
 open(baseDir + "/bower.json", "w").write(buffer)
 
+buffer = open(baseDir + "/src/index.html", 'rU').read()
+buffer = buffer.replace("newbuild", baseDir)
+open(baseDir + "/src/index.html", "w").write(buffer)
+
+buffer = open(baseDir + "/src/app/app.routes.js", 'rU').read()
 buffer = open(baseDir + "/src/app/app.module.js", 'rU').read()
 buffer = buffer.replace("newbuild", baseDir)
 open(baseDir + "/src/app/app.module.js", "w").write(buffer)
