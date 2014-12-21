@@ -117,6 +117,7 @@ def str2File(path, str):
 	file.close()
 
 print
-print "/src/app/app.module.js includes only the modules from bower.manifest1. Add any others youself"
+print "bower installed bower.manifest.core and updated /src/app/app.module.js"
+print "bower installed bower.manifest.additional but did NOT update /src/app/app.module.js. Do it yourself. Now"
 sys.exit("Fin")
 
