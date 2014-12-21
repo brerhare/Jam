@@ -11,7 +11,8 @@ import json
 from pprint import pprint
 import collections
 
-skeletonDir = "/home/kim/angular/skeleton"
+skeletonDir = os.path.abspath(os.path.dirname(sys.argv[0]))
+
 if not os.path.isdir(skeletonDir):
 	sys.exit("Internal error - " + skeletonDir + " doesnt exist. Abortings")
 
@@ -35,6 +36,14 @@ open(baseDir + "/package.json", "w").write(buffer)
 buffer = open(baseDir + "/bower.json", 'rU').read()
 buffer = buffer.replace("newbuild", baseDir)
 open(baseDir + "/bower.json", "w").write(buffer)
+
+buffer = open(baseDir + "/src/app/app.module.js", 'rU').read()
+buffer = buffer.replace("newbuild", baseDir)
+open(baseDir + "/src/app/app.module.js", "w").write(buffer)
+
+buffer = open(baseDir + "/src/app/app.routes.js", 'rU').read()
+buffer = buffer.replace("newbuild", baseDir)
+open(baseDir + "/src/app/app.routes.js", "w").write(buffer)
 
 print "Change dir to " + baseDir
 startDir = os.getcwd()
@@ -62,8 +71,8 @@ def bower_install(manifest):
 				#subprocess.call([callStr, shell=True])
 				os.system(callStr)
 
-bower_install(skeletonDir + "/bower.manifest")
-bower_install(skeletonDir + "/bower.manifest2")
+bower_install(skeletonDir + "/bower.manifest.core")
+bower_install(skeletonDir + "/bower.manifest.additional")
 
 #-------------------------------------------------------------------------------------------
 # NPM installs
@@ -107,5 +116,7 @@ def str2File(path, str):
 	file.write(str + "\n")
 	file.close()
 
+print
+print "/src/app/app.module.js includes only the modules from bower.manifest1. Add any others youself"
 sys.exit("Fin")
 
