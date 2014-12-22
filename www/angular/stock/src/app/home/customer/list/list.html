@@ -1,0 +1,64 @@
+<!-- 'Borrowed' from Laurent's web page -->
+<link rel="stylesheet" href="app/customer/list/listStyle.css"/>
+
+<style>
+  .hand {
+    cursor: pointer;
+    cursor: hand;
+  }
+  .highlight:hover {
+    background-color: #ddf0ff;
+  }
+</style>
+<div class="container-fluid">
+
+ <h4 style="text-align:center">Customer list</h4>
+
+  <div class="table-container">
+  <table st-table="rowCollection" class="table Xtable-striped">
+    <thead>
+      <tr>
+        <th class="hand" st-sort="customerId"> Id</th>
+        <th class="hand" st-sort="companyName">Company Name</th>
+        <th class="hand" st-sort="rate">       Rate</th>
+        <th class="hand" st-sort="phoneNumber">Phone #</th>
+        <th class="hand" st-sort="formaDePago">Forma de Pago</th>
+        <th>
+          <button type="button" ng-click="printCustomers()" class="btn btn-xs btn-primary">
+            <i class="fa fa-file-pdf-o fa-1x"></i>
+          </button>
+        </th>
+      </tr>
+      <tr>
+        <th><input st-search="'customerId'"  placeholder="search" class="input-sm form-control" type="search"/></th>
+        <th><input st-search="'companyName'" placeholder="search" class="input-sm form-control" type="search"/></th>
+        <th><input st-search="'rate'"        placeholder="search" class="input-sm form-control" type="search"/></th>
+        <th><input st-search="'phoneNumber'" placeholder="search" class="input-sm form-control" type="search"/></th>
+        <th><input st-search="'formaDePago'" placeholder="search" class="input-sm form-control" type="search"/></th>
+        <th>
+          <button type="button" ng-click="addCustomer()" class="btn btn-xs btn-success">
+            <i class="fa fa-plus fa-1x"></i>
+          </button>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+    <tr class="highlight hand" ng-repeat="row in rowCollection">
+      <td>{{row.customerId}}</td>
+      <td>{{row.companyName}}</td>
+      <td>{{row.rate}}</td>
+      <td>{{row.phoneNumber}}</td>
+      <td>{{row.formaDePago}}</td>
+      <td>
+        <button type="button" ng-click="deleteCustomer(row)" class="btn btn-xs btn-danger">
+          <i class="fa fa-remove fa-1x"></i>
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+    <p style="text-align:center"><i><b>{{rowCollection.length}} customers</b></i></div></p>
+  </div>
+
+
+</div>
