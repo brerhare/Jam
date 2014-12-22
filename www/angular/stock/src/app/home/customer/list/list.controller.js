@@ -1,6 +1,21 @@
 angular.module('stock')
     .controller('CustomerListCtrl', function ($scope) {
 
+      $scope.addCustomer = function() {
+        alert('add customer')
+      }
+
+      $scope.editCustomer = function(id) {
+        alert('edit customer' + id)
+      }
+
+      $scope.deleteCustomer = function(id) {
+        alert('delete customer' + id)
+      }
+
+      $scope.outputPDF = function() {
+        alert('pdf')
+      }
 
     $scope.rowCollection = [
       {
