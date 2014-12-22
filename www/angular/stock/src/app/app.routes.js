@@ -8,7 +8,7 @@
 angular.module('stock')
   .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
-      .state('loggedOut', {
+      .state('login', {
         url: '/',
         templateUrl: 'app/login/login.html',
         controller: 'LoginCtrl'
