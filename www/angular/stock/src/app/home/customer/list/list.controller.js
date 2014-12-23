@@ -35,15 +35,12 @@ angular.module('stock')
 */
 
   // Get the full customer list from the server
-  $scope.url = "http://test.wireflydesign.com/stock3/testdata/customer.json";
+  $scope.url = "http://stock.wireflydesign.com/server/customer.json";
+  $scope.total = "loading ";
   $http.get($scope.url).success(function(response) {
-   // alert('x');
     $scope.rowCollection = response;
-//    alert(response.customerId[0]);
-            //$scope.newMessage = response.data.queries.request.totalResults;
-            //$scope.messages.push($scope.newMessage);
+    $scope.total = $scope.rowCollection.length;
   });
 
 
-
-  });
+});
