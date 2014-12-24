@@ -18,11 +18,11 @@
     <table st-table="rowCollection" class="table Xtable-striped">
       <thead>
         <tr>
-          <th class="hand" st-sort="customerId"> Id</th>
-          <th class="hand" st-sort="companyName">Company Name</th>
-          <th class="hand" st-sort="rate">       Rate</th>
-          <th class="hand" st-sort="phoneNumber">Phone #</th>
-          <th class="hand" st-sort="formaDePago">Forma de Pago</th>
+          <th class="hand" st-sort="id">                       Id</th>
+          <th class="hand" st-sort="name">                   Name</th>
+          <th class="hand" st-sort="discount_percent"> Discount %</th>
+          <th class="hand" st-sort="telephone">           Phone #</th>
+          <th class="hand" st-sort="forma_de_pago"> Forma de Pago</th>
           <th>
             <button type="button" ng-click="outputPDF()" class="btn btn-xs btn-primary">
               <i class="fa fa-file-pdf-o fa-1x"></i>
@@ -30,11 +30,11 @@
           </th>
         </tr>
         <tr>
-          <th><input st-search="'customerId'"  placeholder="search" class="input-sm form-control" type="search"/></th>
-          <th><input st-search="'companyName'" placeholder="search" class="input-sm form-control" type="search"/></th>
-          <th><input st-search="'rate'"        placeholder="search" class="input-sm form-control" type="search"/></th>
-          <th><input st-search="'phoneNumber'" placeholder="search" class="input-sm form-control" type="search"/></th>
-          <th><input st-search="'formaDePago'" placeholder="search" class="input-sm form-control" type="search"/></th>
+          <th><input st-search="'id'"               placeholder="search" class="input-sm form-control" type="search"/></th>
+          <th><input st-search="'name'"             placeholder="search" class="input-sm form-control" type="search"/></th>
+          <th><input st-search="'discount_percent'" placeholder="search" class="input-sm form-control" type="search"/></th>
+          <th><input st-search="'telephone'"        placeholder="search" class="input-sm form-control" type="search"/></th>
+          <th><input st-search="'forma_de_pago'"    placeholder="search" class="input-sm form-control" type="search"/></th>
           <th>
             <button type="button" ng-click="addItem()" class="btn btn-xs btn-success">
               <i class="fa fa-plus fa-1x"></i>
@@ -44,13 +44,13 @@
       </thead>
       <tbody>
       <tr class="highlight hand" ng-repeat="row in rowCollection">
-        <td ng-click="editItem(row.customerId)">{{row.customerId}}</td>
-        <td ng-click="editItem(row.customerId)">{{row.companyName}}</td>
-        <td ng-click="editItem(row.customerId)">{{row.rate}}</td>
-        <td ng-click="editItem(row.customerId)">{{row.phoneNumber}}</td>
-        <td ng-click="editItem(row.customerId)">{{row.formaDePago}}</td>
+        <td ng-click="editItem(row.id)">{{row.id}}              </td>
+        <td ng-click="editItem(row.id)">{{row.name}}            </td>
+        <td ng-click="editItem(row.id)">{{row.discount_percent}}</td>
+        <td ng-click="editItem(row.id)">{{row.telephone}}       </td>
+        <td ng-click="editItem(row.id)">{{row.forma_de_pago}}   </td>
         <td>
-          <button type="button" ng-click="deleteItem(row.customerId)" class="btn btn-xs btn-danger">
+          <button type="button" ng-click="deleteItem(row.id)" class="btn btn-xs btn-danger">
             <i class="fa fa-remove fa-1x"></i>
           </button>
         </td>
