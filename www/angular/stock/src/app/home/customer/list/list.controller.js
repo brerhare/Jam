@@ -35,13 +35,13 @@ angular.module('stock')
 */
 
 
-$scope.method = 2;
+$scope.method = 1;
 
 
 if (($scope.method == 1) || ($scope.method == 9))
 {
   // Get the full customer list from the server
-    $scope.url = "http://stock.wireflydesign.com/server/customer.json";
+    $scope.url = "http://stock.wireflydesign.com/server/data.php";
     $scope.total = "loading ";
 alert('sending 1');
     $http.get($scope.url).success(function(response) {

@@ -112,11 +112,6 @@ echo "\n\nrec:" . $rec . "   " . $sql . "\n\n";
 	$result = mysql_query($sql) or die(mysql_error());
 }
 
-/*
-	"'" . $nvp->CIF . "'," .
-	"'" . $nvp->formaDePago . "')";
-*/
-
 _dbfin($dbhandle);
 
 function _dbinit(&$dbhandle)
