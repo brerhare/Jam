@@ -212,19 +212,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `stock`.`Xstock_user`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `stock`.`Xstock_user` ;
-
-CREATE TABLE IF NOT EXISTS `stock`.`Xstock_user` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(255) NOT NULL,
-  `password` INT NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `stock`.`stock_supplier_order`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `stock`.`stock_supplier_order` ;
@@ -251,48 +238,11 @@ CREATE TABLE IF NOT EXISTS `stock`.`stock_supplier_order` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_stock_supplier_order_stock_user1`
     FOREIGN KEY (`stock_user_id`)
-    REFERENCES `stock`.`Xstock_user` (`id`)
+    REFERENCES `stock`.`stock_user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
--- -----------------------------------------------------
--- Table `stock`.`Xstock_product`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `stock`.`Xstock_product` ;
-
-CREATE TABLE IF NOT EXISTS `stock`.`Xstock_product` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `uid` INT NOT NULL,
-  `name` VARCHAR(255) NOT NULL,
-  `description` TEXT NULL,
-  `cost` DECIMAL(10,2) NULL,
-  `weight` DECIMAL(10,2) NULL,
-  `height` DECIMAL(10,2) NULL,
-  `width` DECIMAL(10,2) NULL,
-  `depth` DECIMAL(10,2) NULL,
-  `volume` DECIMAL(10,2) NULL,
-  `stock_group_id` INT NOT NULL,
-  `stock_category_id` INT NOT NULL,
-  `stock_subcategory_id` INT NOT NULL,
-  `stock_product_price_id` INT NOT NULL,
-  `stock_vat_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `uid` (`uid` ASC),
-  INDEX `fk_stock_product_stock_group1` (`stock_group_id` ASC),
-  INDEX `fk_stock_product_stock_vat1` (`stock_vat_id` ASC),
-  CONSTRAINT `fk_stock_product_stock_group10`
-    FOREIGN KEY (`stock_group_id`)
-    REFERENCES `stock`.`stock_group` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_stock_product_stock_vat10`
-    FOREIGN KEY (`stock_vat_id`)
-    REFERENCES `stock`.`stock_vat` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -320,7 +270,7 @@ CREATE TABLE IF NOT EXISTS `stock`.`stock_supplier_order_item` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_stock_supplier_order_item_stock_product1`
     FOREIGN KEY (`stock_product_id`)
-    REFERENCES `stock`.`Xstock_product` (`id`)
+    REFERENCES `stock`.`stock_product` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -392,19 +342,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `stock`.`Xstock_user`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `stock`.`Xstock_user` ;
-
-CREATE TABLE IF NOT EXISTS `stock`.`Xstock_user` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(255) NOT NULL,
-  `password` INT NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `stock`.`stock_product_transaction`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `stock`.`stock_product_transaction` ;
@@ -435,33 +372,11 @@ CREATE TABLE IF NOT EXISTS `stock`.`stock_product_transaction` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_stock_product_transaction_stock_user1`
     FOREIGN KEY (`stock_user_id`)
-    REFERENCES `stock`.`Xstock_user` (`id`)
+    REFERENCES `stock`.`stock_user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-
--- -----------------------------------------------------
--- Table `stock`.`Xstock_customer`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `stock`.`Xstock_customer` ;
-
-CREATE TABLE IF NOT EXISTS `stock`.`Xstock_customer` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `uid` INT NOT NULL,
-  `name` VARCHAR(255) NOT NULL,
-  `address1` VARCHAR(255) NULL,
-  `address2` VARCHAR(255) NULL,
-  `address3` VARCHAR(255) NULL,
-  `county_id` INT NULL,
-  `post_code` VARCHAR(255) NULL,
-  `telephone` VARCHAR(255) NULL,
-  `email` VARCHAR(255) NULL,
-  `discount_percent` DECIMAL(10,2) NULL,
-  `stock_county_id` INT NOT NULL,
-  `stock_markup_group_id` INT NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -477,18 +392,6 @@ CREATE TABLE IF NOT EXISTS `stock`.`stock_carriage` (
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
-
--- -----------------------------------------------------
--- Table `stock`.`Xstock_user`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `stock`.`Xstock_user` ;
-
-CREATE TABLE IF NOT EXISTS `stock`.`Xstock_user` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(255) NOT NULL,
-  `password` INT NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -515,7 +418,7 @@ CREATE TABLE IF NOT EXISTS `stock`.`stock_customer_order` (
   INDEX `fk_stock_customer_order_stock_user1` (`stock_user_id` ASC),
   CONSTRAINT `fk_stock_order_stock_customer100`
     FOREIGN KEY (`stock_customer_id`)
-    REFERENCES `stock`.`Xstock_customer` (`id`)
+    REFERENCES `stock`.`stock_customer` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_stock_customer_order_stock_carriage100`
@@ -525,45 +428,7 @@ CREATE TABLE IF NOT EXISTS `stock`.`stock_customer_order` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_stock_customer_order_stock_user1`
     FOREIGN KEY (`stock_user_id`)
-    REFERENCES `stock`.`Xstock_user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `stock`.`Xstock_product`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `stock`.`Xstock_product` ;
-
-CREATE TABLE IF NOT EXISTS `stock`.`Xstock_product` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `uid` INT NOT NULL,
-  `name` VARCHAR(255) NOT NULL,
-  `description` TEXT NULL,
-  `cost` DECIMAL(10,2) NULL,
-  `weight` DECIMAL(10,2) NULL,
-  `height` DECIMAL(10,2) NULL,
-  `width` DECIMAL(10,2) NULL,
-  `depth` DECIMAL(10,2) NULL,
-  `volume` DECIMAL(10,2) NULL,
-  `stock_group_id` INT NOT NULL,
-  `stock_category_id` INT NOT NULL,
-  `stock_subcategory_id` INT NOT NULL,
-  `stock_product_price_id` INT NOT NULL,
-  `stock_vat_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `uid` (`uid` ASC),
-  INDEX `fk_stock_product_stock_group1` (`stock_group_id` ASC),
-  INDEX `fk_stock_product_stock_vat1` (`stock_vat_id` ASC),
-  CONSTRAINT `fk_stock_product_stock_group10`
-    FOREIGN KEY (`stock_group_id`)
-    REFERENCES `stock`.`stock_group` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_stock_product_stock_vat10`
-    FOREIGN KEY (`stock_vat_id`)
-    REFERENCES `stock`.`stock_vat` (`id`)
+    REFERENCES `stock`.`stock_user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -593,7 +458,7 @@ CREATE TABLE IF NOT EXISTS `stock`.`stock_customer_order_item` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_stock_customer_order_item_stock_product10`
     FOREIGN KEY (`stock_product_id`)
-    REFERENCES `stock`.`Xstock_product` (`id`)
+    REFERENCES `stock`.`stock_product` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -615,55 +480,6 @@ CREATE TABLE IF NOT EXISTS `stock`.`stock_units` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `stock`.`Xstock_product`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `stock`.`Xstock_product` ;
-
-CREATE TABLE IF NOT EXISTS `stock`.`Xstock_product` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `uid` INT NOT NULL,
-  `name` VARCHAR(255) NOT NULL,
-  `description` TEXT NULL,
-  `cost` DECIMAL(10,2) NULL,
-  `weight` DECIMAL(10,2) NULL,
-  `height` DECIMAL(10,2) NULL,
-  `width` DECIMAL(10,2) NULL,
-  `depth` DECIMAL(10,2) NULL,
-  `volume` DECIMAL(10,2) NULL,
-  `stock_group_id` INT NOT NULL,
-  `stock_category_id` INT NOT NULL,
-  `stock_subcategory_id` INT NOT NULL,
-  `stock_product_price_id` INT NOT NULL,
-  `stock_vat_id` INT NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `uid` (`uid` ASC),
-  INDEX `fk_stock_product_stock_group1` (`stock_group_id` ASC),
-  INDEX `fk_stock_product_stock_vat1` (`stock_vat_id` ASC),
-  CONSTRAINT `fk_stock_product_stock_group10`
-    FOREIGN KEY (`stock_group_id`)
-    REFERENCES `stock`.`stock_group` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_stock_product_stock_vat10`
-    FOREIGN KEY (`stock_vat_id`)
-    REFERENCES `stock`.`stock_vat` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `stock`.`Xstock_user`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `stock`.`Xstock_user` ;
-
-CREATE TABLE IF NOT EXISTS `stock`.`Xstock_user` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(255) NOT NULL,
-  `password` INT NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
@@ -693,7 +509,7 @@ CREATE TABLE IF NOT EXISTS `stock`.`stock_customer_transaction` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_stock_customer_transaction_stock_user1`
     FOREIGN KEY (`stock_user_id`)
-    REFERENCES `stock`.`Xstock_user` (`id`)
+    REFERENCES `stock`.`stock_user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -721,7 +537,7 @@ CREATE TABLE IF NOT EXISTS `stock`.`stock_customer_transaction_item` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_stock_customer_transaction_item_stock_product1`
     FOREIGN KEY (`stock_product_id`)
-    REFERENCES `stock`.`Xstock_product` (`id`)
+    REFERENCES `stock`.`stock_product` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -839,19 +655,6 @@ By default products use the customers markup group to calculate the price but an
 
 
 -- -----------------------------------------------------
--- Table `stock`.`Xstock_location`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `stock`.`Xstock_location` ;
-
-CREATE TABLE IF NOT EXISTS `stock`.`Xstock_location` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `uid` INT NOT NULL,
-  `name` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `stock`.`stock_user_has_stock_location`
 -- -----------------------------------------------------
 DROP TABLE IF EXISTS `stock`.`stock_user_has_stock_location` ;
@@ -869,7 +672,7 @@ CREATE TABLE IF NOT EXISTS `stock`.`stock_user_has_stock_location` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_stock_user_has_stock_location_stock_location1`
     FOREIGN KEY (`stock_location_id`)
-    REFERENCES `stock`.`Xstock_location` (`id`)
+    REFERENCES `stock`.`stock_location` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
