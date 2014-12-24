@@ -158,6 +158,7 @@ CREATE TABLE IF NOT EXISTS `stock`.`stock_customer` (
   `balance` VARCHAR(255) NULL,
   `link_field` VARCHAR(255) NULL COMMENT 'Any common content here will link customers for any purpose like a report etc',
   `notes` TEXT NULL,
+  `status` INT NULL,
   `CIF` VARCHAR(255) NULL,
   `forma_de_pago` VARCHAR(255) NULL,
   `stock_markup_group_id` INT NOT NULL,
