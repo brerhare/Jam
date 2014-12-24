@@ -791,7 +791,7 @@ CREATE TABLE IF NOT EXISTS `stock`.`stock_pack` (
   `unit_qty` INT NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-COMMENT = 'The parent is always \'per\', ie 1.\nThe units are how many are /* comment truncated */ /* contained in that 1. These are not necessarily 'base' units, ie they might later be reduced further by themselves being parents*/';
+COMMENT = 'The parent is always PER, ie 1.\nThe units are how many are c /* comment truncated */ /*ontained in that 1. These are not necessarily base units, ie they might later be reduced further by themselves being parents*/';
 
 
 -- -----------------------------------------------------
@@ -835,7 +835,7 @@ CREATE TABLE IF NOT EXISTS `stock`.`stock_product_promotion_price` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 COMMENT = 'This holds all price overrides, ie deviations from the marku /* comment truncated */ /*p calculation.
-By default products use the customer's markup group to calculate the price but any products in this table will use this fixed price.*/';
+By default products use the customers markup group to calculate the price but any products in this table will use this fixed price.*/';
 
 
 -- -----------------------------------------------------
