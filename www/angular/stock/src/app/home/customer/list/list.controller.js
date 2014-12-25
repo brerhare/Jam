@@ -44,7 +44,7 @@ angular.module('stock')
 		.success(function(data, status, headers, config) {
 			$scope.rowCollection = [];
 			$scope.rowCollection = data;
-/				$scope.rowCollection = angular.fromJson(data);
+//				$scope.rowCollection = angular.fromJson(data);
 			$scope.displayedCollection = [].concat($scope.rowCollection);
 		});
 ****/
@@ -66,7 +66,7 @@ angular.module('stock')
 			$scope.displayedCollection = [].concat($scope.rowCollection);
 		})
 		.error(function (data, status, headers, config) {
-			alert("error status: " + status + ". data: " + data);// alerted error
+			alert("error status: " + status);
 		});
 
 });
