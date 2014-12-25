@@ -15,7 +15,7 @@
  <h4 style="text-align:center">Customer list</h4>
 
   <div class="table-container">
-    <table st-table="rowCollection" class="table Xtable-striped">
+    <table st-table="displayedCollection" st-safe-src="rowCollection" class="table Xtable-striped">
       <thead>
         <tr>
           <th class="hand" st-sort="id">                       Id</th>
@@ -43,7 +43,7 @@
         </tr>
       </thead>
       <tbody>
-      <tr class="highlight hand" ng-repeat="row in rowCollection">
+      <tr class="highlight hand" ng-repeat="row in displayedCollection">
         <td ng-click="editItem(row.id)">{{row.id}}              </td>
         <td ng-click="editItem(row.id)">{{row.name}}            </td>
         <td ng-click="editItem(row.id)">{{row.discount_percent}}</td>
@@ -57,7 +57,7 @@
       </tr>
       </tbody>
     </table>
-    <p style="text-align:center"><i><b>{{rowCollection.length}} customers</b></i></p>
+    <p style="text-align:center"><i><b>{{displayedCollection.length}} customers</b></i></p>
   </div>
 
 </div>  <!-- container-fluid -->
