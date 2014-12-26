@@ -19,9 +19,9 @@ angular.module('stock')
         controller: 'HomeCtrl'
       })
 
-      .state('home.customer-list', {
+      .state('home.customer-maintain', {
         url: '/customers',
-        templateUrl: 'app/home/customer/list/list.html',
+        templateUrl: 'app/home/customer/maintain/maintain.html',
         controller: 'CustomerListCtrl'
       })
       .state('home.customer-invoice', {

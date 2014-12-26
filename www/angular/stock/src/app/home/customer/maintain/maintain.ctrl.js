@@ -9,7 +9,7 @@ angular.module('stock')
       $location.path("edit.html");
     };
     $scope.deleteItem = function(id) {
-      $location.path("app/home/customer/list/delete.html");
+      $location.path("app/home/customer/maintain/delete.html");
     };
     $scope.outputPDF = function() {
       $location.path("pdf.html");
