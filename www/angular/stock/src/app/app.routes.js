@@ -6,8 +6,9 @@
  */
 
 angular.module('stock')
-  .config(function ($stateProvider, $urlRouterProvider) {
-    $stateProvider
+	.config(function ($stateProvider, $urlRouterProvider) {
+		$stateProvider
+
       .state('login', {
         url: '/',
         templateUrl: 'app/login/login.html',
@@ -22,8 +23,19 @@ angular.module('stock')
       .state('home.customer-maintain', {
         url: '/customers',
         templateUrl: 'app/home/customer/maintain/maintain.html',
-        controller: 'CustomerListCtrl'
+        controller: 'CustomerMaintainCtrl'
       })
+      .state('home.customer-maintain-new', {
+        url: '/customers/add',
+        templateUrl: 'app/home/customer/maintain/add.html',
+        controller: 'CustomerAddCtrl'
+      })
+      .state('home.customer-maintain-edit', {
+        url: '/customers/edit',
+        templateUrl: 'app/home/customer/maintain/edit.html',
+        controller: 'CustomerEditCtrl'
+      })
+
       .state('home.customer-invoice', {
         url: '/invoices',
         templateUrl: 'app/home/customer/customerInvoice.html',
@@ -35,8 +47,11 @@ angular.module('stock')
         controller: 'CustomerReturnCtrl'
       });
 
-    $urlRouterProvider.otherwise('/');
-  });
+//      $urlRouterProvider.otherwise('/invoices');	// redirect to url
+
+    }).run(function($state) {
+      $state.go('login'); //make a transition to login state when app starts
+    });
 
 
 /*****

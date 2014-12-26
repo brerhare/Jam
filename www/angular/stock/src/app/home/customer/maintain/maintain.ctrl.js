@@ -1,5 +1,5 @@
 angular.module('stock')
-	.controller('CustomerListCtrl', function ($scope, $http) {
+	.controller('CustomerMaintainCtrl', function ($scope, $http) {
 
 /*
     $scope.addItem = function() {
