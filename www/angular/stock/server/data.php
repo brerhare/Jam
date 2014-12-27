@@ -4,7 +4,7 @@
 // 'action' : 'get' | 'put' | 'delete'
 // 'id'     : n | 'a' | '*'
 
-$maxRecs = 200;
+$maxRecs = 100;
 
 $inData = json_decode(file_get_contents("php://input"));
 header('Content-Type: application/json');

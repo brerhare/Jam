@@ -36,7 +36,7 @@
           <th><input st-search="'telephone'"        placeholder="search" class="input-sm form-control" type="search"/></th>
           <th><input st-search="'forma_de_pago'"    placeholder="search" class="input-sm form-control" type="search"/></th>
           <th>
-            <button type="button" ng-click="addItem()" class="btn btn-xs btn-success">
+            <button type="button" ui-sref="home.customer-maintain-add" class="btn btn-xs btn-success">
               <i class="fa fa-plus fa-1x"></i>
             </button>
           </th>
@@ -44,11 +44,11 @@
       </thead>
       <tbody>
       <tr class="highlight hand" ng-repeat="row in displayedCollection">
-        <td ng-click="editItem(row.id)">{{row.id}}              </td>
-        <td ng-click="editItem(row.id)">{{row.name}}            </td>
-        <td ng-click="editItem(row.id)">{{row.discount_percent}}</td>
-        <td ng-click="editItem(row.id)">{{row.telephone}}       </td>
-        <td ng-click="editItem(row.id)">{{row.forma_de_pago}}   </td>
+        <td ui-sref="home.customer-maintain-edit(row.id)">{{row.id}}              </td>
+        <td ui-sref="home.customer-maintain-edit(row.id)">{{row.name}}            </td>
+        <td ui-sref="home.customer-maintain-edit(row.id)">{{row.discount_percent}}</td>
+        <td ui-sref="home.customer-maintain-edit(row.id)">{{row.telephone}}       </td>
+        <td ui-sref="home.customer-maintain-edit(row.id)">{{row.forma_de_pago}}   </td>
         <td>
           <button type="button" ng-click="deleteItem(row.id)" class="btn btn-xs btn-danger">
             <i class="fa fa-remove fa-1x"></i>

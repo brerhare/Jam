@@ -1,41 +1,6 @@
 angular.module('stock')
 	.controller('CustomerMaintainCtrl', function ($scope, $http) {
 
-/*
-    $scope.addItem = function() {
-        $location.path("add.html");
-    };
-    $scope.editItem = function(id) {
-      $location.path("edit.html");
-    };
-    $scope.deleteItem = function(id) {
-      $location.path("app/home/customer/maintain/delete.html");
-    };
-    $scope.outputPDF = function() {
-      $location.path("pdf.html");
-    };
-
-      $scope.getData();
-      */
-      /*
-      $scope.addCustomer = function() {
-        alert('add customer');
-      };
-
-      $scope.editCustomer = function(id) {
-        alert('edit customer' + id);
-      };
-
-      $scope.deleteCustomer = function(id) {
-        alert('delete customer' + id);
-      };
-
-      $scope.outputPDF = function() {
-        alert('pdf');
-      };
-*/
-
-
 /****
 		// Get the full customer list from the server
 		$scope.url = "http://stock.wireflydesign.com/server/data.php";
@@ -68,5 +33,14 @@ angular.module('stock')
 		.error(function (data, status, headers, config) {
 			alert("error status: " + status);
 		});
+
+})
+
+.controller('CustomerAddCtrl', function($scope, $state, $stateParams) {
+	$scope.addItem = function() {
+		$scope.rowCollection.push({'id': 999, 'name':'kim', 'discount_percent':100, 'telephone':'07899752030', 'forma_de_pago':'el-nino'});
+        alert('added customer');
+  		$state.go('home.customer-maintain');
+      };
 
 });

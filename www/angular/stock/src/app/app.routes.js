@@ -25,7 +25,7 @@ angular.module('stock')
         templateUrl: 'app/home/customer/maintain/maintain.html',
         controller: 'CustomerMaintainCtrl'
       })
-      .state('home.customer-maintain-new', {
+      .state('home.customer-maintain-add', {
         url: '/customers/add',
         templateUrl: 'app/home/customer/maintain/add.html',
         controller: 'CustomerAddCtrl'
