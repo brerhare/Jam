@@ -1,4 +1,3 @@
-
 /*
  * 'state' is the the sref link itself eg 'customer.invoices'
  * 'url' is for display/accept on the url-bar only, Can be anything
@@ -20,6 +19,8 @@ angular.module('stock')
         controller: 'HomeCtrl'
       })
 
+// Customers
+// ---------
       .state('home.customer-maintain', {
         url: '/customers',
         templateUrl: 'app/home/customer/maintain/maintain.html',
@@ -36,14 +37,19 @@ angular.module('stock')
         controller: 'CustomerEditCtrl'
       })
 
+      .state('home.customer-group', {
+        url: '/groups',
+        templateUrl: 'app/home/customer/group/customerGroup.html',
+        controller: 'CustomerGroupCtrl'
+      })
       .state('home.customer-invoice', {
         url: '/invoices',
-        templateUrl: 'app/home/customer/customerInvoice.html',
+        templateUrl: 'app/home/customer/invoice/customerInvoice.html',
         controller: 'CustomerInvoiceCtrl'
       })
       .state('home.customer-return', {
         url: '/anything-I-like-here/or-even-there',
-        templateUrl: 'app/home/customer/customerReturn.html',
+        templateUrl: 'app/home/customer/return/customerReturn.html',
         controller: 'CustomerReturnCtrl'
       });
 
