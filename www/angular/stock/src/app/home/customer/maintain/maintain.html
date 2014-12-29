@@ -1,0 +1,63 @@
+<!-- 'Borrowed' from Laurent's web page -->
+<link rel="stylesheet" href="app/customer/maintain/maintain.css"/>
+
+<style>
+  .hand {
+    cursor: pointer;
+    cursor: hand;
+  }
+  .highlight:hover {
+    background-color: #ddf0ff;
+  }
+</style>
+<div class="container-fluid">
+
+ <h4 style="text-align:center">Maintain customers</h4>
+
+  <div class="table-container">
+    <table st-table="displayedCollection" st-safe-src="rowCollection" class="table Xtable-striped">
+      <thead>
+        <tr>
+          <th class="hand" st-sort="id">                       Id</th>
+          <th class="hand" st-sort="name">                   Name</th>
+          <th class="hand" st-sort="discount_percent"> Discount %</th>
+          <th class="hand" st-sort="telephone">           Phone #</th>
+          <th class="hand" st-sort="forma_de_pago"> Forma de Pago</th>
+          <th>
+            <button type="button" ng-click="outputPDF()" class="btn btn-xs btn-primary">
+              <i class="fa fa-file-pdf-o fa-1x"></i>
+            </button>
+          </th>
+        </tr>
+        <tr>
+          <th><input st-search="'id'"               placeholder="search" class="input-sm form-control" type="search"/></th>
+          <th><input st-search="'name'"             placeholder="search" class="input-sm form-control" type="search"/></th>
+          <th><input st-search="'discount_percent'" placeholder="search" class="input-sm form-control" type="search"/></th>
+          <th><input st-search="'telephone'"        placeholder="search" class="input-sm form-control" type="search"/></th>
+          <th><input st-search="'forma_de_pago'"    placeholder="search" class="input-sm form-control" type="search"/></th>
+          <th>
+            <button type="button" ui-sref="home.customer-maintain-add" class="btn btn-xs btn-success">
+              <i class="fa fa-plus fa-1x"></i>
+            </button>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr class="highlight hand" ng-repeat="row in displayedCollection">
+        <td ui-sref="home.customer-maintain-edit(row.id)">{{row.id}}              </td>
+        <td ui-sref="home.customer-maintain-edit(row.id)">{{row.name}}            </td>
+        <td ui-sref="home.customer-maintain-edit(row.id)">{{row.discount_percent}}</td>
+        <td ui-sref="home.customer-maintain-edit(row.id)">{{row.telephone}}       </td>
+        <td ui-sref="home.customer-maintain-edit(row.id)">{{row.forma_de_pago}}   </td>
+        <td>
+          <button type="button" ng-click="deleteItem(row.id)" class="btn btn-xs btn-danger">
+            <i class="fa fa-remove fa-1x"></i>
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <p style="text-align:center"><i><b>{{displayedCollection.length}} customers</b></i></p>
+  </div>
+
+</div>  <!-- container-fluid -->

@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "angular-smart-table": "",                <-- include 'smart-table'
+    "components-font-awesome": ""
+  },
+  "devDependencies": {
+  },
+  "resolutions": {
+  }
+}                 
