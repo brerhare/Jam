@@ -5,8 +5,6 @@ angular.module('stock')
   .factory('personFactory', function ($http) {
     return {
         getPeople: function () {
-//alert('xx');
-//return [{'Id':1, 'Name':'aaa'},{'Id':2, 'Name':'bbb'},{'Id':3, 'Name':'ccc'}];
             return $http.get(url);
         },
         addPerson: function (person) {
