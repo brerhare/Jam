@@ -95,7 +95,7 @@ if ( ($showArt == '') && (!isset($_GET['archive'])) )
 			if (date("Y-m-d", strtotime($article->date)) > date("Y-m-d"))
 				continue;
 
-			echo "<a style='color:black; text-decoration:none' href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['parenturl'] . "/?art=" . $article->id . '&page=' . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", urlencode($article->title))    . '"' . ")'>";
+			echo "<a style='color:black; text-decoration:none' href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['parenturl'] . "/?art=" . $article->id . '&page=' . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", mb_convert_encoding($article->title, "HTML-ENTITIES", "UTF-8"))    . '"' . ")'>";
 
 //print_r(Yii::app()->session['parenturl']);
 //die;
@@ -118,7 +118,7 @@ if ( ($showArt == '') && (!isset($_GET['archive'])) )
 echo "<br/>";
 					echo "<span class='mainitem' style='width:95%; vertical-align:top; margin:0px;' >";
 
-						echo "<p class='item' style='width:90%; padding:10px; padding-top: 2px; padding-bottom:0px; margin-bottom:0px; font-weight:bold; color:#424242'>" . $article->title . "</p>";
+						echo "<p class='item' style='width:90%; padding:10px; padding-top: 2px; padding-bottom:0px; margin-bottom:0px; font-weight:bold; color:#424242'>" . mb_convert_encoding($article->title, "HTML-ENTITIES", "UTF-8") . "</p>";
 						echo "<p class='item' style='width:90%; padding:10px; padding-top:5px'>" . $article->intro . "</p>";
 					echo "</span>";
 				echo "</center>";
@@ -196,8 +196,8 @@ if ($showArt == '')
 
 						echo "<span class='itemleadin'>" . $catDesc . "&nbsp&nbsp" . $article->date . "</span>";
 
-						echo "<p class='itemintro' style='padding-top:2px; font-weight:bold; color:#424242'>" . $article->title . "</p>";
-						echo "<span class='itemintro' style='padding-top:2px; color:#000000'>" . $article->intro . "</span>";
+						echo "<p class='itemintro' style='padding-top:2px; font-weight:bold; color:#424242'>" . mb_convert_encoding($article->title, "HTML-ENTITIES", "UTF-8") . "</p>";
+						echo "<span class='itemintro' style='padding-top:2px; color:#000000'>" . mb_convert_encoding($article->intro, "HTML-ENTITIES", "UTF-8") . "</span>";
 					echo "</span>";
 				echo "</a>";
 			}
@@ -210,7 +210,7 @@ if ($showArt == '')
 						echo "<td width='80px' align=right>";
 							echo "<img style='max-width:65px; max-height:50px; vertical-align:bottom; overflow:hidden;' src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/thumb_" . $article->thumbnail_path .  "' alt='No Image'>";
 						echo "</td><td style='padding-left:10px'>";
-							echo "<span style='padding-top:15px; font-size:14; color:#000000'>" . $article->title . "</span>";
+							echo "<span style='padding-top:15px; font-size:14; color:#000000'>" . mb_convert_encoding($article->title, "HTML-ENTITIES", "UTF-8") . "</span>";
 							echo "<span style='padding-left:0px;' class='itemleadin'>" . $catDesc . "&nbsp&nbsp" . $article->date . "</span>";
 						echo "</td>";
 					echo "</tr></table>";

@@ -104,7 +104,7 @@ Yii::log("In at top................." , CLogger::LEVEL_WARNING, 'system.test.kim
         	$criteria->addCondition("id=" . $art);
         	$article = Article::model()->find($criteria);
         	if ($article)
-            	$content = $this->populateArticleHeading($article) . $article->content;
+            	$content = $this->fixChars($this->populateArticleHeading($article) . $article->content);
 		}
 
 		$this->renderPartial('index',array(
@@ -142,7 +142,7 @@ Yii::log("In at top................." , CLogger::LEVEL_WARNING, 'system.test.kim
 			if (!(strstr($article->content, "{{gallery-lightbox")))
 				return;
 
-           	$content = $this->populateArticleHeading($article) . $article->content;
+           	$content = $this->fixChars($this->populateArticleHeading($article) . $article->content);
 		}
 
 		// Extract the {{...}} part of the content, storing the preceding and following strings for later reassembly
@@ -168,7 +168,7 @@ Yii::log("In at top................." , CLogger::LEVEL_WARNING, 'system.test.kim
 //		$decryptedContent = $util->decrypt($content);
 $decryptedContent = $content;
 
-		$content =  Yii::app()->session['stash_pre'] . $decryptedContent .  Yii::app()->session['stash_post'];
+		$content =  $this->fixChars(Yii::app()->session['stash_pre'] . $decryptedContent .  Yii::app()->session['stash_post']);
 		//if (strstr($content, "{{"))
 			//$this->redirect(array('resolveParentSiteGalleryAddon', 'repeat' => '1', 'repeatContent' => $content));
 
@@ -270,6 +270,13 @@ $decryptedContent = $content;
 			$catDesc = $category->name;
 
 		$content .= "<div>";
+			$content .= "<p>";
+				$content .= "<img style='float:right; margin:0px 0px 15px 15px; width:150px; height:auto' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/thumb_" . $article->thumbnail_path .  "' alt='No Image' >";
+				$content .= "<div style='font-size:1.2em; font-weight:bold; color:#424242'>" . $article->title . "</div>";
+				$content .= "<div style='font-size:0.9em; padding-top:5px; height:12px; color:#989898'>" . $catDesc . "&nbsp&nbsp" . $article->date . "</div>";
+				$content .= "<p style='font-size:1.1em; color:#424242'>" . $article->intro . "</p>";
+			$content .= "</p>";
+/***
 			$content .= "<table><tr>";
 				$content .= "<td width='75%'>";
 					$content .= "<div style='font-size:1.2em; font-weight:bold; color:#424242'>" . $article->title . "</div>";
@@ -278,9 +285,13 @@ $decryptedContent = $content;
 				$content .= "<img style='width:150px; height:auto' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/thumb_" . $article->thumbnail_path .  "' alt='No Image' >";
 				$content .= "</td>";
 			$content .= "</tr></table>";
+***/
 		$content .= "</div>";
-
 		return $content;
 	}
 
+	private function fixChars($str)
+	{
+		return mb_convert_encoding($str, "HTML-ENTITIES", "UTF-8");
+	}
 }

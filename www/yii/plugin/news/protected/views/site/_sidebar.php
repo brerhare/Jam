@@ -44,9 +44,9 @@ echo "<div id='sidebar' style='display:none'>";
 
 				echo "<img src='/news/img/gray-circle.png' height='5px' width='5px' style='padding:0px 4px 2px 0px;'/>";
 
-				echo "<a class='uline' href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['parenturl'] . "/?art=" . $article->id .       "&page=" . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", $article->title)          . '"' . ")'>";
+				echo "<a class='uline' href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['parenturl'] . "/?art=" . $article->id .       "&page=" . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", mb_convert_encoding($article->title, "HTML-ENTITIES", "UTF-8") )          . '"' . ")'>";
 
-				echo $article->title . "<br/>";
+				echo mb_convert_encoding($article->title, "HTML-ENTITIES", "UTF-8") . "<br/>";
 				echo "</a>";
 				if ($cnt++ >= 2)
 					break;
