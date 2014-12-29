@@ -8,6 +8,8 @@ angular.module('stock')
             return $http.get(url);
         },
         addItem: function (item) {
+alert(item);
+            //return $http.post(url, "{'daata':'23'}");
             return $http.post(url, item);
         },
         deleteItem: function (item) {

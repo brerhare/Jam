@@ -21,6 +21,8 @@ logClear();
 logWrite(print_r('$_SERVER_["REQUEST_METHOD"] = '. $_SERVER['REQUEST_METHOD'], true));
 logWrite(print_r('$_SERVER_["REQUEST_URI"] = '. $_SERVER['REQUEST_URI'], true));
 logWrite('$_REQUEST = ' . print_r($_REQUEST, true));
+logWrite('$_GET = '. print_r($_GET, true));
+logWrite('$_POST = '. print_r($_POST, true));
 logWrite('$_SERVER = ' . print_r($_SERVER, true));
 
 class MyAPI extends API
@@ -66,9 +68,29 @@ class MyAPI extends API
 			}
 			return $arr;
 		}
-		else
+		else if ($this->method == 'POST')
 		{
-			return "Only accepts GET requests";
+logWrite('In Post handler');
+
+$obj = json_decode(file_get_contents("php://input"),true);
+
+logWrite('Stihl in Post handler' . $obj);
+
+$x=print_r($obj, true);
+logWrite('STILL.. ' . $x);
+
+//logWrite('desc='.$this->
+/*
+			DB::insert('stock_markup_group', array(
+				'id' => $this->id;
+$name = 'Frank';
+DB::insert('tbl', array(
+  'name' => $name,
+  'age' => 23,
+  'height' => 10.75
+));
+*/
+return 'xx';
 		}
 	}
 }
