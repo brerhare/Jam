@@ -1,4 +1,4 @@
-  var url = 'http://stock.wireflydesign.com/server/api/group/';
+var url = 'http://stock.wireflydesign.com/server/api/stock_markup_group/';
 
 angular.module('stock')
 
@@ -13,10 +13,10 @@ angular.module('stock')
             return $http.post(url, person);
         },
         deletePerson: function (person) {
-            return $http.delete(url + person.Id);
+            return $http.delete(url + person.id);
         },
         updatePerson: function (person) {
-            return $http.put(url + person.Id, person);
+            return $http.put(url + person.id, person);
         }
     };
 })
@@ -35,7 +35,7 @@ angular.module('stock')
 })
 
 
-  .controller('CustomerGroupCtrl', function ($scope, personFactory, notificationFactory) {
+  .controller('CustomerMarkupGroupCtrl', function ($scope, personFactory, notificationFactory) {
     $scope.people = [];
     $scope.addMode = false;
  

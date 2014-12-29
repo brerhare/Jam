@@ -1,6 +1,6 @@
 <!-- http://blog.jongallant.com/2013/05/angularjs-webapi-ef.html#.VJ62FsgHA -->
 
-<link rel="stylesheet" href="app/customer/group/customerGroup.css"/>
+<link rel="stylesheet" href="app/customer/group/customerMarkupGroup.css"/>
   
 <style>
 button {margin-right:5px;}
@@ -8,7 +8,7 @@ button {margin-right:5px;}
 
 <div class="container-fluid">
   
- <h4 style="text-align:center">Maintain customer groups</h4>
+ <h4 style="text-align:center">Maintain customer markup groups</h4>
   
    <div ng-cloak>
         <div style="width: 500px;">
@@ -22,7 +22,9 @@ button {margin-right:5px;}
                         </div>
                     </th>
                     <th style="width: 50px;">Id</th>
-                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Percent</th>
+                    <th>Default?</th>
                 </tr>
                 <tr ng-show="addMode">
                     <td>
@@ -39,9 +41,11 @@ button {margin-right:5px;}
                     </td>
                     <td></td>
                     <td>
-                        <input ng-model="person.Name" /></td>
+                        <input ng-model="person.description" /></td>
+                        <input ng-model="person.percent" /></td>
+                        <input ng-model="person.isDefault" /></td>
                 </tr>
-                <tr ng-repeat="person in people | orderBy:'Id':true">
+                <tr ng-repeat="person in people | orderBy:'id':true">
                     <td>
                         <div class="btn-toolbar" ng-show="person.editMode == null || person.editMode == false">
                             <div class="btn-group">
@@ -65,10 +69,18 @@ button {margin-right:5px;}
                             </div>
                         </div>
                     </td>
-                    <td>{{person.Id}}</td>
+                    <td>{{person.id}}</td>
                     <td>
-                        <span ng-show="person.editMode == null || person.editMode == false">{{person.Name}}</span>
-                        <input ng-model="person.Name" ng-show="person.editMode == true" />
+                        <span ng-show="person.editMode == null || person.editMode == false">{{person.description}}</span>
+                        <input ng-model="person.description" ng-show="person.editMode == true" />
+                    </td>
+                    <td>
+                        <span ng-show="person.editMode == null || person.editMode == false">{{person.percent}}</span>
+                        <input ng-model="person.percent" ng-show="person.editMode == true" />
+                    </td>
+                    <td>
+                        <span ng-show="person.editMode == null || person.editMode == false">{{person.isDefault}}</span>
+                        <input ng-model="person.isDefault" ng-show="person.editMode == true" />
                     </td>
                 </tr>
             </table>

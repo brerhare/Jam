@@ -1,5 +1,6 @@
 <?php
 
+
 /*****
 This .htaccess is required in the current directory ...
 RewriteEngine On
@@ -11,6 +12,10 @@ RewriteRule (.*)$ api.php?request=$1 [QSA,NC,L]
 require_once 'api.class.php';
 require_once 'log.php';
 require_once 'meekrodb.2.3.class.php';
+
+DB::$user = 'stock';
+DB::$password = 'stock,';
+DB::$dbName = 'stock';
 
 logClear();
 logWrite(print_r('$_SERVER_["REQUEST_METHOD"] = '. $_SERVER['REQUEST_METHOD'], true));
@@ -43,16 +48,23 @@ class MyAPI extends API
      * Endpoints
      */
 
-	protected function group() {
-		logWrite($this->method);
-		if ($this->method == 'GET') {
+	protected function stock_markup_group()
+	{
+		logWrite("method = " . $this->method);
+		$uid = 1;	//@@NB: hardcoded
+		if ($this->method == 'GET')
+		{
 			$arr = array();
-			$arr[0]['Id'] = 1;
-			$arr[0]['Name'] = 'AAA';
-			$arr[1]['Id'] = 2;
-			$arr[1]['Name'] = 'BBB';
+			$ix = 0;
+			$query = DB::query("SELECT * FROM stock_markup_group WHERE uid=%i", $uid);
+			foreach ($query as $q) {
+    			$arr[$ix]['id'] = $q['id'];
+    			$arr[$ix]['description'] = $q['description'];
+    			$arr[$ix]['percent'] = $q['percent'];
+    			$arr[$ix]['isDefault'] = $q['is_default'];
+				$ix++;
+			}
 			return $arr;
-			//return "Your name is " . $this->User->name;
 		}
 		else
 		{

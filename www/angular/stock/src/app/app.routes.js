@@ -37,10 +37,10 @@ angular.module('stock')
         controller: 'CustomerEditCtrl'
       })
 
-      .state('home.customer-group', {
+      .state('home.customer-markup-group', {
         url: '/groups',
-        templateUrl: 'app/home/customer/group/customerGroup.html',
-        controller: 'CustomerGroupCtrl'
+        templateUrl: 'app/home/customer/markupGroup/customerMarkupGroup.html',
+        controller: 'CustomerMarkupGroupCtrl'
       })
       .state('home.customer-invoice', {
         url: '/invoices',
