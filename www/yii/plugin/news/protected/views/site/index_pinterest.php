@@ -138,12 +138,12 @@ if ($showArt == '')
 			{
 				// Main page large grid format
 				// ---------------------------
-				echo "<a href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['parenturl'] . "/?art=" . $article->id . '&page=' . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", urlencode($article->title))    . '"' . ")'>";
+				echo "<a href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['parenturl'] . "/?art=" . $article->id . '&page=' . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", mb_convert_encoding($article->title, "HTML-ENTITIES", "UTF-8"))    . '"' . ")'>";
 					echo "<span class='item' style='margin-bottom:13px;' >";
 						echo "<img src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/thumb_" . $article->thumbnail_path .  "' alt='No Image' width='100%'>";
 						echo "<span class='itemleadin'>" . $showCat . "&nbsp&nbsp" . $article->date . "</span><hr class='wtf-did-this-hr-take-to-DO'/>";
-						echo "<span class='itemintro' style='font-weight:bold; color:#424242'>" . $article->title . "</span><br/>";
-						echo "<span class='itemintro' style='padding-top:0px; color:#000000'>" . $article->intro . "</span><br/>";
+						echo "<span class='itemintro' style='font-weight:bold; color:#424242'>" . mb_convert_encoding($article->title, "HTML-ENTITIES", "UTF-8") . "</span><br/>";
+						echo "<span class='itemintro' style='padding-top:0px; color:#000000'>" . mb_convert_encoding($article->intro, "HTML-ENTITIES", "UTF-8") . "</span><br/>";
 					echo "</span>";
 				echo "</a>";
 			}
@@ -156,7 +156,7 @@ if ($showArt == '')
 						echo "<td width='80px' align=right>";
 							echo "<img style='max-width:65px; max-height:50px; vertical-align:bottom; overflow:hidden;' src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/thumb_" . $article->thumbnail_path .  "' alt='No Image'>";
 						echo "</td><td style='padding-left:10px'>";
-							echo "<span style='padding-top:15px; font-size:14; color:#000000'>" . $article->title . "</span>";
+							echo "<span style='padding-top:15px; font-size:14; color:#000000'>" . mb_convert_encoding($article->title, "HTML-ENTITIES", "UTF-8") . "</span>";
 							echo "<span style='padding-left:0px;' class='itemleadin'>" . $catDesc . "&nbsp&nbsp" . $article->date . "</span>";
 						echo "</td>";
 					echo "</tr></table>";
