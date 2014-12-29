@@ -2,19 +2,19 @@ var url = 'http://stock.wireflydesign.com/server/api/stock_markup_group/';
 
 angular.module('stock')
 
-  .factory('personFactory', function ($http) {
+  .factory('itemFactory', function ($http) {
     return {
-        getPeople: function () {
+        getItems: function () {
             return $http.get(url);
         },
-        addPerson: function (person) {
-            return $http.post(url, person);
+        addItem: function (item) {
+            return $http.post(url, item);
         },
-        deletePerson: function (person) {
-            return $http.delete(url + person.id);
+        deleteItem: function (item) {
+            return $http.delete(url + item.id);
         },
-        updatePerson: function (person) {
-            return $http.put(url + person.id, person);
+        updateItem: function (item) {
+            return $http.put(url + item.id, item);
         }
     };
 })
@@ -33,31 +33,31 @@ angular.module('stock')
 })
 
 
-  .controller('CustomerMarkupGroupCtrl', function ($scope, personFactory, notificationFactory) {
-    $scope.people = [];
+  .controller('CustomerMarkupGroupCtrl', function ($scope, itemFactory, notificationFactory) {
+    $scope.items = [];
     $scope.addMode = false;
  
     $scope.toggleAddMode = function () {
         $scope.addMode = !$scope.addMode;
     };
  
-    $scope.toggleEditMode = function (person) {
-        person.editMode = !person.editMode;
+    $scope.toggleEditMode = function (item) {
+        item.editMode = !item.editMode;
     };
  
-    var getPeopleSuccessCallback = function (data, status) {
-        $scope.people = data;
+    var getItemsSuccessCallback = function (data, status) {
+        $scope.items = data;
     };
  
     var successCallback = function (data, status, headers, config) {
         notificationFactory.success();
-        return personFactory.getPeople().success(getPeopleSuccessCallback).error(errorCallback);
+        return itemFactory.getItems().success(getItemsSuccessCallback).error(errorCallback);
     };
  
     var successPostCallback = function (data, status, headers, config) {
         successCallback(data, status, headers, config).success(function () {
             $scope.toggleAddMode();
-            $scope.person = {};
+            $scope.item = {};
         });
     };
  
@@ -66,19 +66,18 @@ angular.module('stock')
     };
  
  
-    personFactory.getPeople().success(getPeopleSuccessCallback).error(errorCallback);
-//$scope.people = [{'Id':1, 'Name':'aaa'},{'Id':2, 'Name':'bbb'},{'Id':3, 'Name':'ccc'}];
+    itemFactory.getItems().success(getItemsSuccessCallback).error(errorCallback);
  
-    $scope.addPerson = function () {
-        personFactory.addPerson($scope.person).success(successPostCallback).error(errorCallback);
+    $scope.addItem = function () {
+        itemFactory.addItem($scope.item).success(successPostCallback).error(errorCallback);
     };
  
-    $scope.deletePerson = function (person) {
-        personFactory.deletePerson(person).success(successCallback).error(errorCallback);
+    $scope.deleteItem = function (item) {
+        itemFactory.deleteItem(item).success(successCallback).error(errorCallback);
     };
  
-    $scope.updatePerson = function (person) {
-        personFactory.updatePerson(person).success(successCallback).error(errorCallback);
+    $scope.updateItem = function (item) {
+        itemFactory.updateItem(item).success(successCallback).error(errorCallback);
     };
 });
 
