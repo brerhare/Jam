@@ -85,10 +85,12 @@ logWrite("got json obj=".print_r($obj, true));
 			foreach ($postColumns as $column) {
 				if (!in_array($column, $keys)) {
 logWrite("missing key for col=".print_r($column, true));
-					return "fail";
+					$values[$column] = NULL;
 				}
+				else {
 logWrite("matched key for col=".print_r($column, true));
-				$values[$column] = $obj[$column];
+					$values[$column] = $obj[$column];
+				}
 			}
 			DB::insert('stock_markup_group', $values);
 			return 'ok';
@@ -101,7 +103,6 @@ logWrite("got json obj=".print_r($obj, true));
 			$id = (int) $this->args[0];
 			if ($id == 0)
 				return "fail";
-			$query = DB::query("SELECT * FROM stock_markup_group WHERE id=%i", $id);
            	$keys = array_keys($obj);
 			$values = array();
 			foreach ($putColumns as $column) {
@@ -110,12 +111,7 @@ logWrite("matched key for col=".print_r($column, true));
 					$values[$column] = $obj[$column];
 				}
 			}
-
-DB::update('stock_markup_group', $values, "id=%i", $id);
-
-// DB::update('accounts', array( 'password' => DB::sqleval("REPEAT('joe', 3)")), "username=%s", 'Joe');
-
-			//DB::replace('stock_markup_group', $values);
+			DB::update('stock_markup_group', $values, "id=%i", $id);
 			return 'ok';
 		}
 		else if ($this->method == 'DELETE')

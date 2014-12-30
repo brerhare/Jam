@@ -26,10 +26,11 @@ angular.module('stock')
   .factory('notificationFactory', function () {
     return {
         success: function () {
-//alert('hold for log');
+alert('success - hold for log');
             toastr.success("Success");
         },
         error: function (text) {
+alert('error - hold for log');
             toastr.error(text, "Error!");
         }
     };
@@ -43,10 +44,22 @@ angular.module('stock')
         $scope.addMode = !$scope.addMode;
     };
  
-    $scope.toggleEditMode = function (item) {
-        item.editMode = !item.editMode;
+    $scope.toggleEditDescription = function (item) {
+        item.editDescription = !item.editDescription;
     };
  
+    $scope.toggleEditPercent = function (item) {
+        item.editPercent = !item.editPercent;
+    };
+ 
+	$scope.editDescriptionEnd = function(item){
+		if (event.keyCode == 27 )
+			$scope.toggleEditDescription();
+		if (event.keyCode == 13 && item.description){
+			$scope.toggleEditDescription();
+		}
+  	};
+
     var getItemsSuccessCallback = function (data, status) {
         $scope.items = data;
     };
@@ -82,3 +95,18 @@ angular.module('stock')
     };
 });
 
+/***
+app.directive('ngEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.ngEnter);
+                });
+
+                event.preventDefault();
+            }
+        });
+    };
+});
+***/
