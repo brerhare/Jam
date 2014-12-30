@@ -1,5 +1,9 @@
 var url = 'http://stock.wireflydesign.com/server/api/stock_markup_group/';
 
+toastr.options.timeOut = 1500;
+toastr.options.positionClass = 'toast-bottom-right';
+//toastr.options.progressBar = true; 
+
 angular.module('stock')
 
   .factory('itemFactory', function ($http) {
@@ -22,16 +26,14 @@ angular.module('stock')
   .factory('notificationFactory', function () {
     return {
         success: function () {
-			alert('success');
-            //toastr.success("Success");
+//alert('hold for log');
+            toastr.success("Success");
         },
         error: function (text) {
-			alert('error');
-            //toastr.error(text, "Error!");
+            toastr.error(text, "Error!");
         }
     };
 })
-
 
   .controller('CustomerMarkupGroupCtrl', function ($scope, itemFactory, notificationFactory) {
     $scope.items = [];
@@ -64,7 +66,6 @@ angular.module('stock')
     var errorCallback = function (data, status, headers, config) {
         notificationFactory.error(data.ExceptionMessage);
     };
- 
  
     itemFactory.getItems().success(getItemsSuccessCallback).error(errorCallback);
  

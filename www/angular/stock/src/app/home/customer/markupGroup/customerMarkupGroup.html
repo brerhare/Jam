@@ -6,11 +6,11 @@
 
 button {margin-right:5px;}
 table {table-layout: fixed; }
-.col-button { width:100px; }
 .col-id { width:50px; }
 .col-description { width:300px; }
 .col-percent { width:75px; }
 .col-is-default { width:75px; }
+.col-button { width:80px; }
 
 .col-i-description { width:290px; }
 .col-i-percent { width:65px; }
@@ -29,6 +29,10 @@ table {table-layout: fixed; }
         <div style="width:600px;">
             <table class="table Xtable-striped table-bordered table-condensed table-hover">
                 <tr>
+                    <th class='col-id'>         Id</th>
+                    <th class='col-description'>Description</th>
+                    <th class='col-percent'>    Percent</th>
+                    <th class='col-is-default'> Default?</th>
                     <th class='col-button'>
                         <div class="btn-toolbar">
                             <button type="button" ng-click="toggleAddMode()" class="btn btn-xs btn-success">
@@ -36,12 +40,12 @@ table {table-layout: fixed; }
                             </button>
                         </div>
                     </th>
-                    <th class='col-id'>Id</th>
-                    <th class='col-description'>Description</th>
-                    <th class='col-percent'>Percent</th>
-                    <th class='col-is-default'>Default?</th>
                 </tr>
                 <tr ng-show="addMode">
+                    <td class='col-id'></td>
+                    <td class='col-description'> <input class='col-i-description' ng-model="item.description" /></td>
+                    <td class='col-percent'>     <input class='col-i-percent'     ng-model="item.percent" /></td>
+                    <td class='col-is-default'>  <input class='col-i-is-default'  ng-model="item.is_default" /></td>
                     <td class='col-button'>
                         <div class="btn-toolbar">
                             <div class="btn-group">
@@ -54,12 +58,21 @@ table {table-layout: fixed; }
                             </div>
                         </div>
                     </td>
-                    <td class='col-id'></td>
-                    <td class='col-description'> <input class='col-i-description' ng-model="item.description" /></td>
-                    <td class='col-percent'> <input class='col-i-percent' ng-model="item.percent" /></td>
-                    <td class='col-is-default'> <input class='col-i-is-default' ng-model="item.isDefault" /></td>
                 </tr>
                 <tr ng-repeat="item in items | orderBy:'id':true">
+                    <td class='col-id'>{{item.id}}</td>
+                    <td class='col-description'>
+                        <span ng-show="item.editMode == null || item.editMode == false">{{item.description}}</span>
+                        <input class='col-i-description' ng-model="item.description" ng-show="item.editMode == true" />
+                    </td>
+                    <td class='col-percent'>
+                        <span ng-show="item.editMode == null || item.editMode == false">{{item.percent}}</span>
+                        <input class='col-i-percent' ng-model="item.percent" ng-show="item.editMode == true" />
+                    </td>
+                    <td class='col-is-default'>
+                        <span ng-show="item.editMode == null || item.editMode == false">{{item.is_default}}</span>
+                        <input class='col-i-is-default' ng-model="item.is_default" ng-show="item.editMode == true" />
+                    </td>
                     <td class='col-button'>
                         <div class="btn-toolbar" ng-show="item.editMode == null || item.editMode == false">
                             <div class="btn-group">
@@ -81,19 +94,6 @@ table {table-layout: fixed; }
                                 </button>
                             </div>
                         </div>
-                    </td>
-                    <td class='col-id'>{{item.id}}</td>
-                    <td class='col-description'>
-                        <span ng-show="item.editMode == null || item.editMode == false">{{item.description}}</span>
-                        <input class='col-i-description' ng-model="item.description" ng-show="item.editMode == true" />
-                    </td>
-                    <td class='col-percent'>
-                        <span ng-show="item.editMode == null || item.editMode == false">{{item.percent}}</span>
-                        <input class='col-i-percent' ng-model="item.percent" ng-show="item.editMode == true" />
-                    </td>
-                    <td class='col-is-default'>
-                        <span ng-show="item.editMode == null || item.editMode == false">{{item.isDefault}}</span>
-                        <input class='col-i-is-default' ng-model="item.isDefault" ng-show="item.editMode == true" />
                     </td>
                 </tr>
             </table>

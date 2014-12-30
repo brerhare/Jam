@@ -4,9 +4,13 @@
 /*****
 This .htaccess is required in the current directory ...
 RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule (.*)$ api.php?request=$1 [QSA,NC,L]
+RewriteCond %{REQUEST_FILENAME} !-s
+RewriteRule ^(.*)$ api.php?request=$1 [QSA,NC,L]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^(.*)$ api.php [QSA,NC,L]
+RewriteCond %{REQUEST_FILENAME} -s
+RewriteRule ^(.*)$ api.php [QSA,NC,L]
 *****/
 
 require_once 'api.class.php';
@@ -52,45 +56,48 @@ class MyAPI extends API
 
 	protected function stock_markup_group()
 	{
-		logWrite("method = " . $this->method);
+		logWrite("Method = " . $this->method);
 		$uid = 1;	//@@NB: hardcoded
+
+		$allColumns  = array('id', 'uid', 'description', 'percent', 'is_default');
+		$showColumns = array('id',        'description', 'percent', 'is_default');
+
 		if ($this->method == 'GET')
 		{
 			$arr = array();
 			$ix = 0;
 			$query = DB::query("SELECT * FROM stock_markup_group WHERE uid=%i", $uid);
 			foreach ($query as $q) {
-    			$arr[$ix]['id'] = $q['id'];
-    			$arr[$ix]['description'] = $q['description'];
-    			$arr[$ix]['percent'] = $q['percent'];
-    			$arr[$ix]['isDefault'] = $q['is_default'];
+				foreach ($showColumns as $column)
+    				$arr[$ix][$column] = $q[$column];
 				$ix++;
 			}
 			return $arr;
 		}
 		else if ($this->method == 'POST')
 		{
-logWrite('In Post handler');
-
-$obj = json_decode(file_get_contents("php://input"),true);
-
-logWrite('Stihl in Post handler' . $obj);
-
-$x=print_r($obj, true);
-logWrite('STILL.. ' . $x);
-
-//logWrite('desc='.$this->
-/*
-			DB::insert('stock_markup_group', array(
-				'id' => $this->id;
-$name = 'Frank';
-DB::insert('tbl', array(
-  'name' => $name,
-  'age' => 23,
-  'height' => 10.75
-));
-*/
-return 'xx';
+			$obj = json_decode(file_get_contents("php://input"),true);
+            $keys = array_keys($obj);
+			$values = array();
+			$values['uid'] = $uid;
+			foreach ($showColumns as $column) {
+				if (!in_array($column, $keys)) {
+					// @@TODO: set http status code
+					return "Missing column info for " . $column;
+				}
+				$values[$column] = $obj[$column];
+			}
+			DB::insert('stock_markup_group', $values);
+			return 'ok';
+		}
+		else if ($this->method == 'DELETE')
+		{
+			$id = (int) $this->args[0];
+			if ($id != 0)
+			{
+				DB::delete('stock_markup_group', "id=%i", $id);
+			}
+			return 'ok';
 		}
 	}
 }
