@@ -60,7 +60,8 @@ class MyAPI extends API
 		$uid = 1;	//@@NB: hardcoded
 
 		$allColumns  = array('id', 'uid', 'description', 'percent', 'is_default');
-		$showColumns = array('id',        'description', 'percent', 'is_default');
+		$postColumns = array(             'description', 'percent', 'is_default');
+		$putColumns  = array('id',        'description', 'percent', 'is_default');
 
 		if ($this->method == 'GET')
 		{
@@ -68,7 +69,7 @@ class MyAPI extends API
 			$ix = 0;
 			$query = DB::query("SELECT * FROM stock_markup_group WHERE uid=%i", $uid);
 			foreach ($query as $q) {
-				foreach ($showColumns as $column)
+				foreach ($allColumns as $column)
     				$arr[$ix][$column] = $q[$column];
 				$ix++;
 			}
@@ -77,17 +78,44 @@ class MyAPI extends API
 		else if ($this->method == 'POST')
 		{
 			$obj = json_decode(file_get_contents("php://input"),true);
+logWrite("got json obj=".print_r($obj, true));
             $keys = array_keys($obj);
 			$values = array();
 			$values['uid'] = $uid;
-			foreach ($showColumns as $column) {
+			foreach ($postColumns as $column) {
 				if (!in_array($column, $keys)) {
-					// @@TODO: set http status code
-					return "Missing column info for " . $column;
+logWrite("missing key for col=".print_r($column, true));
+					return "fail";
 				}
+logWrite("matched key for col=".print_r($column, true));
 				$values[$column] = $obj[$column];
 			}
 			DB::insert('stock_markup_group', $values);
+			return 'ok';
+		}
+		else if ($this->method == 'PUT')
+		{
+			$obj = json_decode(file_get_contents("php://input"),true);
+logWrite("got json obj=".print_r($obj, true));
+			// Pick up original
+			$id = (int) $this->args[0];
+			if ($id == 0)
+				return "fail";
+			$query = DB::query("SELECT * FROM stock_markup_group WHERE id=%i", $id);
+           	$keys = array_keys($obj);
+			$values = array();
+			foreach ($putColumns as $column) {
+				if (in_array($column, $keys)) {
+logWrite("matched key for col=".print_r($column, true));
+					$values[$column] = $obj[$column];
+				}
+			}
+
+DB::update('stock_markup_group', $values, "id=%i", $id);
+
+// DB::update('accounts', array( 'password' => DB::sqleval("REPEAT('joe', 3)")), "username=%s", 'Joe');
+
+			//DB::replace('stock_markup_group', $values);
 			return 'ok';
 		}
 		else if ($this->method == 'DELETE')
@@ -96,6 +124,7 @@ class MyAPI extends API
 			if ($id != 0)
 			{
 				DB::delete('stock_markup_group', "id=%i", $id);
+				return 'ok';
 			}
 			return 'ok';
 		}
