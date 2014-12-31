@@ -65,7 +65,7 @@
                     <td class='col-id'>{{item.id}}</td>
                     <td class='col-description'>
                         <span ng-click="toggleEditDescription(item)" ng-show="item.editDescription != true">{{item.description}}</span>
-                        <input class='col-i-description' ng-model="item.description" ng-show="item.editDescription == true" ng-keyup="editDescriptionEnd(item)" />
+                        <input class='col-i-description' ng-model="item.description" ng-show="item.editDescription == true" ng-keypress="editDescriptionEnd($event, item)" />
                     </td>
                     <td class='col-percent'>
                         <span ng-click="toggleEditPercent(item)" ng-show="item.editPercent != true">{{item.percent}}</span>
