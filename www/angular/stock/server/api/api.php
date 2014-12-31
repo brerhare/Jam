@@ -65,6 +65,7 @@ class MyAPI extends API
 
 		if ($this->method == 'GET')
 		{
+// @@TODO get single item
 			$arr = array();
 			$ix = 0;
 			$query = DB::query("SELECT * FROM stock_markup_group WHERE uid=%i", $uid);

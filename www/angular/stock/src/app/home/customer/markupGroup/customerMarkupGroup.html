@@ -46,8 +46,7 @@
                     <td class='col-id'></td>
                     <td class='col-description'> <input class='col-i-description' ng-model="item.description" /></td>
                     <td class='col-percent'>     <input class='col-i-percent'     ng-model="item.percent" /></td>
-					<td></td>
-<!--                <td class='col-is-default'>  <input class='col-i-is-default'  ng-model="item.is_default" /></td> -->
+					<td class='col-is-default'></td>
                     <td class='col-button'>
                         <div class="btn-toolbar">
                             <div class="btn-group">
@@ -72,8 +71,7 @@
                         <input class='col-i-percent'     ng-model="item.percent"     ng-show="item.editPercent == true"      ng-keypress="editPercentEnd($event, item)" />
                     </td>
                     <td class='col-is-default'>
-                        <span ng-show="item.editMode != true">{{item.is_default}}</span>
-<!--                    <input class='col-i-is-default' ng-model="item.is_default" ng-show="item.editMode == true" /> -->
+						<input class='col-i-is-default' name="x" type="radio" ng-model="default_item" value="{{item.id}}" ng-change="setDefaultItem(item)" />
                     </td>
                     <td class='col-button'>
                         <div class="btn-toolbar">

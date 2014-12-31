@@ -8,8 +8,9 @@ angular.module('stock')
 
 	.factory('itemFactory', function ($http) {
 		return {
-			getItems: function () {
-				return $http.get(url);
+			getItem: function (id) {
+				id = typeof id !== 'undefined' ? id : "";
+				return $http.get(url + id);
 			},
 			addItem: function (item) {
 				return $http.post(url, item);
@@ -39,6 +40,7 @@ angular.module('stock')
 	.controller('CustomerMarkupGroupCtrl', function ($scope, itemFactory, notificationFactory) {
 		$scope.items = [];
 		$scope.addMode = false;
+		$scope.default_item = null;
  
 		$scope.toggleAddMode = function () {
 			$scope.addMode = !$scope.addMode;
@@ -87,15 +89,32 @@ angular.module('stock')
 			}
 		};
 
+		$scope.setDefaultItem = function(item) {
+			for (var i = 0; i < $scope.items.length; i++) {
+				if ($scope.items[i].id == $scope.default_item) {
+					$scope.items[i].is_default = 0;
+					$scope.updateItem($scope.items[i]);
+				}
+			}
+			item.is_default = 1;
+			$scope.updateItem(item);	
+		}
+
 // ----------------------------------------------------------------------------------------
 
-		var getItemsSuccessCallback = function (data, status) {
+		var getItemSuccessCallback = function (data, status) {
 			$scope.items = data;
+			for (var i = 0; i < $scope.items.length; i++) {
+				if ($scope.items[i].is_default == 1)
+					$scope.default_item = $scope.items[i].id;
+			}
 		};
  
+// ----------------------------------------------------------------------------------------
+
 		var successCallback = function (data, status, headers, config) {
 			notificationFactory.success();
-			return itemFactory.getItems().success(getItemsSuccessCallback).error(errorCallback);
+			return itemFactory.getItem().success(getItemSuccessCallback).error(errorCallback);
 		};
  
 		var successPostCallback = function (data, status, headers, config) {
@@ -109,7 +128,7 @@ angular.module('stock')
 			notificationFactory.error(data.ExceptionMessage);
 		};
  
-		itemFactory.getItems().success(getItemsSuccessCallback).error(errorCallback);
+		itemFactory.getItem().success(getItemSuccessCallback).error(errorCallback);
  
 		$scope.addItem = function () {
 			itemFactory.addItem($scope.item).success(successPostCallback).error(errorCallback);
