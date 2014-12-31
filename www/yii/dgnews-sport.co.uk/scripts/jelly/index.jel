@@ -180,7 +180,7 @@ css.top = 295px
 			addon.mailer.signup.inputspacing = 5px
 			addon.mailer.signup.successtextcolor = white
 			addon.mailer.signup.failuretextcolor = black
-			addon.mailer.signup.inputwidth = 130px
+			addon.mailer.signup.inputwidth = 140px
 		
 	
 		[home-content]
