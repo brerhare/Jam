@@ -26,11 +26,11 @@ angular.module('stock')
 	.factory('notificationFactory', function () {
 		return {
 			success: function () {
-alert('success - hold for log');
+//alert('success - hold for log');
 				toastr.success("Success");
 			},
 			error: function (text) {
-alert('error - hold for log');
+//alert('error - hold for log');
 				toastr.error(text, "Error!");
 			}
 		};
@@ -42,6 +42,8 @@ alert('error - hold for log');
  
 		$scope.toggleAddMode = function () {
 			$scope.addMode = !$scope.addMode;
+			if ($scope.addMode)
+				$scope.uneditAllBut(null);
 		};
  
 		$scope.uneditAllBut = function(item) {
@@ -54,18 +56,34 @@ alert('error - hold for log');
 		};
 
 		$scope.toggleEditDescription = function (item) {
-			item.editDescription = !item.editDescription;
-			if (item.editDescription)
-				$scope.uneditAllBut(item);
+			if (!$scope.addMode)
+			{
+				item.editDescription = !item.editDescription;
+				if (item.editDescription)
+					$scope.uneditAllBut(item);
+			}
 		};
 
 		$scope.toggleEditPercent = function (item) {
-			item.editPercent = !item.editPercent;
+			if (!$scope.addMode)
+			{
+				item.editPercent = !item.editPercent;
+				if (item.editPercent)
+					$scope.uneditAllBut(item);
+			}
 		};
  
 		$scope.editDescriptionEnd = function(keyEvent, item) {
 			if (event.keyCode == 13 && item.description){
 				$scope.toggleEditDescription(item);
+				$scope.updateItem(item);
+			}
+		};
+
+		$scope.editPercentEnd = function(keyEvent, item) {
+			if (event.keyCode == 13 && item.percent){
+				$scope.toggleEditPercent(item);
+				$scope.updateItem(item);
 			}
 		};
 
