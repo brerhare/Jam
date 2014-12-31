@@ -79,18 +79,18 @@ css.background-color = white
 			[signup_container]
 			child = signup
 			css.height = 50px
-			css.width = 410px
+			css.width = 400px
 			css.margin-top = 20px
 			fx.rounding = 25px
 			css.background-color = #cddff2
 			css.margin-right = 15px
 			
 				[signup]
-				css.margin-left = 25px
-				css.margin-top = 12px
+				css.margin-left = 20px
+				css.margin-top = 15px
 				addon.mailer.signup.orientation = horizontal
 				addon.mailer.signup.buttoncolor = #cddff2
-				addon.mailer.signup.buttontextcolor = black
+				addon.mailer.signup.buttontextcolor = #0c4782
 				addon.mailer.signup.buttontext = Sign Up
 				addon.mailer.signup.inputspacing = 5px
 				addon.mailer.signup.successtextcolor = green
@@ -113,11 +113,11 @@ css.background-color = white
 	child = slider_line, slider, slider_man
 	condition = @PAGE=@HOMEPAGE
 	css.width = 100%
-	css.height = 300px
+	css.height = 340px
 	css.position = relative
 	css.z-index = 900
 	css.margin-top = -55px
-	css.background-color = #a5cae0
+
 		
 		[slider_line]
 		css.height = 5px
@@ -127,6 +127,7 @@ css.background-color = white
 		[slider]
 		css.width = 100%
 		css.height = 300px
+		css.background-color = #a5cae0
 		addon.slider.parallax.width = 100%
 		addon.slider.parallax.height = 400px
 		addon.slider.parallax.background-image = /img/slider-background.jpg
@@ -166,13 +167,15 @@ css.background-color = white
 		addon.slider.parallax.source = db
 
 		[slider_man]
-		css.width = 50px
-		css.height = 50px
-		css.background-color = pink
-		css.margin-left = 100px
+		css.width = 60px
+		css.height = 60px
+		css.margin-left = 80%
+		css.margin-top = -25px
+		css.position = relative
+		css.z-index = 2000
 		image.url = img/man-centred.png
-		image.width = 48px
-		image.height = 45px
+		image.width = 59px
+		image.height = 55px
 	
 	[slider_area]
 	child = slider_line_2
@@ -266,7 +269,7 @@ child = footer-menu, footer-line, footnote
 css.width = 100%
 
 	[footer-menu]
-	child = footer-margin, footer-menu-content
+	child = footer-image-left, footer-menu-center, footer-image-right
 	css.height = 50px
 	css.width = 960px
 	#css.margin-top = 0px
@@ -274,25 +277,53 @@ css.width = 100%
 	css.background-color = #ffd800
 	css.position = relative
 	css.z-index = 950
+	stacking = horizontal
 	
-		[footer-margin]
-		css.height = 20px
-		css.width = 100%
-		
-		[footer-menu-content]
-		child = contact-page
-		stacking = horizontal
-		css.width = 90%
+		[footer-image-left]
+		css.width = 50px
+		css.height = 40px
+		css.margin-top = 4px
+		css.margin-left = 10px
 		css.position = relative
-		css.z-index = 960
+		css.z-index = 2000
+		image.url = img/man-left.png
+		image.width = 35px
+		image.height = 38px
+		
+		[footer-menu-center]
+		child = footer-menu-margin, footer-menu-content
+		css.width = 80%
 	
-		[contact-page]
-			html.raw = Contact Us
-			css.text-align = left
-			#css.width = 20%
-			css.color = #000000
-			css.font-size = 14px
-			click = ?layout=index&page=contact
+			[footer-menu-margin]
+			css.height = 20px
+			css.width = 100%
+		
+			[footer-menu-content]
+			child = contact-page
+			css.width = 100%
+			css.position = relative
+			css.z-index = 960
+			stacking = horizontal
+		
+				[contact-page]
+				html.raw = Contact Us
+				css.text-align = left
+				#css.width = 20%
+				css.color = #000000
+				css.font-size = 14px
+				click = ?layout=index&page=contact
+				
+		[footer-image-right]
+		css.width = 50px
+		css.height = 50px
+		css.margin-left = 5px
+		css.position = relative
+		css.z-index = 2000
+		image.url = img/man-right.png
+		image.width = 46px
+		image.height = 50px
+		
+		
 	
 	[footer-line]
 	css.height = 5px

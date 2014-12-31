@@ -86,8 +86,13 @@ class signup
 
 		// Create a separator defaulting to vertical
 		$separator = "<div style='height:" . $this->optionInputSpacing . "px'>&nbsp</div>";
+		$center = "<center>";
 		if ($this->optionOrientation == "horizontal")
+		{
 			$separator = "<span style='margin-left:" . $this->optionInputSpacing . "px'>&nbsp</span>";
+			$center = "";
+		}
+		
 
 		// Generate the content
 		$content = "<div ng-app>";
@@ -100,7 +105,7 @@ class signup
 				$content .= $separator;
 				$content .= "<input id='signup-email' class='signup-input' type='text' style='width:" . $this->optionInputWidth . "px' title='Email' />";
 				$content .= $separator;
-				$content .= "<center><button ng-click='addSignup()' id='signup-send-button' class='signup-visible signup-send-button' style='background:" . $this->optionButtonColor . "; color:" . $this->optionButtonTextColor . "' class='signup-send-button' id='save'>" . $this->optionButtonText . "</button></center>";
+				$content .= $center . "<button ng-click='addSignup()' id='signup-send-button' class='signup-visible signup-send-button' style='background:" . $this->optionButtonColor . "; color:" . $this->optionButtonTextColor . "' class='signup-send-button' id='save'>" . $this->optionButtonText . "</button>" . $center;
 				$content .= "<span id='signup-message' class='signup-invisible'>Message Area</span>";
 			$content .= "</div>";
 		$content .= "</div>";
