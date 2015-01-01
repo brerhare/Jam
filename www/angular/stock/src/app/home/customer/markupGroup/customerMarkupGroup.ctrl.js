@@ -54,7 +54,7 @@ angular.module('stock')
 					$scope.items[i].editDescription = false;
 					$scope.items[i].editPercent = false;
 				}
-			};
+			}
 		};
 
 		$scope.toggleEditDescription = function (item) {
@@ -98,7 +98,7 @@ angular.module('stock')
 			}
 			item.is_default = 1;
 			$scope.updateItem(item);	
-		}
+		};
 
 // ----------------------------------------------------------------------------------------
 
