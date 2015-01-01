@@ -5,12 +5,13 @@ angular.module('stock', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngR
 			getItem: function (url, id) {
 				id = typeof id !== 'undefined' ? id : "";
 				return $http({
-					url: url + item.id,
+					url: url + id,
 					method: "GET",
-					data: JSON.stringify(requestData),
+					//data: JSON.stringify(requestData),
+					data: '',
 					withCredentials: true,
 					headers: {
-						'Content-Type': 'application/json; charset=utf-8
+						'Content-Type': 'application/json; charset=utf-8'
 					}
 				})
 
