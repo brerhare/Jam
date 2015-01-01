@@ -1,11 +1,27 @@
 angular.module('stock', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'smart-table'])
 
-	.factory('itemFactory', function ($http) {
+	.factory('restFactory', function ($http) {
 		return {
+			getItem: function (url, id) {
+				id = typeof id !== 'undefined' ? id : "";
+				return $http({
+					url: url + item.id,
+					method: "GET",
+					data: JSON.stringify(requestData),
+					withCredentials: true,
+					headers: {
+						'Content-Type': 'application/json; charset=utf-8
+					}
+				})
+
+
+			},
+/*
 			getItem: function (id) {
 				id = typeof id !== 'undefined' ? id : "";
 				return $http.get(url + id);
 			},
+*/
 			addItem: function (item) {
 				return $http.post(url, item);
 			},

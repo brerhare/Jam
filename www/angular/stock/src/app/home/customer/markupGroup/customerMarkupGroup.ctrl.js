@@ -5,7 +5,7 @@ toastr.options.positionClass = 'toast-bottom-right';
 //toastr.options.progressBar = true; 
 
 angular.module('stock')
-	.controller('CustomerMarkupGroupCtrl', function ($scope, itemFactory, notificationFactory) {
+	.controller('CustomerMarkupGroupCtrl', function ($scope, restFactory, notificationFactory) {
 		$scope.items = [];
 		$scope.addMode = false;
 		$scope.default_item = null;
@@ -82,7 +82,7 @@ angular.module('stock')
 
 		var successCallback = function (data, status, headers, config) {
 			notificationFactory.success();
-			return itemFactory.getItem().success(getItemSuccessCallback).error(errorCallback);
+			return restFactory.getItem(url).success(getItemSuccessCallback).error(errorCallback);
 		};
  
 		var successPostCallback = function (data, status, headers, config) {
@@ -96,18 +96,18 @@ angular.module('stock')
 			notificationFactory.error(data.ExceptionMessage);
 		};
  
-		itemFactory.getItem().success(getItemSuccessCallback).error(errorCallback);
+		restFactory.getItem(url).success(getItemSuccessCallback).error(errorCallback);
  
 		$scope.addItem = function () {
-			itemFactory.addItem($scope.item).success(successPostCallback).error(errorCallback);
+			restFactory.addItem($scope.item).success(successPostCallback).error(errorCallback);
 		};
  
 		$scope.deleteItem = function (item) {
-			itemFactory.deleteItem(item).success(successCallback).error(errorCallback);
+			restFactory.deleteItem(item).success(successCallback).error(errorCallback);
 		};
  
 		$scope.updateItem = function (item) {
-			itemFactory.updateItem(item).success(successCallback).error(errorCallback);
+			restFactory.updateItem(item).success(successCallback).error(errorCallback);
 		};
 	});
 
