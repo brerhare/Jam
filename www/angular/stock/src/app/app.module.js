@@ -9,29 +9,35 @@ angular.module('stock', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngR
 					method: "GET",
 					//data: JSON.stringify(requestData),
 					data: '',
-					withCredentials: true,
+					//withCredentials: true,
 					headers: {
-						'Content-Type': 'application/json; charset=utf-8'
 					}
-				})
-
-
+				});
 			},
-/*
-			getItem: function (id) {
-				id = typeof id !== 'undefined' ? id : "";
-				return $http.get(url + id);
+			addItem: function (url, item) {
+				return $http({
+					url: url,
+					method: "POST",
+					data: item,
+				});
 			},
-*/
-			addItem: function (item) {
-				return $http.post(url, item);
+			deleteItem: function (url, id) {
+				return $http({
+					url: url + id,
+					method: "DELETE",
+					data: id,
+				});
 			},
-			deleteItem: function (item) {
-				return $http.delete(url + item.id);
-			},
-			updateItem: function (item) {
-				return $http.put(url + item.id, item);
+			updateItem: function (url, id, item) {
+				return $http({
+					url: url + id,
+					method: "PUT",
+					data: item,
+				});
 			}
+			//updateItem: function (item) {
+				//return $http.put(url + item.id, item);
+			//}
 		};
 	})
 

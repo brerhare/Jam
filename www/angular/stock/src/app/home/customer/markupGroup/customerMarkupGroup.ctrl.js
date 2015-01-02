@@ -1,4 +1,3 @@
-var url = 'http://stock.wireflydesign.com/server/api/stock_markup_group/';
 
 toastr.options.timeOut = 1500;
 toastr.options.positionClass = 'toast-bottom-right';
@@ -6,6 +5,7 @@ toastr.options.positionClass = 'toast-bottom-right';
 
 angular.module('stock')
 	.controller('CustomerMarkupGroupCtrl', function ($scope, restFactory, notificationFactory) {
+		var url = 'http://stock.wireflydesign.com/server/api/stock_markup_group/';
 		$scope.items = [];
 		$scope.addMode = false;
 		$scope.default_item = null;
@@ -99,15 +99,15 @@ angular.module('stock')
 		restFactory.getItem(url).success(getItemSuccessCallback).error(errorCallback);
  
 		$scope.addItem = function () {
-			restFactory.addItem($scope.item).success(successPostCallback).error(errorCallback);
+			restFactory.addItem(url, $scope.item).success(successPostCallback).error(errorCallback);
 		};
  
 		$scope.deleteItem = function (item) {
-			restFactory.deleteItem(item).success(successCallback).error(errorCallback);
+			restFactory.deleteItem(url, item.id).success(successCallback).error(errorCallback);
 		};
  
 		$scope.updateItem = function (item) {
-			restFactory.updateItem(item).success(successCallback).error(errorCallback);
+			restFactory.updateItem(url, item.id, item).success(successCallback).error(errorCallback);
 		};
 	});
 
