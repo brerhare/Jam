@@ -291,6 +291,46 @@ class SiteController extends Controller
 				return;
 			}
 
+			// Check no clash with existing booking
+			$start = $_POST['start']; if (strlen($start) == 1) $start = "0" . $start;
+			$end = $_POST['end']; if (strlen($end) == 1) $end = "0" . $end;
+			$startChk = substr($_POST['date'], 0, 11) . $start . substr($_POST['date'], 13, 6);
+			$endChk = substr($_POST['date'], 0, 11) . $end . substr($_POST['date'], 13, 6);
+			// Only consider events for today
+			$dayStart = substr($_POST['date'], 0, 11) . "00:00:00";
+			$dayEnd = substr($_POST['date'], 0, 11) . "23:59:59";
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("id != " . $_POST['eventId']);					// We might be updating our own existing event
+			$criteria->addCondition("arena = " . $_POST['arena']);
+			$criteria->addCondition("end > " . "'" . $startChk . "'");
+			$criteria->addCondition("start < " . "'" . $endChk . "'");
+			$criteria->addCondition("start >= " . "'" . $dayStart . "'");
+			$criteria->addCondition("end <= " . "'" . $dayEnd . "'");
+			$events = Event::model()->findAll($criteria);
+			Yii::log("  daystart =[" . $dayStart . "]", CLogger::LEVEL_WARNING, 'system.test.kim');
+			Yii::log("  dayend =[" . $dayEnd . "]", CLogger::LEVEL_WARNING, 'system.test.kim');
+			if (($events) && ($_POST['share'] == 0))
+			{
+				$retArr['error'] = "This booking slot is unavailable. Please refresh your browser to see up-to-date content";
+				echo CJSON::encode($retArr);
+				return;
+			}
+			$shareable = 1;
+			foreach ($events as $event)
+			{
+				if ($event->share == 0)
+				{
+					$shareable = 0;
+					break;
+				}
+			}
+			if (!($shareable))
+			{
+				$retArr['error'] = "This booking slot is unavailable to share. Please refresh your browser to see up-to-date content";
+				echo CJSON::encode($retArr);
+				return;
+			}
+
 			// Validate max slots (only if new)
 
 			// Validate 2 week ahead rule

@@ -54,6 +54,34 @@ class MyAPI extends API
      * Endpoints
      */
 
+// STOCK_CUSTOMER
+
+	protected function stock_customer()
+	{
+		logWrite("Method = " . $this->method);
+		$uid = 1;	//@@NB: hardcoded
+
+		$allColumns  = array('id', 'uid', 'name', 'discount_percent', 'telephone', 'forma_de_pago');
+		$showColumns = array('id', 'uid', 'name', 'discount_percent', 'telephone', 'forma_de_pago');
+
+		if ($this->method == 'GET')
+		{
+// @@TODO get single item
+			$arr = array();
+			$ix = 0;
+			$query = DB::query("SELECT * FROM stock_customer WHERE uid=%i", $uid);
+			foreach ($query as $q) {
+				foreach ($showColumns as $column)
+    				$arr[$ix][$column] = $q[$column];
+				$ix++;
+if ($ix > 100) break;	// @@TODO: remove!
+			}
+			return $arr;
+		}
+	}
+
+// STOCK_MARKUP_GROUP
+
 	protected function stock_markup_group()
 	{
 		logWrite("Method = " . $this->method);
@@ -65,6 +93,7 @@ class MyAPI extends API
 
 		if ($this->method == 'GET')
 		{
+// @@TODO get single item
 			$arr = array();
 			$ix = 0;
 			$query = DB::query("SELECT * FROM stock_markup_group WHERE uid=%i", $uid);
