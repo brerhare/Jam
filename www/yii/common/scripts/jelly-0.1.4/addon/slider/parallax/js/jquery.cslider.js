@@ -17,6 +17,8 @@
 		autoplay	: false,// slideshow on / off
 		interval	: 4000  // time between transitions
     };
+
+	fst	        = 1;	// first time (used for interval)
 	
 	$.Slider.prototype 	= {
 		_init 				: function( options ) {
@@ -165,9 +167,21 @@
 		
 			var _self	= this;
 			
+			if (fst)
+			{
+				this.current = this.slidesCount ;
+				useTime = 0;
+				fst = 0;
+			}
+			else
+			{
+				useTime = this.options.interval;
+			}
+
 			this.slideshow	= setTimeout( function() {
 				
 				var page = ( _self.current < _self.slidesCount - 1 ) ? page = _self.current + 1 : page = 0;
+
 				_self._navigate( page, 'next' );
 				
 				if( _self.options.autoplay ) {
@@ -176,7 +190,7 @@
 				
 				}
 			
-			}, this.options.interval );
+			}, useTime );
 		
 		},
 		page				: function( idx ) {
