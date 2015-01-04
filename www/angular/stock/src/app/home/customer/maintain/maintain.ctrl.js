@@ -110,13 +110,14 @@ angular.module('stock')
 		$scope.item = {};
 
 		$scope.addItem = function()
-		{
+		{ return; /*kim*/
 			$scope.formMode = "add";
 			$scope.displayMode = "form";
 		};
 
 		$scope.editItem = function(id)
 		{
+			if (id != 317) return; /*kim*/
 			restFactory.getItem(url, id)
 				.success(function(data, status) {
 					$scope.item = data;
