@@ -1,51 +1,98 @@
-<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css"/>
-
 <style>
-table th,tr {
-  padding-left:0px;
-  padding-right:0px;
+/* the page split into two equal width cols */
+.all {
+    width:100%;
+    Xbackground: #B4D47D;
 }
-</style>
 
-<style>
 .lhs {
 	float: left;
 	width: 50%;
-	background: #B5E3FF;
-	/*left: -250px;*/
+	Xbackground: #B5E3FF;
 }
 
 .rhs {
 	float: right;
-	/*margin-right: -250px;*/
 	width: 50%;
-	background: #FFACAA;
+	Xbackground: #FFACAA;
 }
 </style>
 
-<form ng-submit="formSubmit()" class="pure-form pure-form-aligned">
-  <div style="width:100%">
-  <div class="lhs">
-    <fieldset>
-      <div class="pure-control-group">
-        <label for="name">Name</label>
-        <input id="name" type="text" placeholder="Company name" ng-model="$parent.item.name" ng-minlength="2">
+<style>
+  /* bootstrap overrides */
+  .form-group{
+    margin-top: 2px;
+    margin-bottom: 2px;
+  }
+  .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+    padding-left:5px;
+    padding-right:5px;
+  }
+</style>
+
+<div class="container-fluid">
+
+<form ng-submit="saveItem()" class="form-horizontal" role="form">
+  <div class="all">
+
+    <div class="lhs">
+      <div class="form-group form-group-sm">
+        <label class="control-label col-sm-3" for="name">Name</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" placeholder="Company name" ng-model="$parent.item.name" ng-minlength="2">
+        </div>
       </div>
-      <div class="pure-controls">
-        <button type="submit" class="pure-button pure-button-primary">Submit</button>
-      </div>
-<!--   </fieldset> -->
-  </div>
+    </div>
+
     <div class="rhs">
-<!--      <fieldset> -->
-        <div class="pure-control-group">
-          <label for="name">Address</label>
-          <input id="address1" type="text" placeholder="Address line 1" ng-model="$parent.item.address1" ng-minlength="2">
+      <div class="form-group form-group-sm">
+        <label class="control-label col-sm-3" for="address1">Address</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" placeholder="Line 1" ng-model="$parent.item.address1" ng-minlength="2">
         </div>
-        <div class="pure-controls">
-          <button type="submit" class="pure-button pure-button-primary">Submit</button>
-        </div>
-      </fieldset>
       </div>
-        </div><div style="float: clear both"></div>
-</form>
+      <div class="form-group form-group-sm">
+        <label class="control-label col-sm-3" for="address2"></label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" placeholder="Line 2" ng-model="$parent.item.address2" ng-minlength="2">
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="control-label col-sm-3" for="address3"></label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" placeholder="Line 3" ng-model="$parent.item.address3" ng-minlength="2">
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="control-label col-sm-3" for="post_code"></label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control" placeholder="Post code" ng-model="$parent.item.post_code" ng-minlength="2">
+        </div>
+      </div>
+    </div>
+
+    <!--
+    ('id', 'uid', 'name', 'address1', 'address2', 'address3', 'post_code', 'contact_title', 'contact_first_name', 'contact_last_name'
+    , 'telephone', 'mobile', 'fax', 'email', 'discount_percent', 'balance', 'link_field', 'notes', 'CIF', 'forma_de_pago',
+    /*****/ 'stock_markup_group_id', 'stock_area_id')
+    -->
+
+    <div style="clear: both"></div><hr/>
+
+    <div style="width:20%; margin:0px auto;">
+
+      <div class="form-group">
+        <div class="col-sm-10">
+          <button type="submit" class="btn btn-default">Save</button>
+
+          <button type="button" class="btn btn-default" ng-click="cancelItem()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    </div>
+
+  </form>
+
+  </div>
+

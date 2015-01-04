@@ -127,13 +127,14 @@ angular.module('stock')
 				.error(errorCallback);
 		};
 
-		$scope.formSubmit = function()
+		$scope.cancelItem = function()
 		{
-			alert('submitted=' + $scope.item.name);
+			$scope.displayMode = "list";
 		};
 
 		$scope.saveItem = function()
 		{
+			alert('submitted=' + $scope.item.name);
 			$scope.displayMode = "list";
 		};
 

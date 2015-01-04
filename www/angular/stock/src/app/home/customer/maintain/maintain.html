@@ -41,120 +41,57 @@ h4 { font-size:18px;}
 <div class="container-fluid" style="position:relative">
 
   <div id="list-partial" ng-show="displayMode=='list'" style="position:absolute; top:0px; left:0px" class="fadein fadeout">
-
- <h4 style="text-align:center">Maintain customers</h4>
-
-  <div class="table-container">
-    <table st-table="displayedCollection" st-safe-src="rowCollection" class="table Xtable-striped">
-      <thead>
-        <tr>
-          <th class="hand" st-sort="id">                       Id</th>
-          <th class="hand" st-sort="name">                   Name</th>
-          <th class="hand" st-sort="discount_percent"> Discount %</th>
-          <th class="hand" st-sort="telephone">           Phone #</th>
-          <th class="hand" st-sort="forma_de_pago"> Forma de Pago</th>
-          <th>
-            <button type="button" ng-click="outputPDF()" class="btn btn-xs btn-primary">
-              <i class="fa fa-file-pdf-o fa-1x"></i>
+    <h4 style="text-align:center">Maintain customers</h4>
+    <div class="table-container">
+      <table st-table="displayedCollection" st-safe-src="rowCollection" class="table Xtable-striped">
+        <thead>
+          <tr>
+            <th class="hand" st-sort="id">                       Id</th>
+            <th class="hand" st-sort="name">                   Name</th>
+            <th class="hand" st-sort="discount_percent"> Discount %</th>
+            <th class="hand" st-sort="telephone">           Phone #</th>
+            <th class="hand" st-sort="forma_de_pago"> Forma de Pago</th>
+            <th>
+              <button type="button" ng-click="outputPDF()" class="btn btn-xs btn-primary">
+                <i class="fa fa-file-pdf-o fa-1x"></i>
+              </button>
+            </th>
+          </tr>
+          <tr>
+            <th><input st-search="'id'"               placeholder="search" class="input-sm form-control" type="search"/></th>
+            <th><input st-search="'name'"             placeholder="search" class="input-sm form-control" type="search"/></th>
+            <th><input st-search="'discount_percent'" placeholder="search" class="input-sm form-control" type="search"/></th>
+            <th><input st-search="'telephone'"        placeholder="search" class="input-sm form-control" type="search"/></th>
+            <th><input st-search="'forma_de_pago'"    placeholder="search" class="input-sm form-control" type="search"/></th>
+            <th>
+              <button type="button" ng-click="addItem()" class="btn btn-xs btn-success">
+                <i class="fa fa-plus fa-1x"></i>
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr class="highlight hand" ng-repeat="row in displayedCollection">
+          <td ng-click="editItem(row.id)">{{row.id}}              </td>
+          <td ng-click="editItem(row.id)">{{row.name}}            </td>
+          <td ng-click="editItem(row.id)">{{row.discount_percent}}</td>
+          <td ng-click="editItem(row.id)">{{row.telephone}}       </td>
+          <td ng-click="editItem(row.id)">{{row.forma_de_pago}}   </td>
+          <td>
+            <button type="button" ng-click="deleteItem(row.id)" class="btn btn-xs btn-danger">
+              <i class="fa fa-trash fa-1x"></i>
             </button>
-          </th>
+          </td>
         </tr>
-        <tr>
-          <th><input st-search="'id'"               placeholder="search" class="input-sm form-control" type="search"/></th>
-          <th><input st-search="'name'"             placeholder="search" class="input-sm form-control" type="search"/></th>
-          <th><input st-search="'discount_percent'" placeholder="search" class="input-sm form-control" type="search"/></th>
-          <th><input st-search="'telephone'"        placeholder="search" class="input-sm form-control" type="search"/></th>
-          <th><input st-search="'forma_de_pago'"    placeholder="search" class="input-sm form-control" type="search"/></th>
-          <th>
-            <button type="button" ng-click="addItem()" class="btn btn-xs btn-success">
-              <i class="fa fa-plus fa-1x"></i>
-            </button>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-      <tr class="highlight hand" ng-repeat="row in displayedCollection">
-        <td ng-click="editItem(row.id)">{{row.id}}              </td>
-        <td ng-click="editItem(row.id)">{{row.name}}            </td>
-        <td ng-click="editItem(row.id)">{{row.discount_percent}}</td>
-        <td ng-click="editItem(row.id)">{{row.telephone}}       </td>
-        <td ng-click="editItem(row.id)">{{row.forma_de_pago}}   </td>
-        <td>
-          <button type="button" ng-click="deleteItem(row.id)" class="btn btn-xs btn-danger">
-            <i class="fa fa-trash fa-1x"></i>
-          </button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-    <p style="text-align:center"><i><b>{{displayedCollection.length}} customers</b></i></p>
-  </div>
+        </tbody>
+      </table>
+      <p style="text-align:center"><i><b>{{displayedCollection.length}} customers</b></i></p>
+    </div>
+  </div>  <!-- list-partial -->
 
-    </div>  <!-- list-partial -->
-
-  <div id="edit-partial" ng-show="displayMode=='form'" style="position:absolute; top:0px; left:0px" class="fadein fadeout">
+  <div id="edit-partial" ng-show="displayMode=='form'" style="position:absolute; top:0px; left:0px; width:100%" class="fadein fadeout">
     <h4 style="text-align:center">{{formMode=='add' ? 'Add' : 'Edit'}} customer</h4>
-
-    BEFORE
-<div ng-include src="'app/home/customer/maintain/_form.html'" style="width:100%"></div>
-    AFTER
-
-    frokfrogjktrigjtriogjtriogjtroigjrhyjihotyjhiyojhythjiytohjytihygitgjrtjgtiogjtriogjtiogjtr
-    frokfrogjktrigjtriogjtriogjtroigjrhyjihotyjhiyojhythjiytohjytihygitgjrtjgtiogjtriogjtiogjtr
-    frokfrogjktrigjtriogjtriogjtroigjrhyjihotyjhiyojhythjiytohjytihygitgjrtjgtiogjtriogjtiogjtr
-    frokfrogjktrigjtriogjtriogjtroigjrhyjihotyjhiyojhythjiytohjytihygitgjrtjgtiogjtriogjtiogjtr
-    frokfrogjktrigjtriogjtriogjtroigjrhyjihotyjhiyojhythjiytohjytihygitgjrtjgtiogjtriogjtiogjtr
-    frokfrogjktrigjtriogjtriogjtroigjrhyjihotyjhiyojhythjiytohjytihygitgjrtjgtiogjtriogjtiogjtr
-    frokfrogjktrigjtriogjtriogjtroigjrhyjihotyjhiyojhythjiytohjytihygitgjrtjgtiogjtriogjtiogjtr
-    frokfrogjktrigjtriogjtriogjtroigjrhyjihotyjhiyojhythjiytohjytihygitgjrtjgtiogjtriogjtiogjtr
-    frokfrogjktrigjtriogjtriogjtroigjrhyjihotyjhiyojhythjiytohjytihygitgjrtjgtiogjtriogjtiogjtr
-    frokfrogjktrigjtriogjtriogjtroigjrhyjihotyjhiyojhythjiytohjytihygitgjrtjgtiogjtriogjtiogjtr
-    frokfrogjktrigjtriogjtriogjtroigjrhyjihotyjhiyojhythjiytohjytihygitgjrtjgtiogjtriogjtiogjtr
-    frokfrogjktrigjtriogjtriogjtroigjrhyjihotyjhiyojhythjiytohjytihygitgjrtjgtiogjtriogjtiogjtr
-    frokfrogjktrigjtriogjtriogjtroigjrhyjihotyjhiyojhythjiytohjytihygitgjrtjgtiogjtriogjtiogjtr
-    frokfrogjktrigjtriogjtriogjtroigjrhyjihotyjhiyojhythjiytohjytihygitgjrtjgtiogjtriogjtiogjtr
-    frokfrogjktrigjtriogjtriogjtroigjrhyjihotyjhiyojhythjiytohjytihygitgjrtjgtiogjtriogjtiogjtr
-    frokfrogjktrigjtriogjtriogjtroigjrhyjihotyjhiyojhythjiytohjytihygitgjrtjgtiogjtriogjtiogjtr
-    frokfrogjktrigjtriogjtriogjtroigjrhyjihotyjhiyojhythjiytohjytihygitgjrtjgtiogjtriogjtiogjtr
-    frokfrogjktrigjtriogjtriogjtroigjrhyjihotyjhiyojhythjiytohjytihygitgjrtjgtiogjtriogjtiogjtr
-    frokfrogjktrigjtriogjtriogjtroigjrhyjihotyjhiyojhythjiytohjytihygitgjrtjgtiogjtriogjtiogjtr
-    frokfrogjktrigjtriogjtriogjtroigjrhyjihotyjhiyojhythjiytohjytihygitgjrtjgtiogjtriogjtiogjtr
-    frokfrogjktrigjtriogjtriogjtroigjrhyjihotyjhiyojhythjiytohjytihygitgjrtjgtiogjtriogjtiogjtr
-    frokfrogjktrigjtriogjtriogjtroigjrhyjihotyjhiyojhythjiytohjytihygitgjrtjgtiogjtriogjtiogjtr
-    frokfrogjktrigjtriogjtriogjtroigjrhyjihotyjhiyojhythjiytohjytihygitgjrtjgtiogjtriogjtiogjtr
-    frokfrogjktrigjtriogjtriogjtroigjrhyjihotyjhiyojhythjiytohjytihygitgjrtjgtiogjtriogjtiogjtr<br>
-
-
-    <form name="userForm" ng-submit="submitForm(userForm.$valid)" novalidate> <!-- novalidate prevents HTML5 validation since we will be validating ourselves -->
-
-      <!-- NAME -->
-      <div class="form-group">
-        <label>Name</label>
-        <input type="text" name="name" style='width:200px' class="form-control" ng-model="name" required>
-      </div>
-
-      <!-- USERNAME -->
-      <div class="form-group">
-        <label>Username</label>
-        <input type="text" name="username" class="form-control" ng-model="user.username" ng-minlength="3" ng-maxlength="8">
-      </div>
-
-      <!-- EMAIL -->
-      <div class="form-group">
-        <label>Email</label>
-        <input type="email" name="email" class="form-control" ng-model="email">
-      </div>
-
-      <!-- SUBMIT BUTTON -->
-      <button type="submit" class="btn btn-primary">Submit</button>
-
-    </form>
-
-
-
-    <button type="button" ng-click="saveItem()" class="btn btn-xs btn-danger">
-      <i class="fa fa-trash fa-1x"></i>
-    </button>
+    <div ng-include src="'app/home/customer/maintain/_form.html'" ></div>
   </div>
 
 </div>  <!-- container-fluid -->
