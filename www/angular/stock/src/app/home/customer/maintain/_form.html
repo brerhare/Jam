@@ -1,17 +1,51 @@
-<div class="form-group">
-  <label for="title" class="col-sm-2 control-label">Title</label>
-  <div class="col-sm-10">
-    <input type="text" ng-model="movie.title" class="form-control" id="title" placeholder="Movie Title Here"/>
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css"/>
+
+<style>
+table th,tr {
+  padding-left:0px;
+  padding-right:0px;
+}
+</style>
+
+<style>
+.lhs {
+	float: left;
+	width: 50%;
+	background: #B5E3FF;
+	/*left: -250px;*/
+}
+
+.rhs {
+	float: right;
+	/*margin-right: -250px;*/
+	width: 50%;
+	background: #FFACAA;
+}
+</style>
+
+<form ng-submit="formSubmit()" class="pure-form pure-form-aligned">
+  <div style="width:100%">
+  <div class="lhs">
+    <fieldset>
+      <div class="pure-control-group">
+        <label for="name">Name</label>
+        <input id="name" type="text" placeholder="Company name" ng-model="$parent.item.name" ng-minlength="2">
+      </div>
+      <div class="pure-controls">
+        <button type="submit" class="pure-button pure-button-primary">Submit</button>
+      </div>
+<!--   </fieldset> -->
   </div>
-</div>
-<div class="form-group">
-  <label for="year" class="col-sm-2 control-label">Released Year</label>
-  <div class="col-sm-10">
-    <input type="text" ng-model="movie.releaseYear" class="form-control" id="year" placeholder="When was the movie released?"/>
-  </div>
-</div>
-<div class="form-group">
-  <div class="col-sm-offset-2 col-sm-10">
-    <input type="submit" class="btn btn-primary" value="Save"/>
-  </div>
-</div>
+    <div class="rhs">
+<!--      <fieldset> -->
+        <div class="pure-control-group">
+          <label for="name">Address</label>
+          <input id="address1" type="text" placeholder="Address line 1" ng-model="$parent.item.address1" ng-minlength="2">
+        </div>
+        <div class="pure-controls">
+          <button type="submit" class="pure-button pure-button-primary">Submit</button>
+        </div>
+      </fieldset>
+      </div>
+        </div><div style="float: clear both"></div>
+</form>

@@ -18,21 +18,21 @@ angular.module('stock', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngR
 				return $http({
 					url: url,
 					method: "POST",
-					data: item,
+					data: item
 				});
 			},
 			deleteItem: function (url, id) {
 				return $http({
 					url: url + id,
 					method: "DELETE",
-					data: id,
+					data: id
 				});
 			},
 			updateItem: function (url, id, item) {
 				return $http({
 					url: url + id,
 					method: "PUT",
-					data: item,
+					data: item
 				});
 			}
 			//updateItem: function (item) {
