@@ -61,22 +61,39 @@ class MyAPI extends API
 		logWrite("Method = " . $this->method);
 		$uid = 1;	//@@NB: hardcoded
 
-		$allColumns  = array('id', 'uid', 'name', 'discount_percent', 'telephone', 'forma_de_pago');
+		$allColumns  = array('id', 'uid', 'name', 'address1', 'address2', 'address3', 'post_code', 'contact_title', 'contact_first_name', 'contact_last_name', 'telephone', 'mobile', 'fax', 'email', 'discount_percent', 'balance', 'link_field', 'notes', 'CIF', 'forma_de_pago', /*****/ 'stock_markup_group_id', 'stock_area_id');
 		$showColumns = array('id', 'uid', 'name', 'discount_percent', 'telephone', 'forma_de_pago');
 
 		if ($this->method == 'GET')
 		{
-// @@TODO get single item
-			$arr = array();
-			$ix = 0;
-			$query = DB::query("SELECT * FROM stock_customer WHERE uid=%i", $uid);
-			foreach ($query as $q) {
-				foreach ($showColumns as $column)
-    				$arr[$ix][$column] = $q[$column];
-				$ix++;
-if ($ix > 100) break;	// @@TODO: remove!
+			$id = trim($this->args[0]);
+			if ($id)
+			{
+				// Single item
+				$arr = array();
+				$query = DB::query("SELECT * FROM stock_customer WHERE uid=%i AND id=%i", $uid, $id);
+				if ($query)
+				{
+					foreach ($allColumns as $column)
+						$arr[$column] = $query[0][$column];
+				}
+logWrite('arr = ' . print_r($arr, true));
+				return $arr;
 			}
-			return $arr;
+			else
+			{
+				// All items
+				$arr = array();
+				$ix = 0;
+				$query = DB::query("SELECT * FROM stock_customer WHERE uid=%i", $uid);
+				foreach ($query as $q) {
+					foreach ($showColumns as $column)
+						$arr[$ix][$column] = $q[$column];
+					$ix++;
+	if ($ix > 100) break;	// @@TODO: remove!
+				}
+				return $arr;
+			}
 		}
 	}
 
@@ -93,16 +110,25 @@ if ($ix > 100) break;	// @@TODO: remove!
 
 		if ($this->method == 'GET')
 		{
-// @@TODO get single item
-			$arr = array();
-			$ix = 0;
-			$query = DB::query("SELECT * FROM stock_markup_group WHERE uid=%i", $uid);
-			foreach ($query as $q) {
-				foreach ($allColumns as $column)
-    				$arr[$ix][$column] = $q[$column];
-				$ix++;
+			$id = trim($this->args[0]);
+			if ($id)
+			{
+				// Single item
+				logWrite("GET a customer, id = " . $id);
 			}
-			return $arr;
+			else
+			{
+				// All items
+				$arr = array();
+				$ix = 0;
+				$query = DB::query("SELECT * FROM stock_markup_group WHERE uid=%i", $uid);
+				foreach ($query as $q) {
+					foreach ($allColumns as $column)
+    					$arr[$ix][$column] = $q[$column];
+					$ix++;
+				}
+				return $arr;
+			}
 		}
 		else if ($this->method == 'POST')
 		{
