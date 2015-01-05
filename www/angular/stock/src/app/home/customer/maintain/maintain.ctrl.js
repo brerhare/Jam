@@ -16,8 +16,11 @@ angular.module('stock')
 			restFactory.getItem(urlArea)
 				.success(function(data, status) {
 					$scope.areas = data;
-					$scope.selectedArea = $scope.areas[0];
-					if ($scope.formMode != 'add') {
+					if ($scope.formMode == 'add') {
+						$scope.selectedArea = $scope.areas[0];
+						$scope.item.stock_area_id = $scope.areas[0].id;
+					}
+					else {
 						for (var i = 0; i < $scope.areas.length; i++) {
 							if ($scope.areas[i].id == $scope.item.stock_area_id) {
 								$scope.selectedArea = $scope.areas[i];
@@ -33,9 +36,15 @@ angular.module('stock')
 			restFactory.getItem(urlMarkupGroup)
 				.success(function(data, status) {
 					$scope.markupGroups = data;
-					$scope.selectedMarkupGroup = $scope.markupGroups[0];
-					if ($scope.formMode != 'add') {
-						for (var i = 0; i < $scope.markupGroups.length; i++) {
+					for (var i = 0; i < $scope.markupGroups.length; i++) {
+						if ($scope.formMode == 'add') {
+							if ($scope.markupGroups[i].is_default == 1) {
+								$scope.selectedMarkupGroup = $scope.markupGroups[i];
+								$scope.item.stock_markup_group_id = $scope.markupGroups[i].id;
+								break;
+							}
+						}
+						else {
 							if ($scope.markupGroups[i].id == $scope.item.stock_markup_group_id) {
 								$scope.selectedMarkupGroup = $scope.markupGroups[i];
 							}
@@ -47,6 +56,7 @@ angular.module('stock')
 
 		$scope.addItem = function()
 		{
+			$scope.item = {};
 			$scope.formMode = "add";
 			$scope.displayMode = "form";
 			getAreas();
@@ -89,8 +99,7 @@ angular.module('stock')
 		restFactory.getItem(url).success(getItemSuccessCallback).error(errorCallback);
 
 
-
-
+// This was textalk - not used - not yet deleted in case there is some use in this?
   $scope.onSubmit = function(form) {
 	  alert('form submitted');
     // First we broadcast an event so all fields validate themselves
@@ -104,6 +113,7 @@ angular.module('stock')
 	else
 		alert('form is NOT valid');
   };
+
 
 
 	});
