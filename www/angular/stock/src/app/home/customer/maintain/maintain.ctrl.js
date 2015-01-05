@@ -102,7 +102,7 @@ angular.module('stock')
 				restFactory.addItem(url, $scope.item)
 					.success(function (data, status) {
 						$scope.item.id = data.id;
-						$scope.rowCollection.push($scope.item);		// insert the new one
+						$scope.rowCollection.push($scope.item);		// insert new
 						$scope.displayedCollection = [].concat($scope.rowCollection);
 					})
 					.error(errorCallback);
@@ -112,16 +112,22 @@ angular.module('stock')
 					.success(function (data, status) {
 						for (var i = 0; i < $scope.rowCollection.length; i++) {
 							if ($scope.rowCollection[i].id == $scope.item.id) {
-								$scope.rowCollection.splice(i, 1);
+								$scope.rowCollection[i] = $scope.item;	// replace old with new
+								$scope.displayedCollection = [].concat($scope.rowCollection);
 								break;
 							}
 						}
-						$scope.rowCollection.push($scope.item);		// insert the new one
-						$scope.displayedCollection = [].concat($scope.rowCollection);
 					})
 					.error(errorCallback);
 			}
 			$scope.displayMode = "list";
+		};
+
+		$scope.selchangeArea = function() {
+			$scope.item.stock_area_id = $scope.selectedArea.id;
+		};
+		$scope.selchangeMarkupGroup = function() {
+			$scope.item.stock_markup_group_id = $scope.selectedMarkupGroup.id;
 		};
 
 		var getItemSuccessCallback = function (data, status) {
