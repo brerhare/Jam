@@ -1,7 +1,7 @@
 angular.module('stock')
 	.controller('CustomerMaintainCtrl', function ($scope, restFactory, notificationFactory) {
-		var url     = 'http://stock.wireflydesign.com/server/api/stock_customer/';
-		var urlArea = 'http://stock.wireflydesign.com/server/api/stock_area/';					// for <select>
+		var url            = 'http://stock.wireflydesign.com/server/api/stock_customer/';
+		var urlArea        = 'http://stock.wireflydesign.com/server/api/stock_area/';			// for <select>
 		var urlMarkupGroup = 'http://stock.wireflydesign.com/server/api/stock_markup_group/';	// for <select>
 
 		$scope.rowCollection = [];
@@ -76,6 +76,21 @@ angular.module('stock')
 				.error(errorCallback);
 		};
 
+		$scope.deleteItem = function(id)
+		{
+			restFactory.deleteItem(url, id)
+				.success(function(data, status) {
+					for (var i = 0; i < $scope.rowCollection.length; i++) {
+						if ($scope.rowCollection[i].id == id) {
+							$scope.rowCollection.splice(i, 1);
+							$scope.displayedCollection = [].concat($scope.rowCollection);
+							break;
+						}
+					}
+				})
+				.error(errorCallback);
+		};
+
 		$scope.cancelItem = function()
 		{
 			$scope.displayMode = "list";
@@ -83,7 +98,29 @@ angular.module('stock')
 
 		$scope.saveItem = function()
 		{
-			alert('submitted=' + $scope.item.name);
+			if ($scope.formMode == "add") {
+				restFactory.addItem(url, $scope.item)
+					.success(function (data, status) {
+						$scope.item.id = data.id;
+						$scope.rowCollection.push($scope.item);		// insert the new one
+						$scope.displayedCollection = [].concat($scope.rowCollection);
+					})
+					.error(errorCallback);
+			}
+			else if ($scope.formMode == "edit") {
+				restFactory.updateItem(url, $scope.item.id, $scope.item)
+					.success(function (data, status) {
+						for (var i = 0; i < $scope.rowCollection.length; i++) {
+							if ($scope.rowCollection[i].id == $scope.item.id) {
+								$scope.rowCollection.splice(i, 1);
+								break;
+							}
+						}
+						$scope.rowCollection.push($scope.item);		// insert the new one
+						$scope.displayedCollection = [].concat($scope.rowCollection);
+					})
+					.error(errorCallback);
+			}
 			$scope.displayMode = "list";
 		};
 
@@ -115,15 +152,4 @@ angular.module('stock')
   };
 
 
-
 	});
-
-/*	.controller('CustomerAddCtrl', function($scope, $state, $stateParams) {
-		$scope.addItem = function() {
-			//$scope.rowCollection.push({'id': 999, 'name':'kim', 'discount_percent':100, 'telephone':'07899752030', 'forma_de_pago':'el-nino'});
-			alert('added customer');
-			$state.go('home.customer-maintain');
-		};
-
-	}); */
-

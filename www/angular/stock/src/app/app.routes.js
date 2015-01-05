@@ -53,14 +53,27 @@ angular.module('stock')
         controller: 'CustomerInvoiceCtrl'
       })
       .state('home.customer-return', {
-        url: '/anything-I-like-here/or-even-there',
-        templateUrl: 'app/home/customer/return/customerReturn.html',
-        controller: 'CustomerReturnCtrl'
+                url: '/anything-I-like-here/or-even-there',
+                templateUrl: 'app/home/customer/return/customerReturn.html',
+                controller: 'CustomerReturnCtrl'
+      })
+
+// Products
+// --------
+      .state('home.product-maintain', {
+          url: '/products',
+          templateUrl: 'app/home/product/maintain/maintain.html',
+          controller: 'ProductMaintainCtrl'
       });
+
+
+
 
 //      $urlRouterProvider.otherwise('/invoices');	// redirect to url
 
-    }).run(function($state) {
+    })
+
+   .run(function($state) {
       $state.go('login'); //make a transition to login state when app starts
     });
 
