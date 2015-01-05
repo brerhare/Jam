@@ -28,6 +28,9 @@
     padding-left:5px;
     padding-right:5px;
   }
+  .input-sm, .form-group-sm .form-control {
+    font-size: 14px;
+  }
 </style>
 
 <div class="container-fluid">
@@ -42,31 +45,112 @@
           <input type="text" class="form-control" placeholder="Company name" ng-model="$parent.item.name" ng-minlength="2">
         </div>
       </div>
+      <div class="form-group form-group-sm">
+        <label class="control-label col-sm-3" for="discount_percent">Discount %</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control" placeholder="0.00" ng-model="$parent.item.discount_percent">
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="control-label col-sm-3" for="telephone">Telephone</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" placeholder="" ng-model="$parent.item.telephone">
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="control-label col-sm-3" for="mobile">Mobile</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" placeholder="" ng-model="$parent.item.mobile">
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="control-label col-sm-3" for="fax">Fax</label>
+        <div class="col-sm-4">
+          <input type="text" class="form-control" placeholder="" ng-model="$parent.item.fax">
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="control-label col-sm-3" for="stock_area_id">Area</label>
+        <div class="col-sm-5">
+          <select ng-model="selectedArea" ng-options="area.name for area in $parent.areas" class="form-control">
+          </select>
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="control-label col-sm-3" for="stock_markup_group_id">Markup Group</label>
+        <div class="col-sm-5">
+          <select ng-model="selectedMarkupGroup" ng-options="markupGroup.description for markupGroup in $parent.markupGroups" class="form-control">
+          </select>
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="control-label col-sm-3" for="CIF">CIF</label>
+        <div class="col-sm-3">
+          <input type="text" class="form-control" placeholder="" ng-model="$parent.item.CIF">
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="control-label col-sm-3" for="forma_de_pago">Forma de Pago</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" placeholder="Method of payment" ng-model="$parent.item.forma_de_pago">
+        </div>
+      </div>
+
     </div>
 
     <div class="rhs">
       <div class="form-group form-group-sm">
         <label class="control-label col-sm-3" for="address1">Address</label>
         <div class="col-sm-8">
-          <input type="text" class="form-control" placeholder="Line 1" ng-model="$parent.item.address1" ng-minlength="2">
+          <input type="text" class="form-control" placeholder="Line 1" ng-model="$parent.item.address1">
         </div>
       </div>
       <div class="form-group form-group-sm">
         <label class="control-label col-sm-3" for="address2"></label>
         <div class="col-sm-8">
-          <input type="text" class="form-control" placeholder="Line 2" ng-model="$parent.item.address2" ng-minlength="2">
+          <input type="text" class="form-control" placeholder="Line 2" ng-model="$parent.item.address2">
         </div>
       </div>
       <div class="form-group form-group-sm">
         <label class="control-label col-sm-3" for="address3"></label>
         <div class="col-sm-8">
-          <input type="text" class="form-control" placeholder="Line 3" ng-model="$parent.item.address3" ng-minlength="2">
+          <input type="text" class="form-control" placeholder="Line 3" ng-model="$parent.item.address3">
         </div>
       </div>
       <div class="form-group form-group-sm">
-        <label class="control-label col-sm-3" for="post_code"></label>
+        <label class="control-label col-sm-3" for="post_code">Post Code</label>
         <div class="col-sm-2">
-          <input type="text" class="form-control" placeholder="Post code" ng-model="$parent.item.post_code" ng-minlength="2">
+          <input type="text" class="form-control" placeholder="" ng-model="$parent.item.post_code">
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="control-label col-sm-3" for="contact_title">Contact Title</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control" placeholder="" ng-model="$parent.item.contact_title">
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="control-label col-sm-3" for="contact_first_name">Contact First Name</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" placeholder="" ng-model="$parent.item.contact_first_name">
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="control-label col-sm-3" for="contact_last_name">Contact Last Name</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" placeholder="" ng-model="$parent.item.contact_last_name">
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="control-label col-sm-3" for="email">Email</label>
+        <div class="col-sm-5">
+          <input type="text" class="form-control" placeholder="" ng-model="$parent.item.email">
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="control-label col-sm-3" for="balance">Balance</label>
+        <div class="col-sm-2">
+          <input type="text" disabled class="form-control" placeholder="" ng-model="$parent.item.balance">
         </div>
       </div>
     </div>

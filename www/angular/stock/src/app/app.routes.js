@@ -37,8 +37,13 @@ angular.module('stock')
         controller: 'CustomerEditCtrl'
       })
 
+      .state('home.customer-area', {
+        url: '/areas',
+        templateUrl: 'app/home/customer/area/customerArea.html',
+        controller: 'CustomerAreaCtrl'
+      })
       .state('home.customer-markup-group', {
-        url: '/groups',
+        url: '/markups',
         templateUrl: 'app/home/customer/markupGroup/customerMarkupGroup.html',
         controller: 'CustomerMarkupGroupCtrl'
       })
