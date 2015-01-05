@@ -62,6 +62,8 @@ class MyAPI extends API
 		$uid = 1;	//@@NB: hardcoded
 
 		$allColumns  = array('id', 'uid', 'name', 'address1', 'address2', 'address3', 'post_code', 'contact_title', 'contact_first_name', 'contact_last_name', 'telephone', 'mobile', 'fax', 'email', 'discount_percent', 'balance', 'link_field', 'notes', 'CIF', 'forma_de_pago', /*****/ 'stock_markup_group_id', 'stock_area_id');
+		$postColumns  = array(             'name', 'address1', 'address2', 'address3', 'post_code', 'contact_title', 'contact_first_name', 'contact_last_name', 'telephone', 'mobile', 'fax', 'email', 'discount_percent', 'balance', 'link_field', 'notes', 'CIF', 'forma_de_pago', /*****/ 'stock_markup_group_id', 'stock_area_id');
+		$putColumns  = array('id',        'name', 'address1', 'address2', 'address3', 'post_code', 'contact_title', 'contact_first_name', 'contact_last_name', 'telephone', 'mobile', 'fax', 'email', 'discount_percent', 'balance', 'link_field', 'notes', 'CIF', 'forma_de_pago', /*****/ 'stock_markup_group_id', 'stock_area_id');
 		$showColumns = array('id', 'uid', 'name', 'discount_percent', 'telephone', 'forma_de_pago');
 
 		if ($this->method == 'GET')
@@ -90,10 +92,61 @@ logWrite('arr = ' . print_r($arr, true));
 					foreach ($showColumns as $column)
 						$arr[$ix][$column] = $q[$column];
 					$ix++;
-	if ($ix > 100) break;	// @@TODO: remove!
+	if ($ix >= 100) break;	// @@TODO: remove!
 				}
 				return $arr;
 			}
+		}
+		else if ($this->method == 'POST')
+		{
+			$obj = json_decode(file_get_contents("php://input"),true);
+logWrite("got json obj=".print_r($obj, true));
+            $keys = array_keys($obj);
+			$values = array();
+			$values['uid'] = $uid;
+			foreach ($postColumns as $column) {
+				if (!in_array($column, $keys)) {
+logWrite("missing key for col=".print_r($column, true));
+					$values[$column] = NULL;
+				}
+				else {
+logWrite("matched key for col=".print_r($column, true));
+					$values[$column] = $obj[$column];
+				}
+			}
+			$idArr = array();
+			DB::insert('stock_customer', $values);
+			$idArr['id'] = DB::insertId();
+			return $idArr;
+		}
+		else if ($this->method == 'PUT')
+		{
+			$obj = json_decode(file_get_contents("php://input"),true);
+logWrite("got json obj=".print_r($obj, true));
+			// Pick up original
+			$id = (int) $this->args[0];
+			if ($id == 0)
+				return "fail";
+           	$keys = array_keys($obj);
+			$values = array();
+			foreach ($putColumns as $column) {
+				if (in_array($column, $keys)) {
+logWrite("matched key for col=".print_r($column, true));
+					$values[$column] = $obj[$column];
+				}
+			}
+			DB::update('stock_customer', $values, "id=%i", $id);
+			return 'ok';
+		}
+		else if ($this->method == 'DELETE')
+		{
+			$id = (int) $this->args[0];
+			if ($id != 0)
+			{
+				DB::delete('stock_customer', "id=%i", $id);
+				return 'ok';
+			}
+			return 'ok';
 		}
 	}
 
@@ -147,8 +200,10 @@ logWrite("matched key for col=".print_r($column, true));
 					$values[$column] = $obj[$column];
 				}
 			}
+			$idArr = array();
 			DB::insert('stock_markup_group', $values);
-			return 'ok';
+			$idArr['id'] = DB::insertId();
+			return $idArr;
 		}
 		else if ($this->method == 'PUT')
 		{
@@ -231,8 +286,10 @@ logWrite("matched key for col=".print_r($column, true));
 					$values[$column] = $obj[$column];
 				}
 			}
+			$idArr = array();
 			DB::insert('stock_area', $values);
-			return 'ok';
+			$idArr['id'] = DB::insertId();
+			return $idArr;
 		}
 		else if ($this->method == 'PUT')
 		{
@@ -264,7 +321,192 @@ logWrite("matched key for col=".print_r($column, true));
 			return 'ok';
 		}
 	}
-}
+
+// STOCK_PRODUCT
+
+	protected function stock_product()
+	{
+		logWrite("Method = " . $this->method);
+		$uid = 1;	//@@NB: hardcoded
+
+		$allColumns  = array('id', 'uid', 'name', 'description', 'cost', 'weight', 'height', 'width', 'depth', 'volume', 'price', /*****/ 'stock_group_id', 'stock_vat_id');
+		$postColumns = array(             'name', 'description', 'cost', 'weight', 'height', 'width', 'depth', 'volume', 'price', /*****/ 'stock_group_id', 'stock_vat_id');
+		$putColumns  = array('id',        'name', 'description', 'cost', 'weight', 'height', 'width', 'depth', 'volume', 'price', /*****/ 'stock_group_id', 'stock_vat_id');
+		$showColumns = array('id', 'uid', 'name', 'cost', 'price');
+
+		if ($this->method == 'GET')
+		{
+			$id = trim($this->args[0]);
+			if ($id)
+			{
+				// Single item
+				$arr = array();
+				$query = DB::query("SELECT * FROM stock_product WHERE uid=%i AND id=%i", $uid, $id);
+				if ($query)
+				{
+					foreach ($allColumns as $column)
+						$arr[$column] = $query[0][$column];
+				}
+logWrite('arr = ' . print_r($arr, true));
+				return $arr;
+			}
+			else
+			{
+				// All items
+				$arr = array();
+				$ix = 0;
+				$query = DB::query("SELECT * FROM stock_product WHERE uid=%i", $uid);
+				foreach ($query as $q) {
+					foreach ($showColumns as $column)
+						$arr[$ix][$column] = $q[$column];
+					$ix++;
+				}
+				return $arr;
+			}
+		}
+		else if ($this->method == 'POST')
+		{
+			$obj = json_decode(file_get_contents("php://input"),true);
+logWrite("got json obj=".print_r($obj, true));
+            $keys = array_keys($obj);
+			$values = array();
+			$values['uid'] = $uid;
+			foreach ($postColumns as $column) {
+				if (!in_array($column, $keys)) {
+logWrite("missing key for col=".print_r($column, true));
+					$values[$column] = NULL;
+				}
+				else {
+logWrite("matched key for col=".print_r($column, true));
+					$values[$column] = $obj[$column];
+				}
+			}
+			$idArr = array();
+			DB::insert('stock_product', $values);
+			$idArr['id'] = DB::insertId();
+			return $idArr;
+		}
+		else if ($this->method == 'PUT')
+		{
+			$obj = json_decode(file_get_contents("php://input"),true);
+logWrite("got json obj=".print_r($obj, true));
+			// Pick up original
+			$id = (int) $this->args[0];
+			if ($id == 0)
+				return "fail";
+           	$keys = array_keys($obj);
+			$values = array();
+			foreach ($putColumns as $column) {
+				if (in_array($column, $keys)) {
+logWrite("matched key for col=".print_r($column, true));
+					$values[$column] = $obj[$column];
+				}
+			}
+			DB::update('stock_product', $values, "id=%i", $id);
+			return 'ok';
+		}
+		else if ($this->method == 'DELETE')
+		{
+			$id = (int) $this->args[0];
+			if ($id != 0)
+			{
+				DB::delete('stock_product', "id=%i", $id);
+				return 'ok';
+			}
+			return 'ok';
+		}
+	}
+
+// STOCK_VAT
+
+	protected function stock_vat()
+	{
+		logWrite("Method = " . $this->method);
+		$uid = 1;	//@@NB: hardcoded
+
+		$allColumns  = array('id', 'uid', 'description', 'rate', 'is_default');
+		$postColumns = array(             'description', 'rate', 'is_default');
+		$putColumns  = array('id',        'description', 'rate', 'is_default');
+
+		if ($this->method == 'GET')
+		{
+			$id = trim($this->args[0]);
+			if ($id)
+			{
+				// Single item
+				logWrite("GET a vat rate, id = " . $id);
+			}
+			else
+			{
+				// All items
+				$arr = array();
+				$ix = 0;
+				$query = DB::query("SELECT * FROM stock_vat WHERE uid=%i", $uid);
+				foreach ($query as $q) {
+					foreach ($allColumns as $column)
+    					$arr[$ix][$column] = $q[$column];
+					$ix++;
+				}
+				return $arr;
+			}
+		}
+		else if ($this->method == 'POST')
+		{
+			$obj = json_decode(file_get_contents("php://input"),true);
+logWrite("got json obj=".print_r($obj, true));
+            $keys = array_keys($obj);
+			$values = array();
+			$values['uid'] = $uid;
+			foreach ($postColumns as $column) {
+				if (!in_array($column, $keys)) {
+logWrite("missing key for col=".print_r($column, true));
+					$values[$column] = NULL;
+				}
+				else {
+logWrite("matched key for col=".print_r($column, true));
+					$values[$column] = $obj[$column];
+				}
+			}
+			$idArr = array();
+			DB::insert('stock_vat', $values);
+			$idArr['id'] = DB::insertId();
+			return $idArr;
+		}
+		else if ($this->method == 'PUT')
+		{
+			$obj = json_decode(file_get_contents("php://input"),true);
+logWrite("got json obj=".print_r($obj, true));
+			// Pick up original
+			$id = (int) $this->args[0];
+			if ($id == 0)
+				return "fail";
+           	$keys = array_keys($obj);
+			$values = array();
+			foreach ($putColumns as $column) {
+				if (in_array($column, $keys)) {
+logWrite("matched key for col=".print_r($column, true));
+					$values[$column] = $obj[$column];
+				}
+			}
+			DB::update('stock_vat', $values, "id=%i", $id);
+			return 'ok';
+		}
+		else if ($this->method == 'DELETE')
+		{
+			$id = (int) $this->args[0];
+			if ($id != 0)
+			{
+				DB::delete('stock_vat', "id=%i", $id);
+				return 'ok';
+			}
+			return 'ok';
+		}
+	}
+
+
+} // class MyAPI
+
+// ----------------------------------------------------------------------
 
 // Requests from the same server don't have a HTTP_ORIGIN header
 if (!array_key_exists('HTTP_ORIGIN', $_SERVER))
