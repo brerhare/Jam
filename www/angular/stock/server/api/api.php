@@ -322,10 +322,16 @@ logWrite("matched key for col=".print_r($column, true));
 		}
 	}
 
+function my_error_handler($params) {
+	logWrite("Error: " . $params["error"]);
+	logWrite("Query: " . $params["query"]);
+}
+
 // STOCK_PRODUCT
 
 	protected function stock_product()
 	{
+DB::$error_handler = 'my_error_handler';
 		logWrite("Method = " . $this->method);
 		$uid = 1;	//@@NB: hardcoded
 
@@ -382,8 +388,11 @@ logWrite("matched key for col=".print_r($column, true));
 				}
 			}
 			$idArr = array();
+logWrite("write not=" . print_r($values,true));
 			DB::insert('stock_product', $values);
+logWrite("write done, now to check it");
 			$idArr['id'] = DB::insertId();
+logWrite("write done, id checked");
 			return $idArr;
 		}
 		else if ($this->method == 'PUT')
