@@ -45,7 +45,7 @@
                     array('label' => 'Collections', 'url' => array('/jellyDownloadCollection/admin'), 'visible' => !Yii::app()->user->isGuest),
                 )),
 
-				array('label' => 'Blog', 'url' => 'https://plugin.wireflydesign.com/blog/backend.php/site/absoluteClassicsDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'Blog', 'url' => 'https://plugin.wireflydesign.com/news/backend.php/site/absoluteClassicsDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Events', 'url' => 'https://plugin.wireflydesign.com/event/backend.php/site/absoluteClassicsDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Tickets', 'url' => 'https://plugin.wireflydesign.com/ticket/backend.php/site/absoluteClassicsDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
 

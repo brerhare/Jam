@@ -27,6 +27,12 @@ $this->menu=array(
             'type'  => 'raw',
         ),
 
+		// @@EG: grid view lookup field in column
+		array(
+			'name' => 'collection',
+			'value' => '$data->jellyDownloadCollection->name',
+		),
+
         array(
             'class'=>'bootstrap.widgets.TbButtonColumn',
             'template'=>'{update}{delete}',

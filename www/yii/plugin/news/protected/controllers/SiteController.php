@@ -35,30 +35,151 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
+header('P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"');
+
+Yii::log("In at top................." , CLogger::LEVEL_WARNING, 'system.test.kim');
+
+		// Store the referer (hosting site) in a session cookie
+		if ((!isset(Yii::app()->session['http_referer'])) || (Yii::app()->session['http_referer'] == "unknown http_referer"))
+		{
+			$referer = "unknown http_referer";
+			if (isset($_SERVER['HTTP_REFERER']))
+				$referer = $_SERVER['HTTP_REFERER'];
+			$protoArr = explode(":", $referer);	// eg 'http' or 'https'
+			$referer = str_replace("https://", "", $referer);
+			$referer = str_replace("http://", "", $referer);
+        	$refArr = explode("/", $referer);
+			Yii::app()->session['http_referer'] = $protoArr[0] . "://" . $refArr[0];
+		}
+
 		// Set the news type (blog format)
-		Yii::app()->session['news_type'] = 'traditional';
+		if (!(isset(Yii::app()->session['news_type'])))
+			Yii::app()->session['news_type'] = 'traditional';
 		if (isset($_GET['newstype']))
 			Yii::app()->session['news_type'] = $_GET['newstype'];
+		if (isset($_GET['sidebar']))
+			Yii::app()->session['sidebar'] = $_GET['sidebar'];
+		if (isset($_GET['parenturl']))
+			Yii::app()->session['parenturl'] = $_GET['parenturl'];
+		if ((isset($_GET['page'])) && ($_GET['page'] != ""))
+			Yii::app()->session['page'] = $_GET['page'];
 
-		$category = 0;
-		$this->renderPartial('index',array(
-			'showCat'=>$category,
-			'showArt'=>'',
-		));
+		if (isset($_GET['art']))
+			$this->actionPlay();
+		else
+		{
+			$category = 0;
+			if (isset($_GET['cat']))
+				$category = $_GET['cat'];
+			$this->renderPartial('index',array(
+				'showCat'=>$category,
+				'showArt'=>'',
+			));
+		}
 	}
 
 	/**
 	 * This is the 'index' action that is invoked
-	 * when a category is explicitly requested by users.
+	 * when an article is explicitly requested by users.
 	 */
 	public function actionPlay()
 	{
-		$category = $_GET['cat'];
+		if ((isset($_GET['art'])) && ($_GET['art'] != ""))
+			$this->actionResolveParentSiteGalleryAddon(0);
+
+		// If we get back here then there was no {{gallery-lightbox}} curly
+		$cat = '';
+		$art = '';
+		$content = '';
+		if (isset($_GET['cat']))
+			$cat = $_GET['cat'];
+		if (isset($_GET['art']))
+			$art = $_GET['art'];
+
+        // Show the selected article's detail
+		if ($art != "")
+		{
+        	$criteria = new CDbCriteria;
+        	$criteria->addCondition("uid=" . Yii::app()->session['uid']);
+        	$criteria->addCondition("id=" . $art);
+        	$article = Article::model()->find($criteria);
+        	if ($article)
+            	$content = $this->fixChars($this->populateArticleHeading($article) . $article->content);
+		}
+
 		$this->renderPartial('index',array(
-			'showCat'=>$category,
-			'showArt'=>'',
+			'showCat'=>$cat,
+			'showArt'=>$art,
+			'showContent' => $content,
 		));
 	}
+
+
+	// ------------------------------------------------- Addon resolver code starts --------------------------------------->
+	public function actionResolveParentSiteGalleryAddon($repeat, $repeatContent="")
+	{
+		$content = $repeatContent;
+
+		if ($repeat == 0)
+		{
+			// Stash the $_GETs
+			$cat = '';
+			$art = '';
+			if (isset($_GET['cat']))
+				$cat = $_GET['cat'];
+			if (isset($_GET['art']))
+				$art = $_GET['art'];
+			Yii::app()->session['stash_cat'] = $cat;
+			Yii::app()->session['stash_art'] = $art;
+
+    		// Show the selected article's detail
+    		$criteria = new CDbCriteria;
+    		$criteria->addCondition("uid=" . Yii::app()->session['uid']);
+    		$criteria->addCondition("id=" . Yii::app()->session['stash_art']);
+    		$article = Article::model()->find($criteria);
+			if (!($article))
+				return;
+			if (!(strstr($article->content, "{{gallery-lightbox")))
+				return;
+
+           	$content = $this->fixChars($this->populateArticleHeading($article) . $article->content);
+		}
+
+		// Extract the {{...}} part of the content, storing the preceding and following strings for later reassembly
+		$pre = strstr($content, "{{", true);
+		$tag = strstr($content, "{{");
+		$tag = strstr($tag, "}}", true) . "}}";
+		$post = strstr($content, "}}");
+		$post = str_replace("}}", "", $post);
+		Yii::app()->session['stash_pre'] = $pre;
+		Yii::app()->session['stash_post'] = $post;
+
+		$url = Yii::app()->session['parenturl'] . "/index.php/site/pluginGalleryAddonCallback?&content=" . urlencode($tag);
+		$this->redirect($url);
+	}
+
+	public function actionResolveParentSiteGalleryAddonReturn()
+	{
+		$fileName = $_GET['filename'];
+		$content = file_get_contents($fileName);
+
+		$util = new Util;
+
+//		$decryptedContent = $util->decrypt($content);
+$decryptedContent = $content;
+
+		$content =  $this->fixChars(Yii::app()->session['stash_pre'] . $decryptedContent .  Yii::app()->session['stash_post']);
+		//if (strstr($content, "{{"))
+			//$this->redirect(array('resolveParentSiteGalleryAddon', 'repeat' => '1', 'repeatContent' => $content));
+
+		$this->renderPartial('index',array(
+			'showCat' => Yii::app()->session['stash_cat'],
+			'showArt' => Yii::app()->session['stash_art'],
+			'showContent' => $content,
+		));
+	}
+	// <------------------------------------------- Addon resolver code ends ----------------------------------------------
+
 
 	/**
 	 * This is the action to handle external exceptions.
@@ -77,7 +198,7 @@ class SiteController extends Controller
 	/**
 	 * Displays the contact page
 	 */
-	public function actionContact()
+	public function actionContact($id)
 	{
 		$model=new ContactForm;
 		if(isset($_POST['ContactForm']))
@@ -133,5 +254,44 @@ class SiteController extends Controller
 	{
 		Yii::app()->user->logout();
 		$this->redirect(Yii::app()->homeUrl);
+	}
+
+	private function populateArticleHeading($article)
+	{
+		$content = "";
+
+		// Get the category name
+		$catDesc = "Unknown";
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("uid=" . Yii::app()->session['uid']);
+		$criteria->addCondition("id=" . $article->blog_category_id);
+		$category = Category::model()->find($criteria);
+		if ($category)
+			$catDesc = $category->name;
+
+		$content .= "<div>";
+			$content .= "<p>";
+				$content .= "<img style='float:right; margin:0px 0px 15px 15px; width:150px; height:auto' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/thumb_" . $article->thumbnail_path .  "' alt='No Image' >";
+				$content .= "<div style='font-size:1.2em; font-weight:bold; color:#424242'>" . $article->title . "</div>";
+				$content .= "<div style='font-size:0.9em; padding-top:5px; height:12px; color:#989898'>" . $catDesc . "&nbsp&nbsp" . $article->date . "</div>";
+				$content .= "<p style='font-size:1.1em; color:#424242'>" . $article->intro . "</p>";
+			$content .= "</p>";
+/***
+			$content .= "<table><tr>";
+				$content .= "<td width='75%'>";
+					$content .= "<div style='font-size:1.2em; font-weight:bold; color:#424242'>" . $article->title . "</div>";
+					$content .= "<div style='font-size:0.9em; padding-top:5px; height:12px; color:#989898'>" . $catDesc . "&nbsp&nbsp" . $article->date . "</div>";
+				$content .= "</td><td width='25%'>";
+				$content .= "<img style='width:150px; height:auto' src='" . Yii::app()->baseUrl  . "/userdata/" . Yii::app()->session['uid'] . "/thumb_" . $article->thumbnail_path .  "' alt='No Image' >";
+				$content .= "</td>";
+			$content .= "</tr></table>";
+***/
+		$content .= "</div>";
+		return $content;
+	}
+
+	private function fixChars($str)
+	{
+		return mb_convert_encoding($str, "HTML-ENTITIES", "UTF-8");
 	}
 }

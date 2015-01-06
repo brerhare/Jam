@@ -33,7 +33,7 @@ class JellyGalleryImageController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','multiCreate', 'update','delete','admin','session'),
+				'actions'=>array('create','multiCreate', 'multiCreateUpload', 'update','delete','admin','session'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -59,7 +59,7 @@ class JellyGalleryImageController extends Controller
 
 	/**
 	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 * Single-create entrypoint
 	 */
 	public function actionCreate()
 	{
@@ -93,33 +93,56 @@ class JellyGalleryImageController extends Controller
 	}
 
 	/**
-	 * Multi-Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 * Creates multiple new models.
+	 * Multi-create entrypoint
 	 */
 	public function actionMultiCreate()
 	{
-		if(isset($_FILES['files']))
+		if(isset($_POST['uploadify']))
+			$this->redirect(array('admin'));
+		$this->render('multicreate');
+	}
+
+
+	/**
+	 * This is a NON-USER call
+	 * Upload for multi-create. NOTE that this is called asynchronously for EACH file uploaded
+	 */
+	public function actionMultiCreateUpload()
+	{
+		$targetFolder = '/crap'; // Relative to the root
+		if (!empty($_FILES))
 		{
-			// upload new files
-			foreach($_FILES['files']['name'] as $key=>$filename)
+			$tempFile = $_FILES['Filedata']['tmp_name'];
+			$targetPath = $_SERVER['DOCUMENT_ROOT'] . $targetFolder;
+			$targetFile = rtrim($targetPath,'/') . '/' . $_FILES['Filedata']['name'];
+	
+			// Validate the file type
+			$fileTypes = array('jpg','jpeg','gif','png'); // File extensions
+			$fileParts = pathinfo($_FILES['Filedata']['name']);
+	
+			if (in_array(strtolower($fileParts['extension']),$fileTypes))
 			{
 				$model=new JellyGalleryImage;
+
 				// Hard-wire this image to the gallery stored in our session
 				$model->jelly_gallery_id = Yii::app()->session['gallery_id'];
-				$model->sequence = 1;
-				$model->image = $filename;
-				// @@ EG: How to save a model bypassing the validation
-				if ($model->save(false))
+
+				$model->image = $_FILES['Filedata']['name'];
+				if($model->save(false))
 				{
-                    $fname = Yii::app()->basePath . $this->_imageDir . $model->image;
-					move_uploaded_file($_FILES['files']['tmp_name'][$key], $fname);
-                    $this->makeThumb($fname);
+                	if (strlen($model->image) > 0)
+                	{
+                    	$fname = Yii::app()->basePath . $this->_imageDir . $model->image;
+						move_uploaded_file($tempFile, $fname);
+                    	//$model->image->saveAs($fname);
+                    	$this->makeThumb($fname);
+                	}
 				}
 			}
-			$this->redirect(array('admin','id'=>$model->jelly_gallery_id));
+			else
+				throw new CHttpException(400,'Invalid file type');
 		}
-		//$this->redirect(array('admin','id'=>$model->jelly_gallery_id));
-		$this->render('multicreate');
 	}
 
 	/**

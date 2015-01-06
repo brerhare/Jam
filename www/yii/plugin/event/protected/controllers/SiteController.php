@@ -36,6 +36,14 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
+		// Store any passed customisation args
+		Yii::app()->session['headercolor'] == "";
+		Yii::app()->session['map'] == "";
+		if (isset($_GET['headercolor']))
+			Yii::app()->session['headercolor'] = $_GET['headercolor'];
+		if (isset($_GET['map']))
+			Yii::app()->session['map'] = $_GET['map'];
+
 		$layout = "index";
 		if (isset($_GET['layout']))
 			$layout = $_GET['layout'];

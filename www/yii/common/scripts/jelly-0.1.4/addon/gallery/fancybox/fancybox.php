@@ -55,12 +55,12 @@ class fancybox
 							$galleryId++;
 							$content .= "<tr>";
 							$content .= "<td width='25%'>";
-							$content .= "<a class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/" . $gallery->image . "' title='" . $gallery->text . "'> <img src='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/thumb_" . $gallery->image . "' alt='' /> </a>";
+							$content .= "<a class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $gallery->image . "' title='" . $gallery->text . "'> <img src='" . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $gallery->image . "' alt='' /> </a>";
 							$criteria = new CDbCriteria;
 							$criteria->addCondition("jelly_gallery_id = " . $gallery->id);
 							$galleryImages = JellyGalleryImage::model()->findAll($criteria);
 							foreach ($galleryImages as $galleryImage):
-								$content .= "<a style='display:none' class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/" . $galleryImage->image . "' title='" . $galleryImage->text . "'> <img src='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . "' alt='' /> </a>";
+								$content .= "<a style='display:none' class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $galleryImage->image . "' title='" . $galleryImage->text . "'> <img src='" . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . "' alt='' /> </a>";
 							endforeach;
 							$content .= "</td>";
 							$content .= "<td width='1%'></td>";
@@ -87,8 +87,9 @@ class fancybox
 							$galleryImages = JellyGalleryImage::model()->findAll($criteria);
 							$content .= "<div style='margin-left:50px'>";
 							foreach ($galleryImages as $galleryImage):
-								$content .= '<a class="fancybox item" rel="gallery1" href="' . Yii::app()->baseUrl . "/userdata/jelly/gallery/" . $galleryImage->image . '" title="' . $galleryImage->text . '">';
-								$content .= '<img style="padding:5px" src="' . Yii::app()->baseUrl . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . '" alt="" />';
+//echo "<br/>->" . Yii::app()->getBaseUrl(true) . "<-<br/>";
+								$content .= '<a class="fancybox item" rel="gallery1" href="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $galleryImage->image . '" title="' . $galleryImage->text . '">';
+								$content .= '<img style="padding:5px" src="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . '" alt="" />';
 								$content .= '</a>';
 							endforeach;
 							$content .= "</div>";
@@ -161,11 +162,24 @@ END_OF_API_HTML;
 	private $apiJs = <<<END_OF_API_JS
 
 	jQuery(document).ready(function($){
+
+		// Disable right click
+		$(document).on({
+			"contextmenu": function(e) {
+				console.log("ctx menu button:", e.which);
+				e.preventDefault();				// Stop the context menu
+			},
+			"mousedown": function(e) {
+				console.log("normal mouse down:", e.which);
+			},
+			"mouseup": function(e) {
+				console.log("normal mouse up:", e.which);
+			}
+		});
+
 	});
 
 	$(document).ready(function() {
-		/*$(".fancybox").fancybox();*/
-
 		$(".fancybox").fancybox({
     		helpers:  {
         		thumbs : {
@@ -174,7 +188,6 @@ END_OF_API_HTML;
         		}
     		}
 		});
-
 	});
 
 END_OF_API_JS;

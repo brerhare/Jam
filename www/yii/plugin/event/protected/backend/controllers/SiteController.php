@@ -21,6 +21,17 @@ class SiteController extends Controller
 		);
 	}
 
+// @@TODO: HARDCODED FOR TEST ---------- REMOVE
+    public function actionTestdirect()
+    {
+        Yii::app()->session['uid'] = 55;
+        $identity = new UserIdentity('test', 'test');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
 // @@TODO: HARDCODED FOR ABSOLUTE CLASSICS ---------- REMOVE
     public function actionAbsoluteClassicsdirect()
     {
@@ -40,6 +51,13 @@ class SiteController extends Controller
 	{
 		if (Yii::app()->user->isGuest)
 			$this->redirect(array('site/login'));
+
+        // Store the referer (hosting site) in a session cookie
+        $referer = "unknown http_referer";
+        if (isset($_SERVER['HTTP_REFERER']))
+            $referer = $_SERVER['HTTP_REFERER'];
+        Yii::app()->session['http_referer'] = str_replace("/backend.php", "", $referer);
+
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
 		$this->render('index');

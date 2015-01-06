@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "bootstrap-sass-official": "",
+    "angular-smart-table": ""
+    "toastr": ""
+  },
+  "devDependencies": {
+  },
+  "resolutions": {
+  }
+}                 

@@ -112,8 +112,8 @@ END_OF_BEGINHEADER;
 	</head>
 
 <!-- @@TODO Remove hardcoded LEAFLET leaflet -->
-<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
-<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+<!-- <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" /> -->
+<!-- <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script> -->
 
 	<body>\n
 END_OF_ENDHEADER;
@@ -144,6 +144,26 @@ END_OF_ENDHEADER;
         }); 
         </script>
 
+<!-- Handle postmessages -->
+<!--  @@NB START POSTMESSAGE -->
+<script>
+	var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
+	var eventer = window[eventMethod];
+	var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
+
+	// Listen to message from child window
+	eventer(messageEvent,function(e) {
+  		//console.log('parent received message!:  ',e.data);
+		var n = e.data.indexOf("^");
+		if (n == -1)
+			return;
+		msgArr = e.data.split("^");
+		if (msgArr[0] == "redirect")
+			window.location = msgArr[1];
+	},false);
+</script>
+<!-- @@NB END POSTMESSAGE -->
+
 	</body>
 	</html>\n
 END_OF_FOOTER;
@@ -157,6 +177,24 @@ END_OF_FOOTER;
 	private $cssDivArray = array();
 	private $bodyArray = array();
 	private $scriptArray = array();
+
+// -------------------------- Entry points -----------------------------
+
+    // (1) Expand curly wurlies embedded in content (eg a plugin embeds an addon)
+
+    public function expandContent($content, $jellyRoot)
+    {
+        $this->jellyRootPath = Yii::app()->basePath . "/../" . $jellyRoot;
+        $this->jellyRootUrl  = Yii::app()->baseUrl . $jellyRoot;
+        $this->genInlineHtml($content, $indentLevel=0);
+		$retString = "";
+		foreach ($this->bodyArray as $body)
+			$retString .= $body;	
+//$retString = "OK";
+		return($retString);
+    }
+
+    // (2) Process a jelly file that has been parsed into an array (The general use case - handling entire jelly files)
 
 	public function processData($jellyArray, $jellyRoot)
 	{
@@ -173,7 +211,7 @@ END_OF_FOOTER;
 			// Get the requested page for its metadata
 			if (!strstr(Yii::app()->db->connectionString, "plugin"))	// We dont do this for plugins!
 			{
-				if (isset($_GET['page']))
+				if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 				{
 					$criteria = new CDbCriteria;
 					$criteria->addCondition("url = '" . $_GET['page'] . "'");
@@ -211,7 +249,7 @@ END_OF_FOOTER;
 				$arrDb = $value['db'];
 				if (array_key_exists("filter", $arrDb))
 				{
-					if (isset($_GET['page']))
+					if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 					{
 						if ((array_key_exists("table", $arrDb)) && ($arrDb['table'] == 'ContentBlock'))
 						{
@@ -349,7 +387,7 @@ END_OF_FOOTER;
 					$second = strstr($first, "=");
 					$pageForCondition = ltrim($second, "=");
 					$pageLoading = "";
-					if (isset($_GET['page']))
+					if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 					{
 						$pageLoading = $_GET['page'];
 						if ($this->homePage == 1)
@@ -470,7 +508,7 @@ END_OF_FOOTER;
 
                     // Do the query
                     $q = "return " . $query . ";";
-Yii::log("REPEATING EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
+//Yii::log("REPEATING EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 					if ($validQuery)
 	                    $resp = eval($q);
 	                else
@@ -540,7 +578,7 @@ Yii::log("REPEATING EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim
 
 // @@TODO: remove this hardcoding
 /*****************************************************************/
-if (isset($_GET['page']))
+if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 {
  if ($_GET['page'] != 'Jacquies-Beauty-Dumfries-Salon')
  {
@@ -553,9 +591,28 @@ if (isset($_GET['page']))
 
 		// Is this entire blob clickable?
 		if (array_key_exists("click", $array))
-			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['click'])) . ">\n", $indentLevel);
+		{
+			if (strpos($array['click'], "?") === false)
+				$sep = "?";
+			else
+				$sep = "&";
+			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['click'])) . $sep . "click=true>\n", $indentLevel);
+		}
 		if (array_key_exists("clicknew", $array))
-			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['clicknew'])) . " target='_blank'>\n", $indentLevel);
+		{
+			if (strpos($array['clicknew'], "?") === false)
+				$sep = "?";
+			else
+				$sep = "&";
+			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['clicknew'])) . $sep . "click=true target='_blank'>\n", $indentLevel);
+		}
+
+// original 4 lines follow
+//		if (array_key_exists("click", $array))
+//			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['click'])) . "&click=true>\n", $indentLevel);
+//		if (array_key_exists("clicknew", $array))
+//			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['clicknew'])) . "&click=true target='_blank'>\n", $indentLevel);
+
 
 		$this->genInlineHtml("<div id='" . $blobName . "'>\n", $indentLevel);
 		$this->genDivCSS("div#" . $blobName ." {\n");
@@ -643,6 +700,10 @@ if (strstr($blobName, "googlemap"))
 	{
 		if ($_GET['programid'] == 12)	// Absolute Classics
 			$cssValue = "0px";
+	}
+	if ((Yii::app()->session['map']) && (Yii::app()->session['map'] == "no"))
+	{
+			$cssValue = "0px";			// map=no selected
 	}
 }
 
@@ -864,19 +925,23 @@ if (strstr($blobName, "googlemap"))
 					}
 				}
 
-
                 // Build the query from the collected args
                 $query = $dbTable . '::model()->find($cri);';
                 // Add filters
 				$cri=new CDbCriteria;
 				foreach ($fltArr as $flt)
-					$cri->addCondition($this->dbExpand(trim($flt)));
+				{
+					$condition = $this->dbExpand(trim($flt));
+					$condition = str_replace('""', '"', $condition);
+					$condition = str_replace("''", "'", $condition);
+					$cri->addCondition($condition);
+				}
                 // Add order
                 foreach ($orderArr as $ord)
 				$cri->order = $this->dbExpand(trim($ord));
                 // Do the query
                 $q = "return " . $query . ";";
-Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
+//Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
                 $resp = eval($q);
                 $this->dbTable[$dbTable] = $resp;
 				$this->dbError[$dbTable] = '';
@@ -929,7 +994,16 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				if ($htmlRequired == 0)
 					$this->genInlineHtml($code[0]);		// Local html generated by the addon
 				else
+				{
+					// We are going to return the code generated by the addon to the caller, not emit it
+					// Get the HTML
 					$htmlOutput = $code[0];
+					// Get the JS, replacing the Onready() with inline code
+					$htmlOutput .= "<script>";
+					$htmlOutput .= $code[1];
+					//$htmlOutput .= "init_addon_js();";
+					$htmlOutput .= "</script>";
+				}
 				$this->genScript($code[1]);			// js/jquery generated by the addon
 				if ((count($code) > 2) && (trim($code[2]) != ""))	// Clipboard content returned by the addon 
 				{
@@ -1121,7 +1195,51 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				//$content = str_replace($pOrig, "", $content);
 			}
 
-			if (stristr($vals[0], "gallery"))
+			if (stristr($vals[0], "gallery-hoverzoom"))
+			{
+				// Eg: {{gallery-hoverzoom <33>}}  (hybrid)
+				// ----------------------------------------
+				//@@ TODO: TOFIX: BUG: Uncommenting next line causes memory exhaustion
+				//$moreCurlyWurlys = 1;
+				$galleries = "";
+				$thumbnails = "0";
+				if (count($vals) > 1)
+					$galleries = $vals[1];
+				$addon = array(
+					"gallery" => array(
+						"hoverzoom" => array(
+             				"gallery" => $galleries,
+						)
+					)
+				);
+				$this->addonHandler($addon, 1, $addonHtml);
+				$content = str_replace($pOrig, $addonHtml, $content);
+				//$content = str_replace($pOrig, "", $content);
+			}
+
+			if (stristr($vals[0], "gallery-lightbox"))
+			{
+				// Eg: {{gallery-lightbox <33>}}  (hybrid) - only used in embedded news articles
+				// ---------------------------------------
+				//@@ TODO: TOFIX: BUG: Uncommenting next line causes memory exhaustion
+				//$moreCurlyWurlys = 1;
+				$galleries = "";
+				$thumbnails = "0";
+				if (count($vals) > 1)
+					$galleries = $vals[1];
+				$addon = array(
+					"gallery" => array(
+						"lightbox" => array(
+             				"gallery" => $galleries,
+						)
+					)
+				);
+				$this->addonHandler($addon, 1, $addonHtml);
+				$content = str_replace($pOrig, $addonHtml, $content);
+				//$content = str_replace($pOrig, "", $content);
+			}
+
+			if (stristr($vals[0], "gallery"))		// This is the default gallery, ie everywhere except in embedded news articles
 			{
 				// Eg: {{gallery <33 SomeTitle> <"thumbs">}}  (hybrid)
 				// ---------------------------------------------------
@@ -1208,7 +1326,14 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				// ----------------------------
 				$moreCurlyWurlys = 1;
 				$value = $vals[1];
-				$iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="http://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;department=' . $value . '"></iframe>';
+
+                $deeplink = "";
+				if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
+                    $deeplink .= "&page=" . $_GET['page'];
+                if ((isset($_GET['product'])) && (trim($_GET['product']) != ""))
+                    $deeplink .= "&product=" . $_GET['product'];
+
+				$iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="http://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;department=' . $value . $deeplink . '"></iframe>';
 				//$iframe = '<iframe height="670" width="850" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;department=' . $value . '"></iframe>';
 				$content = str_replace($pOrig, $iframe, $content);
 			}
@@ -1218,7 +1343,7 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				// Eg: {{preset}}
 				// --------------
 				$moreCurlyWurlys = 1;
-				$iframe = '<iframe width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=preset&sid=' . Yii::app()->params['sid'] . '&amp;preset=true"></iframe>';
+				$iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=preset&sid=' . Yii::app()->params['sid'] . '&amp;preset=true"></iframe>';
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 
@@ -1234,7 +1359,10 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				||  ((trim(Yii::app()->params['checkoutGatewayUser']) == "") && (trim(Yii::app()->params['checkoutPaypalUser']) == ""))
 				)
 					die("Checkout needs gateway access to be set up in the configuration file");
-				$iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=checkout&sid=' . Yii::app()->params['sid'] . '&ge=' . Yii::app()->params['checkoutEmail'] . '&gn=' . Yii::app()->params['checkoutName'] . '&gu=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayUser'])) . '&gp=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayPassword'])) . '"></iframe>';
+				$click = '';
+                if ((isset($_GET['click'])) && (trim($_GET['click']) != ""))
+                    $click .= "&click=" . $_GET['click'];
+				$iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=checkout&sid=' . Yii::app()->params['sid'] . '&ge=' . Yii::app()->params['checkoutEmail'] . '&gn=' . Yii::app()->params['checkoutName'] . '&gu=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayUser'])) . '&gp=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayPassword'])) . $click . '"></iframe>';
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 
@@ -1243,21 +1371,39 @@ Yii::log("EVAL = " . $query , CLogger::LEVEL_WARNING, 'system.test.kim');
 				// Eg: {{news traditional}} {{news pinterest}}
 				// -----------------
 				$moreCurlyWurlys = 1;
-				$value = $vals[1];
 
-				$color = '';
-				$backColor = '';
-				if (count($vals) > 2)
-					$color = $vals[2];
-				if (count($vals) > 3)
-					$backColor = $vals[3];
+				$newsType = 'traditional';
+				$sidebar = 'left';
+				$pushRecentDown = '';
+				$pushCategoriesDown = '';
+				if (stristr($vals[1], "="))	// nvp-style args
+				{
+					foreach ($vals as $nvps)
+					{
+						if (!stristr($nvps, "=")) continue;	// first arg obviously wont have
+						$nvp = explode("=", $nvps);
+//echo $nvp[0] . "-" . $nvp[1] . "<br>";
+						if (trim($nvp[0]) == "newstype") $newsType = trim($nvp[1]);
+						if (trim($nvp[0]) == "sidebar") $sidebar = trim($nvp[1]);
+						if (trim($nvp[0]) == "pushrecentdown") $pushRecentDown = trim($nvp[1]);
+						if (trim($nvp[0]) == "pushcategoriesdown") $pushCategoriesDown = trim($nvp[1]);
+					}
+				}
 
                 $deeplink = "";
+				if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
+                    $deeplink .= "&page=" . $_GET['page'];
                 if (isset($_GET['cat']))
                     $deeplink .= "&cat=" . $_GET['cat'];
                 if (isset($_GET['art']))
                     $deeplink .= "&art=" . $_GET['art'];
-                $iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/news/?sid=' . Yii::app()->params['sid'] . '&newstype=' . $value . '&category=0' . '&color=' . $color . '&backcolor=' . $backColor . $deeplink . '"></iframe>';
+
+// @@NB This plugin gets passed the parent url - galleries may be embedded in its pages
+// ------------------------------------------------------------------------------------
+				$page = "";
+				if (isset(Yii::app()->session['page']))
+					$page = Yii::app()->session['page'];
+                $iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="http://plugin.wireflydesign.com/news/?sid=' . Yii::app()->params['sid'] . '&parenturl=' . Yii::app()->getBaseUrl(true)  . '&page=' . $page . '&sidebar=' . $sidebar . '&newstype=' . $newsType . '&category=0' . '&pushrecentdown=' . $pushRecentDown . '&pushcategoriesdown=' . $pushCategoriesDown . $deeplink . '"></iframe>';
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 

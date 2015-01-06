@@ -1,0 +1,8 @@
+gulp issues
+-----------
+Gulp doesnt add (s)css dependencies to index.html (although it adds .js) This might be an scss/css problem
+
+git issues
+----------
+creating an app from skeleton should version all external dependencies except CDNs. Perhaps one copy in skeleton softlinked from apps?
+

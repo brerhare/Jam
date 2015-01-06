@@ -1,0 +1,34 @@
+index.html
+app/
+	app.module.js
+	app.routes.js
+	app.scss
+
+	components/			// each component is like a mini Angular app
+		customer/
+			maintain/
+				maintain.html
+				maintain.controller.js
+
+	shared/				// reusable components or partials of our site. Ideally these are directives
+		home/
+			homeController.js
+			homeService.js
+			homeView.html
+		blog/
+			blogController.js
+			blogService.js
+			blogView.html
+
+assets/
+	img/      // Images and icons for your app
+NOT	css/      // All styles and style related files (SCSS or LESS files)
+NOT	js/       // JavaScript files written for your app that are not for angular
+	libs/     // Third-party libraries such as jQuery, Moment, Underscore, etc.
+
+----------------------------------------------------------------------------------
+
+<!-- user a slider directive to loop over something -->
+<slider id="article-slider" ng-repeat="picture in pictures" size="large" type="square">
+</slider>
+

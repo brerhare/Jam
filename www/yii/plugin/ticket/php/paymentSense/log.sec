@@ -1,0 +1,412 @@
+26-04-13 18:53:53 86.31.215.106 Entrypoint to PaymentSense
+26-04-13 18:53:53 86.31.215.106 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '86.31.215.106']
+26-04-13 18:53:53 86.31.215.106 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 18:53:53 86.31.215.106 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 18:53:53 86.31.215.106 Retrieved event record Made in Dumfries
+26-04-13 18:53:53 86.31.215.106 Going with order number 6-1366995233 (based on uid-time)
+26-04-13 18:53:53 86.31.215.106 Updating order number using sql [UPDATE ticket_order set order_number = '6-1366995233' where ip = '86.31.215.106']
+26-04-13 18:58:44 86.31.215.106 Entrypoint to PaymentSense
+26-04-13 18:58:44 86.31.215.106 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '86.31.215.106']
+26-04-13 18:58:44 86.31.215.106 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 18:58:44 86.31.215.106 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 18:58:44 86.31.215.106 Retrieved event record Made in Dumfries
+26-04-13 18:58:44 86.31.215.106 Going with order number 6-1366995524 (based on uid-time)
+26-04-13 18:58:44 86.31.215.106 Updating order number using sql [UPDATE ticket_order set order_number = '6-1366995524' where ip = '86.31.215.106']
+26-04-13 19:03:49 86.31.215.106 Entrypoint to PaymentSense
+26-04-13 19:03:49 86.31.215.106 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '86.31.215.106']
+26-04-13 19:03:49 86.31.215.106 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 19:03:49 86.31.215.106 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 19:03:49 86.31.215.106 Retrieved event record Made in Dumfries
+26-04-13 19:03:49 86.31.215.106 Going with order number 6-1366995829 (based on uid-time)
+26-04-13 19:03:49 86.31.215.106 Updating order number using sql [UPDATE ticket_order set order_number = '6-1366995829' where ip = '86.31.215.106']
+26-04-13 19:11:40 86.31.215.106 Entrypoint to PaymentSense
+26-04-13 19:11:40 86.31.215.106 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '86.31.215.106']
+26-04-13 19:11:40 86.31.215.106 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 19:11:40 86.31.215.106 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 19:11:40 86.31.215.106 Retrieved event record Made in Dumfries
+26-04-13 19:11:40 86.31.215.106 Going with order number 6-1366996300 (based on uid-time)
+26-04-13 19:11:40 86.31.215.106 Updating order number using sql [UPDATE ticket_order set order_number = '6-1366996300' where ip = '86.31.215.106']
+26-04-13 19:12:53 86.31.215.106 Entrypoint to PaymentSense
+26-04-13 19:12:53 86.31.215.106 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '86.31.215.106']
+26-04-13 19:12:53 86.31.215.106 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 19:12:53 86.31.215.106 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 19:12:53 86.31.215.106 Retrieved event record Made in Dumfries
+26-04-13 19:12:53 86.31.215.106 Going with order number 6-1366996373 (based on uid-time)
+26-04-13 19:12:53 86.31.215.106 Updating order number using sql [UPDATE ticket_order set order_number = '6-1366996373' where ip = '86.31.215.106']
+26-04-13 19:25:12 2.124.91.180 Entrypoint to PaymentSense
+26-04-13 19:25:12 2.124.91.180 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '2.124.91.180']
+26-04-13 19:25:12 2.124.91.180 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 19:25:12 2.124.91.180 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 19:25:12 2.124.91.180 Retrieved event record Made in Dumfries
+26-04-13 19:25:12 2.124.91.180 Going with order number 6-1366997112 (based on uid-time)
+26-04-13 19:25:12 2.124.91.180 Updating order number using sql [UPDATE ticket_order set order_number = '6-1366997112' where ip = '2.124.91.180']
+26-04-13 19:25:29 2.124.91.180 Entrypoint to PaymentSense
+26-04-13 19:25:29 2.124.91.180 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '2.124.91.180']
+26-04-13 19:25:29 2.124.91.180 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 19:25:29 2.124.91.180 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 19:25:29 2.124.91.180 Retrieved event record Made in Dumfries
+26-04-13 19:25:29 2.124.91.180 Going with order number 6-1366997129 (based on uid-time)
+26-04-13 19:25:29 2.124.91.180 Updating order number using sql [UPDATE ticket_order set order_number = '6-1366997129' where ip = '2.124.91.180']
+26-04-13 19:25:38 2.124.91.180 Entrypoint to PaymentSense
+26-04-13 19:25:38 2.124.91.180 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '2.124.91.180']
+26-04-13 19:25:38 2.124.91.180 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 19:25:38 2.124.91.180 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 19:25:38 2.124.91.180 Retrieved event record Made in Dumfries
+26-04-13 19:25:38 2.124.91.180 Going with order number 6-1366997138 (based on uid-time)
+26-04-13 19:25:38 2.124.91.180 Updating order number using sql [UPDATE ticket_order set order_number = '6-1366997138' where ip = '2.124.91.180']
+26-04-13 19:26:12 2.124.91.180 Entrypoint to PaymentSense
+26-04-13 19:26:12 2.124.91.180 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '2.124.91.180']
+26-04-13 19:26:12 2.124.91.180 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 19:26:12 2.124.91.180 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 19:26:12 2.124.91.180 Retrieved event record Made in Dumfries
+26-04-13 19:26:12 2.124.91.180 Going with order number 6-1366997172 (based on uid-time)
+26-04-13 19:26:12 2.124.91.180 Updating order number using sql [UPDATE ticket_order set order_number = '6-1366997172' where ip = '2.124.91.180']
+26-04-13 19:28:27 86.31.215.106 Entrypoint to PaymentSense
+26-04-13 19:28:27 86.31.215.106 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '86.31.215.106']
+26-04-13 19:28:27 86.31.215.106 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 19:28:27 86.31.215.106 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 19:28:27 86.31.215.106 Retrieved event record Made in Dumfries
+26-04-13 19:28:27 86.31.215.106 Going with order number 6-1366997307 (based on uid-time)
+26-04-13 19:28:27 86.31.215.106 Updating order number using sql [UPDATE ticket_order set order_number = '6-1366997307' where ip = '86.31.215.106']
+26-04-13 19:49:49 86.31.215.106 Entrypoint to PaymentSense
+26-04-13 19:49:49 86.31.215.106 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '86.31.215.106']
+26-04-13 19:49:49 86.31.215.106 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 19:49:49 86.31.215.106 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 19:49:49 86.31.215.106 Retrieved event record Made in Dumfries
+26-04-13 19:49:49 86.31.215.106 Going with order number 6-1366998589 (based on uid-time)
+26-04-13 19:49:49 86.31.215.106 Updating order number using sql [UPDATE ticket_order set order_number = '6-1366998589' where ip = '86.31.215.106']
+26-04-13 19:50:32 86.31.215.106 (PaymentForm) Transaction message is AuthCode: 429055
+26-04-13 19:50:32 86.31.215.106 Retrieving (not potential anymore) order details using sql [SELECT * FROM ticket_order where ip = '86.31.215.106']
+26-04-13 19:50:32 86.31.215.106 Updating auth number using sql [UPDATE ticket_order set auth_code = 'AuthCode: 429055' where ip = '86.31.215.106']
+26-04-13 19:52:01 86.184.4.8 Entrypoint to PaymentSense
+26-04-13 19:52:01 86.184.4.8 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '86.184.4.8']
+26-04-13 19:52:01 86.184.4.8 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 19:52:01 86.184.4.8 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 19:52:01 86.184.4.8 Retrieved event record Made in Dumfries
+26-04-13 19:52:01 86.184.4.8 Going with order number 6-1366998721 (based on uid-time)
+26-04-13 19:52:01 86.184.4.8 Updating order number using sql [UPDATE ticket_order set order_number = '6-1366998721' where ip = '86.184.4.8']
+26-04-13 19:53:29 86.31.215.106 (PaymentForm) Transaction message is Duplicate transaction
+26-04-13 19:53:36 86.31.215.106 (PaymentForm) Transaction message is Duplicate transaction
+26-04-13 19:54:15 86.31.215.106 (PaymentForm) Transaction message is Duplicate transaction
+26-04-13 19:55:44 86.184.4.8 Entrypoint to PaymentSense
+26-04-13 19:55:44 86.184.4.8 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '86.184.4.8']
+26-04-13 19:55:44 86.184.4.8 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 19:55:44 86.184.4.8 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 19:55:44 86.184.4.8 Retrieved event record Made in Dumfries
+26-04-13 19:55:44 86.184.4.8 Going with order number 6-1366998944 (based on uid-time)
+26-04-13 19:55:44 86.184.4.8 Updating order number using sql [UPDATE ticket_order set order_number = '6-1366998944' where ip = '86.184.4.8']
+26-04-13 19:56:43 86.31.215.106 (PaymentForm) Transaction message is AuthCode: 833487
+26-04-13 19:56:43 86.31.215.106 Retrieving (not potential anymore) order details using sql [SELECT * FROM ticket_order where ip = '86.31.215.106']
+26-04-13 19:56:43 86.31.215.106 Updating auth number using sql [UPDATE ticket_order set auth_code = 'AuthCode: 833487' where ip = '86.31.215.106']
+26-04-13 20:02:41 2.124.91.180 Entrypoint to PaymentSense
+26-04-13 20:02:41 2.124.91.180 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '2.124.91.180']
+26-04-13 20:02:41 2.124.91.180 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 20:02:41 2.124.91.180 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 20:02:41 2.124.91.180 Retrieved event record Made in Dumfries
+26-04-13 20:02:41 2.124.91.180 Going with order number 6-1366999361 (based on uid-time)
+26-04-13 20:02:41 2.124.91.180 Updating order number using sql [UPDATE ticket_order set order_number = '6-1366999361' where ip = '2.124.91.180']
+26-04-13 20:05:35 2.222.123.15 Entrypoint to PaymentSense
+26-04-13 20:05:35 2.222.123.15 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '2.222.123.15']
+26-04-13 20:05:35 2.222.123.15 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 20:05:35 2.222.123.15 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 20:05:35 2.222.123.15 Retrieved event record Made in Dumfries
+26-04-13 20:05:35 2.222.123.15 Going with order number 6-1366999535 (based on uid-time)
+26-04-13 20:05:35 2.222.123.15 Updating order number using sql [UPDATE ticket_order set order_number = '6-1366999535' where ip = '2.222.123.15']
+26-04-13 20:08:26 88.96.96.62 Entrypoint to PaymentSense
+26-04-13 20:08:26 88.96.96.62 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '88.96.96.62']
+26-04-13 20:08:26 88.96.96.62 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 20:08:26 88.96.96.62 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 20:08:26 88.96.96.62 Retrieved event record Made in Dumfries
+26-04-13 20:08:26 88.96.96.62 Going with order number 6-1366999706 (based on uid-time)
+26-04-13 20:08:26 88.96.96.62 Updating order number using sql [UPDATE ticket_order set order_number = '6-1366999706' where ip = '88.96.96.62']
+26-04-13 20:09:05 2.222.123.15 Entrypoint to PaymentSense
+26-04-13 20:09:05 2.222.123.15 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '2.222.123.15']
+26-04-13 20:09:05 2.222.123.15 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 20:09:05 2.222.123.15 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 20:09:05 2.222.123.15 Retrieved event record Made in Dumfries
+26-04-13 20:09:05 2.222.123.15 Going with order number 6-1366999745 (based on uid-time)
+26-04-13 20:09:05 2.222.123.15 Updating order number using sql [UPDATE ticket_order set order_number = '6-1366999745' where ip = '2.222.123.15']
+26-04-13 20:10:13 87.84.25.246 Entrypoint to PaymentSense
+26-04-13 20:10:13 87.84.25.246 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '87.84.25.246']
+26-04-13 20:10:13 87.84.25.246 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+26-04-13 20:10:13 87.84.25.246 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+26-04-13 20:10:13 87.84.25.246 Retrieved event record Made in Dumfries
+26-04-13 20:10:13 87.84.25.246 Going with order number 6-1366999813 (based on uid-time)
+26-04-13 20:10:13 87.84.25.246 Updating order number using sql [UPDATE ticket_order set order_number = '6-1366999813' where ip = '87.84.25.246']
+26-04-13 20:13:30 88.96.96.62 (PaymentForm) Transaction message is AuthCode: 026768
+26-04-13 20:13:30 88.96.96.62 Retrieving (not potential anymore) order details using sql [SELECT * FROM ticket_order where ip = '88.96.96.62']
+26-04-13 20:13:30 88.96.96.62 Updating auth number using sql [UPDATE ticket_order set auth_code = 'AuthCode: 026768' where ip = '88.96.96.62']
+26-04-13 20:16:12 87.84.25.246 (PaymentForm) Transaction message is AuthCode: 121876
+26-04-13 20:16:12 87.84.25.246 Retrieving (not potential anymore) order details using sql [SELECT * FROM ticket_order where ip = '87.84.25.246']
+26-04-13 20:16:12 87.84.25.246 Updating auth number using sql [UPDATE ticket_order set auth_code = 'AuthCode: 121876' where ip = '87.84.25.246']
+27-04-13 18:29:49 86.183.97.202 Entrypoint to PaymentSense
+27-04-13 18:29:49 86.183.97.202 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '86.183.97.202']
+27-04-13 18:29:49 86.183.97.202 Matching passed sid 8ras9unv9mb6v92a7d8hqrj1d2 with db sid 8ras9unv9mb6v92a7d8hqrj1d2
+27-04-13 18:29:49 86.183.97.202 Retrieving event details using sql [SELECT * FROM ticket_event where id = 6]
+27-04-13 18:29:49 86.183.97.202 Retrieved event record My Test Workshop
+27-04-13 18:29:49 86.183.97.202 Going with order number 4-1367080189 (based on uid-time)
+27-04-13 18:29:49 86.183.97.202 Updating order number using sql [UPDATE ticket_order set order_number = '4-1367080189' where ip = '86.183.97.202']
+28-04-13 22:16:37 86.184.217.102 Entrypoint to PaymentSense
+28-04-13 22:16:37 86.184.217.102 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '86.184.217.102']
+28-04-13 22:16:37 86.184.217.102 Matching passed sid 04i303m6v8unfph9jhnge9tur5 with db sid 04i303m6v8unfph9jhnge9tur5
+28-04-13 22:16:37 86.184.217.102 Retrieving event details using sql [SELECT * FROM ticket_event where id = 3]
+28-04-13 22:16:37 86.184.217.102 Retrieved event record Salon Sense 
+28-04-13 22:16:37 86.184.217.102 Going with order number 5-1367180197 (based on uid-time)
+28-04-13 22:16:37 86.184.217.102 Updating order number using sql [UPDATE ticket_order set order_number = '5-1367180197' where ip = '86.184.217.102']
+28-04-13 22:16:59 86.184.217.102 Entrypoint to PaymentSense
+28-04-13 22:16:59 86.184.217.102 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '86.184.217.102']
+28-04-13 22:16:59 86.184.217.102 Matching passed sid 04i303m6v8unfph9jhnge9tur5 with db sid 04i303m6v8unfph9jhnge9tur5
+28-04-13 22:16:59 86.184.217.102 Retrieving event details using sql [SELECT * FROM ticket_event where id = 3]
+28-04-13 22:16:59 86.184.217.102 Retrieved event record Salon Sense 
+28-04-13 22:16:59 86.184.217.102 Going with order number 5-1367180219 (based on uid-time)
+28-04-13 22:16:59 86.184.217.102 Updating order number using sql [UPDATE ticket_order set order_number = '5-1367180219' where ip = '86.184.217.102']
+28-04-13 22:37:23 90.210.41.198 Entrypoint to PaymentSense
+28-04-13 22:37:23 90.210.41.198 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '90.210.41.198']
+28-04-13 22:37:23 90.210.41.198 Matching passed sid 04i303m6v8unfph9jhnge9tur5 with db sid 04i303m6v8unfph9jhnge9tur5
+28-04-13 22:37:23 90.210.41.198 Retrieving event details using sql [SELECT * FROM ticket_event where id = 3]
+28-04-13 22:37:23 90.210.41.198 Retrieved event record Salon Sense 
+28-04-13 22:37:23 90.210.41.198 Going with order number 5-1367181443 (based on uid-time)
+28-04-13 22:37:23 90.210.41.198 Updating order number using sql [UPDATE ticket_order set order_number = '5-1367181443' where ip = '90.210.41.198']
+28-04-13 22:42:35 90.210.41.198 (PaymentForm) Transaction message is AuthCode: 965465
+28-04-13 22:42:35 90.210.41.198 Retrieving (not potential anymore) order details using sql [SELECT * FROM ticket_order where ip = '90.210.41.198']
+28-04-13 22:42:35 90.210.41.198 Updating auth number using sql [UPDATE ticket_order set auth_code = 'AuthCode: 965465' where ip = '90.210.41.198']
+28-04-13 23:30:02 86.184.217.102 Entrypoint to PaymentSense
+28-04-13 23:30:02 86.184.217.102 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '86.184.217.102']
+28-04-13 23:30:02 86.184.217.102 Matching passed sid 04i303m6v8unfph9jhnge9tur5 with db sid 04i303m6v8unfph9jhnge9tur5
+28-04-13 23:30:02 86.184.217.102 Retrieving event details using sql [SELECT * FROM ticket_event where id = 3]
+28-04-13 23:30:02 86.184.217.102 Retrieved event record Salon Sense 
+28-04-13 23:30:02 86.184.217.102 Going with order number 5-1367184602 (based on uid-time)
+28-04-13 23:30:02 86.184.217.102 Updating order number using sql [UPDATE ticket_order set order_number = '5-1367184602' where ip = '86.184.217.102']
+29-04-13 17:27:38 92.18.173.212 Entrypoint to PaymentSense
+29-04-13 17:27:38 92.18.173.212 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '92.18.173.212']
+29-04-13 17:27:38 92.18.173.212 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+29-04-13 17:27:38 92.18.173.212 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+29-04-13 17:27:38 92.18.173.212 Retrieved event record Made in Dumfries
+29-04-13 17:27:38 92.18.173.212 Going with order number 6-1367249258 (based on uid-time)
+29-04-13 17:27:38 92.18.173.212 Updating order number using sql [UPDATE ticket_order set order_number = '6-1367249258' where ip = '92.18.173.212']
+29-04-13 17:29:37 92.18.173.212 (PaymentForm) Transaction message is AuthCode: 884936
+29-04-13 17:29:37 92.18.173.212 Retrieving (not potential anymore) order details using sql [SELECT * FROM ticket_order where ip = '92.18.173.212']
+29-04-13 17:29:37 92.18.173.212 Updating auth number using sql [UPDATE ticket_order set auth_code = 'AuthCode: 884936' where ip = '92.18.173.212']
+01-05-13 23:07:43 86.155.149.80 Entrypoint to PaymentSense
+01-05-13 23:07:43 86.155.149.80 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '86.155.149.80']
+01-05-13 23:07:43 86.155.149.80 Matching passed sid 04i303m6v8unfph9jhnge9tur5 with db sid 04i303m6v8unfph9jhnge9tur5
+01-05-13 23:07:43 86.155.149.80 Retrieving event details using sql [SELECT * FROM ticket_event where id = 7]
+01-05-13 23:07:43 86.155.149.80 Retrieved event record Salon Sense 
+01-05-13 23:07:43 86.155.149.80 Going with order number 5-1367442463 (based on uid-time)
+01-05-13 23:07:43 86.155.149.80 Updating order number using sql [UPDATE ticket_order set order_number = '5-1367442463' where ip = '86.155.149.80']
+02-05-13 18:40:14 31.95.180.246 Entrypoint to PaymentSense
+02-05-13 18:40:14 31.95.180.246 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '31.95.180.246']
+02-05-13 18:40:14 31.95.180.246 Matching passed sid 04i303m6v8unfph9jhnge9tur5 with db sid 04i303m6v8unfph9jhnge9tur5
+02-05-13 18:40:14 31.95.180.246 Retrieving event details using sql [SELECT * FROM ticket_event where id = 3]
+02-05-13 18:40:14 31.95.180.246 Retrieved event record Salon Sense 
+02-05-13 18:40:14 31.95.180.246 Going with order number 5-1367512814 (based on uid-time)
+02-05-13 18:40:14 31.95.180.246 Updating order number using sql [UPDATE ticket_order set order_number = '5-1367512814' where ip = '31.95.180.246']
+04-05-13 23:30:11 31.51.232.165 Entrypoint to PaymentSense
+04-05-13 23:30:11 31.51.232.165 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '31.51.232.165']
+04-05-13 23:30:11 31.51.232.165 Matching passed sid 04i303m6v8unfph9jhnge9tur5 with db sid 04i303m6v8unfph9jhnge9tur5
+04-05-13 23:30:11 31.51.232.165 Retrieving event details using sql [SELECT * FROM ticket_event where id = 7]
+04-05-13 23:30:11 31.51.232.165 Retrieved event record Salon Sense 
+04-05-13 23:30:11 31.51.232.165 Going with order number 5-1367703011 (based on uid-time)
+04-05-13 23:30:11 31.51.232.165 Updating order number using sql [UPDATE ticket_order set order_number = '5-1367703011' where ip = '31.51.232.165']
+05-05-13 22:33:10 2.126.172.51 Entrypoint to PaymentSense
+05-05-13 22:33:10 2.126.172.51 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '2.126.172.51']
+05-05-13 22:33:10 2.126.172.51 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+05-05-13 22:33:10 2.126.172.51 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+05-05-13 22:33:10 2.126.172.51 Retrieved event record Made in Dumfries
+05-05-13 22:33:10 2.126.172.51 Going with order number 6-1367785990 (based on uid-time)
+05-05-13 22:33:10 2.126.172.51 Updating order number using sql [UPDATE ticket_order set order_number = '6-1367785990' where ip = '2.126.172.51']
+06-05-13 20:45:33 87.113.94.125 Entrypoint to PaymentSense
+06-05-13 20:45:33 87.113.94.125 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '87.113.94.125']
+06-05-13 20:45:33 87.113.94.125 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+06-05-13 20:45:33 87.113.94.125 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+06-05-13 20:45:33 87.113.94.125 Retrieved event record Made in Dumfries
+06-05-13 20:45:33 87.113.94.125 Going with order number 6-1367865933 (based on uid-time)
+06-05-13 20:45:33 87.113.94.125 Updating order number using sql [UPDATE ticket_order set order_number = '6-1367865933' where ip = '87.113.94.125']
+06-05-13 20:46:58 87.113.94.125 (PaymentForm) Transaction message is Card declined: AVS policy
+06-05-13 20:49:56 87.113.94.125 Entrypoint to PaymentSense
+06-05-13 20:49:56 87.113.94.125 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '87.113.94.125']
+06-05-13 20:49:56 87.113.94.125 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+06-05-13 20:49:56 87.113.94.125 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+06-05-13 20:49:56 87.113.94.125 Retrieved event record Made in Dumfries
+06-05-13 20:49:56 87.113.94.125 Going with order number 6-1367866196 (based on uid-time)
+06-05-13 20:49:56 87.113.94.125 Updating order number using sql [UPDATE ticket_order set order_number = '6-1367866196' where ip = '87.113.94.125']
+06-05-13 20:52:06 87.113.94.125 (PaymentForm) Transaction message is AuthCode: 007866
+06-05-13 20:52:06 87.113.94.125 Retrieving (not potential anymore) order details using sql [SELECT * FROM ticket_order where ip = '87.113.94.125']
+06-05-13 20:52:06 87.113.94.125 Updating auth number using sql [UPDATE ticket_order set auth_code = 'AuthCode: 007866' where ip = '87.113.94.125']
+07-05-13 14:55:28 2.126.172.2 Entrypoint to PaymentSense
+07-05-13 14:55:28 2.126.172.2 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '2.126.172.2']
+07-05-13 14:55:28 2.126.172.2 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+07-05-13 14:55:28 2.126.172.2 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+07-05-13 14:55:28 2.126.172.2 Retrieved event record Made in Dumfries
+07-05-13 14:55:28 2.126.172.2 Going with order number 6-1367931328 (based on uid-time)
+07-05-13 14:55:28 2.126.172.2 Updating order number using sql [UPDATE ticket_order set order_number = '6-1367931328' where ip = '2.126.172.2']
+07-05-13 15:29:10 2.126.172.2 (PaymentForm) Transaction message is Card declined: AVS policy
+07-05-13 15:42:51 78.148.39.88 Entrypoint to PaymentSense
+07-05-13 15:42:51 78.148.39.88 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '78.148.39.88']
+07-05-13 15:42:51 78.148.39.88 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+07-05-13 15:42:51 78.148.39.88 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+07-05-13 15:42:51 78.148.39.88 Retrieved event record Made in Dumfries
+07-05-13 15:42:51 78.148.39.88 Going with order number 6-1367934171 (based on uid-time)
+07-05-13 15:42:51 78.148.39.88 Updating order number using sql [UPDATE ticket_order set order_number = '6-1367934171' where ip = '78.148.39.88']
+07-05-13 15:46:02 78.148.39.88 (PaymentForm) Transaction message is Card declined
+07-05-13 22:50:25 92.18.169.100 Entrypoint to PaymentSense
+07-05-13 22:50:25 92.18.169.100 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '92.18.169.100']
+07-05-13 22:50:25 92.18.169.100 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+07-05-13 22:50:25 92.18.169.100 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+07-05-13 22:50:25 92.18.169.100 Retrieved event record Made in Dumfries
+07-05-13 22:50:25 92.18.169.100 Going with order number 6-1367959825 (based on uid-time)
+07-05-13 22:50:25 92.18.169.100 Updating order number using sql [UPDATE ticket_order set order_number = '6-1367959825' where ip = '92.18.169.100']
+07-05-13 23:04:44 92.18.169.100 (PaymentForm) Transaction message is AuthCode: 044347
+07-05-13 23:04:44 92.18.169.100 Retrieving (not potential anymore) order details using sql [SELECT * FROM ticket_order where ip = '92.18.169.100']
+07-05-13 23:04:44 92.18.169.100 Updating auth number using sql [UPDATE ticket_order set auth_code = 'AuthCode: 044347' where ip = '92.18.169.100']
+09-05-13 19:22:36 79.78.242.171 Entrypoint to PaymentSense
+09-05-13 19:22:36 79.78.242.171 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '79.78.242.171']
+09-05-13 19:22:36 79.78.242.171 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+09-05-13 19:22:36 79.78.242.171 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+09-05-13 19:22:36 79.78.242.171 Retrieved event record Made in Dumfries
+09-05-13 19:22:36 79.78.242.171 Going with order number 6-1368120156 (based on uid-time)
+09-05-13 19:22:36 79.78.242.171 Updating order number using sql [UPDATE ticket_order set order_number = '6-1368120156' where ip = '79.78.242.171']
+09-05-13 19:26:37 79.78.242.171 (PaymentForm) Transaction message is Card declined
+09-05-13 19:27:53 79.78.242.171 (PaymentForm) Transaction message is Duplicate transaction
+09-05-13 19:29:43 79.78.242.171 Entrypoint to PaymentSense
+09-05-13 19:29:43 79.78.242.171 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '79.78.242.171']
+09-05-13 19:29:43 79.78.242.171 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+09-05-13 19:29:43 79.78.242.171 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+09-05-13 19:29:43 79.78.242.171 Retrieved event record Made in Dumfries
+09-05-13 19:29:43 79.78.242.171 Going with order number 6-1368120583 (based on uid-time)
+09-05-13 19:29:43 79.78.242.171 Updating order number using sql [UPDATE ticket_order set order_number = '6-1368120583' where ip = '79.78.242.171']
+09-05-13 19:32:15 79.78.242.171 (PaymentForm) Transaction message is Card declined
+09-05-13 19:35:04 79.78.255.181 Entrypoint to PaymentSense
+09-05-13 19:35:04 79.78.255.181 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '79.78.255.181']
+09-05-13 19:35:04 79.78.255.181 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+09-05-13 19:35:04 79.78.255.181 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+09-05-13 19:35:04 79.78.255.181 Retrieved event record Made in Dumfries
+09-05-13 19:35:04 79.78.255.181 Going with order number 6-1368120904 (based on uid-time)
+09-05-13 19:35:04 79.78.255.181 Updating order number using sql [UPDATE ticket_order set order_number = '6-1368120904' where ip = '79.78.255.181']
+12-05-13 13:05:37 176.27.36.39 Entrypoint to PaymentSense
+12-05-13 13:05:37 176.27.36.39 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '176.27.36.39']
+12-05-13 13:05:37 176.27.36.39 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+12-05-13 13:05:37 176.27.36.39 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+12-05-13 13:05:37 176.27.36.39 Retrieved event record Made in Dumfries
+12-05-13 13:05:37 176.27.36.39 Going with order number 6-1368356737 (based on uid-time)
+12-05-13 13:05:37 176.27.36.39 Updating order number using sql [UPDATE ticket_order set order_number = '6-1368356737' where ip = '176.27.36.39']
+12-05-13 13:19:42 176.27.36.39 (PaymentForm) Transaction message is Card declined
+12-05-13 13:24:24 176.27.36.39 Entrypoint to PaymentSense
+12-05-13 13:24:24 176.27.36.39 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '176.27.36.39']
+12-05-13 13:24:24 176.27.36.39 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+12-05-13 13:24:24 176.27.36.39 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+12-05-13 13:24:24 176.27.36.39 Retrieved event record Made in Dumfries
+12-05-13 13:24:24 176.27.36.39 Going with order number 6-1368357864 (based on uid-time)
+12-05-13 13:24:24 176.27.36.39 Updating order number using sql [UPDATE ticket_order set order_number = '6-1368357864' where ip = '176.27.36.39']
+12-05-13 13:26:06 176.27.36.39 (PaymentForm) Transaction message is AuthCode: 013884
+12-05-13 13:26:06 176.27.36.39 Retrieving (not potential anymore) order details using sql [SELECT * FROM ticket_order where ip = '176.27.36.39']
+12-05-13 13:26:06 176.27.36.39 Updating auth number using sql [UPDATE ticket_order set auth_code = 'AuthCode: 013884' where ip = '176.27.36.39']
+13-05-13 20:05:02 31.54.113.26 Entrypoint to PaymentSense
+13-05-13 20:05:02 31.54.113.26 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '31.54.113.26']
+13-05-13 20:05:02 31.54.113.26 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+13-05-13 20:05:02 31.54.113.26 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+13-05-13 20:05:02 31.54.113.26 Retrieved event record Made in Dumfries
+13-05-13 20:05:02 31.54.113.26 Going with order number 6-1368468302 (based on uid-time)
+13-05-13 20:05:02 31.54.113.26 Updating order number using sql [UPDATE ticket_order set order_number = '6-1368468302' where ip = '31.54.113.26']
+13-05-13 20:07:09 31.54.113.26 (PaymentForm) Transaction message is AuthCode: 012254
+13-05-13 20:07:09 31.54.113.26 Retrieving (not potential anymore) order details using sql [SELECT * FROM ticket_order where ip = '31.54.113.26']
+13-05-13 20:07:09 31.54.113.26 Updating auth number using sql [UPDATE ticket_order set auth_code = 'AuthCode: 012254' where ip = '31.54.113.26']
+14-05-13 12:34:16 86.31.215.106 Entrypoint to PaymentSense
+14-05-13 12:34:16 86.31.215.106 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '86.31.215.106']
+14-05-13 12:34:16 86.31.215.106 Matching passed sid ebh8d8h7nvos82om9remsi8fc5 with db sid ebh8d8h7nvos82om9remsi8fc5
+14-05-13 12:34:16 86.31.215.106 Retrieving event details using sql [SELECT * FROM ticket_event where id = 8]
+14-05-13 12:34:16 86.31.215.106 Retrieved event record Simon Callaghan, Piano & Ellie Lovegrove, Trumpet
+14-05-13 12:34:16 86.31.215.106 Going with order number 7-1368527656 (based on uid-time)
+14-05-13 12:34:16 86.31.215.106 Updating order number using sql [UPDATE ticket_order set order_number = '7-1368527656' where ip = '86.31.215.106']
+19-05-13 22:59:06 92.18.163.15 Entrypoint to PaymentSense
+19-05-13 22:59:06 92.18.163.15 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '92.18.163.15']
+19-05-13 22:59:06 92.18.163.15 Matching passed sid 32ohd930m336i0smojebjc8ol2 with db sid 32ohd930m336i0smojebjc8ol2
+19-05-13 22:59:06 92.18.163.15 Retrieving event details using sql [SELECT * FROM ticket_event where id = 2]
+19-05-13 22:59:06 92.18.163.15 Retrieved event record Made in Dumfries
+19-05-13 22:59:06 92.18.163.15 Going with order number 6-1368997146 (based on uid-time)
+19-05-13 22:59:06 92.18.163.15 Updating order number using sql [UPDATE ticket_order set order_number = '6-1368997146' where ip = '92.18.163.15']
+19-05-13 23:04:51 92.18.163.15 (PaymentForm) Transaction message is AuthCode: 078180
+19-05-13 23:04:51 92.18.163.15 Retrieving (not potential anymore) order details using sql [SELECT * FROM ticket_order where ip = '92.18.163.15']
+19-05-13 23:04:51 92.18.163.15 Updating auth number using sql [UPDATE ticket_order set auth_code = 'AuthCode: 078180' where ip = '92.18.163.15']
+29-05-13 12:37:54 86.171.60.151 Entrypoint to PaymentSense
+29-05-13 12:37:55 86.171.60.151 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '86.171.60.151']
+29-05-13 12:37:55 86.171.60.151 Matching passed sid 8ras9unv9mb6v92a7d8hqrj1d2 with db sid 8ras9unv9mb6v92a7d8hqrj1d2
+29-05-13 12:37:55 86.171.60.151 Retrieving event details using sql [SELECT * FROM ticket_event where id = 6]
+29-05-13 12:37:55 86.171.60.151 Retrieved event record My Test Workshop
+29-05-13 12:37:55 86.171.60.151 Going with order number 4-1369823875 (based on uid-time)
+29-05-13 12:37:55 86.171.60.151 Updating order number using sql [UPDATE ticket_order set order_number = '4-1369823875' where ip = '86.171.60.151']
+30-05-13 20:35:20 86.155.91.187 Entrypoint to PaymentSense
+30-05-13 20:35:20 86.155.91.187 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '86.155.91.187']
+30-05-13 20:35:20 86.155.91.187 Matching passed sid ebh8d8h7nvos82om9remsi8fc5 with db sid ebh8d8h7nvos82om9remsi8fc5
+30-05-13 20:35:20 86.155.91.187 Retrieving event details using sql [SELECT * FROM ticket_event where id = 11]
+30-05-13 20:35:20 86.155.91.187 Retrieved event record Opera Rox
+30-05-13 20:35:20 86.155.91.187 Going with order number 7-1369938920 (based on uid-time)
+30-05-13 20:35:20 86.155.91.187 Updating order number using sql [UPDATE ticket_order set order_number = '7-1369938920' where ip = '86.155.91.187']
+31-05-13 11:14:58 86.31.215.106 Entrypoint to PaymentSense
+31-05-13 11:14:58 86.31.215.106 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '86.31.215.106']
+31-05-13 11:14:58 86.31.215.106 Matching passed sid 8ras9unv9mb6v92a7d8hqrj1d2 with db sid 8ras9unv9mb6v92a7d8hqrj1d2
+31-05-13 11:14:58 86.31.215.106 Retrieving event details using sql [SELECT * FROM ticket_event where id = 5]
+31-05-13 11:14:58 86.31.215.106 Retrieved event record My Test Event
+31-05-13 11:14:58 86.31.215.106 Going with order number 4-1369991698 (based on uid-time)
+31-05-13 11:14:58 86.31.215.106 Updating order number using sql [UPDATE ticket_order set order_number = '4-1369991698' where ip = '86.31.215.106']
+31-05-13 11:17:56 86.31.215.106 (PaymentForm) got field - FormMode -> PAYMENT_FORM
+31-05-13 11:17:56 86.31.215.106 (PaymentForm) got field - HashDigest -> 53325044f329093bf6292357c1806b67
+31-05-13 11:17:56 86.31.215.106 (PaymentForm) got field - Amount -> 2000
+31-05-13 11:17:56 86.31.215.106 (PaymentForm) got field - CurrencyShort -> GBP
+31-05-13 11:17:56 86.31.215.106 (PaymentForm) got field - OrderID -> 4-1369991698
+31-05-13 11:17:56 86.31.215.106 (PaymentForm) got field - OrderDescription -> My Test Event
+31-05-13 11:17:56 86.31.215.106 (PaymentForm) got field - CardName -> Geoff Wayne
+31-05-13 11:17:56 86.31.215.106 (PaymentForm) got field - CardNumber -> 4976350000006891
+31-05-13 11:17:56 86.31.215.106 (PaymentForm) got field - ExpiryDateMonth -> 12
+31-05-13 11:17:56 86.31.215.106 (PaymentForm) got field - ExpiryDateYear -> 15
+31-05-13 11:17:56 86.31.215.106 (PaymentForm) got field - StartDateMonth -> 
+31-05-13 11:17:56 86.31.215.106 (PaymentForm) got field - StartDateYear -> 
+31-05-13 11:17:56 86.31.215.106 (PaymentForm) got field - IssueNumber -> 
+31-05-13 11:17:56 86.31.215.106 (PaymentForm) got field - CV2 -> 341
+31-05-13 11:17:56 86.31.215.106 (PaymentForm) got field - Address1 -> 113 Glendower Road
+31-05-13 11:17:56 86.31.215.106 (PaymentForm) got field - Address2 -> Birmingham
+31-05-13 11:17:56 86.31.215.106 (PaymentForm) got field - Address3 -> 
+31-05-13 11:17:56 86.31.215.106 (PaymentForm) got field - Address4 -> 113 Glendower Road
+31-05-13 11:17:56 86.31.215.106 (PaymentForm) got field - City -> Birmingham
+31-05-13 11:17:56 86.31.215.106 (PaymentForm) got field - State -> West Midlands
+31-05-13 11:17:56 86.31.215.106 (PaymentForm) got field - PostCode -> B42 1SX
+31-05-13 11:17:56 86.31.215.106 (PaymentForm) got field - CountryShort -> GBR
+31-05-13 11:21:22 86.31.215.106 (PaymentForm) got field - FormMode -> PAYMENT_FORM
+31-05-13 11:21:22 86.31.215.106 (PaymentForm) got field - HashDigest -> 53325044f329093bf6292357c1806b67
+31-05-13 11:21:22 86.31.215.106 (PaymentForm) got field - Amount -> 2000
+31-05-13 11:21:22 86.31.215.106 (PaymentForm) got field - CurrencyShort -> GBP
+31-05-13 11:21:22 86.31.215.106 (PaymentForm) got field - OrderID -> 4-1369991698
+31-05-13 11:21:22 86.31.215.106 (PaymentForm) got field - OrderDescription -> My Test Event
+31-05-13 11:21:22 86.31.215.106 (PaymentForm) got field - CardName -> Geoff Wayne
+31-05-13 11:21:22 86.31.215.106 (PaymentForm) got field - CardNumber -> 4976350000006891
+31-05-13 11:21:22 86.31.215.106 (PaymentForm) got field - ExpiryDateMonth -> 12
+31-05-13 11:21:22 86.31.215.106 (PaymentForm) got field - ExpiryDateYear -> 15
+31-05-13 11:21:22 86.31.215.106 (PaymentForm) got field - StartDateMonth -> 
+31-05-13 11:21:22 86.31.215.106 (PaymentForm) got field - StartDateYear -> 
+31-05-13 11:21:22 86.31.215.106 (PaymentForm) got field - IssueNumber -> 
+31-05-13 11:21:22 86.31.215.106 (PaymentForm) got field - CV2 -> 341
+31-05-13 11:21:22 86.31.215.106 (PaymentForm) got field - Address1 -> 113 Glendower Road
+31-05-13 11:21:22 86.31.215.106 (PaymentForm) got field - Address2 -> Birmingham
+31-05-13 11:21:22 86.31.215.106 (PaymentForm) got field - Address3 -> 
+31-05-13 11:21:22 86.31.215.106 (PaymentForm) got field - Address4 -> 113 Glendower Road
+31-05-13 11:21:22 86.31.215.106 (PaymentForm) got field - City -> Birmingham
+31-05-13 11:21:22 86.31.215.106 (PaymentForm) got field - State -> West Midlands
+31-05-13 11:21:22 86.31.215.106 (PaymentForm) got field - PostCode -> B42 1SX
+31-05-13 11:21:22 86.31.215.106 (PaymentForm) got field - CountryShort -> GBR
+31-05-13 11:21:27 86.31.215.106 (PaymentForm) got field - CrossReference -> 130531092122191701052673
+31-05-13 11:21:27 86.31.215.106 (PaymentForm) got field - PaRES -> eJxlksluwjAQhu+V+g5R7sUbCQkajKgQlANpS4ME3IJjkSCykIWmPH0dlwJVLVkef/bM/J4xDJvkYJxkUcZZOjBJB5uGTEUWxuluYC79yZNjDvnjA/hRIeX4Q4q6kBzmsiyDnTTicGC+jRby6BCKGXFdwkwOLSn12flcWzbtEmopfMnCVZIOBfS7VcEKEQVpxSEQx+eZxwllXcvuOYAuABJZzMZX7gL6AYBuvm91a5VKXBOHfD5es1dffHr7Jfb8HVOz6+1F443fB4DaGxAGleQUE4YtRgzs9inpU6VLc8jbcKMkq1VsijEGdE9AlaFQdfriDrUBXXcgmzxLZesD6GoDuonLg5R33Z7NLKyH7bhExVYU/BWHKk7+i2KANIeyCqq65GtAFwtEcDrxDduQNV1YYura25coD1eTVKwisp1m6rH6CkgRc2wpUWrVXqPDLiviKkpaqX8BoFYK0m3UNdbNbvH9J/gGvtq1MQ==
+31-05-13 11:21:27 86.31.215.106 (PaymentForm) got field - FormMode -> THREE_D_SECURE
+31-05-13 11:21:27 86.31.215.106 (PaymentForm) got field - ShoppingCartHashDigest -> d41d8cd98f00b204e9800998ecf8427e
+31-05-13 11:21:28 86.31.215.106 (PaymentForm) Transaction message is Card declined: AVS policy
+31-05-13 11:22:21 86.31.215.106 (PaymentForm) got field - CrossReference -> 130531092122191701052673
+31-05-13 11:22:21 86.31.215.106 (PaymentForm) got field - PaRES -> eJxlksluwjAQhu+V+g5R7sUbCQkajKgQlANpS4ME3IJjkSCykIWmPH0dlwJVLVkef/bM/J4xDJvkYJxkUcZZOjBJB5uGTEUWxuluYC79yZNjDvnjA/hRIeX4Q4q6kBzmsiyDnTTicGC+jRby6BCKGXFdwkwOLSn12flcWzbtEmopfMnCVZIOBfS7VcEKEQVpxSEQx+eZxwllXcvuOYAuABJZzMZX7gL6AYBuvm91a5VKXBOHfD5es1dffHr7Jfb8HVOz6+1F443fB4DaGxAGleQUE4YtRgzs9inpU6VLc8jbcKMkq1VsijEGdE9AlaFQdfriDrUBXXcgmzxLZesD6GoDuonLg5R33Z7NLKyH7bhExVYU/BWHKk7+i2KANIeyCqq65GtAFwtEcDrxDduQNV1YYura25coD1eTVKwisp1m6rH6CkgRc2wpUWrVXqPDLiviKkpaqX8BoFYK0m3UNdbNbvH9J/gGvtq1MQ==
+31-05-13 11:22:21 86.31.215.106 (PaymentForm) got field - FormMode -> THREE_D_SECURE
+31-05-13 11:22:21 86.31.215.106 (PaymentForm) got field - ShoppingCartHashDigest -> d41d8cd98f00b204e9800998ecf8427e
+31-05-13 11:22:21 86.31.215.106 (PaymentForm) Transaction message is Duplicate transaction
+31-05-13 11:22:45 86.31.215.106 Entrypoint to PaymentSense
+31-05-13 11:22:45 86.31.215.106 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '86.31.215.106']
+31-05-13 11:22:45 86.31.215.106 Matching passed sid 8ras9unv9mb6v92a7d8hqrj1d2 with db sid 8ras9unv9mb6v92a7d8hqrj1d2
+31-05-13 11:22:45 86.31.215.106 Retrieving event details using sql [SELECT * FROM ticket_event where id = 5]
+31-05-13 11:22:45 86.31.215.106 Retrieved event record My Test Event
+31-05-13 11:22:45 86.31.215.106 Going with order number 4-1369992165 (based on uid-time)
+31-05-13 11:22:45 86.31.215.106 Updating order number using sql [UPDATE ticket_order set order_number = '4-1369992165' where ip = '86.31.215.106']
