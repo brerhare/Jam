@@ -1,7 +1,7 @@
 angular.module('stock')
 	.controller('CustomerMaintainCtrl', function ($scope, restFactory, notificationFactory) {
-		var url     = 'http://stock.wireflydesign.com/server/api/stock_customer/';
-		var urlArea = 'http://stock.wireflydesign.com/server/api/stock_area/';					// for <select>
+		var url            = 'http://stock.wireflydesign.com/server/api/stock_customer/';
+		var urlArea        = 'http://stock.wireflydesign.com/server/api/stock_area/';			// for <select>
 		var urlMarkupGroup = 'http://stock.wireflydesign.com/server/api/stock_markup_group/';	// for <select>
 
 		$scope.rowCollection = [];
@@ -11,8 +11,7 @@ angular.module('stock')
 		$scope.areas = {};			// for <select>
 		$scope.markupGroups = {};	// for <select>
 
-		var getAreas = function()	// for <select>
-		{
+		var getAreas = function() {	// for <select>
 			restFactory.getItem(urlArea)
 				.success(function(data, status) {
 					$scope.areas = data;
@@ -31,8 +30,7 @@ angular.module('stock')
 				.error(errorCallback);
 		};
 
-		var getMarkupGroups = function()	// for <select>
-		{
+		var getMarkupGroups = function() {	// for <select>
 			restFactory.getItem(urlMarkupGroup)
 				.success(function(data, status) {
 					$scope.markupGroups = data;
@@ -54,8 +52,7 @@ angular.module('stock')
 				.error(errorCallback);
 		};
 
-		$scope.addItem = function()
-		{
+		$scope.addItem = function()	{
 			$scope.item = {};
 			$scope.formMode = "add";
 			$scope.displayMode = "form";
@@ -63,8 +60,7 @@ angular.module('stock')
 			getMarkupGroups();
 		};
 
-		$scope.editItem = function(id)
-		{
+		$scope.editItem = function(id) {
 			restFactory.getItem(url, id)
 				.success(function(data, status) {
 					$scope.item = data;
@@ -76,15 +72,55 @@ angular.module('stock')
 				.error(errorCallback);
 		};
 
-		$scope.cancelItem = function()
-		{
+		$scope.deleteItem = function(id) {
+			restFactory.deleteItem(url, id)
+				.success(function(data, status) {
+					for (var i = 0; i < $scope.rowCollection.length; i++) {
+						if ($scope.rowCollection[i].id == id) {
+							$scope.rowCollection.splice(i, 1);
+							$scope.displayedCollection = [].concat($scope.rowCollection);
+							break;
+						}
+					}
+				})
+				.error(errorCallback);
+		};
+
+		$scope.cancelItem = function() {
 			$scope.displayMode = "list";
 		};
 
-		$scope.saveItem = function()
-		{
-			alert('submitted=' + $scope.item.name);
+		$scope.saveItem = function() {
+			if ($scope.formMode == "add") {
+				restFactory.addItem(url, $scope.item)
+					.success(function (data, status) {
+						$scope.item.id = data.id;
+						$scope.rowCollection.push($scope.item);		// insert new
+						$scope.displayedCollection = [].concat($scope.rowCollection);
+					})
+					.error(errorCallback);
+			}
+			else if ($scope.formMode == "edit") {
+				restFactory.updateItem(url, $scope.item.id, $scope.item)
+					.success(function (data, status) {
+						for (var i = 0; i < $scope.rowCollection.length; i++) {
+							if ($scope.rowCollection[i].id == $scope.item.id) {
+								$scope.rowCollection[i] = $scope.item;	// replace old with new
+								$scope.displayedCollection = [].concat($scope.rowCollection);
+								break;
+							}
+						}
+					})
+					.error(errorCallback);
+			}
 			$scope.displayMode = "list";
+		};
+
+		$scope.selchangeArea = function() {
+			$scope.item.stock_area_id = $scope.selectedArea.id;
+		};
+		$scope.selchangeMarkupGroup = function() {
+			$scope.item.stock_markup_group_id = $scope.selectedMarkupGroup.id;
 		};
 
 		var getItemSuccessCallback = function (data, status) {
@@ -115,15 +151,4 @@ angular.module('stock')
   };
 
 
-
 	});
-
-/*	.controller('CustomerAddCtrl', function($scope, $state, $stateParams) {
-		$scope.addItem = function() {
-			//$scope.rowCollection.push({'id': 999, 'name':'kim', 'discount_percent':100, 'telephone':'07899752030', 'forma_de_pago':'el-nino'});
-			alert('added customer');
-			$state.go('home.customer-maintain');
-		};
-
-	}); */
-
