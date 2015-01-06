@@ -4,22 +4,32 @@ toastr.options.positionClass = 'toast-bottom-right';
 //toastr.options.progressBar = true; 
 
 angular.module('stock')
-	.controller('CustomerAreaCtrl', function ($scope, restFactory, notificationFactory) {
-		var url = 'http://stock.wireflydesign.com/server/api/stock_area/';
-		$scope.items = [];
-		$scope.addMode = false;
-		$scope.default_item = null;
- 
-		$scope.toggleAddMode = function () {
-			$scope.addMode = !$scope.addMode;
-			if ($scope.addMode)
-				$scope.uneditAllBut(null);
+	.controller('ProductGroupCtrl', function ($scope, restFactory, notificationFactory) {
+		var url = 'http://stock.wireflydesign.com/server/api/stock_group/';
+		var maxLevels = 3;
+		$scope.levels = [];
+		var ajaxLevel = 0;
+
+		// Set initial values
+		for (var i = 0; i < maxLevels; i++) {
+			$scope.levels[i] = {};
+//			$scope.levels[i].levelNo = i;
+			$scope.levels[i].parent = null;
+			$scope.levels[i].addMode = false;
+			$scope.levels[i].items = {};
+		}
+console.log($scope.levels);
+
+		$scope.toggleAddMode = function (level) {
+			$scope.levels[level].addMode = !$scope.levels[level].addMode;
+			if ($scope.levels[level].addMode)
+				$scope.uneditAllBut(level, null);
 		};
- 
-		$scope.uneditAllBut = function(item) {
-			for (var i = 0; i < $scope.items.length; i++) {
-				if ($scope.items[i] != item) {
-					$scope.items[i].editName = false;
+
+		$scope.uneditAllBut = function(level, item) {
+			for (var i = 0; i < $scope.levels[level].items.length; i++) {
+				if ($scope.levels[level].items[i] != item) {
+					$scope.levels[level].items[i].editName = false;
 				}
 			}
 		};
@@ -40,21 +50,10 @@ angular.module('stock')
 			}
 		};
 
-		$scope.setDefaultItem = function(item) {
-			for (var i = 0; i < $scope.items.length; i++) {
-				if ($scope.items[i].id == $scope.default_item) {
-					$scope.items[i].is_default = 0;
-					$scope.updateItem($scope.items[i]);
-				}
-			}
-			item.is_default = 1;
-			$scope.updateItem(item);	
-		};
-
 // ----------------------------------------------------------------------------------------
 
 		var getItemSuccessCallback = function (data, status) {
-			$scope.items = data;
+			$scope.levels[ajaxLevel].items = data;
 		};
  
 // ----------------------------------------------------------------------------------------
@@ -66,8 +65,8 @@ angular.module('stock')
  
 		var successPostCallback = function (data, status, headers, config) {
 			successCallback(data, status, headers, config).success(function () {
-				$scope.toggleAddMode();
-				$scope.item = {};
+				$scope.toggleAddMode(ajaxLevel);
+				$scope.levels[ajaxLevel].item = {};
 			});
 		};
  
@@ -77,8 +76,9 @@ angular.module('stock')
  
 		restFactory.getItem(url).success(getItemSuccessCallback).error(errorCallback);
  
-		$scope.addItem = function () {
-			restFactory.addItem(url, $scope.item).success(successPostCallback).error(errorCallback);
+		$scope.addItem = function (level) {
+			ajaxLevel = level;
+			restFactory.addItem(url, $scope.levels[level].item).success(successPostCallback).error(errorCallback);
 		};
  
 		$scope.deleteItem = function (item) {
