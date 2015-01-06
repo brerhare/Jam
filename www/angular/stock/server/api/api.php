@@ -512,6 +512,93 @@ logWrite("matched key for col=".print_r($column, true));
 		}
 	}
 
+// STOCK_GROUP
+
+	protected function stock_group()
+	{
+		logWrite("Method = " . $this->method);
+		$uid = 1;	//@@NB: hardcoded
+
+		$allColumns  = array('id', 'uid', 'name', 'parent_id');
+		$postColumns = array(             'name', 'parent_id');
+		$putColumns  = array('id',        'name', 'parent_id');
+
+		if ($this->method == 'GET')
+		{
+			$id = trim($this->args[0]);
+			if ($id)
+			{
+				// Single item
+				logWrite("GET an area, id = " . $id);
+			}
+			else
+			{
+				// All items
+				$arr = array();
+				$ix = 0;
+				$query = DB::query("SELECT * FROM stock_group WHERE uid=%i", $uid);
+				foreach ($query as $q) {
+					foreach ($allColumns as $column)
+    					$arr[$ix][$column] = $q[$column];
+					$ix++;
+				}
+				return $arr;
+			}
+		}
+		else if ($this->method == 'POST')
+		{
+			$obj = json_decode(file_get_contents("php://input"),true);
+logWrite("got json obj=".print_r($obj, true));
+            $keys = array_keys($obj);
+			$values = array();
+			$values['uid'] = $uid;
+			foreach ($postColumns as $column) {
+				if (!in_array($column, $keys)) {
+logWrite("missing key for col=".print_r($column, true));
+					$values[$column] = NULL;
+				}
+				else {
+logWrite("matched key for col=".print_r($column, true));
+					$values[$column] = $obj[$column];
+				}
+			}
+			$idArr = array();
+			DB::insert('stock_group', $values);
+			$idArr['id'] = DB::insertId();
+			return $idArr;
+		}
+		else if ($this->method == 'PUT')
+		{
+			$obj = json_decode(file_get_contents("php://input"),true);
+logWrite("got json obj=".print_r($obj, true));
+			// Pick up original
+			$id = (int) $this->args[0];
+			if ($id == 0)
+				return "fail";
+           	$keys = array_keys($obj);
+			$values = array();
+			foreach ($putColumns as $column) {
+				if (in_array($column, $keys)) {
+logWrite("matched key for col=".print_r($column, true));
+					$values[$column] = $obj[$column];
+				}
+			}
+			DB::update('stock_group', $values, "id=%i", $id);
+			return 'ok';
+		}
+		else if ($this->method == 'DELETE')
+		{
+			$id = (int) $this->args[0];
+			if ($id != 0)
+			{
+				DB::delete('stock_group', "id=%i", $id);
+				return 'ok';
+			}
+			return 'ok';
+		}
+	}
+
+
 
 } // class MyAPI
 
