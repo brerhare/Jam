@@ -13,7 +13,7 @@ angular.module('stock')
 		// Set initial values
 		for (var i = 0; i < maxLevels; i++) {
 			$scope.levels[i] = {};
-			$scope.levels[i].parent = null;
+			$scope.levels[i].parentId = null;
 			$scope.levels[i].addMode = false;
 			$scope.levels[i].selectedItem = -1;		// There are 2 'selected' fields. This one to quickly indicate the ix of the selected item, and a 'selected' property within each item for html class checking
 			$scope.levels[i].items = {};
@@ -36,24 +36,11 @@ console.log($scope.levels);
 		};
 
 		$scope.toggleEditName = function (level, item) {
-			if (!$scope.addMode)
-			{
-				for (var i = 0; i < $scope.levels[level].items.length; i++) {
-					if ($scope.levels[level].items[i] == item) {
-						item.selected = true;
-						$scope.levels[level].selected = i;
-					}
-					else {
-						$scope.levels[level].items[i].selected = false;
-					}
-				}
-				item.selected = true;
-
-return;
-				item.editName = !item.editName;
-				if (item.editName)
-					uneditAllBut(level, item);
-			}
+			if (($scope.editName) || ($scope.addMode))
+				return;
+			item.editName = !item.editName;
+			if (item.editName)
+				uneditAllBut(level, item);
 		};
 
 		$scope.editNameEnd = function(level, keyEvent, item) {
@@ -62,6 +49,34 @@ return;
 				$scope.updateItem(level, item);
 			}
 		};
+
+		$scope.selectName = function(level, item) {
+			if (($scope.editName) || ($scope.addMode))
+				return;
+			for (var i = 0; i < $scope.levels[level].items.length; i++) {
+				if ($scope.levels[level].items[i] == item) {
+					item.selected = true;
+					$scope.levels[level].selected = i;
+					clearLevelsBelow(level, item);
+				}
+				else {
+					$scope.levels[level].items[i].selected = false;
+				}
+			}
+			uneditAllBut(level, null);
+		};
+
+		var clearLevelsBelow = function(level, item) {
+			for (var i=(level+1); i < maxLevels; i++) {
+				if (i == (level+1)) {	// one immediately below us
+					$scope.levels[i].parentId = item.id;
+				}
+				else {
+					$scope.levels[i].parentId = null;
+					$scope.levels[i].items = {};
+				}
+			}
+		}
 
 // ----------------------------------------------------------------------------------------
 
@@ -116,4 +131,28 @@ return;
 			ajaxLevel = level;
 			restFactory.updateItem(url, item.id, item).success(successCallback).error(errorCallback);
 		};
-	});
+	})
+
+	.directive('sglclick', ['$parse', function($parse) {
+		return {
+			restrict: 'A',
+			link: function(scope, element, attr) {
+				var fn = $parse(attr['sglclick']);
+				var delay = 300, clicks = 0, timer = null;
+				element.on('click', function (event) {
+					clicks++;  //count clicks
+					if(clicks === 1) {
+						timer = setTimeout(function() {
+							scope.$apply(function () {
+								fn(scope, { $event: event });
+							});
+							clicks = 0;             //after action performed, reset counter
+						}, delay);
+					} else {
+						clearTimeout(timer);    //prevent single-click action
+						clicks = 0;             //after action performed, reset counter
+					}
+				});
+			}
+		};
+	}]);

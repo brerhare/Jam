@@ -46,7 +46,7 @@
             </tr>
             <tr ng-repeat="item in level.items | orderBy:'name'">
                 <td class='col-name'>
-                    <span ng-click="toggleEditName(level.levelNo, item)" ng-show="item.editName != true" ng-class="{'selected' : item.selected }">{{item.name}}</span>
+                    <span sglclick="selectName(level.levelNo, item)" ng-dblClick="toggleEditName(level.levelNo, item)" ng-show="item.editName != true" ng-class="{'selected' : item.selected }">{{item.name}}</span>
                     <input class='col-i-name' ng-model="item.name" ng-show="item.editName == true" ng-keypress="editNameEnd(level.levelNo, $event, item)" />
                 </td>
                 <td class='col-button'>
