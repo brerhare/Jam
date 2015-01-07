@@ -17,7 +17,7 @@ return array(
     'viewPath' => $backend.'/views',
     'runtimePath' => $backend.'/runtime',
 
-	'name'=>'DG Link V2 Backend',
+	'name'=>'<sitetitle>',
 
 	// preloading 'log' component
 	// preloading 'bootstrap' component
@@ -75,10 +75,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=dglink_co_uk',
+			'connectionString' => 'mysql:host=localhost;dbname=<dbname>',
 			'emulatePrepare' => true,
-			'username' => 'dglink.co.uk',
-			'password' => 'dglink.co.uk,',
+			'username' => '<dbuser>',
+			'password' => '<dbpass>',
 			'charset' => 'utf8',
 		),
 		/**/
@@ -108,8 +108,9 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@wireflydesign.com',
-        // CKEditor size for page content editing
-        'editorpagewidth'=>'800',
-        'editorpageheight'=>'500',
+		// CKEditor size for page content editing (910 max)
+		'editorpagewidth'=>'<editorpagewidth>',
+		'editorpageheight'=>'<editorpageheight>',
 	),
 );
+
