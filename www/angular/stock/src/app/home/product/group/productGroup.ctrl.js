@@ -13,20 +13,20 @@ angular.module('stock')
 		// Set initial values
 		for (var i = 0; i < maxLevels; i++) {
 			$scope.levels[i] = {};
-//			$scope.levels[i].levelNo = i;
 			$scope.levels[i].parent = null;
 			$scope.levels[i].addMode = false;
 			$scope.levels[i].items = {};
+			$scope.levels[i].levelNo = i;
 		}
 console.log($scope.levels);
 
 		$scope.toggleAddMode = function (level) {
 			$scope.levels[level].addMode = !$scope.levels[level].addMode;
 			if ($scope.levels[level].addMode)
-				$scope.uneditAllBut(level, null);
+				uneditAllBut(level, null);
 		};
 
-		$scope.uneditAllBut = function(level, item) {
+		uneditAllBut = function(level, item) {
 			for (var i = 0; i < $scope.levels[level].items.length; i++) {
 				if ($scope.levels[level].items[i] != item) {
 					$scope.levels[level].items[i].editName = false;
@@ -34,19 +34,19 @@ console.log($scope.levels);
 			}
 		};
 
-		$scope.toggleEditName = function (item) {
+		$scope.toggleEditName = function (level, item) {
 			if (!$scope.addMode)
 			{
 				item.editName = !item.editName;
 				if (item.editName)
-					$scope.uneditAllBut(item);
+					uneditAllBut(level, item);
 			}
 		};
 
-		$scope.editNameEnd = function(keyEvent, item) {
+		$scope.editNameEnd = function(level, keyEvent, item) {
 			if (event.keyCode == 13 && item.name){
-				$scope.toggleEditName(item);
-				$scope.updateItem(item);
+				$scope.toggleEditName(level, item);
+				$scope.updateItem(level, item);
 			}
 		};
 
@@ -81,12 +81,13 @@ console.log($scope.levels);
 			restFactory.addItem(url, $scope.levels[level].item).success(successPostCallback).error(errorCallback);
 		};
  
-		$scope.deleteItem = function (item) {
+		$scope.deleteItem = function (level, item) {
+			ajaxLevel = level;
 			restFactory.deleteItem(url, item.id).success(successCallback).error(errorCallback);
 		};
  
-		$scope.updateItem = function (item) {
+		$scope.updateItem = function (level, item) {
+			ajaxLevel = level;
 			restFactory.updateItem(url, item.id, item).success(successCallback).error(errorCallback);
 		};
 	});
-
