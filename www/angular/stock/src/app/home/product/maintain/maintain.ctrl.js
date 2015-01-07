@@ -34,18 +34,18 @@ angular.module('stock')
 		$scope.addItem = function() {
 alert('Cant add more than this test product until groups exist'); return;
 			$scope.item = {};
+			getVats();
 			$scope.formMode = "add";
 			$scope.displayMode = "form";
-			getVats();
 		};
 
 		$scope.editItem = function(id) {
 			restFactory.getItem(url, id)
 				.success(function(data, status) {
 					$scope.item = data;
+					getVats();
 					$scope.formMode = "edit";
 					$scope.displayMode = "form";
-					getVats();
 				})
 				.error(errorCallback);
 		};

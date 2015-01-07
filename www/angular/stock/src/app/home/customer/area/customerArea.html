@@ -1,6 +1,6 @@
 <!-- http://blog.jongallant.com/2013/05/angularjs-webapi-ef.html#.VJ62FsgHA -->
 
-<link rel="stylesheet" href="app/customer/group/customerArea.css"/>
+<link rel="stylesheet" href="app/customer/area/customerArea.css"/>
   
 <style>
 	button {margin-right:5px;}
@@ -50,7 +50,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr ng-repeat="item in items | orderBy:'id':true">
+                <tr ng-repeat="item in items | orderBy:'name'">
                     <td class='col-id'>{{item.id}}</td>
                     <td class='col-name'>
                         <span ng-click="toggleEditName(item)" ng-show="item.editName != true">{{item.name}}</span>

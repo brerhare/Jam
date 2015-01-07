@@ -54,20 +54,20 @@ angular.module('stock')
 
 		$scope.addItem = function()	{
 			$scope.item = {};
-			$scope.formMode = "add";
-			$scope.displayMode = "form";
 			getAreas();
 			getMarkupGroups();
+			$scope.formMode = "add";
+			$scope.displayMode = "form";
 		};
 
 		$scope.editItem = function(id) {
 			restFactory.getItem(url, id)
 				.success(function(data, status) {
 					$scope.item = data;
-					$scope.formMode = "edit";
-					$scope.displayMode = "form";
 					getAreas();
 					getMarkupGroups();
+					$scope.formMode = "edit";
+					$scope.displayMode = "form";
 				})
 				.error(errorCallback);
 		};
