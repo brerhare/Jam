@@ -11,14 +11,12 @@
 
 	.col-i-name { width:190px; }
     .btn-toolbar {width:60px}
+    .selected { background-color: #87CEFA}
 </style>
 
 <div class="container-fluid">
-  
     <h4 style="text-align:center">Maintain product groups</h4>
-  
     <br/>
-
     <div ng-repeat="level in levels" style="width:300px; float:left; padding:0px 60px 25px 0px">
         <table class="table Xtable-striped table-bordered table-condensed Xtable-hover">
             <tr>
@@ -48,7 +46,7 @@
             </tr>
             <tr ng-repeat="item in level.items | orderBy:'name'">
                 <td class='col-name'>
-                    <span ng-click="toggleEditName(level.levelNo, item)" ng-show="item.editName != true">{{item.name}}</span>
+                    <span ng-click="toggleEditName(level.levelNo, item)" ng-show="item.editName != true" ng-class="{'selected' : item.selected }">{{item.name}}</span>
                     <input class='col-i-name' ng-model="item.name" ng-show="item.editName == true" ng-keypress="editNameEnd(level.levelNo, $event, item)" />
                 </td>
                 <td class='col-button'>
