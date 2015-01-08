@@ -31,6 +31,7 @@
   .input-sm, .form-group-sm .form-control {
     font-size: 14px;
   }
+
 </style>
 
 <div class="container-fluid">
@@ -43,6 +44,12 @@
         <label class="control-label col-sm-3" for="name">Name</label>
         <div class="col-sm-8">
           <input type="text" class="form-control" placeholder="" ng-model="$parent.item.name" ng-minlength="2">
+        </div>
+      </div>
+      <div class="form-group form-group-sm">
+        <label class="control-label col-sm-3" for="price">Price</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control" placeholder="" ng-model="$parent.item.price" ng-minlength="2">
         </div>
       </div>
       <div class="form-group form-group-sm">
@@ -65,15 +72,34 @@
     <br/>
      <ul class="nav nav-tabs">
        <li>               <a href="#">Notes</a>     </li>
-       <li class="active"><a href="#">Prices</a>    </li>
+       <li class="active"><a href="#price">Prices</a>    </li>
        <li>               <a href="#">Dimensions</a></li>
        <li>               <a href="#">Barcodes</a>  </li>
        <li>               <a href="#">Deliveries</a></li>
        <li>               <a href="#">Label</a>     </li>
        <li>               <a href="#">UOM</a>       </li>
     </ul>
-
-    <hr/>
+    <!-- price tab -->
+    <div id="price" class="tab-content">
+      <table class="table Xtable-striped table-bordered table-condensed Xtable-hover">
+        <tr>
+          <th class='col-heading'>  Customer<br/>Group</th>
+          <th class='col-heading'>  Calculated<br/>Price</th>
+          <th class='col-heading'>  Manual<br/>Price</th>
+          <th class='col-heading'>  Variance</th>
+          <th class='col-heading'>  Profit</th>
+          <th class='col-heading'>  Gross<br/>Price</th>
+        </tr>
+        <tr ng-repeat="markupGroup in markupGroups | orderBy:'description'">
+          <td class='col-item'>{{markupGroup.description}}</td>
+          <td class='col-item'>0.00</td>
+          <td class='col-item'>0.00</td>
+          <td class='col-item'>0.00</td>
+          <td class='col-item'>0.00</td>
+          <td class='col-item'>0.00</td>
+        </tr>
+      </table>
+    </div>
 
     <div style="width:20%; margin:0px auto;">
 
