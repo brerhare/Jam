@@ -75,6 +75,8 @@ angular.module('stock')
 
 		var clearChildLevels = function(parentLevel, parentItem) {
 			for (var i=(parentLevel+1); i < maxLevels; i++) {
+				$scope.levels[i].selectedItemIx = -1;
+				$scope.levels[i].addMode = false;
 				if (i == (parentLevel+1)) {	// one immediately below us
 					$scope.levels[i].parentId = parentItem.id;
 				}
