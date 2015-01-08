@@ -3,33 +3,24 @@
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
 
-// Set backend and frontend paths
-$backend=dirname(dirname(__FILE__));
-$frontend=dirname($backend);
-Yii::setPathOfAlias('backend', $backend);
-
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
 return array(
-    // Set base of both to frontend (backend reuses frontend code), and backend c, v and r
-    'basePath'=> $frontend,
-    'controllerPath' => $backend.'/controllers',
-    'viewPath' => $backend.'/views',
-    'runtimePath' => $backend.'/runtime',
+	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
+	'name'=>'<sitetitle>',
 
-	'name'=>'DG Link V2 Backend',
+	// Override the default controller
+	//'defaultController'=>'contentBlock',
 
 	// preloading 'log' component
-	// preloading 'bootstrap' component
+	// preloading 'yiibooster' component
 	'preload'=>array('log', 'bootstrap'),
 
 	// autoloading model and component classes
-	// Note that the order is important - we want backend to overwrite frontend when theres a clash
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
-		'backend.models.*',
-		'backend.components.*',
+		'application.extensions.wirefly.jelly-current.*',
 		'application.extensions.PHPMailer.*',
 	),
 
@@ -75,10 +66,10 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=dglink_co_uk',
+			'connectionString' => 'mysql:host=localhost;dbname=<dbname>',
 			'emulatePrepare' => true,
-			'username' => 'dglink.co.uk',
-			'password' => 'dglink.co.uk,',
+			'username' => '<dbuser>',
+			'password' => '<dbpass>',
 			'charset' => 'utf8',
 		),
 		/**/
@@ -108,8 +99,17 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@wireflydesign.com',
-        // CKEditor size for page content editing
-        'editorpagewidth'=>'800',
-        'editorpageheight'=>'500',
+
+		// These are used by the shopping cart checkout process
+		'checkoutEmail'=>'<checkoutemail>',
+		'checkoutName'=>'<checkoutname>',
+		// Test gateway
+		'checkoutGatewayUser'=>'WIREFL-5188100',
+		'checkoutGatewayPassword'=>'391F3GWBZ0',
+		// Live gateway
+		//'checkoutGatewayUser'=>'xxxxx',
+		//'checkoutGatewayPassword'=>'xxxxx',
+		'jellyRoot' => '/scripts/jelly/',
+		'sid' => '<sid>',
 	),
 );
