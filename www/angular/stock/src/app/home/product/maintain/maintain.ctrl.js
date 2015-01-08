@@ -1,13 +1,15 @@
 angular.module('stock')
 	.controller('ProductMaintainCtrl', function ($scope, restFactory, notificationFactory) {
-		var url    = 'http://stock.wireflydesign.com/server/api/stock_product/';
-		var urlVat = 'http://stock.wireflydesign.com/server/api/stock_vat/';			// for <select>
+		var url            = 'http://stock.wireflydesign.com/server/api/stock_product/';
+		var urlVat         = 'http://stock.wireflydesign.com/server/api/stock_vat/';			// for <select>
+		var urlMarkupGroup = 'http://stock.wireflydesign.com/server/api/stock_markup_group/'; // for group tab
 
 		$scope.rowCollection = [];
 		$scope.displayMode = "list";
 		$scope.formMode = "";
 		$scope.item = {};
-		$scope.vats = {};			// for <select>
+		$scope.vats = {};					// for <select>
+		$scope.markupGroups = {};			// for group tab
 
 		var getVats = function() {	// for <select>
 			restFactory.getItem(urlVat)
@@ -31,21 +33,36 @@ angular.module('stock')
 				.error(errorCallback);
 		};
 
+
+		$scope.getMarkupGroups = function() {	// for group tab
+			restFactory.getItem(urlMarkupGroup)
+				.success(function(data, status) {
+					$scope.markupGroups = data;
+				})
+				.error(errorCallback);
+		};
+$scope.getMarkupGroups();	// @@TODO: make this only fire when user clicks the applicable tab
+
+		$scope.pricetabGetCalcPrice = function(product, markupGroup) {
+			//alert(product.name)
+			$scope.priceCalcPrice = (markupGroup.price + (product.price * markupGroup.percent / 100) );
+		}
+
 		$scope.addItem = function() {
 alert('Cant add more than this test product until groups exist'); return;
 			$scope.item = {};
+			getVats();
 			$scope.formMode = "add";
 			$scope.displayMode = "form";
-			getVats();
 		};
 
 		$scope.editItem = function(id) {
 			restFactory.getItem(url, id)
 				.success(function(data, status) {
 					$scope.item = data;
+					getVats();
 					$scope.formMode = "edit";
 					$scope.displayMode = "form";
-					getVats();
 				})
 				.error(errorCallback);
 		};
