@@ -138,7 +138,7 @@ if ($showArt == '')
 			{
 				// Main page large grid format
 				// ---------------------------
-				echo "<a href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['parenturl'] . "/?art=" . $article->id . '&page=' . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", mb_convert_encoding($article->title, "HTML-ENTITIES", "UTF-8"))    . '"' . ")'>";
+				echo "<a href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['parenturl'] . "/?art=" . $article->id . '&page=' . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", urlencode($article->title))    . '"' . ")'>";
 					echo "<span class='item' style='margin-bottom:13px;' >";
 						echo "<img src='" . Yii::app()->baseUrl . "/userdata/" . Yii::app()->session['uid'] . "/thumb_" . $article->thumbnail_path .  "' alt='No Image' width='100%'>";
 						echo "<span class='itemleadin'>" . $showCat . "&nbsp&nbsp" . $article->date . "</span><hr class='wtf-did-this-hr-take-to-DO'/>";

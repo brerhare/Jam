@@ -1,0 +1,16 @@
+site = breakfreecoaching.co.uk
+sitetitle = BreakFree Coaching
+sid = N/A
+
+# Database
+dbname = breakfreecoaching_co_uk
+dbuser = breakfreecoachin
+dbpass = djsu735hj2g
+
+# Shopping cart order confirmation email
+checkoutemail = sales@breakfreecoaching.co.uk
+checkoutname = BreakFree Coaching Sales
+
+# Backend page editor
+editorpagewidth = 800
+editorpageheight = 500
