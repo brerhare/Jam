@@ -6,7 +6,7 @@ toastr.options.positionClass = 'toast-bottom-right';
 angular.module('stock')
 	.controller('ProductGroupCtrl', function ($scope, restFactory, notificationFactory) {
 		var url = 'http://stock.wireflydesign.com/server/api/stock_group/';
-		var maxLevels = 3;
+		var maxLevels = 3;		// @TODO hardcoded. Same in product maint
 		$scope.levels = [];
 		var ajaxLevel = 0;
 
