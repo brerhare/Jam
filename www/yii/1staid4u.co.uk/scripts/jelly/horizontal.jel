@@ -19,7 +19,7 @@ css.display = block
 		[menu-bar]
 		css.width = 1018px
 		css.height = 70px
-		css.margin-top = 115px
+		css.margin-top = 125px
 		image.url = img/menu-bar.png
 		image.width = 1018px
 		image.height = 69px
@@ -64,7 +64,7 @@ css.display = block
 					[contact]
 					css.width = 300px
 					css.height = 60px
-					css.margin-left = 45px
+					css.margin-left = 40px
 					image.url = img/contact.jpg
 					image.width = 250px
 					image.height = 47px
@@ -74,7 +74,7 @@ css.display = block
 					[blurb]
 					css.width = 300px
 					css.height = 60px
-					css.margin-left = 20px
+					css.margin-left = 40px
 					image.url = img/blurb.jpg
 					image.width = 300px
 					image.height = 55px
@@ -88,20 +88,20 @@ css.display = block
 		css.z-index = 1000
 		css.position = absolute
 		addon.menu.basic.width = 780px
-		addon.menu.basic.height = 30px
 		addon.menu.basic.orientation = horizontal
 		addon.menu.basic.font-size = 14px
 		addon.menu.basic.menu-color = #ed2922
 		addon.menu.basic.menu-text-color = white
-		addon.menu.basic.item-separator-width = 1px
-		addon.menu.basic.item-separator-color = #ffffff
+		addon.menu.basic.item-separator-width = 20px
+		addon.menu.basic.item-separator-color = #00ff00
 
-	addon.menu.basic.submenu-color = lightgrey
-	addon.menu.basic.item-color = #ed2922 red
-	addon.menu.basic.item-text-color = black
-	addon.menu.basic.subitem-color = white
-	addon.menu.basic.subitem-text-color = red
-	addon.menu.basic.subitem-seperator-color = red 
+		addon.menu.basic.submenu-color = lightgrey
+		addon.menu.basic.item-color = #ed2922 red
+		addon.menu.basic.item-text-color = black
+		addon.menu.basic.subitem-color = white
+		addon.menu.basic.subitem-text-color = red
+		addon.menu.basic.subitem-separator-width = 10 
+		addon.menu.basic.subitem-separator-color = #0000ff 
 
 
 
@@ -110,7 +110,7 @@ css.display = block
 	[slider]
 	child = slider-bkg, slider-content
 	css.margin-left = 55px
-	css.margin-top = 60px
+	css.margin-top = 75px
 	css.width = 850px
 	
 
@@ -144,7 +144,7 @@ css.display = block
 	[pages]
 	child = content, blog 	
 	css.width = 900px
-	css.margin-top = -20px
+	css.margin-top = 20px
 	css.margin-left = 30px
 	css.background-color = white
 	fx.rounding = 4px
@@ -152,7 +152,7 @@ css.display = block
 		
 		[content]
 		child = line
-		css.margin-top = 25px
+		css.margin-top = 30px
 		css.margin = 30px
 		db.table = ContentBlock
 		db.filter = url=$_GET['page']
@@ -168,7 +168,7 @@ css.display = block
 
 		[blog]
 		condition = @PAGE=@HOMEPAGE
-		html.raw = {{news traditional}}
+		html.raw = {{news pinterest}}
 
 
 ####footer####################################

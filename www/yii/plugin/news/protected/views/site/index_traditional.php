@@ -95,7 +95,7 @@ if ( ($showArt == '') && (!isset($_GET['archive'])) )
 			if (date("Y-m-d", strtotime($article->date)) > date("Y-m-d"))
 				continue;
 
-			echo "<a style='color:black; text-decoration:none' href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['parenturl'] . "/?art=" . $article->id . '&page=' . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", mb_convert_encoding($article->title, "HTML-ENTITIES", "UTF-8"))    . '"' . ")'>";
+			echo "<a style='color:black; text-decoration:none' href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['parenturl'] . "/?art=" . $article->id . '&page=' . Yii::app()->session['page'] . "&title=" . str_replace(" ", "-", urlencode($article->title))    . '"' . ")'>";
 
 //print_r(Yii::app()->session['parenturl']);
 //die;
