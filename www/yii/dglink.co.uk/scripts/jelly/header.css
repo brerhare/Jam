@@ -1,0 +1,61 @@
+<!-- Place your Google fonts here as a cut and paste then choose which header and fonts etc need the font families - NB if the family only come in Italic then you must state the font style as Italic too (DG Link)-->
+
+<link href='http://fonts.googleapis.com/css?family=Rancho|Open+Sans:400italic,400,800' rel='stylesheet' type='text/css'>
+
+<style type="text/css">
+
+
+html, body {	height: 100%;
+		padding: 0;
+		margin: 20;
+		border: 0;}
+
+/* Global Hyperlink settings - will affect menu text colour if no text settings */ 
+a { text-decoration: none; color:#00ad44; }
+a:visited { text-decoration: none; color:#fc8d3d; }
+a:hover { text-decoration: none; color:#00adc9; }
+a:active { text-decoration: none; color:#00adc9 }
+
+
+
+h1 {	font-family: 'Rancho', cursive, sans-serif !important;
+	color: #00ad44;
+	font-size: 36px;
+	font-weight: 400;
+	font-style: italic;
+	text-shadow: 3px 3px 1px lightgrey;}
+
+h2 {	font-family: 'Open Sans', Verdana, sans-serif !important;
+	color: #000000;
+	font-size: 16px;
+	font-weight: 400;}
+
+
+h3 {	font-family: 'Rancho', cursive, sans-serif !important;
+	color: #00ad44;
+	font-size: 24px;
+	font-weight: 500;
+	font-style: italic;}
+
+h4 {	font-family: 'Open Sans', Verdana, sans-serif !important;
+	color: #00ad44;
+	font-size: 16px;
+	font-weight: 400;}
+
+p  {	font-family: 'Open Sans', Verdana, sans-serif !important;
+	color: #000000;
+	font-size: 14px;
+	font-weight: normal}
+
+blockquote {font-family: 'Open Sans', Verdana, sans-serif !important;
+	color: #5b5b5b;
+	font-size: 14px;
+	font-style: italic;
+	font-weight: 300}
+
+
+html { font-family: 'Open Sans', Verdana, sans-serif !important;
+	font-size: 12px;
+	font-weight:normal}
+
+</style>

@@ -91,21 +91,24 @@ css.margin-left = 15px
 	css.margin-top = 20px
 	css.width = 750px
 	css.height = 400px
+	addon.slider.thumbnail.width = 500px
+	addon.slider.thumbnail.height = 375px	
+	
 	#css.background-color = #f7d9ff
-	addon.slider.flexslider.width = 500px
-	addon.slider.flexslider.height = 375px
-	addon.slider.flexslider.border-width = 0px
-	addon.slider.flexslider.border-color = white
-	addon.slider.flexslider.active-dotcolor = #9400c9 
-	addon.slider.flexslider.inactive-dotcolor = #cfcfcf
-	addon.slider.flexslider.dot-margin-top = -30px
-	addon.slider.flexslider.dot-margin-bottom = 0px
-	addon.slider.flexslider.dot-margin-left = 0px
-	addon.slider.flexslider.dot-margin-right = 0px
+	#addon.slider.flexslider.width = 500px
+	#addon.slider.flexslider.height = 375px
+	#addon.slider.flexslider.border-width = 0px
+	#addon.slider.flexslider.border-color = white
+	#addon.slider.flexslider.active-dotcolor = #9400c9 
+	#addon.slider.flexslider.inactive-dotcolor = #cfcfcf
+	#addon.slider.flexslider.dot-margin-top = -30px
+	#addon.slider.flexslider.dot-margin-bottom = 0px
+	#addon.slider.flexslider.dot-margin-left = 0px
+	#addon.slider.flexslider.dot-margin-right = 0px
 		#addon.slider.flexslider.animation = fade
-	addon.slider.flexslider.mode = image
+	#addon.slider.flexslider.mode = image
 		#addon.slider.flexslider.mode = HTML
-	addon.slider.flexslider.source = db
+	#addon.slider.flexslider.source = db
 
 
 

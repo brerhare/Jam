@@ -165,23 +165,30 @@
 
         <li><a href="#">Customers<span class="caret"></span></a>
           <ul>
-            <li><a ui-sref="home.customer-invoice"  >Invoices</a></li>
-            <li><a ui-sref="home.customer-return"   >Returns</a></li>
-            <li><a ui-sref="home.customer-maintain" >Customers</a></li>
-            <li><a ui-sref="home.customer-group"    >Groups</a></li>
-            <li><a ui-sref="#"                      >Areas</a></li>
-            <li><a ui-sref="#"                      >Orders</a></li>
+            <li><a ui-sref="home.customer-invoice">          Invoices</a></li>
+            <li><a ui-sref="home.customer-return">           Returns</a></li>
+            <li><a ui-sref="home.customer-maintain">         Customers</a></li>
+            <li><a ui-sref="home.customer-markup-group">     Markup Groups</a></li>
+            <li><a ui-sref="home.customer-area">             Areas</a></li>
+            <li><a ui-sref="#">                              Orders</a></li>
           </ul>
+        </li>
+        <li><a href="#">Products<span class="caret"></span></a>
+          <ul>
+            <li><a ui-sref='home.product-maintain'>          Products</a></li>
+            <li><a ui-sref="home.product-group">               Groups</a></li>
+          </ul>
+        </li>
         <li><a href="#">Suppliers<span class="caret"></span></a>
           <ul>
-            <li><a ui-sref='#'                      >Deliveries</a></li>
+            <li><a ui-sref='#'>                              Deliveries</a></li>
           </ul>
-        <li><a href="#">Admin<span class="caret"></span></a>
+        </li>
+        <li><a href="#">Settings<span class="caret"></span></a>
           <ul>
-            <li><a ui-sref="#"                      >Reports</a></li>
-            <li><a ui-sref="#"                      >Employees</a></li>
-            <li><a ui-sref="#"                      >Expenses</a></li>
+            <li><a ui-sref="home.settings-vat">              Tax</a></li>
           </ul>
+        </li>
         <li><a ui-sref="login">Logout</a>
       </ul>
     </div>
