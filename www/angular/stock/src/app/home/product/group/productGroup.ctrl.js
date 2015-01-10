@@ -85,15 +85,15 @@ angular.module('stock')
 					$scope.levels[i].items = {};
 				}
 			}
-		}
+		};
 
 // ----------------------------------------------------------------------------------------
 
 		var getItemSuccessCallback = function (data, status) {
 			$scope.levels[ajaxLevel].items = [];
 			for (var i = 0; i < data.length; i++) {
-				if (ajaxLevel == 0) {									// top level
-					if (data[i].parent_id == null)	{
+				if (ajaxLevel === 0) {									// top level
+					if (data[i].parent_id === null)	{
 						$scope.levels[ajaxLevel].items.push(data[i]);
 					}
 				}
@@ -127,7 +127,7 @@ angular.module('stock')
  
 		$scope.addItem = function (level) {
 			ajaxLevel = level;
-			if (level == 0) {
+			if (level === 0) {
 				$scope.levels[level].item.parent_id = null;
 			}
 			else {
@@ -151,7 +151,7 @@ angular.module('stock')
 		return {
 			restrict: 'A',
 			link: function(scope, element, attr) {
-				var fn = $parse(attr['sglclick']);
+				var fn = $parse(attr.sglclick);
 				var delay = 300, clicks = 0, timer = null;
 				element.on('click', function (event) {
 					clicks++;  //count clicks

@@ -47,9 +47,29 @@
         </div>
       </div>
       <div class="form-group form-group-sm">
-        <label class="control-label col-sm-3" for="price">Price</label>
+        <label class="control-label col-sm-3" for="price">Cost Price</label>
         <div class="col-sm-2">
           <input type="text" class="form-control" placeholder="" ng-model="$parent.item.price" ng-minlength="2">
+        </div>
+      </div>
+
+      <div ng-repeat="level in getMaxLevels() track by $index">
+        <div class="form-group form-group-sm">
+          <label class="control-label col-sm-3" for="group_level_{{$index}}">Group level {{$index+1}}</label>
+          <div class="col-sm-5">
+            <select ng-model="$parent.selectedGroup" ng-options="group.name for group in $parent.levelGroups[$index].items" ng-change="selchangeGroup()" class="form-control">
+            </select>
+          </div>
+        </div>
+      </div>
+
+    </div>  <!-- lhs -->
+
+    <div class="rhs">
+      <div class="form-group form-group-sm">
+        <label class="control-label col-sm-3" for="description">Description</label>
+        <div class="col-sm-8">
+          <textarea class="form-control" style="height:auto" placeholder="" rows="5" ng-model="$parent.item.description"></textarea>
         </div>
       </div>
       <div class="form-group form-group-sm">
@@ -59,15 +79,8 @@
           </select>
         </div>
       </div>
-    </div>
-    <div class="rhs">
-      <div class="form-group form-group-sm">
-        <label class="control-label col-sm-3" for="description">Description</label>
-        <div class="col-sm-8">
-          <textarea class="form-control" style="height:auto" placeholder="" rows="5" ng-model="$parent.item.description"></textarea>
-        </div>
-      </div>
-    </div>
+    </div>  <!-- rhs -->
+
     <div style="clear: both"></div>
     <br/>
      <ul class="nav nav-tabs">
@@ -92,6 +105,9 @@
         </tr>
         <tr ng-repeat="markupGroup in markupGroups | orderBy:'description'">
           <td class='col-item'>{{markupGroup.description}}</td>
+
+
+          <td class='col-item'>{{pricetabGetCalcPrice($parent.item.price, markupGroup) | number:2}}</td>
           <td class='col-item'>0.00</td>
           <td class='col-item'>0.00</td>
           <td class='col-item'>0.00</td>
