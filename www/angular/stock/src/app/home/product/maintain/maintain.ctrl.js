@@ -105,8 +105,14 @@ angular.module('stock')
 		};
 
 		$scope.selchangeGroup = function(level) {
-			$scope.item.stock_group_id = $scope.levelGroups[level].selectedGroup.id;
-			alert($scope.item.stock_group_id);
+			var id = $scope.levelGroups[level].selectedGroup.id;
+			if (level == (maxLevels - 1)) {
+				$scope.item.stock_group_id = id;
+			}
+			else {
+				clearLevelsDown(level+1);
+				fillGroupLevel(level+1, getGroupChildren(getGroupItemById(id)), getGroupItemById(id));
+			}
 		};
 
 		var fillGroupLevel = function(level, itemArr, itemSelected) {
@@ -166,7 +172,6 @@ $scope.getMarkupGroups();	// @@TODO: make this only fire when user clicks the ap
 		// ------------
 
 		$scope.addItem = function() {
-//alert('Cant add more than this test product until groups exist'); return;
 			$scope.item = {};
 			getVats();
 			$scope.formMode = "add";
@@ -205,21 +210,19 @@ $scope.getMarkupGroups();	// @@TODO: make this only fire when user clicks the ap
 		};
 
 		$scope.saveItem = function() {
-alert('saving');
 			if ($scope.formMode == "add") {
 				restFactory.addItem(url, $scope.item)
 					.success(function (data, status) {
-alert('add - ok');
 						$scope.item.id = data.id;
 						$scope.rowCollection.push($scope.item);		// insert new
 						$scope.displayedCollection = [].concat($scope.rowCollection);
+						notificationFactory.success();
 					})
 					.error(errorCallback);
 			}
 			else if ($scope.formMode == "edit") {
 				restFactory.updateItem(url, $scope.item.id, $scope.item)
 					.success(function (data, status) {
-alert('edit - ok');
 						for (var i = 0; i < $scope.rowCollection.length; i++) {
 							if ($scope.rowCollection[i].id == $scope.item.id) {
 								$scope.rowCollection[i] = $scope.item;	// replace old with new
@@ -227,6 +230,7 @@ alert('edit - ok');
 								break;
 							}
 						}
+						notificationFactory.success();
 					})
 					.error(errorCallback);
 			}
@@ -239,7 +243,6 @@ alert('edit - ok');
 		};
 
 		var errorCallback = function (data, status, headers, config) {
-alert('notok');
 			notificationFactory.error(data.ExceptionMessage);
 		};
 

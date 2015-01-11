@@ -57,7 +57,7 @@
         <div class="form-group form-group-sm">
           <label class="control-label col-sm-3" for="group_level_{{$index}}">Group level {{$index+1}}</label>
           <div class="col-sm-5">
-            <select ng-model="$parent.levelGroups[$index].selectedGroup" ng-options="group.name for group in $parent.levelGroups[$index].items" ng-change="selchangeGroup($level)" class="form-control">
+            <select ng-model="$parent.levelGroups[$index].selectedGroup" ng-options="group.name for group in $parent.levelGroups[$index].items" ng-change="selchangeGroup($index)" class="form-control">
             </select>
           </div>
         </div>
