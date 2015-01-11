@@ -10,14 +10,17 @@ angular.module('stock')
 		$scope.displayMode = "list";
 		$scope.formMode = "";
 		$scope.item = {};
-		$scope.vats = {};							// for <select>
+		$scope.vats = {};							// for <select>. Has 'items[]', 'selectedVat
 		var groups = [];							// All groups loaded once at startup
-		$scope.levelGroups = new Array(maxLevels);	// An array ix for each level's <select>
+		$scope.levelGroups = new Array(maxLevels);	// An array ix for each level's <select>. Has 'parentId', 'selectedGroup', 'items[]'
 		$scope.markupGroups = {};					// for group tab
 
 		$scope.getMaxLevels = function() {
 			return new Array(maxLevels);
 		};
+
+		// Vat select box. There is a default rate
+		// ---------------------------------------
 
 		var getVats = function() {	// for vat <select>
 			restFactory.getItem(urlVat)
@@ -41,25 +44,92 @@ angular.module('stock')
 				.error(errorCallback);
 		};
 
-		var clearLevelsFrom = function(level) {
+		$scope.selchangeVat = function() {
+			$scope.item.stock_vat_id = $scope.selectedVat.id;
+		};
+
+		// Group levels. There is a hierarchy of select boxes
+		// --------------------------------------------------
+
+		var getGroupItemById = function (id) {
+			for (var i = 0; i < groups.length; i++) {
+				if (groups[i].id == id)
+					return groups[i];
+			}
+			return null;
+		};
+
+		var getGroupTopParents = function() {
+			var arr = [];
+			for (var i = 0; i < groups.length; i++) {
+				if (groups[i].parent_id < 1)
+					arr.push(groups[i]);
+			}
+			return arr;
+		};
+
+		var getGroupParent = function(item) {
+			for (var i = 0; i < groups.length; i++) {
+				if (groups[i].id == item.parent_id)
+					return groups[i];
+			}
+			return null;
+		};
+
+		var getGroupChildren = function(item) {
+			var arr = [];
+			for (var i = 0; i < groups.length; i++) {
+				if (groups[i].parent_id == item.id)
+					arr.push(groups[i]);
+			}
+			return arr;
+		};
+
+		var getGroupSiblings = function(item) {
+			var arr = [];
+			for (var i = 0; i < groups.length; i++) {
+				if (groups[i].parent_id == item.parent_id)
+					arr.push(groups[i]);
+			}
+			return arr;
+		};
+
+		var clearLevelsDown = function(level) {
 			for (var i = level; i < maxLevels; i++) {
 				$scope.levelGroups[i] = {};
 				// @@TODO disable this select seeing as its empty
 				$scope.levelGroups[i].parentId = null;
 				$scope.levelGroups[i].items = {};
+				$scope.levelGroups[i].selectedGroup = null;
 			}
 		};
 
-		var setLevelContent = function(level) {
-			$scope.levelGroups[level].items = [];
-			for (var i = 0; i < groups.length; i++) {
-				if (level == 0) {
-					if (!groups[i].parent_id) {
-						$scope.levelGroups[level].items.push(groups[i]);
-					}
+		$scope.selchangeGroup = function(level) {
+			$scope.item.stock_group_id = $scope.levelGroups[level].selectedGroup.id;
+			alert($scope.item.stock_group_id);
+		};
+
+		var fillGroupLevel = function(level, itemArr, itemSelected) {
+			if (itemArr.length > 0) {
+				$scope.levelGroups[level].parentId = itemArr[0].parent_id;		// Any ix will do - all have same parent
+				$scope.levelGroups[level].items = itemArr;
+				if (itemSelected === null)
+					itemSelected = itemArr[0];
+				$scope.levelGroups[level].selectedGroup = itemSelected;
+			}
+		};
+
+		var setupGroupSelects = function() {
+			clearLevelsDown(0);
+			if ($scope.formMode == "add")							// fill top level
+				fillGroupLevel(0, getGroupTopParents(), null);
+			else if ($scope.formMode == "edit") {					// fill all levels from bottom up
+				var id = $scope.item.stock_group_id;				// ie the group the product is attached to
+				for (var i = (maxLevels - 1); i >=0; i--) {
+					fillGroupLevel(i, getGroupSiblings(getGroupItemById(id)), getGroupItemById(id));
+					id = getGroupItemById(id).parent_id;
 				}
 			}
-
 		};
 
 		$scope.getGroups = function() {	// for the group levels <select>'s
@@ -68,13 +138,13 @@ angular.module('stock')
 					for (var i = 0; i < data.length; i++) {
 						groups[i] = data[i];
 					}
-					clearLevelsFrom(0);
-					setLevelContent(0);
-					//alert('!!! ' + $scope.levelGroups[0].items[0].name)
 				})
 				.error(errorCallback);
 		};
 		$scope.getGroups();
+
+		// Customer markup group
+		// ---------------------
 
 		$scope.getMarkupGroups = function() {	// for group tab
 			restFactory.getItem(urlMarkupGroup)
@@ -85,9 +155,15 @@ angular.module('stock')
 		};
 $scope.getMarkupGroups();	// @@TODO: make this only fire when user clicks the applicable tab, its wasteful like this
 
+		// Tab area. Transactions
+		// ----------------------
+
 		$scope.pricetabGetCalcPrice = function(productPrice, markupGroup) {
 			return (parseFloat(productPrice) + (productPrice * markupGroup.percent / 100) );
 		};
+
+		// Product item
+		// ------------
 
 		$scope.addItem = function() {
 //alert('Cant add more than this test product until groups exist'); return;
@@ -95,6 +171,7 @@ $scope.getMarkupGroups();	// @@TODO: make this only fire when user clicks the ap
 			getVats();
 			$scope.formMode = "add";
 			$scope.displayMode = "form";
+			setupGroupSelects();
 		};
 
 		$scope.editItem = function(id) {
@@ -104,6 +181,7 @@ $scope.getMarkupGroups();	// @@TODO: make this only fire when user clicks the ap
 					getVats();
 					$scope.formMode = "edit";
 					$scope.displayMode = "form";
+					setupGroupSelects();
 				})
 				.error(errorCallback);
 		};
@@ -153,14 +231,6 @@ alert('edit - ok');
 					.error(errorCallback);
 			}
 			$scope.displayMode = "list";
-		};
-
-		$scope.selchangeVat = function() {
-			$scope.item.stock_vat_id = $scope.selectedVat.id;
-		};
-
-		$scope.selchangeGroup = function() {
-			$scope.item.stock_group_id = $scope.selectedGroup.id;
 		};
 
 		var getItemSuccessCallback = function (data, status) {
