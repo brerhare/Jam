@@ -14,6 +14,7 @@ angular.module('stock')
 		var groups = [];							// All groups loaded once at startup
 		$scope.levelGroups = new Array(maxLevels);	// An array ix for each level's <select>. Has 'parentId', 'selectedGroup', 'items[]'
 		$scope.markupGroups = {};					// for group tab
+		$scope.someArrayManualPrice = [];
 
 		$scope.getMaxLevels = function() {
 			return new Array(maxLevels);
