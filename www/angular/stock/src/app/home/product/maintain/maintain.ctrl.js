@@ -68,14 +68,6 @@ angular.module('stock')
 			return arr;
 		};
 
-		var getGroupParent = function(item) {
-			for (var i = 0; i < groups.length; i++) {
-				if (groups[i].id == item.parent_id)
-					return groups[i];
-			}
-			return null;
-		};
-
 		var getGroupChildren = function(item) {
 			var arr = [];
 			for (var i = 0; i < groups.length; i++) {
@@ -161,11 +153,17 @@ angular.module('stock')
 		};
 $scope.getMarkupGroups();	// @@TODO: make this only fire when user clicks the applicable tab, its wasteful like this
 
-		// Tab area. Transactions
-		// ----------------------
+		// Tab area - Prices tab
+		// ---------------------
 
-		$scope.pricetabGetCalcPrice = function(productPrice, markupGroup) {
-			return (parseFloat(productPrice) + (productPrice * markupGroup.percent / 100) );
+		$scope.pricetabGetCalculatedPrice = function(markupGroup) {
+			return ( parseFloat($scope.item.cost) + ($scope.item.cost * markupGroup.percent / 100) );
+		};
+		$scope.pricetabGetManualPrice = function(markupGroup) {
+			return 123.45;
+		};
+		$scope.pricetabGetVariance = function(markupGroup) {
+			return ($scope.pricetabGetCalculatedPrice(markupGroup) - $scope.item.cost);
 		};
 
 		// Product item

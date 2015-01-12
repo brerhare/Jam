@@ -47,9 +47,9 @@
         </div>
       </div>
       <div class="form-group form-group-sm">
-        <label class="control-label col-sm-3" for="price">Cost Price</label>
+        <label class="control-label col-sm-3" for="cost">Cost Price</label>
         <div class="col-sm-2">
-          <input type="text" class="form-control" placeholder="" ng-model="$parent.item.price" ng-minlength="2">
+          <input type="text" class="form-control" placeholder="" ng-model="$parent.item.cost" ng-minlength="2">
         </div>
       </div>
 
@@ -85,15 +85,16 @@
     <br/>
      <ul class="nav nav-tabs">
        <li>               <a href="#">Notes</a>     </li>
-       <li class="active"><a href="#price">Prices</a>    </li>
+       <li class="active"><a href="priceTab">Prices</a>    </li>
        <li>               <a href="#">Dimensions</a></li>
        <li>               <a href="#">Barcodes</a>  </li>
        <li>               <a href="#">Deliveries</a></li>
        <li>               <a href="#">Label</a>     </li>
        <li>               <a href="#">UOM</a>       </li>
     </ul>
+
     <!-- price tab -->
-    <div id="price" class="tab-content">
+    <div id="priceTab" class="tab-content">
       <table class="table Xtable-striped table-bordered table-condensed Xtable-hover">
         <tr>
           <th class='col-heading'>  Customer<br/>Group</th>
@@ -105,11 +106,12 @@
         </tr>
         <tr ng-repeat="markupGroup in markupGroups | orderBy:'description'">
           <td class='col-item'>{{markupGroup.description}}</td>
+          <td class='col-item'>{{pricetabGetCalculatedPrice(markupGroup) | number:2}}</td>
 
+          <td class='col-item'>{{pricetabGetManualPrice(markupGroup) | number:2}}</td>
+<!--          <input class='col-item' ng-model="item.name" ng-show="item.editName == true" ng-keypress="editNameEnd(level.levelNo, $event, item)" /> -->
 
-          <td class='col-item'>{{pricetabGetCalcPrice($parent.item.price, markupGroup) | number:2}}</td>
-          <td class='col-item'>0.00</td>
-          <td class='col-item'>0.00</td>
+          <td class='col-item'>{{pricetabGetProfit(markupGroup) | number:2}}</td>
           <td class='col-item'>0.00</td>
           <td class='col-item'>0.00</td>
           <td class='col-item'>0.00</td>
