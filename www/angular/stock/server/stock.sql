@@ -58,7 +58,6 @@ CREATE TABLE IF NOT EXISTS `stock`.`stock_product` (
   `width` DECIMAL(10,2) NULL,
   `depth` DECIMAL(10,2) NULL,
   `volume` DECIMAL(10,2) NULL,
-  `price` DECIMAL(10,2) NULL,
   `stock_group_id` INT NOT NULL,
   `stock_vat_id` INT NOT NULL,
   PRIMARY KEY (`id`),
@@ -100,11 +99,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `stock`.`stock_markup_group`
+-- Table `stock`.`Xstock_markup_group`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `stock`.`stock_markup_group` ;
+DROP TABLE IF EXISTS `stock`.`Xstock_markup_group` ;
 
-CREATE TABLE IF NOT EXISTS `stock`.`stock_markup_group` (
+CREATE TABLE IF NOT EXISTS `stock`.`Xstock_markup_group` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `uid` INT NOT NULL,
   `description` VARCHAR(255) NOT NULL,
@@ -168,7 +167,7 @@ CREATE TABLE IF NOT EXISTS `stock`.`stock_customer` (
   INDEX `fk_stock_customer_stock_area1_idx` (`stock_area_id` ASC),
   CONSTRAINT `fk_stock_customer_stock_markup_group10`
     FOREIGN KEY (`stock_markup_group_id`)
-    REFERENCES `stock`.`stock_markup_group` (`id`)
+    REFERENCES `stock`.`Xstock_markup_group` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_stock_customer_stock_area1`
@@ -816,22 +815,29 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `stock`.`stock_product_promotion_price`
+-- Table `stock`.`stock_product_price`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `stock`.`stock_product_promotion_price` ;
+DROP TABLE IF EXISTS `stock`.`stock_product_price` ;
 
-CREATE TABLE IF NOT EXISTS `stock`.`stock_product_promotion_price` (
+CREATE TABLE IF NOT EXISTS `stock`.`stock_product_price` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `uid` INT NOT NULL,
   `start_date` DATE NULL,
   `end_date` DATE NULL,
   `price` DECIMAL(10,2) NULL,
   `stock_product_id` INT NOT NULL,
+  `stock_markup_group_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_stock_product_promotion_price_stock_product1_idx` (`stock_product_id` ASC),
+  INDEX `fk_stock_product_price_Xstock_markup_group1_idx` (`stock_markup_group_id` ASC),
   CONSTRAINT `fk_stock_product_promotion_price_stock_product1`
     FOREIGN KEY (`stock_product_id`)
     REFERENCES `stock`.`stock_product` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_stock_product_price_Xstock_markup_group1`
+    FOREIGN KEY (`stock_markup_group_id`)
+    REFERENCES `stock`.`Xstock_markup_group` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
