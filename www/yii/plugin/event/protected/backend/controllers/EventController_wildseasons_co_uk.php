@@ -475,10 +475,13 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 		return;
 */
 
+Yii::log("IMPORT ----- opening file" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		$file = "/tmp/ws.csv";
 		$row = 0;
 		if (($handle = fopen($file, "r")) === FALSE)
 			die("Cant open $file");
+Yii::log("IMPORT ----- file opened ok" , CLogger::LEVEL_WARNING, 'system.test.kim');
+$lc = 0;
     	while (($data = fgetcsv($handle, 1000, ",")) !== FALSE)
     	{
         	// Ignore header line
@@ -492,6 +495,8 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
         		$row++;
         		continue;
         	}
+$lc++;
+Yii::log("IMPORT ----- got record " . $lc, CLogger::LEVEL_WARNING, 'system.test.kim');
 
         	// Init db fields
         	$event = new Event;
@@ -586,6 +591,7 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 						break;
 				}
 			}
+Yii::log("IMPORT ----- about to insert db record " . $lc, CLogger::LEVEL_WARNING, 'system.test.kim');
 // @@TODO: REMOVE HARD CODING!
 			//$event->member_id = 7;
 			$event->program_id = 6;
@@ -595,6 +601,7 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 			echo $ws->event_id . "<br>";
 			if (!($ws->save()))
 				die("Event additional info save failed on line " . $row);
+Yii::log("IMPORT ----- inserted db record " . $lc, CLogger::LEVEL_WARNING, 'system.test.kim');
 			$row++;
 		}
 	}
