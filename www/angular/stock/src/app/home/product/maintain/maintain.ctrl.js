@@ -195,11 +195,9 @@ getMarkupGroups();	// @@TODO: make this only fire when user clicks the applicabl
 
 		var pricetabGetPrice = function(markupGroup){
 			var price = parseFloat(markupGroup.manual);
-			if (price == 0) {
+			if (price === 0) {
 				price = $scope.pricetabGetCalculatedPrice(markupGroup);
-				console.log('using calcprice='+$scope.pricetabGetCalculatedPrice(markupGroup));
 			}
-			else console.log('using manualprice='+parseFloat(markupGroup.manual));
 			return price;
 		};
 
@@ -272,6 +270,12 @@ getMarkupGroups();	// @@TODO: make this only fire when user clicks the applicabl
 						$scope.rowCollection.push($scope.item);		// insert new
 						$scope.displayedCollection = [].concat($scope.rowCollection);
 						notificationFactory.success();
+						// Now update/add any price overrides
+						for (var i = 0; i < $scope.markupGroups.length; i++)
+							if ($scope.markupGroups[i].manual !== 0) {
+								// delete old
+								// add new
+							}
 					})
 					.error(errorCallback);
 			}
@@ -289,7 +293,7 @@ getMarkupGroups();	// @@TODO: make this only fire when user clicks the applicabl
 					})
 					.error(errorCallback);
 			}
-			$scope.displayMode = "list";
+$scope.displayMode = "list";
 		};
 
 		var getItemSuccessCallback = function (data, status) {
