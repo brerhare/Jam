@@ -161,7 +161,7 @@ getGroups();
 						for (i = 0; i < data.length; i++) {
 							var thisMarkupGroup = getMarkupGroupItemById(data[i].id);
 							if (thisMarkupGroup) {
-								thisMarkupGroup.manual = data;
+								thisMarkupGroup.manual[i] = data;
 							}
 						}
 					}
