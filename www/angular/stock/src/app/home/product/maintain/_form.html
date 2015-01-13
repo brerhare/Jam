@@ -34,6 +34,10 @@
 
 </style>
 
+<style>
+.col-item.ng-invalid {color: #de2121; /*error*/}
+</style>
+
 <div class="container-fluid">
 
 <form ng-submit="saveItem()" class="form-horizontal" role="form">
@@ -107,14 +111,10 @@
         <tr ng-repeat="markupGroup in markupGroups | orderBy:'description'">
           <td class='col-item'>{{markupGroup.description}}</td>
           <td class='col-item'>{{pricetabGetCalculatedPrice(markupGroup) | number:2}}</td>
-
-<!--          <td class='col-item'>{{pricetabGetManualPrice(markupGroup) | number:2}}</td> -->
-          <input type="text" class='col-item' ng-model="markupGroup.someArrayManualPrice" />
-
+            <td class="col-item"><input fcsa-number="{ maxDecimals: 2, min: 0, preventInvalidInput: true }" type="text" class='col-item' ng-model="markupGroup.manual" /></td>
+          <td class='col-item'>{{pricetabGetVariance(markupGroup) | number:2}}%</td>
           <td class='col-item'>{{pricetabGetProfit(markupGroup) | number:2}}</td>
-          <td class='col-item'>0.00</td>
-          <td class='col-item'>0.00</td>
-          <td class='col-item'>0.00</td>
+          <td class='col-item'>{{pricetabGetGrossPrice(markupGroup) | number:2}}</td>
         </tr>
       </table>
     </div>
