@@ -153,18 +153,16 @@ getGroups();
 		// -------------								// @@TODO: should also only fire when needed eg price tab
 
 		var getMarkupGroupsProductPrices = function() {	// for group tab
+			for (var i = 0; i < $scope.markupGroups.length; i++)
+				$scope.markupGroups[i].manual = 0;
 			restFactory.getItem(urlProductPrice)
 				.success(function(data, status) {
 					if (data.length > 0) {
-						for (var i = 0; i < data.length; i++) {
+						for (i = 0; i < data.length; i++) {
 							var thisMarkupGroup = getMarkupGroupItemById(data[i].id);
 							if (thisMarkupGroup) {
 								thisMarkupGroup.manual = data;
 							}
-						}
-					} else {
-						for (i = 0; i < $scope.markupGroups.length; i++) {
-							$scope.markupGroups[i].manual = $scope.pricetabGetCalculatedPrice($scope.markupGroups[i]);
 						}
 					}
 				})
@@ -195,19 +193,30 @@ getMarkupGroups();	// @@TODO: make this only fire when user clicks the applicabl
 		// Tab area - Prices tab
 		// ---------------------
 
+		var pricetabGetPrice = function(markupGroup){
+			var price = parseFloat(markupGroup.manual);
+			if (price == 0) {
+				price = $scope.pricetabGetCalculatedPrice(markupGroup);
+				console.log('using calcprice='+$scope.pricetabGetCalculatedPrice(markupGroup));
+			}
+			else console.log('using manualprice='+parseFloat(markupGroup.manual));
+			return price;
+		};
+
 		$scope.pricetabGetCalculatedPrice = function(markupGroup) {
 			var val =  (parseFloat($scope.item.cost) + ($scope.item.cost * markupGroup.percent / 100));
 			return val.toFixed(2);
 		};
 		$scope.pricetabGetVariance = function(markupGroup) {
-			return ((markupGroup.manual - $scope.pricetabGetCalculatedPrice(markupGroup)) / $scope.pricetabGetCalculatedPrice(markupGroup) * 100).toFixed(2) ;
+			return ((pricetabGetPrice(markupGroup) - $scope.pricetabGetCalculatedPrice(markupGroup)) / $scope.pricetabGetCalculatedPrice(markupGroup) * 100).toFixed(2) ;
 		};
+
 		$scope.pricetabGetProfit = function(markupGroup) {
-			return (markupGroup.manual - $scope.item.cost);
+			return (pricetabGetPrice(markupGroup) - $scope.item.cost);
 		};
 		$scope.pricetabGetGrossPrice = function(markupGroup) {
-			var val =  (parseFloat(markupGroup.manual) + ((markupGroup.manual * parseFloat($scope.selectedVat.rate) / 100))).toFixed(2);
-			console.log('manual='+ markupGroup.manual + ' vatrate='+parseFloat($scope.selectedVat.rate) + ' vat=' + (markupGroup.manual * parseFloat($scope.selectedVat.rate)/100) + ' gross='+val)
+			var price = pricetabGetPrice(markupGroup);
+			var val =  (parseFloat(price) + ((price * parseFloat($scope.selectedVat.rate) / 100))).toFixed(2);
 			return val;
 		};
 
