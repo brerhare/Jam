@@ -1,9 +1,10 @@
 angular.module('stock')
 	.controller('ProductMaintainCtrl', function ($scope, restFactory, notificationFactory) {
-		var url            = 'http://stock.wireflydesign.com/server/api/stock_product/';
-		var urlVat         = 'http://stock.wireflydesign.com/server/api/stock_vat/';			// for <select>
-		var urlGroup       = 'http://stock.wireflydesign.com/server/api/stock_group/';			// for <select>
-		var urlMarkupGroup = 'http://stock.wireflydesign.com/server/api/stock_markup_group/'; // for group tab
+		var url             = 'http://stock.wireflydesign.com/server/api/stock_product/';
+		var urlVat          = 'http://stock.wireflydesign.com/server/api/stock_vat/';			// for <select>
+		var urlGroup        = 'http://stock.wireflydesign.com/server/api/stock_group/';			// for <select>
+		var urlMarkupGroup  = 'http://stock.wireflydesign.com/server/api/stock_markup_group/';	// for price tab
+		var urlProductPrice = 'http://stock.wireflydesign.com/server/api/stock_product_price/';	// for price tab
 
 		var maxLevels = 3;		// @TODO hardcoded. Same in group maint
 		$scope.rowCollection = [];
@@ -11,9 +12,11 @@ angular.module('stock')
 		$scope.formMode = "";
 		$scope.item = {};
 		$scope.vats = {};							// for <select>. Has 'items[]', 'selectedVat
+		$scope.selectedVat = { rate : null};
 		var groups = [];							// All groups loaded once at startup
 		$scope.levelGroups = new Array(maxLevels);	// An array ix for each level's <select>. Has 'parentId', 'selectedGroup', 'items[]'
 		$scope.markupGroups = {};					// for group tab
+		$scope.someArrayManualPrice = [];
 
 		$scope.getMaxLevels = function() {
 			return new Array(maxLevels);
@@ -22,27 +25,32 @@ angular.module('stock')
 		// Vat select box. There is a default rate
 		// ---------------------------------------
 
-		var getVats = function() {	// for vat <select>
+		var getVats = function() {
 			restFactory.getItem(urlVat)
 				.success(function(data, status) {
 					$scope.vats = data;
-					for (var i = 0; i < $scope.vats.length; i++) {
-						if ($scope.formMode == 'add') {
-							if ($scope.vats[i].is_default == 1) {
-								$scope.selectedVat = $scope.vats[i];
-								$scope.item.stock_vat_id = $scope.vats[i].id;
-								break;
-							}
-						}
-						else {
-							if ($scope.vats[i].id == $scope.item.stock_vat_id) {
-								$scope.selectedVat = $scope.vats[i];
-							}
-						}
-					}
 				})
 				.error(errorCallback);
 		};
+getVats();
+
+		var setSelectedVat = function() {	// for vat <select>
+			for (var i = 0; i < $scope.vats.length; i++) {
+				if ($scope.formMode == 'add') {
+					if ($scope.vats[i].is_default == 1) {
+						$scope.selectedVat = $scope.vats[i];
+						$scope.item.stock_vat_id = $scope.vats[i].id;
+						break;
+					}
+				}
+				else {
+					if ($scope.vats[i].id == $scope.item.stock_vat_id) {
+						$scope.selectedVat = $scope.vats[i];
+					}
+				}
+			}
+		};
+
 
 		$scope.selchangeVat = function() {
 			$scope.item.stock_vat_id = $scope.selectedVat.id;
@@ -130,7 +138,7 @@ angular.module('stock')
 			}
 		};
 
-		$scope.getGroups = function() {	// for the group levels <select>'s
+		var getGroups = function() {	// for the group levels <select>'s
 			restFactory.getItem(urlGroup)
 				.success(function(data, status) {
 					for (var i = 0; i < data.length; i++) {
@@ -139,52 +147,92 @@ angular.module('stock')
 				})
 				.error(errorCallback);
 		};
-		$scope.getGroups();
+getGroups();
 
-		// Customer markup group
+		// Product price (for markup groups - loaded for product being edited/added)
+		// -------------								// @@TODO: should also only fire when needed eg price tab
+
+		var getMarkupGroupsProductPrices = function() {	// for group tab
+			restFactory.getItem(urlProductPrice)
+				.success(function(data, status) {
+					if (data.length > 0) {
+						for (var i = 0; i < data.length; i++) {
+							var thisMarkupGroup = getMarkupGroupItemById(data[i].id);
+							if (thisMarkupGroup) {
+								thisMarkupGroup.manual = data;
+							}
+						}
+					} else {
+						for (i = 0; i < $scope.markupGroups.length; i++) {
+							$scope.markupGroups[i].manual = $scope.pricetabGetCalculatedPrice($scope.markupGroups[i]);
+						}
+					}
+				})
+				.error(errorCallback);
+		};
+
+		// Customer markup group (loaded at startup)
 		// ---------------------
 
-		$scope.getMarkupGroups = function() {	// for group tab
+		var getMarkupGroupItemById = function (id) {
+			for (var i = 0; i < $scope.markupGroups.length; i++) {
+				if ($scope.markupGroups[i].id == id)
+					return $scope.markupGroups[i];
+			}
+			return null;
+		};
+
+		var getMarkupGroups = function() {	// for group tab
 			restFactory.getItem(urlMarkupGroup)
 				.success(function(data, status) {
+					$scope.markupGroups = {};
 					$scope.markupGroups = data;
 				})
 				.error(errorCallback);
 		};
-$scope.getMarkupGroups();	// @@TODO: make this only fire when user clicks the applicable tab, its wasteful like this
+getMarkupGroups();	// @@TODO: make this only fire when user clicks the applicable tab, its wasteful like this
 
 		// Tab area - Prices tab
 		// ---------------------
 
 		$scope.pricetabGetCalculatedPrice = function(markupGroup) {
-			return ( parseFloat($scope.item.cost) + ($scope.item.cost * markupGroup.percent / 100) );
-		};
-		$scope.pricetabGetManualPrice = function(markupGroup) {
-			return 123.45;
+			var val =  (parseFloat($scope.item.cost) + ($scope.item.cost * markupGroup.percent / 100));
+			return val.toFixed(2);
 		};
 		$scope.pricetabGetVariance = function(markupGroup) {
-			return ($scope.pricetabGetCalculatedPrice(markupGroup) - $scope.item.cost);
+			return ((markupGroup.manual - $scope.pricetabGetCalculatedPrice(markupGroup)) / $scope.pricetabGetCalculatedPrice(markupGroup) * 100).toFixed(2) ;
+		};
+		$scope.pricetabGetProfit = function(markupGroup) {
+			return (markupGroup.manual - $scope.item.cost);
+		};
+		$scope.pricetabGetGrossPrice = function(markupGroup) {
+			var val =  (parseFloat(markupGroup.manual) + ((markupGroup.manual * parseFloat($scope.selectedVat.rate) / 100))).toFixed(2);
+			console.log('manual='+ markupGroup.manual + ' vatrate='+parseFloat($scope.selectedVat.rate) + ' vat=' + (markupGroup.manual * parseFloat($scope.selectedVat.rate)/100) + ' gross='+val)
+			return val;
 		};
 
 		// Product item
 		// ------------
 
+		var initProductEditing = function() {
+			$scope.displayMode = "form";
+			setSelectedVat();
+			setupGroupSelects();
+			getMarkupGroupsProductPrices();
+		};
+
 		$scope.addItem = function() {
 			$scope.item = {};
-			getVats();
 			$scope.formMode = "add";
-			$scope.displayMode = "form";
-			setupGroupSelects();
+			initProductEditing();
 		};
 
 		$scope.editItem = function(id) {
 			restFactory.getItem(url, id)
 				.success(function(data, status) {
 					$scope.item = data;
-					getVats();
 					$scope.formMode = "edit";
-					$scope.displayMode = "form";
-					setupGroupSelects();
+					initProductEditing();
 				})
 				.error(errorCallback);
 		};
