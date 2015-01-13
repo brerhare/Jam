@@ -252,8 +252,13 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
         $model2=Ws::model()->find($criteria);
         if (!($model2))
         {
-        	Yii::log("UPDATE EVENT ----- loading up. id = " . $id . " no model2. Dying " , CLogger::LEVEL_WARNING, 'system.test.kim');
-        	die('Couldnt find event matching Ws record for update for event id ' . $id . ' Please report this error');
+        	Yii::log("UPDATE EVENT ----- loading up. id = " . $id . " no model2. Creating one " , CLogger::LEVEL_WARNING, 'system.test.kim');
+        	//die('Couldnt find event matching Ws record for update for event id ' . $id . ' Please report this error');
+			$model2 = new Ws;
+			$model2->event_id = $model->id;
+			$model2->os_grid_ref = 'none';
+			$model2->grade = 'Easy';
+			$model2->save();
         }
 
         // Uncomment the following line if AJAX validation is needed
