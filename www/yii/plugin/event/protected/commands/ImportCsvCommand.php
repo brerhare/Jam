@@ -122,9 +122,11 @@ class ImportCsvCommand extends CConsoleCommand
 			}
 
 // @@TODO: Remove hardcoding in all the updates here
-			$event->member_id = 25;				// $member->id;
+//			$event->member_id = ??;				// $member->id;
+$event->member_id = 16;
 			$event->program_id = 6;				// $member->lock_program_id;
-			$event->event_price_band_id = 3;	// whatever value was input
+//			$event->event_price_band_id = ??;	// whatever value was input
+$event->event_price_band_id = 2;
 			$event->active = 1;
 			if ((!($dummyRun)) && (!($event->save())))
 				die( "\nEvent save failed on line " . $row . "\n");
@@ -135,12 +137,18 @@ class ImportCsvCommand extends CConsoleCommand
 				die("\nEvent additional info save failed on line " . $row . "\n");
 
 			$eventHasInterest->event_event_id = $event->id;
-			$eventHasInterest->event_interest_id = 11;
+//			$eventHasInterest->event_interest_id = ??;
+if ($data[1]=='Kids') $eventHasInterest->event_interest_id = 9;
+else if ($data[1]=='Nature') $eventHasInterest->event_interest_id = 10;
+else die('wrong interest ' . $data[1]);
 			if ((!($dummyRun)) && (!($eventHasInterest->save())))
 				die("\nEvent has interest save failed on line " . $row . "\n");
 
 			$eventHasFormat->event_event_id = $event->id;
-			$eventHasFormat->event_format_id = 2;
+//			$eventHasFormat->event_format_id = ??;
+if ($data[2]=='Outdoors') $eventHasFormat->event_format_id = 2;
+else if ($data[2]=='Classes') $eventHasFormat->event_format_id = 4;
+else die('wrong format ' . $data[2]);
 			if ((!($dummyRun)) && (!($eventHasFormat->save())))
 				die("\nEvent has format save failed on line " . $row . "\n");
 
