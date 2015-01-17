@@ -119,6 +119,16 @@ class MailerListController extends Controller
 				//$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 
 			// we only allow deletion via POST request
+
+			// Delete all members in this list
+     		$criteria = new CDbCriteria;
+       		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+			$criteria->addCondition("mailer_list_id = " . $id);
+       		$mailerMembers=MailerMember::model()->findAll($criteria);
+			foreach ($mailerMembers as $mailerMember)
+			{
+				$mailerMember->delete();
+			}
 			$this->loadModel($id)->delete();
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser

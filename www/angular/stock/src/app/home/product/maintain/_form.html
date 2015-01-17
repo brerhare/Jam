@@ -31,6 +31,11 @@
   .input-sm, .form-group-sm .form-control {
     font-size: 14px;
   }
+
+</style>
+
+<style>
+.col-item.ng-invalid {color: #de2121; /*error*/}
 </style>
 
 <div class="container-fluid">
@@ -46,13 +51,24 @@
         </div>
       </div>
       <div class="form-group form-group-sm">
-        <label class="control-label col-sm-3" for="stock_vat_id">Vat Rate</label>
-        <div class="col-sm-5">
-          <select ng-model="$parent.selectedVat" ng-options="vat.description for vat in $parent.vats" ng-change="selchangeVat()" class="form-control">
-          </select>
+        <label class="control-label col-sm-3" for="cost">Cost Price</label>
+        <div class="col-sm-2">
+          <input type="text" class="form-control" placeholder="" ng-model="$parent.item.cost" ng-minlength="2">
         </div>
       </div>
-    </div>
+
+      <div ng-repeat="level in getMaxLevels() track by $index">
+        <div class="form-group form-group-sm">
+          <label class="control-label col-sm-3" for="group_level_{{$index}}">Group level {{$index+1}}</label>
+          <div class="col-sm-5">
+            <select ng-model="$parent.levelGroups[$index].selectedGroup" ng-options="group.name for group in $parent.levelGroups[$index].items" ng-change="selchangeGroup($index)" class="form-control">
+            </select>
+          </div>
+        </div>
+      </div>
+
+    </div>  <!-- lhs -->
+
     <div class="rhs">
       <div class="form-group form-group-sm">
         <label class="control-label col-sm-3" for="description">Description</label>
@@ -60,12 +76,20 @@
           <textarea class="form-control" style="height:auto" placeholder="" rows="5" ng-model="$parent.item.description"></textarea>
         </div>
       </div>
-    </div>
+      <div class="form-group form-group-sm">
+        <label class="control-label col-sm-3" for="stock_vat_id">Vat Rate</label>
+        <div class="col-sm-5">
+          <select ng-model="$parent.selectedVat" ng-options="vat.description for vat in $parent.vats" ng-change="selchangeVat()" class="form-control">
+          </select>
+        </div>
+      </div>
+    </div>  <!-- rhs -->
+
     <div style="clear: both"></div>
     <br/>
      <ul class="nav nav-tabs">
        <li>               <a href="#">Notes</a>     </li>
-       <li class="active"><a href="#">Prices</a>    </li>
+       <li class="active"><a href="priceTab">Prices</a>    </li>
        <li>               <a href="#">Dimensions</a></li>
        <li>               <a href="#">Barcodes</a>  </li>
        <li>               <a href="#">Deliveries</a></li>
@@ -73,7 +97,27 @@
        <li>               <a href="#">UOM</a>       </li>
     </ul>
 
-    <hr/>
+    <!-- price tab -->
+    <div id="priceTab" class="tab-content">
+      <table class="table Xtable-striped table-bordered table-condensed Xtable-hover">
+        <tr>
+          <th class='col-heading'>  Customer<br/>Group</th>
+          <th class='col-heading'>  Calculated<br/>Price</th>
+          <th class='col-heading'>  Manual<br/>Price</th>
+          <th class='col-heading'>  Variance</th>
+          <th class='col-heading'>  Profit</th>
+          <th class='col-heading'>  Gross<br/>Price</th>
+        </tr>
+        <tr ng-repeat="markupGroup in markupGroups | orderBy:'description'">
+          <td class='col-item'>{{markupGroup.description}}</td>
+          <td class='col-item'>{{pricetabGetCalculatedPrice(markupGroup) | number:2}}</td>
+            <td class="col-item"><input fcsa-number="{ maxDecimals: 2, min: 0, preventInvalidInput: true }" type="text" class='col-item' ng-model="markupGroup.manual" /></td>
+          <td class='col-item'>{{pricetabGetVariance(markupGroup) | number:2}}%</td>
+          <td class='col-item'>{{pricetabGetProfit(markupGroup) | number:2}}</td>
+          <td class='col-item'>{{pricetabGetGrossPrice(markupGroup) | number:2}}</td>
+        </tr>
+      </table>
+    </div>
 
     <div style="width:20%; margin:0px auto;">
 

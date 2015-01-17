@@ -49,7 +49,6 @@ h4 { font-size:18px;}
             <th class="hand" st-sort="id">                       Id</th>
             <th class="hand" st-sort="name">                   Name</th>
             <th class="hand" st-sort="cost">                   Cost</th>
-            <th class="hand" st-sort="price">                 Price</th>
             <th>
               <button type="button" ng-click="outputPDF()" class="btn btn-xs btn-primary">
                 <i class="fa fa-file-pdf-o fa-1x"></i>
@@ -60,7 +59,6 @@ h4 { font-size:18px;}
             <th><input st-search="'id'"               placeholder="search" class="input-sm form-control" type="search"/></th>
             <th><input st-search="'name'"             placeholder="search" class="input-sm form-control" type="search"/></th>
             <th><input st-search="'cost'"             placeholder="search" class="input-sm form-control" type="search"/></th>
-            <th><input st-search="'price'"            placeholder="search" class="input-sm form-control" type="search"/></th>
             <th>
               <button type="button" ng-click="addItem()" class="btn btn-xs btn-success">
                 <i class="fa fa-plus fa-1x"></i>
@@ -73,7 +71,6 @@ h4 { font-size:18px;}
           <td ng-click="editItem(row.id)">{{row.id}}              </td>
           <td ng-click="editItem(row.id)">{{row.name}}            </td>
           <td ng-click="editItem(row.id)">{{row.cost}}            </td>
-          <td ng-click="editItem(row.id)">{{row.price}}           </td>
           <td>
             <button type="button" ng-click="deleteItem(row.id)" class="btn btn-xs btn-danger">
               <i class="fa fa-trash fa-1x"></i>
