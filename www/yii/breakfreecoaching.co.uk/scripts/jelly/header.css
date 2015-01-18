@@ -1,42 +1,60 @@
-<!-- Google fonts
-<link href='//fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
--->
+<!-- Place your Google fonts below as a cut and paste then choose which header and fonts etc need the font families - NB if the family only come in Italic then you must state the font style as Italic too -->
+
+<link href='http://fonts.googleapis.com/css?family=Gruppo|Open+Sans:300italic,400,700' rel='stylesheet' type='text/css'>
 
 <style type="text/css">
 
-html, body {
-	height: 100%;
-	padding: 0;
-	margin: 0;
-	border: 0;
-}
 
-html * {
-   /*font-size: 1em !important;*/
-   /*font-family: Arial !important;*/
-	font-family: 'Raleway', sans-serif !important;
-	/*color:#00ff00 !important;*/
-}
+html, body, p {	height: 100%;
+				padding: 0;
+				margin: 20;
+				border: 0;
+				line-height: 110%}
 
-a { color:#000000 } /* Globally */
-a:visited { text-decoration: none; color:#000000; }
+/* Global Hyperlink settings - will affect menu text colour if no text settings */ 
+a { text-decoration: underline; color:#b23640; }
+a:visited { text-decoration: none; color:#b23640; }
 a:hover { text-decoration: none; color:#000000; }
-a:focus { text-decoration: none; color:#000000; }
-a:hover, a:active { text-decoration: none; color:0###000 }
+a:active { text-decoration: none; color:#b23640 }
 
-h1 {color: #000000; }
-h2 {color: #000000; }
-h3 {
-	color: #000000;
-	margin-top:5px;
-	margin-bottom:5px
-}
-h4 {
-	color: #000000;
-	margin-top:0px;
-	margin-bottom:0px
-}
 
-html { font-size: 14px;}
+
+h1 {	font-family: 'Gruppo', Verdana, sans-serif !important;
+	color: #b23640;
+	font-size: 28px;
+	font-weight: 700;}
+
+h2 {	font-family: 'Open Sans', Verdana, sans-serif !important;
+	color: #5b5b5b;
+	font-size: 16px;
+	font-weight: 400;
+	font-style: italic;
+	line-height: 120%;}
+
+
+h3 {	font-family: 'Gruppo', Verdana, sans-serif !important;
+	color: #b23640;
+	font-size: 20px;
+	font-weight: 700;
+	font-stretch: wider;}
+
+p  {	font-family: 'Open Sans', Verdana, sans-serif !important;
+	color: #000000;
+	font-size: 14px;
+	font-weight: normal
+	line-height: 120%;
+	font-stretch: expanded}
+
+blockquote {font-family: 'Open Sans', Verdana, sans-serif !important;
+	color: #5b5b5b;
+	font-size: 14px;
+	font-style: italic;
+	font-weight: 300;
+	line-height: 120%;}
+
+
+html { font-family: 'Gruppo', Verdana, sans-serif !important;
+	font-size: 12px;
+	font-weight:normal}
 
 </style>
