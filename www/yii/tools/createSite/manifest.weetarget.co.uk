@@ -1,0 +1,16 @@
+site = weetarget.co.uk
+sitetitle = Wee Target
+sid = 1uphfbav981r4kr2q2sum63s62
+
+# Database
+dbname = weetarget_co_uk
+dbuser = weetarget.co.uk
+dbpass = ghwu73c9e
+
+# Shopping cart order confirmation email
+checkoutemail = tristen@weetarget.co.uk
+checkoutname = Wee Target
+
+# Backend page editor
+editorpagewidth = 800
+editorpageheight = 500

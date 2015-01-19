@@ -1,4 +1,4 @@
-#Demo 2 - DG Link
+#DG Link
 [defaults]
 include = default-values
 
@@ -26,7 +26,7 @@ css.display = block
 		image.url = img/dglink-logo.png
 		image.width = 201px
 		image.height = 100px
-		click = http://www.demo2.wireflydesign.com
+		click = http://www.dglink.co.uk
 
 		[menu]
 		css.height = 50px
@@ -79,17 +79,17 @@ css.display = block
 	css.width = 1000px
 
 	[pages]
-	child = tabs, content 	
+	child = content 	
 	css.width = 960px
 	css.margin-top = 20px
 	css.background-color = white
 	fx.rounding = 4px
 	
-		[tabs]
-		condition = @PAGE=@HOMEPAGE
-		css.display = block
-		css.width = 680px
-		addon.tab.rain.source = db
+		#[tabs]
+		#condition = @PAGE=@HOMEPAGE
+		#css.display = block
+		#css.width = 680px
+		#addon.tab.rain.source = db
 
 			
 		[content]
