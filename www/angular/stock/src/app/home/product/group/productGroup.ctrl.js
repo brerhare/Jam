@@ -6,28 +6,31 @@ toastr.options.positionClass = 'toast-bottom-right';
 angular.module('stock')
 	.controller('ProductGroupCtrl', function ($scope, restFactory, notificationFactory) {
 		var url = 'http://stock.wireflydesign.com/server/api/stock_group/';
-		var maxLevels = 3;
+		var maxLevels = 3;		// @TODO hardcoded. Same in product maint
 		$scope.levels = [];
 		var ajaxLevel = 0;
 
 		// Set initial values
 		for (var i = 0; i < maxLevels; i++) {
 			$scope.levels[i] = {};
-			$scope.levels[i].parentId = null;
 			$scope.levels[i].addMode = false;
-			$scope.levels[i].selectedItem = -1;		// There are 2 'selected' fields. This one to quickly indicate the ix of the selected item, and a 'selected' property within each item for html class checking
+			$scope.levels[i].selectedItemIx = -1;		// There are 2 'selected' fields. This one to quickly indicate the ix of the selected item, and a 'selected' property within each item for html class checking
 			$scope.levels[i].items = {};
 			$scope.levels[i].levelNo = i;
 		}
-console.log($scope.levels);
 
 		$scope.toggleAddMode = function (level) {
+			if ((level > 0) && ($scope.levels[level-1].selectedItemIx == -1)) {
+				toastr.warning("Which group?");
+				$scope.levels[level].addMode = false;
+				return;
+			}
 			$scope.levels[level].addMode = !$scope.levels[level].addMode;
 			if ($scope.levels[level].addMode)
 				uneditAllBut(level, null);
 		};
 
-		uneditAllBut = function(level, item) {
+		var uneditAllBut = function(level, item) {
 			for (var i = 0; i < $scope.levels[level].items.length; i++) {
 				if ($scope.levels[level].items[i] != item) {
 					$scope.levels[level].items[i].editName = false;
@@ -56,8 +59,12 @@ console.log($scope.levels);
 			for (var i = 0; i < $scope.levels[level].items.length; i++) {
 				if ($scope.levels[level].items[i] == item) {
 					item.selected = true;
-					$scope.levels[level].selected = i;
-					clearLevelsBelow(level, item);
+					$scope.levels[level].selectedItemIx = i;
+					clearChildLevels(level, item);
+					if (level < maxLevels) {
+						ajaxLevel = level + 1;
+						restFactory.getItem(url).success(getItemSuccessCallback).error(errorCallback);
+					}
 				}
 				else {
 					$scope.levels[level].items[i].selected = false;
@@ -66,31 +73,32 @@ console.log($scope.levels);
 			uneditAllBut(level, null);
 		};
 
-		var clearLevelsBelow = function(level, item) {
-			for (var i=(level+1); i < maxLevels; i++) {
-				if (i == (level+1)) {	// one immediately below us
-					$scope.levels[i].parentId = item.id;
+		var clearChildLevels = function(parentLevel, parentItem) {
+			for (var i=(parentLevel+1); i < maxLevels; i++) {
+				$scope.levels[i].selectedItemIx = -1;
+				$scope.levels[i].addMode = false;
+				if (i == (parentLevel+1)) {	// one immediately below us
+					$scope.levels[i].parentId = parentItem.id;
 				}
 				else {
 					$scope.levels[i].parentId = null;
 					$scope.levels[i].items = {};
 				}
 			}
-		}
+		};
 
 // ----------------------------------------------------------------------------------------
 
 		var getItemSuccessCallback = function (data, status) {
 			$scope.levels[ajaxLevel].items = [];
-			console.log(data);
 			for (var i = 0; i < data.length; i++) {
-				if (ajaxLevel == 0) {									// top level
-					if (data[i].parent_id == null)	{
+				if (ajaxLevel === 0) {									// top level
+					if (data[i].parent_id === null)	{
 						$scope.levels[ajaxLevel].items.push(data[i]);
 					}
 				}
 				else {													// not top level
-					if (data[i].parent_id == $scope.levels[ajaxLevel-1].item[$scope.levels[ajaxLevel-1].selected])
+					if (data[i].parent_id == $scope.levels[ajaxLevel].parentId)
 						$scope.levels[ajaxLevel].items.push(data[i]);
 				}
 			}
@@ -119,6 +127,12 @@ console.log($scope.levels);
  
 		$scope.addItem = function (level) {
 			ajaxLevel = level;
+			if (level === 0) {
+				$scope.levels[level].item.parent_id = null;
+			}
+			else {
+				$scope.levels[level].item.parent_id = $scope.levels[level - 1].items[$scope.levels[level - 1].selectedItemIx].id;
+			}
 			restFactory.addItem(url, $scope.levels[level].item).success(successPostCallback).error(errorCallback);
 		};
  
@@ -137,7 +151,7 @@ console.log($scope.levels);
 		return {
 			restrict: 'A',
 			link: function(scope, element, attr) {
-				var fn = $parse(attr['sglclick']);
+				var fn = $parse(attr.sglclick);
 				var delay = 300, clicks = 0, timer = null;
 				element.on('click', function (event) {
 					clicks++;  //count clicks

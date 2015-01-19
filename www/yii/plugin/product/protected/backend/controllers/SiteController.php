@@ -81,6 +81,20 @@ class SiteController extends Controller
     /**
      * Displays the DIRECT login page
      */
+// @@TODO: HARDCODED FOR WEETARGET ---------- REMOVE
+    public function actionWeetargetDirect()
+    {
+        Yii::app()->session['uid'] = 76;
+        $identity = new UserIdentity('tristen@weetarget.co.uk', 'boystargets');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
 // @@TODO: HARDCODED FOR BRYCEWALKERVENDING ---------- REMOVE
     public function actionBryceWalkerVendingDirect()
     {

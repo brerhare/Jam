@@ -98,7 +98,7 @@ function dropdownDate(containerDivId, targetElementId, templateStr)
 	// Setup year
 	selectHTML += "<select onChange='dropdownDateSet(\"yyyy\", this.value, \"" + targetElementId + "\", \"" + templateStr + "\")'>";
 	startYear = today.getFullYear();
-	for (var i=startYear; i<(startYear+10); i++)
+	for (var i=startYear-1; i<(startYear+10); i++)
 	{
 		selected = "";
 		if (i == yyyy)

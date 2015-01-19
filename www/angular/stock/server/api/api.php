@@ -61,9 +61,9 @@ class MyAPI extends API
 		logWrite("Method = " . $this->method);
 		$uid = 1;	//@@NB: hardcoded
 
-		$allColumns  = array('id', 'uid', 'name', 'address1', 'address2', 'address3', 'post_code', 'contact_title', 'contact_first_name', 'contact_last_name', 'telephone', 'mobile', 'fax', 'email', 'discount_percent', 'balance', 'link_field', 'notes', 'CIF', 'forma_de_pago', /*****/ 'stock_markup_group_id', 'stock_area_id');
-		$postColumns  = array(             'name', 'address1', 'address2', 'address3', 'post_code', 'contact_title', 'contact_first_name', 'contact_last_name', 'telephone', 'mobile', 'fax', 'email', 'discount_percent', 'balance', 'link_field', 'notes', 'CIF', 'forma_de_pago', /*****/ 'stock_markup_group_id', 'stock_area_id');
-		$putColumns  = array('id',        'name', 'address1', 'address2', 'address3', 'post_code', 'contact_title', 'contact_first_name', 'contact_last_name', 'telephone', 'mobile', 'fax', 'email', 'discount_percent', 'balance', 'link_field', 'notes', 'CIF', 'forma_de_pago', /*****/ 'stock_markup_group_id', 'stock_area_id');
+		$allColumns  = array('id', 'uid', 'name', 'address1', 'address2', 'address3', 'post_code', 'contact', 'telephone', 'mobile', 'fax', 'email', 'discount_percent', 'balance', 'link_field', 'notes', 'CIF', 'forma_de_pago', /*****/ 'stock_markup_group_id', 'stock_area_id');
+		$postColumns  = array(             'name', 'address1', 'address2', 'address3', 'post_code', 'contact', 'telephone', 'mobile', 'fax', 'email', 'discount_percent', 'balance', 'link_field', 'notes', 'CIF', 'forma_de_pago', /*****/ 'stock_markup_group_id', 'stock_area_id');
+		$putColumns  = array('id',        'name', 'address1', 'address2', 'address3', 'post_code', 'contact', 'telephone', 'mobile', 'fax', 'email', 'discount_percent', 'balance', 'link_field', 'notes', 'CIF', 'forma_de_pago', /*****/ 'stock_markup_group_id', 'stock_area_id');
 		$showColumns = array('id', 'uid', 'name', 'discount_percent', 'telephone', 'forma_de_pago');
 
 		if ($this->method == 'GET')
@@ -335,9 +335,9 @@ DB::$error_handler = 'my_error_handler';
 		logWrite("Method = " . $this->method);
 		$uid = 1;	//@@NB: hardcoded
 
-		$allColumns  = array('id', 'uid', 'name', 'description', 'cost', 'weight', 'height', 'width', 'depth', 'volume', 'price', /*****/ 'stock_group_id', 'stock_vat_id');
-		$postColumns = array(             'name', 'description', 'cost', 'weight', 'height', 'width', 'depth', 'volume', 'price', /*****/ 'stock_group_id', 'stock_vat_id');
-		$putColumns  = array('id',        'name', 'description', 'cost', 'weight', 'height', 'width', 'depth', 'volume', 'price', /*****/ 'stock_group_id', 'stock_vat_id');
+		$allColumns  = array('id', 'uid', 'name', 'description', 'cost', 'weight', 'height', 'width', 'depth', 'volume',  /*****/ 'stock_group_id', 'stock_vat_id');
+		$postColumns = array(             'name', 'description', 'cost', 'weight', 'height', 'width', 'depth', 'volume',  /*****/ 'stock_group_id', 'stock_vat_id');
+		$putColumns  = array('id',        'name', 'description', 'cost', 'weight', 'height', 'width', 'depth', 'volume',  /*****/ 'stock_group_id', 'stock_vat_id');
 		$showColumns = array('id', 'uid', 'name', 'cost', 'price');
 
 		if ($this->method == 'GET')
@@ -598,6 +598,89 @@ logWrite("matched key for col=".print_r($column, true));
 		}
 	}
 
+	protected function stock_product_price()
+	{
+		logWrite("Method = " . $this->method);
+		$uid = 1;	//@@NB: hardcoded
+
+		$allColumns  = array('id', 'uid', 'start_date', 'end_date', 'price', 'stock_product_id', 'stock_markup_group_id');
+		$postColumns = array(             'start_date', 'end_date', 'price', 'stock_product_id', 'stock_markup_group_id');
+		$putColumns  = array('id',        'start_date', 'end_date', 'price', 'stock_product_id', 'stock_markup_group_id');
+
+		if ($this->method == 'GET')
+		{
+			$id = trim($this->args[0]);
+			if ($id)
+			{
+				// Single item
+				logWrite("GET a product price, id = " . $id);
+			}
+			else
+			{
+				// All items
+				$arr = array();
+				$ix = 0;
+				$query = DB::query("SELECT * FROM stock_product_price WHERE uid=%i", $uid);
+				foreach ($query as $q) {
+					foreach ($allColumns as $column)
+    					$arr[$ix][$column] = $q[$column];
+					$ix++;
+				}
+				return $arr;
+			}
+		}
+		else if ($this->method == 'POST')
+		{
+			$obj = json_decode(file_get_contents("php://input"),true);
+logWrite("got json obj=".print_r($obj, true));
+            $keys = array_keys($obj);
+			$values = array();
+			$values['uid'] = $uid;
+			foreach ($postColumns as $column) {
+				if (!in_array($column, $keys)) {
+logWrite("missing key for col=".print_r($column, true));
+					$values[$column] = NULL;
+				}
+				else {
+logWrite("matched key for col=".print_r($column, true));
+					$values[$column] = $obj[$column];
+				}
+			}
+			$idArr = array();
+			DB::insert('stock_product_price', $values);
+			$idArr['id'] = DB::insertId();
+			return $idArr;
+		}
+		else if ($this->method == 'PUT')
+		{
+			$obj = json_decode(file_get_contents("php://input"),true);
+logWrite("got json obj=".print_r($obj, true));
+			// Pick up original
+			$id = (int) $this->args[0];
+			if ($id == 0)
+				return "fail";
+           	$keys = array_keys($obj);
+			$values = array();
+			foreach ($putColumns as $column) {
+				if (in_array($column, $keys)) {
+logWrite("matched key for col=".print_r($column, true));
+					$values[$column] = $obj[$column];
+				}
+			}
+			DB::update('stock_product_price', $values, "id=%i", $id);
+			return 'ok';
+		}
+		else if ($this->method == 'DELETE')
+		{
+			$id = (int) $this->args[0];
+			if ($id != 0)
+			{
+				DB::delete('stock_product_price', "id=%i", $id);
+				return 'ok';
+			}
+			return 'ok';
+		}
+	}
 
 
 } // class MyAPI

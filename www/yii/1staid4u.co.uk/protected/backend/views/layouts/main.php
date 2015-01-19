@@ -42,6 +42,7 @@
 				array('label' => 'Products', 'url' => 'https://plugin.wireflydesign.com/product/backend.php/site/1staid4uDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Blog', 'url' => 'https://plugin.wireflydesign.com/news/backend.php/site/1staid4uDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Tickets', 'url' => 'https://plugin.wireflydesign.com/ticket/backend.php/site/1staid4uDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+                array('label' => 'Settings', 'url' => array('/jellySetting/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
 
 array('label' => 'Downloads', 'url' => '#', 'visible' => !Yii::app()->user->isGuest,

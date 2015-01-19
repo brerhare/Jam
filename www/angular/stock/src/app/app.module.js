@@ -1,4 +1,4 @@
-angular.module('stock', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'smart-table'])
+angular.module('stock', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'smart-table', 'fcsa-number'])
 
 	.factory('restFactory', function ($http) {
 		return {
