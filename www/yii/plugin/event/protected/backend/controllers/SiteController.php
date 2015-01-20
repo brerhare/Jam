@@ -128,7 +128,7 @@ class SiteController extends Controller
 				unset(Yii::app()->session['isAnyAdmin']);
 				$criteria = new CDbCriteria;
 				$criteria->addCondition("event_member_id = " . Yii::app()->session['eid']);
-				$criteria->addCondition("privilege_level = 4");	//@@TODO Privilege hardcoded
+				$criteria->addCondition("privilege_level = 2");	//@@TODO Privilege hardcoded
 				$memberHasProgram = MemberHasProgram::model()->findAll($criteria);
 				if ($memberHasProgram)
 					Yii::app()->session['isAnyAdmin'] = 1;
