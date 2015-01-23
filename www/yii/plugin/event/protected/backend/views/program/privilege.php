@@ -9,7 +9,7 @@
 
 	<div class = "row">
 		<div class = "well">
-			<h4>Contributor permissions for <?php echo $model->name;?></h4>
+			<h4>Contributor permissions for the <?php echo $model->name;?> program of events</h4>
 			<table>
 			<thead><tr><th style='width:30%'>Username</th>
 			<th style='width:14%'>Program admin</th>
@@ -27,10 +27,9 @@
 				$criteria->addCondition("event_member_id = " . $member->id);
 				$criteria->addCondition("event_program_id = " . $model->id);
 				$memberHasProgram = MemberHasProgram::model()->find($criteria);
-				if ($memberHasProgram)
-					$val = $memberHasProgram->privilege_level;
-				else
-					$val = 0;
+				if (!$memberHasProgram)
+					continue;
+				$val = $memberHasProgram->privilege_level;
 				echo "<input type='hidden' name='od_" . $member->id . "' value='" . $val . "'>";
 				echo "<tr>";
 				echo "<td>" . $member->user_name . "</td>";
