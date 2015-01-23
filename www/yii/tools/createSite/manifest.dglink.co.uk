@@ -1,0 +1,16 @@
+site = dglink.co.uk
+sitetitle = DG Link
+sid = f2auqirt6ei42bp5812sp1lif2
+
+# Database
+dbname = dglink_co_uk
+dbuser = dglink.co.uk
+dbpass = dglink.co.uk,
+
+# Shopping cart order confirmation email
+checkoutemail = sales@dglink.co.uk
+checkoutname = DG Link
+
+# Backend page editor
+editorpagewidth = 800
+editorpageheight = 500

@@ -6,7 +6,11 @@ class EventController extends Controller
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='//layouts/column2';
+
+	public $createPrograms = 0;
+
+	public $layout='//layouts/columnEvent';
+	//public $layout='//layouts/column2';
 
     private $_thumbDir = '/../userdata/event/thumb/';   // Note this is only partial. Gets prepended base path
 
@@ -312,6 +316,7 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 	 */
 	public function actionAdmin()
 	{
+		$this->createPrograms = 1;
 		$model=new Event('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Event']))

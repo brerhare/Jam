@@ -85,8 +85,15 @@ class eventcode
 		$optArr['center'] = $center;
 		$optArr['zoom'] = '8';
 		$ret = $addon->init($optArr, '/event/scripts/jelly/addon/map/google_os');
+
+		// Suppress the big map if so requested
+		if ((isset($_GET['map'])) && ($_GET['map'] == "no"))
+			$content .= "<div style='display:none'>";
 		$content .= $ret[0];
 		$content .= '<script>' . $ret[1] . '</script>';
+		if ((isset($_GET['map'])) && ($_GET['map'] == "no"))
+			$content .= "</div>";
+
 		// @@NB: For mapping points we select all events from today onwards
 		// @@NB: (Future enhancement?) Should ideally only show pins for the searched results
 		// @@NB: This should ideally be kept in some sort of sync with the event filter used in fill_headers() (below)
@@ -181,7 +188,6 @@ class eventcode
 		$retArr[1] = $apiJs;
 		$retArr[2] = $clipBoard;
 		return $retArr;
-	//		die('ok');
 	}
 
 	/*********************************************************************************************************/
@@ -219,8 +225,6 @@ class eventcode
 			$dt = date('d-m-Y');
 		$edate = date("Y-m-d H:i:s", strtotime($dt));
 		$edate = str_replace("00:00:00", "23:59:59", $edate);
-
-//die('s='.$sdate . ' e='.$edate);
 
 		// @@NB: Be aware that this should be kept in some kind of sync with the event filters used by main_google_map() (above)
 		$criteria = new CDbCriteria;
@@ -411,22 +415,34 @@ class eventcode
 			// Ticketing info (if applicable)
 			if (($event->ticket_event_id != 0) && ($member))
 			{
-				$ticketUrl = "https://plugin.wireflydesign.com/ticket/index.php/ticket/book/" . $event->ticket_event_id . "?sid=" . $member->sid . "&ref=event";
-
-
-
-
+				// Check this event has any tickets to sell before showing a clickable book button!
+		        $eventHasTickets = 0;
+        		$criteria = new CDbCriteria;
+        		$criteria->addCondition("ticket_event_id = " . $event->ticket_event_id);
+        		$areas = Area::model()->findAll($criteria);
+        		foreach ($areas as $area):
+            		$criteria = new CDbCriteria;
+            		$criteria->addCondition("ticket_area_id = " . $area->id);
+            		$ticketTypes = TicketType::model()->findAll($criteria);
+            		if ($ticketTypes)
+						$eventHasTickets = 1;
+				endforeach;
+				if (($eventHasTickets) && ($event->ticket_event_id != 1))  // Ticket event has tickets set up and its not Test Event 1 (BUG - ppl can generate ticket events without a SID. @@FIX!)
+				{
+					$ticketUrl = "https://plugin.wireflydesign.com/ticket/index.php/ticket/book/" . $event->ticket_event_id . "?sid=" . $member->sid . "&ref=event";
 
 if (isset($_GET['test']))
-	{
-				$ticketUrl = "https://plugin.wireflydesign.com/ticket/index.php/ticket/book/" . $event->ticket_event_id . "?sid=" . $member->sid . "&ref=event" . "&ticket_event_id=" . $event->ticket_event_id;
-	}
+{
+  $ticketUrl = "https://plugin.wireflydesign.com/ticket/index.php/ticket/book/" . $event->ticket_event_id . "?sid=" . $member->sid . "&ref=event" . "&ticket_event_id=" . $event->ticket_event_id;
+}
 
-
-
-
-				$content .= "<script>function goBook(where){window.open(where, '_blank');}</script>";
-				$content .= "<div style='float:right'><a target='_blank' href='" . $ticketUrl . "'><img style='margin-top:0px; margin-left:0px' onClick=goBook('" . $ticketUrl . "') title='Book' src='img/book-s.jpg'></a></div><br/>";
+					$content .= "<script>function goBook(where){window.open(where, '_blank');}</script>";
+					$content .= "<div style='float:right'><a target='_blank' href='" . $ticketUrl . "'><img style='margin-top:0px; margin-left:0px' onClick=goBook('" . $ticketUrl . "') title='Click to book' src='img/book-s.jpg'></a></div><br/>";
+				}
+				else	// Ticket event hasn't tickets set up
+				{
+					$content .= "<div style='float:right'><a target='_blank' href='#'><img style='opacity:0.4; filter: alpha(opacity=40); margin-top:0px; margin-left:0px' title='Booking not yet available for this event.\nVendor has still to set up ticketing.\nPlease check back later.' src='img/book-s.jpg'></a></div><br/>";
+				}
 			}
 
 			$content .= "    </div>";
@@ -649,11 +665,16 @@ for (i = 0; i < jsEvents.length; i++)
 
 END_OF_API_JS_fill_headers;
 
+		// Handle 
 		$xcss = "";
 		// The color of the header (WS is green, Ab wants white)
 		if ($this->programId == 12)	// Absolute classics
 		{
-			$xcss .= "<style> #accordion .ui-accordion-header { border: 1px solid #a9b68b; background-color: #ffffff; </style>";
+			$xcss .= "<style> #accordion .ui-accordion-header { border: 1px solid #a9b68b; background-color: #ffffff;} </style>";
+		}
+		if ((Yii::app()->session['headercolor']) && (Yii::app()->session['headercolor'] != ""))
+		{
+			$xcss .= "<style> #accordion .ui-accordion-header { border: 1px solid #a9b68b; background-color: #" . Yii::app()->session['headercolor'] . ";} </style>";
 		}
 
 		$apiHtml = str_replace("<substitute-path>", $this->jellyRootUrl, $apiHtml);

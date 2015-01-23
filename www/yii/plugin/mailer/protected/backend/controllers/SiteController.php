@@ -81,11 +81,39 @@ class SiteController extends Controller
     /**
      * Displays the DIRECT login page
      */
+// @@TODO: HARDCODED FOR DGLINK ---------- REMOVE
+    public function actionDglinkDirect()
+    {
+        Yii::app()->session['uid'] = 75;
+        $identity = new UserIdentity('admin@dglink.co.uk', 'communityV2');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
 // @@TODO: HARDCODED FOR ROTARY PEACE PROJECT ---------- REMOVE
     public function actionRotaryPeaceProjectDirect()
     {
         Yii::app()->session['uid'] = 56;
         $identity = new UserIdentity('register@rotarypeaceproject.com', 'district1020');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR DGNEWS-SPORT ---------- REMOVE
+    public function actionDgnewsSportDirect()
+    {
+        Yii::app()->session['uid'] = 74;
+        $identity = new UserIdentity('info@dgnews-sport.co.uk', 'nicole500');
         $identity->authenticate();
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);

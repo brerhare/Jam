@@ -1,0 +1,65 @@
+<!-- http://blog.jongallant.com/2013/05/angularjs-webapi-ef.html#.VJ62FsgHA -->
+
+<link rel="stylesheet" href="app/product/group/productGroup.css"/>
+  
+<style>
+	button {margin-right:5px;}
+	table {table-layout: fixed; }
+	.col-name { width:200px; }
+	.col-name:hover { background-color: #ddf0ff; cursor:pointer; cursor: hand; }
+	.col-button { width:58px; }
+
+	.col-i-name { width:190px; }
+    .btn-toolbar {width:60px}
+    .selected { background-color: #87CEFA}
+</style>
+
+<div class="container-fluid">
+    <h4 style="text-align:center">Maintain product groups</h4>
+    <br/>
+    <div ng-repeat="level in levels" style="width:300px; /*float:left;*/ display:inline-block; vertical-align:top; padding:0px 60px 25px 0px">
+        <table class="table Xtable-striped table-bordered table-condensed Xtable-hover">
+            <tr>
+                <th class='col-name'>Level {{$index+1}}</th>
+                <th class='col-button'>
+                    <div class="btn-toolbar">
+                        <button type="button" ng-click="toggleAddMode($index)" class="btn btn-xs btn-success">
+                            <i class="fa fa-plus fa-1x"></i>
+                        </button>
+                    </div>
+                </th>
+            </tr>
+            <tr ng-show="level.addMode">
+                <td class='col-name'> <input class='col-i-name' ng-model="level.item.name" /></td>
+                <td class='col-button'>
+                    <div class="btn-toolbar">
+                        <div class="btn-group">
+                            <button type="button" ng-click="addItem($index)" class="btn btn-xs btn-success">
+                                <i class="fa fa-save fa-1x"></i>
+                             </button>
+                             <button type="button" ng-click="toggleAddMode($index)" class="btn btn-xs btn-danger">
+                                 <i class="fa fa-remove fa-1x"></i>
+                              </button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr ng-repeat="item in level.items | orderBy:'name'">
+                <td class='col-name'>
+                    <span sglclick="selectName(level.levelNo, item)" ng-dblClick="toggleEditName(level.levelNo, item)" ng-show="item.editName != true" ng-class="{'selected' : item.selected }">{{item.name}}</span>
+                    <input class='col-i-name' ng-model="item.name" ng-show="item.editName == true" ng-keypress="editNameEnd(level.levelNo, $event, item)" />
+                </td>
+                <td class='col-button'>
+                    <div class="btn-toolbar">
+                        <div class="btn-group">
+                            <button type="button" ng-click="deleteItem(level.levelNo, item)" class="btn btn-xs btn-danger">
+                                <i class="fa fa-trash fa-1x"></i>
+                            </button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+</div> <!-- container-fluid -->

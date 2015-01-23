@@ -172,6 +172,8 @@ class MailerContentController extends Controller
 	public function actionPublish($content_id)
 	{
 		$model=$this->loadModel($content_id);
+		$model->sent = 1;
+		$model->save();		// Update 'sent' flag
 		Yii::app()->session['content_id'] = $content_id;
 		if(Yii::app()->request->isPostRequest)
 		{
@@ -197,7 +199,7 @@ class MailerContentController extends Controller
 						// phpmailer
 						$from = "no-reply@dglink.co.uk";
 						$fromName = "DG Link mailer";
-						$subject = "Sent by DG Link mailer. Please do not reply to this";
+						$subject = $model->title;
 						$mail = new PHPMailer();
 						$url = Yii::app()->getRequest()->getBaseUrl(true);
 						$css = "<style>* { font-family: Arial, Helvetica, Verdana, Tahoma, sans-serif !important; }</style>";

@@ -155,6 +155,7 @@ $content .= "</center>";
 			font-style: italic;
 			color: #aaa;
 			margin:6px;
+margin-left:30px;
 		}
 		.contact-send-button {
 			padding: 2px 2px 2px 2px;
@@ -172,7 +173,7 @@ $content .= "</center>";
 			border: 0px solid #666;
 			text-decoration:none;
 			-webkit-box-shadow:none;
-			-moz-box-shadow:none;
+	-moz-box-shadow:none;
 			box-shadow:none;
 			text-shadow:none;
 		}

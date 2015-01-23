@@ -43,6 +43,11 @@ class JellyDownloadFile extends CActiveRecord
 			array('filename, jelly_download_collection_id', 'required'),
 			array('jelly_download_collection_id', 'numerical', 'integerOnly'=>true),
 			array('filename, description', 'length', 'max'=>255),
+
+			array('filename', 'file','on'=>'update',
+				'allowEmpty' => true,
+			),
+
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, filename, description, jelly_download_collection_id', 'safe', 'on'=>'search'),

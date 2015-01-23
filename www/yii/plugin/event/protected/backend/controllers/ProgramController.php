@@ -100,7 +100,7 @@ class ProgramController extends Controller
 				$memberHasProgram->event_member_id = Yii::app()->session['eid'];
 				$memberHasProgram->event_program_id = $model->id;
 // @@TODO: These privilege levels should be constants from the MemberHasProgram model
-				$memberHasProgram->privilege_level = 4;
+				$memberHasProgram->privilege_level = 2;
 				$memberHasProgram->save();
 
 				$this->redirect(array('admin'));

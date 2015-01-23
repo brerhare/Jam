@@ -20,10 +20,10 @@ css.background-color = white
 ####  Header  #################################
 
 	[header]
-	child = header_left, header_right
+	child = header_left, header_right, header_fb
 	stacking = horizontal
 	css.height = 250px
-	css.width = 960px
+	css.width = 1000px
 	css.position = relative
 	css.z-index = 1000
 	css.overflow = visible
@@ -37,7 +37,7 @@ css.background-color = white
 			css.margin-left = 50px
 			css.margin-top = 25px
 			css.height = 150px
-			css.width = 470px
+			css.width = 360px
 			image.url = img/logo.png
 			image.width = 352px
 			image.height = 147px
@@ -47,8 +47,7 @@ css.background-color = white
 			#css.height = 65px
 			#css.width = 250px
 			css.overflow = visible
-			css.z-index = 900
-			#css.position = absolute
+			css.z-index = 2000
 			css.position = relative
 
 			addon.menu.basic.orientation = horizontal
@@ -71,6 +70,16 @@ css.background-color = white
 			addon.menu.basic.subitem-color = #ffed8e #ffd800
 				#addon.menu.basic.subitem-text-color = purple
 			addon.menu.basic.subitem-seperator-color = white 
+			
+		[header_fb]
+		css.margin-top = 20px
+		css.margin-left = -63px
+		css.height = 70px
+		css.width = 63px
+		image.url = img/facebook.png
+		image.width = 63px
+		image.height = 50px
+		click = ?layout=index&page=rotary-peace-project-facebook
 				
 		[header_right]
 		child = signup_container, quote
@@ -79,18 +88,18 @@ css.background-color = white
 			[signup_container]
 			child = signup
 			css.height = 50px
-			css.width = 410px
+			css.width = 400px
 			css.margin-top = 20px
 			fx.rounding = 25px
 			css.background-color = #cddff2
-			css.margin-right = 15px
+			css.margin-left = 10px
 			
 				[signup]
-				css.margin-left = 25px
-				css.margin-top = 12px
+				css.margin-left = 20px
+				css.margin-top = 15px
 				addon.mailer.signup.orientation = horizontal
 				addon.mailer.signup.buttoncolor = #cddff2
-				addon.mailer.signup.buttontextcolor = black
+				addon.mailer.signup.buttontextcolor = #0c4782
 				addon.mailer.signup.buttontext = Sign Up
 				addon.mailer.signup.inputspacing = 5px
 				addon.mailer.signup.successtextcolor = green
@@ -98,7 +107,7 @@ css.background-color = white
 		
 			[quote]
 			css.margin-top = 75px
-			css.margin-right = 0px
+			#css.margin-right = 0px
 			css.height = 100px
 			css.width = 430px
 			image.url = img/quote.png
@@ -113,11 +122,11 @@ css.background-color = white
 	child = slider_line, slider, slider_man
 	condition = @PAGE=@HOMEPAGE
 	css.width = 100%
-	css.height = 300px
+	css.height = 340px
 	css.position = relative
 	css.z-index = 900
 	css.margin-top = -55px
-	css.background-color = #a5cae0
+
 		
 		[slider_line]
 		css.height = 5px
@@ -127,6 +136,7 @@ css.background-color = white
 		[slider]
 		css.width = 100%
 		css.height = 300px
+		css.background-color = #a5cae0
 		addon.slider.parallax.width = 100%
 		addon.slider.parallax.height = 400px
 		addon.slider.parallax.background-image = /img/slider-background.jpg
@@ -155,6 +165,8 @@ css.background-color = white
 		addon.slider.parallax.link-image = /img/read-more-hover.png
 		addon.slider.parallax.link-hover = /img/slider-read-more.png
 		addon.slider.parallax.dot-top = 260px
+		addon.slider.parallax.dot-alignment = left
+		addon.slider.parallax.dot-margin-left = 45%
 		addon.slider.parallax.dot-color = #ffd800
 		addon.slider.parallax.nav-prev = /img/slider-left.png
 		addon.slider.parallax.nav-prev-hover = /img/slider-left-hover.png
@@ -166,13 +178,15 @@ css.background-color = white
 		addon.slider.parallax.source = db
 
 		[slider_man]
-		css.width = 50px
-		css.height = 50px
-		css.background-color = pink
-		css.margin-left = 100px
+		css.width = 60px
+		css.height = 60px
+		css.margin-left = 80%
+		css.margin-top = -25px
+		css.position = relative
+		css.z-index = 2000
 		image.url = img/man-centred.png
-		image.width = 48px
-		image.height = 45px
+		image.width = 59px
+		image.height = 55px
 	
 	[slider_area]
 	child = slider_line_2
@@ -193,7 +207,7 @@ css.background-color = white
 			
 
 	[pages]
-	child = tabs, content-home, content, contact	
+	child = tabs, content-home, content, contact, blog, facebookfeed	
 	css.width = 960px
 	css.margin-top = 20px
 	css.background-color = white
@@ -215,11 +229,11 @@ css.background-color = white
 		db.filter = url=$_GET['page']
 		db.error = Sorry, I could not find the page $_GET['page']
 		html.raw = ContentBlock.content
-			
+		
 		[content]
 		condition = @PAGE!=@HOMEPAGE
 		css.position = relative
-		css.z-index = 1100
+		css.z-index = 100
 		css.margin-top = 30px
 		css.margin = 30px
 		db.table = ContentBlock
@@ -229,12 +243,12 @@ css.background-color = white
 		
 		[contact]
 		child = contact-form, contact-text
-		condition = @PAGE=font
-		css.height = 300px
+		condition = @PAGE=contact
+		css.height = 340px
 		stacking = horizontal
 		
 			[contact-form]
-			condition = @PAGE=font
+			condition = @PAGE=contact
 			css.width = 400px
 			css.margin = 30px
 			#css.margin-bottom = 30px
@@ -250,12 +264,26 @@ css.background-color = white
 			addon.contact.contactform.inputspacing = 10px
 
 			[contact-text]
-			condition = @PAGE=font
+			condition = @PAGE=contact
 			css.width = 300px
 			css.margin-top = 80px
 			css.font = 12px
 			html.raw = Please fill in the form and someone from the Rotary Peace Project will get back to you as soon as possible.
 			
+		[blog]
+		condition = @PAGE=rotary-peace-project-latest-articles
+		html.raw = {{news traditional}}
+		
+		[facebookfeed]
+		condition = @PAGE=rotary-peace-project-facebook
+		css.margin-left = 100px
+		css.height = 600px
+		html.raw = <iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Ftherotarypeaceproject&amp;width=200&amp;height=200&amp;layout=standard&amp;action=like&amp;show_faces=true&amp;share=true&amp;height=80&amp;appId=259885860792535" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:250px; height:80px;" allowTransparency="true"></iframe>
+		html.raw = </br></br><iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Ftherotarypeaceproject&amp;width=700&amp;height=425&amp;colorscheme=light&amp;show_faces=false&amp;header=true&amp;stream=true&amp;show_border=true&amp;appId=259885860792535" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:700px; height:427px;" allowTransparency="true"></iframe>
+		#html.raw = <br/><br/>
+		#html.raw = <br><br>
+		#html.raw = </br></br>
+		#html.raw = <p></p>	
 			
 
 ####footer####################################
@@ -266,7 +294,7 @@ child = footer-menu, footer-line, footnote
 css.width = 100%
 
 	[footer-menu]
-	child = footer-margin, footer-menu-content
+	child = footer-image-left, footer-menu-center, footer-image-right
 	css.height = 50px
 	css.width = 960px
 	#css.margin-top = 0px
@@ -274,25 +302,61 @@ css.width = 100%
 	css.background-color = #ffd800
 	css.position = relative
 	css.z-index = 950
+	stacking = horizontal
 	
-		[footer-margin]
-		css.height = 20px
-		css.width = 100%
-		
-		[footer-menu-content]
-		child = contact-page
-		stacking = horizontal
-		css.width = 90%
+		[footer-image-left]
+		css.width = 70px
+		css.height = 40px
+		css.margin-top = 6px
+		css.margin-left = 25px
 		css.position = relative
-		css.z-index = 960
+		css.z-index = 2000
+		image.url = img/man-left.png
+		image.width = 35px
+		image.height = 38px
+		
+		[footer-menu-center]
+		child = footer-menu-margin, footer-menu-content
+		css.width = 800px
 	
-		[contact-page]
-			html.raw = Contact Us
-			css.text-align = left
-			#css.width = 20%
-			css.color = #000000
-			css.font-size = 14px
-			click = ?layout=index&page=contact
+			[footer-menu-margin]
+			css.height = 17px
+			css.width = 100%
+		
+			[footer-menu-content]
+			child = contact-page, facebook
+			css.width = 100%
+			css.position = relative
+			css.z-index = 960
+			stacking = horizontal
+		
+				[contact-page]
+				html.raw = Contact Us
+				css.text-align = left
+				css.width = 20%
+				css.color = #000000
+				css.font-size = 14px
+				click = ?layout=index&page=contact
+				
+				[facebook]
+				html.raw = Facebook Feed
+				css.text-align = left
+				css.width = 20%
+				css.color = #000000
+				css.font-size = 14px
+				click = ?layout=index&page=rotary-peace-project-facebook
+				
+		[footer-image-right]
+		css.width = 40px
+		css.height = 40px
+		css.margin-top = 6px
+		css.position = relative
+		css.z-index = 2000
+		image.url = img/man-right.png
+		image.width = 35px
+		image.height = 38px
+		
+		
 	
 	[footer-line]
 	css.height = 5px

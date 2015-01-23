@@ -4,72 +4,46 @@
 
 	<?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>255)); ?>
 
-	<?php //echo $form->textFieldRow($model,'program_id',array('class'=>'span5')); ?>
 	<?php
 		$criteria = new CDbCriteria;
-/***
-		if (Yii::app()->session['pid'] == 6)
-			$criteria->addCondition("id = 6"); // All except WS Wild Seasons
-		else
-			$criteria->addCondition("id != 6"); // All except WS Wild Seasons
-***/
 		$criteria->addCondition("id = "  . Yii::app()->session['pid']); // Ony see the lock_program program
-
-		//echo $form->dropDownListRow($model,'program_id', CHtml::listData(Program::model()->findAll($criteria), 'id', 'name'), array('empty'=>'Choose'));
 		echo $form->dropDownListRow($model,'program_id', CHtml::listData(Program::model()->findAll($criteria), 'id', 'name'));
-
 	?>
 
-	<?php //echo $form->textFieldRow($model,'start',array('class'=>'span5')); ?>
-	<?php /// @@EG How to line up custom content ?>
+<!------------------------------------------ @@EG: dropdown date starts ------------------------------------------->
+	<script type="text/javascript" src="/js/dropdownDate.js"></script>
+	<style>
+		span#startDate select {width:70px; margin-right:5px}
+		span#endDate select {width:70px; margin-right:5px}
+	</style>
+
 	<div class="control-group "><label class="control-label" for="Event_start">Start Date <span class="required">*</span></label>
 		<div class="controls">
-			<?php Yii::import('application.extensions.CJuiDateTimePicker.CJuiDateTimePicker');
-    			$this->widget('CJuiDateTimePicker',array(
-        			'model'=>$model, //Model object
-        			'attribute'=>'start', //attribute name
-        			'mode'=>'datetime', //use "time","date" or "datetime" (default)
-        			'language' => '',
-        			'options'=>array( // jquery plugin options
-        				'showAnim'=>'fold',
-        				'dateFormat'=>'dd-mm-yy',
-        			),
-    			));
-			?>
+			<?php echo $form->hiddenField($model, 'start'); ?>
+			<span id='startDate'></span>
+		</div>
+	</div>
+	<div class="control-group "><label class="control-label" for="Event_end">End Date <span class="required">*</span></label>
+		<div class="controls">
+			<?php echo $form->hiddenField($model, 'end'); ?>
+			<span id='endDate'></span>
 		</div>
 	</div>
 
-	<?php //echo $form->textFieldRow($model,'end',array('class'=>'span5')); ?>
-	<div class="control-group "><label class="control-label" for="Event_end">End Date</label>
-		<div class="controls">
-<?php Yii::import('application.extensions.CJuiDateTimePicker.CJuiDateTimePicker');
-    $this->widget('CJuiDateTimePicker',array(
-        'model'=>$model, //Model object
-        'attribute'=>'end', //attribute name
-        'mode'=>'datetime', //use "time","date" or "datetime" (default)
-        'language' => '',
-        'options'=>array( // jquery plugin options
-        	'showAnim'=>'fold',
-        	'dateFormat'=>'dd-mm-yy',
-        )
-    ));
-?>
-		</div>
-	</div>
+	<script>
+		dropdownDate('startDate', 'Event_start', 'dd-mm-yyyy hr:mn');
+		dropdownDate('endDate', 'Event_end', 'dd-mm-yyyy hr:mn');
+	</script>
+<!-------------------------------------------- dropdown date ends ------------------------------------------------>
 
 	<?php echo $form->textAreaRow($model,'address',array('rows'=>6, 'cols'=>50, 'class'=>'span5')); ?>
-
 	<?php echo $form->textFieldRow($model,'post_code',array('class'=>'span2','maxlength'=>255)); ?>
-
 	<?php echo $form->textFieldRow($model,'web',array('class'=>'span5','maxlength'=>255)); ?>
-
 	<?php
 		$criteria = new CDbCriteria;
 		echo $form->dropDownListRow($model,'event_price_band_id', CHtml::listData(PriceBand::model()->findAll($criteria), 'id', 'name'), array('empty'=>'Choose'));
 	?>
-
 	<?php echo $form->textAreaRow($model,'contact',array('rows'=>6, 'cols'=>50, 'class'=>'span5')); ?>
-
 	<div class="row">
 		<div class="span2"></div>
 	    <div class="xspan2 well" style="margin-left:-20px">
@@ -124,9 +98,7 @@
 	        <?php endforeach; ?>
 	    </div>
 	</div>
-
 	<?php echo $form->fileFieldRow($model, 'thumb_path'); ?>
-
 	<?php
 		if (($model->isNewRecord) || ($model->ticket_event_id == 0))
 		{
@@ -149,8 +121,6 @@
 					echo $form->textField($model,'ticket_event_id');
 				echo "</div>";
 			echo "</div>";
-			//echo $form->error($model,'Ticket event id'); 
-			//echo $form->textFieldRow($model,'ticket_event_id',array('class'=>'span1'));
 		}
 	?>
 
@@ -160,65 +130,61 @@
 	///// @@NB: the 'options' buggers Yii although docs say its right: .. echo $form->toggleButtonRow($model, 'active' , array('options'=>array('enabledLabel'=>'Yes' , 'disabledLabel'=>'Yes')));
 ?>
 
+<!-- CKEditor starts -->
 
+    <script src="<?php echo Yii::app()->baseUrl.'/scripts/editors/ck/ckeditor/ckeditor.js'; ?>"></script>
+    <?php
+        $_SESSION['KCFINDER']['disabled'] = false; // enables the file browser in the admin
+        $_SESSION['KCFINDER']['uploadURL'] = Yii::app()->baseUrl."/userdata/image/"; // URL for the uploads folder
+        $_SESSION['KCFINDER']['uploadDir'] = Yii::app()->basePath."/../userdata/image/"; // path to the uploads folder
+    ?>
+    <!-- <div class="row"> -->
+    <?php echo $form->labelEx($model,'description'); ?>
+    <?php echo $form->textArea($model, 'description', array('id'=>'editor1')); ?>
+    <?php echo $form->error($model,'description'); ?>
+    <!-- </div> -->
 
-	<?php //echo $form->textAreaRow($model,'description',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
-	<div class="control-group "><label class="control-label" for="Event_start">Description <span class="required">*</span></label>
+    <script type="text/javascript">
+    CKEDITOR.replace( 'editor1', {
+        width: <?php echo Yii::app()->params['editorpagewidth'];?>,
+        height: <?php echo Yii::app()->params['editorpageheight'];?>,
+        filebrowserUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/upload.php?type=files',
+        filebrowserImageUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/upload.php?type=images',
+        filebrowserFlashUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/upload.php?type=flash'
+    });
+    </script>
 
+<!-- CKEditor ends -->
 
-
-
-		<div class="controls">
-			<div style="width:500px">
-			<?php
-			$this->widget('bootstrap.widgets.TbRedactorJs',
-		    	array(
-		      	'model'=>$model,
-		      	'attribute'=>'description',
-		      	'editorOptions'=>array(
-		          	'imageUpload' => $this->createUrl('event/imageUpload'),
-		          	'imageGetJson' => $this->createUrl('event/imageList'),
-		          	'width'=>'100%',
-		          	'height'=>'400px'
-		       	)
-		    	));
-			?>
-			</div>
-		</div>
-	</div>
 	<br>&nbsp
-
 	<?php //echo $form->textFieldRow($model,'approved',array('class'=>'span5')); ?>
 	<?php //echo $form->textFieldRow($model,'member_id',array('class'=>'span5')); ?>
-
 	<div class="form-actions">
+		<?php
+		if (Yii::app()->session['pid'] == 6)	// WS Wild Seasons
+		{
+			$this->widget('bootstrap.widgets.TbButton', array(
+				'buttonType'=>'submit',
+				'type'=>'primary',
+            	'htmlOptions' => array(
+                	'class' => $model->isNewRecord ? 'disabled' : '',
+                	'disabled'=>$model->isNewRecord ? 'true' : '',
+                	//'id'=> 'nextButton',
+                	//'name' => 'nextButton',
+                	//'onclick'=>'js:return nextButtonClick()',
+            	),
 
-	<?php
-	if (Yii::app()->session['pid'] == 6)	// WS Wild Seasons
-	{
-		$this->widget('bootstrap.widgets.TbButton', array(
-			'buttonType'=>'submit',
-			'type'=>'primary',
-            'htmlOptions' => array(
-                'class' => $model->isNewRecord ? 'disabled' : '',
-                'disabled'=>$model->isNewRecord ? 'true' : '',
-                //'id'=> 'nextButton',
-                //'name' => 'nextButton',
-                //'onclick'=>'js:return nextButtonClick()',
-            ),
-
-			//'label'=>$model->isNewRecord ? 'Create' : 'Save',
-			'label'=>$model->isNewRecord ? 'Save on next tab' : 'Save',
-		));
-	}
-	else
-	{
-		$this->widget('bootstrap.widgets.TbButton', array(
-			'buttonType'=>'submit',
-			'type'=>'primary',
-			'label'=>$model->isNewRecord ? 'Create' : 'Save',
-		));
-	}
-	?>
-
+				//'label'=>$model->isNewRecord ? 'Create' : 'Save',
+				'label'=>$model->isNewRecord ? 'Save on next tab' : 'Save',
+			));
+		}
+		else
+		{
+			$this->widget('bootstrap.widgets.TbButton', array(
+				'buttonType'=>'submit',
+				'type'=>'primary',
+				'label'=>$model->isNewRecord ? 'Create' : 'Save',
+			));
+		}
+		?>
 	</div>

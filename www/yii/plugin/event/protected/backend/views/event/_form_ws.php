@@ -11,7 +11,9 @@
 
 
 	<?php // @@EG: Change on/off labels on togglebutton ?>
-	<?php echo $form->toggleButtonRow($model2, 'booking_essential' , array('options'=>array('enabledLabel'=>'Yes' , 'disabledLabel'=>'No'))); ?>
+
+	<?php //// @@NB: the 'options' buggers Yii although docs say its right: ..  echo $form->toggleButtonRow($model2, 'booking_essential' , array('options'=>array('enabledLabel'=>'Yes' , 'disabledLabel'=>'No'))); ?>
+	<?php echo $form->toggleButtonRow($model2, 'booking_essential'); ?>
 
 	<?php echo $form->textFieldRow($model2,'min_age',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right')); ?>
 

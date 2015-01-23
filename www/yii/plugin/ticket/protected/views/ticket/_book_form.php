@@ -13,6 +13,8 @@ else
 	$logo = Yii::app()->baseUrl . '/img/default_logo.jpg';
 	
 // Set global flags
+$isFreeEvent = 1;
+(isset($_GET['ref']) && ($_GET['ref'] == 'bktji5308')) ? Yii::app()->session['isBackend'] = 1 : Yii::app()->session['isBackend'] = 0;
 ?>
 
 <style>

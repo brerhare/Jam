@@ -19,7 +19,7 @@ css.display = block
 		[menu-bar]
 		css.width = 1018px
 		css.height = 70px
-		css.margin-top = 115px
+		css.margin-top = 95px
 		image.url = img/menu-bar.png
 		image.width = 1018px
 		image.height = 69px
@@ -31,7 +31,7 @@ css.display = block
 	child = header, slider, pages
 	css.display = block
 	css.width = 960px
-	css.margin-top = -210px
+	css.margin-top = -180px
 	css.background-color = white
 	fx.rounding = 15px
 
@@ -41,7 +41,7 @@ css.display = block
 		child = header-dt, menu
 		
 			[header-dt]
-			child = logo, header-dtl
+			child = logo, header-dtl, facebook, linked-in
 			stacking = horizontal
 
 				[logo]
@@ -52,24 +52,35 @@ css.display = block
 				css.z-index = 1000
 				css.position = relative
 				image.url = img/logo.jpg
-				image.width = 446px
-				image.height = 107px
+				image.width = 350px
+				image.height = 84px
 				click = http://www.1staid4u.co.uk
 
 				[header-dtl]
 				child = contact, blurb
 				css.height = 120px
-				css.width = 400px
+				css.width = 300px
 	
 					[contact]
+					child = contact-no
 					css.width = 300px
-					css.height = 60px
+					css.height = 50px
 					css.margin-left = 45px
-					image.url = img/contact.jpg
+					image.url = img/contact-bkgd.png
 					image.width = 250px
 					image.height = 47px
 					click = http://www.1staid4u.co.uk/?layout=index&page=contact
-							
+					
+						[contact-no]
+						css.width = 100%
+						css.margin-top = -40px
+						css.margin-left = 40px
+						html.raw = +44 (0) 1387 209335 
+						css.color = #000000
+						css.font-size = 18px
+						css.font-weight = bold
+						css.font-stretch = extra-expanded
+						
 
 					[blurb]
 					css.width = 300px
@@ -78,11 +89,30 @@ css.display = block
 					image.url = img/blurb.jpg
 					image.width = 300px
 					image.height = 55px
+					
+				[facebook]
+				css.margin-top = 5px
+				css.margin-left = 15px
+				css.height = 50px
+				css.width = 40px
+				image.url = img/fb-mid.png
+				image.width = 34px
+				image.height = 34px
+				clicknew = https://www.facebook.com/pages/1staid4u/270525453131933?fref=ts
+				
+				[linked-in]
+				css.margin-top = 5px
+				css.height = 50px
+				css.width = 50px
+				image.url = img/linkedin-mid.png
+				image.width = 35px
+				image.height = 35px
+				clicknew = https://www.linkedin.com/pub/stuart-robb/38/b0/774
 
 
 		[menu]
 		css.height = 50px
-		css.margin-top = 20px
+		css.margin-top = -10px
 		css.margin-left = 70px
 		css.overflow = visible
 		css.z-index = 1000
@@ -110,7 +140,7 @@ css.display = block
 	[slider]
 	child = slider-bkg, slider-content
 	css.margin-left = 55px
-	css.margin-top = 60px
+	css.margin-top = 30px
 	css.width = 850px
 	
 
@@ -142,7 +172,7 @@ css.display = block
 			
 
 	[pages]
-	child = content, blog 	
+	child = content, blog, contact-page	
 	css.width = 900px
 	css.margin-top = -20px
 	css.margin-left = 30px
@@ -168,7 +198,36 @@ css.display = block
 
 		[blog]
 		condition = @PAGE=@HOMEPAGE
-		html.raw = {{news traditional red blue}}
+		html.raw = {{news traditional}}
+		
+		[contact-page]
+		child = contact-form, contact-text
+		condition = @PAGE=contact
+		css.height = 300px
+		stacking = horizontal
+			
+			[contact-form]
+			css.width = 400px
+			css.margin = 30px
+			#css.margin-bottom = 30px
+			css.background-color = white
+			addon.contact.contactform.edgepadding = 30px
+			addon.contact.contactform.buttoncolor = #cddff2
+			addon.contact.contactform.buttontextcolor = black
+			addon.contact.contactform.buttontext = Submit
+			addon.contact.contactform.successtextcolor = green
+			addon.contact.contactform.failuretextcolor = red
+			addon.contact.contactform.textcolor = blue
+			addon.contact.contactform.backcolor = pink
+			addon.contact.contactform.inputspacing = 10px
+
+			[contact-text]
+			css.width = 300px
+			css.margin-top = 80px
+			css.font = 12px
+			html.raw = Please fill in the form and someone will get back to you as soon as possible.
+
+		
 
 
 ####footer####################################

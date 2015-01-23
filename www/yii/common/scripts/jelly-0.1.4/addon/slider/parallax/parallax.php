@@ -45,6 +45,8 @@ class parallax
 	private $defaultLinkHover = "/scripts/jelly/addon/slider/parallax/images/link-hover.png";
 	private $defaultDotTop = "200px";
 	private $defaultDotColor = "lightblue";
+	private $defaultDotAlignment = "center";
+	private $defaultDotMarginLeft = "0%";
 	private $defaultNavMargin = "25px";
 	private $defaultNavPrev = "/scripts/jelly/addon/slider/parallax/images/arrow-left.png";
 	private $defaultNavNext = "/scripts/jelly/addon/slider/parallax/images/arrow-right.png";
@@ -155,6 +157,12 @@ class parallax
 			// .da-dots
 				case "dot-top":
 					$this->defaultDotTop = $val;
+					break;
+				case "dot-alignment";
+					$this->defaultDotAlignment = $val;
+					break;
+				case "dot-margin-left";
+					$this->defaultDotMarginLeft = $val;
 					break;
 			// .da-dots span
 				case "dot-color":
@@ -287,9 +295,14 @@ class parallax
 	// .da-dots
 		if (strstr($this->apiHtml, "<substitute-dot-top>"))
 			$this->apiHtml = str_replace("<substitute-dot-top>", $this->defaultDotTop, $this->apiHtml);	
+		if (strstr($this->apiHtml, "<substitute-dot-alignment>"))
+			$this->apiHtml = str_replace("<substitute-dot-alignment>", $this->defaultDotAlignment, $this->apiHtml);	
+		if (strstr($this->apiHtml, "<substitute-dot-margin-left>"))
+			$this->apiHtml = str_replace("<substitute-dot-margin-left>", $this->defaultDotMarginLeft, $this->apiHtml);
 	// .da-dots span
 		if (strstr($this->apiHtml, "<substitute-dot-color>"))
 			$this->apiHtml = str_replace("<substitute-dot-color>", $this->defaultDotColor, $this->apiHtml);	
+			
 	//.da-arrows...
 		if (strstr($this->apiHtml, "<substitute-nav-next>"))
 			$this->apiHtml = str_replace("<substitute-nav-next>", $this->defaultNavNext, $this->apiHtml);
@@ -376,6 +389,8 @@ class parallax
 				
 				.da-dots {
 					top: <substitute-dot-top>;
+					text-align: <substitute-dot-alignment>;
+					margin-left: <substitute-dot-margin-left>;
 							}
 							
 				.da-dots span {
@@ -388,7 +403,7 @@ class parallax
 							}
 				
 				.da-arrows span.da-arrows-prev:hover{
-					background:  url(<substitute-nav-prev-hover) no-repeat top left; 
+					background:  url(<substitute-nav-prev-hover>) no-repeat top left; 
 							}
 							
 				.da-arrows span.da-arrows-next{
@@ -397,7 +412,7 @@ class parallax
 							}
 				
 				.da-arrows span.da-arrows-next:hover{
-					background:  url(<substitute-nav-next-hover) no-repeat top right; 
+					background:  url(<substitute-nav-next-hover>) no-repeat top right; 
 							}
 				
 			</style>

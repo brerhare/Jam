@@ -13,10 +13,12 @@ child = ticker, site
 fx.wallpaper-image-tile = /img/white-tile.jpg
 css.display = block
 
+
 [ticker]
 css.width = 100%
 ######css.height = 100px
 css.position = fixed
+css.z-index = 1000
 css.bottom = 0
 css.background-color = yellow
 addon.ticker.crawler.width = 100%
@@ -28,15 +30,16 @@ addon.ticker.crawler.text-colour = green
 addon.ticker.crawler.tape-border-width = 1px
 #addon.ticker.crawler.tape-border-color = red
 #addon.ticker.crawler.link-color = magenta
-#addon.ticker.crawler.link-text-color = yellow
+#addon.ticker.crawler.link-text-color = blue
 
 	[site]
 	child = main, right-column
 	css.width = 1000px
 	stacking = horizontal
+	css.position = relative
 		
 		[main]
-		child = slider, header, menu, home-page, pages
+		child = slider, header, menu, home-page, pages, footer
 		css.width = 800px
 		css.margin-top = 20px
 
@@ -67,7 +70,7 @@ addon.ticker.crawler.tape-border-width = 1px
 ####  Header  #################################
 
 	[header]
-	child = logo, fb-social, twitter-social
+	child = logo, fb-social, twitter-social, header-text
 	css.height = 110px
 	css.width = 800px
 	css.background-color = red
@@ -77,30 +80,40 @@ addon.ticker.crawler.tape-border-width = 1px
 		css.margin-left = 8px
 		css.margin-top = -5px
 		css.height = 120px
-		css.width = 500px
+		css.width = 345px
 		image.url = img/dgnews-logo.png
 		image.width = 330px
 		image.height = 58px
-		click = ?layout=index&page=index
+		click = ?layout=index&page=home
 		
 		[fb-social]
-		css.height = 100px
-		css.width = 50px
-		css.margin-left = 180px
-		css.margin-top = 5px
+		css.height = 35px
+		css.width = 35px
+		css.margin-top = 15px
 		image.url = img/fb-large.png
-		image.width = 40px
-		image.height = 40px
+		image.width = 28px
+		image.height = 28px
 		clicknew = https://www.facebook.com/DgnewsSport
 		
 		[twitter-social]
-		css.height = 100px
-		css.width = 50px
-		css.margin-top = 5px
+		css.height = 35px
+		css.width = 35px
+		css.margin-top = 15px
 		image.url = img/twitter-large.png
-		image.width = 40px
-		image.height = 40px
+		image.width = 30px
+		image.height = 30px
 		clicknew = https://twitter.com/dgnewsSport
+		
+		[header-text]
+		css.height = 50px
+		css.width = 370px
+		css.margin-top = 23px
+		css.margin-left = 5px
+		html.raw = Get the latest news & sport in Dumfries & Galloway
+		css.font-size = 14px
+		css.font-weight = 700
+		css.color = white
+		click = http://www.dgnews-sport.co.uk
 		
 
 	[menu]
@@ -136,35 +149,51 @@ addon.ticker.crawler.tape-border-width = 1px
 ######## home #######################################
 
 	[home-page]
-	child = color, home-content
+	child = signup-box, home-content
 	condition = @PAGE=@HOMEPAGE
 	css.width = 800px
-	css.margin-top = 20px
-	css.background-color = white
-	fx.rounding = 4px
-	
-		[color]
-		css.width = 180px
-		css.height = 100px
-		#css.background-color = #137feb
-		css.margin-top = 150px
+	css.margin-top = -100px
+
+		[signup-box]
+		child = signup
+		css.width = 150px
+		css.height = 120px
+		css.background-color = #137feb
+#		css.margin-top = 160px
 		css.margin-left = 20px
+css.position = relative
+css.top = 295px
+#css.left = -290px
+		css.padding = 10px
+		html.raw = Get the DG-News right to your inbox
+		css.font-size = 12px
+		css.font-weight = 700
+		css.color = white
 		
+					
+			[signup]
+			css.margin-top = 5px
+			addon.mailer.signup.orientation = vertical
+			addon.mailer.signup.buttoncolor = white
+			addon.mailer.signup.buttontextcolor = red
+			addon.mailer.signup.buttontext = sign up
+			addon.mailer.signup.inputspacing = 5px
+			addon.mailer.signup.successtextcolor = white
+			addon.mailer.signup.failuretextcolor = black
+			addon.mailer.signup.inputwidth = 140px
+		
+	
 		[home-content]
-		child = blog
-		css.margin-top = -240px
-		
-			[blog]
-			css.display = block
-			css.width = 800px
-			html.raw = {{news traditional}}
+		css.display = block
+		css.width = 800px
+		html.raw = {{news newstype=traditional sidebar=left pushcategoriesdown=140px pushrecentdown=0px}}
 
 
 ######## body #######################################
 			
 
 	[pages]
-	child = content 	
+	child = content, contact	
 	css.width = 800px
 	css.margin-top = 20px
 	css.background-color = white
@@ -177,14 +206,48 @@ addon.ticker.crawler.tape-border-width = 1px
 		db.filter = url=$_GET['page']
 		db.error = Sorry, I could not find the page $_GET['page']
 		html.raw = ContentBlock.content
+		
+######## Contact Page #######################################		
+
+		[contact]
+		child = contact-form, contact-text
+		condition = @PAGE=contact-dgnews-sport
+		css.height = 300px
+		css.margin-left = 30px
+		stacking = horizontal
+		
+			[contact-form]
+			css.width = 350px
+			css.margin = 30px
+			#css.margin-bottom = 30px
+			css.background-color = white
+			addon.contact.contactform.edgepadding = 30px
+			addon.contact.contactform.buttoncolor = #137feb
+			addon.contact.contactform.buttontextcolor = white
+			addon.contact.contactform.buttontext = Submit
+			addon.contact.contactform.successtextcolor = green
+			addon.contact.contactform.failuretextcolor = red
+			addon.contact.contactform.textcolor = blue
+			addon.contact.contactform.backcolor = pink
+			addon.contact.contactform.inputspacing = 10px
+
+			[contact-text]
+			css.width = 200px
+			css.margin-top = 80px
+			css.font = 12px
+			html.raw = Please fill in the form and someone will get back to you as soon as possible.
+
 
 
 ####right-column##############################
 
 	[right-column]
 	css.width = 180px
-	css.margin-left = 20px
+	css.margin-left = 850px
 	css.margin-top = 20px
+	#css.right = 0
+	#css.margin-right = 0px
+	css.position = fixed
 	css.background-color = white
 	addon.adbox.basicad.picwidth = 180px
 	addon.adbox.basicad.picheight = 150px
@@ -196,66 +259,60 @@ addon.ticker.crawler.tape-border-width = 1px
 
 [footer]
 child = footer-menu, footnote
-css.margin-top = 40px
-css.margin-left = 20px
-css.height = 180px
-css.width = 960px
-#css.background-color = #ffffff
-#css.background-color = #f7d9ff
+css.margin-top = 20px
+css.height = 130px
+css.background-color = #137feb
+stacking = horizontal
 
 		[footer-menu]
-		stacking = horizontal
-		child = footer-margin, footer-cookies, footer-tandc, footer-contact
+		child = footer-contact, footer-cookies, footer-tandc
 		css.height = 50px
-		css.width = 960px
-
-			[footer-margin]
-			css.width = 20%
-			css.height = 50px
+		css.margin = 20px
+		css.width = 40%
 
 			[footer-cookies]
 			html.raw = Cookie Policy
-			css.width = 20%
-			css.color = #000000
+			css.color = #ffffff
 			css.font-size = 11px
-			css.text-align = right
+			css.font-weight = bold
+			css.margin-top = 3px
 			click = ?layout=index&page=cookie-policy
 
 			[footer-tandc]
 			html.raw = Terms & Conditions
-			css.width = 20%
-			css.color = #000000
+			css.color = #ffffff
 			css.font-size = 11px
-			css.text-align = center
+			css.font-weight = bold
+			css.margin-top = 3px
 			click = ?layout=index&page=terms-conditions
 
 			[footer-contact]
 			html.raw = Contact Us
-			css.text-align = left
-			css.width = 20%
-			css.color = #000000
+			css.color = #ffffff
 			css.font-size = 11px
-			click = ?layout=index&page=contact
+			css.font-weight = bold
+			css.margin-top = 3px
+			click = ?layout=index&page=contact-dgnews-sport
 
 
 	[footnote]
-	child = copyright, wirefly
-	css.width = 100%
-	css.height = 50px
-	stacking = horizontal
+	child = wirefly, copyright
+	css.width = 50%
+	css.height = 100%
+	css.margin = 20px
 
 		[copyright]
-		css.width = 50%
-		css.margin-top = 10px
-		html.raw = Customer &copy 2014 All rights reserved
-		css.color = #000000
+		css.margin-top = 5px
+		html.raw = DG News & Sport &copy 2014 All rights reserved
 		css.font-size = 11px
-		css.text-align = left
+		css.font-weight = bold
+		css.color = #ffffff
+		css.text-align = right
+		css.margin-right = 0px
 
 		[wirefly]
-		css.margin-top = -10px
-		css.height = 50px
-		css.width = 50%
+		css.height = 45px
+		css.width = 100%
 		image.url = img/wirefly-weblink.png
 		image.width = 150px
 		image.height = 40px

@@ -34,6 +34,7 @@ class events
         if (isset($_GET['programid']))
             $this->programId = (int) $_GET['programid'];
 
+
         foreach ($options as $opt => $val)
         {
             switch ($opt)
