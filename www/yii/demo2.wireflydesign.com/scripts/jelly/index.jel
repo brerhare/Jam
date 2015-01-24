@@ -2,87 +2,86 @@
 [defaults]
 include = default-values
 
-# Every blob inherits these before adding/overriding
-
 [* : defaults]
 
 [screen]
-child = logo, site
-#css.background-color = white
-fx.wallpaper-image-tile = /img/background1.jpg
+child =  header, site, footer
+fx.wallpaper-image = /img/background2.jpg
 css.display = block
 
+	####  Header  #################################
+
+	[header]
+	child = logo, menu,
+	css.height = 160px
+	#css.margin-top = 10px
+	stacking = horizontal
+	
 		[logo]
 		css.height = 130px
-		css.margin-left = 20px
+		css.margin-left = 60px
 		css.position = fixed
 		css.z-index = 1100
 		#css.position = absolute
 		image.url = img/dglink-logo.png
-		image.width = 241px
-		image.height = 120px
+		image.width = 201px
+		image.height = 100px
 		click = http://www.demo2.wireflydesign.com
-
-	[site]
-	child = main, side
-
-	[Main]
-	child = header, pages, footer
-	css.width = 1000px
-
-
-
-####  Header  #################################
-
-	[header]
-	child = menu
-	css.height = 200px
-
-	
 
 		[menu]
 		css.height = 50px
 		css.width = 100%
-		css.margin = 0px auto
+		css.margin-top = 60px
+		css.margin-left = 280px
 		css.overflow = visible
 		css.z-index = 1000
-		#css.position = relative
+		css.position = fixed
 
-		addon.menu.basic.orientation = horizontal
 		#addon.menu.basic.width = 960px
-		#addon.menu.basic.height = 14px
+		addon.menu.basic.height = 30px
 		#addon.menu.basic.level = 2
-
-		addon.menu.basic.menu-rounding = 4px
-		#addon.menu.basic.menu-opacity = 70%
+		
+####### Top level background settings (first colour is the top gradiation) ####
+	addon.menu.basic.menu-rounding = 4px
+		#addon.menu.basic.menu-opacity = 96%
 		#addon.menu.basic.menu-tile = /img/menu-bar.jpg
 		#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
-		addon.menu.basic.menu-color = white
+	addon.menu.basic.menu-color = white
 		#addon.menu.basic.item-separator-color = #ffffff
 		#addon.menu.basic.item-separator-width = 3px
+		addon.menu.basic.edgepadding = 5px
 
-		addon.menu.basic.font-size = 12px
-		addon.menu.basic.menu-text-color = blue
+####### Top level font settings ####
+	addon.menu.basic.font-size = 12px
+	addon.menu.basic.menu-text-color = blue
+	addon.menu.basic.menu-text-weight = bold
+		### Need an m1, m2, etc option in header file
 
-		#addon.menu.basic.item-color = black yellow
-		#addon.menu.basic.item-text-color = green
 
-		#addon.menu.basic.submenu-color = yellow red
-	
-		#addon.menu.basic.subitem-color = white black
-		#addon.menu.basic.subitem-text-color = purple
-		#addon.menu.basic.subitem-seperator-color = red 
-
+####### Top level hover settings ####
+	addon.menu.basic.item-color = white #e0e0e0
+	addon.menu.basic.item-text-color = blue
+		
+####### Second level background settings ####
+	addon.menu.basic.submenu-color = #ffffff
+	addon.menu.basic.subitem-separator-color = blue
+		
+####### Second level hover settings ####
+	addon.menu.basic.subitem-color = white #e0e0e0
+	addon.menu.basic.subitem-text-color = blue		
+		
 
 
 ######## body #######################################
-			
+
+	[site]
+	child = pages
+	css.width = 1000px
 
 	[pages]
 	child = tabs, content 	
 	css.width = 960px
 	css.margin-top = 20px
-	css.margin-left = 30px
 	css.background-color = white
 	fx.rounding = 4px
 	
@@ -107,11 +106,8 @@ css.display = block
 [footer]
 child = footer-menu, footnote
 css.margin-top = 40px
-css.margin-left = 20px
-css.height = 180px
-css.width = 960px
-#css.background-color = #ffffff
-#css.background-color = #f7d9ff
+css.height = 100px
+css.background-color = #ffffff
 
 		[footer-menu]
 		stacking = horizontal

@@ -33,13 +33,37 @@
         	$criteria->addCondition("id = 13");	// Only DG Link
         	$program = Program::model()->find($criteria);
 			if ($program)
-				echo '<li class="programcb"><input type="checkbox" checked="checked" disabled="disabled" name="programcb" value="' . $program->id . '"> ' . $program->name . '</li>';
+				echo '<li style="color:#969a9b" class="programcb"><input type="checkbox" checked="checked" disabled="disabled" name="programcb" value="' . $program->id . '"> ' . $program->name . '</li>';
 	        $criteria = new CDbCriteria;
         	$criteria->addCondition("id != 13");	// Everything but DG Link
         	$criteria->order = 'name ASC';
         	$programs = Program::model()->findAll($criteria);
 			foreach ($programs as $program)
-				echo '<li class="programcb"><input type="checkbox" name="programcb" value="' . $program->id . '"> ' . $program->name . '</li>';
+			{
+				$disabled = "";
+				$disabledStyle = "";
+				$checked = "";
+                $criteria = new CDbCriteria;
+                $criteria->addCondition("event_program_id = " . $program->id);
+                $criteria->addCondition("event_member_id = " . Yii::app()->session['eid']);
+                $memberHasProgram = MemberHasProgram::model()->find($criteria);
+				if ($program->private)
+				{
+					if (($memberHasProgram) && ($memberHasProgram->privilege_level == 2))
+						$checked = " checked='checked' ";
+					else
+					{
+						$disabled = " disabled='disabled' ";
+						$disabledStyle = " style='color:#969a9b' ";
+					}
+				}
+				else
+				{
+                    if (($memberHasProgram) && ($memberHasProgram->privilege_level == 2))
+						$checked = " checked='checked' ";
+				}
+				echo '<li ' . $disabledStyle . ' class="programcb"><input type="checkbox" ' . $checked . $disabled . ' name="programcb" value="' . $program->id . '"> ' . $program->name . '</li>';
+			}
 			echo '  </ul></div>';
 		    $this->widget('bootstrap.widgets.TbButton', array(
 		        'buttonType'=>'submit',
@@ -58,7 +82,12 @@
 <script>
 function programButtonClick()
 {
-    return confirm('Create?');
+	url="/event/backend.php/event/create";
+	window.location.href = url;
+
+//var x = document.getElementByName("programcb").value;
+//alert(x);
+//return confirm('Create?');
 }
 </script>
 

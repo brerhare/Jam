@@ -9,8 +9,8 @@ class EventController extends Controller
 
 	public $createPrograms = 0;
 
-//public $layout='//layouts/columnEvent';
-	public $layout='//layouts/column2';
+	public $layout='//layouts/columnEvent';
+	//public $layout='//layouts/column2';
 
     private $_thumbDir = '/../userdata/event/thumb/';   // Note this is only partial. Gets prepended base path
 

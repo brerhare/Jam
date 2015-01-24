@@ -1,8 +1,9 @@
 {
   "dependencies": {
     "bootstrap-sass-official": "",
-    "angular-smart-table": ""
-    "toastr": ""
+    "angular-smart-table": "",
+    "toastr": "",
+    "angular-fcsa-number": ""
   },
   "devDependencies": {
   },
