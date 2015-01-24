@@ -17,7 +17,7 @@ return array(
     'viewPath' => $backend.'/views',
     'runtimePath' => $backend.'/runtime',
 
-	'name'=>'Wee Target Backend',
+	'name'=>'Wee Target Trade Backend',
 
 	// preloading 'log' component
 	// preloading 'bootstrap' component
