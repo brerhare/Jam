@@ -11,7 +11,7 @@ css.display = block
 
 	[contentframe]
 	css.display = block
-	css.width = 400px
+	css.width = 500px
 	css.margin-top = 400px
 	style.html.h1.color = yellow
 	style.html.h1.background-color = black
