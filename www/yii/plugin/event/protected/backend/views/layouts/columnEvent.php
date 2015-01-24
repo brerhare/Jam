@@ -64,15 +64,19 @@
 				}
 				echo '<li ' . $disabledStyle . ' class="programcb"><input type="checkbox" ' . $checked . $disabled . ' name="programcb" value="' . $program->id . '"> ' . $program->name . '</li>';
 			}
+			echo '<li style="padding-top:10px">';
+		    	$this->widget('bootstrap.widgets.TbButton', array(
+		        	'buttonType'=>'submit',
+        			'type'=>'primary',
+        			'label'=>'Create Event',
+        			'htmlOptions'=>array(
+						'style'=>'width:100%',
+            			'onClick'=>'js:return programButtonClick()',
+        			)
+    			));
+			echo '</li>';
+
 			echo '  </ul></div>';
-		    $this->widget('bootstrap.widgets.TbButton', array(
-		        'buttonType'=>'submit',
-        		'type'=>'primary',
-        		'label'=>'Create Event',
-        		'htmlOptions'=>array(
-            		'onClick'=>'js:return programButtonClick()',
-        		)
-    		));
 			echo '</div>';
 		}
 	?>
@@ -82,12 +86,27 @@
 <script>
 function programButtonClick()
 {
+	var cb = [];
+	var eleNodelist = document.getElementsByTagName("input");
+	for (i = 0; i < eleNodelist.length; i++) {
+		if ((eleNodelist[i].type == 'checkbox') && (eleNodelist[i].checked == true)) {
+			cb.push(eleNodelist[i].value);
+		}
+	}
+	// Set the cookie
+	cookieStr = "";
+	for (i = 0; i < cb.length; i++) {
+		if (i > 0)
+			cookieStr += '|';
+		cookieStr += cb[i];
+	}
+	validDays = 3;
+	var date = new Date();
+	date.setTime(date.getTime()+(validDays*24*60*60*1000));
+	var expires = "; expires="+date.toGMTString();
+    document.cookie = "createEventPrograms" + "=" + cookieStr + expires +"; path=/";
 	url="/event/backend.php/event/create";
 	window.location.href = url;
-
-//var x = document.getElementByName("programcb").value;
-//alert(x);
-//return confirm('Create?');
 }
 </script>
 
