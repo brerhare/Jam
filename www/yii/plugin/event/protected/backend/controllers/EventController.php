@@ -225,19 +225,25 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 			$model->ticket_event_id = 0;
 			$model->isNewRecord = true;
 
-			// Copy program inclusions
-			$criteria = new CDbCriteria;
-			$criteria->condition="event_event_id = $originalId";
-			$eventHasPrograms=EventHasProgram::model()->findAll($criteria);
-			foreach ($eventHasPrograms as $eventHasProgram)
+			if ($model->insert())
 			{
-				$data = new EventHasProgram;
-				$data->event_event_id = $model->id;
-				$data->program_id = $eventHasProgram->program_id;
-				$data->save();
-			}
 
-			if (($model->insert()) && ($this->isWildSeasons($id)))
+				// Copy program inclusions
+				$criteria = new CDbCriteria;
+				$criteria->condition="event_event_id = $originalId";
+				$eventHasPrograms=EventHasProgram::model()->findAll($criteria);
+				foreach ($eventHasPrograms as $eventHasProgram)
+				{
+					$data = new EventHasProgram;
+					$data->event_event_id = $model->id;
+					$data->program_id = $eventHasProgram->program_id;
+					$data->save();
+				}
+			}
+			else
+				throw new CHttpException(500,'Could not save new model() in clone');
+
+			if ($this->isWildSeasons($id))
 			{
 				$criteria = new CDbCriteria;
 				$criteria->condition="event_id = $originalId";

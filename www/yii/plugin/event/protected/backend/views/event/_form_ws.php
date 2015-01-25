@@ -7,6 +7,9 @@
 
 	<?php //echo $form->textFieldRow($model2,'grade',array('class'=>'span2','maxlength'=>255)); ?>
 
+	<?php if ($model2->isNewRecord)
+		$model2->grade = 'Easy';
+	?>
     <?php echo $form->dropDownListRow($model2,'grade', array('Easy'=>'Easy', 'Medium'=>'Medium', 'Family'=>'Family'),  array('empty'=>'Choose') ); ?>
 
 
