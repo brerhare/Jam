@@ -1,28 +1,22 @@
 <?php
 
-// Determine which version of the controller to load. The logged in member might be locked to a program
-
-$member=Member::model()->findByPk(Yii::app()->session['eid']);
-Yii::app()->session['pid'] = 0;
-if ($member != null)
-{
-	Yii::app()->session['pid'] = $member->lock_program_id;
-	if ($member->lock_program_id == 6)	// WS Wild Seasons
-		require 'EventController_wildseasons_co_uk.php';
-	else
-		require 'EventController_default.php';
-}
-else
-	throw new CHttpException(400, 'The request cannot be fulfilled. Please logout and login again');
-
-//die('pid='.Yii::app()->session['pid']);
+/*
+	$member=Member::model()->findByPk(Yii::app()->session['eid']);
+	Yii::app()->session['pid'] = 0;
+	if ($member != null)
+	{
+		Yii::app()->session['pid'] = $member->lock_program_id;
+		eventController = new EventController;
+	}
+	//else
+		//throw new CHttpException(400, 'The request cannot be fulfilled. Please logout and login again');
+*/
 
 //------------------------------------------------------------------------------------------------------
 
-<?php
-
 class EventController extends Controller
 {
+
 	/**
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
@@ -52,17 +46,19 @@ class EventController extends Controller
 	 */
 	public function accessRules()
 	{
+		$this->setDefaultProgram();	// @@TODO this being here is a kludge. Should be in a constructor
+
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view', 'import'),
+				'actions'=>array('index','view'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','import','admin','delete','clone','imageUpload','imageList'),
+				'actions'=>array('create','update','admin','delete','clone','imageUpload','imageList'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','import','clone','imageUpload','imageList'),
+				'actions'=>array('admin','delete','clone','imageUpload','imageList'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -91,11 +87,15 @@ class EventController extends Controller
         Yii::log("CREATE EVENT ----- start " , CLogger::LEVEL_WARNING, 'system.test.kim');
         $iDir = $this->getThumbDir();
         $model=new Event;
+$model->program_id = Yii::app()->session['pid'];	// @TODO This is filled simply because cant be null. Not used, in favour of EventHasProgram
+													// @TODO Both the program_id field and 'pid' session var can go
 	//$model->approved = $this->askApproval();
 
-        $model2=new Ws;
-        $model2->booking_essential = 1;
-
+		if ($this->creatingWildSeasons())
+		{
+        	$model2=new Ws;
+        	$model2->booking_essential = 1;
+		}
         $model->member_id = Yii::app()->session['eid'];
 $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval line
         $model->ticket_event_id = 1;	// Default to 'yes'
@@ -108,7 +108,8 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
         	Yii::log("CREATE EVENT ----- POST happened " , CLogger::LEVEL_WARNING, 'system.test.kim');
             $model->attributes=$_POST['Event'];
             $model->thumb_path=CUploadedFile::getInstance($model, 'thumb_path');
-			$model2->attributes=$_POST['Ws'];
+			if ($this->creatingWildSeasons())
+				$model2->attributes=$_POST['Ws'];
 			//$model2->event_id = $model->id;
 
             if($model->save())
@@ -118,21 +119,24 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
                 $this->updateProductCheckboxes($model->id);
 
             	$modelId = $model->id;	// Store for later
-            	// Save Ws fields too
-            	$model2->attributes=$_POST['Ws'];
-            	$model2->event_id = $model->id;
-            	if (!($model2->save()))
-            	{
-        			Yii::log("CREATE EVENT ----- UNsuccessful model2->save() " , CLogger::LEVEL_WARNING, 'system.test.kim');
-	            	$this->deleteProductCheckboxes($model->id);
-            		$model->delete();
-            		$this->render('create',array(
-            			'model'=>$model,
-            			'model2'=>$model2,
-            			'ticketUid'=>$this->getTicketUidFromEventSid(),	// Either a valid uid or -1
-        			));
-        			return;
-            	}
+				if ($this->creatingWildSeasons())
+				{
+            		// Save Ws fields too
+            		$model2->attributes=$_POST['Ws'];
+            		$model2->event_id = $model->id;
+            		if (!($model2->save()))
+            		{
+        				Yii::log("CREATE EVENT ----- UNsuccessful model2->save() " , CLogger::LEVEL_WARNING, 'system.test.kim');
+	            		$this->deleteProductCheckboxes($model->id);
+            			$model->delete();
+            			$this->render('create',array(
+            				'model'=>$model,
+            				'model2'=>$model2,
+            				'ticketUid'=>$this->getTicketUidFromEventSid(),	// Either a valid uid or -1
+        				));
+        				return;
+            		}
+				}
         		Yii::log("CREATE EVENT ----- successful model2->save() " , CLogger::LEVEL_WARNING, 'system.test.kim');
                 if (strlen($model->thumb_path) > 0)
                 {
@@ -172,10 +176,21 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 	        	    	}
 	            	}
 	            }
-        		Yii::log("CREATE EVENT ----- end of create " , CLogger::LEVEL_WARNING, 'system.test.kim');
+				// Now add key records for each program this event wants to appear on
+				$ckArr = explode('|', Yii::app()->request->cookies['createEventPrograms']->value);
+				foreach ($ckArr as $ckItem) {
+					$eventHasProgram = new EventHasProgram;
+					$eventHasProgram->program_id = $ckItem;
+					$eventHasProgram->event_event_id = $model->id;
+					$eventHasProgram->save();
+				}
+        		Yii::log("CREATE EVENT ----- end of event records for create " , CLogger::LEVEL_WARNING, 'system.test.kim');
                 $this->redirect(array('admin'));
-            }
+           	}
         }
+
+		if (!$this->creatingWildSeasons())
+			$model2 = '';
 
         $this->render('create',array(
             'model'=>$model,
@@ -209,7 +224,20 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 			}
 			$model->ticket_event_id = 0;
 			$model->isNewRecord = true;
-			if ($model->insert())
+
+			// Copy program inclusions
+			$criteria = new CDbCriteria;
+			$criteria->condition="event_event_id = $originalId";
+			$eventHasPrograms=EventHasProgram::model()->findAll($criteria);
+			foreach ($eventHasPrograms as $eventHasProgram)
+			{
+				$data = new EventHasProgram;
+				$data->event_event_id = $model->id;
+				$data->program_id = $eventHasProgram->program_id;
+				$data->save();
+			}
+
+			if (($model->insert()) && ($this->isWildSeasons($id)))
 			{
 				$criteria = new CDbCriteria;
 				$criteria->condition="event_id = $originalId";
@@ -259,7 +287,7 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 						$data->save();
 					}
 				}
-			}
+			}	// end of if insert && ws
 		}
 		$this->redirect(array('admin'));
 	}
@@ -274,19 +302,23 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
         Yii::log("UPDATE EVENT ----- start. id = " . $id , CLogger::LEVEL_WARNING, 'system.test.kim');
         $iDir = $this->getThumbDir();
         $model=$this->loadModel($id);
-		$criteria = new CDbCriteria;
-		$criteria->condition="event_id = $model->id";
-        $model2=Ws::model()->find($criteria);
-        if (!($model2))
-        {
-        	Yii::log("UPDATE EVENT ----- loading up. id = " . $id . " no model2. Creating one " , CLogger::LEVEL_WARNING, 'system.test.kim');
-        	//die('Couldnt find event matching Ws record for update for event id ' . $id . ' Please report this error');
-			$model2 = new Ws;
-			$model2->event_id = $model->id;
-			$model2->os_grid_ref = 'none';
-			$model2->grade = 'Easy';
-			$model2->save();
-        }
+
+		if ($this->isWildSeasons($id))
+		{
+			$criteria = new CDbCriteria;
+			$criteria->condition="event_id = $model->id";
+        	$model2=Ws::model()->find($criteria);
+        	if (!($model2))
+        	{
+        		Yii::log("UPDATE EVENT ----- loading up. id = " . $id . " no model2. Creating one " , CLogger::LEVEL_WARNING, 'system.test.kim');
+        		//die('Couldnt find event matching Ws record for update for event id ' . $id . ' Please report this error');
+				$model2 = new Ws;
+				$model2->event_id = $model->id;
+				$model2->os_grid_ref = 'none';
+				$model2->grade = 'Easy';
+				$model2->save();
+        	}
+		}
 
         // Uncomment the following line if AJAX validation is needed
         // $this->performAjaxValidation($model);
@@ -318,15 +350,15 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 
             	$modelId = $model->id;	// Store for later
 
-            	// Save Ws fields too
-            	$model2->attributes=$_POST['Ws'];
-            	$model2->event_id = $model->id;
-            	Yii::log("UPDATE EVENT ----- about to do model2->save() " , CLogger::LEVEL_WARNING, 'system.test.kim');
-            	$model2->save();
-            	Yii::log("UPDATE EVENT ----- did model2->save(). Finished " , CLogger::LEVEL_WARNING, 'system.test.kim');
-
-
-
+				if ($this->isWildSeasons($id))
+				{
+            		// Save Ws fields too
+            		$model2->attributes=$_POST['Ws'];
+            		$model2->event_id = $model->id;
+            		Yii::log("UPDATE EVENT ----- about to do model2->save() " , CLogger::LEVEL_WARNING, 'system.test.kim');
+            		$model2->save();
+            		Yii::log("UPDATE EVENT ----- did model2->save(). Finished " , CLogger::LEVEL_WARNING, 'system.test.kim');
+				}
 
 	            // Do we need to create a ticket event too?
 	            // @@EG Check softlink name for model, this is our standard naming
@@ -363,14 +395,12 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 	            	}
 	            }
 
-
-
-
-
-
                 $this->redirect(array('admin'));
             }
         }
+
+		if (!$this->isWildSeasons($id))
+			$model2 = '';
 
         $this->render('update',array(
             'model'=>$model,
@@ -400,20 +430,34 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
                     unlink($iDir . $model->thumb_path);
             }
 			Yii::log("DELETE EVENT ----- about to delete productcheckboxes " , CLogger::LEVEL_WARNING, 'system.test.kim');
+
+			// Delete related event checkbox records
             $this->deleteProductCheckboxes($model->id);
+
+			if ($this->isWildSeasons($id))
+			{
+				$criteria = new CDbCriteria;
+				$criteria->condition="event_id = $id";
+   				$model2=Ws::model()->find($criteria);
+    	    	if (!($model2))
+    	    		Yii::log("DELETE EVENT ----- NO MATCHINV WS RECORD TO DELETE (ignoring this error)" , CLogger::LEVEL_WARNING, 'system.test.kim');
+    	    	else
+    	    	{
+	        		$model2->delete();
+	        		Yii::log("DELETE EVENT ----- deleteing matching WS record " , CLogger::LEVEL_WARNING, 'system.test.kim');
+    	    	}
+			}
+
+			// Delete program inclusion records
+			$criteria = new CDbCriteria;
+			$criteria->condition="event_event_id = $id";
+			$eventHasPrograms=EventHasProgram::model()->findAll($criteria);
+			foreach ($eventHasPrograms as $eventHasProgram)
+				$eventHasProgram->delete();
+
            	Yii::log("DELETE EVENT ----- about to delete model() " . CLogger::LEVEL_WARNING, 'system.test.kim');
 			$model->delete();
 
-			$criteria = new CDbCriteria;
-			$criteria->condition="event_id = $id";
-   			$model2=Ws::model()->find($criteria);
-    	    if (!($model2))
-    	    	Yii::log("DELETE EVENT ----- NO MATCHINV WS RECORD TO DELETE (ignoring this error)" , CLogger::LEVEL_WARNING, 'system.test.kim');
-    	    else
-    	    {
-	        	$model2->delete();
-	        	Yii::log("DELETE EVENT ----- deleteing matching WS record " , CLogger::LEVEL_WARNING, 'system.test.kim');
-    	    }
 			Yii::log("DELETE EVENT ----- finished " , CLogger::LEVEL_WARNING, 'system.test.kim');
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
@@ -451,196 +495,7 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 		));
 	}
 
-	/**
-	 * Import an event
-	 */
-	public function actionImport()
-	{
-/*
-+-----------------+--------------+------+-----+---------+----------------+
-| Field           | Type         | Null | Key | Default | Extra          |
-+-----------------+--------------+------+-----+---------+----------------+
-| id              | int(11)      | NO   | PRI | NULL    | auto_increment |
-| user_name       | varchar(255) | NO   | UNI | NULL    |                |
-| password        | varchar(255) | NO   |     | NULL    |                |
-| first_name      | varchar(255) | NO   |     | NULL    |                |
-| last_name       | varchar(255) | NO   |     | NULL    |                |
-| telephone       | varchar(45)  | YES  |     | NULL    |                |
-| email_address   | varchar(255) | NO   |     | NULL    |                |
-| organisation    | varchar(255) | YES  |     | NULL    |                |
-| join_date       | date         | NO   |     | NULL    |                |
-| last_login_date | date         | NO   |     | NULL    |                |
-| captcha         | varchar(45)  | YES  |     | NULL    |                |
-+-----------------+--------------+------+-----+---------+----------------+
-
-		$file = "/tmp/ws-member.csv";
-		$row = 0;
-		if (($handle = fopen($file, "r")) === FALSE)
-			die("Cant open $file");
-		while (($data = fgetcsv($handle, 1000, ",")) !== FALSE)
-		{
-	// Ignore header line
-        	if ($row == 0)
-        	{
-            	$row++;
-           		continue;
-        	}
-        	if ($row == 1)
-        	{
-        		$row++;
-        		continue;
-        	}
-			$member = new Member;
-			$member->user_name = $data[1];
-			$member->password = $data[1];
-			$member->first_name = $data[2];
-			$member->last_name = $data[2];
-			$member->telephone = $data[4];
-			$member->email_address = $data[3];
-			$member->organisation = $data[1];
-			$member->join_date = '2013-10-10';
-			$member->last_login_date = '2013-10-10';
-			$member->captcha = '';
-
-			if (!($member->save()))
-				die("Member save failed on line " . $row);
-		}
-		return;
-*/
-
-Yii::log("IMPORT ----- opening file" , CLogger::LEVEL_WARNING, 'system.test.kim');
-		$file = "/tmp/ws.csv";
-		$row = 0;
-		if (($handle = fopen($file, "r")) === FALSE)
-			die("Cant open $file");
-Yii::log("IMPORT ----- file opened ok" , CLogger::LEVEL_WARNING, 'system.test.kim');
-$lc = 0;
-    	while (($data = fgetcsv($handle, 1000, ",")) !== FALSE)
-    	{
-        	// Ignore header line
-        	if ($row == 0)
-        	{
-            	$row++;
-           		continue;
-        	}
-        	if ($row == 1)
-        	{
-        		$row++;
-        		continue;
-        	}
-$lc++;
-Yii::log("IMPORT ----- got record " . $lc, CLogger::LEVEL_WARNING, 'system.test.kim');
-
-        	// Init db fields
-        	$event = new Event;
-        	$ws = new Ws;
-
-        	$num = count($data);
-        	//echo "<p> $num fields in line $row: <br /></p>\n";
-        	for ($c = 0; $c < $num; $c++)
-        	{
-            	//echo $data[$c] . "<br />\n";
-        		switch ($c)
-        		{
-        			case 0: // title
-        				$event->title = $data[$c];
-        				echo $event->title . "<br>";
-        				break;
-        			case 1: // interest
-						break;
-					case 2: // type
-						break;
-					case 3: // start date
-						$dt = $data[$c] . ' ' . $data[$c+1];
-						$date = str_replace('/', '-', $dt);
-						echo date('Y-m-d H:i:s', strtotime($date)) . "<br>";
-						$event->start = date('Y-m-d H:i:s', strtotime($date));
-						break;
-					case 5: // start date
-						$dt = $data[$c] . ' ' . $data[$c+1];
-						$date = str_replace('/', '-', $dt);
-						//echo date('Y-m-d H:i:s', strtotime($date)) . "<br>";
-						$event->end = date('Y-m-d H:i:s', strtotime($date));
-						break;
-					case 7: // address
-						$event->address = $data[$c];
-						break;
-					case 8: // post code
-						$event->post_code = $data[$c];
-						break;
-					case 9: // web
-						$event->web = $data[$c];
-						break;
-					case 10: // price band
-						break;
-					case 11: // contact
-						$event->contact = $data[$c];
-						break;
-					case 12: // description
-						$event->description = $data[$c];
-						break;
-// -----------------------------------------------------------------------------
-					case 13:
-						if ((strtoupper($data[$c]) == 'YES') || (strtoupper($data[$c]) == 'Y'))
-							$ws->booking_essential = 1;
-						break;
-					case 14:
-						$ws->os_grid_ref = $data[$c];
-						break;
-					case 15:
-						$ws->grade = $data[$c];
-						break;
-					case 16:
-						if ((strtoupper($ws->wheelchair_accessible) == 'YES') || (strtoupper($ws->wheelchair_accessible) == 'Y'))
-						$ws->wheelchair_accessible = 1;
-						break;
-					case 17:
-						if ($ws->min_age)
-							$ws->min_age = $data[$c];
-						break;
-					case 18:
-						if ($ws->max_age)
-						$ws->max_age = $data[$c];
-						break;
-					case 19:
-						$ws->child_ages_restrictions = $data[$c];
-						break;
-					case 20:
-						$criteria = new CDbCriteria;
-						$criteria->addCondition("organisation = '" . $data[$c] . "'");
-						$member = Member::model()->find($criteria);
-						if (!($member))
-							die("Organisation field could not identify a member");
-						$event->member_id = $member->id;
-						break;
-					case 21:
-						$ws->full_price_notes = $data[$c];
-						break;
-					case 22:
-						$ws->additional_venue_info = $data[$c];
-						break;
-					case 23:
-						$ws->short_description = $data[$c];
-						break;
-				}
-			}
-Yii::log("IMPORT ----- about to insert db record " . $lc, CLogger::LEVEL_WARNING, 'system.test.kim');
-// @@TODO: REMOVE HARD CODING!
-			//$event->member_id = 7;
-			$event->program_id = 6;
-			if (!($event->save()))
-				die("Event save failed on line " . $row);
-			$ws->event_id = $event->id;
-			echo $ws->event_id . "<br>";
-			if (!($ws->save()))
-				die("Event additional info save failed on line " . $row);
-Yii::log("IMPORT ----- inserted db record " . $lc, CLogger::LEVEL_WARNING, 'system.test.kim');
-			$row++;
-		}
-	}
-
-	/**
-	 * Returns the data model based on the primary key given in the GET variable.
+	 /* Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the ID of the model to be loaded
 	 */
@@ -665,13 +520,39 @@ Yii::log("IMPORT ----- inserted db record " . $lc, CLogger::LEVEL_WARNING, 'syst
 		}
 	}
 
-	// Check whether this is a wild seasons program (true or false)
-	protect function isWildSeasons()
+	// Check whether we are creating a wild seasons program (true or false)
+	protected function creatingWildSeasons()
 	{
 		// eg 6 or 6|13 or 6|13|52 etc
-		$ck = Yii::app()->request->cookies['createEventPrograms']->value;
-		$ckArr = explode('|', $ck);
-		return in_array('|', $ckArr);
+		if (Yii::app()->request->cookies['createEventPrograms'])
+			return in_array('6',  explode('|', Yii::app()->request->cookies['createEventPrograms']->value));
+		else
+			return false;
+	}
+
+	// Check whether we are updating/deleting/cloning a wild seasons program (true or false)
+	protected function isWildSeasons($id)
+	{
+		$criteria = new CDbCriteria;
+		$criteria->condition="event_event_id = $id";
+		$eventHasPrograms=EventHasProgram::model()->findAll($criteria);
+		foreach ($eventHasPrograms as $eventHasProgram)
+		{
+			if ($eventHasProgram->program_id == 6)	// WS
+				return true;
+		}
+		return false;
+	}
+
+	// Set the default (lock) program for this member
+	protected function setDefaultProgram()
+	{
+		$member=Member::model()->findByPk(Yii::app()->session['eid']);
+		Yii::app()->session['pid'] = 0;
+		if ($member != null)
+			Yii::app()->session['pid'] = $member->lock_program_id;
+		else
+			throw new CHttpException(400, 'The request cannot be fulfilled. Please logout and login again');
 	}
 
 	// Check whether this member has a valid SID on their member profile

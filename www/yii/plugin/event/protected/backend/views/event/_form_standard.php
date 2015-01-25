@@ -5,9 +5,9 @@
 	<?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>255)); ?>
 
 	<?php
-		$criteria = new CDbCriteria;
-		$criteria->addCondition("id = "  . Yii::app()->session['pid']); // Ony see the lock_program program
-		echo $form->dropDownListRow($model,'program_id', CHtml::listData(Program::model()->findAll($criteria), 'id', 'name'));
+		//$criteria = new CDbCriteria;
+		//$criteria->addCondition("id = "  . Yii::app()->session['pid']); // Ony see the lock_program program
+		//echo $form->dropDownListRow($model,'program_id', CHtml::listData(Program::model()->findAll($criteria), 'id', 'name'));
 	?>
 
 <!------------------------------------------ @@EG: dropdown date starts ------------------------------------------->
@@ -161,7 +161,8 @@
 	<?php //echo $form->textFieldRow($model,'member_id',array('class'=>'span5')); ?>
 	<div class="form-actions">
 		<?php
-		if (Yii::app()->session['pid'] == 6)	// WS Wild Seasons
+		if ($this->creatingWildSeasons())
+		//if (Yii::app()->session['pid'] == 6)	// WS Wild Seasons
 		{
 			$this->widget('bootstrap.widgets.TbButton', array(
 				'buttonType'=>'submit',

@@ -7,7 +7,14 @@
 )); ?>
 
 <?php
-if (Yii::app()->session['pid'] == 6)	// WS Wild Seasons
+
+$wsFlag = 0;
+if (($model->isNewRecord) && ($this->creatingWildSeasons()))
+	$wsFlag = 1;
+if ((!($model->isNewRecord)) && ($this->isWildSeasons($model->id)))
+	$wsFlag = 1;
+
+if ($wsFlag)
 {
 	$this->widget('bootstrap.widgets.TbTabs',array(
     	'type'=>'tabs',
