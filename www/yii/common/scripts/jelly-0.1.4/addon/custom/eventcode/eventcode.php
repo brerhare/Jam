@@ -111,7 +111,14 @@ class eventcode
 			// Check if we are filtering program
 			if ($this->programId != 0)
 			{
-				if ($event->program_id != $this->programId)
+				// Check this event should appear in the selected program
+				$criteria = new CDbCriteria;
+        		$criteria->addCondition("event_event_id = " .  $event->id);
+        		$criteria->addCondition("program_id = " . $this->programId);
+				$eventHasProgram=EventHasProgram::model()->find($criteria);
+				if (!($eventHasProgram))
+					continue;
+				if (!($eventHasProgram->approved))
 					continue;
 			}
 			else
@@ -119,10 +126,19 @@ class eventcode
 				if ((isset($_GET['program'])) && trim($_GET['program'] != ''))
 				{
 					$showProgram = trim($_GET['program']);
-					if ($event->program_id != $showProgram)
+
+					// Check this event should appear in the selected program
+					$criteria = new CDbCriteria;
+        			$criteria->addCondition("event_event_id = " .  $event->id);
+        			$criteria->addCondition("program_id = " . $showProgram);
+					$eventHasProgram=EventHasProgram::model()->find($criteria);
+					if (!($eventHasProgram))
+						continue;
+					if (!($eventHasProgram->approved))
 						continue;
 				}
 			}
+
 			// Pick up the Ws record
 			$criteria = new CDbCriteria;
 			$criteria->condition = "event_id = " . $event->id;
@@ -249,7 +265,14 @@ class eventcode
 			// Check if we are filtering program
 			if ($this->programId != 0)
 			{
-				if ($event->program_id != $this->programId)
+				// Check this event should appear in the selected program
+				$criteria = new CDbCriteria;
+       			$criteria->addCondition("event_event_id = " .  $event->id);
+       			$criteria->addCondition("program_id = " . $this->programId);
+				$eventHasProgram=EventHasProgram::model()->find($criteria);
+				if (!($eventHasProgram))
+					continue;
+				if (!($eventHasProgram->approved))
 					continue;
 			}
 			else
@@ -258,6 +281,16 @@ class eventcode
 				{
 					$showProgram = trim($_GET['program']);
 					if ($event->program_id != $showProgram)
+						continue;
+
+					// Check this event should appear in the selected program
+					$criteria = new CDbCriteria;
+        			$criteria->addCondition("event_event_id = " .  $event->id);
+        			$criteria->addCondition("program_id = " . $showProgram);
+					$eventHasProgram=EventHasProgram::model()->find($criteria);
+					if (!($eventHasProgram))
+						continue;
+					if (!($eventHasProgram->approved))
 						continue;
 				}
 			}

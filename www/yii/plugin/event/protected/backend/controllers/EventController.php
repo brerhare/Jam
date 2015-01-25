@@ -1,19 +1,5 @@
 <?php
 
-/*
-	$member=Member::model()->findByPk(Yii::app()->session['eid']);
-	Yii::app()->session['pid'] = 0;
-	if ($member != null)
-	{
-		Yii::app()->session['pid'] = $member->lock_program_id;
-		eventController = new EventController;
-	}
-	//else
-		//throw new CHttpException(400, 'The request cannot be fulfilled. Please logout and login again');
-*/
-
-//------------------------------------------------------------------------------------------------------
-
 class EventController extends Controller
 {
 
@@ -84,20 +70,46 @@ class EventController extends Controller
 	 */
 	public function actionCreate()
 	{
+
+/*****
+				echo 'Doing... ';
+				$criteria = new CDbCriteria;
+				$events=Event::model()->findAll($criteria);
+				$irec = 0; $orec = 0; $drec = 0;
+				foreach ($events as $event)
+				{
+					$irec++;
+					$eventHasProgram = new EventHasProgram;
+					$eventHasProgram->program_id = $event->program_id;
+					$eventHasProgram->event_event_id = $event->id;
+					$eventHasProgram->approved = 1;
+					$eventHasProgram->save();
+					$orec++;
+					if ($event->program_id != 13)
+					{
+						$eventHasProgram = new EventHasProgram;
+						$eventHasProgram->program_id = 13;
+						$eventHasProgram->event_event_id = $event->id;
+						$eventHasProgram->approved = 1;
+						$eventHasProgram->save();
+						$drec++;
+					}
+				}
+				echo 'done : ' . $irec . ' : ' . $orec . ' : ' . $drec;
+				die;
+*****/
+
         Yii::log("CREATE EVENT ----- start " , CLogger::LEVEL_WARNING, 'system.test.kim');
         $iDir = $this->getThumbDir();
         $model=new Event;
 $model->program_id = Yii::app()->session['pid'];	// @TODO This is filled simply because cant be null. Not used, in favour of EventHasProgram
 													// @TODO Both the program_id field and 'pid' session var can go
-	//$model->approved = $this->askApproval();
-
 		if ($this->creatingWildSeasons())
 		{
         	$model2=new Ws;
         	$model2->booking_essential = 1;
 		}
         $model->member_id = Yii::app()->session['eid'];
-$model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval line
         $model->ticket_event_id = 1;	// Default to 'yes'
 
         // Uncomment the following line if AJAX validation is needed
@@ -182,7 +194,9 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 					$eventHasProgram = new EventHasProgram;
 					$eventHasProgram->program_id = $ckItem;
 					$eventHasProgram->event_event_id = $model->id;
+					$eventHasProgram->approved = 0;	// This might be changed by handleNewEventPermissions() a couple of lines down...
 					$eventHasProgram->save();
+					$this->handleNewEventPermissions($model->id, $ckItem);
 				}
         		Yii::log("CREATE EVENT ----- end of event records for create " , CLogger::LEVEL_WARNING, 'system.test.kim');
                 $this->redirect(array('admin'));
@@ -559,6 +573,68 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 			Yii::app()->session['pid'] = $member->lock_program_id;
 		else
 			throw new CHttpException(400, 'The request cannot be fulfilled. Please logout and login again');
+	}
+
+	// New event - autoapprove or notify needs approval
+	protected function handleNewEventPermissions($eventId, $programId)
+	{
+		// Get the members permissions for this program
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("event_member_id = " . Yii::app()->session['eid']);
+		$criteria->addCondition("event_program_id = " . $programId);
+		$memberHasProgram = MemberHasProgram::model()->find($criteria);
+		if (!($memberHasProgram))
+		{
+			// Create a no-privilege level 'joining' entry for this program if this is their 1st event for it
+			$memberHasProgram = new MemberHasProgram;
+			$memberHasProgram->event_member_id = Yii::app()->session['eid'];
+			$memberHasProgram->event_program_id = $programId;
+			$memberHasProgram->privilege_level = 0;
+			$memberHasProgram->save();
+		}
+		if ($memberHasProgram->privilege_level > 0)
+		{
+			// Is trusted or admin - set approved
+			$criteria = new CDbCriteria;
+			$criteria->condition="event_event_id = $eventId";
+			$criteria->condition="program_id = $programId";
+			$eventHasProgram = EventHasProgram::model()->find($criteria);
+			if ($eventHasProgram)
+			{
+				$eventHasProgram->approved = 1;
+				$eventHasProgram->save();
+			}
+			else
+				throw new CHttpException(400, 'Missing event-program for this event & program so unable to approve it for public visibility');
+			return;
+		}
+
+		// Unprivileged or new member to this program - send permission-request email to admin(s)
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("event_member_id != " . Yii::app()->session['eid']);
+		$criteria->addCondition("event_program_id = " . $programId);
+		$criteria->addCondition("privilege_level = 2");	//@@TODO Privilege hardcoded
+		$memberHasPrograms = MemberHasProgram::model()->findAll($criteria);
+		foreach ($memberHasProgram as $memberHasProgram)
+		{
+			// phpmailer
+			$member=Member::model()->findByPk($memberHasProgram->event_member_id);
+			if ($member == null)
+			{
+				Yii::log("REQUEST TO POST EVENT COULD NOT RETRIEVE ADMIN MEMBER RECORD" . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
+				return;
+			}
+			$mail = new PHPMailer();
+			$mail->AddAddress($to);
+			$mail->SetFrom($from, $fromName);
+			$mail->AddReplyTo($from, $fromName);
+			$mail->Subject = $subject;
+			$mail->MsgHTML($message);
+			if (!$mail->Send())
+				Yii::log("REQUEST TO POST EVENT COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
+			else
+				Yii::log("REQUEST TO POST EVENT SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+		}
 	}
 
 	// Check whether this member has a valid SID on their member profile
