@@ -304,6 +304,7 @@ CREATE TABLE IF NOT EXISTS `plugin`.`event_event_has_event_program` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `program_id` INT NOT NULL,
   `event_event_id` INT NOT NULL,
+  `approved` INT NULL,
   INDEX `fk_event_event_has_event_program_event_event1_idx` (`event_event_id` ASC),
   PRIMARY KEY (`id`),
   CONSTRAINT `fk_event_event_has_event_program_event_event1`
