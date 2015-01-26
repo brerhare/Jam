@@ -1,3 +1,12 @@
+	<?php
+		if (($this->updateAsAdmin) && (!($model->isNewRecord)))
+		{
+			echo $form->toggleButtonRow($model, 'approved' );
+			///// @@NB: the 'options' buggers Yii although docs say its right: .. echo $form->toggleButtonRow($model, 'approved' , array('options'=>array('enabledLabel'=>'Yes' , 'disabledLabel'=>'Yes')));
+		echo "<hr/>";
+		}
+	?>
+
 	<p class="help-block">Fields with <span class="required">*</span> are required.</p>
 
 	<?php echo $form->errorSummary($model); ?>
@@ -162,7 +171,6 @@
 	<div class="form-actions">
 		<?php
 		if ($this->creatingWildSeasons())
-		//if (Yii::app()->session['pid'] == 6)	// WS Wild Seasons
 		{
 			$this->widget('bootstrap.widgets.TbButton', array(
 				'buttonType'=>'submit',

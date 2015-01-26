@@ -58,8 +58,11 @@ class eventcode
 	// Invoked by index.jel to create the google map. Val is 'os' only at present
 	private function main_google_map($val)
 	{
-		require(Yii::app()->basePath . "/../scripts/jelly/addon/map/google_os/google_os.php");
 
+if ($this->programId == 12)
+	return;
+
+		require(Yii::app()->basePath . "/../scripts/jelly/addon/map/google_os/google_os.php");
 		$mapId = 'main_google_map';
 		$center = 'NX696834';
 		//$center = 'NX976762';
@@ -118,8 +121,6 @@ class eventcode
 				$eventHasProgram=EventHasProgram::model()->find($criteria);
 				if (!($eventHasProgram))
 					continue;
-				if (!($eventHasProgram->approved))
-					continue;
 			}
 			else
 			{
@@ -134,10 +135,18 @@ class eventcode
 					$eventHasProgram=EventHasProgram::model()->find($criteria);
 					if (!($eventHasProgram))
 						continue;
-					if (!($eventHasProgram->approved))
-						continue;
 				}
 			}
+
+			// Check this event is approved
+			$criteria = new CDbCriteria;
+ 			$criteria->addCondition("event_event_id = " .  $event->id);
+  			$criteria->addCondition("program_id = " . $this->programId != 0 ? $this->programId : 13);
+			$eventHasProgram=EventHasProgram::model()->find($criteria);
+			if (!($eventHasProgram))
+				continue;
+			if (!($eventHasProgram->approved))
+				continue;
 
 			// Pick up the Ws record
 			$criteria = new CDbCriteria;
@@ -272,8 +281,6 @@ class eventcode
 				$eventHasProgram=EventHasProgram::model()->find($criteria);
 				if (!($eventHasProgram))
 					continue;
-				if (!($eventHasProgram->approved))
-					continue;
 			}
 			else
 			{
@@ -290,10 +297,18 @@ class eventcode
 					$eventHasProgram=EventHasProgram::model()->find($criteria);
 					if (!($eventHasProgram))
 						continue;
-					if (!($eventHasProgram->approved))
-						continue;
 				}
 			}
+
+			// Check this event is approved
+			$criteria = new CDbCriteria;
+ 			$criteria->addCondition("event_event_id = " .  $event->id);
+  			$criteria->addCondition("program_id = " . $this->programId != 0 ? $this->programId : 13);
+			$eventHasProgram=EventHasProgram::model()->find($criteria);
+			if (!($eventHasProgram))
+				continue;
+			if (!($eventHasProgram->approved))
+				continue;
 
 			// Check text search
 			if ((isset($_GET['textsearch'])) && trim($_GET['textsearch'] != ''))
