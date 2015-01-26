@@ -27,7 +27,21 @@ $this->menu=array(
         ),
 
 		'start',
-		'active',
+		'active:boolean',
+
+
+/*
+'buttonID' => array
+(
+    'label'=>'...',     //Text label of the button.
+    'url'=>'...',       //A PHP expression for generating the URL of the button.
+    'imageUrl'=>'...',  //Image URL of the button.
+    'options'=>array(), //HTML options for the button tag.
+    'click'=>'...',     //A JS function to be invoked when the button is clicked.
+    'visible'=>'...',   //A PHP expression for determining whether the button is visible.
+),
+*/
+
 		//'end',
 		//'address',
 		//'post_code',
@@ -42,6 +56,7 @@ $this->menu=array(
 		*/
 		array(
             'class'=>'bootstrap.widgets.TbButtonColumn',
+///////////////////////////////			'htmlOptions' => array('style'=>'width:80px'),	// @@ CButtonColumn override width
             'template'=>'{update}{clone}{delete}',
             'buttons'=>array(
             	'clone' => array(

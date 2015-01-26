@@ -181,7 +181,7 @@ class Event extends CActiveRecord
 		//$criteria->compare('member_id',$this->member_id);
 */
 		$criteria->addCondition("event_member_id = " . Yii::app()->session['eid']);
-		$criteria->addCondition("privilege_level = " . 4);	//@@TODO Privilege level hardcoding
+		$criteria->addCondition("privilege_level = " . 2);	//@@TODO Privilege level hardcoding
 		$memberHasPrograms = MemberHasProgram::model()->findAll($criteria);
 		foreach ($memberHasPrograms as $memberHasProgram)
 		{
