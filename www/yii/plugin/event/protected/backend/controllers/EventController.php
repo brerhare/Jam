@@ -103,6 +103,7 @@ class EventController extends Controller
         Yii::log("CREATE EVENT ----- start " , CLogger::LEVEL_WARNING, 'system.test.kim');
         $iDir = $this->getThumbDir();
         $model=new Event;
+		$model->active = 1;
 $model->program_id = Yii::app()->session['pid'];	// @TODO This is filled simply because cant be null. Not used, in favour of EventHasProgram
 													// @TODO Both the program_id field and 'pid' session var can go
 		if ($this->creatingWildSeasons())
@@ -649,6 +650,7 @@ $model->program_id = Yii::app()->session['pid'];	// @TODO This is filled simply 
 			return;
 		}
 
+/*
 		// Unprivileged or new member to this program - send permission-request email to admin(s)
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("event_member_id != " . Yii::app()->session['eid']);
@@ -675,6 +677,8 @@ $model->program_id = Yii::app()->session['pid'];	// @TODO This is filled simply 
 			else
 				Yii::log("REQUEST TO POST EVENT SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
+*/
+
 	}
 
 	// Check whether this member has a valid SID on their member profile
