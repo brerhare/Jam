@@ -81,11 +81,6 @@ class MemberController extends Controller
 		if(isset($_POST['Member']))
 		{
 			$model->attributes=$_POST['Member'];
-
-			// ========================= Hardcoded to lock all new members to DG Link initially. Change lock_program_id by hand if necessary
-			$model->lock_program_id = 13;
-			// =========================
-
 			$model->avatar_path=CUploadedFile::getInstance($model, 'avatar_path');
 
 			// Check username doesnt already exist
@@ -125,6 +120,8 @@ class MemberController extends Controller
 				$this->redirect(array('site/index'));
 			}
 		}
+
+		$model->lock_program_id = 13;	// Default to DG Link.
 
 		$this->render('create',array(
 			'model'=>$model,

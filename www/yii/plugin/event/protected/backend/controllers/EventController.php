@@ -75,25 +75,26 @@ class EventController extends Controller
 /*****
 				echo 'Doing... ';
 				$criteria = new CDbCriteria;
-				$events=Event::model()->findAll($criteria);
+				$members=Member::model()->findAll($criteria);
 				$irec = 0; $orec = 0; $drec = 0;
-				foreach ($events as $event)
+				foreach ($members as $member)
 				{
+					if ($member->lock_program_id != 6)
+						continue;
 					$irec++;
-					$eventHasProgram = new EventHasProgram;
-					$eventHasProgram->program_id = $event->program_id;
-					$eventHasProgram->event_event_id = $event->id;
-					$eventHasProgram->approved = 1;
-					$eventHasProgram->save();
-					$orec++;
-					if ($event->program_id != 13)
+
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("event_member_id = $member->id");
+					$criteria->addConditio("event_program_id = 6");
+					$x=MemberHasProgram::model()->find($criteria);
+					if (!($x))
 					{
-						$eventHasProgram = new EventHasProgram;
-						$eventHasProgram->program_id = 13;
-						$eventHasProgram->event_event_id = $event->id;
-						$eventHasProgram->approved = 1;
-						$eventHasProgram->save();
-						$drec++;
+						$memberHasProgram = new MemberHasProgram;
+						$memberHasProgram->event_member_id = $member->id;
+						$memberHasProgram->event_program_id = 6;
+						$memberHasProgram->privilege_level = 1;
+						$memberHasProgram->save();
+						$orec++;
 					}
 				}
 				echo 'done : ' . $irec . ' : ' . $orec . ' : ' . $drec;

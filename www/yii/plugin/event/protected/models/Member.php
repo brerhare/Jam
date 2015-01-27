@@ -17,6 +17,7 @@
  * @property string $captcha
  * @property string $sid
  * @property string $avatar_path
+ * @property string $lock_program_id
  *
  * The followings are the available model relations:
  * @property EventEvent[] $eventEvents
@@ -50,7 +51,7 @@ class Member extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('user_name, password, first_name, last_name, email_address, join_date, last_login_date', 'required'),
+			array('user_name, password, first_name, last_name, email_address, join_date, last_login_date, lock_program_id', 'required'),
 			array('user_name, password, first_name, last_name, email_address, organisation, sid, avatar_path', 'length', 'max'=>255),
 			array('telephone, captcha', 'length', 'max'=>45),
 
@@ -71,7 +72,7 @@ class Member extends CActiveRecord
 
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, user_name, password, first_name, last_name, telephone, email_address, organisation, join_date, last_login_date, captcha, sid, avatar_path', 'safe', 'on'=>'search'),
+			array('id, user_name, password, first_name, last_name, telephone, email_address, organisation, join_date, last_login_date, captcha, sid, avatar_path, lock_program_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -107,6 +108,7 @@ class Member extends CActiveRecord
 			'captcha' => 'Captcha',
 			'sid' => 'SID for Ticketing',
 			'avatar_path' => 'Icon Path',
+			'lock_program_id' => 'Default Program',
 		);
 	}
 
@@ -134,6 +136,7 @@ class Member extends CActiveRecord
 		$criteria->compare('captcha',$this->captcha,true);
 		$criteria->compare('sid',$this->sid,true);
 		$criteria->compare('avatar_path',$this->avatar_path,true);
+		$criteria->compare('lock_program_id',$this->lock_program_id,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

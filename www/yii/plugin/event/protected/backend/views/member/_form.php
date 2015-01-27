@@ -30,6 +30,11 @@
 		echo $form->textFieldRow($model,'sid',array('class'=>'span3','maxlength'=>255));
 	?>
 
+	<?php
+		$criteria = new CDbCriteria;
+		echo $form->dropDownListRow($model,'lock_program_id', CHtml::listData(Program::model()->findAll($criteria), 'id', 'name'));
+	?>
+
 	    <div class="control-group">
     	<label class="control-label" for="avatar_path">Icon Path</label>
            	<div class="controls">
