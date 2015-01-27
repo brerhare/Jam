@@ -124,14 +124,28 @@ class basic
 					break;
 
 				case "menu-stretch":
-					$this->apiHtml = str_replace("<substitute-menu-stretch>",
-						"nav ul {
-							background: url('" . Yii::app()->baseUrl . $val . "');
-							background-size: 100%;
-							background-repeat: no-repeat;
-							size: 100%;
-						}",
-						$this->apiHtml);
+					if ($this->default_orientation != "horizontal")
+					{
+						$this->apiHtml = str_replace("<substitute-menu-stretch>",
+							"nav ul li {
+								background: url('" . Yii::app()->baseUrl . $val . "');
+								background-size: 100%;
+								background-repeat: no-repeat;
+								size: 100%;
+							}",
+							$this->apiHtml);
+					}
+					else
+					{
+						$this->apiHtml = str_replace("<substitute-menu-stretch>",
+							"nav ul {
+								background: url('" . Yii::app()->baseUrl . $val . "');
+								background-size: 100%;
+								background-repeat: no-repeat;
+								size: 100%;
+							}",
+							$this->apiHtml);
+					}
 					break;
 
 				case "menu-color":
@@ -167,10 +181,13 @@ class basic
 						$this->apiHtml);
 					break;
 
-				case "item-color":
+/* Top level hover settings */
+
+				case "item-color":	/* old */
+				case "menu-hover-background-color":
 					$vals = explode(" ", $val);
 					if (count($vals == 1)) array_push($vals, $vals[0]);
-					$this->apiHtml = str_replace("<substitute-item-color>",
+					$this->apiHtml = str_replace("<substitute-menu-hover-background-color>",
 						"nav ul li:hover {
 							background: " . $vals[0] . ";
 							background: linear-gradient(top, " . $vals[0] . " 0%, " . $vals[1] . " 100%);  
@@ -179,6 +196,38 @@ class basic
 						}",	
 						$this->apiHtml);
 					break;
+				case "item-text-color":	/* old */
+				case "menu-hover-text-color":
+					$this->apiHtml = str_replace("<substitute-menu-hover-text-color>",
+						"nav ul li:hover a {color: " . $val . " !important;}",
+						$this->apiHtml);
+					break;
+				case "menu-hover-background-image-stretch":
+					if ($this->default_orientation != "horizontal")
+					{
+						$this->apiHtml = str_replace("<substitute-menu-hover-image-stretch>",
+							"nav ul li:hover {
+								background: url('" . Yii::app()->baseUrl . $val . "');
+								background-size: 100%;
+								background-repeat: no-repeat;
+								size: 100%;
+							}",
+							$this->apiHtml);
+					}
+					else
+					{
+						$this->apiHtml = str_replace("<substitute-menu-hover-image-stretch>",
+							"nav ul li:hover {
+								background: url('" . Yii::app()->baseUrl . $val . "');
+								background-size: 100%;
+								background-repeat: no-repeat;
+								size: 100%;
+							}",
+							$this->apiHtml);
+					}
+					break;
+
+
 				case "subitem-color":
 					$vals = explode(" ", $val);
 					if (count($vals == 1)) array_push($vals, $vals[0]);
@@ -207,11 +256,6 @@ class basic
 				case "submenu-text-color":
 					$this->apiHtml = str_replace("<substitute-submenu-text-color>",
 						"nav ul li ul li a {color: " . $val . " !important;}",
-						$this->apiHtml);
-					break;
-				case "item-text-color":
-					$this->apiHtml = str_replace("<substitute-item-text-color>",
-						"nav ul li:hover a {color: " . $val . " !important;}",
 						$this->apiHtml);
 					break;
 				case "subitem-text-color":
@@ -279,8 +323,9 @@ class basic
 		$this->apiHtml = str_replace("<substitute-menu-text-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-menu-text-weight>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-submenu-text-color>", "", $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-item-color>", "", $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-item-text-color>", "", $this->apiHtml);		
+		$this->apiHtml = str_replace("<substitute-menu-hover-background-color>", "", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-hover-text-color>", "", $this->apiHtml);		
+		$this->apiHtml = str_replace("<substitute-menu-hover-image-stretch>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-subitem-color>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-subitem-text-color>", "", $this->apiHtml);		
 		$this->apiHtml = str_replace("<substitute-item-separator-color>", "", $this->apiHtml);
@@ -427,8 +472,9 @@ $criteria->order = "sequence ASC";
 		<substitute-submenu-text-color>
 		<substitute-submenu-color>
 		<substitute-submenu-opacity>
-		<substitute-item-color>
-		<substitute-item-text-color>
+		<substitute-menu-hover-background-color>
+		<substitute-menu-hover-text-color>
+		<substitute-menu-hover-image-stretch>
 		<substitute-subitem-color>
 		<substitute-subitem-text-color>
 		<substitute-item-separator-color>

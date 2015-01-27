@@ -88,13 +88,13 @@ css.display = block
 			css.z-index = 100
 
 	####### Top level basic settings ####
-		#addon.menu.basic.orientation = vertical
+		addon.menu.basic.orientation = vertical
 		addon.menu.basic.width = 130px
 		addon.menu.basic.height = 50px
 
 	####### Top level background settings (first colour is the top gradiation) ####
 		addon.menu.basic.menu-stretch = /img/menu.png
-		#addon.menu.basic.menu-color = white blue
+		addon.menu.basic.menu-color = transparent
 
 	####### Top level font settings ####
 		addon.menu.basic.font-size = 16px
@@ -103,8 +103,8 @@ css.display = block
 
 
 	####### Top level hover settings ####
-		addon.menu.basic.item-color = cyan
-		addon.menu.basic.item-text-color = blue
+		addon.menu.basic.menu-hover-text-color = blue
+		addon.menu.basic.menu-hover-background-image-stretch = /img/menu-hover.png
 
 
 	####### Second level background settings ####
