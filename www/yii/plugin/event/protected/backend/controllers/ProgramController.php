@@ -34,7 +34,7 @@ class ProgramController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','privilege','admin','delete','export'),
+				'actions'=>array('create','update','privilege','approve','admin','delete','export'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -216,6 +216,21 @@ class ProgramController extends Controller
 		}
 
 		$this->render('privilege',array(
+			'model'=>$model,
+		));
+	}
+
+	/**
+	 * Approve events
+	 */
+	public function actionApprove($id)
+	{
+		$model=new Program('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Program']))
+			$model->attributes=$_GET['Program'];
+
+		$this->render('adminApprove',array(
 			'model'=>$model,
 		));
 	}
