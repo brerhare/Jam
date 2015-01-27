@@ -219,9 +219,9 @@ class basic
 						$this->apiHtml = str_replace("<substitute-menu-hover-image-stretch>",
 							"nav ul li:hover {
 								background: url('" . Yii::app()->baseUrl . $val . "');
-								background-size: 100%;
+								Xbackground-size: 100%;
 								background-repeat: no-repeat;
-								size: 100%;
+								Xsize: 100%;
 							}",
 							$this->apiHtml);
 					}
