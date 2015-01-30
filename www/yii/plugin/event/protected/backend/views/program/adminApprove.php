@@ -1,20 +1,11 @@
-<?php
-
-$this->menu=array(
-	array('label'=>'Create Event','url'=>array('create')),
-);
-
-
-?>
-
-<h4>Manage Events</h4>
+<h4>Approve Events</h4>
 
 
 
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'event-grid',
-	'dataProvider'=>$model->search(),
-	////////////////////'dataProvider'=>$model->searchAllProgramsImAdminOrModFor(),
+	//'dataProvider'=>$model->search(),
+	'dataProvider'=>$model->searchSingleProgram($pid, 0),
 	//'filter'=>$model,
 	'columns'=>array(
 		'id',

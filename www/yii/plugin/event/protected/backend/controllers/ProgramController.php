@@ -225,13 +225,14 @@ class ProgramController extends Controller
 	 */
 	public function actionApprove($id)
 	{
-		$model=new Program('search');
+		$model=new Event('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Program']))
-			$model->attributes=$_GET['Program'];
+		if(isset($_GET['Event']))
+			$model->attributes=$_GET['Event'];
 
 		$this->render('adminApprove',array(
 			'model'=>$model,
+			'pid'=>$id,
 		));
 	}
 

@@ -85,7 +85,7 @@ $img = Yii::app()->request->baseUrl.'/userdata/program/icon/'.'ws-logo-sm.jpg';
             'buttons'=>array(
                 'approve' => array(
                     'label'=>'Approve event submissions',
-                    'imageUrl'=>Yii::app()->request->baseUrl.'/img/tick.jpg',
+                    'imageUrl'=>Yii::app()->request->baseUrl.'/img/list.png',
                     //'url'=>'Yii::app()->controller->createUrl("program/approve", array("product_id"=>$data->primaryKey))',
                     'url'=>'Yii::app()->controller->createUrl("program/approve/" . $data->primaryKey)',
                 ),
