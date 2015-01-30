@@ -24,7 +24,11 @@ $this->menu=array(
 			'htmlOptions' => array('style'=>'width:390px'),
         ),
 
-		'start',
+        array(
+            'name'  => 'Start',
+			'value'=> ' date("d-m-Y",strtotime($data->start))',
+        ),
+
 		'active:boolean',
 
 
@@ -63,7 +67,7 @@ $this->menu=array(
             	),
             	'clone' => array(
                 	'label'=>'Clone',
-                	'imageUrl'=>Yii::app()->request->baseUrl.'/img/copy.png',
+                	'imageUrl'=>Yii::app()->request->baseUrl.'/img/clone.jpg',
                 	'url'=>'Yii::app()->controller->createUrl("event/clone", array("id"=>$data->primaryKey))',
             	),
 

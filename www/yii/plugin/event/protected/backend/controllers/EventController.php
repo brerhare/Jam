@@ -254,6 +254,7 @@ $model->program_id = Yii::app()->session['pid'];	// @TODO This is filled simply 
 					$data = new EventHasProgram;
 					$data->event_event_id = $model->id;
 					$data->program_id = $eventHasProgram->program_id;
+					$data->approved = 0;
 					$data->save();
 				}
 			}

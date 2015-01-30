@@ -32,7 +32,11 @@ else
 			'htmlOptions' => array('style'=>'width:390px'),
         ),
 
-		'start',
+        array(
+            'name'  => 'Start',
+            'value'=> ' date("d-m-Y",strtotime($data->start))',
+        ),
+
 		'active:boolean',
 
 
@@ -69,12 +73,12 @@ else
                 	'label'=> $showType == 0 ? 'Approve' : 'Un-approve',
                     'icon'=>false,
                 	'imageUrl'=>$showType == 0 ? Yii::app()->request->baseUrl.'/img/tick.png' : Yii::app()->request->baseUrl.'/img/cross.png',
-                	'url'=>'Yii::app()->controller->createUrl("admin/toggleEventApproval", array("id"=>$data->primaryKey))',
+                	'url'=>'Yii::app()->controller->createUrl("program/ApproveToggle", array("id"=>$data->primaryKey ))',
             	),
             	'update' => array(
                 	'label'=> 'View',
                     'icon'=>false,
-                	'imageUrl'=>yii::app()->request->baseUrl.'/img/edit.png',
+                	'imageUrl'=>yii::app()->request->baseUrl.'/img/view.jpg',
                 	'url'=>'Yii::app()->controller->createUrl("event/update", array("id"=>$data->primaryKey,"updateMode"=>"view"))',
             	),
 			),
