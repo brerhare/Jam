@@ -33,10 +33,15 @@
 </div>
 
 	<div class="form-actions">
-		<?php $this->widget('bootstrap.widgets.TbButton', array(
+	<?php
+	if ($updateMode == "update")
+	{
+		 $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',
 			'type'=>'primary',
 			'label'=>$model2->isNewRecord ? 'Create' : 'Save',
-		)); ?>
+		));
+	}
+	?>
 	</div>
 

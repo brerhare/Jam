@@ -9,8 +9,6 @@ $this->menu=array(
 
 <h4>Manage Events</h4>
 
-
-
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'event-grid',
 	'dataProvider'=>$model->search(),
@@ -56,16 +54,24 @@ $this->menu=array(
 		*/
 		array(
             'class'=>'bootstrap.widgets.TbButtonColumn',
-///////////////////////////////			'htmlOptions' => array('style'=>'width:80px'),	// @@ CButtonColumn override width
+			'htmlOptions' => array('style'=>'width:80px'),	// @@ CButtonColumn override width
             'template'=>'{update}{clone}{delete}',
             'buttons'=>array(
+            	'update' => array(
+					'icon'=>false,
+                	'imageUrl'=>Yii::app()->request->baseUrl.'/img/edit.png',
+            	),
             	'clone' => array(
                 	'label'=>'Clone',
                 	'imageUrl'=>Yii::app()->request->baseUrl.'/img/copy.png',
                 	'url'=>'Yii::app()->controller->createUrl("event/clone", array("id"=>$data->primaryKey))',
             	),
-			),
 
+				'delete'=>array(
+					'icon'=>false,
+					'imageUrl'=>Yii::app()->request->baseUrl.'/img/cross.png',
+				),
+			),
         ),
 	),
 )); ?>

@@ -176,7 +176,10 @@ class Event extends CActiveRecord
 
 		// Now apply the conditions
 		$criteria=new CDbCriteria;
+		if ($flt == "")
+			$flt = "id = -1";
 		$criteria->addCondition($flt);
+		$criteria->addCondition("active = 1");
 
 //@@ EG: Ordering model records on the admin crud
         $criteria->order = "title ASC";

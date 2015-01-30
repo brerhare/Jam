@@ -1,18 +1,33 @@
-<h4>Approve Events</h4>
+<h4 style="display:inline">Approve Events</h4>
 
+<?php
+$selPending = "";
+$selApproved = "";
+if ($showType == '0')
+	$selPending = " selected";
+else
+	$selApproved = " selected";
+?>
+
+<div style="display:inline; padding-left:100px">
+<select onChange="document.location = this.value" value="GO">
+        <option value="/event/backend.php/program/approve/<?php echo $pid;?>" <?php echo $selPending;?> >Events pending approval</option>
+        <option value="/event/backend.php/program/approveShowApproved/<?php echo $pid;?>" <?php echo $selApproved;?> >Approved events</option>
+</select>
+</div>
 
 
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'event-grid',
 	//'dataProvider'=>$model->search(),
-	'dataProvider'=>$model->searchSingleProgram($pid, 0),
+	'dataProvider'=>$model->searchSingleProgram($pid, $showType),
 	//'filter'=>$model,
 	'columns'=>array(
 		'id',
 
         array(
             'name'  => 'title',
-            'value' => 'CHtml::link($data->title, Yii::app()->createUrl("event/update",array("id"=>$data->primaryKey)))',
+            'value' => 'CHtml::link($data->title, Yii::app()->createUrl("event/update",array("id"=>$data->primaryKey,"updateMode"=>"view")))',
             'type'  => 'raw',
 			'htmlOptions' => array('style'=>'width:390px'),
         ),
@@ -47,13 +62,20 @@
 		*/
 		array(
             'class'=>'bootstrap.widgets.TbButtonColumn',
-///////////////////////////////			'htmlOptions' => array('style'=>'width:80px'),	// @@ CButtonColumn override width
-            'template'=>'{update}{clone}{delete}',
+			'htmlOptions' => array('style'=>'width:80px'),	// @@ CButtonColumn override width
+            'template'=>'{approve}{update}',
             'buttons'=>array(
-            	'clone' => array(
-                	'label'=>'Clone',
-                	'imageUrl'=>Yii::app()->request->baseUrl.'/img/copy.png',
-                	'url'=>'Yii::app()->controller->createUrl("event/clone", array("id"=>$data->primaryKey))',
+            	'approve' => array(
+                	'label'=> $showType == 0 ? 'Approve' : 'Un-approve',
+                    'icon'=>false,
+                	'imageUrl'=>$showType == 0 ? Yii::app()->request->baseUrl.'/img/tick.png' : Yii::app()->request->baseUrl.'/img/cross.png',
+                	'url'=>'Yii::app()->controller->createUrl("admin/toggleEventApproval", array("id"=>$data->primaryKey))',
+            	),
+            	'update' => array(
+                	'label'=> 'View',
+                    'icon'=>false,
+                	'imageUrl'=>yii::app()->request->baseUrl.'/img/edit.png',
+                	'url'=>'Yii::app()->controller->createUrl("event/update", array("id"=>$data->primaryKey,"updateMode"=>"view"))',
             	),
 			),
 

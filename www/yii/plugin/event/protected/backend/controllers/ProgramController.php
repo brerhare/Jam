@@ -34,7 +34,7 @@ class ProgramController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','privilege','approve','admin','delete','export'),
+				'actions'=>array('create','update','privilege','approve','approveShow','approveShowApproved', 'admin','delete','export'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -221,9 +221,25 @@ class ProgramController extends Controller
 	}
 
 	/**
-	 * Approve events
+	 * Approve events - show unapproved events
 	 */
 	public function actionApprove($id)
+	{
+		return $this->actionApproveShow($id, 0);
+	}
+
+	/**
+	 * Approve events - show approved events
+	 */
+	public function actionApproveShowApproved($id)
+	{
+		return $this->actionApproveShow($id, 1);
+	}
+
+	/**
+	 * Approve events - show 
+	 */
+	public function actionApproveShow($id, $show)
 	{
 		$model=new Event('search');
 		$model->unsetAttributes();  // clear any default values
@@ -233,6 +249,7 @@ class ProgramController extends Controller
 		$this->render('adminApprove',array(
 			'model'=>$model,
 			'pid'=>$id,
+			'showType'=>$show,
 		));
 	}
 

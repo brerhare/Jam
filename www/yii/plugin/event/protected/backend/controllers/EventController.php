@@ -322,6 +322,10 @@ $model->program_id = Yii::app()->session['pid'];	// @TODO This is filled simply 
 	 */
 	public function actionUpdate($id)
 	{
+		$updateMode = "update";
+        if(isset($_GET['updateMode']))
+			$updateMode = $_GET['updateMode'];	// "view" - called by ProgramController approvals to view an event
+
         Yii::log("UPDATE EVENT ----- start. id = " . $id , CLogger::LEVEL_WARNING, 'system.test.kim');
         $iDir = $this->getThumbDir();
         $model=$this->loadModel($id);
@@ -467,6 +471,7 @@ $model->program_id = Yii::app()->session['pid'];	// @TODO This is filled simply 
         $this->render('update',array(
             'model'=>$model,
             'model2'=>$model2,
+            'updateMode'=>$updateMode,
             'ticketUid'=>$this->getTicketUidFromEventSid(),	// Either a valid uid or -1
         ));
 	}
