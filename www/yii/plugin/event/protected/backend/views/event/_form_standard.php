@@ -161,7 +161,7 @@
 	<?php //echo $form->textFieldRow($model,'member_id',array('class'=>'span5')); ?>
 	<div class="form-actions">
 <?php
-	if ($updateMode == "update")
+	if (($updateMode == "update") || ($updateMode == "create"))
 	{
 		if ($this->creatingWildSeasons())
 		{

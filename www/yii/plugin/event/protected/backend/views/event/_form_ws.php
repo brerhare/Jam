@@ -34,7 +34,7 @@
 
 	<div class="form-actions">
 	<?php
-	if ($updateMode == "update")
+	if (($updateMode == "update") || ($updateMode == "create"))
 	{
 		 $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',

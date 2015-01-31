@@ -37,15 +37,15 @@ class EventController extends Controller
 
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view','approveResponse'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','delete','clone','imageUpload','imageList'),
+				'actions'=>array('create','update','admin','delete','clone','approveResponse','imageUpload','imageList'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','clone','imageUpload','imageList'),
+				'actions'=>array('admin','delete','clone','approveResponse','imageUpload','imageList'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -101,6 +101,7 @@ class EventController extends Controller
 				die;
 *****/
 
+		$updateMode = "create";
         Yii::log("CREATE EVENT ----- start " , CLogger::LEVEL_WARNING, 'system.test.kim');
         $iDir = $this->getThumbDir();
         $model=new Event;
@@ -212,6 +213,7 @@ $model->program_id = Yii::app()->session['pid'];	// @TODO This is filled simply 
         $this->render('create',array(
             'model'=>$model,
             'model2'=>$model2,
+            'updateMode'=>$updateMode,
             'ticketUid'=>$this->getTicketUidFromEventSid(),	// Either a valid uid or -1
         ));
 	}
@@ -428,7 +430,11 @@ $model->program_id = Yii::app()->session['pid'];	// @TODO This is filled simply 
 				$criteria->addCondition("event_event_id = $id");
 				$eventHasPrograms=EventHasProgram::model()->findAll($criteria);
 				foreach ($eventHasPrograms as $eventHasProgram)
+				{
+					$eventHasProgram->approved = 0;	// This might be changed by handleNewEventPermissions() a couple of lines down...
+					$eventHasProgram->save();
 					$this->handleNewEventPermissions($id, $eventHasProgram->program_id);
+				}
                 $this->redirect(array('admin'));
             }
         }
@@ -530,6 +536,58 @@ $model->program_id = Yii::app()->session['pid'];	// @TODO This is filled simply 
 		));
 	}
 
+	/**
+	 * Reply from email (link) to approve event, possibly upgrade member status
+	 */
+	public function actionApproveResponse()
+	{
+		if (isset($_GET['key']))
+		{
+			$arr = explode("-", $_GET['key']);
+			$program = Program::model()->findByPk($arr[1]);
+			$member = Member::model()->findByPk($arr[2]);
+			$event = Event::model()->findByPk($arr[3]);
+			$level = $arr[5];
+			if ( ($program===null) || ($member===null) || ($event===null) )
+				throw new CHttpException(400,'The requested program/member/event combination does not exist.');
+			// Set approved
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("event_event_id = $event->id");
+			$criteria->addCondition("program_id = $program->id");
+			$eventHasProgram=EventHasProgram::model()->find($criteria);
+			if (!($eventHasProgram))
+				 throw new CHttpException(400,'The requested program/event privilege does not exist.');
+			$eventHasProgram->approved = 1;
+			$eventHasProgram->save();
+			if ($level == 1)
+			{
+				// Set trusted
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("event_member_id = $member->id");
+				$criteria->addCondition("event_program_id = $program->id");
+				$memberHasProgram=MemberHasProgram::model()->find($criteria);
+				if (!($memberHasProgram))
+				 	throw new CHttpException(400,'The requested program/member privilege does not exist.');
+				$memberHasProgram->privilege_level = $level;
+				$memberHasProgram->save();
+			}
+			echo "
+				<html style='color:#ffffff; background-color:#256a9b'>
+				<meta name='viewport' content='width=device-width, initial-scale=1'>
+				<link rel='stylesheet' type='text/css' href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'/>
+				<link rel='stylesheet' type='text/css' href='http://plugin.wireflydesign.com/css/emailResponsive.css'/>
+				<br/><br/><br/><br/><br/>
+				<center><h4>Event approved</h4></center>";
+			if ($level == 1)
+				echo "<center><h4>Member status changed to trusted</h4></center>";
+			echo "
+				<br/>
+				<center><input type=button class='btn-primary' value='Close Window' onClick='javascript:window.close();'></center>
+				</html>";
+		}
+		return;
+	}
+
 	 /* Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the ID of the model to be loaded
@@ -586,7 +644,7 @@ $model->program_id = Yii::app()->session['pid'];	// @TODO This is filled simply 
 		Yii::app()->session['pid'] = 0;
 		if ($member != null)
 			Yii::app()->session['pid'] = $member->lock_program_id;
-		else
+		else if (!(isset($_GET['key'])))
 			throw new CHttpException(400, 'The request cannot be fulfilled. Please logout and login again');
 	}
 
@@ -623,36 +681,67 @@ $model->program_id = Yii::app()->session['pid'];	// @TODO This is filled simply 
 				throw new CHttpException(400, 'Missing event-program for this event & program so unable to approve it for public visibility');
 			return;
 		}
-
-/*
-		// Unprivileged or new member to this program - send permission-request email to admin(s)
+		// Unprivileged or new member to this program - send approval-request email to admin(s)
 		$criteria = new CDbCriteria;
-		$criteria->addCondition("event_member_id != " . Yii::app()->session['eid']);
 		$criteria->addCondition("event_program_id = " . $programId);
 		$criteria->addCondition("privilege_level = 2");	//@@TODO Privilege hardcoded
 		$memberHasPrograms = MemberHasProgram::model()->findAll($criteria);
-		foreach ($memberHasProgram as $memberHasProgram)
+		foreach ($memberHasPrograms as $memberHasProgram)
 		{
-			// phpmailer
+			// Pick up *Admin* member record
 			$member=Member::model()->findByPk($memberHasProgram->event_member_id);
 			if ($member == null)
 			{
 				Yii::log("REQUEST TO POST EVENT COULD NOT RETRIEVE ADMIN MEMBER RECORD" . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
 				return;
 			}
+			// Pick up program
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("id = $programId");
+			$program = Program::model()->find($criteria);
+			if (!($program))
+				throw new CHttpException(400, 'Missing program - cant send approval request email');
+
+			// Pick up event
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("id = $eventId");
+			$event = Event::model()->find($criteria);
+			if (!($event))
+				throw new CHttpException(400, 'Missing event - cant send approval request email');
+
+			// phpmailer
 			$mail = new PHPMailer();
-			$mail->AddAddress($to);
-			$mail->SetFrom($from, $fromName);
-			$mail->AddReplyTo($from, $fromName);
-			$mail->Subject = $subject;
-			$mail->MsgHTML($message);
+			$mail->AddAddress($member->email_address);
+			$mail->SetFrom($program->name . " event mailer");
+			$mail->AddReplyTo("No reply");
+			$mail->Subject = "Event approval request for - " . $event->title;
+
+			$msg = file_get_contents(dirname(Yii::app()->request->scriptFile) . "/protected/backend/controllers/ApproveRequestEmail.template");
+			$msg = str_replace("<program-name>", $program->name, $msg);
+			$msg = str_replace("<member-first-name>", $member->first_name, $msg);
+			$msg = str_replace("<member-last-name>", $member->last_name, $msg);
+			$msg = str_replace("<member-email>", $member->email_address, $msg);
+			$msg = str_replace("<event-id>", $event->id, $msg);
+			$msg = str_replace("<event-title>", $event->title, $msg);
+			$msg = str_replace("<event-start>", $event->start, $msg);
+			$msg = str_replace("<event-end>", $event->end, $msg);
+			$msg = str_replace("<event-venue>", $event->address, $msg);
+			$msg = str_replace("<event-postcode>", $event->post_code, $msg);
+			$msg = str_replace("<event-web>", $event->web, $msg);
+			$msg = str_replace("<event-contact>", $event->contact, $msg);
+			$msg = str_replace("<event-description>", $event->description, $msg);
+			$msg = str_replace("/event/userdata/", "http://plugin.wireflydesign.com/event/userdata/", $msg);
+			$urlSnippet = "approveResponse/?key=" . rand(1000000,9999999) . "-" .$program->id . "-" . Yii::app()->session['eid'] . "-" . $event->id . "-" . rand(1000000,9999999) . "-";
+			$msg = str_replace("<make-approve>", $urlSnippet . "0", $msg);
+			$msg = str_replace("<make-trusted>", $urlSnippet . "1", $msg);
+			$msg = str_replace("<make-admin>",   $urlSnippet . "2", $msg);
+
+			$mail->MsgHTML($msg);
 			if (!$mail->Send())
 				Yii::log("REQUEST TO POST EVENT COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
 			else
 				Yii::log("REQUEST TO POST EVENT SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
-*/
-
 	}
 
 	// Check whether this member has a valid SID on their member profile
