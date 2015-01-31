@@ -423,51 +423,18 @@ $model->program_id = Yii::app()->session['pid'];	// @TODO This is filled simply 
 	            	}
 	            }
 
-				// -FROM- the form
-				// Using the 'approved' DUMMY field in the event from form updating
-				// Update approved for this event in any if its programs we are admin on
+				// Reset 'approved' to what it would be for a new event
 				$criteria = new CDbCriteria;
 				$criteria->addCondition("event_event_id = $id");
 				$eventHasPrograms=EventHasProgram::model()->findAll($criteria);
 				foreach ($eventHasPrograms as $eventHasProgram)
-				{
-					$criteria = new CDbCriteria;
-					$criteria->addCondition("event_member_id = " . Yii::app()->session['eid']);
-					$criteria->addCondition("event_program_id = $eventHasProgram->program_id");
-					$memberHasProgram=MemberHasProgram::model()->find($criteria);
-					if (($memberHasProgram) && ($memberHasProgram->privilege_level == 2))
-					{
-						$eventHasProgram->approved = $model->approved;
-						$eventHasProgram->save();
-					}
-				}
-
+					$this->handleNewEventPermissions($id, $eventHasProgram->program_id);
                 $this->redirect(array('admin'));
             }
         }
 
 		if (!$this->isWildSeasons($id))
 			$model2 = '';
-
-		// -FOR- the form
-		// Using the 'approved' DUMMY field in the event for form updating
-		// See if we are admin any of the programs this event is part of. Should all be the same so just use the 1st one for approvals 0/1
-		$model->approved = 0;	// Start with 'not approved'
-		$criteria = new CDbCriteria;
-		$criteria->addCondition("event_event_id = $id");
-		$eventHasPrograms=EventHasProgram::model()->findAll($criteria);
-		foreach ($eventHasPrograms as $eventHasProgram)
-		{
-			$criteria = new CDbCriteria;
-			$criteria->addCondition("event_member_id = " . Yii::app()->session['eid']);
-			$criteria->addCondition("event_program_id = $eventHasProgram->program_id");
-			$memberHasProgram=MemberHasProgram::model()->find($criteria);
-			if (($memberHasProgram) && ($memberHasProgram->privilege_level == 2))
-			{
-				$model->approved = $eventHasProgram->approved;
-				$this->updateAsAdmin = 1;
-			}
-		}
 
         $this->render('update',array(
             'model'=>$model,
@@ -644,8 +611,8 @@ $model->program_id = Yii::app()->session['pid'];	// @TODO This is filled simply 
 		{
 			// Is trusted or admin - set approved
 			$criteria = new CDbCriteria;
-			$criteria->condition="event_event_id = $eventId";
-			$criteria->condition="program_id = $programId";
+			$criteria->addCondition("event_event_id = $eventId");
+			$criteria->addCondition("program_id = $programId");
 			$eventHasProgram = EventHasProgram::model()->find($criteria);
 			if ($eventHasProgram)
 			{

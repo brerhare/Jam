@@ -1,11 +1,3 @@
-	<?php
-//		if (($this->updateAsAdmin) && (!($model->isNewRecord)))
-//		{
-//			echo $form->toggleButtonRow($model, 'approved' );
-//		echo "<hr/>";
-//		}
-	?>
-
 	<p class="help-block">Fields with <span class="required">*</span> are required.</p>
 
 	<?php echo $form->errorSummary($model); ?>
