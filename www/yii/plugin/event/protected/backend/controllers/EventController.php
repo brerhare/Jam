@@ -695,13 +695,20 @@ $model->program_id = Yii::app()->session['pid'];	// @TODO This is filled simply 
 			return;
 
 		// Unprivileged or new member to this program - send approval-request email to admin(s)
+
+		// Pick up requesting member
+		$memberRequesting=Member::model()->findByPk($event->member_id);
+		if ($memberRequesting == null)
+			throw new CHttpException(400, 'Missing requesting member for this event & program so unable to approve it for public visibility');
+
+		// For each admin on this program ...
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("event_program_id = " . $programId);
 		$criteria->addCondition("privilege_level = 2");	//@@TODO Privilege hardcoded
 		$memberHasPrograms = MemberHasProgram::model()->findAll($criteria);
 		foreach ($memberHasPrograms as $memberHasProgram)
 		{
-			// Pick up *Admin* member record
+			// Pick up admin member record
 			$member=Member::model()->findByPk($memberHasProgram->event_member_id);
 			if ($member == null)
 			{
@@ -724,9 +731,9 @@ $model->program_id = Yii::app()->session['pid'];	// @TODO This is filled simply 
 
 			$msg = file_get_contents(dirname(Yii::app()->request->scriptFile) . "/protected/backend/controllers/ApproveRequestEmail.template");
 			$msg = str_replace("<program-name>", $program->name, $msg);
-			$msg = str_replace("<member-first-name>", $member->first_name, $msg);
-			$msg = str_replace("<member-last-name>", $member->last_name, $msg);
-			$msg = str_replace("<member-email>", $member->email_address, $msg);
+			$msg = str_replace("<member-first-name>", $memberRequesting->first_name, $msg);
+			$msg = str_replace("<member-last-name>", $memberRequesting->last_name, $msg);
+			$msg = str_replace("<member-email>", $memberRequesting->email_address, $msg);
 			$msg = str_replace("<event-id>", $event->id, $msg);
 			$msg = str_replace("<event-title>", $event->title, $msg);
 			$msg = str_replace("<event-start>", $event->start, $msg);
