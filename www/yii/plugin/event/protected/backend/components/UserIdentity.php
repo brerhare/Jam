@@ -29,7 +29,6 @@ class UserIdentity extends CUserIdentity
 		else
 		{
 			Yii::app()->session['eid'] = $model->id;
-			echo $model->id;
 			$this->errorCode=self::ERROR_NONE;
 		}
 		return !$this->errorCode;

@@ -19,8 +19,8 @@ if ($wsFlag)
 	$this->widget('bootstrap.widgets.TbTabs',array(
     	'type'=>'tabs',
     	'tabs' => array(
-        	array('label'=>'Standard', 'content' => $this->renderPartial('_form_standard', array('form' => $form, 'model' => $model, 'model2' => $model2, 'ticketUid' => $ticketUid), true), 'active'=>true),
-        	array('label'=>'Wild Seasons', 'content' => $this->renderPartial('_form_ws', array('form' => $form, 'model' => $model, 'model2' => $model2, 'ticketUid' => $ticketUid),  true)),
+        	array('label'=>'Standard', 'content' => $this->renderPartial('_form_standard', array('form' => $form, 'model' => $model, 'model2' => $model2, 'updateMode' => $updateMode, 'ticketUid' => $ticketUid), true), 'active'=>true),
+        	array('label'=>'Wild Seasons', 'content' => $this->renderPartial('_form_ws', array('form' => $form, 'model' => $model, 'model2' => $model2, 'updateMode' => $updateMode, 'ticketUid' => $ticketUid),  true)),
     	),
 	));
 }
@@ -29,7 +29,7 @@ else	// Default (no lock)
 	$this->widget('bootstrap.widgets.TbTabs',array(
     	'type'=>'tabs',
     	'tabs' => array(
-        	array('label'=>'Standard', 'content' => $this->renderPartial('_form_standard', array('form' => $form, 'model' => $model, 'model2' => $model2, 'ticketUid' => $ticketUid), true), 'active'=>true),
+        	array('label'=>'Standard', 'content' => $this->renderPartial('_form_standard', array('form' => $form, 'model' => $model, 'model2' => $model2, 'updateMode' => $updateMode, 'ticketUid' => $ticketUid), true), 'active'=>true),
     	),
 	));
 }

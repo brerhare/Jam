@@ -1,12 +1,3 @@
-	<?php
-		if (($this->updateAsAdmin) && (!($model->isNewRecord)))
-		{
-			echo $form->toggleButtonRow($model, 'approved' );
-			///// @@NB: the 'options' buggers Yii although docs say its right: .. echo $form->toggleButtonRow($model, 'approved' , array('options'=>array('enabledLabel'=>'Yes' , 'disabledLabel'=>'Yes')));
-		echo "<hr/>";
-		}
-	?>
-
 	<p class="help-block">Fields with <span class="required">*</span> are required.</p>
 
 	<?php echo $form->errorSummary($model); ?>
@@ -169,7 +160,9 @@
 	<?php //echo $form->textFieldRow($model,'approved',array('class'=>'span5')); ?>
 	<?php //echo $form->textFieldRow($model,'member_id',array('class'=>'span5')); ?>
 	<div class="form-actions">
-		<?php
+<?php
+	if (($updateMode == "update") || ($updateMode == "create"))
+	{
 		if ($this->creatingWildSeasons())
 		{
 			$this->widget('bootstrap.widgets.TbButton', array(
@@ -195,5 +188,6 @@
 				'label'=>$model->isNewRecord ? 'Create' : 'Save',
 			));
 		}
-		?>
+	}
+?>
 	</div>

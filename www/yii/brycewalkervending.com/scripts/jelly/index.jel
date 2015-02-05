@@ -12,66 +12,131 @@ fx.wallpaper-image = /img/background.jpg
 css.display = block
 
 	[site]
-	child = header, slider, pages, footer
-	css.width = 970px
+	child = header, site-content, footer
+	css.width = 100%
 
 ####  Header  #################################
 
 	[header]
-	child = logo, menu
-	css.height = 300px
+	child = bubble-links, logo
+	css.width = 1200px
+	css.height = 230px 
+		
+		[bubble-links]
+		child = machine-bubble, FREE-bubble, vendor-bubble, contact-bubble
+		css.height = 300px
+		css.width = 100%
+		stacking = horizontal
+		css.z-index = 180
+		
+			[machine-bubble]
+			css.height = 100%
+			css.width = 20%
+			css.margin-top = 40px
+			image.url = img/machine-bubble.png
+			image.width = 170px
+			image.height = 170px
+			click = ?layout=index&page=vending-machines-office-commercial-dumfries-scotland
+			
+			[FREE-bubble]
+			css.height = 90%
+			css.width = 20%
+			css.margin-top = 10px
+			image.url = img/FREE-bubble.png
+			image.width = 120px
+			image.height = 120px
+			click = ?layout=index&page=vending-machines-office-commercial-dumfries-scotland
+			
+			[vendor-bubble]
+			css.height = 90%
+			css.width = 15%
+			css.margin-left = 25%
+			css.margin-top = 90px
+			image.url = img/vendor-bubble.png
+			image.width = 100px
+			image.height = 100px
+			click = http://www.brycewalkervending.com
+			
+			[contact-bubble]
+			css.height = 100%
+			css.width = 20%
+			css.margin-top = 20px
+			image.url = img/contact-bubble.png
+			image.width = 200px
+			image.height = 200px
+			image.align = center
+			click = ?layout=index&page=contact
+			css.z-index = 180
 	
 		[logo]
-		#css.margin-left = 50px
-		css.margin-top = 25px
-		css.height = 254px
-		css.width = 500px
-		css.z-index = 2000
-		#css.position = relative
-		image.url = img/logo.png
-		image.width = 500px
-		image.height = 254px
+		css.margin-top = -310px
+		css.height = 240px
+		css.width = 550px
+		css.z-index = 200
+		image.url = img/logo-shadow.png
+		image.width = 517px
+		image.height = 229px
 		click = http://www.brycewalkervending.com
+		
+#### Site Content #########################################
 
-		[menu]
-		css.height = 50px
-		#css.width = 250px
-		css.overflow = visible
-		css.z-index = 1100
-		css.position = absolute
-		#css.position = relative
-
-		addon.menu.basic.orientation = horizontal
-		addon.menu.basic.width = 960px
-		#addon.menu.basic.height = 30px
-
-		addon.menu.basic.menu-rounding = 0px
-		#addon.menu.basic.menu-tile = /img/menu-bar.jpg
-		#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
-		addon.menu.basic.menu-color = white cyan
-		#addon.menu.basic.item-separator-color = #ffffff
-		#addon.menu.basic.item-separator-width = 3px
-
-		addon.menu.basic.font-size = 12px
-		#addon.menu.basic.menu-text-color = red
-
-		#addon.menu.basic.item-color = black yellow
-		#addon.menu.basic.item-text-color = green
-
-		#addon.menu.basic.submenu-color = yellow red
+[site-content]
+child = menu-bar, slider, pages
+css.margin-top = -50px
+css.width = 960px
+css.background-color = white
+			
+	[menu-bar]
+	child = menu
+	css.margin-top = 10px
+	css.width = 900px
+	css.height = 45px
+	image.url = img/menu-bar.jpg
+	image.width = 900px
+	image.height = 45px
+	css.overflow = visible
+	css.z-index = 100
 	
-		#addon.menu.basic.subitem-color = white black
-		#addon.menu.basic.subitem-text-color = purple
-		#addon.menu.basic.subitem-seperator-color = red 
+	
+	[menu]
+	css.height = 40px
+	css.width = 900px
+	css.overflow = visible
+	css.z-index = 100
+	css.position = absolute
+	css.margin-top = -40px
+	css.z-index = 100
+	#css.position = relative
+
+	addon.menu.basic.orientation = horizontal
+	addon.menu.basic.width = 960px
+	addon.menu.basic.height = 30px
+
+	addon.menu.basic.menu-rounding = 0px
+	addon.menu.basic.menu-color = transparent
+	addon.menu.basic.edgepadding = 30px
+	addon.menu.basic.item-separator-color = red
+	addon.menu.basic.item-separator-width = 2px
+
+	addon.menu.basic.font-size = 16px
+	addon.menu.basic.menu-text-color = red
+
+	addon.menu.basic.item-color = #1fdfdf
+	addon.menu.basic.item-text-color = red
+
+	addon.menu.basic.submenu-color = white #1fdfdf
+
+	#addon.menu.basic.subitem-color = white black
+	#addon.menu.basic.subitem-text-color = purple
+	addon.menu.basic.subitem-seperator-color = red 
 
 
-#### Slider ###########################################
-
-[slider]
-css.width = 900px
-css.height = 200px
-css.margin-top = 20px
-css.background-color = lightgrey
+	[slider]
+	css.width = 900px
+	css.height = 200px
+	css.margin-top = 20px
+	css.background-color = lightgrey
+	#addon.slider.shopping.slider-height = 200px
 	
 
 ######## body #######################################
@@ -81,8 +146,6 @@ css.background-color = lightgrey
 	child = tabs, content 	
 	css.width = 960px
 	css.margin-top = 20px
-	css.background-color = white
-	fx.rounding = 0px
 	
 		[tabs]
 		condition = @PAGE=@HOMEPAGE
