@@ -5,7 +5,7 @@ include = default-values
 
 [screen]
 child = shop-tab, header, header-background, site
-fx.wallpaper-image = /img/background.jpg
+fx.wallpaper-image = /img/background.png
 css.display = block
 
 	[shop-tab]
@@ -34,6 +34,7 @@ css.display = block
 	css.position = relative
 	
 		[logo]
+		css.margin-top = 20px
 		css.height = 210px
 		css.width = 400px
 		image.url = img/logo.png
@@ -70,7 +71,7 @@ css.display = block
 	child = menu-container, content
 	stacking = horizontal
 	css.width = 970px
-	css.margin-top = -15px
+	css.margin-top = -70px
 	css.background-color = #555555
 	fx.rounding = 4px
 	css.margin-bottom = 50px
@@ -78,6 +79,8 @@ css.display = block
 		[menu-container]
 		child = menu, boy-graphic, footer
 		css.width = 240px
+		css.margin-top = 80px
+		css.overflow = visible
 
 			[menu]
 			#css.height = 40px
@@ -95,11 +98,13 @@ css.display = block
 	####### Top level background settings (first colour is the top gradiation) ####
 		addon.menu.basic.menu-stretch = /img/menu.png
 		addon.menu.basic.menu-color = transparent
+		addon.menu.basic.item-separator-color = transparent
+		addon.menu.basic.item-separator-width = 5px
 
 	####### Top level font settings ####
 		addon.menu.basic.font-size = 16px
 		addon.menu.basic.menu-text-color = black
-		addon.menu.basic.menu-text-weight = normal
+		addon.menu.basic.menu-text-weight = bold
 
 
 	####### Top level hover settings ####
@@ -108,11 +113,11 @@ css.display = block
 
 
 	####### Second level background settings ####
-		addon.menu.basic.submenu-color = #ffffff #bfffff
-		addon.menu.basic.subitem-separator-color = white
+		addon.menu.basic.submenu-color = transparent
+		addon.menu.basic.subitem-separator-color = transparent
 
 	####### Second level hover settings ####
-		addon.menu.basic.subitem-color = cyan
+		addon.menu.basic.subitem-color = transparent
 		addon.menu.basic.subitem-text-color = blue
 	
 	[boy-graphic]
@@ -183,7 +188,7 @@ css.font-size = 14px
 		css.width = 740px
 		fx.rounding = 10px
 		css.box-shadow = 12px 8px 8px rgba(0,0,0,0.5)
-		css.margin-bottom = 10px
+		css.margin-bottom = 30px
 		
 		
 			[content-block]

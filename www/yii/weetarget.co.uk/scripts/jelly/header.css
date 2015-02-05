@@ -1,6 +1,6 @@
 <!-- Place your Google fonts here as a cut and paste then choose which header and fonts etc need the font families - NB if the family only come in Italic then you must state the font style as Italic too -->
 
-<link href='http://fonts.googleapis.com/css?family=Molle:400italic|Open+Sans:300italic,400,700' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Muli|Chewy' rel='stylesheet' type='text/css'>
 
 <style type="text/css">
 
@@ -19,38 +19,37 @@ a:active { text-decoration: none; color:#00adc9 }
 
 
 
-h1 {	font-family: 'Molle', Verdana, sans-serif !important;
-	color: #00ad44;
+h1 {	font-family: 'Chewy', Calibri, sans-serif !important;
+	color: #00dc00;
 	font-size: 32px;
 	font-weight: 400;
-	font-style: italic;
-	text-shadow: 3px 3px 2px lightgrey;}
+	text-shadow: 1px 1px 3px #d6d6d6;}
 
-h2 {	font-family: 'Molle', Verdana, sans-serif !important;
-	color: #00ad44;
-	font-size: 28px;
+h2 {	font-family: 'Muli', Calibri, sans-serif !important;
+	color: #000000;
+	font-size: 18px;
 	font-weight: 400;
-	font-style: italic;
-	text-shadow: 2px 2px 5px lightgrey;}
+	line-height: 120%;}
 
 
-h3 {	font-family: 'Open Sans', Verdana, sans-serif !important;
-	color: #00ad44;
-	font-size: 20px;
-	font-weight: 700;
-	font-stretch: wider;}
+h3 {	font-family: 'Chewy', Calibri, sans-serif !important;
+	color: #00dc00;
+	font-size: 24px;
+	font-weight: 400;
+	text-shadow: 1px 1px 3px #d6d6d6;}
 
-h4 {	font-family: 'Open Sans', Verdana, sans-serif !important;
-	color: #00ad44;
+h4 {	font-family: 'Muli', Calibri, sans-serif !important;
+	color: #000000;
 	font-size: 16px;
 	font-weight: 700;
 	font-stretch: wider;}
 
-p  {	font-family: 'Open Sans', Verdana, sans-serif !important;
+p  {	font-family: 'Muli', Calibri, sans-serif !important;
 	color: #000000;
 	font-size: 14px;
-	font-weight: normal
-	font-stretch: expanded}
+	font-weight: normal;
+	line-height: 120%;
+	font-stretch: expanded;}
 
 blockquote {font-family: 'Open Sans', Verdana, sans-serif !important;
 	color: #5b5b5b;
@@ -59,7 +58,11 @@ blockquote {font-family: 'Open Sans', Verdana, sans-serif !important;
 	font-weight: 300}
 
 
-html { font-family: 'Open Sans', Verdana, sans-serif !important;
+html { font-family: 'Muli', Calibri, sans-serif !important;
+	font-size: 12px;
+	font-weight:normal}
+	
+li { font-family: 'Muli', Calibri, sans-serif !important;
 	font-size: 12px;
 	font-weight:normal}
 
