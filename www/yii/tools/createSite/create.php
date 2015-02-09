@@ -96,6 +96,16 @@ chdir($siteDir . "/protected/data/");
 exec("./dbinit.sh");
 chdir($temp);
 
+// Edit protected/backend/views/site/index.php (analytics)
+echo "Setting up site analytics...\n";
+$siteDir = $siteParentDir . $manifest['site'];
+if (!($index = file_get_contents($siteDir . "/protected/backend/views/site/index.php")))
+	die("Failed to read protected/backend/views/site/index.php file - aborting\n");
+$main = str_replace("<site>", $manifest['site'], $index);
+$main = str_replace("<pass>", $manifest['pass'], $index);
+if (!(file_put_contents($siteDir . "/protected/backend/views/site/index.php", $index)))
+    die("Failed to update protected/backend/views/site/index.php - aborting\n");
+
 // Edit protected/config/main.php
 echo "Setting site parameters...\n";
 $siteDir = $siteParentDir . $manifest['site'];
@@ -109,7 +119,7 @@ $main = str_replace("<sid>", $manifest['sid'], $main);
 $main = str_replace("<checkoutname>", $manifest['checkoutname'], $main);
 $main = str_replace("<checkoutemail>", $manifest['checkoutemail'], $main);
 if (!(file_put_contents($siteDir . "/protected/config/main.php", $main)))
-    die("Failed to update protect/config/main.php - aborting\n");
+    die("Failed to update protected/config/main.php - aborting\n");
 
 // Edit protected/backend/config/main.php
 echo "Setting backend site parameters...\n";
@@ -123,7 +133,7 @@ $main = str_replace("<dbpass>", $manifest['dbpass'], $main);
 $main = str_replace("<editorpagewidth>", $manifest['editorpagewidth'], $main);
 $main = str_replace("<editorpageheight>", $manifest['editorpageheight'], $main);
 if (!(file_put_contents($siteDir . "/protected/backend/config/main.php", $main)))
-    die("Failed to update protect/backend/config/main.php - aborting\n");
+    die("Failed to update protected/backend/config/main.php - aborting\n");
 
 echo "\nDone. Dont forget to restart Apache\n";
 echo "Also dont forget to add this site into /root/setperms\n";
