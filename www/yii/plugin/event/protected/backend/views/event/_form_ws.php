@@ -7,6 +7,9 @@
 
 	<?php //echo $form->textFieldRow($model2,'grade',array('class'=>'span2','maxlength'=>255)); ?>
 
+	<?php if ($model2->isNewRecord)
+		$model2->grade = 'Easy';
+	?>
     <?php echo $form->dropDownListRow($model2,'grade', array('Easy'=>'Easy', 'Medium'=>'Medium', 'Family'=>'Family'),  array('empty'=>'Choose') ); ?>
 
 
@@ -30,10 +33,15 @@
 </div>
 
 	<div class="form-actions">
-		<?php $this->widget('bootstrap.widgets.TbButton', array(
+	<?php
+	if (($updateMode == "update") || ($updateMode == "create"))
+	{
+		 $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',
 			'type'=>'primary',
 			'label'=>$model2->isNewRecord ? 'Create' : 'Save',
-		)); ?>
+		));
+	}
+	?>
 	</div>
 

@@ -9,12 +9,10 @@ $this->menu=array(
 
 <h4>Manage Events</h4>
 
-
-
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'event-grid',
-	//'dataProvider'=>$model->search(),
-	'dataProvider'=>$model->searchAllProgramsImAdminOrModFor(),
+	'dataProvider'=>$model->search(),
+	////////////////////'dataProvider'=>$model->searchAllProgramsImAdminOrModFor(),
 	//'filter'=>$model,
 	'columns'=>array(
 		'id',
@@ -26,8 +24,26 @@ $this->menu=array(
 			'htmlOptions' => array('style'=>'width:390px'),
         ),
 
-		'start',
-		'active',
+        array(
+            'name'  => 'Start',
+			'value'=> ' date("d-m-Y",strtotime($data->start))',
+        ),
+
+		'active:boolean',
+
+
+/*
+'buttonID' => array
+(
+    'label'=>'...',     //Text label of the button.
+    'url'=>'...',       //A PHP expression for generating the URL of the button.
+    'imageUrl'=>'...',  //Image URL of the button.
+    'options'=>array(), //HTML options for the button tag.
+    'click'=>'...',     //A JS function to be invoked when the button is clicked.
+    'visible'=>'...',   //A PHP expression for determining whether the button is visible.
+),
+*/
+
 		//'end',
 		//'address',
 		//'post_code',
@@ -42,15 +58,24 @@ $this->menu=array(
 		*/
 		array(
             'class'=>'bootstrap.widgets.TbButtonColumn',
+			'htmlOptions' => array('style'=>'width:80px'),	// @@ CButtonColumn override width
             'template'=>'{update}{clone}{delete}',
             'buttons'=>array(
+            	'update' => array(
+					'icon'=>false,
+                	'imageUrl'=>Yii::app()->request->baseUrl.'/img/edit.png',
+            	),
             	'clone' => array(
                 	'label'=>'Clone',
-                	'imageUrl'=>Yii::app()->request->baseUrl.'/img/copy.png',
+                	'imageUrl'=>Yii::app()->request->baseUrl.'/img/clone.jpg',
                 	'url'=>'Yii::app()->controller->createUrl("event/clone", array("id"=>$data->primaryKey))',
             	),
-			),
 
+				'delete'=>array(
+					'icon'=>false,
+					'imageUrl'=>Yii::app()->request->baseUrl.'/img/cross.png',
+				),
+			),
         ),
 	),
 )); ?>
