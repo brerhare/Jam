@@ -47,15 +47,29 @@ css.display = block
 		css.width = 560px
 		image.url = img/header-graphics.png
 		image.width = 500px
-		image.height = 124px
+		image.height = 129px
 		
 		[social]
+		child = facebook, trade
 		css.margin-top = 30px
-		css.height = 40px
 		css.width = 40px
-		image.url = img/facebook.png
-		image.width = 34px
-		image.height = 33px
+	
+		
+			[facebook]
+			css.height = 40px
+			css.width = 40px
+			image.url = img/facebook.png
+			image.width = 33px
+			image.height = 33px
+			click = ?layout=index&page=facebook
+			
+			[trade]
+			css.height = 40px
+			css.width = 40px
+			image.url = img/trade.png
+			image.width = 33px
+			image.height = 33px
+			click = http://trade.weetarget.co.uk
 		
 	[header-background]
 	css.margin-top = -193px

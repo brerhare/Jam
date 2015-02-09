@@ -104,11 +104,11 @@ return array(
 		'checkoutEmail'=>'tristen@weetarget.co.uk',
 		'checkoutName'=>'Wee Target',
 		// Test gateway
-		'checkoutGatewayUser'=>'WIREFL-5188100',
-		'checkoutGatewayPassword'=>'391F3GWBZ0',
+		//'checkoutGatewayUser'=>'WIREFL-5188100',
+		//'checkoutGatewayPassword'=>'391F3GWBZ0',
 		// Live gateway
-		//'checkoutGatewayUser'=>'xxxxx',
-		//'checkoutGatewayPassword'=>'xxxxx',
+		'checkoutGatewayUser'=>'WIREFL-5578222',
+		'checkoutGatewayPassword'=>'Sbyzek538949',
 		'jellyRoot' => '/scripts/jelly/',
 		'sid' => '1uphfbav981r4kr2q2sum63s62',
 	),
