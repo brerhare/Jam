@@ -597,6 +597,7 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 			else
 				$sep = "&";
 			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['click'])) . $sep . "click=true>\n", $indentLevel);
+//Yii::log(".................... jellyclick .................. genfromclick=" . $array['click'] , CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
 		if (array_key_exists("clicknew", $array))
 		{
@@ -1140,6 +1141,14 @@ if (strstr($blobName, "googlemap"))
 
 	private function genInlineHtml($content, $indentLevel=0)
 	{
+		// @@TODO FIX BUG - product plugin on going to product page after having backspaced from product page - doubles up quoting the ""sid""
+		if (strstr($content, "&sid=\"\""))
+		{
+			//$content = str_replace("&sid=\"\"", "&sid=\"", $content);
+			//$content = str_replace("\"\"&", "\"&", $content);
+			//$content = str_replace("index.php", "http://plugin.wireflydesign.com/product/index.php", $content);
+		}
+
 		// Translate any @CLIPBOARD's
 		if (strstr($content, "@CLIPBOARD"))
 			$content = str_replace("@CLIPBOARD", $this->clipBoard, $content);

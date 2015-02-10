@@ -139,6 +139,8 @@ class products
 		// If we are in 'preset' mode this still needs to run to build the lists, but we hide it
 		if ($this->mode == 'preset')
 			$content .= "<div id='filter-hidden-in-preset-mode' style='display:none'>";
+		if (isset($_GET['department']) && ($_GET['department'] == ""))
+			$content .= "<div id='filter-hidden-in-no-selected-department-mode' style='display:none'>";
 
         // Duration band (always shown if exists)
         $lastShown = 0;
@@ -222,7 +224,6 @@ class products
             $content .= "</div>";
             $content .= "</div>";
         }
-
        // Departments with features
         $departments  = Department::model()->findAll(array('order'=>'name', 'condition'=>'uid=' . $this->uid));
         if ($departments)
@@ -238,6 +239,10 @@ class products
                 array_push($this->featureSel, '*');
 
             foreach ($departments as $department):
+
+				if (isset($_GET['department']) && ($_GET['department'] == ""))
+					array_push($this->departmentSel, $department->id);
+
                 $vis = "";
                 if (!(in_array($department->id, $this->departmentSel)))
                     $vis = " style='display:none;' ";
@@ -253,7 +258,7 @@ class products
                     if ((in_array($department->id, $this->departmentSel)) &&(!(isset($_GET['feature']))))
                         $match = true;
                     $content .= "<label class='checkbox'> ";
-                    $content .= "<input id='crap' name='feature[]' ";
+                    $content .= "<input id='dummy' name='feature[]' ";
                     if ($match) $content .= " checked='checked' ";
                     $content .= "type='checkbox' value='" . $department->id . '.' . $feature->id . "' onClick=makeSel()>" . $feature->name;
                     $content .= "</label><br>";
@@ -266,6 +271,8 @@ class products
 
 		if ($this->mode == 'preset')
 			$content .= "<div>";
+		if (isset($_GET['department']) && ($_GET['department'] == ""))
+			$content .= "</div>";
 
         return $content;
     }
