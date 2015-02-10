@@ -41,7 +41,7 @@ header($this->p3p);
 
 $clk='off';
 if (isset($_GET['click'])) $clk='true';
-Yii::log("In at top.................. click=".$clk , CLogger::LEVEL_WARNING, 'system.test.kim');
+Yii::log(".................... in at top.................. click=".$clk , CLogger::LEVEL_WARNING, 'system.test.kim');
 
 		// If unset, initialise the product page cookie (only way to tell if we're back-paging from it or going to it)
 		if (!isset(Yii::app()->session['productdetail']))
@@ -66,8 +66,10 @@ Yii::log("In at top.................. click=".$clk , CLogger::LEVEL_WARNING, 'sy
 				$urlParts = explode("://", $_SERVER['HTTP_REFERER']);	// 0 = http or https
 				$urlSubParts = explode("/", $urlParts[1]);				// 0 = www.example.com
 				Yii::app()->session['http_referer'] = $urlParts[0] . "://" . $urlSubParts[0];
+Yii::log(".................... setting http_referer to [" . Yii::app()->session['http_referer'] . "] .................. " , CLogger::LEVEL_WARNING, 'system.test.kim');
 			}
 		}
+Yii::log(".................... http_referer is [" . Yii::app()->session['http_referer'] . "] .................. " , CLogger::LEVEL_WARNING, 'system.test.kim');
 
 		// Get iframe params
 		if (isset($_GET['sid']))
@@ -84,8 +86,8 @@ Yii::log("In at top.................. click=".$clk , CLogger::LEVEL_WARNING, 'sy
 		{
 			if (Yii::app()->session['productdetail'] == "0")
 			{
-Yii::log("redirecting parent to product page.................. " , CLogger::LEVEL_WARNING, 'system.test.kim');
 				$target = Yii::app()->session['http_referer'] . "/?page=" . Yii::app()->session['page'] . "&product=" . Yii::app()->session['product'];
+Yii::log(".................... redirecting parent to product page [$target] .................. " , CLogger::LEVEL_WARNING, 'system.test.kim');
 				echo
 					"<html><script>
 					// @@NB START POSTMESSAGE
@@ -101,7 +103,7 @@ Yii::log("redirecting parent to product page.................. " , CLogger::LEVE
 		{
 			if ( (Yii::app()->session['productdetail'] == "0") || (isset($_GET['cartproduct'])) )
 			{
-Yii::log("parent is sending us to product page.................. " , CLogger::LEVEL_WARNING, 'system.test.kim');
+Yii::log(".................... parent is sending us to product page.................. " , CLogger::LEVEL_WARNING, 'system.test.kim');
 				$parseConfig = new ParseConfig();
 				$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . "product" . '.jel');
 				if (!($jellyArray))
@@ -115,11 +117,11 @@ Yii::log("parent is sending us to product page.................. " , CLogger::LE
 
 		// We've just back-paged from the product page
 		if (Yii::app()->session['productdetail'] == "1")
-if (!isset($_GET['click']))
+		if (!(isset($_GET['checkoutButton'])))	// This is only set in the initial checkout-iframe call, ie when the checkout button is clicked
 		{
-Yii::log("we've just back-paged from product page. redirecting parent.................. " , CLogger::LEVEL_WARNING, 'system.test.kim');
 			Yii::app()->session['productdetail'] = "0";
 			$target = Yii::app()->session['http_referer'] . "/?page=" . Yii::app()->session['page'] . "&department=" . Yii::app()->session['department'];
+Yii::log(".................... we've just back-paged from product page. redirecting parent to [$target].................. " , CLogger::LEVEL_WARNING, 'system.test.kim');
                echo
                    "<html><script>
                    // @@NB START POSTMESSAGE
@@ -133,7 +135,7 @@ Yii::log("we've just back-paged from product page. redirecting parent...........
 $pageParam = '';
 if (isset($_GET['page']))
  $pageParam = $_GET['page'];
-Yii::log("Still here.................. page is " . $pageParam , CLogger::LEVEL_WARNING, 'system.test.kim');
+Yii::log(".................... still here.................. page is " . $pageParam , CLogger::LEVEL_WARNING, 'system.test.kim');
 	
 
 		// Otherwise by default the initial call goes to here
