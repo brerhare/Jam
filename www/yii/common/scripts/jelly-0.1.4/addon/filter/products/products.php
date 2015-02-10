@@ -139,7 +139,7 @@ class products
 		// If we are in 'preset' mode this still needs to run to build the lists, but we hide it
 		if ($this->mode == 'preset')
 			$content .= "<div id='filter-hidden-in-preset-mode' style='display:none'>";
-		if (isset($_GET['department']) && ($_GET['department'] == ""))
+		if (!($this->hasFilterOrFeature()))
 			$content .= "<div id='filter-hidden-in-no-selected-department-mode' style='display:none'>";
 
         // Duration band (always shown if exists)
@@ -240,7 +240,7 @@ class products
 
             foreach ($departments as $department):
 
-				if (isset($_GET['department']) && ($_GET['department'] == ""))
+				if (!($this->hasFilterOrFeature()))
 					array_push($this->departmentSel, $department->id);
 
                 $vis = "";
@@ -271,7 +271,7 @@ class products
 
 		if ($this->mode == 'preset')
 			$content .= "<div>";
-		if (isset($_GET['department']) && ($_GET['department'] == ""))
+		if (!($this->hasFilterOrFeature()))
 			$content .= "</div>";
 
         return $content;
@@ -369,11 +369,29 @@ class products
                             $productList .= "|";
                         $productList .= $product->id;
                     }
+					else if (!($this->hasFilterOrFeature()))
+					{
+                        // We have a winner
+                        if ($productList != "")
+                            $productList .= "|";
+                        $productList .= $product->id;
+					}
                 }
             }
         }
         return $productList;
     }
+
+private function hasFilterOrFeature()
+{
+	$ret = Filter::model()->findAll(array('condition'=>'uid=' . $this->uid));
+	if ($ret)
+		return $ret;
+	$ret = Feature::model()->findAll(array('condition'=>'uid=' . $this->uid));
+	if ($ret)
+		return $ret;
+	return false;
+}
 
     private $apiHtml = <<<END_OF_API_HTML
 
