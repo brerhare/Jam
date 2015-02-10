@@ -117,7 +117,7 @@ Yii::log(".................... parent is sending us to product page.............
 
 		// We've just back-paged from the product page
 		if (Yii::app()->session['productdetail'] == "1")
-//if (!isset($_GET['click']))
+		if (!(isset($_GET['checkoutButton'])))	// This is only set in the initial checkout-iframe call, ie when the checkout button is clicked
 		{
 			Yii::app()->session['productdetail'] = "0";
 			$target = Yii::app()->session['http_referer'] . "/?page=" . Yii::app()->session['page'] . "&department=" . Yii::app()->session['department'];
