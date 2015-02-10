@@ -1334,7 +1334,9 @@ if (strstr($blobName, "googlemap"))
 				// Eg: {{department 27 Guinot}}
 				// ----------------------------
 				$moreCurlyWurlys = 1;
-				$value = $vals[1];
+				$value = "";
+				if (count($vals) > 1)
+					$value = $vals[1];
 
                 $deeplink = "";
 				if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
@@ -1371,7 +1373,7 @@ if (strstr($blobName, "googlemap"))
 				$click = '';
                 if ((isset($_GET['click'])) && (trim($_GET['click']) != ""))
                     $click .= "&click=" . $_GET['click'];
-				$iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=checkout&sid=' . Yii::app()->params['sid'] . '&ge=' . Yii::app()->params['checkoutEmail'] . '&gn=' . Yii::app()->params['checkoutName'] . '&gu=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayUser'])) . '&gp=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayPassword'])) . $click . '"></iframe>';
+				$iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=checkout&sid=' . Yii::app()->params['sid'] . '&ge=' . Yii::app()->params['checkoutEmail'] . '&gn=' . Yii::app()->params['checkoutName'] . '&gu=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayUser'])) . '&gp=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayPassword'])) . $click . '&checkoutButton=true' . '"></iframe>';
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 
