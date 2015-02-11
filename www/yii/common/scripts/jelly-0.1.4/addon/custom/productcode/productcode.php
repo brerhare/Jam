@@ -343,7 +343,7 @@ $content .= "<style> * { color: grey;} </style>";
 				$criteria->addCondition("product_product_id = " . $cProduct);
 				$image = Image::model()->find($criteria);	
 				if ($image)
-					$content .= "<img border=0 src='" . $_imageDir . $image->filename . "' style='height:40px; width:50px'>";
+					$content .= "<img border=0 src='" . $_imageDir . $image->filename . "' style='max-height:40px; max-width:50px'>";
 				$content .= '<br>&nbsp';
 				$content .= "</td>";
 				// Description
