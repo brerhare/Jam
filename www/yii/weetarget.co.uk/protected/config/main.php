@@ -101,14 +101,17 @@ return array(
 		'adminEmail'=>'webmaster@wireflydesign.com',
 
 		// These are used by the shopping cart checkout process
-		'checkoutEmail'=>'tristen@weetarget.co.uk',
+		'checkoutEmail'=>'sales@weetarget.co.uk',
 		'checkoutName'=>'Wee Target',
 		// Test gateway
-		//'checkoutGatewayUser'=>'WIREFL-5188100',
-		//'checkoutGatewayPassword'=>'391F3GWBZ0',
+//		'checkoutGatewayUser'=>'WIREFL-5188100',
+//		'checkoutGatewayPassword'=>'391F3GWBZ0',
 		// Live gateway
 		'checkoutGatewayUser'=>'WIREFL-5578222',
 		'checkoutGatewayPassword'=>'Sbyzek538949',
+		// Paypal
+		'checkoutPaypalEmail'=>'arabellagifts@virginmedia.com',
+
 		'jellyRoot' => '/scripts/jelly/',
 		'sid' => '1uphfbav981r4kr2q2sum63s62',
 	),

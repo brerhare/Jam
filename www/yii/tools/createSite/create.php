@@ -118,6 +118,7 @@ $main = str_replace("<dbpass>", $manifest['dbpass'], $main);
 $main = str_replace("<sid>", $manifest['sid'], $main);
 $main = str_replace("<checkoutname>", $manifest['checkoutname'], $main);
 $main = str_replace("<checkoutemail>", $manifest['checkoutemail'], $main);
+$main = str_replace("<checkoutpaypalemail>", $manifest['checkoutpaypalemail'], $main);
 if (!(file_put_contents($siteDir . "/protected/config/main.php", $main)))
     die("Failed to update protected/config/main.php - aborting\n");
 

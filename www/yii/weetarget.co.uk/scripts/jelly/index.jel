@@ -195,7 +195,7 @@ css.font-size = 14px
 #### Content ################################
 			
 		[content]
-		child = content-block
+		child = content-block, contact, trade-contact
 		css.background-color = white
 		css.margin-left = -60px
 		css.padding = 10px
@@ -211,5 +211,58 @@ css.font-size = 14px
 			db.filter = url=$_GET['page']
 			db.error = Sorry, I could not find the page $_GET['page']
 			html.raw = ContentBlock.content
+			
+			[contact]
+			child = contact-form, contact-text
+			condition = @PAGE=contact
+			css.height = 300px
+			stacking = horizontal
+				
+				[contact-form]
+				css.width = 400px
+				#css.margin-bottom = 30px
+				css.background-color = white
+				addon.contact.contactform.edgepadding = 0px
+				addon.contact.contactform.buttoncolor = #00ef00
+				addon.contact.contactform.buttontextcolor = black
+				addon.contact.contactform.buttontext = Submit
+				addon.contact.contactform.successtextcolor = green
+				addon.contact.contactform.failuretextcolor = red
+				addon.contact.contactform.textcolor = blue
+				addon.contact.contactform.backcolor = pink
+				addon.contact.contactform.inputspacing = 10px
+
+				[contact-text]
+				css.width = 300px
+				css.margin-top = 80px
+				css.font = 12px
+				html.raw = Please fill in the form and someone will get back to you as soon as possible.
+			
+			[trade-contact]
+			child = t-contact-form, t-contact-text
+			condition = @PAGE=wee-target-uk-trade-wholesale
+			css.height = 300px
+			stacking = horizontal
+				
+				[t-contact-form]
+				css.width = 400px
+				#css.margin-bottom = 30px
+				css.background-color = white
+				addon.contact.contactform.edgepadding = 0px
+				addon.contact.contactform.buttoncolor = #ff9400
+				addon.contact.contactform.buttontextcolor = black
+				addon.contact.contactform.buttontext = Submit
+				addon.contact.contactform.successtextcolor = green
+				addon.contact.contactform.failuretextcolor = red
+				addon.contact.contactform.textcolor = blue
+				addon.contact.contactform.backcolor = pink
+				addon.contact.contactform.inputspacing = 10px
+
+				[t-contact-text]
+				css.width = 300px
+				css.margin-top = 80px
+				css.font = 12px
+				html.raw = For Trade enquiries please ensure you state your, Business Address, your Business Website Address, number of years of trading and any other relevant contact details - someone will get back to you as soon as possible.
+
 	
 
