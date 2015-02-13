@@ -504,7 +504,6 @@ $content .= "<style>input {margin-bottom:3px; height:16px;}</style>";
 
 					function proceed(ptype) /* 0=payment gateway, 1=paypal */
 					{
-/*****/
 						if (document.getElementById("address1").value == "")
 						{
 							alert('Address line 1 and 2 cant be empty');
@@ -530,7 +529,11 @@ $content .= "<style>input {margin-bottom:3px; height:16px;}</style>";
 							alert('Email addresses dont match');
 							return(false);
 						}
-/*****/
+						if (document.getElementById("telephone").value == "")
+						{
+							alert('Phone number cant be empty');
+							return(false);
+						}
 						var e = document.getElementById("choose_shipping_option");
 						shipId = e.options[e.selectedIndex].value;
 						a1 = document.getElementById("address1").value;
