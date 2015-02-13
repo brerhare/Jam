@@ -33,7 +33,7 @@
 						<table>
 							<tr>
 								<td class="padding">
-									<p><a href="<return-url>" class="btn-primary">Continue</a></p>
+									<p style="display:<display>"=><a href="<return-url>" class="btn-primary">Continue</a></p>
 								</td>
 							</tr>
 						</table>

@@ -354,6 +354,8 @@ header($this->p3p);
 		// Going to foreign payment sites will set a http-referer different to our own host site, so store this for the return redirect
 		Yii::app()->session['http_payment_return'] = Yii::app()->session['http_referer'];
 
+		Yii::app()->session['ptype'] = $_GET['ptype'];
+
 		if ($_GET['ptype'] == 0)
 		{
 			// Go to paymentsense for payment
@@ -542,6 +544,10 @@ header($this->p3p);
 
 		$thanks = file_get_contents(dirname(Yii::app()->request->scriptFile) . "/protected/controllers/ThankYou.template");
 		$thanks = str_replace("<return-url>", Yii::app()->session['http_payment_return'], $thanks);
+		if (Yii::app()->session['ptype'] == 0)			// Paymentsense
+			$thanks = str_replace("<display>", "none", $thanks);
+		else if (Yii::app()->session['ptype'] == 1)		// Paypal
+			$thanks = str_replace("<display>", "inline", $thanks);
 		die($thanks);
 	}
 
