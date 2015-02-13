@@ -57,6 +57,8 @@ Yii::log(".................... in at top.................. click=".$clk , CLogge
 			Yii::app()->session['checkoutGatewayUser'] = urldecode($util->decrypt($_GET['gu']));
 		if (isset($_GET['gp']))
 			Yii::app()->session['checkoutGatewayPassword'] = urldecode($util->decrypt($_GET['gp']));
+		if (isset($_GET['pp']))
+			Yii::app()->session['checkoutPaypalEmail'] = urldecode($util->decrypt($_GET['pp']));
 
 		// Get the hosting site (referer)
 		if (isset($_SERVER['HTTP_REFERER']))
@@ -167,7 +169,7 @@ header($this->p3p);
 		$jelly->outputData();
 	}
 
-	// Invoke the Paymentsense module
+	// Invoke the payment module: Paymentsense or Paypal
 	public function actionPay()
 	{
 header($this->p3p);
@@ -346,6 +348,9 @@ header($this->p3p);
 //$this->actionPaid();
 //die('done');
 
+		// Going to foreign payment sites will set a http-referer different to our own host site, so store this for the return redirect
+		Yii::app()->session['http_payment_return'] = Yii::app()->session['http_referer'];
+
 		if ($_GET['ptype'] == 0)
 		{
 			// Go to paymentsense for payment
@@ -353,24 +358,28 @@ header($this->p3p);
 		}
 		else if  ($_GET['ptype'] == 1)
 		{
+//$this->actionPaid();
+//die('done');
+
 			// Paypal
 			//$this->renderPartial('paypal');
 			$this->layout = "nosuchlayout";			// Needs this to connect to Paypal
 			$this->render('paypal',array(
+				'business'=>Yii::app()->session['checkoutPaypalEmail'],
 				'description'=>'Purchase from ' . Yii::app()->session['checkoutName'],
             	'subtotal'=>$subtotalGoods,
             	'shipping'=>$shipping->price,
-            	'total'=>$totalGoods,
         	));
 /**/
 			//$this->redirect(Yii::app()->baseUrl . "/php/gw/EntryPoint.php?sid=" . Yii::app()->session['sid'] . "&xid=" . rand(99999,999999) );
 		}
 	}
 
-	// Return from Paymentsense
+	// Return from payment module
 	public function actionPaid()
 	{
 header($this->p3p);
+		Yii::log("PAID PAGE LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		Yii::log("PAID PAGE LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
 
 		$ip = "UNKNOWN";
@@ -477,6 +486,7 @@ header($this->p3p);
 
         // Send email
         $to = $order->email_address;
+ //$to = "kim@dragondex.co.uk";						// KKK kim - remove
         if (strlen($to) > 0)
         {
             $from = Yii::app()->session['checkoutEmail'];
@@ -485,10 +495,9 @@ header($this->p3p);
             // phpmailer
             $mail = new PHPMailer();
             $mail->AddAddress($to);
-			$mail->AddBCC($from);
+			$mail->AddBCC($from);						// KKK kim - uncomment
             $mail->SetFrom($from, $fromName);
             $mail->AddReplyTo($from, $fromName);
-//            $mail->AddAttachment($pdf_filename);
             $mail->Subject = $subject;
             $mail->MsgHTML($message);
             if (!$mail->Send())
@@ -520,8 +529,8 @@ header($this->p3p);
 			}
 		}
 
-		$thanks = "<h2>Thank you for shopping with " . Yii::app()->session['checkoutName'] . "</h2><br>";
-		$thanks .= "<p>An email will be sent to you shortly</p>";
+		$thanks = file_get_contents(dirname(Yii::app()->request->scriptFile) . "/protected/controllers/ThankYou.template");
+		$thanks = str_replace("<return-url>", Yii::app()->session['http_payment_return'], $thanks);
 		die($thanks);
 	}
 
