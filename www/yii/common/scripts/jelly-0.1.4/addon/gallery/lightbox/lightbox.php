@@ -77,7 +77,10 @@ class lightbox
 
 		if ($this->image != "")
 		{
-			$content .= "<a class='example-image-link' href='" . $this->image . "' data-lightbox='example-set' title=''><img class='example-image' src='" . $this->thumb . "' alt='' width='" . $this->width . "' height='" . $this->height . "'/></a>";
+			//$content .= "<a class='example-image-link' href='" . $this->image . "' data-lightbox='example-set' title=''><img class='example-image' src='" . $this->thumb . "' alt='' width='" . $this->width . "' height='" . $this->height . "'/></a>";
+
+			$content .= "<a class='example-image-link' href='" . $this->image . "' data-lightbox='example-set' title=''><img style='max-height:" . $this->height . "px; max-width:" . $this->width . "px' class='example-image' src='" . $this->thumb . "' alt='' style=''/></a>";
+
 		}
 		else
 		{
@@ -97,11 +100,13 @@ class lightbox
 				$content .= "<div class='image-row'>";
 				$content .= "<div class='image-set'>";
 				foreach ($galleryImages as $galleryImage):
-					//$content .= '<a class="example-image-link" href="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $galleryImage->image . '" data-lightbox="gallery-' . $gallery->id . '" title="' . $galleryImage->text . '"><img class="example-image" src="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . '" alt="' . $galleryImage->text . '" width="100" height="100"/></a>';
+					//$content .= '<a style="padding:5px 5px 0px 0px" class="example-image-link" href="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $galleryImage->image . '" data-lightbox="gallery-' . $gallery->id . '" title="' . $galleryImage->text . '"><img class="example-image" src="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . '" alt="' . $galleryImage->text . '" width="100" height="100"/></a>';
 
-					$content .= '<a style="padding:5px 5px 0px 0px" class="example-image-link" href="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $galleryImage->image . '" data-lightbox="gallery-' . $gallery->id . '" title="' . $galleryImage->text . '"><img class="example-image" src="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . '" alt="' . $galleryImage->text . '" width="100" height="100"/></a>';
+					//$content .= '<a style="padding:5px 5px 0px 0px" class="example-image-link" href="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $galleryImage->image . '" data-lightbox="gallery-' . $gallery->id . '" title="' . $galleryImage->text . '"><img class="example-image" src="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . '" alt="' . $galleryImage->text . '" width="auto" height="100"/></a>';
 
-					$content .= '</a>';
+					$content .= '<a style="padding:5px 5px 0px 0px" class="example-image-link" href="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $galleryImage->image . '" data-lightbox="gallery-' . $gallery->id . '" title="' . $galleryImage->text . '"><img class="example-image" style="max-height:50px; max-width:50px" src="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . '" alt="' . $galleryImage->text . '/></a>';
+
+					//$content .= '</a>';
 				endforeach;
 				$content .= "</div>";
 				$content .= "</div>";

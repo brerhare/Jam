@@ -1,4 +1,6 @@
-#Wee Target
+# Wee Target Trade
+# ================
+
 [defaults]
 include = default-values
 [* : defaults]
