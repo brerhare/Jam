@@ -5,7 +5,7 @@ class SiteController extends Controller
 	// @@EG p3p example code here. Needed for IE
 	private $p3p = 'P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"';
 
-	public $test = 0;
+	public $test = 1;
 
 	/**
 	 * Get the jelly script root (as defined in /protected/config/main.php)
@@ -506,7 +506,8 @@ header($this->p3p);
 			}
 			else
 			{
-            	$mail->AddAddress("info@wireflydesign.com");
+            	$mail->AddAddress($to);
+				$mail->AddBCC($from);
 			}
 
             $mail->SetFrom($from, $fromName);
