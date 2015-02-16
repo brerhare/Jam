@@ -5,7 +5,7 @@ class SiteController extends Controller
 	// @@EG p3p example code here. Needed for IE
 	private $p3p = 'P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"';
 
-	public $test = 1;
+	public $test = 0;
 
 	/**
 	 * Get the jelly script root (as defined in /protected/config/main.php)
@@ -176,6 +176,7 @@ header($this->p3p);
 	public function actionPay()
 	{
 header($this->p3p);
+		Yii::log("Checkout - a payment button has been clicked" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		if (isset($_GET['ptype']))
 		{
 			Yii::log("Checkout - payment type requested is " . $_GET['ptype'] , CLogger::LEVEL_WARNING, 'system.test.kim');
@@ -359,6 +360,7 @@ header($this->p3p);
 		if ($_GET['ptype'] == 0)
 		{
 			// Go to paymentsense for payment
+			Yii::log("Checkout - going to paymentsense" , CLogger::LEVEL_WARNING, 'system.test.kim');
 			$this->redirect(Yii::app()->baseUrl . "/php/gw/EntryPoint.php?sid=" . Yii::app()->session['sid'] . "&xid=" . rand(99999,999999) );
 		}
 		else if  ($_GET['ptype'] == 1)
@@ -367,6 +369,7 @@ header($this->p3p);
 //die('done');
 
 			// Paypal
+			Yii::log("Checkout - going to paypal" , CLogger::LEVEL_WARNING, 'system.test.kim');
 			//$this->renderPartial('paypal');
 			$this->layout = "nosuchlayout";			// Needs this to connect to Paypal
 			$this->render('paypal',array(
@@ -499,16 +502,8 @@ header($this->p3p);
             // phpmailer
             $mail = new PHPMailer();
 
-			if ($this->test == 0)
-			{
             	$mail->AddAddress($to);
 				$mail->AddBCC($from);
-			}
-			else
-			{
-            	$mail->AddAddress($to);
-				$mail->AddBCC($from);
-			}
 
             $mail->SetFrom($from, $fromName);
             $mail->AddReplyTo($from, $fromName);
