@@ -460,7 +460,10 @@ $content .= "<style>input {margin-bottom:3px; height:16px;}</style>";
 				$content .= "Enter your email address (twice please)<br />";
 				$content .= "<input id='email1' name='email1' type='text' value='' size='30'/> <br />";
 				$content .= "<input id='email2' name='email2' type='text' value='' size='30'/> <br /><br/>";
-				$content .= " Phone number (recommended)<br />";
+				if ($this->uid == 76)	// Wee target
+					$content .= " Phone number<br />";
+				else
+					$content .= " Phone number (recommended)<br />";
 				$content .= "<input id='telephone' name='telephone' type='text' value='' size='20'/> <br />";
 				$content .= "</td><td>&nbsp</td><td valign='top'>";
 				$content .= "Notes<br>";
@@ -531,8 +534,11 @@ $content .= "<style>input {margin-bottom:3px; height:16px;}</style>";
 						}
 						if (document.getElementById("telephone").value == "")
 						{
-							alert('Phone number cant be empty');
-							return(false);
+							if ($this->uid == 76)	// Wee target
+							{
+								alert('Phone number cant be empty');
+								return(false);
+							}
 						}
 						var e = document.getElementById("choose_shipping_option");
 						shipId = e.options[e.selectedIndex].value;

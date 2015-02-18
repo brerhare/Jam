@@ -81,6 +81,20 @@ class SiteController extends Controller
     /**
      * Displays the DIRECT login page
      */
+// @@TODO: HARDCODED FOR BLOODBIKES ---------- REMOVE
+    public function actionBloodbikesDirect()
+    {
+        Yii::app()->session['uid'] = 77;
+        $identity = new UserIdentity('chairman@dgbloodbikes.org.uk', '13100dbik35');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
 // @@TODO: HARDCODED FOR WEETARGET ---------- REMOVE
     public function actionWeetargetDirect()
     {
