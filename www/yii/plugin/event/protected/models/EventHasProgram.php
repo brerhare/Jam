@@ -7,6 +7,7 @@
  * @property integer $id
  * @property integer $program_id
  * @property integer $event_event_id
+ * @property integer $approved
  */
 class EventHasProgram extends CActiveRecord
 {
@@ -36,10 +37,10 @@ class EventHasProgram extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('program_id, event_event_id', 'required'),
-			array('program_id, event_event_id', 'numerical', 'integerOnly'=>true),
+			array('program_id, event_event_id, approved', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, program_id, event_event_id', 'safe', 'on'=>'search'),
+			array('id, program_id, event_event_id, approved', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -64,6 +65,7 @@ class EventHasProgram extends CActiveRecord
 			'id' => 'Id',
 			'program_id' => 'Program',
 			'event_event_id' => 'Event Event',
+			'approved' => 'Approved',
 		);
 	}
 
@@ -83,6 +85,8 @@ class EventHasProgram extends CActiveRecord
 		$criteria->compare('program_id',$this->program_id);
 
 		$criteria->compare('event_event_id',$this->event_event_id);
+
+		$criteria->compare('approved',$this->approved);
 
 		return new CActiveDataProvider('EventHasProgram', array(
 			'criteria'=>$criteria,

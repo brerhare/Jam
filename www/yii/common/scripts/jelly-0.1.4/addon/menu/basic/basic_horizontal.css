@@ -31,6 +31,7 @@ z-index:11000;
 nav ul li {
 	float: left;
 }
+
 	nav ul li:hover {
 		background: #4b545f;
 		background: linear-gradient(top, #4f5964 0%, #5f6975 40%);

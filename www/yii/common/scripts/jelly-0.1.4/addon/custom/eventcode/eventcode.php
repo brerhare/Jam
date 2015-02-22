@@ -58,8 +58,11 @@ class eventcode
 	// Invoked by index.jel to create the google map. Val is 'os' only at present
 	private function main_google_map($val)
 	{
-		require(Yii::app()->basePath . "/../scripts/jelly/addon/map/google_os/google_os.php");
 
+if ($this->programId == 12)
+	return;
+
+		require(Yii::app()->basePath . "/../scripts/jelly/addon/map/google_os/google_os.php");
 		$mapId = 'main_google_map';
 		$center = 'NX696834';
 		//$center = 'NX976762';
@@ -111,7 +114,12 @@ class eventcode
 			// Check if we are filtering program
 			if ($this->programId != 0)
 			{
-				if ($event->program_id != $this->programId)
+				// Check this event should appear in the selected program
+				$criteria = new CDbCriteria;
+        		$criteria->addCondition("event_event_id = " .  $event->id);
+        		$criteria->addCondition("program_id = " . $this->programId);
+				$eventHasProgram=EventHasProgram::model()->find($criteria);
+				if (!($eventHasProgram))
 					continue;
 			}
 			else
@@ -119,10 +127,27 @@ class eventcode
 				if ((isset($_GET['program'])) && trim($_GET['program'] != ''))
 				{
 					$showProgram = trim($_GET['program']);
-					if ($event->program_id != $showProgram)
+
+					// Check this event should appear in the selected program
+					$criteria = new CDbCriteria;
+        			$criteria->addCondition("event_event_id = " .  $event->id);
+        			$criteria->addCondition("program_id = " . $showProgram);
+					$eventHasProgram=EventHasProgram::model()->find($criteria);
+					if (!($eventHasProgram))
 						continue;
 				}
 			}
+
+			// Check this event is approved
+			$criteria = new CDbCriteria;
+ 			$criteria->addCondition("event_event_id = " .  $event->id);
+  			$criteria->addCondition("program_id = " . $this->programId != 0 ? $this->programId : 13);
+			$eventHasProgram=EventHasProgram::model()->find($criteria);
+			if (!($eventHasProgram))
+				continue;
+			if (!($eventHasProgram->approved))
+				continue;
+
 			// Pick up the Ws record
 			$criteria = new CDbCriteria;
 			$criteria->condition = "event_id = " . $event->id;
@@ -249,7 +274,12 @@ class eventcode
 			// Check if we are filtering program
 			if ($this->programId != 0)
 			{
-				if ($event->program_id != $this->programId)
+				// Check this event should appear in the selected program
+				$criteria = new CDbCriteria;
+       			$criteria->addCondition("event_event_id = " .  $event->id);
+       			$criteria->addCondition("program_id = " . $this->programId);
+				$eventHasProgram=EventHasProgram::model()->find($criteria);
+				if (!($eventHasProgram))
 					continue;
 			}
 			else
@@ -259,8 +289,26 @@ class eventcode
 					$showProgram = trim($_GET['program']);
 					if ($event->program_id != $showProgram)
 						continue;
+
+					// Check this event should appear in the selected program
+					$criteria = new CDbCriteria;
+        			$criteria->addCondition("event_event_id = " .  $event->id);
+        			$criteria->addCondition("program_id = " . $showProgram);
+					$eventHasProgram=EventHasProgram::model()->find($criteria);
+					if (!($eventHasProgram))
+						continue;
 				}
 			}
+
+			// Check this event is approved
+			$criteria = new CDbCriteria;
+ 			$criteria->addCondition("event_event_id = " .  $event->id);
+  			$criteria->addCondition("program_id = " . $this->programId != 0 ? $this->programId : 13);
+			$eventHasProgram=EventHasProgram::model()->find($criteria);
+			if (!($eventHasProgram))
+				continue;
+			if (!($eventHasProgram->approved))
+				continue;
 
 			// Check text search
 			if ((isset($_GET['textsearch'])) && trim($_GET['textsearch'] != ''))
