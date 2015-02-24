@@ -19,6 +19,7 @@ css.display = block
 
 	[header]
 	child = bubble-links, logo
+css.position = relative
 	css.width = 1200px
 	css.height = 230px 
 		
@@ -27,7 +28,6 @@ css.display = block
 		css.height = 300px
 		css.width = 100%
 		stacking = horizontal
-		css.z-index = 180
 		
 			[machine-bubble]
 			css.height = 100%
@@ -66,13 +66,11 @@ css.display = block
 			image.height = 200px
 			image.align = center
 			click = ?layout=index&page=contact
-			css.z-index = 180
 	
 		[logo]
 		css.margin-top = -310px
 		css.height = 240px
 		css.width = 550px
-		css.z-index = 200
 		image.url = img/logo-shadow.png
 		image.width = 517px
 		image.height = 229px
@@ -95,17 +93,14 @@ css.background-color = white
 	image.width = 900px
 	image.height = 45px
 	css.overflow = visible
-	css.z-index = 100
 	
 	
 	[menu]
 	css.height = 40px
 	css.width = 900px
 	css.overflow = visible
-	css.z-index = 100
 	css.position = absolute
 	css.margin-top = -40px
-	css.z-index = 100
 	#css.position = relative
 
 	addon.menu.basic.orientation = horizontal

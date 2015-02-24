@@ -1,0 +1,122 @@
+<?php
+
+/**
+ * API for shopping--
+ *
+ * Notes
+ * -----
+ * For best results don't set the height/width of your container
+ *
+ * http://coolcarousels.frebsite.nl/c/47/
+ */
+
+class shopping
+{
+	// (A) Declare some sensible default values for all options
+	// --------------------------------------------------------
+
+	private $defaultSliderHeight = "400px";
+	private $defaultBackgroundImage =  "/scripts/jelly/addon/slider/parallax/images/slider-background.jpg";
+			
+
+	public function init($options, $jellyRootUrl)
+	{
+		// (B) Override declared default values with any Jelly supplied values
+		// -------------------------------------------------------------------
+
+		$content = "";
+		foreach ($options as $opt => $val)
+		{
+			switch ($opt)
+			{
+				case "slider-height":
+					$this->defaultSliderHeight = $val;
+					break;
+				case "background-image":
+					$this->defaultBackgroundImage = $val;
+					break;
+						
+			
+				default:
+					// Not all array items are action items
+			}
+		}
+
+
+		// (C) Construct some HTML (like the originally downloaded index.html) but with our own database content and declared/overridden defaults
+		//     (This will replace a <substitute-xxxxx> tag like any other substitutions)
+		// -------------------------------------------------------------------------------------------------------------------------------------
+
+
+			
+		$sliderItems = JellySliderImage::model()->findAll(array('order'=>'sequence'));
+		$content .= "<div id='shopping-wrapper'>";
+		$content .= "  <div id='shopping-inner'>";
+		$content .= "    <div id='shopping-carousel'>";
+		
+		foreach ($sliderItems as $sliderItem):
+			$content .= "<div class='jeans' id='jeans'>";
+			$content .= 	"<a href='" . $sliderItem->url . "' >";
+			$content .= "       <img src='" . "/userdata/jelly/sliderimage/" . $sliderItem->image . "' width='140' height='200' />";
+			$content .=         "<em>" . $sliderItem->title . "</em>";
+			$content .= "     </a>";
+			$content .= "</div>";
+	
+		
+		endforeach;
+			$content .= "    </div>";
+			$content .= "  </div>";
+			$content .= "</div>";
+
+		// (D) Make sure all <substitute-xxxx> tags have been substituted in $apiHtml
+		// --------------------------------------------------------------------------
+		
+		if (strstr($this->apiHtml, "<substitute-slider-height>"))
+			$this->apiHtml = str_replace("<substitute-slider-height>", $this->defaultSliderHeight, $this->apiHtml);
+		if (strstr($this->apiHtml, "<substitute-background-image>"))
+			$this->apiHtml = str_replace("<substitute-background-image>", $this->defaultBackgroundImage, $this->apiHtml);
+		
+				
+
+		// (E) Make sure all <substitute-xxxx> tags have been substituted in $apiJs
+		// --------------------------------------------------------------------------
+
+		//if (strstr($this->apiJs, "<substitute-interval>"))
+			//$this->apiJs = str_replace("<substitute-interval>", ($this->defaultInterval * 1000), $this->apiJs);
+
+
+		// Send the html and js to the jelly processor
+		$tmp = str_replace("<substitute-path>", $jellyRootUrl, $this->apiHtml);
+		$html = str_replace("<substitute-data>", $content, $tmp);
+		$js = $this->apiJs;
+		$retArr = array();
+		$retArr[0] = $html;
+		$retArr[1] = $js;
+		return $retArr;
+	}
+
+	// (F) Make sure you have added your substitute 
+	private $apiHtml = <<<END_OF_API_HTML
+
+        <div id="jelly-parallax-slider-container">
+            <!--Parallax Slider-->
+			<script type="text/javascript" src="<substitute-path>/shopping.js"></script>
+			
+			<link rel="stylesheet" type="text/css" href="<substitute-path>/shopping.css" />
+
+			<substitute-data>
+        </div>
+
+END_OF_API_HTML;
+
+	private $apiJs = <<<END_OF_API_JS
+
+	jQuery(document).ready(function($){
+		// Put any startup code in here
+	});
+
+
+END_OF_API_JS;
+
+}
+?>
