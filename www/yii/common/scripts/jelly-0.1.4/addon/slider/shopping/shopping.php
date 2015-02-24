@@ -16,7 +16,6 @@ class shopping
 	// --------------------------------------------------------
 
 	private $defaultSliderHeight = "400px";
-	private $defaultBackgroundImage =  "/scripts/jelly/addon/slider/parallax/images/slider-background.jpg";
 			
 
 	public function init($options, $jellyRootUrl)
@@ -32,11 +31,6 @@ class shopping
 				case "slider-height":
 					$this->defaultSliderHeight = $val;
 					break;
-				case "background-image":
-					$this->defaultBackgroundImage = $val;
-					break;
-						
-			
 				default:
 					// Not all array items are action items
 			}
@@ -73,8 +67,6 @@ class shopping
 		
 		if (strstr($this->apiHtml, "<substitute-slider-height>"))
 			$this->apiHtml = str_replace("<substitute-slider-height>", $this->defaultSliderHeight, $this->apiHtml);
-		if (strstr($this->apiHtml, "<substitute-background-image>"))
-			$this->apiHtml = str_replace("<substitute-background-image>", $this->defaultBackgroundImage, $this->apiHtml);
 		
 				
 
@@ -98,7 +90,7 @@ class shopping
 	// (F) Make sure you have added your substitute 
 	private $apiHtml = <<<END_OF_API_HTML
 
-        <div id="jelly-parallax-slider-container">
+        <div id="jelly-shopping-slider-container">
             <!--Parallax Slider-->
 			<script type="text/javascript" src="<substitute-path>/shopping.js"></script>
 			

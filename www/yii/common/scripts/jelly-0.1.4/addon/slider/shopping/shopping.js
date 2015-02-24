@@ -1,5 +1,4 @@
 $(function() {
-alert('ggtg');	
 	var _visible = 5;
 	var $pagers = $('#pager a');
 	var _onBefore = function() {

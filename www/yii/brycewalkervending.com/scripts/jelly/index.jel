@@ -131,7 +131,7 @@ css.background-color = white
 	css.height = 200px
 	css.margin-top = 20px
 	css.background-color = lightgrey
-	#addon.slider.shopping.slider-height = 200px
+	addon.slider.shopping.slider-height = 200px
 	
 
 ######## body #######################################
