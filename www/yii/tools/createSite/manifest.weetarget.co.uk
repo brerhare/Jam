@@ -10,6 +10,7 @@ dbpass = ghwu73c9e
 # Shopping cart order confirmation email
 checkoutemail = tristen@weetarget.co.uk
 checkoutname = Wee Target
+checkoutpaypalemail = arabellagifts@virginmedia.com
 
 # Backend page editor
 editorpagewidth = 800

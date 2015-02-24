@@ -1,0 +1,4 @@
+AuthUserFile /home/weetarget.co.uk/domains/trade.weetarget.co.uk/dev/src/www/yii/trade.weetarget.co.uk/.htpass
+AuthType Basic
+AuthName "Wee Target Trade"
+Require valid-user

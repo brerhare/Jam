@@ -343,7 +343,7 @@ $content .= "<style> * { color: grey;} </style>";
 				$criteria->addCondition("product_product_id = " . $cProduct);
 				$image = Image::model()->find($criteria);	
 				if ($image)
-					$content .= "<img border=0 src='" . $_imageDir . $image->filename . "' style='height:40px; width:50px'>";
+					$content .= "<img border=0 src='" . $_imageDir . $image->filename . "' style='max-height:40px; max-width:50px'>";
 				$content .= '<br>&nbsp';
 				$content .= "</td>";
 				// Description
@@ -441,6 +441,8 @@ $content .= "<style> * { color: grey;} </style>";
 				$content .= "</div>";
 				$content .= "<div style='clear:both'></div>";
 
+$content .= "<style>input {margin-bottom:3px; height:16px;}</style>";
+
 				// Customer contact details
 				$content .= "<table style='width:80%; float:left'>";
 				$content .= "<thead><tr>";
@@ -449,8 +451,7 @@ $content .= "<style> * { color: grey;} </style>";
 				$content .= "<th align='left' width=50%></th>";
 				$content .= "</tr></thead>";
 				$content .= "<tbody><tr><td valign='top'>";
-				$content .= "Please enter your delivery address<br />";
-				$content .= "Your billing address will be used if left blank<br />";
+				$content .= "Shipping address<br />";
 				$content .= "<input id='address1' name='address1' type='text' value='' size='40'/> <br />";
 				$content .= "<input id='address2' name='address2' type='text' value='' size='40'/> <br />";		
 				$content .= "<input id='address3' name='address3' type='text' value='' size='40'/> <br />";
@@ -459,13 +460,17 @@ $content .= "<style> * { color: grey;} </style>";
 				$content .= "Enter your email address (twice please)<br />";
 				$content .= "<input id='email1' name='email1' type='text' value='' size='30'/> <br />";
 				$content .= "<input id='email2' name='email2' type='text' value='' size='30'/> <br /><br/>";
-				$content .= " Phone number (recommended)<br />";
+				if ($this->uid == 76)	// Wee target
+					$content .= " Phone number<br />";
+				else
+					$content .= " Phone number (recommended)<br />";
 				$content .= "<input id='telephone' name='telephone' type='text' value='' size='20'/> <br />";
 				$content .= "</td><td>&nbsp</td><td valign='top'>";
 				$content .= "Notes<br>";
 				$content .= "<textarea id='message' name='message' rows='7' cols='38'> </textarea> <br><br><br/>";
 				$content .= "<a href='#' onClick=\"proceed(0)\"	>" . "<img src=/product/img/proceed_to_checkout.png></a>";
-//				$content .= "<br><br><a href='#' onClick=\"proceed(1)\"	>" . "<img src=/product/img/paypal-checkout.png></a>";
+				if ((isset(Yii::app()->session['checkoutPaypalEmail'])) && (trim(Yii::app()->session['checkoutPaypalEmail']) != ""))
+					$content .= "<br><br><a href='#' onClick=\"proceed(1)\"	>" . "<img src=/product/img/paypal-checkout.png></a>";
 				$content .= "</td></tr></tbody>";
 				$content .= "</table>";
 
@@ -502,10 +507,14 @@ $content .= "<style> * { color: grey;} </style>";
 
 					function proceed(ptype) /* 0=payment gateway, 1=paypal */
 					{
-/*****
 						if (document.getElementById("address1").value == "")
 						{
-							alert('Address cant be empty');
+							alert('Address line 1 and 2 cant be empty');
+							return(false);
+						}
+						if (document.getElementById("address2").value == "")
+						{
+							alert('Address line 1 and 2 cant be empty');
 							return(false);
 						}
 						if (document.getElementById("post_code").value == "")
@@ -513,7 +522,6 @@ $content .= "<style> * { color: grey;} </style>";
 							alert('Post code cant be empty');
 							return(false);
 						}
-*****/
 						if (document.getElementById("email1").value == "")
 						{
 							alert('Email address cant be empty');
@@ -523,6 +531,14 @@ $content .= "<style> * { color: grey;} </style>";
 						{
 							alert('Email addresses dont match');
 							return(false);
+						}
+						if (document.getElementById("telephone").value == "")
+						{
+							if ($this->uid == 76)	// Wee target
+							{
+								alert('Phone number cant be empty');
+								return(false);
+							}
 						}
 						var e = document.getElementById("choose_shipping_option");
 						shipId = e.options[e.selectedIndex].value;

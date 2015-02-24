@@ -5,7 +5,7 @@ include = default-values
 
 [screen]
 child = shop-tab, header, header-background, site
-fx.wallpaper-image = /img/background.jpg
+fx.wallpaper-image = /img/background.png
 css.display = block
 
 	[shop-tab]
@@ -34,6 +34,7 @@ css.display = block
 	css.position = relative
 	
 		[logo]
+		css.margin-top = 20px
 		css.height = 210px
 		css.width = 400px
 		image.url = img/logo.png
@@ -46,15 +47,29 @@ css.display = block
 		css.width = 560px
 		image.url = img/header-graphics.png
 		image.width = 500px
-		image.height = 124px
+		image.height = 129px
 		
 		[social]
+		child = facebook, trade
 		css.margin-top = 30px
-		css.height = 40px
 		css.width = 40px
-		image.url = img/facebook.png
-		image.width = 34px
-		image.height = 33px
+	
+		
+			[facebook]
+			css.height = 40px
+			css.width = 40px
+			image.url = img/facebook.png
+			image.width = 33px
+			image.height = 33px
+			click = ?layout=index&page=facebook
+			
+			[trade]
+			css.height = 40px
+			css.width = 40px
+			image.url = img/trade.png
+			image.width = 33px
+			image.height = 33px
+			click = http://trade.weetarget.co.uk
 		
 	[header-background]
 	css.margin-top = -193px
@@ -70,7 +85,7 @@ css.display = block
 	child = menu-container, content
 	stacking = horizontal
 	css.width = 970px
-	css.margin-top = -15px
+	css.margin-top = -70px
 	css.background-color = #555555
 	fx.rounding = 4px
 	css.margin-bottom = 50px
@@ -78,6 +93,8 @@ css.display = block
 		[menu-container]
 		child = menu, boy-graphic, footer
 		css.width = 240px
+		css.margin-top = 80px
+		css.overflow = visible
 
 			[menu]
 			#css.height = 40px
@@ -88,31 +105,33 @@ css.display = block
 			css.z-index = 100
 
 	####### Top level basic settings ####
-		#addon.menu.basic.orientation = vertical
+		addon.menu.basic.orientation = vertical
 		addon.menu.basic.width = 130px
 		addon.menu.basic.height = 50px
 
 	####### Top level background settings (first colour is the top gradiation) ####
 		addon.menu.basic.menu-stretch = /img/menu.png
-		#addon.menu.basic.menu-color = white blue
+		addon.menu.basic.menu-color = transparent
+		addon.menu.basic.item-separator-color = transparent
+		addon.menu.basic.item-separator-width = 5px
 
 	####### Top level font settings ####
 		addon.menu.basic.font-size = 16px
 		addon.menu.basic.menu-text-color = black
-		addon.menu.basic.menu-text-weight = normal
+		addon.menu.basic.menu-text-weight = bold
 
 
 	####### Top level hover settings ####
-		addon.menu.basic.item-color = cyan
-		addon.menu.basic.item-text-color = blue
+		addon.menu.basic.menu-hover-text-color = blue
+		addon.menu.basic.menu-hover-background-image-stretch = /img/menu-hover.png
 
 
 	####### Second level background settings ####
-		addon.menu.basic.submenu-color = #ffffff #bfffff
-		addon.menu.basic.subitem-separator-color = white
+		addon.menu.basic.submenu-color = transparent
+		addon.menu.basic.subitem-separator-color = transparent
 
 	####### Second level hover settings ####
-		addon.menu.basic.subitem-color = cyan
+		addon.menu.basic.subitem-color = transparent
 		addon.menu.basic.subitem-text-color = blue
 	
 	[boy-graphic]
@@ -176,14 +195,14 @@ css.font-size = 14px
 #### Content ################################
 			
 		[content]
-		child = content-block
+		child = content-block, contact, trade-contact
 		css.background-color = white
 		css.margin-left = -60px
 		css.padding = 10px
 		css.width = 740px
 		fx.rounding = 10px
 		css.box-shadow = 12px 8px 8px rgba(0,0,0,0.5)
-		css.margin-bottom = 10px
+		css.margin-bottom = 30px
 		
 		
 			[content-block]
@@ -192,5 +211,58 @@ css.font-size = 14px
 			db.filter = url=$_GET['page']
 			db.error = Sorry, I could not find the page $_GET['page']
 			html.raw = ContentBlock.content
+			
+			[contact]
+			child = contact-form, contact-text
+			condition = @PAGE=contact
+			css.height = 300px
+			stacking = horizontal
+				
+				[contact-form]
+				css.width = 400px
+				#css.margin-bottom = 30px
+				css.background-color = white
+				addon.contact.contactform.edgepadding = 0px
+				addon.contact.contactform.buttoncolor = #00ef00
+				addon.contact.contactform.buttontextcolor = black
+				addon.contact.contactform.buttontext = Submit
+				addon.contact.contactform.successtextcolor = green
+				addon.contact.contactform.failuretextcolor = red
+				addon.contact.contactform.textcolor = blue
+				addon.contact.contactform.backcolor = pink
+				addon.contact.contactform.inputspacing = 10px
+
+				[contact-text]
+				css.width = 300px
+				css.margin-top = 80px
+				css.font = 12px
+				html.raw = Please fill in the form and someone will get back to you as soon as possible.
+			
+			[trade-contact]
+			child = t-contact-form, t-contact-text
+			condition = @PAGE=wee-target-uk-trade-wholesale
+			css.height = 300px
+			stacking = horizontal
+				
+				[t-contact-form]
+				css.width = 400px
+				#css.margin-bottom = 30px
+				css.background-color = white
+				addon.contact.contactform.edgepadding = 0px
+				addon.contact.contactform.buttoncolor = #ff9400
+				addon.contact.contactform.buttontextcolor = black
+				addon.contact.contactform.buttontext = Submit
+				addon.contact.contactform.successtextcolor = green
+				addon.contact.contactform.failuretextcolor = red
+				addon.contact.contactform.textcolor = blue
+				addon.contact.contactform.backcolor = pink
+				addon.contact.contactform.inputspacing = 10px
+
+				[t-contact-text]
+				css.width = 300px
+				css.margin-top = 80px
+				css.font = 12px
+				html.raw = For Trade enquiries please ensure you state your, Business Address, your Business Website Address, number of years of trading and any other relevant contact details - someone will get back to you as soon as possible.
+
 	
 

@@ -597,6 +597,7 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 			else
 				$sep = "&";
 			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['click'])) . $sep . "click=true>\n", $indentLevel);
+//Yii::log(".................... jellyclick .................. genfromclick=" . $array['click'] , CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
 		if (array_key_exists("clicknew", $array))
 		{
@@ -1144,6 +1145,14 @@ if (strstr($blobName, "googlemap"))
 
 	private function genInlineHtml($content, $indentLevel=0)
 	{
+		// @@TODO FIX BUG - product plugin on going to product page after having backspaced from product page - doubles up quoting the ""sid""
+		if (strstr($content, "&sid=\"\""))
+		{
+			//$content = str_replace("&sid=\"\"", "&sid=\"", $content);
+			//$content = str_replace("\"\"&", "\"&", $content);
+			//$content = str_replace("index.php", "http://plugin.wireflydesign.com/product/index.php", $content);
+		}
+
 		// Translate any @CLIPBOARD's
 		if (strstr($content, "@CLIPBOARD"))
 			$content = str_replace("@CLIPBOARD", $this->clipBoard, $content);
@@ -1329,7 +1338,9 @@ if (strstr($blobName, "googlemap"))
 				// Eg: {{department 27 Guinot}}
 				// ----------------------------
 				$moreCurlyWurlys = 1;
-				$value = $vals[1];
+				$value = "";
+				if (count($vals) > 1)
+					$value = $vals[1];
 
                 $deeplink = "";
 				if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
@@ -1366,7 +1377,10 @@ if (strstr($blobName, "googlemap"))
 				$click = '';
                 if ((isset($_GET['click'])) && (trim($_GET['click']) != ""))
                     $click .= "&click=" . $_GET['click'];
-				$iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=checkout&sid=' . Yii::app()->params['sid'] . '&ge=' . Yii::app()->params['checkoutEmail'] . '&gn=' . Yii::app()->params['checkoutName'] . '&gu=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayUser'])) . '&gp=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayPassword'])) . $click . '"></iframe>';
+				if (!(isset(Yii::app()->params['checkoutPaypalEmail'])))
+					Yii::app()->params['checkoutPaypalEmail'] = '';
+
+				$iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=checkout&sid=' . Yii::app()->params['sid'] . '&ge=' . Yii::app()->params['checkoutEmail'] . '&gn=' . Yii::app()->params['checkoutName'] . '&gu=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayUser'])) . '&gp=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayPassword'])) . $click . '&pp=' . urlencode($util->encrypt(Yii::app()->params['checkoutPaypalEmail'])) . '&checkoutButton=true' . '"></iframe>';
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 

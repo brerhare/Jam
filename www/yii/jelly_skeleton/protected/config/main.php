@@ -103,12 +103,18 @@ return array(
 		// These are used by the shopping cart checkout process
 		'checkoutEmail'=>'<checkoutemail>',
 		'checkoutName'=>'<checkoutname>',
+
 		// Test gateway
 		'checkoutGatewayUser'=>'WIREFL-5188100',
 		'checkoutGatewayPassword'=>'391F3GWBZ0',
+
 		// Live gateway
 		//'checkoutGatewayUser'=>'xxxxx',
 		//'checkoutGatewayPassword'=>'xxxxx',
+
+        // Paypal
+        //'checkoutPaypalEmail'=>'<checkoutpaypalemail>',
+
 		'jellyRoot' => '/scripts/jelly/',
 		'sid' => '<sid>',
 	),

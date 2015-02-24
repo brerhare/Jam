@@ -5,27 +5,24 @@
 )); ?>
 
 
-	<!-- Uploadify starts -->
-    <link rel="stylesheet" type="text/css" href="/js/uploadify/uploadify.css">
-    <script type="text/javascript" src="/js/uploadify/jquery.uploadify.js"></script>
-    <script src="/js/uploadify/jquery.uploadify.min.js" type="text/javascript"></script>
+	<!-- Uploadifive starts -->
+    <link rel="stylesheet" type="text/css" href="/js/uploadifive/uploadifive.css">
+    <script type="text/javascript" src="/js/uploadifive/jquery.uploadifive.js"></script>
 
     <script type="text/javascript">
-    $(function() {
-        $('#file_upload').uploadify({
-            'swf'      : '/js/uploadify//uploadify.swf',
-            'uploader' : '<?php echo $this->createUrl('jellyGalleryImage/multiCreateUpload');?>',
-            // Your options here
+        $(function() {
+            $('#file_upload').uploadifive({
+                'uploadScript' : '<?php echo $this->createUrl('jellyGalleryImage/multiCreateUpload');?>',
+            });
         });
-    });
     </script>
 
 	<br/></br/>
 
-	<input type="hidden" name="uploadify" value="uploadify">
-	<input type="file" name="file_upload" id="file_upload" />
+	<input type="hidden" name="uploadifive" value="uploadifive">
+	<input id="file_upload" name="file_upload" type="file" multiple="true">
 
-	<!-- Uploadify ends -->
+	<!-- Uploadifive ends -->
 
 
 	<div class="form-actions">

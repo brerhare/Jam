@@ -576,8 +576,11 @@ $model->program_id = Yii::app()->session['pid'];	// @TODO This is filled simply 
 				<meta name='viewport' content='width=device-width, initial-scale=1'>
 				<link rel='stylesheet' type='text/css' href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'/>
 				<link rel='stylesheet' type='text/css' href='http://plugin.wireflydesign.com/css/emailResponsive.css'/>
-				<br/><br/><br/><br/><br/>
-				<center><h4>Event approved</h4></center>";
+				<br/><br/><br/><br/><br/>";
+			if ($event->active == 1)	
+				echo "<center><h4>Event approved</h4></center>";
+			else
+				echo "<center><h4>The member has made this event inactive</h4></center>";
 			if ($level == 1)
 				echo "<center><h4>Member status changed to trusted</h4></center>";
 			echo "
@@ -651,6 +654,13 @@ $model->program_id = Yii::app()->session['pid'];	// @TODO This is filled simply 
 	// New event - autoapprove or notify needs approval
 	protected function handleNewEventPermissions($eventId, $programId)
 	{
+		// Pick up event
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("id = $eventId");
+		$event = Event::model()->find($criteria);
+		if (!($event))
+			throw new CHttpException(400, 'Missing event - cant send evaluate approval status');
+
 		// Get the members permissions for this program
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("event_member_id = " . Yii::app()->session['eid']);
@@ -681,14 +691,24 @@ $model->program_id = Yii::app()->session['pid'];	// @TODO This is filled simply 
 				throw new CHttpException(400, 'Missing event-program for this event & program so unable to approve it for public visibility');
 			return;
 		}
+		if (!($event->active))
+			return;
+
 		// Unprivileged or new member to this program - send approval-request email to admin(s)
+
+		// Pick up requesting member
+		$memberRequesting=Member::model()->findByPk($event->member_id);
+		if ($memberRequesting == null)
+			throw new CHttpException(400, 'Missing requesting member for this event & program so unable to approve it for public visibility');
+
+		// For each admin on this program ...
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("event_program_id = " . $programId);
 		$criteria->addCondition("privilege_level = 2");	//@@TODO Privilege hardcoded
 		$memberHasPrograms = MemberHasProgram::model()->findAll($criteria);
 		foreach ($memberHasPrograms as $memberHasProgram)
 		{
-			// Pick up *Admin* member record
+			// Pick up admin member record
 			$member=Member::model()->findByPk($memberHasProgram->event_member_id);
 			if ($member == null)
 			{
@@ -702,13 +722,6 @@ $model->program_id = Yii::app()->session['pid'];	// @TODO This is filled simply 
 			if (!($program))
 				throw new CHttpException(400, 'Missing program - cant send approval request email');
 
-			// Pick up event
-			$criteria = new CDbCriteria;
-			$criteria->addCondition("id = $eventId");
-			$event = Event::model()->find($criteria);
-			if (!($event))
-				throw new CHttpException(400, 'Missing event - cant send approval request email');
-
 			// phpmailer
 			$mail = new PHPMailer();
 			$mail->AddAddress($member->email_address);
@@ -718,9 +731,9 @@ $model->program_id = Yii::app()->session['pid'];	// @TODO This is filled simply 
 
 			$msg = file_get_contents(dirname(Yii::app()->request->scriptFile) . "/protected/backend/controllers/ApproveRequestEmail.template");
 			$msg = str_replace("<program-name>", $program->name, $msg);
-			$msg = str_replace("<member-first-name>", $member->first_name, $msg);
-			$msg = str_replace("<member-last-name>", $member->last_name, $msg);
-			$msg = str_replace("<member-email>", $member->email_address, $msg);
+			$msg = str_replace("<member-first-name>", $memberRequesting->first_name, $msg);
+			$msg = str_replace("<member-last-name>", $memberRequesting->last_name, $msg);
+			$msg = str_replace("<member-email>", $memberRequesting->email_address, $msg);
 			$msg = str_replace("<event-id>", $event->id, $msg);
 			$msg = str_replace("<event-title>", $event->title, $msg);
 			$msg = str_replace("<event-start>", $event->start, $msg);
