@@ -50,17 +50,22 @@ css.position = relative
 			[vendor-bubble]
 			css.height = 90%
 			css.width = 15%
-			css.margin-left = 25%
-			css.margin-top = 90px
-			image.url = img/vendor-bubble.png
-			image.width = 100px
-			image.height = 100px
+css.margin-left = 30%
+#css.margin-top = 90px
+#image.url = img/vendor-bubble.png
+#image.width = 100px
+#image.height = 100px
+addon.gallery.lightbox.thumb = http://brycewalkervending.com/img/vendor-bubble.png
+addon.gallery.lightbox.image = http://brycewalkervending.com/img/vendor-bubble.png
+addon.gallery.lightbox.width = 100px
+addon.gallery.lightbox.height = 100px
 			click = http://www.brycewalkervending.com
-			
+
 			[contact-bubble]
 			css.height = 100%
 			css.width = 20%
 			css.margin-top = 20px
+			css.margin-left = -90px
 			image.url = img/contact-bubble.png
 			image.width = 200px
 			image.height = 200px
@@ -130,8 +135,8 @@ css.background-color = white
 	css.width = 900px
 	css.height = 200px
 	css.margin-top = 20px
-	#css.background-color = lightgrey
-	addon.slider.shopping.slider-height = 200px
+#css.background-color = lightgrey
+addon.slider.shopping.slider-height = 200px
 	
 
 ######## body #######################################
