@@ -46,9 +46,16 @@ class shopping
 		$sliderItems = JellySliderImage::model()->findAll(array('order'=>'sequence'));
 		$content .= "<div id='shopping-wrapper'>";
 		$content .= "  <div id='shopping-inner'>";
-		$content .= "    <div id='shopping-carousel'>";
+		$content .= "    <div id='carousel'>";
 		
 		foreach ($sliderItems as $sliderItem):
+			$content .= "<div class='jeans' id='jeans'>";
+			$content .= 	"<a href='" . $sliderItem->url . "' >";
+			$content .= "       <img src='" . "/userdata/jelly/sliderimage/" . $sliderItem->image . "' width='140' height='200' />";
+			$content .=         "<em>" . $sliderItem->title . "</em>";
+			$content .= "     </a>";
+			$content .= "</div>";
+	
 			$content .= "<div class='jeans' id='jeans'>";
 			$content .= 	"<a href='" . $sliderItem->url . "' >";
 			$content .= "       <img src='" . "/userdata/jelly/sliderimage/" . $sliderItem->image . "' width='140' height='200' />";
@@ -59,6 +66,13 @@ class shopping
 		
 		endforeach;
 			$content .= "    </div>";
+
+$content .='
+                <a href="#" id="prev"></a>
+                <a href="#" id="next"></a>
+';
+
+
 			$content .= "  </div>";
 			$content .= "</div>";
 
@@ -91,7 +105,8 @@ class shopping
 	private $apiHtml = <<<END_OF_API_HTML
 
         <div id="jelly-shopping-slider-container">
-            <!--Parallax Slider-->
+            <!--Shopping Slider-->
+			<script src="<substitute-path>/jquery.carouFredSel-6.0.4-packed.js" type="text/javascript"></script>
 			<script type="text/javascript" src="<substitute-path>/shopping.js"></script>
 			
 			<link rel="stylesheet" type="text/css" href="<substitute-path>/shopping.css" />
