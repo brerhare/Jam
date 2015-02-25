@@ -55,22 +55,13 @@ class shopping
 			$content .=         "<em>" . $sliderItem->title . "</em>";
 			$content .= "     </a>";
 			$content .= "</div>";
-	
-			$content .= "<div class='jeans' id='jeans'>";
-			$content .= 	"<a href='" . $sliderItem->url . "' >";
-			$content .= "       <img src='" . "/userdata/jelly/sliderimage/" . $sliderItem->image . "' width='140' height='200' />";
-			$content .=         "<em>" . $sliderItem->title . "</em>";
-			$content .= "     </a>";
-			$content .= "</div>";
-	
-		
 		endforeach;
 			$content .= "    </div>";
 
-$content .='
+			$content .='
                 <a href="#" id="prev"></a>
                 <a href="#" id="next"></a>
-';
+			';
 
 
 			$content .= "  </div>";
