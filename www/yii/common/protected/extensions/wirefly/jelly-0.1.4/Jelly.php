@@ -767,6 +767,7 @@ if (strstr($blobName, "googlemap"))
 				$alt = "";
 				$width = "0";
 				$height = "0";
+				$zindex = "";
 				$tip = "";
 				$align = "";
 				foreach ($value as $prop => $val)
@@ -785,6 +786,9 @@ if (strstr($blobName, "googlemap"))
 						case ("height"):
 							$height = $val;
 							break;
+						case ("z-index"):
+							$zindex = " style='position:relative; z-index:" . $val . ';" ';
+							break;
 						case ("align"):
 							if (($val == 'center') || ($val == 'centre'))
 								$align = "style='display:block;margin-left:auto;margin-right:auto'";
@@ -796,9 +800,9 @@ if (strstr($blobName, "googlemap"))
 					}
 				}
 				if ($alt == "")
-					$this->genInlineHtml('<img ' . $align . ' title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.style.display=\'none\'" . " width="' . $width . '" height="' . $height . '">');
+					$this->genInlineHtml('<img ' . $zindex . $align . ' title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.style.display=\'none\'" . " width="' . $width . '" height="' . $height . '">');
 				else
-					$this->genInlineHtml('<img ' . $align . ' title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.onerror=null;this.src=\'' . $this->dbExpand($alt) . '\'" width="' . $width . '" height="' . $height . '">');
+					$this->genInlineHtml('<img ' . $zindex . $align . ' title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.onerror=null;this.src=\'' . $this->dbExpand($alt) . '\'" width="' . $width . '" height="' . $height . '">');
 				break;
 			case "fx":
 				foreach ($value as $cssName => $cssValue)
