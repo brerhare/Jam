@@ -89,6 +89,9 @@ class simple
 				</video>
 			</div>
 		</div>
+		<style>
+		.fancybox-skin { padding:0px; background-color: #CFFFFF; }
+		</style>
 
 END_OF_API_HTML;
 

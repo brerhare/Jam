@@ -111,6 +111,8 @@ END_OF_BEGINHEADER;
 	private $endHeader = <<<END_OF_ENDHEADER
 	</head>
 
+	<link rel="stylesheet" href="/css/jelly-fx.css" />
+
 <!-- @@TODO Remove hardcoded LEAFLET leaflet -->
 <!-- <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" /> -->
 <!-- <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script> -->
@@ -772,6 +774,7 @@ if (strstr($blobName, "googlemap"))
 				$zindex = "";
 				$tip = "";
 				$align = "";
+				$fx = "";
 				foreach ($value as $prop => $val)
 				{
 					switch ($prop)
@@ -793,16 +796,20 @@ if (strstr($blobName, "googlemap"))
 							break;
 						case ("align"):
 							if (($val == 'center') || ($val == 'centre'))
-								$align = "style='display:block;margin-left:auto;margin-right:auto'";
+								$align = " style='display:block;margin-left:auto;margin-right:auto' ";
 							if ($val == 'left')
-								$align = "style='display:block;margin-right:auto'";
+								$align = " style='display:block;margin-right:auto' ";
 							if ($val == 'right')
-								$align = "style='display:block;margin-left:auto'";
+								$align = " style='display:block;margin-left:auto' ";
 							break;
+						case "fx":
+							$fx = " class='" . $val . "' ";
+							break;
+						default:
 					}
 				}
 				if ($alt == "")
-					$this->genInlineHtml('<img ' . $zindex . $align . ' title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.style.display=\'none\'" . " width="' . $width . '" height="' . $height . '">');
+					$this->genInlineHtml('<div class="' . $val . '-container" style="border:0;padding:0;margin:0"><img ' . $fx . $zindex . $align . ' title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.style.display=\'none\'" . " width="' . $width . '" height="' . $height . '"></div>');
 				else
 					$this->genInlineHtml('<img ' . $zindex . $align . ' title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.onerror=null;this.src=\'' . $this->dbExpand($alt) . '\'" width="' . $width . '" height="' . $height . '">');
 				break;
