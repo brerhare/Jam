@@ -300,6 +300,11 @@ class products
             $products = Product::model()->findAll($criteria);
             foreach ($products as $product)
             {
+
+				// KKK
+				if ((isset(Yii::app()->session['department'])) && ($product->product_department_id != Yii::app()->session['department']))
+					continue;
+
 //echo 'dept ' . $this->departmentSel[$i] . ' product ' . $product->id . '<br>';
                 // Each selected feature for this particular department (to match against this particular product)
                 $deptFeatureStr = "";
