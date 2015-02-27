@@ -162,7 +162,9 @@ END_OF_API_HTML;
 	private $apiJs = <<<END_OF_API_JS
 
 	jQuery(document).ready(function($){
+	});
 
+/*****
 		// Disable right click
 		$(document).on({
 			"contextmenu": function(e) {
@@ -176,8 +178,7 @@ END_OF_API_HTML;
 				console.log("normal mouse up:", e.which);
 			}
 		});
-
-	});
+*****/
 
 	$(document).ready(function() {
 		$(".fancybox").fancybox({

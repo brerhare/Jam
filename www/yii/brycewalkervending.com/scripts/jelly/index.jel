@@ -46,20 +46,24 @@ css.position = relative
 			image.width = 120px
 			image.height = 120px
 			click = ?layout=index&page=vending-machines-office-commercial-dumfries-scotland
-			
+
 			[vendor-bubble]
 			css.height = 90%
 			css.width = 15%
-css.margin-left = 30%
-#css.margin-top = 90px
-#image.url = img/vendor-bubble.png
-#image.width = 100px
-#image.height = 100px
-addon.gallery.lightbox.thumb = http://brycewalkervending.com/img/vendor-bubble.png
-addon.gallery.lightbox.image = http://brycewalkervending.com/img/vendor-bubble.png
-addon.gallery.lightbox.width = 100px
-addon.gallery.lightbox.height = 100px
-			click = http://www.brycewalkervending.com
+			css.margin-left = 30%
+			image.url = img/vendor-bubble.png
+			image.width = 100px
+			image.height = 100px
+			click = playVendor
+
+			[show-video]
+			css.display = none
+			addon.video.simple.thumb =  http://brycewalkervending.com/img/vendor-bubble.png
+			addon.video.simple.width = 1065px
+			addon.video.simple.height = 600px
+			# Note that the extension for the video is left off. Requires .mp4, .ogg, .webm
+			addon.video.simple.video = vendor-800x600
+			addon.video.simple.trigger = playVendor
 
 			[contact-bubble]
 			css.height = 100%
