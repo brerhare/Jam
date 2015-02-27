@@ -596,6 +596,8 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 				$sep = "?";
 			else
 				$sep = "&";
+			if (strstr($array['click'], "javascript:"))
+				$sep = "";
 			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['click'])) . $sep . "click=true>\n", $indentLevel);
 //Yii::log(".................... jellyclick .................. genfromclick=" . $array['click'] , CLogger::LEVEL_WARNING, 'system.test.kim');
 		}

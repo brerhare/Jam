@@ -54,7 +54,7 @@ css.position = relative
 			image.url = img/vendor-bubble.png
 			image.width = 100px
 			image.height = 100px
-			click = playVendor
+			click = javascript:playVendor();
 
 			[show-video]
 			css.display = none
@@ -63,7 +63,7 @@ css.position = relative
 			addon.video.simple.height = 600px
 			# Note that the extension for the video is left off. Requires .mp4, .ogg, .webm
 			addon.video.simple.video = vendor-800x600
-			addon.video.simple.trigger = playVendor
+			addon.video.simple.click = playVendor
 
 			[contact-bubble]
 			css.height = 100%
