@@ -132,8 +132,7 @@ END_OF_API_HTML;
 	}
 	video.onended = function(e) {
 		document.getElementById('displayBox').style.visibility="hidden";
-		//parent.$.fancybox.close();	// chrome
-		 $.fancybox.close();		// opera
+		$.fancybox.close();
 	};
 
 
