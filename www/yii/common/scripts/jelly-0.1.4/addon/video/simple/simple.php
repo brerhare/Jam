@@ -1,5 +1,7 @@
 <?php
 
+require ('detectMobile.php');
+
 /**
  * API for a simple video viewer in a jquery thingie
  *
@@ -53,6 +55,13 @@ class simple
 			}
 		}
 
+		// Is this a mobile?
+		$x = detectMobile();
+		if ($x == true)
+			die("mobile");
+		else
+			die("desktop");
+
 		$this->apiHtml = str_replace("<substitute-video>", Yii::app()->getBaseUrl(true) . "/userdata/jelly/video/" . $this->video, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-width>", $this->width, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-height>", $this->height, $this->apiHtml);
@@ -82,9 +91,9 @@ class simple
 		<div id="jelly-video-simple-container" class="fancybox">
 		<div id='displayBox' style='height:<substitute-height>px; width:<substitute-width>px;'>
 				<video width=<substitute-width> height=<substitute-height> controls>
-					<source src='<substitute-video>.mp4' type='video/mp4'>
+					<source src='<substitute-video>.m4v' type='video/mp4'>
 					<source src='<substitute-video>.webm' type='video/webm'>
-					<source src='<substitute-video>.ogg' type='video/ogg'>
+					<source src='<substitute-video>.ogv' type='video/ogg'>
 					"Your browser does not support the video tag."
 				</video>
 			</div>
