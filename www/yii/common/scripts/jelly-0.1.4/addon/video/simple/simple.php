@@ -110,6 +110,7 @@ END_OF_API_HTML;
 				'width': '<substitute-width>',
 				'height': '<substitute-height>',
 				'autoDimensions': false,
+				padding: '0px',
 				//'modal': true,
 				afterClose: function() {
 					video.pause();
