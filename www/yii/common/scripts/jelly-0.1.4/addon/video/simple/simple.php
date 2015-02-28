@@ -56,11 +56,10 @@ class simple
 		}
 
 		// Is this a mobile?
-		$x = detectMobile();
-		if ($x == true)
-			die("mobile");
-		else
-			die("desktop");
+		$isMobile = detectMobile();
+		$playControl = "";
+		if ($isMobile)
+			$playControl = " controls ";
 
 		$this->apiHtml = str_replace("<substitute-video>", Yii::app()->getBaseUrl(true) . "/userdata/jelly/video/" . $this->video, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-width>", $this->width, $this->apiHtml);
@@ -90,7 +89,7 @@ class simple
 
 		<div id="jelly-video-simple-container" class="fancybox">
 		<div id='displayBox' style='height:<substitute-height>px; width:<substitute-width>px;'>
-				<video width=<substitute-width> height=<substitute-height> controls>
+				<video width=<substitute-width> height=<substitute-height> \$playControl >
 					<source src='<substitute-video>.m4v' type='video/mp4'>
 					<source src='<substitute-video>.webm' type='video/webm'>
 					<source src='<substitute-video>.ogv' type='video/ogg'>
