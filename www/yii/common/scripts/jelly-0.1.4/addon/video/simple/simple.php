@@ -81,7 +81,7 @@ class simple
 
 		<div id="jelly-video-simple-container" class="fancybox">
 		<div id='displayBox' style='height:<substitute-height>px; width:<substitute-width>px;'>
-				<video width=<substitute-width> height=<substitute-height> autoplay onended=>
+				<video width=<substitute-width> height=<substitute-height> controls>
 					<source src='<substitute-video>.mp4' type='video/mp4'>
 					<source src='<substitute-video>.webm' type='video/webm'>
 					<source src='<substitute-video>.ogg' type='video/ogg'>
@@ -127,7 +127,7 @@ END_OF_API_HTML;
 
 	// Autoclose when video ends
 	pauseVid = function() {
-		if (!(video.ended))
+		if ((video.ended == false) && (video.paused == false))
 			video.pause();
 	}
 	video.onended = function(e) {
