@@ -81,7 +81,7 @@ class simple
 
 		<div id="jelly-video-simple-container" class="fancybox">
 		<div id='displayBox' style='height:<substitute-height>px; width:<substitute-width>px;'>
-				<video width=<substitute-width> height=<substitute-height> autoplay>
+				<video width=<substitute-width> height=<substitute-height> autoplay onended=>
 					<source src='<substitute-video>.mp4' type='video/mp4'>
 					<source src='<substitute-video>.webm' type='video/webm'>
 					<source src='<substitute-video>.ogg' type='video/ogg'>
@@ -90,7 +90,8 @@ class simple
 			</div>
 		</div>
 		<style>
-		.fancybox-skin { padding:0px; background-color: #CFFFFF; }
+		.fancybox-skin { background-color: #CFFFFF; }
+		.fancybox-inner { overflow-x: hidden !important; }
 		</style>
 
 END_OF_API_HTML;
@@ -113,8 +114,7 @@ END_OF_API_HTML;
 				padding: '0px',
 				//'modal': true,
 				afterClose: function() {
-					video.pause();
-					video.onended();
+					pauseVid();
 				},
          	}
 		);
@@ -123,13 +123,17 @@ END_OF_API_HTML;
 	$(document).ready(function() { 
 	}); 
 
-	// Autoclose when video ends
 	var video = document.getElementsByTagName('video')[0];
+
+	// Autoclose when video ends
 	pauseVid = function() {
-		video.pause();
+		if (!(video.ended))
+			video.pause();
 	}
 	video.onended = function(e) {
 		document.getElementById('displayBox').style.visibility="hidden";
+		parent.$.fancybox.close();	// chrome
+		 $.fancybox.close();		// opera
 	};
 
 
