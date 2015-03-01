@@ -58,6 +58,7 @@ class simple
 		// Is this a mobile?
 		$isMobile = detectMobile();
 		$playControl = " autoplay ";
+		$playControl = "";
 		if ($isMobile)
 			$playControl = " controls ";
 		$this->apiHtml = str_replace("<substitute-controls>", $playControl, $this->apiHtml);
@@ -114,6 +115,9 @@ END_OF_API_HTML;
     });
 
 	<substitute-click-function> = function() {
+		var video = document.getElementsByTagName('video')[0];
+		video.currentTime = 0;
+		video.play();	// This will only work on desktop. Detected mobiles get the controls
 		$.fancybox(
        		$('#displayBox').html(),
        		{
