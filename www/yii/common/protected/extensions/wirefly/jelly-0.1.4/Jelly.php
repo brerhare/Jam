@@ -594,13 +594,17 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 		// Is this entire blob clickable?
 		if (array_key_exists("click", $array))
 		{
+			$click = "click=true\n";
 			if (strpos($array['click'], "?") === false)
 				$sep = "?";
 			else
 				$sep = "&";
 			if (strstr($array['click'], "javascript:"))
+			{
 				$sep = "";
-			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['click'])) . $sep . "click=true>\n", $indentLevel);
+				$click = "";
+			}
+			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['click'])) . $sep . $click . ">", $indentLevel);
 //Yii::log(".................... jellyclick .................. genfromclick=" . $array['click'] , CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
 		if (array_key_exists("clicknew", $array))
