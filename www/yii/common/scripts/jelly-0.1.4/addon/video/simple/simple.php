@@ -63,13 +63,13 @@ class simple
 		{
 			$this->apiJs  = str_replace("<substitute-is-mobile>", "var isMobile=1;", $this->apiJs);
 			$playControl = " controls ";
-			$jsVideoControl = " data-setup='{}' class='video-js vjs-default-skin' ";
+			//$jsVideoControl = " data-setup='{}' class='video-js vjs-default-skin' ";
+			$jsVideoControl = " class='video-js vjs-default-skin' ";						// Only use the css, not the js
 		}
 		else
 		{
 			$this->apiJs  = str_replace("<substitute-is-mobile>", "var isMobile=0;", $this->apiJs);
 		}
-$jsVideoControl = "";
 		$this->apiHtml = str_replace("<substitute-controls>", $playControl, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-js-video-controls>", $jsVideoControl, $this->apiHtml);
 
