@@ -58,7 +58,6 @@ class simple
 		// Is this a mobile?
 		$isMobile = detectMobile();
 		$playControl = " autoplay ";
-		$playControl = "";
 		if ($isMobile)
 			$playControl = " controls ";
 		$this->apiHtml = str_replace("<substitute-controls>", $playControl, $this->apiHtml);
@@ -66,6 +65,7 @@ class simple
 		$this->apiHtml = str_replace("<substitute-video>", Yii::app()->getBaseUrl(true) . "/userdata/jelly/video/" . $this->video, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-width>", $this->width, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-height>", $this->height, $this->apiHtml);
+
 		$this->apiJs   = str_replace("<substitute-width>", $this->width, $this->apiJs);
 		$this->apiJs   = str_replace("<substitute-height>", $this->height, $this->apiJs);
 
@@ -86,8 +86,8 @@ class simple
 
 	private $apiHtml = <<<END_OF_API_HTML
 
-		<link rel="stylesheet" href="<substitute-path>/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
-		<script type="text/javascript" src="<substitute-path>/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+		<link rel="stylesheet" href="<substitute-path>/fancybox/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
+		<script type="text/javascript" src="<substitute-path>/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 
 		<div id="jelly-video-simple-container" class="fancybox">
 		<div id='displayBox' style='height:<substitute-height>px; width:<substitute-width>px;'>
@@ -108,10 +108,10 @@ END_OF_API_HTML;
 
 	private $apiJs = <<<END_OF_API_JS
 
-	jQuery(document).ready(function($){
-	});
-
 	$(document).ready(function(){
+		var video = document.getElementsByTagName('video')[0];
+		//video.currentTime = 0;	// Firefox doesnt like this here (not loaded properly yet?). So only do it when play is clicked
+		video.pause();	// Dont want the damn thing to play until asked
     });
 
 	<substitute-click-function> = function() {

@@ -64,8 +64,7 @@ css.position = relative
 			addon.video.simple.thumb =  http://brycewalkervending.com/img/vendor-bubble.png
 			addon.video.simple.width = 1065px
 			addon.video.simple.height = 600px
-			# Note that the extension for the video is left off. Requires .mp4, .ogg, .webm
-			#addon.video.simple.video = vendor-800x600
+			# Note that the extension for the video is left off. Wants (but doesnt insist on) .m4v, .ogv, .webm
 			addon.video.simple.video = vendor
 			addon.video.simple.click = playVendor
 
