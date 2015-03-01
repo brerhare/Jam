@@ -57,10 +57,15 @@ class simple
 
 		// Is this a mobile?
 		$isMobile = detectMobile();
+		$jsVideoControl = "";
 		$playControl = " autoplay ";
 		if ($isMobile)
+		{
 			$playControl = " controls ";
+			$jsVideoControl = " data-setup='{}' class='video-js vjs-default-skin' ";
+		}
 		$this->apiHtml = str_replace("<substitute-controls>", $playControl, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-js-video-controls>", $jsVideoControl, $this->apiHtml);
 
 		$this->apiHtml = str_replace("<substitute-video>", Yii::app()->getBaseUrl(true) . "/userdata/jelly/video/" . $this->video, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-width>", $this->width, $this->apiHtml);
@@ -89,9 +94,12 @@ class simple
 		<link rel="stylesheet" href="<substitute-path>/fancybox/source/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
 		<script type="text/javascript" src="<substitute-path>/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 
+		<link rel="stylesheet" href="<substitute-path>/video-js/video-js.min.css" type="text/css" media="screen" />
+		<script type="text/javascript" src="<substitute-path>/video-js/video.js"></script>
+
 		<div id="jelly-video-simple-container" class="fancybox">
 		<div id='displayBox' style='height:<substitute-height>px; width:<substitute-width>px;'>
-				<video width=<substitute-width> height=<substitute-height> <substitute-controls> >
+				<video id="html5Vid" width=<substitute-width> height=<substitute-height> preload='auto' <substitute-js-video-controls> <substitute-controls> >
 					<source src='<substitute-video>.m4v' type='video/mp4'>
 					<source src='<substitute-video>.webm' type='video/webm'>
 					<source src='<substitute-video>.ogv' type='video/ogg'>
@@ -107,6 +115,14 @@ class simple
 END_OF_API_HTML;
 
 	private $apiJs = <<<END_OF_API_JS
+
+/*****
+videojs("html5Vid", {}, function(){
+  // Player (this) is initialized and ready.
+//{"example_option":true}'
+alert('rr');
+});
+*****/
 
 	$(document).ready(function(){
 		var video = document.getElementsByTagName('video')[0];
