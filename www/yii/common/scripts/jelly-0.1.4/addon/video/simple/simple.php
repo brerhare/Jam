@@ -61,9 +61,15 @@ class simple
 		$playControl = " autoplay ";
 		if ($isMobile)
 		{
+			$this->apiJs  = str_replace("<substitute-is-mobile>", "var isMobile=1;", $this->apiJs);
 			$playControl = " controls ";
 			$jsVideoControl = " data-setup='{}' class='video-js vjs-default-skin' ";
 		}
+		else
+		{
+			$this->apiJs  = str_replace("<substitute-is-mobile>", "var isMobile=0;", $this->apiJs);
+		}
+$jsVideoControl = "";
 		$this->apiHtml = str_replace("<substitute-controls>", $playControl, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-js-video-controls>", $jsVideoControl, $this->apiHtml);
 
@@ -99,7 +105,7 @@ class simple
 
 		<div id="jelly-video-simple-container" class="fancybox">
 		<div id='displayBox' style='height:<substitute-height>px; width:<substitute-width>px;'>
-				<video id="html5Vid" width=<substitute-width> height=<substitute-height> preload='auto' <substitute-js-video-controls> <substitute-controls> >
+				<video id="html5Vid" width=<substitute-width> height=<substitute-height> <substitute-js-video-controls> <substitute-controls> >
 					<source src='<substitute-video>.m4v' type='video/mp4'>
 					<source src='<substitute-video>.webm' type='video/webm'>
 					<source src='<substitute-video>.ogv' type='video/ogg'>
@@ -116,24 +122,19 @@ END_OF_API_HTML;
 
 	private $apiJs = <<<END_OF_API_JS
 
-/*****
-videojs("html5Vid", {}, function(){
-  // Player (this) is initialized and ready.
-//{"example_option":true}'
-alert('rr');
-});
-*****/
+	<substitute-is-mobile>
 
 	$(document).ready(function(){
 		var video = document.getElementsByTagName('video')[0];
 		//video.currentTime = 0;	// Firefox doesnt like this here (not loaded properly yet?). So only do it when play is clicked
-		video.pause();	// Dont want the damn thing to play until asked
+		video.pause();	//ont want the damn thing to play until asked
     });
 
 	<substitute-click-function> = function() {
 		var video = document.getElementsByTagName('video')[0];
 		video.currentTime = 0;
-		video.play();	// This will only work on desktop. Detected mobiles get the controls
+		//if (!(isMobile))
+			//video.play();	// This will fail on mobiles UNLESS a play has already happened. So differentiate to remove weirdness
 		$.fancybox(
        		$('#displayBox').html(),
        		{
