@@ -19,6 +19,7 @@ css.display = block
 
 	[header]
 	child = bubble-links, logo
+css.position = relative
 	css.width = 1200px
 	css.height = 230px 
 		
@@ -27,7 +28,6 @@ css.display = block
 		css.height = 300px
 		css.width = 100%
 		stacking = horizontal
-		css.z-index = 180
 		
 			[machine-bubble]
 			css.height = 100%
@@ -36,6 +36,7 @@ css.display = block
 			image.url = img/machine-bubble.png
 			image.width = 170px
 			image.height = 170px
+			image.fx = fx-hover-bounce
 			click = ?layout=index&page=vending-machines-office-commercial-dumfries-scotland
 			
 			[FREE-bubble]
@@ -45,37 +46,48 @@ css.display = block
 			image.url = img/FREE-bubble.png
 			image.width = 120px
 			image.height = 120px
+			image.fx = fx-hover-tilt-right
 			click = ?layout=index&page=vending-machines-office-commercial-dumfries-scotland
-			
+
 			[vendor-bubble]
 			css.height = 90%
 			css.width = 15%
-			css.margin-left = 25%
-			css.margin-top = 90px
+			css.margin-left = 30%
 			image.url = img/vendor-bubble.png
 			image.width = 100px
 			image.height = 100px
-			click = http://www.brycewalkervending.com
-			
+			image.fx = fx-hover-spin
+			click = javascript:playVendor();
+
+			[show-video]
+			css.display = none
+			addon.video.simple.thumb =  http://brycewalkervending.com/img/vendor-bubble.png
+			addon.video.simple.width = 1065px
+			addon.video.simple.height = 600px
+			# Note that the extension for the video is left off. Wants (but doesnt insist on) .m4v, .ogv, .webm
+			addon.video.simple.video = vendor
+			addon.video.simple.click = playVendor
+
 			[contact-bubble]
 			css.height = 100%
 			css.width = 20%
 			css.margin-top = 20px
+			css.margin-left = -90px
 			image.url = img/contact-bubble.png
 			image.width = 200px
 			image.height = 200px
 			image.align = center
+			image.fx = fx-hover-swing
 			click = ?layout=index&page=contact
-			css.z-index = 180
 	
 		[logo]
 		css.margin-top = -310px
 		css.height = 240px
 		css.width = 550px
-		css.z-index = 200
 		image.url = img/logo-shadow.png
 		image.width = 517px
 		image.height = 229px
+		image.fx = fx-hover-grow
 		click = http://www.brycewalkervending.com
 		
 #### Site Content #########################################
@@ -95,17 +107,14 @@ css.background-color = white
 	image.width = 900px
 	image.height = 45px
 	css.overflow = visible
-	css.z-index = 100
 	
 	
 	[menu]
 	css.height = 40px
 	css.width = 900px
 	css.overflow = visible
-	css.z-index = 100
 	css.position = absolute
 	css.margin-top = -40px
-	css.z-index = 100
 	#css.position = relative
 
 	addon.menu.basic.orientation = horizontal
@@ -135,8 +144,8 @@ css.background-color = white
 	css.width = 900px
 	css.height = 200px
 	css.margin-top = 20px
-	css.background-color = lightgrey
-	#addon.slider.shopping.slider-height = 200px
+#css.background-color = lightgrey
+addon.slider.shopping.slider-height = 200px
 	
 
 ######## body #######################################
@@ -145,7 +154,7 @@ css.background-color = white
 	[pages]
 	child = tabs, content 	
 	css.width = 960px
-	css.margin-top = 20px
+css.margin-top = 40px
 	
 		[tabs]
 		condition = @PAGE=@HOMEPAGE

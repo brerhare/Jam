@@ -1,0 +1,4 @@
+AuthUserFile /home/dgbloodbikes.org.uk/dev/src/www/yii/dgbloodbikes.org.uk/.htpass
+AuthType Basic
+AuthName "DG Blood Bikes"
+Require valid-user
