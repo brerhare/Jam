@@ -1,8 +1,5 @@
 <?php
 
-// @@TODO: Addons like this one need to 'breakout' of their jelly containers, ie their size is dynamic and always wants to overlay subsequent page content. Need some mechanism to bubble up this notification to container(s) until height/width requirement is satisfied.
-
-
 /**
  * API for traditional menu
  *
@@ -35,7 +32,7 @@ class traditional
 	private $default_menu_tile = "";						// /path/to/image
 	private $default_menu_stretch = "";						// /path/to/image
 	private $default_menu_color = "transparent";			// color name or value - from and optionally to (in which case its a gradient)
-	private $default_item_separator_width = 10;				// px
+	private $default_item_separator_width = 1;				// px
 	private $default_item_separator_color = "transparent";	// specify a color or one of tile|stretch
 	private $default_item_separator_tile = "";				// either ..
 	private $default_item_separator_stretch = "";			// .. or
@@ -50,6 +47,7 @@ class traditional
 	private $default_menu_selected_font_family = "";
 	private $default_menu_selected_font_size = "14";
 	private $default_menu_selected_font_weight = "";
+	private $default_submenu_height = "40";					// actually sets height=font-size & shares remaining px between padding top & bottom
 	private $default_submenu_font_family = "";
 	private $default_submenu_font_size = "14";
 	private $default_submenu_font_weight = "";
@@ -62,12 +60,6 @@ class traditional
 	private $default_submenu_separator_tile = "";
 	private $default_submenu_separator_stretch = "";
 	private $default_submenu_width = "";					// variable or a px value (uniform n/a here). Defaults to variable
-
-
-
-	private $default_subitem_separator_width = 1;
-	private $height;
-
 
 	private $level = 0;									// future use? like cmsms menus can 'come in' at any level
 
@@ -123,7 +115,8 @@ class traditional
 			else if ($opt == "menu-selected-font-size")				$this->default_menu_selected_font_size = $val;
 			else if ($opt == "menu-selected-font-family"	)		$this->default_menu_selected_font_family = $val;
 			else if ($opt == "menu-selected-font-weight")			$this->default_menu_selected_font_weight = $val;
-// Second level font settings
+// Second level settings
+			else if ($opt == "submenu-height")						$this->default_submenu_height = $val;
 			else if ($opt == "submenu-width")						$this->default_submenu_width = $val;
 			else if ($opt == "submenu-font-size")					$this->default_submenu_font_size = $val;
 			else if ($opt == "submenu-font-family")					$this->default_submenu_font_family = $val;
@@ -409,6 +402,14 @@ class traditional
 
 // SUBMENU --------------------------------------------------------------------------------------------------------
 
+		// height
+		$paddingTop    = ($this->default_submenu_height - $this->default_submenu_font_size) / 2;
+		$paddingBottom = ($this->default_submenu_height - $this->default_submenu_font_size - $paddingTop);
+		$this->apiHtml = str_replace("<substitute-submenu-height>",
+			"nav ul li ul li a {height: $this->default_submenu_font_size" . "px;} " .
+			"nav ul li ul li a {padding: " . $paddingTop . "px " .  $paddingBottom . "px;} " ,
+			$this->apiHtml);
+
 		// submenu-width. Variable, uniform or a px value. Dont have to do anything if 'variable'
 		//if ($this->default_orientation == "horizontal")	// Not sure if vertical should be set here as menu-width has the same meaning
 		{
@@ -574,6 +575,7 @@ class traditional
 		$this->apiHtml = str_replace("<substitute-menu-selected-font-size>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-menu-selected-font-family>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-menu-selected-font-weight>", "", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-submenu-height>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-submenu-font-size>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-submenu-font-family>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-submenu-text-color>", "", $this->apiHtml);
@@ -720,6 +722,7 @@ class traditional
 		<substitute-menu-selected-font-size>
 		<substitute-menu-selected-font-family>
 		<substitute-menu-selected-font-weight>
+		<substitute-submenu-height>
 		<substitute-submenu-font-size>
 		<substitute-submenu-font-family>
 		<substitute-submenu-text-color>

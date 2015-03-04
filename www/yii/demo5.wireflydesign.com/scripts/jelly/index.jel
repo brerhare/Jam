@@ -56,29 +56,24 @@ css.display = block
 		#css.position = absolute
 		css.position = relative
 
-		addon.menu.basic.height = 30px
 
-####### Top level background settings (first colour is the top gradiation) ####
-		addon.menu.basic.menu-color = white
-		addon.menu.basic.item-separator-color = #ffffff
-		addon.menu.basic.item-separator-width = 0px
-
-####### Top level font settings ####
-		addon.menu.basic.font-size = 28px
-		addon.menu.basic.menu-text-color = #b23640
-		addon.menu.basic.menu-text-weight = bold
-
-####### Top level hover settings ####
-		addon.menu.basic.item-color = white
-		addon.menu.basic.item-text-color = black
-
-####### Second level background settings ####
-		addon.menu.basic.submenu-color = white
-		addon.menu.basic.subitem-separator-color = #b23640
-
-####### Second level hover settings ####
-		addon.menu.basic.subitem-color = #f6f6f6
-		addon.menu.basic.subitem-text-color = #b23640
+		## 'basic' is the old version, 'traditional' is the new.
+		## This way we can migrate site by site, use either/both for a while
+        addon.menu.traditional.height = 30px
+        addon.menu.traditional.align = center
+        addon.menu.traditional.item-separator-width = 30px
+        addon.menu.traditional.menu-text-color = #b23640
+        addon.menu.traditional.menu-font-weight = bold
+        addon.menu.traditional.menu-font-size = 28px
+        addon.menu.traditional.menu-hover-font-size = 28px
+        addon.menu.traditional.menu-selected-font-size = 28px
+        addon.menu.traditional.menu-hover-text-color = black
+        addon.menu.traditional.menu-selected-text-color = black
+        addon.menu.traditional.submenu-separator-color = #b23640
+        addon.menu.traditional.submenu-font-size = 22
+        addon.menu.traditional.submenu-font-weight = bold
+        addon.menu.traditional.submenu-text-color = black
+        addon.menu.traditional.submenu-background-color = white
 
 
 #### Slider ###########################################
