@@ -20,26 +20,26 @@ class traditional
 	
 
 	// Defaults
-	private $default_orientation = "horizontal";		// horizontal, vertical
-	private $default_width = "";						// blank or a px value. uses 100% of container width if a px isnt specified
-	private $default_height = "40";						// actually sets height=font-size & shares remaining px between padding top & bottom
+	private $default_orientation = "horizontal";			// horizontal, vertical
+	private $default_width = "";							// blank or a px value. uses 100% of container width if a px isnt specified
+	private $default_height = "40";							// actually sets height=font-size & shares remaining px between padding top & bottom
 	private $default_menu_font_family = "";
 	private $default_menu_font_size = "14";
 	private $default_menu_font_weight = "";
 	private $default_menu_text_color = "";
-	private $default_align = "left";					// left, center
-	private $default_item_width = "";					// variable, uniform or a px value. Defaults to variable
-	private $default_item_margin = "0";					// split equally between left and right. @@TODO handle 1st and last
-	private $default_menu_rounding = "";				// px
-	private $default_menu_opacity = "";					// %
-	private $default_menu_tile = "";					// /path/to/image
-	private $default_menu_stretch = "";					// /path/to/image
-	private $default_menu_color = "";					// color name or value - from and optionally to (in which case its a gradient)
-	private $default_item_separator_width = 10;			// px
-	private $default_item_separator_color = "";			// specify a color or one of tile|stretch
-	private $default_item_separator_tile = "";			// either ..
-	private $default_item_separator_stretch = "";		// .. or
-	private $default_edgepadding = "";					// px
+	private $default_align = "left";						// left, center
+	private $default_item_width = "";						// variable, uniform or a px value. Defaults to variable
+	private $default_item_margin = "0";						// split equally between left and right. @@TODO handle 1st and last
+	private $default_menu_rounding = "";					// px
+	private $default_menu_opacity = "";						// %
+	private $default_menu_tile = "";						// /path/to/image
+	private $default_menu_stretch = "";						// /path/to/image
+	private $default_menu_color = "transparent";			// color name or value - from and optionally to (in which case its a gradient)
+	private $default_item_separator_width = 10;				// px
+	private $default_item_separator_color = "transparent";	// specify a color or one of tile|stretch
+	private $default_item_separator_tile = "";				// either ..
+	private $default_item_separator_stretch = "";			// .. or
+	private $default_edgepadding = "";						// px
 	private $default_menu_hover_text_color = "";
 	private $default_menu_hover_background_color = "";
 	private $default_menu_hover_font_family = "";
@@ -195,7 +195,7 @@ class traditional
 		}
 
 		// item-width. Variable, uniform or a px value. Dont have to do anything if 'variable'
-		//if ($this->default_orientation == "horizontal")	// Not sure if vertical should be set here as menu-width has the same meaning
+		if ($this->default_orientation == "horizontal")	// Dont use this for vertical, it messes up the submenu positioning
 		{
 			if (is_numeric($this->default_item_width))					// px value
 			{
@@ -594,7 +594,7 @@ class traditional
 		$levelItemCount = 0;
 
 		// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-		$content .= "<div id='nav-container' style='width:100%; background-color:#6e99c0'>";	// @@TODO: remove
+		//$content .= "<div id='nav-container' style='width:100%; background-color:#6e99c0'>";	// @@TODO: remove
 		// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 		$content .= "<nav>";
@@ -650,7 +650,10 @@ class traditional
 
 		$content .= "</ul>";
 		$content .= "</nav>";
-		$content .= "</div>";
+
+		// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+		//$content .= "</div>";				// Closing tag. See above
+		// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 		// Do the inline substitutions (the ones that depended on the data)
 
