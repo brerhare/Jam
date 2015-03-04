@@ -59,26 +59,26 @@ css.display = block
 		addon.menu.basic.height = 30px
 
 ####### Top level background settings (first colour is the top gradiation) ####
-		#addon.menu.basic.menu-color = white
-		#addon.menu.basic.item-separator-color = #ffffff
-		#addon.menu.basic.item-separator-width = 0px
+		addon.menu.basic.menu-color = white
+		addon.menu.basic.item-separator-color = #ffffff
+		addon.menu.basic.item-separator-width = 0px
 
 ####### Top level font settings ####
-		#addon.menu.basic.font-size = 28px
-		#addon.menu.basic.menu-text-color = #b23640
-		#addon.menu.basic.menu-text-weight = bold
+		addon.menu.basic.font-size = 28px
+		addon.menu.basic.menu-text-color = #b23640
+		addon.menu.basic.menu-text-weight = bold
 
 ####### Top level hover settings ####
-		#addon.menu.basic.item-color = white
-		#addon.menu.basic.item-text-color = black
+		addon.menu.basic.item-color = white
+		addon.menu.basic.item-text-color = black
 
 ####### Second level background settings ####
-		#addon.menu.basic.submenu-color = white
-		#addon.menu.basic.subitem-separator-color = #b23640
+		addon.menu.basic.submenu-color = white
+		addon.menu.basic.subitem-separator-color = #b23640
 
 ####### Second level hover settings ####
-		#addon.menu.basic.subitem-color = #f6f6f6
-		#addon.menu.basic.subitem-text-color = #b23640
+		addon.menu.basic.subitem-color = #f6f6f6
+		addon.menu.basic.subitem-text-color = #b23640
 
 
 #### Slider ###########################################
