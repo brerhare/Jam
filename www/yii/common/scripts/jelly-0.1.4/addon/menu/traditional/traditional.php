@@ -474,20 +474,24 @@ class traditional
 		{
 			$str = "nav ul li ul li {border:0;}";
 			$borderImageParams = " $this->default_submenu_separator_width 0 0 0 ";
-			$str .= "nav ul li ul li + li {border-top-style: solid;}";
-			$str .= "nav ul li ul li + li {border-top-width: " . $this->default_submenu_separator_width . "px;}";
+			if ($this->default_orientation == "horizontal")
+				$target = "nav ul li ul li ";
+			else
+				$target = "nav ul li ul li + li";
+			$str .= "$target {border-top-style: solid;}";
+			$str .= "$target {border-top-width: " . $this->default_submenu_separator_width . "px;}";
 			if ($this->default_submenu_separator_color != "")
-				$str .= "nav ul li ul li + li {border-top-color: $this->default_submenu_separator_color ;}";
+				$str .= "$target {border-top-color: $this->default_submenu_separator_color ;}";
 			// image
 			if ($this->default_submenu_separator_tile != "")
 			{
-				$str .= "nav ul li ul li + li {-moz-border-image: url('". $this->default_submenu_separator_tile    . "') $borderImageParams repeat;}";
-				$str .= "nav ul li ul li + li {     border-image: url('". $this->default_submenu_separator_tile    . "') $borderImageParams repeat;}";
+				$str .= "$target {-moz-border-image: url('". $this->default_submenu_separator_tile    . "') $borderImageParams repeat;}";
+				$str .= "$target {     border-image: url('". $this->default_submenu_separator_tile    . "') $borderImageParams repeat;}";
 			}
 			if ($this->default_submenu_separator_stretch != "")
 			{
-				$str .= "nav ul li ul li + li {-moz-border-image: url('". $this->default_submenu_separator_stretch . "') $borderImageParams stretch;}";
-				$str .= "nav ul li ul li + li {     border-image: url('". $this->default_submenu_separator_stretch . "') $borderImageParams stretch;}";
+				$str .= "$target {-moz-border-image: url('". $this->default_submenu_separator_stretch . "') $borderImageParams stretch;}";
+				$str .= "$target {     border-image: url('". $this->default_submenu_separator_stretch . "') $borderImageParams stretch;}";
 			}
 			$this->apiHtml = str_replace("<substitute-submenu-separator-*>", $str, $this->apiHtml);
 		}
