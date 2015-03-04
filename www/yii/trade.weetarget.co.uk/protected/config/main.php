@@ -66,9 +66,9 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=weetarget_co_uk',
+			'connectionString' => 'mysql:host=localhost;dbname=trade_weetarget_co_uk',
 			'emulatePrepare' => true,
-			'username' => 'weetarget.co.uk',
+			'username' => 'trade.weetarget.',
 			'password' => 'ghwu73c9e',
 			'charset' => 'utf8',
 		),

@@ -4,6 +4,9 @@ class SiteController extends Controller
 {
 	// @@EG p3p example code here. Needed for IE
 	private $p3p = 'P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"';
+
+	public $test = 0;
+
 	/**
 	 * Get the jelly script root (as defined in /protected/config/main.php)
 	 */
@@ -41,7 +44,7 @@ header($this->p3p);
 
 $clk='off';
 if (isset($_GET['click'])) $clk='true';
-Yii::log("In at top.................. click=".$clk , CLogger::LEVEL_WARNING, 'system.test.kim');
+Yii::log(".................... in at top.................. click=".$clk , CLogger::LEVEL_WARNING, 'system.test.kim');
 
 		// If unset, initialise the product page cookie (only way to tell if we're back-paging from it or going to it)
 		if (!isset(Yii::app()->session['productdetail']))
@@ -57,6 +60,8 @@ Yii::log("In at top.................. click=".$clk , CLogger::LEVEL_WARNING, 'sy
 			Yii::app()->session['checkoutGatewayUser'] = urldecode($util->decrypt($_GET['gu']));
 		if (isset($_GET['gp']))
 			Yii::app()->session['checkoutGatewayPassword'] = urldecode($util->decrypt($_GET['gp']));
+		if (isset($_GET['pp']))
+			Yii::app()->session['checkoutPaypalEmail'] = urldecode($util->decrypt($_GET['pp']));
 
 		// Get the hosting site (referer)
 		if (isset($_SERVER['HTTP_REFERER']))
@@ -66,8 +71,10 @@ Yii::log("In at top.................. click=".$clk , CLogger::LEVEL_WARNING, 'sy
 				$urlParts = explode("://", $_SERVER['HTTP_REFERER']);	// 0 = http or https
 				$urlSubParts = explode("/", $urlParts[1]);				// 0 = www.example.com
 				Yii::app()->session['http_referer'] = $urlParts[0] . "://" . $urlSubParts[0];
+Yii::log(".................... setting http_referer to [" . Yii::app()->session['http_referer'] . "] .................. " , CLogger::LEVEL_WARNING, 'system.test.kim');
 			}
 		}
+Yii::log(".................... http_referer is [" . Yii::app()->session['http_referer'] . "] .................. " , CLogger::LEVEL_WARNING, 'system.test.kim');
 
 		// Get iframe params
 		if (isset($_GET['sid']))
@@ -84,8 +91,8 @@ Yii::log("In at top.................. click=".$clk , CLogger::LEVEL_WARNING, 'sy
 		{
 			if (Yii::app()->session['productdetail'] == "0")
 			{
-Yii::log("redirecting parent to product page.................. " , CLogger::LEVEL_WARNING, 'system.test.kim');
 				$target = Yii::app()->session['http_referer'] . "/?page=" . Yii::app()->session['page'] . "&product=" . Yii::app()->session['product'];
+Yii::log(".................... redirecting parent to product page [$target] .................. " , CLogger::LEVEL_WARNING, 'system.test.kim');
 				echo
 					"<html><script>
 					// @@NB START POSTMESSAGE
@@ -101,7 +108,7 @@ Yii::log("redirecting parent to product page.................. " , CLogger::LEVE
 		{
 			if ( (Yii::app()->session['productdetail'] == "0") || (isset($_GET['cartproduct'])) )
 			{
-Yii::log("parent is sending us to product page.................. " , CLogger::LEVEL_WARNING, 'system.test.kim');
+Yii::log(".................... parent is sending us to product page.................. " , CLogger::LEVEL_WARNING, 'system.test.kim');
 				$parseConfig = new ParseConfig();
 				$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . "product" . '.jel');
 				if (!($jellyArray))
@@ -115,11 +122,11 @@ Yii::log("parent is sending us to product page.................. " , CLogger::LE
 
 		// We've just back-paged from the product page
 		if (Yii::app()->session['productdetail'] == "1")
-if (!isset($_GET['click']))
+		if (!(isset($_GET['checkoutButton'])))	// This is only set in the initial checkout-iframe call, ie when the checkout button is clicked
 		{
-Yii::log("we've just back-paged from product page. redirecting parent.................. " , CLogger::LEVEL_WARNING, 'system.test.kim');
 			Yii::app()->session['productdetail'] = "0";
 			$target = Yii::app()->session['http_referer'] . "/?page=" . Yii::app()->session['page'] . "&department=" . Yii::app()->session['department'];
+Yii::log(".................... we've just back-paged from product page. redirecting parent to [$target].................. " , CLogger::LEVEL_WARNING, 'system.test.kim');
                echo
                    "<html><script>
                    // @@NB START POSTMESSAGE
@@ -133,7 +140,7 @@ Yii::log("we've just back-paged from product page. redirecting parent...........
 $pageParam = '';
 if (isset($_GET['page']))
  $pageParam = $_GET['page'];
-Yii::log("Still here.................. page is " . $pageParam , CLogger::LEVEL_WARNING, 'system.test.kim');
+Yii::log(".................... still here.................. page is " . $pageParam , CLogger::LEVEL_WARNING, 'system.test.kim');
 	
 
 		// Otherwise by default the initial call goes to here
@@ -165,10 +172,11 @@ header($this->p3p);
 		$jelly->outputData();
 	}
 
-	// Invoke the Paymentsense module
+	// Invoke the payment module: Paymentsense or Paypal
 	public function actionPay()
 	{
 header($this->p3p);
+		Yii::log("Checkout - a payment button has been clicked" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		if (isset($_GET['ptype']))
 		{
 			Yii::log("Checkout - payment type requested is " . $_GET['ptype'] , CLogger::LEVEL_WARNING, 'system.test.kim');
@@ -344,31 +352,42 @@ header($this->p3p);
 //$this->actionPaid();
 //die('done');
 
+		// Going to foreign payment sites will set a http-referer different to our own host site, so store this for the return redirect
+		Yii::app()->session['http_payment_return'] = Yii::app()->session['http_referer'];
+
+		Yii::app()->session['ptype'] = $_GET['ptype'];
+
 		if ($_GET['ptype'] == 0)
 		{
 			// Go to paymentsense for payment
+			Yii::log("Checkout - going to paymentsense" , CLogger::LEVEL_WARNING, 'system.test.kim');
 			$this->redirect(Yii::app()->baseUrl . "/php/gw/EntryPoint.php?sid=" . Yii::app()->session['sid'] . "&xid=" . rand(99999,999999) );
 		}
 		else if  ($_GET['ptype'] == 1)
 		{
+//$this->actionPaid();
+//die('done');
+
 			// Paypal
+			Yii::log("Checkout - going to paypal" , CLogger::LEVEL_WARNING, 'system.test.kim');
 			//$this->renderPartial('paypal');
 			$this->layout = "nosuchlayout";			// Needs this to connect to Paypal
 			$this->render('paypal',array(
+				'business'=>Yii::app()->session['checkoutPaypalEmail'],
 				'description'=>'Purchase from ' . Yii::app()->session['checkoutName'],
             	'subtotal'=>$subtotalGoods,
             	'shipping'=>$shipping->price,
-            	'total'=>$totalGoods,
         	));
 /**/
 			//$this->redirect(Yii::app()->baseUrl . "/php/gw/EntryPoint.php?sid=" . Yii::app()->session['sid'] . "&xid=" . rand(99999,999999) );
 		}
 	}
 
-	// Return from Paymentsense
+	// Return from payment module
 	public function actionPaid()
 	{
 header($this->p3p);
+		Yii::log("PAID PAGE LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		Yii::log("PAID PAGE LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
 
 		$ip = "UNKNOWN";
@@ -482,11 +501,12 @@ header($this->p3p);
             $subject = "Your order from " . Yii::app()->session['checkoutName'];
             // phpmailer
             $mail = new PHPMailer();
-            $mail->AddAddress($to);
-			$mail->AddBCC($from);
+
+            	$mail->AddAddress($to);
+				$mail->AddBCC($from);
+
             $mail->SetFrom($from, $fromName);
             $mail->AddReplyTo($from, $fromName);
-//            $mail->AddAttachment($pdf_filename);
             $mail->Subject = $subject;
             $mail->MsgHTML($message);
             if (!$mail->Send())
@@ -518,8 +538,12 @@ header($this->p3p);
 			}
 		}
 
-		$thanks = "<h2>Thank you for shopping with " . Yii::app()->session['checkoutName'] . "</h2><br>";
-		$thanks .= "<p>An email will be sent to you shortly</p>";
+		$thanks = file_get_contents(dirname(Yii::app()->request->scriptFile) . "/protected/controllers/ThankYou.template");
+		$thanks = str_replace("<return-url>", Yii::app()->session['http_payment_return'], $thanks);
+		if (Yii::app()->session['ptype'] == 0)			// Paymentsense
+			$thanks = str_replace("<display>", "none", $thanks);
+		else if (Yii::app()->session['ptype'] == 1)		// Paypal
+			$thanks = str_replace("<display>", "inline", $thanks);
 		die($thanks);
 	}
 

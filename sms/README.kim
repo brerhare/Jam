@@ -1,0 +1,12 @@
+Client
+	install smstools (apt-get)
+	edit GSM1 settings in /etc/smsd.conf
+		device = /dev/ttyUSB0
+		baudrate = 2400
+	edit settings in getFromServer.php to suit
+	run as root so it can write to /var/spool/sms/outgoing (maybe exec from a binary to handle setuid properly)
+
+server
+	copy files into a location
+	create subdir 'data' with write perms
+

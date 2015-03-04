@@ -1,0 +1,224 @@
+#Demo 5
+[defaults]
+include = default-values
+
+# Every blob inherits these before adding/overriding
+
+[* : defaults]
+
+[screen]
+child = site
+fx.wallpaper-image-tile = /img/black-tile.jpg
+css.display = block
+
+	[site]
+	child = header, main-image, body, footer
+	css.width = 100%
+
+####  Header  #################################
+
+	[header]
+	child = menu, donate, social
+	css.height = 100px
+	css.max-width = 970px
+	css.min-width = 500px
+	stacking = horizontal
+	
+		[menu]
+		css.height = 40px
+		css.margin-top = 60px
+		css.max-width = 800px
+		css.min-width = 500px
+		css.overflow = visible
+		css.z-index = 100
+		css.position = relative
+
+		addon.menu.basic.orientation = horizontal
+		addon.menu.basic.height = 30px
+		addon.menu.basic.menu-color = transparent
+		addon.menu.basic.item-separator-color = transparent
+		addon.menu.basic.item-separator-width = 5px
+
+		addon.menu.basic.font-size = 20px
+		addon.menu.basic.menu-text-color = white
+		addon.menu.basic.item-color = transparent
+		addon.menu.basic.item-text-color = lightgrey
+
+		#addon.menu.basic.submenu-color = yellow red
+	
+		#addon.menu.basic.subitem-color = white black
+		#addon.menu.basic.subitem-text-color = purple
+		#addon.menu.basic.subitem-seperator-color = red 
+
+
+#### Main Image ###########################################
+
+	[main-image]
+	child = logo, blurb
+	css.width = 100%
+    css.background-size = 100%
+	css.padding-top = 60%
+	css.background-repeat = no-repeat
+	css.background-image = url('/img/bbwebpic.jpg')
+	css.border-style = solid
+	css.border-color = white
+	css.border-top-width = 1px
+
+	
+		[logo]
+		css.margin-left = 100px
+		css.margin-top = -45%
+		css.max-width = 20%
+		#css.min-width = 200px
+		css.background-size = 100%
+		css.padding-top = 20%
+		css.background-repeat = no-repeat
+		css.background-image = url('/img/logo.png')
+		css.z-index = 100
+		
+		[blurb]
+		css.margin-left = 0px
+		css.margin-top = 5%
+		css.max-width = 50%
+		css.background-size = 100%
+		css.padding-top = 20%
+		css.background-repeat = no-repeat
+		css.background-image = url('/img/blurb.png')
+		css.z-index = 100
+		#css.background-color = grey
+
+
+######## body #######################################
+			
+
+	[body]
+	child = page-margin, content-background, news
+	css.width = 100%
+	stacking = horizontal
+	css.background-color = white
+	
+		[page-margin]
+		#css.max-width = 200px
+		css.border-top = solid
+		css.border-color = black
+		css.border-width = 50px
+		css.width = 15%
+		css.height = 1px
+		css.background-color = white
+			
+		[content-background]
+		child = black-line, content
+		css.width = 50%
+		css.min-width = 300px
+		css.min-height = 450px
+		css.background-color = #ededed
+		css.overflow = visible
+		
+			[black-line]
+			css.height = 50px
+			css.background-color = black
+	
+				[content]
+				css.background-color = transparent
+				css.margin-top = -48px
+				css.min-width = 280px
+				css.width = 90%
+				db.table = ContentBlock
+				db.filter = url=$_GET['page']
+				db.error = Sorry, I could not find the page $_GET['page']
+				html.raw = ContentBlock.content
+				css.overflow = visible
+				css.margin-bottom = 50px
+				
+		[news]
+		child = title, facebook
+		css.width = 35%
+		css.min-width = 300px
+		css.border-top = solid
+		css.border-color = black
+		css.border-width = 50px
+		css.background-color = white
+		css.height = 500px
+			
+		[title]
+		css.height = 50px
+		css.margin-top = 25px
+		css.margin-left = 100px
+		image.url = img/news.png
+		image.width = 200px
+		image.height = 42px
+		
+		[facebook]
+		css.width = 250px
+		css.height = 400px
+		css.margin-left = 50px
+		html.raw = <iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fdgbloodbikes&amp;width=250&amp;height=380&amp;colorscheme=light&amp;show_faces=false&amp;header=false&amp;stream=true&amp;show_border=false&amp;appId=259885860792535" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:250px; height:395px;" allowTransparency="true"></iframe>
+				
+
+
+####footer####################################
+
+[footer]
+child = footer-menu, footnote
+	css.width = 100%
+	stacking = horizontal
+	css.background-color = black
+	css.color = white
+
+		[footer-menu]
+		child = footer-volunteer, footer-ride, footer-gallery, footer-faq
+		css.height = 100px
+		css.width = 15%
+		css.min-width = 250px
+		css.margin-left = 17%
+		
+			[footer-volunteer]
+			html.raw = <a style="text-decoration:none; color: white" href="?layout=index&page=contact">HOW TO BECOME A VOLUNTEER</span>
+			css.margin-top = 15px
+
+			[footer-ride]
+			html.raw = <a style="text-decoration:none; color: white" href="?layout=index&page=cookie-policy">RIDING FOR US</span>
+			css.margin-top = 5px
+
+			[footer-gallery]
+			html.raw = <a style="text-decoration:none; color: white" href="?layout=index&page=terms-conditions">GALLERY</span>
+			css.margin-top = 5px
+			
+			[footer-faq]
+			html.raw = <a style="text-decoration:none; color: white" href="?layout=index&page=terms-conditions">FAQ'S</span>
+			css.margin-top = 5px
+
+		[footnote]
+		child = wirefly, copyright
+		css.width = 150px
+		css.margin-left = 15%
+		css.height = 100px
+		css.margin-top = 5px
+		
+			[wirefly]
+			css.height = 45px
+			image.url = img/wirefly-weblink.png
+			image.width = 150px
+			image.height = 40px
+			image.align = left
+			clicknew = http://www.wireflydesign.com
+
+
+			[copyright]
+			html.raw = <span style="color: white">DG Bloodbikes &copy 2015 <br>All rights reserved</span>
+			css.color = #000000
+			css.font-size = 12px
+			css.text-align = center
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+

@@ -16,11 +16,10 @@ css.display = block
 
 [ticker]
 css.width = 100%
-######css.height = 100px
+css.height = 55px
 css.position = fixed
 css.z-index = 1000
 css.bottom = 0
-css.background-color = yellow
 addon.ticker.crawler.width = 100%
 addon.ticker.crawler.font-size = 14px
 addon.ticker.crawler.text-space = 10
@@ -30,7 +29,7 @@ addon.ticker.crawler.text-colour = green
 addon.ticker.crawler.tape-border-width = 1px
 #addon.ticker.crawler.tape-border-color = red
 #addon.ticker.crawler.link-color = magenta
-#addon.ticker.crawler.link-text-color = blue
+addon.ticker.crawler.link-text-color = blue
 
 	[site]
 	child = main, right-column
@@ -253,7 +252,7 @@ css.top = 295px
 	addon.adbox.basicad.picheight = 150px
 	addon.adbox.basicad.picspacing = 5px
 	addon.adbox.basicad.numpics = 4
-	addon.adbox.basicad.interval = 5
+	addon.adbox.basicad.interval = 20
 
 ####footer####################################
 

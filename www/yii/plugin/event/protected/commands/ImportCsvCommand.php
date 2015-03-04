@@ -4,7 +4,7 @@ class ImportCsvCommand extends CConsoleCommand
 {
 	public function run($args)
 	{
-		$dummyRun = 0;
+		$dummyRun = 1;
 		$file = "/tmp/ws.csv";
 		$row = 0;
 		if (($handle = fopen($file, "r")) === FALSE)
@@ -29,6 +29,7 @@ class ImportCsvCommand extends CConsoleCommand
         	$ws = new Ws;
 			$eventHasInterest = new EventHasInterest;
 			$eventHasFormat = new EventHasFormat;
+        	$eventHasProgram = new EventHasProgram;
 
         	$num = count($data);
 			echo $row . " --> ";
@@ -52,10 +53,13 @@ class ImportCsvCommand extends CConsoleCommand
 						echo date('Y-m-d H:i:s', strtotime($date)) . "<br>";
 						$event->start = date('Y-m-d H:i:s', strtotime($date));
 						break;
-					case 5: // start date
-						$dt = $data[$c] . ' ' . $data[$c+1];
+					case 5: // end date
+						if (trim($data[$c] != ''))
+							$dt = $data[$c] . ' ' . $data[$c+1];
+						else	// blank date, use 'start'
+							$dt = $data[$c-2] . ' ' . $data[$c+1];
 						$date = str_replace('/', '-', $dt);
-						//echo date('Y-m-d H:i:s', strtotime($date)) . "<br>";
+						echo date('Y-m-d H:i:s', strtotime($date)) . "<br>";
 						$event->end = date('Y-m-d H:i:s', strtotime($date));
 						break;
 					case 7: // address
@@ -85,6 +89,8 @@ class ImportCsvCommand extends CConsoleCommand
 						break;
 					case 15:
 						$ws->grade = $data[$c];
+						if (trim($ws->grade) == "")
+							die("\nGrade cant be blank");
 						break;
 					case 16:
 						if ((strtoupper($ws->wheelchair_accessible) == 'YES') || (strtoupper($ws->wheelchair_accessible) == 'Y'))
@@ -102,12 +108,12 @@ class ImportCsvCommand extends CConsoleCommand
 						$ws->child_ages_restrictions = $data[$c];
 						break;
 					case 20:
-						$criteria = new CDbCriteria;
-						$criteria->addCondition("organisation = '" . $data[$c] . "'");
-						$member = Member::model()->find($criteria);
-						if (!($member))
-							die("Organisation field could not identify a member");
-						$event->member_id = $member->id;
+						//$criteria = new CDbCriteria;
+						//$criteria->addCondition("organisation = '" . $data[$c] . "'");
+						//$member = Member::model()->find($criteria);
+						//if (!($member))
+							//die("\"$data[$c]\" in the organisation field does not identify an existing member to allocate this event to");
+						//$event->member_id = $member->id;
 						break;
 					case 21:
 						$ws->full_price_notes = $data[$c];
@@ -123,8 +129,9 @@ class ImportCsvCommand extends CConsoleCommand
 
 // @@TODO: Remove hardcoding in all the updates here
 //			$event->member_id = ??;				// $member->id;
-$event->member_id = 16;
-			$event->program_id = 6;				// $member->lock_program_id;
+$event->member_id = 82;
+$event->program_id = 6;							// $member->lock_program_id;
+$eventHasProgram->program_id = 6;
 //			$event->event_price_band_id = ??;	// whatever value was input
 $event->event_price_band_id = 2;
 			$event->active = 1;
@@ -138,8 +145,7 @@ $event->event_price_band_id = 2;
 
 			$eventHasInterest->event_event_id = $event->id;
 //			$eventHasInterest->event_interest_id = ??;
-if ($data[1]=='Kids') $eventHasInterest->event_interest_id = 9;
-else if ($data[1]=='Nature') $eventHasInterest->event_interest_id = 10;
+if ($data[1]=='Nature') $eventHasInterest->event_interest_id = 10;
 else die('wrong interest ' . $data[1]);
 			if ((!($dummyRun)) && (!($eventHasInterest->save())))
 				die("\nEvent has interest save failed on line " . $row . "\n");
@@ -147,10 +153,17 @@ else die('wrong interest ' . $data[1]);
 			$eventHasFormat->event_event_id = $event->id;
 //			$eventHasFormat->event_format_id = ??;
 if ($data[2]=='Outdoors') $eventHasFormat->event_format_id = 2;
-else if ($data[2]=='Classes') $eventHasFormat->event_format_id = 4;
+else if ($data[2]=='Workshop') $eventHasFormat->event_format_id = 3;
+else if ($data[2]=='Exhibition') $eventHasFormat->event_format_id = 9;
+else if ($data[2]=='Competitions') $eventHasFormat->event_format_id = 7;
 else die('wrong format ' . $data[2]);
 			if ((!($dummyRun)) && (!($eventHasFormat->save())))
 				die("\nEvent has format save failed on line " . $row . "\n");
+
+			$eventHasProgram->event_event_id = $event->id;
+$eventHasProgram->approved = ?;
+			if ((!($dummyRun)) && (!($eventHasProgram->save())))
+				die("\nEvent has program save failed on line " . $row . "\n");
 
 			echo " UPDATED";
 

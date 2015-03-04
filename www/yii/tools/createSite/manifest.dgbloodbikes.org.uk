@@ -1,0 +1,17 @@
+site = dgbloodbikes.org.uk
+sitetitle = DG Blood Bikes
+sid = vhdnur30ne1mda1oa0rit9p361
+
+# Database
+dbname = dgbloodbikes_org_uk
+dbuser = dgbloodbikes.org
+dbpass = 13100d382
+
+# Shopping cart order confirmation email
+#checkoutemail = somename@dgbloodbikes.org.uk
+#checkoutname = DG Blood Bikes
+#checkoutpaypalemail = somename@dgbloodbikes.org.uk
+
+# Backend page editor
+editorpagewidth = 800
+editorpageheight = 500

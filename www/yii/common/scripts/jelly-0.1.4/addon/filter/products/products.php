@@ -139,6 +139,8 @@ class products
 		// If we are in 'preset' mode this still needs to run to build the lists, but we hide it
 		if ($this->mode == 'preset')
 			$content .= "<div id='filter-hidden-in-preset-mode' style='display:none'>";
+		if (!($this->hasFilterOrFeature()))
+			$content .= "<div id='filter-hidden-in-no-selected-department-mode' style='display:none'>";
 
         // Duration band (always shown if exists)
         $lastShown = 0;
@@ -222,7 +224,6 @@ class products
             $content .= "</div>";
             $content .= "</div>";
         }
-
        // Departments with features
         $departments  = Department::model()->findAll(array('order'=>'name', 'condition'=>'uid=' . $this->uid));
         if ($departments)
@@ -238,6 +239,10 @@ class products
                 array_push($this->featureSel, '*');
 
             foreach ($departments as $department):
+
+				if (!($this->hasFilterOrFeature()))
+					array_push($this->departmentSel, $department->id);
+
                 $vis = "";
                 if (!(in_array($department->id, $this->departmentSel)))
                     $vis = " style='display:none;' ";
@@ -253,7 +258,7 @@ class products
                     if ((in_array($department->id, $this->departmentSel)) &&(!(isset($_GET['feature']))))
                         $match = true;
                     $content .= "<label class='checkbox'> ";
-                    $content .= "<input id='crap' name='feature[]' ";
+                    $content .= "<input id='dummy' name='feature[]' ";
                     if ($match) $content .= " checked='checked' ";
                     $content .= "type='checkbox' value='" . $department->id . '.' . $feature->id . "' onClick=makeSel()>" . $feature->name;
                     $content .= "</label><br>";
@@ -266,6 +271,8 @@ class products
 
 		if ($this->mode == 'preset')
 			$content .= "<div>";
+		if (!($this->hasFilterOrFeature()))
+			$content .= "</div>";
 
         return $content;
     }
@@ -293,6 +300,11 @@ class products
             $products = Product::model()->findAll($criteria);
             foreach ($products as $product)
             {
+
+				// KKK
+				if ((isset(Yii::app()->session['department'])) && ($product->product_department_id != Yii::app()->session['department']))
+					continue;
+
 //echo 'dept ' . $this->departmentSel[$i] . ' product ' . $product->id . '<br>';
                 // Each selected feature for this particular department (to match against this particular product)
                 $deptFeatureStr = "";
@@ -362,11 +374,29 @@ class products
                             $productList .= "|";
                         $productList .= $product->id;
                     }
+					else if (!($this->hasFilterOrFeature()))
+					{
+                        // We have a winner
+                        if ($productList != "")
+                            $productList .= "|";
+                        $productList .= $product->id;
+					}
                 }
             }
         }
         return $productList;
     }
+
+private function hasFilterOrFeature()
+{
+	$ret = Filter::model()->findAll(array('condition'=>'uid=' . $this->uid));
+	if ($ret)
+		return $ret;
+	$ret = Feature::model()->findAll(array('condition'=>'uid=' . $this->uid));
+	if ($ret)
+		return $ret;
+	return false;
+}
 
     private $apiHtml = <<<END_OF_API_HTML
 

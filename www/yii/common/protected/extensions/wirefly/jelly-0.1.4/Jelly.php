@@ -111,6 +111,8 @@ END_OF_BEGINHEADER;
 	private $endHeader = <<<END_OF_ENDHEADER
 	</head>
 
+	<link rel="stylesheet" href="/css/jelly-fx.css" />
+
 <!-- @@TODO Remove hardcoded LEAFLET leaflet -->
 <!-- <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" /> -->
 <!-- <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script> -->
@@ -592,11 +594,18 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 		// Is this entire blob clickable?
 		if (array_key_exists("click", $array))
 		{
+			$click = "click=true\n";
 			if (strpos($array['click'], "?") === false)
 				$sep = "?";
 			else
 				$sep = "&";
-			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['click'])) . $sep . "click=true>\n", $indentLevel);
+			if (strstr($array['click'], "javascript:"))
+			{
+				$sep = "";
+				$click = "";
+			}
+			$this->genInlineHtml("<a href=" . $this->dbExpand(trim($array['click'])) . $sep . $click . ">", $indentLevel);
+//Yii::log(".................... jellyclick .................. genfromclick=" . $array['click'] , CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
 		if (array_key_exists("clicknew", $array))
 		{
@@ -766,8 +775,10 @@ if (strstr($blobName, "googlemap"))
 				$alt = "";
 				$width = "0";
 				$height = "0";
+				$zindex = "";
 				$tip = "";
 				$align = "";
+				$fx = "";
 				foreach ($value as $prop => $val)
 				{
 					switch ($prop)
@@ -784,20 +795,27 @@ if (strstr($blobName, "googlemap"))
 						case ("height"):
 							$height = $val;
 							break;
+						case ("z-index"):
+							$zindex = " style='position:relative; z-index:" . $val . ';" ';
+							break;
 						case ("align"):
 							if (($val == 'center') || ($val == 'centre'))
-								$align = "style='display:block;margin-left:auto;margin-right:auto'";
+								$align = " style='display:block;margin-left:auto;margin-right:auto' ";
 							if ($val == 'left')
-								$align = "style='display:block;margin-right:auto'";
+								$align = " style='display:block;margin-right:auto' ";
 							if ($val == 'right')
-								$align = "style='display:block;margin-left:auto'";
+								$align = " style='display:block;margin-left:auto' ";
 							break;
+						case "fx":
+							$fx = " class='" . $val . "' ";
+							break;
+						default:
 					}
 				}
 				if ($alt == "")
-					$this->genInlineHtml('<img ' . $align . ' title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.style.display=\'none\'" . " width="' . $width . '" height="' . $height . '">');
+					$this->genInlineHtml('<div class="' . $val . '-container" style="border:0;padding:0;margin:0"><img ' . $fx . $zindex . $align . ' title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.style.display=\'none\'" . " width="' . $width . '" height="' . $height . '"></div>');
 				else
-					$this->genInlineHtml('<img ' . $align . ' title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.onerror=null;this.src=\'' . $this->dbExpand($alt) . '\'" width="' . $width . '" height="' . $height . '">');
+					$this->genInlineHtml('<img ' . $zindex . $align . ' title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.onerror=null;this.src=\'' . $this->dbExpand($alt) . '\'" width="' . $width . '" height="' . $height . '">');
 				break;
 			case "fx":
 				foreach ($value as $cssName => $cssValue)
@@ -1140,6 +1158,14 @@ if (strstr($blobName, "googlemap"))
 
 	private function genInlineHtml($content, $indentLevel=0)
 	{
+		// @@TODO FIX BUG - product plugin on going to product page after having backspaced from product page - doubles up quoting the ""sid""
+		if (strstr($content, "&sid=\"\""))
+		{
+			//$content = str_replace("&sid=\"\"", "&sid=\"", $content);
+			//$content = str_replace("\"\"&", "\"&", $content);
+			//$content = str_replace("index.php", "http://plugin.wireflydesign.com/product/index.php", $content);
+		}
+
 		// Translate any @CLIPBOARD's
 		if (strstr($content, "@CLIPBOARD"))
 			$content = str_replace("@CLIPBOARD", $this->clipBoard, $content);
@@ -1325,7 +1351,9 @@ if (strstr($blobName, "googlemap"))
 				// Eg: {{department 27 Guinot}}
 				// ----------------------------
 				$moreCurlyWurlys = 1;
-				$value = $vals[1];
+				$value = "";
+				if (count($vals) > 1)
+					$value = $vals[1];
 
                 $deeplink = "";
 				if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
@@ -1362,7 +1390,10 @@ if (strstr($blobName, "googlemap"))
 				$click = '';
                 if ((isset($_GET['click'])) && (trim($_GET['click']) != ""))
                     $click .= "&click=" . $_GET['click'];
-				$iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=checkout&sid=' . Yii::app()->params['sid'] . '&ge=' . Yii::app()->params['checkoutEmail'] . '&gn=' . Yii::app()->params['checkoutName'] . '&gu=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayUser'])) . '&gp=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayPassword'])) . $click . '"></iframe>';
+				if (!(isset(Yii::app()->params['checkoutPaypalEmail'])))
+					Yii::app()->params['checkoutPaypalEmail'] = '';
+
+				$iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="https://plugin.wireflydesign.com/product/?layout=checkout&sid=' . Yii::app()->params['sid'] . '&ge=' . Yii::app()->params['checkoutEmail'] . '&gn=' . Yii::app()->params['checkoutName'] . '&gu=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayUser'])) . '&gp=' . urlencode($util->encrypt(Yii::app()->params['checkoutGatewayPassword'])) . $click . '&pp=' . urlencode($util->encrypt(Yii::app()->params['checkoutPaypalEmail'])) . '&checkoutButton=true' . '"></iframe>';
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 
