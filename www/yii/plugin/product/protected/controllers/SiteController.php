@@ -237,6 +237,7 @@ header($this->p3p);
 		}
 
 		// Get the passed fields (This is a @@TODO as its crap comms between page and here...)
+		$sn = "";
 		$a1 = "";
 		$a2 = "";
 		$a3 = "";
@@ -245,6 +246,8 @@ header($this->p3p);
 		$e = "";
 		$t = "";
 		$n = "";
+		$prm = "";
+		if (isset($_GET['sn'])) $sn = $_GET['sn'];
 		if (isset($_GET['a1'])) $a1 = $_GET['a1'];
 		if (isset($_GET['a2'])) $a2 = $_GET['a2'];
 		if (isset($_GET['a3'])) $a3 = $_GET['a3'];
@@ -253,6 +256,7 @@ header($this->p3p);
 		if (isset($_GET['e'])) $e = $_GET['e'];
 		if (isset($_GET['t'])) $t = $_GET['t'];
 		if (isset($_GET['n'])) $n = nl2br($_GET['n']);
+		if (isset($_GET['prm'])) $prm = $_GET['prm'];
 
 		$ip = "UNKNOWN";
 		if (getenv("HTTP_CLIENT_IP"))
@@ -312,6 +316,7 @@ header($this->p3p);
 			$order->http_line_total = number_format(($qty * $price), 2, '.', '');
 			$order->http_shipping_id = $shipId;
 			$order->email_address = $e;
+			$order->name = $sn;
 			$order->delivery_address1 = $a1;
 			$order->delivery_address2 = $a2;
 			$order->delivery_address3 = $a3;
@@ -319,6 +324,7 @@ header($this->p3p);
 			$order->delivery_post_code = $pc;
 			$order->telephone = $t;
 			$order->notes = $n;
+			$order->promo_code = $prm;
 			$totalGoods += ($qty * $price);
 			$order->return_url = Yii::app()->baseUrl;
 			$order->gu = Yii::app()->session['checkoutGatewayUser'];
@@ -411,7 +417,7 @@ header($this->p3p);
 		// Retrieve the original order, now populated by paymentsense
 		$orders = Order::model()->findAll($criteria);
 		$orderCount = 0;
-		$message = "";
+		$message = "<html><style>html, table, div, tr, td, * { font-size: small !important; color: #3B0B0B !important; background-color: #F8ECE0 !important; font-family: Calibri, Verdana, Arial, Serif !important; } table td { border-left:solid 10px transparent; } table td:first-child { border-left:0; }</style>";
 		$message .= "<h2>Thank you for shopping with " . Yii::app()->session['checkoutName'] . "</h2><br>";
 		$message .= "<table style='border:1px solid black'><tr>";
 		$message .= "<b><td style='padding:15px' >Description</td><td style='padding:15px' >Option/Size</td><td style='padding:15px' >Each</td><td style='padding:15px' >Quantity</td><td style='padding:15px' >Total</td></b>";
@@ -456,25 +462,38 @@ header($this->p3p);
 			$message .= "</tr>";
 		}
 		$message .= "</table>";
+		$message .= "</br>";
 
 		$message .= "<table>";
-
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("id = " . $order->http_shipping_id);
 		$shipping = ShippingOption::model()->find($criteria);
 		$shippingAmount = "0.00";
 		if ($shipping)
 			$shippingAmount = $shipping->price;
-		$message .= "<tr><td style='padding:15px'>Shipping: &pound " . $shippingAmount . "</td></tr>";
-		$message .= "<tr><td style='padding:15px'>Total Paid: &pound " . $order->http_total . "</td></tr>";
+		$message .= "<tr><td><b>Shipping: </b>&pound " . $shippingAmount . "</td></tr>";
+		$message .= "<tr><td><b>Total Paid: </b>&pound " . $order->http_total . "</td></tr>";
+		$message .= "</table>";
+		$message .= "</br>";
 
+		$message .= "<table style='border:none'>";
+		if (trim($order->card_number) != "")
+		{
+			// Card details (if any)
+			$message .= "<tr><td><b>Name on card: </b></td><td>" . $order->card_name . "</td></tr>";
+			$message .= "<tr><td><b>Card number: </b></td><td>" . '************ ' . substr($order->card_number, 12, 4) . "</td></tr>";
+		}
+		$message .= "<tr><td><b>Telephone: </b></td><td>" . $order->telephone . "</td></tr>";
+		$message .= "<tr><td><b>Email: </b></td><td>" . $order->email_address . "</td></tr>";
 		$message .= "</table>";
 
-		$message .= "<br><hr><br>";	// Solid line separator
+		$message .= "<br><br><hr><br>";	// Solid line separator
 
 		// Delivery address
 
-		$message .= "<b>Delivery address</b><br>";
+		$message .= "<b>Deliver to</b><br>";
+		if (trim($order->name) != "")
+			$message .= $order->name . "<br>";
 		if (trim($order->delivery_address1) != "")
 			$message .= $order->delivery_address1 . "<br>";
 		if (trim($order->delivery_address2) != "")
@@ -490,7 +509,9 @@ header($this->p3p);
 		// Notes
 
 		$message .= "<b>Notes</b><br>";
-		$message .= $order->notes . "<br>";
+		$message .= $order->notes . "<br><br>";
+
+		$message .= "</html>";
 
         // Send email
         $to = $order->email_address;

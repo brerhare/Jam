@@ -451,6 +451,7 @@ $content .= "<style>input {margin-bottom:3px; height:16px;}</style>";
 				$content .= "<th align='left' width=50%></th>";
 				$content .= "</tr></thead>";
 				$content .= "<tbody><tr><td valign='top'>";
+				$content .= "<span>Name </span><input id='shipping_name' name='shipping_name' type='text' value='' size='30'/> <br /><br/>";
 				$content .= "Shipping address<br />";
 				$content .= "<input id='address1' name='address1' type='text' value='' size='40'/> <br />";
 				$content .= "<input id='address2' name='address2' type='text' value='' size='40'/> <br />";		
@@ -468,6 +469,7 @@ $content .= "<style>input {margin-bottom:3px; height:16px;}</style>";
 				$content .= "</td><td>&nbsp</td><td valign='top'>";
 				$content .= "Notes<br>";
 				$content .= "<textarea id='message' name='message' rows='7' cols='38'> </textarea> <br><br><br/>";
+				$content .= "<span>Got a promotion code? </span><input id='promo_code' name='promo_code' type='text' value='' size='15'/> <br /><br/>";
 				$content .= "<a href='#' onClick=\"proceed(0)\"	>" . "<img src=/product/img/proceed_to_checkout.png></a>";
 				if ((isset(Yii::app()->session['checkoutPaypalEmail'])) && (trim(Yii::app()->session['checkoutPaypalEmail']) != ""))
 					$content .= "<br><br><a href='#' onClick=\"proceed(1)\"	>" . "<img src=/product/img/paypal-checkout.png></a>";
@@ -507,6 +509,11 @@ $content .= "<style>input {margin-bottom:3px; height:16px;}</style>";
 
 					function proceed(ptype) /* 0=payment gateway, 1=paypal */
 					{
+						if (document.getElementById("shipping_name").value == "")
+						{
+							alert('Name cant be empty');
+							return(false);
+						}
 						if (document.getElementById("address1").value == "")
 						{
 							alert('Address line 1 and 2 cant be empty');
@@ -542,6 +549,8 @@ $content .= "<style>input {margin-bottom:3px; height:16px;}</style>";
 						}
 						var e = document.getElementById("choose_shipping_option");
 						shipId = e.options[e.selectedIndex].value;
+						prm = document.getElementById("promo_code").value;
+						sn = document.getElementById("shipping_name").value;
 						a1 = document.getElementById("address1").value;
 						a2 = document.getElementById("address2").value;
 						a3 = document.getElementById("address3").value;
@@ -550,7 +559,7 @@ $content .= "<style>input {margin-bottom:3px; height:16px;}</style>";
 						n = encodeURIComponent(document.getElementById("message").value);
 						e = document.getElementById("email1").value;
 						t = document.getElementById("telephone").value;
-						window.location.href = '/product/index.php/site/pay?cartid='+cartId+'&shipid='+shipId+'&a1='+a1+'&a2='+a2+'&a3='+a3+'&a4='+a4+'&e='+e+'&pc='+pc+'&n='+n+'&t='+t+'&ptype='+ptype;
+						window.location.href = '/product/index.php/site/pay?cartid='+cartId+'&shipid='+shipId+'&sn='+sn+'&a1='+a1+'&a2='+a2+'&a3='+a3+'&a4='+a4+'&e='+e+'&pc='+pc+'&n='+n+'&t='+t+'&prm='+prm+'&ptype='+ptype;
 			}
 END_OF_API_JS_checkout;
 

@@ -1,3 +1,17 @@
+<?php
+// This is to re-use the already-input name/ad1-4/postcode details. We want to send blank ad1-4 to paymentsense
+// so we blank them and dont ask for input
+
+	$CardName = $q['name'];
+	$PostCode = $q['delivery_post_code'];
+?>
+<input type="hidden" name="Address1" value="" />
+<input type="hidden" name="Address2" value="" />
+<input type="hidden" name="Address3" value="" />
+<input type="hidden" name="Address4" value="" />
+
+<!-- ------------------------------------------------------------- -->
+
 <input name="FormMode" type="hidden" value="<?= $NextFormMode ?>" />
 <input name="HashDigest" type="hidden" value="<?= $szHashDigest ?>" />
 
@@ -87,6 +101,7 @@
     <div class="ContentHeader">
         Customer Details
     </div>
+<!-- Kim commented this out. We send paymentsense blanks for the address, and the postcode from the previous (our) form
     <div class="FormItem">
         <div class="FormLabel">Address:</div>
         <div class="FormInput">
@@ -123,12 +138,14 @@
             <input name="State" value="<?= $State ?>" class="InputTextField" MaxLength="50" />
         </div>
     </div>
+-->
     <div class="FormItem">
         <div class="FormLabel">Post Code:</div>
         <div class="FormInput">
             <input name="PostCode" value="<?= $PostCode ?>" class="InputTextField" MaxLength="50" />
         </div>
     </div>
+<!--
     <div class="FormItem">
         <div class="FormLabel">
             Country:
@@ -140,6 +157,7 @@
 			</select>
 		</div>
 	</div>
+-->
 	<div class="FormItem">
 		<div class="FormSubmit">
 			<input type="submit" value="Submit For Processing" />
