@@ -36,6 +36,7 @@ css.position = relative
 			image.url = img/machine-bubble.png
 			image.width = 170px
 			image.height = 170px
+			image.fx = fx-hover-bounce
 			click = ?layout=index&page=vending-machines-office-commercial-dumfries-scotland
 			
 			[FREE-bubble]
@@ -45,21 +46,27 @@ css.position = relative
 			image.url = img/FREE-bubble.png
 			image.width = 120px
 			image.height = 120px
+			image.fx = fx-hover-tilt-right
 			click = ?layout=index&page=vending-machines-office-commercial-dumfries-scotland
-			
+
 			[vendor-bubble]
 			css.height = 90%
 			css.width = 15%
-css.margin-left = 30%
-#css.margin-top = 90px
-#image.url = img/vendor-bubble.png
-#image.width = 100px
-#image.height = 100px
-addon.gallery.lightbox.thumb = http://brycewalkervending.com/img/vendor-bubble.png
-addon.gallery.lightbox.image = http://brycewalkervending.com/img/vendor-bubble.png
-addon.gallery.lightbox.width = 100px
-addon.gallery.lightbox.height = 100px
-			click = http://www.brycewalkervending.com
+			css.margin-left = 30%
+			image.url = img/vendor-bubble.png
+			image.width = 100px
+			image.height = 100px
+			image.fx = fx-hover-spin
+			click = javascript:playVendor();
+
+			[show-video]
+			css.display = none
+			addon.video.simple.thumb =  http://brycewalkervending.com/img/vendor-bubble.png
+			addon.video.simple.width = 1065px
+			addon.video.simple.height = 600px
+			# Note that the extension for the video is left off. Wants (but doesnt insist on) .m4v, .ogv, .webm
+			addon.video.simple.video = vendor
+			addon.video.simple.click = playVendor
 
 			[contact-bubble]
 			css.height = 100%
@@ -70,6 +77,7 @@ addon.gallery.lightbox.height = 100px
 			image.width = 200px
 			image.height = 200px
 			image.align = center
+			image.fx = fx-hover-swing
 			click = ?layout=index&page=contact
 	
 		[logo]
@@ -79,6 +87,7 @@ addon.gallery.lightbox.height = 100px
 		image.url = img/logo-shadow.png
 		image.width = 517px
 		image.height = 229px
+		image.fx = fx-hover-grow
 		click = http://www.brycewalkervending.com
 		
 #### Site Content #########################################
