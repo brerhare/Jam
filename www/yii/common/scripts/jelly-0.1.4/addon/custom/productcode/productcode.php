@@ -316,7 +316,7 @@ $content .= "<style> * { color: grey;} </style>";
 		$content .= "<th align='right' width=7%>Each</th>";	// Price
 		$content .= "<th align='right' width=5%>Qty</th>";	// Qty
 		$content .= "<th align='right' width=10%>Total</th>";	// Total
-		$content .= "<th align='rght' width=8%></th>";	// Total
+		$content .= "<th align='right' width=8%></th>";	// Total
 		$content .= "</tr></thead>";
 
 		// Generate the product lines
@@ -335,7 +335,8 @@ $content .= "<style> * { color: grey;} </style>";
 			$product = Product::model()->find($criteria);	
 			if ($product)
 			{
-				$content .= "<tr><tbody>";
+				$content .= "<tbody>";
+				$content .= "<tr>";
 				// Image
 				$content .= "<td>";
 				$content .= '<br>&nbsp';
@@ -376,7 +377,8 @@ $content .= "<style> * { color: grey;} </style>";
 				$content .= "<td align='right'>";
 				$content .= "<a href='#' onClick=\"deleteItem('" . $product->id . "','" . $option->id . "','" . "')\"	>" . "<img src=/product/img/delete-cross.png height=25px width=25px></a>";
 				$content .= "</td>";
-				$content .= "</tbody></tr>";
+				$content .= "</tr>";
+				$content .= "</tbody>";
 			}
 		}
 		$content .= "</table>";
@@ -385,20 +387,19 @@ $content .= "<style> * { color: grey;} </style>";
 		$content .= "<table style='width:80%; float:left'>";
 		$content .= "<thead><tr>";
 		$content .= "<th align='left' width=10%></th>";
-		$content .= "<th align='left' width=25%></th>";	// Buttons
-		$content .= "<th align='left' width=25%></th>";
-		$content .= "<th align='left' width=19%></th>";	// Delivery dropdown
-		$content .= "<th align='right' width=10%></th>";	// Total
-		$content .= "<th align='right' width=11%></th>";
+		$content .= "<th align='left' width=35%></th>";	// Buttons
+		$content .= "<th align='right' width=25%></th>";
+		$content .= "<th align='right' width=22%></th>";	// Total
+		$content .= "<th align='right' width=8%></th>";	// Total
 		$content .= "</tr></thead>";
 
+		$content .= "<tbody>";
 		$content .= "<tr><td>&nbsp</td></tr>";
-
-		$content .= "<tr><tbody>";
+		$content .= "<tr>";
 		$content .= "<td></td>";
 		$content .= "<td></td>";
-		$content .= "<td>Delivery method</td>";
-		$content .= "<td>";
+		$content .= "<td align='left'><b>Delivery method</b></td>";
+		$content .= "<td align='right'>";
 
 				$content .= "<script> var shipId = 0; var totalShipping = 0; var totalGoods = " . $totalGoods . ";</script>";
 				$content .= "<select id='choose_shipping_option' onChange=updateTotal()>";
@@ -423,25 +424,27 @@ $content .= "<style> * { color: grey;} </style>";
 				$content .= "</select>";
 
 				$content .= "</td>";
-				$content .= "<td></td>";
-				$content .= "<td></td>";
+				$content .= "<td><br><br></td>";
 				$content .= "</tr>";
 
 				$content .= "<tr>";
-				$content .= "<td><br/><br/><br/></td>";
 				$content .= "<td></td>";
-				$content .= "<td align='right'><b>Total to pay</b></td>";
-				$content .= "<td id='showTotal' style='font-weight:bold'>£ " . number_format(($totalGoods + $totalShipping), 2, '.','') . "</td>";
 				$content .= "<td></td>";
+				$content .= "<td align='left'><b>Total to pay</b></td>";
+				$content .= "<td align='right' id='showTotal' style='font-weight:bold'>£ " . number_format(($totalGoods + $totalShipping), 2, '.','') . "</td>";
 				$content .= "<td></td>";
 				$content .= "</tr>";
+				$content .= "</tbody>";
 
 				$content .= "</table>";
 
 				$content .= "</div>";
+
 				$content .= "<div style='clear:both'></div>";
 
-$content .= "<style>input {margin-bottom:3px; height:16px;}</style>";
+				$content .= "<br><br>";
+
+				$content .= "<style>input {margin-bottom:3px; height:16px;}</style>";
 
 				// Customer contact details
 				$content .= "<table style='width:80%; float:left'>";
