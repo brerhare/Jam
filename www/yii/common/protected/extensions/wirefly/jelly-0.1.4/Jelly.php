@@ -1346,6 +1346,19 @@ if (strstr($blobName, "googlemap"))
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 
+			if (stristr($vals[0], "shop"))
+			{
+				// Eg: {{department 27 Guinot}}
+				// ----------------------------
+				$moreCurlyWurlys = 1;
+				$value = "";
+				if (count($vals) > 1)
+					$value = $vals[1];
+
+				$iframe = '<iframe onload="scroll(0,0);" width="100%" height="900" scrolling="no" style="overflow-x:hidden; overflow-y:auto;" src="http://plugin.wireflydesign.com/product/?sid=' . Yii::app()->params['sid'] . '&amp;shop=' . 'shop' . '"></iframe>';
+				$content = str_replace($pOrig, $iframe, $content);
+			}
+
 			if (stristr($vals[0], "department"))
 			{
 				// Eg: {{department 27 Guinot}}
