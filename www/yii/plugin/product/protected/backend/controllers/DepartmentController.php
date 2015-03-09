@@ -8,6 +8,8 @@ class DepartmentController extends Controller
 	 */
 	public $layout='//layouts/column2';
 
+    private $_thumbDir = '/../userdata/thumb/';
+
 	/**
 	 * @return array action filters
 	 */
@@ -70,8 +72,18 @@ class DepartmentController extends Controller
 		if(isset($_POST['Department']))
 		{
 			$model->attributes=$_POST['Department'];
+			$model->thumb_path=CUploadedFile::getInstance($model, 'thumb_path');
 			if($model->save())
+			{
+                if (strlen($model->thumb_path) > 0)
+                {
+                    $fname = Yii::app()->basePath . $this->_thumbDir . Yii::app()->session['uid'] . "-" . $model->thumb_path;
+                    $model->thumb_path->saveAs($fname);
+                    //$this->_watermark($fname);
+                }
+
 				$this->redirect(array('admin'));
+			}
 		}
 
 		$this->render('create',array(
@@ -87,6 +99,9 @@ class DepartmentController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
+        $oldthumbname = $model->thumb_path;
+
+        $model->scenario = 'update';
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -94,8 +109,26 @@ class DepartmentController extends Controller
 		if(isset($_POST['Department']))
 		{
 			$model->attributes=$_POST['Department'];
+
+            $fileT=CUploadedFile::getInstance($model, 'thumb_path');
+            if(is_object($fileT) && get_class($fileT) === 'CUploadedFile')
+            {
+                if (($oldthumbname != '') && (file_exists(Yii::app()->basePath . $this->_thumbDir . Yii::app()->session['uid'] . "-" . $oldthumbname)))
+                    unlink(Yii::app()->basePath . $this->_thumbDir . Yii::app()->session['uid'] . "-" . $oldthumbname);
+                $model->thumb_path = $fileT;
+            }
+
 			if($model->save())
+			{
+                if(is_object($fileT))
+                {
+                    $fname = Yii::app()->basePath . $this->_thumbDir . Yii::app()->session['uid'] . "-" . $model->thumb_path;
+                    $model->thumb_path->saveAs($fname);
+                    //$this->_watermark($fname);
+                }
+
 				$this->redirect(array('admin'));
+			}
 		}
 
 		$this->render('update',array(
@@ -113,6 +146,11 @@ class DepartmentController extends Controller
 		if(Yii::app()->request->isPostRequest)
 		{
 			// we only allow deletion via POST request
+
+            $oldthumbname = $this->loadModel($id)->thumb_path;
+            if (($oldthumbname != '') && (file_exists(Yii::app()->basePath . $this->_thumbDir . Yii::app()->session['uid'] . "-" . $oldthumbname)))
+                unlink(Yii::app()->basePath . $this->_thumbDir . Yii::app()->session['uid'] . "-" . $oldthumbname);
+
 			$this->loadModel($id)->delete();
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
