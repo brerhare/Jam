@@ -1,5 +1,7 @@
 <?php
 
+require ('deviceInfo.php');
+
 /*********************/
 ini_set('display_errors',1);
 error_reporting(E_ALL);
@@ -21,6 +23,8 @@ class Jelly
 
 	//public $DEBUG = true;
 	public $DEBUG = false;
+
+	private $deviceWidth = 0;
 
 	private $blobUniqueId = 0;
 
@@ -186,6 +190,7 @@ END_OF_FOOTER;
 
     public function expandContent($content, $jellyRoot)
     {
+		$this->deviceWidth = deviceInfo();
         $this->jellyRootPath = Yii::app()->basePath . "/../" . $jellyRoot;
         $this->jellyRootUrl  = Yii::app()->baseUrl . $jellyRoot;
         $this->genInlineHtml($content, $indentLevel=0);
@@ -200,6 +205,7 @@ END_OF_FOOTER;
 
 	public function processData($jellyArray, $jellyRoot)
 	{
+		$this->deviceWidth = deviceInfo();
 		$this->jellyRootPath = Yii::app()->basePath . "/../" . $jellyRoot;
 		$this->jellyRootUrl  = Yii::app()->baseUrl . $jellyRoot;
 
@@ -406,6 +412,23 @@ END_OF_FOOTER;
 					else
 					{
 						if ($pageLoading == $pageForCondition)
+							return;
+					}
+				}
+			}
+			else if (strstr($array['condition'], "@DEVICEWIDTH"))	// =1000, >600, <958, >=320, <=800
+			{
+        		$chrs = array('=', '>', '<');
+				foreach ($chrs as $chr) {
+					//echo $chr;	
+					$exp = explode($chr, $array['condition']);
+					if (count($exp) == 2)
+					{
+						if ($chr == "=" && $this->deviceWidth != trim($exp[1]))
+							return;
+						if ($chr == ">" && $this->deviceWidth <= trim($exp[1]))
+							return;
+						if ($chr == "<" && $this->deviceWidth >= trim($exp[1]))
 							return;
 					}
 				}
