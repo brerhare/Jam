@@ -1,4 +1,4 @@
-#Demo 5
+#DG Bloodbikes
 [defaults]
 include = default-values
 
@@ -12,17 +12,18 @@ fx.wallpaper-image-tile = /img/black-tile.jpg
 css.display = block
 
 	[site]
-	child = header, main-image, body, footer
+	child = header, home-image, main-image, body, footer
 	css.width = 100%
 
 ####  Header  #################################
 
 	[header]
-	child = menu, donate, social
+	child = menu, donate, social-fb, social-email
 	css.height = 100px
 	css.max-width = 970px
 	css.min-width = 500px
 	stacking = horizontal
+	css.overflow = visible
 	
 		[menu]
 		css.height = 40px
@@ -33,40 +34,83 @@ css.display = block
 		css.z-index = 100
 		css.position = relative
 
-		addon.menu.basic.orientation = horizontal
-		addon.menu.basic.height = 30px
-		addon.menu.basic.menu-color = transparent
-		addon.menu.basic.item-separator-color = transparent
-		addon.menu.basic.item-separator-width = 5px
+		addon.menu.traditional.orientation = horizontal
+		addon.menu.traditional.height = 30px
+		addon.menu.traditional.menu-color = transparent
+		
+		addon.menu.traditional.menu-font-family = Roboto Condensed
+		addon.menu.traditional.menu-font-size = 20px
+		addon.menu.traditional.menu-text-color = white
+addon.menu.traditional.item-separator-width = 8px
+            addon.menu.traditional.item-separator-color = transparent
+		
+		addon.menu.traditional.menu-hover-font-size = 20px
+		addon.menu.traditional.menu-hover-text-color = lightgrey
+		
+		addon.menu.traditional.menu-selected-font-size = 20px
+		addon.menu.traditional.menu-selected-text-color = lightgrey
 
-		addon.menu.basic.font-size = 20px
-		addon.menu.basic.menu-text-color = white
-		addon.menu.basic.item-color = transparent
-		addon.menu.basic.item-text-color = lightgrey
 
-		#addon.menu.basic.submenu-color = yellow red
+		addon.menu.traditional.submenu-color = black
 	
-		#addon.menu.basic.subitem-color = white black
-		#addon.menu.basic.subitem-text-color = purple
-		#addon.menu.basic.subitem-seperator-color = red 
+		addon.menu.traditional.subitem-color = black
+		addon.menu.traditional.subitem-text-color = white
+		addon.menu.traditional.subitem-seperator-color = white
+		
+		[donate]
+		css.height = 50px
+		css.width = 250px
+		css.margin-top = 57px
+		css.margin-left = 30px
+		image.url = img/donate.png
+		image.width = 250px
+		image.height = 35px
+		image.align = center
+		image.z-index = 100
+		clicknew = http://www.dgbloodbikes.org.uk/?layout=index&page=temp-donate
+		
+		[social-fb]
+		css.height = 40px
+		css.width = 40px
+		css.margin-top = 5px
+		css.margin-left = 40px
+		image.url = img/facebook.png
+		image.width = 35px
+		image.height = 35px
+		image.align = center
+		image.z-index = 100
+		clicknew = https://www.facebook.com/dgbloodbikes
+		
+		[social-email]
+		css.height = 40px
+		css.width = 40px
+		css.margin-top = 5px
+		css.margin-left = 5px
+		image.url = img/email.png
+		image.width = 35px
+		image.height = 35px
+		image.align = center
+		image.z-index = 100
+		#html.raw = <a href="mailto:info@dgbloodbikes.org.uk?subject=Website%20Enquiry"></a>
+		click = http://www.dgbloodbikes.org.uk/?layout=index&page=contact-donate-volunteer
 
 
 #### Main Image ###########################################
 
-	[main-image]
-	child = logo, blurb
+	[home-image]
+	child = home-logo, blurb
+	condition = @PAGE=@HOMEPAGE
 	css.width = 100%
     css.background-size = 100%
-	css.padding-top = 60%
+	css.padding-top = 49%
 	css.background-repeat = no-repeat
-	css.background-image = url('/img/bbwebpic.jpg')
+	css.background-image = url('/img/bbwebpic_NEW.jpg')
 	css.border-style = solid
 	css.border-color = white
 	css.border-top-width = 1px
-
 	
-		[logo]
-		css.margin-left = 100px
+		[home-logo]
+		css.margin-left = 15%
 		css.margin-top = -45%
 		css.max-width = 20%
 		#css.min-width = 200px
@@ -86,6 +130,32 @@ css.display = block
 		css.background-image = url('/img/blurb.png')
 		css.z-index = 100
 		#css.background-color = grey
+	
+	[main-image]
+	child = logo
+	condition = @PAGE!=@HOMEPAGE
+	css.width = 100%
+    css.background-size = 100%
+	css.padding-top = 23%
+	css.background-repeat = no-repeat
+	css.background-image = url('/img/bbwebpic_NEWCROPPED.jpg')
+	css.border-style = solid
+	css.border-color = white
+	css.border-top-width = 1px
+
+	
+		[logo]
+		css.margin-left = 100px
+		css.margin-top = -20%
+		css.max-width = 17%
+		#css.min-width = 200px
+		css.background-size = 100%
+		css.padding-top = 20%
+		css.background-repeat = no-repeat
+		css.background-image = url('/img/logo.png')
+		css.z-index = 100
+		
+
 
 
 ######## body #######################################
@@ -107,7 +177,7 @@ css.display = block
 		css.background-color = white
 			
 		[content-background]
-		child = black-line, content
+		child = black-line, content, contact
 		css.width = 50%
 		css.min-width = 300px
 		css.min-height = 450px
@@ -118,17 +188,43 @@ css.display = block
 			css.height = 50px
 			css.background-color = black
 	
-				[content]
-				css.background-color = transparent
-				css.margin-top = -48px
-				css.min-width = 280px
-				css.width = 90%
-				db.table = ContentBlock
-				db.filter = url=$_GET['page']
-				db.error = Sorry, I could not find the page $_GET['page']
-				html.raw = ContentBlock.content
-				css.overflow = visible
-				css.margin-bottom = 50px
+			[content]
+			css.background-color = transparent
+			css.margin-top = -52px
+			css.min-width = 280px
+			css.width = 90%
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find the page $_GET['page']
+			html.raw = ContentBlock.content
+			css.overflow = visible
+			css.margin-bottom = 50px
+				
+			[contact]
+			child = contact-form, contact-text
+			condition = @PAGE=contact-donate-volunteer
+			css.height = 300px
+			stacking = horizontal
+				
+				[contact-form]
+				css.width = 400px
+				#css.margin-bottom = 30px
+				css.background-color = #ededed
+				addon.contact.contactform.edgepadding = 0px
+				addon.contact.contactform.buttoncolor = grey
+				addon.contact.contactform.buttontextcolor = white
+				addon.contact.contactform.buttontext = [ Submit ]
+				addon.contact.contactform.successtextcolor = green
+				addon.contact.contactform.failuretextcolor = red
+				addon.contact.contactform.textcolor = white
+				addon.contact.contactform.backcolor = lightgrey
+				addon.contact.contactform.inputspacing = 10px
+
+				[contact-text]
+				css.width = 25%
+				css.margin-top = 80px
+				css.font = 12px
+				html.raw = Please fill in the form and someone will get back to you as soon as possible.
 				
 		[news]
 		child = title, facebook
@@ -159,56 +255,95 @@ css.display = block
 ####footer####################################
 
 [footer]
-child = footer-menu, footnote
+child = footer-detail, footer-logo
 	css.width = 100%
 	stacking = horizontal
 	css.background-color = black
 	css.color = white
 
-		[footer-menu]
-		child = footer-volunteer, footer-ride, footer-gallery, footer-faq
-		css.height = 100px
-		css.width = 15%
-		css.min-width = 250px
-		css.margin-left = 17%
 		
-			[footer-volunteer]
-			html.raw = <a style="text-decoration:none; color: white" href="?layout=index&page=contact">HOW TO BECOME A VOLUNTEER</span>
-			css.margin-top = 15px
-
-			[footer-ride]
-			html.raw = <a style="text-decoration:none; color: white" href="?layout=index&page=cookie-policy">RIDING FOR US</span>
-			css.margin-top = 5px
-
-			[footer-gallery]
-			html.raw = <a style="text-decoration:none; color: white" href="?layout=index&page=terms-conditions">GALLERY</span>
-			css.margin-top = 5px
-			
-			[footer-faq]
-			html.raw = <a style="text-decoration:none; color: white" href="?layout=index&page=terms-conditions">FAQ'S</span>
-			css.margin-top = 5px
-
-		[footnote]
-		child = wirefly, copyright
-		css.width = 150px
+		[footer-detail]
+		child = footer-menu, footer-credits
+		css.height = 300px
+		css.width = 75%
+		css.min-width = 300px
 		css.margin-left = 15%
-		css.height = 100px
-		css.margin-top = 5px
 		
-			[wirefly]
-			css.height = 45px
-			image.url = img/wirefly-weblink.png
-			image.width = 150px
-			image.height = 40px
-			image.align = left
-			clicknew = http://www.wireflydesign.com
+			[footer-menu]		
+			child = footer-volunteer, footer-ride, footer-gallery, footer-faq, terms, cookie
+			css.width = 100%
+			css.height = 200px
+		
+				[footer-volunteer]
+				html.raw = <a style="text-decoration:none; color: white" href="?layout=index&page=contact">HOW TO BECOME A VOLUNTEER</span>
+				css.margin-top = 20px
 
+				[footer-ride]
+				html.raw = <a style="text-decoration:none; color: white" href="?layout=index&page=cookie-policy">RIDING FOR US</span>
+				css.margin-top = 5px
 
-			[copyright]
-			html.raw = <span style="color: white">DG Bloodbikes &copy 2015 <br>All rights reserved</span>
-			css.color = #000000
-			css.font-size = 12px
-			css.text-align = center
+				[footer-gallery]
+				html.raw = <a style="text-decoration:none; color: white" href="?layout=index&page=terms-conditions">GALLERY</span>
+				css.margin-top = 5px
+				
+				[footer-faq]
+				html.raw = <a style="text-decoration:none; color: white" href="?layout=index&page=terms-conditions">FAQ'S</span>
+				css.margin-top = 5px
+				
+				[terms]
+				html.raw = <a style="text-decoration:none; color: white" href="?layout=index&page=terms-conditions">T&Cs</span>
+				css.margin-top = 5px
+				
+				[cookie]
+				html.raw = <a style="text-decoration:none; color: white" href="?layout=index&page=cookie-policy">COOKIES</span>
+				css.margin-top = 5px
+					
+			[footer-credits]
+			child = copyright, design, wirefly
+			css.width = 100%
+			css.height = 50px
+			#css.margin-top = 5px
+			stacking = horizontal
+			
+				[copyright]
+				html.raw = <span style="color: white">&copy Dumfries & Galloway Blood Bikes 2015 <br>All rights reserved</span>
+				css.color = #000000
+				css.font-size = 10px
+				css.text-align = left
+				css.width = 32%
+				css.margin-left = 0px
+				css.margin-top = 15px
+				
+				[design]
+				html.raw = <a style="color: white" href="http://www.forsythcreative.com/" target="_blank">Design by Nicola Forsyth Creative Graphic Design</a>
+				css.color = #000000
+				css.font-size = 10px
+				css.text-align = center
+				css.width = 32%
+				css.margin-top = 15px
+				clicknew = http://www.forsythcreative.com/
+				
+				
+				[wirefly]
+				css.height = 50px
+				image.url = img/wirefly-build.png
+				image.width = 150px
+				image.height = 49px
+				image.align = center
+				clicknew = http://www.wireflydesign.com
+				css.width = 25%
+				
+			
+	[footer-logo]		
+	css.margin-top = 10px
+	css.margin-left = -200px
+	css.width = 180px
+	image.url = img/logo.png
+	image.width = 150px
+	image.height = 150px
+	image.align = center
+	image.z-index = 100
+	css.overflow = visible
     
 
     
