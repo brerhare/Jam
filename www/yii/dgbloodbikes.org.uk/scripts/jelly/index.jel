@@ -19,7 +19,7 @@ css.display = block
 
 	[header]
 	child = menu, donate, social-fb, social-email
-	css.height = 100px
+	css.height = 70px
 	css.max-width = 970px
 	css.min-width = 500px
 	stacking = horizontal
@@ -51,11 +51,19 @@ addon.menu.traditional.item-separator-width = 8px
 		addon.menu.traditional.menu-selected-text-color = lightgrey
 
 
-		addon.menu.traditional.submenu-color = black
-	
-		addon.menu.traditional.subitem-color = black
-		addon.menu.traditional.subitem-text-color = white
-		addon.menu.traditional.subitem-seperator-color = white
+		addon.menu.traditional.submenu-height = 25px
+			#addon.menu.traditional.submenu-width = 
+		addon.menu.traditional.submenu-font-size = 16px
+			#addon.menu.traditional.submenu-font-family = 
+			#addon.menu.traditional.submenu-font-weight = 
+			#addon.menu.traditional.submenu-text-color = 
+		addon.menu.traditional.submenu-background-color = black
+			#addon.menu.traditional.submenu-background-tile = 
+			#addon.menu.traditional.submenu-background-stretch = /img/submenu.png
+		addon.menu.traditional.submenu-separator-width = 1px
+		addon.menu.traditional.submenu-separator-color = white
+			#addon.menu.traditional.submenu-separator-tile = 
+			#addon.menu.traditional.submenu-separator-stretch = 
 		
 		[donate]
 		css.height = 50px
@@ -145,7 +153,7 @@ addon.menu.traditional.item-separator-width = 8px
 
 	
 		[logo]
-		css.margin-left = 100px
+		css.margin-left = 15%
 		css.margin-top = -20%
 		css.max-width = 17%
 		#css.min-width = 200px
@@ -264,7 +272,7 @@ child = footer-detail, footer-logo
 		
 		[footer-detail]
 		child = footer-menu, footer-credits
-		css.height = 300px
+		css.height = 340px
 		css.width = 75%
 		css.min-width = 300px
 		css.margin-left = 15%
@@ -301,12 +309,12 @@ child = footer-detail, footer-logo
 			[footer-credits]
 			child = copyright, design, wirefly
 			css.width = 100%
-			css.height = 50px
+			css.height = 100px
 			#css.margin-top = 5px
 			stacking = horizontal
 			
 				[copyright]
-				html.raw = <span style="color: white">&copy Dumfries & Galloway Blood Bikes 2015 <br>All rights reserved</span>
+				html.raw = <span style="color: white">Scottish Charitable Incorporated Organisation ( SCIO ) SC045453<br>&copy Dumfries & Galloway Blood Bikes 2015 <br>All rights reserved</span>
 				css.color = #000000
 				css.font-size = 10px
 				css.text-align = left
