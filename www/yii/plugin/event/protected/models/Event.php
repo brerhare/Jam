@@ -143,11 +143,14 @@ class Event extends CActiveRecord
 		$criteria->compare('event_price_band_id',$this->event_price_band_id);
 
 //@@ EG: Ordering model records on the admin crud
-        $criteria->order = "title ASC";
+        //$criteria->order = "id DESC";
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
-
+			// @@EG: Set default sort orderr
+			'sort'=>array(
+				'defaultOrder'=>'id DESC',
+			),
             // @@EG: Change cgridview pagination
             'pagination' => array(
                 'pageSize' => 50,

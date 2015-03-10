@@ -122,18 +122,20 @@ Yii::log(".................... parent is sending us to product page.............
 
 		// We've just back-paged from the product page
 		if (Yii::app()->session['productdetail'] == "1")
-		if (!(isset($_GET['checkoutButton'])))	// This is only set in the initial checkout-iframe call, ie when the checkout button is clicked
 		{
-			Yii::app()->session['productdetail'] = "0";
-			$target = Yii::app()->session['http_referer'] . "/?page=" . Yii::app()->session['page'] . "&department=" . Yii::app()->session['department'];
+			if (!(isset($_GET['checkoutButton'])))	// This is only set in the initial checkout-iframe call, ie when the checkout button is clicked
+			{
+				Yii::app()->session['productdetail'] = "0";
+				$target = Yii::app()->session['http_referer'] . "/?page=" . Yii::app()->session['page'] . "&department=" . Yii::app()->session['department'];
 Yii::log(".................... we've just back-paged from product page. redirecting parent to [$target].................. " , CLogger::LEVEL_WARNING, 'system.test.kim');
-               echo
-                   "<html><script>
-                   // @@NB START POSTMESSAGE
-                        parent.postMessage('redirect^" . $target . "', '*');
-                    // @@NB END POSTMESSAGE
-                    </script></html>";
-			return;
+               	echo
+                   	"<html><script>
+                   	// @@NB START POSTMESSAGE
+                        	parent.postMessage('redirect^" . $target . "', '*');
+                    	// @@NB END POSTMESSAGE
+                    	</script></html>";
+				return;
+			}
 		}
 
 
@@ -142,6 +144,14 @@ if (isset($_GET['page']))
  $pageParam = $_GET['page'];
 Yii::log(".................... still here.................. page is " . $pageParam , CLogger::LEVEL_WARNING, 'system.test.kim');
 	
+		// Are we going to the 'shop' page?
+		if ((isset($_GET['shop'])) && (!(isset($_GET['product']))))
+		{
+//print_r($_GET);
+//die('xx');
+			$this->actionShop($pageParam);
+			return;
+		}
 
 		// Otherwise by default the initial call goes to here
 		$layout = "index";
@@ -170,6 +180,13 @@ header($this->p3p);
 		$jelly = new Jelly;
 		$jelly->processData($jellyArray,$this->getJellyRoot());
 		$jelly->outputData();
+	}
+
+	public function actionShop($page)
+	{
+header($this->p3p);
+		$this->renderPartial('shop',array(
+		));
 	}
 
 	// Invoke the payment module: Paymentsense or Paypal
