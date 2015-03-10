@@ -316,7 +316,7 @@ $content .= "<style> * { color: grey;} </style>";
 		$content .= "<th align='right' width=7%>Each</th>";	// Price
 		$content .= "<th align='right' width=5%>Qty</th>";	// Qty
 		$content .= "<th align='right' width=10%>Total</th>";	// Total
-		$content .= "<th align='rght' width=8%></th>";	// Total
+		$content .= "<th align='right' width=8%></th>";	// Total
 		$content .= "</tr></thead>";
 
 		// Generate the product lines
@@ -335,7 +335,8 @@ $content .= "<style> * { color: grey;} </style>";
 			$product = Product::model()->find($criteria);	
 			if ($product)
 			{
-				$content .= "<tr><tbody>";
+				$content .= "<tbody>";
+				$content .= "<tr>";
 				// Image
 				$content .= "<td>";
 				$content .= '<br>&nbsp';
@@ -376,7 +377,8 @@ $content .= "<style> * { color: grey;} </style>";
 				$content .= "<td align='right'>";
 				$content .= "<a href='#' onClick=\"deleteItem('" . $product->id . "','" . $option->id . "','" . "')\"	>" . "<img src=/product/img/delete-cross.png height=25px width=25px></a>";
 				$content .= "</td>";
-				$content .= "</tbody></tr>";
+				$content .= "</tr>";
+				$content .= "</tbody>";
 			}
 		}
 		$content .= "</table>";
@@ -385,20 +387,19 @@ $content .= "<style> * { color: grey;} </style>";
 		$content .= "<table style='width:80%; float:left'>";
 		$content .= "<thead><tr>";
 		$content .= "<th align='left' width=10%></th>";
-		$content .= "<th align='left' width=25%></th>";	// Buttons
-		$content .= "<th align='left' width=25%></th>";
-		$content .= "<th align='left' width=19%></th>";	// Delivery dropdown
-		$content .= "<th align='right' width=10%></th>";	// Total
-		$content .= "<th align='right' width=11%></th>";
+		$content .= "<th align='left' width=35%></th>";	// Buttons
+		$content .= "<th align='right' width=25%></th>";
+		$content .= "<th align='right' width=22%></th>";	// Total
+		$content .= "<th align='right' width=8%></th>";	// Total
 		$content .= "</tr></thead>";
 
+		$content .= "<tbody>";
 		$content .= "<tr><td>&nbsp</td></tr>";
-
-		$content .= "<tr><tbody>";
+		$content .= "<tr>";
 		$content .= "<td></td>";
 		$content .= "<td></td>";
-		$content .= "<td>Delivery method</td>";
-		$content .= "<td>";
+		$content .= "<td align='left'><b>Delivery method</b></td>";
+		$content .= "<td align='right'>";
 
 				$content .= "<script> var shipId = 0; var totalShipping = 0; var totalGoods = " . $totalGoods . ";</script>";
 				$content .= "<select id='choose_shipping_option' onChange=updateTotal()>";
@@ -423,25 +424,27 @@ $content .= "<style> * { color: grey;} </style>";
 				$content .= "</select>";
 
 				$content .= "</td>";
-				$content .= "<td></td>";
-				$content .= "<td></td>";
+				$content .= "<td><br><br></td>";
 				$content .= "</tr>";
 
 				$content .= "<tr>";
-				$content .= "<td><br/><br/><br/></td>";
 				$content .= "<td></td>";
-				$content .= "<td align='right'><b>Total to pay</b></td>";
-				$content .= "<td id='showTotal' style='font-weight:bold'>£ " . number_format(($totalGoods + $totalShipping), 2, '.','') . "</td>";
 				$content .= "<td></td>";
+				$content .= "<td align='left'><b>Total to pay</b></td>";
+				$content .= "<td align='right' id='showTotal' style='font-weight:bold'>£ " . number_format(($totalGoods + $totalShipping), 2, '.','') . "</td>";
 				$content .= "<td></td>";
 				$content .= "</tr>";
+				$content .= "</tbody>";
 
 				$content .= "</table>";
 
 				$content .= "</div>";
+
 				$content .= "<div style='clear:both'></div>";
 
-$content .= "<style>input {margin-bottom:3px; height:16px;}</style>";
+				$content .= "<br><br>";
+
+				$content .= "<style>input {margin-bottom:3px; height:16px;}</style>";
 
 				// Customer contact details
 				$content .= "<table style='width:80%; float:left'>";
@@ -451,6 +454,7 @@ $content .= "<style>input {margin-bottom:3px; height:16px;}</style>";
 				$content .= "<th align='left' width=50%></th>";
 				$content .= "</tr></thead>";
 				$content .= "<tbody><tr><td valign='top'>";
+				$content .= "<span>Name </span><input id='shipping_name' name='shipping_name' type='text' value='' size='30'/> <br /><br/>";
 				$content .= "Shipping address<br />";
 				$content .= "<input id='address1' name='address1' type='text' value='' size='40'/> <br />";
 				$content .= "<input id='address2' name='address2' type='text' value='' size='40'/> <br />";		
@@ -468,6 +472,7 @@ $content .= "<style>input {margin-bottom:3px; height:16px;}</style>";
 				$content .= "</td><td>&nbsp</td><td valign='top'>";
 				$content .= "Notes<br>";
 				$content .= "<textarea id='message' name='message' rows='7' cols='38'> </textarea> <br><br><br/>";
+				$content .= "<span>Got a promotion code? </span><input id='promo_code' name='promo_code' type='text' value='' size='15'/> <br /><br/>";
 				$content .= "<a href='#' onClick=\"proceed(0)\"	>" . "<img src=/product/img/proceed_to_checkout.png></a>";
 				if ((isset(Yii::app()->session['checkoutPaypalEmail'])) && (trim(Yii::app()->session['checkoutPaypalEmail']) != ""))
 					$content .= "<br><br><a href='#' onClick=\"proceed(1)\"	>" . "<img src=/product/img/paypal-checkout.png></a>";
@@ -507,6 +512,11 @@ $content .= "<style>input {margin-bottom:3px; height:16px;}</style>";
 
 					function proceed(ptype) /* 0=payment gateway, 1=paypal */
 					{
+						if (document.getElementById("shipping_name").value == "")
+						{
+							alert('Name cant be empty');
+							return(false);
+						}
 						if (document.getElementById("address1").value == "")
 						{
 							alert('Address line 1 and 2 cant be empty');
@@ -542,6 +552,8 @@ $content .= "<style>input {margin-bottom:3px; height:16px;}</style>";
 						}
 						var e = document.getElementById("choose_shipping_option");
 						shipId = e.options[e.selectedIndex].value;
+						prm = document.getElementById("promo_code").value;
+						sn = document.getElementById("shipping_name").value;
 						a1 = document.getElementById("address1").value;
 						a2 = document.getElementById("address2").value;
 						a3 = document.getElementById("address3").value;
@@ -550,7 +562,7 @@ $content .= "<style>input {margin-bottom:3px; height:16px;}</style>";
 						n = encodeURIComponent(document.getElementById("message").value);
 						e = document.getElementById("email1").value;
 						t = document.getElementById("telephone").value;
-						window.location.href = '/product/index.php/site/pay?cartid='+cartId+'&shipid='+shipId+'&a1='+a1+'&a2='+a2+'&a3='+a3+'&a4='+a4+'&e='+e+'&pc='+pc+'&n='+n+'&t='+t+'&ptype='+ptype;
+						window.location.href = '/product/index.php/site/pay?cartid='+cartId+'&shipid='+shipId+'&sn='+sn+'&a1='+a1+'&a2='+a2+'&a3='+a3+'&a4='+a4+'&e='+e+'&pc='+pc+'&n='+n+'&t='+t+'&prm='+prm+'&ptype='+ptype;
 			}
 END_OF_API_JS_checkout;
 

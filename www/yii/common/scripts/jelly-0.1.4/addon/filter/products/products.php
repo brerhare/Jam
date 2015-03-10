@@ -239,7 +239,6 @@ class products
                 array_push($this->featureSel, '*');
 
             foreach ($departments as $department):
-
 				if (!($this->hasFilterOrFeature()))
 					array_push($this->departmentSel, $department->id);
 
@@ -268,12 +267,10 @@ class products
             endforeach;
         }
         $content .= "</div>";
-
 		if ($this->mode == 'preset')
 			$content .= "<div>";
 		if (!($this->hasFilterOrFeature()))
 			$content .= "</div>";
-
         return $content;
     }
 
@@ -301,9 +298,14 @@ class products
             foreach ($products as $product)
             {
 
-				// KKK
+				// KKK - department filtering
+				// This is checked so filters the user sets while browsing the product page are obeyed
 				if ((isset(Yii::app()->session['department'])) && ($product->product_department_id != Yii::app()->session['department']))
-					continue;
+				{
+					// This is checked so {{curly}} department filters are obeyed
+					if ((!(isset($_GET['setfilter']))) || ($_GET['setfilter'] != 'true'))
+						continue;
+				}
 
 //echo 'dept ' . $this->departmentSel[$i] . ' product ' . $product->id . '<br>';
                 // Each selected feature for this particular department (to match against this particular product)
@@ -691,6 +693,7 @@ END_OF_API_HTML;
 			sel += "&showurl=true";
 
         // Activate the link
+		sel += "&setfilter=true";
         window.location.href = sel;
     }
 

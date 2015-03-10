@@ -23,6 +23,7 @@
  * @property string $gu
  * @property string $gp
  * @property string $email_address
+ * @property string $name
  * @property string $delivery_address1
  * @property string $delivery_address2
  * @property string $delivery_address3
@@ -45,6 +46,7 @@
  * @property string $card_country_short
  * @property string $card_currency_short
  * @property string $card_amount
+ * @property string $promo_code
  */
 class Order extends CActiveRecord
 {
@@ -76,12 +78,12 @@ class Order extends CActiveRecord
 		return array(
 			array('uid, ip', 'required'),
 			array('uid', 'numerical', 'integerOnly'=>true),
-			array('ip, sid, order_number, vendor_gateway_id, vendor_gateway_password, return_url, gu, gp, email_address, delivery_address1, delivery_address2, delivery_address3, delivery_address4, delivery_post_code, telephone, card_name, card_number, card_cv2, card_address1, card_address2, card_address3, card_address4, card_city, card_state', 'length', 'max'=>255),
+			array('ip, sid, order_number, vendor_gateway_id, vendor_gateway_password, return_url, gu, gp, email_address, promo_code, name, delivery_address1, delivery_address2, delivery_address3, delivery_address4, delivery_post_code, telephone, card_name, card_number, card_cv2, card_address1, card_address2, card_address3, card_address4, card_city, card_state', 'length', 'max'=>255),
 			array('http_product_id, http_option_id, http_qty, http_price, http_line_total, http_shipping_id, http_total, auth_code, card_expiry_month, card_expiry_year, card_post_code, card_country_short, card_currency_short, card_amount', 'length', 'max'=>45),
 			array('notes', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, ip, sid, order_number, vendor_gateway_id, vendor_gateway_password, http_product_id, http_option_id, http_qty, http_price, http_line_total, http_shipping_id, http_total, auth_code, return_url, gu, gp, email_address, delivery_address1, delivery_address2, delivery_address3, delivery_address4, delivery_post_code, notes, telephone, card_name, card_number, card_expiry_month, card_expiry_year, card_cv2, card_address1, card_address2, card_address3, card_address4, card_city, card_state, card_post_code, card_country_short, card_currency_short, card_amount', 'safe', 'on'=>'search'),
+			array('id, uid, ip, sid, order_number, vendor_gateway_id, vendor_gateway_password, http_product_id, http_option_id, http_qty, http_price, http_line_total, http_shipping_id, http_total, auth_code, return_url, gu, gp, email_address, promo_code, name, delivery_address1, delivery_address2, delivery_address3, delivery_address4, delivery_post_code, notes, telephone, card_name, card_number, card_expiry_month, card_expiry_year, card_cv2, card_address1, card_address2, card_address3, card_address4, card_city, card_state, card_post_code, card_country_short, card_currency_short, card_amount', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -121,6 +123,8 @@ class Order extends CActiveRecord
 			'gu' => 'Gu',
 			'gp' => 'Gp',
 			'email_address' => 'Email Address',
+			'promo_code' => 'Promotion Code',
+			'name' => 'Name',
 			'delivery_address1' => 'Delivery Address1',
 			'delivery_address2' => 'Delivery Address2',
 			'delivery_address3' => 'Delivery Address3',
@@ -177,6 +181,8 @@ class Order extends CActiveRecord
 		$criteria->compare('gu',$this->gu,true);
 		$criteria->compare('gp',$this->gp,true);
 		$criteria->compare('email_address',$this->email_address,true);
+		$criteria->compare('promo_code',$this->promo_code,true);
+		$criteria->compare('name',$this->name,true);
 		$criteria->compare('delivery_address1',$this->delivery_address1,true);
 		$criteria->compare('delivery_address2',$this->delivery_address2,true);
 		$criteria->compare('delivery_address3',$this->delivery_address3,true);
