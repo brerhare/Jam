@@ -13,72 +13,80 @@ css.display = block
 
 	[site]
 	child = header, slider-area, pages, footer
-	css.width = 1200px
+	css.max-width = 1200px
+	css.min-width = 800px
 
 ####  Header  #################################
 
 	[header]
-	child = header-graphics, menu
+	child = logo, menu-block
 	css.height = 250px
 	css.margin-top = 20px
+		css.max-width = 1200px
+		css.min-width = 800px
 	
-		[header-graphics]
-		child = logo, logo-name
+		[logo]
+		#css.height = 120px
+		#css.max-width = 1200px
+		#css.min-width = 800px
+		#image.url = img/logo.png
+		#image.width = 1000px
+		#image.height = 113px
+		
+		css.width = 100%
+		css.background-size = 100%
+		css.background-image = url('/img/logo.png')
+		css.padding-top = 11.3%
+		css.background-repeat = no-repeat
+		#divide the height by the width for the proportional padding height
+		
+		click = http://www.breakfreecoaching.co.uk
+			
+		
+		[menu-block]
+		child = menu-margin, menu
 		stacking = horizontal
-		css.margin-left = 60px
-	
-			[logo]
-			css.height = 250px
-			css.width = 710px
-			image.url = img/logo.png
-			image.width = 700px
-			image.height = 227px
-			click = http://www.breakfreecoaching.co.uk
-			
-			[logo-name]
-			css.height = 250px
-			css.width = 310px
-			css.margin-top = 43px
-			image.url = img/logo-name.png
-			image.width = 301px
-			image.height = 32px
-			click = ?layout=index&page=biography
-			
-
-		[menu]
-		css.height = 50px
-		css.width = 600px
-		css.margin-top = -175px
-		css.margin-left = 350px
-			#css.background-color = pink
-		css.overflow = visible
 		css.z-index = 100
-		#css.position = absolute
-		css.position = relative
+		css.margin-top = -25px
+		
+				[menu-margin]
+				css.max-width = 180px
+				css.min-width = 10%
+				css.height = 25px
+		
+		
+				[menu]
+				css.height = 50px
+				css.width = 725px
+				css.margin-left = 12%
+				css.overflow = visible
+				css.z-index = 100
+				#css.position = absolute
+				css.position = relative
 
-		addon.menu.basic.height = 30px
+				addon.menu.basic.height = 30px
 
-####### Top level background settings (first colour is the top gradiation) ####
-		addon.menu.basic.menu-color = white
-		addon.menu.basic.item-separator-color = #ffffff
-		addon.menu.basic.item-separator-width = 0px
+		####### Top level background settings (first colour is the top gradiation) ####
+				addon.menu.basic.menu-color = white
+				addon.menu.basic.item-separator-color = #ffffff
+				addon.menu.basic.item-separator-width = 0px
 
-####### Top level font settings ####
-		addon.menu.basic.font-size = 28px
-		addon.menu.basic.menu-text-color = #b23640
-		addon.menu.basic.menu-text-weight = bold
+		####### Top level font settings ####
+				addon.menu.basic.font-size = 24px
+				addon.menu.basic.menu-text-color = #8d3559
+				addon.menu.basic.menu-text-weight = bold
 
-####### Top level hover settings ####
-		addon.menu.basic.item-color = white
-		addon.menu.basic.item-text-color = black
+		####### Top level hover settings ####
+				addon.menu.basic.item-color = white
+				addon.menu.basic.item-text-color = black
 
-####### Second level background settings ####
-		addon.menu.basic.submenu-color = white
-		addon.menu.basic.subitem-separator-color = #b23640
+		####### Second level background settings ####
+				addon.menu.basic.submenu-color = white
+				addon.menu.basic.subitem-separator-color = #8d3559
 
-####### Second level hover settings ####
-		addon.menu.basic.subitem-color = #f6f6f6
-		addon.menu.basic.subitem-text-color = #b23640
+		####### Second level hover settings ####
+				addon.menu.basic.subitem-color = #f6f6f6
+				addon.menu.basic.subitem-text-color = #8d3559
 
 
 #### Slider ###########################################
@@ -124,11 +132,11 @@ css.display = block
 	html.raw = ContentBlock.content
 	
 	[contact]
-	child = contact-form, contact-text
+	child = contact-form
 	condition = @PAGE=contact
 	css.height = 300px
-	css.font-size = 18px
-	stacking = horizontal
+	css.margin-top = 50px
+	#stacking = horizontal
 		
 		[contact-form]
 		css.width = 450px
@@ -145,81 +153,107 @@ css.display = block
 		addon.contact.contactform.backcolor = pink
 		addon.contact.contactform.inputspacing = 10px
 
-		[contact-text]
-		css.width = 300px
-		css.margin-top = 80px
-		css.height = 100px
-		html.raw = Please fill in the form and I will get back to you as soon as possible.
+		
 
 
 ####footer####################################
 
 [footer]
-child = footer-graphic, footer-content
-css.margin-top = -10px
-css.margin-left = 157px
+child = social, footer-menu, copyright, wirefly
 css.height = 200px
-css.width = 960px
-css.color = #b23640
+css.margin-top = 80px
+css.width = 800px
+css.color = #8d3559
 css.font-weight = bold
 css.font-size = 14px
 
-	[footer-graphic]
-	css.width = 960px
-	css.height = 151px
-	image.url = img/footer.png
-	image.width = 960px
-	image.height = 151px
-	css.z-index = 10
-	css.position = relative
-	
-	
-	[footer-content]
-	child = footer-menu, footnote
-	css.width = 960px
+	[social]
+	child = social-left, fb-icon, twitter-icon, linkedin-icon, social-right
+	css.height = 50px
+	css.margin-top = 10px
 	stacking = horizontal
-	css.margin-top = -70px
-	css.z-index = 20
-	css.position = relative
-
-		[footer-menu]
-		child = footer-contact, footer-cookies, footer-tandc
-		css.height = 100px
-		css.width = 550px
-		css.margin-left = 100px
-		css.margin-top = 10px
+	
+		[social-left]
+		css,height = 50px
+		css.width = 40%
+		image.url = img/grey-line.jpg
+		image.width = 90%
+		image.height = 40px
+		image.align = center
 		
-			[footer-contact]
-#			html.raw = <a style="text-decoration:underline">Contact Me
-#			click = ?layout=index&page=contact
-			html.raw = <a style="text-decoration:none" href="?layout=index&page=contact">Contact Me</span>
-
-			[footer-cookies]
-			html.raw = <a style="text-decoration:none" href="?layout=index&page=cookie-policy">Cookie Policy</span>
-			css.margin-top = 10px
-#			click = ?layout=index&page=cookie-policy
-
-			[footer-tandc]
-			html.raw = <a style="text-decoration:none" href="?layout=index&page=terms-conditions">Terms & Conditions</span>
-			css.margin-top = 10px
-#			click = ?layout=index&page=terms-conditions
-
-		[footnote]
-		child = wirefly, copyright
-		css.width = 200px
-		css.height = 100px
+		[fb-icon]
+		css,height = 50px
+		css.width = 50px
+		image.url = img/grey-fb.png
+		image.width = 40px
+		image.height = 40px
+		image.align = center
+		clicknew = https://www.facebook.com/breakfreecoaching
 		
-			[wirefly]
-			css.height = 45px
-			image.url = img/wirefly-weblink.png
-			image.width = 150px
-			image.height = 40px
-			image.align = left
-			clicknew = http://www.wireflydesign.com
+		[twitter-icon]
+		css,height = 50px
+		css.width = 50px
+		image.url = img/grey-twit.png
+		image.width = 40px
+		image.height = 40px
+		image.align = center
+		clicknew = https://twitter.com/Breakfree_coach
+		
+		[linkedin-icon]
+		css,height = 50px
+		css.width = 50px
+		image.url = img/grey-in.png
+		image.width = 40px
+		image.height = 40px
+		image.align = center
+		clicknew = https://www.linkedin.com/in/jacqulinebrown
+		
+		[social-right]
+		css,height = 50px
+		css.width = 40%
+		image.url = img/grey-line.jpg
+		image.width = 90%
+		image.height = 40px
+		image.align = center
 
+	[footer-menu]
+	child = footer-contact, footer-cookies, footer-tandc
+	condition = @PAGE!=@HOMEPAGE
+	css.height = 40px
+	css.width = 600px
+	css.margin-top = 10px
+	stacking = horizontal
+	
+		[footer-contact]
+		css.text-align = left
+		css.width = 33%
+		html.raw = <a style="text-decoration:none" href="?layout=index&page=contact">Contact</span>
 
-			[copyright]
-			html.raw = Breakfree Coaching &copy 2014 <br>All rights reserved
-			css.color = #000000
-			css.font-size = 12px
-			css.text-align = left
+		[footer-cookies]
+		css.text-align = center
+		css.width = 33%
+		html.raw = <a style="text-decoration:none" href="?layout=index&page=cookie-policy">Cookie Policy</span>
+
+		[footer-tandc]
+		css.text-align = right
+		css.width = 33%
+		html.raw = <a style="text-decoration:none" href="?layout=index&page=terms-conditions">Terms & Conditions</span>
+
+	
+	[copyright]
+	html.raw = Breakfree Coaching &copy 2015 - All rights reserved
+	condition = @PAGE!=@HOMEPAGE
+	css.color = #000000
+	css.font-size = 12px
+	css.text-align = center
+	css.margin-top = 20px
+	
+	[wirefly]
+	css.height = 45px
+	condition = @PAGE!=@HOMEPAGE
+	image.url = img/wirefly-weblink.png
+	image.width = 150px
+	image.height = 40px
+	image.align = center
+	clicknew = http://www.wireflydesign.com
+
