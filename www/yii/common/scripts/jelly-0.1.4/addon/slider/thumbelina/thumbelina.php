@@ -39,10 +39,10 @@ class thumbelina
 					$this->defaultOrientation = $val;
 					break;
 				case "width":
-					$this->defaultWidth = $val . "px";
+					$this->defaultWidth = $val;
 					break;
 				case "height":
-					$this->defaultHeight = $val . "px";
+					$this->defaultHeight = $val;
 					break;
 				default:
 					// Not all array items are action items
@@ -59,7 +59,11 @@ class thumbelina
 		// HTML
 		$this->apiHtml = str_replace("<substitute-orientation>", $this->defaultOrientation, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-height>", $this->defaultHeight, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-control-height>", ($this->defaultHeight - 40 - 40), $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-image-height>", ($this->defaultHeight - 40), $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-width>", $this->defaultWidth, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-data>", $content, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-path>", $jellyRootUrl, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-data>", $content, $this->apiHtml);
 
 		if ($this->defaultOrientation == "horizontal")
@@ -77,19 +81,15 @@ class thumbelina
 
 		// JS
 		$this->apiJs = str_replace("<substitute-orientation>", $this->defaultOrientation, $this->apiJs);
+		$this->apiJs = str_replace("<substitute-path>", $jellyRootUrl, $this->apiJs);
 
 
 		// Apply all defaults that werent overridden
 		// HTML
-		if (strstr($this->apiHtml, "<substitute-width>"))
-			$this->apiHtml = str_replace("<substitute-width>", "width:" . $this->defaultWidth . ";", $this->apiHtml);
-		if (strstr($this->apiHtml, "<substitute-height>"))
-			$this->apiHtml = str_replace("<substitute-height>", "height:" . $this->defaultHeight . ";", $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-path>", $jellyRootUrl, $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-data>", $content, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-width>", "", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-height>", "", $this->apiHtml);
 
 		// JS
-		$this->apiJs = str_replace("<substitute-path>", $jellyRootUrl, $this->apiJs);
 
 		$retArr = array();
 		$retArr[0] = $this->apiHtml;
@@ -111,7 +111,7 @@ class thumbelina
                 position:relative;
                 margin-top:40px;
                 width:93px;
-                height:256px;
+                height:<substitute-control-height>px;
                 border-left:1px solid #aaa;
                 border-right:1px solid #aaa;
                 margin-bottom:40px;
@@ -148,7 +148,7 @@ class thumbelina
             }
             </style>
 
-            <div id="thumbelinaSliderFrame" style="height:auto; overflow:hidden">
+            <div id="thumbelinaSliderFrame" style="height:<substitute-height>; overflow:hidden">
                 <div  id="thumbelinaSliderControl" style="float:left">
                     <div class="thumbelina-but <substitute-A>">&#708;</div>
                         <ul>
@@ -158,10 +158,10 @@ class thumbelina
                 </div>
 
 				<!-- jquery-zoom -->
-                <div id="zoom-block" style="float:left">
+                <div id="zoom-block" style="float:left; height:<substitute-image-height>; padding:20px">
                     <span class='zoom' id='zoom-container'>
                         <p>Hover</p>
-                        <img src="/userdata/jelly/sliderimage/poppy bowl.jpg" height='200' id='zoom-block-image'/>
+                        <img src="/userdata/jelly/sliderimage/poppy bowl.jpg" height='<substitute-image-height>' id='zoom-block-image'/>
                     </span>
                 </div>
 

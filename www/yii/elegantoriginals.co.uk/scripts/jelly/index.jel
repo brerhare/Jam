@@ -90,9 +90,11 @@ css.margin-left = 15px
 	condition = @HOMEPAGE=1
 	css.margin-top = 20px
 	css.width = 750px
-	css.height = 400px
+	css.height = 520px
 
 	addon.slider.thumbelina.orientation = vertical
+	addon.slider.thumbelina.height = 500px
+	addon.slider.thumbelina.width = 200px
 
 
 	#addon.slider.thumbnail.width = 500px
