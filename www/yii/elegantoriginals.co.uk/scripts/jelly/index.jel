@@ -92,13 +92,13 @@ css.margin-left = 15px
 	css.width = 750px
 	css.height = 520px
 
-	addon.slider.thumbelina.orientation = vertical
-	addon.slider.thumbelina.height = 400px
-	# note no width
-	addon.slider.thumbelina.end-color = #fe8
+	addon.slider.cool.height = 500px
+	addon.slider.cool.width = 600px
 
-	#addon.slider.thumbnail.width = 500px
-	#addon.slider.thumbnail.height = 375px	
+#	addon.slider.thumbelina.orientation = vertical
+#	addon.slider.thumbelina.height = 400px
+#	# note no width
+#	addon.slider.thumbelina.end-color = #fe8
 
 	#css.background-color = #f7d9ff
 	#addon.slider.flexslider.width = 500px
@@ -204,3 +204,4 @@ css.width = 960px
 	image.height = 40px
 	image.align = right
 	clicknew = http://www.wireflydesign.com
+
