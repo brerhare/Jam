@@ -91,9 +91,13 @@ css.margin-left = 15px
 	css.margin-top = 20px
 	css.width = 750px
 	css.height = 400px
-	addon.slider.thumbnail.width = 500px
-	addon.slider.thumbnail.height = 375px	
-	
+
+	addon.slider.thumbelina.orientation = vertical
+
+
+	#addon.slider.thumbnail.width = 500px
+	#addon.slider.thumbnail.height = 375px	
+
 	#css.background-color = #f7d9ff
 	#addon.slider.flexslider.width = 500px
 	#addon.slider.flexslider.height = 375px
