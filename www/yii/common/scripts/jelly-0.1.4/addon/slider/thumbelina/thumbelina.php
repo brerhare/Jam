@@ -12,7 +12,7 @@ class thumbelina
 {
 	//Defaults
 	private $defaultOrientation = "horizontal";		// 'vertical' or 'horizontal'
-	private $defaultWidth = "auto";
+//	private $defaultWidth = "auto";
 	private $defaultHeight = "auto";
 
 	/*
@@ -38,9 +38,9 @@ class thumbelina
 				case "orientation":
 					$this->defaultOrientation = $val;
 					break;
-				case "width":
-					$this->defaultWidth = $val;
-					break;
+//				case "width":
+//					$this->defaultWidth = $val;
+//					break;
 				case "height":
 					$this->defaultHeight = $val;
 					break;
@@ -61,7 +61,7 @@ class thumbelina
 		$this->apiHtml = str_replace("<substitute-height>", $this->defaultHeight, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-control-height>", ($this->defaultHeight - 40 - 40), $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-image-height>", ($this->defaultHeight - 40), $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-width>", $this->defaultWidth, $this->apiHtml);
+//		$this->apiHtml = str_replace("<substitute-width>", $this->defaultWidth, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-data>", $content, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-path>", $jellyRootUrl, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-data>", $content, $this->apiHtml);
@@ -86,7 +86,7 @@ class thumbelina
 
 		// Apply all defaults that werent overridden
 		// HTML
-		$this->apiHtml = str_replace("<substitute-width>", "", $this->apiHtml);
+//		$this->apiHtml = str_replace("<substitute-width>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-height>", "", $this->apiHtml);
 
 		// JS

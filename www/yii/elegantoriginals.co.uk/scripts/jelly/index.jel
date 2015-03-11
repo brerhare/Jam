@@ -94,8 +94,7 @@ css.margin-left = 15px
 
 	addon.slider.thumbelina.orientation = vertical
 	addon.slider.thumbelina.height = 500px
-	addon.slider.thumbelina.width = 200px
-
+	# note no width
 
 	#addon.slider.thumbnail.width = 500px
 	#addon.slider.thumbnail.height = 375px	
