@@ -89,18 +89,16 @@ class cool
             <script src="<substitute-path>/jquery.carouFredSel.js"></script>
             <script src="<substitute-path>/cool.js"></script>
 
-            <div id="wrapper">
-	            <div id="Xinner">
-		            <div id="carousel-wrapper">
-			            <div id="carousel">
-                            <substitute-images>
-                        </div>
+            <div id="cool-wrapper">
+	            <div id="carousel-wrapper">
+		            <div id="carousel">
+                        <substitute-images>
                     </div>
-		            <div id="pager-wrapper">
-			            <div id="pager">
-                            <substitute-thumbs>
-            			</div>
-		            </div>
+                </div>
+	            <div id="pager-wrapper">
+		            <div id="pager">
+                        <substitute-thumbs>
+           			</div>
 	            </div>
             </div>
 

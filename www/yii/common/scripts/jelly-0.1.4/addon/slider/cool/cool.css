@@ -1,15 +1,4 @@
-Xbody {
-	background: #fff;
-	min-height: 600px;
-}
-Xbody * {
-	font-family: Arial, Geneva, SunSans-Regular, sans-serif;
-	font-size: 14px;
-	color: #333;
-	line-height: 22px;
-}
- 
-#wrapper {
+#cool-wrapper {
 	background: #f0ffff;
 	border-bottom: 1px solid #ccc;
 	height: 70%;
@@ -17,14 +6,6 @@ Xbody * {
 	position: absolute;
 	top: 0;
 	left: 0;
-}
-#inner {
-	width: 60%;
-	min-width: 300px;
-	max-width: 800px;
-	position: absolute;
-	bottom: -50px;
-	left: 20%;
 }
 #carousel-wrapper {
 	-webkit-box-sizing: border-box;
