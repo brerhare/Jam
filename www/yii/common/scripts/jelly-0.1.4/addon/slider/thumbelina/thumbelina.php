@@ -12,6 +12,7 @@ class thumbelina
 {
 	//Defaults
 	private $defaultOrientation = "horizontal";		// 'vertical' or 'horizontal'
+//	private $defaultThumbs = "left";				// 'left' or 'right'
 //	private $defaultWidth = "auto";
 	private $defaultHeight = "auto";
 
@@ -44,6 +45,9 @@ class thumbelina
 				case "height":
 					$this->defaultHeight = $val;
 					break;
+//				case "thumbs":
+//					$this->defaultThumbs = $val;
+//					break;
 				default:
 					// Not all array items are action items
 			}
@@ -65,6 +69,16 @@ class thumbelina
 		$this->apiHtml = str_replace("<substitute-data>", $content, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-path>", $jellyRootUrl, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-data>", $content, $this->apiHtml);
+//		if ($this->defaultThumbs == 'left')
+//		{
+//			$this->apiHtml = str_replace("<substitute-hide-left>", "", $this->apiHtml);
+//			$this->apiHtml = str_replace("<substitute-hide-right>", " display:none; ", $this->apiHtml);
+//		}
+//		if ($this->defaultThumbs == 'right')
+//		{
+//			$this->apiHtml = str_replace("<substitute-hide-right>", "", $this->apiHtml);
+//			$this->apiHtml = str_replace("<substitute-hide-left>", " display:none; ", $this->apiHtml);
+//		}
 
 		if ($this->defaultOrientation == "horizontal")
 		{
@@ -120,6 +134,17 @@ class thumbelina
                 width:80px;
                 Xheight:80px;
             }
+			.thumbelina-but {
+				border: 1px solid #444;
+				color: #444;
+				background-color: #fc0;
+			}
+            .thumbelina-but.disabled, .thumbelina-but.disabled:hover {
+                background-color: #fe8;
+                color: #444;
+                cursor: default;
+                box-shadow: none;
+            }
             </style>
 
             <style>
@@ -149,14 +174,6 @@ class thumbelina
             </style>
 
             <div id="thumbelinaSliderFrame" style="height:<substitute-height>; overflow:hidden">
-                <div  id="thumbelinaSliderControl" style="float:left">
-                    <div class="thumbelina-but <substitute-A>">&#708;</div>
-                        <ul>
-                            <substitute-data>
-                        </ul>
-                    <div class="thumbelina-but <substitute-B>">&#709;</div>
-                </div>
-
 				<!-- jquery-zoom -->
                 <div id="zoom-block" style="float:left; height:<substitute-image-height>; padding:20px">
                     <span class='zoom' id='zoom-container'>
@@ -165,7 +182,16 @@ class thumbelina
                     </span>
                 </div>
 
+                <div  id="thumbelinaSliderControl" style="float:left; <substitute-hide-left>">
+                    <div class="thumbelina-but <substitute-A>">&#708;</div>
+                        <ul>
+                            <substitute-data>
+                        </ul>
+                    <div class="thumbelina-but <substitute-B>">&#709;</div>
+                </div>
+
             </div>    <!-- thumbelinaSliderFrame -->
+
         </div>    <!-- jelly-thumbelina-container -->
 
 END_OF_API_HTML;
