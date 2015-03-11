@@ -55,7 +55,7 @@ class cool
 		$sliderItems = JellySliderImage::model()->findAll(array('order'=>'sequence'));
 		$base = Yii::app()->baseUrl . "/userdata/jelly/sliderimage/";
 		foreach ($sliderItems as $sliderItem):
-			$images .= "<img src='" . $base . $sliderItem->image . "' width='" . $this->defaultWidth. "' height='" . $this->defaultHeight . "' />";
+			$images .= "<img src='" . $base . $sliderItem->image . "' width='" . $this->defaultWidth. "px' height='" . $this->defaultHeight . "px' />";
 			$thumbs .= "<img src='" . $base . $sliderItem->image . "' width='" . 80 . "' height='" . 80 . "' />";
 		endforeach;
 
@@ -83,14 +83,14 @@ class cool
 
 	private $apiHtml = <<<END_OF_API_HTML
 
-        <div id="jelly-cool-container" style="Xposition:relative; min-height:<substitute-min-height>px">
+        <div id="jelly-cool-container" style="position:relative; min-height:<substitute-min-height>px">
 
             <link rel="stylesheet" href="<substitute-path>/cool.css" type="text/css">
             <script src="<substitute-path>/jquery.carouFredSel.js"></script>
             <script src="<substitute-path>/cool.js"></script>
 
             <div id="wrapper">
-	            <div id="inner">
+	            <div id="Xinner">
 		            <div id="carousel-wrapper">
 			            <div id="carousel">
                             <substitute-images>
@@ -103,6 +103,7 @@ class cool
 		            </div>
 	            </div>
             </div>
+
 
 
         </div>    <!-- jelly-cool-container -->

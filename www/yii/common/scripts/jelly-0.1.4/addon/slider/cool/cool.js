@@ -1,5 +1,4 @@
 $(function() {
-alert('x');
 	var $carousel = $('#carousel'),
 		$pager = $('#pager');
  
