@@ -98,8 +98,9 @@ css.margin-left = 15px
 
 	# only vertical working at mo
 	addon.slider.thumbelina.orientation = vertical
-	# note no width
+	# height and width are the image you want to display. Image size should be close to this size. The actaul slider will be about 165 px wider
 	addon.slider.thumbelina.height = 500px
+	addon.slider.thumbelina.width = 500px
 	addon.slider.thumbelina.scroll-background-color = #ffe0ff
 	addon.slider.thumbelina.scroll-active-color = #7e70b3
 	addon.slider.thumbelina.scroll-disabled-color = #a28a9c
