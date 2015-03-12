@@ -90,16 +90,19 @@ css.margin-left = 15px
 	condition = @HOMEPAGE=1
 	css.margin-top = 20px
 	css.width = 750px
-	css.height = 520px
+	ss.height = 520px
 
-	addon.slider.cool.height = 500px
-	addon.slider.cool.width = 700px
-	addon.slider.cool.duration = 3
+#	addon.slider.cool.height = 500px
+#	addon.slider.cool.width = 700px
+#	addon.slider.cool.duration = 3
 
-#	addon.slider.thumbelina.orientation = vertical
-#	addon.slider.thumbelina.height = 400px
-#	# note no width
-#	addon.slider.thumbelina.end-color = #fe8
+	# only vertical working at mo
+	addon.slider.thumbelina.orientation = vertical
+	# note no width
+	addon.slider.thumbelina.height = 500px
+	addon.slider.thumbelina.scroll-background-color = #ffe0ff
+	addon.slider.thumbelina.scroll-active-color = #7e70b3
+	addon.slider.thumbelina.scroll-disabled-color = #a28a9c
 
 	#css.background-color = #f7d9ff
 	#addon.slider.flexslider.width = 500px

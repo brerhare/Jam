@@ -11,10 +11,13 @@
 class thumbelina
 {
 	//Defaults
-	private $defaultOrientation = "horizontal";		// 'vertical' or 'horizontal'
+	private $defaultOrientation = "vertical";		// 'vertical' or 'horizontal'
 //	private $defaultThumbs = "left";				// 'left' or 'right'
-//	private $defaultWidth = "auto";
-	private $defaultHeight = "auto";
+	private $defaultWidth = "500";
+	private $defaultHeight = "500";
+	private $defaultScrollBackgroundColor = "#fff";
+	private $defaultScrollActiveColor = "#fc0";
+	private $defaultScrollDisabledColor = "#fe8";
 
 	/*
 	 * Set up any code pre-requisites (onload/document-ready reqs)
@@ -36,18 +39,27 @@ class thumbelina
 
 			switch ($opt)
 			{
-				case "orientation":
-					$this->defaultOrientation = $val;
-					break;
-//				case "width":
-//					$this->defaultWidth = $val;
+//				case "orientation":
+//					$this->defaultOrientation = $val;
 //					break;
+				case "width":
+					$this->defaultWidth = $val;
+					break;
 				case "height":
 					$this->defaultHeight = $val;
 					break;
 //				case "thumbs":
 //					$this->defaultThumbs = $val;
 //					break;
+				case "scroll-background-color":
+					$this->defaultScrollBackgroundColor = $val;
+					break;
+				case "scroll-active-color":
+					$this->defaultScrollActiveColor = $val;
+					break;
+				case "scroll-disabled-color":
+					$this->defaultScrollDisabledColor = $val;
+					break;
 				default:
 					// Not all array items are action items
 			}
@@ -56,16 +68,20 @@ class thumbelina
 		// Content
 		$sliderItems = JellySliderImage::model()->findAll(array('order'=>'sequence'));
 		foreach ($sliderItems as $sliderItem):
-			$content .= "<li> <img class='thumbelinaThumb' src='" . Yii::app()->baseUrl . "/userdata/jelly/sliderimage/" . $sliderItem->image . "'> </li>";
+			$click = " onClick='triggerImage(this);' ";
+			$content .= "<li> <img class='thumbelinaThumb' src='" . Yii::app()->baseUrl . "/userdata/jelly/sliderimage/" . $sliderItem->image . "'" . $click . "> </li>";
 		endforeach;
 
 		// Subsitutions
 		// HTML
 		$this->apiHtml = str_replace("<substitute-orientation>", $this->defaultOrientation, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-height>", $this->defaultHeight, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-width>", $this->defaultWidth, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-control-height>", ($this->defaultHeight - 40 - 40), $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-image-height>", ($this->defaultHeight - 40), $this->apiHtml);
-//		$this->apiHtml = str_replace("<substitute-width>", $this->defaultWidth, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-scroll-background-color>", $this->defaultScrollBackgroundColor, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-scroll-active-color>", $this->defaultScrollActiveColor, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-scroll-disabled-color>", $this->defaultScrollDisabledColor, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-data>", $content, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-path>", $jellyRootUrl, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-data>", $content, $this->apiHtml);
@@ -102,6 +118,7 @@ class thumbelina
 		// HTML
 //		$this->apiHtml = str_replace("<substitute-width>", "", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-height>", "", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-hide-left>", "", $this->apiHtml);
 
 		// JS
 
@@ -124,6 +141,7 @@ class thumbelina
             #thumbelinaSliderControl {
                 position:relative;
                 margin-top:40px;
+				background-color: <substitute-scroll-background-color>;
                 width:93px;
                 height:<substitute-control-height>px;
                 border-left:1px solid #aaa;
@@ -131,16 +149,18 @@ class thumbelina
                 margin-bottom:40px;
             }
             .thumbelinaThumb {
+				cursor:pointer;
                 width:80px;
                 Xheight:80px;
             }
 			.thumbelina-but {
+				cursor:pointer;
 				border: 1px solid #444;
 				color: #444;
-				background-color: #fc0;
+				background-color: <substitute-scroll-active-color>;
 			}
             .thumbelina-but.disabled, .thumbelina-but.disabled:hover {
-                background-color: #fe8;
+                background-color: <substitute-scroll-disabled-color>;
                 color: #444;
                 cursor: default;
                 box-shadow: none;
@@ -175,10 +195,10 @@ class thumbelina
 
             <div id="thumbelinaSliderFrame" style="height:<substitute-height>; overflow:hidden">
 				<!-- jquery-zoom -->
-                <div id="zoom-block" style="float:left; height:<substitute-image-height>; padding:20px">
-                    <span class='zoom' id='zoom-container'>
+                <div id="zoom-block" style="float:left; height:<substitute-image-height>px; max-width:<substitute-width>px; padding:20px">
+                    <span class='zoom' id='zoom-container' style="height:<substitute-height>px; max-width:<substitute-width>px; overflow:hidden">
                         <p>Hover</p>
-                        <img src="/userdata/jelly/sliderimage/poppy bowl.jpg" height='<substitute-image-height>' id='zoom-block-image'/>
+                        <img src="/userdata/jelly/sliderimage/poppy bowl.jpg" style="max-height:<substitute-image-height>px; max-width:<substitute-width>px" id='zoom-block-image'/>
                     </span>
                 </div>
 
@@ -211,6 +231,10 @@ END_OF_API_HTML;
 	// Jquery-zoom stuff
 
 	$(document).ready(function(){
+		setHoverZoom()
+	});
+
+	function setHoverZoom() {
     	$("#zoom-block span img").hover(function(){
         	$('#zoom-block-image').attr({src: $(this).attr('alt')});
         	$('#zoom-container').zoom();
@@ -222,7 +246,7 @@ END_OF_API_HTML;
         	imgSwap.push(imgUrl);
     	});
     	$(imgSwap).preload();
-	});
+	}
 
 	$.fn.preload = function(){
     	this.each(function(){
@@ -230,6 +254,12 @@ END_OF_API_HTML;
     	});
 	}
 
+	function triggerImage(a){
+//$('#zoom-container').trigger('zoom.destroy');
+//$('#zoom-container').('url') = a.src;
+		document.getElementById("zoom-block-image").src = a.src;
+		setHoverZoom();
+	}
 
 
 END_OF_API_JS;

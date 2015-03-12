@@ -1,6 +1,6 @@
 
 
-<link href='http://fonts.googleapis.com/css?family=Handlee|Open+Sans:400italic,400,700' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Allura|Open+Sans:400italic,400,300,700' rel='stylesheet' type='text/css'>
 
 <style type="text/css">
 
@@ -10,50 +10,51 @@ html, body {	height: 100%;
 		border: 0;}
 
 /* Global Hyperlink settings - will affect menu text colour if no text settings */
-a { color:#FFFFFF } 
-a { text-decoration: none; color:#FFFFFF; }
-a:visited { text-decoration: none; color:#FFFFFF; }
-a:hover { text-decoration: none; color:#FFFFFF; }
+a { color:#9A00C4 } 
+a { text-decoration: none; color:#9A00C4; }
+a:visited { text-decoration: none; color:#9A00C4; }
+a:hover { text-decoration: none; color: blue; }
 a:focus { text-decoration: none; color:#FFFFFF; }
-a:hover, a:active { text-decoration: none; color:#FFFFFF }
+a:active { text-decoration: none; color:#9A00C4 }
 
 
 
-h1 {	font-family: 'Handlee', serif !important;
+h1 {	font-family: 'Allura', serif !important;
 	color: #9A00C4;
-	font-size: 32px;
+	font-size: 38px;
 	font-weight: 400;
-	font-stretch: condensed;}
+	font-stretch: condensed;
+	line-height: 90%;}
 
-h2 {	font-family: 'Handlee', serif !important;
-	color: #9A00C4;
-	font-size: 28px;
+h2 {	font-family: 'Open Sans', serif !important;
+	color: black;
+	font-size: 18px;
 	font-weight: 400;
-	font-stretch: condensed;} 
+	line-height: 120%;} 
 
 
-h3 {	font-family: 'Open Sans', Verdana, sans-serif !important;
+h3 {	font-family: 'Allura', Verdana, sans-serif !important;
 	color: #9A00C4;
-	font-size: 24px;
-	font-weight: 700;
-	font-stretch: condensed;}
+	font-size: 30px;
+	font-weight: 400;}
 
 h4 {	font-family: 'Open Sans', Verdana, sans-serif !important;
 	color: #9A00C4;
 	font-size: 24px;
-	font-weight: 700;
-	font-stretch: condensed;}
+	font-weight: 700;}
 
 p  {	font-family: 'Open Sans', Verdana, sans-serif !important;
 	color: #000000;
 	font-size: 16px;
-	font-weight: normal}
+	font-weight: normal;
+	line-height: 120%;}
 
 blockquote {font-family: 'Open Sans', Verdana, sans-serif !important;
 	color: #5b5b5b;
 	font-size: 16px;
 	font-style: italic;
-	font-weight: normal}
+	font-weight: normal;
+	line-height: 120%}
 
 
 html { font-family: 'Open Sans', Verdana, sans-serif !important;
