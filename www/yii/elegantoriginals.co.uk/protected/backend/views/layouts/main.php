@@ -46,7 +46,7 @@
                 )),
 
 				array('label' => 'Galleries', 'url' => array('/jellyGallery/admin'), 'visible' => !Yii::app()->user->isGuest),
-				array('label' => 'Blog Backend', 'url' => 'https://plugin.wireflydesign.com/blog/backend.php/site/elegantDirect', 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'News Backend', 'url' => 'https://plugin.wireflydesign.com/news/backend.php/site/elegantDirect', 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Product Backend', 'url' => 'https://plugin.wireflydesign.com/product/backend.php/site/elegantDirect', 'visible' => !Yii::app()->user->isGuest),
 
                 array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),

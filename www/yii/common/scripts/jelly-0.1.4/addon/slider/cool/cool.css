@@ -1,35 +1,11 @@
-html, body {
-	height: 100%;
-	padding: 0;
-	margin: 0;
-}
-body {
-	background: #fff;
-	min-height: 600px;
-}
-body * {
-	font-family: Arial, Geneva, SunSans-Regular, sans-serif;
-	font-size: 14px;
-	color: #333;
-	line-height: 22px;
-}
- 
-#wrapper {
+#cool-wrapper {
 	background: #f0ffff;
 	border-bottom: 1px solid #ccc;
-	height: 70%;
+height: 90%;
 	width: 100%;
 	position: absolute;
-	top: 0;
+	top: -10%;
 	left: 0;
-}
-#inner {
-	width: 60%;
-	min-width: 300px;
-	max-width: 800px;
-	position: absolute;
-	bottom: -50px;
-	left: 20%;
 }
 #carousel-wrapper {
 	-webkit-box-sizing: border-box;
@@ -45,8 +21,8 @@ body * {
 	left: 0;
 }
 #carousel {
-	width: 800px;
-	height: 500px;
+	width: 600px;
+	height: 600px;
 	overflow: hidden;
 }
 #carousel img {
@@ -58,7 +34,8 @@ body * {
 	width: 100%;
 	overflow: hidden;
 	position: absolute;
-	bottom: -35px;
+top: 75%;
+	Xbottom: -35px;
 	left: 0;
 	z-index: 2;
 }

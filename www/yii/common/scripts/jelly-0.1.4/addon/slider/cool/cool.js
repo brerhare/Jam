@@ -1,3 +1,7 @@
+// ------------------------------------------------------------------------------------
+// See http://beta.matizmo.net/plugin/code-examples/configuration.php.html for settings
+// ------------------------------------------------------------------------------------
+
 $(function() {
 	var $carousel = $('#carousel'),
 		$pager = $('#pager');
@@ -9,14 +13,20 @@ $(function() {
 		return center;
 	}
  
-	$carousel.carouFredSel({
+	$carousel.carouFredSel({	// Note you only set things here, the thumb slider follows suit (how?)
 		responsive: true,
 		items: {
 			visible: 1,
-			width: 800,
-			height: (500/800*100) + '%'
+			width: paramWidth,
+			height: paramHeight,
+			//width: 600,
+			//height: (600/600*100) + '%'
+		},
+		auto: {
+        	timeoutDuration : paramDuration,
 		},
 		scroll: {
+			pauseOnHover:true,
 			fx: 'crossfade',
 			onBefore: function( data ) {
 				var src = data.items.visible.first().attr( 'src' );
@@ -49,3 +59,4 @@ $(function() {
 		$carousel.trigger( 'slideTo', [ 'img[src="'+ src +'"]' ] );
 	});
 });
+
