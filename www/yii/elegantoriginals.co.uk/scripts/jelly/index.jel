@@ -93,7 +93,8 @@ css.margin-left = 15px
 	css.height = 520px
 
 	addon.slider.cool.height = 500px
-	addon.slider.cool.width = 600px
+	addon.slider.cool.width = 700px
+	addon.slider.cool.duration = 3
 
 #	addon.slider.thumbelina.orientation = vertical
 #	addon.slider.thumbelina.height = 400px

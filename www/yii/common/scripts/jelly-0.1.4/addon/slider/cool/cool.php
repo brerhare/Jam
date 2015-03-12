@@ -14,6 +14,7 @@ class cool
 	private $defaultOrientation = "horizontal";		// 'vertical' or 'horizontal'
 	private $defaultHeight = "500";
 	private $defaultWidth = "800";
+	private $defaultDuration = "3000";
 
 	/*
 	 * Set up any code pre-requisites (onload/document-ready reqs)
@@ -41,8 +42,11 @@ class cool
 				case "width":
 					$this->defaultWidth = $val;
 					break;
-				case "width":
-					$this->defaultWidth = $val;
+				case "height":
+					$this->defaultHeight= $val;
+					break;
+				case "duration":
+					$this->defaultDuration= ($val * 1000);
 					break;
 				default:
 					// Not all array items are action items
@@ -61,8 +65,11 @@ class cool
 
 		// Subsitutions
 		// HTML
+		$this->apiHtml = str_replace("<substitute-height>", $this->defaultHeight, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-width>", $this->defaultWidth, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-min-height>", ($this->defaultHeight + 100), $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-images>", $images, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-duration>", $this->defaultDuration, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-thumbs>", $thumbs, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-path>", $jellyRootUrl, $this->apiHtml);
 
@@ -87,7 +94,23 @@ class cool
 
             <link rel="stylesheet" href="<substitute-path>/cool.css" type="text/css">
             <script src="<substitute-path>/jquery.carouFredSel.js"></script>
+
+			<script>
+				/* CarouFredsel settings */
+				var paramWidth = <substitute-width>;
+				var paramHeight = <substitute-height>;
+				var paramDuration = <substitute-duration>;
+			</script>
             <script src="<substitute-path>/cool.js"></script>
+
+			<style>
+			/* Overrides */
+			#carousel {
+    			width: <substitute-width>px;
+    			height: <substitute-height>px;
+    			overflow: hidden;
+			} 
+			</style>
 
             <div id="cool-wrapper">
 	            <div id="carousel-wrapper">
