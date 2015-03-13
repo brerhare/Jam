@@ -9,7 +9,7 @@ include = default-values
 [screen]
 child = site
 #css.background-color = #ffffff
-fx.wallpaper-image = /img/background4.jpg
+fx.wallpaper-image = /img/background2.jpg
 css.display = block
 #addon.analytics.google_analytics.ua = UA-20115178-1
 
@@ -195,7 +195,7 @@ css.width = 960px
 		[copyright]
 		css.width = 50%
 		css.margin-top = 10px
-		html.raw = Elegant Originals © 2014 All rights reserved
+		html.raw = Elegant Originals &copy 2014 All rights reserved
 		css.color = #000000
 		css.font-size = 11px
 		css.text-align = left

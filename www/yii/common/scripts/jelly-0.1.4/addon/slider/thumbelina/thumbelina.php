@@ -67,9 +67,10 @@ class thumbelina
 
 		// Content
 		$sliderItems = JellySliderImage::model()->findAll(array('order'=>'sequence'));
+		$cnt = 1;
 		foreach ($sliderItems as $sliderItem):
 			$click = " onClick='triggerImage(this);' ";
-			$content .= "<li> <img class='thumbelinaThumb' src='" . Yii::app()->baseUrl . "/userdata/jelly/sliderimage/" . $sliderItem->image . "'" . $click . "> </li>";
+			$content .= "<li> <img id='img-id-" . $cnt++ . "' class='thumbelinaThumb' src='" . Yii::app()->baseUrl . "/userdata/jelly/sliderimage/" . $sliderItem->image . "'" . $click . "> </li>";
 		endforeach;
 
 		// Subsitutions
@@ -231,7 +232,8 @@ END_OF_API_HTML;
 	// Jquery-zoom stuff
 
 	$(document).ready(function(){
-		setHoverZoom()
+		setHoverZoom();
+		triggerImage( document.getElementById("img-id-1") );
 	});
 
 	function setHoverZoom() {
