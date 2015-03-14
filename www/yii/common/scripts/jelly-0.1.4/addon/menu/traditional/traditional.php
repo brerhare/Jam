@@ -376,7 +376,7 @@ class traditional
 		if ($this->default_menu_selected_text_color != "")
 		{
 			//$str  = "xnav ul li:selected   { color: $this->default_menu_selected_text_color;}";
-			$str  = ".selected-item a { color: $this->default_menu_selected_text_color !important;}";
+			$str  = "xnav .selected-item a { color: $this->default_menu_selected_text_color !important;}";
 			$this->apiHtml = str_replace("<substitute-menu-selected-text-color>", $str, $this->apiHtml);
 		}
 
@@ -384,21 +384,21 @@ class traditional
 		if ($this->default_menu_selected_background_color != "")
 		{
 			//$str  = "xnav ul li:selected   { background-color: $this->default_menu_selected_background_color;}";
-			$str  = ".selected-item { background-color: $this->default_menu_selected_background_color;}";
+			$str  = "xnav .selected-item { background-color: $this->default_menu_selected_background_color;}";
 			$this->apiHtml = str_replace("<substitute-menu-selected-background-color>", $str, $this->apiHtml);
 		}
 
 		//  menu selected font size
-		$this->apiHtml = str_replace("<substitute-menu-selected-font-size>", ".selected-item a {font-size: $this->default_menu_selected_font_size" . "px ;}", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-selected-font-size>", "xnav .selected-item a {font-size: $this->default_menu_selected_font_size" . "px ;}", $this->apiHtml);
 
 		//  menu selected font family
 		if ($this->default_menu_selected_font_family != "")
 		{
-			$this->apiHtml = str_replace("<substitute-menu-selected-font-family>", ".selected-item {font-family: $this->default_menu_selected_font_family ;}", $this->apiHtml);
+			$this->apiHtml = str_replace("<substitute-menu-selected-font-family>", "xnav .selected-item {font-family: $this->default_menu_selected_font_family ;}", $this->apiHtml);
 		}
 
 		//  menu selected font weight
-		$this->apiHtml = str_replace("<substitute-menu-selected-font-weight>", ".selected {font-weight: $this->default_menu_selected_font_weight ;}", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-selected-font-weight>", "xnav .selected {font-weight: $this->default_menu_selected_font_weight ;}", $this->apiHtml);
 
 // SUBMENU --------------------------------------------------------------------------------------------------------
 
