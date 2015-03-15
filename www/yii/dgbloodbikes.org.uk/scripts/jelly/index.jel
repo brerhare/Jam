@@ -278,32 +278,53 @@ child = footer-detail, footer-logo
 		css.margin-left = 15%
 		
 			[footer-menu]		
-			child = footer-volunteer, footer-ride, footer-gallery, footer-faq, terms, cookie
+			child = footer-faq, terms, cookie
 			css.width = 100%
 			css.height = 200px
+			css.margin-top = 10px
 		
-				[footer-volunteer]
-				html.raw = <a style="text-decoration:none; color: white" href="?layout=index&page=contact">HOW TO BECOME A VOLUNTEER</span>
-				css.margin-top = 20px
-
-				[footer-ride]
-				html.raw = <a style="text-decoration:none; color: white" href="?layout=index&page=cookie-policy">RIDING FOR US</span>
-				css.margin-top = 5px
-
-				[footer-gallery]
-				html.raw = <a style="text-decoration:none; color: white" href="?layout=index&page=terms-conditions">GALLERY</span>
-				css.margin-top = 5px
-				
-				[footer-faq]
-				html.raw = <a style="text-decoration:none; color: white" href="?layout=index&page=terms-conditions">FAQ'S</span>
-				css.margin-top = 5px
+#Top level basic settings
+            addon.menu.traditional.orientation = vertical
+            addon.menu.traditional.height = 20px
+            addon.menu.traditional.align = left
+			addon.menu.traditional.edgepadding = 0px
+#Top level background settings
+            addon.menu.traditional.menu-color = transparent 
+            addon.menu.traditional.item-separator-width = 2px
+            addon.menu.traditional.item-separator-color = transparent
+#Top level font settings
+            addon.menu.traditional.menu-font-size = 14px
+            addon.menu.traditional.menu-font-family = Roboto
+            addon.menu.traditional.menu-text-color = white
+#Top level hover settings
+            addon.menu.traditional.menu-hover-text-color = red
+            addon.menu.traditional.menu-hover-background-color = black
+            addon.menu.traditional.menu-hover-font-size = 14px
+            addon.menu.traditional.menu-hover-font-family = Roboto
+            addon.menu.traditional.menu-hover-font-weight = normal
+#Top level selected settings
+            addon.menu.traditional.menu-selected-text-color = white
+            addon.menu.traditional.menu-selected-background-color = black
+            addon.menu.traditional.menu-selected-font-size = 14px
+            addon.menu.traditional.menu-selected-font-family = Roboto
+            addon.menu.traditional.menu-selected-font-weight = normal
+#Second level settings
+            addon.menu.traditional.submenu-height = 20px
+            addon.menu.traditional.submenu-width = variable / px
+            addon.menu.traditional.submenu-font-size = 10x
+            addon.menu.traditional.submenu-font-family = Arial
+            addon.menu.traditional.submenu-font-weight = normal
+            addon.menu.traditional.submenu-text-color = white
+            addon.menu.traditional.submenu-background-color = black
+            addon.menu.traditional.submenu-separator-width = 1px
+            addon.menu.traditional.submenu-separator-color = red
 				
 				[terms]
-				html.raw = <a style="text-decoration:none; color: white" href="?layout=index&page=terms-conditions">T&Cs</span>
-				css.margin-top = 5px
+				html.raw = <a style="text-decoration:none; color: white" onmouseover="this.style.color='red'" onmouseout="this.style.color='white'" href="?layout=index&page=terms-conditions">T&Cs</a>
+				css.margin-top = 4px
 				
 				[cookie]
-				html.raw = <a style="text-decoration:none; color: white" href="?layout=index&page=cookie-policy">COOKIES</span>
+				html.raw = <a style="text-decoration:none; color: white" onmouseover="this.style.color='red'" onmouseout="this.style.color='white'" href="?layout=index&page=cookie-policy">COOKIES</a>
 				css.margin-top = 5px
 					
 			[footer-credits]
@@ -314,7 +335,7 @@ child = footer-detail, footer-logo
 			stacking = horizontal
 			
 				[copyright]
-				html.raw = <span style="color: white">Scottish Charitable Incorporated Organisation ( SCIO ) SC045453<br>&copy Dumfries & Galloway Blood Bikes 2015 <br>All rights reserved</span>
+				html.raw = <span style="color: white">Scottish Charitable Incorporated <br>Organisation ( SCIO ) SC045453<br>&copy Dumfries & Galloway Blood Bikes 2015 <br>All rights reserved</span>
 				css.color = #000000
 				css.font-size = 10px
 				css.text-align = left
