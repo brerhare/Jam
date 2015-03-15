@@ -12,7 +12,7 @@ css.display = block
 	css.height = 83px
 	css.width = 100px
 	css.position = fixed
-	css.top = 18px
+	css.top = 10px
 	css.right = 0px
 	image.url = img/shop-tab.png
 	image.width = 100px
@@ -36,7 +36,8 @@ css.display = block
 		[logo]
 		css.margin-top = 20px
 		css.height = 210px
-		css.width = 400px
+		css.width = 360px
+		#css.min-width = 360px
 		image.url = img/logo.png
 		image.width = 350px
 		image.height = 217px
@@ -44,17 +45,28 @@ css.display = block
 
 		[graphics]
 		css.margin-top = 35px
-		css.width = 560px
-		image.url = img/header-graphics.png
-		image.width = 500px
-		image.height = 129px
+		#css.margin-left = 2%
+		#css.width = 560px
+		#image.url = img/header-graphics.png
+		#image.width = 500px
+		#image.height = 129px
+		
+		css.width = 45%
+		css.min-width = 400px
+	css.background-size = 100%
+	css.background-image = url('/img/header-graphics.png')
+	css.padding-top = 26%
+	css.background-repeat = no-repeat
+		#divide the height by the width for the proportional padding height
+
 		
 		[social]
 		child = facebook, trade
-		css.margin-top = 30px
-		css.width = 40px
+		css.margin-top = 130px
+		css.margin-left = 2%
+		css.width = 90px
+		stacking = horizontal
 	
-		
 			[facebook]
 			css.height = 40px
 			css.width = 40px
