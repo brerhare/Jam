@@ -49,7 +49,7 @@ Yii::log(".................... in at top.................. click=".$clk , CLogge
 Yii::app()->sess->set("key", "value");
 
 		// If unset, initialise the product page cookie (only way to tell if we're back-paging from it or going to it)
-		if (Yii::app()->sess->exists('productdetail'))
+		if (!(Yii::app()->sess->exists('productdetail')))
 			Yii::app()->sess->set('productdetail', "0");
 
 		// Get hosting site's params
@@ -246,7 +246,7 @@ header($this->p3p);
 			throw new CHttpException(400,'Cannot proceed to payment because UID is not set or expired. (Has this session been idle a long time?)');
 		}
 
-		$cartContent = $this->getCartByIP();
+		$cartContent = Yii::app()->sess->get($cartId);
 		if ((!($cartContent)) || ($cartContent == ''))
 		{
 			Yii::log("Checkout - NOT LOADING PAYMENT PAGE because 'cartid' " . $cartId . " although seemingly valid, did not return that session var" , CLogger::LEVEL_WARNING, 'system.test.kim');

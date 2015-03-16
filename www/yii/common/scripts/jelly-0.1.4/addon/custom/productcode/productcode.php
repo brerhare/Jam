@@ -382,6 +382,7 @@ $content .= "<style> * { color: grey;} </style>";
 
 				$content .= "<script> var shipId = 0; var totalShipping = 0; var totalGoods = " . $totalGoods . ";</script>";
 				$content .= "<select id='choose_shipping_option' onChange=updateTotal()>";
+				$totalShipping = 0.00;
 				$criteria = new CDbCriteria;
 				$criteria->addCondition("uid = " . $this->uid);
 				$criteria->order = 'price ASC';
@@ -389,7 +390,6 @@ $content .= "<style> * { color: grey;} </style>";
 				if ($shippings)
 				{
 					$done = 0;
-					$totalShipping = 0.00;
 					foreach ($shippings as $shipping)
 					{
 						if ($done++ == 0)

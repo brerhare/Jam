@@ -7,6 +7,8 @@
 class Sess extends CComponent
 //class Sess extends CApplicationComponent 
 {
+	private $cookies = true;
+
 	public function init()
 	{
 	}
@@ -16,7 +18,8 @@ class Sess extends CComponent
 		if (trim($value) == "")
 			return $this->clear($key);
 
-		Yii::app()->session[$key] = $value;
+		if ($this->cookies)
+			Yii::app()->session[$key] = $value;
 
 		$ownerString = $this->buildOwnerString();
 		$criteria = new CDbCriteria;
@@ -51,7 +54,8 @@ class Sess extends CComponent
 
 	public function clear($key)
 	{
-		Yii::app()->session[$key] = "";
+		if ($this->cookies)
+			Yii::app()->session[$key] = "";
 
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("owner_string = '" . $this->buildOwnerString() . "'");
@@ -63,7 +67,9 @@ class Sess extends CComponent
 
 	public function get($key)
 	{
-		$value = Yii::app()->session[$key];
+		if (($this->cookies) || ($key == "uid") || ($key == "sid"))
+			$value = Yii::app()->session[$key];
+
 		//if (trim($value) == "")
 			//return;
 
