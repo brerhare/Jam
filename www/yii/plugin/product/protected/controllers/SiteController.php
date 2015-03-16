@@ -46,6 +46,8 @@ $clk='off';
 if (isset($_GET['click'])) $clk='true';
 Yii::log(".................... in at top.................. click=".$clk , CLogger::LEVEL_WARNING, 'system.test.kim');
 
+Yii::app()->sess->set("key", "value");
+
 		// If unset, initialise the product page cookie (only way to tell if we're back-paging from it or going to it)
 		if (!isset(Yii::app()->session['productdetail']))
 			Yii::app()->session['productdetail'] = "0";
@@ -502,6 +504,8 @@ header($this->p3p);
 		}
 		$message .= "<tr><td><b>Telephone: </b></td><td>" . $order->telephone . "</td></tr>";
 		$message .= "<tr><td><b>Email: </b></td><td>" . $order->email_address . "</td></tr>";
+		if (trim($order->promo_code) != "")
+			$message .= "<tr><td><b>Promotion code: </b></td><td>" . $order->promo_code . "</td></tr>";
 		$message .= "</table>";
 
 		$message .= "<br><br><hr><br>";	// Solid line separator
