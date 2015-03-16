@@ -14,7 +14,6 @@ class productcode
 	private $uid = "";
 	private $sid = "";
 	private $cartId = "";
-	private $cookies = 0;
 
 	/*
 	 * Set up any code pre-requisites (onload/document-ready reqs)
@@ -25,8 +24,8 @@ class productcode
 	{
 	  //var_dump( $options );
 
-		$this->uid = Yii::app()->session['uid'];
-		$this->sid = Yii::app()->session['sid'];
+		$this->uid = Yii::app()->sess->get('uid');
+		$this->sid = Yii::app()->sess->get('sid');
 
 		foreach ($options as $opt => $val)
 		{
@@ -105,11 +104,6 @@ class productcode
 	// Invoked by product.jel to show the product price options
 	private function product_page_options_dropdown($val)
 	{
-		/*********************
-		// Check cookie @@EG
-		$cookieValue = (string)Yii::app()->request->cookies['whatevername'];
-		*********************/
-
 		$productId = $val;
 		$content = "";
 
@@ -117,12 +111,7 @@ class productcode
 		$cartConfirm = "";
 		if ((isset($_GET['cartproduct'])) && (isset($_GET['cartoption'])) && (isset($_GET['cartqty'])) && (isset($_GET['cartref'])))
 		{
-			if ($this->cookies)
-				$cartContent = Yii::app()->session[$this->cartId];
-			else
-				$cartContent = $this->getCartByIP();
-
-//echo('original cart=['.$cartContent.']<br>');
+			$cartContent = Yii::app()->sess->get($this->cartId);
 
 			if (!(strstr($cartContent, '_' . $_GET['cartref'])))
 			{
@@ -144,11 +133,7 @@ class productcode
 						$cartConfirm = "<div style='color:gray'>" . $_GET['cartqty'] . " " . $product->name . " " . $option->name . " added to your cart</div>";
 					}
 				}
-//echo('new cart=['.$cartContent.']<br>');
-			if ($this->cookies)
-				Yii::app()->session[$this->cartId] = $cartContent;
-			else
-				$this->SetCartByIP($cartContent);
+				Yii::app()->sess->set($this->cartId, $cartContent);
 			}
 		}
 
@@ -230,14 +215,11 @@ END_OF_API_JS_product_page_options_dropdown;
 
 
 // For debugging - empty the cart
-if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['cart'] = '';
+if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->sess->set('cart', '');
 
 
 		// Pick up the Cart info
-		if ($this->cookies)
-			$cartContent = Yii::app()->session[$this->cartId];
-		else
-			$cartContent = $this->getCartByIP();
+			$cartContent = Yii::app()->sess->get($this->cartId);
 //echo 'cart=[' . $cartContent . ']<br>';
 		if ($cartContent == '')
 			$cartArr = array();
@@ -259,7 +241,7 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 				}
 				$cartArr = $newArr;
 //echo 'deleted='.$cartArr[$i].". There are now " . count($cartArr) . " items in cart<br>";
-				// now save the modified cart array back to the session variable
+				// now save the modified cart array back to the sess variable
 				$cartContent = "";
 				for ($i = 0; $i < count($cartArr); $i++)
 				{
@@ -267,10 +249,7 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 							$cartContent .= '|';
 					$cartContent .= $cartArr[$i];
 				}
-				if ($this->cookies)
-					Yii::app()->session[$this->cartId] = $cartContent;
-				else
-					$this->setCartByIP($cartContent);
+					Yii::app()->sess->set($this->cartId, $cartContent);
 			}
 		}
 
@@ -474,7 +453,7 @@ $content .= "<style> * { color: grey;} </style>";
 				$content .= "<textarea id='message' name='message' rows='7' cols='38'> </textarea> <br><br><br/>";
 				$content .= "<span>Got a promotion code? </span><input id='promo_code' name='promo_code' type='text' value='' size='15'/> <br /><br/>";
 				$content .= "<a href='#' onClick=\"proceed(0)\"	>" . "<img src=/product/img/proceed_to_checkout.png></a>";
-				if ((isset(Yii::app()->session['checkoutPaypalEmail'])) && (trim(Yii::app()->session['checkoutPaypalEmail']) != ""))
+				if ((Yii::app()->sess->exists('checkoutPaypalEmail')) && (trim(Yii::app()->sess->get('checkoutPaypalEmail')) != ""))
 					$content .= "<br><br><a href='#' onClick=\"proceed(1)\"	>" . "<img src=/product/img/paypal-checkout.png></a>";
 				$content .= "</td></tr></tbody>";
 				$content .= "</table>";
@@ -588,46 +567,6 @@ END_OF_API_JS_checkout;
 		return "";
 	}
 
-	private function getCartByIP()
-	{
-		$ip = "UNKNOWN";
-		if (getenv("HTTP_CLIENT_IP"))
-			$ip = getenv("HTTP_CLIENT_IP");
-		else if (getenv("HTTP_X_FORWARDED_FOR"))
-			$ip = getenv("HTTP_X_FORWARDED_FOR");
-		else if (getenv("REMOTE_ADDR"))
-			$ip = getenv("REMOTE_ADDR");
-		$criteria = new CDbCriteria;
-		$criteria->addCondition("ip = '" . $ip . "'");
-		$cart = Cart::model()->find($criteria);
-		if ($cart)
-			return $cart->content;
-		else
-			return "";
-	}
-
-	private function setCartByIP($cartContent)
-	{
-		$ip = "UNKNOWN";
-		if (getenv("HTTP_CLIENT_IP"))
-			$ip = getenv("HTTP_CLIENT_IP");
-		else if (getenv("HTTP_X_FORWARDED_FOR"))
-			$ip = getenv("HTTP_X_FORWARDED_FOR");
-		else if (getenv("REMOTE_ADDR"))
-			$ip = getenv("REMOTE_ADDR");
-
-		Cart::model()->deleteAllByAttributes(array('ip' => $ip));
-		$cart = new Cart;
-		$cart->uid = $this->uid;
-		$cart->ip = $ip;
-		$cart->timestamp = date('Y-m-d H:i:s');
-		$cart->content = $cartContent;
-		if (!$cart->save())
-		{
-			Yii::log("Could not save cart contents" , CLogger::LEVEL_WARNING, 'system.test.kim');
-			die("Could not save cart contents. This has been logged and will be fixed ASAP");
-		}
-	}
 }
 
 ?>
