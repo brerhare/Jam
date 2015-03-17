@@ -107,7 +107,7 @@ $content = "<style> input, textarea{
 
 
 		// Generate the content
-		$content .= "<div ng-app>";
+		$content .= "<div>";
 $content .= "<center>";
 		$content .= "<div style='padding:" . $this->optionEdgePadding . "px' ; background-color=" . $this->optionBackColor . "' ng-controller='contactController'>";
 		$content .= "<input id='contact-name' class='contact-input' type='text' placeholder='Your Name' />";
@@ -266,6 +266,7 @@ function contactController(\$scope, \$http)
 
 		var url = 'http://plugin.wireflydesign.com/mailer/index.php/site/ajaxContactUs/?sid=' + SID + '&name=' + name + '&email=' + email + '&subject=' + subject + '&body=' + body + '&settingsemail=' + settingsemail;
 //alert(url);
+
 
 		\$http.get(url).
 		success(function(data, status, headers, config) {
