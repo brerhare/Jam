@@ -104,11 +104,14 @@ return array(
 		'checkoutEmail'=>'caroline@elegantoriginals.co.uk',
 		'checkoutName'=>'Elegant Originals',
 		// Test gateway
-		'checkoutGatewayUser'=>'WIREFL-5188100',
-		'checkoutGatewayPassword'=>'391F3GWBZ0',
+		//'checkoutGatewayUser'=>'WIREFL-5188100',
+		//'checkoutGatewayPassword'=>'391F3GWBZ0',
 		// Live gateway
-		//'checkoutGatewayUser'=>'xxxxx',
-		//'checkoutGatewayPassword'=>'xxxxx',
+		'checkoutGatewayUser'=>'WIREFL-5578222',
+		'checkoutGatewayPassword'=>'Sbyzek538949',
+		// Paypal
+		'checkoutPaypalEmail'=>'a@b.co.uk',
+
 		'jellyRoot' => '/scripts/jelly/',
 		'sid' => 'huf28g7ckbj45e1d8vc6ivutq1',
 	),

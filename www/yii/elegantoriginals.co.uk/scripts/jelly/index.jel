@@ -16,7 +16,7 @@ css.display = block
 	[site]
 	child = header-area, middle, footer
 	css.display = block
-	css.width = 1000px
+	css.width = 1050px
 	css.background-color = white
 	css.margin-top = 30px
 	fx.rounding = 4px
@@ -117,8 +117,9 @@ css.margin-left = 15px
 	[slider]
 	condition = @HOMEPAGE=1
 	css.margin-top = 20px
-	css.width = 700px
-	css.height = 520px
+	css.width = 650px
+	css.height = 400px
+#	css.background-color = lightgrey
 
 
 	# only vertical working at mo
@@ -133,7 +134,7 @@ css.margin-left = 15px
 
 
 	[content]
-	#css.background-color = #e1ffd9
+#	css.background-color = #e1ffd9
 	db.table = ContentBlock
 	db.filter = url=$_GET['page']
 	db.error = Sorry, I could not find th page $_GET['page']
@@ -149,15 +150,15 @@ css.margin-left = 15px
 		css.width = 400px
 		#css.margin-bottom = 30px
 		css.background-color = white
-#		addon.contact.contactform.edgepadding = 0px
-#		addon.contact.contactform.buttoncolor = #cddff2
-#		addon.contact.contactform.buttontextcolor = black
-#		addon.contact.contactform.buttontext = Submit
-#		addon.contact.contactform.successtextcolor = green
-#		addon.contact.contactform.failuretextcolor = red
-#		addon.contact.contactform.textcolor = blue
-#		addon.contact.contactform.backcolor = pink
-#		addon.contact.contactform.inputspacing = 10px
+		addon.contact.contactform.edgepadding = 0px
+		addon.contact.contactform.buttoncolor = #cddff2
+		addon.contact.contactform.buttontextcolor = black
+		addon.contact.contactform.buttontext = Submit
+		addon.contact.contactform.successtextcolor = green
+		addon.contact.contactform.failuretextcolor = red
+		addon.contact.contactform.textcolor = blue
+		addon.contact.contactform.backcolor = pink
+		addon.contact.contactform.inputspacing = 10px
 
 		[contact-text]
 		css.width = 300px
