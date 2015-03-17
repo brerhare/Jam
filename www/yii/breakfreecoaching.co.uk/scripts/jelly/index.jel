@@ -139,19 +139,20 @@ css.display = block
 	#stacking = horizontal
 		
 		[contact-form]
-		css.width = 450px
+		css.width = 550px
 		css.margin = 0px
 		#css.margin-bottom = 30px
 		css.background-color = white
 		addon.contact.contactform.edgepadding = 0px
-		addon.contact.contactform.buttoncolor = lightgrey
+		addon.contact.contactform.buttoncolor = #fafafa
 		addon.contact.contactform.buttontextcolor = #b23640
 		addon.contact.contactform.buttontext = [ Submit ]
 		addon.contact.contactform.successtextcolor = green
 		addon.contact.contactform.failuretextcolor = red
-		addon.contact.contactform.textcolor = blue
-		addon.contact.contactform.backcolor = pink
+		addon.contact.contactform.textcolor = lightgrey
+		addon.contact.contactform.backcolor = #FFFFD6
 		addon.contact.contactform.inputspacing = 10px
+		addon.contact.contactform.inputwidth = 98%
 
 		
 

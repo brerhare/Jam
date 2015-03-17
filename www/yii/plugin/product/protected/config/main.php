@@ -29,6 +29,7 @@ return array(
 			'password'=>'kimlo,',
 			// If removed, Gii defaults to localhost only. Edit carefully to taste.
 			'ipFilters'=>array('127.0.0.1','::1'),
+			//'ipFilters'=>array('*.*.*.*','::1'),
 			'generatorPaths' => array(
 				'bootstrap.gii'
 			),
@@ -88,6 +89,9 @@ return array(
 				),
 				*/
 			),
+		),
+		'sess' => array(
+    		'class'=>'application.components.Sess',
 		),
 	),
 

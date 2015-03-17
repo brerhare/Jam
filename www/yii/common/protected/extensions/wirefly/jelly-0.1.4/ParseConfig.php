@@ -25,7 +25,9 @@ class ParseConfig
 	    $globals = array();
 		$sectionHasItems = false;		// Allows empty sections
 	    $i = 0;
+		$lc = 0;
 	    foreach( $ini as $line ){
+			$lc++;
 	        $line = trim( $line );
 	        // Comments
 	        if ( $line == '' || $line{0} == ';' || $line{0} == '#')
@@ -41,6 +43,11 @@ class ParseConfig
 	        // Key-value pair
 	        if (strstr($line, '$_GET'))
 		        $line = $this->expandGlobals($line);					// Expand all the $_GET['xyz']
+			if (!(strstr($line, '=')))
+			{
+				echo "The jelly parser detected a missing '=' at or before line " . $lc . "<br/>";
+				continue;
+			}
 	        list( $key, $value ) = explode( '=', $line, 2 );
 	        $key = trim( $key );
 	        $value = trim( $value );

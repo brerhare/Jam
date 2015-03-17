@@ -142,38 +142,38 @@ class traditional
 			if ($this->default_orientation == "horizontal")
 				$this->apiHtml = str_replace("<substitute-width>", "nav ul {width: $this->default_width" . "px;}", $this->apiHtml);
 			else
-				$this->apiHtml = str_replace("<substitute-width>", "nav ul {width: $this->default_width" . "px;}", $this->apiHtml);
+				$this->apiHtml = str_replace("<substitute-width>", "xnav ul {width: $this->default_width" . "px;}", $this->apiHtml);
 		}
 
 		// height
 		$paddingTop    = ($this->default_height - $this->default_menu_font_size) / 2;
 		$paddingBottom = ($this->default_height - $this->default_menu_font_size - $paddingTop);
 		$this->apiHtml = str_replace("<substitute-height>",
-			"nav ul li a {height: $this->default_menu_font_size" . "px;} " .
-			"nav ul li a {padding: " . $paddingTop . "px " .  $paddingBottom . "px;} " ,
+			"xnav ul li a {height: $this->default_menu_font_size" . "px;} " .
+			"xnav ul li a {padding: " . $paddingTop . "px " .  $paddingBottom . "px;} " ,
 			$this->apiHtml);
 
 		//  font size
-		$this->apiHtml = str_replace("<substitute-menu-font-size>", "nav ul li a {font-size: $this->default_menu_font_size" . "px;}", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-font-size>", "xnav ul li a {font-size: $this->default_menu_font_size" . "px;}", $this->apiHtml);
 
 		//  font family
 		if ($this->default_menu_font_family != "")
 		{
-			$this->apiHtml = str_replace("<substitute-menu-font-family>", "nav ul li a {font-family: $this->default_menu_font_family ;}", $this->apiHtml);
+			$this->apiHtml = str_replace("<substitute-menu-font-family>", "xnav ul li a {font-family: $this->default_menu_font_family ;}", $this->apiHtml);
 		}
 
 		//  text color
-		$this->apiHtml = str_replace("<substitute-menu-text-color>", "nav ul li a, nav ul li a:visited {color: $this->default_menu_text_color ;}", $this->apiHtml);
-		//$this->apiHtml = str_replace("<substitute-menu-text-color>", "nav ul li a {color: $this->default_menu_text_color ;}", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-text-color>", "xnav ul li a, xnav ul li a:visited {color: $this->default_menu_text_color ;}", $this->apiHtml);
+		//$this->apiHtml = str_replace("<substitute-menu-text-color>", "xnav ul li a {color: $this->default_menu_text_color ;}", $this->apiHtml);
 
 		//  font weight
-		$this->apiHtml = str_replace("<substitute-menu-font-weight>", "nav ul li a {font-weight: $this->default_menu_font_weight ;}", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-font-weight>", "xnav ul li a {font-weight: $this->default_menu_font_weight ;}", $this->apiHtml);
 
 		// align
 		if ($this->default_orientation == "horizontal")
 		{
 			if ($this->default_align == "center")
-				$this->apiHtml = str_replace("<substitute-align>", "nav {text-align: $this->default_align;}", $this->apiHtml);
+				$this->apiHtml = str_replace("<substitute-align>", "xnav {text-align: $this->default_align;}", $this->apiHtml);
 		}
 
 		// item-margin
@@ -183,7 +183,7 @@ class traditional
 			{
 				$left = ($this->default_item_margin / 2);
 				$right = ($this->default_item_margin - $left);
-				$this->apiHtml = str_replace("<substitute-item-margin>", "nav ul li a {margin: 0px $left" . "px 0px $right" . "px;}", $this->apiHtml);
+				$this->apiHtml = str_replace("<substitute-item-margin>", "xnav ul li a {margin: 0px $left" . "px 0px $right" . "px;}", $this->apiHtml);
 			}
 		}
 
@@ -193,14 +193,14 @@ class traditional
 			if (is_numeric($this->default_item_width))					// px value
 			{
 				$this->apiHtml = str_replace("<substitute-item-width>",
-					"nav ul li a {width: $this->default_item_width" . "px;}" .
-					"nav ul ul li a {width: auto;}" ,
+					"xnav ul li a {width: $this->default_item_width" . "px;}" .
+					"xnav ul ul li a {width: auto;}" ,
 					$this->apiHtml);
 			}
 			if ($this->default_item_width == "uniform")
 			{
 				// This is set inline
-				$this->apiHtml = str_replace("<substitute-item-width>", "nav { width: 100% } <inline-item-width>", $this->apiHtml);
+				$this->apiHtml = str_replace("<substitute-item-width>", "xnav { width: 100% } <inline-item-width>", $this->apiHtml);
 			}
 		}
 
@@ -208,9 +208,9 @@ class traditional
 		if ($this->default_menu_rounding != "")
 		{
 			if ($this->default_orientation == "horizontal")
-				$element = "nav";
+				$element = "xnav";
 			else
-				$element = "nav ul";
+				$element = "xnav ul";
 			$this->apiHtml = str_replace("<substitute-menu-rounding>",
 				"$element {
 					-moz-border-radius: " . $this->default_menu_rounding . "px;
@@ -225,9 +225,9 @@ class traditional
 		if ($this->default_menu_opacity != "")
 		{
 			if ($this->default_orientation == "horizontal")
-				$element = "nav";
+				$element = "xnav";
 			else
-				$element = "nav ul";
+				$element = "xnav ul";
 			$this->apiHtml = str_replace("<substitute-menu-opacity>",	/* First level menu */
 				"$element {
 					zoom: 1; filter: alpha(opacity=" . $this->default_menu_opacity . ");
@@ -240,9 +240,9 @@ class traditional
 		if ($this->default_menu_tile != "")
 		{
 			if ($this->default_orientation == "horizontal")
-				$element = "nav";
+				$element = "xnav";
 			else
-				$element = "nav ul";
+				$element = "xnav ul";
 			$this->apiHtml = str_replace("<substitute-menu-tile>",
 				"$element {
 					background: url('" . Yii::app()->baseUrl . $this->default_menu_tile . "') repeat;
@@ -256,12 +256,12 @@ class traditional
 		{
 			if ($this->default_orientation == "horizontal")
 			{
-				$element = "nav ul";
+				$element = "xnav ul";
 				$item2 = "";
 			}
 			else
 			{
-				$element = "nav ul li";
+				$element = "xnav ul li";
 				$item2 = " ul ul li { background-size: 0%;} ";		// @@NB setting this to 0% to hide inheriting the image - may cause invisibility?
 			}
 			$this->apiHtml = str_replace("<substitute-menu-stretch>",
@@ -280,12 +280,12 @@ class traditional
 		{
 			if ($this->default_orientation == "horizontal")
 			{
-				$element = "nav ul";
+				$element = "xnav ul";
 				$item2 = "";
 			}
 			else
 			{
-				$element = "nav ul li";
+				$element = "xnav ul li";
 				$item2 = "";				//  ul ul li { background-size: 0%;} ";	// @@NB weird invisibility possibility
 			}
 			$vals = explode(" ", $this->default_menu_color);
@@ -304,7 +304,7 @@ class traditional
 		// item-separator-*		(width, color, image)
 		if (($this->default_item_separator_color != "") || ($this->default_item_separator_tile != "") || ($this->default_item_separator_stretch != ""))
 		{
-			$str = "nav ul li {border:0;}";
+			$str = "xnav ul li {border:0;}";
 			if ($this->default_orientation == "horizontal")
 			{
 				$borderStr = "left";
@@ -315,90 +315,90 @@ class traditional
 				$borderStr = "top";
 				$borderImageParams = " $this->default_item_separator_width 0 0 0 ";
 			}
-			$str .= "nav ul li + li {border-" . $borderStr . "-style: solid;}";
-			$str .= "nav ul li + li {border-" . $borderStr . "-width: " . $this->default_item_separator_width . "px;}";
+			$str .= "xnav ul li + li {border-" . $borderStr . "-style: solid;}";
+			$str .= "xnav ul li + li {border-" . $borderStr . "-width: " . $this->default_item_separator_width . "px;}";
 			if ($this->default_item_separator_color != "")
-				$str .= "nav ul li + li {border-" . $borderStr . "-color: $this->default_item_separator_color ;}";
+				$str .= "xnav ul li + li {border-" . $borderStr . "-color: $this->default_item_separator_color ;}";
 			// image
 			if ($this->default_item_separator_tile != "")
 			{
-				$str .= "nav ul li + li {-moz-border-image: url('". $this->default_item_separator_tile    . "') $borderImageParams repeat;}";
-				$str .= "nav ul li + li {     border-image: url('". $this->default_item_separator_tile    . "') $borderImageParams repeat;}";
+				$str .= "xnav ul li + li {-moz-border-image: url('". $this->default_item_separator_tile    . "') $borderImageParams repeat;}";
+				$str .= "xnav ul li + li {     border-image: url('". $this->default_item_separator_tile    . "') $borderImageParams repeat;}";
 			}
 			if ($this->default_item_separator_stretch != "")
 			{
-				$str .= "nav ul li + li {-moz-border-image: url('". $this->default_item_separator_stretch . "') $borderImageParams stretch;}";
-				$str .= "nav ul li + li {     border-image: url('". $this->default_item_separator_stretch . "') $borderImageParams stretch;}";
+				$str .= "xnav ul li + li {-moz-border-image: url('". $this->default_item_separator_stretch . "') $borderImageParams stretch;}";
+				$str .= "xnav ul li + li {     border-image: url('". $this->default_item_separator_stretch . "') $borderImageParams stretch;}";
 			}
 			// submenu
-			$str .= "nav ul li ul li + li {border-" . $borderStr . " : 0px; }";	// @@ use this for the submenu image
+			$str .= "xnav ul li ul li + li {border-" . $borderStr . " : 0px; }";	// @@ use this for the submenu image
 			$this->apiHtml = str_replace("<substitute-item-separator-*>", $str, $this->apiHtml);
 		}
 
 		// edgepadding
 		if ($this->default_edgepadding != "")
 		{
-			$str = "nav ul li a {padding-left: " . $this->default_edgepadding . "px; padding-right: " . $this->default_edgepadding . "px;}";
+			$str = "xnav ul li a {padding-left: " . $this->default_edgepadding . "px; padding-right: " . $this->default_edgepadding . "px;}";
 			$this->apiHtml = str_replace("<substitute-edgepadding>", $str, $this->apiHtml);
 		}
 
 		// menu hover text color
 		if ($this->default_menu_hover_text_color != "")
 		{
-			//$str  = "nav ul li:hover   { color: $this->default_menu_hover_text_color;}";
-			$str  = "nav ul li:visited:hover a, nav ul li:hover a { color: $this->default_menu_hover_text_color ;}";
-//k			$str .= "nav ul li ul li a { color: #fff;}";	// @@NB inheritance @@NB not working
+			//$str  = "xnav ul li:hover   { color: $this->default_menu_hover_text_color;}";
+			$str  = "xnav ul li:visited:hover a, xnav ul li:hover a { color: $this->default_menu_hover_text_color ;}";
+//k			$str .= "xnav ul li ul li a { color: #fff;}";	// @@NB inheritance @@NB not working
 			$this->apiHtml = str_replace("<substitute-menu-hover-text-color>", $str, $this->apiHtml);
 		}
 
 		// menu hover background color
 		if ($this->default_menu_hover_background_color != "")
 		{
-			//$str  = "nav ul li:hover   { background-color: $this->default_menu_hover_background_color;}";
-			$str  = "nav ul li:hover a { background-color: $this->default_menu_hover_background_color;}";
-//k			$str .= "nav ul li ul li a { background-color: #fff;}";	// @@NB inheritance @@NB not working
+			//$str  = "xnav ul li:hover   { background-color: $this->default_menu_hover_background_color;}";
+			$str  = "xnav ul li:hover a { background-color: $this->default_menu_hover_background_color;}";
+//k			$str .= "xnav ul li ul li a { background-color: #fff;}";	// @@NB inheritance @@NB not working
 			$this->apiHtml = str_replace("<substitute-menu-hover-background-color>", $str, $this->apiHtml);
 		}
 
 		//  menu hover font size
-		$this->apiHtml = str_replace("<substitute-menu-hover-font-size>", "nav ul li:hover a {font-size: $this->default_menu_hover_font_size" . "px;}", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-hover-font-size>", "xnav ul li:hover a {font-size: $this->default_menu_hover_font_size" . "px;}", $this->apiHtml);
 
 		//  menu hover font family
 		if ($this->default_menu_hover_font_family != "")
 		{
-			$this->apiHtml = str_replace("<substitute-menu-hover-font-family>", "nav ul li:hover a {font-family: $this->default_menu_hover_font_family ;}", $this->apiHtml);
+			$this->apiHtml = str_replace("<substitute-menu-hover-font-family>", "xnav ul li:hover a {font-family: $this->default_menu_hover_font_family ;}", $this->apiHtml);
 		}
 
 		//  menu hover font weight
-		$this->apiHtml = str_replace("<substitute-menu-hover-font-weight>", "nav ul li: hover a {font-weight: $this->default_menu_hover_font_weight ;}", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-hover-font-weight>", "xnav ul li: hover a {font-weight: $this->default_menu_hover_font_weight ;}", $this->apiHtml);
 
 		// menu selected text color
 		if ($this->default_menu_selected_text_color != "")
 		{
-			//$str  = "nav ul li:selected   { color: $this->default_menu_selected_text_color;}";
-			$str  = ".selected-item a { color: $this->default_menu_selected_text_color !important;}";
+			//$str  = "xnav ul li:selected   { color: $this->default_menu_selected_text_color;}";
+			$str  = "xnav .selected-item a { color: $this->default_menu_selected_text_color !important;}";
 			$this->apiHtml = str_replace("<substitute-menu-selected-text-color>", $str, $this->apiHtml);
 		}
 
 		// menu selected background color
 		if ($this->default_menu_selected_background_color != "")
 		{
-			//$str  = "nav ul li:selected   { background-color: $this->default_menu_selected_background_color;}";
-			$str  = ".selected-item { background-color: $this->default_menu_selected_background_color;}";
+			//$str  = "xnav ul li:selected   { background-color: $this->default_menu_selected_background_color;}";
+			$str  = "xnav .selected-item { background-color: $this->default_menu_selected_background_color;}";
 			$this->apiHtml = str_replace("<substitute-menu-selected-background-color>", $str, $this->apiHtml);
 		}
 
 		//  menu selected font size
-		$this->apiHtml = str_replace("<substitute-menu-selected-font-size>", ".selected-item a {font-size: $this->default_menu_selected_font_size" . "px ;}", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-selected-font-size>", "xnav .selected-item a {font-size: $this->default_menu_selected_font_size" . "px ;}", $this->apiHtml);
 
 		//  menu selected font family
 		if ($this->default_menu_selected_font_family != "")
 		{
-			$this->apiHtml = str_replace("<substitute-menu-selected-font-family>", ".selected-item {font-family: $this->default_menu_selected_font_family ;}", $this->apiHtml);
+			$this->apiHtml = str_replace("<substitute-menu-selected-font-family>", "xnav .selected-item {font-family: $this->default_menu_selected_font_family ;}", $this->apiHtml);
 		}
 
 		//  menu selected font weight
-		$this->apiHtml = str_replace("<substitute-menu-selected-font-weight>", ".selected {font-weight: $this->default_menu_selected_font_weight ;}", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-menu-selected-font-weight>", "xnav .selected {font-weight: $this->default_menu_selected_font_weight ;}", $this->apiHtml);
 
 // SUBMENU --------------------------------------------------------------------------------------------------------
 
@@ -406,8 +406,8 @@ class traditional
 		$paddingTop    = ($this->default_submenu_height - $this->default_submenu_font_size) / 2;
 		$paddingBottom = ($this->default_submenu_height - $this->default_submenu_font_size - $paddingTop);
 		$this->apiHtml = str_replace("<substitute-submenu-height>",
-			"nav ul li ul li a {height: $this->default_submenu_font_size" . "px;} " .
-			"nav ul li ul li a {padding: " . $paddingTop . "px " .  $paddingBottom . "px;} " ,
+			"xnav ul li ul li a {height: $this->default_submenu_font_size" . "px;} " .
+			"xnav ul li ul li a {padding: " . $paddingTop . "px " .  $paddingBottom . "px;} " ,
 			$this->apiHtml);
 
 		// submenu-width. Variable, uniform or a px value. Dont have to do anything if 'variable'
@@ -416,31 +416,31 @@ class traditional
 			if (is_numeric($this->default_submenu_width))					// px value
 			{
 				$this->apiHtml = str_replace("<substitute-submenu-width>",
-					"nav ul li ul li  { width: $this->default_submenu_width" . "px ;}" ,
+					"xnav ul li ul li  { width: $this->default_submenu_width" . "px ;}" ,
 					$this->apiHtml);
 			}
 		}
 
 		//  submenu font size
-		$this->apiHtml = str_replace("<substitute-submenu-font-size>", "nav ul li ul li a {font-size: $this->default_submenu_font_size" . "px !important;}", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-submenu-font-size>", "xnav ul li ul li a {font-size: $this->default_submenu_font_size" . "px !important;}", $this->apiHtml);
 
 		//  submenu font family
 		if ($this->default_submenu_font_family != "")
 		{
-			$this->apiHtml = str_replace("<substitute-submenu-font-family>", "nav ul li ul li a {font-family: $this->default_submenu_font_family !important ;}", $this->apiHtml);
+			$this->apiHtml = str_replace("<substitute-submenu-font-family>", "xnav ul li ul li a {font-family: $this->default_submenu_font_family !important ;}", $this->apiHtml);
 		}
 
 		//  submenu text color
-		$this->apiHtml = str_replace("<substitute-submenu-text-color>", "nav ul li ul li, nav ul li ul li a, nav ul li ul li a:visited {color: $this->default_submenu_text_color !important ;}", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-submenu-text-color>", "xnav ul li ul li, xnav ul li ul li a, xnav ul li ul li a:visited {color: $this->default_submenu_text_color !important ;}", $this->apiHtml);
 
 		//  submenu font weight
-		$this->apiHtml = str_replace("<substitute-submenu-font-weight>", "nav ul li ul li a {font-weight: $this->default_submenu_font_weight !important;}", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-submenu-font-weight>", "xnav ul li ul li a {font-weight: $this->default_submenu_font_weight !important;}", $this->apiHtml);
 
 		// submenu-background-tile
 		if ($this->default_submenu_background_tile != "")
 		{
 			$this->apiHtml = str_replace("<substitute-submenu-background-tile>",
-				"nav ul li ul a { background: url('" . Yii::app()->baseUrl . $this->default_submenu_background_tile . "') repeat !important; }",
+				"xnav ul li ul a { background: url('" . Yii::app()->baseUrl . $this->default_submenu_background_tile . "') repeat !important; }",
 			$this->apiHtml);
 		}
 
@@ -448,7 +448,7 @@ class traditional
 		if ($this->default_submenu_background_stretch != "")
 		{
 			$this->apiHtml = str_replace("<substitute-submenu-background-stretch>",
-				"nav ul li ul li a { background: url('" . Yii::app()->baseUrl . $this->default_submenu_background_stretch . "') ;
+				"xnav ul li ul li a { background: url('" . Yii::app()->baseUrl . $this->default_submenu_background_stretch . "') ;
 				 background-repeat: no-repeat ;
 				 background-size: cover ;
 				 size: cover ; }",
@@ -461,7 +461,7 @@ class traditional
 			$vals = explode(" ", $this->default_submenu_background_color);
 			if (count($vals == 1)) array_push($vals, $vals[0]);
 			$this->apiHtml = str_replace("<substitute-submenu-background-color>",
-				"nav ul li ul li a {
+				"xnav ul li ul li a {
 					background: " . $vals[0] . ";
 					background: linear-gradient(top, " . $vals[0] . " 0%, " . $vals[1] . " 100%);  
 					background: -moz-linear-gradient(top, " . $vals[0] . " 0%, " . $vals[1] . " 100%); 
@@ -473,12 +473,12 @@ class traditional
 		// submenu-separator-*		(width, color, image)
 		if (($this->default_submenu_separator_color != "") || ($this->default_submenu_separator_tile != "") || ($this->default_submenu_separator_stretch != ""))
 		{
-			$str = "nav ul li ul li {border:0;}";
+			$str = "xnav ul li ul li {border:0;}";
 			$borderImageParams = " $this->default_submenu_separator_width 0 0 0 ";
 			if ($this->default_orientation == "horizontal")
-				$target = "nav ul li ul li ";
+				$target = "xnav ul li ul li ";
 			else
-				$target = "nav ul li ul li + li";
+				$target = "xnav ul li ul li + li";
 			$str .= "$target {border-top-style: solid;}";
 			$str .= "$target {border-top-width: " . $this->default_submenu_separator_width . "px;}";
 			if ($this->default_submenu_separator_color != "")
@@ -502,7 +502,7 @@ class traditional
 /****************************************************************
 
 					$this->apiHtml = str_replace("<substitute-submenu-opacity>",	// Second level menu 
-						"nav ul ul {
+						"xnav ul ul {
 							zoom: 1; filter: alpha(opacity='100');
 							opacity: " . (100) . ";
 						}",
@@ -511,7 +511,7 @@ class traditional
 
 				case "Xsubmenu-opacity":
 					$this->apiHtml = str_replace("<substitute-submenu-opacity>",
-						"nav ul ul {
+						"xnav ul ul {
 							background-color: rgba(0,0,255,1.0);
 						}",
 						$this->apiHtml);
@@ -521,7 +521,7 @@ class traditional
 					if ($this->default_orientation != "horizontal")
 					{
 						$this->apiHtml = str_replace("<substitute-menu-hover-image-stretch>",
-							"nav ul li:hover {
+							"xnav ul li:hover {
 								background: url('" . Yii::app()->baseUrl . $val . "');
 								background-size: 100%;
 								background-repeat: no-repeat;
@@ -532,7 +532,7 @@ class traditional
 					else
 					{
 						$this->apiHtml = str_replace("<substitute-menu-hover-image-stretch>",
-							"nav ul li:hover {
+							"xnav ul li:hover {
 								background: url('" . Yii::app()->baseUrl . $val . "');
 								Xbackground-size: 100%;
 								background-repeat: no-repeat;
@@ -600,10 +600,10 @@ class traditional
 		$levelItemCount = 0;
 
 		// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-		//$content .= "<div id='nav-container' style='width:100%; background-color:#6e99c0'>";	// @@TODO: remove
+		//$content .= "<div id='xnav-container' style='width:100%; background-color:#6e99c0'>";	// @@TODO: remove
 		// @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
-		$content .= "<nav>";
+		$content .= "<ynav>";
 		$content .= "<ul>";
 
 		$menuHeaders = ContentBlock::model()->findAll(array('order'=>'sequence'));
@@ -668,14 +668,25 @@ class traditional
 		{
 			$tmp = floor((100 / $levelItemCount)-1);
 			$this->apiHtml = str_replace("<inline-item-width>",
-				"nav ul li { width: " . $tmp . "% ;}
-				nav ul li ul li { width: auto ;}" ,
+				"xnav ul li { width: " . $tmp . "% ;}
+				xnav ul li ul li { width: auto ;}" ,
 				$this->apiHtml);
 		}
 
 		// Clear all <inline> tags that werent overridden
 
 		$this->apiHtml = str_replace("<substitute-item-width>", "", $this->apiHtml);
+
+		// Personalise this nav
+		$role = rand();
+		// css
+		$cssFile =  dirname(__FILE__) . "/traditional_" . $this->default_orientation . ".css";
+		$css = "<style>" . str_replace("nav", "nav[role='xnav-" . $role . "']", file_get_contents($cssFile)) . "</style>";
+		// html
+		$this->apiHtml = str_replace("xnav", "nav[role='xnav-" . $role . "']", $this->apiHtml);
+		$content       = str_replace("<ynav>", "<nav role='xnav-" . $role . "'>", $content);
+		// Prepend css to html
+		$this->apiHtml = $css . $this->apiHtml;
 
 		// Prepare to return to the caller
 
@@ -693,7 +704,7 @@ class traditional
 
 	<div id="jelly-tradntionalmenu-container">
 		<!--Basic Menu includes -->
-		<link rel="stylesheet" type="text/css" href="<substitute-path>/traditional_<substitute-orientation>.css" />
+		<!-- <link rel="stylesheet" type="text/css" href="<substitute-path>/traditional_<substitute-orientation>.css" /> -->
 
 		<style>
 		<substitute-width>

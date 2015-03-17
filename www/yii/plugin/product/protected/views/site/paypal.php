@@ -85,7 +85,7 @@ else array_push($tPrice, "0.01");
 
         <input type="hidden" name="shipping" value="<?php echo $shipping;?>" >		<!-- shipping n/w with _cart, only _xclick -->
 
-		<input type="hidden" name="return" value="https://plugin.wireflydesign.com/product/index.php/site/paid?sid=<?php echo Yii::app()->session['sid'];?>"   />
+		<input type="hidden" name="return" value="https://plugin.wireflydesign.com/product/index.php/site/paid?sid=<?php echo Yii::app()->sess->get('sid');?>"   />
         <input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHostedGuest">
 
 <!--		<input type="image" src="http://www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!"> -->
