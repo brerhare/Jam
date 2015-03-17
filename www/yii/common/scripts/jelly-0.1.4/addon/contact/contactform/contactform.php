@@ -26,6 +26,8 @@ class contactform
 	private $optionFailureTextColor = "red";
 	private $optionTextColor = 'black';
 	private $optionBackColor = '#d3d3d3';
+	private $optionFontFamily = 'arial';
+	private $optionFontSize = '14';
 
 	public $apiOption = array(
 	);
@@ -79,11 +81,12 @@ class contactform
 					$val = str_replace("px", "", $val);
 					$this->optionInputSpacing = $val;
 					break;
-				case "inputwidth":
+				case "font-family":
+					$this->optionFontFamily = $val;
+					break;
+				case "font-size":
 					$val = str_replace("px", "", $val);
-					if (!(strstr($val, "%")))
-						$val .= "px";
-					$this->optionInputWidth = $val;
+					$this->optionFontSize = $val;
 					break;
 				default:
 					// Not all array items are action items
@@ -147,6 +150,8 @@ $content .= "</center>";
 		$this->apiHtml = str_replace("<substitute-textcolor>", $this->optionTextColor, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-backcolor>", $this->optionBackColor, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-inputwidth>", $this->optionInputWidth, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-font-size>", $this->optionFontSize . "px", $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-font-family>", $this->optionFontFamily, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-data>", $content, $this->apiHtml);
 
 		// JS
@@ -162,6 +167,10 @@ $content .= "</center>";
 		.contact-input {
 			background-color: <substitute-backcolor>;
 			width: <substitute-inputwidth>;
+			font-size: <substitute-font-size>;
+			font-family: <substitute-font-family>;
+			padding-left:3px;
+			color: <substitute-textcolor>;
 		}
 		.input-prompt {
 			position: absolute;
