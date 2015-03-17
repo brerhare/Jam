@@ -1,3 +1,4 @@
+
 <?php
 
 /**
@@ -20,6 +21,7 @@ class contactform
 	private $optionButtonTextColor = "white";
 	private $optionButtonText = "Contact Us";
 	private $optionInputSpacing = "0px";
+	private $optionInputWidth = "100%";
 	private $optionSuccessTextColor = "green";
 	private $optionFailureTextColor = "red";
 	private $optionTextColor = 'black';
@@ -77,6 +79,12 @@ class contactform
 					$val = str_replace("px", "", $val);
 					$this->optionInputSpacing = $val;
 					break;
+				case "inputwidth":
+					$val = str_replace("px", "", $val);
+					if (!(strstr($val, "%")))
+						$val .= "px";
+					$this->optionInputWidth = $val;
+					break;
 				default:
 					// Not all array items are action items
 					break;
@@ -102,14 +110,14 @@ $content = "<style> input, textarea{
 		$content .= "<div ng-app>";
 $content .= "<center>";
 		$content .= "<div style='padding:" . $this->optionEdgePadding . "px' ; background-color=" . $this->optionBackColor . "' ng-controller='contactController'>";
-		$content .= "<input id='contact-name' class='contact-input' type='text' title='Your Name' />";
+		$content .= "<input id='contact-name' class='contact-input' type='text' placeholder='Your Name' />";
 		$content .= $separator;
-		$content .= "<input id='contact-email' class='contact-input' type='text' title='Your Email Address' />";
+		$content .= "<input id='contact-email' class='contact-input' type='text' placeholder='Your Email Address' />";
 		$content .= $separator;
-		$content .= "<input id='contact-subject' class='contact-input' type='text' title='Subject' />";
+		$content .= "<input id='contact-subject' class='contact-input' type='text' placeholder='Subject' />";
 		$content .= $separator;
 
-		$content .= "<textarea id='contact-body' class='contact-input' rows='5 type='text' title='Message''></textarea>";
+		$content .= "<textarea id='contact-body' class='contact-input' rows='5 type='text' placeholder='Message''></textarea>";
 		$content .= "<div id='contact-body-div' style='display:none; white-space: pre-wrap;'></div>";
 
 		//$content .= "<input id='contact-body' class='contact-input' type='text' title='Message' />";
@@ -138,6 +146,7 @@ $content .= "</center>";
 		$this->apiHtml = str_replace("<substitute-failuretextcolor>", $this->optionFailureTextColor, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-textcolor>", $this->optionTextColor, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-backcolor>", $this->optionBackColor, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-inputwidth>", $this->optionInputWidth, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-data>", $content, $this->apiHtml);
 
 		// JS
@@ -150,10 +159,14 @@ $content .= "</center>";
 
 	private $apiHtml = <<<END_OF_API_HTML
 		<style>
+		.contact-input {
+			background-color: <substitute-backcolor>;
+			width: <substitute-inputwidth>;
+		}
 		.input-prompt {
 			position: absolute;
 			font-style: italic;
-			color: #aaa;
+			color: <substitute-textcolor>;
 			margin:6px;
 margin-left:30px;
 		}
@@ -173,7 +186,7 @@ margin-left:30px;
 			border: 0px solid #666;
 			text-decoration:none;
 			-webkit-box-shadow:none;
-	-moz-box-shadow:none;
+			-moz-box-shadow:none;
 			box-shadow:none;
 			text-shadow:none;
 		}
@@ -200,28 +213,6 @@ END_OF_API_HTML;
 
 	private $apiJs = <<<END_OF_API_JS
 $(document).ready(function(){
-$('.contact-input[type=text][title],.contact-input[type=password][title],textarea[title]').each(function(i){
-    $(this).addClass('input-prompt-' + i);
-    var promptSpan = $('<span class="input-prompt"/>');
-    $(promptSpan).attr('id', 'input-prompt-' + i);
-    $(promptSpan).append($(this).attr('title'));
-    $(promptSpan).click(function(){
-      $(this).hide();
-      $('.' + $(this).attr('id')).focus();
-    });
-    if($(this).val() != ''){
-      $(promptSpan).hide();
-    }
-    $(this).before(promptSpan);
-    $(this).focus(function(){
-      $('#input-prompt-' + i).hide();
-    });
-    $(this).blur(function(){
-      if($(this).val() == ''){
-        $('#input-prompt-' + i).show();
-      }
-    });
-  });
 });
 
 // Handle newlines between textarea getting lost
@@ -268,6 +259,10 @@ function contactController(\$scope, \$http)
 		}
 
 		// All ok, send the message for emailing
+		document.getElementById('contact-name').value = "";
+		document.getElementById('contact-email').value = "";
+		document.getElementById('contact-subject').value = "";
+		document.getElementById('contact-body').value = "";
 
 		var url = 'http://plugin.wireflydesign.com/mailer/index.php/site/ajaxContactUs/?sid=' + SID + '&name=' + name + '&email=' + email + '&subject=' + subject + '&body=' + body + '&settingsemail=' + settingsemail;
 //alert(url);

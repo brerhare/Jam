@@ -152,6 +152,7 @@ css.display = block
 		addon.contact.contactform.textcolor = blue
 		addon.contact.contactform.backcolor = pink
 		addon.contact.contactform.inputspacing = 10px
+		addon.contact.contactform.inputwidth = 50%
 
 		
 
