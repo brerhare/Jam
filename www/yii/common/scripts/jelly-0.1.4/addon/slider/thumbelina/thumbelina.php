@@ -194,16 +194,16 @@ class thumbelina
             }
             </style>
 
-            <div id="thumbelinaSliderFrame" style="height:<substitute-height>; overflow:hidden">
+            <div id="thumbelinaSliderFrame" style="height:<substitute-height>px; overflow:hidden">
 				<!-- jquery-zoom -->
                 <div id="zoom-block" style="float:left; padding:20px; overflow:hidden">
-                    <span class='zoom' id='zoom-container' style="max-width:<substitute-width>px; overflow:hidden">
+                    <span class='zoom' id='zoom-container' style="width:<substitute-width>px; overflow:hidden">
                         <p>Hover</p>
-                        <img src="/userdata/jelly/sliderimage/poppy bowl.jpg" style="max-height:<substitute-image-height>px; max-width:<substitute-width>px" id='zoom-block-image'/>
+                        <img src="" style="max-height:<substitute-image-height>px; max-width:<substitute-width>px " id='zoom-block-image'/>
                     </span>
                 </div>
 
-                <div  id="thumbelinaSliderControl" style="float:left; <substitute-hide-left>">
+                <div  id="thumbelinaSliderControl" style="float:left; height:<substitute-control-height>px; <substitute-hide-left>">
                     <div class="thumbelina-but <substitute-A>">&#708;</div>
                         <ul>
                             <substitute-data>

@@ -121,7 +121,7 @@ END_OF_BEGINHEADER;
 <!-- <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" /> -->
 <!-- <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script> -->
 
-	<body>\n
+	<body ng-app>\n
 END_OF_ENDHEADER;
 
 	private $stdFooter = <<<END_OF_FOOTER

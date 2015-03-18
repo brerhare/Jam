@@ -16,9 +16,10 @@ css.display = block
 	[site]
 	child = header-area, middle, footer
 	css.display = block
-	css.width = 1000px
+	css.width = 1050px
 	css.background-color = white
-	#css.opacity = 0.8
+	css.margin-top = 30px
+	fx.rounding = 4px
 
 
 
@@ -42,93 +43,130 @@ child = right-column, main-column
 stacking = horizontal
 css.width = 950px
 css.margin-top = 30px
-css.margin-left = 25px 
+css.margin-left = 20px 
 	#css.background-color = #fcffd9
 
 	[right-column]
-	child = menu
-	css.width = 150px
+	child = menu, mailer
+	css.width = 180px
 	css.overflow = visible
 	#css.background-color = #f7d9ff
 
 	[menu]
 	#css.height = 40px
-	#css.width = 100px
+	#css.width = 160px
 	css.overflow = visible
 	css.margin-top = 20px
-	css.margin-left = 0px
+	css.margin-left = 45px
 	addon.menu.basic.orientation = vertical
 	#addon.menu.basic.edgepadding = 5px
 	#addon.menu.basic.menu-text-weight = bold
-	addon.menu.basic.item-separator-color = #000000
+	addon.menu.basic.item-separator-color = #5d1376
 	addon.menu.basic.item-separator-width = 1px
 		#addon.menu.basic.width = 60px
 	addon.menu.basic.height = 32px
 
-	addon.menu.basic.font-size = 12px
+	addon.menu.basic.font-size = 16px
 	addon.menu.basic.menu-rounding = 0px
 		#addon.menu.basic.menu-opacity = 96%
 		#addon.menu.basic.menu-tile = /img/menu-bar.jpg
 		#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
 	addon.menu.basic.menu-color = white
 	addon.menu.basic.menu-text-color = grey
-	addon.menu.basic.submenu-color = #d6d6d6
+	addon.menu.basic.submenu-color = #eddcf5
 	addon.menu.basic.item-color = white
-	addon.menu.basic.item-text-color = black
-	addon.menu.basic.subitem-color = grey
-	addon.menu.basic.subitem-text-color = white
+	addon.menu.basic.item-text-color = #a825e6
+	addon.menu.basic.subitem-color = #f3defa
+	addon.menu.basic.subitem-text-color = black
 	addon.menu.basic.subitem-separator-color = white
+	
+	[mailer]
+	child = signup-text, signup
+	css.margin-top = 60px
+	css.width = 130px
+	css.height = 200px
+	css.background-color = #c2a8c6
+	css.padding = 5px
+	
+		[signup-text]
+		css.height = 110px
+		css.text-align = center
+		css.font-size = 12px
+		html.raw = Leave me your name and email address to find out about new products and exhibitions. I promise to never share your details with anyone else.
+	
+		[signup]
+		css.margin-left = 3px
+		#css.margin-top = -50px
+		addon.mailer.signup.orientation = vertical
+		addon.mailer.signup.buttoncolor = white
+		addon.mailer.signup.buttontextcolor = #5d1376
+		addon.mailer.signup.buttontext = [ Keep in Touch ]
+		addon.mailer.signup.inputspacing = 10px
+		addon.mailer.signup.successtextcolor = green
+		addon.mailer.signup.failuretextcolor = red
+		addon.mailer.signup.inputwidth = 120px
 
 ###########################################################
 
 [main-column]
-child = slider, content
+child = slider, content, contact
 css.width = 750px
 css.margin-left = 15px
+#css.background-color = lightgrey
 
 	[slider]
 	condition = @HOMEPAGE=1
 	css.margin-top = 20px
-	css.width = 750px
-	ss.height = 520px
+	css.width = 650px
+	css.height = 400px
+#	css.background-color = lightgrey
 
-#	addon.slider.cool.height = 500px
-#	addon.slider.cool.width = 700px
-#	addon.slider.cool.duration = 3
 
 	# only vertical working at mo
 	addon.slider.thumbelina.orientation = vertical
-	# height and width are the image you want to display. Image size should be close to this size. The actaul slider will be about 165 px wider
-	addon.slider.thumbelina.height = 500px
+	# height and width are the image you want to display. Image size should be close to this size. The actaul slider will be about 105 px wider
+	addon.slider.thumbelina.height = 400px
 	addon.slider.thumbelina.width = 500px
-	addon.slider.thumbelina.scroll-background-color = #ffe0ff
+	addon.slider.thumbelina.scroll-background-color = #dac4dd
 	addon.slider.thumbelina.scroll-active-color = #7e70b3
-	addon.slider.thumbelina.scroll-disabled-color = #a28a9c
-
-	#css.background-color = #f7d9ff
-	#addon.slider.flexslider.width = 500px
-	#addon.slider.flexslider.height = 375px
-	#addon.slider.flexslider.border-width = 0px
-	#addon.slider.flexslider.border-color = white
-	#addon.slider.flexslider.active-dotcolor = #9400c9 
-	#addon.slider.flexslider.inactive-dotcolor = #cfcfcf
-	#addon.slider.flexslider.dot-margin-top = -30px
-	#addon.slider.flexslider.dot-margin-bottom = 0px
-	#addon.slider.flexslider.dot-margin-left = 0px
-	#addon.slider.flexslider.dot-margin-right = 0px
-		#addon.slider.flexslider.animation = fade
-	#addon.slider.flexslider.mode = image
-		#addon.slider.flexslider.mode = HTML
-	#addon.slider.flexslider.source = db
+	addon.slider.thumbelina.scroll-disabled-color = #e1e1e1
 
 
 
 	[content]
-	#css.background-color = #e1ffd9
+#	css.background-color = #e1ffd9
 	db.table = ContentBlock
 	db.filter = url=$_GET['page']
 	db.error = Sorry, I could not find th page $_GET['page']
 	html.raw = ContentBlock.content
+	
+	[contact]
+	child = contact-form, contact-text
+	condition = @PAGE=contact
+	css.height = 300px
+	stacking = horizontal
+		
+		[contact-form]
+		css.width = 400px
+		#css.margin-bottom = 30px
+		css.background-color = white
+		addon.contact.contactform.edgepadding = 0px
+		addon.contact.contactform.buttoncolor = #cddff2
+		addon.contact.contactform.buttontextcolor = black
+		addon.contact.contactform.buttontext = Submit
+		addon.contact.contactform.successtextcolor = green
+		addon.contact.contactform.failuretextcolor = red
+		addon.contact.contactform.textcolor = blue
+		addon.contact.contactform.backcolor = pink
+		addon.contact.contactform.font-family = arial
+		addon.contact.contactform.font-size = 14
+		addon.contact.contactform.inputspacing = 10px
+
+		[contact-text]
+		css.width = 300px
+		css.margin-top = 80px
+		css.font = 12px
+		html.raw = Please fill in the form and someone will get back to you as soon as possible.
 
 
 

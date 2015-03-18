@@ -95,7 +95,7 @@ class signup
 		
 
 		// Generate the content
-		$content = "<div ng-app>";
+		$content = "<div>";
 			$background = "";
 			if ($this->optionBackColor != '')
 				$background = " background-color:" . $this->optionBackColor . "; ";
