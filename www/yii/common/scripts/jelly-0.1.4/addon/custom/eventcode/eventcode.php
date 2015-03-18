@@ -59,8 +59,10 @@ class eventcode
 	private function main_google_map($val)
 	{
 
-if ($this->programId == 12)
+//if ($this->programId == 12)
+if ($this->programId != 6)
 	return;
+// NB! I have put in 'nomap' var handling in the filter code. It does nothing but pass it on via JS, but I can use it here
 
 		require(Yii::app()->basePath . "/../scripts/jelly/addon/map/google_os/google_os.php");
 		$mapId = 'main_google_map';

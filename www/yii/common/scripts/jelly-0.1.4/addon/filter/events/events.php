@@ -14,6 +14,7 @@ class events
     private $defaultDepartment = "";
     private $defaultWidth = "100%";
 	private $programId = 0;
+	private $map = "nomap";
 
 // Not used ...
     public $apiOption = array(
@@ -33,6 +34,8 @@ class events
         // Check if any program has been selected in the iframe
         if (isset($_GET['programid']))
             $this->programId = (int) $_GET['programid'];
+        if (isset($_GET['map']))
+            $this->map = $_GET['map'];
 
 
         foreach ($options as $opt => $val)
@@ -60,7 +63,7 @@ class events
 
         // Insert the data
         $content = "";
-		$content .= "<script>var programId = " . $this->programId . ";</script>";
+		$content .= "<script>var programId = " . $this->programId . "; var map = " . $this->map . "; </script>";
         $content .= "<div style='position:fixed; color:#575757;'>";      // Your basic solemn grey font color
         $uid = Yii::app()->session['uid'];
 
@@ -391,7 +394,6 @@ END_OF_REVIEW_ORDER_HTML;
         	if (!($openGrade))
             	$content .= "document.getElementById('grade-detail').style.display='none';";
 		}
-
 		// These next 2 'if's cater for both the iframe lock ($this->programId) or dg link non-lock ($_GET['program'])
 		// They serve to hide/show the main map
 
@@ -461,7 +463,7 @@ END_OF_API_HTML;
         sel = '?layout=index';
 
 		// Program lock?
-		sel += '&programid=' + programId;
+		sel += '&programid=' + programId + '&map=' + map;
 
         // Date
         sel += '&sdate=' + selSDate;
