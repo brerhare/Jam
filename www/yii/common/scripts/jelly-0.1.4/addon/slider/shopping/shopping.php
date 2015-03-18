@@ -49,7 +49,7 @@ class shopping
 		$content .= "    <div id='carousel'>";
 		
 		foreach ($sliderItems as $sliderItem):
-			$content .= "<div class='jeans' id='jeans'>";
+			$content .= "<div class='inner-product-block' style=height:230px;overflow:hidden>";
 			$content .= 	"<a href='" . $sliderItem->url . "' >";
 			$content .= "       <img src='" . "/userdata/jelly/sliderimage/" . $sliderItem->image . "' width='140' height='200' />";
 			$content .=         "<em>" . $sliderItem->title . "</em>";
@@ -95,7 +95,7 @@ class shopping
 	// (F) Make sure you have added your substitute 
 	private $apiHtml = <<<END_OF_API_HTML
 
-        <div id="jelly-shopping-slider-container">
+        <div id="jelly-shopping-slider-container" style="overflow:hidden";>
             <!--Shopping Slider-->
 			<script src="<substitute-path>/jquery.carouFredSel-6.0.4-packed.js" type="text/javascript"></script>
 			<script type="text/javascript" src="<substitute-path>/shopping.js"></script>

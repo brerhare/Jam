@@ -142,7 +142,7 @@ css.background-color = white
 
 	[slider]
 	css.width = 900px
-	css.height = 200px
+	css.height = 275px
 	css.margin-top = 20px
 #css.background-color = lightgrey
 addon.slider.shopping.slider-height = 200px
@@ -154,7 +154,7 @@ addon.slider.shopping.slider-height = 200px
 	[pages]
 	child = tabs, content 	
 	css.width = 960px
-css.margin-top = 40px
+#css.margin-top = 40px
 	
 		[tabs]
 		condition = @PAGE=@HOMEPAGE
@@ -164,7 +164,7 @@ css.margin-top = 40px
 
 			
 		[content]
-		css.margin-top = 30px
+		#css.margin-top = 30px
 		css.margin = 30px
 		db.table = ContentBlock
 		db.filter = url=$_GET['page']
