@@ -52,14 +52,14 @@
 	z-index: 2;
 }
 #prev {
-	background: url(img/ui-prev.png ) no-repeat; /* Nav Left*/
+	background: url(img/ui-prev.png ) no-repeat; /* image-previous*/
 	left: 50%;
-	margin-left: -520px;
+	margin-left: -520px; /*nav-margin*/
 }
 #next {
-	background: url( img/ui-next.png ) no-repeat; /* Nav Right*/
+	background: url( img/ui-next.png ) no-repeat; /* image-next*/
 	right: 50%;
-	margin-right: -520px;
+	margin-right: -520px; /*nav-margin*/
 }
 #copy {
 	text-align: center;

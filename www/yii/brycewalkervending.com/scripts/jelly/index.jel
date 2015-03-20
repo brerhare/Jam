@@ -12,7 +12,7 @@ fx.wallpaper-image = /img/background.jpg
 css.display = block
 
 	[site]
-	child = header, site-content, footer
+	child = header, site-content
 	css.width = 100%
 
 ####  Header  #################################
@@ -33,7 +33,7 @@ css.display = block
 			css.position = relative
 			css.z-index = 50
 			css.width = 18%
-			css.margin-top = 40px
+			css.margin-top = 30px
 			image.url = img/machine-bubble.png
 			image.width = 170px
 			image.height = 170px
@@ -100,8 +100,9 @@ css.display = block
 #### Site Content #########################################
 
 [site-content]
-child = menu-bar, slider, pages
-css.margin-top = -50px
+child = menu-bar, slider, pages, footer
+css.margin-top = -30px
+css.margin-bottom = 30px
 css.width = 100%
 css.max-width = 960px
 css.background-color = white
@@ -143,21 +144,22 @@ css.background-color = white
 
 	addon.menu.basic.submenu-color = white #1fdfdf
 
-	#addon.menu.basic.subitem-color = white black
+	addon.menu.basic.subitem-color = white
 	#addon.menu.basic.subitem-text-color = purple
 	addon.menu.basic.subitem-seperator-color = red 
 
 
 	[slider]
-	css.width = 500px
-	css.height = 275px
+	css.width = 875px
+	css.height = 265px
 	css.margin-top = 20px
+	css.box-shadow = 3px 5px 8px rgba(0,0,0,0.5)
 #css.position = relative;
-#css.background-color = lightgrey
 addon.slider.shopping.slider-height = 200px
 addon.slider.shopping.image-previous = img/nav-left.png
 addon.slider.shopping.image-next = img/nav-right.png
-addon.slider.shopping.images = 4
+addon.slider.shopping.nav-margin = -450px
+addon.slider.shopping.images = 5
 	
 
 ######## body #######################################
@@ -166,18 +168,19 @@ addon.slider.shopping.images = 4
 	[pages]
 	child = tabs, content 	
 	css.width = 960px
-#css.margin-top = 40px
+	
 	
 		[tabs]
 		condition = @PAGE=@HOMEPAGE
+		css.margin-top = 10px
 		css.display = block
 		css.width = 680px
 		addon.tab.rain.source = db
+		addon.tab.rain.tab-color = #9cdede
 
 			
 		[content]
-		#css.margin-top = 30px
-		css.margin = 30px
+		css.margin = 8px 8%
 		db.table = ContentBlock
 		db.filter = url=$_GET['page']
 		db.error = Sorry, I could not find the page $_GET['page']
@@ -187,70 +190,55 @@ addon.slider.shopping.images = 4
 ####footer####################################
 
 [footer]
+child = footer-border, footer-content
+css.width = 100%
+css.margin-top = 30px
+
+[footer-border]
+css.width = 80%
+css.height = 1px
+css.background-color = #9cdede
+
+
+[footer-content]
 child = footer-menu, footnote
-css.margin-top = 40px
-css.margin-left = 20px
-css.height = 180px
-css.width = 960px
-#css.background-color = #ffffff
-#css.background-color = #f7d9ff
+css.width = 80%
+css.margin-top = 30px
+stacking = horizontal
 
-		[footer-menu]
-		stacking = horizontal
-		child = footer-margin, footer-cookies, footer-tandc, footer-contact
-		css.height = 50px
-		css.width = 960px
+	[footer-menu]
+	child = footer-contact, footer-cookies, footer-tandc
+	css.height = 100px
+	css.width = 70%
+		
+		[footer-contact]
+		html.raw = <a style="text-decoration:none; color: black; font-size: 12px;" onmouseover="this.style.color='red'" onmouseout="this.style.color='black'" href="?layout=index&page=contact">CONTACT</a>
 
-			[footer-margin]
-			css.width = 20%
-			css.height = 50px
+		[footer-cookies]
+		html.raw = <a style="text-decoration:none; color: black; font-size: 12px;" onmouseover="this.style.color='red'" onmouseout="this.style.color='black'" href="?layout=index&page=cookie-policy">COOKIES</a>
+		css.margin-top = 10px
 
-			[footer-cookies]
-			html.raw = Cookie Policy
-			css.width = 20%
-			css.color = #000000
-			css.font-size = 11px
-			css.text-align = right
-			click = ?layout=index&page=cookie-policy
-
-			[footer-tandc]
-			html.raw = Terms & Conditions
-			css.width = 20%
-			css.color = #000000
-			css.font-size = 11px
-			css.text-align = center
-			click = ?layout=index&page=terms-conditions
-
-			[footer-contact]
-			html.raw = Contact Us
-			css.text-align = left
-			css.width = 20%
-			css.color = #000000
-			css.font-size = 11px
-			click = ?layout=index&page=contact
-
+		[footer-tandc]
+		html.raw = <a style="text-decoration:none; color: black; font-size: 12px;" onmouseover="this.style.color='red'" onmouseout="this.style.color='black'" href="?layout=index&page=terms-conditions">T&Cs</a>
+		css.margin-top = 10px
 
 	[footnote]
 	child = copyright, wirefly
-	css.width = 100%
-	css.height = 50px
-	stacking = horizontal
-
+	css.width = 200px
+	css.height = 100px
+	
 		[copyright]
-		css.width = 50%
-		css.margin-top = 10px
-		html.raw = Customer &copy 2014 All rights reserved
+		html.raw = Bryce Walker Vending &copy 2015 <br>All rights reserved
 		css.color = #000000
-		css.font-size = 11px
-		css.text-align = left
-
-	[wirefly]
-	css.margin-top = -10px
-	css.height = 50px
-	css.width = 50%
-	image.url = img/wirefly-weblink.png
-	image.width = 150px
-	image.height = 40px
-	image.align = right
-	clicknew = http://www.wireflydesign.com
-
+		css.font-size = 12px
+		css.text-align = center
+		
+		[wirefly]
+		css.height = 45px
+		css.margin-top = 10px
+		image.url = img/wirefly-weblink.png
+		image.width = 150px
+		image.height = 40px
+		image.align = center
+		clicknew = http://www.wireflydesign.com
+		

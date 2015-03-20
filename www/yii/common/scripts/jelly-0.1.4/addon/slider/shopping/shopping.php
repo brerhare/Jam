@@ -16,8 +16,9 @@ class shopping
 	// --------------------------------------------------------
 
 	private $defaultSliderHeight = "400px";
-	private $defaultNavLeft = "/scripts/jelly/addon/slider/shopping/img/ui-prev.png";
-	private $defaultNavRight = "/scripts/jelly/addon/slider/shopping/img/ui-next.png";		
+	private $defaultNavPrevious = "/scripts/jelly/addon/slider/shopping/img/ui-prev.png";
+	private $defaultNavNext = "/scripts/jelly/addon/slider/shopping/img/ui-next.png";
+	private $defaultNavMargin = "-520px";
 	private $defaultImages = 5;
 
 	public function init($options, $jellyRootUrl)
@@ -34,13 +35,16 @@ class shopping
 					$this->defaultSliderHeight = $val;
 					break;
 				case "image-previous":
-					$this->defaultNavLeft = $val;
+					$this->defaultNavPrevious = $val;
 					break;
 				case "image-next":
-					$this->defaultNavRight = $val;
+					$this->defaultNavNext = $val;
 					break;
 				case "images":
 					$this->defaultImages = $val;
+					break;
+				case "nav-margin":
+					$this->defaultNavMargin = $val;
 					break;
 					
 				default:
@@ -84,10 +88,16 @@ class shopping
 		
 		if (strstr($this->apiHtml, "<substitute-slider-height>"))
 			$this->apiHtml = str_replace("<substitute-slider-height>", $this->defaultSliderHeight, $this->apiHtml);
+		
 		if (strstr($this->apiHtml, "<substitute-image-previous>"))
-			$this->apiHtml = str_replace("<substitute-image-previous>", $this->defaultNavLeft, $this->apiHtml);
+			$this->apiHtml = str_replace("<substitute-image-previous>", $this->defaultNavPrevious, $this->apiHtml);
+		
 		if (strstr($this->apiHtml, "<substitute-image-next>"))
-			$this->apiHtml = str_replace("<substitute-image-next>", $this->defaultNavRight, $this->apiHtml);
+			$this->apiHtml = str_replace("<substitute-image-next>", $this->defaultNavNext, $this->apiHtml);
+		
+		if (strstr($this->apiHtml, "<substitute-nav-margin>"))
+			$this->apiHtml = str_replace("<substitute-nav-margin>", $this->defaultNavMargin, $this->apiHtml);
+		
 		$this->apiHtml = str_replace("<substitute-images>", $this->defaultImages, $this->apiHtml);
 				
 
@@ -126,10 +136,12 @@ class shopping
 			
 				#prev {
 					background: url(<substitute-image-previous>) no-repeat;
+					margin-left: <substitute-nav-margin>;
 						}
 				
 				#next {
 					background: url(<substitute-image-next>) no-repeat;
+					margin-right: <substitute-nav-margin>;
 						}
 			
 			</style>
