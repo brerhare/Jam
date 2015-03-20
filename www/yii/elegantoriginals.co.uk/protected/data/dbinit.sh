@@ -1,1 +1,1 @@
-mysql -uelegantoriginals elegantoriginals_co_uk -p"elegantoriginals.co.uk," < jelly.sql
+mysql -u elegantoriginals elegantoriginals_co_uk -p"4tyqfahv" < jelly.sql

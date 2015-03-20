@@ -11,43 +11,67 @@ child = site
 #css.background-color = #ffffff
 fx.wallpaper-image = /img/background2.jpg
 css.display = block
-#addon.analytics.google_analytics.ua = UA-20115178-1
-
+addon.analytics.google_analytics.ua = UA-40972311-1
+	
 	[site]
-	child = header-area, middle, footer
+	child = header-area, middle
 	css.display = block
 	css.width = 1050px
 	css.background-color = white
-	css.margin-top = 30px
+	css.margin-top = 40px
+	css.margin-bottom = 50px
 	fx.rounding = 4px
-
-
-
+	
+	
 
 ####### Header #########################
 
 [header-area]
-#css.height = 
+child = social, header-logo
+css.height = 150px
 css.width = 1000px
-#css.margin-left = 100px
-image.url = img/logo-header.png
-image.width = 800px
-image.height = 148px
-image.align = center
-click = http://www.elegant.wireflydesign.com
+#css.margin-top = 30px
+stacking = horizontal
+
+	[social]
+	child = facebook, twitter
+	css.width = 160px
+	
+		[facebook]
+		css.margin-top = 40px
+		image.url = img/facebook.png
+		image.width = 35px
+		image.height = 35px
+		image.align = center
+		clicknew = https://www.facebook.com/ElegantOriginals
+		
+		[twitter]
+		css.margin-top = 10px
+		image.url = img/twitter.png
+		image.width = 35px
+		image.height = 35px
+		image.align = center
+		clicknew = https://twitter.com/E_Originals
+
+	[header-logo]
+	image.url = img/logo-header.png
+	image.width = 800px
+	image.height = 148px
+	image.align = center
+	click = http://www.elegantoriginals.co.uk
 
 ###########################################################
 
 [middle]
 child = right-column, main-column
 stacking = horizontal
-css.width = 950px
+css.width = 1000px
 css.margin-top = 30px
 css.margin-left = 20px 
 	#css.background-color = #fcffd9
 
 	[right-column]
-	child = menu, mailer
+	child = menu, mailer, footer-menu, footnote
 	css.width = 180px
 	css.overflow = visible
 	#css.background-color = #f7d9ff
@@ -56,7 +80,7 @@ css.margin-left = 20px
 	#css.height = 40px
 	#css.width = 160px
 	css.overflow = visible
-	css.margin-top = 20px
+	css.margin-top = 50px
 	css.margin-left = 45px
 	addon.menu.basic.orientation = vertical
 	#addon.menu.basic.edgepadding = 5px
@@ -82,7 +106,7 @@ css.margin-left = 20px
 	
 	[mailer]
 	child = signup-text, signup
-	css.margin-top = 60px
+	css.margin-top = 70px
 	css.width = 130px
 	css.height = 200px
 	css.background-color = #c2a8c6
@@ -105,12 +129,52 @@ css.margin-left = 20px
 		addon.mailer.signup.successtextcolor = green
 		addon.mailer.signup.failuretextcolor = red
 		addon.mailer.signup.inputwidth = 120px
+		
+	[footer-menu]
+		child = footer-contact, footer-cookies, footer-tandc
+		css.height = 100px
+		css.width = 550px
+		css.margin-left = 30px
+		css.margin-top = 50px
+		
+			[footer-contact]
+			html.raw = <a style="text-decoration:none; color: grey; font-size: 12px" href="?layout=index&page=contact">Contact Us</a>
+
+			[footer-cookies]
+			html.raw = <a style="text-decoration:none; color: grey; font-size: 12px" href="?layout=index&page=cookie-policy">Cookie Policy</a>
+			css.margin-top = 10px
+
+			[footer-tandc]
+			html.raw = <a style="text-decoration:none; color: grey; font-size: 12px" href="?layout=index&page=terms-conditions">T&Cs</a>
+			css.margin-top = 10px
+
+		[footnote]
+		child = copyright, wirefly
+		css.width = 200px
+		css.height = 150px
+		
+			[copyright]
+			html.raw = Elegant Originals &copy 2015 <br>All rights reserved
+			css.color = grey
+			css.font-size = 12px
+			css.text-align = left
+			css.margin-left = 30px
+			css.height = 50px
+			
+			[wirefly]
+			css.height = 45px
+			css.margin-left = 25px
+			image.url = img/wirefly-weblink.png
+			image.width = 150px
+			image.height = 44px
+			image.align = left
+			clicknew = http://www.wireflydesign.com
 
 ###########################################################
 
 [main-column]
-child = slider, content, contact
-css.width = 750px
+child = slider, content, blog-content, contact, logo-footer
+css.width = 800px
 css.margin-left = 15px
 #css.background-color = lightgrey
 
@@ -135,6 +199,18 @@ css.margin-left = 15px
 
 	[content]
 #	css.background-color = #e1ffd9
+	condition = @PAGE!=blog
+	css.width = 700px
+	db.table = ContentBlock
+	db.filter = url=$_GET['page']
+	db.error = Sorry, I could not find th page $_GET['page']
+	html.raw = ContentBlock.content
+	
+	[blog-content]
+#	css.background-color = #e1ffd9
+	condition = @PAGE=blog
+	css.width = 800px
+	css.margin-left = 20px
 	db.table = ContentBlock
 	db.filter = url=$_GET['page']
 	db.error = Sorry, I could not find th page $_GET['page']
@@ -148,7 +224,7 @@ css.margin-left = 15px
 		
 		[contact-form]
 		css.width = 400px
-		#css.margin-bottom = 30px
+		css.margin-left = 60px
 		css.background-color = white
 		addon.contact.contactform.edgepadding = 0px
 		addon.contact.contactform.buttoncolor = #cddff2
@@ -157,10 +233,11 @@ css.margin-left = 15px
 		addon.contact.contactform.successtextcolor = green
 		addon.contact.contactform.failuretextcolor = red
 		addon.contact.contactform.textcolor = blue
-		addon.contact.contactform.backcolor = pink
+		addon.contact.contactform.backcolor = #FFFFD6
 		addon.contact.contactform.font-family = arial
 		addon.contact.contactform.font-size = 14
 		addon.contact.contactform.inputspacing = 10px
+		addon.contact.contactform.inputwidth = 58%
 
 		[contact-text]
 		css.width = 300px
@@ -172,79 +249,13 @@ css.margin-left = 15px
 
 ##############################################################
 
-[footer]
-child = footer-menu, logo-footer, footnote
-css.margin-top = 40px
-css.margin-left = 20px
-css.height = 180px
-css.width = 960px
-#css.background-color = #ffffff
-#css.background-color = #f7d9ff
-
-		[footer-menu]
-		stacking = horizontal
-		child = footer-margin, footer-cookies, footer-tandc, footer-contact
-		css.height = 50px
-		css.width = 960px
-
-			[footer-margin]
-			css.width = 20%
-			css.height = 50px
-
-			[footer-cookies]
-			html.raw = Cookie Policy
-			css.width = 20%
-			css.color = #000000
-			css.font-size = 11px
-			css.text-align = right
-			click = ?layout=index&page=cookie-policy
-
-			[footer-tandc]
-			html.raw = Terms & Conditions
-			css.width = 20%
-			css.color = #000000
-			css.font-size = 11px
-			css.text-align = center
-			click = ?layout=index&page=terms-conditions
-
-			[footer-contact]
-			html.raw = Contact Us
-			css.text-align = left
-			css.width = 20%
-			css.color = #000000
-			css.font-size = 11px
-			click = ?layout=index&page=contact
-
-
 	[logo-footer]
 	css.width = 100%
+	css.height = 120px
 	image.url = img/logo-footer.png
 	image.width = 800px
 	image.height = 85px
 	image.align = center
-	click = http://www.elegant.wireflydesign.com
+	click = http://www.elegantoriginals.co.uk
 
-	[footnote]
-	child = copyright, wirefly
-	css.width = 100%
-	css.height = 50px
-	stacking = horizontal
-
-		[copyright]
-		css.width = 50%
-		css.margin-top = 10px
-		html.raw = Elegant Originals &copy 2014 All rights reserved
-		css.color = #000000
-		css.font-size = 11px
-		css.text-align = left
-
-	[wirefly]
-	css.margin-top = -10px
-	css.height = 50px
-	css.width = 50%
-	image.url = img/wirefly-weblink.png
-	image.width = 161px
-	image.height = 40px
-	image.align = right
-	clicknew = http://www.wireflydesign.com
 
