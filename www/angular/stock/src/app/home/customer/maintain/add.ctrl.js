@@ -1,9 +1,10 @@
 angular.module('stock')
 	.controller('CustomerAddCtrl', function ($scope, restFactory, notificationFactory) {
+//	alert('add ctrl');
+
 		var url            = 'http://stock.wireflydesign.com/server/api/stock_customer/';
 		var urlArea        = 'http://stock.wireflydesign.com/server/api/stock_area/';			// for <select>
 		var urlMarkupGroup = 'http://stock.wireflydesign.com/server/api/stock_markup_group/';	// for <select>
-alert('add ctrl');
 		$scope.rowCollection = [];
 		$scope.displayMode = "list";
 		$scope.formMode = "";
