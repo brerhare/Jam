@@ -1,9 +1,6 @@
 angular.module('stock')
-	.controller('CustomerMaintainCtrl', function ($scope, $location, restFactory, notificationFactory) {
-//alert('maintain');
-		$location.path('/home/customer/list');
-        $location.replace();
-
+	.controller('CustomerListCtrl', function ($scope, $state, restFactory, notificationFactory) {
+//alert('list');
 		var url            = 'http://stock.wireflydesign.com/server/api/stock_customer/';
 		var urlArea        = 'http://stock.wireflydesign.com/server/api/stock_area/';			// for <select>
 		var urlMarkupGroup = 'http://stock.wireflydesign.com/server/api/stock_markup_group/';	// for <select>
@@ -59,11 +56,11 @@ angular.module('stock')
 		$scope.addItem = function()	{
 			$state.go('home.customer-add');
 			/*
-			 $scope.item = {};
-			 getAreas();
-			 getMarkupGroups();
-			 $scope.formMode = "add";
-			 $scope.displayMode = "form";*/
+			$scope.item = {};
+			getAreas();
+			getMarkupGroups();
+			$scope.formMode = "add";
+			$scope.displayMode = "form";*/
 		};
 
 		$scope.editItem = function(id) {
@@ -141,22 +138,20 @@ angular.module('stock')
 		restFactory.getItem(url).success(getItemSuccessCallback).error(errorCallback);
 
 
-		/*
 // This was textalk - not used - not yet deleted in case there is some use in this?
-		$scope.onSubmit = function(form) {
-			alert('form submitted');
-			// First we broadcast an event so all fields validate themselves
-			$scope.$broadcast('schemaFormValidate');
+  $scope.onSubmit = function(form) {
+	  alert('form submitted');
+    // First we broadcast an event so all fields validate themselves
+    $scope.$broadcast('schemaFormValidate');
 
-			// Then we check if the form is valid
-			if (form.$valid) {
-				// ... do whatever you need to do with your data.
-				alert('form is valid');
-			}
-			else
-				alert('form is NOT valid');
-		};
-		*/
+    // Then we check if the form is valid
+    if (form.$valid) {
+      // ... do whatever you need to do with your data.
+		alert('form is valid');
+    }
+	else
+		alert('form is NOT valid');
+  };
 
 
 	});

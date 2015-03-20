@@ -26,6 +26,22 @@ angular.module('stock')
         templateUrl: 'app/home/customer/maintain/maintain.html',
         controller: 'CustomerMaintainCtrl'
       })
+		.state('home.customer-list', {
+			url: '/customer/list',
+			templateUrl: 'app/home/customer/maintain/list.html',
+			controller: 'CustomerListCtrl'
+		})
+        .state('home.customer-add', {
+        	url: '/customer/add',
+        	templateUrl: 'app/home/customer/maintain/add.html',
+        	controller: 'CustomerAddCtrl'
+        })
+		.state('home.customer-edit', {
+			url: '/customer/edit',
+			templateUrl: 'app/home/customer/maintain/edit.html',
+			controller: 'CustomerEditCtrl'
+		})
+
       .state('home.customer-area', {
         url: '/customer/areas',
         templateUrl: 'app/home/customer/area/customerArea.html',
