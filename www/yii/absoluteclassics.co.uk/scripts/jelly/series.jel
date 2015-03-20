@@ -40,34 +40,36 @@ click = http://www.absoluteclassics.co.uk/
 child = margin, menu1, menu2, menu3
 css.margin-top = 20px
 css.margin-left = 100px
-css.height = 40px
+css.height = 55px
 css.width = 1000px
 stacking = horizontal
 css.margin-left = 0px auto
 css.margin-right= 0px auto 
 
 	[margin]
-	css.width = 125px
+	css.width = 120px
 	css.height = 20px
 
 	[menu1]
-	css.width = 250px
-	image.url = img/menu/series-underline.png
-	image.width = 83px
+	css.width = 260px
+	css.margin-top = 15px
+	image.url = img/menu/concert-underline.png
+	image.width = 151px
 	image.height = 37px
 	image.align = centre
 	click = http://www.absoluteclassics.co.uk/?layout=series&page=classical-music-series
 
 	[menu2]
 	css.width = 250px
-	image.url = img/menu/festival-white.png
-	image.width = 115px
-	image.height = 35px
+	image.url = img/menu/im-platform-white.png
+	image.width = 218px
+	image.height = 50px
 	image.align = centre
 	click = http://www.absoluteclassics.co.uk/?layout=festival&page=international-music-platform-festival
 
 	[menu3]
 	css.width = 250px
+	css.margin-top = 15px
 	image.url = img/menu/tickets-white.png
 	image.width = 100px
 	image.height = 35px
@@ -175,7 +177,7 @@ stacking = horizontal
 		#css.margin-left = 100px
 
 			[fmenu1]
-			child = education, support, twitter
+			child = education, masterclasses, support
 			#css.height = 200px
 			css.width = 200px
 			css.margin-left = 200px
@@ -188,25 +190,22 @@ stacking = horizontal
 				css.color = #ffffff
 				click = ?layout=index&page=education-classical-music
 
-
+				[masterclasses]
+				html.raw = Master Classes
+				css.margin-top = 8px
+				css.text-align = left
+				css.color = #ffffff
+				#click = ?layout=index&page=education-classical-music
+				
 				[support]
-				html.raw = Support Us
+				html.raw = Sponsors
 				css.margin-top = 8px
 				css.text-align = left
 				css.color = #ffffff
 				click = ?layout=index&page=support-classical-music
 
-				[twitter]
-				html.raw = Twitter
-				css.margin-top = 8px
-				css.text-align = left
-				css.color = #ffffff
-				clicknew = https://twitter.com/ABClassics
-
-
-
 			[fmenu2]
-			child = about, footer-contact, facebook
+			child = about, footer-contact, footer-cookies, footer-tandc,
 			#css.height = 200px
 			css.width = 200px
 
@@ -216,67 +215,66 @@ stacking = horizontal
 				css.text-align = center
 				css.color = #ffffff
 				click = ?layout=index&page=about-absolute-classics
+				
 				[footer-contact]
 				html.raw = Contact Us
 				css.text-align = center
 				css.margin-top = 8px
 				css.color = #ffffff
 				click = ?layout=index&page=contact-live-classical-music-dumfries
-
-				[facebook]
-				html.raw = Facebook
+				
+				[footer-cookies]
+				html.raw = Cookie Policy
 				css.margin-top = 8px
 				css.text-align = center
 				css.color = #ffffff
-				clicknew = https://www.facebook.com/absoluteclassicsconcerts
+				click = ?layout=index&page=cookie-policy
+				
+				[footer-tandc]
+				html.raw = Site T&Cs
+				css.margin-top = 8px
+				css.text-align = center
+				css.color = #ffffff
+				click = ?layout=index&page=terms-conditions
+
+
 
 
 			[fmenu3]
-			child = footer-tandc, footer-cookies, news
+			child = news, facebook, twitter
 			#css.height = 200px
 			css.width = 200px
 			#css.margin-left = 200px
 
-
-				[footer-cookies]
-				html.raw = Cookie Policy
-				css.margin-top = 8px
-				css.text-align = right
-				css.color = #ffffff
-				click = ?layout=index&page=cookie-policy
-
-				[footer-tandc]
-				#html.raw = Site T&Cs
-				css.margin-top = 8px
-				css.text-align = right
-				css.color = #ffffff
-				click = ?layout=index&page=terms-conditions
-
 				[news]
-				#html.raw = Newsletter
+				html.raw = Blog
 				css.margin-top = 8px
 				css.text-align = right
 				css.color = #ffffff
-				click = ?layout=index&page=classical-music-dumfries-news
+				click = ?layout=index&page=latest-news-classical-music-dumfries-galloway
+				
+				[facebook]
+				html.raw = Facebook
+				css.margin-top = 8px
+				css.text-align = right
+				css.color = #ffffff
+				clicknew = https://www.facebook.com/absoluteclassicsconcerts
+				
+				[twitter]
+				html.raw = Twitter
+				css.margin-top = 8px
+				css.text-align = right
+				css.color = #ffffff
+				clicknew = https://twitter.com/ABClassics
 
 
 		[footer-image]
-		child = wirefly
-		css.width = 900px
-		css.margin-left = 160px
-		image.url = img/sponsor-logos.png
-		image.width = 650px
-		image.height = 135px
-		image.align = centre
-		css.position = relative
-		css.z-index = 100
-
-			[wirefly]
-			css.margin-top = 40px
-			css.height = 60px
-			css.width = 20%
-			image.url = img/wirefly-link-white.png
-			image.width = 161px
-			image.height = 40px
-			clicknew = http://www.wireflydesign.com
+		css.margin-top = 40px
+		css.height = 60px
+		css.width = 20%
+		image.url = img/wirefly-link-white.png
+		image.width = 161px
+		image.height = 40px
+		image.align = center
+		clicknew = http://www.wireflydesign.com
 
