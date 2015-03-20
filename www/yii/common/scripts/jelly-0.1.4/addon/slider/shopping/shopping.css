@@ -52,12 +52,12 @@
 	z-index: 2;
 }
 #prev {
-	background: url(img/ui-prev.png ) no-repeat;
+	background: url(img/ui-prev.png ) no-repeat; /* Nav Left*/
 	left: 50%;
 	margin-left: -520px;
 }
 #next {
-	background: url( img/ui-next.png ) no-repeat;
+	background: url( img/ui-next.png ) no-repeat; /* Nav Right*/
 	right: 50%;
 	margin-right: -520px;
 }

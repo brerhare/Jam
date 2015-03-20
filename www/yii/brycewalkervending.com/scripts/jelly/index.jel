@@ -19,8 +19,8 @@ css.display = block
 
 	[header]
 	child = bubble-links, logo
-css.position = relative
-	css.width = 1200px
+	css.width = 100%
+	css.max-width = 1100px
 	css.height = 230px 
 		
 		[bubble-links]
@@ -30,8 +30,9 @@ css.position = relative
 		stacking = horizontal
 		
 			[machine-bubble]
-			css.height = 100%
-			css.width = 20%
+			css.position = relative
+			css.z-index = 50
+			css.width = 18%
 			css.margin-top = 40px
 			image.url = img/machine-bubble.png
 			image.width = 170px
@@ -40,35 +41,39 @@ css.position = relative
 			click = ?layout=index&page=vending-machines-office-commercial-dumfries-scotland
 			
 			[FREE-bubble]
-			css.height = 90%
+			css.position = relative
+			css.z-index = 50
 			css.width = 20%
 			css.margin-top = 10px
 			image.url = img/FREE-bubble.png
-			image.width = 120px
-			image.height = 120px
-			image.fx = fx-hover-tilt-right
+			image.width = 100px
+			image.height = 100px
+			image.fx = fx-hover-bounce
 			click = ?layout=index&page=vending-machines-office-commercial-dumfries-scotland
 
 			[vendor-bubble]
-			css.height = 90%
-			css.width = 15%
+			css.position = relative
+			css.z-index = 150
+			css.width = 20%
 			css.margin-left = 30%
 			image.url = img/vendor-bubble.png
 			image.width = 100px
 			image.height = 100px
-			image.fx = fx-hover-spin
+			image.fx = fx-hover-bounce
 			click = javascript:playVendor();
 
-			[show-video]
-			css.display = none
-			addon.video.simple.thumb =  http://brycewalkervending.com/img/vendor-bubble.png
-			addon.video.simple.width = 1065px
-			addon.video.simple.height = 600px
-			# Note that the extension for the video is left off. Wants (but doesnt insist on) .m4v, .ogv, .webm
-			addon.video.simple.video = vendor
-			addon.video.simple.click = playVendor
+				[show-video]
+				css.display = none
+				addon.video.simple.thumb =  http://brycewalkervending.com/img/vendor-bubble.png
+				addon.video.simple.width = 1065px
+				addon.video.simple.height = 600px
+				# Note that the extension for the video is left off. Wants (but doesnt insist on) .m4v, .ogv, .webm
+				addon.video.simple.video = vendor
+				addon.video.simple.click = playVendor
 
 			[contact-bubble]
+			css.position = relative
+			css.z-index = 50
 			css.height = 100%
 			css.width = 20%
 			css.margin-top = 20px
@@ -76,11 +81,13 @@ css.position = relative
 			image.url = img/contact-bubble.png
 			image.width = 200px
 			image.height = 200px
-			image.align = center
-			image.fx = fx-hover-swing
+			image.align = right
+			image.fx = fx-hover-bounce
 			click = ?layout=index&page=contact
 	
 		[logo]
+		css.position = relative
+		css.z-index = 100
 		css.margin-top = -310px
 		css.height = 240px
 		css.width = 550px
@@ -95,7 +102,8 @@ css.position = relative
 [site-content]
 child = menu-bar, slider, pages
 css.margin-top = -50px
-css.width = 960px
+css.width = 100%
+css.max-width = 960px
 css.background-color = white
 			
 	[menu-bar]
@@ -141,11 +149,15 @@ css.background-color = white
 
 
 	[slider]
-	css.width = 900px
+	css.width = 500px
 	css.height = 275px
 	css.margin-top = 20px
+#css.position = relative;
 #css.background-color = lightgrey
 addon.slider.shopping.slider-height = 200px
+addon.slider.shopping.image-previous = img/nav-left.png
+addon.slider.shopping.image-next = img/nav-right.png
+addon.slider.shopping.images = 4
 	
 
 ######## body #######################################
