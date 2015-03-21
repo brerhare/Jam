@@ -15,6 +15,7 @@ class rain
 {
 	//Defaults
 	private $defaultValue = "900px";
+	private $defaultTabColor = "#d4c2cd";
 
 	public $apiOption = array(
 		"width" => "900px",
@@ -35,7 +36,11 @@ class rain
 		{
 			switch ($opt)
 			{
-				case "source":
+					case "tab-color":
+					$this->defaultTabColor = $val;
+					break;
+					
+					case "source":
 					if ($val == "db")
 					{
 						// If db based content
@@ -87,11 +92,9 @@ class rain
 
 		// Apply all defaults that werent overridden
 		// HTML
-		if (strstr($this->apiHtml, "<substitute-something>"))
-		{
-			$tmp = str_replace("<substitute-something>", $this->defaultValue, $this->apiHtml);
-			$this->apiHtml = $tmp;
-		}
+
+		$this->apiHtml = str_replace("<substitute-tab-color>", $this->defaultTabColor, $this->apiHtml);
+
 		// JS
 
 		// Substitute paths for includes
@@ -116,7 +119,19 @@ class rain
 		<!--JQuery Rain-->
 		<link rel="stylesheet" type="text/css" href="<substitute-path>/rain.css" />
 		<script type="text/javascript" src="<substitute-path>/rain.js"></script>
+		
+		
+		<style>
+		
+			#rain-tabs li a.inactive{
+				background: -moz-linear-gradient(top, <substitute-tab-color>, white 75%);
+				background: -webkit-gradient(linear, 0 0, 0 75%, from(<substitute-tab-color>), to(white));
+									}
+		
+		</style>
+		
 		<substitute-data>
+		
 	</div> <!-- jelly-rain-container -->
 
 END_OF_API_HTML;
