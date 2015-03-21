@@ -176,12 +176,20 @@
 </div>
 
 
+#confirmDialogTemplate {
+   display:inline-block;
+ }
+.ngdialog-content {
+    width: 100px;
+    height: 100%;
+}
+
+
 
 <script type="text/ng-template" id="confirmDialogTemplate">
-    <h1>Template heading</h1>
-    <p>Content goes here</p>
+    <p><center>Delete. Are you sure?</center></p>
     <div class="ngdialog-buttons">
-		<button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click=closeThisDialog("Cancel")>Cancel</button>
+        <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click=closeThisDialog("Cancel")>Cancel</button>
 		<button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=confirm("OK")>OK</button>
-        </div>
+    </div>
 </script>

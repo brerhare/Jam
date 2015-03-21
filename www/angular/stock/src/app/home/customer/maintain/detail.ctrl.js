@@ -97,6 +97,7 @@ angular.module('stock')
 			if ($scope.$parent.editMode == "delete") {
 				ngDialog.openConfirm({
 					template: 'confirmDialogTemplate',
+					closeByEscape: true,
 					scope: $scope //Pass the scope object if you need to access in the template
 				}).then(
 					function(value) {			// OK
