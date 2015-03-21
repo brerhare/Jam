@@ -31,16 +31,11 @@ angular.module('stock')
 			templateUrl: 'app/home/customer/maintain/list.html',
 			controller: 'CustomerListCtrl'
 		})
-        .state('home.customer-add', {
-        	url: '/customer/add',
-        	templateUrl: 'app/home/customer/maintain/add.html',
-        	controller: 'CustomerAddCtrl'
+        .state('home.customer-detail', {
+        	url: '/customer/detail',
+        	templateUrl: 'app/home/customer/maintain/detail.html',
+        	controller: 'CustomerDetailCtrl'
         })
-		.state('home.customer-edit', {
-			url: '/customer/edit',
-			templateUrl: 'app/home/customer/maintain/edit.html',
-			controller: 'CustomerEditCtrl'
-		})
 
       .state('home.customer-area', {
         url: '/customer/areas',
