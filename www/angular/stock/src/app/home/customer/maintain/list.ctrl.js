@@ -4,8 +4,6 @@ angular.module('stock')
 		var url            = 'http://stock.wireflydesign.com/server/api/stock_customer/';
 
 		$scope.rowCollection = [];
-		$scope.displayMode = "list";
-		$scope.formMode = "";
 		$scope.item = {};
 
 
@@ -28,7 +26,7 @@ angular.module('stock')
 
 
 		$scope.cancelItem = function() {
-			$scope.displayMode = "list";
+
 		};
 
 

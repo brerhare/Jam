@@ -1,5 +1,5 @@
 angular.module('stock')
-	.controller('CustomerDetailCtrl', function ($scope, restFactory, notificationFactory) {
+	.controller('CustomerDetailCtrl', function ($scope, restFactory, notificationFactory, ngDialog) {
 		var url            = 'http://stock.wireflydesign.com/server/api/stock_customer/';
 		var urlArea        = 'http://stock.wireflydesign.com/server/api/stock_area/';			// for <select>
 		var urlMarkupGroup = 'http://stock.wireflydesign.com/server/api/stock_markup_group/';	// for <select>
@@ -71,16 +71,21 @@ angular.module('stock')
 			}
 		};
 
-		$scope.deleteItem = function(id) {
+		var deleteItem = function(id) {
 			restFactory.deleteItem(url, id)
 				.success(function(data, status) {
+					window.history.back();
 				})
 				.error(errorCallback);
 		};
 
 		// Processing
 
-		if ($scope.$parent.editMode != "add") {
+		if ($scope.$parent.editMode == "add") {
+			getAreas();
+			getMarkupGroups();
+		}
+		else {
 			restFactory.getItem(url, $scope.$parent.itemId)
 				.success(function (data, status) {
 					$scope.item = data;
@@ -88,10 +93,20 @@ angular.module('stock')
 					getMarkupGroups();
 				})
 				.error(errorCallback);
-		}
-		else {
-			getAreas();
-			getMarkupGroups();
+
+			if ($scope.$parent.editMode == "delete") {
+				ngDialog.openConfirm({
+					template: 'confirmDialogTemplate',
+					scope: $scope //Pass the scope object if you need to access in the template
+				}).then(
+					function(value) {			// OK
+						deleteItem($scope.$parent.itemId);
+					},
+					function(value) {			// Cancel or do nothing
+						window.history.back();
+					}
+				);
+			}
 		}
 
 		$scope.selchangeArea = function() {
