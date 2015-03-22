@@ -1,5 +1,5 @@
 <!-- 'Borrowed' from Laurent's web page -->
-<link rel="stylesheet" href="app/product/maintain/maintain.css"/>
+<link rel="stylesheet" href="app/home/product/maintain/maintain.css"/>
 
 <style>
 h4 { font-size:18px;}
@@ -43,12 +43,12 @@ h4 { font-size:18px;}
   <div id="list-partial" ng-show="displayMode=='list'" style="position:absolute; top:0px; left:0px" class="fadein fadeout">
     <h4 style="text-align:center">Maintain products</h4>
     <div class="table-container">
-      <table Xst-table="displayedCollection" st-safe-src="rowCollection" class="table Xtable-striped">
+      <table st-table="displayedCollection" st-safe-src="rowCollection" class="table Xtable-striped">
         <thead>
           <tr>
-            <th class="hand" st-sort="id">                       Id</th>
-            <th class="hand" st-sort="name">                   Name</th>
-            <th class="hand" st-sort="cost">                   Cost</th>
+            <th class="hand" st-skip-natural="true" st-sort="id">                       Id</th>
+            <th class="hand" st-skip-natural="true" st-sort="name">                   Name</th>
+            <th class="hand" st-skip-natural="true" st-sort="cost">                   Cost</th>
             <th>
               <button type="button" ng-click="outputPDF()" class="btn btn-xs btn-primary">
                 <i class="fa fa-file-pdf-o fa-1x"></i>

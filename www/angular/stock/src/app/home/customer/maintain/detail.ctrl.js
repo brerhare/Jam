@@ -58,6 +58,7 @@ angular.module('stock')
 			if ($scope.$parent.editMode == "add") {
 				restFactory.addItem(url, $scope.item)
 					.success(function (data, status) {
+						notificationFactory.success();
 						window.history.back();
 					})
 					.error(errorCallback);
@@ -65,6 +66,7 @@ angular.module('stock')
 			else if ($scope.$parent.editMode == "edit") {
 				restFactory.updateItem(url, $scope.item.id, $scope.item)
 					.success(function (data, status) {
+						notificationFactory.success();
 						window.history.back();
 					})
 					.error(errorCallback);

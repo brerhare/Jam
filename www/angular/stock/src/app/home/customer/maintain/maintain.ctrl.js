@@ -3,17 +3,18 @@ angular.module('stock')
 //alert('maintain');
 		$location.path('/home/customer/list');
         $location.replace();
-
+/*
 		var url            = 'http://stock.wireflydesign.com/server/api/stock_customer/';
 		var urlArea        = 'http://stock.wireflydesign.com/server/api/stock_area/';			// for <select>
 		var urlMarkupGroup = 'http://stock.wireflydesign.com/server/api/stock_markup_group/';	// for <select>
+*/
 
-		$scope.rowCollection = [];
+	/*	$scope.rowCollection = [];
 		$scope.displayMode = "list";
 		$scope.formMode = "";
 		$scope.item = {};
 		$scope.areas = {};			// for <select>
-		$scope.markupGroups = {};	// for <select>
+		$scope.markupGroups = {};	// for <select>*/
 
 
 

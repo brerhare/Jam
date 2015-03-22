@@ -1,5 +1,5 @@
 <!-- 'Borrowed' from Laurent's web page -->
-<link rel="stylesheet" href="app/customer/maintain/list.css"/>
+<link rel="stylesheet" href="app/home/customer/maintain/list.css"/>
 
 <style>
 h4 { font-size:18px;}
@@ -46,11 +46,11 @@ h4 { font-size:18px;}
       <table st-table="displayedCollection" st-safe-src="rowCollection" class="table Xtable-striped">
         <thead>
           <tr>
-            <th class="hand" st-sort="id">                       Id</th>
-            <th class="hand" st-sort="name">                   Name</th>
-            <th class="hand" st-sort="discount_percent"> Discount %</th>
-            <th class="hand" st-sort="telephone">           Phone #</th>
-            <th class="hand" st-sort="forma_de_pago"> Forma de Pago</th>
+            <th class="hand" st-skip-natural="true" st-sort="id">                       Id</th>
+            <th class="hand" st-skip-natural="true" st-sort="name">                   Name</th>
+            <th class="hand" st-skip-natural="true" st-sort="discount_percent"> Discount %</th>
+            <th class="hand" st-skip-natural="true" st-sort="telephone">           Phone #</th>
+            <th class="hand" st-skip-natural="true" st-sort="forma_de_pago"> F de Pago</th>
             <th>
               <button type="button" ng-click="outputPDF()" class="btn btn-xs btn-primary">
                 <i class="fa fa-file-pdf-o fa-1x"></i>
