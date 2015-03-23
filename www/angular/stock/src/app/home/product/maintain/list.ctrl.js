@@ -1,5 +1,5 @@
 angular.module('stock')
-	.controller('ProductListCtrl', function ($scope, restFactory, notificationFactory) {
+	.controller('ProductListCtrl', function ($scope, $state, restFactory, notificationFactory) {
 
 		var url             = 'http://stock.wireflydesign.com/server/api/stock_product/';
 
