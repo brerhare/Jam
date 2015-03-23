@@ -68,22 +68,36 @@ class MyAPI extends API
 
 		if ($this->method == 'GET')
 		{
-			$id = trim($this->args[0]);
-			if ($id)
+			$params = trim($this->args[0]);
+			if ($params)
 			{
-				// Single item
-				$arr = array();
-				$query = DB::query("SELECT * FROM stock_customer WHERE uid=%i AND id=%i", $uid, $id);
-				if ($query)
+				if ((strstr($params, "?")))
 				{
-					foreach ($allColumns as $column)
-						$arr[$column] = $query[0][$column];
+					// Request has parameter(s)
+					$parts = parse_url($params);
+					parse_str($parts['query'], $query);
+					logWrite("Parameters passed to GET. 'offset'=" .  $query['offset']);
+return('ok');
 				}
-logWrite('arr = ' . print_r($arr, true));
-				return $arr;
+				else
+				{
+logWrite("NO Parameters passed to GET . single");
+					// Single item
+					$id = (int) $this->args[0];
+					$arr = array();
+					$query = DB::query("SELECT * FROM stock_customer WHERE uid=%i AND id=%i", $uid, $id);
+					if ($query)
+					{
+						foreach ($allColumns as $column)
+							$arr[$column] = $query[0][$column];
+					}
+	logWrite('arr = ' . print_r($arr, true));
+					return $arr;
+				}
 			}
 			else
 			{
+logWrite("NO Parameters passed to GET . multiple");
 				// All items
 				$arr = array();
 				$ix = 0;
@@ -92,7 +106,8 @@ logWrite('arr = ' . print_r($arr, true));
 					foreach ($showColumns as $column)
 						$arr[$ix][$column] = $q[$column];
 					$ix++;
-	if ($ix >= 100) break;	// @@TODO: remove!
+	if ($ix >= 10) break;	// @@TODO: remove!
+//	if ($ix >= 100) break;	// @@TODO: remove!
 				}
 				return $arr;
 			}
