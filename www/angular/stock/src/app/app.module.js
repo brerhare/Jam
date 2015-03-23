@@ -1,11 +1,21 @@
 angular.module('stock', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'smart-table', 'fcsa-number', 'ngDialog'])
 
 	.factory('restFactory', function ($http) {
+		
+		var appendUrl = function (url, part) {			// Append to url, ensuring '/' separation of parts
+			var newUrl = url;
+			if (newUrl.charAt(newUrl.length-1) != '/')
+				newUrl += '/';
+			newUrl += ("" + part);
+			//newUrl = url + "?offset=1&limit=20";
+			return newUrl;
+		};
+
 		return {
 			getItem: function (url, id) {
 				id = typeof id !== 'undefined' ? id : "";
 				return $http({
-					url: url + id,
+					url: appendUrl(url, id),
 					method: "GET",
 					//data: JSON.stringify(requestData),
 					data: '',
@@ -23,14 +33,14 @@ angular.module('stock', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngR
 			},
 			deleteItem: function (url, id) {
 				return $http({
-					url: url + id,
+					url: appendUrl(url, id),
 					method: "DELETE",
 					data: id
 				});
 			},
 			updateItem: function (url, id, item) {
 				return $http({
-					url: url + id,
+					url: appendUrl(url, id),
 					method: "PUT",
 					data: item
 				});
