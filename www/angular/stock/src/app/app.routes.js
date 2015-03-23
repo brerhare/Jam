@@ -61,10 +61,21 @@ angular.module('stock')
 // Products
 // --------
       .state('home.product-maintain', {
-          url: '/products/maintain',
+          url: '/product/maintain',
           templateUrl: 'app/home/product/maintain/maintain.html',
           controller: 'ProductMaintainCtrl'
       })
+		.state('home.product-list', {
+			url: '/product/list',
+			templateUrl: 'app/home/product/maintain/list.html',
+			controller: 'ProductListCtrl'
+		})
+		.state('home.product-detail', {
+			url: '/product/detail',
+			templateUrl: 'app/home/product/maintain/detail.html',
+			controller: 'ProductDetailCtrl'
+		})
+
       .state('home.product-group', {
           url: '/product/groups',
           templateUrl: 'app/home/product/group/productGroup.html',

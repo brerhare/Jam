@@ -1,0 +1,91 @@
+<!-- 'Borrowed' from Laurent's web page -->
+<link rel="stylesheet" href="app/home/product/maintain/maintain.css"/>
+
+<style>
+h4 { font-size:18px;}
+</style>
+
+<style>
+/* fade effect */
+  .fadein,
+.fadeout {
+  -webkit-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.6s;
+  -moz-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.6s;
+  -o-transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.6s;
+  transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.6s;
+}
+
+.fadein.ng-hide-remove,
+.fadeout.ng-hide-add.ng-hide-add-active {
+  opacity: 0;
+  display: block !important;
+}
+
+.fadeout.ng-hide-add,
+.fadein.ng-hide-remove.ng-hide-remove-active {
+  opacity: 1;
+  display: block !important;
+}
+</style>
+
+<style>
+  .hand {
+    cursor: pointer;
+    cursor: hand;
+  }
+  .highlight:hover {
+    background-color: #ddf0ff;
+  }
+</style>
+
+<div class="container-fluid" style="position:relative">
+
+  <div id="list-partial" ng-show="displayMode=='list'" style="position:absolute; top:0px; left:0px" class="fadein fadeout">
+    <h4 style="text-align:center">Maintain products</h4>
+    <div class="table-container">
+      <table st-table="displayedCollection" st-safe-src="rowCollection" class="table Xtable-striped">
+        <thead>
+          <tr>
+            <th class="hand" st-skip-natural="true" st-sort="id">                       Id</th>
+            <th class="hand" st-skip-natural="true" st-sort="name">                   Name</th>
+            <th class="hand" st-skip-natural="true" st-sort="cost">                   Cost</th>
+            <th>
+              <button type="button" ng-click="outputPDF()" class="btn btn-xs btn-primary">
+                <i class="fa fa-file-pdf-o fa-1x"></i>
+              </button>
+            </th>
+          </tr>
+          <tr>
+            <th><input st-search="'id'"               placeholder="search" class="input-sm form-control" type="search"/></th>
+            <th><input st-search="'name'"             placeholder="search" class="input-sm form-control" type="search"/></th>
+            <th><input st-search="'cost'"             placeholder="search" class="input-sm form-control" type="search"/></th>
+            <th>
+              <button type="button" ng-click="addItem()" class="btn btn-xs btn-success">
+                <i class="fa fa-plus fa-1x"></i>
+              </button>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+        <tr class="highlight hand" ng-repeat="row in displayedCollection | orderBy:'name'">
+          <td ng-click="editItem(row.id)">{{row.id}}              </td>
+          <td ng-click="editItem(row.id)">{{row.name}}            </td>
+          <td ng-click="editItem(row.id)">{{row.cost}}            </td>
+          <td>
+            <button type="button" ng-click="deleteItem(row.id)" class="btn btn-xs btn-danger">
+              <i class="fa fa-trash fa-1x"></i>
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <p style="text-align:center"><i><b>{{displayedCollection.length}} products</b></i></p>
+    </div>
+  </div>  <!-- list-partial -->
+
+  <div id="edit-partial" ng-show="displayMode=='form'" style="position:absolute; top:0px; left:0px; width:100%" class="fadein fadeout">
+    <h4 style="text-align:center">{{formMode=='add' ? 'Add' : 'Edit'}} product</h4>
+    <div ng-include src="'app/home/product/maintain/_form.html'" ></div>
+  </div>
+
+</div>  <!-- container-fluid -->
