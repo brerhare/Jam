@@ -1,5 +1,5 @@
 angular.module('stock')
-	.controller('ProductDetailCtrl', function ($scope, restFactory, notificationFactory) {
+	.controller('ProductDetailCtrl', function ($scope, restFactory, notificationFactory, ngDialog) {
 		var url             = 'http://stock.wireflydesign.com/server/api/stock_product/';
 		var urlVat          = 'http://stock.wireflydesign.com/server/api/stock_vat/';			// for <select>
 		var urlGroup        = 'http://stock.wireflydesign.com/server/api/stock_group/';			// for <select>
@@ -8,15 +8,12 @@ angular.module('stock')
 
 		var maxLevels = 3;		// @TODO hardcoded. Same in group maint
 		$scope.rowCollection = [];
-		$scope.displayMode = "list";
-		$scope.formMode = "";
 		$scope.item = {};
 		$scope.vats = {};							// for <select>. Has 'items[]', 'selectedVat
 		$scope.selectedVat = { rate : null};
 		var groups = [];							// All groups loaded once at startup
 		$scope.levelGroups = new Array(maxLevels);	// An array ix for each level's <select>. Has 'parentId', 'selectedGroup', 'items[]'
 		$scope.markupGroups = {};					// for group tab
-		$scope.someArrayManualPrice = [];
 
 		$scope.getMaxLevels = function() {
 			return new Array(maxLevels);
@@ -36,7 +33,7 @@ getVats();
 
 		var setSelectedVat = function() {	// for vat <select>
 			for (var i = 0; i < $scope.vats.length; i++) {
-				if ($scope.formMode == 'add') {
+				if ($scope.$parent.editMode == "add") {
 					if ($scope.vats[i].is_default == 1) {
 						$scope.selectedVat = $scope.vats[i];
 						$scope.item.stock_vat_id = $scope.vats[i].id;
@@ -127,9 +124,9 @@ getVats();
 
 		var setupGroupSelects = function() {
 			clearLevelsDown(0);
-			if ($scope.formMode == "add")							// fill top level
+			if ($scope.$parent.editMode == "add")							// fill top level
 				fillGroupLevel(0, getGroupTopParents(), null);
-			else if ($scope.formMode == "edit") {					// fill all levels from bottom up
+			else if ($scope.$parent.editMode == "edit") {					// fill all levels from bottom up
 				var id = $scope.item.stock_group_id;				// ie the group the product is attached to
 				for (var i = (maxLevels - 1); i >=0; i--) {
 					fillGroupLevel(i, getGroupSiblings(getGroupItemById(id)), getGroupItemById(id));
@@ -144,10 +141,11 @@ getVats();
 					for (var i = 0; i < data.length; i++) {
 						groups[i] = data[i];
 					}
+					setupGroupSelects();
 				})
 				.error(errorCallback);
 		};
-getGroups();
+
 
 		// Product price (for markup groups - loaded for product being edited/added)
 		// -------------								// @@TODO: should also only fire when needed eg price tab
@@ -218,93 +216,97 @@ getMarkupGroups();	// @@TODO: make this only fire when user clicks the applicabl
 			return val;
 		};
 
-		// Product item
-		// ------------
 
-		var initProductEditing = function() {
-			$scope.displayMode = "form";
-			setSelectedVat();
-			setupGroupSelects();
-			getMarkupGroupsProductPrices();
-		};
-
-		$scope.addItem = function() {
-			$scope.item = {};
-			$scope.formMode = "add";
-			initProductEditing();
-		};
-
-		$scope.editItem = function(id) {
-			restFactory.getItem(url, id)
-				.success(function(data, status) {
-					$scope.item = data;
-					$scope.formMode = "edit";
-					initProductEditing();
-				})
-				.error(errorCallback);
-		};
-
-		$scope.deleteItem = function(id) {
-			restFactory.deleteItem(url, id)
-				.success(function(data, status) {
-					for (var i = 0; i < $scope.rowCollection.length; i++) {
-						if ($scope.rowCollection[i].id == id) {
-							$scope.rowCollection.splice(i, 1);
-							$scope.displayedCollection = [].concat($scope.rowCollection);
-							break;
-						}
-					}
-				})
-				.error(errorCallback);
-		};
+		// Ending off
 
 		$scope.cancelItem = function() {
-			$scope.displayMode = "list";
+			window.history.back();
 		};
 
-		$scope.saveItem = function() {
-			if ($scope.formMode == "add") {
-				restFactory.addItem(url, $scope.item)
-					.success(function (data, status) {
-						$scope.item.id = data.id;
-						$scope.rowCollection.push($scope.item);		// insert new
-						$scope.displayedCollection = [].concat($scope.rowCollection);
-						notificationFactory.success();
-						// Now update/add any price overrides
-						for (var i = 0; i < $scope.markupGroups.length; i++)
+        $scope.saveItem = function() {
+            if ($scope.$parent.editMode == "add") {
+                restFactory.addItem(url, $scope.item)
+                    .success(function (data, status) {
+						// Now update/add any price overrides					 @@WHUT?
+						for (var i = 0; i < $scope.markupGroups.length; i++) {
 							if ($scope.markupGroups[i].manual !== 0) {
 								// delete old
 								// add new
 							}
-					})
-					.error(errorCallback);
-			}
-			else if ($scope.formMode == "edit") {
-				restFactory.updateItem(url, $scope.item.id, $scope.item)
-					.success(function (data, status) {
-						for (var i = 0; i < $scope.rowCollection.length; i++) {
-							if ($scope.rowCollection[i].id == $scope.item.id) {
-								$scope.rowCollection[i] = $scope.item;	// replace old with new
-								$scope.displayedCollection = [].concat($scope.rowCollection);
-								break;
-							}
 						}
-						notificationFactory.success();
-					})
-					.error(errorCallback);
-			}
-$scope.displayMode = "list";
-		};
-
-		var getItemSuccessCallback = function (data, status) {
-			$scope.rowCollection = data;
-			$scope.displayedCollection = [].concat($scope.rowCollection);
-		};
+                        notificationFactory.success();
+                        window.history.back();
+                    })
+                    .error(errorCallback);
+            }
+            else if ($scope.$parent.editMode == "edit") {
+                restFactory.updateItem(url, $scope.item.id, $scope.item)
+                    .success(function (data, status) {
+                        notificationFactory.success();
+                        window.history.back();
+                    })
+                    .error(errorCallback);
+            }
+        };
+        var deleteItem = function(id) {
+            restFactory.deleteItem(url, id)
+                .success(function(data, status) {
+                    window.history.back();
+                })
+                .error(errorCallback);
+        };
 
 		var errorCallback = function (data, status, headers, config) {
+			alert(data.value);
 			notificationFactory.error(data.ExceptionMessage);
 		};
 
-		restFactory.getItem(url).success(getItemSuccessCallback).error(errorCallback);
+
+		// Start Processing
+
+
+		var initProductEditing = function() {
+			setSelectedVat();
+			getGroups();
+			getMarkupGroupsProductPrices();
+		};
+
+        if ($scope.$parent.editMode == "add") {
+			// @@ Initialise fields
+			$scope.item.name = "";
+			$scope.item.description = "";
+			$scope.item.cost   = 0.00;
+			$scope.item.weight = 0.00;
+			$scope.item.width  = 0.00;
+			$scope.item.height = 0.00;
+			$scope.item.depth  = 0.00;
+			$scope.item.volume = 0.00;
+			$scope.item.stock_group_id = 0;
+			$scope.item.stock_vat_id = 0;
+			initProductEditing();
+        }
+        else {
+            restFactory.getItem(url, $scope.$parent.itemId)
+                .success(function (data, status) {
+                    $scope.item = data;
+					initProductEditing();
+                })
+                .error(errorCallback);
+
+            if ($scope.$parent.editMode == "delete") {
+                ngDialog.openConfirm({
+                    template: 'confirmDialogTemplate',
+                    closeByEscape: true,
+                    scope: $scope //Pass the scope object if you need to access in the template
+                }).then(
+                    function(value) {           // OK
+                        deleteItem($scope.$parent.itemId);
+                    },
+                    function(value) {           // Cancel or do nothing
+                        window.history.back();
+                    }
+                );
+            }
+        }
 
 	});
