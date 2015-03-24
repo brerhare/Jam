@@ -106,7 +106,7 @@ logWrite("NO Parameters passed to GET . multiple");
 					foreach ($showColumns as $column)
 						$arr[$ix][$column] = $q[$column];
 					$ix++;
-	if ($ix >= 10) break;	// @@TODO: remove!
+//	if ($ix >= 10) break;	// @@TODO: remove!
 //	if ($ix >= 100) break;	// @@TODO: remove!
 				}
 				return $arr;
