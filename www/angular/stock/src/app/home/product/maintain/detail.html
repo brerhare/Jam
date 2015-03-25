@@ -85,17 +85,26 @@
                 </div>
             </div>  <!-- rhs -->
 
+
+
             <div style="clear: both"></div>
             <br/>
+
             <ul class="nav nav-tabs">
-                <li>               <a href="#">Notes</a>     </li>
-                <li class="active"><a href="priceTab">Prices</a>    </li>
-                <li>               <a href="#">Dimensions</a></li>
-                <li>               <a href="#">Barcodes</a>  </li>
-                <li>               <a href="#">Deliveries</a></li>
-                <li>               <a href="#">Label</a>     </li>
-                <li>               <a href="#">UOM</a>       </li>
-            </ul>
+                <li><a ui-sref=".notes"      ui-sref-active="active">Notes</a></li>
+                <li><a ui-sref=".prices"     ui-sref-active="active">Prices</a></li>
+                <li><a ui-sref=".dimensions" ui-sref-active="active">Dimensions</a></li>
+                <li><a ui-sref=".barcodes"   ui-sref-active="active">Barcodes</a></li>
+                <li><a ui-sref=".deliveries" ui-sref-active="active">Deliveries</a></li>
+                <li><a ui-sref=".label"      ui-sref-active="active">Label</a></li>
+                <li><a ui-sref=".UOM"        ui-sref-active="active">UOM</a></li>
+              </ul>
+            <div class="well" ui-view></div>
+
+
+
+
+            <br><hr><br>
 
             <!-- price tab -->
             <div id="priceTab" class="tab-content">
