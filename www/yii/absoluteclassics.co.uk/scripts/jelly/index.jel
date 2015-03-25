@@ -151,12 +151,50 @@ stacking = horizontal
 
 
 		[content-background]
-		child = content
+		child = blog-content, content
 		css.margin-top = -500px
 		fx.rounding = 4px
 		fx.opacity = 95%
 		css.background-color = white
-	
+		
+			[blog-content]
+			child = signup-box, blog-content
+			#condition = @PAGE=latest-news-classical-music-dumfries-galloway
+			css.width = 800px
+			css.margin-top = -100px
+
+			[signup-box]
+			child = signup
+			css.width = 150px
+			css.height = 120px
+			css.background-color = #137feb
+			css.margin-left = 20px
+			css.position = relative
+			css.top = 295px
+			css.padding = 10px
+			html.raw = Get the DG-News right to your inbox
+			css.font-size = 12px
+			css.font-weight = 700
+			css.color = white
+			
+						
+				[signup]
+				css.margin-top = 5px
+				addon.mailer.signup.orientation = vertical
+				addon.mailer.signup.buttoncolor = #ebebeb
+				addon.mailer.signup.buttontextcolor = black
+				addon.mailer.signup.buttontext = sign up
+				addon.mailer.signup.inputspacing = 5px
+				addon.mailer.signup.successtextcolor = white
+				addon.mailer.signup.failuretextcolor = black
+				addon.mailer.signup.inputwidth = 140px
+			
+		
+			[blog-content]
+			css.display = block
+			css.width = 100%
+			html.raw = {{news newstype=traditional sidebar=left pushcategoriesdown=140px pushrecentdown=0px}}
+			
 			[content]
 			css.margin-left = 25px
 			css.width = 750px
