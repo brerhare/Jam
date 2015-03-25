@@ -42,13 +42,27 @@
 </style>
 
 <div class="container-fluid">
-
-    <!-- notes tab -->
-    <div id="notesTab" class="tab-content">
-        <textarea style="" ng-model="textAreaModel"></textarea>
+    <!-- price tab -->
+    <div id="priceTab" class="tab-content">
+        <table class="table Xtable-striped table-bordered table-condensed Xtable-hover">
+            <tr>
+                <th class='col-heading'>  Customer<br/>Group</th>
+                <th class='col-heading'>  Calculated<br/>Price</th>
+                <th class='col-heading'>  Manual<br/>Price</th>
+                <th class='col-heading'>  Variance</th>
+                <th class='col-heading'>  Profit</th>
+                <th class='col-heading'>  Gross<br/>Price</th>
+            </tr>
+            <tr ng-repeat="markupGroup in markupGroups | orderBy:'description'">
+                <td class='col-item'>{{markupGroup.description}}</td>
+                <td class='col-item'>{{pricetabGetCalculatedPrice(markupGroup) | number:2}}</td>
+                <td class="col-item"><input fcsa-number="{ maxDecimals: 2, min: 0, preventInvalidInput: true }" type="text" class='col-item' ng-model="markupGroup.manual" /></td>
+                <td class='col-item'>{{pricetabGetVariance(markupGroup) | number:2}}%</td>
+                <td class='col-item'>{{pricetabGetProfit(markupGroup) | number:2}}</td>
+                <td class='col-item'>{{pricetabGetGrossPrice(markupGroup) | number:2}}</td>
+            </tr>
+        </table>
     </div>
-
-
 </div>
 
 <script type="text/ng-template" id="confirmDialogTemplate">

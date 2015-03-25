@@ -80,10 +80,10 @@ angular.module('stock')
 		    templateUrl: 'app/home/product/maintain/detail_notes.html',
 		    controller: 'ProductDetailNotesCtrl'
 		  })
-          .state('home.product-detail.notes2', {
+          .state('home.product-detail.prices', {
 		    url: '/notes2',
-		    templateUrl: 'app/home/product/maintain/detail_notes2.html',
-		    controller: 'ProductDetailNotes2Ctrl'
+		    templateUrl: 'app/home/product/maintain/detail_prices.html',
+		    controller: 'ProductDetailPricesCtrl'
 		  })
 
       .state('home.product-group', {

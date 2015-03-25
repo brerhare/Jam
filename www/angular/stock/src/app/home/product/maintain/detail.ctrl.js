@@ -1,5 +1,5 @@
 angular.module('stock')
-	.controller('ProductDetailCtrl', function ($scope, restFactory, notificationFactory, ngDialog) {
+	.controller('ProductDetailCtrl', function ($scope, $state, $stateParams, $location, restFactory, notificationFactory, ngDialog) {
 		var url             = 'http://stock.wireflydesign.com/server/api/stock_product/';
 		var urlVat          = 'http://stock.wireflydesign.com/server/api/stock_vat/';			// for <select>
 		var urlGroup        = 'http://stock.wireflydesign.com/server/api/stock_group/';			// for <select>
@@ -19,6 +19,9 @@ angular.module('stock')
 			return new Array(maxLevels);
 		};
 
+		$scope.showTab = function(name) {
+			$state.go(name, $stateParams, {location: 'replace'});
+		}
 		// Vat select box. There is a default rate
 		// ---------------------------------------
 
