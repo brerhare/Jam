@@ -81,9 +81,34 @@ angular.module('stock')
 		    controller: 'ProductDetailNotesCtrl'
 		  })
           .state('home.product-detail.prices', {
-		    url: '/notes2',
+		    url: '/prices',
 		    templateUrl: 'app/home/product/maintain/detail_prices.html',
 		    controller: 'ProductDetailPricesCtrl'
+		  })
+          .state('home.product-detail.dimensions', {
+		    url: '/dimensions',
+		    templateUrl: 'app/home/product/maintain/detail_dimensions.html',
+		    controller: 'ProductDetailDimensionsCtrl'
+		  })
+		  .state('home.product-detail.barcodes', {
+		    url: '/barcodes',
+		    templateUrl: 'app/home/product/maintain/detail_barcodes.html',
+		    controller: 'ProductDetailBarcodesCtrl'
+		  })
+		  .state('home.product-detail.deliveries', {
+		    url: '/deliveries',
+		    templateUrl: 'app/home/product/maintain/detail_deliveries.html',
+		    controller: 'ProductDetailDeliveriesCtrl'
+		  })
+		  .state('home.product-detail.labels', {
+		    url: '/labels',
+		    templateUrl: 'app/home/product/maintain/detail_labels.html',
+		    controller: 'ProductDetailLabelsCtrl'
+		  })
+		  .state('home.product-detail.uom', {
+		    url: '/uom',
+		    templateUrl: 'app/home/product/maintain/detail_uom.html',
+		    controller: 'ProductDetailUOMCtrl'
 		  })
 
       .state('home.product-group', {

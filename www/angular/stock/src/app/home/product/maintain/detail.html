@@ -91,17 +91,16 @@
             <br/>
 
             <ul class="nav nav-tabs">
-<!--                <li><a ui-sref=".notes"      ui-sref-active="active">Notes</a></li>
-                <li><a ui-sref=".prices"     ui-sref-active="active">Prices</a></li> -->
 
-                <li class="Xactive"><a ng-click="showTab('home.product-detail.notes')"     ui-sref-active="active">Notes</a></li>
+                <li><a ng-click="showTab('home.product-detail.notes')"     ui-sref-active="active">Notes</a></li>
+
+<!--                <li class="Xactive"><a ng-click="showTab('home.product-detail.notes')"     ui-sref-active="active">Notes</a></li> -->
                 <li><a ng-click="showTab('home.product-detail.prices')"     ui-sref-active="active">Prices</a></li>
-
-                <li><a ui-sref=".dimensions" ui-sref-active="active">Dimensions</a></li>
-                <li><a ui-sref=".barcodes"   ui-sref-active="active">Barcodes</a></li>
-                <li><a ui-sref=".deliveries" ui-sref-active="active">Deliveries</a></li>
-                <li><a ui-sref=".label"      ui-sref-active="active">Label</a></li>
-                <li><a ui-sref=".UOM"        ui-sref-active="active">UOM</a></li>
+                <li><a ng-click="showTab('home.product-detail.dimensions')"     ui-sref-active="active">Dimensions</a></li>
+                <li><a ng-click="showTab('home.product-detail.barcodes')"     ui-sref-active="active">Barcodes</a></li>
+                <li><a ng-click="showTab('home.product-detail.deliveries')"     ui-sref-active="active">Deliveries</a></li>
+                <li><a ng-click="showTab('home.product-detail.labels')"     ui-sref-active="active">Labels</a></li>
+                <li><a ng-click="showTab('home.product-detail.uom')"     ui-sref-active="active">UOM</a></li>
               </ul>
             <div class="well" ui-view></div>
 
