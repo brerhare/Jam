@@ -153,7 +153,29 @@ angular.module('stock')
 			window.history.back();
 		};
 
+		var validInput = function() {
+			$scope.errorMsg = '';
+			if ($scope.item.name == '')
+				$scope.errorMsg = 'Name cant be blank';
+			else if ($scope.item.stock_group_id == 0)
+				$scope.errorMsg = 'Must select a product group';
+			else if ($scope.item.stock_vat_id == 0)
+				$scope.errorMsg = 'Invalid Tax';
+
+			if ($scope.errorMsg) {
+				ngDialog.openConfirm({
+					template: 'errorDialogTemplate',
+					closeByEscape: true,
+					scope: $scope //Pass the scope object if you need to access in the template
+				});
+				return 0;
+			}
+			return 1;
+		}
+
         $scope.saveItem = function() {
+        	if (!validInput())
+        		return;
             if ($scope.$parent.editMode == "add") {
                 restFactory.addItem(url, $scope.item)
                     .success(function (data, status) {

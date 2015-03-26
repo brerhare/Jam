@@ -16,11 +16,11 @@ angular.module('stock')
 
 
 		// Product price (for markup groups - loaded for product being edited/added)
-		// -------------								// @@TODO: should also only fire when needed eg price tab
+		// -------------
 
 		var getMarkupGroupsProductPrices = function() {	// for group tab
 			for (var i = 0; i < $scope.markupGroups.length; i++)
-				$scope.markupGroups[i].manual = 0;
+				$scope.markupGroups[i].manual = '';
 			restFactory.getItem(urlProductPrice)
 				.success(function(data, status) {
 					if (data.length > 0) {
@@ -51,16 +51,15 @@ angular.module('stock')
 				.success(function(data, status) {
 					$scope.markupGroups = {};
 					$scope.markupGroups = data;
+					getMarkupGroupsProductPrices();
 				})
 				.error(errorCallback);
 		};
-getMarkupGroups();	// @@TODO: make this only fire when user clicks the applicable tab, its wasteful like this
 
 		// Tab area - Prices tab
 		// ---------------------
-
 		var pricetabGetPrice = function(markupGroup){
-			var price = parseFloat(markupGroup.manual);
+			var price = markupGroup.manual == '' ? 0 : parseFloat(markupGroup.manual);
 			if (price === 0) {
 				price = $scope.pricetabGetCalculatedPrice(markupGroup);
 			}
@@ -94,9 +93,9 @@ getMarkupGroups();	// @@TODO: make this only fire when user clicks the applicabl
 		};
 
 
-		// Start Processing
+		// Start
 
-		getMarkupGroupsProductPrices();
 
+		getMarkupGroups();
 
 	});
