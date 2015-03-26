@@ -110,7 +110,7 @@ css.display = block
 				addon.menu.traditional.item-width = uniform
 #	// Top level background settings
 				addon.menu.traditional.menu-rounding = 0px
-				addon.menu.traditional.menu-color = transparent 
+				addon.menu.traditional.menu-color = red transparent 
 				addon.menu.traditional.item-separator-width = 4px
 				addon.menu.traditional.item-separator-color = red
 #				addon.menu.traditional.item-separator-tile = /img/menu.jpg
