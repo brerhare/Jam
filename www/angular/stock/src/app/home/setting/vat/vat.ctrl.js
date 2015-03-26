@@ -1,7 +1,7 @@
 
-toastr.options.timeOut = 1500;
-toastr.options.positionClass = 'toast-bottom-right';
-//toastr.options.progressBar = true; 
+//toastr.options.timeOut = 1500;
+//toastr.options.positionClass = 'toast-bottom-right';
+//////toastr.options.progressBar = true;
 
 angular.module('stock')
 	.controller('SettingVatCtrl', function ($scope, restFactory, notificationFactory) {

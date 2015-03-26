@@ -157,13 +157,13 @@ angular.module('stock')
             if ($scope.$parent.editMode == "add") {
                 restFactory.addItem(url, $scope.item)
                     .success(function (data, status) {
-						// Now update/add any price overrides					 @@WHUT?
-						for (var i = 0; i < $scope.markupGroups.length; i++) {
-							if ($scope.markupGroups[i].manual !== 0) {
-								// delete old
-								// add new
-							}
-						}
+//						// Now update/add any price overrides					 @@WHUT?
+//						for (var i = 0; i < $scope.markupGroups.length; i++) {
+//							if ($scope.markupGroups[i].manual !== 0) {
+//								// delete old
+//								// add new
+//							}
+//						}
                         notificationFactory.success();
                         window.history.back();
                     })
@@ -187,7 +187,7 @@ angular.module('stock')
         };
 
 		var errorCallback = function (data, status, headers, config) {
-			alert(data.value);
+			alert("error");
 			notificationFactory.error(data.ExceptionMessage);
 		};
 
@@ -212,6 +212,8 @@ angular.module('stock')
 			$scope.item.volume = 0.00;
 			$scope.item.stock_group_id = 0;
 			$scope.item.stock_vat_id = 0;
+			$scope.item.notes = "";
+			$scope.item.priced_by_weight = 0;
 			initProductEditing();
         }
         else {
