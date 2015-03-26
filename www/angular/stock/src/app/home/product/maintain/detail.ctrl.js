@@ -3,8 +3,6 @@ angular.module('stock')
 		var url             = 'http://stock.wireflydesign.com/server/api/stock_product/';
 		var urlVat          = 'http://stock.wireflydesign.com/server/api/stock_vat/';			// for <select>
 		var urlGroup        = 'http://stock.wireflydesign.com/server/api/stock_group/';			// for <select>
-		var urlMarkupGroup  = 'http://stock.wireflydesign.com/server/api/stock_markup_group/';	// for price tab
-		var urlProductPrice = 'http://stock.wireflydesign.com/server/api/stock_product_price/';	// for price tab
 
 		var maxLevels = 3;		// @TODO hardcoded. Same in group maint
 		$scope.rowCollection = [];
@@ -13,7 +11,6 @@ angular.module('stock')
 		$scope.selectedVat = { rate : null};
 		var groups = [];							// All groups loaded once at startup
 		$scope.levelGroups = new Array(maxLevels);	// An array ix for each level's <select>. Has 'parentId', 'selectedGroup', 'items[]'
-		$scope.markupGroups = {};					// for group tab
 
 		$scope.getMaxLevels = function() {
 			return new Array(maxLevels);
@@ -22,17 +19,9 @@ angular.module('stock')
 		$scope.showTab = function(name) {
 			$state.go(name, $stateParams, {location: 'replace'});
 		}
+
 		// Vat select box. There is a default rate
 		// ---------------------------------------
-
-		var getVats = function() {
-			restFactory.getItem(urlVat)
-				.success(function(data, status) {
-					$scope.vats = data;
-				})
-				.error(errorCallback);
-		};
-getVats();
 
 		var setSelectedVat = function() {	// for vat <select>
 			for (var i = 0; i < $scope.vats.length; i++) {
@@ -51,6 +40,14 @@ getVats();
 			}
 		};
 
+		var getVats = function() {
+			restFactory.getItem(urlVat)
+				.success(function(data, status) {
+					$scope.vats = data;
+					setSelectedVat();
+				})
+				.error(errorCallback);
+		};
 
 		$scope.selchangeVat = function() {
 			$scope.item.stock_vat_id = $scope.selectedVat.id;
@@ -150,76 +147,6 @@ getVats();
 		};
 
 
-		// Product price (for markup groups - loaded for product being edited/added)
-		// -------------								// @@TODO: should also only fire when needed eg price tab
-
-		var getMarkupGroupsProductPrices = function() {	// for group tab
-			for (var i = 0; i < $scope.markupGroups.length; i++)
-				$scope.markupGroups[i].manual = 0;
-			restFactory.getItem(urlProductPrice)
-				.success(function(data, status) {
-					if (data.length > 0) {
-						for (i = 0; i < data.length; i++) {
-							var thisMarkupGroup = getMarkupGroupItemById(data[i].id);
-							if (thisMarkupGroup) {
-								thisMarkupGroup.manual[i] = data;
-							}
-						}
-					}
-				})
-				.error(errorCallback);
-		};
-
-		// Customer markup group (loaded at startup)
-		// ---------------------
-
-		var getMarkupGroupItemById = function (id) {
-			for (var i = 0; i < $scope.markupGroups.length; i++) {
-				if ($scope.markupGroups[i].id == id)
-					return $scope.markupGroups[i];
-			}
-			return null;
-		};
-
-		var getMarkupGroups = function() {	// for group tab
-			restFactory.getItem(urlMarkupGroup)
-				.success(function(data, status) {
-					$scope.markupGroups = {};
-					$scope.markupGroups = data;
-				})
-				.error(errorCallback);
-		};
-getMarkupGroups();	// @@TODO: make this only fire when user clicks the applicable tab, its wasteful like this
-
-		// Tab area - Prices tab
-		// ---------------------
-
-		var pricetabGetPrice = function(markupGroup){
-			var price = parseFloat(markupGroup.manual);
-			if (price === 0) {
-				price = $scope.pricetabGetCalculatedPrice(markupGroup);
-			}
-			return price;
-		};
-
-		$scope.pricetabGetCalculatedPrice = function(markupGroup) {
-			var val =  (parseFloat($scope.item.cost) + ($scope.item.cost * markupGroup.percent / 100));
-			return val.toFixed(2);
-		};
-		$scope.pricetabGetVariance = function(markupGroup) {
-			return ((pricetabGetPrice(markupGroup) - $scope.pricetabGetCalculatedPrice(markupGroup)) / $scope.pricetabGetCalculatedPrice(markupGroup) * 100).toFixed(2) ;
-		};
-
-		$scope.pricetabGetProfit = function(markupGroup) {
-			return (pricetabGetPrice(markupGroup) - $scope.item.cost);
-		};
-		$scope.pricetabGetGrossPrice = function(markupGroup) {
-			var price = pricetabGetPrice(markupGroup);
-			var val =  (parseFloat(price) + ((price * parseFloat($scope.selectedVat.rate) / 100))).toFixed(2);
-			return val;
-		};
-
-
 		// Ending off
 
 		$scope.cancelItem = function() {
@@ -269,9 +196,8 @@ getMarkupGroups();	// @@TODO: make this only fire when user clicks the applicabl
 
 
 		var initProductEditing = function() {
-			setSelectedVat();
+			getVats();
 			getGroups();
-			getMarkupGroupsProductPrices();
 		};
 
         if ($scope.$parent.editMode == "add") {
