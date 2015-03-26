@@ -12,128 +12,215 @@ fx.wallpaper-image-tile = /img/background.jpg
 css.display = block
 
 	[site]
-	child = header, slider, pages, footer
-	css.width = 970px
+	child = header, slider, body, footer
+	css.width = 85%
+	css.min-width = 900px
 	css.background-color = white
 
 ####  Header  #################################
 
 	[header]
-	child = header-left, header-logo, header-details
+	child = header-bar, header-main
 	css.height = 200px
 	css.width = 100%
-	stacking = horizontal
 		
-		[header-left]
-		css.width = 5%
-		css.minwidth = 5px
+		[header-bar]
+		css.width = 100%
 		css.height = 37px
 		css.background-color = #b7dd79
-		#css.margin-left = 0px
 		css.margin-top = 120px
-
-		[header-logo]
-		css.margin-left = 10px
-		css.margin-top = 25px
-		css.height = 200px
-		css.width = 30%
-		css.minwidth = 190px
-		image.url = img/logo.png
-		image.width = 185px
-		image.height = 138px
-		click = http://www.southwest-arb.co.uk
-
-		[header-details]
-		child = social, header-contact, menu
-		css.width = 65%
 		
-			[social]
-			child = facebook, email
+		[header-main]
+		child = header-logo, header-details
+		css.width = 95%
+		css.margin-top = -157px
+		stacking = horizontal
+
+			[header-logo]
+			css.margin-left = 10%
+			css.margin-top = 25px
+			css.background-color = white
+			css.height = 175px
+			css.width = 205px
+			image.url = img/logo.png
+			image.width = 185px
+			image.height = 138px
+			image.align = center
+			click = http://www.southwest-arb.co.uk
+
+			[header-details]
+			child = social, header-contact, menu
+			css.width = 60%
+			css.min-width = 300px
+			css.height = 180px
+			css.margin-top = 20px
+			css.margin-left = 20px
+			css.float = right
+#			css.background-color = lightgrey
 			
-			[header-contact]
-			css.width = 100%
-		
-			[menu]
-			css.height = 50px
-			#css.width = 250px
-			css.overflow = visible
-			css.z-index = 900
-			#css.position = absolute
-			css.position = relative
+				[social]
+				child = facebook, email
+				css.width = 100%
+				stacking = horizontal
+				#css.right = 0px
+				#css.position = relative
+				css.float = right
+				
+					[facebook]
+					css.width = 50px
+					css.height = 60px
+					css.float = right
+					image.url = img/facebook.png
+					image.width = 40px
+					image.height = 40px
+					clicknew = https://www.facebook.com/southwestarb
+					
+					
+					[email]
+					css.width = 50px
+					css.height = 60px
+					css.float = right
+					image.url = img/email.png
+					image.width = 40px
+					image.height = 40px
+					click = ?layout=index&page=contact
+					
+				
+				[header-contact]
+				css.width = 100%
+				css,height = 50px
+				image.url = img/header-contact.png
+				image.width = 500px
+				image.height = 40px
+			
+				[menu]
+				css.height = 40px
+				css.width = 90%
+				css.overflow = visible
+				css.position = relative
+				css.z-index = 100
 
-			addon.menu.basic.orientation = horizontal
-			#addon.menu.basic.width = 960px
-			#addon.menu.basic.height = 30px
-			#addon.menu.basic.level = 2
 
-			addon.menu.basic.menu-rounding = 4px
-			#addon.menu.basic.menu-opacity = 70%
-			#addon.menu.basic.menu-tile = /img/menu-bar.jpg
-			#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
-			addon.menu.basic.menu-color = white
-			#addon.menu.basic.item-separator-color = #ffffff
-			#addon.menu.basic.item-separator-width = 3px
+#	// Top level basic settings
+				addon.menu.traditional.orientation = horizontal
+				#addon.menu.traditional.width = 90%
+				addon.menu.traditional.height = 37px
+				addon.menu.traditional.align = center
+				addon.menu.traditional.item-margin = 5px
+				addon.menu.traditional.item-width = uniform
+#	// Top level background settings
+				addon.menu.traditional.menu-rounding = 0px
+				addon.menu.traditional.menu-color = transparent 
+				addon.menu.traditional.item-separator-width = 4px
+				addon.menu.traditional.item-separator-color = red
+#				addon.menu.traditional.item-separator-tile = /img/menu.jpg
+				addon.menu.traditional.item-separator-stretch = /img/menu-seperator.jpg
+				addon.menu.traditional.edgepadding = 0px
+#	// Top level font settings
+				addon.menu.traditional.menu-font-size = 14px
+				addon.menu.traditional.menu-font-family = Arial
+				addon.menu.traditional.menu-font-weight = bold
+				addon.menu.traditional.menu-text-color = #384433
+#	// Top level hover settings
+				addon.menu.traditional.menu-hover-text-color = white
+				addon.menu.traditional.menu-hover-background-color = transparent
+				addon.menu.traditional.menu-hover-font-size = 14px
+				addon.menu.traditional.menu-hover-font-family = Arial
+				addon.menu.traditional.menu-hover-font-weight = Bold
+#	// Top level selected settings
+				addon.menu.traditional.menu-selected-text-color = #384433
+				addon.menu.traditional.menu-selected-background-color = transparent
+				addon.menu.traditional.menu-selected-font-size = 14px
+				addon.menu.traditional.menu-selected-font-family = Arial
+				addon.menu.traditional.menu-selected-font-weight = bold
+#	// Second level settings
+				addon.menu.traditional.submenu-height = 30px // centers text
+				addon.menu.traditional.submenu-width = variable / px
+				addon.menu.traditional.submenu-font-size = 16px
+				addon.menu.traditional.submenu-font-family = Arial
+				addon.menu.traditional.submenu-font-weight = normal
+				addon.menu.traditional.submenu-text-color = blue
+				addon.menu.traditional.submenu-background-color = grey
+				addon.menu.traditional.submenu-background-tile = /img/menu.jpg
+				addon.menu.traditional.submenu-background-stretch = /img/menu.jpg
+				addon.menu.traditional.submenu-separator-width = 1px
+				addon.menu.traditional.submenu-separator-color = red
+				addon.menu.traditional.submenu-separator-tile = /img/menu.jpg
+				addon.menu.traditional.submenu-separator-stretch = /img/menu.jpg
 
-			addon.menu.basic.font-size = 12px
-			#addon.menu.basic.menu-text-color = red
-
-			#addon.menu.basic.item-color = black yellow
-			#addon.menu.basic.item-text-color = green
-
-			#addon.menu.basic.submenu-color = yellow red
-		
-			#addon.menu.basic.subitem-color = white black
-			#addon.menu.basic.subitem-text-color = purple
-			#addon.menu.basic.subitem-seperator-color = red 
 
 
 #### Slider ###########################################
 
 	[slider]
-	css.width = 960px
-  	css.height = 320px
-	addon.slider.flexslider.width = 952px
-	addon.slider.flexslider.height = 310px
-	addon.slider.flexslider.mode = image
-	addon.slider.flexslider.source = db
-
-	#addon.slider.flexslider.border-width = 0px
-	#addon.slider.flexslider.border-color = red
-	#addon.slider.flexslider.active-dotcolor = red
-	#addon.slider.flexslider.inactive-dotcolor = blue
-	#addon.slider.flexslider.dot-margin-top = -200px
-	#addon.slider.flexslider.dot-margin-bottom = 0px
-	#addon.slider.flexslider.dot-margin-left = 0px
-	#addon.slider.flexslider.dot-margin-right = 0px
-	#addon.slider.flexslider.animation = fade
-	#addon.slider.flexslider.mode = HTML
-	#addon.slider.glitz.slider = 2
+	child = image-left-container, image-right-container
+	css.width = 95%
+	stacking = horizontal
+	
+		[image-left-container]
+		child = image-left
+		css.width = 66%
+		css.margin-left = 1%
+		#css.padding = 5px
+	
+			[image-left]
+			css.background-size = 99%
+			css.background-image = url('/img/sun-tree.jpg')
+			css.padding-top = 40%
+			css.background-repeat = no-repeat
+				#divide the height by the width for the proportional padding height
+				
+		[image-right-container]
+		child = image-right
+		css.width = 30%
+		css.margin-left = 3%
+		#css.padding = 5px
+				
+			[image-right]
+			css.background-size = 98%
+			css.background-image = url('/img/man-tree.jpg')
+			css.padding-top = 89%
+			css.background-repeat = no-repeat
+				#divide the height by the width for the proportional padding height
 
 
 ######## body #######################################
 			
+[body]
+child = left-column, middle-column, right-column
+stacking = horizontal
+css.margin-top = 20px
 
-	[pages]
-	child = tabs, content 	
-	css.width = 960px
-	css.margin-top = 20px
-	css.background-color = white
-	fx.rounding = 4px
+	[left-column]
+	child = side-menu, quote
+	css.width = 180px
+	css.margin-left = 22px
 	
-		[tabs]
-		condition = @PAGE=@HOMEPAGE
-		css.display = block
-		css.width = 680px
-		addon.tab.rain.source = db
-
-			
+		[side-menu]
+		html.raw = Side Menu
+		
+		[quote]
+		css.margin-top = 20px
+		image.url = img/quote.jpg
+		image.width = 160px
+		image.height = 191px
+		image.align = center
+		
+	
+	[middle-column]
+	child = content 	
+	css.width = 50%
+	
 		[content]
-		css.margin-top = 30px
 		css.margin = 30px
 		db.table = ContentBlock
 		db.filter = url=$_GET['page']
 		db.error = Sorry, I could not find the page $_GET['page']
 		html.raw = ContentBlock.content
+		
+	[right-column]
+	child = image1, image2, image3
+	css.width = 24%
 
 
 ####footer####################################
