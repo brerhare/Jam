@@ -47,6 +47,7 @@ h4 { font-size:18px;}
         <thead>
           <tr>
             <th class="hand" st-skip-natural="true" st-sort="id">                       Id</th>
+            <th class="hand" st-skip-natural="true" st-sort="code">                   Code</th>
             <th class="hand" st-skip-natural="true" st-sort="name">                   Name</th>
             <th class="hand" st-skip-natural="true" st-sort="cost">                   Cost</th>
             <th>
@@ -56,6 +57,7 @@ h4 { font-size:18px;}
             </th>
           </tr>
           <tr>
+            <th><input st-search="'code'"             placeholder="search" class="input-sm form-control" type="search"/></th>
             <th><input st-search="'id'"               placeholder="search" class="input-sm form-control" type="search"/></th>
             <th><input st-search="'name'"             placeholder="search" class="input-sm form-control" type="search"/></th>
             <th><input st-search="'cost'"             placeholder="search" class="input-sm form-control" type="search"/></th>
@@ -69,6 +71,7 @@ h4 { font-size:18px;}
         <tbody>
         <tr class="highlight hand" ng-repeat="row in displayedCollection | orderBy:'name'">
           <td ng-click="editItem(row.id)">{{row.id}}              </td>
+          <td ng-click="editItem(row.id)">{{row.code}}            </td>
           <td ng-click="editItem(row.id)">{{row.name}}            </td>
           <td ng-click="editItem(row.id)">{{row.cost}}            </td>
           <td>

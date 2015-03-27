@@ -155,7 +155,9 @@ angular.module('stock')
 
 		var validInput = function() {
 			$scope.errorMsg = '';
-			if ($scope.item.name == '')
+			if ($scope.item.code === '')
+				$scope.errorMsg = 'Code cant be blank';
+			else if ($scope.item.name === '')
 				$scope.errorMsg = 'Name cant be blank';
 			else if ($scope.item.stock_group_id == 0)
 				$scope.errorMsg = 'Must select a product group';
@@ -171,7 +173,7 @@ angular.module('stock')
 				return 0;
 			}
 			return 1;
-		}
+		};
 
         $scope.saveItem = function() {
         	if (!validInput())
@@ -224,6 +226,7 @@ angular.module('stock')
 
         if ($scope.$parent.editMode == "add") {
 			// @@ Initialise fields
+			$scope.item.code = "";
 			$scope.item.name = "";
 			$scope.item.description = "";
 			$scope.item.cost   = 0.00;

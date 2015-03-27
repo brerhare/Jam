@@ -59,7 +59,7 @@ angular.module('stock')
 		// Tab area - Prices tab
 		// ---------------------
 		var pricetabGetPrice = function(markupGroup){
-			var price = markupGroup.manual == '' ? 0 : parseFloat(markupGroup.manual);
+			var price = markupGroup.manual === '' ? 0 : parseFloat(markupGroup.manual);
 			if (price === 0) {
 				price = $scope.pricetabGetCalculatedPrice(markupGroup);
 			}
