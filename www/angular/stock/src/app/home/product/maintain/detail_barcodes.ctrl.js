@@ -1,7 +1,7 @@
 angular.module('stock')
 	.controller('ProductDetailBarcodesCtrl', function ($scope, restFactory, notificationFactory, ngDialog) {
 
-		var url = 'http://stock.wireflydesign.com/server/api/stock_barcode/';
+		var url = 'http://stock.wireflydesign.com/server/api/get_stock_barcodes/';
 		$scope.items = [];
 		$scope.addMode = false;
 

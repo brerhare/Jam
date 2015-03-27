@@ -1,5 +1,5 @@
 angular.module('stock')
-	.controller('CustomerDetailCtrl', function ($scope, restFactory, notificationFactory, ngDialog) {
+	.controller('CustomerDetailCtrl', function ($scope, $state, $stateParams, restFactory, notificationFactory, ngDialog) {
 		var url            = 'http://stock.wireflydesign.com/server/api/stock_customer/';
 		var urlArea        = 'http://stock.wireflydesign.com/server/api/stock_area/';			// for <select>
 		var urlMarkupGroup = 'http://stock.wireflydesign.com/server/api/stock_markup_group/';	// for <select>
@@ -8,6 +8,10 @@ angular.module('stock')
 		$scope.item = {};
 		$scope.areas = {};			// for <select>
 		$scope.markupGroups = {};	// for <select>
+
+		$scope.showTab = function(name) {
+			$state.go(name, $stateParams, {location: 'replace'});
+		}
 
 		var getAreas = function() {	// for <select>
 			restFactory.getItem(urlArea)
@@ -54,7 +58,27 @@ angular.module('stock')
 			window.history.back();
 		};
 
+		var validInput = function() {
+			$scope.errorMsg = '';
+			if ($scope.item.code === '')
+				$scope.errorMsg = 'Code cant be blank';
+			else if ($scope.item.name === '')
+				$scope.errorMsg = 'Name cant be blank';
+
+			if ($scope.errorMsg) {
+				ngDialog.openConfirm({
+					template: 'errorDialogTemplate',
+					closeByEscape: true,
+					scope: $scope //Pass the scope object if you need to access in the template
+				});
+				return 0;
+			}
+			return 1;
+		};
+
 		$scope.saveItem = function() {
+        	if (!validInput())
+        		return;
 			if ($scope.$parent.editMode == "add") {
 				restFactory.addItem(url, $scope.item)
 					.success(function (data, status) {
@@ -83,16 +107,39 @@ angular.module('stock')
 
 		// Processing
 
-		if ($scope.$parent.editMode == "add") {
+		var initCustomerEditing = function() {
 			getAreas();
 			getMarkupGroups();
+		};
+
+		if ($scope.$parent.editMode == "add") {
+			initCustomerEditing();
+			$scope.item.code = "";
+			$scope.item.name = "";
+			$scope.item.address1 = "";
+			$scope.item.address2 = "";
+			$scope.item.address3 = "";
+			$scope.item.post_code = "";
+			$scope.item.contact = "";
+			$scope.item.telephone = "";
+			$scope.item.mobile = "";
+			$scope.item.fax = "";
+			$scope.item.email = "";
+			$scope.item.discount_percent = 0.00;
+			$scope.item.balance = 0.00;
+			$scope.item.link_field = "";
+			$scope.item.notes = "";
+			$scope.status = 0;
+			$scope.item.CIF = "";
+			$scope.item.forma_de_pago = "";
+			$scope.item.stock_markup_group_id = 0;
+			$scope.item.stock_area_id = 0;
 		}
 		else {
 			restFactory.getItem(url, $scope.$parent.itemId)
 				.success(function (data, status) {
 					$scope.item = data;
-					getAreas();
-					getMarkupGroups();
+					initCustomerEditing();
 				})
 				.error(errorCallback);
 

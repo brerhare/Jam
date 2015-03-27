@@ -40,6 +40,12 @@
 
             <div class="lhs">
                 <div class="form-group form-group-sm">
+                    <label class="control-label col-sm-3" for="code">Code</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" placeholder="" ng-model="item.code" ng-minlength="1">
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
                     <label class="control-label col-sm-3" for="name">Name</label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control" placeholder="Company name" ng-model="item.name" ng-minlength="2">
@@ -84,18 +90,11 @@
                     </div>
                 </div>
                 <div class="form-group form-group-sm">
-                    <label class="control-label col-sm-3" for="CIF">CIF</label>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" placeholder="" ng-model="item.CIF">
+                    <label class="control-label col-sm-3" for="balance">Balance</label>
+                    <div class="col-sm-2">
+                        <input type="text" ng-disabled="true" class="form-control" placeholder="" ng-model="item.balance">
                     </div>
                 </div>
-                <div class="form-group form-group-sm">
-                    <label class="control-label col-sm-3" for="forma_de_pago">Forma de Pago</label>
-                    <div class="col-sm-5">
-                        <input type="text" class="form-control" placeholder="Method of payment" ng-model="item.forma_de_pago">
-                    </div>
-                </div>
-
             </div>
 
             <div class="rhs">
@@ -125,20 +124,26 @@
                 </div>
                 <div class="form-group form-group-sm">
                     <label class="control-label col-sm-3" for="contact">Contact</label>
-                    <div class="col-sm-2">
+                    <div class="col-sm-7">
                         <input type="text" class="form-control" placeholder="" ng-model="item.contact">
                     </div>
                 </div>
                 <div class="form-group form-group-sm">
                     <label class="control-label col-sm-3" for="email">Email</label>
-                    <div class="col-sm-5">
+                    <div class="col-sm-7">
                         <input type="text" class="form-control" placeholder="" ng-model="item.email">
                     </div>
                 </div>
                 <div class="form-group form-group-sm">
-                    <label class="control-label col-sm-3" for="balance">Balance</label>
-                    <div class="col-sm-2">
-                        <input type="text" disabled class="form-control" placeholder="" ng-model="item.balance">
+                    <label class="control-label col-sm-3" for="CIF">CIF</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" placeholder="" ng-model="item.CIF">
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="control-label col-sm-3" for="forma_de_pago">Forma de Pago</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" placeholder="Method of payment" ng-model="item.forma_de_pago">
                     </div>
                 </div>
             </div>
@@ -151,16 +156,9 @@
 
             <div style="clear: both"></div>
 
-            <br/>
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="#">Orders</a></li>
-                <li><a href="#">Notes</a></li>
-            </ul>
-
-            <hr/>
+<br>
 
             <div style="width:20%; margin:0px auto;">
-
                 <div class="form-group">
                     <div class="col-sm-10">
                         <button type="submit" class="btn btn-primary btn-default">Save</button>
@@ -168,8 +166,15 @@
                     </div>
                 </div>
             </div>
+<hr>
 
-        </div>
+            <ul class="nav nav-tabs">
+                <li><a ng-click="showTab('home.customer-detail.notes')"     ui-sref-active="active">Notes</a></li>
+                <li><a ng-click="showTab('home.customer-detail.orders')"    ui-sref-active="active">Orders</a></li>
+            </ul>
+            <div class="well" ui-view></div>
+
+         </div>
 
     </form>
 
@@ -181,5 +186,12 @@
     <div class="ngdialog-buttons">
         <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click=closeThisDialog("Cancel")>Cancel</button>
 		<button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=confirm("OK")>OK</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="errorDialogTemplate">
+    <h4 style="color:#760404"><center>{{errorMsg}}</center></h4>
+    <div class="ngdialog-buttons">
+        <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=closeThisDialog("OK")>OK</button>
     </div>
 </script>

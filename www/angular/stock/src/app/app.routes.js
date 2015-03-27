@@ -36,6 +36,16 @@ angular.module('stock')
         	templateUrl: 'app/home/customer/maintain/detail.html',
         	controller: 'CustomerDetailCtrl'
         })
+		  .state('home.customer-detail.notes', {
+		    url: '/notes',
+		    templateUrl: 'app/home/customer/maintain/detail_notes.html',
+		    controller: 'CustomerDetailNotesCtrl'
+		  })
+		  .state('home.customer-detail.orders', {
+		    url: '/notes',
+		    templateUrl: 'app/home/customer/maintain/detail_orders.html',
+		    controller: 'CustomerDetailOrdersCtrl'
+		  })
 
       .state('home.customer-area', {
         url: '/customer/areas',
