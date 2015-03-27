@@ -238,13 +238,17 @@ angular.module('stock')
 			$scope.item.stock_group_id = 0;
 			$scope.item.stock_vat_id = 0;
 			$scope.item.notes = "";
-			$scope.item.priced_by_weight = 0;
+			$scope.item.priced_by_weight = false;
 			initProductEditing();
         }
         else {
             restFactory.getItem(url, $scope.$parent.itemId)
                 .success(function (data, status) {
                     $scope.item = data;
+                    if ($scope.item.priced_by_weight == 0)
+                    	$scope.item.priced_by_weight = false;
+                    else
+                    	$scope.item.priced_by_weight = true;
 					initProductEditing();
                 })
                 .error(errorCallback);
