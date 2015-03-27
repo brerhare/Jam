@@ -229,7 +229,7 @@ angular.module('stock')
 			$scope.item.code = "";
 			$scope.item.name = "";
 			$scope.item.description = "";
-			$scope.item.cost   = 0.00;
+			$scope.item.cost   = 0.0000;
 			$scope.item.weight = 0.00;
 			$scope.item.width  = 0.00;
 			$scope.item.height = 0.00;
