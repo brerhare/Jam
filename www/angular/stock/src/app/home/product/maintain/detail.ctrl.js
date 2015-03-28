@@ -239,6 +239,7 @@ angular.module('stock')
 			$scope.item.stock_vat_id = 0;
 			$scope.item.notes = "";
 			$scope.item.priced_by_weight = false;
+//alert(JSON.stringify($scope.item));
 			initProductEditing();
         }
         else {

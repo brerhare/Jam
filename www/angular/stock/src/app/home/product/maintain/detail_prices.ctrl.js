@@ -4,16 +4,9 @@ angular.module('stock')
 		var urlMarkupGroup  = 'http://stock.wireflydesign.com/server/api/stock_markup_group/';	// for price tab
 		var urlProductPrice = 'http://stock.wireflydesign.com/server/api/stock_product_price/';	// for price tab
 
-		var maxLevels = 3;		// @TODO hardcoded. Same in group maint
 		$scope.rowCollection = [];
 
-		$scope.levelGroups = new Array(maxLevels);	// An array ix for each level's <select>. Has 'parentId', 'selectedGroup', 'items[]'
 		$scope.markupGroups = {};					// for group tab
-
-		$scope.getMaxLevels = function() {
-			return new Array(maxLevels);
-		};
-
 
 		// Product price (for markup groups - loaded for product being edited/added)
 		// -------------

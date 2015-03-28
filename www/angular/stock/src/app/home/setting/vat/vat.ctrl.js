@@ -76,6 +76,7 @@ angular.module('stock')
 				if ($scope.items[i].is_default == 1)
 					$scope.default_item = $scope.items[i].id;
 			}
+//alert(JSON.stringify($scope.items));
 		};
  
 // ----------------------------------------------------------------------------------------

@@ -46,7 +46,7 @@
                     </td>
                 </tr>
                 <tr ng-repeat="item in items | orderBy:'description'">
-                    <td class='col-id'>{{item.id}}</td>
+<!--                    <td class='col-id'>{{item.id}}</td> -->
                     <td class='col-description'>
                         <span ng-click="toggleEditBarcode(item)" ng-show="item.barcode != true">{{item.barcode}}</span>
                         <input class='col-i-barcode' ng-model="item.barcode" ng-show="item.barcode == true" ng-keypress="editBarcodeEnd($event, item)" />

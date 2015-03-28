@@ -1,7 +1,7 @@
 angular.module('stock')
 	.controller('ProductDetailBarcodesCtrl', function ($scope, restFactory, notificationFactory, ngDialog) {
 
-		var url = 'http://stock.wireflydesign.com/server/api/get_stock_barcodes/';
+		var url = 'http://stock.wireflydesign.com/server/api/custom_product_maintain_tab_barcode_getall/' + $scope.$parent.item.id;
 		$scope.items = [];
 		$scope.addMode = false;
 
@@ -14,7 +14,7 @@ angular.module('stock')
 		$scope.uneditAllBut = function(item) {
 			for (var i = 0; i < $scope.items.length; i++) {
 				if ($scope.items[i] != item) {
-					$scope.items[i].editDescription = false;
+					$scope.items[i].editBarcode = false;
 				}
 			}
 		};
@@ -39,6 +39,7 @@ angular.module('stock')
 
 		var getItemSuccessCallback = function (data, status) {
 			$scope.items = data;
+//alert(JSON.stringify($scope.items));
 		};
 
 // ----------------------------------------------------------------------------------------
@@ -56,7 +57,8 @@ angular.module('stock')
 		};
 
 		var errorCallback = function (data, status, headers, config) {
-			notificationFactory.error(data.ExceptionMessage);
+			notificationFactory.error("");
+			//notificationFactory.error(data.ExceptionMessage);
 		};
 
 		restFactory.getItem(url).success(getItemSuccessCallback).error(errorCallback);
