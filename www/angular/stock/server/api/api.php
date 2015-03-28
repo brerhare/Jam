@@ -21,7 +21,8 @@ DB::$user = 'stock';
 DB::$password = 'stock,';
 DB::$dbName = 'stock';
 
-logClear();
+//logClear();
+logWrite("===============================================================================================================");
 logWrite(print_r('$_SERVER_["REQUEST_METHOD"] = '. $_SERVER['REQUEST_METHOD'], true));
 logWrite(print_r('$_SERVER_["REQUEST_URI"] = '. $_SERVER['REQUEST_URI'], true));
 logWrite('$_REQUEST = ' . print_r($_REQUEST, true));
@@ -61,10 +62,10 @@ class MyAPI extends API
 		logWrite("Method = " . $this->method);
 		$uid = 1;	//@@NB: hardcoded
 
-		$allColumns  = array('id', 'uid', 'name', 'address1', 'address2', 'address3', 'post_code', 'contact', 'telephone', 'mobile', 'fax', 'email', 'discount_percent', 'balance', 'link_field', 'notes', 'CIF', 'forma_de_pago', /*****/ 'stock_markup_group_id', 'stock_area_id');
-		$postColumns  = array(             'name', 'address1', 'address2', 'address3', 'post_code', 'contact', 'telephone', 'mobile', 'fax', 'email', 'discount_percent', 'balance', 'link_field', 'notes', 'CIF', 'forma_de_pago', /*****/ 'stock_markup_group_id', 'stock_area_id');
-		$putColumns  = array('id',        'name', 'address1', 'address2', 'address3', 'post_code', 'contact', 'telephone', 'mobile', 'fax', 'email', 'discount_percent', 'balance', 'link_field', 'notes', 'CIF', 'forma_de_pago', /*****/ 'stock_markup_group_id', 'stock_area_id');
-		$showColumns = array('id', 'uid', 'name', 'discount_percent', 'telephone', 'forma_de_pago');
+		$allColumns  = array('id', 'code', 'uid', 'name', 'address1', 'address2', 'address3', 'post_code', 'contact', 'telephone', 'mobile', 'fax', 'email', 'discount_percent', 'balance', 'link_field', 'notes', 'CIF', 'forma_de_pago', /*****/ 'stock_markup_group_id', 'stock_area_id');
+		$postColumns  = array(             'code', 'name', 'address1', 'address2', 'address3', 'post_code', 'contact', 'telephone', 'mobile', 'fax', 'email', 'discount_percent', 'balance', 'link_field', 'notes', 'CIF', 'forma_de_pago', /*****/ 'stock_markup_group_id', 'stock_area_id');
+		$putColumns  = array('id',        'code', 'name', 'address1', 'address2', 'address3', 'post_code', 'contact', 'telephone', 'mobile', 'fax', 'email', 'discount_percent', 'balance', 'link_field', 'notes', 'CIF', 'forma_de_pago', /*****/ 'stock_markup_group_id', 'stock_area_id');
+		$showColumns = array('id', 'uid', 'code', 'name', 'discount_percent', 'telephone', 'forma_de_pago');
 
 		if ($this->method == 'GET')
 		{
@@ -350,10 +351,10 @@ DB::$error_handler = 'my_error_handler';
 		logWrite("Method = " . $this->method);
 		$uid = 1;	//@@NB: hardcoded
 
-		$allColumns  = array('id', 'uid', 'name', 'description', 'cost', 'weight', 'height', 'width', 'depth', 'volume',  /*****/ 'stock_group_id', 'stock_vat_id');
-		$postColumns = array(             'name', 'description', 'cost', 'weight', 'height', 'width', 'depth', 'volume',  /*****/ 'stock_group_id', 'stock_vat_id');
-		$putColumns  = array('id',        'name', 'description', 'cost', 'weight', 'height', 'width', 'depth', 'volume',  /*****/ 'stock_group_id', 'stock_vat_id');
-		$showColumns = array('id', 'uid', 'name', 'cost', 'price');
+		$allColumns  = array('id', 'uid', 'code', 'name', 'description', 'cost', 'weight', 'height', 'width', 'depth', 'volume', 'notes', 'priced_by_weight', /*****/ 'stock_group_id', 'stock_vat_id');
+		$postColumns = array(             'code', 'name', 'description', 'cost', 'weight', 'height', 'width', 'depth', 'volume', 'notes', 'priced_by_weight', /*****/ 'stock_group_id', 'stock_vat_id');
+		$putColumns  = array('id',        'code', 'name', 'description', 'cost', 'weight', 'height', 'width', 'depth', 'volume', 'notes', 'priced_by_weight', /*****/ 'stock_group_id', 'stock_vat_id');
+		$showColumns = array('id', 'uid', 'code', 'name', 'cost', 'price');
 
 		if ($this->method == 'GET')
 		{
@@ -697,6 +698,32 @@ logWrite("matched key for col=".print_r($column, true));
 		}
 	}
 
+// CUSTOM queries here
+
+	protected function custom_product_maintain_tab_barcode_getall()
+	{
+		$sendColumns  = array('id', 'barcode', 'notes');
+		$uid = 1;	//@@NB: hardcoded
+
+		logWrite("CUSTOM Method = " . $this->method);
+		$id = (int) $this->args[0];
+		$arr = array();
+		$query = DB::query("SELECT * FROM stock_product_has_barcode WHERE stock_product_id=%i", $id);
+		if ($query)
+		{
+			foreach ($query as $barcode_linkpair)
+			{
+				$query2 = DB::query("SELECT * FROM stock_barcode WHERE uid=%i AND id=%i", $uid, $barcode_linkpair['stock_barcode_id']);
+				$arr2 = array();
+				foreach ($sendColumns as $column) {
+					$arr2[$column] = $query2[0][$column];
+				}
+				array_push($arr, $arr2);
+			}
+		}
+		logWrite('arr = ' . print_r($arr, true));
+		return $arr;
+	}
 
 } // class MyAPI
 
