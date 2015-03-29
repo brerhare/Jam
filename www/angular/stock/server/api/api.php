@@ -700,19 +700,45 @@ logWrite("matched key for col=".print_r($column, true));
 
 // CUSTOM queries here
 
-	protected function custom_product_maintain_tab_barcode_getall()
+	// MANUAL PRICES TAB
+
+	protected function custom_product_maintain_tab_prices_getall()
 	{
+		$sendColumns  = array('stock_markup_group_id', 'price');
+		$uid = 1;	//@@NB: hardcoded
+
+		logWrite("CUSTOM Method custom_product_maintain_tab_prices_getall() = " . $this->method);
+		$productId = (int) $this->args[0];
+		$arr = array();
+		$query = DB::query("SELECT * FROM stock_product_price WHERE stock_product_id=%i", $productId);
+		if ($query)
+		{
+			foreach ($query as $price_link)
+			{
+logWrite("product id = " . $productId . "and price record = " . $price_link['price']);
+				$query2 = DB::query("SELECT * FROM stock_markup_group WHERE uid=%i AND id=%i", $uid, $price_link['stock_markup_group_id']);
+				$arr2 = array();
+				$arr2['price']                 = $price_link['price'];
+				$arr2['stock_markup_group_id'] = $price_link['stock_markup_group_id'];
+				array_push($arr, $arr2);
+			}
+		}
+		logWrite('arr = ' . print_r($arr, true));
+		return $arr;
+	}
+
+	// BARCODE TAB
+
+	protected function custom_product_maintain_tab_barcode_getall() {
 		$sendColumns  = array('id', 'barcode', 'notes');
 		$uid = 1;	//@@NB: hardcoded
 
 		logWrite("CUSTOM Method custom_product_maintain_tab_barcode_getall() = " . $this->method);
-		$id = (int) $this->args[0];
+		$productId = (int) $this->args[0];
 		$arr = array();
-		$query = DB::query("SELECT * FROM stock_product_has_barcode WHERE stock_product_id=%i", $id);
-		if ($query)
-		{
-			foreach ($query as $barcode_linkpair)
-			{
+		$query = DB::query("SELECT * FROM stock_product_has_barcode WHERE stock_product_id=%i", $productId);
+		if ($query) {
+			foreach ($query as $barcode_linkpair) {
 				$query2 = DB::query("SELECT * FROM stock_barcode WHERE uid=%i AND id=%i", $uid, $barcode_linkpair['stock_barcode_id']);
 				$arr2 = array();
 				foreach ($sendColumns as $column) {
@@ -725,17 +751,14 @@ logWrite("matched key for col=".print_r($column, true));
 		return $arr;
 	}
 
-	protected function custom_product_maintain_tab_barcode_delete()
-	{
-		if ($this->method == 'DELETE')
-		{
+	protected function custom_product_maintain_tab_barcode_delete() {
+		if ($this->method == 'DELETE') {
 			$uid = 1;	//@@NB: hardcoded
 			$obj = json_decode(file_get_contents("php://input"),true);
 			logWrite("CUSTOM Method custom_product_maintain_tab_barcode_delete() = " . $this->method);
 			logWrite('received obj = ' . print_r($obj, true));
 			$id = (int) $this->args[0];
-			if ($id != 0)
-			{
+			if ($id != 0) {
 				logWrite("Delete of record id " . $id);
 				DB::delete('stock_product_has_barcode', "stock_product_id=%i AND stock_barcode_id=%i", $id, $obj);
 				DB::delete('stock_barcode', "uid=%i AND id=%i", $uid, $obj);
@@ -745,10 +768,8 @@ logWrite("matched key for col=".print_r($column, true));
 		}
 	}
 
-	protected function custom_product_maintain_tab_barcode_add()
-	{
-		if ($this->method == 'POST')
-		{
+	protected function custom_product_maintain_tab_barcode_add() {
+		if ($this->method == 'POST') {
 			$addColumns  = array('barcode', 'notes');
 			$uid = 1;	//@@NB: hardcoded
 			$id = (int) $this->args[0];
