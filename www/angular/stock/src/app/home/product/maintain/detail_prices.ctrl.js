@@ -106,11 +106,17 @@ angular.module('stock')
 		};
 
 		$scope.saveManualPrices = function() {
-			restFactory.addItem(urlSaveAll).success(saveManualPricesSuccessCallback).error(errorCallback);
+			var sendItems = [];
+			for (var k = 0; k < $scope.markupGroups.length; k++) {
+				sendItems[k] = {};
+				sendItems[k]['stock_markup_group_id'] = $scope.markupGroups[k].id;
+				sendItems[k]['price'] = $scope.markupGroups[k].manual;
+			}
+			alert(JSON.stringify(sendItems));
+			restFactory.addItem(urlSaveAll, sendItems).success(saveManualPricesSuccessCallback).error(errorCallback);
 		};
 
 		// Start
-
 
 		getMarkupGroups();
 
