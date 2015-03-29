@@ -2,7 +2,7 @@ angular.module('stock')
 	.controller('ProductDetailBarcodesCtrl', function ($scope, restFactory, notificationFactory, ngDialog) {
 
 		var urlGetAll = 'http://stock.wireflydesign.com/server/api/custom_product_maintain_tab_barcode_getall/' + $scope.$parent.item.id;
-		var urlDelete = 'http://stock.wireflydesign.com/server/api/custom_product_maintain_tab_barcode_delete/' + $scope.$parent.item.id;
+		var urlDelete = 'http://stock.wireflydesign.com/server/api/custom_product_maintain_tab_barcode_delete/';
 		var urlAdd    = 'http://stock.wireflydesign.com/server/api/custom_product_maintain_tab_barcode_add/';
 
 		$scope.tabitems = [];
@@ -11,15 +11,13 @@ angular.module('stock')
 
 		$scope.toggleAddMode = function () {
 			$scope.addMode = !$scope.addMode;
-//			if ($scope.addMode)
-//				$scope.uneditAllBut(null);
 		};
 
 // ----------------------------------------------------------------------------------------
 
 		var getItemSuccessCallback = function (data, status) {
 			$scope.tabitems = data;
-//alert(JSON.stringify($scope.tabitems));
+
 		};
 
 // ----------------------------------------------------------------------------------------
@@ -50,8 +48,8 @@ angular.module('stock')
 			restFactory.addItem(urlAdd, $scope.newitem).success(successPostCallback).error(errorCallback);
 		};
 
-		$scope.deleteItem = function (item) {
-			restFactory.deleteItem(urlDelete, item.id).success(successCallback).error(errorCallback);
+		$scope.deleteItem = function (tabitem) {
+			restFactory.deleteItem(urlDelete, tabitem.id).success(successCallback).error(errorCallback);
 		};
 
 	});

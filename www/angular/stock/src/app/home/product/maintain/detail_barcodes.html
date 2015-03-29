@@ -49,18 +49,18 @@
                         </div>
                     </td>
                 </tr>
-                <tr ng-repeat="item in tabitems | orderBy:'barcode'">
-<!--                    <td class='col-id'>{{item.id}}</td> -->
+                <tr ng-repeat="tabitem in tabitems | orderBy:'barcode'">
+<!--                    <td class='col-id'>{{tabitem.id}}</td> -->
                     <td class='col-barcode'>
-                        <span>{{item.barcode}}</span>
+                        <span>{{tabitem.barcode}}</span>
                     </td>
                     <td>
-                         <span>{{item.notes}}</span>
+                         <span>{{tabitem.notes}}</span>
                     </td>
                     <td class='col-button'>
                         <div class="btn-toolbar">
                             <div class="btn-group">
-                                <button type="button" ng-click="deleteItem(item)" class="btn btn-xs btn-danger">
+                                <button type="button" ng-click="deleteItem(tabitem)" class="btn btn-xs btn-danger">
                                     <i class="fa fa-trash fa-1x"></i>
                                 </button>
                             </div>
