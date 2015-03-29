@@ -2,8 +2,8 @@ angular.module('stock')
 	.controller('ProductDetailBarcodesCtrl', function ($scope, restFactory, notificationFactory, ngDialog) {
 
 		var urlGetAll = 'http://stock.wireflydesign.com/server/api/custom_product_maintain_tab_barcode_getall/' + $scope.$parent.item.id;
-		var urlDelete = 'http://stock.wireflydesign.com/server/api/custom_product_maintain_tab_barcode_delete/';
-		var urlAdd    = 'http://stock.wireflydesign.com/server/api/custom_product_maintain_tab_barcode_add/';
+		var urlDelete = 'http://stock.wireflydesign.com/server/api/custom_product_maintain_tab_barcode_delete/' + $scope.$parent.item.id;
+		var urlAdd    = 'http://stock.wireflydesign.com/server/api/custom_product_maintain_tab_barcode_add/' + $scope.$parent.item.id;
 
 		$scope.tabitems = [];
 		$scope.newitem = {};
@@ -22,16 +22,15 @@ angular.module('stock')
 
 // ----------------------------------------------------------------------------------------
 
-		var successCallback = function (data, status, headers, config) {
-			notificationFactory.success();
-			return restFactory.getItem(url).success(getItemSuccessCallback).error(errorCallback);
-		};
-
 		var successPostCallback = function (data, status, headers, config) {
 			//successCallback(data, status, headers, config).success(function () {
 				$scope.toggleAddMode();
 				$scope.newitem = {};
 			//});
+			restFactory.getItem(urlGetAll).success(getItemSuccessCallback).error(errorCallback);	// reload all after adding
+		};
+
+		var successDeleteCallback = function (data, status, headers, config) {
 			restFactory.getItem(urlGetAll).success(getItemSuccessCallback).error(errorCallback);	// reload all after adding
 		};
 
@@ -43,13 +42,11 @@ angular.module('stock')
 		restFactory.getItem(urlGetAll).success(getItemSuccessCallback).error(errorCallback);
 
 		$scope.addItem = function () {
-			// Prepend the product code so the backend can update the link file too...
-			$scope.newitem['product_id'] = $scope.$parent.item.id;
 			restFactory.addItem(urlAdd, $scope.newitem).success(successPostCallback).error(errorCallback);
 		};
 
 		$scope.deleteItem = function (tabitem) {
-			restFactory.deleteItem(urlDelete, tabitem.id).success(successCallback).error(errorCallback);
+			restFactory.deleteItem(urlDelete, tabitem.id).success(successDeleteCallback).error(errorCallback);
 		};
 
 	});
