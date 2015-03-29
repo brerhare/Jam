@@ -11,7 +11,7 @@ angular.module('stock')
 
 		$scope.showTab = function(name) {
 			$state.go(name, $stateParams, {location: 'replace'});
-		}
+		};
 
 		var getAreas = function() {	// for <select>
 			restFactory.getItem(urlArea)

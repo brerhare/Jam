@@ -18,7 +18,7 @@ angular.module('stock')
 
 		$scope.showTab = function(name) {
 			$state.go(name, $stateParams, {location: 'replace'});
-		}
+		};
 
 		// Vat select box. There is a default rate
 		// ---------------------------------------
@@ -159,9 +159,9 @@ angular.module('stock')
 				$scope.errorMsg = 'Code cant be blank';
 			else if ($scope.item.name === '')
 				$scope.errorMsg = 'Name cant be blank';
-			else if ($scope.item.stock_group_id == 0)
+			else if ($scope.item.stock_group_id === 0)
 				$scope.errorMsg = 'Must select a product group';
-			else if ($scope.item.stock_vat_id == 0)
+			else if ($scope.item.stock_vat_id === 0)
 				$scope.errorMsg = 'Invalid Tax';
 
 			if ($scope.errorMsg) {
@@ -246,7 +246,7 @@ angular.module('stock')
             restFactory.getItem(url, $scope.$parent.itemId)
                 .success(function (data, status) {
                     $scope.item = data;
-                    if ($scope.item.priced_by_weight == 0)
+                    if ($scope.item.priced_by_weight === 0)
                     	$scope.item.priced_by_weight = false;
                     else
                     	$scope.item.priced_by_weight = true;

@@ -27,13 +27,13 @@ angular.module('stock')
 		});
 
 		var calcVolume = function() {
-			if ((parseFloat($scope.height) != 0)
-			&&  (parseFloat($scope.width) != 0)
-			&&  (parseFloat($scope.depth) != 0)) {
+			if ((parseFloat($scope.height) !== 0) &&
+			    (parseFloat($scope.width) !== 0) &&
+			    (parseFloat($scope.depth) !== 0)) {
 				var v = $scope.volume = parseFloat($scope.height) * parseFloat($scope.width) * parseFloat($scope.depth);
 				if (isNaN(v))
 					v = 0.00;
 				$scope.volume = v.toFixed(2);
 			}
-		}
+		};
 	});
