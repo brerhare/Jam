@@ -705,7 +705,7 @@ logWrite("matched key for col=".print_r($column, true));
 		$sendColumns  = array('id', 'barcode', 'notes');
 		$uid = 1;	//@@NB: hardcoded
 
-		logWrite("CUSTOM Method = " . $this->method);
+		logWrite("CUSTOM Method custom_product_maintain_tab_barcode_getall() = " . $this->method);
 		$id = (int) $this->args[0];
 		$arr = array();
 		$query = DB::query("SELECT * FROM stock_product_has_barcode WHERE stock_product_id=%i", $id);
@@ -723,6 +723,65 @@ logWrite("matched key for col=".print_r($column, true));
 		}
 		logWrite('arr = ' . print_r($arr, true));
 		return $arr;
+	}
+
+	protected function custom_product_maintain_tab_barcode_delete()
+	{
+		if ($this->method == 'DELETE')
+		{
+			$uid = 1;	//@@NB: hardcoded
+			$obj = json_decode(file_get_contents("php://input"),true);
+			logWrite("CUSTOM Method custom_product_maintain_tab_barcode_delete() = " . $this->method);
+			logWrite('received obj = ' . print_r($obj, true));
+			$id = (int) $this->args[0];
+			if ($id != 0)
+			{
+				logWrite("Delete of record id " . $id);
+				DB::delete('stock_product_has_barcode', "stock_product_id=%i AND stock_barcode_id=%i", $id, $obj);
+				DB::delete('stock_barcode', "uid=%i AND id=%i", $uid, $obj);
+				return 'ok';
+			}
+			return 'ok';
+		}
+	}
+
+	protected function custom_product_maintain_tab_barcode_add()
+	{
+		if ($this->method == 'POST')
+		{
+			$addColumns  = array('barcode', 'notes');
+			$uid = 1;	//@@NB: hardcoded
+			$id = (int) $this->args[0];
+
+			logWrite("CUSTOM Method custom_product_maintain_tab_barcode_add() = " . $this->method);
+			$obj = json_decode(file_get_contents("php://input"),true);
+        	$keys = array_keys($obj);
+			$values = array();
+			$values['uid'] = $uid;
+			foreach ($addColumns as $column) {
+				if (!in_array($column, $keys)) {
+					$values[$column] = NULL;
+				}
+				else {
+					$values[$column] = $obj[$column];
+				}
+			}
+			$idArr = array();
+			// Insert barcode record
+logWrite("write1 fields =".print_r($values, true));
+			DB::insert('stock_barcode', $values);
+logWrite("write1 done");
+
+			$idArr['id'] = DB::insertId();
+			// Insert product-barcode link record
+			$linkArr = array();
+			$linkArr['stock_product_id'] = $id;
+			$linkArr['stock_barcode_id'] = $idArr['id'];
+logWrite("write2 fields =".print_r($linkArr, true));
+			DB::insert('stock_product_has_barcode', $linkArr);
+logWrite("write2 done");
+			return $idArr;
+		}
 	}
 
 } // class MyAPI
