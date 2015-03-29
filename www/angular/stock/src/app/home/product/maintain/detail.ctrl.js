@@ -238,6 +238,7 @@ angular.module('stock')
 			$scope.item.stock_group_id = 0;
 			$scope.item.stock_vat_id = 0;
 			$scope.item.notes = "";
+			$scope.item.label = "";
 			$scope.item.priced_by_weight = false;
 //alert(JSON.stringify($scope.item));
 			initProductEditing();

@@ -110,10 +110,10 @@ angular.module('stock')
 		    templateUrl: 'app/home/product/maintain/detail_deliveries.html',
 		    controller: 'ProductDetailDeliveriesCtrl'
 		  })
-		  .state('home.product-detail.labels', {
+		  .state('home.product-detail.label', {
 		    url: '/labels',
-		    templateUrl: 'app/home/product/maintain/detail_labels.html',
-		    controller: 'ProductDetailLabelsCtrl'
+		    templateUrl: 'app/home/product/maintain/detail_label.html',
+		    controller: 'ProductDetailLabelCtrl'
 		  })
 		  .state('home.product-detail.uom', {
 		    url: '/uom',
