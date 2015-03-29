@@ -13,11 +13,8 @@ angular.module('stock')
 			$scope.addMode = !$scope.addMode;
 		};
 
-// ----------------------------------------------------------------------------------------
-
 		var getItemSuccessCallback = function (data, status) {
 			$scope.tabitems = data;
-
 		};
 
 // ----------------------------------------------------------------------------------------
