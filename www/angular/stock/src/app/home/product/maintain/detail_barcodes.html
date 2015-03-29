@@ -5,11 +5,13 @@
 <style>
 	button {margin-right:5px;}
 	table {table-layout: fixed; }
-	.col-barcode { width:300px; }
+	.col-barcode { width:150px; }
+	.col-notes { width:500px; }
 	.col-barcode:hover { background-color: #ddf0ff; cursor:pointer; cursor: hand; }
 	.col-button { width:80px; }
 
-	.col-i-barcode { width:290px; }
+	.col-i-barcode { width:140px; }
+	.col-i-notes { width:490px; }
 
 </style>
 
@@ -17,11 +19,12 @@
 
    <div ng-cloak>
 <center>
-        <div style="width:600px;">
+        <div style="width:800px;">
             <table class="Xtax-table Xtable-striped table-bordered table-condensed Xtable-hover">
                 <tr>
 
                     <th class='col-barcode'>Barcode</th>
+                    <th class='col-notes'>Notes</th>
                     <th class='col-button'>
                         <div class="btn-toolbar">
                             <button type="button" ng-click="toggleAddMode()" class="btn btn-xs btn-success">
@@ -31,7 +34,8 @@
                     </th>
                 </tr>
                 <tr ng-show="addMode">
-                    <td class='barcode'> <input class='col-i-barcode' ng-model="item.barcode" /></td>
+                    <td> <input class='col-i-barcode' ng-model="newitem.barcode" /></td>
+                    <td> <input class='col-i-notes' ng-model="newitem.notes" /></td>
                     <td class='col-button'>
                         <div class="btn-toolbar">
                             <div class="btn-group">
@@ -45,11 +49,13 @@
                         </div>
                     </td>
                 </tr>
-                <tr ng-repeat="item in items | orderBy:'description'">
+                <tr ng-repeat="item in tabitems | orderBy:'barcode'">
 <!--                    <td class='col-id'>{{item.id}}</td> -->
-                    <td class='col-description'>
-                        <span ng-click="toggleEditBarcode(item)" ng-show="item.barcode != true">{{item.barcode}}</span>
-                        <input class='col-i-barcode' ng-model="item.barcode" ng-show="item.barcode == true" ng-keypress="editBarcodeEnd($event, item)" />
+                    <td class='col-barcode'>
+                        <span>{{item.barcode}}</span>
+                    </td>
+                    <td>
+                         <span>{{item.notes}}</span>
                     </td>
                     <td class='col-button'>
                         <div class="btn-toolbar">
