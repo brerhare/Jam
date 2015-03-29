@@ -702,19 +702,15 @@ logWrite("matched key for col=".print_r($column, true));
 
 	// MANUAL PRICES TAB
 
-	protected function custom_product_maintain_tab_prices_getall()
-	{
-		$sendColumns  = array('stock_markup_group_id', 'price');
+	protected function custom_product_maintain_tab_prices_getall() {
 		$uid = 1;	//@@NB: hardcoded
 
 		logWrite("CUSTOM Method custom_product_maintain_tab_prices_getall() = " . $this->method);
 		$productId = (int) $this->args[0];
 		$arr = array();
 		$query = DB::query("SELECT * FROM stock_product_price WHERE stock_product_id=%i", $productId);
-		if ($query)
-		{
-			foreach ($query as $price_link)
-			{
+		if ($query) {
+			foreach ($query as $price_link) {
 logWrite("product id = " . $productId . "and price record = " . $price_link['price']);
 				$query2 = DB::query("SELECT * FROM stock_markup_group WHERE uid=%i AND id=%i", $uid, $price_link['stock_markup_group_id']);
 				$arr2 = array();
@@ -725,6 +721,38 @@ logWrite("product id = " . $productId . "and price record = " . $price_link['pri
 		}
 		logWrite('arr = ' . print_r($arr, true));
 		return $arr;
+	}
+
+	protected function custom_product_maintain_tab_prices_saveall() {
+		if ($this->method == 'POST') {
+			$uid = 1;	//@@NB: hardcoded
+			logWrite("CUSTOM Method custom_product_maintain_tab_prices_saveall() = " . $this->method);
+			// Delete all existing manual price records
+			$obj = json_decode(file_get_contents("php://input"),true);
+			logWrite('received obj = ' . print_r($obj, true));
+			$productId = (int) $this->args[0];
+			if ($productId != 0) {
+				logWrite("Delete all manual prices for product id = " . $productId);
+				DB::delete('stock_product_price', "uid=%i AND stock_product_id=%i", $uid, $productId);
+			}
+			// Now create records for those that have manual prices (ignore price=0)
+			foreach ($obj as $rec) {
+				$price = floatval($rec['price']);
+				if ($price != 0) {
+					logWrite("writing (non-zero price). price =". $rec['price']);
+					$values = array();
+					$values['uid'] = $uid;
+					$values['start_date'] = '';
+					$values['end_date'] = '';
+					$values['price'] = $price;
+					$values['stock_product_id'] = $productId;
+					$values['stock_markup_group_id'] = $rec['stock_markup_group_id'];
+					DB::insert('stock_product_price', $values);
+					$idArr['id'] = DB::insertId();
+				}
+			}
+			return $idArr['id'];
+		}
 	}
 
 	// BARCODE TAB
