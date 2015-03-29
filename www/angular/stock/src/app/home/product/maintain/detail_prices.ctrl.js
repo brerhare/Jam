@@ -4,6 +4,7 @@ angular.module('stock')
 		var urlMarkupGroup  = 'http://stock.wireflydesign.com/server/api/stock_markup_group/';
 		var urlProductPrice = 'http://stock.wireflydesign.com/server/api/stock_product_price/';
 		var urlGetAll       = 'http://stock.wireflydesign.com/server/api/custom_product_maintain_tab_prices_getall/' + $scope.$parent.item.id;
+		var urlSaveAll      = 'http://stock.wireflydesign.com/server/api/custom_product_maintain_tab_prices_saveall/' + $scope.$parent.item.id;
 
 		$scope.rowCollection = [];
 
@@ -88,13 +89,25 @@ angular.module('stock')
 		};
 
 		var getManualPricesSuccessCallback = function (data, status) {
-alert(JSON.stringify(data));
+			for (var i = 0; i < data.length; i++) {
+				for (var j = 0; j < $scope.markupGroups.length; j++) {
+					if (data[i].stock_markup_group_id == $scope.markupGroups[j].id)
+						$scope.markupGroups[j].manual = data[i].price;
+				}
+			}
+		};
+
+		var saveManualPricesSuccessCallback = function (data, status) {
+			notificationFactory.success();
 		};
 
 		var getManualPrices = function() {
 			restFactory.getItem(urlGetAll).success(getManualPricesSuccessCallback).error(errorCallback);
 		};
 
+		$scope.saveManualPrices = function() {
+			restFactory.addItem(urlSaveAll).success(saveManualPricesSuccessCallback).error(errorCallback);
+		};
 
 		// Start
 

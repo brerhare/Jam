@@ -51,7 +51,7 @@
                 <th class='col-heading'>
                     <span>Manual Price</span>
                     <span>
-                        <button style="margin-left:20px; border:none" type="button" class="btn-xs btn-primary" ng-click="applyMarkupGroups()">Apply</button>
+                        <button style="margin-left:20px; border:none" type="button" class="btn-xs btn-primary" ng-click="saveManualPrices()">Apply</button>
                    </span>
                 </th>
                 <th class='col-heading'>  Variance</th>
@@ -61,8 +61,7 @@
             <tr ng-repeat="markupGroup in markupGroups | orderBy:pricetabGetGrossPrice">
                 <td class='col-item'>{{markupGroup.description}}</td>
                 <td class='col-item'>{{pricetabGetCalculatedPrice(markupGroup) | number:2}}</td>
-                <td class="col-item"><input fcsa-number="{ maxDecimals: 2, min: 0, preventInvalidInput: true }" type="text" class='col-item' ng-model="markupGroup.manual" /></td>
-
+                <td class="col-item"><input fcsa-number="{ maxDecimals: 2, min: 0, preventInvalidInput: true }" type="text" class='col-item' ng-model="markupGroup.manual" ng-model-options="{updateOn: 'default blur', debounce: {default: 500, blur: 0} }" /></td>
                 <td class='col-item'>{{pricetabGetVariance(markupGroup) | number:2}}%</td>
                 <td class='col-item'>{{pricetabGetProfit(markupGroup) | number:2}}</td>
                 <td class='col-item'>{{pricetabGetGrossPrice(markupGroup) | number:2}}</td>
