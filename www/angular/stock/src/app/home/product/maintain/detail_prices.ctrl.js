@@ -112,7 +112,7 @@ angular.module('stock')
 				sendItems[k].stock_markup_group_id = $scope.markupGroups[k].id;
 				sendItems[k].price = $scope.markupGroups[k].manual;
 			}
-			alert(JSON.stringify(sendItems));
+//			alert(JSON.stringify(sendItems));
 			restFactory.addItem(urlSaveAll, sendItems).success(saveManualPricesSuccessCallback).error(errorCallback);
 		};
 
