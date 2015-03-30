@@ -351,9 +351,9 @@ DB::$error_handler = 'my_error_handler';
 		logWrite("Method = " . $this->method);
 		$uid = 1;	//@@NB: hardcoded
 
-		$allColumns  = array('id', 'uid', 'code', 'name', 'description', 'cost', 'weight', 'height', 'width', 'depth', 'volume', 'notes', 'priced_by_weight', /*****/ 'stock_group_id', 'stock_vat_id');
-		$postColumns = array(             'code', 'name', 'description', 'cost', 'weight', 'height', 'width', 'depth', 'volume', 'notes', 'priced_by_weight', /*****/ 'stock_group_id', 'stock_vat_id');
-		$putColumns  = array('id',        'code', 'name', 'description', 'cost', 'weight', 'height', 'width', 'depth', 'volume', 'notes', 'priced_by_weight', /*****/ 'stock_group_id', 'stock_vat_id');
+		$allColumns  = array('id', 'uid', 'code', 'name', 'description', 'cost', 'weight', 'height', 'width', 'depth', 'volume', 'notes', 'label', 'priced_by_weight', /*****/ 'stock_group_id', 'stock_vat_id');
+		$postColumns = array(             'code', 'name', 'description', 'cost', 'weight', 'height', 'width', 'depth', 'volume', 'notes', 'label', 'priced_by_weight', /*****/ 'stock_group_id', 'stock_vat_id');
+		$putColumns  = array('id',        'code', 'name', 'description', 'cost', 'weight', 'height', 'width', 'depth', 'volume', 'notes', 'label', 'priced_by_weight', /*****/ 'stock_group_id', 'stock_vat_id');
 		$showColumns = array('id', 'uid', 'code', 'name', 'cost', 'price');
 
 		if ($this->method == 'GET')
@@ -790,7 +790,6 @@ logWrite("product id = " . $productId . "and price record = " . $price_link['pri
 				logWrite("Delete of record id " . $id);
 				DB::delete('stock_product_has_barcode', "stock_product_id=%i AND stock_barcode_id=%i", $id, $obj);
 				DB::delete('stock_barcode', "uid=%i AND id=%i", $uid, $obj);
-				return 'ok';
 			}
 			return 'ok';
 		}
@@ -832,6 +831,71 @@ logWrite("write2 done");
 			return $idArr;
 		}
 	}
+
+	// PACK TAB
+
+	protected function custom_product_maintain_tab_pack_getall() {
+		$sendColumns  = array('id', 'unit', 'qty');
+		$uid = 1;	//@@NB: hardcoded
+		logWrite("CUSTOM Method custom_product_maintain_tab_pack_getall() = " . $this->method);
+		$productId = (int) $this->args[0];
+		$arr = array();
+		$query = DB::query("SELECT * FROM stock_pack WHERE uid=%i AND stock_product_id=%i", $uid, $productId);
+		if ($query) {
+			foreach ($query as $row) {
+				logWrite("Got row = " . print_r($row, true));
+				$arr2 = array();
+				foreach ($sendColumns as $col) {
+					$arr2[$col] = $row[$col];
+				}
+				array_push($arr, $arr2);
+			}
+		}
+		logWrite('arr = ' . print_r($arr, true));
+		return $arr;
+	}
+
+	protected function custom_product_maintain_tab_pack_delete() {
+		if ($this->method == 'DELETE') {
+			$uid = 1;	//@@NB: hardcoded
+			$obj = json_decode(file_get_contents("php://input"),true);
+			logWrite("CUSTOM Method custom_product_maintain_tab_pack_delete() = " . $this->method);
+			logWrite('received obj = ' . print_r($obj, true));
+			DB::delete('stock_pack', "uid=%i AND id=%i", $uid, $obj);
+			return 'ok';
+		}
+	}
+
+	protected function custom_product_maintain_tab_pack_add() {
+		if ($this->method == 'POST') {
+			$addColumns  = array('unit', 'qty');
+			$uid = 1;	//@@NB: hardcoded
+			$id = (int) $this->args[0];
+
+			logWrite("CUSTOM Method custom_product_maintain_tab_pack_add() = " . $this->method);
+			$obj = json_decode(file_get_contents("php://input"),true);
+        	$keys = array_keys($obj);
+			$values = array();
+			$values['uid'] = $uid;
+			$values['stock_product_id'] = $id;
+			foreach ($addColumns as $column) {
+				if (!in_array($column, $keys)) {
+					$values[$column] = NULL;
+				}
+				else {
+					$values[$column] = $obj[$column];
+				}
+			}
+			$idArr = array();
+			// Insert pack record
+logWrite("write fields =".print_r($values, true));
+			DB::insert('stock_pack', $values);
+logWrite("write done");
+			$idArr['id'] = DB::insertId();
+			return $idArr;
+		}
+	}
+
 
 } // class MyAPI
 
