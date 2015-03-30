@@ -58,10 +58,10 @@
                 <th class='col-heading'>  Profit</th>
                 <th class='col-heading'>  Gross<br/>Price</th>
             </tr>
-            <tr ng-repeat="markupGroup in markupGroups | orderBy:pricetabGetGrossPrice">
+            <tr ng-repeat="markupGroup in markupGroups | orderBy:'description'">
                 <td class='col-item'>{{markupGroup.description}}</td>
                 <td class='col-item'>{{pricetabGetCalculatedPrice(markupGroup) | number:2}}</td>
-                <td class="col-item"><input fcsa-number="{ maxDecimals: 2, min: 0, preventInvalidInput: true }" type="text" class='col-item' ng-model="markupGroup.manual" ng-model-options="{updateOn: 'default blur', debounce: {default: 700, blur: 0} }" /></td>
+                <td class="col-item"><input fcsa-number="{ maxDecimals: 2, min: 0, preventInvalidInput: true }" type="text" class='col-item' ng-model="markupGroup.manual"  /></td>
                 <td class='col-item'>{{pricetabGetVariance(markupGroup) | number:2}}%</td>
                 <td class='col-item'>{{pricetabGetProfit(markupGroup) | number:2}}</td>
                 <td class='col-item'>{{pricetabGetGrossPrice(markupGroup) | number:2}}</td>

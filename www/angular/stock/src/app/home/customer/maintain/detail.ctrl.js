@@ -130,8 +130,8 @@ angular.module('stock')
 			$scope.item.link_field = "";
 			$scope.item.notes = "";
 			$scope.status = 0;
-			$scope.item.CIF = "";
-			$scope.item.forma_de_pago = "";
+			$scope.item.tax_reference = "";
+			$scope.item.payment_method = "";
 			$scope.item.stock_markup_group_id = 0;
 			$scope.item.stock_area_id = 0;
 		}
