@@ -131,7 +131,7 @@ angular.module('stock')
 			$scope.item.notes = "";
 			$scope.status = 0;
 			$scope.item.tax_reference = "";
-			$scope.item.payment_method = "";
+			$scope.item.payment_terms = "";
 			$scope.item.stock_markup_group_id = 0;
 			$scope.item.stock_area_id = 0;
 		}
