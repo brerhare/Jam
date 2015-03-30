@@ -190,7 +190,7 @@ logWrite("matched key for col=".print_r($column, true));
 				// All items
 				$arr = array();
 				$ix = 0;
-				$query = DB::query("SELECT * FROM stock_markup_group WHERE uid=%i", $uid);
+				$query = DB::query("SELECT * FROM stock_markup_group WHERE uid=%i ORDER BY description", $uid);
 				foreach ($query as $q) {
 					foreach ($allColumns as $column)
     					$arr[$ix][$column] = $q[$column];
@@ -276,7 +276,7 @@ logWrite("matched key for col=".print_r($column, true));
 				// All items
 				$arr = array();
 				$ix = 0;
-				$query = DB::query("SELECT * FROM stock_area WHERE uid=%i", $uid);
+				$query = DB::query("SELECT * FROM stock_area WHERE uid=%i ORDER BY name", $uid);
 				foreach ($query as $q) {
 					foreach ($allColumns as $column)
     					$arr[$ix][$column] = $q[$column];
