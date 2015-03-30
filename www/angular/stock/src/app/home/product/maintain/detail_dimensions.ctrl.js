@@ -7,26 +7,28 @@ angular.module('stock')
 		$scope.volume = $scope.$parent.item.volume;
 		$scope.weight = $scope.$parent.item.weight;
 
+
 		$scope.$watch('height', function () {
 			$scope.$parent.item.height = $scope.height;
-			calcVolume();
 		});
 
 		$scope.$watch('width', function () {
 			$scope.$parent.item.width = $scope.width;
-			calcVolume();
 		});
 
 		$scope.$watch('depth', function () {
 			$scope.$parent.item.depth = $scope.depth;
-			calcVolume();
 		});
 
 		$scope.$watch('weight', function () {
 			$scope.$parent.item.weight = $scope.weight;
 		});
 
-		var calcVolume = function() {
+		$scope.$watch('volume', function () {
+			$scope.$parent.item.volume = $scope.volume;
+		});
+
+		$scope.calcVolume = function() {
 			if ((parseFloat($scope.height) !== 0) &&
 			    (parseFloat($scope.width) !== 0) &&
 			    (parseFloat($scope.depth) !== 0)) {
