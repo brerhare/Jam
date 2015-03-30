@@ -222,6 +222,7 @@ angular.module('stock')
 		var initProductEditing = function() {
 			getVats();
 			getGroups();
+			$scope.showTab('home.product-detail.prices');
 		};
 
         if ($scope.$parent.editMode == "add") {
