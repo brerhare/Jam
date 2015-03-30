@@ -127,6 +127,12 @@ angular.module('stock')
           controller: 'ProductGroupCtrl'
       })
 
+      .state('home.product-location', {
+        url: '/product/locations',
+        templateUrl: 'app/home/product/location/productLocation.html',
+        controller: 'ProductLocationCtrl'
+      })
+
 // Settings
 // --------
         .state('home.settings-vat', {
