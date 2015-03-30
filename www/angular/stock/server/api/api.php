@@ -62,10 +62,10 @@ class MyAPI extends API
 		logWrite("Method = " . $this->method);
 		$uid = 1;	//@@NB: hardcoded
 
-		$allColumns  = array('id', 'code', 'uid', 'name', 'address1', 'address2', 'address3', 'post_code', 'contact', 'telephone', 'mobile', 'fax', 'email', 'discount_percent', 'balance', 'link_field', 'notes', 'CIF', 'forma_de_pago', /*****/ 'stock_markup_group_id', 'stock_area_id');
-		$postColumns  = array(             'code', 'name', 'address1', 'address2', 'address3', 'post_code', 'contact', 'telephone', 'mobile', 'fax', 'email', 'discount_percent', 'balance', 'link_field', 'notes', 'CIF', 'forma_de_pago', /*****/ 'stock_markup_group_id', 'stock_area_id');
-		$putColumns  = array('id',        'code', 'name', 'address1', 'address2', 'address3', 'post_code', 'contact', 'telephone', 'mobile', 'fax', 'email', 'discount_percent', 'balance', 'link_field', 'notes', 'CIF', 'forma_de_pago', /*****/ 'stock_markup_group_id', 'stock_area_id');
-		$showColumns = array('id', 'uid', 'code', 'name', 'discount_percent', 'telephone', 'forma_de_pago');
+		$allColumns  = array('id', 'code', 'uid', 'name', 'address1', 'address2', 'address3', 'post_code', 'contact', 'telephone', 'mobile', 'fax', 'email', 'discount_percent', 'balance', 'link_field', 'notes', 'tax_reference', 'payment_method', /*****/ 'stock_markup_group_id', 'stock_area_id');
+		$postColumns  = array(             'code', 'name', 'address1', 'address2', 'address3', 'post_code', 'contact', 'telephone', 'mobile', 'fax', 'email', 'discount_percent', 'balance', 'link_field', 'notes', 'tax_reference', 'payment_method', /*****/ 'stock_markup_group_id', 'stock_area_id');
+		$putColumns  = array('id',        'code', 'name', 'address1', 'address2', 'address3', 'post_code', 'contact', 'telephone', 'mobile', 'fax', 'email', 'discount_percent', 'balance', 'link_field', 'notes', 'tax_reference', 'payment_method', /*****/ 'stock_markup_group_id', 'stock_area_id');
+		$showColumns = array('id', 'uid', 'code', 'name', 'discount_percent', 'telephone', 'payment_method');
 
 		if ($this->method == 'GET')
 		{
