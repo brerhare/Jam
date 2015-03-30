@@ -1,9 +1,9 @@
 angular.module('stock')
-	.controller('ProductDetailBarcodesCtrl', function ($scope, restFactory, notificationFactory, ngDialog) {
+	.controller('ProductDetailPackCtrl', function ($scope, restFactory, notificationFactory, ngDialog) {
 
-		var urlGetAll = 'http://stock.wireflydesign.com/server/api/custom_product_maintain_tab_barcode_getall/' + $scope.$parent.item.id;
-		var urlDelete = 'http://stock.wireflydesign.com/server/api/custom_product_maintain_tab_barcode_delete/' + $scope.$parent.item.id;
-		var urlAdd    = 'http://stock.wireflydesign.com/server/api/custom_product_maintain_tab_barcode_add/' + $scope.$parent.item.id;
+		var urlGetAll = 'http://stock.wireflydesign.com/server/api/custom_product_maintain_tab_pack_getall/' + $scope.$parent.item.id;
+		var urlDelete = 'http://stock.wireflydesign.com/server/api/custom_product_maintain_tab_pack_delete/' + $scope.$parent.item.id;
+		var urlAdd    = 'http://stock.wireflydesign.com/server/api/custom_product_maintain_tab_pack_add/' + $scope.$parent.item.id;
 
 		$scope.tabitems = [];
 		$scope.newitem = {};

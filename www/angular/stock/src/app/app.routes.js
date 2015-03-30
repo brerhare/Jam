@@ -115,10 +115,10 @@ angular.module('stock')
 		    templateUrl: 'app/home/product/maintain/detail_label.html',
 		    controller: 'ProductDetailLabelCtrl'
 		  })
-		  .state('home.product-detail.uom', {
+		  .state('home.product-detail.pack', {
 		    url: '/uom',
-		    templateUrl: 'app/home/product/maintain/detail_uom.html',
-		    controller: 'ProductDetailUOMCtrl'
+		    templateUrl: 'app/home/product/maintain/detail_pack.html',
+		    controller: 'ProductDetailPackCtrl'
 		  })
 
       .state('home.product-group', {
