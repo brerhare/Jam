@@ -50,7 +50,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr ng-repeat="item in items | orderBy:'name'">
+                <tr ng-repeat="item in items">          <!-- NB removed "| orderBy:'name' " -->
                     <td class='col-id'>{{item.id}}</td>
                     <td class='col-name'>
                         <span ng-click="toggleEditName(item)" ng-show="item.editName != true">{{item.name}}</span>
