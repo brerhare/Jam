@@ -343,6 +343,92 @@ function my_error_handler($params) {
 	logWrite("Query: " . $params["query"]);
 }
 
+// STOCK_LOCATION
+
+	protected function stock_location()
+	{
+		logWrite("Method = " . $this->method);
+		$uid = 1;	//@@NB: hardcoded
+
+		$allColumns  = array('id', 'uid', 'name');
+		$postColumns = array(             'name');
+		$putColumns  = array('id',        'name');
+
+		if ($this->method == 'GET')
+		{
+			$id = trim($this->args[0]);
+			if ($id)
+			{
+				// Single item
+				logWrite("GET a location, id = " . $id);
+			}
+			else
+			{
+				// All items
+				$arr = array();
+				$ix = 0;
+				$query = DB::query("SELECT * FROM stock_location WHERE uid=%i", $uid);
+				foreach ($query as $q) {
+					foreach ($allColumns as $column)
+    					$arr[$ix][$column] = $q[$column];
+					$ix++;
+				}
+				return $arr;
+			}
+		}
+		else if ($this->method == 'POST')
+		{
+			$obj = json_decode(file_get_contents("php://input"),true);
+logWrite("got json obj=".print_r($obj, true));
+            $keys = array_keys($obj);
+			$values = array();
+			$values['uid'] = $uid;
+			foreach ($postColumns as $column) {
+				if (!in_array($column, $keys)) {
+logWrite("missing key for col=".print_r($column, true));
+					$values[$column] = NULL;
+				}
+				else {
+logWrite("matched key for col=".print_r($column, true));
+					$values[$column] = $obj[$column];
+				}
+			}
+			$idArr = array();
+			DB::insert('stock_location', $values);
+			$idArr['id'] = DB::insertId();
+			return $idArr;
+		}
+		else if ($this->method == 'PUT')
+		{
+			$obj = json_decode(file_get_contents("php://input"),true);
+logWrite("got json obj=".print_r($obj, true));
+			// Pick up original
+			$id = (int) $this->args[0];
+			if ($id == 0)
+				return "fail";
+           	$keys = array_keys($obj);
+			$values = array();
+			foreach ($putColumns as $column) {
+				if (in_array($column, $keys)) {
+logWrite("matched key for col=".print_r($column, true));
+					$values[$column] = $obj[$column];
+				}
+			}
+			DB::update('stock_location', $values, "id=%i", $id);
+			return 'ok';
+		}
+		else if ($this->method == 'DELETE')
+		{
+			$id = (int) $this->args[0];
+			if ($id != 0)
+			{
+				DB::delete('stock_location', "id=%i", $id);
+				return 'ok';
+			}
+			return 'ok';
+		}
+	}
+
 // STOCK_PRODUCT
 
 	protected function stock_product()
@@ -545,7 +631,7 @@ logWrite("matched key for col=".print_r($column, true));
 			if ($id)
 			{
 				// Single item
-				logWrite("GET an area, id = " . $id);
+				logWrite("GET a group, id = " . $id);
 			}
 			else
 			{
