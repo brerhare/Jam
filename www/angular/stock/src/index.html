@@ -10,6 +10,8 @@
     <!-- build:css({.tmp,src}) styles/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="../bower_components/toastr/toastr.css" />
+    <link rel="stylesheet" href="../bower_components/ngDialog/css/ngDialog.css" />
+    <link rel="stylesheet" href="../bower_components/ngDialog/css/ngDialog-theme-default.css" />
     <!-- endbower -->
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet">		<!-- @@TODO kim added -->
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">	<!-- @@TODO kim added -->
@@ -81,8 +83,9 @@
     <script src="../bower_components/angular-resource/angular-resource.js"></script>
     <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
-    <script src="../bower_components/angular-smart-table/dist/smart-table.min.js"></script>
+    <script src="../bower_components/angular-smart-table/dist/smart-table.js"></script>
     <script src="../bower_components/toastr/toastr.js"></script>
+    <script src="../bower_components/ngDialog/js/ngDialog.js"></script>
     <!-- endbower -->
    <script src="../bower_components/angular-fcsa-number/src/fcsaNumber.js"></script> <!-- kim added. Altho its bower installed...? -->
     <!-- endbuild -->
@@ -93,10 +96,24 @@
     <script src="app/login/login.ctrl.js"></script>
     <script src="app/home/home.ctrl.js"></script>
     <script src="app/home/customer/maintain/maintain.ctrl.js"></script>
+    <script src="app/home/customer/maintain/list.ctrl.js"></script>
+    <script src="app/home/customer/maintain/detail.ctrl.js"></script>
+    <script src="app/home/customer/maintain/detail_notes.ctrl.js"></script>
+    <script src="app/home/customer/maintain/detail_orders.ctrl.js"></script>
     <script src="app/home/customer/markupGroup/customerMarkupGroup.ctrl.js"></script>
     <script src="app/home/customer/area/customerArea.ctrl.js"></script>
     <script src="app/home/product/maintain/maintain.ctrl.js"></script>
+    <script src="app/home/product/maintain/list.ctrl.js"></script>
+    <script src="app/home/product/maintain/detail.ctrl.js"></script>
+    <script src="app/home/product/maintain/detail_notes.ctrl.js"></script>
+    <script src="app/home/product/maintain/detail_prices.ctrl.js"></script>
+    <script src="app/home/product/maintain/detail_dimensions.ctrl.js"></script>
+    <script src="app/home/product/maintain/detail_barcodes.ctrl.js"></script>
+    <script src="app/home/product/maintain/detail_deliveries.ctrl.js"></script>
+    <script src="app/home/product/maintain/detail_label.ctrl.js"></script>
+    <script src="app/home/product/maintain/detail_pack.ctrl.js"></script>
     <script src="app/home/product/group/productGroup.ctrl.js"></script>
+    <script src="app/home/product/location/productLocation.ctrl.js"></script>
     <script src="app/home/setting/vat/vat.ctrl.js"></script>
 
     <!-- inject:partials -->
