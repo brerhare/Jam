@@ -233,8 +233,16 @@ END_OF_API_HTML;
 					osgridref = gridrefNumToLet(eastnorth[0], eastnorth[1], 10);
 				}				
 				var latlong = OSGridToLatLong(osgridref);
-				loadMap(latlong.lat, latlong.lng);
-				setupMarker2(latlong.lat, latlong.lng, postcode);
+
+
+/**************************************************************************************/
+/* Replaced next 2 lines with 3rd to force google map to use leaflet for wild seasons */
+/**************************************************************************************/
+//				loadMap(latlong.lat, latlong.lng);
+//				setupMarker2(latlong.lat, latlong.lng, postcode);
+markerByLatLong(latlong.lat, latlong.lng, postcode);
+
+
 			}
 		}
 
