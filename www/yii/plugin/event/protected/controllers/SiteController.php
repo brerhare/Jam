@@ -183,6 +183,7 @@ class SiteController extends Controller
 
 						if (trim($ws->os_grid_ref) != "")
 						{
+// GOOGLE MAPS OSGRIDREF TO LATLNG - uses LEAFLET (called by markerByOs2)
 							$addon = new google_os;
 							$optArr = array();
 							$optArr['single'] = '1';

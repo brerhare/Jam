@@ -16,6 +16,14 @@ class eventcode
 	private $jellyRootUrl = "";
 	private $programId = 0;
 
+	// This is an array list we populate and map points for
+	// Contains 4 arrays (ref, icon, hovertip, content)
+	private $mapEventId = array();
+	private $mapPoint = array();
+	private $mapIcon = array();
+	private $mapTip = array();
+	private $mapContent = array();
+
 	/*
 	 * Set up any code pre-requisites (onload/document-ready reqs)
 	 * Apply options
@@ -70,13 +78,6 @@ if ($this->programId != 6)
 		//$center = 'NX976762';
 
 		$content = "";
-
-		// This is an array list we populate and map points for
-		// Contains 4 arrays (ref, icon, hovertip, content)
-		$mapPoint = array();
-		$mapIcon = array();
-		$mapTip = array();
-		$mapContent = array();
 
 		// @@EG: Calling a jelly addon directly, not using a jelly script
 		$addon = new google_os;
@@ -171,10 +172,10 @@ if ($this->programId != 6)
 				continue;
 
 			$osGridRef = str_replace(' ', '', $ws->os_grid_ref);
-			if (!(in_array($osGridRef, $mapPoint)))
+			if (!(in_array($osGridRef, $this->mapPoint)))
 			{
-				array_push($mapPoint, $osGridRef);
-				array_push($mapTip, $event->address);
+				array_push($this->mapPoint, $osGridRef);
+				array_push($this->mapTip, $event->address);
 				$infoWindow = "<div style='height:150px; width:300px; '>";
 				$infoWindow .= "<h3>" . $event->title . "</h3>";
 				$infoWindow .= "<i>" . $this->formatDateString($event->start, $event->end) . "</i><br><br>";
@@ -190,19 +191,21 @@ if ($this->programId != 6)
 
 				$infoWindow .= $ws->short_description;
 				$infoWindow .= "</div>";
-				array_push($mapContent, $infoWindow);
+				array_push($this->mapContent, $infoWindow);
 				if (trim($member->avatar_path) != "")
-					array_push($mapIcon, 'userdata/member/avatar/' . trim($member->avatar_path));
+					array_push($this->mapIcon, 'userdata/member/avatar/' . trim($member->avatar_path));
 				else
-					array_push($mapIcon, 'userdata/program/icon/' . trim($program->icon_path));
+					array_push($this->mapIcon, 'userdata/program/icon/' . trim($program->icon_path));
 			}
 		}
+/**********/
 		$content .= "<script>";
-		for ($i = 0; $i < count($mapPoint); $i++)
+		for ($i = 0; $i < count($this->mapPoint); $i++)
 		{
-			$content .= "markerByOs('" . $mapPoint[$i] . "', '" . $mapIcon[$i] . "', '" . urlencode($mapTip[$i]) . "', '"    . urlencode($mapContent[$i])     . "');";
+			$content .= "markerByOs('" . $this->mapPoint[$i] . "', '" . $this->mapIcon[$i] . "', '" . urlencode($this->mapTip[$i]) . "', '"    . urlencode($this->mapContent[$i])     . "');";
 		}
 		$content .= "</script>";
+/**********/
 
 		$content .= "<script> centerByOs('" . $center . "'); </script>";
 

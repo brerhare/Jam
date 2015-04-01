@@ -218,8 +218,16 @@ END_OF_API_HTML;
 					osgridref = gridrefNumToLet(eastnorth[0], eastnorth[1], 10);
 				}				
 				var latlong = OSGridToLatLong(osgridref);
-				loadMap(latlong.lat, latlong.lng);
-				setupMarker(latlong.lat, latlong.lng, iconpath, hovertip, content);
+
+
+/**************************************************************************************/
+/* Replaced next 2 lines with 3rd to force google map to use leaflet for wild seasons */
+/**************************************************************************************/
+//				loadMap(latlong.lat, latlong.lng);
+//				setupMarker(latlong.lat, latlong.lng, iconpath, hovertip, content);
+markerByLatLongBigMap(latlong.lat, latlong.lng, hovertip);
+
+
 			}
 		}
 
@@ -242,17 +250,40 @@ END_OF_API_HTML;
 //				setupMarker2(latlong.lat, latlong.lng, postcode);
 markerByLatLong(latlong.lat, latlong.lng, postcode);
 
-
 			}
 		}
 
-		markerByLatLong = function(lat, long, postcode)
+// LEAFLET leaflet	Main map
+		var map = null;	// This global is set a few lines down
+
+		markerByLatLongBigMap = function(lat, long, hovertip)	// Big map
+		{
+//alert(urldecode(hovertip));
+			if (map != null)
+			{
+				if ((isNaN(lat)) || (isNaN(long)))
+					return;
+				var marker = L.marker([lat, long]).addTo(map);
+				return;
+			}
+			var id = mapId + "-map";
+			map = L.map(id).setView([lat, long], 13);
+			L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+				maxZoom: 18,
+				attribution: '',
+				/*id: 'examples.map-i86knfo3'*/
+				id: 'tekaweni.k8ngolij'
+			}).addTo(map);
+			map.panTo(new L.LatLng(55.1213702,-3.3806166,12));						// center
+			map.setZoom(8);															// all of D&G
+			var marker = L.marker([lat, long]).addTo(map);
+		}
+
+// LEAFLET leaflet	Little map for each event
+		markerByLatLong = function(lat, long, postcode)	// Small map
 		{
 			var id = mapId + "-map";
 			var map = L.map(id).setView([lat, long], 13);
-
-// LEAFLET leaflet
-
 			L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
 				maxZoom: 18,
 				attribution: '',

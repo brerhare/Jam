@@ -463,7 +463,12 @@ END_OF_API_HTML;
         sel = '?layout=index';
 
 		// Program lock?
-		sel += '&programid=' + programId + '&map=' + map;
+		if (typeof programId == 'undefined')
+			sel += '&programid=' + '6';			// wild seasons
+		else
+			 sel += '&programid=' + programId;
+	
+		sel += '&map=' + map;
 
         // Date
         sel += '&sdate=' + selSDate;
