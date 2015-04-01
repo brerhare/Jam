@@ -263,7 +263,7 @@ markerByLatLong(latlong.lat, latlong.lng, postcode);
 			{
 				if ((isNaN(lat)) || (isNaN(long)))
 					return;
-				var marker = L.marker([lat, long]).addTo(map);
+				L.marker([lat, long]).addTo(map).bindPopup(urldecode(hovertip));
 				return;
 			}
 			var id = mapId + "-map";
