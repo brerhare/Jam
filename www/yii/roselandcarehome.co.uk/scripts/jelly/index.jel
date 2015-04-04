@@ -1,20 +1,309 @@
+#Roseland Residential Care Home
 [defaults]
 include = default-values
 
-; Every blob inherits these before adding/overriding
 [* : defaults]
 
 [screen]
-child = contentframe
-fx.wallpaper-image = /img/background.jpg
+child = site
 css.display = block
+css.background-color = white
+#fx.wallpaper-image = /img/background.jpg
+#addon.analytics.google_analytics.ua = UA-20115178-1
 
-	[contentframe]
-	css.display = block
-	css.width = 500px
-	css.margin-top = 400px
-	style.html.h1.color = yellow
-	style.html.h1.background-color = black
-	style.html.h1.padding = 10px
-	html.h1 = a jelly&#0153; site is coming soon
+	[site]
+	child = header, middle, footer
+	css.width = 80%
+	css.min-width = 950px
+
+####  Header  #################################
+
+	[header]
+	child = logo
+	css.height = 240px
+	css.margin-top = 25px
+	stacking = horizontal
+	
+		[logo]
+		css.width = 30%
+		css.min-width = 200px
+		css.background-size = 100%
+		css.background-image = url('/img/logo.png')
+		css.background-repeat = no-repeat
+		css.padding-top = 68%
+#divide the height by the width for the proportional padding height
+
+		click = http://www.roselandcarehome.co.uk/
+
+
+
+#### middle left ###########################################
+
+[middle]
+child = left, main
+stacking = horizontal
+
+	[left]
+	child = menu, menu-footnote
+	css.width = 15%
+	css.min-width = 80px
+	css.background-color = white
+	
+		[menu]
+		css.overflow = visible
+		css.z-index = 100
+		css.position = relative
+
+		#// Top level basic settings
+            addon.menu.traditional.orientation = vertical
+            addon.menu.traditional.width = 80px
+            addon.menu.traditional.height = 40px
+            addon.menu.traditional.align = left
+            addon.menu.traditional.item-width = 80px
+#// Top level background settings
+            addon.menu.traditional.menu-rounding = 0px
+            addon.menu.traditional.menu-opacity = 0%
+            addon.menu.traditional.menu-color = transparent 
+            addon.menu.traditional.item-separator-width = 2px
+            addon.menu.traditional.item-separator-color = transparent
+#addon.menu.traditional.edgepadding = 40px
+#// Top level font settings
+            addon.menu.traditional.menu-font-size = 14px
+            addon.menu.traditional.menu-font-family = Arial
+            addon.menu.traditional.menu-font-weight = normal
+            addon.menu.traditional.menu-text-color = black
+#// Top level hover settings
+            addon.menu.traditional.menu-hover-text-color = #698d68
+            addon.menu.traditional.menu-hover-background-color = transparent
+            addon.menu.traditional.menu-hover-font-size = 14px
+            addon.menu.traditional.menu-hover-font-family = Arial
+            addon.menu.traditional.menu-hover-font-weight = normal
+#// Top level selected settings
+            addon.menu.traditional.menu-selected-text-color = #698d68
+            addon.menu.traditional.menu-selected-background-color = transparent
+            addon.menu.traditional.menu-selected-font-size = 14px
+            addon.menu.traditional.menu-selected-font-family = Arial
+            addon.menu.traditional.menu-selected-font-weight = normal
+#// Second level settings
+            addon.menu.traditional.submenu-height = 30px // centers text
+            addon.menu.traditional.submenu-width = variable / px
+            addon.menu.traditional.submenu-font-size = 16px
+            addon.menu.traditional.submenu-font-family = Arial
+            addon.menu.traditional.submenu-font-weight = normal
+            addon.menu.traditional.submenu-text-color = blue
+            addon.menu.traditional.submenu-background-color = grey
+            addon.menu.traditional.submenu-background-tile = /img/menu.jpg
+            addon.menu.traditional.submenu-background-stretch = /img/menu.jpg
+            addon.menu.traditional.submenu-separator-width = 1px
+            addon.menu.traditional.submenu-separator-color = red
+            addon.menu.traditional.submenu-separator-tile = /img/menu.jpg
+            addon.menu.traditional.submenu-separator-stretch = /img/menu.jpg
+
+		
+########
+
+		[menu-footnote]
+		child = staff, address, standard-links, credits
+		#css.height = 100px
+		css.width = 100%
+		css.margin-top = 10px
+#css.background-color = lightgrey
+
+			[staff]
+			child = staff-text, staff-img, staff-rose
+			css.width = 80%
+			css.padding = 10%
+			css.height = 100px
+			fx.rounding = 5px
+			css.background-color = #698d68
+			
+				[staff-text]
+				html.raw = Meet the Staff
+				css.text-align = center
+				
+				[staff-img]
+				css.margin-top = 10px
+				css.background-size = 100%
+				css.background-image = url('/img/staff.jpg')
+				css.background-repeat = no-repeat
+				css.padding-top = 52%
+#divide the height by the width for the proportional padding height
+				click = ?layout=index&page=caring-staff-dumfries-care-home
+				
+				[staff-rose]
+				css.margin-top = 10px
+				css.margin-left = 40%
+				css.width = 50%
+				css.background-size = 100%
+				css.background-image = url('/img/single-rose.jpg')
+				css.background-repeat = no-repeat
+				css.padding-top = 97%				
+				
+				
+
+############
+			[address]
+			child = add-name, add1, add2, add3, add4, add5
+			css.margin-top = 10px
+			css.color = blue
+			css.line-height = 130%
+			css.font-size = 14px
+			css.font-weight = normal
+				
+				[add-name]
+				html.raw = <span style="font-size:18px; font-weight: bold;">Business Name</span><br/>
+				
+				[add1]
+				html.raw = 100 Any street<br/>
+				
+				[add2]
+				html.raw = Anytown<br/>
+				
+				[add3]
+				html.raw = Dumfries & Galloway<br/><br/>
+				
+				[add4]
+				html.raw = Tel: 01556 680488<br/>
+				
+				[add5]
+				html.raw = &nbsp; or: 07827 815031<br/>
+			
+############			
+			[standard-links]
+			child = footer-contact, footer-cookies, footer-terms
+			css.line-height = 40px
+			css.color = red
+			css.margin-top = 10px
+			
+				[footer-contact]
+				html.raw = <a style="text-decoration:none; font-size: 12px;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#316b35'" href="?layout=index&page=contact">CONTACT</a>
+
+				[footer-cookies]
+				#css.margin-top = 10px
+				html.raw = <a style="text-decoration:none; color: #316b35; font-size: 12px;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#316b35'" href="?layout=index&page=cookie-policy">COOKIES</a>
+				
+
+				[footer-terms]
+				#css.margin-top = 10px
+				html.raw = <a style="text-decoration:none; color: #316b35; font-size: 12px;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#316b35'" href="?layout=index&page=terms-conditions">TERMS</a>
+				
+############
+			[credits]
+			child = copyright, admin-links
+			css.width = 100%
+			#css.height = 300px
+			css.margin-top = 10px
+			
+				[copyright]
+				html.raw = Customer &copy 2015 <br>All rights reserved
+				css.color = #000000
+				css.font-size = 12px
+				css.text-align = left
+				
+				[admin-links]
+				child = wirefly, admin
+				stacking = horizontal
+				css.margin-top = 20px
+		
+				
+					[wirefly]
+					css.height = 45px
+					css.margin-top = 5px
+					image.url = img/wirefly-design.png
+					image.width = 100px
+					image.height = 46px
+					image.align = left
+					clicknew = http://www.wireflydesign.com
+					
+				
+					[admin]
+					css.height = 30px
+					css.margin-left = -20px
+					image.url = img/admin.png
+					image.width = 20px
+					image.height = 20px
+					image.align = left
+					clicknew = backend.php					
+		
+		
+#### middle main ###########################################	
+
+[main]
+child = slider, body
+css.width = 80%	
+css.min-width = 750px
+css.float = right
+
+	[slider]
+	css.width = 100%
+	css.margin-right = 0px
+	css.min-width = 750px
+  	css.height = 520px
+	condition = @PAGE=@HOMEPAGE
+	addon.slider.flexslider.width = 750px
+	addon.slider.flexslider.height = 500px
+	addon.slider.flexslider.mode = image
+	addon.slider.flexslider.source = db
+
+	#addon.slider.flexslider.border-width = 0px
+	#addon.slider.flexslider.border-color = red
+	#addon.slider.flexslider.active-dotcolor = red
+	#addon.slider.flexslider.inactive-dotcolor = blue
+	addon.slider.flexslider.dot-margin-top = -42px
+	#addon.slider.flexslider.dot-margin-bottom = 0px
+	#addon.slider.flexslider.dot-margin-left = 0px
+	#addon.slider.flexslider.dot-margin-right = 0px
+	addon.slider.flexslider.animation = slide
+	
+	[body]
+	child = content, contact
+	css.minwidth = 400px
+	css.margin-top = 20px
+	css.background-color = white
+	fx.rounding = 4px
+	
+	[contact-text]
+	css.width = 300px
+	css.margin-top = 80px
+	css.font = 12px
+	html.raw = Please fill in the form and someone will get back to you as soon as possible.
+			
+		[content]
+		css.margin-top = 30px
+		css.margin = 30px
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
+		
+		[contact]
+		child = contact-form, contact-text
+		condition = @PAGE=contact
+		css.height = 300px
+		stacking = horizontal
+	
+			[contact-form]
+			css.width = 550px
+			css.margin = 0px
+			#css.margin-bottom = 30px
+			css.background-color = white
+			addon.contact.contactform.edgepadding = 0px
+			addon.contact.contactform.buttoncolor = #fafafa
+			addon.contact.contactform.buttontextcolor = #b23640
+			addon.contact.contactform.buttontext = [&nbsp;&nbsp; Submit &nbsp;&nbsp;]
+			addon.contact.contactform.successtextcolor = green
+			addon.contact.contactform.failuretextcolor = red
+			addon.contact.contactform.textcolor = grey
+			addon.contact.contactform.backcolor = #FFFFD6
+			addon.contact.contactform.inputspacing = 10px
+			addon.contact.contactform.inputwidth = 98%
+
+
+####footer####################################
+
+[footer]
+css.height = 180px
+css.width = 100%
+css.background-color = #f7d9ff
+
 
