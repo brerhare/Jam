@@ -62,7 +62,7 @@ stacking = horizontal
             addon.menu.traditional.item-width = 80px
 #// Top level background settings
             addon.menu.traditional.menu-rounding = 0px
-            addon.menu.traditional.menu-opacity = 0%
+            addon.menu.traditional.menu-opacity = 100%
             addon.menu.traditional.menu-color = transparent 
             addon.menu.traditional.item-separator-width = 2px
             addon.menu.traditional.item-separator-color = transparent
@@ -296,7 +296,7 @@ css.float = right
 			addon.contact.contactform.textcolor = grey
 			addon.contact.contactform.backcolor = #FFFFD6
 			addon.contact.contactform.inputspacing = 10px
-			addon.contact.contactform.inputwidth = 98%
+#			addon.contact.contactform.inputwidth = 98%
 
 
 ####footer####################################
