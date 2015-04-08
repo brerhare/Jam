@@ -85,7 +85,7 @@ if ($order->order_number != "76-1425808212")
 //				echo sprintf("%02s/%02s/%02s", substr($date,8,2),substr($date,5,2),substr($date,2,2));
 			echo "	</td>";
 			echo "	<td>";
-			echo '<a title="View this customers order" href="' . Yii::app()->controller->createUrl("index2") . "/" . $order->order_number . '">' . $order->order_number . '</a>';
+			echo '<a title="View this customers order" href="' . Yii::app()->controller->createUrl("index2") . "/?o=" . $order->order_number . '">' . $order->order_number . '</a>';
 			echo "	</td>";
 			echo "<td>";
 			echo substr($order->card_name, 0, 30);

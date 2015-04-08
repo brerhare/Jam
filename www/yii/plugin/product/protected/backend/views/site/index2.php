@@ -10,112 +10,112 @@ table tr {
 
 <?php
 
-$this->pageTitle=Yii::app()->name;
+// Report Detail
+// -------------
 
-echo "<h2>Welcome to <i>"; echo CHtml::encode(Yii::app()->name); echo "</i></h2>";
-echo "<h5>Sales report. Click on an order number for more detail</h5>";
+$fst = 1;
 
-if (Yii::app()->user->isGuest):
-	echo "<h5>Please login to continue</h5>";
-else:
+$criteria = new CDbCriteria;
+$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+$criteria->addCondition("order_number = '" . $order_number . "'");
+$criteria->order = 'id ASC';
+$orders = Order::model()->findAll($criteria);
 
+foreach ($orders as $order)
+{
+	if ($fst == 1)
+	{
+		echo "<hr/>";
+		$fst = 0;
+		echo "<table><tr><td width=20%></td><td style='Xbackground-color:#dbdbdb' width=20%>";
+		echo $order->card_name . "<br>";
 
+		echo $order->delivery_address1 . "<br>";
+		if (trim($order->delivery_address2) != "")
+			echo $order->delivery_address2 . "<br>";
+		if (trim($order->delivery_address3) != "")
+			echo $order->delivery_address3 . "<br>";
+		if (trim($order->delivery_address4) != "")
+			echo $order->delivery_address4 . "<br>";
+		if (trim($order->delivery_post_code) != "")
+			echo $order->delivery_post_code . "<br>";
+		echo "<br>";
 
-echo "";
-endif;
-if (1==1):
+		echo $order->telephone . "<br>";
+		if ($order->payment_type == 0)
+			echo "Card ending ************ " . substr($order->card_number, 12, 4) . "<br>";
+		else
+			echo "Own payment method used" . "<br>";
+//		echo "Button1" . "<br>";
+//		echo "Button2" . "<br>";
+		echo "</td><td width=40%>";
 
+		echo "<h5><i>";
+		$dt = explode("-", $order->order_number);
+		if (sizeof($dt) > 1)
+			echo "Date : " . date('d/m/Y', $dt[1]) . "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp";
+		echo "Order number : " . $order->order_number;
+		echo "</i></h5>";
 
-
-// Report
-// ------
-
-$order_number = "";
-
-echo '<div class="row">';
-echo '<div class="span12">';
-	echo '<table id="reportTable">';
+		echo "<table>";
 		echo '<tr style="background-color:#c3d9ff; color:#0088cc;">';
-			echo '<td style="text-align:center">Date</td>';
-			echo '<td>Order Number</td>';
-			echo '<td>Name</td>';
-			echo '<td>Post Code</td>';
-			echo '<td style="text-align:right">Qty</td>';
-			echo '<td style="text-align:right; width:70px">£</td>';
-			echo '<td style="padding-left:20px">Own / DG Link</td>';
-		echo '</tr>';
-
+		echo '<td>Product</td>';
+		echo '<td style="text-align:right">Qty</td>';
+		echo '<td style="text-align:right; width:70px">Each</td>';
+		echo '<td style="text-align:right; width:70px">Line total</td>';
+		echo "</tr>";
+	}
+		echo "<tr>";
+		echo "<td>";
 		$criteria = new CDbCriteria;
-		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
-		$criteria->order = 'id DESC';
-		$orders = Order::model()->findAll($criteria);
-		foreach ($orders as $order):
+		$criteria->addCondition("id = " . $order->http_product_id);
+		$product = Product::model()->find($criteria);
+		$name = $order->http_product_id;
+		if ($product)
+			$name = $product->name;
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("id = " . $order->http_option_id);
+		$option = Option::model()->find($criteria);
+		$optionDesc = "";
+		if ($option)
+			$optionDesc = $option->name;
+		echo $name . " " . $optionDesc;
+		echo "</td>";
+		echo '<td style="text-align:right">';
+		echo $order->http_qty;
+		echo "</td>";
+		echo '<td style="text-align:right">';
+		echo $order->http_price;
+		echo "</td>";
+		echo '<td style="text-align:right">';
+		echo $order->http_line_total;
+		echo "</td>";
+		echo "</tr>";
+}
 
-//            // Suppress values for non-paymentsense tickets
-//            if (!($transaction->auth_code))
-//                $transaction->http_ticket_total = 0;
-			if (trim($order->order_number) == "")
-				continue;
-			if (!(strstr($order->ip, "x-")))
-				continue;
-
-			if (($order->card_name == "Geoff Wayne")
-			||  ($order->card_name == "Kim")
-			||  ($order->card_name == "Geoff Wayne")
-			||  ($order->card_name == "name")
-			||  ($order->card_name == "Kim Hancock")
-			||  ($order->card_name == "Timothy Taylor")
-			||  ($order->card_name == "James Jackson")
-			||  ($order->card_name == "John Watson"))
-if ($order->order_number != "76-1425808212")
-				continue;
-
-			// Print each order line only once (each has the totals)
-			if ($order_number == $order->order_number)
-				continue;
-			if ($order_number == "")
-				$order_number = $order->order_number;
-			$order_number = $order->order_number;
-
-			echo "<tr>";
-			echo "	<td style='text-align:center'>";
-			$dt = explode("-", $order->order_number);
-			if (sizeof($dt) > 1)
-				echo date('d/m/Y', $dt[1]);
-//				echo sprintf("%02s/%02s/%02s", substr($date,8,2),substr($date,5,2),substr($date,2,2));
-			echo "	</td>";
-			echo "	<td>";
-			echo '<a title="View this customers order" href="' . Yii::app()->controller->createUrl("index2") . "/" . $order->order_number . '">' . $order->order_number . '</a>';
-			echo "	</td>";
-			echo "<td>";
-			echo substr($order->card_name, 0, 30);
-			echo "		</td>";
-			echo "<td>";
-			echo $order->delivery_post_code;
-			echo "	</td>";
-			echo '	<td style="text-align:right">';
-			echo $order->http_total_qty;
-			echo "	</td>";
-			echo "	<td style='text-align:right'>";
-			echo $order->http_total;
-			echo "	</td>";
-			echo "	<td style='padding-left:40px'>";
-			if ($order->payment_type == 0)
-				echo "DG Link";
-			else
-				echo "Own";
-			echo "	</td>";
-			echo "</tr>";
-		endforeach;
-
+if ($fst != 1)
+{
+	echo "<tr><td colspan=2></td>";
+	echo '<td style="text-align:right">';
+	echo "Order total";
+	echo "</td>";
+	echo '<td style="text-align:right">';
+	echo "<b>" . $order->http_total . "</b>";
+	echo "</td></tr>";
+	if (trim($order->notes) != "")
+	{
+		echo "<tr><td colspan=4>" . "Notes : " . $order->notes . "</td><tr>";
+	}
+	if (trim($order->promo_code) != "")
+	{
+		echo "<tr><td colspan=4>" . "Promo code : " . $order->promo_code . "</td><tr>";
+	}
 	echo "</table>";
-echo "</div>";
-echo "</div>";
-
-echo "<script>";
-echo "$(document).ready(function() {";
-echo "});";
-echo "</script>";
+	echo "</td><td width=20%></td></tr>";
+	echo "</table>";
+	echo "<hr/>";
+}
 
 
-endif ?>
+
+?>
