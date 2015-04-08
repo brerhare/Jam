@@ -274,8 +274,8 @@ markerByLatLong(latlong.lat, latlong.lng, postcode);
 				/*id: 'examples.map-i86knfo3'*/
 				id: 'tekaweni.k8ngolij'
 			}).addTo(map);
-			map.panTo(new L.LatLng(55.1213702,-3.3806166,12));						// center
-			map.setZoom(8);															// all of D&G
+// This is timing point 1			//map.panTo(new L.LatLng(55.1213702,-3.3806166,12));						// center
+// This is timing point 1			//map.setZoom(8);															// all of D&G
 			var marker = L.marker([lat, long]).addTo(map);
 		}
 
@@ -291,6 +291,27 @@ markerByLatLong(latlong.lat, latlong.lng, postcode);
 				id: 'tekaweni.k8ngolij'
 			}).addTo(map);
 			var marker = L.marker([lat, long]).addTo(map);
+		}
+
+// LEAFLET leaflet	Make map encompass all markers
+		markerBounds = function(points) {
+			// Convert the passed array of os grid refs to array of lat-longs
+			points2 = new Array();
+			for (var i = 0; i < points.length; i++) {
+				if (points[i].length > 0) {
+					if (points[i].indexOf(',') != -1) {
+						var eastnorth = points[i].split(',');
+						points[i] = gridrefNumToLet(eastnorth[0], eastnorth[1], 10);
+					}				
+					var latlong = OSGridToLatLong(points[i]);
+					if (isNaN(latlong.lat))
+						continue;
+					points2.push(latlong);
+// This is timing point 2					//if (i == 2) alert(latlong.lat + ":" + latlong.lng);
+				}
+			}
+			var bounds = new L.LatLngBounds(points2);
+			map.fitBounds(bounds);
 		}
 
 		centerByLatLong = function(lat, long)

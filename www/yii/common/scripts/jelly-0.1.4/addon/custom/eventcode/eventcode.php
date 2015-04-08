@@ -171,6 +171,7 @@ if ($this->programId != 6)
 			if (!($program))
 				continue;
 
+/*
 			$osGridRef = str_replace(' ', '', $ws->os_grid_ref);
 			if (!(in_array($osGridRef, $this->mapPoint)))
 			{
@@ -197,15 +198,16 @@ if ($this->programId != 6)
 				else
 					array_push($this->mapIcon, 'userdata/program/icon/' . trim($program->icon_path));
 			}
+*/
 		}
-/**********/
+/**********
 		$content .= "<script>";
 		for ($i = 0; $i < count($this->mapPoint); $i++)
 		{
 			$content .= "markerByOs('" . $this->mapPoint[$i] . "', '" . $this->mapIcon[$i] . "', '" . urlencode($this->mapTip[$i]) . "', '"    . urlencode($this->mapContent[$i])     . "');";
 		}
 		$content .= "</script>";
-/**********/
+**********/
 
 		$content .= "<script> centerByOs('" . $center . "'); </script>";
 
@@ -446,6 +448,47 @@ if ($this->programId != 6)
 			$criteria->condition = 'id = ' . $event->program_id;
 			$program = Program::model()->find($criteria);
 
+
+
+			if ($this->programId == 6)
+			{
+				// Pick up the Ws record
+				$criteria = new CDbCriteria;
+				$criteria->condition = "event_id = " . $event->id;
+				$ws = Ws::model()->find($criteria);
+				if (!($ws))
+					continue;
+
+				$osGridRef = str_replace(' ', '', $ws->os_grid_ref);
+				if (!(in_array($osGridRef, $this->mapPoint)))
+				{
+					array_push($this->mapPoint, $osGridRef);
+					array_push($this->mapTip, "<b>" . $event->title . "</b>". "<br>" . $event->address);
+					//array_push($this->mapTip, "<b>" . $event->title . "</b>". "<br>" . $ws->os_grid_ref);
+					$infoWindow = "<div style='height:150px; width:300px; '>";
+					$infoWindow .= "<h3>" . $event->title . "</h3>";
+					$infoWindow .= "<i>" . $this->formatDateString($event->start, $event->end) . "</i><br><br>";
+
+					if (trim($event->thumb_path) != "")
+					{
+						if (file_exists('userdata/event/thumb/' . $event->thumb_path))
+						{
+							$img = 'userdata/event/thumb/' . $event->thumb_path;
+							$infoWindow .= "<img style='padding-right:10px' align='left' title='" . $member->organisation . "' src='" . $img . "' width='140' height='115'>";
+						}
+					}
+
+					$infoWindow .= $ws->short_description;
+					$infoWindow .= "</div>";
+					array_push($this->mapContent, $infoWindow);
+					if (trim($member->avatar_path) != "")
+						array_push($this->mapIcon, 'userdata/member/avatar/' . trim($member->avatar_path));
+					else
+						array_push($this->mapIcon, 'userdata/program/icon/' . trim($program->icon_path));
+				}
+			}
+
+
 			$hasEvents = true;
 
 			// The header block
@@ -588,6 +631,23 @@ if (isset($_GET['test']))
 			$content .= "</div>";
 		}
 		$content .= "</div>";	// 'accordion'
+
+
+/**********/
+		$content .= "<script>";
+		$content .= "var mapMarkers = new Array();";
+		//$content .= "var mapMarkers = new array();";
+		for ($i = 0; $i < count($this->mapPoint); $i++)
+		{
+			if (strlen($this->mapPoint[$i]) < 8)
+				continue;
+			$content .= "markerByOs('" . $this->mapPoint[$i] . "', '" . $this->mapIcon[$i] . "', '" . urlencode($this->mapTip[$i]) . "', '"    . urlencode($this->mapContent[$i])     . "');";
+			$content .= "mapMarkers[mapMarkers.length] = '" . $this->mapPoint[$i] . "';";
+		}
+		$content .= "markerBounds(mapMarkers);";
+		$content .= "</script>";
+/**********/
+
 
 		// Terminate the generated js array
 		if ($hasEvents)
