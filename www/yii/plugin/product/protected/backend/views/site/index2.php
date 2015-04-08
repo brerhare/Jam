@@ -25,6 +25,7 @@ foreach ($orders as $order)
 {
 	if ($fst == 1)
 	{
+		echo "<div id='printDiv'>";
 		echo "<hr/>";
 		$fst = 0;
 		echo "<table><tr><td width=20%></td><td style='Xbackground-color:#dbdbdb' width=20%>";
@@ -46,8 +47,7 @@ foreach ($orders as $order)
 			echo "Card ending ************ " . substr($order->card_number, 12, 4) . "<br>";
 		else
 			echo "Own payment method used" . "<br>";
-//		echo "Button1" . "<br>";
-//		echo "Button2" . "<br>";
+		echo "<br> <button class='btn btn-primary' type='button' onclick='printDiv()'>Print</button>";
 		echo "</td><td width=40%>";
 
 		echo "<h5><i>";
@@ -114,8 +114,29 @@ if ($fst != 1)
 	echo "</td><td width=20%></td></tr>";
 	echo "</table>";
 	echo "<hr/>";
+	echo "</div> <!-- printDiv -->";
 }
 
-
-
 ?>
+
+	<script>
+
+	jQuery(document).ready(function($){
+	});
+
+	function printDiv()
+	{
+		content = '<style> div { font-family: Sans-Serif; } #header-date {margin-top:40px;}</style>';
+		content += '<div>';
+		content += document.getElementById('printDiv').innerHTML;
+		content += '</div>';
+		var WinPrint = window.open('', '', 'letf=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+		WinPrint.document.write(content);
+		WinPrint.document.close();
+		WinPrint.focus();
+		WinPrint.print();
+		WinPrint.close();
+	}
+
+	</script>
+
