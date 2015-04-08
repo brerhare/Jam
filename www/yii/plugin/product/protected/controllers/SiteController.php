@@ -285,6 +285,7 @@ header($this->p3p);
 
 		Order::model()->deleteAllByAttributes(array('ip' => $ip));	
 
+		$totalQty = 0;
 		$totalGoods = 0.00;
 		$cartArr = explode('|', $cartContent);
 		if (count($cartArr) < 1)
@@ -343,6 +344,7 @@ header($this->p3p);
 			$order->notes = $n;
 			$order->promo_code = $prm;
 			$totalGoods += ($qty * $price);
+			$totalQty += $qty;
 			$order->return_url = Yii::app()->baseUrl;
 			$order->gu = Yii::app()->sess->get('checkoutGatewayUser');
 			$order->gp = Yii::app()->sess->get('checkoutGatewayPassword');
@@ -368,7 +370,9 @@ header($this->p3p);
 		{
 			foreach ($orders as $order)
 			{
+				$order->payment_type = $_GET['ptype'];	// Paymentsense=0, Paypal=1, ...
 				$order->http_total = number_format($totalGoods, 2, '.', '');
+				$order->http_total_qty = number_format($totalQty);
 				$order->save();
 			}
 		}
