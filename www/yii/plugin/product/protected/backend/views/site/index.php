@@ -42,7 +42,7 @@ echo '<div class="span12">';
 			echo '<td>Post Code</td>';
 			echo '<td style="text-align:right">Qty</td>';
 			echo '<td style="text-align:right; width:70px">£</td>';
-			echo '<td style="padding-left:20px">Own / DG Link</td>';
+			echo '<td style="padding-left:20px">Payment Method</td>';
 		echo '</tr>';
 
 		$criteria = new CDbCriteria;

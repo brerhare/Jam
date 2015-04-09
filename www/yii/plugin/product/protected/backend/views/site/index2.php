@@ -41,8 +41,9 @@ foreach ($orders as $order)
 		if (trim($order->delivery_post_code) != "")
 			echo $order->delivery_post_code . "<br>";
 		echo "<br>";
-
+		echo $order->email_address . "<br>";
 		echo $order->telephone . "<br>";
+		echo "<br>";
 		if ($order->payment_type == 0)
 			echo "Card ending ************ " . substr($order->card_number, 12, 4) . "<br>";
 		else
@@ -102,13 +103,13 @@ if ($fst != 1)
 	echo '<td style="text-align:right">';
 	echo "<b>" . $order->http_total . "</b>";
 	echo "</td></tr>";
-	if (trim($order->notes) != "")
+	//if (trim($order->notes) != "")
 	{
-		echo "<tr><td colspan=4>" . "Notes : " . $order->notes . "</td><tr>";
+		echo "<tr><td colspan=4><br>" . "Notes : " . $order->notes . "</td><tr>";
 	}
-	if (trim($order->promo_code) != "")
+	//if (trim($order->promo_code) != "")
 	{
-		echo "<tr><td colspan=4>" . "Promo code : " . $order->promo_code . "</td><tr>";
+		echo "<tr><td colspan=4><br>" . "Voucher code : " . $order->promo_code . "</td><tr>";
 	}
 	echo "</table>";
 	echo "</td><td width=20%></td></tr>";
