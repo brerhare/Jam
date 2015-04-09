@@ -29,7 +29,10 @@ foreach ($orders as $order)
 		echo "<hr/>";
 		$fst = 0;
 		echo "<table><tr><td width=20%></td><td style='Xbackground-color:#dbdbdb' width=20%>";
-		echo $order->card_name . "<br>";
+		$name = $order->name;
+		if (trim($order->card_name) != "")
+			$name = $order->card_name;
+		echo $name . "<br>";
 
 		echo $order->delivery_address1 . "<br>";
 		if (trim($order->delivery_address2) != "")
@@ -41,8 +44,8 @@ foreach ($orders as $order)
 		if (trim($order->delivery_post_code) != "")
 			echo $order->delivery_post_code . "<br>";
 		echo "<br>";
-		echo $order->email_address . "<br>";
-		echo $order->telephone . "<br>";
+		echo "<a href='mailto:" . trim($order->email_address) . "?Subject=Wee Target' target='_top'>" .$order->email_address . "</a>" . "<br>";
+		echo "Tel : " . $order->telephone . "<br>";
 		echo "<br>";
 		if ($order->payment_type == 0)
 			echo "Card ending ************ " . substr($order->card_number, 12, 4) . "<br>";
@@ -96,9 +99,25 @@ foreach ($orders as $order)
 
 if ($fst != 1)
 {
-	echo "<tr><td colspan=2></td>";
+	$shipAmount = "0.00";
+	$criteria = new CDbCriteria;
+	$criteria->addCondition("id = " . $order->http_shipping_id);
+	$shipping = ShippingOption::model()->find($criteria);
+	if ($shipping)
+		$shipAmount = $shipping->price;
+	echo "<tr>";
+	echo '<td colspan=3 style="text-align:right">';
+	echo $shipping->description;
+	echo "</td>";
 	echo '<td style="text-align:right">';
-	echo "Order total";
+	echo $shipAmount;
+	echo "</td></tr>";
+	//if (trim($order->notes) != "")
+
+
+	echo "<tr>";
+	echo '<td colspan=3 style="text-align:right">';
+	echo "<b>Order total</b>";
 	echo "</td>";
 	echo '<td style="text-align:right">';
 	echo "<b>" . $order->http_total . "</b>";

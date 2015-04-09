@@ -67,7 +67,7 @@ echo '<div class="span12">';
 			||  ($order->card_name == "Timothy Taylor")
 			||  ($order->card_name == "James Jackson")
 			||  ($order->card_name == "John Watson"))
-if ($order->order_number != "76-1425808212")
+//if ($order->order_number != "76-1425808212")
 				continue;
 
 			// Print each order line only once (each has the totals)
@@ -88,7 +88,10 @@ if ($order->order_number != "76-1425808212")
 			echo '<a title="View this customers order" href="' . Yii::app()->controller->createUrl("index2") . "/?o=" . $order->order_number . '">' . $order->order_number . '</a>';
 			echo "	</td>";
 			echo "<td>";
-			echo substr($order->card_name, 0, 30);
+			$name = $order->name;
+			if (trim($order->card_name) != "")
+				$name = $order->card_name;
+			echo substr($name, 0, 30) . "<br>";
 			echo "		</td>";
 			echo "<td>";
 			echo $order->delivery_post_code;
