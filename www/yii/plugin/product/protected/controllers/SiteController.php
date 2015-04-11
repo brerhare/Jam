@@ -194,7 +194,6 @@ header($this->p3p);
 	// Invoke the payment module: Paymentsense or Paypal
 	public function actionPay()
 	{
-header($this->p3p);
 		Yii::log("Checkout - a payment button has been clicked" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		if (isset($_GET['ptype']))
 		{
@@ -249,7 +248,7 @@ header($this->p3p);
 		$cartContent = Yii::app()->sess->get($cartId);
 		if ((!($cartContent)) || ($cartContent == ''))
 		{
-			Yii::log("Checkout - NOT LOADING PAYMENT PAGE because 'cartid' " . $cartId . " although seemingly valid, did not return that session var" , CLogger::LEVEL_WARNING, 'system.test.kim');
+			Yii::log("Checkout - NOT LOADING PAYMENT PAGE because 'cartid' " . $cartId . " although seemingly valid, does not contain a usable session var" , CLogger::LEVEL_WARNING, 'system.test.kim');
 			throw new CHttpException(400,'Cannot proceed to payment because cart details werent accessible. (Has this session been idle a long time?)');
 		}
 
@@ -285,6 +284,7 @@ header($this->p3p);
 
 		Order::model()->deleteAllByAttributes(array('ip' => $ip));	
 
+		$totalQty = 0;
 		$totalGoods = 0.00;
 		$cartArr = explode('|', $cartContent);
 		if (count($cartArr) < 1)
@@ -294,6 +294,8 @@ header($this->p3p);
 		}
 		for ($i = 0; $i < count($cartArr); $i++)
 		{
+			Yii::log("Checkout - about to add a line to orders" , CLogger::LEVEL_WARNING, 'system.test.kim');
+
 			$itemArr = explode('_', $cartArr[$i]);
 			if (count($itemArr) != 4)
 			{
@@ -324,6 +326,7 @@ header($this->p3p);
 			$order->uid = Yii::app()->sess->get('uid');
 			$order->sid = Yii::app()->sess->get('sid');
 			$order->ip = $ip;
+			$order->order_number = trim(Yii::app()->sess->get('uid')) . "-" . time();	// for paypal
 			$order->vendor_gateway_id = "@@TODO gateway id";
 			$order->vendor_gateway_password = "@@TODO gateway password";
 			$order->http_product_id = $productId;
@@ -343,6 +346,7 @@ header($this->p3p);
 			$order->notes = $n;
 			$order->promo_code = $prm;
 			$totalGoods += ($qty * $price);
+			$totalQty += $qty;
 			$order->return_url = Yii::app()->baseUrl;
 			$order->gu = Yii::app()->sess->get('checkoutGatewayUser');
 			$order->gp = Yii::app()->sess->get('checkoutGatewayPassword');
@@ -351,6 +355,7 @@ header($this->p3p);
 				Yii::log("Checkout - Write error on order reord!" , CLogger::LEVEL_WARNING, 'system.test.kim');
 				throw new CHttpException(400,'Error creating order');
 			}
+			Yii::log("Checkout - added a line to orders" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
 		$subtotalGoods = $totalGoods;
 		// Add shipping to total
@@ -368,7 +373,9 @@ header($this->p3p);
 		{
 			foreach ($orders as $order)
 			{
+				$order->payment_type = $_GET['ptype'];	// Paymentsense=0, Paypal=1, ...
 				$order->http_total = number_format($totalGoods, 2, '.', '');
+				$order->http_total_qty = number_format($totalQty);
 				$order->save();
 			}
 		}
