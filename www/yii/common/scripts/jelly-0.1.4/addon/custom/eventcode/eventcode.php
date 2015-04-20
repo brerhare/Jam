@@ -16,6 +16,7 @@ class eventcode
 	private $jellyRootUrl = "";
 	private $programId = 0;
 	private $showMap = false;
+	private $singleMember = 0;
 
 	// This is an array list we populate and map points for
 	// Contains 4 arrays (ref, icon, hovertip, content)
@@ -46,6 +47,11 @@ class eventcode
 //die('isset p='.$this->programId);
 		}
 //die('isNOTset p='.$this->programId);
+
+		// Check if a single member is required
+		$this->singleMember = 0;
+		if (isset($_GET['member']))
+			$this->singleMember = $_GET['member'];
 
 		// Check if the big map is required
 		$this->showMap = false;
@@ -178,6 +184,10 @@ class eventcode
 		foreach ($events as $event)
 		{
 			if ($event->active != 1)
+				continue;
+
+			// Check if this is a singlemember requirement
+			if (($this->singleMember != 0) && ($event->member_id != $this->singleMember))
 				continue;
 
 			// Check if we are filtering program
