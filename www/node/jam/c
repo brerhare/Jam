@@ -1,0 +1,1 @@
+g++ -g -o jam -Wno-write-strings $1 $(mysql_config --cflags) $(mysql_config --libs)

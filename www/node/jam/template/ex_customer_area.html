@@ -1,0 +1,61 @@
+<link rel="stylesheet" href="http://test.wireflydesign.com/x.css" />
+
+{@database stock}
+
+<table>
+
+{@each stock_area}
+
+  <tr>
+    <td>{name}</td>
+  </tr>
+  <tr>
+    <td>
+      <table>
+      	<tr>
+          <th>Id</th>
+          <th>Code</th>
+          <th>Name</th>
+          <th>Contact</th>
+          <th>Telephone</th>
+          <th>Discount</th>
+          <th>Address 1</th>
+          <th>Address 2</th>
+          <th>Address 3</th>
+          <th>Postcode</th>
+      	</tr>
+
+    {@each stock_customer}
+
+        {@count id as areatotal}
+        {@count id as grandtotal}
+
+        <tr>
+          <td>{id}</td>
+          <td>{code}</td>
+          <td>{name}</td>
+          <td>{contact}</td>
+          <td>{telephone}</td>
+          <td>{discount_percent}</td>
+          <td>{address1}</td>
+          <td>{address2}</td>
+          <td>{address3}</td>
+          <td>{post_code}</td>
+        </tr>
+
+    {@end}
+
+        <tr>
+          <td colspan=10>{stock_area.name} has {count.areatotal} customers</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+{@end}
+
+  <tr>
+    <td>All areas has {count.grandtotal} customers</td>
+  </tr>
+</table>
+
