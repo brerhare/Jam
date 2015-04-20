@@ -10,8 +10,6 @@
 
 using namespace std;
 
-string templatePath = "./public/";
-
 #define MAX_SQL_QUERY_LEN 1024
 MYSQL *conn = NULL;
 
@@ -55,10 +53,15 @@ char *findVar(char *qualifiedName);
 void updateVar(char *qualifiedName);
 void jamDump();
 
-int main() {
+int main(int argc, char *argv[]) {
+	if (argc < 2) {
+		die("no template file given to process");
+	}
+	string fname = argv[1];
+
 	// Read in template
 	//string fname = templatePath + "ex1.html";
-	string fname = templatePath + "ex_customer_area.html";
+	//string fname = templatePath + "ex_customer_area.html";
 	char *tpl = readTemplate(fname);
 
 	// Create Jam array from template
@@ -69,12 +72,12 @@ int main() {
 	}
 
 	// Generate HTML from Jam array
-jamDump();
 	genHtml(0, NULL, NULL);
 
 	free(tpl);
 	if (conn)
 		mysql_close(conn);
+jamDump();
 	exit(0);
 }
 
@@ -337,7 +340,7 @@ char *readTemplate(string fname){
 	std::ifstream html (fname.c_str(), std::ifstream::binary);
 	if (!html){
 		std::cout << "error: cant open file " << fname << endl;
-		return NULL;
+		die("");
 	}
 	html.seekg (0, html.end);
 	int length = html.tellg();
@@ -458,12 +461,14 @@ int getWord(char *dest, char *src, int wordnum, char *separator)
 }
 
 void jamDump() {
+	printf("<br><br><div style='font-size:11px;color:#ffffff;background-color:#00727a'>");
 	for (int i = 0; i < MAX_JAM; i++) {
 		if (jam[i] == NULL)
 			break;
 		//printf("%02d JAMDUMP: %s >>>>>%s<<<<<\n\n\n", i, jam[i]->command, jam[i]->trailer);
-		printf("%02d JAMDUMP: %s:%s\n", i, jam[i]->command, jam[i]->args);
+		printf("%02d JAMDUMP: %s:%s<br>", i, jam[i]->command, jam[i]->args);
 	}
+	printf("</div>");
 
 }
 
