@@ -16,8 +16,6 @@ MYSQL *conn = NULL;
 typedef struct {
 	char *command;
 	char *args;
-	char *name;
-	char *value;
 	char *trailer;
 } JAM;
 #define MAX_JAM 10000
@@ -34,7 +32,7 @@ typedef struct {
 	char *name;
 	int type;
 	char *aValue;
-	int nValue;
+	long nValue;
 	double dValue;
 } VAR;
 #define MAX_VAR 10000
@@ -466,9 +464,19 @@ void jamDump() {
 		if (jam[i] == NULL)
 			break;
 		//printf("%02d JAMDUMP: %s >>>>>%s<<<<<\n\n\n", i, jam[i]->command, jam[i]->trailer);
-		printf("%02d JAMDUMP: %s:%s<br>", i, jam[i]->command, jam[i]->args);
+		printf("%02d JAMDUMP: %s : %s<br>", i, jam[i]->command, jam[i]->args);
+	}
+	printf("<hr>");
+	for (int i = 0; i < MAX_VAR; i++) {
+		if (var[i] == NULL)
+			break;
+		if (var[i]->type == VAR_ALPHA)
+			printf("%02d VARDUMP: %s : VAR_ALPHA : %s<br>", i, var[i]->name, var[i]->aValue);
+		if (var[i]->type == VAR_NUMBER)
+			printf("%02d VARDUMP: %s : VAR_NUMBER : %ld<br>", i, var[i]->name, var[i]->nValue);
+		if (var[i]->type == VAR_DECIMAL2)
+			printf("%02d VARDUMP: %s : VAR_DECIMAL2 : %.2f<br>", i, var[i]->name, var[i]->dValue);
 	}
 	printf("</div>");
-
 }
 
