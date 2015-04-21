@@ -195,10 +195,10 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 				sumFieldAs = strdup(tmp);
 			}
 			char *value = findVar(sumFieldName);
-//if (value)
-//	printf("FOUND!=[%s]\n",value);
-//else
-//	printf("NOT-FOUND :( Was looking for sumFieldName=[%s] and tableName=[%s]\n",sumFieldName, tableName);
+if (value)
+	printf("FOUND!=[%s]\n",value);
+else
+	printf("NOT-FOUND :( Was looking for sumFieldName=[%s] and tableName=[%s]\n",sumFieldName, tableName);
 			free(sumFieldName);
 			free(sumFieldAs);
 			emit(jam[ix]->trailer);
@@ -222,11 +222,13 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 }
 
 char *findVar(char *qualifiedName) {
+/*
 	if (!(strchr(qualifiedName, '.'))) {
 		char *tmp = (char *) calloc(1, 1024);
 		sprintf(tmp, "findVar() failed - was given a non-qualified field name [%s]", qualifiedName);
 		die(tmp);
 	}
+*/
 	for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
 		if (!(var[i]))
 			break;	
