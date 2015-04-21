@@ -24,16 +24,23 @@ int jamIx = 0;
 
 char *tableStack[MAX_JAM];
 
-#define VAR_ALPHA    0
-#define VAR_NUMBER   1
-#define VAR_DECIMAL2 2
+#define VAR_STRING    0
+#define VAR_NUMBER    1
+#define VAR_DECIMAL2  2
+#define VAR_DATE      3
+#define VAR_TIME      4
+#define VAR_DATETIME  5
 
 typedef struct {
 	char *name;
 	int type;
-	char *aValue;
-	long nValue;
-	double dValue;
+	char *portableValue;
+	char *stringValue;
+	long numberValue;
+	double decimal2Value;
+	char *dateValue;
+	char *timeValue;
+	char *datetimeValue;
 } VAR;
 #define MAX_VAR 10000
 VAR *var[MAX_VAR];
@@ -49,6 +56,7 @@ int openDB(char *name);
 void setFieldValues(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields, MYSQL_ROW *rowP);
 char *findVar(char *qualifiedName);
 void updateVar(char *qualifiedName, enum enum_field_types mysqlType, char *value);
+int decodeMysqlType(VAR *var, enum enum_field_types mysqlType, char *value);
 void jamDump();
 
 int main(int argc, char *argv[]) {
@@ -223,29 +231,21 @@ char *findVar(char *qualifiedName) {
 		if (!(var[i]))
 			break;	
 		if (!strcmp(var[i]->name, qualifiedName)) {
-			return var[i]->aValue;
+			return var[i]->portableValue;	// the string representation of the value, whatever type it really is
 		}
 	}
 	return NULL;
 }
 
 void updateVar(char *qualifiedName, enum enum_field_types mysqlType, char *value) {
-	if (!qualifiedName) {
+	if (!qualifiedName)
 		printf("NULL 'qualifiedName' passed to updateVar\n");
-		//return;
-	}
-/*	if (!value) {
-		printf("NULL 'value' passed to updateVar\n");
-		return;
-	} */
 	char *oldValue = findVar(qualifiedName);
 	if (!(oldValue)) {
 		VAR *newVar = (VAR *) calloc(1, sizeof(VAR));
 		newVar->name = strdup(qualifiedName);
-//kim	seems is always alpha (see report which prints dec10.2 already. so make a function mysql2jam (and reverse) to do atof atol and call it here
-		newVar->type = VAR_ALPHA;
-		if (value)
-			newVar->aValue = strdup(value);
+		int ret = decodeMysqlType(newVar, mysqlType, value);
+//printf( "NAME=%s TYPE=%d AVALUE=%s NVALUE=%ld DVALUE=%2.f\n", newVar->name, newVar->type, newVar->stringValue, newVar->numberValue, newVar->decimal2Value);
 		for (int i = 0; i < MAX_VAR; i++) {
 			if (!var[i]) {
 				var[i] = newVar;
@@ -257,15 +257,76 @@ void updateVar(char *qualifiedName, enum enum_field_types mysqlType, char *value
 			if (!var[i])
 				break;	
 			if (!strcmp(var[i]->name, qualifiedName)) {
-				if (var[i]->aValue) {
-					free(var[i]->aValue);
-					var[i]->aValue = NULL;
+				int ret = decodeMysqlType(var[i], mysqlType, value);
+				break;
+
+/*
+				if (var[i]->stringValue) {
+					free(var[i]->stringValue);
+					var[i]->stringValue = NULL;
 				}
 				if (value)
-					var[i]->aValue = strdup(value);
+					var[i]->stringValue = strdup(value);
+*/
+
+
+
 			}
 		}
 	}
+}
+
+int decodeMysqlType(VAR *var, enum enum_field_types mysqlType, char *value) {
+	var->type = -1;
+	// Sanitise input for general purpose use
+	char *safeValue = NULL;
+	if (value)
+		safeValue = strdup(value);
+	// Free any existing value
+	if (var->stringValue) free(var->stringValue);
+	if (var->dateValue) free(var->dateValue);
+	if (var->timeValue) free(var->timeValue);
+	if (var->datetimeValue) free(var->datetimeValue);
+	var->stringValue = NULL;
+	var->dateValue = NULL;
+	var->timeValue = NULL;
+	var->datetimeValue = NULL;
+	var->numberValue = 0;
+	var->decimal2Value = 0;
+	// Determine the type
+	switch (mysqlType)
+	{
+		case MYSQL_TYPE_DATE:
+			var->type = VAR_DATE;
+			var->dateValue = safeValue;
+			break;
+		case MYSQL_TYPE_TIME:
+			var->type = VAR_TIME;
+			var->timeValue = safeValue;
+		case MYSQL_TYPE_DATETIME:
+		case MYSQL_TYPE_TIMESTAMP:
+			var->type = VAR_DATETIME;
+			var->datetimeValue = safeValue;
+			break;
+		case MYSQL_TYPE_DECIMAL:
+		case MYSQL_TYPE_NEWDECIMAL:
+			var->type = VAR_DECIMAL2;
+			if (safeValue)
+				var->decimal2Value = atof(safeValue);
+			break;
+	}
+	if (var->type == -1) {
+		if (IS_NUM(mysqlType)) {
+			var->type = VAR_NUMBER;
+			if (safeValue)
+				var->numberValue = atol(safeValue);
+		} else {
+			var->type = VAR_STRING;
+			var->stringValue = safeValue;
+		}
+	}
+	var->portableValue = safeValue;
+	return 0;
 }
 
 void setFieldValues(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields, MYSQL_ROW *rowP) {
@@ -502,12 +563,12 @@ void jamDump() {
 	for (int i = 0; i < MAX_VAR; i++) {
 		if (var[i] == NULL)
 			break;
-		if (var[i]->type == VAR_ALPHA)
-			printf("%02d VARDUMP: %s : VAR_ALPHA : %s<br>", i, var[i]->name, var[i]->aValue);
+		if (var[i]->type == VAR_STRING)
+			printf("%02d VARDUMP: %s : VAR_STRING : %s<br>", i, var[i]->name, var[i]->stringValue);
 		if (var[i]->type == VAR_NUMBER)
-			printf("%02d VARDUMP: %s : VAR_NUMBER : %ld<br>", i, var[i]->name, var[i]->nValue);
+			printf("%02d VARDUMP: %s : VAR_NUMBER : %ld<br>", i, var[i]->name, var[i]->numberValue);
 		if (var[i]->type == VAR_DECIMAL2)
-			printf("%02d VARDUMP: %s : VAR_DECIMAL2 : %.2f<br>", i, var[i]->name, var[i]->dValue);
+			printf("%02d VARDUMP: %s : VAR_DECIMAL2 : %.2f<br>", i, var[i]->name, var[i]->decimal2Value);
 	}
 	printf("</div>");
 }
