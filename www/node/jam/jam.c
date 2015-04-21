@@ -46,9 +46,9 @@ void emit(char *line);
 void die(const char *errorString);
 int getWord(char *dest, char *src, int wordnum, char *separator);
 int openDB(char *name);
-void setFieldValues(char *qualifier, char **headers, int numFields, MYSQL_ROW *rowP);
+void setFieldValues(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields, MYSQL_ROW *rowP);
 char *findVar(char *qualifiedName);
-void updateVar(char *qualifiedName);
+void updateVar(char *qualifiedName, enum enum_field_types mysqlType, char *value);
 void jamDump();
 
 int main(int argc, char *argv[]) {
@@ -113,16 +113,18 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 				die(tmp);
 			}
 			int numFields = mysql_num_fields(res);
-			char *headers[numFields];
+			char *mysqlHeaders[numFields];
+			enum enum_field_types mysqlTypes[numFields];
 			MYSQL_FIELD *field;
 			for (int i = 0; (field = mysql_fetch_field(res)); i++) {
-				headers[i] = field->name;
+				mysqlHeaders[i] = field->name;
+				mysqlTypes[i] = field->type;
 			}
 
 			while ((row = mysql_fetch_row(res)) != NULL) {
 				// Recurse - start an each-end loop
 				emit(jam[ix]->trailer);		
-				setFieldValues(args, headers, numFields, &row);
+				setFieldValues(args, mysqlHeaders, mysqlTypes, numFields, &row);
 
 //printf("GOING\n");
 				genHtml((ix + 1), &row, args);
@@ -141,6 +143,35 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 			// Return from an each-end loop
 //printf("RETURNING\n");
 			return(0);
+		} else if (!(strcmp(cmd, "@include"))) {
+			char *buf = NULL;
+			std::ifstream includeFile (args, std::ifstream::binary);
+			if (!includeFile){
+				sprintf(tmp, "cant @include %s", args);
+				die(tmp);
+			}
+			includeFile.seekg (0, includeFile.end);
+			int length = includeFile.tellg();
+			includeFile.seekg (0, includeFile.beg);
+			buf = (char *) calloc(1, length+1);
+			if (!buf) {
+				sprintf(tmp, "cant calloc memory to @include %s", args);
+				die(tmp);
+			}
+			// Emit any pre-tags
+			if (strstr(args, ".css"))
+				emit("<style>");
+			includeFile.read (buf,length);
+			buf[length] = 0;
+			includeFile.close();
+			if (!includeFile) {
+				sprintf(tmp, "error: not the whole of %s could be read", args);
+				die(tmp);
+			}
+			emit(buf);
+			// Emit any post-tags
+			if (strstr(args, ".css"))
+			emit("</style>");
 		} else if (!(strcmp(cmd, "@count"))) {
 			emit(jam[ix]->trailer);
 		} else if (!(strcmp(cmd, "@sum"))) {
@@ -198,7 +229,7 @@ char *findVar(char *qualifiedName) {
 	return NULL;
 }
 
-void updateVar(char *qualifiedName, char *value) {
+void updateVar(char *qualifiedName, enum enum_field_types mysqlType, char *value) {
 	if (!qualifiedName) {
 		printf("NULL 'qualifiedName' passed to updateVar\n");
 		//return;
@@ -211,6 +242,7 @@ void updateVar(char *qualifiedName, char *value) {
 	if (!(oldValue)) {
 		VAR *newVar = (VAR *) calloc(1, sizeof(VAR));
 		newVar->name = strdup(qualifiedName);
+//kim	seems is always alpha (see report which prints dec10.2 already. so make a function mysql2jam (and reverse) to do atof atol and call it here
 		newVar->type = VAR_ALPHA;
 		if (value)
 			newVar->aValue = strdup(value);
@@ -236,14 +268,14 @@ void updateVar(char *qualifiedName, char *value) {
 	}
 }
 
-void setFieldValues(char *qualifier, char **headers, int numFields, MYSQL_ROW *rowP) {
+void setFieldValues(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields, MYSQL_ROW *rowP) {
 	MYSQL_ROW row = *rowP;
 	int i = 0;
 	for (i = 0; i < numFields; i++) {
 		char qualifiedName[256];
-		sprintf(qualifiedName, "%s.%s", qualifier, headers[i]);
-		updateVar(qualifiedName, row[i]);
-//printf("HDR=[%s.%s]:[%s]\n", qualifier, headers[i], row[i]);
+		sprintf(qualifiedName, "%s.%s", qualifier, mysqlHeaders[i]);
+		updateVar(qualifiedName, mysqlTypes[i], row[i]);
+//printf("HDR=[%s.%s]:[%s]\n", qualifier, mysqlHeaders[i], row[i]);
 	}
 }
 
