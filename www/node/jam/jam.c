@@ -10,6 +10,10 @@
 
 using namespace std;
 
+// General substitutables
+char *COL_SEPARATOR  = "<&nbsp>";
+char *NEWLINE = "<br>";
+
 #define MAX_SQL_QUERY_LEN 1024
 MYSQL *conn = NULL;
 
@@ -55,6 +59,7 @@ void emit(char *line);
 void die(const char *errorString);
 int getWord(char *dest, char *src, int wordnum, char *separator);
 int openDB(char *name);
+void closeDB();
 void setFieldValues(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields, MYSQL_ROW *rowP);
 VAR *findVar(char *qualifiedName);
 void fillVarDataTypes(VAR *var, char *value);
@@ -87,7 +92,7 @@ int main(int argc, char *argv[]) {
 
 	free(tpl);
 	if (conn)
-		mysql_close(conn);
+		closeDB();
 jamDump();
 	exit(0);
 }
@@ -102,7 +107,72 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 		if (!(strcmp(cmd, "@!begin"))) {
 //		--------------------------------
 			emit(jam[ix]->trailer);
+//		--------------------------------
+		} else if (!(strcmp(cmd, "@list"))) {
+//		--------------------------------
+			MYSQL_RES *res;
+			MYSQL_ROW row;
+			char sep = ' ';
+			getWord(tmp, args, 1, &sep);
+			if (*tmp) {
+				char *listWhat = strdup(tmp);
+				if (!strcmp(listWhat, "databases")) {
+					char *dbName = strdup("");
+					if (openDB(dbName) < 0) {
+						die(mysql_error(conn));
+					}
+					mysql_query(conn,"show databases");
+					res = mysql_store_result(conn);
+					while (row = mysql_fetch_row(res)) {
+						if ((!strcmp(row[0], "information_schema")) || (!strcmp(row[0], "mysql")) || (!strcmp(row[0], "performance_schema")))
+							continue;
+						sprintf(tmp, "%s%s", row[0], NEWLINE);
+						emit(tmp);
+					}
+					closeDB();
+				} else if (!strcmp(listWhat, "tables")) {
+					mysql_query(conn,"show tables");
+					res = mysql_store_result(conn);
+					while (row = mysql_fetch_row(res)) {
+						if ((!strcmp(row[0], "information_schema")) || (!strcmp(row[0], "mysql")) || (!strcmp(row[0], "performance_schema")))
+							continue;
+						sprintf(tmp, "%s%s", row[0], NEWLINE);
+						emit(tmp);
+					}
+				}
+			} else {
+				die("list what?");
+			}
+			emit(jam[ix]->trailer);
+//		--------------------------------
+		} else if (!(strcmp(cmd, "@describe"))) {
+//		--------------------------------
+			char sep = ' ';
+			getWord(tmp, args, 1, &sep);
+			if (*tmp) {
+				MYSQL_RES *res;
+				char *query = (char *) calloc(1, MAX_SQL_QUERY_LEN);
+				sprintf(query, "select * from %s LIMIT 1",  args);
+				if (mysql_query(conn, query)) {
+					die(mysql_error(conn));
+				}
+				res = mysql_store_result(conn);
+  				if (!res) {
+					sprintf(tmp, "Couldn't get results set for describe: %s\n", mysql_error(conn));
+					die(tmp);
+				}
+				MYSQL_FIELD *field;
+				for (int i = 0; (field = mysql_fetch_field(res)); i++) {
+					sprintf(tmp, "%s -> %d %s", field->name, field->type, NEWLINE);
+					emit(tmp);
+				}
+			} else {
+				die("describe what?");
+			}
+			emit(jam[ix]->trailer);
+//		-----------------------------------------
 		} else if (!(strcmp(cmd, "@database"))) {
+//		-----------------------------------------
 			if (strlen(args) == 0) {
 				printf("missing database name\n");
 				exit(1);
@@ -135,12 +205,10 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 				mysqlHeaders[i] = field->name;
 				mysqlTypes[i] = field->type;
 			}
-
 			while ((row = mysql_fetch_row(res)) != NULL) {
 				// Recurse - start an each-end loop
 				emit(jam[ix]->trailer);		
 				setFieldValues(args, mysqlHeaders, mysqlTypes, numFields, &row);
-
 //printf("GOING\n");
 				genHtml((ix + 1), &row, args);
 //printf("BACK\n");
@@ -191,6 +259,7 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 			// Emit any post-tags
 			if (strstr(args, ".css"))
 			emit("</style>");
+			emit(jam[ix]->trailer);
 //		--------------------------------------
 		} else if (!(strcmp(cmd, "@count"))) {
 //		--------------------------------------
@@ -633,6 +702,10 @@ int openDB(char *name) {
 	return 0;
 }
 
+void closeDB() {
+	mysql_close(conn);
+}
+
 int main2() {
 	MYSQL *conn;
 	MYSQL_RES *res;
@@ -751,8 +824,8 @@ void jamDump() {
 		printf("</span>");
 	}
 	printf("<br>");
-	printf("<span style='margin:5px; padding:5px; color:#000; background-color:yellow;'>count </span>");
-	printf("<span style='margin:5px; padding:5px; color:#000; background-color:orange;'>sum </span>");
+	printf("<span style='margin:3px; padding:2px; color:#000; background-color:yellow;'>count </span>");
+	printf("<span style='margin:3px; padding:2px; color:#000; background-color:orange;'>sum </span>");
 	printf("<br>");
 	printf("<br>");
 	printf("</div>");
