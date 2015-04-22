@@ -41,6 +41,7 @@ typedef struct {
 	char *dateValue;
 	char *timeValue;
 	char *datetimeValue;
+	int debugHighlight;
 } VAR;
 #define MAX_VAR 10000
 VAR *var[MAX_VAR];
@@ -54,9 +55,12 @@ void die(const char *errorString);
 int getWord(char *dest, char *src, int wordnum, char *separator);
 int openDB(char *name);
 void setFieldValues(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields, MYSQL_ROW *rowP);
-char *findVar(char *qualifiedName);
-void updateVar(char *qualifiedName, enum enum_field_types mysqlType, char *value);
+VAR *findVar(char *qualifiedName);
+void fillVarDataTypes(VAR *var, char *value);
+void updateTableVar(char *qualifiedName, enum enum_field_types mysqlType, char *value);
+void updateNonTableVar(char *qualifiedName, char *value, int type);
 int decodeMysqlType(VAR *var, enum enum_field_types mysqlType, char *value);
+void clearVarValues(VAR *varStruct);
 void jamDump();
 
 int main(int argc, char *argv[]) {
@@ -194,22 +198,74 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 				getWord(tmp, args, 3, &sep);
 				sumFieldAs = strdup(tmp);
 			}
-			char *value = findVar(sumFieldName);
-if (value)
-	printf("FOUND!=[%s]\n",value);
-else
-	printf("NOT-FOUND :( Was looking for sumFieldName=[%s] and tableName=[%s]\n",sumFieldName, tableName);
+			// Lookup the variable we want to sum. It might be qualified, but if it isnt then qualify it with the current table name
+			VAR *varToSum = NULL;
+			char *varToSumQualifiedName = (char *) calloc(1, 512);
+			if (strchr(sumFieldName, '.'))
+				strcpy(varToSumQualifiedName, sumFieldName);
+			else
+				sprintf(varToSumQualifiedName, "%s.%s", tableName, sumFieldName);
+			varToSum = findVar(varToSumQualifiedName);
+			if (!varToSum) {
+				sprintf(tmp, "variable to sum doesnt exist :( Was looking for tableName=[%s] and sumFieldName=[%s]\n",tableName, sumFieldName);
+				die(tmp);
+			}
+			// Lookup the variable we want to sum as (into). Is is always prepended with '.sum', whether qualified or not
+			VAR *varToSumAs = NULL;
+			if (sumFieldAs)
+				sprintf(tmp, "sum.%s", sumFieldAs);
+			else
+				sprintf(tmp, "sum.%s", sumFieldName);
+			varToSumAs = findVar(tmp);
+			if (!varToSumAs) {
+				char *val = "0";
+				updateNonTableVar(tmp, val, varToSum->type);
+				varToSumAs = findVar(tmp);
+varToSum->debugHighlight = 1;
+			}
+			// Do the sum	@@TODOCALC
+			if (varToSum->type == VAR_NUMBER) {
+				varToSumAs->numberValue += varToSum->numberValue;
+				free(varToSumAs->portableValue);
+				sprintf(tmp, "%ld", varToSumAs->numberValue);
+				varToSumAs->portableValue = strdup(tmp);
+varToSumAs->debugHighlight = 1;
+			}
+			else if (varToSum->type == VAR_DECIMAL2) {
+				varToSumAs->decimal2Value += varToSum->decimal2Value;
+				free(varToSumAs->portableValue);
+				sprintf(tmp, "%.2lf", varToSumAs->decimal2Value);
+				varToSumAs->portableValue = strdup(tmp);
+varToSumAs->debugHighlight = 1;
+			}
+			// Wrap up
 			free(sumFieldName);
 			free(sumFieldAs);
+			free(varToSumQualifiedName);
 			emit(jam[ix]->trailer);
 		} else if (cmd[0] != '@') {
 			// Get the stored value
-			char *value = findVar(cmd);
-			if (!value)
-				value = "???";
-//emit("valuestart-");
-			emit(value);
-//emit("valueend-");
+			VAR *variable = findVar(cmd);
+			if (variable) {
+				emit(variable->portableValue);
+				// Clear if 'sum.'
+				if (strlen(variable->name) > 4) {
+					strcpy(tmp, "sum.");
+					if (!strncmp(variable->name, tmp, 4)) {
+						if (variable->type == VAR_NUMBER) {
+							variable->numberValue = 0;
+							free(variable->portableValue);
+							variable->portableValue = strdup("0");
+						} else if (variable->type == VAR_DECIMAL2) {
+							variable->decimal2Value = 0;
+							free(variable->portableValue);
+							variable->portableValue = strdup("0.00");
+						}
+					}
+				}
+			}
+			else
+				emit("???");
 			emit(jam[ix]->trailer);		
 		} else {
 			emit(jam[ix]->trailer);
@@ -221,33 +277,84 @@ else
 	free(tmp);
 }
 
-char *findVar(char *qualifiedName) {
-/*
-	if (!(strchr(qualifiedName, '.'))) {
+VAR *findVar(char *qualifiedName) {
+/* if (!(strchr(qualifiedName, '.'))) {
 		char *tmp = (char *) calloc(1, 1024);
 		sprintf(tmp, "findVar() failed - was given a non-qualified field name [%s]", qualifiedName);
 		die(tmp);
-	}
-*/
+	} */
 	for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
 		if (!(var[i]))
 			break;	
 		if (!strcmp(var[i]->name, qualifiedName)) {
-			return var[i]->portableValue;	// the string representation of the value, whatever type it really is
+			return var[i];
 		}
 	}
 	return NULL;
 }
+void fillVarDataTypes(VAR *var, char *value) {
+	char *safeValue = NULL;
+	if (value)
+		safeValue = strdup(value);
+	if (var->type == VAR_DATE)
+		var->dateValue = safeValue;
+	else if (var->type == VAR_TIME)
+		var->timeValue = safeValue;
+	else if (var->type == VAR_DATETIME)
+		var->datetimeValue = safeValue;
+	else if (var->type == VAR_DECIMAL2) {
+		if (safeValue)
+			var->decimal2Value = atof(safeValue);
+	} else if (var->type == VAR_NUMBER) {
+		if (safeValue)
+			var->numberValue = atol(safeValue);
+	} else
+		var->stringValue = safeValue;
+	if (safeValue)
+		var->portableValue = strdup(safeValue);
+}
 
-void updateVar(char *qualifiedName, enum enum_field_types mysqlType, char *value) {
+void updateNonTableVar(char *qualifiedName, char *value, int type) {
 	if (!qualifiedName)
-		printf("NULL 'qualifiedName' passed to updateVar\n");
-	char *oldValue = findVar(qualifiedName);
-	if (!(oldValue)) {
+		printf("NULL 'qualifiedName' passed to updateNonTableVar\n");
+	char *safeValue = NULL;
+	if (value)
+		safeValue = strdup(value);
+	VAR *seekVar = findVar(qualifiedName);
+	if (!seekVar) {
+		VAR *newVar = (VAR *) calloc(1, sizeof(VAR));
+		newVar->name = strdup(qualifiedName);
+		newVar->type = type;
+		clearVarValues(newVar);
+		fillVarDataTypes(newVar, safeValue);
+//printf("NON-TABLE-> NAME=%s TYPE=%d AVALUE=%s NVALUE=%ld DVALUE=%2.f\n", newVar->name, newVar->type, newVar->stringValue, newVar->numberValue, newVar->decimal2Value);
+		for (int i = 0; i < MAX_VAR; i++) {
+			if (!var[i]) {
+				var[i] = newVar;
+				return;
+			}
+		}
+	} else {
+		for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
+			if (!var[i])
+				break;	
+			if (!strcmp(var[i]->name, qualifiedName)) {
+				fillVarDataTypes(var[i], value);
+				break;
+			}
+		}
+	}
+}
+
+void updateTableVar(char *qualifiedName, enum enum_field_types mysqlType, char *value) {
+	if (!qualifiedName)
+		printf("NULL 'qualifiedName' passed to updateTableVar\n");
+	VAR *seekVar = findVar(qualifiedName);
+	if (!seekVar) {
 		VAR *newVar = (VAR *) calloc(1, sizeof(VAR));
 		newVar->name = strdup(qualifiedName);
 		int ret = decodeMysqlType(newVar, mysqlType, value);
-//printf( "NAME=%s TYPE=%d AVALUE=%s NVALUE=%ld DVALUE=%2.f\n", newVar->name, newVar->type, newVar->stringValue, newVar->numberValue, newVar->decimal2Value);
+//printf("TABLE-> NAME=%s TYPE=%d AVALUE=%s NVALUE=%ld DVALUE=%2.f\n", newVar->name, newVar->type, newVar->stringValue, newVar->numberValue, newVar->decimal2Value);
 		for (int i = 0; i < MAX_VAR; i++) {
 			if (!var[i]) {
 				var[i] = newVar;
@@ -261,73 +368,56 @@ void updateVar(char *qualifiedName, enum enum_field_types mysqlType, char *value
 			if (!strcmp(var[i]->name, qualifiedName)) {
 				int ret = decodeMysqlType(var[i], mysqlType, value);
 				break;
-
-/*
-				if (var[i]->stringValue) {
-					free(var[i]->stringValue);
-					var[i]->stringValue = NULL;
-				}
-				if (value)
-					var[i]->stringValue = strdup(value);
-*/
-
-
-
 			}
 		}
 	}
 }
 
+void clearVarValues(VAR *varStruct) {
+	if (!varStruct)
+		return;
+	// Free any existing value
+	if (varStruct->portableValue) free(varStruct->portableValue);
+	if (varStruct->stringValue) free(varStruct->stringValue);
+	if (varStruct->dateValue) free(varStruct->dateValue);
+	if (varStruct->timeValue) free(varStruct->timeValue);
+	if (varStruct->datetimeValue) free(varStruct->datetimeValue);
+	varStruct->portableValue = NULL;
+	varStruct->stringValue = NULL;
+	varStruct->dateValue = NULL;
+	varStruct->timeValue = NULL;
+	varStruct->datetimeValue = NULL;
+	varStruct->numberValue = 0;
+	varStruct->decimal2Value = 0;
+}
+
 int decodeMysqlType(VAR *var, enum enum_field_types mysqlType, char *value) {
 	var->type = -1;
-	// Sanitise input for general purpose use
-	char *safeValue = NULL;
-	if (value)
-		safeValue = strdup(value);
-	// Free any existing value
-	if (var->stringValue) free(var->stringValue);
-	if (var->dateValue) free(var->dateValue);
-	if (var->timeValue) free(var->timeValue);
-	if (var->datetimeValue) free(var->datetimeValue);
-	var->stringValue = NULL;
-	var->dateValue = NULL;
-	var->timeValue = NULL;
-	var->datetimeValue = NULL;
-	var->numberValue = 0;
-	var->decimal2Value = 0;
-	// Determine the type
+	clearVarValues(var);
 	switch (mysqlType)
 	{
 		case MYSQL_TYPE_DATE:
 			var->type = VAR_DATE;
-			var->dateValue = safeValue;
 			break;
 		case MYSQL_TYPE_TIME:
 			var->type = VAR_TIME;
-			var->timeValue = safeValue;
 		case MYSQL_TYPE_DATETIME:
 		case MYSQL_TYPE_TIMESTAMP:
 			var->type = VAR_DATETIME;
-			var->datetimeValue = safeValue;
 			break;
 		case MYSQL_TYPE_DECIMAL:
 		case MYSQL_TYPE_NEWDECIMAL:
 			var->type = VAR_DECIMAL2;
-			if (safeValue)
-				var->decimal2Value = atof(safeValue);
 			break;
 	}
 	if (var->type == -1) {
 		if (IS_NUM(mysqlType)) {
 			var->type = VAR_NUMBER;
-			if (safeValue)
-				var->numberValue = atol(safeValue);
 		} else {
 			var->type = VAR_STRING;
-			var->stringValue = safeValue;
 		}
 	}
-	var->portableValue = safeValue;
+	fillVarDataTypes(var, value);
 	return 0;
 }
 
@@ -337,7 +427,7 @@ void setFieldValues(char *qualifier, char **mysqlHeaders, enum enum_field_types 
 	for (i = 0; i < numFields; i++) {
 		char qualifiedName[256];
 		sprintf(qualifiedName, "%s.%s", qualifier, mysqlHeaders[i]);
-		updateVar(qualifiedName, mysqlTypes[i], row[i]);
+		updateTableVar(qualifiedName, mysqlTypes[i], row[i]);
 //printf("HDR=[%s.%s]:[%s]\n", qualifier, mysqlHeaders[i], row[i]);
 	}
 }
@@ -502,7 +592,8 @@ void emit(char *line) {
 }
 
 void die(const char *errorString) {
-	fprintf(stderr, "%s\n", errorString);
+	//fprintf(stderr, "%s\n", errorString);
+	fprintf(stdout, "%s\n", errorString);
 	exit(1);
 }
 
@@ -565,12 +656,14 @@ void jamDump() {
 	for (int i = 0; i < MAX_VAR; i++) {
 		if (var[i] == NULL)
 			break;
+		printf("<span"); if (var[i]->debugHighlight) printf(" style='color:yellow;'"); printf(">");
 		if (var[i]->type == VAR_STRING)
 			printf("%02d VARDUMP: %s : VAR_STRING : %s<br>", i, var[i]->name, var[i]->stringValue);
 		if (var[i]->type == VAR_NUMBER)
 			printf("%02d VARDUMP: %s : VAR_NUMBER : %ld<br>", i, var[i]->name, var[i]->numberValue);
 		if (var[i]->type == VAR_DECIMAL2)
 			printf("%02d VARDUMP: %s : VAR_DECIMAL2 : %.2f<br>", i, var[i]->name, var[i]->decimal2Value);
+		printf("</span>");
 	}
 	printf("</div>");
 }
