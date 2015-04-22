@@ -66,6 +66,7 @@ void fillVarDataTypes(VAR *var, char *value);
 void updateTableVar(char *qualifiedName, enum enum_field_types mysqlType, char *value);
 void updateNonTableVar(char *qualifiedName, char *value, int type);
 int decodeMysqlType(VAR *var, enum enum_field_types mysqlType, char *value);
+int fieldConvertMysql2Jam(enum enum_field_types mysqlType);
 void clearVarValues(VAR *varStruct);
 void jamDump();
 
@@ -162,10 +163,19 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 					die(tmp);
 				}
 				MYSQL_FIELD *field;
+				char *aType = (char *) calloc(1, 1024);
 				for (int i = 0; (field = mysql_fetch_field(res)); i++) {
-					sprintf(tmp, "%s -> %d %s", field->name, field->type, NEWLINE);
+					int type = fieldConvertMysql2Jam(field->type);
+					if (type == VAR_STRING) strcpy(aType, "string");
+					if (type == VAR_NUMBER) strcpy(aType, "number");
+					if (type == VAR_DECIMAL2) strcpy(aType, "2-decimal");
+					if (type == VAR_DATE) strcpy(aType, "date");
+					if (type == VAR_TIME) strcpy(aType, "time");
+					if (type == VAR_DATETIME) strcpy(aType, "datetime");
+					sprintf(tmp, "%s : %s %s", field->name, aType, NEWLINE);
 					emit(tmp);
 				}
+				free(aType);
 			} else {
 				die("describe what?");
 			}
@@ -538,33 +548,37 @@ void clearVarValues(VAR *varStruct) {
 }
 
 int decodeMysqlType(VAR *var, enum enum_field_types mysqlType, char *value) {
-	var->type = -1;
 	clearVarValues(var);
-	switch (mysqlType)
-	{
+	var->type = fieldConvertMysql2Jam(mysqlType);
+	fillVarDataTypes(var, value);
+	return 0;
+}
+
+int fieldConvertMysql2Jam(enum enum_field_types mysqlType) {
+	int type = -1;
+	switch (mysqlType) {
 		case MYSQL_TYPE_DATE:
-			var->type = VAR_DATE;
+			type = VAR_DATE;
 			break;
 		case MYSQL_TYPE_TIME:
-			var->type = VAR_TIME;
+			type = VAR_TIME;
 		case MYSQL_TYPE_DATETIME:
 		case MYSQL_TYPE_TIMESTAMP:
-			var->type = VAR_DATETIME;
+			type = VAR_DATETIME;
 			break;
 		case MYSQL_TYPE_DECIMAL:
 		case MYSQL_TYPE_NEWDECIMAL:
-			var->type = VAR_DECIMAL2;
+			type = VAR_DECIMAL2;
 			break;
 	}
-	if (var->type == -1) {
+	if (type == -1) {
 		if (IS_NUM(mysqlType)) {
-			var->type = VAR_NUMBER;
+			type = VAR_NUMBER;
 		} else {
-			var->type = VAR_STRING;
+			type = VAR_STRING;
 		}
 	}
-	fillVarDataTypes(var, value);
-	return 0;
+	return type;
 }
 
 void setFieldValues(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields, MYSQL_ROW *rowP) {
