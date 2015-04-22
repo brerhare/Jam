@@ -34,6 +34,7 @@ char *tableStack[MAX_JAM];
 typedef struct {
 	char *name;
 	int type;
+	char *source;	// mysql, count, sum etc
 	char *portableValue;
 	char *stringValue;
 	long numberValue;
@@ -216,25 +217,26 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 				sprintf(tmp, "variable to count doesnt exist :( Was looking for tableName=[%s] and countFieldName=[%s]\n",tableName, countFieldName);
 				die(tmp);
 			}
-			// Lookup the variable we want to count as (into). Is is always prepended with '.count', whether qualified or not
+			// Lookup the variable we want to count as (into). If it is unnamed prepend '.count' to it
 			VAR *varToCountAs = NULL;
-			if (countFieldAs)
-				sprintf(tmp, "count.%s", countFieldAs);
-			else
+			if (!countFieldAs)
 				sprintf(tmp, "count.%s", countFieldName);
+			else
+				sprintf(tmp, "%s", countFieldAs);
 			varToCountAs = findVar(tmp);
 			if (!varToCountAs) {
 				char *val = "0";
 				updateNonTableVar(tmp, val, VAR_NUMBER);
 				varToCountAs = findVar(tmp);
-varToCount->debugHighlight = 2;
+				varToCountAs->source = strdup("count");
+				varToCountAs->debugHighlight = 2;
 			}
+			varToCount->debugHighlight = 2;
 			// Do the count	@@TODOCALC
 			varToCountAs->numberValue++;
 			free(varToCountAs->portableValue);
 			sprintf(tmp, "%ld", varToCountAs->numberValue);
 			varToCountAs->portableValue = strdup(tmp);
-varToCountAs->debugHighlight = 2;
 			// Wrap up
 			free(countFieldName);
 			free(countFieldAs);
@@ -266,33 +268,33 @@ varToCountAs->debugHighlight = 2;
 				sprintf(tmp, "variable to sum doesnt exist :( Was looking for tableName=[%s] and sumFieldName=[%s]\n",tableName, sumFieldName);
 				die(tmp);
 			}
-			// Lookup the variable we want to sum as (into). Is is always prepended with '.sum', whether qualified or not
+			// Lookup the variable we want to sum as (into). If it is unnamed prepend '.sum' to it
 			VAR *varToSumAs = NULL;
-			if (sumFieldAs)
-				sprintf(tmp, "sum.%s", sumFieldAs);
-			else
+			if (!sumFieldAs)
 				sprintf(tmp, "sum.%s", sumFieldName);
+			else
+				sprintf(tmp, "%s", sumFieldAs);
 			varToSumAs = findVar(tmp);
 			if (!varToSumAs) {
 				char *val = "0";
 				updateNonTableVar(tmp, val, varToSum->type);
 				varToSumAs = findVar(tmp);
-varToSum->debugHighlight = 1;
+				varToSumAs->source = strdup("sum");
+				varToSumAs->debugHighlight = 3;
 			}
+			varToSum->debugHighlight = 3;
 			// Do the sum	@@TODOCALC
 			if (varToSum->type == VAR_NUMBER) {
 				varToSumAs->numberValue += varToSum->numberValue;
 				free(varToSumAs->portableValue);
 				sprintf(tmp, "%ld", varToSumAs->numberValue);
 				varToSumAs->portableValue = strdup(tmp);
-varToSumAs->debugHighlight = 1;
 			}
 			else if (varToSum->type == VAR_DECIMAL2) {
 				varToSumAs->decimal2Value += varToSum->decimal2Value;
 				free(varToSumAs->portableValue);
 				sprintf(tmp, "%.2lf", varToSumAs->decimal2Value);
 				varToSumAs->portableValue = strdup(tmp);
-varToSumAs->debugHighlight = 1;
 			}
 			// Wrap up
 			free(sumFieldName);
@@ -302,37 +304,42 @@ varToSumAs->debugHighlight = 1;
 //		---------------------------
 		} else if (cmd[0] != '@') {
 //		---------------------------
-			// Get the stored value
-			VAR *variable = findVar(cmd);
+			// Get the stored value. Mysql fields are always stored fully qualified. Others might have no or many levels of qualifier
+			VAR *variable = NULL;
+			variable = findVar(cmd);
+			if (!variable) {
+				// If not found, it might be a non-qualified variable in the form of '(null).something' (no qualifier)
+				char *p = strchr(cmd, '.');
+				if ((p) && (*(++p)))
+					variable = findVar(p);
+			}
+
+
 			if (variable) {
 				emit(variable->portableValue);
 				// Clear if 'count.'
-				if (strlen(variable->name) > 6) {
-					strcpy(tmp, "count.");
-					if (!strncmp(variable->name, tmp, 6)) {
+				if ((variable->source) && (!strcmp(variable->source, "count"))) {
+					variable->numberValue = 0;
+					free(variable->portableValue);
+					variable->portableValue = strdup("0");
+				}
+				// Clear if 'sum.'
+				if ((variable->source) && (!strcmp(variable->source, "sum"))) {
+					if (variable->type == VAR_NUMBER) {
 						variable->numberValue = 0;
 						free(variable->portableValue);
 						variable->portableValue = strdup("0");
-					}
-				}
-				// Clear if 'sum.'
-				if (strlen(variable->name) > 4) {
-					strcpy(tmp, "sum.");
-					if (!strncmp(variable->name, tmp, 4)) {
-						if (variable->type == VAR_NUMBER) {
-							variable->numberValue = 0;
-							free(variable->portableValue);
-							variable->portableValue = strdup("0");
-						} else if (variable->type == VAR_DECIMAL2) {
-							variable->decimal2Value = 0;
-							free(variable->portableValue);
-							variable->portableValue = strdup("0.00");
-						}
+					} else if (variable->type == VAR_DECIMAL2) {
+						variable->decimal2Value = 0;
+						free(variable->portableValue);
+						variable->portableValue = strdup("0.00");
 					}
 				}
 			}
-			else
-				emit("???");
+			else {
+				sprintf(tmp, "[%s]", cmd);
+				emit(tmp);
+			}
 			emit(jam[ix]->trailer);		
 //		--------
 		} else {
@@ -346,16 +353,16 @@ varToSumAs->debugHighlight = 1;
 	free(tmp);
 }
 
-VAR *findVar(char *qualifiedName) {
-/* if (!(strchr(qualifiedName, '.'))) {
+VAR *findVar(char *name) {
+/* if (!(strchr(name, '.'))) {
 		char *tmp = (char *) calloc(1, 1024);
-		sprintf(tmp, "findVar() failed - was given a non-qualified field name [%s]", qualifiedName);
+		sprintf(tmp, "findVar() failed - was given a non-qualified field name [%s]", name);
 		die(tmp);
 	} */
 	for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
 		if (!(var[i]))
 			break;	
-		if (!strcmp(var[i]->name, qualifiedName)) {
+		if (!strcmp(var[i]->name, name)) {
 			return var[i];
 		}
 	}
@@ -422,6 +429,7 @@ void updateTableVar(char *qualifiedName, enum enum_field_types mysqlType, char *
 	if (!seekVar) {
 		VAR *newVar = (VAR *) calloc(1, sizeof(VAR));
 		newVar->name = strdup(qualifiedName);
+		newVar->source = strdup("mysql");
 		int ret = decodeMysqlType(newVar, mysqlType, value);
 //printf("TABLE-> NAME=%s TYPE=%d AVALUE=%s NVALUE=%ld DVALUE=%2.f\n", newVar->name, newVar->type, newVar->stringValue, newVar->numberValue, newVar->decimal2Value);
 		for (int i = 0; i < MAX_VAR; i++) {
@@ -581,9 +589,7 @@ char *curlies2JamArray(char *tplPos) {
 			}
 		}
 	}
-
 	free(trailer);
-
 	return (endCurly+1);
 }
 
@@ -714,12 +720,13 @@ int getWord(char *dest, char *src, int wordnum, char *separator)
 }
 
 void jamDump() {
-	printf("<br><br><div style='font-size:11px;color:#ffffff;background-color:#00727a'>");
+	char *tmp = (char *) calloc(1, 4096);
+	printf("<br><br><div style='font-size:11px;color:#ffffff;background-color:#1b2426'>");
 	for (int i = 0; i < MAX_JAM; i++) {
 		if (jam[i] == NULL)
 			break;
 		//printf("%02d JAMDUMP: %s >>>>>%s<<<<<\n\n\n", i, jam[i]->command, jam[i]->trailer);
-		printf("%02d JAMDUMP: %s : %s<br>", i, jam[i]->command, jam[i]->args);
+		printf("%02d JAMDUMP %s : %s<br>", i, jam[i]->command, jam[i]->args);
 	}
 	printf("<hr>");
 	for (int i = 0; i < MAX_VAR; i++) {
@@ -727,18 +734,28 @@ void jamDump() {
 			break;
 
 		printf("<span");
-		if (var[i]->debugHighlight == 1) printf(" style='color:yellow;'");
-		if (var[i]->debugHighlight == 2) printf(" style='color:orange;'");
+		if (var[i]->debugHighlight == 1) printf(" style='color:#e18d88'");
+		if (var[i]->debugHighlight == 2) printf(" style='color:yellow;'");
+		if (var[i]->debugHighlight == 3) printf(" style='color:orange;'");
 		printf(">");
 
+		*tmp = 0;
+		if (var[i]->source)
+			sprintf(tmp, " : source %s", var[i]->source);
 		if (var[i]->type == VAR_STRING)
-			printf("%02d VARDUMP: %s : VAR_STRING : %s<br>", i, var[i]->name, var[i]->stringValue);
+			printf("%02d VARDUMP %s : VAR_STRING %s %s<br>", i, var[i]->name, var[i]->stringValue, tmp);
 		if (var[i]->type == VAR_NUMBER)
-			printf("%02d VARDUMP: %s : VAR_NUMBER : %ld<br>", i, var[i]->name, var[i]->numberValue);
+			printf("%02d VARDUMP %s : VAR_NUMBER %ld %s<br>", i, var[i]->name, var[i]->numberValue, tmp);
 		if (var[i]->type == VAR_DECIMAL2)
-			printf("%02d VARDUMP: %s : VAR_DECIMAL2 : %.2f<br>", i, var[i]->name, var[i]->decimal2Value);
+			printf("%02d VARDUMP %s : VAR_DECIMAL2 %.2f %s<br>", i, var[i]->name, var[i]->decimal2Value, tmp);
 		printf("</span>");
 	}
+	printf("<br>");
+	printf("<span style='margin:5px; padding:5px; color:#000; background-color:yellow;'>count </span>");
+	printf("<span style='margin:5px; padding:5px; color:#000; background-color:orange;'>sum </span>");
+	printf("<br>");
+	printf("<br>");
 	printf("</div>");
+	free(tmp);
 }
 
