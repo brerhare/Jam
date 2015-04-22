@@ -97,9 +97,9 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 	while (jam[ix]) {
 		char *cmd = jam[ix]->command;
 		char *args = jam[ix]->args;
-//printf("%s\n", cmd);
-		// Process the jam command
+//		--------------------------------
 		if (!(strcmp(cmd, "@!begin"))) {
+//		--------------------------------
 			emit(jam[ix]->trailer);
 		} else if (!(strcmp(cmd, "@database"))) {
 			if (strlen(args) == 0) {
@@ -110,7 +110,9 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 				die(mysql_error(conn));
 			}
 			emit(jam[ix]->trailer);
+//		-------------------------------------
 		} else if (!(strcmp(cmd, "@each"))) {
+//		-------------------------------------
 			// Read record
 			MYSQL_RES *res;
 			MYSQL_ROW row;
@@ -151,11 +153,15 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 			}
 			mysql_free_result(res);
 			free(query);
+//		------------------------------------
 		} else if (!(strcmp(cmd, "@end"))) {
+//		------------------------------------
 			// Return from an each-end loop
 //printf("RETURNING\n");
 			return(0);
+//		----------------------------------------
 		} else if (!(strcmp(cmd, "@include"))) {
+//		----------------------------------------
 			char *buf = NULL;
 			std::ifstream includeFile (args, std::ifstream::binary);
 			if (!includeFile){
@@ -184,9 +190,59 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 			// Emit any post-tags
 			if (strstr(args, ".css"))
 			emit("</style>");
+//		--------------------------------------
 		} else if (!(strcmp(cmd, "@count"))) {
+//		--------------------------------------
+			char sep = ' ';
+			getWord(tmp, args, 1, &sep);
+			char *countFieldName = strdup(tmp);
+			if (!countFieldName)
+				die("Cant count a nonexistent field");
+			char *countFieldAs = NULL;
+			getWord(tmp, args, 2, &sep);
+			if (!(strcmp(tmp, "as"))) {
+				getWord(tmp, args, 3, &sep);
+				countFieldAs = strdup(tmp);
+			}
+			// Lookup the variable we want to count. It might be qualified, but if it isnt then qualify it with the current table name
+			VAR *varToCount = NULL;
+			char *varToCountQualifiedName = (char *) calloc(1, 512);
+			if (strchr(countFieldName, '.'))
+				strcpy(varToCountQualifiedName, countFieldName);
+			else
+				sprintf(varToCountQualifiedName, "%s.%s", tableName, countFieldName);
+			varToCount = findVar(varToCountQualifiedName);
+			if (!varToCount) {
+				sprintf(tmp, "variable to count doesnt exist :( Was looking for tableName=[%s] and countFieldName=[%s]\n",tableName, countFieldName);
+				die(tmp);
+			}
+			// Lookup the variable we want to count as (into). Is is always prepended with '.count', whether qualified or not
+			VAR *varToCountAs = NULL;
+			if (countFieldAs)
+				sprintf(tmp, "count.%s", countFieldAs);
+			else
+				sprintf(tmp, "count.%s", countFieldName);
+			varToCountAs = findVar(tmp);
+			if (!varToCountAs) {
+				char *val = "0";
+				updateNonTableVar(tmp, val, VAR_NUMBER);
+				varToCountAs = findVar(tmp);
+varToCount->debugHighlight = 2;
+			}
+			// Do the count	@@TODOCALC
+			varToCountAs->numberValue++;
+			free(varToCountAs->portableValue);
+			sprintf(tmp, "%ld", varToCountAs->numberValue);
+			varToCountAs->portableValue = strdup(tmp);
+varToCountAs->debugHighlight = 2;
+			// Wrap up
+			free(countFieldName);
+			free(countFieldAs);
+			free(varToCountQualifiedName);
 			emit(jam[ix]->trailer);
+//		------------------------------------
 		} else if (!(strcmp(cmd, "@sum"))) {
+//		------------------------------------
 			char sep = ' ';
 			getWord(tmp, args, 1, &sep);
 			char *sumFieldName = strdup(tmp);
@@ -243,11 +299,22 @@ varToSumAs->debugHighlight = 1;
 			free(sumFieldAs);
 			free(varToSumQualifiedName);
 			emit(jam[ix]->trailer);
+//		---------------------------
 		} else if (cmd[0] != '@') {
+//		---------------------------
 			// Get the stored value
 			VAR *variable = findVar(cmd);
 			if (variable) {
 				emit(variable->portableValue);
+				// Clear if 'count.'
+				if (strlen(variable->name) > 6) {
+					strcpy(tmp, "count.");
+					if (!strncmp(variable->name, tmp, 6)) {
+						variable->numberValue = 0;
+						free(variable->portableValue);
+						variable->portableValue = strdup("0");
+					}
+				}
 				// Clear if 'sum.'
 				if (strlen(variable->name) > 4) {
 					strcpy(tmp, "sum.");
@@ -267,7 +334,9 @@ varToSumAs->debugHighlight = 1;
 			else
 				emit("???");
 			emit(jam[ix]->trailer);		
+//		--------
 		} else {
+//		--------
 			emit(jam[ix]->trailer);
 		}
 
@@ -656,7 +725,12 @@ void jamDump() {
 	for (int i = 0; i < MAX_VAR; i++) {
 		if (var[i] == NULL)
 			break;
-		printf("<span"); if (var[i]->debugHighlight) printf(" style='color:yellow;'"); printf(">");
+
+		printf("<span");
+		if (var[i]->debugHighlight == 1) printf(" style='color:yellow;'");
+		if (var[i]->debugHighlight == 2) printf(" style='color:orange;'");
+		printf(">");
+
 		if (var[i]->type == VAR_STRING)
 			printf("%02d VARDUMP: %s : VAR_STRING : %s<br>", i, var[i]->name, var[i]->stringValue);
 		if (var[i]->type == VAR_NUMBER)
