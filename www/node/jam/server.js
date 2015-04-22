@@ -28,7 +28,7 @@ function showAvailableTemplates(response) {
 		fs.readdir(__dirname + templatePath, function(err, files) {
 			if (err) return;
 			files.forEach(function(f) {
-				if (f != ".gitignore")
+				if ((f.indexOf(".tpl") != -1) && (f.indexOf(".swp") == -1) && (f.indexOf(".bak") == -1))
 					html += "<a href='http://" + ip + ":" + port + "/?template=" + f + "'>" + f + "</a> <br>";
 			});
 			callback(html);
