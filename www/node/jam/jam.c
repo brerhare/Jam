@@ -8,11 +8,9 @@
 
 #include </usr/include/mysql/mysql.h>
 
-using namespace std;
+#include "util.h"
 
-// General substitutables
-char *COL_SEPARATOR  = "<&nbsp>";
-char *NEWLINE = "<br>";
+using namespace std;
 
 #define MAX_SQL_QUERY_LEN 1024
 MYSQL *conn = NULL;
@@ -57,7 +55,6 @@ JAM *initJam();
 int genHtml(int startIx, MYSQL_ROW *row, char *tableName);
 void emit(char *line);
 void die(const char *errorString);
-int getWord(char *dest, char *src, int wordnum, char *separator);
 int openDB(char *name);
 void closeDB();
 void setFieldValues(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields, MYSQL_ROW *rowP);
@@ -127,7 +124,7 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 					while (row = mysql_fetch_row(res)) {
 						if ((!strcmp(row[0], "information_schema")) || (!strcmp(row[0], "mysql")) || (!strcmp(row[0], "performance_schema")))
 							continue;
-						sprintf(tmp, "%s%s", row[0], NEWLINE);
+						sprintf(tmp, "%s <br>", row[0]);
 						emit(tmp);
 					}
 					closeDB();
@@ -137,7 +134,7 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 					while (row = mysql_fetch_row(res)) {
 						if ((!strcmp(row[0], "information_schema")) || (!strcmp(row[0], "mysql")) || (!strcmp(row[0], "performance_schema")))
 							continue;
-						sprintf(tmp, "%s%s", row[0], NEWLINE);
+						sprintf(tmp, "%s <br>", row[0]);
 						emit(tmp);
 					}
 				}
@@ -148,34 +145,31 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 //		--------------------------------
 		} else if (!(strcmp(cmd, "@describe"))) {
 //		--------------------------------
+			MYSQL_RES *res;
+			MYSQL_ROW row;
 			char sep = ' ';
 			getWord(tmp, args, 1, &sep);
 			if (*tmp) {
-				MYSQL_RES *res;
 				char *query = (char *) calloc(1, MAX_SQL_QUERY_LEN);
-				sprintf(query, "select * from %s LIMIT 1",  args);
-				if (mysql_query(conn, query)) {
-					die(mysql_error(conn));
-				}
+				char *line = (char *) calloc(1, 4096);
+				sprintf(query, "desc %s", args);
+				mysql_query(conn,query);
 				res = mysql_store_result(conn);
-  				if (!res) {
-					sprintf(tmp, "Couldn't get results set for describe: %s\n", mysql_error(conn));
-					die(tmp);
+				int numFields = mysql_num_fields(res);
+				emit("<table border=1 cellpadding=3 cellspacing=0 style='border: 1pt solid #abdbd7; border-Collapse: collapse'>");
+				emit("<tr><td> Field </td><td> Type </td><td> Empty allowed? </td><td> Key </td><td> Default value </td><td> Extra </td></tr>");
+				while (row = mysql_fetch_row(res)) {
+					strcpy(line, "<tr>");
+					for (int i = 0; i < numFields; i++) {
+						sprintf(tmp, "<td> %s </td>", row[i]);
+						strcat(line, tmp);
+					}
+					strcat(line, "</tr>");
+					emit(line);
 				}
-				MYSQL_FIELD *field;
-				char *aType = (char *) calloc(1, 1024);
-				for (int i = 0; (field = mysql_fetch_field(res)); i++) {
-					int type = fieldConvertMysql2Jam(field->type);
-					if (type == VAR_STRING) strcpy(aType, "string");
-					if (type == VAR_NUMBER) strcpy(aType, "number");
-					if (type == VAR_DECIMAL2) strcpy(aType, "2-decimal");
-					if (type == VAR_DATE) strcpy(aType, "date");
-					if (type == VAR_TIME) strcpy(aType, "time");
-					if (type == VAR_DATETIME) strcpy(aType, "datetime");
-					sprintf(tmp, "%s : %s %s", field->name, aType, NEWLINE);
-					emit(tmp);
-				}
-				free(aType);
+				emit("</table>");
+				free(query);
+				free(line);
 			} else {
 				die("describe what?");
 			}
@@ -757,53 +751,6 @@ void die(const char *errorString) {
 	//fprintf(stderr, "%s\n", errorString);
 	fprintf(stdout, "%s\n", errorString);
 	exit(1);
-}
-
-int getWord(char *dest, char *src, int wordnum, char *separator)
-{
-    int onaword = 0;
-    int inaquote = 0;
-    int retcode = -1;
-    char *p;
-    while (*src)
-    {
-        /*if ((*src == 10) || (*src == 13))
-            break;*/
-        for (p = separator; *p; p++)
-        {
-            if (*src == *p)
-                break;
-        }
-        if (!(*p))
-        {
-            /* Non-separator */
-            if (onaword == 0)
-            {
-                onaword = 1;
-                wordnum--;
-            }
-        }
-        else
-            if (!inaquote)
-                /* Separator */
-                onaword = 0;
-        if ((!wordnum) && (onaword) && (*src != '\"'))
-            if (*src != 10)
-            {
-                *dest++ = *src;
-                retcode = 0;
-            }
-        if (*src == '\"')
-        {
-            if (inaquote)
-                inaquote = 0;
-            else
-                inaquote = 1;
-        }
-        src++;
-    }
-    *dest = '\0';
-    return(retcode);
 }
 
 void jamDump() {
