@@ -5,7 +5,7 @@
 #include <string.h>
 #include <ctype.h>
 
-char *strtrim(char *str);
+char *strTrim(char *str);
 int getWord(char *dest, char *src, int wordnum, char *separator);
 char *getWordAlloc(char *src, int wordnum, char *separator);
 

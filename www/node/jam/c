@@ -1,1 +1,1 @@
-g++ -g -o jam -Wno-write-strings $1 $(mysql_config --cflags) $(mysql_config --libs)
+g++ $1 util.c -g -o jam -fpermissive -Wno-write-strings $(mysql_config --cflags) $(mysql_config --libs)

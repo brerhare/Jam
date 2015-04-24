@@ -59,12 +59,14 @@ int openDB(char *name);
 void closeDB();
 void setFieldValues(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields, MYSQL_ROW *rowP);
 VAR *findVar(char *qualifiedName);
+VAR *findVarTryBothWays(char *name);
 void fillVarDataTypes(VAR *var, char *value);
 void updateTableVar(char *qualifiedName, enum enum_field_types mysqlType, char *value);
 void updateNonTableVar(char *qualifiedName, char *value, int type);
 int decodeMysqlType(VAR *var, enum enum_field_types mysqlType, char *value);
 int fieldConvertMysql2Jam(enum enum_field_types mysqlType);
 void clearVarValues(VAR *varStruct);
+int buildMysqlQuerySelect(char *query, char *args, char *currentTableName);
 void jamDump();
 
 int main(int argc, char *argv[]) {
@@ -188,11 +190,29 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 //		-------------------------------------
 		} else if (!(strcmp(cmd, "@each"))) {
 //		-------------------------------------
-			// Read record
+//{@each stock_customer}
+//{@each stock_customer.stock_area_id = id}
+//{@each stock_customer.stock_area_id = area.id}
+//{@each stock_customer stock_area_id = }
+//{@each stock_customer whose stock_area_id = }
+			char *givenTableName = (char *) calloc(1, 4096);
+			char *givenFieldName = NULL;
+			char *query = (char *) calloc(1, MAX_SQL_QUERY_LEN);
+			// Get the given table name that we want each of
+			char *ta = args;
+			char *tg = givenTableName;
+			while ((*ta) && (*ta != ' ') && (*ta != '.'))	// Find ' ' or '.' which terminates the tablename;
+				*tg++ = *ta++;
+			sprintf(query, "select * from %s",  givenTableName);				// set a default query
+			// Is there more than just the table name?
+			if (*ta) {
+				ta++;
+				buildMysqlQuerySelect(query, ta, tableName);		// build a complex wuery
+			}
+strcat(query, " LIMIT 400");
+			// Do the query
 			MYSQL_RES *res;
 			MYSQL_ROW row;
-			char *query = (char *) calloc(1, MAX_SQL_QUERY_LEN);
-			sprintf(query, "select * from %s LIMIT 4",  args);
 			if (mysql_query(conn, query)) {
 				die(mysql_error(conn));
 			}
@@ -212,13 +232,13 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 			while ((row = mysql_fetch_row(res)) != NULL) {
 				// Recurse - start an each-end loop
 				emit(jam[ix]->trailer);		
-				setFieldValues(args, mysqlHeaders, mysqlTypes, numFields, &row);
-//printf("GOING\n");
-				genHtml((ix + 1), &row, args);
+				setFieldValues(givenTableName, mysqlHeaders, mysqlTypes, numFields, &row);
+//printf("GOING with tablename=[%s]<br>\n", givenTableName);
+				genHtml((ix + 1), &row, givenTableName);
 //printf("BACK\n");
 			}
 			// Finished. Now emit the loops' trailer and make it current, so we will immediately advance past it
-			while (jam[ix] && (strcmp(jam[ix]->command, "@end") || (strcmp(jam[ix]->args, args)))) {
+			while (jam[ix] && (strcmp(jam[ix]->command, "@end") || (strcmp(jam[ix]->args, givenTableName)))) {
 				ix++;
 			}
 			if (jam[ix]) {
@@ -377,17 +397,8 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 //		---------------------------
 		} else if (cmd[0] != '@') {
 //		---------------------------
-			// Get the stored value. Mysql fields are always stored fully qualified. Others might have no or many levels of qualifier
 			VAR *variable = NULL;
-			variable = findVar(cmd);
-			if (!variable) {
-				// If not found, it might be a non-qualified variable in the form of '(null).something' (no qualifier)
-				char *p = strchr(cmd, '.');
-				if ((p) && (*(++p)))
-					variable = findVar(p);
-			}
-
-
+			variable = findVarTryBothWays(cmd);
 			if (variable) {
 				emit(variable->portableValue);
 				// Clear if 'count.'
@@ -426,12 +437,20 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 	free(tmp);
 }
 
+VAR *findVarTryBothWays(char *name) {
+	// Get the stored value. Mysql fields are always stored fully qualified. Others might have no or many levels of qualifier
+	VAR *variable = NULL;
+	variable = findVar(name);
+	if (!variable) {
+		// If not found, it might be a non-qualified variable in the form of '(null).something' (no qualifier)
+		char *p = strchr(name, '.');
+		if ((p) && (*(++p)))
+			variable = findVar(p);
+	}
+	return variable;
+}
+
 VAR *findVar(char *name) {
-/* if (!(strchr(name, '.'))) {
-		char *tmp = (char *) calloc(1, 1024);
-		sprintf(tmp, "findVar() failed - was given a non-qualified field name [%s]", name);
-		die(tmp);
-	} */
 	for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
 		if (!(var[i]))
 			break;	
@@ -584,6 +603,44 @@ void setFieldValues(char *qualifier, char **mysqlHeaders, enum enum_field_types 
 		updateTableVar(qualifiedName, mysqlTypes[i], row[i]);
 //printf("HDR=[%s.%s]:[%s]\n", qualifier, mysqlHeaders[i], row[i]);
 	}
+}
+
+int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
+	char *selectorField = NULL;
+	char *operand = NULL;
+	char *externalField = NULL;
+	char *tmp = (char *) calloc(1, 4096);
+	char sep = ' ';
+	int wdNum = 1;
+	selectorField = strTrim(getWordAlloc(args, wdNum, &sep));	// try for the field selector
+	if (!selectorField)
+		die("table name given for @each but no field selector");
+	if (!strcmp(selectorField, "whose")) {
+		wdNum++;
+		free(selectorField);
+		selectorField = strTrim(getWordAlloc(args, wdNum, &sep));
+		if (!selectorField)
+			die("table name given for @each but no field selector after 'whose'");
+	}
+	operand = strTrim(getWordAlloc(args, ++wdNum, &sep));	// try for the operand '=' '>' '<' etc
+	if (!operand)
+		die("no operand given for @each");
+	externalField = strTrim(getWordAlloc(args, ++wdNum, &sep));	// try for the external field, containing the value to look for
+	if (!externalField)
+		die("no external field given for @each");
+//sprintf(tmp, "[%s][%s][%s] fullargs=[%s] and currenttable=[%s]", selectorField, operand, externalField, args, currentTableName); die(tmp);
+	sprintf(tmp, "%s.%s", currentTableName, externalField);
+	VAR *variable = NULL;
+	variable = findVarTryBothWays(tmp);
+	// Finally build the query string
+	sprintf(tmp, " where %s %s %s", selectorField, operand, variable->portableValue);
+	strcat(query, tmp);
+	free(selectorField);
+	free(operand);
+	free(externalField);
+	free(tmp);
+//sprintf(tmp, "wd=[%s]", wd); die(tmp);
+	return 0;
 }
 
 char *curlies2JamArray(char *tplPos) {
