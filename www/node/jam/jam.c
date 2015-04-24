@@ -250,6 +250,53 @@ strcat(query, " LIMIT 100");
 			}
 			mysql_free_result(res);
 			free(query);
+//		-------------------------------------
+		} else if (!(strcmp(cmd, "@get"))) {
+//		-------------------------------------
+			// @@TODO refactor this because it shares 90% of its code with @each
+			char *givenTableName = (char *) calloc(1, 4096);
+			char *givenFieldName = NULL;
+			char *query = (char *) calloc(1, MAX_SQL_QUERY_LEN);
+			// Get the given table name that we want to get
+			char *ta = args;
+			char *tg = givenTableName;
+			while ((*ta) && (*ta != ' ') && (*ta != '.'))	// Find ' ' or '.' which terminates the tablename;
+				*tg++ = *ta++;
+			sprintf(query, "select * from %s",  givenTableName);				// set a default query
+			// Is there more than just the table name?
+			if (*ta) {
+				ta++;
+				buildMysqlQuerySelect(query, ta, tableName);		// build a complex wuery
+			}
+			strcat(query, " LIMIT 1");
+//die(query);
+			// Do the query
+			MYSQL_RES *res;
+			MYSQL_ROW row;
+			if (mysql_query(conn, query)) {
+				die(mysql_error(conn));
+			}
+			res = mysql_store_result(conn);
+  			if (!res) {
+				sprintf(tmp, "Couldn't get results set: %s\n", mysql_error(conn));
+				die(tmp);
+			}
+			int numFields = mysql_num_fields(res);
+			char *mysqlHeaders[numFields];
+			enum enum_field_types mysqlTypes[numFields];
+			MYSQL_FIELD *field;
+			for (int i = 0; (field = mysql_fetch_field(res)); i++) {
+				mysqlHeaders[i] = field->name;
+				mysqlTypes[i] = field->type;
+			}
+			row = mysql_fetch_row(res);
+			if (row)
+				setFieldValues(givenTableName, mysqlHeaders, mysqlTypes, numFields, &row);
+			if (jam[ix]) {
+				emit(jam[ix]->trailer);
+			}
+			mysql_free_result(res);
+			free(query);
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@end"))) {
 //		------------------------------------
