@@ -1,3 +1,7 @@
+/*
+ * @@TODO Fix the priority of assignment to non-qualified vars. This worked well until I stuck in a @GET inside a @EACH loop - it obeys the @EACH x
+ */
+
 #include <stdio.h>
 #include <string.h>
 #include <string>
@@ -209,7 +213,7 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 				ta++;
 				buildMysqlQuerySelect(query, ta, tableName);		// build a complex wuery
 			}
-strcat(query, " LIMIT 400");
+strcat(query, " LIMIT 100");
 			// Do the query
 			MYSQL_RES *res;
 			MYSQL_ROW row;
