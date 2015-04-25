@@ -286,7 +286,7 @@ $this->redirect($tmp2);
 			// Check for duplicate Auth Code!!!!!
 			if ($orderCount == 0)
 			{
-				$file = "/home/tmp/ticketemail.dat";
+				$file = Yii::app()->basePath . "/../tmp/ticketemail.dat";
 				if (strpos(file_get_contents($file), $order->auth_code) !== false)
 				{
     				Yii::log("PAID PAGE BAILING - DETECTED DUPLICATE AUTH:" . $order->auth_code, CLogger::LEVEL_WARNING, 'system.test.kim');
