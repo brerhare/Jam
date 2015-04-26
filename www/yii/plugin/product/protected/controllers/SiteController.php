@@ -580,6 +580,7 @@ header($this->p3p);
 			foreach ($orders as $order)
 			{
 				$order->ip = 'x-' . $ip;
+				$order->timestamp = date("Y-m-d H:i:s");
 				$order->save();
 			}
 		}
