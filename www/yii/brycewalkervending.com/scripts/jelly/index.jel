@@ -153,8 +153,9 @@ css.background-color = white
 	css.width = 875px
 	css.height = 265px
 	css.margin-top = 20px
+	css.margin-bottom = 20px
 	css.box-shadow = 3px 5px 8px rgba(0,0,0,0.5)
-#css.position = relative;
+#image is 480px x 788px
 addon.slider.shopping.slider-height = 200px
 addon.slider.shopping.image-previous = img/nav-left.png
 addon.slider.shopping.image-next = img/nav-right.png
@@ -180,7 +181,7 @@ addon.slider.shopping.images = 5
 
 			
 		[content]
-		css.margin = 8px 8%
+		css.margin = 10px 8%
 		db.table = ContentBlock
 		db.filter = url=$_GET['page']
 		db.error = Sorry, I could not find the page $_GET['page']
