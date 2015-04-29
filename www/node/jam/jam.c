@@ -678,11 +678,15 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 		die("no operand given for @each");
 	externalField = strTrim(getWordAlloc(args, ++wdNum, &sep));	// try for the external field, containing the value to look for
 	if (!externalField)
-		die("no external field given for @each");
+		die("no external field given for lookup");
 //sprintf(tmp, "[%s][%s][%s] fullargs=[%s] and currenttable=[%s]", selectorField, operand, externalField, args, currentTableName); die(tmp);
 	sprintf(tmp, "%s.%s", currentTableName, externalField);
 	VAR *variable = NULL;
 	variable = findVarTryBothWays(tmp);
+	if (!variable) {
+		strcat(tmp, "% - no such variable, cant build select");
+		die(tmp);
+	}
 	// Finally build the query string
 	sprintf(tmp, " where %s %s %s", selectorField, operand, variable->portableValue);
 	strcat(query, tmp);
@@ -767,6 +771,8 @@ char *curlies2JamArray(char *tplPos) {
 			if ((tableStack[i] == NULL) && (i > 0)) {
 				i--;
 //printf("POP: [%s]\n", tableStack[i]);
+				if (!tableStack[i])
+					die("Invalid @end tag found. I dont seem to find an @each for this one");
 				jam[jamIx]->args = strdup(tableStack[i]);
 				free(tableStack[i]);
 				tableStack[i] = NULL;
