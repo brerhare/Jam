@@ -146,11 +146,12 @@ if ($fst != 1)
 
 	function printDiv()
 	{
-		content = '<style> div { font-family: Sans-Serif; } #header-date {margin-top:40px;}</style>';
+//		content = '<style> div { font-family: Sans-Serif; } #header-date {margin-top:40px;}</style>';
+content += '<style type="text/css" media="print"> @page { size: landscape; } * { font-family:arial,sans-serif;font-size:12px; } </style>';
 		content += '<div>';
 		content += document.getElementById('printDiv').innerHTML;
 		content += '</div>';
-		var WinPrint = window.open('', '', 'letf=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+		var WinPrint = window.open('', '', 'left=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
 		WinPrint.document.write(content);
 		WinPrint.document.close();
 		WinPrint.focus();
