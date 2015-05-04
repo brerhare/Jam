@@ -2,7 +2,7 @@
 
 # -------------------------------------------------------------------------
 
-deps="php5-mcrypt opendkim opendkim-tools build-essential"
+deps="php5-mcrypt opendkim opendkim-tools build-essential git whois"
 
 # -------------------------------------------------------------------------
 
@@ -30,7 +30,7 @@ if [ "$arch" = "i686" ]; then
 fi
 
 yesno () {
-	if [ "$VIRTUALMIN_NONINTERACTIVE" != "" ]; then
+	if [ "$NONINTERACTIVE_MODE" != "" ]; then
 		return 1
 	fi
 	while read line; do

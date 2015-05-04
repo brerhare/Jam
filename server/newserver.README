@@ -12,8 +12,8 @@ install OS and set up basics
 	set the hostname to the nameserver its going to be
 		hostname ns2.wireflydesign.com or whatever
 		vi /etc/hostname
-		vi /etc/hosts and make sure there is a line something like
-			193.164.131.95 ns2.technotart.com ns2
+		???? (BO hasnt, MO has but MO cant 'hostname -f' without it) vi /etc/hosts and make sure there is a line something like
+			x.x.x.x nsx.wireflydesign.com nsx
 	create and populate /root/.bashrc, /root/.ssh/, and copy sample to authorized_keys
 	set ssh keepalive packet interval in /etc/ssh/sshd_config
 		ClientAliveInterval 60
