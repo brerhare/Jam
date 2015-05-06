@@ -702,6 +702,17 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 				selectorField = strdup(p);
 			}
 		}
+		if (!strcmp(selectorField, "order")) {
+			sprintf(tmp, " %s", selectorField);
+			free(selectorField);
+			while (selectorField = strTrim(getWordAlloc(subArg[i], ++wdNum, space))) {
+				strcat(tmp, " ");
+				strcat(tmp, selectorField);
+				free(selectorField);
+			}
+			strcat(queryBuilder, tmp);
+			break;
+		}
 
 		operand = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// try for the operand '=' '>' '<' 'is' 'is not' etc
 		if (!operand)
