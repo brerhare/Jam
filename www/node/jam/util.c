@@ -1,4 +1,7 @@
 #include "util.h"
+#include <stdio.h>
+
+int getWordIgnoreQuotes = 0;
 
 /* Trims a sting in place. No memory adjustment is done */
 char *strTrim(char *str)
@@ -40,6 +43,9 @@ int getWord(char *dest, char *src, int wordnum, char *separator)
     int inaquote = 0;
     int retcode = -1;
     char *p;
+	char quoteChar = '\"';
+	if (getWordIgnoreQuotes == 1)
+		quoteChar = 7;
     while (*src)
     {
         /*if ((*src == 10) || (*src == 13))
@@ -51,29 +57,33 @@ int getWord(char *dest, char *src, int wordnum, char *separator)
         }
         if (!(*p))
         {
-            /* Non-separator */
-            if (onaword == 0)
+            if (onaword == 0) /* Non-separator */
             {
                 onaword = 1;
                 wordnum--;
             }
         }
-        else
-            if (!inaquote)
-                /* Separator */
-                onaword = 0;
-        if ((!wordnum) && (onaword) && (*src != '\"'))
-            if (*src != 10)
-            {
-                *dest++ = *src;
-                retcode = 0;
-            }
-        if (*src == '\"')
+        else if (!inaquote) /* Separator */
+            onaword = 0;
+
+        if ((!wordnum) && (onaword))
+		{
+			if ((*src != quoteChar) || (getWordIgnoreQuotes == 1))
+			{
+            	if (*src != 10)
+            	{
+                	*dest++ = *src;
+                	retcode = 0;
+            	}
+			}
+		}
+
+        if ((*src == quoteChar) && (getWordIgnoreQuotes == 0))
         {
             if (inaquote)
                 inaquote = 0;
             else
-                inaquote = 1;
+               	inaquote = 1;
         }
         src++;
     }
@@ -81,13 +91,15 @@ int getWord(char *dest, char *src, int wordnum, char *separator)
     return(retcode);
 }
 
-/* A version of getWord that returns a malloc'd string which the caller must free */
+/* A wrapper for getWord to return a malloc'd string which the caller must free */
 char *getWordAlloc(char *src, int wordnum, char *separator)
 {
 	char *p = NULL;
+	if (src == NULL)
+		return NULL;
 	char *tmp = (char *) calloc(1, (strlen(src)+1));
 	getWord(tmp, src, wordnum, separator);
-	if (tmp)
+	if (*tmp)
 		p = strdup(tmp);
 	free(tmp);
 	return p;

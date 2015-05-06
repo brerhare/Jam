@@ -8,6 +8,7 @@
 char *strTrim(char *str);
 int getWord(char *dest, char *src, int wordnum, char *separator);
 char *getWordAlloc(char *src, int wordnum, char *separator);
+extern int getWordIgnoreQuotes;
 
 #endif /* _UTIL_H_INCLUDED_ */
 
