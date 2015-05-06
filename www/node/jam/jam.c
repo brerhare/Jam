@@ -678,7 +678,6 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 		if (!subArg[i])
 			break;
 	}
-	strcpy(queryBuilder, " WHERE ");
 
 	// Deal with each "<whose> a = b" phrase
 	for (int i = 0; i < MAX_SUBARGS; i++) {
@@ -750,7 +749,9 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 			varValue = strdup(externalFieldOrValue);
 		sprintf(tmp, " %s %s %s", selectorField, operand, varValue);		// eg "a = b"
 		free(varValue);
-		if (!firstArg)
+		if (firstArg)
+			strcpy(queryBuilder, " WHERE ");
+		else
 			strcat(queryBuilder, " AND ");
 		firstArg = 0;
 		strcat(queryBuilder, tmp);
