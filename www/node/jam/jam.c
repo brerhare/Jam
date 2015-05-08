@@ -449,46 +449,49 @@ strcat(query, " LIMIT 100");
 //		---------------------------
 		} else if (cmd[0] != '@') {
 //		---------------------------
-			char *p = strchr(cmd, '=');
+			char *assignment = (char *) calloc(1, 4096);
+			sprintf(assignment, "%s%s", cmd, args);
+			char *p = strchr(assignment, '=');
 			if (p) {		// Variable assignment a = b
+				int createNew = 0;
 				char *eq = "=";
-				char *lhs = strTrim(getWordAlloc(cmd, 1, eq));	// try for the field selector (LHS)
+				char *lhs = strTrim(getWordAlloc(assignment, 1, eq));	// try for the field selector (LHS)
 				// Try for the LHS field/variable
 				if (!lhs)
 					die("Must have something before an '=' sign");
 				VAR *lhsVar = findVarTryBothWays(lhs);			// Try to lookup the variable as is. It may or may not be qualified
 				if ((!lhsVar) && (!strchr(lhs, '.'))) {			// Not found? qualify it with the current table name and try again
-					sprintf(tmp, "%s.%s", cmd, tableName);
+					sprintf(tmp, "%s.%s", lhs, tableName);
 					lhsVar = findVarTryBothWays(tmp);
 				}
 				// Try for the RHS field/variable/literal or expression	@@TODO field/variable only catered for at mo
-				char *rhs = strTrim(getWordAlloc(cmd, 2, eq));
+				char *rhs = strTrim(getWordAlloc(assignment, 2, eq));
 				if (!rhs)
 					die("Must have something after an '=' sign");
 				VAR *rhsVar = findVarTryBothWays(rhs);			// Try to lookup the variable as is. It may or may not be qualified
 				if ((!rhsVar) && (!strchr(rhs, '.'))) {			// Not found? qualify it with the current table name and try again
-					sprintf(tmp, "%s.%s", cmd, tableName);
+					sprintf(tmp, "%s.%s", rhs, tableName);
 					rhsVar = findVarTryBothWays(tmp);		// @@TODO more duplication here
 				}
 				// Create / update LHS
 				if (!lhsVar) {									// Still not found? Create a new variable then
+					createNew = 1;
+					lhsVar = (VAR *) calloc(1, sizeof(VAR));
+					lhsVar->name = strdup(lhs);	// @@FIX!!!!!!!!!!!!
+					lhsVar->type = rhsVar->type;
 				}
-
-typedef struct {
-	char *name;
-	int type;
-	char *source;	// mysql, count, sum etc
-	char *portableValue;
-	char *stringValue;
-	long numberValue;
-	double decimal2Value;
-	char *dateValue;
-	char *timeValue;
-	char *datetimeValue;
-	int debugHighlight;
-} VAR;
-				
-
+				clearVarValues(lhsVar);
+				fillVarDataTypes(lhsVar, rhsVar->portableValue);
+				lhsVar->debugHighlight = 4;
+				if (createNew) {
+					for (int i = 0; i < MAX_VAR; i++) {
+						if (!var[i]) {
+							var[i] = lhsVar;
+							break;
+						}
+					}
+				}
+//die("\ndead\n");
 			} else {		// Not an assignment - just emit variable
 				VAR *variable = findVarTryBothWays(cmd);
 				if (variable) {
@@ -518,6 +521,7 @@ typedef struct {
 				}
 			}
 			emit(jam[ix]->trailer);		
+			free(assignment);
 //		--------
 		} else {
 //		--------
@@ -615,6 +619,7 @@ void updateTableVar(char *qualifiedName, enum enum_field_types mysqlType, char *
 		VAR *newVar = (VAR *) calloc(1, sizeof(VAR));
 		newVar->name = strdup(qualifiedName);
 		newVar->source = strdup("mysql");
+		newVar->debugHighlight = 5;
 		int ret = decodeMysqlType(newVar, mysqlType, value);
 //printf("TABLE-> NAME=%s TYPE=%d AVALUE=%s NVALUE=%ld DVALUE=%2.f\n", newVar->name, newVar->type, newVar->stringValue, newVar->numberValue, newVar->decimal2Value);
 		for (int i = 0; i < MAX_VAR; i++) {
@@ -993,6 +998,8 @@ void jamDump() {
 		if (var[i]->debugHighlight == 1) printf(" style='color:#e18d88'");
 		if (var[i]->debugHighlight == 2) printf(" style='color:yellow;'");
 		if (var[i]->debugHighlight == 3) printf(" style='color:orange;'");
+		if (var[i]->debugHighlight == 4) printf(" style='color:cyan;'");
+		if (var[i]->debugHighlight == 5) printf(" style='color:#e28c86;'");
 		printf(">");
 
 		*tmp = 0;
@@ -1009,6 +1016,8 @@ void jamDump() {
 	printf("<br>");
 	printf("<span style='margin:3px; padding:2px; color:#000; background-color:yellow;'>count </span>");
 	printf("<span style='margin:3px; padding:2px; color:#000; background-color:orange;'>sum </span>");
+	printf("<span style='margin:3px; padding:2px; color:#000; background-color:cyan;'>variable </span>");
+	printf("<span style='margin:3px; padding:2px; color:#000; background-color:#e28c86;'>mysql </span>");
 	printf("<br>");
 	printf("<br>");
 	printf("</div>");
