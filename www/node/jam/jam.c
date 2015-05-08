@@ -449,32 +449,73 @@ strcat(query, " LIMIT 100");
 //		---------------------------
 		} else if (cmd[0] != '@') {
 //		---------------------------
-			VAR *variable = NULL;
-			variable = findVarTryBothWays(cmd);
-			if (variable) {
-				emit(variable->portableValue);
-				// Clear if 'count.'
-				if ((variable->source) && (!strcmp(variable->source, "count"))) {
-					variable->numberValue = 0;
-					free(variable->portableValue);
-					variable->portableValue = strdup("0");
+			char *p = strchr(cmd, '=');
+			if (p) {		// Variable assignment a = b
+				char *eq = "=";
+				char *lhs = strTrim(getWordAlloc(cmd, 1, eq));	// try for the field selector (LHS)
+				// Try for the LHS field/variable
+				if (!lhs)
+					die("Must have something before an '=' sign");
+				VAR *lhsVar = findVarTryBothWays(lhs);			// Try to lookup the variable as is. It may or may not be qualified
+				if ((!lhsVar) && (!strchr(lhs, '.'))) {			// Not found? qualify it with the current table name and try again
+					sprintf(tmp, "%s.%s", cmd, tableName);
+					lhsVar = findVarTryBothWays(tmp);
 				}
-				// Clear if 'sum.'
-				if ((variable->source) && (!strcmp(variable->source, "sum"))) {
-					if (variable->type == VAR_NUMBER) {
+				// Try for the RHS field/variable/literal or expression	@@TODO field/variable only catered for at mo
+				char *rhs = strTrim(getWordAlloc(cmd, 2, eq));
+				if (!rhs)
+					die("Must have something after an '=' sign");
+				VAR *rhsVar = findVarTryBothWays(rhs);			// Try to lookup the variable as is. It may or may not be qualified
+				if ((!rhsVar) && (!strchr(rhs, '.'))) {			// Not found? qualify it with the current table name and try again
+					sprintf(tmp, "%s.%s", cmd, tableName);
+					rhsVar = findVarTryBothWays(tmp);		// @@TODO more duplication here
+				}
+				// Create / update LHS
+				if (!lhsVar) {									// Still not found? Create a new variable then
+				}
+
+typedef struct {
+	char *name;
+	int type;
+	char *source;	// mysql, count, sum etc
+	char *portableValue;
+	char *stringValue;
+	long numberValue;
+	double decimal2Value;
+	char *dateValue;
+	char *timeValue;
+	char *datetimeValue;
+	int debugHighlight;
+} VAR;
+				
+
+			} else {		// Not an assignment - just emit variable
+				VAR *variable = findVarTryBothWays(cmd);
+				if (variable) {
+					emit(variable->portableValue);
+					// Clear if 'count.'
+					if ((variable->source) && (!strcmp(variable->source, "count"))) {
 						variable->numberValue = 0;
 						free(variable->portableValue);
 						variable->portableValue = strdup("0");
-					} else if (variable->type == VAR_DECIMAL2) {
-						variable->decimal2Value = 0;
-						free(variable->portableValue);
-						variable->portableValue = strdup("0.00");
+					}
+					// Clear if 'sum.'
+					if ((variable->source) && (!strcmp(variable->source, "sum"))) {
+						if (variable->type == VAR_NUMBER) {
+							variable->numberValue = 0;
+							free(variable->portableValue);
+							variable->portableValue = strdup("0");
+						} else if (variable->type == VAR_DECIMAL2) {
+							variable->decimal2Value = 0;
+							free(variable->portableValue);
+							variable->portableValue = strdup("0.00");
+						}
 					}
 				}
-			}
-			else {
-				sprintf(tmp, "[%s]", cmd);
-				emit(tmp);
+				else {
+					sprintf(tmp, "[%s]", cmd);
+					emit(tmp);
+				}
 			}
 			emit(jam[ix]->trailer);		
 //		--------
