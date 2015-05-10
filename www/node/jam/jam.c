@@ -64,7 +64,7 @@ int openDB(char *name);
 void closeDB();
 void setFieldValues(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields, MYSQL_ROW *rowP);
 VAR *findVar(char *qualifiedName);
-VAR *findVarTryBothWays(char *name);
+VAR *findVarTryBothWays(char *name, char *prefix);
 void fillVarDataTypes(VAR *var, char *value);
 void updateTableVar(char *qualifiedName, enum enum_field_types mysqlType, char *value);
 void updateNonTableVar(char *qualifiedName, char *value, int type);
@@ -459,20 +459,12 @@ strcat(query, " LIMIT 100");
 				// Try for the LHS field/variable
 				if (!lhs)
 					die("Must have something before an '=' sign");
-				VAR *lhsVar = findVarTryBothWays(lhs);			// Try to lookup the variable as is. It may or may not be qualified
-				if ((!lhsVar) && (!strchr(lhs, '.'))) {			// Not found? qualify it with the current table name and try again
-					sprintf(tmp, "%s.%s", lhs, tableName);
-					lhsVar = findVarTryBothWays(tmp);
-				}
+				VAR *lhsVar = findVarTryBothWays(lhs, tableName);			// Try to lookup the variable as is. It may or may not be qualified
 				// Try for the RHS field/variable/literal or expression	@@TODO field/variable only catered for at mo
 				char *rhs = strTrim(getWordAlloc(assignment, 2, eq));
 				if (!rhs)
 					die("Must have something after an '=' sign");
-				VAR *rhsVar = findVarTryBothWays(rhs);			// Try to lookup the variable as is. It may or may not be qualified
-				if ((!rhsVar) && (!strchr(rhs, '.'))) {			// Not found? qualify it with the current table name and try again
-					sprintf(tmp, "%s.%s", rhs, tableName);
-					rhsVar = findVarTryBothWays(tmp);		// @@TODO more duplication here
-				}
+				VAR *rhsVar = findVarTryBothWays(rhs, tableName);			// Try to lookup the variable as is. It may or may not be qualified
 				// Create / update LHS
 				if (!lhsVar) {									// Still not found? Create a new variable then
 					createNew = 1;
@@ -491,9 +483,8 @@ strcat(query, " LIMIT 100");
 						}
 					}
 				}
-//die("\ndead\n");
 			} else {		// Not an assignment - just emit variable
-				VAR *variable = findVarTryBothWays(cmd);
+				VAR *variable = findVarTryBothWays(cmd, tableName);
 				if (variable) {
 					emit(variable->portableValue);
 					// Clear if 'count.'
@@ -534,15 +525,16 @@ strcat(query, " LIMIT 100");
 	free(tmp);
 }
 
-VAR *findVarTryBothWays(char *name) {
-	// Get the stored value. Mysql fields are always stored fully qualified. Others might have no or many levels of qualifier
+VAR *findVarTryBothWays(char *name, char *prefix) {
+	// Search using the name as supplied. Mysql fields are always stored fully qualified. Others might have no or many levels of qualifier
 	VAR *variable = NULL;
 	variable = findVar(name);
-	if (!variable) {
-		// If not found, it might be a non-qualified variable in the form of '(null).something' (no qualifier)
-		char *p = strchr(name, '.');
-		if ((p) && (*(++p)))
-			variable = findVar(p);
+	if ((!variable) && (prefix)) {
+		// If not found, it might be a non-qualified variable. Stick the current table name (if any) in front of it and try again
+		char *tmp = (char *) calloc(1, 4096);
+		sprintf(tmp, "%s.%s", prefix, name);
+			variable = findVar(tmp);
+		free(tmp);
 	}
 	return variable;
 }
@@ -785,10 +777,10 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 			die("no external field given for lookup");
 
 //sprintf(tmp, "i=%d [%s][%s][%s] fullargs=[%s] and currenttable=[%s]\n", i, selectorField, operand, externalFieldOrValue, args, currentTableName); /*die(tmp);*/
-		sprintf(tmp, "%s.%s", currentTableName, externalFieldOrValue);
 		VAR *variable = NULL;
 		char *varValue = NULL;
-		variable = findVarTryBothWays(tmp);
+		variable = findVarTryBothWays(externalFieldOrValue, currentTableName);
+//printf("\n[%s][%s]\n", externalFieldOrValue, currentTableName);
 		if (variable)
 			varValue = strdup(variable->portableValue);
 		else
@@ -836,6 +828,7 @@ char *curlies2JamArray(char *tplPos) {
 	char *space = " ";
 	getWord(buf, wd, 1, space);
 
+/*
 	// Get the current table from the top of stack for unqualified variables
 	if ((buf[0] != '@') && (!(strchr(buf, '.')))) {
 		for (int i = 0; i < MAX_JAM; i++) {
@@ -846,11 +839,12 @@ char *curlies2JamArray(char *tplPos) {
 				sprintf(newBuf, "%s.%s", tableStack[i], buf);
 				free(buf);
 				buf = newBuf;
-//printf(" ... storing variable [%s]\n", buf);
+printf(" ... storing variable [%s]\n", buf);
 				break;
 			}
 		}
 	}
+*/
 	for (char *p = buf; *p; ++p) *p = tolower(*p);
 	jam[jamIx]->command = buf;
 
