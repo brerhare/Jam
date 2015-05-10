@@ -64,7 +64,7 @@ int openDB(char *name);
 void closeDB();
 void setFieldValues(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields, MYSQL_ROW *rowP);
 VAR *findVar(char *qualifiedName);
-VAR *findVarTryBothWays(char *name, char *prefix);
+VAR *findVar2(char *name, char *prefix);
 void fillVarDataTypes(VAR *var, char *value);
 void updateTableVar(char *qualifiedName, enum enum_field_types mysqlType, char *value);
 void updateNonTableVar(char *qualifiedName, char *value, int type);
@@ -459,12 +459,12 @@ strcat(query, " LIMIT 100");
 				// Try for the LHS field/variable
 				if (!lhs)
 					die("Must have something before an '=' sign");
-				VAR *lhsVar = findVarTryBothWays(lhs, tableName);			// Try to lookup the variable as is. It may or may not be qualified
+				VAR *lhsVar = findVar2(lhs, tableName);			// Try to lookup the variable as is. It may or may not be qualified
 				// Try for the RHS field/variable/literal or expression	@@TODO field/variable only catered for at mo
 				char *rhs = strTrim(getWordAlloc(assignment, 2, eq));
 				if (!rhs)
 					die("Must have something after an '=' sign");
-				VAR *rhsVar = findVarTryBothWays(rhs, tableName);			// Try to lookup the variable as is. It may or may not be qualified
+				VAR *rhsVar = findVar2(rhs, tableName);			// Try to lookup the variable as is. It may or may not be qualified
 				// Create / update LHS
 				if (!lhsVar) {									// Still not found? Create a new variable then
 					createNew = 1;
@@ -484,7 +484,7 @@ strcat(query, " LIMIT 100");
 					}
 				}
 			} else {		// Not an assignment - just emit variable
-				VAR *variable = findVarTryBothWays(cmd, tableName);
+				VAR *variable = findVar2(cmd, tableName);
 				if (variable) {
 					emit(variable->portableValue);
 					// Clear if 'count.'
@@ -525,7 +525,7 @@ strcat(query, " LIMIT 100");
 	free(tmp);
 }
 
-VAR *findVarTryBothWays(char *name, char *prefix) {
+VAR *findVar2(char *name, char *prefix) {
 	// Search using the name as supplied. Mysql fields are always stored fully qualified. Others might have no or many levels of qualifier
 	VAR *variable = NULL;
 	variable = findVar(name);
@@ -779,7 +779,7 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 //sprintf(tmp, "i=%d [%s][%s][%s] fullargs=[%s] and currenttable=[%s]\n", i, selectorField, operand, externalFieldOrValue, args, currentTableName); /*die(tmp);*/
 		VAR *variable = NULL;
 		char *varValue = NULL;
-		variable = findVarTryBothWays(externalFieldOrValue, currentTableName);
+		variable = findVar2(externalFieldOrValue, currentTableName);
 //printf("\n[%s][%s]\n", externalFieldOrValue, currentTableName);
 		if (variable)
 			varValue = strdup(variable->portableValue);

@@ -1,6 +1,9 @@
 #ifndef _CALC__H
 #define _CALC_H_
 
+// ------------------------------------------------
+// http://www.paulgriffiths.net/program/c/calc1.php
+// ------------------------------------------------
 
 double calculate(char * infix);
 
