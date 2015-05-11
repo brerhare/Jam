@@ -1,8 +1,9 @@
 /*
- * @@TODO Fix the priority of assignment to non-qualified vars. This worked well until I stuck in a @GET inside a @EACH loop - it obeys the @EACH x
+ * @@TODO Fix the priority of assignment to non-qualified vars. This worked well until I stuck in a @GET inside a @EACH loop - it still obeys the @EACH x
  */
 
 #include <stdio.h>
+#include <strings.h>
 #include <string.h>
 #include <string>
 #include <iostream>
@@ -63,7 +64,7 @@ int openDB(char *name);
 void closeDB();
 void setFieldValues(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields, MYSQL_ROW *rowP);
 VAR *findVar(char *qualifiedName);
-VAR *findVarTryBothWays(char *name);
+VAR *findVar2(char *name, char *prefix);
 void fillVarDataTypes(VAR *var, char *value);
 void updateTableVar(char *qualifiedName, enum enum_field_types mysqlType, char *value);
 void updateNonTableVar(char *qualifiedName, char *value, int type);
@@ -116,8 +117,8 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 //		--------------------------------
 			MYSQL_RES *res;
 			MYSQL_ROW row;
-			char sep = ' ';
-			getWord(tmp, args, 1, &sep);
+			char *space = " ";
+			getWord(tmp, args, 1, space);
 			if (*tmp) {
 				char *listWhat = strdup(tmp);
 				if (!strcmp(listWhat, "databases")) {
@@ -153,8 +154,8 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 //		--------------------------------
 			MYSQL_RES *res;
 			MYSQL_ROW row;
-			char sep = ' ';
-			getWord(tmp, args, 1, &sep);
+			char *space = " ";
+			getWord(tmp, args, 1, space);
 			if (*tmp) {
 				char *query = (char *) calloc(1, MAX_SQL_QUERY_LEN);
 				char *line = (char *) calloc(1, 4096);
@@ -338,15 +339,15 @@ strcat(query, " LIMIT 100");
 //		--------------------------------------
 		} else if (!(strcmp(cmd, "@count"))) {
 //		--------------------------------------
-			char sep = ' ';
-			getWord(tmp, args, 1, &sep);
+			char *space = " ";
+			getWord(tmp, args, 1, space);
 			char *countFieldName = strdup(tmp);
 			if (!countFieldName)
 				die("Cant count a nonexistent field");
 			char *countFieldAs = NULL;
-			getWord(tmp, args, 2, &sep);
+			getWord(tmp, args, 2, space);
 			if (!(strcmp(tmp, "as"))) {
-				getWord(tmp, args, 3, &sep);
+				getWord(tmp, args, 3, space);
 				countFieldAs = strdup(tmp);
 			}
 			// Lookup the variable we want to count. It might be qualified, but if it isnt then qualify it with the current table name
@@ -389,15 +390,15 @@ strcat(query, " LIMIT 100");
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@sum"))) {
 //		------------------------------------
-			char sep = ' ';
-			getWord(tmp, args, 1, &sep);
+			char *space = " ";
+			getWord(tmp, args, 1, space);
 			char *sumFieldName = strdup(tmp);
 			if (!sumFieldName)
 				die("Cant sum a nonexistent field");
 			char *sumFieldAs = NULL;
-			getWord(tmp, args, 2, &sep);
+			getWord(tmp, args, 2, space);
 			if (!(strcmp(tmp, "as"))) {
-				getWord(tmp, args, 3, &sep);
+				getWord(tmp, args, 3, space);
 				sumFieldAs = strdup(tmp);
 			}
 			// Lookup the variable we want to sum. It might be qualified, but if it isnt then qualify it with the current table name
@@ -448,34 +449,70 @@ strcat(query, " LIMIT 100");
 //		---------------------------
 		} else if (cmd[0] != '@') {
 //		---------------------------
-			VAR *variable = NULL;
-			variable = findVarTryBothWays(cmd);
-			if (variable) {
-				emit(variable->portableValue);
-				// Clear if 'count.'
-				if ((variable->source) && (!strcmp(variable->source, "count"))) {
-					variable->numberValue = 0;
-					free(variable->portableValue);
-					variable->portableValue = strdup("0");
+			char *assignment = (char *) calloc(1, 4096);
+			sprintf(assignment, "%s%s", cmd, args);
+			char *p = strchr(assignment, '=');
+			if (p) {		// Variable assignment a = b
+				int createNew = 0;
+				char *eq = "=";
+				char *lhs = strTrim(getWordAlloc(assignment, 1, eq));	// try for the field selector (LHS)
+				// Try for the LHS field/variable
+				if (!lhs)
+					die("Must have something before an '=' sign");
+				VAR *lhsVar = findVar2(lhs, tableName);			// Try to lookup the variable as is. It may or may not be qualified
+				// Try for the RHS field/variable/literal or expression	@@TODO field/variable only catered for at mo
+				char *rhs = strTrim(getWordAlloc(assignment, 2, eq));
+				if (!rhs)
+					die("Must have something after an '=' sign");
+				VAR *rhsVar = findVar2(rhs, tableName);			// Try to lookup the variable as is. It may or may not be qualified
+				// Create / update LHS
+				if (!lhsVar) {									// Still not found? Create a new variable then
+					createNew = 1;
+					lhsVar = (VAR *) calloc(1, sizeof(VAR));
+					lhsVar->name = strdup(lhs);	// @@FIX!!!!!!!!!!!!
+					lhsVar->type = rhsVar->type;
 				}
-				// Clear if 'sum.'
-				if ((variable->source) && (!strcmp(variable->source, "sum"))) {
-					if (variable->type == VAR_NUMBER) {
+				clearVarValues(lhsVar);
+				fillVarDataTypes(lhsVar, rhsVar->portableValue);
+				lhsVar->debugHighlight = 4;
+				if (createNew) {
+					for (int i = 0; i < MAX_VAR; i++) {
+						if (!var[i]) {
+							var[i] = lhsVar;
+							break;
+						}
+					}
+				}
+			} else {		// Not an assignment - just emit variable
+				VAR *variable = findVar2(cmd, tableName);
+				if (variable) {
+					emit(variable->portableValue);
+					// Clear if 'count.'
+					if ((variable->source) && (!strcmp(variable->source, "count"))) {
 						variable->numberValue = 0;
 						free(variable->portableValue);
 						variable->portableValue = strdup("0");
-					} else if (variable->type == VAR_DECIMAL2) {
-						variable->decimal2Value = 0;
-						free(variable->portableValue);
-						variable->portableValue = strdup("0.00");
+					}
+					// Clear if 'sum.'
+					if ((variable->source) && (!strcmp(variable->source, "sum"))) {
+						if (variable->type == VAR_NUMBER) {
+							variable->numberValue = 0;
+							free(variable->portableValue);
+							variable->portableValue = strdup("0");
+						} else if (variable->type == VAR_DECIMAL2) {
+							variable->decimal2Value = 0;
+							free(variable->portableValue);
+							variable->portableValue = strdup("0.00");
+						}
 					}
 				}
-			}
-			else {
-				sprintf(tmp, "[%s]", cmd);
-				emit(tmp);
+				else {
+					sprintf(tmp, "[%s]", cmd);
+					emit(tmp);
+				}
 			}
 			emit(jam[ix]->trailer);		
+			free(assignment);
 //		--------
 		} else {
 //		--------
@@ -488,15 +525,16 @@ strcat(query, " LIMIT 100");
 	free(tmp);
 }
 
-VAR *findVarTryBothWays(char *name) {
-	// Get the stored value. Mysql fields are always stored fully qualified. Others might have no or many levels of qualifier
+VAR *findVar2(char *name, char *prefix) {
+	// Search using the name as supplied. Mysql fields are always stored fully qualified. Others might have no or many levels of qualifier
 	VAR *variable = NULL;
 	variable = findVar(name);
-	if (!variable) {
-		// If not found, it might be a non-qualified variable in the form of '(null).something' (no qualifier)
-		char *p = strchr(name, '.');
-		if ((p) && (*(++p)))
-			variable = findVar(p);
+	if ((!variable) && (prefix)) {
+		// If not found, it might be a non-qualified variable. Stick the current table name (if any) in front of it and try again
+		char *tmp = (char *) calloc(1, 4096);
+		sprintf(tmp, "%s.%s", prefix, name);
+			variable = findVar(tmp);
+		free(tmp);
 	}
 	return variable;
 }
@@ -573,6 +611,7 @@ void updateTableVar(char *qualifiedName, enum enum_field_types mysqlType, char *
 		VAR *newVar = (VAR *) calloc(1, sizeof(VAR));
 		newVar->name = strdup(qualifiedName);
 		newVar->source = strdup("mysql");
+		newVar->debugHighlight = 5;
 		int ret = decodeMysqlType(newVar, mysqlType, value);
 //printf("TABLE-> NAME=%s TYPE=%d AVALUE=%s NVALUE=%ld DVALUE=%2.f\n", newVar->name, newVar->type, newVar->stringValue, newVar->numberValue, newVar->decimal2Value);
 		for (int i = 0; i < MAX_VAR; i++) {
@@ -657,44 +696,110 @@ void setFieldValues(char *qualifier, char **mysqlHeaders, enum enum_field_types 
 }
 
 int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
+	#define MAX_SUBARGS 1024
 	char *selectorField = NULL;
 	char *operand = NULL;
-	char *externalField = NULL;
+	char *externalFieldOrValue = NULL;
 	char *tmp = (char *) calloc(1, 4096);
-	char sep = ' ';
-	int wdNum = 1;
-	selectorField = strTrim(getWordAlloc(args, wdNum, &sep));	// try for the field selector
-	if (!selectorField)
-		die("table name given for @each but no field selector");
-	if (!strcmp(selectorField, "whose")) {
-		wdNum++;
-		free(selectorField);
-		selectorField = strTrim(getWordAlloc(args, wdNum, &sep));
+	char *queryBuilder = (char *) calloc(1, 4096);
+	char *space = " ";
+	int wdNum = 0;
+	int firstArg = 1;
+
+	char *subArg[1024];							// array to store all the comma-separated nvp substrings. Eg "product.id = someid"
+	for (int i = 0; i < MAX_SUBARGS; i++)
+		subArg[i] = NULL;
+	// Split the args-by-commas into an nvp array
+	for (int i = 0; i < MAX_SUBARGS; i++) {
+		char *comma = ",";
+		subArg[i] = strTrim(getWordAlloc(args, (i + 1), comma));
+		if (!subArg[i])
+			break;
+	}
+
+	// Deal with each "<whose> a = b" phrase
+	for (int i = 0; i < MAX_SUBARGS; i++) {
+		if (subArg[i] == NULL) {
+			if (firstArg)
+				die("No arguments provided to @each/@get");
+			break;
+		}
+		wdNum = 0;
+
+		selectorField = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// try for the field selector (LHS)
 		if (!selectorField)
-			die("table name given for @each but no field selector after 'whose'");
+			die("table name given for mysql lookup but no field selector");
+		if (!strcmp(selectorField, "whose")) {
+			free(selectorField);
+			selectorField = strTrim(getWordAlloc(args, ++wdNum, space));
+			if (!selectorField)
+				die("table name given for mysql lookup but no field selector after 'whose'");
+			if (char *p = strchr(selectorField, '.')) {	// remove any irrelevant stuff before the '.'
+				free(selectorField);
+				selectorField = strdup(p);
+			}
+		}
+		if (!strcmp(selectorField, "order")) {
+			sprintf(tmp, " %s", selectorField);
+			free(selectorField);
+			while (selectorField = strTrim(getWordAlloc(subArg[i], ++wdNum, space))) {
+				strcat(tmp, " ");
+				strcat(tmp, selectorField);
+				free(selectorField);
+			}
+			strcat(queryBuilder, tmp);
+			break;
+		}
+
+		operand = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// try for the operand '=' '>' '<' 'is' 'is not' etc
+		if (!operand)
+			die("no operator given for lookup");
+		if (!strcasecmp(operand, "is")) {
+			free(operand);
+			operand = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// we got 'is', the next is either 'not' or out of bounds to us
+			if (!strcasecmp(operand, "not")) {
+				free(operand);
+				operand = strdup("is not");
+			}
+			else {
+				free(operand);
+				operand = strdup("is");
+				wdNum--;
+			}
+		}
+
+//@@TODO fix quotes in util.c - until fixed we can only use single quotes here
+		getWordIgnoreQuotes = 1;
+		externalFieldOrValue = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// try for the external field, containing the value to look for
+//printf("\n\n[[[%s]]]\n\n", externalFieldOrValue);
+		getWordIgnoreQuotes = 0;
+		if (!externalFieldOrValue)
+			die("no external field given for lookup");
+
+//sprintf(tmp, "i=%d [%s][%s][%s] fullargs=[%s] and currenttable=[%s]\n", i, selectorField, operand, externalFieldOrValue, args, currentTableName); /*die(tmp);*/
+		VAR *variable = NULL;
+		char *varValue = NULL;
+		variable = findVar2(externalFieldOrValue, currentTableName);
+//printf("\n[%s][%s]\n", externalFieldOrValue, currentTableName);
+		if (variable)
+			varValue = strdup(variable->portableValue);
+		else
+			varValue = strdup(externalFieldOrValue);
+		sprintf(tmp, " %s %s %s", selectorField, operand, varValue);		// eg "a = b"
+		free(varValue);
+		if (firstArg)
+			strcpy(queryBuilder, " WHERE ");
+		else
+			strcat(queryBuilder, " AND ");
+		firstArg = 0;
+		strcat(queryBuilder, tmp);
+		free(selectorField); selectorField = NULL;
+		free(operand); operand = NULL;
+		free(externalFieldOrValue); externalFieldOrValue = NULL;
 	}
-	operand = strTrim(getWordAlloc(args, ++wdNum, &sep));	// try for the operand '=' '>' '<' etc
-	if (!operand)
-		die("no operand given for @each");
-	externalField = strTrim(getWordAlloc(args, ++wdNum, &sep));	// try for the external field, containing the value to look for
-	if (!externalField)
-		die("no external field given for lookup");
-//sprintf(tmp, "[%s][%s][%s] fullargs=[%s] and currenttable=[%s]", selectorField, operand, externalField, args, currentTableName); die(tmp);
-	sprintf(tmp, "%s.%s", currentTableName, externalField);
-	VAR *variable = NULL;
-	variable = findVarTryBothWays(tmp);
-	if (!variable) {
-		strcat(tmp, "% - no such variable, cant build select");
-		die(tmp);
-	}
-	// Finally build the query string
-	sprintf(tmp, " where %s %s %s", selectorField, operand, variable->portableValue);
-	strcat(query, tmp);
-	free(selectorField);
-	free(operand);
-	free(externalField);
+	strcat(query, queryBuilder);
+//die(query);
 	free(tmp);
-//sprintf(tmp, "wd=[%s]", wd); die(tmp);
 	return 0;
 }
 
@@ -720,9 +825,10 @@ char *curlies2JamArray(char *tplPos) {
 	jam[jamIx] = (JAM *) calloc(1, sizeof(JAM));
 
 	char *buf = (char *) calloc(1, strlen(wd)+1);
-	char sep = ' ';
-	getWord(buf, wd, 1, &sep);
+	char *space = " ";
+	getWord(buf, wd, 1, space);
 
+/*
 	// Get the current table from the top of stack for unqualified variables
 	if ((buf[0] != '@') && (!(strchr(buf, '.')))) {
 		for (int i = 0; i < MAX_JAM; i++) {
@@ -733,11 +839,12 @@ char *curlies2JamArray(char *tplPos) {
 				sprintf(newBuf, "%s.%s", tableStack[i], buf);
 				free(buf);
 				buf = newBuf;
-//printf(" ... storing variable [%s]\n", buf);
+printf(" ... storing variable [%s]\n", buf);
 				break;
 			}
 		}
 	}
+*/
 	for (char *p = buf; *p; ++p) *p = tolower(*p);
 	jam[jamIx]->command = buf;
 
@@ -758,7 +865,7 @@ char *curlies2JamArray(char *tplPos) {
 		for (int i = 0; i < MAX_JAM; i++) {
 			if (tableStack[i] == NULL) {
 				char *p = (char *) calloc(1, 4096);
-				getWord(p, jam[jamIx]->args, 1, &sep);
+				getWord(p, jam[jamIx]->args, 1, space);
 				tableStack[i] = p;
 //printf("STACK: [%s]\n", tableStack[i]);
 				break;
@@ -885,6 +992,8 @@ void jamDump() {
 		if (var[i]->debugHighlight == 1) printf(" style='color:#e18d88'");
 		if (var[i]->debugHighlight == 2) printf(" style='color:yellow;'");
 		if (var[i]->debugHighlight == 3) printf(" style='color:orange;'");
+		if (var[i]->debugHighlight == 4) printf(" style='color:cyan;'");
+		if (var[i]->debugHighlight == 5) printf(" style='color:#e28c86;'");
 		printf(">");
 
 		*tmp = 0;
@@ -901,6 +1010,8 @@ void jamDump() {
 	printf("<br>");
 	printf("<span style='margin:3px; padding:2px; color:#000; background-color:yellow;'>count </span>");
 	printf("<span style='margin:3px; padding:2px; color:#000; background-color:orange;'>sum </span>");
+	printf("<span style='margin:3px; padding:2px; color:#000; background-color:cyan;'>variable </span>");
+	printf("<span style='margin:3px; padding:2px; color:#000; background-color:#e28c86;'>mysql </span>");
 	printf("<br>");
 	printf("<br>");
 	printf("</div>");
