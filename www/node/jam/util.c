@@ -37,11 +37,14 @@ char *strTrim(char *str)
 	return str;
 }
 
+// Returns position of word or -1
+// Dest can be null
 int getWord(char *dest, char *src, int wordnum, char *separator)
 {
     int onaword = 0;
     int inaquote = 0;
-    int retcode = -1;
+    char *startPos = src;
+    char *wordPos = NULL;
     char *p;
 	char quoteChar = '\"';
 	if (getWordIgnoreQuotes == 1)
@@ -71,10 +74,12 @@ int getWord(char *dest, char *src, int wordnum, char *separator)
 			if ((*src != quoteChar) || (getWordIgnoreQuotes == 1))
 			{
             	if (*src != 10)
-            	{
-                	*dest++ = *src;
-                	retcode = 0;
-            	}
+				{
+					if (dest)
+                		*dest++ = *src;
+					if (wordPos == NULL)
+						wordPos = src;
+				}
 			}
 		}
 
@@ -87,8 +92,9 @@ int getWord(char *dest, char *src, int wordnum, char *separator)
         }
         src++;
     }
-    *dest = '\0';
-    return(retcode);
+	if (dest)
+    	*dest = '\0';
+	return wordPos == NULL ? -1 : (int) (wordPos - startPos);
 }
 
 /* A wrapper for getWord to return a malloc'd string which the caller must free */
@@ -103,5 +109,49 @@ char *getWordAlloc(char *src, int wordnum, char *separator)
 		p = strdup(tmp);
 	free(tmp);
 	return p;
+}
+
+// You must free the result if result is non-NULL.
+char *strReplaceAlloc(char *orig, char *rep, char *with) {
+	char *result; // the return string
+	char *ins;    // the next insert point
+	char *tmp;    // varies
+	int len_rep;  // length of rep
+	int len_with; // length of with
+	int len_front; // distance between rep and end of last rep
+	int count;    // number of replacements
+
+	if (!orig)
+		return NULL;
+	if (!rep)
+		rep = "";
+	len_rep = strlen(rep);
+	if (!with)
+		with = "";
+	len_with = strlen(with);
+
+	ins = orig;
+	for (count = 0; tmp = strstr(ins, rep); ++count) {
+		ins = tmp + len_rep;
+	}
+
+	// first time through the loop, all the variable are set correctly from here on,
+	//    tmp points to the end of the result string
+	//    ins points to the next occurrence of rep in orig
+	//    orig points to the remainder of orig after "end of rep"
+	tmp = result = (char *) malloc(strlen(orig) + (len_with - len_rep) * count + 1);
+
+	if (!result)
+		return NULL;
+
+	while (count--) {
+		ins = strstr(orig, rep);
+		len_front = ins - orig;
+		tmp = strncpy(tmp, orig, len_front) + len_front;
+		tmp = strcpy(tmp, with) + len_with;
+		orig += len_front + len_rep; // move to next "end of rep"
+	}
+	strcpy(tmp, orig);
+	return result;
 }
 

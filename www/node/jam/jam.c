@@ -14,8 +14,11 @@
 #include </usr/include/mysql/mysql.h>
 
 #include "util.h"
+#include "calc.h"
 
 using namespace std;
+
+#define round(x) ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 
 #define MAX_SQL_QUERY_LEN 1024
 MYSQL *conn = NULL;
@@ -73,6 +76,7 @@ int fieldConvertMysql2Jam(enum enum_field_types mysqlType);
 void clearVarValues(VAR *varStruct);
 int buildMysqlQuerySelect(char *query, char *args, char *currentTableName);
 int isCalculation(char *str);
+char *expandFieldsInString(char *str, char *tableName);
 void jamDump();
 
 int main(int argc, char *argv[]) {
@@ -450,65 +454,85 @@ strcat(query, " LIMIT 100");
 //		---------------------------
 		} else if (cmd[0] != '@') {
 //		---------------------------
+/*			rawData = LHS string
+			if '='
+				rawData = RHS string
+			expandFields(rawData)
+
+			if findVar(rawData)
+				result string = var value
+			else if isCalculation(rawData)
+				result string = calculate(rawData)
+			else
+				result string = expandedData
+
+			if '='
+				prepare LHS for receiving result (may not exist yet)
+				LHS var = result string
+			else
+				emit(result string)		*/
+
+			// rawData = LHS to start with
 			char *rawData = (char *) calloc(1, 4096);
-			char *assignment = (char *) calloc(1, 4096);
-			sprintf(assignment, "%s%s", cmd, args);			// eg: 'mem.l3_group_name= stock_group.name'
-			char *p = strchr(assignment, '=');
-			if (p) {
+			strcpy(rawData, cmd);							// eg: [mem.group_count]
+
+			char *resultString = (char *) calloc(1, 4096);
+			char *fullLine = (char *) calloc(1, 4096);
+			sprintf(fullLine, "%s%s", cmd, args);			// eg: [mem.group_count][= stock_group.count]
+
+			// rawData = RHS if equals sign
+			char *eq = "=";
+			if (strchr(fullLine, '=')) {
+				char *rhs = strTrim(getWordAlloc(fullLine, 2, eq));		// eg [stock_group.count]
+				strcpy(rawData, rhs);
+				free(rhs);
 			}
 
+			// Expand any fields to values
+			char *expandedData = expandFieldsInString(rawData, tableName);	// Allocates memory - needs freeing
+//printf("\nSTART.... [%s][%s]\n", rawData, expandedData);
 
-/*			rawData = LHS
-			if '='
-				prepare LHS for receiving result
-				rawData = RHS
-			if isCalculation(rawData)
-				result = evaluate(rawData)
-			if '='
-				LHS = result
-			
+			// Either retrieve the data from a field or calculate
+			VAR *searchVar = findVarLenient(rawData, tableName);
+			if (searchVar)
+				strcpy(resultString, searchVar->portableValue);
+			else if (isCalculation(expandedData)) {
+				sprintf(resultString, "%.2f", calculate(expandedData));
+			}
 			else
-				emit(rawData)
-*/
-			VAR *lhsVar = NULL;
+				strcpy(resultString, expandedData);
 
-//			char *assignment = (char *) calloc(1, 4096);
-//			sprintf(assignment, "%s%s", cmd, args);
-			if (p) {		// Variable assignment a = b
-				int createNew = 0;
-				char *eq = "=";
-				char *lhs = strTrim(getWordAlloc(assignment, 1, eq));	// try for the field selector (LHS)
-				// Try for the LHS field/variable
-				if (!lhs)
-					die("Must have something before an '=' sign");
-				lhsVar = findVarLenient(lhs, tableName);			// Try to lookup the variable as is. It may or may not be qualified
-
-				// Try for the RHS field/variable/literal or expression	@@TODO field/variable only catered for at mo
-				char *rhs = strTrim(getWordAlloc(assignment, 2, eq));
-				if (!rhs)
-					die("Must have something after an '=' sign");
-				VAR *rhsVar = findVarLenient(rhs, tableName);			// Try to lookup the variable as is. It may or may not be qualified
+			// If '=' store result in LHS
+			if (strchr(fullLine, '=')) {
 				// Create / update LHS
-				if (!lhsVar) {									// Still not found? Create a new variable then
+				int createNew = 0;
+				VAR *assignVar = findVarLenient(cmd, tableName);
+				if (!assignVar) {
 					createNew = 1;
-					lhsVar = (VAR *) calloc(1, sizeof(VAR));
-					lhsVar->name = strdup(lhs);	// @@FIX!!!!!!!!!!!!
-					lhsVar->type = rhsVar->type;
+					assignVar = (VAR *) calloc(1, sizeof(VAR));
+					assignVar->name = strdup(cmd);
+					assignVar->type = VAR_STRING;	// @@FIX!!!!!!
 				}
-				clearVarValues(lhsVar);
-				fillVarDataTypes(lhsVar, rhsVar->portableValue);
-				lhsVar->debugHighlight = 4;
+				clearVarValues(assignVar);
+				fillVarDataTypes(assignVar, resultString);
 				if (createNew) {
+//printf("NEW-->%s<-- with value -->%s<--\n", assignVar->name, assignVar->portableValue);
+					assignVar->debugHighlight = 6;
 					for (int i = 0; i < MAX_VAR; i++) {
 						if (!var[i]) {
-							var[i] = lhsVar;
+							var[i] = assignVar;
 							break;
 						}
 					}
 				}
+				free(rawData);
+				free(expandedData);
+				free(resultString);
+				free(fullLine);
 			} else {		// Not an assignment - just emit variable
 				VAR *variable = findVarLenient(cmd, tableName);
 				if (variable) {
+//printf("RETR-->%s<--\n", variable->name);
 					emit(variable->portableValue);
 					// Clear if 'count.'
 					if ((variable->source) && (!strcmp(variable->source, "count"))) {
@@ -535,7 +559,6 @@ strcat(query, " LIMIT 100");
 				}
 			}
 			emit(jam[ix]->trailer);		
-			free(assignment);
 //		--------
 		} else {
 //		--------
@@ -572,26 +595,26 @@ VAR *findVarStrict(char *name) {
 	}
 	return NULL;
 }
-void fillVarDataTypes(VAR *var, char *value) {
+void fillVarDataTypes(VAR *variable, char *value) {
 	char *safeValue = NULL;
 	if (value)
 		safeValue = strdup(value);
-	if (var->type == VAR_DATE)
-		var->dateValue = safeValue;
-	else if (var->type == VAR_TIME)
-		var->timeValue = safeValue;
-	else if (var->type == VAR_DATETIME)
-		var->datetimeValue = safeValue;
-	else if (var->type == VAR_DECIMAL2) {
+	if (variable->type == VAR_DATE)
+		variable->dateValue = safeValue;
+	else if (variable->type == VAR_TIME)
+		variable->timeValue = safeValue;
+	else if (variable->type == VAR_DATETIME)
+		variable->datetimeValue = safeValue;
+	else if (variable->type == VAR_DECIMAL2) {
 		if (safeValue)
-			var->decimal2Value = atof(safeValue);
-	} else if (var->type == VAR_NUMBER) {
+			variable->decimal2Value = atof(safeValue);
+	} else if (variable->type == VAR_NUMBER) {
 		if (safeValue)
-			var->numberValue = atol(safeValue);
+			variable->numberValue = atol(safeValue);
 	} else
-		var->stringValue = safeValue;
+		variable->stringValue = safeValue;
 	if (safeValue)
-		var->portableValue = strdup(safeValue);
+		variable->portableValue = strdup(safeValue);
 }
 
 void updateNonTableVar(char *qualifiedName, char *value, int type) {
@@ -673,10 +696,10 @@ void clearVarValues(VAR *varStruct) {
 	varStruct->decimal2Value = 0;
 }
 
-int decodeMysqlType(VAR *var, enum enum_field_types mysqlType, char *value) {
-	clearVarValues(var);
-	var->type = fieldConvertMysql2Jam(mysqlType);
-	fillVarDataTypes(var, value);
+int decodeMysqlType(VAR *variable, enum enum_field_types mysqlType, char *value) {
+	clearVarValues(variable);
+	variable->type = fieldConvertMysql2Jam(mysqlType);
+	fillVarDataTypes(variable, value);
 	return 0;
 }
 
@@ -993,6 +1016,38 @@ int isCalculation(char *str) {
 	return 0;
 }
 
+// Given a string like  [stock.id + ((stock.discount * 100) / stock_tax)+2) + 100]
+// Return a string like [123 + ((5.25 * 100) / 20)+2) + 100]
+// NEEDS FREEING
+char *expandFieldsInString(char *str, char *tableName) {
+	char *p = str;
+	char *newStr = (char *) calloc(1, 4096);
+	char *p2 = newStr;
+    char *nonWordChars = " +-*/^%()";
+
+	while (*p) {
+		if (!strchr(nonWordChars, *p)) {	// found a word
+			char *wd = (char *) calloc(1, 4096);
+			char *p3 = wd;
+			while ((*p) && (!strchr(nonWordChars, *p)))	// isolate the word
+				*p3++ = *p++;
+			VAR *variable = NULL;
+			variable = findVarLenient(wd, tableName);		// does it name a field?
+			if (variable)
+				p3 = variable->portableValue;				// yes - replace the word with its value
+			else
+				p3 = wd;								// no - use the word
+			while (*p3)
+				*p2++ = *p3++;
+			free(wd);
+		}
+		if ((*p) && (strchr(nonWordChars, *p)))
+			*p2++ = *p++;
+	}
+	return newStr;
+}
+
+// Output some content. No sugar added
 void emit(char *line) {
 	printf("%s", line);
 }
@@ -1023,6 +1078,7 @@ void jamDump() {
 		if (var[i]->debugHighlight == 3) printf(" style='color:orange;'");
 		if (var[i]->debugHighlight == 4) printf(" style='color:cyan;'");
 		if (var[i]->debugHighlight == 5) printf(" style='color:#e28c86;'");
+		if (var[i]->debugHighlight == 6) printf(" style='color:#a8c968;'");
 		printf(">");
 
 		*tmp = 0;
@@ -1041,6 +1097,7 @@ void jamDump() {
 	printf("<span style='margin:3px; padding:2px; color:#000; background-color:orange;'>sum </span>");
 	printf("<span style='margin:3px; padding:2px; color:#000; background-color:cyan;'>variable </span>");
 	printf("<span style='margin:3px; padding:2px; color:#000; background-color:#e28c86;'>mysql </span>");
+	printf("<span style='margin:3px; padding:2px; color:#000; background-color:#a8c968;'>auto </span>");
 	printf("<br>");
 	printf("<br>");
 	printf("</div>");
