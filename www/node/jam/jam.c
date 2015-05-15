@@ -14,7 +14,6 @@
 #include </usr/include/mysql/mysql.h>
 
 #include "util.h"
-#include "calc.h"
 
 using namespace std;
 
@@ -76,6 +75,7 @@ int fieldConvertMysql2Jam(enum enum_field_types mysqlType);
 void clearVarValues(VAR *varStruct);
 int buildMysqlQuerySelect(char *query, char *args, char *currentTableName);
 int isCalculation(char *str);
+char *calculate(char *str);
 char *expandFieldsInString(char *str, char *tableName);
 void jamDump();
 
@@ -475,10 +475,18 @@ strcat(query, " LIMIT 100");
 			// rawData = LHS to start with
 			char *rawData = (char *) calloc(1, 4096);
 			strcpy(rawData, cmd);							// eg: [mem.group_count]
+//printf("{AWAY:%s and %s}",cmd, rawData);
 
 			char *resultString = (char *) calloc(1, 4096);
 			char *fullLine = (char *) calloc(1, 4096);
-			sprintf(fullLine, "%s%s", cmd, args);			// eg: [mem.group_count][= stock_group.count]
+			strcpy(fullLine, cmd);
+//printf("(CHK:%s and %s)", fullLine, args);
+			if (args) {
+				//strcat(fullLine, " ");
+				strcat(fullLine, args);
+			}
+			//sprintf(fullLine, "%s%s", cmd, args);			// eg: [mem.group_count][= stock_group.count]
+			strcpy(rawData, fullLine);
 
 			// rawData = RHS if equals sign
 			char *eq = "=";
@@ -490,14 +498,14 @@ strcat(query, " LIMIT 100");
 
 			// Expand any fields to values
 			char *expandedData = expandFieldsInString(rawData, tableName);	// Allocates memory - needs freeing
-//printf("\nSTART.... [%s][%s]\n", rawData, expandedData);
+//printf("\nSTART.... [%s][%s][%s]\n", fullLine, rawData, expandedData);
 
 			// Either retrieve the data from a field or calculate
 			VAR *searchVar = findVarLenient(rawData, tableName);
 			if (searchVar)
 				strcpy(resultString, searchVar->portableValue);
 			else if (isCalculation(expandedData)) {
-				sprintf(resultString, "%.2f", calculate(expandedData));
+				sprintf(resultString, "%s", calculate(expandedData));	//@TODO: decimals artificially removed!!!!
 			}
 			else
 				strcpy(resultString, expandedData);
@@ -529,10 +537,12 @@ strcat(query, " LIMIT 100");
 				free(expandedData);
 				free(resultString);
 				free(fullLine);
-			} else {		// Not an assignment - just emit variable
+			} else if (1!=2){		// Not an assignment - just emit variable
 				VAR *variable = findVarLenient(cmd, tableName);
 				if (variable) {
 //printf("RETR-->%s<--\n", variable->name);
+//char xx[256]; sprintf(xx, "R[%s]:%s", resultString, variable->portableValue);
+//emit(xx);
 					emit(variable->portableValue);
 					// Clear if 'count.'
 					if ((variable->source) && (!strcmp(variable->source, "count"))) {
@@ -558,6 +568,7 @@ strcat(query, " LIMIT 100");
 					emit(tmp);
 				}
 			}
+else { emit(resultString); }
 			emit(jam[ix]->trailer);		
 //		--------
 		} else {
@@ -615,6 +626,8 @@ void fillVarDataTypes(VAR *variable, char *value) {
 		variable->stringValue = safeValue;
 	if (safeValue)
 		variable->portableValue = strdup(safeValue);
+else
+variable->portableValue = strdup("");
 }
 
 void updateNonTableVar(char *qualifiedName, char *value, int type) {
@@ -896,7 +909,10 @@ printf(" ... storing variable [%s]\n", buf);
 
 	buf = (char *) calloc(1, strlen(wd)+1);
 	if (char *p = strchr(wd, ' ')) {
-	 jam[jamIx]->args = strdup(p+1);
+     if (*(p+1))
+	 	jam[jamIx]->args = strdup(p+1);
+	else
+        jam[jamIx]->args = strdup("");
 	}
 //printf("SETTING [%s]=[%s]\n", jam[jamIx]->command, jam[jamIx]->args);
 
@@ -1010,10 +1026,36 @@ int main2() {
 }
 
 int isCalculation(char *str) {
-	if ((strchr(str, '+')) || (strchr(str, '-')) || (strchr(str, '*')) || (strchr(str, '/'))
-	||  (strchr(str, '^')) || (strchr(str, '%')) || (strchr(str, '(')) || (strchr(str, ')')))
+	if ((strstr(str, " + ")) || (strstr(str, " - ")) || (strstr(str, " * ")) || (strstr(str, " / "))
+	||  (strstr(str, " ^ ")) || (strstr(str, " % ")) || (strchr(str, '(')) || (strchr(str, ')')))
 		return 1;
+/*	if ((strchr(str, '+')) || (strchr(str, '-')) || (strchr(str, '*')) || (strchr(str, '/'))
+	||  (strchr(str, '^')) || (strchr(str, '%')) || (strchr(str, '(')) || (strchr(str, ')')))
+		return 1; */
 	return 0;
+}
+
+// Call the calculator
+char *calculate(char *str) {
+	int scale = 2;
+	FILE *fp;
+	char *result = (char *) calloc(1, 4096);
+	strcpy(result, "0");
+	char commandStr[4096];
+	sprintf(commandStr, "echo 'scale=%d; %s' | bc", scale, str);
+	fp = popen(commandStr, "r");
+	if (fp == NULL) {
+		printf("calculator failed (1)\n");
+	} else {
+		if (fgets(result, 4096, fp) != NULL) {
+			char *p = strchr(result, '\n');
+			if (*p)
+				*p = '\0';
+		}
+		pclose(fp);
+	}
+//printf("\n*** [%s][%s] ***\n", str, result);
+	return result;
 }
 
 // Given a string like  [stock.id + ((stock.discount * 100) / stock_tax)+2) + 100]
@@ -1033,8 +1075,15 @@ char *expandFieldsInString(char *str, char *tableName) {
 				*p3++ = *p++;
 			VAR *variable = NULL;
 			variable = findVarLenient(wd, tableName);		// does it name a field?
-			if (variable)
+			if (variable) {
+/*
+				if (char *pMinus = strchr(variable->portableValue, '-'))
+					*pMinus = ' ';	//@@TODO decimals (mult by 100)
+				if (char *pDot = strchr(variable->portableValue, '.'))
+					*pDot = '\0';	//@@TODO decimals (mult by 100)
+*/
 				p3 = variable->portableValue;				// yes - replace the word with its value
+			}
 			else
 				p3 = wd;								// no - use the word
 			while (*p3)
