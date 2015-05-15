@@ -60,7 +60,7 @@
                         </div>
                     </td>
                 </tr>
-                <tr ng-repeat="item in items | orderBy:'description'">
+                <tr ng-repeat="item in items">              <!-- NB: " | orderBy:description" removed as default sort from server is description. Prevents jumping when description is modified -->
                     <td class='col-id'>{{item.id}}</td>
                     <td class='col-description'>
                         <span ng-click="toggleEditDescription(item)" ng-show="item.editDescription != true">{{item.description}}</span>

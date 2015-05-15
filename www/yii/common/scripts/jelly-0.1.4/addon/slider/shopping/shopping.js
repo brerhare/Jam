@@ -1,5 +1,7 @@
+var imageNum = 5;
+
 $(function() {
-	var _visible = 5;
+	var _visible = imageNum;
 	var $pagers = $('#pager a');
 	var _onBefore = function() {
 		$(this).find('img').stop().fadeTo( 300, 1 );

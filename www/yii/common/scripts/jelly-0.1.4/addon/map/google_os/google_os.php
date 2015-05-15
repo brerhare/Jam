@@ -218,8 +218,16 @@ END_OF_API_HTML;
 					osgridref = gridrefNumToLet(eastnorth[0], eastnorth[1], 10);
 				}				
 				var latlong = OSGridToLatLong(osgridref);
-				loadMap(latlong.lat, latlong.lng);
-				setupMarker(latlong.lat, latlong.lng, iconpath, hovertip, content);
+
+
+/**************************************************************************************/
+/* Replaced next 2 lines with 3rd to force google map to use leaflet for wild seasons */
+/**************************************************************************************/
+//				loadMap(latlong.lat, latlong.lng);
+//				setupMarker(latlong.lat, latlong.lng, iconpath, hovertip, content);
+markerByLatLongBigMap(latlong.lat, latlong.lng, hovertip);
+
+
 			}
 		}
 
@@ -233,18 +241,49 @@ END_OF_API_HTML;
 					osgridref = gridrefNumToLet(eastnorth[0], eastnorth[1], 10);
 				}				
 				var latlong = OSGridToLatLong(osgridref);
-				loadMap(latlong.lat, latlong.lng);
-				setupMarker2(latlong.lat, latlong.lng, postcode);
+
+
+/**************************************************************************************/
+/* Replaced next 2 lines with 3rd to force google map to use leaflet for wild seasons */
+/**************************************************************************************/
+//				loadMap(latlong.lat, latlong.lng);
+//				setupMarker2(latlong.lat, latlong.lng, postcode);
+markerByLatLong(latlong.lat, latlong.lng, postcode);
+
 			}
 		}
 
-		markerByLatLong = function(lat, long, postcode)
+// LEAFLET leaflet	Main map
+		var map = null;	// This global is set a few lines down
+
+		markerByLatLongBigMap = function(lat, long, hovertip)	// Big map
+		{
+//alert(urldecode(hovertip));
+			if (map != null)
+			{
+				if ((isNaN(lat)) || (isNaN(long)))
+					return;
+				L.marker([lat, long]).addTo(map).bindPopup(urldecode(hovertip));
+				return;
+			}
+			var id = mapId + "-map";
+			map = L.map(id).setView([lat, long], 13);
+			L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+				maxZoom: 18,
+				attribution: '',
+				/*id: 'examples.map-i86knfo3'*/
+				id: 'tekaweni.k8ngolij'
+			}).addTo(map);
+// This is timing point 1			//map.panTo(new L.LatLng(55.1213702,-3.3806166,12));						// center
+// This is timing point 1			//map.setZoom(8);															// all of D&G
+			var marker = L.marker([lat, long]).addTo(map);
+		}
+
+// LEAFLET leaflet	Little map for each event
+		markerByLatLong = function(lat, long, postcode)	// Small map
 		{
 			var id = mapId + "-map";
 			var map = L.map(id).setView([lat, long], 13);
-
-// LEAFLET leaflet
-
 			L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
 				maxZoom: 18,
 				attribution: '',
@@ -252,6 +291,28 @@ END_OF_API_HTML;
 				id: 'tekaweni.k8ngolij'
 			}).addTo(map);
 			var marker = L.marker([lat, long]).addTo(map);
+		}
+
+// LEAFLET leaflet	Make map encompass all markers
+		markerBounds = function(points, pointsP) {
+//alert(pointsP);
+			// Convert the passed array of os grid refs to array of lat-longs
+			points2 = new Array();
+			for (var i = 0; i < points.length; i++) {
+				if (points[i].length > 0) {
+					if (points[i].indexOf(',') != -1) {
+						var eastnorth = points[i].split(',');
+						points[i] = gridrefNumToLet(eastnorth[0], eastnorth[1], 10);
+					}				
+					var latlong = OSGridToLatLong(points[i]);
+					if (isNaN(latlong.lat))
+						continue;
+					points2.push(latlong);
+// This is timing point 2					//if (i == 2) alert(latlong.lat + ":" + latlong.lng);
+				}
+			}
+			var bounds = new L.LatLngBounds(points2);
+			map.fitBounds(bounds);
 		}
 
 		centerByLatLong = function(lat, long)

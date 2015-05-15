@@ -77,6 +77,10 @@ class contactform
 				case "backcolour":
 					$this->optionBackColor = $val;
 					break;
+				case "inputwidth":
+//					$val = str_replace("px", "", $val);
+					$this->optionInputWidth = $val;
+					break;
 				case "inputspacing":
 					$val = str_replace("px", "", $val);
 					$this->optionInputSpacing = $val;
@@ -104,13 +108,14 @@ class contactform
 $content = "<style> input, textarea{  
     font-family: Arial, sans-serif;
     font-size: 100%;
-    width: 26em; /* fallback for the next one, for browsers not recognizing ch */
-    width: 40ch; /* sets the width to 40 times the width of the digit '0' */
+    Xwidth: 26em; /* fallback for the next one, for browsers not recognizing ch */
+    Xwidth: 40ch; /* sets the width to 40 times the width of the digit '0' */
+width:98%
 }</style>";
 
 
 		// Generate the content
-		$content .= "<div>";
+		$content .= "<div style='width:" . $this->optionInputWidth . ";'>";
 $content .= "<center>";
 		$content .= "<div style='padding:" . $this->optionEdgePadding . "px' ; background-color=" . $this->optionBackColor . "' ng-controller='contactController'>";
 		$content .= "<input id='contact-name' class='contact-input' type='text' placeholder='Your Name' />";
@@ -149,7 +154,7 @@ $content .= "</center>";
 		$this->apiHtml = str_replace("<substitute-failuretextcolor>", $this->optionFailureTextColor, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-textcolor>", $this->optionTextColor, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-backcolor>", $this->optionBackColor, $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-inputwidth>", $this->optionInputWidth, $this->apiHtml);
+		//$this->apiHtml = str_replace("<substitute-inputwidth>", "98%", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-font-size>", $this->optionFontSize . "px", $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-font-family>", $this->optionFontFamily, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-data>", $content, $this->apiHtml);

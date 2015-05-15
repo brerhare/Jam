@@ -98,6 +98,9 @@ return array(
 				*/
 			),
 		),
+		'sess' => array(
+    		'class'=>'application.components.Sess',
+		),
 	),
 
 	// application-level parameters that can be accessed

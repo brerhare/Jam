@@ -65,6 +65,8 @@ opacity:0.85;
 	echo "<div style='width:100%; padding:12px'; >";
 	foreach ($departments as $department)
 	{
+		if (!($department->active))
+			continue;
 		//echo "<a href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->sess->get('parenturl') . "/?department=" . $department->id . '&page=' . Yii::app()->sess->get('page') . '"' . ")'>";
 		echo "<a href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->sess->get('http_referer') . "/?department=" . $department->id . '&page=' . Yii::app()->sess->get('page') . '"' . ")'>";
 			echo "<span class='item' style='text-align:center;' >";

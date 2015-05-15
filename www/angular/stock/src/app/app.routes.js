@@ -26,6 +26,27 @@ angular.module('stock')
         templateUrl: 'app/home/customer/maintain/maintain.html',
         controller: 'CustomerMaintainCtrl'
       })
+		.state('home.customer-list', {
+			url: '/customer/list',
+			templateUrl: 'app/home/customer/maintain/list.html',
+			controller: 'CustomerListCtrl'
+		})
+        .state('home.customer-detail', {
+        	url: '/customer/detail',
+        	templateUrl: 'app/home/customer/maintain/detail.html',
+        	controller: 'CustomerDetailCtrl'
+        })
+		  .state('home.customer-detail.notes', {
+		    url: '/notes',
+		    templateUrl: 'app/home/customer/maintain/detail_notes.html',
+		    controller: 'CustomerDetailNotesCtrl'
+		  })
+		  .state('home.customer-detail.orders', {
+		    url: '/notes',
+		    templateUrl: 'app/home/customer/maintain/detail_orders.html',
+		    controller: 'CustomerDetailOrdersCtrl'
+		  })
+
       .state('home.customer-area', {
         url: '/customer/areas',
         templateUrl: 'app/home/customer/area/customerArea.html',
@@ -50,14 +71,66 @@ angular.module('stock')
 // Products
 // --------
       .state('home.product-maintain', {
-          url: '/products/maintain',
+          url: '/product/maintain',
           templateUrl: 'app/home/product/maintain/maintain.html',
           controller: 'ProductMaintainCtrl'
       })
+		.state('home.product-list', {
+			url: '/product/list',
+			templateUrl: 'app/home/product/maintain/list.html',
+			controller: 'ProductListCtrl'
+		})
+		.state('home.product-detail', {
+			url: '/product/detail',
+			templateUrl: 'app/home/product/maintain/detail.html',
+			controller: 'ProductDetailCtrl'
+		})
+		  .state('home.product-detail.notes', {
+		    url: '/notes',
+		    templateUrl: 'app/home/product/maintain/detail_notes.html',
+		    controller: 'ProductDetailNotesCtrl'
+		  })
+          .state('home.product-detail.prices', {
+		    url: '/prices',
+		    templateUrl: 'app/home/product/maintain/detail_prices.html',
+		    controller: 'ProductDetailPricesCtrl'
+		  })
+          .state('home.product-detail.dimensions', {
+		    url: '/dimensions',
+		    templateUrl: 'app/home/product/maintain/detail_dimensions.html',
+		    controller: 'ProductDetailDimensionsCtrl'
+		  })
+		  .state('home.product-detail.barcodes', {
+		    url: '/barcodes',
+		    templateUrl: 'app/home/product/maintain/detail_barcodes.html',
+		    controller: 'ProductDetailBarcodesCtrl'
+		  })
+		  .state('home.product-detail.deliveries', {
+		    url: '/deliveries',
+		    templateUrl: 'app/home/product/maintain/detail_deliveries.html',
+		    controller: 'ProductDetailDeliveriesCtrl'
+		  })
+		  .state('home.product-detail.label', {
+		    url: '/labels',
+		    templateUrl: 'app/home/product/maintain/detail_label.html',
+		    controller: 'ProductDetailLabelCtrl'
+		  })
+		  .state('home.product-detail.pack', {
+		    url: '/uom',
+		    templateUrl: 'app/home/product/maintain/detail_pack.html',
+		    controller: 'ProductDetailPackCtrl'
+		  })
+
       .state('home.product-group', {
           url: '/product/groups',
           templateUrl: 'app/home/product/group/productGroup.html',
           controller: 'ProductGroupCtrl'
+      })
+
+      .state('home.product-location', {
+        url: '/product/locations',
+        templateUrl: 'app/home/product/location/productLocation.html',
+        controller: 'ProductLocationCtrl'
       })
 
 // Settings
