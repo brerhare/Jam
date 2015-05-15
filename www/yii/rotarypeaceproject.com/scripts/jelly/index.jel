@@ -220,6 +220,8 @@ css.background-color = white
 		css.width = 700px
 		#css.height = 250px
 		addon.tab.rain.source = db
+		addon.tab.rain.tab-color = #ffed8e
+
 
 		[content-home]
 		condition = @PAGE=@HOMEPAGE

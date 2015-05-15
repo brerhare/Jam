@@ -1,0 +1,17 @@
+site = timtaylor-painter-decorator-tiler.co.uk
+sitetitle = Tim Taylor Decorator
+sid = 2hd4s484uoejuvcvvfvvdt8pk5
+
+# Database
+dbname = timtaylor_painter_decorator_tiler_co_uk
+dbuser = timtaylor-painte
+dbpass = gy48rg5td
+
+# Shopping cart order confirmation email
+#checkoutemail = somename@roselandcarehome.co.uk
+#checkoutname = Roseland Care Home
+#checkoutpaypalemail = somename@roselandcarehome.co.u
+
+# Backend page editor
+editorpagewidth = 800
+editorpageheight = 500

@@ -78,7 +78,7 @@ return array(
 			'connectionString' => 'mysql:host=localhost;dbname=elegantoriginals_co_uk',
 			'emulatePrepare' => true,
 			'username' => 'elegantoriginals',
-			'password' => 'elegantoriginals.co.uk,',
+			'password' => '4tyqfahv',
 			'charset' => 'utf8',
 		),
 		/**/
@@ -108,8 +108,9 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@wireflydesign.com',
-        // CKEditor size for page content editing
-        'editorpagewidth'=>'800',
-        'editorpageheight'=>'500',
+		// CKEditor size for page content editing (910 max)
+		'editorpagewidth'=>'800',
+		'editorpageheight'=>'500',
 	),
 );
+

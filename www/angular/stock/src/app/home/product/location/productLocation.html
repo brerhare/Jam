@@ -1,0 +1,75 @@
+<!-- http://blog.jongallant.com/2013/05/angularjs-webapi-ef.html#.VJ62FsgHA -->
+
+<link rel="stylesheet" href="app/home/product/productLocation.css"/>
+  
+<style>
+	button {margin-right:5px;}
+	table {table-layout: fixed; }
+	.col-id { width:50px; }
+	.col-name { width:300px; }
+	.col-name:hover { background-color: #ddf0ff; cursor:pointer; cursor: hand; }
+	.col-button { width:80px; }
+
+	.col-i-name { width:290px; }
+</style>
+
+<div class="container-fluid">
+  
+ <h4 style="text-align:center">Maintain product locations</h4>
+  
+<br/>
+
+   <div ng-cloak>
+<center>
+        <div style="width:600px;">
+            <table class="table Xtable-striped table-bordered table-condensed Xtable-hover">
+                <tr>
+                    <th class='col-id'>         Id</th>
+                    <th class='col-name'>Name</th>
+                    <th class='col-button'>
+                        <div class="btn-toolbar">
+                            <button type="button" ng-click="toggleAddMode()" class="btn btn-xs btn-success">
+                                <i class="fa fa-plus fa-1x"></i>
+                            </button>
+                        </div>
+                    </th>
+                </tr>
+                <tr ng-show="addMode">
+                    <td class='col-id'></td>
+                    <td class='col-name'> <input class='col-i-name' ng-model="item.name" /></td>
+                    <td class='col-button'>
+                        <div class="btn-toolbar">
+                            <div class="btn-group">
+                                <button type="button" ng-click="addItem()" class="btn btn-xs btn-success">
+                                    <i class="fa fa-save fa-1x"></i>
+                                 </button>
+                                 <button type="button" ng-click="toggleAddMode()" class="btn btn-xs btn-danger">
+                                     <i class="fa fa-remove fa-1x"></i>
+                                  </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-repeat="item in items | orderBy:'name'">
+                    <td class='col-id'>{{item.id}}</td>
+                    <td class='col-name'>
+                        <span ng-click="toggleEditName(item)" ng-show="item.editName != true">{{item.name}}</span>
+                        <input class='col-i-name' ng-model="item.name" ng-show="item.editName == true" ng-keypress="editNameEnd($event, item)" />
+                    </td>
+                    <td class='col-button'>
+                        <div class="btn-toolbar">
+                            <div class="btn-group">
+                                <button type="button" ng-click="deleteItem(item)" class="btn btn-xs btn-danger">
+                                    <i class="fa fa-trash fa-1x"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+</center>
+    </div>
+
+</div> <!-- container-fluid -->
+

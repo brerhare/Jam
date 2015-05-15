@@ -1,0 +1,295 @@
+#Demo 5
+[defaults]
+include = default-values
+
+# Every blob inherits these before adding/overriding
+
+[* : defaults]
+
+[screen]
+child = site
+fx.wallpaper-image-tile = /img/background.jpg
+css.display = block
+
+	[site]
+	child = header, slider, body, footer
+	css.width = 85%
+	css.min-width = 900px
+	css.background-color = white
+
+####  Header  #################################
+
+	[header]
+	child = header-bar, header-main
+	css.height = 200px
+	css.width = 100%
+		
+		[header-bar]
+		css.width = 100%
+		css.height = 37px
+		css.background-color = #b7dd79
+		css.margin-top = 120px
+		
+		[header-main]
+		child = header-logo, header-details
+		css.width = 95%
+		css.margin-top = -157px
+		stacking = horizontal
+
+			[header-logo]
+			css.margin-left = 10%
+			css.margin-top = 25px
+			css.background-color = white
+			css.height = 175px
+			css.width = 205px
+			image.url = img/logo.png
+			image.width = 185px
+			image.height = 138px
+			image.align = center
+			click = http://www.southwest-arb.co.uk
+
+			[header-details]
+			child = social, header-contact, menu
+			css.width = 60%
+			css.min-width = 300px
+			css.height = 180px
+			css.margin-top = 20px
+			css.margin-left = 20px
+			css.float = right
+#			css.background-color = lightgrey
+			
+				[social]
+				child = facebook, email
+				css.width = 100%
+				stacking = horizontal
+				#css.right = 0px
+				#css.position = relative
+				css.float = right
+				
+					[facebook]
+					css.width = 50px
+					css.height = 60px
+					css.float = right
+					image.url = img/facebook.png
+					image.width = 40px
+					image.height = 40px
+					clicknew = https://www.facebook.com/southwestarb
+					
+					
+					[email]
+					css.width = 50px
+					css.height = 60px
+					css.float = right
+					image.url = img/email.png
+					image.width = 40px
+					image.height = 40px
+					click = ?layout=index&page=contact
+					
+				
+				[header-contact]
+				css.width = 100%
+				css,height = 50px
+				image.url = img/header-contact.png
+				image.width = 500px
+				image.height = 40px
+			
+				[menu]
+				css.height = 40px
+				css.width = 90%
+				css.overflow = visible
+				css.position = relative
+				css.z-index = 100
+
+
+#	// Top level basic settings
+				addon.menu.traditional.orientation = horizontal
+				#addon.menu.traditional.width = 90%
+				addon.menu.traditional.height = 37px
+				addon.menu.traditional.align = center
+				addon.menu.traditional.item-margin = 5px
+				addon.menu.traditional.item-width = uniform
+#	// Top level background settings
+				addon.menu.traditional.menu-rounding = 0px
+				addon.menu.traditional.menu-color = red transparent 
+				addon.menu.traditional.item-separator-width = 4px
+				addon.menu.traditional.item-separator-color = red
+#				addon.menu.traditional.item-separator-tile = /img/menu.jpg
+				addon.menu.traditional.item-separator-stretch = /img/menu-seperator.jpg
+				addon.menu.traditional.edgepadding = 0px
+#	// Top level font settings
+				addon.menu.traditional.menu-font-size = 14px
+				addon.menu.traditional.menu-font-family = Arial
+				addon.menu.traditional.menu-font-weight = bold
+				addon.menu.traditional.menu-text-color = #384433
+#	// Top level hover settings
+				addon.menu.traditional.menu-hover-text-color = white
+				addon.menu.traditional.menu-hover-background-color = transparent
+				addon.menu.traditional.menu-hover-font-size = 14px
+				addon.menu.traditional.menu-hover-font-family = Arial
+				addon.menu.traditional.menu-hover-font-weight = Bold
+#	// Top level selected settings
+				addon.menu.traditional.menu-selected-text-color = #384433
+				addon.menu.traditional.menu-selected-background-color = transparent
+				addon.menu.traditional.menu-selected-font-size = 14px
+				addon.menu.traditional.menu-selected-font-family = Arial
+				addon.menu.traditional.menu-selected-font-weight = bold
+#	// Second level settings
+				addon.menu.traditional.submenu-height = 30px // centers text
+				addon.menu.traditional.submenu-width = variable / px
+				addon.menu.traditional.submenu-font-size = 16px
+				addon.menu.traditional.submenu-font-family = Arial
+				addon.menu.traditional.submenu-font-weight = normal
+				addon.menu.traditional.submenu-text-color = blue
+				addon.menu.traditional.submenu-background-color = grey
+				addon.menu.traditional.submenu-background-tile = /img/menu.jpg
+				addon.menu.traditional.submenu-background-stretch = /img/menu.jpg
+				addon.menu.traditional.submenu-separator-width = 1px
+				addon.menu.traditional.submenu-separator-color = red
+				addon.menu.traditional.submenu-separator-tile = /img/menu.jpg
+				addon.menu.traditional.submenu-separator-stretch = /img/menu.jpg
+
+
+
+#### Slider ###########################################
+
+	[slider]
+	child = image-left-container, image-right-container
+	css.width = 95%
+	stacking = horizontal
+	
+		[image-left-container]
+		child = image-left
+		css.width = 66%
+		css.margin-left = 1%
+		#css.padding = 5px
+	
+			[image-left]
+			css.background-size = 99%
+			css.background-image = url('/img/sun-tree.jpg')
+			css.padding-top = 40%
+			css.background-repeat = no-repeat
+				#divide the height by the width for the proportional padding height
+				
+		[image-right-container]
+		child = image-right
+		css.width = 30%
+		css.margin-left = 3%
+		#css.padding = 5px
+				
+			[image-right]
+			css.background-size = 98%
+			css.background-image = url('/img/man-tree.jpg')
+			css.padding-top = 89%
+			css.background-repeat = no-repeat
+				#divide the height by the width for the proportional padding height
+
+
+######## body #######################################
+			
+[body]
+child = left-column, middle-column, right-column
+stacking = horizontal
+css.margin-top = 20px
+
+	[left-column]
+	child = side-menu, quote
+	css.width = 180px
+	css.margin-left = 22px
+	
+		[side-menu]
+		html.raw = Side Menu
+		
+		[quote]
+		css.margin-top = 20px
+		image.url = img/quote.jpg
+		image.width = 160px
+		image.height = 191px
+		image.align = center
+		
+	
+	[middle-column]
+	child = content 	
+	css.width = 50%
+	
+		[content]
+		css.margin = 30px
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
+		
+	[right-column]
+	child = image1, image2, image3
+	css.width = 24%
+
+
+####footer####################################
+
+[footer]
+child = footer-menu, footnote
+css.margin-top = 40px
+css.margin-left = 20px
+css.height = 180px
+css.width = 960px
+#css.background-color = #ffffff
+#css.background-color = #f7d9ff
+
+		[footer-menu]
+		stacking = horizontal
+		child = footer-margin, footer-cookies, footer-tandc, footer-contact
+		css.height = 50px
+		css.width = 960px
+
+			[footer-margin]
+			css.width = 20%
+			css.height = 50px
+
+			[footer-cookies]
+			html.raw = Cookie Policy
+			css.width = 20%
+			css.color = #000000
+			css.font-size = 11px
+			css.text-align = right
+			click = ?layout=index&page=cookie-policy
+
+			[footer-tandc]
+			html.raw = Terms & Conditions
+			css.width = 20%
+			css.color = #000000
+			css.font-size = 11px
+			css.text-align = center
+			click = ?layout=index&page=terms-conditions
+
+			[footer-contact]
+			html.raw = Contact Us
+			css.text-align = left
+			css.width = 20%
+			css.color = #000000
+			css.font-size = 11px
+			click = ?layout=index&page=contact
+
+
+	[footnote]
+	child = copyright, wirefly
+	css.width = 100%
+	css.height = 50px
+	stacking = horizontal
+
+		[copyright]
+		css.width = 50%
+		css.margin-top = 10px
+		html.raw = Customer &copy 2014 All rights reserved
+		css.color = #000000
+		css.font-size = 11px
+		css.text-align = left
+
+	[wirefly]
+	css.margin-top = -10px
+	css.height = 50px
+	css.width = 50%
+	image.url = img/wirefly-weblink.png
+	image.width = 150px
+	image.height = 40px
+	image.align = right
+	clicknew = http://www.wireflydesign.com
+

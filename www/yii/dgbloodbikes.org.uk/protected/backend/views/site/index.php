@@ -9,6 +9,6 @@ $this->pageTitle=Yii::app()->name;
 <br/>
 
 <?php if (!Yii::app()->user->isGuest)
-echo '<iframe src="http://<site>:<pass>@www.<site>/awstats/awstats.pl?framename=mainright" height=5500px width=100%></iframe>';
+echo '<iframe src="http://dgbloodbikes.org.uk:13100d382@www.dgbloodbikes.org.uk/awstats/awstats.pl?framename=mainright" height=5500px width=100%></iframe>';
 ?>
 

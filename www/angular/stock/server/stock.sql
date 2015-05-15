@@ -50,14 +50,18 @@ DROP TABLE IF EXISTS `stock`.`stock_product` ;
 CREATE TABLE IF NOT EXISTS `stock`.`stock_product` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `uid` INT NOT NULL,
+  `code` VARCHAR(45) NOT NULL,
   `name` VARCHAR(255) NOT NULL,
   `description` TEXT NULL,
-  `cost` DECIMAL(10,2) NULL,
+  `cost` DECIMAL(10,4) NULL,
   `weight` DECIMAL(10,2) NULL,
   `height` DECIMAL(10,2) NULL,
   `width` DECIMAL(10,2) NULL,
   `depth` DECIMAL(10,2) NULL,
   `volume` DECIMAL(10,2) NULL,
+  `notes` TEXT NULL,
+  `label` TEXT NULL,
+  `priced_by_weight` INT NULL,
   `stock_group_id` INT NOT NULL,
   `stock_vat_id` INT NOT NULL,
   PRIMARY KEY (`id`),
@@ -141,14 +145,13 @@ DROP TABLE IF EXISTS `stock`.`stock_customer` ;
 CREATE TABLE IF NOT EXISTS `stock`.`stock_customer` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `uid` INT NOT NULL,
+  `code` VARCHAR(45) NOT NULL,
   `name` VARCHAR(255) NOT NULL,
   `address1` VARCHAR(255) NULL,
   `address2` VARCHAR(255) NULL,
   `address3` VARCHAR(255) NULL,
   `post_code` VARCHAR(255) NULL,
-  `contact_title` VARCHAR(255) NULL,
-  `contact_first_name` VARCHAR(255) NULL,
-  `contact_last_name` VARCHAR(255) NULL,
+  `contact` VARCHAR(255) NULL,
   `telephone` VARCHAR(255) NULL,
   `mobile` VARCHAR(255) NULL,
   `fax` VARCHAR(255) NULL,
@@ -786,32 +789,18 @@ DROP TABLE IF EXISTS `stock`.`stock_pack` ;
 CREATE TABLE IF NOT EXISTS `stock`.`stock_pack` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `uid` INT NOT NULL,
-  `container_name` VARCHAR(255) NOT NULL,
-  `unit_name` VARCHAR(255) NOT NULL,
-  `unit_qty` INT NOT NULL,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB
-COMMENT = 'The parent is always PER, ie 1.\nThe units are how many are c /* comment truncated */ /*ontained in that 1. These are not necessarily base units, ie they might later be reduced further by themselves being parents*/';
-
-
--- -----------------------------------------------------
--- Table `stock`.`stock_label_translation`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `stock`.`stock_label_translation` ;
-
-CREATE TABLE IF NOT EXISTS `stock`.`stock_label_translation` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `uid` INT NOT NULL,
-  `notes` TEXT NOT NULL,
+  `unit` VARCHAR(255) NOT NULL,
+  `qty` INT NOT NULL,
   `stock_product_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_stock_label_translation_stock_product1` (`stock_product_id` ASC),
-  CONSTRAINT `fk_stock_label_translation_stock_product1`
+  INDEX `fk_stock_pack_stock_product1_idx` (`stock_product_id` ASC),
+  CONSTRAINT `fk_stock_pack_stock_product1`
     FOREIGN KEY (`stock_product_id`)
     REFERENCES `stock`.`stock_product` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+COMMENT = 'The parent is always PER, ie 1.\nThe units are how many are c /* comment truncated */ /*ontained in that 1. These are not necessarily base units, ie they might later be reduced further by themselves being parents*/';
 
 
 -- -----------------------------------------------------

@@ -53,6 +53,8 @@ table tr {
 		$criteria->order = 'order_number ASC';
 
 		$curOrder = '';
+		$orderArr = array();
+		$typeArr = array();
 
 		$transactions = Transaction::model()->findAll($criteria);
 		foreach ($transactions as $transaction):
@@ -60,7 +62,9 @@ table tr {
 			// Check for dups. Cant have more than one record of the same ticket type per order
 			if ($curOrder != $transaction->order_number)
 			{
+				unset($orderArr);
 				$orderArr = array();
+				unset($typeArr);
 				$typeArr = array();
 				$curOrder = $transaction->order_number;
 			}

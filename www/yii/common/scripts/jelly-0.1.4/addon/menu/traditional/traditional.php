@@ -338,7 +338,8 @@ class traditional
 		// edgepadding
 		if ($this->default_edgepadding != "")
 		{
-			$str = "xnav ul li a {padding-left: " . $this->default_edgepadding . "px; padding-right: " . $this->default_edgepadding . "px;}";
+			//$str = "xnav ul li a {padding-left: " . $this->default_edgepadding . "px; padding-right: " . $this->default_edgepadding . "px;}";
+			$str = "xnav {padding-left: " . $this->default_edgepadding . "px; padding-right: " . $this->default_edgepadding . "px;}";
 			$this->apiHtml = str_replace("<substitute-edgepadding>", $str, $this->apiHtml);
 		}
 
