@@ -38,7 +38,7 @@ class VendorReportCommand extends CConsoleCommand
 		{
 
 
-//kim
+//KIM
 //if ($vendor->email != 'alex@electricfieldsfestival.com')
 // continue;
 
@@ -185,7 +185,7 @@ class VendorReportCommand extends CConsoleCommand
 					$mail = new PHPMailer();
 
 
-//kim
+//KIM
 //if ($to == 'alex@electricfieldsfestival.com')
 //{
 //$to = 'kim@wireflydesign.com';
@@ -242,8 +242,7 @@ class VendorReportCommand extends CConsoleCommand
 			else
 				Yii::log("WEEKLY SUMMARY SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
-		/////echo $gmsg;
 	}
-
 }
 ?>
+

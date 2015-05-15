@@ -14,7 +14,6 @@ class productcode
 	private $uid = "";
 	private $sid = "";
 	private $cartId = "";
-	private $cookies = 0;
 
 	/*
 	 * Set up any code pre-requisites (onload/document-ready reqs)
@@ -25,8 +24,8 @@ class productcode
 	{
 	  //var_dump( $options );
 
-		$this->uid = Yii::app()->session['uid'];
-		$this->sid = Yii::app()->session['sid'];
+		$this->uid = Yii::app()->sess->get('uid');
+		$this->sid = Yii::app()->sess->get('sid');
 
 		foreach ($options as $opt => $val)
 		{
@@ -105,11 +104,6 @@ class productcode
 	// Invoked by product.jel to show the product price options
 	private function product_page_options_dropdown($val)
 	{
-		/*********************
-		// Check cookie @@EG
-		$cookieValue = (string)Yii::app()->request->cookies['whatevername'];
-		*********************/
-
 		$productId = $val;
 		$content = "";
 
@@ -117,12 +111,7 @@ class productcode
 		$cartConfirm = "";
 		if ((isset($_GET['cartproduct'])) && (isset($_GET['cartoption'])) && (isset($_GET['cartqty'])) && (isset($_GET['cartref'])))
 		{
-			if ($this->cookies)
-				$cartContent = Yii::app()->session[$this->cartId];
-			else
-				$cartContent = $this->getCartByIP();
-
-//echo('original cart=['.$cartContent.']<br>');
+			$cartContent = Yii::app()->sess->get($this->cartId);
 
 			if (!(strstr($cartContent, '_' . $_GET['cartref'])))
 			{
@@ -144,11 +133,7 @@ class productcode
 						$cartConfirm = "<div style='color:gray'>" . $_GET['cartqty'] . " " . $product->name . " " . $option->name . " added to your cart</div>";
 					}
 				}
-//echo('new cart=['.$cartContent.']<br>');
-			if ($this->cookies)
-				Yii::app()->session[$this->cartId] = $cartContent;
-			else
-				$this->SetCartByIP($cartContent);
+				Yii::app()->sess->set($this->cartId, $cartContent);
 			}
 		}
 
@@ -230,14 +215,11 @@ END_OF_API_JS_product_page_options_dropdown;
 
 
 // For debugging - empty the cart
-if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['cart'] = '';
+if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->sess->set('cart', '');
 
 
 		// Pick up the Cart info
-		if ($this->cookies)
-			$cartContent = Yii::app()->session[$this->cartId];
-		else
-			$cartContent = $this->getCartByIP();
+			$cartContent = Yii::app()->sess->get($this->cartId);
 //echo 'cart=[' . $cartContent . ']<br>';
 		if ($cartContent == '')
 			$cartArr = array();
@@ -259,7 +241,7 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 				}
 				$cartArr = $newArr;
 //echo 'deleted='.$cartArr[$i].". There are now " . count($cartArr) . " items in cart<br>";
-				// now save the modified cart array back to the session variable
+				// now save the modified cart array back to the sess variable
 				$cartContent = "";
 				for ($i = 0; $i < count($cartArr); $i++)
 				{
@@ -267,10 +249,7 @@ if ((isset($_GET['reset'])) && ($_GET['reset'] == '1'))			Yii::app()->session['c
 							$cartContent .= '|';
 					$cartContent .= $cartArr[$i];
 				}
-				if ($this->cookies)
-					Yii::app()->session[$this->cartId] = $cartContent;
-				else
-					$this->setCartByIP($cartContent);
+					Yii::app()->sess->set($this->cartId, $cartContent);
 			}
 		}
 
@@ -316,7 +295,7 @@ $content .= "<style> * { color: grey;} </style>";
 		$content .= "<th align='right' width=7%>Each</th>";	// Price
 		$content .= "<th align='right' width=5%>Qty</th>";	// Qty
 		$content .= "<th align='right' width=10%>Total</th>";	// Total
-		$content .= "<th align='rght' width=8%></th>";	// Total
+		$content .= "<th align='right' width=8%></th>";	// Total
 		$content .= "</tr></thead>";
 
 		// Generate the product lines
@@ -335,7 +314,8 @@ $content .= "<style> * { color: grey;} </style>";
 			$product = Product::model()->find($criteria);	
 			if ($product)
 			{
-				$content .= "<tr><tbody>";
+				$content .= "<tbody>";
+				$content .= "<tr>";
 				// Image
 				$content .= "<td>";
 				$content .= '<br>&nbsp';
@@ -343,7 +323,7 @@ $content .= "<style> * { color: grey;} </style>";
 				$criteria->addCondition("product_product_id = " . $cProduct);
 				$image = Image::model()->find($criteria);	
 				if ($image)
-					$content .= "<img border=0 src='" . $_imageDir . $image->filename . "' style='height:40px; width:50px'>";
+					$content .= "<img border=0 src='" . $_imageDir . $image->filename . "' style='max-height:40px; max-width:50px'>";
 				$content .= '<br>&nbsp';
 				$content .= "</td>";
 				// Description
@@ -376,7 +356,8 @@ $content .= "<style> * { color: grey;} </style>";
 				$content .= "<td align='right'>";
 				$content .= "<a href='#' onClick=\"deleteItem('" . $product->id . "','" . $option->id . "','" . "')\"	>" . "<img src=/product/img/delete-cross.png height=25px width=25px></a>";
 				$content .= "</td>";
-				$content .= "</tbody></tr>";
+				$content .= "</tr>";
+				$content .= "</tbody>";
 			}
 		}
 		$content .= "</table>";
@@ -385,23 +366,23 @@ $content .= "<style> * { color: grey;} </style>";
 		$content .= "<table style='width:80%; float:left'>";
 		$content .= "<thead><tr>";
 		$content .= "<th align='left' width=10%></th>";
-		$content .= "<th align='left' width=25%></th>";	// Buttons
-		$content .= "<th align='left' width=25%></th>";
-		$content .= "<th align='left' width=19%></th>";	// Delivery dropdown
-		$content .= "<th align='right' width=10%></th>";	// Total
-		$content .= "<th align='right' width=11%></th>";
+		$content .= "<th align='left' width=35%></th>";	// Buttons
+		$content .= "<th align='right' width=25%></th>";
+		$content .= "<th align='right' width=22%></th>";	// Total
+		$content .= "<th align='right' width=8%></th>";	// Total
 		$content .= "</tr></thead>";
 
+		$content .= "<tbody>";
 		$content .= "<tr><td>&nbsp</td></tr>";
-
-		$content .= "<tr><tbody>";
+		$content .= "<tr>";
 		$content .= "<td></td>";
 		$content .= "<td></td>";
-		$content .= "<td>Delivery method</td>";
-		$content .= "<td>";
+		$content .= "<td align='left'><b>Delivery method</b></td>";
+		$content .= "<td align='right'>";
 
 				$content .= "<script> var shipId = 0; var totalShipping = 0; var totalGoods = " . $totalGoods . ";</script>";
 				$content .= "<select id='choose_shipping_option' onChange=updateTotal()>";
+				$totalShipping = 0.00;
 				$criteria = new CDbCriteria;
 				$criteria->addCondition("uid = " . $this->uid);
 				$criteria->order = 'price ASC';
@@ -409,7 +390,6 @@ $content .= "<style> * { color: grey;} </style>";
 				if ($shippings)
 				{
 					$done = 0;
-					$totalShipping = 0.00;
 					foreach ($shippings as $shipping)
 					{
 						if ($done++ == 0)
@@ -423,23 +403,27 @@ $content .= "<style> * { color: grey;} </style>";
 				$content .= "</select>";
 
 				$content .= "</td>";
-				$content .= "<td></td>";
-				$content .= "<td></td>";
+				$content .= "<td><br><br></td>";
 				$content .= "</tr>";
 
 				$content .= "<tr>";
-				$content .= "<td><br/><br/><br/></td>";
 				$content .= "<td></td>";
-				$content .= "<td align='right'><b>Total to pay</b></td>";
-				$content .= "<td id='showTotal' style='font-weight:bold'>£ " . number_format(($totalGoods + $totalShipping), 2, '.','') . "</td>";
 				$content .= "<td></td>";
+				$content .= "<td align='left'><b>Total to pay</b></td>";
+				$content .= "<td align='right' id='showTotal' style='font-weight:bold'>£ " . number_format(($totalGoods + $totalShipping), 2, '.','') . "</td>";
 				$content .= "<td></td>";
 				$content .= "</tr>";
+				$content .= "</tbody>";
 
 				$content .= "</table>";
 
 				$content .= "</div>";
+
 				$content .= "<div style='clear:both'></div>";
+
+				$content .= "<br><br>";
+
+				$content .= "<style>input {margin-bottom:3px; height:16px;}</style>";
 
 				// Customer contact details
 				$content .= "<table style='width:80%; float:left'>";
@@ -449,7 +433,8 @@ $content .= "<style> * { color: grey;} </style>";
 				$content .= "<th align='left' width=50%></th>";
 				$content .= "</tr></thead>";
 				$content .= "<tbody><tr><td valign='top'>";
-				$content .= "Please enter your delivery address<br />";
+				$content .= "<span>Name </span><input id='shipping_name' name='shipping_name' type='text' value='' size='30'/> <br /><br/>";
+				$content .= "Shipping address<br />";
 				$content .= "<input id='address1' name='address1' type='text' value='' size='40'/> <br />";
 				$content .= "<input id='address2' name='address2' type='text' value='' size='40'/> <br />";		
 				$content .= "<input id='address3' name='address3' type='text' value='' size='40'/> <br />";
@@ -458,13 +443,18 @@ $content .= "<style> * { color: grey;} </style>";
 				$content .= "Enter your email address (twice please)<br />";
 				$content .= "<input id='email1' name='email1' type='text' value='' size='30'/> <br />";
 				$content .= "<input id='email2' name='email2' type='text' value='' size='30'/> <br /><br/>";
-				$content .= " Phone number (recommended)<br />";
+				if ($this->uid == 76)	// Wee target
+					$content .= " Phone number<br />";
+				else
+					$content .= " Phone number (recommended)<br />";
 				$content .= "<input id='telephone' name='telephone' type='text' value='' size='20'/> <br />";
 				$content .= "</td><td>&nbsp</td><td valign='top'>";
 				$content .= "Notes<br>";
 				$content .= "<textarea id='message' name='message' rows='7' cols='38'> </textarea> <br><br><br/>";
+				$content .= "<span>Got a promotion code? </span><input id='promo_code' name='promo_code' type='text' value='' size='15'/> <br /><br/>";
 				$content .= "<a href='#' onClick=\"proceed(0)\"	>" . "<img src=/product/img/proceed_to_checkout.png></a>";
-//				$content .= "<br><br><a href='#' onClick=\"proceed(1)\"	>" . "<img src=/product/img/paypal-checkout.png></a>";
+				if ((Yii::app()->sess->exists('checkoutPaypalEmail')) && (trim(Yii::app()->sess->get('checkoutPaypalEmail')) != ""))
+					$content .= "<br><br><a href='#' onClick=\"proceed(1)\"	>" . "<img src=/product/img/paypal-checkout.png></a>";
 				$content .= "</td></tr></tbody>";
 				$content .= "</table>";
 
@@ -501,9 +491,19 @@ $content .= "<style> * { color: grey;} </style>";
 
 					function proceed(ptype) /* 0=payment gateway, 1=paypal */
 					{
+						if (document.getElementById("shipping_name").value == "")
+						{
+							alert('Name cant be empty');
+							return(false);
+						}
 						if (document.getElementById("address1").value == "")
 						{
-							alert('Address cant be empty');
+							alert('Address line 1 and 2 cant be empty');
+							return(false);
+						}
+						if (document.getElementById("address2").value == "")
+						{
+							alert('Address line 1 and 2 cant be empty');
 							return(false);
 						}
 						if (document.getElementById("post_code").value == "")
@@ -521,8 +521,18 @@ $content .= "<style> * { color: grey;} </style>";
 							alert('Email addresses dont match');
 							return(false);
 						}
+						if (document.getElementById("telephone").value == "")
+						{
+							if ($this->uid == 76)	// Wee target
+							{
+								alert('Phone number cant be empty');
+								return(false);
+							}
+						}
 						var e = document.getElementById("choose_shipping_option");
 						shipId = e.options[e.selectedIndex].value;
+						prm = document.getElementById("promo_code").value;
+						sn = document.getElementById("shipping_name").value;
 						a1 = document.getElementById("address1").value;
 						a2 = document.getElementById("address2").value;
 						a3 = document.getElementById("address3").value;
@@ -531,7 +541,7 @@ $content .= "<style> * { color: grey;} </style>";
 						n = encodeURIComponent(document.getElementById("message").value);
 						e = document.getElementById("email1").value;
 						t = document.getElementById("telephone").value;
-						window.location.href = '/product/index.php/site/pay?cartid='+cartId+'&shipid='+shipId+'&a1='+a1+'&a2='+a2+'&a3='+a3+'&a4='+a4+'&e='+e+'&pc='+pc+'&n='+n+'&t='+t+'&ptype='+ptype;
+						window.location.href = '/product/index.php/site/pay?cartid='+cartId+'&shipid='+shipId+'&sn='+sn+'&a1='+a1+'&a2='+a2+'&a3='+a3+'&a4='+a4+'&e='+e+'&pc='+pc+'&n='+n+'&t='+t+'&prm='+prm+'&ptype='+ptype;
 			}
 END_OF_API_JS_checkout;
 
@@ -557,46 +567,6 @@ END_OF_API_JS_checkout;
 		return "";
 	}
 
-	private function getCartByIP()
-	{
-		$ip = "UNKNOWN";
-		if (getenv("HTTP_CLIENT_IP"))
-			$ip = getenv("HTTP_CLIENT_IP");
-		else if (getenv("HTTP_X_FORWARDED_FOR"))
-			$ip = getenv("HTTP_X_FORWARDED_FOR");
-		else if (getenv("REMOTE_ADDR"))
-			$ip = getenv("REMOTE_ADDR");
-		$criteria = new CDbCriteria;
-		$criteria->addCondition("ip = '" . $ip . "'");
-		$cart = Cart::model()->find($criteria);
-		if ($cart)
-			return $cart->content;
-		else
-			return "";
-	}
-
-	private function setCartByIP($cartContent)
-	{
-		$ip = "UNKNOWN";
-		if (getenv("HTTP_CLIENT_IP"))
-			$ip = getenv("HTTP_CLIENT_IP");
-		else if (getenv("HTTP_X_FORWARDED_FOR"))
-			$ip = getenv("HTTP_X_FORWARDED_FOR");
-		else if (getenv("REMOTE_ADDR"))
-			$ip = getenv("REMOTE_ADDR");
-
-		Cart::model()->deleteAllByAttributes(array('ip' => $ip));
-		$cart = new Cart;
-		$cart->uid = $this->uid;
-		$cart->ip = $ip;
-		$cart->timestamp = date('Y-m-d H:i:s');
-		$cart->content = $cartContent;
-		if (!$cart->save())
-		{
-			Yii::log("Could not save cart contents" , CLogger::LEVEL_WARNING, 'system.test.kim');
-			die("Could not save cart contents. This has been logged and will be fixed ASAP");
-		}
-	}
 }
 
 ?>

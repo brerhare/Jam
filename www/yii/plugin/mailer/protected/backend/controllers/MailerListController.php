@@ -31,7 +31,7 @@ class MailerListController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','delete','import'),
+				'actions'=>array('create','update','admin','delete','import','download','exportCSV'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -119,6 +119,16 @@ class MailerListController extends Controller
 				//$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 
 			// we only allow deletion via POST request
+
+			// Delete all members in this list
+     		$criteria = new CDbCriteria;
+       		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+			$criteria->addCondition("mailer_list_id = " . $id);
+       		$mailerMembers=MailerMember::model()->findAll($criteria);
+			foreach ($mailerMembers as $mailerMember)
+			{
+				$mailerMember->delete();
+			}
 			$this->loadModel($id)->delete();
 
 			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
@@ -223,6 +233,56 @@ class MailerListController extends Controller
 			'id'=>$list_id,
 			'name'=>$model->name,
 		));
+	}
+
+   /**
+     * Show the 'Download .CSV for this event' view
+     */
+    public function actionDownload($list_id)
+    {
+        $model=$this->loadModel($list_id);
+        if(isset($_GET['Event']))
+            $model->attributes=$_GET['Event'];
+
+        $this->render('download',array(
+            'model'=>$this->loadModel($list_id),
+        ));
+    }
+
+    /**
+     * Export CSV report (called from the 'download' view)
+     */
+    public function actionExportCSV($id)
+    {
+        $model=$this->loadModel($id);
+        if(isset($_GET['MailerList']))
+            $model->attributes=$_GET['MailerList'];
+
+        $cr = "<br>";
+        $heading = array('email_address', 'first_name', 'last_name', 'telephone', 'address', 'active');
+
+        if (file_exists('/tmp/mailerListMemberExport.csv'))
+            unlink('/tmp/mailerListMemberExport.csv');
+        $fp2 = fopen('/tmp/mailerListMemberExport.csv', 'w');
+        fputcsv($fp2, $heading);
+
+        $criteria = new CDbCriteria;
+        $criteria->addCondition("id = " . $id);
+        $mailerList = MailerList::model()->find($criteria);
+        if ($mailerList)
+        {
+            $criteria = new CDbCriteria;
+            $criteria->addCondition("mailer_list_id = " . $mailerList->id);
+            $mailerMembers = MailerMember::model()->findAll($criteria);
+            foreach ($mailerMembers as $mailerMember)
+            {
+                $line = array($mailerMember->email_address, $mailerMember->first_name, $mailerMember->last_name, $mailerMember->telephone, $mailerMember->address, $mailerMember->active);
+                fputcsv($fp2, $line);
+			}
+		}
+     	fclose($fp2);
+        // Send file to user
+        Yii::app()->getRequest()->sendFile( "Export.csv" , file_get_contents( "/tmp/mailerListMemberExport.csv" ) );
 	}
 
 	/**

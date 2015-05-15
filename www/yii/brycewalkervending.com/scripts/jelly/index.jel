@@ -12,161 +12,286 @@ fx.wallpaper-image = /img/background.jpg
 css.display = block
 
 	[site]
-	child = header, slider, pages, footer
-	css.width = 970px
+	child = header, site-content
+	css.width = 100%
 
 ####  Header  #################################
 
 	[header]
-	child = logo, menu
-	css.height = 300px
+	child = bubble-links, logo
+	css.width = 100%
+	css.max-width = 1100px
+	css.height = 230px 
+		
+		[bubble-links]
+		child = machine-bubble, FREE-bubble, vendor-bubble, contact-bubble
+		css.height = 300px
+		css.width = 100%
+		stacking = horizontal
+		
+			[machine-bubble]
+			css.position = relative
+			css.z-index = 50
+			css.width = 18%
+			css.margin-top = 30px
+			image.url = img/machine-bubble.png
+			image.width = 170px
+			image.height = 170px
+			image.fx = fx-hover-bounce
+			click = ?layout=index&page=vending-machines-office-commercial-dumfries-scotland
+			
+			[FREE-bubble]
+			css.position = relative
+			css.z-index = 50
+			css.width = 20%
+			css.margin-top = 10px
+			image.url = img/FREE-bubble.png
+			image.width = 100px
+			image.height = 100px
+			image.fx = fx-hover-bounce
+			click = ?layout=index&page=vending-machines-office-commercial-dumfries-scotland
+
+			[vendor-bubble]
+			css.position = relative
+			css.z-index = 150
+			css.width = 20%
+			css.margin-left = 30%
+			image.url = img/vendor-bubble.png
+			image.width = 100px
+			image.height = 100px
+			image.fx = fx-hover-bounce
+			click = javascript:playVendor();
+
+				[show-video]
+				css.display = none
+				addon.video.simple.thumb =  http://brycewalkervending.com/img/vendor-bubble.png
+				addon.video.simple.width = 1065px
+				addon.video.simple.height = 600px
+				# Note that the extension for the video is left off. Wants (but doesnt insist on) .m4v, .ogv, .webm
+				addon.video.simple.video = vendor
+				addon.video.simple.click = playVendor
+
+			[contact-bubble]
+			css.position = relative
+			css.z-index = 50
+			css.height = 100%
+			css.width = 20%
+			css.margin-top = 20px
+			css.margin-left = -90px
+			image.url = img/contact-bubble.png
+			image.width = 200px
+			image.height = 200px
+			image.align = right
+			image.fx = fx-hover-bounce
+			click = ?layout=index&page=contact
 	
 		[logo]
-		#css.margin-left = 50px
-		css.margin-top = 25px
-		css.height = 254px
-		css.width = 500px
-		css.z-index = 2000
-		#css.position = relative
-		image.url = img/logo.png
-		image.width = 500px
-		image.height = 254px
+		css.position = relative
+		css.z-index = 100
+		css.margin-top = -310px
+		css.height = 240px
+		css.width = 550px
+		image.url = img/logo-shadow.png
+		image.width = 517px
+		image.height = 229px
+		image.fx = fx-hover-grow
 		click = http://www.brycewalkervending.com
+		
+#### Site Content #########################################
 
-		[menu]
-		css.height = 50px
-		#css.width = 250px
-		css.overflow = visible
-		css.z-index = 1100
-		css.position = absolute
-		#css.position = relative
-
-		addon.menu.basic.orientation = horizontal
-		addon.menu.basic.width = 960px
-		#addon.menu.basic.height = 30px
-
-		addon.menu.basic.menu-rounding = 0px
-		#addon.menu.basic.menu-tile = /img/menu-bar.jpg
-		#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
-		addon.menu.basic.menu-color = white cyan
-		#addon.menu.basic.item-separator-color = #ffffff
-		#addon.menu.basic.item-separator-width = 3px
-
-		addon.menu.basic.font-size = 12px
-		#addon.menu.basic.menu-text-color = red
-
-		#addon.menu.basic.item-color = black yellow
-		#addon.menu.basic.item-text-color = green
-
-		#addon.menu.basic.submenu-color = yellow red
+[site-content]
+child = menu-bar, slider, pages, footer
+css.margin-top = -30px
+css.margin-bottom = 30px
+css.width = 100%
+css.max-width = 960px
+css.background-color = white
+			
+	[menu-bar]
+	child = menu
+	css.margin-top = 10px
+	css.width = 900px
+	css.height = 45px
+	image.url = img/menu-bar.jpg
+	image.width = 900px
+	image.height = 45px
+	css.overflow = visible
 	
-		#addon.menu.basic.subitem-color = white black
-		#addon.menu.basic.subitem-text-color = purple
-		#addon.menu.basic.subitem-seperator-color = red 
+	
+	[menu]
+	css.height = 40px
+	css.width = 900px
+	css.overflow = visible
+	css.position = absolute
+	css.margin-top = -40px
+	#css.position = relative
+
+	addon.menu.basic.orientation = horizontal
+	addon.menu.basic.width = 960px
+	addon.menu.basic.height = 30px
+
+	addon.menu.basic.menu-rounding = 0px
+	addon.menu.basic.menu-color = transparent
+	addon.menu.basic.edgepadding = 30px
+	addon.menu.basic.item-separator-color = red
+	addon.menu.basic.item-separator-width = 2px
+
+	addon.menu.basic.font-size = 16px
+	addon.menu.basic.menu-text-color = red
+
+	addon.menu.basic.item-color = #1fdfdf
+	addon.menu.basic.item-text-color = red
+
+	addon.menu.basic.submenu-color = white #1fdfdf
+
+	addon.menu.basic.subitem-color = white
+	#addon.menu.basic.subitem-text-color = purple
+	addon.menu.basic.subitem-seperator-color = red 
 
 
-#### Slider ###########################################
-
-[slider]
-css.width = 900px
-css.height = 200px
-css.margin-top = 20px
-css.background-color = lightgrey
+	[slider]
+	css.width = 875px
+	css.height = 265px
+	css.margin-top = 20px
+	css.margin-bottom = 20px
+	css.box-shadow = 3px 5px 8px rgba(0,0,0,0.5)
+#image is 480px x 788px
+addon.slider.shopping.slider-height = 200px
+addon.slider.shopping.image-previous = img/nav-left.png
+addon.slider.shopping.image-next = img/nav-right.png
+addon.slider.shopping.nav-margin = -450px
+addon.slider.shopping.images = 5
 	
 
 ######## body #######################################
 			
 
 	[pages]
-	child = tabs, content 	
+	child = tabs, content, contact	
 	css.width = 960px
-	css.margin-top = 20px
-	css.background-color = white
-	fx.rounding = 0px
+	
 	
 		[tabs]
 		condition = @PAGE=@HOMEPAGE
+		css.margin-top = 10px
 		css.display = block
 		css.width = 680px
 		addon.tab.rain.source = db
+		addon.tab.rain.tab-color = #9cdede
 
 			
 		[content]
-		css.margin-top = 30px
-		css.margin = 30px
+		css.margin = 10px 8%
 		db.table = ContentBlock
 		db.filter = url=$_GET['page']
 		db.error = Sorry, I could not find the page $_GET['page']
 		html.raw = ContentBlock.content
+		
+		[contact]
+		child = contact-form, contact-text
+		condition = @PAGE=contact
+		css.height = 300px
+		stacking = horizontal
+	
+			[contact-form]
+			css.width = 60%
+			css.margin = 0px
+			#css.margin-bottom = 30px
+			css.background-color = white
+			addon.contact.contactform.edgepadding = 0px
+			addon.contact.contactform.buttoncolor = #fafafa
+			addon.contact.contactform.buttontextcolor = #b23640
+			addon.contact.contactform.buttontext = [&nbsp;&nbsp; Submit &nbsp;&nbsp;]
+			addon.contact.contactform.successtextcolor = green
+			addon.contact.contactform.failuretextcolor = red
+			addon.contact.contactform.textcolor = grey
+			addon.contact.contactform.backcolor = #FFFFD6
+			addon.contact.contactform.inputspacing = 10px
+			addon.contact.contactform.inputwidth = 80%
+
+			[contact-text]
+			css.width = 35%
+			css.margin-top = 80px
+			css.font = 12px
+			html.raw = Please fill in the form and someone will get back to you as soon as possible.
+
 
 
 ####footer####################################
 
 [footer]
+child = footer-border, footer-content
+css.width = 100%
+css.margin-top = 30px
+
+[footer-border]
+css.width = 80%
+css.height = 1px
+css.background-color = #9cdede
+
+
+[footer-content]
 child = footer-menu, footnote
-css.margin-top = 40px
-css.margin-left = 20px
-css.height = 180px
-css.width = 960px
-#css.background-color = #ffffff
-#css.background-color = #f7d9ff
+css.width = 80%
+css.margin-top = 30px
+stacking = horizontal
 
-		[footer-menu]
-		stacking = horizontal
-		child = footer-margin, footer-cookies, footer-tandc, footer-contact
-		css.height = 50px
-		css.width = 960px
+	[footer-menu]
+	child = footer-contact, footer-cookies, footer-tandc
+	css.height = 100px
+	css.width = 70%
+		
+		[footer-contact]
+		html.raw = <a style="text-decoration:none; color: black; font-size: 12px;" onmouseover="this.style.color='red'" onmouseout="this.style.color='black'" href="?layout=index&page=contact">CONTACT</a>
 
-			[footer-margin]
-			css.width = 20%
-			css.height = 50px
+		[footer-cookies]
+		html.raw = <a style="text-decoration:none; color: black; font-size: 12px;" onmouseover="this.style.color='red'" onmouseout="this.style.color='black'" href="?layout=index&page=cookie-policy">COOKIES</a>
+		css.margin-top = 10px
 
-			[footer-cookies]
-			html.raw = Cookie Policy
-			css.width = 20%
-			css.color = #000000
-			css.font-size = 11px
-			css.text-align = right
-			click = ?layout=index&page=cookie-policy
-
-			[footer-tandc]
-			html.raw = Terms & Conditions
-			css.width = 20%
-			css.color = #000000
-			css.font-size = 11px
-			css.text-align = center
-			click = ?layout=index&page=terms-conditions
-
-			[footer-contact]
-			html.raw = Contact Us
-			css.text-align = left
-			css.width = 20%
-			css.color = #000000
-			css.font-size = 11px
-			click = ?layout=index&page=contact
-
+		[footer-tandc]
+		html.raw = <a style="text-decoration:none; color: black; font-size: 12px;" onmouseover="this.style.color='red'" onmouseout="this.style.color='black'" href="?layout=index&page=terms-conditions">T&Cs</a>
+		css.margin-top = 10px
 
 	[footnote]
 	child = copyright, wirefly
-	css.width = 100%
-	css.height = 50px
-	stacking = horizontal
-
+	css.width = 200px
+	css.height = 100px
+	
 		[copyright]
-		css.width = 50%
-		css.margin-top = 10px
-		html.raw = Customer &copy 2014 All rights reserved
+		html.raw = Bryce Walker Vending &copy 2015 <br>All rights reserved
 		css.color = #000000
-		css.font-size = 11px
-		css.text-align = left
+		css.font-size = 12px
+		css.text-align = center
+		
+		[wirefly]
+		child = wirefly-logo, admin
+		stacking = horizontal
+		css.margin-top = 20px
+		css.width = 100px
 
-	[wirefly]
-	css.margin-top = -10px
-	css.height = 50px
-	css.width = 50%
-	image.url = img/wirefly-weblink.png
-	image.width = 150px
-	image.height = 40px
-	image.align = right
-	clicknew = http://www.wireflydesign.com
+		
+			[wirefly-logo]
+			image.url = img/wirefly-design.png
+			image.width = 100%
+			image.height = 46%
+			image.align = left
+			clicknew = http://www.wireflydesign.com
+			
+		
+			[admin]
+			child = cog-center
+			css.height = 20px
+			css.width = 20px
+			css.background-size = 100%
+			css.background-image = url('/img/admin.png')
+			css.margin-left = -20px
 
+				[cog-center]
+				css.width = 5px
+				css.height = 5px
+				css.margin-top = 8px
+				image.url = img/cog-center.png
+				image.width = 5px
+				image.height = 5px
+				image.align = center
+				clicknew = backend.php	

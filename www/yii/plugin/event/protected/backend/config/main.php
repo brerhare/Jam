@@ -108,5 +108,8 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'kim@wireflydesign.com',
+		// CKEditor size for page content editing
+		'editorpagewidth'=>'700',   
+		'editorpageheight'=>'500',  
 	),
 );

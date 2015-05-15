@@ -173,6 +173,7 @@ class SiteController extends Controller
             $member->first_name = $_GET['name'];
             $member->email_address = $_GET['email'];
             $member->mailer_list_id = $mailerList->id;
+            $member->active = 1;
             $member->save();
         }
 	}

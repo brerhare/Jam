@@ -17,27 +17,31 @@
 
 	<?php echo $form->textAreaRow($model,'text',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 
-
-
-	<div class="row">
-<br>
-    <?php $urlEmbed = "";
-    if (!($model->isNewRecord))
-        echo "To embed this in pages use <b>{{gallery " . $model->id . " " . $model->title . "}}</b>";
-	?>
-	</div>
-<br>
-
-
-
-
-	<?php //echo $form->textFieldRow($model,'image',array('class'=>'span5','maxlength'=>255)); ?>
-
     <div class="row">
         <?php echo $form->labelEx($model,'image'); ?>
         <?php echo CHtml::activeFileField($model,'image',array('size'=>60,'maxlength'=>255)); ?>
         <?php echo $form->error($model,'image'); ?>
     </div>
+
+
+	<br>
+	<div class="row" class="span8">
+    	<?php $urlEmbed = "";
+    	if (!($model->isNewRecord))
+		{
+			$urlEmbed .= "<b>Example code to include photo albums in your pages</b><br/>";
+			$urlEmbed .= "<i>{{gallery}}</i> will show the entire list of active albums in your Gallery. Clicking on an album will screenshow it's images<br/>";
+			$urlEmbed .= "<i>{{gallery " . $model->id . " " . $model->title . "}}</i> ... to list just this album (whether active or not)</br>";
+			$urlEmbed .= "<i>{{gallery " . $model->id .  " thumbnails " . $model->title . "}}</i> ... displays all images as thumbnails for this album. Clicking on any thumbnail will start the screenshow from that point<br/>";
+			$urlEmbed .= "<br/>";
+			$urlEmbed .= "<b>Example code to include galleries in your blog-news articles</b><br/>";
+			$urlEmbed .= "<i>{{gallery-lightbox " . $model->id .  " " . $model->title ."}}</i> ... displays all images as thumbnails for this album. Hover over any thumbnail to see the enlarged image<br/>";
+			echo $urlEmbed;
+		}
+		?>
+	</div>
+
+
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(

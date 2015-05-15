@@ -30,9 +30,7 @@ class crawler
 		{
 			switch ($opt)
 			{
-
 //				case "jellyword":
-//					$this-> defined default as above or the jelly value
 				case "width":
 					$this->defaultWidth = $val;
 					break;
@@ -83,13 +81,10 @@ class crawler
 	
 		// Build up the ticker data
 		$content = "";
-		$tickerItems = JellyTicker::model()->findAll(array('order'=>'id'));
-
-/**
-echo "<div id='wrapper'>";
-echo "<div class='second'>
-        <dl id='ticker-1'>";
-**/
+		$itemCount = 0;
+		$criteria = new CDbCriteria;
+		$criteria->order = "id DESC";
+		$tickerItems = JellyTicker::model()->findAll($criteria);
 		foreach ($tickerItems as $tickerItem):
 			$textLine = $tickerItem->heading;
 			if (strlen($tickerItem->url) > 0)
@@ -97,16 +92,8 @@ echo "<div class='second'>
 			$content .= "<dt>" . $textLine . "</dt>";
 			$content .= "<dd>" . $tickerItem->text . "</dd>";
 		endforeach;
-
-/**
-echo "</dl>
-    </div>";
-echo "</div>";
-**/
-
 		$this->apiHTML = str_replace("<substitute-data>", $content, $this->apiHTML);
 
-	
 //Apply all values to the HTML and/or JS
 	//HTML
 	

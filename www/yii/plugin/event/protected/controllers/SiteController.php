@@ -36,6 +36,14 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
+		// Store any passed customisation args
+		Yii::app()->session['headercolor'] == "";
+		Yii::app()->session['map'] == "";
+		if (isset($_GET['headercolor']))
+			Yii::app()->session['headercolor'] = $_GET['headercolor'];
+		if (isset($_GET['map']))
+			Yii::app()->session['map'] = $_GET['map'];
+
 		$layout = "index";
 		if (isset($_GET['layout']))
 			$layout = $_GET['layout'];
@@ -175,6 +183,7 @@ class SiteController extends Controller
 
 						if (trim($ws->os_grid_ref) != "")
 						{
+// GOOGLE MAPS OSGRIDREF TO LATLNG - uses LEAFLET (called by markerByOs2)
 							$addon = new google_os;
 							$optArr = array();
 							$optArr['single'] = '1';
@@ -192,7 +201,7 @@ class SiteController extends Controller
 						}
 						else
 						{
-// GOOGLE MAPS POSTCODE TO LATLNG
+// GOOGLE MAPS POSTCODE TO LATLNG - uses LEAFLET
 $address = $event->post_code;
 $coords = file_get_contents('http://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($address) . '&sensor=true');
 $coords = json_decode($coords);

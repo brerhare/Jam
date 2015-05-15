@@ -1,0 +1,92 @@
+<!-- http://blog.jongallant.com/2013/05/angularjs-webapi-ef.html#.VJ62FsgHA -->
+
+<link rel="stylesheet" href="app/customer/markupGroup/customerMarkupGroup.css"/>
+  
+<style>
+	button {margin-right:5px;}
+	table {table-layout: fixed; }
+	.col-id { width:50px; }
+	.col-description { width:300px; }
+	.col-description:hover { background-color: #ddf0ff; cursor:pointer; cursor: hand; }
+	.col-percent { width:75px; }
+	.col-percent:hover { background-color: #ddf0ff; cursor:pointer; cursor: hand; }
+	.col-is-default { width:75px; }
+	.col-button { width:80px; }
+
+	.col-i-description { width:290px; }
+	.col-i-percent { width:65px; }
+	.col-i-is-default { width:65px; }
+
+</style>
+
+<div class="container-fluid">
+  
+ <h4 style="text-align:center">Maintain customer markup groups</h4>
+  
+<br/>
+
+   <div ng-cloak>
+<center>
+        <div style="width:600px;">
+            <table class="table Xtable-striped table-bordered table-condensed Xtable-hover">
+                <tr>
+                    <th class='col-id'>         Id</th>
+                    <th class='col-description'>Description</th>
+                    <th class='col-percent'>    Percent</th>
+                    <th class='col-is-default'> Default?</th>
+                    <th class='col-button'>
+                        <div class="btn-toolbar">
+                            <button type="button" ng-click="toggleAddMode()" class="btn btn-xs btn-success">
+                                <i class="fa fa-plus fa-1x"></i>
+                            </button>
+                        </div>
+                    </th>
+                </tr>
+                <tr ng-show="addMode">
+                    <td class='col-id'></td>
+                    <td class='col-description'> <input class='col-i-description' ng-model="item.description" /></td>
+                    <td class='col-percent'>     <input class='col-i-percent'     ng-model="item.percent" /></td>
+					<td class='col-is-default'></td>
+                    <td class='col-button'>
+                        <div class="btn-toolbar">
+                            <div class="btn-group">
+                                <button type="button" ng-click="addItem()" class="btn btn-xs btn-success">
+                                    <i class="fa fa-save fa-1x"></i>
+                                 </button>
+                                 <button type="button" ng-click="toggleAddMode()" class="btn btn-xs btn-danger">
+                                     <i class="fa fa-remove fa-1x"></i>
+                                  </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-repeat="item in items">              <!-- NB: " | orderBy:description" removed as default sort from server is description. Prevents jumping when description is modified -->
+                    <td class='col-id'>{{item.id}}</td>
+                    <td class='col-description'>
+                        <span ng-click="toggleEditDescription(item)" ng-show="item.editDescription != true">{{item.description}}</span>
+                        <input class='col-i-description' ng-model="item.description" ng-show="item.editDescription == true" ng-keypress="editDescriptionEnd($event, item)" />
+                    </td>
+                    <td class='col-percent'>
+                        <span ng-click="toggleEditPercent(item)"     ng-show="item.editPercent != true">     {{item.percent}}</span>
+                        <input class='col-i-percent'     ng-model="item.percent"     ng-show="item.editPercent == true"      ng-keypress="editPercentEnd($event, item)" />
+                    </td>
+                    <td class='col-is-default'>
+						<input class='col-i-is-default' name="x" type="radio" ng-model="default_item" value="{{item.id}}" ng-change="setDefaultItem(item)" />
+                    </td>
+                    <td class='col-button'>
+                        <div class="btn-toolbar">
+                            <div class="btn-group">
+                                <button type="button" ng-click="deleteItem(item)" class="btn btn-xs btn-danger">
+                                    <i class="fa fa-trash fa-1x"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+</center>
+    </div>
+
+</div> <!-- container-fluid -->
+

@@ -110,6 +110,10 @@ class MailerMember extends CActiveRecord
 		$criteria->addCondition("mailer_list_id = " . Yii::app()->session['list_id']);
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+			// @@EG: Change cgridview pagination
+			'pagination' => array(
+				'pageSize' => 50,
+			),
 		));
 	}
 }

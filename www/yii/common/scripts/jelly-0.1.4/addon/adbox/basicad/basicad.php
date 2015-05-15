@@ -128,7 +128,8 @@ var ajaxShowAds = function(val) {
 		tval = "img-" + nextChange;
 		document.getElementById(tval).src = '/../userdata/jelly/adblock/' + val.img[i];
 		tval = "url-" + nextChange;
-		document.getElementById(tval).href = val.url[i];
+		if (val.url[i].length > 0)
+			document.getElementById(tval).href = val.url[i];
 		nextChange++;
 		if (nextChange == (ajaxCount))
 			nextChange = 0;

@@ -45,24 +45,162 @@ echo "<script>var showDays=" . $showDays . ";</script>";
 
 <script>
 
-// Set the starting display date to today (epoch format)
-var timeStamp = Math.floor(new Date().getTime() / 1000);
+Date.prototype.yyyymmdd = function() {
+   var yyyy = this.getFullYear().toString();
+   var mm = (this.getMonth()+1).toString(); // getMonth() is zero-based
+   var dd  = this.getDate().toString();
+   return yyyy + (mm[1]?mm:"0"+mm[0]) + (dd[1]?dd:"0"+dd[0]); // padding
+  };
+
+// Set the starting display date to today (yyyymmdd format)
+
+var timeStamp = stampGetToday();
 var arrivalStamp = timeStamp;
-var departureStamp = timeStamp + 86400;
+var departureStamp = stampAddDays(timeStamp, 1);
+
+function stampGetToday() {
+	var today = new Date();
+	var dd = today.getDate();
+	var mm = today.getMonth()+1; //January is 0!
+	var yyyy = today.getFullYear();
+	if(dd<10) dd='0'+dd;
+	if(mm<10) mm='0'+mm;
+	return ("" + yyyy + mm + dd);
+}
+
+function stampAddDays(stamp, num) {
+	yyyy = +stamp.substr(0,4);
+	mm = +stamp.substr(4,2);
+	dd = +stamp.substr(6,2);
+	while(num > 0) {
+		dd += 1;
+		mmBump = false;
+		if (mm == 2) {
+			isLeap = new Date(yyyy, 1, 29).getMonth() == 1;	// is leap year
+			if (isLeap && (dd > 29))
+				mmBump = true;
+			if (!isLeap && (dd > 28))
+				mmBump = true;
+		}
+		else if ((mm == 1) || (mm == 3) || (mm == 5) || (mm == 7) || (mm == 8) || (mm == 10) || (mm == 12)) {
+			if (dd > 31)
+				mmBump = true;
+		}
+		else {
+			if (dd > 30)
+				mmBump = true;
+		}
+		if (mmBump) {
+			dd = 1;
+			mm += 1;
+			if (mm > 12) {
+				mm = 1;
+				yyyy += 1;
+			}
+		}
+		num -= 1;
+	}
+	if(dd<10) dd='0'+dd;
+	if(mm<10) mm='0'+mm;
+//	alert ("ADD: " + yyyy + mm + dd);
+	return ("" + yyyy + mm + dd);
+}
+
+function stampSubtractDays(stamp, num) {
+	yyyy = +stamp.substr(0,4);
+	mm = +stamp.substr(4,2);
+	dd = +stamp.substr(6,2);
+	while(num > 0) {
+		dd -= 1;
+		if (dd == 0)
+		{
+			mm -= 1;
+			dd = 31;	// most common case
+			if (mm == 0)
+			{
+				dd = 31;
+				mm = 12;
+				yyyy -= 1;
+			}
+			else if (mm == 2) {
+				isLeap = new Date(yyyy, 1, 29).getMonth() == 1;	// is leap year
+				if (isLeap)
+					dd = 29;
+				else
+					dd = 28;
+			}
+			else if ((mm == 4) || (mm == 6) || (mm == 9) || (mm == 11))
+				dd = 30;
+		}
+		num -= 1;
+	}
+	if(dd<10) dd='0'+dd;
+	if(mm<10) mm='0'+mm;
+//	alert ("SUBTRACT: " + yyyy + mm + dd);
+	return ("" + yyyy + mm + dd);
+}
+
+function stampDiffDays(stamp, stamp2) {
+	yyyy = +stamp.substr(0,4);
+	mm = +stamp.substr(4,2);
+	dd = +stamp.substr(6,2);
+	yyyy2 = +stamp2.substr(0,4);
+	mm2 = +stamp2.substr(4,2);
+	dd2 = +stamp2.substr(6,2);
+	num = 0;
+	while ((dd != dd2) || (mm != mm2) || (yyyy != yyyy2)) {
+		dd += 1;
+		mmBump = false;
+		if (mm == 2) {
+			isLeap = new Date(yyyy, 1, 29).getMonth() == 1;	// is leap year
+			if (isLeap && (dd > 29))
+				mmBump = true;
+			if (!isLeap && (dd > 28))
+				mmBump = true;
+		}
+		else if ((mm == 1) || (mm == 3) || (mm == 5) || (mm == 7) || (mm == 8) || (mm == 10) || (mm == 12)) {
+			if (dd > 31)
+				mmBump = true;
+		}
+		else {
+			if (dd > 30)
+				mmBump = true;
+		}
+		if (mmBump) {
+			dd = 1;
+			mm += 1;
+			if (mm > 12) {
+				mm = 1;
+				yyyy += 1;
+			}
+		}
+		num += 1;
+		if (num > 9999) {
+			alert('overflow in date calc');
+			break;
+		}
+	}
+	return num;
+}
 
 function changeDate(days) {
-	timeStamp += (days * 86400);
+	if (days > 0)
+		timeStamp = stampAddDays(timeStamp, days);
+	else
+		timeStamp = stampSubtractDays(timeStamp, (days * -1));
 	ajaxGetRoomPriceAvail();
 }
 function setDate(){
 	var v = document.getElementById("datepicker");
-	dd = v.value.substr(0, 2);
-	mm = v.value.substr(3, 2);
-	yyyy = v.value.substr(6, 4);
-	timeStamp = new Date(yyyy, mm-1, dd).getTime() / 1000;
+	var dd = v.value.substr(0, 2);
+	var mm = v.value.substr(3, 2);
+	var yyyy = v.value.substr(6, 4);
+	timeStamp = ("" + yyyy + mm + dd);
+	arrivalStamp = timeStamp;
+	departureStamp = stampAddDays(arrivalStamp, 1);
 	ajaxGetRoomPriceAvail();
 	// Also set the arrival/departure dates
-	dt = new Date(yyyy, mm-1, dd);
+	var dt = new Date(yyyy, mm-1, dd);
 	$('#arrivedate').datepicker().datepicker('setDate', dt);
 	onArrivalDateChange();
 }
@@ -70,37 +208,35 @@ function setDate(){
 function onArrivalDateChange()
 {
 	var v = document.getElementById("arrivedate");
-	dd = v.value.substr(0, 2);
-	mm = v.value.substr(3, 2);
-	yyyy = v.value.substr(6, 4);
-	dt = new Date(yyyy, mm-1, dd);
-	dt2 = new Date(yyyy, mm-1, dt.getDate()+1);
-	timeStamp = new Date(yyyy, mm-1, dd).getTime() / 1000;
+	var dd = v.value.substr(0, 2);
+	var mm = v.value.substr(3, 2);
+	var yyyy = v.value.substr(6, 4);
+	timeStamp = ("" + yyyy + mm + dd);
+	arrivalStamp = timeStamp;
+	departureStamp = stampAddDays(arrivalStamp, 1);
+	var dt = new Date(yyyy, mm-1, dd);
+	var dt2 = new Date(yyyy, mm-1, dt.getDate()+1);
 	$('#datepicker').datepicker().datepicker('setDate', dt);
-	$('#departdate').datepicker().datepicker('setDate', dt2);
 	$("#departdate").datepicker( "option", "minDate", dt2 );
-	arrivalStamp = dt.getTime()/1000;
-	departureStamp = dt2.getTime()/1000;
+	$('#departdate').datepicker().datepicker('setDate', dt2);
 	ajaxGetRoomPriceAvail();
 }
 
 function onDepartureDateChange()
 {
-	var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
-
 	var v = document.getElementById("departdate");
-	dd = v.value.substr(0, 2);
-	mm = v.value.substr(3, 2);
-	yyyy = v.value.substr(6, 4);
+	var dd = v.value.substr(0, 2);
+	var mm = v.value.substr(3, 2);
+	var yyyy = v.value.substr(6, 4);
+	departureStamp = ("" + yyyy + mm + dd);
 	var firstDate = new Date(yyyy,(mm-1),dd);
-
 	v = document.getElementById("arrivedate");
 	dd = v.value.substr(0, 2);
 	mm = v.value.substr(3, 2);
 	yyyy = v.value.substr(6, 4);
+	arrivalStamp = ("" + yyyy + mm + dd);
 	var secondDate = new Date(yyyy,(mm-1),dd);
-
-	var nights = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
+	var nights = stampDiffDays(arrivalStamp, departureStamp);
 	document.getElementById("nights").value = nights;
 	ajaxGetRoomPriceAvail();
 }
@@ -417,6 +553,7 @@ function showTopPickLines(){
 // Called: startup + whenever the user changes the calendar dates
 function ajaxGetRoomPriceAvail()
 {
+//kim
 	<?php
 	$criteria = new CDbCriteria;
 	$criteria->addCondition("uid = " . Yii::app()->session['uid']);
@@ -494,15 +631,13 @@ function showDates() {
 	var cell = rowWeekDay.insertCell(0);
 	cell = rowMonthDay.insertCell(0);
 	cell = rowMonth.insertCell(0);
-
-	var d = new Date(0); // The 0 sets the date to the epoch
-//	var dTest = new Date(0); // The 0 sets the date to the epoch
-	d.setUTCSeconds(timeStamp);
-//	dTest.setSeconds(timeStamp);
-//alert('timestamp='+timeStamp + ', setUTCSeconds=' + d.toISOString() + ', setSeconds=' + dTest.toISOString());
-
 	for (var i = 0; i < 14; i++)
 	{
+		var stmp = stampAddDays(timeStamp, i);
+		var yyyy = +stmp.substr(0, 4);
+		var mm = +stmp.substr(4, 2);
+		var dd = +stmp.substr(6, 2);
+		var d = new Date(yyyy,(mm-1),dd);
 		// Day of week
 		cell = rowWeekDay.insertCell(i+1);
 		var wday = d.toString().substr(0,3);
@@ -744,7 +879,7 @@ $(document).ready(function() {
 		dt2 = new Date(yyyy, mm-1, dt.getDate()+1);
 		$('#departdate').datepicker().datepicker('setDate', dt2);
 		$("#departdate").datepicker( "option", "minDate", dt2 );
-		var nights = Math.ceil((departureStamp - arrivalStamp) / 86400);
+		var nights = stampDiffDays(arrivalStamp, departureStamp);
 		document.getElementById("nights").value = nights;
 	});
 

@@ -269,6 +269,19 @@ class SiteController extends Controller
 			Yii::log("TEST AJAX CALL: date:" . $_POST['date'] . " arrival:" . $_POST['arrival'] . " departure:" . $_POST['departure'] . " room:" . $_POST['roomList'], CLogger::LEVEL_WARNING, 'system.test.kim');
 			if(isset($_POST['date']))
 			{
+				$pyyyy = substr($_POST['date'], 0, 4);
+				$pmm   = substr($_POST['date'], 4, 2);
+				$pdd   = substr($_POST['date'], 6, 2);
+				$pdate = $pyyyy . "-" . $pmm . "-" . $pdd;
+				$ayyyy = substr($_POST['arrival'], 0, 4);
+				$amm   = substr($_POST['arrival'], 4, 2);
+				$add   = substr($_POST['arrival'], 6, 2);
+				$adate = $ayyyy . "-" . $amm . "-" . $add;
+				$dyyyy = substr($_POST['departure'], 0, 4);
+				$dmm   = substr($_POST['departure'], 4, 2);
+				$ddd   = substr($_POST['departure'], 6, 2);
+				$ddate = $dyyyy . "-" . $dmm . "-" . $ddd;
+
 				$retArr = array();
 				$roomCount = 0;
 				foreach ($_POST['roomList'] as $roomId)
@@ -279,18 +292,21 @@ class SiteController extends Controller
 					$availDays = array();
 					for ($i = 0; $i < 14; $i++)
 					{
-						$availDays[date('Y-m-d', ($_POST['date'] + ($i * (60 * 60 * 24)) ))] = 1;
+						$availDays[$this->addDays($pdate, $i)] = 1;
 						// Eg '2013-04-16'=>'1'
 					}
+//Yii::log("TEST AJAX INIT-ARRAY: " . print_r($availDays, true), CLogger::LEVEL_WARNING, 'system.test.kim');
 					$criteria = new CDbCriteria;
 					$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 					$criteria->addCondition("room_id = " . $roomId);
-					$criteria->addCondition("date >= '" . date('Y-m-d', $_POST['date']) . "'");
-					$criteria->addCondition("date <= '" . date('Y-m-d', ($_POST['date'] + (13 * (60 * 60 * 24)) )) . "'");
+					$criteria->addCondition("date >= '" . $pdate . "'");
+					$criteria->addCondition("date <  '" . $this->addDays($pdate, 14) . "'");
 					$days = Calendar::model()->findAll($criteria);
+//Yii::log("TEST AJAX AVAILDAY from-to dates: " . $pdate . ":" . $this->addDays($pdate, 14), CLogger::LEVEL_WARNING, 'system.test.kim');
 					foreach ($days as $day)
 					{
 						$availDays[$day->date] = 0;
+//Yii::log("TEST AJAX AVAILDAY from-to dates: MATCH! ". $day->date, CLogger::LEVEL_WARNING, 'system.test.kim');
 						// Eg '2013-04-16'=>'0'
 						$i++;
 					}
@@ -299,14 +315,15 @@ class SiteController extends Controller
 					foreach ($availDays as $k => $v)
 						$arr[$i++] = $v;
 
-					// CHECK IF THIS ROOM IS AVAILABLE FOR THE ARRIVE-DEPART DATES (for the buttons)
+					// CHECK IF THIS ROOM IS AVAILABLE FOR THE WHOLE ARRIVE-DEPART DATE RANGE (for the buttons)
 
 					$criteria = new CDbCriteria;
 					$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 					$criteria->addCondition("room_id = " . $roomId);
-					$criteria->addCondition("date >= '" . date('Y-m-d', $_POST['arrival']) . "'");
-					$criteria->addCondition("date <= '" . date('Y-m-d', ($_POST['departure'] - (1 * (60 * 60 * 24)) )) . "'");
+					$criteria->addCondition("date >= '" . $adate . "'");
+					$criteria->addCondition("date <  '" . $ddate . "'");
 					$days = Calendar::model()->findAll($criteria);
+//Yii::log("TEST AJAX AVAILTOBOOKROOM from-to dates: " . $adate . ":" . $ddate, CLogger::LEVEL_WARNING, 'system.test.kim');
 					$roomIsAvailToBook = 1;
 					foreach ($days as $day)
 					{
@@ -344,6 +361,45 @@ class SiteController extends Controller
 		Yii::log("EXIT TEST AJAX CALL: " . $_POST['date'] , CLogger::LEVEL_WARNING, 'system.test.kim');
 	}
 	
+	public function addDays($date, $num)
+	{
+	    $yyyy = intval(substr($date, 0, 4));
+    	$mm = intval(substr($date, 5, 2));
+    	$dd = intval(substr($date, 8, 2));
+//Yii::log("ADDDAYS: " . $date . " ... " . $yyyy . "-" . $mm . "-" . $dd , CLogger::LEVEL_WARNING, 'system.test.kim');
+    	while ($num > 0) {
+        	$dd += 1;
+        	$mmBump = false;
+        	if ($mm == 2) {
+            	$isLeap = ((($yyyy % 4) == 0) && ((($yyyy % 100) != 0) || (($yyyy %400) == 0)));
+            	if ($isLeap && ($dd > 29))
+                	$mmBump = true;
+            	if (!($isLeap) && ($dd > 28))
+                	$mmBump = true;
+        	}
+        	else if (($mm == 1) || ($mm == 3) || ($mm == 5) || ($mm == 7) || ($mm == 8) || ($mm == 10) || ($mm == 12)) {
+            	if ($dd > 31)
+                	$mmBump = true;
+        	}
+        	else {
+            	if ($dd > 30)
+                	$mmBump = true;
+        	}
+        	if ($mmBump) {
+            	$dd = 1;
+            	$mm += 1;
+            	if ($mm > 12) {
+                	$mm = 1;
+                	$yyyy += 1;
+            	}
+        	}
+        	$num -= 1;
+    	}
+    	if($dd<10) $dd='0'.$dd;
+    	if($mm<10) $mm='0'.$mm;
+    	return ($yyyy . "-" . $mm . "-" . $dd);
+	}
+
 	/**
 	 * This is the action to handle external exceptions.
 	 */

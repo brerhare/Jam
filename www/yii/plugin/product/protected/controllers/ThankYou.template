@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="viewport" content="width=device-width" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!-- https://github.com/leemunroe/html-email-template -->
+<title>Thank you</title>
+<link rel='stylesheet' type='text/css' href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css'>
+<link rel='stylesheet' type='text/css' href='https://plugin.wireflydesign.com/css/emailResponsive.css'>
+</head>
+
+<body bgcolor="#f6f6f6">
+
+<!-- body -->
+
+<center>
+
+<table class="body-wrap">
+	<tr>
+		<td></td>
+		<td class="container" bgcolor="#FFFFFF">
+
+			<!-- content -->
+			<div class="content">
+			<table>
+				<tr>
+					<td>
+						<h4>Thank you!</h4>
+						<p>A confirmation email with your order details has been emailed to you.<br/>
+						<p>Your goods will be delivered to the address you supplied.</p>
+
+						<hr/>
+						<table>
+							<tr>
+								<td class="padding">
+									<p style="display:<display>"=><a href="<return-url>" class="btn-primary">Continue</a></p>
+								</td>
+							</tr>
+						</table>
+						<br/>
+					</td>
+				</tr>
+			</table>
+			</div>
+			<!-- /content -->
+			
+		</td>
+		<td></td>
+	</tr>
+</table>
+<!-- /body -->
+
+<!-- footer -->
+<table class="footer-wrap">
+	<tr>
+		<td></td>
+		<td class="container">
+			
+			<!-- content -->
+			<div class="content">
+				<table>
+					<tr>
+						<td align="center">
+<!--							<p>Service provided by <a href="http://www.dglink.co.uk">DG Link</a></p>	-->
+						</td>
+					</tr>
+				</table>
+			</div>
+			<!-- /content -->
+			
+		</td>
+		<td></td>
+	</tr>
+</table>
+
+<!-- /footer -->
+
+<center>
+
+</body>
+</html>

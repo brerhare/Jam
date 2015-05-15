@@ -14,6 +14,8 @@
 		echo $form->textFieldRow($model,'user_name',array('class'=>'span3','maxlength'=>255));
 	?>
 
+	<?php echo "<div style=display:none>" . $form->textFieldRow($model,'password',array('class'=>'span3','maxlength'=>255)) . "</div>"; ?>
+
 	<?php echo $form->passwordFieldRow($model,'password',array('class'=>'span3','maxlength'=>255)); ?>
 
 	<?php echo $form->textFieldRow($model,'first_name',array('class'=>'span3','maxlength'=>255)); ?>
@@ -28,6 +30,11 @@
 
 	<?php if (!($model->isNewRecord))
 		echo $form->textFieldRow($model,'sid',array('class'=>'span3','maxlength'=>255));
+	?>
+
+	<?php
+		$criteria = new CDbCriteria;
+		echo $form->dropDownListRow($model,'lock_program_id', CHtml::listData(Program::model()->findAll($criteria), 'id', 'name'));
 	?>
 
 	    <div class="control-group">

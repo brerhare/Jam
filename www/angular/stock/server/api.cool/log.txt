@@ -1,0 +1,64 @@
+NEW API
+=======
+$_SERVER_["REQUEST_URI"] = /server/api/stock_markup_group/
+$_REQUEST = Array
+(
+    [request] => stock_markup_group/
+)
+
+$_GET = Array
+(
+    [request] => stock_markup_group/
+)
+
+$_POST = Array
+(
+)
+
+$_SERVER = Array
+(
+    [PHPRC] => /home/wireflydesign.com/domains/stock.wireflydesign.com/fcgi-bin/../etc/php5
+    [SCRIPT_FILENAME] => /home/wireflydesign.com/domains/stock.wireflydesign.com/dev/src/www/angular/stock/server/api/api.php
+    [PATH] => /usr/local/bin:/usr/bin:/bin
+    [PWD] => /home/wireflydesign.com/domains/stock.wireflydesign.com/fcgi-bin
+    [SHLVL] => 0
+    [PHP_FCGI_MAX_REQUESTS] => 99999
+    [FCGI_ROLE] => RESPONDER
+    [REDIRECT_SCRIPT_URL] => /server/api/stock_markup_group/
+    [REDIRECT_SCRIPT_URI] => http://stock.wireflydesign.com/server/api/stock_markup_group/
+    [REDIRECT_STATUS] => 200
+    [SCRIPT_URL] => /server/api/stock_markup_group/
+    [SCRIPT_URI] => http://stock.wireflydesign.com/server/api/stock_markup_group/
+    [HTTP_HOST] => stock.wireflydesign.com
+    [HTTP_CONNECTION] => close
+    [CONTENT_LENGTH] => 8
+    [HTTP_ACCEPT] => application/json, text/plain, */*
+    [HTTP_ORIGIN] => http://stock.wireflydesign.com
+    [HTTP_USER_AGENT] => Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.71 Safari/537.36
+    [CONTENT_TYPE] => application/json;charset=UTF-8
+    [HTTP_REFERER] => http://stock.wireflydesign.com/src/index.html
+    [HTTP_ACCEPT_ENCODING] => gzip, deflate
+    [HTTP_ACCEPT_LANGUAGE] => en-GB,en-US;q=0.8,en;q=0.6
+    [HTTP_COOKIE] => _ga=GA1.3.486268282.1419864384
+    [SERVER_SIGNATURE] => 
+    [SERVER_SOFTWARE] => Apache
+    [SERVER_NAME] => stock.wireflydesign.com
+    [SERVER_ADDR] => 79.143.182.153
+    [SERVER_PORT] => 80
+    [REMOTE_ADDR] => 82.26.169.128
+    [DOCUMENT_ROOT] => /home/wireflydesign.com/domains/stock.wireflydesign.com/dev/src/www/angular/stock
+    [SERVER_ADMIN] => [no address given]
+    [REMOTE_PORT] => 16085
+    [REDIRECT_QUERY_STRING] => request=stock_markup_group/
+    [REDIRECT_URL] => /server/api/stock_markup_group/
+    [GATEWAY_INTERFACE] => CGI/1.1
+    [SERVER_PROTOCOL] => HTTP/1.1
+    [REQUEST_METHOD] => POST
+    [QUERY_STRING] => request=stock_markup_group/
+    [REQUEST_URI] => /server/api/stock_markup_group/
+    [SCRIPT_NAME] => /server/api/api.php
+    [PHP_SELF] => /server/api/api.php
+    [REQUEST_TIME] => 1419892972
+)
+
+METHOD = POST

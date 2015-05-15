@@ -143,6 +143,48 @@ class Event extends CActiveRecord
 		$criteria->compare('event_price_band_id',$this->event_price_band_id);
 
 //@@ EG: Ordering model records on the admin crud
+        //$criteria->order = "id DESC";
+
+		return new CActiveDataProvider($this, array(
+			'criteria'=>$criteria,
+			// @@EG: Set default sort orderr
+			'sort'=>array(
+				'defaultOrder'=>'id DESC',
+			),
+            // @@EG: Change cgridview pagination
+            'pagination' => array(
+                'pageSize' => 50,
+            ),
+
+		));
+	}
+
+	public function searchSingleProgram($pid, $approved)
+	{
+		$flt = "";
+		// Consider all the events in this program
+		$criteria=new CDbCriteria;
+		$criteria->addCondition("program_id = " . $pid);
+		if ($approved == 1)
+			$criteria->addCondition("approved = 1");
+		else
+			$criteria->addCondition("approved != 1");
+		$eventHasPrograms = EventHasProgram::model()->findAll($criteria);
+		foreach ($eventHasPrograms as $eventHasProgram)
+		{
+			if ($flt != "")
+				$flt .= " or ";
+			$flt .= "id = " . $eventHasProgram->event_event_id;
+		}
+
+		// Now apply the conditions
+		$criteria=new CDbCriteria;
+		if ($flt == "")
+			$flt = "id = -1";
+		$criteria->addCondition($flt);
+		$criteria->addCondition("active = 1");
+
+//@@ EG: Ordering model records on the admin crud
         $criteria->order = "title ASC";
 
 		return new CActiveDataProvider($this, array(
@@ -156,6 +198,9 @@ class Event extends CActiveRecord
 		));
 	}
 
+
+// @@TODO Check ... Is this even still used??
+
 	public function searchAllProgramsImAdminOrModFor()
 	{
 		// Add all my own events
@@ -163,25 +208,8 @@ class Event extends CActiveRecord
 
 		// Also add all events in all programs I'm admin on
 		$criteria=new CDbCriteria;
-	//$criteria->addCondition("lock_program_id = " . Yii::app()->session['pid']);
-/*
-		$criteria->compare('id',$this->id);
-		//$criteria->compare('title',$this->title,true);
-		$criteria->compare('start',$this->start,true);
-		$criteria->compare('end',$this->end,true);
-		$criteria->compare('address',$this->address,true);
-		$criteria->compare('post_code',$this->post_code,true);
-		$criteria->compare('web',$this->web,true);
-		$criteria->compare('contact',$this->contact,true);
-		$criteria->compare('description',$this->description,true);
-		$criteria->compare('thumb_path',$this->thumb_path,true);
-		$criteria->compare('approved',$this->approved);
-		$criteria->compare('ticket_event_id',$this->ticket_event_id);
-		$criteria->compare('active',$this->active);
-		//$criteria->compare('member_id',$this->member_id);
-*/
 		$criteria->addCondition("event_member_id = " . Yii::app()->session['eid']);
-		$criteria->addCondition("privilege_level = " . 4);	//@@TODO Privilege level hardcoding
+		$criteria->addCondition("privilege_level = " . 2);	//@@TODO Privilege level hardcoding
 		$memberHasPrograms = MemberHasProgram::model()->findAll($criteria);
 		foreach ($memberHasPrograms as $memberHasProgram)
 		{

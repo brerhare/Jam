@@ -1,0 +1,8 @@
+#
+#  mod_rewrite in use
+
+RewriteEngine On
+
+#### Kim's 301's
+Redirect 301 /dumfries-galloway-whats-on-events.html http://www.dglink.co.uk/?layout=index&page=electric-fields-tickets-dumfries-galloway
+
