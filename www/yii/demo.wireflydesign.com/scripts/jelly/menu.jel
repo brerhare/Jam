@@ -1,0 +1,27 @@
+	####### Top level basic settings ####
+#		addon.menu.basic.width = 100%
+#		addon.menu.basic.height = 75px
+
+	####### Top level background settings (first colour is the top gradiation) ####
+		addon.menu.basic.menu-stretch = /img/menu.png
+		#addon.menu.basic.menu-color = white blue
+
+	####### Top level font settings ####
+		addon.menu.basic.font-size = 16px
+		addon.menu.basic.menu-text-color = black
+		addon.menu.basic.menu-text-weight = normal
+
+
+	####### Top level hover settings ####
+		addon.menu.basic.item-color = cyan
+		addon.menu.basic.item-text-color = blue
+
+
+	####### Second level background settings ####
+		addon.menu.basic.submenu-color = #ffffff #bfffff
+		addon.menu.basic.subitem-separator-color = white
+
+	####### Second level hover settings ####
+		addon.menu.basic.subitem-color = cyan
+		addon.menu.basic.subitem-text-color = blue
+	
