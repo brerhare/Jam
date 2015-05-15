@@ -5,6 +5,20 @@ $this->menu=array(
 );
 
 
+Yii::app()->clientScript->registerScript('search', "
+$('.search-button').click(function(){
+    $('.search-form').toggle();
+    return false;
+});
+$('.search-form form').submit(function(){
+    $('#event-grid').yiiGridView('update', {
+        data: $(this).serialize()
+    });
+    return false;
+});
+");
+
+
 ?>
 
 <h4>Manage Events</h4>
@@ -13,7 +27,7 @@ $this->menu=array(
 	'id'=>'event-grid',
 	'dataProvider'=>$model->search(),
 	////////////////////'dataProvider'=>$model->searchAllProgramsImAdminOrModFor(),
-	//'filter'=>$model,
+	'filter'=>$model,
 	'columns'=>array(
 		'id',
 
@@ -21,15 +35,20 @@ $this->menu=array(
             'name'  => 'title',
             'value' => 'CHtml::link($data->title, Yii::app()->createUrl("event/update",array("id"=>$data->primaryKey)))',
             'type'  => 'raw',
-			'htmlOptions' => array('style'=>'width:390px'),
+			'htmlOptions' => array('style'=>'width:300px'),
         ),
 
         array(
-            'name'  => 'Start',
+            'name'  => 'start',
 			'value'=> ' date("d-m-Y",strtotime($data->start))',
+			'htmlOptions' => array('style'=>'width:90px'),
         ),
 
-		'active:boolean',
+        array(
+            'name'  => 'active',
+			'htmlOptions' => array('style'=>'width:70px'),
+        ),
+		//'active:boolean',
 
 
 /*

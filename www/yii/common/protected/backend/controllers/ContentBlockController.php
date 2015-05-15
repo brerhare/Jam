@@ -62,6 +62,7 @@ class ContentBlockController extends Controller
 	public function actionCreate()
 	{
 		$model=new ContentBlock;
+		$model->active = 1;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);

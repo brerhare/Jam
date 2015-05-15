@@ -263,7 +263,7 @@ $(document).ready(function() {
 	echo "<div style='float:left'>";
 	echo "<input type='button' id='other-events' onclick='todglinkFunction()'></input>";
 	echo "</div>";
-	echo "<script>function todglinkFunction(){ window.location.href = 'http://dglink.co.uk/dumfries-galloway-whats-on-events.html'  }</script>";
+	echo "<script>function todglinkFunction(){ window.location.href = 'http://dglink.co.uk'  }</script>";
 
 	echo "<div style='float:right'>";
 	$this->widget('zii.widgets.jui.CJuiButton', array(
@@ -292,7 +292,7 @@ $(document).ready(function() {
 
 	<div><center>
 	<br/>
-	By using this service you agree to our <a href="https://secure.dglink.co.uk/cboxoffice/tandc.html" target="_blank">Terms & Conditions</a> as well as any conditions displayed below
+	By using this service you agree to our <a href="https://plugin.wireflydesign.com/ticket/tandc.html" target="_blank">Terms & Conditions</a> as well as any conditions displayed below
 	</center></div>
 
 </div>

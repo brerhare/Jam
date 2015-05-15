@@ -97,7 +97,6 @@
     }
 
     .sidebar-nav li a {
-      display: block;
       text-decoration: none;
       color: #d8ffff;                   /* $nav-text-color */
     }
@@ -111,6 +110,13 @@
     .sidebar-nav li a:active,
     .sidebar-nav li a:focus {
       text-decoration: none;
+    }
+
+    .sidebar-nav li span {
+      color: #d8ffff;
+      padding-right:5px;
+        display: inline-block;
+      cursor: pointer;
     }
 
     .sidebar-nav > .sidebar-brand {
@@ -127,6 +133,10 @@
       color: #fff;
       background: none;
     }
+
+    .sidebar-nav ul {
+      list-style: none;
+}
 
     @media(min-width:768px) {
       #wrapper {
@@ -163,33 +173,32 @@
       <ul class="sidebar-nav">
         <li class="sidebar-brand"><a href="#">Stock Control</a></li>
 
-        <li><a href="#">Customers<span class="caret"></span></a>
+        <li><span class="fa fa-plus fa-1x"></span><a ui-sref="home.customer-maintain">Customers</a>
           <ul>
             <li><a ui-sref="home.customer-invoice">          Invoices</a></li>
             <li><a ui-sref="home.customer-return">           Returns</a></li>
-            <li><a ui-sref="home.customer-maintain">         Customers</a></li>
             <li><a ui-sref="home.customer-markup-group">     Markup Groups</a></li>
             <li><a ui-sref="home.customer-area">             Areas</a></li>
             <li><a ui-sref="#">                              Orders</a></li>
           </ul>
         </li>
-        <li><a href="#">Products<span class="caret"></span></a>
+        <li><span class="fa fa-plus fa-1x"> </span><a ui-sref="home.product-maintain">Products</a>
           <ul>
-            <li><a ui-sref='home.product-maintain'>          Products</a></li>
             <li><a ui-sref="home.product-group">               Groups</a></li>
+            <li><a ui-sref="home.product-location">         Locations</a></li>
           </ul>
         </li>
-        <li><a href="#">Suppliers<span class="caret"></span></a>
+        <li><span class="fa fa-plus fa-1x"></span><a href="#">Suppliers</span></a>
           <ul>
             <li><a ui-sref='#'>                              Deliveries</a></li>
           </ul>
         </li>
-        <li><a href="#">Settings<span class="caret"></span></a>
+        <li><span class="fa fa-plus fa-1x"></span><a href="#">Settings</a>
           <ul>
             <li><a ui-sref="home.settings-vat">              Tax</a></li>
           </ul>
         </li>
-        <li><a ui-sref="login">Logout</a>
+        <li><span class="fa fa-sign-out fa-1x" ui-sref="login"></span><a ui-sref="login">Logout</a>
       </ul>
     </div>
 
@@ -226,12 +235,14 @@
       $("#wrapper").toggleClass("toggled");
     });
     /* Handle child menus */
+
     $('.sidebar-nav ul').hide(); //Hide children by default
-    $('.sidebar-nav li a').click(function(event) {
-      if ($(this).next('ul ul').children().length !== 0)
-        event.preventDefault();
-      $(this).siblings('ul').slideToggle(100);
+    $('.sidebar-nav li span').click(function(event) {
+        if ($(this).next('ul ul').children().length !== 0)
+            event.preventDefault();
+        $(this).siblings('ul').slideToggle(100);
     })
+
   </script>
 
 

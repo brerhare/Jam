@@ -16,7 +16,7 @@ class products
 
     // Globals
     private $clipBoard = "";
-    private $uid = "";//Yii::app()->session['uid'];
+    private $uid = "";//Yii::app()->sess->get('uid');
     private $defaultDepartment = "";
     private $defaultWidth = "100%";
     private $departmentSel = array();
@@ -38,7 +38,7 @@ class products
     public function init($options, $jellyRootUrl)
     {
 //      var_dump( $options );
-        $this->uid = Yii::app()->session['uid'];
+        $this->uid = Yii::app()->sess->get('uid');
 
         // Generate the content into the html, replacing any <substituteN> tags
         $content = "";
@@ -230,8 +230,8 @@ class products
         {
             if (isset($_GET['department']))
                 $this->departmentSel = explode('|', $_GET['department']);
-			else if (isset(Yii::app()->session['department']))
-				$this->departmentSel = explode('|', Yii::app()->session['department']); 
+			else if (Yii::app()->sess->exists('department'))
+				$this->departmentSel = explode('|', Yii::app()->sess->get('department')); 
 
             if (isset($_GET['feature']))
                 $this->featureSel = explode('|', $_GET['feature']);
@@ -239,7 +239,6 @@ class products
                 array_push($this->featureSel, '*');
 
             foreach ($departments as $department):
-
 				if (!($this->hasFilterOrFeature()))
 					array_push($this->departmentSel, $department->id);
 
@@ -268,12 +267,10 @@ class products
             endforeach;
         }
         $content .= "</div>";
-
 		if ($this->mode == 'preset')
 			$content .= "<div>";
 		if (!($this->hasFilterOrFeature()))
 			$content .= "</div>";
-
         return $content;
     }
 
@@ -301,9 +298,14 @@ class products
             foreach ($products as $product)
             {
 
-				// KKK
-				if ((isset(Yii::app()->session['department'])) && ($product->product_department_id != Yii::app()->session['department']))
-					continue;
+				// KKK - department filtering
+				// This is checked so filters the user sets while browsing the product page are obeyed
+				if ( (Yii::app()->sess->exists('department')) && ($product->product_department_id != Yii::app()->sess->get('department')) )
+				{
+					// This is checked so {{curly}} department filters are obeyed
+					if ((!(isset($_GET['setfilter']))) || ($_GET['setfilter'] != 'true'))
+						continue;
+				}
 
 //echo 'dept ' . $this->departmentSel[$i] . ' product ' . $product->id . '<br>';
                 // Each selected feature for this particular department (to match against this particular product)
@@ -691,6 +693,7 @@ END_OF_API_HTML;
 			sel += "&showurl=true";
 
         // Activate the link
+		sel += "&setfilter=true";
         window.location.href = sel;
     }
 

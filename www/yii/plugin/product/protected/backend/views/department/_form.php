@@ -1,6 +1,7 @@
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'department-form',
 	'enableAjaxValidation'=>false,
+    'htmlOptions'=>array('enctype'=>'multipart/form-data'),
 	'type'=>'horizontal',
 )); ?>
 
@@ -17,6 +18,17 @@
 		$jellyEmbed = "To embed this in pages use <b><i>{{department " . $model->id . " " . $model->name . "}}</b></i>"; ?>
 
 	<?php echo $form->textFieldRow($model,'name',array('class'=>'span5','maxlength'=>255, 'hint'=>$jellyEmbed)); ?>
+
+<?php echo $form->toggleButtonRow($model, 'active'); ?>
+
+    <div class="control-group">
+        <label class="control-label" for="thumb_path">Thumb (140w x 140h)</label>
+            <div class="controls">
+            <?php echo CHtml::activeFileField($model,'thumb_path',array('size'=>60,'maxlength'=>255)); ?>
+            <?php echo $form->error($model,'thumb_path'); ?>
+        </div>
+    </div>
+
 	<?php echo $jellyEmbed . "<br/><br/>";?>
 
 	<?php if (!($model->isNewRecord)): ?>

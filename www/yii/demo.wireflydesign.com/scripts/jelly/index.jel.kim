@@ -1,0 +1,171 @@
+#Test file
+[defaults]
+include = default-values
+
+; Every blob inherits these before adding/overriding
+[* : defaults]
+
+[screen]
+child = site
+#fx.wallpaper-image-tile = /img/straw-tile.jpg
+css.background-color = black
+css.display = block
+
+#[ticker]
+#css.width = 100%
+######css.height = 100px
+#css.position = fixed
+#css.bottom = 0
+
+
+	[site]
+	child = header, slider, pages, footer
+	css.width = 970px
+
+####  Header  #################################
+
+		[header]
+		child = header-dt, menu
+		
+			[header-dt]
+			child = logo, stat-link
+			stacking = horizontal
+
+				[logo]
+				css.margin-left = 50px
+				css.margin-top = 25px
+				css.height = 120px
+				css.width = 500px
+				css.z-index = 1000
+				css.position = relative
+				image.url = img/Logo.png
+				image.width = 241px
+				image.height = 116px
+				click = http://www.test.wireflydesign.com
+
+				[stat-link]
+				child = cart, news
+				css.height = 45px
+				css.width = 260px
+				css.margin-left = 160px
+				fx.rounding = 4px
+				css.background-color = white
+				stacking = horizontal
+
+					[cart]
+					css.width = 120px
+					css.height = 22px
+					css.margin-left = 40px
+					css.margin-top = 15px
+					html.raw = Shopping Cart
+					css.font-size = 12px
+					click = http://www.test.wireflydesign.com/?layout=index&page=checkout
+							
+
+					[news]
+					css.width = 100px
+					css.height = 22px
+					css.margin-left = 0px
+					css.margin-top = 15px
+					html.raw = Newsletter
+					css.font-size = 12px
+					click = http://www.test.wireflydesign.com/?layout=index&page=text-blog
+
+
+
+		[menu]
+        css.height = 240px
+        #css.margin-top = 60px
+        css.max-width = 800px
+        css.min-width = 500px
+        css.overflow = visible
+        css.z-index = 100
+
+
+        addon.menu.traditional.orientation = horizontal
+        addon.menu.traditional.height = 30px
+        #addon.menu.traditional.menu-color = transparent
+
+        addon.menu.traditional.menu-font-family = Roboto Condensed
+        addon.menu.traditional.menu-font-size = 20px
+        addon.menu.traditional.menu-text-color = white
+addon.menu.traditional.item-separator-width = 8px
+            addon.menu.traditional.item-separator-color = transparent
+
+        addon.menu.traditional.menu-hover-font-size = 20px
+        addon.menu.traditional.menu-hover-text-color = lightgrey
+
+        addon.menu.traditional.menu-selected-font-size = 20px
+        addon.menu.traditional.menu-selected-text-color = lightgrey
+
+
+        addon.menu.traditional.submenu-height = 25px
+            #addon.menu.traditional.submenu-width = 
+        addon.menu.traditional.submenu-font-size = 16px
+            #addon.menu.traditional.submenu-font-family = 
+            #addon.menu.traditional.submenu-font-weight = 
+            #addon.menu.traditional.submenu-text-color = 
+        addon.menu.traditional.submenu-background-color = black
+            #addon.menu.traditional.submenu-background-tile = 
+            #addon.menu.traditional.submenu-background-stretch = /img/submenu.png
+        addon.menu.traditional.submenu-separator-width = 1px
+        addon.menu.traditional.submenu-separator-color = white
+            #addon.menu.traditional.submenu-separator-tile = 
+            #addon.menu.traditional.submenu-separator-stretch = 
+
+
+#### Slider ###########################################
+
+
+######## body #######################################
+			
+
+	[pages]
+	css.background-color = white
+	db.table = ContentBlock
+	db.filter = url=$_GET['page']
+	db.error = Sorry, I could not find the page $_GET['page']
+	html.raw = ContentBlock.content
+
+####footer####################################
+
+            [footer]
+            css.width = 100%
+            css.height = 200px
+css.background-color = black
+
+# Top level basic settings
+            addon.menu.traditional.orientation = vertical
+            addon.menu.traditional.height = 20px
+            addon.menu.traditional.align = left
+# Top level background settings
+            addon.menu.traditional.menu-color = transparent
+            addon.menu.traditional.item-separator-width = 2px
+            addon.menu.traditional.item-separator-color = transparent
+# Top level font settings
+            addon.menu.traditional.menu-font-size = 10px
+            addon.menu.traditional.menu-font-family = Roboto
+            addon.menu.traditional.menu-text-color = white
+# Top level hover settings
+            addon.menu.traditional.menu-hover-text-color = red
+            addon.menu.traditional.menu-hover-background-color = black
+            addon.menu.traditional.menu-hover-font-size = 10px
+            addon.menu.traditional.menu-hover-font-family = Roboto
+            addon.menu.traditional.menu-hover-font-weight = normal
+# Top level selected settings
+            addon.menu.traditional.menu-selected-text-color = white
+            addon.menu.traditional.menu-selected-background-color = black
+            addon.menu.traditional.menu-selected-font-size = 10px
+            addon.menu.traditional.menu-selected-font-family = Roboto
+            addon.menu.traditional.menu-selected-font-weight = normal
+# Second level settings
+            addon.menu.traditional.submenu-height = 20px
+            #addon.menu.traditional.submenu-width = variable / px
+            addon.menu.traditional.submenu-font-size = 10x
+            addon.menu.traditional.submenu-font-family = Arial
+            addon.menu.traditional.submenu-font-weight = normal
+            addon.menu.traditional.submenu-text-color = white
+            addon.menu.traditional.submenu-background-color = black
+            addon.menu.traditional.submenu-separator-width = 1px
+            addon.menu.traditional.submenu-separator-color = red
+

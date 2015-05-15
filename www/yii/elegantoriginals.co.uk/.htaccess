@@ -1,0 +1,13 @@
+Redirect 301 /home http://www.elegantoriginals.co.uk/?layout=index&page=index
+Redirect 301 /gallery http://www.elegantoriginals.co.uk/?layout=index&page=textile-glassware-silk-wedding
+Redirect 301 /contact-me http://www.elegantoriginals.co.uk/?layout=index&page=contact&click=true
+Redirect 301 /system/app/pages/recentChanges http://www.elegantoriginals.co.uk/?layout=index&page=index
+Redirect 301 /system/app/pages/reportAbuse http://www.elegantoriginals.co.uk/?layout=index&page=contact&click=true
+Redirect 301 /scarves/bridal http://www.elegantoriginals.co.uk/?layout=index&page=shop
+Redirect 301 /scarves http://www.elegantoriginals.co.uk/?layout=index&page=shop
+Redirect 301 /tartan-felt http://www.elegantoriginals.co.uk/?layout=index&page=shop
+Redirect 301 /hand-felted-creations http://www.elegantoriginals.co.uk/?layout=index&page=shop
+Redirect 301 /upcycled-gowns http://www.elegantoriginals.co.uk/?layout=index&page=shop
+Redirect 301 /testimonials http://www.elegantoriginals.co.uk/?layout=index&page=contact&click=true
+Redirect 301 /where-to-see-me http://www.elegantoriginals.co.uk/?layout=index&page=contact&click=true
+

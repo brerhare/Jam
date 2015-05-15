@@ -95,15 +95,15 @@ class signup
 		
 
 		// Generate the content
-		$content = "<div ng-app>";
+		$content = "<div>";
 			$background = "";
 			if ($this->optionBackColor != '')
 				$background = " background-color:" . $this->optionBackColor . "; ";
 			$color = " color:" . $this->optionTextColor . "; ";
 			$content .= "<div style='" . $background . "' ng-controller='signupController'>";
-				$content .= "<input id='signup-name' class='signup-input' type='text' style='width:" . $this->optionInputWidth . "px' title='Name' />";
+				$content .= "<input id='signup-name' class='signup-input' type='text' style='width:" . $this->optionInputWidth . "px' placeholder='Name' title='Name' />";
 				$content .= $separator;
-				$content .= "<input id='signup-email' class='signup-input' type='text' style='width:" . $this->optionInputWidth . "px' title='Email' />";
+				$content .= "<input id='signup-email' class='signup-input' type='text' style='width:" . $this->optionInputWidth . "px' placeholder='Email' title='Email' />";
 				$content .= $separator;
 				$content .= $center . "<button ng-click='addSignup()' id='signup-send-button' class='signup-visible signup-send-button' style='background:" . $this->optionButtonColor . "; color:" . $this->optionButtonTextColor . "' class='signup-send-button' id='save'>" . $this->optionButtonText . "</button>" . $center;
 				$content .= "<span id='signup-message' class='signup-invisible'>Message Area</span>";
@@ -178,6 +178,7 @@ END_OF_API_HTML;
 
 	private $apiJs = <<<END_OF_API_JS
 $(document).ready(function(){
+/*
 $('.signup-input[type=text][title],.signup-input[type=password][title],textarea[title]').each(function(i){
     $(this).addClass('input-prompt-' + i);
     var promptSpan = $('<span class="input-prompt"/>');
@@ -200,6 +201,7 @@ $('.signup-input[type=text][title],.signup-input[type=password][title],textarea[
       }
     });
   });
+*/
 });
 
 function signupController(\$scope, \$http)
