@@ -1,0 +1,17 @@
+site = southwest-arb.co.uk
+sitetitle = SouthWest Arb
+sid = d3749rpmr3hr7unmqdvgedlck4
+
+# Database
+dbname = southwest_arb_co_uk
+dbuser = southwest-arb.co
+dbpass = h2a7jgbx
+
+# Shopping cart order confirmation email
+checkoutemail = not_set
+checkoutname = not_set
+
+# Backend page editor
+editorpagewidth = 800
+editorpageheight = 500
+

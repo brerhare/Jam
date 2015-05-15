@@ -32,6 +32,17 @@ class SiteController extends Controller
         $this->redirect(array('site/index'));
     }
 
+// @@TODO: HARDCODED FOR DEMO ---------- REMOVE
+    public function actionDemodirect()
+    {
+        Yii::app()->session['uid'] = 4;
+        $identity = new UserIdentity('demo', 'demo');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
 // @@TODO: HARDCODED FOR ABSOLUTE CLASSICS ---------- REMOVE
     public function actionAbsoluteClassicsdirect()
     {
@@ -128,7 +139,7 @@ class SiteController extends Controller
 				unset(Yii::app()->session['isAnyAdmin']);
 				$criteria = new CDbCriteria;
 				$criteria->addCondition("event_member_id = " . Yii::app()->session['eid']);
-				$criteria->addCondition("privilege_level = 4");	//@@TODO Privilege hardcoded
+				$criteria->addCondition("privilege_level = 2");	//@@TODO Privilege hardcoded
 				$memberHasProgram = MemberHasProgram::model()->findAll($criteria);
 				if ($memberHasProgram)
 					Yii::app()->session['isAnyAdmin'] = 1;

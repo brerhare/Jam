@@ -66,7 +66,7 @@ $(document).ready(function() {
 <?php
 	// Set global flags
 	$isFreeEvent = 1;
-	(isset($_GET['ref']) && ($_GET['ref'] == 'bktji5308')) ? $isBackend = 1 : $isBackend = 0;
+	$isBackend = Yii::app()->session['isBackend'];	// This is set in _book_form.php
 
 	$fst = 1;
 	$lc = 0;
@@ -405,7 +405,7 @@ function genHeading($event)
 <div class="row">
 
 	<div style="Xfloat:left">
-	By using this service you agree to our <a href="https://secure.dglink.co.uk/cboxoffice/tandc.html" target="_blank">Terms & Conditions</a> as well as the conditions displayed below
+	By using this service you agree to our <a href="https://plugin.wireflydesign.com/ticket/tandc.html" target="_blank">Terms & Conditions</a> as well as the conditions displayed below
 	</div>
 
 	<div style="Xfloat:right">

@@ -1,0 +1,12 @@
+build has 'stock' modulename in it
+build doesnt pick up libs
+check validity of {a/b} substitutions I did in watch, server
+check dependencies
+FIXED. wiredep excludes bootstrap. why?
+FIXED. unit-tests excludes bootstrap. why?
+FIXED. bootstrap is in old assets/libs
+
+
+
+
+

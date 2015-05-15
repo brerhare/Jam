@@ -1,0 +1,17 @@
+site = elegantoriginals.co.uk
+sitetitle = Elegant Originals
+sid = huf28g7ckbj45e1d8vc6ivutq1
+
+# Database
+dbname = elegantoriginals_co_uk
+dbuser = elegantoriginals
+dbpass = 4tyqfahv
+
+# Shopping cart order confirmation email
+checkoutemail = caroline@elegantoriginals.co.uk
+checkoutname = Elegant Originals Sales
+checkoutpaypalemail = caroline@elegantoriginals.co.uk
+
+# Backend page editor
+editorpagewidth = 800
+editorpageheight = 500

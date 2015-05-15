@@ -1,0 +1,381 @@
+#Southwest Arb
+[defaults]
+include = default-values
+
+# Every blob inherits these before adding/overriding
+
+[* : defaults]
+
+[screen]
+child = site
+fx.wallpaper-image-tile = /img/background.jpg
+css.display = block
+
+	[site]
+	child = header, slider, body, footer
+	css.width = 85%
+	css.min-width = 900px
+	css.background-color = white
+
+####  Header  #################################
+
+	[header]
+	child = header-bar, header-main
+	css.height = 200px
+	css.width = 100%
+		
+		[header-bar]
+		css.width = 100%
+		css.height = 37px
+		css.background-color = #b7dd79
+		css.margin-top = 120px
+		
+		[header-main]
+		child = header-logo, header-details
+		css.width = 95%
+		css.margin-top = -157px
+		stacking = horizontal
+
+			[header-logo]
+			css.margin-left = 10%
+			css.margin-top = 25px
+			css.background-color = white
+			css.height = 175px
+			css.width = 205px
+			image.url = img/logo.png
+			image.width = 185px
+			image.height = 138px
+			image.align = center
+			click = http://www.southwest-arb.co.uk/
+
+			[header-details]
+			child = social, header-contact, menu
+			css.width = 60%
+			css.min-width = 300px
+			css.height = 180px
+			css.margin-top = 20px
+			css.margin-left = 20px
+			css.float = right
+#			css.background-color = lightgrey
+			
+				[social]
+				child = facebook, email
+				css.width = 100%
+				stacking = horizontal
+				#css.right = 0px
+				#css.position = relative
+				css.float = right
+				
+					[facebook]
+					css.width = 50px
+					css.height = 60px
+					css.float = right
+					image.url = img/facebook.png
+					image.width = 40px
+					image.height = 40px
+					clicknew = https://www.facebook.com/southwestarb
+					
+					
+					[email]
+					css.width = 50px
+					css.height = 60px
+					css.float = right
+					image.url = img/email.png
+					image.width = 40px
+					image.height = 40px
+					click = ?layout=index&page=contact
+					
+				
+				[header-contact]
+				css.width = 100%
+				css.height = 50px
+				image.url = img/header-contact.png
+				image.width = 500px
+				image.height = 40px
+			
+				[menu]
+				child = home-page, menu-seperator, services-page, menu-seperator, contact-page, menu-seperator, credential-page
+				css.margin-top = 2px
+				css.margin-left = 0px
+				css.height = 40px
+				css.width = 95%
+				css.position = relative
+				css.z-index = 100
+				stacking = horizontal
+				
+					[menu-seperator]
+					css.width = 5px
+					css.height = 5px
+					css.margin-top = 5px
+					image.url = img/menu-seperator.png
+					image.width = 5px
+					image.height = 5px
+					
+					[home-page]
+					css.width = 20%
+					css.text-align = center
+					html.raw = <a style="text-decoration:none; color: black; font-weight: bold; font-size: 14px;" onmouseover="this.style.color='white'" onmouseout="this.style.color='black'" href="?layout=index&page=index">Home</a>
+
+					[services-page]
+					css.width = 20%
+					css.text-align = center
+					html.raw = <a style="text-decoration:none; color: black; font-weight: bold; font-size: 14px;" onmouseover="this.style.color='white'" onmouseout="this.style.color='black'" href="?layout=index&page=tree-surgeon-services-dumfries-galloway">Services</a>
+
+					[credential-page]
+					css.width = 20%
+					css.text-align = center
+					html.raw = <a style="text-decoration:none; color: black; font-weight: bold; font-size: 14px;" onmouseover="this.style.color='white'" onmouseout="this.style.color='black'" href="?layout=index&page=qualified-tree-surgeon-dumfries-galloway">Credentials</a>
+					
+					[contact-page]
+					css.width = 20%
+					css.text-align = center
+					html.raw = <a style="text-decoration:none; color: black; font-weight: bold; font-size: 14px;" onmouseover="this.style.color='white'" onmouseout="this.style.color='black'" href="?layout=index&page=contact">Contact</a>
+
+
+#### Slider ###########################################
+
+	[slider]
+	child = image-left-container, image-right-container
+	css.width = 95%
+	stacking = horizontal
+	
+		[image-left-container]
+		child = image-left
+		css.width = 66%
+		css.margin-left = 1%
+		#css.padding = 5px
+	
+			[image-left]
+			css.background-size = 99%
+			css.background-image = url('/img/sun-tree.jpg')
+			css.padding-top = 40%
+			css.background-repeat = no-repeat
+				#divide the height by the width for the proportional padding height
+				
+		[image-right-container]
+		child = image-right
+		css.width = 30%
+		css.margin-left = 3%
+		#css.padding = 5px
+				
+			[image-right]
+			css.background-size = 98%
+			css.background-image = url('/img/man-tree.jpg')
+			css.padding-top = 89%
+			css.background-repeat = no-repeat
+				#divide the height by the width for the proportional padding height
+
+
+######## body #######################################
+			
+[body]
+child = left-column, middle-column, right-column
+stacking = horizontal
+	css.margin-top = 20px
+
+
+	[left-column]
+	child = side-menu, quote
+	css.width = 180px
+	css.margin-left = 30px
+	css.margin-top = 20px
+	
+		[side-menu]
+		#		css.height = 40px
+		#		css.width = 90%
+				css.overflow = visible
+				css.position = relative
+				css.z-index = 100
+
+#	// Top level basic settings
+				addon.menu.traditional.orientation = vertical
+				addon.menu.traditional.width = 180px
+				addon.menu.traditional.height = 45px
+#				addon.menu.traditional.align = center
+				addon.menu.traditional.item-margin = 5px
+				addon.menu.traditional.item-width = 120px
+#	// Top level background settings
+				addon.menu.traditional.menu-rounding = 0px
+				addon.menu.traditional.menu-color = #e4f2cd 
+				addon.menu.traditional.item-separator-width = 2px
+				addon.menu.traditional.item-separator-color = white
+#				addon.menu.traditional.item-separator-tile = /img/menu.jpg
+#				addon.menu.traditional.item-separator-stretch = /img/menu-seperator.jpg
+#				addon.menu.traditional.edgepadding = 20px
+#	// Top level font settings
+				addon.menu.traditional.menu-font-size = 12px
+				addon.menu.traditional.menu-font-family = Arial
+				addon.menu.traditional.menu-font-weight = normal
+				addon.menu.traditional.menu-text-color = #384433
+#	// Top level hover settings
+				addon.menu.traditional.menu-hover-text-color = #384433
+				addon.menu.traditional.menu-hover-background-color = white
+				addon.menu.traditional.menu-hover-font-size = 12px
+				addon.menu.traditional.menu-hover-font-family = Arial
+				addon.menu.traditional.menu-hover-font-weight = bold
+#	// Top level selected settings
+				addon.menu.traditional.menu-selected-text-color = #384433
+				addon.menu.traditional.menu-selected-background-color = #f0f8e4
+				addon.menu.traditional.menu-selected-font-size = 12px
+				addon.menu.traditional.menu-selected-font-family = Arial
+				addon.menu.traditional.menu-selected-font-weight = bold
+#	// Second level settings
+				addon.menu.traditional.submenu-height = 30px // centers text
+				addon.menu.traditional.submenu-width = variable / px
+				addon.menu.traditional.submenu-font-size = 12px
+				addon.menu.traditional.submenu-font-family = Arial
+				addon.menu.traditional.submenu-font-weight = normal
+				addon.menu.traditional.submenu-text-color = blue
+				addon.menu.traditional.submenu-background-color = grey
+				addon.menu.traditional.submenu-background-tile = /img/menu.jpg
+				addon.menu.traditional.submenu-background-stretch = /img/menu.jpg
+				addon.menu.traditional.submenu-separator-width = 1px
+				addon.menu.traditional.submenu-separator-color = red
+				addon.menu.traditional.submenu-separator-tile = /img/menu.jpg
+				addon.menu.traditional.submenu-separator-stretch = /img/menu.jpg
+		
+		[quote]
+		css.margin-top = 20px
+		image.url = img/quote.jpg
+		image.width = 180px
+		image.height = 215px
+		image.align = left
+		
+	
+	[middle-column]
+	child = content 	
+	css.width = 50%
+	css.margin-left = 4%
+	
+		[content]
+		css.margin-left = 30px
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
+		
+	[right-column]
+	child = image1, image2, image3
+	css.width = 20%
+	css.margin-top = 10px
+	
+		[image1]
+		css.margin-top = 20px
+		image.url = img/image-right1.png
+		image.width = 160px
+		image.height = 160px
+		image.align = right
+		
+		[image2]
+		css.margin-top = 20px
+		image.url = img/image-right2.png
+		image.width = 160px
+		image.height = 160px
+		image.align = right
+		
+		[image3]
+		css.margin-top = 20px
+		image.url = img/image-right3.png
+		image.width = 160px
+		image.height = 160px
+		image.align = right
+
+
+####footer####################################
+
+[footer]
+child = footer-menu, footnote
+css.margin-top = 50px
+css.width = 100%
+css.background-color = #b7dd79
+stacking = horizontal
+
+
+	[footer-menu]
+	child = address, footer-contact, footer-cookies, footer-tandc
+	css.height = 200px
+	css.width = 170px
+	css.margin-left = 40px
+	css.margin-top = 10px
+
+	
+		[address]
+		css.height = 140px
+		html.raw = <span style="font-size:18px; font-weight: bold; color:#316b35; line-height: 120%;">South West Arb</span><br/><span style="font-size:14px; font-weight: normal; color:#316b35; line-height: 120%;">Dunjop Cottage</span><br/><span style="font-size:14px; font-weight: normal; color:#316b35; line-height: 120%;">Bridge of Dee</span><br/><span style="font-size:14px; font-weight: normal; color:#316b35; line-height: 120%;">Castle Douglas</span><br/><br/><span style="font-size:14px; font-weight: normal; color:#316b35; line-height: 120%;">Tel 01556 680488</span><br/><span style="font-size:14px; font-weight: normal; color:#316b35; line-height: 120%;">or 07827 815031</span><br/>
+		
+	
+		[footer-contact]
+		html.raw = <a style="text-decoration:none; color: #316b35; font-size: 12px;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#316b35'" href="?layout=index&page=contact">CONTACT</a>
+
+		[footer-cookies]
+		html.raw = <a style="text-decoration:none; color: #316b35; font-size: 12px;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#316b35'" href="?layout=index&page=cookie-policy">COOKIES</a>
+		css.margin-top = 10px
+
+		[footer-tandc]
+		html.raw = <a style="text-decoration:none; color: #316b35; font-size: 12px;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#316b35'" href="?layout=index&page=terms-conditions">TERMS</a>
+		css.margin-top = 10px
+
+	[footnote]
+	child = accred, copyright, nicky, wirefly
+	css.width = 74%
+	css.height = 330px
+	css.margin-right = 20px
+	
+		[accred]
+		css.height = 180px
+		image.url = img/accreditation.png
+		image.width = 160px
+		image.height = 158px
+		image.align = right
+	
+		[copyright]
+		html.raw = South West Arb &copy 2015 <br>All rights reserved
+		css.color = #000000
+		css.font-size = 12px
+		css.text-align = right
+		
+		[nicky]
+		html.raw = Designed by Nicola Forsyth
+		css.margin-top = 15px
+		css.color = #ffffff
+		css.font-size = 12px
+		css.font-weight = bold
+		css.text-align = right
+		clicknew = http://www.forsythcreative.com/
+		
+		[wirefly]
+		child = wirefly-logo, admin
+		stacking = horizontal
+		css.margin-top = 20px
+		css.float = right
+		css.margin-bottom = 30px
+
+		
+			[wirefly-logo]
+			css.height = 45px
+			css.margin-top = 5px
+			image.url = img/wirefly-design.png
+			image.width = 100px
+			image.height = 46px
+			image.align = right
+			clicknew = http://www.wireflydesign.com
+			
+		
+			[admin]
+			child = cog-center
+			css.height = 20px
+			css.width = 20px
+			css.background-size = 100%
+			css.background-image = url('/img/admin.png')
+			css.margin-left = -20px
+
+				[cog-center]
+				css.width = 5px
+				css.height = 5px
+				css.margin-top = 8px
+				image.url = img/cog-center.png
+				image.width = 5px
+				image.height = 5px
+				image.align = center
+				clicknew = backend.php	
+

@@ -1,0 +1,15 @@
+{
+  "name": "newbuild",
+  "version": "0.0.1",
+  "description": "A Wirefly project",
+  "repository" : { 
+    "type" : "git",
+    "url" : "http://github.com/npm/npm.git"
+  },
+  "engines": {
+    "node": "0.10.33",
+    "npm": "2.1.7"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

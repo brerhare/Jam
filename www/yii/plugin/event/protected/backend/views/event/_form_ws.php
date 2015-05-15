@@ -7,11 +7,16 @@
 
 	<?php //echo $form->textFieldRow($model2,'grade',array('class'=>'span2','maxlength'=>255)); ?>
 
+	<?php if ($model2->isNewRecord)
+		$model2->grade = 'Easy';
+	?>
     <?php echo $form->dropDownListRow($model2,'grade', array('Easy'=>'Easy', 'Medium'=>'Medium', 'Family'=>'Family'),  array('empty'=>'Choose') ); ?>
 
 
 	<?php // @@EG: Change on/off labels on togglebutton ?>
-	<?php echo $form->toggleButtonRow($model2, 'booking_essential' , array('options'=>array('enabledLabel'=>'Yes' , 'disabledLabel'=>'No'))); ?>
+
+	<?php //// @@NB: the 'options' buggers Yii although docs say its right: ..  echo $form->toggleButtonRow($model2, 'booking_essential' , array('options'=>array('enabledLabel'=>'Yes' , 'disabledLabel'=>'No'))); ?>
+	<?php echo $form->toggleButtonRow($model2, 'booking_essential'); ?>
 
 	<?php echo $form->textFieldRow($model2,'min_age',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right')); ?>
 
@@ -28,10 +33,15 @@
 </div>
 
 	<div class="form-actions">
-		<?php $this->widget('bootstrap.widgets.TbButton', array(
+	<?php
+	if (($updateMode == "update") || ($updateMode == "create"))
+	{
+		 $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',
 			'type'=>'primary',
 			'label'=>$model2->isNewRecord ? 'Create' : 'Save',
-		)); ?>
+		));
+	}
+	?>
 	</div>
 

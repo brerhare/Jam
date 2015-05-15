@@ -39,16 +39,22 @@ _dbfin($dbhandle);
 			$dbhandle="";
 			_dbinit($dbhandle);
 
+			// Pick up the order record for the adress lines from our form
+			$sql = "SELECT * FROM product_order where ip = '" . getIP() . "'";
+			logMsg("Retrieving order details to duplicate address1-4 using sql [" . $sql . "]");
+			$result = mysql_query($sql) or die(mysql_error());
+			$q = mysql_fetch_array($result, MYSQL_ASSOC);
+
 			$sql = "UPDATE product_order set
 				card_name = '" . $_POST['CardName'] . "',
 				card_number = '" . $_POST['CardNumber'] . "', 
 				card_expiry_month = '" . $_POST['ExpiryDateMonth'] . "',
 				card_expiry_year = '" . $_POST['ExpiryDateYear'] . "',
 				card_cv2 = '" . $_POST['CV2'] . "',
-				card_address1 = '" . $_POST['Address1'] . "',
-				card_address2 = '" . $_POST['Address2'] . "',
-				card_address3 = '" . $_POST['Address3'] . "',
-				card_address4 = '" . $_POST['Address4'] . "', 
+				card_address1 = '" . $_q['delivery_address1'] . "',
+				card_address2 = '" . $_q['delivery_address2'] . "',
+				card_address3 = '" . $_q['delivery_address3'] . "',
+				card_address4 = '" . $_q['delivery_address4'] . "', 
 				card_city = '" . $_POST['City'] . "',
 				card_state = '" . $_POST['State'] . "',
 				card_post_code = '" . $_POST['PostCode'] . "',
@@ -167,6 +173,15 @@ _dbfin($dbhandle);
 				$lilStartDateYearList = PaymentFormHelper::createStartDateYearListItemList($StartDateYear);
 				
 				$lilISOCountryList = PaymentFormHelper::createISOCountryListItemList($CountryShort, $iclISOCountryList);
+
+				// Pick up the order record for name and address to pre-fill the payment form
+				$dbhandle="";
+				_dbinit($dbhandle);
+				$sql = "SELECT * FROM product_order where ip = '" . getIP() . "'";
+				logMsg("Retrieving order name/postcode for form prefill using sql [" . $sql . "]");
+				$result = mysql_query($sql) or die(mysql_error());
+				$q = mysql_fetch_array($result, MYSQL_ASSOC);
+			_dbfin($dbhandle);
 
 				include ("Templates/PaymentForm.tpl");
 			}

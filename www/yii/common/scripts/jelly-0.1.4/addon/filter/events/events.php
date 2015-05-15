@@ -14,6 +14,7 @@ class events
     private $defaultDepartment = "";
     private $defaultWidth = "100%";
 	private $programId = 0;
+	private $map = "nomap";
 
 // Not used ...
     public $apiOption = array(
@@ -33,6 +34,10 @@ class events
         // Check if any program has been selected in the iframe
         if (isset($_GET['programid']))
             $this->programId = (int) $_GET['programid'];
+        if (isset($_GET['map']))
+            $this->map = $_GET['map'];
+//echo $this->map;die;
+
 
         foreach ($options as $opt => $val)
         {
@@ -59,7 +64,15 @@ class events
 
         // Insert the data
         $content = "";
-		$content .= "<script>var programId = " . $this->programId . ";</script>";
+
+		$pHeaderColor = "";
+		$pMember = "";
+		if (isset($_GET['headercolor']))
+			$pHeaderColor = $_GET['headercolor'];
+		if (isset($_GET['member']))
+			$pHeaderColor = $_GET['member'];
+
+		$content .= "<script>var programId = " . $this->programId . "; var mapyesorno ='" . $this->map . "'; var headercolor = '" . $pHeaderColor . "'; var member = '" . $pMember . "';</script>";
         $content .= "<div style='position:fixed; color:#575757;'>";      // Your basic solemn grey font color
         $uid = Yii::app()->session['uid'];
 
@@ -390,7 +403,6 @@ END_OF_REVIEW_ORDER_HTML;
         	if (!($openGrade))
             	$content .= "document.getElementById('grade-detail').style.display='none';";
 		}
-
 		// These next 2 'if's cater for both the iframe lock ($this->programId) or dg link non-lock ($_GET['program'])
 		// They serve to hide/show the main map
 
@@ -460,7 +472,14 @@ END_OF_API_HTML;
         sel = '?layout=index';
 
 		// Program lock?
-		sel += '&programid=' + programId;
+		if (typeof programId == 'undefined')
+			sel += '&programid=' + '6';			// wild seasons
+		else
+			 sel += '&programid=' + programId;
+	
+		sel += '&map=' + mapyesorno;
+		//sel += '&headercolor=' + headercolor;
+		//sel += '&member=' + member;
 
         // Date
         sel += '&sdate=' + selSDate;
@@ -581,6 +600,7 @@ END_OF_API_HTML;
 
         // Activate the link
 //alert(sel);
+	
         window.location.href = sel;
     }
 

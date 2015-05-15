@@ -9,7 +9,7 @@ $this->menu=array(
 ?>
 
 <style>
-img { height:50px;}
+.imgClass { height:50px;}
 </style>
 
 <h2>Manage Images for
@@ -37,7 +37,7 @@ img { height:50px;}
         array('name'=>'image',
             'type'=>'html',
             'header'=>'Picture',
-            'value'=> 'CHtml::image("/userdata/jelly/gallery/" . $data->image, "image", array("height"=>"50"))',
+            'value'=> 'CHtml::image("/userdata/jelly/gallery/" . $data->image, "image", array("height"=>"50", "class"=>"imgClass"))',
         ),
 
 		//'image',

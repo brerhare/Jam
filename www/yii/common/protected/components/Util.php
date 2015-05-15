@@ -17,4 +17,5 @@ class Util
 		$key = "password to (en/de)crypt";
 		return rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), base64_decode($str), MCRYPT_MODE_CBC, md5(md5($key))), "\0");
 	}
+
 }

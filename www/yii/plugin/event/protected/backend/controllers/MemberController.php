@@ -121,6 +121,8 @@ class MemberController extends Controller
 			}
 		}
 
+		$model->lock_program_id = 13;	// Default to DG Link.
+
 		$this->render('create',array(
 			'model'=>$model,
 		));

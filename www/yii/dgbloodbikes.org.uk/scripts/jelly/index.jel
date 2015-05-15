@@ -1,0 +1,388 @@
+#DG Bloodbikes
+[defaults]
+include = default-values
+
+# Every blob inherits these before adding/overriding
+
+[* : defaults]
+
+[screen]
+child = site
+fx.wallpaper-image-tile = /img/black-tile.jpg
+css.display = block
+
+	[site]
+	child = header, home-image, main-image, body, footer
+	css.width = 100%
+
+####  Header  #################################
+
+	[header]
+	child = menu, donate, social-fb, social-email
+	css.height = 70px
+	css.max-width = 970px
+	css.min-width = 500px
+	stacking = horizontal
+	css.overflow = visible
+	
+		[menu]
+		css.height = 40px
+		css.margin-top = 60px
+		css.max-width = 800px
+		css.min-width = 500px
+		css.overflow = visible
+		css.z-index = 100
+		css.position = relative
+
+		addon.menu.traditional.orientation = horizontal
+		addon.menu.traditional.height = 30px
+		addon.menu.traditional.menu-color = transparent
+		
+		addon.menu.traditional.menu-font-family = Roboto Condensed
+		addon.menu.traditional.menu-font-size = 20px
+		addon.menu.traditional.menu-text-color = white
+addon.menu.traditional.item-separator-width = 8px
+            addon.menu.traditional.item-separator-color = transparent
+		
+		addon.menu.traditional.menu-hover-font-size = 20px
+		addon.menu.traditional.menu-hover-text-color = lightgrey
+		
+		addon.menu.traditional.menu-selected-font-size = 20px
+		addon.menu.traditional.menu-selected-text-color = lightgrey
+
+
+		addon.menu.traditional.submenu-height = 25px
+			#addon.menu.traditional.submenu-width = 
+		addon.menu.traditional.submenu-font-size = 16px
+			#addon.menu.traditional.submenu-font-family = 
+			#addon.menu.traditional.submenu-font-weight = 
+			#addon.menu.traditional.submenu-text-color = 
+		addon.menu.traditional.submenu-background-color = black
+			#addon.menu.traditional.submenu-background-tile = 
+			#addon.menu.traditional.submenu-background-stretch = /img/submenu.png
+		addon.menu.traditional.submenu-separator-width = 1px
+		addon.menu.traditional.submenu-separator-color = white
+			#addon.menu.traditional.submenu-separator-tile = 
+			#addon.menu.traditional.submenu-separator-stretch = 
+		
+		[donate]
+		css.height = 50px
+		css.width = 250px
+		css.margin-top = 57px
+		css.margin-left = 30px
+		image.url = img/donate.png
+		image.width = 250px
+		image.height = 35px
+		image.align = center
+		image.z-index = 100
+		clicknew = http://www.dgbloodbikes.org.uk/?layout=index&page=temp-donate
+		
+		[social-fb]
+		css.height = 40px
+		css.width = 40px
+		css.margin-top = 5px
+		css.margin-left = 40px
+		image.url = img/facebook.png
+		image.width = 35px
+		image.height = 35px
+		image.align = center
+		image.z-index = 100
+		clicknew = https://www.facebook.com/dgbloodbikes
+		
+		[social-email]
+		css.height = 40px
+		css.width = 40px
+		css.margin-top = 5px
+		css.margin-left = 5px
+		image.url = img/email.png
+		image.width = 35px
+		image.height = 35px
+		image.align = center
+		image.z-index = 100
+		#html.raw = <a href="mailto:info@dgbloodbikes.org.uk?subject=Website%20Enquiry"></a>
+		click = http://www.dgbloodbikes.org.uk/?layout=index&page=contact-donate-volunteer
+
+
+#### Main Image ###########################################
+
+	[home-image]
+	child = home-logo, blurb
+	condition = @PAGE=@HOMEPAGE
+	css.width = 100%
+    css.background-size = 100%
+	css.padding-top = 49%
+	css.background-repeat = no-repeat
+	css.background-image = url('/img/bbwebpic_NEW.jpg')
+	css.border-style = solid
+	css.border-color = white
+	css.border-top-width = 1px
+	
+		[home-logo]
+		css.margin-left = 15%
+		css.margin-top = -45%
+		css.max-width = 20%
+		#css.min-width = 200px
+		css.background-size = 100%
+		css.padding-top = 20%
+		css.background-repeat = no-repeat
+		css.background-image = url('/img/logo.png')
+		css.z-index = 100
+		
+		[blurb]
+		css.margin-left = 0px
+		css.margin-top = 5%
+		css.max-width = 50%
+		css.background-size = 100%
+		css.padding-top = 20%
+		css.background-repeat = no-repeat
+		css.background-image = url('/img/blurb.png')
+		css.z-index = 100
+		#css.background-color = grey
+	
+	[main-image]
+	child = logo
+	condition = @PAGE!=@HOMEPAGE
+	css.width = 100%
+    css.background-size = 100%
+	css.padding-top = 23%
+	css.background-repeat = no-repeat
+	css.background-image = url('/img/bbwebpic_NEWCROPPED.jpg')
+	css.border-style = solid
+	css.border-color = white
+	css.border-top-width = 1px
+
+	
+		[logo]
+		css.margin-left = 15%
+		css.margin-top = -20%
+		css.max-width = 17%
+		#css.min-width = 200px
+		css.background-size = 100%
+		css.padding-top = 20%
+		css.background-repeat = no-repeat
+		css.background-image = url('/img/logo.png')
+		css.z-index = 100
+		
+
+
+
+######## body #######################################
+			
+
+	[body]
+	child = page-margin, content-background, news
+	css.width = 100%
+	stacking = horizontal
+	css.background-color = white
+	
+		[page-margin]
+		#css.max-width = 200px
+		css.border-top = solid
+		css.border-color = black
+		css.border-width = 50px
+		css.width = 15%
+		css.height = 1px
+		css.background-color = white
+			
+		[content-background]
+		child = black-line, content, contact
+		css.width = 50%
+		css.min-width = 300px
+		css.min-height = 450px
+		css.background-color = #ededed
+		css.overflow = visible
+		
+			[black-line]
+			css.height = 50px
+			css.background-color = black
+	
+			[content]
+			css.background-color = transparent
+			css.margin-top = -52px
+			css.min-width = 280px
+			css.width = 90%
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find the page $_GET['page']
+			html.raw = ContentBlock.content
+			css.overflow = visible
+			css.margin-bottom = 50px
+				
+			[contact]
+			child = contact-form, contact-text
+			condition = @PAGE=contact-donate-volunteer
+			css.height = 300px
+			stacking = horizontal
+				
+				[contact-form]
+				css.width = 400px
+				css.margin = 10px
+				addon.contact.contactform.edgepadding = 0px
+				addon.contact.contactform.buttoncolor = grey
+				addon.contact.contactform.buttontextcolor = white
+				addon.contact.contactform.buttontext = [ Submit ]
+				addon.contact.contactform.successtextcolor = green
+				addon.contact.contactform.failuretextcolor = red
+				addon.contact.contactform.textcolor = black
+				addon.contact.contactform.backcolor = white
+				addon.contact.contactform.inputspacing = 10px
+				addon.contact.contactform.inputwidth = 350px
+
+				[contact-text]
+				css.width = 25%
+				css.margin-top = 80px
+				css.font = 12px
+				html.raw = Please fill in the form and someone will get back to you as soon as possible.
+				
+		[news]
+		child = title, facebook
+		css.width = 35%
+		css.min-width = 300px
+		css.border-top = solid
+		css.border-color = black
+		css.border-width = 50px
+		css.background-color = white
+		css.height = 500px
+			
+		[title]
+		css.height = 50px
+		css.margin-top = 25px
+		css.margin-left = 100px
+		image.url = img/news.png
+		image.width = 200px
+		image.height = 42px
+		
+		[facebook]
+		css.width = 250px
+		css.height = 400px
+		css.margin-left = 50px
+		html.raw = <iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fdgbloodbikes&amp;width=250&amp;height=380&amp;colorscheme=light&amp;show_faces=false&amp;header=false&amp;stream=true&amp;show_border=false&amp;appId=259885860792535" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:250px; height:395px;" allowTransparency="true"></iframe>
+				
+
+
+####footer####################################
+
+[footer]
+child = footer-detail, footer-logo
+	css.width = 100%
+	stacking = horizontal
+	css.background-color = black
+	css.color = white
+
+		
+		[footer-detail]
+		child = footer-menu, footer-credits
+		css.height = 340px
+		css.width = 75%
+		css.min-width = 300px
+		css.margin-left = 15%
+		
+			[footer-menu]		
+			child = footer-faq, terms, cookie
+			css.width = 100%
+			css.height = 200px
+			css.margin-top = 10px
+		
+#Top level basic settings
+            addon.menu.traditional.orientation = vertical
+            addon.menu.traditional.height = 20px
+            addon.menu.traditional.align = left
+			addon.menu.traditional.edgepadding = 0px
+#Top level background settings
+            addon.menu.traditional.menu-color = transparent 
+            addon.menu.traditional.item-separator-width = 2px
+            addon.menu.traditional.item-separator-color = transparent
+#Top level font settings
+            addon.menu.traditional.menu-font-size = 14px
+            addon.menu.traditional.menu-font-family = Roboto
+            addon.menu.traditional.menu-text-color = white
+#Top level hover settings
+            addon.menu.traditional.menu-hover-text-color = red
+            addon.menu.traditional.menu-hover-background-color = black
+            addon.menu.traditional.menu-hover-font-size = 14px
+            addon.menu.traditional.menu-hover-font-family = Roboto
+            addon.menu.traditional.menu-hover-font-weight = normal
+#Top level selected settings
+            addon.menu.traditional.menu-selected-text-color = white
+            addon.menu.traditional.menu-selected-background-color = black
+            addon.menu.traditional.menu-selected-font-size = 14px
+            addon.menu.traditional.menu-selected-font-family = Roboto
+            addon.menu.traditional.menu-selected-font-weight = normal
+#Second level settings
+            addon.menu.traditional.submenu-height = 20px
+            addon.menu.traditional.submenu-width = variable / px
+            addon.menu.traditional.submenu-font-size = 10x
+            addon.menu.traditional.submenu-font-family = Arial
+            addon.menu.traditional.submenu-font-weight = normal
+            addon.menu.traditional.submenu-text-color = white
+            addon.menu.traditional.submenu-background-color = black
+            addon.menu.traditional.submenu-separator-width = 1px
+            addon.menu.traditional.submenu-separator-color = red
+				
+				[terms]
+				html.raw = <a style="text-decoration:none; color: white" onmouseover="this.style.color='red'" onmouseout="this.style.color='white'" href="?layout=index&page=terms-conditions">T&Cs</a>
+				css.margin-top = 4px
+				
+				[cookie]
+				html.raw = <a style="text-decoration:none; color: white" onmouseover="this.style.color='red'" onmouseout="this.style.color='white'" href="?layout=index&page=cookie-policy">COOKIES</a>
+				css.margin-top = 5px
+					
+			[footer-credits]
+			child = copyright, design, wirefly
+			css.width = 100%
+			css.height = 100px
+			#css.margin-top = 5px
+			stacking = horizontal
+			
+				[copyright]
+				html.raw = <span style="color: white">Scottish Charitable Incorporated <br>Organisation ( SCIO ) SC045453<br>&copy Dumfries & Galloway Blood Bikes 2015 <br>All rights reserved</span>
+				css.color = #000000
+				css.font-size = 10px
+				css.text-align = left
+				css.width = 32%
+				css.margin-left = 0px
+				css.margin-top = 15px
+				
+				[design]
+				html.raw = <a style="color: white" href="http://www.forsythcreative.com/" target="_blank">Design by Nicola Forsyth Creative Graphic Design</a>
+				css.color = #000000
+				css.font-size = 10px
+				css.text-align = center
+				css.width = 32%
+				css.margin-top = 15px
+				clicknew = http://www.forsythcreative.com/
+				
+				
+				[wirefly]
+				css.height = 50px
+				image.url = img/wirefly-build.png
+				image.width = 150px
+				image.height = 49px
+				image.align = center
+				clicknew = http://www.wireflydesign.com
+				css.width = 25%
+				
+			
+	[footer-logo]		
+	css.margin-top = 10px
+	css.margin-left = -200px
+	css.width = 180px
+	image.url = img/logo.png
+	image.width = 150px
+	image.height = 150px
+	image.align = center
+	image.z-index = 100
+	css.overflow = visible
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+

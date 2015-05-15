@@ -140,7 +140,7 @@ class Program extends CActiveRecord
 		// All programs I'm admin on
 		$criteria=new CDbCriteria;
 		$criteria->addCondition("event_member_id = " . Yii::app()->session['eid']);
-		$criteria->addCondition("privilege_level >= " . 4);	//@@TODO Privilege level hardcoding. This is admin
+		$criteria->addCondition("privilege_level >= " . 2);	//@@TODO Privilege level hardcoding. This is admin
 		$memberHasPrograms = MemberHasProgram::model()->findAll($criteria);
 		foreach ($memberHasPrograms as $memberHasProgram)
 		{

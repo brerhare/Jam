@@ -8,5 +8,8 @@ userdata/*
 !userdata/image
 userdata/image/*
 !userdata/image/.gitignore
+!userdata/thumb/.gitignore
+!userdata/thumb
+userdata/thumb/*
 *.bfproject
 *.bak

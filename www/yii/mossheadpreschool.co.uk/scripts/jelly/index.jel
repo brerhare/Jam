@@ -7,7 +7,7 @@ include = default-values
 # Every blob inherits these before adding/overriding
 
 [screen]
-child = header-graphic, site
+child = header-graphic, site, footer
 fx.wallpaper-image-tile = /img/background.jpg
 css.display = block
 #addon.analytics.google_analytics.ua = UA-20115178-1
@@ -28,7 +28,7 @@ css.display = block
 	fx.rounding = 10px
 			
 		[backgd]
-		child = middle, footer
+		child = middle
 		css.background-color = white
 		css.width = 980px
 		fx.rounding = 8px
@@ -48,28 +48,28 @@ css.margin-left = 40px
 	css.width = 180px
 	css.margin-left = 0px
 	fx.rounding = 8px
-	css.background-color = #ffff00
+#	css.background-color = #ffff00
 		
 		[signup]
 		css.margin = 10px
-		#addon.mailer.signup.orientation = horizontal
-		addon.mailer.signup.buttoncolor = red
-		addon.mailer.signup.buttontextcolor = yellow
-		addon.mailer.signup.buttontext = Submit
-		addon.mailer.signup.inputspacing = 5px
-		addon.mailer.signup.successtextcolor = green
-		addon.mailer.signup.failuretextcolor = red
-		addon.mailer.signup.inputwidth = 155px
+#		#addon.mailer.signup.orientation = horizontal
+#		addon.mailer.signup.buttoncolor = red
+#		addon.mailer.signup.buttontextcolor = yellow
+#		addon.mailer.signup.buttontext = Submit
+#		addon.mailer.signup.inputspacing = 5px
+#		addon.mailer.signup.successtextcolor = green
+#		addon.mailer.signup.failuretextcolor = red
+#		addon.mailer.signup.inputwidth = 155px
 			
 		[red-hand]
 		css.margin-top = -45px
 		css.margin = 150px
 		css.width = 30px
 		css.height = 30px
-		image.url = img/red-hand.png
-		image.width = 30px
-		image.height = 30px
-		css.overflow = visible
+#		image.url = img/red-hand.png
+#		image.width = 30px
+#		image.height = 30px
+#		css.overflow = visible
 			
 
 			
@@ -83,11 +83,11 @@ css.margin-left = 40px
 			css.width = 180px
 		
 				[menu]
-				#css.height = 40px
 				css.width = 180px
 				css.overflow = visible
 				css.position = relative
 				css.z-index = 1000
+				css.margin-top=10px
 
 				addon.menu.basic.orientation = vertical
 				addon.menu.basic.width = 160px
@@ -121,78 +121,153 @@ css.margin-left = 40px
 ###########################################################
 
 [content-block]
-child = slider, content
-css.width = 680px
+child = slider, slider-hand, content, contact, blog
+css.width = 710px
 css.margin-left = 50px
+css.margin-top=6px
 
 	[slider]
 	css.width = 680px
-	css.height = 390px
+	css.height = 400px
 	condition = @PAGE=@HOMEPAGE
+	css.position = relative
+	css.z-index = 900
 	addon.slider.flexslider.width = 660px
 	addon.slider.flexslider.height = 370px
 		addon.slider.flexslider.border-width = 10px
 		addon.slider.flexslider.border-color = #76f04e
-		addon.slider.flexslider.active-dotcolor = blue
+		addon.slider.flexslider.active-dotcolor = red
 		addon.slider.flexslider.inactive-dotcolor = lightgrey
-		addon.slider.flexslider.dot-margin-top = -200px
-		addon.slider.flexslider.dot-margin-bottom = 0px
-		addon.slider.flexslider.dot-margin-left = 0px
-		addon.slider.flexslider.dot-margin-right = 0px
+		addon.slider.flexslider.dot-margin-top = -35px
+		#addon.slider.flexslider.dot-margin-bottom = 0px
+		#addon.slider.flexslider.dot-margin-left = 0px
+		#addon.slider.flexslider.dot-margin-right = 0px
 		#addon.slider.flexslider.animation = fade
 	addon.slider.flexslider.mode = image
 		#addon.slider.flexslider.mode = HTML
 	addon.slider.flexslider.source = db
+	
+	[slider-hand]
+	condition = @PAGE=@HOMEPAGE
+	css.position = relative
+	css.z-index = 1000
+	css.margin-top = -25px
+		css.margin-left = 640px
+		css.width = 40px
+		css.height = 40px
+		image.url = img/blue-hand.png
+		image.width = 40px
+		image.height = 40px
+		css.overflow = visible
+	
 		
 	[content]
 	db.table = ContentBlock
 	db.filter = url=$_GET['page']
-	db.error = Sorry, I could not find th page $_GET['page']
+	db.error = Sorry, I could not find the page $_GET['page']
 	html.raw = ContentBlock.content
+	
+	[contact]
+	child = contact-form, contact-text
+	condition = @PAGE=contact
+	css.height = 300px
+	stacking = horizontal
+	
+		[contact-form]
+		css.width = 350px
+		css.margin = 30px
+		#css.margin-bottom = 30px
+		css.background-color = white
+		addon.contact.contactform.edgepadding = 30px
+		addon.contact.contactform.buttoncolor = #cddff2
+		addon.contact.contactform.buttontextcolor = black
+		addon.contact.contactform.buttontext = Submit
+		addon.contact.contactform.successtextcolor = green
+		addon.contact.contactform.failuretextcolor = red
+		addon.contact.contactform.textcolor = grey
+		addon.contact.contactform.backcolor = white
+		addon.contact.contactform.inputspacing = 10px
+	
+		[contact-text]
+		css.width = 250px
+		css.margin-top = 80px
+		css.font = 12px
+		html.raw = Please fill in the form and someone will get back to you as soon as possible.
+		
+	[blog]
+	condition = @PAGE=mosshead-preschool-news-articles
+	#html.raw = {{news newstype=pinterest sidebar=right color=blue backcolor=#49eb13}}
+	html.raw = {{news newstype=pinterest sidebar=right pushrecentdown=0 pushcategoriesdown=0}}
+	
+
 
 [footer]
-	child = footer-menu
-	css.margin-top = 40px
-	css.height = 200px
-	css.width = 960px
-	css.background-color = #ffffff
+child = footer-menu, white-hand, footnote
+css.margin-top = 20px
+css.height = 100px
+css.background-color = #49eb13
+stacking = horizontal
+css.width = 980px
+fx.rounding = 8px
 
 		[footer-menu]
-		stacking = horizontal
-		child = footer-margin, footer-cookies, footer-tandc, footer-contact, wirefly
-		css.height = 200px
-		css.width = 960px
-
-			[footer-margin]
-			css.width = 20%
-			css.height = 200px
+		child = footer-contact, footer-cookies, footer-tandc
+		css.height = 60px
+		css.margin = 20px
+		css.width = 25%
 
 			[footer-cookies]
 			html.raw = Cookie Policy
-			css.width = 20%
 			css.color = #000000
-			css.text-align = left
+			css.font-size = 12px
+			css.font-weight = bold
+			css.margin-top = 8px
 			click = ?layout=index&page=cookie-policy
 
 			[footer-tandc]
 			html.raw = Terms & Conditions
-			css.width = 20%
 			css.color = #000000
-			css.text-align = center
+			css.font-size = 12px
+			css.font-weight = bold
+			css.margin-top = 8px
 			click = ?layout=index&page=terms-conditions
 
 			[footer-contact]
 			html.raw = Contact Us
-			css.text-align = right
-			css.width = 20%
 			css.color = #000000
+			css.font-size = 12px
+			css.font-weight = bold
+			css.margin-top = 2px
 			click = ?layout=index&page=contact
 
-			[wirefly]
-			css.margin-top = 100px
-			css.height = 50px
-			css.width = 20%
-			image.url = img/wirefly-link-white.png
-			image.width = 161px
-			image.height = 40px
-			clicknew = http://www.wireflydesign.com
+	[white-hand]
+	css.margin-top = 30px
+		css.width = 15%
+		css.height = 30px
+		image.url = img/white-hand.png
+		image.width = 30px
+		image.height = 30px
+	
+	[footnote]
+	child = wirefly, copyright
+	css.width = 50%
+	css.height = 100%
+	css.margin = 20px
+
+		[copyright]
+		css.margin-top = 5px
+		html.raw = Mosshead Preschool &copy 2014 All rights reserved
+		css.font-size = 11px
+		css.font-weight = bold
+		css.color = #000000
+		css.text-align = right
+		css.margin-right = 0px
+
+		[wirefly]
+		css.height = 45px
+		css.width = 100%
+		image.url = img/wirefly-weblink.png
+		image.width = 150px
+		image.height = 40px
+		image.align = right
+		clicknew = http://www.wireflydesign.com

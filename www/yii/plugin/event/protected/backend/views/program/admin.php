@@ -80,14 +80,28 @@ $img = Yii::app()->request->baseUrl.'/userdata/program/icon/'.'ws-logo-sm.jpg';
 
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
-			'template'=>'{update}{images}{delete}',
-'htmlOptions'=>array('width'=>'60px'),
+			'template'=>'{approve}{privilege}{update}{delete}',
+'htmlOptions'=>array('width'=>'100px'),
             'buttons'=>array(
-                'images' => array(
+                'approve' => array(
+                    'label'=>'Approve event submissions',
+                    'imageUrl'=>Yii::app()->request->baseUrl.'/img/list.png',
+                    //'url'=>'Yii::app()->controller->createUrl("program/approve", array("product_id"=>$data->primaryKey))',
+                    'url'=>'Yii::app()->controller->createUrl("program/approve/" . $data->primaryKey)',
+                ),
+                'privilege' => array(
                     'label'=>'Assign privileges',
                     'imageUrl'=>Yii::app()->request->baseUrl.'/img/members.jpg',
                     //'url'=>'Yii::app()->controller->createUrl("program/privilege", array("product_id"=>$data->primaryKey))',
                     'url'=>'Yii::app()->controller->createUrl("program/privilege/" . $data->primaryKey)',
+                ),
+                'update' => array(
+                    'icon'=>false,
+                    'imageUrl'=>Yii::app()->request->baseUrl.'/img/edit.png',
+                ),
+                'delete'=>array(
+                    'icon'=>false,
+                    'imageUrl'=>Yii::app()->request->baseUrl.'/img/cross.png',
                 ),
 			),
 		),

@@ -78,6 +78,56 @@ class SiteController extends Controller
 		$this->render('contact',array('model'=>$model));
 	}
 
+// @@TODO: HARDCODED FOR ELEGANT ORIGINALS ---------- REMOVE
+    public function actionElegantDirect()
+    {
+        Yii::app()->session['uid'] = 59;
+        $identity = new UserIdentity('caroline@elegantoriginals.co.uk', 'gothchick');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR BLOODBIKES ---------- REMOVE
+    public function actionBloodbikesDirect()
+    {
+        Yii::app()->session['uid'] = 77;
+        $identity = new UserIdentity('chairman@dgbloodbikes.org.uk', '13100dbik35');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+// @@TODO: HARDCODED FOR AbSOLUTE CLASSICS ---------- REMOVE
+    public function actionAbsoluteClassicsdirect()
+    {       
+        Yii::app()->session['uid'] = 7;
+        $identity = new UserIdentity('mcquiston.concerts@gmail.com', 'greyfriars');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }   
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR DGLINK ---------- REMOVE
+    public function actionDglinkDirect()
+    {
+        Yii::app()->session['uid'] = 75;
+        $identity = new UserIdentity('admin@dglink.co.uk', 'communityV2');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
     /**
      * Displays the DIRECT login page
      */
@@ -86,6 +136,20 @@ class SiteController extends Controller
     {
         Yii::app()->session['uid'] = 56;
         $identity = new UserIdentity('register@rotarypeaceproject.com', 'district1020');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR DGNEWS-SPORT ---------- REMOVE
+    public function actionDgnewsSportDirect()
+    {
+        Yii::app()->session['uid'] = 74;
+        $identity = new UserIdentity('info@dgnews-sport.co.uk', 'nicole500');
         $identity->authenticate();
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);

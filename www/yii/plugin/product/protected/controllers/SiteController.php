@@ -4,6 +4,9 @@ class SiteController extends Controller
 {
 	// @@EG p3p example code here. Needed for IE
 	private $p3p = 'P3P:CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"';
+
+	public $test = 0;
+
 	/**
 	 * Get the jelly script root (as defined in /protected/config/main.php)
 	 */
@@ -38,16 +41,121 @@ class SiteController extends Controller
 	public function actionIndex()
 	{
 header($this->p3p);
+
+$clk='off';
+if (isset($_GET['click'])) $clk='true';
+Yii::log(".................... in at top.................. click=".$clk , CLogger::LEVEL_WARNING, 'system.test.kim');
+
+Yii::app()->sess->set("key", "value");
+
+		// If unset, initialise the product page cookie (only way to tell if we're back-paging from it or going to it)
+		if (!(Yii::app()->sess->exists('productdetail')))
+			Yii::app()->sess->set('productdetail', "0");
+
+		// Get hosting site's params
 		$util = new Util;
 		if (isset($_GET['ge']))
-			Yii::app()->session['checkoutEmail'] = $_GET['ge'];
+			Yii::app()->sess->set('checkoutEmail', $_GET['ge']);
 		if (isset($_GET['gn']))
-			Yii::app()->session['checkoutName'] = $_GET['gn'];
+			Yii::app()->sess->set('checkoutName', $_GET['gn']);
 		if (isset($_GET['gu']))
-			Yii::app()->session['checkoutGatewayUser'] = urldecode($util->decrypt($_GET['gu']));
+			Yii::app()->sess->set('checkoutGatewayUser', urldecode($util->decrypt($_GET['gu'])));
 		if (isset($_GET['gp']))
-			Yii::app()->session['checkoutGatewayPassword'] = urldecode($util->decrypt($_GET['gp']));
+			Yii::app()->sess->set('checkoutGatewayPassword', urldecode($util->decrypt($_GET['gp'])));
+		if (isset($_GET['pp']))
+			Yii::app()->sess->set('checkoutPaypalEmail', urldecode($util->decrypt($_GET['pp'])));
 
+		// Get the hosting site (referer)
+		if (isset($_SERVER['HTTP_REFERER']))
+		{
+			if (!strstr($_SERVER['HTTP_REFERER'], "plugin.wireflydesign.com"))
+			{
+				$urlParts = explode("://", $_SERVER['HTTP_REFERER']);	// 0 = http or https
+				$urlSubParts = explode("/", $urlParts[1]);				// 0 = www.example.com
+				Yii::app()->sess->set('http_referer',  $urlParts[0] . "://" . $urlSubParts[0]);
+Yii::log(".................... setting http_referer to [" . Yii::app()->sess->get('http_referer') . "] .................. " , CLogger::LEVEL_WARNING, 'system.test.kim');
+			}
+		}
+Yii::log(".................... http_referer is [" . Yii::app()->sess->get('http_referer') . "] .................. " , CLogger::LEVEL_WARNING, 'system.test.kim');
+
+		// Get iframe params
+		if (isset($_GET['sid']))
+			Yii::app()->sess->set('sid', $_GET['sid']);
+		if (isset($_GET['page']))
+			Yii::app()->sess->set('page', $_GET['page']);
+		if (isset($_GET['product']))
+			Yii::app()->sess->set('product', $_GET['product']);
+		if (isset($_GET['department']))
+			Yii::app()->sess->set('department', $_GET['department']);
+
+		// Are we redirecting the parent to the product page?
+		if ((isset($_GET['show'])) && ($_GET['show'] == 'product'))
+		{
+			if (Yii::app()->sess->get('productdetail') == "0")
+			{
+				$target = Yii::app()->sess->get('http_referer') . "/?page=" . Yii::app()->sess->get('page') . "&product=" . Yii::app()->sess->get('product');
+Yii::log(".................... redirecting parent to product page [$target] .................. " , CLogger::LEVEL_WARNING, 'system.test.kim');
+				echo
+					"<html><script>
+					// @@NB START POSTMESSAGE
+	   					parent.postMessage('redirect^" . $target . "', '*');
+					// @@NB END POSTMESSAGE
+					</script></html>";
+				return;
+			}
+		}
+
+		// Or is the parent sending us to the product page?
+		else if ((isset($_GET['page'])) && (isset($_GET['product']))) 
+		{
+			if ( (Yii::app()->sess->get('productdetail') == "0") || (isset($_GET['cartproduct'])) )
+			{
+Yii::log(".................... parent is sending us to product page.................. " , CLogger::LEVEL_WARNING, 'system.test.kim');
+				$parseConfig = new ParseConfig();
+				$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . "product" . '.jel');
+				if (!($jellyArray))
+					throw new Exception('Aborting');
+				$jelly = new Jelly;
+				$jelly->processData($jellyArray,$this->getJellyRoot());
+				$jelly->outputData();
+				return;
+			}
+		}
+
+		// We've just back-paged from the product page
+		if (Yii::app()->sess->get('productdetail') == "1")
+		{
+			if (!(isset($_GET['checkoutButton'])))	// This is only set in the initial checkout-iframe call, ie when the checkout button is clicked
+			{
+				Yii::app()->sess->set('productdetail',"0");
+				$target = Yii::app()->sess->get('http_referer') . "/?page=" . Yii::app()->sess->get('page') . "&department=" . Yii::app()->sess->get('department');
+Yii::log(".................... we've just back-paged from product page. redirecting parent to [$target].................. " , CLogger::LEVEL_WARNING, 'system.test.kim');
+               	echo
+                   	"<html><script>
+                   	// @@NB START POSTMESSAGE
+                        	parent.postMessage('redirect^" . $target . "', '*');
+                    	// @@NB END POSTMESSAGE
+                    	</script></html>";
+				return;
+			}
+		}
+
+
+$pageParam = '';
+if (isset($_GET['page']))
+ $pageParam = $_GET['page'];
+Yii::log(".................... still here.................. page is " . $pageParam , CLogger::LEVEL_WARNING, 'system.test.kim');
+	
+		// Are we going to the 'shop' page?
+		if ((isset($_GET['shop'])) && (!(isset($_GET['product']))))
+		{
+//print_r($_GET);
+//die('xx');
+			$this->actionShop($pageParam);
+			return;
+		}
+
+		// Otherwise by default the initial call goes to here
 		$layout = "index";
 		if (isset($_GET['layout']))
 			$layout = $_GET['layout'];
@@ -55,17 +163,13 @@ header($this->p3p);
 		$jellyArray = $parseConfig->parse(Yii::app()->basePath . "/../" . $this->getJellyRoot() . $layout . ".jel");
 		if (!($jellyArray))
 			throw new Exception('Aborting');
-
 		$jelly = new Jelly;
 		$jelly->processData($jellyArray,$this->getJellyRoot());
 		$jelly->outputData();
-
-		//$this->render('index');
 	}
 
 	/**
-	 * This is the default 'index' action that is invoked
-	 * when an action is not explicitly requested by users.
+	 *
 	 */
 	public function actionPlay($page)
 	{
@@ -78,29 +182,35 @@ header($this->p3p);
 		$jelly = new Jelly;
 		$jelly->processData($jellyArray,$this->getJellyRoot());
 		$jelly->outputData();
-
 	}
 
-	// Invoke the Paymentsense module
-	public function actionPay()
+	public function actionShop($page)
 	{
 header($this->p3p);
+		$this->renderPartial('shop',array(
+		));
+	}
+
+	// Invoke the payment module: Paymentsense or Paypal
+	public function actionPay()
+	{
+		Yii::log("Checkout - a payment button has been clicked" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		if (isset($_GET['ptype']))
 		{
 			Yii::log("Checkout - payment type requested is " . $_GET['ptype'] , CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
 
 		// Check vendor cart details exist
-		if ((trim(Yii::app()->session['checkoutEmail']) == "")
-		|| (trim(Yii::app()->session['checkoutName']) == ""))
+		if ((trim(Yii::app()->sess->get('checkoutEmail')) == "")
+		|| (trim(Yii::app()->sess->get('checkoutName')) == ""))
 		{
 			Yii::log("Checkout - NOT LOADING PAYMENT PAGE because vendor cart details arent present" , CLogger::LEVEL_WARNING, 'system.test.kim');
 			throw new CHttpException(400,'Cannot proceed to payment because vendor cart details dont exist');
 		}
 
 		// Check vendor has at least one payment type
-		if ((trim(Yii::app()->session['checkoutGatewayUser']) == "")
-		&& (trim(Yii::app()->session['checkoutPaypalUser']) == ""))
+		if ((trim(Yii::app()->sess->get('checkoutGatewayUser')) == "")
+		&& (trim(Yii::app()->sess->get('checkoutPaypalUser')) == ""))
 		{
 			Yii::log("Checkout - NOT LOADING PAYMENT PAGE because no payment processor details are present" , CLogger::LEVEL_WARNING, 'system.test.kim');
 			throw new CHttpException(400,'Cannot proceed to payment because No payment processor details exist');
@@ -116,7 +226,7 @@ header($this->p3p);
 		if (isset($_GET['cartid']))
 		{
 			$cartId = $_GET['cartid'];
-			Yii::app()->session['cartid'] = $cartId;
+			Yii::app()->sess->set('cartid', $cartId);
 		}
 		else
 		{
@@ -124,27 +234,26 @@ header($this->p3p);
 			throw new CHttpException(400,'Cannot proceed to payment because cartid wasnt passed by caller');
 		}
 		Yii::log("Checkout - PAYMENT PAGE LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
-		if (trim(Yii::app()->session['sid']) == "")
+		if (trim(Yii::app()->sess->get('sid')) == "")
 		{
 			Yii::log("Checkout - NOT LOADING PAYMENT PAGE because SID is unset!" , CLogger::LEVEL_WARNING, 'system.test.kim');
 			throw new CHttpException(400,'Cannot proceed to payment because SID is not set or expired. (Has this session been idle a long time?)');
 		}
-		if (trim(Yii::app()->session['uid']) == "")
+		if (trim(Yii::app()->sess->get('uid')) == "")
 		{
 			Yii::log("Checkout - NOT LOADING PAYMENT PAGE because UID is unset!" , CLogger::LEVEL_WARNING, 'system.test.kim');
 			throw new CHttpException(400,'Cannot proceed to payment because UID is not set or expired. (Has this session been idle a long time?)');
 		}
 
-		//@@TODO: Remove the cookie stuff
-		//$cartContent = Yii::app()->session[$cartId];
-		$cartContent = $this->getCartByIP();
+		$cartContent = Yii::app()->sess->get($cartId);
 		if ((!($cartContent)) || ($cartContent == ''))
 		{
-			Yii::log("Checkout - NOT LOADING PAYMENT PAGE because 'cartid' " . $cartId . " although seemingly valid, did not return that session var" , CLogger::LEVEL_WARNING, 'system.test.kim');
+			Yii::log("Checkout - NOT LOADING PAYMENT PAGE because 'cartid' " . $cartId . " although seemingly valid, does not contain a usable session var" , CLogger::LEVEL_WARNING, 'system.test.kim');
 			throw new CHttpException(400,'Cannot proceed to payment because cart details werent accessible. (Has this session been idle a long time?)');
 		}
 
 		// Get the passed fields (This is a @@TODO as its crap comms between page and here...)
+		$sn = "";
 		$a1 = "";
 		$a2 = "";
 		$a3 = "";
@@ -153,6 +262,8 @@ header($this->p3p);
 		$e = "";
 		$t = "";
 		$n = "";
+		$prm = "";
+		if (isset($_GET['sn'])) $sn = $_GET['sn'];
 		if (isset($_GET['a1'])) $a1 = $_GET['a1'];
 		if (isset($_GET['a2'])) $a2 = $_GET['a2'];
 		if (isset($_GET['a3'])) $a3 = $_GET['a3'];
@@ -161,6 +272,7 @@ header($this->p3p);
 		if (isset($_GET['e'])) $e = $_GET['e'];
 		if (isset($_GET['t'])) $t = $_GET['t'];
 		if (isset($_GET['n'])) $n = nl2br($_GET['n']);
+		if (isset($_GET['prm'])) $prm = $_GET['prm'];
 
 		$ip = "UNKNOWN";
 		if (getenv("HTTP_CLIENT_IP"))
@@ -172,6 +284,7 @@ header($this->p3p);
 
 		Order::model()->deleteAllByAttributes(array('ip' => $ip));	
 
+		$totalQty = 0;
 		$totalGoods = 0.00;
 		$cartArr = explode('|', $cartContent);
 		if (count($cartArr) < 1)
@@ -181,6 +294,8 @@ header($this->p3p);
 		}
 		for ($i = 0; $i < count($cartArr); $i++)
 		{
+			Yii::log("Checkout - about to add a line to orders" , CLogger::LEVEL_WARNING, 'system.test.kim');
+
 			$itemArr = explode('_', $cartArr[$i]);
 			if (count($itemArr) != 4)
 			{
@@ -208,9 +323,10 @@ header($this->p3p);
 			}
 			// Create a (potential) order
 			$order=new Order;
-			$order->uid = Yii::app()->session['uid'];
-			$order->sid = Yii::app()->session['sid'];
+			$order->uid = Yii::app()->sess->get('uid');
+			$order->sid = Yii::app()->sess->get('sid');
 			$order->ip = $ip;
+			$order->order_number = trim(Yii::app()->sess->get('uid')) . "-" . time();	// for paypal
 			$order->vendor_gateway_id = "@@TODO gateway id";
 			$order->vendor_gateway_password = "@@TODO gateway password";
 			$order->http_product_id = $productId;
@@ -220,6 +336,7 @@ header($this->p3p);
 			$order->http_line_total = number_format(($qty * $price), 2, '.', '');
 			$order->http_shipping_id = $shipId;
 			$order->email_address = $e;
+			$order->name = $sn;
 			$order->delivery_address1 = $a1;
 			$order->delivery_address2 = $a2;
 			$order->delivery_address3 = $a3;
@@ -227,15 +344,18 @@ header($this->p3p);
 			$order->delivery_post_code = $pc;
 			$order->telephone = $t;
 			$order->notes = $n;
+			$order->promo_code = $prm;
 			$totalGoods += ($qty * $price);
+			$totalQty += $qty;
 			$order->return_url = Yii::app()->baseUrl;
-			$order->gu = Yii::app()->session['checkoutGatewayUser'];
-			$order->gp = Yii::app()->session['checkoutGatewayPassword'];
+			$order->gu = Yii::app()->sess->get('checkoutGatewayUser');
+			$order->gp = Yii::app()->sess->get('checkoutGatewayPassword');
 			if(!$order->save())
 			{
 				Yii::log("Checkout - Write error on order reord!" , CLogger::LEVEL_WARNING, 'system.test.kim');
 				throw new CHttpException(400,'Error creating order');
 			}
+			Yii::log("Checkout - added a line to orders" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
 		$subtotalGoods = $totalGoods;
 		// Add shipping to total
@@ -253,38 +373,51 @@ header($this->p3p);
 		{
 			foreach ($orders as $order)
 			{
+				$order->payment_type = $_GET['ptype'];	// Paymentsense=0, Paypal=1, ...
 				$order->http_total = number_format($totalGoods, 2, '.', '');
+				$order->http_total_qty = number_format($totalQty);
 				$order->save();
 			}
 		}
 //$this->actionPaid();
 //die('done');
 
+		// Going to foreign payment sites will set a http-referer different to our own host site, so store this for the return redirect
+		Yii::app()->sess->set('http_payment_return', Yii::app()->sess->get('http_referer'));
+
+		Yii::app()->sess->set('ptype', $_GET['ptype']);
+
 		if ($_GET['ptype'] == 0)
 		{
 			// Go to paymentsense for payment
-			$this->redirect(Yii::app()->baseUrl . "/php/gw/EntryPoint.php?sid=" . Yii::app()->session['sid'] . "&xid=" . rand(99999,999999) );
+			Yii::log("Checkout - going to paymentsense" , CLogger::LEVEL_WARNING, 'system.test.kim');
+			$this->redirect(Yii::app()->baseUrl . "/php/gw/EntryPoint.php?sid=" . Yii::app()->sess->get('sid') . "&xid=" . rand(99999,999999) );
 		}
 		else if  ($_GET['ptype'] == 1)
 		{
+//$this->actionPaid();
+//die('done');
+
 			// Paypal
+			Yii::log("Checkout - going to paypal" , CLogger::LEVEL_WARNING, 'system.test.kim');
 			//$this->renderPartial('paypal');
 			$this->layout = "nosuchlayout";			// Needs this to connect to Paypal
 			$this->render('paypal',array(
-				'description'=>'Purchase from ' . Yii::app()->session['checkoutName'],
+				'business'=>Yii::app()->sess->get('checkoutPaypalEmail'),
+				'description'=>'Purchase from ' . Yii::app()->sess->get('checkoutName'),
             	'subtotal'=>$subtotalGoods,
             	'shipping'=>$shipping->price,
-            	'total'=>$totalGoods,
         	));
 /**/
-			//$this->redirect(Yii::app()->baseUrl . "/php/gw/EntryPoint.php?sid=" . Yii::app()->session['sid'] . "&xid=" . rand(99999,999999) );
+			//$this->redirect(Yii::app()->baseUrl . "/php/gw/EntryPoint.php?sid=" . Yii::app()->sess->get('sid') . "&xid=" . rand(99999,999999) );
 		}
 	}
 
-	// Return from Paymentsense
+	// Return from payment module
 	public function actionPaid()
 	{
 header($this->p3p);
+		Yii::log("PAID PAGE LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		Yii::log("PAID PAGE LOADING" , CLogger::LEVEL_WARNING, 'system.test.kim');
 
 		$ip = "UNKNOWN";
@@ -295,21 +428,21 @@ header($this->p3p);
 		else if (getenv("REMOTE_ADDR"))
 			$ip = getenv("REMOTE_ADDR");
 
-		if (trim(Yii::app()->session['uid']) == "")
+		if (trim(Yii::app()->sess->get('uid')) == "")
 		{
 			Yii::log("Checkout - NOT LOADING PAID PAGE because UID is unset!" , CLogger::LEVEL_WARNING, 'system.test.kim');
 			throw new CHttpException(400,'Cannot proceed to paid page because UID is not set or expired. Please contact the supplier. (Has this session been idle a long time?)');
 		}
 
 		$criteria = new CDbCriteria;
-		//$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+		//$criteria->addCondition("uid = " . Yii::app()->sess->get('uid'));
 		$criteria->addCondition("ip = '" . $ip . "'");
 
 		// Retrieve the original order, now populated by paymentsense
 		$orders = Order::model()->findAll($criteria);
 		$orderCount = 0;
-		$message = "";
-		$message .= "<h2>Thank you for shopping with " . Yii::app()->session['checkoutName'] . "</h2><br>";
+		$message = "<html><style>html, table, div, tr, td, * { font-size: small !important; color: #3B0B0B !important; background-color: #F8ECE0 !important; font-family: Calibri, Verdana, Arial, Serif !important; } table td { border-left:solid 10px transparent; } table td:first-child { border-left:0; }</style>";
+		$message .= "<h2>Thank you for shopping with " . Yii::app()->sess->get('checkoutName') . "</h2><br>";
 		$message .= "<table style='border:1px solid black'><tr>";
 		$message .= "<b><td style='padding:15px' >Description</td><td style='padding:15px' >Option/Size</td><td style='padding:15px' >Each</td><td style='padding:15px' >Quantity</td><td style='padding:15px' >Total</td></b>";
 		$message .= "</tr>";
@@ -353,25 +486,40 @@ header($this->p3p);
 			$message .= "</tr>";
 		}
 		$message .= "</table>";
+		$message .= "</br>";
 
 		$message .= "<table>";
-
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("id = " . $order->http_shipping_id);
 		$shipping = ShippingOption::model()->find($criteria);
 		$shippingAmount = "0.00";
 		if ($shipping)
 			$shippingAmount = $shipping->price;
-		$message .= "<tr><td style='padding:15px'>Shipping: &pound " . $shippingAmount . "</td></tr>";
-		$message .= "<tr><td style='padding:15px'>Total Paid: &pound " . $order->http_total . "</td></tr>";
+		$message .= "<tr><td><b>Shipping: </b>&pound " . $shippingAmount . "</td></tr>";
+		$message .= "<tr><td><b>Total Paid: </b>&pound " . $order->http_total . "</td></tr>";
+		$message .= "</table>";
+		$message .= "</br>";
 
+		$message .= "<table style='border:none'>";
+		if (trim($order->card_number) != "")
+		{
+			// Card details (if any)
+			$message .= "<tr><td><b>Name on card: </b></td><td>" . $order->card_name . "</td></tr>";
+			$message .= "<tr><td><b>Card number: </b></td><td>" . '************ ' . substr($order->card_number, 12, 4) . "</td></tr>";
+		}
+		$message .= "<tr><td><b>Telephone: </b></td><td>" . $order->telephone . "</td></tr>";
+		$message .= "<tr><td><b>Email: </b></td><td>" . $order->email_address . "</td></tr>";
+		if (trim($order->promo_code) != "")
+			$message .= "<tr><td><b>Promotion code: </b></td><td>" . $order->promo_code . "</td></tr>";
 		$message .= "</table>";
 
-		$message .= "<br><hr><br>";	// Solid line separator
+		$message .= "<br><br><hr><br>";	// Solid line separator
 
 		// Delivery address
 
-		$message .= "<b>Delivery address</b><br>";
+		$message .= "<b>Deliver to</b><br>";
+		if (trim($order->name) != "")
+			$message .= $order->name . "<br>";
 		if (trim($order->delivery_address1) != "")
 			$message .= $order->delivery_address1 . "<br>";
 		if (trim($order->delivery_address2) != "")
@@ -387,22 +535,25 @@ header($this->p3p);
 		// Notes
 
 		$message .= "<b>Notes</b><br>";
-		$message .= $order->notes . "<br>";
+		$message .= $order->notes . "<br><br>";
+
+		$message .= "</html>";
 
         // Send email
         $to = $order->email_address;
         if (strlen($to) > 0)
         {
-            $from = Yii::app()->session['checkoutEmail'];
-            $fromName = Yii::app()->session['checkoutName'];
-            $subject = "Your order from " . Yii::app()->session['checkoutName'];
+            $from = Yii::app()->sess->get('checkoutEmail');
+            $fromName = Yii::app()->sess->get('checkoutName');
+            $subject = "Your order from " . Yii::app()->sess->get('checkoutName');
             // phpmailer
             $mail = new PHPMailer();
-            $mail->AddAddress($to);
-			$mail->AddBCC($from);
+
+            	$mail->AddAddress($to);
+				$mail->AddBCC($from);
+
             $mail->SetFrom($from, $fromName);
             $mail->AddReplyTo($from, $fromName);
-//            $mail->AddAttachment($pdf_filename);
             $mail->Subject = $subject;
             $mail->MsgHTML($message);
             if (!$mail->Send())
@@ -414,9 +565,8 @@ header($this->p3p);
                 Yii::log("PAID PAGE SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
         }
 
-		//@@ TODO: remove cookie stuff
-		$cartId = Yii::app()->session['cartid'];
-		Yii::app()->session[$cartId] = "";
+		// Remove cookie stuff
+		Yii::app()->sess->clear('cartid');
 
 		// Delete all the cart info
 		Cart::model()->deleteAllByAttributes(array('ip' => $ip));
@@ -430,12 +580,17 @@ header($this->p3p);
 			foreach ($orders as $order)
 			{
 				$order->ip = 'x-' . $ip;
+				$order->timestamp = date("Y-m-d H:i:s");
 				$order->save();
 			}
 		}
 
-		$thanks = "<h2>Thank you for shopping with " . Yii::app()->session['checkoutName'] . "</h2><br>";
-		$thanks .= "<p>An email will be sent to you shortly</p>";
+		$thanks = file_get_contents(dirname(Yii::app()->request->scriptFile) . "/protected/controllers/ThankYou.template");
+		$thanks = str_replace("<return-url>", Yii::app()->sess->get('http_payment_return'), $thanks);
+		if (Yii::app()->sess->get('ptype') == 0)			// Paymentsense
+			$thanks = str_replace("<display>", "none", $thanks);
+		else if (Yii::app()->sess->get('ptype') == 1)		// Paypal
+			$thanks = str_replace("<display>", "inline", $thanks);
 		die($thanks);
 	}
 

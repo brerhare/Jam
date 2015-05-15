@@ -11,10 +11,10 @@ css.display = block
 
 	[contentframe]
 	css.display = block
-	css.width = 100px
+	css.width = 500px
 	css.margin-top = 400px
 	style.html.h1.color = yellow
 	style.html.h1.background-color = black
 	style.html.h1.padding = 10px
-	html.h1 = jelly
+	html.h1 = a jelly&#0153; site is coming soon
 

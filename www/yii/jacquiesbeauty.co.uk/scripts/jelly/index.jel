@@ -50,8 +50,8 @@ addon.analytics.google_analytics.ua = UA-20115178-1
 
 			[salon]
 			css.display = block
-			css.height = 20px
-			css.margin-top = -90px 
+			css.height = 100px
+			css.margin-top = -70px 
 			css.margin-left = -165px
 			image.url = /img/tour.png
 			image.width = 116px
@@ -62,7 +62,7 @@ addon.analytics.google_analytics.ua = UA-20115178-1
 			[fb]
 			css.display = block
 			css.height = 20px
-			css.margin-top = -90px 
+			css.margin-top = -70px 
 			css.margin-left = -40px
 			image.url = /img/facebook.png
 			image.width = 20px
@@ -71,12 +71,12 @@ addon.analytics.google_analytics.ua = UA-20115178-1
 
 			[checkout]
 			css.display = block
-			css.height = 20px
-			css.margin-top = -90px 
-			css.margin-left = 520px
-			image.url = /img/cart.png
-			image.width = 120px
-			image.height = 20px
+			css.height = 100px
+			css.margin-top = -85px 
+			css.margin-left = 620px
+			image.url = /img/checkout.png
+			image.width = 80px
+			image.height = 65px
 			click = ?layout=index&page=checkout
 
 			[home]
