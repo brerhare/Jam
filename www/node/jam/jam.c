@@ -14,8 +14,11 @@
 #include </usr/include/mysql/mysql.h>
 
 #include "util.h"
+#include "calc.h"
 
 using namespace std;
+
+#define round(x) ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 
 #define MAX_SQL_QUERY_LEN 1024
 MYSQL *conn = NULL;
@@ -63,8 +66,8 @@ void die(const char *errorString);
 int openDB(char *name);
 void closeDB();
 void setFieldValues(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields, MYSQL_ROW *rowP);
-VAR *findVar(char *qualifiedName);
-VAR *findVarTryBothWays(char *name);
+VAR *findVarStrict(char *qualifiedName);
+VAR *findVarLenient(char *name, char *prefix);
 void fillVarDataTypes(VAR *var, char *value);
 void updateTableVar(char *qualifiedName, enum enum_field_types mysqlType, char *value);
 void updateNonTableVar(char *qualifiedName, char *value, int type);
@@ -72,6 +75,8 @@ int decodeMysqlType(VAR *var, enum enum_field_types mysqlType, char *value);
 int fieldConvertMysql2Jam(enum enum_field_types mysqlType);
 void clearVarValues(VAR *varStruct);
 int buildMysqlQuerySelect(char *query, char *args, char *currentTableName);
+int isCalculation(char *str);
+char *expandFieldsInString(char *str, char *tableName);
 void jamDump();
 
 int main(int argc, char *argv[]) {
@@ -357,7 +362,7 @@ strcat(query, " LIMIT 100");
 				strcpy(varToCountQualifiedName, countFieldName);
 			else
 				sprintf(varToCountQualifiedName, "%s.%s", tableName, countFieldName);
-			varToCount = findVar(varToCountQualifiedName);
+			varToCount = findVarStrict(varToCountQualifiedName);
 			if (!varToCount) {
 				sprintf(tmp, "variable to count doesnt exist :( Was looking for tableName=[%s] and countFieldName=[%s]\n",tableName, countFieldName);
 				die(tmp);
@@ -368,11 +373,11 @@ strcat(query, " LIMIT 100");
 				sprintf(tmp, "count.%s", countFieldName);
 			else
 				sprintf(tmp, "%s", countFieldAs);
-			varToCountAs = findVar(tmp);
+			varToCountAs = findVarStrict(tmp);
 			if (!varToCountAs) {
 				char *val = "0";
 				updateNonTableVar(tmp, val, VAR_NUMBER);
-				varToCountAs = findVar(tmp);
+				varToCountAs = findVarStrict(tmp);
 				varToCountAs->source = strdup("count");
 				varToCountAs->debugHighlight = 2;
 			}
@@ -408,7 +413,7 @@ strcat(query, " LIMIT 100");
 				strcpy(varToSumQualifiedName, sumFieldName);
 			else
 				sprintf(varToSumQualifiedName, "%s.%s", tableName, sumFieldName);
-			varToSum = findVar(varToSumQualifiedName);
+			varToSum = findVarStrict(varToSumQualifiedName);
 			if (!varToSum) {
 				sprintf(tmp, "variable to sum doesnt exist :( Was looking for tableName=[%s] and sumFieldName=[%s]\n",tableName, sumFieldName);
 				die(tmp);
@@ -419,11 +424,11 @@ strcat(query, " LIMIT 100");
 				sprintf(tmp, "sum.%s", sumFieldName);
 			else
 				sprintf(tmp, "%s", sumFieldAs);
-			varToSumAs = findVar(tmp);
+			varToSumAs = findVarStrict(tmp);
 			if (!varToSumAs) {
 				char *val = "0";
 				updateNonTableVar(tmp, val, varToSum->type);
-				varToSumAs = findVar(tmp);
+				varToSumAs = findVarStrict(tmp);
 				varToSumAs->source = strdup("sum");
 				varToSumAs->debugHighlight = 3;
 			}
@@ -449,32 +454,109 @@ strcat(query, " LIMIT 100");
 //		---------------------------
 		} else if (cmd[0] != '@') {
 //		---------------------------
-			VAR *variable = NULL;
-			variable = findVarTryBothWays(cmd);
-			if (variable) {
-				emit(variable->portableValue);
-				// Clear if 'count.'
-				if ((variable->source) && (!strcmp(variable->source, "count"))) {
-					variable->numberValue = 0;
-					free(variable->portableValue);
-					variable->portableValue = strdup("0");
+/*			rawData = LHS string
+			if '='
+				rawData = RHS string
+			expandFields(rawData)
+
+			if findVar(rawData)
+				result string = var value
+			else if isCalculation(rawData)
+				result string = calculate(rawData)
+			else
+				result string = expandedData
+
+			if '='
+				prepare LHS for receiving result (may not exist yet)
+				LHS var = result string
+			else
+				emit(result string)		*/
+
+			// rawData = LHS to start with
+			char *rawData = (char *) calloc(1, 4096);
+			strcpy(rawData, cmd);							// eg: [mem.group_count]
+
+			char *resultString = (char *) calloc(1, 4096);
+			char *fullLine = (char *) calloc(1, 4096);
+			sprintf(fullLine, "%s%s", cmd, args);			// eg: [mem.group_count][= stock_group.count]
+
+			// rawData = RHS if equals sign
+			char *eq = "=";
+			if (strchr(fullLine, '=')) {
+				char *rhs = strTrim(getWordAlloc(fullLine, 2, eq));		// eg [stock_group.count]
+				strcpy(rawData, rhs);
+				free(rhs);
+			}
+
+			// Expand any fields to values
+			char *expandedData = expandFieldsInString(rawData, tableName);	// Allocates memory - needs freeing
+//printf("\nSTART.... [%s][%s]\n", rawData, expandedData);
+
+			// Either retrieve the data from a field or calculate
+			VAR *searchVar = findVarLenient(rawData, tableName);
+			if (searchVar)
+				strcpy(resultString, searchVar->portableValue);
+			else if (isCalculation(expandedData)) {
+				sprintf(resultString, "%.2f", calculate(expandedData));
+			}
+			else
+				strcpy(resultString, expandedData);
+
+			// If '=' store result in LHS
+			if (strchr(fullLine, '=')) {
+				// Create / update LHS
+				int createNew = 0;
+				VAR *assignVar = findVarLenient(cmd, tableName);
+				if (!assignVar) {
+					createNew = 1;
+					assignVar = (VAR *) calloc(1, sizeof(VAR));
+					assignVar->name = strdup(cmd);
+					assignVar->type = VAR_STRING;	// @@FIX!!!!!!
 				}
-				// Clear if 'sum.'
-				if ((variable->source) && (!strcmp(variable->source, "sum"))) {
-					if (variable->type == VAR_NUMBER) {
+				clearVarValues(assignVar);
+				fillVarDataTypes(assignVar, resultString);
+				if (createNew) {
+//printf("NEW-->%s<-- with value -->%s<--\n", assignVar->name, assignVar->portableValue);
+					assignVar->debugHighlight = 6;
+					for (int i = 0; i < MAX_VAR; i++) {
+						if (!var[i]) {
+							var[i] = assignVar;
+							break;
+						}
+					}
+				}
+				free(rawData);
+				free(expandedData);
+				free(resultString);
+				free(fullLine);
+			} else {		// Not an assignment - just emit variable
+				VAR *variable = findVarLenient(cmd, tableName);
+				if (variable) {
+//printf("RETR-->%s<--\n", variable->name);
+					emit(variable->portableValue);
+					// Clear if 'count.'
+					if ((variable->source) && (!strcmp(variable->source, "count"))) {
 						variable->numberValue = 0;
 						free(variable->portableValue);
 						variable->portableValue = strdup("0");
-					} else if (variable->type == VAR_DECIMAL2) {
-						variable->decimal2Value = 0;
-						free(variable->portableValue);
-						variable->portableValue = strdup("0.00");
+					}
+					// Clear if 'sum.'
+					if ((variable->source) && (!strcmp(variable->source, "sum"))) {
+						if (variable->type == VAR_NUMBER) {
+							variable->numberValue = 0;
+							free(variable->portableValue);
+							variable->portableValue = strdup("0");
+						} else if (variable->type == VAR_DECIMAL2) {
+							variable->decimal2Value = 0;
+							free(variable->portableValue);
+							variable->portableValue = strdup("0.00");
+						}
 					}
 				}
-			}
-			else {
-				sprintf(tmp, "[%s]", cmd);
-				emit(tmp);
+				else {
+					sprintf(tmp, "[%s]", cmd);
+					emit(tmp);
+				}
 			}
 			emit(jam[ix]->trailer);		
 //		--------
@@ -489,20 +571,21 @@ strcat(query, " LIMIT 100");
 	free(tmp);
 }
 
-VAR *findVarTryBothWays(char *name) {
-	// Get the stored value. Mysql fields are always stored fully qualified. Others might have no or many levels of qualifier
+VAR *findVarLenient(char *name, char *prefix) {
+	// Search using the name as supplied. Mysql fields are always stored fully qualified. Others might have no or many levels of qualifier
 	VAR *variable = NULL;
-	variable = findVar(name);
-	if (!variable) {
-		// If not found, it might be a non-qualified variable in the form of '(null).something' (no qualifier)
-		char *p = strchr(name, '.');
-		if ((p) && (*(++p)))
-			variable = findVar(p);
+	variable = findVarStrict(name);
+	if ((!variable) && (prefix)) {
+		// If not found, it might be a non-qualified variable. Stick the current table name (if any) in front of it and try again
+		char *tmp = (char *) calloc(1, 4096);
+		sprintf(tmp, "%s.%s", prefix, name);
+			variable = findVarStrict(tmp);
+		free(tmp);
 	}
 	return variable;
 }
 
-VAR *findVar(char *name) {
+VAR *findVarStrict(char *name) {
 	for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
 		if (!(var[i]))
 			break;	
@@ -512,26 +595,26 @@ VAR *findVar(char *name) {
 	}
 	return NULL;
 }
-void fillVarDataTypes(VAR *var, char *value) {
+void fillVarDataTypes(VAR *variable, char *value) {
 	char *safeValue = NULL;
 	if (value)
 		safeValue = strdup(value);
-	if (var->type == VAR_DATE)
-		var->dateValue = safeValue;
-	else if (var->type == VAR_TIME)
-		var->timeValue = safeValue;
-	else if (var->type == VAR_DATETIME)
-		var->datetimeValue = safeValue;
-	else if (var->type == VAR_DECIMAL2) {
+	if (variable->type == VAR_DATE)
+		variable->dateValue = safeValue;
+	else if (variable->type == VAR_TIME)
+		variable->timeValue = safeValue;
+	else if (variable->type == VAR_DATETIME)
+		variable->datetimeValue = safeValue;
+	else if (variable->type == VAR_DECIMAL2) {
 		if (safeValue)
-			var->decimal2Value = atof(safeValue);
-	} else if (var->type == VAR_NUMBER) {
+			variable->decimal2Value = atof(safeValue);
+	} else if (variable->type == VAR_NUMBER) {
 		if (safeValue)
-			var->numberValue = atol(safeValue);
+			variable->numberValue = atol(safeValue);
 	} else
-		var->stringValue = safeValue;
+		variable->stringValue = safeValue;
 	if (safeValue)
-		var->portableValue = strdup(safeValue);
+		variable->portableValue = strdup(safeValue);
 }
 
 void updateNonTableVar(char *qualifiedName, char *value, int type) {
@@ -540,7 +623,7 @@ void updateNonTableVar(char *qualifiedName, char *value, int type) {
 	char *safeValue = NULL;
 	if (value)
 		safeValue = strdup(value);
-	VAR *seekVar = findVar(qualifiedName);
+	VAR *seekVar = findVarStrict(qualifiedName);
 	if (!seekVar) {
 		VAR *newVar = (VAR *) calloc(1, sizeof(VAR));
 		newVar->name = strdup(qualifiedName);
@@ -569,11 +652,12 @@ void updateNonTableVar(char *qualifiedName, char *value, int type) {
 void updateTableVar(char *qualifiedName, enum enum_field_types mysqlType, char *value) {
 	if (!qualifiedName)
 		printf("NULL 'qualifiedName' passed to updateTableVar\n");
-	VAR *seekVar = findVar(qualifiedName);
+	VAR *seekVar = findVarStrict(qualifiedName);
 	if (!seekVar) {
 		VAR *newVar = (VAR *) calloc(1, sizeof(VAR));
 		newVar->name = strdup(qualifiedName);
 		newVar->source = strdup("mysql");
+		newVar->debugHighlight = 5;
 		int ret = decodeMysqlType(newVar, mysqlType, value);
 //printf("TABLE-> NAME=%s TYPE=%d AVALUE=%s NVALUE=%ld DVALUE=%2.f\n", newVar->name, newVar->type, newVar->stringValue, newVar->numberValue, newVar->decimal2Value);
 		for (int i = 0; i < MAX_VAR; i++) {
@@ -612,10 +696,10 @@ void clearVarValues(VAR *varStruct) {
 	varStruct->decimal2Value = 0;
 }
 
-int decodeMysqlType(VAR *var, enum enum_field_types mysqlType, char *value) {
-	clearVarValues(var);
-	var->type = fieldConvertMysql2Jam(mysqlType);
-	fillVarDataTypes(var, value);
+int decodeMysqlType(VAR *variable, enum enum_field_types mysqlType, char *value) {
+	clearVarValues(variable);
+	variable->type = fieldConvertMysql2Jam(mysqlType);
+	fillVarDataTypes(variable, value);
 	return 0;
 }
 
@@ -678,7 +762,6 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 		if (!subArg[i])
 			break;
 	}
-	strcpy(queryBuilder, " WHERE ");
 
 	// Deal with each "<whose> a = b" phrase
 	for (int i = 0; i < MAX_SUBARGS; i++) {
@@ -740,17 +823,19 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 			die("no external field given for lookup");
 
 //sprintf(tmp, "i=%d [%s][%s][%s] fullargs=[%s] and currenttable=[%s]\n", i, selectorField, operand, externalFieldOrValue, args, currentTableName); /*die(tmp);*/
-		sprintf(tmp, "%s.%s", currentTableName, externalFieldOrValue);
 		VAR *variable = NULL;
 		char *varValue = NULL;
-		variable = findVarTryBothWays(tmp);
+		variable = findVarLenient(externalFieldOrValue, currentTableName);
+//printf("\n[%s][%s]\n", externalFieldOrValue, currentTableName);
 		if (variable)
 			varValue = strdup(variable->portableValue);
 		else
 			varValue = strdup(externalFieldOrValue);
 		sprintf(tmp, " %s %s %s", selectorField, operand, varValue);		// eg "a = b"
 		free(varValue);
-		if (!firstArg)
+		if (firstArg)
+			strcpy(queryBuilder, " WHERE ");
+		else
 			strcat(queryBuilder, " AND ");
 		firstArg = 0;
 		strcat(queryBuilder, tmp);
@@ -789,6 +874,7 @@ char *curlies2JamArray(char *tplPos) {
 	char *space = " ";
 	getWord(buf, wd, 1, space);
 
+/*
 	// Get the current table from the top of stack for unqualified variables
 	if ((buf[0] != '@') && (!(strchr(buf, '.')))) {
 		for (int i = 0; i < MAX_JAM; i++) {
@@ -799,11 +885,12 @@ char *curlies2JamArray(char *tplPos) {
 				sprintf(newBuf, "%s.%s", tableStack[i], buf);
 				free(buf);
 				buf = newBuf;
-//printf(" ... storing variable [%s]\n", buf);
+printf(" ... storing variable [%s]\n", buf);
 				break;
 			}
 		}
 	}
+*/
 	for (char *p = buf; *p; ++p) *p = tolower(*p);
 	jam[jamIx]->command = buf;
 
@@ -922,7 +1009,45 @@ int main2() {
 	mysql_close(conn);
 }
 
+int isCalculation(char *str) {
+	if ((strchr(str, '+')) || (strchr(str, '-')) || (strchr(str, '*')) || (strchr(str, '/'))
+	||  (strchr(str, '^')) || (strchr(str, '%')) || (strchr(str, '(')) || (strchr(str, ')')))
+		return 1;
+	return 0;
+}
 
+// Given a string like  [stock.id + ((stock.discount * 100) / stock_tax)+2) + 100]
+// Return a string like [123 + ((5.25 * 100) / 20)+2) + 100]
+// NEEDS FREEING
+char *expandFieldsInString(char *str, char *tableName) {
+	char *p = str;
+	char *newStr = (char *) calloc(1, 4096);
+	char *p2 = newStr;
+    char *nonWordChars = " +-*/^%()";
+
+	while (*p) {
+		if (!strchr(nonWordChars, *p)) {	// found a word
+			char *wd = (char *) calloc(1, 4096);
+			char *p3 = wd;
+			while ((*p) && (!strchr(nonWordChars, *p)))	// isolate the word
+				*p3++ = *p++;
+			VAR *variable = NULL;
+			variable = findVarLenient(wd, tableName);		// does it name a field?
+			if (variable)
+				p3 = variable->portableValue;				// yes - replace the word with its value
+			else
+				p3 = wd;								// no - use the word
+			while (*p3)
+				*p2++ = *p3++;
+			free(wd);
+		}
+		if ((*p) && (strchr(nonWordChars, *p)))
+			*p2++ = *p++;
+	}
+	return newStr;
+}
+
+// Output some content. No sugar added
 void emit(char *line) {
 	printf("%s", line);
 }
@@ -951,6 +1076,9 @@ void jamDump() {
 		if (var[i]->debugHighlight == 1) printf(" style='color:#e18d88'");
 		if (var[i]->debugHighlight == 2) printf(" style='color:yellow;'");
 		if (var[i]->debugHighlight == 3) printf(" style='color:orange;'");
+		if (var[i]->debugHighlight == 4) printf(" style='color:cyan;'");
+		if (var[i]->debugHighlight == 5) printf(" style='color:#e28c86;'");
+		if (var[i]->debugHighlight == 6) printf(" style='color:#a8c968;'");
 		printf(">");
 
 		*tmp = 0;
@@ -967,6 +1095,9 @@ void jamDump() {
 	printf("<br>");
 	printf("<span style='margin:3px; padding:2px; color:#000; background-color:yellow;'>count </span>");
 	printf("<span style='margin:3px; padding:2px; color:#000; background-color:orange;'>sum </span>");
+	printf("<span style='margin:3px; padding:2px; color:#000; background-color:cyan;'>variable </span>");
+	printf("<span style='margin:3px; padding:2px; color:#000; background-color:#e28c86;'>mysql </span>");
+	printf("<span style='margin:3px; padding:2px; color:#000; background-color:#a8c968;'>auto </span>");
 	printf("<br>");
 	printf("<br>");
 	printf("</div>");

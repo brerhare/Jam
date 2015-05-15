@@ -1,0 +1,5 @@
+AuthType Basic
+AuthName "Password Protected Area"
+AuthUserFile /home/absoluteclassics.co.uk/dev/src/www/yii/absoluteclassics.co.uk/.htpasswd
+Require valid-user
+#alex:alex,
