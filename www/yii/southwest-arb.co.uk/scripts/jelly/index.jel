@@ -318,7 +318,7 @@ stacking = horizontal
 	[footnote]
 	child = accred, copyright, nicky, wirefly
 	css.width = 74%
-	css.height = 300px
+	css.height = 330px
 	css.margin-right = 20px
 	
 		[accred]
@@ -344,12 +344,38 @@ stacking = horizontal
 		clicknew = http://www.forsythcreative.com/
 		
 		[wirefly]
-		css.height = 45px
+		child = wirefly-logo, admin
+		stacking = horizontal
 		css.margin-top = 20px
-		image.url = img/wirefly-build.png
-		image.width = 150px
-		image.height = 40px
-		image.align = right
-		clicknew = http://www.wireflydesign.com
-		#css.background-color = grey
+		css.float = right
+		css.margin-bottom = 30px
+
+		
+			[wirefly-logo]
+			css.height = 45px
+			css.margin-top = 5px
+			image.url = img/wirefly-design.png
+			image.width = 100px
+			image.height = 46px
+			image.align = right
+			clicknew = http://www.wireflydesign.com
+			
+		
+			[admin]
+			child = cog-center
+			css.height = 20px
+			css.width = 20px
+			css.background-size = 100%
+			css.background-image = url('/img/admin.png')
+			css.margin-left = -20px
+
+				[cog-center]
+				css.width = 5px
+				css.height = 5px
+				css.margin-top = 8px
+				image.url = img/cog-center.png
+				image.width = 5px
+				image.height = 5px
+				image.align = center
+				clicknew = backend.php	
 
