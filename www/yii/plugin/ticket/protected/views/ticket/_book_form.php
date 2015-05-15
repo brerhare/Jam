@@ -292,7 +292,7 @@ $(document).ready(function() {
 
 	<div><center>
 	<br/>
-	By using this service you agree to our <a href="https://secure.dglink.co.uk/cboxoffice/tandc.html" target="_blank">Terms & Conditions</a> as well as any conditions displayed below
+	By using this service you agree to our <a href="https://plugin.wireflydesign.com/ticket/tandc.html" target="_blank">Terms & Conditions</a> as well as any conditions displayed below
 	</center></div>
 
 </div>

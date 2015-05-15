@@ -1,7 +1,7 @@
 
-toastr.options.timeOut = 1500;
-toastr.options.positionClass = 'toast-bottom-right';
-//toastr.options.progressBar = true; 
+//toastr.options.timeOut = 1500;
+//toastr.options.positionClass = 'toast-bottom-right';
+//////toastr.options.progressBar = true;
 
 angular.module('stock')
 	.controller('SettingVatCtrl', function ($scope, restFactory, notificationFactory) {
@@ -76,6 +76,7 @@ angular.module('stock')
 				if ($scope.items[i].is_default == 1)
 					$scope.default_item = $scope.items[i].id;
 			}
+//alert(JSON.stringify($scope.items));
 		};
  
 // ----------------------------------------------------------------------------------------

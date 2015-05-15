@@ -36,6 +36,16 @@ angular.module('stock')
         	templateUrl: 'app/home/customer/maintain/detail.html',
         	controller: 'CustomerDetailCtrl'
         })
+		  .state('home.customer-detail.notes', {
+		    url: '/notes',
+		    templateUrl: 'app/home/customer/maintain/detail_notes.html',
+		    controller: 'CustomerDetailNotesCtrl'
+		  })
+		  .state('home.customer-detail.orders', {
+		    url: '/notes',
+		    templateUrl: 'app/home/customer/maintain/detail_orders.html',
+		    controller: 'CustomerDetailOrdersCtrl'
+		  })
 
       .state('home.customer-area', {
         url: '/customer/areas',
@@ -100,21 +110,27 @@ angular.module('stock')
 		    templateUrl: 'app/home/product/maintain/detail_deliveries.html',
 		    controller: 'ProductDetailDeliveriesCtrl'
 		  })
-		  .state('home.product-detail.labels', {
+		  .state('home.product-detail.label', {
 		    url: '/labels',
-		    templateUrl: 'app/home/product/maintain/detail_labels.html',
-		    controller: 'ProductDetailLabelsCtrl'
+		    templateUrl: 'app/home/product/maintain/detail_label.html',
+		    controller: 'ProductDetailLabelCtrl'
 		  })
-		  .state('home.product-detail.uom', {
+		  .state('home.product-detail.pack', {
 		    url: '/uom',
-		    templateUrl: 'app/home/product/maintain/detail_uom.html',
-		    controller: 'ProductDetailUOMCtrl'
+		    templateUrl: 'app/home/product/maintain/detail_pack.html',
+		    controller: 'ProductDetailPackCtrl'
 		  })
 
       .state('home.product-group', {
           url: '/product/groups',
           templateUrl: 'app/home/product/group/productGroup.html',
           controller: 'ProductGroupCtrl'
+      })
+
+      .state('home.product-location', {
+        url: '/product/locations',
+        templateUrl: 'app/home/product/location/productLocation.html',
+        controller: 'ProductLocationCtrl'
       })
 
 // Settings

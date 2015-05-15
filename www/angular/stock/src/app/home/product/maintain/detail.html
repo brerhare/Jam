@@ -44,16 +44,76 @@
         <div class="all">
 
             <div class="lhs">
+
+                <div class="form-group form-group-sm">
+                    <label class="control-label col-sm-3" for="code">Code</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" placeholder="" ng-model="item.code" ng-minlength="1">
+                    </div>
+                </div>
+
                 <div class="form-group form-group-sm">
                     <label class="control-label col-sm-3" for="name">Name</label>
                     <div class="col-sm-8">
-                        <input type="text" class="form-control" placeholder="" ng-model="item.name" ng-minlength="2">
+                        <input type="text" class="form-control" placeholder="" ng-model="item.name" ng-minlength="1">
                     </div>
                 </div>
+
+                <div class="form-group form-group-sm">
+                    <label class="control-label col-sm-3" for="stock_vat_id">Vat Rate</label>
+                    <div class="col-sm-5">
+                        <select ng-model="selectedVat" ng-options="vat.description for vat in vats" ng-change="selchangeVat()" class="form-control">
+                        </select>
+                    </div>
+                </div>
+
                 <div class="form-group form-group-sm">
                     <label class="control-label col-sm-3" for="cost">Cost Price</label>
                     <div class="col-sm-2">
-                        <input type="text" class="form-control" placeholder="" ng-model="item.cost" ng-minlength="2">
+                        <input type="text" class="form-control" placeholder="" ng-model="item.cost">
+                    </div>
+                </div>
+
+                <div class="form-group form-group-sm">
+                    <label class="control-label col-sm-3" for="priced_by_weight">Weight Price</label>
+                    <div class="col-sm-1">
+                        <input type="checkbox" class="form-control" placeholder="" ng-model="item.priced_by_weight">
+                    </div>
+                </div>
+
+                <div class="form-group form-group-sm">
+                    <label class="control-label col-sm-3" for="calc_field">Stock Onhand</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" placeholder="" ng-model="TODOonhand">
+                    </div>
+                </div>
+
+                <div class="form-group form-group-sm">
+                    <label class="control-label col-sm-3" for="calc_field">Min Level</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" placeholder="" ng-model="TODOminlevel">
+                    </div>
+                    <label class="control-label col-sm-2" for="calc_field">Max Level</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" placeholder="" ng-model="TODOmaxlevel">
+                    </div>
+                </div>
+
+            </div>  <!-- lhs -->
+
+            <div class="rhs">
+
+                <div class="form-group form-group-sm">
+                    <label class="control-label col-sm-3" for="description">Description</label>
+                    <div class="col-sm-8">
+                        <textarea class="form-control" style="height:auto" placeholder="" rows="4" ng-model="item.description"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group form-group-sm">
+                    <label class="control-label col-sm-3" for="preferred_supplier">Supplier</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" placeholder="" ng-model="TODOsupplier" ng-disabled="true">
                     </div>
                 </div>
 
@@ -67,52 +127,34 @@
                     </div>
                 </div>
 
-            </div>  <!-- lhs -->
-
-            <div class="rhs">
-                <div class="form-group form-group-sm">
-                    <label class="control-label col-sm-3" for="description">Description</label>
-                    <div class="col-sm-8">
-                        <textarea class="form-control" style="height:auto" placeholder="" rows="5" ng-model="item.description"></textarea>
-                    </div>
-                </div>
-                <div class="form-group form-group-sm">
-                    <label class="control-label col-sm-3" for="stock_vat_id">Vat Rate</label>
-                    <div class="col-sm-5">
-                        <select ng-model="selectedVat" ng-options="vat.description for vat in vats" ng-change="selchangeVat()" class="form-control">
-                        </select>
-                    </div>
-                </div>
             </div>  <!-- rhs -->
 
-
-
             <div style="clear: both"></div>
-            <br/>
-
-            <ul class="nav nav-tabs">
-
-                <li><a ng-click="showTab('home.product-detail.notes')"     ui-sref-active="active">Notes</a></li>
-
-<!--                <li class="Xactive"><a ng-click="showTab('home.product-detail.notes')"     ui-sref-active="active">Notes</a></li> -->
-                <li><a ng-click="showTab('home.product-detail.prices')"     ui-sref-active="active">Prices</a></li>
-                <li><a ng-click="showTab('home.product-detail.dimensions')"     ui-sref-active="active">Dimensions</a></li>
-                <li><a ng-click="showTab('home.product-detail.barcodes')"     ui-sref-active="active">Barcodes</a></li>
-                <li><a ng-click="showTab('home.product-detail.deliveries')"     ui-sref-active="active">Deliveries</a></li>
-                <li><a ng-click="showTab('home.product-detail.labels')"     ui-sref-active="active">Labels</a></li>
-                <li><a ng-click="showTab('home.product-detail.uom')"     ui-sref-active="active">UOM</a></li>
-              </ul>
-            <div class="well" ui-view></div>
+<br>
 
             <div style="width:20%; margin:0px auto;">
-
                 <div class="form-group">
                     <div class="col-sm-10">
-                        <button type="submit" class="btn btn-primary btn-default">Save</button>
+                        <button type="button" class="btn btn-primary Xbtn-default" ng-click="saveItem()">Save</button>
                         <button type="button" class="btn btn-secondary" ng-click="cancelItem()">Cancel</button>
                     </div>
                 </div>
             </div>
+<hr>
+
+            <ul class="nav nav-tabs">
+<!--                <li class="Xactive"><a ng-click="showTab('home.product-detail.notes')"     ui-sref-active="active">Notes</a></li> -->
+                <li><a ng-click="showTab('home.product-detail.prices')"     ui-sref-active="active">Prices</a></li>
+                <li><a ng-click="showTab('home.product-detail.levels')"     ui-sref-active="active">Levels</a></li>
+                <li><a ng-click="showTab('home.product-detail.dimensions')"     ui-sref-active="active">Dimensions</a></li>
+                <li><a ng-click="showTab('home.product-detail.pack')"     ui-sref-active="active">Pack</a></li>
+                <li><a ng-click="showTab('home.product-detail.barcodes')"     ui-sref-active="active">Barcodes</a></li>
+                <li><a ng-click="showTab('home.product-detail.label')"     ui-sref-active="active">Label</a></li>
+                <li><a ng-click="showTab('home.product-detail.notes')"     ui-sref-active="active">Notes</a></li>
+                <li><a ng-click="showTab('home.product-detail.deliveries')"     ui-sref-active="active">Deliveries</a></li>
+              </ul>
+            <div class="well" ui-view></div>
+
 
         </div>
 
@@ -125,5 +167,12 @@
     <div class="ngdialog-buttons">
         <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click=closeThisDialog("Cancel")>Cancel</button>
         <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=confirm("OK")>OK</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="errorDialogTemplate">
+    <h4 style="color:#760404"><center>{{errorMsg}}</center></h4>
+    <div class="ngdialog-buttons">
+        <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=closeThisDialog("OK")>OK</button>
     </div>
 </script>

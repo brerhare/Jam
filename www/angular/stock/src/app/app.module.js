@@ -64,7 +64,6 @@ angular.module('stock', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngR
 		};
 	})
 
-
   .controller('appCtrl', function ($scope) {
   });
 

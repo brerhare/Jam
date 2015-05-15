@@ -216,17 +216,17 @@ addon.menu.traditional.item-separator-width = 8px
 				
 				[contact-form]
 				css.width = 400px
-				#css.margin-bottom = 30px
-				css.background-color = #ededed
+				css.margin = 10px
 				addon.contact.contactform.edgepadding = 0px
 				addon.contact.contactform.buttoncolor = grey
 				addon.contact.contactform.buttontextcolor = white
 				addon.contact.contactform.buttontext = [ Submit ]
 				addon.contact.contactform.successtextcolor = green
 				addon.contact.contactform.failuretextcolor = red
-				addon.contact.contactform.textcolor = white
-				addon.contact.contactform.backcolor = lightgrey
+				addon.contact.contactform.textcolor = black
+				addon.contact.contactform.backcolor = white
 				addon.contact.contactform.inputspacing = 10px
+				addon.contact.contactform.inputwidth = 350px
 
 				[contact-text]
 				css.width = 25%

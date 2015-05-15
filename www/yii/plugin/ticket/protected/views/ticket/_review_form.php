@@ -405,7 +405,7 @@ function genHeading($event)
 <div class="row">
 
 	<div style="Xfloat:left">
-	By using this service you agree to our <a href="https://secure.dglink.co.uk/cboxoffice/tandc.html" target="_blank">Terms & Conditions</a> as well as the conditions displayed below
+	By using this service you agree to our <a href="https://plugin.wireflydesign.com/ticket/tandc.html" target="_blank">Terms & Conditions</a> as well as the conditions displayed below
 	</div>
 
 	<div style="Xfloat:right">

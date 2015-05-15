@@ -1,73 +1,76 @@
-<style>
-    /* the page split into two equal width cols */
-    .all {
-        width:100%;
-        Xbackground: #B4D47D;
-    }
+<!-- http://blog.jongallant.com/2013/05/angularjs-webapi-ef.html#.VJ62FsgHA -->
 
-    .lhs {
-        float: left;
-        width: 50%;
-        Xbackground: #B5E3FF;
-    }
-
-    .rhs {
-        float: right;
-        width: 50%;
-        Xbackground: #FFACAA;
-    }
-</style>
+<link rel="stylesheet" href="app/home/setting/vat/vat.css"/>
 
 <style>
-    /* bootstrap overrides */
-    .form-group{
-        margin-top: 2px;
-        margin-bottom: 2px;
-    }
-    .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
-        padding-left:5px;
-        padding-right:5px;
-    }
-    .input-sm, .form-group-sm .form-control {
-        font-size: 14px;
-    }
+	button {margin-right:5px;}
+	table {table-layout: fixed; }
+	.col-barcode { width:150px; }
+	.col-notes { width:500px; }
+	.col-barcode:hover { background-color: #ddf0ff; cursor:pointer; cursor: hand; }
+	.col-button { width:80px; }
 
-</style>
+	.col-i-barcode { width:140px; }
+	.col-i-notes { width:490px; }
 
-<style>
-    textarea {
-        width:50%;
-        height:200px;
-    }
 </style>
 
 <div class="container-fluid">
 
-    <!-- barcodes tab -->
-    <div id="barcodesTab" class="tab-content">
-		<table class="col-sm-4">
-			<tr>
-				<th>Barcode #</th>
-				<th>
-					<button type="button" class="btn-secondary" ng-click="">Add</button>
-				</th>
-			</tr>
-			<tr>
-				<td>
-				</td>
-				<td>
-				</td>
-			</tr>
-		</table>
+   <div ng-cloak>
+<center>
+        <div style="width:800px;">
+            <table class="Xtax-table Xtable-striped table-bordered table-condensed Xtable-hover">
+                <tr>
+
+                    <th class='col-barcode'>Barcode</th>
+                    <th class='col-notes'>Notes</th>
+                    <th class='col-button'>
+                        <div class="btn-toolbar">
+                            <button type="button" ng-click="toggleAddMode()" class="btn btn-xs btn-success">
+                                <i class="fa fa-plus fa-1x"></i>
+                            </button>
+                        </div>
+                    </th>
+                </tr>
+                <tr ng-show="addMode">
+                    <td> <input class='col-i-barcode' ng-model="newitem.barcode" /></td>
+                    <td> <input class='col-i-notes' ng-model="newitem.notes" /></td>
+                    <td class='col-button'>
+                        <div class="btn-toolbar">
+                            <div class="btn-group">
+                                <button type="button" ng-click="addItem()" class="btn btn-xs btn-success">
+                                    <i class="fa fa-save fa-1x"></i>
+                                 </button>
+                                 <button type="button" ng-click="toggleAddMode()" class="btn btn-xs btn-danger">
+                                     <i class="fa fa-remove fa-1x"></i>
+                                  </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-repeat="tabitem in tabitems | orderBy:'barcode'">
+<!--                    <td class='col-id'>{{tabitem.id}}</td> -->
+                    <td class='col-barcode'>
+                        <span>{{tabitem.barcode}}</span>
+                    </td>
+                    <td>
+                         <span>{{tabitem.notes}}</span>
+                    </td>
+                    <td class='col-button'>
+                        <div class="btn-toolbar">
+                            <div class="btn-group">
+                                <button type="button" ng-click="deleteItem(tabitem)" class="btn btn-xs btn-danger">
+                                    <i class="fa fa-trash fa-1x"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+</center>
     </div>
 
-</div>
+</div> <!-- container-fluid -->
 
-
-<script type="text/ng-template" id="confirmDialogTemplate">
-    <p><center>Delete. Are you sure?</center></p>
-    <div class="ngdialog-buttons">
-        <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click=closeThisDialog("Cancel")>Cancel</button>
-        <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=confirm("OK")>OK</button>
-    </div>
-</script>
