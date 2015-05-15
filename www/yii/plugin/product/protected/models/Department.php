@@ -8,6 +8,7 @@
  * @property integer $uid
  * @property string $name
  * @property string $thumb_path
+ * @property integer $active
  *
  * The followings are the available model relations:
  * @property Feature[] $features
@@ -43,7 +44,7 @@ class Department extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('uid, name', 'required'),
-			array('uid', 'numerical', 'integerOnly'=>true),
+			array('uid, active', 'numerical', 'integerOnly'=>true),
 			array('name, thumb_path', 'length', 'max'=>255),
 
             array('thumb_path', 'file','on'=>'insert',
@@ -63,7 +64,7 @@ class Department extends CActiveRecord
 
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, name, thumb_path', 'safe', 'on'=>'search'),
+			array('id, uid, name, thumb_path, active', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -91,6 +92,7 @@ class Department extends CActiveRecord
 			'uid' => 'Uid',
 			'name' => 'Name',
 			'thumb_path' => 'Thumb (140w x 140h)',
+			'active' => 'Active',
 		);
 	}
 
@@ -110,6 +112,7 @@ class Department extends CActiveRecord
 		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('thumb_path',$this->thumb_path,true);
+		$criteria->compare('active',$this->active);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

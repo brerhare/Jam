@@ -69,7 +69,7 @@ return array(
 			'connectionString' => 'mysql:host=localhost;dbname=elegantoriginals_co_uk',
 			'emulatePrepare' => true,
 			'username' => 'elegantoriginals',
-			'password' => 'elegantoriginals.co.uk,',
+			'password' => '4tyqfahv',
 			'charset' => 'utf8',
 		),
 		/**/
@@ -102,13 +102,19 @@ return array(
 
 		// These are used by the shopping cart checkout process
 		'checkoutEmail'=>'caroline@elegantoriginals.co.uk',
-		'checkoutName'=>'Elegant Originals',
+		'checkoutName'=>'Elegant Originals Sales',
+
 		// Test gateway
 		'checkoutGatewayUser'=>'WIREFL-5188100',
 		'checkoutGatewayPassword'=>'391F3GWBZ0',
+
 		// Live gateway
 		//'checkoutGatewayUser'=>'xxxxx',
 		//'checkoutGatewayPassword'=>'xxxxx',
+
+        // Paypal
+        //'checkoutPaypalEmail'=>'caroline@elegantoriginals.co.uk',
+
 		'jellyRoot' => '/scripts/jelly/',
 		'sid' => 'huf28g7ckbj45e1d8vc6ivutq1',
 	),

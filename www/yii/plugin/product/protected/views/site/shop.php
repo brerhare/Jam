@@ -59,20 +59,22 @@ opacity:0.85;
 
 <?php
 	$criteria = new CDbCriteria;
-	$criteria->addCondition("uid=" . Yii::app()->session['uid']);
+	$criteria->addCondition("uid=" . Yii::app()->sess->get('uid'));
 	$criteria->order = "name ASC";
 	$departments = Department::model()->findAll($criteria);
 	echo "<div style='width:100%; padding:12px'; >";
 	foreach ($departments as $department)
 	{
-		//echo "<a href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['parenturl'] . "/?department=" . $department->id . '&page=' . Yii::app()->session['page'] . '"' . ")'>";
-		echo "<a href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->session['http_referer'] . "/?department=" . $department->id . '&page=' . Yii::app()->session['page'] . '"' . ")'>";
+		if (!($department->active))
+			continue;
+		//echo "<a href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->sess->get('parenturl') . "/?department=" . $department->id . '&page=' . Yii::app()->sess->get('page') . '"' . ")'>";
+		echo "<a href='#' onClick='pM(" . '"redirect",' . '"' .     Yii::app()->sess->get('http_referer') . "/?department=" . $department->id . '&page=' . Yii::app()->sess->get('page') . '"' . ")'>";
 			echo "<span class='item' style='text-align:center;' >";
 
 				// @@EG: vertically align img in div
 				echo "<div style='height:140px; width:154px; text-align: center; margin:1em 0; margin-bottom:0px'>";
 					echo "<span style='display: inline-block; height: 100%; vertical-align: middle;'></span>";
-					echo "<img style='max-width:154px; max-height:140px; vertical-align:bottom; overflow:hidden;' src='" . Yii::app()->baseUrl . "/userdata/thumb/" . Yii::app()->session['uid'] . "-" . $department->thumb_path .  "' alt='No Image'>";
+					echo "<img style='max-width:154px; max-height:140px; vertical-align:bottom; overflow:hidden;' src='" . Yii::app()->baseUrl . "/userdata/thumb/" . Yii::app()->sess->get('uid') . "-" . $department->thumb_path .  "' alt='No Image'>";
 				echo "</div>";
 
 //				echo "<span class='itemleadin'>" . $catDesc . "&nbsp&nbsp" . $article->date . "</span>";

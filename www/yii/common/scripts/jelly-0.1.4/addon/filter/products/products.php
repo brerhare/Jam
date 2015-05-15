@@ -16,7 +16,7 @@ class products
 
     // Globals
     private $clipBoard = "";
-    private $uid = "";//Yii::app()->session['uid'];
+    private $uid = "";//Yii::app()->sess->get('uid');
     private $defaultDepartment = "";
     private $defaultWidth = "100%";
     private $departmentSel = array();
@@ -38,7 +38,7 @@ class products
     public function init($options, $jellyRootUrl)
     {
 //      var_dump( $options );
-        $this->uid = Yii::app()->session['uid'];
+        $this->uid = Yii::app()->sess->get('uid');
 
         // Generate the content into the html, replacing any <substituteN> tags
         $content = "";
@@ -230,8 +230,8 @@ class products
         {
             if (isset($_GET['department']))
                 $this->departmentSel = explode('|', $_GET['department']);
-			else if (isset(Yii::app()->session['department']))
-				$this->departmentSel = explode('|', Yii::app()->session['department']); 
+			else if (Yii::app()->sess->exists('department'))
+				$this->departmentSel = explode('|', Yii::app()->sess->get('department')); 
 
             if (isset($_GET['feature']))
                 $this->featureSel = explode('|', $_GET['feature']);
@@ -300,7 +300,7 @@ class products
 
 				// KKK - department filtering
 				// This is checked so filters the user sets while browsing the product page are obeyed
-				if ((isset(Yii::app()->session['department'])) && ($product->product_department_id != Yii::app()->session['department']))
+				if ( (Yii::app()->sess->exists('department')) && ($product->product_department_id != Yii::app()->sess->get('department')) )
 				{
 					// This is checked so {{curly}} department filters are obeyed
 					if ((!(isset($_GET['setfilter']))) || ($_GET['setfilter'] != 'true'))

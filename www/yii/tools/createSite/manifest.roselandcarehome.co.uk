@@ -1,0 +1,17 @@
+site = roselandcarehome.co.uk
+sitetitle = Roseland Care Home
+sid = fbjmgjh6nrdet4fql8345iv1h4
+
+# Database
+dbname = roselandcarehome_co_uk
+dbuser = roselandcarehome
+dbpass = y6jkd4hf
+
+# Shopping cart order confirmation email
+#checkoutemail = somename@roselandcarehome.co.uk
+#checkoutname = Roseland Care Home
+#checkoutpaypalemail = somename@roselandcarehome.co.u
+
+# Backend page editor
+editorpagewidth = 800
+editorpageheight = 500

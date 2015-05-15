@@ -1,0 +1,9 @@
+This is available from the jquery plugins site, however the latest version is at the author's site
+	http://www.jacklmoore.com/zoom
+
+Usage
+-----
+Include the jquery.zoom.js script. Thats the only file from the zip thats actually needed.
+
+Look at the example here which shows some styling for it, and includes a nice hover-thumbnail-select-image montage.
+
