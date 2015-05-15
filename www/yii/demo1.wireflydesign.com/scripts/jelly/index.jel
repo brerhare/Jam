@@ -1,4 +1,4 @@
-#Demo 5
+#Demo 1
 [defaults]
 include = default-values
 
@@ -12,39 +12,34 @@ fx.wallpaper-image-tile = /img/background.jpg
 css.display = block
 
 	[site]
-	child = header, slider, pages, footer
+	child = header, pages, footer
 	css.width = 970px
 
 ####  Header  #################################
 
 	[header]
-	child = logo, menu
-	css.height = 200px
+	child = logo, menu, slider
+	css.height = 500px
 	
 		[logo]
 		css.margin-left = 50px
 		css.margin-top = 25px
 		css.height = 120px
 		css.width = 500px
-		css.z-index = 1000
-		css.position = relative
 		image.url = img/Logo.png
 		image.width = 241px
 		image.height = 116px
-		click = http://www.demo5.wireflydesign.com
+		click = http://www.demo1.wireflydesign.com
 
 		[menu]
 		css.height = 50px
 		#css.width = 250px
 		css.overflow = visible
-		css.z-index = 900
-		#css.position = absolute
-		css.position = relative
 
 		addon.menu.basic.orientation = horizontal
 		#addon.menu.basic.width = 960px
 		#addon.menu.basic.height = 30px
-		#addon.menu.basic.level = 2
+		addon.menu.basic.edgepadding = 13
 
 		addon.menu.basic.menu-rounding = 4px
 		#addon.menu.basic.menu-opacity = 70%
@@ -86,8 +81,6 @@ css.display = block
 	#addon.slider.flexslider.dot-margin-left = 0px
 	#addon.slider.flexslider.dot-margin-right = 0px
 	#addon.slider.flexslider.animation = fade
-	#addon.slider.flexslider.mode = HTML
-	#addon.slider.glitz.slider = 2
 
 
 ######## body #######################################
@@ -126,12 +119,12 @@ css.height = 180px
 css.width = 960px
 #css.background-color = #ffffff
 #css.background-color = #f7d9ff
+		stacking = horizontal
 
 		[footer-menu]
-		stacking = horizontal
 		child = footer-margin, footer-cookies, footer-tandc, footer-contact
 		css.height = 50px
-		css.width = 960px
+		css.width = 50%
 
 			[footer-margin]
 			css.width = 20%
@@ -163,8 +156,8 @@ css.width = 960px
 
 
 	[footnote]
-	child = copyright, wirefly
-	css.width = 100%
+	child = copyright, admin-links
+	css.width = 50%
 	css.height = 50px
 	stacking = horizontal
 
@@ -176,13 +169,27 @@ css.width = 960px
 		css.font-size = 11px
 		css.text-align = left
 
-	[wirefly]
-	css.margin-top = -10px
-	css.height = 50px
-	css.width = 50%
-	image.url = img/wirefly-weblink.png
-	image.width = 150px
-	image.height = 40px
-	image.align = right
-	clicknew = http://www.wireflydesign.com
+	[admin-links]
+	child = wirefly, admin
+	stacking = horizontal
+
+	
+		[wirefly]
+		css.height = 45px
+		css.margin-top = 5px
+		image.url = img/wirefly-design.png
+		image.width = 100px
+		image.height = 46px
+		image.align = left
+		clicknew = http://www.wireflydesign.com
+		
+	
+		[admin]
+		css.height = 30px
+		css.margin-left = -20px
+		image.url = img/admin.png
+		image.width = 20px
+		image.height = 20px
+		image.align = left
+		clicknew = backend.php
 
