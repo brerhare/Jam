@@ -1,0 +1,178 @@
+<style>
+    /* the page split into two equal width cols */
+    .all {
+        width:100%;
+        Xbackground: #B4D47D;
+    }
+
+    .lhs {
+        float: left;
+        width: 50%;
+        Xbackground: #B5E3FF;
+    }
+
+    .rhs {
+        float: right;
+        width: 50%;
+        Xbackground: #FFACAA;
+    }
+</style>
+
+<style>
+    /* bootstrap overrides */
+    .form-group{
+        margin-top: 2px;
+        margin-bottom: 2px;
+    }
+    .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+        padding-left:5px;
+        padding-right:5px;
+    }
+    .input-sm, .form-group-sm .form-control {
+        font-size: 14px;
+    }
+
+</style>
+
+<style>
+    .col-item.ng-invalid {color: #de2121; /*error*/}
+</style>
+
+<div class="container-fluid">
+
+    <form ng-submit="saveItem()" class="form-horizontal" role="form">
+        <div class="all">
+
+            <div class="lhs">
+
+                <div class="form-group form-group-sm">
+                    <label class="control-label col-sm-3" for="code">Code</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" placeholder="" ng-model="item.code" ng-minlength="1">
+                    </div>
+                </div>
+
+                <div class="form-group form-group-sm">
+                    <label class="control-label col-sm-3" for="name">Name</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" placeholder="" ng-model="item.name" ng-minlength="1">
+                    </div>
+                </div>
+
+                <div class="form-group form-group-sm">
+                    <label class="control-label col-sm-3" for="stock_vat_id">Vat Rate</label>
+                    <div class="col-sm-5">
+                        <select ng-model="selectedVat" ng-options="vat.description for vat in vats" ng-change="selchangeVat()" class="form-control">
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group form-group-sm">
+                    <label class="control-label col-sm-3" for="cost">Cost Price</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" placeholder="" ng-model="item.cost">
+                    </div>
+                </div>
+
+                <div class="form-group form-group-sm">
+                    <label class="control-label col-sm-3" for="priced_by_weight">Weight Price</label>
+                    <div class="col-sm-1">
+                        <input type="checkbox" class="form-control" placeholder="" ng-model="item.priced_by_weight">
+                    </div>
+                </div>
+
+                <div class="form-group form-group-sm">
+                    <label class="control-label col-sm-3" for="calc_field">Stock Onhand</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" placeholder="" ng-model="TODOonhand">
+                    </div>
+                </div>
+
+                <div class="form-group form-group-sm">
+                    <label class="control-label col-sm-3" for="calc_field">Min Level</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" placeholder="" ng-model="TODOminlevel">
+                    </div>
+                    <label class="control-label col-sm-2" for="calc_field">Max Level</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" placeholder="" ng-model="TODOmaxlevel">
+                    </div>
+                </div>
+
+            </div>  <!-- lhs -->
+
+            <div class="rhs">
+
+                <div class="form-group form-group-sm">
+                    <label class="control-label col-sm-3" for="description">Description</label>
+                    <div class="col-sm-8">
+                        <textarea class="form-control" style="height:auto" placeholder="" rows="4" ng-model="item.description"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-group form-group-sm">
+                    <label class="control-label col-sm-3" for="preferred_supplier">Supplier</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" placeholder="" ng-model="TODOsupplier" ng-disabled="true">
+                    </div>
+                </div>
+
+                <div ng-repeat="level in getMaxLevels() track by $index">
+                    <div class="form-group form-group-sm">
+                        <label class="control-label col-sm-3" for="group_level_{{$index}}">Group level {{$index+1}}</label>
+                        <div class="col-sm-5">
+                            <select ng-model="levelGroups[$index].selectedGroup" ng-options="group.name for group in levelGroups[$index].items" ng-change="selchangeGroup($index)" class="form-control">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+            </div>  <!-- rhs -->
+
+            <div style="clear: both"></div>
+<br>
+
+            <div style="width:20%; margin:0px auto;">
+                <div class="form-group">
+                    <div class="col-sm-10">
+                        <button type="button" class="btn btn-primary Xbtn-default" ng-click="saveItem()">Save</button>
+                        <button type="button" class="btn btn-secondary" ng-click="cancelItem()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+<hr>
+
+            <ul class="nav nav-tabs">
+<!--                <li class="Xactive"><a ng-click="showTab('home.product-detail.notes')"     ui-sref-active="active">Notes</a></li> -->
+                <li><a ng-click="showTab('home.product-detail.prices')"     ui-sref-active="active">Prices</a></li>
+                <li><a ng-click="showTab('home.product-detail.levels')"     ui-sref-active="active">Levels</a></li>
+                <li><a ng-click="showTab('home.product-detail.dimensions')"     ui-sref-active="active">Dimensions</a></li>
+                <li><a ng-click="showTab('home.product-detail.pack')"     ui-sref-active="active">Pack</a></li>
+                <li><a ng-click="showTab('home.product-detail.barcodes')"     ui-sref-active="active">Barcodes</a></li>
+                <li><a ng-click="showTab('home.product-detail.label')"     ui-sref-active="active">Label</a></li>
+                <li><a ng-click="showTab('home.product-detail.notes')"     ui-sref-active="active">Notes</a></li>
+                <li><a ng-click="showTab('home.product-detail.deliveries')"     ui-sref-active="active">Deliveries</a></li>
+              </ul>
+            <div class="well" ui-view></div>
+
+
+        </div>
+
+    </form>
+
+</div>
+
+<script type="text/ng-template" id="confirmDialogTemplate">
+    <p><center>Delete. Are you sure?</center></p>
+    <div class="ngdialog-buttons">
+        <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click=closeThisDialog("Cancel")>Cancel</button>
+        <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=confirm("OK")>OK</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="errorDialogTemplate">
+    <h4 style="color:#760404"><center>{{errorMsg}}</center></h4>
+    <div class="ngdialog-buttons">
+        <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click=closeThisDialog("OK")>OK</button>
+    </div>
+</script>

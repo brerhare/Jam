@@ -36,6 +36,7 @@ class events
             $this->programId = (int) $_GET['programid'];
         if (isset($_GET['map']))
             $this->map = $_GET['map'];
+//echo $this->map;die;
 
 
         foreach ($options as $opt => $val)
@@ -63,7 +64,15 @@ class events
 
         // Insert the data
         $content = "";
-		$content .= "<script>var programId = " . $this->programId . "; var map = " . $this->map . "; </script>";
+
+		$pHeaderColor = "";
+		$pMember = "";
+		if (isset($_GET['headercolor']))
+			$pHeaderColor = $_GET['headercolor'];
+		if (isset($_GET['member']))
+			$pHeaderColor = $_GET['member'];
+
+		$content .= "<script>var programId = " . $this->programId . "; var mapyesorno ='" . $this->map . "'; var headercolor = '" . $pHeaderColor . "'; var member = '" . $pMember . "';</script>";
         $content .= "<div style='position:fixed; color:#575757;'>";      // Your basic solemn grey font color
         $uid = Yii::app()->session['uid'];
 
@@ -463,7 +472,14 @@ END_OF_API_HTML;
         sel = '?layout=index';
 
 		// Program lock?
-		sel += '&programid=' + programId + '&map=' + map;
+		if (typeof programId == 'undefined')
+			sel += '&programid=' + '6';			// wild seasons
+		else
+			 sel += '&programid=' + programId;
+	
+		sel += '&map=' + mapyesorno;
+		//sel += '&headercolor=' + headercolor;
+		//sel += '&member=' + member;
 
         // Date
         sel += '&sdate=' + selSDate;
@@ -584,6 +600,7 @@ END_OF_API_HTML;
 
         // Activate the link
 //alert(sel);
+	
         window.location.href = sel;
     }
 

@@ -71,13 +71,14 @@ css.display = block
 			css.height = 40px
 			css.width = 40px
 			image.url = img/facebook.png
-			image.width = 33px
-			image.height = 33px
+			image.width = 34px
+			image.height = 34px
 			click = ?layout=index&page=facebook
 			
 			[trade]
 			css.height = 40px
 			css.width = 40px
+			css.margin-top = 1px
 			image.url = img/trade.png
 			image.width = 33px
 			image.height = 33px

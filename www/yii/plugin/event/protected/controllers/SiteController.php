@@ -183,6 +183,7 @@ class SiteController extends Controller
 
 						if (trim($ws->os_grid_ref) != "")
 						{
+// GOOGLE MAPS OSGRIDREF TO LATLNG - uses LEAFLET (called by markerByOs2)
 							$addon = new google_os;
 							$optArr = array();
 							$optArr['single'] = '1';
@@ -200,7 +201,7 @@ class SiteController extends Controller
 						}
 						else
 						{
-// GOOGLE MAPS POSTCODE TO LATLNG
+// GOOGLE MAPS POSTCODE TO LATLNG - uses LEAFLET
 $address = $event->post_code;
 $coords = file_get_contents('http://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($address) . '&sensor=true');
 $coords = json_decode($coords);

@@ -15,6 +15,17 @@ class eventcode
 	private $sid = "";
 	private $jellyRootUrl = "";
 	private $programId = 0;
+	private $showMap = false;
+	private $singleMember = 0;
+
+	// This is an array list we populate and map points for
+	// Contains 4 arrays (ref, icon, hovertip, content)
+	private $mapEventId = array();
+	private $mapPoint = array();
+	private $mapPointProgramId = array();
+	private $mapIcon = array();
+	private $mapTip = array();
+	private $mapContent = array();
 
 	/*
 	 * Set up any code pre-requisites (onload/document-ready reqs)
@@ -36,6 +47,18 @@ class eventcode
 //die('isset p='.$this->programId);
 		}
 //die('isNOTset p='.$this->programId);
+
+		// Check if a single member is required
+		$this->singleMember = 0;
+		if (isset($_GET['member']))
+			$this->singleMember = $_GET['member'];
+
+		// Check if the big map is required
+		$this->showMap = false;
+		if ((isset($_GET['map'])) && ($_GET['map'] == "yes"))
+			$this->showMap = true;
+		if ($this->programId == 6)
+			$this->showMap = true;
 
 		foreach ($options as $opt => $val)
 		{
@@ -60,8 +83,8 @@ class eventcode
 	{
 
 //if ($this->programId == 12)
-if ($this->programId != 6)
-	return;
+//////////////////////////////////////////////////////if ($this->programId != 6)
+//////////////////////////////////////////////////////////	return;
 // NB! I have put in 'nomap' var handling in the filter code. It does nothing but pass it on via JS, but I can use it here
 
 		require(Yii::app()->basePath . "/../scripts/jelly/addon/map/google_os/google_os.php");
@@ -70,13 +93,6 @@ if ($this->programId != 6)
 		//$center = 'NX976762';
 
 		$content = "";
-
-		// This is an array list we populate and map points for
-		// Contains 4 arrays (ref, icon, hovertip, content)
-		$mapPoint = array();
-		$mapIcon = array();
-		$mapTip = array();
-		$mapContent = array();
 
 		// @@EG: Calling a jelly addon directly, not using a jelly script
 		$addon = new google_os;
@@ -91,118 +107,15 @@ if ($this->programId != 6)
 		$optArr['zoom'] = '8';
 		$ret = $addon->init($optArr, '/event/scripts/jelly/addon/map/google_os');
 
+
+
 		// Suppress the big map if so requested
-		if ((isset($_GET['map'])) && ($_GET['map'] == "no"))
+		if (!($this->showMap))
 			$content .= "<div style='display:none'>";
 		$content .= $ret[0];
 		$content .= '<script>' . $ret[1] . '</script>';
-		if ((isset($_GET['map'])) && ($_GET['map'] == "no"))
+		if (!($this->showMap))
 			$content .= "</div>";
-
-		// @@NB: For mapping points we select all events from today onwards
-		// @@NB: (Future enhancement?) Should ideally only show pins for the searched results
-		// @@NB: This should ideally be kept in some sort of sync with the event filter used in fill_headers() (below)
-		$dt = date('d-m-Y');
-		$sdate = date("Y-m-d H:i:s", strtotime($dt));
-		$criteria = new CDbCriteria;
-		$criteria->addCondition("start >= '" . $sdate . "'");
-		$criteria->order = 'start ASC';
-		$events = Event::model()->findAll($criteria);
-		foreach ($events as $event)
-		{
-			if ($event->active != 1)
-				continue;
-
-			// Check if we are filtering program
-			if ($this->programId != 0)
-			{
-				// Check this event should appear in the selected program
-				$criteria = new CDbCriteria;
-        		$criteria->addCondition("event_event_id = " .  $event->id);
-        		$criteria->addCondition("program_id = " . $this->programId);
-				$eventHasProgram=EventHasProgram::model()->find($criteria);
-				if (!($eventHasProgram))
-					continue;
-			}
-			else
-			{
-				if ((isset($_GET['program'])) && trim($_GET['program'] != ''))
-				{
-					$showProgram = trim($_GET['program']);
-
-					// Check this event should appear in the selected program
-					$criteria = new CDbCriteria;
-        			$criteria->addCondition("event_event_id = " .  $event->id);
-        			$criteria->addCondition("program_id = " . $showProgram);
-					$eventHasProgram=EventHasProgram::model()->find($criteria);
-					if (!($eventHasProgram))
-						continue;
-				}
-			}
-
-			// Check this event is approved
-			$criteria = new CDbCriteria;
- 			$criteria->addCondition("event_event_id = " .  $event->id);
-  			$criteria->addCondition("program_id = " . $this->programId != 0 ? $this->programId : 13);
-			$eventHasProgram=EventHasProgram::model()->find($criteria);
-			if (!($eventHasProgram))
-				continue;
-			if (!($eventHasProgram->approved))
-				continue;
-
-			// Pick up the Ws record
-			$criteria = new CDbCriteria;
-			$criteria->condition = "event_id = " . $event->id;
-			$ws = Ws::model()->find($criteria);
-			if (!($ws))
-				continue;
-			// Pick up the member
-			$criteria = new CDbCriteria;
-			$criteria->condition = "id = " . $event->member_id;
-			$member = Member::model()->find($criteria);
-			if (!($member))
-				continue;
-
-			// Pick up the program
-			$criteria = new CDbCriteria;
-			$criteria->condition = 'id = ' . $event->program_id;
-			$program = Program::model()->find($criteria);
-			if (!($program))
-				continue;
-
-			$osGridRef = str_replace(' ', '', $ws->os_grid_ref);
-			if (!(in_array($osGridRef, $mapPoint)))
-			{
-				array_push($mapPoint, $osGridRef);
-				array_push($mapTip, $event->address);
-				$infoWindow = "<div style='height:150px; width:300px; '>";
-				$infoWindow .= "<h3>" . $event->title . "</h3>";
-				$infoWindow .= "<i>" . $this->formatDateString($event->start, $event->end) . "</i><br><br>";
-
-				if (trim($event->thumb_path) != "")
-				{
-					if (file_exists('userdata/event/thumb/' . $event->thumb_path))
-					{
-						$img = 'userdata/event/thumb/' . $event->thumb_path;
-						$infoWindow .= "<img style='padding-right:10px' align='left' title='" . $member->organisation . "' src='" . $img . "' width='140' height='115'>";
-					}
-				}
-
-				$infoWindow .= $ws->short_description;
-				$infoWindow .= "</div>";
-				array_push($mapContent, $infoWindow);
-				if (trim($member->avatar_path) != "")
-					array_push($mapIcon, 'userdata/member/avatar/' . trim($member->avatar_path));
-				else
-					array_push($mapIcon, 'userdata/program/icon/' . trim($program->icon_path));
-			}
-		}
-		$content .= "<script>";
-		for ($i = 0; $i < count($mapPoint); $i++)
-		{
-			$content .= "markerByOs('" . $mapPoint[$i] . "', '" . $mapIcon[$i] . "', '" . urlencode($mapTip[$i]) . "', '"    . urlencode($mapContent[$i])     . "');";
-		}
-		$content .= "</script>";
 
 		$content .= "<script> centerByOs('" . $center . "'); </script>";
 
@@ -271,6 +184,10 @@ if ($this->programId != 6)
 		foreach ($events as $event)
 		{
 			if ($event->active != 1)
+				continue;
+
+			// Check if this is a singlemember requirement
+			if (($this->singleMember != 0) && ($event->member_id != $this->singleMember))
 				continue;
 
 			// Check if we are filtering program
@@ -443,6 +360,49 @@ if ($this->programId != 6)
 			$criteria->condition = 'id = ' . $event->program_id;
 			$program = Program::model()->find($criteria);
 
+			$osGridRefOrPostCode = $event->post_code;
+			$infoWindowContent = $event->title;
+
+			if ($event->program_id == 6)
+			{
+				// Pick up the Ws record
+				$criteria = new CDbCriteria;
+				$criteria->condition = "event_id = " . $event->id;
+				$ws = Ws::model()->find($criteria);
+				if (!($ws))
+					continue;
+				$osGridRefOrPostCode = str_replace(' ', '', $ws->os_grid_ref);
+				$infoWindowContent = $ws->short_description;
+			}
+
+			if (!(in_array($osGridRefOrPostCode, $this->mapPoint)))
+			{
+				array_push($this->mapPoint, $osGridRefOrPostCode);
+				array_push($this->mapPointProgramId, $event->program_id);
+				array_push($this->mapTip, "<b>" . $event->title . "</b>". "<br>" . $event->address);
+				$infoWindow = "<div style='height:150px; width:300px; '>";
+				$infoWindow .= "<h3>" . $event->title . "</h3>";
+				$infoWindow .= "<i>" . $this->formatDateString($event->start, $event->end) . "</i><br><br>";
+
+				if (trim($event->thumb_path) != "")
+				{
+					if (file_exists('userdata/event/thumb/' . $event->thumb_path))
+					{
+						$img = 'userdata/event/thumb/' . $event->thumb_path;
+						$infoWindow .= "<img style='padding-right:10px' align='left' title='" . $member->organisation . "' src='" . $img . "' width='140' height='115'>";
+					}
+				}
+
+				$infoWindow .= $infoWindowContent;
+				$infoWindow .= "</div>";
+				array_push($this->mapContent, $infoWindow);
+				if (trim($member->avatar_path) != "")
+					array_push($this->mapIcon, 'userdata/member/avatar/' . trim($member->avatar_path));
+				else
+					array_push($this->mapIcon, 'userdata/program/icon/' . trim($program->icon_path));
+			}
+
+
 			$hasEvents = true;
 
 			// The header block
@@ -586,6 +546,48 @@ if (isset($_GET['test']))
 		}
 		$content .= "</div>";	// 'accordion'
 
+
+/**********/
+		$content .= "<script>";
+		$content .= "var mapMarkers = new Array();";
+		$content .= "var mapMarkersP = new Array();";
+		//$content .= "var mapMarkers = new array();";
+$aa="";
+		for ($i = 0; $i < count($this->mapPoint); $i++)
+		{
+			// WS
+			if ($this->mapPointProgramId[$i] == 6)
+			{
+/**/
+				if (strlen($this->mapPoint[$i]) < 8)
+					continue;
+				$content .= "markerByOs('" . $this->mapPoint[$i] . "', '" . $this->mapIcon[$i] . "', '" . urlencode($this->mapTip[$i]) . "', '"    . urlencode($this->mapContent[$i])     . "');";
+				$content .= "mapMarkers[mapMarkers.length] = '" . $this->mapPoint[$i] . "';";
+/**/
+			}
+			else	// Non-WS
+			{
+				// GOOGLE MAPS POSTCODE TO LATLNG
+				$address = $this->mapPoint[$i];
+				$coords = file_get_contents('http://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($address) . '&sensor=true');
+				$coords = json_decode($coords);
+				$lat = $coords->results[0]->geometry->location->lat;
+				$lng = $coords->results[0]->geometry->location->lng;
+//if ($this->mapPoint[$i] != "EH3 6AQ.")
+// continue;
+				$content .= "markerByLatLongBigMap('" . $lat . "', '" . $lng . "', '" . urlencode($this->mapTip[$i]) . "');";
+				$content .= "mapMarkersP[mapMarkersP.length] = '" . $lat."~".$lng . "';";
+$aa .= $this->mapPoint[$i] . " = " . $lat."~".$lng . "<br>";
+			}
+		}
+//var_dump($this->mapPoint);
+//echo "<br><br>";
+//var_dump($this->mapPointProgramId);
+		$content .= "markerBounds(mapMarkers, mapMarkersP);";
+		$content .= "</script>";
+/**********/
+
+//echo $aa;die;
 		// Terminate the generated js array
 		if ($hasEvents)
 			$jsEvents = substr($jsEvents, 0, -1) . "];";

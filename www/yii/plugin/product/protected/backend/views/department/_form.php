@@ -19,6 +19,8 @@
 
 	<?php echo $form->textFieldRow($model,'name',array('class'=>'span5','maxlength'=>255, 'hint'=>$jellyEmbed)); ?>
 
+<?php echo $form->toggleButtonRow($model, 'active'); ?>
+
     <div class="control-group">
         <label class="control-label" for="thumb_path">Thumb (140w x 140h)</label>
             <div class="controls">
