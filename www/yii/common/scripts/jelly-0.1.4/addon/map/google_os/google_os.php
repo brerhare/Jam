@@ -294,7 +294,8 @@ markerByLatLong(latlong.lat, latlong.lng, postcode);
 		}
 
 // LEAFLET leaflet	Make map encompass all markers
-		markerBounds = function(points) {
+		markerBounds = function(points, pointsP) {
+//alert(pointsP);
 			// Convert the passed array of os grid refs to array of lat-longs
 			points2 = new Array();
 			for (var i = 0; i < points.length; i++) {

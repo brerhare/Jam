@@ -65,6 +65,7 @@ class DepartmentController extends Controller
 	{
 		$model=new Department;
 		$model->uid = Yii::app()->session['uid'];
+		$model->active = 1;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
