@@ -1,77 +1,51 @@
 angular.module('stock')
 	.controller('ProductDetailBarcodesCtrl', function ($scope, restFactory, notificationFactory, ngDialog) {
 
-		var url = 'http://stock.wireflydesign.com/server/api/stock_barcode/';
-		$scope.items = [];
+		var urlGetAll = 'http://stock.wireflydesign.com/server/api/custom_product_maintain_tab_barcode_getall/' + $scope.$parent.item.id;
+		var urlDelete = 'http://stock.wireflydesign.com/server/api/custom_product_maintain_tab_barcode_delete/' + $scope.$parent.item.id;
+		var urlAdd    = 'http://stock.wireflydesign.com/server/api/custom_product_maintain_tab_barcode_add/' + $scope.$parent.item.id;
+
+		$scope.tabitems = [];
+		$scope.newitem = {};
 		$scope.addMode = false;
 
 		$scope.toggleAddMode = function () {
 			$scope.addMode = !$scope.addMode;
-			if ($scope.addMode)
-				$scope.uneditAllBut(null);
 		};
-
-		$scope.uneditAllBut = function(item) {
-			for (var i = 0; i < $scope.items.length; i++) {
-				if ($scope.items[i] != item) {
-					$scope.items[i].editDescription = false;
-				}
-			}
-		};
-
-		$scope.toggleEditBarcode = function (item) {
-			if (!$scope.addMode)
-			{
-				item.editBarcode = !item.editBarcode;
-				if (item.editBarcode)
-					$scope.uneditAllBut(item);
-			}
-		};
-
-		$scope.editBarcodeEnd = function(keyEvent, item) {
-			if (event.keyCode == 13 && item.barcode){
-				$scope.toggleEditBarcode(item);
-				$scope.updateItem(item);
-			}
-		};
-
-// ----------------------------------------------------------------------------------------
 
 		var getItemSuccessCallback = function (data, status) {
-			$scope.items = data;
+			$scope.tabitems = data;
 		};
 
 // ----------------------------------------------------------------------------------------
 
-		var successCallback = function (data, status, headers, config) {
-			notificationFactory.success();
-			return restFactory.getItem(url).success(getItemSuccessCallback).error(errorCallback);
+		var successPostCallback = function (data, status, headers, config) {
+			//successCallback(data, status, headers, config).success(function () {
+				notificationFactory.success();
+				$scope.toggleAddMode();
+				$scope.newitem = {};
+			//});
+			restFactory.getItem(urlGetAll).success(getItemSuccessCallback).error(errorCallback);	// reload all after adding
 		};
 
-		var successPostCallback = function (data, status, headers, config) {
-			successCallback(data, status, headers, config).success(function () {
-				$scope.toggleAddMode();
-				$scope.item = {};
-			});
+		var successDeleteCallback = function (data, status, headers, config) {
+			notificationFactory.success();
+			restFactory.getItem(urlGetAll).success(getItemSuccessCallback).error(errorCallback);	// reload all after adding
 		};
 
 		var errorCallback = function (data, status, headers, config) {
-			notificationFactory.error(data.ExceptionMessage);
+			notificationFactory.error("");
+			//notificationFactory.error(data.ExceptionMessage);
 		};
 
-		restFactory.getItem(url).success(getItemSuccessCallback).error(errorCallback);
+		restFactory.getItem(urlGetAll).success(getItemSuccessCallback).error(errorCallback);
 
 		$scope.addItem = function () {
-			restFactory.addItem(url, $scope.item).success(successPostCallback).error(errorCallback);
+			restFactory.addItem(urlAdd, $scope.newitem).success(successPostCallback).error(errorCallback);
 		};
 
-		$scope.deleteItem = function (item) {
-			restFactory.deleteItem(url, item.id).success(successCallback).error(errorCallback);
+		$scope.deleteItem = function (tabitem) {
+			restFactory.deleteItem(urlDelete, tabitem.id).success(successDeleteCallback).error(errorCallback);
 		};
-
-		$scope.updateItem = function (item) {
-			restFactory.updateItem(url, item.id, item).success(successCallback).error(errorCallback);
-		};
-
 
 	});

@@ -9,7 +9,7 @@ angular.module('stock')
 		$scope.items = [];
 		$scope.addMode = false;
 		$scope.default_item = null;
- 
+
 		$scope.toggleAddMode = function () {
 			$scope.addMode = !$scope.addMode;
 			if ($scope.addMode)

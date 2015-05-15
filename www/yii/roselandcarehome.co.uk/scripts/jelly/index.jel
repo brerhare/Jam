@@ -1,0 +1,355 @@
+#Roseland Residential Care Home
+[defaults]
+include = default-values
+
+[* : defaults]
+
+[screen]
+child = site
+css.display = block
+css.background-color = white
+#fx.wallpaper-image = /img/background.jpg
+#addon.analytics.google_analytics.ua = UA-20115178-1
+
+	[site]
+	child = header, middle
+	css.width = 80%
+	css.min-width = 950px
+
+####  Header  #################################
+
+	[header]
+	child = logo, header-text, header-image
+	css.height = 200px
+	css.margin-top = 25px
+	stacking = horizontal
+	css.overflow = visible
+	css.position = relative
+	
+		[logo]
+		css.width = 30%
+		css.height = 60%
+		css.margin-top = 30px
+		css.margin-left = 3%
+		css.min-width = 200px
+		image.url = img/logo.png
+		image.width = 100%
+		image.height = 68%
+		css.z-index = 150
+		css.overflow = visible
+		css.position = relative
+		click = http://www.roselandcarehome.co.uk/
+		
+		[header-text]
+		child = header-text-title, header-text-body
+		css.width = 40%
+		css.height = 100px
+		css.min-width = 300px
+		css.margin-top = 50px
+		css.margin-left = 5%
+		css.color = black
+		css.font-size = 13px
+		css.font-weight = normal
+		css.font-family = Open Sans
+				
+				[header-text-title]
+				css.line-height = 200%
+				html.raw = <span style="font-size:24px; font-family: Sorts Mill Goudy; font-weight: bold; color: #719572;">The Independent Residential Care Home</span><br/>
+				
+				[header-text-body]
+				css.margin-top = 5px
+				css.line-height = 150%
+				html.raw = Roseland has an emphasis on individually tailored care for the frail in a supportive and homely environment
+		
+		
+		[header-image]
+		css.margin-top = 70px
+		css.margin-left = 1%
+		css.width = 5%
+		image.url = img/rose-leaf.png
+		image.width = 100%
+		image.height = 50%
+		#image.z-index = 100
+
+
+
+#### middle left ###########################################
+
+[middle]
+child = left, main
+stacking = horizontal
+
+	[left]
+	child = menu, menu-footnote
+	css.width = 15%
+	css.min-width = 80px
+	css.background-color = white
+	
+		[menu]
+		css.overflow = visible
+		css.z-index = 100
+		css.position = relative
+
+		#// Top level basic settings
+            addon.menu.traditional.orientation = vertical
+            addon.menu.traditional.width = 80px
+            addon.menu.traditional.height = 40px
+            addon.menu.traditional.align = left
+            addon.menu.traditional.item-width = 80px
+			
+#// Top level background settings
+            addon.menu.traditional.menu-rounding = 0px
+            addon.menu.traditional.menu-opacity = 100%
+            addon.menu.traditional.menu-color = transparent 
+            addon.menu.traditional.item-separator-width = 2px
+            addon.menu.traditional.item-separator-color = transparent
+			
+#// Top level font settings
+            addon.menu.traditional.menu-font-size = 18px
+            addon.menu.traditional.menu-font-family = Sorts Mill Goudy
+            addon.menu.traditional.menu-font-weight = normal
+            addon.menu.traditional.menu-text-color = black
+#// Top level hover settings
+            addon.menu.traditional.menu-hover-text-color = #698d68
+            addon.menu.traditional.menu-hover-background-color = transparent
+            addon.menu.traditional.menu-hover-font-size = 18px
+            addon.menu.traditional.menu-hover-font-family = Sorts Mill Goudy
+            addon.menu.traditional.menu-hover-font-weight = normal
+#// Top level selected settings
+            addon.menu.traditional.menu-selected-text-color = #698d68
+            addon.menu.traditional.menu-selected-background-color = transparent
+            addon.menu.traditional.menu-selected-font-size = 18px
+            addon.menu.traditional.menu-selected-font-family = Sorts Mill Goudy
+            addon.menu.traditional.menu-selected-font-weight = normal
+#// Second level settings
+            addon.menu.traditional.submenu-height = 30px
+            addon.menu.traditional.submenu-width = 80px
+            addon.menu.traditional.submenu-font-size = 16px
+            addon.menu.traditional.submenu-font-family = Sorts Mill Goudy
+            addon.menu.traditional.submenu-font-weight = normal
+            addon.menu.traditional.submenu-text-color = #698d68
+            addon.menu.traditional.submenu-background-color = white
+            addon.menu.traditional.submenu-separator-width = 1px
+            addon.menu.traditional.submenu-separator-color = #d2dcd1
+
+
+		
+########
+
+		[menu-footnote]
+		child = staff, address, standard-links, credits
+
+		css.width = 100%
+		css.margin-top = 60px
+		css.font-family = Open Sans
+#css.background-color = lightgrey
+
+			[staff]
+			child = staff-text, staff-img, staff-rose
+			css.width = 80%
+			css.padding = 10%
+			#css.height = 110px
+			fx.rounding = 5px
+			css.background-color = #d2dcd1
+			
+				[staff-text]
+				html.raw = Meet the Staff
+				css.text-align = center
+				css.font-size = 14px
+				
+				[staff-img]
+				css.margin-top = 13px
+#				image.url = img/staff-front.jpg
+#				image.width = 100%
+#				image.height = 70%
+				css.background-size = 100%
+				css.background-image = url('/img/staff-front.jpg')
+				css.background-repeat = no-repeat
+				css.padding-top = 70%
+#divide the height by the width for the proportional padding height
+				click = ?layout=index&page=caring-staff-dumfries-care-home
+				
+				[staff-rose]
+				css.margin-top = -25px
+				css.float = right
+				css.width = 35%
+				image.url = img/single-rose.png
+				image.width = 100%
+				image.height = 97%
+				css.margin-bottom = -10px
+
+				
+				
+
+############
+			[address]
+			child = add1, add2, add3, add4
+			css.margin-top = 70px
+			css.color = black
+			css.line-height = 130%
+			css.font-size = 14px
+			css.font-weight = normal
+				
+				[add1]
+				html.raw = 15 Laurieknow<br/>
+				
+				[add2]
+				html.raw = Dumfries<br/>
+				
+				[add3]
+				html.raw = DG2 7AH<br/>
+				
+				[add4]
+				html.raw = Tel: 01387 252616<br/>
+				
+	
+			
+############			
+			[standard-links]
+			child = footer-contact, footer-cookies, footer-terms
+			css.line-height = 20px
+			css.margin-top = 30px
+			
+				[footer-contact]
+				html.raw = <a style="text-decoration:none; color: black; font-size: 12px;" onmouseover="this.style.color='#698d68'" onmouseout="this.style.color='black'" href="?layout=index&page=contact">Contact</a>
+
+				[footer-cookies]
+				html.raw = <a style="text-decoration:none; color: black; font-size: 12px;" onmouseover="this.style.color='#698d68'" onmouseout="this.style.color='black'" href="?layout=index&page=cookie-policy">Cookies</a>
+				
+
+				[footer-terms]
+				html.raw = <a style="text-decoration:none; color: black; font-size: 12px;" onmouseover="this.style.color='#698d68'" onmouseout="this.style.color='black'" href="?layout=index&page=terms-conditions">Site Policies</a>
+				
+############
+			[credits]
+			child = copyright, wirefly
+			css.width = 100%
+			#css.height = 300px
+			css.margin-top = 50px
+			
+				[copyright]
+				html.raw = Roseland Residential Care Home &copy 2015 <br>All rights reserved
+				css.color = #000000
+				css.font-size = 12px
+				css.text-align = left
+				
+				[wirefly]
+				child = wirefly-logo, admin
+				stacking = horizontal
+				css.margin-top = 20px
+		
+				
+					[wirefly-logo]
+					css.height = 45px
+					css.margin-top = 5px
+					image.url = img/wirefly-design.png
+					image.width = 100px
+					image.height = 46px
+					image.align = left
+					clicknew = http://www.wireflydesign.com
+					
+				
+					[admin]
+					child = cog-center
+					css.height = 20px
+					css.width = 20px
+					css.background-size = 100%
+					css.background-image = url('/img/admin.png')
+					css.margin-left = -20px
+		
+						[cog-center]
+						css.width = 5px
+						css.height = 5px
+						css.margin-top = 8px
+						image.url = img/cog-center.png
+						image.width = 5px
+						image.height = 5px
+						image.align = center
+						clicknew = backend.php		
+		
+		
+#### middle main ###########################################	
+
+[main]
+child = slider, body
+css.width = 77%	
+css.min-width = 750px
+css.float = right
+
+	[slider]
+	css.width = 100%
+	css.margin-right = 0px
+	css.min-width = 750px
+  	css.height = 530px
+	condition = @PAGE=@HOMEPAGE
+	addon.slider.flexslider.width = 750px
+	addon.slider.flexslider.height = 500px
+	addon.slider.flexslider.mode = image
+	addon.slider.flexslider.source = db
+
+	#addon.slider.flexslider.border-width = 0px
+	#addon.slider.flexslider.border-color = red
+	addon.slider.flexslider.active-dotcolor = #628661
+	addon.slider.flexslider.inactive-dotcolor = #d2dcd1
+	addon.slider.flexslider.dot-margin-top = -30px
+	#addon.slider.flexslider.dot-margin-bottom = 0px
+	#addon.slider.flexslider.dot-margin-left = 0px
+	#addon.slider.flexslider.dot-margin-right = 0px
+	addon.slider.flexslider.animation = slide
+	
+	[body]
+	child = content, contact, footer
+	css.margin-top = 20px
+	css.background-color = white
+	fx.rounding = 4px
+	
+			
+		[content]
+		css.width = 85%
+		css.margin-top = 30px
+		css.margin = 30px 0px
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
+		
+		[contact]
+		child = contact-form, contact-text
+		condition = @PAGE=contact
+		css.height = 300px
+		stacking = horizontal
+	
+			[contact-form]
+			css.width = 550px
+			css.margin = 0px
+			#css.margin-bottom = 30px
+			css.background-color = white
+			addon.contact.contactform.edgepadding = 0px
+			addon.contact.contactform.buttoncolor = #fafafa
+			addon.contact.contactform.buttontextcolor = #b23640
+			addon.contact.contactform.buttontext = [&nbsp;&nbsp; Submit &nbsp;&nbsp;]
+			addon.contact.contactform.successtextcolor = green
+			addon.contact.contactform.failuretextcolor = red
+			addon.contact.contactform.textcolor = grey
+			addon.contact.contactform.backcolor = #FFFFD6
+			addon.contact.contactform.inputspacing = 10px
+#			addon.contact.contactform.inputwidth = 98%
+
+			[contact-text]
+			css.width = 300px
+			css.margin-top = 80px
+			css.font = 12px
+			html.raw = Please fill in the form and someone will get back to you as soon as possible.
+
+
+####footer####################################
+
+[footer]
+css.margin = 40px
+css.width = 85%
+image.url = /img/scroll.png
+image.width = 20%
+image.height = 26%
+image.align = center
+
+

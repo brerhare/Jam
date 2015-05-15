@@ -1,26 +1,21 @@
 angular.module('stock')
 	.controller('ProductDetailPricesCtrl', function ($scope, restFactory, notificationFactory) {
 
-		var urlMarkupGroup  = 'http://stock.wireflydesign.com/server/api/stock_markup_group/';	// for price tab
-		var urlProductPrice = 'http://stock.wireflydesign.com/server/api/stock_product_price/';	// for price tab
+		var urlMarkupGroup  = 'http://stock.wireflydesign.com/server/api/stock_markup_group/';
+		var urlProductPrice = 'http://stock.wireflydesign.com/server/api/stock_product_price/';
+		var urlGetAll       = 'http://stock.wireflydesign.com/server/api/custom_product_maintain_tab_prices_getall/' + $scope.$parent.item.id;
+		var urlSaveAll      = 'http://stock.wireflydesign.com/server/api/custom_product_maintain_tab_prices_saveall/' + $scope.$parent.item.id;
 
-		var maxLevels = 3;		// @TODO hardcoded. Same in group maint
 		$scope.rowCollection = [];
 
-		$scope.levelGroups = new Array(maxLevels);	// An array ix for each level's <select>. Has 'parentId', 'selectedGroup', 'items[]'
 		$scope.markupGroups = {};					// for group tab
 
-		$scope.getMaxLevels = function() {
-			return new Array(maxLevels);
-		};
-
-
 		// Product price (for markup groups - loaded for product being edited/added)
-		// -------------								// @@TODO: should also only fire when needed eg price tab
+		// -------------
 
 		var getMarkupGroupsProductPrices = function() {	// for group tab
 			for (var i = 0; i < $scope.markupGroups.length; i++)
-				$scope.markupGroups[i].manual = 0;
+				$scope.markupGroups[i].manual = '';
 			restFactory.getItem(urlProductPrice)
 				.success(function(data, status) {
 					if (data.length > 0) {
@@ -31,6 +26,7 @@ angular.module('stock')
 							}
 						}
 					}
+					getManualPrices();
 				})
 				.error(errorCallback);
 		};
@@ -51,16 +47,15 @@ angular.module('stock')
 				.success(function(data, status) {
 					$scope.markupGroups = {};
 					$scope.markupGroups = data;
+					getMarkupGroupsProductPrices();
 				})
 				.error(errorCallback);
 		};
-getMarkupGroups();	// @@TODO: make this only fire when user clicks the applicable tab, its wasteful like this
 
 		// Tab area - Prices tab
 		// ---------------------
-
 		var pricetabGetPrice = function(markupGroup){
-			var price = parseFloat(markupGroup.manual);
+			var price = markupGroup.manual === '' ? 0 : parseFloat(markupGroup.manual);
 			if (price === 0) {
 				price = $scope.pricetabGetCalculatedPrice(markupGroup);
 			}
@@ -89,14 +84,40 @@ getMarkupGroups();	// @@TODO: make this only fire when user clicks the applicabl
 
 
 		var errorCallback = function (data, status, headers, config) {
-			alert(data.value);
-			notificationFactory.error(data.ExceptionMessage);
+			notificationFactory.error("");
+			//notificationFactory.error(data.ExceptionMessage);
 		};
 
+		var getManualPricesSuccessCallback = function (data, status) {
+			for (var i = 0; i < data.length; i++) {
+				for (var j = 0; j < $scope.markupGroups.length; j++) {
+					if (data[i].stock_markup_group_id == $scope.markupGroups[j].id)
+						$scope.markupGroups[j].manual = data[i].price;
+				}
+			}
+		};
 
-		// Start Processing
+		var saveManualPricesSuccessCallback = function (data, status) {
+			notificationFactory.success();
+		};
 
-		getMarkupGroupsProductPrices();
+		var getManualPrices = function() {
+			restFactory.getItem(urlGetAll).success(getManualPricesSuccessCallback).error(errorCallback);
+		};
 
+		$scope.saveManualPrices = function() {
+			var sendItems = [];
+			for (var k = 0; k < $scope.markupGroups.length; k++) {
+				sendItems[k] = {};
+				sendItems[k].stock_markup_group_id = $scope.markupGroups[k].id;
+				sendItems[k].price = $scope.markupGroups[k].manual;
+			}
+//			alert(JSON.stringify(sendItems));
+			restFactory.addItem(urlSaveAll, sendItems).success(saveManualPricesSuccessCallback).error(errorCallback);
+		};
+
+		// Start
+
+		getMarkupGroups();
 
 	});

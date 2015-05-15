@@ -18,7 +18,7 @@ angular.module('stock')
 
 		$scope.showTab = function(name) {
 			$state.go(name, $stateParams, {location: 'replace'});
-		}
+		};
 
 		// Vat select box. There is a default rate
 		// ---------------------------------------
@@ -153,17 +153,41 @@ angular.module('stock')
 			window.history.back();
 		};
 
+		var validInput = function() {
+			$scope.errorMsg = '';
+			if ($scope.item.code === '')
+				$scope.errorMsg = 'Code cant be blank';
+			else if ($scope.item.name === '')
+				$scope.errorMsg = 'Name cant be blank';
+			else if ($scope.item.stock_group_id === 0)
+				$scope.errorMsg = 'Must select a product group';
+			else if ($scope.item.stock_vat_id === 0)
+				$scope.errorMsg = 'Invalid Tax';
+
+			if ($scope.errorMsg) {
+				ngDialog.openConfirm({
+					template: 'errorDialogTemplate',
+					closeByEscape: true,
+					scope: $scope //Pass the scope object if you need to access in the template
+				});
+				return 0;
+			}
+			return 1;
+		};
+
         $scope.saveItem = function() {
+        	if (!validInput())
+        		return;
             if ($scope.$parent.editMode == "add") {
                 restFactory.addItem(url, $scope.item)
                     .success(function (data, status) {
-						// Now update/add any price overrides					 @@WHUT?
-						for (var i = 0; i < $scope.markupGroups.length; i++) {
-							if ($scope.markupGroups[i].manual !== 0) {
-								// delete old
-								// add new
-							}
-						}
+//						// Now update/add any price overrides					 @@WHUT?
+//						for (var i = 0; i < $scope.markupGroups.length; i++) {
+//							if ($scope.markupGroups[i].manual !== 0) {
+//								// delete old
+//								// add new
+//							}
+//						}
                         notificationFactory.success();
                         window.history.back();
                     })
@@ -187,7 +211,7 @@ angular.module('stock')
         };
 
 		var errorCallback = function (data, status, headers, config) {
-			alert(data.value);
+			alert("error");
 			notificationFactory.error(data.ExceptionMessage);
 		};
 
@@ -198,13 +222,15 @@ angular.module('stock')
 		var initProductEditing = function() {
 			getVats();
 			getGroups();
+			$scope.showTab('home.product-detail.prices');
 		};
 
         if ($scope.$parent.editMode == "add") {
 			// @@ Initialise fields
+			$scope.item.code = "";
 			$scope.item.name = "";
 			$scope.item.description = "";
-			$scope.item.cost   = 0.00;
+			$scope.item.cost   = 0.0000;
 			$scope.item.weight = 0.00;
 			$scope.item.width  = 0.00;
 			$scope.item.height = 0.00;
@@ -212,12 +238,20 @@ angular.module('stock')
 			$scope.item.volume = 0.00;
 			$scope.item.stock_group_id = 0;
 			$scope.item.stock_vat_id = 0;
+			$scope.item.notes = "";
+			$scope.item.label = "";
+			$scope.item.priced_by_weight = false;
+//alert(JSON.stringify($scope.item));
 			initProductEditing();
         }
         else {
             restFactory.getItem(url, $scope.$parent.itemId)
                 .success(function (data, status) {
                     $scope.item = data;
+                    if ($scope.item.priced_by_weight === 0)
+                    	$scope.item.priced_by_weight = false;
+                    else
+                    	$scope.item.priced_by_weight = true;
 					initProductEditing();
                 })
                 .error(errorCallback);

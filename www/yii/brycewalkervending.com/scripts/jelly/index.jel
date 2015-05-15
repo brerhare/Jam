@@ -153,8 +153,9 @@ css.background-color = white
 	css.width = 875px
 	css.height = 265px
 	css.margin-top = 20px
+	css.margin-bottom = 20px
 	css.box-shadow = 3px 5px 8px rgba(0,0,0,0.5)
-#css.position = relative;
+#image is 480px x 788px
 addon.slider.shopping.slider-height = 200px
 addon.slider.shopping.image-previous = img/nav-left.png
 addon.slider.shopping.image-next = img/nav-right.png
@@ -166,7 +167,7 @@ addon.slider.shopping.images = 5
 			
 
 	[pages]
-	child = tabs, content 	
+	child = tabs, content, contact	
 	css.width = 960px
 	
 	
@@ -180,11 +181,40 @@ addon.slider.shopping.images = 5
 
 			
 		[content]
-		css.margin = 8px 8%
+		css.margin = 10px 8%
 		db.table = ContentBlock
 		db.filter = url=$_GET['page']
 		db.error = Sorry, I could not find the page $_GET['page']
 		html.raw = ContentBlock.content
+		
+		[contact]
+		child = contact-form, contact-text
+		condition = @PAGE=contact
+		css.height = 300px
+		stacking = horizontal
+	
+			[contact-form]
+			css.width = 60%
+			css.margin = 0px
+			#css.margin-bottom = 30px
+			css.background-color = white
+			addon.contact.contactform.edgepadding = 0px
+			addon.contact.contactform.buttoncolor = #fafafa
+			addon.contact.contactform.buttontextcolor = #b23640
+			addon.contact.contactform.buttontext = [&nbsp;&nbsp; Submit &nbsp;&nbsp;]
+			addon.contact.contactform.successtextcolor = green
+			addon.contact.contactform.failuretextcolor = red
+			addon.contact.contactform.textcolor = grey
+			addon.contact.contactform.backcolor = #FFFFD6
+			addon.contact.contactform.inputspacing = 10px
+			addon.contact.contactform.inputwidth = 80%
+
+			[contact-text]
+			css.width = 35%
+			css.margin-top = 80px
+			css.font = 12px
+			html.raw = Please fill in the form and someone will get back to you as soon as possible.
+
 
 
 ####footer####################################
@@ -234,11 +264,34 @@ stacking = horizontal
 		css.text-align = center
 		
 		[wirefly]
-		css.height = 45px
-		css.margin-top = 10px
-		image.url = img/wirefly-weblink.png
-		image.width = 150px
-		image.height = 40px
-		image.align = center
-		clicknew = http://www.wireflydesign.com
+		child = wirefly-logo, admin
+		stacking = horizontal
+		css.margin-top = 20px
+		css.width = 100px
+
 		
+			[wirefly-logo]
+			image.url = img/wirefly-design.png
+			image.width = 100%
+			image.height = 46%
+			image.align = left
+			clicknew = http://www.wireflydesign.com
+			
+		
+			[admin]
+			child = cog-center
+			css.height = 20px
+			css.width = 20px
+			css.background-size = 100%
+			css.background-image = url('/img/admin.png')
+			css.margin-left = -20px
+
+				[cog-center]
+				css.width = 5px
+				css.height = 5px
+				css.margin-top = 8px
+				image.url = img/cog-center.png
+				image.width = 5px
+				image.height = 5px
+				image.align = center
+				clicknew = backend.php	
