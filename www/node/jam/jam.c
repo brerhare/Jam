@@ -23,6 +23,7 @@ using namespace std;
 MYSQL *conn = NULL;
 
 typedef struct {
+	char *rawData;
 	char *command;
 	char *args;
 	char *trailer;
@@ -113,6 +114,7 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 	while (jam[ix]) {
 		char *cmd = jam[ix]->command;
 		char *args = jam[ix]->args;
+		char *rawData = jam[ix]->rawData;
 //		--------------------------------
 		if (!(strcmp(cmd, "@!begin"))) {
 //		--------------------------------
@@ -454,15 +456,15 @@ strcat(query, " LIMIT 100");
 //		---------------------------
 		} else if (cmd[0] != '@') {
 //		---------------------------
-/*			rawData = LHS string
+/*			data = LHS string
 			if '='
-				rawData = RHS string
-			expandFields(rawData)
+				data = RHS string
+			expandFields(data)
 
-			if findVar(rawData)
+			if findVar(data)
 				result string = var value
-			else if isCalculation(rawData)
-				result string = calculate(rawData)
+			else if isCalculation(data)
+				result string = calculate(data)
 			else
 				result string = expandedData
 
@@ -472,40 +474,42 @@ strcat(query, " LIMIT 100");
 			else
 				emit(result string)		*/
 
-			// rawData = LHS to start with
-			char *rawData = (char *) calloc(1, 4096);
-			strcpy(rawData, cmd);							// eg: [mem.group_count]
-//printf("{AWAY:%s and %s}",cmd, rawData);
+			// data = LHS to start with
+			char *data = (char *) calloc(1, 4096);
+			strcpy(data, cmd);							// eg: [mem.group_count]
+//printf("{AWAY:%s and %s}",cmd, data);
 
 			char *resultString = (char *) calloc(1, 4096);
 			char *fullLine = (char *) calloc(1, 4096);
 			strcpy(fullLine, cmd);
 //printf("(CHK:%s and %s)", fullLine, args);
-			if (args) {
-				//strcat(fullLine, " ");
-				strcat(fullLine, args);
-			}
+			if (args)
+				strcpy(fullLine, rawData);
+			strTrim(fullLine);
+//printf("T=[%s]\n",fullLine);
 			//sprintf(fullLine, "%s%s", cmd, args);			// eg: [mem.group_count][= stock_group.count]
-			strcpy(rawData, fullLine);
+			strcpy(data, fullLine);
 
-			// rawData = RHS if equals sign
+			// data = RHS if equals sign
 			char *eq = "=";
 			if (strchr(fullLine, '=')) {
 				char *rhs = strTrim(getWordAlloc(fullLine, 2, eq));		// eg [stock_group.count]
-				strcpy(rawData, rhs);
+				strcpy(data, rhs);
 				free(rhs);
 			}
 
 			// Expand any fields to values
-			char *expandedData = expandFieldsInString(rawData, tableName);	// Allocates memory - needs freeing
-//printf("\nSTART.... [%s][%s][%s]\n", fullLine, rawData, expandedData);
+			char *expandedData = expandFieldsInString(data, tableName);	// Allocates memory - needs freeing
+//printf("\nSTART.... [c=%s][a=%s][f=%s][r=%s][e%s]\n", cmd, args, fullLine, data, expandedData);
 
 			// Either retrieve the data from a field or calculate
-			VAR *searchVar = findVarLenient(rawData, tableName);
+			VAR *searchVar = findVarLenient(data, tableName);
 			if (searchVar)
 				strcpy(resultString, searchVar->portableValue);
 			else if (isCalculation(expandedData)) {
-				sprintf(resultString, "%s", calculate(expandedData));	//@TODO: decimals artificially removed!!!!
+				char *calc = calculate(expandedData);
+				sprintf(resultString, "%s", calc);						//@TODO: decimals artificially removed!!!!
+				free(calc);
 			}
 			else
 				strcpy(resultString, expandedData);
@@ -533,17 +537,14 @@ strcat(query, " LIMIT 100");
 						}
 					}
 				}
-				free(rawData);
-				free(expandedData);
-				free(resultString);
-				free(fullLine);
-			} else if (1!=2){		// Not an assignment - just emit variable
+			} else {		// Not an assignment - just emit variable
+				emit(resultString);
+				// Clear if necessary
 				VAR *variable = findVarLenient(cmd, tableName);
 				if (variable) {
 //printf("RETR-->%s<--\n", variable->name);
 //char xx[256]; sprintf(xx, "R[%s]:%s", resultString, variable->portableValue);
 //emit(xx);
-					emit(variable->portableValue);
 					// Clear if 'count.'
 					if ((variable->source) && (!strcmp(variable->source, "count"))) {
 						variable->numberValue = 0;
@@ -563,13 +564,12 @@ strcat(query, " LIMIT 100");
 						}
 					}
 				}
-				else {
-					sprintf(tmp, "[%s]", cmd);
-					emit(tmp);
-				}
 			}
-else { emit(resultString); }
 			emit(jam[ix]->trailer);		
+			free(data);
+			free(expandedData);
+			free(resultString);
+			free(fullLine);
 //		--------
 		} else {
 //		--------
@@ -879,9 +879,10 @@ char *curlies2JamArray(char *tplPos) {
 		printf("there is an opening '{' within a '{}'\n");
 		exit(1);
 	}
-//printf("startCurly=%p, endCurly=%p, wdLen=%d, wd=%s\n", startCurly, endCurly, wdLen, wd);
+//printf("startCurly=%p, endCurly=%p, wdLen=%d, wd=%s\n<br>", startCurly, endCurly, wdLen, wd);
 
 	jam[jamIx] = (JAM *) calloc(1, sizeof(JAM));
+	jam[jamIx]->rawData = strdup(wd);
 
 	char *buf = (char *) calloc(1, strlen(wd)+1);
 	char *space = " ";
@@ -1054,7 +1055,7 @@ char *calculate(char *str) {
 		}
 		pclose(fp);
 	}
-//printf("\n*** [%s][%s] ***\n", str, result);
+//printf("\n *** [%s][%s] *** \n", str, result);
 	return result;
 }
 
