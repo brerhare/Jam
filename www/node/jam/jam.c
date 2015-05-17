@@ -17,6 +17,9 @@
 
 using namespace std;
 
+char *startJam = "{{";
+char *endJam = "}}";
+
 #define round(x) ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 
 #define MAX_SQL_QUERY_LEN 1024
@@ -863,23 +866,20 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 }
 
 char *curlies2JamArray(char *tplPos) {
-	char *startCurly = strchr(tplPos, '{');
-	if (startCurly == NULL)
+	char *startCurly = strstr(tplPos, startJam);
+	if (!startCurly)
 		return NULL;
-	char *endCurly = strchr(tplPos, '}');
-	if (endCurly == NULL) {
-		printf("an opening '{' has a missing closing '}'\n");
-		exit(1);
-	}
-	char *wd = (char *) malloc(endCurly - startCurly);
-	int wdLen = (endCurly - startCurly - 1);
-	memcpy(wd, (startCurly+1), wdLen);
+	char *endCurly = strstr(tplPos, endJam);
+	if (!endCurly)
+		die("Unmatched jam token, an open must have a close");
+	int wdLen = (endCurly - startCurly - strlen(startJam));
+	char *wd = (char *) malloc(wdLen + 1);
+	memcpy(wd, (startCurly + strlen(startJam)), wdLen);
 	wd[wdLen] = 0;
-	if (strchr(wd, '{')) {
-		printf("there is an opening '{' within a '{}'\n");
-		exit(1);
+	if (strstr(wd, startJam)) {
+		die("there is an opening jam token within a token pair");
 	}
-//printf("startCurly=%p, endCurly=%p, wdLen=%d, wd=%s\n<br>", startCurly, endCurly, wdLen, wd);
+//printf("\nlen=[%d] wd=[%s]\n", wdLen, wd);
 
 	jam[jamIx] = (JAM *) calloc(1, sizeof(JAM));
 	jam[jamIx]->rawData = strdup(wd);
@@ -899,12 +899,13 @@ char *curlies2JamArray(char *tplPos) {
 				sprintf(newBuf, "%s.%s", tableStack[i], buf);
 				free(buf);
 				buf = newBuf;
-printf(" ... storing variable [%s]\n", buf);
+//printf(" ... storing variable [%s]\n", buf);
 				break;
 			}
 		}
 	}
 */
+
 	for (char *p = buf; *p; ++p) *p = tolower(*p);
 	jam[jamIx]->command = buf;
 
@@ -917,8 +918,8 @@ printf(" ... storing variable [%s]\n", buf);
 	}
 //printf("SETTING [%s]=[%s]\n", jam[jamIx]->command, jam[jamIx]->args);
 
-	char *trailer = strdup(endCurly + 1);
-	char *c = strchr(trailer, '{');
+	char *trailer = strdup(endCurly + strlen(endJam));
+	char *c = strstr(trailer, startJam);
 	if (c)
 		*c = 0;
 	jam[jamIx]->trailer = strdup(trailer);
@@ -951,36 +952,43 @@ printf(" ... storing variable [%s]\n", buf);
 		}
 	}
 	free(trailer);
-	return (endCurly+1);
+	return (endCurly + strlen(endJam));
 }
 
 char *readTemplate(string fname){
 	char *buf = NULL;
 	std::ifstream html (fname.c_str(), std::ifstream::binary);
 	if (!html){
-		std::cout << "error: cant open file " << fname << endl;
+		std::cout << "error: can't open file " << fname << endl;
 		die("");
 	}
 	html.seekg (0, html.end);
 	int length = html.tellg();
 	html.seekg (0, html.beg);
 
-	buf = (char *) calloc(1, 9 +length+1);
+	int jamLen = (strlen(startJam) + strlen(endJam));
+	char *fakeWord = "@!begin";
+
+	buf = (char *) calloc(1, jamLen + strlen(fakeWord) + length + 1);
 	if (!buf) {
 		std::cout << "error: cant calloc memory " << fname << endl;
-		exit(1);
+		die("");
 	}
-	strcpy(buf, "{@!begin}");
-	html.read (buf+9,length);
-	buf[9+length] = 0;
+	strcpy(buf, startJam);
+	strcat(buf, fakeWord);
+	strcat(buf, endJam);
+	int bufLen = strlen(buf);
+	html.read ((buf + bufLen), length);
+	buf[bufLen+length] = 0;
 	html.close();
 	if (!html) {
 		std::cout << "error: only " << html.gcount() << " could be read" << endl;
-		exit(1);
+		die("");
 	}
-//	printf("-->%s<--\n", buf);
+//	printf("\n[%d][%d]\n-->%s<--\n", jamLen, length, buf);
 	return buf;
 }
+
 
 int openDB(char *name) {
 	char *server = "localhost";
