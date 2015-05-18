@@ -260,6 +260,7 @@ strcat(query, " LIMIT 100");
 				emit(jam[ix]->trailer);
 			}
 			mysql_free_result(res);
+			free(givenTableName);
 			free(query);
 //		-------------------------------------
 		} else if (!(strcmp(cmd, "@get"))) {
@@ -307,12 +308,14 @@ strcat(query, " LIMIT 100");
 				emit(jam[ix]->trailer);
 			}
 			mysql_free_result(res);
+			free(givenTableName);
 			free(query);
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@end"))) {
 //		------------------------------------
 			// Return from an each-end loop
 //printf("RETURNING\n");
+			free(tmp);
 			return(0);
 //		----------------------------------------
 		} else if (!(strcmp(cmd, "@include"))) {
@@ -342,6 +345,7 @@ strcat(query, " LIMIT 100");
 				die(tmp);
 			}
 			emit(buf);
+			free(buf);
 			// Emit any post-tags
 			if (strstr(args, ".css"))
 			emit("</style>");
@@ -612,7 +616,7 @@ VAR *findVarStrict(char *name) {
 void fillVarDataTypes(VAR *variable, char *value) {
 	char *safeValue = NULL;
 	if (value)
-		safeValue = strdup(value);
+		safeValue = strdup(value);	//@@BUG something weird here. The 'if VAR_NUMBER' branch is taken but no value. And valgrind shows a leak
 	if (variable->type == VAR_DATE)
 		variable->dateValue = safeValue;
 	else if (variable->type == VAR_TIME)
@@ -629,8 +633,8 @@ void fillVarDataTypes(VAR *variable, char *value) {
 		variable->stringValue = safeValue;
 	if (safeValue)
 		variable->portableValue = strdup(safeValue);
-else
-variable->portableValue = strdup("");
+	else
+		variable->portableValue = strdup("");
 }
 
 void updateNonTableVar(char *qualifiedName, char *value, int type) {
@@ -650,7 +654,7 @@ void updateNonTableVar(char *qualifiedName, char *value, int type) {
 		for (int i = 0; i < MAX_VAR; i++) {
 			if (!var[i]) {
 				var[i] = newVar;
-				return;
+				break;
 			}
 		}
 	} else {
@@ -663,6 +667,8 @@ void updateNonTableVar(char *qualifiedName, char *value, int type) {
 			}
 		}
 	}
+	if (safeValue)
+		free(safeValue);
 }
 
 void updateTableVar(char *qualifiedName, enum enum_field_types mysqlType, char *value) {
@@ -861,7 +867,10 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 	}
 	strcat(query, queryBuilder);
 //die(query);
+	free(queryBuilder);
 	free(tmp);
+	for (int i = 0; i < MAX_SUBARGS; i++)
+		free(subArg[i]);
 	return 0;
 }
 
@@ -909,7 +918,6 @@ char *curlies2JamArray(char *tplPos) {
 	for (char *p = buf; *p; ++p) *p = tolower(*p);
 	jam[jamIx]->command = buf;
 
-	buf = (char *) calloc(1, strlen(wd)+1);
 	if (char *p = strchr(wd, ' ')) {
      if (*(p+1))
 	 	jam[jamIx]->args = strdup(p+1);
@@ -952,6 +960,7 @@ char *curlies2JamArray(char *tplPos) {
 		}
 	}
 	free(trailer);
+	free(wd);
 	return (endCurly + strlen(endJam));
 }
 
