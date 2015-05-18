@@ -9,20 +9,35 @@ templatePath = "/template";
 http.createServer(function (request, response) {
 	var queryData = url.parse(request.url, true).query;
 	response.writeHead(200, {'Content-Type': 'text/html'});
+
+if (request.method == 'POST') {
+        console.log("POST");
+        var body = '';
+        request.on('data', function (data) {
+            body += data;
+            console.log("Partial body: " + body);
+        });
+        request.on('end', function () {
+            console.log("Body: " + body);
+        });
+        response.writeHead(200, {'Content-Type': 'text/html'});
+        response.end('post received');
+    }
+
 	if (queryData.template) {	// http://host:8000/?template=xyz
 		getRequest(response, queryData);
+	} else if (queryData.run) {
+console.log('li');
 	} else {
 		showAvailableTemplates(response);
 	}
 }).listen(port, ip);
 console.log('listening on http://' + ip + '/' + port + '/');
 
-
 function showAvailableTemplates(response) {
 	getFileList(function(html) {
 		response.end(html);
 	});
-
 	function getFileList(callback) {
 		var html = "";
 		fs.readdir(__dirname + templatePath, function(err, files) {
@@ -36,10 +51,8 @@ function showAvailableTemplates(response) {
 	}
 }
 
-
 function getRequest(response, queryData, callback) {
-
-console.log("calling jam with args" + " : " + "template/" + queryData.template);
+	console.log("calling jam with args" + " : " + "template/" + queryData.template);
 	var child = require('child_process').execFile('./jam', [ "template/" + queryData.template ]); 
 	// use event hooks to provide a callback to execute when data are available: 
 	child.stdout.on('data', function(data) {
