@@ -22,7 +22,9 @@ char *endJam = "}}";
 
 #define round(x) ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 
+#define MAX_ARGS 4096
 #define MAX_SQL_QUERY_LEN 1024
+
 MYSQL *conn = NULL;
 
 typedef struct {
@@ -60,7 +62,7 @@ typedef struct {
 #define MAX_VAR 10000
 VAR *var[MAX_VAR];
 
-char *readTemplate(string fname);
+char *readTemplate(char *fname);
 char *curlies2JamArray(char *tplPos);
 JAM *initJam();
 int genHtml(int startIx, MYSQL_ROW *row, char *tableName);
@@ -84,15 +86,45 @@ char *expandFieldsInString(char *str, char *tableName);
 void jamDump();
 
 int main(int argc, char *argv[]) {
-	if (argc < 2) {
-		die("no template file given to process");
+	char *argName[MAX_ARGS];
+	char *argValue[MAX_ARGS];
+	for (int i = 0; i < MAX_ARGS; i++)
+		argName[i] = argValue[i] = NULL;
+
+	char *eq = "=";
+	int i;
+	for (i = 1; i < argc; i++) {
+		argName[i-1]  = strTrim(getWordAlloc(argv[i], 1, eq));
+		argValue[i-1] = strTrim(getWordAlloc(argv[i], 2, eq));
+//		printf("arg [%s] has value [%s]\n", argName[i-1], argValue[i-1]);
 	}
-	string fname = argv[1];
+
+	char *tplName = NULL;
+	for (i = 0; i < MAX_ARGS; i++) {
+		if (!argName[i])
+			break;
+		if (!(strcmp(argName[i], "template")))
+			tplName = strdup(argValue[i]);
+		else {
+			VAR *assignVar = (VAR *) calloc(1, sizeof(VAR));
+			assignVar->name = strdup(argName[i]);
+			assignVar->type = VAR_STRING;	// @@FIX!!!!!!
+			clearVarValues(assignVar);
+			fillVarDataTypes(assignVar, argValue[i]);
+//printf("PREFILL-->%s<-- with value -->%s<--\n", assignVar->name, assignVar->portableValue);
+			assignVar->source = strdup("prefill");
+			assignVar->debugHighlight = 1;
+			for (int i = 0; i < MAX_VAR; i++) {
+				if (!var[i]) {
+					var[i] = assignVar;
+					break;
+				}
+			}
+		}
+	}
 
 	// Read in template
-	//string fname = templatePath + "ex1.html";
-	//string fname = templatePath + "ex_customer_area.html";
-	char *tpl = readTemplate(fname);
+	char *tpl = readTemplate(tplName);
 
 	// Create Jam array from template
 	char *tplPos = tpl;
@@ -536,7 +568,7 @@ strcat(query, " LIMIT 100");
 				fillVarDataTypes(assignVar, resultString);
 				if (createNew) {
 //printf("NEW-->%s<-- with value -->%s<--\n", assignVar->name, assignVar->portableValue);
-					assignVar->debugHighlight = 6;
+					assignVar->debugHighlight = 4;
 					for (int i = 0; i < MAX_VAR; i++) {
 						if (!var[i]) {
 							var[i] = assignVar;
@@ -964,11 +996,11 @@ char *curlies2JamArray(char *tplPos) {
 	return (endCurly + strlen(endJam));
 }
 
-char *readTemplate(string fname){
+char *readTemplate(char *fname){
 	char *buf = NULL;
-	std::ifstream html (fname.c_str(), std::ifstream::binary);
+	std::ifstream html (fname, std::ifstream::binary);
 	if (!html){
-		std::cout << "error: can't open file " << fname << endl;
+		std::cout << "error: cant open file " << fname << endl;
 		die("");
 	}
 	html.seekg (0, html.end);
@@ -1140,12 +1172,12 @@ void jamDump() {
 			break;
 
 		printf("<span");
-		if (var[i]->debugHighlight == 1) printf(" style='color:#e18d88'");
+		if (var[i]->debugHighlight == 1) printf(" style='color:#decde3'");
 		if (var[i]->debugHighlight == 2) printf(" style='color:yellow;'");
 		if (var[i]->debugHighlight == 3) printf(" style='color:orange;'");
-		if (var[i]->debugHighlight == 4) printf(" style='color:cyan;'");
+		if (var[i]->debugHighlight == 4) printf(" style='color:#a8c968;'");
 		if (var[i]->debugHighlight == 5) printf(" style='color:#e28c86;'");
-		if (var[i]->debugHighlight == 6) printf(" style='color:#a8c968;'");
+		if (var[i]->debugHighlight == 6) printf(" style='color:cyan;'");
 		printf(">");
 
 		*tmp = 0;
@@ -1160,11 +1192,12 @@ void jamDump() {
 		printf("</span>");
 	}
 	printf("<br>");
+	printf("<span style='margin:3px; padding:2px; color:#000; background-color:#decde3;'>prefill </span>");
 	printf("<span style='margin:3px; padding:2px; color:#000; background-color:yellow;'>count </span>");
 	printf("<span style='margin:3px; padding:2px; color:#000; background-color:orange;'>sum </span>");
-	printf("<span style='margin:3px; padding:2px; color:#000; background-color:cyan;'>variable </span>");
+	printf("<span style='margin:3px; padding:2px; color:#000; background-color:#a8c968;'>variable </span>");
 	printf("<span style='margin:3px; padding:2px; color:#000; background-color:#e28c86;'>mysql </span>");
-	printf("<span style='margin:3px; padding:2px; color:#000; background-color:#a8c968;'>auto </span>");
+	printf("<span style='margin:3px; padding:2px; color:#000; background-color:cyan;'>unused </span>");
 	printf("<br>");
 	printf("<br>");
 	printf("</div>");
