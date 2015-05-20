@@ -120,9 +120,12 @@ class TicketController extends Controller
 
         // renders the view file 'protected/views/ticket/book.php'
         // using the default layout 'protected/views/layouts/main.php'
-        $this->render('book',array(
-                        'model'=>$model,
-                        'somedata'=>array(1,2,3),
+		if (!($model->active))
+			die('Sorry, this ticket event is inactive now');
+		else
+        	$this->render('book',array(
+                        	'model'=>$model,
+                        	'somedata'=>array(1,2,3),
         ));
 	}
 
