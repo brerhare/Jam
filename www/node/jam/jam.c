@@ -241,7 +241,7 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 //{@each stock_customer.stock_area_id = id}
 //{@each stock_customer.stock_area_id = area.id}
 //{@each stock_customer stock_area_id = }
-//{@each stock_customer whose stock_area_id = }
+//{@each stock_customer filter stock_area_id = }
 			char *givenTableName = (char *) calloc(1, 4096);
 			char *givenFieldName = NULL;
 			char *query = (char *) calloc(1, MAX_SQL_QUERY_LEN);
@@ -258,6 +258,7 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 			}
 strcat(query, " LIMIT 100");
 			// Do the query
+//printf("\n\n[%s]\n\n", query);
 			MYSQL_RES *res;
 			MYSQL_ROW row;
 			if (mysql_query(conn, query)) {
@@ -313,8 +314,9 @@ strcat(query, " LIMIT 100");
 				buildMysqlQuerySelect(query, ta, tableName);		// build a complex wuery
 			}
 			strcat(query, " LIMIT 1");
-//die(query);
 			// Do the query
+//printf("\n\n[%s]\n\n", query);
+//die("kkk");
 			MYSQL_RES *res;
 			MYSQL_ROW row;
 			if (mysql_query(conn, query)) {
@@ -817,7 +819,7 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 			break;
 	}
 
-	// Deal with each "<whose> a = b" phrase
+	// Deal with each "<filter> a = b" phrase
 	for (int i = 0; i < MAX_SUBARGS; i++) {
 		if (subArg[i] == NULL) {
 			if (firstArg)
@@ -829,11 +831,11 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 		selectorField = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// try for the field selector (LHS)
 		if (!selectorField)
 			die("table name given for mysql lookup but no field selector");
-		if (!strcmp(selectorField, "whose")) {
+		if (!strcmp(selectorField, "filter")) {
 			free(selectorField);
 			selectorField = strTrim(getWordAlloc(args, ++wdNum, space));
 			if (!selectorField)
-				die("table name given for mysql lookup but no field selector after 'whose'");
+				die("table name given for mysql lookup but no field selector after 'filter'");
 			if (char *p = strchr(selectorField, '.')) {	// remove any irrelevant stuff before the '.'
 				free(selectorField);
 				selectorField = strdup(p);
@@ -885,6 +887,30 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 			varValue = strdup(variable->portableValue);
 		else
 			varValue = strdup(externalFieldOrValue);
+		// Quote it if necessary (contains non-numeric chars and isnt already)
+		if ((varValue[0] != '\'') && (varValue[strlen(varValue)] != '\'')) {
+			int isNum = 1;
+			if (strlen(varValue) == 0)
+				isNum = 0;
+			int numOfMinuses = 0;
+			char *p = varValue;
+			while (*p) {
+				if (*p == '-')
+					numOfMinuses++;
+				else if ((*p < '0') || (*p > '9'))
+					isNum = 0;
+				p++;
+			}
+			if ((!isNum) || (numOfMinuses > 1)) {
+				char *newValue = (char *) calloc(1, strlen(varValue) + 3);
+				strcpy(newValue, "'");
+				strcat(newValue, varValue);
+				strcat(newValue, "'");
+				free(varValue);
+				varValue = newValue;
+			}
+		}
+
 		sprintf(tmp, " %s %s %s", selectorField, operand, varValue);		// eg "a = b"
 		free(varValue);
 		if (firstArg)

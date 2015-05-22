@@ -7,6 +7,7 @@ var ip = "178.238.232.146";
 templatePath = "/template";
 
 http.createServer(function (request, response) {
+
 	var queryData = url.parse(request.url, true).query;
 	response.writeHead(200, {'Content-Type': 'text/html'});
 
@@ -17,7 +18,10 @@ http.createServer(function (request, response) {
 		});
 		request.on('end', function () {
 			console.log("Post: " + body);
-			getRequest(response, "template=template/" + queryData.template,  body);
+var req = decodeURIComponent(body)
+console.log("req=-->"+ req+ "<---");
+			body = body.replace(/\+/g , " ");
+			getRequest(response, "template=template/" + queryData.template,  decodeURIComponent(body));
 		});
 	}
 	else if (queryData.template) {	// http://host:8000/?template=xyz
