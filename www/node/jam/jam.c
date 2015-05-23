@@ -302,6 +302,7 @@ strcat(query, " LIMIT 100");
 			char *givenTableName = (char *) calloc(1, 4096);
 			char *givenFieldName = NULL;
 			char *query = (char *) calloc(1, MAX_SQL_QUERY_LEN);
+			int skipCode = 0;
 			// Get the given table name that we want to get
 			char *ta = args;
 			char *tg = givenTableName;
@@ -311,7 +312,7 @@ strcat(query, " LIMIT 100");
 			// Is there more than just the table name?
 			if (*ta) {
 				ta++;
-				buildMysqlQuerySelect(query, ta, tableName);		// build a complex wuery
+				skipCode = buildMysqlQuerySelect(query, ta, tableName);		// build a complex wuery
 			}
 			strcat(query, " LIMIT 1");
 			// Do the query
@@ -344,6 +345,10 @@ strcat(query, " LIMIT 100");
 			mysql_free_result(res);
 			free(givenTableName);
 			free(query);
+			if ((!row) && (skipCode == 1)) {
+				free(tmp);
+				return(0);
+			}
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@end"))) {
 //		------------------------------------
@@ -799,6 +804,7 @@ void setFieldValues(char *qualifier, char **mysqlHeaders, enum enum_field_types 
 
 int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 	#define MAX_SUBARGS 1024
+	int retval = 0;
 	char *selectorField = NULL;
 	char *operand = NULL;
 	char *externalFieldOrValue = NULL;
@@ -850,6 +856,11 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 				free(selectorField);
 			}
 			strcat(queryBuilder, tmp);
+			break;
+		}
+
+		if (!strcmp(selectorField, "skip")) {
+			retval = 1;	// We will notify the caller of this
 			break;
 		}
 
@@ -929,7 +940,7 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 	free(tmp);
 	for (int i = 0; i < MAX_SUBARGS; i++)
 		free(subArg[i]);
-	return 0;
+	return retval;
 }
 
 char *curlies2JamArray(char *tplPos) {
