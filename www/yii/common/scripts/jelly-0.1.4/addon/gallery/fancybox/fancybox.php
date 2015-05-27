@@ -58,6 +58,7 @@ class fancybox
 							$content .= "<a class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $gallery->image . "' title='" . $gallery->text . "'> <img src='" . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $gallery->image . "' alt='' /> </a>";
 							$criteria = new CDbCriteria;
 							$criteria->addCondition("jelly_gallery_id = " . $gallery->id);
+							$criteria->order = "sequence";
 							$galleryImages = JellyGalleryImage::model()->findAll($criteria);
 							foreach ($galleryImages as $galleryImage):
 								$content .= "<a style='display:none' class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $galleryImage->image . "' title='" . $galleryImage->text . "'> <img src='" . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . "' alt='' /> </a>";

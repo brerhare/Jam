@@ -116,7 +116,8 @@ class JellyGallery extends CActiveRecord
 
 			// @@EG: admin gridview default sort
 			'sort'=>array(
-				'defaultOrder'=>'id DESC',
+				//'defaultOrder'=>'id DESC',
+				'defaultOrder'=>'sequence ASC',
 			),
 
             // @@EG: Change cgridview pagination
