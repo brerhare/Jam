@@ -206,13 +206,16 @@ class MailerContentController extends Controller
 						$msg = "<div style='max-width:700px'>";
 						$msg .= str_replace("/mailer/mailer/../", $url . "/", $model->content);
 						$msg .= "</div>";
+
+						$uns = "<style>* {color: #4b5962;font-size: 9px;}</style><br><br><hr><center> <p>Dont want any more emails from us? <a href='http://plugin.wireflydesign.com/mailer/?unsubscribe=" . $mailerMember->email_address . "'>Unsubscribe</a></p></center>";
+
 						$mail->AddAddress($mailerMember->email_address);
 //						$mail->AddBCC($from);
 						$mail->SetFrom($from, $fromName);
 						$mail->AddReplyTo($from, $fromName);
 //						$mail->AddAttachment($pdf_filename);
 						$mail->Subject = $subject;
-						$mail->MsgHTML($css . $msg);
+						$mail->MsgHTML($css . $msg . $uns);
 						if (!$mail->Send())
 						{
     						Yii::log("MAILER COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
