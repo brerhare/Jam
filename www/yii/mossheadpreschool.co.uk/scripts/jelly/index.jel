@@ -48,28 +48,28 @@ css.margin-left = 40px
 	css.width = 180px
 	css.margin-left = 0px
 	fx.rounding = 8px
-	css.background-color = #ffff00
+#	css.background-color = #ffff00
 		
 		[signup]
 		css.margin = 10px
-		#addon.mailer.signup.orientation = horizontal
-		addon.mailer.signup.buttoncolor = red
-		addon.mailer.signup.buttontextcolor = yellow
-		addon.mailer.signup.buttontext = Submit
-		addon.mailer.signup.inputspacing = 5px
-		addon.mailer.signup.successtextcolor = green
-		addon.mailer.signup.failuretextcolor = red
-		addon.mailer.signup.inputwidth = 155px
+#		#addon.mailer.signup.orientation = horizontal
+#		addon.mailer.signup.buttoncolor = red
+#		addon.mailer.signup.buttontextcolor = yellow
+#		addon.mailer.signup.buttontext = Submit
+#		addon.mailer.signup.inputspacing = 5px
+#		addon.mailer.signup.successtextcolor = green
+#		addon.mailer.signup.failuretextcolor = red
+#		addon.mailer.signup.inputwidth = 155px
 			
 		[red-hand]
 		css.margin-top = -45px
 		css.margin = 150px
 		css.width = 30px
 		css.height = 30px
-		image.url = img/red-hand.png
-		image.width = 30px
-		image.height = 30px
-		css.overflow = visible
+#		image.url = img/red-hand.png
+#		image.width = 30px
+#		image.height = 30px
+#		css.overflow = visible
 			
 
 			
@@ -184,8 +184,8 @@ css.margin-top=6px
 		addon.contact.contactform.buttontext = Submit
 		addon.contact.contactform.successtextcolor = green
 		addon.contact.contactform.failuretextcolor = red
-		addon.contact.contactform.textcolor = blue
-		addon.contact.contactform.backcolor = pink
+		addon.contact.contactform.textcolor = grey
+		addon.contact.contactform.backcolor = white
 		addon.contact.contactform.inputspacing = 10px
 	
 		[contact-text]

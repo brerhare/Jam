@@ -1,0 +1,74 @@
+https://www.virtualmin.com/documentation/system/migrate
+
+----- old server
+
+backup virtualmin settings and domains from the old server
+	mkdir /root/backups
+	virtualmin backup-domain --dest /root/backups/ --all-domains --all-features --newformat --all-virtualmin
+
+------ new server
+
+install OS and set up basics
+	set the hostname to the nameserver its going to be
+		hostname ns2.wireflydesign.com or whatever
+		vi /etc/hostname
+		???? (BO hasnt, MO has but MO cant 'hostname -f' without it) vi /etc/hosts and make sure there is a line something like
+			x.x.x.x nsx.wireflydesign.com nsx
+	create and populate /root/.bashrc, /root/.ssh/, and copy sample to authorized_keys
+	set ssh keepalive packet interval in /etc/ssh/sshd_config
+		ClientAliveInterval 60
+		ClientAliveCountMax 99999
+
+run automatic scripts
+	newserver1.sh		(installs virtualmin)
+	newserver2.sh		(installs packages)
+
+increase mysql open files limit (and then reboot)
+	add these lines to /etc/security/limits.conf
+		mysql soft nofile 24000
+		mysql hard nofile 32000
+	add this line into /etc/mysql/my.cnf under the [mysqld] section (and then restart mysql)
+		open_files_limit = 24000
+	NB you can check the number of open files with 'lsof -u mysql'
+
+virtualmin initial settings
+	webmin -> servers. mailman needs the 'mailman' list, so create it
+
+? possibly redundant because of virtualmin settings restore
+	set up the actual domain the nameserver belongs to. Note this is done on all nameservers
+		virtualmin create server (note that this automatically creates a nameserver based on hostname (see top)
+
+restore virtualmin settings and domains to the new server
+	restore settings
+		virtualmin restore-domain --source /root/backups/virtualmin.tar.gz --all-virtualmin
+		run system-settings -> re-check configuration and fix the following
+			postfix 'mydestination' and change the nsX.wireflydesign.com to the new server's X
+			networking 'dns 127.0.0.1' as prompted
+	restore domains
+		virtualmin restore-domain --source /root/backups/ --all-domains --all-features
+		and if you need you can restore a single domain like this
+			virtualmin restore-domain --source /root/new/ --domain brycewalkervending.com --all-features
+	check/set low ttl for all domains
+??? 	check the ttl came through from the imported settings. If so, delete this line. If not, change this line to say set it in the default template
+		virtualmin modify-dns --all-domains --ttl 1800
+
+create wirefly databases so nightly restores will work
+	either use the script in one of the other servers
+		createWireflyDatabases.sql
+	or do it manually
+		for plugin
+			CREATE DATABASE plugin;
+			CREATE USER 'plugin'@'localhost' IDENTIFIED BY 'plugin,';
+			GRANT ALL PRIVILEGES ON plugin.* TO 'plugin'@'localhost';
+		for stock
+			CREATE DATABASE stock;
+			CREATE USER 'stock'@'localhost' IDENTIFIED BY 'stock,'
+			GRANT ALL PRIVILEGES ON stock.* TO 'stock'@'localhost';
+
+setup cron jobs
+	on intermediate server
+		30 23 * * * /opt/bo/backup2mo.sh
+		0 4 * * * /opt/bo/importall.sh
+	on end server
+		0 4 * * * /opt/bo/importall.sh
+

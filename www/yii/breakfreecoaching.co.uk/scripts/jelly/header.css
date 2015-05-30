@@ -9,7 +9,7 @@ html, body, p {	height: 100%;
 				padding: 0;
 				margin: 20;
 				border: 0;
-				line-height: 110%}
+				line-height: 110%;}
 
 /* Global Hyperlink settings - will affect menu text colour if no text settings */ 
 a { text-decoration: underline; color:#8d3559; }
@@ -22,7 +22,8 @@ a:active { text-decoration: none; color:#8d3559 }
 h1 {	font-family: 'Quicksand', Verdana, sans-serif !important;
 	color: #8d3559;
 	font-size: 34px;
-	font-weight: 700;}
+	font-weight: 700;
+	line-height: 110%;}
 
 h2 {	font-family: 'Open Sans', Verdana, sans-serif !important;
 	color: #000000;
@@ -36,7 +37,7 @@ h3 {	font-family: 'Quicksand', Verdana, sans-serif !important;
 	color: #8d3559;
 	font-size: 20px;
 	font-weight: 700;
-	font-stretch: wider;}
+	line-height: 110%;}
 
 p  {	font-family: 'Open Sans', Verdana, sans-serif !important;
 	color: #000000;

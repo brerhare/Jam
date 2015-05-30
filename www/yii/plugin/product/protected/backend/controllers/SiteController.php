@@ -24,6 +24,7 @@ class SiteController extends Controller
 	/**
 	 * This is the default 'index' action that is invoked
 	 * when an action is not explicitly requested by users.
+	 * It has the basic report for a front page
 	 */
 	public function actionIndex()
 	{
@@ -36,6 +37,17 @@ class SiteController extends Controller
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
 		$this->render('index');
+	}
+
+	/*
+	 * "index" has the basic report for a front page - and this is the detail page for it
+	 */
+	public function actionIndex2()
+	//public function actionIndex2($id)
+	{
+		$this->render('index2',array(
+            	'order_number'=>$_GET['o'],
+		));
 	}
 
 	/**
