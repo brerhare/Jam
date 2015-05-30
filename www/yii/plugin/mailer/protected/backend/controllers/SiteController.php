@@ -78,6 +78,25 @@ class SiteController extends Controller
 		$this->render('contact',array('model'=>$model));
 	}
 
+// @@TODO: HARDCODED FOR DEMO ---------- REMOVE
+    public function actiondemoDirect()
+    {
+        Yii::app()->session['uid'] = 4;
+        $identity = new UserIdentity('demo', 'demo');
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+// @@TODO: HARDCODED FOR OUTLOOK SOLUTIONS ---------- REMOVE
+    public function actionOutlookDirect()
+    {
+        Yii::app()->session['uid'] = 87;
+        $identity = new UserIdentity('martin@outlooksolutions.com.au', '83bs9hrdb');
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
 // @@TODO: HARDCODED FOR ELEGANT ORIGINALS ---------- REMOVE
     public function actionElegantDirect()
     {
