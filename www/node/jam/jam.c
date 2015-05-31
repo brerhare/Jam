@@ -79,7 +79,8 @@ void updateNonTableVar(char *qualifiedName, char *value, int type);
 int decodeMysqlType(VAR *var, enum enum_field_types mysqlType, char *value);
 int fieldConvertMysql2Jam(enum enum_field_types mysqlType);
 void clearVarValues(VAR *varStruct);
-int buildMysqlQuerySelect(char *query, char *args, char *currentTableName);
+int buildMysqlQuerySelect(char *query, char *args, char *currentTableName, char *givenTableName);
+int isMysqlFieldName(char *fieldName, char *tableName);
 int isCalculation(char *str);
 char *calculate(char *str);
 char *expandFieldsInString(char *str, char *tableName);
@@ -241,7 +242,7 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 //{@each stock_customer.stock_area_id = id}
 //{@each stock_customer.stock_area_id = area.id}
 //{@each stock_customer stock_area_id = }
-//{@each stock_customer whose stock_area_id = }
+//{@each stock_customer filter stock_area_id = }
 			char *givenTableName = (char *) calloc(1, 4096);
 			char *givenFieldName = NULL;
 			char *query = (char *) calloc(1, MAX_SQL_QUERY_LEN);
@@ -254,10 +255,12 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 			// Is there more than just the table name?
 			if (*ta) {
 				ta++;
-				buildMysqlQuerySelect(query, ta, tableName);		// build a complex wuery
+				buildMysqlQuerySelect(query, ta, tableName, givenTableName);		// build a complex query
 			}
 strcat(query, " LIMIT 100");
 			// Do the query
+//printf("\n\nQ--> [%s] <--Q\n\n", query);
+//die(" ");
 			MYSQL_RES *res;
 			MYSQL_ROW row;
 			if (mysql_query(conn, query)) {
@@ -301,6 +304,7 @@ strcat(query, " LIMIT 100");
 			char *givenTableName = (char *) calloc(1, 4096);
 			char *givenFieldName = NULL;
 			char *query = (char *) calloc(1, MAX_SQL_QUERY_LEN);
+			int skipCode = 0;
 			// Get the given table name that we want to get
 			char *ta = args;
 			char *tg = givenTableName;
@@ -310,11 +314,12 @@ strcat(query, " LIMIT 100");
 			// Is there more than just the table name?
 			if (*ta) {
 				ta++;
-				buildMysqlQuerySelect(query, ta, tableName);		// build a complex wuery
+				skipCode = buildMysqlQuerySelect(query, ta, tableName, givenTableName);		// build a complex wuery
 			}
 			strcat(query, " LIMIT 1");
-//die(query);
 			// Do the query
+//printf("\n\n[%s]\n\n", query);
+//die("kkk");
 			MYSQL_RES *res;
 			MYSQL_ROW row;
 			if (mysql_query(conn, query)) {
@@ -342,6 +347,10 @@ strcat(query, " LIMIT 100");
 			mysql_free_result(res);
 			free(givenTableName);
 			free(query);
+			if ((!row) && (skipCode == 1)) {
+				free(tmp);
+				return(0);
+			}
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@end"))) {
 //		------------------------------------
@@ -795,8 +804,9 @@ void setFieldValues(char *qualifier, char **mysqlHeaders, enum enum_field_types 
 	}
 }
 
-int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
+int buildMysqlQuerySelect(char *query, char *args, char *currentTableName, char *givenTableName) {
 	#define MAX_SUBARGS 1024
+	int retval = 0;
 	char *selectorField = NULL;
 	char *operand = NULL;
 	char *externalFieldOrValue = NULL;
@@ -817,7 +827,7 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 			break;
 	}
 
-	// Deal with each "<whose> a = b" phrase
+	// Deal with each "<filter> a = b" phrase
 	for (int i = 0; i < MAX_SUBARGS; i++) {
 		if (subArg[i] == NULL) {
 			if (firstArg)
@@ -829,11 +839,11 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 		selectorField = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// try for the field selector (LHS)
 		if (!selectorField)
 			die("table name given for mysql lookup but no field selector");
-		if (!strcmp(selectorField, "whose")) {
+		if (!strcmp(selectorField, "filter")) {
 			free(selectorField);
 			selectorField = strTrim(getWordAlloc(args, ++wdNum, space));
 			if (!selectorField)
-				die("table name given for mysql lookup but no field selector after 'whose'");
+				die("table name given for mysql lookup but no field selector after 'filter'");
 			if (char *p = strchr(selectorField, '.')) {	// remove any irrelevant stuff before the '.'
 				free(selectorField);
 				selectorField = strdup(p);
@@ -848,6 +858,11 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 				free(selectorField);
 			}
 			strcat(queryBuilder, tmp);
+			break;
+		}
+
+		if (!strcmp(selectorField, "skip")) {
+			retval = 1;	// We will notify the caller of this
 			break;
 		}
 
@@ -885,6 +900,30 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 			varValue = strdup(variable->portableValue);
 		else
 			varValue = strdup(externalFieldOrValue);
+		// Quote it if necessary (contains non-numeric chars and isnt already)
+		if ((!isMysqlFieldName(varValue, givenTableName)) && (varValue[0] != '\'') && (varValue[strlen(varValue)] != '\'')) {
+			int isNum = 1;
+			if (strlen(varValue) == 0)
+				isNum = 0;
+			int numOfMinuses = 0;
+			char *p = varValue;
+			while (*p) {
+				if (*p == '-')
+					numOfMinuses++;
+				else if ((*p < '0') || (*p > '9'))
+					isNum = 0;
+				p++;
+			}
+			if ((!isNum) || (numOfMinuses > 1)) {
+				char *newValue = (char *) calloc(1, strlen(varValue) + 3);
+				strcpy(newValue, "'");
+				strcat(newValue, varValue);
+				strcat(newValue, "'");
+				free(varValue);
+				varValue = newValue;
+			}
+		}
+
 		sprintf(tmp, " %s %s %s", selectorField, operand, varValue);		// eg "a = b"
 		free(varValue);
 		if (firstArg)
@@ -903,6 +942,29 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 	free(tmp);
 	for (int i = 0; i < MAX_SUBARGS; i++)
 		free(subArg[i]);
+	return retval;
+}
+
+int isMysqlFieldName(char *fieldName, char *tableName) {
+	char *query = (char *) calloc(1, 4096);
+	sprintf(query, "SELECT * FROM %s LIMIT 1", tableName);
+//die(query);
+	MYSQL_RES *res;
+	if (mysql_query(conn, query)) {
+		die(mysql_error(conn));
+	}
+	res = mysql_store_result(conn);
+	if (!res) {
+		char *tmp = (char *) calloc(1, 4096);
+		sprintf(tmp, "Couldn't get results set: %s\n", mysql_error(conn));
+		die(tmp);
+	}
+	int numFields = mysql_num_fields(res);
+	MYSQL_FIELD *field;
+	for (int i = 0; (field = mysql_fetch_field(res)); i++) {
+		if (!strcmp(field->name, fieldName))
+			return 1;
+	}
 	return 0;
 }
 
@@ -1087,6 +1149,25 @@ int isCalculation(char *str) {
 
 // Call the calculator
 char *calculate(char *str) {
+	// Check if date calculation
+	char *space = " ";
+	char *wd;
+	int wdNum = 0;
+	while (1) {
+		wd = strTrim(getWordAlloc(str, ++wdNum, space));
+		if (!wd)
+			break;
+		int numOfMinuses = 0;
+		char *p = wd;
+		while (*p) {
+			if (*p == '-')
+				numOfMinuses++;
+			p++;
+		}
+		if (numOfMinuses > 1) {
+		}
+	}
+
 	int scale = 2;
 	FILE *fp;
 	char *result = (char *) calloc(1, 4096);
