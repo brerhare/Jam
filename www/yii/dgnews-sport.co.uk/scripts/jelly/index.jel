@@ -227,7 +227,7 @@ css.top = 295px
 			addon.contact.contactform.successtextcolor = green
 			addon.contact.contactform.failuretextcolor = red
 			addon.contact.contactform.textcolor = blue
-			addon.contact.contactform.backcolor = pink
+			addon.contact.contactform.backcolor = white
 			addon.contact.contactform.inputspacing = 10px
 
 			[contact-text]

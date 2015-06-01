@@ -135,28 +135,56 @@ stacking = horizontal
 ### Need to specify the height and width of the items.
 
 	[content-block]
-	child = image, content-background
+#image, 
+	child = blog-page, content
 	css.width = 800px
 	css.margin-left = 60px
 	css.margin-top = 30px
+	fx.rounding = 4px
+	css.background-image = url('/img/white-background.jpg')
+	css.background-color = #eeeeee
+	css.background-repeat = no-repeat
+		
+			[blog-page]
+			child = signup-box, blog-content
+			css.width = 100%
+			condition = @PAGE=latest-news-classical-music-dumfries-galloway
 
-		[image]
-		css.width = 800px
-		css.height = 500px
-		css.margin-left = -10px
-		image.url = img/centre-background.jpg
-		image.width = 600px
-		image.height = 462px
-		image.align = center
-
-
-		[content-background]
-		child = content
-		css.margin-top = -500px
-		fx.rounding = 4px
-		fx.opacity = 95%
-		css.background-color = white
-	
+				[signup-box]
+				child = signup
+				css.width = 150px
+				css.height = 120px
+				css.background-color = white
+				css.margin-left = 20px
+				css.position = absolute
+				css.margin-top = 160px
+				css.padding = 10px
+				html.raw = Keep in touch with Absolute Classics, we will never share your email address with anyone else.
+				css.color = black
+				css.font-size = 10px
+				css.font-weight = 400
+				css.color = white
+				css.text-align = center
+				css.box-shadow = 3px 5px 8px rgba(0,0,0,0.5)
+				
+							
+					[signup]
+					css.margin-top = 5px
+					addon.mailer.signup.orientation = vertical
+					addon.mailer.signup.buttoncolor = #ebebeb
+					addon.mailer.signup.buttontextcolor = black
+					addon.mailer.signup.buttontext = sign up
+					addon.mailer.signup.inputspacing = 5px
+					addon.mailer.signup.successtextcolor = white
+					addon.mailer.signup.failuretextcolor = black
+					addon.mailer.signup.inputwidth = 140px
+				
+			
+				[blog-content]
+				css.display = block
+				css.width = 100%
+				html.raw = {{news newstype=traditional sidebar=left pushcategoriesdown=140px pushrecentdown=0px}}
+			
 			[content]
 			css.margin-left = 25px
 			css.width = 750px
