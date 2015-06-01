@@ -14,16 +14,21 @@
 #include </usr/include/mysql/mysql.h>
 
 #include "util.h"
-#include "calc.h"
 
 using namespace std;
 
+char *startJam = "{{";
+char *endJam = "}}";
+
 #define round(x) ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 
+#define MAX_ARGS 4096
 #define MAX_SQL_QUERY_LEN 1024
+
 MYSQL *conn = NULL;
 
 typedef struct {
+	char *rawData;
 	char *command;
 	char *args;
 	char *trailer;
@@ -57,7 +62,7 @@ typedef struct {
 #define MAX_VAR 10000
 VAR *var[MAX_VAR];
 
-char *readTemplate(string fname);
+char *readTemplate(char *fname);
 char *curlies2JamArray(char *tplPos);
 JAM *initJam();
 int genHtml(int startIx, MYSQL_ROW *row, char *tableName);
@@ -74,21 +79,53 @@ void updateNonTableVar(char *qualifiedName, char *value, int type);
 int decodeMysqlType(VAR *var, enum enum_field_types mysqlType, char *value);
 int fieldConvertMysql2Jam(enum enum_field_types mysqlType);
 void clearVarValues(VAR *varStruct);
-int buildMysqlQuerySelect(char *query, char *args, char *currentTableName);
+int buildMysqlQuerySelect(char *query, char *args, char *currentTableName, char *givenTableName);
+int isMysqlFieldName(char *fieldName, char *tableName);
 int isCalculation(char *str);
+char *calculate(char *str);
 char *expandFieldsInString(char *str, char *tableName);
 void jamDump();
 
 int main(int argc, char *argv[]) {
-	if (argc < 2) {
-		die("no template file given to process");
+	char *argName[MAX_ARGS];
+	char *argValue[MAX_ARGS];
+	for (int i = 0; i < MAX_ARGS; i++)
+		argName[i] = argValue[i] = NULL;
+
+	char *eq = "=";
+	int i;
+	for (i = 1; i < argc; i++) {
+		argName[i-1]  = strTrim(getWordAlloc(argv[i], 1, eq));
+		argValue[i-1] = strTrim(getWordAlloc(argv[i], 2, eq));
+//		printf("arg [%s] has value [%s]\n", argName[i-1], argValue[i-1]);
 	}
-	string fname = argv[1];
+
+	char *tplName = NULL;
+	for (i = 0; i < MAX_ARGS; i++) {
+		if (!argName[i])
+			break;
+		if (!(strcmp(argName[i], "template")))
+			tplName = strdup(argValue[i]);
+		else {
+			VAR *assignVar = (VAR *) calloc(1, sizeof(VAR));
+			assignVar->name = strdup(argName[i]);
+			assignVar->type = VAR_STRING;	// @@FIX!!!!!!
+			clearVarValues(assignVar);
+			fillVarDataTypes(assignVar, argValue[i]);
+//printf("PREFILL-->%s<-- with value -->%s<--\n", assignVar->name, assignVar->portableValue);
+			assignVar->source = strdup("prefill");
+			assignVar->debugHighlight = 1;
+			for (int i = 0; i < MAX_VAR; i++) {
+				if (!var[i]) {
+					var[i] = assignVar;
+					break;
+				}
+			}
+		}
+	}
 
 	// Read in template
-	//string fname = templatePath + "ex1.html";
-	//string fname = templatePath + "ex_customer_area.html";
-	char *tpl = readTemplate(fname);
+	char *tpl = readTemplate(tplName);
 
 	// Create Jam array from template
 	char *tplPos = tpl;
@@ -113,6 +150,7 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 	while (jam[ix]) {
 		char *cmd = jam[ix]->command;
 		char *args = jam[ix]->args;
+		char *rawData = jam[ix]->rawData;
 //		--------------------------------
 		if (!(strcmp(cmd, "@!begin"))) {
 //		--------------------------------
@@ -204,7 +242,7 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 //{@each stock_customer.stock_area_id = id}
 //{@each stock_customer.stock_area_id = area.id}
 //{@each stock_customer stock_area_id = }
-//{@each stock_customer whose stock_area_id = }
+//{@each stock_customer filter stock_area_id = }
 			char *givenTableName = (char *) calloc(1, 4096);
 			char *givenFieldName = NULL;
 			char *query = (char *) calloc(1, MAX_SQL_QUERY_LEN);
@@ -217,10 +255,12 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 			// Is there more than just the table name?
 			if (*ta) {
 				ta++;
-				buildMysqlQuerySelect(query, ta, tableName);		// build a complex wuery
+				buildMysqlQuerySelect(query, ta, tableName, givenTableName);		// build a complex query
 			}
 strcat(query, " LIMIT 100");
 			// Do the query
+//printf("\n\nQ--> [%s] <--Q\n\n", query);
+//die(" ");
 			MYSQL_RES *res;
 			MYSQL_ROW row;
 			if (mysql_query(conn, query)) {
@@ -255,6 +295,7 @@ strcat(query, " LIMIT 100");
 				emit(jam[ix]->trailer);
 			}
 			mysql_free_result(res);
+			free(givenTableName);
 			free(query);
 //		-------------------------------------
 		} else if (!(strcmp(cmd, "@get"))) {
@@ -263,6 +304,7 @@ strcat(query, " LIMIT 100");
 			char *givenTableName = (char *) calloc(1, 4096);
 			char *givenFieldName = NULL;
 			char *query = (char *) calloc(1, MAX_SQL_QUERY_LEN);
+			int skipCode = 0;
 			// Get the given table name that we want to get
 			char *ta = args;
 			char *tg = givenTableName;
@@ -272,11 +314,12 @@ strcat(query, " LIMIT 100");
 			// Is there more than just the table name?
 			if (*ta) {
 				ta++;
-				buildMysqlQuerySelect(query, ta, tableName);		// build a complex wuery
+				skipCode = buildMysqlQuerySelect(query, ta, tableName, givenTableName);		// build a complex wuery
 			}
 			strcat(query, " LIMIT 1");
-//die(query);
 			// Do the query
+//printf("\n\n[%s]\n\n", query);
+//die("kkk");
 			MYSQL_RES *res;
 			MYSQL_ROW row;
 			if (mysql_query(conn, query)) {
@@ -302,12 +345,18 @@ strcat(query, " LIMIT 100");
 				emit(jam[ix]->trailer);
 			}
 			mysql_free_result(res);
+			free(givenTableName);
 			free(query);
+			if ((!row) && (skipCode == 1)) {
+				free(tmp);
+				return(0);
+			}
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@end"))) {
 //		------------------------------------
 			// Return from an each-end loop
 //printf("RETURNING\n");
+			free(tmp);
 			return(0);
 //		----------------------------------------
 		} else if (!(strcmp(cmd, "@include"))) {
@@ -337,6 +386,7 @@ strcat(query, " LIMIT 100");
 				die(tmp);
 			}
 			emit(buf);
+			free(buf);
 			// Emit any post-tags
 			if (strstr(args, ".css"))
 			emit("</style>");
@@ -454,15 +504,15 @@ strcat(query, " LIMIT 100");
 //		---------------------------
 		} else if (cmd[0] != '@') {
 //		---------------------------
-/*			rawData = LHS string
+/*			data = LHS string
 			if '='
-				rawData = RHS string
-			expandFields(rawData)
+				data = RHS string
+			expandFields(data)
 
-			if findVar(rawData)
+			if findVar(data)
 				result string = var value
-			else if isCalculation(rawData)
-				result string = calculate(rawData)
+			else if isCalculation(data)
+				result string = calculate(data)
 			else
 				result string = expandedData
 
@@ -472,32 +522,42 @@ strcat(query, " LIMIT 100");
 			else
 				emit(result string)		*/
 
-			// rawData = LHS to start with
-			char *rawData = (char *) calloc(1, 4096);
-			strcpy(rawData, cmd);							// eg: [mem.group_count]
+			// data = LHS to start with
+			char *data = (char *) calloc(1, 4096);
+			strcpy(data, cmd);							// eg: [mem.group_count]
+//printf("{AWAY:%s and %s}",cmd, data);
 
 			char *resultString = (char *) calloc(1, 4096);
 			char *fullLine = (char *) calloc(1, 4096);
-			sprintf(fullLine, "%s%s", cmd, args);			// eg: [mem.group_count][= stock_group.count]
+			strcpy(fullLine, cmd);
+//printf("(CHK:%s and %s)", fullLine, args);
+			if (args)
+				strcpy(fullLine, rawData);
+			strTrim(fullLine);
+//printf("T=[%s]\n",fullLine);
+			//sprintf(fullLine, "%s%s", cmd, args);			// eg: [mem.group_count][= stock_group.count]
+			strcpy(data, fullLine);
 
-			// rawData = RHS if equals sign
+			// data = RHS if equals sign
 			char *eq = "=";
 			if (strchr(fullLine, '=')) {
 				char *rhs = strTrim(getWordAlloc(fullLine, 2, eq));		// eg [stock_group.count]
-				strcpy(rawData, rhs);
+				strcpy(data, rhs);
 				free(rhs);
 			}
 
 			// Expand any fields to values
-			char *expandedData = expandFieldsInString(rawData, tableName);	// Allocates memory - needs freeing
-//printf("\nSTART.... [%s][%s]\n", rawData, expandedData);
+			char *expandedData = expandFieldsInString(data, tableName);	// Allocates memory - needs freeing
+//printf("\nSTART.... [c=%s][a=%s][f=%s][r=%s][e%s]\n", cmd, args, fullLine, data, expandedData);
 
 			// Either retrieve the data from a field or calculate
-			VAR *searchVar = findVarLenient(rawData, tableName);
+			VAR *searchVar = findVarLenient(data, tableName);
 			if (searchVar)
 				strcpy(resultString, searchVar->portableValue);
 			else if (isCalculation(expandedData)) {
-				sprintf(resultString, "%.2f", calculate(expandedData));
+				char *calc = calculate(expandedData);
+				sprintf(resultString, "%s", calc);						//@TODO: decimals artificially removed!!!!
+				free(calc);
 			}
 			else
 				strcpy(resultString, expandedData);
@@ -517,7 +577,7 @@ strcat(query, " LIMIT 100");
 				fillVarDataTypes(assignVar, resultString);
 				if (createNew) {
 //printf("NEW-->%s<-- with value -->%s<--\n", assignVar->name, assignVar->portableValue);
-					assignVar->debugHighlight = 6;
+					assignVar->debugHighlight = 4;
 					for (int i = 0; i < MAX_VAR; i++) {
 						if (!var[i]) {
 							var[i] = assignVar;
@@ -525,15 +585,14 @@ strcat(query, " LIMIT 100");
 						}
 					}
 				}
-				free(rawData);
-				free(expandedData);
-				free(resultString);
-				free(fullLine);
 			} else {		// Not an assignment - just emit variable
+				emit(resultString);
+				// Clear if necessary
 				VAR *variable = findVarLenient(cmd, tableName);
 				if (variable) {
 //printf("RETR-->%s<--\n", variable->name);
-					emit(variable->portableValue);
+//char xx[256]; sprintf(xx, "R[%s]:%s", resultString, variable->portableValue);
+//emit(xx);
 					// Clear if 'count.'
 					if ((variable->source) && (!strcmp(variable->source, "count"))) {
 						variable->numberValue = 0;
@@ -553,12 +612,12 @@ strcat(query, " LIMIT 100");
 						}
 					}
 				}
-				else {
-					sprintf(tmp, "[%s]", cmd);
-					emit(tmp);
-				}
 			}
 			emit(jam[ix]->trailer);		
+			free(data);
+			free(expandedData);
+			free(resultString);
+			free(fullLine);
 //		--------
 		} else {
 //		--------
@@ -598,7 +657,7 @@ VAR *findVarStrict(char *name) {
 void fillVarDataTypes(VAR *variable, char *value) {
 	char *safeValue = NULL;
 	if (value)
-		safeValue = strdup(value);
+		safeValue = strdup(value);	//@@BUG something weird here. The 'if VAR_NUMBER' branch is taken but no value. And valgrind shows a leak
 	if (variable->type == VAR_DATE)
 		variable->dateValue = safeValue;
 	else if (variable->type == VAR_TIME)
@@ -615,6 +674,8 @@ void fillVarDataTypes(VAR *variable, char *value) {
 		variable->stringValue = safeValue;
 	if (safeValue)
 		variable->portableValue = strdup(safeValue);
+	else
+		variable->portableValue = strdup("");
 }
 
 void updateNonTableVar(char *qualifiedName, char *value, int type) {
@@ -634,7 +695,7 @@ void updateNonTableVar(char *qualifiedName, char *value, int type) {
 		for (int i = 0; i < MAX_VAR; i++) {
 			if (!var[i]) {
 				var[i] = newVar;
-				return;
+				break;
 			}
 		}
 	} else {
@@ -647,6 +708,8 @@ void updateNonTableVar(char *qualifiedName, char *value, int type) {
 			}
 		}
 	}
+	if (safeValue)
+		free(safeValue);
 }
 
 void updateTableVar(char *qualifiedName, enum enum_field_types mysqlType, char *value) {
@@ -741,8 +804,9 @@ void setFieldValues(char *qualifier, char **mysqlHeaders, enum enum_field_types 
 	}
 }
 
-int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
+int buildMysqlQuerySelect(char *query, char *args, char *currentTableName, char *givenTableName) {
 	#define MAX_SUBARGS 1024
+	int retval = 0;
 	char *selectorField = NULL;
 	char *operand = NULL;
 	char *externalFieldOrValue = NULL;
@@ -763,7 +827,7 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 			break;
 	}
 
-	// Deal with each "<whose> a = b" phrase
+	// Deal with each "<filter> a = b" phrase
 	for (int i = 0; i < MAX_SUBARGS; i++) {
 		if (subArg[i] == NULL) {
 			if (firstArg)
@@ -775,11 +839,11 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 		selectorField = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// try for the field selector (LHS)
 		if (!selectorField)
 			die("table name given for mysql lookup but no field selector");
-		if (!strcmp(selectorField, "whose")) {
+		if (!strcmp(selectorField, "filter")) {
 			free(selectorField);
 			selectorField = strTrim(getWordAlloc(args, ++wdNum, space));
 			if (!selectorField)
-				die("table name given for mysql lookup but no field selector after 'whose'");
+				die("table name given for mysql lookup but no field selector after 'filter'");
 			if (char *p = strchr(selectorField, '.')) {	// remove any irrelevant stuff before the '.'
 				free(selectorField);
 				selectorField = strdup(p);
@@ -794,6 +858,11 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 				free(selectorField);
 			}
 			strcat(queryBuilder, tmp);
+			break;
+		}
+
+		if (!strcmp(selectorField, "skip")) {
+			retval = 1;	// We will notify the caller of this
 			break;
 		}
 
@@ -831,6 +900,30 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 			varValue = strdup(variable->portableValue);
 		else
 			varValue = strdup(externalFieldOrValue);
+		// Quote it if necessary (contains non-numeric chars and isnt already)
+		if ((!isMysqlFieldName(varValue, givenTableName)) && (varValue[0] != '\'') && (varValue[strlen(varValue)] != '\'')) {
+			int isNum = 1;
+			if (strlen(varValue) == 0)
+				isNum = 0;
+			int numOfMinuses = 0;
+			char *p = varValue;
+			while (*p) {
+				if (*p == '-')
+					numOfMinuses++;
+				else if ((*p < '0') || (*p > '9'))
+					isNum = 0;
+				p++;
+			}
+			if ((!isNum) || (numOfMinuses > 1)) {
+				char *newValue = (char *) calloc(1, strlen(varValue) + 3);
+				strcpy(newValue, "'");
+				strcat(newValue, varValue);
+				strcat(newValue, "'");
+				free(varValue);
+				varValue = newValue;
+			}
+		}
+
 		sprintf(tmp, " %s %s %s", selectorField, operand, varValue);		// eg "a = b"
 		free(varValue);
 		if (firstArg)
@@ -845,30 +938,54 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName) {
 	}
 	strcat(query, queryBuilder);
 //die(query);
+	free(queryBuilder);
 	free(tmp);
+	for (int i = 0; i < MAX_SUBARGS; i++)
+		free(subArg[i]);
+	return retval;
+}
+
+int isMysqlFieldName(char *fieldName, char *tableName) {
+	char *query = (char *) calloc(1, 4096);
+	sprintf(query, "SELECT * FROM %s LIMIT 1", tableName);
+//die(query);
+	MYSQL_RES *res;
+	if (mysql_query(conn, query)) {
+		die(mysql_error(conn));
+	}
+	res = mysql_store_result(conn);
+	if (!res) {
+		char *tmp = (char *) calloc(1, 4096);
+		sprintf(tmp, "Couldn't get results set: %s\n", mysql_error(conn));
+		die(tmp);
+	}
+	int numFields = mysql_num_fields(res);
+	MYSQL_FIELD *field;
+	for (int i = 0; (field = mysql_fetch_field(res)); i++) {
+		if (!strcmp(field->name, fieldName))
+			return 1;
+	}
 	return 0;
 }
 
 char *curlies2JamArray(char *tplPos) {
-	char *startCurly = strchr(tplPos, '{');
-	if (startCurly == NULL)
+	char *startCurly = strstr(tplPos, startJam);
+	if (!startCurly)
 		return NULL;
-	char *endCurly = strchr(tplPos, '}');
-	if (endCurly == NULL) {
-		printf("an opening '{' has a missing closing '}'\n");
-		exit(1);
-	}
-	char *wd = (char *) malloc(endCurly - startCurly);
-	int wdLen = (endCurly - startCurly - 1);
-	memcpy(wd, (startCurly+1), wdLen);
+	char *endCurly = strstr(tplPos, endJam);
+	if (!endCurly)
+		die("Unmatched jam token, an open must have a close");
+	int wdLen = (endCurly - startCurly - strlen(startJam));
+	char *wd = (char *) malloc(wdLen + 1);
+	memcpy(wd, (startCurly + strlen(startJam)), wdLen);
 	wd[wdLen] = 0;
-	if (strchr(wd, '{')) {
-		printf("there is an opening '{' within a '{}'\n");
-		exit(1);
+	if (strstr(wd, startJam)) {
+		die("there is an opening jam token within a token pair");
 	}
-//printf("startCurly=%p, endCurly=%p, wdLen=%d, wd=%s\n", startCurly, endCurly, wdLen, wd);
+//printf("\nlen=[%d] wd=[%s]\n", wdLen, wd);
 
 	jam[jamIx] = (JAM *) calloc(1, sizeof(JAM));
+	jam[jamIx]->rawData = strdup(wd);
 
 	char *buf = (char *) calloc(1, strlen(wd)+1);
 	char *space = " ";
@@ -885,23 +1002,26 @@ char *curlies2JamArray(char *tplPos) {
 				sprintf(newBuf, "%s.%s", tableStack[i], buf);
 				free(buf);
 				buf = newBuf;
-printf(" ... storing variable [%s]\n", buf);
+//printf(" ... storing variable [%s]\n", buf);
 				break;
 			}
 		}
 	}
 */
+
 	for (char *p = buf; *p; ++p) *p = tolower(*p);
 	jam[jamIx]->command = buf;
 
-	buf = (char *) calloc(1, strlen(wd)+1);
 	if (char *p = strchr(wd, ' ')) {
-	 jam[jamIx]->args = strdup(p+1);
+     if (*(p+1))
+	 	jam[jamIx]->args = strdup(p+1);
+	else
+        jam[jamIx]->args = strdup("");
 	}
 //printf("SETTING [%s]=[%s]\n", jam[jamIx]->command, jam[jamIx]->args);
 
-	char *trailer = strdup(endCurly + 1);
-	char *c = strchr(trailer, '{');
+	char *trailer = strdup(endCurly + strlen(endJam));
+	char *c = strstr(trailer, startJam);
 	if (c)
 		*c = 0;
 	jam[jamIx]->trailer = strdup(trailer);
@@ -934,12 +1054,13 @@ printf(" ... storing variable [%s]\n", buf);
 		}
 	}
 	free(trailer);
-	return (endCurly+1);
+	free(wd);
+	return (endCurly + strlen(endJam));
 }
 
-char *readTemplate(string fname){
+char *readTemplate(char *fname){
 	char *buf = NULL;
-	std::ifstream html (fname.c_str(), std::ifstream::binary);
+	std::ifstream html (fname, std::ifstream::binary);
 	if (!html){
 		std::cout << "error: cant open file " << fname << endl;
 		die("");
@@ -948,22 +1069,29 @@ char *readTemplate(string fname){
 	int length = html.tellg();
 	html.seekg (0, html.beg);
 
-	buf = (char *) calloc(1, 9 +length+1);
+	int jamLen = (strlen(startJam) + strlen(endJam));
+	char *fakeWord = "@!begin";
+
+	buf = (char *) calloc(1, jamLen + strlen(fakeWord) + length + 1);
 	if (!buf) {
 		std::cout << "error: cant calloc memory " << fname << endl;
-		exit(1);
+		die("");
 	}
-	strcpy(buf, "{@!begin}");
-	html.read (buf+9,length);
-	buf[9+length] = 0;
+	strcpy(buf, startJam);
+	strcat(buf, fakeWord);
+	strcat(buf, endJam);
+	int bufLen = strlen(buf);
+	html.read ((buf + bufLen), length);
+	buf[bufLen+length] = 0;
 	html.close();
 	if (!html) {
 		std::cout << "error: only " << html.gcount() << " could be read" << endl;
-		exit(1);
+		die("");
 	}
-//	printf("-->%s<--\n", buf);
+//	printf("\n[%d][%d]\n-->%s<--\n", jamLen, length, buf);
 	return buf;
 }
+
 
 int openDB(char *name) {
 	char *server = "localhost";
@@ -1010,10 +1138,55 @@ int main2() {
 }
 
 int isCalculation(char *str) {
-	if ((strchr(str, '+')) || (strchr(str, '-')) || (strchr(str, '*')) || (strchr(str, '/'))
-	||  (strchr(str, '^')) || (strchr(str, '%')) || (strchr(str, '(')) || (strchr(str, ')')))
+	if ((strstr(str, " + ")) || (strstr(str, " - ")) || (strstr(str, " * ")) || (strstr(str, " / "))
+	||  (strstr(str, " ^ ")) || (strstr(str, " % ")) || (strchr(str, '(')) || (strchr(str, ')')))
 		return 1;
+/*	if ((strchr(str, '+')) || (strchr(str, '-')) || (strchr(str, '*')) || (strchr(str, '/'))
+	||  (strchr(str, '^')) || (strchr(str, '%')) || (strchr(str, '(')) || (strchr(str, ')')))
+		return 1; */
 	return 0;
+}
+
+// Call the calculator
+char *calculate(char *str) {
+	// Check if date calculation
+	char *space = " ";
+	char *wd;
+	int wdNum = 0;
+	while (1) {
+		wd = strTrim(getWordAlloc(str, ++wdNum, space));
+		if (!wd)
+			break;
+		int numOfMinuses = 0;
+		char *p = wd;
+		while (*p) {
+			if (*p == '-')
+				numOfMinuses++;
+			p++;
+		}
+		if (numOfMinuses > 1) {
+		}
+	}
+
+	int scale = 2;
+	FILE *fp;
+	char *result = (char *) calloc(1, 4096);
+	strcpy(result, "0");
+	char commandStr[4096];
+	sprintf(commandStr, "echo 'scale=%d; %s' | bc", scale, str);
+	fp = popen(commandStr, "r");
+	if (fp == NULL) {
+		printf("calculator failed (1)\n");
+	} else {
+		if (fgets(result, 4096, fp) != NULL) {
+			char *p = strchr(result, '\n');
+			if (*p)
+				*p = '\0';
+		}
+		pclose(fp);
+	}
+//printf("\n *** [%s][%s] *** \n", str, result);
+	return result;
 }
 
 // Given a string like  [stock.id + ((stock.discount * 100) / stock_tax)+2) + 100]
@@ -1033,8 +1206,15 @@ char *expandFieldsInString(char *str, char *tableName) {
 				*p3++ = *p++;
 			VAR *variable = NULL;
 			variable = findVarLenient(wd, tableName);		// does it name a field?
-			if (variable)
+			if (variable) {
+/*
+				if (char *pMinus = strchr(variable->portableValue, '-'))
+					*pMinus = ' ';	//@@TODO decimals (mult by 100)
+				if (char *pDot = strchr(variable->portableValue, '.'))
+					*pDot = '\0';	//@@TODO decimals (mult by 100)
+*/
 				p3 = variable->portableValue;				// yes - replace the word with its value
+			}
 			else
 				p3 = wd;								// no - use the word
 			while (*p3)
@@ -1073,12 +1253,12 @@ void jamDump() {
 			break;
 
 		printf("<span");
-		if (var[i]->debugHighlight == 1) printf(" style='color:#e18d88'");
+		if (var[i]->debugHighlight == 1) printf(" style='color:#decde3'");
 		if (var[i]->debugHighlight == 2) printf(" style='color:yellow;'");
 		if (var[i]->debugHighlight == 3) printf(" style='color:orange;'");
-		if (var[i]->debugHighlight == 4) printf(" style='color:cyan;'");
+		if (var[i]->debugHighlight == 4) printf(" style='color:#a8c968;'");
 		if (var[i]->debugHighlight == 5) printf(" style='color:#e28c86;'");
-		if (var[i]->debugHighlight == 6) printf(" style='color:#a8c968;'");
+		if (var[i]->debugHighlight == 6) printf(" style='color:cyan;'");
 		printf(">");
 
 		*tmp = 0;
@@ -1093,11 +1273,12 @@ void jamDump() {
 		printf("</span>");
 	}
 	printf("<br>");
+	printf("<span style='margin:3px; padding:2px; color:#000; background-color:#decde3;'>prefill </span>");
 	printf("<span style='margin:3px; padding:2px; color:#000; background-color:yellow;'>count </span>");
 	printf("<span style='margin:3px; padding:2px; color:#000; background-color:orange;'>sum </span>");
-	printf("<span style='margin:3px; padding:2px; color:#000; background-color:cyan;'>variable </span>");
+	printf("<span style='margin:3px; padding:2px; color:#000; background-color:#a8c968;'>variable </span>");
 	printf("<span style='margin:3px; padding:2px; color:#000; background-color:#e28c86;'>mysql </span>");
-	printf("<span style='margin:3px; padding:2px; color:#000; background-color:#a8c968;'>auto </span>");
+	printf("<span style='margin:3px; padding:2px; color:#000; background-color:cyan;'>unused </span>");
 	printf("<br>");
 	printf("<br>");
 	printf("</div>");
