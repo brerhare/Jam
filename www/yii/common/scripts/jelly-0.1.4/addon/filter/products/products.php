@@ -239,6 +239,8 @@ class products
                 array_push($this->featureSel, '*');
 
             foreach ($departments as $department):
+				if (!($department->active))
+					continue;
 				if (!($this->hasFilterOrFeature()))
 					array_push($this->departmentSel, $department->id);
 
