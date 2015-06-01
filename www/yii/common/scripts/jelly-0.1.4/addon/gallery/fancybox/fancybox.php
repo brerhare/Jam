@@ -55,18 +55,18 @@ class fancybox
 							$galleryId++;
 							$content .= "<tr>";
 							$content .= "<td width='25%'>";
-							$content .= "<a class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $gallery->image . "' title='" . $gallery->text . "'> <img src='" . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $gallery->image . "' alt='' /> </a>";
+							$content .= "<a class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $gallery->image . "' title='" . str_replace("'", "", $gallery->text) . "'> <img src='" . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $gallery->image . "' alt='' /> </a>";
 							$criteria = new CDbCriteria;
 							$criteria->addCondition("jelly_gallery_id = " . $gallery->id);
 							$criteria->order = "sequence";
 							$galleryImages = JellyGalleryImage::model()->findAll($criteria);
 							foreach ($galleryImages as $galleryImage):
-								$content .= "<a style='display:none' class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $galleryImage->image . "' title='" . $galleryImage->text . "'> <img src='" . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . "' alt='' /> </a>";
+								$content .= "<a style='display:none' class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $galleryImage->image . "' title='" . str_replace("'", "", $galleryImage->text) . "'> <img src='" . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . "' alt='' /> </a>";
 							endforeach;
 							$content .= "</td>";
 							$content .= "<td width='1%'></td>";
 							$content .= "<td width='74%'>";
-							$content .= "<b>" . $gallery->title . "</b><br>" . $gallery->text;
+							$content .= "<b>" . $gallery->title . "</b><br>" . str_replace("'", "", $gallery->text);
 							$content .= "</td></tr>";
 						endforeach;
 						$content .= "</table>";
@@ -89,7 +89,7 @@ class fancybox
 							$content .= "<div style='margin-left:50px'>";
 							foreach ($galleryImages as $galleryImage):
 //echo "<br/>->" . Yii::app()->getBaseUrl(true) . "<-<br/>";
-								$content .= '<a class="fancybox item" rel="gallery1" href="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $galleryImage->image . '" title="' . $galleryImage->text . '">';
+								$content .= '<a class="fancybox item" rel="gallery1" href="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $galleryImage->image . '" title="' . str_replace("'", "", $galleryImage->text) . '">';
 								$content .= '<img style="padding:5px" src="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . '" alt="" />';
 								$content .= '</a>';
 							endforeach;
