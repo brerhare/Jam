@@ -60,16 +60,16 @@ table tr {
 		foreach ($transactions as $transaction):
 
 			// Check for dups. Cant have more than one record of the same ticket type per order
-			if ($curOrder != $transaction->order_number)
-			{
-				unset($orderArr);
-				$orderArr = array();
-				unset($typeArr);
-				$typeArr = array();
-				$curOrder = $transaction->order_number;
-			}
-			if ((in_array($transaction->order_number, $orderArr)) && (in_array($transaction->http_ticket_type_id, $typeArr)))
-				continue;
+			//if ($curOrder != $transaction->order_number)
+			//{
+				//unset($orderArr);
+				//$orderArr = array();
+				//unset($typeArr);
+				//$typeArr = array();
+				//$curOrder = $transaction->order_number;
+			//}
+			//if ((in_array($transaction->order_number, $orderArr)) && (in_array($transaction->http_ticket_type_id, $typeArr)))
+				//continue;
 			array_push($orderArr, $transaction->order_number);
 			array_push($typeArr, $transaction->http_ticket_type_id);
 
