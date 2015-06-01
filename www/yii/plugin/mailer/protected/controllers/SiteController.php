@@ -29,12 +29,26 @@ class SiteController extends Controller
 		);
 	}
 
+	public function accessRules()
+	{
+		return array(
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('index','view','unsubscribe'),
+				'users'=>array('*'),
+			),
+		);
+	}
+
 	/**
 	 * This is the default 'index' action that is invoked
 	 * when an action is not explicitly requested by users.
 	 */
 	public function actionIndex()
 	{
+		if (isset($_GET['unsubscribe']))
+		{
+			return $this->actionUnsubscribe();
+		}
 		$layout = "index";
 		if (isset($_GET['layout']))
 			$layout = $_GET['layout'];
@@ -67,7 +81,21 @@ class SiteController extends Controller
 
 	}
 
-
+	public function actionUnsubscribe()
+	{
+		if ((trim($_GET['unsubscribe'])) == "")
+		{
+		die("<style>* {color:#bf5855;}</style><br><br><br><br><br><br><br><center><h3>No email given to unsubscribe!</h3><h4>Please contact the list owner via the website you subscribed at and ask to be manually removed<br><br>Apologies for the inconvenience, we do respect your privacy</h4><h5>Should you have ANY difficulty with that you may raise this with us directly at info@wireflydesign.com</h5></center>");
+		}
+        $criteria = new CDbCriteria;
+        $criteria->addCondition("email_address = '" . $_GET['unsubscribe'] . "'");
+        $members = MailerMember::model()->findAll($criteria);
+		foreach ($members as $member)
+		{
+            $member->delete();
+        }
+	die("<style>* {color:#bf5855;}</style><br><br><br><br><br><br><br><center><h3>Thank you</h3><h4>You are no longer on our mailing list and will receive no further emails from us</h4></center>");
+	}
 
 	/**
 	 * This is the action to handle external exceptions.

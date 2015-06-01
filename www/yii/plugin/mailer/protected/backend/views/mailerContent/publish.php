@@ -15,7 +15,7 @@ $this->menu=array(
     'htmlOptions'=>array('enctype'=>'multipart/form-data'),
 )); ?>
 
-<?php if ($model->sent) echo "<h4 style='color:red'>Warning! This has already been published</h4>"; ?>
+<?php if ($model->sent == 1) echo "<h4 style='color:red'>Warning! This has already been published</h4>"; ?>
 
 <div class="form-actions">
 	<?php $this->widget('bootstrap.widgets.TbButton', array(

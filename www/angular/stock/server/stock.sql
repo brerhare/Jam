@@ -161,8 +161,8 @@ CREATE TABLE IF NOT EXISTS `stock`.`stock_customer` (
   `link_field` VARCHAR(255) NULL COMMENT 'Any common content here will link customers for any purpose like a report etc',
   `notes` TEXT NULL,
   `status` INT NULL,
-  `CIF` VARCHAR(255) NULL,
-  `forma_de_pago` VARCHAR(255) NULL,
+  `tax_reference` VARCHAR(255) NULL,
+  `payment_method` VARCHAR(255) NULL,
   `stock_markup_group_id` INT NOT NULL,
   `stock_area_id` INT NOT NULL,
   PRIMARY KEY (`id`),
@@ -678,11 +678,13 @@ CREATE TABLE IF NOT EXISTS `stock`.`stock_customer_transaction` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `uid` INT NOT NULL,
   `type` VARCHAR(255) NOT NULL,
+  `document_number` INT NOT NULL,
   `reference` VARCHAR(255) NOT NULL,
   `date` DATE NOT NULL,
-  `carriage` DECIMAL(10,2) NULL COMMENT 'Store the carriage amount as well as the carriage id\n',
-  `vat` DECIMAL(10,2) NULL,
+  `carriage_amount` DECIMAL(10,2) NULL COMMENT 'Store the carriage amount as well as the carriage id\n',
+  `vat_amount` DECIMAL(10,2) NULL,
   `total_amount` DECIMAL(10,2) NULL,
+  `balance` DECIMAL(10,2) NULL,
   `stock_customer_id` INT NOT NULL,
   `stock_user_id` INT NOT NULL,
   `notes` TEXT NULL,
@@ -882,6 +884,20 @@ CREATE TABLE IF NOT EXISTS `stock`.`stock_currencies` (
   `name` VARCHAR(255) NOT NULL,
   `local_value` DECIMAL(10,4) NOT NULL,
   `foreign_value` DECIMAL(10,4) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `stock`.`stock_customer_transaction_xref`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `stock`.`stock_customer_transaction_xref` ;
+
+CREATE TABLE IF NOT EXISTS `stock`.`stock_customer_transaction_xref` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `source_transaction_id` INT NOT NULL,
+  `contra_transaction_id` INT NULL,
+  `amount` DECIMAL(10,2) NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
 
