@@ -140,7 +140,7 @@ class traditional
 		if ($this->default_width != "")
 		{
 			if ($this->default_orientation == "horizontal")
-				$this->apiHtml = str_replace("<substitute-width>", "nav ul {width: $this->default_width" . "px;}", $this->apiHtml);
+				$this->apiHtml = str_replace("<substitute-width>", "xnav ul {width: $this->default_width" . "px;}", $this->apiHtml);
 			else
 				$this->apiHtml = str_replace("<substitute-width>", "xnav ul {width: $this->default_width" . "px;}", $this->apiHtml);
 		}
