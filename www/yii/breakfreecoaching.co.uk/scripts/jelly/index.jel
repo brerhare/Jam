@@ -20,7 +20,7 @@ css.display = block
 
 	[header]
 	child = logo, menu-block
-	css.height = 250px
+	css.height = 230px
 	css.margin-top = 20px
 		css.max-width = 1200px
 		css.min-width = 800px
@@ -57,7 +57,7 @@ css.display = block
 		
 				[menu]
 				css.height = 50px
-				css.width = 725px
+				css.width = 750px
 				css.margin-left = 12%
 				css.overflow = visible
 				css.z-index = 100
@@ -95,7 +95,7 @@ css.display = block
 	child = slider
 	condition = @PAGE=@HOMEPAGE
 	css.height = 550px
-	css.margin-top = -50px
+	css.margin-top = -20px
 
 		[slider]
 		css.width = 800px
@@ -135,12 +135,11 @@ css.display = block
 	child = contact-form
 	condition = @PAGE=contact
 	css.height = 300px
-	css.margin-top = 50px
-	#stacking = horizontal
+	css.margin-top = 20px
+	css.width = 100%
 		
 		[contact-form]
-		css.width = 550px
-		css.margin = 0px
+		css.width = 75%
 		#css.margin-bottom = 30px
 		css.background-color = white
 		addon.contact.contactform.edgepadding = 0px
