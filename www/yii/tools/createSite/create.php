@@ -101,8 +101,8 @@ echo "Setting up site analytics...\n";
 $siteDir = $siteParentDir . $manifest['site'];
 if (!($index = file_get_contents($siteDir . "/protected/backend/views/site/index.php")))
 	die("Failed to read protected/backend/views/site/index.php file - aborting\n");
-$main = str_replace("<site>", $manifest['site'], $index);
-$main = str_replace("<pass>", $manifest['pass'], $index);
+$index = str_replace("<site>", $manifest['site'], $index);
+$index = str_replace("<pass>", $manifest['dbpass'], $index);
 if (!(file_put_contents($siteDir . "/protected/backend/views/site/index.php", $index)))
     die("Failed to update protected/backend/views/site/index.php - aborting\n");
 
@@ -118,7 +118,7 @@ $main = str_replace("<dbpass>", $manifest['dbpass'], $main);
 $main = str_replace("<sid>", $manifest['sid'], $main);
 $main = str_replace("<checkoutname>", $manifest['checkoutname'], $main);
 $main = str_replace("<checkoutemail>", $manifest['checkoutemail'], $main);
-$main = str_replace("<checkoutpaypalemail>", $manifest['checkoutpaypalemail'], $main);
+if (isset($manifest['checkoutpaypalemail'])) $main = str_replace("<checkoutpaypalemail>", $manifest['checkoutpaypalemail'], $main);
 if (!(file_put_contents($siteDir . "/protected/config/main.php", $main)))
     die("Failed to update protected/config/main.php - aborting\n");
 

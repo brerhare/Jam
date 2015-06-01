@@ -75,7 +75,7 @@ addon.menu.traditional.item-separator-width = 8px
 		image.height = 35px
 		image.align = center
 		image.z-index = 100
-		clicknew = http://www.dgbloodbikes.org.uk/?layout=index&page=temp-donate
+		clicknew = http://www.dgbloodbikes.org.uk/?layout=index&page=donate-make-a-difference
 		
 		[social-fb]
 		css.height = 40px

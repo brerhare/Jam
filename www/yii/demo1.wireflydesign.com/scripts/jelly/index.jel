@@ -12,44 +12,47 @@ fx.wallpaper-image-tile = /img/background.jpg
 css.display = block
 
 	[site]
-	child = header, pages, footer
+	child = header, slider, pages, footer
 	css.width = 970px
 
 ####  Header  #################################
 
 	[header]
-	child = logo, menu, slider
-	css.height = 500px
+	child = logo, menu
+	stacking = horizontal
+	css.width = 100%
+	css.overflow = visible
+	css.z-index = 100
 	
 		[logo]
-		css.margin-left = 50px
 		css.margin-top = 25px
-		css.height = 120px
-		css.width = 500px
+		css.height = 80px
+		css.width = 25%
 		image.url = img/Logo.png
-		image.width = 241px
-		image.height = 116px
+		image.width = 100%
+		image.height = 48%
 		click = http://www.demo1.wireflydesign.com
+		css.overflow = visible
+		css.z-index = 100
+		css.position = relative
 
 		[menu]
+		css.margin-top = 50px
+		css.margin-left = 5%
 		css.height = 50px
-		#css.width = 250px
+		css.width = 65%
 		css.overflow = visible
 
 		addon.menu.basic.orientation = horizontal
-		#addon.menu.basic.width = 960px
 		#addon.menu.basic.height = 30px
 		addon.menu.basic.edgepadding = 13
 
 		addon.menu.basic.menu-rounding = 4px
-		#addon.menu.basic.menu-opacity = 70%
-		#addon.menu.basic.menu-tile = /img/menu-bar.jpg
-		#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
 		addon.menu.basic.menu-color = white
 		#addon.menu.basic.item-separator-color = #ffffff
 		#addon.menu.basic.item-separator-width = 3px
 
-		addon.menu.basic.font-size = 12px
+		addon.menu.basic.font-size = 14px
 		#addon.menu.basic.menu-text-color = red
 
 		#addon.menu.basic.item-color = black yellow
@@ -67,6 +70,7 @@ css.display = block
 	[slider]
 	css.width = 960px
   	css.height = 320px
+	css.z-index = 50
 	addon.slider.flexslider.width = 952px
 	addon.slider.flexslider.height = 310px
 	addon.slider.flexslider.mode = image
@@ -122,34 +126,27 @@ css.width = 960px
 		stacking = horizontal
 
 		[footer-menu]
-		child = footer-margin, footer-cookies, footer-tandc, footer-contact
+		child = footer-cookies, footer-tandc, footer-contact
 		css.height = 50px
 		css.width = 50%
 
-			[footer-margin]
-			css.width = 20%
-			css.height = 50px
-
 			[footer-cookies]
 			html.raw = Cookie Policy
-			css.width = 20%
 			css.color = #000000
 			css.font-size = 11px
-			css.text-align = right
+			css.text-align = left
 			click = ?layout=index&page=cookie-policy
 
 			[footer-tandc]
 			html.raw = Terms & Conditions
-			css.width = 20%
 			css.color = #000000
 			css.font-size = 11px
-			css.text-align = center
+			css.text-align = left
 			click = ?layout=index&page=terms-conditions
 
 			[footer-contact]
 			html.raw = Contact Us
 			css.text-align = left
-			css.width = 20%
 			css.color = #000000
 			css.font-size = 11px
 			click = ?layout=index&page=contact
@@ -185,11 +182,20 @@ css.width = 960px
 		
 	
 		[admin]
-		css.height = 30px
+		child = cog-center
+		css.height = 20px
+		css.width = 20px
+		css.background-size = 100%
+		css.background-image = url('/img/admin.png')
 		css.margin-left = -20px
-		image.url = img/admin.png
-		image.width = 20px
-		image.height = 20px
-		image.align = left
-		clicknew = backend.php
+		
+			[cog-center]
+			css.width = 5px
+			css.height = 5px
+			css.margin-top = 8px
+			image.url = img/cog-center.png
+			image.width = 5px
+			image.height = 5px
+			image.align = center
+			clicknew = backend.php
 
