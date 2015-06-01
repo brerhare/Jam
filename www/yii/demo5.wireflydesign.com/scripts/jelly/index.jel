@@ -1,4 +1,4 @@
-#Demo 5
+#Breakfree Coaching
 [defaults]
 include = default-values
 
@@ -8,195 +8,213 @@ include = default-values
 
 [screen]
 child = site
-fx.wallpaper-image-tile = /img/background.jpg
+css.background-color = white
 css.display = block
 
 	[site]
-	child = header, slider, pages, footer
-	css.width = 970px
+	child = header, slider-area, pages, footer
+	css.width = 1200px
 
 ####  Header  #################################
 
 	[header]
-	child = logo-and-signup, menu
-	css.height = 200px
+	child = header-graphics, menu
+	css.height = 250px
+	css.margin-top = 20px
 	
-		[logo-and-signup]
-		child = logo, signup
+		[header-graphics]
+		child = logo, logo-name
 		stacking = horizontal
-
-		[logo]
-		css.margin-left = 50px
-		css.margin-top = 25px
-		css.height = 120px
-		css.width = 500px
-		css.z-index = 1000
-		css.position = relative
-		image.url = img/Logo.png
-		image.width = 241px
-		image.height = 116px
-		click = http://www.demo5.wireflydesign.com
-
-		[signup]
-		css.margin-left = 50px
-		css.margin-top = 30px
-		addon.mailer.signup.orientation = vertical
-		addon.mailer.signup.buttoncolor = red
-		addon.mailer.signup.buttontextcolor = yellow
-		addon.mailer.signup.buttontext = Signup
-		addon.mailer.signup.inputspacing = 5px
+		css.margin-left = 60px
+	
+			[logo]
+			css.height = 250px
+			css.width = 710px
+			image.url = img/old-logo.png
+			image.width = 700px
+			image.height = 227px
+			click = http://www.breakfreecoaching.co.uk
+			
+			[logo-name]
+			css.height = 250px
+			css.width = 310px
+			css.margin-top = 43px
+			image.url = img/logo-name.png
+			image.width = 301px
+			image.height = 32px
+			click = ?layout=index&page=biography
+			
 
 		[menu]
 		css.height = 50px
-		#css.width = 250px
+		css.width = 600px
+		css.margin-top = -175px
+		css.margin-left = 350px
+			#css.background-color = pink
 		css.overflow = visible
-		css.z-index = 1000
-		css.position = absolute
-		#css.position = relative
+		css.z-index = 100
+		#css.position = absolute
+		css.position = relative
 
-		addon.menu.basic.orientation = horizontal
-		#addon.menu.basic.width = 960px
-		#addon.menu.basic.height = 30px
-		#addon.menu.basic.level = 2
 
-		addon.menu.basic.menu-rounding = 4px
-		#addon.menu.basic.menu-opacity = 70%
-		#addon.menu.basic.menu-tile = /img/menu-bar.jpg
-		#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
-		addon.menu.basic.menu-color = white
-		#addon.menu.basic.item-separator-color = #ffffff
-		#addon.menu.basic.item-separator-width = 3px
-
-		addon.menu.basic.font-size = 12px
-		#addon.menu.basic.menu-text-color = red
-
-		#addon.menu.basic.item-color = black yellow
-		#addon.menu.basic.item-text-color = green
-
-		#addon.menu.basic.submenu-color = yellow red
-	
-		#addon.menu.basic.subitem-color = white black
-		#addon.menu.basic.subitem-text-color = purple
-		#addon.menu.basic.subitem-seperator-color = red 
+		## 'basic' is the old version, 'traditional' is the new.
+		## This way we can migrate site by site, use either/both for a while
+        addon.menu.traditional.height = 30px
+        addon.menu.traditional.align = center
+        addon.menu.traditional.item-separator-width = 30px
+        addon.menu.traditional.menu-text-color = #b23640
+        addon.menu.traditional.menu-font-weight = bold
+        addon.menu.traditional.menu-font-size = 28px
+        addon.menu.traditional.menu-hover-font-size = 28px
+        addon.menu.traditional.menu-selected-font-size = 28px
+        addon.menu.traditional.menu-hover-text-color = black
+        addon.menu.traditional.menu-selected-text-color = black
+        addon.menu.traditional.submenu-separator-color = #b23640
+        addon.menu.traditional.submenu-font-size = 22
+        addon.menu.traditional.submenu-font-weight = bold
+        addon.menu.traditional.submenu-text-color = black
+        addon.menu.traditional.submenu-background-color = white
 
 
 #### Slider ###########################################
 
-	[slider]
-	css.width = 960px
-  	css.height = 320px
-	addon.slider.flexslider.width = 952px
-	addon.slider.flexslider.height = 310px
-	addon.slider.flexslider.mode = image
-	addon.slider.flexslider.source = db
+	[slider-area]
+	child = slider
+	condition = @PAGE=@HOMEPAGE
+	css.height = 550px
+	css.margin-top = -50px
 
-	#addon.slider.flexslider.border-width = 0px
-	#addon.slider.flexslider.border-color = red
-	#addon.slider.flexslider.active-dotcolor = red
-	#addon.slider.flexslider.inactive-dotcolor = blue
-	#addon.slider.flexslider.dot-margin-top = -200px
-	#addon.slider.flexslider.dot-margin-bottom = 0px
-	#addon.slider.flexslider.dot-margin-left = 0px
-	#addon.slider.flexslider.dot-margin-right = 0px
-	#addon.slider.flexslider.animation = fade
-	#addon.slider.flexslider.mode = HTML
-	#addon.slider.glitz.slider = 2
+		[slider]
+		css.width = 800px
+		css.height = 510px
+		css.box-shadow = 10px 15px 10px rgba(0,0,0,0.2)
+		addon.slider.flexslider.width = 800px
+		addon.slider.flexslider.height = 510px
+		addon.slider.flexslider.mode = image
+		addon.slider.flexslider.source = db
+
+		#addon.slider.flexslider.border-width = 0px
+		#addon.slider.flexslider.border-color = red
+		#addon.slider.flexslider.active-dotcolor = red
+		#addon.slider.flexslider.inactive-dotcolor = blue
+		#addon.slider.flexslider.dot-margin-top = -200px
+		#addon.slider.flexslider.dot-margin-bottom = 0px
+		#addon.slider.flexslider.dot-margin-left = 0px
+		#addon.slider.flexslider.dot-margin-right = 0px
+		#addon.slider.flexslider.animation = fade
+		#addon.slider.flexslider.mode = HTML
 
 
 ######## body #######################################
 			
 
 	[pages]
-	child = tabs, content 	
-	css.width = 960px
-	css.margin-top = 20px
+	child = contact 	
+	css.width = 780px
+	#css.margin-top = 40px
 	css.background-color = white
-	fx.rounding = 4px
+	db.table = ContentBlock
+	db.filter = url=$_GET['page']
+	db.error = Sorry, I could not find the page $_GET['page']
+	html.raw = ContentBlock.content
 	
-		[tabs]
-		condition = @PAGE=@HOMEPAGE
-		css.display = block
-		css.width = 680px
-		addon.tab.rain.source = db
+	[contact]
+	child = contact-form, contact-text
+	condition = @PAGE=contact
+	css.height = 300px
+	css.font-size = 18px
+	stacking = horizontal
+		
+		[contact-form]
+		css.width = 450px
+		css.margin = 0px
+		#css.margin-bottom = 30px
+		css.background-color = white
+		addon.contact.contactform.edgepadding = 0px
+		addon.contact.contactform.buttoncolor = lightgrey
+		addon.contact.contactform.buttontextcolor = #b23640
+		addon.contact.contactform.buttontext = [ Submit ]
+		addon.contact.contactform.successtextcolor = green
+		addon.contact.contactform.failuretextcolor = red
+		addon.contact.contactform.textcolor = blue
+		addon.contact.contactform.backcolor = pink
+		addon.contact.contactform.inputspacing = 10px
 
-			
-		[content]
-		css.background-color = #B8C0D3
-		css.margin-top = 30px
-		css.margin = 30px
-		db.table = ContentBlock
-		db.filter = url=$_GET['page']
-		db.error = Sorry, I could not find the page $_GET['page']
-		html.raw = ContentBlock.content
+		[contact-text]
+		css.width = 300px
+		css.margin-top = 50px
+		css.height = 140px
+		html.raw = Please fill in the form and I will get back to you as soon as possible.<br/><br/>Postal Address:<br/>West Silvermill Lane, <br/>Stockbridge, <br/>Edinburgh, <br/>EH3 5BD
 
 
 ####footer####################################
 
 [footer]
-child = footer-menu, footnote
-css.margin-top = 40px
-css.margin-left = 20px
-css.height = 180px
+child = footer-graphic, footer-content
+css.margin-top = -10px
+css.margin-left = 157px
+css.height = 200px
 css.width = 960px
-#css.background-color = #ffffff
-#css.background-color = #f7d9ff
+css.color = #b23640
+css.font-weight = bold
+css.font-size = 14px
+
+	[footer-graphic]
+	css.width = 960px
+	css.height = 151px
+	image.url = img/footer.png
+	image.width = 960px
+	image.height = 151px
+	css.z-index = 10
+	css.position = relative
+	
+	
+	[footer-content]
+	child = footer-menu, footnote
+	css.width = 960px
+	stacking = horizontal
+	css.margin-top = -70px
+	css.z-index = 20
+	css.position = relative
 
 		[footer-menu]
-		stacking = horizontal
-		child = footer-margin, footer-cookies, footer-tandc, footer-contact
-		css.height = 50px
-		css.width = 960px
-
-			[footer-margin]
-			css.width = 20%
-			css.height = 50px
+		child = footer-contact, footer-cookies, footer-tandc
+		css.height = 100px
+		css.width = 550px
+		css.margin-left = 100px
+		css.margin-top = 10px
+		
+			[footer-contact]
+#			html.raw = <a style="text-decoration:underline">Contact Me
+#			click = ?layout=index&page=contact
+			html.raw = <a style="text-decoration:none" href="?layout=index&page=contact">Contact Me</span>
 
 			[footer-cookies]
-			html.raw = Cookie Policy
-			css.width = 20%
-			css.color = #000000
-			css.font-size = 11px
-			css.text-align = right
-			click = ?layout=index&page=cookie-policy
+			html.raw = <a style="text-decoration:none" href="?layout=index&page=cookie-policy">Cookie Policy</span>
+			css.margin-top = 10px
+#			click = ?layout=index&page=cookie-policy
 
 			[footer-tandc]
-			html.raw = Terms & Conditions
-			css.width = 20%
-			css.color = #000000
-			css.font-size = 11px
-			css.text-align = center
-			click = ?layout=index&page=terms-conditions
+			html.raw = <a style="text-decoration:none" href="?layout=index&page=terms-conditions">Terms & Conditions</span>
+			css.margin-top = 10px
+#			click = ?layout=index&page=terms-conditions
 
-			[footer-contact]
-			html.raw = Contact Us
+		[footnote]
+		child = wirefly, copyright
+		css.width = 200px
+		css.height = 100px
+		
+			[wirefly]
+			css.height = 45px
+			image.url = img/wirefly-weblink.png
+			image.width = 150px
+			image.height = 40px
+			image.align = left
+			clicknew = http://www.wireflydesign.com
+
+
+			[copyright]
+			html.raw = Breakfree Coaching &copy 2015 <br>All rights reserved
+			css.color = #000000
+			css.font-size = 12px
 			css.text-align = left
-			css.width = 20%
-			css.color = #000000
-			css.font-size = 11px
-			click = ?layout=index&page=contact
-
-
-	[footnote]
-	child = copyright, wirefly
-	css.width = 100%
-	css.height = 50px
-	stacking = horizontal
-
-		[copyright]
-		css.width = 50%
-		css.margin-top = 10px
-		html.raw = Customer &copy 2014 All rights reserved
-		css.color = #000000
-		css.font-size = 11px
-		css.text-align = left
-
-	[wirefly]
-	css.margin-top = -10px
-	css.height = 50px
-	css.width = 50%
-	image.url = img/wirefly-weblink.png
-	image.width = 150px
-	image.height = 40px
-	image.align = right
-	clicknew = http://www.wireflydesign.com
-

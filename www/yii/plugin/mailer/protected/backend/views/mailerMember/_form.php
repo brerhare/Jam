@@ -22,7 +22,7 @@
 
 	<?php // echo $form->textFieldRow($model,'active',array('class'=>'span1')); ?>
 	<?php // @@EG: Change on/off labels on togglebutton ?>
-	<?php echo $form->toggleButtonRow($model, 'active' , array('options'=>array('enabledLabel'=>'Yes', 'disabledLabel'=>'No'))); ?>
+	<?php echo $form->toggleButtonRow($model, 'active'); ?>
 
 	<?php //echo $form->textFieldRow($model,'mailer_list_id',array('class'=>'span5')); ?>
 

@@ -1,0 +1,57 @@
+<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700,400italic|Gloria+Hallelujah' rel='stylesheet' type='text/css'>
+
+<style type="text/css">
+
+html, body, p {	height: 110%;
+			line-height: 120%;}
+
+/* Global Hyperlink settings - will affect menu text colour if no text settings */ 
+/* Main: Blue #1cb9d9 / Second: Green 76f04e*/
+
+a { text-decoration: none; color:#1cb9d9; }
+a:visited { text-decoration: none; color:#1cb9d9; }
+a:hover { text-decoration: none; color:#76f04e; }
+a:active { text-decoration: none; color:#76f04e; }
+
+
+
+h1 {	font-family: 'Gloria Hallelujah', Verdana, sans-serif !important;
+	color: #1cb9d9;
+	font-size: 28px;
+	font-weight: 400;
+	text-shadow: 1px 1px 2px lightgrey;}
+
+h2 {	font-family: 'Source Sans Pro', Verdana, sans-serif !important;
+	color: grey;
+	font-size: 18px;
+	font-weight: normal;
+	line-height: 110%;}
+
+
+h3 {	font-family: 'Gloria Hallelujah', Verdana, sans-serif !important;
+	color: #1cb9d9;
+	font-size: 20px;
+	font-weight: 400;}
+
+h4 {	font-family: 'Gloria Hallelujah', Verdana, sans-serif !important;
+	color: #1cb9d9;
+	font-size: 16px;
+	font-weight: 400;}
+
+p  {	font-family: 'Source Sans Pro', Verdana, sans-serif !important;
+	color: #000000;
+	font-size: 14px;
+	font-weight: normal}
+
+blockquote {font-family: 'Source Sans Pro', Verdana, sans-serif !important;
+	color: #5b5b5b;
+	font-size: 14px;
+	font-style: italic;
+	font-weight: normal}
+
+
+html { font-family: 'Source Sans Pro', Verdana, sans-serif !important;
+	font-size: 12px;
+	font-weight:normal}
+
+</style>

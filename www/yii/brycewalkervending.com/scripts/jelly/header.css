@@ -1,0 +1,60 @@
+<!-- Place your Google fonts here as a cut and paste then choose which header and fonts etc need the font families - NB if the family only come in Italic then you must state the font style as Italic too -->
+
+<link href='http://fonts.googleapis.com/css?family=Audiowide|Open+Sans:400italic,700,400' rel='stylesheet' type='text/css'>
+
+<style type="text/css">
+
+
+html, body {	height: 100%;
+		padding: 0;
+		margin: 20;
+		border: 0;}
+
+/* Global Hyperlink settings - will affect menu text colour if no text settings */ 
+a { text-decoration: none; }
+a:visited, a:active { text-decoration: none; color:#d30000; }
+a:hover { text-decoration: none; color:#0044ff; text-shadow: 1px 1px 2px grey; }
+
+
+
+h1 {	font-family: 'Audiowide', Verdana, sans-serif !important;
+	color: #6b6b6b;
+	font-size: 32px;
+	font-weight: 400;}
+
+h2 {	font-family: 'Open Sans', Verdana, sans-serif !important;
+	color: 000000;
+	font-size: 18px;
+	font-weight: 300;
+	line-height: 120%;}
+
+
+h3 {	font-family: 'Audiowide', Verdana, sans-serif !important;
+	color: #6b6b6b;
+	font-size: 24px;
+	font-weight: 400;}
+
+h4 {	font-family: 'Open Sans', Verdana, sans-serif !important;
+	color: #000000;
+	font-size: 16px;
+	font-weight: 700;
+	font-stretch: wider;}
+
+p  {	font-family: 'Open Sans', Verdana, sans-serif !important;
+	color: #000000;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 120%;}
+
+blockquote {font-family: 'Open Sans', Verdana, sans-serif !important;
+	color: #5b5b5b;
+	font-size: 14px;
+	font-style: italic;
+	font-weight: 300;}
+
+
+html { font-family: 'Audiowide', Verdana, sans-serif !important;
+	font-size: 12px;
+	font-weight:normal}
+
+</style>

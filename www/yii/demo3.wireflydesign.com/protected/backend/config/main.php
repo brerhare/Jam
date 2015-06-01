@@ -75,7 +75,7 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=demo1_wireflydesign_com',
+			'connectionString' => 'mysql:host=localhost;dbname=demo3_wireflydesign_com',
 			'emulatePrepare' => true,
 			'username' => 'wireflydesign.co',
 			'password' => 'wireflydesign.com,',
@@ -108,5 +108,9 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@wireflydesign.com',
+        // CKEditor size for page content editing
+        'editorpagewidth'=>'910',
+        'editorpageheight'=>'500',
+
 	),
 );

@@ -26,11 +26,13 @@ $this->menu=array(
             'value' => 'CHtml::link($data->name, Yii::app()->createUrl("product/update",array("id"=>$data->primaryKey)))',
             'type'  => 'raw',
         ),
+/****
         array(
             'name'  => 'description',
             'value' => 'CHtml::link($data->description, Yii::app()->createUrl("product/update",array("id"=>$data->primaryKey)))',
             'type'  => 'raw',
         ),
+****/
 
 		/*
 		'weight',

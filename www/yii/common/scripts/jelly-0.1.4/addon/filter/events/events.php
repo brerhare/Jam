@@ -14,6 +14,7 @@ class events
     private $defaultDepartment = "";
     private $defaultWidth = "100%";
 	private $programId = 0;
+	private $map = "nomap";
 
 // Not used ...
     public $apiOption = array(
@@ -33,6 +34,10 @@ class events
         // Check if any program has been selected in the iframe
         if (isset($_GET['programid']))
             $this->programId = (int) $_GET['programid'];
+        if (isset($_GET['map']))
+            $this->map = $_GET['map'];
+//echo $this->map;die;
+
 
         foreach ($options as $opt => $val)
         {
@@ -59,9 +64,37 @@ class events
 
         // Insert the data
         $content = "";
-		$content .= "<script>var programId = " . $this->programId . ";</script>";
+
+		$pHeaderColor = "";
+		$pMember = "";
+		if (isset($_GET['headercolor']))
+			$pHeaderColor = $_GET['headercolor'];
+		if (isset($_GET['member']))
+			$pHeaderColor = $_GET['member'];
+
+		$content .= "<script>var programId = " . $this->programId . "; var mapyesorno ='" . $this->map . "'; var headercolor = '" . $pHeaderColor . "'; var member = '" . $pMember . "';</script>";
         $content .= "<div style='position:fixed; color:#575757;'>";      // Your basic solemn grey font color
         $uid = Yii::app()->session['uid'];
+
+		// Show 'Review order' button from ticketing
+		$reviewOrder = <<<END_OF_REVIEW_ORDER_HTML
+		<div>
+			<style>
+				#review-order {
+					background: url(//plugin.wireflydesign.com/ticket/img/rev-order.png);
+					border: 0;
+					display: block;
+					height: 50px;
+					width: 125px;
+					cursor:pointer;
+					outline:none;
+				}
+			</style>
+			<input type='button' id='review-order' onclick='revieworderFunction()'></input>
+		</div>
+		<script>function revieworderFunction(){ window.open("https://plugin.wireflydesign.com/ticket/index.php/ticket/review") }</script>
+END_OF_REVIEW_ORDER_HTML;
+		$content .= $reviewOrder;
 
         $twistyIcon = "<img style='padding-right:3px' title='" . 'Show more' . "' src='img/" . 'open-twisty.png' . "' >";
 
@@ -69,7 +102,10 @@ class events
         $content .= "<input type='button' id='textsearchbutton' style='float:left; padding:3px; width:60px; ' onClick='searchEvents()' value='Search'>";
 		$content .= "<br/>";
         $content .= "<div style='float:left'>";
-        $content .= "<input type='text' id='textsearchbox' style='width:116px' title='Input text to search for' value='" . '' . "'>";
+		$srchStr = '';
+		if (isset($_GET['textsearch']))
+			$srchStr = " value='" . $_GET['textsearch'] . "' ";;
+        $content .= "<input type='text' " . $srchStr . " id='textsearchbox' style='width:116px' title='Input text to search for' value='" . '' . "'>";
         $content .= "</div>";
         $content .= "<div style='clear:both'></div>";
 
@@ -135,7 +171,6 @@ class events
         // Interest
         $interests  = Interest::model()->findAll(array('order'=>'id'));
         $openInterest = false;
-        if ($interests)
         {
             $interestSel = array();
             if (isset($_GET['interest']))
@@ -304,7 +339,6 @@ class events
         $openGrade = false;
 		if ($this->programId == 6)
 		{
-
         	// Wild Seasons fields start here
         	// ------------------------------
 
@@ -363,11 +397,27 @@ class events
         if (!($openPrice))
             $content .= "document.getElementById('price-detail').style.display='none';";
 
-		// Wild Seasons
+		// Wild Seasons (program lock in iframe)
 		if ($this->programId == 6)
 		{
         	if (!($openGrade))
             	$content .= "document.getElementById('grade-detail').style.display='none';";
+		}
+		// These next 2 'if's cater for both the iframe lock ($this->programId) or dg link non-lock ($_GET['program'])
+		// They serve to hide/show the main map
+
+		// WS Wild Seasons or no program (program lock in iframe)
+		if (($this->programId != 6) && ($this->programId != 0))
+		{
+			$content .= "document.getElementById('googlemap3').setAttribute('style','height:0px');";
+			$content .= "document.getElementById('googlemap3').style.height='0px';";
+		}
+
+		// WS Wild Seasons from dg link (non lock in iframe)
+		if ((isset($_GET['program'])) && (($_GET['program'] != 6) && ($_GET['program'] != 0)))
+		{
+			$content .= "document.getElementById('googlemap3').setAttribute('style','height:0px');";
+			$content .= "document.getElementById('googlemap3').style.height='0px';";
 		}
 
         $content .= "</script>";
@@ -414,6 +464,7 @@ END_OF_API_HTML;
     textSearch = '';
     grade = '';
     abtype = '';
+	resetting = 0;
 
     function makeSel()
     {
@@ -421,7 +472,14 @@ END_OF_API_HTML;
         sel = '?layout=index';
 
 		// Program lock?
-		sel += '&programid=' + programId;
+		if (typeof programId == 'undefined')
+			sel += '&programid=' + '6';			// wild seasons
+		else
+			 sel += '&programid=' + programId;
+	
+		sel += '&map=' + mapyesorno;
+		//sel += '&headercolor=' + headercolor;
+		//sel += '&member=' + member;
 
         // Date
         sel += '&sdate=' + selSDate;
@@ -435,7 +493,7 @@ END_OF_API_HTML;
             var str = '';
            for (var i = 0; i < av.length; i++)
            {
-               if (av[i].checked)
+               if ((av[i].checked) && (resetting == 0))
                 {
                     if (str != '') str += '|';
                     str += av[i].value;
@@ -451,7 +509,7 @@ END_OF_API_HTML;
             var str = '';
            for (var i = 0; i < av.length; i++)
            {
-               if (av[i].checked)
+               if ((av[i].checked) && (resetting == 0))
                 {
                     if (str != '') str += '|';
                     str += av[i].value;
@@ -467,7 +525,7 @@ END_OF_API_HTML;
             var str = '';
            for (var i = 0; i < av.length; i++)
            {
-               if (av[i].checked)
+               if ((av[i].checked) && (resetting == 0))
                 {
                     if (str != '') str += '|';
                     str += av[i].value;
@@ -483,7 +541,7 @@ END_OF_API_HTML;
             var str = '';
            for (var i = 0; i < av.length; i++)
            {
-               if (av[i].checked)
+               if ((av[i].checked) && (resetting == 0))
                 {
                     if (str != '') str += '|';
                     str += av[i].value;
@@ -499,7 +557,7 @@ END_OF_API_HTML;
             var str = '';
            for (var i = 0; i < av.length; i++)
            {
-               if (av[i].checked)
+               if ((av[i].checked) && (resetting == 0))
                 {
                     if (str != '') str += '|';
                     str += av[i].value;
@@ -515,7 +573,7 @@ END_OF_API_HTML;
             var str = '';
            for (var i = 0; i < av.length; i++)
            {
-               if (av[i].checked)
+               if ((av[i].checked) && (resetting == 0))
                 {
                     if (str != '') str += '|';
                     str += av[i].value;
@@ -531,7 +589,7 @@ END_OF_API_HTML;
             var str = '';
            for (var i = 0; i < av.length; i++)
            {
-               if (av[i].checked)
+               if ((av[i].checked) && (resetting == 0))
                 {
                     if (str != '') str += '|';
                     str += av[i].value;
@@ -542,6 +600,7 @@ END_OF_API_HTML;
 
         // Activate the link
 //alert(sel);
+	
         window.location.href = sel;
     }
 
@@ -554,6 +613,7 @@ END_OF_API_HTML;
     function resetEvents()
     {
         document.getElementById('textsearchbox').value = "";
+		resetting = 1;
         makeSel();
     }
 

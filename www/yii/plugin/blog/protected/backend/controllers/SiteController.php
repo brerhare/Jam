@@ -27,6 +27,12 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
+        // Store the referer (hosting site) in a session cookie
+        $referer = "unknown http_referer";
+        if (isset($_SERVER['HTTP_REFERER']))
+            $referer = $_SERVER['HTTP_REFERER'];
+        Yii::app()->session['http_referer'] = str_replace("/backend.php", "", $referer);
+
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
 		$this->render('index');
@@ -84,6 +90,20 @@ class SiteController extends Controller
     {
         Yii::app()->session['uid'] = 70;
         $identity = new UserIdentity('bryce@brycewalkervending.com', 'bubbles!');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR 1STAID4U ---------- REMOVE
+    public function action1staid4uDirect()
+    {
+        Yii::app()->session['uid'] = 71;
+        $identity = new UserIdentity('contact@1staid4u.co.uk', 'connor1611');
         $identity->authenticate();
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);

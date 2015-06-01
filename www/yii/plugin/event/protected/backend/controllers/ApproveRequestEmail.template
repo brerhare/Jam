@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="viewport" content="width=device-width" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!-- https://github.com/leemunroe/html-email-template -->
+<title>Really Simple HTML Email Template</title>
+<link rel='stylesheet' type='text/css' href='http://plugin.wireflydesign.com/css/emailResponsive.css'>
+</head>
+
+<body bgcolor="#f6f6f6">
+
+<!-- body -->
+<table class="body-wrap">
+	<tr>
+		<td></td>
+		<td class="container" bgcolor="#FFFFFF">
+
+			<!-- content -->
+			<div class="content">
+			<table>
+				<tr>
+					<td>
+						<p>Hi there,</p>
+						<p>You are receiving this because you are admin at <program-name>.<br/>
+						<member-first-name> <member-last-name> <member-email> requests that you approve event id <event-id> for public viewing.</p>
+
+						<h4><event-title></h4>
+
+						<p>Here are your options.</p>
+						<table>
+							<tr>
+								<td class="padding">
+									<p><a href="http://plugin.wireflydesign.com/event/backend.php/event/<make-approve>" class="btn-primary">Approve this one event</a></p>
+									<p><a href="http://plugin.wireflydesign.com/event/backend.php/event/<make-trusted>" class="btn-primary">Approve and grant this member trusted status</a></p>
+								</td>
+							</tr>
+						</table>
+						<hr/>
+						<br/>
+						<p><i> This event runs from <event-start> to <event-end></i><p>
+						<p><event-venue></p>
+						<p><event-postcode></p>
+						<p><event-web></p>
+						<p><event-contact></p>
+						<p><event-description></p>
+					</td>
+				</tr>
+			</table>
+			</div>
+			<!-- /content -->
+			
+		</td>
+		<td></td>
+	</tr>
+</table>
+<!-- /body -->
+
+<!-- footer -->
+<table class="footer-wrap">
+	<tr>
+		<td></td>
+		<td class="container">
+			
+			<!-- content -->
+			<div class="content">
+				<table>
+					<tr>
+						<td align="center">
+							<p>Service provided by <a href="http://www.dglink.co.uk">DG Link</a></p>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<!-- /content -->
+			
+		</td>
+		<td></td>
+	</tr>
+</table>
+<!-- /footer -->
+
+</body>
+</html>

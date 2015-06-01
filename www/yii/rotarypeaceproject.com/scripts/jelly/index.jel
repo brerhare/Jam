@@ -1,0 +1,410 @@
+#Peace Project
+[defaults]
+include = default-values
+
+# Every blob inherits these before adding/overriding
+# Site Colours: Main - Orange #ffd800, Secondary - Light Blue #cddff2
+
+[* : defaults]
+
+[screen]
+child = site
+#fx.wallpaper-image-tile = /img/background.jpg
+css.display = block
+css.background-color = white
+
+	[site]
+	child = header, slider_area_home, slider_area, pages, footer
+	css.width = 100%
+
+####  Header  #################################
+
+	[header]
+	child = header_left, header_right, header_fb
+	stacking = horizontal
+	css.height = 250px
+	css.width = 1000px
+	css.position = relative
+	css.z-index = 1000
+	css.overflow = visible
+	
+		[header_left]
+		child = logo, menu
+		css.width = 50%
+		css.overflow = visible
+
+			[logo]
+			css.margin-left = 50px
+			css.margin-top = 25px
+			css.height = 150px
+			css.width = 360px
+			image.url = img/logo.png
+			image.width = 352px
+			image.height = 147px
+			click = http://www.rotarypeaceproject.com
+
+			[menu]
+			#css.height = 65px
+			#css.width = 250px
+			css.overflow = visible
+			css.z-index = 2000
+			css.position = relative
+
+			addon.menu.basic.orientation = horizontal
+			addon.menu.basic.height = 40px
+
+			addon.menu.basic.menu-rounding = 20px
+			addon.menu.basic.menu-color = #ffd800
+			addon.menu.basic.item-separator-width = 0px
+			addon.menu.basic.item-separator-color = white
+			addon.menu.basic.edgepadding = 30px
+			addon.menu.basic.font-size = 14px
+			addon.menu.basic.menu-text-color = black
+			addon.menu.basic.menu-text-weight = bold
+
+			addon.menu.basic.item-color = #ffed8e #ffd800
+				#addon.menu.basic.item-text-color = green
+
+			addon.menu.basic.submenu-color = #ffed8e 
+	
+			addon.menu.basic.subitem-color = #ffed8e #ffd800
+				#addon.menu.basic.subitem-text-color = purple
+			addon.menu.basic.subitem-seperator-color = white 
+			
+		[header_fb]
+		css.margin-top = 20px
+		css.margin-left = -63px
+		css.height = 70px
+		css.width = 63px
+		image.url = img/facebook.png
+		image.width = 63px
+		image.height = 50px
+		click = ?layout=index&page=rotary-peace-project-facebook
+				
+		[header_right]
+		child = signup_container, quote
+		css.width = 50%
+				
+			[signup_container]
+			child = signup
+			css.height = 50px
+			css.width = 400px
+			css.margin-top = 20px
+			fx.rounding = 25px
+			css.background-color = #cddff2
+			css.margin-left = 10px
+			
+				[signup]
+				css.margin-left = 20px
+				css.margin-top = 15px
+				addon.mailer.signup.orientation = horizontal
+				addon.mailer.signup.buttoncolor = #cddff2
+				addon.mailer.signup.buttontextcolor = #0c4782
+				addon.mailer.signup.buttontext = Sign Up
+				addon.mailer.signup.inputspacing = 5px
+				addon.mailer.signup.successtextcolor = green
+				addon.mailer.signup.failuretextcolor = red
+		
+			[quote]
+			css.margin-top = 75px
+			#css.margin-right = 0px
+			css.height = 100px
+			css.width = 430px
+			image.url = img/quote.png
+			image.width = 422px
+			image.height = 95px
+			click = http://www.rotarypeaceproject.com
+		
+		
+#### Slider ###########################################
+
+	[slider_area_home]
+	child = slider_line, slider, slider_man
+	condition = @PAGE=@HOMEPAGE
+	css.width = 100%
+	css.height = 340px
+	css.position = relative
+	css.z-index = 900
+	css.margin-top = -55px
+
+		
+		[slider_line]
+		css.height = 5px
+		css.width = 100%
+		css.background-color = #ffd800
+	
+		[slider]
+		css.width = 100%
+		css.height = 300px
+		css.background-color = #a5cae0
+		addon.slider.parallax.width = 100%
+		addon.slider.parallax.height = 400px
+		addon.slider.parallax.background-image = /img/slider-background.jpg
+		addon.slider.parallax.content-width = 80%
+		addon.slider.parallax.content-left = 10%
+		addon.slider.parallax.title-text-color = black
+		addon.slider.parallax.title-font-size = 36px
+		addon.slider.parallax.title-margin-top = 20px
+		addon.slider.parallax.title-shadow = 2px 2px 2px
+		addon.slider.parallax.title-shadow-opacity = 0.4
+		addon.slider.parallax.title-font = 'Baumans', Verdana, sans-serif
+		addon.slider.parallax.title-weight = 600
+		addon.slider.parallax.title-style = italic
+		addon.slider.parallax.blurb-margin-top = 105px
+		addon.slider.parallax.blurb-color = grey
+		addon.slider.parallax.blurb-size = 18px
+		addon.slider.parallax.blurb-line-height = 24px
+		addon.slider.parallax.blurb-height = 92px
+		#addon.slider.parallax.blurb-style = italic
+		addon.slider.parallax.blurb-font = 'Open Sans', Verdana, sans-serif
+		addon.slider.parallax.blurb-weight = 300
+		addon.slider.parallax.image-margin-top = 60px
+		addon.slider.parallax.imagewidth = 252
+		addon.slider.parallax.imageheight = 180
+		addon.slider.parallax.link-margin-top = 220px
+		addon.slider.parallax.link-image = /img/read-more-hover.png
+		addon.slider.parallax.link-hover = /img/slider-read-more.png
+		addon.slider.parallax.dot-top = 260px
+		addon.slider.parallax.dot-alignment = left
+		addon.slider.parallax.dot-margin-left = 45%
+		addon.slider.parallax.dot-color = #ffd800
+		addon.slider.parallax.nav-prev = /img/slider-left.png
+		addon.slider.parallax.nav-prev-hover = /img/slider-left-hover.png
+		addon.slider.parallax.nav-next = /img/slider-right.png
+		addon.slider.parallax.nav-next-hover = /img/slider-right-hover.png
+		addon.slider.parallax.nav-margin = 50px
+	
+		addon.slider.parallax.interval = 5
+		addon.slider.parallax.source = db
+
+		[slider_man]
+		css.width = 60px
+		css.height = 60px
+		css.margin-left = 80%
+		css.margin-top = -25px
+		css.position = relative
+		css.z-index = 2000
+		image.url = img/man-centred.png
+		image.width = 59px
+		image.height = 55px
+	
+	[slider_area]
+	child = slider_line_2
+	condition = @PAGE!=@HOMEPAGE
+	css.width = 100%
+	css.height = 40px
+	css.position = relative
+	css.z-index = 900
+	css.margin-top = -55px
+		
+	[slider_line_2]
+	css.height = 5px
+	css.width = 100%
+	css.background-color = #ffd800
+
+
+######## body #######################################
+			
+
+	[pages]
+	child = tabs, content-home, content, contact, blog, facebookfeed	
+	css.width = 960px
+	css.margin-top = 20px
+	css.background-color = white
+	fx.rounding = 4px
+	
+		[tabs]
+		condition = @PAGE=@HOMEPAGE
+		css.display = block
+		css.margin-top = 5px
+		css.width = 700px
+		#css.height = 250px
+		addon.tab.rain.source = db
+		addon.tab.rain.tab-color = #ffed8e
+
+
+		[content-home]
+		condition = @PAGE=@HOMEPAGE
+		css.margin-top = -10px
+		css.margin = 30px
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
+		
+		[content]
+		condition = @PAGE!=@HOMEPAGE
+		css.position = relative
+		css.z-index = 100
+		css.margin-top = 30px
+		css.margin = 30px
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
+		
+		[contact]
+		child = contact-form, contact-text
+		condition = @PAGE=contact
+		css.height = 340px
+		stacking = horizontal
+		
+			[contact-form]
+			condition = @PAGE=contact
+			css.width = 400px
+			css.margin = 30px
+			#css.margin-bottom = 30px
+			css.background-color = white
+			addon.contact.contactform.edgepadding = 30px
+			addon.contact.contactform.buttoncolor = #cddff2
+			addon.contact.contactform.buttontextcolor = black
+			addon.contact.contactform.buttontext = Submit
+			addon.contact.contactform.successtextcolor = green
+			addon.contact.contactform.failuretextcolor = red
+			addon.contact.contactform.textcolor = blue
+			addon.contact.contactform.backcolor = pink
+			addon.contact.contactform.inputspacing = 10px
+
+			[contact-text]
+			condition = @PAGE=contact
+			css.width = 300px
+			css.margin-top = 80px
+			css.font = 12px
+			html.raw = Please fill in the form and someone from the Rotary Peace Project will get back to you as soon as possible.
+			
+		[blog]
+		condition = @PAGE=rotary-peace-project-latest-articles
+		html.raw = {{news traditional}}
+		
+		[facebookfeed]
+		condition = @PAGE=rotary-peace-project-facebook
+		css.margin-left = 100px
+		css.height = 600px
+		html.raw = <iframe src="//www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Ftherotarypeaceproject&amp;width=200&amp;height=200&amp;layout=standard&amp;action=like&amp;show_faces=true&amp;share=true&amp;height=80&amp;appId=259885860792535" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:250px; height:80px;" allowTransparency="true"></iframe>
+		html.raw = </br></br><iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Ftherotarypeaceproject&amp;width=700&amp;height=425&amp;colorscheme=light&amp;show_faces=false&amp;header=true&amp;stream=true&amp;show_border=true&amp;appId=259885860792535" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:700px; height:427px;" allowTransparency="true"></iframe>
+		#html.raw = <br/><br/>
+		#html.raw = <br><br>
+		#html.raw = </br></br>
+		#html.raw = <p></p>	
+			
+
+####footer####################################
+
+[footer]
+child = footer-menu, footer-line, footnote
+#css.height = 180px
+css.width = 100%
+
+	[footer-menu]
+	child = footer-image-left, footer-menu-center, footer-image-right
+	css.height = 50px
+	css.width = 960px
+	#css.margin-top = 0px
+	fx.rounding = 25px
+	css.background-color = #ffd800
+	css.position = relative
+	css.z-index = 950
+	stacking = horizontal
+	
+		[footer-image-left]
+		css.width = 70px
+		css.height = 40px
+		css.margin-top = 6px
+		css.margin-left = 25px
+		css.position = relative
+		css.z-index = 2000
+		image.url = img/man-left.png
+		image.width = 35px
+		image.height = 38px
+		
+		[footer-menu-center]
+		child = footer-menu-margin, footer-menu-content
+		css.width = 800px
+	
+			[footer-menu-margin]
+			css.height = 17px
+			css.width = 100%
+		
+			[footer-menu-content]
+			child = contact-page, facebook
+			css.width = 100%
+			css.position = relative
+			css.z-index = 960
+			stacking = horizontal
+		
+				[contact-page]
+				html.raw = Contact Us
+				css.text-align = left
+				css.width = 20%
+				css.color = #000000
+				css.font-size = 14px
+				click = ?layout=index&page=contact
+				
+				[facebook]
+				html.raw = Facebook Feed
+				css.text-align = left
+				css.width = 20%
+				css.color = #000000
+				css.font-size = 14px
+				click = ?layout=index&page=rotary-peace-project-facebook
+				
+		[footer-image-right]
+		css.width = 40px
+		css.height = 40px
+		css.margin-top = 6px
+		css.position = relative
+		css.z-index = 2000
+		image.url = img/man-right.png
+		image.width = 35px
+		image.height = 38px
+		
+		
+	
+	[footer-line]
+	css.height = 5px
+	css.margin-top = -25px
+	css.width = 100%
+	css.background-color = #ffd800
+
+	[footnote]
+	child = cookies, tandc, copyright, wirefly
+	css.position = relative
+	css.z-index = 800
+	css.background-color = #000000
+	
+		[cookies]
+		html.raw = Cookie Policy
+		css.margin-top = 40px
+		css.width = 50%
+		css.color = #ffffff
+		css.font-size = 12px
+		css.text-align = left
+		click = ?layout=index&page=cookie-policy
+
+		[tandc]
+		html.raw = Terms & Conditions
+		css.width = 50%
+		css.margin-top = 5px
+		css.color = #ffffff
+		css.font-size = 12px
+		css.text-align = left
+		click = ?layout=index&page=terms-conditions
+
+		[copyright]
+		css.width = 50%
+		css.margin-top = 20px
+		html.raw = Rotary Peace Project &copy 2014 All rights reserved
+		css.color = #ffffff
+		css.font-size = 12px
+		css.text-align = left
+
+		[wirefly]
+		css.margin-top = -30px
+		css.height = 70px
+		css.width = 60%
+		image.url = img/wirefly-weblink.png
+		image.width = 150px
+		image.height = 42px
+		image.align = right
+		clicknew = http://www.wireflydesign.com
+

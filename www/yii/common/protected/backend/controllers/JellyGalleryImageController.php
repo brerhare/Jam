@@ -33,7 +33,7 @@ class JellyGalleryImageController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','session'),
+				'actions'=>array('create','multiCreate', 'multiCreateUpload', 'update','delete','admin','session'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -59,7 +59,7 @@ class JellyGalleryImageController extends Controller
 
 	/**
 	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
+	 * Single-create entrypoint
 	 */
 	public function actionCreate()
 	{
@@ -87,10 +87,65 @@ class JellyGalleryImageController extends Controller
 			}
 		}
 
-
 		$this->render('create',array(
 			'model'=>$model,
 		));
+	}
+
+	/**
+	 * Creates multiple new models.
+	 * Multi-create entrypoint
+	 */
+	public function actionMultiCreate()
+	{
+		if(isset($_POST['uploadifive']))
+			$this->redirect(array('admin'));
+		$this->render('multicreate');
+	}
+
+
+	/**
+	 * This is a NON-USER call
+	 * Upload for multi-create. NOTE that this is called asynchronously for EACH file uploaded
+	 */
+	public function actionMultiCreateUpload()
+	{
+		Yii::log("Upload - begin" , CLogger::LEVEL_WARNING, 'system.test.kim');
+		//$targetFolder = '/tmp'; // Relative to the root
+		if (!empty($_FILES))
+		{
+			Yii::log("Upload - var_dump of FILES : " . print_r($_FILES,true), CLogger::LEVEL_WARNING, 'system.test.kim');
+
+			//$tempFile = $_FILES['Filedata']['tmp_name'];
+			//$targetPath = $_SERVER['DOCUMENT_ROOT'] . $targetFolder;
+			//$targetFile = rtrim($targetPath,'/') . '/' . $_FILES['Filedata']['name'];
+
+			// Validate the file type
+			$fileTypes = array('jpg','jpeg','gif','png'); // File extensions
+			$filePartsAsArr =  pathinfo(implode("", $_FILES['Filedata']['name']));
+	
+			if (in_array(strtolower($filePartsAsArr['extension']),$fileTypes))
+			{
+				$model=new JellyGalleryImage;
+
+				// Hard-wire this image to the gallery stored in our session
+				$model->jelly_gallery_id = Yii::app()->session['gallery_id'];
+
+				//$model->image = $_FILES['Filedata']['name'];
+				$model->image = implode("", $_FILES['Filedata']['name']);
+				if($model->save(false))
+				{
+                	if (strlen($model->image) > 0)
+                	{
+                    	$fname = Yii::app()->basePath . $this->_imageDir . $model->image;
+			move_uploaded_file(implode("", $_FILES['Filedata']['tmp_name']) , $fname);
+                    	$this->makeThumb($fname);
+                	}
+				}
+			}
+			else
+				throw new CHttpException(400,'Invalid file type');
+		}
 	}
 
 	/**
@@ -152,7 +207,8 @@ class JellyGalleryImageController extends Controller
         	if (($oldfilename != '') && (file_exists(Yii::app()->basePath . $this->_imageDir . $oldfilename)))
         	{
             	unlink(Yii::app()->basePath . $this->_imageDir . $oldfilename);
-                unlink(Yii::app()->basePath . $this->_imageDir . 'thumb_' . $oldfilename);
+        	if (($oldfilename != '') && (file_exists(Yii::app()->basePath . $this->_imageDir . 'thumb_' . $oldfilename)))
+                	unlink(Yii::app()->basePath . $this->_imageDir . 'thumb_' . $oldfilename);
         	}
 
 			// we only allow deletion via POST request

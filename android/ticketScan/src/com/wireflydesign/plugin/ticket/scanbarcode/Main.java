@@ -125,7 +125,8 @@ public class Main extends Activity {
 	        tvStatus.setText(intent.getStringExtra("SCAN_RESULT_FORMAT"));
 	        tvResult.setText(intent.getStringExtra("SCAN_RESULT"));
 
-if ((ar.indexOf(intent.getStringExtra("SCAN_RESULT")) == -1) && (intent.getStringExtra("SCAN_RESULT").length() == 21))
+//if ((ar.indexOf(intent.getStringExtra("SCAN_RESULT")) == -1) && (intent.getStringExtra("SCAN_RESULT").length() == 21))
+if (ar.indexOf(intent.getStringExtra("SCAN_RESULT")) == -1)
 {
 	ar.add(intent.getStringExtra("SCAN_RESULT"));
 	tvResult.setText("Ticket OK");
@@ -150,7 +151,7 @@ if ((ar.indexOf(intent.getStringExtra("SCAN_RESULT")) == -1) && (intent.getStrin
          r.play();
     } catch (Exception e) {}
 }
-else if (intent.getStringExtra("SCAN_RESULT").length() != 21)
+else if (intent.getStringExtra("SCAN_RESULT").length() == 212121)
 {
 	tvResult.setText("Invalid ticket");
 	tvResult.setBackgroundColor(Color.RED);

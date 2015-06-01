@@ -37,6 +37,12 @@ return array(
 
 	// application components
 	'components'=>array(
+		// Set the lifetime for any session cookies
+		'session' => array(
+			'cookieParams' => array(
+				'lifetime' => 2592000,	// 30 days
+			),
+		),
 		'bootstrap'=>array(
 			'class' => 'ext.bootstrap.components.Bootstrap',
 			'responsiveCss' => true,
@@ -87,6 +93,9 @@ return array(
 				),
 				*/
 			),
+		),
+		'sess' => array(
+    		'class'=>'application.components.Sess',
 		),
 	),
 

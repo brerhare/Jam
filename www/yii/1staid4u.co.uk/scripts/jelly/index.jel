@@ -1,4 +1,4 @@
-#Demo 1 File - 1st Aid 4U
+#1st Aid 4U
 [defaults]
 include = default-values
 
@@ -6,7 +6,7 @@ include = default-values
 [* : defaults]
 
 [screen]
-child = site, site-content, footer
+child = site, site-content, bottom-margin
 fx.wallpaper-image-tile = /img/background-tile.jpg
 css.display = block
 
@@ -19,7 +19,7 @@ css.display = block
 		[menu-bar]
 		css.width = 1018px
 		css.height = 70px
-		css.margin-top = 125px
+		css.margin-top = 95px
 		image.url = img/menu-bar.png
 		image.width = 1018px
 		image.height = 69px
@@ -28,10 +28,10 @@ css.display = block
 
 
 	[site-content]
-	child = header, slider, pages
+	child = header, slider, pages, footer
 	css.display = block
 	css.width = 960px
-	css.margin-top = -210px
+	css.margin-top = -180px
 	css.background-color = white
 	fx.rounding = 15px
 
@@ -41,7 +41,7 @@ css.display = block
 		child = header-dt, menu
 		
 			[header-dt]
-			child = logo, header-dtl
+			child = logo, header-dtl, facebook, linked-in
 			stacking = horizontal
 
 				[logo]
@@ -52,45 +52,78 @@ css.display = block
 				css.z-index = 1000
 				css.position = relative
 				image.url = img/logo.jpg
-				image.width = 446px
-				image.height = 107px
+				image.width = 350px
+				image.height = 84px
 				click = http://www.1staid4u.co.uk
 
 				[header-dtl]
 				child = contact, blurb
 				css.height = 120px
-				css.width = 400px
+				css.width = 300px
 	
 					[contact]
+					child = contact-no
 					css.width = 300px
-					css.height = 60px
-					css.margin-left = 40px
-					image.url = img/contact.jpg
+					css.height = 50px
+					css.margin-left = 45px
+					image.url = img/contact-bkgd.png
 					image.width = 250px
 					image.height = 47px
 					click = http://www.1staid4u.co.uk/?layout=index&page=contact
-							
+					
+						[contact-no]
+						css.width = 100%
+						css.margin-top = -40px
+						css.margin-left = 40px
+						html.raw = +44 (0) 1387 209335 
+						css.color = #000000
+						css.font-size = 18px
+						css.font-weight = bold
+						css.font-stretch = extra-expanded
+						
 
 					[blurb]
 					css.width = 300px
 					css.height = 60px
-					css.margin-left = 40px
+					css.margin-left = 20px
 					image.url = img/blurb.jpg
 					image.width = 300px
 					image.height = 55px
+					
+				[facebook]
+				css.margin-top = 5px
+				css.margin-left = 15px
+				css.height = 50px
+				css.width = 40px
+				image.url = img/fb-mid.png
+				image.width = 34px
+				image.height = 34px
+				clicknew = https://www.facebook.com/pages/1staid4u/270525453131933?fref=ts
+				
+				[linked-in]
+				css.margin-top = 5px
+				css.height = 50px
+				css.width = 50px
+				image.url = img/linkedin-mid.png
+				image.width = 35px
+				image.height = 35px
+				clicknew = https://www.linkedin.com/pub/stuart-robb/38/b0/774
 
 
 		[menu]
 		css.height = 50px
-		css.margin-top = 20px
+		css.margin-top = -10px
 		css.margin-left = 70px
 		css.overflow = visible
 		css.z-index = 1000
 		css.position = absolute
+		addon.menu.basic.width = 780px
+		addon.menu.basic.height = 30px
 		addon.menu.basic.orientation = horizontal
 		addon.menu.basic.font-size = 14px
 		addon.menu.basic.menu-color = #ed2922
 		addon.menu.basic.menu-text-color = white
+		addon.menu.basic.item-separator-width = 1px
 		addon.menu.basic.item-separator-color = #ffffff
 
 	addon.menu.basic.submenu-color = lightgrey
@@ -107,7 +140,7 @@ css.display = block
 	[slider]
 	child = slider-bkg, slider-content
 	css.margin-left = 55px
-	css.margin-top = 75px
+	css.margin-top = 30px
 	css.width = 850px
 	
 
@@ -139,99 +172,123 @@ css.display = block
 			
 
 	[pages]
-	child = content, blog 	
+	child = content, contact-page, line, blog	
 	css.width = 900px
-	css.margin-top = 20px
+	css.margin-top = -20px
 	css.margin-left = 30px
 	css.background-color = white
 	fx.rounding = 4px
 	
 		
 		[content]
-		child = line
-		css.margin-top = 30px
+		css.margin-top = 25px
 		css.margin = 30px
 		db.table = ContentBlock
 		db.filter = url=$_GET['page']
 		db.error = Sorry, I could not find the page $_GET['page']
 		html.raw = ContentBlock.content
+		
+		[contact-page]
+		child = contact-form, contact-text
+		condition = @PAGE=contact
+		css.height = 300px
+		stacking = horizontal
+			
+			[contact-form]
+			css.width = 400px
+			css.margin-left = 30px
+			css.background-color = white
+			addon.contact.contactform.edgepadding = 10px
+			addon.contact.contactform.buttoncolor = #cddff2
+			addon.contact.contactform.buttontextcolor = black
+			addon.contact.contactform.buttontext = Submit
+			addon.contact.contactform.successtextcolor = green
+			addon.contact.contactform.failuretextcolor = red
+			addon.contact.contactform.textcolor = blue
+			addon.contact.contactform.backcolor = #13eb7f
+			addon.contact.contactform.inputspacing = 10px
 
-			[line]
+			[contact-text]
+			css.width = 300px
+			css.margin-top = 80px
+			css.font = 12px
+			html.raw = Please fill in the form and someone will get back to you as soon as possible.
+
+		[line]
+		css.margin-top = 40px
+		css.margin-left = 110px
+		css.width = 640px
+		css.height = 1px
+		css.background-color = #b7b7b7
+		
+		[blog]
+		child = blog-line
+		condition = @PAGE=@HOMEPAGE
+		html.raw = {{news newstype=traditional}}
+		
+			[blog-line]
 			css.margin-top = 40px
-			css.margin-left = 80px
+			css.margin-left = 110px
 			css.width = 640px
 			css.height = 1px
-			css.background-color = #b7b7b7
-
-		[blog]
-		condition = @PAGE=@HOMEPAGE
-		html.raw = {{news left}}
+			css.background-color = #b7b7b7		
 
 
 ####footer####################################
 
 [footer]
 child = footer-menu, footnote
-css.margin-top = 20px
-css.height = 180px
+stacking = horizontal
+css.height = 90px
 css.width = 960px
 
-		[footer-menu]
-		stacking = horizontal
-		child = footer-margin, footer-cookies, footer-tandc, footer-contact
-		css.height = 50px
-		css.width = 960px
 
-			[footer-margin]
-			css.width = 20%
-			css.height = 50px
+		[footer-menu]
+		child = footer-cookies, footer-tandc, footer-contact
+		css.height = 800px
+		css.width = 300px
+		css.font-weight = bold
+		css.font-size = 12px
+		css.margin-left = 20%
+		css.margin-top = 25px
 
 			[footer-cookies]
 			html.raw = Cookie Policy
-			css.width = 20%
 			css.color = #000000
-			css.font-size = 12px
-			css.text-align = right
 			click = ?layout=index&page=cookie-policy
 
 			[footer-tandc]
 			html.raw = Terms & Conditions
-			css.width = 20%
 			css.color = #000000
-			css.font-size = 12px
-			css.text-align = center
+			css.margin-top = 5px
 			click = ?layout=index&page=terms-conditions
 
 			[footer-contact]
 			html.raw = Contact Us
-			css.text-align = left
-			css.width = 20%
 			css.color = #000000
-			css.font-size = 12px
+			css.margin-top = 5px
 			click = ?layout=index&page=contact
 
 
 	[footnote]
-	child = copyright, wirefly
-	css.width = 960px
-	css.height = 70px
-	css.text-align = center
-	#stacking = horizontal
+	child = wirefly, copyright
+	css.width = 300px
+	css.height = 80px
+	#css.margin-top = -20px
 
+		[wirefly]
+		css.height = 60px
+		image.url = img/wirefly-weblink.png
+		image.width = 200px
+		image.height = 53px
+		clicknew = http://www.wireflydesign.com
+		
+		
 		[copyright]
-		#css.width = 960px
-		css.margin-top = 10px
 		html.raw = 1st Aid 4U &copy 2014 All rights reserved
 		css.color = #000000
 		css.font-size = 11px
-		#css.text-align = left
-
-		[wirefly]
-		css.margin-top = 10px
-		css.height = 50px
-		#css.width = 50%
-		image.url = img/wirefly-weblink.png
-		image.width = 150px
-		image.height = 40px
-		image.align = center
-		clicknew = http://www.wireflydesign.com
+		
+[bottom-margin]
+css.height = 20px
+css.width = 100%

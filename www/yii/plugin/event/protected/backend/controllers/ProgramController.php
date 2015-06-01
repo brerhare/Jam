@@ -34,7 +34,7 @@ class ProgramController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','privilege','admin','delete','export'),
+				'actions'=>array('create','update','privilege','approve','approveShow','approveShowApproved', 'approveToggle', 'admin','delete','export'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -100,7 +100,7 @@ class ProgramController extends Controller
 				$memberHasProgram->event_member_id = Yii::app()->session['eid'];
 				$memberHasProgram->event_program_id = $model->id;
 // @@TODO: These privilege levels should be constants from the MemberHasProgram model
-				$memberHasProgram->privilege_level = 4;
+				$memberHasProgram->privilege_level = 2;
 				$memberHasProgram->save();
 
 				$this->redirect(array('admin'));
@@ -218,6 +218,66 @@ class ProgramController extends Controller
 		$this->render('privilege',array(
 			'model'=>$model,
 		));
+	}
+
+	/**
+	 * Approve events - unapproved events
+	 */
+	public function actionApprove($id)
+	{
+		return $this->actionApproveShow($id, 0);
+	}
+
+	/**
+	 * Approve events - approved events
+	 */
+	public function actionApproveShowApproved($id)
+	{
+		return $this->actionApproveShow($id, 1);
+	}
+
+	/**
+	 * Approve events - show 
+	 */
+	public function actionApproveShow($id, $show)
+	{
+		$model=new Event('search');
+		$model->unsetAttributes();  // clear any default values
+		if(isset($_GET['Event']))
+			$model->attributes=$_GET['Event'];
+
+		Yii::app()->session['showProgram'] = $id;
+		Yii::app()->session['showtype'] = $show;
+
+		$this->render('adminApprove',array(
+			'model'=>$model,
+			'pid'=>$id,
+			'showType'=>$show,
+		));
+	}
+
+	/**
+	 * Approve events - toggle approved 
+	 */
+	public function actionApproveToggle($id)	// Note this $id is the event, not the program
+	{
+		$programId = Yii::app()->session['showProgram'];
+		$show = Yii::app()->session['showtype'];
+
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("program_id = " . $programId);
+		$criteria->addCondition("event_event_id = " . $id);
+		$eventHasProgram = EventHasProgram::model()->find($criteria);
+		if ($eventHasProgram)
+		{
+			if ($eventHasProgram->approved == 1)
+				$eventHasProgram->approved = 0;
+			else
+				$eventHasProgram->approved = 1;
+			$eventHasProgram->save();
+		}
+
+		return $this->actionApproveShow($programId, $show);
 	}
 
 	/**

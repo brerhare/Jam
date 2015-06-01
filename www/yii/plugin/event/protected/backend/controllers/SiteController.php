@@ -21,7 +21,29 @@ class SiteController extends Controller
 		);
 	}
 
-// @@TODO: HARDCODED FOR AbSOLUTE CLASSICS ---------- REMOVE
+// @@TODO: HARDCODED FOR TEST ---------- REMOVE
+    public function actionTestdirect()
+    {
+        Yii::app()->session['uid'] = 55;
+        $identity = new UserIdentity('test', 'test');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+// @@TODO: HARDCODED FOR DEMO ---------- REMOVE
+    public function actionDemodirect()
+    {
+        Yii::app()->session['uid'] = 4;
+        $identity = new UserIdentity('demo', 'demo');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+// @@TODO: HARDCODED FOR ABSOLUTE CLASSICS ---------- REMOVE
     public function actionAbsoluteClassicsdirect()
     {
         Yii::app()->session['uid'] = 7;
@@ -40,6 +62,13 @@ class SiteController extends Controller
 	{
 		if (Yii::app()->user->isGuest)
 			$this->redirect(array('site/login'));
+
+        // Store the referer (hosting site) in a session cookie
+        $referer = "unknown http_referer";
+        if (isset($_SERVER['HTTP_REFERER']))
+            $referer = $_SERVER['HTTP_REFERER'];
+        Yii::app()->session['http_referer'] = str_replace("/backend.php", "", $referer);
+
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
 		$this->render('index');
@@ -110,7 +139,7 @@ class SiteController extends Controller
 				unset(Yii::app()->session['isAnyAdmin']);
 				$criteria = new CDbCriteria;
 				$criteria->addCondition("event_member_id = " . Yii::app()->session['eid']);
-				$criteria->addCondition("privilege_level = 4");	//@@TODO Privilege hardcoded
+				$criteria->addCondition("privilege_level = 2");	//@@TODO Privilege hardcoded
 				$memberHasProgram = MemberHasProgram::model()->findAll($criteria);
 				if ($memberHasProgram)
 					Yii::app()->session['isAnyAdmin'] = 1;

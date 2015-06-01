@@ -10,6 +10,7 @@
  * @property string $title
  * @property string $image
  * @property string $url
+ * @property string $text
  */
 class JellySliderImage extends CActiveRecord
 {
@@ -57,10 +58,10 @@ class JellySliderImage extends CActiveRecord
             array('image', 'unsafe'),
             array('image', 'length', 'max'=>255),
 
-			array('url', 'safe'),
+			array('url, text', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, slider, sequence, title, image, url', 'safe', 'on'=>'search'),
+			array('id, slider, sequence, title, image, url, text', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -87,6 +88,7 @@ class JellySliderImage extends CActiveRecord
 			'title' => 'Title',
 			'image' => 'Image',
 			'url' => 'Target URL',
+			'text' => 'Text',
 		);
 	}
 
@@ -107,6 +109,7 @@ class JellySliderImage extends CActiveRecord
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('image',$this->image,true);
 		$criteria->compare('url',$this->url,true);
+		$criteria->compare('text',$this->text,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

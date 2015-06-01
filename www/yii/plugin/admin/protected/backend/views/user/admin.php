@@ -3,6 +3,20 @@
 $this->menu=array(
 	array('label'=>'Create User','url'=>array('create')),
 );
+
+Yii::app()->clientScript->registerScript('search', "
+$('.search-button').click(function(){
+    $('.search-form').toggle();
+    return false;
+});
+$('.search-form form').submit(function(){
+    $('#event-grid').yiiGridView('update', {
+        data: $(this).serialize()
+    });
+    return false;
+});
+");
+
 ?>
 
 <h1>Manage Users</h1>
@@ -76,6 +90,7 @@ $gridColumns=array(
 $this->widget('bootstrap.widgets.TbExtendedGridView', array(
 	'type'=>'bordered',
 	'dataProvider'=>$model->search(),
+    'filter'=>$model,
 	'template'=>"{items}{pager}",
 	'columns'=>$gridColumns,
 ));

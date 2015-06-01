@@ -36,6 +36,14 @@ class VendorReportCommand extends CConsoleCommand
 		// All vendors
 		foreach ($vendors as $vendor)
 		{
+
+
+//KIM
+//if ($vendor->email != 'alex@electricfieldsfestival.com')
+// continue;
+
+
+
 			if (file_exists('/tmp/ticketVendorSales.csv'))
 				unlink('/tmp/ticketVendorSales.csv');
 			$fp2 = fopen('/tmp/ticketVendorSales.csv', 'w');
@@ -50,7 +58,17 @@ class VendorReportCommand extends CConsoleCommand
 			foreach ($events as $event)	// All active events
 			{
 				if (!($event->active))
-					continue;
+				{
+					// Even if this event is inactive, if there are recent transactions we still send the report
+					$criteria = new CDbCriteria;
+					$criteria->addCondition("vendor_id = " . $vendor->id);
+					$criteria->addCondition("event_id = " . $event->id);
+					$criteria->addCondition("timestamp >= '" . $fromdate->format('Y-m-d') . " 00:00:00'");
+					$criteria->addCondition("timestamp <= '" . $todate->format('Y-m-d') . " 99:99:99'");
+					$transactions = Transaction::model()->findAll($criteria);
+					if (!($transactions))
+						continue;
+				}
 				$umsg .= "<i>" . $cr . $event->title . " : " . $event->date . "</i>" . $cr;
 				$hasActiveEvent = true;
 				$eQty = 0;
@@ -77,6 +95,7 @@ class VendorReportCommand extends CConsoleCommand
 						$criteria->addCondition("timestamp >= '" . $fromdate->format('Y-m-d') . " 00:00:00'");
 						$criteria->addCondition("timestamp <= '" . $todate->format('Y-m-d') . " 99:99:99'");
 //echo $cr . $fromdate->format('Y-m-d') . " 00:00:00" . " ..... " . $todate->format('Y-m-d') . " 99:99:99" . $cr;
+//$criteria->order = "timestamp, auth_code";
 						$transactions = Transaction::model()->findAll($criteria);
 						foreach ($transactions as $transaction)	// All event transactions for the period
 						{
@@ -164,8 +183,19 @@ class VendorReportCommand extends CConsoleCommand
 					$message = $ghtmlstart . $umsg . $ghtmlend; 
 					// phpmailer
 					$mail = new PHPMailer();
+
+
+//KIM
+//if ($to == 'alex@electricfieldsfestival.com')
+//{
+//$to = 'kim@wireflydesign.com';
+//$subject = 'Alexs report';
+//}
+
+
+
 					$mail->AddAddress($to);
-//$mail->AddBCC("kim@wireflydesign.com");
+//$mail->AddBCC("info@wireflydesign.com");
 					$mail->SetFrom($from, $fromName);
 					$mail->AddReplyTo($from, $fromName);
 					$mail->AddAttachment($att_filename);
@@ -191,7 +221,7 @@ class VendorReportCommand extends CConsoleCommand
 		$gcontent = $ghtmlstart . $gsummary . $gmsg . $ghtmlend;
 
 		// Send summary email to jo
-		$to = "jo@wireflydesign.com";
+		$to = "info@wireflydesign.com";
 		$att_filename = "/tmp/ticketSales.csv";
 		if (strlen($to) > 0)
 		{
@@ -202,7 +232,6 @@ class VendorReportCommand extends CConsoleCommand
 			// phpmailer
 			$mail = new PHPMailer();
 			$mail->AddAddress($to);
-$mail->AddBCC("kim@wireflydesign.com");
 			$mail->SetFrom($from, $fromName);
 			$mail->AddReplyTo($from, $fromName);
 			$mail->AddAttachment($att_filename);
@@ -213,8 +242,7 @@ $mail->AddBCC("kim@wireflydesign.com");
 			else
 				Yii::log("WEEKLY SUMMARY SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		}
-		/////echo $gmsg;
 	}
-
 }
 ?>
+

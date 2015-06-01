@@ -1,0 +1,15 @@
+{
+  "name": "newbuild",
+  "version": "0.0.1",
+  "authors": [
+    "Kim <kim@wireflydesign.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

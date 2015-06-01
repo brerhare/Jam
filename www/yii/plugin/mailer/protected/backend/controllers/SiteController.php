@@ -27,6 +27,12 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
+        // Store the referer (hosting site) in a session cookie
+        $referer = "unknown http_referer";
+        if (isset($_SERVER['HTTP_REFERER']))
+            $referer = $_SERVER['HTTP_REFERER'];
+        Yii::app()->session['http_referer'] = str_replace("/backend.php", "", $referer);
+
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
 		$this->render('index');
@@ -71,6 +77,168 @@ class SiteController extends Controller
 		}
 		$this->render('contact',array('model'=>$model));
 	}
+
+// @@TODO: HARDCODED FOR DEMO1 ---------- REMOVE
+    public function actiondemo1Direct()
+    {
+        Yii::app()->session['uid'] = 64;
+        $identity = new UserIdentity('demo1', 'demo1');
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+// @@TODO: HARDCODED FOR DEMO2 ---------- REMOVE
+    public function actiondemo2Direct()
+    {
+        Yii::app()->session['uid'] = 65;
+        $identity = new UserIdentity('demo2', 'demo2');
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+// @@TODO: HARDCODED FOR DEMO3 ---------- REMOVE
+    public function actiondemo3Direct()
+    {
+        Yii::app()->session['uid'] = 66;
+        $identity = new UserIdentity('demo3', 'demo3');
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+// @@TODO: HARDCODED FOR DEMO4 ---------- REMOVE
+    public function actiondemo4Direct()
+    {
+        Yii::app()->session['uid'] = 67;
+        $identity = new UserIdentity('demo4', 'demo4');
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+// @@TODO: HARDCODED FOR DEMO5 ---------- REMOVE
+    public function actiondemo5Direct()
+    {
+        Yii::app()->session['uid'] = 68;
+        $identity = new UserIdentity('demo5', 'demo5');
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+// @@TODO: HARDCODED FOR DEMO ---------- REMOVE
+    public function actiondemoDirect()
+    {
+        Yii::app()->session['uid'] = 4;
+        $identity = new UserIdentity('demo', 'demo');
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+// @@TODO: HARDCODED FOR OUTLOOK SOLUTIONS ---------- REMOVE
+    public function actionOutlookDirect()
+    {
+        Yii::app()->session['uid'] = 87;
+        $identity = new UserIdentity('martin@outlooksolutions.com.au', '83bs9hrdb');
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+// @@TODO: HARDCODED FOR ELEGANT ORIGINALS ---------- REMOVE
+    public function actionElegantDirect()
+    {
+        Yii::app()->session['uid'] = 59;
+        $identity = new UserIdentity('caroline@elegantoriginals.co.uk', 'gothchick');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR BLOODBIKES ---------- REMOVE
+    public function actionBloodbikesDirect()
+    {
+        Yii::app()->session['uid'] = 77;
+        $identity = new UserIdentity('chairman@dgbloodbikes.org.uk', '13100dbik35');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+// @@TODO: HARDCODED FOR AbSOLUTE CLASSICS ---------- REMOVE
+    public function actionAbsoluteClassicsdirect()
+    {       
+        Yii::app()->session['uid'] = 7;
+        $identity = new UserIdentity('mcquiston.concerts@gmail.com', 'greyfriars');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }   
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR DGLINK ---------- REMOVE
+    public function actionDglinkDirect()
+    {
+        Yii::app()->session['uid'] = 75;
+        $identity = new UserIdentity('admin@dglink.co.uk', 'communityV2');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR ROTARY PEACE PROJECT ---------- REMOVE
+    public function actionRotaryPeaceProjectDirect()
+    {
+        Yii::app()->session['uid'] = 56;
+        $identity = new UserIdentity('register@rotarypeaceproject.com', 'district1020');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR DGNEWS-SPORT ---------- REMOVE
+    public function actionDgnewsSportDirect()
+    {
+        Yii::app()->session['uid'] = 74;
+        $identity = new UserIdentity('info@dgnews-sport.co.uk', 'nicole500');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR MOSSHEAD PRESCHOOL ---------- REMOVE
+    public function actionMossheadPreschoolDirect()
+    {
+        Yii::app()->session['uid'] = 73;
+        $identity = new UserIdentity('chairperson@mossheadpreschool.co.uk', 'earlyyears');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
 
     /**
      * Displays the DIRECT login page

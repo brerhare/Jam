@@ -1,0 +1,3 @@
+# Product weekly report
+2 5 * * 1 cd /home/wireflydesign.com/domains/plugin.wireflydesign.com/dev/src/www/yii/plugin/product && php /home/wireflydesign.com/domains/plugin.wireflydesign.com/dev/src/www/yii/plugin/product/console.php VendorReport KronOS
+

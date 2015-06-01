@@ -8,7 +8,7 @@ $this->menu=array(
 <h2>Manage Gallery Albums</h2>
 
 <style>
-Ximg { height:50px;}
+.imgClass { height:50px;}
 </style>
 
 
@@ -17,7 +17,7 @@ Ximg { height:50px;}
 	'dataProvider'=>$model->search(),
 	//'filter'=>$model,
 	'columns'=>array(
-		//'id',
+		'id',
 
         array(
             'name'  => 'sequence',
@@ -37,7 +37,7 @@ Ximg { height:50px;}
             'type'=>'html',
 			'htmlOptions'=>array('width'=>'60px'),
             'header'=>'',
-            'value'=> 'CHtml::image("/userdata/jelly/gallery/" . $data->image, "image", array("height"=>"50"))',
+            'value'=> 'CHtml::image("/userdata/jelly/gallery/" . $data->image, "image", array("height"=>"50", "class"=>"imgClass"))',
         ),
 
 

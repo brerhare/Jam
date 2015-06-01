@@ -1,0 +1,76 @@
+#Wee Target
+[defaults]
+include = default-values
+[* : defaults]
+
+[screen]
+child = menu, content
+#fx.wallpaper-image = /img/background.jpg
+fx.wallpaper-color = #8dadca
+
+	[menu]
+	css.overflow = visible
+
+	addon.menu.basic.orientation = vertical
+	addon.menu.basic.height = 40px
+
+	addon.menu.basic.menu-font-family = "Times New Roman", Georgia, Serif
+	addon.menu.basic.menu-font-size = 30
+	addon.menu.basic.menu-text-color = yellow
+	addon.menu.basic.menu-font-weight = light
+
+# autosize by default
+	#addon.menu.basic.width = 330px
+
+# item-width = variable, uniform, or a px value. Variable by default
+    #addon.menu.basic.item-width = 80px
+
+	addon.menu.basic.menu-rounding = 4
+    addon.menu.basic.menu-opacity = 99
+
+# @@TODO this sets subitem background size 0% so test it with subitems
+	#addon.menu.basic.menu-tile = /img/facebook.png
+	#addon.menu.basic.menu-stretch = /img/facebook.png
+
+	addon.menu.basic.menu-color = #0e3576 #235896
+
+	addon.menu.basic.item-separator-width = 10
+	addon.menu.basic.item-separator-color = cyan
+	#addon.menu.basic.item-separator-tile = /img/facebook.png
+	#addon.menu.basic.item-separator-stretch = /img/facebook.png
+
+	addon.menu.basic.edgepadding = 13
+
+	addon.menu.basic.menu-hover-text-color = green
+	addon.menu.basic.menu-hover-background-color = yellow
+	addon.menu.basic.menu-hover-font-family = monospace
+	addon.menu.basic.menu-hover-font-size = 16
+	addon.menu.basic.menu-hover-font-weight = normal
+
+	addon.menu.basic.menu-selected-text-color = blue
+	addon.menu.basic.menu-selected-background-color = orange
+	addon.menu.basic.menu-selected-font-family = serif
+	addon.menu.basic.menu-selected-font-size = 10
+	addon.menu.basic.menu-selected-font-weight = bold
+
+	addon.menu.basic.submenu-font-family = arial
+	addon.menu.basic.submenu-font-size = 14
+	addon.menu.basic.submenu-font-weight = bold
+	addon.menu.basic.submenu-text-color = white
+	addon.menu.basic.submenu-background-color = green yellow
+	#addon.menu.basic.submenu-background-tile = /img/facebook.png
+	#addon.menu.basic.submenu-background-stretch = /img/facebook.png
+
+	addon.menu.basic.submenu-separator-width = 20px
+	#addon.menu.basic.submenu-separator-color = red
+	addon.menu.basic.submenu-separator-tile = /img/facebook.png
+	#addon.menu.basic.submenu-separator-stretch = /img/facebook.png
+
+	[content]
+	css.height = 2000
+	db.table = ContentBlock
+	db.filter = url=$_GET['page']
+	db.error = Sorry, I could not find the page $_GET['page']
+	html.raw = <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+

@@ -7,6 +7,8 @@ $this->pageTitle=Yii::app()->name . ' - Login';
 ?>
 
 <h4>Login</h4>
+or <a href="https://plugin.wireflydesign.com/event/backend.php/member/create">register</a> as a new user
+<br/><br/>
 
 <p>Please fill out the following form with your login credentials:</p>
 

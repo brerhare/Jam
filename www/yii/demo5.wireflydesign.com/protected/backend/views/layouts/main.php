@@ -40,7 +40,8 @@
                 array('label' => 'Tabs', 'url' => array('/tabBlock/admin'), 'visible' => !Yii::app()->user->isGuest),                      
                 array('label' => 'Galleries', 'url' => array('/jellyGallery/admin'), 'visible' => !Yii::app()->user->isGuest),                      
 				array('label' => 'Products', 'url' => 'https://plugin.wireflydesign.com/product/backend.php/site/demo5Direct', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
-				array('label' => 'Blog', 'url' => 'https://plugin.wireflydesign.com/blog/backend.php/site/demo5Direct', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'News', 'url' => 'https://plugin.wireflydesign.com/news/backend.php/site/demo5Direct', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+				 array('label' => 'Mailer', 'url' => 'https://plugin.wireflydesign.com/mailer/backend.php/site/demo5Direct', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Tickets', 'url' => 'https://plugin.wireflydesign.com/ticket/backend.php/site/demo5Direct', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
 

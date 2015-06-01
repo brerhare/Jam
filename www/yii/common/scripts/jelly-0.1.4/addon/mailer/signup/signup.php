@@ -15,9 +15,12 @@ class signup
 	private $optionButtonColor = "grey";
 	private $optionButtonTextColor = "white";
 	private $optionButtonText = "Signup";
-	private $optionInputSpacing = "0px";
+	private $optionInputSpacing = "5";
+	private $optionInputWidth = "145";
 	private $optionSuccessTextColor = "green";
 	private $optionFailureTextColor = "red";
+	private $optionTextColor = 'black';	// NOT USED
+	private $optionBackColor = '';
 
 	public $apiOption = array(
 	);
@@ -59,9 +62,21 @@ class signup
 				case "failuretextcolour":
 					$this->optionFailureTextColor = $val;
 					break;
+				case "textcolor":
+				case "textcolour":
+					$this->optionTextColor = $val;
+					break;
+				case "backcolor":
+				case "backcolour":
+					$this->optionBackColor = $val;
+					break;
 				case "inputspacing":
 					$val = str_replace("px", "", $val);
 					$this->optionInputSpacing = $val;
+					break;
+				case "inputwidth":
+					$val = str_replace("px", "", $val);
+					$this->optionInputWidth = $val;
 					break;
 				default:
 					// Not all array items are action items
@@ -71,23 +86,28 @@ class signup
 
 		// Create a separator defaulting to vertical
 		$separator = "<div style='height:" . $this->optionInputSpacing . "px'>&nbsp</div>";
+		$center = "<center>";
 		if ($this->optionOrientation == "horizontal")
+		{
 			$separator = "<span style='margin-left:" . $this->optionInputSpacing . "px'>&nbsp</span>";
-
-		// Make the website sid available to js
-		$SID = Yii::app()->params['sid'];
-		$content .= "<script> var SID=" . $SID . "</script>";
+			$center = "";
+		}
+		
 
 		// Generate the content
-		$content = "<div ng-app>";
-		$content .= "<div ng-controller='signupController'>";
-		$content .= "<input id='signup-name' class='signup-input' type='text' title='Name' />";
-		$content .= $separator;
-		$content .= "<input id='signup-email' class='signup-input' type='text' title='Email' />";
-		$content .= $separator;
-		$content .= "<button ng-click='addSignup()' id='signup-send-button' class='signup-visible signup-send-button' style='background:" . $this->optionButtonColor . "; color:" . $this->optionButtonTextColor . "' class='signup-send-button' id='save'>" . $this->optionButtonText . "</button>";
-		$content .= "<span id='signup-message' class='signup-invisible'>Message Area</span>";
-		$content .= "</div>";
+		$content = "<div>";
+			$background = "";
+			if ($this->optionBackColor != '')
+				$background = " background-color:" . $this->optionBackColor . "; ";
+			$color = " color:" . $this->optionTextColor . "; ";
+			$content .= "<div style='" . $background . "' ng-controller='signupController'>";
+				$content .= "<input id='signup-name' class='signup-input' type='text' style='width:" . $this->optionInputWidth . "px' placeholder='Name' title='Name' />";
+				$content .= $separator;
+				$content .= "<input id='signup-email' class='signup-input' type='text' style='width:" . $this->optionInputWidth . "px' placeholder='Email' title='Email' />";
+				$content .= $separator;
+				$content .= $center . "<button ng-click='addSignup()' id='signup-send-button' class='signup-visible signup-send-button' style='background:" . $this->optionButtonColor . "; color:" . $this->optionButtonTextColor . "' class='signup-send-button' id='save'>" . $this->optionButtonText . "</button>" . $center;
+				$content .= "<span id='signup-message' class='signup-invisible'>Message Area</span>";
+			$content .= "</div>";
 		$content .= "</div>";
 
 		// Get SID to send to plugin
@@ -158,6 +178,7 @@ END_OF_API_HTML;
 
 	private $apiJs = <<<END_OF_API_JS
 $(document).ready(function(){
+/*
 $('.signup-input[type=text][title],.signup-input[type=password][title],textarea[title]').each(function(i){
     $(this).addClass('input-prompt-' + i);
     var promptSpan = $('<span class="input-prompt"/>');
@@ -180,6 +201,7 @@ $('.signup-input[type=text][title],.signup-input[type=password][title],textarea[
       }
     });
   });
+*/
 });
 
 function signupController(\$scope, \$http)

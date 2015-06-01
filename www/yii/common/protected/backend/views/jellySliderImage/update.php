@@ -5,6 +5,6 @@ $this->menu=array(
 );
 ?>
 
-<h1>Update Slider Content <?php //echo $model->id; ?></h1>
+<h2>Update Slider Content <?php //echo $model->id; ?></h2>
 
 <?php echo $this->renderPartial('_form',array('model'=>$model)); ?>

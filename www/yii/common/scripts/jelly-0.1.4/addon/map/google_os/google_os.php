@@ -29,9 +29,16 @@ class google_os
 
 	public function init($options, $jellyRootUrl)
 	{
-//if (isset($_GET['programid']))
-//die('x');
-//		var_dump( $options );
+		// Check for map suppression (from the event plugin)
+/*
+		if ((isset($_GET['map'])) && ($_GET['map'] == "no"))
+		{
+			$retArr = array();
+			$retArr[0] = "";
+			$retArr[1] = "";
+			return $retArr;
+		}
+*/
 
 		// Generate the content into the html, replacing any <substituteN> tags
 		$onReady = "";
@@ -65,11 +72,15 @@ class google_os
 					$onReady .= '$(document).ready(function (){';
 					if ($inputMode == "os")
 						$onReady .= " centerByOs('" . $val . "');";
+
+/* Commented because leaflet also uses this and its hardcoded to google maps */
 					else if ($inputMode == "latlong")
 					{
 						$ll = explode(',', $val);
-						$onReady .= " centerByLatLong('" . $ll[0] . "','" . $ll[1] . "');";
+						//$onReady .= " centerByLatLong('" . $ll[0] . "','" . $ll[1] . "');";
+						$onReady .= " markerByLatLong('" . $ll[0] . "','" . $ll[1] . "');";
 					}
+/**/
 					else if ($inputMode == "postcode")
 					{
 						$vc = "NX832613";
@@ -152,7 +163,6 @@ class google_os
 		$retArr = array();
 		$retArr[0] = $html;
 		$retArr[1] = $js;
-
 		return $retArr;
 	}
 
@@ -165,6 +175,10 @@ class google_os
 
 		<script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=false"></script>
 		<script type="text/javascript" src="<substitute-path>/latlong-gridref.js"></script>
+
+<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
 <!--
 		<label for="osgridref">OS Grid Reference:</label>
 		<input id="osgridref" type="text" style="width:200px;" />
@@ -204,8 +218,16 @@ END_OF_API_HTML;
 					osgridref = gridrefNumToLet(eastnorth[0], eastnorth[1], 10);
 				}				
 				var latlong = OSGridToLatLong(osgridref);
-				loadMap(latlong.lat, latlong.lng);
-				setupMarker(latlong.lat, latlong.lng, iconpath, hovertip, content);
+
+
+/**************************************************************************************/
+/* Replaced next 2 lines with 3rd to force google map to use leaflet for wild seasons */
+/**************************************************************************************/
+//				loadMap(latlong.lat, latlong.lng);
+//				setupMarker(latlong.lat, latlong.lng, iconpath, hovertip, content);
+markerByLatLongBigMap(latlong.lat, latlong.lng, hovertip);
+
+
 			}
 		}
 
@@ -219,23 +241,78 @@ END_OF_API_HTML;
 					osgridref = gridrefNumToLet(eastnorth[0], eastnorth[1], 10);
 				}				
 				var latlong = OSGridToLatLong(osgridref);
-				loadMap(latlong.lat, latlong.lng);
-				setupMarker2(latlong.lat, latlong.lng, postcode);
+
+
+/**************************************************************************************/
+/* Replaced next 2 lines with 3rd to force google map to use leaflet for wild seasons */
+/**************************************************************************************/
+//				loadMap(latlong.lat, latlong.lng);
+//				setupMarker2(latlong.lat, latlong.lng, postcode);
+markerByLatLong(latlong.lat, latlong.lng, postcode);
+
 			}
 		}
 
-		markerByLatLong = function(lat, long, postcode)
-		{
-			var id = mapId + "-map";
-			var map = L.map(id).setView([lat, long], 13);
+// LEAFLET leaflet	Main map
+		var map = null;	// This global is set a few lines down
 
-// LEAFLET leaflet
+		markerByLatLongBigMap = function(lat, long, hovertip)	// Big map
+		{
+//alert(urldecode(hovertip));
+			if (map != null)
+			{
+				if ((isNaN(lat)) || (isNaN(long)))
+					return;
+				L.marker([lat, long]).addTo(map).bindPopup(urldecode(hovertip));
+				return;
+			}
+			var id = mapId + "-map";
+			map = L.map(id).setView([lat, long], 13);
 			L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
 				maxZoom: 18,
 				attribution: '',
-				id: 'examples.map-i86knfo3'
+				/*id: 'examples.map-i86knfo3'*/
+				id: 'tekaweni.k8ngolij'
+			}).addTo(map);
+// This is timing point 1			//map.panTo(new L.LatLng(55.1213702,-3.3806166,12));						// center
+// This is timing point 1			//map.setZoom(8);															// all of D&G
+			var marker = L.marker([lat, long]).addTo(map);
+		}
+
+// LEAFLET leaflet	Little map for each event
+		markerByLatLong = function(lat, long, postcode)	// Small map
+		{
+			var id = mapId + "-map";
+			var map = L.map(id).setView([lat, long], 13);
+			L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+				maxZoom: 18,
+				attribution: '',
+				/*id: 'examples.map-i86knfo3'*/
+				id: 'tekaweni.k8ngolij'
 			}).addTo(map);
 			var marker = L.marker([lat, long]).addTo(map);
+		}
+
+// LEAFLET leaflet	Make map encompass all markers
+		markerBounds = function(points, pointsP) {
+//alert(pointsP);
+			// Convert the passed array of os grid refs to array of lat-longs
+			points2 = new Array();
+			for (var i = 0; i < points.length; i++) {
+				if (points[i].length > 0) {
+					if (points[i].indexOf(',') != -1) {
+						var eastnorth = points[i].split(',');
+						points[i] = gridrefNumToLet(eastnorth[0], eastnorth[1], 10);
+					}				
+					var latlong = OSGridToLatLong(points[i]);
+					if (isNaN(latlong.lat))
+						continue;
+					points2.push(latlong);
+// This is timing point 2					//if (i == 2) alert(latlong.lat + ":" + latlong.lng);
+				}
+			}
+			var bounds = new L.LatLngBounds(points2);
+			map.fitBounds(bounds);
 		}
 
 		centerByLatLong = function(lat, long)

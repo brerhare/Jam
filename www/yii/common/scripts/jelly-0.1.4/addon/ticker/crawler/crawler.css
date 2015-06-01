@@ -1,0 +1,71 @@
+html, body {
+	height: 100%;
+	padding: 0;
+	margin: 0;
+}
+/************
+body {
+	min-height: 300px;
+}
+body * {
+	font-family: Arial, Geneva, SunSans-Regular, sans-serif;
+	font-size: 14px; /*font-size*/
+	color: #333;
+	line-height: 22px;
+}
+************/
+ 
+#wrapper {
+	width: 100%;
+	margin: 0;
+	/*position: absolute;*/
+	left: 0;
+	top: 50%;
+}
+ 
+#wrapper > div {
+	font-family: Arial, Geneva, SunSans-Regular, sans-serif;
+	font-size: 14px; /*font-size*/
+	color: #333;
+	line-height: 22px;
+	background-color: #eee; /*tape-color*/
+	border-style: solid none;
+	border-width: 1px; /*tape-border-width*/
+	border-color: #ccc; /*tape-border-color*/
+	width: 100%;
+	height: 30px; /*tape-height*/
+	padding: 5px 0;
+	overflow: hidden;
+}
+#wrapper > div.first {
+	border-bottom: none;
+}
+ 
+#wrapper dl {
+	display: block;
+	margin: 0;
+}
+#wrapper dt, #wrapper dd {
+	display: block;
+	float: left;
+	margin: 0 10px;
+	padding: 5px 10px; /*this padding effects the hyperlink blocks*/
+}
+#wrapper dt { 
+	background-color: #f66; /*link-color*/
+	color: #fff; /* link-text-color*/
+}
+
+#wrapper dt a { 
+	text-decoration: none; 
+	color: #000000; 
+	}
+
+#wrapper dd {
+	color: #333; /*text-color*/
+	margin-right: 50px;
+}
+ 
+code {
+	font-style: italic;
+}

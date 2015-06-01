@@ -13,6 +13,7 @@ class fancybox
 	//Defaults
 	private $defaultSomething = 'someval';
 	private $gallery = "";
+	private $thumbnails = "0";
 
 	public $apiOption = array(
 	);
@@ -34,20 +35,18 @@ class fancybox
 			switch ($opt)
 			{
 				case "gallery":
-				if (strlen($val) > 0)
-					$this->gallery = $val;
-//die('x='.$this->gallery);
-				break;
-                case "source":
-					if ($val == "db")
+					if (strlen($val) > 0)
+						$this->gallery = $val;
+					break;
+				case "thumbnails":
+					$this->thumbnails = $val;
+					if ($this->thumbnails == "0")	// ----- Gallery view
 					{
-						// If db based content
-						$content .= "<table>";
+						$content .= "<table style='margin-left:50px'>";
 						$galleries = JellyGallery::model()->findAll(array('order'=>'sequence'));
 						foreach ($galleries as $gallery):
 							if (($gallery->active == 0) && (strlen($this->gallery) == 0))
 								continue;
-//die($this->gallery);
 							if (strlen($this->gallery) > 0)
 							{
 								if ($gallery->id != $this->gallery)
@@ -56,43 +55,50 @@ class fancybox
 							$galleryId++;
 							$content .= "<tr>";
 							$content .= "<td width='25%'>";
-
-							$content .= "<a class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/" . $gallery->image . "' title='" . $gallery->text . "'> <img src='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/thumb_" . $gallery->image . "' alt='' /> </a>";
-
+							$content .= "<a class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $gallery->image . "' title='" . str_replace("'", "", $gallery->text) . "'> <img src='" . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $gallery->image . "' alt='' /> </a>";
 							$criteria = new CDbCriteria;
 							$criteria->addCondition("jelly_gallery_id = " . $gallery->id);
+							$criteria->order = "sequence";
 							$galleryImages = JellyGalleryImage::model()->findAll($criteria);
 							foreach ($galleryImages as $galleryImage):
-
-								$content .= "<a style='display:none' class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/" . $galleryImage->image . "' title='" . $galleryImage->text . "'> <img src='" . Yii::app()->baseUrl . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . "' alt='' /> </a>";
-
+								$content .= "<a style='display:none' class='fancybox' rel='gallery" . $galleryId . "' href='" . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $galleryImage->image . "' title='" . str_replace("'", "", $galleryImage->text) . "'> <img src='" . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . "' alt='' /> </a>";
 							endforeach;
-
 							$content .= "</td>";
 							$content .= "<td width='1%'></td>";
 							$content .= "<td width='74%'>";
-							$content .= "<b>" . $gallery->title . "</b><br>" . $gallery->text;
+							$content .= "<b>" . $gallery->title . "</b><br>" . str_replace("'", "", $gallery->text);
 							$content .= "</td></tr>";
-
 						endforeach;
 						$content .= "</table>";
 					}
-					else if ($val == "glob")
+					else	// ----- Thumbnail view
 					{
-						// get pattern
-						$pattern = $options['pattern'];
-						foreach (glob(Yii::app()->basePath . "/../" . $pattern) as $filename)
-						{
-							$content .= "<li>";
-							$content .= "<img src='" . Yii::app()->baseUrl . dirname($pattern) . "/". basename($filename) . "' style='float: none; margin: 0px;' alt=''>";
-							$content .= "</li>";
-						}
+						$galleries = JellyGallery::model()->findAll(array('order'=>'sequence'));
+						foreach ($galleries as $gallery):
+							if (($gallery->active == 0) && (strlen($this->gallery) == 0))
+								continue;
+							if (strlen($this->gallery) > 0)
+							{
+								if ($gallery->id != $this->gallery)
+									continue;
+							}
+							$criteria = new CDbCriteria;
+							$criteria->addCondition("jelly_gallery_id = " . $gallery->id);
+							$criteria->order = "sequence ASC";
+							$galleryImages = JellyGalleryImage::model()->findAll($criteria);
+							$content .= "<div style='margin-left:50px'>";
+							foreach ($galleryImages as $galleryImage):
+//echo "<br/>->" . Yii::app()->getBaseUrl(true) . "<-<br/>";
+								$content .= '<a class="fancybox item" rel="gallery1" href="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/" . $galleryImage->image . '" title="' . str_replace("'", "", $galleryImage->text) . '">';
+								$content .= '<img style="padding:5px" src="' . Yii::app()->getBaseUrl(true) . "/userdata/jelly/gallery/thumb_" . $galleryImage->image . '" alt="" />';
+								$content .= '</a>';
+							endforeach;
+							$content .= "</div>";
+						endforeach;
 					}
-					break;
 				default:
-					// Not all array items are action items
-			}
-		}
+			}								// END switch (opt)
+		}									// END foreach ($options as $opt => $val)
 
 		// Apply all defaults that werent overridden
 		// HTML
@@ -141,6 +147,13 @@ class fancybox
 			<link rel="stylesheet" href="<substitute-path>/source/helpers/jquery.fancybox-thumbs.css?v=1.0.7" type="text/css" media="screen" />
 			<script type="text/javascript" src="<substitute-path>/source/helpers/jquery.fancybox-thumbs.js?v=1.0.7"></script>
 
+			<style>
+				.item:hover {
+				opacity:0.9;
+				}
+			</style>
+
+
 			<substitute-data>
 
 		</div>
@@ -152,9 +165,23 @@ END_OF_API_HTML;
 	jQuery(document).ready(function($){
 	});
 
-	$(document).ready(function() {
-		/*$(".fancybox").fancybox();*/
+/*****
+		// Disable right click
+		$(document).on({
+			"contextmenu": function(e) {
+				console.log("ctx menu button:", e.which);
+				e.preventDefault();				// Stop the context menu
+			},
+			"mousedown": function(e) {
+				console.log("normal mouse down:", e.which);
+			},
+			"mouseup": function(e) {
+				console.log("normal mouse up:", e.which);
+			}
+		});
+*****/
 
+	$(document).ready(function() {
 		$(".fancybox").fancybox({
     		helpers:  {
         		thumbs : {
@@ -163,7 +190,6 @@ END_OF_API_HTML;
         		}
     		}
 		});
-
 	});
 
 END_OF_API_JS;

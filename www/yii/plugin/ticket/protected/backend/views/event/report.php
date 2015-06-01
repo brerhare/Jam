@@ -50,12 +50,40 @@ table tr {
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("event_id = " . $model->id);
 		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+		$criteria->order = 'order_number ASC';
+
+		$curOrder = '';
+		$orderArr = array();
+		$typeArr = array();
+
 		$transactions = Transaction::model()->findAll($criteria);
 		foreach ($transactions as $transaction):
+
+			// Check for dups. Cant have more than one record of the same ticket type per order
+			//if ($curOrder != $transaction->order_number)
+			//{
+				//unset($orderArr);
+				//$orderArr = array();
+				//unset($typeArr);
+				//$typeArr = array();
+				//$curOrder = $transaction->order_number;
+			//}
+			//if ((in_array($transaction->order_number, $orderArr)) && (in_array($transaction->http_ticket_type_id, $typeArr)))
+				//continue;
+			array_push($orderArr, $transaction->order_number);
+			array_push($typeArr, $transaction->http_ticket_type_id);
+
 		 	$criteria = new CDbCriteria;
-			$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+			//$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 			$criteria->addCondition("order_number = '" . $transaction->order_number . "'");
 			$auth = Auth::model()->find($criteria);
+			if (!($auth))
+				continue;
+
+            // Suppress values for non-paymentsense tickets
+            if (!($transaction->auth_code))
+                $transaction->http_ticket_total = 0;
+
 			if ($prevOrder != $transaction->order_number)
 			$lc++; 
 			$class = ($lc%2 == 0)? 'background1': 'background2';
@@ -124,7 +152,8 @@ table tr {
 			</td>
 			<td style="text-align:right">
 				<?php
-				echo $transaction->http_ticket_total;
+				if ($transaction->http_ticket_total != 0)
+					echo $transaction->http_ticket_total;
 				$valueTotal += $transaction->http_ticket_total;
 				?>
 			</td>

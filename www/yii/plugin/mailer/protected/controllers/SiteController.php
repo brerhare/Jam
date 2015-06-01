@@ -29,12 +29,26 @@ class SiteController extends Controller
 		);
 	}
 
+	public function accessRules()
+	{
+		return array(
+			array('allow',  // allow all users to perform 'index' and 'view' actions
+				'actions'=>array('index','view','unsubscribe'),
+				'users'=>array('*'),
+			),
+		);
+	}
+
 	/**
 	 * This is the default 'index' action that is invoked
 	 * when an action is not explicitly requested by users.
 	 */
 	public function actionIndex()
 	{
+		if (isset($_GET['unsubscribe']))
+		{
+			return $this->actionUnsubscribe();
+		}
 		$layout = "index";
 		if (isset($_GET['layout']))
 			$layout = $_GET['layout'];
@@ -67,7 +81,21 @@ class SiteController extends Controller
 
 	}
 
-
+	public function actionUnsubscribe()
+	{
+		if ((trim($_GET['unsubscribe'])) == "")
+		{
+		die("<style>* {color:#bf5855;}</style><br><br><br><br><br><br><br><center><h3>No email given to unsubscribe!</h3><h4>Please contact the list owner via the website you subscribed at and ask to be manually removed<br><br>Apologies for the inconvenience, we do respect your privacy</h4><h5>Should you have ANY difficulty with that you may raise this with us directly at info@wireflydesign.com</h5></center>");
+		}
+        $criteria = new CDbCriteria;
+        $criteria->addCondition("email_address = '" . $_GET['unsubscribe'] . "'");
+        $members = MailerMember::model()->findAll($criteria);
+		foreach ($members as $member)
+		{
+            $member->delete();
+        }
+	die("<style>* {color:#bf5855;}</style><br><br><br><br><br><br><br><center><h3>Thank you</h3><h4>You are no longer on our mailing list and will receive no further emails from us</h4></center>");
+	}
 
 	/**
 	 * This is the action to handle external exceptions.
@@ -173,7 +201,38 @@ class SiteController extends Controller
             $member->first_name = $_GET['name'];
             $member->email_address = $_GET['email'];
             $member->mailer_list_id = $mailerList->id;
+            $member->active = 1;
             $member->save();
         }
 	}
+
+    public function actionAjaxContactUs()
+    {
+		Yii::log("AJAX CALL TO CONTACT US: uid:" . Yii::app()->session['uid'] . " name:" . $_GET['name'] . " email:" . $_GET['email'], CLogger::LEVEL_WARNING, 'system.test.kim');
+
+        // Send email to the address defined on system settings
+
+        // Pick up our only record
+		$to = $_GET['settingsemail'];
+        if (strlen(trim($to)) > 0)
+        {
+            $from =  $_GET['email'];
+            $fromName = $_GET['name'];
+            $subject = "[CONTACTFORM] " . $_GET['subject'];
+            $message = "<b><u>" . $_GET['body'] . "</u></b><br/>";
+            // phpmailer
+            $mail = new PHPMailer();
+            $mail->AddAddress($to);
+            $mail->SetFrom($from, $fromName);
+            $mail->AddReplyTo($from, $fromName);
+            $mail->Subject = $subject;
+            $mail->MsgHTML($message);
+            if (!$mail->Send())
+                Yii::log("CONTACT US COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
+            else
+                Yii::log("CONTACT US SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+        }
+	}
+
 }
+

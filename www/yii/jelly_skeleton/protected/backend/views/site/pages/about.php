@@ -5,4 +5,4 @@ $this->pageTitle=Yii::app()->name . ' - About';
 ?>
 <h1>About</h1>
 
-<p>Administration of Jacquies Beauty page content</p>
+<p>Administration of site content</p>

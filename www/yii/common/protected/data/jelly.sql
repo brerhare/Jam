@@ -86,6 +86,7 @@ CREATE  TABLE IF NOT EXISTS `jelly_slider_image` (
   `title` VARCHAR(255) NOT NULL ,
   `image` VARCHAR(255) NULL ,
   `url` VARCHAR(255) NULL ,
+  `text` TEXT NULL COMMENT '	' ,
   PRIMARY KEY (`id`) ,
   INDEX `sequence` (`sequence` ASC) )
 ENGINE = InnoDB;
@@ -176,6 +177,46 @@ CREATE  TABLE IF NOT EXISTS `jelly_download_file` (
     REFERENCES `jelly_download_collection` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `jelly_ticker`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `jelly_ticker` ;
+
+CREATE  TABLE IF NOT EXISTS `jelly_ticker` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `ticker` INT NULL ,
+  `heading` VARCHAR(255) NOT NULL ,
+  `text` TEXT NOT NULL ,
+  `url` VARCHAR(255) NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `jelly_setting`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `jelly_setting` ;
+
+CREATE  TABLE IF NOT EXISTS `jelly_setting` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `email` VARCHAR(255) NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `jelly_adblock`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `jelly_adblock` ;
+
+CREATE  TABLE IF NOT EXISTS `jelly_adblock` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `image` VARCHAR(255) NOT NULL ,
+  `url` VARCHAR(255) NULL ,
+  PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
 

@@ -5,7 +5,7 @@ function genTicket(
 	$order_name,
 	$order_card,
 	$vendor_id,
-	$event_id,
+	$ticket_type_event,
 	$ticket_type_area,
 	$ticket_type_id,
 	$ticket_type_qty,
@@ -18,27 +18,9 @@ function genTicket(
 	require_once('../../../tcpdf/config/lang/eng.php');
 	require_once('../../../tcpdf/tcpdf.php');
 
-	$vendorModel = Vendor::model()->findByPk($vendor_id); 
-	$eventModel = Event::model()->findByPk($event_id);
-
 	$dgLogo = CHtml::image(
 		Yii::app()->baseUrl . '/img/DGLink_Box_Office_plus_web_address.jpg',
 		'DG Image',
-		array('style'=>'height:80px;')
-	);
-
-	$logo = Yii::app()->baseUrl . '/img/default_logo.jpg';
-	if (strlen($eventModel->ticket_logo_path) > 0)
-	{
-		if (file_exists(Yii::app()->basePath . '/../userdata/' . Yii::app()->session['uid'] . '/' . $eventModel->ticket_logo_path))
-		{
-			$logo = Yii::app()->baseUrl . '/userdata/' . Yii::app()->session['uid'] . '/' . $eventModel->ticket_logo_path;
-		}
-	}
-	
-	$ticketLogo = CHtml::image(
-		$logo,
-		'Logo Image',
 		array('style'=>'height:80px;')
 	);
 
@@ -87,6 +69,30 @@ function genTicket(
 		for ($ticket = 0; $ticket < $ticket_type_qty[$type]; $ticket++)
 		{
 			$totalTickets++;
+
+			// Pick up the event
+			$eventModel = Event::model()->findByPk($ticket_type_event[$type]);
+
+			// Pick up the vendor
+			$vendorModel = Vendor::model()->findByPk($eventModel->ticket_vendor_id); 
+
+			$logo = Yii::app()->baseUrl . '/img/default_logo.jpg';
+			if (strlen($eventModel->ticket_logo_path) > 0)
+			{
+				if (file_exists(Yii::app()->basePath . '/../userdata/' . Yii::app()->session['uid'] . '/' . $eventModel->ticket_logo_path))
+				{
+					$logo = Yii::app()->baseUrl . '/userdata/' . Yii::app()->session['uid'] . '/' . $eventModel->ticket_logo_path;
+				}
+			}
+	
+			$ticketLogo = CHtml::image(
+				$logo,
+				'Logo Image',
+				array('style'=>'height:80px;')
+			);
+
+
+
 			$areaModel = Area::model()->findByPk($ticket_type_area[$type]); 
 			$ticketTypeModel = TicketType::model()->findByPk($ticket_type_id[$type]);
 			// add a page
@@ -222,8 +228,8 @@ EOD;
 	$pdf->AddPage();
 
 	$pdf->SetFont("helvetica", "", 10);
-	$pdf->writeHTML("<b>Vendor: " . $vendorModel->name . " " . $vendorModel->address . " " . $vendorModel->post_code);
-	$pdf->writeHTML("<b>Event Date: " . $eventModel->date);
+//	$pdf->writeHTML("<b>Vendor: " . $vendorModel->name . " " . $vendorModel->address . " " . $vendorModel->post_code);
+//	$pdf->writeHTML("<b>Event Date: " . $eventModel->date);
 	$pdf->writeHTML("<b>Order Number: " . $order_number);
 	$pdf->writeHTML("<b>Number of tickets on order: " . $totalTickets);
 	$pdf->writeHTML("<b>Name: " . $order_name);

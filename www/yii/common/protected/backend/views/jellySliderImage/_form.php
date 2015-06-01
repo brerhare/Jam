@@ -17,6 +17,8 @@
 
 	<?php echo $form->textFieldRow($model,'url',array('class'=>'span5','maxlength'=>255)); ?>
 
+	<?php echo $form->textAreaRow($model, 'text', array('class'=>'span5', 'rows'=>5)); ?>
+
     <?php /// @@EG How to line up custom content ?>
     <div class="control-group "><label class="control-label" for="image">Image <span class="required">*</span></label>
         <div class="controls">

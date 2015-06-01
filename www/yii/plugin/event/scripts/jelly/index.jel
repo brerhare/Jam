@@ -14,7 +14,7 @@ fx.wallpaper-color = #00000
     child = googlemap, spacer, grid
 
     [googlemap]
-    css.height = 370px
+    #css.height = 370px
     css.overflow = auto
     addon.custom.eventcode.main_google_map = os;
 

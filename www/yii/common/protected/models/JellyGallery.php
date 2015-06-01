@@ -113,6 +113,18 @@ class JellyGallery extends CActiveRecord
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+
+			// @@EG: admin gridview default sort
+			'sort'=>array(
+				//'defaultOrder'=>'id DESC',
+				'defaultOrder'=>'sequence ASC',
+			),
+
+            // @@EG: Change cgridview pagination
+            'pagination' => array(
+                'pageSize' => 50,
+            ),
+
 		));
 	}
 }

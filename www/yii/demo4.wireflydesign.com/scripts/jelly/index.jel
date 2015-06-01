@@ -1,105 +1,93 @@
-#Test file
+#Demo 4
 [defaults]
 include = default-values
 
-; Every blob inherits these before adding/overriding
+# Every blob inherits these before adding/overriding
+
 [* : defaults]
 
 [screen]
 child = site
-fx.wallpaper-image-tile = /img/straw-tile.jpg
+fx.wallpaper-image-tile = /img/background.jpg
 css.display = block
 
 	[site]
-	child = header, slider, pages
+	child = header, slider, pages, footer
 	css.width = 970px
 
 ####  Header  #################################
 
-		[header]
-		child = header-dt, menu
-		
-			[header-dt]
-			child = logo, stat-link
-			stacking = horizontal
-
-				[logo]
-				css.margin-left = 50px
-				css.margin-top = 25px
-				css.height = 120px
-				css.width = 500px
-				css.z-index = 1000
-				css.position = relative
-				image.url = img/Logo.png
-				image.width = 241px
-				image.height = 116px
-				click = http://www.demo4.wireflydesign.com
-
-				[stat-link]
-				child = cart, news
-				css.height = 45px
-				css.width = 260px
-				css.margin-left = 160px
-				fx.rounding = 4px
-				css.background-color = white
-				stacking = horizontal
-
-					[cart]
-					css.width = 120px
-					css.height = 22px
-					css.margin-left = 40px
-					css.margin-top = 15px
-					html.raw = Shopping Cart
-					css.font-size = 12px
-					click = http://www.demo4.wireflydesign.com/?layout=index&page=checkout
-							
-
-					[news]
-					css.width = 100px
-					css.height = 22px
-					css.margin-left = 0px
-					css.margin-top = 15px
-					html.raw = Newsletter
-					css.font-size = 12px
-					click = http://www.demo4.wireflydesign.com/?layout=index&page=text-blog
-
-
+	[header]
+	child = logo, menu
+	css.height = 200px
+	
+		[logo]
+		css.margin-left = 50px
+		css.margin-top = 25px
+		css.height = 120px
+		css.width = 500px
+		css.z-index = 1000
+		css.position = relative
+		image.url = img/Logo.png
+		image.width = 241px
+		image.height = 116px
+		click = http://www.demo4.wireflydesign.com
 
 		[menu]
 		css.height = 50px
-		css.margin-top = -30px
-		css.margin-left = 465px
+		#css.width = 250px
 		css.overflow = visible
 		css.z-index = 1000
 		css.position = absolute
-		addon.menu.basic.orientation = horizontal
-		addon.menu.basic.font-size = 12px
-		addon.menu.basic.menu-rounding = 4px
-			#addon.menu.basic.menu-opacity = 70%
-			#addon.menu.basic.menu-tile = /img/menu-bar.jpg
-			#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
-		addon.menu.basic.menu-color = white
-	#addon.menu.basic.menu-text-color = red
-	#addon.menu.basic.submenu-color = yellow red
-	#addon.menu.basic.item-color = black yellow
-	#addon.menu.basic.item-text-color = green
-	#addon.menu.basic.subitem-color = white black
-	#addon.menu.basic.subitem-text-color = purple
-	#addon.menu.basic.subitem-seperator-color = red 
+		#css.position = relative
 
+		addon.menu.basic.orientation = horizontal
+		#addon.menu.basic.width = 960px
+		#addon.menu.basic.height = 30px
+		#addon.menu.basic.level = 2
+
+		addon.menu.basic.menu-rounding = 4px
+		#addon.menu.basic.menu-opacity = 70%
+		#addon.menu.basic.menu-tile = /img/menu-bar.jpg
+		#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
+		addon.menu.basic.menu-color = white
+		#addon.menu.basic.item-separator-color = #ffffff
+		#addon.menu.basic.item-separator-width = 3px
+
+		addon.menu.basic.font-size = 12px
+		#addon.menu.basic.menu-text-color = red
+
+		#addon.menu.basic.item-color = black yellow
+		#addon.menu.basic.item-text-color = green
+
+		#addon.menu.basic.submenu-color = yellow red
+	
+		#addon.menu.basic.subitem-color = white black
+		#addon.menu.basic.subitem-text-color = purple
+		#addon.menu.basic.subitem-seperator-color = red 
 
 
 #### Slider ###########################################
 
 	[slider]
-	css.margin-top = -50px
-	#css.margin-left = 30px
 	css.width = 960px
   	css.height = 320px
 	addon.slider.flexslider.width = 952px
 	addon.slider.flexslider.height = 310px
 	addon.slider.flexslider.mode = image
 	addon.slider.flexslider.source = db
+
+	#addon.slider.flexslider.border-width = 0px
+	#addon.slider.flexslider.border-color = red
+	#addon.slider.flexslider.active-dotcolor = red
+	#addon.slider.flexslider.inactive-dotcolor = blue
+	#addon.slider.flexslider.dot-margin-top = -200px
+	#addon.slider.flexslider.dot-margin-bottom = 0px
+	#addon.slider.flexslider.dot-margin-left = 0px
+	#addon.slider.flexslider.dot-margin-right = 0px
+	#addon.slider.flexslider.animation = fade
+	#addon.slider.flexslider.mode = HTML
+	#addon.slider.glitz.slider = 2
 
 
 ######## body #######################################
@@ -129,3 +117,72 @@ css.display = block
 
 
 ####footer####################################
+
+[footer]
+child = footer-menu, footnote
+css.margin-top = 40px
+css.margin-left = 20px
+css.height = 180px
+css.width = 960px
+#css.background-color = #ffffff
+#css.background-color = #f7d9ff
+
+		[footer-menu]
+		stacking = horizontal
+		child = footer-margin, footer-cookies, footer-tandc, footer-contact
+		css.height = 50px
+		css.width = 960px
+
+			[footer-margin]
+			css.width = 20%
+			css.height = 50px
+
+			[footer-cookies]
+			html.raw = Cookie Policy
+			css.width = 20%
+			css.color = #000000
+			css.font-size = 11px
+			css.text-align = right
+			click = ?layout=index&page=cookie-policy
+
+			[footer-tandc]
+			html.raw = Terms & Conditions
+			css.width = 20%
+			css.color = #000000
+			css.font-size = 11px
+			css.text-align = center
+			click = ?layout=index&page=terms-conditions
+
+			[footer-contact]
+			html.raw = Contact Us
+			css.text-align = left
+			css.width = 20%
+			css.color = #000000
+			css.font-size = 11px
+			click = ?layout=index&page=contact
+
+
+	[footnote]
+	child = copyright, wirefly
+	css.width = 100%
+	css.height = 50px
+	stacking = horizontal
+
+		[copyright]
+		css.width = 50%
+		css.margin-top = 10px
+		html.raw = Customer &copy 2014 All rights reserved
+		css.color = #000000
+		css.font-size = 11px
+		css.text-align = left
+
+	[wirefly]
+	css.margin-top = -10px
+	css.height = 50px
+	css.width = 50%
+	image.url = img/wirefly-weblink.png
+	image.width = 150px
+	image.height = 40px
+	image.align = right
+	clicknew = http://www.wireflydesign.com
+

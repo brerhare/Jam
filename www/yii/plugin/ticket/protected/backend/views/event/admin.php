@@ -4,6 +4,20 @@ $this->menu=array(
 	array('label'=>'Create Event','url'=>array('create')),
 );
 
+
+Yii::app()->clientScript->registerScript('search', "
+$('.search-button').click(function(){
+    $('.search-form').toggle();
+    return false;
+});
+$('.search-form form').submit(function(){
+    $('#event-grid').yiiGridView('update', {
+        data: $(this).serialize()
+    });
+    return false;
+});
+");
+
 ?>
 
 <h4>Manage Events</h4>
@@ -11,11 +25,17 @@ $this->menu=array(
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'event-grid',
 	'dataProvider'=>$model->search(),
-//	'filter'=>$model,
+	'filter'=>$model,
 	'columns'=>array(
 		'id',
 //		'uid',
-		'title',
+
+        array(
+            'name'  => 'title',
+            'value' => 'CHtml::link($data->title, Yii::app()->createUrl("event/update",array("id"=>$data->primaryKey)))',
+            'type'  => 'raw',
+        ),
+
 		'date',
 		'active:boolean',
 //		'active_start_date',

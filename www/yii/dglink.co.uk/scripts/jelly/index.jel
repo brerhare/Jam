@@ -1,20 +1,173 @@
+#DG Link
 [defaults]
 include = default-values
 
-; Every blob inherits these before adding/overriding
 [* : defaults]
 
 [screen]
-child = contentframe
-fx.wallpaper-image = /img/background.jpg
+child =  main, footer
+fx.wallpaper-image = /img/background3.jpg
 css.display = block
 
-	[contentframe]
-	css.display = block
-	css.width = 100px
-	css.margin-top = 400px
-	style.html.h1.color = yellow
-	style.html.h1.background-color = black
-	style.html.h1.padding = 10px
-	html.h1 = jelly
+[main]
+child = right-column, site
+stacking = horizontal
+css.width = 80%
+css.min-width = 850px
+
+	####  Header  #################################
+
+	[right-column]
+	child = logo, menu,
+	css.min-height = 500px
+	css.width = 18%
+	css.min-width = 100px
+	css.position = fixed
+	css.overflow = visible
+	
+		[logo]
+		css.height = 130px
+		css.z-index = 1100
+		image.url = img/dglink-logo.png
+		image.width = 201px
+		image.height = 100px
+		click = http://www.dglink.co.uk
+		css.overflow = visible
+
+		[menu]
+		css.width = 100%
+		css.margin-top = -10px
+		css.overflow = visible
+		css.z-index = 1000
+
+		#addon.menu.basic.width = 960px
+		addon.menu.basic.height = 30px
+		addon.menu.basic.orientation = vertical
+		
+####### Top level background settings (first colour is the top gradiation) ####
+	addon.menu.basic.menu-rounding = 4px
+		#addon.menu.basic.menu-opacity = 96%
+		#addon.menu.basic.menu-tile = /img/menu-bar.jpg
+		#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
+	addon.menu.basic.menu-color = white
+		#addon.menu.basic.item-separator-color = #ffffff
+		#addon.menu.basic.item-separator-width = 3px
+		addon.menu.basic.edgepadding = 30px
+
+####### Top level font settings ####
+	addon.menu.basic.font-size = 12px
+	addon.menu.basic.menu-text-color = blue
+	addon.menu.basic.menu-text-weight = bold
+		### Need an m1, m2, etc option in header file
+
+
+####### Top level hover settings ####
+	addon.menu.basic.item-color = white #e0e0e0
+	addon.menu.basic.item-text-color = blue
+		
+####### Second level background settings ####
+	addon.menu.basic.submenu-color = #ffffff
+	addon.menu.basic.subitem-separator-color = blue
+		
+####### Second level hover settings ####
+	addon.menu.basic.subitem-color = white #e0e0e0
+	addon.menu.basic.subitem-text-color = blue		
+		
+
+
+######## body #######################################
+
+	[site]
+	child = pages
+	css.min-width = 700px
+	css.width = 80%
+	css.margin-left = 20%
+	css.margin-top = 40px
+
+	[pages]
+	child = content
+	css.background-color = white
+	fx.rounding = 4px
+	
+		#[tabs]
+		#condition = @PAGE=@HOMEPAGE
+		#css.display = block
+		#css.width = 680px
+		#addon.tab.rain.source = db
+
+			
+		[content]
+		css.margin-top = 30px
+		css.margin = 30px
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
+
+		
+
+
+####footer####################################
+
+[footer]
+child = footer-container  
+css.margin-top = 100px
+css.margin-bottom = 40px
+css.background-color = #ffffff
+
+[footer-container]
+child = contact, footer-menu
+stacking = horizontal
+css.margin-left = 19%
+css.margin-top = 30px
+
+
+	[contact]
+	css.width = 330px
+	css.margin-bottom = 20px
+	css.margin-left = 100px
+	css.margin-top = 10px
+	css.font-size = 14px
+	html.raw = <p>Contact the DG Link by using the form below</p>
+	addon.contact.contactform.edgepadding = 0px
+	addon.contact.contactform.buttoncolor = #cddff2
+	addon.contact.contactform.buttontextcolor = black
+	addon.contact.contactform.buttontext = Send us your message
+	addon.contact.contactform.successtextcolor = green
+	addon.contact.contactform.failuretextcolor = red
+	addon.contact.contactform.textcolor = blue
+	addon.contact.contactform.backcolor = white
+	addon.contact.contactform.inputspacing = 10px
+
+	[footer-menu]
+	child = footer-cookies, footer-tandc, wirefly, copyright
+	css.height = 100px
+	css.width = 20%
+	css.margin-left = 10%
+	css.margin-top = 10px
+	
+		[footer-cookies]
+		html.raw = <a style="text-decoration:none" href="?layout=index&page=cookie-policy">Cookie Policy</span>
+		css.margin-top = 10px
+
+		[footer-tandc]
+		html.raw = <a style="text-decoration:none" href="?layout=index&page=terms-conditions">Terms & Conditions</span>
+		css.margin-top = 10px
+	
+		[wirefly]
+		css.height = 45px
+		image.url = img/wirefly-weblink.png
+		image.width = 150px
+		image.height = 40px
+		image.align = left
+		clicknew = http://www.wireflydesign.com
+
+
+		[copyright]
+		html.raw = DG Link &copy 2015 <br>All rights reserved
+		css.color = #000000
+		css.font-size = 12px
+		css.text-align = left
+	
+
 

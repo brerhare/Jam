@@ -6,7 +6,11 @@ class EventController extends Controller
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='//layouts/column2';
+
+	public $createPrograms = 0;
+
+	public $layout='//layouts/columnEvent';
+	//public $layout='//layouts/column2';
 
     private $_thumbDir = '/../userdata/event/thumb/';   // Note this is only partial. Gets prepended base path
 
@@ -29,7 +33,7 @@ class EventController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index','view', 'import'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -252,8 +256,13 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
         $model2=Ws::model()->find($criteria);
         if (!($model2))
         {
-        	Yii::log("UPDATE EVENT ----- loading up. id = " . $id . " no model2. Dying " , CLogger::LEVEL_WARNING, 'system.test.kim');
-        	die('Couldnt find event matching Ws record for update for event id ' . $id . ' Please report this error');
+        	Yii::log("UPDATE EVENT ----- loading up. id = " . $id . " no model2. Creating one " , CLogger::LEVEL_WARNING, 'system.test.kim');
+        	//die('Couldnt find event matching Ws record for update for event id ' . $id . ' Please report this error');
+			$model2 = new Ws;
+			$model2->event_id = $model->id;
+			$model2->os_grid_ref = 'none';
+			$model2->grade = 'Easy';
+			$model2->save();
         }
 
         // Uncomment the following line if AJAX validation is needed
@@ -408,6 +417,7 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 	 */
 	public function actionAdmin()
 	{
+		$this->createPrograms = 1;
 		$model=new Event('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['Event']))
@@ -475,10 +485,13 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 		return;
 */
 
+Yii::log("IMPORT ----- opening file" , CLogger::LEVEL_WARNING, 'system.test.kim');
 		$file = "/tmp/ws.csv";
 		$row = 0;
 		if (($handle = fopen($file, "r")) === FALSE)
 			die("Cant open $file");
+Yii::log("IMPORT ----- file opened ok" , CLogger::LEVEL_WARNING, 'system.test.kim');
+$lc = 0;
     	while (($data = fgetcsv($handle, 1000, ",")) !== FALSE)
     	{
         	// Ignore header line
@@ -492,6 +505,8 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
         		$row++;
         		continue;
         	}
+$lc++;
+Yii::log("IMPORT ----- got record " . $lc, CLogger::LEVEL_WARNING, 'system.test.kim');
 
         	// Init db fields
         	$event = new Event;
@@ -586,6 +601,7 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 						break;
 				}
 			}
+Yii::log("IMPORT ----- about to insert db record " . $lc, CLogger::LEVEL_WARNING, 'system.test.kim');
 // @@TODO: REMOVE HARD CODING!
 			//$event->member_id = 7;
 			$event->program_id = 6;
@@ -595,6 +611,7 @@ $model->approved = 1;	// @@TODO REMOVE HARDCODING and implement the askApproval 
 			echo $ws->event_id . "<br>";
 			if (!($ws->save()))
 				die("Event additional info save failed on line " . $row);
+Yii::log("IMPORT ----- inserted db record " . $lc, CLogger::LEVEL_WARNING, 'system.test.kim');
 			$row++;
 		}
 	}

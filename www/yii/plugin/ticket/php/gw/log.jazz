@@ -1,0 +1,289 @@
+08-09-14 10:59:47 86.172.5.208 Entrypoint to PaymentSense
+08-09-14 10:59:47 86.172.5.208 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '86.172.5.208']
+08-09-14 10:59:47 86.172.5.208 Matching passed sid 2fidm4d63nvtms4utfmbnq42f2 with db sid 2fidm4d63nvtms4utfmbnq42f2
+08-09-14 10:59:47 86.172.5.208 Retrieving event details using sql [SELECT * FROM ticket_event where id = 236]
+08-09-14 10:59:47 86.172.5.208 Retrieved event record EVAN CHRISTOPHER with Ken Mathieson's Classic Jazz Orchestra
+08-09-14 10:59:47 86.172.5.208 Going with order number 69-1410170387 (based on uid-time)
+08-09-14 10:59:47 86.172.5.208 Updating order number using sql [UPDATE ticket_order set order_number = '69-1410170387' where ip = '86.172.5.208']
+08-09-14 10:59:47 86.172.5.208 (PaymentForm) Start dump -------------------------------
+08-09-14 10:59:47 86.172.5.208 (PaymentForm) End dump ---------------------------------
+08-09-14 11:02:02 86.172.5.208 (PaymentForm) Start dump -------------------------------
+08-09-14 11:02:02 86.172.5.208 (PaymentForm) got field - FormMode -> PAYMENT_FORM
+08-09-14 11:02:02 86.172.5.208 (PaymentForm) got field - HashDigest -> 0b0db374400c78de68bb56d77bb06597
+08-09-14 11:02:02 86.172.5.208 (PaymentForm) got field - Amount -> 1200
+08-09-14 11:02:02 86.172.5.208 (PaymentForm) got field - CurrencyShort -> GBP
+08-09-14 11:02:02 86.172.5.208 (PaymentForm) got field - OrderID -> 69-1410170387
+08-09-14 11:02:02 86.172.5.208 (PaymentForm) got field - OrderDescription -> EVAN CHRISTOPHER with Ken Mathieson's Classic Jazz Orchestra
+08-09-14 11:02:02 86.172.5.208 (PaymentForm) got field - CardName -> James Stockley
+08-09-14 11:02:02 86.172.5.208 (PaymentForm) got field - CardNumber -> 4921819845934968
+08-09-14 11:02:02 86.172.5.208 (PaymentForm) got field - ExpiryDateMonth -> 02
+08-09-14 11:02:02 86.172.5.208 (PaymentForm) got field - ExpiryDateYear -> 15
+08-09-14 11:02:02 86.172.5.208 (PaymentForm) got field - StartDateMonth -> 03
+08-09-14 11:02:02 86.172.5.208 (PaymentForm) got field - StartDateYear -> 12
+08-09-14 11:02:02 86.172.5.208 (PaymentForm) got field - IssueNumber -> 
+08-09-14 11:02:02 86.172.5.208 (PaymentForm) got field - CV2 -> 698
+08-09-14 11:02:02 86.172.5.208 (PaymentForm) got field - Address1 -> 23 Leven Close
+08-09-14 11:02:02 86.172.5.208 (PaymentForm) got field - Address2 -> Eagles Cliff
+08-09-14 11:02:02 86.172.5.208 (PaymentForm) got field - Address3 -> 
+08-09-14 11:02:02 86.172.5.208 (PaymentForm) got field - Address4 -> 
+08-09-14 11:02:02 86.172.5.208 (PaymentForm) got field - City -> STOCKTON-ON-TEES
+08-09-14 11:02:02 86.172.5.208 (PaymentForm) got field - State -> County Durham
+08-09-14 11:02:02 86.172.5.208 (PaymentForm) got field - PostCode -> TS16 0JS
+08-09-14 11:02:02 86.172.5.208 (PaymentForm) got field - CountryShort -> GBR
+08-09-14 11:02:02 86.172.5.208 (PaymentForm) End dump ---------------------------------
+08-09-14 11:02:04 86.172.5.208 Updating order details with payment info, using sql [UPDATE ticket_order set
+				card_name = 'James Stockley',
+				card_number = '4921819845934968', 
+				card_expiry_month = '02',
+				card_expiry_year = '15',
+				card_cv2 = '698',
+				card_address1 = '23 Leven Close',
+				card_address2 = 'Eagles Cliff',
+				card_address3 = '',
+				card_address4 = '', 
+				card_city = 'STOCKTON-ON-TEES',
+				card_state = 'County Durham',
+				card_post_code = 'TS16 0JS',
+				card_country_short = 'GBR',
+				card_currency_short = 'GBP',
+				card_amount = '1200'
+				where ip = '86.172.5.208']
+08-09-14 11:02:21 86.172.5.208 (PaymentForm) Start dump -------------------------------
+08-09-14 11:02:21 86.172.5.208 (PaymentForm) got field - CrossReference -> 140908100202551201254372
+08-09-14 11:02:21 86.172.5.208 (PaymentForm) got field - PaRES -> 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
+08-09-14 11:02:21 86.172.5.208 (PaymentForm) got field - FormMode -> THREE_D_SECURE
+08-09-14 11:02:21 86.172.5.208 (PaymentForm) got field - ShoppingCartHashDigest -> d41d8cd98f00b204e9800998ecf8427e
+08-09-14 11:02:21 86.172.5.208 (PaymentForm) End dump ---------------------------------
+08-09-14 11:02:22 86.172.5.208 (PaymentForm) Transaction message is Card declined
+08-09-14 18:29:11 86.142.141.180 Entrypoint to PaymentSense
+08-09-14 18:29:11 86.142.141.180 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '86.142.141.180']
+08-09-14 18:29:11 86.142.141.180 Matching passed sid 2fidm4d63nvtms4utfmbnq42f2 with db sid 2fidm4d63nvtms4utfmbnq42f2
+08-09-14 18:29:11 86.142.141.180 Retrieving event details using sql [SELECT * FROM ticket_event where id = 253]
+08-09-14 18:29:11 86.142.141.180 Retrieved event record THE BBC BIG BAND with Georgina Jackson play the American Big Band Classics
+08-09-14 18:29:11 86.142.141.180 Going with order number 69-1410197351 (based on uid-time)
+08-09-14 18:29:11 86.142.141.180 Updating order number using sql [UPDATE ticket_order set order_number = '69-1410197351' where ip = '86.142.141.180']
+08-09-14 18:29:11 86.142.141.180 (PaymentForm) Start dump -------------------------------
+08-09-14 18:29:11 86.142.141.180 (PaymentForm) End dump ---------------------------------
+08-09-14 18:31:34 86.142.141.180 (PaymentForm) Start dump -------------------------------
+08-09-14 18:31:34 86.142.141.180 (PaymentForm) got field - FormMode -> PAYMENT_FORM
+08-09-14 18:31:34 86.142.141.180 (PaymentForm) got field - HashDigest -> a6ef770c6d0ae88bdec855bfc5f1edcf
+08-09-14 18:31:34 86.142.141.180 (PaymentForm) got field - Amount -> 3000
+08-09-14 18:31:34 86.142.141.180 (PaymentForm) got field - CurrencyShort -> GBP
+08-09-14 18:31:34 86.142.141.180 (PaymentForm) got field - OrderID -> 69-1410197351
+08-09-14 18:31:34 86.142.141.180 (PaymentForm) got field - OrderDescription -> THE BBC BIG BAND with Georgina Jackson play the American Big Band Classics
+08-09-14 18:31:34 86.142.141.180 (PaymentForm) got field - CardName -> j walker
+08-09-14 18:31:34 86.142.141.180 (PaymentForm) got field - CardNumber -> 5301270467180000
+08-09-14 18:31:34 86.142.141.180 (PaymentForm) got field - ExpiryDateMonth -> 03
+08-09-14 18:31:34 86.142.141.180 (PaymentForm) got field - ExpiryDateYear -> 16
+08-09-14 18:31:34 86.142.141.180 (PaymentForm) got field - StartDateMonth -> 11
+08-09-14 18:31:34 86.142.141.180 (PaymentForm) got field - StartDateYear -> 12
+08-09-14 18:31:34 86.142.141.180 (PaymentForm) got field - IssueNumber -> 
+08-09-14 18:31:34 86.142.141.180 (PaymentForm) got field - CV2 -> 563
+08-09-14 18:31:34 86.142.141.180 (PaymentForm) got field - Address1 -> 30summervaleavenue
+08-09-14 18:31:34 86.142.141.180 (PaymentForm) got field - Address2 -> 
+08-09-14 18:31:34 86.142.141.180 (PaymentForm) got field - Address3 -> 
+08-09-14 18:31:34 86.142.141.180 (PaymentForm) got field - Address4 -> 
+08-09-14 18:31:34 86.142.141.180 (PaymentForm) got field - City -> annan
+08-09-14 18:31:34 86.142.141.180 (PaymentForm) got field - State -> 
+08-09-14 18:31:34 86.142.141.180 (PaymentForm) got field - PostCode -> DG126EP
+08-09-14 18:31:34 86.142.141.180 (PaymentForm) got field - CountryShort -> GBR
+08-09-14 18:31:34 86.142.141.180 (PaymentForm) End dump ---------------------------------
+08-09-14 18:31:37 86.142.141.180 Updating order details with payment info, using sql [UPDATE ticket_order set
+				card_name = 'j walker',
+				card_number = '5301270467180000', 
+				card_expiry_month = '03',
+				card_expiry_year = '16',
+				card_cv2 = '563',
+				card_address1 = '30summervaleavenue',
+				card_address2 = '',
+				card_address3 = '',
+				card_address4 = '', 
+				card_city = 'annan',
+				card_state = '',
+				card_post_code = 'DG126EP',
+				card_country_short = 'GBR',
+				card_currency_short = 'GBP',
+				card_amount = '3000'
+				where ip = '86.142.141.180']
+08-09-14 18:33:11 86.142.141.180 (PaymentForm) Start dump -------------------------------
+08-09-14 18:33:11 86.142.141.180 (PaymentForm) got field - CrossReference -> 140908173135915201849227
+08-09-14 18:33:11 86.142.141.180 (PaymentForm) got field - PaRES -> eNrVWFmT4kqu/isdPY/MOV4xcIKqiEzvBhu8YvvNG94XbIOXX39NVVd3T033xNz7cuMQFVFpISkl69OXIvdG0kYRo0fBvY1e93LUdV4cfUnDl69noEU3aodu0OWPXH993T8l3ffvun9XeERtl9bVK/Yn+ie+Rz4eF7dtkHhV/7r3ghsUldc1jhIEuUe+Pe7LqBWZb9I1uiEIfLtZHLyL98gP+/P9ueqWUMc0fA1wLQtw5ebzu4cvFIVLwMwX3DaszJc98tTYh14fveIoRqI7dPsF2/5FYH8R6z3yJt83T3egrO+LbwJF0T3ys2S/vJQ2qoLpdYtTe+T70z4am7qKFo0lxu/rPfIjuMarXtFPn8X3It0b9uu+T8tPQRF/YdgeeZPvu97r792rs0e+rfaB93i8ZspURH1Yns5aQUOQbGftCIoALJ8l2TeVfRSkr+gzqOX/mxUo4rpN+6R8Jd51fgj2yDMU5K2Ur3s9jatlszb6MpZF1b18Tfq++QtBhmH4cyD+rNsYwZckEHSHLAphl8b/+PpuFYVida3/V2a0V9VVGnhFOnv9ghA56pM6/PI9tl+5MbSnJwzRWPqPxdUfAUZWfzwlKIE9sYf82ulPmf03u3wOtu28P7rEw54bfHL0uteia/RERPTF1MSXr//4TVcwaRx1/f9l94+df/bw4c/yinv0Op457ObpDyGE9CqPxrnSjteLqHlW8PJh9665R76H+y2X98L99ILeFTMk3fpjtDrdNKe47WDtyYpyHo71g4oeDenSa00QMDuuN3dKjrVNzl7qZq2ZJBDq3hMFffAqIuA0quskQ3Qz0UPh6qiVW73D05OJtqdLlPc2hHe+rpxpta64ENasj5EyfqynrizzKZZmi8OFsybdGwLbyNNA3rds4cYgNHR63koD0VWD+PJTUb5leYim96zsNbpjvN57X+l3P4uCXvGWBqOVl3e+o+swKgPsn19O5oumgz/oaUlgeXqBXhsU3tR9gV6Vfzkf6X9+oV94uEc+u3rzTUdtn14X5C2MIosigzM0DTo6BoMIQSxqQBH8R68ietLbulUa/dRteacbGNWRDrUrJo9AASrLQRUMseOM9AwkGCsWBI4BCsuQNXTgB4exVPXAjpri2Arq2hLj2FIucuEjKMc8xIvcNdi7TA88wEyWHuXCuHBzyFuTinOTS0PbJ6TOFcLG5c3YxK0stKVCxXe5q0PBvZCxnLG1TDtv9mCUryYnsSKLMSKnFA5hTa6pPJ62uq3M4cWaFjnmpJBRDRBxAzou9pPMOKPMyJjMuN5TpnySyZz5r/nlIS1r9RL0R34cveSV+Ty3DiZIO5d1K3JQVmdWlyH4yE0yCwUeTWXtE1oia87Avdsz7IAZ7kXBgtJifFwr/Is8yiJ/lQHK0/qN10WfYFQWAtUEgOQVwNAwVQ8wVulkvSPW8Xk9umcKjiGvXeZMFESROJCI4G8cEblTFrOrPLmUHLcExIM8nVXMIwx1zg2yzVR82gger2HGMB3HqxfUmlzit/VBF7rjKb6uV3SD4RjZ2cdk5SDrAWrxJeM1j6AsS2VRevCbgs/IlTPxbCqHuF7aisVeG0t9eEYZrnjeXw39thlEBqgA1qSAyqLwzK98vk9Bl9nYJYfYvSex4+WxIy94Av+feEplGnzgyf0dnsxy9wjpBUeOqKoEC69MPQvJoSGacg6ElnK/xS9oMgsyAOSlcIvPkBlYiAwqu/SZEDOgfdcBrMSANAbbBXcL9gxxWDA4yLM5KMUNMrM4yIa5YBXgsgFmxQD4JQMKjPNbkqf8bkCf2OAAONFLT4LL7RLra3BFN/zIdGuTNVFhzRAXS1R1tJw2q8dQ9w6ariVLiBNp2NQJOVgniPuNo5DXoxtxM2cjcLhbJPW4HMvOHQ/Xmlr72wBDtkKhCxJut+bFAx2Ho9R2e13NSYc1F5MZ8YfVF9M0lSkjORiXYyNRj0W3GwU+X20OE4eleNFIJEAajSCRMvN4uxq4YpQS6rIaE1eYYTj0mqRYRn7Isvs5NM/TLD0o6ry9HrFtmjP3Ph461jG3Z28hIBszVsdJHK6wEkuic43EBX5jdPMdSo0TDibOwQvRaLfzAhRtQyOKltStr1tKLvlnqS/n7RozJqwpCnFkd2tHMlnsxNY6PE3+cexru1cv6/jl5Z1Kf2bOX1EpGz+pFE8/qPR38Pj38i1tHTPsUQb5G/xgItOWJY+CAfz3VqgNjsWSgNCKIFeSoFRjC99NPq8R3kUrZJ0cju+UcmQn6/ctosN/oRuRDQs/BZOsi4P4QUljoZq5Ghum/LlNdB/foSKrQBmSNmO8UeW0QHMtZ+KocPUiE7E3mfFNZtV/0yNiqePyTj4deXA58pg4Zs/gWWe1ppc1BIoXwfiaGQeRK7rNPZKNWcQrZwB+HQhDrt7CLezESfLdMMcxdvWYbjs2sTFFrFOQnDfXYjUhSd3ZFBW22bX1p65xj17RWjwVO34I8QzX2+0MNbWS3cOhuDOD80BwiqoqDUYT71wIbpis+/aIAdpRA5QEdB6t0I0iIsDdnmxVryO/ZlnePC2/WZANVWMBq61P+U7QUjSTmC1Lkdk2ZHuCkoMYlbyDmjKZnhSTMZAAOtPsYtZYoEjKtNfBr0eFPZ3qmkbbgFcquhF1W75UuFK6AqaOKdfjmehu1ZkjkHklE6nTemGyu7vevYiUm7Q7ng8t4nEc40cofKDno/+wTxXXDKfxIZ2Yi5ltaTCwAHgnuDFoSGXg/EGpNLNQtCogIGZ/Ra0QZiB801VJlotVczBAW2lEomErMcPuo9zf6jMs8WzTDbEXvNmLgw6rmYbVgYfJTYfx/PfqxzhhwWaZFtomgOhty+TxQJ8Dg8jn3x8VRCHdHStMJwxjj+YVXo/31Cfjs+HnTGgdIXuouxGdTCaYI7s2zFMG2WCHXtcHLfObiGzS4rQUojorJt+khEsX+gqdOgM2lBY6MxZdlaN+9wypb6Smpk85hlTDwvOVxF4mxjYDGpmsW9e7aRiceArI14NJsvR6hgp7dGn+ik2VjBereHjkAWM+SAePeqRClJt4gPM08Pop7+vMKD00F/wcRFSTUSm1NpqBjdlmGqxijdZyqRweNqPIc9UCntJ39251Episrk5FWU6XUh3t0MTkeQgP8zkTrkOxcqkcLhG2dyFjA6UbN2e8NY0SgT2hXy7YgdxaV0VJLA+5BL3h8hLdWoSbFRTY/ddHBTPPC4W00Y+p+0Ql+Y2yQXh4gLUog4xYDiT5N1P332hK+j5tLxNMJg4nA5DyDJ/T9vScZn7IOG+ZDIGsdgOtvuXBs4NkmTMbyrB7jzeRzf8Q73jMQPf+TjpDMn/fnp9j1XDrLjLiKGYgfreXDd6CukZDRZ0+tSgnPXxCjVWUHRb6T389qYuQGcDz+wOol/qqTNPTZUd5Io4bO92g0JzcbnT3jFLGwTdhU5cbF4P1NlBVwCK9vDZPPWEIctgmxgr3xDzbGWgDiLU4KTKt8Ey/irJk2vRCOGAtFTE2crAdwSe5IiodlGAGrc1VXUCOK/ce6euQvh5losS9eYR231o2EyqRf036bR9ctOMBP92pR8bMoTjfq/tFW1pAY1SqDrCjbp1wuHD6CTUO9SCdEXlzu2gGInWlTxl8jD7KUuV3KtuUVnlyxWi0xrszEW21iVnfwvoHkZMej5q63OD2DbEj8hatxHbTcTdtTfHkdIhm3Tqas+qJEAmjiM53FxM3ULtMA8A6DFTrKKh1CtPIKlufmHIeSn4a2wLEy28swGdqtlQMbN+onB3UpXkcCK7bJ80NTLxgSUPPzyPjWYjl2OBliL4fG7F6Wc70G2cEo8WckPsoYknDcYSl6wYn8/f/MGknzEldz6aND3CyHih9yz0i8qsSoUZtVlX/EhVzFTGmYoVBX2FVIvX4+YDdeWujQR7w9zwOwd0fhgomDM6FfgIFw/Kb49kZoR/KYIrobTR7Np+29gmAB+r4fHIuMNnkUqa86UXqPSBndmTA3qHodSQ0a3fNzSiJh4wOLterH16Jgpxbc32c62JHTPa4QPwWi51BqOKq02QijhE+HOotypgqftWu144PgSngNLI9bpFBWLE7oWsymcntwq2TsyiiY39IQvF8mf0TpJiTeSzwcx7yQikFpGWP19PA4ooE1LGsvbPGOHx84qxHPjv9NFr5aEc2OCv91tQ0IrteHk4LeQFn1oAkQf9r+kR+3I0g3+9LftykvF24vt0DP+8If74f/h9sY0vE
+08-09-14 18:33:11 86.142.141.180 (PaymentForm) got field - FormMode -> THREE_D_SECURE
+08-09-14 18:33:11 86.142.141.180 (PaymentForm) got field - ShoppingCartHashDigest -> d41d8cd98f00b204e9800998ecf8427e
+08-09-14 18:33:11 86.142.141.180 (PaymentForm) End dump ---------------------------------
+08-09-14 18:33:12 86.142.141.180 (PaymentForm) Transaction message is AuthCode: 033035
+08-09-14 18:33:12 86.142.141.180 Retrieving (not potential anymore) order details using sql [SELECT * FROM ticket_order where ip = '86.142.141.180']
+08-09-14 18:33:12 86.142.141.180 Updating auth number using sql [UPDATE ticket_order set auth_code = 'AuthCode: 033035' where ip = '86.142.141.180']
+08-09-14 18:33:12 86.142.141.180 Creating Auth record using sql [INSERT into ticket_auth (uid, order_number, card_name, card_number, expiry_month, expiry_year, cv2, address1, address2, address3, address4, city, state, post_code, country_short, amount, currency_short, auth_code) VALUES ('69','69-1410197351','j walker','5301270467180000','03','16','563','30summervaleavenue','','','','annan','','DG126EP','GBR','3000','GBP','AuthCode: 033035')]
+*************************************************************************************************
+*************************************************************************************************
+*************************************************************************************************
+*************************************************************************************************
+*************************************************************************************************
+*************************************************************************************************
+*************************************************************************************************
+*************************************************************************************************
+*************************************************************************************************
+*************************************************************************************************
+*************************************************************************************************
+10-09-14 08:51:53 86.172.14.240 Entrypoint to PaymentSense
+10-09-14 08:51:53 86.172.14.240 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '86.172.14.240']
+10-09-14 08:51:53 86.172.14.240 Matching passed sid 2fidm4d63nvtms4utfmbnq42f2 with db sid 2fidm4d63nvtms4utfmbnq42f2
+10-09-14 08:51:53 86.172.14.240 Retrieving event details using sql [SELECT * FROM ticket_event where id = 243]
+10-09-14 08:51:53 86.172.14.240 Retrieved event record The JOHN BURGESS HOT FOUR: Remembering Alex Welsh
+10-09-14 08:51:53 86.172.14.240 Going with order number 69-1410335513 (based on uid-time)
+10-09-14 08:51:53 86.172.14.240 Updating order number using sql [UPDATE ticket_order set order_number = '69-1410335513' where ip = '86.172.14.240']
+10-09-14 08:51:53 86.172.14.240 (PaymentForm) Start dump -------------------------------
+10-09-14 08:51:53 86.172.14.240 (PaymentForm) End dump ---------------------------------
+10-09-14 08:53:46 86.172.14.240 (PaymentForm) Start dump -------------------------------
+10-09-14 08:53:46 86.172.14.240 (PaymentForm) got field - FormMode -> PAYMENT_FORM
+10-09-14 08:53:46 86.172.14.240 (PaymentForm) got field - HashDigest -> 839c76f17eff9e01de3af5c0e9115928
+10-09-14 08:53:46 86.172.14.240 (PaymentForm) got field - Amount -> 2000
+10-09-14 08:53:46 86.172.14.240 (PaymentForm) got field - CurrencyShort -> GBP
+10-09-14 08:53:46 86.172.14.240 (PaymentForm) got field - OrderID -> 69-1410335513
+10-09-14 08:53:46 86.172.14.240 (PaymentForm) got field - OrderDescription -> The JOHN BURGESS HOT FOUR: Remembering Alex Welsh
+10-09-14 08:53:46 86.172.14.240 (PaymentForm) got field - CardName -> Mr Alan K Bean
+10-09-14 08:53:46 86.172.14.240 (PaymentForm) got field - CardNumber -> 5299307023654542
+10-09-14 08:53:46 86.172.14.240 (PaymentForm) got field - ExpiryDateMonth -> 08
+10-09-14 08:53:46 86.172.14.240 (PaymentForm) got field - ExpiryDateYear -> 15
+10-09-14 08:53:46 86.172.14.240 (PaymentForm) got field - StartDateMonth -> 06
+10-09-14 08:53:46 86.172.14.240 (PaymentForm) got field - StartDateYear -> 12
+10-09-14 08:53:46 86.172.14.240 (PaymentForm) got field - IssueNumber -> 
+10-09-14 08:53:46 86.172.14.240 (PaymentForm) got field - CV2 -> 642
+10-09-14 08:53:46 86.172.14.240 (PaymentForm) got field - Address1 -> The Coachhouse
+10-09-14 08:53:46 86.172.14.240 (PaymentForm) got field - Address2 -> Ballplay Road
+10-09-14 08:53:46 86.172.14.240 (PaymentForm) got field - Address3 -> 
+10-09-14 08:53:46 86.172.14.240 (PaymentForm) got field - Address4 -> 
+10-09-14 08:53:46 86.172.14.240 (PaymentForm) got field - City -> MOFFAT
+10-09-14 08:53:46 86.172.14.240 (PaymentForm) got field - State -> Dumfriesshire
+10-09-14 08:53:46 86.172.14.240 (PaymentForm) got field - PostCode -> DG10 9JX
+10-09-14 08:53:46 86.172.14.240 (PaymentForm) got field - CountryShort -> GBR
+10-09-14 08:53:46 86.172.14.240 (PaymentForm) End dump ---------------------------------
+10-09-14 08:53:49 86.172.14.240 Updating order details with payment info, using sql [UPDATE ticket_order set
+				card_name = 'Mr Alan K Bean',
+				card_number = '5299307023654542', 
+				card_expiry_month = '08',
+				card_expiry_year = '15',
+				card_cv2 = '642',
+				card_address1 = 'The Coachhouse',
+				card_address2 = 'Ballplay Road',
+				card_address3 = '',
+				card_address4 = '', 
+				card_city = 'MOFFAT',
+				card_state = 'Dumfriesshire',
+				card_post_code = 'DG10 9JX',
+				card_country_short = 'GBR',
+				card_currency_short = 'GBP',
+				card_amount = '2000'
+				where ip = '86.172.14.240']
+10-09-14 08:54:03 86.172.14.240 (PaymentForm) Start dump -------------------------------
+10-09-14 08:54:03 86.172.14.240 (PaymentForm) got field - CrossReference -> 140910075347945201132710
+10-09-14 08:54:03 86.172.14.240 (PaymentForm) got field - PaRES -> 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
+10-09-14 08:54:03 86.172.14.240 (PaymentForm) got field - FormMode -> THREE_D_SECURE
+10-09-14 08:54:03 86.172.14.240 (PaymentForm) got field - ShoppingCartHashDigest -> d41d8cd98f00b204e9800998ecf8427e
+10-09-14 08:54:03 86.172.14.240 (PaymentForm) End dump ---------------------------------
+10-09-14 08:54:05 86.172.14.240 (PaymentForm) Transaction message is AuthCode: T16707
+10-09-14 08:54:05 86.172.14.240 Retrieving (not potential anymore) order details using sql [SELECT * FROM ticket_order where ip = '86.172.14.240']
+10-09-14 08:54:05 86.172.14.240 Updating auth number using sql [UPDATE ticket_order set auth_code = 'AuthCode: T16707' where ip = '86.172.14.240']
+10-09-14 08:54:05 86.172.14.240 Creating Auth record using sql [INSERT into ticket_auth (uid, order_number, card_name, card_number, expiry_month, expiry_year, cv2, address1, address2, address3, address4, city, state, post_code, country_short, amount, currency_short, auth_code) VALUES ('69','69-1410335513','Mr Alan K Bean','5299307023654542','08','15','642','The Coachhouse','Ballplay Road','','','MOFFAT','Dumfriesshire','DG10 9JX','GBR','2000','GBP','AuthCode: T16707')]
+10-09-14 13:32:44 31.185.184.246 Entrypoint to PaymentSense
+10-09-14 13:32:44 31.185.184.246 Retrieving (potential) order details using sql [SELECT * FROM ticket_order where ip = '31.185.184.246']
+10-09-14 13:32:44 31.185.184.246 Matching passed sid 2fidm4d63nvtms4utfmbnq42f2 with db sid 2fidm4d63nvtms4utfmbnq42f2
+10-09-14 13:32:44 31.185.184.246 Retrieving event details using sql [SELECT * FROM ticket_event where id = 237]
+10-09-14 13:32:44 31.185.184.246 Retrieved event record AN AFTERNOON OF ACOUSTIC BLUES
+10-09-14 13:32:44 31.185.184.246 Going with order number 69-1410352364 (based on uid-time)
+10-09-14 13:32:44 31.185.184.246 Updating order number using sql [UPDATE ticket_order set order_number = '69-1410352364' where ip = '31.185.184.246']
+10-09-14 13:32:44 31.185.184.246 (PaymentForm) Start dump -------------------------------
+10-09-14 13:32:44 31.185.184.246 (PaymentForm) End dump ---------------------------------
+10-09-14 13:36:14 31.185.184.246 (PaymentForm) Start dump -------------------------------
+10-09-14 13:36:14 31.185.184.246 (PaymentForm) got field - FormMode -> PAYMENT_FORM
+10-09-14 13:36:14 31.185.184.246 (PaymentForm) got field - HashDigest -> cd4b223f7f3854fcf2c9b4ab279edcc4
+10-09-14 13:36:14 31.185.184.246 (PaymentForm) got field - Amount -> 2000
+10-09-14 13:36:14 31.185.184.246 (PaymentForm) got field - CurrencyShort -> GBP
+10-09-14 13:36:14 31.185.184.246 (PaymentForm) got field - OrderID -> 69-1410352364
+10-09-14 13:36:14 31.185.184.246 (PaymentForm) got field - OrderDescription -> AN AFTERNOON OF ACOUSTIC BLUES
+10-09-14 13:36:14 31.185.184.246 (PaymentForm) got field - CardName -> Lawrence Nelson
+10-09-14 13:36:14 31.185.184.246 (PaymentForm) got field - CardNumber -> 5182260201958675
+10-09-14 13:36:14 31.185.184.246 (PaymentForm) got field - ExpiryDateMonth -> 08
+10-09-14 13:36:14 31.185.184.246 (PaymentForm) got field - ExpiryDateYear -> 15
+10-09-14 13:36:14 31.185.184.246 (PaymentForm) got field - StartDateMonth -> 09
+10-09-14 13:36:14 31.185.184.246 (PaymentForm) got field - StartDateYear -> 13
+10-09-14 13:36:14 31.185.184.246 (PaymentForm) got field - IssueNumber -> 
+10-09-14 13:36:14 31.185.184.246 (PaymentForm) got field - CV2 -> 990
+10-09-14 13:36:14 31.185.184.246 (PaymentForm) got field - Address1 -> 5 Elm House Barns
+10-09-14 13:36:14 31.185.184.246 (PaymentForm) got field - Address2 -> High Hesket
+10-09-14 13:36:14 31.185.184.246 (PaymentForm) got field - Address3 -> 
+10-09-14 13:36:14 31.185.184.246 (PaymentForm) got field - Address4 -> 
+10-09-14 13:36:14 31.185.184.246 (PaymentForm) got field - City -> Carlisle
+10-09-14 13:36:14 31.185.184.246 (PaymentForm) got field - State -> Cumbria
+10-09-14 13:36:14 31.185.184.246 (PaymentForm) got field - PostCode -> CA4 0HS
+10-09-14 13:36:14 31.185.184.246 (PaymentForm) got field - CountryShort -> GBR
+10-09-14 13:36:14 31.185.184.246 (PaymentForm) End dump ---------------------------------
+10-09-14 13:36:17 31.185.184.246 Updating order details with payment info, using sql [UPDATE ticket_order set
+				card_name = 'Lawrence Nelson',
+				card_number = '5182260201958675', 
+				card_expiry_month = '08',
+				card_expiry_year = '15',
+				card_cv2 = '990',
+				card_address1 = '5 Elm House Barns',
+				card_address2 = 'High Hesket',
+				card_address3 = '',
+				card_address4 = '', 
+				card_city = 'Carlisle',
+				card_state = 'Cumbria',
+				card_post_code = 'CA4 0HS',
+				card_country_short = 'GBR',
+				card_currency_short = 'GBP',
+				card_amount = '2000'
+				where ip = '31.185.184.246']
+10-09-14 13:37:30 31.185.184.246 (PaymentForm) Start dump -------------------------------
+10-09-14 13:37:30 31.185.184.246 (PaymentForm) got field - FormMode -> PAYMENT_FORM
+10-09-14 13:37:30 31.185.184.246 (PaymentForm) got field - HashDigest -> cd4b223f7f3854fcf2c9b4ab279edcc4
+10-09-14 13:37:30 31.185.184.246 (PaymentForm) got field - Amount -> 2000
+10-09-14 13:37:30 31.185.184.246 (PaymentForm) got field - CurrencyShort -> GBP
+10-09-14 13:37:30 31.185.184.246 (PaymentForm) got field - OrderID -> 69-1410352364
+10-09-14 13:37:30 31.185.184.246 (PaymentForm) got field - OrderDescription -> AN AFTERNOON OF ACOUSTIC BLUES
+10-09-14 13:37:30 31.185.184.246 (PaymentForm) got field - CardName -> Lawrence Nelson
+10-09-14 13:37:30 31.185.184.246 (PaymentForm) got field - CardNumber -> 5181260201958675
+10-09-14 13:37:30 31.185.184.246 (PaymentForm) got field - ExpiryDateMonth -> 08
+10-09-14 13:37:30 31.185.184.246 (PaymentForm) got field - ExpiryDateYear -> 15
+10-09-14 13:37:30 31.185.184.246 (PaymentForm) got field - StartDateMonth -> 09
+10-09-14 13:37:30 31.185.184.246 (PaymentForm) got field - StartDateYear -> 13
+10-09-14 13:37:30 31.185.184.246 (PaymentForm) got field - IssueNumber -> 
+10-09-14 13:37:30 31.185.184.246 (PaymentForm) got field - CV2 -> 990
+10-09-14 13:37:30 31.185.184.246 (PaymentForm) got field - Address1 -> 5 Elm House Barns
+10-09-14 13:37:30 31.185.184.246 (PaymentForm) got field - Address2 -> High Hesket
+10-09-14 13:37:30 31.185.184.246 (PaymentForm) got field - Address3 -> 
+10-09-14 13:37:30 31.185.184.246 (PaymentForm) got field - Address4 -> 
+10-09-14 13:37:30 31.185.184.246 (PaymentForm) got field - City -> Carlisle
+10-09-14 13:37:30 31.185.184.246 (PaymentForm) got field - State -> Cumbria
+10-09-14 13:37:30 31.185.184.246 (PaymentForm) got field - PostCode -> CA4 0HS
+10-09-14 13:37:30 31.185.184.246 (PaymentForm) got field - CountryShort -> GBR
+10-09-14 13:37:30 31.185.184.246 (PaymentForm) End dump ---------------------------------
+10-09-14 13:37:32 31.185.184.246 Updating order details with payment info, using sql [UPDATE ticket_order set
+				card_name = 'Lawrence Nelson',
+				card_number = '5181260201958675', 
+				card_expiry_month = '08',
+				card_expiry_year = '15',
+				card_cv2 = '990',
+				card_address1 = '5 Elm House Barns',
+				card_address2 = 'High Hesket',
+				card_address3 = '',
+				card_address4 = '', 
+				card_city = 'Carlisle',
+				card_state = 'Cumbria',
+				card_post_code = 'CA4 0HS',
+				card_country_short = 'GBR',
+				card_currency_short = 'GBP',
+				card_amount = '2000'
+				where ip = '31.185.184.246']
+10-09-14 13:37:34 31.185.184.246 (PaymentForm) Start dump -------------------------------
+10-09-14 13:37:34 31.185.184.246 (PaymentForm) got field - CrossReference -> 140910123731290101249073
+10-09-14 13:37:34 31.185.184.246 (PaymentForm) got field - PaRES -> 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
+10-09-14 13:37:34 31.185.184.246 (PaymentForm) got field - FormMode -> THREE_D_SECURE
+10-09-14 13:37:34 31.185.184.246 (PaymentForm) got field - ShoppingCartHashDigest -> d41d8cd98f00b204e9800998ecf8427e
+10-09-14 13:37:34 31.185.184.246 (PaymentForm) End dump ---------------------------------
+10-09-14 13:37:36 31.185.184.246 (PaymentForm) Transaction message is AuthCode: 014834
+10-09-14 13:37:36 31.185.184.246 Retrieving (not potential anymore) order details using sql [SELECT * FROM ticket_order where ip = '31.185.184.246']
+10-09-14 13:37:36 31.185.184.246 Updating auth number using sql [UPDATE ticket_order set auth_code = 'AuthCode: 014834' where ip = '31.185.184.246']
+

@@ -153,6 +153,15 @@ class Event extends CActiveRecord
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+            // @@EG: Set default sort orderr
+            'sort'=>array(
+                'defaultOrder'=>'id DESC',
+            ),      
+            // @@EG: Change cgridview pagination
+            'pagination' => array(
+                'pageSize' => 50,
+            ),
+
 		));
 	}
 }
