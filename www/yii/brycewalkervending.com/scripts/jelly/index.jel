@@ -7,7 +7,7 @@ include = default-values
 [* : defaults]
 
 [screen]
-child = site
+child = vendor-cameo, site
 fx.wallpaper-image = /img/background.jpg
 css.display = block
 
@@ -102,7 +102,7 @@ css.display = block
 [site-content]
 child = menu-bar, slider, pages, footer
 css.margin-top = -30px
-css.margin-bottom = 30px
+css.margin-bottom = 120px
 css.width = 100%
 css.max-width = 960px
 css.background-color = white
@@ -168,7 +168,8 @@ addon.slider.shopping.images = 5
 
 	[pages]
 	child = tabs, content, contact	
-	css.width = 960px
+	css.width = 90%
+	css.min-width = 900px
 	
 	
 		[tabs]
@@ -222,6 +223,7 @@ addon.slider.shopping.images = 5
 [footer]
 child = footer-border, footer-content
 css.width = 100%
+css.min-width = 900px
 css.margin-top = 30px
 
 [footer-border]
@@ -235,6 +237,7 @@ child = footer-menu, footnote
 css.width = 80%
 css.margin-top = 30px
 stacking = horizontal
+css.z-index = 200
 
 	[footer-menu]
 	child = footer-contact, footer-cookies, footer-tandc
@@ -251,6 +254,7 @@ stacking = horizontal
 		[footer-tandc]
 		html.raw = <a style="text-decoration:none; color: black; font-size: 12px;" onmouseover="this.style.color='red'" onmouseout="this.style.color='black'" href="?layout=index&page=terms-conditions">T&Cs</a>
 		css.margin-top = 10px
+		css.z-index = 200
 
 	[footnote]
 	child = copyright, wirefly
@@ -295,3 +299,18 @@ stacking = horizontal
 				image.height = 5px
 				image.align = center
 				clicknew = backend.php	
+				
+################################################
+
+[vendor-cameo]
+css.position = fixed
+css.z-index = 150
+css.width = 25%
+css.margin-bottom = -10px
+css.padding-left = 5%
+css.bottom = 0px
+image.url = img/vendor-cameo.png
+image.width =90%
+image.height = 54%
+image.fx = fx-hover-swing
+click = javascript:playVendor();
