@@ -35,21 +35,23 @@
 			'class' => 'bootstrap.widgets.TbMenu',
 			'items' => array(
                 array('label' => 'Pages', 'url' => array('/contentBlock/admin'), 'visible' => !Yii::app()->user->isGuest),
+                array('label' => 'Ticker', 'url' => array('/jellyTicker/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Image Sliders', 'url' => array('/jellySliderImage/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'HTML Sliders', 'url' => array('/jellySliderHtml/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Tabs', 'url' => array('/tabBlock/admin'), 'visible' => !Yii::app()->user->isGuest),                      
                 array('label' => 'Galleries', 'url' => array('/jellyGallery/admin'), 'visible' => !Yii::app()->user->isGuest),                      
 				array('label' => 'Products', 'url' => 'https://plugin.wireflydesign.com/product/backend.php/site/demo2Direct', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
-				array('label' => 'Blog', 'url' => 'https://plugin.wireflydesign.com/blog/backend.php/site/demo2Direct', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'News', 'url' => 'https://plugin.wireflydesign.com/blog/backend.php/site/demo2Direct', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+				 array('label' => 'Mailer', 'url' => 'https://plugin.wireflydesign.com/mailer/backend.php/site/demo2Direct', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Tickets', 'url' => 'https://plugin.wireflydesign.com/ticket/backend.php/site/demo2Direct', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
-
 array('label' => 'Downloads', 'url' => '#', 'visible' => !Yii::app()->user->isGuest,
                 'items' => array(
                     array('label' => 'Files', 'url' => array('/jellyDownloadFile/admin'), 'visible' => !Yii::app()->user->isGuest),
                     array('label' => 'Collections', 'url' => array('/jellyDownloadCollection/admin'), 'visible' => !Yii::app()->user->isGuest),
                 )),
-
+                array('label' => 'Ad Blocks', 'url' => array('/jellyAdblock/admin'), 'visible' => !Yii::app()->user->isGuest),
+                array('label' => 'Settings', 'url' => array('/jellySetting/admin'), 'visible' => !Yii::app()->user->isGuest),
 
                 array('label' => 'Logout', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),                 
                 array('label' => 'Contact', 'url' => array('/site/contact'), 'visible' => Yii::app()->user->isGuest),                

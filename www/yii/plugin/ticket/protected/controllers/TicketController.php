@@ -120,9 +120,12 @@ class TicketController extends Controller
 
         // renders the view file 'protected/views/ticket/book.php'
         // using the default layout 'protected/views/layouts/main.php'
-        $this->render('book',array(
-                        'model'=>$model,
-                        'somedata'=>array(1,2,3),
+		if (!($model->active))
+			die('Sorry, this ticket event is inactive now');
+		else
+        	$this->render('book',array(
+                        	'model'=>$model,
+                        	'somedata'=>array(1,2,3),
         ));
 	}
 
@@ -286,7 +289,7 @@ $this->redirect($tmp2);
 			// Check for duplicate Auth Code!!!!!
 			if ($orderCount == 0)
 			{
-				$file = "/home/tmp/ticketemail.dat";
+				$file = Yii::app()->basePath . "/../tmp/ticketemail.dat";
 				if (strpos(file_get_contents($file), $order->auth_code) !== false)
 				{
     				Yii::log("PAID PAGE BAILING - DETECTED DUPLICATE AUTH:" . $order->auth_code, CLogger::LEVEL_WARNING, 'system.test.kim');

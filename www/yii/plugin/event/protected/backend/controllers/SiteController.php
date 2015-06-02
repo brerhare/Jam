@@ -32,6 +32,17 @@ class SiteController extends Controller
         $this->redirect(array('site/index'));
     }
 
+// @@TODO: HARDCODED FOR DEMO ---------- REMOVE
+    public function actionDemodirect()
+    {
+        Yii::app()->session['uid'] = 4;
+        $identity = new UserIdentity('demo', 'demo');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
 // @@TODO: HARDCODED FOR ABSOLUTE CLASSICS ---------- REMOVE
     public function actionAbsoluteClassicsdirect()
     {
