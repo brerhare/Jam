@@ -78,6 +78,19 @@ class SiteController extends Controller
 		$this->render('contact',array('model'=>$model));
 	}
 
+	/**
+	 * Displays the DIRECT login page
+	 */
+// @@TODO: HARDCODED FOR OUTLOOK SOLUTIONS ---------- REMOVE
+	public function actionOutlookDirect()
+	{
+		Yii::app()->session['uid'] = 87;
+		$identity = new UserIdentity('martin@outlooksolutions.com.au', '83bs9hrdb');
+		$duration = 3600*24*14; // 14 days
+		Yii::app()->user->login($identity, $duration);
+		$this->redirect(array('site/index'));
+	}
+
     /**
      * Displays the DIRECT login page
      */

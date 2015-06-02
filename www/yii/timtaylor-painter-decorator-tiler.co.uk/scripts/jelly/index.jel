@@ -1,20 +1,265 @@
+#Tim Taylor
 [defaults]
 include = default-values
 
-; Every blob inherits these before adding/overriding
 [* : defaults]
 
 [screen]
-child = contentframe
-fx.wallpaper-image = /img/background.jpg
+child = site
 css.display = block
+css.background-color = white
+#addon.analytics.google_analytics.ua = UA-20115178-1
 
-	[contentframe]
-	css.display = block
-	css.width = 500px
-	css.margin-top = 400px
-	style.html.h1.color = yellow
-	style.html.h1.background-color = black
-	style.html.h1.padding = 10px
-	html.h1 = a jelly&#0153; site is coming soon
+	[site]
+	child = header, middle, footer
+	css.width = 100%
+####  Header  #################################
+
+	[header]
+	child = logo
+	css.box-shadow = 0px 8px 8px rgba(0,0,0,0.5)
+	css.width = 100%
+	css.height = 125px
+	css.min-width = 750px
+	
+		[logo]
+		css.margin-top = 25px
+		css.width = 50%
+		css.min-width = 600px
+		css.background-size = 100%
+		css.background-image = url('/img/name.png')
+		css.background-repeat = no-repeat
+		css.padding-top = 11.6%
+#divide the height by the width for the proportional padding height
+
+		click = http://www.timtaylor-painter-decorator-tiler.co.uk/
+		
+		css.margin-bottom = -30px
+		
+
+
+#### middle left ###########################################
+
+[middle]
+child = left, main
+stacking = horizontal
+css.margin-top = 50px
+css.width = 60%
+css.min-width = 850px
+
+	[left]
+	child = menu, menu-footnote
+	css.width = 21%
+	css.min-width = 80px
+	css.background-color = white
+	
+		[menu]
+		css.overflow = visible
+		css.z-index = 100
+		css.position = relative
+
+		addon.menu.basic.orientation = vertical
+		addon.menu.basic.width = 80px
+#		addon.menu.basic.height = 40px
+		addon.menu.basic.menu-color = transparent
+		addon.menu.basic.item-separator-color = #e8d7ab
+		addon.menu.basic.item-separator-width = 1px
+
+		addon.menu.basic.font-size = 16px
+		addon.menu.basic.menu-text-color = black
+
+		addon.menu.basic.item-color = white
+		addon.menu.basic.item-text-color = black
+
+		addon.menu.basic.submenu-color = white
+	
+		addon.menu.basic.subitem-color = white
+		addon.menu.basic.subitem-text-color = black
+		addon.menu.basic.subitem-seperator-color = white 
+		
+########
+
+		[menu-footnote]
+		child = address, trusted-trader, standard-links, credits
+		#css.height = 100px
+		css.width = 90%
+		css.margin-top = 10px
+
+############
+			[address]
+			child = add-name, add-phone, add1, add2, add3, add4, add5
+			css.margin-top = 50px
+			css.color = Black
+			css.line-height = 130%
+			css.font-size = 12px
+			css.font-weight = normal
+				
+				[add-name]
+				html.raw = <span style="font-size:14px; font-weight: bold;">Tim Taylor</span><br/><br/>
+				
+				[add-phone]
+				html.raw = Tel: 01387 780580<br/><br/>
+				html.raw = Mob: 07786 942505<br/><br/>
+				
+				[add1]
+				html.raw = tim.taylor@commdev.co.uk<br/><br/>
+				html.raw = Dinnings Wood<br/>
+				
+				[add2]
+				html.raw = Sandyhills<br/>
+				
+				[add3]
+				html.raw = Dalbeattie<br/>
+				
+				[add4]
+				html.raw = Dumfries<br/>
+				
+				[add5]
+				html.raw = DG5 4NZ<br/>
+				
+			[trusted-trader]
+			css.margin-top = 50px
+			css.background-size = 100%
+			css.background-image = url('/img/trusted trader.png')
+			css.background-repeat = no-repeat
+			css.padding-top = 53%
+			
+############			
+			[standard-links]
+			child = footer-contact, footer-cookies, footer-terms
+			css.line-height = 20px
+			css.color = black
+			css.margin-top = 60px
+			
+				[footer-contact]
+				html.raw = <a style="text-decoration:none; color: black; font-size: 12px;" onmouseover="this.style.color='#e8d7ab'" onmouseout="this.style.color='black'" href="?layout=index&page=contact-tim-taylor-paintor-decorator-tiler">CONTACT</a>
+
+				[footer-cookies]
+				#css.margin-top = 10px
+				html.raw = <a style="text-decoration:none; color: black; font-size: 12px;" onmouseover="this.style.color='#e8d7ab'" onmouseout="this.style.color='black'" href="?layout=index&page=cookie-policy">COOKIES</a>
+				
+
+				[footer-terms]
+				#css.margin-top = 10px
+				html.raw = <a style="text-decoration:none; color: black; font-size: 12px;" onmouseover="this.style.color='#e8d7ab'" onmouseout="this.style.color='black'" href="?layout=index&page=terms-conditions">TERMS</a>
+				
+############
+			[credits]
+			child = copyright, admin-links
+			css.width = 100%
+			css.margin-top = 30px
+			
+				[copyright]
+				html.raw = Tim Taylor, Painter, Decorator, Tiler &copy 2015 <br>All rights reserved
+				css.color = #000000
+				css.font-size = 10px
+				css.text-align = left
+				
+				[admin-links]
+				child = wirefly, admin
+				stacking = horizontal
+				css.margin-top = 40px
+		
+				
+					[wirefly]
+					css.height = 45px
+					css.margin-top = 5px
+					image.url = img/wirefly-design.png
+					image.width = 100px
+					image.height = 46px
+					image.align = left
+					clicknew = http://www.wireflydesign.com
+					
+				
+					[admin]
+					css.height = 30px
+					css.margin-left = -20px
+					image.url = img/admin.png
+					image.width = 20px
+					image.height = 20px
+					image.align = left
+					clicknew = backend.php					
+		
+		
+#### middle main ###########################################	
+
+[main]
+child = slider, body, bar
+css.width = 74%	
+css.min-width = 640px
+css.margin-left = 3%
+
+	[slider]
+	css.width = 90%
+	css.margin-left = 5%
+	css.margin-bottom = 20px
+  	css.height = 430px
+	condition = @PAGE=@HOMEPAGE
+	addon.slider.flexslider.width = 600px
+	addon.slider.flexslider.height = 400px
+	addon.slider.flexslider.mode = image
+	addon.slider.flexslider.source = db
+
+	#addon.slider.flexslider.border-width = 0px
+	#addon.slider.flexslider.border-color = red
+	addon.slider.flexslider.active-dotcolor = #c9a582
+	addon.slider.flexslider.inactive-dotcolor = #eee2c3
+	addon.slider.flexslider.dot-margin-top = -28px
+	#addon.slider.flexslider.dot-margin-bottom = 0px
+	#addon.slider.flexslider.dot-margin-left = 0px
+	#addon.slider.flexslider.dot-margin-right = 0px
+	addon.slider.flexslider.animation = slide
+	
+	[body]
+	child = content, contact
+	css.width = 90%
+	css.background-color = white
+			
+		[content]
+		css.margin-top = -15px
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
+		
+		[contact]
+		child = contact-form
+		condition = @PAGE=contact-tim-taylor-paintor-decorator-tiler
+		css.height = 300px
+		css.width = 100%
+		
+	
+			[contact-form]
+			css.width = 80%
+			css.background-color = white
+			addon.contact.contactform.edgepadding = 0px
+			addon.contact.contactform.buttoncolor = #fafafa
+			addon.contact.contactform.buttontextcolor = #c9a582
+			addon.contact.contactform.buttontext = [&nbsp;&nbsp; Submit &nbsp;&nbsp;]
+			addon.contact.contactform.successtextcolor = green
+			addon.contact.contactform.failuretextcolor = red
+			addon.contact.contactform.textcolor = grey
+			addon.contact.contactform.backcolor = #fafafa
+			addon.contact.contactform.inputspacing = 10px
+			addon.contact.contactform.inputwidth = 90%
+
+
+			
+	[bar]
+	css.margin-top = 30px
+	css.width = 80%
+	css.background-size = 100%
+	css.background-image = url('/img/line.png')
+	css.background-repeat = no-repeat
+	css.padding-top = 1.6%
+#divide the height by the width for the proportional padding height
+	
+
+
+####footer####################################
+
+[footer]
+css.height = 100px
+css.width = 100%
+
 
