@@ -49,7 +49,7 @@ css.min-width = 850px
 
 	[left]
 	child = menu, menu-footnote
-	css.width = 15%
+	css.width = 21%
 	css.min-width = 80px
 	css.background-color = white
 	
@@ -60,7 +60,7 @@ css.min-width = 850px
 
 		addon.menu.basic.orientation = vertical
 		addon.menu.basic.width = 80px
-		addon.menu.basic.height = 40px
+#		addon.menu.basic.height = 40px
 		addon.menu.basic.menu-color = transparent
 		addon.menu.basic.item-separator-color = #e8d7ab
 		addon.menu.basic.item-separator-width = 1px
@@ -87,7 +87,7 @@ css.min-width = 850px
 
 ############
 			[address]
-			child = add-name, add-phone, add1, add2, add3, add4,
+			child = add-name, add-phone, add1, add2, add3, add4, add5
 			css.margin-top = 50px
 			css.color = Black
 			css.line-height = 130%
@@ -95,12 +95,14 @@ css.min-width = 850px
 			css.font-weight = normal
 				
 				[add-name]
-				html.raw = <span style="font-size:14px; font-weight: bold;">Tim Taylor</span><br/>
+				html.raw = <span style="font-size:14px; font-weight: bold;">Tim Taylor</span><br/><br/>
 				
 				[add-phone]
-				html.raw = Tel: 01556 680488<br/><br/>
+				html.raw = Tel: 01387 780580<br/><br/>
+				html.raw = Mob: 07786 942505<br/><br/>
 				
 				[add1]
+				html.raw = tim.taylor@commdev.co.uk<br/><br/>
 				html.raw = Dinnings Wood<br/>
 				
 				[add2]
@@ -110,6 +112,9 @@ css.min-width = 850px
 				html.raw = Dalbeattie<br/>
 				
 				[add4]
+				html.raw = Dumfries<br/>
+				
+				[add5]
 				html.raw = DG5 4NZ<br/>
 				
 			[trusted-trader]
@@ -127,7 +132,7 @@ css.min-width = 850px
 			css.margin-top = 60px
 			
 				[footer-contact]
-				html.raw = <a style="text-decoration:none; color: black; font-size: 12px;" onmouseover="this.style.color='#e8d7ab'" onmouseout="this.style.color='black'" href="?layout=index&page=contact">CONTACT</a>
+				html.raw = <a style="text-decoration:none; color: black; font-size: 12px;" onmouseover="this.style.color='#e8d7ab'" onmouseout="this.style.color='black'" href="?layout=index&page=contact-tim-taylor-paintor-decorator-tiler">CONTACT</a>
 
 				[footer-cookies]
 				#css.margin-top = 10px
@@ -180,8 +185,8 @@ css.min-width = 850px
 
 [main]
 child = slider, body, bar
-css.width = 80%	
-css.min-width = 650px
+css.width = 74%	
+css.min-width = 640px
 css.margin-left = 3%
 
 	[slider]
@@ -218,15 +223,14 @@ css.margin-left = 3%
 		html.raw = ContentBlock.content
 		
 		[contact]
-		child = contact-form, contact-text
-		condition = @PAGE=contact
+		child = contact-form
+		condition = @PAGE=contact-tim-taylor-paintor-decorator-tiler
 		css.height = 300px
-		stacking = horizontal
+		css.width = 100%
+		
 	
 			[contact-form]
-			css.width = 60%
-			css.margin = 0px
-			#css.margin-bottom = 30px
+			css.width = 80%
 			css.background-color = white
 			addon.contact.contactform.edgepadding = 0px
 			addon.contact.contactform.buttoncolor = #fafafa
@@ -235,15 +239,10 @@ css.margin-left = 3%
 			addon.contact.contactform.successtextcolor = green
 			addon.contact.contactform.failuretextcolor = red
 			addon.contact.contactform.textcolor = grey
-			addon.contact.contactform.backcolor = #FFFFD6
+			addon.contact.contactform.backcolor = #fafafa
 			addon.contact.contactform.inputspacing = 10px
 			addon.contact.contactform.inputwidth = 90%
 
-			[contact-text]
-			css.width = 35%
-			css.margin-top = 80px
-			css.font = 12px
-			html.raw = Please fill in the form and someone will get back to you as soon as possible.
 
 			
 	[bar]

@@ -12,10 +12,10 @@ html, body, p {	height: 100%;
 				line-height: 110%}
 
 /* Global Hyperlink settings - will affect menu text colour if no text settings */ 
-a { text-decoration: none; color:#00ad44; }
-a:visited { text-decoration: none; color:#fc8d3d; }
-a:hover { text-decoration: none; color:#00adc9; }
-a:active { text-decoration: none; color:#00adc9 }
+a { text-decoration: none; color: grey; }
+a:visited { text-decoration: none; color:grey; }
+a:hover { text-decoration: none; color:grey; }
+a:active { text-decoration: none; color:grey }
 
 
 

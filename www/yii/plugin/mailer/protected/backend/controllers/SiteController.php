@@ -109,7 +109,7 @@ class SiteController extends Controller
     }
 
 // @@TODO: HARDCODED FOR DEMO4 ---------- REMOVE
-    public function actiondemo1Direct()
+    public function actiondemo4Direct()
     {
         Yii::app()->session['uid'] = 67;
         $identity = new UserIdentity('demo4', 'demo4');
