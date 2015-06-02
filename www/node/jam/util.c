@@ -111,7 +111,7 @@ char *getWordAlloc(char *src, int wordnum, char *separator)
 	return p;
 }
 
-// You must free the result if result is non-NULL.
+// You must free the result if result is non-NULL
 char *strReplaceAlloc(char *orig, char *rep, char *with) {
 	char *result; // the return string
 	char *ins;    // the next insert point

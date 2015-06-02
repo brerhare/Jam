@@ -1,6 +1,6 @@
 <!-- Place your Google fonts here as a cut and paste then choose which header and fonts etc need the font families - NB if the family only come in Italic then you must state the font style as Italic too -->
 
-<link href='http://fonts.googleapis.com/css?family=Eagle+Lake|Comfortaa' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Lobster|Comfortaa:400,300,700' rel='stylesheet' type='text/css'>
 
 <style type="text/css">
 
@@ -12,14 +12,14 @@ html, h2, h4, body, p {	height: 100%;
 				line-height: 140%;}
 
 /* Global Hyperlink settings - will affect menu text colour if no text settings */ 
-a { text-decoration: none; color:#00ad44; }
-a:visited, a:active { text-decoration: none; color:#fc8d3d; }
-a:hover { text-decoration: none; color:#00adc9; text-shadow: 2px 2px 2px grey; }
+a { text-decoration: none; color:#7f13eb; }
+a:visited, a:active { text-decoration: none; color:#7f13eb; }
+a:hover { text-decoration: none; color:blue; }
 
 
 
-h1 {	font-family: 'Eagle Lake', Verdana, sans-serif !important;
-	color: #00ad44;
+h1 {	font-family: 'Lobster', Verdana, sans-serif !important;
+	color: #7f13eb;
 	font-size: 36px;
 	font-weight: 400;
 	font-style: italic;
@@ -33,14 +33,14 @@ h2 {	font-family: 'Comfortaa', Verdana, sans-serif !important;
 	font-style: italic;}
 
 
-h3 {	font-family: 'Eagle Lake', Verdana, sans-serif !important;
-	color: #00ad44;
+h3 {	font-family: 'Lobster', Verdana, sans-serif !important;
+	color: #7f13eb;
 	font-size: 20px;
 	font-weight: 700;
 	font-stretch: wider;}
 
 h4 {	font-family: 'Comfortaa', Verdana, sans-serif !important;
-	color: #00ad44;
+	color: #7f13eb;
 	font-size: 16px;
 	font-weight: 700;
 	font-stretch: wider;}
