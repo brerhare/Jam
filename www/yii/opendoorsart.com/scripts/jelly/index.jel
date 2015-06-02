@@ -56,7 +56,7 @@ stacking = horizontal
 		[email-signup]
 		child = signup-text, signup, assurance-text
 		css.width = 200px
-		css.height = 180px
+		css.height = 200px
 		css.margin-left = 20px
 		#css.margin-top = 20px
 		css.background-color = white
@@ -88,7 +88,7 @@ stacking = horizontal
 
 			[assurance-text]
 			css.width = 160px
-			css.height = 25px
+			css.height = 45px
 			css.margin-left = 20px
 			css.margin-top = 5px
 			css.text-align = center
@@ -121,35 +121,47 @@ addon.slider.flexslider.pattern = /userdata/image/slider/*
 
 ########################################################
 
-[menu]
-css.height = 40px
-css.overflow = visible
-css.margin-top = -50px
-css.box-shadow = 10px, 20px, 1px
-
-addon.menu.basic.width = 700px
-addon.menu.basic.height = 30px
-addon.menu.basic.font-size = 12px
-addon.menu.basic.menu-rounding = 4px
-
-addon.menu.basic.menu-color = white
-addon.menu.basic.menu-text-color = #2e3a7a
-addon.menu.basic.submenu-color = #ffffff
-addon.menu.basic.item-color = white
-addon.menu.basic.item-text-color = #a70055
-addon.menu.basic.subitem-color = #a70055
-addon.menu.basic.subitem-text-color = white
-addon.menu.basic.subitem-separator-color = #a70055
+#[menu]
+#css.height = 40px
+#css.overflow = visible
+#css.margin-top = -50px
+#css.box-shadow = 10px, 20px, 1px
+#
+#addon.menu.basic.width = 700px
+#addon.menu.basic.height = 30px
+#addon.menu.basic.font-size = 12px
+#addon.menu.basic.menu-rounding = 4px
+#
+#addon.menu.basic.menu-color = white
+#addon.menu.basic.menu-text-color = #2e3a7a
+#addon.menu.basic.submenu-color = #ffffff
+#addon.menu.basic.item-color = white
+#addon.menu.basic.item-text-color = #a70055
+#addon.menu.basic.subitem-color = #a70055
+#addon.menu.basic.subitem-text-color = white
+#addon.menu.basic.subitem-separator-color = #a70055
 
 [content-container]
-child = content
+child = content-background
 css.margin-top = 6px
-css.background-color = white
-fx.rounding = 4px
+
+
+
+	[content-background]
+	child = content
+	css.width = 945px
+	css.margin-left = 0px
+	css.background-color = white
+	fx.rounding = 15px
+	css.box-shadow = 12px 8px 8px rgba(0,0,0,0.5)
+	css.margin-bottom = 30px
+	
 
 	[content]
-	css.margin = 15px
-	css.width = 670px
+	css.margin-left = 90px
+	css.margin-top = 30px
+	css.margin-bottom = 30px
+	css.width = 750px
 	db.table = ContentBlock
 	db.filter = url=$_GET['page']
 	db.error = Sorry, I could not find th page $_GET['page']
@@ -158,10 +170,11 @@ fx.rounding = 4px
 [footer]
 child = temp, footer-menu, wirefly
 stacking = horizontal
-fx.rounding = 4px
-css.width = 700px
+fx.rounding = 15px
+css.width = 945px
 css.height = 80px
 css.margin-top = 5px
+css.margin-left = 0px
 css.background-color = #2e3a7a
 css.font-size = 10px
 
