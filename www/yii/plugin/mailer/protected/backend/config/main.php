@@ -17,7 +17,7 @@ return array(
     'viewPath' => $backend.'/views',
     'runtimePath' => $backend.'/runtime',
 
-	'name'=>'Mailer Backend',
+	'name'=>'Newsletters Backend',
 
 	// preloading 'log' component
 	// preloading 'bootstrap' component

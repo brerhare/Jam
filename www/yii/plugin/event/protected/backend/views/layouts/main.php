@@ -34,6 +34,7 @@ if ($member)
 	'type' => 'null', // null or 'inverse'
 	'brand' => 'Home',
 	'brandUrl' => array('/site/index'),
+	'brandOptions' => array('onclick' => 'window.close()'),
 	'collapse' => true, // requires bootstrap-responsive.css
 	'items' => array(
 		array(
