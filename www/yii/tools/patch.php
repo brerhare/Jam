@@ -1,5 +1,7 @@
 <?php
 
+$testMode = 1;
+
 require 'jellySites.inc';
 
 if (defined('STDIN')) 	// ie running in commandline mode
@@ -13,7 +15,9 @@ if (defined('STDIN')) 	// ie running in commandline mode
 	require($patchFile);
 
 	foreach ($siteList as $domain => $location):
-		//echo "Patching $domain\n";
+		if (($testMode) && (!strstr($location, "demo")))
+			continue;
+		echo "Patching $domain\n";
 		patch($domain, $location);
 	endforeach;
 }
