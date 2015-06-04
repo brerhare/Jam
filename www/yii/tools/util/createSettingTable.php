@@ -1,8 +1,6 @@
 <?php
 
-require 'patchUtil.php';
-
-function patch($domain, $location) {
+function util($domain, $location) {
 
 	$commands= <<<END_OF_COMMANDS
 CREATE  TABLE IF NOT EXISTS `jelly_setting` (
@@ -16,7 +14,6 @@ END_OF_COMMANDS;
 	echo "$domain\n";
 	dbExec($location, $commands);
 	echo "------------------------------------------\n";
-	//system("cat $name");
 
 }
 
