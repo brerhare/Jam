@@ -2,7 +2,7 @@
 
 function util($domain, $location) {
 
-	$commands= <<<END_OF_COMMANDS
+	$dbCommands= <<<END_OF_COMMANDS
 CREATE  TABLE IF NOT EXISTS `jelly_setting` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `email` VARCHAR(255) NULL ,
@@ -12,7 +12,7 @@ END_OF_COMMANDS;
 
 	//system("ls -d $location");
 	echo "$domain\n";
-	dbExec($location, $commands);
+	dbExec($location, $dbCommands);
 	echo "------------------------------------------\n";
 
 }

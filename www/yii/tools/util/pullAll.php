@@ -2,12 +2,12 @@
 
 function util($domain, $location) {
 
-	$commands= <<<END_OF_COMMANDS
+	$dbCommands= <<<END_OF_COMMANDS
 END_OF_COMMANDS;
 
-	//system("ls -d $location");
-	echo "$domain\n";
-	//dbExec($location, $commands);
+	echo "Processing $domain\n";
+	system("cd $location; git pull");
+	//dbExec($location, $dbCommands);
 	echo "------------------------------------------\n";
 
 }
