@@ -102,6 +102,17 @@ class JellySettingController extends Controller
 		if(isset($_POST['JellySetting']))
 		{
 			$model->attributes=$_POST['JellySetting'];
+
+			// Check for favicon
+        	if ((isset($_FILES['favicon'])) && (isset($_FILES['favicon']['tmp_name'])) && ((trim($_FILES['favicon']['tmp_name'])) != ""))
+			{
+				//if (trim($x['favicon'] != ""))
+				{
+					$temp = CUploadedFile::getInstanceByName('favicon');  // gets me the file into this variable
+					$temp->saveAs(Yii::app()->baseUrl . 'favicon.ico');  // full name , including the filename too.
+				}
+			}
+
 			if($model->save())
 				$this->redirect(array('site/index'));
 		}
