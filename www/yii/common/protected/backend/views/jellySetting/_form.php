@@ -13,7 +13,12 @@
 	<?php echo $form->textFieldRow($model,'email',array('class'=>'span5','maxlength'=>255)); ?>
 
     <?php /// @@EG How to line up custom content ?>
-    <div class="control-group "><label class="control-label" for="image">Favicon </label>
+    <?php /// @@EG Display thumbnails of existing images ?>
+    <div class="control-group ">
+        <label class="control-label" for="image">
+            Favicon<br> 
+            <img src="/favicon.ico" alt="Mountain View" style="max-width:200px;max-height:220px;"/>
+        </label>
         <div class="controls">
 			<input type="file" name="favicon" accept="image/*">
         </div>
