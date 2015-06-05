@@ -17,7 +17,7 @@ return array(
     'viewPath' => $backend.'/views',
     'runtimePath' => $backend.'/runtime',
 
-	'name'=>'Wirefly Demo Site Backend',
+	'name'=>'Wirefly Demo Backend',
 
 	// preloading 'log' component
 	// preloading 'bootstrap' component
@@ -75,7 +75,7 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=demo_wireflydesign_com',
+			'connectionString' => 'mysql:host=localhost;dbname=demo1_wireflydesign_com',
 			'emulatePrepare' => true,
 			'username' => 'wireflydesign.co',
 			'password' => 'wireflydesign.com,',
@@ -108,5 +108,9 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@wireflydesign.com',
+		// CKEditor size for page content editing (910 max)
+		'editorpagewidth'=>'800',
+		'editorpageheight'=>'500',
 	),
 );
+

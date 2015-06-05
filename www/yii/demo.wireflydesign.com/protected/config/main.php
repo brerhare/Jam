@@ -7,7 +7,7 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'Wirefly Test Site',
+	'name'=>'Wirefly Demo',
 
 	// Override the default controller
 	//'defaultController'=>'contentBlock',
@@ -66,7 +66,7 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=demo_wireflydesign_com',
+			'connectionString' => 'mysql:host=localhost;dbname=demo1_wireflydesign_com',
 			'emulatePrepare' => true,
 			'username' => 'wireflydesign.co',
 			'password' => 'wireflydesign.com,',
@@ -99,12 +99,22 @@ return array(
 	'params'=>array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@wireflydesign.com',
-        // These are used by the shopping cart checkout process
-        'checkoutEmail'=>'info@wireflydesign.com',
-        'checkoutName'=>'Wirefly Demo',
-        // Test gateway
-        'checkoutGatewayUser'=>'WIREFL-5188100',
-        'checkoutGatewayPassword'=>'391F3GWBZ0',
+
+		// These are used by the shopping cart checkout process
+		'checkoutEmail'=>'info@wireflydesign.com',
+		'checkoutName'=>'Wirefly Demo Online Sales',
+
+		// Test gateway
+		'checkoutGatewayUser'=>'WIREFL-5188100',
+		'checkoutGatewayPassword'=>'391F3GWBZ0',
+
+		// Live gateway
+		//'checkoutGatewayUser'=>'xxxxx',
+		//'checkoutGatewayPassword'=>'xxxxx',
+
+        // Paypal
+        //'checkoutPaypalEmail'=>'<checkoutpaypalemail>',
+
 		'jellyRoot' => '/scripts/jelly/',
 		'sid' => 'demo',
 	),
