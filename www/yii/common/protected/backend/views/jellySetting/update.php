@@ -12,4 +12,4 @@ $this->menu=array(
 
 <h2>Update Settings</h2>
 
-<?php echo $this->renderPartial('_form',array('model'=>$model)); ?>
+<?php echo $this->renderPartial('_form',array('model'=>$model, 'pass1'=>$pass1, 'pass2'=>$pass2)); ?>

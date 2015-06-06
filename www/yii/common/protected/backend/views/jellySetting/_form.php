@@ -17,12 +17,30 @@
     <div class="control-group ">
         <label class="control-label" for="image">
             Favicon<br> 
-            <img src="/favicon.ico" alt="Mountain View" style="max-width:200px;max-height:220px;"/>
+            <?php if (!$model->isNewRecord) echo "<img src='/favicon.ico?lastmod=12345678' style='max-width:100px;max-height:100px;'/>"; ?>
         </label>
         <div class="controls">
 			<input type="file" name="favicon" accept="image/*">
         </div>
     </div>
+
+    <div class="control-group ">
+        <label class="control-label">New password</label>
+        <div class="controls">
+			<input style="width:100px" type="password" name="pass1" accept="image/*">
+			&nbsp&nbsp Type it again &nbsp&nbsp&nbsp
+			<input style="width:100px" type="password" name="pass2" accept="image/*">
+        </div>
+    </div>
+
+<!--
+    <div class="control-group ">
+        <label class="control-label">Input it again</label>
+        <div class="controls">
+			<input type="password" name="pass2" accept="image/*">
+        </div>
+    </div>
+-->
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
