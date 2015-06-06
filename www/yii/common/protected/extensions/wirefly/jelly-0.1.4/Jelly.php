@@ -1457,7 +1457,7 @@ if (strstr($blobName, "googlemap"))
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 
-			if (stristr($vals[0], "news"))
+			if ((stristr($vals[0], "news")) || (stristr($vals[0], "blog")))
 			{
 				// Eg: {{news traditional}} {{news pinterest}}
 				// -----------------
@@ -1498,7 +1498,7 @@ if (strstr($blobName, "googlemap"))
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 
-			if (stristr($vals[0], "blog750"))
+			if (stristr($vals[0], "Xblog750"))
 			{
 				// Eg: {{blog750}}
 				// ------------
@@ -1507,7 +1507,7 @@ if (strstr($blobName, "googlemap"))
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 
-			if (stristr($vals[0], "blog"))
+			if (stristr($vals[0], "Xblog"))
 			{
 				// Eg: {{blog}}
 				// ------------
