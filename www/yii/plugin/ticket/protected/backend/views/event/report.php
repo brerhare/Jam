@@ -11,7 +11,10 @@ $valueArray = array();
 
 <h4>
 <?php
-echo $model->title . " as at " . date("d/m/y") . ' (' . $vendorName . ' / ' . str_replace('-', '/', $model->date) . ')'
+if ($model)
+	echo $model->title . " as at " . date("d/m/y") . ' (' . $vendorName . ' / ' . str_replace('-', '/', $model->date) . ')';
+else
+	echo "All events" . " as at " . date("d/m/y") . ' (' . $vendorName . ')';
 ?>
 </h4>
 
@@ -48,9 +51,10 @@ table tr {
 		$valueTotal = 0;
 		$lc = 0; 
 		$criteria = new CDbCriteria;
-		$criteria->addCondition("event_id = " . $model->id);
+		if ($model)
+			$criteria->addCondition("event_id = " . $model->id);
 		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
-		$criteria->order = 'order_number ASC';
+		$criteria->order = 'order_number DESC';
 
 		$curOrder = '';
 		$orderArr = array();
