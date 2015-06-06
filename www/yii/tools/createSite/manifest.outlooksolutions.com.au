@@ -1,0 +1,17 @@
+site = outlooksolutions.com.au
+sitetitle = Outlook Solutions
+sid = uoevl2i0b62arcrooll3ke21j1
+
+# Database
+dbname = outlooksolutions_com_au
+dbuser = outlooksolutions
+dbpass = 83bs9hrdb
+
+# Shopping cart order confirmation email
+checkoutemail = sales@outlooksolutions.com.au
+checkoutname = Outlook Solutions Sales
+
+# Backend page editor
+editorpagewidth = 800
+editorpageheight = 500
+

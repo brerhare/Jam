@@ -95,6 +95,8 @@ class JellySettingController extends Controller
 			$model->id = $id;
 			$model->save();
 		}
+		$pass1 = "";
+		$pass2 = "";
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -102,12 +104,50 @@ class JellySettingController extends Controller
 		if(isset($_POST['JellySetting']))
 		{
 			$model->attributes=$_POST['JellySetting'];
+
+			$pass1 = trim($_POST['pass1']);
+			$pass2 = trim($_POST['pass2']);
+			if ($pass1 != $pass2)
+				throw new CHttpException(400,'Error changing password. Password mismatch. Please click the Back button and try again');
+			else if ($pass1 != "")
+			{
+				// Check the login cookies are set (needed for db access)
+				if ((!isset(Yii::app()->session['admin_user_id'])) || (Yii::app()->session['admin_user_id'] < 1))
+					throw new CHttpException(400,'Error changing password. Please logout, login and try again');
+				// Update password (defines are in protected/backend/config/main.php)
+				$hostName = Yii::app()->params['dbHost'];
+				$dbName = Yii::app()->params['dbName'];
+				$dbUser = Yii::app()->params['dbUser'];
+				$dbPass = Yii::app()->params['dbPass'];
+				$connect_id = mysql_connect($hostName, $dbUser, $dbPass);
+				if ($connect_id) {
+                	if (mysql_select_db($dbName)) {
+						$query = "update admin_user set password = '" . $pass1 . "' where id = " . Yii::app()->session['admin_user_id'];
+						$result = mysql_query($query, $connect_id);
+                		if (!$result)
+							throw new CHttpException(400,'Cant update password database');
+					} else throw new CHttpException(400,'Cant select on password database');
+				} else throw new CHttpException(400,'Cant connect to password database');
+			}
+
+			// Check for favicon
+        	if ((isset($_FILES['favicon'])) && (isset($_FILES['favicon']['tmp_name'])) && ((trim($_FILES['favicon']['tmp_name'])) != ""))
+			{
+				//if (trim($x['favicon'] != ""))
+				{
+					$temp = CUploadedFile::getInstanceByName('favicon');  // gets me the file into this variable
+					$temp->saveAs(Yii::app()->baseUrl . 'favicon.ico');  // full name , including the filename too.
+				}
+			}
+
 			if($model->save())
 				$this->redirect(array('site/index'));
 		}
 
 		$this->render('update',array(
 			'model'=>$model,
+			'pass1'=>$pass1,
+			'pass2'=>$pass2,
 		));
 	}
 

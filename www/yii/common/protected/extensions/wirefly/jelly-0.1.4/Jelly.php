@@ -107,8 +107,10 @@ class Jelly
 	</style>
 
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js" ></script>
-	<link rel="shortcut icon" href="//resources.news.com.au/cs/newscomau/images/favicon.ico" type="image/x-icon" />
-	<link rel="icon" href="//resources.news.com.au/cs/newscomau/images/favicon.ico" type="image/x-icon" />
+
+<!-- Force favicon.ico -->
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
 	
 END_OF_BEGINHEADER;
 
@@ -1455,7 +1457,7 @@ if (strstr($blobName, "googlemap"))
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 
-			if (stristr($vals[0], "news"))
+			if ((stristr($vals[0], "news")) || (stristr($vals[0], "blog")))
 			{
 				// Eg: {{news traditional}} {{news pinterest}}
 				// -----------------
@@ -1496,7 +1498,7 @@ if (strstr($blobName, "googlemap"))
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 
-			if (stristr($vals[0], "blog750"))
+			if (stristr($vals[0], "Xblog750"))
 			{
 				// Eg: {{blog750}}
 				// ------------
@@ -1505,7 +1507,7 @@ if (strstr($blobName, "googlemap"))
 				$content = str_replace($pOrig, $iframe, $content);
 			}
 
-			if (stristr($vals[0], "blog"))
+			if (stristr($vals[0], "Xblog"))
 			{
 				// Eg: {{blog}}
 				// ------------
