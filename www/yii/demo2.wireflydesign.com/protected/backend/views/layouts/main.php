@@ -52,7 +52,7 @@
                         array('label' => 'Products', 'url' => 'https://plugin.wireflydesign.com/product/backend.php/site/demo2Direct', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
                         array('label' => 'Blog', 'url' => 'https://plugin.wireflydesign.com/news/backend.php/site/demo2Direct', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
                         array('label' => 'Newsletters', 'url' => 'https://plugin.wireflydesign.com/mailer/backend.php/site/demo2Direct', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
-                        array('label' => 'Events', 'url' => 'https://plugin.wireflydesign.com/event/backend.php/site/demo2Direct', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+                        array('label' => 'Events', 'url' => 'https://plugin.wireflydesign.com/event/backend.php/site/login', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
                         array('label' => 'Tickets', 'url' => 'https://plugin.wireflydesign.com/ticket/backend.php/site/demo2Direct', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
                     ),
                 ),
