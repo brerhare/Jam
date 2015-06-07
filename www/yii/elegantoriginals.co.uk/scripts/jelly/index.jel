@@ -11,7 +11,7 @@ child = site
 #css.background-color = #ffffff
 fx.wallpaper-image = /img/background2.jpg
 css.display = block
-addon.analytics.google_analytics.ua = UA-40972311-1
+#####addon.analytics.google_analytics.ua = UA-40972311-1
 	
 	[site]
 	child = header-area, middle
