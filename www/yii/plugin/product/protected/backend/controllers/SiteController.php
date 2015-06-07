@@ -97,7 +97,7 @@ class SiteController extends Controller
     public function actionWeetargetDirect()
     {
         Yii::app()->session['uid'] = 76;
-        $identity = new UserIdentity('tristen@weetarget.co.uk', 'boystargets');
+        $identity = new UserIdentity('tristen@weetarget.co.uk', 'site2plugin');
         $identity->authenticate();
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);
@@ -111,7 +111,7 @@ class SiteController extends Controller
     public function actionBryceWalkerVendingDirect()
     {
         Yii::app()->session['uid'] = 70;
-        $identity = new UserIdentity('bryce@brycewalkervending.com', 'bubbles!');
+        $identity = new UserIdentity('bryce@brycewalkervending.com', 'site2plugin');
         $identity->authenticate();
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);
@@ -125,7 +125,7 @@ class SiteController extends Controller
     public function action1staid4uDirect()
     {
         Yii::app()->session['uid'] = 71;
-        $identity = new UserIdentity('contact@1staid4u.co.uk', 'connor1611');
+        $identity = new UserIdentity('contact@1staid4u.co.uk', 'site2plugin');
         $identity->authenticate();
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);
@@ -139,8 +139,10 @@ class SiteController extends Controller
     public function actionDemoDirect()
     {
         Yii::app()->session['uid'] = 4;
-        $identity = new UserIdentity('demo', 'demo');
+        $identity = new UserIdentity('demo', 'site2plugin');
         $identity->authenticate();
+//echo "S=" . Yii::app()->session['uid'];
+//die;
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);
         $this->redirect(array('site/index'));
@@ -153,7 +155,7 @@ class SiteController extends Controller
     public function actionDemo1Direct()
     {
         Yii::app()->session['uid'] = 64;
-        $identity = new UserIdentity('demo1', 'demo1');
+        $identity = new UserIdentity('demo1', 'site2plugin');
         $identity->authenticate();
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);
@@ -167,7 +169,7 @@ class SiteController extends Controller
     public function actionDemo2Direct()
     {
         Yii::app()->session['uid'] = 65;
-        $identity = new UserIdentity('demo2', 'demo2');
+        $identity = new UserIdentity('demo2', 'site2plugin');
         $identity->authenticate();
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);
@@ -181,7 +183,7 @@ class SiteController extends Controller
     public function actionDemo3Direct()
     {
         Yii::app()->session['uid'] = 66;
-        $identity = new UserIdentity('demo3', 'demo3');
+        $identity = new UserIdentity('demo3', 'site2plugin');
         $identity->authenticate();
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);
@@ -195,7 +197,7 @@ class SiteController extends Controller
     public function actionDemo4Direct()
     {
         Yii::app()->session['uid'] = 67;
-        $identity = new UserIdentity('demo4', 'demo4');
+        $identity = new UserIdentity('demo4', 'site2plugin');
         $identity->authenticate();
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);
@@ -209,7 +211,7 @@ class SiteController extends Controller
     public function actionDemo5Direct()
     {
         Yii::app()->session['uid'] = 68;
-        $identity = new UserIdentity('demo5', 'demo5');
+        $identity = new UserIdentity('demo5', 'site2plugin');
         $identity->authenticate();
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);
@@ -224,7 +226,7 @@ class SiteController extends Controller
     public function actionTestDirect()
     {
         Yii::app()->session['uid'] = 55;
-        $identity = new UserIdentity('test', 'test');
+        $identity = new UserIdentity('test', 'site2plugin');
 		$identity->authenticate();
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);
@@ -235,7 +237,7 @@ class SiteController extends Controller
     public function actionElegantDirect()
     {
         Yii::app()->session['uid'] = 59;
-        $identity = new UserIdentity('caroline@elegantoriginals.co.uk', 'gothchick');
+        $identity = new UserIdentity('caroline@elegantoriginals.co.uk', 'site2plugin');
 		$identity->authenticate();
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);
@@ -246,7 +248,7 @@ class SiteController extends Controller
     public function actionJDirect()
     {
         Yii::app()->session['uid'] = 19;
-        $identity = new UserIdentity('wendy@jacquiesbeauty.co.uk', 'guinot');
+        $identity = new UserIdentity('wendy@jacquiesbeauty.co.uk', 'site2plugin');
 		$identity->authenticate();
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);
@@ -260,7 +262,7 @@ class SiteController extends Controller
     public function actionDDirect()
     {
         Yii::app()->session['uid'] = 17;
-        $identity = new UserIdentity('gordon@dumfriesfurniture.com', 'gordon');
+        $identity = new UserIdentity('gordon@dumfriesfurniture.com', 'site2plugin');
 		$identity->authenticate();
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);
@@ -274,7 +276,7 @@ class SiteController extends Controller
     public function actionSDirect()
     {
         Yii::app()->session['uid'] = 22;
-        $identity = new UserIdentity('nancy@styleyourvenue.co.uk', 'cu62mg6');
+        $identity = new UserIdentity('nancy@styleyourvenue.co.uk', 'site2plugin');
 		$identity->authenticate();
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);
@@ -288,7 +290,7 @@ class SiteController extends Controller
     public function actionADirect()
     {
         Yii::app()->session['uid'] = 24;
-        $identity = new UserIdentity('rachel@the-art-room.co.uk', 'oldschool');
+        $identity = new UserIdentity('rachel@the-art-room.co.uk', 'site2plugin');
 		$identity->authenticate();
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);
@@ -302,7 +304,7 @@ class SiteController extends Controller
     public function actionGCDirect()
     {
         Yii::app()->session['uid'] = 53;
-        $identity = new UserIdentity('neil@gallowaycontrols.co.uk', 'Neil~2#');
+        $identity = new UserIdentity('neil@gallowaycontrols.co.uk', 'site2plugin');
 		$identity->authenticate();
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);

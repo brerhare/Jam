@@ -40,8 +40,9 @@ db.filter = sid=$_GET['sid']
 			addon.filter.blogs.get = recent
 #@@ array parsing order isnt the same as defined? If this db, stuff is in the next block where it belongs it doesnt work
 			db.table = Article
+			db.filter = id=@CLIPBOARD
 			#db.filter = uid=User.id, blog_category_id=$_GET['category']
-			db.filter = uid=User.id
+			#db.filter = uid=User.id
 			db.order = date DESC
 
 				[most-recent-blog]
@@ -90,9 +91,11 @@ db.filter = sid=$_GET['sid']
 					css.padding-right = 20px
 					css.padding-top = 20px
 					child = blog-thumb, blog-title, blog-intro
+					#addon.filter.blogs.get = older
 					db.table = Article
+					#db.filter = id=@CLIPBOARD
 					#db.filter = uid=User.id, id!=Article.id, blog_category_id=$_GET['category']
-					db.filter = uid=User.id, id!=Article.id
+					#db.filter = uid=User.id, id!=Article.id
 					db.order = date DESC
 					db.fetch = multiple
 					click = index.php/?layout=article750&sid=$_GET['sid']&id=Article.id

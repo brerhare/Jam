@@ -25,19 +25,21 @@ class blogs
 //      var_dump( $options );
 
         // Generate the content into the html, replacing any <substituteN> tags
+		$clipBoard = "";
         $content = "";
-		$category = "";
-		$recent = "";
+		$catId = "";
+		$catList = "";
+		$getType = "";
 		$blogwidth = "auto";
         foreach ($options as $opt => $val)
         {
             switch ($opt)
             {
-                case "recent":	// Get the most recent article for the applicable category (or all if 0)
-                    $recent = $val;
+                case "get":	// Get the most recent article for the applicable category (or all if 0)
+                    $getType = $val;
                     break;
                 case "category":
-                    $category = $val;
+                    $catList = $val;
                     break;
                 case "blogwidth":
                     $blogwidth = $val;
@@ -57,29 +59,49 @@ class blogs
         $content = "<div style='padding-left:20px; font-size: 15px; background-color: #f8f8f8; color:#575757;'>";      // Your basic solemn grey font color
         $uid = Yii::app()->session['uid'];
 
-        // Most recent article?
-        $criteria = new CDbCriteria;
-        $criteria->addCondition("uid=" . $uid);
-		if (($category != "") && ($category != "0"))
-			$criteria->addCondition("blog_category_id=" . $category);
-        $articles = Article::model()->findAll($criteria);
-        //$articles  = Article::model()->findAll(array('order'=>'date DESC', 'condition'=>'uid=' . Yii::app()->session['uid'] . ' and ' ));
-/*
-        if ($articles)
-        {
-			$content .= "<br>";
-			$content .= "<b>";
-          	$content .= "<a onClick=makeSel(0) href='#'>All Categories</a><br>";
-            foreach ($categories as $category):
-            	$content .= "<a onClick=makeSel(" . $category->id . ") href='#'>$category->name</a><br>";
-            endforeach;
-			$content .= "<br/>";
-			$content .= "</b>";
-        }
-*/
+
+		// Get data. Most recent article
+		if ($getType == "recent")
+		{
+        	$criteria = new CDbCriteria;
+        	$criteria->addCondition("uid=" . $uid);
+        	$criteria->order = "date DESC";
+			if (($catId != "") && ($catId != "0"))
+				$criteria->addCondition("blog_category_id=" . $catId);
+        	$articles = Article::model()->findAll($criteria);
+        	if ($articles)
+        	{
+            	foreach ($articles as $article)
+				{
+					$clipBoard = $article->id;
+					break;
+				}
+        	}
+		}
+
+		// Get data. A list of older articles
+		if ($getType == "older")
+		{
+        	$criteria = new CDbCriteria;
+        	$criteria->addCondition("uid=" . $uid);
+        	$criteria->order = "date DESC";
+			if (($catId != "") && ($catId != "0"))
+				$criteria->addCondition("blog_category_id=" . $catId);
+        	$articles = Article::model()->findAll($criteria);
+        	if ($articles)
+        	{
+            	foreach ($articles as $article)
+				{
+					$clipBoard = $article->id;
+					break;
+				}
+        	}
+$clipBoard = "30|35";
+die($clipBoard);
+		}
 
         // List of categories?
-		if ($category != "")
+		if ($catList != "")
 		{
         	$categories  = Category::model()->findAll(array('order'=>'name', 'condition'=>'uid=' . $uid));
         	if ($categories)
@@ -112,6 +134,7 @@ class blogs
         $retArr = array();
         $retArr[0] = $this->apiHtml;
         $retArr[1] = $this->apiJs;
+        $retArr[2] = $clipBoard;
         return $retArr;
     }
 
