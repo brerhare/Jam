@@ -10,7 +10,8 @@
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<?php echo $form->textFieldRow($model,'email',array('class'=>'span5','maxlength'=>255)); ?>
+	<?php echo $form->textFieldRow($model,'email',array('class'=>'span3','maxlength'=>255)); ?>
+	<?php echo $form->textFieldRow($model,'analyticsUA',array('class'=>'span2','maxlength'=>255)); ?>
 
     <?php /// @@EG How to line up custom content ?>
     <?php /// @@EG Display thumbnails of existing images ?>
