@@ -6,6 +6,7 @@
  * The followings are the available columns in table 'jelly_setting':
  * @property integer $id
  * @property string $email
+ * @property string $analyticsUA
  */
 class JellySetting extends CActiveRecord
 {
@@ -36,9 +37,10 @@ class JellySetting extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('email', 'length', 'max'=>255),
+			array('analyticsUA', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, email', 'safe', 'on'=>'search'),
+			array('id, email, analyticsUA', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -61,6 +63,7 @@ class JellySetting extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'email' => 'Email',
+			'analyticsUA' => 'Analytics UA number',
 		);
 	}
 
@@ -77,6 +80,7 @@ class JellySetting extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('email',$this->email,true);
+		$criteria->compare('analyticsUA',$this->analyticsUA,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

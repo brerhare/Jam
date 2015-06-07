@@ -13,7 +13,7 @@ css.margin = 0px auto
 child = contentframe
 fx.wallpaper-image = /img/bg.jpg
 css.display = block
-addon.analytics.google_analytics.ua = UA-20115178-1
+#####addon.analytics.google_analytics.ua = UA-20115178-1
 
 	[contentframe]
 	child = fixedheader, carousel, tabscontainer, contentcontainer, footer, bottom
