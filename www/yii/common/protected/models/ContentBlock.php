@@ -75,7 +75,7 @@ class ContentBlock extends CActiveRecord
 			'parent_id' => 'Parent',
 			'sequence' => 'Sequence',
 			'title' => 'Title',
-			'url' => 'Url',
+			'url' => 'Url extension',
 			'content' => 'Content',
 			'active' => 'Active',
 			'home' => 'Is Home Page',

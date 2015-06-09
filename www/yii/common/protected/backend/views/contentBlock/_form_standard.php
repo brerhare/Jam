@@ -30,6 +30,16 @@
 	<?php echo $form->textFieldRow($model,'sequence',array('class'=>'span1','maxlength'=>55)); ?>
 	<?php echo $form->textFieldRow($model,'url',array('class'=>'span5','maxlength'=>255, 'hint'=>$urlEmbed)); ?>
 
+
+	<?php if (!$model->isNewRecord) {
+    	echo "<div class='control-group '><label class='control-label'>Full Url </label>";
+        echo     "<div class='controls' style='margin-top:5px'>";
+		echo         "<i>" . Yii::app()->getBaseUrl(true) . "/?layout=index&page=" . $model->url . "</i>";
+        echo     "</div>";
+    	echo "</div>";
+		}
+	?>
+
 	<?php //echo $form->textFieldRow($model,'home',array('class'=>'span1','maxlength'=>1)); ?>
 	<?php echo $form->toggleButtonRow($model, 'home'); ?>
 
