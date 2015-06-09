@@ -11,6 +11,7 @@ class JellySliderImageController extends Controller
 	private $_imageDir = '/../userdata/jelly/sliderimage/';
 
 
+
 	/**
 	 * @return array action filters
 	 */
@@ -72,14 +73,16 @@ class JellySliderImageController extends Controller
 
 		if(isset($_POST['JellySliderImage']))
 		{
+			$rand = "random" . rand(1900, 9999) . "-";
 			$model->attributes=$_POST['JellySliderImage'];
-			$model->image=CUploadedFile::getInstance($model, 'image');
+			$image = CUploadedFile::getInstance($model, 'image');
+			$model->image = $rand . CUploadedFile::getInstance($model, 'image');
 			if($model->save())
 			{
                 if (strlen($model->image) > 0)
                 {
                     $fname = Yii::app()->basePath . $this->_imageDir . $model->image;
-                    $model->image->saveAs($fname);
+                    $image->saveAs($fname);
                     //$this->_watermark($fname);
                 }
 				$this->redirect(array('admin'));
@@ -107,15 +110,16 @@ class JellySliderImageController extends Controller
 
 		if(isset($_POST['JellySliderImage']))
 		{
+			$rand = "random" . rand(1900, 9999) . "-";
 			$model->attributes=$_POST['JellySliderImage'];
-            $file=CUploadedFile::getInstance($model, 'image');
+            $file = CUploadedFile::getInstance($model, 'image');
             if(is_object($file) && get_class($file) === 'CUploadedFile')
             {
                 if (file_exists(Yii::app()->basePath . $this->_imageDir . $model->image))
                 {
                     unlink(Yii::app()->basePath . $this->_imageDir . $model->image);
                 }
-                $model->image = $file;
+                $model->image = $rand . $file;
             }
 
 			if($model->save())
@@ -123,7 +127,7 @@ class JellySliderImageController extends Controller
                 if(is_object($file))
                 {
                     $fname = Yii::app()->basePath . $this->_imageDir . $model->image;
-                    $model->image->saveAs($fname);
+                    $file->saveAs($fname);
                     //$this->_watermark($fname);
 
                 }
