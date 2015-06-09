@@ -212,20 +212,23 @@ END_OF_FOOTER;
 		$this->jellyRootUrl  = Yii::app()->baseUrl . $jellyRoot;
 
 		// Hardcoded google analytics if any
-		$this->logMsg("... Preprocessing Settings addon (Google Analytics) ...\n\n", 0);
-		$criteria = new CDbCriteria;
-		$criteria->addCondition("id = 1");
-		$setting = JellySetting::model()->find($criteria);
-		if ($setting)
+		if (!(strstr(Yii::app()->getBaseUrl(true), "plugin")))
 		{
-			if (trim($setting->analyticsUA) != "")
+			$this->logMsg("... Preprocessing Settings addon (Google Analytics) ...\n\n", 0);
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("id = 1");
+			$setting = JellySetting::model()->find($criteria);
+			if ($setting)
 			{
-				$addonCmd = "addon.analytics.google_analytics.ua = " . $setting->analyticsUA;
-				$arr = array();
-				$arr['analytics'] = array();
-				$arr['analytics']['google_analytics'] = array();
-				$arr['analytics']['google_analytics']['ua'] = $setting->analyticsUA;
-				$this->addonHandler($arr);
+				if (trim($setting->analyticsUA) != "")
+				{
+					$addonCmd = "addon.analytics.google_analytics.ua = " . $setting->analyticsUA;
+					$arr = array();
+					$arr['analytics'] = array();
+					$arr['analytics']['google_analytics'] = array();
+					$arr['analytics']['google_analytics']['ua'] = $setting->analyticsUA;
+					$this->addonHandler($arr);
+				}
 			}
 		}
 
