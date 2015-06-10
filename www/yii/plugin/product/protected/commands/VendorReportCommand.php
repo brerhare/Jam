@@ -154,18 +154,18 @@ class VendorReportCommand extends CConsoleCommand
 				$message = $ghtmlstart . $umsg . $ghtmlend; 
 				// phpmailer
 				$mail = new PHPMailer();
-//				$mail->AddAddress($to);				// KIM
-				$mail->AddAddress("k@microboot.com");	// KIM
+				$mail->AddAddress($to);				// KIM
+//				$mail->AddAddress("k@microboot.com");	// KIM
 //$mail->AddBCC("info@wireflydesign.com");
 				$mail->SetFrom($from, $fromName);
 				$mail->AddReplyTo($from, $fromName);
 				$mail->AddAttachment($att_filename);
 				$mail->Subject = $subject;
 				$mail->MsgHTML($message);
-				if (!$mail->Send())
-					Yii::log("WEEKLY REPORT COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
-				else
-					Yii::log("WEEKLY SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+//				if (!$mail->Send())
+//					Yii::log("WEEKLY REPORT COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
+//				else
+//					Yii::log("WEEKLY SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
 			}
 			// Accumulate to global
 			$gmsg .= $umsg;
@@ -180,7 +180,7 @@ class VendorReportCommand extends CConsoleCommand
 		$gcontent = $ghtmlstart . $gsummary . $gmsg . $ghtmlend;
 
 		// Send summary email to jo
-		$to = "kim@wireflydesign.com";				// KIM jo
+		$to = "info@wireflydesign.com";				// KIM jo
 		$att_filename = "/tmp/productSales.csv";
 		if (strlen($to) > 0)
 		{
