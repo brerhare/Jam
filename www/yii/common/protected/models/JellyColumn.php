@@ -10,7 +10,7 @@
  * @property string $title
  * @property string $content
  */
-class JellySliderHtml extends CActiveRecord
+class JellyColumn extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
@@ -69,7 +69,7 @@ class JellySliderHtml extends CActiveRecord
 			'column' => 'Column Number',
 			'sequence' => 'Sequence',
 			'title' => 'Title',
-			'content' => 'HTML Content',
+			'content' => 'Content',
 		);
 	}
 

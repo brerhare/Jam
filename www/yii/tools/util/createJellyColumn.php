@@ -15,14 +15,22 @@ CREATE  TABLE IF NOT EXISTS `jelly_column` (
 ENGINE = InnoDB;
 END_OF_COMMANDS;
 
+	if ($location == "test.wireflydesign.com")
+	{
+		echo "skipping $domain\n";
+		return;
+	}
+
 	echo "$domain\n";
 
-	//system("cd $location; cp protected/components/UserIdentity.php ../common/protected/components/");
-	//system("cd $location; git add ../common/protected/components/UserIdentity.php");
-	//system("cd $location; git rm protected/components/UserIdentity.php");
-	//system("cd $location/protected/components/; ln -s ../../../common/protected/components/UserIdentity.php");
-	//system("cd $location; git add protected/components/UserIdentity.php");
-	//system("cd $location; git commit -m 'jelly - single login for plugins and sites, and can change password'; git pull; git push");
+	system("cd $location/protected/models/; ln -s ../../../common/protected/models/JellyColumn.php");
+	system("cd $location/protected/models; git add JellyColumn.php");
+
+	system("cd $location/protected/backend/controllers/; ln -s ../../../../common/protected/backend/controllers/JellyColumnController.php");
+	system("cd $location/protected/backend/controllers/; git add JellyColumnController.php");
+
+	system("cd $location/protected/backend/views/; ln -s ../../../../common/protected/backend/views/jellyColumn/");
+	system("cd $location/protected/backend/views/; git add jellyColumn/*");
 
 	dbExec($location, $dbCommands);
 

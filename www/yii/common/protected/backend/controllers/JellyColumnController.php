@@ -62,7 +62,6 @@ class JellyColumnController extends Controller
 	public function actionCreate()
 	{
 		$model=new JellyColumn;
-		$model->active = 1;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -141,8 +140,6 @@ class JellyColumnController extends Controller
 	 */
 	public function actionAdmin()
 	{
-//$this->actionTreeView();
-//return;
 		$model=new JellyColumn('search');
 		$model->unsetAttributes();  // clear any default values
 		if(isset($_GET['JellyColumn']))

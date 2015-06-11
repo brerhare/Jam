@@ -38,12 +38,6 @@ $this->widget('CTreeView',array(
 			'value' => 'CHtml::link($data->title, Yii::app()->createUrl("jellyColumn/update",array("id"=>$data->primaryKey)))',
 			'type'  => 'raw',
 		),
-		array(
-			'name'  => 'url',
-			'value' => 'CHtml::link($data->url, Yii::app()->createUrl("jellyColumn/update",array("id"=>$data->primaryKey)))',
-			'type'  => 'raw',
-		),
-		'active:boolean',
 		// 'content',
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
