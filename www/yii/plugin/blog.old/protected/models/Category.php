@@ -85,12 +85,6 @@ class Category extends CActiveRecord
 		$criteria->compare('name',$this->name,true);
 
 		return new CActiveDataProvider($this, array(
-
-            // @@EG: Change cgridview pagination
-            'pagination' => array(
-                'pageSize' => 50,
-            ),
-        
 			'criteria'=>$criteria,
 		));
 	}

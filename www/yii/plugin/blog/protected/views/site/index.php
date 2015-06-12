@@ -1,14 +1,16 @@
 <?php
-/* @var $this SiteController */
 
-$this->pageTitle=Yii::app()->name;
+// @@NB This is the place to amend the number of item on each of the two page types.
+//      @@TODO The iframe height is set by the first page but not adjusted for the height of the second. This results in padding or clipping
+
+$maxDisplayItems = 52;
+$maxDisplayArchiveItems = ($maxDisplayItems * 4);
+
+if (Yii::app()->session['news_type'] == 'traditional')
+	require('index_traditional.php');
+else if (Yii::app()->session['news_type'] == 'pinterest')
+	require('index_pinterest.php');
+else
+	die('Invalid or missing newstype. Options are traditional or pinterest.');
 ?>
-
-<h1>Welcome to <i><?php echo CHtml::encode(Yii::app()->name); ?></i></h1>
-
-<p>You may change the content of this page by modifying the following two files:</p>
-<ul>
-	<li>View file: <code><?php echo __FILE__; ?></code></li>
-	<li>Layout file: <code><?php echo $this->getLayoutFile('main'); ?></code></li>
-</ul>
 
