@@ -19,7 +19,7 @@ css.display = block
 
 
 	[site]
-	child = header, slider, pages, footer
+	child = header, slider, columns, pages, footer
 	css.width = 970px
 
 ####  Header  #################################
@@ -119,6 +119,36 @@ addon.menu.traditional.item-separator-width = 8px
 
 ######## body #######################################
 			
+
+
+	[columns]
+	css.width = 800px
+	child = column-1, column-2
+	stacking = horizontal
+	css.background-color = white
+
+            [column-1]
+            addon.global.column.id = 1
+            addon.global.column.width = 300px
+            addon.global.column.internal-width = 100px
+            addon.global.column.background-color = #13ebb5
+#           addon.global.column.background-image = img/…
+#           addon.global.column.top-image = img/…
+            addon.global.column.top-height = 20px
+#           addon.global.column.bottom-image = img/…
+            addon.global.column.bottom-height = 5px
+
+            [column-2]
+            addon.global.column.id = 2
+            addon.global.column.width = 450px
+            addon.global.column.internal-width = 100px
+            addon.global.column.background-color = #f0ca57
+#           addon.global.column.background-image = img/…
+#           addon.global.column.top-image = img/…
+            addon.global.column.top-height = 50px
+#           addon.global.column.bottom-image = img/…
+            addon.global.column.bottom-height = 50px
+
 
 	[pages]
 	css.background-color = white
