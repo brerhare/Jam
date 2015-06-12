@@ -79,15 +79,18 @@ class column
 
 		$bgStyle = "background-color:" . $this->defaultBackgroundColor;
 		if ($this->defaultBackgroundImage != "")
-			$bgStyle = "background-image: " . $this->defaultBackgroundImage;
-		$this->apiHtml = str_replace("<substitute-bg>", $bgStyle,  $this->apiHtml);
+		{
+			//$bgStyle = "background: url(" . Yii::app()->baseUrl . $this->defaultBackgroundImage . ") no-repeat center center fixed; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;";
+			$bgStyle = "background: url(" . Yii::app()->baseUrl . $this->defaultBackgroundImage . ") no-repeat center;";
+		}
+		//$this->apiHtml = str_replace("<substitute-bg>", $bgStyle,  $this->apiHtml);
 
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("column_id = " . $this->defaultId);
  		//$criteria->order = "column_id ASC, sequence ASC, title ASC";
 		$columnItems = JellyColumn::model()->findAll($criteria);
 		foreach ($columnItems as $columnItem):
-			$content .= "<div id='col-outer' style='background-color:" . $this->defaultBackgroundColor . "'>";
+			$content .= "<div id='col-outer' style='" .$bgStyle . "'>";
 			$content .= $columnItem->content;
 
 				//$content .= "<a href='" . $sliderItem->url . "'> <img src='" . Yii::app()->baseUrl . "/userdata/jelly/sliderimage/" . $sliderItem->image . "' style='margin:0px; width:" . $this->defaultWidth . "; height:" . $this->defaultHeight . "; background: url(/userdata/jelly/sliderimage/" . $sliderItem->image  . " no-repeat center center; background-size:cover;' alt=''></a>";
@@ -141,7 +144,7 @@ class column
 			<style>
 				#col-outer {
 					border: 2px solid blue;
-					<substitute-bg>;
+					<!-- <substitute-bg>; -->
 				}
 			</style>
 			<substitute-data>
