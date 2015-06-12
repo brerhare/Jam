@@ -29,10 +29,11 @@ $this->widget('CTreeView',array(
 	'id'=>'jelly-column-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
+	// 'id',
 	'columns'=>array(
-		// 'id',
-		//'sequence',
 // @@EG Clickable rows in grid view!
+	'column',
+	'sequence',
 		array(
 			'name'  => 'title',
 			'value' => 'CHtml::link($data->title, Yii::app()->createUrl("jellyColumn/update",array("id"=>$data->primaryKey)))',
