@@ -11,6 +11,6 @@ if (Yii::app()->session['news_type'] == 'traditional')
 else if (Yii::app()->session['news_type'] == 'pinterest')
 	require('index_pinterest.php');
 else
-	die('Invalid or missing newstype');
+	die('Invalid or missing newstype. Options are traditional or pinterest.');
 ?>
 

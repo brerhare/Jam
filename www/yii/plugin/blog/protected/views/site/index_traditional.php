@@ -74,6 +74,10 @@ if (Yii::app()->session['sidebar'] == 'left')
 <span class="mainitem" style="display:inline-block; width:70%">
 
 <?php
+if (!(isset($article)))
+{
+	die;
+}
 $nextPageDate = "";
 $nextPageItem = "";
 $mainArticleId = $article->id;
