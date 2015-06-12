@@ -79,7 +79,9 @@ class ArticleController extends Controller
 				if (strlen($model->thumbnail_path) > 0)
                 {
                     $fname = $iDir . $model->thumbnail_path;
+                    $fthumb = $iDir . "thumb_" . $model->thumbnail_path;
                     $model->thumbnail_path->saveAs($fname);
+					ImageUtils::resize($fname, $fthumb, 500);
                 }
 
 				$this->redirect(array('admin'));
@@ -114,12 +116,18 @@ class ArticleController extends Controller
                 if (strlen($model->thumbnail_path) > 0)
                 {
                     if (file_exists($iDir . $model->thumbnail_path))
+					{
                         unlink($iDir . $model->thumbnail_path);
+						if (file_exists($iDir . "thumb_" . $model->thumbnail_path))
+							unlink($iDir . "thumb_" . $model->thumbnail_path);
+					}
                 }
                 // Save new one
                 $model->thumbnail_path = $file;
                 $fname = $iDir . $model->thumbnail_path;
+                $fthumb = $iDir . "thumb_" . $model->thumbnail_path;
                 $model->thumbnail_path->saveAs($fname);
+				ImageUtils::resize($fname, $fthumb, 500);
             }
 			if($model->save())
 				$this->redirect(array('admin'));
@@ -143,7 +151,11 @@ class ArticleController extends Controller
 			// we only allow deletion via POST request
             $oldfilename = $this->loadModel($id)->thumbnail_path;
             if (($oldfilename != '') && (file_exists($iDir . $oldfilename)))
+			{
                 unlink($iDir . $oldfilename);
+				if (file_exists($iDir . "thumb_" . $oldfilename))
+					unlink($iDir . "thumb_" . $oldfilename);
+			}
 
 			$this->loadModel($id)->delete();
 

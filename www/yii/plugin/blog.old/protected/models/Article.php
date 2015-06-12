@@ -95,8 +95,6 @@ class Article extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		//@@EG grid sorting
-		$criteria->order = 'date DESC, id DESC';
 		$criteria->compare('id',$this->id);
 		//$criteria->compare('uid',$this->uid);
 		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
@@ -109,12 +107,6 @@ class Article extends CActiveRecord
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
-
-            // @@EG: Change cgridview pagination
-            'pagination' => array(
-                'pageSize' => 50,
-            ),
-
 		));
 	}
 
