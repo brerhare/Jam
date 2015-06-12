@@ -13,13 +13,14 @@ class column
 	//Defaults
 	private $defaultId = "1";
 	private $defaultWidth = "200px";
-	private $defaultInternalWidth = "200px";
+	private $defaultInternalWidth = "100%";
 	private $defaultBackgroundColor = "#ffffff";
 	private $defaultBackgroundImage = "";
 	private $defaultTopHeight = "0px";
 	private $defaultBottomHeight = "0px";
 	private $defaultTopImage = "";
 	private $defaultBottomImage = "";
+	private $debug = "";
 
 	/*
 	 * Set up any code pre-requisites (onload/document-ready reqs)
@@ -72,30 +73,34 @@ class column
 				case "bottom-image":
 					$this->defaultBottomImage = $val;
 					break;
+				case "debug":
+					$this->debug = 1;
 				default:
 					// Not all array items are action items
 			}
 		}
 
-		$bgStyle = "background-color:" . $this->defaultBackgroundColor;
+		if ($this->debug != "")
+			$content .= " <style> #col-outer { border: 1px solid blue; } #col-inner { border: 1px solid red; } </style>";
+
+		$widthStyle = "width: " . $this->defaultWidth . ";";
+
+		$bgStyle = "background-color:" . $this->defaultBackgroundColor . ";";
 		if ($this->defaultBackgroundImage != "")
-		{
-			//$bgStyle = "background: url(" . Yii::app()->baseUrl . $this->defaultBackgroundImage . ") no-repeat center center fixed; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;";
 			$bgStyle = "background: url(" . Yii::app()->baseUrl . $this->defaultBackgroundImage . ") no-repeat center;";
-		}
-		//$this->apiHtml = str_replace("<substitute-bg>", $bgStyle,  $this->apiHtml);
+
+		$internalWidthStyle = "width: " . $this->defaultInternalWidth . ";";
 
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("column_id = " . $this->defaultId);
  		//$criteria->order = "column_id ASC, sequence ASC, title ASC";
 		$columnItems = JellyColumn::model()->findAll($criteria);
 		foreach ($columnItems as $columnItem):
-			$content .= "<div id='col-outer' style='" .$bgStyle . "'>";
-			$content .= $columnItem->content;
-
-				//$content .= "<a href='" . $sliderItem->url . "'> <img src='" . Yii::app()->baseUrl . "/userdata/jelly/sliderimage/" . $sliderItem->image . "' style='margin:0px; width:" . $this->defaultWidth . "; height:" . $this->defaultHeight . "; background: url(/userdata/jelly/sliderimage/" . $sliderItem->image  . " no-repeat center center; background-size:cover;' alt=''></a>";
-
-
+			$content .= "<div id='col-outer' style='" .$bgStyle . $widthStyle . "'>";
+				// Internal box
+				$content .= "<div id='col-inner' style='margin:auto; overflow:hidden; word-wrap:break-word; " . $internalWidthStyle . "'>";
+					$content .= $columnItem->content;
+				$content .= "</div>";
 			$content .= "</div>";
 		endforeach;
 
@@ -141,12 +146,6 @@ class column
 
         <div id="jelly-global-column-container">
             <!-- Global Column -->
-			<style>
-				#col-outer {
-					border: 2px solid blue;
-					<!-- <substitute-bg>; -->
-				}
-			</style>
 			<substitute-data>
         </div>
 
