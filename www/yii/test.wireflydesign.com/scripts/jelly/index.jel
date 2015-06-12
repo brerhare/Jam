@@ -127,28 +127,26 @@ addon.menu.traditional.item-separator-width = 8px
 	stacking = horizontal
 	css.background-color = white
 
-            [column-1]
-			addon.global.column.debug = 1
-            addon.global.column.id = 1
-            addon.global.column.width = 300px
-            addon.global.column.internal-width = 250px
-            addon.global.column.background-color = #13ebb5
-            addon.global.column.background-image = img/background.jpg
-#           addon.global.column.top-image = img/header-graphics.png
-            addon.global.column.top-height = 20px
-#           addon.global.column.bottom-image = img/…
-            addon.global.column.bottom-height = 5px
+		[column-1]
+		addon.global.column.debug = 1
+		addon.global.column.id = 1
+		addon.global.column.width = 300px
+		addon.global.column.internal-width = 250px
+		addon.global.column.background-color = #13ebb5
+#		addon.global.column.background-image = img/background.jpg
+		addon.global.column.top-image = img/header-graphics.png
+		addon.global.column.top-height = 20px
+		addon.global.column.bottom-image = img/facebook.png
+		addon.global.column.bottom-height = 10px
 
-            [column-2]
-            addon.global.column.id = 2
-            addon.global.column.width = 450px
-            addon.global.column.internal-width = 100px
-            addon.global.column.background-color = #f0ca57
-           addon.global.column.background-image = img/background.jpg
-#           addon.global.column.top-image = img/…
-            addon.global.column.top-height = 50px
-#           addon.global.column.bottom-image = img/…
-            addon.global.column.bottom-height = 50px
+		[column-2]
+		addon.global.column.id = 2
+		addon.global.column.width = 450px
+		addon.global.column.internal-width = 350px
+		addon.global.column.background-color = #f0ca57
+		addon.global.column.background-image = img/background.jpg
+		addon.global.column.top-height = 200px
+		addon.global.column.bottom-height = 0px
 
 
 	[pages]

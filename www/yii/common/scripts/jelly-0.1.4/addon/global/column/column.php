@@ -81,25 +81,42 @@ class column
 		}
 
 		if ($this->debug != "")
-			$content .= " <style> #col-outer { border: 1px solid blue; } #col-inner { border: 1px solid red; } </style>";
+			$content .= "	<style>		#col-outer { border: 1px solid blue; }
+										#col-inner { border: 1px solid red; }
+										#col-top { border: 1px solid yellow; }
+										#col-bottom { border: 1px solid yellow; }
+							</style>";
 
 		$widthStyle = "width: " . $this->defaultWidth . ";";
-
 		$bgStyle = "background-color:" . $this->defaultBackgroundColor . ";";
 		if ($this->defaultBackgroundImage != "")
-			$bgStyle = "background: url(" . Yii::app()->baseUrl . $this->defaultBackgroundImage . ") no-repeat center;";
+			$bgStyle = "background: url(" . Yii::app()->baseUrl . $this->defaultBackgroundImage . ") no-repeat center; background-size:100%";
 
 		$internalWidthStyle = "width: " . $this->defaultInternalWidth . ";";
+
+		$bgTopStyle = "background-color: transparent;";
+		if ($this->defaultTopImage != "")
+			$bgTopStyle = "background: url(" . Yii::app()->baseUrl . $this->defaultTopImage . ") no-repeat center; background-size:100%";
+
+		$bgBottomStyle = "background-color: transparent;";
+		if ($this->defaultBottomImage != "")
+			$bgBottomStyle = "background: url(" . Yii::app()->baseUrl . $this->defaultBottomImage . ") no-repeat center; background-size:100%";
 
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("column_id = " . $this->defaultId);
  		//$criteria->order = "column_id ASC, sequence ASC, title ASC";
 		$columnItems = JellyColumn::model()->findAll($criteria);
 		foreach ($columnItems as $columnItem):
+			// Outer box
 			$content .= "<div id='col-outer' style='" .$bgStyle . $widthStyle . "'>";
-				// Internal box
+				// Inner box
 				$content .= "<div id='col-inner' style='margin:auto; overflow:hidden; word-wrap:break-word; " . $internalWidthStyle . "'>";
+					// Top box within inner
+					$content .= "<div id='col-top' style='height:" . $this->defaultTopHeight. "; width:100%;" .$bgTopStyle . "'></div>";
+					// Actual content within inner
 					$content .= $columnItem->content;
+					// Bottom box within inner
+					$content .= "<div id='col-bottom' style='height:" . $this->defaultBottomHeight. "; width:100%;" .$bgBottomStyle . "'></div>";
 				$content .= "</div>";
 			$content .= "</div>";
 		endforeach;
