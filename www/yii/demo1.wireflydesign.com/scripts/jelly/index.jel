@@ -110,11 +110,15 @@ css.display = block
 		
 			[column-1]
 			css.margin = 5px
-			addon.global.column.debug = 1
+#			addon.global.column.debug = 1
 			addon.global.column.id = 1
 			addon.global.column.width = 300px
-			addon.global.column.internal-width = 290px
-			addon.global.column.background-color = yellow
+			addon.global.column.internal-width = 250px
+
+			addon.global.column.content-width = 200px
+			addon.global.column.internal-color = white
+
+			addon.global.column.background-color = black
 #			addon.global.column.background-image = img/…
 			addon.global.column.top-image = img/cow-spot-top.jpg
 			addon.global.column.top-height = 20px
@@ -123,7 +127,7 @@ css.display = block
 		
 			[column-2]
 			css.margin = 5px
-			addon.global.column.debug = 1
+#			addon.global.column.debug = 1
 			addon.global.column.id = 2
 			addon.global.column.width = 240px
 			addon.global.column.internal-width = 240px

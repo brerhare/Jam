@@ -14,6 +14,8 @@ class column
 	private $defaultId = "1";
 	private $defaultWidth = "200px";
 	private $defaultInternalWidth = "100%";
+	private $defaultContentWidth = "100%";
+	private $defaultInternalColor = "transparent";
 	private $defaultBackgroundColor = "#ffffff";
 	private $defaultBackgroundImage = "";
 	private $defaultTopHeight = "0px";
@@ -48,6 +50,26 @@ class column
 				case "internalwidth":
 				case "internal-width":
 					$this->defaultInternalWidth = $val . "px";
+					break;
+				case "contentwidth":
+				case "content-width":
+					$this->defaultContentWidth = $val . "px";
+					break;
+				case "internalcolor":
+				case "internal-color":
+					$this->defaultInternalColor = $val;
+					break;
+				case "backgroundcolor":
+				case "background-color":
+					$this->defaultBackgroundColor = $val;
+					break;
+				case "backgroundcolor":
+				case "background-color":
+					$this->defaultBackgroundColor = $val;
+					break;
+				case "backgroundcolor":
+				case "background-color":
+					$this->defaultBackgroundColor = $val;
 					break;
 				case "backgroundcolor":
 				case "background-color":
@@ -94,6 +116,9 @@ class column
 
 		$internalWidthStyle = "width: " . $this->defaultInternalWidth . ";";
 
+		$contentWidthStyle = "width: " . $this->defaultContentWidth . ";";
+		$internalColorStyle = "background-color:" . $this->defaultInternalColor . ";";
+
 		$bgTopStyle = "background-color: transparent;";
 		if ($this->defaultTopImage != "")
 			$bgTopStyle = "background: url(" . Yii::app()->baseUrl . $this->defaultTopImage . ") no-repeat center; background-size:100%";
@@ -112,9 +137,11 @@ class column
 				// Top box
 				$content .= "<div id='col-top' style='height:" . $this->defaultTopHeight. "; width:100%;" .$bgTopStyle . "'></div>";
 				// Inner box
-				$content .= "<div id='col-inner' style='margin:auto; overflow:hidden; word-wrap:break-word; " . $internalWidthStyle . "'>";
+				$content .= "<div id='col-inner' style='margin:auto; overflow:hidden; word-wrap:break-word; " . $internalColorStyle  . $internalWidthStyle . "'>";
 					// Actual content within inner
-					$content .= $columnItem->content;
+					$content .= "<div id='col-content' style='margin:auto; overflow:hidden; " .$contentWidthStyle . "'>";
+						$content .= $columnItem->content;
+					$content .= "</div>";
 				$content .= "</div>";
 				// Bottom box
 				$content .= "<div id='col-bottom' style='height:" . $this->defaultBottomHeight. "; width:100%;" .$bgBottomStyle . "'></div>";
