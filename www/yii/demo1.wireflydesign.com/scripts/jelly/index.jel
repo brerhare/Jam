@@ -91,7 +91,7 @@ css.display = block
 			
 
 	[pages]
-	child = tabs, content 	
+	child = tabs, column-block, content 	
 	css.width = 960px
 	css.margin-top = 20px
 	css.background-color = white
@@ -102,6 +102,37 @@ css.display = block
 		css.display = block
 		css.width = 680px
 		addon.tab.rain.source = db
+		
+		[column-block]
+		child = column-1, column-2
+		condition = @PAGE=@HOMEPAGE
+		stacking = horizontal
+		
+			[column-1]
+			css.margin = 5px
+			addon.global.column.debug = 1
+			addon.global.column.id = 1
+			addon.global.column.width = 300px
+			addon.global.column.internal-width = 290px
+			addon.global.column.background-color = yellow
+#			addon.global.column.background-image = img/…
+			addon.global.column.top-image = img/cow-spot-top.jpg
+			addon.global.column.top-height = 20px
+			addon.global.column.bottom-image = img/cow-spot-bottom.jpg
+			addon.global.column.bottom-height = 5px
+		
+			[column-2]
+			css.margin = 5px
+			addon.global.column.debug = 1
+			addon.global.column.id = 2
+			addon.global.column.width = 240px
+			addon.global.column.internal-width = 240px
+			addon.global.column.background-color = #13eb7f
+#			addon.global.column.background-image = img/
+			addon.global.column.top-image = img/flower-hill.jpg
+			addon.global.column.top-height = 43px
+			addon.global.column.bottom-image = img/chain-bottom.jpg
+			addon.global.column.bottom-height = 25px	
 
 			
 		[content]

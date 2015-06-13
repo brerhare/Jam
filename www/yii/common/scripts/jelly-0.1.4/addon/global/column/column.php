@@ -83,8 +83,8 @@ class column
 		if ($this->debug != "")
 			$content .= "	<style>		#col-outer { border: 1px solid blue; }
 										#col-inner { border: 1px solid red; }
-										#col-top { border: 1px solid yellow; }
-										#col-bottom { border: 1px solid yellow; }
+										#col-top { border: 1px solid purple; }
+										#col-bottom { border: 1px solid purple; }
 							</style>";
 
 		$widthStyle = "width: " . $this->defaultWidth . ";";
@@ -109,35 +109,18 @@ class column
 		foreach ($columnItems as $columnItem):
 			// Outer box
 			$content .= "<div id='col-outer' style='" .$bgStyle . $widthStyle . "'>";
+				// Top box
+				$content .= "<div id='col-top' style='height:" . $this->defaultTopHeight. "; width:100%;" .$bgTopStyle . "'></div>";
 				// Inner box
 				$content .= "<div id='col-inner' style='margin:auto; overflow:hidden; word-wrap:break-word; " . $internalWidthStyle . "'>";
-					// Top box within inner
-					$content .= "<div id='col-top' style='height:" . $this->defaultTopHeight. "; width:100%;" .$bgTopStyle . "'></div>";
 					// Actual content within inner
 					$content .= $columnItem->content;
-					// Bottom box within inner
-					$content .= "<div id='col-bottom' style='height:" . $this->defaultBottomHeight. "; width:100%;" .$bgBottomStyle . "'></div>";
 				$content .= "</div>";
+				// Bottom box
+				$content .= "<div id='col-bottom' style='height:" . $this->defaultBottomHeight. "; width:100%;" .$bgBottomStyle . "'></div>";
 			$content .= "</div>";
 		endforeach;
 
-
-/*
-		// Apply all defaults that werent overridden
-		// HTML
-		if (strstr($this->apiHtml, "<substitute-width>"))
-			$this->apiHtml = str_replace("<substitute-width>", "width:" . $this->defaultWidth . ";", $this->apiHtml);
-		if (strstr($this->apiHtml, "<substitute-height>"))
-			$this->apiHtml = str_replace("<substitute-height>", "height:" . $this->defaultHeight . ";", $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-border-width>", $this->defaultBorderWidth,  $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-border-color>", $this->defaultBorderColor,  $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-active-dotcolor>", $this->defaultActiveDotColor,  $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-inactive-dotcolor>", $this->defaultInactiveDotColor,  $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-dot-margin-top>", "0px",  $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-dot-margin-bottom>", "0px",  $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-dot-margin-left>", "0px",  $this->apiHtml);
-		$this->apiHtml = str_replace("<substitute-dot-margin-right>", "0px",  $this->apiHtml);
-*/
 		// JS
 		if (strstr($this->apiJs, "<substitute-animation>"))
 		{
