@@ -21,7 +21,7 @@ class VendorReportCommand extends CConsoleCommand
 		fputcsv($fp, $heading);
 		
 		// Report date range
-		$fromdate = new DateTime('30 days ago');	// KIM make 7
+		$fromdate = new DateTime('7 days ago');
 		$todate = new DateTime('1 days ago');
 
 		$ghtmlstart = "<html><style>html, table, div, tr, td, * { font-size: small !important; color: #150e00 !important; background-color: #e1dab9 !important; font-family: Calibri, Verdana, Arial, Serif !important; } table td { border-left:solid 10px transparent; } table td:first-child { border-left:0; }</style>";
