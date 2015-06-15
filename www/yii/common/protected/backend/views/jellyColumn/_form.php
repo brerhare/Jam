@@ -9,7 +9,7 @@
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<?php  echo $form->textFieldRow($model,'column',array('class'=>'span2')); ?>
+	<?php  echo $form->textFieldRow($model,'column_id',array('class'=>'span2')); ?>
 
 	<?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>255)); ?>
 
