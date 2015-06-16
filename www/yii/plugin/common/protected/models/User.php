@@ -69,7 +69,7 @@ class User extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'email_address' => 'Email Address',
+			'email_address' => 'User name',
 			'password' => 'Password',
 			'display_name' => 'Display Name',
 			'sid' => 'Sid',
