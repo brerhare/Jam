@@ -10,21 +10,30 @@ $valueArray = array();
 ?>
 
 <?php if (!($model)) { 
-$lastWeek = time() - (6 * 24 * 60 * 60);
-$f = getdate($lastWeek);
-$t = getdate();
+$f = $fromD;
+$t = $toD;
+$fChk = $f['year']; if (strlen($f['mon']) == 1) $fChk .= "0"; $fChk .= $f['mon']; if (strlen($f['mday']) == 1) $fChk .= "0"; $fChk .= $f['mday'];
+$tChk = $t['year']; if (strlen($t['mon']) == 1) $tChk .= "0"; $tChk .= $t['mon']; if (strlen($t['mday']) == 1) $tChk .= "0"; $tChk .= $t['mday'];
+//echo "<br>[". $fChk . "-" . $tChk . "]<br>";
 ?>
 <!------------------------------------------ @@EG: dropdown date starts ------------------------------------------->
     <script type="text/javascript" src="/js/dropdownDate.js"></script>
     <style>
-        span#startDate select {width:70px; margin-right:5px; margin-top:5px;}
-        span#endDate select {width:70px; margin-right:5px; margin-top:5px;}
+        span#startDate select {width:70px; margin-right:5px; margin-top:10px;}
+        span#endDate select {width:70px; margin-right:5px; margin-top:10px;}
     </style>
 
 	<input name="start" id="Event_start" type="hidden" value="<?php echo $f['mday'] . "-" . $f['mon'] . "-" . $f['year'];?>"/>
-	<b>Displaying From</b> <span id='startDate'></span>
+	<span> <b>Displaying From</b></span> <span id='startDate'></span>
 	<input name="end" id="Event_end" type="hidden" value="<?php echo $t['mday'] . "-" . $t['mon'] . "-" . $t['year'];?>" />
-	&nbsp&nbsp&nbsp <b>To</b> <span id='endDate'></span>
+	&nbsp&nbsp&nbsp <span><b>To</b></span> <span id='endDate'></span>
+
+	&nbsp&nbsp&nbsp
+	<?php $this->widget('bootstrap.widgets.TbButton', array(
+		'buttonType'=>'submit',
+		'type'=>'primary',
+		'label'=>'Change',
+	)); ?>
 
     <script>
         dropdownDate('startDate', 'Event_start', 'dd-mm-yyyy');
@@ -84,6 +93,14 @@ table tr {
 		$transactions = Transaction::model()->findAll($criteria);
 		foreach ($transactions as $transaction):
 
+			if (!($model))
+			{
+				$date = $transaction->timestamp;
+				$chk = sprintf("%04s%02s%02s", substr($date,0,4),substr($date,5,2),substr($date,8,2));
+				if (($chk < $fChk) || ($chk > $tChk))
+					continue;
+			
+			}
 			// Check for dups. Cant have more than one record of the same ticket type per order
 			//if ($curOrder != $transaction->order_number)
 			//{

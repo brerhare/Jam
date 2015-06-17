@@ -365,8 +365,17 @@ class EventController extends Controller
 	 */
 	public function actionFullReport()
 	{
+		$start = time() - (6 * 24 * 60 * 60);
+		$end = time();
+		$f = getdate($start);
+		$t = getdate($end);
+
 		$this->render('report',array(
 			'model'=>null,
+			'fromD'=>$f,
+			'toD'=>$t,
+			'fromT'=>$start,
+			'toT'=>$end,
 		));
 	}
 
