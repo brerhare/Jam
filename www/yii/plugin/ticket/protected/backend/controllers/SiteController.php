@@ -263,8 +263,9 @@ class SiteController extends Controller
 	// Login from another plugin (events)
 	public function actionLogin2()
 	{
-//echo $_GET['sid'];
-//die;
+        if (trim($_GET['sid']) == "")
+            $this->redirect(array('site/login'));
+
         $criteria = new CDbCriteria;
         $criteria->addCondition("sid = '" . $_GET['sid']. "'");
         $user = User::model()->find($criteria);

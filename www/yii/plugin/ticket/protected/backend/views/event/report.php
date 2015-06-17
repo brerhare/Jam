@@ -9,12 +9,33 @@ $ticketArray = array();
 $valueArray = array();
 ?>
 
-<h4>
+<?php if (!($model)) { 
+$lastWeek = time() - (6 * 24 * 60 * 60);
+$f = getdate($lastWeek);
+$t = getdate();
+?>
+<!------------------------------------------ @@EG: dropdown date starts ------------------------------------------->
+    <script type="text/javascript" src="/js/dropdownDate.js"></script>
+    <style>
+        span#startDate select {width:70px; margin-right:5px; margin-top:5px;}
+        span#endDate select {width:70px; margin-right:5px; margin-top:5px;}
+    </style>
+
+	<input name="start" id="Event_start" type="hidden" value="<?php echo $f['mday'] . "-" . $f['mon'] . "-" . $f['year'];?>"/>
+	<b>Displaying From</b> <span id='startDate'></span>
+	<input name="end" id="Event_end" type="hidden" value="<?php echo $t['mday'] . "-" . $t['mon'] . "-" . $t['year'];?>" />
+	&nbsp&nbsp&nbsp <b>To</b> <span id='endDate'></span>
+
+    <script>
+        dropdownDate('startDate', 'Event_start', 'dd-mm-yyyy');
+        dropdownDate('endDate', 'Event_end', 'dd-mm-yyyy');
+    </script>
+<!-------------------------------------------- dropdown date ends ------------------------------------------------>
+<?php } ?>
+
 <?php
 if ($model)
-	echo $model->title . " as at " . date("d/m/y") . ' (' . $vendorName . ' / ' . str_replace('-', '/', $model->date) . ')';
-else
-	echo "All events" . " as at " . date("d/m/y") . ' (' . $vendorName . ')';
+	echo "<h4>" . $model->title . "    -   " . $model->date . "</h4>";
 ?>
 </h4>
 

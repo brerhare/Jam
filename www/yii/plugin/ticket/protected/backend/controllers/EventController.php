@@ -33,11 +33,11 @@ class EventController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','delete','download','exportCSV','showReport', 'remailConfirm', 'remailSend'),
+				'actions'=>array('create','update','admin','delete','download','exportCSV','showReport', 'fullReport', 'remailConfirm', 'remailSend'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','download','exportCSV','showReport', 'remailConfirm', 'remailSend'),
+				'actions'=>array('admin','delete','download','exportCSV','showReport', 'fullReport', 'remailConfirm', 'remailSend'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -357,6 +357,16 @@ class EventController extends Controller
 
 		$this->render('report',array(
 			'model'=>$model,
+		));
+	}
+
+	/**
+	 * Show report for all events
+	 */
+	public function actionFullReport()
+	{
+		$this->render('report',array(
+			'model'=>null,
 		));
 	}
 

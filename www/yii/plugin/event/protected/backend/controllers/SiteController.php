@@ -123,6 +123,8 @@ class SiteController extends Controller
 	public function actionLogin2()
 	{
 		$model=new LoginForm;
+		if (trim($_GET['sid']) == "")
+			$this->redirect(array('site/login'));
 
         $criteria = new CDbCriteria;
         $criteria->addCondition("sid = '" . $_GET['sid']. "'");
