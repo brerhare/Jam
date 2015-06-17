@@ -260,6 +260,27 @@ class SiteController extends Controller
 		$this->render('login',array('model'=>$model));
 	}
 
+	// Login from another plugin (events)
+	public function actionLogin2()
+	{
+//echo $_GET['sid'];
+//die;
+        $criteria = new CDbCriteria;
+        $criteria->addCondition("sid = '" . $_GET['sid']. "'");
+        $user = User::model()->find($criteria);
+        if ($user == null)
+        {
+            Yii::log("Cant autologin using SID");
+            throw new CHttpException(500,'Missing user - Cannot continue without a valid sid');
+        }
+        Yii::app()->session['uid'] = $user->id;
+        $identity = new UserIdentity($user->email_address, $user->password);
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+	}
+
 	/**
 	 * Logs out the current user and redirect to homepage.
 	 */
