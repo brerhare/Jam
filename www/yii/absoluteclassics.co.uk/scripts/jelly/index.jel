@@ -16,7 +16,7 @@ css.display = block
 	[site]
 	child = header, all-content, footer
 	css.display = block
-	css.width = 1200px
+	css.width = 100%
 
 
 ####### Header #########################
@@ -33,7 +33,7 @@ css.width = 1200px
 css.margin-top = 20px
 image.url = img/ac-logo.png
 image.width = 250px
-image.height = 114px
+image.height = 46%
 image.align = center
 click = http://www.absoluteclassics.co.uk/
 
@@ -43,6 +43,8 @@ css.margin-top = 20px
 css.margin-left = 100px
 css.height = 55px
 css.width = 1000px
+#css.width = 80%
+#css.minwidth = 800px
 stacking = horizontal
 css.margin-left = 0px auto
 css.margin-right= 0px auto 
@@ -92,8 +94,8 @@ css.width = 960px
 css.margin-top = 30px
 css.background-color = black
 	image.url = img/centre-background.jpg
-	image.width = 600px
-	image.height = 462px
+	image.width = 58%
+	image.height = 58%
 	image.align = center
 	
 	[home-content-block]
