@@ -106,6 +106,11 @@ return array(
 	// application-level parameters that can be accessed
 	// using Yii::app()->params['paramName']
 	'params'=>array(
+        // used for login names and passwords
+        'dbHost' => 'localhost',
+        'dbName' => 'plugin',
+        'dbUser' => 'plugin',
+        'dbPass' => 'plugin,',
 		// this is used in contact page
 		'adminEmail'=>'webmaster@wireflydesign.com',
         // CKEditor size for page content editing
