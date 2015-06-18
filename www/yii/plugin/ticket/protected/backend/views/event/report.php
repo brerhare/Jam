@@ -1,3 +1,10 @@
+<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+	'id'=>'report-form',
+	'type'=>'horizontal',
+	'enableAjaxValidation'=>false,
+	'htmlOptions'=>array('enctype'=>'multipart/form-data'),
+)); ?>
+
 <?php
 $vendorName = "Missing vendor";
 $criteria = new CDbCriteria;
@@ -9,12 +16,42 @@ $ticketArray = array();
 $valueArray = array();
 ?>
 
-<h4>
+<?php if (!($model)) { 
+$f = $fromD;
+$t = $toD;
+$fChk = $f['year'] . $f['mon'] . $f['mday'];
+$tChk = $t['year'] . $t['mon'] . $t['mday'];
+//echo "<br>[". $fChk . "-" . $tChk . "]<br>";
+?>
+<!------------------------------------------ @@EG: dropdown date starts ------------------------------------------->
+    <script type="text/javascript" src="/js/dropdownDate.js"></script>
+    <style>
+        span#startDate select {width:70px; margin-right:5px; margin-top:10px;}
+        span#endDate select {width:70px; margin-right:5px; margin-top:10px;}
+    </style>
+
+	<input name="start" id="Event_start" type="hidden" value="<?php echo $f['mday'] . "-" . $f['mon'] . "-" . $f['year'];?>"/>
+	<span> <b>Displaying From</b></span> <span id='startDate'></span>
+	<input name="end" id="Event_end" type="hidden" value="<?php echo $t['mday'] . "-" . $t['mon'] . "-" . $t['year'];?>" />
+	&nbsp&nbsp&nbsp <span><b>To</b></span> <span id='endDate'></span>
+
+	&nbsp&nbsp&nbsp
+	<?php $this->widget('bootstrap.widgets.TbButton', array(
+		'buttonType'=>'submit',
+		'type'=>'primary',
+		'label'=>'Change',
+	)); ?>
+
+    <script>
+        dropdownDate('startDate', 'Event_start', 'dd-mm-yyyy');
+        dropdownDate('endDate', 'Event_end', 'dd-mm-yyyy');
+    </script>
+<!-------------------------------------------- dropdown date ends ------------------------------------------------>
+<?php } ?>
+
 <?php
 if ($model)
-	echo $model->title . " as at " . date("d/m/y") . ' (' . $vendorName . ' / ' . str_replace('-', '/', $model->date) . ')';
-else
-	echo "All events" . " as at " . date("d/m/y") . ' (' . $vendorName . ')';
+	echo "<h4>" . $model->title . "    -   " . $model->date . "</h4>";
 ?>
 </h4>
 
@@ -63,6 +100,14 @@ table tr {
 		$transactions = Transaction::model()->findAll($criteria);
 		foreach ($transactions as $transaction):
 
+			if (!($model))
+			{
+				$date = $transaction->timestamp;
+				$chk = sprintf("%04s%02s%02s", substr($date,0,4),substr($date,5,2),substr($date,8,2));
+				if (($chk < $fChk) || ($chk > $tChk))
+					continue;
+			
+			}
 			// Check for dups. Cant have more than one record of the same ticket type per order
 			//if ($curOrder != $transaction->order_number)
 			//{
@@ -235,3 +280,4 @@ $(document).ready(function() {
 });
 </script>
 
+<?php $this->endWidget(); ?>
