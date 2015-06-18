@@ -33,11 +33,11 @@ class EventController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','delete','download','exportCSV','showReport', 'fullReport', 'remailConfirm', 'remailSend'),
+				'actions'=>array('create','update','admin','delete','download','downloadFull','exportCSV','exportCSVFull','showReport', 'fullReport', 'remailConfirm', 'remailSend'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','download','exportCSV','showReport', 'fullReport', 'remailConfirm', 'remailSend'),
+				'actions'=>array('admin','delete','download','downloadFull','exportCSV','exportCSVFull','showReport', 'fullReport', 'remailConfirm', 'remailSend'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -203,15 +203,30 @@ class EventController extends Controller
 	}
 
 	/**
+	 * Show the 'Download .CSV for this event' view
+	 */
+	//public function actionDownloadFull($fromD, $toD, $fromT, $toT)
+	public function actionDownloadFull()
+	{
+//print_r($_GET);
+//die;
+		$this->render('downloadFull',array(
+			'model'=>null,
+			'fromD'=>$_GET['fromD'],
+			'toD'=>$_GET['toD'],
+			'fromT'=>$_GET['fromT'],
+			'toT'=>$_GET['toT'],
+		));
+	}
+
+	/**
 	 * Export CSV report (called from the 'download' view)
 	 */
 	public function actionExportCSV($id)
 	{
-//die('x='.$id);
 		$model=$this->loadModel($id);
 		if(isset($_GET['Event']))
 			$model->attributes=$_GET['Event'];
-
 		$cr = "<br>";
 		$heading = array('event', 'area', 'ticket_type', 'date', 'order_number', 'auth_code', 'name', 'email', 'telephone', 'address1', 'address2', 'address3', 'address4', 'city', 'county', 'post_code', 'price_each', 'sales_qty', 'sales_value');
 		
@@ -221,7 +236,6 @@ class EventController extends Controller
 		fputcsv($fp2, $heading);
 		$umsg = "";	
 		$hasActiveEvent = false;
-		$uQty = 0;
 		$uVal = 0;
 
 		$criteria = new CDbCriteria;
@@ -308,41 +322,116 @@ class EventController extends Controller
 				}
 			}
 		}
-
 		fclose($fp2);
-
 		if ($hasActiveEvent)
-		{
-			// Send file to user
 			Yii::app()->getRequest()->sendFile( "Export.csv" , file_get_contents( "/tmp/ticketVendorExport.csv" ) );
+		$this->redirect(array('admin'));
+	}
 
-/*****
-			// Send email to vendor
-			$to = $vendor->email;
-			$att_filename = "/tmp/ticketVendorExport.csv";
-			if (strlen($to) > 0)
+	/**
+	 * Export CSV report (called from the menu)
+	 */
+	public function actionExportCSVFull()
+	{
+//print_r($_GET);
+//die;
+		$f = getdate($_GET['fromT']);
+		$t = getdate($_GET['toT']);
+		if (strlen($f['mon']) == 1) $f['mon'] = "0" . $f['mon'];
+		if (strlen($f['mday']) == 1) $f['mday'] = "0" . $f['mday'];
+		if (strlen($t['mon']) == 1) $t['mon'] = "0" . $t['mon'];
+		if (strlen($t['mday']) == 1) $t['mday'] = "0" . $t['mday'];
+		$fChk = $f['year'] . $f['mon'] . $f['mday'];
+		$tChk = $t['year'] . $t['mon'] . $t['mday'];
+
+		// Pick up the vendor record
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("id = " . Yii::app()->session['uid']);
+		$vendor = Vendor::model()->find($criteria);
+		if (!($vendor))
+			throw new CHttpException(400,'Vendor record missing');
+		if (trim($vendor->email) == "")
+			throw new CHttpException(400,'Please set up an email address in your vendor record');
+
+		if(isset($_GET['Event']))
+			$model->attributes=$_GET['Event'];
+		$cr = "<br>";
+		$heading = array('event', 'area', 'ticket_type', 'date', 'order_number', 'auth_code', 'name', 'email', 'telephone', 'address1', 'address2', 'address3', 'address4', 'city', 'county', 'post_code', 'price_each', 'sales_qty', 'sales_value');
+		
+		if (file_exists('/tmp/ticketVendorExportFull.csv'))
+			unlink('/tmp/ticketVendorExportFull.csv');
+		$fp2 = fopen('/tmp/ticketVendorExportFull.csv', 'w');
+		fputcsv($fp2, $heading);
+		$hasActiveEvent = false;
+
+		$criteria = new CDbCriteria;
+        $criteria->addCondition("uid = " . Yii::app()->session['uid']);
+		$transactions = Transaction::model()->findAll($criteria);
+		foreach ($transactions as $transaction)	// All event transactions for the event
+		{
+			// Suppress values for non-paymentsense tickets
+			if (!($transaction->auth_code))
+				$transaction->http_ticket_total = 0;
+
+			$date = $transaction->timestamp;
+			$chk = sprintf("%04s%02s%02s", substr($date,0,4),substr($date,5,2),substr($date,8,2));
+//echo "   >> " . $chk . " ? " . $fChk . " : " . $tChk . " <<   ";
+			if (($chk < $fChk) || ($chk > $tChk))
+				continue;
+
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("id = " . $transaction->event_id);
+			$event = Event::model()->find($criteria);
+			if ($event)
 			{
-				$from = "admin@dglink.co.uk";
-				$fromName = "Admin";
-				$subject = "Your requested ticket sales report";
-				$message = $umsg; 
-				// phpmailer
-				$mail = new PHPMailer();
-				$mail->AddAddress($to);
-//$mail->AddBCC("kim@wireflydesign.com");
-				$mail->SetFrom($from, $fromName);
-				$mail->AddReplyTo($from, $fromName);
-				$mail->AddAttachment($att_filename);
-				$mail->Subject = $subject;
-				$mail->MsgHTML($message);
-				if (!$mail->Send())
-					Yii::log("WEEKLY REPORT COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
-				else
-					Yii::log("WEEKLY SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
-			}
-*****/
-		}
+				//if (!($event->active))
+					//continue;
 
+				$hasActiveEvent = true;
+
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("id = " . $transaction->http_area_id);
+				$area = Area::model()->find($criteria);
+				$areaDescription = "*Missing*";
+				if ($area)
+					$areaDescription = $area->description;
+
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("id = " . $transaction->http_ticket_type_id);
+				$ticketType = TicketType::model()->find($criteria);
+				$ticketTypeDescription = "*Missing*";
+				if ($ticketType)
+					$ticketTypeDescription = $ticketType->description;
+
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("order_number = '" . $transaction->order_number . "'");
+				$auth = Auth::model()->find($criteria);
+				$name = "";
+				$a1 = "";
+				$a2 = "";
+				$a3 = "";
+				$a4 = "";
+				$city = "";
+					$state = "";
+				$pc = "";
+				if ($auth != null)
+				{
+					$name = $auth->card_name;
+					$a1 = $auth->address1;
+					$a2 = $auth->address2;
+					$a3 = $auth->address3;
+					$a4 = $auth->address4;
+					$city = $auth->city;
+					$state = $auth->state;
+					$pc = $auth->post_code;
+				}
+				$line = array($event->title, $areaDescription, $ticketTypeDescription, $transaction->timestamp, $transaction->order_number, $transaction->auth_code, $name, $transaction->email, $transaction->telephone, $a1, $a2, $a3, $a4, $city, $state, $pc, sprintf("%01.2f", $transaction->http_ticket_price), $transaction->http_ticket_qty, sprintf("%01.2f", $transaction->http_ticket_total));
+				fputcsv($fp2, $line);
+			}
+		}
+		fclose($fp2);
+		if ($hasActiveEvent)
+			Yii::app()->getRequest()->sendFile( "Export.csv" , file_get_contents( "/tmp/ticketVendorExportFull.csv" ) );
 		$this->redirect(array('admin'));
 	}
 

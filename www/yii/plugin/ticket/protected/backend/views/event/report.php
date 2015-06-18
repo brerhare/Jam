@@ -26,8 +26,8 @@ $tChk = $t['year'] . $t['mon'] . $t['mday'];
 <!------------------------------------------ @@EG: dropdown date starts ------------------------------------------->
     <script type="text/javascript" src="/js/dropdownDate.js"></script>
     <style>
-        span#startDate select {width:70px; margin-right:5px; margin-top:10px;}
-        span#endDate select {width:70px; margin-right:5px; margin-top:10px;}
+        span#startDate select {width:70px; margin-right:5px; margin-top:0px;}
+        span#endDate select {width:70px; margin-right:5px; margin-top:0px;}
     </style>
 
 	<input name="start" id="Event_start" type="hidden" value="<?php echo $f['mday'] . "-" . $f['mon'] . "-" . $f['year'];?>"/>
@@ -39,7 +39,7 @@ $tChk = $t['year'] . $t['mon'] . $t['mday'];
 	<?php $this->widget('bootstrap.widgets.TbButton', array(
 		'buttonType'=>'submit',
 		'type'=>'primary',
-		'label'=>'Change',
+		'label'=>'Apply',
 	)); ?>
 
     <script>
@@ -56,6 +56,7 @@ if ($model)
 </h4>
 
 <style>
+#content { padding:0px}
 .background1 { background-color:#d7e3f9; }
 .background2 { background-color:#ffffff; }
 table td, table th {
@@ -71,9 +72,10 @@ table tr {
 <div class="span12">
 	<table id="reportTable">
 		<tr style="background-color:#c3d9ff; color:#0088cc;">
-			<td>Resend</td>
-			<td style="text-align:center">Date</td>
-			<td>Order Number</td>
+			<?php if ($model) echo "<td>Resend</td>";?>
+			<?php if (!($model)) echo "<td width=220px>Event</td>";?>
+			<td style="text-align:left">Date</td>
+			<td><?php if ($model) echo "Order Number";?></td>
 			<td>Name</td>
 			<td>Phone</td>
 			<td>Post Code</td>
@@ -107,6 +109,13 @@ table tr {
 				if (($chk < $fChk) || ($chk > $tChk))
 					continue;
 			
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("id = " . $transaction->event_id);
+				$event = Event::model()->find($criteria);
+				$eventTitle = "*Missing*";
+				if ($event)
+					$eventTitle = $event->title;
+
 			}
 			// Check for dups. Cant have more than one record of the same ticket type per order
 			//if ($curOrder != $transaction->order_number)
@@ -139,9 +148,15 @@ table tr {
 		?>
 		<?php echo "<tr class=" . $class . ">" ?>
 			<?php if ($prevOrder != $transaction->order_number) : ?>
+
 			<td>
-				<?php echo '<a title="Email this customers tickets" href="' . Yii::app()->createUrl('event/remailConfirm', array('id' => $transaction->id, 'name' => $auth->card_name))  . '" target="_blank"><img src="/ticket/img/email.png" border="0" ></a>'; ?>
+			<?php if ($model)
+				echo '<a title="Email this customers tickets" href="' . Yii::app()->createUrl('event/remailConfirm', array('id' => $transaction->id, 'name' => $auth->card_name))  . '" target="_blank"><img src="/ticket/img/email.png" border="0" ></a>';
+			else
+				echo $eventTitle;
+			?>
 			</td>
+
 			<td>
 				<?php
 				$date = $transaction->timestamp;
@@ -149,7 +164,9 @@ table tr {
 				?>
 			</td>
 			<td>
-				<?php echo '<a title="View this customers tickets" href="' . Yii::app()->baseUrl . '/tkts/' . $transaction->order_number . '.pdf">' . $transaction->order_number . '</a>'; ?>
+				<?php if ($model)
+					 echo '<a title="View this customers tickets" href="' . Yii::app()->baseUrl . '/tkts/' . $transaction->order_number . '.pdf">' . $transaction->order_number . '</a>';
+				?>
 			</td>
 			<td>
 				<?php if ($auth) echo substr($auth->card_name, 0, 30); else echo 'Name not available';?>
@@ -279,5 +296,18 @@ $(document).ready(function() {
 	?>
 });
 </script>
+
+<?php
+if (!($model))
+{
+	$this->widget('bootstrap.widgets.TbButton', array(
+		'label'=>'Download as CSV',
+		'url'   => Yii::app()->controller->createUrl("downloadFull", array("fromD" => $fromD, "toD" => $toD, "fromT" => $fromT, "toT" => $toT)),
+		'type'=>'primary',
+		'buttonType' =>'link',
+		//'imageUrl'=>Yii::app()->request->baseUrl.'/img/arrow_down.png',
+	));
+}
+?> 
 
 <?php $this->endWidget(); ?>
