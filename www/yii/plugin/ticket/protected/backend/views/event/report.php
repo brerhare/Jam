@@ -1,3 +1,10 @@
+<?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
+	'id'=>'report-form',
+	'type'=>'horizontal',
+	'enableAjaxValidation'=>false,
+	'htmlOptions'=>array('enctype'=>'multipart/form-data'),
+)); ?>
+
 <?php
 $vendorName = "Missing vendor";
 $criteria = new CDbCriteria;
@@ -12,8 +19,8 @@ $valueArray = array();
 <?php if (!($model)) { 
 $f = $fromD;
 $t = $toD;
-$fChk = $f['year']; if (strlen($f['mon']) == 1) $fChk .= "0"; $fChk .= $f['mon']; if (strlen($f['mday']) == 1) $fChk .= "0"; $fChk .= $f['mday'];
-$tChk = $t['year']; if (strlen($t['mon']) == 1) $tChk .= "0"; $tChk .= $t['mon']; if (strlen($t['mday']) == 1) $tChk .= "0"; $tChk .= $t['mday'];
+$fChk = $f['year'] . $f['mon'] . $f['mday'];
+$tChk = $t['year'] . $t['mon'] . $t['mday'];
 //echo "<br>[". $fChk . "-" . $tChk . "]<br>";
 ?>
 <!------------------------------------------ @@EG: dropdown date starts ------------------------------------------->
@@ -273,3 +280,4 @@ $(document).ready(function() {
 });
 </script>
 
+<?php $this->endWidget(); ?>

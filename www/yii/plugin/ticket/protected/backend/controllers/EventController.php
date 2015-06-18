@@ -367,8 +367,18 @@ class EventController extends Controller
 	{
 		$start = time() - (6 * 24 * 60 * 60);
 		$end = time();
+
+		if(Yii::app()->request->isPostRequest)
+		{
+			$start = strtotime($_POST['start']);
+			$end = strtotime($_POST['end']);
+		}
 		$f = getdate($start);
 		$t = getdate($end);
+		if (strlen($f['mon']) == 1) $f['mon'] = "0" . $f['mon'];
+		if (strlen($f['mday']) == 1) $f['mday'] = "0" . $f['mday'];
+		if (strlen($t['mon']) == 1) $t['mon'] = "0" . $t['mon'];
+		if (strlen($t['mday']) == 1) $t['mday'] = "0" . $t['mday'];
 
 		$this->render('report',array(
 			'model'=>null,
