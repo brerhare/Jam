@@ -21,39 +21,6 @@ class SiteController extends Controller
 		);
 	}
 
-// @@TODO: HARDCODED FOR TEST ---------- REMOVE
-    public function actionTestdirect()
-    {
-        Yii::app()->session['uid'] = 55;
-        $identity = new UserIdentity('test', 'site2plugin');
-        $identity->authenticate();
-        $duration = 3600*24*14; // 14 days
-        Yii::app()->user->login($identity, $duration);
-        $this->redirect(array('site/index'));
-    }
-
-// @@TODO: HARDCODED FOR DEMO ---------- REMOVE
-    public function actionDemodirect()
-    {
-        Yii::app()->session['uid'] = 4;
-        $identity = new UserIdentity('demo', 'site2plugin');
-        $identity->authenticate();
-        $duration = 3600*24*14; // 14 days
-        Yii::app()->user->login($identity, $duration);
-        $this->redirect(array('site/index'));
-    }
-
-// @@TODO: HARDCODED FOR ABSOLUTE CLASSICS ---------- REMOVE
-    public function actionAbsoluteClassicsdirect()
-    {
-        Yii::app()->session['uid'] = 7;
-        $identity = new UserIdentity('Alex', 'site2plugin');
-        $identity->authenticate();
-        $duration = 3600*24*14; // 14 days
-        Yii::app()->user->login($identity, $duration);
-        $this->redirect(array('site/index'));
-    }
-
 	/**
 	 * This is the default 'index' action that is invoked
 	 * when an action is not explicitly requested by users.
@@ -151,6 +118,44 @@ class SiteController extends Controller
 		// display the login form
 		$this->render('login',array('model'=>$model));
 	}
+
+	// Login from a backend
+	public function actionLogin2()
+	{
+		$model=new LoginForm;
+		if (trim($_GET['sid']) == "")
+			$this->redirect(array('site/login'));
+
+        $criteria = new CDbCriteria;
+        $criteria->addCondition("sid = '" . $_GET['sid']. "'");
+        $member = Member::model()->find($criteria);
+        if ($member == null)
+        {
+            Yii::log("Cant autologin using SID");
+            throw new CHttpException(500,'Missing member - Cannot continue without a valid sid');
+        }
+//echo $user->email_address;
+//die;
+
+		$model->username = $member->user_name;
+		$model->password = $member->password;
+		if($model->validate() && $model->login())
+		{
+			// Set the admin session var if is an admin on ANY project (shows the 'Project' menu option)
+			unset(Yii::app()->session['isAnyAdmin']);
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("event_member_id = " . Yii::app()->session['eid']);
+			$criteria->addCondition("privilege_level = 2");	//@@TODO Privilege hardcoded
+			$memberHasProgram = MemberHasProgram::model()->findAll($criteria);
+			if ($memberHasProgram)
+				Yii::app()->session['isAnyAdmin'] = 1;
+
+			// And carry on...
+			$this->redirect(Yii::app()->user->returnUrl);
+		}
+        throw new CHttpException(500,'Member validation problem - Cannot continue without a valid sid');
+	}
+
 
 	/**
 	 * Logs out the current user and redirect to homepage.

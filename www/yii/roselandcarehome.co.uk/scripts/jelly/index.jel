@@ -93,7 +93,7 @@ stacking = horizontal
 		#// Top level basic settings
             addon.menu.traditional.orientation = vertical
             addon.menu.traditional.width = 80px
-            addon.menu.traditional.height = 40px
+            addon.menu.traditional.height = 35px
             addon.menu.traditional.align = left
             addon.menu.traditional.item-width = 80px
 			
@@ -101,7 +101,7 @@ stacking = horizontal
             addon.menu.traditional.menu-rounding = 0px
             addon.menu.traditional.menu-opacity = 100%
             addon.menu.traditional.menu-color = transparent 
-            addon.menu.traditional.item-separator-width = 2px
+            addon.menu.traditional.item-separator-width = 7px
             addon.menu.traditional.item-separator-color = transparent
 			
 #// Top level font settings
@@ -320,7 +320,7 @@ css.float = right
 		stacking = horizontal
 	
 			[contact-form]
-			css.width = 550px
+			css.width = 60%
 			css.margin = 0px
 			#css.margin-bottom = 30px
 			css.background-color = white
@@ -336,9 +336,10 @@ css.float = right
 #			addon.contact.contactform.inputwidth = 98%
 
 			[contact-text]
-			css.width = 300px
+			css.width = 30%
 			css.margin-top = 80px
 			css.font = 12px
+			css.padding = 5px
 			html.raw = Please fill in the form and someone will get back to you as soon as possible.
 
 
