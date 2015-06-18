@@ -16,7 +16,7 @@ css.display = block
 	[site]
 	child = header, all-content, footer
 	css.display = block
-	css.width = 1200px
+	css.width = 100%
 
 
 ####### Header #########################
@@ -33,7 +33,7 @@ css.width = 1200px
 css.margin-top = 20px
 image.url = img/ac-logo.png
 image.width = 250px
-image.height = 114px
+image.height = 46%
 image.align = center
 click = http://www.absoluteclassics.co.uk/
 
@@ -43,6 +43,8 @@ css.margin-top = 20px
 css.margin-left = 100px
 css.height = 55px
 css.width = 1000px
+#css.width = 80%
+#css.minwidth = 800px
 stacking = horizontal
 css.margin-left = 0px auto
 css.margin-right= 0px auto 
@@ -58,7 +60,7 @@ css.margin-right= 0px auto
 	image.width = 151px
 	image.height = 35px
 	image.align = centre
-#	click = http://www.absoluteclassics.co.uk/?layout=series&page=classical-music-series
+	click = http://www.absoluteclassics.co.uk/?layout=series&page=classical-music-series
 
 	[menu2]
 	css.width = 250px
@@ -66,7 +68,7 @@ css.margin-right= 0px auto
 	image.width = 218px
 	image.height = 50px
 	image.align = centre
-#	click = http://www.absoluteclassics.co.uk/?layout=festival&page=international-music-platform-festival
+	click = http://www.absoluteclassics.co.uk/?layout=festival&page=international-music-platform-festival
 
 	[menu3]
 	css.width = 250px
@@ -75,7 +77,7 @@ css.margin-right= 0px auto
 	image.width = 100px
 	image.height = 35px
 	image.align = centre
-#	click = http://www.absoluteclassics.co.uk/?layout=tickets&page=classical-music-dumfries-live-performance
+	click = http://www.absoluteclassics.co.uk/?layout=tickets&page=classical-music-dumfries-live-performance
 	
 
 ######## Page Content ###############################
@@ -92,8 +94,8 @@ css.width = 960px
 css.margin-top = 30px
 css.background-color = black
 	image.url = img/centre-background.jpg
-	image.width = 600px
-	image.height = 462px
+	image.width = 58%
+	image.height = 58%
 	image.align = center
 	
 	[home-content-block]
@@ -223,21 +225,21 @@ stacking = horizontal
 				css.margin-top = 8px
 				css.text-align = left
 				css.color = #ffffff
-#				click = ?layout=index&page=education-classical-music
+				click = ?layout=index&page=education-classical-music
 
 				[masterclasses]
 				html.raw = Master Classes
 				css.margin-top = 8px
 				css.text-align = left
 				css.color = #ffffff
-#				click = ?layout=index&page=education-classical-music
+				click = ?layout=index&page=education-classical-music
 				
 				[support]
 				html.raw = Sponsors
 				css.margin-top = 8px
 				css.text-align = left
 				css.color = #ffffff
-#				click = ?layout=index&page=support-classical-music
+				click = ?layout=index&page=support-classical-music
 
 			[fmenu2]
 			child = about, footer-contact, footer-cookies, footer-tandc,
@@ -249,28 +251,28 @@ stacking = horizontal
 				css.margin-top = 8px
 				css.text-align = center
 				css.color = #ffffff
-#				click = ?layout=index&page=about-absolute-classics
+				click = ?layout=index&page=about-absolute-classics
 				
 				[footer-contact]
 				html.raw = Contact Us
 				css.text-align = center
 				css.margin-top = 8px
 				css.color = #ffffff
-#				click = ?layout=index&page=contact-live-classical-music-dumfries
+				click = ?layout=index&page=contact-live-classical-music-dumfries
 				
 				[footer-cookies]
 				html.raw = Cookie Policy
 				css.margin-top = 8px
 				css.text-align = center
 				css.color = #ffffff
-#				click = ?layout=index&page=cookie-policy
+				click = ?layout=index&page=cookie-policy
 				
 				[footer-tandc]
 				html.raw = Site T&Cs
 				css.margin-top = 8px
 				css.text-align = center
 				css.color = #ffffff
-#				click = ?layout=index&page=terms-conditions
+				click = ?layout=index&page=terms-conditions
 
 
 
@@ -286,21 +288,21 @@ stacking = horizontal
 				css.margin-top = 8px
 				css.text-align = right
 				css.color = #ffffff
-#				click = ?layout=index&page=latest-news-classical-music-dumfries-galloway
+				click = ?layout=index&page=latest-news-classical-music-dumfries-galloway
 				
 				[facebook]
 				html.raw = Facebook
 				css.margin-top = 8px
 				css.text-align = right
 				css.color = #ffffff
-#				clicknew = https://www.facebook.com/absoluteclassicsconcerts
+				clicknew = https://www.facebook.com/absoluteclassicsconcerts
 				
 				[twitter]
 				html.raw = Twitter
 				css.margin-top = 8px
 				css.text-align = right
 				css.color = #ffffff
-#				clicknew = https://twitter.com/ABClassics
+				clicknew = https://twitter.com/ABClassics
 
 
 		[footer-image]
