@@ -38,6 +38,7 @@
 				array('label' => 'Manual Tickets', 'url' => array('/site/manualTicket'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Vendor Details', 'url' => array('/vendor/createUpdate'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Events', 'url' => array('/event/admin'), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'Report', 'url' => array('/event/fullReport'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
                 array('label' => 'Logout', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Contact', 'url' => array('/site/contact'), 'visible' => Yii::app()->user->isGuest),

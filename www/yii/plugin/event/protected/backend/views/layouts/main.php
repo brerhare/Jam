@@ -47,7 +47,7 @@ if ($member)
 				//array('label' => 'Import CSV', 'url' => array('/event/import'), 'visible' => !Yii::app()->user->isGuest),
 				array('label' => 'Your Details', 'url' => array('/member/update'), 'visible' => !Yii::app()->user->isGuest),
 // @@EG layout/main tbmenu to external site in new tab/window
-				array('label' => 'Ticketing', 'url' => 'https://plugin.wireflydesign.com/ticket/backend.php/site/login', 'linkOptions' => array('target' => '_blank'), 'visible' => (!Yii::app()->user->isGuest && $sid != "") ),
+				array('label' => 'Ticketing', 'url' => 'https://plugin.wireflydesign.com/ticket/backend.php/site/login2/?sid=' . $sid, 'linkOptions' => array('target' => '_blank'), 'visible' => (!Yii::app()->user->isGuest && $sid != "") ),
 				array('label' => 'Logout', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),
 			),
 		),

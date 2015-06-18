@@ -48,6 +48,7 @@ class UserIdentity extends CUserIdentity
 					$this->username = "admin";      // Hardcode to bypass Yii's controller permissions @@FIX
 					Yii::app()->session['admin_user_id'] = $row['id'];        
 					Yii::app()->session['admin_user_display_name'] = $row['display_name'];
+					Yii::app()->session['admin_user_sid'] = $row['sid'];
 				}
 			} else throw new CHttpException(400,'Cant select on password database');
 		} else throw new CHttpException(400,'Cant connect to password database');

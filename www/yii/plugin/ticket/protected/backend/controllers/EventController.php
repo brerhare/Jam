@@ -33,11 +33,11 @@ class EventController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','admin','delete','download','exportCSV','showReport', 'remailConfirm', 'remailSend'),
+				'actions'=>array('create','update','admin','delete','download','exportCSV','showReport', 'fullReport', 'remailConfirm', 'remailSend'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','download','exportCSV','showReport', 'remailConfirm', 'remailSend'),
+				'actions'=>array('admin','delete','download','exportCSV','showReport', 'fullReport', 'remailConfirm', 'remailSend'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -357,6 +357,35 @@ class EventController extends Controller
 
 		$this->render('report',array(
 			'model'=>$model,
+		));
+	}
+
+	/**
+	 * Show report for all events
+	 */
+	public function actionFullReport()
+	{
+		$start = time() - (6 * 24 * 60 * 60);
+		$end = time();
+
+		if(Yii::app()->request->isPostRequest)
+		{
+			$start = strtotime($_POST['start']);
+			$end = strtotime($_POST['end']);
+		}
+		$f = getdate($start);
+		$t = getdate($end);
+		if (strlen($f['mon']) == 1) $f['mon'] = "0" . $f['mon'];
+		if (strlen($f['mday']) == 1) $f['mday'] = "0" . $f['mday'];
+		if (strlen($t['mon']) == 1) $t['mon'] = "0" . $t['mon'];
+		if (strlen($t['mday']) == 1) $t['mday'] = "0" . $t['mday'];
+
+		$this->render('report',array(
+			'model'=>null,
+			'fromD'=>$f,
+			'toD'=>$t,
+			'fromT'=>$start,
+			'toT'=>$end,
 		));
 	}
 
