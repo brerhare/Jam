@@ -146,9 +146,10 @@ function dropdownDate(containerDivId, targetElementId, templateStr)
 	dropdownDateSet("dd", dd.toString(), targetElementId, templateStr);
 	dropdownDateSet("mm", mm.toString(), targetElementId, templateStr);
 	dropdownDateSet("yyyy", yyyy.toString(), targetElementId, templateStr);
-	if (hr != -1)
+//alert('t: ' + templateStr + '=>' + document.getElementById(targetElementId).value);
+	if (hrPos != -1)
 		dropdownDateSet("hr", hr.toString(), targetElementId, templateStr);
-	if (mn != -1)
+	if (mnPos != -1)
 		dropdownDateSet("mn", mn.toString(), targetElementId, templateStr);
 //alert('2: ' + templateStr + '=>' + document.getElementById(targetElementId).value);
 }
