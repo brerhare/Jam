@@ -125,7 +125,6 @@ class SiteController extends Controller
 		$model=new LoginForm;
 		if (trim($_GET['sid']) == "")
 			$this->redirect(array('site/login'));
-
         $criteria = new CDbCriteria;
         $criteria->addCondition("sid = '" . $_GET['sid']. "'");
         $member = Member::model()->find($criteria);
@@ -134,9 +133,6 @@ class SiteController extends Controller
             Yii::log("Cant autologin using SID");
             throw new CHttpException(500,'Missing member - Cannot continue without a valid sid');
         }
-//echo $user->email_address;
-//die;
-
 		$model->username = $member->user_name;
 		$model->password = $member->password;
 		if($model->validate() && $model->login())
@@ -155,7 +151,6 @@ class SiteController extends Controller
 		}
         throw new CHttpException(500,'Member validation problem - Cannot continue without a valid sid');
 	}
-
 
 	/**
 	 * Logs out the current user and redirect to homepage.
