@@ -1,0 +1,17 @@
+domain = dev.6tyshadesofbeauty.co.uk
+parentdomain = sixtyshadesofbeauty.co.uk
+sitetitle = 6tyshades Of Beauty
+sid = test
+
+# Database
+dbname = 6tyshadesofbeauty_co_uk
+dbuser = sixtyshadesofbea
+dbpass = qAsEqcXz
+
+# Shopping cart order confirmation email
+checkoutemail = info.6tyshadesofbeauty.co.uk
+checkoutname = 6ty Shades of Beauty Sales
+
+# Backend page editor
+editorpagewidth = 800
+editorpageheight = 500
