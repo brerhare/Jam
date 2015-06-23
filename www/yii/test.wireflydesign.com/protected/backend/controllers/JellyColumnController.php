@@ -1,1 +1,0 @@
-../../../../common/protected/backend/controllers/JellyColumnController.php

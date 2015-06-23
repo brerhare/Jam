@@ -1,4 +1,5 @@
-site = rotarypeaceproject.com
+domain = rotarypeaceproject.com
+parentdomain =
 sitetitle = Rotary Peace Project
 sid = 9hfibchdmrtks747o2cofd59m0
 

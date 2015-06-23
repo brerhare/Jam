@@ -1,4 +1,5 @@
-site = heavingbosom.com
+domain = heavingbosom.com
+parentdomain =
 sitetitle = Heaving Bosom
 sid = heavingbosomsid
 
