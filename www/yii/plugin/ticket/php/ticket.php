@@ -94,7 +94,17 @@ function genTicket(
 
 
 			$areaModel = Area::model()->findByPk($ticket_type_area[$type]); 
+			if ($areaModel)
+				$aDescription = $areaModel->description;
+			else
+				$aDescription = "Ticket area here";
+
 			$ticketTypeModel = TicketType::model()->findByPk($ticket_type_id[$type]);
+			if ($ticketTypeModel)
+				$ttDescription = $ticketTypeModel->description;
+			else
+				$ttDescription = "Ticket type here";
+
 			// add a page
 			$pdf->AddPage();
 			$pdf->SetFont('helvetica', '', 12);
@@ -126,6 +136,8 @@ function genTicket(
 			);
 
 //end barcode
+
+file_put_contents("/tmp/ccc.txt", $eventModel->ticket_text);
 
 $tbl = <<<EOD
 		<table border="0">
@@ -173,9 +185,9 @@ $tbl = <<<EOD
 			</tr>
 			<tr>
 				<td height="40px" style="height:35px" >
-					$areaModel->description
+					$aDescription
 <br/>					
-					$ticketTypeModel->description
+					$ttDescription
 				</td>
 			</tr>
 			<tr>
@@ -198,7 +210,6 @@ $tbl = <<<EOD
 		<br/><br/>
 
 		$eventModel->ticket_text
-
 		<p/>
 		$eventModel->ticket_terms
 EOD;
