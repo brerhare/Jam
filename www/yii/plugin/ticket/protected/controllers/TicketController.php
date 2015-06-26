@@ -517,10 +517,13 @@ $this->redirect($tmp2);
 			"£0.00",
 			$ticketNumbers
 		);
-		$data = file_get_contents("/tmp/test-ticket.pdf");
-		header("Content-type: application/octet-stream");
-		header("Content-disposition: attachment;filename=test-ticket.pdf");
-		echo $data;
+		//$data = file_get_contents("/tmp/test-ticket.pdf");
+		//header("Content-type: application/octet-stream");
+		//header("Content-disposition: attachment;filename=test-ticket.pdf");
+		//echo $data;
+rename("/tmp/test-ticket.pdf", "test-ticket.pdf");
+echo "<embed src='/ticket/test-ticket.pdf' width='100%' height='100%' type='application/pdf'>";
+//echo "<iframe src='/ticket/test-ticket.pdf' width='100%' style='height:100%'></iframe>";
 	}
 
 	/**

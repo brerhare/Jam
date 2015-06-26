@@ -165,7 +165,7 @@ table tr {
 			</td>
 			<td>
 				<?php if ($model)
-					 echo '<a title="View this customers tickets" href="' . Yii::app()->baseUrl . '/tkts/' . $transaction->order_number . '.pdf">' . $transaction->order_number . '</a>';
+					 echo '<a title="View this customers tickets" target="_blank" href="' . Yii::app()->baseUrl . '/tkts/' . $transaction->order_number . '.pdf">' . $transaction->order_number . '</a>';
 				?>
 			</td>
 			<td>
