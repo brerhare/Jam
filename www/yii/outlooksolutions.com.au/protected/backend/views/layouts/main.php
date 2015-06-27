@@ -42,6 +42,7 @@
                     'items' => array(
                         array('label' => 'Galleries', 'url' => array('/jellyGallery/admin'), 'visible' => !Yii::app()->user->isGuest),
                         array('label' => 'Tabs', 'url' => array('/tabBlock/admin'), 'visible' => !Yii::app()->user->isGuest),
+						array('label' => 'Columns', 'url' => array('/jellyColumn/admin'), 'visible' => !Yii::app()->user->isGuest),
                         //array('label' => 'Ad Blocks', 'url' => array('/jellyAdblock/admin'), 'visible' => !Yii::app()->user->isGuest),
                         //array('label' => 'Ticker', 'url' => array('/jellyTicker/admin'), 'visible' => !Yii::app()->user->isGuest),
                     ),
