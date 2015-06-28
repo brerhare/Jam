@@ -17,7 +17,7 @@ return array(
     'viewPath' => $backend.'/views',
     'runtimePath' => $backend.'/runtime',
 
-	'name'=>'Wirefly Test Site Backend',
+	'name'=>'Test Site Backend',
 
 	// preloading 'log' component
 	// preloading 'bootstrap' component
@@ -113,8 +113,9 @@ return array(
         'dbPass' => 'plugin,',
 		// this is used in contact page
 		'adminEmail'=>'webmaster@wireflydesign.com',
-        // CKEditor size for page content editing
-        'editorpagewidth'=>'800',
-        'editorpageheight'=>'500',
+		// CKEditor size for page content editing (910 max)
+		'editorpagewidth'=>'800',
+		'editorpageheight'=>'500',
 	),
 );
+

@@ -32,16 +32,20 @@ while (!feof($handle))
 fclose($handle); 
 print_r($manifest);
 
-// The 'site' parameter must NOT be blank
-if (trim($manifest['site']) == "")
-	die("The 'site' entry in the manifest can not be blank - aborting\n");
-if (strstr(strtolower($manifest['site']), 'www'))
-	die("The site name should now have 'www' in it - aborting\n");
+// The 'domain' parameter must NOT be blank
+if (trim($manifest['domain']) == "")
+	die("The 'domain' entry in the manifest can not be blank - aborting\n");
+if (strstr(strtolower($manifest['domain']), 'www'))
+	die("The domain name should now have 'www' in it - aborting\n");
 
 // Check the target location is ok
 echo "Checking target location is ok...\n";
-$baseDir = "/home/" . $manifest['site'];
-$baseDirDev = "/home/" . $manifest['site'] . "/dev";
+$baseDir = "/home/" . $manifest['domain'];
+if (trim($manifest['parentdomain']) != "") {
+	$baseDir = "/home/" . $manifest['parentdomain'];
+	$baseDir .= "/domains/" . $manifest['domain'];
+}
+$baseDirDev = $baseDir. "/dev";
 if (is_dir($baseDirDev))
 	die($baseDir . " already has a jelly site in it - aborting\n");
 
@@ -63,27 +67,32 @@ exec("git clone /opt/dev/extern");
 // Copy the jelly skeleton
 echo "Copying jelly skeleton...\n";
 $siteParentDir = $baseDirDev . "/src/www/yii/";
-exec("cp -r " . $siteParentDir . "jelly_skeleton" . " " . $siteParentDir . $manifest['site']);
-if (!(is_dir($siteParentDir . $manifest['site'])))
-	die("Couldnt copy jelly skeleton to " . $manifest['site'] . " - aborting\n");
+exec("cp -r " . $siteParentDir . "jelly_skeleton" . " " . $siteParentDir . $manifest['domain']);
+if (!(is_dir($siteParentDir . $manifest['domain'])))
+	die("Couldnt copy jelly skeleton to " . $manifest['domain'] . " - aborting\n");
 
 // Set permissions
 echo "Setting permissions...\n";
-exec("chown -R " . $manifest['site'] . " " . $baseDirDev);
-exec("chgrp -R " . $manifest['site'] . " " . $baseDirDev);
+if (trim($manifest['parentdomain']) == "") {
+	exec("chown -R " . $manifest['domain'] . " " . $baseDirDev);
+	exec("chgrp -R " . $manifest['domain'] . " " . $baseDirDev);
+} else {
+	exec("chown -R " . $manifest['parentdomain'] . " " . $baseDirDev);
+	exec("chgrp -R " . $manifest['parentdomain'] . " " . $baseDirDev);
+}
 
 // Patch the apache conf file to reflect the home location (in 2 places)
 echo "Patching Apache config...\n";
-if (!($apache = file_get_contents("/etc/apache2/sites-available/" . $manifest['site'] . ".conf")))
+if (!($apache = file_get_contents("/etc/apache2/sites-available/" . $manifest['domain'] . ".conf")))
 	die("Failed to read apache.conf file - aborting\n");
-$apache = str_replace("DocumentRoot /home/" . $manifest['site'] . "/public_html", "DocumentRoot /home/" . $manifest['site'] . "/dev/src/www/yii/" . $manifest['site'], $apache);
-$apache = str_replace("<Directory /home/" . $manifest['site'] . "/public_html>", "<Directory /home/" . $manifest['site'] . "/dev/src/www/yii/" . $manifest['site'] . ">", $apache);
-if (!(file_put_contents("/etc/apache2/sites-available/" . $manifest['site'] . ".conf", $apache)))
+$apache = str_replace("DocumentRoot " . $baseDir. "/public_html", "DocumentRoot " . $baseDir . "/dev/src/www/yii/" . $manifest['domain'], $apache);
+$apache = str_replace("<Directory " . $baseDir . "/public_html>", "<Directory " . $baseDir . "/dev/src/www/yii/" . $manifest['domain'] . ">", $apache);
+if (!(file_put_contents("/etc/apache2/sites-available/" . $manifest['domain'] . ".conf", $apache)))
 	die("Failed to replace the patched apache conf file in the apache location - aborting\n");
 
 // Edit protected/data/dbinit.sh
 echo "Importing Jelly basics ...\n";
-$siteDir = $siteParentDir . $manifest['site'];
+$siteDir = $siteParentDir . $manifest['domain'];
 if (!($dbInit = file_get_contents($siteDir . "/protected/data/dbinit.sh")))
 	die("Failed to read dbinit.sh file - aborting\n");
 $dbInit = str_replace("<username>", $manifest['dbuser'], $dbInit);
@@ -98,17 +107,20 @@ chdir($temp);
 
 // Edit protected/backend/views/site/index.php (analytics)
 echo "Setting up site analytics...\n";
-$siteDir = $siteParentDir . $manifest['site'];
+$siteDir = $siteParentDir . $manifest['domain'];
 if (!($index = file_get_contents($siteDir . "/protected/backend/views/site/index.php")))
 	die("Failed to read protected/backend/views/site/index.php file - aborting\n");
-$index = str_replace("<site>", $manifest['site'], $index);
+if (trim($manifest['parentdomain']) == "")
+	$index = str_replace("<site>", $manifest['domain'], $index);
+else
+	$index = str_replace("<site>", $manifest['parentdomain'], $index);
 $index = str_replace("<pass>", $manifest['dbpass'], $index);
 if (!(file_put_contents($siteDir . "/protected/backend/views/site/index.php", $index)))
     die("Failed to update protected/backend/views/site/index.php - aborting\n");
 
 // Edit protected/config/main.php
 echo "Setting site parameters...\n";
-$siteDir = $siteParentDir . $manifest['site'];
+$siteDir = $siteParentDir . $manifest['domain'];
 if (!($main = file_get_contents($siteDir . "/protected/config/main.php")))
 	die("Failed to read protected/config/main.php file - aborting\n");
 $main = str_replace("<sitetitle>", $manifest['sitetitle'], $main);
@@ -124,7 +136,7 @@ if (!(file_put_contents($siteDir . "/protected/config/main.php", $main)))
 
 // Edit protected/backend/config/main.php
 echo "Setting backend site parameters...\n";
-$siteDir = $siteParentDir . $manifest['site'];
+$siteDir = $siteParentDir . $manifest['domain'];
 if (!($main = file_get_contents($siteDir . "/protected/backend/config/main.php")))
 	die("Failed to read protected/backend/config/main.php file - aborting\n");
 $main = str_replace("<sitetitle>", $manifest['sitetitle'] . " Backend", $main);

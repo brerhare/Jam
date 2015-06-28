@@ -38,11 +38,11 @@ class TicketController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','delete'),
+				'actions'=>array('create','update','delete', 'viewTicket'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete', 'viewTicket'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -483,6 +483,47 @@ $this->redirect($tmp2);
                         'myticket'=>Yii::app()->baseUrl . '/tktp/' . $rnd . '.pdf',
                         'somedata'=>array(1,2,3),
         ));
+	}
+
+	// View a test ticket
+	public function actionViewTicket()
+	{
+		//if (trim($_GET['event']) == "")
+			//throw new CHttpException(500,'No event id was given for ticket view');
+        $ticket_type_event_arr = array();
+        $ticket_type_area_arr = array();
+		$ticket_type_id_arr = array();
+		$ticket_type_qty_arr = array();
+		$ticket_type_price_arr = array();
+		$ticket_type_total_arr = array();
+		$ticketNumbers = array();
+       	array_push($ticket_type_event_arr, $_GET['event']);
+       	array_push($ticket_type_area_arr,  0);
+		array_push($ticket_type_id_arr,    0);
+		array_push($ticket_type_qty_arr,   1);
+		array_push($ticket_type_price_arr, 0);
+		array_push($ticket_type_total_arr, 0);
+		genTicket(
+			"test-ticket",				// order number
+			"Test Name",				// card name
+			"1234 5678 9012 3456",		// card number
+			Yii::app()->session['uid'],	// vendor id
+			$ticket_type_event_arr,
+			$ticket_type_area_arr,
+			$ticket_type_id_arr,
+			$ticket_type_qty_arr,
+			$ticket_type_price_arr,
+			$ticket_type_total_arr,
+			"£0.00",
+			$ticketNumbers
+		);
+		//$data = file_get_contents("/tmp/test-ticket.pdf");
+		//header("Content-type: application/octet-stream");
+		//header("Content-disposition: attachment;filename=test-ticket.pdf");
+		//echo $data;
+rename("/tmp/test-ticket.pdf", "test-ticket.pdf");
+echo "<embed src='/ticket/test-ticket.pdf' width='100%' height='100%' type='application/pdf'>";
+//echo "<iframe src='/ticket/test-ticket.pdf' width='100%' style='height:100%'></iframe>";
 	}
 
 	/**

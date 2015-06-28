@@ -203,6 +203,7 @@ DROP TABLE IF EXISTS `jelly_setting` ;
 CREATE  TABLE IF NOT EXISTS `jelly_setting` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `email` VARCHAR(255) NULL ,
+  `analyticsUA` VARCHAR(255) NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 

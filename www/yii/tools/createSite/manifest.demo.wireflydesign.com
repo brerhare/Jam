@@ -1,4 +1,5 @@
-site = z.com
+domain = z.com
+parentdomain =
 sitetitle = Wirefly Demo
 sid = demo
 

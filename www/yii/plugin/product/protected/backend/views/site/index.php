@@ -85,7 +85,7 @@ echo '<div class="span12">';
 //				echo sprintf("%02s/%02s/%02s", substr($date,8,2),substr($date,5,2),substr($date,2,2));
 			echo "	</td>";
 			echo "	<td>";
-			echo '<a title="View this customers order" href="' . Yii::app()->controller->createUrl("index2") . "/?o=" . $order->order_number . '">' . $order->order_number . '</a>';
+			echo '<a title="View this customers order" target="_blank"  href="' . Yii::app()->controller->createUrl("index2") . "/?o=" . $order->order_number . '">' . $order->order_number . '</a>';
 			echo "	</td>";
 			echo "<td>";
 			$name = $order->name;

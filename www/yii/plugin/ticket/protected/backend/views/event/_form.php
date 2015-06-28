@@ -48,6 +48,12 @@
 <table><tr>
 <td width="155px" style="vertical-align:top; text-align:right;">
     <?php echo $form->labelEx($model,'Ticket Text&nbsp&nbsp'); ?>
+<br>
+<?php if (!($model->isNewRecord))
+	echo '<input type="button" class="btn btn-info" value="View Ticket" onclick="window.open(' . "'https://plugin.wireflydesign.com/ticket/backend.php/ticket/viewTicket/?event=" . $model->id . "'" . ')"> ';
+else
+	echo '<input type="button" class="btn btn-info" value="View Ticket" onclick="alert(' . "'First finish creating this event before viewing a test ticket'" . ')"> ';
+?>
 </td>
 <td>
     <?php echo $form->textArea($model, 'ticket_text', array('id'=>'editor1')); ?>
@@ -163,7 +169,7 @@ function embedExternal()	/* Embed a non-wirefly hosted site iframe */
                 <?php
                 // @@EG TbButton to fire javascript
                 $this->widget('bootstrap.widgets.TbButton', array(
-                    'type'=>'primary',
+                    'type'=>'info',
                     'label'=>'Get Embed Code',
                         'htmlOptions'=>array(
                             'onclick'=>'js:embedWirefly()',
@@ -181,7 +187,7 @@ function embedExternal()	/* Embed a non-wirefly hosted site iframe */
                 <?php
                 // @@EG TbButton to fire javascript
                 $this->widget('bootstrap.widgets.TbButton', array(
-                    'type'=>'primary',
+                    'type'=>'info',
                     'label'=>'Get Embed Code',
                         'htmlOptions'=>array(
                             'onclick'=>'js:embedExternal()',
