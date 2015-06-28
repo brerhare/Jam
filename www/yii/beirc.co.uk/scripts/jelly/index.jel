@@ -53,6 +53,7 @@ css.display = block
 				css.margin-left = 30px
 				css.width = 375px
 	  			css.height = 250px
+   				addon.slider.flexslider.slider = 1
    				addon.slider.flexslider.width = 365px
    				addon.slider.flexslider.height = 250px
    				addon.slider.flexslider.mode = image
