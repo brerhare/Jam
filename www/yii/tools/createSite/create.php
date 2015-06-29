@@ -148,7 +148,9 @@ $main = str_replace("<editorpageheight>", $manifest['editorpageheight'], $main);
 if (!(file_put_contents($siteDir . "/protected/backend/config/main.php", $main)))
     die("Failed to update protected/backend/config/main.php - aborting\n");
 
-echo "\nDone. Dont forget to restart Apache\n";
-echo "Also dont forget to add this site into /root/setperms\n";
+echo "\nDone\n";
+echo "Add this site into /root/setperms\n";
+echo "Add this site into tools/util/jellySites.inc\n";
+echo "Dont forget to restart Apache\n";
 
 ?>
