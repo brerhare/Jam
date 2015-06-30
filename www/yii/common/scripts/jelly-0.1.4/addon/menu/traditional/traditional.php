@@ -256,7 +256,7 @@ class traditional
 		{
 			if ($this->default_orientation == "horizontal")
 			{
-				$element = "xnav ul";
+				$element = "xnav";
 				$item2 = "";
 			}
 			else
