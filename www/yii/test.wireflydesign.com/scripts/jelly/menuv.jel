@@ -31,8 +31,8 @@ fx.wallpaper-color = #8dadca
 
 # @@TODO this sets subitem background size 0% so test it with subitems
 	#addon.menu.traditional.menu-color = #0e3576 #235896
-	#addon.menu.traditional.menu-tile = /img/twitter.png
-	addon.menu.traditional.menu-stretch = /img/twitter.png
+	addon.menu.traditional.menu-tile = /img/twitter.png
+	#addon.menu.traditional.menu-stretch = /img/twitter.png
 
 	addon.menu.traditional.item-separator-width = 10
 	addon.menu.traditional.item-separator-color = pink
