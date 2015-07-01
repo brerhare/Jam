@@ -19,7 +19,7 @@ css.display = block
 
 
 	[site]
-	child = header, slider, columns, pages, footer
+	child = header, slider, pages, footer
 	css.width = 970px
 
 ####  Header  #################################
@@ -120,35 +120,6 @@ addon.menu.traditional.item-separator-width = 8px
 ######## body #######################################
 			
 
-
-	[columns]
-	css.width = 800px
-	child = column-1, column-2
-	stacking = horizontal
-	css.background-color = white
-
-		[column-1]
-		addon.global.column.debug = 1
-		addon.global.column.id = 1
-		addon.global.column.width = 300px
-		addon.global.column.internal-width = 250px
-		addon.global.column.background-color = #13ebb5
-#		addon.global.column.background-image = img/background.jpg
-		addon.global.column.top-image = img/header-graphics.png
-		addon.global.column.top-height = 20px
-		addon.global.column.bottom-image = img/facebook.png
-		addon.global.column.bottom-height = 10px
-
-		[column-2]
-		addon.global.column.id = 2
-		addon.global.column.width = 450px
-		addon.global.column.internal-width = 350px
-		addon.global.column.background-color = #f0ca57
-		addon.global.column.background-image = img/background.jpg
-		addon.global.column.top-height = 200px
-		addon.global.column.bottom-height = 0px
-
-
 	[pages]
 	css.background-color = white
 	db.table = ContentBlock
@@ -163,37 +134,38 @@ addon.menu.traditional.item-separator-width = 8px
             css.height = 200px
 css.background-color = black
 
-        addon.menu.traditional.orientation = vertical
-        addon.menu.traditional.height = 30px
-        #addon.menu.traditional.menu-color = transparent
-
-        addon.menu.traditional.menu-font-family = arial
-        addon.menu.traditional.menu-font-size = 10px
-        addon.menu.traditional.menu-text-color = white
-#        addon.menu.traditional.menu-selected-background-color = yellow
-addon.menu.traditional.item-separator-width = 8px
+# Top level basic settings
+            addon.menu.traditional.orientation = vertical
+            addon.menu.traditional.height = 20px
+            addon.menu.traditional.align = left
+# Top level background settings
+            addon.menu.traditional.menu-color = transparent
+            addon.menu.traditional.item-separator-width = 2px
             addon.menu.traditional.item-separator-color = transparent
-
-        addon.menu.traditional.menu-hover-font-size = 20px
-        addon.menu.traditional.menu-hover-text-color = yellow
-        addon.menu.traditional.menu-hover-background-color = brown
-
-        addon.menu.traditional.menu-selected-font-size = 16px
-        addon.menu.traditional.menu-selected-text-color = black
-        addon.menu.traditional.menu-selected-background-color = cyan
-
-
-        addon.menu.traditional.submenu-height = 25px
-            #addon.menu.traditional.submenu-width = 
-        addon.menu.traditional.submenu-font-size = 16px
-            #addon.menu.traditional.submenu-font-family = 
-            #addon.menu.traditional.submenu-font-weight = 
-            #addon.menu.traditional.submenu-text-color = 
-        addon.menu.traditional.submenu-background-color = black
-            #addon.menu.traditional.submenu-background-tile = 
-            #addon.menu.traditional.submenu-background-stretch = /img/submenu.png
-        addon.menu.traditional.submenu-separator-width = 1px
-        addon.menu.traditional.submenu-separator-color = white
-            #addon.menu.traditional.submenu-separator-tile = 
-            #addon.menu.traditional.submenu-separator-stretch = 
+# Top level font settings
+            addon.menu.traditional.menu-font-size = 10px
+            addon.menu.traditional.menu-font-family = Roboto
+            addon.menu.traditional.menu-text-color = white
+# Top level hover settings
+            addon.menu.traditional.menu-hover-text-color = red
+            addon.menu.traditional.menu-hover-background-color = black
+            addon.menu.traditional.menu-hover-font-size = 10px
+            addon.menu.traditional.menu-hover-font-family = Roboto
+            addon.menu.traditional.menu-hover-font-weight = normal
+# Top level selected settings
+            addon.menu.traditional.menu-selected-text-color = white
+            addon.menu.traditional.menu-selected-background-color = black
+            addon.menu.traditional.menu-selected-font-size = 10px
+            addon.menu.traditional.menu-selected-font-family = Roboto
+            addon.menu.traditional.menu-selected-font-weight = normal
+# Second level settings
+            addon.menu.traditional.submenu-height = 20px
+            #addon.menu.traditional.submenu-width = variable / px
+            addon.menu.traditional.submenu-font-size = 10x
+            addon.menu.traditional.submenu-font-family = Arial
+            addon.menu.traditional.submenu-font-weight = normal
+            addon.menu.traditional.submenu-text-color = white
+            addon.menu.traditional.submenu-background-color = black
+            addon.menu.traditional.submenu-separator-width = 1px
+            addon.menu.traditional.submenu-separator-color = red
 
