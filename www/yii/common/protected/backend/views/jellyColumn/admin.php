@@ -32,7 +32,7 @@ $this->widget('CTreeView',array(
 	// 'id',
 	'columns'=>array(
 // @@EG Clickable rows in grid view!
-	'column_id',
+	'column_name',
 	'sequence',
 		array(
 			'name'  => 'title',

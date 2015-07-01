@@ -5,7 +5,7 @@
  *
  * The followings are the available columns in table 'jelly_column':
  * @property integer $id
- * @property integer $column_id
+ * @property integer $column_name
  * @property integer $sequence
  * @property string $title
  * @property string $content
@@ -39,12 +39,12 @@ class JellyColumn extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('title', 'required'),
-			array('column_id, sequence', 'numerical', 'integerOnly'=>true),
+			array('sequence', 'numerical', 'integerOnly'=>true),
 			array('title', 'length', 'max'=>255),
 			array('content', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, column_id, sequence, title, content', 'safe', 'on'=>'search'),
+			array('id, column_name, sequence, title, content', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -66,7 +66,7 @@ class JellyColumn extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'column_id' => 'Column Number',
+			'column_name' => 'Column Name',
 			'sequence' => 'Sequence',
 			'title' => 'Title',
 			'content' => 'Content',
@@ -85,12 +85,12 @@ class JellyColumn extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('column_id',$this->column_id);
+		$criteria->compare('column_name',$this->column_name);
 		$criteria->compare('sequence',$this->sequence);
 		$criteria->compare('title',$this->title,true);
 		$criteria->compare('content',$this->content,true);
 
-        $criteria->order = "column_id ASC, sequence ASC, title ASC";
+        $criteria->order = "column_name ASC, sequence ASC, title ASC";
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
