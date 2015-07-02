@@ -105,13 +105,13 @@ css.display = block
 		
 		[column-block]
 		child = column-1, column-2
-		condition = @PAGE=@HOMEPAGE
+		#condition = @PAGE=@HOMEPAGE
 		stacking = horizontal
 		
 			[column-1]
 			css.margin = 5px
-#			addon.global.column.debug = 1
-			addon.global.column.id = 1
+			#addon.global.column.debug = 1
+			addon.global.column.name = 1
 			addon.global.column.width = 300px
 			addon.global.column.internal-width = 250px
 
@@ -128,7 +128,7 @@ css.display = block
 			[column-2]
 			css.margin = 5px
 #			addon.global.column.debug = 1
-			addon.global.column.id = 2
+			addon.global.column.name = 2
 			addon.global.column.width = 240px
 			addon.global.column.internal-width = 240px
 			addon.global.column.background-color = #13eb7f
