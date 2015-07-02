@@ -46,7 +46,6 @@
 	<?php //echo $form->textFieldRow($model,'active',array('class'=>'span1','maxlength'=>1)); ?>
 	<?php echo $form->toggleButtonRow($model, 'active'); ?>
 
-
 <!-- CKEditor starts -->
 
     <script src="<?php echo Yii::app()->baseUrl.'/scripts/editors/ck/ckeditor/ckeditor.js'; ?>"></script>
@@ -63,6 +62,11 @@
 
     <script type="text/javascript">
     CKEDITOR.replace( 'editor1', {
+		on: {
+			instanceReady: function() {
+				this.editable().setStyle( 'background-color', '#ffffff');
+			}
+		},
 		allowedContent : true,	// Allow potentially harmful tags: iframes, javascript etc
         width: <?php echo Yii::app()->params['editorpagewidth'];?>,
         height: <?php echo Yii::app()->params['editorpageheight'];?>,
@@ -70,7 +74,37 @@
         filebrowserImageUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/upload.php?type=images',
         filebrowserFlashUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/upload.php?type=flash'
     });
-	</script>
+
+function embedWirefly() {
+var editor = CKEDITOR.instances['editor1'];
+if (editor) { editor.destroy(true); }
+
+//CKEDITOR.instances.editor.destroy();
+
+    CKEDITOR.replace( 'editor1', {
+		on: {
+			instanceReady: function() {
+				this.editable().setStyle( 'background-color', '#625d5d');
+			}
+		},
+		allowedContent : true,	// Allow potentially harmful tags: iframes, javascript etc
+        width: <?php echo Yii::app()->params['editorpagewidth'];?>,
+        height: <?php echo Yii::app()->params['editorpageheight'];?>,
+        filebrowserUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/upload.php?type=files',
+        filebrowserImageUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/upload.php?type=images',
+        filebrowserFlashUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/upload.php?type=flash'
+    });
+}
+
+</script>
+
+		<?php $this->widget('bootstrap.widgets.TbButton', array(
+			'type'=>'info',
+			'label'=>'View with dark background',
+			'htmlOptions'=>array(
+				'onclick'=>'js:embedWirefly()',
+			)
+		)); ?>
 
 <!-- CKEditor ends -->
 
