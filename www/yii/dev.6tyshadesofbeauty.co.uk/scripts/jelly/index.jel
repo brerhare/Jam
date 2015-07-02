@@ -13,8 +13,8 @@ css.display = block
 css.background-color = black
 
 	[slider]
-	css.width = 80%
-	css.margin-left = 10%
+	css.width = 100%
+#	css.margin-left = 10%
 #	css.min-width = 600px
 	css.height = 100%
 	condition = @PAGE=@HOMEPAGE
@@ -56,13 +56,14 @@ addon.slider.flexslider.border-width = 0px
 	
 		[header-details]
 		child = phone-no, menu
-		css.width = 80%
+		css.width = 70%
 		css.min-width = 600px
 		css.margin-top = 5px
 		stacking = horizontal
 		
 		[phone-no]
-		css.width = 20%
+		css.margin-top = 5px
+		css.width = 25%
 		css.min-width = 150px
 		image.url = img/tel-no.png
 		image.width = 100%
@@ -87,7 +88,7 @@ addon.slider.flexslider.border-width = 0px
 		#addon.menu.basic.item-separator-color = #ffffff
 		#addon.menu.basic.item-separator-width = 3px
 
-		addon.menu.basic.font-size = 12px
+		addon.menu.basic.font-size = 14px
 		addon.menu.basic.menu-text-color = white
 
 		#addon.menu.basic.item-color = black yellow
@@ -108,23 +109,29 @@ addon.slider.flexslider.border-width = 0px
 condition = @PAGE=@HOMEPAGE
 child = home-left, home-center, home-right
 stacking = horizontal
-css.width = 80%
+css.width = 75%
 css.min-width = 600px
 
 	[home-left]
+	css.margin-top = 20px
 	child = home-vlogo, home-content
-	css.width = 30%
+	css.width = 20%
 	css.min-width = 200px
 	
 		[home-vlogo]
 		css.width = 100%
-		image.url = img/6ty-vertical.png
+		image.url = img/6ty-vlogo-line.png
 		image.width = 100%
-		image.height = 227%
+		image.height = 243%
 		click = http://www.dev.6tyshadesofbeauty.co.uk
 		
 		[home-content]
 		css.width = 100%
+		css.background-color = transparent
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
 	
 	
 	[home-right]
@@ -133,7 +140,13 @@ css.min-width = 600px
 	css.min-width = 400px
 	
 		[home-banner]
-		css.width = 100%
+		css.margin-top = 20px
+		css.width = 90%
+		css.float = right
+		image.url = img/shades.png
+		image.width = 100%
+		image.height = 9%
+		
 		
 		[home-main]
 		child = column-shop, column-side-menu, column-downloads
@@ -166,7 +179,7 @@ css.min-width = 600px
 ######## Pages #######################################
 
 	[pages]
-	condition! = @PAGE=@HOMEPAGE
+	condition = @PAGE!=@HOMEPAGE
 	child = content 	
 	css.width = 50%
 	css.margin-top = 20px
@@ -186,16 +199,21 @@ css.min-width = 600px
 ####footer####################################
 
 [footer]
-child = footer-left, footer-right
+child = footer-content
 css.margin-top = 40px
 css.background-color = #e6e7e8
-stacking = horizontal
+
+	[footer-content]
+	child = footer-left, footer-right
+	css.width = 75%
+	css.min-width = 600px
+	stacking = horizontal
 
 		[footer-left]
 		child = copyright, design, wirefly
 		css.width = 49%
 		css.height = 50px
-		stacking = horizontal
+		
 
 		[copyright]
 		css.margin-top = 10px
@@ -205,7 +223,7 @@ stacking = horizontal
 		css.text-align = left
 		
 		[design]
-		css.width = 10%
+		html.raw = Design by WeeSleekit
 
 		[wirefly]
 		child = wirefly-logo, admin
@@ -246,7 +264,7 @@ stacking = horizontal
 		[footer-right]
 		child = footer-cookies, footer-tandc, footer-contact
 		css.height = 50px
-		css.width = 50%
+		css.width = 49%
 
 			[footer-cookies]
 			html.raw = Cookie Policy

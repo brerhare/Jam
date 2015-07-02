@@ -38,10 +38,10 @@ class JellyColumn extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('title', 'required'),
+			array('title, column_name', 'required'),
 			array('sequence', 'numerical', 'integerOnly'=>true),
 			array('title', 'length', 'max'=>255),
-			array('content', 'safe'),
+			array('column_name, content', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, column_name, sequence, title, content', 'safe', 'on'=>'search'),
