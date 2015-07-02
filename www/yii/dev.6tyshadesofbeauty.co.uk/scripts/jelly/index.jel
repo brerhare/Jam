@@ -10,7 +10,6 @@ include = default-values
 child = slider, site
 fx.wallpaper-image = /img/plain-bg.jpg
 css.display = block
-css.background-color = black
 
 	[slider]
 	css.width = 100%
@@ -20,7 +19,7 @@ css.background-color = black
 	condition = @PAGE=@HOMEPAGE
 
 	css.position = fixed
-	css.z-index = 1
+#	css.z-index = 1
 	
 addon.slider.flexslider.width = 100%
 addon.slider.flexslider.height = 100%
@@ -28,22 +27,22 @@ addon.slider.flexslider.mode = image
 addon.slider.flexslider.source = db
 
 addon.slider.flexslider.border-width = 0px
-#addon.slider.flexslider.border-color = red
-#addon.slider.flexslider.active-dotcolor = red
-#addon.slider.flexslider.inactive-dotcolor = blue
-#addon.slider.flexslider.dot-margin-top = -200px
-#addon.slider.flexslider.dot-margin-bottom = 0px
-#addon.slider.flexslider.dot-margin-left = 0px
-#addon.slider.flexslider.dot-margin-right = 0px
-#addon.slider.flexslider.animation = fade
-#addon.slider.flexslider.mode = HTML
-#addon.slider.glitz.slider = 2
+	#addon.slider.flexslider.border-color = red
+	#addon.slider.flexslider.active-dotcolor = red
+	#addon.slider.flexslider.inactive-dotcolor = blue
+addon.slider.flexslider.dot-margin-top = -200px
+	#addon.slider.flexslider.dot-margin-bottom = 0px
+	#addon.slider.flexslider.dot-margin-left = 0px
+	#addon.slider.flexslider.dot-margin-right = 0px
+	#addon.slider.flexslider.animation = fade
+	#addon.slider.flexslider.mode = HTML
+	#addon.slider.glitz.slider = 2
 
 
 	[site]
 	child =	header, home-page, pages, footer
 	css.width = 100%
-	css.z-index = 10
+#	css.z-index = 10
 	css.position = relative
 
 ####  Header  #################################
@@ -56,7 +55,7 @@ addon.slider.flexslider.border-width = 0px
 	
 		[header-details]
 		child = phone-no, menu
-		css.width = 70%
+		css.width = 80%
 		css.min-width = 600px
 		css.margin-top = 5px
 		stacking = horizontal
@@ -107,16 +106,16 @@ addon.slider.flexslider.border-width = 0px
 	
 [home-page]
 condition = @PAGE=@HOMEPAGE
-child = home-left, home-center, home-right
+child = home-left, home-right
 stacking = horizontal
-css.width = 75%
+css.width = 80%
 css.min-width = 600px
 
 	[home-left]
 	css.margin-top = 20px
 	child = home-vlogo, home-content
 	css.width = 20%
-	css.min-width = 200px
+	css.min-width = 150px
 	
 		[home-vlogo]
 		css.width = 100%
@@ -135,14 +134,14 @@ css.min-width = 600px
 	
 	
 	[home-right]
-	child = home-banner, home main
-	css.width = 65%
+	child = home-banner, home-main
+	css.width = 80%
 	css.min-width = 400px
+
 	
 		[home-banner]
 		css.margin-top = 20px
 		css.width = 90%
-		css.float = right
 		image.url = img/shades.png
 		image.width = 100%
 		image.height = 9%
@@ -150,51 +149,105 @@ css.min-width = 600px
 		
 		[home-main]
 		child = column-shop, column-side-menu, column-downloads
-		css.margin-left = 50%
-		css.width = 50%
+		css.margin-left = 65%
+		css.width = 30%
+#		css.z-index = 10
 		
 			[column-shop]
+			css.margin-top = 20px
 #			addon.global.column.debug = 1
-			addon.global.column.id = 1
+			addon.global.column.name = derm
 			addon.global.column.width = 100%
 			addon.global.column.internal-width = 100%
-
 			addon.global.column.content-width = 98%
 			addon.global.column.internal-color = transparent
-
 			addon.global.column.background-color = transparent
-#			addon.global.column.background-image = img/…
+#			addon.global.column.background-image = img/...
 #			addon.global.column.top-image = img/cow-spot-top.jpg
 #			addon.global.column.top-height = 20px
 #			addon.global.column.bottom-image = img/cow-spot-bottom.jpg
 #			addon.global.column.bottom-height = 5px
 			
 			[column-side-menu]
-			css.width = 10%
+#			addon.global.column.debug = 1
+			addon.global.column.name = side-nav
+			addon.global.column.width = 100%
+			addon.global.column.internal-width = 100%
+			addon.global.column.content-width = 98%
+			addon.global.column.internal-color = transparent
+			addon.global.column.background-color = transparent
+			addon.global.column.top-height = 5px
+			addon.global.column.bottom-height = 5px
 			
 			[column-downloads]
-			css.width = 10%
+#			addon.global.column.debug = 1
+			addon.global.column.name = downloads
+			addon.global.column.width = 100%
+			addon.global.column.internal-width = 100%
+			addon.global.column.content-width = 98%
+			addon.global.column.internal-color = transparent
+			addon.global.column.background-color = transparent
+			addon.global.column.top-height = 5px
+			addon.global.column.bottom-height = 5px
 	
 	
 ######## Pages #######################################
 
-	[pages]
-	condition = @PAGE!=@HOMEPAGE
-	child = content 	
-	css.width = 50%
-	css.margin-top = 20px
-	css.background-color = white
-	fx.rounding = 4px
+[pages]
+condition = @PAGE!=@HOMEPAGE
+child = page-left, page-center, page-right
+css.margin-top = 20px
+css.width = 75%
+css.min-width = 600px
+stacking = horizontal
 	
-			
-		[content]
-		css.margin-top = 30px
-		css.margin = 30px
-		db.table = ContentBlock
-		db.filter = url=$_GET['page']
-		db.error = Sorry, I could not find the page $_GET['page']
-		html.raw = ContentBlock.content
+	[page-left]
+	child =  page-logo, page-left-columns
+	css.width = 25%
 
+		
+		[page-logo]
+		css.width = 90%
+		image.url = img/6ty-h-logo.png
+		image.width = 100%
+		image.height = 44%
+		
+		[page-left-columns]
+		css.width = 100%
+		addon.global.column.id = downloads
+		addon.global.column.width = 100%
+		addon.global.column.internal-width = 100%
+		addon.global.column.content-width = 98%
+		addon.global.column.internal-color = transparent
+		addon.global.column.background-color = transparent
+		addon.global.column.top-height = 5px
+		addon.global.column.bottom-height = 5px
+		
+			
+		
+	[page-center]
+	child = page-banner, page-content
+	css.width = 55%
+		
+			[page-banner]
+			image.url = img/shades.png
+			image.width = 100%
+			image.height = 9%
+	
+			[page-content]
+			css.width = 95%
+			css.margin-top = 100px
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find the page $_GET['page']
+			html.raw = ContentBlock.content
+
+	[page-right]
+	css.width = 15%
+		image.url = img/6ty-vertical.png
+		image.width = 100%
+		image.height = 227%
+		click = http://www.dev.6tyshadesofbeauty.co.uk
 
 ####footer####################################
 
@@ -206,17 +259,17 @@ css.background-color = #e6e7e8
 	[footer-content]
 	child = footer-left, footer-right
 	css.width = 75%
+	css.margin-top = 20px
 	css.min-width = 600px
 	stacking = horizontal
 
 		[footer-left]
 		child = copyright, design, wirefly
 		css.width = 49%
-		css.height = 50px
-		
+		css.height =150px
+		css.line-height = 25px
 
 		[copyright]
-		css.margin-top = 10px
 		html.raw = 6TY Shades of Beauty &copy 2015 All rights reserved
 		css.color = #000000
 		css.font-size = 11px
@@ -263,8 +316,9 @@ css.background-color = #e6e7e8
 
 		[footer-right]
 		child = footer-cookies, footer-tandc, footer-contact
-		css.height = 50px
+		css.height = 150px
 		css.width = 49%
+		css.line-height = 25px
 
 			[footer-cookies]
 			html.raw = Cookie Policy
