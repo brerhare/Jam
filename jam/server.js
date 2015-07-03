@@ -1,9 +1,12 @@
+var os = require('os');
 var http = require('http');
 var url = require('url');
 var fs = require('fs');
 
 var port = 8000;
 var ip = "178.238.232.146";
+if (os.hostname() == "fry")
+	ip = "127.0.0.1";
 templatePath = "/template";
 
 http.createServer(function (request, response) {
@@ -29,6 +32,7 @@ console.log("req=-->"+ req+ "<---");
 	} else {
 		showAvailableTemplates(response);
 	}
+//}).listen(port, ip);
 }).listen(port, ip);
 console.log('listening on http://' + ip + '/' + port + '/');
 
