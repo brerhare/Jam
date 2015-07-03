@@ -32,13 +32,17 @@ $this->widget('CTreeView',array(
 	// 'id',
 	'columns'=>array(
 // @@EG Clickable rows in grid view!
-	'column_name',
-	'sequence',
+		array(
+			'name'  => 'column_name',
+			'value' => 'CHtml::link($data->column_name, Yii::app()->createUrl("jellyColumn/update",array("id"=>$data->primaryKey)))',
+			'type'  => 'raw',
+		),
 		array(
 			'name'  => 'title',
 			'value' => 'CHtml::link($data->title, Yii::app()->createUrl("jellyColumn/update",array("id"=>$data->primaryKey)))',
 			'type'  => 'raw',
 		),
+	'sequence',
 		// 'content',
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
