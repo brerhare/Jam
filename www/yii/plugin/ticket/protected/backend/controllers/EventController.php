@@ -315,8 +315,8 @@ class EventController extends Controller
 						$val += $transaction->http_ticket_total;
 						$eQty += $transaction->http_ticket_qty;
 						$eVal += $transaction->http_ticket_total;
-						if ($transaction->http_ticket_price != "0.00")
-							$uQty += $transaction->http_ticket_qty;
+						//if ($transaction->http_ticket_price != "0.00")
+							//$uQty += $transaction->http_ticket_qty;
 						$uVal += $transaction->http_ticket_total;
 					}
 				}
