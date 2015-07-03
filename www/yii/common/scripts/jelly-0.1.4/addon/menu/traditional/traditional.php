@@ -256,12 +256,12 @@ class traditional
 		{
 			if ($this->default_orientation == "horizontal")
 			{
-				$element = "xnav ul";
+				$element = "xnav";
 				$item2 = "";
 			}
 			else
 			{
-				$element = "xnav ul li";
+				$element = "xnav ul li a";
 				$item2 = " ul ul li { background-size: 0%;} ";		// @@NB setting this to 0% to hide inheriting the image - may cause invisibility?
 			}
 			$this->apiHtml = str_replace("<substitute-menu-stretch>",

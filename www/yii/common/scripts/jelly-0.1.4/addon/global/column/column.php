@@ -11,7 +11,7 @@
 class column
 {
 	//Defaults
-	private $defaultId = "1";
+	private $defaultName = "1";
 	private $defaultWidth = "200px";
 	private $defaultInternalWidth = "100%";
 	private $defaultContentWidth = "100%";
@@ -41,8 +41,8 @@ class column
 				$val = str_replace("px", "", $val);
 			switch ($opt)
 			{
-				case "id":
-					$this->defaultId = $val;
+				case "name":
+					$this->defaultName = $val;
 					break;
 				case "width":
 					$this->defaultWidth = $val . "px";
@@ -128,8 +128,8 @@ class column
 			$bgBottomStyle = "background: url(" . Yii::app()->baseUrl . $this->defaultBottomImage . ") no-repeat center; background-size:100%";
 
 		$criteria = new CDbCriteria;
-		$criteria->addCondition("column_id = " . $this->defaultId);
- 		//$criteria->order = "column_id ASC, sequence ASC, title ASC";
+		$criteria->addCondition("column_name = '" . $this->defaultName . "'");
+ 		//$criteria->order = "column_name ASC, sequence ASC, title ASC";
 		$columnItems = JellyColumn::model()->findAll($criteria);
 		foreach ($columnItems as $columnItem):
 			// Outer box

@@ -1,3 +1,4 @@
+apt-get install g++
 setup mysql development
 	apt-get install libmysqlclient-dev
 	mysql_config --libs

@@ -1,20 +1,205 @@
+#Outlook Solutions
 [defaults]
 include = default-values
 
-; Every blob inherits these before adding/overriding
 [* : defaults]
 
 [screen]
-child = contentframe
-fx.wallpaper-image = /img/background.jpg
+child = site, right
 css.display = block
+css.background-color = white
+stacking = horizontal
 
-	[contentframe]
-	css.display = block
-	css.width = 500px
-	css.margin-top = 400px
-	style.html.h1.color = yellow
-	style.html.h1.background-color = black
-	style.html.h1.padding = 10px
-	html.h1 = a jelly&#0153; site is coming soon
+	[site]
+	child = header, middle, footer
+	css.width = 100%
 
+####  Header  #################################
+
+	[header]
+	css.width = 100%
+	css.height = 15%
+	css.background-size = 100%
+	css.background-image = url('/img/logo.jpg')
+	css.background-repeat = no-repeat
+	css.padding-top = 13%
+#divide the height by the width for the proportional padding height
+
+		click = http://www.outlooksolutions.com.au/
+
+
+
+#### middle left ###########################################
+
+[middle]
+child = main, content
+css.width = 70%
+css.min-width = 600px
+
+
+	[main]
+	child = menu, slider
+	css.width = 100%
+	css.min-width = 80px
+	css.background-color = white
+	stacking = horizontal
+	
+		[menu]
+		css.margin-top = 180px
+		css.width = 20%
+		css.min-width = 100px
+		css.z-index = 100
+		css.overflow = visible
+		
+		addon.menu.traditional.orientation = vertical
+		addon.menu.traditional.height = 40px
+		addon.menu.traditional.align = center
+#		addon.menu.traditional.item-margin = // split equally between left and right. 
+		addon.menu.traditional.item-width = uniform
+
+		addon.menu.traditional.menu-rounding = 8px
+		addon.menu.traditional.menu-stretch = /img/menu-button.png
+#		addon.menu.traditional.menu-color = transparent 
+		addon.menu.traditional.item-separator-width = 10px
+		addon.menu.traditional.item-separator-color = transparent
+#		addon.menu.traditional.edgepadding = 40px
+
+		addon.menu.traditional.menu-font-size = 20px
+		addon.menu.traditional.menu-font-family = Nunito, Verdana, Sans Serif
+		addon.menu.traditional.menu-font-weight = bold
+		addon.menu.traditional.menu-text-color = white
+
+#// Top level selected settings
+#            addon.menu.traditional.menu-selected-text-color = blue
+ #           addon.menu.traditional.menu-selected-background-color = black
+#            addon.menu.traditional.menu-selected-font-size = 14px
+#            addon.menu.traditional.menu-selected-font-family = Nunito
+#            addon.menu.traditional.menu-selected-font-weight = normal
+#// Second level settings
+#            addon.menu.traditional.submenu-height = 30px // centers text
+#            addon.menu.traditional.submenu-width = variable / px
+#            addon.menu.traditional.submenu-font-size = 16px
+#            addon.menu.traditional.submenu-font-family = Nunito
+#            addon.menu.traditional.submenu-font-weight = normal
+#            addon.menu.traditional.submenu-text-color = blue
+#            addon.menu.traditional.submenu-background-color = grey
+#            addon.menu.traditional.submenu-background-tile = /img/menu.jpg
+#            addon.menu.traditional.submenu-background-stretch = /img/menu.jpg
+#            addon.menu.traditional.submenu-separator-width = 1px
+#            addon.menu.traditional.submenu-separator-color = red
+#            addon.menu.traditional.submenu-separator-tile = /img/menu.jpg
+#            addon.menu.traditional.submenu-separator-stretch = /img/menu.jpg
+		
+
+
+		[slider]
+		css.width = 80%
+		css.margin-left = -8%
+		css.min-width = 500px
+		css.height = 70%
+		addon.slider.flexslider.width = 100%
+		addon.slider.flexslider.height = 100%
+		addon.slider.flexslider.mode = image
+		addon.slider.flexslider.source = db
+		addon.slider.flexslider.border-width = 0px
+		
+		#addon.slider.flexslider.border-color = red
+		#addon.slider.flexslider.active-dotcolor = red
+		#addon.slider.flexslider.inactive-dotcolor = blue
+		addon.slider.flexslider.dot-margin-top = -42px
+		#addon.slider.flexslider.dot-margin-bottom = 0px
+		#addon.slider.flexslider.dot-margin-left = 0px
+		#addon.slider.flexslider.dot-margin-right = 0px
+		addon.slider.flexslider.animation = slide
+	
+	
+			
+	[content]
+	css.margin-top = 30px
+	db.table = ContentBlock
+	db.filter = url=$_GET['page']
+	db.error = Sorry, I could not find the page $_GET['page']
+	html.raw = ContentBlock.content
+		
+		
+
+
+####footer####################################
+
+[footer]
+child = footer-content
+css.margin-top = 50px
+css.width = 100%
+css.background-size = 100%
+css.background-image = url('/img/footer.jpg')
+css.background-repeat = no-repeat
+
+	[footer-content]
+	child = standard-links, credits
+	css.width = 80%
+
+			
+	[standard-links]
+	child = footer-contact, footer-cookies, footer-terms
+	css.line-height = 20px
+	css.color = #25519c
+	css.margin-top = 15px
+	
+		[footer-contact]
+		html.raw = <a style="text-decoration:none; color: #25519c; font-size: 12px; font-weight: bold;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#25519c'" href="?layout=index&page=contact">CONTACT</a>
+
+		[footer-cookies]
+		#css.margin-top = 10px
+		html.raw = <a style="text-decoration:none; color: #25519c; font-size: 12px; font-weight: bold;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#25519c'" href="?layout=index&page=cookie-policy">COOKIES</a>
+		
+
+		[footer-terms]
+		#css.margin-top = 10px
+		html.raw = <a style="text-decoration:none; color: #25519c; font-size: 12px; font-weight: bold;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#25519c'" href="?layout=index&page=terms-conditions">TERMS</a>
+				
+############
+	[credits]
+	child = copyright, wirefly
+	css.width = 100%
+	#css.height = 300px
+	css.margin-top = 15px
+	
+		[copyright]
+		html.raw = Outlook Solutions &copy 2015 <br>All rights reserved
+		css.color = #000000
+		css.font-size = 12px
+		css.text-align = left
+		
+		[wirefly]
+		child = wirefly-logo, admin
+		stacking = horizontal
+		css.margin-top = 30px
+
+		
+			[wirefly-logo]
+			css.height = 45px
+			css.margin-top = 5px
+			image.url = img/wirefly-design.png
+			image.width = 100px
+			image.height = 46px
+			image.align = left
+			clicknew = http://www.wireflydesign.com
+			
+		
+			[admin]
+			child = cog-center
+			css.height = 20px
+			css.width = 20px
+			css.background-size = 100%
+			css.background-image = url('/img/admin.png')
+			css.margin-left = -20px
+
+				[cog-center]
+				css.width = 5px
+				css.height = 5px
+				css.margin-top = 8px
+				image.url = img/cog-center.png
+				image.width = 5px
+				image.height = 5px
+				image.align = center
+				clicknew = backend.php				
