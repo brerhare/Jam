@@ -20,6 +20,8 @@ using namespace std;
 char *startJam = "{{";
 char *endJam = "}}";
 
+int swapNl2br = 0;
+
 #define round(x) ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 
 #define MAX_ARGS 4096
@@ -65,7 +67,7 @@ VAR *var[MAX_VAR];
 char *readTemplate(char *fname);
 char *curlies2JamArray(char *tplPos);
 JAM *initJam();
-int genHtml(int startIx, MYSQL_ROW *row, char *tableName);
+int genOutput(int startIx, MYSQL_ROW *row, char *tableName);
 void emit(char *line);
 void die(const char *errorString);
 int openDB(char *name);
@@ -135,7 +137,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	// Generate HTML from Jam array
-	genHtml(0, NULL, NULL);
+	genOutput(0, NULL, NULL);
 
 	free(tpl);
 	if (conn)
@@ -144,20 +146,41 @@ jamDump();
 	exit(0);
 }
 
-int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
+int genOutput(int startIx, MYSQL_ROW *row, char *tableName) {
 	int ix = startIx;
 	char *tmp = (char *) calloc(1, 4096);
 	while (jam[ix]) {
 		char *cmd = jam[ix]->command;
 		char *args = jam[ix]->args;
 		char *rawData = jam[ix]->rawData;
+//		-------------------------------
+		if (!(strcmp(cmd, "@nl2br"))) {
+//		-------------------------------
+			char *space = " ";
+			swapNl2br = 1;
+			if (args)
+				getWord(tmp, args, 1, space);
+			if (*tmp) {
+				if ((!strcmp(tmp, "off")) || (!strcmp(tmp, "0")))
+					swapNl2br = 0;
+			}
+		}
+
+		if (swapNl2br) {
+			char *newStr = strReplaceAlloc(jam[ix]->trailer, "\n", "<br>\n");
+			if (newStr) {
+				free(jam[ix]->trailer);
+				jam[ix]->trailer = newStr;
+			}
+		}
+
 //		--------------------------------
 		if (!(strcmp(cmd, "@!begin"))) {
 //		--------------------------------
 			emit(jam[ix]->trailer);
-//		--------------------------------
+//		-------------------------------------
 		} else if (!(strcmp(cmd, "@list"))) {
-//		--------------------------------
+//		-------------------------------------
 			MYSQL_RES *res;
 			MYSQL_ROW row;
 			char *space = " ";
@@ -192,9 +215,9 @@ int genHtml(int startIx, MYSQL_ROW *row, char *tableName) {
 				die("list what?");
 			}
 			emit(jam[ix]->trailer);
-//		--------------------------------
+//		-----------------------------------------
 		} else if (!(strcmp(cmd, "@describe"))) {
-//		--------------------------------
+//		-----------------------------------------
 			MYSQL_RES *res;
 			MYSQL_ROW row;
 			char *space = " ";
@@ -284,7 +307,7 @@ strcat(query, " LIMIT 100");
 				emit(jam[ix]->trailer);		
 				setFieldValues(givenTableName, mysqlHeaders, mysqlTypes, numFields, &row);
 //printf("GOING with tablename=[%s]<br>\n", givenTableName);
-				genHtml((ix + 1), &row, givenTableName);
+				genOutput((ix + 1), &row, givenTableName);
 //printf("BACK\n");
 			}
 			// Finished. Now emit the loops' trailer and make it current, so we will immediately advance past it
@@ -297,9 +320,9 @@ strcat(query, " LIMIT 100");
 			mysql_free_result(res);
 			free(givenTableName);
 			free(query);
-//		-------------------------------------
+//		------------------------------------
 		} else if (!(strcmp(cmd, "@get"))) {
-//		-------------------------------------
+//		------------------------------------
 			// @@TODO refactor this because it shares 90% of its code with @each
 			char *givenTableName = (char *) calloc(1, 4096);
 			char *givenFieldName = NULL;
