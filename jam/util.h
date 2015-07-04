@@ -12,4 +12,3 @@ extern int getWordIgnoreQuotes;
 char *strReplaceAlloc(char *orig, char *rep, char *with);
 
 #endif /* _UTIL_H_INCLUDED_ */
-

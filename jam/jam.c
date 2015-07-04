@@ -1,7 +1,6 @@
 /*
  * @@TODO Fix the priority of assignment to non-qualified vars. This worked well until I stuck in a @GET inside a @EACH loop - it still obeys the @EACH x
  */
-
 #include <stdio.h>
 #include <strings.h>
 #include <string.h>
@@ -304,7 +303,7 @@ strcat(query, " LIMIT 100");
 			}
 			while ((row = mysql_fetch_row(res)) != NULL) {
 				// Recurse - start an each-end loop
-				emit(jam[ix]->trailer);		
+				emit(jam[ix]->trailer);
 				setFieldValues(givenTableName, mysqlHeaders, mysqlTypes, numFields, &row);
 //printf("GOING with tablename=[%s]<br>\n", givenTableName);
 				genOutput((ix + 1), &row, givenTableName);
@@ -636,7 +635,7 @@ strcat(query, " LIMIT 100");
 					}
 				}
 			}
-			emit(jam[ix]->trailer);		
+			emit(jam[ix]->trailer);
 			free(data);
 			free(expandedData);
 			free(resultString);
@@ -670,7 +669,7 @@ VAR *findVarLenient(char *name, char *prefix) {
 VAR *findVarStrict(char *name) {
 	for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
 		if (!(var[i]))
-			break;	
+			break;
 		if (!strcmp(var[i]->name, name)) {
 			return var[i];
 		}
@@ -724,7 +723,7 @@ void updateNonTableVar(char *qualifiedName, char *value, int type) {
 	} else {
 		for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
 			if (!var[i])
-				break;	
+				break;
 			if (!strcmp(var[i]->name, qualifiedName)) {
 				fillVarDataTypes(var[i], value);
 				break;
@@ -755,7 +754,7 @@ void updateTableVar(char *qualifiedName, enum enum_field_types mysqlType, char *
 	} else {
 		for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
 			if (!var[i])
-				break;	
+				break;
 			if (!strcmp(var[i]->name, qualifiedName)) {
 				int ret = decodeMysqlType(var[i], mysqlType, value);
 				break;
@@ -1307,4 +1306,3 @@ void jamDump() {
 	printf("</div>");
 	free(tmp);
 }
-
