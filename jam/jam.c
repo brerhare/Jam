@@ -19,7 +19,7 @@ using namespace std;
 char *startJam = "{{";
 char *endJam = "}}";
 
-int swapNl2br = 0;
+int literal = 0;
 
 #define round(x) ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 
@@ -40,12 +40,13 @@ int jamIx = 0;
 
 char *tableStack[MAX_JAM];
 
-#define VAR_STRING    0
-#define VAR_NUMBER    1
-#define VAR_DECIMAL2  2
-#define VAR_DATE      3
-#define VAR_TIME      4
-#define VAR_DATETIME  5
+#define VAR_STRING     0
+#define VAR_NUMBER     1
+#define VAR_INCREMENT  2
+#define VAR_DECIMAL2   3
+#define VAR_DATE       4
+#define VAR_TIME       5
+#define VAR_DATETIME   6
 
 typedef struct {
 	char *name;
@@ -153,24 +154,33 @@ int genOutput(int startIx, MYSQL_ROW *row, char *tableName) {
 		char *args = jam[ix]->args;
 		char *rawData = jam[ix]->rawData;
 //		-------------------------------
-		if (!(strcmp(cmd, "@nl2br"))) {
+		if (!(strcmp(cmd, "@literal"))) {
 //		-------------------------------
 			char *space = " ";
-			swapNl2br = 1;
+			literal = 1;
 			if (args)
 				getWord(tmp, args, 1, space);
 			if (*tmp) {
 				if ((!strcmp(tmp, "off")) || (!strcmp(tmp, "0")))
-					swapNl2br = 0;
+					literal = 0;
 			}
 		}
 
-		if (swapNl2br) {
+		if (literal) {
 			char *newStr = strReplaceAlloc(jam[ix]->trailer, "\n", "<br>\n");
 			if (newStr) {
 				free(jam[ix]->trailer);
 				jam[ix]->trailer = newStr;
 			}
+			newStr = strReplaceAlloc(jam[ix]->trailer, "\t", "&nbsp&nbsp&nbsp&nbsp");
+			if (newStr) {
+				free(jam[ix]->trailer);
+				jam[ix]->trailer = newStr;
+			}
+			//emit(jam[ix]->command);
+			//emit(jam[ix]->args);
+			emit(jam[ix]->trailer);
+			//continue;
 		}
 
 //		--------------------------------
