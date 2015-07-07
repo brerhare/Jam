@@ -12,81 +12,24 @@
 
 #include </usr/include/mysql/mysql.h>
 
+#include "common.h"
+#include "wordDatabase.h"
+#include "wordMisc.h"
+#include "database.h"
 #include "util.h"
 
-using namespace std;
 
+// Common declares start
+MYSQL *conn = NULL;
 char *startJam = "{{";
 char *endJam = "}}";
-
 int literal = 0;
-
-#define round(x) ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
-
-#define MAX_ARGS 4096
-#define MAX_SQL_QUERY_LEN 1024
-
-MYSQL *conn = NULL;
-
-typedef struct {
-	char *rawData;
-	char *command;
-	char *args;
-	char *trailer;
-} JAM;
-#define MAX_JAM 10000
 JAM *jam[MAX_JAM];
 int jamIx = 0;
-
 char *tableStack[MAX_JAM];
-
-#define VAR_STRING     0
-#define VAR_NUMBER     1
-#define VAR_INCREMENT  2
-#define VAR_DECIMAL2   3
-#define VAR_DATE       4
-#define VAR_TIME       5
-#define VAR_DATETIME   6
-
-typedef struct {
-	char *name;
-	int type;
-	char *source;	// mysql, count, sum etc
-	char *portableValue;
-	char *stringValue;
-	long numberValue;
-	double decimal2Value;
-	char *dateValue;
-	char *timeValue;
-	char *datetimeValue;
-	int debugHighlight;
-} VAR;
-#define MAX_VAR 10000
 VAR *var[MAX_VAR];
+// Common declares end
 
-char *readTemplate(char *fname);
-char *curlies2JamArray(char *tplPos);
-JAM *initJam();
-int genOutput(int startIx, MYSQL_ROW *row, char *tableName);
-void emit(char *line);
-void die(const char *errorString);
-int openDB(char *name);
-void closeDB();
-void setFieldValues(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields, MYSQL_ROW *rowP);
-VAR *findVarStrict(char *qualifiedName);
-VAR *findVarLenient(char *name, char *prefix);
-void fillVarDataTypes(VAR *var, char *value);
-void updateTableVar(char *qualifiedName, enum enum_field_types mysqlType, char *value);
-void updateNonTableVar(char *qualifiedName, char *value, int type);
-int decodeMysqlType(VAR *var, enum enum_field_types mysqlType, char *value);
-int fieldConvertMysql2Jam(enum enum_field_types mysqlType);
-void clearVarValues(VAR *varStruct);
-int buildMysqlQuerySelect(char *query, char *args, char *currentTableName, char *givenTableName);
-int isMysqlFieldName(char *fieldName, char *tableName);
-int isCalculation(char *str);
-char *calculate(char *str);
-char *expandFieldsInString(char *str, char *tableName);
-void jamDump();
 
 int main(int argc, char *argv[]) {
 	char *argName[MAX_ARGS];
@@ -137,7 +80,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	// Generate HTML from Jam array
-	genOutput(0, NULL, NULL);
+	control(0, NULL);
 
 	free(tpl);
 	if (conn)
@@ -146,16 +89,15 @@ jamDump();
 	exit(0);
 }
 
-int genOutput(int startIx, MYSQL_ROW *row, char *tableName) {
+int control(int startIx, char *defaultTableName) {
 	int ix = startIx;
 	char *tmp = (char *) calloc(1, 4096);
 	while (jam[ix]) {
 		char *cmd = jam[ix]->command;
 		char *args = jam[ix]->args;
 		char *rawData = jam[ix]->rawData;
-//		-------------------------------
-		if (!(strcmp(cmd, "@literal"))) {
-//		-------------------------------
+
+		if (!strcmp(cmd, "@literal")) {
 			char *space = " ";
 			literal = 1;
 			if (args)
@@ -177,96 +119,22 @@ int genOutput(int startIx, MYSQL_ROW *row, char *tableName) {
 				free(jam[ix]->trailer);
 				jam[ix]->trailer = newStr;
 			}
-			//emit(jam[ix]->command);
-			//emit(jam[ix]->args);
 			emit(jam[ix]->trailer);
-			//continue;
 		}
 
-//		--------------------------------
-		if (!(strcmp(cmd, "@!begin"))) {
-//		--------------------------------
+		if (!(strcmp(cmd, "@!begin")))
 			emit(jam[ix]->trailer);
-//		-------------------------------------
-		} else if (!(strcmp(cmd, "@list"))) {
-//		-------------------------------------
-			MYSQL_RES *res;
-			MYSQL_ROW row;
-			char *space = " ";
-			getWord(tmp, args, 1, space);
-			if (*tmp) {
-				char *listWhat = strdup(tmp);
-				if (!strcmp(listWhat, "databases")) {
-					char *dbName = strdup("");
-					if (openDB(dbName) < 0) {
-						die(mysql_error(conn));
-					}
-					mysql_query(conn,"show databases");
-					res = mysql_store_result(conn);
-					while (row = mysql_fetch_row(res)) {
-						if ((!strcmp(row[0], "information_schema")) || (!strcmp(row[0], "mysql")) || (!strcmp(row[0], "performance_schema")))
-							continue;
-						sprintf(tmp, "%s <br>", row[0]);
-						emit(tmp);
-					}
-					closeDB();
-				} else if (!strcmp(listWhat, "tables")) {
-					mysql_query(conn,"show tables");
-					res = mysql_store_result(conn);
-					while (row = mysql_fetch_row(res)) {
-						if ((!strcmp(row[0], "information_schema")) || (!strcmp(row[0], "mysql")) || (!strcmp(row[0], "performance_schema")))
-							continue;
-						sprintf(tmp, "%s <br>", row[0]);
-						emit(tmp);
-					}
-				}
-			} else {
-				die("list what?");
-			}
-			emit(jam[ix]->trailer);
+		else if (!(strcmp(cmd, "@list")))
+			wordDatabaseList(ix, defaultTableName);
+
 //		-----------------------------------------
-		} else if (!(strcmp(cmd, "@describe"))) {
+		else if (!(strcmp(cmd, "@describe"))) {
 //		-----------------------------------------
-			MYSQL_RES *res;
-			MYSQL_ROW row;
-			char *space = " ";
-			getWord(tmp, args, 1, space);
-			if (*tmp) {
-				char *query = (char *) calloc(1, MAX_SQL_QUERY_LEN);
-				char *line = (char *) calloc(1, 4096);
-				sprintf(query, "desc %s", args);
-				mysql_query(conn,query);
-				res = mysql_store_result(conn);
-				int numFields = mysql_num_fields(res);
-				emit("<table border=1 cellpadding=3 cellspacing=0 style='border: 1pt solid #abdbd7; border-Collapse: collapse'>");
-				emit("<tr><td> Field </td><td> Type </td><td> Empty allowed? </td><td> Key </td><td> Default value </td><td> Extra </td></tr>");
-				while (row = mysql_fetch_row(res)) {
-					strcpy(line, "<tr>");
-					for (int i = 0; i < numFields; i++) {
-						sprintf(tmp, "<td> %s </td>", row[i]);
-						strcat(line, tmp);
-					}
-					strcat(line, "</tr>");
-					emit(line);
-				}
-				emit("</table>");
-				free(query);
-				free(line);
-			} else {
-				die("describe what?");
-			}
-			emit(jam[ix]->trailer);
+			wordDatabaseDescribe(ix, defaultTableName);
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@database"))) {
 //		-----------------------------------------
-			if (strlen(args) == 0) {
-				printf("missing database name\n");
-				exit(1);
-			}
-			if (openDB(args) < 0) {
-				die(mysql_error(conn));
-			}
-			emit(jam[ix]->trailer);
+			wordDatabaseDatabase(ix, defaultTableName);
 //		-------------------------------------
 		} else if (!(strcmp(cmd, "@each"))) {
 //		-------------------------------------
@@ -276,33 +144,8 @@ int genOutput(int startIx, MYSQL_ROW *row, char *tableName) {
 //{@each stock_customer stock_area_id = }
 //{@each stock_customer filter stock_area_id = }
 			char *givenTableName = (char *) calloc(1, 4096);
-			char *givenFieldName = NULL;
-			char *query = (char *) calloc(1, MAX_SQL_QUERY_LEN);
-			// Get the given table name that we want each of
-			char *ta = args;
-			char *tg = givenTableName;
-			while ((*ta) && (*ta != ' ') && (*ta != '.'))	// Find ' ' or '.' which terminates the tablename;
-				*tg++ = *ta++;
-			sprintf(query, "select * from %s",  givenTableName);				// set a default query
-			// Is there more than just the table name?
-			if (*ta) {
-				ta++;
-				buildMysqlQuerySelect(query, ta, tableName, givenTableName);		// build a complex query
-			}
-strcat(query, " LIMIT 100");
-			// Do the query
-//printf("\n\nQ--> [%s] <--Q\n\n", query);
-//die(" ");
-			MYSQL_RES *res;
+			MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 100);
 			MYSQL_ROW row;
-			if (mysql_query(conn, query)) {
-				die(mysql_error(conn));
-			}
-			res = mysql_store_result(conn);
-  			if (!res) {
-				sprintf(tmp, "Couldn't get results set: %s\n", mysql_error(conn));
-				die(tmp);
-			}
 			int numFields = mysql_num_fields(res);
 			char *mysqlHeaders[numFields];
 			enum enum_field_types mysqlTypes[numFields];
@@ -316,7 +159,7 @@ strcat(query, " LIMIT 100");
 				emit(jam[ix]->trailer);
 				setFieldValues(givenTableName, mysqlHeaders, mysqlTypes, numFields, &row);
 //printf("GOING with tablename=[%s]<br>\n", givenTableName);
-				genOutput((ix + 1), &row, givenTableName);
+				control((ix + 1), givenTableName);
 //printf("BACK\n");
 			}
 			// Finished. Now emit the loops' trailer and make it current, so we will immediately advance past it
@@ -328,40 +171,12 @@ strcat(query, " LIMIT 100");
 			}
 			mysql_free_result(res);
 			free(givenTableName);
-			free(query);
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@get"))) {
 //		------------------------------------
-			// @@TODO refactor this because it shares 90% of its code with @each
-			char *givenTableName = (char *) calloc(1, 4096);
-			char *givenFieldName = NULL;
-			char *query = (char *) calloc(1, MAX_SQL_QUERY_LEN);
-			int skipCode = 0;
-			// Get the given table name that we want to get
-			char *ta = args;
-			char *tg = givenTableName;
-			while ((*ta) && (*ta != ' ') && (*ta != '.'))	// Find ' ' or '.' which terminates the tablename;
-				*tg++ = *ta++;
-			sprintf(query, "select * from %s",  givenTableName);				// set a default query
-			// Is there more than just the table name?
-			if (*ta) {
-				ta++;
-				skipCode = buildMysqlQuerySelect(query, ta, tableName, givenTableName);		// build a complex wuery
-			}
-			strcat(query, " LIMIT 1");
-			// Do the query
-//printf("\n\n[%s]\n\n", query);
-//die("kkk");
-			MYSQL_RES *res;
+    		char *givenTableName = (char *) calloc(1, 4096);
+			MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 1);
 			MYSQL_ROW row;
-			if (mysql_query(conn, query)) {
-				die(mysql_error(conn));
-			}
-			res = mysql_store_result(conn);
-  			if (!res) {
-				sprintf(tmp, "Couldn't get results set: %s\n", mysql_error(conn));
-				die(tmp);
-			}
 			int numFields = mysql_num_fields(res);
 			char *mysqlHeaders[numFields];
 			enum enum_field_types mysqlTypes[numFields];
@@ -378,11 +193,10 @@ strcat(query, " LIMIT 100");
 			}
 			mysql_free_result(res);
 			free(givenTableName);
-			free(query);
-			if ((!row) && (skipCode == 1)) {
-				free(tmp);
-				return(0);
-			}
+			//if ((!row) && (skipCode == 1)) {		/@@FIX! make function so this can be shared with database.c
+				//free(tmp);
+				//return(0);
+			//}
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@end"))) {
 //		------------------------------------
@@ -393,146 +207,15 @@ strcat(query, " LIMIT 100");
 //		----------------------------------------
 		} else if (!(strcmp(cmd, "@include"))) {
 //		----------------------------------------
-			char *buf = NULL;
-			std::ifstream includeFile (args, std::ifstream::binary);
-			if (!includeFile){
-				sprintf(tmp, "cant @include %s", args);
-				die(tmp);
-			}
-			includeFile.seekg (0, includeFile.end);
-			int length = includeFile.tellg();
-			includeFile.seekg (0, includeFile.beg);
-			buf = (char *) calloc(1, length+1);
-			if (!buf) {
-				sprintf(tmp, "cant calloc memory to @include %s", args);
-				die(tmp);
-			}
-			// Emit any pre-tags
-			if (strstr(args, ".css"))
-				emit("<style>");
-			includeFile.read (buf,length);
-			buf[length] = 0;
-			includeFile.close();
-			if (!includeFile) {
-				sprintf(tmp, "error: not the whole of %s could be read", args);
-				die(tmp);
-			}
-			emit(buf);
-			free(buf);
-			// Emit any post-tags
-			if (strstr(args, ".css"))
-			emit("</style>");
-			emit(jam[ix]->trailer);
+			wordMiscInclude(ix, defaultTableName);
 //		--------------------------------------
 		} else if (!(strcmp(cmd, "@count"))) {
 //		--------------------------------------
-			char *space = " ";
-			getWord(tmp, args, 1, space);
-			char *countFieldName = strdup(tmp);
-			if (!countFieldName)
-				die("Cant count a nonexistent field");
-			char *countFieldAs = NULL;
-			getWord(tmp, args, 2, space);
-			if (!(strcmp(tmp, "as"))) {
-				getWord(tmp, args, 3, space);
-				countFieldAs = strdup(tmp);
-			}
-			// Lookup the variable we want to count. It might be qualified, but if it isnt then qualify it with the current table name
-			VAR *varToCount = NULL;
-			char *varToCountQualifiedName = (char *) calloc(1, 512);
-			if (strchr(countFieldName, '.'))
-				strcpy(varToCountQualifiedName, countFieldName);
-			else
-				sprintf(varToCountQualifiedName, "%s.%s", tableName, countFieldName);
-			varToCount = findVarStrict(varToCountQualifiedName);
-			if (!varToCount) {
-				sprintf(tmp, "variable to count doesnt exist :( Was looking for tableName=[%s] and countFieldName=[%s]\n",tableName, countFieldName);
-				die(tmp);
-			}
-			// Lookup the variable we want to count as (into). If it is unnamed prepend '.count' to it
-			VAR *varToCountAs = NULL;
-			if (!countFieldAs)
-				sprintf(tmp, "count.%s", countFieldName);
-			else
-				sprintf(tmp, "%s", countFieldAs);
-			varToCountAs = findVarStrict(tmp);
-			if (!varToCountAs) {
-				char *val = "0";
-				updateNonTableVar(tmp, val, VAR_NUMBER);
-				varToCountAs = findVarStrict(tmp);
-				varToCountAs->source = strdup("count");
-				varToCountAs->debugHighlight = 2;
-			}
-			varToCount->debugHighlight = 2;
-			// Do the count	@@TODOCALC
-			varToCountAs->numberValue++;
-			free(varToCountAs->portableValue);
-			sprintf(tmp, "%ld", varToCountAs->numberValue);
-			varToCountAs->portableValue = strdup(tmp);
-			// Wrap up
-			free(countFieldName);
-			free(countFieldAs);
-			free(varToCountQualifiedName);
-			emit(jam[ix]->trailer);
+			wordMiscCount(ix, defaultTableName);
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@sum"))) {
 //		------------------------------------
-			char *space = " ";
-			getWord(tmp, args, 1, space);
-			char *sumFieldName = strdup(tmp);
-			if (!sumFieldName)
-				die("Cant sum a nonexistent field");
-			char *sumFieldAs = NULL;
-			getWord(tmp, args, 2, space);
-			if (!(strcmp(tmp, "as"))) {
-				getWord(tmp, args, 3, space);
-				sumFieldAs = strdup(tmp);
-			}
-			// Lookup the variable we want to sum. It might be qualified, but if it isnt then qualify it with the current table name
-			VAR *varToSum = NULL;
-			char *varToSumQualifiedName = (char *) calloc(1, 512);
-			if (strchr(sumFieldName, '.'))
-				strcpy(varToSumQualifiedName, sumFieldName);
-			else
-				sprintf(varToSumQualifiedName, "%s.%s", tableName, sumFieldName);
-			varToSum = findVarStrict(varToSumQualifiedName);
-			if (!varToSum) {
-				sprintf(tmp, "variable to sum doesnt exist :( Was looking for tableName=[%s] and sumFieldName=[%s]\n",tableName, sumFieldName);
-				die(tmp);
-			}
-			// Lookup the variable we want to sum as (into). If it is unnamed prepend '.sum' to it
-			VAR *varToSumAs = NULL;
-			if (!sumFieldAs)
-				sprintf(tmp, "sum.%s", sumFieldName);
-			else
-				sprintf(tmp, "%s", sumFieldAs);
-			varToSumAs = findVarStrict(tmp);
-			if (!varToSumAs) {
-				char *val = "0";
-				updateNonTableVar(tmp, val, varToSum->type);
-				varToSumAs = findVarStrict(tmp);
-				varToSumAs->source = strdup("sum");
-				varToSumAs->debugHighlight = 3;
-			}
-			varToSum->debugHighlight = 3;
-			// Do the sum	@@TODOCALC
-			if (varToSum->type == VAR_NUMBER) {
-				varToSumAs->numberValue += varToSum->numberValue;
-				free(varToSumAs->portableValue);
-				sprintf(tmp, "%ld", varToSumAs->numberValue);
-				varToSumAs->portableValue = strdup(tmp);
-			}
-			else if (varToSum->type == VAR_DECIMAL2) {
-				varToSumAs->decimal2Value += varToSum->decimal2Value;
-				free(varToSumAs->portableValue);
-				sprintf(tmp, "%.2lf", varToSumAs->decimal2Value);
-				varToSumAs->portableValue = strdup(tmp);
-			}
-			// Wrap up
-			free(sumFieldName);
-			free(sumFieldAs);
-			free(varToSumQualifiedName);
-			emit(jam[ix]->trailer);
+			wordMiscSum(ix, defaultTableName);
 //		---------------------------
 		} else if (cmd[0] != '@') {
 //		---------------------------
@@ -579,11 +262,11 @@ strcat(query, " LIMIT 100");
 			}
 
 			// Expand any fields to values
-			char *expandedData = expandFieldsInString(data, tableName);	// Allocates memory - needs freeing
+			char *expandedData = expandFieldsInString(data, defaultTableName);	// Allocates memory - needs freeing
 //printf("\nSTART.... [c=%s][a=%s][f=%s][r=%s][e%s]\n", cmd, args, fullLine, data, expandedData);
 
 			// Either retrieve the data from a field or calculate
-			VAR *searchVar = findVarLenient(data, tableName);
+			VAR *searchVar = findVarLenient(data, defaultTableName);
 			if (searchVar)
 				strcpy(resultString, searchVar->portableValue);
 			else if (isCalculation(expandedData)) {
@@ -598,7 +281,7 @@ strcat(query, " LIMIT 100");
 			if (strchr(fullLine, '=')) {
 				// Create / update LHS
 				int createNew = 0;
-				VAR *assignVar = findVarLenient(cmd, tableName);
+				VAR *assignVar = findVarLenient(cmd, defaultTableName);
 				if (!assignVar) {
 					createNew = 1;
 					assignVar = (VAR *) calloc(1, sizeof(VAR));
@@ -620,7 +303,7 @@ strcat(query, " LIMIT 100");
 			} else {		// Not an assignment - just emit variable
 				emit(resultString);
 				// Clear if necessary
-				VAR *variable = findVarLenient(cmd, tableName);
+				VAR *variable = findVarLenient(cmd, defaultTableName);
 				if (variable) {
 //printf("RETR-->%s<--\n", variable->name);
 //char xx[256]; sprintf(xx, "R[%s]:%s", resultString, variable->portableValue);

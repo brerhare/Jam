@@ -1,1 +1,1 @@
-g++ jam.c util.c -g3 -o jam -fpermissive -Wno-write-strings $(mysql_config --cflags) $(mysql_config --libs)
+g++ main.c wordDatabase.c wordMisc.c database.c util.c -g3 -o jam -fpermissive -Wno-write-strings $(mysql_config --cflags) $(mysql_config --libs)
