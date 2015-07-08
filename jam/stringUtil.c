@@ -1,4 +1,4 @@
-#include "util.h"
+#include "stringUtil.h"
 #include <stdio.h>
 
 int getWordIgnoreQuotes = 0;

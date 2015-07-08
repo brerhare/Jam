@@ -10,7 +10,7 @@
 #include </usr/include/mysql/mysql.h>
 
 #include "common.h"
-#include "util.h"
+#include "stringUtil.h"
 
 MYSQL_RES *doSqlSelect(int ix, char *defaultTableName, char **givenTableName, int maxRows) {
     char *cmd = jam[ix]->command;

@@ -11,7 +11,7 @@
 
 #include "wordDatabase.h"
 #include "common.h"
-#include "util.h"
+#include "stringUtil.h"
 
 int wordDatabaseList(int ix, char *defaultTableName) {
     char *cmd = jam[ix]->command;

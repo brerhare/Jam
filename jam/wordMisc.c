@@ -11,7 +11,7 @@
 
 #include "wordMisc.h"
 #include "common.h"
-#include "util.h"
+#include "stringUtil.h"
 
 int wordMiscInclude(int ix, char *defaultTableName) {
     char *cmd = jam[ix]->command;

@@ -16,8 +16,8 @@
 #include "wordDatabase.h"
 #include "wordMisc.h"
 #include "database.h"
-#include "util.h"
-
+#include "stringUtil.h"
+#include "listUtil.h"
 
 // Common declares start
 MYSQL *conn = NULL;
@@ -30,13 +30,28 @@ char *tableStack[MAX_JAM];
 VAR *var[MAX_VAR];
 // Common declares end
 
-
 int main(int argc, char *argv[]) {
 	char *argName[MAX_ARGS];
 	char *argValue[MAX_ARGS];
 	for (int i = 0; i < MAX_ARGS; i++)
 		argName[i] = argValue[i] = NULL;
-
+/*
+linkList *l = listCreate();
+char *s1 = strdup("Item1");
+char *s2 = strdup("Item2");
+char *item = (char *) listAlloc(sizeof(s1));
+strcpy(item, s1);
+listAddItem(l, item);
+item = (char *) listAlloc(sizeof(s2));
+strcpy(item, s2);
+listAddItem(l, item);
+char *p = (char *) listFirst(l);
+printf("1st=[%s]\n", p);
+p = (char *) listNext(p);
+printf("2nd=[%s]\n", p);
+listRemove(l);
+exit(0);
+*/
 	char *eq = "=";
 	int i;
 	for (i = 1; i < argc; i++) {
