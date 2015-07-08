@@ -33,6 +33,19 @@ printf("2nd=[%s]\n", p);
 listRemove(l);
 */
 
+/*
+typedef struct {
+    MYSQL_RES *res;
+    MYSQL_ROW row;
+} LISTDATA_MYSQL;
+
+typedef struct {
+    char *name;
+    int type;
+    linkList *list;
+} LIST_HOLDER;
+*/
+
 LIST *listCreateMysql(char *name) {
     LIST_HOLDER *lp = NULL;
     for (int ix = 0; ix < MAX_LIST_HOLDER; ix++) {
@@ -45,16 +58,23 @@ LIST *listCreateMysql(char *name) {
     if (!lp)
         die("Run out of list holder space");
     lp->name = strdup(name);
+    lp->type = LIST_MYSQL_TYPE;
     lp->list = listCreate();
 }
 
-int ListAddItemMysql(LIST_HOLDER *lp, LIST_MYSQL *data) {
-//char *item = (char *) listAlloc(sizeof(data));
+int ListAddItem(LIST_HOLDER *lp, void *data) {
+    if (lp->type == LIST_MYSQL_TYPE) {
+        LIST_DATA_MYSQL *usrData = (LIST_DATA_MYSQL *) data;
+        LIST_DATA_MYSQL *newData = (LIST_DATA_MYSQL *) calloc(1, sizeof(LIST_DATA_MYSQL));
+        newData->res = usrData->res;
+        newData->row = usrData->row;
+        listAddItem(lp->list, newData);
+    }
 }
 
 LIST_HOLDER *getListByName(char *name) {
     for (int ix = 0; ix < MAX_LIST_HOLDER; ix++) {
-        if ((listHolder[ix] == NULL) || (!(strcmp(listHolder[ix]->name, name))))
+        if ((listHolder[ix]) && (listHolder[ix]->name) && (!(strcmp(listHolder[ix]->name, name))) )
             return listHolder[ix];
     }
     return NULL;

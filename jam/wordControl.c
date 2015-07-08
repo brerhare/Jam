@@ -12,6 +12,7 @@
 #include "wordControl.h"
 #include "common.h"
 #include "stringUtil.h"
+#include "database.h"
 
 int wordControlEach(int ix, char *defaultTableName) {
     char *cmd = jam[ix]->command;
@@ -57,4 +58,30 @@ int wordControlEach(int ix, char *defaultTableName) {
     emit(jam[ix]->trailer);
     free(tmp);
     return 0;
+}
+
+int wordControlGet(int ix, char *defaultTableName) {
+    char *givenTableName = (char *) calloc(1, 4096);
+    MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 1);
+    MYSQL_ROW row;
+    int numFields = mysql_num_fields(res);
+    char *mysqlHeaders[numFields];
+    enum enum_field_types mysqlTypes[numFields];
+    MYSQL_FIELD *field;
+    for (int i = 0; (field = mysql_fetch_field(res)); i++) {
+        mysqlHeaders[i] = field->name;
+        mysqlTypes[i] = field->type;
+    }
+    row = mysql_fetch_row(res);
+    if (row)
+        setFieldValues(givenTableName, mysqlHeaders, mysqlTypes, numFields, &row);
+    if (jam[ix]) {
+        emit(jam[ix]->trailer);
+    }
+    mysql_free_result(res);
+    free(givenTableName);
+    //if ((!row) && (skipCode == 1)) {		/@@FIX! make function so this can be shared with database.c
+        //free(tmp);
+        //return(0);
+    //}
 }

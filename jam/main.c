@@ -140,7 +140,7 @@ int control(int startIx, char *defaultTableName) {
 			//wordControlEach(ix, defaultTableName);
 
 
-
+/**/
 //{@each stock_customer}
 //{@each stock_customer.stock_area_id = id}
 //{@each stock_customer.stock_area_id = area.id}
@@ -174,12 +174,16 @@ int control(int startIx, char *defaultTableName) {
 			}
 			mysql_free_result(res);
 			free(givenTableName);
-
+/**/
 
 
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@get"))) {
 //		------------------------------------
+			wordControlGet(ix, defaultTableName);
+
+
+/*
     		char *givenTableName = (char *) calloc(1, 4096);
 			MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 1);
 			MYSQL_ROW row;
@@ -203,6 +207,9 @@ int control(int startIx, char *defaultTableName) {
 				//free(tmp);
 				//return(0);
 			//}
+*/
+
+
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@end"))) {
 //		------------------------------------

@@ -3,7 +3,7 @@
 typedef struct {
     MYSQL_RES *res;
     MYSQL_ROW row;
-} LIST_MYSQL;
+} LIST_DATA_MYSQL;
 
 typedef struct {
     char *name;
