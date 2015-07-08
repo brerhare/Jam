@@ -12,6 +12,7 @@
 #include "common.h"
 #include "stringUtil.h"
 
+// This is the common code that used to be in @get and @each (now called from wordControlXxxx)
 MYSQL_RES *doSqlSelect(int ix, char *defaultTableName, char **givenTableName, int maxRows) {
     char *cmd = jam[ix]->command;
     char *args = jam[ix]->args;
