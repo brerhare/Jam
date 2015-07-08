@@ -6,6 +6,23 @@
 
 #include "listUtil.h"
 
+/*
+linkList *l = listCreate();
+char *s1 = strdup("Item1");
+char *s2 = strdup("Item2");
+char *item = (char *) listAlloc(sizeof(s1));
+strcpy(item, s1);
+listAddItem(l, item);
+item = (char *) listAlloc(sizeof(s2));
+strcpy(item, s2);
+listAddItem(l, item);
+char *p = (char *) listFirst(l);
+printf("1st=[%s]\n", p);
+p = (char *) listNext(p);
+printf("2nd=[%s]\n", p);
+listRemove(l);
+*/
+
 struct linkListElement
 {
 	char idString[8];

@@ -15,6 +15,7 @@
 #include "common.h"
 #include "wordDatabase.h"
 #include "wordMisc.h"
+#include "wordControl.h"
 #include "database.h"
 #include "stringUtil.h"
 #include "listUtil.h"
@@ -35,23 +36,6 @@ int main(int argc, char *argv[]) {
 	char *argValue[MAX_ARGS];
 	for (int i = 0; i < MAX_ARGS; i++)
 		argName[i] = argValue[i] = NULL;
-/*
-linkList *l = listCreate();
-char *s1 = strdup("Item1");
-char *s2 = strdup("Item2");
-char *item = (char *) listAlloc(sizeof(s1));
-strcpy(item, s1);
-listAddItem(l, item);
-item = (char *) listAlloc(sizeof(s2));
-strcpy(item, s2);
-listAddItem(l, item);
-char *p = (char *) listFirst(l);
-printf("1st=[%s]\n", p);
-p = (char *) listNext(p);
-printf("2nd=[%s]\n", p);
-listRemove(l);
-exit(0);
-*/
 	char *eq = "=";
 	int i;
 	for (i = 1; i < argc; i++) {
@@ -153,6 +137,10 @@ int control(int startIx, char *defaultTableName) {
 //		-------------------------------------
 		} else if (!(strcmp(cmd, "@each"))) {
 //		-------------------------------------
+			//wordControlEach(ix, defaultTableName);
+
+
+
 //{@each stock_customer}
 //{@each stock_customer.stock_area_id = id}
 //{@each stock_customer.stock_area_id = area.id}
@@ -186,6 +174,9 @@ int control(int startIx, char *defaultTableName) {
 			}
 			mysql_free_result(res);
 			free(givenTableName);
+
+
+
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@get"))) {
 //		------------------------------------
