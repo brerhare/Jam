@@ -11,10 +11,10 @@
 
 #include "common.h"
 #include "stringUtil.h"
-#include "listUtil.h"
+#include "linkListUtil.h"
 #include "list.h"
 
-LIST_HOLDER *listHolder[MAX_LIST_HOLDER];
+LIST_CONTAINER *listContainer[MAX_LIST_CONTAINER];
 
 /*
 linkList *l = listCreate();
@@ -33,49 +33,99 @@ printf("2nd=[%s]\n", p);
 listRemove(l);
 */
 
-/*
+/* #define LIST_MYSQL_TYPE     0
+   #define LIST_LINKLIST_TYPE  1
+
 typedef struct {
+    linkList *list;
+} LIST_DATA_LINKLIST;
+
+typedef struct {
+    char *tableName;
     MYSQL_RES *res;
-    MYSQL_ROW row;
-} LISTDATA_MYSQL;
+    int numFields = mysql_num_fields(listData->res);
+    char *mysqlHeaders[numFields];
+    enum enum_field_types mysqlTypes[numFields];
+} LIST_DATA_MYSQL;
 
 typedef struct {
     char *name;
     int type;
-    linkList *list;
-} LIST_HOLDER;
-*/
+    void *listData;     // could be any of the predefined types
+} LIST_CONTAINER; */
 
-LIST *listCreateMysql(char *name) {
-    LIST_HOLDER *lp = NULL;
-    for (int ix = 0; ix < MAX_LIST_HOLDER; ix++) {
-        if (listHolder[ix] == NULL) {
-            listHolder[ix] = (LIST_HOLDER *) calloc(1, sizeof(LIST_HOLDER));
-            lp = listHolder[ix];
-            break;
+LIST_CONTAINER *getNewListSlot();
+
+LIST_CONTAINER *listCreateMysql(char *listName, char *tableName) {
+    LIST_CONTAINER *lp = getNewListSlot();
+    lp->name = strdup(listName);
+    lp->type = LIST_MYSQL_TYPE;
+    lp->listData = (LIST_DATA_MYSQL *) calloc(1, sizeof(LIST_DATA_MYSQL));
+    LIST_DATA_MYSQL *data = (LIST_DATA_MYSQL *) lp->listData;
+    data->tableName = (char *) strdup(tableName);
+    return lp;
+}
+
+LIST_CONTAINER *listCreateLinkList(char *listName) {
+    LIST_CONTAINER *lp = getNewListSlot();
+    lp->name = strdup(listName);
+    lp->type = LIST_LINKLIST_TYPE;
+    lp->listData = (LIST_DATA_LINKLIST *) calloc(1, sizeof(LIST_DATA_LINKLIST));
+    LIST_DATA_LINKLIST *data = (LIST_DATA_LINKLIST *) lp->listData;
+    data->list = linkListCreate();
+}
+
+int listAdd(LIST_CONTAINER *lp, void *data) {
+    if (lp->type == LIST_MYSQL_TYPE) {                                  // data is a MYSQL_RES object. Only ever one add
+        LIST_DATA_MYSQL *listData = (LIST_DATA_MYSQL *) lp->listData;
+        listData->res = (MYSQL_RES *) data;
+        // Set up field info
+        listData->numFields = mysql_num_fields(listData->res);
+        listData->mysqlHeaders[listData->numFields];
+        //enum_field_types data->mysqlTypes[data->numFields];
+        MYSQL_FIELD *field;
+        for (int i = 0; (field = mysql_fetch_field(listData->res)); i++) {
+            listData->mysqlHeaders[i] = field->name;
+            listData->mysqlTypes[i] = field->type;
         }
     }
-    if (!lp)
-        die("Run out of list holder space");
-    lp->name = strdup(name);
-    lp->type = LIST_MYSQL_TYPE;
-    lp->list = listCreate();
-}
-
-int ListAddItem(LIST_HOLDER *lp, void *data) {
-    if (lp->type == LIST_MYSQL_TYPE) {
-        LIST_DATA_MYSQL *usrData = (LIST_DATA_MYSQL *) data;
-        LIST_DATA_MYSQL *newData = (LIST_DATA_MYSQL *) calloc(1, sizeof(LIST_DATA_MYSQL));
-        newData->res = usrData->res;
-        newData->row = usrData->row;
-        listAddItem(lp->list, newData);
+    else if (lp->type == LIST_LINKLIST_TYPE) {                          // data is a blob
+        LIST_DATA_LINKLIST *data = (LIST_DATA_LINKLIST *) lp->listData;
+        void *blob = linkListAlloc(sizeof(blob)); // allocate space for a pointer
+        blob = data;                              // we own the data now. Caller should not free it
+        linkListAddItem(data->list, blob);
     }
+    return 0;
 }
 
-LIST_HOLDER *getListByName(char *name) {
-    for (int ix = 0; ix < MAX_LIST_HOLDER; ix++) {
-        if ((listHolder[ix]) && (listHolder[ix]->name) && (!(strcmp(listHolder[ix]->name, name))) )
-            return listHolder[ix];
+int listTop(LIST_CONTAINER *lp) {
+    if (lp->type == LIST_LINKLIST_TYPE) {
+        // @@TODO
+    }
+    return 0;
+}
+
+void *listNext(LIST_CONTAINER *lp) {
+    if (lp->type == LIST_LINKLIST_TYPE) {
+        // @@TODO
     }
     return NULL;
+}
+
+LIST_CONTAINER *getListByName(char *listName) {
+    for (int ix = 0; ix < MAX_LIST_CONTAINER; ix++) {
+        if ((listContainer[ix]) && (listContainer[ix]->name) && (!(strcmp(listContainer[ix]->name, listName))) )
+            return listContainer[ix];
+    }
+    return NULL;
+}
+
+LIST_CONTAINER *getNewListSlot() {
+    for (int ix = 0; ix < MAX_LIST_CONTAINER; ix++) {
+        if (listContainer[ix] == NULL) {
+            listContainer[ix] = (LIST_CONTAINER *) calloc(1, sizeof(LIST_CONTAINER));
+            return listContainer[ix];
+        }
+    }
+    die("Run out of list container items");
 }

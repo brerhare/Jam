@@ -15,10 +15,10 @@
 #include "common.h"
 #include "wordDatabase.h"
 #include "wordMisc.h"
-#include "wordControl.h"
 #include "database.h"
+#include "list.h"
 #include "stringUtil.h"
-#include "listUtil.h"
+#include "linkListUtil.h"
 
 // Common declares start
 MYSQL *conn = NULL;
@@ -137,33 +137,11 @@ int control(int startIx, char *defaultTableName) {
 //		-------------------------------------
 		} else if (!(strcmp(cmd, "@each"))) {
 //		-------------------------------------
-			//wordControlEach(ix, defaultTableName);
-
-
-/**/
-//{@each stock_customer}
-//{@each stock_customer.stock_area_id = id}
-//{@each stock_customer.stock_area_id = area.id}
-//{@each stock_customer stock_area_id = }
-//{@each stock_customer filter stock_area_id = }
 			char *givenTableName = (char *) calloc(1, 4096);
 			MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 100);
-			MYSQL_ROW row;
-			int numFields = mysql_num_fields(res);
-			char *mysqlHeaders[numFields];
-			enum enum_field_types mysqlTypes[numFields];
-			MYSQL_FIELD *field;
-			for (int i = 0; (field = mysql_fetch_field(res)); i++) {
-				mysqlHeaders[i] = field->name;
-				mysqlTypes[i] = field->type;
-			}
-			while ((row = mysql_fetch_row(res)) != NULL) {
-				// Recurse - start an each-end loop
-				emit(jam[ix]->trailer);
-				setFieldValues(givenTableName, mysqlHeaders, mysqlTypes, numFields, &row);
-//printf("GOING with tablename=[%s]<br>\n", givenTableName);
+			SQL_RESULT *rp = sqlCreateResult(givenTableName, res);
+			while (sqlGetRow(rp) != SQL_EOF) {
 				control((ix + 1), givenTableName);
-//printf("BACK\n");
 			}
 			// Finished. Now emit the loops' trailer and make it current, so we will immediately advance past it
 			while (jam[ix] && (strcmp(jam[ix]->command, "@end") || (strcmp(jam[ix]->args, givenTableName)))) {
@@ -174,42 +152,10 @@ int control(int startIx, char *defaultTableName) {
 			}
 			mysql_free_result(res);
 			free(givenTableName);
-/**/
-
-
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@get"))) {
 //		------------------------------------
-			wordControlGet(ix, defaultTableName);
-
-
-/*
-    		char *givenTableName = (char *) calloc(1, 4096);
-			MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 1);
-			MYSQL_ROW row;
-			int numFields = mysql_num_fields(res);
-			char *mysqlHeaders[numFields];
-			enum enum_field_types mysqlTypes[numFields];
-			MYSQL_FIELD *field;
-			for (int i = 0; (field = mysql_fetch_field(res)); i++) {
-				mysqlHeaders[i] = field->name;
-				mysqlTypes[i] = field->type;
-			}
-			row = mysql_fetch_row(res);
-			if (row)
-				setFieldValues(givenTableName, mysqlHeaders, mysqlTypes, numFields, &row);
-			if (jam[ix]) {
-				emit(jam[ix]->trailer);
-			}
-			mysql_free_result(res);
-			free(givenTableName);
-			//if ((!row) && (skipCode == 1)) {		/@@FIX! make function so this can be shared with database.c
-				//free(tmp);
-				//return(0);
-			//}
-*/
-
-
+			wordDatabaseGet(ix, defaultTableName);
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@end"))) {
 //		------------------------------------

@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <malloc.h>
 
-#include "listUtil.h"
+#include "linkListUtil.h"
 
 /*
 linkList *l = listCreate();
@@ -32,7 +32,7 @@ struct linkListElement
 	linkList *list;	// Each element has a pointer to its list header
 };
 
-linkList *listCreate()
+linkList *linkListCreate()
 {
 	linkList *listPtr;
 	listPtr = (linkList *) calloc(1, sizeof (linkList));
@@ -40,7 +40,8 @@ linkList *listCreate()
 	return listPtr;
 }
 
-void *listAlloc(int size)
+// You could allocate the size of just a pointer if you want to store a blob thats managed externally
+void *linkListAlloc(int size)
 {
 	struct linkListElement *ptr;
 	ptr = (struct linkListElement *) calloc(1, (sizeof(struct linkListElement) + size));
@@ -50,7 +51,7 @@ void *listAlloc(int size)
 	return(ptr);
 }
 
-int listAddItem(linkList *list, void *data)
+int linkListAddItem(linkList *list, void *data)
 {
 	linkListElement *tmpPtr, *elemPtr;
 
@@ -83,7 +84,7 @@ int listAddItem(linkList *list, void *data)
 	return(0);
 }
 
-void *listFirst(linkList *list)
+void *linkListFirst(linkList *list)
 {
 	void *retData;
 	linkListElement *elemPtr;
@@ -101,7 +102,7 @@ void *listFirst(linkList *list)
 	return(NULL);
 }
 
-void *listNext(void *data)
+void *linkListNext(void *data)
 {
 	void *retData;
 	linkListElement *elemPtr;
@@ -122,7 +123,7 @@ void *listNext(void *data)
 	}
 }
 
-int listGetItemSize(void *data)
+int linkListGetItemSize(void *data)
 {
 	struct linkListElement *ptr = (struct linkListElement *) data;
 	ptr--;
@@ -134,7 +135,7 @@ int listGetItemSize(void *data)
 	return(ptr->size);
 }
 
-int listDeleteItem(linkList *list, void *data)
+int linkListDeleteItem(linkList *list, void *data)
 {
 	linkListElement *elemPtr, *otherElemPtr;
 	elemPtr = (linkListElement *) data;
@@ -160,12 +161,12 @@ int listDeleteItem(linkList *list, void *data)
 	return(0);
 }
 
-int listCount(linkList *list)
+int linkListCount(linkList *list)
 {
 	return(list->count);
 }
 
-void listRemove(linkList *list)
+void linkListRemove(linkList *list)
 {
 	linkListElement *delPtr, *tmpPtr;
 	if (!(list))
@@ -197,23 +198,23 @@ struct nvpItem
 
 linkList *nvpCreate()
 {
-	linkList *nvpList = listCreate();
+	linkList *nvpList = linkListCreate();
 	return nvpList;
 }
 
 int nvpAdd(linkList *nvpList, char *name, char *value)
 {
 	struct nvpItem *nvp;
-	nvp = (nvpItem *) listAlloc(sizeof(struct nvpItem));
+	nvp = (nvpItem *) linkListAlloc(sizeof(struct nvpItem));
 	nvp->name = strdup(name);
 	nvp->value = strdup(value);
-	return (listAddItem(nvpList, nvp));
+	return (linkListAddItem(nvpList, nvp));
 }
 
 int nvpAddReplace(linkList *nvpList, char *name, char *value)
 {
 	struct nvpItem *nvp;
-	nvp = (struct nvpItem *) listFirst(nvpList);
+	nvp = (struct nvpItem *) linkListFirst(nvpList);
 	while (nvp)
 	{
 		if (!(strcmp(name, nvp->name)))
@@ -223,7 +224,7 @@ int nvpAddReplace(linkList *nvpList, char *name, char *value)
 			return(0);
 		}
 		else
-			nvp = (struct nvpItem *) listNext(nvp);
+			nvp = (struct nvpItem *) linkListNext(nvp);
 	}
 	return(nvpAdd(nvpList, name, value));
 }
@@ -231,13 +232,13 @@ int nvpAddReplace(linkList *nvpList, char *name, char *value)
 char *nvpGet(linkList *nvpList, char *name)
 {
 	struct nvpItem *nvp;
-	nvp = (struct nvpItem *) listFirst(nvpList);
+	nvp = (struct nvpItem *) linkListFirst(nvpList);
 	while (nvp)
 	{
 		if (!(strcmp(name, nvp->name)))
 			return(nvp->value);
 		else
-			nvp = (struct nvpItem *) listNext(nvp);
+			nvp = (struct nvpItem *) linkListNext(nvp);
 	}
 	return(NULL);
 }
@@ -247,7 +248,7 @@ char *nvpGet(linkList *nvpList, char *name)
 char *nvpFirst(linkList *nvpList)
 {
 	struct nvpItem *nvp;
-	nvp = (struct nvpItem *) listFirst(nvpList);
+	nvp = (struct nvpItem *) linkListFirst(nvpList);
 	if (nvp)
 		return(nvp->name);
 	else
@@ -259,19 +260,19 @@ char *nvpFirst(linkList *nvpList)
 char *nvpNext(linkList *nvpList, char *name)
 {
 	struct nvpItem *nvp;
-	nvp = (struct nvpItem *) listFirst(nvpList);
+	nvp = (struct nvpItem *) linkListFirst(nvpList);
 	while (nvp)
 	{
 		if (!(strcmp(name, nvp->name)))
 		{
-			nvp = (struct nvpItem *) listNext(nvp);
+			nvp = (struct nvpItem *) linkListNext(nvp);
 			if (nvp)
 				return(nvp->name);
 			else
 				return(NULL);
 		}
 		else
-			nvp = (struct nvpItem *) listNext(nvp);
+			nvp = (struct nvpItem *) linkListNext(nvp);
 	}
 	return(NULL);
 }
@@ -281,14 +282,14 @@ void nvpRemove(linkList *nvpList)
 	struct nvpItem *nvp;
 
 	// Go thru list freeing nvp ptrs
-	nvp = (struct nvpItem *) listFirst(nvpList);
+	nvp = (struct nvpItem *) linkListFirst(nvpList);
 	while (nvp)
 	{
 		free(nvp->name);
 		free(nvp->value);
-		nvp = (struct nvpItem *) listNext(nvp);
+		nvp = (struct nvpItem *) linkListNext(nvp);
 	}
-	listRemove(nvpList);
+	linkListRemove(nvpList);
 }
 
 

@@ -11,6 +11,7 @@
 
 #include "wordDatabase.h"
 #include "common.h"
+#include "database.h"
 #include "stringUtil.h"
 
 int wordDatabaseList(int ix, char *defaultTableName) {
@@ -109,4 +110,20 @@ int wordDatabaseDescribe(int ix, char *defaultTableName)
     }
     free(tmp);
     emit(jam[ix]->trailer);
+}
+
+int wordDatabaseGet(int ix, char *defaultTableName) {
+    char *givenTableName = (char *) calloc(1, 4096);
+    MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 1);
+    SQL_RESULT *rp = sqlCreateResult(givenTableName, res);
+    sqlGetRow(rp);
+
+    if (jam[ix]) {
+        emit(jam[ix]->trailer);
+    }
+    mysql_free_result(res);
+    free(givenTableName);
+    //if ((!row) && (skipCode == 1)) {		/@@FIX! make function so this can be shared with database.c
+        //return(0);
+    //}
 }

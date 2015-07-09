@@ -10,9 +10,40 @@
 #include </usr/include/mysql/mysql.h>
 
 #include "common.h"
+#include "database.h"
 #include "stringUtil.h"
 
-// This is the common code that used to be in @get and @each (now called from wordControlXxxx)
+// ----------------------------------------------------------------
+// mysql result handling
+
+SQL_RESULT *sqlCreateResult(char *tableName, MYSQL_RES *res) {
+    SQL_RESULT *rp = (SQL_RESULT *) calloc(1, sizeof(SQL_RESULT));
+    rp->tableName = (char *) strdup(tableName);
+    rp->res = res;
+    // Set up field info
+    rp->numFields = mysql_num_fields(rp->res);
+    //enum_field_types rp->mysqlTypes[rp->numFields];
+    MYSQL_FIELD *field;
+    for (int i = 0; (field = mysql_fetch_field(rp->res)); i++) {
+        rp->mysqlHeaders[i] = field->name;
+        rp->mysqlTypes[i] = field->type;
+    }
+    return rp;
+}
+
+int sqlGetRow(SQL_RESULT *rp) {
+    MYSQL_ROW row;
+    row = mysql_fetch_row(rp->res);
+    if (row) {
+        setFieldValues(rp->tableName, rp->mysqlHeaders, rp->mysqlTypes, rp->numFields, &row);
+        return SQL_OK;
+    }
+    return SQL_EOF;
+}
+
+// ----------------------------------------------------------------
+
+// This is the common code that used to be in @get and @each - now called from control() and wordDatabaseGet()
 MYSQL_RES *doSqlSelect(int ix, char *defaultTableName, char **givenTableName, int maxRows) {
     char *cmd = jam[ix]->command;
     char *args = jam[ix]->args;

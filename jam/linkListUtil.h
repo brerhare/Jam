@@ -1,5 +1,5 @@
-#ifndef	__LIST_H_INCLUDED__
-#define	__LIST_H_INCLUDED__
+#ifndef	__LINKLISTUTIL_H_INCLUDED
+#define	__LINKLISTUTIL_H_INCLUDED
 
 /*
  * Wrap these definitions inside an extern "C" if we're compiling C++ code
@@ -16,15 +16,15 @@ typedef struct
 } linkList;
 
 // linkList Protos
-linkList *listCreate();
-void *listAlloc(int size);
-int listAddItem(linkList *list, void *data);
-void *listFirst(linkList *list);
-void *listNext(void *data);
-int listGetItemSize(void *data);
-int listDeleteItem(linkList *list, void *data);
-int listCount(linkList *list);
-void listRemove(linkList *list);
+linkList *linkListCreate();
+void *linkListAlloc(int size);
+int linkListAddItem(linkList *list, void *data);
+void *linkListFirst(linkList *list);
+void *linkListNext(void *data);
+int linkListGetItemSize(void *data);
+int linkListDeleteItem(linkList *list, void *data);
+int linkListCount(linkList *list);
+void linkListRemove(linkList *list);
 
 // NVP Protos
 linkList *nvpCreate();
@@ -82,5 +82,4 @@ unsigned SMOplListNumItems( SMOplList list );
 }
 #endif
 
-#endif /* __LIST_H_INCLUDED__ */
-
+#endif /* __LINKLISTUTIL_H_INCLUDED */
