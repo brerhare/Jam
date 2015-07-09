@@ -100,16 +100,17 @@ int control(int startIx, char *defaultTableName) {
 		char *cmd = jam[ix]->command;
 		char *args = jam[ix]->args;
 		char *rawData = jam[ix]->rawData;
+
 //		-----------------------------------------
 		if (!strcmp(cmd, "@literal")) {
 //		-----------------------------------------
-			char *space = " ";
 			literal = 1;
-			if (args)
-				getWord(tmp, args, 1, space);
-			if (*tmp) {
-				if ((!strcmp(tmp, "off")) || (!strcmp(tmp, "0")))
-					literal = 0;
+			if (args) {
+				getWord(tmp, args, 1, " ");
+				if (*tmp) {
+					if ((!strcmp(tmp, "off")) || (!strcmp(tmp, "0")))
+						literal = 0;
+				}
 			}
 		}
 
@@ -132,7 +133,27 @@ int control(int startIx, char *defaultTableName) {
 //		-----------------------------------------
 			emit(jam[ix]->trailer);
 //		-----------------------------------------
-		else if (!(strcmp(cmd, "@list")))
+		else if (!(strcmp(cmd, "@new"))) {
+//		-----------------------------------------
+			if (args) {
+				getWord(tmp, args, 1, " ");
+				if (*tmp) {
+					if (!strcmp(tmp, "database"))
+						wordDatabaseNew(ix, defaultTableName);
+				}
+			}
+//		-----------------------------------------
+		} else if (!(strcmp(cmd, "@remove"))) {
+//		-----------------------------------------
+			if (args) {
+				getWord(tmp, args, 1, " ");
+				if (*tmp) {
+					if (!strcmp(tmp, "database"))
+						wordDatabaseRemove(ix, defaultTableName);
+				}
+			}
+//		-----------------------------------------
+		} else if (!(strcmp(cmd, "@list")))
 //		-----------------------------------------
 			wordDatabaseList(ix, defaultTableName);
 //		-----------------------------------------

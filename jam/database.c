@@ -13,6 +13,11 @@
 #include "database.h"
 #include "stringUtil.h"
 
+// Mysql server credentials
+char *dbServer = "localhost";
+char *dbUser = "root";
+char *dbPassword = "Wole9anic-";
+
 // ----------------------------------------------------------------
 // mysql result handling
 
@@ -332,12 +337,9 @@ int buildMysqlQuerySelect(char *query, char *args, char *currentTableName, char 
 }
 
 int openDB(char *name) {
-	char *server = "localhost";
-	char *user = "root";
-	char *password = "Wole9anic-"; /* set me first */
-	char *database = name;
 	conn = mysql_init(NULL);
-	if (!mysql_real_connect(conn, server, user, password, database, 0, NULL, 0)) {
+	if (!mysql_real_connect(conn, dbServer, dbUser, dbPassword, name, 0, NULL, 0)) {
+        mysql_close(conn);
 		return -1;
 	}
 	return 0;
@@ -345,4 +347,13 @@ int openDB(char *name) {
 
 void closeDB() {
 	mysql_close(conn);
+}
+
+int connectDBServer() {
+	conn = mysql_init(NULL);
+    if (!mysql_real_connect(conn, dbServer, dbUser, dbPassword, NULL, 0, NULL, 0)) {
+        mysql_close(conn);
+        return -1;
+    }
+    return 0;
 }

@@ -58,18 +58,53 @@ int wordDatabaseList(int ix, char *defaultTableName) {
     return 0;
 }
 
+int wordDatabaseNew(int ix, char *defaultTableName) {
+    char *cmd = jam[ix]->command;
+    char *args = jam[ix]->args;
+    char *rawData = jam[ix]->rawData;
+    char *dbName = (char *) calloc(1, 4096);
+
+    getWord(dbName, args, 2, " ");
+    if (!dbName)
+	   die("missing database name to create");
+    if (connectDBServer() < 0)
+    	die(mysql_error(conn));
+    char *qStr = (char *) calloc(1, 4096);
+    sprintf(qStr,"DROP DATABASE IF EXISTS %s", dbName);
+    int status = mysql_query(conn,qStr);
+    sprintf(qStr,"CREATE DATABASE %s", dbName);
+    status = mysql_query(conn,qStr);
+	emit(jam[ix]->trailer);
+    free(dbName);
+}
+
+int wordDatabaseRemove(int ix, char *defaultTableName) {
+    char *cmd = jam[ix]->command;
+    char *args = jam[ix]->args;
+    char *rawData = jam[ix]->rawData;
+    char *dbName = (char *) calloc(1, 4096);
+
+    getWord(dbName, args, 2, " ");
+    if (!dbName)
+	   die("missing database name to remove");
+    if (connectDBServer() < 0)
+    	die(mysql_error(conn));
+    char *qStr = (char *) calloc(1, 4096);
+    sprintf(qStr,"DROP DATABASE IF EXISTS %s", dbName);
+    int status = mysql_query(conn,qStr);
+	emit(jam[ix]->trailer);
+    free(dbName);
+}
+
 int wordDatabaseDatabase(int ix, char *defaultTableName) {
     char *cmd = jam[ix]->command;
     char *args = jam[ix]->args;
     char *rawData = jam[ix]->rawData;
 
-	if (strlen(args) == 0) {
-		printf("missing database name\n");
-		exit(1);
-	}
-	if (openDB(args) < 0) {
+	if (strlen(args) == 0)
+		die("missing database name");
+	if (openDB(args) < 0)
 		die(mysql_error(conn));
-	}
 	emit(jam[ix]->trailer);
 }
 
