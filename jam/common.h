@@ -1,3 +1,6 @@
+#ifndef __COMMON_H_INCLUDED
+#define __COMMON_H_INCLUDED
+
 using namespace std;
 
 extern char *startJam;
@@ -48,26 +51,16 @@ typedef struct {
 #define MAX_VAR 10000
 extern VAR *var[MAX_VAR];
 
-char *readTemplate(char *fname);
-char *curlies2JamArray(char *tplPos);
-JAM *initJam();
-int control(int startIx, char *tableName);
-void emit(char *line);
-void die(const char *errorString);
-int openDB(char *name);
-void closeDB();
-void setFieldValues(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields, MYSQL_ROW *rowP);
+// Common.c functions
 VAR *findVarStrict(char *qualifiedName);
-VAR *findVarLenient(char *name, char *prefix);
+VAR *findVarLenient(char *name, char *prefix);void emit(char *line);
+void die(const char *errorString);
+void jamDump();
 void fillVarDataTypes(VAR *var, char *value);
-void updateTableVar(char *qualifiedName, enum enum_field_types mysqlType, char *value);
-void updateNonTableVar(char *qualifiedName, char *value, int type);
-int decodeMysqlType(VAR *var, enum enum_field_types mysqlType, char *value);
-int fieldConvertMysql2Jam(enum enum_field_types mysqlType);
+void updateVar(char *qualifiedName, char *value, int type);
 void clearVarValues(VAR *varStruct);
-int buildMysqlQuerySelect(char *query, char *args, char *currentTableName, char *givenTableName);
-int isMysqlFieldName(char *fieldName, char *tableName);
+char *expandVarsInString(char *str, char *tableName);
 int isCalculation(char *str);
 char *calculate(char *str);
-char *expandFieldsInString(char *str, char *tableName);
-void jamDump();
+
+#endif /* __COMMON_H_INCLUDED */

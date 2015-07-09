@@ -91,7 +91,7 @@ int wordMiscCount(int ix, char *defaultTableName) {
     varToCountAs = findVarStrict(tmp);
     if (!varToCountAs) {
         char *val = "0";
-        updateNonTableVar(tmp, val, VAR_NUMBER);
+        updateVar(tmp, val, VAR_NUMBER);
         varToCountAs = findVarStrict(tmp);
         varToCountAs->source = strdup("count");
         varToCountAs->debugHighlight = 2;
@@ -148,7 +148,7 @@ int wordMiscSum(int ix, char *defaultTableName) {
     varToSumAs = findVarStrict(tmp);
     if (!varToSumAs) {
         char *val = "0";
-        updateNonTableVar(tmp, val, varToSum->type);
+        updateVar(tmp, val, varToSum->type);
         varToSumAs = findVarStrict(tmp);
         varToSumAs->source = strdup("sum");
         varToSumAs->debugHighlight = 3;

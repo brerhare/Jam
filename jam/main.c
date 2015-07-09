@@ -31,6 +31,11 @@ char *tableStack[MAX_JAM];
 VAR *var[MAX_VAR];
 // Common declares end
 
+char *readTemplate(char *fname);
+char *curlies2JamArray(char *tplPos);
+JAM *initJam();
+int control(int startIx, char *tableName);
+
 int main(int argc, char *argv[]) {
 	char *argName[MAX_ARGS];
 	char *argValue[MAX_ARGS];
@@ -95,8 +100,9 @@ int control(int startIx, char *defaultTableName) {
 		char *cmd = jam[ix]->command;
 		char *args = jam[ix]->args;
 		char *rawData = jam[ix]->rawData;
-
+//		-----------------------------------------
 		if (!strcmp(cmd, "@literal")) {
+//		-----------------------------------------
 			char *space = " ";
 			literal = 1;
 			if (args)
@@ -121,11 +127,14 @@ int control(int startIx, char *defaultTableName) {
 			emit(jam[ix]->trailer);
 		}
 
+//		-----------------------------------------
 		if (!(strcmp(cmd, "@!begin")))
+//		-----------------------------------------
 			emit(jam[ix]->trailer);
+//		-----------------------------------------
 		else if (!(strcmp(cmd, "@list")))
+//		-----------------------------------------
 			wordDatabaseList(ix, defaultTableName);
-
 //		-----------------------------------------
 		else if (!(strcmp(cmd, "@describe"))) {
 //		-----------------------------------------
@@ -221,7 +230,7 @@ int control(int startIx, char *defaultTableName) {
 			}
 
 			// Expand any fields to values
-			char *expandedData = expandFieldsInString(data, defaultTableName);	// Allocates memory - needs freeing
+			char *expandedData = expandVarsInString(data, defaultTableName);	// Allocates memory - needs freeing
 //printf("\nSTART.... [c=%s][a=%s][f=%s][r=%s][e%s]\n", cmd, args, fullLine, data, expandedData);
 
 			// Either retrieve the data from a field or calculate
@@ -302,344 +311,6 @@ int control(int startIx, char *defaultTableName) {
 		ix++;
 	}
 	free(tmp);
-}
-
-VAR *findVarLenient(char *name, char *prefix) {
-	// Search using the name as supplied. Mysql fields are always stored fully qualified. Others might have no or many levels of qualifier
-	VAR *variable = NULL;
-	variable = findVarStrict(name);
-	if ((!variable) && (prefix)) {
-		// If not found, it might be a non-qualified variable. Stick the current table name (if any) in front of it and try again
-		char *tmp = (char *) calloc(1, 4096);
-		sprintf(tmp, "%s.%s", prefix, name);
-			variable = findVarStrict(tmp);
-		free(tmp);
-	}
-	return variable;
-}
-
-VAR *findVarStrict(char *name) {
-	for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
-		if (!(var[i]))
-			break;
-		if (!strcmp(var[i]->name, name)) {
-			return var[i];
-		}
-	}
-	return NULL;
-}
-void fillVarDataTypes(VAR *variable, char *value) {
-	char *safeValue = NULL;
-	if (value)
-		safeValue = strdup(value);	//@@BUG something weird here. The 'if VAR_NUMBER' branch is taken but no value. And valgrind shows a leak
-	if (variable->type == VAR_DATE)
-		variable->dateValue = safeValue;
-	else if (variable->type == VAR_TIME)
-		variable->timeValue = safeValue;
-	else if (variable->type == VAR_DATETIME)
-		variable->datetimeValue = safeValue;
-	else if (variable->type == VAR_DECIMAL2) {
-		if (safeValue)
-			variable->decimal2Value = atof(safeValue);
-	} else if (variable->type == VAR_NUMBER) {
-		if (safeValue)
-			variable->numberValue = atol(safeValue);
-	} else
-		variable->stringValue = safeValue;
-	if (safeValue)
-		variable->portableValue = strdup(safeValue);
-	else
-		variable->portableValue = strdup("");
-}
-
-void updateNonTableVar(char *qualifiedName, char *value, int type) {
-	if (!qualifiedName)
-		printf("NULL 'qualifiedName' passed to updateNonTableVar\n");
-	char *safeValue = NULL;
-	if (value)
-		safeValue = strdup(value);
-	VAR *seekVar = findVarStrict(qualifiedName);
-	if (!seekVar) {
-		VAR *newVar = (VAR *) calloc(1, sizeof(VAR));
-		newVar->name = strdup(qualifiedName);
-		newVar->type = type;
-		clearVarValues(newVar);
-		fillVarDataTypes(newVar, safeValue);
-//printf("NON-TABLE-> NAME=%s TYPE=%d AVALUE=%s NVALUE=%ld DVALUE=%2.f\n", newVar->name, newVar->type, newVar->stringValue, newVar->numberValue, newVar->decimal2Value);
-		for (int i = 0; i < MAX_VAR; i++) {
-			if (!var[i]) {
-				var[i] = newVar;
-				break;
-			}
-		}
-	} else {
-		for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
-			if (!var[i])
-				break;
-			if (!strcmp(var[i]->name, qualifiedName)) {
-				fillVarDataTypes(var[i], value);
-				break;
-			}
-		}
-	}
-	if (safeValue)
-		free(safeValue);
-}
-
-void updateTableVar(char *qualifiedName, enum enum_field_types mysqlType, char *value) {
-	if (!qualifiedName)
-		printf("NULL 'qualifiedName' passed to updateTableVar\n");
-	VAR *seekVar = findVarStrict(qualifiedName);
-	if (!seekVar) {
-		VAR *newVar = (VAR *) calloc(1, sizeof(VAR));
-		newVar->name = strdup(qualifiedName);
-		newVar->source = strdup("mysql");
-		newVar->debugHighlight = 5;
-		int ret = decodeMysqlType(newVar, mysqlType, value);
-//printf("TABLE-> NAME=%s TYPE=%d AVALUE=%s NVALUE=%ld DVALUE=%2.f\n", newVar->name, newVar->type, newVar->stringValue, newVar->numberValue, newVar->decimal2Value);
-		for (int i = 0; i < MAX_VAR; i++) {
-			if (!var[i]) {
-				var[i] = newVar;
-				return;
-			}
-		}
-	} else {
-		for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
-			if (!var[i])
-				break;
-			if (!strcmp(var[i]->name, qualifiedName)) {
-				int ret = decodeMysqlType(var[i], mysqlType, value);
-				break;
-			}
-		}
-	}
-}
-
-void clearVarValues(VAR *varStruct) {
-	if (!varStruct)
-		return;
-	// Free any existing value
-	if (varStruct->portableValue) free(varStruct->portableValue);
-	if (varStruct->stringValue) free(varStruct->stringValue);
-	if (varStruct->dateValue) free(varStruct->dateValue);
-	if (varStruct->timeValue) free(varStruct->timeValue);
-	if (varStruct->datetimeValue) free(varStruct->datetimeValue);
-	varStruct->portableValue = NULL;
-	varStruct->stringValue = NULL;
-	varStruct->dateValue = NULL;
-	varStruct->timeValue = NULL;
-	varStruct->datetimeValue = NULL;
-	varStruct->numberValue = 0;
-	varStruct->decimal2Value = 0;
-}
-
-int decodeMysqlType(VAR *variable, enum enum_field_types mysqlType, char *value) {
-	clearVarValues(variable);
-	variable->type = fieldConvertMysql2Jam(mysqlType);
-	fillVarDataTypes(variable, value);
-	return 0;
-}
-
-int fieldConvertMysql2Jam(enum enum_field_types mysqlType) {
-	int type = -1;
-	switch (mysqlType) {
-		case MYSQL_TYPE_DATE:
-			type = VAR_DATE;
-			break;
-		case MYSQL_TYPE_TIME:
-			type = VAR_TIME;
-		case MYSQL_TYPE_DATETIME:
-		case MYSQL_TYPE_TIMESTAMP:
-			type = VAR_DATETIME;
-			break;
-		case MYSQL_TYPE_DECIMAL:
-		case MYSQL_TYPE_NEWDECIMAL:
-			type = VAR_DECIMAL2;
-			break;
-	}
-	if (type == -1) {
-		if (IS_NUM(mysqlType)) {
-			type = VAR_NUMBER;
-		} else {
-			type = VAR_STRING;
-		}
-	}
-	return type;
-}
-
-void setFieldValues(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields, MYSQL_ROW *rowP) {
-	MYSQL_ROW row = *rowP;
-	int i = 0;
-	for (i = 0; i < numFields; i++) {
-		char qualifiedName[256];
-		sprintf(qualifiedName, "%s.%s", qualifier, mysqlHeaders[i]);
-		updateTableVar(qualifiedName, mysqlTypes[i], row[i]);
-//printf("HDR=[%s.%s]:[%s]\n", qualifier, mysqlHeaders[i], row[i]);
-	}
-}
-
-int buildMysqlQuerySelect(char *query, char *args, char *currentTableName, char *givenTableName) {
-	#define MAX_SUBARGS 1024
-	int retval = 0;
-	char *selectorField = NULL;
-	char *operand = NULL;
-	char *externalFieldOrValue = NULL;
-	char *tmp = (char *) calloc(1, 4096);
-	char *queryBuilder = (char *) calloc(1, 4096);
-	char *space = " ";
-	int wdNum = 0;
-	int firstArg = 1;
-
-	char *subArg[1024];							// array to store all the comma-separated nvp substrings. Eg "product.id = someid"
-	for (int i = 0; i < MAX_SUBARGS; i++)
-		subArg[i] = NULL;
-	// Split the args-by-commas into an nvp array
-	for (int i = 0; i < MAX_SUBARGS; i++) {
-		char *comma = ",";
-		subArg[i] = strTrim(getWordAlloc(args, (i + 1), comma));
-		if (!subArg[i])
-			break;
-	}
-
-	// Deal with each "<filter> a = b" phrase
-	for (int i = 0; i < MAX_SUBARGS; i++) {
-		if (subArg[i] == NULL) {
-			if (firstArg)
-				die("No arguments provided to @each/@get");
-			break;
-		}
-		wdNum = 0;
-
-		selectorField = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// try for the field selector (LHS)
-		if (!selectorField)
-			die("table name given for mysql lookup but no field selector");
-		if (!strcmp(selectorField, "filter")) {
-			free(selectorField);
-			selectorField = strTrim(getWordAlloc(args, ++wdNum, space));
-			if (!selectorField)
-				die("table name given for mysql lookup but no field selector after 'filter'");
-			if (char *p = strchr(selectorField, '.')) {	// remove any irrelevant stuff before the '.'
-				free(selectorField);
-				selectorField = strdup(p);
-			}
-		}
-		if (!strcmp(selectorField, "order")) {
-			sprintf(tmp, " %s", selectorField);
-			free(selectorField);
-			while (selectorField = strTrim(getWordAlloc(subArg[i], ++wdNum, space))) {
-				strcat(tmp, " ");
-				strcat(tmp, selectorField);
-				free(selectorField);
-			}
-			strcat(queryBuilder, tmp);
-			break;
-		}
-
-		if (!strcmp(selectorField, "skip")) {
-			retval = 1;	// We will notify the caller of this
-			break;
-		}
-
-		operand = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// try for the operand '=' '>' '<' 'is' 'is not' etc
-		if (!operand)
-			die("no operator given for lookup");
-		if (!strcasecmp(operand, "is")) {
-			free(operand);
-			operand = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// we got 'is', the next is either 'not' or out of bounds to us
-			if (!strcasecmp(operand, "not")) {
-				free(operand);
-				operand = strdup("is not");
-			}
-			else {
-				free(operand);
-				operand = strdup("is");
-				wdNum--;
-			}
-		}
-
-//@@TODO fix quotes in util.c - until fixed we can only use single quotes here
-		getWordIgnoreQuotes = 1;
-		externalFieldOrValue = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// try for the external field, containing the value to look for
-//printf("\n\n[[[%s]]]\n\n", externalFieldOrValue);
-		getWordIgnoreQuotes = 0;
-		if (!externalFieldOrValue)
-			die("no external field given for lookup");
-
-//sprintf(tmp, "i=%d [%s][%s][%s] fullargs=[%s] and currenttable=[%s]\n", i, selectorField, operand, externalFieldOrValue, args, currentTableName); /*die(tmp);*/
-		VAR *variable = NULL;
-		char *varValue = NULL;
-		variable = findVarLenient(externalFieldOrValue, currentTableName);
-//printf("\n[%s][%s]\n", externalFieldOrValue, currentTableName);
-		if (variable)
-			varValue = strdup(variable->portableValue);
-		else
-			varValue = strdup(externalFieldOrValue);
-		// Quote it if necessary (contains non-numeric chars and isnt already)
-		if ((!isMysqlFieldName(varValue, givenTableName)) && (varValue[0] != '\'') && (varValue[strlen(varValue)] != '\'')) {
-			int isNum = 1;
-			if (strlen(varValue) == 0)
-				isNum = 0;
-			int numOfMinuses = 0;
-			char *p = varValue;
-			while (*p) {
-				if (*p == '-')
-					numOfMinuses++;
-				else if ((*p < '0') || (*p > '9'))
-					isNum = 0;
-				p++;
-			}
-			if ((!isNum) || (numOfMinuses > 1)) {
-				char *newValue = (char *) calloc(1, strlen(varValue) + 3);
-				strcpy(newValue, "'");
-				strcat(newValue, varValue);
-				strcat(newValue, "'");
-				free(varValue);
-				varValue = newValue;
-			}
-		}
-
-		sprintf(tmp, " %s %s %s", selectorField, operand, varValue);		// eg "a = b"
-		free(varValue);
-		if (firstArg)
-			strcpy(queryBuilder, " WHERE ");
-		else
-			strcat(queryBuilder, " AND ");
-		firstArg = 0;
-		strcat(queryBuilder, tmp);
-		free(selectorField); selectorField = NULL;
-		free(operand); operand = NULL;
-		free(externalFieldOrValue); externalFieldOrValue = NULL;
-	}
-	strcat(query, queryBuilder);
-//die(query);
-	free(queryBuilder);
-	free(tmp);
-	for (int i = 0; i < MAX_SUBARGS; i++)
-		free(subArg[i]);
-	return retval;
-}
-
-int isMysqlFieldName(char *fieldName, char *tableName) {
-	char *query = (char *) calloc(1, 4096);
-	sprintf(query, "SELECT * FROM %s LIMIT 1", tableName);
-//die(query);
-	MYSQL_RES *res;
-	if (mysql_query(conn, query)) {
-		die(mysql_error(conn));
-	}
-	res = mysql_store_result(conn);
-	if (!res) {
-		char *tmp = (char *) calloc(1, 4096);
-		sprintf(tmp, "Couldn't get results set: %s\n", mysql_error(conn));
-		die(tmp);
-	}
-	int numFields = mysql_num_fields(res);
-	MYSQL_FIELD *field;
-	for (int i = 0; (field = mysql_fetch_field(res)); i++) {
-		if (!strcmp(field->name, fieldName))
-			return 1;
-	}
-	return 0;
 }
 
 char *curlies2JamArray(char *tplPos) {
@@ -766,23 +437,6 @@ char *readTemplate(char *fname){
 	return buf;
 }
 
-
-int openDB(char *name) {
-	char *server = "localhost";
-	char *user = "root";
-	char *password = "Wole9anic-"; /* set me first */
-	char *database = name;
-	conn = mysql_init(NULL);
-	if (!mysql_real_connect(conn, server, user, password, database, 0, NULL, 0)) {
-		return -1;
-	}
-	return 0;
-}
-
-void closeDB() {
-	mysql_close(conn);
-}
-
 int main2() {
 	MYSQL *conn;
 	MYSQL_RES *res;
@@ -809,152 +463,4 @@ int main2() {
 	/* close connection */
 	mysql_free_result(res);
 	mysql_close(conn);
-}
-
-int isCalculation(char *str) {
-	if ((strstr(str, " + ")) || (strstr(str, " - ")) || (strstr(str, " * ")) || (strstr(str, " / "))
-	||  (strstr(str, " ^ ")) || (strstr(str, " % ")) || (strchr(str, '(')) || (strchr(str, ')')))
-		return 1;
-/*	if ((strchr(str, '+')) || (strchr(str, '-')) || (strchr(str, '*')) || (strchr(str, '/'))
-	||  (strchr(str, '^')) || (strchr(str, '%')) || (strchr(str, '(')) || (strchr(str, ')')))
-		return 1; */
-	return 0;
-}
-
-// Call the calculator
-char *calculate(char *str) {
-	// Check if date calculation
-	char *space = " ";
-	char *wd;
-	int wdNum = 0;
-	while (1) {
-		wd = strTrim(getWordAlloc(str, ++wdNum, space));
-		if (!wd)
-			break;
-		int numOfMinuses = 0;
-		char *p = wd;
-		while (*p) {
-			if (*p == '-')
-				numOfMinuses++;
-			p++;
-		}
-		if (numOfMinuses > 1) {
-		}
-	}
-
-	int scale = 2;
-	FILE *fp;
-	char *result = (char *) calloc(1, 4096);
-	strcpy(result, "0");
-	char commandStr[4096];
-	sprintf(commandStr, "echo 'scale=%d; %s' | bc", scale, str);
-	fp = popen(commandStr, "r");
-	if (fp == NULL) {
-		printf("calculator failed (1)\n");
-	} else {
-		if (fgets(result, 4096, fp) != NULL) {
-			char *p = strchr(result, '\n');
-			if (*p)
-				*p = '\0';
-		}
-		pclose(fp);
-	}
-//printf("\n *** [%s][%s] *** \n", str, result);
-	return result;
-}
-
-// Given a string like  [stock.id + ((stock.discount * 100) / stock_tax)+2) + 100]
-// Return a string like [123 + ((5.25 * 100) / 20)+2) + 100]
-// NEEDS FREEING
-char *expandFieldsInString(char *str, char *tableName) {
-	char *p = str;
-	char *newStr = (char *) calloc(1, 4096);
-	char *p2 = newStr;
-    char *nonWordChars = " +-*/^%()";
-
-	while (*p) {
-		if (!strchr(nonWordChars, *p)) {	// found a word
-			char *wd = (char *) calloc(1, 4096);
-			char *p3 = wd;
-			while ((*p) && (!strchr(nonWordChars, *p)))	// isolate the word
-				*p3++ = *p++;
-			VAR *variable = NULL;
-			variable = findVarLenient(wd, tableName);		// does it name a field?
-			if (variable) {
-/*
-				if (char *pMinus = strchr(variable->portableValue, '-'))
-					*pMinus = ' ';	//@@TODO decimals (mult by 100)
-				if (char *pDot = strchr(variable->portableValue, '.'))
-					*pDot = '\0';	//@@TODO decimals (mult by 100)
-*/
-				p3 = variable->portableValue;				// yes - replace the word with its value
-			}
-			else
-				p3 = wd;								// no - use the word
-			while (*p3)
-				*p2++ = *p3++;
-			free(wd);
-		}
-		if ((*p) && (strchr(nonWordChars, *p)))
-			*p2++ = *p++;
-	}
-	return newStr;
-}
-
-// Output some content. No sugar added
-void emit(char *line) {
-	printf("%s", line);
-}
-
-void die(const char *errorString) {
-	//fprintf(stderr, "%s\n", errorString);
-	fprintf(stdout, "%s\n", errorString);
-	exit(1);
-}
-
-void jamDump() {
-	char *tmp = (char *) calloc(1, 4096);
-	printf("<br><br><div style='font-size:11px;color:#ffffff;background-color:#1b2426'>");
-	for (int i = 0; i < MAX_JAM; i++) {
-		if (jam[i] == NULL)
-			break;
-		//printf("%02d JAMDUMP: %s >>>>>%s<<<<<\n\n\n", i, jam[i]->command, jam[i]->trailer);
-		printf("%02d JAMDUMP %s : %s<br>", i, jam[i]->command, jam[i]->args);
-	}
-	printf("<hr>");
-	for (int i = 0; i < MAX_VAR; i++) {
-		if (var[i] == NULL)
-			break;
-
-		printf("<span");
-		if (var[i]->debugHighlight == 1) printf(" style='color:#decde3'");
-		if (var[i]->debugHighlight == 2) printf(" style='color:yellow;'");
-		if (var[i]->debugHighlight == 3) printf(" style='color:orange;'");
-		if (var[i]->debugHighlight == 4) printf(" style='color:#a8c968;'");
-		if (var[i]->debugHighlight == 5) printf(" style='color:#e28c86;'");
-		if (var[i]->debugHighlight == 6) printf(" style='color:cyan;'");
-		printf(">");
-
-		*tmp = 0;
-		if (var[i]->source)
-			sprintf(tmp, " : source %s", var[i]->source);
-		if (var[i]->type == VAR_STRING)
-			printf("%02d VARDUMP %s : VAR_STRING %s %s<br>", i, var[i]->name, var[i]->stringValue, tmp);
-		if (var[i]->type == VAR_NUMBER)
-			printf("%02d VARDUMP %s : VAR_NUMBER %ld %s<br>", i, var[i]->name, var[i]->numberValue, tmp);
-		if (var[i]->type == VAR_DECIMAL2)
-			printf("%02d VARDUMP %s : VAR_DECIMAL2 %.2f %s<br>", i, var[i]->name, var[i]->decimal2Value, tmp);
-		printf("</span>");
-	}
-	printf("<br>");
-	printf("<span style='margin:3px; padding:2px; color:#000; background-color:#decde3;'>prefill </span>");
-	printf("<span style='margin:3px; padding:2px; color:#000; background-color:yellow;'>count </span>");
-	printf("<span style='margin:3px; padding:2px; color:#000; background-color:orange;'>sum </span>");
-	printf("<span style='margin:3px; padding:2px; color:#000; background-color:#a8c968;'>variable </span>");
-	printf("<span style='margin:3px; padding:2px; color:#000; background-color:#e28c86;'>mysql </span>");
-	printf("<span style='margin:3px; padding:2px; color:#000; background-color:cyan;'>unused </span>");
-	printf("<br>");
-	printf("<br>");
-	printf("</div>");
-	free(tmp);
 }
