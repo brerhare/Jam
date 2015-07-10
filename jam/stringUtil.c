@@ -155,3 +155,4 @@ char *strReplaceAlloc(char *orig, char *rep, char *with) {
 	return result;
 }
 
+//char extractBlock(char *src, )

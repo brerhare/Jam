@@ -33,7 +33,7 @@ int _isMysqlFieldName(char *fieldName, char *tableName);
 // Big things
 
 MYSQL_RES *doSqlSelect(int ix, char *defaultTableName, char **givenTableName, int maxRows);
-int buildMysqlQuerySelect(char *query, char *args, char *currentTableName, char *givenTableName);
+int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char *givenTableName);
 
 int connectDBServer();
 int openDB(char *name);

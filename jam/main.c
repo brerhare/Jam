@@ -139,7 +139,9 @@ int control(int startIx, char *defaultTableName) {
 				getWord(tmp, args, 1, " ");
 				if (*tmp) {
 					if (!strcmp(tmp, "database"))
-						wordDatabaseNew(ix, defaultTableName);
+						wordDatabaseNewDatabase(ix, defaultTableName);
+					if (!strcmp(tmp, "table"))
+						wordDatabaseNewTable(ix, defaultTableName);
 				}
 			}
 //		-----------------------------------------
@@ -149,7 +151,9 @@ int control(int startIx, char *defaultTableName) {
 				getWord(tmp, args, 1, " ");
 				if (*tmp) {
 					if (!strcmp(tmp, "database"))
-						wordDatabaseRemove(ix, defaultTableName);
+						wordDatabaseRemoveDatabase(ix, defaultTableName);
+					if (!strcmp(tmp, "table"))
+						wordDatabaseRemoveTable(ix, defaultTableName);
 				}
 			}
 //		-----------------------------------------

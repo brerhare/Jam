@@ -170,7 +170,7 @@ MYSQL_RES *doSqlSelect(int ix, char *defaultTableName, char **givenTableName, in
     // Is there more than just the table name?
     if (*ta) {
         ta++;
-        skipCode = buildMysqlQuerySelect(query, ta, defaultTableName, *givenTableName);		// build a complex query
+        skipCode = appendSqlSelectOptions(query, ta, defaultTableName, *givenTableName);		// build a complex query
     }
 
     // Append 'limit n'
@@ -195,7 +195,7 @@ MYSQL_RES *doSqlSelect(int ix, char *defaultTableName, char **givenTableName, in
     return res;
 }
 
-int buildMysqlQuerySelect(char *query, char *args, char *currentTableName, char *givenTableName) {
+int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char *givenTableName) {
 	#define MAX_SUBARGS 1024
 	int retval = 0;
 	char *selectorField = NULL;
