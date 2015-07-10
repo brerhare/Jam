@@ -28,7 +28,7 @@ int wordDatabaseList(int ix, char *defaultTableName) {
         char *listWhat = strdup(tmp);
         if (!strcmp(listWhat, "databases")) {
             char *dbName = strdup("");
-            if (openDB(dbName) < 0) {
+            if (openDB(dbName) != 0) {
                 die(mysql_error(conn));
             }
             mysql_query(conn,"show databases");
@@ -67,13 +67,14 @@ int wordDatabaseNew(int ix, char *defaultTableName) {
     getWord(dbName, args, 2, " ");
     if (!dbName)
 	   die("missing database name to create");
-    if (connectDBServer() < 0)
+    if (connectDBServer() != 0)
     	die(mysql_error(conn));
     char *qStr = (char *) calloc(1, 4096);
-    sprintf(qStr,"DROP DATABASE IF EXISTS %s", dbName);
-    int status = mysql_query(conn,qStr);
+    //sprintf(qStr,"DROP DATABASE IF EXISTS %s", dbName);
+    //int status = mysql_query(conn,qStr);
     sprintf(qStr,"CREATE DATABASE %s", dbName);
-    status = mysql_query(conn,qStr);
+    if (mysql_query(conn,qStr) != 0)
+        die(mysql_error(conn));
 	emit(jam[ix]->trailer);
     free(dbName);
 }
@@ -87,7 +88,7 @@ int wordDatabaseRemove(int ix, char *defaultTableName) {
     getWord(dbName, args, 2, " ");
     if (!dbName)
 	   die("missing database name to remove");
-    if (connectDBServer() < 0)
+    if (connectDBServer() != 0)
     	die(mysql_error(conn));
     char *qStr = (char *) calloc(1, 4096);
     sprintf(qStr,"DROP DATABASE IF EXISTS %s", dbName);
@@ -103,7 +104,7 @@ int wordDatabaseDatabase(int ix, char *defaultTableName) {
 
 	if (strlen(args) == 0)
 		die("missing database name");
-	if (openDB(args) < 0)
+	if (openDB(args) != 0)
 		die(mysql_error(conn));
 	emit(jam[ix]->trailer);
 }
@@ -123,8 +124,11 @@ int wordDatabaseDescribe(int ix, char *defaultTableName)
         char *query = (char *) calloc(1, MAX_SQL_QUERY_LEN);
         char *line = (char *) calloc(1, 4096);
         sprintf(query, "desc %s", args);
-        mysql_query(conn,query);
+        if (mysql_query(conn,query) != 0)
+    	   die(mysql_error(conn));
         res = mysql_store_result(conn);
+        if (!res)
+            die("Cannot describe database table - returned null resultset");
         int numFields = mysql_num_fields(res);
         emit("<table border=1 cellpadding=3 cellspacing=0 style='border: 1pt solid #abdbd7; border-Collapse: collapse'>");
         emit("<tr><td> Field </td><td> Type </td><td> Empty allowed? </td><td> Key </td><td> Default value </td><td> Extra </td></tr>");
@@ -152,7 +156,6 @@ int wordDatabaseGet(int ix, char *defaultTableName) {
     MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 1);
     SQL_RESULT *rp = sqlCreateResult(givenTableName, res);
     sqlGetRow(rp);
-
     if (jam[ix]) {
         emit(jam[ix]->trailer);
     }

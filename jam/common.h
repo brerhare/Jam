@@ -31,6 +31,7 @@ extern char *tableStack[MAX_JAM];
 #define VAR_NUMBER     1
 #define VAR_INCREMENT  2
 #define VAR_DECIMAL2   3
+#define VAR_DECIMAL4   4
 #define VAR_DATE       4
 #define VAR_TIME       5
 #define VAR_DATETIME   6

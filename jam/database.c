@@ -130,7 +130,7 @@ int _isSqlFieldName(char *fieldName, char *tableName) {
 	sprintf(query, "SELECT * FROM %s LIMIT 1", tableName);
 //die(query);
 	MYSQL_RES *res;
-	if (mysql_query(conn, query)) {
+	if (mysql_query(conn, query) != 0) {
 		die(mysql_error(conn));
 	}
 	res = mysql_store_result(conn);
@@ -183,7 +183,7 @@ MYSQL_RES *doSqlSelect(int ix, char *defaultTableName, char **givenTableName, in
 //die("kkk");
     MYSQL_RES *res;
     MYSQL_ROW row;
-    if (mysql_query(conn, query)) {
+    if (mysql_query(conn, query) != 0) {
         die(mysql_error(conn));
     }
     res = mysql_store_result(conn);
