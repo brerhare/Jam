@@ -19,6 +19,48 @@ char *dbUser = "root";
 char *dbPassword = "Wole9anic-";
 
 // ----------------------------------------------------------------
+// Mapping
+
+struct SQLMAP {
+	char *jam;
+	char *sql;
+};
+SQLMAP sqlTypeMap[] = {
+    "string",       "VARCHAR(255)",
+	"number", 	    "INTEGER",
+    "decimal1",     "DECIMAL(10,1)",
+    "decimal2",     "DECIMAL(10,2)",
+    "decimal3",     "DECIMAL(10,3)",
+    "decimal4",     "DECIMAL(10,4)",
+    "date",         "DATE",
+    "time",         "TIME",
+    "datetime",     "TIMESTAMP",
+    NULL,           NULL
+};
+SQLMAP sqlOptionMap[] = {
+    "required",     "NOT NULL",
+    "increment",    "AUTO_INCREMENT",
+    "unique",       "UNIQUE",
+    NULL,           NULL
+};
+
+char *getSqlType(char *jamType) {
+    for (int i = 0; sqlTypeMap[i].jam; i++) {
+        if (!strcmp(jamType, sqlTypeMap[i].jam))
+            return sqlTypeMap[i].sql;
+    }
+    return NULL;
+}
+
+char *getSqlOption(char *jamOption) {
+    for (int i = 0; sqlOptionMap[i].jam; i++) {
+        if (!strcmp(jamOption, sqlOptionMap[i].jam))
+            return sqlOptionMap[i].sql;
+    }
+    return NULL;
+}
+
+// ----------------------------------------------------------------
 // mysql result handling
 
 SQL_RESULT *sqlCreateResult(char *tableName, MYSQL_RES *res) {

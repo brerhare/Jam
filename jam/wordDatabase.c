@@ -172,25 +172,54 @@ int wordDatabaseGet(int ix, char *defaultTableName) {
 //-----------------------------------------------------------------
 // Table
 
+/*  {@new table product
+        code        string      unique required
+        name  		string      required
+        onhand      number
+        costprice	decimal4
+        sellprice	decimal2
+        unuqueid	number      increment
+        created		datetime
+        order_date	date
+        order_time	time
+    } */
 int wordDatabaseNewTable(int ix, char *defaultTableName) {
     char *cmd = jam[ix]->command;
     char *args = jam[ix]->args;
     char *rawData = jam[ix]->rawData;
-    char *dbName = (char *) calloc(1, 4096);
+    char *tableName = (char *) calloc(1, 4096);
+    char *tmp = (char *) calloc(1, 4096);
 
-    getWord(dbName, args, 2, " ");
-    if (!dbName)
-	   die("missing database name to create");
+    getWord(tableName, args, 2, " \t");
+    if (!tableName)
+	   die("missing table name to create");
     if (connectDBServer() != 0)
     	die(mysql_error(conn));
+
     char *qStr = (char *) calloc(1, 4096);
-    //sprintf(qStr,"DROP DATABASE IF EXISTS %s", dbName);
-    //int status = mysql_query(conn,qStr);
-    sprintf(qStr,"CREATE DATABASE %s", dbName);
-    if (mysql_query(conn,qStr) != 0)
-        die(mysql_error(conn));
+    sprintf(qStr, "CREATE TABLE %s (", tableName);
+    int cnt = 2;
+    while (char *block = strTrim(getWordAlloc(args, cnt++, "\n"))) {
+        char *fieldName = strTrim(getWordAlloc(block, 1, " \t"));
+        char *fieldType = strTrim(getWordAlloc(block, 2, " \t"));
+        char *fieldExtra = strTrim(getWordAlloc(block, 3, " \t"));
+        if (!(fieldName) || (!fieldType))
+            die("Missing field name or type");
+        sprintf(tmp, "%s ", fieldName);
+        free(fieldName);
+        free(fieldType);
+        free(fieldExtra);
+        free(block);
+    }
+    strcat(qStr, ")");
+    die(qStr);
+//if (mysql_query(con, "CREATE TABLE Cars(Id INT, Name TEXT, Price INT)")) {
+
+//    if (mysql_query(conn,qStr) != 0)
+//        die(mysql_error(conn));
 	emit(jam[ix]->trailer);
-    free(dbName);
+    free(tableName);
+    free(qStr);
 }
 
 int wordDatabaseRemoveTable(int ix, char *defaultTableName) {
@@ -199,7 +228,7 @@ int wordDatabaseRemoveTable(int ix, char *defaultTableName) {
     char *rawData = jam[ix]->rawData;
     char *dbName = (char *) calloc(1, 4096);
 
-    getWord(dbName, args, 2, " ");
+    getWord(dbName, args, 2, " \t");
     if (!dbName)
 	   die("missing database name to remove");
     if (connectDBServer() != 0)

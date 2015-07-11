@@ -1,8 +1,15 @@
 #ifndef __DATABASE_H_INCLUDED
 #define __DATABASE_H_INCLUDED
 
+
 // ----------------------------------------------------------------
-// mysql result handling
+// Mapping
+
+char *getSqlType(char *jamType);
+char *getSqlOption(char *jamOption);
+
+// ----------------------------------------------------------------
+// Mysql result handling
 
 #define SQL_OK  0
 #define SQL_EOF -1

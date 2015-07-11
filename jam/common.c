@@ -218,6 +218,7 @@ void jamDump() {
 //--------------------------------------------------------------------
 // Calculations
 
+
 int isCalculation(char *str) {
 	if ((strstr(str, " + ")) || (strstr(str, " - ")) || (strstr(str, " * ")) || (strstr(str, " / "))
 	||  (strstr(str, " ^ ")) || (strstr(str, " % ")) || (strchr(str, '(')) || (strchr(str, ')')))
@@ -269,3 +270,6 @@ char *calculate(char *str) {
 //printf("\n *** [%s][%s] *** \n", str, result);
 	return result;
 }
+
+//--------------------------------------------------------------------
+// Template parse extractors
