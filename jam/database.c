@@ -27,19 +27,19 @@ struct SQLMAP {
 };
 SQLMAP sqlTypeMap[] = {
     "string",       "VARCHAR(255)",
-	"number", 	    "INTEGER",
-    "decimal1",     "DECIMAL(10,1)",
-    "decimal2",     "DECIMAL(10,2)",
-    "decimal3",     "DECIMAL(10,3)",
-    "decimal4",     "DECIMAL(10,4)",
+	"number", 	    "INT",
+	"number.0",	    "INT",
+    "number.1",     "DECIMAL(10,1)",
+    "number.2",     "DECIMAL(10,2)",
+    "number.3",     "DECIMAL(10,3)",
+    "number.4",     "DECIMAL(10,4)",
     "date",         "DATE",
     "time",         "TIME",
-    "datetime",     "TIMESTAMP",
+    "datetime",     "DATETIME",
     NULL,           NULL
 };
 SQLMAP sqlOptionMap[] = {
     "required",     "NOT NULL",
-    "increment",    "AUTO_INCREMENT",
     "unique",       "UNIQUE",
     NULL,           NULL
 };

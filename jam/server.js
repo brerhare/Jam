@@ -12,9 +12,9 @@ templatePath = "/template";
 http.createServer(function (request, response) {
 
 	var queryData = url.parse(request.url, true).query;
-	response.writeHead(200, {'Content-Type': 'text/html'});
 
 	if ((request.method == 'POST') && (queryData.template)) {
+		response.writeHead(200, {'Content-Type': 'text/html'});
 		var body = '';
 		request.on('data', function (data) {
 			body += data;
@@ -22,13 +22,34 @@ http.createServer(function (request, response) {
 		request.on('end', function () {
 			console.log("Post: " + body);
 var req = decodeURIComponent(body)
-console.log("req=-->"+ req+ "<---");
+console.log("Request: ---> "+ req+ " <---");
 			body = body.replace(/\+/g , " ");
 			getRequest(response, "template=template/" + queryData.template,  decodeURIComponent(body));
 		});
 	}
 	else if (queryData.template) {	// http://host:8000/?template=xyz
+		response.writeHead(200, {'Content-Type': 'text/html'});
 		getRequest(response, "template=template/" + queryData.template, null);
+	} else if (request.url.indexOf('.js') != -1) {
+		fileName = __dirname + "/" + request.url;
+		fs.readFile(fileName, function (err, data) {
+			response.writeHead(200, {'Content-Type': 'text/js'});
+			if (err)
+				console.log("no file " + fileName);
+			else
+				response.write(data);
+			response.end();
+		});
+	} else if (request.url.indexOf('.css') != -1) {
+		fileName = __dirname + "/" + request.url;
+		fs.readFile(fileName, function (err, data) {
+			response.writeHead(200, {'Content-Type': 'text/css'});
+			if (err)
+				console.log("no file " + fileName);
+			else
+				response.write(data);
+			response.end();
+		});
 	} else {
 		showAvailableTemplates(response);
 	}
@@ -79,7 +100,7 @@ function getRequest(response, templateName, prefill, callback) {
 	});
 	child.stdout.on('end', function() {
 		response.end();
-		console.log("     completed request");
+		console.log("completed request");
 	});
 }
 

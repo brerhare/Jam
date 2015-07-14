@@ -142,6 +142,8 @@ int control(int startIx, char *defaultTableName) {
 						wordDatabaseNewDatabase(ix, defaultTableName);
 					if (!strcmp(tmp, "table"))
 						wordDatabaseNewTable(ix, defaultTableName);
+					if (!strcmp(tmp, "index"))
+						wordDatabaseNewIndex(ix, defaultTableName);
 				}
 			}
 //		-----------------------------------------
@@ -154,20 +156,34 @@ int control(int startIx, char *defaultTableName) {
 						wordDatabaseRemoveDatabase(ix, defaultTableName);
 					if (!strcmp(tmp, "table"))
 						wordDatabaseRemoveTable(ix, defaultTableName);
+					if (!strcmp(tmp, "index"))
+						wordDatabaseRemoveIndex(ix, defaultTableName);
 				}
 			}
 //		-----------------------------------------
-		} else if (!(strcmp(cmd, "@list")))
+		} else if (!(strcmp(cmd, "@list"))) {
 //		-----------------------------------------
-			wordDatabaseList(ix, defaultTableName);
+		if (args) {
+			getWord(tmp, args, 1, " ");
+			if (*tmp) {
+				if (!strcmp(tmp, "databases"))
+					wordDatabaseListDatabases(ix, defaultTableName);
+				if (!strcmp(tmp, "tables"))
+					wordDatabaseListTables(ix, defaultTableName);
+			}
+		}
 //		-----------------------------------------
-		else if (!(strcmp(cmd, "@describe"))) {
+		} else if (!(strcmp(cmd, "@describe"))) {
 //		-----------------------------------------
 			wordDatabaseDescribe(ix, defaultTableName);
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@database"))) {
 //		-----------------------------------------
 			wordDatabaseDatabase(ix, defaultTableName);
+//		-----------------------------------------
+		} else if (!(strcmp(cmd, "@skip"))) {
+//		-----------------------------------------
+			;	// @@TODO!	// @@TODO also any other skips, in @each etc
 //		-------------------------------------
 		} else if (!(strcmp(cmd, "@each"))) {
 //		-------------------------------------
@@ -175,6 +191,7 @@ int control(int startIx, char *defaultTableName) {
 			MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 100);
 			SQL_RESULT *rp = sqlCreateResult(givenTableName, res);
 			while (sqlGetRow(rp) != SQL_EOF) {
+				emit(jam[ix]->trailer);
 				control((ix + 1), givenTableName);
 			}
 			// Finished. Now emit the loops' trailer and make it current, so we will immediately advance past it
