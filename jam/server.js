@@ -25,9 +25,9 @@ var req = decodeURIComponent(body)
 console.log("Request: ---> "+ req+ " <---");
 			body = body.replace(/\+/g , " ");
 			getRequest(response, "template=template/" + queryData.template,  decodeURIComponent(body));
+			response.end();
 		});
-	}
-	else if (queryData.template) {	// http://host:8000/?template=xyz
+	} else if (queryData.template) {	// http://host:8000/?template=xyz
 		response.writeHead(200, {'Content-Type': 'text/html'});
 		getRequest(response, "template=template/" + queryData.template, null);
 	} else if (request.url.indexOf('.js') != -1) {
@@ -58,6 +58,7 @@ console.log("Request: ---> "+ req+ " <---");
 console.log('listening on http://' + ip + '/' + port + '/');
 
 function showAvailableTemplates(response) {
+	response.writeHead(200, {'Content-Type': 'text/html'});
 	getFileList(function(html) {
 		response.end(html);
 	});
@@ -92,15 +93,27 @@ function getRequest(response, templateName, prefill, callback) {
 		}
 	}
 	console.log("calling jam with args" + " : " + args);
-	//var child = require('child_process').execFile('./jam', [ "template/" + queryData.template ]); 
-	var child = require('child_process').execFile('./jam',  args , {}, function(){} ); 
-	// use event hooks to provide a callback to execute when data are available: 
-	child.stdout.on('data', function(data) {
+
+	var spawn = require('child_process').spawn;
+	var cspr = spawn("./jam", args);
+	cspr.stdout.setEncoding('utf8');
+
+	cspr.stdout.on('data', function (data) {
+		var buf = new Buffer(data);
+		response.write(data);
+		//console.log(buf.toString('utf8'));		// echo the data
+	});
+
+	cspr.stderr.on('data', function (data) {
+		data += '';
+		console.log(data.replace("\n", "\nstderr: "));	// echo the error
 		response.write(data);
 	});
-	child.stdout.on('end', function() {
+
+	cspr.on('exit', function (code) {
 		response.end();
-		console.log("completed request");
+    	console.log('finished with result code ' + code);
 	});
+
 }
 

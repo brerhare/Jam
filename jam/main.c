@@ -188,7 +188,7 @@ int control(int startIx, char *defaultTableName) {
 		} else if (!(strcmp(cmd, "@each"))) {
 //		-------------------------------------
 			char *givenTableName = (char *) calloc(1, 4096);
-			MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 100);
+			MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 999999);
 			SQL_RESULT *rp = sqlCreateResult(givenTableName, res);
 			while (sqlGetRow(rp) != SQL_EOF) {
 				emit(jam[ix]->trailer);
