@@ -7,7 +7,7 @@ var port = 8000;
 var ip = "178.238.232.146";
 if (os.hostname() == "fry")
 	ip = "127.0.0.1";
-templatePath = "/template";
+templatePath = "template";
 
 args = [];
 process.argv.forEach(function (val, index, array) {
@@ -43,12 +43,12 @@ http.createServer(function (request, response) {
 var req = decodeURIComponent(body)
 console.log("Request: ---> "+ req+ " <---");
 			body = body.replace(/\+/g , " ");
-			getRequest(response, "template=template/" + queryData.template,  decodeURIComponent(body));
+			getRequest(response, "template=" + templatePath + "/" + queryData.template,  decodeURIComponent(body));
 			response.end();
 		});
 	} else if (queryData.template) {	// http://host:8000/?template=xyz
 		response.writeHead(200, {'Content-Type': 'text/html'});
-		getRequest(response, "template=template/" + queryData.template, null);
+		getRequest(response, "template=" + templatePath + "/" + queryData.template, null);
 	} else if (request.url.indexOf('.js') != -1) {
 		fileName = __dirname + "/" + request.url;
 		fs.readFile(fileName, function (err, data) {
@@ -84,7 +84,7 @@ function showAvailableTemplates(response) {
 	});
 	function getFileList(callback) {
 		var html = "";
-		fs.readdir(__dirname + "/" + "template/", function(err, files) {
+		fs.readdir(__dirname + "/" + templatePath + "/", function(err, files) {
 			if (err) return;
 			files.forEach(function(f) {
 				if ((f.indexOf(".tpl") != -1) && (f.indexOf(".swp") == -1) && (f.indexOf(".bak") == -1))
