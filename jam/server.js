@@ -9,6 +9,25 @@ if (os.hostname() == "fry")
 	ip = "127.0.0.1";
 templatePath = "/template";
 
+args = [];
+process.argv.forEach(function (val, index, array) {
+	args.push(val);
+});
+for (i = 0; i < args.length; i++) {
+	if (args[i] == '-port') {
+		i++;
+		port = args[i];
+	}
+	else if (args[i] == '-templatepath') {
+		i++;
+		templatePath = args[i];
+	}
+	else if (i > 1) {
+		console.log('node server.js [-port] [-templatepath]');
+		process.exit(0);
+	}
+}
+
 http.createServer(function (request, response) {
 
 	var queryData = url.parse(request.url, true).query;
@@ -55,7 +74,8 @@ console.log("Request: ---> "+ req+ " <---");
 	}
 //}).listen(port, ip);
 }).listen(port, ip);
-console.log('listening on http://' + ip + '/' + port + '/');
+console.log('templatepath is ' + templatePath);
+console.log('listening on http://' + ip + ':' + port);
 
 function showAvailableTemplates(response) {
 	response.writeHead(200, {'Content-Type': 'text/html'});
