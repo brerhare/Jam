@@ -58,7 +58,8 @@ int main(int argc, char *argv[]) {
 		if (!(strcmp(argName[i], "template"))) {
 			tplName = strTrim(getWordAlloc(argValue[i], 1, ":"));
 			tplEntrypoint = strTrim(getWordAlloc(argValue[i], 2, ":"));
-		} else {
+// @@KIM! remove next if
+		} else if (!tplEntrypoint){
 			VAR *assignVar = (VAR *) calloc(1, sizeof(VAR));
 			assignVar->name = strdup(argName[i]);
 			assignVar->type = VAR_STRING;	// @@FIX!!!!!!
@@ -77,7 +78,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	// @@TODO @@FIX!
-	if ((tplEntrypoint) && (1==1)){
+	if (tplEntrypoint) {
 		int add = 0;
 		for (int i = 0; i < MAX_ARGS; i++) {
 			if (!argName[i])
@@ -85,13 +86,16 @@ int main(int argc, char *argv[]) {
 			if (!strcmp(argName[i], "form.addbutton"))
 				add = 1;
 		}
-		if (add) {
+		if ((add) && (1==1)){
 			//printf("ADDING\n");
 			char *query = (char *) calloc(1, 4096);
 			char *name = NULL, *a1 = NULL, *a2 = NULL, *a3 = NULL, *a4 = NULL, *pc = NULL, *tel = NULL, *email = NULL;
 			for (int i = 0; i < MAX_ARGS; i++) {
 				if (!argName[i])
 					break;
+				if (!argValue[i])
+					continue;
+
 				if (!strcmp(argName[i], "stock_supplier.name"))	name = strdup(argValue[i]);
 				if (!strcmp(argName[i], "stock_supplier.address1"))	a1 = strdup(argValue[i]);
 				if (!strcmp(argName[i], "stock_supplier.address2"))	a2 = strdup(argValue[i]);
@@ -101,16 +105,18 @@ int main(int argc, char *argv[]) {
 				if (!strcmp(argName[i], "stock_supplier.telephone"))	tel = strdup(argValue[i]);
 				if (!strcmp(argName[i], "stock_supplier.email"))	email = strdup(argValue[i]);
 			}
-			if ((!name)  || (!strcmp(name, ","))) name = strdup("");
-			if ((!a1)     || (!strcmp(a1, ","))) a1 = strdup("");
-			if ((!a2)     || (!strcmp(a2, ","))) a2 = strdup("");
-			if ((!a3)     || (!strcmp(a3, ",")))  a3 = strdup("");
-			if ((!a4)     || (!strcmp(a4, ","))) a4 = strdup("");
-			if ((!pc)     || (!strcmp(pc, ",")))  pc = strdup("");
-			if ((!tel)    || (!strcmp(tel, ","))) tel = strdup("");
-			if ((!email)  || (!strcmp(email, ","))) email = strdup("");
+			if (((!name))  || (!strcmp(name, ","))) name = strdup("");
+			if (((!a1) )    || (!strcmp(a1, ","))) a1 = strdup("");
+			if (((!a2) )    || (!strcmp(a2, ","))) a2 = strdup("");
+			if (((!a3) )    || (!strcmp(a3, ",")))  a3 = strdup("");
+			if (((!a4) )    || (!strcmp(a4, ","))) a4 = strdup("");
+			if (((!pc) )    || (!strcmp(pc, ",")))  pc = strdup("");
+			if (((!tel))    || (!strcmp(tel, ","))) tel = strdup("");
+			if (((!email))  || (!strcmp(email, ","))) email = strdup("");
 			//printf("XXXXXXXXXXXXXXXXXXXXXXXX\n");
-			if (strlen(name)) {
+
+
+			if ((name) && (strlen(name)) && (1==1)) {
 			//printf("YYYYYYYYYYYYYYYYYYYYYYY\n");
 
 				sprintf(query, "insert into stock_supplier values (NULL, 1, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');", name,a1,a2,a3,a4,pc,tel,email);
