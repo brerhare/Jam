@@ -184,6 +184,11 @@ int control(int startIx, char *defaultTableName) {
 		} else if (!(strcmp(cmd, "@skip"))) {
 //		-----------------------------------------
 			;	// @@TODO!	// @@TODO also any other skips, in @each etc
+
+//		------------------------------------
+		} else if (!(strcmp(cmd, "@get"))) {
+//		------------------------------------
+			wordDatabaseGet(ix, defaultTableName);
 //		-------------------------------------
 		} else if (!(strcmp(cmd, "@each"))) {
 //		-------------------------------------
@@ -203,14 +208,17 @@ int control(int startIx, char *defaultTableName) {
 			}
 			mysql_free_result(res);
 			free(givenTableName);
-//		------------------------------------
-		} else if (!(strcmp(cmd, "@get"))) {
-//		------------------------------------
-			wordDatabaseGet(ix, defaultTableName);
+//		-------------------------------------
+		} else if (!(strcmp(cmd, "@hidden"))) {
+//		-------------------------------------
+			while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
+				ix++;		// skip over all the hidden content
+			if (jam[ix])
+				emit(jam[ix]->trailer);
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@end"))) {
 //		------------------------------------
-			// Return from an each-end loop
+			// Return from an each-end or hidden-end loop
 //printf("RETURNING\n");
 			free(tmp);
 			return(0);
@@ -414,7 +422,7 @@ char *curlies2JamArray(char *tplPos) {
 	jam[jamIx]->trailer = strdup(trailer);
 
 	// Push the table onto the stack at every start of loop
-	if (!(strcmp(jam[jamIx]->command, "@each"))) {
+	if ( (!strcmp(jam[jamIx]->command, "@each")) || (!strcmp(jam[jamIx]->command, "@hidden")) ) {
 		for (int i = 0; i < MAX_JAM; i++) {
 			if (tableStack[i] == NULL) {
 				char *p = (char *) calloc(1, 4096);
@@ -432,7 +440,7 @@ char *curlies2JamArray(char *tplPos) {
 				i--;
 //printf("POP: [%s]\n", tableStack[i]);
 				if (!tableStack[i])
-					die("Invalid @end tag found. I dont seem to find an @each for this one");
+					die("Invalid @end tag found. I dont seem to find the tag that started this one");
 				jam[jamIx]->args = strdup(tableStack[i]);
 				free(tableStack[i]);
 				tableStack[i] = NULL;

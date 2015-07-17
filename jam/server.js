@@ -69,7 +69,28 @@ console.log("Request: ---> "+ req+ " <---");
 				response.write(data);
 			response.end();
 		});
+	} else if (request.url.indexOf('.html') != -1) {
+		fileName = __dirname + "/" + request.url;
+		fs.readFile(fileName, function (err, data) {
+			response.writeHead(200, {'Content-Type': 'text/html'});
+			if (err)
+				console.log("no file " + fileName);
+			else
+				response.write(data);
+			response.end();
+		});
+	} else if (request.url != "/") {
+		fileName = __dirname + "/" + request.url;
+		fs.readFile(fileName, function (err, data) {
+			response.writeHead(200, {'Content-Type': 'text/html'});
+			if (err)
+				console.log("no file " + fileName);
+			else
+				response.write(data);
+			response.end();
+		});
 	} else {
+console.log("["+request.url+"]");
 		showAvailableTemplates(response);
 	}
 //}).listen(port, ip);
