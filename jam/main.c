@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
 	for (i = 1; i < argc; i++) {
 		argName[i-1]  = strTrim(getWordAlloc(argv[i], 1, eq));
 		argValue[i-1] = strTrim(getWordAlloc(argv[i], 2, eq));
-//		printf("arg [%s] has value [%s]\n", argName[i-1], argValue[i-1]);
+		//printf("arg [%s] has value [%s]\n", argName[i-1], argValue[i-1]);
 	}
 
 	char *tplName = NULL;

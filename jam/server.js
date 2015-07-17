@@ -40,11 +40,11 @@ http.createServer(function (request, response) {
 		});
 		request.on('end', function () {
 			console.log("Post: " + body);
-var req = decodeURIComponent(body)
-console.log("Request: ---> "+ req+ " <---");
+//var req = decodeURIComponent(body)
+//console.log("POST Request: ---> "+ req+ " <---");
 			body = body.replace(/\+/g , " ");
 			getRequest(response, "template=" + templatePath + "/" + queryData.template,  decodeURIComponent(body));
-			response.end();
+			//response.end();
 		});
 	} else if (queryData.template) {	// http://host:8000/?template=xyz
 		response.writeHead(200, {'Content-Type': 'text/html'});
@@ -117,6 +117,8 @@ function showAvailableTemplates(response) {
 }
 
 function getRequest(response, templateName, prefill, callback) {
+//console.log("TEMPLATENAME--->[" + templateName + "]");
+//console.log("PREFILL--->[" + prefill + "]");
 	args = [];
 	args.push(templateName);
 	if (args[0].indexOf(" ") != -1)
@@ -133,8 +135,6 @@ function getRequest(response, templateName, prefill, callback) {
 			args.push(" " + pre + nvpArr[i] + post);
 		}
 	}
-	console.log("calling jam with args" + " : " + args);
-
 	var spawn = require('child_process').spawn;
 	var cspr = spawn("./jam", args);
 	cspr.stdout.setEncoding('utf8');
@@ -142,7 +142,7 @@ function getRequest(response, templateName, prefill, callback) {
 	cspr.stdout.on('data', function (data) {
 		var buf = new Buffer(data);
 		response.write(data);
-		//console.log(buf.toString('utf8'));		// echo the data
+//		console.log(buf.toString('utf8'));		// echo the data
 	});
 
 	cspr.stderr.on('data', function (data) {
