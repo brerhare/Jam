@@ -2,6 +2,7 @@
  * @@TODO Fix the priority of assignment to non-qualified vars. This worked well until I stuck in a @GET inside a @EACH loop - it still obeys the @EACH x
  */
 #include <stdio.h>
+#include <stdlib.h>
 #include <strings.h>
 #include <string.h>
 #include <string>
@@ -50,12 +51,14 @@ int main(int argc, char *argv[]) {
 	}
 
 	char *tplName = NULL;
+	char *tplEntrypoint = NULL;
 	for (i = 0; i < MAX_ARGS; i++) {
 		if (!argName[i])
 			break;
-		if (!(strcmp(argName[i], "template")))
-			tplName = strdup(argValue[i]);
-		else {
+		if (!(strcmp(argName[i], "template"))) {
+			tplName = strTrim(getWordAlloc(argValue[i], 1, ":"));
+			tplEntrypoint = strTrim(getWordAlloc(argValue[i], 2, ":"));
+		} else {
 			VAR *assignVar = (VAR *) calloc(1, sizeof(VAR));
 			assignVar->name = strdup(argName[i]);
 			assignVar->type = VAR_STRING;	// @@FIX!!!!!!
@@ -73,6 +76,57 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
+	// @@TODO @@FIX!
+	if ((tplEntrypoint) && (1==1)){
+		int add = 0;
+		for (int i = 0; i < MAX_ARGS; i++) {
+			if (!argName[i])
+				break;
+			if (!strcmp(argName[i], "form.addbutton"))
+				add = 1;
+		}
+		if (add) {
+			//printf("ADDING\n");
+			char *query = (char *) calloc(1, 4096);
+			char *name = NULL, *a1 = NULL, *a2 = NULL, *a3 = NULL, *a4 = NULL, *pc = NULL, *tel = NULL, *email = NULL;
+			for (int i = 0; i < MAX_ARGS; i++) {
+				if (!argName[i])
+					break;
+				if (!strcmp(argName[i], "stock_supplier.name"))	name = strdup(argValue[i]);
+				if (!strcmp(argName[i], "stock_supplier.address1"))	a1 = strdup(argValue[i]);
+				if (!strcmp(argName[i], "stock_supplier.address2"))	a2 = strdup(argValue[i]);
+				if (!strcmp(argName[i], "stock_supplier.address3"))	a3 = strdup(argValue[i]);
+				if (!strcmp(argName[i], "stock_supplier.address4"))	a4 = strdup(argValue[i]);
+				if (!strcmp(argName[i], "stock_supplier.postcode"))	pc = strdup(argValue[i]);
+				if (!strcmp(argName[i], "stock_supplier.telephone"))	tel = strdup(argValue[i]);
+				if (!strcmp(argName[i], "stock_supplier.email"))	email = strdup(argValue[i]);
+			}
+			if ((!name)  || (!strcmp(name, ","))) name = strdup("");
+			if ((!a1)     || (!strcmp(a1, ","))) a1 = strdup("");
+			if ((!a2)     || (!strcmp(a2, ","))) a2 = strdup("");
+			if ((!a3)     || (!strcmp(a3, ",")))  a3 = strdup("");
+			if ((!a4)     || (!strcmp(a4, ","))) a4 = strdup("");
+			if ((!pc)     || (!strcmp(pc, ",")))  pc = strdup("");
+			if ((!tel)    || (!strcmp(tel, ","))) tel = strdup("");
+			if ((!email)  || (!strcmp(email, ","))) email = strdup("");
+			//printf("XXXXXXXXXXXXXXXXXXXXXXXX\n");
+			if (strlen(name)) {
+			//printf("YYYYYYYYYYYYYYYYYYYYYYY\n");
+
+				sprintf(query, "insert into stock_supplier values (NULL, 1, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');", name,a1,a2,a3,a4,pc,tel,email);
+				if (openDB("stock") != 0)
+					die(mysql_error(conn));
+				if (mysql_query(conn, query)) {
+					fprintf(stderr, "%s\n", mysql_error(conn));
+					exit(1);
+				}
+				closeDB();
+
+			}
+		}
+	}
+
+
 	// Read in template
 	char *tpl = readTemplate(tplName);
 
@@ -83,10 +137,12 @@ int main(int argc, char *argv[]) {
 		jamIx++;
 	}
 
+
 	// Generate HTML from Jam array
 	control(0, NULL);
 
 	free(tpl);
+	free(tplEntrypoint);
 	if (conn)
 		closeDB();
 jamDump();
@@ -209,16 +265,16 @@ int control(int startIx, char *defaultTableName) {
 			mysql_free_result(res);
 			free(givenTableName);
 //		-------------------------------------
-		} else if (!(strcmp(cmd, "@hidden"))) {
+		} else if (!(strcmp(cmd, "@gopher"))) {
 //		-------------------------------------
 			while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
-				ix++;		// skip over all the hidden content
+				ix++;		// skip over all the gopher content
 			if (jam[ix])
 				emit(jam[ix]->trailer);
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@end"))) {
 //		------------------------------------
-			// Return from an each-end or hidden-end loop
+			// Return from an each-end or gopher-end loop
 //printf("RETURNING\n");
 			free(tmp);
 			return(0);
@@ -422,7 +478,7 @@ char *curlies2JamArray(char *tplPos) {
 	jam[jamIx]->trailer = strdup(trailer);
 
 	// Push the table onto the stack at every start of loop
-	if ( (!strcmp(jam[jamIx]->command, "@each")) || (!strcmp(jam[jamIx]->command, "@hidden")) ) {
+	if ( (!strcmp(jam[jamIx]->command, "@each")) || (!strcmp(jam[jamIx]->command, "@gopher")) ) {
 		for (int i = 0; i < MAX_JAM; i++) {
 			if (tableStack[i] == NULL) {
 				char *p = (char *) calloc(1, 4096);

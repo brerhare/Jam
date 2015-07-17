@@ -328,5 +328,5 @@ int wordDatabaseRemoveIndex(int ix, char *defaultTableName) {
     int status = mysql_query(conn,qStr);
 	emit(jam[ix]->trailer);
     free(tableName);
-    free(indexName);    
+    free(indexName);
 }

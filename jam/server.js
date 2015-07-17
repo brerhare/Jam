@@ -90,7 +90,7 @@ http.createServer(function (request, response) {
 			response.end();
 		});
 	} else {
-console.log("["+request.url+"]");
+//console.log("["+request.url+"]");
 		showAvailableTemplates(response);
 	}
 //}).listen(port, ip);
@@ -135,6 +135,7 @@ function getRequest(response, templateName, prefill, callback) {
 			args.push(" " + pre + nvpArr[i] + post);
 		}
 	}
+	console.log("calling jam with args" + " : " + args);
 	var spawn = require('child_process').spawn;
 	var cspr = spawn("./jam", args);
 	cspr.stdout.setEncoding('utf8');
