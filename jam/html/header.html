@@ -7,16 +7,57 @@
 <meta name="description" content="">
 <meta name="author" content="">
  
-<link rel="stylesheet" href="css/sys/fa/css/font-awesome.min.css">
-<link rel="stylesheet" href="css/sys/uikit/css/uk.css" type="text/css" />
-<script src="css/sys/uikit/jquery.js"></script>
-<script src="css/sys/uikit/js/uikit.min.js"></script>
+<script src="sys/uikit/jquery.js"></script>
+
+<link rel="stylesheet" href="sys/fa/css/font-awesome.min.css">
+<link rel="stylesheet" href="sys/uikit/css/uk.css" type="text/css" />
+
+<script src="sys/uikit/js/uikit.min.js"></script>
+
+<script src="sys/editablegrid/editablegrid.js"></script>
+<!-- [DO NOT DEPLOY] --> <script src="sys/editablegrid/editablegrid_renderers.js" ></script>
+<!-- [DO NOT DEPLOY] --> <script src="sys/editablegrid/editablegrid_editors.js" ></script>
+<!-- [DO NOT DEPLOY] --> <script src="sys/editablegrid/editablegrid_validators.js" ></script>
+<!-- [DO NOT DEPLOY] --> <script src="sys/editablegrid/editablegrid_utils.js" ></script>
+<!-- [DO NOT DEPLOY] --> <script src="sys/editablegrid/editablegrid_charts.js" ></script>
+
+<link rel="stylesheet" href="sys/editablegrid/editablegrid.css" type="text/css" media="screen">
  
 <!--[if lt IE 9]> <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script> <![endif]-->
 
+<!-- uikit overrides - move to css -->
 <style>
-.uk-form-row { margin-top: 3px !important}
+.uk-form-row { margin-top: 2px !important}
 </style>
+
+<!-- editablegrid -->
+        <script>
+            window.onload = function() {
+              editableGrid = new EditableGrid("GridAttach", { sortIconUp: "sys/editablegrid/img/close-twisty.png", sortIconDown: "sys/editablegrid/img/open-twisty.png"}); 
+
+                // we build and load the metadata in Javascript
+                editableGrid.load({ metadata: [
+                    { name: "name", datatype: "string", editable: true },
+                    { name: "address1", datatype: "string", editable: true },
+                    { name: "address2", datatype: "string", editable: true },
+                    { name: "address3", datatype: "string", editable: true },
+                    { name: "address4", datatype: "string", editable: true },
+                    { name: "postcode", datatype: "string", editable: true },
+                    { name: "telephone", datatype: "string", editable: true },
+                    { name: "email", datatype: "email", editable: false },
+                    { name: "active", datatype: "boolean", editable: true },
+                    { name: "area", datatype: "string", editable: true, values: 
+                        { 'All areas': { "18" : "Adeje", "17" : "Arona", "21" : "Granadilla", "15": "North", "13": "Placeholder area", "22": "San Miguel de Abona", "20": "Santiago del Teide", "16": "South"},
+                        }
+                    },
+                ]});
+
+                // then we attach to the HTML table and render it
+                editableGrid.attachToHTMLTable('suppliertable');
+                editableGrid.renderGrid();
+            } 
+        </script>
+
 
 </head>
 <body>
