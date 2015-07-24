@@ -1,1 +1,2 @@
-g++ main.c wordDatabase.c wordMisc.c database.c common.c list.c linkListUtil.c stringUtil.c -g3 -o jam -fpermissive -Wno-write-strings $(mysql_config --cflags) $(mysql_config --libs)
+g++ main.c cgiUtil.c wordDatabase.c wordMisc.c database.c common.c list.c linkListUtil.c stringUtil.c -g3 -o jam -fpermissive -Wno-write-strings $(mysql_config --cflags) $(mysql_config --libs)
+chown wireflydesign.com:wireflydesign.com jam
