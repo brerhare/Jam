@@ -284,16 +284,16 @@ int control(int startIx, char *defaultTableName) {
 			mysql_free_result(res);
 			free(givenTableName);
 //		-------------------------------------
-		} else if (!(strcmp(cmd, "@gopher"))) {
+		} else if (!(strcmp(cmd, "@concall"))) {
 //		-------------------------------------
 			while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
-				ix++;		// skip over all the gopher content
+				ix++;		// skip over all the oncall content
 			if (jam[ix])
 				emit(jam[ix]->trailer);
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@end"))) {
 //		------------------------------------
-			// Return from an each-end or gopher-end loop
+			// Return from an each-end or oncall-end loop
 //printf("RETURNING\n");
 			free(tmp);
 			return(0);
@@ -497,7 +497,7 @@ char *curlies2JamArray(char *tplPos) {
 	jam[jamIx]->trailer = strdup(trailer);
 
 	// Push the table onto the stack at every start of loop
-	if ( (!strcmp(jam[jamIx]->command, "@each")) || (!strcmp(jam[jamIx]->command, "@gopher")) ) {
+	if ( (!strcmp(jam[jamIx]->command, "@each")) || (!strcmp(jam[jamIx]->command, "@oncall")) ) {
 		for (int i = 0; i < MAX_JAM; i++) {
 			if (tableStack[i] == NULL) {
 				char *p = (char *) calloc(1, 4096);

@@ -33,7 +33,7 @@ http.createServer(function (request, response) {
 	var queryData = url.parse(request.url, true).query;
 
 	if ((request.method == 'POST') && (queryData.template)) {
-		response.writeHead(200, {'Content-Type': 'text/html'});
+		response.writeHead(200, {'Content-Type': 'text/html;charset=utf-8'});
 		var body = '';
 		request.on('data', function (data) {
 			body += data;
@@ -47,12 +47,12 @@ http.createServer(function (request, response) {
 			//response.end();
 		});
 	} else if (queryData.template) {	// http://host:8000/?template=xyz
-		response.writeHead(200, {'Content-Type': 'text/html'});
+		response.writeHead(200, {'Content-Type': 'text/html;charset=utf-8'});
 		getRequest(response, "template=" + templatePath + "/" + queryData.template, null);
 	} else if (request.url.indexOf('.js') != -1) {
 		fileName = __dirname + "/" + request.url;
 		fs.readFile(fileName, function (err, data) {
-			response.writeHead(200, {'Content-Type': 'text/js'});
+			response.writeHead(200, {'Content-Type': 'text/js;charset=utf-8'});
 			if (err)
 				console.log("no file " + fileName);
 			else
@@ -62,7 +62,7 @@ http.createServer(function (request, response) {
 	} else if (request.url.indexOf('.css') != -1) {
 		fileName = __dirname + "/" + request.url;
 		fs.readFile(fileName, function (err, data) {
-			response.writeHead(200, {'Content-Type': 'text/css'});
+			response.writeHead(200, {'Content-Type': 'text/css;charset=utf-8'});
 			if (err)
 				console.log("no file " + fileName);
 			else
@@ -72,7 +72,7 @@ http.createServer(function (request, response) {
 	} else if (request.url.indexOf('.html') != -1) {
 		fileName = __dirname + "/" + request.url;
 		fs.readFile(fileName, function (err, data) {
-			response.writeHead(200, {'Content-Type': 'text/html'});
+			response.writeHead(200, {'Content-Type': 'text/html;charset=utf-8'});
 			if (err)
 				console.log("no file " + fileName);
 			else
@@ -82,7 +82,7 @@ http.createServer(function (request, response) {
 	} else if (request.url != "/") {
 		fileName = __dirname + "/" + request.url;
 		fs.readFile(fileName, function (err, data) {
-			response.writeHead(200, {'Content-Type': 'text/html'});
+			response.writeHead(200, {'Content-Type': 'text/html;charset=utf-8'});
 			if (err)
 				console.log("no file " + fileName);
 			else
@@ -99,7 +99,7 @@ console.log('templatepath is ' + templatePath);
 console.log('listening on http://' + ip + ':' + port);
 
 function showAvailableTemplates(response) {
-	response.writeHead(200, {'Content-Type': 'text/html'});
+	response.writeHead(200, {'Content-Type': 'text/html;charset=utf-8'});
 	getFileList(function(html) {
 		response.end(html);
 	});
@@ -118,7 +118,7 @@ function showAvailableTemplates(response) {
 
 function getRequest(response, templateName, prefill, callback) {
 //console.log("TEMPLATENAME--->[" + templateName + "]");
-//console.log("PREFILL--->[" + prefill + "]");
+console.log("PREFILL--->[" + prefill + "]");
 	args = [];
 	args.push(templateName);
 	if (args[0].indexOf(" ") != -1)

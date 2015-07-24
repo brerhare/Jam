@@ -11,15 +11,15 @@ function _getFormVars(formName) {
 
 
 function myFunction(formName) {
-    var kvpairs = [];
-    var form = document.getElementById(formName);
-    for (var i = 0; i < form.elements.length; i++ ) {
-        var e = form.elements[i];
-        kvpairs.push(encodeURIComponent(e.name) + "=" + encodeURIComponent(e.value));
-    }
-    var queryString = kvpairs.join("&");
-    alert(queryString);
-return false;
+	var kvpairs = [];
+	var form = document.getElementById(formName);
+	for (var i = 0; i < form.elements.length; i++ ) {
+		var e = form.elements[i];
+		kvpairs.push(encodeURIComponent(e.name) + "=" + encodeURIComponent(e.value));
+	}
+	var queryString = kvpairs.join("&");
+	console.log(queryString);
+	return false;
 }
 
 
