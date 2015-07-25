@@ -6,6 +6,6 @@ setup mysql development
 	g++ -Wno-write-strings $1 $(mysql_config --cflags) $(mysql_config --libs)
 
 install jam
-	copy jam.sh and jam to a /cgi-bin/ defined in the site's apache config
-	edit jam.sh to point to wherever the jam rootdir should be (for templates, its own js, etc)
-	browsers call jam.sh
+	copy jam and jam.cfg to a /cgi-bin/ defined in the site's apache config
+	edit jam.cfg - set rootDir to wherever the jam rootdir should be (for templates, its own js, etc)
+

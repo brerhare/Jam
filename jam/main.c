@@ -3,6 +3,10 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <libgen.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <limits.h>
 #include <strings.h>
 #include <string.h>
 #include <string>
@@ -42,13 +46,42 @@ int main(int argc, char *argv[]) {
 	char **cgivars ;
 	char *tplName = NULL;
 	char *tplEntrypoint = NULL;
+	char tmpPath[PATH_MAX], binary[PATH_MAX];
+	char *tmp = (char *) calloc(1, 4096);
+	char *rootDir = NULL;
 
 	printf("Content-type: text/html; charset=UTF-8\n\n");
 
-	if (argc != 2)
-		die("Disconnected. Woe");
-	char *rootDir = strdup(argv[1]);
+	// Get path to cfg
+	pid_t pid = getpid();
+	sprintf(tmpPath, "/proc/%d/exe", pid);
+	if (readlink(tmpPath, binary, PATH_MAX) == -1)
+		die("readlink failed");
 
+	// Get cfg
+	sprintf(tmpPath, "%s/jam.cfg", dirname(binary));
+	FILE *fp = fopen(tmpPath, "r");
+	if (fp == NULL) {
+		sprintf(tmp, "Cant open config file %s", tmpPath);
+		die(tmpPath);
+	}
+	char line[1024];
+	while(fgets(line, sizeof(line), fp) != NULL) {
+		char *name = strTrim(getWordAlloc(line, 1, " \t"));
+		char *val = strTrim(getWordAlloc(line, 2, " \t"));
+		if ((!name) || (!val))
+			die("Bad config line");
+		if (!(strcasecmp(name, "rootDir")))
+			rootDir = strdup(val);
+		free(name);
+		free(val);
+	}
+	if (rootDir == NULL)
+		die("root dir not specified");
+	printf("%s FND!\n", rootDir);
+	fclose(fp);
+
+exit(0);
 
 	cgivars= getcgivars() ;
 printf("<html>");
