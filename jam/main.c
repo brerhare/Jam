@@ -20,6 +20,7 @@
 #include "list.h"
 #include "stringUtil.h"
 #include "linkListUtil.h"
+#include "cgiUtil.h"
 
 // Common declares start
 MYSQL *conn = NULL;
@@ -37,7 +38,27 @@ char *curlies2JamArray(char *tplPos);
 JAM *initJam();
 int control(int startIx, char *tableName);
 
-int main(int argc, char *argv[]) {
+int main() {
+    char **cgivars ;
+    int ii ;
+    //cgivars= getcgivars() ;
+printf("Content-type: text/html; charset=UTF-8\n\n");
+printf("<html>");
+printf("    <head>");
+printf("    </head>");
+printf("    <body>");
+
+	printf("xxTESTING MAIN<br>");
+    //for (ii=0; cgivars[ii]; ii+= 2)
+        //printf("<li>[%s] = [%s]>br>", cgivars[ii], cgivars[ii+1]) ;
+	printf("TESTED MAIN<br>");
+
+printf("    </body>");
+printf("</html>");
+exit(0);
+}
+
+int Xmain(int argc, char *argv[]) {
 	char *argName[MAX_ARGS];
 	char *argValue[MAX_ARGS];
 	for (int i = 0; i < MAX_ARGS; i++)
