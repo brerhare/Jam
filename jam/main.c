@@ -38,20 +38,29 @@ char *curlies2JamArray(char *tplPos);
 JAM *initJam();
 int control(int startIx, char *tableName);
 
-int main() {
-    char **cgivars ;
-    int ii ;
-    //cgivars= getcgivars() ;
-printf("Content-type: text/html; charset=UTF-8\n\n");
+int main(int argc, char *argv[]) {
+	char **cgivars ;
+	char *tplName = NULL;
+	char *tplEntrypoint = NULL;
+
+	printf("Content-type: text/html; charset=UTF-8\n\n");
+
+	if (argc != 2)
+		die("Disconnected. Woe");
+	char *rootDir = strdup(argv[1]);
+
+
+	cgivars= getcgivars() ;
 printf("<html>");
 printf("    <head>");
+printf("        <script src='js/util.js'></script>");
 printf("    </head>");
 printf("    <body>");
 
-	printf("xxTESTING MAIN<br>");
-    //for (ii=0; cgivars[ii]; ii+= 2)
-        //printf("<li>[%s] = [%s]>br>", cgivars[ii], cgivars[ii+1]) ;
-	printf("TESTED MAIN<br>");
+	printf("My rootdir is %s<br>", rootDir);
+	for (int i=0; cgivars[i]; i+= 2)
+		printf("<li>[%s] = [%s]<br>", cgivars[i], cgivars[i+1]) ;
+	printf("Done<br>");
 
 printf("    </body>");
 printf("</html>");
@@ -144,7 +153,6 @@ int Xmain(int argc, char *argv[]) {
 			}
 		}
 	}
-
 
 	// Read in template
 	char *tpl = readTemplate(tplName);
