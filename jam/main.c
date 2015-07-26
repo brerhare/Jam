@@ -35,6 +35,8 @@ JAM *jam[MAX_JAM];
 int jamIx = 0;
 char *tableStack[MAX_JAM];
 VAR *var[MAX_VAR];
+char *rootDir = NULL;	// from config
+
 // Common declares end
 
 char *readTemplate(char *fname);
@@ -44,14 +46,14 @@ int control(int startIx, char *tableName);
 
 int main(int argc, char *argv[]) {
 	char **cgivars ;
-	char *tplName = NULL;
-	char *tplEntrypoint = NULL;
 	char tmpPath[PATH_MAX], binary[PATH_MAX];
 	char *tmp = (char *) calloc(1, 4096);
-	char *rootDir = NULL;
+	char *tplName = NULL;
+	char *tplEntrypoint = NULL;
 
 	printf("Content-type: text/html; charset=UTF-8\n\n");
 
+/*
 	// Get path to cfg
 	pid_t pid = getpid();
 	sprintf(tmpPath, "/proc/%d/exe", pid);
@@ -78,26 +80,61 @@ int main(int argc, char *argv[]) {
 	}
 	if (rootDir == NULL)
 		die("root dir not specified");
-	printf("%s FND!\n", rootDir);
 	fclose(fp);
+*/
 
-exit(0);
-
-	cgivars= getcgivars() ;
-printf("<html>");
-printf("    <head>");
-printf("        <script src='js/util.js'></script>");
-printf("    </head>");
-printf("    <body>");
-
-	printf("My rootdir is %s<br>", rootDir);
-	for (int i=0; cgivars[i]; i+= 2)
+	cgivars = getcgivars() ;
+	for (int i=0; cgivars[i]; i+= 2) {
 		printf("<li>[%s] = [%s]<br>", cgivars[i], cgivars[i+1]) ;
-	printf("Done<br>");
 
-printf("    </body>");
-printf("</html>");
+		if (!(strcmp(cgivars[i], "template"))) {
+			tplName = strTrim(getWordAlloc(cgivars[i+1], 1, ":"));
+			tplEntrypoint = strTrim(getWordAlloc(cgivars[i+1], 2, ":"));
+// @@KIM! remove next if
+		} else if (!tplEntrypoint){
+			VAR *assignVar = (VAR *) calloc(1, sizeof(VAR));
+			assignVar->name = strdup(cgivars[i]);
+			assignVar->type = VAR_STRING;	// @@FIX!!!!!!
+			clearVarValues(assignVar);
+			fillVarDataTypes(assignVar, cgivars[i+1]);
+//printf("PREFILL-->%s<-- with value -->%s<--\n", assignVar->name, assignVar->portableValue);
+			assignVar->source = strdup("prefill");
+			assignVar->debugHighlight = 1;
+			for (int i = 0; i < MAX_VAR; i++) {
+				if (!var[i]) {
+					var[i] = assignVar;
+					break;
+				}
+			}
+		}
+	}
+
+//const char* s = getenv("PATH");
+printf("--->%s<---<br><br>", getenv("DOCUMENT_ROOT"));
 exit(0);
+
+	// Read in template
+	sprintf(tmp, "%s/%s", rootDir, tplName);
+	char *tpl = readTemplate(tmp);
+
+	// Create Jam array from template
+	char *tplPos = tpl;
+	while (tplPos = curlies2JamArray(tplPos)) {
+		//printf("%s\n", jam[jamIx]->command);
+		jamIx++;
+	}
+
+
+	// Generate HTML from Jam array
+	control(0, NULL);
+
+	free(tmp);
+	free(tpl);
+	free(tplEntrypoint);
+	if (conn)
+		closeDB();
+jamDump();
+	exit(0);
 }
 
 int Xmain(int argc, char *argv[]) {

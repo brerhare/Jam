@@ -3,3 +3,7 @@ chown `ls -ld main.c | awk '{print $3}'` jam
 chgrp `ls -ld main.c | awk '{print $4}'` jam
 cp jam ../../../cgi-bin/
 strip ../../../cgi-bin/jam
+
+cp -r sys ../../../cgi-bin/
+chown -R `ls -ld main.c | awk '{print $3}'` ../../../cgi-bin/sys
+chgrp -R `ls -ld main.c | awk '{print $4}'` ../../../cgi-bin/sys

@@ -64,4 +64,6 @@ char *expandVarsInString(char *str, char *tableName);
 int isCalculation(char *str);
 char *calculate(char *str);
 
+extern char *rootDir;	// from config
+
 #endif /* __COMMON_H_INCLUDED */

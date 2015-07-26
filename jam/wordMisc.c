@@ -20,7 +20,8 @@ int wordMiscInclude(int ix, char *defaultTableName) {
     char *tmp = (char *) calloc(1, 4096);
 
 	char *buf = NULL;
-	std::ifstream includeFile (args, std::ifstream::binary);
+	sprintf(tmp, "%s/%s", rootDir, args);
+	std::ifstream includeFile (tmp, std::ifstream::binary);
 	if (!includeFile){
 		sprintf(tmp, "cant @include %s", args);
 		die(tmp);
