@@ -2,4 +2,5 @@
 g++ main.c cgiUtil.c wordDatabase.c wordMisc.c database.c common.c list.c linkListUtil.c stringUtil.c -g3 -o jam -fpermissive -Wno-write-strings $(mysql_config --cflags) $(mysql_config --libs)
 chown `ls -ld main.c | awk '{print $3}'` jam
 chgrp `ls -ld main.c | awk '{print $4}'` jam
-#strip ../../../cgi-bin/jam
+cp -a jam cgi/
+strip cgi/jam

@@ -20,11 +20,12 @@ int wordMiscInclude(int ix, char *defaultTableName) {
     char *tmp = (char *) calloc(1, 4096);
 
 	char *buf = NULL;
-	sprintf(tmp, "%s", args);
+	sprintf(tmp, "%s/%s", documentRoot, args);
 	std::ifstream includeFile (tmp, std::ifstream::binary);
 	if (!includeFile){
-		sprintf(tmp, "cant @include %s", args);
-		die(tmp);
+			char *error = (char *) calloc(1, 4096);
+		sprintf(error, "@include : cant find file %s", tmp);
+		die(error);
 	}
 	includeFile.seekg (0, includeFile.end);
 	int length = includeFile.tellg();

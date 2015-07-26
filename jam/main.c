@@ -54,6 +54,7 @@ int main(int argc, char *argv[]) {
 	printf("Content-type: text/html; charset=UTF-8\n\n");
 
 	documentRoot = getenv("DOCUMENT_ROOT");
+//	printf("DOCUMENT ROOT [%s]<br>", documentRoot);
 
 /*
 	// Get path to cfg
@@ -87,7 +88,7 @@ int main(int argc, char *argv[]) {
 
 	cgivars = getcgivars() ;
 	for (int i=0; cgivars[i]; i+= 2) {
-		printf("<li>[%s] = [%s]<br>", cgivars[i], cgivars[i+1]) ;
+//		printf("<li>[%s] = [%s]<br>", cgivars[i], cgivars[i+1]) ;
 
 		if (!(strcmp(cgivars[i], "template"))) {
 			tplName = strTrim(getWordAlloc(cgivars[i+1], 1, ":"));
