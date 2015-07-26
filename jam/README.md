@@ -6,6 +6,8 @@ setup mysql development
 	g++ -Wno-write-strings $1 $(mysql_config --cflags) $(mysql_config --libs)
 
 install jam
-	copy jam and jam.cfg to a /cgi-bin/ defined in the site's apache config
-	edit jam.cfg - set rootDir to wherever the jam rootdir should be (for templates, its own js, etc)
+	alias this dir as /jam/ in the site's apache config and create a <directory></directory> entry (copy cgi-bin)
+	remember to restart apache :-/
+	softlink ./jamjar from the site's root
+	create a template directory (suggested: jamtemplate) in the site's root. All jam calls will need to include '?template=xxx.tpl"
 

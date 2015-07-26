@@ -151,6 +151,9 @@ if (!(file_put_contents($siteDir . "/protected/backend/config/main.php", $main))
 echo "\nDone\n";
 echo "Add this site into /root/setperms\n";
 echo "Add this site into tools/util/jellySites.inc\n";
+echo "Add apache lines\n";
+echo " - ScriptAlias /jam/ /home/SITE/dev/src/jam/\n";
+echo " - <Directory /home/SITE/dev/src/jam> ..... </Directory>   (copy of the cgi-bin lines)\n";
 echo "Dont forget to restart Apache\n";
 
 ?>

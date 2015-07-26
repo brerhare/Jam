@@ -19,6 +19,14 @@ angular.module('stock')
         controller: 'HomeCtrl'
       })
 
+// Suppliers
+// ---------
+      .state('home.supplier-maintain', {
+        url: '/supplier/maintain',
+        templateUrl: 'app/home/supplier/maintain/maintain.html',
+        controller: 'SupplierMaintainCtrl'
+      })
+
 // Customers
 // ---------
       .state('home.customer-maintain', {

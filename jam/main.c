@@ -35,7 +35,7 @@ JAM *jam[MAX_JAM];
 int jamIx = 0;
 char *tableStack[MAX_JAM];
 VAR *var[MAX_VAR];
-char *rootDir = NULL;	// from config
+char *documentRoot = NULL;
 
 // Common declares end
 
@@ -52,6 +52,8 @@ int main(int argc, char *argv[]) {
 	char *tplEntrypoint = NULL;
 
 	printf("Content-type: text/html; charset=UTF-8\n\n");
+
+	documentRoot = getenv("DOCUMENT_ROOT");
 
 /*
 	// Get path to cfg
@@ -109,12 +111,8 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-//const char* s = getenv("PATH");
-printf("--->%s<---<br><br>", getenv("DOCUMENT_ROOT"));
-exit(0);
-
 	// Read in template
-	sprintf(tmp, "%s/%s", rootDir, tplName);
+	sprintf(tmp, "%s/%s", documentRoot, tplName);
 	char *tpl = readTemplate(tmp);
 
 	// Create Jam array from template
