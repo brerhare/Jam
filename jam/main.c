@@ -361,7 +361,7 @@ int control(int startIx, char *defaultTableName) {
 			mysql_free_result(res);
 			free(givenTableName);
 //		-------------------------------------
-		} else if (!(strcmp(cmd, "@concall"))) {
+		} else if (!(strcmp(cmd, "@oncall"))) {
 //		-------------------------------------
 			while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
 				ix++;		// skip over all the oncall content
