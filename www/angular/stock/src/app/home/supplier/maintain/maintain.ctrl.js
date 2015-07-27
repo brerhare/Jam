@@ -4,8 +4,9 @@ angular.module('stock')
 
 //window.location.href = 'http://google.com';
 
-		$location.path('/home/supplier/list');
-        $location.replace();
+//		$location.path('/home/supplier/list');
+//        $location.replace();
+
 /*
 		var url            = 'http://stock.wireflydesign.com/server/api/stock_customer/';
 		var urlArea        = 'http://stock.wireflydesign.com/server/api/stock_area/';			// for <select>
