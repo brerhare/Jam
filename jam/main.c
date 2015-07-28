@@ -15,8 +15,6 @@
 #include <vector>
 #include <cstdlib>
 
-#include </usr/include/mysql/mysql.h>
-
 #include "common.h"
 #include "wordDatabase.h"
 #include "wordMisc.h"
@@ -25,6 +23,7 @@
 #include "stringUtil.h"
 #include "linkListUtil.h"
 #include "cgiUtil.h"
+#include "template.h"
 
 // Common declares start
 MYSQL *conn = NULL;
@@ -39,7 +38,6 @@ char *documentRoot = NULL;
 
 // Common declares end
 
-char *readTemplate(char *fname);
 char *curlies2JamArray(char *tplPos);
 JAM *initJam();
 int control(int startIx, char *tableName);
@@ -112,12 +110,53 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	// Read in template
+	// Read in template, including any @include's
 	sprintf(tmp, "%s/%s", documentRoot, tplName);
 	char *tpl = readTemplate(tmp);
+	char *newTpl = strdup("");
+	char *tplPos = tpl;
+
+	while (char *include = strstr(tplPos, "@include")) {
+		char *startCurly = (include - strlen(startJam));
+		char *endCurly = strstr(include, endJam);
+		if (!endCurly)
+			die("Include - unmatched jam token, an open must have a close");
+		char *buf = (char *) calloc(1, (endCurly - include + 1));
+		memcpy(buf, include, (endCurly - include));
+		char *includeFileName = strTrim(getWordAlloc(buf, 2, " \t\r\n"));
+		// Read in the include file
+		sprintf(tmp, "%s/%s", documentRoot, includeFileName);
+		std::ifstream includeFile (tmp, std::ifstream::binary);
+		if (!includeFile){
+			char *error = (char *) calloc(1, 4096);
+			sprintf(error, "@include : cant find file %s", tmp);
+			die(error);
+		}
+		includeFile.seekg (0, includeFile.end);
+		int length = includeFile.tellg();
+		includeFile.seekg (0, includeFile.beg);
+		char *includeBuf = (char *) calloc(1, length+1);
+		if (!includeBuf) {
+			sprintf(tmp, "cant calloc memory to @include %s", includeFileName);
+			die(tmp);
+		}
+/*
+// Do the concatenation
+if (tplPos != startCurly) {
+	char *thusFar = (char *) needs work.. kim here.
+	newTpl = (char *) realloc(newTpl, (strlen(newTpl) + (startCurly - tplPos + 1)));
+	memcpy()
+	strcat(newTpl, tplPos);
+}*/
+
+
+		free(buf);
+		free(includeFileName);
+		tplPos = (endCurly + strlen(endJam));
+	}
 
 	// Create Jam array from template
-	char *tplPos = tpl;
+	tplPos = tpl;
 	while (tplPos = curlies2JamArray(tplPos)) {
 		//printf("%s\n", jam[jamIx]->command);
 		jamIx++;
@@ -603,40 +642,6 @@ char *curlies2JamArray(char *tplPos) {
 	free(trailer);
 	free(wd);
 	return (endCurly + strlen(endJam));
-}
-
-char *readTemplate(char *fname){
-	char *buf = NULL;
-	std::ifstream html (fname, std::ifstream::binary);
-	if (!html){
-		std::cout << "error: cant open file " << fname << endl;
-		die("");
-	}
-	html.seekg (0, html.end);
-	int length = html.tellg();
-	html.seekg (0, html.beg);
-
-	int jamLen = (strlen(startJam) + strlen(endJam));
-	char *fakeWord = "@!begin";
-
-	buf = (char *) calloc(1, jamLen + strlen(fakeWord) + length + 1);
-	if (!buf) {
-		std::cout << "error: cant calloc memory " << fname << endl;
-		die("");
-	}
-	strcpy(buf, startJam);
-	strcat(buf, fakeWord);
-	strcat(buf, endJam);
-	int bufLen = strlen(buf);
-	html.read ((buf + bufLen), length);
-	buf[bufLen+length] = 0;
-	html.close();
-	if (!html) {
-		std::cout << "error: only " << html.gcount() << " could be read" << endl;
-		die("");
-	}
-//	printf("\n[%d][%d]\n-->%s<--\n", jamLen, length, buf);
-	return buf;
 }
 
 int main2() {
