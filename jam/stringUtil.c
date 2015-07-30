@@ -1,6 +1,10 @@
 #include "stringUtil.h"
 #include <stdio.h>
 
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
 int getWordIgnoreQuotes = 0;
 
 /* Trims a sting in place. No memory adjustment is done */
