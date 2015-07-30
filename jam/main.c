@@ -1,0 +1,673 @@
+/*
+ * @@TODO Fix the priority of assignment to non-qualified vars. This worked well until I stuck in a @GET inside a @EACH loop - it still obeys the @EACH x
+ */
+#include <stdio.h>
+#include <stdlib.h>
+#include <libgen.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <limits.h>
+#include <strings.h>
+#include <string.h>
+#include <string>
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <cstdlib>
+
+#include "common.h"
+#include "wordDatabase.h"
+#include "wordMisc.h"
+#include "database.h"
+#include "list.h"
+#include "stringUtil.h"
+#include "linkListUtil.h"
+#include "cgiUtil.h"
+#include "template.h"
+
+// Common declares start
+MYSQL *conn = NULL;
+char *startJam = "{{";
+char *endJam = "}}";
+int literal = 0;
+JAM *jam[MAX_JAM];
+int jamIx = 0;
+char *tableStack[MAX_JAM];
+VAR *var[MAX_VAR];
+char *documentRoot = NULL;
+
+// Common declares end
+
+char *curlies2JamArray(char *tplPos);
+JAM *initJam();
+int control(int startIx, char *tableName);
+
+int main(int argc, char *argv[]) {
+	char **cgivars ;
+	char tmpPath[PATH_MAX], binary[PATH_MAX];
+	char *tmp = (char *) calloc(1, 4096);
+	char *tplName = NULL;
+	char *tplEntrypoint = NULL;
+
+	printf("Content-type: text/html; charset=UTF-8\n\n");
+
+	documentRoot = getenv("DOCUMENT_ROOT");
+//	printf("DOCUMENT ROOT [%s]<br>", documentRoot);
+
+/*
+	// Get path to cfg
+	pid_t pid = getpid();
+	sprintf(tmpPath, "/proc/%d/exe", pid);
+	if (readlink(tmpPath, binary, PATH_MAX) == -1)
+		die("readlink failed");
+
+	// Get cfg
+	sprintf(tmpPath, "%s/jam.cfg", dirname(binary));
+	FILE *fp = fopen(tmpPath, "r");
+	if (fp == NULL) {
+		sprintf(tmp, "Cant open config file %s", tmpPath);
+		die(tmpPath);
+	}
+	char line[1024];
+	while(fgets(line, sizeof(line), fp) != NULL) {
+		char *name = strTrim(getWordAlloc(line, 1, " \t"));
+		char *val = strTrim(getWordAlloc(line, 2, " \t"));
+		if ((!name) || (!val))
+			die("Bad config line");
+		if (!(strcasecmp(name, "rootDir")))
+			rootDir = strdup(val);
+		free(name);
+		free(val);
+	}
+	if (rootDir == NULL)
+		die("root dir not specified");
+	fclose(fp);
+*/
+
+	cgivars = getcgivars() ;
+	for (int i=0; cgivars[i]; i+= 2) {
+//		printf("<li>[%s] = [%s]<br>", cgivars[i], cgivars[i+1]) ;
+
+		if (!(strcmp(cgivars[i], "template"))) {
+			tplName = strTrim(getWordAlloc(cgivars[i+1], 1, ":"));
+			tplEntrypoint = strTrim(getWordAlloc(cgivars[i+1], 2, ":"));
+// @@KIM! remove next if
+		} else if (!tplEntrypoint){
+			VAR *assignVar = (VAR *) calloc(1, sizeof(VAR));
+			assignVar->name = strdup(cgivars[i]);
+			assignVar->type = VAR_STRING;	// @@FIX!!!!!!
+			clearVarValues(assignVar);
+			fillVarDataTypes(assignVar, cgivars[i+1]);
+//printf("PREFILL-->%s<-- with value -->%s<--\n", assignVar->name, assignVar->portableValue);
+			assignVar->source = strdup("prefill");
+			assignVar->debugHighlight = 1;
+			for (int i = 0; i < MAX_VAR; i++) {
+				if (!var[i]) {
+					var[i] = assignVar;
+					break;
+				}
+			}
+		}
+	}
+
+	// Read in template, including any @include's
+	sprintf(tmp, "%s/%s", documentRoot, tplName);
+	char *tpl = readTemplate(tmp);
+	char *newTpl = strdup("");
+	char *tplPos = tpl;
+
+	while (char *include = strstr(tplPos, "@include")) {
+		char *startCurly = (include - strlen(startJam));
+		char *endCurly = strstr(include, endJam);
+		if (!endCurly)
+			die("Include - unmatched jam token, an open must have a close");
+		char *buf = (char *) calloc(1, (endCurly - include + 1));
+		memcpy(buf, include, (endCurly - include));
+		char *includeFileName = strTrim(getWordAlloc(buf, 2, " \t\r\n"));
+		// Read in the include file
+		sprintf(tmp, "%s/%s", documentRoot, includeFileName);
+		std::ifstream includeFile (tmp, std::ifstream::binary);
+		if (!includeFile){
+			char *error = (char *) calloc(1, 4096);
+			sprintf(error, "@include : cant find file %s", tmp);
+			die(error);
+		}
+		includeFile.seekg (0, includeFile.end);
+		int length = includeFile.tellg();
+		includeFile.seekg (0, includeFile.beg);
+		char *includeBuf = (char *) calloc(1, length+1);
+		if (!includeBuf) {
+			sprintf(tmp, "cant calloc memory to @include %s", includeFileName);
+			die(tmp);
+		}
+/*
+// Do the concatenation
+if (tplPos != startCurly) {
+	char *thusFar = (char *) needs work.. kim here.
+	newTpl = (char *) realloc(newTpl, (strlen(newTpl) + (startCurly - tplPos + 1)));
+	memcpy()
+	strcat(newTpl, tplPos);
+}*/
+
+
+		free(buf);
+		free(includeFileName);
+		tplPos = (endCurly + strlen(endJam));
+	}
+
+	// Create Jam array from template
+	tplPos = tpl;
+	while (tplPos = curlies2JamArray(tplPos)) {
+		//printf("%s\n", jam[jamIx]->command);
+		jamIx++;
+	}
+
+
+	// Generate HTML from Jam array
+	control(0, NULL);
+
+	free(tmp);
+	free(tpl);
+	free(tplEntrypoint);
+	if (conn)
+		closeDB();
+jamDump();
+	exit(0);
+}
+
+int Xmain(int argc, char *argv[]) {
+	char *argName[MAX_ARGS];
+	char *argValue[MAX_ARGS];
+	for (int i = 0; i < MAX_ARGS; i++)
+		argName[i] = argValue[i] = NULL;
+	char *eq = "=";
+	int i;
+	for (i = 1; i < argc; i++) {
+		argName[i-1]  = strTrim(getWordAlloc(argv[i], 1, eq));
+		argValue[i-1] = strTrim(getWordAlloc(argv[i], 2, eq));
+		//printf("arg [%s] has value [%s]\n", argName[i-1], argValue[i-1]);
+	}
+
+	char *tplName = NULL;
+	char *tplEntrypoint = NULL;
+	for (i = 0; i < MAX_ARGS; i++) {
+		if (!argName[i])
+			break;
+		if (!(strcmp(argName[i], "template"))) {
+			tplName = strTrim(getWordAlloc(argValue[i], 1, ":"));
+			tplEntrypoint = strTrim(getWordAlloc(argValue[i], 2, ":"));
+// @@KIM! remove next if
+		} else if (!tplEntrypoint){
+			VAR *assignVar = (VAR *) calloc(1, sizeof(VAR));
+			assignVar->name = strdup(argName[i]);
+			assignVar->type = VAR_STRING;	// @@FIX!!!!!!
+			clearVarValues(assignVar);
+			fillVarDataTypes(assignVar, argValue[i]);
+//printf("PREFILL-->%s<-- with value -->%s<--\n", assignVar->name, assignVar->portableValue);
+			assignVar->source = strdup("prefill");
+			assignVar->debugHighlight = 1;
+			for (int i = 0; i < MAX_VAR; i++) {
+				if (!var[i]) {
+					var[i] = assignVar;
+					break;
+				}
+			}
+		}
+	}
+
+	// @@TODO @@FIX!
+	if (tplEntrypoint) {
+		int add = 0;
+		for (int i = 0; i < MAX_ARGS; i++) {
+			if (!argName[i])
+				break;
+			if (!strcmp(argName[i], "form.addbutton"))
+				add = 1;
+		}
+		if (add) {
+			char *query = (char *) calloc(1, 4096);
+			char *name = NULL, *a1 = NULL, *a2 = NULL, *a3 = NULL, *a4 = NULL, *pc = NULL, *tel = NULL, *email = NULL;
+			for (int i = 0; i < MAX_ARGS; i++) {
+				if (!argName[i])
+					break;
+				if (!argValue[i])
+					continue;
+				if (!strcmp(argName[i], "stock_supplier.name"))	name = strdup(argValue[i]);
+				if (!strcmp(argName[i], "stock_supplier.address1"))	a1 = strdup(argValue[i]);
+				if (!strcmp(argName[i], "stock_supplier.address2"))	a2 = strdup(argValue[i]);
+				if (!strcmp(argName[i], "stock_supplier.address3"))	a3 = strdup(argValue[i]);
+				if (!strcmp(argName[i], "stock_supplier.address4"))	a4 = strdup(argValue[i]);
+				if (!strcmp(argName[i], "stock_supplier.postcode"))	pc = strdup(argValue[i]);
+				if (!strcmp(argName[i], "stock_supplier.telephone"))	tel = strdup(argValue[i]);
+				if (!strcmp(argName[i], "stock_supplier.email"))	email = strdup(argValue[i]);
+			}
+			if (((!name))  || (!strcmp(name, ","))) name = strdup("");
+			if (((!a1) )    || (!strcmp(a1, ","))) a1 = strdup("");
+			if (((!a2) )    || (!strcmp(a2, ","))) a2 = strdup("");
+			if (((!a3) )    || (!strcmp(a3, ",")))  a3 = strdup("");
+			if (((!a4) )    || (!strcmp(a4, ","))) a4 = strdup("");
+			if (((!pc) )    || (!strcmp(pc, ",")))  pc = strdup("");
+			if (((!tel))    || (!strcmp(tel, ","))) tel = strdup("");
+			if (((!email))  || (!strcmp(email, ","))) email = strdup("");
+			if ((name) && (strlen(name)) && (1==1)) {
+				sprintf(query, "insert into stock_supplier values (NULL, 1, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');", name,a1,a2,a3,a4,pc,tel,email);
+				if (openDB("stock") != 0)
+					die(mysql_error(conn));
+				if (mysql_query(conn, query)) {
+					fprintf(stderr, "%s\n", mysql_error(conn));
+					exit(1);
+				}
+				closeDB();
+			}
+		}
+	}
+
+	// Read in template
+	char *tpl = readTemplate(tplName);
+
+	// Create Jam array from template
+	char *tplPos = tpl;
+	while (tplPos = curlies2JamArray(tplPos)) {
+		//printf("%s\n", jam[jamIx]->command);
+		jamIx++;
+	}
+
+
+	// Generate HTML from Jam array
+	control(0, NULL);
+
+	free(tpl);
+	free(tplEntrypoint);
+	if (conn)
+		closeDB();
+jamDump();
+	exit(0);
+}
+
+int control(int startIx, char *defaultTableName) {
+	int ix = startIx;
+	char *tmp = (char *) calloc(1, 4096);
+	while (jam[ix]) {
+		char *cmd = jam[ix]->command;
+		char *args = jam[ix]->args;
+		char *rawData = jam[ix]->rawData;
+
+//		-----------------------------------------
+		if (!strcmp(cmd, "@literal")) {
+//		-----------------------------------------
+			literal = 1;
+			if (args) {
+				getWord(tmp, args, 1, " ");
+				if (*tmp) {
+					if ((!strcmp(tmp, "off")) || (!strcmp(tmp, "0")))
+						literal = 0;
+				}
+			}
+		}
+
+		if (literal) {
+			char *newStr = strReplaceAlloc(jam[ix]->trailer, "\n", "<br>\n");
+			if (newStr) {
+				free(jam[ix]->trailer);
+				jam[ix]->trailer = newStr;
+			}
+			newStr = strReplaceAlloc(jam[ix]->trailer, "\t", "&nbsp&nbsp&nbsp&nbsp");
+			if (newStr) {
+				free(jam[ix]->trailer);
+				jam[ix]->trailer = newStr;
+			}
+			emit(jam[ix]->trailer);
+		}
+
+//		-----------------------------------------
+		if (!(strcmp(cmd, "@!begin")))
+//		-----------------------------------------
+			emit(jam[ix]->trailer);
+//		-----------------------------------------
+		else if (!(strcmp(cmd, "@new"))) {
+//		-----------------------------------------
+			if (args) {
+				getWord(tmp, args, 1, " ");
+				if (*tmp) {
+					if (!strcmp(tmp, "database"))
+						wordDatabaseNewDatabase(ix, defaultTableName);
+					if (!strcmp(tmp, "table"))
+						wordDatabaseNewTable(ix, defaultTableName);
+					if (!strcmp(tmp, "index"))
+						wordDatabaseNewIndex(ix, defaultTableName);
+				}
+			}
+//		-----------------------------------------
+		} else if (!(strcmp(cmd, "@remove"))) {
+//		-----------------------------------------
+			if (args) {
+				getWord(tmp, args, 1, " ");
+				if (*tmp) {
+					if (!strcmp(tmp, "database"))
+						wordDatabaseRemoveDatabase(ix, defaultTableName);
+					if (!strcmp(tmp, "table"))
+						wordDatabaseRemoveTable(ix, defaultTableName);
+					if (!strcmp(tmp, "index"))
+						wordDatabaseRemoveIndex(ix, defaultTableName);
+				}
+			}
+//		-----------------------------------------
+		} else if (!(strcmp(cmd, "@list"))) {
+//		-----------------------------------------
+		if (args) {
+			getWord(tmp, args, 1, " ");
+			if (*tmp) {
+				if (!strcmp(tmp, "databases"))
+					wordDatabaseListDatabases(ix, defaultTableName);
+				if (!strcmp(tmp, "tables"))
+					wordDatabaseListTables(ix, defaultTableName);
+			}
+		}
+//		-----------------------------------------
+		} else if (!(strcmp(cmd, "@describe"))) {
+//		-----------------------------------------
+			wordDatabaseDescribe(ix, defaultTableName);
+//		-----------------------------------------
+		} else if (!(strcmp(cmd, "@database"))) {
+//		-----------------------------------------
+			wordDatabaseDatabase(ix, defaultTableName);
+//		-----------------------------------------
+		} else if (!(strcmp(cmd, "@skip"))) {
+//		-----------------------------------------
+			;	// @@TODO!	// @@TODO also any other skips, in @each etc
+
+//		------------------------------------
+		} else if (!(strcmp(cmd, "@get"))) {
+//		------------------------------------
+			wordDatabaseGet(ix, defaultTableName);
+//		-------------------------------------
+		} else if (!(strcmp(cmd, "@each"))) {
+//		-------------------------------------
+			char *givenTableName = (char *) calloc(1, 4096);
+			MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 999999);
+			SQL_RESULT *rp = sqlCreateResult(givenTableName, res);
+			while (sqlGetRow(rp) != SQL_EOF) {
+				emit(jam[ix]->trailer);
+				control((ix + 1), givenTableName);
+			}
+			// Finished. Now emit the loops' trailer and make it current, so we will immediately advance past it
+			while (jam[ix] && (strcmp(jam[ix]->command, "@end") || (strcmp(jam[ix]->args, givenTableName)))) {
+				ix++;
+			}
+			if (jam[ix]) {
+				emit(jam[ix]->trailer);
+			}
+			mysql_free_result(res);
+			free(givenTableName);
+//		-------------------------------------
+		} else if (!(strcmp(cmd, "@oncall"))) {
+//		-------------------------------------
+			while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
+				ix++;		// skip over all the oncall content
+			if (jam[ix])
+				emit(jam[ix]->trailer);
+//		------------------------------------
+		} else if (!(strcmp(cmd, "@end"))) {
+//		------------------------------------
+			// Return from an each-end or oncall-end loop
+//printf("RETURNING\n");
+			free(tmp);
+			return(0);
+//		----------------------------------------
+		} else if (!(strcmp(cmd, "@include"))) {
+//		----------------------------------------
+			wordMiscInclude(ix, defaultTableName);
+//		--------------------------------------
+		} else if (!(strcmp(cmd, "@count"))) {
+//		--------------------------------------
+			wordMiscCount(ix, defaultTableName);
+//		------------------------------------
+		} else if (!(strcmp(cmd, "@sum"))) {
+//		------------------------------------
+			wordMiscSum(ix, defaultTableName);
+//		---------------------------
+		} else if (cmd[0] != '@') {
+//		---------------------------
+/*			data = LHS string
+			if '='
+				data = RHS string
+			expandFields(data)
+
+			if findVar(data)
+				result string = var value
+			else if isCalculation(data)
+				result string = calculate(data)
+			else
+				result string = expandedData
+
+			if '='
+				prepare LHS for receiving result (may not exist yet)
+				LHS var = result string
+			else
+				emit(result string)		*/
+
+			// data = LHS to start with
+			char *data = (char *) calloc(1, 4096);
+			strcpy(data, cmd);							// eg: [mem.group_count]
+//printf("{AWAY:%s and %s}",cmd, data);
+
+			char *resultString = (char *) calloc(1, 4096);
+			char *fullLine = (char *) calloc(1, 4096);
+			strcpy(fullLine, cmd);
+//printf("(CHK:%s and %s)", fullLine, args);
+			if (args)
+				strcpy(fullLine, rawData);
+			strTrim(fullLine);
+//printf("T=[%s]\n",fullLine);
+			//sprintf(fullLine, "%s%s", cmd, args);			// eg: [mem.group_count][= stock_group.count]
+			strcpy(data, fullLine);
+
+			// data = RHS if equals sign
+			char *eq = "=";
+			if (strchr(fullLine, '=')) {
+				char *rhs = strTrim(getWordAlloc(fullLine, 2, eq));		// eg [stock_group.count]
+				strcpy(data, rhs);
+				free(rhs);
+			}
+
+			// Expand any fields to values
+			char *expandedData = expandVarsInString(data, defaultTableName);	// Allocates memory - needs freeing
+//printf("\nSTART.... [c=%s][a=%s][f=%s][r=%s][e%s]\n", cmd, args, fullLine, data, expandedData);
+
+			// Either retrieve the data from a field or calculate
+			VAR *searchVar = findVarLenient(data, defaultTableName);
+			if (searchVar)
+				strcpy(resultString, searchVar->portableValue);
+			else if (isCalculation(expandedData)) {
+				char *calc = calculate(expandedData);
+				sprintf(resultString, "%s", calc);						//@TODO: decimals artificially removed!!!!
+				free(calc);
+			}
+			else
+				strcpy(resultString, expandedData);
+
+			// If '=' store result in LHS
+			if (strchr(fullLine, '=')) {
+				// Create / update LHS
+				int createNew = 0;
+				VAR *assignVar = findVarLenient(cmd, defaultTableName);
+				if (!assignVar) {
+					createNew = 1;
+					assignVar = (VAR *) calloc(1, sizeof(VAR));
+					assignVar->name = strdup(cmd);
+					assignVar->type = VAR_STRING;	// @@FIX!!!!!!
+				}
+				clearVarValues(assignVar);
+				fillVarDataTypes(assignVar, resultString);
+				if (createNew) {
+//printf("NEW-->%s<-- with value -->%s<--\n", assignVar->name, assignVar->portableValue);
+					assignVar->debugHighlight = 4;
+					for (int i = 0; i < MAX_VAR; i++) {
+						if (!var[i]) {
+							var[i] = assignVar;
+							break;
+						}
+					}
+				}
+			} else {		// Not an assignment - just emit variable
+				emit(resultString);
+				// Clear if necessary
+				VAR *variable = findVarLenient(cmd, defaultTableName);
+				if (variable) {
+//printf("RETR-->%s<--\n", variable->name);
+//char xx[256]; sprintf(xx, "R[%s]:%s", resultString, variable->portableValue);
+//emit(xx);
+					// Clear if 'count.'
+					if ((variable->source) && (!strcmp(variable->source, "count"))) {
+						variable->numberValue = 0;
+						free(variable->portableValue);
+						variable->portableValue = strdup("0");
+					}
+					// Clear if 'sum.'
+					if ((variable->source) && (!strcmp(variable->source, "sum"))) {
+						if (variable->type == VAR_NUMBER) {
+							variable->numberValue = 0;
+							free(variable->portableValue);
+							variable->portableValue = strdup("0");
+						} else if (variable->type == VAR_DECIMAL2) {
+							variable->decimal2Value = 0;
+							free(variable->portableValue);
+							variable->portableValue = strdup("0.00");
+						}
+					}
+				}
+			}
+			emit(jam[ix]->trailer);
+			free(data);
+			free(expandedData);
+			free(resultString);
+			free(fullLine);
+//		--------
+		} else {
+//		--------
+			emit(jam[ix]->trailer);
+		}
+
+		// Next
+		ix++;
+	}
+	free(tmp);
+}
+
+char *curlies2JamArray(char *tplPos) {
+	char *startCurly = strstr(tplPos, startJam);
+	if (!startCurly)
+		return NULL;
+	char *endCurly = strstr(tplPos, endJam);
+	if (!endCurly)
+		die("Unmatched jam token, an open must have a close");
+	int wdLen = (endCurly - startCurly - strlen(startJam));
+	char *wd = (char *) malloc(wdLen + 1);
+	memcpy(wd, (startCurly + strlen(startJam)), wdLen);
+	wd[wdLen] = 0;
+	if (strstr(wd, startJam)) {
+		die("there is an opening jam token within a token pair");
+	}
+//printf("\nlen=[%d] wd=[%s]\n", wdLen, wd);
+
+	jam[jamIx] = (JAM *) calloc(1, sizeof(JAM));
+	jam[jamIx]->rawData = strdup(wd);
+
+	char *buf = (char *) calloc(1, strlen(wd)+1);
+	char *space = " ";
+	getWord(buf, wd, 1, space);
+
+/*
+	// Get the current table from the top of stack for unqualified variables
+	if ((buf[0] != '@') && (!(strchr(buf, '.')))) {
+		for (int i = 0; i < MAX_JAM; i++) {
+			if ((tableStack[i] == NULL) && (i > 0)) {
+				i--;
+//printf("USING STACK: [%s]", tableStack[i]);
+				char *newBuf = (char *) calloc(1, 4096);
+				sprintf(newBuf, "%s.%s", tableStack[i], buf);
+				free(buf);
+				buf = newBuf;
+//printf(" ... storing variable [%s]\n", buf);
+				break;
+			}
+		}
+	}
+*/
+
+	for (char *p = buf; *p; ++p) *p = tolower(*p);
+	jam[jamIx]->command = buf;
+
+	if (char *p = strchr(wd, ' ')) {
+     if (*(p+1))
+	 	jam[jamIx]->args = strdup(p+1);
+	else
+        jam[jamIx]->args = strdup("");
+	}
+//printf("SETTING [%s]=[%s]\n", jam[jamIx]->command, jam[jamIx]->args);
+
+	char *trailer = strdup(endCurly + strlen(endJam));
+	char *c = strstr(trailer, startJam);
+	if (c)
+		*c = 0;
+	jam[jamIx]->trailer = strdup(trailer);
+
+	// Push the table onto the stack at every start of loop
+	if ( (!strcmp(jam[jamIx]->command, "@each")) || (!strcmp(jam[jamIx]->command, "@oncall")) ) {
+		for (int i = 0; i < MAX_JAM; i++) {
+			if (tableStack[i] == NULL) {
+				char *p = (char *) calloc(1, 4096);
+				getWord(p, jam[jamIx]->args, 1, space);
+				tableStack[i] = p;
+//printf("STACK: [%s]\n", tableStack[i]);
+				break;
+			}
+		}
+	}
+	// Pop the table off the stack at every end of loop
+	if (!(strcmp(jam[jamIx]->command, "@end"))) {
+		for (int i = 0; i < MAX_JAM; i++) {
+			if ((tableStack[i] == NULL) && (i > 0)) {
+				i--;
+//printf("POP: [%s]\n", tableStack[i]);
+				if (!tableStack[i])
+					die("Invalid @end tag found. I dont seem to find the tag that started this one");
+				jam[jamIx]->args = strdup(tableStack[i]);
+				free(tableStack[i]);
+				tableStack[i] = NULL;
+				break;
+			}
+		}
+	}
+	free(trailer);
+	free(wd);
+	return (endCurly + strlen(endJam));
+}
+
+int main2() {
+	MYSQL *conn;
+	MYSQL_RES *res;
+	MYSQL_ROW row;
+	char *server = "localhost";
+	char *user = "root";
+	char *password = "Wole9anic-"; /* set me first */
+	char *database = "mysql";
+	conn = mysql_init(NULL);
+	if (!mysql_real_connect(conn, server, user, password, database, 0, NULL, 0)) {
+		fprintf(stderr, "%s\n", mysql_error(conn));
+		exit(1);
+	}
+	/* send SQL query */
+	if (mysql_query(conn, "show tables")) {
+	fprintf(stderr, "%s\n", mysql_error(conn));
+	exit(1);
+	}
+	res = mysql_use_result(conn);
+	/* output table name */
+	printf("MySQL Tables in mysql database:\n");
+	while ((row = mysql_fetch_row(res)) != NULL)
+	printf("%s \n", row[0]);
+	/* close connection */
+	mysql_free_result(res);
+	mysql_close(conn);
+}
