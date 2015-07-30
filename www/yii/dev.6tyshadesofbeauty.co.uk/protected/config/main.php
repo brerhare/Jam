@@ -116,6 +116,6 @@ return array(
         //'checkoutPaypalEmail'=>'<checkoutpaypalemail>',
 
 		'jellyRoot' => '/scripts/jelly/',
-		'sid' => 'test',
+		'sid' => 'v8a6b0kdob7huqhu1625uamjf1',
 	),
 );

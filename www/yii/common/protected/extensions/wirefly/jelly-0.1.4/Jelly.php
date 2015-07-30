@@ -1591,7 +1591,7 @@ function myErrorHandler($errno, $errstr, $errfile, $errline)
         break;
 
     default:
-        echo "Unknown error type: [$errno] $errstr<br />\n";
+        echo "[Error $errno] $errstr<br />\n";
         break;
     }
 
