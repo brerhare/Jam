@@ -555,6 +555,7 @@ if (isset($_GET['test']))
 $aa="";
 		for ($i = 0; $i < count($this->mapPoint); $i++)
 		{
+usleep(80000);	// @@TODO USLEEP TIME DELAY 
 			// WS
 			if ($this->mapPointProgramId[$i] == 6)
 			{
@@ -570,6 +571,8 @@ $aa="";
 				// GOOGLE MAPS POSTCODE TO LATLNG
 				$address = $this->mapPoint[$i];
 				$coords = file_get_contents('http://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($address) . '&sensor=true');
+//var_dump($coords);
+if (!$coords) die("cant get mapdata");
 				$coords = json_decode($coords);
 				$lat = $coords->results[0]->geometry->location->lat;
 				$lng = $coords->results[0]->geometry->location->lng;
