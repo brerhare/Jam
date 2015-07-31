@@ -15,8 +15,6 @@
 #include <vector>
 #include <cstdlib>
 
-#include </usr/include/mysql/mysql.h>
-
 #include "common.h"
 #include "wordDatabase.h"
 #include "wordMisc.h"
@@ -25,6 +23,13 @@
 #include "stringUtil.h"
 #include "linkListUtil.h"
 #include "cgiUtil.h"
+#include "template.h"
+
+#include <locale.h>
+
+#ifndef __STDC_ISO_10646__
+#error "Oops, our wide chars are not Unicode codepoints, sorry!"
+#endif
 
 // Common declares start
 MYSQL *conn = NULL;
@@ -39,10 +44,20 @@ char *documentRoot = NULL;
 
 // Common declares end
 
-char *readTemplate(char *fname);
-char *curlies2JamArray(char *tplPos);
 JAM *initJam();
 int control(int startIx, char *tableName);
+
+int isASCII(const char *data, size_t size)
+{
+    const unsigned char *str = (const unsigned char*)data;
+    const unsigned char *end = str + size;
+    for (; str != end; str++) {
+        if (*str & 0x80)
+            return 0;
+    }
+    return 1;
+}
+
 
 int main(int argc, char *argv[]) {
 	char **cgivars ;
@@ -86,6 +101,7 @@ int main(int argc, char *argv[]) {
 	fclose(fp);
 */
 
+
 	cgivars = getcgivars() ;
 	for (int i=0; cgivars[i]; i+= 2) {
 //		printf("<li>[%s] = [%s]<br>", cgivars[i], cgivars[i+1]) ;
@@ -112,9 +128,52 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	// Read in template
+	// Read in template, including any @include's
 	sprintf(tmp, "%s/%s", documentRoot, tplName);
+	//sprintf(tmp, "/home/kim/dev/src/jam/template2/supplier.tpl");
 	char *tpl = readTemplate(tmp);
+
+int sanity = 0;
+	while (1) {
+if (++sanity > 100) { printf("Overflow!"); break; }
+		TAGINFO *tagInfo = getTagInfo(tpl, "@include");
+		if (tagInfo == NULL)
+			break;
+		// Read in the include file to memory
+		sprintf(tmp, "%s/%s", documentRoot, tagInfo->content);
+		std::ifstream includeFile (tmp, std::ifstream::binary);
+		if (!includeFile){
+			char *error = (char *) calloc(1, 4096);
+			sprintf(error, "@include : cant find file %s", tmp);
+			die(error);
+		}
+		includeFile.seekg (0, includeFile.end);
+		int length = includeFile.tellg();
+		includeFile.seekg (0, includeFile.beg);
+		char *includeBuf = (char *) calloc(1, length+1);
+		if (!includeBuf) {
+			sprintf(tmp, "cant calloc memory to @include %s", tagInfo->content);
+			die(tmp);
+		}
+   		includeFile.read(includeBuf, length);
+   		includeBuf[length] = 0;
+	    includeFile.close();
+		//printf("[file=%s][len=%d][includeBuf=%s][1st=%c][strlen=%d]", tmp, length, includeBuf, includeBuf[0], (int) strlen(includeBuf));
+		//exit(0);
+
+		// Include the include
+		char *newTpl = (char *) calloc(1, (strlen(tpl) + strlen(includeBuf) + 1));
+		*(tagInfo->startCurlyPos) = '\0';
+		strcpy(newTpl, tpl);
+		strcat(newTpl, includeBuf);
+		strcat(newTpl, (tagInfo->endCurlyPos + strlen(endJam)));
+		//printf("1st=%d, incl=%d, 2nd=%d<br>", (int)strlen(tpl), (int)strlen(includeBuf), (int)strlen((endCurly+strlen(endCurly))));
+		free(tpl);
+		tpl = newTpl;
+		free(tagInfo->name);
+		free(tagInfo->content);
+		free(tagInfo);
+	}
 
 	// Create Jam array from template
 	char *tplPos = tpl;
@@ -122,7 +181,6 @@ int main(int argc, char *argv[]) {
 		//printf("%s\n", jam[jamIx]->command);
 		jamIx++;
 	}
-
 
 	// Generate HTML from Jam array
 	control(0, NULL);
@@ -361,7 +419,7 @@ int control(int startIx, char *defaultTableName) {
 			mysql_free_result(res);
 			free(givenTableName);
 //		-------------------------------------
-		} else if (!(strcmp(cmd, "@concall"))) {
+		} else if (!(strcmp(cmd, "@oncall"))) {
 //		-------------------------------------
 			while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
 				ix++;		// skip over all the oncall content
@@ -375,7 +433,7 @@ int control(int startIx, char *defaultTableName) {
 			free(tmp);
 			return(0);
 //		----------------------------------------
-		} else if (!(strcmp(cmd, "@include"))) {
+		} else if (!(strcmp(cmd, "@Xinclude"))) {
 //		----------------------------------------
 			wordMiscInclude(ix, defaultTableName);
 //		--------------------------------------
@@ -513,130 +571,6 @@ int control(int startIx, char *defaultTableName) {
 		ix++;
 	}
 	free(tmp);
-}
-
-char *curlies2JamArray(char *tplPos) {
-	char *startCurly = strstr(tplPos, startJam);
-	if (!startCurly)
-		return NULL;
-	char *endCurly = strstr(tplPos, endJam);
-	if (!endCurly)
-		die("Unmatched jam token, an open must have a close");
-	int wdLen = (endCurly - startCurly - strlen(startJam));
-	char *wd = (char *) malloc(wdLen + 1);
-	memcpy(wd, (startCurly + strlen(startJam)), wdLen);
-	wd[wdLen] = 0;
-	if (strstr(wd, startJam)) {
-		die("there is an opening jam token within a token pair");
-	}
-//printf("\nlen=[%d] wd=[%s]\n", wdLen, wd);
-
-	jam[jamIx] = (JAM *) calloc(1, sizeof(JAM));
-	jam[jamIx]->rawData = strdup(wd);
-
-	char *buf = (char *) calloc(1, strlen(wd)+1);
-	char *space = " ";
-	getWord(buf, wd, 1, space);
-
-/*
-	// Get the current table from the top of stack for unqualified variables
-	if ((buf[0] != '@') && (!(strchr(buf, '.')))) {
-		for (int i = 0; i < MAX_JAM; i++) {
-			if ((tableStack[i] == NULL) && (i > 0)) {
-				i--;
-//printf("USING STACK: [%s]", tableStack[i]);
-				char *newBuf = (char *) calloc(1, 4096);
-				sprintf(newBuf, "%s.%s", tableStack[i], buf);
-				free(buf);
-				buf = newBuf;
-//printf(" ... storing variable [%s]\n", buf);
-				break;
-			}
-		}
-	}
-*/
-
-	for (char *p = buf; *p; ++p) *p = tolower(*p);
-	jam[jamIx]->command = buf;
-
-	if (char *p = strchr(wd, ' ')) {
-     if (*(p+1))
-	 	jam[jamIx]->args = strdup(p+1);
-	else
-        jam[jamIx]->args = strdup("");
-	}
-//printf("SETTING [%s]=[%s]\n", jam[jamIx]->command, jam[jamIx]->args);
-
-	char *trailer = strdup(endCurly + strlen(endJam));
-	char *c = strstr(trailer, startJam);
-	if (c)
-		*c = 0;
-	jam[jamIx]->trailer = strdup(trailer);
-
-	// Push the table onto the stack at every start of loop
-	if ( (!strcmp(jam[jamIx]->command, "@each")) || (!strcmp(jam[jamIx]->command, "@oncall")) ) {
-		for (int i = 0; i < MAX_JAM; i++) {
-			if (tableStack[i] == NULL) {
-				char *p = (char *) calloc(1, 4096);
-				getWord(p, jam[jamIx]->args, 1, space);
-				tableStack[i] = p;
-//printf("STACK: [%s]\n", tableStack[i]);
-				break;
-			}
-		}
-	}
-	// Pop the table off the stack at every end of loop
-	if (!(strcmp(jam[jamIx]->command, "@end"))) {
-		for (int i = 0; i < MAX_JAM; i++) {
-			if ((tableStack[i] == NULL) && (i > 0)) {
-				i--;
-//printf("POP: [%s]\n", tableStack[i]);
-				if (!tableStack[i])
-					die("Invalid @end tag found. I dont seem to find the tag that started this one");
-				jam[jamIx]->args = strdup(tableStack[i]);
-				free(tableStack[i]);
-				tableStack[i] = NULL;
-				break;
-			}
-		}
-	}
-	free(trailer);
-	free(wd);
-	return (endCurly + strlen(endJam));
-}
-
-char *readTemplate(char *fname){
-	char *buf = NULL;
-	std::ifstream html (fname, std::ifstream::binary);
-	if (!html){
-		std::cout << "error: cant open file " << fname << endl;
-		die("");
-	}
-	html.seekg (0, html.end);
-	int length = html.tellg();
-	html.seekg (0, html.beg);
-
-	int jamLen = (strlen(startJam) + strlen(endJam));
-	char *fakeWord = "@!begin";
-
-	buf = (char *) calloc(1, jamLen + strlen(fakeWord) + length + 1);
-	if (!buf) {
-		std::cout << "error: cant calloc memory " << fname << endl;
-		die("");
-	}
-	strcpy(buf, startJam);
-	strcat(buf, fakeWord);
-	strcat(buf, endJam);
-	int bufLen = strlen(buf);
-	html.read ((buf + bufLen), length);
-	buf[bufLen+length] = 0;
-	html.close();
-	if (!html) {
-		std::cout << "error: only " << html.gcount() << " could be read" << endl;
-		die("");
-	}
-//	printf("\n[%d][%d]\n-->%s<--\n", jamLen, length, buf);
-	return buf;
 }
 
 int main2() {

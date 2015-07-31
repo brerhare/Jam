@@ -1,6 +1,8 @@
 #ifndef __COMMON_H_INCLUDED
 #define __COMMON_H_INCLUDED
 
+#include </usr/include/mysql/mysql.h>
+
 using namespace std;
 
 extern char *startJam;
