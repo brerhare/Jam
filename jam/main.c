@@ -30,7 +30,6 @@
 #ifndef __STDC_ISO_10646__
 #error "Oops, our wide chars are not Unicode codepoints, sorry!"
 #endif
- char *getTagContent(char *text, char *tagName);
 
 // Common declares start
 MYSQL *conn = NULL;
@@ -130,60 +129,50 @@ int main(int argc, char *argv[]) {
 	}
 
 	// Read in template, including any @include's
-//	sprintf(tmp, "%s/%s", documentRoot, tplName);
-sprintf(tmp, "/home/kim/dev/src/jam/template2/supplier.tpl");
+	sprintf(tmp, "%s/%s", documentRoot, tplName);
+	//sprintf(tmp, "/home/kim/dev/src/jam/template2/supplier.tpl");
 	char *tpl = readTemplate(tmp);
-
-
-getTagContent(tpl, "@include");
-
 
 int sanity = 0;
 	while (1) {
 if (++sanity > 100) { printf("Overflow!"); break; }
-		if (char *include = strstr(tpl, "@include")) {
-			char *startCurly = (include - strlen(startJam));
-			char *endCurly = strstr(include, endJam);
-			if ((!endCurly) ||(endCurly < startCurly))
-				die("Include - unmatched jam token, an open must have a close");
-			char *buf = (char *) calloc(1, (endCurly - include + 1));
-			memcpy(buf, include, (endCurly - include));
-			char *includeFileName = strTrim(getWordAlloc(buf, 2, " \t\r\n"));
-			// Read in the include file to memory
-			sprintf(tmp, "%s/%s", documentRoot, includeFileName);
-			std::ifstream includeFile (tmp, std::ifstream::binary);
-			if (!includeFile){
-				char *error = (char *) calloc(1, 4096);
-				sprintf(error, "@include : cant find file %s", tmp);
-				die(error);
-			}
-			includeFile.seekg (0, includeFile.end);
-			int length = includeFile.tellg();
-			includeFile.seekg (0, includeFile.beg);
-			char *includeBuf = (char *) calloc(1, length+1);
-			if (!includeBuf) {
-				sprintf(tmp, "cant calloc memory to @include %s", includeFileName);
-				die(tmp);
-			}
-    		includeFile.read(includeBuf, length);
-    		includeBuf[length] = 0;
-    		//includeBuf[4] = 0;
-		    includeFile.close();
-			//printf("[file=%s][len=%d][includeBuf=%s][1st=%c][strlen=%d]", tmp, length, includeBuf, includeBuf[0], (int) strlen(includeBuf));
-			//exit(0);
-			// Include the include
-
-			char *newTpl = (char *) calloc(1, (strlen(tpl) + strlen(includeBuf) + 1));
-			*startCurly = '\0';
-			strcpy(newTpl, tpl);
-			strcat(newTpl, includeBuf);
-			strcat(newTpl, (endCurly + strlen(endCurly)));
-			printf("1st=%d, incl=%d, 2nd=%d<br>", (int)strlen(tpl), (int)strlen(includeBuf), (int)strlen((endCurly+strlen(endCurly))));
-			free(tpl);
-			tpl = newTpl;
-		}
-		else
+		TAGINFO *tagInfo = getTagInfo(tpl, "@include");
+		if (tagInfo == NULL)
 			break;
+		// Read in the include file to memory
+		sprintf(tmp, "%s/%s", documentRoot, tagInfo->content);
+		std::ifstream includeFile (tmp, std::ifstream::binary);
+		if (!includeFile){
+			char *error = (char *) calloc(1, 4096);
+			sprintf(error, "@include : cant find file %s", tmp);
+			die(error);
+		}
+		includeFile.seekg (0, includeFile.end);
+		int length = includeFile.tellg();
+		includeFile.seekg (0, includeFile.beg);
+		char *includeBuf = (char *) calloc(1, length+1);
+		if (!includeBuf) {
+			sprintf(tmp, "cant calloc memory to @include %s", tagInfo->content);
+			die(tmp);
+		}
+   		includeFile.read(includeBuf, length);
+   		includeBuf[length] = 0;
+	    includeFile.close();
+		//printf("[file=%s][len=%d][includeBuf=%s][1st=%c][strlen=%d]", tmp, length, includeBuf, includeBuf[0], (int) strlen(includeBuf));
+		//exit(0);
+
+		// Include the include
+		char *newTpl = (char *) calloc(1, (strlen(tpl) + strlen(includeBuf) + 1));
+		*(tagInfo->startCurlyPos) = '\0';
+		strcpy(newTpl, tpl);
+		strcat(newTpl, includeBuf);
+		strcat(newTpl, (tagInfo->endCurlyPos + strlen(endJam)));
+		//printf("1st=%d, incl=%d, 2nd=%d<br>", (int)strlen(tpl), (int)strlen(includeBuf), (int)strlen((endCurly+strlen(endCurly))));
+		free(tpl);
+		tpl = newTpl;
+		free(tagInfo->name);
+		free(tagInfo->content);
+		free(tagInfo);
 	}
 
 	// Create Jam array from template

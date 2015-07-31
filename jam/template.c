@@ -15,6 +15,8 @@
 #include "common.h"
 #include "stringUtil.h"
 
+#include "template.h"
+
 char *readTemplate(char *fname){
 	char *buf = NULL;
 	std::ifstream html (fname, std::ifstream::binary);
@@ -139,11 +141,10 @@ char *curlies2JamArray(char *tplPos) {
 	return (endCurly + strlen(endJam));
 }
 
-
-// Retrieves the tag content without curlies
+// Retrieves info about a tag embedded in text
 // Leave tagName blank to get the first tag
 // Result must be freed by caller
-char *getTagContent(char *text, char *tagName) {
+TAGINFO *getTagInfo(char *text, char *tagName) {
 	char *currTag, *currTagData;
 	char *content = NULL;
 	char *pos     = text;
@@ -160,10 +161,17 @@ char *getTagContent(char *text, char *tagName) {
 		memcpy(content, startContent, (endContent - startContent + 1));
 		currTag = strTrim(getWordAlloc(content, 1, " \t\n"));
 		currTagData = (content + strlen(currTag) + 1);	// point to the actual tag data, past the tag name
-		if (tagName == NULL)							// no tag given? Return the data for the first found
-			return currTagData;
-		if (!strcmp(tagName, currTag))					// matched the tag
-			return currTagData;
+		if ((tagName == NULL) || (!strcmp(tagName, currTag))) {
+			TAGINFO *tagInfo = (TAGINFO *) calloc(1, sizeof(TAGINFO));
+			tagInfo->startCurlyPos = tag;
+			tagInfo->endCurlyPos = pEnd;
+			tagInfo->name = strdup(currTag);
+			tagInfo->content = strdup(currTagData);
+//			char *tmp = (char *) calloc(1, 4096); sprintf(tmp, "s=%d, e=%d, content=%s", (int) tagInfo->startCurlyPos, (int) tagInfo->endCurlyPos, tagInfo->content); die(tmp);
+			free(currTag);
+			return tagInfo;
+		}
 		pos = (pEnd + strlen(endJam));					// advance
 	}
+	return NULL;
 }
