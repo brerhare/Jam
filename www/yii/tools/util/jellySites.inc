@@ -7,6 +7,7 @@ $siteList = array (
 	'beirc.co.uk'                  => '/home/beirc.co.uk/dev/src/www/yii/beirc.co.uk',
 	'breakfreecoaching.co.uk'      => '/home/breakfreecoaching.co.uk/dev/src/www/yii/breakfreecoaching.co.uk',
 	'brycewalkervending.com'       => '/home/brycewalkervending.com/dev/src/www/yii/brycewalkervending.com',
+	'craigieknowesgolfandteeroom.co.uk' ==> '/home/craigieknowesgolfandteeroom.co.uk/dev/src/www/yii/craigieknowesgolfandteeroom.co.uk',
 	'demo1.wireflydesign.com'      => '/home/wireflydesign.com/domains/demo1.wireflydesign.com/dev/src/www/yii/demo1.wireflydesign.com',
 	'demo2.wireflydesign.com'      => '/home/wireflydesign.com/domains/demo2.wireflydesign.com/dev/src/www/yii/demo2.wireflydesign.com',
 	'demo3.wireflydesign.com'      => '/home/wireflydesign.com/domains/demo3.wireflydesign.com/dev/src/www/yii/demo3.wireflydesign.com',
@@ -32,6 +33,7 @@ $siteList = array (
 	'timtaylor-painter-decorator-tiler.co.uk'   => '/home/timtaylor-painter-decorator-tiler.co.uk/dev/src/www/yii/timtaylor-painter-decorator-tiler.co.uk',
 	'trade.weetarget.co.uk'         => '/home/weetarget.co.uk/domains/trade.weetarget.co.uk/dev/src/www/yii/trade.weetarget.co.uk',
 	'weetarget.co.uk'               => '/home/weetarget.co.uk/dev/src/www/yii/weetarget.co.uk',
+	'zoelifecoaching.co.uk'			=> '/home/zoelifecoaching.co.uk/dev/src/www/yii/zoelifecoaching.co.uk',
 //	'xxx'                           => '/home/xxx/dev/src/www/yii/xxx',
 
 );

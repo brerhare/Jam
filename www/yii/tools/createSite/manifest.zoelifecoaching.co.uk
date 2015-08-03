@@ -1,0 +1,19 @@
+domain = zoelifecoaching.co.uk
+parentdomain =
+sitetitle = Zoe Life Coaching
+sid = t83969red8ipbef8tqje20vkl3
+
+# Database
+dbname = zoelifecoaching_co_uk
+dbuser = zoelifecoaching.
+dbpass = u5hc8u5
+
+# Shopping cart order confirmation email
+checkoutemail = no@email
+checkoutname = Zoe
+checkoutpaypalemail = no@email
+
+# Backend page editor
+editorpagewidth = 700
+editorpageheight = 450
+

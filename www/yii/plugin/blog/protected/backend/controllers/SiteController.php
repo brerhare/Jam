@@ -81,6 +81,34 @@ class SiteController extends Controller
 	/**
 	 * Displays the DIRECT login page
 	 */
+// @@TODO: HARDCODED FOR ZoeLife ---------- REMOVE
+    public function actionZoelifeDirect()
+    {
+        Yii::app()->session['uid'] = 90;
+        $identity = new UserIdentity('ZoeRoberts', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+	/**
+	 * Displays the DIRECT login page
+	 */
+// @@TODO: HARDCODED FOR CraigieKnowes ---------- REMOVE
+    public function actionCraigieknowesDirect()
+    {
+        Yii::app()->session['uid'] = 89;
+        $identity = new UserIdentity('Craigieknowes', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+	/**
+	 * Displays the DIRECT login page
+	 */
 // @@TODO: HARDCODED FOR 6TY ---------- REMOVE
     public function actionShadesDirect()
     {
