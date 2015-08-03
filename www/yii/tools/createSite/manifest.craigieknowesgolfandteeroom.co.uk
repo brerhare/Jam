@@ -1,0 +1,19 @@
+domain = craigieknowesgolfandteeroom.co.uk
+parentdomain =
+sitetitle = Craigieknowes Golf & Tee Room
+sid = 05ega7s6r2ecfpfmqcrb2von20
+
+# Database
+dbname = craigieknowesgolfandteeroom_co_uk
+dbuser = craigieknowesgol
+dbpass = rh63jdu
+
+# Shopping cart order confirmation email
+checkoutemail = no@email
+checkoutname = Craigieknowes
+checkoutpaypalemail = no@email
+
+# Backend page editor
+editorpagewidth = 700
+editorpageheight = 450
+
