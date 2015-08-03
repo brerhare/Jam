@@ -53,7 +53,7 @@ opacity:0.85;
 
 <div style="width:100%; border:0px solid black">	<!-- test container -->
 
-<div style="padding-top:10px; width:100%" ng-app>
+<div style="/* kim padding-top:10px; */ width:100%" ng-app>
 
 <?php
 // The sidebar is initially invisible
