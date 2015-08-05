@@ -1,3 +1,14 @@
+function runTemplate(templateName) {
+//window.location.href = '/index.html';
+alert('11');
+//window.location.href = '/jamcgi/jam?template=/jam/template2/supplierMaintForm.tpl';
+window.location.href = 'http://www.stackoverflow.com';
+window.top.location.href = 'http://stackoverflow.com';
+$(location).attr('href', 'http://stackoverflow.com')
+alert('fe');
+return(false);
+}
+
 function _getFormVars(formName) {
     console.log($(formName).serialize());
     return $(formName).serialize();
