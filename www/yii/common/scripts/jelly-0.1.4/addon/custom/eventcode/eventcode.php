@@ -555,7 +555,7 @@ if (isset($_GET['test']))
 $aa="";
 		for ($i = 0; $i < count($this->mapPoint); $i++)
 		{
-usleep(80000);	// @@TODO USLEEP TIME DELAY 
+usleep(150000);	// @@TODO USLEEP TIME DELAY 
 			// WS
 			if ($this->mapPointProgramId[$i] == 6)
 			{
