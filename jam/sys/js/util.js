@@ -20,8 +20,6 @@ function myFunction(formName) {
 	return false;
 }
 
-alert('1');
-
 // Place at end of html to run code after dom loaded but not waiting for images to finish loading
 (function() {
    // your page initialization code here

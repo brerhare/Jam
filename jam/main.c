@@ -142,7 +142,7 @@ if (++sanity > 100) { printf("Overflow!"); break; }
 		// Read in the include file to memory
 		sprintf(tmp, "%s/%s", documentRoot, tagInfo->content);
 		std::ifstream includeFile (tmp, std::ifstream::binary);
-		if (!includeFile){
+		if (!includeFile) {
 			char *error = (char *) calloc(1, 4096);
 			sprintf(error, "@include : cant find file %s", tmp);
 			die(error);
