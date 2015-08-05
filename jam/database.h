@@ -3,8 +3,7 @@
 
 
 // ----------------------------------------------------------------
-// Mapping
-
+// Mapping of Mysql to Jam types and options. Eg DECIMAL(10,1) = number.1 and NOT NULL = required
 char *getSqlType(char *jamType);
 char *getSqlOption(char *jamOption);
 

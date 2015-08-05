@@ -110,7 +110,7 @@ char *curlies2JamArray(char *tplPos) {
 	jam[jamIx]->trailer = strdup(trailer);
 
 	// Push the table onto the stack at every start of loop
-	if ( (!strcmp(jam[jamIx]->command, "@each")) || (!strcmp(jam[jamIx]->command, "@oncall")) ) {
+	if ( (!strcmp(jam[jamIx]->command, "@each")) || (!strcmp(jam[jamIx]->command, "@action")) ) {
 		for (int i = 0; i < MAX_JAM; i++) {
 			if (tableStack[i] == NULL) {
 				char *p = (char *) calloc(1, 4096);

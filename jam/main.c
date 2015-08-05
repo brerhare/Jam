@@ -142,7 +142,7 @@ if (++sanity > 100) { printf("Overflow!"); break; }
 		// Read in the include file to memory
 		sprintf(tmp, "%s/%s", documentRoot, tagInfo->content);
 		std::ifstream includeFile (tmp, std::ifstream::binary);
-		if (!includeFile){
+		if (!includeFile) {
 			char *error = (char *) calloc(1, 4096);
 			sprintf(error, "@include : cant find file %s", tmp);
 			die(error);
@@ -419,16 +419,16 @@ int control(int startIx, char *defaultTableName) {
 			mysql_free_result(res);
 			free(givenTableName);
 //		-------------------------------------
-		} else if (!(strcmp(cmd, "@oncall"))) {
+		} else if (!(strcmp(cmd, "@action"))) {
 //		-------------------------------------
 			while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
-				ix++;		// skip over all the oncall content
+				ix++;		// skip over all the action content
 			if (jam[ix])
 				emit(jam[ix]->trailer);
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@end"))) {
 //		------------------------------------
-			// Return from an each-end or oncall-end loop
+			// Return from an each-end or action-end loop
 //printf("RETURNING\n");
 			free(tmp);
 			return(0);
