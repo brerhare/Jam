@@ -1,5 +1,5 @@
 /*
- *  Either just a 'template.tpl' or a '/full/url/to/temaplate.tpl'
+ * @param templateName		either just a 'template.tpl' or a '/full/url/to/temaplate.tpl'
  */
 function runTemplate(templateName) {
 	var newLocation = templateName;
@@ -9,12 +9,19 @@ function runTemplate(templateName) {
 		var newLocation = currLocation.replace(value, templateName);
 	}
 	window.location.href = newLocation;
-	return(false);
+}
+
+
+/*
+ * 
+ */
+function backButton() {
+	window.history.back();
 }
 
 /*
- * forms can have several space-separated forms
- * forms and output are optional
+ * @param forms		can have several space-separated forms. Optional
+ * @param output	HTML element to fill with the returned content
  */
 function runAction(action, forms, output) {
 	if (typeof forms === 'undefined') { forms = ''; }
