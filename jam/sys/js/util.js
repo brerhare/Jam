@@ -6,17 +6,45 @@ function runTemplate(templateName) {
 	return(false);
 }
 
-function _getFormVars(formName) {
-    console.log($(formName).serialize());
-    return $(formName).serialize();
+function runAction(action, forms, output) {
+	if (typeof forms === 'undefined') { forms = ''; }
+	if (typeof output === 'undefined') { output = ''; }
+	var form = forms.split(" ");
+	var postData = '';
+	for (i = 0; i < form.length; i++) {
+//alert(form[i]);
+		var obj = $('form[name="' + form[i] + '"]');
+		if (postData != '')
+			postData += '&';
+		postData += obj.serialize();
+//alert('assembling data. So far we have : ' + postData);
+	}
+	var formURL = obj.attr("action");
+	var formURL = $(this).attr("action");
+	if ((typeof formURL == 'undefined') || (formURL == ''))
+		formURL = window.location.href;
+//alert('sending to ' + formURL + ' data : ' + postData);
+	$.ajax( {
+		url : formURL,
+		type: "POST",
+		data : postData,
+		success:function(data, textStatus, jqXHR) {
+//alert('back with: ' + data);
+			if (output != '') {
+				var target = document.getElementsByName(output);
+				target[0].innerHTML = data;
+			}
+		},
+		error: function(jqXHR, textStatus, errorThrown) {
+			alert('Ajax failure sending form ' + forms + '. Error: ' + textStatus);
+		}
+	});
+    //e.preventDefault(); //STOP default action
+    //e.unbind(); //unbind. to stop multiple form submit.
+	return false;
 }
 
-function myFunction() {
-alert('myfunction..');
-$("#supplierform").submit(); 
-return false;
-}
-
+/*
 $("#supplierform").submit(function(e)
 {
     var postData = $(this).serialize();
@@ -40,6 +68,7 @@ alert('back with: ' + data);
     e.preventDefault(); //STOP default action
     //e.unbind(); //unbind. to stop multiple form submit.
 });
+*/
 
 /*
 function myFunction(formName) {
