@@ -11,6 +11,36 @@ function _getFormVars(formName) {
     return $(formName).serialize();
 }
 
+function myFunction() {
+alert('myfunction..');
+$("#supplierform").submit(); 
+return false;
+}
+
+$("#supplierform").submit(function(e)
+{
+    var postData = $(this).serialize();
+    var formURL = $(this).attr("action");
+    $.ajax(
+    {
+        url : formURL,
+        type: "POST",
+        data : postData,
+        success:function(data, textStatus, jqXHR) 
+        {
+            //data: return data from server
+alert('back with: ' + data);
+        },
+        error: function(jqXHR, textStatus, errorThrown) 
+        {
+            //if fails      
+			alert('back with failure ' + textStatus);
+        }
+    });
+    e.preventDefault(); //STOP default action
+    //e.unbind(); //unbind. to stop multiple form submit.
+});
+
 /*
 function myFunction(formName) {
 	var kvpairs = [];
