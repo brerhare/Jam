@@ -17,9 +17,9 @@ function runTemplate(templateName) {
 
 /*
  * @param action	name of action to run.
-					- 'actionName' only - current template
-					- 'templateName:actionName - different template in same directory as current template
-					- '/path/to/templateName:actionName - use as is
+ *					- 'actionName' only - current template
+ *					- 'templateName:actionName - different template in same directory as current template
+ *					- '/path/to/templateName:actionName - use as is
  * @param element	element(s) to send. Multiples space separated. Form elements are expanded to their child elements
  * @param output	HTML element to fill with the returned content
  */
