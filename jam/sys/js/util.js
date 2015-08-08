@@ -30,10 +30,14 @@ function runAction(action, element, output) {
 	var formURL = getURLBase();
 	// Prepare the 'template' parameter: 'template.tpl' or 'template.tpl:actionName'
 	var postData = 'template=';
-	if (action.indexOf(':') != -1)
-		postData += action;
-	else
+	if (action.indexOf(':') == -1)							// actionName only - current template
 		postData += getURLParameter('template') + ':' + action;
+	else {
+		if (action.indexOf('/') == -1)						// has ':' but no slashes - diff tpl in same dir as curr tpl
+			postData += dirname(getURLParameter('template')) + '/' + action;
+		else												// has ':' and slashes - use as supplied
+			postData += action;
+	}
 	// Gather all the elements to send
 	var el = element.split(" ");
 	for (i = 0; i < el.length; i++) {
