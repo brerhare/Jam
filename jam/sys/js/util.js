@@ -16,34 +16,37 @@ function runTemplate(templateName) {
 }
 
 /*
- * @param forms		can have several space-separated forms. Optional
- * @param forms		can also be js:fieldname or js:literalvalue
+ * @param action	name of action to run.
+					- 'actionName' only - current template
+					- 'templateName:actionName - different template in same directory as current template
+					- '/path/to/templateName:actionName - use as is
+ * @param element	element(s) to send. Multiples space separated. Form elements are expanded to their child elements
  * @param output	HTML element to fill with the returned content
  */
-function runAction(action, forms, output) {
-	if (typeof forms === 'undefined') { forms = ''; }
+function runAction(action, element, output) {
+	if (typeof element === 'undefined') { elements = ''; }
 	if (typeof output === 'undefined') { output = ''; }
-	var formURL = window.location.href;
-	var thisTemplateName = window.location.search.substr(1);
-	var postData = 'template=' + getURLParameter('template');
-
-// @@TODO need to work :js into the form loop so can have multiple :js's. 
-// @@TODO need to cater for template:action. At present it only caters for actions within the current form
-
-	jsIx = forms.indexOf('js:');
-	if (jsIx != -1) {
-		postData += '&js=' + forms.substr(jsIx+3);
-//alert('js data : ' + postData);
-	} else {
-		var form = forms.split(" ");
-		for (i = 0; i < form.length; i++) {
-//alert(form[i]);
-			var obj = $('form[name="' + form[i] + '"]');
+	// Where we will send the reques to
+	var formURL = getURLBase();
+	// Prepare the 'template' parameter: 'template.tpl' or 'template.tpl:actionName'
+	var postData = 'template=';
+	if (action.indexOf(':') != -1)
+		postData += action;
+	else
+		postData += getURLParameter('template') + ':' + action;
+	// Gather all the elements to send
+	var el = element.split(" ");
+	for (i = 0; i < el.length; i++) {
+		if (document.forms[el]) {							// is this a form element?
+			var obj = $('form[name="' + el[i] + '"]');
 			postData += '&' + obj.serialize();
-//alert('assembling data. So far we have : ' + postData);
+			if (typeof obj.attr("action") != 'undefined')	// If a form (any form) has an 'action' we use it
+				formURL = obj.attr("action");
+		} else {											// not a form element
+			var obj = document.getElementsByName(el);
+			postData += '&' + encodeURIComponent(obj[0].value);
 		}
-		if (typeof obj.attr("action") != 'undefined')
-			formURL = obj.attr("action");
+//alert('assembling data. So far we have : ' + postData);
 	}
 //alert('sending to ' + formURL + ' data : ' + postData);
 	$.ajax( {
@@ -58,7 +61,7 @@ function runAction(action, forms, output) {
 			}
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
-			alert('Ajax failure sending form ' + forms + '. Error: ' + textStatus);
+			alert('Ajax failure sending form ' + element + '. Error: ' + textStatus);
 		}
 	});
     //e.preventDefault(); //STOP default action

@@ -67,48 +67,16 @@ int main(int argc, char *argv[]) {
 	char *tplEntrypoint = NULL;
 
 	printf("Content-type: text/html; charset=UTF-8\n\n");
-
 	documentRoot = getenv("DOCUMENT_ROOT");
-//	printf("DOCUMENT ROOT [%s]<br>", documentRoot);
-
-/*
-	// Get path to cfg
-	pid_t pid = getpid();
-	sprintf(tmpPath, "/proc/%d/exe", pid);
-	if (readlink(tmpPath, binary, PATH_MAX) == -1)
-		die("readlink failed");
-
-	// Get cfg
-	sprintf(tmpPath, "%s/jam.cfg", dirname(binary));
-	FILE *fp = fopen(tmpPath, "r");
-	if (fp == NULL) {
-		sprintf(tmp, "Cant open config file %s", tmpPath);
-		die(tmpPath);
-	}
-	char line[1024];
-	while(fgets(line, sizeof(line), fp) != NULL) {
-		char *name = strTrim(getWordAlloc(line, 1, " \t"));
-		char *val = strTrim(getWordAlloc(line, 2, " \t"));
-		if ((!name) || (!val))
-			die("Bad config line");
-		if (!(strcasecmp(name, "rootDir")))
-			rootDir = strdup(val);
-		free(name);
-		free(val);
-	}
-	if (rootDir == NULL)
-		die("root dir not specified");
-	fclose(fp);
-*/
-
 
 	cgivars = getcgivars() ;
 	for (int i=0; cgivars[i]; i+= 2) {
-//		printf("<li>[%s] = [%s]<br>", cgivars[i], cgivars[i+1]) ;
+		//printf("[%s] = [%s]<br>", cgivars[i], cgivars[i+1]) ;
 
 		if (!(strcmp(cgivars[i], "template"))) {
 			tplName = strTrim(getWordAlloc(cgivars[i+1], 1, ":"));
 			tplEntrypoint = strTrim(getWordAlloc(cgivars[i+1], 2, ":"));
+printf("[%s][%s]<br>", tplName, tplEntrypoint);
 // @@KIM! remove next if
 		} else if (!tplEntrypoint){
 			VAR *assignVar = (VAR *) calloc(1, sizeof(VAR));
