@@ -76,7 +76,7 @@ int main(int argc, char *argv[]) {
 		if (!(strcmp(cgivars[i], "template"))) {
 			tplName = strTrim(getWordAlloc(cgivars[i+1], 1, ":"));
 			tplEntrypoint = strTrim(getWordAlloc(cgivars[i+1], 2, ":"));
-printf("[%s][%s]<br>", tplName, tplEntrypoint);
+//printf("[%s][%s]<br>", tplName, tplEntrypoint);
 // @@KIM! remove next if
 		} else if (!tplEntrypoint){
 			VAR *assignVar = (VAR *) calloc(1, sizeof(VAR));
