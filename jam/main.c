@@ -41,6 +41,7 @@ int jamIx = 0;
 char *tableStack[MAX_JAM];
 VAR *var[MAX_VAR];
 char *documentRoot = NULL;
+char *tplEntrypoint = NULL;
 
 // Common declares end
 
@@ -64,7 +65,6 @@ int main(int argc, char *argv[]) {
 	char tmpPath[PATH_MAX], binary[PATH_MAX];
 	char *tmp = (char *) calloc(1, 4096);
 	char *tplName = NULL;
-	char *tplEntrypoint = NULL;
 
 	printf("Content-type: text/html; charset=UTF-8\n\n");
 	documentRoot = getenv("DOCUMENT_ROOT");
@@ -157,7 +157,7 @@ if (++sanity > 100) { printf("Overflow!"); break; }
 		while (jam[ix]) {
 			if ((!strcmp(jam[ix]->command, "@action")) && (!strcmp(jam[ix]->args, tplEntrypoint))) {
 				startIx = ix;
-				printf("XXXXXXXXXXXXXXXXXXXXX FOUND! XXXXXXXXXXXXXXXXXXXXXXX<br>");
+				//printf("XXXXXXXXXXXXXXXXXXXXX FOUND ACTION TO RUN! XXXXXXXXXXXXXXXXXXXXXXX<br>");
 				break;
 			}
 			ix++;
@@ -291,7 +291,7 @@ int control(int startIx, char *defaultTableName) {
 		char *args = jam[ix]->args;
 		char *rawData = jam[ix]->rawData;
 
-printf("Processing [%s]<br>", cmd);
+//printf("Processing [%s]<br>", cmd);
 
 //		-----------------------------------------
 		if (!strcmp(cmd, "@literal")) {
@@ -403,13 +403,19 @@ printf("Processing [%s]<br>", cmd);
 //		-------------------------------------
 		} else if (!(strcmp(cmd, "@action"))) {
 //		-------------------------------------
-			emit(jam[ix]->trailer);
-			control((ix + 1), defaultTableName);
-			// Now emit the loops' trailer and make it current, so we will immediately advance past it
-			while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
-				ix++;		// skip over all the action content
-			if (jam[ix])
+			if (!tplEntrypoint) {		// not for us - ignore completely
+				while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
+					ix++;				
 				emit(jam[ix]->trailer);
+			} else {					// for us - run and stop
+				control((ix + 1), defaultTableName);
+				// Now emit the loops' trailer and stop
+				while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
+					ix++;		// skip over all the action content
+				if (jam[ix])
+					emit(jam[ix]->trailer);
+				return(0);
+			}
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@end"))) {
 //		------------------------------------
