@@ -408,6 +408,7 @@ int control(int startIx, char *defaultTableName) {
 					ix++;				
 				emit(jam[ix]->trailer);
 			} else {					// for us - run and stop
+				emit(jam[ix]->trailer);
 				control((ix + 1), defaultTableName);
 				// Now emit the loops' trailer and stop
 				while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
