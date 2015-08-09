@@ -151,7 +151,19 @@ if (++sanity > 100) { printf("Overflow!"); break; }
 	}
 
 	// Generate HTML from Jam array
-	control(0, NULL);
+	int startIx = 0;
+	if (tplEntrypoint) {
+		int ix = 0;
+		while (jam[ix]) {
+			if ((!strcmp(jam[ix]->command, "@action")) && (!strcmp(jam[ix]->args, tplEntrypoint))) {
+				startIx = ix;
+				printf("XXXXXXXXXXXXXXXXXXXXX FOUND! XXXXXXXXXXXXXXXXXXXXXXX<br>");
+				break;
+			}
+			ix++;
+		}
+	}
+	control(startIx, NULL);
 
 	free(tmp);
 	free(tpl);
@@ -279,6 +291,8 @@ int control(int startIx, char *defaultTableName) {
 		char *args = jam[ix]->args;
 		char *rawData = jam[ix]->rawData;
 
+printf("Processing [%s]<br>", cmd);
+
 //		-----------------------------------------
 		if (!strcmp(cmd, "@literal")) {
 //		-----------------------------------------
@@ -389,6 +403,9 @@ int control(int startIx, char *defaultTableName) {
 //		-------------------------------------
 		} else if (!(strcmp(cmd, "@action"))) {
 //		-------------------------------------
+			emit(jam[ix]->trailer);
+			control((ix + 1), defaultTableName);
+			// Now emit the loops' trailer and make it current, so we will immediately advance past it
 			while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
 				ix++;		// skip over all the action content
 			if (jam[ix])
