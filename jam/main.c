@@ -170,7 +170,7 @@ if (++sanity > 100) { printf("Overflow!"); break; }
 	free(tplEntrypoint);
 	if (conn)
 		closeDB();
-jamDump();
+jamDump(2);
 	exit(0);
 }
 
@@ -279,7 +279,7 @@ int Xmain(int argc, char *argv[]) {
 	free(tplEntrypoint);
 	if (conn)
 		closeDB();
-jamDump();
+jamDump(2);
 	exit(0);
 }
 

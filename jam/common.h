@@ -58,7 +58,7 @@ extern VAR *var[MAX_VAR];
 VAR *findVarStrict(char *qualifiedName);
 VAR *findVarLenient(char *name, char *prefix);void emit(char *line);
 void die(const char *errorString);
-void jamDump();
+void jamDump(int which);
 void fillVarDataTypes(VAR *var, char *value);
 void updateVar(char *qualifiedName, char *value, int type);
 void clearVarValues(VAR *varStruct);
