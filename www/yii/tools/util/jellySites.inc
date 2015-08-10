@@ -34,7 +34,7 @@ $siteList = array (
 	'trade.weetarget.co.uk'         => '/home/weetarget.co.uk/domains/trade.weetarget.co.uk/dev/src/www/yii/trade.weetarget.co.uk',
 	'weetarget.co.uk'               => '/home/weetarget.co.uk/dev/src/www/yii/weetarget.co.uk',
 	'zoelifecoaching.co.uk'			=> '/home/zoelifecoaching.co.uk/dev/src/www/yii/zoelifecoaching.co.uk',
-//	'xxx'                           => '/home/xxx/dev/src/www/yii/xxx',
+	'cocoakalula.co.uk'				=> '/home/cocoakalula.co.uk/dev/src/www/yii/cocoakalula.co.uk',
 
 );
 

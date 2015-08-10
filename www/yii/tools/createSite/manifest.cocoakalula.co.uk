@@ -1,0 +1,19 @@
+domain = cocoakalula.co.uk
+parentdomain =
+sitetitle = Cocoa Kalula
+sid = 79acmnoo2p7v0c1b9sr5gkfmn2
+
+# Database
+dbname = cocoakalula_co_uk
+dbuser = cocoakalula.co.u
+dbpass = 35yjd32a8
+
+# Shopping cart order confirmation email
+checkoutemail = no@email
+checkoutname = Cocoa Kalula
+checkoutpaypalemail = no@email
+
+# Backend page editor
+editorpagewidth = 700
+editorpageheight = 450
+
