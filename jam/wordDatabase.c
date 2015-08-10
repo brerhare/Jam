@@ -202,7 +202,7 @@ int wordDatabaseNewTable(int ix, char *defaultTableName) {
 
     char *qStr = (char *) calloc(1, 4096);
     char *p;
-    sprintf(qStr, "CREATE TABLE IF NOT EXISTS %s ( __id INT NOT NULL AUTO_INCREMENT , ", tableName);
+    sprintf(qStr, "CREATE TABLE IF NOT EXISTS %s ( _id INT NOT NULL AUTO_INCREMENT , ", tableName);
     int cnt = 2;
     // Each line. Building a query string similar to "CREATE TABLE Cars(Id INT NOT NULL, Name TEXT, Price INT)"
     while (char *block = strTrim(getWordAlloc(args, cnt++, "\n"))) {
@@ -215,7 +215,7 @@ int wordDatabaseNewTable(int ix, char *defaultTableName) {
         strcat(qStr, " ");
         // Field type to query string
         if ((p = getSqlType(fieldType)) == NULL) {
-            sprintf(tmp, "Invalid field type '%s' in create table", p);
+            sprintf(tmp, "Invalid field type '%s' in create table", fieldType);
             die(tmp);
         }
         strcat(qStr, p);
@@ -237,7 +237,7 @@ int wordDatabaseNewTable(int ix, char *defaultTableName) {
         free(fieldType);
         free(block);
     }
-    strcat(qStr, "  PRIMARY KEY (__id) ) ENGINE = InnoDB;");
+    strcat(qStr, "  PRIMARY KEY (_id) ) ENGINE = InnoDB;");
     if (mysql_query(conn,qStr) != 0)
         die(mysql_error(conn));
 	emit(jam[ix]->trailer);
@@ -306,6 +306,9 @@ int wordDatabaseRemoveTable(int ix, char *defaultTableName) {
     char *qStr = (char *) calloc(1, 4096);
     sprintf(qStr,"DROP TABLE IF EXISTS %s", tableName);
     int status = mysql_query(conn,qStr);
+    ///// @@TODO make wrapper for mysql_query so we can show proper errors...
+    ///// see http://www.databaseskill.com/3643013/
+    ///// char x[200]; sprintf(x, "=%d=", mysql_errno(conn)); die(x);
 	emit(jam[ix]->trailer);
     free(tableName);
 }

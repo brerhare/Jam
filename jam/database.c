@@ -27,6 +27,7 @@ struct SQLMAP {
 };
 SQLMAP sqlTypeMap[] = {
     "string",       "VARCHAR(255)",
+    "text",			"TEXT",
 	"number", 	    "INT",
 	"number.0",	    "INT",
     "number.1",     "DECIMAL(10,1)",
