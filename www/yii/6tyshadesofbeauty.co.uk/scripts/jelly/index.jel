@@ -67,7 +67,7 @@ addon.slider.flexslider.border-width = 0px
 		image.url = img/tel-no.png
 		image.width = 100%
 		image.height = 10%
-		click = http://www.dev.6tyshadesofbeauty.co.uk
+		click = http://www.6tyshadesofbeauty.co.uk
 		
 		[fb]
 		css.margin-top = 5px
@@ -170,7 +170,7 @@ css.margin-top = 50px
 		image.url = img/6ty-vlogo-line.png
 		image.width = 100%
 		image.height = 243%
-		click = http://www.dev.6tyshadesofbeauty.co.uk
+		click = http://www.6tyshadesofbeauty.co.uk
 		
 		[home-content]
 		css.width = 100%
