@@ -206,7 +206,6 @@ void jamDump(int which) {
 				printf("%02d VARDUMP %s : VAR_DECIMAL2 %.2f %s<br>", i, var[i]->name, var[i]->decimal2Value, tmp);
 			printf("</span>");
 		}
-		printf("<br>");
 		printf("<span style='margin:3px; padding:2px; color:#000; background-color:#decde3;'>prefill </span>");
 		printf("<span style='margin:3px; padding:2px; color:#000; background-color:yellow;'>count </span>");
 		printf("<span style='margin:3px; padding:2px; color:#000; background-color:orange;'>sum </span>");
@@ -214,7 +213,6 @@ void jamDump(int which) {
 		printf("<span style='margin:3px; padding:2px; color:#000; background-color:#e28c86;'>mysql </span>");
 		printf("<span style='margin:3px; padding:2px; color:#000; background-color:cyan;'>unused </span>");
 	}
-	printf("<br>");
 	printf("<br>");
 	printf("</div>");
 	free(tmp);

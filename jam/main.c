@@ -27,6 +27,8 @@
 
 #include <locale.h>
 
+#include "log.h"
+
 #ifndef __STDC_ISO_10646__
 #error "Oops, our wide chars are not Unicode codepoints, sorry!"
 #endif
@@ -66,6 +68,7 @@ int main(int argc, char *argv[]) {
 	char *tmp = (char *) calloc(1, 4096);
 	char *tplName = NULL;
 
+	logMsg(LOGINFO, "Starting");
 	printf("Content-type: text/html; charset=UTF-8\n\n");
 	documentRoot = getenv("DOCUMENT_ROOT");
 
@@ -350,6 +353,8 @@ int control(int startIx, char *defaultTableName) {
 						wordDatabaseRemoveTable(ix, defaultTableName);
 					if (!strcmp(tmp, "index"))
 						wordDatabaseRemoveIndex(ix, defaultTableName);
+					if (!strcmp(tmp, "item"))
+						wordDatabaseRemoveItem(ix, defaultTableName);
 				}
 			}
 //		-----------------------------------------
