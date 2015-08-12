@@ -341,8 +341,7 @@ int wordDatabaseRemoveItem(int ix, char *defaultTableName) {
     char *tableName = (char *) calloc(1, 4096);
     char *tmp = (char *) calloc(1, 4096);
     VAR *variable = NULL;
-printf("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
-return(0);
+
     getWord(tableName, args, 2, " \t");
     //if (!tableName)
         die("missing table name to remove item from");

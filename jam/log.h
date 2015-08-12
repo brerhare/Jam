@@ -17,7 +17,7 @@ C_FILE_START
 #define BAD -1
 #define UGLY 1
 
-#define LOGFINE 1
+#define LOGMICRO 1
 #define LOGDEBUG 2
 #define LOGINFO  3
 #define LOGWARN 4

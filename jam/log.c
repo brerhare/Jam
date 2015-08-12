@@ -14,10 +14,8 @@
 
 int logLevel = LOGDEBUG;
 FILE *log_message_stream = NULL;
-char *logFileName = "log.dat";
-long logMaxBytes = 0L;
-int timesSinceSeek = 0;
-char *redirBuf = NULL;
+char *logFileName = "/tmp/log.dat";
+long logMaxBytes = 10000000L;
 
 void logMsg(int type, char *str, ...)
 {
@@ -28,9 +26,12 @@ void logMsg(int type, char *str, ...)
 	if (type < logLevel)
 		return;
 
-	// Set output (see config.cpp)
-	if (log_message_stream == NULL)
-		log_message_stream = stderr;
+	//if (log_message_stream == NULL)
+		//log_message_stream = stderr;
+
+	if (log_message_stream == NULL) {
+		log_message_stream = fopen(logFileName, "w");
+	}
 
 /*
 FILE *fp = fopen("c:/tmp/xx.log", "a");
@@ -44,60 +45,56 @@ va_end(ap);
 */
 
 	// Check for logmaxbytes exceeded
-	if (++timesSinceSeek > 100)
+	fseek(log_message_stream, 0, SEEK_END);
+	length = ftell(log_message_stream);
+	if (length > logMaxBytes)
 	{
-		fseek(log_message_stream, 0, SEEK_END);
-		length = ftell(log_message_stream);
-		if (length > logMaxBytes)
+		fprintf(log_message_stream, "Maximum log size reached on file %s\n", logFileName);
+		fflush(log_message_stream);
+		struct stat file_stat;
+		FILE *fpOld;
+		int bytes;
+		char *buf = (char *) malloc(1024);
+		char *logOld = (char *) malloc(strlen(logFileName) + 10);
+		strcpy(logOld, logFileName);
+		strcat(logOld, ".old");
+		if ((stat(logOld, &file_stat)) == 0)
 		{
-			fprintf(log_message_stream, "Maximum log size reached on file %s\n", logFileName);
-			fflush(log_message_stream);
-			struct stat file_stat;
-			FILE *fpOld;
-			int bytes;
-			char *buf = (char *) malloc(1024);
-			char *logOld = (char *) malloc(strlen(logFileName) + 10);
-			strcpy(logOld, logFileName);
-			strcat(logOld, ".old");
-			if ((stat(logOld, &file_stat)) == 0)
-			{
 #ifdef WIN32
-				if (DeleteFile(logOld) == 0)
+			if (DeleteFile(logOld) == 0)
 #else
-				if (unlink(logOld) != 0)
+			if (unlink(logOld) != 0)
 #endif
-					/*exit(-1)*/ ;
-			}
-			if ((fpOld = fopen(logOld, "w")) == NULL)
 				/*exit(-1)*/ ;
-			else
-			{
-				fclose(log_message_stream);
-				if ((log_message_stream = fopen(logFileName, "r")) == NULL)
-				{
-					exit(-1);
-				}
-				while ((bytes = fread(buf, sizeof(char), 1024, log_message_stream)) > 0)
-					bytes = fwrite(buf, sizeof(char), bytes, fpOld);
-				fclose(fpOld);
-			}
+		}
+		if ((fpOld = fopen(logOld, "w")) == NULL)
+			/*exit(-1)*/ ;
+		else
+		{
 			fclose(log_message_stream);
-#ifdef WIN32
-			if (DeleteFile(logFileName) == 0)
-#else
-			if (unlink(logFileName) != 0)
-#endif
-				/*exit(-1)*/ ;
-			if ((log_message_stream = fopen(logFileName, "a")) == NULL)
+			if ((log_message_stream = fopen(logFileName, "r")) == NULL)
 			{
-				log_message_stream = stderr;
-				logMsg(LOGERROR, "Cant open log file - aborting");
 				exit(-1);
 			}
-			free(buf);
-			free(logOld);
+			while ((bytes = fread(buf, sizeof(char), 1024, log_message_stream)) > 0)
+				bytes = fwrite(buf, sizeof(char), bytes, fpOld);
+			fclose(fpOld);
 		}
-		timesSinceSeek = 0;
+		fclose(log_message_stream);
+#ifdef WIN32
+		if (DeleteFile(logFileName) == 0)
+#else
+		if (unlink(logFileName) != 0)
+#endif
+			/*exit(-1)*/ ;
+		if ((log_message_stream = fopen(logFileName, "a")) == NULL)
+		{
+			log_message_stream = stderr;
+			logMsg(LOGERROR, "Cant open log file - aborting");
+			exit(-1);
+		}
+		free(buf);
+		free(logOld);
 	}
 
 	// Timestamp
@@ -113,23 +110,23 @@ va_end(ap);
 	va_start(ap, str);
 	switch (type)
 	{
-		case LOGFINE:
-			fprintf(log_message_stream, "Fine:  ");
+		case LOGMICRO:
+			fprintf(log_message_stream, "  Micro:  ");
 			break;
 		case LOGDEBUG:
-			fprintf(log_message_stream, "Debug:  ");
+			fprintf(log_message_stream, "  Debug:  ");
 			break;
 		case LOGINFO:
-			fprintf(log_message_stream, "Info:  ");
+			fprintf(log_message_stream, "   Info:  ");
 			break;
 		case LOGWARN:
 			fprintf(log_message_stream, "Warning:  ");
 			break;
 		case LOGERROR:
-			fprintf(log_message_stream, "Error:  ");
+			fprintf(log_message_stream, "  Error:  ");
 			break;
 		case LOGFATAL:
-			fprintf(log_message_stream, "Fatal:  ");
+			fprintf(log_message_stream, "  Fatal:  ");
 			break;
 		default:
 			fprintf(log_message_stream, "(Unknown log type):  ");
@@ -140,3 +137,10 @@ va_end(ap);
 	fflush(log_message_stream);
 	va_end(ap);
 }
+
+/*
+int main() {
+	printf("xxx");
+	logMsg(LOGINFO, "SSSSSSS");
+}
+*/
