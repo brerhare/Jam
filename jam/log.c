@@ -30,7 +30,7 @@ void logMsg(int type, char *str, ...)
 		//log_message_stream = stderr;
 
 	if (log_message_stream == NULL) {
-		log_message_stream = fopen(logFileName, "w");
+		log_message_stream = fopen(logFileName, "a+");
 	}
 
 /*

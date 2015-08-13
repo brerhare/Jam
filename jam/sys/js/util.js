@@ -20,8 +20,10 @@ function runTemplate(templateName) {
  *					- 'actionName' only - current template
  *					- 'templateName:actionName - different template in same directory as current template
  *					- '/path/to/templateName:actionName - use as is
- * @param element	element(s) to send. Multiples space separated. Form elements are expanded to their child elements
- * @param output	HTML element to fill with the returned content
+ * @param element	element(s) to send. Space-separate multiples
+					- form elements are expanded to their child elements
+					- if it isnt an element then 'name=value' format is assumed and sent as given, eg 'stock_supplier._id=2'
+ * @param output	HTML element that receives any returned content (innerHTML)
  */
 function runAction(action, element, output) {
 	if (typeof element === 'undefined') { elements = ''; }
@@ -47,8 +49,13 @@ function runAction(action, element, output) {
 			if (typeof obj.attr("action") != 'undefined')	// If a form (any form) has an 'action' we use it
 				formURL = obj.attr("action");
 		} else {											// not a form element
-			var obj = document.getElementsByName(el);
-			postData += '&' + encodeURIComponent(obj[0].value);
+			var obj = document.getElementsByName(el);		// .. try to get it
+			if (obj.length > 0)								// got it
+				postData += '&' + el + '=' + encodeURIComponent(obj[0].value);
+			else {											// not ANY kind of element, so just send as is (a=b)
+				var lit = el[i].split('=');
+				postData += '&' + lit[0] + '=' + lit[1];
+			}
 		}
 //alert('assembling data. So far we have : ' + postData);
 	}

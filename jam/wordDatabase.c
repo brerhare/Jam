@@ -13,6 +13,7 @@
 #include "common.h"
 #include "database.h"
 #include "stringUtil.h"
+#include "log.h"
 
 //-----------------------------------------------------------------
 // Database
@@ -341,15 +342,20 @@ int wordDatabaseRemoveItem(int ix, char *defaultTableName) {
     char *tableName = (char *) calloc(1, 4096);
     char *tmp = (char *) calloc(1, 4096);
     VAR *variable = NULL;
+    logMsg(LOGDEBUG, "Removing item from table %s", tableName);
 
     getWord(tableName, args, 2, " \t");
-    //if (!tableName)
+    if (!tableName) {
+        logMsg(LOGFATAL, "Cant remove item, no table name given");
         die("missing table name to remove item from");
+    }
     // The _id variable must exist
     sprintf(tmp, "%s._id", tableName);
     variable = findVarStrict(tmp);
-    if (!variable)
+    if (!variable) {
+        logMsg(LOGFATAL, "Cant remove item, missing _id variable");
         die("missing _id variable to remove item for");
+    }
 
     char *qStr = (char *) calloc(1, 4096);
     sprintf(qStr,"DELETE FROM %s WHERE _id = %d", tableName, atoi(variable->portableValue));

@@ -307,7 +307,8 @@ int control(int startIx, char *defaultTableName) {
 		char *args = jam[ix]->args;
 		char *rawData = jam[ix]->rawData;
 
-		logMsg(LOGMICRO, "Command loop processing command [%s] args [%s]", cmd, args);
+		if ((strlen(cmd)) && (cmd[0] == '@'))
+			logMsg(LOGMICRO, "Command loop processing command [%s] args [%s]", cmd, args);
 
 //		-----------------------------------------
 		if (!strcmp(cmd, "@literal")) {
@@ -360,7 +361,7 @@ int control(int startIx, char *defaultTableName) {
 			if (args) {
 				getWord(tmp, args, 1, " ");
 				if (*tmp) {
-					logMsg(LOGDEBUG, "@remove");
+					logMsg(LOGDEBUG, "@remove requested");
 					if (!strcmp(tmp, "database"))
 						wordDatabaseRemoveDatabase(ix, defaultTableName);
 					if (!strcmp(tmp, "table"))
@@ -408,7 +409,9 @@ int control(int startIx, char *defaultTableName) {
 			SQL_RESULT *rp = sqlCreateResult(givenTableName, res);
 			while (sqlGetRow(rp) != SQL_EOF) {
 				emit(jam[ix]->trailer);
+				logMsg(LOGMICRO, "@each starting recurse");
 				control((ix + 1), givenTableName);
+				logMsg(LOGMICRO, "@each ended recurse");
 			}
 			// Finished. Now emit the loops' trailer and make it current, so we will immediately advance past it
 			while (jam[ix] && (strcmp(jam[ix]->command, "@end") || (strcmp(jam[ix]->args, givenTableName)))) {
@@ -428,7 +431,9 @@ int control(int startIx, char *defaultTableName) {
 				emit(jam[ix]->trailer);
 			} else {					// for us - run and stop
 				emit(jam[ix]->trailer);
+				logMsg(LOGMICRO, "@action starting recurse");
 				control((ix + 1), defaultTableName);
+				logMsg(LOGMICRO, "@action ended recurse");
 				// Now emit the loops' trailer and stop
 				while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
 					ix++;		// skip over all the action content
