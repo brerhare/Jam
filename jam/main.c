@@ -27,6 +27,8 @@
 
 #include <locale.h>
 
+#include "log.h"
+
 #ifndef __STDC_ISO_10646__
 #error "Oops, our wide chars are not Unicode codepoints, sorry!"
 #endif
@@ -66,12 +68,16 @@ int main(int argc, char *argv[]) {
 	char *tmp = (char *) calloc(1, 4096);
 	char *tplName = NULL;
 
+	logMsg(LOGINFO, "--------------------------------------------------------------------------");
+	logMsg(LOGINFO, "Starting");
 	printf("Content-type: text/html; charset=UTF-8\n\n");
+
 	documentRoot = getenv("DOCUMENT_ROOT");
+	logMsg(LOGINFO, "DOCUMENT_ROOT is %s", documentRoot);
 
 	cgivars = getcgivars() ;
 	for (int i=0; cgivars[i]; i+= 2) {
-		//printf("[%s] = [%s]<br>", cgivars[i], cgivars[i+1]) ;
+		logMsg(LOGDEBUG, "Parameter [%s] = [%s]", cgivars[i], cgivars[i+1]) ;
 
 		if (!(strcmp(cgivars[i], "template"))) {
 			tplName = strTrim(getWordAlloc(cgivars[i+1], 1, ":"));
@@ -84,7 +90,7 @@ int main(int argc, char *argv[]) {
 			assignVar->type = VAR_STRING;	// @@FIX!!!!!!
 			clearVarValues(assignVar);
 			fillVarDataTypes(assignVar, cgivars[i+1]);
-//printf("PREFILL-->%s<-- with value -->%s<--\n", assignVar->name, assignVar->portableValue);
+			logMsg(LOGDEBUG, "PREFILL-->%s<-- with value -->%s<--\n", assignVar->name, assignVar->portableValue);
 			assignVar->source = strdup("prefill");
 			assignVar->debugHighlight = 1;
 			for (int i = 0; i < MAX_VAR; i++) {
@@ -98,7 +104,7 @@ int main(int argc, char *argv[]) {
 
 	// Read in template, including any @include's
 	sprintf(tmp, "%s/%s", documentRoot, tplName);
-	//sprintf(tmp, "/home/kim/dev/src/jam/template2/supplier.tpl");
+	logMsg(LOGINFO, "Asking for template %s", tmp);
 	char *tpl = readTemplate(tmp);
 
 int sanity = 0;
@@ -107,12 +113,14 @@ if (++sanity > 100) { printf("Overflow!"); break; }
 		TAGINFO *tagInfo = getTagInfo(tpl, "@include");
 		if (tagInfo == NULL)
 			break;
-		// Read in the include file to memory
+		// Read in the include file
 		sprintf(tmp, "%s/%s", documentRoot, tagInfo->content);
+		logMsg(LOGINFO, "Including @INCLUDE file %s", tmp);
 		std::ifstream includeFile (tmp, std::ifstream::binary);
 		if (!includeFile) {
 			char *error = (char *) calloc(1, 4096);
 			sprintf(error, "@include : cant find file %s", tmp);
+			logMsg(LOGFATAL, "%s", error);
 			die(error);
 		}
 		includeFile.seekg (0, includeFile.end);
@@ -121,6 +129,7 @@ if (++sanity > 100) { printf("Overflow!"); break; }
 		char *includeBuf = (char *) calloc(1, length+1);
 		if (!includeBuf) {
 			sprintf(tmp, "cant calloc memory to @include %s", tagInfo->content);
+			logMsg(LOGFATAL, "%s", tmp);
 			die(tmp);
 		}
    		includeFile.read(includeBuf, length);
@@ -135,7 +144,7 @@ if (++sanity > 100) { printf("Overflow!"); break; }
 		strcpy(newTpl, tpl);
 		strcat(newTpl, includeBuf);
 		strcat(newTpl, (tagInfo->endCurlyPos + strlen(endJam)));
-		//printf("1st=%d, incl=%d, 2nd=%d<br>", (int)strlen(tpl), (int)strlen(includeBuf), (int)strlen((endCurly+strlen(endCurly))));
+		logMsg(LOGDEBUG, "Splicing included file into template. 1stpart=%d, include=%d, 2ndpart=%d<br>", (int)strlen(tpl), (int)strlen(includeBuf), (int)strlen((tagInfo->endCurlyPos + strlen(endJam))));
 		free(tpl);
 		tpl = newTpl;
 		free(tagInfo->name);
@@ -144,33 +153,40 @@ if (++sanity > 100) { printf("Overflow!"); break; }
 	}
 
 	// Create Jam array from template
+	logMsg(LOGINFO, "Creating jam array");
 	char *tplPos = tpl;
 	while (tplPos = curlies2JamArray(tplPos)) {
-		//printf("%s\n", jam[jamIx]->command);
+			logMsg(LOGDEBUG, "Array command=%s", jam[jamIx]->command);
 		jamIx++;
 	}
 
 	// Generate HTML from Jam array
+	logMsg(LOGINFO, "Generating HTML from Jam array");
 	int startIx = 0;
 	if (tplEntrypoint) {
 		int ix = 0;
 		while (jam[ix]) {
 			if ((!strcmp(jam[ix]->command, "@action")) && (!strcmp(jam[ix]->args, tplEntrypoint))) {
 				startIx = ix;
-				//printf("XXXXXXXXXXXXXXXXXXXXX FOUND ACTION TO RUN! XXXXXXXXXXXXXXXXXXXXXXX<br>");
+				logMsg(LOGINFO, "Preparing to run @ACTION %s", tplEntrypoint);
 				break;
 			}
 			ix++;
 		}
 	}
+	if (startIx == 0)
+		logMsg(LOGINFO, "Processing command loop starting from @BEGIN");
+	else
+		logMsg(LOGINFO, "Processing command loop for @ACTION %s", tplEntrypoint);
 	control(startIx, NULL);
+	logMsg(LOGINFO, "Finished command loop. Ending");
 
 	free(tmp);
 	free(tpl);
 	free(tplEntrypoint);
 	if (conn)
 		closeDB();
-jamDump();
+jamDump(2);
 	exit(0);
 }
 
@@ -279,7 +295,7 @@ int Xmain(int argc, char *argv[]) {
 	free(tplEntrypoint);
 	if (conn)
 		closeDB();
-jamDump();
+jamDump(2);
 	exit(0);
 }
 
@@ -291,7 +307,8 @@ int control(int startIx, char *defaultTableName) {
 		char *args = jam[ix]->args;
 		char *rawData = jam[ix]->rawData;
 
-//printf("Processing [%s]<br>", cmd);
+		if ((strlen(cmd)) && (cmd[0] == '@'))
+			logMsg(LOGMICRO, "Command loop processing command [%s] args [%s]", cmd, args);
 
 //		-----------------------------------------
 		if (!strcmp(cmd, "@literal")) {
@@ -344,12 +361,15 @@ int control(int startIx, char *defaultTableName) {
 			if (args) {
 				getWord(tmp, args, 1, " ");
 				if (*tmp) {
+					logMsg(LOGDEBUG, "@remove requested");
 					if (!strcmp(tmp, "database"))
 						wordDatabaseRemoveDatabase(ix, defaultTableName);
 					if (!strcmp(tmp, "table"))
 						wordDatabaseRemoveTable(ix, defaultTableName);
 					if (!strcmp(tmp, "index"))
 						wordDatabaseRemoveIndex(ix, defaultTableName);
+					if (!strcmp(tmp, "item"))
+						wordDatabaseRemoveItem(ix, defaultTableName);
 				}
 			}
 //		-----------------------------------------
@@ -389,7 +409,9 @@ int control(int startIx, char *defaultTableName) {
 			SQL_RESULT *rp = sqlCreateResult(givenTableName, res);
 			while (sqlGetRow(rp) != SQL_EOF) {
 				emit(jam[ix]->trailer);
+				logMsg(LOGMICRO, "@each starting recurse");
 				control((ix + 1), givenTableName);
+				logMsg(LOGMICRO, "@each ended recurse");
 			}
 			// Finished. Now emit the loops' trailer and make it current, so we will immediately advance past it
 			while (jam[ix] && (strcmp(jam[ix]->command, "@end") || (strcmp(jam[ix]->args, givenTableName)))) {
@@ -409,7 +431,9 @@ int control(int startIx, char *defaultTableName) {
 				emit(jam[ix]->trailer);
 			} else {					// for us - run and stop
 				emit(jam[ix]->trailer);
+				logMsg(LOGMICRO, "@action starting recurse");
 				control((ix + 1), defaultTableName);
+				logMsg(LOGMICRO, "@action ended recurse");
 				// Now emit the loops' trailer and stop
 				while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
 					ix++;		// skip over all the action content

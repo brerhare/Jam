@@ -13,6 +13,7 @@
 #include "common.h"
 #include "database.h"
 #include "stringUtil.h"
+#include "log.h"
 
 //-----------------------------------------------------------------
 // Database
@@ -332,4 +333,34 @@ int wordDatabaseRemoveIndex(int ix, char *defaultTableName) {
 	emit(jam[ix]->trailer);
     free(tableName);
     free(indexName);
+}
+
+int wordDatabaseRemoveItem(int ix, char *defaultTableName) {
+    char *cmd = jam[ix]->command;
+    char *args = jam[ix]->args;
+    char *rawData = jam[ix]->rawData;
+    char *tableName = (char *) calloc(1, 4096);
+    char *tmp = (char *) calloc(1, 4096);
+    VAR *variable = NULL;
+    logMsg(LOGDEBUG, "Removing item from table %s", tableName);
+
+    getWord(tableName, args, 2, " \t");
+    if (!tableName) {
+        logMsg(LOGFATAL, "Cant remove item, no table name given");
+        die("missing table name to remove item from");
+    }
+    // The _id variable must exist
+    sprintf(tmp, "%s._id", tableName);
+    variable = findVarStrict(tmp);
+    if (!variable) {
+        logMsg(LOGFATAL, "Cant remove item, missing _id variable");
+        die("missing _id variable to remove item for");
+    }
+
+    char *qStr = (char *) calloc(1, 4096);
+    sprintf(qStr,"DELETE FROM %s WHERE _id = %d", tableName, atoi(variable->portableValue));
+    int status = mysql_query(conn,qStr);
+    emit(jam[ix]->trailer);
+    free(tableName);
+    free(tmp);
 }

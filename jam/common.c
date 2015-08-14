@@ -168,48 +168,51 @@ void die(const char *errorString) {
 	exit(1);
 }
 
-void jamDump() {
+void jamDump(int which) {
 	char *tmp = (char *) calloc(1, 4096);
 	printf("<br><br><div style='font-size:11px;color:#ffffff;background-color:#1b2426'>");
-	for (int i = 0; i < MAX_JAM; i++) {
-		if (jam[i] == NULL)
-			break;
-		//printf("%02d JAMDUMP: %s >>>>>%s<<<<<\n\n\n", i, jam[i]->command, jam[i]->trailer);
-		printf("%02d JAMDUMP %s : %s<br>", i, jam[i]->command, jam[i]->args);
+	if ((which == 0) || (which == 1)) {
+		for (int i = 0; i < MAX_JAM; i++) {
+			if (jam[i] == NULL)
+				break;
+			//printf("%02d JAMDUMP: %s >>>>>%s<<<<<\n\n\n", i, jam[i]->command, jam[i]->trailer);
+			printf("%02d JAMDUMP %s : %s<br>", i, jam[i]->command, jam[i]->args);
+		}
 	}
-	printf("<hr>");
-	for (int i = 0; i < MAX_VAR; i++) {
-		if (var[i] == NULL)
-			break;
+	if (which == 0)
+		printf("<hr>");
+	if ((which == 0) || (which == 2)) {
+		for (int i = 0; i < MAX_VAR; i++) {
+			if (var[i] == NULL)
+				break;
 
-		printf("<span");
-		if (var[i]->debugHighlight == 1) printf(" style='color:#decde3'");
-		if (var[i]->debugHighlight == 2) printf(" style='color:yellow;'");
-		if (var[i]->debugHighlight == 3) printf(" style='color:orange;'");
-		if (var[i]->debugHighlight == 4) printf(" style='color:#a8c968;'");
-		if (var[i]->debugHighlight == 5) printf(" style='color:#e28c86;'");
-		if (var[i]->debugHighlight == 6) printf(" style='color:cyan;'");
-		printf(">");
+			printf("<span");
+			if (var[i]->debugHighlight == 1) printf(" style='color:#decde3'");
+			if (var[i]->debugHighlight == 2) printf(" style='color:yellow;'");
+			if (var[i]->debugHighlight == 3) printf(" style='color:orange;'");
+			if (var[i]->debugHighlight == 4) printf(" style='color:#a8c968;'");
+			if (var[i]->debugHighlight == 5) printf(" style='color:#e28c86;'");
+			if (var[i]->debugHighlight == 6) printf(" style='color:cyan;'");
+			printf(">");
 
-		*tmp = 0;
-		if (var[i]->source)
-			sprintf(tmp, " : source %s", var[i]->source);
-		if (var[i]->type == VAR_STRING)
-			printf("%02d VARDUMP %s : VAR_STRING %s %s<br>", i, var[i]->name, var[i]->stringValue, tmp);
-		if (var[i]->type == VAR_NUMBER)
-			printf("%02d VARDUMP %s : VAR_NUMBER %ld %s<br>", i, var[i]->name, var[i]->numberValue, tmp);
-		if (var[i]->type == VAR_DECIMAL2)
-			printf("%02d VARDUMP %s : VAR_DECIMAL2 %.2f %s<br>", i, var[i]->name, var[i]->decimal2Value, tmp);
-		printf("</span>");
+			*tmp = 0;
+			if (var[i]->source)
+				sprintf(tmp, " : source %s", var[i]->source);
+			if (var[i]->type == VAR_STRING)
+				printf("%02d VARDUMP %s : VAR_STRING %s %s<br>", i, var[i]->name, var[i]->stringValue, tmp);
+			if (var[i]->type == VAR_NUMBER)
+				printf("%02d VARDUMP %s : VAR_NUMBER %ld %s<br>", i, var[i]->name, var[i]->numberValue, tmp);
+			if (var[i]->type == VAR_DECIMAL2)
+				printf("%02d VARDUMP %s : VAR_DECIMAL2 %.2f %s<br>", i, var[i]->name, var[i]->decimal2Value, tmp);
+			printf("</span>");
+		}
+		printf("<span style='margin:3px; padding:2px; color:#000; background-color:#decde3;'>prefill </span>");
+		printf("<span style='margin:3px; padding:2px; color:#000; background-color:yellow;'>count </span>");
+		printf("<span style='margin:3px; padding:2px; color:#000; background-color:orange;'>sum </span>");
+		printf("<span style='margin:3px; padding:2px; color:#000; background-color:#a8c968;'>variable </span>");
+		printf("<span style='margin:3px; padding:2px; color:#000; background-color:#e28c86;'>mysql </span>");
+		printf("<span style='margin:3px; padding:2px; color:#000; background-color:cyan;'>unused </span>");
 	}
-	printf("<br>");
-	printf("<span style='margin:3px; padding:2px; color:#000; background-color:#decde3;'>prefill </span>");
-	printf("<span style='margin:3px; padding:2px; color:#000; background-color:yellow;'>count </span>");
-	printf("<span style='margin:3px; padding:2px; color:#000; background-color:orange;'>sum </span>");
-	printf("<span style='margin:3px; padding:2px; color:#000; background-color:#a8c968;'>variable </span>");
-	printf("<span style='margin:3px; padding:2px; color:#000; background-color:#e28c86;'>mysql </span>");
-	printf("<span style='margin:3px; padding:2px; color:#000; background-color:cyan;'>unused </span>");
-	printf("<br>");
 	printf("<br>");
 	printf("</div>");
 	free(tmp);
