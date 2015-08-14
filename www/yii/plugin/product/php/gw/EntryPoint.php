@@ -26,6 +26,15 @@
 		die("Cannot retrieve order record");
 	}
 
+
+/*****
+if (getIP() != '87.112.54.144') {
+    die("Down for maintenance. Our apologies. Please use alternative payment methods for today");
+}
+*****/
+
+
+
     $ShoppingCartAmount = str_replace('.', '', $qOrder['http_total']);
 	if ($ShoppingCartAmount == 0)
 	{
