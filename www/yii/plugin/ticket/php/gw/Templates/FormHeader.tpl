@@ -6,6 +6,6 @@
     <link href="CSS/StyleSheet.css" rel="stylesheet" type="text/css" />
 </head>
 
-<body<?= $BodyAttributes ?>>
-	<div style="width:<?= $Width ?>px;margin:auto">
-    		<form name="Form" action="<?= $FormAction ?>" method="post"<?= $FormAttributes ?>>
+<body<?php echo $BodyAttributes ?>>
+	<div style="width:<?php echo $Width ?>px;margin:auto">
+    		<form name="Form" action="<?php echo $FormAction ?>" method="post"<?php echo $FormAttributes ?>>

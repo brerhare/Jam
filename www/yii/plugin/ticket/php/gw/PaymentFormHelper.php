@@ -243,13 +243,13 @@
 
 				if ($CountryShort != "" &&
 					$CountryShort != -1 &&
-					$CountryShort == $iclISOCountryList->getAt($LoopIndex)->getCountryShort())
+					$CountryShort == $iclISOCountryList->getAt($LoopIndex)->getCountryShort3())
 				{
-					$lilISOCountryList->add($iclISOCountryList->getAt($LoopIndex)->getCountryName(), $iclISOCountryList->getAt($LoopIndex)->getCountryShort(), true);
+					$lilISOCountryList->add($iclISOCountryList->getAt($LoopIndex)->getCountryName(), $iclISOCountryList->getAt($LoopIndex)->getCountryShort3(), true);
 				}
 				else
 				{
-					$lilISOCountryList->add($iclISOCountryList->getAt($LoopIndex)->getCountryName(), $iclISOCountryList->getAt($LoopIndex)->getCountryShort(), false);
+					$lilISOCountryList->add($iclISOCountryList->getAt($LoopIndex)->getCountryName(), $iclISOCountryList->getAt($LoopIndex)->getCountryShort3(), false);
 				}
 			}
 
