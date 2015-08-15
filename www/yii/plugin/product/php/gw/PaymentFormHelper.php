@@ -95,44 +95,44 @@
 	{
 		public static function getSiteSecureBaseURL()
 		{
-			$szReturnString = "";
-			$szPortString = "";
-			$szProtocolString = "";
+            $szReturnString = "";
+            $szPortString = "";
+            $szProtocolString = "";
 
-			if ($_SERVER["HTTPS"] == "on")
-			{
-				$szProtocolString = "https://";
-				if ($_SERVER["SERVER_PORT"] != 443)
-				{
-					$szPortString = ":".$_SERVER["SERVER_PORT"];
-				}
-			}
-			else
-			{
-				$szProtocolString = "http://";			
-				if ($_SERVER["SERVER_PORT"] != 80)
-				{
-					$szPortString = ":".$_SERVER["SERVER_PORT"];
-				}
-			}
+            if ($_SERVER["HTTPS"] == "on")
+            {
+                $szProtocolString = "https://";
+                if ($_SERVER["SERVER_PORT"] != 443)
+                {
+                    $szPortString = ":" . $_SERVER["SERVER_PORT"];
+                }
+            }
+            else
+            {
+                $szProtocolString = "http://";
+                if ($_SERVER["SERVER_PORT"] != 80)
+                {
+                    $szPortString = ":" . $_SERVER["SERVER_PORT"];
+                }
+            }
 
-			$szReturnString = $szProtocolString.$_SERVER["SERVER_NAME"].$szPortString.$_SERVER["SCRIPT_NAME"];
-			
-			$boFinished = false;
-			$LoopIndex = strlen($szReturnString) - 1;
+            $szReturnString = $szProtocolString . $_SERVER["SERVER_NAME"] . $szPortString . $_SERVER["SCRIPT_NAME"];
 
-			while ($boFinished == false &&
-				   $LoopIndex >= 0)
-			{
-				if ($szReturnString[$LoopIndex] == "/")
-				{
-					$boFinished = true;
-					$szReturnString = substr($szReturnString, 0, $LoopIndex + 1);
-				}
-				$LoopIndex--;;
-			}
+            $boFinished = false;
+            $LoopIndex = strlen($szReturnString) - 1;
 
-			return ($szReturnString);
+            while ($boFinished == false && $LoopIndex >= 0)
+            {
+                if ($szReturnString[$LoopIndex] == "/")
+                {
+                    $boFinished = true;
+                    $szReturnString = substr($szReturnString, 0, $LoopIndex + 1);
+                }
+                $LoopIndex--;
+                ;
+            }
+
+            return ($szReturnString);
 		}
 		public static function createExpiryDateMonthListItemList($ExpiryDateMonth)
 		{
@@ -243,13 +243,13 @@
 
 				if ($CountryShort != "" &&
 					$CountryShort != -1 &&
-					$CountryShort == $iclISOCountryList->getAt($LoopIndex)->getCountryShort())
+					$CountryShort == $iclISOCountryList->getAt($LoopIndex)->getCountryShort3())
 				{
-					$lilISOCountryList->add($iclISOCountryList->getAt($LoopIndex)->getCountryName(), $iclISOCountryList->getAt($LoopIndex)->getCountryShort(), true);
+					$lilISOCountryList->add($iclISOCountryList->getAt($LoopIndex)->getCountryName(), $iclISOCountryList->getAt($LoopIndex)->getCountryShort3(), true);
 				}
 				else
 				{
-					$lilISOCountryList->add($iclISOCountryList->getAt($LoopIndex)->getCountryName(), $iclISOCountryList->getAt($LoopIndex)->getCountryShort(), false);
+					$lilISOCountryList->add($iclISOCountryList->getAt($LoopIndex)->getCountryName(), $iclISOCountryList->getAt($LoopIndex)->getCountryShort3(), false);
 				}
 			}
 
@@ -309,6 +309,7 @@
 
 // @@TODO: NB hardcoded return
 return true;
+
 			return ($boReturnValue);
 		}
         public static function generateStringToHash2($szPaRES,

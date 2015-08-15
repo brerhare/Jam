@@ -26,11 +26,21 @@
 		die("Cannot retrieve order record");
 	}
 
-/****************************************************
+	// Pick up the vendor record
+	$sql = "SELECT * FROM ticket_vendor where id = " . $qOrder['vendor_id'];
+	logMsg("Retrieving vendor details using sql [" . $sql . "]");
+	$result = mysql_query($sql) or die(mysql_error());
+	if (($qVendor = mysql_fetch_array($result, MYSQL_ASSOC)) == true)
+		logMsg("Retrieved vendor record " . $qVendor['name']);
+	else
+	{
+		logMsg("Unsuccessful...aborting");
+		die("Cannot retrieve vendor record");
+	}
+
 	// Pick up the event record
 	$sql = "SELECT * FROM ticket_event where id = " . $qOrder['event_id'];
 	logMsg("Retrieving event details using sql [" . $sql . "]");
-
 	$result = mysql_query($sql) or die(mysql_error());
 	if (($qEvent = mysql_fetch_array($result, MYSQL_ASSOC)) == true)
 		logMsg("Retrieved event record " . $qEvent['title']);
@@ -39,11 +49,17 @@
 		logMsg("Unsuccessful...aborting");
 		die("Cannot retrieve event record");
 	}
-*****************************************************/
 
-/********************    $ShoppingCartAmount = str_replace('.', '', $qOrder['http_total']); ********************/
-//$ShoppingCartAmount = str_replace('.', '', $qOrder['http_total']);
-														$ShoppingCartAmount = str_replace('.', '', $_GET['rtotal']);
+
+
+/*****
+if (getIP() != '87.112.54.144') {
+	die("Down for maintenance. Our apologies. Please use alternative payment methods for today");
+}
+*****/
+
+
+	$ShoppingCartAmount = str_replace('.', '', $_GET['rtotal']);
 	if ($ShoppingCartAmount == 0)
 	{
 		logMsg("Total amount is zero...aborting");
@@ -54,7 +70,7 @@
     $ShoppingCartOrderID = $qOrder['uid'] . "-" . time();
 	logMsg("Going with order number " . $ShoppingCartOrderID . " (based on uid-time)");
 /*********************    $ShoppingCartOrderDescription = $qEvent['title']; ***********************/
-														$ShoppingCartOrderDescription = 'Ticket order';
+	$ShoppingCartOrderDescription = 'Ticket order ' . substr($qVendor['name'], 0, 20) . ' : ' . substr($qEvent['title'], 0, 20);
 
     $ShoppingCartHashDigest = "123";
 

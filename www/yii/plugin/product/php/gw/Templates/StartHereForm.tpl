@@ -10,9 +10,9 @@
 			will be susceptable to tampering by the customer if you do not protect it.
 		</p>
 		<p>
-			The worst kinds of customer tampering could be lowering the transaction price (say from £100.00 down
-			to £1.00), or making a failed transaction look like an authorised one. This is called a "man-in-the-
-			middle" attack.
+			The worst kinds of customer tampering could be lowering the transaction price (say from &pound;100.00 down
+			to &pound;1.00), or making a failed transaction look like an authorised one. This is called a "man-in-the-
+			middle" attack. 		
 		</p>
 		<p>
 			The data in this example is protected by the use of Hashing. Hashing is used to produce a unique
@@ -43,18 +43,18 @@
 		</p>
 	</div>
 
-	<input type="hidden" name="ShoppingCartAmount" value="<?= $szAmount ?>" />
-	<input type="hidden" name="ShoppingCartCurrencyShort" value="<?= $szCurrencyShort ?>" />
-	<input type="hidden" name="ShoppingCartOrderID" value="<?= $szOrderID ?>" />
-	<input type="hidden" name="ShoppingCartOrderDescription" value="<?= $szOrderDescription ?>" />
-	<input type="hidden" name="ShoppingCartHashDigest" value="<?= $szHashDigest ?>" />
+	<input type="hidden" name="ShoppingCartAmount" value="<?php echo $Amount ?>" />
+	<input type="hidden" name="ShoppingCartCurrencyShort" value="<?php echo $CurrencyShort ?>" />
+	<input type="hidden" name="ShoppingCartOrderID" value="<?php echo $OrderID ?>" />
+	<input type="hidden" name="ShoppingCartOrderDescription" value="<?php echo $OrderDescription ?>" />
+	<input type="hidden" name="ShoppingCartHashDigest" value="<?php echo $HashDigest ?>" />
 	
 	<div class="FormItem">
 		<div class="FormLabel">
 			Amount:
 		</div>
 		<div class="FormInputTextOnly">
-			<?= $szDisplayAmount ?>
+			<?php echo $DisplayAmount ?>
 		</div>
 	</div>				
 	<div class="FormItem">
@@ -62,7 +62,7 @@
 			Currency:
 		</div>
 		<div class="FormInputTextOnly">
-			<?= $szCurrencyShort ?>
+			<?php echo $CurrencyShort ?>
 		</div>
 	</div>				
 	<div class="FormItem">
@@ -70,7 +70,7 @@
 			Order ID:
 		</div>
 		<div class="FormInputTextOnly">
-			<?= $szOrderID ?>
+			<?php echo $OrderID ?>
 		</div>
 	</div>				
 	<div class="FormItem">
@@ -78,7 +78,7 @@
 			Order Description:
 		</div>
 		<div class="FormInputTextOnly">
-			<?= $szOrderDescription ?>
+			<?php echo $OrderDescription ?>
 		</div>
 	</div>				
 	<div class="FormItem">

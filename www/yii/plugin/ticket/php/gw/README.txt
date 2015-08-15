@@ -10,8 +10,8 @@ In the file Config.php, you need to edit the following variables:
 2) SiteSecureBaseURL - this needs to be the base URL of the payment pages for your environment - e.g. "https://www.yoursite.com/Pages/". This path can also be a local path if you are testing the sample payment form in a local development environment (e.g. "http://localhost:4512/MySite/"). This path MUST include the trailing slash "/". 
 
 3) PaymentProcessorDomain & PaymentProcessorPort - these need to be set to the domain and port for your payment processor entry points
-   e.g. if your payment processor has entry points of the form "https://gwX.paymentsensegateway.com:4430/", then             
-           PaymentProcessorDomain = "paymentsensegateway.com" 
+   e.g. if your payment processor has entry points of the form "https://gwX.paymentprocessor.net:4430/", then             
+           PaymentProcessorDomain = "paymentprocessor.net" 
            PaymentProcessorPort = "4430"
         if your payment processor has entry points of the form "https://gwX.thepaymentgateway.net/", then                         
            PaymentProcessorDomain = "thepaymentgateway.net"

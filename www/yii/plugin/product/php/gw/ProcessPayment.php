@@ -98,7 +98,7 @@
 	{
 		// could not communicate with the payment gateway 
 		$NextFormMode = "PAYMENT_FORM";
-		$Message = "Couldn't communicate with payment gateway". $cdtCardDetailsTransaction->getLastException()->getMessage();
+		$Message = "Couldn't communicate with payment gateway";
 		PaymentFormHelper::reportTransactionResults($OrderID, 30, $Message, null);
 	}
 	else

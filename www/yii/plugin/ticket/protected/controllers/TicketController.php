@@ -289,13 +289,17 @@ $this->redirect($tmp2);
 			// Check for duplicate Auth Code!!!!!
 			if ($orderCount == 0)
 			{
-				$file = Yii::app()->basePath . "/../tmp/ticketemail.dat";
-				if (strpos(file_get_contents($file), $order->auth_code) !== false)
+				if ((strstr($order->auth_code, "AuthCode:")) != false)
 				{
-    				Yii::log("PAID PAGE BAILING - DETECTED DUPLICATE AUTH:" . $order->auth_code, CLogger::LEVEL_WARNING, 'system.test.kim');
-					return;
+					$file = Yii::app()->basePath . "/../tmp/ticketemail.dat";
+					if (strpos(file_get_contents($file), $order->auth_code) !== false)
+					{
+    					Yii::log("********* PAID PAGE BAILING - DETECTED DUPLICATE AUTH:" . $order->auth_code, CLogger::LEVEL_WARNING, 'system.test.kim');
+						die('Sorry, there has been a problem processing this order');
+						return;
+					}
+					file_put_contents($file, $order->auth_code . "\n", FILE_APPEND);
 				}
-				file_put_contents($file, $order->auth_code . "\n", FILE_APPEND);
 			}
 
 			// Store this. Free and manual tickets dont come into this loop

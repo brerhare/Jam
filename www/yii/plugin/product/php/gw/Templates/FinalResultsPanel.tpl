@@ -1,10 +1,10 @@
-<input name="FormMode" type="hidden" value="<?= $NextFormMode ?>" />
+<input name="FormMode" type="hidden" value="<?php echo $NextFormMode ?>" />
 
-<div class="<?= $MessageClass ?>">
+<div class="<?php echo $MessageClass ?>">
 	<div class="TransactionResultsItem">
 		<div class="TransactionResultsLabel">Payment Processor Response:</div>
 		<div class="TransactionResultsText">
-			<?= $Message ?>
+			<?php echo $Message ?>
 		</div>
 	</div>
 
@@ -19,7 +19,7 @@
 			Previous Transaction Response:
 		</div>
 		<div class="TransactionResultsText">
-			<?= $PreviousTransactionMessage ?>
+			<?php echo $PreviousTransactionMessage ?>
 		</div>
 	</div>
 <?php } ?>

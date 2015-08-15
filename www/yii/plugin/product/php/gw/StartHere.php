@@ -7,22 +7,23 @@
 	$BodyAttributes = "";
 	$FormAttributes = "";
 	$FormAction = "PaymentForm.php";
+    
 	include ("Templates/FormHeader.tpl");
 
-	$szAmount = "1000";
-	$szCurrencyShort = "GBP";
-	$szOrderID = "Order-1234";
-	$szOrderDescription = "A Test Order";
+	$Amount = "1000";
+	$CurrencyShort = "GBP";
+	$OrderID = "Order-1234";
+	$OrderDescription = "A Test Order";
 
-	if ($iclISOCurrencyList->getISOCurrency($szCurrencyShort, $icISOCurrency))
+	if ($iclISOCurrencyList->getISOCurrency($CurrencyShort, $icISOCurrency))
 	{
-		$szDisplayAmount = $icISOCurrency->getAmountCurrencyString($szAmount, false);
+		$DisplayAmount = $icISOCurrency->getAmountCurrencyString($Amount, false);
 	}
 
-	$szHashDigest = PaymentFormHelper::calculateHashDigest(PaymentFormHelper::generateStringToHash($szAmount,
-                        $szCurrencyShort,
-                        $szOrderID,
-                        $szOrderDescription,
+	$HashDigest = PaymentFormHelper::calculateHashDigest(PaymentFormHelper::generateStringToHash($Amount,
+                        $CurrencyShort,
+                        $OrderID,
+                        $OrderDescription,
                         $SecretKey));
 
 	include ("Templates/StartHereForm.tpl");

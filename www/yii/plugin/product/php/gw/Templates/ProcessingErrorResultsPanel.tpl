@@ -1,3 +1,3 @@
 <div class="ErrorMessage">
-	<?= $Message ?>
+	<?php echo $Message ?>
 </div>
