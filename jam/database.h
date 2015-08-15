@@ -44,5 +44,6 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 int connectDBServer();
 int openDB(char *name);
 void closeDB();
+int sqlQuery(char *qStr);
 
 #endif /* __DATABASE_H_INCLUDED */

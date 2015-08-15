@@ -307,9 +307,6 @@ int wordDatabaseRemoveTable(int ix, char *defaultTableName) {
     char *qStr = (char *) calloc(1, 4096);
     sprintf(qStr,"DROP TABLE IF EXISTS %s", tableName);
     int status = mysql_query(conn,qStr);
-    ///// @@TODO make wrapper for mysql_query so we can show proper errors...
-    ///// see http://www.databaseskill.com/3643013/
-    ///// char x[200]; sprintf(x, "=%d=", mysql_errno(conn)); die(x);
 	emit(jam[ix]->trailer);
     free(tableName);
 }
@@ -342,24 +339,30 @@ int wordDatabaseRemoveItem(int ix, char *defaultTableName) {
     char *tableName = (char *) calloc(1, 4096);
     char *tmp = (char *) calloc(1, 4096);
     VAR *variable = NULL;
-    logMsg(LOGDEBUG, "Removing item from table %s", tableName);
 
     getWord(tableName, args, 2, " \t");
     if (!tableName) {
-        logMsg(LOGFATAL, "Cant remove item, no table name given");
-        die("missing table name to remove item from");
+        logMsg(LOGERROR, "Cant remove item, no table name given");
+       printf("missing table name to remove item from");
+       return(0);
     }
+    logMsg(LOGDEBUG, "Removing item from table %s", tableName);
     // The _id variable must exist
     sprintf(tmp, "%s._id", tableName);
     variable = findVarStrict(tmp);
     if (!variable) {
-        logMsg(LOGFATAL, "Cant remove item, missing _id variable");
-        die("missing _id variable to remove item for");
+        logMsg(LOGERROR, "Cant remove item, missing _id variable");
+        printf("missing _id variable to remove item for");
+        return(0);
     }
-
     char *qStr = (char *) calloc(1, 4096);
     sprintf(qStr,"DELETE FROM %s WHERE _id = %d", tableName, atoi(variable->portableValue));
-    int status = mysql_query(conn,qStr);
+    int status = sqlQuery(qStr);
+    if (status == -1) {
+        logMsg(LOGERROR, "Remove item failed");
+        return (-1);
+    }
+    logMsg(LOGDEBUG, "Removed item %d from %s", atoi(variable->portableValue), tableName);
     emit(jam[ix]->trailer);
     free(tableName);
     free(tmp);

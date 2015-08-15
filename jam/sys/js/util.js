@@ -59,20 +59,21 @@ function runAction(action, element, output) {
 		}
 //alert('assembling data. So far we have : ' + postData);
 	}
-//alert('sending to ' + formURL + ' data : ' + postData);
+alert('sending to ' + formURL + ' data : ' + postData);
 	$.ajax( {
 		url : formURL,
 		type: "POST",
 		data : postData,
 		success:function(data, textStatus, jqXHR) {
-//alert('back with: ' + data);
+alert('back with: ' + data);
 			if (output != '') {
 				var target = document.getElementsByName(output);
 				target[0].innerHTML = data;
 			}
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
-			alert('Ajax failure sending form ' + element + '. Error: ' + textStatus);
+			console.log(textStatus, errorThrown);
+			alert('Ajax failure sending form ' + element + " \n" + errorThrown + "\n(" + textStatus + ")");
 		}
 	});
     //e.preventDefault(); //STOP default action

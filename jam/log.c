@@ -12,7 +12,10 @@
 
 #include "log.h"
 
+//int logLevel = LOGMICRO;
 int logLevel = LOGDEBUG;
+
+int logId = rand() % 99;
 FILE *log_message_stream = NULL;
 char *logFileName = "/tmp/log.dat";
 long logMaxBytes = 10000000L;
@@ -59,14 +62,7 @@ va_end(ap);
 		strcpy(logOld, logFileName);
 		strcat(logOld, ".old");
 		if ((stat(logOld, &file_stat)) == 0)
-		{
-#ifdef WIN32
-			if (DeleteFile(logOld) == 0)
-#else
-			if (unlink(logOld) != 0)
-#endif
-				/*exit(-1)*/ ;
-		}
+			unlink(logOld);
 		if ((fpOld = fopen(logOld, "w")) == NULL)
 			/*exit(-1)*/ ;
 		else
@@ -81,12 +77,7 @@ va_end(ap);
 			fclose(fpOld);
 		}
 		fclose(log_message_stream);
-#ifdef WIN32
-		if (DeleteFile(logFileName) == 0)
-#else
-		if (unlink(logFileName) != 0)
-#endif
-			/*exit(-1)*/ ;
+		unlink(logFileName);
 		if ((log_message_stream = fopen(logFileName, "a")) == NULL)
 		{
 			log_message_stream = stderr;
@@ -111,13 +102,13 @@ va_end(ap);
 	switch (type)
 	{
 		case LOGMICRO:
-			fprintf(log_message_stream, "  Micro:  ");
+			fprintf(log_message_stream, "%2d  Micro:  ", logId);
 			break;
 		case LOGDEBUG:
-			fprintf(log_message_stream, "  Debug:  ");
+			fprintf(log_message_stream, "%2d  Debug:  ", logId);
 			break;
 		case LOGINFO:
-			fprintf(log_message_stream, "   Info:  ");
+			fprintf(log_message_stream, "%2d   Info:  ", logId);
 			break;
 		case LOGWARN:
 			fprintf(log_message_stream, "Warning:  ");
