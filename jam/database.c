@@ -12,6 +12,7 @@
 #include "common.h"
 #include "database.h"
 #include "stringUtil.h"
+#include "log.h"
 
 // Mysql server credentials
 char *dbServer = "localhost";
@@ -380,23 +381,55 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 }
 
 int openDB(char *name) {
-	conn = mysql_init(NULL);
+	if (!name) {
+		logMsg(LOGERROR, "openDB requires a name of db to open");
+		return(-1);
+	}
+	logMsg(LOGMICRO, "Opening db %s", name);
+	if (!conn)
+		conn = mysql_init(NULL);
 	if (!mysql_real_connect(conn, dbServer, dbUser, dbPassword, name, 0, NULL, 0)) {
         mysql_close(conn);
+        logMsg(LOGERROR, "Open db %s failed", name);
 		return -1;
 	}
+	logMsg(LOGMICRO, "openDB succeeded opening %s", name);
 	return 0;
 }
 
 void closeDB() {
-	mysql_close(conn);
+	if (!conn){
+		logMsg(LOGMICRO, "db connection isnt open, not going to try close it");
+	} else {
+		logMsg(LOGMICRO, "Closing connection to db server");
+		mysql_close(conn);
+		conn = NULL;
+		logMsg(LOGMICRO, "Connection closed");
+	}
 }
 
 int connectDBServer() {
-	conn = mysql_init(NULL);
+	logMsg(LOGMICRO, "Connecting to db server");
+	if (!conn)
+		conn = mysql_init(NULL);
     if (!mysql_real_connect(conn, dbServer, dbUser, dbPassword, NULL, 0, NULL, 0)) {
         mysql_close(conn);
+        logMsg(LOGERROR, "Connection to db server failed");
         return -1;
     }
+    logMsg(LOGMICRO, "Connected OK");
     return 0;
 }
+
+int sqlQuery(char *qStr) {
+	if (!conn) {
+		logMsg(LOGERROR, "Cant do sql query - no db open");
+        return -1;
+	}
+	logMsg(LOGMICRO, "Executing sql query [%s]", qStr);
+	int status = mysql_query(conn, qStr);
+	logMsg(LOGMICRO, "Sql query returned status %d", status);
+}
+    ///// @@TODO make wrapper for mysql_query so we can show proper errors...
+    ///// see http://www.databaseskill.com/3643013/
+    ///// char x[200]; sprintf(x, "=%d=", mysql_errno(conn)); die(x);

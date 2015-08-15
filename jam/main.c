@@ -80,17 +80,19 @@ int main(int argc, char *argv[]) {
 		logMsg(LOGDEBUG, "Parameter [%s] = [%s]", cgivars[i], cgivars[i+1]) ;
 
 		if (!(strcmp(cgivars[i], "template"))) {
+			logMsg(LOGDEBUG, "Found template parameter");
 			tplName = strTrim(getWordAlloc(cgivars[i+1], 1, ":"));
 			tplEntrypoint = strTrim(getWordAlloc(cgivars[i+1], 2, ":"));
+			logMsg(LOGDEBUG, "Template parameter contains an action to run: [%s]", tplEntrypoint);
 //printf("[%s][%s]<br>", tplName, tplEntrypoint);
 // @@KIM! remove next if
-		} else if (!tplEntrypoint){
+		} else /* if (!tplEntrypoint) */ {
 			VAR *assignVar = (VAR *) calloc(1, sizeof(VAR));
 			assignVar->name = strdup(cgivars[i]);
 			assignVar->type = VAR_STRING;	// @@FIX!!!!!!
 			clearVarValues(assignVar);
 			fillVarDataTypes(assignVar, cgivars[i+1]);
-			logMsg(LOGDEBUG, "PREFILL-->%s<-- with value -->%s<--\n", assignVar->name, assignVar->portableValue);
+			logMsg(LOGDEBUG, "Initializing startup variable %s with value %s", assignVar->name, assignVar->portableValue);
 			assignVar->source = strdup("prefill");
 			assignVar->debugHighlight = 1;
 			for (int i = 0; i < MAX_VAR; i++) {
@@ -179,7 +181,7 @@ if (++sanity > 100) { printf("Overflow!"); break; }
 	else
 		logMsg(LOGINFO, "Processing command loop for @ACTION %s", tplEntrypoint);
 	control(startIx, NULL);
-	logMsg(LOGINFO, "Finished command loop. Ending");
+	logMsg(LOGINFO, "Finished command loop");
 
 	free(tmp);
 	free(tpl);
@@ -187,6 +189,7 @@ if (++sanity > 100) { printf("Overflow!"); break; }
 	if (conn)
 		closeDB();
 jamDump(2);
+	logMsg(LOGINFO, "Normal exit");
 	exit(0);
 }
 
