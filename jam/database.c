@@ -423,13 +423,17 @@ int connectDBServer() {
 
 int sqlQuery(char *qStr) {
 	if (!conn) {
-		logMsg(LOGERROR, "Cant do sql query - no db open");
+		logMsg(LOGERROR, "Cant do sql query - no db is open");
         return -1;
 	}
 	logMsg(LOGMICRO, "Executing sql query [%s]", qStr);
 	int status = mysql_query(conn, qStr);
-	logMsg(LOGMICRO, "Sql query returned status %d", status);
+	if (status != 0)
+		logMsg(LOGERROR, "Sql query error %s", sqlError());
+	return (-1);
 }
-    ///// @@TODO make wrapper for mysql_query so we can show proper errors...
-    ///// see http://www.databaseskill.com/3643013/
-    ///// char x[200]; sprintf(x, "=%d=", mysql_errno(conn)); die(x);
+
+char *sqlError() {
+	//// see http://www.databaseskill.com/3643013/ for more on errors
+	return (char *) (mysql_error(conn));
+}

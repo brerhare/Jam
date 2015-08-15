@@ -45,5 +45,6 @@ int connectDBServer();
 int openDB(char *name);
 void closeDB();
 int sqlQuery(char *qStr);
+char *sqlError();
 
 #endif /* __DATABASE_H_INCLUDED */
