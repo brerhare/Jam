@@ -24,11 +24,14 @@ function runTemplate(templateName) {
 					- form elements are expanded to their child elements
 					- if it isnt an element then 'name=value' format is assumed and sent as given, eg 'stock_supplier._id=2'
  * @param output	HTML element that receives any returned content (innerHTML)
+ * @param callback	note this cannot have arguments
  */
-function runAction(action, element, output) {
+function runAction(action, element, output, callback) {
+//alert('startajax');
 	if (typeof element === 'undefined') { elements = ''; }
 	if (typeof output === 'undefined') { output = ''; }
-	// Where we will send the reques to
+	if (typeof callback === 'undefined') { callback = ''; }
+	// Where we will send the request to
 	var formURL = getURLBase();
 	// Prepare the 'template' parameter: 'template.tpl' or 'template.tpl:actionName'
 	var postData = 'template=';
@@ -59,16 +62,19 @@ function runAction(action, element, output) {
 		}
 //alert('assembling data. So far we have : ' + postData);
 	}
-alert('sending to ' + formURL + ' data : ' + postData);
+//alert('sending to ' + formURL + ' data : ' + postData);
 	$.ajax( {
 		url : formURL,
 		type: "POST",
 		data : postData,
 		success:function(data, textStatus, jqXHR) {
-alert('back with: ' + data);
+//alert('back with: ' + data);
 			if (output != '') {
 				var target = document.getElementsByName(output);
 				target[0].innerHTML = data;
+			}
+			if (callback != '') {
+				callback();
 			}
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
