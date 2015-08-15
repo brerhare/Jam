@@ -347,9 +347,6 @@ class eventcode
 				}
 			}
 
-			// From this point we're committed to adding this record, because of the jsEvents table syncing
-
-			$jsEvents .= '"' . $event->id . '",';
 			// Pick up the member
 			$criteria = new CDbCriteria;
 			$criteria->condition = "id = " . $event->member_id;
@@ -374,6 +371,9 @@ class eventcode
 				$osGridRefOrPostCode = str_replace(' ', '', $ws->os_grid_ref);
 				$infoWindowContent = $ws->short_description;
 			}
+
+			// From this point we're committed to adding this record, because of the jsEvents table syncing
+			$jsEvents .= '"' . $event->id . '",';
 
 			if (!(in_array($osGridRefOrPostCode, $this->mapPoint)))
 			{
