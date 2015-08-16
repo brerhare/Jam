@@ -356,6 +356,8 @@ int control(int startIx, char *defaultTableName) {
 						wordDatabaseNewTable(ix, defaultTableName);
 					if (!strcmp(tmp, "index"))
 						wordDatabaseNewIndex(ix, defaultTableName);
+					if (!strcmp(tmp, "item"))
+						wordDatabaseNewItem(ix, defaultTableName);
 				}
 			}
 //		-----------------------------------------
@@ -375,6 +377,16 @@ int control(int startIx, char *defaultTableName) {
 						wordDatabaseRemoveItem(ix, defaultTableName);
 				}
 			}
+//		-----------------------------------------
+		} else if (!(strcmp(cmd, "@update"))) {
+//		-----------------------------------------
+			if (!strcmp(tmp, "item"))
+				wordDatabaseUpdateItem(ix, defaultTableName);
+//		-----------------------------------------
+		} else if (!(strcmp(cmd, "@amend"))) {
+//		-----------------------------------------
+			if (!strcmp(tmp, "item"))
+				wordDatabaseAmendItem(ix, defaultTableName);
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@list"))) {
 //		-----------------------------------------
@@ -410,7 +422,7 @@ int control(int startIx, char *defaultTableName) {
 			char *givenTableName = (char *) calloc(1, 4096);
 			MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 999999);
 			SQL_RESULT *rp = sqlCreateResult(givenTableName, res);
-			while (sqlGetRow(rp) != SQL_EOF) {
+			while (sqlGetRow2Var(rp) != SQL_EOF) {
 				emit(jam[ix]->trailer);
 				logMsg(LOGMICRO, "@each starting recurse");
 				control((ix + 1), givenTableName);

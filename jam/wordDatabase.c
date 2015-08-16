@@ -165,7 +165,7 @@ int wordDatabaseGet(int ix, char *defaultTableName) {
     char *givenTableName = (char *) calloc(1, 4096);
     MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 1);
     SQL_RESULT *rp = sqlCreateResult(givenTableName, res);
-    sqlGetRow(rp);
+    sqlGetRow2Var(rp);
     if (jam[ix]) {
         emit(jam[ix]->trailer);
     }
@@ -295,6 +295,48 @@ int wordDatabaseNewIndex(int ix, char *defaultTableName) {
     free(tmp);
 }
 
+int wordDatabaseNewItem(int ix, char *defaultTableName) {
+    char *cmd = jam[ix]->command;
+    char *args = jam[ix]->args;
+    char *rawData = jam[ix]->rawData;
+    char *tableName = (char *) calloc(1, 4096);
+    char *tmp = (char *) calloc(1, 4096);
+    char *qStr = (char *) calloc(1, 4096);
+
+    emit(jam[ix]->trailer);
+    free(tableName);
+    free(qStr);
+    free(tmp);
+}
+
+int wordDatabaseAmendItem(int ix, char *defaultTableName) {
+    char *cmd = jam[ix]->command;
+    char *args = jam[ix]->args;
+    char *rawData = jam[ix]->rawData;
+    char *tableName = (char *) calloc(1, 4096);
+    char *tmp = (char *) calloc(1, 4096);
+    char *qStr = (char *) calloc(1, 4096);
+
+    emit(jam[ix]->trailer);
+    free(tableName);
+    free(qStr);
+    free(tmp);
+}
+
+int wordDatabaseUpdateItem(int ix, char *defaultTableName) {
+    char *cmd = jam[ix]->command;
+    char *args = jam[ix]->args;
+    char *rawData = jam[ix]->rawData;
+    char *tableName = (char *) calloc(1, 4096);
+    char *tmp = (char *) calloc(1, 4096);
+    char *qStr = (char *) calloc(1, 4096);
+
+    emit(jam[ix]->trailer);
+    free(tableName);
+    free(qStr);
+    free(tmp);
+}
+
 int wordDatabaseRemoveTable(int ix, char *defaultTableName) {
     char *cmd = jam[ix]->command;
     char *args = jam[ix]->args;
@@ -317,6 +359,7 @@ int wordDatabaseRemoveIndex(int ix, char *defaultTableName) {
     char *rawData = jam[ix]->rawData;
     char *tableName = (char *) calloc(1, 4096);
     char *indexName = (char *) calloc(1, 4096);
+    char *qStr = (char *) calloc(1, 4096);
 
     getWord(tableName, args, 2, " \t");
     if (!tableName)
@@ -324,7 +367,6 @@ int wordDatabaseRemoveIndex(int ix, char *defaultTableName) {
     getWord(indexName, args, 3, " \t");
     if (!indexName)
         die("missing index name to remove");
-    char *qStr = (char *) calloc(1, 4096);
     sprintf(qStr,"DROP INDEX %s ON %s", indexName, tableName);
     int status = mysql_query(conn,qStr);
 	emit(jam[ix]->trailer);
@@ -338,6 +380,7 @@ int wordDatabaseRemoveItem(int ix, char *defaultTableName) {
     char *rawData = jam[ix]->rawData;
     char *tableName = (char *) calloc(1, 4096);
     char *tmp = (char *) calloc(1, 4096);
+    char *qStr = (char *) calloc(1, 4096);
     VAR *variable = NULL;
 
     getWord(tableName, args, 2, " \t");
@@ -355,9 +398,8 @@ int wordDatabaseRemoveItem(int ix, char *defaultTableName) {
         printf("missing _id variable to remove item for");
         return(0);
     }
-    char *qStr = (char *) calloc(1, 4096);
     sprintf(qStr,"DELETE FROM %s WHERE _id = %d", tableName, atoi(variable->portableValue));
-    int status = sqlQuery(qStr);
+    int status = doSqlQuery(qStr);
     if (status == -1) {
         logMsg(LOGERROR, "Remove item failed");
         return (-1);

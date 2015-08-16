@@ -80,7 +80,7 @@ SQL_RESULT *sqlCreateResult(char *tableName, MYSQL_RES *res) {
     return rp;
 }
 
-int sqlGetRow(SQL_RESULT *rp) {
+int sqlGetRow2Var(SQL_RESULT *rp) {
     MYSQL_ROW row;
     row = mysql_fetch_row(rp->res);
     if (row) {
@@ -380,6 +380,9 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 	return retval;
 }
 
+// ----------------------------------------------------------------
+// Primitive MYSQL functions
+
 int openDB(char *name) {
 	if (!name) {
 		logMsg(LOGERROR, "openDB requires a name of db to open");
@@ -421,7 +424,7 @@ int connectDBServer() {
     return 0;
 }
 
-int sqlQuery(char *qStr) {
+int doSqlQuery(char *qStr) {
 	if (!conn) {
 		logMsg(LOGERROR, "Cant do sql query - no db is open");
         return -1;
@@ -433,7 +436,18 @@ int sqlQuery(char *qStr) {
 	return (-1);
 }
 
-char *sqlError() {
-	//// see http://www.databaseskill.com/3643013/ for more on errors
+// Get the result RES of the last query
+MYSQL_RES *getSqlQueryRES() {
+	MYSQL_RES *result = mysql_store_result(conn);
+	if (result == NULL) 
+		logMsg(LOGERROR, "Sql query RES is NULL. Error %s", sqlError());
+	return result;
+}
+
+MYSQL_ROW getSqlROW(MYSQL_RES *result) {
+	return(mysql_fetch_row(result));
+}
+
+char *sqlError() {		// see http://www.databaseskill.com/3643013/ for more on errors
 	return (char *) (mysql_error(conn));
 }

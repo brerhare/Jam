@@ -11,8 +11,14 @@ int wordDatabaseGet(int ix, char *defaultTableName);
 
 int wordDatabaseNewTable(int ix, char *defaultTableName);
 int wordDatabaseRemoveTable(int ix, char *defaultTableName);
+
 int wordDatabaseNewIndex(int ix, char *defaultTableName);
 int wordDatabaseRemoveIndex(int ix, char *defaultTableName);
+
+
+int wordDatabaseNewItem(int ix, char *defaultTableName);
+int wordDatabaseAmendItem(int ix, char *defaultTableName);
+int wordDatabaseUpdateItem(int ix, char *defaultTableName);
 int wordDatabaseRemoveItem(int ix, char *defaultTableName);
 
 #endif /* __WORDDATABASE_H_INCLUDED */

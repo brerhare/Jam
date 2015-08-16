@@ -24,7 +24,7 @@ typedef struct {
 } SQL_RESULT;
 
 SQL_RESULT *sqlCreateResult(char *tableName, MYSQL_RES *res);
-int sqlGetRow(SQL_RESULT *rp);
+int sqlGetRow2Var(SQL_RESULT *rp);
 
 // ----------------------------------------------------------------
 // Var related
@@ -44,7 +44,10 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 int connectDBServer();
 int openDB(char *name);
 void closeDB();
-int sqlQuery(char *qStr);
+
+int doSqlQuery(char *qStr);
+MYSQL_RES *getSqlQueryRES();
+
 char *sqlError();
 
 #endif /* __DATABASE_H_INCLUDED */
