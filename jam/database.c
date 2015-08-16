@@ -81,13 +81,16 @@ SQL_RESULT *sqlCreateResult(char *tableName, MYSQL_RES *res) {
 }
 
 int sqlGetRow2Var(SQL_RESULT *rp) {
-    MYSQL_ROW row;
-    row = mysql_fetch_row(rp->res);
-    if (row) {
-        _updateSqlFields(rp->tableName, rp->mysqlHeaders, rp->mysqlTypes, rp->numFields, &row);
-        return SQL_OK;
-    }
-    return SQL_EOF;
+	MYSQL_ROW row;
+	row = mysql_fetch_row(rp->res);
+	if (row) {
+		logMsg(LOGDEBUG, "sqlGetRow2Var() found a sql row, copying values to jam format");
+		_updateSqlFields(rp->tableName, rp->mysqlHeaders, rp->mysqlTypes, rp->numFields, &row);
+		return SQL_OK;
+	}
+	logMsg(LOGDEBUG, "sqlGetRow2Var() didnt find a sql row, initialising NULL jam format values");
+	_nullifySqlFields(rp->tableName, rp->mysqlHeaders, rp->mysqlTypes, rp->numFields, &row);
+	return SQL_EOF;
 }
 
 // ----------------------------------------------------------------
@@ -134,6 +137,16 @@ void _updateSqlFields(char *qualifier, char **mysqlHeaders, enum enum_field_type
 		char qualifiedName[256];
 		sprintf(qualifiedName, "%s.%s", qualifier, mysqlHeaders[i]);
 		updateSqlVar(qualifiedName, mysqlTypes[i], row[i]);
+//printf("HDR=[%s.%s]:[%s]\n", qualifier, mysqlHeaders[i], row[i]);
+	}
+}
+void _nullifySqlFields(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields, MYSQL_ROW *rowP) {
+	MYSQL_ROW row = *rowP;
+	int i = 0;
+	for (i = 0; i < numFields; i++) {
+		char qualifiedName[256];
+		sprintf(qualifiedName, "%s.%s", qualifier, mysqlHeaders[i]);
+		updateSqlVar(qualifiedName, mysqlTypes[i], NULL);
 //printf("HDR=[%s.%s]:[%s]\n", qualifier, mysqlHeaders[i], row[i]);
 	}
 }

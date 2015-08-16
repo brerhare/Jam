@@ -33,6 +33,7 @@ int fieldConvertMysql2Var(enum enum_field_types mysqlType);
 void updateSqlVar(char *qualifiedName, enum enum_field_types mysqlType, char *value);   // @@ Rationalise this with the non-sql 'updateVar()'
 
 void _updateSqlFields(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields, MYSQL_ROW *rowP);
+void _nullifySqlFields(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields, MYSQL_ROW *rowP);
 int _isMysqlFieldName(char *fieldName, char *tableName);
 
 // ----------------------------------------------------------------
