@@ -47,6 +47,7 @@ void closeDB();
 
 int doSqlQuery(char *qStr);
 MYSQL_RES *getSqlQueryRES();
+MYSQL_ROW getSqlROW(MYSQL_RES *result);
 
 char *sqlError();
 

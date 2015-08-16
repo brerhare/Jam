@@ -433,7 +433,7 @@ int doSqlQuery(char *qStr) {
 	int status = mysql_query(conn, qStr);
 	if (status != 0)
 		logMsg(LOGERROR, "Sql query error %s", sqlError());
-	return (-1);
+	return(status);
 }
 
 // Get the result RES of the last query
