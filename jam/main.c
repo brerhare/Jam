@@ -17,6 +17,7 @@
 
 #include "common.h"
 #include "wordDatabase.h"
+#include "wordHtml.h" 
 #include "wordMisc.h"
 #include "database.h"
 #include "list.h"
@@ -341,11 +342,21 @@ int control(int startIx, char *defaultTableName) {
 		}
 
 //		-----------------------------------------
-		if (!(strcmp(cmd, "@!begin")))
+		if (!(strcmp(cmd, "@!begin"))) {
 //		-----------------------------------------
 			emit(jam[ix]->trailer);
 //		-----------------------------------------
-		else if (!(strcmp(cmd, "@new"))) {
+		} else if (!(strcmp(cmd, "@html"))) {
+//		-----------------------------------------
+			if (args) {
+				getWord(tmp, args, 1, " ");
+				if (*tmp) {
+					if (!strcmp(tmp, "gridtable"))
+						wordHtmlGridtable(ix, defaultTableName);
+				}
+			}
+//		-----------------------------------------
+		} else if (!(strcmp(cmd, "@new"))) {
 //		-----------------------------------------
 			if (args) {
 				getWord(tmp, args, 1, " ");

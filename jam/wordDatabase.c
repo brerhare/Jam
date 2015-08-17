@@ -73,18 +73,20 @@ int wordDatabaseNewDatabase(int ix, char *defaultTableName) {
 	char *dbName = (char *) calloc(1, 4096);
 
 	getWord(dbName, args, 2, " ");
-	if (!dbName)
-	   die("missing database name to create");
+	if (!dbName) {
+	   logMsg(LOGERROR, "missing database name to create");
+	   return(-1);
+	}
 	if (connectDBServer() != 0)
-		die(mysql_error(conn));
+		return(-1);
 	char *qStr = (char *) calloc(1, 4096);
 	//sprintf(qStr,"DROP DATABASE IF EXISTS %s", dbName);
 	//int status = mysql_query(conn,qStr);
 	sprintf(qStr,"CREATE DATABASE %s", dbName);
 	if (mysql_query(conn,qStr) != 0)
-		die(mysql_error(conn));
+		return(-1);
 	if (openDB(dbName) != 0)
-		die(mysql_error(conn));
+		return(-1);
 	emit(jam[ix]->trailer);
 	free(dbName);
 }

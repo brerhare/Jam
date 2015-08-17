@@ -1,0 +1,17 @@
+* emit trailer from the process loop, not from each call. If a call is missed that @'s trailer isnt emitted. Emit from each 'if @xxx' block after handling whatever words. Default catchall there already does an emit
+
+* autofill table js variables presently hardcoded in header.html, but how to gridify a table easily? One single '@' with everything isnt ideal
+	possibly '@html tablegrid xxx' helper tags within the table, examining the table's regular html tags, or both?
+		use to gather info about required column sorting, in-place editing, data types, dropdown contents etc
+
+* complete the add/update/delete (and fix hardcodd to always try to add new)
+
+* grid, editgrid high level control js functions
+	can we simplify the runTemplate/runAction/backButton functions? How about generating the hidden '_id' fields automatically, and delete confirmation?
+
+* scratch.js for custom generated code. Either one big <script></script> tag or individual. Individual is bigger but more containerised
+
+* jamify the input field stuff
+
+* field validation. Server or client side?
+

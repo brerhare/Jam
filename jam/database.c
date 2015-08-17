@@ -406,7 +406,7 @@ int openDB(char *name) {
 		conn = mysql_init(NULL);
 	if (!mysql_real_connect(conn, dbServer, dbUser, dbPassword, name, 0, NULL, 0)) {
         mysql_close(conn);
-        logMsg(LOGERROR, "Open db %s failed", name);
+        logMsg(LOGERROR, "Open db %s failed. %s", name, sqlError());
 		return -1;
 	}
 	logMsg(LOGMICRO, "openDB succeeded opening %s", name);
@@ -430,7 +430,7 @@ int connectDBServer() {
 		conn = mysql_init(NULL);
     if (!mysql_real_connect(conn, dbServer, dbUser, dbPassword, NULL, 0, NULL, 0)) {
         mysql_close(conn);
-        logMsg(LOGERROR, "Connection to db server failed");
+        logMsg(LOGERROR, "Connection to db server failed. %s", sqlError());
         return -1;
     }
     logMsg(LOGMICRO, "Connected OK");
