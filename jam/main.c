@@ -62,7 +62,6 @@ int isASCII(const char *data, size_t size)
     return 1;
 }
 
-
 int main(int argc, char *argv[]) {
 	char **cgivars ;
 	char tmpPath[PATH_MAX], binary[PATH_MAX];

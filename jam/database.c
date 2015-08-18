@@ -84,11 +84,11 @@ int sqlGetRow2Var(SQL_RESULT *rp) {
 	MYSQL_ROW row;
 	row = mysql_fetch_row(rp->res);
 	if (row) {
-		logMsg(LOGDEBUG, "sqlGetRow2Var() found a sql row, copying values to jam format");
+		logMsg(LOGMICRO, "sqlGetRow2Var() found a sql row, copying values to jam format");
 		_updateSqlFields(rp->tableName, rp->mysqlHeaders, rp->mysqlTypes, rp->numFields, &row);
 		return SQL_OK;
 	}
-	logMsg(LOGDEBUG, "sqlGetRow2Var() didnt find a sql row, initialising NULL jam format values");
+	logMsg(LOGMICRO, "sqlGetRow2Var() didnt find a sql row, initialising NULL jam format values");
 	_nullifySqlFields(rp->tableName, rp->mysqlHeaders, rp->mysqlTypes, rp->numFields, &row);
 	return SQL_EOF;
 }

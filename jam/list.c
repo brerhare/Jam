@@ -13,28 +13,8 @@
 #include "stringUtil.h"
 #include "linkListUtil.h"
 #include "list.h"
+#include "log.h"
 
-LIST_CONTAINER *listContainer[MAX_LIST_CONTAINER];
-
-/*
-linkList *l = listCreate();
-char *s1 = strdup("Item1");
-char *s2 = strdup("Item2");
-char *item = (char *) listAlloc(sizeof(s1));
-strcpy(item, s1);
-listAddItem(l, item);
-item = (char *) listAlloc(sizeof(s2));
-strcpy(item, s2);
-listAddItem(l, item);
-char *p = (char *) listFirst(l);
-printf("1st=[%s]\n", p);
-p = (char *) listNext(p);
-printf("2nd=[%s]\n", p);
-listRemove(l);
-*/
-
-
-/* #define LIST_LINKLIST_TYPE  0
 
 typedef struct {
     linkList *list;
@@ -43,58 +23,147 @@ typedef struct {
 typedef struct {
     char *name;
     int type;
-    void *listData;     // could be any of the predefined types
-} LIST_CONTAINER; */
+    linkList *listData;
+    void *lastData;			// holds the last returned data in the list, which gives us the position for 'next'
+} LIST_CONTAINER;
+#define MAX_LIST_CONTAINER 10000
 
-LIST_CONTAINER *getNewListSlot();
+LIST_CONTAINER *listContainer[MAX_LIST_CONTAINER];
 
-LIST_CONTAINER *listCreateLinkList(char *listName) {
-    LIST_CONTAINER *lp = getNewListSlot();
-    lp->name = strdup(listName);
-    lp->type = LIST_LINKLIST_TYPE;
-    lp->listData = (LIST_DATA_LINKLIST *) calloc(1, sizeof(LIST_DATA_LINKLIST));
-    LIST_DATA_LINKLIST *data = (LIST_DATA_LINKLIST *) lp->listData;
-    data->list = linkListCreate();
-}
-
-int listAdd(LIST_CONTAINER *lp, void *data) {
-    if (lp->type == LIST_LINKLIST_TYPE) {                          // data is a blob
-        LIST_DATA_LINKLIST *data = (LIST_DATA_LINKLIST *) lp->listData;
-        void *blob = linkListAlloc(sizeof(blob)); // allocate space for a pointer
-        blob = data;                              // we own the data now. Caller should not free it
-        linkListAddItem(data->list, blob);
-    }
-    return 0;
-}
-
-int listTop(LIST_CONTAINER *lp) {
-    if (lp->type == LIST_LINKLIST_TYPE) {
-        // @@TODO
-    }
-    return 0;
-}
-
-void *listNext(LIST_CONTAINER *lp) {
-    if (lp->type == LIST_LINKLIST_TYPE) {
-        // @@TODO
-    }
-    return NULL;
-}
-
-LIST_CONTAINER *getListByName(char *listName) {
-    for (int ix = 0; ix < MAX_LIST_CONTAINER; ix++) {
-        if ((listContainer[ix]) && (listContainer[ix]->name) && (!(strcmp(listContainer[ix]->name, listName))) )
-            return listContainer[ix];
-    }
-    return NULL;
-}
-
-LIST_CONTAINER *getNewListSlot() {
-    for (int ix = 0; ix < MAX_LIST_CONTAINER; ix++) {
-        if (listContainer[ix] == NULL) {
-            listContainer[ix] = (LIST_CONTAINER *) calloc(1, sizeof(LIST_CONTAINER));
-            return listContainer[ix];
+LIST_CONTAINER *_newListSlot() {
+    for (int i = 0; i < MAX_LIST_CONTAINER; i++) {
+        if (listContainer[i] == NULL) {
+            listContainer[i] = (LIST_CONTAINER *) calloc(1, sizeof(LIST_CONTAINER));
+            return listContainer[i];
         }
     }
-    die("Run out of list container items");
+    return NULL;
+}
+
+LIST_CONTAINER *_getListSlot(char *listName) {
+    LIST_CONTAINER *newContainer = NULL;
+    for (int i = 0; i < MAX_LIST_CONTAINER; i++) {
+        if (listContainer[i] == NULL)
+            break;
+        if (!strcmp(listName, listContainer[i]->name))
+            return (listContainer[i]);
+    }
+    return NULL;
+}
+
+int listCreate(char *listName) {
+    if (listName == NULL) {
+        logMsg(LOGERROR, "listcreate - No list name supplied to create");
+        return(-1);
+    }
+    LIST_CONTAINER *lp = _newListSlot();
+    if (lp == NULL) {
+        logMsg(LOGERROR, "listcreate - Run out of slots for list container");
+        return (-1);
+    }
+    lp->name = strdup(listName);
+    lp->type = LIST_TYPE_UNSTRUCTURED;
+    lp->listData = linkListCreate();
+}
+
+// You could allocate the size of just a pointer if you want to store a blob thats managed externally
+void *listAlloc(int size) {
+    return linkListAlloc(size);
+}
+
+int listAdd(char *listName, void *data) {
+    if (listName == NULL) {
+        logMsg(LOGERROR, "listadd - No list name supplied to add to");
+        return(-1);
+    }
+    LIST_CONTAINER *lp = _getListSlot(listName);
+    if (lp == NULL) {
+        logMsg(LOGERROR, "listadd - Cant find slot %s in list container", listName);
+        return (-1);
+    }
+    if (lp->type == LIST_TYPE_UNSTRUCTURED) {                          // data is a blob
+        //LIST_DATA_LINKLIST *data = (LIST_DATA_LINKLIST *) lp->listData;
+        //void *storeData = linkListAlloc(sizeof(data)); // allocate space for a pointer
+        //storeData = data;                              // we own the data now. Caller should not free it
+        linkListAddItem(lp->listData, data);
+        return(0);
+    }
+    return(-1);
+}
+
+void listRemove(char *listName) {
+    if (listName == NULL)
+        return;
+    LIST_CONTAINER *lp = _getListSlot(listName);
+    if (lp == NULL)
+        return;
+    linkListRemove(lp->listData);
+    free(lp->name);
+}
+
+
+
+
+
+void *listFirst(char *listName) {
+	if (listName == NULL) {
+		logMsg(LOGERROR, "No list name supplied to list-first from");
+		return NULL;
+	}
+	LIST_CONTAINER *lp = _getListSlot(listName);
+	if (lp == NULL) {
+		logMsg(LOGERROR, "list-first cant find slot %s in list container", listName);
+		return NULL;
+	}
+	if (lp->type == LIST_TYPE_UNSTRUCTURED) {
+		return (lp->lastData = linkListFirst(lp->listData));
+	}
+	lp->lastData = NULL;
+	return NULL;
+}
+
+void *listNext(char *listName) {
+    if (listName == NULL) {
+        logMsg(LOGERROR, "No list name supplied to list-next from");
+        return NULL;
+    }
+    LIST_CONTAINER *lp = _getListSlot(listName);
+    if (lp == NULL) {
+        logMsg(LOGERROR, "list-next cant find slot %s in list container", listName);
+        return NULL;
+    }
+    if (lp->type == LIST_TYPE_UNSTRUCTURED) {
+        return (lp->lastData = linkListNext(lp->lastData));
+    }
+    return NULL;
+}
+
+// ----------------------------------------------------------------------------------------------------------
+
+void unitTestList() {
+	int status = listCreate("test");
+	if (status == -1) {
+		logMsg(LOGERROR, "Cant create list");
+	}
+//	// Store a string
+	char s1[512]; strcpy(s1, "STRING DATA 1");
+	char *store1 = (char *) listAlloc(strlen(s1)+1); 
+	strcpy(store1, s1);
+	listAdd("test", store1);
+//	// Store a string
+	char *s2 = strdup("STRING DATA 2");
+	char *store2 = (char *) listAlloc(strlen(s2)+1);
+	strcpy(store2, s2);
+	listAdd("test", store2);
+//	// Store a string
+	char *store3 = (char *) listAlloc(100);
+	strcpy(store3, "STRING DATA 3");
+	listAdd("test", store3);
+	// retrieve them
+	char *p = (char *) listFirst("test");
+	while (p) {
+		printf("item=[%s]\n", p);
+		p = (char *) listNext("test");
+	}
+	listRemove("test");
 }
