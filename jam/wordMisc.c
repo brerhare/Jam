@@ -12,6 +12,8 @@
 #include "wordMisc.h"
 #include "common.h"
 #include "stringUtil.h"
+#include "list.h"
+#include "log.h"
 
 int wordMiscInclude(int ix, char *defaultTableName) {
     char *cmd = jam[ix]->command;
@@ -175,4 +177,79 @@ int wordMiscSum(int ix, char *defaultTableName) {
     free(varToSumQualifiedName);
     emit(jam[ix]->trailer);
     free(tmp);
+}
+
+int wordMiscNewList(int ix, char *defaultTableName) {
+	char *cmd = jam[ix]->command;
+	char *args = jam[ix]->args;
+	char *rawData = jam[ix]->rawData;
+	char *listName = (char *) calloc(1, 4096);
+	char *fullListName = (char *) calloc(1, 4096);
+	char *listCommand = (char *) calloc(1, 4096);
+	char *listCommandArgs = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 4096);
+
+	getWord(listName, args, 2, " \t");
+	if (!listName)
+		logMsg(LOGERROR, "missing list name to create");
+
+	VAR *variable = NULL;
+	sprintf(fullListName, "_list.%s", listName);
+	variable = findVarStrict(fullListName);
+	if (variable) {						// list exists - kill it
+		listRemove(listName);
+		clearVarValues(variable);
+		free(variable);
+	}
+	// Create the list VAR with a listcount value of 0
+	// NB: The VAR is fully qualified with "_list." but the LIST is NOT
+	variable = (VAR *) calloc(1, sizeof(VAR));
+	variable->name = strdup(fullListName);
+	variable->type = VAR_NUMBER;
+	clearVarValues(variable);
+	fillVarDataTypes(variable, "0");
+	logMsg(LOGDEBUG, "Initializing list variable %s with value %s", variable->name, variable->portableValue);
+	variable->source = strdup("list");
+	variable->debugHighlight = 6;
+	// Create the list
+	int status = listCreate(listName);
+	if (status == -1) {
+		logMsg(LOGERROR, "Cant create list %s", listName);
+	}
+	// Is there an initialiser command?
+	getWord(listCommand, args, 3, " \t");
+	if (listCommand) {
+		if (!strcasecmp(listCommand, "dir")) {
+			getWord(listCommandArgs, args, 4, " \t");
+			char *result = (char *) calloc(1, 10000000);	// 10 mb
+			char *commandStr = (char *) calloc(1, 4096);
+			sprintf(commandStr, "ls %s", listCommandArgs);
+			sprintf(commandStr, "ls /tmp");
+			logMsg(LOGDEBUG, "Attempt to list dir [%s]", commandStr);
+			FILE *fp = popen(commandStr, "r");
+			if (fp == NULL) {
+				logMsg(LOGERROR, "list dir failed");
+			} else {
+				while(fgets(result, 4096, fp) != NULL) {
+					char *pos;
+					if ((pos = strchr(result, '\n')) != NULL)
+    					*pos = '\0';
+					char *store = (char *) listAlloc(strlen(result) + 1);
+					strcpy(store, result);
+					listAdd(listName, store);
+					logMsg(LOGMICRO, "list add [%s]", result);
+				}
+				pclose(fp);
+			}
+			free(commandStr);
+			free(result);
+		}
+	}
+	// Wrap up
+    free(tmp);
+    free(listName);
+    free(fullListName);
+    free(listCommand);
+    free(listCommandArgs);
+    emit(jam[ix]->trailer);
 }

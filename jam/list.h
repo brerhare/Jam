@@ -1,6 +1,8 @@
 #ifndef __LIST_H_INCLUDED
 #define __LIST_H_INCLUDED
 
+// This is a wrapper around linkList, to enable naming of lists
+
 #include "linkListUtil.h"
 
 #define LIST_TYPE_UNSTRUCTURED  0

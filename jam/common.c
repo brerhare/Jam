@@ -211,7 +211,7 @@ void jamDump(int which) {
 		printf("<span style='margin:3px; padding:2px; color:#000; background-color:orange;'>sum </span>");
 		printf("<span style='margin:3px; padding:2px; color:#000; background-color:#a8c968;'>variable </span>");
 		printf("<span style='margin:3px; padding:2px; color:#000; background-color:#e28c86;'>mysql </span>");
-		printf("<span style='margin:3px; padding:2px; color:#000; background-color:cyan;'>unused </span>");
+		printf("<span style='margin:3px; padding:2px; color:#000; background-color:cyan;'>list </span>");
 	}
 	printf("<br>");
 	printf("</div>");
@@ -257,7 +257,7 @@ char *calculate(char *str) {
 	FILE *fp;
 	char *result = (char *) calloc(1, 4096);
 	strcpy(result, "0");
-	char commandStr[4096];
+	char *commandStr = (char *) calloc(1, 4096);
 	sprintf(commandStr, "echo 'scale=%d; %s' | bc", scale, str);
 	fp = popen(commandStr, "r");
 	if (fp == NULL) {
@@ -271,6 +271,7 @@ char *calculate(char *str) {
 		pclose(fp);
 	}
 //printf("\n *** [%s][%s] *** \n", str, result);
+	free(commandStr);
 	return result;
 }
 

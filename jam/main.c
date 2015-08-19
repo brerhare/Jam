@@ -83,7 +83,8 @@ int main(int argc, char *argv[]) {
 			logMsg(LOGDEBUG, "Found template parameter");
 			tplName = strTrim(getWordAlloc(cgivars[i+1], 1, ":"));
 			tplEntrypoint = strTrim(getWordAlloc(cgivars[i+1], 2, ":"));
-			logMsg(LOGDEBUG, "Template parameter contains an action to run: [%s]", tplEntrypoint);
+			if (tplEntrypoint)
+				logMsg(LOGDEBUG, "Template parameter contains an action to run: [%s]", tplEntrypoint);
 //printf("[%s][%s]<br>", tplName, tplEntrypoint);
 // @@KIM! remove next if
 		} else /* if (!tplEntrypoint) */ {
@@ -368,6 +369,8 @@ int control(int startIx, char *defaultTableName) {
 						wordDatabaseNewIndex(ix, defaultTableName);
 					if (!strcmp(tmp, "item"))
 						wordDatabaseNewItem(ix, defaultTableName);
+					if (!strcmp(tmp, "list"))
+						wordMiscNewList(ix, defaultTableName);
 				}
 			}
 //		-----------------------------------------

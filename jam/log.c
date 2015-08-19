@@ -12,8 +12,8 @@
 
 #include "log.h"
 
-//int logLevel = LOGMICRO;
-int logLevel = LOGDEBUG;
+int logLevel = LOGMICRO;
+//int logLevel = LOGDEBUG;
 
 int logId = rand() % 99;
 FILE *log_message_stream = NULL;

@@ -15,7 +15,6 @@
 #include "list.h"
 #include "log.h"
 
-
 typedef struct {
     linkList *list;
 } LIST_DATA_LINKLIST;
