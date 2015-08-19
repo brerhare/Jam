@@ -184,7 +184,6 @@ int wordMiscNewList(int ix, char *defaultTableName) {
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
 	char *listName = (char *) calloc(1, 4096);
-	char *fullListName = (char *) calloc(1, 4096);
 	char *listCommand = (char *) calloc(1, 4096);
 	char *listCommandArgs = (char *) calloc(1, 4096);
 	char *tmp = (char *) calloc(1, 4096);
@@ -194,8 +193,7 @@ int wordMiscNewList(int ix, char *defaultTableName) {
 		logMsg(LOGERROR, "missing list name to create");
 
 	VAR *variable = NULL;
-	sprintf(fullListName, "_list.%s", listName);
-	variable = findVarStrict(fullListName);
+	variable = findVarStrict(listName);
 	if (variable) {						// list exists - kill it
 		listRemove(listName);
 		clearVarValues(variable);
@@ -204,11 +202,11 @@ int wordMiscNewList(int ix, char *defaultTableName) {
 	// Create the list VAR with a listcount value of 0
 	// NB: The VAR is fully qualified with "_list." but the LIST is NOT
 	variable = (VAR *) calloc(1, sizeof(VAR));
-	variable->name = strdup(fullListName);
-	variable->type = VAR_NUMBER;
+	variable->name = strdup(listName);
+	variable->type = VAR_STRING;
 	clearVarValues(variable);
-	fillVarDataTypes(variable, "0");
-	logMsg(LOGDEBUG, "Initializing list variable %s with value %s", variable->name, variable->portableValue);
+	fillVarDataTypes(variable, "");
+	logMsg(LOGDEBUG, "Initializing list variable %s with no value", variable->name);
 	variable->source = strdup("list");
 	variable->debugHighlight = 6;
 	if (addVar(variable) == -1) {
@@ -227,8 +225,7 @@ int wordMiscNewList(int ix, char *defaultTableName) {
 			getWord(listCommandArgs, args, 4, " \t");
 			char *result = (char *) calloc(1, 10000000);	// 10 mb
 			char *commandStr = (char *) calloc(1, 4096);
-			sprintf(commandStr, "ls %s", listCommandArgs);
-			sprintf(commandStr, "ls /tmp");
+			sprintf(commandStr, "ls %s/%s", documentRoot, listCommandArgs);
 			logMsg(LOGDEBUG, "Attempt to list dir [%s]", commandStr);
 			FILE *fp = popen(commandStr, "r");
 			if (fp == NULL) {
@@ -244,7 +241,7 @@ int wordMiscNewList(int ix, char *defaultTableName) {
 					logMsg(LOGMICRO, "added [%s] to list [%s]", result, listName);
 				}
 				pclose(fp);
-				logMsg(LOGDEBUG, "new list [%s] [%s] created", listName, fullListName);
+				logMsg(LOGDEBUG, "new list [%s] created", listName);
 			}
 			free(commandStr);
 			free(result);
@@ -253,7 +250,6 @@ int wordMiscNewList(int ix, char *defaultTableName) {
 	// Wrap up
     free(tmp);
     free(listName);
-    free(fullListName);
     free(listCommand);
     free(listCommandArgs);
     emit(jam[ix]->trailer);

@@ -107,7 +107,7 @@ int main(int argc, char *argv[]) {
 
 	// Read in template, including any @include's
 	sprintf(tmp, "%s/%s", documentRoot, tplName);
-	logMsg(LOGINFO, "Asking for template %s", tmp);
+	logMsg(LOGINFO, "asking for template %s", tmp);
 	char *tpl = readTemplate(tmp);
 
 int sanity = 0;
@@ -118,7 +118,7 @@ if (++sanity > 100) { printf("Overflow!"); break; }
 			break;
 		// Read in the include file
 		sprintf(tmp, "%s/%s", documentRoot, tagInfo->content);
-		logMsg(LOGINFO, "Including @INCLUDE file %s", tmp);
+		logMsg(LOGINFO, "including @INCLUDE file %s", tmp);
 		std::ifstream includeFile (tmp, std::ifstream::binary);
 		if (!includeFile) {
 			char *error = (char *) calloc(1, 4096);
@@ -434,25 +434,27 @@ int control(int startIx, char *defaultTableName) {
 //		-------------------------------------
 			// This is either a list or a db table
 			char *listName = (char *) calloc(1, 4096);
-			char *fullListName = (char *) calloc(1, 4096);
 			getWord(listName, args, 1, " \t");
-			sprintf(fullListName, "_list.%s", listName);
-			logMsg(LOGDEBUG, "@each - looking to see if [%s] [%s] is a list", listName, fullListName);
-			VAR *listVar = findVarStrict(fullListName);
+			logMsg(LOGDEBUG, "@each - looking to see if [%s] is a list (exists as a variable)", listName);
+			VAR *listVar = findVarStrict(listName);
 			if (listVar) {	// its a list
 				logMsg(LOGDEBUG, "Its a list. Do listfirst() for list [%s]", listName);
 				char *p = (char *) listFirst(listName);
 				while (p) {
 					emit(jam[ix]->trailer);
 					logMsg(LOGMICRO, "setting list variable [%s] to value [%s]", listName, p);
-
-
 					clearVarValues(listVar);
 					fillVarDataTypes(listVar, p);
 					logMsg(LOGMICRO, "@each (list %s) starting recurse", listName);
 					control((ix + 1), defaultTableName);
 					logMsg(LOGMICRO, "@each (list %s) ended recurse", listName);
 					p = (char *) listNext(listName);
+				}
+				while (jam[ix] && (strcmp(jam[ix]->command, "@end"))) {
+					ix++;
+				}
+				if (jam[ix]) {
+					emit(jam[ix]->trailer);
 				}
 			} else {		// its a db table
 				logMsg(LOGDEBUG, "Its a db, not a list. do the select()");
