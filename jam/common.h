@@ -55,6 +55,7 @@ typedef struct {
 extern VAR *var[MAX_VAR];
 
 // Common.c functions
+int addVar(VAR *newVar);
 VAR *findVarStrict(char *qualifiedName);
 VAR *findVarLenient(char *name, char *prefix);void emit(char *line);
 void die(const char *errorString);

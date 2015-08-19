@@ -10,10 +10,22 @@
 #include </usr/include/mysql/mysql.h>
 
 #include "common.h"
+#include "log.h"
 #include "stringUtil.h"
 
 //-----------------------------------------------------------
 // Var related
+
+// Add a fully populated VAR to the official List Of Vars
+int addVar(VAR *newVar) {
+	for (int i = 0; i < MAX_VAR; i++) {
+		if (!var[i]) {
+			var[i] = newVar;
+			return (0);
+		}
+	}
+	logMsg(LOGERROR, "Cant add new var - MAX_VAR exceeded");
+}
 
 VAR *findVarLenient(char *name, char *prefix) {
 	// Search using the name as supplied. Mysql fields are always stored fully qualified. Others might have no or many levels of qualifier

@@ -211,6 +211,10 @@ int wordMiscNewList(int ix, char *defaultTableName) {
 	logMsg(LOGDEBUG, "Initializing list variable %s with value %s", variable->name, variable->portableValue);
 	variable->source = strdup("list");
 	variable->debugHighlight = 6;
+	if (addVar(variable) == -1) {
+		logMsg(LOGFATAL, "Cant create any more vars, terminating");
+		exit(1);
+	}
 	// Create the list
 	int status = listCreate(listName);
 	if (status == -1) {
@@ -237,9 +241,10 @@ int wordMiscNewList(int ix, char *defaultTableName) {
 					char *store = (char *) listAlloc(strlen(result) + 1);
 					strcpy(store, result);
 					listAdd(listName, store);
-					logMsg(LOGMICRO, "list add [%s]", result);
+					logMsg(LOGMICRO, "added [%s] to list [%s]", result, listName);
 				}
 				pclose(fp);
+				logMsg(LOGDEBUG, "new list [%s] [%s] created", listName, fullListName);
 			}
 			free(commandStr);
 			free(result);

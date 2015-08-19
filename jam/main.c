@@ -432,24 +432,49 @@ int control(int startIx, char *defaultTableName) {
 //		-------------------------------------
 		} else if (!(strcmp(cmd, "@each"))) {
 //		-------------------------------------
-			char *givenTableName = (char *) calloc(1, 4096);
-			MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 999999);
-			SQL_RESULT *rp = sqlCreateResult(givenTableName, res);
-			while (sqlGetRow2Var(rp) != SQL_EOF) {
-				emit(jam[ix]->trailer);
-				logMsg(LOGMICRO, "@each starting recurse");
-				control((ix + 1), givenTableName);
-				logMsg(LOGMICRO, "@each ended recurse");
+			// This is either a list or a db table
+			char *listName = (char *) calloc(1, 4096);
+			char *fullListName = (char *) calloc(1, 4096);
+			getWord(listName, args, 1, " \t");
+			sprintf(fullListName, "_list.%s", listName);
+			logMsg(LOGDEBUG, "@each - looking to see if [%s] [%s] is a list", listName, fullListName);
+			VAR *listVar = findVarStrict(fullListName);
+			if (listVar) {	// its a list
+				logMsg(LOGDEBUG, "Its a list. Do listfirst() for list [%s]", listName);
+				char *p = (char *) listFirst(listName);
+				while (p) {
+					emit(jam[ix]->trailer);
+					logMsg(LOGMICRO, "setting list variable [%s] to value [%s]", listName, p);
+
+
+					clearVarValues(listVar);
+					fillVarDataTypes(listVar, p);
+					logMsg(LOGMICRO, "@each (list %s) starting recurse", listName);
+					control((ix + 1), defaultTableName);
+					logMsg(LOGMICRO, "@each (list %s) ended recurse", listName);
+					p = (char *) listNext(listName);
+				}
+			} else {		// its a db table
+				logMsg(LOGDEBUG, "Its a db, not a list. do the select()");
+				char *givenTableName = (char *) calloc(1, 4096);
+				MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 999999);
+				SQL_RESULT *rp = sqlCreateResult(givenTableName, res);
+				while (sqlGetRow2Var(rp) != SQL_EOF) {
+					emit(jam[ix]->trailer);
+					logMsg(LOGMICRO, "@each (db table %s) starting recurse", givenTableName);
+					control((ix + 1), givenTableName);
+					logMsg(LOGMICRO, "@each (db table %s) ended recurse", givenTableName);
+				}
+				// Finished. Now emit the loops' trailer and make it current, so we will immediately advance past it
+				while (jam[ix] && (strcmp(jam[ix]->command, "@end") || (strcmp(jam[ix]->args, givenTableName)))) {
+					ix++;
+				}
+				if (jam[ix]) {
+					emit(jam[ix]->trailer);
+				}
+				mysql_free_result(res);
+				free(givenTableName);
 			}
-			// Finished. Now emit the loops' trailer and make it current, so we will immediately advance past it
-			while (jam[ix] && (strcmp(jam[ix]->command, "@end") || (strcmp(jam[ix]->args, givenTableName)))) {
-				ix++;
-			}
-			if (jam[ix]) {
-				emit(jam[ix]->trailer);
-			}
-			mysql_free_result(res);
-			free(givenTableName);
 //		-------------------------------------
 		} else if (!(strcmp(cmd, "@action"))) {
 //		-------------------------------------
@@ -565,11 +590,9 @@ int control(int startIx, char *defaultTableName) {
 				if (createNew) {
 //printf("NEW-->%s<-- with value -->%s<--\n", assignVar->name, assignVar->portableValue);
 					assignVar->debugHighlight = 4;
-					for (int i = 0; i < MAX_VAR; i++) {
-						if (!var[i]) {
-							var[i] = assignVar;
-							break;
-						}
+					if (addVar(assignVar) == -1) {
+						logMsg(LOGFATAL, "Cant create any more vars, terminating");
+						exit(1);
 					}
 				}
 			} else {		// Not an assignment - just emit variable
