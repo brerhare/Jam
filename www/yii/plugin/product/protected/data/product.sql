@@ -29,6 +29,7 @@ CREATE  TABLE IF NOT EXISTS `plugin`.`product_vat` (
   `uid` INT NOT NULL ,
   `description` VARCHAR(255) NOT NULL ,
   `rate` DECIMAL(10,2) NULL ,
+  `is_default` INT NULL,
   PRIMARY KEY (`id`) ,
   INDEX `uid` (`uid` ASC) )
 ENGINE = InnoDB;

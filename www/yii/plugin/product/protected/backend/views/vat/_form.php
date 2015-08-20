@@ -14,6 +14,10 @@
 
 	<?php echo $form->textFieldRow($model,'rate',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right')); ?>
 
+	<?php echo $form->toggleButtonRow($model, 'is_default');
+	//// @@NB: the 'options' buggers Yii although docs say its right: .. echo $form->toggleButtonRow($model, 'is_default' , array('disabled'=>'true','options'=>array('enabledLabel'=>'Yes' , 'disabledLabel'=>'No')));
+	?>
+
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',
