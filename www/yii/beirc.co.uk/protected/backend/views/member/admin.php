@@ -24,7 +24,7 @@ $this->menu=array(
 
 		'password',
 		'displayname',
-		//'email',
+		'email',
 		'member_type_id',
 		array(
             'class'=>'bootstrap.widgets.TbButtonColumn',
