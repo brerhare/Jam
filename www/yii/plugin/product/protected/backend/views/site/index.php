@@ -20,13 +20,6 @@ if (Yii::app()->user->isGuest):
 else:
 
 
-
-echo "";
-endif;
-if (1==1):
-
-
-
 // Report
 // ------
 
