@@ -42,14 +42,32 @@
 
 <!-- @@EG: Dropdowns -->
 
-<?php
-$criteria = new CDbCriteria;
- $criteria->addCondition("uid = " . Yii::app()->session['uid']);
-?>
-
-	<?php //echo $form->textFieldRow($model,'product_vat_id',array('class'=>'span5')); ?>
-
-	<?php echo $form->dropDownListRow($model,'product_vat_id', CHtml::listData(Vat::model()->findAll($criteria), 'id', 'description'), array('empty'=>'Choose')); ?>
+	<?php
+	$criteria = new CDbCriteria;
+ 	$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+	$vats = Vat::model()->findAll();
+	if ($vats)
+	{
+		$defaultVat = "";
+		if ($model->isNewRecord)
+		{
+			// Find default
+			$criteria = new CDbCriteria;
+ 			$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+			$criteria->addCondition("is_default = 1");
+			$vats = Vat::model()->find($criteria);
+			if ($vats)
+				$defaultVat = $vats->id;
+		}
+		else
+			$defaultVat = $model->product_vat_id;
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
+		echo $form->dropDownListRow($model,'product_vat_id', CHtml::listData(Vat::model()->findAll($criteria), 'id', 'description'), array( 'options' => array($defaultVat=>array('selected'=>true))   ));
+	}
+	else
+		$model->product_vat_id = 0;
+	?>
 
 	<?php echo $form->textFieldRow($model,'display_priority',array('class'=>'span1','maxlength'=>10, 'style'=>'text-align:right')); ?>
 
