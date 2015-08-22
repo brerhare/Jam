@@ -45,7 +45,7 @@
 	<?php
 	$criteria = new CDbCriteria;
  	$criteria->addCondition("uid = " . Yii::app()->session['uid']);
-	$vats = Vat::model()->findAll();
+	$vats = Vat::model()->findAll($criteria);
 	if ($vats)
 	{
 		$defaultVat = "";
