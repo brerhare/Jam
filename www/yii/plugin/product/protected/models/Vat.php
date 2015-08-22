@@ -8,6 +8,7 @@
  * @property integer $uid
  * @property string $description
  * @property string $rate
+ * @property integer $is_default
  *
  * The followings are the available model relations:
  * @property Product[] $products
@@ -41,12 +42,12 @@ class Vat extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('uid, description', 'required'),
-			array('uid', 'numerical', 'integerOnly'=>true),
+			array('uid, is_default', 'numerical', 'integerOnly'=>true),
 			array('description', 'length', 'max'=>255),
 			array('rate', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, uid, description, rate', 'safe', 'on'=>'search'),
+			array('id, uid, description, rate, is_default', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -71,7 +72,8 @@ class Vat extends CActiveRecord
 			'id' => 'ID',
 			'uid' => 'Uid',
 			'description' => 'Description',
-			'rate' => 'Rate',
+			'rate' => 'Rate %',
+			'is_default' => 'Default rate?',
 		);
 	}
 
@@ -91,6 +93,7 @@ class Vat extends CActiveRecord
 		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('rate',$this->rate,true);
+		$criteria->compare('is_default',$this->is_default,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
