@@ -141,6 +141,12 @@ angular.module('stock')
         controller: 'ProductLocationCtrl'
       })
 
+      .state('home.product-container', {
+        url: '/supplier/containers',
+        templateUrl: 'app/home/product/container/productContainer.html',
+        controller: 'ProductContainerCtrl'
+      })
+
 // Settings
 // --------
         .state('home.settings-vat', {
