@@ -353,6 +353,8 @@ int control(int startIx, char *defaultTableName) {
 				if (*tmp) {
 					if (!strcmp(tmp, "gridtable"))
 						wordHtmlGridtable(ix, defaultTableName);
+					else if (!strcmp(tmp, "input"))
+						wordHtmlInput(ix, defaultTableName);
 				}
 			}
 //		-----------------------------------------
@@ -363,13 +365,13 @@ int control(int startIx, char *defaultTableName) {
 				if (*tmp) {
 					if (!strcmp(tmp, "database"))
 						wordDatabaseNewDatabase(ix, defaultTableName);
-					if (!strcmp(tmp, "table"))
+					else if (!strcmp(tmp, "table"))
 						wordDatabaseNewTable(ix, defaultTableName);
-					if (!strcmp(tmp, "index"))
+					else if (!strcmp(tmp, "index"))
 						wordDatabaseNewIndex(ix, defaultTableName);
-					if (!strcmp(tmp, "item"))
+					else if (!strcmp(tmp, "item"))
 						wordDatabaseNewItem(ix, defaultTableName);
-					if (!strcmp(tmp, "list"))
+					else if (!strcmp(tmp, "list"))
 						wordMiscNewList(ix, defaultTableName);
 				}
 			}
@@ -382,11 +384,11 @@ int control(int startIx, char *defaultTableName) {
 					logMsg(LOGDEBUG, "@remove requested");
 					if (!strcmp(tmp, "database"))
 						wordDatabaseRemoveDatabase(ix, defaultTableName);
-					if (!strcmp(tmp, "table"))
+					else if (!strcmp(tmp, "table"))
 						wordDatabaseRemoveTable(ix, defaultTableName);
-					if (!strcmp(tmp, "index"))
+					else if (!strcmp(tmp, "index"))
 						wordDatabaseRemoveIndex(ix, defaultTableName);
-					if (!strcmp(tmp, "item"))
+					else if (!strcmp(tmp, "item"))
 						wordDatabaseRemoveItem(ix, defaultTableName);
 				}
 			}
@@ -408,7 +410,7 @@ int control(int startIx, char *defaultTableName) {
 			if (*tmp) {
 				if (!strcmp(tmp, "databases"))
 					wordDatabaseListDatabases(ix, defaultTableName);
-				if (!strcmp(tmp, "tables"))
+				else if (!strcmp(tmp, "tables"))
 					wordDatabaseListTables(ix, defaultTableName);
 			}
 		}
