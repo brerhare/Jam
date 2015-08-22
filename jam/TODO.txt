@@ -1,3 +1,5 @@
+------------- todo ------------------------------------
+
 * emit trailer from the process loop, not from each call. If a call is missed that @'s trailer isnt emitted. Emit from each 'if @xxx' block after handling whatever words. Default catchall there already does an emit
 
 * autofill table js variables presently hardcoded in header.html, but how to gridify a table easily? One single '@' with everything isnt ideal
@@ -14,4 +16,6 @@
 * jamify the input field stuff
 
 * field validation. Server or client side?
+
+------------- done ------------------------------------
 
