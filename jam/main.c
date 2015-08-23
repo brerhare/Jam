@@ -353,7 +353,7 @@ int control(int startIx, char *defaultTableName) {
 				if (*tmp) {
 					if (!strcmp(tmp, "gridtable"))
 						wordHtmlGridtable(ix, defaultTableName);
-					else if (!strcmp(tmp, "input"))
+					else if ( (!strcmp(tmp, "input")) || (!strcmp(tmp, "date")) )
 						wordHtmlInput(ix, defaultTableName);
 					else if (!strcmp(tmp, "textarea"))
 						wordHtmlTextarea(ix, defaultTableName);
