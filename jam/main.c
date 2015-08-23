@@ -357,6 +357,8 @@ int control(int startIx, char *defaultTableName) {
 						wordHtmlInput(ix, defaultTableName);
 					else if (!strcmp(tmp, "textarea"))
 						wordHtmlTextarea(ix, defaultTableName);
+					else if (!strcmp(tmp, "button"))
+						wordHtmlButton(ix, defaultTableName);
 				}
 			}
 //		-----------------------------------------

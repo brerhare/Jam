@@ -33,6 +33,9 @@ int wordHtmlGridtable(int ix, char *defaultTableName) {
 	free(tmp);
 }
 
+//	{{@html input hidden stock_supplier._id}}
+//	{{@html input text stock_supplier.payment_terms mini "Payment terms" days}}
+
 int wordHtmlInput(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
@@ -74,8 +77,6 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	getWord(fieldPrompt, args, 5, " \t");
 	getWord(fieldPlaceholder, args, 6, " \t");
 
-//              type var                 size  prompt          placeholder
-//{{@html input text stock_supplier.code small "Supplier Code" code}}
 	printf("<div class='uk-form-row'>\n");
 	printf("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPrompt);
 	printf("		<div class='uk-form-controls'>\n");
@@ -93,6 +94,8 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	free(fieldPlaceholder);
 	free(tmp);
 }
+
+//	{{@html textarea stock_supplier.notes 60x5 Notes}}
 
 int wordHtmlTextarea(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
@@ -132,8 +135,6 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 	getWord(fieldPrompt, args, 4, " \t");
 	getWord(fieldPlaceholder, args, 5, " \t");
 
-//              type var                size  prompt  placeholder
-//{{@html textarea stock_supplier.code  50x5  Notes   notes}}
 	printf("<div class='uk-form-row'>\n");
 	printf("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPrompt);
 	printf("		<div class='uk-form-controls'>\n");
@@ -149,5 +150,99 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 	free(fieldVarValue);
 	free(fieldPrompt);
 	free(fieldPlaceholder);
+	free(tmp);
+}
+
+/*	{{@html button Save primary small
+		alert('ok')     // or any js
+		runTemplate
+		runTemplate supplierMaint.tpl
+		runAction updateSupplier supplierForm outputResult backButton
+		runAction updateSupplier supplierForm outputResult runTemplate supplierMaint.tpl    // where supplierMaint.tpl is the arg to runTemplate
+}} */
+
+int wordHtmlButton(int ix, char *defaultTableName) {
+	char *cmd = jam[ix]->command;
+	char *args = jam[ix]->args;
+	char *rawData = jam[ix]->rawData;
+	char *buttonText = (char *) calloc(1, 4096);
+	char *buttonType = (char *) calloc(1, 4096);
+	char *buttonSize = (char *) calloc(1, 4096);
+	char *buttonJS = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 4096);
+	int buttonId = rand() % 9999999;			// @@TODO fix
+
+	getWord(buttonText, args, 2, " \t");
+	if (!buttonText) {
+	   logMsg(LOGERROR, "missing button text");
+	   return(-1);
+	}
+	getWord(buttonType, args, 3, " \t");
+	if (!buttonType) {
+	   logMsg(LOGERROR, "missing button type");
+	   return(-1);
+	}
+	getWord(buttonSize, args, 4, " \t");
+	if (!buttonSize) {
+	   logMsg(LOGERROR, "missing button size");
+	   return(-1);
+	}
+
+	printf("<button type='button' onClick='buttonClick%d()' class='uk-button uk-button-%s uk-button-%s'>%s</button>\n", buttonId, buttonSize, buttonType, buttonText);
+	sprintf(buttonJS, "<script>\nfunction buttonClick%d() {\n", buttonId);
+	int cnt = 2;
+	while (char *block = strTrim(getWordAlloc(args, cnt++, "\n"))) {
+		char *command = strTrim(getWordAlloc(block, 1, " \t"));
+		if (!command)
+			break;
+		if (!strcasecmp(command, "runTemplate")) {		// Parenthesize argument if any
+			char *templateName = strTrim(getWordAlloc(block, 2, " \t"));
+			if (templateName)
+				sprintf(tmp, "%s('%s');\n", command, templateName);
+			else
+				sprintf(tmp, "%s();\n", command);
+			strcat(buttonJS, tmp);
+			free(command);
+			free(templateName);
+		} else if (!strcasecmp(command, "runAction")) {	// Look for AJAX command, we need to wait for return there
+			char *pBlock = strchr(block, ' ');
+			sprintf(tmp, "%s(", command);
+			strcat(buttonJS, tmp);
+			int ix = 1;
+//printf("<br> \n----->%s <br>\n", pBlock);
+			while(char *runActionArg = strTrim(getWordAlloc(pBlock, ix, " "))) {
+				if (!runActionArg)
+					break;
+//printf("-->%s <br>\n", runActionArg);
+				if (ix != 1)
+					strcat(buttonJS, ", ");
+				if (ix < 4) {
+					if ((!strchr(runActionArg, '"')) && (!strchr(runActionArg, '\''))) {
+						sprintf(tmp, "'%s'", runActionArg);
+						strcat(buttonJS, tmp);
+					} else
+						strcat(buttonJS, runActionArg);
+				}
+				else
+					strcat(buttonJS, runActionArg);
+					//strcat(buttonJS, "@@TODOCALLBACK");
+				free(runActionArg);
+				ix++;
+			}
+			strcat(buttonJS, ");\n");
+		} else {
+			sprintf(tmp, "%s\n", block);
+			strcat(buttonJS, tmp);
+		}
+//printf("-----> <br>\n");
+		free(block);
+	}
+	strcat(buttonJS, "}\n</script>\n");
+	printf("%s", buttonJS);
+	emit(jam[ix]->trailer);
+	free(buttonText);
+	free(buttonType);
+	free(buttonSize);
+	free(buttonJS);
 	free(tmp);
 }
