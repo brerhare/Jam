@@ -1,3 +1,7 @@
+<style>
+.control-group{ margin-bottom:5px !important;}
+</style>
+
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'article-form',
 	'type'=>'horizontal',
@@ -20,11 +24,9 @@
 	<?php //echo $form->textFieldRow($model,'date',array('class'=>'span5')); ?>
 
 
-<div id = "row">
-Date *
-</div>
-<div id = "row">
-
+<div class="control-group">
+<label class="control-label required">Date</label>
+<div style="margin-bottom:6px;" class="controls">
 	<?php
 // @@EG CJuiDatePicker. See also the model for the before/after function I added to support this
 
@@ -50,7 +52,7 @@ Date *
 	<?php //echo $form->textFieldRow($model,'thumbnail_path',array('class'=>'span5','maxlength'=>255)); ?>
 	<?php echo $form->fileFieldRow($model, 'thumbnail_path'); ?>
 
-	<?php echo $form->textAreaRow($model,'intro',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
+	<?php echo $form->textAreaRow($model,'intro',array('rows'=>6, 'cols'=>50, 'class'=>'span6')); ?>
 
 	<?php //echo $form->textAreaRow($model,'content',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
 
@@ -61,6 +63,14 @@ Date *
 	.Xui-tooltip{display:none}
 	</style>
 
+	<div class="form-actions">
+		<?php $this->widget('bootstrap.widgets.TbButton', array(
+			'buttonType'=>'submit',
+			'type'=>'primary',
+			'label'=>$model->isNewRecord ? 'Create' : 'Save',
+		)); ?>
+	</div>
+
 <!-- CKEditor starts -->
 
     <script src="<?php echo Yii::app()->baseUrl.'/scripts/editors/ck/ckeditor/ckeditor.js'; ?>"></script>
@@ -70,7 +80,6 @@ Date *
         $_SESSION['KCFINDER']['uploadDir'] = Yii::app()->basePath."/../userdata/image/"; // path to the uploads folder
     ?>
     <!-- <div class="row"> -->
-    <?php echo $form->labelEx($model,'content'); ?>
     <?php echo $form->textArea($model, 'content', array('id'=>'editor1')); ?>
     <?php echo $form->error($model,'content'); ?>
     <!-- </div> -->

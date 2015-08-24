@@ -10,6 +10,7 @@
 
 	<?php //echo $form->textFieldRow($model,'uid',array('class'=>'span5')); ?>
 
+<br>
 	<?php echo $form->textFieldRow($model,'name',array('class'=>'span5','maxlength'=>255)); ?>
 
 	<div class="form-actions">
