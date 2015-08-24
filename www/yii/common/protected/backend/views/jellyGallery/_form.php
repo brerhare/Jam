@@ -1,5 +1,6 @@
 <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
 	'id'=>'jelly-gallery-form',
+	'type' => 'horizontal',
 	'enableAjaxValidation'=>false,
     'htmlOptions'=>array('enctype'=>'multipart/form-data'),
 )); ?>
@@ -10,12 +11,11 @@
 
 	<?php echo $form->textFieldRow($model,'sequence',array('class'=>'span1')); ?>
 
-	<?php echo $form->textFieldRow($model,'title',array('class'=>'span5','maxlength'=>255)); ?>
+	<?php echo $form->textFieldRow($model,'title',array('class'=>'span3','maxlength'=>255)); ?>
 
 	<?php echo $form->toggleButtonRow($model, 'active'); ?>
-<br>
 
-	<?php echo $form->textAreaRow($model,'text',array('rows'=>6, 'cols'=>50, 'class'=>'span8')); ?>
+	<?php echo $form->textAreaRow($model,'text',array('rows'=>6, 'cols'=>50, 'class'=>'span6')); ?>
 
     <div class="row">
         <?php echo $form->labelEx($model,'image'); ?>
@@ -24,7 +24,15 @@
     </div>
 
 
-	<br>
+	<div class="form-actions">
+		<?php $this->widget('bootstrap.widgets.TbButton', array(
+			'buttonType'=>'submit',
+			'type'=>'primary',
+			'label'=>$model->isNewRecord ? 'Create' : 'Save',
+		)); ?>
+	</div>
+
+
 	<div class="row" class="span8">
     	<?php $urlEmbed = "";
     	if (!($model->isNewRecord))
@@ -41,14 +49,5 @@
 		?>
 	</div>
 
-
-
-	<div class="form-actions">
-		<?php $this->widget('bootstrap.widgets.TbButton', array(
-			'buttonType'=>'submit',
-			'type'=>'primary',
-			'label'=>$model->isNewRecord ? 'Create' : 'Save',
-		)); ?>
-	</div>
 
 <?php $this->endWidget(); ?>
