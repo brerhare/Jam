@@ -33,11 +33,11 @@ class JellyGalleryController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','delete','admin'),
+				'actions'=>array('create','update','delete','deleteWithImages','admin'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
+				'actions'=>array('admin','delete','deleteWithImages'),
 				'users'=>array('admin'),
 			),
 			array('deny',  // deny all users
@@ -150,8 +150,11 @@ class JellyGalleryController extends Controller
 			$criteria = new CDbCriteria;
 			$criteria->addCondition("jelly_gallery_id = " . $id);
 			$galleryImages = JellyGalleryImage::model()->findAll($criteria);
-			if ($galleryImages)
-				throw new CHttpException(400,'Cant delete a gallery album that still has images.');
+			if ($galleryImages) {
+				$this->redirect(array('deleteWithImages', 'id'=>$id));
+				//$this->actionDeleteWithImages($id);
+				//throw new CHttpException(400,'Cant delete a gallery album that still has images.');
+			}
 
         	$oldfilename = $this->loadModel($id)->image;
         	if (($oldfilename != '') && (file_exists(Yii::app()->basePath . $this->_imageDir . $oldfilename)))
@@ -168,6 +171,53 @@ class JellyGalleryController extends Controller
 		}
 		else
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
+	}
+
+	public function actionDeleteWithImages($id)
+	{
+		if(Yii::app()->request->isPostRequest)
+		{
+			// we only allow deletion via POST request
+
+			// Cant delete galleries for which there are images (user deletes all those first)
+			$criteria = new CDbCriteria;
+			$criteria->addCondition("jelly_gallery_id = " . $id);
+			$galleryImages = JellyGalleryImage::model()->findAll($criteria);
+			if ($galleryImages)
+				throw new CHttpException(400,'XXXXXXXCant delete a gallery album that still has images.');
+
+        	$oldfilename = $this->loadModel($id)->image;
+        	if (($oldfilename != '') && (file_exists(Yii::app()->basePath . $this->_imageDir . $oldfilename)))
+        	{
+            	unlink(Yii::app()->basePath . $this->_imageDir . $oldfilename);
+				unlink(Yii::app()->basePath . $this->_imageDir . 'thumb_' . $oldfilename);
+        	}
+
+			$this->loadModel($id)->delete();
+
+			// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+			if(!isset($_GET['ajax']))
+				$this->redirect(array('admin'));
+		}
+		else
+		{
+Yii::log("Going for confirm delete with images", CLogger::LEVEL_WARNING, 'system.test.kim');
+ $this->redirect(array('create'));
+
+		//$this->redirect(array('index'));
+
+		$dataProvider=new CActiveDataProvider('JellyGallery');
+		$this->render('index',array(
+			'dataProvider'=>$dataProvider,
+		));
+
+
+/*
+       		$this->render('deleteWithImages',array(
+           		'id'=>$id,
+       		));
+*/
+		}
 	}
 
 	/**
