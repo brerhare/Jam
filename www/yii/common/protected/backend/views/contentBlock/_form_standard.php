@@ -1,3 +1,7 @@
+<style>
+.control-group{ margin-bottom:3px !important;}
+</style>
+
 	<p class="help-block">Fields with <span class="required">*</span> are required.</p>
 
 	<?php echo $form->errorSummary($model); ?>
@@ -46,6 +50,24 @@
 	<?php //echo $form->textFieldRow($model,'active',array('class'=>'span1','maxlength'=>1)); ?>
 	<?php echo $form->toggleButtonRow($model, 'active'); ?>
 
+
+	<div class="form-actions">
+		<?php $this->widget('bootstrap.widgets.TbButton', array(
+			'buttonType'=>'submit',
+			'type'=>'primary',
+			'label'=>$model->isNewRecord ? 'Create' : 'Save',
+		)); ?>
+	</div>
+
+
+	<?php $this->widget('bootstrap.widgets.TbButton', array(
+		'type'=>'info',
+		'label'=>'View with dark background',
+		'htmlOptions'=>array(
+			'onclick'=>'js:embedWirefly()',
+		)
+	)); ?>
+
 <!-- CKEditor starts -->
 
     <script src="<?php echo Yii::app()->baseUrl.'/scripts/editors/ck/ckeditor/ckeditor.js'; ?>"></script>
@@ -55,7 +77,6 @@
         $_SESSION['KCFINDER']['uploadDir'] = Yii::app()->basePath."/../userdata/image/"; // path to the uploads folder
 	?>
     <!-- <div class="row"> -->
-    <?php echo $form->labelEx($model,'content'); ?>
     <?php echo $form->textArea($model, 'content', array('id'=>'editor1')); ?>
     <?php echo $form->error($model,'content'); ?>
     <!-- </div> -->
@@ -97,14 +118,6 @@ if (editor) { editor.destroy(true); }
 }
 
 </script>
-
-		<?php $this->widget('bootstrap.widgets.TbButton', array(
-			'type'=>'info',
-			'label'=>'View with dark background',
-			'htmlOptions'=>array(
-				'onclick'=>'js:embedWirefly()',
-			)
-		)); ?>
 
 <!-- CKEditor ends -->
 
