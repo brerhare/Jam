@@ -15,9 +15,9 @@ $this->menu=array(
 <?php $this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'jelly-gallery-grid',
 	'dataProvider'=>$model->search(),
-	//'filter'=>$model,
+	'filter'=>$model,
 	'columns'=>array(
-		'id',
+		//'id',
 
         array(
             'name'  => 'sequence',
