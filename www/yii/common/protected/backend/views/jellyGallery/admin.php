@@ -40,10 +40,16 @@ $this->menu=array(
             'value'=> 'CHtml::image("/userdata/jelly/gallery/" . $data->image, "image", array("height"=>"50", "class"=>"imgClass"))',
         ),
 
+/*array
+(
+        'class'=>'CButtonColumn',
+        'deleteConfirmation'=>"js:'Do you really want to delete record with ID '+$(this).parent().parent().children(':nth-child(2)').text()+'?'",
+),*/
+
 
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
-			'template'=>'{update}{images}{delete}',
+			'template'=>'{update}{images}',
             'buttons'=>array(
                 'images' => array(
                     'label'=>'Images',
@@ -52,6 +58,22 @@ $this->menu=array(
                 ),
             ),
 
+		),
+		array (
+        	'class'=>'CButtonColumn',
+			'template'=>'{delete}',
+			'buttons'=>array(
+				'delete' => array (
+					'label'=>'Delete',
+					//'url'=>'...',       //A PHP expression for generating the URL of the button.
+					//'imageUrl'=>'...',  //Image URL of the button.
+					//'options'=>array(), //HTML options for the button tag.
+					//'click'=>'...',     //A JS function to be invoked when the button is clicked.
+					//'visible'=>'...',   //A PHP expression for determining whether the button is visible.
+				),
+			),
+			//'deleteConfirmation'=>"js:'Record with ID '+$(this).parent().parent().children(':first-child').text()+' will be deleted! Continue?'",
+			'deleteConfirmation'=>"js:'WARNING! This gallery album AND all its images will be deleted! Continue?'",
 		),
 	),
 )); ?>

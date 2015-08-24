@@ -150,12 +150,16 @@ class JellyGalleryController extends Controller
 			$criteria = new CDbCriteria;
 			$criteria->addCondition("jelly_gallery_id = " . $id);
 			$galleryImages = JellyGalleryImage::model()->findAll($criteria);
-			if ($galleryImages) {
-				$this->redirect(array('deleteWithImages', 'id'=>$id));
-				//$this->actionDeleteWithImages($id);
-				//throw new CHttpException(400,'Cant delete a gallery album that still has images.');
-			}
-
+			foreach ($galleryImages as $galleryImage):
+            	$oldfilename = $galleryImage->image;
+            	if (($oldfilename != '') && (file_exists(Yii::app()->basePath . $this->_imageDir . $oldfilename)))
+            	{
+                	unlink(Yii::app()->basePath . $this->_imageDir . $oldfilename);
+            		if (($oldfilename != '') && (file_exists(Yii::app()->basePath . $this->_imageDir . 'thumb_' . $oldfilename)))
+                    	unlink(Yii::app()->basePath . $this->_imageDir . 'thumb_' . $oldfilename);
+            	}
+				$galleryImage->delete();
+			endforeach;
         	$oldfilename = $this->loadModel($id)->image;
         	if (($oldfilename != '') && (file_exists(Yii::app()->basePath . $this->_imageDir . $oldfilename)))
         	{
