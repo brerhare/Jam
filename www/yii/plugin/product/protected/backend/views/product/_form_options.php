@@ -1,3 +1,7 @@
+<style>
+.control-group{ margin-bottom:3px !important;}
+</style>
+
 <?php echo $form->errorSummary($model); ?>
 
 <style>

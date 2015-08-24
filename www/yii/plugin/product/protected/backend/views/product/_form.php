@@ -1,3 +1,7 @@
+<style>
+.control-group{ margin-bottom:3px !important;}
+</style>
+
 <div class="form">
     <?php $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
         'id'=>'product-form',

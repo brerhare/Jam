@@ -1,3 +1,7 @@
+<style>
+.control-group{ margin-bottom:3px !important;}
+</style>
+
 <div class="row">
     <div class="span4 well">
 

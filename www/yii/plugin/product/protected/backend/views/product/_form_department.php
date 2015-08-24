@@ -1,3 +1,7 @@
+<style>
+.control-group{ margin-bottom:3px !important;}
+</style>
+
 	<div style='color:red'>
 	<b>NB: Order Options and Features are specific to each department<br>
 	   After moving a product to another department those will have to be input again</b>

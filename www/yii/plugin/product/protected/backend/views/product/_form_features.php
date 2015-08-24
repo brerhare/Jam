@@ -1,3 +1,7 @@
+<style>
+.control-group{ margin-bottom:3px !important;}
+</style>
+
 <?php echo $form->errorSummary($model); ?>
 <div class="row">
     <div class="span2 well">
