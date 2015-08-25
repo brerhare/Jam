@@ -129,7 +129,7 @@ class column
 
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("column_name = '" . $this->defaultName . "'");
- 		//$criteria->order = "column_name ASC, sequence ASC, title ASC";
+ 		$criteria->order = "column_name ASC, sequence ASC, title ASC";
 		$columnItems = JellyColumn::model()->findAll($criteria);
 		foreach ($columnItems as $columnItem):
 			// Outer box
