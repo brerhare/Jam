@@ -424,12 +424,17 @@ $this->redirect($tmp2);
 
 		// Pick up the vendor record to BCC them
 		$bcc = "";
+		$vendorName = ".";
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$criteria->addCondition("id = " . $order->vendor_id);
 		$vendor = Vendor::model()->find($criteria);
-		if (($vendor) && (trim($vendor->email) != "") && ($vendor->notify_sale == 1))
-			$bcc = $vendor->email;
+		if ($vendor)
+		{
+			$vendorName = " on behalf of " . $vendor->name;
+ 			if ((trim($vendor->email) != "") && ($vendor->notify_sale == 1))
+				$bcc = $vendor->email;
+		}
 
 		// Send email
 		$to = $order->email_address;
@@ -437,8 +442,9 @@ $this->redirect($tmp2);
 		{
 			$from = "admin@dglink.co.uk";
 			$fromName = "Admin";
-			$subject = "Your tickets purchased at DG Link";
-			$message = '<b>Thank you for using the DG Link to order your ticket(s).</b> <br> The attached PDF file contains your ticket(s) and card receipt. Please print all pages and bring them with you to your event or activity. The barcode on each ticket can only be used once.<br> If you ever need to reprint your tickets you may login to the site and do so from your account page. If you have forgotten your log in details you can request a password reminder.<br> We hope you enjoy your event.  --  The DG Link Team';
+			$subject = "Your tickets purchased at DG Link" .  $vendorName;
+			//$message = '<b>Thank you for using the DG Link to order your tickets.</b> <br> The attached PDF file contains your tickets and card receipt. Please print all pages and bring them with you to your event or activity. The barcode on each ticket can only be used once.<br> If you ever need to reprint your tickets you may login to the site and do so from your account page. If you have forgotten your log in details you can request a password reminder.<br> We hope you enjoy your event.  --  The DG Link Team';
+			$message = '<b>Thank you for using the DG Link to order your tickets.</b> <br> The attached PDF file contains your tickets and card receipt. Please print all pages and bring them with you to your event or activity. The barcode on each ticket can only be used once.<br> We hope you enjoy your event.  --  The DG Link Team';
 			// phpmailer
 			$mail = new PHPMailer();
 			$mail->AddAddress($to);
