@@ -37,23 +37,21 @@ class column
 		$content = "";
 		foreach ($options as $opt => $val)
 		{
-			if (strstr($val, "px"))
-				$val = str_replace("px", "", $val);
 			switch ($opt)
 			{
 				case "name":
 					$this->defaultName = $val;
 					break;
 				case "width":
-					$this->defaultWidth = $val . "px";
+					$this->defaultWidth = $val;
 					break;
 				case "internalwidth":
 				case "internal-width":
-					$this->defaultInternalWidth = $val . "px";
+					$this->defaultInternalWidth = $val;
 					break;
 				case "contentwidth":
 				case "content-width":
-					$this->defaultContentWidth = $val . "px";
+					$this->defaultContentWidth = $val;
 					break;
 				case "internalcolor":
 				case "internal-color":
@@ -81,11 +79,11 @@ class column
 					break;
 				case "topheight":
 				case "top-height":
-					$this->defaultTopHeight = $val . "px";
+					$this->defaultTopHeight = $val;
 					break;
 				case "bottomheight":
 				case "bottom-height":
-					$this->defaultBottomHeight = $val . "px";
+					$this->defaultBottomHeight = $val;
 					break;
 				case "topimage":
 				case "top-image":
