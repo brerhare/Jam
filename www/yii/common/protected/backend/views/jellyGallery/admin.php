@@ -17,7 +17,7 @@ $this->menu=array(
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
 	'columns'=>array(
-		//'id',
+		'id',
 
         array(
             'name'  => 'sequence',
