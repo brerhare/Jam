@@ -730,7 +730,20 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 		//$this->logMsg("Handling " . $word . " with value " . $value . "\n", 1);
 		switch ($word)
 		{
-
+			case "jam":
+				// jam = /jam/template/sometemplate.tpl
+				$settingEmail = "Not set in settings";
+				$criteria = new CDbCriteria;
+				$criteria->addCondition("id = 1");
+				$setting = JellySetting::model()->find($criteria);
+				if ($setting)
+					$settingEmail = $setting->email;
+				$yiiSite = str_replace("/index.php", "", Yii::app()->createAbsoluteUrl(Yii::app()->request->url));
+				$jamUrl = $yiiSite . "/jamcgi/jam?template=" . $value . "&jelly_setting.email=" . $settingEmail;
+				$shell_exec = "php " . Yii::app()->basePath . "/../jam/jellyjam.php";
+				$curlContent = shell_exec ($shell_exec);
+				//$this->genInlineHtml($curlContent);
+				break;
 			case "css":
 				// Each blob has a div#blobname { } around ALL its css, and the name of the blob is the generated div's id
 				// For example <div id='xyz'> would have css defined as -
@@ -767,7 +780,7 @@ if (strstr($blobName, "googlemap"))
 				break;
 			case "style":
 				foreach ($value as $cssName => $cssValue)
-				{
+		{
 					switch ($cssName)
 					{
 						case ("background-image"):
