@@ -56,7 +56,7 @@
             }
         },
         allowedContent : true,  // Allow potentially harmful tags: iframes, javascript etc
-        width: <?php echo Yii::app()->params['editorpagewidth'];?>,
+        width: 300,
         height: <?php echo Yii::app()->params['editorpageheight'];?>,
         filebrowserUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/upload.php?type=files',
         filebrowserImageUploadUrl: '<?php echo Yii::app()->baseUrl; ?>/scripts/editors/ck/kcfinder/upload.php?type=images',
