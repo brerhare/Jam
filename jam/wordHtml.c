@@ -66,10 +66,8 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	   return(-1);
 	}
 
-	if ((!strchr(fieldVar, '.')) && (defaultTableName)) {
-		strcat(fieldVar, ".");
-		strcat(fieldVar, defaultTableName);
-	}
+	if ((!strchr(fieldVar, '.')) && (defaultTableName))
+		sprintf(fieldVar, "%s.%s", defaultTableName, fieldVar);
 	variable = findVarStrict(fieldVar);
 	if (variable)
 		strcpy(fieldVarValue, variable->portableValue);
@@ -124,10 +122,8 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 	getWord(fieldSize2, fieldSize, 2, "x");	// rows
 	getWord(fieldSize, fieldSize, 1, "x");	// cols
 
-	if ((!strchr(fieldVar, '.')) && (defaultTableName)) {
-		strcat(fieldVar, ".");
-		strcat(fieldVar, defaultTableName);
-	}
+	if ((!strchr(fieldVar, '.')) && (defaultTableName))
+		sprintf(fieldVar, "%s.%s", defaultTableName, fieldVar);
 	variable = findVarStrict(fieldVar);
 	if (variable)
 		strcpy(fieldVarValue, variable->portableValue);
@@ -245,4 +241,72 @@ int wordHtmlButton(int ix, char *defaultTableName) {
 	free(buttonSize);
 	free(buttonJS);
 	free(tmp);
+}
+
+//	{{@html select stock_supplier.name stock_supplier._id medium "Choose supplier" stock_purchorder.supplier_id}}
+
+int wordHtmlSelect(int ix, char *defaultTableName) {
+	char *cmd = jam[ix]->command;
+	char *args = jam[ix]->args;
+	char *rawData = jam[ix]->rawData;
+	char *fieldVarName = (char *) calloc(1, 4096);
+	char *fieldVarValue = (char *) calloc(1, 4096);
+	char *fieldSize = (char *) calloc(1, 4096);
+	char *fieldPrompt = (char *) calloc(1, 4096);
+	char *fieldVarSelected = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 4096);
+	VAR *variable = NULL;
+/*
+	getWord(fieldVarName, args, 2, " \t");
+	if (!fieldVarName) {
+	   logMsg(LOGERROR, "missing name variable for select");
+	   return(-1);
+	}
+	getWord(fieldVarValue, args, 3, " \t");
+	if (!fieldVarValue) {
+	   logMsg(LOGERROR, "missing value variable for select");
+	   return(-1);
+	}
+	getWord(fieldSize, args, 4, " \t");
+	if (!fieldSize) {
+	   logMsg(LOGERROR, "missing size for select");
+	   return(-1);
+	}
+	getWord(fieldSelected, args, 5, " \t");
+
+	if ((!strchr(fieldVar, '.')) && (defaultTableName))
+		sprintf(fieldVar, "%s.%s", fieldVar, defaultTableName);
+	variable = findVarStrict(fieldVar);
+	if (variable)
+		strcpy(fieldVarValue, variable->portableValue);
+
+	getWord(fieldPrompt, args, 4, " \t");
+	getWord(fieldPlaceholder, args, 5, " \t");
+
+	printf("<div class='uk-dropdown uk-dropdown-scrollable'>\n");
+	printf(""
+
+	printf("<div class='uk-dropdown uk-dropdown-scrollable>\n");
+	printf("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPrompt);
+	printf("		<div class='uk-form-controls'>\n");
+	printf("		<textarea name='%s' id='%s' cols='%s' rows='%s'>%s</textarea>", fieldVar, fieldVar, fieldSize, fieldSize2, fieldVarValue);
+	printf("	</div>\n");
+	printf("</div>\n");
+
+
+<select name="{filter.select}">
+	{@each stock_area}
+		<option value="{id}">{name}</option>
+	{@end}
+</select>
+
+
+	emit(jam[ix]->trailer);
+	free(fieldVarName);
+	free(fieldVarValue);
+	free(fieldSize);
+	free(fieldPrompt);
+	free(fieldVarSelected);
+	free(tmp);
+*/
 }

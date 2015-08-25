@@ -254,3 +254,20 @@ int wordMiscNewList(int ix, char *defaultTableName) {
     free(listCommandArgs);
     emit(jam[ix]->trailer);
 }
+
+int wordMiscEmail(int ix, char *defaultTableName) {
+	char *cmd = jam[ix]->command;
+	char *args = jam[ix]->args;
+	char *rawData = jam[ix]->rawData;
+	char *listName = (char *) calloc(1, 4096);
+	char *listCommand = (char *) calloc(1, 4096);
+	char *listCommandArgs = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 4096);
+
+	// Wrap up
+    free(tmp);
+    free(listName);
+    free(listCommand);
+    free(listCommandArgs);
+    emit(jam[ix]->trailer);
+}

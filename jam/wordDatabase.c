@@ -297,6 +297,64 @@ int wordDatabaseNewIndex(int ix, char *defaultTableName) {
 	free(tmp);
 }
 
+int wordDatabaseClearItem(int ix, char *defaultTableName) {
+	char *cmd = jam[ix]->command;
+	char *args = jam[ix]->args;
+	char *rawData = jam[ix]->rawData;
+	char *tableName = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 4096);
+	char *qStr = (char *) calloc(1, 4096);
+	char *nameStr = (char *) calloc(1, 4096);
+	char *valueStr = (char *) calloc(1, 4096);
+
+	getWord(tableName, args, 2, " \t");
+	if (!tableName) {
+		logMsg(LOGERROR, "New item failed - no table name supplied");
+		return (-1);
+	}
+	sprintf(qStr, "DESC %s", tableName);
+	int status = doSqlQuery(qStr);
+	if (status == -1) {
+		logMsg(LOGERROR, "New item failed - cant 'describe' table");
+		return (-1);
+	}
+	MYSQL_RES *res = getSqlQueryRES();
+	if (res == NULL) {
+		logMsg(LOGERROR, "New item cannot describe database table - returned null resultset");
+		return(-1);
+	}
+	int numFields = mysql_num_fields(res);
+	while (MYSQL_ROW row = mysql_fetch_row(res)) {
+		if (strlen(nameStr) != 0) {
+			strcat(nameStr, ", ");
+			strcat(valueStr, ", ");
+		}
+		strcat(nameStr, row[0]);
+		sprintf(tmp, "%s.%s", tableName, row[0]);
+		VAR *seekVar = findVarStrict(tmp);
+		if (!seekVar)
+			strcat(valueStr, "NULL");
+		else {
+			sprintf(tmp, "'%s'", seekVar->portableValue);
+			strcat(valueStr, tmp);
+		}
+	}
+	sprintf(qStr,"INSERT INTO %s (", tableName);
+	strcat(qStr, nameStr);
+	strcat(qStr, ") values (");
+	strcat(qStr, valueStr);
+	strcat(qStr, ")");
+	status = doSqlQuery(qStr);
+	if (status == -1) {
+		logMsg(LOGERROR, "Remove item failed");
+		return (-1);
+	}
+	emit(jam[ix]->trailer);
+	free(tableName);
+	free(qStr);
+	free(tmp);
+}
+
 int wordDatabaseNewItem(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;

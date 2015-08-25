@@ -15,7 +15,7 @@ int wordDatabaseRemoveTable(int ix, char *defaultTableName);
 int wordDatabaseNewIndex(int ix, char *defaultTableName);
 int wordDatabaseRemoveIndex(int ix, char *defaultTableName);
 
-
+int wordDatabaseClearItem(int ix, char *defaultTableName);
 int wordDatabaseNewItem(int ix, char *defaultTableName);
 int wordDatabaseAmendItem(int ix, char *defaultTableName);
 int wordDatabaseUpdateItem(int ix, char *defaultTableName);
