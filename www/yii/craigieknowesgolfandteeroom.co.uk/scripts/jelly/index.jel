@@ -99,7 +99,7 @@ css.overflow = visible
 		addon.menu.traditional.menu-font-size = 16px
 		addon.menu.traditional.menu-font-family = Georgia
 		addon.menu.traditional.menu-font-weight = normal
-		addon.menu.traditional.menu-text-color = black
+		addon.menu.traditional.menu-text-color = #6b7964
 
 #// Top level hover settings
 		addon.menu.traditional.menu-hover-text-color = #eeeeed
@@ -109,7 +109,7 @@ css.overflow = visible
 		addon.menu.traditional.menu-hover-font-weight = normal
 			
 #// Top level selected settings
-		addon.menu.traditional.menu-selected-text-color = #6b7964
+		addon.menu.traditional.menu-selected-text-color = black
 		addon.menu.traditional.menu-selected-background-color = #eeeeed
 		addon.menu.traditional.menu-selected-font-size = 16px
 		addon.menu.traditional.menu-selected-font-family = Georgia
@@ -269,7 +269,7 @@ ccs.margin = 1%
 		#addon.slider.flexslider.animation = slide
 	
 		[home-content]
-		css.margin = 0px
+		css.padding = 10px
 		db.table = ContentBlock
 		db.filter = url=$_GET['page']
 		db.error = Sorry, I could not find the page $_GET['page']
@@ -290,7 +290,7 @@ ccs.margin = 1%
 			addon.global.column.name = mid-left
 			addon.global.column.width = 100%
 			addon.global.column.internal-width = 100%
-			addon.global.column.content-width = 98%
+			addon.global.column.content-width =88%
 			addon.global.column.internal-color = #eeeeed
 			addon.global.column.background-color = transparent
 			
@@ -306,7 +306,7 @@ ccs.margin = 1%
 			addon.global.column.name = mid-right
 			addon.global.column.width = 100%
 			addon.global.column.internal-width = 100%
-			addon.global.column.content-width = 98%
+			addon.global.column.content-width = 88%
 			addon.global.column.internal-color = #eeeeed
 			addon.global.column.background-color = transparent
 			
@@ -326,7 +326,7 @@ ccs.margin = 1%
 	addon.global.column.name = right-column
 	addon.global.column.width = 100%
 	addon.global.column.internal-width = 100%
-	addon.global.column.content-width = 98%
+	addon.global.column.content-width = 88%
 	addon.global.column.internal-color = #eeeeed
 	addon.global.column.background-color = transparent
 	
