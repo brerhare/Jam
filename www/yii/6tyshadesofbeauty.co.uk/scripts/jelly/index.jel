@@ -368,7 +368,7 @@ css.background-color = #e6e7e8
 		css.text-align = left
 		
 		[design]
-		html.raw = Design by WeeSleekit
+		html.raw = Branding by WeeSleekit
 
 		[wirefly]
 		child = wirefly-logo, admin
