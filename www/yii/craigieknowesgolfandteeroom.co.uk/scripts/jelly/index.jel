@@ -1,20 +1,402 @@
+#Craigieknowes Golf Course
 [defaults]
 include = default-values
 
-; Every blob inherits these before adding/overriding
 [* : defaults]
 
 [screen]
-child = contentframe
-fx.wallpaper-image = /img/background.jpg
+child = site
 css.display = block
+fx.wallpaper-image = /img/background.jpg
+	
+	[site]
+	child = header, middle, footer
+	css.width = 80%
+	css.min-width = 950px
+	css.border-left = 1px solid #607457
+	#css.border-right = 1px solid #607457
+	
+		
+####  Header  #################################
 
-	[contentframe]
-	css.display = block
-	css.width = 500px
-	css.margin-top = 400px
-	style.html.h1.color = yellow
-	style.html.h1.background-color = black
-	style.html.h1.padding = 10px
-	html.h1 = a jelly&#0153; site is coming soon
+	[header]
+	child = logo, header-image
+	#css.height = 33%
+	stacking = horizontal
+	css.margin-left = 5px
+	css.z-index = 1
+	css.position = relative
+	
+	
+		[logo]
+		css.margin-left = 0%
+		css.margin-top = 25px
+		css.width = 24%
+		css.min-width = 200px
+		image.width = 100%
+		image.height = 100%
+		image.url = img/logo.png
+		css.z-index = 100
+		css.position = relative
+#divide the height by the width for the proportional padding height
+		
+		click = http://www...
 
+		[header-image]
+		child = header-text
+		css.margin-left = -13%
+		#css.margin-bottom = -2%
+		css.width = 88%
+		image.url = img/header.jpg
+		image.height = 35%
+		image.width = 100%
+		css.z-index = 50
+		css.position = relative
+		
+					
+			
+#### middle left ###########################################
+
+[middle]
+child = left, main
+stacking = horizontal
+css.margin-top = 20px
+css.overflow = visible
+
+	[left]
+	child = menu, left-column, menu-footnote
+	css.width = 20%
+	css.min-width = 80px
+	#css.background-color = transparent
+	css.margin-left = 3%
+	#css.padding-right =
+	css.background-color = transparent
+	#css.border-right = 1px solid #607457
+	
+		[menu]
+		css.overflow = visible
+		css.z-index = 100
+		css.position = relative
+
+		
+		#// Top level basic settings
+		addon.menu.traditional.orientation = vertical
+		addon.menu.traditional.width = 160px
+		addon.menu.traditional.height = 30px
+		addon.menu.traditional.align = left
+#		addon.menu.traditional.item-margin = // split equally between left and right. @@TODO handle 1st and last
+		addon.menu.traditional.item-width = uniform
+		
+#// Top level background settings
+		addon.menu.traditional.menu-rounding = 0px
+#		addon.menu.traditional.menu-opacity = 0%
+		addon.menu.traditional.menu-color = #eeeeed 
+		addon.menu.traditional.item-separator-width = 10px
+		addon.menu.traditional.item-separator-color = transparent
+#		addon.menu.traditional.edgepadding = 40px
+
+#// Top level font settings
+		addon.menu.traditional.menu-font-size = 16px
+		addon.menu.traditional.menu-font-family = Georgia
+		addon.menu.traditional.menu-font-weight = normal
+		addon.menu.traditional.menu-text-color = black
+
+#// Top level hover settings
+		addon.menu.traditional.menu-hover-text-color = #eeeeed
+		addon.menu.traditional.menu-hover-background-color = #425439
+		addon.menu.traditional.menu-hover-font-size = 16px
+		addon.menu.traditional.menu-hover-font-family = Georgia
+		addon.menu.traditional.menu-hover-font-weight = normal
+			
+#// Top level selected settings
+		addon.menu.traditional.menu-selected-text-color = #6b7964
+		addon.menu.traditional.menu-selected-background-color = #eeeeed
+		addon.menu.traditional.menu-selected-font-size = 16px
+		addon.menu.traditional.menu-selected-font-family = Georgia
+		addon.menu.traditional.menu-selected-font-weight = bold
+			
+#// Second level settings
+#		addon.menu.traditional.submenu-height = 30px // centers text
+		addon.menu.traditional.submenu-width = variable
+		addon.menu.traditional.submenu-font-size = 14px
+		addon.menu.traditional.submenu-font-family = Open Sans
+		addon.menu.traditional.submenu-font-weight = normal
+		addon.menu.traditional.submenu-text-color = #425439
+		addon.menu.traditional.submenu-background-color = #eeeeed
+		addon.menu.traditional.submenu-separator-width = 1px
+		addon.menu.traditional.submenu-separator-color = #425439
+
+		
+		[left-column]
+		css.width = 100%
+		css.margin-top = 50px
+		addon.global.column.name = global-left
+		addon.global.column.width = 100%
+		addon.global.column.internal-width = 100%
+		addon.global.column.content-width = 98%
+		addon.global.column.internal-color = transparent
+		addon.global.column.background-color = transparent
+		
+		addon.global.column.top-height = 0px
+		addon.global.column.bottom-height = 10px
+		
+
+		[menu-footnote]
+		child = address, standard-links, credits
+		css.width = 100%
+		css.margin-top = 20px
+
+						
+			[standard-links]
+			child = footer-contact, footer-cookies, footer-terms
+			css.line-height = 20px
+			css.margin-top = 50px
+			
+				[footer-contact]
+				html.raw = <a style="text-decoration:none; color: #000000; font-size: 10px;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#000000'" href="?layout=index&page=contact">CONTACT</a>
+
+				[footer-cookies]
+				#css.margin-top = 10px
+				html.raw = <a style="text-decoration:none; color: #000000; font-size: 10px;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#000000'" href="?layout=index&page=cookie-policy">COOKIES</a>
+				
+
+				[footer-terms]
+				#css.margin-top = 10px
+				html.raw = <a style="text-decoration:none; color: #000000; font-size: 10px;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#000000'" href="?layout=index&page=terms-conditions">TERMS</a>
+
+				
+			[credits]
+			child = copyright, wirefly
+			css.width = 100%
+			css.margin-top = 50px
+			
+				[copyright]
+				html.raw = Craigieknowes Golf Course<br>and Tee Room &copy 2015<br>All rights reserved
+				css.color = #000000
+				css.font-size = 12px
+				css.text-align = left
+				css.font-family = Open Sans, Verdana, sans-serif
+				
+				[wirefly]
+				child = wirefly-logo, admin
+				stacking = horizontal
+				css.margin-top = 40px
+		
+				
+					[wirefly-logo]
+					css.height = 45px
+					css.margin-top = 5px
+					image.url = img/wirefly-design.png
+					image.width = 100px
+					image.height = 46px
+					image.align = left
+					clicknew = http://www.wireflydesign.com
+					
+				
+					[admin]
+					child = cog-center
+					css.height = 20px
+					css.width = 20px
+					css.background-size = 100%
+					css.background-image = url('/img/admin.png')
+					css.margin-left = -20px
+		
+						[cog-center]
+						css.width = 5px
+						css.height = 5px
+						css.margin-top = 8px
+						image.url = img/cog-center.png
+						image.width = 5px
+						image.height = 5px
+						image.align = center
+						clicknew = backend.php				
+		
+		
+#### middle main ###########################################	
+
+[main]
+child = mid-column, right-column, page-content
+css.width = 76%	
+#css.min-width = 650px
+css.float = right
+stacking = horizontal
+css.overflow = visible
+ccs.margin = 1%
+
+	[mid-column]
+	child = slider-overlay, slider, home-content, bot-mid
+	css.width = 60%
+	#css.margin-left = -10%
+	css.padding-left = 3%
+	css.padding-right = 3%
+	css.border-left = 1px solid #607457
+	css.border-right = 1px solid #607457	
+	condition = @PAGE=@HOMEPAGE
+	css.overflow = visible
+	
+		[slider-overlay]
+		css.width = 100%
+		css.margin-top = -12%
+		#css.min-width = 200px
+		css.overflow = visible
+		
+		image.width = 60%
+		image.height = 100%
+		image.url = img/slider-overlay.png
+		css.z-index = 99
+		css.position = relative
+		
+		[slider]
+		css.width = 100%
+		css.margin-right = 0px
+		css.margin-left = 0px
+		css.margin-top = -52%
+		css.min-width = 300px
+		css.height = 60%
+		addon.slider.flexslider.width = 100%
+		addon.slider.flexslider.height = 100%
+		addon.slider.flexslider.mode = image
+		addon.slider.flexslider.source = db
+
+		addon.slider.flexslider.border-width = 0px
+		addon.slider.flexslider.border-color = red
+		addon.slider.flexslider.active-dotcolor = #607457
+		addon.slider.flexslider.inactive-dotcolor = #eeeeed
+		addon.slider.flexslider.dot-margin-top = -30px
+		addon.slider.flexslider.dot-margin-bottom = 0px
+		addon.slider.flexslider.dot-margin-left = 0px
+		addon.slider.flexslider.dot-margin-right = 0px
+		#addon.slider.flexslider.animation = slide
+	
+		[home-content]
+		css.margin = 0px
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
+		css.background-color = #eeeeed
+		
+		
+		[bot-mid]
+		child = mid-left, mid-right
+		stacking = horizontal
+		css.margin-top = 8%
+		
+			[mid-left]
+			css.width = 46%
+			#css.height = 400px
+			css.color = #000000
+			css.padding-right = 3%
+			addon.global.column.name = mid-left
+			addon.global.column.width = 100%
+			addon.global.column.internal-width = 100%
+			addon.global.column.content-width = 98%
+			addon.global.column.internal-color = #eeeeed
+			addon.global.column.background-color = transparent
+			
+			addon.global.column.top-height = 0px
+			addon.global.column.bottom-height = 25px
+			
+			[mid-right]
+			css.width = 45%
+			#css.height = 400px
+			css.color = #000000
+			css.padding-left = 3%
+			css.border-left = 1px solid #607457
+			addon.global.column.name = mid-right
+			addon.global.column.width = 100%
+			addon.global.column.internal-width = 100%
+			addon.global.column.content-width = 98%
+			addon.global.column.internal-color = #eeeeed
+			addon.global.column.background-color = transparent
+			
+			addon.global.column.top-height = 0px
+			addon.global.column.bottom-height = 25px
+			condition = @PAGE=@HOMEPAGE
+			
+	[right-column]
+	css.width = 27%
+	#css.height = 400px
+	css.color = #ffffff
+	#css.border-left = 1px solid #607457
+	css.border-right = 1px solid #607457
+	css.padding-left = 3%
+	css.padding-right = 3%
+	css.padding-bottom = 50px
+	addon.global.column.name = right-column
+	addon.global.column.width = 100%
+	addon.global.column.internal-width = 100%
+	addon.global.column.content-width = 98%
+	addon.global.column.internal-color = #eeeeed
+	addon.global.column.background-color = transparent
+	
+	addon.global.column.top-height = 0px
+	addon.global.column.bottom-height = 25px
+	condition = @PAGE=@HOMEPAGE
+	
+	[page-content]
+	condition = @PAGE!=@HOMEPAGE
+	css.margin = 0px 15px
+	css.padding = 0px 15px
+	db.table = ContentBlock
+	db.filter = url=$_GET['page']
+	db.error = Sorry, I could not find the page $_GET['page']
+	html.raw = ContentBlock.content
+	css.background-color = #eeeeed
+	
+	
+	
+####footer####################################
+
+[footer]
+css.height = 100px
+css.width = 100%
+css.background-color = #000000
+
+
+
+
+
+
+#[body]
+	#child = content, contact
+	#css.minwidth = 400px
+	#css.margin-top = 20px
+	#css.background-color = white
+	#fx.rounding = 4px
+			
+		#[content]
+		#css.margin-top = 30px
+		#css.margin = 30px
+		#db.table = ContentBlock
+		#db.filter = url=$_GET['page']
+		#db.error = Sorry, I could not find the page $_GET['page']
+		#html.raw = ContentBlock.content
+		
+		#[contact]
+		#child = contact-form, contact-text
+		#condition = @PAGE=contact
+		#css.height = 300px
+		#stacking = horizontal
+	
+#			[contact-form]
+#			css.width = 60%
+#			css.margin = 0px
+#			#css.margin-bottom = 30px
+#			css.background-color = white
+#			addon.contact.contactform.edgepadding = 0px
+#			addon.contact.contactform.buttoncolor = #fafafa
+#			addon.contact.contactform.buttontextcolor = #b23640
+#			addon.contact.contactform.buttontext = [&nbsp;&nbsp; Submit &nbsp;&nbsp;]
+#			addon.contact.contactform.successtextcolor = green
+#			addon.contact.contactform.failuretextcolor = red
+#			addon.contact.contactform.textcolor = grey
+#			addon.contact.contactform.backcolor = #FFFFD6
+#			addon.contact.contactform.inputspacing = 10px
+#			addon.contact.contactform.inputwidth = 80%
+#
+#			[contact-text]
+#			css.width = 35%
+#			css.margin-top = 80px
+#			css.font = 12px
+#			html.raw = Please fill in the form and someone will get back to you as soon as possible.
