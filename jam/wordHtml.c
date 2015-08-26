@@ -134,7 +134,7 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 	printf("<div class='uk-form-row'>\n");
 	printf("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPrompt);
 	printf("		<div class='uk-form-controls'>\n");
-	printf("		<textarea name='%s' id='%s' cols='%s' rows='%s'>%s</textarea>", fieldVar, fieldVar, fieldSize, fieldSize2, fieldVarValue);
+	printf("		<textarea name='%s' id='%s' cols='%s' rows='%s' placeholder='%s'>%s</textarea>", fieldVar, fieldVar, fieldSize, fieldSize2, fieldPlaceholder, fieldVarValue);
 	printf("	</div>\n");
 	printf("</div>\n");
 
