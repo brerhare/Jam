@@ -5,5 +5,6 @@ int wordHtmlGridtable(int ix, char *defaultTableName);
 int wordHtmlInput(int ix, char *defaultTableName);
 int wordHtmlTextarea(int ix, char *defaultTableName);
 int wordHtmlButton(int ix, char *defaultTableName);
+int wordHtmlSelect(int ix, char *defaultTableName);
 
 #endif	// WORDHTML_H_INCLUDED

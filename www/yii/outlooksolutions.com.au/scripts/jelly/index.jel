@@ -5,7 +5,8 @@ include = default-values
 [* : defaults]
 
 [screen]
-child = site, right
+child = site, forms
+css.min-width = 700px
 css.display = block
 css.background-color = white
 stacking = horizontal
@@ -13,6 +14,7 @@ stacking = horizontal
 	[site]
 	child = header, middle, footer
 	css.width = 100%
+	css.min-width = 800px
 
 ####  Header  #################################
 
@@ -23,9 +25,7 @@ stacking = horizontal
 	css.background-image = url('/img/logo.jpg')
 	css.background-repeat = no-repeat
 	css.padding-top = 13%
-#divide the height by the width for the proportional padding height
-
-		click = http://www.outlooksolutions.com.au/
+	click = http://www.outlooksolutions.com.au/
 
 
 
@@ -34,13 +34,14 @@ stacking = horizontal
 [middle]
 child = main, content
 css.width = 70%
-css.min-width = 600px
+css.min-width = 700px
+css.margin-left = 5%
 
 
 	[main]
 	child = menu, slider
 	css.width = 100%
-	css.min-width = 80px
+	css.min-width = 700px
 	css.background-color = white
 	stacking = horizontal
 	
@@ -52,19 +53,16 @@ css.min-width = 600px
 		css.overflow = visible
 		
 		addon.menu.traditional.orientation = vertical
-		addon.menu.traditional.height = 40px
+		addon.menu.traditional.height = 50px
 		addon.menu.traditional.align = center
 #		addon.menu.traditional.item-margin = // split equally between left and right. 
 		addon.menu.traditional.item-width = uniform
 
-		addon.menu.traditional.menu-rounding = 8px
-		addon.menu.traditional.menu-stretch = /img/menu-button.png
-#		addon.menu.traditional.menu-color = transparent 
-		addon.menu.traditional.item-separator-width = 10px
+		addon.menu.traditional.menu-stretch = /img/menu-button.png 
+		addon.menu.traditional.item-separator-width = 8px
 		addon.menu.traditional.item-separator-color = transparent
-#		addon.menu.traditional.edgepadding = 40px
 
-		addon.menu.traditional.menu-font-size = 20px
+		addon.menu.traditional.menu-font-size = 16px
 		addon.menu.traditional.menu-font-family = Nunito, Verdana, Sans Serif
 		addon.menu.traditional.menu-font-weight = bold
 		addon.menu.traditional.menu-text-color = white
@@ -72,9 +70,21 @@ css.min-width = 600px
 #// Top level selected settings
 #            addon.menu.traditional.menu-selected-text-color = blue
  #           addon.menu.traditional.menu-selected-background-color = black
-#            addon.menu.traditional.menu-selected-font-size = 14px
+            addon.menu.traditional.menu-selected-font-size = 16px
 #            addon.menu.traditional.menu-selected-font-family = Nunito
 #            addon.menu.traditional.menu-selected-font-weight = normal
+#// Top level hover settings
+#            addon.menu.traditional.menu-hover-text-color = red
+#            addon.menu.traditional.menu-hover-background-color = grey
+            addon.menu.traditional.menu-hover-font-size = 16px
+            addon.menu.traditional.menu-hover-font-family = Nunito
+            addon.menu.traditional.menu-hover-font-weight = normal
+#// Top level selected settings
+#            addon.menu.traditional.menu-selected-text-color = blue
+#            addon.menu.traditional.menu-selected-background-color = black
+            addon.menu.traditional.menu-selected-font-size = 16px
+            addon.menu.traditional.menu-selected-font-family = Nunito
+            addon.menu.traditional.menu-selected-font-weight = normal			
 #// Second level settings
 #            addon.menu.traditional.submenu-height = 30px // centers text
 #            addon.menu.traditional.submenu-width = variable / px
@@ -94,7 +104,8 @@ css.min-width = 600px
 
 		[slider]
 		css.width = 80%
-		css.margin-left = -8%
+		css.margin-left = -10%
+		css.margin-top = 30px
 		css.min-width = 500px
 		css.height = 70%
 		addon.slider.flexslider.width = 100%
@@ -102,20 +113,19 @@ css.min-width = 600px
 		addon.slider.flexslider.mode = image
 		addon.slider.flexslider.source = db
 		addon.slider.flexslider.border-width = 0px
-		
-		#addon.slider.flexslider.border-color = red
-		#addon.slider.flexslider.active-dotcolor = red
-		#addon.slider.flexslider.inactive-dotcolor = blue
-		addon.slider.flexslider.dot-margin-top = -42px
-		#addon.slider.flexslider.dot-margin-bottom = 0px
-		#addon.slider.flexslider.dot-margin-left = 0px
-		#addon.slider.flexslider.dot-margin-right = 0px
-		addon.slider.flexslider.animation = slide
+
+		addon.slider.flexslider.active-dotcolor = #ef801d
+		addon.slider.flexslider.inactive-dotcolor = #25519c
+		addon.slider.flexslider.dot-margin-top = -60px
+		addon.slider.flexslider.animation = fade
 	
 	
 			
 	[content]
+	css.width = 80%
+	css.min-width = 600px
 	css.margin-top = 30px
+	css.margin-left = 10%
 	db.table = ContentBlock
 	db.filter = url=$_GET['page']
 	db.error = Sorry, I could not find the page $_GET['page']
@@ -133,20 +143,23 @@ css.width = 100%
 css.background-size = 100%
 css.background-image = url('/img/footer.jpg')
 css.background-repeat = no-repeat
+stacking = horizontal
 
 	[footer-content]
-	child = standard-links, credits
+	child = footer-right, footer-phone
 	css.width = 80%
+	css.margin-left = 10%
+	stacking = horizontal
+	
+	[footer-right]
+	child = standard-links, credits
+	css.width = 20%
 
-			
 	[standard-links]
-	child = footer-contact, footer-cookies, footer-terms
+	child = footer-cookies, footer-terms
 	css.line-height = 20px
 	css.color = #25519c
 	css.margin-top = 15px
-	
-		[footer-contact]
-		html.raw = <a style="text-decoration:none; color: #25519c; font-size: 12px; font-weight: bold;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#25519c'" href="?layout=index&page=contact">CONTACT</a>
 
 		[footer-cookies]
 		#css.margin-top = 10px
@@ -156,6 +169,15 @@ css.background-repeat = no-repeat
 		[footer-terms]
 		#css.margin-top = 10px
 		html.raw = <a style="text-decoration:none; color: #25519c; font-size: 12px; font-weight: bold;" onmouseover="this.style.color='white'" onmouseout="this.style.color='#25519c'" href="?layout=index&page=terms-conditions">TERMS</a>
+		
+	[footer-phone]
+	css.width = 80%
+	css.margin-top = 30px
+	image.url = img/phone.png
+	image.width = 50%
+	image.height = 22%
+	image.align = right
+	
 				
 ############
 	[credits]
@@ -173,7 +195,7 @@ css.background-repeat = no-repeat
 		[wirefly]
 		child = wirefly-logo, admin
 		stacking = horizontal
-		css.margin-top = 30px
+		css.margin-top = 25px
 
 		
 			[wirefly-logo]
@@ -202,4 +224,44 @@ css.background-repeat = no-repeat
 				image.width = 5px
 				image.height = 5px
 				image.align = center
-				clicknew = backend.php				
+				clicknew = backend.php	
+
+######## Right Column #####################################		
+[forms]
+child = contact-form, contact-details
+css.width = 20%
+css.min-width = 180px
+css.margin-top = 40px
+css.margin-left = 75%
+css.position = absolute
+
+
+	[contact-form]
+	html.raw = </br><h3>Get a Quote Now</h3>
+	css.text-align = center
+	css.height = 240px
+	fx.rounding = 10px
+	css.border = 4px solid #25519c
+	css.background-color = white
+	jam = /jam/template/contactForm.tpl
+	
+	[contact-details]
+	css.margin-top = 40px
+	fx.rounding = 10px
+	css.border = 4px solid #25519c
+	css.background-color = white
+	
+	#addon.global.column.debug = 1
+	addon.global.column.name = direct
+	addon.global.column.width = 100%
+	addon.global.column.internal-width = 100%
+	addon.global.column.content-width = 98%
+	addon.global.column.internal-color = transparent
+	addon.global.column.background-color = transparent
+
+	#addon.global.column.background-image = img/...
+	#addon.global.column.top-image = img/cow-spot-top.jpg
+	#addon.global.column.top-height = 20px
+	#addon.global.column.bottom-image = img/cow-spot-bottom.jpg
+	#addon.global.column.bottom-height = 5px
+		

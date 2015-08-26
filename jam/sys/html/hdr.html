@@ -1,0 +1,29 @@
+<script src="/jam/sys/extern/editablegrid/editablegrid.js"></script>
+<!-- [DO NOT DEPLOY] --> <script src="/jam/sys/extern/editablegrid/editablegrid_renderers.js" ></script>
+<!-- [DO NOT DEPLOY] --> <script src="/jam/sys/extern/editablegrid/editablegrid_editors.js" ></script>
+<!-- [DO NOT DEPLOY] --> <script src="/jam/sys/extern/editablegrid/editablegrid_validators.js" ></script>
+<!-- [DO NOT DEPLOY] --> <script src="/jam/sys/extern/editablegrid/editablegrid_utils.js" ></script>
+<!-- [DO NOT DEPLOY] --> <script src="/jam/sys/extern/editablegrid/editablegrid_charts.js" ></script>
+
+<link rel="stylesheet" href="/jam/sys/extern/editablegrid/editablegrid.css" type="text/css" media="screen">
+ 
+<!-- editablegrid -->
+        <script>
+            window.onload = function() {
+              editableGrid = new EditableGrid("GridAttach", { sortIconUp: "/jam/sys/extern/editablegrid/img/close-twisty.png", sortIconDown: "/jam/sys/extern/editablegrid/img/open-twisty.png"}); 
+
+                // we build and load the metadata in Javascript
+                editableGrid.load({ metadata: [
+                    { name: "code", datatype: "integer", editable: false },
+                    { name: "name", datatype: "string", editable: false },
+                    { name: "contact", datatype: "string", editable: false },
+                    { name: "telephone", datatype: "string", editable: false },
+                    { name: "email", datatype: "email", editable: false }
+                ]});
+
+                // then we attach to the HTML table and render it
+                editableGrid.attachToHTMLTable('suppliertable');
+                editableGrid.renderGrid();
+            } 
+        </script>
+

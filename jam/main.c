@@ -362,6 +362,16 @@ int control(int startIx, char *defaultTableName) {
 				}
 			}
 //		-----------------------------------------
+		} else if (!(strcmp(cmd, "@clear"))) {
+//		-----------------------------------------
+			if (args) {
+				getWord(tmp, args, 1, " ");
+				if (*tmp) {
+					if (!strcmp(tmp, "item"))
+						wordDatabaseClearItem(ix, defaultTableName);
+				}
+			}
+//		-----------------------------------------
 		} else if (!(strcmp(cmd, "@new"))) {
 //		-----------------------------------------
 			if (args) {
@@ -521,6 +531,10 @@ int control(int startIx, char *defaultTableName) {
 		} else if (!(strcmp(cmd, "@sum"))) {
 //		------------------------------------
 			wordMiscSum(ix, defaultTableName);
+//		------------------------------------
+		} else if (!(strcmp(cmd, "@email"))) {
+//		------------------------------------
+			wordMiscEmail(ix, defaultTableName);
 //		---------------------------
 		} else if (cmd[0] != '@') {
 //		---------------------------

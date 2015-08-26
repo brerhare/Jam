@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Usage: ./util.sh pullAll.php
+
 TESTMODE=0
 RUNFILE=
 

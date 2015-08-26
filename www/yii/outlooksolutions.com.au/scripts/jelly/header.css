@@ -12,49 +12,55 @@ html, h2, h4, body, p {	height: 100%;
 				line-height: 140%;}
 
 /* Global Hyperlink settings - will affect menu text colour if no text settings */ 
-a { text-decoration: none; color:#00ad44; }
-a:visited, a:active { text-decoration: none; color:#fc8d3d; }
-a:hover { text-decoration: none; color:#00adc9; text-shadow: 2px 2px 2px grey; }
+a { text-decoration: none; color:#25519c; font-weight: 700; }
+a:visited, a:active { text-decoration: none; color:#25519c; }
+a:hover { text-decoration: none; color:#ef801d; text-shadow: 1px 1px 2px grey; }
 
 
 
 h1 {	font-family: 'Nunito', Verdana, sans-serif !important;
 	color: #25519c;
 	font-size: 36px;
-	font-weight: 300;
+	font-weight: 600;
 	text-shadow: 3px 3px 2px lightgrey;
-	line-height: 100%;}
+	line-height: 100%;
+	margin-bottom: 0.2em;}
 
 h2 {	font-family: 'Pontano Sans', Arial, sans-serif !important;
-	color: #7a7a7a;
-	font-size: 18px;
+	color: #3d3d3d;
+	font-size: 20px;
 	font-weight: 400;
-	font-style: italic;}
+	font-style: italic;
+	margin-bottom: 0.2em;}
 
 
 h3 {	font-family: 'Nunito', Verdana, sans-serif !important;
-	color: #25519c;
+	color: #ff9800;
 	font-size: 20px;
 	font-weight: 700;
-	font-stretch: wider;}
+	font-stretch: wider;
+	margin-bottom: 0.2em;}
 
 h4 {	font-family: 'Nunito', Verdana, sans-serif !important;
 	color: #25519c;
 	font-size: 16px;
 	font-weight: 700;
-	font-stretch: wider;}
+	font-stretch: wider;
+	margin-bottom: 0.2em;}
 
 p  {	font-family: 'Pontano Sans', Arial, sans-serif !important;
 	color: #000000;
-	font-size: 14px;
-	font-weight: normal
-	font-stretch: expanded}
+	font-size: 16px;
+	font-weight: normal;
+	font-stretch: expanded;
+	margin-bottom: 0em;}
 
 blockquote {font-family: 'Nunito', Verdana, sans-serif !important;
 	color: #5b5b5b;
-	font-size: 14px;
+	font-size: 16px;
 	font-style: italic;
-	font-weight: 300}
+	font-weight: 300;
+	margin: 0.2em 0em 0.2em 0em;}
 
 
 html { font-family: 'Nunito', Verdana, sans-serif !important;

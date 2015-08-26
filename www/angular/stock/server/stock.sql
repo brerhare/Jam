@@ -252,11 +252,6 @@ CREATE TABLE IF NOT EXISTS `stock`.`stock_supplier_order` (
     REFERENCES `stock`.`stock_supplier` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_stock_supplier_order_stock_user1`
-    FOREIGN KEY (`stock_user_id`)
-    REFERENCES `stock`.`Xstock_user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
