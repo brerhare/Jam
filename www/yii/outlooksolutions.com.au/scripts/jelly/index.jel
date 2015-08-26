@@ -239,7 +239,7 @@ css.position = absolute
 	[contact-form]
 	html.raw = </br><h3>Get a Quote Now</h3>
 	css.text-align = center
-	css.height = 410px
+	css.height = 397px
 	fx.rounding = 10px
 	css.border = 4px solid #25519c
 	css.background-color = white
