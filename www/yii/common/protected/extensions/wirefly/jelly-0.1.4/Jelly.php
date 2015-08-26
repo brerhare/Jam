@@ -738,21 +738,16 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 					case "embed":
 					case "iframe":
 						// Get uid. From where depends whether site or plugin
-            			$uid = 0;
+            			$sid = "";
 						session_start();
-						if (isset($_SESSION['admin_user_id']))
-							$uid = $_SESSION['admin_user_id'];
-						else {
-							if (isset($_GET['sid'])) {
-								$criteria = new CDbCriteria;
-								$criteria->addCondition("sid = '" . $sid . "'");
-								$user = User::model()->find($criteria);
-								if ($user)
-									$uid = $user->id;
-							}
-						}
-						if ($uid == 0) {
-							$this->genInlineHtml("jam component requires a uid or sid");
+						if (isset($_SESSION['admin_user_sid']))
+							$sid = $_SESSION['admin_user_sid'];
+						else if (isset(Yii::app()->params['sid']))
+							$sid = Yii::app()->params['sid'];
+						else if (isset($_GET['sid']))
+							$sid = $_GET['sid'];
+						if ($sid == "") {
+							$this->genInlineHtml("jam component requires a sid");
 							break;
 						}
 						$settingEmail = "Not set in settings";
@@ -763,27 +758,31 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 							$settingEmail = $setting->email;
 						// Create url and call curl
 						$yiiSite = str_replace("/index.php", "", Yii::app()->createAbsoluteUrl(Yii::app()->request->getPathInfo()));
-						$jamUrl = $yiiSite . "/jamcgi/jam?template=" . $jamArg . "&jelly.uid=" . $uid . "&jelly.email=" . $settingEmail;
+						$jamUrl = $yiiSite . "/jamcgi/jam?template=" . $jamArg . "&jelly.sid=" . $sid . "&jelly.email=" . $settingEmail;
 						if ($jamType == "embed") {
 							$shell_exec = "php " . Yii::app()->basePath . "/../jam/jelly2jam.php" . " " . $jamUrl;
 							$curlContent = shell_exec ($shell_exec);
 							$this->genInlineHtml($curlContent);
 						} else {
-							$iframe = "<iframe id='frm' onload='scroll(0,0);' width='100%' height='100' scrolling='no' style='overflow-x:hidden; overflow-y:auto;' src='"  .$jamUrl . "' ></iframe>";
+							$iframe = "<iframe id='frm' onload='scroll(0,0);' width='100%' height='0' scrolling='no' style='overflow-x:hidden; overflow-y:auto;' src='"  .$jamUrl . "' ></iframe>";
 							$this->genInlineHtml($iframe);
 						}
 						break;
 				}
+
 /*
-   while (list($var,$value) = each ($_SERVER)) {
-      echo "$var => $value <br />";
-   }
-echo "<hr>";
+while (list($var,$value) = each ($_SERVER))
+	echo "$var => $value <br />";
 echo '<pre>';
+echo "<hr>SESSION<br>";
 session_start();
 var_dump($_SESSION);
+echo "<hr>GET<br>";
+var_dump($_GET);
 echo '</pre>';
 */
+
+
 			}
 			case "css":
 				// Each blob has a div#blobname { } around ALL its css, and the name of the blob is the generated div's id
