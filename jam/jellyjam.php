@@ -1,5 +1,6 @@
 <?php
-	$jamUrl = "http://www.outlooksolutions.com.au/jamcgi/jam?template=/jam/template/contactForm.tpl&jelly_setting.email=kim@wireflydesign.com";
+	//$jamUrl = "http://www.outlooksolutions.com.au/jamcgi/jam?template=/jam/template/contactForm.tpl&jelly_setting.email=kim@wireflydesign.com";
+	$jamUrl = $argv[1];
 	$options = array(
 		CURLOPT_RETURNTRANSFER => true,   // return web page
 		CURLOPT_HEADER         => false,  // don't return headers

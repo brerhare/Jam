@@ -730,20 +730,61 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 		//$this->logMsg("Handling " . $word . " with value " . $value . "\n", 1);
 		switch ($word)
 		{
-			case "jam":
-				// jam = /jam/template/sometemplate.tpl
-				$settingEmail = "Not set in settings";
-				$criteria = new CDbCriteria;
-				$criteria->addCondition("id = 1");
-				$setting = JellySetting::model()->find($criteria);
-				if ($setting)
-					$settingEmail = $setting->email;
-				$yiiSite = str_replace("/index.php", "", Yii::app()->createAbsoluteUrl(Yii::app()->request->url));
-				$jamUrl = $yiiSite . "/jamcgi/jam?template=" . $value . "&jelly_setting.email=" . $settingEmail;
-				$shell_exec = "php " . Yii::app()->basePath . "/../jam/jellyjam.php";
-				$curlContent = shell_exec ($shell_exec);
-				//$this->genInlineHtml($curlContent);
-				break;
+			case "jam":    // NB: DUPS ALLOWED
+			foreach ($value as $jamType => $jamArg)
+			{
+				switch ($jamType)
+				{
+					case "embed":
+					case "iframe":
+						// Get uid. From where depends whether site or plugin
+            			$uid = 0;
+						session_start();
+						if (isset($_SESSION['admin_user_id']))
+							$uid = $_SESSION['admin_user_id'];
+						else {
+							if (isset($_GET['sid'])) {
+								$criteria = new CDbCriteria;
+								$criteria->addCondition("sid = '" . $sid . "'");
+								$user = User::model()->find($criteria);
+								if ($user)
+									$uid = $user->id;
+							}
+						}
+						if ($uid == 0) {
+							$this->genInlineHtml("jam component requires a uid or sid");
+							break;
+						}
+						$settingEmail = "Not set in settings";
+						$criteria = new CDbCriteria;
+						$criteria->addCondition("id = 1");
+						$setting = JellySetting::model()->find($criteria);
+						if ($setting)
+							$settingEmail = $setting->email;
+						// Create url and call curl
+						$yiiSite = str_replace("/index.php", "", Yii::app()->createAbsoluteUrl(Yii::app()->request->getPathInfo()));
+						$jamUrl = $yiiSite . "/jamcgi/jam?template=" . $jamArg . "&uid=" . $uid . "&jelly_setting.email=" . $settingEmail;
+						if ($jamType == "embed") {
+							$shell_exec = "php " . Yii::app()->basePath . "/../jam/jellyjam.php" . " " . $jamUrl;
+							$curlContent = shell_exec ($shell_exec);
+							$this->genInlineHtml($curlContent);
+						} else {
+							$iframe = "<iframe id='frm' onload='scroll(0,0);' width='100%' height='100' scrolling='no' style='overflow-x:hidden; overflow-y:auto;' src='"  .$jamUrl . "' ></iframe>";
+							$this->genInlineHtml($iframe);
+						}
+						break;
+				}
+/*
+   while (list($var,$value) = each ($_SERVER)) {
+      echo "$var => $value <br />";
+   }
+echo "<hr>";
+echo '<pre>';
+session_start();
+var_dump($_SESSION);
+echo '</pre>';
+*/
+			}
 			case "css":
 				// Each blob has a div#blobname { } around ALL its css, and the name of the blob is the generated div's id
 				// For example <div id='xyz'> would have css defined as -
@@ -1604,7 +1645,7 @@ function myErrorHandler($errno, $errstr, $errfile, $errline)
         break;
 
     default:
-        echo "[Error $errno] $errstr<br />\n";
+        echo "[Error $errno on line $errline] $errstr<br />\n";
         break;
     }
 
