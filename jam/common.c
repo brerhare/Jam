@@ -183,17 +183,16 @@ void die(const char *errorString) {
 void jamDump(int which) {
 	char *tmp = (char *) calloc(1, 4096);
 	printf("<br><br><div style='font-size:11px;color:#ffffff;background-color:#1b2426'>");
-	if ((which == 0) || (which == 1)) {
+	if ((which == 2) || (which == 3)) {
 		for (int i = 0; i < MAX_JAM; i++) {
 			if (jam[i] == NULL)
 				break;
-			//printf("%02d JAMDUMP: %s >>>>>%s<<<<<\n\n\n", i, jam[i]->command, jam[i]->trailer);
 			printf("%02d JAMDUMP %s : %s<br>", i, jam[i]->command, jam[i]->args);
 		}
 	}
-	if (which == 0)
+	if (which == 3)
 		printf("<hr>");
-	if ((which == 0) || (which == 2)) {
+	if ((which == 1) || (which == 3)) {
 		for (int i = 0; i < MAX_VAR; i++) {
 			if (var[i] == NULL)
 				break;
