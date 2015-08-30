@@ -265,34 +265,37 @@ int wordMiscEmail(int ix, char *defaultTableName) {
 	char *mailBody = (char *) calloc(1, 4096);
 	char *tmp = (char *) calloc(1, 4096);
 
-	getWord(mailFrom, args, 2, " \t");
+	getWord(mailFrom, args, 1, " \t");
 	if (!mailFrom) {
 		logMsg(LOGERROR, "missing 'from' email");
 		return(-1);
 	}
-	getWord(mailTo, args, 3, " \t");
+	getWord(mailTo, args, 2, " \t");
 	if (!mailTo) {
 		logMsg(LOGERROR, "missing 'to' email");
 		return(-1);
 	}
-	getWord(mailSubject, args, 4, " \t");
+	getWord(mailSubject, args, 3, " \t");
 	if (!mailSubject) {
 		logMsg(LOGERROR, "missing email subject");
 		return(-1);
 	}
-	getWord(mailBody, args, 5, " \t");
+	getWord(mailBody, args, 4, " \t");
 
+	logMsg(LOGDEBUG, "Try to send via sendmail. From [%s] To [%s] Subject [%s]", mailFrom, mailTo, mailSubject);
 	FILE *mailpipe = popen("/usr/sbin/sendmail -t", "w");
 	if (mailpipe == NULL) {
-		logMsg(LOGERROR, "Failed to invoke sendmail");
+		logMsg(LOGERROR, "Failed to popen sendmail");
 		return(-1);
 	}
+	logMsg(LOGDEBUG, "Mailpipe popen ok. Sending via sendmail");
 	fprintf(mailpipe, "From: %s\n", mailFrom);
 	fprintf(mailpipe, "To: %s\n", mailTo);
 	fprintf(mailpipe, "Subject: %s\n\n", mailSubject);
 	fwrite(mailBody, 1, strlen(mailBody), mailpipe);
 	fwrite(".\n", 1, 2, mailpipe);
 	pclose(mailpipe);
+
 	// Wrap up
     free(tmp);
     free(mailFrom);
