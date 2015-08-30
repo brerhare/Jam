@@ -739,7 +739,8 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 					case "iframe":
 						// Get uid. From where depends whether site or plugin
             			$sid = "";
-						session_start();
+						if(!isset($_SESSION))
+							session_start();
 						if (isset($_SESSION['admin_user_sid']))
 							$sid = $_SESSION['admin_user_sid'];
 						else if (isset(Yii::app()->params['sid']))
