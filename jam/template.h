@@ -3,6 +3,7 @@
 
 char *readTemplate(char *fname);
 char *curlies2JamArray(char *tplPos);
+char *expandCurliesInString(char *str);
 
 typedef struct {
 	char *startCurlyPos;
