@@ -222,8 +222,8 @@ TAGINFO *getTagInfo(char *text, char *tagName) {
 // Take a string with embedded curlies in it, and return a string with the curlies evaluated (NOT RECURSIVE)
 // eg "My name is {{name}}" would expand to "My name is John"
 char *expandCurliesInString(char *str) {
-	char *p = str;
-	char *retStr = strdup("");
+	char *p = retStr;
+	char *retStr = strdup(str);
 	char *tmp = (char *) calloc(1, 4096);
 	while (char *startCurly = strstr(p, startJam)) {
 		retStr = (char *) realloc(retStr, (strlen(retStr) + (int) (startCurly - p) + 2));
