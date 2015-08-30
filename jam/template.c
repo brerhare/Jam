@@ -14,6 +14,7 @@
 
 #include "common.h"
 #include "stringUtil.h"
+#include "log.h"
 
 #include "template.h"
 
@@ -52,19 +53,41 @@ char *readTemplate(char *fname){
 }
 
 char *curlies2JamArray(char *tplPos) {
+
 	char *startCurly = strstr(tplPos, startJam);
 	if (!startCurly)
 		return NULL;
-	char *endCurly = strstr(tplPos, endJam);
+
+	char *endCurly = NULL;
+
+	// Find the matching endCurly, skipping over any embedded curlies @@TODO duplicated in getTagInfo()
+	int depth = 1;	// ie the start curly we just found
+	char *inCurlyPos = (startCurly + strlen(startJam));
+	int sanity = 0;
+	while (depth > 0) {
+		if (++sanity > 100) { printf("Overflow in curlies2JamArray!"); break; }
+		char *sCurly = strstr(inCurlyPos, startJam);
+		char *eCurly = strstr(inCurlyPos, endJam);
+		if ((!sCurly) || (eCurly < sCurly)) {	// ie we found our match
+			if (--depth == 0) {
+				endCurly = eCurly;
+				break;
+			}
+		} else {
+			depth++;
+			inCurlyPos = (eCurly +strlen(endJam));
+		}
+	}
 	if (!endCurly)
 		die("Unmatched jam token, an open must have a close");
+
 	int wdLen = (endCurly - startCurly - strlen(startJam));
 	char *wd = (char *) malloc(wdLen + 1);
 	memcpy(wd, (startCurly + strlen(startJam)), wdLen);
 	wd[wdLen] = 0;
-	if (strstr(wd, startJam)) {
-		die("there is an opening jam token within a token pair");
-	}
+	//if (strstr(wd, startJam)) {
+		//die("there is an opening jam token within a token pair");
+	//}
 //printf("\nlen=[%d] wd=[%s]\n", wdLen, wd);
 
 	jam[jamIx] = (JAM *) calloc(1, sizeof(JAM));
@@ -150,11 +173,30 @@ TAGINFO *getTagInfo(char *text, char *tagName) {
 	char *pos     = text;
 	char *tag     = NULL;
 	while (tag = strstr(pos, startJam)) {
-		char *pEnd = NULL;
-		if ((pEnd = strstr(pos, endJam)) == NULL)
-			die("getTagContent: found mismatched tags");
+		// Find the matching endCurly, skipping over any embedded curlies  @@TODO duplicated in curlies2JamArray()
+		int depth = 1;	// ie the start curly we just found
+		char *inCurlyPos = (tag + strlen(startJam));
+		char *endCurly = NULL;
+		int sanity = 0;
+		while (depth > 0) {
+			if (++sanity > 100) { printf("Overflow in getTagContent!"); break; }
+			char *sCurly = strstr(inCurlyPos, startJam);
+			char *eCurly = strstr(inCurlyPos, endJam);
+			if ((!sCurly) || (eCurly < sCurly)) {	// ie we found our match
+				if (--depth == 0) {
+					endCurly = eCurly;
+					break;
+				}
+			} else {
+				depth++;
+				inCurlyPos = (eCurly +strlen(endJam));
+			}
+		}
+		if (!endCurly)
+			die("Unmatched jam token, an open must have a close");
+
 		char *startContent = (tag + strlen(startJam));
-		char *endContent = (pEnd - 1);
+		char *endContent = (endCurly - 1);
 		if (endContent < startContent)
 			die("getTagContent: end tag before start tag");
 		content = (char *) calloc(1, (endContent - startContent + 2));
@@ -164,14 +206,15 @@ TAGINFO *getTagInfo(char *text, char *tagName) {
 		if ((tagName == NULL) || (!strcmp(tagName, currTag))) {
 			TAGINFO *tagInfo = (TAGINFO *) calloc(1, sizeof(TAGINFO));
 			tagInfo->startCurlyPos = tag;
-			tagInfo->endCurlyPos = pEnd;
+			tagInfo->endCurlyPos = endCurly;
 			tagInfo->name = strdup(currTag);
 			tagInfo->content = strdup(currTagData);
+			logMsg(LOGDEBUG, "TAGINFO created. name=[%s], content=[%s]", tagInfo->name, tagInfo->content);
 //			char *tmp = (char *) calloc(1, 4096); sprintf(tmp, "s=%d, e=%d, content=%s", (int) tagInfo->startCurlyPos, (int) tagInfo->endCurlyPos, tagInfo->content); die(tmp);
 			free(currTag);
 			return tagInfo;
 		}
-		pos = (pEnd + strlen(endJam));					// advance
+		pos = (endCurly + strlen(endJam));					// advance
 	}
 	return NULL;
 }

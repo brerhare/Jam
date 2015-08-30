@@ -259,15 +259,45 @@ int wordMiscEmail(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
-	char *listName = (char *) calloc(1, 4096);
-	char *listCommand = (char *) calloc(1, 4096);
-	char *listCommandArgs = (char *) calloc(1, 4096);
+	char *mailFrom = (char *) calloc(1, 4096);
+	char *mailTo = (char *) calloc(1, 4096);
+	char *mailSubject = (char *) calloc(1, 4096);
+	char *mailBody = (char *) calloc(1, 4096);
 	char *tmp = (char *) calloc(1, 4096);
 
+	getWord(mailFrom, args, 2, " \t");
+	if (!mailFrom) {
+		logMsg(LOGERROR, "missing 'from' email");
+		return(-1);
+	}
+	getWord(mailTo, args, 3, " \t");
+	if (!mailTo) {
+		logMsg(LOGERROR, "missing 'to' email");
+		return(-1);
+	}
+	getWord(mailSubject, args, 4, " \t");
+	if (!mailSubject) {
+		logMsg(LOGERROR, "missing email subject");
+		return(-1);
+	}
+	getWord(mailBody, args, 5, " \t");
+
+	FILE *mailpipe = popen("/usr/sbin/sendmail -t", "w");
+	if (mailpipe == NULL) {
+		logMsg(LOGERROR, "Failed to invoke sendmail");
+		return(-1);
+	}
+	fprintf(mailpipe, "From: %s\n", mailFrom);
+	fprintf(mailpipe, "To: %s\n", mailTo);
+	fprintf(mailpipe, "Subject: %s\n\n", mailSubject);
+	fwrite(mailBody, 1, strlen(mailBody), mailpipe);
+	fwrite(".\n", 1, 2, mailpipe);
+	pclose(mailpipe);
 	// Wrap up
     free(tmp);
-    free(listName);
-    free(listCommand);
-    free(listCommandArgs);
+    free(mailFrom);
+    free(mailTo);
+    free(mailSubject);
+    free(mailBody);
     emit(jam[ix]->trailer);
 }

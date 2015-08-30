@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
 
 int sanity = 0;
 	while (1) {
-if (++sanity > 100) { printf("Overflow!"); break; }
+if (++sanity > 100) { printf("Overflow in main!"); break; }
 		TAGINFO *tagInfo = getTagInfo(tpl, "@include");
 		if (tagInfo == NULL)
 			break;
