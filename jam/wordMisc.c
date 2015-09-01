@@ -257,7 +257,8 @@ int wordMiscNewList(int ix, char *defaultTableName) {
 
 int wordMiscEmail(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
-	char *args = jam[ix]->args;
+	char *expandedArgs = expandVarsInString(jam[ix]->args, defaultTableName);    // Allocates memory - needs freeing
+	char *args = expandedArgs;
 	char *rawData = jam[ix]->rawData;
 	char *mailFrom = (char *) calloc(1, 4096);
 	char *mailTo = (char *) calloc(1, 4096);
@@ -293,19 +294,14 @@ int wordMiscEmail(int ix, char *defaultTableName) {
 		strcat(mailBody, tmp);
 	}
 
-logMsg(LOGDEBUG, "B4 ==============> [%s]", mailBody);
-	char *mailExpandedBody = expandVarsInString(mailBody, defaultTableName);    // Allocates memory - needs freeing
-logMsg(LOGDEBUG, "AF ==============> [%s]", mailExpandedBody);
-
-	while (char *p = strchr(mailExpandedBody, '\\')) {
+	while (char *p = strchr(mailBody, '\\')) {
 		*p = ' ';
 		p++;
 		if ((*p) && (*p == 'n'))
 			*p = 10;
 	}
-logMsg(LOGDEBUG, "FN ==============> [%s]", mailExpandedBody);
 
-	logMsg(LOGDEBUG, "Try to send via sendmail. From [%s] To [%s] Subject [%s]", mailFrom, mailTo, mailSubject);
+	logMsg(LOGDEBUG, "Try to send via sendmail. From [%s] To [%s] Subject [%s] Body [%s]", mailFrom, mailTo, mailSubject, mailBody);
 	FILE *mailpipe = popen("/usr/sbin/sendmail -t", "w");
 	if (mailpipe == NULL) {
 		logMsg(LOGERROR, "Failed to popen sendmail");
@@ -315,12 +311,11 @@ logMsg(LOGDEBUG, "FN ==============> [%s]", mailExpandedBody);
 	fprintf(mailpipe, "From: %s\n", mailFrom);
 	fprintf(mailpipe, "To: %s\n", mailTo);
 	fprintf(mailpipe, "Subject: %s\n\n", mailSubject);
-	fwrite(mailExpandedBody, 1, strlen(mailExpandedBody), mailpipe);
+	fwrite(mailBody, 1, strlen(mailBody), mailpipe);
 	fwrite(".\n", 1, 2, mailpipe);
 	pclose(mailpipe);
 
 	// Wrap up
-	free(mailExpandedBody);
     free(tmp);
     free(mailFrom);
     free(mailTo);

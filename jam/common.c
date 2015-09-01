@@ -148,8 +148,10 @@ char *expandVarsInString(char *str, char *tableName) {
 			while ((*p) && (!strchr(nonWordChars, *p)))	// isolate the word
 				*p3++ = *p++;
 			VAR *variable = NULL;
+			logMsg(LOGMICRO, "expandVarsInString looking to expand word [%s] ...", wd);
 			variable = findVarLenient(wd, tableName);		// does it name a field?
 			if (variable) {
+				logMsg(LOGMICRO, " ... expandVarsInString expanded word [%s] to [%s]", wd, variable->portableValue);
 /*
 				if (char *pMinus = strchr(variable->portableValue, '-'))
 					*pMinus = ' ';	//@@TODO decimals (mult by 100)
@@ -158,8 +160,10 @@ char *expandVarsInString(char *str, char *tableName) {
 */
 				p3 = variable->portableValue;				// yes - replace the word with its value
 			}
-			else
+			else {
+				logMsg(LOGMICRO, "... expandVarsInString did not expand word [%s]", wd);
 				p3 = wd;								// no - use the word
+			}
 			while (*p3)
 				*p2++ = *p3++;
 			free(wd);
