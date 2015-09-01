@@ -7,4 +7,6 @@ char *getWordAlloc(char *src, int wordnum, char *separator);
 extern int getWordIgnoreQuotes;
 char *strReplaceAlloc(char *orig, char *rep, char *with);
 
+char *str_replace(const char *string, const char *substr, const char *replacement);
+
 #endif /* _UTIL_H_INCLUDED_ */

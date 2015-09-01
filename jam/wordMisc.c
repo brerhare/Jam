@@ -297,6 +297,14 @@ logMsg(LOGDEBUG, "B4 ==============> [%s]", mailBody);
 	char *mailExpandedBody = expandVarsInString(mailBody, defaultTableName);    // Allocates memory - needs freeing
 logMsg(LOGDEBUG, "AF ==============> [%s]", mailExpandedBody);
 
+	while (char *p = strchr(mailExpandedBody, '\\')) {
+		*p = ' ';
+		p++;
+		if ((*p) && (*p == 'n'))
+			*p = 10;
+	}
+logMsg(LOGDEBUG, "FN ==============> [%s]", mailExpandedBody);
+
 	logMsg(LOGDEBUG, "Try to send via sendmail. From [%s] To [%s] Subject [%s]", mailFrom, mailTo, mailSubject);
 	FILE *mailpipe = popen("/usr/sbin/sendmail -t", "w");
 	if (mailpipe == NULL) {
