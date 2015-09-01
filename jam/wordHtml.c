@@ -12,6 +12,7 @@
 #include "wordHtml.h"
 #include "common.h"
 #include "stringUtil.h"
+#include "database.h"
 #include "log.h"
 
 //-----------------------------------------------------------------
@@ -78,7 +79,22 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	printf("<div class='uk-form-row'>\n");
 	printf("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPrompt);
 	printf("		<div class='uk-form-controls'>\n");
-	printf("		<input type='%s' name='%s' id='%s' value='%s' placeholder='%s' class='uk-form-width-%s'>\n", fieldType, fieldVar, fieldVar, fieldVarValue, fieldPlaceholder, fieldSize);
+	if (!strcasecmp(fieldType, "filter")) {
+		scratchJs("$.getScript('/jam/sys/extern/uikit/js/components/autocomplete.js');");
+		printf("<div class='uk-autocomplete uk-form' data-uk-autocomplete=\"{source:'/auto2.json'}\">");
+		printf("	<input type='text' autocomplete='off'>");
+		printf("	<div class='uk-dropdown' aria-expanded='false'>");
+		printf("		<ul class='uk-nav uk-nav-autocomplete uk-autocomplete-results'>");
+		printf("			<li data-value='Hamburg'><a>Hamburg</a></li>");
+		printf("			<li data-value='New York'><a>New York</a></li>");
+		printf("			<li data-value='Moscow'><a>Moscow</a></li>");
+		printf("			<li data-value='Amsterdam'><a>Amsterdam</a></li>");
+		printf("		</ul>");
+		printf("	</div>");
+		printf("</div>");
+	}
+	else
+		printf("		<input type='%s' name='%s' id='%s' value='%s' placeholder='%s' class='uk-form-width-%s'>\n", fieldType, fieldVar, fieldVar, fieldVarValue, fieldPlaceholder, fieldSize);
 	printf("	</div>\n");
 	printf("</div>\n");
 

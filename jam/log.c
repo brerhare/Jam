@@ -32,9 +32,8 @@ void logMsg(int type, char *str, ...)
 	//if (log_message_stream == NULL)
 		//log_message_stream = stderr;
 
-	if (log_message_stream == NULL) {
+	if (log_message_stream == NULL)
 		log_message_stream = fopen(logFileName, "a+");
-	}
 
 /*
 FILE *fp = fopen("c:/tmp/xx.log", "a");

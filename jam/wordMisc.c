@@ -262,8 +262,8 @@ int wordMiscEmail(int ix, char *defaultTableName) {
 	char *mailFrom = (char *) calloc(1, 4096);
 	char *mailTo = (char *) calloc(1, 4096);
 	char *mailSubject = (char *) calloc(1, 4096);
-	char *mailBody = (char *) calloc(1, 4096);
-	char *tmp = (char *) calloc(1, 4096);
+	char *mailBody = (char *) calloc(1, 20000000);	//@@TODO 20 mb max email body. And tmp
+	char *tmp = (char *) calloc(1, 20000000);
 
 	getWord(mailFrom, args, 1, " \t");
 	if (!mailFrom) {
@@ -280,7 +280,20 @@ int wordMiscEmail(int ix, char *defaultTableName) {
 		logMsg(LOGERROR, "missing email subject");
 		return(-1);
 	}
-	getWord(mailBody, args, 4, " \t");
+
+	int sanity = 0;
+	int cnt = 4;
+	strcpy(mailBody, "");
+	while (1) {
+		if (++sanity > 100) { printf("Overflow in mailbody!"); break; }
+		getWord(tmp, args, cnt++, " ");
+		if (strlen(tmp) == 0)
+			break;
+		strcat(mailBody, " ");
+		strcat(mailBody, tmp);
+	}
+
+	char *mailExpandedBody = expandVarsInString(mailBody, defaultTableName);    // Allocates memory - needs freeing
 
 	logMsg(LOGDEBUG, "Try to send via sendmail. From [%s] To [%s] Subject [%s]", mailFrom, mailTo, mailSubject);
 	FILE *mailpipe = popen("/usr/sbin/sendmail -t", "w");
@@ -292,11 +305,12 @@ int wordMiscEmail(int ix, char *defaultTableName) {
 	fprintf(mailpipe, "From: %s\n", mailFrom);
 	fprintf(mailpipe, "To: %s\n", mailTo);
 	fprintf(mailpipe, "Subject: %s\n\n", mailSubject);
-	fwrite(mailBody, 1, strlen(mailBody), mailpipe);
+	fwrite(mailExpandedBody, 1, strlen(mailExpandedBody), mailpipe);
 	fwrite(".\n", 1, 2, mailpipe);
 	pclose(mailpipe);
 
 	// Wrap up
+	free(mailExpandedBody);
     free(tmp);
     free(mailFrom);
     free(mailTo);

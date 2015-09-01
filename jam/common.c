@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdarg.h>
 #include <strings.h>
 #include <string.h>
 #include <string>
@@ -12,6 +13,9 @@
 #include "common.h"
 #include "log.h"
 #include "stringUtil.h"
+
+FILE *scratchJsStream = NULL;
+char *scratchJsFileName = "jam/sys/js/scratch.js";		// preceeded by documentroot
 
 //-----------------------------------------------------------
 // Var related
@@ -229,6 +233,32 @@ void jamDump(int which) {
 	free(tmp);
 }
 
+int scratchJs(char *str, ...) {
+	va_list ap;
+	logMsg(LOGDEBUG, "Creating scratch entry");
+	if (scratchJsStream == NULL) {
+		char *tmp = (char *) calloc(1, 4096);
+		sprintf(tmp, "%s/%s", documentRoot, scratchJsFileName);
+		logMsg(LOGDEBUG, "Opening scratch file %s", tmp);
+		if ((scratchJsStream = fopen(tmp, "w+")) == NULL) {
+			logMsg(LOGFATAL, "Cannot open scratch file %s", tmp);
+			exit(1);
+		}
+		free(tmp);
+	}
+	logMsg(LOGDEBUG, "Creating scratch entry2");	
+	va_start(ap, str);
+	logMsg(LOGDEBUG, "Creating scratch entry3");	
+	vfprintf(scratchJsStream, str, ap);
+	logMsg(LOGDEBUG, "Creating scratch entry4");		
+	fprintf(scratchJsStream, "\n");
+	logMsg(LOGDEBUG, "Creating scratch entry5");		
+	fflush(scratchJsStream);
+	logMsg(LOGDEBUG, "Creating scratch entry6");
+	va_end(ap);
+	logMsg(LOGDEBUG, "Creating scratch entry7");
+	return(0);
+}
 //--------------------------------------------------------------------
 // Calculations
 

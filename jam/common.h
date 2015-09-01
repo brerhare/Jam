@@ -66,7 +66,9 @@ void clearVarValues(VAR *varStruct);
 char *expandVarsInString(char *str, char *tableName);
 int isCalculation(char *str);
 char *calculate(char *str);
+int scratchJs(char *str, ...);	// @@TODO also need a includeJs() (includes but no dups)
 
 extern char *documentRoot;
+extern FILE *scratchJsStream;
 
 #endif /* __COMMON_H_INCLUDED */
