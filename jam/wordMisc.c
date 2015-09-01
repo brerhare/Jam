@@ -293,7 +293,9 @@ int wordMiscEmail(int ix, char *defaultTableName) {
 		strcat(mailBody, tmp);
 	}
 
+logMsg(LOGDEBUG, "B4 ==============> [%s]", mailBody);
 	char *mailExpandedBody = expandVarsInString(mailBody, defaultTableName);    // Allocates memory - needs freeing
+logMsg(LOGDEBUG, "AF ==============> [%s]", mailExpandedBody);
 
 	logMsg(LOGDEBUG, "Try to send via sendmail. From [%s] To [%s] Subject [%s]", mailFrom, mailTo, mailSubject);
 	FILE *mailpipe = popen("/usr/sbin/sendmail -t", "w");
