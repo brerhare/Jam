@@ -39,7 +39,7 @@ addon.slider.flexslider.border-width = 0px
 
 
 	[site]
-	child =	header, home-page, pages, footer
+	child =	header, home-page, pages, contact-page footer
 	css.width = 100%
 
 
@@ -258,7 +258,7 @@ condition = @PAGE!=@HOMEPAGE
 child = page-top, page-bottom
 css.margin-top = 70px
 css.width = 85%
-css.min-width = 800px
+css.min-width = 960px
 css.padding-bottom = 20px
 
 
@@ -267,17 +267,18 @@ css.padding-bottom = 20px
 	image.url = img/6ty-shades-title.png
 	image.width = 100%
 	image.height = 13%
+	click = ?layout=index&page=index
 
 	[page-bottom]
-	child = page-left, page-main, page-contact-content, page-contact
+	child = page-left, page-main, page-plugins, page-contact-content, page-contact
 	stacking = horizontal
 	css.width = 100%
 
 		
 		[page-left]
 		child =  page-line, page-left-column-download, page-left-column-sidenav
-		css.min-width = 230px
-		css.width = 25%
+		css.min-width = 200px
+		css.width = 20%
 			
 			[page-line]
 			css.margin-top = 10px
@@ -311,74 +312,78 @@ css.padding-bottom = 20px
 				
 			
 		[page-main]
-		child = page-center-main, page-center-news, page-center-shop
-		condition = @PAGE!=contact, news-content, products
+		condition = @PAGE!=contact, products, news-6tyshades-beauty
 		css.width = 550px
-		css.margin-left = 20px
-		
-			[page-center-main]
-			css.width = 80%
-			db.table = ContentBlock
-			db.filter = url=$_GET['page']
-			db.error = Sorry, I could not find the page $_GET['page']
-			html.raw = ContentBlock.content
+		css.margin-left = 100px
+		css.margin-top = 50px
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
 			
-			[page-center-news]
-			condition = @PAGE=news-6tyshades-beauty
-			child = news-top, news-mid, news-bottom
-			css.background-color = black
-			css.margin-left = 3%
 			
-				[news-top]
-				css.width = 100%
-				css.height = 19%
-				image.url = img/whitebg-top.png
-				image.width = 100%
-				image.height = 19%
-				css.width = 600px				
-				css.overflow = visible
-				
-				[news-mid]
-				child = news-content
-				css.width = 100%
-				css.height = 100%
-				css.background-size = 100%
-				css.background-image = url('/img/whitebg-mid.png')
-				css.background-repeat = repeat-y
-				
-					[news-content]
-					css.width = 95%
-					html.raw = {{blog newstype=pinterest sidebar=right}}
-				
-				[news-bottom]
-				css.width = 100%
-				css.height = 12%
-				image.url = img/whitebg-bottom.png
-				image.width = 100%
-				image.height = 12%
-			
-			[page-center-shop]
-			condition = @PAGE=products
-			css.background-color = black
+#### Plug-in Pages ###########################
 
+		[page-plugins]
+		condition = @PAGE=products, news-6tyshades-beauty
+		child = plugin-top, plugin-mid, plugin-bottom
+		css.background-color = black
+		css.width = 70%
+		css.min-width = 750px
+
+			[plugin-top]
+			css.width = 100%
+			css.height = 10%
+			image.url = img/whitebg-top.png
+			image.width = 100%
+			image.height = 10%			
 			
-			[page-contact-content]
-			condition = @PAGE=contact
-			css.width = 35%
-			css.margin-left = 3%
-			css.margin-top = 100px
-			css.min-width = 250px
-			db.table = ContentBlock
-			db.filter = url=$_GET['page']
-			db.error = Sorry, I could not find the page $_GET['page']
-			html.raw = ContentBlock.content
+			[plugin-mid]
+			child = product-content, news-content
+			css.width = 100%
+			css.background-size = 100%
+			css.background-image = url('/img/whitebg-mid.png')
+			css.background-repeat = repeat-y
 			
-			[page-contact]
-			condition = @PAGE=contact
-			child = contact-form
-			css.width = 30%
-			css.margin-left = 30px
+				[product-content]
+				condition = @PAGE!=news-6tyshades-beauty
+				css.width = 95%
+				html.raw = {{shop}}
+				css.overflow = visible
+				css.margin-top = -50px
+				
+				[news-content]
+				condition = @PAGE!=products
+				css.width = 95%
+				html.raw = {{blog newstype=pinterest sidebar=right}}
+				css.overflow = visible
 			
+			[plugin-bottom]
+			css.width = 100%
+			css.height = 12%
+			image.url = img/whitebg-bottom.png
+			image.width = 100%
+			image.height = 12%
+
+		#### Contact Page ############################
+
+		[page-contact-content]
+		condition = @PAGE=contact
+		css.width = 35%
+		css.margin-left = 5%
+		css.margin-top = 100px
+		css.min-width = 250px
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
+
+		[page-contact]
+		condition = @PAGE=contact
+		child = contact-form
+		css.width = 25%
+		css.margin-left = 50px
+
 			[contact-form]
 			css.margin-top = 100px
 			css.min-height = 510px

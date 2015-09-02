@@ -416,7 +416,8 @@ END_OF_FOOTER;
 						$not = 1;
 					$first = strstr($array['condition'], "=");
 					$second = strstr($first, "=");
-					$pageForCondition = ltrim($second, "=");
+					$pageForConditionArr = explode(',', ltrim($second, "="));
+					$pageForConditionArr = array_map('trim', $pageForConditionArr);
 					$pageLoading = "";
 					if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 					{
@@ -429,12 +430,12 @@ END_OF_FOOTER;
 //die('blobname='.$blobName. ' not='.$not.' loading='.$pageLoading.' condition='.$pageForCondition);
 					if ($not == 0)
 					{
-						if ($pageLoading != $pageForCondition)
+						if (!(in_array($pageLoading, $pageForConditionArr)))
 							return;
 					}
 					else
 					{
-						if ($pageLoading == $pageForCondition)
+						if (in_array($pageLoading, $pageForConditionArr))
 							return;
 					}
 				}
