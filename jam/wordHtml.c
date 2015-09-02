@@ -80,9 +80,25 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	printf("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPrompt);
 	printf("		<div class='uk-form-controls'>\n");
 	if (!strcasecmp(fieldType, "filter")) {
-		scratchJs("$.getScript('/jam/sys/extern/uikit/js/components/autocomplete.js');");
-		scratchJs("var linkElem = document.createElement('link'); document.getElementsByTagName('head')[0].appendChild(linkElem); linkElem.rel = 'stylesheet'; linkElem.type = 'text/css'; linkElem.href = '/jam/sys/extern/uikit/css/components/autocomplete.css';");
-		printf("<div class='uk-autocomplete uk-form' data-uk-autocomplete=\"{source:'/auto.php'}\">");
+		int randId = rand() % 9999999;
+		scratchJs(	"// Include autocomplete CSS \n"
+					"$.getScript('/jam/sys/extern/uikit/js/components/autocomplete.js', initAutocomplete ); \n"
+					"var linkElem = document.createElement('link'); \n"
+					"document.getElementsByTagName('head')[0].appendChild(linkElem); \n"
+					"linkElem.rel = 'stylesheet'; linkElem.type = 'text/css'; \n"
+					"linkElem.href = '/jam/sys/extern/uikit/css/components/autocomplete.css'; \n\n"
+					"// Handler for autocomplete ID %d \n"
+					"var autocomplete = null; \n"
+					"function initAutocomplete() { \n"
+					"	autocomplete = $.UIkit.autocomplete($('#autocompleteCallback_%d'), { 'source': autocompleteCallbackCb_%d }); \n"
+					"}"
+					"function autocompleteCallbackCb_%d(release) { \n"
+					"	var data = []; \n"
+					"	data = [{'value':'Area-1', 'id':'1'},{'value':'Area-2', 'id':'2'},{'value':'Area-3', 'id':'3'}]; \n"
+					"	release(data); // release the data back to the autocompleter \n"
+					"}"
+					, randId, randId, randId, randId);
+		printf("<div class='uk-autocomplete uk-form' id='autocompleteCallback_%d'>", randId);
 		printf("	<input type='text' autocomplete='off'>");
 		printf("</div>");
 	}
