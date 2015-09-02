@@ -8,7 +8,9 @@ include = default-values
 
 [screen]
 child = slider, site
-fx.wallpaper-image = /img/plain-bg.jpg
+#fx.wallpaper-image = /img/plain-bg.jpg
+css.background-color = black
+
 css.display = block
 
 	[slider]
@@ -39,7 +41,7 @@ addon.slider.flexslider.border-width = 0px
 	[site]
 	child =	header, home-page, pages, footer
 	css.width = 100%
-	css.position = relative
+
 
 ####  Header  #################################
 
@@ -48,7 +50,9 @@ addon.slider.flexslider.border-width = 0px
 	css.height = 50px
 	css.width = 100%
 	css.background-color = #ec008c
+	css.z-index = 25
 	css.position = fixed
+	css.overflow = visible
 	
 	
 		[header-details]
@@ -70,7 +74,7 @@ addon.slider.flexslider.border-width = 0px
 		[fb]
 		css.margin-top = 5px
 		css.width = 35px
-		css.margin-left = 100px
+		css.margin-left = 6%
 		image.url = img/facebook-button.png
 		image.width = 100%
 		image.height = 100%
@@ -88,7 +92,7 @@ addon.slider.flexslider.border-width = 0px
 		[menu]
 		css.height = 50px
 		css.margin-top = 10px
-		css.width = 50%
+		css.width = 49%
 		css.float = right
 		css.overflow = visible
 		
@@ -135,7 +139,7 @@ addon.slider.flexslider.border-width = 0px
 		addon.menu.traditional.submenu-font-size = 12px
 		addon.menu.traditional.submenu-font-family = Open Sans
 		addon.menu.traditional.submenu-font-weight = normal
-		addon.menu.traditional.submenu-text-color = #ec008c
+		addon.menu.traditional.submenu-text-color = white
 		addon.menu.traditional.submenu-background-color = #662d91
 #		addon.menu.traditional.submenu-background-tile = /img/menu.jpg
 #		addon.menu.traditional.submenu-background-stretch = /img/menu.jpg
@@ -150,96 +154,101 @@ addon.slider.flexslider.border-width = 0px
 ######## Home Page #######################################
 	
 [home-page]
+child = home-foreground
 condition = @PAGE=@HOMEPAGE
-child = home-left, home-right
-stacking = horizontal
-css.width = 80%
-css.min-width = 600px
 css.margin-top = 50px
+css.padding-bottom = 20px
+css.z-index = 20
+css.position = relative
+css.background-size = 100%
+css.background-repeat = repeat-y
+css.background-image = url('/img/home-bgd.png')
 
-	[home-left]
-	css.margin-top = 20px
-	child = home-vlogo, home-content
-	css.width = 20%
-	css.min-width = 150px
-	css.background-size = 100%
-	css.background-repeat = repeat-y
-	css.background-image = url('/img/home-bgd-left.')
-
-	
-		[home-vlogo]
-		css.width = 100%
-		image.url = img/6ty-vlogo-line.png
-		image.width = 100%
-		image.height = 243%
-		click = http://www.6tyshadesofbeauty.co.uk
-		
-		[home-content]
-		css.width = 100%
-		css.background-color = transparent
-		db.table = ContentBlock
-		db.filter = url=$_GET['page']
-		db.error = Sorry, I could not find the page $_GET['page']
-		html.raw = ContentBlock.content
-	
-	
-	[home-right]
-	child = home-banner, home-main
+	[home-foreground]
+	child = home-left, home-right
+	stacking = horizontal
 	css.width = 80%
-	css.min-width = 400px
+	css.min-width = 600px
+	css.margin-top = 50px
 
-	
-		[home-banner]
+		[home-left]
 		css.margin-top = 20px
-		css.width = 90%
-		image.url = img/shades.png
-		image.width = 100%
-		image.height = 9%
+		child = home-vlogo, home-content
+		css.width = 20%
+		css.min-width = 150px
+		
+			[home-vlogo]
+			css.width = 100%
+			image.url = img/6ty-vlogo-line.png
+			image.width = 100%
+			image.height = 243%
+			click = http://www.6tyshadesofbeauty.co.uk
+			
+			[home-content]
+			css.width = 100%
+			css.background-color = transparent
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find the page $_GET['page']
+			html.raw = ContentBlock.content
 		
 		
-		[home-main]
-		child = column-shop, column-side-menu, column-downloads
-		css.margin-left = 65%
-		css.width = 30%
-#		css.z-index = 10
+		[home-right]
+		child = home-banner, home-main
+		css.width = 80%
+		css.min-width = 400px
+
 		
-			[column-shop]
+			[home-banner]
 			css.margin-top = 20px
-#			addon.global.column.debug = 1
-			addon.global.column.name = shop
-			addon.global.column.width = 100%
-			addon.global.column.internal-width = 100%
-			addon.global.column.content-width = 98%
-			addon.global.column.internal-color = transparent
-			addon.global.column.background-color = transparent
-#			addon.global.column.background-image = img/...
-#			addon.global.column.top-image = img/cow-spot-top.jpg
-#			addon.global.column.top-height = 20px
-#			addon.global.column.bottom-image = img/cow-spot-bottom.jpg
-#			addon.global.column.bottom-height = 5px
+			css.width = 90%
+			image.url = img/shades.png
+			image.width = 100%
+			image.height = 9%
 			
-			[column-side-menu]
-#			addon.global.column.debug = 1
-			addon.global.column.name = side-nav
-			addon.global.column.width = 100%
-			addon.global.column.internal-width = 100%
-			addon.global.column.content-width = 98%
-			addon.global.column.internal-color = transparent
-			addon.global.column.background-color = transparent
-			addon.global.column.top-height = 5px
-			addon.global.column.bottom-height = 5px
 			
-			[column-downloads]
-#			addon.global.column.debug = 1
-			addon.global.column.name = downloads
-			addon.global.column.width = 100%
-			addon.global.column.internal-width = 100%
-			addon.global.column.content-width = 98%
-			addon.global.column.internal-color = transparent
-			addon.global.column.background-color = transparent
-			addon.global.column.top-height = 5px
-			addon.global.column.bottom-height = 5px
+			[home-main]
+			child = column-shop, column-side-menu, column-downloads
+			css.margin-left = 65%
+			css.width = 30%
 			
+				[column-shop]
+				css.margin-top = 20px
+	#			addon.global.column.debug = 1
+				addon.global.column.name = shop
+				addon.global.column.width = 100%
+				addon.global.column.internal-width = 100%
+				addon.global.column.content-width = 98%
+				addon.global.column.internal-color = transparent
+				addon.global.column.background-color = transparent
+	#			addon.global.column.background-image = img/...
+	#			addon.global.column.top-image = img/cow-spot-top.jpg
+	#			addon.global.column.top-height = 20px
+	#			addon.global.column.bottom-image = img/cow-spot-bottom.jpg
+	#			addon.global.column.bottom-height = 5px
+				
+				[column-side-menu]
+	#			addon.global.column.debug = 1
+				addon.global.column.name = side-nav
+				addon.global.column.width = 100%
+				addon.global.column.internal-width = 100%
+				addon.global.column.content-width = 98%
+				addon.global.column.internal-color = transparent
+				addon.global.column.background-color = transparent
+				addon.global.column.top-height = 5px
+				addon.global.column.bottom-height = 5px
+				
+				[column-downloads]
+	#			addon.global.column.debug = 1
+				addon.global.column.name = downloads
+				addon.global.column.width = 100%
+				addon.global.column.internal-width = 100%
+				addon.global.column.content-width = 98%
+				addon.global.column.internal-color = transparent
+				addon.global.column.background-color = transparent
+				addon.global.column.top-height = 5px
+				addon.global.column.bottom-height = 5px
+				
 	
 	
 ######## Pages #######################################
@@ -249,7 +258,9 @@ condition = @PAGE!=@HOMEPAGE
 child = page-top, page-bottom
 css.margin-top = 70px
 css.width = 85%
-css.min-width = 600px
+css.min-width = 800px
+css.padding-bottom = 20px
+
 
 	[page-top]
 	css.width = 100%
@@ -260,10 +271,12 @@ css.min-width = 600px
 	[page-bottom]
 	child = page-left, page-main, page-contact-content, page-contact
 	stacking = horizontal
+	css.width = 100%
+
 		
 		[page-left]
 		child =  page-line, page-left-column-download, page-left-column-sidenav
-		css.min-width = 220px
+		css.min-width = 230px
 		css.width = 25%
 			
 			[page-line]
@@ -299,12 +312,12 @@ css.min-width = 600px
 			
 		[page-main]
 		child = page-center-main, page-center-news, page-center-shop
-		css.width = 70%
-		css.margin-left = 3%
-		css.min-width = 500px
-		css.margin-top = 100px
+		condition = @PAGE!=contact, news-content, products
+		css.width = 550px
+		css.margin-left = 20px
 		
 			[page-center-main]
+			css.width = 80%
 			db.table = ContentBlock
 			db.filter = url=$_GET['page']
 			db.error = Sorry, I could not find the page $_GET['page']
@@ -314,15 +327,16 @@ css.min-width = 600px
 			condition = @PAGE=news-6tyshades-beauty
 			child = news-top, news-mid, news-bottom
 			css.background-color = black
-			css.width = 70%
 			css.margin-left = 3%
 			
 				[news-top]
 				css.width = 100%
-				css.height = 11%
+				css.height = 19%
 				image.url = img/whitebg-top.png
 				image.width = 100%
-				image.height = 11%
+				image.height = 19%
+				css.width = 600px				
+				css.overflow = visible
 				
 				[news-mid]
 				child = news-content
@@ -338,40 +352,40 @@ css.min-width = 600px
 				
 				[news-bottom]
 				css.width = 100%
-				css.height = 18%
+				css.height = 12%
 				image.url = img/whitebg-bottom.png
 				image.width = 100%
-				image.height = 18%
+				image.height = 12%
 			
 			[page-center-shop]
 			condition = @PAGE=products
 			css.background-color = black
-			
-			[page-contact]
-			condition = @PAGE=contact
-			child = page-contact-content, contact-block
-			stacking = horizontal
+
 			
 			[page-contact-content]
+			condition = @PAGE=contact
 			css.width = 35%
 			css.margin-left = 3%
-			css.min-width = 500px
 			css.margin-top = 100px
+			css.min-width = 250px
 			db.table = ContentBlock
 			db.filter = url=$_GET['page']
 			db.error = Sorry, I could not find the page $_GET['page']
 			html.raw = ContentBlock.content
 			
-			[contact-block]
+			[page-contact]
+			condition = @PAGE=contact
 			child = contact-form
-			css.width = 35%
+			css.width = 30%
+			css.margin-left = 30px
 			
 			[contact-form]
-			html.raw = </br><h3>Contact us directly</h3>
-			css.text-align = left
+			css.margin-top = 100px
+			css.min-height = 510px
+			html.raw = </br><h3 style="color: #00aef0; text-align: center;">Contact us directly</h3>
 			fx.rounding = 10px
 			css.border = 4px solid #ec008c
-		#	css.background-color = white
+			css.background-color = white
 		#	jam.embed = /jam/template/contactForm.tpl
 			jam.iframe = /jam/template/contactForm.tpl
 
@@ -380,96 +394,98 @@ css.min-width = 600px
 
 [footer]
 child = footer-content
-css.margin-top = 40px
 css.background-color = #e6e7e8
+css.z-index = 25
+css.position = relative
 
-	[footer-content]
-	child = footer-left, footer-right
-	css.width = 75%
-	css.margin-top = 20px
-	css.min-width = 600px
-	stacking = horizontal
 
-		[footer-left]
-		child = copyright, design, wirefly
-		css.width = 49%
-		css.height =150px
-		css.line-height = 25px
-
-		[copyright]
-		html.raw = 6TY Shades of Beauty &copy 2015 All rights reserved
-		css.color = #000000
-		css.font-size = 11px
-		css.text-align = left
-		
-		[design]
-		html.raw = Branding by WeeSleekit
-
-		[wirefly]
-		child = wirefly-logo, admin
-		stacking = horizontal
+		[footer-content]
+		child = footer-left, footer-right
+		css.width = 75%
 		css.margin-top = 20px
+		css.min-width = 600px
+		stacking = horizontal
 
-		
-			[wirefly-logo]
-			css.height = 45px
-			css.margin-top = 5px
-			image.url = img/wirefly-design.png
-			image.width = 100px
-			image.height = 46px
-			image.align = left
-			clicknew = http://www.wireflydesign.com
+			[footer-left]
+			child = copyright, design, wirefly
+			css.width = 49%
+			css.height =150px
+			css.line-height = 25px
+
+			[copyright]
+			html.raw = 6TY Shades of Beauty &copy 2015 All rights reserved
+			css.color = #000000
+			css.font-size = 11px
+			css.text-align = left
 			
-		
-			[admin]
-			child = cog-center
-			css.height = 20px
-			css.width = 20px
-			css.background-size = 100%
-			css.background-image = url('/img/admin.png')
-			css.margin-left = -20px
+			[design]
+			html.raw = Branding by WeeSleekit
 
-				[cog-center]
-				css.width = 5px
-				css.height = 5px
-				css.margin-top = 8px
-				image.url = img/cog-center.png
-				image.width = 5px
-				image.height = 5px
-				image.align = center
-				clicknew = backend.php
+			[wirefly]
+			child = wirefly-logo, admin
+			stacking = horizontal
+			css.margin-top = 20px
+
+			
+				[wirefly-logo]
+				css.height = 45px
+				css.margin-top = 5px
+				image.url = img/wirefly-design.png
+				image.width = 100px
+				image.height = 46px
+				image.align = left
+				clicknew = http://www.wireflydesign.com
+				
+			
+				[admin]
+				child = cog-center
+				css.height = 20px
+				css.width = 20px
+				css.background-size = 100%
+				css.background-image = url('/img/admin.png')
+				css.margin-left = -20px
+
+					[cog-center]
+					css.width = 5px
+					css.height = 5px
+					css.margin-top = 8px
+					image.url = img/cog-center.png
+					image.width = 5px
+					image.height = 5px
+					image.align = center
+					clicknew = backend.php
 
 
 
-		[footer-right]
-		child = footer-cookies, footer-tandc, footer-contact
-		css.height = 150px
-		css.width = 49%
-		css.line-height = 25px
+			[footer-right]
+			child = footer-cookies, footer-tandc, footer-contact
+			css.height = 150px
+			css.width = 49%
+			css.line-height = 25px
 
-			[footer-cookies]
-			html.raw = Cookie Policy
-			css.width = 20%
-			css.color = #000000
-			css.font-size = 11px
-			css.text-align = right
-			click = ?layout=index&page=cookie-policy
+				[footer-cookies]
+				html.raw = Cookie Policy
+				css.width = 20%
+				css.color = #000000
+				css.font-size = 11px
+				css.text-align = right
+				click = ?layout=index&page=cookie-policy
 
-			[footer-tandc]
-			html.raw = Terms & Conditions
-			css.width = 20%
-			css.color = #000000
-			css.font-size = 11px
-			css.text-align = right
-			click = ?layout=index&page=terms-conditions
+				[footer-tandc]
+				html.raw = Terms & Conditions
+				css.width = 20%
+				css.color = #000000
+				css.font-size = 11px
+				css.text-align = right
+				click = ?layout=index&page=terms-conditions
 
-			[footer-contact]
-			html.raw = Contact Us
-			css.text-align = right
-			css.width = 20%
-			css.color = #000000
-			css.font-size = 11px
-			click = ?layout=index&page=contact
+				[footer-contact]
+				html.raw = Contact Us
+				css.text-align = right
+				css.width = 20%
+				css.color = #000000
+				css.font-size = 11px
+				click = ?layout=index&page=contact
 
 
 #	html.raw = <SCRIPT charset="utf-8" type="text/javascript" src="http://ws-eu.amazon-adsystem.com/widgets/q?rt=tf_ssw&ServiceVersion=20070822&MarketPlace=GB&ID=V20070822%2FGB%2F6tyshadofbeau-21%2F8003%2F0dee832e-e44c-44cc-96d5-180176bc91e1&Operation=GetScriptTemplate"> </SCRIPT> <NOSCRIPT><A HREF="http://ws-eu.amazon-adsystem.com/widgets/q?rt=tf_ssw&ServiceVersion=20070822&MarketPlace=GB&ID=V20070822%2FGB%2F6tyshadofbeau-21%2F8003%2F0dee832e-e44c-44cc-96d5-180176bc91e1&Operation=NoScript">Amazon.co.uk Widgets</A></NOSCRIPT>	
