@@ -266,7 +266,7 @@ class SiteController extends Controller
 	{
 		if (Yii::app()->request->isAjaxRequest)
 		{
-			Yii::log("TEST AJAX CALL: date:" . $_POST['date'] . " arrival:" . $_POST['arrival'] . " departure:" . $_POST['departure'] . " room:" . $_POST['roomList'], CLogger::LEVEL_WARNING, 'system.test.kim');
+			//Yii::log("TEST AJAX CALL: date:" . $_POST['date'] . " arrival:" . $_POST['arrival'] . " departure:" . $_POST['departure'] . " room:" . $_POST['roomList'], CLogger::LEVEL_WARNING, 'system.test.kim');
 			if(isset($_POST['date']))
 			{
 				$pyyyy = substr($_POST['date'], 0, 4);
