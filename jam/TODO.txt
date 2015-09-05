@@ -11,11 +11,14 @@
 * grid, editgrid high level control js functions
 	can we simplify the runTemplate/runAction/backButton functions? How about generating the hidden '_id' fields automatically, and delete confirmation?
 
-* scratch.js for custom generated code. Either one big <script></script> tag or individual. Individual is bigger but more containerised
-
 * jamify the input field stuff
 
 * field validation. Server or client side?
+
+------------- bugs ------------------------------------
+
+@get cant handle: {{@get admin_user filter display_name = 'Tim Taylor'}} because of the space. 'Rockerbie' works fine.
+scratch.js is shared
 
 ------------- done ------------------------------------
 

@@ -67,7 +67,10 @@ char *getSqlOption(char *jamOption) {
 
 SQL_RESULT *sqlCreateResult(char *tableName, MYSQL_RES *res) {
     SQL_RESULT *rp = (SQL_RESULT *) calloc(1, sizeof(SQL_RESULT));
-    rp->tableName = (char *) strdup(tableName);
+	if (tableName)
+    	rp->tableName = (char *) strdup(tableName);
+    else
+    	rp->tableName = strdup("");
     rp->res = res;
     // Set up field info
     rp->numFields = mysql_num_fields(rp->res);

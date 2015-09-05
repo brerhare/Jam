@@ -173,9 +173,25 @@ int wordDatabaseGet(int ix, char *defaultTableName) {
 	}
 	mysql_free_result(res);
 	free(givenTableName);
-	//if ((!row) && (skipCode == 1)) {		/@@FIX! make function so this can be shared with database.c
-		//return(0);
-	//}
+}
+
+int wordDatabaseSql(int ix, char *defaultTableName) {
+	char *args = jam[ix]->args;
+	logMsg(LOGDEBUG, "Doing raw sql query [%s]", args);
+	int status = doSqlQuery(args);
+	if (status == -1) {
+		logMsg(LOGERROR, "Sql query failed - doSqlQuery() failed");
+		return (-1);
+	}
+	logMsg(LOGDEBUG, "Getting RES for raw query");
+	MYSQL_RES *res = mysql_store_result(conn);
+	if (res != NULL) {	// ie the query returned row(s)
+		logMsg(LOGDEBUG, "RES is non-null");
+		SQL_RESULT *rp = sqlCreateResult(defaultTableName, res);
+		sqlGetRow2Var(rp);
+		mysql_free_result(res);
+	} else logMsg(LOGDEBUG, "RES is null");
+	emit(jam[ix]->trailer);
 }
 
 //-----------------------------------------------------------------

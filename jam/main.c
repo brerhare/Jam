@@ -448,7 +448,11 @@ int control(int startIx, char *defaultTableName) {
 		} else if (!(strcmp(cmd, "@get"))) {
 //		------------------------------------
 			wordDatabaseGet(ix, defaultTableName);
-//		-------------------------------------
+//		------------------------------------
+		} else if (!(strcmp(cmd, "@sql"))) {
+//		------------------------------------
+			wordDatabaseSql(ix, defaultTableName);
+//		-------------------------------------//		-------------------------------------
 		} else if (!(strcmp(cmd, "@each"))) {
 //		-------------------------------------
 			// This is either a list or a db table
