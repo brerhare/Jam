@@ -335,21 +335,15 @@ class EventController extends Controller
 	{
 //print_r($_GET);
 //die;
-		$f = getdate($_GET['fromT']);
-		$t = getdate($_GET['toT']);
-		if (strlen($f['mon']) == 1) $f['mon'] = "0" . $f['mon'];
-		if (strlen($f['mday']) == 1) $f['mday'] = "0" . $f['mday'];
-		if (strlen($t['mon']) == 1) $t['mon'] = "0" . $t['mon'];
-		if (strlen($t['mday']) == 1) $t['mday'] = "0" . $t['mday'];
-		$fChk = $f['year'] . $f['mon'] . $f['mday'];
-		$tChk = $t['year'] . $t['mon'] . $t['mday'];
+		$fChk = $_GET['fyear'] . $_GET['fmon'] . $_GET['fmday'];
+		$tChk = $_GET['tyear'] . $_GET['tmon'] . $_GET['tmday'];
 
 		// Pick up the vendor record
 		$criteria = new CDbCriteria;
-		$criteria->addCondition("id = " . Yii::app()->session['uid']);
+		$criteria->addCondition("uid = " . Yii::app()->session['uid']);
 		$vendor = Vendor::model()->find($criteria);
 		if (!($vendor))
-			throw new CHttpException(400,'Vendor record missing');
+			throw new CHttpException(400,'Vendor record missing for id ' . Yii::app()->session['uid']);
 		if (trim($vendor->email) == "")
 			throw new CHttpException(400,'Please set up an email address in your vendor record');
 

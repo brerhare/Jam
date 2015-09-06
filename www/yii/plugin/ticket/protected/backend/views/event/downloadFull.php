@@ -13,7 +13,8 @@
 				$this->widget('bootstrap.widgets.TbButton', array(
 					'type'=>'primary',
 					'label'=>'Download',
-					'url'=> array('/event/exportCSVFull/?fromD='.$fromD."&toD=".$toD."&fromT=".$fromT."&toT=".$toT),
+//					'url'=> array('/event/exportCSVFull/?fromD='.$fromD."&toD=".$toD."&fromT=".$fromT."&toT=".$toT),
+					'url'=> array('/event/exportCSVFull/?fmday='.$fromD['mday'].'&fmon='.$fromD['mon'].'&fyear='.$fromD['year'].'&tmday='.$toD['mday'].'&tmon='.$toD['mon'].'&tyear='.$toD['year']),
 				)); ?> &nbsp&nbsp&nbsp&nbspThe file is in CSV format
 			</div>
 		</div>
