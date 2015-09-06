@@ -8,6 +8,7 @@ int wordDatabaseRemoveDatabase(int ix, char *defaultTableName);
 int wordDatabaseDatabase(int ix, char *defaultTableName);
 int wordDatabaseDescribe(int ix, char *defaultTableName);
 int wordDatabaseGet(int ix, char *defaultTableName);
+int wordDatabaseSql(int ix, char *defaultTableName);
 
 int wordDatabaseNewTable(int ix, char *defaultTableName);
 int wordDatabaseRemoveTable(int ix, char *defaultTableName);

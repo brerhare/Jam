@@ -323,3 +323,27 @@ int wordMiscEmail(int ix, char *defaultTableName) {
     free(mailBody);
     emit(jam[ix]->trailer);
 }
+
+// Use for anything - internally used too. eg for html gen hidden dbname element
+int wordMiscTrigger(int ix, char *defaultTableName) {
+	char *cmd = jam[ix]->command;
+	char *args = jam[ix]->args;
+	char *triggerName = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 4096);
+
+	getWord(triggerName, args, 1, " \t");
+	if (!triggerName) {
+		logMsg(LOGERROR, "missing trigger name");
+		return(-1);
+	}
+	if (!strcmp(triggerName, "HtmlEnd")) {
+		if (trigger_HtmlEnd_DbName == NULL)
+			trigger_HtmlEnd_DbName = strdup("");
+		printf("<input type='hidden' id='_dbname' name='_dbname' value='%s'>", trigger_HtmlEnd_DbName);
+	}
+
+	// Wrap up
+	free(tmp);
+	free(triggerName);
+    emit(jam[ix]->trailer);
+}
