@@ -45,16 +45,17 @@ function runAction(action, element, output, callback) {
 	}
 	// Gather all the elements to send
 	var el = element.split(" ");
+	el.push("_dbname");										// always try to append this (for runactions)
 	for (i = 0; i < el.length; i++) {
-		if (document.forms[el]) {							// is this a form element?
+		if (document.forms[el[i]]) {							// is this a form element?
 			var obj = $('form[name="' + el[i] + '"]');
 			postData += '&' + obj.serialize();
 			if (typeof obj.attr("action") != 'undefined')	// If a form (any form) has an 'action' we use it
 				formURL = obj.attr("action");
 		} else {											// not a form element
-			var obj = document.getElementsByName(el);		// .. try to get it
-			if (obj.length > 0)								// got it
-				postData += '&' + el + '=' + encodeURIComponent(obj[0].value);
+			var obj = document.getElementsByName(el[i]);		// .. try to get it
+			if ((obj) && (obj.length > 0))					// got it
+				postData += '&' + el[i] + '=' + encodeURIComponent(obj[0].value);
 			else {											// not ANY kind of element, so just send as is (a=b)
 				var lit = el[i].split('=');
 				postData += '&' + lit[0] + '=' + lit[1];

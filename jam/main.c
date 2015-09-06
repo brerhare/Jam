@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
 			assignVar->type = VAR_STRING;	// @@FIX!!!!!!
 			clearVarValues(assignVar);
 			fillVarDataTypes(assignVar, cgivars[i+1]);
-			logMsg(LOGDEBUG, "Initializing startup variable %s with value %s", assignVar->name, assignVar->portableValue);
+//			logMsg(LOGMICRO, "Initializing startup variable %s with value %s", assignVar->name, assignVar->portableValue);
 			assignVar->source = strdup("prefill");
 			assignVar->debugHighlight = 1;
 			for (int i = 0; i < MAX_VAR; i++) {
@@ -170,17 +170,27 @@ if (++sanity > 100) { printf("Overflow in main!"); break; }
 		int ix = 0;
 		while (jam[ix]) {
 			if ((!strcmp(jam[ix]->command, "@action")) && (!strcmp(jam[ix]->args, tplEntrypoint))) {
+				logMsg(LOGINFO, "Preparing to run @action %s, checking for _dbname", tplEntrypoint);
+				// Set to use the named db
+				for (int i=0; cgivars[i]; i+= 2) {
+					if (!strcasecmp(cgivars[i], "_dbname")) {
+						logMsg(LOGDEBUG, "Using parameter [%s] = [%s] to set db", cgivars[i], cgivars[i+1]);
+						if (openDB(cgivars[i+1]) != 0)
+							return(-1);
+						break;
+					}
+				}
+				// Set startpoint
 				startIx = ix;
-				logMsg(LOGINFO, "Preparing to run @ACTION %s", tplEntrypoint);
 				break;
 			}
 			ix++;
 		}
 	}
 	if (startIx == 0)
-		logMsg(LOGINFO, "Processing command loop starting from @BEGIN");
+		logMsg(LOGINFO, "Processing command loop starting from @!begin");
 	else
-		logMsg(LOGINFO, "Processing command loop for @ACTION %s", tplEntrypoint);
+		logMsg(LOGINFO, "Processing command loop for @action %s", tplEntrypoint);
 	control(startIx, NULL);
 	logMsg(LOGINFO, "Finished command loop");
 
@@ -348,6 +358,10 @@ int control(int startIx, char *defaultTableName) {
 		if (!(strcmp(cmd, "@!begin"))) {
 //		-----------------------------------------
 			emit(jam[ix]->trailer);
+//		-----------------------------------------
+		} else if (!(strcmp(cmd, "@trigger"))) {
+//		-----------------------------------------
+			wordMiscTrigger(ix, defaultTableName);
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@html"))) {
 //		-----------------------------------------
