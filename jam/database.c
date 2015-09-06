@@ -388,7 +388,7 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 		free(externalFieldOrValue); externalFieldOrValue = NULL;
 	}
 	strcat(query, queryBuilder);
-//die(query);
+	logMsg(LOGDEBUG, "appendSqlSelectOptions() built query [%s]", query);
 	free(queryBuilder);
 	free(tmp);
 	for (int i = 0; i < MAX_SUBARGS; i++)

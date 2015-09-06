@@ -81,7 +81,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	printf("		<div class='uk-form-controls'>\n");
 	if (!strcasecmp(fieldType, "filter")) {
 		int randId = rand() % 9999999;
-		scratchJs(	"// Include autocomplete CSS \n"
+		scratchJs(	"// Include autocomplete JS and CSS \n"
 					"$.getScript('/jam/sys/extern/uikit/js/components/autocomplete.js', initAutocomplete ); \n"
 					"var linkElem = document.createElement('link'); \n"
 					"document.getElementsByTagName('head')[0].appendChild(linkElem); \n"
@@ -90,17 +90,27 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 					"// Handler for autocomplete ID %d \n"
 					"var autocomplete = null; \n"
 					"function initAutocomplete() { \n"
-					"	autocomplete = $.UIkit.autocomplete($('#autocompleteCallback_%d'), { 'source': autocompleteCallbackCb_%d }); \n"
-					"}"
+					"	autocomplete = $.UIkit.autocomplete($('#autocompleteCallback_%d'), { 'source': autocompleteCallbackCb_%d, minLength:1}); \n"
+					"}\n"
 					"function autocompleteCallbackCb_%d(release) { \n"
-					"	var data = []; \n"
-					"	data = [{'value':'Area-1', 'id':'1'},{'value':'Area-2', 'id':'2'},{'value':'Area-3', 'id':'3'}]; \n"
-					"	release(data); // release the data back to the autocompleter \n"
-					"}"
-					, randId, randId, randId, randId);
-		printf("<div class='uk-autocomplete uk-form' id='autocompleteCallback_%d'>", randId);
-		printf("	<input type='text' autocomplete='off'>");
-		printf("</div>");
+						"$.ajax({ \n"
+					"		url : '/jamcgi/jam', type: 'POST', data : 'template=/jam/sys/template/autocomplete.tpl:filterAutocomplete&_filtervalue='+document.getElementById('autocompleteInput_%d').value+'&_filterfield='+document.getElementById('autocompleteTableField_%d').value, \n"
+					"		success: function(data, textStatus, jqXHR) { \n"
+//					"alert('ajaxok with: ' + data) \n"
+					"			var dat = []; \n"
+					"			dat = JSON.parse(data); \n"
+					"			release(dat); // release the data back to the autocompleter \n"
+					"		}, \n"
+					"		error: function (jqXHR, textStatus, errorThrown) { \n"
+					"			alert('autocomplete ajax call failed'); \n"
+					"		} \n"
+					"	}); \n"
+					"} \n"
+					, randId, randId, randId, randId, randId, randId);
+		printf("<div class='uk-autocomplete uk-form' id='autocompleteCallback_%d'> \n", randId);
+		printf("	<input type='text' id='autocompleteInput_%d' autocomplete='off'> \n", randId);
+		printf("</div> \n");
+		printf("<input type='hidden' id='autocompleteTableField_%d' value='%s'> \n", randId, fieldVar);
 	}
 	else
 		printf("		<input type='%s' name='%s' id='%s' value='%s' placeholder='%s' class='uk-form-width-%s'>\n", fieldType, fieldVar, fieldVar, fieldVarValue, fieldPlaceholder, fieldSize);

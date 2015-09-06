@@ -109,6 +109,10 @@ int main(int argc, char *argv[]) {
 	sprintf(tmp, "%s/%s", documentRoot, tplName);
 	logMsg(LOGINFO, "asking for template %s", tmp);
 	char *tpl = readTemplate(tmp);
+	if (tpl)
+		logMsg(LOGINFO, "successfully read template %s", tmp);
+	else
+		logMsg(LOGINFO, "could not read template %s", tmp);
 
 int sanity = 0;
 	while (1) {

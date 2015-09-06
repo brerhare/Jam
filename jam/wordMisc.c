@@ -11,6 +11,7 @@
 
 #include "wordMisc.h"
 #include "common.h"
+#include "database.h"
 #include "stringUtil.h"
 #include "list.h"
 #include "log.h"
@@ -336,10 +337,78 @@ int wordMiscTrigger(int ix, char *defaultTableName) {
 		logMsg(LOGERROR, "missing trigger name");
 		return(-1);
 	}
+
+	logMsg(LOGDEBUG, "trigger %s activated", triggerName);
+
+	// @action needs the database if coming from html input
 	if (!strcmp(triggerName, "HtmlEnd")) {
 		if (trigger_HtmlEnd_DbName == NULL)
 			trigger_HtmlEnd_DbName = strdup("");
 		printf("<input type='hidden' id='_dbname' name='_dbname' value='%s'>", trigger_HtmlEnd_DbName);
+	}
+
+	// Autocomplete <input type=filter> cant produce json (yet) or db handle '%like%' (needs embedded curlies to work) so we have this trigger temporarily - a @@TODO
+	if (!strcmp(triggerName, "HtmlAutocomplete")) {
+//printf("[{'value':'Xrea-1', 'id':'1'},{'value':'Xrea-2', 'id':'2'},{'value':'Yrea-3', 'id':'3'}]");
+//printf("[{\"value\":\"Xrea-1\"},{\"value\":\"Xrea-2\"},{\"value\":\"Zrea-3\"}]");
+//return(0);
+		char *q = (char *) calloc(1, 4096);
+		char *triggerField = (char *) calloc(1, 4096);
+		char *triggerValue = (char *) calloc(1, 4096);
+		char *tableName = (char *) calloc(1, 4096);
+		char *fieldName = (char *) calloc(1, 4096);
+		getWord(triggerField, args, 2, " \t");
+		if (!triggerField) {
+			logMsg(LOGERROR, "missing trigger '_filterfield'");
+			return(-1);
+		}
+		getWord(triggerValue, args, 3, " \t");
+		if (!triggerValue) {
+			logMsg(LOGERROR, "missing trigger '_filtervalue'");
+			return(-1);
+		}
+		VAR *variableField = findVarStrict(triggerField);
+		if (!variableField) {
+			logMsg(LOGERROR, "missing trigger variable for '_filterfield'");
+			return(-1);	
+		}
+		VAR *variableValue = findVarStrict(triggerValue);
+		if (!variableValue) {
+			logMsg(LOGERROR, "missing trigger variable for '_filtervalue'");
+			return(-1);	
+		}
+		getWord(tableName, variableField->portableValue, 1, ".");
+		getWord(fieldName, variableField->portableValue, 2, ".");
+		sprintf(q, "select _id, %s from %s where %s like '%%%s%%'", fieldName, tableName, fieldName, variableValue->portableValue);
+		logMsg(LOGDEBUG, "Autocomplete trigger prepared query [%s]", q);
+		int status = doSqlQuery(q);
+		if (status == -1) {
+			logMsg(LOGERROR, "Sql query failed - doSqlQuery() failed");
+			return (-1);
+		}
+		logMsg(LOGDEBUG, "Getting RES for raw query");
+		MYSQL_RES *res = mysql_store_result(conn);
+		if (res != NULL) {	// ie the query returned row(s)
+			logMsg(LOGDEBUG, "RES is non-null");
+			SQL_RESULT *rp = sqlCreateResult(tableName, res);
+			int first = 1;
+			printf("[");
+			while (sqlGetRow2Var(rp) != SQL_EOF) {
+				VAR *v = findVarStrict(variableField->portableValue);
+				sprintf(tmp, "%s._id", tableName);
+				VAR *_id = findVarStrict(tmp);
+				if ((!v) || (!_id)) {
+					logMsg(LOGERROR, "internal error - either cant retrieve row jam variable or its _id");
+					return(-1);	
+				}
+				if (first)
+					first = 0;
+				else
+					printf(", ");
+				printf("{\"value\":\"%s\", \"id\":\"%d\"}", v->portableValue,  atoi(_id->portableValue));
+			}
+			printf("]");
+		} else logMsg(LOGDEBUG, "RES is null");
 	}
 
 	// Wrap up
