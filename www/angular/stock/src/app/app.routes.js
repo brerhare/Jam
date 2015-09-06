@@ -19,6 +19,15 @@ angular.module('stock')
         controller: 'HomeCtrl'
       })
 
+// Transactions
+// ------------
+      .state('home.purchase-order', {
+        url: '/transaction/purchaseOrder',
+        templateUrl: 'app/home/transaction/purchaseOrder/purchaseOrder.html',
+        controller: 'PurchaseOrderCtrl'
+      })
+
+
 // Suppliers
 // ---------
       .state('home.supplier-maintain', {
