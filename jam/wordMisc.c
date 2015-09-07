@@ -349,9 +349,6 @@ int wordMiscTrigger(int ix, char *defaultTableName) {
 
 	// Autocomplete <input type=filter> cant produce json (yet) or db handle '%like%' (needs embedded curlies to work) so we have this trigger temporarily - a @@TODO
 	if (!strcmp(triggerName, "HtmlAutocomplete")) {
-//printf("[{'value':'Xrea-1', 'id':'1'},{'value':'Xrea-2', 'id':'2'},{'value':'Yrea-3', 'id':'3'}]");
-//printf("[{\"value\":\"Xrea-1\"},{\"value\":\"Xrea-2\"},{\"value\":\"Zrea-3\"}]");
-//return(0);
 		char *q = (char *) calloc(1, 4096);
 		char *triggerField = (char *) calloc(1, 4096);
 		char *triggerValue = (char *) calloc(1, 4096);
@@ -379,7 +376,13 @@ int wordMiscTrigger(int ix, char *defaultTableName) {
 		}
 		getWord(tableName, variableField->portableValue, 1, ".");
 		getWord(fieldName, variableField->portableValue, 2, ".");
-		sprintf(q, "select _id, %s from %s where %s like '%%%s%%'", fieldName, tableName, fieldName, variableValue->portableValue);
+		// Kludge to handle old 'id' vs '_id' field in tables
+		char idField[512];
+		sprintf(idField, "_id");
+		if ( (!strcmp(tableName, "stock_customer"))
+		||   (!strcmp(tableName, "stock_product")) )
+			sprintf(idField, "id");
+		sprintf(q, "select %s, %s from %s where %s like '%%%s%%'", idField, fieldName, tableName, fieldName, variableValue->portableValue);
 		logMsg(LOGDEBUG, "Autocomplete trigger prepared query [%s]", q);
 		int status = doSqlQuery(q);
 		if (status == -1) {
@@ -395,7 +398,7 @@ int wordMiscTrigger(int ix, char *defaultTableName) {
 			printf("[");
 			while (sqlGetRow2Var(rp) != SQL_EOF) {
 				VAR *v = findVarStrict(variableField->portableValue);
-				sprintf(tmp, "%s._id", tableName);
+				sprintf(tmp, "%s.%s", tableName, idField);
 				VAR *_id = findVarStrict(tmp);
 				if ((!v) || (!_id)) {
 					logMsg(LOGERROR, "internal error - either cant retrieve row jam variable or its _id");
@@ -405,6 +408,7 @@ int wordMiscTrigger(int ix, char *defaultTableName) {
 					first = 0;
 				else
 					printf(", ");
+				// Avoid single quotes - the formal JSON spec doesnt allow them
 				printf("{\"value\":\"%s\", \"id\":\"%d\"}", v->portableValue,  atoi(_id->portableValue));
 			}
 			printf("]");
