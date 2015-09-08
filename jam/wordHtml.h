@@ -3,6 +3,7 @@
 
 int wordHtmlGrid(int ix, char *defaultTableName);
 int wordHtmlInput(int ix, char *defaultTableName);
+int wordHtmlInp(int ix, char *defaultTableName);
 int wordHtmlTextarea(int ix, char *defaultTableName);
 int wordHtmlButton(int ix, char *defaultTableName);
 int wordHtmlSelect(int ix, char *defaultTableName);

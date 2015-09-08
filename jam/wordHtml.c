@@ -34,10 +34,7 @@ int wordHtmlGrid(int ix, char *defaultTableName) {
 	free(tmp);
 }
 
-//	{{@html input hidden stock_supplier._id}}
-//	{{@html input text stock_supplier.payment_terms mini "Payment terms" days}}
-
-int wordHtmlInput(int ix, char *defaultTableName) {
+int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
@@ -76,9 +73,11 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	getWord(fieldPrompt, args, 5, " \t");
 	getWord(fieldPlaceholder, args, 6, " \t");
 
-	printf("<div class='uk-form-row'>\n");
-	printf("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPrompt);
-	printf("		<div class='uk-form-controls'>\n");
+	if (inputType == 1) {
+		printf("<div class='uk-form-row'>\n");
+		printf("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPrompt);
+		printf("		<div class='uk-form-controls'>\n");
+	}
 	if (!strcasecmp(fieldType, "filter")) {
 		int randId = rand() % 9999999;
 		scratchJs(	"// Include autocomplete JS and CSS \n"
@@ -114,9 +113,10 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	}
 	else
 		printf("		<input type='%s' name='%s' id='%s' value='%s' placeholder='%s' class='uk-form-width-%s'>\n", fieldType, fieldVar, fieldVar, fieldVarValue, fieldPlaceholder, fieldSize);
-	printf("	</div>\n");
-	printf("</div>\n");
-
+	if (inputType == 1) {
+		printf("	</div>\n");
+		printf("</div>\n");
+	}
 	emit(jam[ix]->trailer);
 	free(fieldName);
 	free(fieldType);
@@ -126,6 +126,16 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	free(fieldPrompt);
 	free(fieldPlaceholder);
 	free(tmp);
+}
+
+//	{{@html input hidden stock_supplier._id}}
+//	{{@html input text stock_supplier.payment_terms mini "Payment terms" days}}
+
+int wordHtmlInput(int ix, char *defaultTableName) {
+	return(_wordHtmlInputInp(ix, defaultTableName, 1));
+}
+int wordHtmlInp(int ix, char *defaultTableName) {
+	return(_wordHtmlInputInp(ix, defaultTableName, 0));
 }
 
 //	{{@html textarea stock_supplier.notes 60x5 Notes}}

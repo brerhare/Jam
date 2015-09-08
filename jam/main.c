@@ -376,6 +376,8 @@ int control(int startIx, char *defaultTableName) {
 						wordHtmlGrid(ix, defaultTableName);
 					else if ( (!strcmp(tmp, "input")) || (!strcmp(tmp, "date")) )
 						wordHtmlInput(ix, defaultTableName);
+					else if (!strcmp(tmp, "inp"))
+						wordHtmlInp(ix, defaultTableName);
 					else if (!strcmp(tmp, "textarea"))
 						wordHtmlTextarea(ix, defaultTableName);
 					else if (!strcmp(tmp, "button"))
@@ -533,8 +535,6 @@ int control(int startIx, char *defaultTableName) {
 				// Now emit the loops' trailer and stop
 				while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
 					ix++;		// skip over all the action content
-				//if (jam[ix])
-					//emit(jam[ix]->trailer);
 				return(0);
 			}
 //		------------------------------------
