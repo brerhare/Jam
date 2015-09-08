@@ -533,8 +533,8 @@ int control(int startIx, char *defaultTableName) {
 				// Now emit the loops' trailer and stop
 				while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
 					ix++;		// skip over all the action content
-				if (jam[ix])
-					emit(jam[ix]->trailer);
+				//if (jam[ix])
+					//emit(jam[ix]->trailer);
 				return(0);
 			}
 //		------------------------------------
