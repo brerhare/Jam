@@ -108,7 +108,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 					"} \n"
 					, randId, randId, randId, randId, randId, randId);
 		printf("<div class='uk-autocomplete uk-form' id='autocompleteCallback_%d'> \n", randId);
-		printf("	<input type='text' id='autocompleteInput_%d' autocomplete='off'> \n", randId);
+		printf("	<input type='text' id='autocompleteInput_%d' autocomplete='off' value='%s'> \n", randId, fieldVarValue);
 		printf("</div> \n");
 		printf("<input type='hidden' id='autocompleteTableField_%d' value='%s'> \n", randId, fieldVar);
 	}
