@@ -372,8 +372,8 @@ int control(int startIx, char *defaultTableName) {
 			if (args) {
 				getWord(tmp, args, 1, " ");
 				if (*tmp) {
-					if (!strcmp(tmp, "gridtable"))
-						wordHtmlGridtable(ix, defaultTableName);
+					if (!strcmp(tmp, "grid"))
+						wordHtmlGrid(ix, defaultTableName);
 					else if ( (!strcmp(tmp, "input")) || (!strcmp(tmp, "date")) )
 						wordHtmlInput(ix, defaultTableName);
 					else if (!strcmp(tmp, "textarea"))

@@ -18,7 +18,7 @@
 //-----------------------------------------------------------------
 // HTML
 
-int wordHtmlGridtable(int ix, char *defaultTableName) {
+int wordHtmlGrid(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
