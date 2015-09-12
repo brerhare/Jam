@@ -25,6 +25,8 @@ function runTemplate(templateName) {
 					- if it isnt an element then 'name=value' format is assumed and sent as given, eg 'stock_supplier._id=2'
  * @param output	HTML element that receives any returned content (innerHTML)
  * @param callback	note this cannot have arguments
+ *
+ * @note			we always try to send the _dbname element too for runactions
  */
 function runAction(action, element, output, callback) {
 //alert('startajax');
@@ -45,7 +47,7 @@ function runAction(action, element, output, callback) {
 	}
 	// Gather all the elements to send
 	var el = element.split(" ");
-	el.push("_dbname");										// always try to append this (for runactions)
+	el.push("_dbname");											// always try to append this (for runactions)
 	for (i = 0; i < el.length; i++) {
 		if (document.forms[el[i]]) {							// is this a form element?
 			var obj = $('form[name="' + el[i] + '"]');

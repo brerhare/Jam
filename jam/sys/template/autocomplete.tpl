@@ -1,5 +1,6 @@
+This relies on the hidden _dbname embedded in the calling html page to know which db to use
+------------------------------------------------------------------------------------------
 {{@action filterAutocomplete}}
-{{@database stock}}
-	{{@trigger HtmlAutocomplete _filterfield _filtervalue}}
+	{{@custom html autocomplete _filterfield _filtervalue}}
 {{@end}}
 

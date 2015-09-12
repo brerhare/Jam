@@ -17,8 +17,6 @@
 FILE *scratchJsStream = NULL;
 char *scratchJsFileName = "jam/sys/js/scratch.js";		// preceeded by documentroot
 
-char *trigger_HtmlEnd_DbName;	// this is run just before the closing body tag (see footer/ftr.html in sys/html/)
-
 //-----------------------------------------------------------
 // Var related
 

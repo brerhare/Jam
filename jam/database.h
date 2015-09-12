@@ -1,6 +1,8 @@
 #ifndef __DATABASE_H_INCLUDED
 #define __DATABASE_H_INCLUDED
 
+extern char *connDbName;
+extern MYSQL *conn;
 
 // ----------------------------------------------------------------
 // Mapping of Mysql to Jam types and options. Eg DECIMAL(10,1) = number.1 and NOT NULL = required

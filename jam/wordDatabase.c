@@ -87,7 +87,6 @@ int wordDatabaseNewDatabase(int ix, char *defaultTableName) {
 		return(-1);
 	if (openDB(dbName) != 0)
 		return(-1);
-	trigger_HtmlEnd_DbName = strdup(dbName);
 	emit(jam[ix]->trailer);
 	free(dbName);
 }
@@ -119,7 +118,6 @@ int wordDatabaseDatabase(int ix, char *defaultTableName) {
 		die("missing database name");
 	if (openDB(args) != 0)
 		die(mysql_error(conn));
-	trigger_HtmlEnd_DbName = strdup(args);
 	emit(jam[ix]->trailer);
 }
 

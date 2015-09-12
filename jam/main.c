@@ -19,6 +19,7 @@
 #include "wordDatabase.h"
 #include "wordHtml.h" 
 #include "wordMisc.h"
+#include "wordCustom.h"
 #include "database.h"
 #include "list.h"
 #include "stringUtil.h"
@@ -35,7 +36,6 @@
 #endif
 
 // Common declares start
-MYSQL *conn = NULL;
 char *startJam = "{{";
 char *endJam = "}}";
 int literal = 0;
@@ -174,7 +174,7 @@ if (++sanity > 100) { printf("Overflow in main!"); break; }
 		int ix = 0;
 		while (jam[ix]) {
 			if ((!strcmp(jam[ix]->command, "@action")) && (!strcmp(jam[ix]->args, tplEntrypoint))) {
-				logMsg(LOGINFO, "Preparing to run @action %s, checking for _dbname", tplEntrypoint);
+/*				logMsg(LOGINFO, "Preparing to run @action %s, checking for _dbname", tplEntrypoint);
 				// Set to use the named db
 				for (int i=0; cgivars[i]; i+= 2) {
 					if (!strcasecmp(cgivars[i], "_dbname")) {
@@ -183,7 +183,7 @@ if (++sanity > 100) { printf("Overflow in main!"); break; }
 							return(-1);
 						break;
 					}
-				}
+				} */
 				// Set startpoint
 				startIx = ix;
 				break;
@@ -336,7 +336,7 @@ int control(int startIx, char *defaultTableName) {
 //		-----------------------------------------
 			literal = 1;
 			if (args) {
-				getWord(tmp, args, 1, " ");
+				getWord(tmp, args, 1, " \t");
 				if (*tmp) {
 					if ((!strcmp(tmp, "off")) || (!strcmp(tmp, "0")))
 						literal = 0;
@@ -363,14 +363,20 @@ int control(int startIx, char *defaultTableName) {
 //		-----------------------------------------
 			emit(jam[ix]->trailer);
 //		-----------------------------------------
-		} else if (!(strcmp(cmd, "@trigger"))) {
+		} else if (!(strcmp(cmd, "@custom"))) {
 //		-----------------------------------------
-			wordMiscTrigger(ix, defaultTableName);
+			if (args) {
+				getWord(tmp, args, 1, " \t");
+				if (*tmp) {
+					if (!strcmp(tmp, "html"))
+						wordCustomHtml(ix, defaultTableName);
+				}
+			}
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@html"))) {
 //		-----------------------------------------
 			if (args) {
-				getWord(tmp, args, 1, " ");
+				getWord(tmp, args, 1, " \t");
 				if (*tmp) {
 					if (!strcmp(tmp, "grid"))
 						wordHtmlGrid(ix, defaultTableName);
@@ -388,7 +394,7 @@ int control(int startIx, char *defaultTableName) {
 		} else if (!(strcmp(cmd, "@clear"))) {
 //		-----------------------------------------
 			if (args) {
-				getWord(tmp, args, 1, " ");
+				getWord(tmp, args, 1, " \t");
 				if (*tmp) {
 					if (!strcmp(tmp, "item"))
 						wordDatabaseClearItem(ix, defaultTableName);
@@ -398,7 +404,7 @@ int control(int startIx, char *defaultTableName) {
 		} else if (!(strcmp(cmd, "@new"))) {
 //		-----------------------------------------
 			if (args) {
-				getWord(tmp, args, 1, " ");
+				getWord(tmp, args, 1, " \t");
 				if (*tmp) {
 					if (!strcmp(tmp, "database"))
 						wordDatabaseNewDatabase(ix, defaultTableName);
@@ -416,7 +422,7 @@ int control(int startIx, char *defaultTableName) {
 		} else if (!(strcmp(cmd, "@remove"))) {
 //		-----------------------------------------
 			if (args) {
-				getWord(tmp, args, 1, " ");
+				getWord(tmp, args, 1, " \t");
 				if (*tmp) {
 					logMsg(LOGDEBUG, "@remove requested");
 					if (!strcmp(tmp, "database"))
@@ -443,7 +449,7 @@ int control(int startIx, char *defaultTableName) {
 		} else if (!(strcmp(cmd, "@list"))) {
 //		-----------------------------------------
 		if (args) {
-			getWord(tmp, args, 1, " ");
+			getWord(tmp, args, 1, " \t");
 			if (*tmp) {
 				if (!strcmp(tmp, "databases"))
 					wordDatabaseListDatabases(ix, defaultTableName);
@@ -529,6 +535,12 @@ int control(int startIx, char *defaultTableName) {
 				emit(jam[ix]->trailer);
 			} else {					// for us - run and stop
 				emit(jam[ix]->trailer);
+				VAR *v = findVarStrict("_dbname");
+				if ((v) && (v->portableValue) && (strlen(v->portableValue))) {
+					logMsg(LOGDEBUG, "@action preprocess - _dbname '%s' was given", v->portableValue);
+					if (openDB(v->portableValue) != 0)
+						return(-1);
+				} else logMsg(LOGDEBUG, "@action preprocess - no _dbname was given");
 				logMsg(LOGMICRO, "@action starting recurse");
 				control((ix + 1), defaultTableName);
 				logMsg(LOGMICRO, "@action ended recurse");

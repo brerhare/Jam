@@ -19,6 +19,9 @@ char *dbServer = "localhost";
 char *dbUser = "root";
 char *dbPassword = "Wole9anic-";
 
+MYSQL *conn = NULL;
+char *connDbName = NULL;
+
 // ----------------------------------------------------------------
 // Mapping
 
@@ -404,6 +407,11 @@ int openDB(char *name) {
 		logMsg(LOGERROR, "openDB requires a name of db to open");
 		return(-1);
 	}
+	if (connDbName)
+		free(connDbName);
+	connDbName = strdup(name);
+	if (conn)
+		closeDB();
 	logMsg(LOGMICRO, "Opening db %s", name);
 	if (!conn)
 		conn = mysql_init(NULL);

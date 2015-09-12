@@ -71,9 +71,4 @@ int scratchJs(char *str, ...);	// @@TODO also need a includeJs() (includes but n
 extern char *documentRoot;
 extern FILE *scratchJsStream;
 
-// 'triggers' go here. Any info at all can be added here, is used at trigger point(s) to do additional stuff
-// Eg: if html is involved then output the dbname as a hidden element to pass when ajaxing @actions
-
-extern char *trigger_HtmlEnd_DbName;		// Trigger name 'HtmlEnd'
-
 #endif /* __COMMON_H_INCLUDED */
