@@ -21,7 +21,7 @@
 
 @skip n/w
 
-scratch.js is shared
+/sys/js/scratch.js is shared :-/
 
 ------------- done ------------------------------------
 
