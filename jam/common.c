@@ -250,17 +250,11 @@ int scratchJs(char *str, ...) {
 		}
 		free(tmp);
 	}
-	logMsg(LOGDEBUG, "Creating scratch entry2");	
 	va_start(ap, str);
-	logMsg(LOGDEBUG, "Creating scratch entry3");	
 	vfprintf(scratchJsStream, str, ap);
-	logMsg(LOGDEBUG, "Creating scratch entry4");		
 	fprintf(scratchJsStream, "\n");
-	logMsg(LOGDEBUG, "Creating scratch entry5");		
 	fflush(scratchJsStream);
-	logMsg(LOGDEBUG, "Creating scratch entry6");
 	va_end(ap);
-	logMsg(LOGDEBUG, "Creating scratch entry7");
 	return(0);
 }
 //--------------------------------------------------------------------
