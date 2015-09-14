@@ -104,9 +104,6 @@ char **getcgivars() {
 		exit(1) ;
 	}
 	sprintf(cgiinput, "%s&%s", cgiinputq, cgiinputp);
-	//strcpy(cgiinput, cgiinputq);
-	//strcat(cgiinput, "&");
-	//strcat(cgiinput, cgiinputp);
 
 	/** Change all plusses back to spaces. **/
 	for (i=0; cgiinput[i]; i++) if (cgiinput[i] == '+') cgiinput[i] = ' ' ;
