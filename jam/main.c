@@ -25,7 +25,7 @@
 #include "stringUtil.h"
 #include "linkListUtil.h"
 #include "cgiUtil.h"
-#include "template.h"
+#include "jam.h"
 
 #include <locale.h>
 
@@ -44,7 +44,7 @@ int jamIx = 0;
 char *tableStack[MAX_JAM];
 VAR *var[MAX_VAR];
 char *documentRoot = NULL;
-char *tplEntrypoint = NULL;
+char *jamEntrypoint = NULL;
 
 // Common declares end
 
@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
 	char **cgivars ;
 	char tmpPath[PATH_MAX], binary[PATH_MAX];
 	char *tmp = (char *) calloc(1, 4096);
-	char *tplName = NULL;
+	char *jamName = NULL;
 
 	logMsg(LOGINFO, "--------------------------------------------------------------------------");
 	logMsg(LOGINFO, "Starting");
@@ -79,15 +79,15 @@ int main(int argc, char *argv[]) {
 	for (int i=0; cgivars[i]; i+= 2) {
 		logMsg(LOGDEBUG, "Parameter [%s] = [%s]", cgivars[i], cgivars[i+1]) ;
 
-		if (!(strcmp(cgivars[i], "template"))) {
-			logMsg(LOGDEBUG, "Found template parameter");
-			tplName = strTrim(getWordAlloc(cgivars[i+1], 1, ":"));
-			tplEntrypoint = strTrim(getWordAlloc(cgivars[i+1], 2, ":"));
-			if (tplEntrypoint)
-				logMsg(LOGDEBUG, "Template parameter contains an action to run: [%s]", tplEntrypoint);
-//printf("[%s][%s]<br>", tplName, tplEntrypoint);
+		if (!(strcmp(cgivars[i], "jam"))) {
+			logMsg(LOGDEBUG, "Found jam parameter");
+			jamName = strTrim(getWordAlloc(cgivars[i+1], 1, ":"));
+			jamEntrypoint = strTrim(getWordAlloc(cgivars[i+1], 2, ":"));
+			if (jamEntrypoint)
+				logMsg(LOGDEBUG, "Jam parameter contains an action to run: [%s]", jamEntrypoint);
+//printf("[%s][%s]<br>", jamName, jamEntrypoint);
 // @@KIM! remove next if
-		} else /* if (!tplEntrypoint) */ {
+		} else /* if (!jamEntrypoint) */ {
 			VAR *assignVar = (VAR *) calloc(1, sizeof(VAR));
 			assignVar->name = strdup(cgivars[i]);
 			assignVar->type = VAR_STRING;	// @@FIX!!!!!!
@@ -105,19 +105,21 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	// Read in template, including any @include's
-	sprintf(tmp, "%s/%s", documentRoot, tplName);
-	logMsg(LOGINFO, "asking for template %s", tmp);
-	char *tpl = readTemplate(tmp);
-	if (tpl)
-		logMsg(LOGINFO, "successfully read template %s", tmp);
+	// Read in jam, including any @include's
+	sprintf(tmp, "%s/%s", documentRoot, jamName);
+	if (!strstr(tmp, ".jam"))
+		strcat(tmp, ".jam");
+	logMsg(LOGINFO, "asking for jam %s", tmp);
+	char *jamBuf = readJam(tmp);
+	if (jamBuf)
+		logMsg(LOGINFO, "successfully read jam %s", tmp);
 	else
-		logMsg(LOGINFO, "could not read template %s", tmp);
+		logMsg(LOGINFO, "could not read jam %s", tmp);
 
 int sanity = 0;
 	while (1) {
 if (++sanity > 100) { printf("Overflow in main!"); break; }
-		TAGINFO *tagInfo = getTagInfo(tpl, "@include");
+		TAGINFO *tagInfo = getTagInfo(jamBuf, "@include");
 		if (tagInfo == NULL)
 			break;
 		// Read in the include file
@@ -146,23 +148,23 @@ if (++sanity > 100) { printf("Overflow in main!"); break; }
 		//exit(0);
 
 		// Include the include
-		char *newTpl = (char *) calloc(1, (strlen(tpl) + strlen(includeBuf) + 1));
+		char *newJam = (char *) calloc(1, (strlen(jamBuf) + strlen(includeBuf) + 1));
 		*(tagInfo->startCurlyPos) = '\0';
-		strcpy(newTpl, tpl);
-		strcat(newTpl, includeBuf);
-		strcat(newTpl, (tagInfo->endCurlyPos + strlen(endJam)));
-		logMsg(LOGDEBUG, "Splicing included file into template. 1stpart=%d, include=%d, 2ndpart=%d<br>", (int)strlen(tpl), (int)strlen(includeBuf), (int)strlen((tagInfo->endCurlyPos + strlen(endJam))));
-		free(tpl);
-		tpl = newTpl;
+		strcpy(newJam, jamBuf);
+		strcat(newJam, includeBuf);
+		strcat(newJam, (tagInfo->endCurlyPos + strlen(endJam)));
+		logMsg(LOGDEBUG, "Splicing included file into jam. 1stpart=%d, include=%d, 2ndpart=%d<br>", (int)strlen(jamBuf), (int)strlen(includeBuf), (int)strlen((tagInfo->endCurlyPos + strlen(endJam))));
+		free(jamBuf);
+		jamBuf = newJam;
 		free(tagInfo->name);
 		free(tagInfo->content);
 		free(tagInfo);
 	}
 
-	// Create Jam array from template
+	// Create Jam array from jamBuf
 	logMsg(LOGINFO, "Creating jam array");
-	char *tplPos = tpl;
-	while (tplPos = curlies2JamArray(tplPos)) {
+	char *jamPos = jamBuf;
+	while (jamPos = curlies2JamArray(jamPos)) {
 			logMsg(LOGDEBUG, "Array command=%s", jam[jamIx]->command);
 		jamIx++;
 	}
@@ -170,11 +172,11 @@ if (++sanity > 100) { printf("Overflow in main!"); break; }
 	// Generate HTML from Jam array
 	logMsg(LOGINFO, "Generating HTML from Jam array");
 	int startIx = 0;
-	if (tplEntrypoint) {
+	if (jamEntrypoint) {
 		int ix = 0;
 		while (jam[ix]) {
-			if ((!strcmp(jam[ix]->command, "@action")) && (!strcmp(jam[ix]->args, tplEntrypoint))) {
-/*				logMsg(LOGINFO, "Preparing to run @action %s, checking for _dbname", tplEntrypoint);
+			if ((!strcmp(jam[ix]->command, "@action")) && (!strcmp(jam[ix]->args, jamEntrypoint))) {
+/*				logMsg(LOGINFO, "Preparing to run @action %s, checking for _dbname", jamEntrypoint);
 				// Set to use the named db
 				for (int i=0; cgivars[i]; i+= 2) {
 					if (!strcasecmp(cgivars[i], "_dbname")) {
@@ -194,13 +196,13 @@ if (++sanity > 100) { printf("Overflow in main!"); break; }
 	if (startIx == 0)
 		logMsg(LOGINFO, "Processing command loop starting from @!begin");
 	else
-		logMsg(LOGINFO, "Processing command loop for @action %s", tplEntrypoint);
+		logMsg(LOGINFO, "Processing command loop for @action %s", jamEntrypoint);
 	control(startIx, NULL);
 	logMsg(LOGINFO, "Finished command loop");
 
 	free(tmp);
-	free(tpl);
-	free(tplEntrypoint);
+	free(jamBuf);
+	free(jamEntrypoint);
 	if (conn)
 		closeDB();
 
@@ -224,16 +226,16 @@ int Xmain(int argc, char *argv[]) {
 		//printf("arg [%s] has value [%s]\n", argName[i-1], argValue[i-1]);
 	}
 
-	char *tplName = NULL;
-	char *tplEntrypoint = NULL;
+	char *jamName = NULL;
+	char *jamEntrypoint = NULL;
 	for (i = 0; i < MAX_ARGS; i++) {
 		if (!argName[i])
 			break;
-		if (!(strcmp(argName[i], "template"))) {
-			tplName = strTrim(getWordAlloc(argValue[i], 1, ":"));
-			tplEntrypoint = strTrim(getWordAlloc(argValue[i], 2, ":"));
+		if (!(strcmp(argName[i], "jam"))) {
+			jamName = strTrim(getWordAlloc(argValue[i], 1, ":"));
+			jamEntrypoint = strTrim(getWordAlloc(argValue[i], 2, ":"));
 // @@KIM! remove next if
-		} else if (!tplEntrypoint){
+		} else if (!jamEntrypoint){
 			VAR *assignVar = (VAR *) calloc(1, sizeof(VAR));
 			assignVar->name = strdup(argName[i]);
 			assignVar->type = VAR_STRING;	// @@FIX!!!!!!
@@ -252,7 +254,7 @@ int Xmain(int argc, char *argv[]) {
 	}
 
 	// @@TODO @@FIX!
-	if (tplEntrypoint) {
+	if (jamEntrypoint) {
 		int add = 0;
 		for (int i = 0; i < MAX_ARGS; i++) {
 			if (!argName[i])
@@ -298,12 +300,12 @@ int Xmain(int argc, char *argv[]) {
 		}
 	}
 
-	// Read in template
-	char *tpl = readTemplate(tplName);
+	// Read in jam
+	char *jam = readJam(jamName);
 
-	// Create Jam array from template
-	char *tplPos = tpl;
-	while (tplPos = curlies2JamArray(tplPos)) {
+	// Create Jam array from jam
+	char *jamPos = jam;
+	while (jamPos = curlies2JamArray(jamPos)) {
 		//printf("%s\n", jam[jamIx]->command);
 		jamIx++;
 	}
@@ -312,8 +314,8 @@ int Xmain(int argc, char *argv[]) {
 	// Generate HTML from Jam array
 	control(0, NULL);
 
-	free(tpl);
-	free(tplEntrypoint);
+	free(jam);
+	free(jamEntrypoint);
 	if (conn)
 		closeDB();
 jamDump(1);
@@ -529,7 +531,7 @@ int control(int startIx, char *defaultTableName) {
 //		-------------------------------------
 		} else if (!(strcmp(cmd, "@action"))) {
 //		-------------------------------------
-			if (!tplEntrypoint) {		// not for us - ignore completely
+			if (!jamEntrypoint) {		// not for us - ignore completely
 				while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
 					ix++;				
 				emit(jam[ix]->trailer);

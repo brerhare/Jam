@@ -7,7 +7,7 @@ var port = 8000;
 var ip = "178.238.232.146";
 if (os.hostname() == "fry")
 	ip = "127.0.0.1";
-templatePath = "template";
+runPath = "run";
 
 args = [];
 process.argv.forEach(function (val, index, array) {
@@ -18,12 +18,12 @@ for (i = 0; i < args.length; i++) {
 		i++;
 		port = args[i];
 	}
-	else if (args[i] == '-templatepath') {
+	else if (args[i] == '-runpath') {
 		i++;
-		templatePath = args[i];
+		runPath = args[i];
 	}
 	else if (i > 1) {
-		console.log('node server.js [-port] [-templatepath]');
+		console.log('node server.js [-port] [-runpath]');
 		process.exit(0);
 	}
 }
@@ -32,7 +32,7 @@ http.createServer(function (request, response) {
 
 	var queryData = url.parse(request.url, true).query;
 
-	if ((request.method == 'POST') && (queryData.template)) {
+	if ((request.method == 'POST') && (queryData.run)) {
 		response.writeHead(200, {'Content-Type': 'text/html;charset=utf-8'});
 		var body = '';
 		request.on('data', function (data) {
@@ -43,12 +43,12 @@ http.createServer(function (request, response) {
 //var req = decodeURIComponent(body)
 //console.log("POST Request: ---> "+ req+ " <---");
 			body = body.replace(/\+/g , " ");
-			getRequest(response, "template=" + templatePath + "/" + queryData.template,  decodeURIComponent(body));
+			getRequest(response, "run=" + runPath + "/" + queryData.run,  decodeURIComponent(body));
 			//response.end();
 		});
-	} else if (queryData.template) {	// http://host:8000/?template=xyz
+	} else if (queryData.run) {	// http://host:8000/?run=xyz
 		response.writeHead(200, {'Content-Type': 'text/html;charset=utf-8'});
-		getRequest(response, "template=" + templatePath + "/" + queryData.template, null);
+		getRequest(response, "run=" + runPath + "/" + queryData.run, null);
 	} else if (request.url.indexOf('.js') != -1) {
 		fileName = __dirname + "/" + request.url;
 		fs.readFile(fileName, function (err, data) {
@@ -91,36 +91,36 @@ http.createServer(function (request, response) {
 		});
 	} else {
 //console.log("["+request.url+"]");
-		showAvailableTemplates(response);
+		showAvailableJams(response);
 	}
 //}).listen(port, ip);
 }).listen(port, ip);
-console.log('templatepath is ' + templatePath);
+console.log('runpath is ' + runPath);
 console.log('listening on http://' + ip + ':' + port);
 
-function showAvailableTemplates(response) {
+function showAvailableJams(response) {
 	response.writeHead(200, {'Content-Type': 'text/html;charset=utf-8'});
 	getFileList(function(html) {
 		response.end(html);
 	});
 	function getFileList(callback) {
 		var html = "";
-		fs.readdir(__dirname + "/" + templatePath + "/", function(err, files) {
+		fs.readdir(__dirname + "/" + runPath + "/", function(err, files) {
 			if (err) return;
 			files.forEach(function(f) {
 				if ((f.indexOf(".tpl") != -1) && (f.indexOf(".swp") == -1) && (f.indexOf(".bak") == -1))
-					html += "<a href='http://" + ip + ":" + port + "/?template=" + f + "'>" + f + "</a> <br>";
+					html += "<a href='http://" + ip + ":" + port + "/?run=" + f + "'>" + f + "</a> <br>";
 			});
 			callback(html);
 		});
 	}
 }
 
-function getRequest(response, templateName, prefill, callback) {
-//console.log("TEMPLATENAME--->[" + templateName + "]");
+function getRequest(response, runName, prefill, callback) {
+//console.log("TEMPLATENAME--->[" + runName + "]");
 console.log("PREFILL--->[" + prefill + "]");
 	args = [];
-	args.push(templateName);
+	args.push(runName);
 	if (args[0].indexOf(" ") != -1)
 		args[0] = "'" + args[0] + "'";
 	if (prefill) {

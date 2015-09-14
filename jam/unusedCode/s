@@ -1,1 +1,1 @@
-exec node server.js -port 8001 -templatepath template2
+exec node server.js -port 8001 -runpath run

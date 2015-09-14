@@ -16,13 +16,13 @@
 #include "stringUtil.h"
 #include "log.h"
 
-#include "template.h"
+#include "jam.h"
 
-char *readTemplate(char *fname){
+char *readJam(char *fname){
 	char *buf = NULL;
 	std::ifstream html (fname, std::ifstream::binary);
 	if (!html){
-		std::cout << "readTemplate: error - cant open file " << fname << endl;
+		std::cout << "readJam: error - cant open file " << fname << endl;
 		die("");
 	}
 	html.seekg (0, html.end);
@@ -52,9 +52,9 @@ char *readTemplate(char *fname){
 	return buf;
 }
 
-char *curlies2JamArray(char *tplPos) {
+char *curlies2JamArray(char *jamPos) {
 
-	char *startCurly = strstr(tplPos, startJam);
+	char *startCurly = strstr(jamPos, startJam);
 	if (!startCurly)
 		return NULL;
 

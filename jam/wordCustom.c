@@ -42,7 +42,7 @@ int wordCustomHtml(int ix, char *defaultTableName) {
 		logMsg(LOGDEBUG, "");
 	}
 
-	// Called from sys/template/autocomplete.tpl
+	// Called from sys/jam/autocomplete.jam
 	if (!strcmp(customName, "autocomplete")) {
 	// Autocomplete <input type=filter> cant produce json (yet) or db handle '%like%' (needs embedded curlies to work) so we have this custom operation temporarily - a @@TODO
 		char *q = (char *) calloc(1, 4096);

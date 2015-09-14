@@ -315,4 +315,5 @@ char *calculate(char *str) {
 }
 
 //--------------------------------------------------------------------
-// Template parse extractors
+// Jam parse extractors
+

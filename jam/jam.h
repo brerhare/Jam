@@ -1,8 +1,8 @@
-#ifndef _TEMPLATE_H_INCLUDED_
-#define _TEMPLATE_H_INCLUDED_
+#ifndef _JAM_H_INCLUDED_
+#define _JAM_H_INCLUDED_
 
-char *readTemplate(char *fname);
-char *curlies2JamArray(char *tplPos);
+char *readJam(char *fname);
+char *curlies2JamArray(char *jamPos);
 char *expandCurliesInString(char *str);
 
 typedef struct {
@@ -13,4 +13,4 @@ typedef struct {
 } TAGINFO;
 TAGINFO *getTagInfo(char *text, char *tagName);
 
-#endif /* _TEMPLATE_H_INCLUDED_ */
+#endif /* _JAM_H_INCLUDED_ */

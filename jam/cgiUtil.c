@@ -46,24 +46,29 @@ char **getcgivars() {
 	register int i ;
 	char *request_method ;
 	int content_length;
-	char *cgiinput ;
+	char *cgiinput, *cgiinputq, *cgiinputp ;
 	char **cgivars ;
 	char **pairlist ;
 	int paircount ;
 	char *nvpair ;
 	char *eqpos ;
 
-	/** Depending on the request method, read all CGI input into cgiinput. **/
+	/** Depending on the request method, read all CGI input into cgiinput **/
 	request_method= getenv("REQUEST_METHOD") ;
 
-	if (!strcmp(request_method, "GET") || !strcmp(request_method, "HEAD") ) {
-		/* Some servers apparently don't provide QUERY_STRING if it's empty, */
-		/*   so avoid strdup()'ing a NULL pointer here.                      */
-		char *qs ;
-		qs= getenv("QUERY_STRING") ;
-		cgiinput= strdup(qs  ? qs  : "") ;
+	if (strcmp(request_method, "GET") && strcmp(request_method, "HEAD") && strcmp(request_method, "POST") ) {
+		printf("Content-Type: text/plain\n\n") ;
+		printf("getcgivars(): Unsupported REQUEST_METHOD.\n") ;
+		exit(1) ;
 	}
-	else if (!strcmp(request_method, "POST")) {
+
+	/* Some servers apparently don't provide QUERY_STRING if it's empty, */
+	/*   so avoid strdup()'ing a NULL pointer here.                      */
+	char *qs ;
+	qs = getenv("QUERY_STRING") ;
+	cgiinputq = strdup(qs ? qs  : "") ;
+
+	if (!strcmp(request_method, "POST")) {
 		/* strcasecmp() is not supported in Windows-- use strcmpi() instead */
 		if (( strcasecmp(getenv("CONTENT_TYPE"), "application/x-www-form-urlencoded"))
 		&&  ( strcasecmp(getenv("CONTENT_TYPE"), "application/x-www-form-urlencoded; charset=UTF-8")) ) {
@@ -76,23 +81,32 @@ char **getcgivars() {
 			printf("getcgivars(): No Content-Length was sent with the POST request.\n") ;
 			exit(1) ;
 		}
-		if ( !(cgiinput= (char *) malloc(content_length+1)) ) {
+		if ( !(cgiinputp = (char *) malloc(content_length+1)) ) {
 			printf("Content-Type: text/plain\n\n") ;
 			printf("getcgivars(): Couldn't malloc for cgiinput.\n") ;
 			exit(1) ;
 		}
-		if (!fread(cgiinput, content_length, 1, stdin)) {
+		if (!fread(cgiinputp, content_length, 1, stdin)) {
 			printf("Content-Type: text/plain\n\n") ;
 			printf("getcgivars(): Couldn't read CGI input from STDIN.\n") ;
 			exit(1) ;
 		}
-		cgiinput[content_length]='\0' ;
+		cgiinputp[content_length]='\0' ;
 	}
 	else {
+		cgiinputp = strdup("");
+	}
+
+	// Combine query string and stdin strings
+	if ( !(cgiinput = (char *) calloc(1, (strlen(cgiinputq) + strlen(cgiinputp) + 2)) ) ) {	// join the strings, inserting a '&' between the two
 		printf("Content-Type: text/plain\n\n") ;
-		printf("getcgivars(): Unsupported REQUEST_METHOD.\n") ;
+		printf("getcgivars(): Couldn't malloc for cgiinput.\n") ;
 		exit(1) ;
 	}
+	sprintf(cgiinput, "%s&%s", cgiinputq, cgiinputp);
+	//strcpy(cgiinput, cgiinputq);
+	//strcat(cgiinput, "&");
+	//strcat(cgiinput, cgiinputp);
 
 	/** Change all plusses back to spaces. **/
 	for (i=0; cgiinput[i]; i++) if (cgiinput[i] == '+') cgiinput[i] = ' ' ;
@@ -125,6 +139,8 @@ char **getcgivars() {
 
 	/** Free anything that needs to be freed. **/
 	free(cgiinput) ;
+	free(cgiinputq) ;
+	free(cgiinputp) ;
 	for (i=0; pairlist[i]; i++) free(pairlist[i]) ;
 	free(pairlist) ;
 	/** Return the list of name-value strings. **/

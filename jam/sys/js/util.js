@@ -3,23 +3,24 @@ function backButton() {
 }
 
 /*
- * @param templateName		either empty (rerun this template), just a 'template.tpl' or a '/full/url/to/temaplate.tpl'
+ * @param jamName		either empty (rerun this jam), just a 'something[.jam]' or a '/url/to/something[.jam]'
  */
-function runTemplate(templateName) {
-	var newLocation = templateName;				// Default is to assume a full url, ie use as supplied
-	if (typeof templateName === 'undefined')
-		newLocation = location.href;			// If empty grab the current url
-	else if (templateName.indexOf('/') == -1)
-		// If just a 'template.tpl' build a url using the full url base, the path to the current template, and the new template name
-		newLocation = getURLBase() + '?template=' + dirname(getURLParameter('template')) + '/' + templateName;
+function runJam(jamName) {
+	var newLocation = jamName;				// Default is to assume a full url, ie use as supplied
+	if (typeof jamName === 'undefined')
+		newLocation = location.href;		// If empty grab the current url
+	else if (jamName.indexOf('/') == -1) {
+		// If just a 'something[.jam]' build a url using the full url base, the path to the current jamfile, and the new jamfile name
+		newLocation = location.href.substring(0, location.href.lastIndexOf("/") + 1) + jamName;
+	}
 	window.location.href = newLocation;
 }
 
 /*
  * @param action	name of action to run.
- *					- 'actionName' only - current template
- *					- 'templateName:actionName - different template in same directory as current template
- *					- '/path/to/templateName:actionName - use as is
+ *					- 'actionName' only - current jam
+ *					- 'jamName:actionName - different jam in same directory as current jam
+ *					- '/path/to/jamName:actionName - use as is
  * @param element	element(s) to send. Space-separate multiples
 					- form elements are expanded to their child elements
 					- if it isnt an element then 'name=value' format is assumed and sent as given, eg 'stock_supplier._id=2'
@@ -35,16 +36,20 @@ function runAction(action, element, output, callback) {
 	if (typeof callback === 'undefined') { callback = ''; }
 	// Where we will send the request to
 	var formURL = getURLBase();
-	// Prepare the 'template' parameter: 'template.tpl' or 'template.tpl:actionName'
-	var postData = 'template=';
-	if (action.indexOf(':') == -1)							// actionName only - current template
-		postData += getURLParameter('template') + ':' + action;
-	else {
-		if (action.indexOf('/') == -1)						// has ':' but no slashes - diff tpl in same dir as curr tpl
-			postData += dirname(getURLParameter('template')) + '/' + action;
+	// Prepare the 'jam' parameter: 'somejam' or 'somejam:actionName'
+	var urlSplit = basename(location.href).split("&");
+	var thisJamName = urlSplit[0];
+	var postData = 'x=y'; /* 'jam=';
+	if (action.indexOf(':') == -1) {						// actionName only - current jam
+		postData += thisJamName + ':' + action;
+	} else {
+		if (action.indexOf('/') == -1) {					// has ':' but no slashes - diff jam in same dir as curr jam
+			var urlSplit = basename(location.href).split("&");
+			postData += urlSplit[0] + '/' + action;
+		}
 		else												// has ':' and slashes - use as supplied
 			postData += action;
-	}
+	} */
 	// Gather all the elements to send
 	var el = element.split(" ");
 	el.push("_dbname");											// always try to append this (for runactions)
@@ -65,7 +70,7 @@ function runAction(action, element, output, callback) {
 		}
 //alert('assembling data. So far we have : ' + postData);
 	}
-//alert('sending to ' + formURL + ' data : ' + postData);
+alert('sending to - \nurl : ' + formURL + '\ndata : ' + postData);
 	$.ajax( {
 		url : formURL,
 		type: "POST",

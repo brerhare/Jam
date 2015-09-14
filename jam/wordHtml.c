@@ -93,7 +93,7 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 					"}\n"
 					"function autocompleteCallbackCb_%d(release) { \n"
 						"$.ajax({ \n"
-					"		url : '/jamcgi/jam', type: 'POST', data : 'template=/jam/sys/template/autocomplete.tpl:filterAutocomplete&_filtervalue='+document.getElementById('autocompleteInput_%d').value+'&_filterfield='+document.getElementById('autocompleteTableField_%d').value+'&_dbname='+document.getElementById('_dbname').value, \n"
+					"		url : '/jamcgi/jam', type: 'POST', data : 'jam=/jam/sys/jam/autocomplete:filterAutocomplete&_filtervalue='+document.getElementById('autocompleteInput_%d').value+'&_filterfield='+document.getElementById('autocompleteTableField_%d').value+'&_dbname='+document.getElementById('_dbname').value, \n"
 					"		success: function(data, textStatus, jqXHR) { \n"
 //					"alert('ajaxok with: ' + data) \n"
 					"			var dat = []; \n"
@@ -196,10 +196,10 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 
 /*	{{@html button Save primary small
 		alert('ok')     // or any js
-		runTemplate
-		runTemplate supplierMaint.tpl
+		runJam
+		runJam supplierMaint
 		runAction updateSupplier supplierForm outputResult backButton
-		runAction updateSupplier supplierForm outputResult runTemplate supplierMaint.tpl    // where supplierMaint.tpl is the arg to runTemplate
+		runAction updateSupplier supplierForm outputResult runJam supplierMaint    // where supplierMaint is the arg to runJam
 }} */
 
 int wordHtmlButton(int ix, char *defaultTableName) {
@@ -236,15 +236,15 @@ int wordHtmlButton(int ix, char *defaultTableName) {
 		char *command = strTrim(getWordAlloc(block, 1, " \t"));
 		if (!command)
 			break;
-		if (!strcasecmp(command, "runTemplate")) {		// Parenthesize argument if any
-			char *templateName = strTrim(getWordAlloc(block, 2, " \t"));
-			if (templateName)
-				sprintf(tmp, "%s('%s');\n", command, templateName);
+		if (!strcasecmp(command, "runJam")) {		// Parenthesize argument if any
+			char *jamName = strTrim(getWordAlloc(block, 2, " \t"));
+			if (jamName)
+				sprintf(tmp, "%s('%s');\n", command, jamName);
 			else
 				sprintf(tmp, "%s();\n", command);
 			strcat(buttonJS, tmp);
 			free(command);
-			free(templateName);
+			free(jamName);
 		} else if (!strcasecmp(command, "runAction")) {	// Look for AJAX command, we need to wait for return there
 			char *pBlock = strchr(block, ' ');
 			sprintf(tmp, "%s(", command);
