@@ -29,6 +29,7 @@ $siteList = array (
 	'rotarypeaceproject.com'       => '/home/rotarypeaceproject.com/dev/src/www/yii/rotarypeaceproject.com',
 	'southwest-arb.co.uk'          => '/home/southwest-arb.co.uk/dev/src/www/yii/southwest-arb.co.uk',
 	'styleyourvenue.co.uk'         => '/home/styleyourvenue.co.uk/dev/src/www/yii/styleyourvenue.co.uk',
+	'susiejamieson.com'            => '/home/susiejamieson.com/dev/src/www/yii/susiejamieson.com',
 	'test.wireflydesign.com'       => '/home/wireflydesign.com/domains/test.wireflydesign.com/dev/src/www/yii/test.wireflydesign.com',
 	'the-art-room.co.uk'           => '/home/the-art-room.co.uk/dev/src/www/yii/the-art-room.co.uk',
 	'timtaylor-painter-decorator-tiler.co.uk'   => '/home/timtaylor-painter-decorator-tiler.co.uk/dev/src/www/yii/timtaylor-painter-decorator-tiler.co.uk',
