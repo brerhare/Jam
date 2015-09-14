@@ -81,6 +81,20 @@ class SiteController extends Controller
     /**
      * Displays the DIRECT login page
      */
+// @@TODO: HARDCODED FOR Susie Jamieson ---------- REMOVE
+    public function actionSusiejamiesonDirect()
+    {
+        Yii::app()->session['uid'] = 93;
+        $identity = new UserIdentity('creative-therapies', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
 // @@TODO: HARDCODED FOR Cocoa Kulula ---------- REMOVE
     public function actionCocoaDirect()
     {
