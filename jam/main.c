@@ -44,7 +44,6 @@ int jamIx = 0;
 char *tableStack[MAX_JAM];
 VAR *var[MAX_VAR];
 char *documentRoot = NULL;
-char *jamRoot = NULL;
 char *jamEntrypoint = NULL;
 
 // Common declares end
@@ -106,17 +105,6 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	// Set jammRoot
-	sprintf(tmp, "%s/%s", documentRoot, jamName);
-	char *p = strstr(tmp, "/run/");
-	if (!p) {
-		logMsg(LOGFATAL, "Cant establish jamRoot from [%s]. No point continuing", tmp);
-		exit(1);
-	}
-	*p = '\0';
-	jamRoot = strdup(tmp);
-	logMsg(LOGINFO, "jamRoot is %s", jamRoot);
-
 	// Read in jam, including any @include's
 	sprintf(tmp, "%s/%s", documentRoot, jamName);
 	if (!strstr(tmp, ".jam"))
@@ -135,7 +123,7 @@ if (++sanity > 100) { printf("Overflow in main!"); break; }
 		if (tagInfo == NULL)
 			break;
 		// Read in the include file
-		sprintf(tmp, "%s/%s", jamRoot, tagInfo->content);
+		sprintf(tmp, "%s/%s", documentRoot, tagInfo->content);
 		logMsg(LOGINFO, "including @INCLUDE file %s", tmp);
 		std::ifstream includeFile (tmp, std::ifstream::binary);
 		if (!includeFile) {
