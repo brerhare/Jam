@@ -3,8 +3,8 @@ function backButton() {
 }
 
 function runUrl(url, newTab) {
-	if (typeof newTab === 'undefined')
-		window.open(url);
+	if ((typeof newTab === 'undefined') && (newTab != 1) && (newTab != 'yes'))
+		window.open(url, '_self');
 	else
 		window.open(url,'_blank');
 }
