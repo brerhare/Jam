@@ -1,0 +1,99 @@
+{{@include /jam/sys/html/header.html}}
+
+{{@database stock}}
+
+{{@get stock_supplier filter _id = stock_supplier._id}}
+
+<style type="text/css">
+	label {text-align: right;}
+</style>
+
+<div class="uk-container uk-container-center">
+
+<center><h3>Input suppliers</h3></center>
+
+<div class="uk-grid">
+<div class="uk-width-1-5"></div>
+<div class="uk-width-3-5">
+
+<form name="supplierForm" class="uk-form uk-form-horizontal">
+<!-- html input type fieldname size prompt placeholder -->
+	{{@html input hidden stock_supplier._id}}
+	{{@html input text stock_supplier.code small "Supplier Code" code}}		<!-- quote anything that has a space in it -->
+	{{@html input text stock_supplier.name large Name name}}
+	{{@html input text stock_supplier.address1 large "Address line 1" "address 1"}}
+	{{@html input text stock_supplier.address2 large 2 "address 2"}}
+	{{@html input text stock_supplier.address3 large 3 "address 3"}}
+	{{@html input text stock_supplier.post_code small "Post code" "post code"}}
+	{{@html input text stock_supplier.country medium Country country}}
+	{{@html input text stock_supplier.contact large "Contact person" contact}}
+
+	<div class="uk-form-row">
+		<label class="uk-form-label" for="stock_supplier.telephone">Numbers</label>
+		<div class="uk-form-controls">
+			<div class="uk-form-icon">
+				<i class="uk-icon-phone"></i>
+				<input type="text" name="stock_supplier.telephone" id="stock_supplier.telephone" value="{{stock_supplier.telephone}}" placeholder="telephone" class="uk-form-width-small">
+			</div>
+			<div class="uk-form-icon">
+				<i class="uk-icon-mobile-phone"></i>
+				<input type="text" name="stock_supplier.mobile" id="stock_supplier.mobile" value="{{stock_supplier.mobile}}" placeholder="mobile" class="uk-form-width-small">
+			</div>
+			<div class="uk-form-icon">
+				<i class="uk-icon-fax"></i>
+				<input type="text" name="stock_supplier.fax" id="stock_supplier.fax" value="{{stock_supplier.fax}}" placeholder="fax" class="uk-form-width-small">
+			</div>
+		</div>
+	</div>
+
+	{{@html input text stock_supplier.email medium "Email address" email}}
+	{{@html input text stock_supplier.payment_terms mini "Payment terms" day}}
+	{{@html input text stock_supplier.tax_reference small "Tax reference" CIF}}
+	{{@html textarea stock_supplier.notes 60x5 Notes}}
+
+	<br>
+
+	{{@Xhtml button Save primary small
+		alert('ok')		// or any js
+		//runJam
+		//runJam supplierMaint
+		//runAction updateSupplier supplierForm outp alert('back from ajax')
+		//runAction 'updateSupplier' 'supplierForm id' 'outp' backButton
+		//runAction updateSupplier supplierForm, outp, backButton
+		//runAction updateSupplier  "supplierForm supplier2" outp  runJam("containerMaint")
+	}}
+
+	<br>
+
+<!--	<button type="button" onClick="runAction('updateSupplier', 'supplierForm', 'outp', backButton)" class="uk-button uk-button-primary">Save</button>	-->
+	<button type="button" onClick="LOCALrunAction('updateSupplier', 'supplierForm', 'outp', backButton)" class="uk-button uk-button-primary">Save</button>
+
+	<button type="button" onClick="backButton()" class="uk-button uk-button-primary">Cancel</button>
+
+</form>
+
+
+<div name="outp" style="border 10px solid black; Xheight:200px; Xwidth:500px;"></div>
+
+</div>	<!-- uk-width-3-5 -->
+</div>	<!-- uk-grid -->
+
+</div>	<!-- uk-container -->
+
+{{@action updateSupplier}}
+	{{stock_supplier.uid = 1}}
+	{{@new item stock_supplier}}
+{{@end}}
+
+<script>
+function LOCALrunAction(action, pre, post, next) {
+	var x = document.forms["supplierForm"]["stock_supplier.code"].value;
+	if (x == null || x == "" || isNaN(x)) {
+		alert('code should be numeric');
+		return;
+	}
+	runAction('updateSupplier', 'supplierForm', 'outp', backButton);
+}
+</script>
+
+{{@include /jam/sys/html/footer.html}}
