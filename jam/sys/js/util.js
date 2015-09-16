@@ -2,6 +2,13 @@ function backButton() {
 	window.history.back();
 }
 
+function runUrl(url, newTab) {
+	if (typeof newTab === 'undefined')
+		window.open(url);
+	else
+		window.open(url,'_blank');
+}
+
 /*
  * @param jamName		either empty (rerun this jam), just a 'something[.jam]' or a '/url/to/something[.jam]'
  */
@@ -35,25 +42,18 @@ function runAction(action, element, output, callback) {
 	if (typeof output === 'undefined') { output = ''; }
 	if (typeof callback === 'undefined') { callback = ''; }
 	// Where we will send the request to
-	var formURL = getURLBase();
-alert('action='+action);
+	var runURL = dirname(getURLBase());
 	// Prepare the 'jam' parameter: 'somejam' or 'somejam:actionName'
 	var urlSplit = basename(location.href).split("?");
-//alert('urlSplit='+urlSplit);
-	var thisJamName = urlSplit[0];
-alert('thisJamName='+thisJamName);
-	var postData = 'jam=';
+	var runJam = urlSplit[0];
+
 	if (action.indexOf(':') == -1) {						// actionName only - current jam
-		postData += thisJamName + ':' + action;
+		runJam += ':' + action;
 	} else {
-		if (action.indexOf('/') == -1) {					// has ':' but no slashes - diff jam in same dir as curr jam
-			var urlSplit = basename(location.href).split("?");
-			postData += urlSplit[0] + '/' + action;
-		}
-		else												// has ':' and slashes - use as supplied
-			postData += action;
+		runJam = action;
 	}
 	// Gather all the elements to send
+	var postData = 'ajax=1';
 	var el = element.split(" ");
 	el.push("_dbname");											// always try to append this (for runactions)
 	for (i = 0; i < el.length; i++) {
@@ -73,13 +73,14 @@ alert('thisJamName='+thisJamName);
 		}
 //alert('assembling data. So far we have : ' + postData);
 	}
-alert('sending to - \nurl : ' + formURL + '\ndata : ' + postData);
+	var sendURL = runURL + '/' + runJam;
+//alert('sending to - \nurl : ' + sendURL + '\ndata : ' + postData);
 	$.ajax( {
-		url : formURL,
+		url : sendURL,
 		type: "POST",
 		data : postData,
 		success:function(data, textStatus, jqXHR) {
-alert('back with: ' + data);
+//alert('back with: ' + data);
 			if (output != '') {
 				var target = document.getElementsByName(output);
 				target[0].innerHTML = data;
