@@ -152,8 +152,8 @@ echo "\nDone\n";
 echo "Add this site into /root/setperms\n";
 echo "Add this site into tools/util/jellySites.inc\n";
 echo "Add apache lines\n";
-echo " - ScriptAlias /jam/ /home/SITE/dev/src/jam/\n";
-echo " - <Directory /home/SITE/dev/src/jam> ..... </Directory>   (copy of the cgi-bin lines)\n";
+echo " - ScriptAlias /jamcgi/ /home/SITE/dev/src/www/yii/SITE/jam/cgi/\n";
+echo " - <Directory /home/SITE/dev/src/www/yii/SITE/jam/cgi> ..... </Directory>   (copy of the cgi-bin lines)\n";
 echo "Dont forget to restart Apache\n";
 
 ?>
