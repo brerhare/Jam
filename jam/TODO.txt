@@ -19,6 +19,8 @@
 
 ------------- bugs ------------------------------------
 
+* html button - runactions are ajax, subsequent whatevers need to wait for completion (see purchaseOrderForm.jam save button for eg)
+
 @get cant handle: {{@get admin_user filter display_name = 'Tim Taylor'}} because of the space. 'Rockerbie' works fine. Fix singlequote handling in getword (and its variants)
 
 @skip n/w
