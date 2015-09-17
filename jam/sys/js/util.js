@@ -74,7 +74,7 @@ function runAction(action, element, output, callback) {
 //alert('assembling data. So far we have : ' + postData);
 	}
 	var sendURL = runURL + '/' + runJam;
-alert('sending to - \nurl : ' + sendURL + '\ndata : ' + postData);
+//alert('sending to - \nurl : ' + sendURL + '\ndata : ' + postData);
 	$.ajax( {
 		url : sendURL,
 		type: "POST",

@@ -533,7 +533,6 @@ int control(int startIx, char *defaultTableName) {
 			if (!jamEntrypoint) {		// not for us - ignore completely
 				while (jam[ix] && (strcmp(jam[ix]->command, "@end")) ) {
 					if (!strcmp(jam[ix]->command, "@each")) {
-						emit("SKIPPING-THROUGH-ACTIONLOOP");
 						while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
 							ix++;
 					}
