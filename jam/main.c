@@ -534,19 +534,16 @@ int control(int startIx, char *defaultTableName) {
 				while (jam[ix] && (strcmp(jam[ix]->command, "@end")) ) {
 					if (!strcmp(jam[ix]->command, "@each")) {
 						emit("SKIPPING-THROUGH-ACTIONLOOP");
-						if (jam[ix]) {
-							while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
-								ix++;
-						if (jam[ix])
+						while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
 							ix++;
-						}
 					}
-					ix++;
+					if (jam[ix])
+						ix++;
 				}
 				if (jam[ix])
 					emit(jam[ix]->trailer);
 			} else {					// for us - run and stop
-				//emit(jam[ix]->trailer);
+				emit(jam[ix]->trailer);
 				VAR *v = findVarStrict("_dbname");
 				if ((v) && (v->portableValue) && (strlen(v->portableValue))) {
 					logMsg(LOGDEBUG, "@action preprocess - _dbname '%s' was given", v->portableValue);
