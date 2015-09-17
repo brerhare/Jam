@@ -47,13 +47,13 @@ class ImportCsvCommand extends CConsoleCommand
 						break;
 					case 2: // type
 						break;
-					case 3: // start date
+					case 3: // start date (DD/MM/YYYY)
 						$dt = $data[$c] . ' ' . $data[$c+1];
 						$date = str_replace('/', '-', $dt);
 						echo date('Y-m-d H:i:s', strtotime($date)) . "<br>";
 						$event->start = date('Y-m-d H:i:s', strtotime($date));
 						break;
-					case 5: // end date
+					case 5: // end date (DD/MM/YYYY)
 						if (trim($data[$c] != ''))
 							$dt = $data[$c] . ' ' . $data[$c+1];
 						else	// blank date, use 'start'
@@ -129,7 +129,7 @@ class ImportCsvCommand extends CConsoleCommand
 
 // @@TODO: Remove hardcoding in all the updates here
 //			$event->member_id = ??;				// $member->id;
-$event->member_id = 82;
+$event->member_id = 16;
 $event->program_id = 6;							// $member->lock_program_id;
 $eventHasProgram->program_id = 6;
 //			$event->event_price_band_id = ??;	// whatever value was input
@@ -161,7 +161,7 @@ else die('wrong format ' . $data[2]);
 				die("\nEvent has format save failed on line " . $row . "\n");
 
 			$eventHasProgram->event_event_id = $event->id;
-$eventHasProgram->approved = ?;
+$eventHasProgram->approved = 1;
 			if ((!($dummyRun)) && (!($eventHasProgram->save())))
 				die("\nEvent has program save failed on line " . $row . "\n");
 
