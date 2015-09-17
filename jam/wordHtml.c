@@ -40,12 +40,13 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	char *rawData = jam[ix]->rawData;
 	char *fieldName = (char *) calloc(1, 4096);
 	char *fieldType = (char *) calloc(1, 4096);
-	char *fieldSize = (char *) calloc(1, 4096);
 	char *fieldVar = (char *) calloc(1, 4096);
+	char *fieldSize = (char *) calloc(1, 4096);			// NB this is 'jam:action' for keyaction
 	char *fieldVarValue = (char *) calloc(1, 4096);
-	char *fieldPrompt = (char *) calloc(1, 4096);
-	char *fieldPlaceholder = (char *) calloc(1, 4096);
+	char *fieldPrompt = (char *) calloc(1, 4096);		// NB this is 'size' for keyaction
+	char *fieldPlaceholder = (char *) calloc(1, 4096);	
 	char *tmp = (char *) calloc(1, 4096);
+	int randId = rand() % 9999999;
 	VAR *variable = NULL;
 
 	getWord(fieldType, args, 2, " \t");
@@ -79,7 +80,6 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 		printf("		<div class='uk-form-controls'>\n");
 	}
 	if (!strcasecmp(fieldType, "filter")) {
-		int randId = rand() % 9999999;
 		scratchJs(	"// Include autocomplete JS and CSS \n"
 					"$.getScript('/jam/sys/extern/uikit/js/components/autocomplete.js', initAutocomplete ); \n"
 					"var linkElem = document.createElement('link'); \n"
@@ -90,10 +90,10 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 					"//var autocomplete = null; \n"
 					"function initAutocomplete() { \n"
 					"	var autocomplete = $.UIkit.autocomplete($('#autocompleteCallback_%d'), { 'source': autocompleteCallbackCb_%d, minLength:1}); \n"
-					"}\n"
+					"} \n"
 					"function autocompleteCallbackCb_%d(release) { \n"
 						"$.ajax({ \n"
-					"		url : '/jamcgi/jam', type: 'POST', data : 'jam=/jam/sys/jam/autocomplete:filterAutocomplete&_filtervalue='+document.getElementById('autocompleteInput_%d').value+'&_filterfield='+document.getElementById('autocompleteTableField_%d').value+'&_dbname='+document.getElementById('_dbname').value, \n"
+					"		url : '/runsys/jam/autocomplete:filterAutocomplete', type: 'POST', data : '_filtervalue='+document.getElementById('autocompleteInput_%d').value+'&_filterfield='+document.getElementById('autocompleteTableField_%d').value+'&_dbname='+document.getElementById('_dbname').value, \n"
 					"		success: function(data, textStatus, jqXHR) { \n"
 //					"alert('ajaxok with: ' + data) \n"
 					"			var dat = []; \n"
@@ -111,7 +111,15 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 		printf("</div> \n");
 		printf("<input type='hidden' id='autocompleteTableField_%d' value='%s'> \n", randId, fieldVar);
 	}
-	else
+	else if (!strcasecmp(fieldType, "keyaction")) {
+		scratchJs(	"// onKeyUp handler for keyaction ID %d \n"
+					"function onKeyUp_%d() { \n"
+					"//	var el = document.getElementById('keyaction_%d').value; \n"
+					"	runAction('%s', 'keyaction_%d %s', '%s'); \n"
+					"} \n"
+					, randId, randId, randId, fieldVar /*actually jam:action*/, randId, fieldSize /*actually input*/, fieldPrompt /*actually outputResult*/);
+		printf("		<input type='text' name=keyaction_%d id='keyaction_%d' value='' onkeyup='onKeyUp_%d()' class='uk-form-width-%s'>\n", randId, randId, randId, fieldPrompt);
+	} else
 		printf("		<input type='%s' name='%s' id='%s' value='%s' placeholder='%s' class='uk-form-width-%s'>\n", fieldType, fieldVar, fieldVar, fieldVarValue, fieldPlaceholder, fieldSize);
 	if (inputType == 1) {
 		printf("	</div>\n");

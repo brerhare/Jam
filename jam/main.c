@@ -522,9 +522,8 @@ int control(int startIx, char *defaultTableName) {
 				while (jam[ix] && (strcmp(jam[ix]->command, "@end") || (strcmp(jam[ix]->args, givenTableName)))) {
 					ix++;
 				}
-				if (jam[ix]) {
+				if (jam[ix])
 					emit(jam[ix]->trailer);
-				}
 				mysql_free_result(res);
 				free(givenTableName);
 			}
@@ -532,11 +531,22 @@ int control(int startIx, char *defaultTableName) {
 		} else if (!(strcmp(cmd, "@action"))) {
 //		-------------------------------------
 			if (!jamEntrypoint) {		// not for us - ignore completely
-				while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
-					ix++;				
-				emit(jam[ix]->trailer);
+				while (jam[ix] && (strcmp(jam[ix]->command, "@end")) ) {
+					if (!strcmp(jam[ix]->command, "@each")) {
+						emit("SKIPPING-THROUGH-ACTIONLOOP");
+						if (jam[ix]) {
+							while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
+								ix++;
+						if (jam[ix])
+							ix++;
+						}
+					}
+					ix++;
+				}
+				if (jam[ix])
+					emit(jam[ix]->trailer);
 			} else {					// for us - run and stop
-				emit(jam[ix]->trailer);
+				//emit(jam[ix]->trailer);
 				VAR *v = findVarStrict("_dbname");
 				if ((v) && (v->portableValue) && (strlen(v->portableValue))) {
 					logMsg(LOGDEBUG, "@action preprocess - _dbname '%s' was given", v->portableValue);
@@ -548,7 +558,7 @@ int control(int startIx, char *defaultTableName) {
 				logMsg(LOGMICRO, "@action ended recurse");
 				// Now emit the loops' trailer and stop
 				while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
-					ix++;		// skip over all the action content
+					ix++;
 				return(0);
 			}
 //		------------------------------------

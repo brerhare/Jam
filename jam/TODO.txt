@@ -17,9 +17,15 @@
 
 * define pathnames somewhere (common.h?) for things like sys/...
 
+* combine runJam and runAction (util.js) as they are basically the same thing
+
+* combine all the html 'input' types into a single thing? We badly need variable ordering of args anyway...
+
 ------------- bugs ------------------------------------
 
 * html button - runactions are ajax, subsequent whatevers need to wait for completion (see purchaseOrderForm.jam save button for eg)
+
+@each crashes if you dont have a 'filter' clause and do have a 'order by' clause
 
 @get cant handle: {{@get admin_user filter display_name = 'Tim Taylor'}} because of the space. 'Rockerbie' works fine. Fix singlequote handling in getword (and its variants)
 

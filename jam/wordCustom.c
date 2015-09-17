@@ -33,7 +33,7 @@ int wordCustomHtml(int ix, char *defaultTableName) {
 	}
 	logMsg(LOGDEBUG, "custom html %s activated", customName);
 
-	// Called from sys/html/footer.html
+	// Called from sys/html/footer.html. So this is just before the </body></html> closing tags
 	if (!strcmp(customName, "endOfHtml")) {
 		// Embed the db name in the html for any @action calls
 		if (connDbName == NULL)
@@ -42,8 +42,8 @@ int wordCustomHtml(int ix, char *defaultTableName) {
 		logMsg(LOGDEBUG, "");
 	}
 
-	// Called from sys/jam/autocomplete.jam
-	if (!strcmp(customName, "autocomplete")) {
+	// Called from sys/jam/autocomplete.jam to service an autocomplete request
+	if (!strcmp(customName, "filterAutocomplete")) {
 	// Autocomplete <input type=filter> cant produce json (yet) or db handle '%like%' (needs embedded curlies to work) so we have this custom operation temporarily - a @@TODO
 		char *q = (char *) calloc(1, 4096);
 		char *customField = (char *) calloc(1, 4096);
