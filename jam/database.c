@@ -368,13 +368,15 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 					isNum = 0;
 				p++;
 			}
-			if ((!isNum) || (numOfMinuses > 1)) {
-				char *newValue = (char *) calloc(1, strlen(varValue) + 3);
-				strcpy(newValue, "'");
-				strcat(newValue, varValue);
-				strcat(newValue, "'");
-				free(varValue);
-				varValue = newValue;
+			if ( (1==1) || (!isNum) || (numOfMinuses > 1) ) {	// @@TODO @@FIX!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				if (!strchr(varValue, '\'')) {
+					char *newValue = (char *) calloc(1, strlen(varValue) + 3);
+					strcpy(newValue, "'");
+					strcat(newValue, varValue);
+					strcat(newValue, "'");
+					free(varValue);
+					varValue = newValue;
+				}
 			}
 		}
 

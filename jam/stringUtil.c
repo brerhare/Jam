@@ -161,7 +161,7 @@ char *strReplaceAlloc(char *orig, char *rep, char *with) {
 
 //--------------------------------------------------------------------------------------------------------
 
-// Replace all occurrences of 'substr' with 'replacement' in 'string'
+// UNCHECKED! UNTESTED! Replace all occurrences of 'substr' with 'replacement' in 'string'
 char *str_replace (const char *string, const char *substr, const char *replacement) {
 	char *tok = NULL;
 	char *newstr = NULL;

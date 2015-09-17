@@ -64,9 +64,9 @@ function runAction(action, element, output, callback) {
 				formURL = obj.attr("action");
 		} else {											// not a form element
 			var obj = document.getElementsByName(el[i]);		// .. try to get it
-			if ((obj) && (obj.length > 0))					// got it
+			if ((obj) && (obj.length > 0)) {					// got it
 				postData += '&' + el[i] + '=' + encodeURIComponent(obj[0].value);
-			else {											// not ANY kind of element, so just send as is (a=b)
+			} else {											// not ANY kind of element, so just send as is (a=b)
 				var lit = el[i].split('=');
 				postData += '&' + lit[0] + '=' + lit[1];
 			}
