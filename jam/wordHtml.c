@@ -114,10 +114,21 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	else if (!strcasecmp(fieldType, "keyaction")) {
 		scratchJs(	"// onKeyUp handler for keyaction ID %d \n"
 					"function onKeyUp_%d() { \n"
-					"//	var el = document.getElementById('keyaction_%d').value; \n"
-					"	runAction('%s', 'keyaction_%d %s', '%s'); \n"
+					"	var valel = document.getElementById('keyaction_%d'); \n"
+					"	var el = document.getElementById('keyaction'); \n"
+					"	if (el == null) { \n"
+					"		var input = document.createElement('input'); \n"
+					"		input.setAttribute('type', 'hidden'); \n"
+					"		input.setAttribute('name', 'keyaction'); \n"
+					"		input.setAttribute('id', 'keyaction'); \n"
+					"		input.setAttribute('value', valel.value); \n"
+					"		document.body.appendChild(input); \n"
+					"	} else { \n"
+					"		el.setAttribute('value', valel.value); \n"
+					"	} \n"
+					"	runAction('%s', 'keyaction %s', '%s'); \n"
 					"} \n"
-					, randId, randId, randId, fieldVar /*actually jam:action*/, randId, fieldSize /*actually input*/, fieldPrompt /*actually outputResult*/);
+					, randId, randId, randId, fieldVar /*actually jam:action*/, fieldSize /*actually input*/, fieldPrompt /*actually outputResult*/);
 		printf("		<input type='text' name=keyaction_%d id='keyaction_%d' value='' onkeyup='onKeyUp_%d()' class='uk-form-width-%s'>\n", randId, randId, randId, fieldPrompt);
 	} else
 		printf("		<input type='%s' name='%s' id='%s' value='%s' placeholder='%s' class='uk-form-width-%s'>\n", fieldType, fieldVar, fieldVar, fieldVarValue, fieldPlaceholder, fieldSize);
