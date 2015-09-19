@@ -539,6 +539,9 @@ int control(int startIx, char *defaultTableName) {
 				free(givenTableName);
 			}
 //		-------------------------------------
+		} else if (!(strcmp(cmd, "@runaction"))) {
+
+//		-------------------------------------
 		} else if (!(strcmp(cmd, "@action"))) {
 //		-------------------------------------
 			if (!jamEntrypoint) {		// not for us - ignore completely
@@ -560,7 +563,7 @@ int control(int startIx, char *defaultTableName) {
 					if (openDB(v->portableValue) != 0) {
 						return(-1);
 					}
-				} else logMsg(LOGDEBUG, "@action preprocess - no _dbname was given");
+				} else logMsg(LOGDEBUG, "@action preprocess - no _dbname was given, assuming db already open");
 				logMsg(LOGMICRO, "@action starting recurse");
 				control((ix + 1), defaultTableName);
 				logMsg(LOGMICRO, "@action ended recurse");

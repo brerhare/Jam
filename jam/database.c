@@ -273,14 +273,11 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 	for (int i = 0; i < MAX_SUBARGS; i++)
 		subArg[i] = NULL;
 	// Split the args-by-commas into an nvp array
-logMsg(LOGDEBUG, "AAAAAAAA args = [%s] AAAAAAAA", args);
 	for (int i = 0; i < MAX_SUBARGS; i++) {
 		char *comma = ",";
 		subArg[i] = strTrim(getWordAlloc(args, (i + 1), comma));
 		if (!subArg[i])
 			break;
-logMsg(LOGDEBUG, "AAAAAAAA subArg[%d] = [%s] AAAAAAAA", i, subArg[i]);
-
 	}
 
 	// Deal with each "<filter> a = b" phrase
@@ -340,7 +337,6 @@ logMsg(LOGDEBUG, "AAAAAAAA subArg[%d] = [%s] AAAAAAAA", i, subArg[i]);
 		}
 
 		externalFieldOrValue = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// try for the external field, containing the value to look for
-logMsg(LOGDEBUG, "XXXXX externalFieldOrValue = [%s] XXXXX", externalFieldOrValue);
 //printf("\n\n[[[%s]]]\n\n", externalFieldOrValue);
 		if (!externalFieldOrValue)
 			die("no external field given for lookup");

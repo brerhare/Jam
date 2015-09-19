@@ -1,5 +1,7 @@
 ------------- todo ------------------------------------
 
+* {{@runaction <actionname>}} - to have access to all existing state, unlike js:runAction. What happens after?
+
 * emit trailer from the process loop, not from each call. If a call is missed that @'s trailer isnt emitted. Emit from each 'if @xxx' block after handling whatever words. Default catchall there already does an emit
 
 * autofill table js variables presently hardcoded in header.html, but how to gridify a table easily? One single '@' with everything isnt ideal
@@ -35,3 +37,13 @@
 
 ------------- done ------------------------------------
 
+http://plugin.wireflydesign.com/tmp/ticketeventreport-c843ce0gvknvrq58o2kgjei6s5.html
+
+<html>
+<head>
+<meta http-equiv="refresh" content="0; url=http://plugin.wireflydesign.com/run/ticket/report?debug=3&uid=69&event=372" />
+</head>
+<body>
+Loading...
+</body>
+</html>
