@@ -239,6 +239,11 @@ table tr {
 			<td style="text-align:right"><?php echo $ticketTotal?></td>
 			<td style="text-align:right; width:70px"><?php echo number_format((float)$valueTotal, 2, '.', '')?></td>
 		</tr>
+		<?php if ($model)
+			<td colspan=10>
+				Input email address for this as a searchable report&nbsp<input type='text' name='eml' id='eml'>
+			</td>
+		?>
 
 	</table>
 </div>
