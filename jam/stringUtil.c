@@ -5,7 +5,7 @@
 #include <string.h>
 #include <ctype.h>
 
-int getWordIgnoreQuotes = 0;
+#include "log.h"
 
 /* Trims a sting in place. No memory adjustment is done */
 char *strTrim(char *str)
@@ -50,9 +50,11 @@ int getWord(char *dest, char *src, int wordnum, char *separator)
     char *startPos = src;
     char *wordPos = NULL;
     char *p;
-	char quoteChar = '\"';
-	if (getWordIgnoreQuotes == 1)
-		quoteChar = 7;
+
+	char quoteChar = '\'';
+	if (!strchr(separator, ' '))
+		quoteChar = 255;
+
     while (*src)
     {
         /*if ((*src == 10) || (*src == 13))
@@ -75,7 +77,7 @@ int getWord(char *dest, char *src, int wordnum, char *separator)
 
         if ((!wordnum) && (onaword))
 		{
-			if ((*src != quoteChar) || (getWordIgnoreQuotes == 1))
+			if (*src != quoteChar)
 			{
             	if (*src != 10)
 				{
@@ -87,7 +89,7 @@ int getWord(char *dest, char *src, int wordnum, char *separator)
 			}
 		}
 
-        if ((*src == quoteChar) && (getWordIgnoreQuotes == 0))
+        if (*src == quoteChar)
         {
             if (inaquote)
                 inaquote = 0;

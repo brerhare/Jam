@@ -271,7 +271,7 @@ if (++sanity > 200) { printf("Overflow in expandCurliesInString!"); break; }
 		VAR *pVar = findVarLenient(pWd, defaultTableName);
 		if ((pVar) && (pVar->portableValue))
 			pWd = pVar->portableValue;
-		logMsg(LOGMICRO, "expandCurliesInString - substituting %s with value %s", wd, pWd);
+		logMsg(LOGMICRO, "expandCurliesInString - substituting [%s] with value [%s]", wd, pWd);
 
 		// Include the variable
 		char *newStr = (char *) calloc(1, (strlen(str) + strlen(pWd) + 1));
