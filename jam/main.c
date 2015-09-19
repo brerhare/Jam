@@ -327,11 +327,22 @@ int control(int startIx, char *defaultTableName) {
 	char *tmp = (char *) calloc(1, 4096);
 	while (jam[ix]) {
 		char *cmd = jam[ix]->command;
-		char *args = jam[ix]->args;
-		char *rawData = jam[ix]->rawData;
+		char *args = NULL;
+		char *rawData = NULL;
 
-		if ((strlen(cmd)) && (cmd[0] == '@'))
+		if ((strlen(cmd)) && (cmd[0] == '@')) {
+			// Expand any {{values}} in the argument string with the current values
+			args = expandCurliesInString(jam[ix]->args, defaultTableName);
+			rawData = expandCurliesInString(jam[ix]->rawData, defaultTableName);
+			free(jam[ix]->args);
+			free(jam[ix]->rawData);
+			jam[ix]->args = args;
+			jam[ix]->rawData = rawData;
 			logMsg(LOGMICRO, "Command loop processing command [%s] args [%s]", cmd, args);
+		}
+
+		args = jam[ix]->args;
+		rawData = jam[ix]->rawData;
 
 //		-----------------------------------------
 		if (!strcmp(cmd, "@literal")) {
@@ -546,8 +557,9 @@ int control(int startIx, char *defaultTableName) {
 				VAR *v = findVarStrict("_dbname");
 				if ((v) && (v->portableValue) && (strlen(v->portableValue))) {
 					logMsg(LOGDEBUG, "@action preprocess - _dbname '%s' was given", v->portableValue);
-					if (openDB(v->portableValue) != 0)
+					if (openDB(v->portableValue) != 0) {
 						return(-1);
+					}
 				} else logMsg(LOGDEBUG, "@action preprocess - no _dbname was given");
 				logMsg(LOGMICRO, "@action starting recurse");
 				control((ix + 1), defaultTableName);
@@ -555,6 +567,7 @@ int control(int startIx, char *defaultTableName) {
 				// Now emit the loops' trailer and stop
 				while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
 					ix++;
+				free(tmp);
 				return(0);
 			}
 //		------------------------------------

@@ -60,7 +60,7 @@ char *curlies2JamArray(char *jamPos) {
 
 	char *endCurly = NULL;
 
-	// Find the matching endCurly, skipping over any embedded curlies @@TODO duplicated in getTagInfo()
+	// Find the matching endCurly, skipping over any embedded curlies @@TODO duplicated in getTagInfo() and one other
 	int depth = 1;	// ie the start curly we just found
 	char *inCurlyPos = (startCurly + strlen(startJam));
 	int sanity = 0;
@@ -119,11 +119,11 @@ char *curlies2JamArray(char *jamPos) {
 	jam[jamIx]->command = buf;
 
 	if (char *p = strchr(wd, ' ')) {
-     if (*(p+1))
-	 	jam[jamIx]->args = strdup(p+1);
-	else
-        jam[jamIx]->args = strdup("");
+		if (*(p+1))
+		 	jam[jamIx]->args = strdup(p+1);
 	}
+	else
+		jam[jamIx]->args = strdup("");
 //printf("SETTING [%s]=[%s]\n", jam[jamIx]->command, jam[jamIx]->args);
 
 	char *trailer = strdup(endCurly + strlen(endJam));
@@ -173,7 +173,7 @@ TAGINFO *getTagInfo(char *text, char *tagName) {
 	char *pos     = text;
 	char *tag     = NULL;
 	while (tag = strstr(pos, startJam)) {
-		// Find the matching endCurly, skipping over any embedded curlies  @@TODO duplicated in curlies2JamArray()
+		// Find the matching endCurly, skipping over any embedded curlies  @@TODO duplicated in curlies2JamArray() and one other
 		int depth = 1;	// ie the start curly we just found
 		char *inCurlyPos = (tag + strlen(startJam));
 		char *endCurly = NULL;
@@ -220,18 +220,70 @@ TAGINFO *getTagInfo(char *text, char *tagName) {
 }
 
 // Take a string with embedded curlies in it, and return a string with the curlies evaluated (NOT RECURSIVE)
-// eg "My name is {{name}}" would expand to "My name is John"
-char *expandCurliesInString(char *str) {
-	char *retStr = strdup(str);
-	char *p = retStr;
-	while (char *startCurly = strstr(p, startJam)) {
-		retStr = (char *) realloc(retStr, (strlen(retStr) + (int) (startCurly - p) + 2));
-		memcpy((retStr + strlen(retStr)), p, (startCurly - p));
-		char *wdStart = (startCurly + strlen(startJam));
-		char *wdEnd = strstr(wdStart, endJam);
-		if (!wdEnd) {
-			logMsg(LOGERROR, "Unmatched start tag found while expanding");
-			return (NULL);
+// eg "My name is {{name}}." could expand to "My name is John."
+// Caller frees
+char *expandCurliesInString(char *originalStr, char *defaultTableName) {
+	if (originalStr == NULL)
+		return(NULL);
+
+	char *str = strdup(originalStr);
+	char *startCurly = strstr(str, startJam);
+	if (startCurly == NULL)
+		return (str);
+
+	logMsg(LOGDEBUG, "expandCurliesInString - started. original string is [%s]", originalStr);
+
+int sanity = 0;
+	while (1) {
+if (++sanity > 200) { printf("Overflow in expandCurliesInString!"); break; }
+		startCurly = strstr(str, startJam);
+		if (startCurly == NULL)
+			break;
+
+		char *endCurly = NULL;
+		// Find the matching endCurly, skipping over any embedded curlies @@TODO duplicated in 2 other places
+		int depth = 1;	// ie the start curly we just found
+		char *inCurlyPos = (startCurly + strlen(startJam));
+		while (depth > 0) {
+			if (++sanity > 200) { printf("Overflow2 in expandCurliesInString!"); break; }
+			char *sCurly = strstr(inCurlyPos, startJam);
+			char *eCurly = strstr(inCurlyPos, endJam);
+			if ((!sCurly) || (eCurly < sCurly)) {	// ie we found our match
+				if (--depth == 0) {
+					endCurly = eCurly;
+					break;
+				}
+			} else {
+				depth++;
+				inCurlyPos = (eCurly +strlen(endJam));
+			}
 		}
+		if (!endCurly)
+			die("Unmatched jam token, an open must have a close");
+
+		// Extract the variable name
+		int wdLen = (endCurly - startCurly - strlen(startJam));
+		char *wd = (char *) malloc(wdLen + 1);
+		memcpy(wd, (startCurly + strlen(startJam)), wdLen);
+		wd[wdLen] = 0;
+		// Point to its value (or itself it none exists)
+		char *pWd = wd;
+		VAR *pVar = findVarLenient(pWd, defaultTableName);
+		if ((pVar) && (pVar->portableValue))
+			pWd = pVar->portableValue;
+		logMsg(LOGMICRO, "expandCurliesInString - substituting %s with value %s", wd, pWd);
+
+		// Include the variable
+		char *newStr = (char *) calloc(1, (strlen(str) + strlen(pWd) + 1));
+		int num = (int) (startCurly - str);
+		memcpy(newStr, str, num);
+		newStr[num] = '\0';
+		strcat(newStr, pWd);
+		strcat(newStr, (endCurly + strlen(endJam)));
+		logMsg(LOGDEBUG, "Splicing replaced {{variable}} with variable->content. 1stpart=%d, variabledata=%d, 2ndpart=%d<br>", (int)strlen(str), (int)strlen(wd), (int)strlen((endCurly + strlen(endJam))));
+		free(str);
+		str = newStr;
 	}
+	logMsg(LOGDEBUG, "expandCurliesInString - expanded string is [%s]", str);
+	return (str);
 }

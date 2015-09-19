@@ -227,7 +227,6 @@ MYSQL_RES *doSqlSelect(int ix, char *defaultTableName, char **givenTableName, in
     char *tg = *givenTableName;
     while ((*ta) && (*ta != ' ') && (*ta != '.'))	// Find ' ' or '.' which terminates the tablename;
         *tg++ = *ta++;
-
     char *query = (char *) calloc(1, MAX_SQL_QUERY_LEN);
     sprintf(query, "select * from %s",  *givenTableName);				// set a default query
     // Is there more than just the table name?

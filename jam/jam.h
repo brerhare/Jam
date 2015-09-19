@@ -3,7 +3,7 @@
 
 char *readJam(char *fname);
 char *curlies2JamArray(char *jamPos);
-char *expandCurliesInString(char *str);
+char *expandCurliesInString(char *str, char *defaultTableName);
 
 typedef struct {
 	char *startCurlyPos;
