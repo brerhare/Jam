@@ -553,7 +553,7 @@ int control(int startIx, char *defaultTableName) {
 			if (startIx == 0)
 				logMsg(LOGERROR, "Cant find action [%s] to run from within jam script", jam[ix]->args);
 			else
-				logMsg(LOGINFO, "Running @action [%s] within jam script", jam[aix]->args);
+				logMsg(LOGINFO, "Running @action [%s] within jam script", jam[startIx]->args);
 			control(startIx, NULL);
 			logMsg(LOGINFO, "Finished running action [%s] within jam script");
 //		-------------------------------------
