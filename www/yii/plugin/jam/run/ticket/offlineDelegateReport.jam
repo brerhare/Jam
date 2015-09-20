@@ -38,8 +38,8 @@
 					<th> Tickets </th>
 				</tr>
 				<tr>
-					<td> {{@html inp keyaction searchNameAction null tablebody small-tiny}} </td>
-					<td> {{@html inp keyaction searchPostcodeAction null tablebody mini}} </td>
+					<td> {{@html inp keyaction searchNameAction null tablebody 'small uk-form-width-medium-small'}} </td>
+					<td> {{@html inp keyaction searchPostcodeAction null tablebody 'small uk-form-width-small-small}} </td>
 					<td> </td>
 				</tr>
 			</thead>
