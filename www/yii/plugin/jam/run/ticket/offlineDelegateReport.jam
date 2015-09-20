@@ -16,7 +16,10 @@
 {{@new index ticket_temp_delegate_report name
         name
 }}
-{{@each ticket_transaction filter uid = uid, event_id = event, order by order_number DESC}}
+{{@new index ticket_temp_delegate_report post_code
+        post_code
+}}
+{{@each ticket_transaction filter uid = uid, event_id = event}}
 	{{@get ticket_auth filter order_number = ticket_transaction.order_number}}
 	{{ticket_temp_delegate_report.uid = ticket_transaction.uid}}
 	{{ticket_temp_delegate_report.event_id = ticket_transaction.event_id}}
@@ -66,7 +69,7 @@ $(document).ready(function(){
 {{@end}}
 
 {{@action searchPostcodeAction}}
-	{{@each ticket_temp_delegate_report filter post_code like '%{{keyaction}}%', order by name}}
+	{{@each ticket_temp_delegate_report filter post_code like '%{{keyaction}}%', order by post_code}}
 				<tr>
 					<td> {{name}} </td>
 					<td> {{post_code}} </td>
