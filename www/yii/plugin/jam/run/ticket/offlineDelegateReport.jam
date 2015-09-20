@@ -1,4 +1,5 @@
 {{@include /jam/sys/html/header.html}}
+<meta name="viewport" content="initial-scale=1, maximum-scale=1">
 
 {{@database plugin}}
 
@@ -37,7 +38,7 @@
 					<th> Tickets </th>
 				</tr>
 				<tr>
-					<td> {{@html inp keyaction searchNameAction null tablebody mini}} </td>
+					<td> {{@html inp keyaction searchNameAction null tablebody small-tiny}} </td>
 					<td> {{@html inp keyaction searchPostcodeAction null tablebody mini}} </td>
 					<td> </td>
 				</tr>
@@ -48,8 +49,11 @@
 	</form>
 </div>	<!-- uk-overflow-container -->
 
-{{keyaction = ''}}
-{{@runaction searchNameAction}}
+<script>
+$(document).ready(function(){
+	runAction('searchNameAction', 'keyaction=', 'tablebody');
+});
+</script>
 
 {{@action searchNameAction}}
 	{{@each ticket_temp_delegate_report filter name like '%{{keyaction}}%', order by name}}

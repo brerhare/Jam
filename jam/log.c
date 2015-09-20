@@ -49,7 +49,7 @@ va_end(ap);
 	// Check for logmaxbytes exceeded
 	fseek(log_message_stream, 0, SEEK_END);
 	length = ftell(log_message_stream);
-	if (length > logMaxBytes)
+	if ((1==2) && (length > logMaxBytes))
 	{
 		fprintf(log_message_stream, "Maximum log size reached on file %s\n", logFileName);
 		fflush(log_message_stream);
