@@ -482,7 +482,6 @@ int control(int startIx, char *defaultTableName) {
 		} else if (!(strcmp(cmd, "@skip"))) {
 //		-----------------------------------------
 			;	// @@TODO!	// @@TODO also any other skips, in @each etc
-
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@get"))) {
 //		------------------------------------
@@ -491,7 +490,7 @@ int control(int startIx, char *defaultTableName) {
 		} else if (!(strcmp(cmd, "@sql"))) {
 //		------------------------------------
 			wordDatabaseSql(ix, defaultTableName);
-//		-------------------------------------//		-------------------------------------
+//		------------------------------------
 		} else if (!(strcmp(cmd, "@each"))) {
 //		-------------------------------------
 			// This is either a list or a db table
@@ -540,7 +539,23 @@ int control(int startIx, char *defaultTableName) {
 			}
 //		-------------------------------------
 		} else if (!(strcmp(cmd, "@runaction"))) {
-
+//		-------------------------------------
+			int startIx = 0;
+			int aix = 0;
+			while (jam[aix]) {
+				if ((!strcmp(jam[aix]->command, "@action")) && (!strcmp(jam[aix]->args, jam[ix]->args))) {
+					// Set startpoint
+					startIx = aix;
+					break;
+				}
+				aix++;
+			}
+			if (startIx == 0)
+				logMsg(LOGERROR, "Cant find action [%s] to run from within jam script", jam[ix]->args);
+			else
+				logMsg(LOGINFO, "Running @action [%s] within jam script", jam[aix]->args);
+			control(startIx, NULL);
+			logMsg(LOGINFO, "Finished running action [%s] within jam script");
 //		-------------------------------------
 		} else if (!(strcmp(cmd, "@action"))) {
 //		-------------------------------------
