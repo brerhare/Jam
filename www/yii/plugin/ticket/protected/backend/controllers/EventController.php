@@ -434,6 +434,35 @@ class EventController extends Controller
 	 */
 	public function actionShowReport($id)
 	{
+		if(Yii::app()->request->isPostRequest) {
+			if ((isset($_POST['eml'])) && (trim($_POST['eml']) != "") && (isset($_POST['uid'])) && (trim($_POST['uid']))) {
+				$model=$this->loadModel($_POST['event']);
+				$to = $_POST['eml'];
+				$from = "no-reply@wireflydesign.com";
+				$fromName = "Ticket reports";
+				$subject = "Link to the report for " . $model->title;
+				$linkPath = Yii::app()->basePath . "/../../tmp/ticketeventreport-" . Yii::app()->session['sid'] . "-" . $_POST['event'] . ".html";
+				$linkUrl = "http://plugin.wireflydesign.com/tmp/ticketeventreport-" . Yii::app()->session['sid'] . "-" . $_POST['event'] . ".html";
+				$htmlContent = "<html><head><meta http-equiv='refresh' content='0; url=http://plugin.wireflydesign.com/run/ticket/report?uid=" . $_POST['uid'] . "&event=" .  $_POST['event'] . "' />";
+				file_put_contents($linkPath, $htmlContent);
+				$message = "<b>" . $model->title . "</b><br><br>Please click on the link below to access the report<br>This will be valid for 90 days<br><br><a href='" . $linkUrl . "'>Click here</a><br>";
+				// phpmailer
+				$mail = new PHPMailer();
+				$mail->AddAddress($to);
+				$mail->SetFrom($from, $fromName);
+				$mail->AddReplyTo($from, $fromName);
+				$mail->Subject = $subject;
+				$mail->MsgHTML($message);
+				if (!$mail->Send())
+				{
+					Yii::log("REPORT PAGE COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
+					echo "<div id=\"mailerrors\">Mailer Error: " . $mail->ErrorInfo . "</div>";
+				}
+				else
+					Yii::log("REPORT RESEND PAGE SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+				$this->redirect(array('admin'));
+			}
+		}
 		$model=$this->loadModel($id);
 		if(isset($_GET['Event']))
 			$model->attributes=$_GET['Event'];
