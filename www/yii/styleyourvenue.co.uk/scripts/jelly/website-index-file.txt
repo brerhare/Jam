@@ -1,0 +1,239 @@
+#Style Your Venue
+[defaults]
+include = default-values
+css.color = white
+
+; Every blob inherits these before adding/overriding
+[* : defaults]
+
+[screen]
+child = backgd
+#css.background-color = #000000
+#style.background-image = /img/StyleBackground.png
+fx.wallpaper-image = /img/FullBackground.jpg
+css.display = block
+addon.analytics.google_analytics.ua = UA-48370894-1
+html.raw = <div id="fb-root"></div><script>(function(d, s, id) {var js, fjs = d.getElementsByTagName(s)[0]; if (d.getElementById(id)) return; js = d.createElement(s); js.id = id; js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId259885860792535"; fjs.parentNode.insertBefore(js, fjs);}(document, 'script', 'facebook-jssdk'));</script>
+
+[backgd]
+child = contentframe
+css.width = 1000px
+css.background-color = #000000
+
+	[contentframe]
+	child = header, menu, slider, watermark, line, contentcontainer, footer-line, footer
+	css.width = 960px
+
+	[header]
+	child = logo, contact, icons
+	css.margin-top = 20px
+	css.height = 104px
+	stacking = horizontal
+
+	[logo]
+	child = logo-pic
+	css.height = 104px
+	css.width = 40%
+
+		[logo-pic]
+		css.height = 104px
+		#css.width = 40%
+		#style.background-image = /img/Header Logo.png
+		css.background-image = url('/img/Header Logo.png')
+
+	[contact]
+	child = contact-text
+	css.height = 104px
+	css.width = 30%
+
+		[contact-text]
+		css.margin-top = 30px
+		css.height = 104px
+		html.raw = Wedding & Event Decor for Hire<br><br>
+		html.raw = 07868 840894 
+
+	[icons]
+	child = cart, news, social
+	css.margin-left = 30px
+	css.width = 250px
+
+		[cart]
+		child = cart-pic, cart-text
+		stacking = horizontal
+		css.margin-top = 20px
+		css.height = 18px		
+		click = http://www.styleyourvenue.co.uk/?layout=index&page=checkout
+
+			[cart-pic]
+			css.width = 25px
+			css.background-image = url('/img/cart.jpg')
+			css.height = 17px
+
+			[cart-text]
+			css.width = 80%
+			css.margin-top = 4px
+			css.margin-left = 4px
+			css.font-size = 12px
+			html.raw = Shopping Cart
+
+		[news]
+		child = news-pic, news-text
+		stacking = horizontal
+		css.height = 18px
+		click = http://www.styleyourvenue.co.uk/?layout=index&page=event-decor-dumfries-news
+
+			[news-pic]
+			css.width = 25px
+			css.background-image = url('/img/news.jpg')
+			css.height = 17px
+
+			[news-text]
+			css.width = 80%
+			css.margin-top = 4px
+			css.margin-left = 4px
+			css.font-size = 12px
+			html.raw = Newsletter
+
+		[social]
+		css.margin-top = 4px
+		css.margin-left = 1px
+		css.height = 100px
+		css.width = 240px
+		html.raw = <div class="fb-like" data-href="https://www.facebook.com/StyleYourVenue" data-layout="standard" data-action="like" data-show-faces="false" data-share="false" data-colorscheme="dark" height="80" width="240"></div>
+
+
+		
+
+	[menu]
+	css.height = 34px
+	css.width = 960px
+	css.overflow = visible
+	css.margin-top = 2px
+
+#### Top level basic settings ###
+	addon.menu.basic.orientation = horizontal
+	addon.menu.basic.width = 960px
+	addon.menu.basic.menu-rounding = 0px
+	addon.menu.basic.menu-opacity = 100%
+	addon.menu.basic.menu-tile = /img/menu-bar.jpg
+	addon.menu.basic.height = 30px
+		#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
+		#addon.menu.basic.menu-color = blue green
+
+#### Top level font ####
+	addon.menu.basic.font-size = 12px
+	addon.menu.basic.menu-text-color = black
+	
+#### Top level hover effect ####
+	addon.menu.basic.item-text-color = white
+	addon.menu.basic.item-color = #8c8c8c black
+
+#### Second level basic settings ####
+	addon.menu.basic.submenu-color = #4d4d4d
+	addon.menu.basic.subitem-seperator-color = white
+
+#### Second level hover effect ####
+	addon.menu.basic.subitem-color = #696969 black
+	addon.menu.basic.subitem-text-color = white
+
+
+addon.menu.basic.submenu-text-color = yellow
+
+
+	
+		
+
+
+	[slider]
+	css.margin-top = 13px
+	css.width = 960px
+	css.height = 250px
+	addon.slider.flexslider.width = 960px
+	addon.slider.flexslider.height = 250px
+	addon.slider.flexslider.border-width = 0px
+	#addon.slider.flexslider.border-color = #
+	#addon.slider.flexslider.active-dotcolor = red
+	#addon.slider.flexslider.inactive-dotcolor = blue
+	#addon.slider.flexslider.dot-margin-top = -200px
+	#addon.slider.flexslider.dot-margin-bottom = 0px
+	#addon.slider.flexslider.dot-margin-left = 0px
+	#addon.slider.flexslider.dot-margin-right = 0px
+	addon.slider.flexslider.mode = image
+	addon.slider.flexslider.source = db
+
+
+	[watermark]
+	css.height = 200px
+	css.margin-top = -130px
+	css.margin-left = 650px
+	css.position = relative
+	css.z-index = 10000
+	css.background-image = url('/img/Watermark.png')
+	
+
+	[line]
+	css.height = 2px
+	css.margin-top = -50px
+	css.background-color = #ff00ff
+
+    [contentcontainer]
+    child = content
+    #css.background-color = white
+    fx.rounding = 4px
+
+        [content]
+        css.margin = 15px
+        db.table = ContentBlock
+        db.filter = url=$_GET['page']
+        db.error = Sorry, I could not find that page. You requested $_GET['page']
+        html.raw = ContentBlock.content
+
+	[footer-line]
+	css.height = 2px
+	css.margin-top = 30px
+	css.background-color = #ff00ff
+
+	[footer]
+	child = footer-menu, wirefly-details
+	#css.height = 40px
+	#css.width = 60%
+
+
+		[footer-menu]
+		stacking = horizontal
+		child = footer-cookies, footer-tandc, footer-contact
+		css.height = 20px
+		css.margin-top = 10px
+		css.width = 60%
+
+			[footer-cookies]
+			html.raw = Cookie Policy
+			css.width = 33%
+			css.text-align = left
+			click = http://www.styleyourvenue.co.uk/?layout=index&page=event-decor-dumfries-cookies
+
+			[footer-tandc]
+			html.raw = Terms & Conditions
+			css.width = 33%
+			css.text-align = center
+			click = http://www.styleyourvenue.co.uk/?layout=index&page=event-decor-dumfries-terms
+
+			[footer-contact]
+			html.raw = Contact Us
+			css.text-align = right
+			css.width = 30%
+			click = http://www.styleyourvenue.co.uk/?layout=index&page=style-your-venue-dumfries-contact
+
+		[wirefly-details]
+		css.margin-top = -10px
+		css.margin-left = 800px
+		css.height = 50px
+		css.width = 200px
+		image.url = img/wirefly-link-white.png
+	image.width = 161px
+	image.height = 40px
+		clicknew = http://www.wireflydesign.com
+
+#html.raw = <div class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
+
+ 

@@ -1,0 +1,34 @@
+#Style Your Venue
+[defaults]
+include = default-values
+css.color = white
+
+; Every blob inherits these before adding/overriding
+[* : defaults]
+
+[screen]
+child = backgd
+fx.wallpaper-image = /img/FullBackground.jpg
+css.display = block
+
+[backgd]
+child = contentframe
+css.width = 1000px
+css.background-color = #000000
+
+	[contentframe]
+	child = header, message
+	css.width = 960px
+	css.height = 500px
+
+	[header]
+	css.margin-top = 100px
+	css.width = 40%
+	image.url = img/temp-logo.png
+	image.width = 100%
+	image.height = 32%
+	
+	[message]
+	css.margin-top = 150px
+	html.raw = This website has been suspended
+	css.text-align = center
