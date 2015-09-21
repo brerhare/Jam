@@ -16,6 +16,8 @@ class simple
 	private $width = "800";
 	private $height = "600";
 	private $video = "";						// Dont supply an extension. If one is supplied then remove it
+	private $loop = "";
+	private $poster = "";
 	private $clickFunction = "playVideo";		// Trigger
 
 	/*
@@ -50,6 +52,12 @@ class simple
 				case "click":
 					$this->clickFunction = $val;
 					break;
+				case "loop":
+					$this->loop = $val;
+					break;
+				case "poster":
+					$this->poster = $val;
+					break;
 				default:
 					// Not all array items are action items
 			}
@@ -59,10 +67,19 @@ class simple
 		$isMobile = detectMobile();
 		$jsVideoControl = "";
 		$playControl = " autoplay ";
+		if ($this->loop != "")
+			$playControl .= " loop ";
+		if ($this->poster != "")
+			$playControl .= " poster='" . $this->poster . "' ";
+
 		if ($isMobile)
 		{
 			$this->apiJs  = str_replace("<substitute-is-mobile>", "var isMobile=1;", $this->apiJs);
 			$playControl = " controls ";
+			if ($this->loop != "")
+				$playControl .= " loop ";
+			if ($this->poster != "")
+				$playControl .= " poster='" . $this->poster . "' ";
 			//$jsVideoControl = " data-setup='{}' class='video-js vjs-default-skin' ";
 			$jsVideoControl = " class='video-js vjs-default-skin' ";						// Only use the css, not the js
 		}

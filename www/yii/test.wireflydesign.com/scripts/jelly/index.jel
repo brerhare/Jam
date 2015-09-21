@@ -32,12 +32,12 @@ css.display = block
 		css.height = 1100px
 		css.width = 800px
 		css.border-color = black
-		addon.video.simple.thumb =  http://brycewalkervending.com/img/vendor-bubble.png
-		addon.video.simple.width = 400x
-		addon.video.simple.height = 300px
+		addon.video.simple.thumb = https://wireflydesign.com/wpimages/wp89c52d0a_06.png
+		addon.video.simple.width = 1060x
+		addon.video.simple.height = 600px
 		addon.video.simple.video = vendor
-		addon.video.simple.click = playVendor
-		html.raw = <a href=javascript:playVendor();>Click to play</a>
+		addon.video.simple.loop = yes
+		addon.video.simple.poster = /img/facebook.png
 	
 			[header-dt]
 			child = logo, stat-link
