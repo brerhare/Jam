@@ -1,42 +1,58 @@
 <!-- Google fonts
-<link href='//fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Comfortaa:400,700,300|Quicksand:700' rel='stylesheet' type='text/css'>
 -->
 
 <style type="text/css">
 
-html, body {
-	height: 100%;
-	padding: 0;
-	margin: 0;
-	border: 0;
-}
+html, h2, h4, body, p {	height: 100%;
+				padding: 0%;
+				margin: 0%;
+				border: 0px;
+				line-height: 140%;}
 
-html * {
-   /*font-size: 1em !important;*/
-   /*font-family: Arial !important;*/
-	font-family: 'Raleway', sans-serif !important;
-	/*color:#00ff00 !important;*/
-}
+/* Global Hyperlink settings - will affect menu text colour if no text settings */ 
+a { text-decoration: none; color:#00ad44; }
+a:visited, a:active { text-decoration: none; color:#fc8d3d; }
+a:hover { text-decoration: none; color:#00adc9; text-shadow: 2px 2px 2px grey; }
 
-a { color:#000000 } /* Globally */
-a:visited { text-decoration: none; color:#000000; }
-a:hover { text-decoration: none; color:#000000; }
-a:focus { text-decoration: none; color:#000000; }
-a:hover, a:active { text-decoration: none; color:0###000 }
 
-h1 {color: #000000; }
-h2 {color: #000000; }
-h3 {
-	color: #000000;
-	margin-top:5px;
-	margin-bottom:5px
-}
-h4 {
-	color: #000000;
-	margin-top:0px;
-	margin-bottom:0px
-}
 
-html { font-size: 14px;}
+h1 {	font-family: 'Quicksand', Verdana, sans-serif !important;
+	color: white;
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 100%;}
+
+h2 {	font-family: 'Comfortaa', Verdana, sans-serif !important;
+	color: white;
+	font-size: 18px;
+	font-weight: 400;}
+
+
+h3 {	font-family: 'Quicksand', Verdana, sans-serif !important;
+	color: white;
+	font-size: 20px;
+	font-weight: 700;}
+
+h4 {	font-family: 'Comfortaa', Verdana, sans-serif !important;
+	color: white;
+	font-size: 14px;
+	font-weight: 400;}
+
+p  {	font-family: 'Comfortaa', Verdana, sans-serif !important;
+	color: white;
+	font-size: 14px;
+	font-weight: 300;}
+
+blockquote {font-family: 'Comfortaa', Verdana, sans-serif !important;
+	color: white;
+	font-size: 14px;
+	font-style: italic;
+	font-weight: 300}
+
+
+html { font-family: 'Comfortaa', Verdana, sans-serif !important;
+	font-size: 12px;
+	font-weight:normal}
 
 </style>

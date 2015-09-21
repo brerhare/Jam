@@ -1,3 +1,4 @@
+#cocoakalula
 [defaults]
 include = default-values
 
@@ -5,16 +6,114 @@ include = default-values
 [* : defaults]
 
 [screen]
-child = contentframe
-fx.wallpaper-image = /img/background.jpg
+child = slider, site
+#fx.wallpaper-image = /img/background.jpg
 css.display = block
+css.background-color = #42290f
 
-	[contentframe]
-	css.display = block
-	css.width = 500px
-	css.margin-top = 400px
-	style.html.h1.color = yellow
-	style.html.h1.background-color = black
-	style.html.h1.padding = 10px
-	html.h1 = a jelly&#0153; site is coming soon
 
+	[slider]
+	css.width = 100%
+	css.height = 100%
+	css.position = fixed
+	addon.slider.flexslider.width = 100%
+	addon.slider.flexslider.height = 100%
+	addon.slider.flexslider.border-width = 0px
+	addon.slider.flexslider.border-color = transparent
+	addon.slider.flexslider.active-dotcolor = transparent
+	addon.slider.flexslider.inactive-dotcolor = transparent
+	addon.slider.flexslider.dot-margin-top = 0px
+	addon.slider.flexslider.dot-margin-bottom = 0px
+	addon.slider.flexslider.dot-margin-left = 0px
+	addon.slider.flexslider.dot-margin-right = 0px
+	addon.slider.flexslider.animation = fade
+	addon.slider.flexslider.mode = image
+	addon.slider.flexslider.source = db
+
+	[site]
+	child = logo, content, contact, footer
+	css.margin-left = 10%
+	css.width = 25%
+	css.min-width = 350px
+	css.height = 100%
+	css.background-color = #42290f
+	css.opacity = 0.80
+	
+		[logo]
+		css.width = 90%
+		css.margin-top = 50px
+		image.url = img/logo.png
+		image.width = 100%
+		image.height = 18%
+		image.align = center
+		image.z-index = 100
+		
+		[content]
+		css.width = 80%
+		css.margin-top = 50px
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
+	
+		[contact]
+		css.width = 80%
+		css.margin-top = 50px
+		css.background-color = transparent
+		addon.contact.contactform.edgepadding = 0px
+		addon.contact.contactform.buttoncolor = white
+		addon.contact.contactform.buttontextcolor = #42290f
+		addon.contact.contactform.buttontext = [&nbsp;&nbsp;Submit&nbsp;&nbsp;]
+		addon.contact.contactform.successtextcolor = white
+		addon.contact.contactform.failuretextcolor = red
+		addon.contact.contactform.textcolor = grey
+		addon.contact.contactform.backcolor = white
+		addon.contact.contactform.inputspacing = 10px
+		addon.contact.contactform.inputwidth = 98%
+	
+		[footer]
+		child = copyright, wirefly
+		css.margin-top = 40px
+		css.width = 49%
+		css.height =150px
+		
+		[copyright]
+		html.raw = Cocoa Kalula &copy 2015 </br>All rights reserved
+		css.font-size = 11px
+		css.text-align = center
+		css.color = white
+
+		[wirefly]
+		child = wirefly-logo, admin
+		stacking = horizontal
+		css.margin-top = 20px
+		css.margin = 20%
+
+		
+			[wirefly-logo]
+			css.height = 45px
+			css.margin-top = 5px
+			image.url = img/wirefly-design.png
+			image.width = 100px
+			image.height = 46px
+			image.align = left
+			clicknew = http://www.wireflydesign.com
+			
+		
+			[admin]
+			child = cog-center
+			css.height = 20px
+			css.width = 20px
+			css.background-size = 100%
+			css.background-image = url('/img/admin.png')
+			css.margin-left = -20px
+
+				[cog-center]
+				css.width = 5px
+				css.height = 5px
+				css.margin-top = 8px
+				image.url = img/cog-center.png
+				image.width = 5px
+				image.height = 5px
+				image.align = center
+				clicknew = backend.php
