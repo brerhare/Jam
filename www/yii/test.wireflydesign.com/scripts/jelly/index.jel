@@ -25,8 +25,20 @@ css.display = block
 ####  Header  #################################
 
 		[header]
-		child = header-dt, menu
-		
+		child = test, header-dt, menu
+
+		[test]
+		css.background-color = #d1d1d1
+		css.height = 1100px
+		css.width = 800px
+		css.border-color = black
+		addon.video.simple.thumb =  http://brycewalkervending.com/img/vendor-bubble.png
+		addon.video.simple.width = 400x
+		addon.video.simple.height = 300px
+		addon.video.simple.video = vendor
+		addon.video.simple.click = playVendor
+		html.raw = <a href=javascript:playVendor();>Click to play</a>
+	
 			[header-dt]
 			child = logo, stat-link
 			stacking = horizontal

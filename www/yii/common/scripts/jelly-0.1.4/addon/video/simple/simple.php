@@ -88,6 +88,8 @@ class simple
 
 		// JS
 		$this->apiJs   = str_replace("<substitute-click-function>", $this->clickFunction, $this->apiJs);
+		if ($this->clickFunction == "playVideo")
+			$this->apiJs .= "<script> $(document).ready(function(){ playVideo(); }); </script>";
 
 		$retArr = array();
 		$retArr[0] = $this->apiHtml;
