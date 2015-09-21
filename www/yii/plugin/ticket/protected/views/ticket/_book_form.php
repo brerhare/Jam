@@ -62,7 +62,7 @@ $isFreeEvent = 1;
 		</div>
 	</div>
 
-<!--- TICKET DIV ---------------------------------------------------------------------------------------------------->
+<!--- TICKET DIV ------------------------------------------------------------------------------------------------- -->
 
 <style>
 
@@ -96,7 +96,10 @@ function calcValues()
         var linePrefix = 'line_' + x + '_';
         price = parseFloat(document.getElementById(linePrefix + 'price').textContent);
         var e = document.getElementById(linePrefix + 'select');
-        var num = parseInt(e.options[e.selectedIndex].value);
+		if (e)
+        	var num = parseInt(e.options[e.selectedIndex].value);
+		else
+			var num = 0;
         numTickets += num;
 
         lineTotal = price * num;
@@ -179,7 +182,12 @@ $(document).ready(function() {
 						array_push($arr, $x);
 					}
 					?>
-					<?php echo CHtml::dropDownList($linePrefix . 'select', $select, $arr, array('style'=>'width:55px', 'onchange'=>'calcValues()'));?>
+					<?php
+						if (count($arr) > 0)
+							echo CHtml::dropDownList($linePrefix . 'select', $select, $arr, array('style'=>'width:55px', 'onchange'=>'calcValues()'));
+						else
+							echo "<span style='color:red'>Sold out</span>";
+					?>
 				</td>
 				<!-- unit price -->
 				<td width="10%" style="text-align:right">
