@@ -93,7 +93,7 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 					"} \n"
 					"function autocompleteCallbackCb_%d(release) { \n"
 						"$.ajax({ \n"
-					"		url : '/runsys/jam/autocomplete:filterAutocomplete', type: 'POST', data : '_filtervalue='+document.getElementById('autocompleteInput_%d').value+'&_filterfield='+document.getElementById('autocompleteTableField_%d').value+'&_dbname='+document.getElementById('_dbname').value, \n"
+					"		url : '/run/sys/autocomplete:filterAutocomplete', type: 'POST', data : '_filtervalue='+document.getElementById('autocompleteInput_%d').value+'&_filterfield='+document.getElementById('autocompleteTableField_%d').value+'&_dbname='+document.getElementById('_dbname').value, \n"
 					"		success: function(data, textStatus, jqXHR) { \n"
 //					"alert('ajaxok with: ' + data) \n"
 					"			var dat = []; \n"
