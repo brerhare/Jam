@@ -32,11 +32,11 @@ div.uk-grid { padding-bottom:2000px;}
 			<div class="uk-width-9-10">
 				{{@html input hidden stock_supplier_order._id}}
 				{{@html input filter stock_supplier.name medium Supplier supplier}}
-				{{@html input date stock_supplier_order.delivery_date medium "Delivery Date" "require a delivery date field"}}
+				{{@html input date stock_supplier_order.delivery_date medium 'Delivery Date' 'require a delivery date field'}}
 <!--			</div>
 			<div class="uk-width-5-10"> -->
 				{{@html input filter stock_container.name medium Container}}
-				{{@html input text stock_location.name medium Location}}
+				{{@html input filter stock_location.name medium Location}}
 
 				{{@html button Save primary small
 					runAction savePurchaseOrder purchaseOrderForm
@@ -73,7 +73,7 @@ div.uk-grid { padding-bottom:2000px;}
 	{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
 	{{line.volume = (stock_product.volume * stock_supplier_order_item.qty)}}
 	{{@sum line.volume as total.volume}}
-	{{ref = ""}}
+	{{ref = ''}}
 				<tr>
 					<td> {{@html inp text stock_product.code small}} </td>
 					<td> {{ref}} </td>

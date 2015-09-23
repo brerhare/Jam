@@ -1,0 +1,208 @@
+<link rel="stylesheet" type="text/css" href="/jam/css/kim2.css">
+
+<div style='color:#fff; background-color:#00727a; padding:10px; margin-bottom:10px'>
+	<p>
+		Notes
+	</p>
+</div>
+
+{{@literal on}}
+
+<h4>List</h4>
+
+{@new list mylist dir /jam/template}
+{@each mylist}
+	{mylist}
+{@end}
+
+{@html gridtable suppliertable
+	code      	number
+	name 		string		edit
+	email		email
+	balance		number.2
+	duedate		date 		edit
+	country		string		edit
+}
+
+<hr>
+<h4>Database</h4>
+
+{@database stock}
+{@list databases}
+{@list tables}
+{@describe stock_area}
+
+<hr>
+
+{@new database business}
+{@new table product
+	code        string      unique required
+	name  		string      required
+	onhand      number
+	costprice	number.4
+	sellprice	number.2
+	created		datetime
+	order_date	date
+	order_time	time
+	...
+}
+{@new index product nameindex
+	name	(asc)
+	code 	(desc)
+	...
+}
+
+{@clear item product}
+{@new item product}
+{@amend item product}
+{@update item product}
+{@remove item product}
+
+{@remove index product nameindex
+{@remove table product}
+{@remove database business
+
+<hr>
+
+{@each stock_customer}
+{@each stock_customer_transaction filter date > '2015-04-20', date < '2015-04-23'}
+{@each stock_area filter id > 14, id < 17}
+{@each stock_customer filter stock_area_id = id, order by name}
+{@each stock_customer_transaction filter stock_user_id = stock_user.id}
+{@each stock_customer_transaction filter date < mem.duedate, type = 'inv', balance > 0, order by date}
+{@each stock_product_has_location filter stock_location_id = filter.location, onhand < min_level}
+
+{@skip stock_product_has_location.stock_location_id = null}
+{@skip stock_product_has_location.onhand < stock_product_has_location.min_level}
+
+{@end}
+
+{@get stock_markup_group filter id = stock_customer.stock_markup_group_id}
+{@get stock_markup_group filter id != stock_customer.stock_markup_group_id}
+{@get stock_markup_group filter id > stock_customer.stock_markup_group_id}
+{@get stock_markup_group filter id >= stock_customer.stock_markup_group_id}
+{@get stock_customer filter id = stock_customer_transaction.stock_customer_id, name > filter.customername, skip if null}
+{@get stock_customer_transaction filter id = stock_customer_transaction_item.id, stock_user_id = stock_user.id, type = 'inv', skip if null}
+
+{@sql delete from customer where _id = 1}
+{@sql select name, telephone from customer where balance > {input.bal} }
+
+<hr>
+
+<h4>Inbuilt</h4>
+
+{@count id}
+{@count stock_customer_transaction.id as invoicetotal}
+
+{@sum id}
+{@sum stock_customer_transaction.total_amount as my.salestotal}
+
+{@runaction actionname}		// calls an action which (unlike html) has access to all variables
+
+{stock_product.cost}
+{stock_customer_transaction_item.price - stock_product.cost}
+{(stock_customer_transaction_item.price - stock_product.cost) * stock_customer_transaction_item.qty}
+{mem.l1_group_name = stock_group.name}
+{mem.l1_group_name}
+{mem.qty-required = stock_product_has_location.onhand - stock_product_has_location.min_level}
+{mem.c1 = stock_product_has_location.onhand - stock_product_has_location.min_level}
+
+<hr>
+
+<h4>HTML</h4>
+
+<h5>Inputs</h5>
+
+{@html input hidden stock_supplier._id}
+{@html input text stock_supplier.payment_terms mini "Payment terms" days}
+{@html input date stock_supplier.date mini "Date"}
+{@html input filter stock_supplier.name mini "Supplier Name" name}
+{@html input keyaction jam:action, inputElement, outputResult, mini}	// use null for empty values
+{@html inp <anytype means inline input>}
+
+{@html textarea stock_supplier.notes 60x5 Notes}
+
+{@html dropdown stock_supplier.name stock_supplier._id medium "Choose supplier"}
+{@html dropdown stock_supplier.name stock_supplier._id medium "Choose supplier" stock_purchorder.supplier_id}
+
+{@html button Save primary small
+	alert('ok')     // or any js
+	runJam
+	runJam supplierMaint.tpl
+	runAction updateSupplier, supplierForm, outputResult, alert('back from ajax')
+	runAction updateSupplier 'supplierForm _id' outputResult runJam supplierMaint.tpl 
+	runAction updateSupplier, supplierForm _id, outputResult, runJam('supplierMaint.tpl')
+}
+
+<hr>
+
+<h4>Actions</h4>
+
+runJam templateName
+	runJam('name.tpl')
+	runJam
+runAction [jamName:]actionName, [formName(s)], [resultObjectName], [callback]
+	runAction('save')
+	runAction('jam2:save', 'form1 form2', 'divThatGetsTheResult'), backButton()
+
+<hr>
+<h4>Utility</h4>
+
+<h5>Variables</h5>
+
+system.today 	@@TODO
+system.now 		@@TODO
+
+<hr>
+<h5>tags</h5>
+
+{@email admin@dglink.co.uk concertgoer@horrormail.com "Your tickets" Thank you order.name for buying numberof tickets}
+
+<hr>
+
+<h4>Allsorts</h4>
+
+{@trigger HtmlEnd}	Used internally only (for now)
+
+<hr>
+
+
+{{@literal off}}
+
+
+<input type="text" name="{filter.customername}" value="">
+
+<textarea name="{filter.textarea}" rows="4" cols="50"></textarea>
+
+<input type="password" name="{filter.password}">
+
+<input type="submit" name="{filter.yesbutton}" value="Yes">
+
+<input type="date" name="{filter.duedate}">
+
+<input type="color" name="{filter.color}" value="#ff0000">
+
+{@each stock_location}
+	<input type="radio"    name="{filter.location}" value="{stock_location.id}">{stock_location.name}
+	<input type="checkbox" name="{filter.location}" value="{stock_location.id}">{stock_location.name}
+{@end}
+
+<select name="{filter.select}">
+	{@each stock_area}
+		<option value="{id}">{name}</option>
+	{@end}
+</select>
+
+<hr>
+
+{@new form myform
+	action 			?template=test_filter.update:newamendremove
+	{{@button}}
+
+}
+
+{@hidden addnewcustomer}
+
+
+{@end}
+
