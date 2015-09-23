@@ -26,14 +26,14 @@
 
 			<div class="uk-width-8-10">
 				{{@html input hidden stock_supplier_order._id}}
-				{{@html input filter stock_supplier.name medium Supplier supplier}}
+				{{@html input filter stock_supplier_order.stock_supplier_id stock_supplier.name medium Supplier}}
 				{{@html input date stock_supplier_order.delivery_date medium 'Delivery Date' 'require a delivery date field'}}
 			</div>
 			<div class="uk-width-4-10">
-				{{@html input filter stock_location.name medium Location}}
+				{{@html input filter stock_supplier_order.location_id stock_location.name medium Location}}
 			</div>
 			<div class="uk-width-4-10">
-				{{@html input filter stock_container.name medium Container}}
+				{{@html input filter stock_supplier_order.container_id stock_container.name medium Container}}
 			</div>
 			<div class="uk-width-8-10">
 				<br>

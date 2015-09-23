@@ -69,18 +69,29 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	   return(-1);
 	}
 
-	if ((!strchr(fieldVar, '.')) && (defaultTableName))
-		sprintf(fieldVar, "%s.%s", defaultTableName, fieldVar);
-	variable = findVarStrict(fieldVar);
-	if (variable)
-		strcpy(fieldVarValue, variable->portableValue);
+	if (!strcasecmp(fieldType, "filter")) {
+		if ((!strchr(fieldSize, '.')) && (defaultTableName))
+			sprintf(fieldSize, "%s.%s", defaultTableName, fieldSize);
+		variable = findVarStrict(fieldSize);
+		if (variable)
+			strcpy(fieldVarValue, variable->portableValue);
+	} else {
+		if ((!strchr(fieldVar, '.')) && (defaultTableName))
+			sprintf(fieldVar, "%s.%s", defaultTableName, fieldVar);
+		variable = findVarStrict(fieldVar);
+		if (variable)
+			strcpy(fieldVarValue, variable->portableValue);
+	}
 
 	getWord(fieldPrompt, args, 5, " \t");
 	getWord(fieldPlaceholder, args, 6, " \t");
 
 	if (inputType == 1) {
 		printf("<div class='uk-form-row'>\n");
-		printf("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPrompt);
+		if (!strcasecmp(fieldType, "filter"))
+			printf("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPlaceholder);
+		else
+			printf("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPrompt);
 		printf("		<div class='uk-form-controls'>\n");
 	}
 	if (!strcasecmp(fieldType, "filter")) {
@@ -92,6 +103,7 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 					"linkElem.href = '/jam/sys/extern/uikit/css/components/autocomplete.css'; \n\n"
 					"// Handler for autocomplete ID %d \n"
 					"function autocompleteCallbackCb_%d(release) { \n"
+//					"alert('ajaxsending: ' + '_filtervalue='+document.getElementById('autocompleteInput_%d').value+'&_filterfield='+document.getElementById('autocompleteTableField_%d').value+'&_dbname='+document.getElementById('_dbname').value) \n"
 						"$.ajax({ \n"
 					"		url : '/run/sys/autocomplete:filterAutocomplete', type: 'POST', data : '_filtervalue='+document.getElementById('autocompleteInput_%d').value+'&_filterfield='+document.getElementById('autocompleteTableField_%d').value+'&_dbname='+document.getElementById('_dbname').value, \n"
 					"		success: function(data, textStatus, jqXHR) { \n"
@@ -119,9 +131,9 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 			return(-1);
 		}
 		printf("<div class='uk-autocomplete uk-form' id='autocompleteCallback_%d'> \n", randId);
-		printf("	<input type='text' id='autocompleteInput_%d' autocomplete='off' value='%s' class='uk-form-width-%s'> \n", randId, fieldVarValue, fieldSize);
+		printf("	<input type='text' name='%s' id='autocompleteInput_%d' autocomplete='off' value='%s' class='uk-form-width-%s'> \n", fieldVar, randId, fieldVarValue, fieldPrompt);
 		printf("</div> \n");
-		printf("<input type='hidden' id='autocompleteTableField_%d' value='%s'> \n", randId, fieldVar);
+		printf("<input type='hidden' id='autocompleteTableField_%d' value='%s'> \n", randId, fieldSize);
 	}
 	else if (!strcasecmp(fieldType, "keyaction")) {
 		scratchJs(	"// onKeyUp handler for keyaction ID %d \n"
