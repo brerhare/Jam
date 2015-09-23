@@ -15,6 +15,10 @@
 #include "database.h"
 #include "log.h"
 
+#define MAX_BREAKPOINTS 10000	
+// Breakpoint vars collected along the way that will now be used to generate stuff									// quite a few
+int breakpointAutocompleteId[MAX_BREAKPOINTS];
+
 //-----------------------------------------------------------------
 // HTML <tag> generation from {{curly}}
 
@@ -87,10 +91,6 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 					"linkElem.rel = 'stylesheet'; linkElem.type = 'text/css'; \n"
 					"linkElem.href = '/jam/sys/extern/uikit/css/components/autocomplete.css'; \n\n"
 					"// Handler for autocomplete ID %d \n"
-					"//var autocomplete = null; \n"
-					"function initAutocomplete() { \n"
-					"	var autocomplete = $.UIkit.autocomplete($('#autocompleteCallback_%d'), { 'source': autocompleteCallbackCb_%d, minLength:1}); \n"
-					"} \n"
 					"function autocompleteCallbackCb_%d(release) { \n"
 						"$.ajax({ \n"
 					"		url : '/run/sys/autocomplete:filterAutocomplete', type: 'POST', data : '_filtervalue='+document.getElementById('autocompleteInput_%d').value+'&_filterfield='+document.getElementById('autocompleteTableField_%d').value+'&_dbname='+document.getElementById('_dbname').value, \n"
@@ -105,7 +105,19 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 					"		} \n"
 					"	}); \n"
 					"} \n"
-					, randId, randId, randId, randId, randId, randId);
+					, randId, randId, randId, randId);
+		// Add to breakpoint
+		int i;
+		for (i = 0; i < MAX_BREAKPOINTS; i++) {
+			if (breakpointAutocompleteId[i] < 1 ) {
+				breakpointAutocompleteId[i] = randId;
+				break;
+			}
+		}
+		if (i == MAX_BREAKPOINTS) {
+			logMsg(LOGFATAL, "Max breakpoints reached");
+			return(-1);
+		}
 		printf("<div class='uk-autocomplete uk-form' id='autocompleteCallback_%d'> \n", randId);
 		printf("	<input type='text' id='autocompleteInput_%d' autocomplete='off' value='%s'> \n", randId, fieldVarValue);
 		printf("</div> \n");
@@ -424,6 +436,7 @@ int wordHtmlSys(int ix, char *defaultTableName) {
 		char idField[512];
 		sprintf(idField, "_id");
 		if ( (!strcmp(tableName, "stock_customer"))
+		||   (!strcmp(tableName, "stock_location"))
 		||   (!strcmp(tableName, "stock_product")) )
 			sprintf(idField, "id");
 		sprintf(q, "select %s, %s from %s where %s like '%%%s%%'", idField, fieldName, tableName, fieldName, variableValue->portableValue);
@@ -473,10 +486,6 @@ int wordHtmlSys(int ix, char *defaultTableName) {
 //-----------------------------------------------------------------
 // HTML breakpoints. End of header, body, etc. Do something at these points
 
-// Breakpoint vars collected along the way that will now be used to generate stuff
-#define MAX_BREAKPOINTS 10000										// quite a few
-char *breakpointAutocompleteId [MAX_BREAKPOINTS];
-
 int wordHtmlBreakpoint(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
@@ -498,10 +507,19 @@ int wordHtmlBreakpoint(int ix, char *defaultTableName) {
 		if (!strcasecmp(breakpointBodyArg, "end")) {	// Called from sys/html/footer.html
 			// GENERATE END STUFF WEVE BEEN COLLECTING
 			// ---------------------------------------
+			// Generate the init for uikit autocomplete
+			if (breakpointAutocompleteId[0] != 0) {
+				scratchJs("function initAutocomplete() { \n");
+				for (int i = 0; breakpointAutocompleteId[i] != 0; i++)
+					scratchJs("		autocomplete = $.UIkit.autocomplete($('#autocompleteCallback_%d'), { 'source': autocompleteCallbackCb_%d, minLength:1}); \n", breakpointAutocompleteId[i], breakpointAutocompleteId[i]);
+				scratchJs("} \n");
+				logMsg(LOGDEBUG, "created init js for uikit autocomplete");
+			}
 			// Embed the db name in the html for any @action calls
 			if (connDbName == NULL)
 				connDbName = strdup("");
 			printf("<input type='hidden' id='_dbname' name='_dbname' value='%s'>", connDbName);
+			logMsg(LOGDEBUG, "created hidden _dbname element");
 		}
 		free(breakpointBodyArg);
 	}
