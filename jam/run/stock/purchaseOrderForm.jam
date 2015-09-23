@@ -77,7 +77,7 @@ div.uk-grid { padding-bottom:2000px;}
 				<tr>
 					<td> {{@html inp text stock_product.code small}} </td>
 					<td> {{ref}} </td>
-					<td> {{@html inp text stock_product.name}} </td>
+					<td> {{@html inp filter stock_product.name}} </td>
 					<td> {{@html inp text stock_supplier_order_item.qty small}} </td>
 					<td> -Unit- </td>
 					<td> {{stock_product.cost}} </td>
