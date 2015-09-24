@@ -49,7 +49,7 @@ VAR *findVarStrict(char *name) {
 	for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
 		if (!(var[i]))
 			break;
-		if (!strcmp(var[i]->name, name)) {
+		if (!strcasecmp(var[i]->name, name)) {
 			return var[i];
 		}
 	}

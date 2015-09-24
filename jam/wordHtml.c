@@ -69,6 +69,7 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	   return(-1);
 	}
 
+	strcpy(fieldVarValue, " ");
 	if (!strcasecmp(fieldType, "filter")) {
 		if ((!strchr(fieldSize, '.')) && (defaultTableName))
 			sprintf(fieldSize, "%s.%s", defaultTableName, fieldSize);
@@ -154,8 +155,12 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 					"} \n"
 					, randId, randId, randId, fieldVar /*actually jam:action*/, fieldSize /*actually input*/, fieldPrompt /*actually outputResult*/);
 		printf("		<input type='text' name=keyaction_%d id='keyaction_%d' value='' onkeyup='onKeyUp_%d()' class='uk-form-width-%s'>\n", randId, randId, randId, fieldPlaceholder);
-	} else
-		printf("		<input type='%s' name='%s' id='%s' value='%s' placeholder='%s' class='uk-form-width-%s'>\n", fieldType, fieldVar, fieldVar, fieldVarValue, fieldPlaceholder, fieldSize);
+	} else {
+		if (inputType == 1)	// full 'input'
+			printf("		<input type='%s' name='%s' id='%s' value='%s' placeholder='%s' class='uk-form-width-%s'>\n", fieldType, fieldVar, fieldVar, fieldVarValue, fieldPlaceholder, fieldSize);
+		else 				// 'inp' only
+			printf("		<input type='%s' name='%s' id='%s' value='%s' class='uk-form-width-%s'>\n", fieldType, fieldVar, fieldVar, fieldVarValue, fieldSize);
+	}
 	if (inputType == 1) {
 		printf("	</div>\n");
 		printf("</div>\n");
@@ -451,7 +456,11 @@ int wordHtmlSys(int ix, char *defaultTableName) {
 		||   (!strcmp(tableName, "stock_location"))
 		||   (!strcmp(tableName, "stock_product")) )
 			sprintf(idField, "id");
-		sprintf(q, "select %s, %s from %s where %s like '%%%s%%'", idField, fieldName, tableName, fieldName, variableValue->portableValue);
+		char searchValue[1024];
+		sprintf(searchValue, variableValue->portableValue);
+		if (!strcmp(searchValue, " "))
+			strcpy(searchValue, "");
+		sprintf(q, "select %s, %s from %s where %s like '%%%s%%'", idField, fieldName, tableName, fieldName, searchValue);
 		logMsg(LOGDEBUG, "Autocomplete custom prepared query [%s]", q);
 		int status = doSqlQuery(q);
 		if (status == -1) {
