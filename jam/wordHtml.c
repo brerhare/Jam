@@ -69,7 +69,6 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	   return(-1);
 	}
 
-	strcpy(fieldVarValue, " ");
 	if (!strcasecmp(fieldType, "filter")) {
 		if ((!strchr(fieldSize, '.')) && (defaultTableName))
 			sprintf(fieldSize, "%s.%s", defaultTableName, fieldSize);
