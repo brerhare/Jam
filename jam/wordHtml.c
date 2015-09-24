@@ -131,7 +131,7 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 			return(-1);
 		}
 		printf("<div class='uk-autocomplete uk-form' id='autocompleteCallback_%d'> \n", randId);
-		printf("	<input type='text' name='%s' id='autocompleteInput_%d' autocomplete='off' value='%s' class='uk-form-width-%s'> \n", fieldVar, randId, fieldVarValue, fieldPrompt);
+		printf("	<input type='text' name='%s' id='autocompleteInput_%d' autocomplete='off' value='%s' /*onclick='this.select()'*/ class='uk-form-width-%s'> \n", fieldVar, randId, fieldVarValue, fieldPrompt);
 		printf("</div> \n");
 		printf("<input type='hidden' id='autocompleteTableField_%d' value='%s'> \n", randId, fieldSize);
 	}
