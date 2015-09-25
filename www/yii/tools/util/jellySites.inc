@@ -21,6 +21,7 @@ $siteList = array (
 	'dumfriesfurniture.com'        => '/home/dumfriesfurniture.com/dev/src/www/yii/dumfriesfurniture.com',
 	'elegantoriginals.co.uk'       => '/home/elegantoriginals.co.uk/dev/src/www/yii/elegantoriginals.co.uk',
 	'fadguide.com'                 => '/home/fadguide.com/dev/src/www/yii/fadguide.com',
+	'fresherthantheudders.co.uk'   => '/home/fresherthantheudders.co.uk/dev/src/www/yii/fresherthantheudders.co.uk',
 	'jacquiesbeauty.co.uk'         => '/home/jacquiesbeauty.co.uk/dev/src/www/yii/jacquiesbeauty.co.uk',
 	'knowledgebase.wireflydesign.com'  => '/home/wireflydesign.com/domains/knowledgebase.wireflydesign.com/dev/src/www/yii/knowledgebase.wireflydesign.com',
 	'mossheadpreschool.co.uk'      => '/home/mossheadpreschool.co.uk/dev/src/www/yii/mossheadpreschool.co.uk',
