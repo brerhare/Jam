@@ -19,7 +19,6 @@
 #include "wordDatabase.h"
 #include "wordHtml.h" 
 #include "wordMisc.h"
-#include "wordCustom.h"
 #include "database.h"
 #include "list.h"
 #include "stringUtil.h"
@@ -376,16 +375,6 @@ int control(int startIx, char *defaultTableName) {
 //		-----------------------------------------
 			emit(jam[ix]->trailer);
 //		-----------------------------------------
-		} else if (!(strcmp(cmd, "@custom"))) {
-//		-----------------------------------------
-			if (args) {
-				getWord(tmp, args, 1, " \t");
-				if (*tmp) {
-					if (!strcmp(tmp, "html"))
-						wordCustomHtml(ix, defaultTableName);
-				}
-			}
-//		-----------------------------------------
 		} else if (!(strcmp(cmd, "@html"))) {
 //		-----------------------------------------
 			if (args) {
@@ -401,6 +390,10 @@ int control(int startIx, char *defaultTableName) {
 						wordHtmlTextarea(ix, defaultTableName);
 					else if (!strcmp(tmp, "button"))
 						wordHtmlButton(ix, defaultTableName);
+					else if (!strcmp(tmp, "breakpoint"))
+						wordHtmlBreakpoint(ix, defaultTableName);
+					else if (!strcmp(tmp, "sys"))
+						wordHtmlSys(ix, defaultTableName);
 				}
 			}
 //		-----------------------------------------

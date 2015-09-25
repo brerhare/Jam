@@ -15,8 +15,12 @@
 #include "database.h"
 #include "log.h"
 
+#define MAX_BREAKPOINTS 10000	
+// Breakpoint vars collected along the way that will now be used to generate stuff									// quite a few
+int breakpointAutocompleteId[MAX_BREAKPOINTS];
+
 //-----------------------------------------------------------------
-// HTML
+// HTML <tag> generation from {{curly}}
 
 int wordHtmlGrid(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
@@ -65,35 +69,37 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	   return(-1);
 	}
 
-	if ((!strchr(fieldVar, '.')) && (defaultTableName))
-		sprintf(fieldVar, "%s.%s", defaultTableName, fieldVar);
-	variable = findVarStrict(fieldVar);
-	if (variable)
-		strcpy(fieldVarValue, variable->portableValue);
+	if (!strcasecmp(fieldType, "filter")) {
+		if ((!strchr(fieldSize, '.')) && (defaultTableName))
+			sprintf(fieldSize, "%s.%s", defaultTableName, fieldSize);
+		variable = findVarStrict(fieldSize);
+		if (variable)
+			strcpy(fieldVarValue, variable->portableValue);
+	} else {
+		if ((!strchr(fieldVar, '.')) && (defaultTableName))
+			sprintf(fieldVar, "%s.%s", defaultTableName, fieldVar);
+		variable = findVarStrict(fieldVar);
+		if (variable)
+			strcpy(fieldVarValue, variable->portableValue);
+	}
 
 	getWord(fieldPrompt, args, 5, " \t");
 	getWord(fieldPlaceholder, args, 6, " \t");
 
 	if (inputType == 1) {
 		printf("<div class='uk-form-row'>\n");
-		printf("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPrompt);
+		if (!strcasecmp(fieldType, "filter"))
+			printf("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPlaceholder);
+		else
+			printf("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPrompt);
 		printf("		<div class='uk-form-controls'>\n");
 	}
 	if (!strcasecmp(fieldType, "filter")) {
-		scratchJs(	"// Include autocomplete JS and CSS \n"
-					"$.getScript('/jam/sys/extern/uikit/js/components/autocomplete.js', initAutocomplete ); \n"
-					"var linkElem = document.createElement('link'); \n"
-					"document.getElementsByTagName('head')[0].appendChild(linkElem); \n"
-					"linkElem.rel = 'stylesheet'; linkElem.type = 'text/css'; \n"
-					"linkElem.href = '/jam/sys/extern/uikit/css/components/autocomplete.css'; \n\n"
-					"// Handler for autocomplete ID %d \n"
-					"//var autocomplete = null; \n"
-					"function initAutocomplete() { \n"
-					"	var autocomplete = $.UIkit.autocomplete($('#autocompleteCallback_%d'), { 'source': autocompleteCallbackCb_%d, minLength:1}); \n"
-					"} \n"
+		scratchJs(	"// Handler for autocomplete ID %d \n"
 					"function autocompleteCallbackCb_%d(release) { \n"
+//					"alert('ajaxsending: ' + '_filtervalue='+document.getElementById('autocompleteInput_%d').value+'&_filterfield='+document.getElementById('autocompleteTableField_%d').value+'&_dbname='+document.getElementById('_dbname').value) \n"
 						"$.ajax({ \n"
-					"		url : '/runsys/jam/autocomplete:filterAutocomplete', type: 'POST', data : '_filtervalue='+document.getElementById('autocompleteInput_%d').value+'&_filterfield='+document.getElementById('autocompleteTableField_%d').value+'&_dbname='+document.getElementById('_dbname').value, \n"
+					"		url : '/run/sys/autocomplete:filterAutocomplete', type: 'POST', data : '_filtervalue='+document.getElementById('autocompleteInput_%d').value+'&_filterfield='+document.getElementById('autocompleteTableField_%d').value+'&_dbname='+document.getElementById('_dbname').value, \n"
 					"		success: function(data, textStatus, jqXHR) { \n"
 //					"alert('ajaxok with: ' + data) \n"
 					"			var dat = []; \n"
@@ -105,11 +111,23 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 					"		} \n"
 					"	}); \n"
 					"} \n"
-					, randId, randId, randId, randId, randId, randId);
+					, randId, randId, randId, randId);
+		// Add to breakpoint
+		int i;
+		for (i = 0; i < MAX_BREAKPOINTS; i++) {
+			if (breakpointAutocompleteId[i] < 1 ) {
+				breakpointAutocompleteId[i] = randId;
+				break;
+			}
+		}
+		if (i == MAX_BREAKPOINTS) {
+			logMsg(LOGFATAL, "Max breakpoints reached");
+			return(-1);
+		}
 		printf("<div class='uk-autocomplete uk-form' id='autocompleteCallback_%d'> \n", randId);
-		printf("	<input type='text' id='autocompleteInput_%d' autocomplete='off' value='%s'> \n", randId, fieldVarValue);
+		printf("	<input type='text' name='%s' id='autocompleteInput_%d' autocomplete='off' value='%s' /*onclick='this.select()'*/ class='uk-form-width-%s'> \n", fieldVar, randId, fieldVarValue, fieldPrompt);
 		printf("</div> \n");
-		printf("<input type='hidden' id='autocompleteTableField_%d' value='%s'> \n", randId, fieldVar);
+		printf("<input type='hidden' id='autocompleteTableField_%d' value='%s'> \n", randId, fieldSize);
 	}
 	else if (!strcasecmp(fieldType, "keyaction")) {
 		scratchJs(	"// onKeyUp handler for keyaction ID %d \n"
@@ -130,8 +148,12 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 					"} \n"
 					, randId, randId, randId, fieldVar /*actually jam:action*/, fieldSize /*actually input*/, fieldPrompt /*actually outputResult*/);
 		printf("		<input type='text' name=keyaction_%d id='keyaction_%d' value='' onkeyup='onKeyUp_%d()' class='uk-form-width-%s'>\n", randId, randId, randId, fieldPlaceholder);
-	} else
-		printf("		<input type='%s' name='%s' id='%s' value='%s' placeholder='%s' class='uk-form-width-%s'>\n", fieldType, fieldVar, fieldVar, fieldVarValue, fieldPlaceholder, fieldSize);
+	} else {
+		if (inputType == 1)	// full 'input'
+			printf("		<input type='%s' name='%s' id='%s' value='%s' placeholder='%s' class='uk-form-width-%s'>\n", fieldType, fieldVar, fieldVar, fieldVarValue, fieldPlaceholder, fieldSize);
+		else 				// 'inp' only
+			printf("		<input type='%s' name='%s' id='%s' value='%s' class='uk-form-width-%s'>\n", fieldType, fieldVar, fieldVar, fieldVarValue, fieldSize);
+	}
 	if (inputType == 1) {
 		printf("	</div>\n");
 		printf("</div>\n");
@@ -373,4 +395,158 @@ int wordHtmlSelect(int ix, char *defaultTableName) {
 	free(fieldVarSelected);
 	free(tmp);
 */
+}
+
+//-----------------------------------------------------------------
+// HTML sys - 'filterAutocomplete' is called from run/sys/xxxx.jam
+
+int wordHtmlSys(int ix, char *defaultTableName) {
+	char *cmd = jam[ix]->command;
+	char *args = jam[ix]->args;
+	char *rawData = jam[ix]->rawData;
+	char *sysName = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 4096);
+
+	getWord(sysName, args, 2, " \t");
+	if (!sysName)
+	   die("missing HTML sys name");
+
+	logMsg(LOGDEBUG, "html sys %s activated", sysName);
+
+	if (!strcasecmp(sysName, "filterAutocomplete")) {
+// Autocomplete <input type=filter> cant produce json (yet) or db handle '%like%' (needs embedded curlies to work) so we have this custom operation temporarily - a @@TODO
+		char *q = (char *) calloc(1, 4096);
+		char *customField = (char *) calloc(1, 4096);
+		char *customValue = (char *) calloc(1, 4096);
+		char *tableName = (char *) calloc(1, 4096);
+		char *fieldName = (char *) calloc(1, 4096);
+		getWord(customField, args, 3, " \t");
+		if (!customField) {
+			logMsg(LOGERROR, "missing field '_filterfield'");
+			return(-1);
+		}
+		getWord(customValue, args, 4, " \t");
+		if (!customValue) {
+			logMsg(LOGERROR, "missing value '_filtervalue'");
+			return(-1);
+		}
+		VAR *variableField = findVarStrict(customField);
+		if (!variableField) {
+			logMsg(LOGERROR, "missing custom variable for '_filterfield'. Looking (strict) for '%s'", customField);
+			return(-1);	
+		}
+		VAR *variableValue = findVarStrict(customValue);
+		if (!variableValue) {
+			logMsg(LOGERROR, "missing custom variable for '_filtervalue'. Looking (strict) for '%s'", customValue);
+			return(-1);	
+		}
+		getWord(tableName, variableField->portableValue, 1, ".");
+		getWord(fieldName, variableField->portableValue, 2, ".");
+		// Kludge to handle old 'id' vs '_id' field in tables
+		char idField[512];
+		sprintf(idField, "_id");
+		if ( (!strcmp(tableName, "stock_customer"))
+		||   (!strcmp(tableName, "stock_location"))
+		||   (!strcmp(tableName, "stock_product")) )
+			sprintf(idField, "id");
+		char searchValue[1024];
+		sprintf(searchValue, variableValue->portableValue);
+		if (!strcmp(searchValue, " "))
+			strcpy(searchValue, "");
+		sprintf(q, "select %s, %s from %s where %s like '%%%s%%'", idField, fieldName, tableName, fieldName, searchValue);
+		logMsg(LOGDEBUG, "Autocomplete custom prepared query [%s]", q);
+		int status = doSqlQuery(q);
+		if (status == -1) {
+			logMsg(LOGERROR, "Sql query failed - doSqlQuery() failed");
+			return (-1);
+		}
+		logMsg(LOGDEBUG, "Getting RES for raw query");
+		MYSQL_RES *res = mysql_store_result(conn);
+		if (res != NULL) {	// ie the query returned row(s)
+			logMsg(LOGDEBUG, "RES is non-null");
+			SQL_RESULT *rp = sqlCreateResult(tableName, res);
+			int first = 1;
+			printf("[");
+			while (sqlGetRow2Var(rp) != SQL_EOF) {
+				VAR *v = findVarStrict(variableField->portableValue);
+				sprintf(tmp, "%s.%s", tableName, idField);
+				VAR *_id = findVarStrict(tmp);
+				if ((!v) || (!_id)) {
+					logMsg(LOGERROR, "internal error - either cant retrieve row jam variable or its _id");
+					return(-1);	
+				}
+				if (first)
+					first = 0;
+				else
+					printf(", ");
+				// Avoid single quotes - the formal JSON spec doesnt allow them
+				printf("{\"value\":\"%s\", \"id\":\"%d\"}", v->portableValue,  atoi(_id->portableValue));
+			}
+			printf("]");
+		} else
+			logMsg(LOGDEBUG, "RES is null");
+		free(q);
+		free(customField);
+		free(customValue);
+		free(tableName);
+		free(fieldName);
+	}
+
+	emit(jam[ix]->trailer);
+	free(sysName);
+	free(tmp);
+}
+
+//-----------------------------------------------------------------
+// HTML breakpoints. End of header, body, etc. Do something at these points
+
+int wordHtmlBreakpoint(int ix, char *defaultTableName) {
+	char *cmd = jam[ix]->command;
+	char *args = jam[ix]->args;
+	char *rawData = jam[ix]->rawData;
+	char *breakpointName = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 4096);
+
+	getWord(breakpointName, args, 2, " \t");
+	if (!breakpointName)
+	   die("missing HTML breakpoint name");
+
+	logMsg(LOGDEBUG, "html breakpoint %s activated", breakpointName);
+
+	if (!strcasecmp(breakpointName, "body")) {
+		char *breakpointBodyArg = (char *) calloc(1, 4096);
+		getWord(breakpointBodyArg, args, 3, " \t");
+		if (!breakpointBodyArg)
+		   die("missing HTML breakpoint body arg");
+
+		if (!strcasecmp(breakpointBodyArg, "end")) {	// Called from sys/html/footer.html
+			// GENERATE END STUFF WEVE BEEN COLLECTING
+			// ---------------------------------------
+
+			if (breakpointAutocompleteId[0] != 0) {
+				// Generate the init for uikit autocomplete
+				scratchJs(	"// Include autocomplete JS and CSS \n"
+							"$.getScript('/jam/sys/extern/uikit/js/components/autocomplete.js', initAutocomplete ); \n"
+							"var linkElem = document.createElement('link'); \n"
+							"document.getElementsByTagName('head')[0].appendChild(linkElem); \n"
+							"linkElem.rel = 'stylesheet'; linkElem.type = 'text/css'; \n"
+							"linkElem.href = '/jam/sys/extern/uikit/css/components/autocomplete.css'; \n\n");
+				scratchJs(	"// Init autocomplet for each element \n\n"
+							"function initAutocomplete() { \n");
+				for (int i = 0; breakpointAutocompleteId[i] != 0; i++)
+					scratchJs("		autocomplete = $.UIkit.autocomplete($('#autocompleteCallback_%d'), { 'source': autocompleteCallbackCb_%d, minLength:1}); \n", breakpointAutocompleteId[i], breakpointAutocompleteId[i]);
+				scratchJs("} \n");
+				logMsg(LOGDEBUG, "created init js for uikit autocomplete");
+			}
+			// Embed the db name in the html for any @action calls
+			if (connDbName == NULL)
+				connDbName = strdup("");
+			printf("<input type='hidden' id='_dbname' name='_dbname' value='%s'>", connDbName);
+			logMsg(LOGDEBUG, "created hidden _dbname element");
+		}
+		free(breakpointBodyArg);
+	}
+	emit(jam[ix]->trailer);
+	free(breakpointName);
+	free(tmp);
 }

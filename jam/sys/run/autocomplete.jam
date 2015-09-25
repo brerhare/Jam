@@ -1,9 +1,0 @@
-This relies on the hidden _dbname embedded in the calling html page to know which db to use
-------------------------------------------------------------------------------------------
-
-Service a filter request. _filterfield is table.field
-------------------------
-{{@action filterAutocomplete}}
-	{{@custom html filterAutocomplete _filterfield _filtervalue}}
-{{@end}}
-
