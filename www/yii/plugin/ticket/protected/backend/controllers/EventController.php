@@ -443,7 +443,7 @@ class EventController extends Controller
 				$subject = "Link to the report for " . $model->title;
 				$linkPath = Yii::app()->basePath . "/../../tmp/ticketeventreport-" . Yii::app()->session['sid'] . "-" . $_POST['event'] . ".html";
 				$linkUrl = "http://plugin.wireflydesign.com/tmp/ticketeventreport-" . Yii::app()->session['sid'] . "-" . $_POST['event'] . ".html";
-				$htmlContent = "<html><head><meta http-equiv='refresh' content='0; url=http://plugin.wireflydesign.com/run/ticket/offlineDelegateReport?uid=" . $_POST['uid'] . "&event=" .  $_POST['event'] . "' /></head><body></body></html>";
+				$htmlContent = "<html><head><meta http-equiv='refresh' content='0; url=http://plugin.wireflydesign.com/run/plugin/ticket/offlineDelegateReport?uid=" . $_POST['uid'] . "&event=" .  $_POST['event'] . "' /></head><body></body></html>";
 				file_put_contents($linkPath, $htmlContent);
 				$message = "<b>" . $model->title . "</b><br><br>Please click on the link below to access the report<br>This will be valid for 90 days<br><br><a href='" . $linkUrl . "'>Click here</a><br>";
 				// phpmailer

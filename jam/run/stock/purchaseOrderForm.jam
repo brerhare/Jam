@@ -1,0 +1,175 @@
+{{@version 0.0.1}}
+<!-- Purchase Order Form -->
+
+{{@include /jam/sys/html/header.html}}
+
+{{@database stock}}
+
+{{@get stock_supplier_order filter _id = stock_supplier_order._id}}
+{{@get stock_supplier filter _id = stock_supplier_order.supplier_id}}
+{{@get stock_container filter _id = stock_supplier_order.container_id}}
+{{@get stock_location filter id = stock_supplier_order.location_id}}
+{{@X stock_supplier._id}}{{@X stock_supplier.name}}
+
+<style type="text/css">
+	label {text-align: right;}
+	.uk-form-label {width:100px !important;}
+	.uk-form-controls {margin-left: 115px !important;}
+</style>
+
+<div class="uk-container uk-container-center">
+	<h3>Purchase Order</h3>
+
+	<form name="purchaseOrderForm" class="uk-form uk-form-horizontal">
+
+		<div class="uk-grid">
+
+			<div class="uk-width-8-10">
+				{{@html input hidden stock_supplier_order._id}}
+				{{@html input filter stock_supplier_order.stock_supplier_id stock_supplier.name medium Supplier}}
+				{{@html input date stock_supplier_order.delivery_date medium 'Delivery Date' 'require a delivery date field'}}
+			</div>
+			<div class="uk-width-4-10">
+				{{@html input filter stock_supplier_order.location_id stock_location.name medium Location}}
+			</div>
+			<div class="uk-width-4-10">
+				{{@html input filter stock_supplier_order.container_id stock_container.name medium Container}}
+			</div>
+			<div class="uk-width-8-10">
+				<br>
+				{{@html button Save primary small
+					runAction savePurchaseOrder purchaseOrderForm
+					runJam purchaseOrder
+				}}
+				{{@html button Cancel primary small
+					backButton()
+				}}
+				<br>
+				<br>
+			</div>
+		</div>	<!-- uk-grid -->
+
+	</form>
+
+	<form name="purchaseOrderItemForm" class="uk-form uk-form-horizontal">
+
+		<div class="uk-grid">
+
+			<div class="uk-width-10-10">
+
+				<table id="lineitemTable" class="uk-table /*uk-table-striped*/ uk-table-condensed" style="border:1px solid #dddddd">
+					<tr>
+						<th> Code </th>
+						<th> Supplier Ref </th>
+						<th> Product </th>
+						<th> Qty </th>
+						<th> Order Unit </th>
+						<th> Price p/item </th>
+						<th> Line Total </th>
+						<th> Volume </th>
+            			<th>
+                			<button type='button' class="uk-button uk-button-mini uk-button-success" onClick="insertRow()">
+                    			<i class="uk-icon-plus"></i>
+                			</button>
+            			</th>
+					</tr>
+					<tr id='newRow' style='display:none'>
+						<td> {{@html inp text stock_product.code small}} </td>
+						<td> </td>
+						<td> {{@html inp filter stock_supplier_order_item.stock_product_id stock_product.name}} </td>
+						<td> {{@html inp text stock_supplier_order_item.qty small}} </td>
+						<td> -Unit- </td>
+						<td> <span name='stock_product.cost'> 0 </span> </td>
+						<td> <span name='linetotal'> 0 </span> </td>
+						<td> <span name='linevolume'> 0 </span> </td>
+            			<td>
+                			<button type='button' class="uk-button uk-button-mini uk-button-primary" onClick="saveRow()">
+                    			<i class="uk-icon-save"></i>
+                			</button>
+            			</td>
+					</tr>
+{{@each stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order._id}}
+	{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
+	{{line.volume = (stock_product.volume * stock_supplier_order_item.qty)}}
+	{{@sum line.volume as total.volume}}
+	{{ref = ''}}
+					<tr>
+						<td> {{@html inp text stock_product.code small}} </td>
+						<td> {{ref}} </td>
+						<td> {{@html inp filter stock_supplier_order_item.stock_product_id stock_product.name}} </td>
+						<td> {{@html inp text stock_supplier_order_item.qty small}} </td>
+						<td> -Unit- </td>
+						<td> <span name='stock_product.cost'> {{stock_product.cost}} </span> </td>
+						<td> <span name='linetotal'> {{stock_product.cost * stock_supplier_order_item.qty}} </span> </td>
+						<td> <span name='linevolume'> {{line.volume}} </span> </td>
+            			<td>
+                			<button type='button' class="uk-button uk-button-mini uk-button-danger" onClick="deleteRow(this)">
+                    			<i class="uk-icon-trash"></i>
+                			</button>
+            			</td>
+					</tr>
+{{@end}}
+					<tr>
+						<td colspan=7> <center> Container volume {{stock_container.volume}}. Free volume {{stock_container.volume - total.volume}}.</td>
+						<td> {{line.volume}} </td>
+						<td></td>
+					</tr>
+				</table>
+			</div> <!-- uk-width-* -->
+		</div>	<!-- uk-grid -->
+	</form>
+</div>	<!-- uk-container -->
+
+
+{{@action savePurchaseOrder}}
+	{{stock_container.uid = getUid}}
+	{{@new item stock_container}}
+{{@end}}
+
+<script>
+	window.onload = function() {
+		// Add event handlers for each row in the table
+		var rowNum = 0;
+		while ((document.getElementsByName('stock_supplier_order_item.qty')[rowNum]) !== undefined) {
+			addEventChangeQty(rowNum);
+			rowNum++;
+		}
+	}
+	// Addevent onChange lineitem Qty
+	function addEventChangeQty(rowNum) {
+		document.getElementsByName('stock_supplier_order_item.qty')[rowNum].addEventListener('change', function(e){
+			var tr = $(this).closest('tr');
+			row = tr[0].rowIndex - 1;
+			var qty = document.getElementsByName('stock_supplier_order_item.qty')[row].value;
+			var cost = document.getElementsByName('stock_product.cost')[row].innerHTML;
+			var lineTotal = parseFloat(cost) * parseFloat(qty);
+//alert('qty='+qty+ ', cost='+cost+', lineTotal='+lineTotal);
+			document.getElementsByName('linetotal')[row].innerHTML = lineTotal.toFixed(2);
+			//var productVolume = document.getElementsByName('stock_product.volume')[row].innerHTML;
+			//var lineVolume = parseFloat(productVolume) * parseFloat(qty);
+			//document.getElementsByName('linevolume')[row].innerHTML = lineVolume.toFixed(2);
+		});
+    } 
+
+	function insertRow() {
+		if (document.getElementById('newRow').style.display == 'table-row')
+			document.getElementById('newRow').style.display = 'none';
+		else
+			document.getElementById('newRow').style.display = 'table-row';
+	}
+
+	function saveRow() {
+		document.getElementById('newRow').style.display = 'none';
+	}
+	function deleteRow(elem) {
+		var tr = $(elem).closest('tr');
+		row = tr[0].rowIndex;
+		document.getElementById('lineitemTable').deleteRow(row);
+	}
+</script>
+
+{{@include /jam/sys/html/footer.html}}
+
+<!-- min height hack for angular -->
+<div style="height:2000px;">&nbsp</div>
+
