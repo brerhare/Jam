@@ -107,7 +107,7 @@ css.display = block
 			css.text-align = center
 			css.min-height = 400px
 			css.background-color = white
-			#jam.embed = /jam/template/contactForm.jam
+			#jam.embed = /run/contactForm.jam
 			jam.iframe = /run/contactForm
 			
 			[form-bottom]
