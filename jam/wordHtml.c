@@ -95,13 +95,7 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 		printf("		<div class='uk-form-controls'>\n");
 	}
 	if (!strcasecmp(fieldType, "filter")) {
-		scratchJs(	"// Include autocomplete JS and CSS \n"
-					"$.getScript('/jam/sys/extern/uikit/js/components/autocomplete.js', initAutocomplete ); \n"
-					"var linkElem = document.createElement('link'); \n"
-					"document.getElementsByTagName('head')[0].appendChild(linkElem); \n"
-					"linkElem.rel = 'stylesheet'; linkElem.type = 'text/css'; \n"
-					"linkElem.href = '/jam/sys/extern/uikit/css/components/autocomplete.css'; \n\n"
-					"// Handler for autocomplete ID %d \n"
+		scratchJs(	"// Handler for autocomplete ID %d \n"
 					"function autocompleteCallbackCb_%d(release) { \n"
 //					"alert('ajaxsending: ' + '_filtervalue='+document.getElementById('autocompleteInput_%d').value+'&_filterfield='+document.getElementById('autocompleteTableField_%d').value+'&_dbname='+document.getElementById('_dbname').value) \n"
 						"$.ajax({ \n"
@@ -523,13 +517,22 @@ int wordHtmlBreakpoint(int ix, char *defaultTableName) {
 		char *breakpointBodyArg = (char *) calloc(1, 4096);
 		getWord(breakpointBodyArg, args, 3, " \t");
 		if (!breakpointBodyArg)
-		   die("missing HTML breakpoint body arg");	
+		   die("missing HTML breakpoint body arg");
+
 		if (!strcasecmp(breakpointBodyArg, "end")) {	// Called from sys/html/footer.html
 			// GENERATE END STUFF WEVE BEEN COLLECTING
 			// ---------------------------------------
-			// Generate the init for uikit autocomplete
+
 			if (breakpointAutocompleteId[0] != 0) {
-				scratchJs("function initAutocomplete() { \n");
+				// Generate the init for uikit autocomplete
+				scratchJs(	"// Include autocomplete JS and CSS \n"
+							"$.getScript('/jam/sys/extern/uikit/js/components/autocomplete.js', initAutocomplete ); \n"
+							"var linkElem = document.createElement('link'); \n"
+							"document.getElementsByTagName('head')[0].appendChild(linkElem); \n"
+							"linkElem.rel = 'stylesheet'; linkElem.type = 'text/css'; \n"
+							"linkElem.href = '/jam/sys/extern/uikit/css/components/autocomplete.css'; \n\n");
+				scratchJs(	"// Init autocomplet for each element \n\n"
+							"function initAutocomplete() { \n");
 				for (int i = 0; breakpointAutocompleteId[i] != 0; i++)
 					scratchJs("		autocomplete = $.UIkit.autocomplete($('#autocompleteCallback_%d'), { 'source': autocompleteCallbackCb_%d, minLength:1}); \n", breakpointAutocompleteId[i], breakpointAutocompleteId[i]);
 				scratchJs("} \n");
