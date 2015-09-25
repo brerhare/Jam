@@ -761,6 +761,7 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 						// Create url and call curl
 						$yiiSite = str_replace("/index.php", "", Yii::app()->createAbsoluteUrl(Yii::app()->request->getPathInfo()));
 						$jamUrl = $yiiSite . "/jamcgi/jam?template=" . $jamArg . "&jelly.sid=" . $sid . "&jelly.email=" . $settingEmail;
+						$jamUrl = $yiiSite . $jamArg . "&jelly.sid=" . $sid . "&jelly.email=" . $settingEmail;
 						if ($jamType == "embed") {
 							$shell_exec = "php " . Yii::app()->basePath . "/../jam/jelly2jam.php" . " " . $jamUrl;
 							$curlContent = shell_exec ($shell_exec);
