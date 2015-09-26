@@ -124,6 +124,23 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 			logMsg(LOGFATAL, "Max breakpoints reached");
 			return(-1);
 		}
+
+		printf("<input type='hidden' id='SEARCH_FIELDNAME_%d' value='stock_supplier.name'> \n", randId);
+		printf("<input type='hidden' id='SEARCH_RESULT_%d' name='stock_supplier.id' value='{{stock_supplier._id}}'> \n", randId);
+		printf("<div id='SEARCH_DIV_%d' class='uk-autocomplete uk-form' data-uk-autocomplete='off'> \n", randId);
+		printf("	<input type='text' id='SEARCH_VALUE_%d'> \n", randId);
+		printf("	<script type='text/autocomplete'> \n");
+		printf("		<ul class='uk-nav uk-nav-autocomplete uk-autocomplete-results'> \n");
+		printf("			{{~items}} \n");
+		printf("				<li class='clicked' data-value='{{ $item.value }}'  data-id='{{ $item.id }}'> \n");
+		printf("					<a> {{ $item.value }} </a> \n");
+		printf("				</li> \n");
+		printf("			{{/items}} \n");
+		printf("		</ul> \n");
+		printf("	</script> \n");
+		printf("</div> \n");
+
+
 		printf("<div class='uk-autocomplete uk-form' id='autocompleteCallback_%d'> \n", randId);
 		printf("	<input type='text' name='%s' id='autocompleteInput_%d' autocomplete='off' value='%s' /*onclick='this.select()'*/ class='uk-form-width-%s'> \n", fieldVar, randId, fieldVarValue, fieldPrompt);
 		printf("</div> \n");
