@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Jam</title>
+<script type="text/javascript" src="/jam/sys/extern/uikit/jquery.js"></script>
+<link rel="stylesheet" href="/jam/sys/extern/fa/css/font-awesome.min.css">
+<link rel="stylesheet" href="/jam/sys/extern/uikit/css/uk.css" type="text/css" />
+<script src="/jam/sys/extern/uikit/js/uikit.min.js"></script>
+</head>
+<body>
+
+<form>
+<input type='hidden' id='SEARCH_FIELDNAME' value='stock_supplier.name'>
+<input type='hidden' id='SEARCH_RESULT' name='stock_supplier.id' value=''>
+<div id="SEARCH_DIV" class="uk-autocomplete uk-form" data-uk-autocomplete="off">
+    <input type="text" id='SEARCH_VALUE'>
+    <script type="text/autocomplete">
+        <ul class="uk-nav uk-nav-autocomplete uk-autocomplete-results">
+            {{~items}}
+            <li class="clicked" data-value="{{ $item.value }}"  data-id="{{ $item.id }}">
+                <a> {{ $item.value }} </a>
+            </li>
+            {{/items}}
+        </ul>
+    </script>
+</div>
+<button type="submit" onClick="alert('The ID of the selected item is '+document.getElementById('SEARCH_RESULT').value);">OK</button>
+</form>
+
+<script>
+//$(document).ready(function() {
+function initAutocomplete() {
+	autocomplete = $.UIkit.autocomplete($('#SEARCH_DIV'), { 'source': SEARCH_DIV_AJAX, minLength:1});
+	$('#SEARCH_DIV').on('selectitem.uk.autocomplete', function(event, data, ac){
+	alert(data.value+' '+data.id);
+	document.getElementById('SEARCH_RESULT').value = data.id;
+	});
+}
+
+function SEARCH_DIV_AJAX(release) { 
+	$.ajax({ 
+		url : '/run/sys/autocomplete:filterAutocomplete', type: 'POST', data : '_filtervalue='+document.getElementById('SEARCH_VALUE').value+'&_filterfield='+document.getElementById('SEARCH_FIELDNAME').value+'&_dbname='+document.getElementById('_dbname').value, 
+		success: function(data, textStatus, jqXHR) { 
+			var dat = []; 
+			dat = JSON.parse(data); 
+			release(dat); // release the data back to the autocompleter 
+		}, 
+		error: function (jqXHR, textStatus, errorThrown) { 
+			alert('autocomplete ajax call failed'); 
+		} 
+	}); 
+} 
+
+</script>
+
+
+<hr>
+
+
+
+
+<script>
+
+// Include autocomplete JS and CSS 
+$.getScript('/jam/sys/extern/uikit/js/components/autocomplete.js', initAutocomplete );
+var linkElem = document.createElement('link');
+document.getElementsByTagName('head')[0].appendChild(linkElem);
+linkElem.rel = 'stylesheet'; linkElem.type = 'text/css';
+linkElem.href = '/jam/sys/extern/uikit/css/components/autocomplete.css'; 
+
+</script>
+
+
+<!-- This always goes last -->
+<script src="/jam/sys/js/util.js"></script>
+
+<!-- Temp -->
+<script src="/jam/sys/js/iframeResizer.contentWindow.min.js"></script>
+
+<!-- html end generation -->
+<input type='hidden' id='_dbname' name='_dbname' value='stock'>
+</body>
+</html>
+
