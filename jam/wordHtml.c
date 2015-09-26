@@ -51,7 +51,7 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	char *fieldPrompt = (char *) calloc(1, 4096);		// NB this is 'size' for keyaction
 	char *fieldPlaceholder = (char *) calloc(1, 4096);	
 	char *tmp = (char *) calloc(1, 4096);
-	int randId = rand() % 9999999;
+	int randId = cmdSeqnum; // rand() % 9999999;
 	VAR *variable = NULL;
 	VAR *variableSearch = NULL;
 

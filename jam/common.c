@@ -17,6 +17,8 @@
 FILE *scratchJsStream = NULL;
 char *scratchJsFileName = "jam/sys/js/scratch.js";		// preceeded by documentroot
 
+int cmdSeqnum = 0;	// every @jamcommand has a unique sequence number. Can be used for unique field names in grids
+
 //-----------------------------------------------------------
 // Var related
 

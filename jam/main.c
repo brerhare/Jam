@@ -328,6 +328,7 @@ int control(int startIx, char *defaultTableName) {
 		char *cmd = jam[ix]->command;
 		char *args = NULL;
 		char *rawData = NULL;
+		cmdSeqnum++;		// up the unique sequence number
 
 		if ((strlen(cmd)) && (cmd[0] == '@')) {
 			// Expand any {{values}} in the argument string with the current values
