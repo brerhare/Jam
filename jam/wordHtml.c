@@ -47,11 +47,13 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	char *fieldVar = (char *) calloc(1, 4096);
 	char *fieldSize = (char *) calloc(1, 4096);			// NB this is 'jam:action' for keyaction
 	char *fieldVarValue = (char *) calloc(1, 4096);
+	char *fieldSearchValue = (char *) calloc(1, 4096);
 	char *fieldPrompt = (char *) calloc(1, 4096);		// NB this is 'size' for keyaction
 	char *fieldPlaceholder = (char *) calloc(1, 4096);	
 	char *tmp = (char *) calloc(1, 4096);
 	int randId = rand() % 9999999;
 	VAR *variable = NULL;
+	VAR *variableSearch = NULL;
 
 	getWord(fieldType, args, 2, " \t");
 	if (!fieldType) {
@@ -69,18 +71,18 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	   return(-1);
 	}
 
+	if ((!strchr(fieldVar, '.')) && (defaultTableName))
+		sprintf(fieldVar, "%s.%s", defaultTableName, fieldVar);
+	variable = findVarStrict(fieldVar);
+	if (variable)
+		strcpy(fieldVarValue, variable->portableValue);
+
 	if (!strcasecmp(fieldType, "filter")) {
 		if ((!strchr(fieldSize, '.')) && (defaultTableName))
 			sprintf(fieldSize, "%s.%s", defaultTableName, fieldSize);
-		variable = findVarStrict(fieldSize);
-		if (variable)
-			strcpy(fieldVarValue, variable->portableValue);
-	} else {
-		if ((!strchr(fieldVar, '.')) && (defaultTableName))
-			sprintf(fieldVar, "%s.%s", defaultTableName, fieldVar);
-		variable = findVarStrict(fieldVar);
-		if (variable)
-			strcpy(fieldVarValue, variable->portableValue);
+		variableSearch = findVarStrict(fieldSize);
+		if (variableSearch)
+			strcpy(fieldSearchValue, variableSearch->portableValue);
 	}
 
 	getWord(fieldPrompt, args, 5, " \t");
@@ -95,23 +97,20 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 		printf("		<div class='uk-form-controls'>\n");
 	}
 	if (!strcasecmp(fieldType, "filter")) {
-		scratchJs(	"// Handler for autocomplete ID %d \n"
-					"function autocompleteCallbackCb_%d(release) { \n"
-//					"alert('ajaxsending: ' + '_filtervalue='+document.getElementById('autocompleteInput_%d').value+'&_filterfield='+document.getElementById('autocompleteTableField_%d').value+'&_dbname='+document.getElementById('_dbname').value) \n"
-						"$.ajax({ \n"
-					"		url : '/run/sys/autocomplete:filterAutocomplete', type: 'POST', data : '_filtervalue='+document.getElementById('autocompleteInput_%d').value+'&_filterfield='+document.getElementById('autocompleteTableField_%d').value+'&_dbname='+document.getElementById('_dbname').value, \n"
-					"		success: function(data, textStatus, jqXHR) { \n"
-//					"alert('ajaxok with: ' + data) \n"
-					"			var dat = []; \n"
-					"			dat = JSON.parse(data); \n"
-					"			release(dat); // release the data back to the autocompleter \n"
-					"		}, \n"
-					"		error: function (jqXHR, textStatus, errorThrown) { \n"
-					"			alert('autocomplete ajax call failed'); \n"
-					"		} \n"
-					"	}); \n"
-					"} \n"
-					, randId, randId, randId, randId);
+		scratchJs(	"// Handler for autocomplete (%d) \n", randId);
+		scratchJs(	"function SEARCH_DIV_AJAX_%d(release) { \n", randId);
+		scratchJs(	"	$.ajax({ \n");
+		scratchJs(	"		url : '/run/sys/autocomplete:filterAutocomplete', type: 'POST', data : '_filtervalue='+document.getElementById('SEARCH_VALUE_%d').value+'&_filterfield='+document.getElementById('SEARCH_FIELDNAME_%d').value+'&_dbname='+document.getElementById('_dbname').value, \n", randId, randId);
+		scratchJs(	"		success: function(data, textStatus, jqXHR) { \n");
+		scratchJs(	"			var dat = []; \n");
+		scratchJs(	"			dat = JSON.parse(data); \n");
+		scratchJs(	"			release(dat); \n");
+		scratchJs(	"		}, \n");
+		scratchJs(	"		error: function (jqXHR, textStatus, errorThrown) { \n");
+		scratchJs(	"			alert('autocomplete ajax call failed'); \n");
+		scratchJs(	"		}, \n");
+		scratchJs(	"	}); \n");
+		scratchJs(	"} \n");
 		// Add to breakpoint
 		int i;
 		for (i = 0; i < MAX_BREAKPOINTS; i++) {
@@ -125,10 +124,15 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 			return(-1);
 		}
 
-		printf("<input type='hidden' id='SEARCH_FIELDNAME_%d' value='stock_supplier.name'> \n", randId);
-		printf("<input type='hidden' id='SEARCH_RESULT_%d' name='stock_supplier.id' value='{{stock_supplier._id}}'> \n", randId);
+#ifdef ABC
+filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSearchValue  prompt  placeholder
+        1     2          3                                    4                            5       6
+{{@html input filter    stock_supplier_order.stock_supplier_id stock_supplier.name medium Supplier}}
+#endif
+		printf("<input type='hidden' id='SEARCH_FIELDNAME_%d' value='%s'> \n", randId, fieldSize);
+		printf("<input type='hidden' id='SEARCH_RESULT_%d' name='%s' value='%s'> \n", randId, fieldVar, fieldVarValue);
 		printf("<div id='SEARCH_DIV_%d' class='uk-autocomplete uk-form' data-uk-autocomplete='off'> \n", randId);
-		printf("	<input type='text' id='SEARCH_VALUE_%d'> \n", randId);
+		printf("	<input type='text' id='SEARCH_VALUE_%d' value='%s'> \n", randId, fieldSearchValue);
 		printf("	<script type='text/autocomplete'> \n");
 		printf("		<ul class='uk-nav uk-nav-autocomplete uk-autocomplete-results'> \n");
 		printf("			{{~items}} \n");
@@ -139,12 +143,11 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 		printf("		</ul> \n");
 		printf("	</script> \n");
 		printf("</div> \n");
-
-
+/* OLD FILTER CODE
 		printf("<div class='uk-autocomplete uk-form' id='autocompleteCallback_%d'> \n", randId);
-		printf("	<input type='text' name='%s' id='autocompleteInput_%d' autocomplete='off' value='%s' /*onclick='this.select()'*/ class='uk-form-width-%s'> \n", fieldVar, randId, fieldVarValue, fieldPrompt);
+		printf("	<input type='text' name='%s' id='autocompleteInput_%d' autocomplete='off' value='%s' class='uk-form-width-%s'> \n", fieldVar, randId, fieldVarValue, fieldPrompt);
 		printf("</div> \n");
-		printf("<input type='hidden' id='autocompleteTableField_%d' value='%s'> \n", randId, fieldSize);
+		printf("<input type='hidden' id='autocompleteTableField_%d' value='%s'> \n", randId, fieldSize); */
 	}
 	else if (!strcasecmp(fieldType, "keyaction")) {
 		scratchJs(	"// onKeyUp handler for keyaction ID %d \n"
@@ -181,6 +184,7 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	free(fieldSize);
 	free(fieldVar);
 	free(fieldVarValue);
+	free(fieldSearchValue);
 	free(fieldPrompt);
 	free(fieldPlaceholder);
 	free(tmp);
@@ -542,16 +546,27 @@ int wordHtmlBreakpoint(int ix, char *defaultTableName) {
 
 			if (breakpointAutocompleteId[0] != 0) {
 				// Generate the init for uikit autocomplete
-				scratchJs(	"// Include autocomplete JS and CSS \n"
-							"$.getScript('/jam/sys/extern/uikit/js/components/autocomplete.js', initAutocomplete ); \n"
-							"var linkElem = document.createElement('link'); \n"
-							"document.getElementsByTagName('head')[0].appendChild(linkElem); \n"
-							"linkElem.rel = 'stylesheet'; linkElem.type = 'text/css'; \n"
-							"linkElem.href = '/jam/sys/extern/uikit/css/components/autocomplete.css'; \n\n");
-				scratchJs(	"// Init autocomplet for each element \n\n"
-							"function initAutocomplete() { \n");
-				for (int i = 0; breakpointAutocompleteId[i] != 0; i++)
-					scratchJs("		autocomplete = $.UIkit.autocomplete($('#autocompleteCallback_%d'), { 'source': autocompleteCallbackCb_%d, minLength:1}); \n", breakpointAutocompleteId[i], breakpointAutocompleteId[i]);
+/*
+function initAutocomplete() {
+    autocomplete = $.UIkit.autocomplete($('#SEARCH_DIV'), { 'source': SEARCH_DIV_AJAX, minLength:1});
+    $('#SEARCH_DIV').on('selectitem.uk.autocomplete', function(event, data, ac){
+    document.getElementById('SEARCH_RESULT').value = data.id;
+    });
+}*/
+				scratchJs(	"// Include autocomplete JS and CSS \n");
+				scratchJs(	"$.getScript('/jam/sys/extern/uikit/js/components/autocomplete.js', initAutocomplete ); \n");
+				scratchJs(	"var linkElem = document.createElement('link'); \n");
+				scratchJs(	"document.getElementsByTagName('head')[0].appendChild(linkElem); \n");
+				scratchJs(	"linkElem.rel = 'stylesheet'; linkElem.type = 'text/css'; \n");
+				scratchJs(	"linkElem.href = '/jam/sys/extern/uikit/css/components/autocomplete.css'; \n\n");
+				scratchJs(	"// Init autocomplet for each element \n\n");
+				scratchJs(	"function initAutocomplete() { \n");
+				for (int i = 0; breakpointAutocompleteId[i] != 0; i++) {
+					scratchJs(	"	autocomplete = $.UIkit.autocomplete($('#SEARCH_DIV_%d'), { 'source': SEARCH_DIV_AJAX_%d, minLength:1}); \n", breakpointAutocompleteId[i], breakpointAutocompleteId[i]);
+					scratchJs(	"	$('#SEARCH_DIV_%d').on('selectitem.uk.autocomplete', function(event, data, ac){ \n", breakpointAutocompleteId[i]);
+					scratchJs(	"		document.getElementById('SEARCH_RESULT_%d').value = data.id; \n", breakpointAutocompleteId[i]);
+					scratchJs("	}); \n");
+				}
 				scratchJs("} \n");
 				logMsg(LOGDEBUG, "created init js for uikit autocomplete");
 			}
