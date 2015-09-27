@@ -60,7 +60,6 @@
 				<table id="lineitemTable" class="uk-table /*uk-table-striped*/ uk-table-condensed" style="border:1px solid #dddddd">
 					<tr>
 						<th> Code </th>
-						<th> Supplier Ref </th>
 						<th> Product </th>
 						<th> Qty </th>
 						<th> Order Unit </th>
@@ -75,13 +74,12 @@
 					</tr>
 					<tr id='newRow' style='display:none'>
 						<td> {{@html gridinp text stock_product.code small}} </td>
-						<td> </td>
 						<td> {{@html gridinp filter stock_supplier_order_item.stock_product_id stock_product.name}} </td>
 						<td> {{@html gridinp text stock_supplier_order_item.qty small}} </td>
 						<td> -Unit- </td>
-						<td> <span name='stock_product.cost'> 0 </span> </td>
-						<td> <span name='linetotal'> 0 </span> </td>
-						<td> <span name='linevolume'> 0 </span> </td>
+						<td> {{@html gridinp disabled stock_product.cost small}} </td>
+						<td> {{@html gridinp disabled linetotal small}} </td>
+						<td> {{@html gridinp disabled linevolume small}} </td>
             			<td>
                 			<button type='button' class="uk-button uk-button-mini uk-button-primary" onClick="saveRow()">
                     			<i class="uk-icon-save"></i>
@@ -95,13 +93,12 @@
 	{{ref = ''}}
 					<tr>
 						<td> {{@html gridinp text stock_product.code small}} </td>
-						<td> {{ref}} </td>
 						<td> {{@html gridinp filter stock_supplier_order_item.stock_product_id stock_product.name}} </td>
 						<td> {{@html gridinp text stock_supplier_order_item.qty small}} </td>
 						<td> -Unit- </td>
-						<td> <span name='stock_product.cost'> {{stock_product.cost}} </span> </td>
-						<td> <span name='linetotal'> {{stock_product.cost * stock_supplier_order_item.qty}} </span> </td>
-						<td> <span name='linevolume'> {{line.volume}} </span> </td>
+						<td> {{@html gridinp disabled stock_product.cost small}} </td>
+						<td> {{@html gridinp disabled linetotal small}} </td>
+						<td> {{@html gridinp disabled linevolume small}} </td>
             			<td>
                 			<button type='button' class="uk-button uk-button-mini uk-button-danger" onClick="deleteRow(this)">
                     			<i class="uk-icon-trash"></i>
@@ -128,28 +125,7 @@
 
 <script>
 	window.onload = function() {
-		// Add event handlers for each row in the table
-		var rowNum = 0;
-		while ((document.getElementsByName('stock_supplier_order_item.qty')[rowNum]) !== undefined) {
-			addEventChangeQty(rowNum);
-			rowNum++;
-		}
 	}
-	// Addevent onChange lineitem Qty
-	function addEventChangeQty(rowNum) {
-		document.getElementsByName('stock_supplier_order_item.qty')[rowNum].addEventListener('change', function(e){
-			var tr = $(this).closest('tr');
-			row = tr[0].rowIndex - 1;
-			var qty = document.getElementsByName('stock_supplier_order_item.qty')[row].value;
-			var cost = document.getElementsByName('stock_product.cost')[row].innerHTML;
-			var lineTotal = parseFloat(cost) * parseFloat(qty);
-//alert('qty='+qty+ ', cost='+cost+', lineTotal='+lineTotal);
-			document.getElementsByName('linetotal')[row].innerHTML = lineTotal.toFixed(2);
-			//var productVolume = document.getElementsByName('stock_product.volume')[row].innerHTML;
-			//var lineVolume = parseFloat(productVolume) * parseFloat(qty);
-			//document.getElementsByName('linevolume')[row].innerHTML = lineVolume.toFixed(2);
-		});
-    } 
 
 	function insertRow() {
 		if (document.getElementById('newRow').style.display == 'table-row')
@@ -166,17 +142,17 @@
 		row = tr[0].rowIndex;
 		document.getElementById('lineitemTable').deleteRow(row);
 	}
-</script>
 
-<script>
-function onChange_stock_product_code(obj) {
-	var str = '';
-	str += 'id: ' + obj.id + '\n';
-	str += 'name: ' + obj.name + '\n';
-	str += 'value: ' + obj.value + '\n';
-	str += 'event: ' + event.type + '\n';
-	alert(str);
-}
+	function onChange_stock_product_code(obj) {
+		var str = '';
+		str += 'id: ' + obj.id + '\n';
+		str += 'name: ' + obj.name + '\n';
+		str += 'value: ' + obj.value + '\n';
+		str += 'event: ' + event.type + '\n';
+//		alert('calledfunc ' + str);
+		obj2 = getSibling(obj, 'stock_supplier_order_item.qty');
+//		alert(obj2.value);
+	}
 </script>
 
 {{@include /jam/sys/html/footer.html}}

@@ -55,6 +55,7 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	char *fieldSearchValue = (char *) calloc(1, 4096);
 	char *fieldPrompt = (char *) calloc(1, 4096);		// NB this is 'size' for keyaction
 	char *fieldPlaceholder = (char *) calloc(1, 4096);	
+	char *disabledStr = (char *) calloc(1, 4096);
 	char *tmp = (char *) calloc(1, 4096);
 	int randId = rand() % 9999999;	// default to non-grid
 	VAR *variable = NULL;
@@ -67,6 +68,10 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	if (!fieldType) {
 	   logMsg(LOGERROR, "missing input type for html input");
 	   return(-1);
+	}
+	if (!strcasecmp(fieldType, "disabled")) {
+		strcpy(disabledStr, " disabled ");
+		strcpy(fieldType, "text");
 	}
 	getWord(fieldVar, args, 3, " \t");
 	if (!fieldVar) {
@@ -173,9 +178,9 @@ filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSe
 		printf("		<input type='text' name=keyaction_%d id='keyaction_%d' value='' onkeyup='onKeyUp_%d()' class='uk-form-width-%s'>\n", randId, randId, randId, fieldPlaceholder);
 	} else {
 		if ((inputType == INPUT) || (inputType == GRIDINPUT))
-			printf("		<input type='%s' name='%s' id='SEQ_%d_%s' value='%s' placeholder='%s' class='uk-form-width-%s' onChange='fn(this, event);'>\n", fieldType, fieldVar, randId, fieldVar, fieldVarValue, fieldPlaceholder, fieldSize);
+			printf("		<input type='%s' name='%s' id='SEQ_%d_%s' value='%s' placeholder='%s' class='uk-form-width-%s' onChange='fn(this, event);' %s>\n", fieldType, fieldVar, randId, fieldVar, fieldVarValue, fieldPlaceholder, fieldSize, disabledStr);
 		else 				// 'inp' only
-			printf("		<input type='%s' name='%s' id='SEQ_%d_%s' value='%s' class='uk-form-width-%s' onChange='fn(this, event)'>\n", fieldType, fieldVar, randId, fieldVar, fieldVarValue, fieldSize);
+			printf("		<input type='%s' name='%s' id='SEQ_%d_%s' value='%s' class='uk-form-width-%s' onChange='fn(this, event)' %s>\n", fieldType, fieldVar, randId, fieldVar, fieldVarValue, fieldSize, disabledStr);
 	}
 	if ((inputType == INPUT) || (inputType == GRIDINPUT)) {
 		printf("	</div>\n");

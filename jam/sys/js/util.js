@@ -138,6 +138,16 @@ function fn(obj, event) {
 	}
 }
 
+// Get a sibling element in a grid eg we want element 'SEQ_39_table.field'
+function getSibling(callingObj, siblingName) {	// eg obj and 'table.field'
+	var idSplit = callingObj.id.split('_');
+	if (idSplit.length < 3) {
+		alert('getSibling requires at least 2 underscores in the passed object id');
+		return(null);
+	}
+	return document.getElementById(idSplit[0] + '_' + idSplit[1] + '_' + siblingName);
+}
+
 
 // ----------------------------------+-----------------------------------------------------------------------
 // End. Dont put anything after here |
