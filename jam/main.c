@@ -328,7 +328,6 @@ int control(int startIx, char *defaultTableName) {
 		char *cmd = jam[ix]->command;
 		char *args = NULL;
 		char *rawData = NULL;
-		cmdSeqnum++;		// up the unique sequence number
 
 		if ((strlen(cmd)) && (cmd[0] == '@')) {
 			// Expand any {{values}} in the argument string with the current values
@@ -381,12 +380,16 @@ int control(int startIx, char *defaultTableName) {
 			if (args) {
 				getWord(tmp, args, 1, " \t");
 				if (*tmp) {
-					if (!strcmp(tmp, "grid"))
-						wordHtmlGrid(ix, defaultTableName);
-					else if ( (!strcmp(tmp, "input")) || (!strcmp(tmp, "date")) )
+					if ( (!strcmp(tmp, "input")) || (!strcmp(tmp, "date")) )
 						wordHtmlInput(ix, defaultTableName);
 					else if (!strcmp(tmp, "inp"))
 						wordHtmlInp(ix, defaultTableName);
+
+					else if ( (!strcmp(tmp, "gridinput")) || (!strcmp(tmp, "griddate")) )
+						wordHtmlGridInput(ix, defaultTableName);
+					else if (!strcmp(tmp, "gridinp"))
+						wordHtmlGridInp(ix, defaultTableName);
+
 					else if (!strcmp(tmp, "textarea"))
 						wordHtmlTextarea(ix, defaultTableName);
 					else if (!strcmp(tmp, "button"))
@@ -501,6 +504,7 @@ int control(int startIx, char *defaultTableName) {
 					clearVarValues(listVar);
 					fillVarDataTypes(listVar, p);
 					logMsg(LOGMICRO, "@each (list %s) starting recurse", listName);
+					cmdSeqnum++;		// up the unique sequence number
 					control((ix + 1), defaultTableName);
 					logMsg(LOGMICRO, "@each (list %s) ended recurse", listName);
 					p = (char *) listNext(listName);
@@ -519,6 +523,7 @@ int control(int startIx, char *defaultTableName) {
 				while (sqlGetRow2Var(rp) != SQL_EOF) {
 					emit(jam[ix]->trailer);
 					logMsg(LOGMICRO, "@each (db table %s) starting recurse", givenTableName);
+					cmdSeqnum++;		// up the unique sequence number
 					control((ix + 1), givenTableName);
 					logMsg(LOGMICRO, "@each (db table %s) ended recurse", givenTableName);
 				}

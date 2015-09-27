@@ -74,10 +74,10 @@
             			</th>
 					</tr>
 					<tr id='newRow' style='display:none'>
-						<td> {{@html inp text stock_product.code small}} </td>
+						<td> {{@html gridinp text stock_product.code small}} </td>
 						<td> </td>
-						<td> {{@html inp filter stock_supplier_order_item.stock_product_id stock_product.name}} </td>
-						<td> {{@html inp text stock_supplier_order_item.qty small}} </td>
+						<td> {{@html gridinp filter stock_supplier_order_item.stock_product_id stock_product.name}} </td>
+						<td> {{@html gridinp text stock_supplier_order_item.qty small}} </td>
 						<td> -Unit- </td>
 						<td> <span name='stock_product.cost'> 0 </span> </td>
 						<td> <span name='linetotal'> 0 </span> </td>
@@ -94,10 +94,10 @@
 	{{@sum line.volume as total.volume}}
 	{{ref = ''}}
 					<tr>
-						<td> {{@html inp text stock_product.code small}} </td>
+						<td> {{@html gridinp text stock_product.code small}} </td>
 						<td> {{ref}} </td>
-						<td> {{@html inp filter stock_supplier_order_item.stock_product_id stock_product.name}} </td>
-						<td> {{@html inp text stock_supplier_order_item.qty small}} </td>
+						<td> {{@html gridinp filter stock_supplier_order_item.stock_product_id stock_product.name}} </td>
+						<td> {{@html gridinp text stock_supplier_order_item.qty small}} </td>
 						<td> -Unit- </td>
 						<td> <span name='stock_product.cost'> {{stock_product.cost}} </span> </td>
 						<td> <span name='linetotal'> {{stock_product.cost * stock_supplier_order_item.qty}} </span> </td>

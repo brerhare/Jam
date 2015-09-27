@@ -19,6 +19,11 @@
 // Breakpoint vars collected along the way that will now be used to generate stuff									// quite a few
 int breakpointAutocompleteId[MAX_BREAKPOINTS];
 
+#define INP 0
+#define INPUT 1
+#define GRIDINP 2
+#define GRIDINPUT 3
+
 //-----------------------------------------------------------------
 // HTML <tag> generation from {{curly}}
 
@@ -51,9 +56,12 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	char *fieldPrompt = (char *) calloc(1, 4096);		// NB this is 'size' for keyaction
 	char *fieldPlaceholder = (char *) calloc(1, 4096);	
 	char *tmp = (char *) calloc(1, 4096);
-	int randId = cmdSeqnum; // rand() % 9999999;
+	int randId = rand() % 9999999;	// default to non-grid
 	VAR *variable = NULL;
 	VAR *variableSearch = NULL;
+
+	if ((inputType == GRIDINPUT) || (inputType == GRIDINP))
+		randId = cmdSeqnum;
 
 	getWord(fieldType, args, 2, " \t");
 	if (!fieldType) {
@@ -88,7 +96,7 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	getWord(fieldPrompt, args, 5, " \t");
 	getWord(fieldPlaceholder, args, 6, " \t");
 
-	if (inputType == 1) {
+	if ((inputType == INPUT) || (inputType == GRIDINPUT)) {
 		printf("<div class='uk-form-row'>\n");
 		if (!strcasecmp(fieldType, "filter"))
 			printf("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPlaceholder);
@@ -98,9 +106,9 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	}
 	if (!strcasecmp(fieldType, "filter")) {
 		scratchJs(	"// Handler for autocomplete (%d) \n", randId);
-		scratchJs(	"function SEARCH_DIV_AJAX_%d(release) { \n", randId);
+		scratchJs(	"function SEQ_%d_SEARCH_DIV_AJAX(release) { \n", randId);
 		scratchJs(	"	$.ajax({ \n");
-		scratchJs(	"		url : '/run/sys/autocomplete:filterAutocomplete', type: 'POST', data : '_filtervalue='+document.getElementById('SEARCH_VALUE_%d').value+'&_filterfield='+document.getElementById('SEARCH_FIELDNAME_%d').value+'&_dbname='+document.getElementById('_dbname').value, \n", randId, randId);
+		scratchJs(	"		url : '/run/sys/autocomplete:filterAutocomplete', type: 'POST', data : '_filtervalue='+document.getElementById('SEQ_%d_SEARCH_VALUE').value+'&_filterfield='+document.getElementById('SEQ_%d_SEARCH_FIELDNAME').value+'&_dbname='+document.getElementById('_dbname').value, \n", randId, randId);
 		scratchJs(	"		success: function(data, textStatus, jqXHR) { \n");
 		scratchJs(	"			var dat = []; \n");
 		scratchJs(	"			dat = JSON.parse(data); \n");
@@ -129,10 +137,10 @@ filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSe
         1     2          3                                    4                            5       6
 {{@html input filter    stock_supplier_order.stock_supplier_id stock_supplier.name medium Supplier}}
 #endif
-		printf("<input type='hidden' id='SEARCH_FIELDNAME_%d' value='%s'> \n", randId, fieldSize);
-		printf("<input type='hidden' id='SEARCH_RESULT_%d' name='%s' value='%s'> \n", randId, fieldVar, fieldVarValue);
-		printf("<div id='SEARCH_DIV_%d' class='uk-autocomplete uk-form' data-uk-autocomplete='off'> \n", randId);
-		printf("	<input type='text' id='SEARCH_VALUE_%d' value='%s' class='uk-form-width-%s'> \n", randId, fieldSearchValue, fieldPrompt);
+		printf("<input type='hidden' id='SEQ_%d_SEARCH_FIELDNAME' value='%s'> \n", randId, fieldSize);
+		printf("<input type='hidden' id='SEQ_%d_SEARCH_RESULT' name='%s' value='%s'> \n", randId, fieldVar, fieldVarValue);
+		printf("<div id='SEQ_%d_SEARCH_DIV' class='uk-autocomplete uk-form' data-uk-autocomplete='off'> \n", randId);
+		printf("	<input type='text' id='SEQ_%d_SEARCH_VALUE' value='%s' class='uk-form-width-%s'> \n", randId, fieldSearchValue, fieldPrompt);
 		printf("	<script type='text/autocomplete'> \n");
 		printf("		<ul class='uk-nav uk-nav-autocomplete uk-autocomplete-results'> \n");
 		printf("			{{~items}} \n");
@@ -164,12 +172,12 @@ filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSe
 					, randId, randId, randId, fieldVar /*actually jam:action*/, fieldSize /*actually input*/, fieldPrompt /*actually outputResult*/);
 		printf("		<input type='text' name=keyaction_%d id='keyaction_%d' value='' onkeyup='onKeyUp_%d()' class='uk-form-width-%s'>\n", randId, randId, randId, fieldPlaceholder);
 	} else {
-		if (inputType == 1)	// full 'input'
-			printf("		<input type='%s' name='%s' id='%s' value='%s' placeholder='%s' class='uk-form-width-%s' onChange='fn(this, event);'>\n", fieldType, fieldVar, fieldVar, fieldVarValue, fieldPlaceholder, fieldSize);
+		if ((inputType == INPUT) || (inputType == GRIDINPUT))
+			printf("		<input type='%s' name='%s' id='SEQ_%d_%s' value='%s' placeholder='%s' class='uk-form-width-%s' onChange='fn(this, event);'>\n", fieldType, fieldVar, randId, fieldVar, fieldVarValue, fieldPlaceholder, fieldSize);
 		else 				// 'inp' only
-			printf("		<input type='%s' name='%s' id='%s' value='%s' class='uk-form-width-%s' onChange='fn(this, event)'>\n", fieldType, fieldVar, fieldVar, fieldVarValue, fieldSize);
+			printf("		<input type='%s' name='%s' id='SEQ_%d_%s' value='%s' class='uk-form-width-%s' onChange='fn(this, event)'>\n", fieldType, fieldVar, randId, fieldVar, fieldVarValue, fieldSize);
 	}
-	if (inputType == 1) {
+	if ((inputType == INPUT) || (inputType == GRIDINPUT)) {
 		printf("	</div>\n");
 		printf("</div>\n");
 	}
@@ -185,14 +193,17 @@ filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSe
 	free(tmp);
 }
 
-//	{{@html input hidden stock_supplier._id}}
-//	{{@html input text stock_supplier.payment_terms mini "Payment terms" days}}
-
-int wordHtmlInput(int ix, char *defaultTableName) {
-	return(_wordHtmlInputInp(ix, defaultTableName, 1));
-}
 int wordHtmlInp(int ix, char *defaultTableName) {
-	return(_wordHtmlInputInp(ix, defaultTableName, 0));
+	return(_wordHtmlInputInp(ix, defaultTableName, INP));
+}
+int wordHtmlInput(int ix, char *defaultTableName) {
+	return(_wordHtmlInputInp(ix, defaultTableName, INPUT));
+}
+int wordHtmlGridInp(int ix, char *defaultTableName) {
+	return(_wordHtmlInputInp(ix, defaultTableName, GRIDINP));
+}
+int wordHtmlGridInput(int ix, char *defaultTableName) {
+	return(_wordHtmlInputInp(ix, defaultTableName, GRIDINPUT));
 }
 
 //	{{@html textarea stock_supplier.notes 60x5 Notes}}
@@ -538,28 +549,28 @@ int wordHtmlBreakpoint(int ix, char *defaultTableName) {
 		if (!strcasecmp(breakpointBodyArg, "end")) {	// Called from sys/html/footer.html
 			// GENERATE END STUFF WEVE BEEN COLLECTING
 			// ---------------------------------------
-
 			if (breakpointAutocompleteId[0] != 0) {
 				// Generate the init for uikit autocomplete
-/*
-function initAutocomplete() {
-    autocomplete = $.UIkit.autocomplete($('#SEARCH_DIV'), { 'source': SEARCH_DIV_AJAX, minLength:1});
-    $('#SEARCH_DIV').on('selectitem.uk.autocomplete', function(event, data, ac){
-    document.getElementById('SEARCH_RESULT').value = data.id;
-    });
-}*/
 				scratchJs(	"// Include autocomplete JS and CSS \n");
 				scratchJs(	"$.getScript('/jam/sys/extern/uikit/js/components/autocomplete.js', initAutocomplete ); \n");
 				scratchJs(	"var linkElem = document.createElement('link'); \n");
 				scratchJs(	"document.getElementsByTagName('head')[0].appendChild(linkElem); \n");
 				scratchJs(	"linkElem.rel = 'stylesheet'; linkElem.type = 'text/css'; \n");
 				scratchJs(	"linkElem.href = '/jam/sys/extern/uikit/css/components/autocomplete.css'; \n\n");
-				scratchJs(	"// Init autocomplet for each element \n\n");
+
 				scratchJs(	"function initAutocomplete() { \n");
+
+				scratchJs(	"	// Init autocomplete for zero'th element (grid inserts) \n\n");
+				scratchJs(	"	autocomplete = $.UIkit.autocomplete($('#SEQ_0_SEARCH_DIV'), { 'source': SEQ_0_SEARCH_DIV_AJAX, minLength:1}); \n");
+				scratchJs(	"	$('#SEQ_0_SEARCH_DIV').on('selectitem.uk.autocomplete', function(event, data, ac){ \n");
+				scratchJs(	"		document.getElementById('SEQ_0_SEARCH_RESULT').value = data.id; \n");
+				scratchJs("	}); \n");
+	
+				scratchJs(	"// Init autocomplete for each element \n\n");
 				for (int i = 0; breakpointAutocompleteId[i] != 0; i++) {
-					scratchJs(	"	autocomplete = $.UIkit.autocomplete($('#SEARCH_DIV_%d'), { 'source': SEARCH_DIV_AJAX_%d, minLength:1}); \n", breakpointAutocompleteId[i], breakpointAutocompleteId[i]);
-					scratchJs(	"	$('#SEARCH_DIV_%d').on('selectitem.uk.autocomplete', function(event, data, ac){ \n", breakpointAutocompleteId[i]);
-					scratchJs(	"		document.getElementById('SEARCH_RESULT_%d').value = data.id; \n", breakpointAutocompleteId[i]);
+					scratchJs(	"	autocomplete = $.UIkit.autocomplete($('#SEQ_%d_SEARCH_DIV'), { 'source': SEQ_%d_SEARCH_DIV_AJAX, minLength:1}); \n", breakpointAutocompleteId[i], breakpointAutocompleteId[i]);
+					scratchJs(	"	$('#SEQ_%d_SEARCH_DIV').on('selectitem.uk.autocomplete', function(event, data, ac){ \n", breakpointAutocompleteId[i]);
+					scratchJs(	"		document.getElementById('SEQ_%d_SEARCH_RESULT').value = data.id; \n", breakpointAutocompleteId[i]);
 					scratchJs("	}); \n");
 				}
 				scratchJs("} \n");
