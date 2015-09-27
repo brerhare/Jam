@@ -15,16 +15,8 @@
 	{mylist}
 {@end}
 
-{@html gridtable suppliertable
-	code      	number
-	name 		string		edit
-	email		email
-	balance		number.2
-	duedate		date 		edit
-	country		string		edit
-}
-
 <hr>
+
 <h4>Database</h4>
 
 {@database stock}
@@ -87,6 +79,10 @@
 {@sql delete from customer where _id = 1}
 {@sql select name, telephone from customer where balance > {input.bal} }
 
+{@action addnewcustomer}
+	...
+{@end}
+
 <hr>
 
 <h4>Inbuilt</h4>
@@ -118,6 +114,7 @@
 {@html input date stock_supplier.date mini "Date"}
 {@html input filter stock_supplier.name mini "Supplier Name" name}
 {@html input keyaction jam:action, inputElement, outputResult, mini}	// use null for empty values
+{@html input disabled stock_supplier.payment_terms mini "Payment terms" days}}	// same as input just no editing
 {@html inp <anytype means inline input>}
 
 {@html textarea stock_supplier.notes 60x5 Notes}
@@ -201,8 +198,4 @@ system.now 		@@TODO
 
 }
 
-{@hidden addnewcustomer}
-
-
-{@end}
 

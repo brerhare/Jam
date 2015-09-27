@@ -1,3 +1,10 @@
+------------- immediate -------------------------------
+
+SEQ_12_elementid only caters for one sequence. Need SEQ_1_12_elementid
+Need adhoc db lookup for single table.field (use autocomplete ajax for an example of how)
+Generally lookup actions (eg autocomplete) should return all fields. Either update existing by name or create hiddens)
+
+
 ------------- todo ------------------------------------
 
 * {{@runaction <actionname>}} - to have access to all existing state, unlike js:runAction. What happens after?

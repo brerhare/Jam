@@ -84,7 +84,7 @@
 						<td> {{@html gridinp text stock_product.code small}} </td>
 						<td> {{@html gridinp filter stock_supplier_order_item.stock_product_id stock_product.name}} </td>
 						<td> {{@html gridinp text stock_supplier_order_item.qty small}} </td>
-						<td> -Unit- </td>
+						<td> <!-- -Unit- --> </td>
 						<td> {{@html gridinp disabled stock_product.cost small}} </td>
 						<td> {{@html gridinp disabled linetotal small}} </td>
 						<td> {{@html gridinp disabled linevolume small}} </td>
@@ -98,12 +98,11 @@
 	{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
 	{{line.volume = (stock_product.volume * stock_supplier_order_item.qty)}}
 	{{@sum line.volume as total.volume}}
-	{{ref = ''}}
 					<tr>
 						<td> {{@html gridinp text stock_product.code small}} </td>
 						<td> {{@html gridinp filter stock_supplier_order_item.stock_product_id stock_product.name}} </td>
 						<td> {{@html gridinp text stock_supplier_order_item.qty small}} </td>
-						<td> -Unit- </td>
+						<td> <!-- -Unit- --> </td>
 						<td> {{@html gridinp disabled stock_product.cost small}} </td>
 						<td> {{@html gridinp disabled linetotal small}} </td>
 						<td> {{@html gridinp disabled linevolume small}} </td>
@@ -115,8 +114,8 @@
 					</tr>
 {{@end}}
 					<tr>
-						<td colspan=7> <center> Container volume {{stock_container.volume}}. Free volume {{stock_container.volume - total.volume}}.</td>
-						<td> {{line.volume}} </td>
+						<td colspan=6> <center> Container volume <!--{{stock_container.volume}}-->. Free volume <!--{{stock_container.volume - total.volume}}-->.</td>
+						<td> <!--{{line.volume}}--> </td>
 						<td></td>
 					</tr>
 				</table>
@@ -133,6 +132,19 @@
 
 <script>
 	window.onload = function() {
+		// @@TODO ...
+		cnt = 1;
+		while (true) {
+			flt = 'SEQ_' + cnt + '_stock_product.code';
+			startObj = document.getElementById(flt);
+			if (startObj)
+				calcRowValues(startObj);
+			else
+				break;
+			cnt++;
+			if (cnt > 10)
+				break;
+		}
 	}
 
 	function insertRow() {
@@ -151,27 +163,38 @@
 		document.getElementById('lineitemTable').deleteRow(row);
 	}
 
+	// Grid filter on product code
 	function onChange_stock_product_code(obj) {
-		var str = '';
-		str += 'id: ' + obj.id + '\n';
-		str += 'name: ' + obj.name + '\n';
-		str += 'value: ' + obj.value + '\n';
-		str += 'event: ' + event.type + '\n';
 //alert('calledfunc ' + str);
 		calcRowValues(obj);
 		obj2 = getSibling(obj, 'stock_supplier_order_item.qty');
 //alert(obj2.value);
 	}
 
+	// Grid filter on product name
+	function onChange_stock_supplier_order_item_stock_product_id(obj) {
+		calcRowValues(obj);
+	}
+
+	// Grid filter on qty
+	function onChange_stock_supplier_order_item_qty(obj) {
+		calcRowValues(obj);
+	}
+
+
 	function calcRowValues(obj) {
-		//var rowPrefix = getRowPrefix(obj);
-		var objQty = getSibling(obj, 'stock_supplier_order_item.qty');
-		var objPrice = getSibling(obj, 'stock_product.cost');
+		objQty = getSibling(obj, 'stock_supplier_order_item.qty');
+		objPrice = getSibling(obj, 'stock_product.cost');
 		objLineTotal = getSibling(obj, 'linetotal');
 		objLineVolume = getSibling(obj, 'linevolume');
-//		objContainer = stock_container.name
-		var lineTotal = (objQty.value * objPrice.value);
-		objLineTotal.value = lineTotal;
+//		objProductVolume = get('stock_product.volume');	// @@TODO ... single table.field lookup needed here
+		lineTotal = (objQty.value * objPrice.value);
+		lineVolume = (objQty.value * 0.25);			// @@TODO remove hardcoding
+		objLineTotal.value = lineTotal.toFixed(2);
+		objLineVolume.value = lineVolume.toFixed(2);
+		// Update total container usage (all rows)
+		objContainerVolume = get('stock_supplier_order.container_id');
+//		objContainer = get('stock_container.name	@@TODO ... this would have worked if lookups pushed all vars (updated existing by name, or new hiddens)
 	}
 
 </script>

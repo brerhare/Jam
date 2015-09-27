@@ -143,6 +143,11 @@ function getSibling(callingObj, siblingName) {	// eg obj and 'table.field'
 	return document.getElementById(getRowPrefix(callingObj) + siblingName);
 }
 
+// Get a non-grid element by name
+function get(name) {
+	return document.getElementsByName(name)[0];
+}
+
 // extract the row prefix ('SEQ_99_') from an object
 function getRowPrefix(obj) {
 	var idSplit = obj.id.split('_');

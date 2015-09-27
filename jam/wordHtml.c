@@ -571,14 +571,22 @@ int wordHtmlBreakpoint(int ix, char *defaultTableName) {
 				scratchJs(	"	// Init autocomplete for zero'th element (grid inserts) \n\n");
 				scratchJs(	"	autocomplete = $.UIkit.autocomplete($('#SEQ_0_SEARCH_DIV'), { 'source': SEQ_0_SEARCH_DIV_AJAX, minLength:1}); \n");
 				scratchJs(	"	$('#SEQ_0_SEARCH_DIV').on('selectitem.uk.autocomplete', function(event, data, ac){ \n");
-				scratchJs(	"		document.getElementById('SEQ_0_SEARCH_RESULT').value = data.id; \n");
+				scratchJs(	"		var obj = document.getElementById('SEQ_0_SEARCH_RESULT'); \n");
+				scratchJs(	"		obj.value = data.id; \n");
+				scratchJs(	"		var evt = document.createEvent('HTMLEvents'); \n");
+				scratchJs(	"		evt.initEvent('change', false, true); \n");
+				scratchJs(	"		fn(obj, evt); \n");
 				scratchJs("	}); \n");
 	
 				scratchJs(	"// Init autocomplete for each element \n\n");
 				for (int i = 0; breakpointAutocompleteId[i] != 0; i++) {
 					scratchJs(	"	autocomplete = $.UIkit.autocomplete($('#SEQ_%d_SEARCH_DIV'), { 'source': SEQ_%d_SEARCH_DIV_AJAX, minLength:1}); \n", breakpointAutocompleteId[i], breakpointAutocompleteId[i]);
 					scratchJs(	"	$('#SEQ_%d_SEARCH_DIV').on('selectitem.uk.autocomplete', function(event, data, ac){ \n", breakpointAutocompleteId[i]);
-					scratchJs(	"		document.getElementById('SEQ_%d_SEARCH_RESULT').value = data.id; \n", breakpointAutocompleteId[i]);
+					scratchJs(	"		var obj = document.getElementById('SEQ_%d_SEARCH_RESULT'); \n", breakpointAutocompleteId[i]);
+					scratchJs(	"       obj.value = data.id; \n");
+					scratchJs(	"		var evt = document.createEvent('HTMLEvents'); \n");
+					scratchJs(	"		evt.initEvent('change', false, true); \n");
+					scratchJs(	"		fn(obj, evt); \n");
 					scratchJs("	}); \n");
 				}
 				scratchJs("} \n");
