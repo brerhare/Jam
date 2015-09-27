@@ -69,10 +69,6 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	   logMsg(LOGERROR, "missing input type for html input");
 	   return(-1);
 	}
-	if (!strcasecmp(fieldType, "disabled")) {
-		strcpy(disabledStr, " disabled ");
-		strcpy(fieldType, "text");
-	}
 	getWord(fieldVar, args, 3, " \t");
 	if (!fieldVar) {
 	   logMsg(LOGERROR, "missing input variable for html input");
@@ -84,8 +80,10 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	   return(-1);
 	}
 
-	if ((!strchr(fieldVar, '.')) && (defaultTableName))
-		sprintf(fieldVar, "%s.%s", defaultTableName, fieldVar);
+	if (strcasecmp(fieldType, "disabled")) {
+		if ((!strchr(fieldVar, '.')) && (defaultTableName))
+			sprintf(fieldVar, "%s.%s", defaultTableName, fieldVar);
+	}
 	variable = findVarStrict(fieldVar);
 	if (variable)
 		strcpy(fieldVarValue, variable->portableValue);
@@ -177,9 +175,13 @@ filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSe
 					, randId, randId, randId, fieldVar /*actually jam:action*/, fieldSize /*actually input*/, fieldPrompt /*actually outputResult*/);
 		printf("		<input type='text' name=keyaction_%d id='keyaction_%d' value='' onkeyup='onKeyUp_%d()' class='uk-form-width-%s'>\n", randId, randId, randId, fieldPlaceholder);
 	} else {
+		if (!strcasecmp(fieldType, "disabled")) {
+			strcpy(disabledStr, " disabled ");
+			strcpy(fieldType, "text");
+		}
 		if ((inputType == INPUT) || (inputType == GRIDINPUT))
 			printf("		<input type='%s' name='%s' id='SEQ_%d_%s' value='%s' placeholder='%s' class='uk-form-width-%s' onChange='fn(this, event);' %s>\n", fieldType, fieldVar, randId, fieldVar, fieldVarValue, fieldPlaceholder, fieldSize, disabledStr);
-		else 				// 'inp' only
+		else		// 'inp' only
 			printf("		<input type='%s' name='%s' id='SEQ_%d_%s' value='%s' class='uk-form-width-%s' onChange='fn(this, event)' %s>\n", fieldType, fieldVar, randId, fieldVar, fieldVarValue, fieldSize, disabledStr);
 	}
 	if ((inputType == INPUT) || (inputType == GRIDINPUT)) {
@@ -195,6 +197,7 @@ filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSe
 	free(fieldSearchValue);
 	free(fieldPrompt);
 	free(fieldPlaceholder);
+	free(disabledStr);
 	free(tmp);
 }
 

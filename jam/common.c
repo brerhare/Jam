@@ -241,7 +241,7 @@ void jamDump(int which) {
 
 int scratchJs(char *str, ...) {
 	va_list ap;
-	logMsg(LOGDEBUG, "Creating scratch entry");
+//	logMsg(LOGDEBUG, "Creating scratch entry");
 	if (scratchJsStream == NULL) {
 		char *tmp = (char *) calloc(1, 4096);
 		sprintf(tmp, "%s/%s", documentRoot, scratchJsFileName);

@@ -5,6 +5,14 @@
 
 {{@database stock}}
 
+<style>
+	.uk-form input[type=text]:disabled {
+		border:none;
+		color:#000;
+		background-color:#fff;
+	}
+</style>
+
 {{@get stock_supplier_order filter _id = stock_supplier_order._id}}
 {{@get stock_supplier filter _id = stock_supplier_order.supplier_id}}
 {{@get stock_container filter _id = stock_supplier_order.container_id}}
@@ -149,10 +157,23 @@
 		str += 'name: ' + obj.name + '\n';
 		str += 'value: ' + obj.value + '\n';
 		str += 'event: ' + event.type + '\n';
-//		alert('calledfunc ' + str);
+//alert('calledfunc ' + str);
+		calcRowValues(obj);
 		obj2 = getSibling(obj, 'stock_supplier_order_item.qty');
-//		alert(obj2.value);
+//alert(obj2.value);
 	}
+
+	function calcRowValues(obj) {
+		//var rowPrefix = getRowPrefix(obj);
+		var objQty = getSibling(obj, 'stock_supplier_order_item.qty');
+		var objPrice = getSibling(obj, 'stock_product.cost');
+		objLineTotal = getSibling(obj, 'linetotal');
+		objLineVolume = getSibling(obj, 'linevolume');
+//		objContainer = stock_container.name
+		var lineTotal = (objQty.value * objPrice.value);
+		objLineTotal.value = lineTotal;
+	}
+
 </script>
 
 {{@include /jam/sys/html/footer.html}}
