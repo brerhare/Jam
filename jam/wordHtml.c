@@ -132,7 +132,7 @@ filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSe
 		printf("<input type='hidden' id='SEARCH_FIELDNAME_%d' value='%s'> \n", randId, fieldSize);
 		printf("<input type='hidden' id='SEARCH_RESULT_%d' name='%s' value='%s'> \n", randId, fieldVar, fieldVarValue);
 		printf("<div id='SEARCH_DIV_%d' class='uk-autocomplete uk-form' data-uk-autocomplete='off'> \n", randId);
-		printf("	<input type='text' id='SEARCH_VALUE_%d' value='%s'> \n", randId, fieldSearchValue);
+		printf("	<input type='text' id='SEARCH_VALUE_%d' value='%s' class='uk-form-width-%s'> \n", randId, fieldSearchValue, fieldPrompt);
 		printf("	<script type='text/autocomplete'> \n");
 		printf("		<ul class='uk-nav uk-nav-autocomplete uk-autocomplete-results'> \n");
 		printf("			{{~items}} \n");
@@ -143,11 +143,6 @@ filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSe
 		printf("		</ul> \n");
 		printf("	</script> \n");
 		printf("</div> \n");
-/* OLD FILTER CODE
-		printf("<div class='uk-autocomplete uk-form' id='autocompleteCallback_%d'> \n", randId);
-		printf("	<input type='text' name='%s' id='autocompleteInput_%d' autocomplete='off' value='%s' class='uk-form-width-%s'> \n", fieldVar, randId, fieldVarValue, fieldPrompt);
-		printf("</div> \n");
-		printf("<input type='hidden' id='autocompleteTableField_%d' value='%s'> \n", randId, fieldSize); */
 	}
 	else if (!strcasecmp(fieldType, "keyaction")) {
 		scratchJs(	"// onKeyUp handler for keyaction ID %d \n"
@@ -170,9 +165,9 @@ filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSe
 		printf("		<input type='text' name=keyaction_%d id='keyaction_%d' value='' onkeyup='onKeyUp_%d()' class='uk-form-width-%s'>\n", randId, randId, randId, fieldPlaceholder);
 	} else {
 		if (inputType == 1)	// full 'input'
-			printf("		<input type='%s' name='%s' id='%s' value='%s' placeholder='%s' class='uk-form-width-%s'>\n", fieldType, fieldVar, fieldVar, fieldVarValue, fieldPlaceholder, fieldSize);
+			printf("		<input type='%s' name='%s' id='%s' value='%s' placeholder='%s' class='uk-form-width-%s' onChange='fn(this, event);'>\n", fieldType, fieldVar, fieldVar, fieldVarValue, fieldPlaceholder, fieldSize);
 		else 				// 'inp' only
-			printf("		<input type='%s' name='%s' id='%s' value='%s' class='uk-form-width-%s'>\n", fieldType, fieldVar, fieldVar, fieldVarValue, fieldSize);
+			printf("		<input type='%s' name='%s' id='%s' value='%s' class='uk-form-width-%s' onChange='fn(this, event)'>\n", fieldType, fieldVar, fieldVar, fieldVarValue, fieldSize);
 	}
 	if (inputType == 1) {
 		printf("	</div>\n");

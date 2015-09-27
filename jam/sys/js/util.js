@@ -1,3 +1,6 @@
+// ----------------------------------------------------------------------------------------------------------
+// Navigation
+
 function backButton() {
 	window.history.back();
 }
@@ -118,6 +121,25 @@ function basename(path) {
 function dirname(path) {
 	return path.replace(/\\/g,'/').replace(/\/[^\/]*$/, '');;
 }
+
+// ----------------------------------------------------------------------------------------------------------
+// Event handlers
+
+function fn(obj, event) {
+	var fName = obj.id;
+	if (typeof yourFunctionName == 'function') { 
+}
+var str = '';
+str += 'id: ' + obj.id + '\n';
+str += 'name: ' + obj.name + '\n';
+str += 'value: ' + obj.value + '\n';
+str += 'event: ' + event.type + '\n';
+alert(str);
+//alert(obj.id + ' has ' + obj.value + ' on ' + event.type);
+}
+
+// ----------------------------------------------------------------------------------------------------------
+// End. Dont put anything after here
 
 // Place at end of html to run code after dom loaded but not waiting for images to finish loading
 (function() {
