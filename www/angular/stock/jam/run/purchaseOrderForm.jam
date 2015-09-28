@@ -136,8 +136,7 @@
 </div>	<!-- uk-container -->
 
 {{@action savePurchaseOrder}}
-	{{stock_container.uid = getUid}}
-	{{@new item stock_container}}
+	{{@update item stock_supplier_order}}
 {{@end}}
 
 {{@action newPurchaseOrderRow}}
