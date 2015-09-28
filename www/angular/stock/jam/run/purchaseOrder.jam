@@ -19,7 +19,7 @@
 			<th> Date </th>
 			<th> Reference </th>
 			<th> Total </th>
-			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('purchaseOrderForm?stock_supplier_order._id=0')"> <i class="uk-icon-plus"></i> New</button> </th>
+			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="//runJam('purchaseOrderForm?stock_supplier_order._id=0')"> <i class="uk-icon-plus"></i> New</button> </th>
 		</tr>
 {{@each stock_supplier_order}}
 	{{rowId = (rowId + 1)}}	

@@ -5,11 +5,14 @@
 
 {{@database stock}}
 
-<style>
+<style>	/* @@EG */
 	.uk-form input[type=text]:disabled {
 		border:none;
 		color:#000;
 		background-color:#fff;
+	}
+	.uk-form-width-small {
+		width:90px;
 	}
 </style>
 
@@ -65,6 +68,8 @@
 
 			<div class="uk-width-10-10">
 
+				{{@html input hidden stock_supplier_order._id}}
+
 				<table id="lineitemTable" class="uk-table /*uk-table-striped*/ uk-table-condensed" style="border:1px solid #dddddd">
 					<tr>
 						<th> Code </th>
@@ -80,7 +85,7 @@
                 			</button>
             			</th>
 					</tr>
-					<tr id='newRow' style='display:none'>
+					<tr id='newrow' style='display:none'>
 						<td> {{@html gridinp text stock_product.code small}} </td>
 						<td> {{@html gridinp filter stock_supplier_order_item.stock_product_id stock_product.name}} </td>
 						<td> {{@html gridinp text stock_supplier_order_item.qty small}} </td>
@@ -89,8 +94,11 @@
 						<td> {{@html gridinp disabled linetotal small}} </td>
 						<td> {{@html gridinp disabled linevolume small}} </td>
             			<td>
-                			<button type='button' class="uk-button uk-button-mini uk-button-primary" onClick="saveRow()">
+                			<button type='button' class="uk-button uk-button-mini uk-button-primary" onClick="runAction('newPurchaseOrderRow', 'purchaseOrderItemForm'); hideNewRow(); runJam()">
                     			<i class="uk-icon-save"></i>
+                			</button>
+                			<button type='button' class="uk-button uk-button-mini uk-button-primary" onClick="hideNewRow()">
+                    			<i class="uk-icon-remove"></i>
                 			</button>
             			</td>
 					</tr>
@@ -107,7 +115,7 @@
 						<td> {{@html gridinp disabled linetotal small}} </td>
 						<td> {{@html gridinp disabled linevolume small}} </td>
             			<td>
-                			<button type='button' class="uk-button uk-button-mini uk-button-danger" onClick="deleteRow(this)">
+                			<button type='button' class="uk-button uk-button-mini uk-button-danger" onClick="deleteRow('{{stock_supplier_order_item._id}}')">
                     			<i class="uk-icon-trash"></i>
                 			</button>
             			</td>
@@ -124,10 +132,19 @@
 	</form>
 </div>	<!-- uk-container -->
 
-
 {{@action savePurchaseOrder}}
 	{{stock_container.uid = getUid}}
 	{{@new item stock_container}}
+{{@end}}
+
+{{@action newPurchaseOrderRow}}
+	{{stock_supplier_order_item.uid = 1}}
+	{{stock_supplier_order_item.stock_supplier_order_id = stock_supplier_order._id}}
+	{{@new item stock_supplier_order_item}}
+{{@end}}
+
+{{@action deletePurchaseOrderRow}}
+    {{@remove item stock_supplier_order_item}}
 {{@end}}
 
 <script>
@@ -148,19 +165,24 @@
 	}
 
 	function insertRow() {
-		if (document.getElementById('newRow').style.display == 'table-row')
-			document.getElementById('newRow').style.display = 'none';
+		if (document.getElementById('newrow').style.display == 'table-row')
+			document.getElementById('newrow').style.display = 'none';
 		else
-			document.getElementById('newRow').style.display = 'table-row';
+			document.getElementById('newrow').style.display = 'table-row';
 	}
 
-	function saveRow() {
-		document.getElementById('newRow').style.display = 'none';
+	function hideNewRow() {
+		document.getElementById('newrow').style.display = 'none';
 	}
-	function deleteRow(elem) {
-		var tr = $(elem).closest('tr');
-		row = tr[0].rowIndex;
-		document.getElementById('lineitemTable').deleteRow(row);
+	function deleteRow(id) {
+		window.event.cancelBubble = true;   // Prevent any further events
+		var result = confirm('Confirm delete');
+		if (result) {
+			runAction('deletePurchaseOrderRow', 'stock_supplier_order_item._id='+id, '', runJam);
+			var tr = $(elem).closest('tr');
+			row = tr[0].rowIndex;
+			document.getElementById('lineitemTable').deleteRow(row);
+		}
 	}
 
 	// Grid filter on product code
