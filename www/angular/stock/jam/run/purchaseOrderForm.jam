@@ -48,7 +48,8 @@
 			</div>
 			<div class="uk-width-8-10">
 				<br>
-				{{@html button Save primary small
+				<button type='button' class="uk-button uk-button-small uk-button-primary" onClick="savePurchaseOrder()"> Save </button>
+				{{@Xhtml button Save primary small
 					runAction savePurchaseOrder purchaseOrderForm
 					runJam purchaseOrder
 				}}
@@ -136,6 +137,7 @@
 </div>	<!-- uk-container -->
 
 {{@action savePurchaseOrder}}
+	{{stock_supplier_order.reference = ref}}
 	{{@update item stock_supplier_order}}
 {{@end}}
 
@@ -171,7 +173,11 @@
 	}
 
 	function showNewRow() {
-		document.getElementById('newrow').style.display = 'table-row';
+		obj = document.getElementsByName('stock_supplier_order._id')[0];
+		if (obj.value == "")
+			alert('Save header details before adding stock');
+		else
+			document.getElementById('newrow').style.display = 'table-row';
 	}
 	function hideNewRow() {
 		document.getElementById('newrow').style.display = 'none';
@@ -185,6 +191,30 @@
 //			row = tr[0].rowIndex;
 //			document.getElementById('lineitemTable').deleteRow(row);
 		}
+	}
+	function savePurchaseOrder() {
+		obj = document.getElementsByName('stock_supplier_order.supplier_id')[0];
+		if (obj.value == "") {
+			alert('Invalid supplier');
+			return;
+		}
+		obj = document.getElementsByName('stock_supplier_order.delivery_date')[0];
+		if (obj.value == "") {
+			alert('Invalid delivery date');
+			return;
+		}
+		obj = document.getElementsByName('stock_supplier_order.location_id')[0];
+		if (obj.value == "") {
+			alert('Invalid location');
+			return;
+		}
+		obj = document.getElementsByName('stock_supplier_order.container_id')[0];
+		if (obj.value == "") {
+			alert('Invalid container');
+			return;
+		}
+		runAction('savePurchaseOrder', 'purchaseOrderForm');
+		runJam('purchaseOrder');
 	}
 	function addNewRowButtonClick() {
 		flt = 'SEQ_' + 0 + '_';

@@ -455,7 +455,7 @@ int wordDatabaseAmendItem(int ix, char *defaultTableName) {
 		return(-1);
 	}
 
-	// Find the primary key
+	// Find the primary key variable (must exist)
 	sprintf(tmp, "%s.%s", tableName, "_id");
 	VAR *idVar = findVarStrict(tmp);
 	if (!idVar) {
@@ -491,18 +491,37 @@ int wordDatabaseAmendItem(int ix, char *defaultTableName) {
 	free(tmp);
 }
 
+// Create if not exist, amend if exist
 int wordDatabaseUpdateItem(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
 	char *tableName = (char *) calloc(1, 4096);
 	char *tmp = (char *) calloc(1, 4096);
-	char *qStr = (char *) calloc(1, 4096);
+	int res = 0;
+
+	getWord(tableName, args, 2, " \t");
+	if (!tableName) {
+		logMsg(LOGERROR, "Update item failed - no table name supplied");
+		return (-1);
+	}
+
+	// Find the primary key. If it exists WITH A VALUE it's a new, otherwise an amend)
+	sprintf(tmp, "%s.%s", tableName, "_id");
+	VAR *idVar = findVarStrict(tmp);
+	if ((!idVar) || (strlen(idVar->portableValue) == 0)) {
+		logMsg(LOGDEBUG, "Update item resolves to New item");
+		res = wordDatabaseNewItem(ix, defaultTableName);
+	}
+	else {
+		logMsg(LOGDEBUG, "Update item resolves to Amend item");
+		res = wordDatabaseAmendItem(ix, defaultTableName);
+	}
 
 	emit(jam[ix]->trailer);
 	free(tableName);
-	free(qStr);
 	free(tmp);
+	return(res);
 }
 
 int wordDatabaseRemoveTable(int ix, char *defaultTableName) {
