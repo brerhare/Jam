@@ -72,6 +72,7 @@
 
 				<table id="lineitemTable" class="uk-table /*uk-table-striped*/ uk-table-condensed" style="border:1px solid #dddddd">
 					<tr>
+						<th> </th>
 						<th> Code </th>
 						<th> Product </th>
 						<th> Qty </th>
@@ -80,12 +81,13 @@
 						<th> Line Total </th>
 						<th> Volume </th>
             			<th>
-                			<button type='button' class="uk-button uk-button-mini uk-button-success" onClick="insertRow()">
+                			<button type='button' class="uk-button uk-button-mini uk-button-success" onClick="showNewRow()">
                     			<i class="uk-icon-plus"></i>
                 			</button>
             			</th>
 					</tr>
 					<tr id='newrow' style='display:none'>
+						<td> </td>
 						<td> {{@html gridinp text stock_product.code small}} </td>
 						<td> {{@html gridinp filter stock_supplier_order_item.stock_product_id stock_product.name}} </td>
 						<td> {{@html gridinp text stock_supplier_order_item.qty small}} </td>
@@ -94,7 +96,7 @@
 						<td> {{@html gridinp disabled linetotal small}} </td>
 						<td> {{@html gridinp disabled linevolume small}} </td>
             			<td>
-                			<button type='button' class="uk-button uk-button-mini uk-button-primary" onClick="runAction('newPurchaseOrderRow', 'purchaseOrderItemForm'); hideNewRow(); runJam()">
+                			<button type='button' class="uk-button uk-button-mini uk-button-primary" onClick="addNewRowButtonClick()">
                     			<i class="uk-icon-save"></i>
                 			</button>
                 			<button type='button' class="uk-button uk-button-mini uk-button-primary" onClick="hideNewRow()">
@@ -107,8 +109,9 @@
 	{{line.volume = (stock_product.volume * stock_supplier_order_item.qty)}}
 	{{@sum line.volume as total.volume}}
 					<tr>
-						<td> {{@html gridinp text stock_product.code small}} </td>
-						<td> {{@html gridinp filter stock_supplier_order_item.stock_product_id stock_product.name}} </td>
+						<td> {{@html gridinp hidden stock_supplier_order_item._id}} </td>
+						<td> {{@html gridinp disabled stock_product.code small}} </td>
+						<td> {{@html gridinp disabled stock_product.name}} </td>
 						<td> {{@html gridinp text stock_supplier_order_item.qty small}} </td>
 						<td> <!-- -Unit- --> </td>
 						<td> {{@html gridinp disabled stock_product.cost small}} </td>
@@ -147,6 +150,10 @@
     {{@remove item stock_supplier_order_item}}
 {{@end}}
 
+{{@action changeQty}}
+	{{@amend item stock_supplier_order_item}}
+{{@end}}
+
 <script>
 	window.onload = function() {
 		// @@TODO ...
@@ -164,13 +171,9 @@
 		}
 	}
 
-	function insertRow() {
-		if (document.getElementById('newrow').style.display == 'table-row')
-			document.getElementById('newrow').style.display = 'none';
-		else
-			document.getElementById('newrow').style.display = 'table-row';
+	function showNewRow() {
+		document.getElementById('newrow').style.display = 'table-row';
 	}
-
 	function hideNewRow() {
 		document.getElementById('newrow').style.display = 'none';
 	}
@@ -179,30 +182,78 @@
 		var result = confirm('Confirm delete');
 		if (result) {
 			runAction('deletePurchaseOrderRow', 'stock_supplier_order_item._id='+id, '', runJam);
-			var tr = $(elem).closest('tr');
-			row = tr[0].rowIndex;
-			document.getElementById('lineitemTable').deleteRow(row);
+//			var tr = $(elem).closest('tr');
+//			row = tr[0].rowIndex;
+//			document.getElementById('lineitemTable').deleteRow(row);
 		}
+	}
+	function addNewRowButtonClick() {
+		flt = 'SEQ_' + 0 + '_';
+		prodCodeObj = document.getElementById(flt + 'stock_product.code');
+		prodIdObj = document.getElementById(flt + 'SEARCH_RESULT');
+		prodQtyObj = document.getElementById(flt + 'stock_supplier_order_item.qty');
+		if (prodIdObj.value  == '')	{
+			alert('No product selected');
+			return;
+		}
+		if (isNaN(prodQtyObj.value) || (Number(prodQtyObj.value) < 1)) {
+			alert('Invalid quantity');
+			return;
+		}
+		runAction('newPurchaseOrderRow', 'stock_supplier_order._id' + ' ' + prodCodeObj.name + ' ' + prodIdObj.name + ' ' + prodQtyObj.name);
+		hideNewRow();
+		runJam();
 	}
 
 	// Grid filter on product code
 	function onChange_stock_product_code(obj) {
-//alert('calledfunc ' + str);
 		calcRowValues(obj);
 		obj2 = getSibling(obj, 'stock_supplier_order_item.qty');
-//alert(obj2.value);
 	}
 
 	// Grid filter on product name
 	function onChange_stock_supplier_order_item_stock_product_id(obj) {
+		if (checkDupProduct(obj) == 1) {
+			alert('Duplicate product');
+			return;
+		}
 		calcRowValues(obj);
 	}
 
 	// Grid filter on qty
 	function onChange_stock_supplier_order_item_qty(obj) {
+		if (obj.id.substr(0, 6) == 'SEQ_0_')
+			return;
+		objId =  getSibling(obj, 'stock_supplier_order_item._id');
+		runAction('changeQty', 'stock_supplier_order_item._id=' + objId.value + ' ' + obj.name + '='+obj.value);
 		calcRowValues(obj);
 	}
 
+	// Check duplicate product
+	function checkDupProduct(obj) {
+return;
+alert('checking:'+obj.id);
+nObj = getSibling(obj, 'SEARCH_FIELDNAME');
+alert(nObj.id);
+		// @@TODO ...
+		cnt = 1;
+		while (true) {
+			flt = 'SEQ_' + cnt + '_SEARCH__FIELDNAME';
+			startObj = document.getElementById(flt);
+			if (startObj) {
+alert('fnd');
+				if (startObj.value == obj.value) {
+					alert('Product already on order');
+					return;
+				}
+			}
+			else
+				break;
+			cnt++;
+			if (cnt > 10)
+				break;
+		}
+	}
 
 	function calcRowValues(obj) {
 		objQty = getSibling(obj, 'stock_supplier_order_item.qty');

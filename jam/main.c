@@ -448,13 +448,25 @@ int control(int startIx, char *defaultTableName) {
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@update"))) {
 //		-----------------------------------------
-			if (!strcmp(tmp, "item"))
-				wordDatabaseUpdateItem(ix, defaultTableName);
+			if (args) {
+				getWord(tmp, args, 1, " \t");
+				if (*tmp) {
+					logMsg(LOGDEBUG, "@update requested");
+					if (!strcmp(tmp, "item"))
+						wordDatabaseUpdateItem(ix, defaultTableName);
+				}
+			}
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@amend"))) {
 //		-----------------------------------------
-			if (!strcmp(tmp, "item"))
-				wordDatabaseAmendItem(ix, defaultTableName);
+			if (args) {
+				getWord(tmp, args, 1, " \t");
+				if (*tmp) {
+					logMsg(LOGDEBUG, "@amend requested");
+					if (!strcmp(tmp, "item"))
+						wordDatabaseAmendItem(ix, defaultTableName);
+				}
+			}
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@list"))) {
 //		-----------------------------------------
