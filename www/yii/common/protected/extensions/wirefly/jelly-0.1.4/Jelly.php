@@ -898,7 +898,7 @@ if (strstr($blobName, "googlemap"))
 							$height = $val;
 							break;
 						case ("z-index"):
-							$zindex = " style='position:relative; z-index:" . $val . ';" ';
+							$zindex = ' style="position:relative; z-index:' . $val . '";';
 							break;
 						case ("align"):
 							if (($val == 'center') || ($val == 'centre'))
@@ -915,7 +915,7 @@ if (strstr($blobName, "googlemap"))
 					}
 				}
 				if ($alt == "")
-					$this->genInlineHtml('<div class="' . $val . '-container" style="border:0;padding:0;margin:0"><img ' . $fx . $zindex . $align . ' title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.style.display=\'none\'" . " width="' . $width . '" height="' . $height . '"></div>');
+					$this->genInlineHtml('<div class="' . $val . '-container" style="border:0;padding:0;margin:0"><img ' . $fx . $zindex . $align . ' title="' . $tip . '" src="' . $this->dbExpand($url) . '" width="' . $width . '" height="' . $height . '"></div>');
 				else
 					$this->genInlineHtml('<img ' . $zindex . $align . ' title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.onerror=null;this.src=\'' . $this->dbExpand($alt) . '\'" width="' . $width . '" height="' . $height . '">');
 				break;
