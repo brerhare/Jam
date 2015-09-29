@@ -17,6 +17,8 @@
 FILE *scratchJsStream = NULL;
 char *scratchJsFileName = "jam/sys/js/scratch.js";		// preceeded by documentroot
 
+int cmdSeqnum = 0;	// every @jamcommand has a unique sequence number. Can be used for unique field names in grids
+
 //-----------------------------------------------------------
 // Var related
 
@@ -49,7 +51,7 @@ VAR *findVarStrict(char *name) {
 	for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
 		if (!(var[i]))
 			break;
-		if (!strcmp(var[i]->name, name)) {
+		if (!strcasecmp(var[i]->name, name)) {
 			return var[i];
 		}
 	}
@@ -239,7 +241,7 @@ void jamDump(int which) {
 
 int scratchJs(char *str, ...) {
 	va_list ap;
-	logMsg(LOGDEBUG, "Creating scratch entry");
+//	logMsg(LOGDEBUG, "Creating scratch entry");
 	if (scratchJsStream == NULL) {
 		char *tmp = (char *) calloc(1, 4096);
 		sprintf(tmp, "%s/%s", documentRoot, scratchJsFileName);

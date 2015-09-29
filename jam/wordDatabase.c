@@ -420,7 +420,7 @@ int wordDatabaseNewItem(int ix, char *defaultTableName) {
 	strcat(qStr, ")");
 	status = doSqlQuery(qStr);
 	if (status == -1) {
-		logMsg(LOGERROR, "Remove item failed");
+		logMsg(LOGERROR, "New item failed");
 		return (-1);
 	}
 	emit(jam[ix]->trailer);
@@ -436,25 +436,92 @@ int wordDatabaseAmendItem(int ix, char *defaultTableName) {
 	char *tableName = (char *) calloc(1, 4096);
 	char *tmp = (char *) calloc(1, 4096);
 	char *qStr = (char *) calloc(1, 4096);
+	char *nvpStr = (char *) calloc(1, 4096);
+
+	getWord(tableName, args, 2, " \t");
+	if (!tableName) {
+		logMsg(LOGERROR, "Amend item failed - no table name supplied");
+		return (-1);
+	}
+	sprintf(qStr, "DESC %s", tableName);
+	int status = doSqlQuery(qStr);
+	if (status == -1) {
+		logMsg(LOGERROR, "Amend item failed - cant 'describe' table");
+		return (-1);
+	}
+	MYSQL_RES *res = getSqlQueryRES();
+	if (res == NULL) {
+		logMsg(LOGERROR, "Amend item cannot describe database table - returned null resultset");
+		return(-1);
+	}
+
+	// Find the primary key variable (must exist)
+	sprintf(tmp, "%s.%s", tableName, "_id");
+	VAR *idVar = findVarStrict(tmp);
+	if (!idVar) {
+		logMsg(LOGERROR, "Amend item requires the _id variable to be set");
+		return(-1);
+	}
+
+	int numFields = mysql_num_fields(res);
+	while (MYSQL_ROW row = mysql_fetch_row(res)) {
+		if (!strcmp(row[0], "_id"))
+			continue;
+		sprintf(tmp, "%s.%s", tableName, row[0]);
+		VAR *seekVar = findVarStrict(tmp);
+		if (!seekVar)
+			continue;
+		if (strlen(nvpStr) != 0)
+			strcat(nvpStr, ", ");
+		sprintf(tmp, "%s = '%s'", row[0], seekVar->portableValue);
+		strcat(nvpStr, tmp);
+	}
+	sprintf(qStr,"UPDATE %s SET %s WHERE _id = '%s'", tableName, nvpStr, idVar->portableValue);
+	logMsg(LOGDEBUG, "item amend about to issue query [%s]", qStr);
+	status = doSqlQuery(qStr);
+	if (status == -1) {
+		logMsg(LOGERROR, "Amend item failed");
+		return (-1);
+	}
 
 	emit(jam[ix]->trailer);
 	free(tableName);
 	free(qStr);
+	free(nvpStr);
 	free(tmp);
 }
 
+// Create if not exist, amend if exist
 int wordDatabaseUpdateItem(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
 	char *tableName = (char *) calloc(1, 4096);
 	char *tmp = (char *) calloc(1, 4096);
-	char *qStr = (char *) calloc(1, 4096);
+	int res = 0;
+
+	getWord(tableName, args, 2, " \t");
+	if (!tableName) {
+		logMsg(LOGERROR, "Update item failed - no table name supplied");
+		return (-1);
+	}
+
+	// Find the primary key. If it exists WITH A VALUE it's a new, otherwise an amend)
+	sprintf(tmp, "%s.%s", tableName, "_id");
+	VAR *idVar = findVarStrict(tmp);
+	if ((!idVar) || (strlen(idVar->portableValue) == 0)) {
+		logMsg(LOGDEBUG, "Update item resolves to New item");
+		res = wordDatabaseNewItem(ix, defaultTableName);
+	}
+	else {
+		logMsg(LOGDEBUG, "Update item resolves to Amend item");
+		res = wordDatabaseAmendItem(ix, defaultTableName);
+	}
 
 	emit(jam[ix]->trailer);
 	free(tableName);
-	free(qStr);
 	free(tmp);
+	return(res);
 }
 
 int wordDatabaseRemoveTable(int ix, char *defaultTableName) {

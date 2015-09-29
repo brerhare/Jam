@@ -90,7 +90,7 @@ class simple
 		$this->apiHtml = str_replace("<substitute-controls>", $playControl, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-js-video-controls>", $jsVideoControl, $this->apiHtml);
 
-		$this->apiHtml = str_replace("<substitute-video>", Yii::app()->getBaseUrl(true) . "/userdata/jelly/video/" . $this->video, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-video>", Yii::app()->getBaseUrl(true) . $this->video, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-width>", $this->width, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-height>", $this->height, $this->apiHtml);
 
@@ -126,6 +126,7 @@ class simple
 		<div id='displayBox' style='height:<substitute-height>px; width:<substitute-width>px;'>
 				<video id="html5Vid" width=<substitute-width> height=<substitute-height> <substitute-js-video-controls> <substitute-controls> >
 					<source src='<substitute-video>.m4v' type='video/mp4'>
+					<source src='<substitute-video>.mp4' type='video/mp4'>
 					<source src='<substitute-video>.webm' type='video/webm'>
 					<source src='<substitute-video>.ogv' type='video/ogg'>
 					"Your browser does not support the video tag."

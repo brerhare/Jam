@@ -243,8 +243,8 @@ css.position = absolute
 	fx.rounding = 10px
 	css.border = 4px solid #25519c
 	css.background-color = white
-#	jam.embed = /jam/template/contactForm.tpl
-	jam.iframe = /jam/template/contactForm.tpl
+#	jam.embed = /run/contactForm
+	jam.iframe = /run/contactForm
 
 	[contact-details]
 	css.margin-top = 40px

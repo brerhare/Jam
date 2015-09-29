@@ -9,9 +9,10 @@ Doing...
 {{@remove table stock_supplier_order_item}}
 {{@remove table stock_container}}
 
+{{{@X TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!! reference unique required below}}
 {{@new table stock_supplier_order
 	uid						number
-	reference				string		unique required
+	reference				string
 	supplier_id				number		required
 	supplier_reference		string
 	container_id			number
