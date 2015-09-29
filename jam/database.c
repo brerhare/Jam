@@ -455,6 +455,7 @@ int doSqlQuery(char *qStr) {
 	int status = mysql_query(conn, qStr);
 	if (status != 0)
 		logMsg(LOGERROR, "Sql query error %s", sqlError());
+	logMsg(LOGMICRO, "Executed sql query");
 	return(status);
 }
 

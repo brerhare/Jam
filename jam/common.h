@@ -71,4 +71,6 @@ int scratchJs(char *str, ...);	// @@TODO also need a includeJs() (includes but n
 extern char *documentRoot;
 extern FILE *scratchJsStream;
 
+extern int cmdSeqnum;	// every @jamcommand has a unique sequence number. Can be used for unique field names in grids
+
 #endif /* __COMMON_H_INCLUDED */
