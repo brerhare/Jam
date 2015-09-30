@@ -105,8 +105,10 @@ class simple
 
 		// JS
 		$this->apiJs   = str_replace("<substitute-click-function>", $this->clickFunction, $this->apiJs);
-		if ($this->clickFunction == "playVideo")
-			$this->apiHtmls .= "<script> $(document).ready(function(){ playVideo(); }); </script>";
+		if ($this->clickFunction == "playVideo")	{
+			$this->apiHtml .= "<script> $(document).ready(function(){ playVideo(); }); </script>";
+			$this->apiHtml = str_replace("fancybox", "unfancybox", $this->apiHtml);
+		}
 
 		$retArr = array();
 		$retArr[0] = $this->apiHtml;
