@@ -96,7 +96,7 @@ function runAction(action, element, output, callback) {
 		},
 		error: function(jqXHR, textStatus, errorThrown) {
 			console.log(textStatus, errorThrown);
-			alert('Ajax failure sending form ' + element + " \n" + errorThrown + "\n(" + textStatus + ")");
+			alert('Ajax failure communicating with server: ' + element + " \n" + errorThrown + "\n(" + textStatus + ")");
 		}
 	});
     //e.preventDefault(); //STOP default action
