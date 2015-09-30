@@ -19,7 +19,6 @@
 #include "wordDatabase.h"
 #include "wordHtml.h" 
 #include "wordMisc.h"
-#include "wordCustom.h"
 #include "database.h"
 #include "list.h"
 #include "stringUtil.h"
@@ -376,31 +375,29 @@ int control(int startIx, char *defaultTableName) {
 //		-----------------------------------------
 			emit(jam[ix]->trailer);
 //		-----------------------------------------
-		} else if (!(strcmp(cmd, "@custom"))) {
-//		-----------------------------------------
-			if (args) {
-				getWord(tmp, args, 1, " \t");
-				if (*tmp) {
-					if (!strcmp(tmp, "html"))
-						wordCustomHtml(ix, defaultTableName);
-				}
-			}
-//		-----------------------------------------
 		} else if (!(strcmp(cmd, "@html"))) {
 //		-----------------------------------------
 			if (args) {
 				getWord(tmp, args, 1, " \t");
 				if (*tmp) {
-					if (!strcmp(tmp, "grid"))
-						wordHtmlGrid(ix, defaultTableName);
-					else if ( (!strcmp(tmp, "input")) || (!strcmp(tmp, "date")) )
+					if ( (!strcmp(tmp, "input")) || (!strcmp(tmp, "date")) )
 						wordHtmlInput(ix, defaultTableName);
 					else if (!strcmp(tmp, "inp"))
 						wordHtmlInp(ix, defaultTableName);
+
+					else if ( (!strcmp(tmp, "gridinput")) || (!strcmp(tmp, "griddate")) )
+						wordHtmlGridInput(ix, defaultTableName);
+					else if (!strcmp(tmp, "gridinp"))
+						wordHtmlGridInp(ix, defaultTableName);
+
 					else if (!strcmp(tmp, "textarea"))
 						wordHtmlTextarea(ix, defaultTableName);
 					else if (!strcmp(tmp, "button"))
 						wordHtmlButton(ix, defaultTableName);
+					else if (!strcmp(tmp, "breakpoint"))
+						wordHtmlBreakpoint(ix, defaultTableName);
+					else if (!strcmp(tmp, "sys"))
+						wordHtmlSys(ix, defaultTableName);
 				}
 			}
 //		-----------------------------------------
@@ -451,13 +448,25 @@ int control(int startIx, char *defaultTableName) {
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@update"))) {
 //		-----------------------------------------
-			if (!strcmp(tmp, "item"))
-				wordDatabaseUpdateItem(ix, defaultTableName);
+			if (args) {
+				getWord(tmp, args, 1, " \t");
+				if (*tmp) {
+					logMsg(LOGDEBUG, "@update requested");
+					if (!strcmp(tmp, "item"))
+						wordDatabaseUpdateItem(ix, defaultTableName);
+				}
+			}
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@amend"))) {
 //		-----------------------------------------
-			if (!strcmp(tmp, "item"))
-				wordDatabaseAmendItem(ix, defaultTableName);
+			if (args) {
+				getWord(tmp, args, 1, " \t");
+				if (*tmp) {
+					logMsg(LOGDEBUG, "@amend requested");
+					if (!strcmp(tmp, "item"))
+						wordDatabaseAmendItem(ix, defaultTableName);
+				}
+			}
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@list"))) {
 //		-----------------------------------------
@@ -507,6 +516,7 @@ int control(int startIx, char *defaultTableName) {
 					clearVarValues(listVar);
 					fillVarDataTypes(listVar, p);
 					logMsg(LOGMICRO, "@each (list %s) starting recurse", listName);
+					cmdSeqnum++;		// up the unique sequence number
 					control((ix + 1), defaultTableName);
 					logMsg(LOGMICRO, "@each (list %s) ended recurse", listName);
 					p = (char *) listNext(listName);
@@ -525,6 +535,7 @@ int control(int startIx, char *defaultTableName) {
 				while (sqlGetRow2Var(rp) != SQL_EOF) {
 					emit(jam[ix]->trailer);
 					logMsg(LOGMICRO, "@each (db table %s) starting recurse", givenTableName);
+					cmdSeqnum++;		// up the unique sequence number
 					control((ix + 1), givenTableName);
 					logMsg(LOGMICRO, "@each (db table %s) ended recurse", givenTableName);
 				}

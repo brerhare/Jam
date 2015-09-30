@@ -1,3 +1,6 @@
+// ----------------------------------------------------------------------------------------------------------
+// Navigation
+
 function backButton() {
 	window.history.back();
 }
@@ -64,6 +67,8 @@ function runAction(action, element, output, callback) {
 				formURL = obj.attr("action");
 		} else {											// not a form element
 			var obj = document.getElementsByName(el[i]);		// .. try to get it
+			if (!(obj))
+				obj = document.getElementById(el[i]);
 			if ((obj) && (obj.length > 0)) {					// got it
 				postData += '&' + el[i] + '=' + encodeURIComponent(obj[0].value);
 			} else {											// not ANY kind of element, so just send as is (a=b)
@@ -118,6 +123,46 @@ function basename(path) {
 function dirname(path) {
 	return path.replace(/\\/g,'/').replace(/\/[^\/]*$/, '');;
 }
+
+// ----------------------------------------------------------------------------------------------------------
+// Event handlers
+
+// Call a jam-supplied event handler
+function fn(obj, event) {
+	var localFunc = '';
+	if (event.type == 'change') {
+		localFunc = 'on' + event.type.charAt(0).toUpperCase() + event.type.slice(1) + '_' + obj.name;
+	}
+	localFunc = localFunc.split('.').join('_');
+	if (localFunc != '') {
+		if (typeof window[localFunc] === "function")
+			window[localFunc](obj);
+	}
+}
+
+// Get a sibling element in a grid eg we want element 'SEQ_39_table.field'
+function getSibling(callingObj, siblingName) {	// eg obj and 'table.field'
+	return document.getElementById(getRowPrefix(callingObj) + siblingName);
+}
+
+// Get a non-grid element by name
+function get(name) {
+	return document.getElementsByName(name)[0];
+}
+
+// extract the row prefix ('SEQ_99_') from an object
+function getRowPrefix(obj) {
+	var idSplit = obj.id.split('_');
+	if (idSplit.length < 3) {
+		alert('getRowPrefix requires at least 2 underscores in the passed object id');
+		return(null);
+	}
+	return idSplit[0] + '_' + idSplit[1] + '_';
+}
+
+// ----------------------------------+-----------------------------------------------------------------------
+// End. Dont put anything after here |
+// ----------------------------------+
 
 // Place at end of html to run code after dom loaded but not waiting for images to finish loading
 (function() {

@@ -760,7 +760,8 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 							$settingEmail = $setting->email;
 						// Create url and call curl
 						$yiiSite = str_replace("/index.php", "", Yii::app()->createAbsoluteUrl(Yii::app()->request->getPathInfo()));
-						$jamUrl = $yiiSite . "/jamcgi/jam?template=" . $jamArg . "&jelly.sid=" . $sid . "&jelly.email=" . $settingEmail;
+						//$jamUrl = $yiiSite . "/jamcgi/jam?template=" . $jamArg . "&jelly.sid=" . $sid . "&jelly.email=" . $settingEmail;
+						$jamUrl = $yiiSite . $jamArg . "?jelly.sid=" . $sid . "&jelly.email=" . $settingEmail;
 						if ($jamType == "embed") {
 							$shell_exec = "php " . Yii::app()->basePath . "/../jam/jelly2jam.php" . " " . $jamUrl;
 							$curlContent = shell_exec ($shell_exec);
@@ -897,7 +898,7 @@ if (strstr($blobName, "googlemap"))
 							$height = $val;
 							break;
 						case ("z-index"):
-							$zindex = " style='position:relative; z-index:" . $val . ';" ';
+							$zindex = ' style="position:relative; z-index:' . $val . '";';
 							break;
 						case ("align"):
 							if (($val == 'center') || ($val == 'centre'))
@@ -914,7 +915,7 @@ if (strstr($blobName, "googlemap"))
 					}
 				}
 				if ($alt == "")
-					$this->genInlineHtml('<div class="' . $val . '-container" style="border:0;padding:0;margin:0"><img ' . $fx . $zindex . $align . ' title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.style.display=\'none\'" . " width="' . $width . '" height="' . $height . '"></div>');
+					$this->genInlineHtml('<div class="' . $val . '-container" style="border:0;padding:0;margin:0"><img ' . $fx . $zindex . $align . ' title="' . $tip . '" src="' . $this->dbExpand($url) . '" width="' . $width . '" height="' . $height . '"></div>');
 				else
 					$this->genInlineHtml('<img ' . $zindex . $align . ' title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.onerror=null;this.src=\'' . $this->dbExpand($alt) . '\'" width="' . $width . '" height="' . $height . '">');
 				break;
