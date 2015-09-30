@@ -45,6 +45,7 @@ Doing...
 	sell_by_date			date
 	stock_supplier_order_id	number		required
 	stock_product_id		number		required
+	stock_pack_id			number		required
 }}
 
 {{@new table stock_container

@@ -72,22 +72,23 @@
 				{{@html input hidden stock_supplier_order._id}}
 
 				<table id="lineitemTable" class="uk-table /*uk-table-striped*/ uk-table-condensed" style="border:1px solid #dddddd">
+				<thead>
 					<tr>
 						<th> </th>
 						<th> Code </th>
-						<th> Product </th>
+						<th style='max-width:185px;'> Product </th>
 						<th> Qty </th>
 						<th> Order Unit </th>
-						<th> Price p/item </th>
+						<th> Item Price </th>
 						<th> Line Total </th>
 						<th> Volume </th>
-            			<th>
+            			<th style='min-width:50px;'>
                 			<button type='button' class="uk-button uk-button-mini uk-button-success" onClick="showNewRow()">
                     			<i class="uk-icon-plus"></i>
                 			</button>
             			</th>
 					</tr>
-					<tr id='newrow' style='display:none'>
+					<tr id='newRow' style='display:none'>
 						<td> </td>
 						<td> {{@html gridinp text stock_product.code small}} </td>
 						<td> {{@html gridinp filter stock_supplier_order_item.stock_product_id stock_product.name}} </td>
@@ -105,10 +106,15 @@
                 			</button>
             			</td>
 					</tr>
-{{@each stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order._id}}
-	{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
-	{{line.volume = (stock_product.volume * stock_supplier_order_item.qty)}}
-	{{@sum line.volume as total.volume}}
+					</thead>
+					<tbody name='linebody'>
+
+{{@action showOrderLines}}
+
+	{{@each stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order._id}}
+		{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
+		{{line.volume = (stock_product.volume * stock_supplier_order_item.qty)}}
+		{{@sum line.volume as total.volume}}
 					<tr>
 						<td> {{@html gridinp hidden stock_supplier_order_item._id}} </td>
 						<td> {{@html gridinp disabled stock_product.code small}} </td>
@@ -124,16 +130,20 @@
                 			</button>
             			</td>
 					</tr>
-{{@end}}
+	{{@end}}
 					<tr>
 						<td colspan=6> <center> Container volume <!--{{stock_container.volume}}-->. Free volume <!--{{stock_container.volume - total.volume}}-->.</td>
 						<td> <!--{{line.volume}}--> </td>
 						<td></td>
 					</tr>
+{{@end}}
+					</tbody>
 				</table>
+
 			</div> <!-- uk-width-* -->
 		</div>	<!-- uk-grid -->
 	</form>
+
 </div>	<!-- uk-container -->
 
 {{@action savePurchaseOrder}}
@@ -157,19 +167,7 @@
 
 <script>
 	window.onload = function() {
-		// @@TODO ...
-		cnt = 1;
-		while (true) {
-			flt = 'SEQ_' + cnt + '_stock_product.code';
-			startObj = document.getElementById(flt);
-			if (startObj)
-				calcRowValues(startObj);
-			else
-				break;
-			cnt++;
-			if (cnt > 10)
-				break;
-		}
+		runAction('showOrderLines', 'stock_supplier_order._id', 'linebody', calcAllRowValues);
 	}
 
 	function showNewRow() {
@@ -177,21 +175,25 @@
 		if (obj.value == "")
 			alert('Save header details before adding stock');
 		else
-			document.getElementById('newrow').style.display = 'table-row';
+			document.getElementById('newRow').style.display = 'table-row';
 	}
 	function hideNewRow() {
-		document.getElementById('newrow').style.display = 'none';
+		document.getElementById('newRow').style.display = 'none';
 	}
 	function deleteRow(id) {
 		window.event.cancelBubble = true;   // Prevent any further events
 		var result = confirm('Confirm delete');
 		if (result) {
-			runAction('deletePurchaseOrderRow', 'stock_supplier_order_item._id='+id, '', runJam);
+			runAction('deletePurchaseOrderRow', 'stock_supplier_order_item._id='+id, '', _afterRowDeleted);
 //			var tr = $(elem).closest('tr');
 //			row = tr[0].rowIndex;
 //			document.getElementById('lineitemTable').deleteRow(row);
 		}
 	}
+	function _afterRowDeleted() {
+		runAction('showOrderLines', 'stock_supplier_order._id', 'linebody', calcAllRowValues);
+	}
+
 	function savePurchaseOrder() {
 		obj = document.getElementsByName('stock_supplier_order.supplier_id')[0];
 		if (obj.value == "") {
@@ -229,10 +231,12 @@
 			alert('Invalid quantity');
 			return;
 		}
-		runAction('newPurchaseOrderRow', 'stock_supplier_order._id' + ' ' + prodCodeObj.name + ' ' + prodIdObj.name + ' ' + prodQtyObj.name);
-		hideNewRow();
-		runJam();
+		runAction('newPurchaseOrderRow', 'stock_supplier_order._id' + ' ' + prodCodeObj.name + ' ' + prodIdObj.name + ' ' + prodQtyObj.name, '', _afterNewRowAdded);
 	}
+	function _afterNewRowAdded() {
+		hideNewRow();
+		runAction('showOrderLines', 'stock_supplier_order._id', 'linebody', calcAllRowValues);
+}
 
 	// Grid filter on product code
 	function onChange_stock_product_code(obj) {
@@ -276,6 +280,22 @@ alert('fnd');
 					return;
 				}
 			}
+			else
+				break;
+			cnt++;
+			if (cnt > 10)
+				break;
+		}
+	}
+
+	function calcAllRowValues() {
+		// @@TODO ...
+		cnt = 1;
+		while (true) {
+			flt = 'SEQ_' + cnt + '_stock_supplier_order_item._id';
+			startObj = document.getElementById(flt);
+			if (startObj)
+				calcRowValues(startObj);
 			else
 				break;
 			cnt++;
