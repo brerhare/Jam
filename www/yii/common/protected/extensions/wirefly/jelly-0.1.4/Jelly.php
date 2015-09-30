@@ -729,6 +729,7 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 	private function wordArrayHandler($blobName, $word, $value)
 	{
 		//$this->logMsg("Handling " . $word . " with value " . $value . "\n", 1);
+		$jamHeight = "0";
 		switch ($word)
 		{
 			case "jam":    // NB: DUPS ALLOWED
@@ -736,6 +737,9 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 			{
 				switch ($jamType)
 				{
+					case "iframe-height":
+						$jamHeight = $jamArg;	
+						break;
 					case "embed":
 					case "iframe":
 						// Get uid. From where depends whether site or plugin
@@ -767,7 +771,8 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 							$curlContent = shell_exec ($shell_exec);
 							$this->genInlineHtml($curlContent);
 						} else {
-							$iframe = "<iframe id='frm' onload='scroll(0,0);' width='100%' height='0' scrolling='no' style='overflow-x:hidden; overflow-y:auto;' src='"  .$jamUrl . "' ></iframe>";
+							// Check if iframe has a size
+							$iframe = "<iframe id='frm' onload='scroll(0,0);' width='100%' height='" .$jamHeight . "' scrolling='no' style='overflow-x:hidden; overflow-y:auto;' src='"  .$jamUrl . "' ></iframe>";
 							$this->genInlineHtml($iframe);
 						}
 						break;
