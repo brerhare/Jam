@@ -13,8 +13,8 @@ require ('detectMobile.php');
 class simple
 {
 	//Defaults
-	private $width = "800";
-	private $height = "600";
+	private $width = "auto";
+	private $height = "auto";
 	private $video = "";						// Dont supply an extension. If one is supplied then remove it
 	private $loop = "";
 	private $poster = "";
@@ -33,8 +33,8 @@ class simple
 		$content = "";
 		foreach ($options as $opt => $val)
 		{
-			$val = str_replace("px", "", $val);
-			$val = str_replace("%", "", $val);
+			//$val = str_replace("px", "", $val);
+			//$val = str_replace("%", "", $val);
 			$val = trim($val);
 
 			switch ($opt)
@@ -123,7 +123,7 @@ class simple
 		<script type="text/javascript" src="<substitute-path>/video-js/video.js"></script>
 
 		<div id="jelly-video-simple-container" class="fancybox">
-		<div id='displayBox' style='height:<substitute-height>px; width:<substitute-width>px;'>
+		<div id='displayBox' style='height:<substitute-height>; width:<substitute-width>; margin:0px auto'>
 				<video id="html5Vid" width=<substitute-width> height=<substitute-height> <substitute-js-video-controls> <substitute-controls> >
 					<source src='<substitute-video>.m4v' type='video/mp4'>
 					<source src='<substitute-video>.mp4' type='video/mp4'>
