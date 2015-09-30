@@ -184,12 +184,16 @@
 		window.event.cancelBubble = true;   // Prevent any further events
 		var result = confirm('Confirm delete');
 		if (result) {
-			runAction('deletePurchaseOrderRow', 'stock_supplier_order_item._id='+id, '', runJam);
+			runAction('deletePurchaseOrderRow', 'stock_supplier_order_item._id='+id, '', _afterRowDeleted);
 //			var tr = $(elem).closest('tr');
 //			row = tr[0].rowIndex;
 //			document.getElementById('lineitemTable').deleteRow(row);
 		}
 	}
+	function _afterRowDeleted() {
+		runAction('showOrderLines', 'stock_supplier_order._id', 'linebody', calcAllRowValues);
+	}
+
 	function savePurchaseOrder() {
 		obj = document.getElementsByName('stock_supplier_order.supplier_id')[0];
 		if (obj.value == "") {
