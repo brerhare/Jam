@@ -689,6 +689,10 @@ class traditional
 		// Prepend css to html
 		$this->apiHtml = $css . $this->apiHtml;
 
+		// Center the menu if we can
+		if (($this->default_orientation == "horizontal") && ($this->default_width == ""))
+			$this->apiHtml .= "<style> /*kim*/ nav ul { width:auto !important;} </style>";
+
 		// Prepare to return to the caller
 
 		$html = str_replace("<substitute-data>", $content, $this->apiHtml);
