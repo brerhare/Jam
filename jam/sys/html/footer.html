@@ -10,5 +10,21 @@
 
 <!-- html end generation -->
 {{@html breakpoint body end}}
+
+<!-- Refresh page in back-button -->
+<input type="hidden" id="refreshed" value="no">
+<script type="text/javascript">
+	Xonload = function() {
+alert('on');
+	var e = document.getElementById("refreshed");
+	if (e.value == "no")
+		e.value = "yes";
+	else {
+		e.value = "no";
+		location.reload();
+	}
+}
+</script>
+
 </body>
 </html>

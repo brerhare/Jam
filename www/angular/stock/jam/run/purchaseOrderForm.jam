@@ -215,9 +215,9 @@
 			alert('Invalid container');
 			return;
 		}
-		runAction('savePurchaseOrder', 'purchaseOrderForm');
-		runJam('purchaseOrder');
+		runAction('savePurchaseOrder', 'purchaseOrderForm', '', backButton);
 	}
+
 	function addNewRowButtonClick() {
 		flt = 'SEQ_' + 0 + '_';
 		prodCodeObj = document.getElementById(flt + 'stock_product.code');
