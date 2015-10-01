@@ -69,7 +69,14 @@ int main(int argc, char *argv[]) {
 
 	logMsg(LOGINFO, "--------------------------------------------------------------------------");
 	logMsg(LOGINFO, "Starting");
-	printf("Content-type: text/html; charset=UTF-8\n\n");
+
+	// Output headers to prevent caching
+	printf("Cache-Control: no-store, must-revalidate, max-age=0\r\n");
+	printf("Pragma: no-cache\r\n");
+	printf("Expires: Sat, 26 Jul 1997 05:00:00 GMT\r\n");
+	// Always need this header
+	printf("Content-type: text/html; charset=UTF-8\r\n");
+	printf("\r\n");
 
 	documentRoot = getenv("DOCUMENT_ROOT");
 	logMsg(LOGINFO, "DOCUMENT_ROOT is %s", documentRoot);

@@ -46,6 +46,11 @@ function confirmDelete(id, ref) {
 }
 </script>
 
+<script>
+	window.onload = function() {
+	}
+</script>
+
 {{@action deletePO}}
 	{{@sql delete from stock_supplier_order_item where _id = stock_supplier_order._id}}
 	{{@remove item stock_supplier_order}}
