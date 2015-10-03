@@ -193,11 +193,6 @@
 	}
 
 	function savePurchaseOrder(retFlag) {
-xobj = document.getElementsByName('stock_supplier_order._id')[0];
-if (xobj == null)
-alert('_id non exist!');
-else
-alert('_id is '+xobj.value);
 		obj = document.getElementsByName('stock_supplier_order.supplier_id')[0];
 		if (obj.value == "") {
 			alert('Invalid supplier');
