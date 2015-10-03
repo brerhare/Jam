@@ -38,7 +38,7 @@ int wordHtmlGrid(int ix, char *defaultTableName) {
 	if (!tableName)
 	   die("missing table name to gridify");
 
-	emit(jam[ix]->trailer);
+	emitData(jam[ix]->trailer);
 	free(tableName);
 	free(tmp);
 }
@@ -100,12 +100,12 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	getWord(fieldPlaceholder, args, 6, " \t");
 
 	if ((inputType == INPUT) || (inputType == GRIDINPUT)) {
-		printf("<div class='uk-form-row'>\n");
+		emitData("<div class='uk-form-row'>\n");
 		if (!strcasecmp(fieldType, "filter"))
-			printf("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPlaceholder);
+			emitData("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPlaceholder);
 		else
-			printf("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPrompt);
-		printf("		<div class='uk-form-controls'>\n");
+			emitData("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPrompt);
+		emitData("		<div class='uk-form-controls'>\n");
 	}
 	if (!strcasecmp(fieldType, "filter")) {
 		scratchJs(	"// Handler for autocomplete (%d) \n", randId);
@@ -140,20 +140,20 @@ filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSe
         1     2          3                                    4                            5       6
 {{@html input filter    stock_supplier_order.stock_supplier_id stock_supplier.name medium Supplier}}
 #endif
-		printf("<input type='hidden' id='SEQ_%d_SEARCH_FIELDNAME' value='%s'> \n", randId, fieldSize);
-		printf("<input type='hidden' id='SEQ_%d_SEARCH_RESULT' name='%s' value='%s'> \n", randId, fieldVar, fieldVarValue);
-		printf("<div id='SEQ_%d_SEARCH_DIV' class='uk-autocomplete uk-form' data-uk-autocomplete='off'> \n", randId);
-		printf("	<input type='text' id='SEQ_%d_SEARCH_VALUE' value='%s' class='uk-form-width-%s'> \n", randId, fieldSearchValue, fieldPrompt);
-		printf("	<script type='text/autocomplete'> \n");
-		printf("		<ul class='uk-nav uk-nav-autocomplete uk-autocomplete-results'> \n");
-		printf("			{{~items}} \n");
-		printf("				<li class='clicked' data-value='{{ $item.value }}'  data-id='{{ $item.id }}'> \n");
-		printf("					<a> {{ $item.value }} </a> \n");
-		printf("				</li> \n");
-		printf("			{{/items}} \n");
-		printf("		</ul> \n");
-		printf("	</script> \n");
-		printf("</div> \n");
+		emitData("<input type='hidden' id='SEQ_%d_SEARCH_FIELDNAME' value='%s'> \n", randId, fieldSize);
+		emitData("<input type='hidden' id='SEQ_%d_SEARCH_RESULT' name='%s' value='%s'> \n", randId, fieldVar, fieldVarValue);
+		emitData("<div id='SEQ_%d_SEARCH_DIV' class='uk-autocomplete uk-form' data-uk-autocomplete='off'> \n", randId);
+		emitData("	<input type='text' id='SEQ_%d_SEARCH_VALUE' value='%s' class='uk-form-width-%s'> \n", randId, fieldSearchValue, fieldPrompt);
+		emitData("	<script type='text/autocomplete'> \n");
+		emitData("		<ul class='uk-nav uk-nav-autocomplete uk-autocomplete-results'> \n");
+		emitData("			{{~items}} \n");
+		emitData("				<li class='clicked' data-value='{{ $item.value }}'  data-id='{{ $item.id }}'> \n");
+		emitData("					<a> {{ $item.value }} </a> \n");
+		emitData("				</li> \n");
+		emitData("			{{/items}} \n");
+		emitData("		</ul> \n");
+		emitData("	</script> \n");
+		emitData("</div> \n");
 	}
 	else if (!strcasecmp(fieldType, "keyaction")) {
 		scratchJs(	"// onKeyUp handler for keyaction ID %d \n"
@@ -173,22 +173,22 @@ filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSe
 					"	runAction('%s', 'keyaction %s', '%s'); \n"
 					"} \n"
 					, randId, randId, randId, fieldVar /*actually jam:action*/, fieldSize /*actually input*/, fieldPrompt /*actually outputResult*/);
-		printf("		<input type='text' name=keyaction_%d id='keyaction_%d' value='' onkeyup='onKeyUp_%d()' class='uk-form-width-%s'>\n", randId, randId, randId, fieldPlaceholder);
+		emitData("		<input type='text' name=keyaction_%d id='keyaction_%d' value='' onkeyup='onKeyUp_%d()' class='uk-form-width-%s'>\n", randId, randId, randId, fieldPlaceholder);
 	} else {
 		if (!strcasecmp(fieldType, "disabled")) {
 			strcpy(disabledStr, " disabled ");
 			strcpy(fieldType, "text");
 		}
 		if ((inputType == INPUT) || (inputType == GRIDINPUT))
-			printf("		<input type='%s' name='%s' id='SEQ_%d_%s' value='%s' placeholder='%s' class='uk-form-width-%s' onChange='fn(this, event);' %s>\n", fieldType, fieldVar, randId, fieldVar, fieldVarValue, fieldPlaceholder, fieldSize, disabledStr);
+			emitData("		<input type='%s' name='%s' id='SEQ_%d_%s' value='%s' placeholder='%s' class='uk-form-width-%s' onChange='fn(this, event);' %s>\n", fieldType, fieldVar, randId, fieldVar, fieldVarValue, fieldPlaceholder, fieldSize, disabledStr);
 		else		// 'inp' only
-			printf("		<input type='%s' name='%s' id='SEQ_%d_%s' value='%s' class='uk-form-width-%s' onChange='fn(this, event)' %s>\n", fieldType, fieldVar, randId, fieldVar, fieldVarValue, fieldSize, disabledStr);
+			emitData("		<input type='%s' name='%s' id='SEQ_%d_%s' value='%s' class='uk-form-width-%s' onChange='fn(this, event)' %s>\n", fieldType, fieldVar, randId, fieldVar, fieldVarValue, fieldSize, disabledStr);
 	}
 	if ((inputType == INPUT) || (inputType == GRIDINPUT)) {
-		printf("	</div>\n");
-		printf("</div>\n");
+		emitData("	</div>\n");
+		emitData("</div>\n");
 	}
-	emit(jam[ix]->trailer);
+	emitData(jam[ix]->trailer);
 	free(fieldName);
 	free(fieldType);
 	free(fieldSize);
@@ -252,14 +252,14 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 	getWord(fieldPrompt, args, 4, " \t");
 	getWord(fieldPlaceholder, args, 5, " \t");
 
-	printf("<div class='uk-form-row'>\n");
-	printf("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPrompt);
-	printf("		<div class='uk-form-controls'>\n");
-	printf("		<textarea name='%s' id='%s' cols='%s' rows='%s' placeholder='%s'>%s</textarea>", fieldVar, fieldVar, fieldSize, fieldSize2, fieldPlaceholder, fieldVarValue);
-	printf("	</div>\n");
-	printf("</div>\n");
+	emitData("<div class='uk-form-row'>\n");
+	emitData("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPrompt);
+	emitData("		<div class='uk-form-controls'>\n");
+	emitData("		<textarea name='%s' id='%s' cols='%s' rows='%s' placeholder='%s'>%s</textarea>", fieldVar, fieldVar, fieldSize, fieldSize2, fieldPlaceholder, fieldVarValue);
+	emitData("	</div>\n");
+	emitData("</div>\n");
 
-	emit(jam[ix]->trailer);
+	emitData(jam[ix]->trailer);
 	free(fieldName);
 	free(fieldSize);
 	free(fieldSize2);
@@ -305,7 +305,7 @@ int wordHtmlButton(int ix, char *defaultTableName) {
 	   return(-1);
 	}
 
-	printf("<button type='button' onClick='buttonClick%d()' class='uk-button uk-button-%s uk-button-%s'>%s</button>\n", buttonId, buttonSize, buttonType, buttonText);
+	emitData("<button type='button' onClick='buttonClick%d()' class='uk-button uk-button-%s uk-button-%s'>%s</button>\n", buttonId, buttonSize, buttonType, buttonText);
 	sprintf(buttonJS, "<script>\nfunction buttonClick%d() {\n", buttonId);
 	int cnt = 2;
 	while (char *block = strTrim(getWordAlloc(args, cnt++, "\n"))) {
@@ -326,11 +326,11 @@ int wordHtmlButton(int ix, char *defaultTableName) {
 			sprintf(tmp, "%s(", command);
 			strcat(buttonJS, tmp);
 			int ix = 1;
-//printf("<br> \n----->%s <br>\n", pBlock);
+//emitData("<br> \n----->%s <br>\n", pBlock);
 			while(char *runActionArg = strTrim(getWordAlloc(pBlock, ix, " "))) {
 				if (!runActionArg)
 					break;
-//printf("-->%s <br>\n", runActionArg);
+//emitData("-->%s <br>\n", runActionArg);
 				if (ix != 1)
 					strcat(buttonJS, ", ");
 				if (ix < 4) {
@@ -351,12 +351,12 @@ int wordHtmlButton(int ix, char *defaultTableName) {
 			sprintf(tmp, "%s\n", block);
 			strcat(buttonJS, tmp);
 		}
-//printf("-----> <br>\n");
+//emitData("-----> <br>\n");
 		free(block);
 	}
 	strcat(buttonJS, "}\n</script>\n");
-	printf("%s", buttonJS);
-	emit(jam[ix]->trailer);
+	emitData("%s", buttonJS);
+	emitData(jam[ix]->trailer);
 	free(buttonText);
 	free(buttonType);
 	free(buttonSize);
@@ -396,7 +396,7 @@ int wordHtmlSelect(int ix, char *defaultTableName) {
 	getWord(fieldSelected, args, 5, " \t");
 
 	if ((!strchr(fieldVar, '.')) && (defaultTableName))
-		sprintf(fieldVar, "%s.%s", fieldVar, defaultTableName);
+		semitData(fieldVar, "%s.%s", fieldVar, defaultTableName);
 	variable = findVarStrict(fieldVar);
 	if (variable)
 		strcpy(fieldVarValue, variable->portableValue);
@@ -404,15 +404,15 @@ int wordHtmlSelect(int ix, char *defaultTableName) {
 	getWord(fieldPrompt, args, 4, " \t");
 	getWord(fieldPlaceholder, args, 5, " \t");
 
-	printf("<div class='uk-dropdown uk-dropdown-scrollable'>\n");
-	printf(""
+	emitData("<div class='uk-dropdown uk-dropdown-scrollable'>\n");
+	emitData(""
 
-	printf("<div class='uk-dropdown uk-dropdown-scrollable>\n");
-	printf("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPrompt);
-	printf("		<div class='uk-form-controls'>\n");
-	printf("		<textarea name='%s' id='%s' cols='%s' rows='%s'>%s</textarea>", fieldVar, fieldVar, fieldSize, fieldSize2, fieldVarValue);
-	printf("	</div>\n");
-	printf("</div>\n");
+	emitData("<div class='uk-dropdown uk-dropdown-scrollable>\n");
+	emitData("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPrompt);
+	emitData("		<div class='uk-form-controls'>\n");
+	emitData("		<textarea name='%s' id='%s' cols='%s' rows='%s'>%s</textarea>", fieldVar, fieldVar, fieldSize, fieldSize2, fieldVarValue);
+	emitData("	</div>\n");
+	emitData("</div>\n");
 
 
 <select name="{filter.select}">
@@ -422,7 +422,7 @@ int wordHtmlSelect(int ix, char *defaultTableName) {
 </select>
 
 
-	emit(jam[ix]->trailer);
+	emitData(jam[ix]->trailer);
 	free(fieldVarName);
 	free(fieldVarValue);
 	free(fieldSize);
@@ -501,7 +501,7 @@ int wordHtmlSys(int ix, char *defaultTableName) {
 			logMsg(LOGDEBUG, "RES is non-null");
 			SQL_RESULT *rp = sqlCreateResult(tableName, res);
 			int first = 1;
-			printf("[");
+			emitData("[");
 			while (sqlGetRow2Var(rp) != SQL_EOF) {
 				VAR *v = findVarStrict(variableField->portableValue);
 				sprintf(tmp, "%s.%s", tableName, idField);
@@ -513,11 +513,11 @@ int wordHtmlSys(int ix, char *defaultTableName) {
 				if (first)
 					first = 0;
 				else
-					printf(", ");
+					emitData(", ");
 				// Avoid single quotes - the formal JSON spec doesnt allow them
-				printf("{\"value\":\"%s\", \"id\":\"%d\"}", v->portableValue,  atoi(_id->portableValue));
+				emitData("{\"value\":\"%s\", \"id\":\"%d\"}", v->portableValue,  atoi(_id->portableValue));
 			}
-			printf("]");
+			emitData("]");
 		} else
 			logMsg(LOGDEBUG, "RES is null");
 		free(q);
@@ -527,7 +527,7 @@ int wordHtmlSys(int ix, char *defaultTableName) {
 		free(fieldName);
 	}
 
-	emit(jam[ix]->trailer);
+	emitData(jam[ix]->trailer);
 	free(sysName);
 	free(tmp);
 }
@@ -595,12 +595,12 @@ int wordHtmlBreakpoint(int ix, char *defaultTableName) {
 			// Embed the db name in the html for any @action calls
 			if (connDbName == NULL)
 				connDbName = strdup("");
-			printf("<input type='hidden' id='_dbname' name='_dbname' value='%s'>", connDbName);
+			emitData("<input type='hidden' id='_dbname' name='_dbname' value='%s'>", connDbName);
 			logMsg(LOGDEBUG, "created hidden _dbname element");
 		}
 		free(breakpointBodyArg);
 	}
-	emit(jam[ix]->trailer);
+	emitData(jam[ix]->trailer);
 	free(breakpointName);
 	free(tmp);
 }

@@ -55,6 +55,11 @@ typedef struct {
 extern VAR *var[MAX_VAR];
 
 // Common.c functions
+int emitHeader(char *str, ...);
+int endHeader();
+int emitData(char *str, ...);
+int endData();
+
 int addVar(VAR *newVar);
 VAR *findVarStrict(char *qualifiedName);
 VAR *findVarLenient(char *name, char *prefix);void emit(char *line);
@@ -67,6 +72,9 @@ char *expandVarsInString(char *str, char *tableName);
 int isCalculation(char *str);
 char *calculate(char *str);
 int scratchJs(char *str, ...);	// @@TODO also need a includeJs() (includes but no dups)
+
+extern int jamDataRequested;
+int oobJamData();
 
 extern char *documentRoot;
 extern FILE *scratchJsStream;

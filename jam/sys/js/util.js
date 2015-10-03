@@ -56,7 +56,7 @@ function runAction(action, element, output, callback) {
 		runJam = action;
 	}
 	// Gather all the elements to send
-	var postData = 'ajax=1';
+	var postData = 'jamDataRequested=1';
 	var el = element.split(" ");
 	el.push("_dbname");											// always try to append this (for runactions)
 	for (i = 0; i < el.length; i++) {
@@ -78,6 +78,7 @@ function runAction(action, element, output, callback) {
 		}
 //alert('assembling data. So far we have : ' + postData);
 	}
+	checkSanity('BEFORE AJAX ');
 	var sendURL = runURL + '/' + runJam;
 //alert('sending to - \nurl : ' + sendURL + '\ndata : ' + postData);
 	$.ajax( {
@@ -86,17 +87,55 @@ function runAction(action, element, output, callback) {
 		data : postData,
 		success:function(data, textStatus, jqXHR) {
 //alert('back with: ' + data);
+
+            // Check for oob data
+            var spl = data.split("{oobData}");
+            if (spl.length > 1) {
+				oobData = spl[1];
+//alert('has oob data:' + oobData + ' of length ' + oobData.length);
+                var oob = [];
+                oob = JSON.parse(decodeURIComponent(spl[1]));
+                for (i = 0; i < oob.length; i++) {
+					var oobName = oob[i]['name'];
+					var oobValue = oob[i]['value'];
+console.log('processing ' + oobName + ' : ' + oobValue);
+					var obj = document.getElementsByName(oobName);
+					if (obj[0] == null) {
+						var input = document.createElement("input");
+						input.setAttribute("type", "hidden");
+						input.setAttribute("name", oobName);
+						input.setAttribute("id", oobName);
+						input.setAttribute("value", decodeURIComponent(oobValue));
+console.log('   creating');
+						document.body.appendChild(input);
+					} else {
+console.log('   updating');
+						obj[0].value = decodeURIComponent(oobValue);
+					}
+                }
+console.log('-------------------------------------------------------------------------------------');
+                // Strip out oob from data
+                data = spl[0];
+            }
+
 			if (output != '') {
+				checkSanity('BACK FROM AJAX ');
 				var target = document.getElementsByName(output);
-				target[0].innerHTML = data;
+				if (target[0] instanceof HTMLInputElement) {
+//					alert('is inp');
+					target[0].value = data;
+				} else {
+//					alert('isnt inp');
+					target[0].innerHTML = data;
+				}
 			}
 			if (callback != '') {
 				callback();
 			}
 		},
-		error: function(jqXHR, textStatus, errorThrown) {
-			console.log(textStatus, errorThrown);
-			alert('Ajax failure communicating with server: ' + element + " \n" + errorThrown + "\n(" + textStatus + ")");
+		error: function(xhr, textStatus, errorThrown) {
+			console.log(xhr, textStatus, errorThrown);
+			alert('Ajax failure communicating with server: ' + xhr.status + "(" + xhr.responseText + ")\n" + errorThrown + "\n(" + textStatus + ")");
 		}
 	});
     //e.preventDefault(); //STOP default action
@@ -161,6 +200,36 @@ function getRowPrefix(obj) {
 }
 
 // ----------------------------------+-----------------------------------------------------------------------
+// Init stuff
+
+// Create a hidden element for each URL parameter this page was called with
+function createHiddenElementsFromUrlParams() {
+	var srch = window.location.search;
+	if ((srch.indexOf('?') == -1) && (srch.indexOf('&') == -1))
+		return;
+	parArr = srch.split("?")[1].split("&");
+	for (var i = 0; i < parArr.length; i++) {
+		parr = parArr[i].split("=");
+		//alert('name:['+parr[0]+'] has value:['+decodeURIComponent(parr[1])+']');
+		var input = document.createElement("input");
+		input.setAttribute("type", "hidden");
+		input.setAttribute("name", parr[0]);
+		input.setAttribute("id", parr[0]);
+		input.setAttribute("value", decodeURIComponent(parr[1]));
+		document.body.appendChild(input);
+checkSanity('ONLOAD ANON FUNCTION ');
+	}
+}
+
+function checkSanity(str) {
+return;
+	var target = document.getElementsByName('stock_supplier_order._id');
+	if (target == null) alert(str+' sanity object is null, so its name etc will be too');
+	else if (target[0] instanceof HTMLInputElement) {
+		alert(str+' sanity object is non-null ...  Name=[' + target[0].name + '] and Value='+target[0].value);
+	}
+}
+// ----------------------------------+-----------------------------------------------------------------------
 // End. Dont put anything after here |
 // ----------------------------------+
 
@@ -169,5 +238,6 @@ function getRowPrefix(obj) {
    // your page initialization code here
    // the DOM will be available here
 //alert('Popup from the anonymous function at the end of util.js');
+	createHiddenElementsFromUrlParams();
 })()
 

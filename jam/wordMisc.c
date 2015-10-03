@@ -40,7 +40,7 @@ int wordMiscInclude(int ix, char *defaultTableName) {
 	}
 	// Emit any pre-tags
 	if (strstr(args, ".css"))
-		emit("<style>");
+		emitData("<style>");
 	includeFile.read (buf,length);
 	buf[length] = 0;
 	includeFile.close();
@@ -48,12 +48,12 @@ int wordMiscInclude(int ix, char *defaultTableName) {
 		sprintf(tmp, "error: not the whole of %s could be read", args);
 		die(tmp);
 	}
-	emit(buf);
+	emitData(buf);
 	free(buf);
 	// Emit any post-tags
 	if (strstr(args, ".css"))
-	emit("</style>");
-	emit(jam[ix]->trailer);
+	emitData("</style>");
+	emitData(jam[ix]->trailer);
     free(tmp);
 
 }
@@ -112,7 +112,7 @@ int wordMiscCount(int ix, char *defaultTableName) {
     free(countFieldAs);
     free(varToCountQualifiedName);
     free(tmp);
-    emit(jam[ix]->trailer);
+    emitData(jam[ix]->trailer);
 }
 
 int wordMiscSum(int ix, char *defaultTableName) {
@@ -176,7 +176,7 @@ int wordMiscSum(int ix, char *defaultTableName) {
     free(sumFieldName);
     free(sumFieldAs);
     free(varToSumQualifiedName);
-    emit(jam[ix]->trailer);
+    emitData(jam[ix]->trailer);
     free(tmp);
 }
 
@@ -253,7 +253,39 @@ int wordMiscNewList(int ix, char *defaultTableName) {
     free(listName);
     free(listCommand);
     free(listCommandArgs);
-    emit(jam[ix]->trailer);
+    emitData(jam[ix]->trailer);
+}
+
+int wordMiscType(int ix, char *defaultTableName) {
+	char *cmd = jam[ix]->command;
+	char *args = jam[ix]->args;
+	char *rawData = jam[ix]->rawData;
+	char *tmp = (char *) calloc(1, 4096);
+	char *fileName = (char *) calloc(1, 4096);
+
+	getWord(fileName, args, 1, " \t");
+	if (!fileName) {
+		logMsg(LOGERROR, "missing 'file name' to type");
+		return(-1);
+	}
+
+	FILE *fp = fopen(fileName, "r");
+	if (fp == NULL) {
+		logMsg(LOGERROR, "Error opening file '%s'", fileName);
+		return(-1);
+	}
+	fseek(fp, 0, SEEK_END);
+	long len = ftell(fp);
+	char *buf = (char *) malloc(len);
+	fseek(fp, 0, SEEK_SET);
+	fread(buf, 1, len, fp);
+	fclose(fp);
+	emitData(buf);
+
+    free(tmp);
+    free(fileName);
+    free(buf);
+    emitData(jam[ix]->trailer);
 }
 
 int wordMiscEmail(int ix, char *defaultTableName) {
@@ -287,7 +319,7 @@ int wordMiscEmail(int ix, char *defaultTableName) {
 	int cnt = 4;
 	strcpy(mailBody, "");
 	while (1) {
-		if (++sanity > 100) { printf("Overflow in mailbody!"); break; }
+		if (++sanity > 100) { emitData("Overflow in mailbody!"); break; }
 		getWord(tmp, args, cnt++, " ");
 		if (strlen(tmp) == 0)
 			break;
@@ -322,6 +354,6 @@ int wordMiscEmail(int ix, char *defaultTableName) {
     free(mailTo);
     free(mailSubject);
     free(mailBody);
-    emit(jam[ix]->trailer);
+    emitData(jam[ix]->trailer);
 }
 

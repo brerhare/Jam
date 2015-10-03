@@ -36,7 +36,6 @@
 		<div class="uk-grid">
 
 			<div class="uk-width-8-10">
-				{{@html input hidden stock_supplier_order._id}}
 				{{@html input filter stock_supplier_order.supplier_id stock_supplier.name medium Supplier}}
 				{{@html input date stock_supplier_order.delivery_date medium 'Delivery Date' 'require a delivery date field'}}
 			</div>
@@ -48,7 +47,7 @@
 			</div>
 			<div class="uk-width-8-10">
 				<br>
-				<button type='button' class="uk-button uk-button-small uk-button-primary" onClick="savePurchaseOrder()"> Save </button>
+				<button type='button' class="uk-button uk-button-small uk-button-primary" onClick="savePurchaseOrder(1)"> Save </button>
 				{{@Xhtml button Save primary small
 					runAction savePurchaseOrder purchaseOrderForm
 					runJam purchaseOrder
@@ -56,6 +55,7 @@
 				{{@html button Cancel primary small
 					backButton()
 				}}
+				<button type='button' class="uk-button uk-button-small uk-button-primary" onClick="savePurchaseOrder(0)"> Apply </button>
 				<br>
 				<br>
 			</div>
@@ -68,8 +68,6 @@
 		<div class="uk-grid">
 
 			<div class="uk-width-10-10">
-
-				{{@html input hidden stock_supplier_order._id}}
 
 				<table id="lineitemTable" class="uk-table /*uk-table-striped*/ uk-table-condensed" style="border:1px solid #dddddd">
 				<thead>
@@ -111,7 +109,7 @@
 
 {{@action showOrderLines}}
 
-	{{@each stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order._id}}
+	{{@each stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order._id, order by _id DESC}}
 		{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
 		{{line.volume = (stock_product.volume * stock_supplier_order_item.qty)}}
 		{{@sum line.volume as total.volume}}
@@ -172,7 +170,7 @@
 
 	function showNewRow() {
 		obj = document.getElementsByName('stock_supplier_order._id')[0];
-		if (obj.value == "")
+		if ((obj.value == "") || (obj.value == "0"))
 			alert('Save header details before adding stock');
 		else
 			document.getElementById('newRow').style.display = 'table-row';
@@ -194,7 +192,12 @@
 		runAction('showOrderLines', 'stock_supplier_order._id', 'linebody', calcAllRowValues);
 	}
 
-	function savePurchaseOrder() {
+	function savePurchaseOrder(retFlag) {
+xobj = document.getElementsByName('stock_supplier_order._id')[0];
+if (xobj == null)
+alert('_id non exist!');
+else
+alert('_id is '+xobj.value);
 		obj = document.getElementsByName('stock_supplier_order.supplier_id')[0];
 		if (obj.value == "") {
 			alert('Invalid supplier');
@@ -215,7 +218,11 @@
 			alert('Invalid container');
 			return;
 		}
-		runAction('savePurchaseOrder', 'purchaseOrderForm', '', backButton);
+		if (retFlag == 0){	// apply
+			runAction('savePurchaseOrder', 'purchaseOrderForm stock_supplier_order._id');
+		}
+		else				// save
+			runAction('savePurchaseOrder', 'purchaseOrderForm stock_supplier_order._id', '', backButton);
 	}
 
 	function addNewRowButtonClick() {

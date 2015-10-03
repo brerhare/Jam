@@ -17,8 +17,23 @@
 FILE *scratchJsStream = NULL;
 char *scratchJsFileName = "jam/sys/js/scratch.js";		// preceeded by documentroot
 
+#define MAX_EMITHEADER_LEN 409600
+char *emitHeaderBuffer = (char *) malloc(MAX_EMITHEADER_LEN);
+char *emitHeaderPos = emitHeaderBuffer;
+int emitHeaderRemaining = MAX_EMITHEADER_LEN;
+
+#define MAX_EMITDATA_LEN 40960000
+char *emitDataBuffer = (char *) malloc(MAX_EMITDATA_LEN);
+char *emitDataPos = emitDataBuffer;
+int emitDataRemaining = MAX_EMITDATA_LEN;
+
+FILE *emitStream = stdout;
+
+int jamDataRequested = 0;		// Some ajax calls will ask for this
+
 int cmdSeqnum = 0;	// every @jamcommand has a unique sequence number. Can be used for unique field names in grids
 
+char *oobFileName = "/tmp/oobData.tmp";
 //-----------------------------------------------------------
 // Var related
 
@@ -84,7 +99,7 @@ void fillVarDataTypes(VAR *variable, char *value) {
 
 void updateVar(char *qualifiedName, char *value, int type) {
 	if (!qualifiedName)
-		printf("NULL 'qualifiedName' passed to updateVar\n");
+		emitData("NULL 'qualifiedName' passed to updateVar\n");
 	char *safeValue = NULL;
 	if (value)
 		safeValue = strdup(value);
@@ -95,7 +110,7 @@ void updateVar(char *qualifiedName, char *value, int type) {
 		newVar->type = type;
 		clearVarValues(newVar);
 		fillVarDataTypes(newVar, safeValue);
-//printf("NON-TABLE-> NAME=%s TYPE=%d AVALUE=%s NVALUE=%ld DVALUE=%2.f\n", newVar->name, newVar->type, newVar->stringValue, newVar->numberValue, newVar->decimal2Value);
+//emitData("NON-TABLE-> NAME=%s TYPE=%d AVALUE=%s NVALUE=%ld DVALUE=%2.f\n", newVar->name, newVar->type, newVar->stringValue, newVar->numberValue, newVar->decimal2Value);
 		for (int i = 0; i < MAX_VAR; i++) {
 			if (!var[i]) {
 				var[i] = newVar;
@@ -179,11 +194,6 @@ char *expandVarsInString(char *str, char *tableName) {
 // ----------------------------------------------------------
 // General stuff
 
-// Output some content. No sugar added
-void emit(char *line) {
-	printf("%s", line);
-}
-
 void die(const char *errorString) {
 	//fprintf(stderr, "%s\n", errorString);
 	fprintf(stdout, "%s\n", errorString);
@@ -192,51 +202,96 @@ void die(const char *errorString) {
 
 void jamDump(int which) {
 	char *tmp = (char *) calloc(1, 4096);
-	printf("<br><br><div style='font-size:11px;color:#ffffff;background-color:#1b2426'>");
+	emitData("<br><br><div style='font-size:11px;color:#ffffff;background-color:#1b2426'>");
 	if ((which == 2) || (which == 3)) {
 		for (int i = 0; i < MAX_JAM; i++) {
 			if (jam[i] == NULL)
 				break;
-			printf("%02d JAMDUMP %s : %s<br>", i, jam[i]->command, jam[i]->args);
+			emitData("%02d JAMDUMP %s : %s<br>", i, jam[i]->command, jam[i]->args);
 		}
 	}
 	if (which == 3)
-		printf("<hr>");
+		emitData("<hr>");
 	if ((which == 1) || (which == 3)) {
 		for (int i = 0; i < MAX_VAR; i++) {
 			if (var[i] == NULL)
 				break;
 
-			printf("<span");
-			if (var[i]->debugHighlight == 1) printf(" style='color:#decde3'");
-			if (var[i]->debugHighlight == 2) printf(" style='color:yellow;'");
-			if (var[i]->debugHighlight == 3) printf(" style='color:orange;'");
-			if (var[i]->debugHighlight == 4) printf(" style='color:#a8c968;'");
-			if (var[i]->debugHighlight == 5) printf(" style='color:#e28c86;'");
-			if (var[i]->debugHighlight == 6) printf(" style='color:cyan;'");
-			printf(">");
+			emitData("<span");
+			if (var[i]->debugHighlight == 1) emitData(" style='color:#decde3'");
+			if (var[i]->debugHighlight == 2) emitData(" style='color:yellow;'");
+			if (var[i]->debugHighlight == 3) emitData(" style='color:orange;'");
+			if (var[i]->debugHighlight == 4) emitData(" style='color:#a8c968;'");
+			if (var[i]->debugHighlight == 5) emitData(" style='color:#e28c86;'");
+			if (var[i]->debugHighlight == 6) emitData(" style='color:cyan;'");
+			emitData(">");
 
 			*tmp = 0;
 			if (var[i]->source)
 				sprintf(tmp, " : source %s", var[i]->source);
 			if (var[i]->type == VAR_STRING)
-				printf("%02d VARDUMP %s : VAR_STRING %s %s<br>", i, var[i]->name, var[i]->stringValue, tmp);
+				emitData("%02d VARDUMP %s : VAR_STRING %s %s<br>", i, var[i]->name, var[i]->stringValue, tmp);
 			if (var[i]->type == VAR_NUMBER)
-				printf("%02d VARDUMP %s : VAR_NUMBER %ld %s<br>", i, var[i]->name, var[i]->numberValue, tmp);
+				emitData("%02d VARDUMP %s : VAR_NUMBER %ld %s<br>", i, var[i]->name, var[i]->numberValue, tmp);
 			if (var[i]->type == VAR_DECIMAL2)
-				printf("%02d VARDUMP %s : VAR_DECIMAL2 %.2f %s<br>", i, var[i]->name, var[i]->decimal2Value, tmp);
-			printf("</span>");
+				emitData("%02d VARDUMP %s : VAR_DECIMAL2 %.2f %s<br>", i, var[i]->name, var[i]->decimal2Value, tmp);
+			emitData("</span>");
 		}
-		printf("<span style='margin:3px; padding:2px; color:#000; background-color:#decde3;'>prefill </span>");
-		printf("<span style='margin:3px; padding:2px; color:#000; background-color:yellow;'>count </span>");
-		printf("<span style='margin:3px; padding:2px; color:#000; background-color:orange;'>sum </span>");
-		printf("<span style='margin:3px; padding:2px; color:#000; background-color:#a8c968;'>variable </span>");
-		printf("<span style='margin:3px; padding:2px; color:#000; background-color:#e28c86;'>mysql </span>");
-		printf("<span style='margin:3px; padding:2px; color:#000; background-color:cyan;'>list </span>");
+		emitData("<span style='margin:3px; padding:2px; color:#000; background-color:#decde3;'>prefill </span>");
+		emitData("<span style='margin:3px; padding:2px; color:#000; background-color:yellow;'>count </span>");
+		emitData("<span style='margin:3px; padding:2px; color:#000; background-color:orange;'>sum </span>");
+		emitData("<span style='margin:3px; padding:2px; color:#000; background-color:#a8c968;'>variable </span>");
+		emitData("<span style='margin:3px; padding:2px; color:#000; background-color:#e28c86;'>mysql </span>");
+		emitData("<span style='margin:3px; padding:2px; color:#000; background-color:cyan;'>list </span>");
 	}
-	printf("<br>");
-	printf("</div>");
+	emitData("<br>");
+	emitData("</div>");
 	free(tmp);
+}
+
+int emitHeader(char *str, ...) {
+	va_list ap;
+	va_start(ap, str);
+// @@BUG Overflow needs checked. See http://stackoverflow.com/questions/7215921/possible-buffer-overflow-vulnerability-for-va-list-in-c and http://linux.die.net/man/3/vsnprintf for ideas
+	unsigned long len = vsnprintf(emitHeaderPos, emitHeaderRemaining, str, ap);
+	emitHeaderPos += len;
+	*emitHeaderPos = '\0';
+	emitHeaderRemaining -= len;
+
+	sprintf(emitHeaderPos, "\r\n");
+	emitHeaderPos += 2;
+	emitHeaderRemaining -= 2;
+
+	va_end(ap);
+}
+
+int emitData(char *str, ...) {
+	va_list ap;
+	va_start(ap, str);
+// @@BUG Overflow needs checked. See http://stackoverflow.com/questions/7215921/possible-buffer-overflow-vulnerability-for-va-list-in-c and http://linux.die.net/man/3/vsnprintf for ideas
+	unsigned long len = vsnprintf(emitDataPos, emitDataRemaining, str, ap);
+	emitDataPos += len;
+	*emitDataPos = '\0';
+	emitDataRemaining -= len;
+
+	va_end(ap);
+}
+
+int endHeader() {
+	char *p = emitHeaderBuffer;
+	while (*p) {
+		putchar(*p++);
+	}
+	printf("\r\n");
+//logMsg(LOGDEBUG, "ENDHEADER=[%s]", emitHeaderBuffer);
+}
+
+int endData() {
+	char *p = emitDataBuffer;
+	while (*p) {
+		putchar(*p++);
+	}
+//logMsg(LOGDEBUG, "ENDDATA=[%s]", emitDataBuffer);
 }
 
 int scratchJs(char *str, ...) {
@@ -302,7 +357,7 @@ char *calculate(char *str) {
 	sprintf(commandStr, "echo 'scale=%d; %s' | bc", scale, str);
 	fp = popen(commandStr, "r");
 	if (fp == NULL) {
-		printf("calculator failed (1)\n");
+		emitData("calculator failed (1)\n");
 	} else {
 		if (fgets(result, 4096, fp) != NULL) {
 			char *p = strchr(result, '\n');
@@ -311,11 +366,40 @@ char *calculate(char *str) {
 		}
 		pclose(fp);
 	}
-//printf("\n *** [%s][%s] *** \n", str, result);
+//emitData("\n *** [%s][%s] *** \n", str, result);
 	free(commandStr);
 	return result;
 }
 
-//--------------------------------------------------------------------
-// Jam parse extractors
+// ----------------------------------------------------------
+// Out of band vars
+
+// @action - out of band var 'dump' to a <div>
+int oobJamData() {
+//return 0; //@@KIM
+//	FILE *fp = fopen(oobFileName, "w");
+//	if (fp == NULL) {
+//		logMsg(LOGFATAL, "Cant open oob file '%s'", oobFileName);
+//		return(-1);
+//	}
+	int first = 1;
+	logMsg(LOGDEBUG, "Emitting oob jamData");
+	printf("{oobData}");
+	printf("[");
+	for (int i = 0; i < MAX_VAR; i++) {
+		if (var[i] == NULL)
+			break;
+		if (first)
+			first = 0;
+		else
+			printf(", ");
+		// Avoid single quotes - the formal JSON spec doesnt allow them
+		printf("{\"name\":\"%s\", \"value\":\"%s\"}", var[i]->name,  var[i]->portableValue);
+	}
+	printf("]");
+//	fclose(fp);
+	logMsg(LOGDEBUG, "Finished emitting oob jamData");
+	//fflush(stdout);
+
+}
 

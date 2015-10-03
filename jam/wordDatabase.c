@@ -35,11 +35,11 @@ int wordDatabaseListDatabases(int ix, char *defaultTableName) {
 		if ((!strcmp(row[0], "information_schema")) || (!strcmp(row[0], "mysql")) || (!strcmp(row[0], "performance_schema")))
 			continue;
 		sprintf(tmp, "%s <br>", row[0]);
-		emit(tmp);
+		emitData(tmp);
 	}
 	closeDB();
 
-	emit(jam[ix]->trailer);
+	emitData(jam[ix]->trailer);
 	free(tmp);
 	return 0;
 }
@@ -58,10 +58,10 @@ int wordDatabaseListTables(int ix, char *defaultTableName) {
 		if ((!strcmp(row[0], "information_schema")) || (!strcmp(row[0], "mysql")) || (!strcmp(row[0], "performance_schema")))
 			continue;
 		sprintf(tmp, "%s <br>", row[0]);
-		emit(tmp);
+		emitData(tmp);
 	}
 
-	emit(jam[ix]->trailer);
+	emitData(jam[ix]->trailer);
 	free(tmp);
 	return 0;
 }
@@ -87,7 +87,7 @@ int wordDatabaseNewDatabase(int ix, char *defaultTableName) {
 		return(-1);
 	if (openDB(dbName) != 0)
 		return(-1);
-	emit(jam[ix]->trailer);
+	emitData(jam[ix]->trailer);
 	free(dbName);
 }
 
@@ -105,7 +105,7 @@ int wordDatabaseRemoveDatabase(int ix, char *defaultTableName) {
 	char *qStr = (char *) calloc(1, 4096);
 	sprintf(qStr,"DROP DATABASE IF EXISTS %s", dbName);
 	int status = mysql_query(conn,qStr);
-	emit(jam[ix]->trailer);
+	emitData(jam[ix]->trailer);
 	free(dbName);
 }
 
@@ -118,7 +118,7 @@ int wordDatabaseDatabase(int ix, char *defaultTableName) {
 		die("missing database name");
 	if (openDB(args) != 0)
 		die(mysql_error(conn));
-	emit(jam[ix]->trailer);
+	emitData(jam[ix]->trailer);
 }
 
 int wordDatabaseDescribe(int ix, char *defaultTableName)
@@ -142,8 +142,8 @@ int wordDatabaseDescribe(int ix, char *defaultTableName)
 		if (!res)
 			die("Cannot describe database table - returned null resultset");
 		int numFields = mysql_num_fields(res);
-		emit("<table border=1 cellpadding=3 cellspacing=0 style='border: 1pt solid #abdbd7; border-Collapse: collapse'>");
-		emit("<tr><td> Field </td><td> Type </td><td> Empty allowed? </td><td> Key </td><td> Default value </td><td> Extra </td></tr>");
+		emitData("<table border=1 cellpadding=3 cellspacing=0 style='border: 1pt solid #abdbd7; border-Collapse: collapse'>");
+		emitData("<tr><td> Field </td><td> Type </td><td> Empty allowed? </td><td> Key </td><td> Default value </td><td> Extra </td></tr>");
 		while (row = mysql_fetch_row(res)) {
 			strcpy(line, "<tr>");
 			for (int i = 0; i < numFields; i++) {
@@ -151,16 +151,16 @@ int wordDatabaseDescribe(int ix, char *defaultTableName)
 				strcat(line, tmp);
 			}
 			strcat(line, "</tr>");
-			emit(line);
+			emitData(line);
 		}
-		emit("</table>");
+		emitData("</table>");
 		free(query);
 		free(line);
 	} else {
 		die("describe what?");
 	}
 	free(tmp);
-	emit(jam[ix]->trailer);
+	emitData(jam[ix]->trailer);
 }
 
 int wordDatabaseGet(int ix, char *defaultTableName) {
@@ -169,7 +169,7 @@ int wordDatabaseGet(int ix, char *defaultTableName) {
 	SQL_RESULT *rp = sqlCreateResult(givenTableName, res);
 	sqlGetRow2Var(rp);
 	if (jam[ix]) {
-		emit(jam[ix]->trailer);
+		emitData(jam[ix]->trailer);
 	}
 	mysql_free_result(res);
 	free(givenTableName);
@@ -191,7 +191,7 @@ int wordDatabaseSql(int ix, char *defaultTableName) {
 		sqlGetRow2Var(rp);
 		mysql_free_result(res);
 	} else logMsg(LOGDEBUG, "RES is null");
-	emit(jam[ix]->trailer);
+	emitData(jam[ix]->trailer);
 }
 
 //-----------------------------------------------------------------
@@ -259,7 +259,7 @@ int wordDatabaseNewTable(int ix, char *defaultTableName) {
 	strcat(qStr, "  PRIMARY KEY (_id) ) ENGINE = InnoDB;");
 	if (mysql_query(conn,qStr) != 0)
 		die(mysql_error(conn));
-	emit(jam[ix]->trailer);
+	emitData(jam[ix]->trailer);
 	free(tableName);
 	free(qStr);
 	free(tmp);
@@ -306,7 +306,7 @@ int wordDatabaseNewIndex(int ix, char *defaultTableName) {
 	//die(qStr);
 	if (mysql_query(conn,qStr) != 0)
 		die(mysql_error(conn));
-	emit(jam[ix]->trailer);
+	emitData(jam[ix]->trailer);
 	free(tableName);
 	free(indexName);
 	free(qStr);
@@ -325,7 +325,7 @@ int wordDatabaseClearItem(int ix, char *defaultTableName) {
 
 // @@TODO nothing here yet
 
-	emit(jam[ix]->trailer);
+	emitData(jam[ix]->trailer);
 	free(tableName);
 	free(qStr);
 	free(tmp);
@@ -383,7 +383,43 @@ int wordDatabaseNewItem(int ix, char *defaultTableName) {
 		logMsg(LOGERROR, "New item failed");
 		return (-1);
 	}
-	emit(jam[ix]->trailer);
+
+	int newId = mysql_insert_id(conn);
+	sprintf(tmp, "select * from %s where _id = '%d'", tableName, newId);
+	status = doSqlQuery(tmp);
+	if (status == -1) {
+		logMsg(LOGERROR, "Sql query failed - doSqlQuery() failed");
+		return (-1);
+	}
+	logMsg(LOGDEBUG, "Getting RES for raw query");
+	res = mysql_store_result(conn);
+	if (res != NULL) {	// ie the query returned row(s)
+		logMsg(LOGDEBUG, "RES is non-null");
+		SQL_RESULT *rp = sqlCreateResult(tableName, res);
+		sqlGetRow2Var(rp);
+		mysql_free_result(res);
+	} else logMsg(LOGDEBUG, "RES is null");
+
+
+/*
+	sprintf(tmp, "%s.%s", tableName, "_id");
+	VAR *newVar = findVarStrict(tmp);
+	if (newVar) {
+		//delete
+	}
+	newVar = (VAR *) calloc(1, sizeof(VAR));
+	newVar->name = strdup(tmp);
+	newVar->type = VAR_STRING;	// @@FIX!!!!!!
+	clearVarValues(newVar);
+	sprintf(tmp, "%d", newId);
+	fillVarDataTypes(newVar, tmp);
+	if (addVar(newVar) == -1) {
+		logMsg(LOGFATAL, "Cant create any more vars, terminating");
+		exit(1);
+	}
+*/
+	logMsg(LOGDEBUG, "Created new item in table '%s' with _id value '%d'", tableName, newId);
+	emitData(jam[ix]->trailer);
 	free(tableName);
 	free(qStr);
 	free(tmp);
@@ -444,7 +480,7 @@ int wordDatabaseAmendItem(int ix, char *defaultTableName) {
 		return (-1);
 	}
 
-	emit(jam[ix]->trailer);
+	emitData(jam[ix]->trailer);
 	free(tableName);
 	free(qStr);
 	free(nvpStr);
@@ -469,7 +505,7 @@ int wordDatabaseUpdateItem(int ix, char *defaultTableName) {
 	// Find the primary key. If it exists WITH A VALUE it's a new, otherwise an amend)
 	sprintf(tmp, "%s.%s", tableName, "_id");
 	VAR *idVar = findVarStrict(tmp);
-	if ((!idVar) || (strlen(idVar->portableValue) == 0)) {
+	if ((!idVar) || (atoi(idVar->portableValue) == 0)) {
 		logMsg(LOGDEBUG, "Update item resolves to New item");
 		res = wordDatabaseNewItem(ix, defaultTableName);
 	}
@@ -478,7 +514,7 @@ int wordDatabaseUpdateItem(int ix, char *defaultTableName) {
 		res = wordDatabaseAmendItem(ix, defaultTableName);
 	}
 
-	emit(jam[ix]->trailer);
+	emitData(jam[ix]->trailer);
 	free(tableName);
 	free(tmp);
 	return(res);
@@ -496,7 +532,7 @@ int wordDatabaseRemoveTable(int ix, char *defaultTableName) {
 	char *qStr = (char *) calloc(1, 4096);
 	sprintf(qStr,"DROP TABLE IF EXISTS %s", tableName);
 	int status = mysql_query(conn,qStr);
-	emit(jam[ix]->trailer);
+	emitData(jam[ix]->trailer);
 	free(tableName);
 }
 
@@ -516,7 +552,7 @@ int wordDatabaseRemoveIndex(int ix, char *defaultTableName) {
 		die("missing index name to remove");
 	sprintf(qStr,"DROP INDEX %s ON %s", indexName, tableName);
 	int status = mysql_query(conn,qStr);
-	emit(jam[ix]->trailer);
+	emitData(jam[ix]->trailer);
 	free(tableName);
 	free(indexName);
 }
@@ -533,8 +569,8 @@ int wordDatabaseRemoveItem(int ix, char *defaultTableName) {
 	getWord(tableName, args, 2, " \t");
 	if (!tableName) {
 		logMsg(LOGERROR, "Cant remove item, no table name given");
-	   printf("missing table name to remove item from");
-	   return(-1);
+		emitData("missing table name to remove item from");
+		return(-1);
 	}
 	logMsg(LOGDEBUG, "Removing item from table %s", tableName);
 	// The _id variable must exist
@@ -542,7 +578,7 @@ int wordDatabaseRemoveItem(int ix, char *defaultTableName) {
 	variable = findVarStrict(tmp);
 	if (!variable) {
 		logMsg(LOGERROR, "Cant remove item, missing _id variable");
-		printf("missing _id variable to remove item for");
+		emitData("missing _id variable to remove item for");
 		return(-1);
 	}
 	sprintf(qStr,"DELETE FROM %s WHERE _id = %d", tableName, atoi(variable->portableValue));
@@ -552,7 +588,7 @@ int wordDatabaseRemoveItem(int ix, char *defaultTableName) {
 		return (-1);
 	}
 	logMsg(LOGDEBUG, "Removed item %d from %s", atoi(variable->portableValue), tableName);
-	emit(jam[ix]->trailer);
+	emitData(jam[ix]->trailer);
 	free(tableName);
 	free(tmp);
 }

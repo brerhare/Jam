@@ -71,12 +71,11 @@ int main(int argc, char *argv[]) {
 	logMsg(LOGINFO, "Starting");
 
 	// Output headers to prevent caching
-	printf("Cache-Control: no-store, must-revalidate, max-age=0\r\n");
-	printf("Pragma: no-cache\r\n");
-	printf("Expires: Sat, 26 Jul 1997 05:00:00 GMT\r\n");
+	emitHeader("Cache-Control: no-store, must-revalidate, max-age=0");
+	emitHeader("Pragma: no-cache");
+	emitHeader("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 	// Always need this header
-	printf("Content-type: text/html; charset=UTF-8\r\n");
-	printf("\r\n");
+	emitHeader("Content-type: text/html; charset=UTF-8");
 
 	documentRoot = getenv("DOCUMENT_ROOT");
 	logMsg(LOGINFO, "DOCUMENT_ROOT is %s", documentRoot);
@@ -85,13 +84,15 @@ int main(int argc, char *argv[]) {
 	for (int i=0; cgivars[i]; i+= 2) {
 		logMsg(LOGDEBUG, "Parameter [%s] = [%s]", cgivars[i], cgivars[i+1]) ;
 
-		if (!(strcmp(cgivars[i], "jam"))) {
+		if (!strcmp(cgivars[i], "jamDataRequested"))
+			jamDataRequested = 1;
+		if (!strcmp(cgivars[i], "jam")) {
 			logMsg(LOGDEBUG, "Found jam parameter");
 			jamName = strTrim(getWordAlloc(cgivars[i+1], 1, ":"));
 			jamEntrypoint = strTrim(getWordAlloc(cgivars[i+1], 2, ":"));
 			if (jamEntrypoint)
 				logMsg(LOGDEBUG, "Jam parameter contains an action to run: [%s]", jamEntrypoint);
-//printf("[%s][%s]<br>", jamName, jamEntrypoint);
+//emitData("[%s][%s]<br>", jamName, jamEntrypoint);
 // @@KIM! remove next if
 		} else /* if (!jamEntrypoint) */ {
 			VAR *assignVar = (VAR *) calloc(1, sizeof(VAR));
@@ -124,7 +125,7 @@ int main(int argc, char *argv[]) {
 
 int sanity = 0;
 	while (1) {
-if (++sanity > 100) { printf("Overflow in main!"); break; }
+if (++sanity > 100) { emitData("Overflow in main!"); break; }
 		TAGINFO *tagInfo = getTagInfo(jamBuf, "@include");
 		if (tagInfo == NULL)
 			break;
@@ -150,7 +151,7 @@ if (++sanity > 100) { printf("Overflow in main!"); break; }
    		includeFile.read(includeBuf, length);
    		includeBuf[length] = 0;
 	    includeFile.close();
-		//printf("[file=%s][len=%d][includeBuf=%s][1st=%c][strlen=%d]", tmp, length, includeBuf, includeBuf[0], (int) strlen(includeBuf));
+		//emitData("[file=%s][len=%d][includeBuf=%s][1st=%c][strlen=%d]", tmp, length, includeBuf, includeBuf[0], (int) strlen(includeBuf));
 		//exit(0);
 
 		// Include the include
@@ -199,11 +200,15 @@ if (++sanity > 100) { printf("Overflow in main!"); break; }
 			ix++;
 		}
 	}
-	if (startIx == 0)
+	if (startIx == 0) {
 		logMsg(LOGINFO, "Processing command loop starting from @!begin");
-	else
+		control(startIx, NULL);
+	}
+	else {
 		logMsg(LOGINFO, "Processing command loop for @action %s", jamEntrypoint);
-	control(startIx, NULL);
+		control(startIx, NULL);
+	}
+
 	logMsg(LOGINFO, "Finished command loop");
 
 	free(tmp);
@@ -212,119 +217,16 @@ if (++sanity > 100) { printf("Overflow in main!"); break; }
 	if (conn)
 		closeDB();
 
+	// Output the data
+	endHeader();
+	endData();
+	if (jamDataRequested == 1)
+		oobJamData();
+
 	VAR *debugVar = findVarStrict("debug");
 	if ((debugVar) && (atoi(debugVar->portableValue) > 0))
 		jamDump(atoi(debugVar->portableValue));
 	logMsg(LOGINFO, "Normal exit");
-	exit(0);
-}
-
-int Xmain(int argc, char *argv[]) {
-	char *argName[MAX_ARGS];
-	char *argValue[MAX_ARGS];
-	for (int i = 0; i < MAX_ARGS; i++)
-		argName[i] = argValue[i] = NULL;
-	char *eq = "=";
-	int i;
-	for (i = 1; i < argc; i++) {
-		argName[i-1]  = strTrim(getWordAlloc(argv[i], 1, eq));
-		argValue[i-1] = strTrim(getWordAlloc(argv[i], 2, eq));
-		//printf("arg [%s] has value [%s]\n", argName[i-1], argValue[i-1]);
-	}
-
-	char *jamName = NULL;
-	char *jamEntrypoint = NULL;
-	for (i = 0; i < MAX_ARGS; i++) {
-		if (!argName[i])
-			break;
-		if (!(strcmp(argName[i], "jam"))) {
-			jamName = strTrim(getWordAlloc(argValue[i], 1, ":"));
-			jamEntrypoint = strTrim(getWordAlloc(argValue[i], 2, ":"));
-// @@KIM! remove next if
-		} else if (!jamEntrypoint){
-			VAR *assignVar = (VAR *) calloc(1, sizeof(VAR));
-			assignVar->name = strdup(argName[i]);
-			assignVar->type = VAR_STRING;	// @@FIX!!!!!!
-			clearVarValues(assignVar);
-			fillVarDataTypes(assignVar, argValue[i]);
-//printf("PREFILL-->%s<-- with value -->%s<--\n", assignVar->name, assignVar->portableValue);
-			assignVar->source = strdup("prefill");
-			assignVar->debugHighlight = 1;
-			for (int i = 0; i < MAX_VAR; i++) {
-				if (!var[i]) {
-					var[i] = assignVar;
-					break;
-				}
-			}
-		}
-	}
-
-	// @@TODO @@FIX!
-	if (jamEntrypoint) {
-		int add = 0;
-		for (int i = 0; i < MAX_ARGS; i++) {
-			if (!argName[i])
-				break;
-			if (!strcmp(argName[i], "form.addbutton"))
-				add = 1;
-		}
-		if (add) {
-			char *query = (char *) calloc(1, 4096);
-			char *name = NULL, *a1 = NULL, *a2 = NULL, *a3 = NULL, *a4 = NULL, *pc = NULL, *tel = NULL, *email = NULL;
-			for (int i = 0; i < MAX_ARGS; i++) {
-				if (!argName[i])
-					break;
-				if (!argValue[i])
-					continue;
-				if (!strcmp(argName[i], "stock_supplier.name"))	name = strdup(argValue[i]);
-				if (!strcmp(argName[i], "stock_supplier.address1"))	a1 = strdup(argValue[i]);
-				if (!strcmp(argName[i], "stock_supplier.address2"))	a2 = strdup(argValue[i]);
-				if (!strcmp(argName[i], "stock_supplier.address3"))	a3 = strdup(argValue[i]);
-				if (!strcmp(argName[i], "stock_supplier.address4"))	a4 = strdup(argValue[i]);
-				if (!strcmp(argName[i], "stock_supplier.postcode"))	pc = strdup(argValue[i]);
-				if (!strcmp(argName[i], "stock_supplier.telephone"))	tel = strdup(argValue[i]);
-				if (!strcmp(argName[i], "stock_supplier.email"))	email = strdup(argValue[i]);
-			}
-			if (((!name))  || (!strcmp(name, ","))) name = strdup("");
-			if (((!a1) )    || (!strcmp(a1, ","))) a1 = strdup("");
-			if (((!a2) )    || (!strcmp(a2, ","))) a2 = strdup("");
-			if (((!a3) )    || (!strcmp(a3, ",")))  a3 = strdup("");
-			if (((!a4) )    || (!strcmp(a4, ","))) a4 = strdup("");
-			if (((!pc) )    || (!strcmp(pc, ",")))  pc = strdup("");
-			if (((!tel))    || (!strcmp(tel, ","))) tel = strdup("");
-			if (((!email))  || (!strcmp(email, ","))) email = strdup("");
-			if ((name) && (strlen(name)) && (1==1)) {
-				sprintf(query, "insert into stock_supplier values (NULL, 1, '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s');", name,a1,a2,a3,a4,pc,tel,email);
-				if (openDB("stock") != 0)
-					die(mysql_error(conn));
-				if (mysql_query(conn, query)) {
-					fprintf(stderr, "%s\n", mysql_error(conn));
-					exit(1);
-				}
-				closeDB();
-			}
-		}
-	}
-
-	// Read in jam
-	char *jam = readJam(jamName);
-
-	// Create Jam array from jam
-	char *jamPos = jam;
-	while (jamPos = curlies2JamArray(jamPos)) {
-		//printf("%s\n", jam[jamIx]->command);
-		jamIx++;
-	}
-
-
-	// Generate HTML from Jam array
-	control(0, NULL);
-
-	free(jam);
-	free(jamEntrypoint);
-	if (conn)
-		closeDB();
-jamDump(1);
 	exit(0);
 }
 
@@ -374,13 +276,13 @@ int control(int startIx, char *defaultTableName) {
 				free(jam[ix]->trailer);
 				jam[ix]->trailer = newStr;
 			}
-			emit(jam[ix]->trailer);
+			emitData(jam[ix]->trailer);
 		}
 
 //		-----------------------------------------
 		if (!(strcmp(cmd, "@!begin"))) {
 //		-----------------------------------------
-			emit(jam[ix]->trailer);
+			emitData(jam[ix]->trailer);
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@html"))) {
 //		-----------------------------------------
@@ -518,7 +420,7 @@ int control(int startIx, char *defaultTableName) {
 				logMsg(LOGDEBUG, "Its a list. Do listfirst() for list [%s]", listName);
 				char *p = (char *) listFirst(listName);
 				while (p) {
-					emit(jam[ix]->trailer);
+					emitData(jam[ix]->trailer);
 					logMsg(LOGMICRO, "setting list variable [%s] to value [%s]", listName, p);
 					clearVarValues(listVar);
 					fillVarDataTypes(listVar, p);
@@ -532,7 +434,7 @@ int control(int startIx, char *defaultTableName) {
 					ix++;
 				}
 				if (jam[ix]) {
-					emit(jam[ix]->trailer);
+					emitData(jam[ix]->trailer);
 				}
 			} else {		// its a db table
 				logMsg(LOGDEBUG, "Its a db, not a list. do the select()");
@@ -540,7 +442,7 @@ int control(int startIx, char *defaultTableName) {
 				MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 999999);
 				SQL_RESULT *rp = sqlCreateResult(givenTableName, res);
 				while (sqlGetRow2Var(rp) != SQL_EOF) {
-					emit(jam[ix]->trailer);
+					emitData(jam[ix]->trailer);
 					logMsg(LOGMICRO, "@each (db table %s) starting recurse", givenTableName);
 					cmdSeqnum++;		// up the unique sequence number
 					control((ix + 1), givenTableName);
@@ -551,7 +453,7 @@ int control(int startIx, char *defaultTableName) {
 					ix++;
 				}
 				if (jam[ix])
-					emit(jam[ix]->trailer);
+					emitData(jam[ix]->trailer);
 				mysql_free_result(res);
 				free(givenTableName);
 			}
@@ -587,9 +489,9 @@ int control(int startIx, char *defaultTableName) {
 						ix++;
 				}
 				if (jam[ix])
-					emit(jam[ix]->trailer);
+					emitData(jam[ix]->trailer);
 			} else {					// for us - run and stop
-				emit(jam[ix]->trailer);
+				emitData(jam[ix]->trailer);
 				VAR *v = findVarStrict("_dbname");
 				if ((v) && (v->portableValue) && (strlen(v->portableValue))) {
 					logMsg(LOGDEBUG, "@action preprocess - _dbname '%s' was given", v->portableValue);
@@ -610,7 +512,7 @@ int control(int startIx, char *defaultTableName) {
 		} else if (!(strcmp(cmd, "@end"))) {
 //		------------------------------------
 			// Return from an each-end or action-end loop
-//printf("RETURNING\n");
+//emitData("RETURNING\n");
 			free(tmp);
 			return(0);
 //		----------------------------------------
@@ -630,6 +532,11 @@ int control(int startIx, char *defaultTableName) {
 //		------------------------------------
 			wordMiscEmail(ix, defaultTableName);
 //		---------------------------
+		} else if (!(strcmp(cmd, "@type"))) {
+//		------------------------------------
+			wordMiscType(ix, defaultTableName);
+//		---------------------------
+
 		} else if (cmd[0] != '@') {
 //		---------------------------
 /*			data = LHS string
@@ -648,21 +555,21 @@ int control(int startIx, char *defaultTableName) {
 				prepare LHS for receiving result (may not exist yet)
 				LHS var = result string
 			else
-				emit(result string)		*/
+				emitData(result string)		*/
 
 			// data = LHS to start with
 			char *data = (char *) calloc(1, 4096);
 			strcpy(data, cmd);							// eg: [mem.group_count]
-//printf("{AWAY:%s and %s}",cmd, data);
+//emitData("{AWAY:%s and %s}",cmd, data);
 
 			char *resultString = (char *) calloc(1, 4096);
 			char *fullLine = (char *) calloc(1, 4096);
 			strcpy(fullLine, cmd);
-//printf("(CHK:%s and %s)", fullLine, args);
+//emitData("(CHK:%s and %s)", fullLine, args);
 			if (args)
 				strcpy(fullLine, rawData);
 			strTrim(fullLine);
-//printf("T=[%s]\n",fullLine);
+//emitData("T=[%s]\n",fullLine);
 			//sprintf(fullLine, "%s%s", cmd, args);			// eg: [mem.group_count][= stock_group.count]
 			strcpy(data, fullLine);
 
@@ -676,7 +583,7 @@ int control(int startIx, char *defaultTableName) {
 
 			// Expand any fields to values
 			char *expandedData = expandVarsInString(data, defaultTableName);	// Allocates memory - needs freeing
-//printf("\nSTART.... [c=%s][a=%s][f=%s][r=%s][e%s]\n", cmd, args, fullLine, data, expandedData);
+//emitData("\nSTART.... [c=%s][a=%s][f=%s][r=%s][e%s]\n", cmd, args, fullLine, data, expandedData);
 
 			// Either retrieve the data from a field or calculate
 			VAR *searchVar = findVarLenient(data, defaultTableName);
@@ -704,7 +611,7 @@ int control(int startIx, char *defaultTableName) {
 				clearVarValues(assignVar);
 				fillVarDataTypes(assignVar, resultString);
 				if (createNew) {
-//printf("NEW-->%s<-- with value -->%s<--\n", assignVar->name, assignVar->portableValue);
+//emitData("NEW-->%s<-- with value -->%s<--\n", assignVar->name, assignVar->portableValue);
 					assignVar->debugHighlight = 4;
 					if (addVar(assignVar) == -1) {
 						logMsg(LOGFATAL, "Cant create any more vars, terminating");
@@ -712,13 +619,13 @@ int control(int startIx, char *defaultTableName) {
 					}
 				}
 			} else {		// Not an assignment - just emit variable
-				emit(resultString);
+				emitData(resultString);
 				// Clear if necessary
 				VAR *variable = findVarLenient(cmd, defaultTableName);
 				if (variable) {
-//printf("RETR-->%s<--\n", variable->name);
+//emitData("RETR-->%s<--\n", variable->name);
 //char xx[256]; sprintf(xx, "R[%s]:%s", resultString, variable->portableValue);
-//emit(xx);
+//emitData(xx);
 					// Clear if 'count.'
 					if ((variable->source) && (!strcmp(variable->source, "count"))) {
 						variable->numberValue = 0;
@@ -739,7 +646,7 @@ int control(int startIx, char *defaultTableName) {
 					}
 				}
 			}
-			emit(jam[ix]->trailer);
+			emitData(jam[ix]->trailer);
 			free(data);
 			free(expandedData);
 			free(resultString);
@@ -747,7 +654,7 @@ int control(int startIx, char *defaultTableName) {
 //		--------
 		} else {
 //		--------
-			emit(jam[ix]->trailer);
+			emitData(jam[ix]->trailer);
 		}
 
 		// Next
@@ -776,9 +683,9 @@ int main2() {
 	}
 	res = mysql_use_result(conn);
 	/* output table name */
-	printf("MySQL Tables in mysql database:\n");
+	emitData("MySQL Tables in mysql database:\n");
 	while ((row = mysql_fetch_row(res)) != NULL)
-	printf("%s \n", row[0]);
+	emitData("%s \n", row[0]);
 	/* close connection */
 	mysql_free_result(res);
 	mysql_close(conn);
