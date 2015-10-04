@@ -4,6 +4,7 @@ $siteList = array (
 	'1staid4u.co.uk'               => '/home/1staid4u.co.uk/dev/src/www/yii/1staid4u.co.uk',
 	'6tyshadesofbeauty.co.uk'      => '/home/sixtyshadesofbeauty.co.uk/dev/src/www/yii/6tyshadesofbeauty.co.uk',
 	'absoluteclassics.co.uk'       => '/home/absoluteclassics.co.uk/dev/src/www/yii/absoluteclassics.co.uk',
+	'barstobrickridingcentre.co.uk'      => '/home/barstobrickridingcentre.co.uk/dev/src/www/yii/barstobrickridingcentre.co.uk',
 	'beirc.co.uk'                  => '/home/beirc.co.uk/dev/src/www/yii/beirc.co.uk',
 	'breakfreecoaching.co.uk'      => '/home/breakfreecoaching.co.uk/dev/src/www/yii/breakfreecoaching.co.uk',
 	'brycewalkervending.com'       => '/home/brycewalkervending.com/dev/src/www/yii/brycewalkervending.com',
