@@ -78,7 +78,6 @@ function runAction(action, element, output, callback) {
 		}
 //alert('assembling data. So far we have : ' + postData);
 	}
-	checkSanity('BEFORE AJAX ');
 	var sendURL = runURL + '/' + runJam;
 //alert('sending to - \nurl : ' + sendURL + '\ndata : ' + postData);
 	$.ajax( {
@@ -86,40 +85,10 @@ function runAction(action, element, output, callback) {
 		type: "POST",
 		data : postData,
 		success:function(data, textStatus, jqXHR) {
-//alert('back with: ' + data);
-
-            // Check for oob data
-            var spl = data.split("{oobData}");
-            if (spl.length > 1) {
-				oobData = spl[1];
-//alert('has oob data:' + oobData + ' of length ' + oobData.length);
-                var oob = [];
-                oob = JSON.parse(decodeURIComponent(spl[1]));
-                for (i = 0; i < oob.length; i++) {
-					var oobName = oob[i]['name'];
-					var oobValue = oob[i]['value'];
-console.log('processing ' + oobName + ' : ' + oobValue);
-					var obj = document.getElementsByName(oobName);
-					if (obj[0] == null) {
-						var input = document.createElement("input");
-						input.setAttribute("type", "hidden");
-						input.setAttribute("name", oobName);
-						input.setAttribute("id", oobName);
-						input.setAttribute("value", decodeURIComponent(oobValue));
-console.log('   creating');
-						document.body.appendChild(input);
-					} else {
-console.log('   updating');
-						obj[0].value = decodeURIComponent(oobValue);
-					}
-                }
-console.log('-------------------------------------------------------------------------------------');
-                // Strip out oob from data
-                data = spl[0];
-            }
-
+//alert('back with: ' + data + ' of len ' + data.length);
+			data = processOobData(data);
+//alert('fixd with: ' + data + ' of len ' + data.length);
 			if (output != '') {
-				checkSanity('BACK FROM AJAX ');
 				var target = document.getElementsByName(output);
 				if (target[0] instanceof HTMLInputElement) {
 //					alert('is inp');
@@ -149,16 +118,26 @@ function getURLBase() {		// everything but the arguments. ie up to but not inclu
 }
 
 /*
- * What it says. myvar = getURLParameter('someparamname');
+ * @param requestedvar		eg myvar = getURLParameter('someparamname');
+ * @return					eg someparamvalue
+ * usage					someparamvalue = getURLParameter('someparamname');
  */
 function getURLParameter(name) {
   return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
 }
 
+/*
+ * @param path		eg /etc/passwd
+ * @return			eg passwd
+ */
 function basename(path) {
 	return path.replace(/\\/g,'/').replace( /.*\//, '' );
 }
  
+/*
+ * @param path		eg /etc/passwd
+ * @return			eg /etc
+ */
 function dirname(path) {
 	return path.replace(/\\/g,'/').replace(/\/[^\/]*$/, '');;
 }
@@ -217,21 +196,44 @@ function createHiddenElementsFromUrlParams() {
 		input.setAttribute("id", parr[0]);
 		input.setAttribute("value", decodeURIComponent(parr[1]));
 		document.body.appendChild(input);
-checkSanity('ONLOAD ANON FUNCTION ');
 	}
 }
 
-function checkSanity(str) {
-return;
-	var target = document.getElementsByName('stock_supplier_order._id');
-	if (target == null) alert(str+' sanity object is null, so its name etc will be too');
-	else if (target[0] instanceof HTMLInputElement) {
-		alert(str+' sanity object is non-null ...  Name=[' + target[0].name + '] and Value='+target[0].value);
+function processOobData(data) {
+	var spl = data.split("{oobData}");
+	if (spl.length > 1) {
+		console.log('----- oob data begins ---------------------------------------------------------------');
+		oobData = spl[1];
+//alert('found oob data:' + oobData + ' of length ' + oobData.length);
+		var oob = [];
+		oob = JSON.parse(decodeURIComponent(spl[1]));
+		for (i = 0; i < oob.length; i++) {
+			var oobName = oob[i]['name'];
+			var oobValue = oob[i]['value'];
+			var obj = document.getElementsByName(oobName);
+			if (obj[0] == null) {
+				var input = document.createElement("input");
+				input.setAttribute("type", "hidden");
+				input.setAttribute("name", oobName);
+				input.setAttribute("id", oobName);
+				input.setAttribute("value", decodeURIComponent(oobValue));
+console.log('creating ' + oobName + ' : ' + oobValue);
+				document.body.appendChild(input);
+			} else {
+console.log('updating ' + oobName + ' : ' + oobValue);
+				obj[0].value = decodeURIComponent(oobValue);
+			}
+		}
+		// Strip out oob from data
+		data = spl[0];
+		console.log('----- oob data ends -----------------------------------------------------------------');
 	}
+	return data;
 }
-// ----------------------------------+-----------------------------------------------------------------------
-// End. Dont put anything after here |
-// ----------------------------------+
+
+// --------------------------------------------------------+-----------------------------------------------------
+// End. Only put things after here for this function to do | 
+// --------------------------------------------------------+
 
 // Place at end of html to run code after dom loaded but not waiting for images to finish loading
 (function() {
