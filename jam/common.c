@@ -399,7 +399,7 @@ int oobJamData() {
 		else
 			name = strdup(var[i]->portableValue);
 		if (strchr(var[i]->portableValue, '\"'))
-			value = strReplaceAlloc(var[i]->portableValue, """, "*");
+			value = strReplaceAlloc(var[i]->portableValue, "\"", "\\\"");
 		else
 			value = strdup(var[i]->portableValue);
 		// Avoid single quotes - the formal JSON spec doesnt allow them
