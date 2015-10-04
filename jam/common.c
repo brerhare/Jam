@@ -393,8 +393,19 @@ int oobJamData() {
 			first = 0;
 		else
 			printf(", ");
+		char *name, *value;
+		if (strchr(var[i]->name, '"'))
+			name = strReplaceAlloc(var[i]->name, "\"", "\\\"");
+		else
+			name = strdup(var[i]->portableValue);
+		if (strchr(var[i]->portableValue, '\"'))
+			value = strReplaceAlloc(var[i]->portableValue, """, "*");
+		else
+			value = strdup(var[i]->portableValue);
 		// Avoid single quotes - the formal JSON spec doesnt allow them
 		printf("{\"name\":\"%s\", \"value\":\"%s\"}", var[i]->name,  var[i]->portableValue);
+		free(name);
+		free(value);
 	}
 	printf("]");
 //	fclose(fp);

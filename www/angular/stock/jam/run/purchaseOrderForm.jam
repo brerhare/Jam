@@ -172,8 +172,11 @@
 		obj = document.getElementsByName('stock_supplier_order._id')[0];
 		if ((obj.value == "") || (obj.value == "0"))
 			alert('Save header details before adding stock');
-		else
+		else {
+			document.getElementById('SEQ_0_stock_product.code').value = "";
+			document.getElementById('SEQ_0_SEARCH_VALUE').value = "";
 			document.getElementById('newRow').style.display = 'table-row';
+		}
 	}
 	function hideNewRow() {
 		document.getElementById('newRow').style.display = 'none';
@@ -242,6 +245,8 @@
 
 	// Grid filter on product code
 	function onChange_stock_product_code(obj) {
+		obj = document.getElementsByName('stock_product._id');
+		if (obj) obj.parentNode.removeChild(element);
 		calcRowValues(obj);
 		obj2 = getSibling(obj, 'stock_supplier_order_item.qty');
 	}
