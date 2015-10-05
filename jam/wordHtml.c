@@ -502,7 +502,7 @@ int wordHtmlSys(int ix, char *defaultTableName) {
 			SQL_RESULT *rp = sqlCreateResult(tableName, res);
 			int first = 1;
 			emitData("[");
-			while (sqlGetRow2Var(rp) != SQL_EOF) {
+			while (sqlGetRow2Vars(rp) != SQL_EOF) {
 				VAR *v = findVarStrict(variableField->portableValue);
 				sprintf(tmp, "%s.%s", tableName, idField);
 				VAR *_id = findVarStrict(tmp);

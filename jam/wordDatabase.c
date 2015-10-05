@@ -167,7 +167,9 @@ int wordDatabaseGet(int ix, char *defaultTableName) {
 	char *givenTableName = (char *) calloc(1, 4096);
 	MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 1);
 	SQL_RESULT *rp = sqlCreateResult(givenTableName, res);
-	sqlGetRow2Var(rp);
+
+	sqlGetRow2Vars(rp);
+	logMsg(LOGDEBUG, "done sqlCreateResult");
 	if (jam[ix]) {
 		emitData(jam[ix]->trailer);
 	}
@@ -188,7 +190,7 @@ int wordDatabaseSql(int ix, char *defaultTableName) {
 	if (res != NULL) {	// ie the query returned row(s)
 		logMsg(LOGDEBUG, "RES is non-null");
 		SQL_RESULT *rp = sqlCreateResult(defaultTableName, res);
-		sqlGetRow2Var(rp);
+		sqlGetRow2Vars(rp);
 		mysql_free_result(res);
 	} else logMsg(LOGDEBUG, "RES is null");
 	emitData(jam[ix]->trailer);
@@ -319,15 +321,29 @@ int wordDatabaseClearItem(int ix, char *defaultTableName) {
 	char *rawData = jam[ix]->rawData;
 	char *tableName = (char *) calloc(1, 4096);
 	char *tmp = (char *) calloc(1, 4096);
-	char *qStr = (char *) calloc(1, 4096);
-	char *nameStr = (char *) calloc(1, 4096);
-	char *valueStr = (char *) calloc(1, 4096);
 
-// @@TODO nothing here yet
+	getWord(tableName, args, 2, " \t");
+	if (!tableName)
+	   die("missing table name to clear item for");
+
+	sprintf(tmp, "select * from %s limit 1", tableName);
+	logMsg(LOGDEBUG, "Doing dummy sql query [%s]", tmp);
+	int status = doSqlQuery(tmp);
+	if (status == -1) {
+		logMsg(LOGERROR, "Sql query failed - doSqlQuery() failed");
+		return (-1);
+	}
+	logMsg(LOGDEBUG, "Getting RES for raw query");
+	MYSQL_RES *res = mysql_store_result(conn);
+	if (res != NULL) {	// ie the query returned row(s)
+		logMsg(LOGDEBUG, "RES is non-null");
+		SQL_RESULT *rp = sqlCreateResult(tableName, res);
+		sqlClearRowVars(rp);
+		mysql_free_result(res);
+	} else logMsg(LOGDEBUG, "RES is null");
 
 	emitData(jam[ix]->trailer);
 	free(tableName);
-	free(qStr);
 	free(tmp);
 }
 
@@ -396,7 +412,7 @@ int wordDatabaseNewItem(int ix, char *defaultTableName) {
 	if (res != NULL) {	// ie the query returned row(s)
 		logMsg(LOGDEBUG, "RES is non-null");
 		SQL_RESULT *rp = sqlCreateResult(tableName, res);
-		sqlGetRow2Var(rp);
+		sqlGetRow2Vars(rp);
 		mysql_free_result(res);
 	} else logMsg(LOGDEBUG, "RES is null");
 

@@ -163,6 +163,10 @@
 	{{@amend item stock_supplier_order_item}}
 {{@end}}
 
+{{@action getProduct}}
+	{{@get stock_product filter id = givenId}}
+{{@end}}
+
 <script>
 	window.onload = function() {
 		runAction('showOrderLines', 'stock_supplier_order._id', 'linebody', calcAllRowValues);
@@ -245,6 +249,8 @@
 
 	// Grid filter on product code
 	function onChange_stock_product_code(obj) {
+		runAction('getProduct', obj.name, alert);
+return;
 		obj = document.getElementsByName('stock_product._id');
 		if (obj) obj.parentNode.removeChild(element);
 		calcRowValues(obj);
