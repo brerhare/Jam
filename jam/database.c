@@ -107,21 +107,21 @@ int sqlGetRow2Vars(SQL_RESULT *rp) {
 	}
 	logMsg(LOGMICRO, "sqlGetRow2Vars() didnt find a sql row, initialising NULL jam format values");
 
-	sqlClearRowVars(rp); // I replaced the next line with this, so now a 'fail' sets _id to -1
+	sqlClearRowVars(rp); // I replaced the next line with this, so now a 'fail' sets id to -1
 	//_nullifySqlFields(rp->tableName, rp->mysqlHeaders, rp->mysqlTypes, rp->numFields);
 
 	return SQL_EOF;
 }
 
-// Zero all vars applicable to a sql record and set _id to -1
+// Zero all vars applicable to a sql record and set id to -1
 int sqlClearRowVars(SQL_RESULT *rp) {
 // @@FIX why do we need SQL_RESULT? Look at mysql_list_fields() (see http://ropas.snu.ac.kr/n/lib/manual074.html)
 	char *tmp = (char *) calloc(1, 4096);
 	_nullifySqlFields(rp->tableName, rp->mysqlHeaders, rp->mysqlTypes, rp->numFields);
-	sprintf(tmp, "%s._id", rp->tableName);
+	sprintf(tmp, "%s.id", rp->tableName);
 	VAR *seekVar = findVarStrict(tmp);
 	if (!seekVar) {
-		logMsg(LOGERROR, "Cant clear item '%s' because no _id var exists", rp->tableName);
+		logMsg(LOGERROR, "Cant clear item '%s' because no id var exists", rp->tableName);
 		return (-1);
 	}
 	if (seekVar->portableValue)

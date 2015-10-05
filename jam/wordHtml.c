@@ -364,7 +364,7 @@ int wordHtmlButton(int ix, char *defaultTableName) {
 	free(tmp);
 }
 
-//	{{@html select stock_supplier.name stock_supplier._id medium "Choose supplier" stock_purchorder.supplier_id}}
+//	{{@html select stock_supplier.name stock_supplier.id medium "Choose supplier" stock_purchorder.supplier_id}}
 
 int wordHtmlSelect(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
@@ -477,13 +477,9 @@ int wordHtmlSys(int ix, char *defaultTableName) {
 		}
 		getWord(tableName, variableField->portableValue, 1, ".");
 		getWord(fieldName, variableField->portableValue, 2, ".");
-		// Kludge to handle old 'id' vs '_id' field in tables
+		// Kludge to handle old 'id' vs 'id' field in tables
 		char idField[512];
-		sprintf(idField, "_id");
-		if ( (!strcmp(tableName, "stock_customer"))
-		||   (!strcmp(tableName, "stock_location"))
-		||   (!strcmp(tableName, "stock_product")) )
-			sprintf(idField, "id");
+		sprintf(idField, "id");
 		char searchValue[1024];
 		sprintf(searchValue, variableValue->portableValue);
 		if (!strcmp(searchValue, " "))
@@ -505,9 +501,9 @@ int wordHtmlSys(int ix, char *defaultTableName) {
 			while (sqlGetRow2Vars(rp) != SQL_EOF) {
 				VAR *v = findVarStrict(variableField->portableValue);
 				sprintf(tmp, "%s.%s", tableName, idField);
-				VAR *_id = findVarStrict(tmp);
-				if ((!v) || (!_id)) {
-					logMsg(LOGERROR, "internal error - either cant retrieve row jam variable or its _id");
+				VAR *id = findVarStrict(tmp);
+				if ((!v) || (!id)) {
+					logMsg(LOGERROR, "internal error - either cant retrieve row jam variable or its id");
 					return(-1);	
 				}
 				if (first)
@@ -515,7 +511,7 @@ int wordHtmlSys(int ix, char *defaultTableName) {
 				else
 					emitData(", ");
 				// Avoid single quotes - the formal JSON spec doesnt allow them
-				emitData("{\"value\":\"%s\", \"id\":\"%d\"}", v->portableValue,  atoi(_id->portableValue));
+				emitData("{\"value\":\"%s\", \"id\":\"%d\"}", v->portableValue,  atoi(id->portableValue));
 			}
 			emitData("]");
 		} else
