@@ -48,6 +48,16 @@ function confirmDelete(id, ref) {
 
 <script>
 	window.onload = function() {
+
+/*
+var x = new Object;
+x = '[{"name":"jamDataRequested", "value":"1"}, {"name":"stock_product.code", "value":"89524"}, {"name":"_dbname", "value":"stock"}, {"name":"stock_product.id", "value":"13"}, {"name":"stock_product.uid", "value":"1"}, {"name":"stock_product.name", "value":"Irn Bru 330ml"}, {"name":"stock_product.description", "value":"Cans, sold individually"}, {"name":"stock_product.cost", "value":"0.3500"}, {"name":"stock_product.weight", "value":"10.00"}, {"name":"stock_product.height", "value":"40.00"}, {"name":"stock_product.width", "value":"27.00"}, {"name":"stock_product.depth", "value":"12.00"}, {"name":"stock_product.volume", "value":"0.15"}, {"name":"stock_product.notes", "value":"I really hate Irn Bru, please dont order any more :-) who can hate Irn Bru?"}, {"name":"stock_product.label", "value":"Irn Bru Fabricado en escocia, E123 E55"}, {"name":"stock_product.priced_by_weight", "value":"1"}, {"name":"stock_product.stock_group_id", "value":"121"}, {"name":"stock_product.stock_vat_id", "value":"1"}]';
+alert('ok');
+var oob = JSON.parse((x));
+//var oob = JSON.stringify((x));
+console.log(oob);
+*/
+
 	}
 </script>
 

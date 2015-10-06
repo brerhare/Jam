@@ -14,6 +14,8 @@
 #include "log.h"
 #include "stringUtil.h"
 
+CURL *curl = NULL;
+
 FILE *scratchJsStream = NULL;
 char *scratchJsFileName = "jam/sys/js/scratch.js";		// preceeded by documentroot
 

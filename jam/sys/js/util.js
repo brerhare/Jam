@@ -92,10 +92,10 @@ function runAction(action, element, output, callback) {
 				var target = document.getElementsByName(output);
 				if (target[0] instanceof HTMLInputElement) {
 //					alert('is inp');
-					target[0].value = data;
+					target[0].value = decodeURIComponent(data);
 				} else {
 //					alert('isnt inp');
-					target[0].innerHTML = data;
+					target[0].innerHTML = decodeURIComponent(data);
 				}
 			}
 			if (callback != '') {
@@ -203,10 +203,10 @@ function processOobData(data) {
 	var spl = data.split("{oobData}");
 	if (spl.length > 1) {
 		console.log('----- oob data begins ---------------------------------------------------------------');
-		oobData = spl[1];
-//alert('found oob data:' + oobData + ' of length ' + oobData.length);
+		var oobData = spl[1];
+alert('found oob data:' + oobData + ' of length ' + oobData.length);
 		var oob = [];
-		oob = JSON.parse(decodeURIComponent(spl[1]));
+		oob = JSON.parse(spl[1]);
 		for (i = 0; i < oob.length; i++) {
 			var oobName = oob[i]['name'];
 			var oobValue = oob[i]['value'];
@@ -217,10 +217,10 @@ function processOobData(data) {
 				input.setAttribute("name", oobName);
 				input.setAttribute("id", oobName);
 				input.setAttribute("value", decodeURIComponent(oobValue));
-console.log('creating ' + oobName + ' : ' + oobValue);
+console.log('creating ' + oobName + ' : ' + decodeURIComponent(oobValue));
 				document.body.appendChild(input);
 			} else {
-console.log('updating ' + oobName + ' : ' + oobValue);
+console.log('updating ' + oobName + ' : ' + decodeURIComponent(oobValue));
 				obj[0].value = decodeURIComponent(oobValue);
 			}
 		}

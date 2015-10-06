@@ -67,6 +67,12 @@ int main(int argc, char *argv[]) {
 	char *tmp = (char *) calloc(1, 4096);
 	char *jamName = NULL;
 
+	curl = curl_easy_init();
+	if (!curl) {
+		logMsg(LOGFATAL, "Cant initialize curl, aborting");
+		exit(1);
+	}
+
 	logMsg(LOGINFO, "--------------------------------------------------------------------------");
 	logMsg(LOGINFO, "Starting");
 

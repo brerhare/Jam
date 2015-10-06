@@ -2,6 +2,7 @@
 #define __COMMON_H_INCLUDED
 
 #include </usr/include/mysql/mysql.h>
+#include <curl/curl.h>
 
 using namespace std;
 
@@ -9,6 +10,8 @@ extern char *startJam;
 extern char *endJam;
 
 extern int literal;
+
+extern CURL *curl;
 
 #define round(x) ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 

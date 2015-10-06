@@ -364,7 +364,7 @@ int wordHtmlButton(int ix, char *defaultTableName) {
 	free(tmp);
 }
 
-//	{{@html select stock_supplier.name stock_supplier.id medium "Choose supplier" stock_purchorder.supplier_id}}
+//	{{@html select stock_supplier.name stock_supplier. medium "Choose supplier" stock_purchorder.supplier_id}}
 
 int wordHtmlSelect(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
