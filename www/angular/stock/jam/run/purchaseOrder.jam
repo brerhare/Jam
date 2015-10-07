@@ -19,17 +19,17 @@
 			<th> Date </th>
 			<th> Reference </th>
 			<th> Total </th>
-			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('purchaseOrderForm?stock_supplier_order._id=0')"> <i class="uk-icon-plus"></i> New</button> </th>
+			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('purchaseOrderForm?stock_supplier_order.id=0')"> <i class="uk-icon-plus"></i> New</button> </th>
 		</tr>
 {{@each stock_supplier_order}}
 	{{rowId = (rowId + 1)}}	
-		<tr class="rowHighlight" id="R{{rowId}}" onClick="runJam('purchaseOrderForm?stock_supplier_order._id={{_id}}&debug=3')">
-	{{@get stock_supplier filter _id = stock_supplier_order.supplier_id}}
+		<tr class="rowHighlight" id="R{{rowId}}" onClick="runJam('purchaseOrderForm?stock_supplier_order.id={{id}}&debug=3')">
+	{{@get stock_supplier filter id = stock_supplier_order.supplier_id}}
 			<td>{{stock_supplier.name}}</td>
 			<td>{{delivery_date}}</td>
 			<td>{{reference}}</td>
 			<td>{{total}}</td>
-			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{_id}}','{{reference}}')"> <i class="uk-icon-trash"></i></button> </td>
+			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{reference}}')"> <i class="uk-icon-trash"></i></button> </td>
 		</tr>
 {{@end}}
 	</table>
@@ -41,18 +41,18 @@ function confirmDelete(id, ref) {
 	window.event.cancelBubble = true;	// Prevent any further events
 	var result = confirm('Confirm delete of order with reference ' + ref);
 	if (result) {
-		runAction('deletePO', 'stock_supplier_order._id='+id, '', runJam);	
+		runAction('deletePO', 'stock_supplier_order.id='+id, '', runJam);	
 	}
 }
 </script>
 
 <script>
-	window.onload = function() {
-	}
+window.onload = function() {
+}
 </script>
 
 {{@action deletePO}}
-	{{@sql delete from stock_supplier_order_item where _id = stock_supplier_order._id}}
+	{{@sql delete from stock_supplier_order_item where id = stock_supplier_order.id}}
 	{{@remove item stock_supplier_order}}
 {{@end}}
 

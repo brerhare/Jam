@@ -16,11 +16,11 @@
 	}
 </style>
 
-{{@get stock_supplier_order filter _id = stock_supplier_order._id}}
-{{@get stock_supplier filter _id = stock_supplier_order.supplier_id}}
-{{@get stock_container filter _id = stock_supplier_order.container_id}}
+{{@get stock_supplier_order filter id = stock_supplier_order.id}}
+{{@get stock_supplier filter id = stock_supplier_order.supplier_id}}
+{{@get stock_container filter id = stock_supplier_order.container_id}}
 {{@get stock_location filter id = stock_supplier_order.location_id}}
-{{@X stock_supplier._id}}{{@X stock_supplier.name}}
+{{@X stock_supplier.id}}{{@X stock_supplier.name}}
 
 <style type="text/css">
 	label {text-align: right;}
@@ -109,21 +109,23 @@
 
 {{@action showOrderLines}}
 
-	{{@each stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order._id, order by _id DESC}}
+	{{@each stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id, order by id DESC}}
 		{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
 		{{line.volume = (stock_product.volume * stock_supplier_order_item.qty)}}
 		{{@sum line.volume as total.volume}}
 					<tr>
-						<td> {{@html gridinp hidden stock_supplier_order_item._id}} </td>
+						<td> {{@html gridinp hidden stock_supplier_order_item.id}} </td>
 						<td> {{@html gridinp disabled stock_product.code small}} </td>
-						<td> {{@html gridinp disabled stock_product.name}} </td>
+						<td>  <input type='text' class='uk-form-width-' value='{{stock_product.name}}' disabled></td>
+<!-- above line is a hack for line below because name=xxx is zeroth element in first display line not input line
+<!--						<td> {{@html gridinp disabled stock_product.name}} </td> -->
 						<td> {{@html gridinp text stock_supplier_order_item.qty small}} </td>
 						<td> <!-- -Unit- --> </td>
 						<td> {{@html gridinp disabled stock_product.cost small}} </td>
 						<td> {{@html gridinp disabled linetotal small}} </td>
 						<td> {{@html gridinp disabled linevolume small}} </td>
             			<td>
-                			<button type='button' class="uk-button uk-button-mini uk-button-danger" onClick="deleteRow('{{stock_supplier_order_item._id}}')">
+                			<button type='button' class="uk-button uk-button-mini uk-button-danger" onClick="deleteRow('{{stock_supplier_order_item.id}}')">
                     			<i class="uk-icon-trash"></i>
                 			</button>
             			</td>
@@ -151,7 +153,9 @@
 
 {{@action newPurchaseOrderRow}}
 	{{stock_supplier_order_item.uid = 1}}
-	{{stock_supplier_order_item.stock_supplier_order_id = stock_supplier_order._id}}
+	{{stock_supplier_order_item.supplier_product_ref = '@@TODO and pack also'}}
+	{{stock_supplier_order_item.stock_pack_id = -1}}
+	{{stock_supplier_order_item.stock_supplier_order_id = stock_supplier_order.id}}
 	{{@new item stock_supplier_order_item}}
 {{@end}}
 
@@ -163,13 +167,23 @@
 	{{@amend item stock_supplier_order_item}}
 {{@end}}
 
+{{@action checkOrderProductByCode}}
+	{{@get stock_product filter code = stock_product.code}}
+	{{@get stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id, stock_product_id = stock_product.id}}
+{{@end}}
+
+{{@action checkOrderProductById}}
+	{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
+	{{@get stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id, stock_product_id = stock_product.id}}
+{{@end}}
+
 <script>
 	window.onload = function() {
-		runAction('showOrderLines', 'stock_supplier_order._id', 'linebody', calcAllRowValues);
+		runAction('showOrderLines', 'stock_supplier_order.id', 'linebody', calcAllRowValues);
 	}
 
 	function showNewRow() {
-		obj = document.getElementsByName('stock_supplier_order._id')[0];
+		obj = document.getElementsByName('stock_supplier_order.id')[0];
 		if ((obj.value == "") || (obj.value == "0"))
 			alert('Save header details before adding stock');
 		else {
@@ -185,14 +199,14 @@
 		window.event.cancelBubble = true;   // Prevent any further events
 		var result = confirm('Confirm delete');
 		if (result) {
-			runAction('deletePurchaseOrderRow', 'stock_supplier_order_item._id='+id, '', _afterRowDeleted);
+			runAction('deletePurchaseOrderRow', 'stock_supplier_order_item.id='+id, '', _afterRowDeleted);
 //			var tr = $(elem).closest('tr');
 //			row = tr[0].rowIndex;
 //			document.getElementById('lineitemTable').deleteRow(row);
 		}
 	}
 	function _afterRowDeleted() {
-		runAction('showOrderLines', 'stock_supplier_order._id', 'linebody', calcAllRowValues);
+		runAction('showOrderLines', 'stock_supplier_order.id', 'linebody', calcAllRowValues);
 	}
 
 	function savePurchaseOrder(retFlag) {
@@ -217,10 +231,10 @@
 			return;
 		}
 		if (retFlag == 0){	// apply
-			runAction('savePurchaseOrder', 'purchaseOrderForm stock_supplier_order._id');
+			runAction('savePurchaseOrder', 'purchaseOrderForm stock_supplier_order.id');
 		}
 		else				// save
-			runAction('savePurchaseOrder', 'purchaseOrderForm stock_supplier_order._id', '', backButton);
+			runAction('savePurchaseOrder', 'purchaseOrderForm stock_supplier_order.id', '', backButton);
 	}
 
 	function addNewRowButtonClick() {
@@ -236,36 +250,49 @@
 			alert('Invalid quantity');
 			return;
 		}
-		runAction('newPurchaseOrderRow', 'stock_supplier_order._id' + ' ' + prodCodeObj.name + ' ' + prodIdObj.name + ' ' + prodQtyObj.name, '', _afterNewRowAdded);
+		runAction('newPurchaseOrderRow', 'stock_supplier_order.id' + ' ' + prodCodeObj.name + ' ' + prodIdObj.name + ' ' + prodQtyObj.name, '', _afterNewRowAdded);
 	}
 	function _afterNewRowAdded() {
 		hideNewRow();
-		runAction('showOrderLines', 'stock_supplier_order._id', 'linebody', calcAllRowValues);
+		runAction('showOrderLines', 'stock_supplier_order.id', 'linebody', calcAllRowValues);
 }
 
-	// Grid filter on product code
+	// Grid product lookup by code
 	function onChange_stock_product_code(obj) {
-		obj = document.getElementsByName('stock_product._id');
-		if (obj) obj.parentNode.removeChild(element);
-		calcRowValues(obj);
-		obj2 = getSibling(obj, 'stock_supplier_order_item.qty');
+		runAction('checkOrderProductByCode', obj.name + ' stock_supplier_order.id', '', checkedOrderProductByCode);
+	}
+	function checkedOrderProductByCode() {
+		productObj = document.getElementsByName('stock_product.id')[0];
+		if ((productObj == null) || (productObj.value == '-1')) {
+			alert('No product with that code');
+			return;
+		}
+		orderItemObj = document.getElementsByName('stock_supplier_order_item.id')[0];
+		if ((orderItemObj == null) || (orderItemObj.value != '-1')) {
+			alert('Product already on order');
+			return;
+		}
+		// Update the name-search filter content with the product name
+		searchResultObj = document.getElementById('SEQ_0_SEARCH_RESULT');
+		searchResultObj.value = productObj.value;	// store the product id in the result field
+		productNameObj = document.getElementsByName('stock_product.name')[0];
+		searchFieldObj = document.getElementById('SEQ_0_SEARCH_VALUE');
+		searchFieldObj.value = productNameObj.value;
 	}
 
 	// Grid filter on product name
 	function onChange_stock_supplier_order_item_stock_product_id(obj) {
-		if (checkDupProduct(obj) == 1) {
-			alert('Duplicate product');
-			return;
-		}
-		calcRowValues(obj);
+		runAction('checkOrderProductById', 'stock_supplier_order.id stock_supplier_order_item.stock_product_id', '', checkedOrderProductById);
+	}
+	function checkedOrderProductById() {
 	}
 
 	// Grid filter on qty
 	function onChange_stock_supplier_order_item_qty(obj) {
 		if (obj.id.substr(0, 6) == 'SEQ_0_')
 			return;
-		objId =  getSibling(obj, 'stock_supplier_order_item._id');
-		runAction('changeQty', 'stock_supplier_order_item._id=' + objId.value + ' ' + obj.name + '='+obj.value);
+		objId =  getSibling(obj, 'stock_supplier_order_item.id');
+		runAction('changeQty', 'stock_supplier_order_item.id=' + objId.value + ' ' + obj.name + '='+obj.value);
 		calcRowValues(obj);
 	}
 
@@ -299,7 +326,7 @@ alert('fnd');
 		// @@TODO ...
 		cnt = 1;
 		while (true) {
-			flt = 'SEQ_' + cnt + '_stock_supplier_order_item._id';
+			flt = 'SEQ_' + cnt + '_stock_supplier_order_item.id';
 			startObj = document.getElementById(flt);
 			if (startObj)
 				calcRowValues(startObj);

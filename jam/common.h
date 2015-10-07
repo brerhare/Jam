@@ -2,6 +2,7 @@
 #define __COMMON_H_INCLUDED
 
 #include </usr/include/mysql/mysql.h>
+#include <curl/curl.h>
 
 using namespace std;
 
@@ -9,6 +10,8 @@ extern char *startJam;
 extern char *endJam;
 
 extern int literal;
+
+extern CURL *curl;
 
 #define round(x) ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 
@@ -58,7 +61,7 @@ extern VAR *var[MAX_VAR];
 int emitHeader(char *str, ...);
 int endHeader();
 int emitData(char *str, ...);
-int endData();
+int endData(int urlEncodingRequired);
 
 int addVar(VAR *newVar);
 VAR *findVarStrict(char *qualifiedName);
@@ -72,6 +75,7 @@ char *expandVarsInString(char *str, char *tableName);
 int isCalculation(char *str);
 char *calculate(char *str);
 int scratchJs(char *str, ...);	// @@TODO also need a includeJs() (includes but no dups)
+char *urlEncode(char *str);
 
 extern int jamDataRequested;
 int oobJamData();

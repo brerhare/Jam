@@ -20,17 +20,17 @@
 			<th> Contact </th>
 			<th> Telephone </th>
 			<th> Email </th>
-			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('supplierMaintForm?stock_supplier._id=0')"> <i class="uk-icon-plus"></i> New</button> </th>
+			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('supplierMaintForm?stock_supplier.id=0')"> <i class="uk-icon-plus"></i> New</button> </th>
 		</tr>
 {{@each stock_supplier}}
 	{{rowId = (rowId + 1)}}	
-		<tr class="rowHighlight" id="R{{rowId}}" onClick="runJam('supplierMaintForm?stock_supplier._id={{_id}}')">
+		<tr class="rowHighlight" id="R{{rowId}}" onClick="runJam('supplierMaintForm?stock_supplier.id={{id}}')">
 			<td>{{code}}</td>
 			<td>{{name}}</td>
 			<td>{{contact}}</td>
 			<td>{{telephone}}</td>
 			<td>{{email}}</td>
-			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{_id}}','{{name}}')"> <i class="uk-icon-trash"></i></button> </td>
+			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{name}}')"> <i class="uk-icon-trash"></i></button> </td>
 		</tr>
 {{@end}}
 	</table>
@@ -42,7 +42,7 @@ function confirmDelete(id, name) {
 	window.event.cancelBubble = true;	// Prevent any further events
 	var result = confirm('Confirm delete of item ' + name);
 	if (result) {
-		runAction('deleteSupplier', 'stock_supplier._id='+id, '', runJam);	
+		runAction('deleteSupplier', 'stock_supplier.id='+id, '', runJam);	
 	}
 }
 </script>
