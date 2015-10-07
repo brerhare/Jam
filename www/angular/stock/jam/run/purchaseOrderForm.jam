@@ -174,14 +174,24 @@
 	{{@amend item stock_supplier_order_item}}
 {{@end}}
 
+{{@action recalculateOrderCost}}
+	{{total.cost = 0}}
+	{{@each stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id}}
+		{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
+		{{line.cost = stock_product.cost * stock_supplier_order_item.qty}}
+		{{total.cost = total.cost + line.cost}}
+	{{@end}}
+	{{stock_supplier_order.price_total = total.cost}}
+	{{stock_supplier_order.total = total.cost}}
+	{{@amend item stock_supplier_order}}
+{{@end}}
+
 {{@action checkOrderProductByCode}}
 	{{@get stock_product filter code = stock_product.code}}
 	{{@get stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id, stock_product_id = stock_product.id}}
 {{@end}}
 
 {{@action checkOrderProductById}}
-	{{@Xget stock_product filter id = stock_supplier_order_item.stock_product_id}}
-	{{@Xget stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id, stock_product_id = stock_product.id}}
 	{{@get stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id, stock_product_id = stock_supplier_order_item.stock_product_id}}
 {{@end}}
 
@@ -264,6 +274,7 @@
 	function _afterNewRowAdded() {
 		hideNewRow();
 		showOrderLines();
+		runAction('recalculateOrderCost', 'stock_supplier_order.id');
 }
 
 	// Grid product lookup by code
@@ -309,13 +320,16 @@ alert('ok2');
 return true;
 	}
 
-	// Grid filter on qty
+	// Quantity changed
 	function onChange_stock_supplier_order_item_qty(obj) {
 		if (obj.id.substr(0, 6) == 'SEQ_0_')
 			return;
 		objId =  getSibling(obj, 'stock_supplier_order_item.id');
-		runAction('changeQty', 'stock_supplier_order_item.id=' + objId.value + ' ' + obj.name + '='+obj.value, '', showOrderLines);
+		runAction('changeQty', 'stock_supplier_order_item.id=' + objId.value + ' ' + obj.name + '='+obj.value, '', afterQtyChanged);
 		calcRowValues(obj);
+	}
+	function afterQtyChanged() {
+		runAction('recalculateOrderCost', 'stock_supplier_order.id', '', showOrderLines);
 	}
 
 	function showOrderLines() {
