@@ -282,7 +282,6 @@
 
 	// Grid filter on product name
 	function onChange_stock_supplier_order_item_stock_product_id(obj) {
-alert('c');
 		runAction('checkOrderProductById', 'stock_supplier_order.id stock_supplier_order_item.stock_product_id', '', checkedOrderProductById);
 	}
 	function checkedOrderProductById() {
