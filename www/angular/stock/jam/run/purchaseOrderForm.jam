@@ -112,7 +112,9 @@
 	{{@each stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id, order by id DESC}}
 		{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
 		{{line.volume = (stock_product.volume * stock_supplier_order_item.qty)}}
+		{{total.volume = total.volume + line.volume}}
 		{{@sum line.volume as total.volume}}
+		{{@sum stock_product.cost as total.cost}}
 					<tr>
 						<td> {{@html gridinp hidden stock_supplier_order_item.id}} </td>
 						<td> {{@html gridinp disabled stock_product.code small}} </td>
@@ -132,9 +134,8 @@
 					</tr>
 	{{@end}}
 					<tr>
-						<td colspan=6> <center> Container volume <!--{{stock_container.volume}}-->. Free volume <!--{{stock_container.volume - total.volume}}-->.</td>
-						<td> <!--{{line.volume}}--> </td>
-						<td></td>
+						<td colspan=6> <center> Container volume <!--{{stock_container.volume}}-->. Free volume {{stock_container.volume - total.volume}}.</td>
+						<td colspan=2> <!-- Total cost: {{total.cost}} --> </td>
 					</tr>
 {{@end}}
 					</tbody>
