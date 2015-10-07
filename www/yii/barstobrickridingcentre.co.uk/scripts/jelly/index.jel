@@ -137,7 +137,7 @@ css.display = block
 		addon.slider.parallax.nav-next-hover = /img/slider-right-hover.png
 		addon.slider.parallax.nav-margin = 50px
 	
-		addon.slider.parallax.interval = 5
+		addon.slider.parallax.interval = 15
 		addon.slider.parallax.source = db
 		
 		[slider-under]
