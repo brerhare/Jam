@@ -86,16 +86,16 @@ function runAction(action, element, output, callback) {
 		data : postData,
 		success:function(data, textStatus, jqXHR) {
 //alert('back with: ' + data + ' of len ' + data.length);
-			data = processOobData(data);
+			data = processOobData(decodeURIComponent(data));
 //alert('fixd with: ' + data + ' of len ' + data.length);
 			if (output != '') {
 				var target = document.getElementsByName(output);
 				if (target[0] instanceof HTMLInputElement) {
 //					alert('is inp');
-					target[0].value = decodeURIComponent(data);
+					target[0].value = data;
 				} else {
 //					alert('isnt inp');
-					target[0].innerHTML = decodeURIComponent(data);
+					target[0].innerHTML = data;
 				}
 			}
 			if (callback != '') {
@@ -204,7 +204,7 @@ function processOobData(data) {
 	if (spl.length > 1) {
 		console.log('----- oob data begins ---------------------------------------------------------------');
 		var oobData = spl[1];
-alert('found oob data:' + oobData + ' of length ' + oobData.length);
+//alert('found oob data:' + oobData + ' of length ' + oobData.length);
 		var oob = [];
 		oob = JSON.parse(spl[1]);
 		for (i = 0; i < oob.length; i++) {
@@ -216,12 +216,12 @@ alert('found oob data:' + oobData + ' of length ' + oobData.length);
 				input.setAttribute("type", "hidden");
 				input.setAttribute("name", oobName);
 				input.setAttribute("id", oobName);
-				input.setAttribute("value", decodeURIComponent(oobValue));
-console.log('creating ' + oobName + ' : ' + decodeURIComponent(oobValue));
+				input.setAttribute("value", oobValue);
+console.log('creating ' + oobName + ' : ' + oobValue);
 				document.body.appendChild(input);
 			} else {
-console.log('updating ' + oobName + ' : ' + decodeURIComponent(oobValue));
-				obj[0].value = decodeURIComponent(oobValue);
+console.log('updating ' + oobName + ' : ' + oobValue);
+				obj[0].value = oobValue;
 			}
 		}
 		// Strip out oob from data
@@ -229,6 +229,10 @@ console.log('updating ' + oobName + ' : ' + decodeURIComponent(oobValue));
 		console.log('----- oob data ends -----------------------------------------------------------------');
 	}
 	return data;
+}
+
+function jsonEscapeChars(str) {
+	return str.replace(/\\n/g, "\\n").replace(/\\"/g, '\\"').replace(/\\r/g, "\\r").replace(/\\t/g, "\\t").replace(/\\b/g, "\\b").replace(/\\f/g, "\\f").replace(/\\/g, "\\\\");
 }
 
 // --------------------------------------------------------+-----------------------------------------------------

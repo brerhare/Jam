@@ -66,12 +66,7 @@ int main(int argc, char *argv[]) {
 	char tmpPath[PATH_MAX], binary[PATH_MAX];
 	char *tmp = (char *) calloc(1, 4096);
 	char *jamName = NULL;
-
-	curl = curl_easy_init();
-	if (!curl) {
-		logMsg(LOGFATAL, "Cant initialize curl, aborting");
-		exit(1);
-	}
+	int urlEncodeRequired = 0;
 
 	logMsg(LOGINFO, "--------------------------------------------------------------------------");
 	logMsg(LOGINFO, "Starting");
@@ -213,6 +208,7 @@ if (++sanity > 100) { emitData("Overflow in main!"); break; }
 	else {
 		logMsg(LOGINFO, "Processing command loop for @action %s", jamEntrypoint);
 		control(startIx, NULL);
+		urlEncodeRequired = 1;
 	}
 
 	logMsg(LOGINFO, "Finished command loop");
@@ -229,9 +225,9 @@ if (++sanity > 100) { emitData("Overflow in main!"); break; }
 
 	// Output the data
 	endHeader();
-	endData();
 	if (jamDataRequested == 1)
 		oobJamData();
+	endData(urlEncodeRequired);
 
 	logMsg(LOGINFO, "Normal exit");
 	exit(0);

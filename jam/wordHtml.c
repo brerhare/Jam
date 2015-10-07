@@ -510,8 +510,12 @@ int wordHtmlSys(int ix, char *defaultTableName) {
 					first = 0;
 				else
 					emitData(", ");
+				char *valJSON = escapeJsonChars(v->portableValue);
+				char *idJSON = escapeJsonChars(id->portableValue);
 				// Avoid single quotes - the formal JSON spec doesnt allow them
-				emitData("{\"value\":\"%s\", \"id\":\"%d\"}", v->portableValue,  atoi(id->portableValue));
+				emitData("{\"value\":\"%s\", \"id\":\"%s\"}", valJSON,  idJSON);
+				free(valJSON);
+				free(idJSON);
 			}
 			emitData("]");
 		} else

@@ -288,12 +288,18 @@ int endHeader() {
 //logMsg(LOGDEBUG, "ENDHEADER=[%s]", emitHeaderBuffer);
 }
 
-int endData() {
+int endData(int urlEncodeRequired) {
 	char *p = emitDataBuffer;
-	while (*p) {
-		putchar(*p++);
+	char *encodedData = NULL;
+	if (urlEncodeRequired) {
+		encodedData = urlEncode(emitDataBuffer);
+		p = encodedData;
 	}
-//logMsg(LOGDEBUG, "ENDDATA=[%s]", emitDataBuffer);
+	while (*p)
+		putchar(*p++);
+	if (encodedData)
+		free(encodedData);
+//logMsg(LOGMICRO, "ENDDATA=[%s]", emitDataBuffer);
 }
 
 int scratchJs(char *str, ...) {
@@ -316,6 +322,24 @@ int scratchJs(char *str, ...) {
 	va_end(ap);
 	return(0);
 }
+
+char *urlEncode(char *str) {		// needs freeing
+char *p = strdup(str);
+return p;
+	char *encodedData = NULL;
+	curl = curl_easy_init();
+	if (!curl)
+		logMsg(LOGERROR, "Cant easy_init curl! Wont even try to urlencode");
+	else
+		encodedData = curl_easy_escape(curl, emitDataBuffer, 0);
+	if (!encodedData) {
+		logMsg(LOGERROR, "Cant easy_escape curl! Handing back original unencoded string");
+		encodedData = strdup(str);
+	}
+	curl_easy_cleanup(curl);
+	return (encodedData);
+}
+
 //--------------------------------------------------------------------
 // Calculations
 
@@ -386,30 +410,24 @@ int oobJamData() {
 //	}
 	int first = 1;
 	logMsg(LOGDEBUG, "Emitting oob jamData");
-	printf("{oobData}");
-	printf("[");
+	emitData("{oobData}");
+	emitData("[");
 	for (int i = 0; i < MAX_VAR; i++) {
 		if (var[i] == NULL)
 			break;
 		if (first)
 			first = 0;
 		else
-			printf(", ");
-		char *name, *value;
-		if (strchr(var[i]->name, '"'))
-			name = strReplaceAlloc(var[i]->name, "\"", "\\\"");
-		else
-			name = strdup(var[i]->portableValue);
-		if (strchr(var[i]->portableValue, '\"'))
-			value = strReplaceAlloc(var[i]->portableValue, "\"", "\\\"");
-		else
-			value = strdup(var[i]->portableValue);
+			emitData(", ");
+
+		char *nameJSON = escapeJsonChars(var[i]->name);
+		char *valueJSON = escapeJsonChars(var[i]->portableValue);
 		// Avoid single quotes - the formal JSON spec doesnt allow them
-		printf("{\"name\":\"%s\", \"value\":\"%s\"}", var[i]->name,  var[i]->portableValue);
-		free(name);
-		free(value);
+		emitData("{\"name\":\"%s\", \"value\":\"%s\"}", nameJSON,  valueJSON);
+		free(nameJSON);
+		free(valueJSON);
 	}
-	printf("]");
+	emitData("]");
 //	fclose(fp);
 	logMsg(LOGDEBUG, "Finished emitting oob jamData");
 	//fflush(stdout);

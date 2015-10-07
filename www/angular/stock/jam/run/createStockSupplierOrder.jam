@@ -44,6 +44,7 @@ Doing...
 	price					number.2
 	batch_number			string
 	sell_by_date			date
+	supplier_product_ref	string
 	stock_supplier_order_id	number		required
 	stock_product_id		number		required
 	stock_pack_id			number		required
