@@ -109,12 +109,16 @@
 
 {{@action showOrderLines}}
 
+	{{total.cost = 0}}
+	{{total.volume = 0}}
 	{{@each stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id, order by id DESC}}
+		{{@get stock_container filter id = stock_supplier_order.container_id}}
 		{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
-		{{line.volume = (stock_product.volume * stock_supplier_order_item.qty)}}
+		{{line.cost = stock_product.cost * stock_supplier_order_item.qty}}
+		{{total.cost = total.cost + line.cost}}
+		{{line.volume = stock_product.volume * stock_supplier_order_item.qty}}
 		{{total.volume = total.volume + line.volume}}
-		{{@sum line.volume as total.volume}}
-		{{@sum stock_product.cost as total.cost}}
+
 					<tr>
 						<td> {{@html gridinp hidden stock_supplier_order_item.id}} </td>
 						<td> {{@html gridinp disabled stock_product.code small}} </td>
@@ -124,8 +128,8 @@
 						<td> {{@html gridinp text stock_supplier_order_item.qty small}} </td>
 						<td> <!-- -Unit- --> </td>
 						<td> {{@html gridinp disabled stock_product.cost small}} </td>
-						<td> {{@html gridinp disabled linetotal small}} </td>
-						<td> {{@html gridinp disabled linevolume small}} </td>
+						<td> {{@html gridinp disabled line.cost small}} </td>
+						<td> {{@html gridinp disabled line.volume small}} </td>
             			<td>
                 			<button type='button' class="uk-button uk-button-mini uk-button-danger" onClick="deleteRow('{{stock_supplier_order_item.id}}')">
                     			<i class="uk-icon-trash"></i>
@@ -134,8 +138,10 @@
 					</tr>
 	{{@end}}
 					<tr>
-						<td colspan=6> <center> Container volume <!--{{stock_container.volume}}-->. Free volume {{stock_container.volume - total.volume}}.</td>
-						<td colspan=2> <!-- Total cost: {{total.cost}} --> </td>
+						<td colspan=6> </td>
+						<td> {{total.cost}} </td>
+						<td> {{total.volume}} used</td>
+						<td style='text-align:right'> <b>{{stock_container.volume - total.volume}} free</b>.</td>
 					</tr>
 {{@end}}
 					</tbody>
@@ -181,6 +187,10 @@
 
 <script>
 	window.onload = function() {
+		showOrderLines();
+	}
+
+	function onChange_stock_supplier_order_container_id(obj) {
 		showOrderLines();
 	}
 
@@ -309,8 +319,8 @@ return true;
 	}
 
 	function showOrderLines() {
-//		alert('redrawing...');
-		runAction('showOrderLines', 'stock_supplier_order.id', 'linebody', calcAllRowValues);
+		//alert('redrawing...');
+		runAction('showOrderLines', 'stock_supplier_order.id' + ' ' + 'stock_supplier_order.container_id', 'linebody', calcAllRowValues);
 }
 
 	// Check duplicate product
@@ -356,6 +366,7 @@ alert('fnd');
 	}
 
 	function calcRowValues(obj) {
+return;
 		objQty = getSibling(obj, 'stock_supplier_order_item.qty');
 		objPrice = getSibling(obj, 'stock_product.cost');
 		objLineTotal = getSibling(obj, 'linetotal');
