@@ -20,7 +20,6 @@
 {{@get stock_supplier filter id = stock_supplier_order.supplier_id}}
 {{@get stock_container filter id = stock_supplier_order.container_id}}
 {{@get stock_location filter id = stock_supplier_order.location_id}}
-{{@X stock_supplier.id}}{{@X stock_supplier.name}}
 
 <style type="text/css">
 	label {text-align: right;}
@@ -124,7 +123,7 @@
 						<td> {{@html gridinp disabled stock_product.code small}} </td>
 						<td>  <input type='text' class='uk-form-width-' value='{{stock_product.name}}' disabled></td>
 <!-- above line is a hack for line below because name=xxx is zeroth element in first display line not input line
-<!--						<td> {{@html gridinp disabled stock_product.name}} </td> -->
+				<!--	<td> {{@html gridinp disabled stock_product.name}} </td> -->
 						<td> {{@html gridinp text stock_supplier_order_item.qty small}} </td>
 						<td> <!-- -Unit- --> </td>
 						<td> {{@html gridinp disabled stock_product.cost small}} </td>
@@ -178,8 +177,7 @@
 	{{total.cost = 0}}
 	{{@each stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id}}
 		{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
-		{{line.cost = stock_product.cost * stock_supplier_order_item.qty}}
-		{{total.cost = total.cost + line.cost}}
+		{{total.cost = total.cost + stock_product.cost * stock_supplier_order_item.qty}}
 	{{@end}}
 	{{stock_supplier_order.price_total = total.cost}}
 	{{stock_supplier_order.total = total.cost}}
@@ -326,7 +324,6 @@ return true;
 			return;
 		objId =  getSibling(obj, 'stock_supplier_order_item.id');
 		runAction('changeQty', 'stock_supplier_order_item.id=' + objId.value + ' ' + obj.name + '='+obj.value, '', afterQtyChanged);
-		calcRowValues(obj);
 	}
 	function afterQtyChanged() {
 		runAction('recalculateOrderCost', 'stock_supplier_order.id', '', showOrderLines);
@@ -334,66 +331,8 @@ return true;
 
 	function showOrderLines() {
 		//alert('redrawing...');
-		runAction('showOrderLines', 'stock_supplier_order.id' + ' ' + 'stock_supplier_order.container_id', 'linebody', calcAllRowValues);
+		runAction('showOrderLines', 'stock_supplier_order.id' + ' ' + 'stock_supplier_order.container_id', 'linebody');
 }
-
-	// Check duplicate product
-	function checkDupProduct(obj) {
-return;
-alert('checking:'+obj.id);
-nObj = getSibling(obj, 'SEARCH_FIELDNAME');
-alert(nObj.id);
-		// @@TODO ...
-		cnt = 1;
-		while (true) {
-			flt = 'SEQ_' + cnt + '_SEARCH__FIELDNAME';
-			startObj = document.getElementById(flt);
-			if (startObj) {
-alert('fnd');
-				if (startObj.value == obj.value) {
-					alert('Product already on order');
-					return;
-				}
-			}
-			else
-				break;
-			cnt++;
-			if (cnt > 10)
-				break;
-		}
-	}
-
-	function calcAllRowValues() {
-		// @@TODO ...
-		cnt = 1;
-		while (true) {
-			flt = 'SEQ_' + cnt + '_stock_supplier_order_item.id';
-			startObj = document.getElementById(flt);
-			if (startObj)
-				calcRowValues(startObj);
-			else
-				break;
-			cnt++;
-			if (cnt > 10)
-				break;
-		}
-	}
-
-	function calcRowValues(obj) {
-return;
-		objQty = getSibling(obj, 'stock_supplier_order_item.qty');
-		objPrice = getSibling(obj, 'stock_product.cost');
-		objLineTotal = getSibling(obj, 'linetotal');
-		objLineVolume = getSibling(obj, 'linevolume');
-//		objProductVolume = get('stock_product.volume');	// @@TODO ... single table.field lookup needed here
-		lineTotal = (objQty.value * objPrice.value);
-		lineVolume = (objQty.value * 0.25);			// @@TODO remove hardcoding
-		objLineTotal.value = lineTotal.toFixed(2);
-		objLineVolume.value = lineVolume.toFixed(2);
-		// Update total container usage (all rows)
-		objContainerVolume = get('stock_supplier_order.container_id');
-//		objContainer = get('stock_container.name	@@TODO ... this would have worked if lookups pushed all vars (updated existing by name, or new hiddens)
-	}
 
 </script>
 
