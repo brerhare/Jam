@@ -167,7 +167,9 @@ int wordDatabaseGet(int ix, char *defaultTableName) {
 	char *givenTableName = (char *) calloc(1, 4096);
 	MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 1);
 	SQL_RESULT *rp = sqlCreateResult(givenTableName, res);
-	sqlGetRow2Var(rp);
+
+	sqlGetRow2Vars(rp);
+	logMsg(LOGDEBUG, "done sqlCreateResult");
 	if (jam[ix]) {
 		emitData(jam[ix]->trailer);
 	}
@@ -188,7 +190,7 @@ int wordDatabaseSql(int ix, char *defaultTableName) {
 	if (res != NULL) {	// ie the query returned row(s)
 		logMsg(LOGDEBUG, "RES is non-null");
 		SQL_RESULT *rp = sqlCreateResult(defaultTableName, res);
-		sqlGetRow2Var(rp);
+		sqlGetRow2Vars(rp);
 		mysql_free_result(res);
 	} else logMsg(LOGDEBUG, "RES is null");
 	emitData(jam[ix]->trailer);
@@ -221,7 +223,7 @@ int wordDatabaseNewTable(int ix, char *defaultTableName) {
 
 	char *qStr = (char *) calloc(1, 4096);
 	char *p;
-	sprintf(qStr, "CREATE TABLE IF NOT EXISTS %s ( _id INT NOT NULL AUTO_INCREMENT , ", tableName);
+	sprintf(qStr, "CREATE TABLE IF NOT EXISTS %s ( id INT NOT NULL AUTO_INCREMENT , ", tableName);
 	int cnt = 2;
 	// Each line. Building a query string similar to "CREATE TABLE Cars(Id INT NOT NULL, Name TEXT, Price INT)"
 	while (char *block = strTrim(getWordAlloc(args, cnt++, "\n"))) {
@@ -256,7 +258,7 @@ int wordDatabaseNewTable(int ix, char *defaultTableName) {
 		free(fieldType);
 		free(block);
 	}
-	strcat(qStr, "  PRIMARY KEY (_id) ) ENGINE = InnoDB;");
+	strcat(qStr, "  PRIMARY KEY (id) ) ENGINE = InnoDB;");
 	if (mysql_query(conn,qStr) != 0)
 		die(mysql_error(conn));
 	emitData(jam[ix]->trailer);
@@ -319,15 +321,29 @@ int wordDatabaseClearItem(int ix, char *defaultTableName) {
 	char *rawData = jam[ix]->rawData;
 	char *tableName = (char *) calloc(1, 4096);
 	char *tmp = (char *) calloc(1, 4096);
-	char *qStr = (char *) calloc(1, 4096);
-	char *nameStr = (char *) calloc(1, 4096);
-	char *valueStr = (char *) calloc(1, 4096);
 
-// @@TODO nothing here yet
+	getWord(tableName, args, 2, " \t");
+	if (!tableName)
+	   die("missing table name to clear item for");
+
+	sprintf(tmp, "select * from %s limit 1", tableName);
+	logMsg(LOGDEBUG, "Doing dummy sql query [%s]", tmp);
+	int status = doSqlQuery(tmp);
+	if (status == -1) {
+		logMsg(LOGERROR, "Sql query failed - doSqlQuery() failed");
+		return (-1);
+	}
+	logMsg(LOGDEBUG, "Getting RES for raw query");
+	MYSQL_RES *res = mysql_store_result(conn);
+	if (res != NULL) {	// ie the query returned row(s)
+		logMsg(LOGDEBUG, "RES is non-null");
+		SQL_RESULT *rp = sqlCreateResult(tableName, res);
+		sqlClearRowVars(rp);
+		mysql_free_result(res);
+	} else logMsg(LOGDEBUG, "RES is null");
 
 	emitData(jam[ix]->trailer);
 	free(tableName);
-	free(qStr);
 	free(tmp);
 }
 
@@ -385,7 +401,7 @@ int wordDatabaseNewItem(int ix, char *defaultTableName) {
 	}
 
 	int newId = mysql_insert_id(conn);
-	sprintf(tmp, "select * from %s where _id = '%d'", tableName, newId);
+	sprintf(tmp, "select * from %s where id = '%d'", tableName, newId);
 	status = doSqlQuery(tmp);
 	if (status == -1) {
 		logMsg(LOGERROR, "Sql query failed - doSqlQuery() failed");
@@ -396,13 +412,13 @@ int wordDatabaseNewItem(int ix, char *defaultTableName) {
 	if (res != NULL) {	// ie the query returned row(s)
 		logMsg(LOGDEBUG, "RES is non-null");
 		SQL_RESULT *rp = sqlCreateResult(tableName, res);
-		sqlGetRow2Var(rp);
+		sqlGetRow2Vars(rp);
 		mysql_free_result(res);
 	} else logMsg(LOGDEBUG, "RES is null");
 
 
 /*
-	sprintf(tmp, "%s.%s", tableName, "_id");
+	sprintf(tmp, "%s.%s", tableName, "id");
 	VAR *newVar = findVarStrict(tmp);
 	if (newVar) {
 		//delete
@@ -418,7 +434,7 @@ int wordDatabaseNewItem(int ix, char *defaultTableName) {
 		exit(1);
 	}
 */
-	logMsg(LOGDEBUG, "Created new item in table '%s' with _id value '%d'", tableName, newId);
+	logMsg(LOGDEBUG, "Created new item in table '%s' with id value '%d'", tableName, newId);
 	emitData(jam[ix]->trailer);
 	free(tableName);
 	free(qStr);
@@ -452,16 +468,16 @@ int wordDatabaseAmendItem(int ix, char *defaultTableName) {
 	}
 
 	// Find the primary key variable (must exist)
-	sprintf(tmp, "%s.%s", tableName, "_id");
+	sprintf(tmp, "%s.%s", tableName, "id");
 	VAR *idVar = findVarStrict(tmp);
 	if (!idVar) {
-		logMsg(LOGERROR, "Amend item requires the _id variable to be set");
+		logMsg(LOGERROR, "Amend item requires the id variable to be set");
 		return(-1);
 	}
 
 	int numFields = mysql_num_fields(res);
 	while (MYSQL_ROW row = mysql_fetch_row(res)) {
-		if (!strcmp(row[0], "_id"))
+		if (!strcmp(row[0], "id"))
 			continue;
 		sprintf(tmp, "%s.%s", tableName, row[0]);
 		VAR *seekVar = findVarStrict(tmp);
@@ -472,7 +488,7 @@ int wordDatabaseAmendItem(int ix, char *defaultTableName) {
 		sprintf(tmp, "%s = '%s'", row[0], seekVar->portableValue);
 		strcat(nvpStr, tmp);
 	}
-	sprintf(qStr,"UPDATE %s SET %s WHERE _id = '%s'", tableName, nvpStr, idVar->portableValue);
+	sprintf(qStr,"UPDATE %s SET %s WHERE id = '%s'", tableName, nvpStr, idVar->portableValue);
 	logMsg(LOGDEBUG, "item amend about to issue query [%s]", qStr);
 	status = doSqlQuery(qStr);
 	if (status == -1) {
@@ -503,7 +519,7 @@ int wordDatabaseUpdateItem(int ix, char *defaultTableName) {
 	}
 
 	// Find the primary key. If it exists WITH A VALUE it's a new, otherwise an amend)
-	sprintf(tmp, "%s.%s", tableName, "_id");
+	sprintf(tmp, "%s.%s", tableName, "id");
 	VAR *idVar = findVarStrict(tmp);
 	if ((!idVar) || (atoi(idVar->portableValue) == 0)) {
 		logMsg(LOGDEBUG, "Update item resolves to New item");
@@ -573,15 +589,15 @@ int wordDatabaseRemoveItem(int ix, char *defaultTableName) {
 		return(-1);
 	}
 	logMsg(LOGDEBUG, "Removing item from table %s", tableName);
-	// The _id variable must exist
-	sprintf(tmp, "%s._id", tableName);
+	// The id variable must exist
+	sprintf(tmp, "%s.id", tableName);
 	variable = findVarStrict(tmp);
 	if (!variable) {
-		logMsg(LOGERROR, "Cant remove item, missing _id variable");
-		emitData("missing _id variable to remove item for");
+		logMsg(LOGERROR, "Cant remove item, missing id variable");
+		emitData("missing id variable to remove item for");
 		return(-1);
 	}
-	sprintf(qStr,"DELETE FROM %s WHERE _id = %d", tableName, atoi(variable->portableValue));
+	sprintf(qStr,"DELETE FROM %s WHERE id = %d", tableName, atoi(variable->portableValue));
 	int status = doSqlQuery(qStr);
 	if (status == -1) {
 		logMsg(LOGERROR, "Remove item failed");

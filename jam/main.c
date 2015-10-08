@@ -66,6 +66,7 @@ int main(int argc, char *argv[]) {
 	char tmpPath[PATH_MAX], binary[PATH_MAX];
 	char *tmp = (char *) calloc(1, 4096);
 	char *jamName = NULL;
+	int urlEncodeRequired = 0;
 
 	logMsg(LOGINFO, "--------------------------------------------------------------------------");
 	logMsg(LOGINFO, "Starting");
@@ -207,6 +208,7 @@ if (++sanity > 100) { emitData("Overflow in main!"); break; }
 	else {
 		logMsg(LOGINFO, "Processing command loop for @action %s", jamEntrypoint);
 		control(startIx, NULL);
+		urlEncodeRequired = 1;
 	}
 
 	logMsg(LOGINFO, "Finished command loop");
@@ -217,15 +219,16 @@ if (++sanity > 100) { emitData("Overflow in main!"); break; }
 	if (conn)
 		closeDB();
 
-	// Output the data
-	endHeader();
-	endData();
-	if (jamDataRequested == 1)
-		oobJamData();
-
 	VAR *debugVar = findVarStrict("debug");
 	if ((debugVar) && (atoi(debugVar->portableValue) > 0))
 		jamDump(atoi(debugVar->portableValue));
+
+	// Output the data
+	endHeader();
+	if (jamDataRequested == 1)
+		oobJamData();
+	endData(urlEncodeRequired);
+
 	logMsg(LOGINFO, "Normal exit");
 	exit(0);
 }
@@ -441,7 +444,7 @@ int control(int startIx, char *defaultTableName) {
 				char *givenTableName = (char *) calloc(1, 4096);
 				MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 999999);
 				SQL_RESULT *rp = sqlCreateResult(givenTableName, res);
-				while (sqlGetRow2Var(rp) != SQL_EOF) {
+				while (sqlGetRow2Vars(rp) != SQL_EOF) {
 					emitData(jam[ix]->trailer);
 					logMsg(LOGMICRO, "@each (db table %s) starting recurse", givenTableName);
 					cmdSeqnum++;		// up the unique sequence number

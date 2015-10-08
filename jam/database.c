@@ -69,6 +69,14 @@ char *getSqlOption(char *jamOption) {
 // mysql result handling
 
 SQL_RESULT *sqlCreateResult(char *tableName, MYSQL_RES *res) {
+	if (tableName == NULL) {
+		logMsg(LOGERROR, "sqlCreateResult: tableName param is NULL");
+		return NULL;
+	}
+	if (res == NULL) {
+		logMsg(LOGERROR, "sqlCreateResult: res param is NULL");
+		return NULL;
+	}
     SQL_RESULT *rp = (SQL_RESULT *) calloc(1, sizeof(SQL_RESULT));
 	if (tableName)
     	rp->tableName = (char *) strdup(tableName);
@@ -86,17 +94,43 @@ SQL_RESULT *sqlCreateResult(char *tableName, MYSQL_RES *res) {
     return rp;
 }
 
-int sqlGetRow2Var(SQL_RESULT *rp) {
-	MYSQL_ROW row;
-	row = mysql_fetch_row(rp->res);
+int sqlGetRow2Vars(SQL_RESULT *rp) {
+	if (rp == NULL) {
+		logMsg(LOGERROR, "sqlGetRow2Vars: param rp is NULL");
+		return(-1);
+	}
+	MYSQL_ROW row = mysql_fetch_row(rp->res);
 	if (row) {
-		logMsg(LOGMICRO, "sqlGetRow2Var() found a sql row, copying values to jam format");
+		logMsg(LOGMICRO, "sqlGetRow2Vars() found a sql row, copying values to jam format");
 		_updateSqlFields(rp->tableName, rp->mysqlHeaders, rp->mysqlTypes, rp->numFields, &row);
 		return SQL_OK;
 	}
-	logMsg(LOGMICRO, "sqlGetRow2Var() didnt find a sql row, initialising NULL jam format values");
-	_nullifySqlFields(rp->tableName, rp->mysqlHeaders, rp->mysqlTypes, rp->numFields, &row);
+	logMsg(LOGMICRO, "sqlGetRow2Vars() didnt find a sql row, initialising NULL jam format values");
+
+	sqlClearRowVars(rp); // I replaced the next line with this, so now a 'fail' sets id to -1
+	//_nullifySqlFields(rp->tableName, rp->mysqlHeaders, rp->mysqlTypes, rp->numFields);
+
 	return SQL_EOF;
+}
+
+// Zero all vars applicable to a sql record and set id to -1
+int sqlClearRowVars(SQL_RESULT *rp) {
+// @@FIX why do we need SQL_RESULT? Look at mysql_list_fields() (see http://ropas.snu.ac.kr/n/lib/manual074.html)
+	char *tmp = (char *) calloc(1, 4096);
+	_nullifySqlFields(rp->tableName, rp->mysqlHeaders, rp->mysqlTypes, rp->numFields);
+	sprintf(tmp, "%s.id", rp->tableName);
+	VAR *seekVar = findVarStrict(tmp);
+	if (!seekVar) {
+		logMsg(LOGERROR, "Cant clear item '%s' because no id var exists", rp->tableName);
+		return (-1);
+	}
+	if (seekVar->portableValue)
+		free(seekVar->portableValue);
+//	seekVar->portableValue = strdup("-1");
+	seekVar->type = VAR_NUMBER;
+	fillVarDataTypes(seekVar, "-1");
+	free(tmp);
+	return 0;
 }
 
 // ----------------------------------------------------------------
@@ -146,14 +180,13 @@ void _updateSqlFields(char *qualifier, char **mysqlHeaders, enum enum_field_type
 //emitData("HDR=[%s.%s]:[%s]\n", qualifier, mysqlHeaders[i], row[i]);
 	}
 }
-void _nullifySqlFields(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields, MYSQL_ROW *rowP) {
-	MYSQL_ROW row = *rowP;
+void _nullifySqlFields(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields) {
 	int i = 0;
 	for (i = 0; i < numFields; i++) {
 		char qualifiedName[256];
 		sprintf(qualifiedName, "%s.%s", qualifier, mysqlHeaders[i]);
 		updateSqlVar(qualifiedName, mysqlTypes[i], NULL);
-//emitData("HDR=[%s.%s]:[%s]\n", qualifier, mysqlHeaders[i], row[i]);
+		//xxkimxx
 	}
 }
 void updateSqlVar(char *qualifiedName, enum enum_field_types mysqlType, char *value) {
@@ -246,12 +279,13 @@ MYSQL_RES *doSqlSelect(int ix, char *defaultTableName, char **givenTableName, in
     MYSQL_RES *res;
     MYSQL_ROW row;
     if (mysql_query(conn, query) != 0) {
-        die(mysql_error(conn));
+        logMsg(LOGERROR, "doSqlSelect: mysql_query failed with '%s', ", mysql_error(conn));
+        return NULL;
     }
     res = mysql_store_result(conn);
       if (!res) {
-        sprintf(tmp, "Couldn't get results set: %s\n", mysql_error(conn));
-        die(tmp);
+        logMsg(LOGERROR, "Couldn't get results set: %s\n", mysql_error(conn));
+        return(NULL);
     }
     free(query);
     return res;

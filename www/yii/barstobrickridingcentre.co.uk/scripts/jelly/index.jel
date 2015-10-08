@@ -1,0 +1,259 @@
+#Barstobrick
+[defaults]
+include = default-values
+
+# Every blob inherits these before adding/overriding
+
+[* : defaults]
+
+[screen]
+child = site
+css.background-color = white
+css.display = block
+
+	[site]
+	child = left-column, main-site
+	css.width = 100%
+	stacking = horizontal
+	
+		[left-column]
+		child = book, menu, sign-up
+		css.width = 15%
+		css.min-width = 180px		
+		css.margin-left = 10%
+		css.margin-top = 40px
+		css.position = fixed
+		css.z-index = 100
+		
+			[book]
+			css.margin-left = 1%
+			css.width = 65%
+#			css.height = 55%
+			image.url = img/book-now.png
+			image.width = 100%
+			image.height = 55%
+		
+			[menu]
+			css.overflow = visible
+			css.position = relative
+			css.z-index = 100
+			css.margin-top = 30px
+
+
+	####### Top level basic settings ####
+		addon.menu.basic.orientation = vertical
+		addon.menu.basic.width = 130px
+		addon.menu.basic.height = 50px
+
+	####### Top level background settings (first colour is the top gradiation) ####
+		addon.menu.basic.menu-stretch = /img/menu-button.png
+		addon.menu.basic.menu-color = transparent
+		addon.menu.basic.item-separator-color = transparent
+		addon.menu.basic.item-separator-width = 5px
+
+	####### Top level font settings ####
+		addon.menu.basic.font-size = 14px
+		addon.menu.basic.menu-text-color = #56bbfe
+		addon.menu.basic.menu-text-weight = bold
+
+
+	####### Top level hover settings ####
+		addon.menu.basic.menu-hover-text-color = #56bbfe
+		addon.menu.basic.menu-hover-background-image-stretch = /img/menu-hover.png
+
+
+	####### Second level background settings ####
+		addon.menu.basic.submenu-color = transparent
+		addon.menu.basic.subitem-separator-color = transparent
+
+	####### Second level hover settings ####
+		addon.menu.basic.subitem-color = transparent
+		addon.menu.basic.subitem-text-color = blue
+
+			
+	
+		[main-site]
+		child = header, slider, slider-under, pages, footer
+
+####  Header  #################################
+
+	[header]
+	child = logo
+	css.width = 90%
+	css.margin-top = 25px
+	image.url = img/logo.png
+	image.width = 85%
+	image.height = 23%
+	click = ?layout=index&page=index
+	css.overflow = visible
+	css.z-index = 50
+	css.position = relative
+		
+
+
+#### Slider ###########################################
+
+	[slider]
+		css.width = 100%
+		css.height = 10%
+		css.max-height = 350px
+		css.margin-top = -6%
+		#300px
+		css.background-color = #56bbfe
+		addon.slider.parallax.width = 100%
+		addon.slider.parallax.height = 100%
+		addon.slider.parallax.background-image = /img/slider-bg.jpg
+		addon.slider.parallax.content-width = 80%
+		addon.slider.parallax.content-left = 15%
+		addon.slider.parallax.title-text-color = black
+		addon.slider.parallax.title-font-size = 36px
+		addon.slider.parallax.title-margin-top = 20px
+		addon.slider.parallax.title-shadow = 2px 2px 2px
+		addon.slider.parallax.title-shadow-opacity = 0.4
+		addon.slider.parallax.title-font = 'Nunito', Arial, sans-serif
+		addon.slider.parallax.title-weight = 600
+#		addon.slider.parallax.title-style = italic
+		addon.slider.parallax.blurb-margin-top = 105px
+		addon.slider.parallax.blurb-color = grey
+		addon.slider.parallax.blurb-size = 16px
+		addon.slider.parallax.blurb-line-height = 23px
+		addon.slider.parallax.blurb-height = 92px
+		#addon.slider.parallax.blurb-style = italic
+		addon.slider.parallax.blurb-font = 'Open Sans', Verdana, sans-serif
+		addon.slider.parallax.blurb-weight = 300
+		addon.slider.parallax.image-margin-top = 60px
+		addon.slider.parallax.imagewidth = 252
+		addon.slider.parallax.imageheight = 180
+		addon.slider.parallax.link-margin-top = 220px
+		addon.slider.parallax.link-image = /img/read-more.png
+		addon.slider.parallax.link-hover = /img/read-hover.png
+		addon.slider.parallax.dot-top = 260px
+		addon.slider.parallax.dot-alignment = left
+		addon.slider.parallax.dot-margin-left = 45%
+		addon.slider.parallax.dot-color = #ffd800
+		addon.slider.parallax.nav-prev = /img/slider-left.png
+		addon.slider.parallax.nav-prev-hover = /img/slider-left-hover.png
+		addon.slider.parallax.nav-next = /img/slider-right.png
+		addon.slider.parallax.nav-next-hover = /img/slider-right-hover.png
+		addon.slider.parallax.nav-margin = 50px
+	
+		addon.slider.parallax.interval = 15
+		addon.slider.parallax.source = db
+		
+		[slider-under]
+		css.width = 100%
+	css.margin-top = -8%
+	image.url = img/slider-under.png
+	image.width = 100%
+	image.height = 11%
+#	css.overflow = visible
+	css.z-index = 50
+	css.position = relative
+
+
+######## body #######################################
+			
+
+	[pages]
+	child = content 	
+	css.width = 70%
+	css.margin-left = 20%
+	css.min-width = 700px
+	css.margin-top = 20px
+
+			
+		[content]
+		css.margin-top = 30px
+		css.margin = 30px
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
+
+
+####footer####################################
+
+[footer]
+child = footer-menu, footnote
+css.margin-top = 40px
+css.margin-left = 20px
+css.height = 180px
+css.width = 960px
+#css.background-color = #ffffff
+#css.background-color = #f7d9ff
+		stacking = horizontal
+
+		[footer-menu]
+		child = footer-cookies, footer-tandc, footer-contact
+		css.height = 50px
+		css.width = 50%
+
+			[footer-cookies]
+			html.raw = Cookie Policy
+			css.color = #000000
+			css.font-size = 11px
+			css.text-align = left
+			click = ?layout=index&page=cookie-policy
+
+			[footer-tandc]
+			html.raw = Terms & Conditions
+			css.color = #000000
+			css.font-size = 11px
+			css.text-align = left
+			click = ?layout=index&page=terms-conditions
+
+			[footer-contact]
+			html.raw = Contact Us
+			css.text-align = left
+			css.color = #000000
+			css.font-size = 11px
+			click = ?layout=index&page=contact
+
+
+	[footnote]
+	child = copyright, admin-links
+	css.width = 50%
+	css.height = 50px
+	stacking = horizontal
+
+		[copyright]
+		css.width = 50%
+		css.margin-top = 10px
+		html.raw = Customer &copy 2014 All rights reserved
+		css.color = #000000
+		css.font-size = 11px
+		css.text-align = left
+
+	[admin-links]
+	child = wirefly, admin
+	stacking = horizontal
+
+	
+		[wirefly]
+		css.height = 45px
+		css.margin-top = 5px
+		image.url = img/wirefly-design.png
+		image.width = 100px
+		image.height = 46px
+		image.align = left
+		clicknew = http://www.wireflydesign.com
+		
+	
+		[admin]
+		child = cog-center
+		css.height = 20px
+		css.width = 20px
+		css.background-size = 100%
+		css.background-image = url('/img/admin.png')
+		css.margin-left = -20px
+		
+			[cog-center]
+			css.width = 5px
+			css.height = 5px
+			css.margin-top = 8px
+			image.url = img/cog-center.png
+			image.width = 5px
+			image.height = 5px
+			image.align = center
+			clicknew = backend.php
+
