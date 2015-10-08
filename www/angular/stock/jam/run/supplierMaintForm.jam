@@ -82,7 +82,7 @@
 
 {{@action updateSupplier}}
 	{{stock_supplier.uid = 1}}
-	{{@new item stock_supplier}}
+	{{@update item stock_supplier}}
 {{@end}}
 
 <script>

@@ -82,6 +82,7 @@ class traditional
 
 // Top level basic settings
 			if 		($opt == "orientation")							$this->default_orientation = $val;
+			else if ($opt == "level")								$this->level = $val;
 			else if ($opt == "width")								$this->default_width = $val;
 			else if ($opt == "height")								$this->default_height = $val;
 			else if ($opt == "align")								$this->default_align = $val;
@@ -611,10 +612,27 @@ class traditional
 		foreach ($menuHeaders as $menuHeader):
 			if (!$menuHeader->active)
 				continue;
-			if ($this->level == 0)
+
+			if (($this->level == 0) || ($this->level == 1))
 			{
 				if ($menuHeader->parent_id)
 					continue;
+			}
+
+			if ($this->level == 2)
+			{
+                if (isset($_GET['page']))
+                {
+                    // Get the requested URL
+                    $criteria = new CDbCriteria;
+                    $criteria->addCondition("url = '" . $_GET['page'] . "'");
+                    $menuParent = ContentBlock::model()->find($criteria);
+                    if ($menuParent)
+                    {
+						if ($menuParent->id != $menuHeader->parent_id)
+							continue;
+					}
+                }
 			}
 
 			// Is this the selected page?
@@ -641,6 +659,9 @@ class traditional
 			$menuItems = ContentBlock::model()->findAll($criteria);
 			$l2 = false;
 			foreach ($menuItems as $menuItem):
+
+				if ($this->level != 0)
+					continue;
 
 				if ($l2 == false)
 				{
