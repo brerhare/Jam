@@ -621,18 +621,18 @@ class traditional
 
 			if ($this->level == 2)
 			{
-                if (isset($_GET['page']))
-                {
-                    // Get the requested URL
-                    $criteria = new CDbCriteria;
-                    $criteria->addCondition("url = '" . $_GET['page'] . "'");
-                    $menuParent = ContentBlock::model()->find($criteria);
-                    if ($menuParent)
-                    {
-						if ($menuParent->id != $menuHeader->parent_id)
-							continue;
-					}
-                }
+				// Get the requested URL
+				$criteria = new CDbCriteria;
+				if (isset($_GET['page']))
+					$criteria->addCondition("url = '" . $_GET['page'] . "'");
+				else
+					$criteria->addCondition("home = 1");
+				$menuParent = ContentBlock::model()->find($criteria);
+				if ($menuParent)
+				{
+					if ($menuParent->id != $menuHeader->parent_id)
+						continue;
+				}
 			}
 
 			// Is this the selected page?
