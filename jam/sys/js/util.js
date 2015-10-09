@@ -143,7 +143,7 @@ function dirname(path) {
 }
 
 // ----------------------------------------------------------------------------------------------------------
-// Event handlers
+// Jam helpers
 
 // Call a jam-supplied event handler
 function fn(obj, event) {
@@ -151,11 +151,59 @@ function fn(obj, event) {
 	if (event.type == 'change') {
 		localFunc = 'on' + event.type.charAt(0).toUpperCase() + event.type.slice(1) + '_' + obj.name;
 	}
-	localFunc = localFunc.split('.').join('_');
+	localFunc = localFunc.split('.').join('_dot_');
 	if (localFunc != '') {
 		if (typeof window[localFunc] === "function")
 			window[localFunc](obj);
 	}
+}
+
+// Getter/setter for DOM elements. Id preferred to name. For now name is always name[0]
+// someval = data('inputid').content();		.name() .id()
+// data('inputid').content(someval);
+var data = function(element) {
+	// Self instantiate if necessary. http://programmers.stackexchange.com/questions/118798/avoiding-new-operator-in-javascript-the-better-way
+	if (Object.getPrototypeOf(this) !== data.prototype) {
+		var o = Object.create(data.prototype);
+		o.constructor.apply(o, arguments);
+		return o;
+  	}
+	this.obj = document.getElementById(element);
+	if (this.obj == null) {
+		this.obj = document.getElementsByName(element)[0];
+		if (this.obj == null) {
+			console.log('data: invalid element ' + element);
+			return null;
+		}
+	}
+}
+data.prototype.content = function(val) {
+	if (val == null)
+		return (this.obj instanceof HTMLInputElement) ? this.obj.value : this.obj.innerHTML;
+	else
+		(this.obj instanceof HTMLInputElement) ?  this.obj.value = val : this.obj.innerHTML = val;
+};
+data.prototype.id = function(val) {
+	if (val == null)
+		return this.obj.id;
+	else
+		this.obj.id = val;
+};
+data.prototype.name = function(val) {
+	if (val == null)
+		return this.obj.name;
+	else
+		this.obj.name = val;
+};
+
+function getElementContent(object) {
+				if (target[0] instanceof HTMLInputElement) {
+//					alert('is inp');
+					target[0].value = data;
+				} else {
+//					alert('isnt inp');
+					target[0].innerHTML = data;
+				}
 }
 
 // Get a sibling element in a grid eg we want element 'SEQ_39_table.field'
