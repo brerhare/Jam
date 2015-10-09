@@ -11,18 +11,16 @@ html, h2, h4, body, p {	height: 100%;
 				line-height: 140%;}
 
 /* Global Hyperlink settings - will affect menu text colour if no text settings */ 
-a { text-decoration: none; color:#7f13eb; }
-a:visited, a:active { text-decoration: none; color:#7f13eb; }
-a:hover { text-decoration: none; color:blue; }
+a { text-decoration: none; color:#288d57; }
+a:visited, a:active { text-decoration: none; color:#288d57; }
+a:hover { text-decoration: none; color:#36c076; }
 
 
 
 h1 {	font-family: 'Nunito', Arial, sans-serif !important;
-	color: #7f13eb;
+	color: #36c076;
 	font-size: 36px;
 	font-weight: 400;
-	font-style: italic;
-	text-shadow: 3px 3px 2px lightgrey;
 	line-height: 100%;}
 
 h2 {	font-family: 'Open Sans', Verdana, sans-serif !important;
@@ -33,13 +31,13 @@ h2 {	font-family: 'Open Sans', Verdana, sans-serif !important;
 
 
 h3 {	font-family: 'Nunito', Arial, sans-serif !important;
-	color: #7f13eb;
+	color: #36c076;
 	font-size: 20px;
 	font-weight: 700;
 	font-stretch: wider;}
 
 h4 {	font-family: 'Open Sans', Verdana, sans-serif !important;
-	color: #7f13eb;
+	color: #36c076;
 	font-size: 16px;
 	font-weight: 700;
 	font-stretch: wider;}
