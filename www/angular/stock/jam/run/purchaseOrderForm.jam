@@ -198,7 +198,7 @@
 		showOrderLines();
 	}
 
-	function onChange_stock_supplier_order_container_id(obj) {
+	function onChange_stock_supplier_order_dot_container_id(obj) {
 		showOrderLines();
 	}
 
@@ -276,7 +276,7 @@
 }
 
 	// Grid product lookup by code
-	function onChange_stock_product_code(obj) {
+	function onChange_stock_product_dot_code(obj) {
 		runAction('checkOrderProductByCode', obj.name + ' stock_supplier_order.id', '', checkedOrderProductByCode);
 	}
 	function checkedOrderProductByCode() {
@@ -299,7 +299,7 @@
 	}
 
 	// Grid filter on product name
-	function onChange_stock_supplier_order_item_stock_product_id(obj) {
+	function onChange_stock_supplier_order_item_dot_stock_product_id(obj) {
 //alert('u uh'); //return;	// bailing out here lets you add any product. Staying in doesnt let you add any
 return;
 		runAction('checkOrderProductById', 'stock_supplier_order.id stock_supplier_order_item.stock_product_id', '', checkedOrderProductById);
@@ -319,7 +319,7 @@ return true;
 	}
 
 	// Quantity changed
-	function onChange_stock_supplier_order_item_qty(obj) {
+	function onChange_stock_supplier_order_item_dot_qty(obj) {
 		if (obj.id.substr(0, 6) == 'SEQ_0_')
 			return;
 		objId =  getSibling(obj, 'stock_supplier_order_item.id');
