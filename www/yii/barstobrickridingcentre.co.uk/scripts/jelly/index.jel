@@ -17,18 +17,18 @@ css.display = block
 	stacking = horizontal
 	
 		[left-column]
-		child = book, menu, sign-up, menu-2
+		child = book, menu, menu-2, sign-up
 		css.width = 15%
 		css.min-width = 180px		
-		css.margin-left = 10%
-		css.margin-top = 40px
+		css.margin-left = 5%
+		css.margin-top = 20px
 		css.position = fixed
+#		css.position = relative
 		css.z-index = 100
 		
 			[book]
 			css.margin-left = 1%
 			css.width = 65%
-#			css.height = 55%
 			image.url = img/book-now.png
 			image.width = 100%
 			image.height = 55%
@@ -38,55 +38,66 @@ css.display = block
 			css.overflow = visible
 			css.position = relative
 			css.margin-top = 30px
+			css.min-height = 280px
+			addon.menu.traditional.orientation = vertical
+			addon.menu.traditional.level = 1
+			addon.menu.traditional.width = 150px
+			addon.menu.traditional.height = 50px
+			addon.menu.traditional.menu-stretch = /img/menu-button.png
+			addon.menu.traditional.menu-color = transparent
+			addon.menu.traditional.item-separator-color = transparent
+			addon.menu.traditional.item-separator-width = 5px
+			addon.menu.traditional.font-size = 14px
+			addon.menu.traditional.menu-text-color = #56bbfe
+			addon.menu.traditional.menu-text-weight = bold
+			addon.menu.traditional.menu-hover-text-color = #56bbfe
+			addon.menu.traditional.menu-hover-background-image-stretch = /img/menu-hover.png
+			addon.menu.traditional.submenu-color = transparent
+			addon.menu.traditional.subitem-separator-color = transparent
+#			addon.menu.traditional.subitem-color = transparent
+#			addon.menu.traditional.subitem-text-color = blue
 
 
-	####### Top level basic settings ####
-		addon.menu.traditional.orientation = vertical
-		addon.menu.traditional.level = 1
-		addon.menu.traditional.width = 130px
-		addon.menu.traditional.height = 50px
 
-	####### Top level background settings (first colour is the top gradiation) ####
-		addon.menu.traditional.menu-stretch = /img/menu-button.png
-		addon.menu.traditional.menu-color = transparent
-		addon.menu.traditional.item-separator-color = transparent
-		addon.menu.traditional.item-separator-width = 5px
+[sign-up]
+child = signup-title, signup-form
+css.width = 140px
+css.margin-left = 0px
+css.margin-top = 40px
+css.background-color = white
+css.border = 2px solid #56bbfe
+css.border-radius = 15px
+css.box-shadow = 12px 8px 8px rgba(0,0,0,0.5)
 
-	####### Top level font settings ####
-		addon.menu.traditional.font-size = 14px
-		addon.menu.traditional.menu-text-color = #56bbfe
-		addon.menu.traditional.menu-text-weight = bold
-
-
-	####### Top level hover settings ####
-		addon.menu.traditional.menu-hover-text-color = #56bbfe
-		addon.menu.traditional.menu-hover-background-image-stretch = /img/menu-hover.png
-
-
-	####### Second level background settings ####
-		addon.menu.traditional.submenu-color = transparent
-		addon.menu.traditional.subitem-separator-color = transparent
-
-	####### Second level hover settings ####
-#		addon.menu.traditional.subitem-color = transparent
-#		addon.menu.traditional.subitem-text-color = blue
+	[signup-title]
+	css.height = 55px
+	css.margin-top = -15px
+	html.raw = <h1><span style="font-size:20px; line-height: 80%;">Stay in<br/>Touch</span></h1>
+	css.text-align = center
+	
+	[signup-form]
+	css.height = 125px
+	#jam.embed = /run/contactForm.jam
+	jam.iframe = /jam/run/signUp
 		
 		
 		[menu-2]
 		
-		css.margin-top = 100px
+		css.margin-top = 30px
+		css.margin-left = 5px		
+		
 				addon.menu.traditional.orientation = vertical
 				addon.menu.traditional.level = 2
-				addon.menu.traditional.item-separator-color = #ffffff
+				addon.menu.traditional.menu-color = #56bbfe
+				addon.menu.traditional.item-separator-color = white
 				addon.menu.traditional.item-separator-width = 2px
-				addon.menu.traditional.font-size = 16px
-				addon.menu.traditional.menu-rounding = 0px
+				addon.menu.traditional.font-size = 14px
+				addon.menu.traditional.menu-rounding = 4px
 				addon.menu.traditional.menu-opacity = 100%
-#kim commented				addon.menu.traditional.width = 150px
-				addon.menu.traditional.menu-color = #bca498
-				addon.menu.traditional.menu-text-color = black
-				addon.menu.traditional.submenu-color = transparent
-				addon.menu.traditional.item-color = #bca498
+#	addon.menu.traditional.width = 150px
+				addon.menu.traditional.menu-text-color = white
+				addon.menu.traditional.submenu-color = #56bbfe
+				addon.menu.traditional.item-color = #238bfe
 				addon.menu.traditional.item-text-color = white
 			#addon.menu.traditional.subitem-color = #ff0092
 			#addon.menu.traditional.subitem-text-color = #ffffff
@@ -103,11 +114,12 @@ css.display = block
 	child = logo, facebook, phone
 	stacking = horizontal
 	css.width = 90%
-	css.margin-top = 25px
+	css.margin-top = 5px
 	
 		[logo]
-		css.width = 80%
-		css.margin-top = 25px
+		css.width = 70%
+		css.margin-top = 10px
+		css.margin-bottom = 5px
 		image.url = img/logo.png
 		image.width = 100%
 		image.height = 23%
@@ -197,21 +209,47 @@ html.raw = <style>.da-slider{z-index:0}</style>
 			
 
 	[pages]
-	child = content 	
+	child = content, contact 	
 	css.width = 65%
 	css.margin-left = 25%
 	css.min-width = 700px
 	css.margin-top = 20px
 
+#		[page-margin]
+#		css.width = 15%
+#		css.min-width = 180px		
+#		css.margin-left = 10%
 			
 		[content]
-		css.margin-top = 30px
-		css.margin = 30px
+		condition = @PAGE!=contact
 		db.table = ContentBlock
 		db.filter = url=$_GET['page']
 		db.error = Sorry, I could not find the page $_GET['page']
 		html.raw = ContentBlock.content
-
+		
+		[contact]
+		condition = @PAGE=contact
+		child = contact-content, contact-form
+		stacking = horizontal
+		
+			[contact-content]
+			css.width = 60%
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find the page $_GET['page']
+			html.raw = ContentBlock.content
+			
+			[contact-form]
+			css.width = 35%
+			css.margin-left = 4%
+			css.border = 2px solid #56bbfe
+			css.border-radius = 5px
+			html.raw = <h1><span style="font-size:24px;">Contact Us</span></h1>
+			css.text-align = center
+			css.height = 430px
+			css.background-color = white
+			#jam.embed = /run/contactForm.jam
+			jam.iframe = /jam/run/contactForm
 
 ####footer####################################
 

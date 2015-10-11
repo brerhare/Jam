@@ -2,4 +2,4 @@ RewriteEngine On
 RewriteCond %{SCRIPT_FILENAME} !-d
 RewriteCond %{SCRIPT_FILENAME} !-f
 RewriteRule ^run(.+)$ jamcgi/jam?jam=/jam/run/$1 [L,QSA]
-RewriteRule ^runsys/(.+)$ jamcgi/jam?jam=/jam/sys/$1 [L,QSA]
+RewriteRule ^jam/run(.+)$ jamcgi/jam?jam=/jam/run/$1 [L,QSA]

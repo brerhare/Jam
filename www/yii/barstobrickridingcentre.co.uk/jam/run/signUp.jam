@@ -1,0 +1,71 @@
+{{@include /jam/sys/html/header.html}}
+
+<style>
+	body {
+		display:none
+	}
+	.uk-form * {
+		font-family: 'Nunito', Arial, sans-serif !important;
+		color: #56bbfe !important;
+	}
+	.uk-form input, textarea {
+		border-radius: 5px !important;
+		margin-bottom:3px !important;
+		border: 2px solid #56bbfe !important;
+	}
+	.uk-form button {
+		margin-top:3px !important;
+		Xmargin-bottom:8px !important;
+		color: #ffffff !important;
+		background: #56bbfe !important;
+	}
+	.uk-form button:hover {
+		background: #238bfe !important;
+	}
+</style>
+
+<form name="contactForm" class="uk-form">
+	{{@html input hidden jelly.sid}}
+	{{@html input hidden jelly.email}}
+	{{@html input text mailer_member.first_name large '' Name}}
+	{{@html input text mailer_member.email_address large '' Email}}
+	{{@html button SUBMIT primary .uk-width-1-1 
+		runAction sendMessage contactForm contactForm
+	}}
+</form>
+
+<script>
+$(window).load(function() {
+	$("body").show();
+	//$("body").fadeIn("slow");
+/*
+	document.getElementById("mailer_member.first_name").addEventListener("change", function() {
+		val = document.getElementById("mailer_member.first_name").value;
+alert('['+val+']');
+			if ((val == null) || (val == "")) {
+			alert("Name is required");
+			return false;
+		}
+	});
+*/
+
+
+});
+</script>
+
+{{@action sendMessage}}
+	{{@database plugin}}
+	{{@get admin_user filter sid = jelly.sid}}
+	{{@get mailer_list filter uid = admin_user.id}}
+	{{mailer_member.uid = admin_user.id}}
+	{{mailer_member.active = 1}}
+	{{mailer_member.mailer_list_id = mailer_list.id}}
+	{{@new item mailer_member}}
+
+	{{@email jelly.email jelly.email 'Newsletter SignUp' You have a new signup. The contact details for this message will be stored in your website newsletter mailing list. \n\nName: mailer_member.first_name \nEmail: mailer_member.email_address \n }}
+
+	<center><p><br><b>Thank you {{mailer_member.first_name}}! We won't pass on your details.</b><br></p></center>
+{{@end}}
+
+{{@include /jam/sys/html/footer.html}}
+
