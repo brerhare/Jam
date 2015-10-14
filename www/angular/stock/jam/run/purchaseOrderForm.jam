@@ -120,6 +120,7 @@
 	{{@each stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id, order by id DESC}}
 		{{@get stock_container filter id = stock_supplier_order.container_id}}
 		{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
+		{{@get stock_pack filter id = stock_supplier_order_item.stock_pack_id}}
 		{{line.cost = stock_product.cost * stock_supplier_order_item.qty}}
 		{{total.cost = total.cost + line.cost}}
 		{{line.volume = stock_product.volume * stock_supplier_order_item.qty}}
@@ -133,8 +134,7 @@
 				<!--	<td> {{@html gridinp disabled stock_product.name}} </td> -->
 						<td> {{@html gridinp text stock_supplier_order_item.qty small}} </td>
 
-						<td>
-						</td>
+						<td> {{@html gridinp disabled stock_pack.unit small}} </td>
 
 						<td> {{@html gridinp disabled stock_product.cost small}} </td>
 						<td> {{@html gridinp disabled line.cost small}} </td>
