@@ -353,14 +353,11 @@
 	function onChangePack() {
 		obj = document.getElementById("SEQ_0_pack");
 		document.getElementsByName('stock_supplier_order_item.stock_pack_id')[0].value = obj.options[obj.selectedIndex].value;	// changed case selection
-alert('s='+document.getElementsByName('stock_supplier_order_item.stock_pack_id')[0].value);
 		objId =  getSibling(obj, 'stock_supplier_order_item.id');
-alert('itemid='+objId.value );
 		runAction('changePack', 'stock_supplier_order_item.id=' + objId.value + ' ' + obj.name + '='+obj.value, '', afterQtyChanged);
 	}
 
 	function showOrderLines() {
-		//alert('redrawing...');
 		runAction('showOrderLines', 'stock_supplier_order.id' + ' ' + 'stock_supplier_order.container_id', 'linebody');
 }
 
