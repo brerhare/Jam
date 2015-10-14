@@ -89,14 +89,8 @@
 						<td> </td>
 						<td> {{@html gridinp text stock_product.code small}} </td>
 						<td> {{@html gridinp filter stock_supplier_order_item.stock_product_id stock_product.name}} </td>
-						<td> {{@html gridinp text stock_supplier_order_item.qty small}} </td>
-						<td>
-							<select name="SEQ_{{lineNum}}_pack">
-								{{@each stock_pack filter stock_product_id = 2}}
-									<option value="{{id}}">{{unit}}</option>
-								{{@end}}
-							</select>
-						</td>
+						<td> {{@html gridinp text stock_supplier_order_item.pack_qty small}} </td>
+						<td id="packTD" name="packTD"> </td>
 						<td> {{@html gridinp disabled stock_product.cost small}} </td>
 						<td> {{@html gridinp disabled linetotal small}} </td>
 						<td> {{@html gridinp disabled linevolume small}} </td>
@@ -121,9 +115,9 @@
 		{{@get stock_container filter id = stock_supplier_order.container_id}}
 		{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
 		{{@get stock_pack filter id = stock_supplier_order_item.stock_pack_id}}
-		{{line.cost = stock_product.cost * stock_supplier_order_item.qty}}
+		{{line.cost = stock_product.cost * stock_supplier_order_item.total_qty}}
 		{{total.cost = total.cost + line.cost}}
-		{{line.volume = stock_product.volume * stock_supplier_order_item.qty}}
+		{{line.volume = stock_product.volume * stock_supplier_order_item.total_qty}}
 		{{total.volume = total.volume + line.volume}}
 
 					<tr>
@@ -132,7 +126,7 @@
 						<td>  <input type='text' class='uk-form-width-' value='{{stock_product.name}}' disabled></td>
 <!-- above line is a hack for line below because name=xxx is zeroth element in first display line not input line
 				<!--	<td> {{@html gridinp disabled stock_product.name}} </td> -->
-						<td> {{@html gridinp text stock_supplier_order_item.qty small}} </td>
+						<td> {{@html gridinp text stock_supplier_order_item.pack_qty small}} </td>
 
 						<td> {{@html gridinp disabled stock_pack.unit small}} </td>
 
@@ -169,8 +163,7 @@
 
 {{@action newPurchaseOrderRow}}
 	{{stock_supplier_order_item.uid = 1}}
-	{{stock_supplier_order_item.supplier_product_ref = '@@TODO and pack also'}}
-	{{stock_supplier_order_item.stock_pack_id = -1}}
+	{{stock_supplier_order_item.supplier_product_ref = TODO}}
 	{{stock_supplier_order_item.stock_supplier_order_id = stock_supplier_order.id}}
 	{{@new item stock_supplier_order_item}}
 {{@end}}
@@ -183,11 +176,14 @@
 	{{@amend item stock_supplier_order_item}}
 {{@end}}
 
-{{@action recalculateOrderCost}}
+{{@action recalcOrder}}
 	{{total.cost = 0}}
 	{{@each stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id}}
 		{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
-		{{total.cost = total.cost + stock_product.cost * stock_supplier_order_item.qty}}
+		{{@get stock_pack filter id = stock_supplier_order_item.stock_pack_id}}
+		{{stock_supplier_order_item.total_qty = stock_supplier_order_item.pack_qty * stock_pack.qty}}
+		{{@amend item stock_supplier_order_item}}
+		{{total.cost = total.cost + stock_product.cost * stock_supplier_order_item.total_qty}}
 	{{@end}}
 	{{stock_supplier_order.price_total = total.cost}}
 	{{stock_supplier_order.total = total.cost}}
@@ -197,11 +193,21 @@
 {{@action checkOrderProductByCode}}
 	{{@get stock_product filter code = stock_product.code}}
 	{{@get stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id, stock_product_id = stock_product.id}}
+	<select id="SEQ_0_pack" onchange="onChangePack();">
+	{{@each stock_pack filter stock_product_id = stock_product.id}}
+		<option value="{{id}}">{{unit}}</option>
+	{{@end}}
+	</select>
 {{@end}}
 
 {{@action checkOrderProductById}}
 	{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
 	{{@get stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id, stock_product_id = stock_supplier_order_item.stock_product_id}}
+	<select id="SEQ_0_pack" onchange="onChangePack();">
+	{{@each stock_pack filter stock_product_id = stock_product.id}}
+		<option value="{{id}}">{{unit}}</option>
+	{{@end}}
+	</select>
 {{@end}}
 
 <script>
@@ -229,12 +235,8 @@
 	function deleteRow(id) {
 		window.event.cancelBubble = true;   // Prevent any further events
 		var result = confirm('Confirm delete');
-		if (result) {
+		if (result)
 			runAction('deletePurchaseOrderRow', 'stock_supplier_order_item.id='+id, '', showOrderLines);
-//			var tr = $(elem).closest('tr');
-//			row = tr[0].rowIndex;
-//			document.getElementById('lineitemTable').deleteRow(row);
-		}
 	}
 
 	function savePurchaseOrder(retFlag) {
@@ -269,7 +271,7 @@
 		flt = 'SEQ_' + 0 + '_';
 		prodCodeObj = document.getElementById(flt + 'stock_product.code');
 		prodIdObj = document.getElementById(flt + 'SEARCH_RESULT');
-		prodQtyObj = document.getElementById(flt + 'stock_supplier_order_item.qty');
+		prodQtyObj = document.getElementById(flt + 'stock_supplier_order_item.pack_qty');
 		if (prodIdObj.value  == '')	{
 			alert('No product selected');
 			return;
@@ -278,17 +280,26 @@
 			alert('Invalid quantity');
 			return;
 		}
-		runAction('newPurchaseOrderRow', 'stock_supplier_order.id' + ' ' + prodCodeObj.name + ' ' + prodIdObj.name + ' ' + prodQtyObj.name, '', _afterNewRowAdded);
+		// Validate pack is selected
+		packObj = document.getElementById("SEQ_0_pack");
+		if (packObj.selectedIndex == -1) {
+			alert('no case selection');
+			return;
+		}
+		document.getElementsByName('stock_supplier_order_item.stock_pack_id')[0].value = packObj.options[packObj.selectedIndex].value;	// case selection
+		runAction('newPurchaseOrderRow', 'stock_supplier_order.id' + ' ' + prodCodeObj.name + ' ' + prodIdObj.name + ' ' + 'stock_supplier_order_item.stock_pack_id' + ' ' + prodQtyObj.name, '', _afterNewRowAdded);
 	}
 	function _afterNewRowAdded() {
 		hideNewRow();
+		runAction('recalcOrder', 'stock_supplier_order.id', '', addedNewRow);
+	}
+	function addedNewRow() {
 		showOrderLines();
-		runAction('recalculateOrderCost', 'stock_supplier_order.id');
-}
+	}
 
 	// Grid product lookup by code
 	function onChange_stock_product_dot_code(obj) {
-		runAction('checkOrderProductByCode', obj.name + ' stock_supplier_order.id', '', checkedOrderProductByCode);
+		runAction('checkOrderProductByCode', obj.name + ' stock_supplier_order.id', 'packTD', checkedOrderProductByCode);
 	}
 	function checkedOrderProductByCode() {
 		productObj = document.getElementsByName('stock_product.id')[0];
@@ -296,7 +307,6 @@
 			alert('No product with that code');
 			return;
 		}
-//alert('bycode: ' + productObj.value); // this get the right product code
 		orderItemObj = document.getElementsByName('stock_supplier_order_item.id')[0];
 		if ((orderItemObj == null) || (orderItemObj.value != '-1')) {
 			alert('Product already on order');
@@ -308,14 +318,14 @@
 		productNameObj = document.getElementsByName('stock_product.name')[0];
 		searchFieldObj = document.getElementById('SEQ_0_SEARCH_VALUE');
 		searchFieldObj.value = productNameObj.value;
+		document.getElementsByName('stock_supplier_order_item.stock_pack_id')[0].value = obj.options[obj.selectedIndex].value;	// initial case selection
 	}
 
 	// Grid filter on product name
 	function onChange_stock_supplier_order_item_dot_stock_product_id(obj) {
-		runAction('checkOrderProductById', 'stock_supplier_order.id stock_supplier_order_item.stock_product_id', '', checkedOrderProductById);
+		runAction('checkOrderProductById', 'stock_supplier_order.id stock_supplier_order_item.stock_product_id', 'packTD', checkedOrderProductById);
 	}
 	function checkedOrderProductById() {
-//alert('byid back with product id : ' + productObj.value); // this get the right product code
 		orderItemObj = document.getElementsByName('stock_supplier_order_item.id')[0];
         if ((orderItemObj == null) || (orderItemObj.value != '-1')) {
             alert('Product already on order');
@@ -325,19 +335,28 @@
 		productObj = document.getElementsByName('stock_product.id')[0];
 		searchResultObj = document.getElementById('SEQ_0_SEARCH_RESULT');
 		searchResultObj.value = productObj.value;	// store the product id in the result field
-		//productId = ?
-		//document.getElementById('SEQ_0_SEARCH_RESULT').value = ;
+		document.getElementsByName('stock_supplier_order_item.stock_pack_id')[0].value = obj.options[obj.selectedIndex].value;	// initial case selection
 	}
 
 	// Quantity changed
-	function onChange_stock_supplier_order_item_dot_qty(obj) {
-		if (obj.id.substr(0, 6) == 'SEQ_0_')
+	function onChange_stock_supplier_order_item_dot_pack_qty(obj) {
+		if (obj.id.substr(0, 6) == 'SEQ_0_')	// Only do this if NOT adding a record
 			return;
 		objId =  getSibling(obj, 'stock_supplier_order_item.id');
 		runAction('changeQty', 'stock_supplier_order_item.id=' + objId.value + ' ' + obj.name + '='+obj.value, '', afterQtyChanged);
 	}
 	function afterQtyChanged() {
-		runAction('recalculateOrderCost', 'stock_supplier_order.id', '', showOrderLines);
+		runAction('recalcOrder', 'stock_supplier_order.id', '', showOrderLines);
+	}
+
+	// Pack changed
+	function onChangePack() {
+		obj = document.getElementById("SEQ_0_pack");
+		document.getElementsByName('stock_supplier_order_item.stock_pack_id')[0].value = obj.options[obj.selectedIndex].value;	// changed case selection
+alert('s='+document.getElementsByName('stock_supplier_order_item.stock_pack_id')[0].value);
+		objId =  getSibling(obj, 'stock_supplier_order_item.id');
+alert('itemid='+objId.value );
+		runAction('changePack', 'stock_supplier_order_item.id=' + objId.value + ' ' + obj.name + '='+obj.value, '', afterQtyChanged);
 	}
 
 	function showOrderLines() {
