@@ -11,10 +11,11 @@
 	.uk-form input, textarea {
 		border-radius: 5px !important;
 		margin-bottom:3px !important;
+		margin-top: 2px !important;
 		border: 2px solid #56bbfe !important;
 	}
 	.uk-form button {
-		margin-top:3px !important;
+		Xmargin-top:3px !important;
 		Xmargin-bottom:8px !important;
 		color: #ffffff !important;
 		background: #56bbfe !important;
@@ -27,11 +28,15 @@
 <form name="contactForm" class="uk-form">
 	{{@html input hidden jelly.sid}}
 	{{@html input hidden jelly.email}}
-	{{@html input text mailer_member.first_name large '' Name}}
-	{{@html input text mailer_member.email_address large '' Email}}
-	{{@html button SUBMIT primary .uk-width-1-1 
-		runAction sendMessage contactForm contactForm
-	}}
+	<div class="uk-form-row">
+		<div class="uk-form-controls">
+			<input type="text" name="member.first_name" placeholder="Name" class="uk-form-width-small">
+			<input type="text" name="member.email_address" placeholder="Email" class="uk-form-width-small">
+			{{@html button SUBMIT primary medium
+				runAction sendMessage contactForm contactForm
+			}}
+		</div>
+	</div>
 </form>
 
 <script>
