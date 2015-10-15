@@ -477,8 +477,16 @@ int control(int startIx, char *defaultTableName) {
 				logMsg(LOGERROR, "Cant find action [%s] to run from within jam script", jam[ix]->args);
 			else
 				logMsg(LOGINFO, "Running @action [%s] within jam script", jam[startIx]->args);
+			if (jam[startIx])
+				emitData(jam[startIx]->trailer);
+			if (jam[startIx])
+				startIx++;
+
 			control(startIx, NULL);
-			logMsg(LOGINFO, "Finished running action [%s] within jam script");
+			logMsg(LOGINFO, "Finished running action [%s] within jam script", jam[startIx]->args);
+			//if (jam[startIx])
+				//emitData(jam[startIx]->trailer);
+			emitData(jam[ix]->trailer);
 //		-------------------------------------
 		} else if (!(strcmp(cmd, "@action"))) {
 //		-------------------------------------
