@@ -283,6 +283,22 @@ function jsonEscapeChars(str) {
 	return str.replace(/\\n/g, "\\n").replace(/\\"/g, '\\"').replace(/\\r/g, "\\r").replace(/\\t/g, "\\t").replace(/\\b/g, "\\b").replace(/\\f/g, "\\f").replace(/\\/g, "\\\\");
 }
 
+
+// --------------------------------------------------------+-----------------------------------------------------
+// Printing
+
+function print(element) {
+	pre = "<style> .uk-button { display:none; } </style>";
+	var content = pre + document.getElementById(element).innerHTML;
+	var printContent = pre + content;
+	var WinPrint = window.open('', '', 'letf=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+	WinPrint.document.write(printContent);
+	WinPrint.document.close();
+	WinPrint.focus();
+	WinPrint.print();
+	WinPrint.close();
+}
+
 // --------------------------------------------------------+-----------------------------------------------------
 // End. Only put things after here for this function to do | 
 // --------------------------------------------------------+
