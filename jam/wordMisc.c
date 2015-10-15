@@ -343,8 +343,15 @@ int wordMiscEmail(int ix, char *defaultTableName) {
 	logMsg(LOGDEBUG, "Mailpipe popen ok. Sending via sendmail");
 	fprintf(mailpipe, "From: %s\n", mailFrom);
 	fprintf(mailpipe, "To: %s\n", mailTo);
+
+	fprintf(mailpipe, "MIME-Version: 1.0\n");
+	fprintf(mailpipe, "Content-Type: text/html\n");
+
 	fprintf(mailpipe, "Subject: %s\n\n", mailSubject);
+	fprintf(mailpipe, "<!DOCTYPE HTML>");
+	fprintf(mailpipe, "<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8' /></head><body>");
 	fwrite(mailBody, 1, strlen(mailBody), mailpipe);
+	fprintf(mailpipe, "</body></html>");
 	fwrite(".\n", 1, 2, mailpipe);
 	pclose(mailpipe);
 
