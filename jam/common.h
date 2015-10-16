@@ -57,11 +57,18 @@ typedef struct {
 #define MAX_VAR 10000
 extern VAR *var[MAX_VAR];
 
+int control(int startIx, char *defaultTableName);
+
 // Common.c functions
 int emitHeader(char *str, ...);
 int endHeader();
 int emitData(char *str, ...);
 int endData(int urlEncodingRequired);
+extern char *emitDataPos;
+extern int emitDataRemaining;
+extern char *emitScratchPos;
+extern int emitScratchRemaining;
+extern char *emitScratchBuffer;
 
 int addVar(VAR *newVar);
 VAR *findVarStrict(char *qualifiedName);

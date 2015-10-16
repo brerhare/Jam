@@ -107,10 +107,8 @@
 					<tbody name='linebody'>
 
 {{@action showOrderLines}}
-
 	{{total.cost = 0}}
 	{{total.volume = 0}}
-	{{lineNum = 0}}
 	{{@each stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id, order by id DESC}}
 		{{@get stock_container filter id = stock_supplier_order.container_id}}
 		{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
@@ -119,7 +117,6 @@
 		{{total.cost = total.cost + line.cost}}
 		{{line.volume = stock_product.volume * stock_supplier_order_item.total_qty}}
 		{{total.volume = total.volume + line.volume}}
-
 					<tr>
 						<td> {{@html gridinp hidden stock_supplier_order_item.id}} </td>
 						<td> {{@html gridinp disabled stock_product.code small}} </td>
@@ -168,9 +165,12 @@
 	{{@update item stock_supplier_order}}
 {{@end}}
 
+{{@action emailContent}}
+	TESTCONTENTFROMANACTION
+{{@end}}
+
 {{@action emailPurchaseOrder}}
-{{xx = abcdefg}}
-	{{@email k@microboot.com kim@microboot.come "Purchase order" CONTENT {{xx}} MORECONTENT}}
+	{{@email k@microboot.com kim@microboot.com 'Purchase order' action:emailContent}}
 {{@end}}
 
 {{@action newPurchaseOrderRow}}

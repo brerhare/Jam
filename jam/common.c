@@ -20,14 +20,19 @@ FILE *scratchJsStream = NULL;
 char *scratchJsFileName = "jam/sys/js/scratch.js";		// preceeded by documentroot
 
 #define MAX_EMITHEADER_LEN 409600
-char *emitHeaderBuffer = (char *) malloc(MAX_EMITHEADER_LEN);
+char *emitHeaderBuffer = (char *) calloc(1, MAX_EMITHEADER_LEN);
 char *emitHeaderPos = emitHeaderBuffer;
 int emitHeaderRemaining = MAX_EMITHEADER_LEN;
 
 #define MAX_EMITDATA_LEN 40960000
-char *emitDataBuffer = (char *) malloc(MAX_EMITDATA_LEN);
+char *emitDataBuffer = (char *) calloc(1, MAX_EMITDATA_LEN);
 char *emitDataPos = emitDataBuffer;
 int emitDataRemaining = MAX_EMITDATA_LEN;
+
+#define MAX_EMITSCRATCH_LEN 40960000
+char *emitScratchBuffer = (char *) calloc(1, MAX_EMITSCRATCH_LEN);
+char *emitScratchPos = emitScratchBuffer;
+int emitScratchRemaining = MAX_EMITSCRATCH_LEN;
 
 FILE *emitStream = stdout;
 
@@ -263,7 +268,6 @@ int emitHeader(char *str, ...) {
 	sprintf(emitHeaderPos, "\r\n");
 	emitHeaderPos += 2;
 	emitHeaderRemaining -= 2;
-
 	va_end(ap);
 }
 
@@ -275,7 +279,6 @@ int emitData(char *str, ...) {
 	emitDataPos += len;
 	*emitDataPos = '\0';
 	emitDataRemaining -= len;
-
 	va_end(ap);
 }
 

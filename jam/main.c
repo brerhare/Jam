@@ -484,8 +484,6 @@ int control(int startIx, char *defaultTableName) {
 
 			control(startIx, NULL);
 			logMsg(LOGINFO, "Finished running action [%s] within jam script", jam[startIx]->args);
-			//if (jam[startIx])
-				//emitData(jam[startIx]->trailer);
 			emitData(jam[ix]->trailer);
 //		-------------------------------------
 		} else if (!(strcmp(cmd, "@action"))) {
