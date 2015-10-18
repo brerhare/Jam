@@ -113,10 +113,10 @@ css.display = block
 				css.text-align = center
 				
 				[signup-form]
+				css.position = relative
+				css.z-index = 2
 				css.width = 368px
 				css.height = 50px
-css.position = relative
-css.z-index = 100
 				#jam.embed = /run/contactForm.jam
 				jam.iframe = /jam/run/signUp
 				
@@ -147,7 +147,7 @@ css.z-index = 100
 		image.height = 23%
 		click = ?layout=index&page=index
 		css.overflow = visible
-		css.z-index = 50
+		css.z-index = 1
 		css.position = relative
 		
 
@@ -247,10 +247,9 @@ html.raw = <style>.da-slider{z-index:0}</style>
 		html.raw = ContentBlock.content
 		
 		[blog-page]
-		condition = @PAGE=blog-equestrian-horse-riding-dumfries-galloway
+		condition = @PAGE=news-riding-dumfries-galloway
 		html.raw = {{news newstype=traditional sidebar=right}}
-		
-		
+				
 		[contact]
 		condition = @PAGE=contact
 		child = contact-content, contact-form
@@ -270,9 +269,10 @@ html.raw = <style>.da-slider{z-index:0}</style>
 			css.border-radius = 5px
 			html.raw = <h1><span style="font-size:24px;">Contact Us</span></h1>
 			css.text-align = center
-			css.height = 430px
+#			css.height = 430px
 			css.background-color = white
 			#jam.embed = /run/contactForm.jam
+			jam.iframe-height = 342px
 			jam.iframe = /jam/run/contactForm
 
 ####footer####################################
