@@ -306,6 +306,8 @@ int endData(int urlEncodeRequired) {
 }
 
 int scratchJs(char *str, ...) {
+char *scr = (char *) calloc(1, 20000000);
+
 	va_list ap;
 //	logMsg(LOGDEBUG, "Creating scratch entry");
 	if (scratchJsStream == NULL) {
@@ -320,6 +322,9 @@ int scratchJs(char *str, ...) {
 	}
 	va_start(ap, str);
 	vfprintf(scratchJsStream, str, ap);
+vsprintf(scr, str, ap);
+sprintf(scr, "\n");
+emitData(scr);
 	fprintf(scratchJsStream, "\n");
 	fflush(scratchJsStream);
 	va_end(ap);
