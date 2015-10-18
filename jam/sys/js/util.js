@@ -59,6 +59,7 @@ function runAction(action, element, output, callback) {
 	var postData = 'jamDataRequested=1';
 	var el = element.split(" ");
 	el.push("_dbname");											// always try to append this (for runactions)
+	el.push("_prefill");
 	for (i = 0; i < el.length; i++) {
 		if (document.forms[el[i]]) {							// is this a form element?
 			var obj = $('form[name="' + el[i] + '"]');
@@ -231,19 +232,26 @@ function getRowPrefix(obj) {
 
 // Create a hidden element for each URL parameter this page was called with
 function createHiddenElementsFromUrlParams() {
+	// Creart the prefill container form
+	var prefillForm = document.createElement('form');
+	prefillForm.setAttribute("type", "hidden");
+	prefillForm.setAttribute("name", "_prefill");
+	prefillForm.setAttribute("id", "_prefill");
+	document.body.appendChild(prefillForm);
+	// Now fill it with prefills
 	var srch = window.location.search;
 	if ((srch.indexOf('?') == -1) && (srch.indexOf('&') == -1))
 		return;
 	parArr = srch.split("?")[1].split("&");
 	for (var i = 0; i < parArr.length; i++) {
 		parr = parArr[i].split("=");
-		//alert('name:['+parr[0]+'] has value:['+decodeURIComponent(parr[1])+']');
+//alert('name:['+parr[0]+'] has value:['+decodeURIComponent(parr[1])+']');
 		var input = document.createElement("input");
 		input.setAttribute("type", "hidden");
 		input.setAttribute("name", parr[0]);
 		input.setAttribute("id", parr[0]);
 		input.setAttribute("value", decodeURIComponent(parr[1]));
-		document.body.appendChild(input);
+		prefillForm.appendChild(input);
 	}
 }
 
