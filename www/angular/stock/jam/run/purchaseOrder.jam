@@ -23,7 +23,7 @@
 		</tr>
 {{@each stock_supplier_order}}
 	{{rowId = (rowId + 1)}}	
-		<tr class="rowHighlight" id="R{{rowId}}" onClick="runJam('purchaseOrderForm?stock_supplier_order.id={{id}}&debug=3')">
+		<tr class="rowHighlight" id="R{{rowId}}" onClick="runJam('purchaseOrderForm?stock_supplier_order.id={{id}}')">
 	{{@get stock_supplier filter id = stock_supplier_order.supplier_id}}
 			<td>{{stock_supplier.name}}</td>
 			<td>{{delivery_date}}</td>

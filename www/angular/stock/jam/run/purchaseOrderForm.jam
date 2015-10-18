@@ -75,7 +75,7 @@
 						<th> Code </th>
 						<th style='max-width:185px;'> Product </th>
 						<th> Qty </th>
-						<th> Order Unit </th>
+						<th> Pack </th>
 						<th> Item Price </th>
 						<th> Line Total </th>
 						<th> Volume </th>
@@ -152,9 +152,11 @@
 
 		<br>
 		<button type='button' class="uk-button uk-button-small uk-button-primary" onClick="print('printing')">Print</button>
+		<span name="emailButton">
 		{{@html button Email primary small
-			runAction emailPurchaseOrder purchaseOrderForm
+			runAction emailPurchaseOrder 'purchaseOrderForm' emailButton showOrderLines
 		}}
+		</span>
 
 	</form>
 
@@ -166,11 +168,51 @@
 {{@end}}
 
 {{@action emailContent}}
-	TESTCONTENTFROMANACTION
+	{{@get stock_supplier filter id = stock_supplier_order.supplier_id}}
+	{{@get stock_location filter id = stock_supplier_order.location_id}}
+<style> .uk-form input[type=text]:disabled { border:none; color:#000; background-color:#fff; }</style>
+	<h3> {{stock_supplier.name}} </h3>
+	<h4>Stock order from [Company] <h4>
+	<h5> Deliver to {{stock_location.name}} by {{stock_supplier_order.delivery_date}} </h5>
+	<table id="lineitemTable" style="margin-top: 15px; border-collapse: collapse; width: 100%; margin-bottom: 15px; border-spacing: 0; border:1px solid #dddddd">
+		<thead>
+			<tr>										<!-- HEADING ROW --->
+				<th style="text-align: left;padding: 4px 8px"> Code </th>
+				<th style="text-align: left;padding: 4px 8px"> Your ref </th>
+				<th style="text-align: left;padding: 4px 8px" style='max-width:185px;'> Product </th>
+				<th style="text-align:right;padding: 4px 8px"> Qty </th>
+				<th style="text-align: left;padding: 4px 8px"> Pack </th>
+				<th style="text-align:right;padding: 4px 8px"> Item Price </th>
+				<th style="text-align:right;padding: 4px 8px"> Line Total </th>
+			</tr>
+		</thead>
+		<tbody>
+			{{total.cost = 0}}
+			{{@each stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id, order by id DESC}}
+				{{@get stock_container filter id = stock_supplier_order.container_id}}
+				{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
+				{{@get stock_pack filter id = stock_supplier_order_item.stock_pack_id}}
+				{{line.cost = stock_product.cost * stock_supplier_order_item.total_qty}}
+				<tr>
+					<td style="padding: 4px 8px">               {{stock_product.code}} </td>
+					<td style="padding: 4px 8px">               {{stock_supplier_order_item.supplier_product_ref}} </td>
+					<td style="padding: 4px 8px">               {{stock_product.name}} </td>
+					<td style="padding: 4px 8px" align="right"> {{stock_supplier_order_item.pack_qty}} </td>
+					<td style="padding: 4px 8px">               {{stock_pack.unit}} </td>
+					<td style="padding: 4px 8px" align="right"> {{stock_product.cost}} </td>
+					<td style="padding: 4px 8px" align="right"> {{line.cost}} </td>
+				</tr>
+				{{total.cost = total.cost + line.cost}}
+			{{@end}}
+		</tbody>
+	</table>
+	<br><b>Order value : {{total.cost}}</b><br><br>
 {{@end}}
 
 {{@action emailPurchaseOrder}}
+	{{@actionsync off}}
 	{{@email k@microboot.com kim@microboot.com 'Purchase order' action:emailContent}}
+	<button type='button' disabled class='uk-button uk-button-small uk-button-primary'>Email sent</button>
 {{@end}}
 
 {{@action newPurchaseOrderRow}}
