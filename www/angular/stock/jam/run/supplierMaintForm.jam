@@ -18,7 +18,7 @@
 
 <form name="supplierForm" class="uk-form uk-form-horizontal">
 <!-- html input type fieldname size prompt placeholder -->
-	{{@html input hidden stock_supplier.id}}
+	{{@Xhtml input hidden stock_supplier.id}}
 	{{@html input text stock_supplier.code small 'Supplier Code' code}}		<!-- quote anything that has a space in it -->
 	{{@html input text stock_supplier.name large Name name}}
 	{{@html input text stock_supplier.address1 large 'Address line 1' 'address 1'}}
@@ -87,11 +87,13 @@
 
 <script>
 function LOCALrunAction(action, pre, post, next) {
+/*****
 	var x = document.forms["supplierForm"]["stock_supplier.code"].value;
 	if (x == null || x == "" || isNaN(x)) {
 		alert('code should be numeric');
 		return;
 	}
+*****/
 	runAction('updateSupplier', 'supplierForm', 'outp', backButton);
 }
 </script>
