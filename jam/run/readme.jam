@@ -131,6 +131,8 @@
 	runAction updateSupplier, supplierForm _id, outputResult, runJam('supplierMaint.tpl')
 }
 
+{@html breakpoint body end}  // so far the only breakpoint, triggered by footer.html to do stuff at end
+
 <hr>
 
 <h4>Actions</h4>
@@ -160,7 +162,6 @@ system.now 		@@TODO
 
 <h4>Allsorts</h4>
 
-{@trigger HtmlEnd}	Used internally only (for now)
 
 <hr>
 

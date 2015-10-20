@@ -3,6 +3,20 @@
 {{@database stock}}
 
 <style>
+td > input {
+	padding: 4px 6px;
+	border: 1px solid #ddd;
+	background: #fff;
+	color: #444;
+	border-radius: 4px;
+	box-sizing: border-box;
+	margin: 0;
+	font: inherit;
+
+}
+</style>
+
+<style>
 .rowHighlight:hover {
   background-color: #ddf0ff;
   Xcolor:#0077dd;
@@ -14,18 +28,50 @@
 
 <div class="uk-overflow-container">
 	<table id="suppliertable" class="testgrid uk-table /*uk-table-striped*/ uk-table-condensed" style="border:1px solid #dddddd">
-		<tr>
-			<th> Code </th>
-			<th> Name </th>
-			<th> Contact </th>
-			<th> Telephone </th>
-			<th> Email </th>
-			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('supplierMaintForm')"> <i class="uk-icon-plus"></i> New</button> </th>
-		</tr>
-{{@each stock_supplier}}
+		<thead>
+			<tr>
+				<th> Code </th>
+				<th> Name </th>
+				<th> Contact </th>
+				<th> Telephone </th>
+				<th> Email </th>
+				<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('supplierMaintForm')"> <i class="uk-icon-plus"></i> New</button> </th>
+			</tr>
+			<tr>
+				<td> </td>
+				<td> {{@html inp keyaction searchNameAction null tablebody 'small uk-form-width-medium-small'}} </td>
+				<td> </td>
+				<td> </td>
+				<td> </td>
+				<td> </td>
+			</tr>
+		</thead>
+		<tbody name='tablebody'>
+		</tbody>
+	</table>
+
+</div>	<!-- uk-overflow-container -->
+
+<script>
+	window.onload = function() {
+		runAction('searchNameAction', 'keyaction=', 'tablebody');
+	}
+
+	function confirmDelete(id, name) {
+		window.event.cancelBubble = true;	// Prevent any further events
+		var result = confirm('Confirm delete of item ' + name);
+		if (result) {
+			runAction('deleteSupplier', 'stock_supplier.id='+id, '', runJam);	
+		}
+	}
+</script>
+
+{{@action searchNameAction}}
+	{{rowId = 0}}
+	{{@each stock_supplier filter name like '%{{keyaction}}%', order by name}}
 	{{rowId = (rowId + 1)}}	
 		<tr class="rowHighlight" id="R{{rowId}}" onClick="runJam('supplierMaintForm?stock_supplier.id={{id}}')">
-			<td>{{code}}</td>
+			<td>{{id}}</td>
 			<td>{{name}}</td>
 			<td>{{contact}}</td>
 			<td>{{telephone}}</td>
@@ -33,19 +79,6 @@
 			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{name}}')"> <i class="uk-icon-trash"></i></button> </td>
 		</tr>
 {{@end}}
-	</table>
-
-</div>	<!-- uk-overflow-container -->
-
-<script>
-function confirmDelete(id, name) {
-	window.event.cancelBubble = true;	// Prevent any further events
-	var result = confirm('Confirm delete of item ' + name);
-	if (result) {
-		runAction('deleteSupplier', 'stock_supplier.id='+id, '', runJam);	
-	}
-}
-</script>
 
 {{@action deleteSupplier}}
 	{{@remove item stock_supplier}}

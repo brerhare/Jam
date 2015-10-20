@@ -228,9 +228,9 @@ function getRowPrefix(obj) {
 }
 
 // ----------------------------------+-----------------------------------------------------------------------
-// Init stuff
+// Init
 
-// Create a hidden element for each URL parameter this page was called with
+// Create a hidden form with input elements for all URL parameters this page was called with
 function createHiddenElementsFromUrlParams() {
 	// Creart the prefill container form
 	var prefillForm = document.createElement('form');
@@ -254,6 +254,9 @@ function createHiddenElementsFromUrlParams() {
 		prefillForm.appendChild(input);
 	}
 }
+
+// ----------------------------------+-----------------------------------------------------------------------
+// OOB (returning from actions)
 
 function processOobData(data) {
 	var spl = data.split("{oobData}");
