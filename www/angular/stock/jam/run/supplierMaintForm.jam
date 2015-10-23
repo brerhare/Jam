@@ -2,7 +2,7 @@
 
 {{@database stock}}
 
-{{@get stock_supplier filter _id = stock_supplier._id}}
+{{@get stock_supplier filter id = stock_supplier.id}}
 
 <style type="text/css">
 	label {text-align: right;}
@@ -17,9 +17,7 @@
 <div class="uk-width-3-5">
 
 <form name="supplierForm" class="uk-form uk-form-horizontal">
-<!-- html input type fieldname size prompt placeholder -->
-	{{@html input hidden stock_supplier._id}}
-	{{@html input text stock_supplier.code small 'Supplier Code' code}}		<!-- quote anything that has a space in it -->
+	{{@html input disabled stock_supplier.id small 'Supplier Code' code}}
 	{{@html input text stock_supplier.name large Name name}}
 	{{@html input text stock_supplier.address1 large 'Address line 1' 'address 1'}}
 	{{@html input text stock_supplier.address2 large 2 'address 2'}}
@@ -82,16 +80,18 @@
 
 {{@action updateSupplier}}
 	{{stock_supplier.uid = 1}}
-	{{@new item stock_supplier}}
+	{{@update item stock_supplier}}
 {{@end}}
 
 <script>
 function LOCALrunAction(action, pre, post, next) {
+/*****
 	var x = document.forms["supplierForm"]["stock_supplier.code"].value;
 	if (x == null || x == "" || isNaN(x)) {
 		alert('code should be numeric');
 		return;
 	}
+*****/
 	runAction('updateSupplier', 'supplierForm', 'outp', backButton);
 }
 </script>

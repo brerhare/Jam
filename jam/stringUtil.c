@@ -7,6 +7,29 @@
 
 #include "log.h"
 
+// Escape some chars that JSON doesnt like
+char *escapeJsonChars(char *src)
+{
+int fnd = 0;
+	char *ret = (char *) calloc(2, (strlen(src) + 1));
+	char *p = src;
+	char *p2 = ret;
+	char *sp = NULL;
+	while (*p) {
+		if      (*p == '\"') { *p2++ = '\\'; *p2++ = '\"'; p++; }
+		else if (*p == '\\') { *p2++ = '\\'; *p2++ = '\\'; p++; }
+		else if (*p == '/')  { *p2++ = '\\'; *p2++ = '/';  p++; }
+		else if (*p == '\b') { *p2++ = '\\'; *p2++ = 'b';  p++; }
+		else if (*p == '\f') { *p2++ = '\\'; *p2++ = 'f';  p++; }
+		else if (*p == '\n') { *p2++ = '\\'; *p2++ = 'n';  p++; }
+		else if (*p == '\r') { *p2++ = '\\'; *p2++ = 'r';  p++; }
+		else if (*p == '\t') { *p2++ = '\\'; *p2++ = 't';  p++; }
+		else
+			*p2++ = *p++;
+	}
+	return(ret);
+}
+
 /* Trims a sting in place. No memory adjustment is done */
 char *strTrim(char *str)
 {

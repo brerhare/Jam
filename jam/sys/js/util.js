@@ -59,6 +59,7 @@ function runAction(action, element, output, callback) {
 	var postData = 'jamDataRequested=1';
 	var el = element.split(" ");
 	el.push("_dbname");											// always try to append this (for runactions)
+	el.push("_prefill");
 	for (i = 0; i < el.length; i++) {
 		if (document.forms[el[i]]) {							// is this a form element?
 			var obj = $('form[name="' + el[i] + '"]');
@@ -78,7 +79,6 @@ function runAction(action, element, output, callback) {
 		}
 //alert('assembling data. So far we have : ' + postData);
 	}
-	checkSanity('BEFORE AJAX ');
 	var sendURL = runURL + '/' + runJam;
 //alert('sending to - \nurl : ' + sendURL + '\ndata : ' + postData);
 	$.ajax( {
@@ -86,40 +86,10 @@ function runAction(action, element, output, callback) {
 		type: "POST",
 		data : postData,
 		success:function(data, textStatus, jqXHR) {
-//alert('back with: ' + data);
-
-            // Check for oob data
-            var spl = data.split("{oobData}");
-            if (spl.length > 1) {
-				oobData = spl[1];
-//alert('has oob data:' + oobData + ' of length ' + oobData.length);
-                var oob = [];
-                oob = JSON.parse(decodeURIComponent(spl[1]));
-                for (i = 0; i < oob.length; i++) {
-					var oobName = oob[i]['name'];
-					var oobValue = oob[i]['value'];
-console.log('processing ' + oobName + ' : ' + oobValue);
-					var obj = document.getElementsByName(oobName);
-					if (obj[0] == null) {
-						var input = document.createElement("input");
-						input.setAttribute("type", "hidden");
-						input.setAttribute("name", oobName);
-						input.setAttribute("id", oobName);
-						input.setAttribute("value", decodeURIComponent(oobValue));
-console.log('   creating');
-						document.body.appendChild(input);
-					} else {
-console.log('   updating');
-						obj[0].value = decodeURIComponent(oobValue);
-					}
-                }
-console.log('-------------------------------------------------------------------------------------');
-                // Strip out oob from data
-                data = spl[0];
-            }
-
+//alert('back with: ' + data + ' of len ' + data.length);
+			data = processOobData(decodeURIComponent(data));
+//alert('fixd with: ' + data + ' of len ' + data.length);
 			if (output != '') {
-				checkSanity('BACK FROM AJAX ');
 				var target = document.getElementsByName(output);
 				if (target[0] instanceof HTMLInputElement) {
 //					alert('is inp');
@@ -149,22 +119,32 @@ function getURLBase() {		// everything but the arguments. ie up to but not inclu
 }
 
 /*
- * What it says. myvar = getURLParameter('someparamname');
+ * @param requestedvar		eg myvar = getURLParameter('someparamname');
+ * @return					eg someparamvalue
+ * usage					someparamvalue = getURLParameter('someparamname');
  */
 function getURLParameter(name) {
   return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search)||[,""])[1].replace(/\+/g, '%20'))||null
 }
 
+/*
+ * @param path		eg /etc/passwd
+ * @return			eg passwd
+ */
 function basename(path) {
 	return path.replace(/\\/g,'/').replace( /.*\//, '' );
 }
  
+/*
+ * @param path		eg /etc/passwd
+ * @return			eg /etc
+ */
 function dirname(path) {
 	return path.replace(/\\/g,'/').replace(/\/[^\/]*$/, '');;
 }
 
 // ----------------------------------------------------------------------------------------------------------
-// Event handlers
+// Jam helpers
 
 // Call a jam-supplied event handler
 function fn(obj, event) {
@@ -172,11 +152,59 @@ function fn(obj, event) {
 	if (event.type == 'change') {
 		localFunc = 'on' + event.type.charAt(0).toUpperCase() + event.type.slice(1) + '_' + obj.name;
 	}
-	localFunc = localFunc.split('.').join('_');
+	localFunc = localFunc.split('.').join('_dot_');
 	if (localFunc != '') {
 		if (typeof window[localFunc] === "function")
 			window[localFunc](obj);
 	}
+}
+
+// Getter/setter for DOM elements. Id preferred to name. For now name is always name[0]
+// someval = data('inputid').content();		.name() .id()
+// data('inputid').content(someval);
+var data = function(element) {
+	// Self instantiate if necessary. http://programmers.stackexchange.com/questions/118798/avoiding-new-operator-in-javascript-the-better-way
+	if (Object.getPrototypeOf(this) !== data.prototype) {
+		var o = Object.create(data.prototype);
+		o.constructor.apply(o, arguments);
+		return o;
+  	}
+	this.obj = document.getElementById(element);
+	if (this.obj == null) {
+		this.obj = document.getElementsByName(element)[0];
+		if (this.obj == null) {
+			console.log('data: invalid element ' + element);
+			return null;
+		}
+	}
+}
+data.prototype.content = function(val) {
+	if (val == null)
+		return (this.obj instanceof HTMLInputElement) ? this.obj.value : this.obj.innerHTML;
+	else
+		(this.obj instanceof HTMLInputElement) ?  this.obj.value = val : this.obj.innerHTML = val;
+};
+data.prototype.id = function(val) {
+	if (val == null)
+		return this.obj.id;
+	else
+		this.obj.id = val;
+};
+data.prototype.name = function(val) {
+	if (val == null)
+		return this.obj.name;
+	else
+		this.obj.name = val;
+};
+
+function getElementContent(object) {
+				if (target[0] instanceof HTMLInputElement) {
+//					alert('is inp');
+					target[0].value = data;
+				} else {
+//					alert('isnt inp');
+					target[0].innerHTML = data;
+				}
 }
 
 // Get a sibling element in a grid eg we want element 'SEQ_39_table.field'
@@ -200,38 +228,91 @@ function getRowPrefix(obj) {
 }
 
 // ----------------------------------+-----------------------------------------------------------------------
-// Init stuff
+// Init
 
-// Create a hidden element for each URL parameter this page was called with
+// Create a hidden form with input elements for all URL parameters this page was called with
 function createHiddenElementsFromUrlParams() {
+	// Creart the prefill container form
+	var prefillForm = document.createElement('form');
+	prefillForm.setAttribute("type", "hidden");
+	prefillForm.setAttribute("name", "_prefill");
+	prefillForm.setAttribute("id", "_prefill");
+	document.body.appendChild(prefillForm);
+	// Now fill it with prefills
 	var srch = window.location.search;
 	if ((srch.indexOf('?') == -1) && (srch.indexOf('&') == -1))
 		return;
 	parArr = srch.split("?")[1].split("&");
 	for (var i = 0; i < parArr.length; i++) {
 		parr = parArr[i].split("=");
-		//alert('name:['+parr[0]+'] has value:['+decodeURIComponent(parr[1])+']');
+//alert('name:['+parr[0]+'] has value:['+decodeURIComponent(parr[1])+']');
 		var input = document.createElement("input");
 		input.setAttribute("type", "hidden");
 		input.setAttribute("name", parr[0]);
 		input.setAttribute("id", parr[0]);
 		input.setAttribute("value", decodeURIComponent(parr[1]));
-		document.body.appendChild(input);
-checkSanity('ONLOAD ANON FUNCTION ');
+		prefillForm.appendChild(input);
 	}
 }
 
-function checkSanity(str) {
-return;
-	var target = document.getElementsByName('stock_supplier_order._id');
-	if (target == null) alert(str+' sanity object is null, so its name etc will be too');
-	else if (target[0] instanceof HTMLInputElement) {
-		alert(str+' sanity object is non-null ...  Name=[' + target[0].name + '] and Value='+target[0].value);
-	}
-}
 // ----------------------------------+-----------------------------------------------------------------------
-// End. Dont put anything after here |
-// ----------------------------------+
+// OOB (returning from actions)
+
+function processOobData(data) {
+	var spl = data.split("{oobData}");
+	if (spl.length > 1) {
+		console.log('----- oob data begins ---------------------------------------------------------------');
+		var oobData = spl[1];
+//alert('found oob data:' + oobData + ' of length ' + oobData.length);
+		var oob = [];
+		oob = JSON.parse(spl[1]);
+		for (i = 0; i < oob.length; i++) {
+			var oobName = oob[i]['name'];
+			var oobValue = oob[i]['value'];
+			var obj = document.getElementsByName(oobName);
+			if (obj[0] == null) {
+				var input = document.createElement("input");
+				input.setAttribute("type", "hidden");
+				input.setAttribute("name", oobName);
+				input.setAttribute("id", oobName);
+				input.setAttribute("value", oobValue);
+console.log('creating ' + oobName + ' : ' + oobValue);
+				document.body.appendChild(input);
+			} else {
+console.log('updating ' + oobName + ' : ' + oobValue);
+				obj[0].value = oobValue;
+			}
+		}
+		// Strip out oob from data
+		data = spl[0];
+		console.log('----- oob data ends -----------------------------------------------------------------');
+	}
+	return data;
+}
+
+function jsonEscapeChars(str) {
+	return str.replace(/\\n/g, "\\n").replace(/\\"/g, '\\"').replace(/\\r/g, "\\r").replace(/\\t/g, "\\t").replace(/\\b/g, "\\b").replace(/\\f/g, "\\f").replace(/\\/g, "\\\\");
+}
+
+
+// --------------------------------------------------------+-----------------------------------------------------
+// Printing
+
+function print(element) {
+	pre = "<style> .uk-button { display:none; } </style>";
+	var content = pre + document.getElementById(element).innerHTML;
+	var printContent = pre + content;
+	var WinPrint = window.open('', '', 'letf=0,top=0,width=800,height=900,toolbar=0,scrollbars=0,status=0');
+	WinPrint.document.write(printContent);
+	WinPrint.document.close();
+	WinPrint.focus();
+	WinPrint.print();
+	WinPrint.close();
+}
+
+// --------------------------------------------------------+-----------------------------------------------------
+// End. Only put things after here for this function to do | 
+// --------------------------------------------------------+
 
 // Place at end of html to run code after dom loaded but not waiting for images to finish loading
 (function() {

@@ -192,7 +192,8 @@ END_OF_FOOTER;
 
     public function expandContent($content, $jellyRoot)
     {
-		$this->deviceWidth = deviceInfo();
+		if ($this->gotDeviceWidth() == -1)
+			return;
         $this->jellyRootPath = Yii::app()->basePath . "/../" . $jellyRoot;
         $this->jellyRootUrl  = Yii::app()->baseUrl . $jellyRoot;
         $this->genInlineHtml($content, $indentLevel=0);
@@ -207,7 +208,8 @@ END_OF_FOOTER;
 
 	public function processData($jellyArray, $jellyRoot)
 	{
-		$this->deviceWidth = deviceInfo();
+		if ($this->gotDeviceWidth() == -1)
+			return;
 		$this->jellyRootPath = Yii::app()->basePath . "/../" . $jellyRoot;
 		$this->jellyRootUrl  = Yii::app()->baseUrl . $jellyRoot;
 
@@ -331,6 +333,39 @@ END_OF_FOOTER;
 			}
 		}
 		array_push($this->scriptArray, "</script>\n");
+	}
+
+	// Check we have the device width. If not, echo the html/js to get it and caller quits
+    private function gotDeviceWidth()
+    {
+		//// THE OLD (retired) METHOD ------------->    $this->deviceWidth = deviceInfo();
+
+		if (isset($_GET['devicewidth'])) {
+			if ($_GET['devicewidth'] != 0) {
+				$this->deviceWidth = $_GET['devicewidth'];
+				array_push($this->headerArray, '<meta name="viewport" content="width=device-width" />');
+			}
+			return(0);
+		}
+    	$deviceWidthHtml = <<<END_OF_GETDEVICEWIDTH
+			<html>
+			<head>
+			<script type="text/javascript">
+			var url = window.location.href;
+			if (url.indexOf('?') === -1)
+				url += '?';
+			else
+				url += '&';
+			url += 'devicewidth=' + screen.width;
+			window.location.href = url;
+			</script>
+			</head>
+			<body>
+			</body>
+			</html>
+END_OF_GETDEVICEWIDTH;
+		echo $deviceWidthHtml;
+		return (-1);
 	}
 
 	public function outputData()
