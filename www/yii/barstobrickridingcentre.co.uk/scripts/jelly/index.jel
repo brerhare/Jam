@@ -17,6 +17,7 @@ css.display = block
 	stacking = horizontal
 	
 		[left-column]
+		condition = @DEVICEWIDTH>759
 		child = book, menu, menu-2
 		css.width = 15%
 		css.min-width = 180px		
@@ -37,8 +38,8 @@ css.display = block
 			[menu]
 			css.overflow = visible
 			css.position = relative
-			css.margin-top = 30px
-			css.min-height = 280px
+			css.margin-top = 20px
+			css.min-height = 360px
 			addon.menu.traditional.orientation = vertical
 			addon.menu.traditional.level = 1
 			addon.menu.traditional.width = 150px
@@ -155,9 +156,9 @@ css.display = block
 
 	[slider]
 	condition = @PAGE=@HOMEPAGE
+	condition = @DEVICEWIDTH>759
 	css.width = 100%
-	css.height = 10%
-	css.height = 270px
+	css.height = 330px
 	css.margin-top = -4%
 html.raw = <style>.da-slider{z-index:0}</style>
 	css.background-color = #def2fe
@@ -204,7 +205,8 @@ html.raw = <style>.da-slider{z-index:0}</style>
 	[slider-img]
 	condition = @PAGE=@HOMEPAGE
 	css.width = 100%
-	css.margin-top = -10%
+	css.min-width = 800px
+	css.margin-top = -50px
 	image.url = img/slider-under.png
 	image.width = 100%
 	image.height = 11%

@@ -409,86 +409,76 @@ END_OF_GETDEVICEWIDTH;
 		// Search array for repeating fields - we'll generate an instance of this blob for each
 		$hasRepeatingField = false;
 		// Skip over 'condition' blobs that fail their condition
-		if (array_key_exists("condition", $array))
-		{
-			if ((strstr($array['condition'], "@HOMEPAGE")) && !(strstr($array['condition'], "@PAGE")))
-			{
-				// condition = @HOMEPAGE=0
-				// condition = @HOMEPAGE=1
-				// condition = @HOMEPAGE!=0
-				// condition = @HOMEPAGE!=1
-				if (strstr($array['condition'], "!=1"))
-				{
-					if ($this->homePage == "1")
-						return;
+
+		foreach ($array as $k=>$v) {
+			if ("condition" == substr($k, 0, 9)) {
+				if ((strstr($array[$k], "@HOMEPAGE")) && !(strstr($array[$k], "@PAGE"))) {
+					// condition = @HOMEPAGE=0
+					// condition = @HOMEPAGE=1
+					// condition = @HOMEPAGE!=0
+					// condition = @HOMEPAGE!=1
+					if (strstr($array[$k], "!=1")) {
+						if ($this->homePage == "1")
+							return;
+					}
+					else if (strstr($array[$k], "!=0")) {
+						if ($this->homePage == "0")
+							return;
+					}
+					else if (strstr($array[$k], "=1")) {
+						if ($this->homePage == "0")
+							return;
+					}
+					else if (strstr($array[$k], "=0")) {
+						if ($this->homePage == "1")
+							return;	
+					}
 				}
-				else if (strstr($array['condition'], "!=0"))
-				{
-					if ($this->homePage == "0")
-						return;
-				}
-				else if (strstr($array['condition'], "=1"))
-				{
-					if ($this->homePage == "0")
-						return;
-				}
-				else if (strstr($array['condition'], "=0"))
-				{
-					if ($this->homePage == "1")
-						return;	
-				}
-			}
-			else if (strstr($array['condition'], "@PAGE"))
-			{
-				// condition = @PAGE=@HOMEPAGE
-				// condition = @PAGE!=@HOMEPAGE
-				// condition = @PAGE=classical-music-series
-				// condition = @PAGE!=classical-music-series
-				if (strstr($array['condition'], "="))
-				{
-					$not = 0;
-					if (strstr($array['condition'], "!"))
-						$not = 1;
-					$first = strstr($array['condition'], "=");
-					$second = strstr($first, "=");
-					$pageForConditionArr = explode(',', ltrim($second, "="));
-					$pageForConditionArr = array_map('trim', $pageForConditionArr);
-					$pageLoading = "";
-					if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
-					{
-						$pageLoading = $_GET['page'];
-						if ($this->homePage == 1)
+				else if (strstr($array[$k], "@PAGE")) {
+					// condition = @PAGE=@HOMEPAGE
+					// condition = @PAGE!=@HOMEPAGE
+					// condition = @PAGE=classical-music-series
+					// condition = @PAGE!=classical-music-series
+					if (strstr($array[$k], "=")) {
+						$not = 0;
+						if (strstr($array[$k], "!"))
+							$not = 1;
+						$first = strstr($array[$k], "=");
+						$second = strstr($first, "=");
+						$pageForConditionArr = explode(',', ltrim($second, "="));
+						$pageForConditionArr = array_map('trim', $pageForConditionArr);
+						$pageLoading = "";
+						if ((isset($_GET['page'])) && (trim($_GET['page']) != "")) {
+							$pageLoading = $_GET['page'];
+							if ($this->homePage == 1)
+								$pageLoading = "@HOMEPAGE";
+						}
+						else
 							$pageLoading = "@HOMEPAGE";
-					}
-					else
-						$pageLoading = "@HOMEPAGE";
-//die('blobname='.$blobName. ' not='.$not.' loading='.$pageLoading.' condition='.$pageForCondition);
-					if ($not == 0)
-					{
-						if (!(in_array($pageLoading, $pageForConditionArr)))
-							return;
-					}
-					else
-					{
-						if (in_array($pageLoading, $pageForConditionArr))
-							return;
+	//die('blobname='.$blobName. ' not='.$not.' loading='.$pageLoading.' condition='.$pageForCondition);
+						if ($not == 0) {
+							if (!(in_array($pageLoading, $pageForConditionArr)))
+								return;
+						}
+						else {
+							if (in_array($pageLoading, $pageForConditionArr))
+								return;
+						}
 					}
 				}
-			}
-			else if (strstr($array['condition'], "@DEVICEWIDTH"))	// =1000, >600, <958, >=320, <=800
-			{
-        		$chrs = array('=', '>', '<');
-				foreach ($chrs as $chr) {
-					//echo $chr;	
-					$exp = explode($chr, $array['condition']);
-					if (count($exp) == 2)
-					{
-						if ($chr == "=" && $this->deviceWidth != trim($exp[1]))
-							return;
-						if ($chr == ">" && $this->deviceWidth <= trim($exp[1]))
-							return;
-						if ($chr == "<" && $this->deviceWidth >= trim($exp[1]))
-							return;
+				else if (strstr($array[$k], "@DEVICEWIDTH")) {	// =1000, >600, <958, >=320, <=800
+        			$chrs = array('=', '>', '<');
+					foreach ($chrs as $chr) {
+						//echo $chr;	
+						$exp = explode($chr, $array[$k]);
+						if (count($exp) == 2) {
+							if ($chr == "=" && $this->deviceWidth != trim($exp[1]))
+								return;
+							if ($chr == ">" && $this->deviceWidth <= trim($exp[1]))
+								return;
+							if ($chr == "<" && $this->deviceWidth >= trim($exp[1]))
+								return;
+						}
 					}
 				}
 			}
