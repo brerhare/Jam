@@ -26,7 +26,8 @@ typedef struct {
 } SQL_RESULT;
 
 SQL_RESULT *sqlCreateResult(char *tableName, MYSQL_RES *res);
-int sqlGetRow2Var(SQL_RESULT *rp);
+int sqlGetRow2Vars(SQL_RESULT *rp);
+int sqlClearRowVars(SQL_RESULT *rp);
 
 // ----------------------------------------------------------------
 // Var related
@@ -35,7 +36,7 @@ int fieldConvertMysql2Var(enum enum_field_types mysqlType);
 void updateSqlVar(char *qualifiedName, enum enum_field_types mysqlType, char *value);   // @@ Rationalise this with the non-sql 'updateVar()'
 
 void _updateSqlFields(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields, MYSQL_ROW *rowP);
-void _nullifySqlFields(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields, MYSQL_ROW *rowP);
+void _nullifySqlFields(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields);
 int _isMysqlFieldName(char *fieldName, char *tableName);
 
 // ----------------------------------------------------------------

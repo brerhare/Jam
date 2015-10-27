@@ -1,0 +1,73 @@
+{{@include /jam/sys/html/header.html}}
+
+<style>
+	body {
+		display:none;
+		margin:1px !important;
+	}
+	.uk-form * {
+		font-family: Verdana, sans-serif !important;
+		color: black !important;
+	}
+	.uk-form input, textarea {
+		border-radius: 5px !important;
+		margin-bottom:3px !important;
+		border: 2px solid #bca498 !important;
+	}
+	.uk-form button {
+		margin-top:3px !important;
+		Xmargin-bottom:8px !important;
+		color: #ffffff !important;
+		background: #bca498 !important;
+	}
+	.uk-form button:hover {
+		background: #ccb9b0 !important;
+	}
+</style>
+
+<form name="contactForm" class="uk-form">
+	{{@html input hidden jelly.sid}}
+	{{@html input hidden jelly.email}}
+	{{@html input text mailer_member.first_name large '' Name}}
+	{{@html input text mailer_member.email_address large '' Email}}
+	{{@html textarea message 60x5 '' Message}}
+	{{@html button SEND primary large 
+		runAction sendMessage contactForm contactForm
+	}}
+</form>
+
+<script>
+$(window).load(function() {
+	$("body").show();
+	//$("body").fadeIn("slow");
+/*
+	document.getElementById("mailer_member.first_name").addEventListener("change", function() {
+		val = document.getElementById("mailer_member.first_name").value;
+alert('['+val+']');
+			if ((val == null) || (val == "")) {
+			alert("Name is required");
+			return false;
+		}
+	});
+*/
+
+
+});
+</script>
+
+{{@action sendMessage}}
+	{{@database plugin}}
+	{{@get admin_user filter sid = jelly.sid}}
+	{{@get mailer_list filter uid = admin_user.id}}
+	{{mailer_member.uid = admin_user.id}}
+	{{mailer_member.active = 1}}
+	{{mailer_member.mailer_list_id = mailer_list.id}}
+	{{@new item mailer_member}}
+
+	{{@email jelly.email jelly.email 'Website enquiry' You have a new enquiry. Details below.\n\nName: mailer_member.first_name \nEmail: mailer_member.email_address \nMessage: message \n  }}
+
+	<center><p><br><br><br><b>Thank you {{mailer_member.first_name}}!</b><br>I will get back to you as soon as possible</p></center>
+{{@end}}
+
+{{@include /jam/sys/html/footer.html}}
+

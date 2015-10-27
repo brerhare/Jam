@@ -48,7 +48,7 @@ char *readJam(char *fname){
 		std::cout << "error: only " << html.gcount() << " could be read" << endl;
 		die("");
 	}
-//	printf("\n[%d][%d]\n-->%s<--\n", jamLen, length, buf);
+//	emitData("\n[%d][%d]\n-->%s<--\n", jamLen, length, buf);
 	return buf;
 }
 
@@ -65,7 +65,7 @@ char *curlies2JamArray(char *jamPos) {
 	char *inCurlyPos = (startCurly + strlen(startJam));
 	int sanity = 0;
 	while (depth > 0) {
-		if (++sanity > 100) { printf("Overflow in curlies2JamArray!"); break; }
+		if (++sanity > 100) { emitData("Overflow in curlies2JamArray!"); break; }
 		char *sCurly = strstr(inCurlyPos, startJam);
 		char *eCurly = strstr(inCurlyPos, endJam);
 		if ((!sCurly) || (eCurly < sCurly)) {	// ie we found our match
@@ -88,7 +88,7 @@ char *curlies2JamArray(char *jamPos) {
 	//if (strstr(wd, startJam)) {
 		//die("there is an opening jam token within a token pair");
 	//}
-//printf("\nlen=[%d] wd=[%s]\n", wdLen, wd);
+//emitData("\nlen=[%d] wd=[%s]\n", wdLen, wd);
 
 	jam[jamIx] = (JAM *) calloc(1, sizeof(JAM));
 	jam[jamIx]->rawData = strdup(wd);
@@ -103,12 +103,12 @@ char *curlies2JamArray(char *jamPos) {
 		for (int i = 0; i < MAX_JAM; i++) {
 			if ((tableStack[i] == NULL) && (i > 0)) {
 				i--;
-//printf("USING STACK: [%s]", tableStack[i]);
+//emitData("USING STACK: [%s]", tableStack[i]);
 				char *newBuf = (char *) calloc(1, 4096);
 				sprintf(newBuf, "%s.%s", tableStack[i], buf);
 				free(buf);
 				buf = newBuf;
-//printf(" ... storing variable [%s]\n", buf);
+//emitData(" ... storing variable [%s]\n", buf);
 				break;
 			}
 		}
@@ -124,7 +124,7 @@ char *curlies2JamArray(char *jamPos) {
 	}
 	else
 		jam[jamIx]->args = strdup("");
-//printf("SETTING [%s]=[%s]\n", jam[jamIx]->command, jam[jamIx]->args);
+//emitData("SETTING [%s]=[%s]\n", jam[jamIx]->command, jam[jamIx]->args);
 
 	char *trailer = strdup(endCurly + strlen(endJam));
 	char *c = strstr(trailer, startJam);
@@ -139,7 +139,7 @@ char *curlies2JamArray(char *jamPos) {
 				char *p = (char *) calloc(1, 4096);
 				getWord(p, jam[jamIx]->args, 1, space);
 				tableStack[i] = p;
-//printf("STACK: [%s]\n", tableStack[i]);
+//emitData("STACK: [%s]\n", tableStack[i]);
 				break;
 			}
 		}
@@ -149,7 +149,7 @@ char *curlies2JamArray(char *jamPos) {
 		for (int i = 0; i < MAX_JAM; i++) {
 			if ((tableStack[i] == NULL) && (i > 0)) {
 				i--;
-//printf("POP: [%s]\n", tableStack[i]);
+//emitData("POP: [%s]\n", tableStack[i]);
 				if (!tableStack[i])
 					die("Invalid @end tag found. I dont seem to find the tag that started this one");
 				jam[jamIx]->args = strdup(tableStack[i]);
@@ -179,7 +179,7 @@ TAGINFO *getTagInfo(char *text, char *tagName) {
 		char *endCurly = NULL;
 		int sanity = 0;
 		while (depth > 0) {
-			if (++sanity > 100) { printf("Overflow in getTagContent!"); break; }
+			if (++sanity > 100) { emitData("Overflow in getTagContent!"); break; }
 			char *sCurly = strstr(inCurlyPos, startJam);
 			char *eCurly = strstr(inCurlyPos, endJam);
 			if ((!sCurly) || (eCurly < sCurly)) {	// ie we found our match
@@ -235,7 +235,7 @@ char *expandCurliesInString(char *originalStr, char *defaultTableName) {
 
 int sanity = 0;
 	while (1) {
-if (++sanity > 200) { printf("Overflow in expandCurliesInString!"); break; }
+if (++sanity > 200) { emitData("Overflow in expandCurliesInString!"); break; }
 		startCurly = strstr(str, startJam);
 		if (startCurly == NULL)
 			break;
@@ -245,7 +245,7 @@ if (++sanity > 200) { printf("Overflow in expandCurliesInString!"); break; }
 		int depth = 1;	// ie the start curly we just found
 		char *inCurlyPos = (startCurly + strlen(startJam));
 		while (depth > 0) {
-			if (++sanity > 200) { printf("Overflow2 in expandCurliesInString!"); break; }
+			if (++sanity > 200) { emitData("Overflow2 in expandCurliesInString!"); break; }
 			char *sCurly = strstr(inCurlyPos, startJam);
 			char *eCurly = strstr(inCurlyPos, endJam);
 			if ((!sCurly) || (eCurly < sCurly)) {	// ie we found our match
