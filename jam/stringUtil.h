@@ -10,4 +10,6 @@ char *strReplaceAlloc(char *orig, char *rep, char *with);
 
 char *str_replace(const char *string, const char *substr, const char *replacement);
 
+char *strAnyChr(char *string, char *chars);
+
 #endif /* _UTIL_H_INCLUDED_ */

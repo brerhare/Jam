@@ -50,6 +50,9 @@ char *jamEntrypoint = NULL;
 JAM *initJam();
 int control(int startIx, char *tableName);
 
+#define MAX_TEMPLATES 10000
+TAGINFO *tinfo[MAX_TEMPLATES];
+
 int isASCII(const char *data, size_t size)
 {
     const unsigned char *str = (const unsigned char*)data;
@@ -169,6 +172,38 @@ if (++sanity > 100) { emitData("Overflow in main!"); break; }
 		free(tagInfo);
 	}
 
+	// Preprocess templates
+	int tagIx = 0;
+	char *pBuf = jamBuf;
+	while (tinfo[tagIx] = getTagInfo(pBuf, "@template")) {
+		pBuf = tinfo[tagIx]->endCurlyPos;
+		tagIx++;
+	}
+	if (tagIx) {
+		tagIx = 0;
+		while (tinfo[tagIx]) {
+			char *searchFor = getWordAlloc(tinfo[tagIx]->content, 1, " \n");
+			char *replace = strAnyChr(tinfo[tagIx]->content, " \n");
+			if (replace)
+				replace++;
+			if (!searchFor) {
+				logMsg(LOGERROR, "template requires a 'searchfor' argument");
+				exit(0);
+			}
+			if ((searchFor[strlen(searchFor)-1] == 10) || (searchFor[strlen(searchFor)-1] == 13))
+				searchFor[strlen(searchFor)-1] = '\0';
+			logMsg(LOGDEBUG, "template will search for [%s] to replace [%s]", searchFor, replace);
+			// Replace
+			if (strstr(jamBuf, searchFor)) {
+				char *newBuf = strReplaceAlloc(jamBuf, searchFor, replace);
+				free(jamBuf);
+				jamBuf = newBuf;
+			}
+			free(searchFor);
+			tagIx++;
+		}
+	}
+
 	// Create Jam array from jamBuf
 	logMsg(LOGINFO, "Creating jam array");
 	char *jamPos = jamBuf;
@@ -284,6 +319,10 @@ int control(int startIx, char *defaultTableName) {
 
 //		-----------------------------------------
 		if (!(strcmp(cmd, "@!begin"))) {
+//		-----------------------------------------
+			emitData(jam[ix]->trailer);
+//		-----------------------------------------
+		} else if (!(strcmp(cmd, "@template"))) {
 //		-----------------------------------------
 			emitData(jam[ix]->trailer);
 //		-----------------------------------------
@@ -672,30 +711,3 @@ int control(int startIx, char *defaultTableName) {
 	free(tmp);
 }
 
-int main2() {
-	MYSQL *conn;
-	MYSQL_RES *res;
-	MYSQL_ROW row;
-	char *server = "localhost";
-	char *user = "root";
-	char *password = "Wole9anic-"; /* set me first */
-	char *database = "mysql";
-	conn = mysql_init(NULL);
-	if (!mysql_real_connect(conn, server, user, password, database, 0, NULL, 0)) {
-		fprintf(stderr, "%s\n", mysql_error(conn));
-		exit(1);
-	}
-	/* send SQL query */
-	if (mysql_query(conn, "show tables")) {
-	fprintf(stderr, "%s\n", mysql_error(conn));
-	exit(1);
-	}
-	res = mysql_use_result(conn);
-	/* output table name */
-	emitData("MySQL Tables in mysql database:\n");
-	while ((row = mysql_fetch_row(res)) != NULL)
-	emitData("%s \n", row[0]);
-	/* close connection */
-	mysql_free_result(res);
-	mysql_close(conn);
-}
