@@ -69,7 +69,7 @@ alert('['+val+']');
 
 	{{@email jelly.email jelly.email 'Newsletter SignUp' You have a new signup. The contact details for this message will be stored in your website newsletter mailing list. \n\nName: mailer_member.first_name \nEmail: mailer_member.email_address \n }}
 
-	<center><p><br><b>Thank you {{mailer_member.first_name}}! We won't pass on your details.</b><br></p></center>
+	<center><p><b>Thank you {{mailer_member.first_name}}! We won't pass on your details.</b></p></center>
 {{@end}}
 
 {{@include /jam/sys/html/footer.html}}
