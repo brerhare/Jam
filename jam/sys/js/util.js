@@ -96,12 +96,13 @@ function runAction(action, element, output, callback) {
 					target[0].value = data;
 				} else {
 //					alert('isnt inp');
-					target[0].innerHTML = data;
+					if (typeof target[0] !== 'undefined')
+						target[0].innerHTML = data;
 				}
 			}
-			if (callback != '') {
+			window.eval(document.getElementById("runscript").innerHTML);	// Apply any JS that might have come in
+			if (callback != '')
 				callback();
-			}
 		},
 		error: function(xhr, textStatus, errorThrown) {
 			console.log(xhr, textStatus, errorThrown);

@@ -382,7 +382,8 @@ int wordDatabaseNewItem(int ix, char *defaultTableName) {
 		strcat(nameStr, row[0]);
 		sprintf(tmp, "%s.%s", tableName, row[0]);
 		VAR *seekVar = findVarStrict(tmp);
-		if (!seekVar)
+logMsg(LOGDEBUG, "wordDatabaseNewItem setting up field: [%s]", row[0]);
+		if ((!seekVar) || (!strcasecmp(row[0], "id")))
 			strcat(valueStr, "NULL");
 		else {
 			sprintf(tmp, "'%s'", seekVar->portableValue);
@@ -394,7 +395,8 @@ int wordDatabaseNewItem(int ix, char *defaultTableName) {
 	strcat(qStr, ") values (");
 	strcat(qStr, valueStr);
 	strcat(qStr, ")");
-	status = doSqlQuery(qStr);
+	logMsg(LOGDEBUG, "wordDatabaseNewItem creating: [%s]", qStr);
+		status = doSqlQuery(qStr);
 	if (status == -1) {
 		logMsg(LOGERROR, "New item failed");
 		return (-1);
@@ -521,7 +523,7 @@ int wordDatabaseUpdateItem(int ix, char *defaultTableName) {
 	// Find the primary key. If it exists WITH A VALUE it's a new, otherwise an amend)
 	sprintf(tmp, "%s.%s", tableName, "id");
 	VAR *idVar = findVarStrict(tmp);
-	if ((!idVar) || (atoi(idVar->portableValue) == 0)) {
+	if ((!idVar) || (atoi(idVar->portableValue) == 0) || (atoi(idVar->portableValue) == -1)) {
 		logMsg(LOGDEBUG, "Update item resolves to New item");
 		res = wordDatabaseNewItem(ix, defaultTableName);
 	}

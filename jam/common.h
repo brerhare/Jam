@@ -64,8 +64,12 @@ int emitHeader(char *str, ...);
 int endHeader();
 int emitData(char *str, ...);
 int endData(int urlEncodingRequired);
+int emitJs(char *str, ...);
+int endJs(int urlEncodingRequired);
 extern char *emitDataPos;
 extern int emitDataRemaining;
+extern char *emitJsPos;
+extern int emitJsRemaining;
 extern char *emitScratchPos;
 extern int emitScratchRemaining;
 extern char *emitScratchBuffer;
@@ -86,6 +90,8 @@ char *urlEncode(char *str);
 
 extern int jamDataRequested;
 int oobJamData();
+
+extern int urlEncodeRequired;
 
 extern char *documentRoot;
 extern FILE *scratchJsStream;

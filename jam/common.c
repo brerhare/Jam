@@ -16,9 +16,6 @@
 
 CURL *curl = NULL;
 
-FILE *scratchJsStream = NULL;
-char *scratchJsFileName = "jam/sys/js/scratch.js";		// preceeded by documentroot
-
 #define MAX_EMITHEADER_LEN 409600
 char *emitHeaderBuffer = (char *) calloc(1, MAX_EMITHEADER_LEN);
 char *emitHeaderPos = emitHeaderBuffer;
@@ -29,6 +26,12 @@ char *emitDataBuffer = (char *) calloc(1, MAX_EMITDATA_LEN);
 char *emitDataPos = emitDataBuffer;
 int emitDataRemaining = MAX_EMITDATA_LEN;
 
+#define MAX_EMITJS_LEN 40960000
+char *emitJsBuffer = (char *) calloc(1, MAX_EMITJS_LEN);
+char *emitJsPos = emitJsBuffer;
+int emitJsRemaining = MAX_EMITJS_LEN;
+
+// Scratch is used as a temp buffer for email body
 #define MAX_EMITSCRATCH_LEN 40960000
 char *emitScratchBuffer = (char *) calloc(1, MAX_EMITSCRATCH_LEN);
 char *emitScratchPos = emitScratchBuffer;
@@ -37,6 +40,8 @@ int emitScratchRemaining = MAX_EMITSCRATCH_LEN;
 FILE *emitStream = stdout;
 
 int jamDataRequested = 0;		// Some ajax calls will ask for this
+
+int urlEncodeRequired = 0;
 
 int cmdSeqnum = 0;	// every @jamcommand has a unique sequence number. Can be used for unique field names in grids
 
@@ -282,6 +287,17 @@ int emitData(char *str, ...) {
 	va_end(ap);
 }
 
+int emitJs(char *str, ...) {
+	va_list ap;
+	va_start(ap, str);
+// @@BUG Overflow needs checked. See http://stackoverflow.com/questions/7215921/possible-buffer-overflow-vulnerability-for-va-list-in-c and http://linux.die.net/man/3/vsnprintf for ideas
+	unsigned long len = vsnprintf(emitJsPos, emitJsRemaining, str, ap);
+	emitJsPos += len;
+	*emitJsPos = '\0';
+	emitJsRemaining -= len;
+	va_end(ap);
+}
+
 int endHeader() {
 	char *p = emitHeaderBuffer;
 	while (*p) {
@@ -305,25 +321,21 @@ int endData(int urlEncodeRequired) {
 //logMsg(LOGMICRO, "ENDDATA=[%s]", emitDataBuffer);
 }
 
-int scratchJs(char *str, ...) {
-	va_list ap;
-//	logMsg(LOGDEBUG, "Creating scratch entry");
-	if (scratchJsStream == NULL) {
-		char *tmp = (char *) calloc(1, 4096);
-		sprintf(tmp, "%s/%s", documentRoot, scratchJsFileName);
-		logMsg(LOGDEBUG, "Opening scratch file %s", tmp);
-		if ((scratchJsStream = fopen(tmp, "w+")) == NULL) {
-			logMsg(LOGFATAL, "Cannot open scratch file %s", tmp);
-			exit(1);
-		}
-		free(tmp);
+int endJs(int urlEncodeRequired) {
+	char *p = emitJsBuffer;
+	char *encodedJs = NULL;
+	if (urlEncodeRequired) {
+		encodedJs = urlEncode(emitJsBuffer);
+		p = encodedJs;
 	}
-	va_start(ap, str);
-	vfprintf(scratchJsStream, str, ap);
-	fprintf(scratchJsStream, "\n");
-	fflush(scratchJsStream);
-	va_end(ap);
-	return(0);
+	emitData("\n\n<script type='text/javascript' id='runscript'>\n");
+	//emitData("alert('runnn');");
+	emitData(p);
+	//emitData("alert('rannn');");
+	emitData("</script>\n");
+	if (encodedJs)
+		free(encodedJs);
+logMsg(LOGMICRO, "ENDJS=[%s]", emitJsBuffer);
 }
 
 char *urlEncode(char *str) {		// needs freeing

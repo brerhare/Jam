@@ -108,20 +108,20 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 		emitData("		<div class='uk-form-controls'>\n");
 	}
 	if (!strcasecmp(fieldType, "filter")) {
-		scratchJs(	"// Handler for autocomplete (%d) \n", randId);
-		scratchJs(	"function SEQ_%d_SEARCH_DIV_AJAX(release) { \n", randId);
-		scratchJs(	"	$.ajax({ \n");
-		scratchJs(	"		url : '/run/sys/autocomplete:filterAutocomplete', type: 'POST', data : '_filtervalue='+document.getElementById('SEQ_%d_SEARCH_VALUE').value+'&_filterfield='+document.getElementById('SEQ_%d_SEARCH_FIELDNAME').value+'&_dbname='+document.getElementById('_dbname').value, \n", randId, randId);
-		scratchJs(	"		success: function(data, textStatus, jqXHR) { \n");
-		scratchJs(	"			var dat = []; \n");
-		scratchJs(	"			dat = JSON.parse(data); \n");
-		scratchJs(	"			release(dat); \n");
-		scratchJs(	"		}, \n");
-		scratchJs(	"		error: function (jqXHR, textStatus, errorThrown) { \n");
-		scratchJs(	"			alert('autocomplete ajax call failed'); \n");
-		scratchJs(	"		}, \n");
-		scratchJs(	"	}); \n");
-		scratchJs(	"} \n");
+		emitJs(	"// Handler for autocomplete (%d) \n", randId);
+		emitJs(	"function SEQ_%d_SEARCH_DIV_AJAX(release) { \n", randId);
+		emitJs(	"	$.ajax({ \n");
+		emitJs(	"		url : '/run/sys/autocomplete:filterAutocomplete', type: 'POST', data : '_filtervalue='+document.getElementById('SEQ_%d_SEARCH_VALUE').value+'&_filterfield='+document.getElementById('SEQ_%d_SEARCH_FIELDNAME').value+'&_dbname='+document.getElementById('_dbname').value, \n", randId, randId);
+		emitJs(	"		success: function(data, textStatus, jqXHR) { \n");
+		emitJs(	"			var dat = []; \n");
+		emitJs(	"			dat = JSON.parse(data); \n");
+		emitJs(	"			release(dat); \n");
+		emitJs(	"		}, \n");
+		emitJs(	"		error: function (jqXHR, textStatus, errorThrown) { \n");
+		emitJs(	"			alert('autocomplete ajax call failed'); \n");
+		emitJs(	"		}, \n");
+		emitJs(	"	}); \n");
+		emitJs(	"} \n");
 		// Add to breakpoint
 		int i;
 		for (i = 0; i < MAX_BREAKPOINTS; i++) {
@@ -156,7 +156,7 @@ filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSe
 		emitData("</div> \n");
 	}
 	else if (!strcasecmp(fieldType, "keyaction")) {
-		scratchJs(	"// onKeyUp handler for keyaction ID %d \n"
+		emitJs(	"// onKeyUp handler for keyaction ID %d \n"
 					"function onKeyUp_%d() { \n"
 					"	var valel = document.getElementById('keyaction_%d'); \n"
 					"	var el = document.getElementById('keyaction'); \n"
@@ -306,7 +306,7 @@ int wordHtmlButton(int ix, char *defaultTableName) {
 	}
 
 	emitData("<button type='button' onClick='buttonClick%d()' class='uk-button uk-button-%s uk-button-%s'>%s</button>\n", buttonId, buttonSize, buttonType, buttonText);
-	sprintf(buttonJS, "<script>\nfunction buttonClick%d() {\n", buttonId);
+	emitJs("buttonClick%d = function() {\n", buttonId);
 	int cnt = 2;
 	while (char *block = strTrim(getWordAlloc(args, cnt++, "\n"))) {
 		char *command = strTrim(getWordAlloc(block, 1, " \t"));
@@ -318,13 +318,13 @@ int wordHtmlButton(int ix, char *defaultTableName) {
 				sprintf(tmp, "%s('%s');\n", command, jamName);
 			else
 				sprintf(tmp, "%s();\n", command);
-			strcat(buttonJS, tmp);
+			emitJs(tmp);
 			free(command);
 			free(jamName);
 		} else if (!strcasecmp(command, "runAction")) {	// Look for AJAX command, we need to wait for return there
 			char *pBlock = strchr(block, ' ');
 			sprintf(tmp, "%s(", command);
-			strcat(buttonJS, tmp);
+			emitJs(tmp);
 			int ix = 1;
 //emitData("<br> \n----->%s <br>\n", pBlock);
 			while(char *runActionArg = strTrim(getWordAlloc(pBlock, ix, " "))) {
@@ -332,30 +332,29 @@ int wordHtmlButton(int ix, char *defaultTableName) {
 					break;
 //emitData("-->%s <br>\n", runActionArg);
 				if (ix != 1)
-					strcat(buttonJS, ", ");
+					emitJs(", ");
 				if (ix < 4) {
 					if ((!strchr(runActionArg, '"')) && (!strchr(runActionArg, '\''))) {
 						sprintf(tmp, "'%s'", runActionArg);
-						strcat(buttonJS, tmp);
+						emitJs(tmp);
 					} else
-						strcat(buttonJS, runActionArg);
+						emitJs(runActionArg);
 				}
 				else
-					strcat(buttonJS, runActionArg);
+					emitJs(runActionArg);
 					//strcat(buttonJS, "@@TODOCALLBACK");
 				free(runActionArg);
 				ix++;
 			}
-			strcat(buttonJS, ");\n");
+			emitJs(");\n");
 		} else {
 			sprintf(tmp, "%s\n", block);
-			strcat(buttonJS, tmp);
+			emitJs(tmp);
 		}
 //emitData("-----> <br>\n");
 		free(block);
 	}
-	strcat(buttonJS, "}\n</script>\n");
-	emitData("%s", buttonJS);
+	emitJs("}\n\n");
 	emitData(jam[ix]->trailer);
 	free(buttonText);
 	free(buttonType);
@@ -555,41 +554,42 @@ int wordHtmlBreakpoint(int ix, char *defaultTableName) {
 		   die("missing HTML breakpoint body arg");
 
 		if (!strcasecmp(breakpointBodyArg, "end")) {	// Called from sys/html/footer.html
+
 			// GENERATE END STUFF WEVE BEEN COLLECTING
 			// ---------------------------------------
 			if (breakpointAutocompleteId[0] != 0) {
 				// Generate the init for uikit autocomplete
-				scratchJs(	"// Include autocomplete JS and CSS \n");
-				scratchJs(	"$.getScript('/jam/sys/extern/uikit/js/components/autocomplete.js', initAutocomplete ); \n");
-				scratchJs(	"var linkElem = document.createElement('link'); \n");
-				scratchJs(	"document.getElementsByTagName('head')[0].appendChild(linkElem); \n");
-				scratchJs(	"linkElem.rel = 'stylesheet'; linkElem.type = 'text/css'; \n");
-				scratchJs(	"linkElem.href = '/jam/sys/extern/uikit/css/components/autocomplete.css'; \n\n");
+				emitJs(	"// Include autocomplete JS and CSS \n");
+				emitJs(	"$.getScript('/jam/sys/extern/uikit/js/components/autocomplete.js', initAutocomplete ); \n");
+				emitJs(	"var linkElem = document.createElement('link'); \n");
+				emitJs(	"document.getElementsByTagName('head')[0].appendChild(linkElem); \n");
+				emitJs(	"linkElem.rel = 'stylesheet'; linkElem.type = 'text/css'; \n");
+				emitJs(	"linkElem.href = '/jam/sys/extern/uikit/css/components/autocomplete.css'; \n\n");
 
-				scratchJs(	"function initAutocomplete() { \n");
+				emitJs(	"function initAutocomplete() { \n");
 
-				scratchJs(	"	// Init autocomplete for zero'th element (grid inserts) \n\n");
-				scratchJs(	"	autocomplete = $.UIkit.autocomplete($('#SEQ_0_SEARCH_DIV'), { 'source': SEQ_0_SEARCH_DIV_AJAX, minLength:1}); \n");
-				scratchJs(	"	$('#SEQ_0_SEARCH_DIV').on('selectitem.uk.autocomplete', function(event, data, ac){ \n");
-				scratchJs(	"		var obj = document.getElementById('SEQ_0_SEARCH_RESULT'); \n");
-				scratchJs(	"		obj.value = data.id; \n");
-				scratchJs(	"		var evt = document.createEvent('HTMLEvents'); \n");
-				scratchJs(	"		evt.initEvent('change', false, true); \n");
-				scratchJs(	"		fn(obj, evt); \n");
-				scratchJs("	}); \n");
+				emitJs(	"	// Init autocomplete for zero'th element (grid inserts) \n\n");
+				emitJs(	"	autocomplete = $.UIkit.autocomplete($('#SEQ_0_SEARCH_DIV'), { 'source': SEQ_0_SEARCH_DIV_AJAX, minLength:1}); \n");
+				emitJs(	"	$('#SEQ_0_SEARCH_DIV').on('selectitem.uk.autocomplete', function(event, data, ac){ \n");
+				emitJs(	"		var obj = document.getElementById('SEQ_0_SEARCH_RESULT'); \n");
+				emitJs(	"		obj.value = data.id; \n");
+				emitJs(	"		var evt = document.createEvent('HTMLEvents'); \n");
+				emitJs(	"		evt.initEvent('change', false, true); \n");
+				emitJs(	"		fn(obj, evt); \n");
+				emitJs("	}); \n");
 	
-				scratchJs(	"// Init autocomplete for each element \n\n");
+				emitJs(	"// Init autocomplete for each element \n\n");
 				for (int i = 0; breakpointAutocompleteId[i] != 0; i++) {
-					scratchJs(	"	autocomplete = $.UIkit.autocomplete($('#SEQ_%d_SEARCH_DIV'), { 'source': SEQ_%d_SEARCH_DIV_AJAX, minLength:1}); \n", breakpointAutocompleteId[i], breakpointAutocompleteId[i]);
-					scratchJs(	"	$('#SEQ_%d_SEARCH_DIV').on('selectitem.uk.autocomplete', function(event, data, ac){ \n", breakpointAutocompleteId[i]);
-					scratchJs(	"		var obj = document.getElementById('SEQ_%d_SEARCH_RESULT'); \n", breakpointAutocompleteId[i]);
-					scratchJs(	"       obj.value = data.id; \n");
-					scratchJs(	"		var evt = document.createEvent('HTMLEvents'); \n");
-					scratchJs(	"		evt.initEvent('change', false, true); \n");
-					scratchJs(	"		fn(obj, evt); \n");
-					scratchJs("	}); \n");
+					emitJs(	"	autocomplete = $.UIkit.autocomplete($('#SEQ_%d_SEARCH_DIV'), { 'source': SEQ_%d_SEARCH_DIV_AJAX, minLength:1}); \n", breakpointAutocompleteId[i], breakpointAutocompleteId[i]);
+					emitJs(	"	$('#SEQ_%d_SEARCH_DIV').on('selectitem.uk.autocomplete', function(event, data, ac){ \n", breakpointAutocompleteId[i]);
+					emitJs(	"		var obj = document.getElementById('SEQ_%d_SEARCH_RESULT'); \n", breakpointAutocompleteId[i]);
+					emitJs(	"       obj.value = data.id; \n");
+					emitJs(	"		var evt = document.createEvent('HTMLEvents'); \n");
+					emitJs(	"		evt.initEvent('change', false, true); \n");
+					emitJs(	"		fn(obj, evt); \n");
+					emitJs("	}); \n");
 				}
-				scratchJs("} \n");
+				emitJs("} \n");
 				logMsg(LOGDEBUG, "created init js for uikit autocomplete");
 			}
 			// Embed the db name in the html for any @action calls
