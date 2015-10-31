@@ -58,16 +58,16 @@ function runAction(action, element, output, callback) {
 	// Gather all the elements to send
 	var postData = 'jamDataRequested=1';
 	var el = element.split(" ");
-	el.push("_dbname");											// always try to append this (for runactions)
-	el.push("_prefill");
+	el.push("_dbname");											// always try to append this
+	el.push("_initialUrlParams");								// any url parameters this page was initially called with
 	for (i = 0; i < el.length; i++) {
 		if (document.forms[el[i]]) {							// is this a form element?
-			var obj = $('form[name="' + el[i] + '"]');
+			var obj = $('form[name="' + el[i] + '"]');			// yes its a form element
 			postData += '&' + obj.serialize();
-			if (typeof obj.attr("action") != 'undefined')	// If a form (any form) has an 'action' we use it
+			if (typeof obj.attr("action") != 'undefined')		// If any form at all has an 'action' we use it
 				formURL = obj.attr("action");
-		} else {											// not a form element
-			var obj = document.getElementsByName(el[i]);		// .. try to get it
+		} else {												// no its not a form element
+			var obj = document.getElementsByName(el[i]);		// try to get it
 			if (!(obj))
 				obj = document.getElementById(el[i]);
 			if ((obj) && (obj.length > 0)) {					// got it
@@ -230,15 +230,16 @@ function getRowPrefix(obj) {
 // ----------------------------------+-----------------------------------------------------------------------
 // Init
 
-// Create a hidden form with input elements for all URL parameters this page was called with
+// Create a hidden form with input elements for any parameters embedded in the URL that this page was initially called with 
+//                                                  ------------------------------
 function createHiddenElementsFromUrlParams() {
-	// Creart the prefill container form
-	var prefillForm = document.createElement('form');
-	prefillForm.setAttribute("type", "hidden");
-	prefillForm.setAttribute("name", "_prefill");
-	prefillForm.setAttribute("id", "_prefill");
-	document.body.appendChild(prefillForm);
-	// Now fill it with prefills
+	// Create the initialUrlParams container form
+	var initialUrlParamsForm = document.createElement('form');
+	initialUrlParamsForm.setAttribute("type", "hidden");
+	initialUrlParamsForm.setAttribute("name", "_initialUrlParams");
+	initialUrlParamsForm.setAttribute("id", "_initialUrlParams");
+	document.body.appendChild(initialUrlParamsForm);
+	// Now fill it with any params after the ? or &
 	var srch = window.location.search;
 	if ((srch.indexOf('?') == -1) && (srch.indexOf('&') == -1))
 		return;
@@ -251,7 +252,7 @@ function createHiddenElementsFromUrlParams() {
 		input.setAttribute("name", parr[0]);
 		input.setAttribute("id", parr[0]);
 		input.setAttribute("value", decodeURIComponent(parr[1]));
-		prefillForm.appendChild(input);
+		initialUrlParamsForm.appendChild(input);
 	}
 }
 
