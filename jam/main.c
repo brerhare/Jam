@@ -335,9 +335,6 @@ int control(int startIx, char *defaultTableName) {
 						wordHtmlInput(ix, defaultTableName);
 					else if (!strcmp(tmp, "inp"))
 						wordHtmlInp(ix, defaultTableName);
-
-					else if (!strcmp(tmp, "griddate"))
-						wordHtmlGridDate(ix, defaultTableName);
 					else if (!strcmp(tmp, "gridinp"))
 						wordHtmlGridInp(ix, defaultTableName);
 

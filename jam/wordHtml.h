@@ -5,7 +5,6 @@ int wordHtmlSys(int ix, char *defaultTableName);
 int wordHtmlBreakpoint(int ix, char *defaultTableName);
 int wordHtmlInput(int ix, char *defaultTableName);
 int wordHtmlInp(int ix, char *defaultTableName);
-int wordHtmlGridDate(int ix, char *defaultTableName);
 int wordHtmlGridInp(int ix, char *defaultTableName);
 int wordHtmlTextarea(int ix, char *defaultTableName);
 int wordHtmlButton(int ix, char *defaultTableName);

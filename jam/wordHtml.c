@@ -22,7 +22,6 @@ int breakpointAutocompleteId[MAX_BREAKPOINTS];
 #define INP 0
 #define INPUT 1
 #define GRIDINP 2
-#define GRIDDATE 3
 
 //-----------------------------------------------------------------
 // HTML <tag> generation from {{curly}}
@@ -61,7 +60,7 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	VAR *variable = NULL;
 	VAR *variableSearch = NULL;
 
-	if ((inputType == GRIDDATE) || (inputType == GRIDINP))
+	if (inputType == GRIDINP)
 		randId = cmdSeqnum;
 
 	getWord(fieldType, args, 2, " \t");
@@ -99,7 +98,7 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	getWord(fieldPrompt, args, 5, " \t");
 	getWord(fieldPlaceholder, args, 6, " \t");
 
-	if ((inputType == INPUT) || (inputType == GRIDDATE)) {
+	if (inputType == INPUT) {
 		emitData("<div class='uk-form-row'>\n");
 		if (!strcasecmp(fieldType, "filter"))
 			emitData("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPlaceholder);
@@ -179,12 +178,12 @@ filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSe
 			strcpy(disabledStr, " disabled ");
 			strcpy(fieldType, "text");
 		}
-		if ((inputType == INPUT) || (inputType == GRIDDATE))
+		if (inputType == INPUT)
 			emitData("		<input type='%s' name='%s' id='SEQ_%d_%s' value='%s' placeholder='%s' class='uk-form-width-%s' onChange='fn(this, event);' %s>\n", fieldType, fieldVar, randId, fieldVar, fieldVarValue, fieldPlaceholder, fieldSize, disabledStr);
 		else		// 'inp' only
 			emitData("		<input type='%s' name='%s' id='SEQ_%d_%s' value='%s' class='uk-form-width-%s' onChange='fn(this, event)' %s>\n", fieldType, fieldVar, randId, fieldVar, fieldVarValue, fieldSize, disabledStr);
 	}
-	if ((inputType == INPUT) || (inputType == GRIDDATE)) {
+	if (inputType == INPUT) {
 		emitData("	</div>\n");
 		emitData("</div>\n");
 	}
@@ -209,9 +208,6 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 }
 int wordHtmlGridInp(int ix, char *defaultTableName) {
 	return(_wordHtmlInputInp(ix, defaultTableName, GRIDINP));
-}
-int wordHtmlGridDate(int ix, char *defaultTableName) {
-	return(_wordHtmlInputInp(ix, defaultTableName, GRIDDATE));
 }
 
 //	{{@html textarea stock_supplier.notes 60x5 Notes}}
