@@ -22,25 +22,10 @@ int breakpointAutocompleteId[MAX_BREAKPOINTS];
 #define INP 0
 #define INPUT 1
 #define GRIDINP 2
+#define GRIDDATE 3
 
 //-----------------------------------------------------------------
 // HTML <tag> generation from {{curly}}
-
-int wordHtmlGrid(int ix, char *defaultTableName) {
-	char *cmd = jam[ix]->command;
-	char *args = jam[ix]->args;
-	char *rawData = jam[ix]->rawData;
-	char *tableName = (char *) calloc(1, 4096);
-	char *tmp = (char *) calloc(1, 4096);
-
-	getWord(tableName, args, 2, " ");
-	if (!tableName)
-	   die("missing table name to gridify");
-
-	emitData(jam[ix]->trailer);
-	free(tableName);
-	free(tmp);
-}
 
 int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	char *cmd = jam[ix]->command;
