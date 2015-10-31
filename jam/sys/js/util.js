@@ -88,7 +88,6 @@ function runAction(action, element, output, callback) {
 		success:function(data, textStatus, jqXHR) {
 //alert('back with: ' + data + ' of len ' + data.length);
 			data = processOobData(decodeURIComponent(data));
-//alert('fixd with: ' + data + ' of len ' + data.length);
 			if (output != '') {
 				var target = document.getElementsByName(output);
 				if (target[0] instanceof HTMLInputElement) {

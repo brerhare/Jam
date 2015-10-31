@@ -1,7 +1,7 @@
+{{@include /jam/sys/html/header.html}}
+
 {{@version 0.0.1}}
 <!-- Purchase Order Form -->
-
-{{@include /jam/sys/html/header.html}}
 
 {{@database stock}}
 
@@ -417,8 +417,8 @@
 
 </script>
 
-{{@include /jam/sys/html/footer.html}}
-
 <!-- min height hack for angular -->
 <div style="height:2000px;">&nbsp</div>
+
+{{@include /jam/sys/html/footer.html}}
 

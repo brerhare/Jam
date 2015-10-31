@@ -238,7 +238,6 @@ if (++sanity > 100) { emitData("Overflow in main!"); break; }
 	if (startIx == 0) {
 		logMsg(LOGINFO, "Processing command loop starting from @!begin");
 		control(startIx, NULL);
-		endJs(urlEncodeRequired);	// No encode
 	}
 	else {
 		logMsg(LOGINFO, "Processing command loop for @action %s", jamEntrypoint);

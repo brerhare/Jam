@@ -597,9 +597,13 @@ int wordHtmlBreakpoint(int ix, char *defaultTableName) {
 				connDbName = strdup("");
 			emitData("<input type='hidden' id='_dbname' name='_dbname' value='%s'>", connDbName);
 			logMsg(LOGDEBUG, "created hidden _dbname element");
+
+			endJs(urlEncodeRequired);	// No encode
+
 		}
 		free(breakpointBodyArg);
 	}
+
 	emitData(jam[ix]->trailer);
 	free(breakpointName);
 	free(tmp);
