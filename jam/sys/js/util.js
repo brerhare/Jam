@@ -58,6 +58,7 @@ function runAction(action, element, output, callback) {
 	// Gather all the elements to send
 	var postData = 'jamDataRequested=1';
 	var el = element.split(" ");
+	el = runActionPreProcessGrid(el);							// expand 'SEQ_' to individual names for sending grid
 	el.push("_dbname");											// always try to append this
 	el.push("_initialUrlParams");								// any url parameters this page was initially called with
 	for (i = 0; i < el.length; i++) {
@@ -150,7 +151,12 @@ function dirname(path) {
 function fn(obj, event) {
 	var localFunc = '';
 	if (event.type == 'change') {
-		localFunc = 'on' + event.type.charAt(0).toUpperCase() + event.type.slice(1) + '_' + obj.name;
+		localFunc = 'on' + event.type.charAt(0).toUpperCase() + event.type.slice(1) + '_' + obj.id;
+		if (localFunc.indexOf("_SEQ") != -1) {	// eg convert onChange_SEQ_3_customer.name to onChange_customer.name
+			var uscore = localFunc.split("_");
+			uscore.splice(1, 2);
+			localFunc = uscore.join("_");
+		}
 	}
 	localFunc = localFunc.split('.').join('_dot_');
 	if (localFunc != '') {
@@ -198,13 +204,13 @@ data.prototype.name = function(val) {
 };
 
 function getElementContent(object) {
-				if (target[0] instanceof HTMLInputElement) {
-//					alert('is inp');
-					target[0].value = data;
-				} else {
-//					alert('isnt inp');
-					target[0].innerHTML = data;
-				}
+	if (target[0] instanceof HTMLInputElement) {
+//		alert('is inp');
+		target[0].value = data;
+	} else {
+//		alert('isnt inp');
+		target[0].innerHTML = data;
+	}
 }
 
 // Get a sibling element in a grid eg we want element 'SEQ_39_table.field'
@@ -219,13 +225,67 @@ function get(name) {
 
 // extract the row prefix ('SEQ_99_') from an object
 function getRowPrefix(obj) {
+	if (obj == null) {
+		alert('Error: getRowPrefix cant work with a null object');
+		return(null);
+	}
+	if (obj.id.indexOf("SEQ_") == -1) {
+		alert('Error: getRowPrefix found no SEQ_ in the passed object id');
+		return(null);
+	}
 	var idSplit = obj.id.split('_');
 	if (idSplit.length < 3) {
-		alert('getRowPrefix requires at least 2 underscores in the passed object id');
+		alert('Error: getRowPrefix requires at least 2 underscores in the passed object id');
 		return(null);
 	}
 	return idSplit[0] + '_' + idSplit[1] + '_';
 }
+
+// If there is any SEQ_ item create element.name's for ALL sibling grid element.id to send to server, and return the modified element array to runAction
+function runActionPreProcessGrid(elArr) {
+	var seq = "";
+	var newArr = [];
+	for (i = 0; i < elArr.length; i++) {
+		if (elArr[i].indexOf("SEQ_") != -1) {
+			var obj = document.getElementById(elArr[i].id);
+			var seqArr = elArr[i].split("_");
+			seq = seqArr[0] + '_' + seqArr[1] + '_';
+		} else {
+			newArr.push(elArr[i]);
+		}
+	}
+	// @@TODO Very inefficient looping thru all id's this way... consider using a class to group grid fields
+	if (seq != "") {			// found at least one SEQ_ (and dropped ALL occurrences from the array)
+		var allElements = document.getElementsByTagName("*");
+		for (var i = 0, n = allElements.length; i < n; ++i) {
+			var el = allElements[i];
+			if ((el.id) && (el.id.substring(0, seq.length) == seq)) {
+				var newName =  el.id.substring(seq.length);
+				var gridElement = document.getElementsByName(newName);
+				if (gridElement[0])
+					 document.body.removeChild(gridElement[0]);
+				gridElement = document.createElement("input");
+				gridElement.setAttribute("type", "hidden");
+				gridElement.setAttribute("name", newName);
+				gridElement.setAttribute("value", el.value);
+				document.body.appendChild(gridElement);
+				newArr.push(newName);		// add it to the array
+				console.log('Appending grid element ' + newName);
+			}
+		}
+		console.log('Expanded array to send is ' + newArr);
+	}
+	return newArr;
+}
+/*
+function getSibling(callingObj, siblingName) {	// eg obj and 'table.field'
+	return document.getElementById(getRowPrefix(callingObj) + siblingName);
+
+		if (localFunc.indexOf("_SEQ") != -1) {	// eg convert onChange_SEQ_3_customer.name to onChange_customer.name
+			var uscore = localFunc.split("_");
+			uscore.splice(1, 2);
+			localFunc = uscore.join("_");
+*/
 
 // ----------------------------------+-----------------------------------------------------------------------
 // Init

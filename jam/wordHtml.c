@@ -22,7 +22,6 @@ int breakpointAutocompleteId[MAX_BREAKPOINTS];
 #define INP 0
 #define INPUT 1
 #define GRIDINP 2
-#define GRIDDATE 3
 
 //-----------------------------------------------------------------
 // HTML <tag> generation from {{curly}}
@@ -37,7 +36,7 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	char *fieldSize = (char *) calloc(1, 4096);			// NB this is 'jam:action' for keyaction
 	char *fieldVarValue = (char *) calloc(1, 4096);
 	char *fieldSearchValue = (char *) calloc(1, 4096);
-	char *fieldPrompt = (char *) calloc(1, 4096);		// NB this is 'size' for keyaction
+	char *fieldPrompt = (char *) calloc(1, 4096);		// NB this is 'size' for ekyaction
 	char *fieldPlaceholder = (char *) calloc(1, 4096);	
 	char *disabledStr = (char *) calloc(1, 4096);
 	char *tmp = (char *) calloc(1, 4096);
@@ -125,7 +124,7 @@ filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSe
 {{@html input filter    stock_supplier_order.stock_supplier_id stock_supplier.name medium Supplier}}
 #endif
 		emitData("<input type='hidden' id='SEQ_%d_SEARCH_FIELDNAME' value='%s'> \n", randId, fieldSize);
-		emitData("<input type='hidden' id='SEQ_%d_SEARCH_RESULT' name='%s' value='%s'> \n", randId, fieldVar, fieldVarValue);
+		emitData("<input type='hidden' id='SEQ_%d_SEARCH_RESULT' name='%s' id='%s' value='%s'> \n", randId, fieldVar, fieldVar, fieldVarValue);
 		emitData("<div id='SEQ_%d_SEARCH_DIV' class='uk-autocomplete uk-form' data-uk-autocomplete='off'> \n", randId);
 		emitData("	<input type='text' id='SEQ_%d_SEARCH_VALUE' value='%s' class='uk-form-width-%s'> \n", randId, fieldSearchValue, fieldPrompt);
 		emitData("	<script type='text/autocomplete'> \n");
@@ -157,16 +156,19 @@ filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSe
 					"	runAction('%s', 'keyaction %s', '%s'); \n"
 					"} \n"
 					, randId, randId, randId, fieldVar /*actually jam:action*/, fieldSize /*actually input*/, fieldPrompt /*actually outputResult*/);
-		emitData("		<input type='text' name=keyaction_%d id='keyaction_%d' value='' onkeyup='onKeyUp_%d()' class='uk-form-width-%s'>\n", randId, randId, randId, fieldPlaceholder);
+		if ((inputType == INPUT) || (inputType == INP))
+			emitData("		<input type='text' name=keyaction_%d id='keyaction_%d' value='' onkeyup='onKeyUp_%d()' class='uk-form-width-%s'>\n", randId, randId, randId, fieldPlaceholder);
+		else
+			emitData("		<input type='text' id='keyaction_%d' value='' onkeyup='onKeyUp_%d()' class='uk-form-width-%s'>\n", randId, randId, fieldPlaceholder);
 	} else {
 		if (!strcasecmp(fieldType, "disabled")) {
 			strcpy(disabledStr, " disabled ");
 			strcpy(fieldType, "text");
 		}
-		if (inputType == INPUT)
+		if ((inputType == INPUT) || (inputType == INP))
 			emitData("		<input type='%s' name='%s' id='SEQ_%d_%s' value='%s' placeholder='%s' class='uk-form-width-%s' onChange='fn(this, event);' %s>\n", fieldType, fieldVar, randId, fieldVar, fieldVarValue, fieldPlaceholder, fieldSize, disabledStr);
 		else		// 'inp' only
-			emitData("		<input type='%s' name='%s' id='SEQ_%d_%s' value='%s' class='uk-form-width-%s' onChange='fn(this, event)' %s>\n", fieldType, fieldVar, randId, fieldVar, fieldVarValue, fieldSize, disabledStr);
+			emitData("		<input type='%s' id='SEQ_%d_%s' value='%s' class='uk-form-width-%s' onChange='fn(this, event)' %s>\n", fieldType, randId, fieldVar, fieldVarValue, fieldSize, disabledStr);
 	}
 	if (inputType == INPUT) {
 		emitData("	</div>\n");
