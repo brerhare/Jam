@@ -79,12 +79,20 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 			strcpy(fieldSearchValue, variableSearch->portableValue);
 	}
 
+	if (!strcasecmp(fieldType, "dropdown")) {
+		if ((!strchr(fieldSize, '.')) && (defaultTableName))
+			sprintf(fieldSize, "%s.%s", defaultTableName, fieldSize);
+		variableSearch = findVarStrict(fieldSize);
+		if (variableSearch)
+			strcpy(fieldSearchValue, variableSearch->portableValue);
+	}
+
 	getWord(fieldPrompt, args, 5, " \t");
 	getWord(fieldPlaceholder, args, 6, " \t");
 
 	if (inputType == INPUT) {
 		emitData("<div class='uk-form-row'>\n");
-		if (!strcasecmp(fieldType, "filter"))
+		if ((!strcasecmp(fieldType, "filter")) || (!strcasecmp(fieldType, "dropdown")))
 			emitData("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPlaceholder);
 		else
 			emitData("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPrompt);
@@ -138,6 +146,43 @@ filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSe
 		emitData("		</ul> \n");
 		emitData("	</script \n");
 		emitData("</div> \n");
+	}
+	else if (!strcasecmp(fieldType, "dropdown")) {
+		logMsg(LOGDEBUG, "Select: fieldVarValue=[%s] and fieldSize=[%s]", fieldVarValue, fieldSize);
+		emitData("	<select id='SEQ_%d_SELECT_VALUE' name='%s' value='%s' onchange='//alert(this.value);' class='uk-form-width-%s'> \n", randId, fieldVar, fieldVarValue, fieldPrompt);
+		// Construct all the <option> tags from content
+		char tmp2[4096];
+		sprintf(tmp2, fieldSize);
+		char *p = strchr(tmp2, '.');
+		if (p)
+			*p = '\0';
+		sprintf(tmp, "select * from %s order by id", tmp2);
+		logMsg(LOGDEBUG, "Select: about to query for all options using raw sql [%s]", tmp);
+		int status = doSqlQuery(tmp);
+		if (status == -1) {
+			logMsg(LOGERROR, "Sql query failed - doSqlQuery() failed");
+			return (-1);
+		}
+		logMsg(LOGDEBUG, "Getting RES for raw query");
+		MYSQL_RES *res = mysql_store_result(conn);
+		if (res != NULL) {	// ie the query returned row(s)
+			logMsg(LOGDEBUG, "RES is non-null");
+			SQL_RESULT *rp = sqlCreateResult(tmp2, res);
+			strcat(tmp2, ".id");
+			while (sqlGetRow2Vars(rp) != SQL_EOF) {
+				VAR *idVar = findVarStrict(tmp2);
+				VAR *showVar = findVarStrict(fieldSize);
+				logMsg(LOGDEBUG, "Select: found option [%s]->[%s]", idVar->portableValue, showVar->portableValue);
+				char selected[128];
+				strcpy(selected, "");
+				if (!strcmp(idVar->portableValue, fieldVarValue))
+					strcpy(selected, "selected='selected'");
+				emitData("    <option value='%s' %s>%s</option> \n", idVar->portableValue, selected, showVar->portableValue);
+			}
+			mysql_free_result(res);
+		} else logMsg(LOGDEBUG, "RES is null");
+
+		emitData("  </select> \n");
 	}
 	else if (!strcasecmp(fieldType, "keyaction")) {
 		emitJs(	"// onKeyUp handler for keyaction ID %d \n"

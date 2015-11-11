@@ -113,15 +113,14 @@
 {@html input hidden stock_supplier._id}
 {@html input text stock_supplier.payment_terms mini "Payment terms" days}
 {@html input date stock_supplier.date mini "Date"}
-{@html input filter stock_supplier.name mini "Supplier Name" name}
+{@html input filter stock_transaction.supplier_id stock_supplier.name mini "Supplier Name"}
+{@html input dropdown stock_transaction.supplier_id stock_supplier.name mini "Supplier Name"}
 {@html input keyaction jam:action, inputElement, outputResult, mini}	// use null for empty values
 {@html input disabled stock_supplier.payment_terms mini "Payment terms" days}}	// same as input just no editing
 {@html inp <anytype means inline input>}
 
 {@html textarea stock_supplier.notes 60x5 Notes}
 
-{@html dropdown stock_supplier.name stock_supplier._id medium "Choose supplier"}
-{@html dropdown stock_supplier.name stock_supplier._id medium "Choose supplier" stock_purchorder.supplier_id}
 
 {@html button Save primary small
 	alert('ok')     // or any js
