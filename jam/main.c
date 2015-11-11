@@ -346,6 +346,8 @@ int control(int startIx, char *defaultTableName) {
 						wordHtmlBreakpoint(ix, defaultTableName);
 					else if (!strcmp(tmp, "sys"))
 						wordHtmlSys(ix, defaultTableName);
+					else if (!strcmp(tmp, "js"))
+						wordHtmlJs(ix, defaultTableName);
 				}
 			}
 //		-----------------------------------------

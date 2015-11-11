@@ -63,6 +63,7 @@
 {@each stock_customer_transaction filter stock_user_id = stock_user.id}
 {@each stock_customer_transaction filter date < mem.duedate, type = 'inv', balance > 0, order by date}
 {@each stock_product_has_location filter stock_location_id = filter.location, onhand < min_level}
+{@each ticket_temp_delegate_report filter name like '%{{keyaction}}%', order by name}
 
 {@skip stock_product_has_location.stock_location_id = null}
 {@skip stock_product_has_location.onhand < stock_product_has_location.min_level}
@@ -132,6 +133,8 @@
 }
 
 {@html breakpoint body end}  // so far the only breakpoint, triggered by footer.html to do stuff at end
+
+{@html js whateverisheregetsrunafterreturnfromaction}	// this is the only way actions can create js
 
 <hr>
 

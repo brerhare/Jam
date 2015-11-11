@@ -2,6 +2,7 @@
 #define WORDHTML_H_INCLUDED
 
 int wordHtmlSys(int ix, char *defaultTableName);
+int wordHtmlJs(int ix, char *defaultTableName);
 int wordHtmlBreakpoint(int ix, char *defaultTableName);
 int wordHtmlInput(int ix, char *defaultTableName);
 int wordHtmlInp(int ix, char *defaultTableName);

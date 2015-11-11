@@ -322,20 +322,21 @@ int endData(int urlEncodeRequired) {
 }
 
 int endJs(int urlEncodeRequired) {
+//return(0);
 	char *p = emitJsBuffer;
 	char *encodedJs = NULL;
 	if (urlEncodeRequired) {
 		encodedJs = urlEncode(emitJsBuffer);
 		p = encodedJs;
 	}
-	emitData("\n\n<script type='text/javascript' id='runscript'>\n");
-	//emitData("alert('runnn');");
+// @@KIM <script> tag
+	emitData("\n\n<script>\n");
 	emitData(p);
-	//emitData("alert('rannn');");
+	logMsg(LOGDEBUG, "EMITJS (inside <script>) : [%s]", p);
+// @@KIM <script> tag
 	emitData("</script>\n");
 	if (encodedJs)
 		free(encodedJs);
-logMsg(LOGMICRO, "ENDJS=[%s]", emitJsBuffer);
 }
 
 char *urlEncode(char *str) {		// needs freeing

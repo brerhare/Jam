@@ -81,14 +81,15 @@ function runAction(action, element, output, callback) {
 //alert('assembling data. So far we have : ' + postData);
 	}
 	var sendURL = runURL + '/' + runJam;
-//alert('sending to - \nurl : ' + sendURL + '\ndata : ' + postData);
+console.log('AJAX sending to - \nurl : ' + sendURL + '\ndata : ' + postData);
 	$.ajax( {
 		url : sendURL,
 		type: "POST",
 		data : postData,
 		success:function(data, textStatus, jqXHR) {
-//alert('back with: ' + data + ' of len ' + data.length);
+console.log('AJAX call returned data [' + data + '] of len ' + data.length);
 			data = processOobData(decodeURIComponent(data));
+console.log('AJAX data stripped of oob [' + data + '] of len ' + data.length);
 			if (output != '') {
 				var target = document.getElementsByName(output);
 				if (target[0] instanceof HTMLInputElement) {
@@ -100,7 +101,45 @@ function runAction(action, element, output, callback) {
 						target[0].innerHTML = data;
 				}
 			}
-			window.eval(document.getElementById("runscript").innerHTML);	// Apply any JS that might have come in
+			// Apply any JS that might have come in
+
+
+scriptArr = [];
+otherArr = [];
+curPos = 0;
+while ((startTag = data.indexOf("<script", curPos)) != -1) {
+    if (startTag != curPos)
+        otherArr.push(data.substring(curPos, startTag));
+    pos = data.indexOf(">", startTag);
+    if (pos == -1) {
+        alert('script start tag incomplete');
+    }
+    endTag = data.indexOf("</scri" + "pt>", pos+1);
+    if (endTag == -1)
+        alert('script start tag has no end tag');
+    else {
+        scriptArr.push(data.substring(pos+1, endTag));
+    }
+    curPos = endTag + 9;                                            // just after the closing ">"
+console.log("[" + data.substring(pos+1, endTag) + "]");
+}
+otherArr.push(data.substring(curPos));
+console.log("extracted script array : " + scriptArr);
+console.log("extracted other  array : " + otherArr);
+for (i = 0; i < scriptArr.length; i++)
+	window.eval(scriptArr[i]);
+
+
+/**
+			var script = data.replace("<script>", "");
+			script = script.replace("</script>", "");
+alert(script);
+			window.eval(script);
+xxx('HI!');
+**/
+
+
+			// Callback if one was given
 			if (callback != '')
 				callback();
 		},

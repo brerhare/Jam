@@ -127,7 +127,8 @@ filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSe
 		emitData("<input type='hidden' id='SEQ_%d_SEARCH_RESULT' name='%s' id='%s' value='%s'> \n", randId, fieldVar, fieldVar, fieldVarValue);
 		emitData("<div id='SEQ_%d_SEARCH_DIV' class='uk-autocomplete uk-form' data-uk-autocomplete='off'> \n", randId);
 		emitData("	<input type='text' id='SEQ_%d_SEARCH_VALUE' value='%s' class='uk-form-width-%s'> \n", randId, fieldSearchValue, fieldPrompt);
-		emitData("	<script type='text/autocomplete'> \n");
+// @@KIM emitData below emitJs
+		emitData("	<script type='text/autocomplete' \n");
 		emitData("		<ul class='uk-nav uk-nav-autocomplete uk-autocomplete-results'> \n");
 		emitData("			{{~items}} \n");
 		emitData("				<li class='clicked' data-value='{{ $item.value }}'  data-id='{{ $item.id }}'> \n");
@@ -135,7 +136,7 @@ filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSe
 		emitData("				</li> \n");
 		emitData("			{{/items}} \n");
 		emitData("		</ul> \n");
-		emitData("	</script> \n");
+		emitData("	</script \n");
 		emitData("</div> \n");
 	}
 	else if (!strcasecmp(fieldType, "keyaction")) {
@@ -412,6 +413,24 @@ int wordHtmlSelect(int ix, char *defaultTableName) {
 	free(fieldVarSelected);
 	free(tmp);
 */
+}
+
+//-----------------------------------------------------------------
+// Dont know where else to put this. Its the only way for Actions to create runnable JS
+
+int wordHtmlJs(int ix, char *defaultTableName) {
+	char *cmd = jam[ix]->command;
+	char *args = jam[ix]->args;
+	char *rawData = jam[ix]->rawData;
+	char *tmp = (char *) calloc(1, 4096);
+ 
+	char *p = args;
+	while ((*p) && (*p != ' '))
+		p++;
+	emitJs("%s", p);
+	logMsg(LOGDEBUG, "wordHtmlJs emitting js [%s]", args);
+
+	free(tmp);
 }
 
 //-----------------------------------------------------------------
