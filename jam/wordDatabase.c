@@ -523,6 +523,7 @@ int wordDatabaseUpdateItem(int ix, char *defaultTableName) {
 	// Find the primary key. If it exists WITH A VALUE it's a new, otherwise an amend)
 	sprintf(tmp, "%s.%s", tableName, "id");
 	VAR *idVar = findVarStrict(tmp);
+	logMsg(LOGDEBUG, "Update item looking for (strict) variable [%s]", tmp);
 	if ((!idVar) || (atoi(idVar->portableValue) == 0) || (atoi(idVar->portableValue) == -1)) {
 		logMsg(LOGDEBUG, "Update item resolves to New item");
 		res = wordDatabaseNewItem(ix, defaultTableName);
