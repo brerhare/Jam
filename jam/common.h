@@ -88,8 +88,10 @@ char *calculate(char *str);
 int scratchJs(char *str, ...);	// @@TODO also need a includeJs() (includes but no dups)
 char *urlEncode(char *str);
 
-extern int jamDataRequested;
+extern int oobDataRequested;
 int oobJamData();
+
+int sysJam(char *jamName, char *jEntrypoint, char *jamOutputStream);		// process a jam file from within
 
 extern int urlEncodeRequired;
 

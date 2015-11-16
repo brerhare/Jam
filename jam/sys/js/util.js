@@ -56,7 +56,7 @@ function runAction(action, element, output, callback) {
 		runJam = action;
 	}
 	// Gather all the elements to send
-	var postData = 'jamDataRequested=1';
+	var postData = 'OobDataRequested=1';
 	var el = element.split(" ");
 	el = runActionPreProcessGrid(el);							// expand 'SEQ_' to individual names for sending grid
 	el.push("_dbname");											// always try to append this

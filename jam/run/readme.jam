@@ -131,13 +131,15 @@
 	runAction updateSupplier, supplierForm _id, outputResult, runJam('supplierMaint.tpl')
 }
 
+<h5> html control </h5>
+
 {@html breakpoint body end}  // so far the only breakpoint, triggered by footer.html to do stuff at end
 
 {@html js whateverisheregetsrunafterreturnfromaction}	// this is the only way actions can create js
 
 <hr>
 
-<h4>Actions</h4>
+<h5>Javascript supplied functions</h5>
 
 runJam templateName
 	runJam('name.tpl')
@@ -155,14 +157,15 @@ system.today 	@@TODO
 system.now 		@@TODO
 
 <hr>
-<h5>tags</h5>
+
+<h4>Misc</h4>
 
 {@email admin@dglink.co.uk concertgoer@horrormail.com "Your tickets" Thank you order.name for buying numberof tickets}
 {@type /path/file}
+{@sysjam jamscript-in-sys-jam-area optional-action}
 
 <hr>
 
-<h4>Allsorts</h4>
 
 
 <hr>

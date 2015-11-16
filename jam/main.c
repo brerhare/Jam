@@ -43,15 +43,18 @@ int jamIx = 0;
 char *tableStack[MAX_JAM];
 VAR *var[MAX_VAR];
 char *documentRoot = NULL;
-char *jamEntrypoint = NULL;
+
+char *jamEntrypoint = NULL;		// action entrypoint. Hackily global because its used in other .c file(s)
+char *outputStream = NULL;	// sysJam uses this to override usual output if non null
 
 // Common declares end
 
 JAM *initJam();
+int processJam(char *jamName, char *jamEntrypoint, int sysJamFlag);
 int control(int startIx, char *tableName);
 
 #define MAX_TEMPLATES 10000
-TAGINFO *tinfo[MAX_TEMPLATES];
+#define JAMSYSPATH "/jam/sys/jam/"
 
 int isASCII(const char *data, size_t size)
 {
@@ -66,8 +69,6 @@ int isASCII(const char *data, size_t size)
 
 int main(int argc, char *argv[]) {
 	char **cgivars ;
-	char tmpPath[PATH_MAX], binary[PATH_MAX];
-	char *tmp = (char *) calloc(1, 4096);
 	char *jamName = NULL;
 
 	logMsg(LOGINFO, "--------------------------------------------------------------------------");
@@ -80,21 +81,16 @@ int main(int argc, char *argv[]) {
 	// Always need this header
 	emitHeader("Content-type: text/html; charset=UTF-8");
 
-	documentRoot = getenv("DOCUMENT_ROOT");
-	logMsg(LOGINFO, "DOCUMENT_ROOT is %s", documentRoot);
-
 	cgivars = getcgivars() ;
 	for (int i=0; cgivars[i]; i+= 2) {
 		logMsg(LOGDEBUG, "Parameter [%s] = [%s]", cgivars[i], cgivars[i+1]) ;
 
-		if (!strcmp(cgivars[i], "jamDataRequested"))
-			jamDataRequested = 1;
+		if (!strcmp(cgivars[i], "OobDataRequested"))
+			oobDataRequested = 1;
 		if (!strcmp(cgivars[i], "jam")) {
 			logMsg(LOGDEBUG, "Found jam parameter");
 			jamName = strTrim(getWordAlloc(cgivars[i+1], 1, ":"));
 			jamEntrypoint = strTrim(getWordAlloc(cgivars[i+1], 2, ":"));
-			if (jamEntrypoint)
-				logMsg(LOGDEBUG, "Jam parameter contains an action to run: [%s]", jamEntrypoint);
 //emitData("[%s][%s]<br>", jamName, jamEntrypoint);
 // @@KIM! remove next if
 		} else /* if (!jamEntrypoint) */ {
@@ -114,6 +110,72 @@ int main(int argc, char *argv[]) {
 			}
 		}
 	}
+	return(processJam(jamName, jamEntrypoint, 0));
+	// Cleanup
+	free(jamEntrypoint);
+	if (conn)
+		closeDB();
+}
+
+// This is called from within to process a jam file, instead of main() ie no cgi
+// Save the current global jam, create a new one for the jam file, then restore the original
+// Allows us to process jam files with the existing vars, useful for calling templates etc
+int sysJam(char *jamName, char *jEntrypoint, char *jamOutputStream) {
+	logMsg(LOGDEBUG, "sysJam start");
+
+	if ((jamOutputStream) && (!strcasecmp(jamOutputStream, "js")))
+		outputStream = strdup(jamOutputStream);
+
+	JAM *tmpJam[MAX_JAM];
+	memcpy(tmpJam, jam, (sizeof(JAM *) * MAX_JAM));
+	memset(jam, 0, (sizeof(JAM *) * MAX_JAM));
+	int tmpJamIx = jamIx;
+
+	char *savEntrypoint = NULL;
+	if (jamEntrypoint) {
+		savEntrypoint = strdup(jamEntrypoint);
+		free(jamEntrypoint);
+		jamEntrypoint = NULL;
+	}
+	if (jEntrypoint)
+		jamEntrypoint = strdup(jEntrypoint);	
+
+	char *fullJamName = (char *) calloc(1, 4096);
+	sprintf(fullJamName, JAMSYSPATH);
+	strcat(fullJamName, jamName);
+	jamIx = 0;
+
+	logMsg(LOGDEBUG, "sysJam requesting jam [%s] and action [%s]", fullJamName, jamEntrypoint);
+	processJam(fullJamName, jamEntrypoint, 1);
+
+	if (jamEntrypoint) {
+		free(jamEntrypoint);
+		jamEntrypoint = NULL;
+	}
+	if (savEntrypoint)
+		jamEntrypoint = strdup(savEntrypoint);	
+	memcpy(jam, tmpJam, (sizeof(JAM *) * MAX_JAM));
+	jamIx = tmpJamIx;
+	free(fullJamName);
+
+	if (outputStream) {
+		free(outputStream);
+		outputStream = NULL;
+	}
+	logMsg(LOGDEBUG, "sysJam end");
+}
+
+// Entrypoint of actual jam file processing. Called by main() or sysJam()
+int processJam(char *jamName, char *jamEntrypoint, int sysJamFlag) {
+	char tmpPath[PATH_MAX], binary[PATH_MAX];
+	char *tmp = (char *) calloc(1, 4096);
+	TAGINFO *tinfo[MAX_TEMPLATES];
+
+	documentRoot = getenv("DOCUMENT_ROOT");
+	logMsg(LOGINFO, "DOCUMENT_ROOT is %s", documentRoot);
+
+	if (jamEntrypoint)
+		logMsg(LOGDEBUG, "Jam parameter contains an action to run: [%s]", jamEntrypoint);
 
 	// Read in jam, including any @include's
 	sprintf(tmp, "%s/%s", documentRoot, jamName);
@@ -236,36 +298,38 @@ if (++sanity > 100) { emitData("Overflow in main!"); break; }
 		}
 	}
 	if (startIx == 0) {
-		logMsg(LOGINFO, "Processing command loop starting from @!begin");
+		logMsg(LOGINFO, "Processing command loop starting from @!begin (startIx=%d)", startIx);
 		control(startIx, NULL);
 	}
 	else {
 		logMsg(LOGINFO, "Processing command loop for @action %s", jamEntrypoint);
 		control(startIx, NULL);
-		urlEncodeRequired = 1;
-		endJs(urlEncodeRequired);	// Encode
+		if (!sysJamFlag) {
+			urlEncodeRequired = 1;
+			endJs(urlEncodeRequired);	// Encode
+		}
 	}
 
 	logMsg(LOGINFO, "Finished command loop");
 
 	free(tmp);
 	free(jamBuf);
-	free(jamEntrypoint);
-	if (conn)
-		closeDB();
 
 	VAR *debugVar = findVarStrict("debug");
 	if ((debugVar) && (atoi(debugVar->portableValue) > 0))
 		jamDump(atoi(debugVar->portableValue));
 
 	// Output the data
-	endHeader();
-	if (jamDataRequested == 1)
-		oobJamData();
-	endData(urlEncodeRequired);
-
-	logMsg(LOGINFO, "Normal exit");
-	exit(0);
+	if (!sysJamFlag) {
+		endHeader();
+		if (oobDataRequested == 1)
+			oobJamData();
+		endData(urlEncodeRequired);
+		logMsg(LOGINFO, "Normal exit");
+		exit(0);
+	} else {
+		logMsg(LOGINFO, "Normal return");
+	}
 }
 
 int control(int startIx, char *defaultTableName) {
@@ -275,7 +339,6 @@ int control(int startIx, char *defaultTableName) {
 		char *cmd = jam[ix]->command;
 		char *args = NULL;
 		char *rawData = NULL;
-
 		if ((strlen(cmd)) && (cmd[0] == '@')) {
 			// Expand any {{values}} in the argument string with the current values
 			args = expandCurliesInString(jam[ix]->args, defaultTableName);
@@ -320,6 +383,18 @@ int control(int startIx, char *defaultTableName) {
 //		-----------------------------------------
 		if (!(strcmp(cmd, "@!begin"))) {
 //		-----------------------------------------
+			emitData(jam[ix]->trailer);
+//		-----------------------------------------
+		} else if (!(strcmp(cmd, "@sysjam"))) {
+//		-----------------------------------------
+			char *jamName = getWordAlloc(args, 1, " \t ");
+			char *jamAction = getWordAlloc(args, 2, " \t ");
+			char *jamOutputStream = getWordAlloc(args, 3, " \t ");
+
+			sysJam(jamName, jamAction, jamOutputStream);
+			free(jamName);
+			free(jamAction);
+			free(jamOutputStream);
 			emitData(jam[ix]->trailer);
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@template"))) {

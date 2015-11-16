@@ -39,7 +39,7 @@ int emitScratchRemaining = MAX_EMITSCRATCH_LEN;
 
 FILE *emitStream = stdout;
 
-int jamDataRequested = 0;		// Some ajax calls will ask for this
+int oobDataRequested = 0;		// Some ajax calls will ask for this
 
 int urlEncodeRequired = 0;
 
@@ -330,9 +330,9 @@ int endJs(int urlEncodeRequired) {
 		p = encodedJs;
 	}
 // @@KIM <script> tag
-	emitData("\n\n<script>\n");
+	emitData("\n\n<script id='endJSs'>\n");
 	emitData(p);
-	logMsg(LOGDEBUG, "EMITJS (inside <script>) : [%s]", p);
+	logMsg(LOGDEBUG, "endJs generated (inside <script>) : [%s]", p);
 // @@KIM <script> tag
 	emitData("</script>\n");
 	if (encodedJs)
