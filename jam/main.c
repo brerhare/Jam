@@ -90,7 +90,7 @@ int main(int argc, char *argv[]) {
 			logMsg(LOGDEBUG, "Found jam parameter");
 			jamName = strTrim(getWordAlloc(cgivars[i+1], 1, ":"));
 			jamEntrypoint = strTrim(getWordAlloc(cgivars[i+1], 2, ":"));
-//emitData("[%s][%s]<br>", jamName, jamEntrypoint);
+//emitStd("[%s][%s]<br>", jamName, jamEntrypoint);
 // @@KIM! remove next if
 		} else /* if (!jamEntrypoint) */ {
 			VAR *assignVar = (VAR *) calloc(1, sizeof(VAR));
@@ -189,7 +189,7 @@ int processJam(char *jamName, char *jamEntrypoint, int sysJamFlag) {
 
 int sanity = 0;
 	while (1) {
-if (++sanity > 100) { emitData("Overflow in main!"); break; }
+if (++sanity > 100) { emitStd("Overflow in main!"); break; }
 		TAGINFO *tagInfo = getTagInfo(jamBuf, "@include");
 		if (tagInfo == NULL)
 			break;
@@ -215,7 +215,7 @@ if (++sanity > 100) { emitData("Overflow in main!"); break; }
    		includeFile.read(includeBuf, length);
    		includeBuf[length] = 0;
 	    includeFile.close();
-		//emitData("[file=%s][len=%d][includeBuf=%s][1st=%c][strlen=%d]", tmp, length, includeBuf, includeBuf[0], (int) strlen(includeBuf));
+		//emitStd("[file=%s][len=%d][includeBuf=%s][1st=%c][strlen=%d]", tmp, length, includeBuf, includeBuf[0], (int) strlen(includeBuf));
 		//exit(0);
 
 		// Include the include
@@ -323,7 +323,7 @@ if (++sanity > 100) { emitData("Overflow in main!"); break; }
 		endHeader();
 		if (oobDataRequested == 1)
 			oobJamData();
-		endData(urlEncodeRequired);
+		endStd(urlEncodeRequired);
 		logMsg(LOGINFO, "Normal exit");
 		exit(0);
 	} else {
@@ -376,13 +376,13 @@ int control(int startIx, char *defaultTableName) {
 				free(jam[ix]->trailer);
 				jam[ix]->trailer = newStr;
 			}
-			emitData(jam[ix]->trailer);
+			emitStd(jam[ix]->trailer);
 		}
 
 //		-----------------------------------------
 		if (!(strcmp(cmd, "@!begin"))) {
 //		-----------------------------------------
-			emitData(jam[ix]->trailer);
+			emitStd(jam[ix]->trailer);
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@sysjam"))) {
 //		-----------------------------------------
@@ -394,11 +394,11 @@ int control(int startIx, char *defaultTableName) {
 			free(jamName);
 			free(jamAction);
 			free(jamOutputStream);
-			emitData(jam[ix]->trailer);
+			emitStd(jam[ix]->trailer);
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@template"))) {
 //		-----------------------------------------
-			emitData(jam[ix]->trailer);
+			emitStd(jam[ix]->trailer);
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@html"))) {
 //		-----------------------------------------
@@ -535,7 +535,7 @@ int control(int startIx, char *defaultTableName) {
 				logMsg(LOGDEBUG, "Its a list. Do listfirst() for list [%s]", listName);
 				char *p = (char *) listFirst(listName);
 				while (p) {
-					emitData(jam[ix]->trailer);
+					emitStd(jam[ix]->trailer);
 					logMsg(LOGMICRO, "setting list variable [%s] to value [%s]", listName, p);
 					clearVarValues(listVar);
 					fillVarDataTypes(listVar, p);
@@ -549,7 +549,7 @@ int control(int startIx, char *defaultTableName) {
 					ix++;
 				}
 				if (jam[ix]) {
-					emitData(jam[ix]->trailer);
+					emitStd(jam[ix]->trailer);
 				}
 			} else {		// its a db table
 				logMsg(LOGDEBUG, "Its a db, not a list. do the select()");
@@ -557,7 +557,7 @@ int control(int startIx, char *defaultTableName) {
 				MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 999999);
 				SQL_RESULT *rp = sqlCreateResult(givenTableName, res);
 				while (sqlGetRow2Vars(rp) != SQL_EOF) {
-					emitData(jam[ix]->trailer);
+					emitStd(jam[ix]->trailer);
 					logMsg(LOGMICRO, "@each (db table %s) starting recurse", givenTableName);
 					cmdSeqnum++;		// up the unique sequence number
 					control((ix + 1), givenTableName);
@@ -568,7 +568,7 @@ int control(int startIx, char *defaultTableName) {
 					ix++;
 				}
 				if (jam[ix])
-					emitData(jam[ix]->trailer);
+					emitStd(jam[ix]->trailer);
 				mysql_free_result(res);
 				free(givenTableName);
 			}
@@ -590,13 +590,13 @@ int control(int startIx, char *defaultTableName) {
 			else
 				logMsg(LOGINFO, "Running @action [%s] within jam script", jam[startIx]->args);
 			if (jam[startIx])
-				emitData(jam[startIx]->trailer);
+				emitStd(jam[startIx]->trailer);
 			if (jam[startIx])
 				startIx++;
 
 			control(startIx, NULL);
 			logMsg(LOGINFO, "Finished running action [%s] within jam script", jam[startIx]->args);
-			emitData(jam[ix]->trailer);
+			emitStd(jam[ix]->trailer);
 //		-------------------------------------
 		} else if (!(strcmp(cmd, "@action"))) {
 //		-------------------------------------
@@ -610,9 +610,9 @@ int control(int startIx, char *defaultTableName) {
 						ix++;
 				}
 				if (jam[ix])
-					emitData(jam[ix]->trailer);
+					emitStd(jam[ix]->trailer);
 			} else {					// for us - run and stop
-				emitData(jam[ix]->trailer);
+				emitStd(jam[ix]->trailer);
 				VAR *v = findVarStrict("_dbname");
 				if ((v) && (v->portableValue) && (strlen(v->portableValue))) {
 					logMsg(LOGDEBUG, "@action preprocess - _dbname '%s' was given", v->portableValue);
@@ -633,7 +633,7 @@ int control(int startIx, char *defaultTableName) {
 		} else if (!(strcmp(cmd, "@end"))) {
 //		------------------------------------
 			// Return from an each-end or action-end loop
-//emitData("RETURNING\n");
+//emitStd("RETURNING\n");
 			free(tmp);
 			return(0);
 //		----------------------------------------
@@ -676,21 +676,21 @@ int control(int startIx, char *defaultTableName) {
 				prepare LHS for receiving result (may not exist yet)
 				LHS var = result string
 			else
-				emitData(result string)		*/
+				emitStd(result string)		*/
 
 			// data = LHS to start with
 			char *data = (char *) calloc(1, 4096);
 			strcpy(data, cmd);							// eg: [mem.group_count]
-//emitData("{AWAY:%s and %s}",cmd, data);
+//emitStd("{AWAY:%s and %s}",cmd, data);
 
 			char *resultString = (char *) calloc(1, 4096);
 			char *fullLine = (char *) calloc(1, 4096);
 			strcpy(fullLine, cmd);
-//emitData("(CHK:%s and %s)", fullLine, args);
+//emitStd("(CHK:%s and %s)", fullLine, args);
 			if (args)
 				strcpy(fullLine, rawData);
 			strTrim(fullLine);
-//emitData("T=[%s]\n",fullLine);
+//emitStd("T=[%s]\n",fullLine);
 			//sprintf(fullLine, "%s%s", cmd, args);			// eg: [mem.group_count][= stock_group.count]
 			strcpy(data, fullLine);
 
@@ -704,7 +704,7 @@ int control(int startIx, char *defaultTableName) {
 
 			// Expand any fields to values
 			char *expandedData = expandVarsInString(data, defaultTableName);	// Allocates memory - needs freeing
-//emitData("\nSTART.... [c=%s][a=%s][f=%s][r=%s][e%s]\n", cmd, args, fullLine, data, expandedData);
+//emitStd("\nSTART.... [c=%s][a=%s][f=%s][r=%s][e%s]\n", cmd, args, fullLine, data, expandedData);
 
 			// Either retrieve the data from a field or calculate
 			VAR *searchVar = findVarLenient(data, defaultTableName);
@@ -732,7 +732,7 @@ int control(int startIx, char *defaultTableName) {
 				clearVarValues(assignVar);
 				fillVarDataTypes(assignVar, resultString);
 				if (createNew) {
-//emitData("NEW-->%s<-- with value -->%s<--\n", assignVar->name, assignVar->portableValue);
+//emitStd("NEW-->%s<-- with value -->%s<--\n", assignVar->name, assignVar->portableValue);
 					assignVar->debugHighlight = 4;
 					if (addVar(assignVar) == -1) {
 						logMsg(LOGFATAL, "Cant create any more vars, terminating");
@@ -740,13 +740,13 @@ int control(int startIx, char *defaultTableName) {
 					}
 				}
 			} else {		// Not an assignment - just emit variable
-				emitData(resultString);
+				emitStd(resultString);
 				// Clear if necessary
 				VAR *variable = findVarLenient(cmd, defaultTableName);
 				if (variable) {
-//emitData("RETR-->%s<--\n", variable->name);
+//emitStd("RETR-->%s<--\n", variable->name);
 //char xx[256]; sprintf(xx, "R[%s]:%s", resultString, variable->portableValue);
-//emitData(xx);
+//emitStd(xx);
 					// Clear if 'count.'
 					if ((variable->source) && (!strcmp(variable->source, "count"))) {
 						variable->numberValue = 0;
@@ -767,7 +767,7 @@ int control(int startIx, char *defaultTableName) {
 					}
 				}
 			}
-			emitData(jam[ix]->trailer);
+			emitStd(jam[ix]->trailer);
 			free(data);
 			free(expandedData);
 			free(resultString);
@@ -775,7 +775,7 @@ int control(int startIx, char *defaultTableName) {
 //		--------
 		} else {
 //		--------
-			emitData(jam[ix]->trailer);
+			emitStd(jam[ix]->trailer);
 		}
 
 		// Next

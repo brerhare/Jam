@@ -40,7 +40,7 @@ int wordMiscInclude(int ix, char *defaultTableName) {
 	}
 	// Emit any pre-tags
 	if (strstr(args, ".css"))
-		emitData("<style>");
+		emitStd("<style>");
 	includeFile.read (buf,length);
 	buf[length] = 0;
 	includeFile.close();
@@ -48,12 +48,12 @@ int wordMiscInclude(int ix, char *defaultTableName) {
 		sprintf(tmp, "error: not the whole of %s could be read", args);
 		die(tmp);
 	}
-	emitData(buf);
+	emitStd(buf);
 	free(buf);
 	// Emit any post-tags
 	if (strstr(args, ".css"))
-	emitData("</style>");
-	emitData(jam[ix]->trailer);
+	emitStd("</style>");
+	emitStd(jam[ix]->trailer);
     free(tmp);
 
 }
@@ -112,7 +112,7 @@ int wordMiscCount(int ix, char *defaultTableName) {
     free(countFieldAs);
     free(varToCountQualifiedName);
     free(tmp);
-    emitData(jam[ix]->trailer);
+    emitStd(jam[ix]->trailer);
 }
 
 int wordMiscSum(int ix, char *defaultTableName) {
@@ -176,7 +176,7 @@ int wordMiscSum(int ix, char *defaultTableName) {
     free(sumFieldName);
     free(sumFieldAs);
     free(varToSumQualifiedName);
-    emitData(jam[ix]->trailer);
+    emitStd(jam[ix]->trailer);
     free(tmp);
 }
 
@@ -253,7 +253,7 @@ int wordMiscNewList(int ix, char *defaultTableName) {
     free(listName);
     free(listCommand);
     free(listCommandArgs);
-    emitData(jam[ix]->trailer);
+    emitStd(jam[ix]->trailer);
 }
 
 int wordMiscType(int ix, char *defaultTableName) {
@@ -280,12 +280,12 @@ int wordMiscType(int ix, char *defaultTableName) {
 	fseek(fp, 0, SEEK_SET);
 	fread(buf, 1, len, fp);
 	fclose(fp);
-	emitData(buf);
+	emitStd(buf);
 
     free(tmp);
     free(fileName);
     free(buf);
-    emitData(jam[ix]->trailer);
+    emitStd(jam[ix]->trailer);
 }
 
 int wordMiscEmail(int ix, char *defaultTableName) {
@@ -323,11 +323,11 @@ int wordMiscEmail(int ix, char *defaultTableName) {
 			*p2++ = *p++;
 		*p2 = '\0';
 		logMsg(LOGDEBUG, "Email calling action [%s] for body content", action);
-		// Temporarily redirect emitData to emitScratch and run the action
-		char *saveDataPos = emitDataPos;
-		int saveDataRemaining = emitDataRemaining;
-		emitDataPos = emitScratchPos;
-		emitDataRemaining = emitScratchRemaining;
+		// Temporarily redirect emitStd to emitScratch and run the action
+		char *saveStdPos = emitStdPos;
+		int saveStdRemaining = emitStdRemaining;
+		emitStdPos = emitScratchPos;
+		emitStdRemaining = emitScratchRemaining;
 		// Copied @runaction block starts ------------------------------
 		int startIx = 0;
 		int aix = 0;
@@ -344,16 +344,16 @@ int wordMiscEmail(int ix, char *defaultTableName) {
 		else
 			logMsg(LOGINFO, "Running @action [%s] within email handler", jam[startIx]->args);
 		if (jam[startIx])
-			emitData(jam[startIx]->trailer);
+			emitStd(jam[startIx]->trailer);
 		if (jam[startIx])
 			startIx++;
 
 		control(startIx, NULL);
 		logMsg(LOGINFO, "Finished running action [%s] within email handler", jam[startIx]->args);
 		// Copied @runaction block ends --------------------------------
-		// Restore emitData
-		emitDataPos = saveDataPos;
-		emitDataRemaining = saveDataRemaining;
+		// Restore emitStd
+		emitStdPos = saveStdPos;
+		emitStdRemaining = saveStdRemaining;
 		// Create the email body
 		p = emitScratchBuffer;
 		char *encodedData = urlEncode(emitScratchBuffer);
@@ -364,7 +364,7 @@ int wordMiscEmail(int ix, char *defaultTableName) {
 		int cnt = 4;
 		strcpy(mailBody, "");
 		while (1) {
-			if (++sanity > 100) { emitData("Overflow in mailbody!"); break; }
+			if (++sanity > 100) { emitStd("Overflow in mailbody!"); break; }
 			getWord(tmp, args, cnt++, " ");
 			if (strlen(tmp) == 0)
 				break;
@@ -410,6 +410,6 @@ int wordMiscEmail(int ix, char *defaultTableName) {
     free(mailTo);
     free(mailSubject);
     free(mailBody);
-    emitData(jam[ix]->trailer);
+    emitStd(jam[ix]->trailer);
 }
 
