@@ -91,6 +91,7 @@ char *urlEncode(char *str);
 extern int oobDataRequested;
 int oobJamData();
 
+extern char *outputStream;	// sysJam uses this to override usual output if non null
 int sysJam(char *jamName, char *jEntrypoint, char *jamOutputStream);		// process a jam file from within
 
 extern int urlEncodeRequired;

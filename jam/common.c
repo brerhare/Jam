@@ -38,6 +38,7 @@ char *emitScratchPos = emitScratchBuffer;
 int emitScratchRemaining = MAX_EMITSCRATCH_LEN;
 
 FILE *emitStream = stdout;
+char *outputStream = NULL;	// sysJam uses this to override usual output if non null. "js" is used so far to write scripts
 
 int oobDataRequested = 0;		// Some ajax calls will ask for this
 

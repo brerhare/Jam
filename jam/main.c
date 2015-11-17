@@ -45,7 +45,6 @@ VAR *var[MAX_VAR];
 char *documentRoot = NULL;
 
 char *jamEntrypoint = NULL;		// action entrypoint. Hackily global because its used in other .c file(s)
-char *outputStream = NULL;	// sysJam uses this to override usual output if non null
 
 // Common declares end
 
