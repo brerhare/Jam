@@ -1,0 +1,7 @@
+{{@action filterAutocomplete}}
+{{@database stock}}
+	{{@each stock_supplier filter name >= _filter }}
+		{{name}}
+	{{@end}}
+{{@end}}
+

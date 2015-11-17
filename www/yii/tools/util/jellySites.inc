@@ -2,8 +2,10 @@
 
 $siteList = array (
 	'1staid4u.co.uk'               => '/home/1staid4u.co.uk/dev/src/www/yii/1staid4u.co.uk',
-	'6tyshadesofbeauty.co.uk'      => '/home/sixtyshadesofbeauty.co.uk/domains/dev.6tyshadesofbeauty.co.uk/dev/src/www/yii/dev.6tyshadesofbeauty.co.uk',
+	'6tyshadesofbeauty.co.uk'      => '/home/sixtyshadesofbeauty.co.uk/dev/src/www/yii/6tyshadesofbeauty.co.uk',
 	'absoluteclassics.co.uk'       => '/home/absoluteclassics.co.uk/dev/src/www/yii/absoluteclassics.co.uk',
+	'barstobrickridingcentre.co.uk'      => '/home/barstobrickridingcentre.co.uk/dev/src/www/yii/barstobrickridingcentre.co.uk',
+	'beingbusiness.co.uk'          => '/home/beingbusiness.co.uk/dev/src/www/yii/beingbusiness.co.uk',
 	'beirc.co.uk'                  => '/home/beirc.co.uk/dev/src/www/yii/beirc.co.uk',
 	'breakfreecoaching.co.uk'      => '/home/breakfreecoaching.co.uk/dev/src/www/yii/breakfreecoaching.co.uk',
 	'brycewalkervending.com'       => '/home/brycewalkervending.com/dev/src/www/yii/brycewalkervending.com',
@@ -21,7 +23,10 @@ $siteList = array (
 	'dumfriesfurniture.com'        => '/home/dumfriesfurniture.com/dev/src/www/yii/dumfriesfurniture.com',
 	'elegantoriginals.co.uk'       => '/home/elegantoriginals.co.uk/dev/src/www/yii/elegantoriginals.co.uk',
 	'fadguide.com'                 => '/home/fadguide.com/dev/src/www/yii/fadguide.com',
+	'fresherthantheudders.co.uk'   => '/home/fresherthantheudders.co.uk/dev/src/www/yii/fresherthantheudders.co.uk',
+	'horses.wireflydesign.com'     => '/home/wireflydesign.com/domains/horses.wireflydesign.com/dev/src/www/yii/horses.wireflydesign.com',
 	'jacquiesbeauty.co.uk'         => '/home/jacquiesbeauty.co.uk/dev/src/www/yii/jacquiesbeauty.co.uk',
+	'knowledgebase.wireflydesign.com'  => '/home/wireflydesign.com/domains/knowledgebase.wireflydesign.com/dev/src/www/yii/knowledgebase.wireflydesign.com',
 	'mossheadpreschool.co.uk'      => '/home/mossheadpreschool.co.uk/dev/src/www/yii/mossheadpreschool.co.uk',
 	'opendoorsart.com'             => '/home/opendoorsart.com/dev/src/www/yii/opendoorsart.com',
 	'outlooksolutions.com.au'      => '/home/outlooksolutions.com.au/dev/src/www/yii/outlooksolutions.com.au',

@@ -1,0 +1,199 @@
+#Demo 1
+[defaults]
+include = default-values
+
+# Every blob inherits these before adding/overriding
+
+[* : defaults]
+
+[screen]
+child = site
+css.background-color = black
+css.display = block
+
+	[site]
+	child = header, pages, footer
+	css.width = 100%
+
+####  Header  #################################
+
+	[header]
+	child = logo, cow, churn
+	css.width = 100%
+#	css.height = auto
+	css.background-image = url('/img/background-header.jpg')
+#	css.background = url('/img/background-header.jpg')
+	css.background-size = 100% 100%
+	css.background-repeat = no-repeat
+	stacking = horizontal
+
+	
+			[logo]
+			css.margin-top = 2%
+			css.margin-left = 15%
+			css.width = 25%
+			image.url = img/logo.png
+			image.width = 80%
+			image.height = 113%
+			click = ?layout=index&page=index
+
+			[cow]
+			css.margin-top = 5%
+			css.width = 25%
+			image.url = img/cow.png
+			image.width = 68%
+			image.height = 84%
+			click = ?layout=index&page=index
+
+			
+			[churn]
+			css.margin-top = 2%
+			css.width = 20%
+			image.url = img/churn.png
+			image.width = 65%
+			image.height = 140%
+			click = ?layout=index&page=index
+
+
+
+
+######## body #######################################
+			
+
+	[pages]
+	child = content-block, form 	
+	css.width = 960px
+	stacking = horizontal
+	
+		[content-block]
+		child = content-top, content, content-bottom
+		css.width = 60%
+		css.background-color = white
+		
+			[content-top]
+			css.width = 100%
+			image.url = img/content-top.jpg
+			image.width = 100%
+			image.height = auto
+			
+			[content]
+			css.width = 90%
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find the page $_GET['page']
+			html.raw = ContentBlock.content
+			
+			[content-bottom]
+			css.width = 100%
+			image.url = img/content-bottom.jpg
+			image.width = 100%
+			image.height = auto
+		
+		[form]
+		child = form-top, contact-form, form-bottom
+		css.width = 30%
+		css.margin-left = 5%
+		css.background-color = white
+		
+			[form-top]
+			css.width = 100%
+			image.url = img/form-top.jpg
+			image.width = 100%
+			image.height = auto
+			
+			[contact-form]
+			css.width = 80%
+			html.raw = <h1>Stay in<br/>touch</h1>
+			css.text-align = center
+			css.min-height = 400px
+			css.background-color = white
+			#jam.embed = /run/contactForm.jam
+			jam.iframe = /run/contactForm
+			
+			[form-bottom]
+			css.width = 100%
+			image.url = img/form-bottom.jpg
+			image.width = 100%
+			image.height = auto
+		
+
+
+####footer####################################
+
+[footer]
+child = footer-menu, admin-links
+css.background-image = url('/img/grass-tile.jpg')
+css.bacground-repeat = repeat
+css.padding = 50px 15%
+stacking = horizontal
+
+		[footer-menu]
+		child = footer-cookies, footer-tandc, footer-contact, copyright
+		css.width = 35%
+
+
+			[footer-cookies]
+			html.raw = Cookie Policy
+			css.color = #000000
+			css.font-size = 11px
+			css.text-align = left
+			click = ?layout=index&page=cookie-policy
+
+			[footer-tandc]
+			html.raw = Terms & Conditions
+			css.color = #000000
+			css.font-size = 11px
+			css.text-align = left
+			click = ?layout=index&page=terms-conditions
+
+			[footer-contact]
+			html.raw = Contact Us
+			css.text-align = left
+			css.color = #000000
+			css.font-size = 11px
+			click = ?layout=index&page=contact
+			
+			[copyright]
+			css.margin-top = 10px
+			html.raw = Roan's Dairy &copy 2015 All rights reserved
+			css.color = #000000
+			css.font-size = 11px
+			css.text-align = left
+
+
+	[admin-links]
+	child = wirefly, admin
+	css.width = 35%
+	css.height = 50px
+	stacking = horizontal
+	css.float = right
+
+	
+		[wirefly]
+		css.height = 45px
+		css.margin-top = 5px
+		image.url = img/wirefly-design.png
+		image.width = 100px
+		image.height = 46px
+		image.align = left
+		clicknew = http://www.wireflydesign.com
+		
+	
+		[admin]
+		child = cog-center
+		css.height = 20px
+		css.width = 20px
+		css.background-size = 100%
+		css.background-image = url('/img/admin-dark.png')
+		css.margin-left = -20px
+		
+			[cog-center]
+			css.width = 5px
+			css.height = 5px
+			css.margin-top = 8px
+			image.url = img/cog-center.png
+			image.width = 5px
+			image.height = 5px
+			image.align = center
+			clicknew = backend.php
+

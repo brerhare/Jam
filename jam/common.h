@@ -2,6 +2,7 @@
 #define __COMMON_H_INCLUDED
 
 #include </usr/include/mysql/mysql.h>
+#include <curl/curl.h>
 
 using namespace std;
 
@@ -9,6 +10,8 @@ extern char *startJam;
 extern char *endJam;
 
 extern int literal;
+
+extern CURL *curl;
 
 #define round(x) ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 
@@ -54,7 +57,23 @@ typedef struct {
 #define MAX_VAR 10000
 extern VAR *var[MAX_VAR];
 
+int control(int startIx, char *defaultTableName);
+
 // Common.c functions
+int emitHeader(char *str, ...);
+int endHeader();
+int emitData(char *str, ...);
+int endData(int urlEncodingRequired);
+int emitJs(char *str, ...);
+int endJs(int urlEncodingRequired);
+extern char *emitDataPos;
+extern int emitDataRemaining;
+extern char *emitJsPos;
+extern int emitJsRemaining;
+extern char *emitScratchPos;
+extern int emitScratchRemaining;
+extern char *emitScratchBuffer;
+
 int addVar(VAR *newVar);
 VAR *findVarStrict(char *qualifiedName);
 VAR *findVarLenient(char *name, char *prefix);void emit(char *line);
@@ -67,8 +86,18 @@ char *expandVarsInString(char *str, char *tableName);
 int isCalculation(char *str);
 char *calculate(char *str);
 int scratchJs(char *str, ...);	// @@TODO also need a includeJs() (includes but no dups)
+char *urlEncode(char *str);
+
+extern int oobDataRequested;
+int oobJamData();
+
+int sysJam(char *jamName, char *jEntrypoint, char *jamOutputStream);		// process a jam file from within
+
+extern int urlEncodeRequired;
 
 extern char *documentRoot;
 extern FILE *scratchJsStream;
+
+extern int cmdSeqnum;	// every @jamcommand has a unique sequence number. Can be used for unique field names in grids
 
 #endif /* __COMMON_H_INCLUDED */

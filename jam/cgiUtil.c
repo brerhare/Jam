@@ -16,6 +16,7 @@
 #include <stdlib.h>
 
 #include "cgiUtil.h"
+#include "common.h"
 
 /** Convert a two-char hex string into the char it represents. **/
 char x2c(char *what) {
@@ -57,8 +58,8 @@ char **getcgivars() {
 	request_method= getenv("REQUEST_METHOD") ;
 
 	if (strcmp(request_method, "GET") && strcmp(request_method, "HEAD") && strcmp(request_method, "POST") ) {
-		printf("Content-Type: text/plain\n\n") ;
-		printf("getcgivars(): Unsupported REQUEST_METHOD.\n") ;
+		emitData("Content-Type: text/plain\n\n") ;
+		emitData("getcgivars(): Unsupported REQUEST_METHOD.\n") ;
 		exit(1) ;
 	}
 
@@ -72,23 +73,23 @@ char **getcgivars() {
 		/* strcasecmp() is not supported in Windows-- use strcmpi() instead */
 		if (( strcasecmp(getenv("CONTENT_TYPE"), "application/x-www-form-urlencoded"))
 		&&  ( strcasecmp(getenv("CONTENT_TYPE"), "application/x-www-form-urlencoded; charset=UTF-8")) ) {
-			printf("Content-Type: text/plain\n\n") ;
-			printf("getcgivars(): Unsupported Content-Type. [%s]\n", getenv("CONTENT_TYPE") ) ;
+			emitData("Content-Type: text/plain\n\n") ;
+			emitData("getcgivars(): Unsupported Content-Type. [%s]\n", getenv("CONTENT_TYPE") ) ;
 			exit(1) ;
 		}
 		if ( !(content_length = atoi(getenv("CONTENT_LENGTH"))) ) {
-			printf("Content-Type: text/plain\n\n") ;
-			printf("getcgivars(): No Content-Length was sent with the POST request.\n") ;
+			emitData("Content-Type: text/plain\n\n") ;
+			emitData("getcgivars(): No Content-Length was sent with the POST request.\n") ;
 			exit(1) ;
 		}
 		if ( !(cgiinputp = (char *) malloc(content_length+1)) ) {
-			printf("Content-Type: text/plain\n\n") ;
-			printf("getcgivars(): Couldn't malloc for cgiinput.\n") ;
+			emitData("Content-Type: text/plain\n\n") ;
+			emitData("getcgivars(): Couldn't malloc for cgiinput.\n") ;
 			exit(1) ;
 		}
 		if (!fread(cgiinputp, content_length, 1, stdin)) {
-			printf("Content-Type: text/plain\n\n") ;
-			printf("getcgivars(): Couldn't read CGI input from STDIN.\n") ;
+			emitData("Content-Type: text/plain\n\n") ;
+			emitData("getcgivars(): Couldn't read CGI input from STDIN.\n") ;
 			exit(1) ;
 		}
 		cgiinputp[content_length]='\0' ;
@@ -99,8 +100,8 @@ char **getcgivars() {
 
 	// Combine query string and stdin strings
 	if ( !(cgiinput = (char *) calloc(1, (strlen(cgiinputq) + strlen(cgiinputp) + 2)) ) ) {	// join the strings, inserting a '&' between the two
-		printf("Content-Type: text/plain\n\n") ;
-		printf("getcgivars(): Couldn't malloc for cgiinput.\n") ;
+		emitData("Content-Type: text/plain\n\n") ;
+		emitData("getcgivars(): Couldn't malloc for cgiinput.\n") ;
 		exit(1) ;
 	}
 	sprintf(cgiinput, "%s&%s", cgiinputq, cgiinputp);
@@ -157,23 +158,23 @@ int main3() {
     
 	/** Print the CGI response header, required for all HTML output. **/
 	/** Note the extra \n, to send the blank line.                  **/
-	printf("Content-type: text/html\n\n") ;
+	emitData("Content-type: text/html\n\n") ;
     
 	/** Finally, print out the complete HTML response page.         **/
-	printf("<html>\n") ;
-	printf("<head><title>CGI Results</title></head>\n") ;
-	printf("<body>\n") ;
-	printf("<h1>Hello, world.</h1>\n") ;
-	printf("Your CGI input variables were:\n") ;
-	printf("<ul>\n") ;
+	emitData("<html>\n") ;
+	emitData("<head><title>CGI Results</title></head>\n") ;
+	emitData("<body>\n") ;
+	emitData("<h1>Hello, world.</h1>\n") ;
+	emitData("Your CGI input variables were:\n") ;
+	emitData("<ul>\n") ;
 
 	/** Print the CGI variables sent by the user.  Note the list of **/
 	/**   variables alternates names and values, and ends in NULL.  **/
 	for (i=0; cgivars[i]; i+= 2)
-		printf("<li>[%s] = [%s]\n", cgivars[i], cgivars[i+1]) ;
-	printf("</ul>\n") ;
-	printf("</body>\n") ;
-	printf("</html>\n") ;
+		emitData("<li>[%s] = [%s]\n", cgivars[i], cgivars[i+1]) ;
+	emitData("</ul>\n") ;
+	emitData("</body>\n") ;
+	emitData("</html>\n") ;
 
 	/** Free anything that needs to be freed **/
 	for (i=0; cgivars[i]; i++) free(cgivars[i]) ;
