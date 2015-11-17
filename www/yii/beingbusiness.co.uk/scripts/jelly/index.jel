@@ -1,0 +1,201 @@
+#Being Business
+[defaults]
+include = default-values
+
+# Every blob inherits these before adding/overriding
+
+[* : defaults]
+
+[screen]
+child = site
+css.background-color = white
+css.display = block
+
+	[site]
+	child = header, slider, pages, footer
+	css.width = 100%
+
+####  Header  #################################
+
+	[header]
+	child = logo, menu
+	stacking = horizontal
+	css.width = 100%
+	css.overflow = visible
+	css.z-index = 100
+	
+		[logo]
+		css.margin-top = 25px
+		css.height = 80px
+		css.width = 25%
+		image.url = img/logo.png
+		image.width = 100%
+		image.height = 48%
+		click = ?layout=index&page=index
+		css.overflow = visible
+		css.z-index = 100
+		css.position = relative
+
+		[menu]
+		css.margin-top = 50px
+		css.margin-left = 5%
+		css.height = 50px
+		css.width = 65%
+		css.overflow = visible
+
+		addon.menu.basic.orientation = horizontal
+		#addon.menu.basic.height = 30px
+		addon.menu.basic.edgepadding = 13
+
+		addon.menu.basic.menu-rounding = 4px
+		addon.menu.basic.menu-color = white
+		#addon.menu.basic.item-separator-color = #ffffff
+		#addon.menu.basic.item-separator-width = 3px
+
+		addon.menu.basic.font-size = 14px
+		#addon.menu.basic.menu-text-color = red
+
+		#addon.menu.basic.item-color = black yellow
+		#addon.menu.basic.item-text-color = green
+
+		#addon.menu.basic.submenu-color = yellow red
+	
+		#addon.menu.basic.subitem-color = white black
+		#addon.menu.basic.subitem-text-color = purple
+		#addon.menu.basic.subitem-seperator-color = red 
+
+
+#### Slider ###########################################
+
+	[slider]
+	css.width = 960px
+  	css.height = 320px
+	css.z-index = 50
+	addon.slider.flexslider.width = 952px
+	addon.slider.flexslider.height = 310px
+	addon.slider.flexslider.mode = image
+	addon.slider.flexslider.source = db
+
+	#addon.slider.flexslider.border-width = 0px
+	#addon.slider.flexslider.border-color = red
+	#addon.slider.flexslider.active-dotcolor = red
+	#addon.slider.flexslider.inactive-dotcolor = blue
+	#addon.slider.flexslider.dot-margin-top = -200px
+	#addon.slider.flexslider.dot-margin-bottom = 0px
+	#addon.slider.flexslider.dot-margin-left = 0px
+	#addon.slider.flexslider.dot-margin-right = 0px
+	#addon.slider.flexslider.animation = fade
+
+
+######## body #######################################
+			
+
+	[pages]
+	child = tabs, content 	
+	css.width = 960px
+	css.margin-top = 20px
+	css.background-color = white
+	fx.rounding = 4px
+	
+		[tabs]
+		condition = @PAGE=@HOMEPAGE
+		css.display = block
+		css.width = 680px
+		addon.tab.rain.source = db
+
+			
+		[content]
+		css.margin-top = 30px
+		css.margin = 30px
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
+
+
+####footer####################################
+
+[footer]
+child = footer-menu, footnote
+css.margin-top = 40px
+css.margin-left = 20px
+css.height = 180px
+css.width = 960px
+#css.background-color = #ffffff
+#css.background-color = #f7d9ff
+		stacking = horizontal
+
+		[footer-menu]
+		child = footer-cookies, footer-tandc, footer-contact
+		css.height = 50px
+		css.width = 50%
+
+			[footer-cookies]
+			html.raw = Cookie Policy
+			css.color = #000000
+			css.font-size = 11px
+			css.text-align = left
+			click = ?layout=index&page=cookie-policy
+
+			[footer-tandc]
+			html.raw = Terms & Conditions
+			css.color = #000000
+			css.font-size = 11px
+			css.text-align = left
+			click = ?layout=index&page=terms-conditions
+
+			[footer-contact]
+			html.raw = Contact Us
+			css.text-align = left
+			css.color = #000000
+			css.font-size = 11px
+			click = ?layout=index&page=contact
+
+
+	[footnote]
+	child = copyright, admin-links
+	css.width = 50%
+	css.height = 50px
+	stacking = horizontal
+
+		[copyright]
+		css.width = 50%
+		css.margin-top = 10px
+		html.raw = Customer &copy 2014 All rights reserved
+		css.color = #000000
+		css.font-size = 11px
+		css.text-align = left
+
+	[admin-links]
+	child = wirefly, admin
+	stacking = horizontal
+
+	
+		[wirefly]
+		css.height = 45px
+		css.margin-top = 5px
+		image.url = img/wirefly-design.png
+		image.width = 100px
+		image.height = 46px
+		image.align = left
+		clicknew = http://www.wireflydesign.com
+		
+	
+		[admin]
+		child = cog-center
+		css.height = 20px
+		css.width = 20px
+		css.background-size = 100%
+		css.background-image = url('/img/admin.png')
+		css.margin-left = -20px
+		
+			[cog-center]
+			css.width = 5px
+			css.height = 5px
+			css.margin-top = 8px
+			image.url = img/cog-center.png
+			image.width = 5px
+			image.height = 5px
+			image.align = center
+			clicknew = backend.php
+

@@ -93,6 +93,20 @@ class SiteController extends Controller
     /**
      * Displays the DIRECT login page
      */
+// @@TODO: HARDCODED FOR Being Business ---------- REMOVE
+    public function actionBeingDirect()
+    {
+        Yii::app()->session['uid'] = 97;
+        $identity = new UserIdentity('admin@beingbusiness.co.uk', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
 // @@TODO: HARDCODED FOR Barstobrick RC ---------- REMOVE
     public function actionBarstoDirect()
     {
