@@ -62,12 +62,12 @@ int control(int startIx, char *defaultTableName);
 // Common.c functions
 int emitHeader(char *str, ...);
 int endHeader();
-int emitData(char *str, ...);
-int endData(int urlEncodingRequired);
+int emitStd(char *str, ...);
+int endStd(int urlEncodingRequired);
 int emitJs(char *str, ...);
 int endJs(int urlEncodingRequired);
-extern char *emitDataPos;
-extern int emitDataRemaining;
+extern char *emitStdPos;
+extern int emitStdRemaining;
 extern char *emitJsPos;
 extern int emitJsRemaining;
 extern char *emitScratchPos;
@@ -91,6 +91,7 @@ char *urlEncode(char *str);
 extern int oobDataRequested;
 int oobJamData();
 
+extern char *outputStream;	// sysJam uses this to override usual output if non null
 int sysJam(char *jamName, char *jEntrypoint, char *jamOutputStream);		// process a jam file from within
 
 extern int urlEncodeRequired;

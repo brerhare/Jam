@@ -177,7 +177,7 @@ void _updateSqlFields(char *qualifier, char **mysqlHeaders, enum enum_field_type
 		char qualifiedName[256];
 		sprintf(qualifiedName, "%s.%s", qualifier, mysqlHeaders[i]);
 		updateSqlVar(qualifiedName, mysqlTypes[i], row[i]);
-//emitData("HDR=[%s.%s]:[%s]\n", qualifier, mysqlHeaders[i], row[i]);
+//emitStd("HDR=[%s.%s]:[%s]\n", qualifier, mysqlHeaders[i], row[i]);
 	}
 }
 void _nullifySqlFields(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields) {
@@ -191,7 +191,7 @@ void _nullifySqlFields(char *qualifier, char **mysqlHeaders, enum enum_field_typ
 }
 void updateSqlVar(char *qualifiedName, enum enum_field_types mysqlType, char *value) {
 	if (!qualifiedName)
-		emitData("NULL 'qualifiedName' passed to updateTableVar\n");
+		emitStd("NULL 'qualifiedName' passed to updateTableVar\n");
 	VAR *seekVar = findVarStrict(qualifiedName);
 	if (!seekVar) {
 		VAR *newVar = (VAR *) calloc(1, sizeof(VAR));
@@ -199,7 +199,7 @@ void updateSqlVar(char *qualifiedName, enum enum_field_types mysqlType, char *va
 		newVar->source = strdup("mysql");
 		newVar->debugHighlight = 5;
 		int ret = decodeMysqlType(newVar, mysqlType, value);
-//emitData("TABLE-> NAME=%s TYPE=%d AVALUE=%s NVALUE=%ld DVALUE=%2.f\n", newVar->name, newVar->type, newVar->stringValue, newVar->numberValue, newVar->decimal2Value);
+//emitStd("TABLE-> NAME=%s TYPE=%d AVALUE=%s NVALUE=%ld DVALUE=%2.f\n", newVar->name, newVar->type, newVar->stringValue, newVar->numberValue, newVar->decimal2Value);
 		for (int i = 0; i < MAX_VAR; i++) {
 			if (!var[i]) {
 				var[i] = newVar;
@@ -274,7 +274,7 @@ MYSQL_RES *doSqlSelect(int ix, char *defaultTableName, char **givenTableName, in
     strcat(query, s);
     free(s);
     // Do the query
-//emitData("\n\n[%s]\n\n", query);
+//emitStd("\n\n[%s]\n\n", query);
 //die("kkk");
     MYSQL_RES *res;
     MYSQL_ROW row;
@@ -371,7 +371,7 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 		}
 
 		externalFieldOrValue = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// try for the external field, containing the value to look for
-//emitData("\n\n[[[%s]]]\n\n", externalFieldOrValue);
+//emitStd("\n\n[[[%s]]]\n\n", externalFieldOrValue);
 		if (!externalFieldOrValue)
 			die("no external field given for lookup");
 
@@ -379,7 +379,7 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 		VAR *variable = NULL;
 		char *varValue = NULL;
 		variable = findVarLenient(externalFieldOrValue, currentTableName);
-//emitData("\n[%s][%s]\n", externalFieldOrValue, currentTableName);
+//emitStd("\n[%s][%s]\n", externalFieldOrValue, currentTableName);
 		if (variable)
 			varValue = strdup(variable->portableValue);
 		else
