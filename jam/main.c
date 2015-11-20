@@ -277,6 +277,7 @@ if (++sanity > 100) { emitStd("Overflow in main!"); break; }
 	int startIx = 0;
 	if (jamEntrypoint) {
 		int ix = 0;
+		int foundEntrypoint = 0;
 		while (jam[ix]) {
 			if ((!strcmp(jam[ix]->command, "@action")) && (!strcmp(jam[ix]->args, jamEntrypoint))) {
 /*				logMsg(LOGINFO, "Preparing to run @action %s, checking for _dbname", jamEntrypoint);
@@ -291,9 +292,14 @@ if (++sanity > 100) { emitStd("Overflow in main!"); break; }
 				} */
 				// Set startpoint
 				startIx = ix;
+				foundEntrypoint = 1;
 				break;
 			}
 			ix++;
+		}
+		if (!foundEntrypoint) {
+			logMsg(LOGERROR, "jam entrytpoint for requested @action [%s] was not found", jamEntrypoint);
+			return(-1);
 		}
 	}
 	if (startIx == 0) {
