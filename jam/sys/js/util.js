@@ -62,6 +62,8 @@ function runAction(action, element, output, callback) {
 	el.push("_dbname");											// always try to append this
 	el.push("_initialUrlParams");								// any url parameters this page was initially called with
 	for (i = 0; i < el.length; i++) {
+		if (el[i] == '')
+			continue;
 		if (document.forms[el[i]]) {							// is this a form element?
 			var obj = $('form[name="' + el[i] + '"]');			// yes its a form element
 			postData += '&' + obj.serialize();
@@ -87,9 +89,11 @@ console.log('AJAX sending to - \nurl : ' + sendURL + '\ndata : ' + postData);
 		type: "POST",
 		data : postData,
 		success:function(data, textStatus, jqXHR) {
-console.log('AJAX call returned data [' + data + '] of len ' + data.length);
+console.log('AJAX call returned raw data [' + data + '] of len ' + data.length);
 			data = processOobData(decodeURIComponent(data));
-console.log('AJAX data stripped of oob [' + data + '] of len ' + data.length);
+//console.log('AJAX data stripped of oob [' + data + '] of len ' + data.length);
+			data = processScriptData(data);
+//console.log('AJAX data stripped of script tags [' + data + '] of len ' + data.length);
 			if (output != '') {
 				var target = document.getElementsByName(output);
 				if (target[0] instanceof HTMLInputElement) {
@@ -101,43 +105,6 @@ console.log('AJAX data stripped of oob [' + data + '] of len ' + data.length);
 						target[0].innerHTML = data;
 				}
 			}
-			// Apply any JS that might have come in
-
-
-scriptArr = [];
-otherArr = [];
-curPos = 0;
-while ((startTag = data.indexOf("<script", curPos)) != -1) {
-    if (startTag != curPos)
-        otherArr.push(data.substring(curPos, startTag));
-    pos = data.indexOf(">", startTag);
-    if (pos == -1) {
-        alert('script start tag incomplete');
-    }
-    endTag = data.indexOf("</scri" + "pt>", pos+1);
-    if (endTag == -1)
-        alert('script start tag has no end tag');
-    else {
-        scriptArr.push(data.substring(pos+1, endTag));
-    }
-    curPos = endTag + 9;                                            // just after the closing ">"
-console.log("[" + data.substring(pos+1, endTag) + "]");
-}
-otherArr.push(data.substring(curPos));
-console.log("extracted script array : " + scriptArr);
-console.log("extracted other  array : " + otherArr);
-for (i = 0; i < scriptArr.length; i++)
-	window.eval(scriptArr[i]);
-
-
-/**
-			var script = data.replace("<script>", "");
-			script = script.replace("</script>", "");
-alert(script);
-			window.eval(script);
-xxx('HI!');
-**/
-
 
 			// Callback if one was given
 			if (callback != '')
@@ -356,14 +323,15 @@ function createHiddenElementsFromUrlParams() {
 }
 
 // ----------------------------------+-----------------------------------------------------------------------
-// OOB (returning from actions)
+// Returning from ajax runAction
 
+// Process any OOB data embedded in the returned data
 function processOobData(data) {
+	console.log('----- oob data begins ---------------------------------------------------------------');
 	var spl = data.split("{oobData}");
 	if (spl.length > 1) {
-		console.log('----- oob data begins ---------------------------------------------------------------');
 		var oobData = spl[1];
-//alert('found oob data:' + oobData + ' of length ' + oobData.length);
+console.log('found oob data:' + oobData + ' of length ' + oobData.length);
 		var oob = [];
 		oob = JSON.parse(spl[1]);
 		for (i = 0; i < oob.length; i++) {
@@ -385,8 +353,44 @@ console.log('updating ' + oobName + ' : ' + oobValue);
 		}
 		// Strip out oob from data
 		data = spl[0];
-		console.log('----- oob data ends -----------------------------------------------------------------');
 	}
+	console.log('----- oob data ends -----------------------------------------------------------------');
+	return data;
+}
+
+// Enable any <script> tags in the returned data
+function processScriptData(data) {
+	// Split off and apply any JS that might have come in
+	scriptArr = [];
+	htmlArr = [];
+	curPos = 0;
+	while ((startTag = data.indexOf("<script", curPos)) != -1) {
+		if (startTag != curPos)
+			htmlArr.push(data.substring(curPos, startTag));
+		pos = data.indexOf(">", startTag);
+		if (pos == -1) {
+			alert('script start tag incomplete');
+		}
+		endTag = data.indexOf("</scri" + "pt>", pos+1);
+		if (endTag == -1)
+			alert('script start tag has no end tag');
+		else {
+			scriptArr.push(data.substring(pos+1, endTag));
+		}
+		curPos = endTag + 9;                                            // just after the closing ">"
+		//console.log("[" + data.substring(pos+1, endTag) + "]");
+	}
+	htmlArr.push(data.substring(curPos));
+	console.log('----- script data begins ------------------------------------------------------------');
+	for (i = 0; i < scriptArr.length; i++) {
+		console.log(scriptArr[i]);
+		window.eval(scriptArr[i]);
+	}
+	console.log('----- script data ends --------------------------------------------------------------');
+	console.log('----- html data begins --------------------------------------------------------------');
+	console.log(htmlArr.join(''));
+	data = htmlArr.join('');
+	console.log('----- html data ends -----------------------------------------------------------------');
 	return data;
 }
 

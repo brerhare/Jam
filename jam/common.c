@@ -319,25 +319,29 @@ int endStd(int urlEncodeRequired) {
 		putchar(*p++);
 	if (encodedData)
 		free(encodedData);
-//logMsg(LOGMICRO, "ENDDATA=[%s]", emitStdBuffer);
+logMsg(LOGMICRO, "ENDDATA=[%s]", emitStdBuffer);
 }
 
 int endJs(int urlEncodeRequired) {
 //return(0);
-	char *p = emitJsBuffer;
-	char *encodedJs = NULL;
-	if (urlEncodeRequired) {
-		encodedJs = urlEncode(emitJsBuffer);
-		p = encodedJs;
+	if (strlen(emitJsBuffer)) {
+		char *p = emitJsBuffer;
+		char *encodedJs = NULL;
+		if (urlEncodeRequired) {
+			encodedJs = urlEncode(emitJsBuffer);
+			p = encodedJs;
+		}
+	// @@KIM <script> tag
+		emitStd("\n\n<script id='endJs'>\n");
+		emitStd(p);
+		logMsg(LOGDEBUG, "endJs generated <script> tags enclosing : [%s]", p);
+	// @@KIM <script> tag
+		emitStd("</script>\n");
+		if (encodedJs)
+			free(encodedJs);
+	} else {
+		logMsg(LOGDEBUG, "endJs had nothing to output");
 	}
-// @@KIM <script> tag
-	emitStd("\n\n<script id='endJSs'>\n");
-	emitStd(p);
-	logMsg(LOGDEBUG, "endJs generated (inside <script>) : [%s]", p);
-// @@KIM <script> tag
-	emitStd("</script>\n");
-	if (encodedJs)
-		free(encodedJs);
 }
 
 char *urlEncode(char *str) {		// needs freeing

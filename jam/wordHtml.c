@@ -26,6 +26,9 @@ int breakpointAutocompleteId[MAX_BREAKPOINTS];
 //-----------------------------------------------------------------
 // HTML <tag> generation from {{curly}}
 
+int wowdHtmlDropdown(int ix, char *defaultTableName, int inputType) {
+}
+
 int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
@@ -136,7 +139,7 @@ filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSe
 		emitStd("<div id='SEQ_%d_SEARCH_DIV' class='uk-autocomplete uk-form' data-uk-autocomplete='off'> \n", randId);
 		emitStd("	<input type='text' id='SEQ_%d_SEARCH_VALUE' value='%s' class='uk-form-width-%s'> \n", randId, fieldSearchValue, fieldPrompt);
 // @@KIM emitStd below emitJs
-		emitStd("	<script type='text/autocomplete' \n");
+		emitStd("	<script type='text/autocomplete'> \n");
 		emitStd("		<ul class='uk-nav uk-nav-autocomplete uk-autocomplete-results'> \n");
 		emitStd("			{{~items}} \n");
 		emitStd("				<li class='clicked' data-value='{{ $item.value }}'  data-id='{{ $item.id }}'> \n");
