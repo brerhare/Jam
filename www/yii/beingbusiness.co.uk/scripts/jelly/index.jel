@@ -12,75 +12,92 @@ css.background-color = white
 css.display = block
 
 	[site]
-	child = header, slider, pages, footer
+	child = header, slider, pages, tab-pages, mob-pages, footer
 	css.width = 100%
 
 ####  Header  #################################
 
 	[header]
-	child = logo, menu
-	stacking = horizontal
+	child = header-content
 	css.width = 100%
-	css.overflow = visible
-	css.z-index = 100
+	css.position = fixed
+	css.background-color = white
+	css.z-index = 50
+	
+	[header-content]
+	child = logo, menu_home, menu_1, menu_2, menu_3, menu_4
+	stacking = horizontal
+	css.width = 80%
+	css.margin-top = 20px
+
 	
 		[logo]
-		css.margin-top = 25px
-		css.height = 80px
-		css.width = 25%
+		css.width = 30%
 		image.url = img/logo.png
 		image.width = 100%
-		image.height = 48%
+		image.height = 100%
 		click = ?layout=index&page=index
-		css.overflow = visible
-		css.z-index = 100
-		css.position = relative
 
-		[menu]
-		css.margin-top = 50px
-		css.margin-left = 5%
-		css.height = 50px
-		css.width = 65%
-		css.overflow = visible
-
-		addon.menu.basic.orientation = horizontal
-		#addon.menu.basic.height = 30px
-		addon.menu.basic.edgepadding = 13
-
-		addon.menu.basic.menu-rounding = 4px
-		addon.menu.basic.menu-color = white
-		#addon.menu.basic.item-separator-color = #ffffff
-		#addon.menu.basic.item-separator-width = 3px
-
-		addon.menu.basic.font-size = 14px
-		#addon.menu.basic.menu-text-color = red
-
-		#addon.menu.basic.item-color = black yellow
-		#addon.menu.basic.item-text-color = green
-
-		#addon.menu.basic.submenu-color = yellow red
-	
-		#addon.menu.basic.subitem-color = white black
-		#addon.menu.basic.subitem-text-color = purple
-		#addon.menu.basic.subitem-seperator-color = red 
-
+		[menu_home]
+		css.margin-top = 10px
+		css.margin-left = 10%
+		css.width = 8%
+		image.url = img/menu_home.png
+		image.width = 100%
+		image.height = 100%
+		click = ?layout=index&page=index
+		
+		[menu_1]
+		css.margin-top = 10px
+		css.margin-left = 5px
+		css.width = 8%
+		image.url = img/menu_1.png
+		image.width = 100%
+		image.height = 100%
+		click = ?layout=index&page=being-business-women-blog-news
+		
+		[menu_2]
+		css.margin-top = 10px
+		css.margin-left = 5px
+		css.width = 8%
+		image.url = img/menu_2.png
+		image.width = 100%
+		image.height = 100%
+		click = ?layout=index&page=business-events-dumfries
+		
+		[menu_3]
+		css.margin-top = 10px
+		css.margin-left = 5px
+		css.width = 8%
+		image.url = img/menu_3.png
+		image.width = 100%
+		image.height = 100%
+		click = ?layout=index&page=business-club-dumfries-resources
+		
+		[menu_4]
+		css.margin-top = 10px
+		css.margin-left = 5px
+		css.width = 8%
+		image.url = img/menu_4.png
+		image.width = 100%
+		image.height = 100%
+		click = ?layout=index&page=business-club-dumfries-membership
 
 #### Slider ###########################################
 
 	[slider]
-	css.width = 960px
-  	css.height = 320px
-	css.z-index = 50
-	addon.slider.flexslider.width = 952px
-	addon.slider.flexslider.height = 310px
+	css.width = 100%
+	css.margin-top = 11%
+	addon.slider.flexslider.width = 100%
+	addon.slider.flexslider.height = 100%
 	addon.slider.flexslider.mode = image
 	addon.slider.flexslider.source = db
 
-	#addon.slider.flexslider.border-width = 0px
+	addon.slider.flexslider.border-width = 0px
 	#addon.slider.flexslider.border-color = red
 	#addon.slider.flexslider.active-dotcolor = red
 	#addon.slider.flexslider.inactive-dotcolor = blue
-	#addon.slider.flexslider.dot-margin-top = -200px
+	addon.slider.flexslider.dot-margin-top = -100%
 	#addon.slider.flexslider.dot-margin-bottom = 0px
 	#addon.slider.flexslider.dot-margin-left = 0px
 	#addon.slider.flexslider.dot-margin-right = 0px
@@ -91,26 +108,101 @@ css.display = block
 			
 
 	[pages]
-	child = tabs, content 	
-	css.width = 960px
+	child = sub_menu, content, right_column
+	css.width = 80%
 	css.margin-top = 20px
-	css.background-color = white
-	fx.rounding = 4px
+	stacking = horizontal
+	condition = @DEVICEWIDTH>959
 	
-		[tabs]
-		condition = @PAGE=@HOMEPAGE
-		css.display = block
-		css.width = 680px
-		addon.tab.rain.source = db
+		[sub_menu]
+		css.width = 15%
+		css.overflow = visible
+		addon.menu.basic.orientation = vertical
+		addon.menu.basic.level = 2
+#		addon.menu.basic.height = 40px
+		addon.menu.basic.menu-font-family = "Quicksand", Verdana, sans-serif
+		addon.menu.basic.menu-font-size = 16
+		addon.menu.basic.menu-text-color = black
+		addon.menu.basic.menu-text-weight = bold
 
-			
+#		addon.menu.basic.align = center / left
+#		addon.menu.basic.width = 1100px
+#		addon.menu.basic.item-width-variable = fixed / variable
+#		addon.menu.basic.item-width = 40px
+		addon.menu.basic.menu-rounding = 0
+
+		# item-margin is the gap in px between items
+		#addon.menu.basic.item-margin = 1px
+		addon.menu.basic.menu-color = #ffbd3e
+
+		addon.menu.basic.item-separator-width = 2px
+		addon.menu.basic.item-separator-color = white
+
+		#addon.menu.basic.edgepadding = 13
+		
+				
 		[content]
+		child = all_content, blog_content
 		css.margin-top = 30px
-		css.margin = 30px
+		css.margin-left = 4%
+		css.width = 60%
+		
+			[all_content]
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find the page $_GET['page']
+			html.raw = ContentBlock.content
+			
+			[blog_content]
+			condition = @PAGE=being-business-women-blog-news
+			#html.raw = {{news newstype=pinterest sidebar=right}}
+			
+		[right_column]
+		css.width = 15%
+		css.margin-left = 4%
+		css.min-width = 150px
+		html.raw = </br><h3>Sign up for regular info</h3>
+		css.text-align = center
+		css.min-height = 200px
+		css.background-color = white
+	#	jam.embed = /jam/run/signup_form.jam
+		jam.iframe = /jam/run/signup_form.jam
+		
+	[tab-pages]
+	child = tab-column, tab-content
+	css.width = 90%
+	css.margin-top = 20px
+	stacking = horizontal
+	condition = @DEVICEWIDTH<960
+	condition = @DEVICEWIDTH>519
+	
+		[tab-column]
+		child = sub-menu, right_column
+		css.width = 20%
+			
+	
+		[tab-content]
+		css.margin-top = 30px
+		css.width = 80%
 		db.table = ContentBlock
 		db.filter = url=$_GET['page']
 		db.error = Sorry, I could not find the page $_GET['page']
 		html.raw = ContentBlock.content
+		
+	[mob-pages]
+	child = sub-menu, mob-content, right_column
+	css.width = 90%
+	css.margin-top = 20px
+	condition = @DEVICEWIDTH<520
+					
+	
+		[mob-content]
+		css.margin-top = 30px
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
+
 
 
 ####footer####################################
@@ -161,7 +253,7 @@ css.width = 960px
 		[copyright]
 		css.width = 50%
 		css.margin-top = 10px
-		html.raw = Customer &copy 2014 All rights reserved
+		html.raw = Being Business &copy 2015 All rights reserved
 		css.color = #000000
 		css.font-size = 11px
 		css.text-align = left
