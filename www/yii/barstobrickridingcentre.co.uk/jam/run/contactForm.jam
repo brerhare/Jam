@@ -1,0 +1,74 @@
+{{@include /jam/sys/html/header.html}}
+
+<style>
+	body {
+		display:none
+	}
+	.uk-form * {
+		font-family: 'Nunito', Arial, sans-serif !important;
+		color: #56bbfe !important;
+	}
+	.uk-form input, textarea {
+		border-radius: 5px !important;
+		margin-bottom:3px !important;
+		border: 2px solid #56bbfe !important;
+	}
+	.uk-form button {
+		margin-top:3px !important;
+		Xmargin-bottom:8px !important;
+		color: #ffffff !important;
+		background: #56bbfe !important;
+	}
+	.uk-form button:hover {
+		background: #238bfe !important;
+	}
+</style>
+
+<form name="contactForm" class="uk-form">
+	{{@html input hidden jelly.sid}}
+	{{@html input hidden jelly.email}}
+	{{@html input text mailer_member.first_name large '' Name}}
+	{{@html input text mailer_member.email_address large '' Email}}
+	{{@html textarea message 60x5 '' Message}}
+	<p> Leave your phone number and we will get back to you as soon as posible</p>
+	{{@html input text mailer_member.telephone large '' Phone}}
+	{{@html button SEND primary .uk-width-1-1 
+		runAction sendMessage contactForm contactForm
+	}}
+</form>
+
+<script>
+$(window).load(function() {
+	$("body").show();
+	//$("body").fadeIn("slow");
+/*
+	document.getElementById("mailer_member.first_name").addEventListener("change", function() {
+		val = document.getElementById("mailer_member.first_name").value;
+alert('['+val+']');
+			if ((val == null) || (val == "")) {
+			alert("Name is required");
+			return false;
+		}
+	});
+*/
+
+
+});
+</script>
+
+{{@action sendMessage}}
+	{{@database plugin}}
+	{{@get admin_user filter sid = jelly.sid}}
+	{{@get mailer_list filter uid = admin_user.id}}
+	{{mailer_member.uid = admin_user.id}}
+	{{mailer_member.active = 1}}
+	{{mailer_member.mailer_list_id = mailer_list.id}}
+	{{@new item mailer_member}}
+
+	{{@email jelly.email jelly.email 'Website enquiry' You have a new enquiry. The contact details for this message will be stored in your website newsletter mailing list. The message is  below.\n\nName: mailer_member.first_name \nEmail: mailer_member.email_address \nMessage: message \nTelephone: mailer_member.telephone \n  }}
+
+	<center><p><br><br><br><b>Thank you {{mailer_member.first_name}}!</b><br>We will get back to you shortly</p></center>
+{{@end}}
+
+{{@include /jam/sys/html/footer.html}}
+
