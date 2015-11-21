@@ -1,69 +1,63 @@
-<!-- Place your Google fonts below as a cut and paste then choose which header and fonts etc need the font families - NB if the family only come in Italic then you must state the font style as Italic too -->
+<!-- Place your Google fonts here as a cut and paste then choose which header and fonts etc need the font families - NB if the family only come in Italic then you must state the font style as Italic too -->
 
-<link href='http://fonts.googleapis.com/css?family=Gruppo|Open+Sans:300italic,300,700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Droid+Sans|Italiana' rel='stylesheet' type='text/css'>
 
 <style type="text/css">
 
 
-html, body, p {	height: 100%;
-				padding: 0;
-				margin: 20;
-				border: 0;
-				line-height: 110%}
+html, h2, h4, body, p {	height: 100%;
+				padding: 0%;
+				margin: 0%;
+				border: 0px;
+				line-height: 140%;}
 
 /* Global Hyperlink settings - will affect menu text colour if no text settings */ 
-a { text-decoration: underline; color:#b23640; }
-a:visited { text-decoration: none; color:#b23640; }
-a:hover { text-decoration: none; color:#000000; }
-a:active { text-decoration: none; color:#b23640 }
+a { text-decoration: none; color:#af2626; }
+a:visited, a:active { text-decoration: none; color:#af2626; }
+a:hover { text-decoration: none; color:#525252; }
 
 
 
-h1 {	font-family: 'Gruppo', Verdana, sans-serif !important;
-	color: #b23640;
-	font-size: 34px;
-	font-weight: 700;}
+h1 {	font-family: 'Italiana', Verdana, sans-serif !important;
+	color: #822626;
+	font-size: 36px;
+	font-weight: 700;
+	line-height: 100%;}
 
-h2 {	font-family: 'Open Sans', Verdana, sans-serif !important;
-	color: #000000;
-	font-size: 20px;
+h2 {	font-family: 'Droid Sans', Verdana, sans-serif !important;
+	color: #525252;
+	font-size: 18px;
 	font-weight: 400;
-	font-style: normal;
-	line-height: 140%;}
+	font-style: italic;}
 
 
-h3 {	font-family: 'Gruppo', Verdana, sans-serif !important;
-	color: #b23640;
+h3 {	font-family: 'Italiana', Verdana, sans-serif !important;
+	color: #822626;
 	font-size: 20px;
 	font-weight: 700;
 	font-stretch: wider;}
 
-p  {	font-family: 'Open Sans', Verdana, sans-serif !important;
-	color: #000000;
-	font-size: 17px;
-	font-weight: 300;
-	line-height: 150%;
-	font-stretch: expanded}
-	
-	li { font-family: 'Gruppo', Verdana, sans-serif !important;
-	color: #5b5b5b;
+h4 {	font-family: 'Italiana', Verdana, sans-serif !important;
+	color: #822626;
 	font-size: 16px;
-	font-weight: normal;
-	line-height: 80%;
+	font-weight: 700;
+	font-stretch: wider;}
+
+p  {	font-family: 'Droid Sans', Verdana, sans-serif !important;
+	color: #000000;
+	font-size: 14px;
+	font-weight: normal
 	font-stretch: expanded}
 
-blockquote {font-family: 'Open Sans', Verdana, sans-serif !important;
+blockquote {font-family: 'Droid Sans', Verdana, sans-serif !important;
 	color: #5b5b5b;
 	font-size: 14px;
 	font-style: italic;
-	font-weight: 300;
-	line-height: 140%;}
+	font-weight: 300}
 
-html { font-family: 'Gruppo', Verdana, sans-serif !important;
-	font-size: 16px;
-	font-weight:normal;
-	line-height: 140%;}
-	
 
+html { font-family: 'Droid Sans', Verdana, sans-serif !important;
+	font-size: 12px;
+	font-weight:normal}
 
 </style>
