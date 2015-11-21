@@ -119,6 +119,8 @@
 {@html input disabled stock_supplier.payment_terms mini "Payment terms" days}}	// same as input just no editing
 {@html inp <anytype means inline input>}
 
+{@html input type=dropdown field=product.supplier_id pickfield=supplier.name size=medium label=Supplier}
+
 {@html textarea stock_supplier.notes 60x5 Notes}
 
 
@@ -209,8 +211,10 @@ system.now 		@@TODO
 
 <h3>Internal notes</h3>
 
-@actions. Emits to stdout same as 'global' jam, but we need an out of band way to harvest the variables created by the action.
-o File? Works for non-html jam
-o Embedded div at the end of output which an http ajax.onsuccess can unpack? works for html jam
+@actions. All variables created as the result of actions are sent as oob to the browser.
 
 Later on the jam will need to differentiate the commandline and client-server mode to decide which oob type to use
+
+
+<h4>Autocreated Jam variables</h4>
+arg.xxxxx		// mainly for sysjam, all args processed line by line are converted to vars
