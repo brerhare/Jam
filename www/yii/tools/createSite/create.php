@@ -149,6 +149,7 @@ if (!(file_put_contents($siteDir . "/protected/backend/config/main.php", $main))
     die("Failed to update protected/backend/config/main.php - aborting\n");
 
 echo "\nDone\n";
+echo "Add this site into /root/.bashrc\n";
 echo "Add this site into /root/setperms\n";
 echo "Add this site into tools/util/jellySites.inc\n";
 echo "Add apache lines\n";

@@ -367,7 +367,7 @@ $criteria->order = "sequence ASC";
 					if ($menuItems)
 					{
 						$parent = $menuItems->id;
-						$layout = $_GET['layout'];
+						if (isset($_GET['layout'])) $layout = $_GET['layout']; else $layout="index";
 						if ($menuItems->parent_id != 0)
 							$parent = $menuItems->parent_id;
 						// Now get all children
