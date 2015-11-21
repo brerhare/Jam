@@ -2,7 +2,7 @@
 
 {{@database stock}}
 
-{{@get stock_container filter _id = stock_container._id}}
+{{@get stock_container filter id = stock_container.id}}
 
 <style type="text/css">
 	label {text-align: right;}
@@ -19,7 +19,7 @@
 
 <form name="containerForm" class="uk-form uk-form-horizontal">
 <!-- html input type fieldname size prompt placeholder -->
-	{{@html input hidden stock_container._id}}
+	{{@html input hidden stock_container.id}}
 	{{@html input text stock_container.name medium Name name}}
 	{{@html input text stock_container.volume medium "Volume 3m" "volume 3m"}}
 	<br>
@@ -32,7 +32,7 @@
 
 <form name="containerForm2" class="uk-form uk-form-horizontal">
 <!-- html input type fieldname size prompt placeholder -->
-	{{@html input hidden stock_container._id}}
+	{{@html input hidden stock_container.id}}
 	{{@html input text stock_container.volume medium "Volume 3m" "volume 3m"}}
 	{{@html input text stock_container.name medium Name name}}
 	<br>

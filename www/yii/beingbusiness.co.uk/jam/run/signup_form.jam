@@ -1,0 +1,73 @@
+{{@include /jam/sys/html/header.html}}
+
+<style>
+	body {
+		display:none
+	}
+	.uk-form * {
+		font-family: 'Quicksand', Verdana, sans-serif !important;
+		color: #faa402 !important;
+	}
+	.uk-form input, textarea {
+		border-radius: 5px !important;
+		margin-bottom:3px !important;
+		margin-top: 2px !important;
+		border: 2px solid #faa402 !important;
+	}
+	.uk-form button {
+		Xmargin-top:3px !important;
+		Xmargin-bottom:8px !important;
+		color: #ffffff !important;
+		background: #faa402 !important;
+	}
+	.uk-form button:hover {
+		background: #ffbd3e !important;
+	}
+</style>
+
+<form name="contactForm" class="uk-form">
+		{{@html input hidden jelly.sid}}
+	{{@html input hidden jelly.email}}
+	{{@html input text mailer_member.first_name large '' Name}}
+	{{@html input text mailer_member.email_address large '' Email}}
+	{{@html button SUBMIT primary .uk-width-1-1 
+		runAction sendMessage contactForm contactForm
+	}}
+	</div>
+</form>
+
+<script>
+$(window).load(function() {
+	$("body").show();
+	//$("body").fadeIn("slow");
+/*
+	document.getElementById("mailer_member.first_name").addEventListener("change", function() {
+		val = document.getElementById("mailer_member.first_name").value;
+alert('['+val+']');
+			if ((val == null) || (val == "")) {
+			alert("Name is required");
+			return false;
+		}
+	});
+*/
+
+
+});
+</script>
+
+{{@action sendMessage}}
+	{{@database plugin}}
+	{{@get admin_user filter sid = jelly.sid}}
+	{{@get mailer_list filter uid = admin_user.id}}
+	{{mailer_member.uid = admin_user.id}}
+	{{mailer_member.active = 1}}
+	{{mailer_member.mailer_list_id = mailer_list.id}}
+	{{@new item mailer_member}}
+
+	{{@email jelly.email jelly.email 'Newsletter SignUp' You have a new signup. The contact details for this message will be stored in your website newsletter mailing list. \n\nName: mailer_member.first_name \nEmail: mailer_member.email_address \n }}
+
+	<center><p><b>Thank you {{mailer_member.first_name}}!</br>We will never pass on your details to anyone else.</p><p>Please add</br>no-reply@dglink.co.uk</br>to your contact list as we sometimes get lost with all the spam that you get.</p></center>
+{{@end}}
+
+{{@include /jam/sys/html/footer.html}}
+

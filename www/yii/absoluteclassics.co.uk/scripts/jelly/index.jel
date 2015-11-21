@@ -91,11 +91,11 @@ child = home-content-block
 condition = @HOMEPAGE=1
 css.width = 960px
 #css.height = 500px
-css.margin-top = 30px
+#css.margin-top = 30px
 css.background-color = black
 	image.url = img/centre-background.jpg
-	image.width = 58%
-	image.height = 58%
+	image.width = 90%
+	image.height = 53%
 	image.align = center
 	
 	[home-content-block]
@@ -144,7 +144,7 @@ stacking = horizontal
 	css.margin-top = 30px
 	fx.rounding = 4px
 	css.background-image = url('/img/white-background.jpg')
-	css.background-color = #eeeeee
+	css.background-color = white
 	css.background-repeat = no-repeat
 		
 			[blog-page]
