@@ -338,6 +338,12 @@ END_OF_FOOTER;
 	// Check we have the device width. If not, echo the html/js to get it and caller quits
     private function gotDeviceWidth()
     {
+		// Device width handling is only on sites Jo has fixed for mobile. @@TODO remove this 'if' completely to enable for all
+		if ( (!(stristr($_SERVER['HTTP_HOST'], "barstobrickridingcentre.co.uk")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "breakfreecoaching.co.uk")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "beingbusiness.co.uk"))) )
+			return 0;
+
 		//// THE OLD (retired) METHOD ------------->    $this->deviceWidth = deviceInfo();
 
 		if (isset($_GET['devicewidth'])) {
