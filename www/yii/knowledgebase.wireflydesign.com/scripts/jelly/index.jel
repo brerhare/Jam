@@ -33,18 +33,52 @@ css.display = block
 			css.width = 60%
 			css.margin-top = 40px
 			css.overflow = visible
-			addon.menu.basic.orientation = horizontal
-			addon.menu.basic.height = 40px
-			addon.menu.basic.align = center
-			addon.menu.basic.level = 1
-			addon.menu.basic.menu-font-family = "Comfortaa", Verdana, SanSerif
-			addon.menu.basic.menu-font-size = 40px
-			addon.menu.basic.menu-text-color = #2e2575
-			addon.menu.basic.menu-text-weight = normal
-			addon.menu.basic.menu-rounding = 0px
-			addon.menu.basic.menu-color = transparent
-			addon.menu.basic.item-separator-width = 0px
-			addon.menu.basic.item-separator-color = transparent
+			
+			#// Top level basic settings
+			addon.menu.traditional.orientation = horizontal
+			#addon.menu.traditional.width = 100%
+			addon.menu.traditional.height = 40px
+			addon.menu.traditional.align = left
+			addon.menu.traditional.item-width = variable
+			addon.menu.traditional.level = 1
+
+			#// Top level background settings
+			addon.menu.traditional.menu-rounding = 0px
+			addon.menu.traditional.menu-opacity = 100%
+			addon.menu.traditional.menu-color = transparent 
+			addon.menu.traditional.item-separator-width = 0px
+
+			#// Top level font settings
+			addon.menu.traditional.menu-font-size = 18px
+			addon.menu.traditional.menu-font-family = "Comfortaa", Verdana, SanSerif
+			addon.menu.traditional.menu-font-weight = normal
+			addon.menu.traditional.menu-text-color = #2e2575
+
+			#// Top level hover settings
+			addon.menu.traditional.menu-hover-text-color = red
+			addon.menu.traditional.menu-hover-background-color = transparent
+			addon.menu.traditional.menu-hover-font-size = 18px
+			addon.menu.traditional.menu-hover-font-family = "Comfortaa", Verdana, SanSerif
+			addon.menu.traditional.menu-hover-font-weight = normal
+
+			#// Top level selected settings
+			addon.menu.traditional.menu-selected-text-color = black
+			addon.menu.traditional.menu-selected-background-color = transparent
+			addon.menu.traditional.menu-selected-font-size = 18px
+			addon.menu.traditional.menu-selected-font-family = "Comfortaa", Verdana, SanSerif
+			addon.menu.traditional.menu-selected-font-weight = normal
+
+			#// Second level settings
+			addon.menu.traditional.submenu-height = 40px
+			addon.menu.traditional.submenu-width = variable
+			addon.menu.traditional.submenu-font-size = 16px
+			addon.menu.traditional.submenu-font-family = "Comfortaa", Verdana, SanSerif
+			addon.menu.traditional.submenu-font-weight = normal
+			addon.menu.traditional.submenu-text-color = #2e2575
+			addon.menu.traditional.submenu-background-color = transparent
+			addon.menu.traditional.submenu-separator-width = 0px
+			addon.menu.traditional.submenu-separator-color = red
+
 		
 			[logo]
 			css.width = 30%
@@ -73,26 +107,50 @@ css.display = block
 		css.width = 15%
 		css.margin-top = 30px
 		css.overflow = visible
-		addon.menu.basic.orientation = vertical
-		addon.menu.basic.height = 40px
-		addon.menu.basic.align = center
-		addon.menu.basic.level = 2
-		addon.menu.basic.menu-font-family = "Comfortaa", Verdana, SanSerif
-		addon.menu.basic.menu-font-size = 16px
-		addon.menu.basic.menu-text-color = #2e2575
-		addon.menu.basic.menu-text-weight = normal
-		addon.menu.basic.menu-rounding = 0px
-		addon.menu.basic.menu-color = transparent
-		addon.menu.basic.item-separator-width = 0px
-		addon.menu.basic.item-separator-color = transparent
-		
-		addon.menu.basic.item-color = transparent
-		addon.menu.basic.item-text-color = #5e5794
-		addon.menu.basic.submenu-color = transparent
+		#// Top level basic settings
+			addon.menu.traditional.orientation = vertical
+			addon.menu.traditional.width = 100%
+			addon.menu.traditional.height = 40px
+			addon.menu.traditional.align = center
+			addon.menu.traditional.item-width = variable
+			addon.menu.traditional.level = 2
 
-		addon.menu.basic.subitem-color = transparent
-		addon.menu.basic.subitem-text-color = #2e2575
-		addon.menu.basic.subitem-seperator-color = #2e2575 
+			#// Top level background settings
+			addon.menu.traditional.menu-rounding = 0px
+			addon.menu.traditional.menu-opacity = 100%
+			addon.menu.traditional.menu-color = transparent 
+			addon.menu.traditional.item-separator-width = 5px
+
+			#// Top level font settings
+			addon.menu.traditional.menu-font-size = 18px
+			addon.menu.traditional.menu-font-family = "Comfortaa", Verdana, SanSerif
+			addon.menu.traditional.menu-font-weight = normal
+			addon.menu.traditional.menu-text-color = #2e2575
+
+			#// Top level hover settings
+			addon.menu.traditional.menu-hover-text-color = red
+			addon.menu.traditional.menu-hover-background-color = transparent
+			addon.menu.traditional.menu-hover-font-size = 18px
+			addon.menu.traditional.menu-hover-font-family = "Comfortaa", Verdana, SanSerif
+			addon.menu.traditional.menu-hover-font-weight = normal
+
+			#// Top level selected settings
+			addon.menu.traditional.menu-selected-text-color = black
+			addon.menu.traditional.menu-selected-background-color = transparent
+			addon.menu.traditional.menu-selected-font-size = 18px
+			addon.menu.traditional.menu-selected-font-family = "Comfortaa", Verdana, SanSerif
+			addon.menu.traditional.menu-selected-font-weight = normal
+
+			#// Second level settings
+			addon.menu.traditional.submenu-height = 40px
+			addon.menu.traditional.submenu-width = variable
+			addon.menu.traditional.submenu-font-size = 16px
+			addon.menu.traditional.submenu-font-family = "Comfortaa", Verdana, SanSerif
+			addon.menu.traditional.submenu-font-weight = normal
+			addon.menu.traditional.submenu-text-color = #2e2575
+			addon.menu.traditional.submenu-background-color = transparent
+			addon.menu.traditional.submenu-separator-width = 0px
+			addon.menu.traditional.submenu-separator-color = red 
 	
 		[content]
 		css.width = 75%
