@@ -287,3 +287,42 @@ if (++sanity > 200) { emitStd("Overflow in expandCurliesInString!"); break; }
 	logMsg(LOGDEBUG, "expandCurliesInString - expanded string is [%s]", str);
 	return (str);
 }
+
+// Create/update vars from args. 
+int jamArgs2Vars(int ix, char *args) {
+	char *tmp = (char *) calloc(1, 4096);
+	char *arg = NULL;
+	int wdNum = 1;
+	while (arg = getWordAlloc(args, wdNum++, " \t\n")) {	// eg 'a=b' or 'c = d'
+		char *n = getWordAlloc(arg, 1, "=");
+		char *v = getWordAlloc(arg, 2, "=");
+		if ((!n) || (!v)) {
+			continue;
+		}
+		strcat(tmp, n);
+		strcat(tmp, "=");
+		strcat(tmp, v);
+		strcat(tmp, " | ");
+		VAR *var = findVarStrict(n);
+		if (var) {
+			if (var->portableValue)
+				free(var->portableValue);
+			var->portableValue = strdup(v);
+		} else {
+			var = (VAR *) calloc(1, sizeof(VAR));
+			var->name = strdup(n);
+			var->type = VAR_STRING;
+			var->source = strdup("arg");
+			var->debugHighlight = 7;
+			clearVarValues(var);
+			fillVarDataTypes(var, v);
+			if (addVar(var) == -1) {
+				logMsg(LOGFATAL, "Cant create any more vars, terminating");
+				exit(1);
+			}
+		}
+	}
+	if (strlen(tmp))
+		logMsg(LOGDEBUG, "Arg nvp's [%s]", tmp);
+	free(tmp);
+}

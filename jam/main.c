@@ -353,6 +353,7 @@ int control(int startIx, char *defaultTableName) {
 			jam[ix]->args = args;
 			jam[ix]->rawData = rawData;
 			logMsg(LOGMICRO, "Command loop processing command [%s] args [%s]", cmd, args);
+			jamArgs2Vars(ix, args);		// Create/update vars from args. 
 		}
 
 		args = jam[ix]->args;
@@ -392,9 +393,9 @@ int control(int startIx, char *defaultTableName) {
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@sysjam"))) {
 //		-----------------------------------------
-			char *jamName = getWordAlloc(args, 1, " \t ");
-			char *jamAction = getWordAlloc(args, 2, " \t ");
-			char *jamOutputStream = getWordAlloc(args, 3, " \t ");
+			char *jamName = getWordAlloc(args, 1, "\t ");
+			char *jamAction = getWordAlloc(args, 2, "\t ");
+			char *jamOutputStream = getWordAlloc(args, 3, "\t ");
 
 			sysJam(jamName, jamAction, jamOutputStream);
 			free(jamName);
