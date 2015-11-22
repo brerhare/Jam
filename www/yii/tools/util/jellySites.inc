@@ -40,6 +40,7 @@ $siteList = array (
 	'timtaylor-painter-decorator-tiler.co.uk'   => '/home/timtaylor-painter-decorator-tiler.co.uk/dev/src/www/yii/timtaylor-painter-decorator-tiler.co.uk',
 	'trade.weetarget.co.uk'         => '/home/weetarget.co.uk/domains/trade.weetarget.co.uk/dev/src/www/yii/trade.weetarget.co.uk',
 	'weetarget.co.uk'               => '/home/weetarget.co.uk/dev/src/www/yii/weetarget.co.uk',
+	'wireflydesign.com'             => '/home/wireflydesign.com/dev/src/www/yii/wireflydesign.com',
 	'zoelifecoaching.co.uk'			=> '/home/zoelifecoaching.co.uk/dev/src/www/yii/zoelifecoaching.co.uk',
 
 );
