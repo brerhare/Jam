@@ -19,13 +19,13 @@ class basicad
 			switch ($opt)
 			{
 				case "picwidth":
-					$this->defaultPicWidth = str_replace("px", "", $val) . "px";
+					$this->defaultPicWidth = $val;
 					break;
 				case "picheight":
-					$this->defaultPicHeight = str_replace("px", "", $val) . "px";
+					$this->defaultPicHeight = $val;
 					break;
 				case "picspacing":
-					$this->defaultPicSpacing = str_replace("px", "", $val) . "px";
+					$this->defaultPicSpacing = $val;
 					break;
 				case "numpics":
 					$this->defaultNumPics = $val;
@@ -43,11 +43,11 @@ class basicad
 		$cnt = 0;
 		$adBlocks = JellyAdblock::model()->findAll(array('order'=>'RAND()'));
 		foreach ($adBlocks as $adBlock):
-            $content .= "<tr><td  style='padding-bottom:10px' height='" . $this->defaultPicHeight . "'>";
+            $content .= "<tr><td  style='height:auto; padding-bottom:" . $this->defaultPicSpacing . ";' >";
 			$content .= "<input type=hidden id='id-" . $cnt . "' value='" . $adBlock->id . "'>";
 			if (trim($adBlock->url) != "")
 				$content .= "<a id='url-" . $cnt . "' href='" . $adBlock->url . "' target='_blank'>";
-            $content .= "<img id='img-" . $cnt . "' src='" . Yii::app()->baseUrl . $this->_imageDir . $adBlock->image . "' style='width:" . $this->defaultPicWidth . "; height:" . $this->defaultPicHeight . "; border:0px solid black' alt=''>";
+            $content .= "<img id='img-" . $cnt . "' src='" . Yii::app()->baseUrl . $this->_imageDir . $adBlock->image . "' style='width:" . $this->defaultPicWidth . "; border:0px solid black' alt=''>";
 			if (trim($adBlock->url) != "")
 				$content .= "</a>";
             $content .= "</td></tr>";
