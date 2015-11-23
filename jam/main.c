@@ -71,7 +71,20 @@ int main(int argc, char *argv[]) {
 	char *jamName = NULL;
 
 	logMsg(LOGINFO, "--------------------------------------------------------------------------");
-	logMsg(LOGINFO, "Starting");
+	logMsg(LOGINFO, "Starting. argc is %d", argc);
+
+	if (argc == 3) {		// manual eg: /path/to/jam /path/to/documentroot /path/to/jamfile
+		setenv("REQUEST_METHOD", "GET", 1);
+		char *tmp = (char *) calloc(1, 16384);
+		//for (int i = 1; i < argc; i++) {
+			//strcat(tmp, argv[i]);
+			//strcat(tmp, " ");
+		//}
+		setenv("DOCUMENT_ROOT", argv[1], 1);
+		sprintf(tmp, "jam=jam/run/%s", argv[2]);
+		setenv("QUERY_STRING", tmp, 1);
+		free(tmp);
+	}
 
 	// Output headers to prevent caching
 	emitHeader("Cache-Control: no-store, must-revalidate, max-age=0");

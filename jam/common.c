@@ -237,6 +237,7 @@ void jamDump(int which) {
 			if (var[i]->debugHighlight == 4) emitStd(" style='color:#a8c968;'");
 			if (var[i]->debugHighlight == 5) emitStd(" style='color:#e28c86;'");
 			if (var[i]->debugHighlight == 6) emitStd(" style='color:cyan;'");
+			if (var[i]->debugHighlight == 7) emitStd(" style='color:white;'");
 			emitStd(">");
 
 			*tmp = 0;
@@ -256,6 +257,7 @@ void jamDump(int which) {
 		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:#a8c968;'>variable </span>");
 		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:#e28c86;'>mysql </span>");
 		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:cyan;'>list </span>");
+		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:white;'>arg </span>");
 	}
 	emitStd("<br>");
 	emitStd("</div>");

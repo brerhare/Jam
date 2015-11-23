@@ -74,12 +74,14 @@ char *curlies2JamArray(char *jamPos) {
 				break;
 			}
 		} else {
-			depth++;
+			//depth++;
 			inCurlyPos = (eCurly +strlen(endJam));
 		}
 	}
-	if (!endCurly)
-		die("Unmatched jam token, an open must have a close");
+	if (!endCurly) {
+		logMsg(LOGERROR, "Unmatched jam token. An open must have a close");
+		return(NULL);
+	}
 
 	int wdLen = (endCurly - startCurly - strlen(startJam));
 	char *wd = (char *) malloc(wdLen + 1);
@@ -136,7 +138,7 @@ char *curlies2JamArray(char *jamPos) {
 	if ( (!strcmp(jam[jamIx]->command, "@each")) || (!strcmp(jam[jamIx]->command, "@action")) ) {
 		for (int i = 0; i < MAX_JAM; i++) {
 			if (tableStack[i] == NULL) {
-				char *p = (char *) calloc(1, 4096);
+				char *p = (char *) calloc(10, 4096);
 				getWord(p, jam[jamIx]->args, 1, space);
 				tableStack[i] = p;
 //emitStd("STACK: [%s]\n", tableStack[i]);
@@ -150,8 +152,10 @@ char *curlies2JamArray(char *jamPos) {
 			if ((tableStack[i] == NULL) && (i > 0)) {
 				i--;
 //emitStd("POP: [%s]\n", tableStack[i]);
-				if (!tableStack[i])
-					die("Invalid @end tag found. I dont seem to find the tag that started this one");
+				if (!tableStack[i]) {
+					logMsg(LOGERROR, "Invalid @end tag found. I dont seem to find the tag that started this one");
+					return(NULL);
+				}
 				jam[jamIx]->args = strdup(tableStack[i]);
 				free(tableStack[i]);
 				tableStack[i] = NULL;
@@ -188,17 +192,21 @@ TAGINFO *getTagInfo(char *text, char *tagName) {
 					break;
 				}
 			} else {
-				depth++;
+				//depth++;
 				inCurlyPos = (eCurly +strlen(endJam));
 			}
 		}
-		if (!endCurly)
-			die("Unmatched jam token, an open must have a close");
+		if (!endCurly) {
+			logMsg(LOGERROR, "Unmatched jam token, an open must have a close");
+			return(NULL);
+		}
 
 		char *startContent = (tag + strlen(startJam));
 		char *endContent = (endCurly - 1);
-		if (endContent < startContent)
-			die("getTagContent: end tag before start tag");
+		if (endContent < startContent) {
+			logMsg(LOGERROR, "getTagContent: end tag before start tag");
+			return(NULL);
+		}
 		content = (char *) calloc(1, (endContent - startContent + 2));
 		memcpy(content, startContent, (endContent - startContent + 1));
 		currTag = strTrim(getWordAlloc(content, 1, " \t\n"));
@@ -254,12 +262,14 @@ if (++sanity > 200) { emitStd("Overflow in expandCurliesInString!"); break; }
 					break;
 				}
 			} else {
-				depth++;
+				//depth++;
 				inCurlyPos = (eCurly +strlen(endJam));
 			}
 		}
-		if (!endCurly)
-			die("Unmatched jam token, an open must have a close");
+		if (!endCurly) {
+			logMsg(LOGERROR, "Unmatched jam token, an open must have a close");
+			return(NULL);
+		}
 
 		// Extract the variable name
 		int wdLen = (endCurly - startCurly - strlen(startJam));

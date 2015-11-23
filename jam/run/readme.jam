@@ -211,6 +211,11 @@ system.now 		@@TODO
 
 <h3>Internal notes</h3>
 
+Running from commandline
+	- /path/to/jam documentroot path/to/jamfile
+	- ../cgi/jam ~/dev/src/www/angular/stock befriender
+
+
 @actions. All variables created as the result of actions are sent as oob to the browser.
 
 Later on the jam will need to differentiate the commandline and client-server mode to decide which oob type to use
