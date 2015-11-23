@@ -81,6 +81,20 @@ class SiteController extends Controller
     /**
      * Displays the DIRECT login page
      */
+// @@TODO: HARDCODED FOR Wirefly ---------- REMOVE
+    public function actionWireflyDirect()
+    {
+        Yii::app()->session['uid'] = 18;
+        $identity = new UserIdentity('info@wireflydesign.com', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
 // @@TODO: HARDCODED FOR Being Business ---------- REMOVE
     public function actionBeingDirect()
     {
