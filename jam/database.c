@@ -256,7 +256,7 @@ MYSQL_RES *doSqlSelect(int ix, char *defaultTableName, char **givenTableName, in
     int skipCode = 0;
 
     // Get the given table name that we want to get
-    char *ta = args;
+    char *ta = strTrim(args);
     char *tg = *givenTableName;
     while ((*ta) && (*ta != ' ') && (*ta != '.'))	// Find ' ' or '.' which terminates the tablename;
         *tg++ = *ta++;

@@ -276,6 +276,7 @@ if (++sanity > 100) { emitStd("Overflow in main!"); break; }
 			tagIx++;
 		}
 	}
+logMsg(LOGDEBUG, "=====================> [%s] <========================", jamBuf);
 
 	// Create Jam array from jamBuf
 	logMsg(LOGINFO, "Creating jam array");
@@ -575,7 +576,9 @@ int control(int startIx, char *defaultTableName) {
 				logMsg(LOGDEBUG, "Its a db, not a list. do the select()");
 				char *givenTableName = (char *) calloc(1, 4096);
 				MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 999999);
+				logMsg(LOGMICRO, "Create the result set");
 				SQL_RESULT *rp = sqlCreateResult(givenTableName, res);
+				logMsg(LOGDEBUG, "Get each row from the result set");
 				while (sqlGetRow2Vars(rp) != SQL_EOF) {
 					emitStd(jam[ix]->trailer);
 					logMsg(LOGMICRO, "@each (db table %s) starting recurse", givenTableName);
