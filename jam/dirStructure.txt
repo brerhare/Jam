@@ -1,0 +1,32 @@
+/jam	/cgi
+			runjam.cgi
+			runjam.conf								path to jam executable (eg /home/dev/src/jam/cgi/jam)
+
+		/css										user css
+			*.css
+
+		/run
+			*.jam
+			template								user templates (crud.jam, crudInline.jam)
+			include									user includes (common jam, etc)
+				*.jam
+			/sys -> ../sys/run						autocomplete.jam
+
+		/sys -> /home/dev/src/jam/sys
+			/run									/jam/run/sys is a softlink to here
+			/css									empty - delete
+			/extern
+				/editablegrid
+				/fa
+				/uikit
+				/addon
+					/menu
+						/smartmenus
+			/html
+				hdr, header, ftr, footer.html
+			/js
+				iframeResizer.contentWindow.min.js
+				util.js
+
+		jelly2jam.php -> /home/dev/src/jam/jelly2jam.php
+
