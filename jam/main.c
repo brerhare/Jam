@@ -81,7 +81,7 @@ int main(int argc, char *argv[]) {
 			//strcat(tmp, " ");
 		//}
 		setenv("DOCUMENT_ROOT", argv[1], 1);
-		sprintf(tmp, "jam=jam/run/%s", argv[2]);
+		sprintf(tmp, "jam=jam/%s", argv[2]);
 		setenv("QUERY_STRING", tmp, 1);
 		free(tmp);
 	}
