@@ -53,7 +53,7 @@ int processJam(char *jamName, char *jamEntrypoint, int sysJamFlag);
 int control(int startIx, char *tableName);
 
 #define MAX_TEMPLATES 10000
-#define JAMSYSPATH "/jam/sys/jam/"
+#define SYSJAMPATH "/jam/sys/run/"
 
 int isASCII(const char *data, size_t size)
 {
@@ -153,7 +153,7 @@ int sysJam(char *jamName, char *jEntrypoint, char *jamOutputStream) {
 		jamEntrypoint = strdup(jEntrypoint);	
 
 	char *fullJamName = (char *) calloc(1, 4096);
-	sprintf(fullJamName, JAMSYSPATH);
+	sprintf(fullJamName, SYSJAMPATH);
 	strcat(fullJamName, jamName);
 	jamIx = 0;
 
