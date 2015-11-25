@@ -276,6 +276,7 @@ if (++sanity > 100) { emitStd("Overflow in main!"); break; }
 			tagIx++;
 		}
 	}
+//logMsg(LOGDEBUG, "=====================> [%s] <========================", jamBuf);
 
 	// Create Jam array from jamBuf
 	logMsg(LOGINFO, "Creating jam array");
@@ -351,6 +352,7 @@ if (++sanity > 100) { emitStd("Overflow in main!"); break; }
 }
 
 int control(int startIx, char *defaultTableName) {
+//	emitStd("...ENTERING %d...", startIx);
 	int ix = startIx;
 	char *tmp = (char *) calloc(1, 4096);
 	while (jam[ix]) {
@@ -575,7 +577,9 @@ int control(int startIx, char *defaultTableName) {
 				logMsg(LOGDEBUG, "Its a db, not a list. do the select()");
 				char *givenTableName = (char *) calloc(1, 4096);
 				MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 999999);
+				logMsg(LOGMICRO, "Create the result set");
 				SQL_RESULT *rp = sqlCreateResult(givenTableName, res);
+				logMsg(LOGDEBUG, "Get each row from the result set");
 				while (sqlGetRow2Vars(rp) != SQL_EOF) {
 					emitStd(jam[ix]->trailer);
 					logMsg(LOGMICRO, "@each (db table %s) starting recurse", givenTableName);
@@ -653,7 +657,7 @@ int control(int startIx, char *defaultTableName) {
 		} else if (!(strcmp(cmd, "@end"))) {
 //		------------------------------------
 			// Return from an each-end or action-end loop
-//emitStd("RETURNING\n");
+//emitStd("...RETURNING %d...", ix);
 			free(tmp);
 			return(0);
 //		----------------------------------------
