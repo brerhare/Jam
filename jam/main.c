@@ -276,7 +276,7 @@ if (++sanity > 100) { emitStd("Overflow in main!"); break; }
 			tagIx++;
 		}
 	}
-logMsg(LOGDEBUG, "=====================> [%s] <========================", jamBuf);
+//logMsg(LOGDEBUG, "=====================> [%s] <========================", jamBuf);
 
 	// Create Jam array from jamBuf
 	logMsg(LOGINFO, "Creating jam array");
@@ -352,6 +352,7 @@ logMsg(LOGDEBUG, "=====================> [%s] <========================", jamBuf
 }
 
 int control(int startIx, char *defaultTableName) {
+//	emitStd("...ENTERING %d...", startIx);
 	int ix = startIx;
 	char *tmp = (char *) calloc(1, 4096);
 	while (jam[ix]) {
@@ -656,7 +657,7 @@ int control(int startIx, char *defaultTableName) {
 		} else if (!(strcmp(cmd, "@end"))) {
 //		------------------------------------
 			// Return from an each-end or action-end loop
-//emitStd("RETURNING\n");
+//emitStd("...RETURNING %d...", ix);
 			free(tmp);
 			return(0);
 //		----------------------------------------
