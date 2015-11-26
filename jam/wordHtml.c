@@ -217,7 +217,7 @@ filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSe
 		if ((inputType == INPUT) || (inputType == INP))
 			emitStd("		<input type='%s' name='%s' id='SEQ_%d_%s' value='%s' placeholder='%s' class='uk-form-width-%s' onChange='fn(this, event);' %s>\n", fieldType, fieldVar, randId, fieldVar, fieldVarValue, fieldPlaceholder, fieldSize, disabledStr);
 		else		// 'inp' only
-			emitStd("		<input type='%s' id='SEQ_%d_%s' value='%s' class='uk-form-width-%s' onChange='fn(this, event)' %s>\n", fieldType, randId, fieldVar, fieldVarValue, fieldSize, disabledStr);
+			emitStd("		<input type='%s' name='%s' id='SEQ_%d_%s' value='%s' class='uk-form-width-%s' onChange='fn(this, event)' %s>\n", fieldType, fieldVar, randId, fieldVar, fieldVarValue, fieldSize, disabledStr);
 	}
 	if (inputType == INPUT) {
 		emitStd("	</div>\n");
