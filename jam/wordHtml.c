@@ -105,7 +105,7 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 		emitJs(	"// Handler for autocomplete (%d) \n", randId);
 		emitJs(	"function SEQ_%d_SEARCH_DIV_AJAX(release) { \n", randId);
 		emitJs(	"	$.ajax({ \n");
-		emitJs(	"		url : '/run/sys/autocomplete:filterAutocomplete', type: 'POST', data : '_filtervalue='+document.getElementById('SEQ_%d_SEARCH_VALUE').value+'&_filterfield='+document.getElementById('SEQ_%d_SEARCH_FIELDNAME').value+'&_dbname='+document.getElementById('_dbname').value, \n", randId, randId);
+		emitJs(	"		url : '/run/sys/run/autocomplete:filterAutocomplete', type: 'POST', data : '_filtervalue='+document.getElementById('SEQ_%d_SEARCH_VALUE').value+'&_filterfield='+document.getElementById('SEQ_%d_SEARCH_FIELDNAME').value+'&_dbname='+document.getElementById('_dbname').value, \n", randId, randId);
 		emitJs(	"		success: function(data, textStatus, jqXHR) { \n");
 		emitJs(	"			var dat = []; \n");
 		emitJs(	"			dat = JSON.parse(data); \n");
