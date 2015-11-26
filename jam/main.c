@@ -53,7 +53,7 @@ int processJam(char *jamName, char *jamEntrypoint, int sysJamFlag);
 int control(int startIx, char *tableName);
 
 #define MAX_TEMPLATES 10000
-#define JAMSYSPATH "/jam/sys/jam/"
+#define SYSJAMPATH "/jam/sys/run/"
 
 int isASCII(const char *data, size_t size)
 {
@@ -81,7 +81,7 @@ int main(int argc, char *argv[]) {
 			//strcat(tmp, " ");
 		//}
 		setenv("DOCUMENT_ROOT", argv[1], 1);
-		sprintf(tmp, "jam=jam/run/%s", argv[2]);
+		sprintf(tmp, "jam=jam/%s", argv[2]);
 		setenv("QUERY_STRING", tmp, 1);
 		free(tmp);
 	}
@@ -153,7 +153,7 @@ int sysJam(char *jamName, char *jEntrypoint, char *jamOutputStream) {
 		jamEntrypoint = strdup(jEntrypoint);	
 
 	char *fullJamName = (char *) calloc(1, 4096);
-	sprintf(fullJamName, JAMSYSPATH);
+	sprintf(fullJamName, SYSJAMPATH);
 	strcat(fullJamName, jamName);
 	jamIx = 0;
 

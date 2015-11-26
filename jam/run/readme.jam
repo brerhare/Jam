@@ -163,6 +163,8 @@ system.now 		@@TODO
 <h4>Misc</h4>
 
 {@email admin@dglink.co.uk concertgoer@horrormail.com "Your tickets" Thank you order.name for buying numberof tickets}
+{@email from to subject action:runActionNameForContent}
+
 {@type /path/file}
 {@sysjam jamscript-in-sys-jam-area optional-action}
 

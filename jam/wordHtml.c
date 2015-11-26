@@ -147,7 +147,7 @@ filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSe
 		emitStd("				</li> \n");
 		emitStd("			{{/items}} \n");
 		emitStd("		</ul> \n");
-		emitStd("	</script \n");
+		emitStd("	</script> \n");
 		emitStd("</div> \n");
 	}
 	else if (!strcasecmp(fieldType, "dropdown")) {
