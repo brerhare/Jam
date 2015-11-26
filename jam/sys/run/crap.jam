@@ -1,0 +1,7 @@
+----SYSJAM-CALL-TO-JAM-NOT-ACTION----<br>
+
+{{@action crapaction}}
+	----SYSJAM-CALL-TO-ACTION-NOT-JAM----<br>
+{{@end}}
+
+{{@include /jam/sys/html/ftr.html}}
