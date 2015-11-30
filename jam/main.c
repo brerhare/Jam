@@ -275,8 +275,58 @@ if (++sanity > 100) { emitStd("Overflow in main!"); break; }
 			free(searchFor);
 			tagIx++;
 		}
+
+
+	
+		// Now strip out the templates and everything inside them
+logMsg(LOGDEBUG, "BUF1 = =====================> [%s] <========================", jamBuf);
+		int s1 = 0;
+		while (1) {
+			if (s1++ > 200) {
+				logMsg(LOGDEBUG, "Overflow in stripping templates");
+				break;
+			}
+			char *startCurly = strstr(jamBuf, "{{@template");
+			if (!startCurly)
+				break;
+			char *endCurly = NULL;
+
+			// Find the matching endCurly, skipping over any embedded curlies @@TODO duplicated in getTagInfo() and one other
+			int depth = 1;	// ie the start curly we just found
+			char *inCurlyPos = (startCurly + strlen("{{@template"));
+			int sanity = 0;
+			while (depth > 0) {
+				if (++sanity > 100) { emitStd("Overflow in stripping out @template's"); break; }
+				char *sCurly = strstr(inCurlyPos, startJam);
+				char *eCurly = strstr(inCurlyPos, endJam);
+				if ((!sCurly) || (eCurly < sCurly)) {	// ie we found our match
+					if (--depth == 0) {
+						endCurly = eCurly;
+						break;
+					}
+				} else {
+					//depth++;
+					inCurlyPos = (eCurly +strlen(endJam));
+				}
+			}
+			if (!endCurly) {
+				logMsg(LOGERROR, "Unmatched jam token. An open must have a close");
+				break;
+			}
+			// Snip
+			logMsg(LOGDEBUG, "orig=%d 1st=%d 2nd=%d", (int) strlen(jamBuf), (startCurly - jamBuf), (endCurly));
+			char *newBuf = (char *) calloc(1, strlen(jamBuf));
+			memcpy(newBuf, jamBuf, (startCurly - jamBuf));
+			strcat(newBuf, (endCurly + strlen(endJam)));
+			free(jamBuf);
+			jamBuf = newBuf;
+
+
+		}
 	}
-//logMsg(LOGDEBUG, "=====================> [%s] <========================", jamBuf);
+logMsg(LOGDEBUG, "BUF2 = =====================> [%s] <========================", jamBuf);
+
+
 
 	// Create Jam array from jamBuf
 	logMsg(LOGINFO, "Creating jam array");
