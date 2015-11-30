@@ -224,7 +224,7 @@ html.raw = <style>.da-slider{z-index:0}</style>
 			css.background-color = white
 			#jam.embed = /run/contactForm.jam
 			jam.iframe-height = 358px
-			jam.iframe = /jam/run/contactForm
+			jam.iframe = /run/contactForm
 
 ####footer####################################
 
@@ -268,7 +268,7 @@ css.width = 100%
 		css.width = 368px
 		css.height = 50px
 		#jam.embed = /run/contactForm.jam
-		jam.iframe = /jam/run/signUp
+		jam.iframe = /run/signUp
 				
 	
 		[footer-content]
@@ -433,7 +433,7 @@ condition = @DEVICEWIDTH<551
 		css.width = 368px
 		css.height = 50px
 		#jam.embed = /run/contactForm.jam
-		jam.iframe = /jam/run/signUp
+		jam.iframe = /run/signUp
 		
 	[mob-header-img]
 	css.width = 100%
@@ -472,7 +472,7 @@ condition = @DEVICEWIDTH<551
 		css.background-color = white
 		#jam.embed = /run/contactForm.jam
 		jam.iframe-height = 342px
-		jam.iframe = /jam/run/contactForm
+		jam.iframe = /run/contactForm
 
 			[mob-social]
 			child = mob-facebook, mob-phone

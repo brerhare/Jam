@@ -1,0 +1,22 @@
+{{@include /jam/sys/html/header.html}}
+
+{{@database jacquiesbeauty_co_uk}}
+
+{{@template MENU
+    <ul id="main-menu" class="sm sm-blue">
+    {{@each content_block filter parent_id = 0, active = 1}}
+        <li> <a href="#"> {{title}} </a>
+            <ul>
+        {{@each content_block filter parent_id = id, active = 1}}
+                <li> <a href="#"> {{title}} </a> </li>
+        {{@end}}
+            </ul>
+        </li>
+    {{@end}}
+    </ul>
+}}
+
+<!-- Call the addon -->
+{{@include /jam/run/sys/addon/menu/smartmenus/index.html}}
+
+{{@include /jam/sys/html/footer.html}}
