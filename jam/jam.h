@@ -4,6 +4,7 @@
 char *readJam(char *fname);
 char *curlies2JamArray(char *jamPos);
 char *expandCurliesInString(char *str, char *defaultTableName);
+int jamArgs2Vars(int ix, char *args);
 
 typedef struct {
 	char *startCurlyPos;

@@ -22,9 +22,9 @@ char *emitHeaderPos = emitHeaderBuffer;
 int emitHeaderRemaining = MAX_EMITHEADER_LEN;
 
 #define MAX_EMITDATA_LEN 40960000
-char *emitDataBuffer = (char *) calloc(1, MAX_EMITDATA_LEN);
-char *emitDataPos = emitDataBuffer;
-int emitDataRemaining = MAX_EMITDATA_LEN;
+char *emitStdBuffer = (char *) calloc(1, MAX_EMITDATA_LEN);
+char *emitStdPos = emitStdBuffer;
+int emitStdRemaining = MAX_EMITDATA_LEN;
 
 #define MAX_EMITJS_LEN 40960000
 char *emitJsBuffer = (char *) calloc(1, MAX_EMITJS_LEN);
@@ -38,8 +38,9 @@ char *emitScratchPos = emitScratchBuffer;
 int emitScratchRemaining = MAX_EMITSCRATCH_LEN;
 
 FILE *emitStream = stdout;
+char *outputStream = NULL;	// sysJam uses this to override usual output if non null. "js" is used so far to write scripts
 
-int jamDataRequested = 0;		// Some ajax calls will ask for this
+int oobDataRequested = 0;		// Some ajax calls will ask for this
 
 int urlEncodeRequired = 0;
 
@@ -111,7 +112,7 @@ void fillVarDataTypes(VAR *variable, char *value) {
 
 void updateVar(char *qualifiedName, char *value, int type) {
 	if (!qualifiedName)
-		emitData("NULL 'qualifiedName' passed to updateVar\n");
+		emitStd("NULL 'qualifiedName' passed to updateVar\n");
 	char *safeValue = NULL;
 	if (value)
 		safeValue = strdup(value);
@@ -122,7 +123,7 @@ void updateVar(char *qualifiedName, char *value, int type) {
 		newVar->type = type;
 		clearVarValues(newVar);
 		fillVarDataTypes(newVar, safeValue);
-//emitData("NON-TABLE-> NAME=%s TYPE=%d AVALUE=%s NVALUE=%ld DVALUE=%2.f\n", newVar->name, newVar->type, newVar->stringValue, newVar->numberValue, newVar->decimal2Value);
+//emitStd("NON-TABLE-> NAME=%s TYPE=%d AVALUE=%s NVALUE=%ld DVALUE=%2.f\n", newVar->name, newVar->type, newVar->stringValue, newVar->numberValue, newVar->decimal2Value);
 		for (int i = 0; i < MAX_VAR; i++) {
 			if (!var[i]) {
 				var[i] = newVar;
@@ -214,50 +215,52 @@ void die(const char *errorString) {
 
 void jamDump(int which) {
 	char *tmp = (char *) calloc(1, 4096);
-	emitData("<br><br><div style='font-size:11px;color:#ffffff;background-color:#1b2426'>");
+	emitStd("<br><br><div style='font-size:11px;color:#ffffff;background-color:#1b2426'>");
 	if ((which == 2) || (which == 3)) {
 		for (int i = 0; i < MAX_JAM; i++) {
 			if (jam[i] == NULL)
 				break;
-			emitData("%02d JAMDUMP %s : %s<br>", i, jam[i]->command, jam[i]->args);
+			emitStd("%02d JAMDUMP %s : %s<br>", i, jam[i]->command, jam[i]->args);
 		}
 	}
 	if (which == 3)
-		emitData("<hr>");
+		emitStd("<hr>");
 	if ((which == 1) || (which == 3)) {
 		for (int i = 0; i < MAX_VAR; i++) {
 			if (var[i] == NULL)
 				break;
 
-			emitData("<span");
-			if (var[i]->debugHighlight == 1) emitData(" style='color:#decde3'");
-			if (var[i]->debugHighlight == 2) emitData(" style='color:yellow;'");
-			if (var[i]->debugHighlight == 3) emitData(" style='color:orange;'");
-			if (var[i]->debugHighlight == 4) emitData(" style='color:#a8c968;'");
-			if (var[i]->debugHighlight == 5) emitData(" style='color:#e28c86;'");
-			if (var[i]->debugHighlight == 6) emitData(" style='color:cyan;'");
-			emitData(">");
+			emitStd("<span");
+			if (var[i]->debugHighlight == 1) emitStd(" style='color:#decde3'");
+			if (var[i]->debugHighlight == 2) emitStd(" style='color:yellow;'");
+			if (var[i]->debugHighlight == 3) emitStd(" style='color:orange;'");
+			if (var[i]->debugHighlight == 4) emitStd(" style='color:#a8c968;'");
+			if (var[i]->debugHighlight == 5) emitStd(" style='color:#e28c86;'");
+			if (var[i]->debugHighlight == 6) emitStd(" style='color:cyan;'");
+			if (var[i]->debugHighlight == 7) emitStd(" style='color:white;'");
+			emitStd(">");
 
 			*tmp = 0;
 			if (var[i]->source)
 				sprintf(tmp, " : source %s", var[i]->source);
 			if (var[i]->type == VAR_STRING)
-				emitData("%02d VARDUMP %s : VAR_STRING %s %s<br>", i, var[i]->name, var[i]->stringValue, tmp);
+				emitStd("%02d VARDUMP %s : VAR_STRING %s %s<br>", i, var[i]->name, var[i]->stringValue, tmp);
 			if (var[i]->type == VAR_NUMBER)
-				emitData("%02d VARDUMP %s : VAR_NUMBER %ld %s<br>", i, var[i]->name, var[i]->numberValue, tmp);
+				emitStd("%02d VARDUMP %s : VAR_NUMBER %ld %s<br>", i, var[i]->name, var[i]->numberValue, tmp);
 			if (var[i]->type == VAR_DECIMAL2)
-				emitData("%02d VARDUMP %s : VAR_DECIMAL2 %.2f %s<br>", i, var[i]->name, var[i]->decimal2Value, tmp);
-			emitData("</span>");
+				emitStd("%02d VARDUMP %s : VAR_DECIMAL2 %.2f %s<br>", i, var[i]->name, var[i]->decimal2Value, tmp);
+			emitStd("</span>");
 		}
-		emitData("<span style='margin:3px; padding:2px; color:#000; background-color:#decde3;'>prefill </span>");
-		emitData("<span style='margin:3px; padding:2px; color:#000; background-color:yellow;'>count </span>");
-		emitData("<span style='margin:3px; padding:2px; color:#000; background-color:orange;'>sum </span>");
-		emitData("<span style='margin:3px; padding:2px; color:#000; background-color:#a8c968;'>variable </span>");
-		emitData("<span style='margin:3px; padding:2px; color:#000; background-color:#e28c86;'>mysql </span>");
-		emitData("<span style='margin:3px; padding:2px; color:#000; background-color:cyan;'>list </span>");
+		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:#decde3;'>prefill </span>");
+		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:yellow;'>count </span>");
+		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:orange;'>sum </span>");
+		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:#a8c968;'>variable </span>");
+		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:#e28c86;'>mysql </span>");
+		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:cyan;'>list </span>");
+		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:white;'>arg </span>");
 	}
-	emitData("<br>");
-	emitData("</div>");
+	emitStd("<br>");
+	emitStd("</div>");
 	free(tmp);
 }
 
@@ -276,14 +279,14 @@ int emitHeader(char *str, ...) {
 	va_end(ap);
 }
 
-int emitData(char *str, ...) {
+int emitStd(char *str, ...) {
 	va_list ap;
 	va_start(ap, str);
 // @@BUG Overflow needs checked. See http://stackoverflow.com/questions/7215921/possible-buffer-overflow-vulnerability-for-va-list-in-c and http://linux.die.net/man/3/vsnprintf for ideas
-	unsigned long len = vsnprintf(emitDataPos, emitDataRemaining, str, ap);
-	emitDataPos += len;
-	*emitDataPos = '\0';
-	emitDataRemaining -= len;
+	unsigned long len = vsnprintf(emitStdPos, emitStdRemaining, str, ap);
+	emitStdPos += len;
+	*emitStdPos = '\0';
+	emitStdRemaining -= len;
 	va_end(ap);
 }
 
@@ -307,35 +310,40 @@ int endHeader() {
 //logMsg(LOGDEBUG, "ENDHEADER=[%s]", emitHeaderBuffer);
 }
 
-int endData(int urlEncodeRequired) {
-	char *p = emitDataBuffer;
+int endStd(int urlEncodeRequired) {
+	char *p = emitStdBuffer;
 	char *encodedData = NULL;
 	if (urlEncodeRequired) {
-		encodedData = urlEncode(emitDataBuffer);
+		encodedData = urlEncode(emitStdBuffer);
 		p = encodedData;
 	}
 	while (*p)
 		putchar(*p++);
 	if (encodedData)
 		free(encodedData);
-//logMsg(LOGMICRO, "ENDDATA=[%s]", emitDataBuffer);
+logMsg(LOGMICRO, "ENDDATA=[%s]", emitStdBuffer);
 }
 
 int endJs(int urlEncodeRequired) {
-	char *p = emitJsBuffer;
-	char *encodedJs = NULL;
-	if (urlEncodeRequired) {
-		encodedJs = urlEncode(emitJsBuffer);
-		p = encodedJs;
+//return(0);
+	if (strlen(emitJsBuffer)) {
+		char *p = emitJsBuffer;
+		char *encodedJs = NULL;
+		if (urlEncodeRequired) {
+			encodedJs = urlEncode(emitJsBuffer);
+			p = encodedJs;
+		}
+	// @@KIM <script> tag
+		emitStd("\n\n<script id='endJs'>\n");
+		emitStd(p);
+		logMsg(LOGDEBUG, "endJs generated <script> tags enclosing : [%s]", p);
+	// @@KIM <script> tag
+		emitStd("</script>\n");
+		if (encodedJs)
+			free(encodedJs);
+	} else {
+		logMsg(LOGDEBUG, "endJs had nothing to output");
 	}
-	emitData("\n\n<script type='text/javascript' id='runscript'>\n");
-	//emitData("alert('runnn');");
-	emitData(p);
-	//emitData("alert('rannn');");
-	emitData("</script>\n");
-	if (encodedJs)
-		free(encodedJs);
-logMsg(LOGMICRO, "ENDJS=[%s]", emitJsBuffer);
 }
 
 char *urlEncode(char *str) {		// needs freeing
@@ -346,7 +354,7 @@ return p;
 	if (!curl)
 		logMsg(LOGERROR, "Cant easy_init curl! Wont even try to urlencode");
 	else
-		encodedData = curl_easy_escape(curl, emitDataBuffer, 0);
+		encodedData = curl_easy_escape(curl, emitStdBuffer, 0);
 	if (!encodedData) {
 		logMsg(LOGERROR, "Cant easy_escape curl! Handing back original unencoded string");
 		encodedData = strdup(str);
@@ -398,7 +406,7 @@ char *calculate(char *str) {
 	sprintf(commandStr, "echo 'scale=%d; %s' | bc", scale, str);
 	fp = popen(commandStr, "r");
 	if (fp == NULL) {
-		emitData("calculator failed (1)\n");
+		emitStd("calculator failed (1)\n");
 	} else {
 		if (fgets(result, 4096, fp) != NULL) {
 			char *p = strchr(result, '\n');
@@ -407,7 +415,7 @@ char *calculate(char *str) {
 		}
 		pclose(fp);
 	}
-//emitData("\n *** [%s][%s] *** \n", str, result);
+//emitStd("\n *** [%s][%s] *** \n", str, result);
 	free(commandStr);
 	return result;
 }
@@ -425,24 +433,24 @@ int oobJamData() {
 //	}
 	int first = 1;
 	logMsg(LOGDEBUG, "Emitting oob jamData");
-	emitData("{oobData}");
-	emitData("[");
+	emitStd("{oobData}");
+	emitStd("[");
 	for (int i = 0; i < MAX_VAR; i++) {
 		if (var[i] == NULL)
 			break;
 		if (first)
 			first = 0;
 		else
-			emitData(", ");
+			emitStd(", ");
 
 		char *nameJSON = escapeJsonChars(var[i]->name);
 		char *valueJSON = escapeJsonChars(var[i]->portableValue);
 		// Avoid single quotes - the formal JSON spec doesnt allow them
-		emitData("{\"name\":\"%s\", \"value\":\"%s\"}", nameJSON,  valueJSON);
+		emitStd("{\"name\":\"%s\", \"value\":\"%s\"}", nameJSON,  valueJSON);
 		free(nameJSON);
 		free(valueJSON);
 	}
-	emitData("]");
+	emitStd("]");
 //	fclose(fp);
 	logMsg(LOGDEBUG, "Finished emitting oob jamData");
 	//fflush(stdout);

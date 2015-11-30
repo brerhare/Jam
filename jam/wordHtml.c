@@ -26,6 +26,9 @@ int breakpointAutocompleteId[MAX_BREAKPOINTS];
 //-----------------------------------------------------------------
 // HTML <tag> generation from {{curly}}
 
+int wowdHtmlDropdown(int ix, char *defaultTableName, int inputType) {
+}
+
 int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
@@ -79,22 +82,30 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 			strcpy(fieldSearchValue, variableSearch->portableValue);
 	}
 
+	if (!strcasecmp(fieldType, "dropdown")) {
+		if ((!strchr(fieldSize, '.')) && (defaultTableName))
+			sprintf(fieldSize, "%s.%s", defaultTableName, fieldSize);
+		variableSearch = findVarStrict(fieldSize);
+		if (variableSearch)
+			strcpy(fieldSearchValue, variableSearch->portableValue);
+	}
+
 	getWord(fieldPrompt, args, 5, " \t");
 	getWord(fieldPlaceholder, args, 6, " \t");
 
 	if (inputType == INPUT) {
-		emitData("<div class='uk-form-row'>\n");
-		if (!strcasecmp(fieldType, "filter"))
-			emitData("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPlaceholder);
+		emitStd("<div class='uk-form-row'>\n");
+		if ((!strcasecmp(fieldType, "filter")) || (!strcasecmp(fieldType, "dropdown")))
+			emitStd("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPlaceholder);
 		else
-			emitData("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPrompt);
-		emitData("		<div class='uk-form-controls'>\n");
+			emitStd("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPrompt);
+		emitStd("		<div class='uk-form-controls'>\n");
 	}
 	if (!strcasecmp(fieldType, "filter")) {
 		emitJs(	"// Handler for autocomplete (%d) \n", randId);
 		emitJs(	"function SEQ_%d_SEARCH_DIV_AJAX(release) { \n", randId);
 		emitJs(	"	$.ajax({ \n");
-		emitJs(	"		url : '/run/sys/autocomplete:filterAutocomplete', type: 'POST', data : '_filtervalue='+document.getElementById('SEQ_%d_SEARCH_VALUE').value+'&_filterfield='+document.getElementById('SEQ_%d_SEARCH_FIELDNAME').value+'&_dbname='+document.getElementById('_dbname').value, \n", randId, randId);
+		emitJs(	"		url : '/run/sys/run/autocomplete:filterAutocomplete', type: 'POST', data : '_filtervalue='+document.getElementById('SEQ_%d_SEARCH_VALUE').value+'&_filterfield='+document.getElementById('SEQ_%d_SEARCH_FIELDNAME').value+'&_dbname='+document.getElementById('_dbname').value, \n", randId, randId);
 		emitJs(	"		success: function(data, textStatus, jqXHR) { \n");
 		emitJs(	"			var dat = []; \n");
 		emitJs(	"			dat = JSON.parse(data); \n");
@@ -123,20 +134,58 @@ filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSe
         1     2          3                                    4                            5       6
 {{@html input filter    stock_supplier_order.stock_supplier_id stock_supplier.name medium Supplier}}
 #endif
-		emitData("<input type='hidden' id='SEQ_%d_SEARCH_FIELDNAME' value='%s'> \n", randId, fieldSize);
-		emitData("<input type='hidden' id='SEQ_%d_SEARCH_RESULT' name='%s' id='%s' value='%s'> \n", randId, fieldVar, fieldVar, fieldVarValue);
-		emitData("<div id='SEQ_%d_SEARCH_DIV' class='uk-autocomplete uk-form' data-uk-autocomplete='off'> \n", randId);
-		emitData("	<input type='text' id='SEQ_%d_SEARCH_VALUE' value='%s' class='uk-form-width-%s'> \n", randId, fieldSearchValue, fieldPrompt);
-		emitData("	<script type='text/autocomplete'> \n");
-		emitData("		<ul class='uk-nav uk-nav-autocomplete uk-autocomplete-results'> \n");
-		emitData("			{{~items}} \n");
-		emitData("				<li class='clicked' data-value='{{ $item.value }}'  data-id='{{ $item.id }}'> \n");
-		emitData("					<a> {{ $item.value }} </a> \n");
-		emitData("				</li> \n");
-		emitData("			{{/items}} \n");
-		emitData("		</ul> \n");
-		emitData("	</script> \n");
-		emitData("</div> \n");
+		emitStd("<input type='hidden' id='SEQ_%d_SEARCH_FIELDNAME' value='%s'> \n", randId, fieldSize);
+		emitStd("<input type='hidden' id='SEQ_%d_SEARCH_RESULT' name='%s' id='%s' value='%s'> \n", randId, fieldVar, fieldVar, fieldVarValue);
+		emitStd("<div id='SEQ_%d_SEARCH_DIV' class='uk-autocomplete uk-form' data-uk-autocomplete='off'> \n", randId);
+		emitStd("	<input type='text' id='SEQ_%d_SEARCH_VALUE' value='%s' class='uk-form-width-%s'> \n", randId, fieldSearchValue, fieldPrompt);
+// @@KIM emitStd below emitJs
+		emitStd("	<script type='text/autocomplete'> \n");
+		emitStd("		<ul class='uk-nav uk-nav-autocomplete uk-autocomplete-results'> \n");
+		emitStd("			{{~items}} \n");
+		emitStd("				<li class='clicked' data-value='{{ $item.value }}'  data-id='{{ $item.id }}'> \n");
+		emitStd("					<a> {{ $item.value }} </a> \n");
+		emitStd("				</li> \n");
+		emitStd("			{{/items}} \n");
+		emitStd("		</ul> \n");
+		emitStd("	</script> \n");
+		emitStd("</div> \n");
+	}
+	else if (!strcasecmp(fieldType, "dropdown")) {
+		logMsg(LOGDEBUG, "Select: fieldVarValue=[%s] and fieldSize=[%s]", fieldVarValue, fieldSize);
+		emitStd("	<select id='SEQ_%d_SELECT_VALUE' name='%s' value='%s' onchange='//alert(this.value);' class='uk-form-width-%s'> \n", randId, fieldVar, fieldVarValue, fieldPrompt);
+		// Construct all the <option> tags from content
+		char tmp2[4096];
+		sprintf(tmp2, fieldSize);
+		char *p = strchr(tmp2, '.');
+		if (p)
+			*p = '\0';
+		sprintf(tmp, "select * from %s order by id", tmp2);
+		logMsg(LOGDEBUG, "Select: about to query for all options using raw sql [%s]", tmp);
+		int status = doSqlQuery(tmp);
+		if (status == -1) {
+			logMsg(LOGERROR, "Sql query failed - doSqlQuery() failed");
+			return (-1);
+		}
+		logMsg(LOGDEBUG, "Getting RES for raw query");
+		MYSQL_RES *res = mysql_store_result(conn);
+		if (res != NULL) {	// ie the query returned row(s)
+			logMsg(LOGDEBUG, "RES is non-null");
+			SQL_RESULT *rp = sqlCreateResult(tmp2, res);
+			strcat(tmp2, ".id");
+			while (sqlGetRow2Vars(rp) != SQL_EOF) {
+				VAR *idVar = findVarStrict(tmp2);
+				VAR *showVar = findVarStrict(fieldSize);
+				logMsg(LOGDEBUG, "Select: found option [%s]->[%s]", idVar->portableValue, showVar->portableValue);
+				char selected[128];
+				strcpy(selected, "");
+				if (!strcmp(idVar->portableValue, fieldVarValue))
+					strcpy(selected, "selected='selected'");
+				emitStd("    <option value='%s' %s>%s</option> \n", idVar->portableValue, selected, showVar->portableValue);
+			}
+			mysql_free_result(res);
+		} else logMsg(LOGDEBUG, "RES is null");
+
+		emitStd("  </select> \n");
 	}
 	else if (!strcasecmp(fieldType, "keyaction")) {
 		emitJs(	"// onKeyUp handler for keyaction ID %d \n"
@@ -157,24 +206,24 @@ filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSe
 					"} \n"
 					, randId, randId, randId, fieldVar /*actually jam:action*/, fieldSize /*actually input*/, fieldPrompt /*actually outputResult*/);
 		if ((inputType == INPUT) || (inputType == INP))
-			emitData("		<input type='text' name=keyaction_%d id='keyaction_%d' value='' onkeyup='onKeyUp_%d()' class='uk-form-width-%s'>\n", randId, randId, randId, fieldPlaceholder);
+			emitStd("		<input type='text' name=keyaction_%d id='keyaction_%d' value='' onkeyup='onKeyUp_%d()' class='uk-form-width-%s'>\n", randId, randId, randId, fieldPlaceholder);
 		else
-			emitData("		<input type='text' id='keyaction_%d' value='' onkeyup='onKeyUp_%d()' class='uk-form-width-%s'>\n", randId, randId, fieldPlaceholder);
+			emitStd("		<input type='text' id='keyaction_%d' value='' onkeyup='onKeyUp_%d()' class='uk-form-width-%s'>\n", randId, randId, fieldPlaceholder);
 	} else {
 		if (!strcasecmp(fieldType, "disabled")) {
 			strcpy(disabledStr, " disabled ");
 			strcpy(fieldType, "text");
 		}
 		if ((inputType == INPUT) || (inputType == INP))
-			emitData("		<input type='%s' name='%s' id='SEQ_%d_%s' value='%s' placeholder='%s' class='uk-form-width-%s' onChange='fn(this, event);' %s>\n", fieldType, fieldVar, randId, fieldVar, fieldVarValue, fieldPlaceholder, fieldSize, disabledStr);
+			emitStd("		<input type='%s' name='%s' id='SEQ_%d_%s' value='%s' placeholder='%s' class='uk-form-width-%s' onChange='fn(this, event);' %s>\n", fieldType, fieldVar, randId, fieldVar, fieldVarValue, fieldPlaceholder, fieldSize, disabledStr);
 		else		// 'inp' only
-			emitData("		<input type='%s' id='SEQ_%d_%s' value='%s' class='uk-form-width-%s' onChange='fn(this, event)' %s>\n", fieldType, randId, fieldVar, fieldVarValue, fieldSize, disabledStr);
+			emitStd("		<input type='%s' name='%s' id='SEQ_%d_%s' value='%s' class='uk-form-width-%s' onChange='fn(this, event)' %s>\n", fieldType, fieldVar, randId, fieldVar, fieldVarValue, fieldSize, disabledStr);
 	}
 	if (inputType == INPUT) {
-		emitData("	</div>\n");
-		emitData("</div>\n");
+		emitStd("	</div>\n");
+		emitStd("</div>\n");
 	}
-	emitData(jam[ix]->trailer);
+	emitStd(jam[ix]->trailer);
 	free(fieldName);
 	free(fieldType);
 	free(fieldSize);
@@ -235,14 +284,14 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 	getWord(fieldPrompt, args, 4, " \t");
 	getWord(fieldPlaceholder, args, 5, " \t");
 
-	emitData("<div class='uk-form-row'>\n");
-	emitData("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPrompt);
-	emitData("		<div class='uk-form-controls'>\n");
-	emitData("		<textarea name='%s' id='%s' cols='%s' rows='%s' placeholder='%s'>%s</textarea>", fieldVar, fieldVar, fieldSize, fieldSize2, fieldPlaceholder, fieldVarValue);
-	emitData("	</div>\n");
-	emitData("</div>\n");
+	emitStd("<div class='uk-form-row'>\n");
+	emitStd("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPrompt);
+	emitStd("		<div class='uk-form-controls'>\n");
+	emitStd("		<textarea name='%s' id='%s' cols='%s' rows='%s' placeholder='%s'>%s</textarea>", fieldVar, fieldVar, fieldSize, fieldSize2, fieldPlaceholder, fieldVarValue);
+	emitStd("	</div>\n");
+	emitStd("</div>\n");
 
-	emitData(jam[ix]->trailer);
+	emitStd(jam[ix]->trailer);
 	free(fieldName);
 	free(fieldSize);
 	free(fieldSize2);
@@ -288,7 +337,7 @@ int wordHtmlButton(int ix, char *defaultTableName) {
 	   return(-1);
 	}
 
-	emitData("<button type='button' onClick='buttonClick%d()' class='uk-button uk-button-%s uk-button-%s'>%s</button>\n", buttonId, buttonSize, buttonType, buttonText);
+	emitStd("<button type='button' onClick='buttonClick%d()' class='uk-button uk-button-%s uk-button-%s'>%s</button>\n", buttonId, buttonSize, buttonType, buttonText);
 	emitJs("buttonClick%d = function() {\n", buttonId);
 	int cnt = 2;
 	while (char *block = strTrim(getWordAlloc(args, cnt++, "\n"))) {
@@ -309,11 +358,11 @@ int wordHtmlButton(int ix, char *defaultTableName) {
 			sprintf(tmp, "%s(", command);
 			emitJs(tmp);
 			int ix = 1;
-//emitData("<br> \n----->%s <br>\n", pBlock);
+//emitStd("<br> \n----->%s <br>\n", pBlock);
 			while(char *runActionArg = strTrim(getWordAlloc(pBlock, ix, " "))) {
 				if (!runActionArg)
 					break;
-//emitData("-->%s <br>\n", runActionArg);
+//emitStd("-->%s <br>\n", runActionArg);
 				if (ix != 1)
 					emitJs(", ");
 				if (ix < 4) {
@@ -334,11 +383,11 @@ int wordHtmlButton(int ix, char *defaultTableName) {
 			sprintf(tmp, "%s\n", block);
 			emitJs(tmp);
 		}
-//emitData("-----> <br>\n");
+//emitStd("-----> <br>\n");
 		free(block);
 	}
 	emitJs("}\n\n");
-	emitData(jam[ix]->trailer);
+	emitStd(jam[ix]->trailer);
 	free(buttonText);
 	free(buttonType);
 	free(buttonSize);
@@ -378,7 +427,7 @@ int wordHtmlSelect(int ix, char *defaultTableName) {
 	getWord(fieldSelected, args, 5, " \t");
 
 	if ((!strchr(fieldVar, '.')) && (defaultTableName))
-		semitData(fieldVar, "%s.%s", fieldVar, defaultTableName);
+		semitStd(fieldVar, "%s.%s", fieldVar, defaultTableName);
 	variable = findVarStrict(fieldVar);
 	if (variable)
 		strcpy(fieldVarValue, variable->portableValue);
@@ -386,15 +435,15 @@ int wordHtmlSelect(int ix, char *defaultTableName) {
 	getWord(fieldPrompt, args, 4, " \t");
 	getWord(fieldPlaceholder, args, 5, " \t");
 
-	emitData("<div class='uk-dropdown uk-dropdown-scrollable'>\n");
-	emitData(""
+	emitStd("<div class='uk-dropdown uk-dropdown-scrollable'>\n");
+	emitStd(""
 
-	emitData("<div class='uk-dropdown uk-dropdown-scrollable>\n");
-	emitData("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPrompt);
-	emitData("		<div class='uk-form-controls'>\n");
-	emitData("		<textarea name='%s' id='%s' cols='%s' rows='%s'>%s</textarea>", fieldVar, fieldVar, fieldSize, fieldSize2, fieldVarValue);
-	emitData("	</div>\n");
-	emitData("</div>\n");
+	emitStd("<div class='uk-dropdown uk-dropdown-scrollable>\n");
+	emitStd("	<label class='uk-form-label' for='%s'>%s</label>\n", fieldVar, fieldPrompt);
+	emitStd("		<div class='uk-form-controls'>\n");
+	emitStd("		<textarea name='%s' id='%s' cols='%s' rows='%s'>%s</textarea>", fieldVar, fieldVar, fieldSize, fieldSize2, fieldVarValue);
+	emitStd("	</div>\n");
+	emitStd("</div>\n");
 
 
 <select name="{filter.select}">
@@ -404,7 +453,7 @@ int wordHtmlSelect(int ix, char *defaultTableName) {
 </select>
 
 
-	emitData(jam[ix]->trailer);
+	emitStd(jam[ix]->trailer);
 	free(fieldVarName);
 	free(fieldVarValue);
 	free(fieldSize);
@@ -412,6 +461,24 @@ int wordHtmlSelect(int ix, char *defaultTableName) {
 	free(fieldVarSelected);
 	free(tmp);
 */
+}
+
+//-----------------------------------------------------------------
+// Dont know where else to put this. Its the only way for Actions to create runnable JS
+
+int wordHtmlJs(int ix, char *defaultTableName) {
+	char *cmd = jam[ix]->command;
+	char *args = jam[ix]->args;
+	char *rawData = jam[ix]->rawData;
+	char *tmp = (char *) calloc(1, 4096);
+ 
+	char *p = args;
+	while ((*p) && (*p != ' '))
+		p++;
+	emitJs("%s", p);
+	logMsg(LOGDEBUG, "wordHtmlJs emitting js [%s]", args);
+
+	free(tmp);
 }
 
 //-----------------------------------------------------------------
@@ -479,7 +546,7 @@ int wordHtmlSys(int ix, char *defaultTableName) {
 			logMsg(LOGDEBUG, "RES is non-null");
 			SQL_RESULT *rp = sqlCreateResult(tableName, res);
 			int first = 1;
-			emitData("[");
+			emitStd("[");
 			while (sqlGetRow2Vars(rp) != SQL_EOF) {
 				VAR *v = findVarStrict(variableField->portableValue);
 				sprintf(tmp, "%s.%s", tableName, idField);
@@ -491,15 +558,15 @@ int wordHtmlSys(int ix, char *defaultTableName) {
 				if (first)
 					first = 0;
 				else
-					emitData(", ");
+					emitStd(", ");
 				char *valJSON = escapeJsonChars(v->portableValue);
 				char *idJSON = escapeJsonChars(id->portableValue);
 				// Avoid single quotes - the formal JSON spec doesnt allow them
-				emitData("{\"value\":\"%s\", \"id\":\"%s\"}", valJSON,  idJSON);
+				emitStd("{\"value\":\"%s\", \"id\":\"%s\"}", valJSON,  idJSON);
 				free(valJSON);
 				free(idJSON);
 			}
-			emitData("]");
+			emitStd("]");
 		} else
 			logMsg(LOGDEBUG, "RES is null");
 		free(q);
@@ -509,7 +576,7 @@ int wordHtmlSys(int ix, char *defaultTableName) {
 		free(fieldName);
 	}
 
-	emitData(jam[ix]->trailer);
+	emitStd(jam[ix]->trailer);
 	free(sysName);
 	free(tmp);
 }
@@ -578,7 +645,7 @@ int wordHtmlBreakpoint(int ix, char *defaultTableName) {
 			// Embed the db name in the html for any @action calls
 			if (connDbName == NULL)
 				connDbName = strdup("");
-			emitData("<input type='hidden' id='_dbname' name='_dbname' value='%s'>", connDbName);
+			emitStd("<input type='hidden' id='_dbname' name='_dbname' value='%s'>", connDbName);
 			logMsg(LOGDEBUG, "created hidden _dbname element");
 
 			endJs(urlEncodeRequired);	// No encode
@@ -587,7 +654,7 @@ int wordHtmlBreakpoint(int ix, char *defaultTableName) {
 		free(breakpointBodyArg);
 	}
 
-	emitData(jam[ix]->trailer);
+	emitStd(jam[ix]->trailer);
 	free(breakpointName);
 	free(tmp);
 }

@@ -1,0 +1,59 @@
+{{@include /jam/sys/html/header.html}}
+
+{{@database stock}}
+
+<style>
+.rowHighlight:hover {
+  background-color: #ddf0ff;
+  Xcolor:#0077dd;
+  cursor:pointer;
+}
+</style>
+
+<center><h3>Purchase deliveries</h3></center>
+
+<div class="uk-overflow-container">
+	<table id="purchasedeliverytable" class="testgrid uk-table /*uk-table-striped*/ uk-table-condensed" style="border:1px solid #dddddd">
+		<tr>
+			<th style="width:300px; overflow:hidden"> Supplier </th>
+			<th> Date </th>
+			<th> Reference </th>
+			<th> Total </th>
+<!--			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('purchaseDeliveryForm?stock_supplier_order.id=0')"> <i class="uk-icon-plus"></i> New</button> </th> -->
+		</tr>
+{{@each stock_supplier_order}}
+	{{rowId = (rowId + 1)}}	
+		<tr class="rowHighlight" id="R{{rowId}}" onClick="runJam('purchaseDeliveryForm?stock_supplier_order.id={{id}}')">
+	{{@get stock_supplier filter id = stock_supplier_order.supplier_id}}
+			<td>{{stock_supplier.name}}</td>
+			<td>{{delivery_date}}</td>
+			<td>{{reference}}</td>
+			<td>{{stock_supplier_order.total}}</td>
+<!--			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{reference}}')"> <i class="uk-icon-trash"></i></button> </td> -->
+		</tr>
+{{@end}}
+	</table>
+
+</div>	<!-- uk-overflow-container -->
+
+<script>
+function confirmDelete(id, ref) {
+	window.event.cancelBubble = true;	// Prevent any further events
+	var result = confirm('Confirm delete of order with reference ' + ref);
+	if (result) {
+		runAction('deletePO', 'stock_supplier_order.id='+id, '', runJam);	
+	}
+}
+</script>
+
+<script>
+window.onload = function() {
+}
+</script>
+
+{{@action deletePO}}
+	{{@sql delete from stock_supplier_order_item where id = stock_supplier_order.id}}
+	{{@remove item stock_supplier_order}}
+{{@end}}
+
+{{@include /jam/sys/html/footer.html}}

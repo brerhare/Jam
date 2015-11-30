@@ -1,3 +1,4 @@
+#knowledgebase
 [defaults]
 include = default-values
 
@@ -5,16 +6,204 @@ include = default-values
 [* : defaults]
 
 [screen]
-child = contentframe
-fx.wallpaper-image = /img/background.jpg
+child = site
+css.background-color = white
 css.display = block
 
 	[contentframe]
-	css.display = block
-	css.width = 500px
-	css.margin-top = 400px
-	style.html.h1.color = yellow
-	style.html.h1.background-color = black
-	style.html.h1.padding = 10px
-	html.h1 = a jelly&#0153; site is coming soon
+	child = header, page-content, footer
+	css.width = 100%
+	
+		[header]
+		child = home_icon, menu, logo
+		stacking = horizontal
+		css.width = 80%
+				
+			[home_icon]
+			css.width = 10%
+			css.margin-top = 40px
+			image.url = img/home.png
+			image.width = 40%
+			image.height = 100%
+			image.align = center
+			click = ?layout=index&page=index
+			html.raw = <a id="TOP" name="TOP">
+			
+			[menu]
+			css.width = 60%
+			css.margin-top = 40px
+			css.overflow = visible
+			
+			#// Top level basic settings
+			addon.menu.traditional.orientation = horizontal
+			#addon.menu.traditional.width = 100%
+			addon.menu.traditional.height = 40px
+			addon.menu.traditional.align = left
+			addon.menu.traditional.item-width = variable
+			addon.menu.traditional.level = 1
 
+			#// Top level background settings
+			addon.menu.traditional.menu-rounding = 0px
+			addon.menu.traditional.menu-opacity = 100%
+			addon.menu.traditional.menu-color = transparent 
+			addon.menu.traditional.item-separator-width = 0px
+
+			#// Top level font settings
+			addon.menu.traditional.menu-font-size = 18px
+			addon.menu.traditional.menu-font-family = "Comfortaa", Verdana, SanSerif
+			addon.menu.traditional.menu-font-weight = normal
+			addon.menu.traditional.menu-text-color = #2e2575
+
+			#// Top level hover settings
+			addon.menu.traditional.menu-hover-text-color = red
+			addon.menu.traditional.menu-hover-background-color = transparent
+			addon.menu.traditional.menu-hover-font-size = 18px
+			addon.menu.traditional.menu-hover-font-family = "Comfortaa", Verdana, SanSerif
+			addon.menu.traditional.menu-hover-font-weight = normal
+
+			#// Top level selected settings
+			addon.menu.traditional.menu-selected-text-color = black
+			addon.menu.traditional.menu-selected-background-color = transparent
+			addon.menu.traditional.menu-selected-font-size = 18px
+			addon.menu.traditional.menu-selected-font-family = "Comfortaa", Verdana, SanSerif
+			addon.menu.traditional.menu-selected-font-weight = normal
+
+			#// Second level settings
+			addon.menu.traditional.submenu-height = 40px
+			addon.menu.traditional.submenu-width = variable
+			addon.menu.traditional.submenu-font-size = 16px
+			addon.menu.traditional.submenu-font-family = "Comfortaa", Verdana, SanSerif
+			addon.menu.traditional.submenu-font-weight = normal
+			addon.menu.traditional.submenu-text-color = #2e2575
+			addon.menu.traditional.submenu-background-color = transparent
+			addon.menu.traditional.submenu-separator-width = 0px
+			addon.menu.traditional.submenu-separator-color = red
+
+		
+			[logo]
+			css.width = 30%
+			image.url = img/Logo.png
+			image.width = 80%
+			image.height = 100%
+			image.align = right
+			clicknew = https://wireflydesign.com
+			
+	[page-content]
+	child = page-container
+	css.margin-top = -20px
+	css.padding = 30px 0px
+	css.width = 100%
+	css.min-height = 350px
+	css.background-size = 100%
+	css.background-image = url('/img/blue_bokeh_pale.jpg')
+	css.background-repeat = no-repeat
+	
+	[page-container]
+	child = page-menu, content
+	css.width = 80%
+	stacking = horizontal
+	
+		[page-menu]
+		css.width = 15%
+		css.margin-top = 30px
+		css.overflow = visible
+		#// Top level basic settings
+			addon.menu.traditional.orientation = vertical
+			addon.menu.traditional.width = 100%
+			addon.menu.traditional.height = 40px
+			addon.menu.traditional.align = center
+			addon.menu.traditional.item-width = variable
+			addon.menu.traditional.level = 2
+
+			#// Top level background settings
+			addon.menu.traditional.menu-rounding = 0px
+			addon.menu.traditional.menu-opacity = 100%
+			addon.menu.traditional.menu-color = transparent 
+			addon.menu.traditional.item-separator-width = 5px
+
+			#// Top level font settings
+			addon.menu.traditional.menu-font-size = 18px
+			addon.menu.traditional.menu-font-family = "Comfortaa", Verdana, SanSerif
+			addon.menu.traditional.menu-font-weight = normal
+			addon.menu.traditional.menu-text-color = #2e2575
+
+			#// Top level hover settings
+			addon.menu.traditional.menu-hover-text-color = red
+			addon.menu.traditional.menu-hover-background-color = transparent
+			addon.menu.traditional.menu-hover-font-size = 18px
+			addon.menu.traditional.menu-hover-font-family = "Comfortaa", Verdana, SanSerif
+			addon.menu.traditional.menu-hover-font-weight = normal
+
+			#// Top level selected settings
+			addon.menu.traditional.menu-selected-text-color = black
+			addon.menu.traditional.menu-selected-background-color = transparent
+			addon.menu.traditional.menu-selected-font-size = 18px
+			addon.menu.traditional.menu-selected-font-family = "Comfortaa", Verdana, SanSerif
+			addon.menu.traditional.menu-selected-font-weight = normal
+
+			#// Second level settings
+			addon.menu.traditional.submenu-height = 40px
+			addon.menu.traditional.submenu-width = variable
+			addon.menu.traditional.submenu-font-size = 16px
+			addon.menu.traditional.submenu-font-family = "Comfortaa", Verdana, SanSerif
+			addon.menu.traditional.submenu-font-weight = normal
+			addon.menu.traditional.submenu-text-color = #2e2575
+			addon.menu.traditional.submenu-background-color = transparent
+			addon.menu.traditional.submenu-separator-width = 0px
+			addon.menu.traditional.submenu-separator-color = red 
+	
+		[content]
+		css.width = 75%
+		css.margin-left = 2%
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
+	
+			
+
+
+[footnote]
+			child = copyright, wirefly
+			css.width = 80%
+			css.margin-top = 10px
+			
+				[copyright]
+				html.raw = Wirefly Design Ltd &copy 2015 <br>All rights reserved
+				css.color = #000000
+				css.font-size = 12px
+				css.text-align = left
+				
+				[wirefly]
+				child = wirefly-logo, admin
+				stacking = horizontal
+				css.margin-top = 20px
+		
+				
+					[wirefly-logo]
+					css.height = 45px
+					css.margin-top = 5px
+					image.url = img/wirefly-design.png
+					image.width = 100px
+					image.height = 46px
+					image.align = left
+					clicknew = http://www.wireflydesign.com
+					
+				
+					[admin]
+					child = cog-center
+					css.height = 20px
+					css.width = 20px
+					css.background-size = 100%
+					css.background-image = url('/img/admin.png')
+					css.margin-left = -20px
+		
+						[cog-center]
+						css.width = 5px
+						css.height = 5px
+						css.margin-top = 8px
+						image.url = img/cog-center.png
+						image.width = 5px
+						image.height = 5px
+						image.align = center
+						clicknew = backend.php	
