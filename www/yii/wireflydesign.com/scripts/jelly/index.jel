@@ -18,18 +18,21 @@ css.background-color = white
 	
 		[left-column]
 		child = portfolio, wirefly
-		css.margin-top = 20px
 		css.width = 15%
-		css.margin-left = 2%
+		css.padding = 2%
 		css.z-index = 50
 		css.position = fixed
+		css.background-image = url('/img/blue_transp.png')
+		css.background-size = 100% 100%
+		
 			
 			[portfolio]
 			css.width = 100%
+			#css.background-color = blue
 			addon.adbox.basicad.picwidth = 100%
-			addon.adbox.basicad.picheight = 100%
-			addon.adbox.basicad.picspacing = 20%
-			addon.adbox.basicad.numpics = 10
+			#addon.adbox.basicad.picheight = 100%
+			addon.adbox.basicad.picspacing = 10%
+			addon.adbox.basicad.numpics = 8
 			addon.adbox.basicad.interval = 5
 			
 			[wirefly]
@@ -198,7 +201,7 @@ css.background-color = white
 
 				addon.global.column.background-image = img/home_column_bgd.png
 				#addon.global.column.top-image = img/home_top.png
-				addon.global.column.top-height = 20%
+				addon.global.column.top-height = 20px
 				#addon.global.column.bottom-image = img/home_btm.png
 				addon.global.column.bottom-height = 20px
 			
@@ -213,7 +216,7 @@ css.background-color = white
 					image.url = /img/facebook.png
 					image.width = 100%
 					image.height = 100%
-					clicknew = https://www.facebook.com/
+					clicknew = https://www.facebook.com/WireflyDesign
 					
 					[twitter]
 					css.margin-top = 15px
@@ -221,7 +224,7 @@ css.background-color = white
 					image.url = /img/twitter.png
 					image.width = 100%
 					image.height = 100%
-					clicknew = https://twitter.com/
+					clicknew = https://twitter.com/WireflyDesign
 					
 					[email]
 					css.margin-top = 15px
@@ -348,7 +351,7 @@ css.margin-bottom = 10px
 #### Footer ##################################################		
 		
 [footer]
-child = footer-content
+child = footer-content, copyright
 css.width = 100% 
 css.background-image = url('/img/blue_bokeh_still.jpg')
 css.background-size = 100%
@@ -391,12 +394,12 @@ css.background-size = 100%
 		addon.global.column.bottom-height = 5px
 			
 			[copyright]
-			css.margin-top = 20px
+			css.margin = 20px auto
 			css.line-height = 1em
-			html.raw = Zoe Life Coaching &copy 2015</br>All rights reserved
+			html.raw = Wirefly Design Ltd &copy 2015 - All rights reserved
 			css.color = #000000
 			css.font-size = 11px
-			css.text-align = right
+			css.text-align = center
 		
 
 			
