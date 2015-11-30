@@ -387,6 +387,12 @@ END_OF_GETDEVICEWIDTH;
 				$this->emit(file_get_contents($this->jellyRootPath . 'header.html'));
 		}
 
+		// snake oil here
+		if (stristr($_SERVER['HTTP_HOST'], "wireflydesign.com")) {
+			array_push($this->headerArray, '<script type="text/javascript" src="http://www.bae5tracker.com/js/61103.js" ></script>');
+			array_push($this->headerArray, '<noscript><img src="http://www.bae5tracker.com/61103.png" style="display:none;" /></noscript>');
+		}
+
 		foreach ($this->headerArray as $hdr)
 			$this->emit($hdr);
 

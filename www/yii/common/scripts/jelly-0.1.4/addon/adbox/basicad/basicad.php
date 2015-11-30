@@ -39,11 +39,11 @@ class basicad
 		// Build up the html
 
 		$content = "";
-        $content .= "<table style='border-spacing:0px; padding:0px; margin:0px; margin-left:-1px'>";
+        $content .= "<table style='border-spacing:0px; padding:0px; margin:0px; Xmargin-left:-1px'>";
 		$cnt = 0;
 		$adBlocks = JellyAdblock::model()->findAll(array('order'=>'RAND()'));
 		foreach ($adBlocks as $adBlock):
-            $content .= "<tr><td  style='height:auto; padding-bottom:" . $this->defaultPicSpacing . ";' >";
+            $content .= "<tr><td  style='padding-left:0px; padding-right:0px; height:auto; padding-bottom:" . $this->defaultPicSpacing . ";' >";
 			$content .= "<input type=hidden id='id-" . $cnt . "' value='" . $adBlock->id . "'>";
 			if (trim($adBlock->url) != "")
 				$content .= "<a id='url-" . $cnt . "' href='" . $adBlock->url . "' target='_blank'>";
