@@ -277,7 +277,7 @@ if (++sanity > 100) { emitStd("Overflow in main!"); break; }
 		}
 
 
-	
+
 		// Now strip out the templates and everything inside them
 logMsg(LOGDEBUG, "BUF1 = =====================> [%s] <========================", jamBuf);
 		int s1 = 0;
@@ -417,7 +417,7 @@ int control(int startIx, char *defaultTableName) {
 			free(jam[ix]->rawData);
 			jam[ix]->args = args;
 			jam[ix]->rawData = rawData;
-			logMsg(LOGMICRO, "Command loop processing command [%s] args [%s]", cmd, args);
+			logMsg(LOGMICRO, "Command loop processing command [%s] args [%s] (ix=%d)", cmd, args, ix);
 			jamArgs2Vars(ix, args);		// Create/update vars from args. 
 		}
 
@@ -639,6 +639,7 @@ int control(int startIx, char *defaultTableName) {
 				}
 				// Finished. Now emit the loops' trailer and make it current, so we will immediately advance past it
 				while (jam[ix] && (strcmp(jam[ix]->command, "@end") || (strcmp(jam[ix]->args, givenTableName)))) {
+					logMsg(LOGDEBUG,"---skipping [%s][%s] ------", jam[ix]->command,jam[ix]->args);
 					ix++;
 				}
 				if (jam[ix])
