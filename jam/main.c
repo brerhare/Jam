@@ -637,11 +637,30 @@ int control(int startIx, char *defaultTableName) {
 					control((ix + 1), givenTableName);
 					logMsg(LOGMICRO, "@each (db table %s) ended recurse", givenTableName);
 				}
-				// Finished. Now emit the loops' trailer and make it current, so we will immediately advance past it
+				// Finished. Now advance to the matching @end and emit its trailer
+				int depth = 0;
+				int sanity = 0;
+				while (jam[++ix]) {
+					if (++sanity > 1000) {
+						logMsg(LOGERROR, "Endless looping finding @end for @each in control()");
+						return(-1);
+					}
+					if (!strcmp(jam[ix]->command, "@end")) {
+						if (depth == 0)
+							break;
+						else
+							depth--;
+					} else if (!strcmp(jam[ix]->command, "@each")) {
+						depth++;
+					}
+				}
+
+				/*
 				while (jam[ix] && (strcmp(jam[ix]->command, "@end") || (strcmp(jam[ix]->args, givenTableName)))) {
 					logMsg(LOGDEBUG,"---skipping [%s][%s] ------", jam[ix]->command,jam[ix]->args);
 					ix++;
-				}
+				}*/
+
 				if (jam[ix])
 					emitStd(jam[ix]->trailer);
 				mysql_free_result(res);
