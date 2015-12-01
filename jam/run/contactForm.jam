@@ -1,7 +1,5 @@
 {{@include /jam/sys/html/header.html}}
 
-{{@database plugin}}
-
 <style>
 	body {
 		display:none
@@ -57,6 +55,7 @@ alert('['+val+']');
 </script>
 
 {{@action sendMessage}}
+	{{@database plugin}}
 	{{@get admin_user filter sid = jelly.sid}}
 	{{@get mailer_list filter uid = admin_user.id}}
 	{{mailer_member.uid = admin_user.id}}
