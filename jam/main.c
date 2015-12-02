@@ -802,7 +802,9 @@ int control(int startIx, char *defaultTableName) {
 
 			// Either retrieve the data from a field or calculate
 			VAR *searchVar = findVarLenient(data, defaultTableName);
-			if (searchVar)
+			if (!strcmp(data, "''"))
+				strcpy(resultString, "");
+			else if (searchVar)
 				strcpy(resultString, searchVar->portableValue);
 			else if (isCalculation(expandedData)) {
 				char *calc = calculate(expandedData);
