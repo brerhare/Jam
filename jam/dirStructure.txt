@@ -7,10 +7,10 @@
 
 		/run
 			*.jam
-			template								user templates (crud.jam, crudInline.jam)
-			include									user includes (common jam, etc)
-				*.jam
-			/sys -> ../sys/run						autocomplete.jam
+			/sys -> ../sys/run						link contains common system dirs eg template, addon, etc. Deliberately no direct access to addon
+
+* eg:		template								user templates (and/or modified system templates)
+* eg:		include									user includes (user common jam, etc)
 
 		/sys -> /home/dev/src/jam/sys
 			/run									/jam/run/sys is a softlink to here
@@ -30,3 +30,23 @@
 
 		jelly2jam.php -> /home/dev/src/jam/jelly2jam.php
 
+* are examples of user defined directories
+
+--------------------------------------------------------------------------------
+
+js
+	runJam(jam)
+	runAction([/path/to/][jam:]action)
+
+browser
+	url/run/jam[:action]
+
+jam
+	@include /path/to/jam
+
+programmatically
+	jamBuilder(jam, action=NULL, outputstream=NULL or 'js')
+
+commandline
+	/path/to/jam documentroot path/to/jamfile
+	../cgi/jam ~/dev/src/www/angular/stock befriender
