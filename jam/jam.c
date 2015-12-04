@@ -320,7 +320,8 @@ int jamArgs2Vars(int ix, char *args) {
 			var->portableValue = strdup(v);
 		} else {
 			var = (VAR *) calloc(1, sizeof(VAR));
-			var->name = strdup(n);
+			sprintf(tmp, "control.%s", n);
+			var->name = strdup(tmp);
 			var->type = VAR_STRING;
 			var->source = strdup("arg");
 			var->debugHighlight = 7;

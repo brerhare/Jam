@@ -1,19 +1,13 @@
-/jam	/cgi
-			runjam.cgi
-			runjam.conf								path to jam executable (eg /home/dev/src/jam/cgi/jam)
-
-		/css										user css
-			*.css
-
 		/run
 			*.jam
 			/sys -> ../sys/run						link contains common system dirs eg template, addon, etc. Deliberately no direct access to addon
 
-* eg:		template								user templates (and/or modified system templates)
-* eg:		include									user includes (user common jam, etc)
+* eg:		/template								user templates (and/or modified system templates)
+* eg:		/include								user includes (user common jam, etc)
 
 		/sys -> /home/dev/src/jam/sys
 			/run									/jam/run/sys is a softlink to here
+				/template
 			/css									empty - delete
 			/extern
 				/editablegrid
@@ -31,6 +25,28 @@
 		jelly2jam.php -> /home/dev/src/jam/jelly2jam.php
 
 * are examples of user defined directories
+
+--------------------------------------------------------------------------------
+
+/jam
+----
+drwxr-xr-x 2 wireflydesign.com wireflydesign.com 4096 Nov 24 13:50 cgi
+-rwxr-xr-x 1 wireflydesign.com wireflydesign.com 6272 Nov 24 13:15     runjam.cgi
+-rw-r--r-- 1 wireflydesign.com wireflydesign.com   26 Nov 24 13:15     runjam.conf (path to jam binary)
+drwxr-xr-x 2 wireflydesign.com wireflydesign.com 4096 Sep 15 14:52 css
+lrwxrwxrwx 1 dev               dev                 31 Nov 24 14:31 jelly2jam.php -> /home/dev/src/jam/jelly2jam.php
+
+drwxr-xr-x 2 wireflydesign.com wireflydesign.com 4096 Dec  1 22:37 run
+lrwxrwxrwx 1 wireflydesign.com wireflydesign.com   11 Dec  4 12:00     sys -> ../sys/run/
+
+lrwxrwxrwx 1 dev               dev                 21 Nov 24 12:58 sys -> /home/dev/src/jam/sys
+drwxr-xr-x 3 dev               dev               4096 Nov 24 12:27     addon
+drwxr-xr-x 2 dev               dev               4096 Nov 23 11:06     css
+drwxr-xr-x 5 dev               dev               4096 Nov 26 13:43     extern
+drwxr-xr-x 2 dev               dev               4096 Nov 30 18:47     html
+drwxr-xr-x 2 dev               dev               4096 Nov 30 18:47     js
+drwxr-xr-x 3 dev               dev               4096 Dec  4 15:16     run
+drwxr-xr-x 2 dev               dev               4096 Dec  4 15:16         template (abstract all addons via templates)
 
 --------------------------------------------------------------------------------
 
