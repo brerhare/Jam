@@ -1,0 +1,136 @@
+{{@include /jam/sys/html/header.html}}
+
+{{@database befriending_wireflydesign_com}}
+
+<!-- Template defines -->
+{{@template DESCRIPTION Befrienders}}
+{{@template TABLE befriender}}
+
+<!-- Template defines for the list component -->
+{{@template DELETEFIELD befriender.id}}
+{{@template HEADINGS
+	<th> Surname </th>
+	<th> Forename </th>
+	<th> Matched </th>
+}}
+{{@template COLUMNS
+	<td>{{@get global filter id = global_id}} {{global.surname}}</td>
+	<td>{{global.forename}}</td>
+	<td>match indicator</td>
+}}
+
+<!-- Template defines for the form input component -->
+{{@template FORMINPUT
+	{{@html input text global.forename medium 'Forename'}}
+	{{@html input text global.surname medium 'Surname'}}
+	{{@html input text befriender.gender medium 'gender'}}
+	{{@html input text befriender.dob medium 'dob'}}
+	{{@html input text befriender.enquired medium 'enquired'}}
+	{{@html input text befriender.training_completed medium 'training_completed'}}
+	{{@html input text befriender.volunteer tiny 'volunteer'}}
+	{{@html input text befriender.volunteer_policy medium 'volunteer_policy'}}
+	{{@html input text befriender.match_limit medium 'match_limit'}}
+	{{@html input text befriender.driving_licence medium 'driving_licence'}}
+	{{@html input text befriender.car_insurance medium 'car_insurance'}}
+	{{@html input dropdown befriender.users_id      user.global_id medium 'Coordinator'}}
+	{{@html input text befriender.vol_status medium 'vol_status'}}
+	{{@html input text befriender.notes medium 'notes'}}
+	{{@html input text befriender.idcard medium 'idcard'}}
+	{{@html input text befriender.application_notes medium 'application_notes'}}
+	{{@html input text befriender.emergency_name medium 'emergency_name'}}
+	{{@html input text befriender.emergency_phone medium 'emergency_phone'}}
+	{{@html input text befriender.emergency_relationship medium 'emergency_relationship'}}
+	{{@html input text befriender.befriender_photo_path medium 'Upload Photo'}}
+	{{@html input text befriender.smoker medium 'smoker'}}
+	{{@html input text befriender.smoke_car medium 'smoke_car'}}
+	{{@html input text befriender.young_smoker medium 'young_smoker'}}
+	{{@html input dropdown befriender.heardabout_id  heardabout.from_where   medium  'Heard from where'}}
+	{{@html input dropdown befriender.employment_status_id   employment_status.description   medium   'Employment status' }}
+}}
+
+
+<!-- This is a copy of crud.jam template ----------------------------------------- -->
+
+<!-- List component -->
+
+<style>
+.rowHighlight:hover {
+  background-color: #ddf0ff;
+  cursor:pointer;
+}
+</style>
+
+<h3> DESCRIPTION </h3>
+	<div name="content" class="uk-overflow-container">
+		<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+			<tr>
+				HEADINGS
+				<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('maintain', ' ', 'content')"> <i class="uk-icon-plus"></i> New</button> </th>
+			</tr>
+{{@each TABLE}}
+			<tr class="rowHighlight" onClick="runAction('maintain', 'TABLE.id={{id}}', 'content')">
+				COLUMNS
+				<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{DELETEFIELD}}')"> <i class="uk-icon-trash"></i></button> </td>
+			</tr>
+{{@end}}
+		</table>
+</div>	<!-- uk-overflow-container -->
+
+<script>
+function confirmDelete(id, displayInfo) {
+	window.event.cancelBubble = true;	// Prevent any further events
+	var result = confirm('Confirm delete of item ' + displayInfo);
+	if (result)
+		runAction('delete', 'TABLE.id='+id, '', runJam);	
+}
+</script>
+
+{{@action delete}}
+	{{@get TABLE filter id = TABLE.id}}
+	{{global.id = TABLE.global_id}}
+	{{@remove item TABLE}}
+	{{@remove item global}}
+{{@end}}
+
+<!-- Form input component -->
+
+{{@action maintain}}
+	{{@get TABLE filter id = TABLE.id}}
+	{{@get global filter id = TABLE.global_id}}
+
+	<style type="text/css">
+		label {text-align: right;}
+	</style>
+
+	<div class="uk-container uk-container-center">
+		<div class="uk-grid">
+			<div class="uk-width-3-5">
+				<form name="inputForm" class="uk-form uk-form-horizontal">
+					<input type="hidden" name="TABLE.id" value="{{TABLE.id}}">
+					<input type="hidden" name="global.id" value="{{global.id}}">
+					FORMINPUT
+{{@include /jam/run/include/global_contact.jam}}
+					<br>
+					<center>
+						{{@html button Save primary medium
+							runAction('update', 'inputForm', '', runJam)
+						}}
+						{{@html button Cancel primary medium
+							runJam();
+						}}
+					</center>
+				</form>
+			</div>	<!-- uk-width-3-5 -->
+		</div>	<!-- uk-container -->
+	</div>
+{{@end}}
+
+{{@action update}}
+	{{@update item global}}			<!-- first update the link table (inserts wont have its id yet)
+	{{TABLE.global_id = global.id}}
+	{{@update item TABLE}}
+
+{{@end}}
+
+
+{{@include /jam/sys/html/footer.html}}

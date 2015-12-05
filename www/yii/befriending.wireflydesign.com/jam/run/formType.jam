@@ -1,0 +1,27 @@
+{{@include /jam/sys/html/header.html}}
+
+<style>
+	div { width:600px; }
+</style>
+
+{{@database befriending_wireflydesign_com}}
+
+<!-- Template defines -->
+{{@template TABLE form_type}}
+{{@template DESCRIPTION List the Different Types of Forms}}
+{{@template DELETEFIELD form_type.name}}
+
+{{@template HEADINGS
+	<th> Form Types </th>
+}}
+
+{{@template COLUMNS
+	<td> {{@html gridinp text form_type.name medium}} </td>
+}}
+
+{{@template EDITS name}}
+
+<!-- Include the template -->
+{{@include /jam/run/sys/crudInline.jam}}
+
+{{@include /jam/sys/html/footer.html}}

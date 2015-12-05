@@ -1,0 +1,26 @@
+{{@include /jam/sys/html/header.html}}
+
+<!-- Template defines for the menu -->
+{{@template MENU
+<ul id="main-menu" class="sm sm-blue collapsed">
+	<li> <a href="http://www.befriending.wireflydesign.com/schema/index.html" target="_blank">Schema</a> </li>
+	<li><a href="#"> Event stuff </a>
+		<ul>
+			<li> <a href="/run/event.jam" target="_blank"> Events </a> </li>
+			<li> <a href="/run/event_type.jam" target="_blank"> Event types </a> </li>
+		</ul>
+	</li>
+	<li><a href="#"> Simd stuff </a>
+		<ul>
+			<li> <a href="/run/simd.jam" target="_blank"> Simd </a> </li>
+			<li> <a href="/run/simd_lookup.jam" target="_blank"> Simd lookup </a> </li>
+		</ul>
+	</li>
+	<li> <a href="/run/menu.jam" target="_blank"> Old menu </a> </li>
+</ul>
+}}
+
+<!-- Call the addon -->
+{{@include /jam/run/sys/smartmenus.jam}}
+
+{{@include /jam/sys/html/footer.html}}

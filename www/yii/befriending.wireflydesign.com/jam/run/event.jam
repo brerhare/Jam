@@ -1,0 +1,37 @@
+{{@include /jam/sys/html/header.html}}
+
+<style>
+	div { width:600px; }
+</style>
+
+{{@database befriending_wireflydesign_com}}
+
+
+<!-- Template defines -->
+{{@template TABLE event}}
+{{@Xtemplate FILTER filter id > 2}}
+{{@template DESCRIPTION Maintain Events}}
+
+<!-- Template defines for the list component -->
+{{@template DELETEFIELD event.date}}
+{{@template HEADINGS
+	<th> Date </th>
+	<th> Comments </th>
+}}
+{{@template COLUMNS
+	<td>{{date}}</td>
+	<td>{{comments}}</td>
+}}
+
+<!-- Template defines for the form input component -->
+{{@template FORMINPUT
+
+	{{@html input date event.date medium 'Date'}}
+	{{@html input dropdown event.event_type_id event_type.name medium 'Event Type'}}
+	{{@html textarea event.comments 60x5 Notes}}
+}}
+
+<!-- Include the template -->
+{{@include /jam/run/sys/crud.jam}}
+
+{{@include /jam/sys/html/footer.html}}

@@ -1,0 +1,27 @@
+{{@include /jam/sys/html/header.html}}
+
+<style>
+	div { width:600px; }
+</style>
+
+{{@database befriending_wireflydesign_com}}
+
+<!-- Template defines -->
+{{@template TABLE need_type}}
+{{@template DESCRIPTION List available Special Needs}}
+{{@template DELETEFIELD need_type.description}}
+
+{{@template HEADINGS
+	<th> Special Need Type </th>
+}}
+
+{{@template COLUMNS
+	<td> {{@html gridinp text need_type.description medium Special Need}} </td>
+}}
+
+{{@template EDITS description}}
+
+<!-- Include the template -->
+{{@include /jam/run/sys/crudInline.jam}}
+
+{{@include /jam/sys/html/footer.html}}
