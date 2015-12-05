@@ -282,6 +282,17 @@ int emitHeader(char *str, ...) {
 int emitStd(char *str, ...) {
 	va_list ap;
 	va_start(ap, str);
+
+	if (outputStream) {	//@@TODO This whole stream handling is messy for jamBuilder...
+		logMsg(LOGDEBUG, "jamBuilder 'js' is on so emitStd is redirected to emitJs");
+		unsigned long len = vsnprintf(emitJsPos, emitJsRemaining, str, ap);
+		emitJsPos += len;
+		*emitJsPos = '\0';
+		emitJsRemaining -= len;
+		va_end(ap);
+		return(0);
+	}
+
 // @@BUG Overflow needs checked. See http://stackoverflow.com/questions/7215921/possible-buffer-overflow-vulnerability-for-va-list-in-c and http://linux.die.net/man/3/vsnprintf for ideas
 	unsigned long len = vsnprintf(emitStdPos, emitStdRemaining, str, ap);
 	emitStdPos += len;
@@ -326,11 +337,13 @@ logMsg(LOGMICRO, "ENDDATA=[%s]", emitStdBuffer);
 
 int endJs(int urlEncodeRequired) {
 //return(0);
+	char *p = NULL;
 	if (strlen(emitJsBuffer)) {
-		char *p = emitJsBuffer;
+		p = emitJsBuffer;
+
 		char *encodedJs = NULL;
 		if (urlEncodeRequired) {
-			encodedJs = urlEncode(emitJsBuffer);
+			encodedJs = urlEncode(p);
 			p = encodedJs;
 		}
 	// @@KIM <script> tag
