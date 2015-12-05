@@ -26,7 +26,11 @@ int breakpointAutocompleteId[MAX_BREAKPOINTS];
 //-----------------------------------------------------------------
 // HTML <tag> generation from {{curly}}
 
-int wowdHtmlDropdown(int ix, char *defaultTableName, int inputType) {
+int wordHtmlDropdown(int ix, char *defaultTableName) {
+	jamBuilder("/jam/sys/run/genHtml.jam", "genHtmlAction", "js");
+	//emitStd("<DROPDOWN>");
+	//emitStd("</DROPDOWN>");
+	//emitJs("function DROPDOWN() { drpdn=1; }");
 }
 
 int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {

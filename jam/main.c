@@ -49,11 +49,11 @@ char *jamEntrypoint = NULL;		// action entrypoint. Hackily global because its us
 // Common declares end
 
 JAM *initJam();
-int processJam(char *jamName, char *jamEntrypoint, int sysJamFlag);
+int processJam(char *jamName, char *jamEntrypoint, int jamBuilderFlag);
 int control(int startIx, char *tableName);
 
 #define MAX_TEMPLATES 10000
-#define SYSJAMPATH "/jam/sys/run/"
+#define JAMBUILDERPATH ""
 
 int isASCII(const char *data, size_t size)
 {
@@ -132,12 +132,14 @@ int main(int argc, char *argv[]) {
 // This is called from within to process a jam file, instead of main() ie no cgi
 // Save the current global jam, create a new one for the jam file, then restore the original
 // Allows us to process jam files with the existing vars, useful for calling templates etc
-int sysJam(char *jamName, char *jEntrypoint, char *jamOutputStream) {
-	logMsg(LOGDEBUG, "sysJam start");
-
-	if ((jamOutputStream) && (!strcasecmp(jamOutputStream, "js")))
+int jamBuilder(char *jamName, char *jEntrypoint, char *jamOutputStream) {
+	logMsg(LOGDEBUG, "jamBuilder start");
+	if ((jamOutputStream) && (!strcasecmp(jamOutputStream, "js"))) {
 		outputStream = strdup(jamOutputStream);
-
+		logMsg(LOGDEBUG, "jamBuilder will append to js stream");
+	} else {
+		logMsg(LOGDEBUG, "jamBuilder will append to std stream");
+	}
 	JAM *tmpJam[MAX_JAM];
 	memcpy(tmpJam, jam, (sizeof(JAM *) * MAX_JAM));
 	memset(jam, 0, (sizeof(JAM *) * MAX_JAM));
@@ -153,11 +155,11 @@ int sysJam(char *jamName, char *jEntrypoint, char *jamOutputStream) {
 		jamEntrypoint = strdup(jEntrypoint);	
 
 	char *fullJamName = (char *) calloc(1, 4096);
-	sprintf(fullJamName, SYSJAMPATH);
+	sprintf(fullJamName, JAMBUILDERPATH);
 	strcat(fullJamName, jamName);
 	jamIx = 0;
 
-	logMsg(LOGDEBUG, "sysJam requesting jam [%s] and action [%s]", fullJamName, jamEntrypoint);
+	logMsg(LOGDEBUG, "jamBuilder requesting jam [%s] and action [%s]", fullJamName, jamEntrypoint);
 	processJam(fullJamName, jamEntrypoint, 1);
 
 	if (jamEntrypoint) {
@@ -174,11 +176,11 @@ int sysJam(char *jamName, char *jEntrypoint, char *jamOutputStream) {
 		free(outputStream);
 		outputStream = NULL;
 	}
-	logMsg(LOGDEBUG, "sysJam end");
+	logMsg(LOGDEBUG, "jamBuilder end");
 }
 
-// Entrypoint of actual jam file processing. Called by main() or sysJam()
-int processJam(char *jamName, char *jamEntrypoint, int sysJamFlag) {
+// Entrypoint of actual jam file processing. Called by main() or jamBuilder()
+int processJam(char *jamName, char *jamEntrypoint, int jamBuilderFlag) {
 	char tmpPath[PATH_MAX], binary[PATH_MAX];
 	char *tmp = (char *) calloc(1, 4096);
 	TAGINFO *tinfo[MAX_TEMPLATES];
@@ -275,11 +277,12 @@ if (++sanity > 100) { emitStd("Overflow in main!"); break; }
 			free(searchFor);
 			tagIx++;
 		}
+//logMsg(LOGDEBUG, "BUF1 with expanded templates = =====================> [%s] <========================", jamBuf);
+logMsg(LOGERROR, "Remember templates stripping is not accurate...................................");
 
 
 
 		// Now strip out the templates and everything inside them
-logMsg(LOGDEBUG, "BUF1 = =====================> [%s] <========================", jamBuf);
 		int s1 = 0;
 		while (1) {
 			if (s1++ > 200) {
@@ -314,17 +317,15 @@ logMsg(LOGDEBUG, "BUF1 = =====================> [%s] <========================",
 				break;
 			}
 			// Snip
-			logMsg(LOGDEBUG, "orig=%d 1st=%d 2nd=%d", (int) strlen(jamBuf), (startCurly - jamBuf), (endCurly));
+			logMsg(LOGDEBUG, "Stripping template: orig=%d 1st=%d 2nd=%d", (int) strlen(jamBuf), (startCurly - jamBuf), (endCurly));
 			char *newBuf = (char *) calloc(1, strlen(jamBuf));
 			memcpy(newBuf, jamBuf, (startCurly - jamBuf));
 			strcat(newBuf, (endCurly + strlen(endJam)));
 			free(jamBuf);
 			jamBuf = newBuf;
-
-
 		}
 	}
-logMsg(LOGDEBUG, "BUF2 = =====================> [%s] <========================", jamBuf);
+//logMsg(LOGDEBUG, "BUF2 with stripped templates after expanding = =====================> [%s] <========================", jamBuf);
 
 
 
@@ -373,7 +374,7 @@ logMsg(LOGDEBUG, "BUF2 = =====================> [%s] <========================",
 	else {
 		logMsg(LOGINFO, "Processing command loop for @action %s", jamEntrypoint);
 		control(startIx, NULL);
-		if (!sysJamFlag) {
+		if (!jamBuilderFlag) {
 			urlEncodeRequired = 1;
 			endJs(urlEncodeRequired);	// Encode
 		}
@@ -389,7 +390,7 @@ logMsg(LOGDEBUG, "BUF2 = =====================> [%s] <========================",
 		jamDump(atoi(debugVar->portableValue));
 
 	// Output the data
-	if (!sysJamFlag) {
+	if (!jamBuilderFlag) {
 		endHeader();
 		if (oobDataRequested == 1)
 			oobJamData();
@@ -456,17 +457,17 @@ int control(int startIx, char *defaultTableName) {
 //		-----------------------------------------
 			emitStd(jam[ix]->trailer);
 //		-----------------------------------------
-		} else if (!(strcmp(cmd, "@sysjam"))) {
+//		} else if (!(strcmp(cmd, "@jambuilder"))) {
 //		-----------------------------------------
-			char *jamName = getWordAlloc(args, 1, "\t ");
-			char *jamAction = getWordAlloc(args, 2, "\t ");
-			char *jamOutputStream = getWordAlloc(args, 3, "\t ");
-
-			sysJam(jamName, jamAction, jamOutputStream);
-			free(jamName);
-			free(jamAction);
-			free(jamOutputStream);
-			emitStd(jam[ix]->trailer);
+//			char *jamName = getWordAlloc(args, 1, "\t ");
+//			char *jamAction = getWordAlloc(args, 2, "\t ");
+//			char *jamOutputStream = getWordAlloc(args, 3, "\t ");
+//
+//			jamBuilder(jamName, jamAction, jamOutputStream);
+//			free(jamName);
+//			free(jamAction);
+//			free(jamOutputStream);
+//			emitStd(jam[ix]->trailer);
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@template"))) {
 //		-----------------------------------------
@@ -477,7 +478,9 @@ int control(int startIx, char *defaultTableName) {
 			if (args) {
 				getWord(tmp, args, 1, " \t");
 				if (*tmp) {
-					if ( (!strcmp(tmp, "input")) || (!strcmp(tmp, "date")) )
+					if (!strcmp(tmp, "dropdown"))
+						wordHtmlDropdown(ix, defaultTableName);
+					else if ( (!strcmp(tmp, "input")) || (!strcmp(tmp, "date")) )
 						wordHtmlInput(ix, defaultTableName);
 					else if (!strcmp(tmp, "inp"))
 						wordHtmlInp(ix, defaultTableName);
