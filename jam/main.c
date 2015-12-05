@@ -53,7 +53,7 @@ int processJam(char *jamName, char *jamEntrypoint, int jamBuilderFlag);
 int control(int startIx, char *tableName);
 
 #define MAX_TEMPLATES 10000
-#define JAMBUILDERPATH "/jam/run/sys/"
+#define JAMBUILDERPATH ""
 
 int isASCII(const char *data, size_t size)
 {
@@ -134,10 +134,12 @@ int main(int argc, char *argv[]) {
 // Allows us to process jam files with the existing vars, useful for calling templates etc
 int jamBuilder(char *jamName, char *jEntrypoint, char *jamOutputStream) {
 	logMsg(LOGDEBUG, "jamBuilder start");
-
-	if ((jamOutputStream) && (!strcasecmp(jamOutputStream, "js")))
+	if ((jamOutputStream) && (!strcasecmp(jamOutputStream, "js"))) {
 		outputStream = strdup(jamOutputStream);
-
+		logMsg(LOGDEBUG, "jamBuilder will append to js stream");
+	} else {
+		logMsg(LOGDEBUG, "jamBuilder will append to std stream");
+	}
 	JAM *tmpJam[MAX_JAM];
 	memcpy(tmpJam, jam, (sizeof(JAM *) * MAX_JAM));
 	memset(jam, 0, (sizeof(JAM *) * MAX_JAM));
@@ -275,7 +277,8 @@ if (++sanity > 100) { emitStd("Overflow in main!"); break; }
 			free(searchFor);
 			tagIx++;
 		}
-logMsg(LOGDEBUG, "BUF1 with expanded templates = =====================> [%s] <========================", jamBuf);
+//logMsg(LOGDEBUG, "BUF1 with expanded templates = =====================> [%s] <========================", jamBuf);
+logMsg(LOGERROR, "Remember templates stripping is not accurate...................................");
 
 
 
@@ -322,7 +325,7 @@ logMsg(LOGDEBUG, "BUF1 with expanded templates = =====================> [%s] <==
 			jamBuf = newBuf;
 		}
 	}
-logMsg(LOGDEBUG, "BUF2 with stripped templates after expanding = =====================> [%s] <========================", jamBuf);
+//logMsg(LOGDEBUG, "BUF2 with stripped templates after expanding = =====================> [%s] <========================", jamBuf);
 
 
 
@@ -475,7 +478,9 @@ int control(int startIx, char *defaultTableName) {
 			if (args) {
 				getWord(tmp, args, 1, " \t");
 				if (*tmp) {
-					if ( (!strcmp(tmp, "input")) || (!strcmp(tmp, "date")) )
+					if (!strcmp(tmp, "dropdown"))
+						wordHtmlDropdown(ix, defaultTableName);
+					else if ( (!strcmp(tmp, "input")) || (!strcmp(tmp, "date")) )
 						wordHtmlInput(ix, defaultTableName);
 					else if (!strcmp(tmp, "inp"))
 						wordHtmlInp(ix, defaultTableName);

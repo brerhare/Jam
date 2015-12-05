@@ -1,0 +1,7 @@
+----genHtml-CALL-TO-JAM----<br>
+
+{{@action genHtmlAction}}
+	----genHtml-CALL-TO-ACTION----<br>
+{{@end}}
+
+{{@include /jam/sys/html/ftr.html}}
