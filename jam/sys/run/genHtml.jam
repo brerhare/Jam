@@ -2,7 +2,7 @@
 <p> Uses current db </p>
 
 {{@action htmlDropdown}}
-	<select id='SEQ_{{control.seqno}}_SELECT_VALUE' name='{{}}' value='{{}}' onchange='alert(this.value);' class='uk-form-width-{{control.size}}'>
+	<select id='SEQ_{{control.seqno}}_SELECT_VALUE' name='{{.}}' value='{{.}}' onChange='fn(this, event);' class='uk-form-width-{{control.size}}'>
 	{{@each TABLENAME}}
 		<option value='{{TARGET_FIELD}}'> {{PICK_FIELD}} </option>
 	{{@end}}
@@ -10,7 +10,7 @@
 {{@end}}
 
 {{@action htmlDropdownSav}}
-	<select id='SEQ_{{control.seqno}}_SELECT_VALUE' name='{{}}' value='{{}}' onchange='alert(this.value);' class='uk-form-width-{{control.size}}'>
+	<select id='SEQ_{{control.seqno}}_SELECT_VALUE' name='{{.}}' value='{{.}}' onchange='alert(this.value);' class='uk-form-width-{{control.size}}'>
 	{{@each stock_container}}
 		<option value='{{control.field}}'> {{control.pickfield}} </option>
 	{{@end}}

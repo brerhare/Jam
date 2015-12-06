@@ -27,8 +27,17 @@ int breakpointAutocompleteId[MAX_BREAKPOINTS];
 // HTML <tag> generation from {{curly}}
 
 int wordHtmlDropdown(int ix, char *defaultTableName) {
-	jamBuilder("/jam/sys/run/genHtml.jam", "htmlDropdown", "std");
-	jamBuilder("/jam/sys/run/genHtml.jam", "htmlDropdownJs", "js");
+	JAMBUILDER jb;
+	jb.stream = STREAMOUTPUT_STD;
+	char *templateStr = "{{@template TABLENAME stock_container}}	\
+						 {{@template TARGET_FIELD stock_container.id}}	\
+						 {{@template PICK_FIELD stock_container.name}}";
+	jb.templateStr = templateStr;
+	jamBuilder("/jam/sys/run/genHtml.jam", "htmlDropdown", &jb);
+
+	jb.stream = STREAMOUTPUT_JS;
+	jb.templateStr = NULL;
+	jamBuilder("/jam/sys/run/genHtml.jam", "htmlDropdownJs", &jb);
 }
 
 int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {

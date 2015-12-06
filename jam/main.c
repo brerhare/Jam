@@ -49,7 +49,7 @@ char *jamEntrypoint = NULL;		// action entrypoint. Hackily global because its us
 // Common declares end
 
 JAM *initJam();
-int processJam(char *jamName, char *jamEntrypoint, int jamBuilderFlag);
+int processJam(char *jamName, char *jamEntrypoint, JAMBUILDER *jb);
 int control(int startIx, char *tableName);
 
 #define MAX_TEMPLATES 10000
@@ -122,7 +122,7 @@ int main(int argc, char *argv[]) {
 			}
 		}
 	}
-	return(processJam(jamName, jamEntrypoint, 0));
+	return(processJam(jamName, jamEntrypoint, NULL));
 	// Cleanup
 	free(jamEntrypoint);
 	if (conn)
@@ -131,11 +131,15 @@ int main(int argc, char *argv[]) {
 
 // This is called from within to process a jam file, instead of main() ie no cgi
 // Save the current global jam, create a new one for the jam file, then restore the original
-// Allows us to process jam files with the existing vars, useful for calling templates etc
-int jamBuilder(char *jamName, char *jEntrypoint, char *jamOutputStream) {
+// Allows us to process jam files with the existing vars, useful for generating html content from 'live' data
+int jamBuilder(char *jamName, char *jEntrypoint, JAMBUILDER *jb) {
 	logMsg(LOGDEBUG, "jamBuilder start");
-	if ((jamOutputStream) && (!strcasecmp(jamOutputStream, "js"))) {
-		outputStream = strdup(jamOutputStream);
+	if (jb == NULL) {
+		logMsg(LOGERROR, "jamBuilder requires a JAMBUILDER pointer");
+		return(-1);
+	}
+	outputStream = jb->stream;	// copy to global so emitStd etc can access it
+	if (jb->stream == STREAMOUTPUT_JS) {
 		logMsg(LOGDEBUG, "jamBuilder will append to js stream");
 	} else {
 		logMsg(LOGDEBUG, "jamBuilder will append to std stream");
@@ -160,7 +164,7 @@ int jamBuilder(char *jamName, char *jEntrypoint, char *jamOutputStream) {
 	jamIx = 0;
 
 	logMsg(LOGDEBUG, "jamBuilder requesting jam [%s] and action [%s]", fullJamName, jamEntrypoint);
-	processJam(fullJamName, jamEntrypoint, 1);
+	processJam(fullJamName, jamEntrypoint, jb);
 
 	if (jamEntrypoint) {
 		free(jamEntrypoint);
@@ -172,15 +176,12 @@ int jamBuilder(char *jamName, char *jEntrypoint, char *jamOutputStream) {
 	jamIx = tmpJamIx;
 	free(fullJamName);
 
-	if (outputStream) {
-		free(outputStream);
-		outputStream = NULL;
-	}
+	outputStream = 0;	// reset this
 	logMsg(LOGDEBUG, "jamBuilder end");
 }
 
 // Entrypoint of actual jam file processing. Called by main() or jamBuilder()
-int processJam(char *jamName, char *jamEntrypoint, int jamBuilderFlag) {
+int processJam(char *jamName, char *jamEntrypoint, JAMBUILDER *jb) {
 	char tmpPath[PATH_MAX], binary[PATH_MAX];
 	char *tmp = (char *) calloc(1, 4096);
 	TAGINFO *tinfo[MAX_TEMPLATES];
@@ -201,6 +202,12 @@ int processJam(char *jamName, char *jamEntrypoint, int jamBuilderFlag) {
 		logMsg(LOGINFO, "successfully read jam %s", tmp);
 	else
 		logMsg(LOGINFO, "could not read jam %s", tmp);
+
+	// Append and jambuilder templates
+	if ((jb) && (jb->templateStr)) {
+		jamBuf = (char *) realloc(jamBuf, (strlen(jamBuf) + strlen(jb->templateStr) + 1));
+		strcat(jamBuf, jb->templateStr);
+	}
 
 int sanity = 0;
 	while (1) {
@@ -374,7 +381,7 @@ logMsg(LOGERROR, "Remember templates stripping is not accurate..................
 	else {
 		logMsg(LOGINFO, "Processing command loop for @action %s", jamEntrypoint);
 		control(startIx, NULL);
-		if (!jamBuilderFlag) {
+		if (!jb) {
 			urlEncodeRequired = 1;
 			endJs(urlEncodeRequired);	// Encode
 		}
@@ -390,7 +397,7 @@ logMsg(LOGERROR, "Remember templates stripping is not accurate..................
 		jamDump(atoi(debugVar->portableValue));
 
 	// Output the data
-	if (!jamBuilderFlag) {
+	if (!jb) {
 		endHeader();
 		if (oobDataRequested == 1)
 			oobJamData();

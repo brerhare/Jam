@@ -38,7 +38,8 @@ char *emitScratchPos = emitScratchBuffer;
 int emitScratchRemaining = MAX_EMITSCRATCH_LEN;
 
 FILE *emitStream = stdout;
-char *outputStream = NULL;	// jamBuilder uses this to override usual output if non null. "js" is used so far to write scripts
+
+int outputStream = 0;			// copy of the JAMBUILDER stream (eg for emitStd)
 
 int oobDataRequested = 0;		// Some ajax calls will ask for this
 
@@ -283,8 +284,8 @@ int emitStd(char *str, ...) {
 	va_list ap;
 	va_start(ap, str);
 
-	if (outputStream) {	//@@TODO This whole stream handling is messy for jamBuilder...
-		logMsg(LOGDEBUG, "jamBuilder 'js' is on so emitStd is redirected to emitJs");
+	if (outputStream == STREAMOUTPUT_JS) {	//@@TODO This whole stream handling is messy for jamBuilder...
+		logMsg(LOGDEBUG, "jamBuilder 'STREAMOUTPUT_JS' is on so emitStd is redirected to emitJs");
 		unsigned long len = vsnprintf(emitJsPos, emitJsRemaining, str, ap);
 		emitJsPos += len;
 		*emitJsPos = '\0';
