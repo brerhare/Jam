@@ -58,12 +58,12 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 							sequence
 							);
 	jb.templateStr = templateStr;
-	jamBuilder("/run/sys/jamBuilder/html/dropdown.jam", "dropdownHtml", &jb);
+	jamBuilder("/jam/run/sys/jamBuilder/html/dropdown.jam", "dropdownHtml", &jb);
 
 	jb.stream = STREAMOUTPUT_JS;
 	sprintf(templateStr,"{{@template DROPDOWN_SEQ %d}}", sequence);
 	jb.templateStr = templateStr;
-	jamBuilder("/run/sys/jamBuilder/html/dropdown.jam", "dropdownJs", &jb);
+	jamBuilder("/jam/run/sys/jamBuilder/html/dropdown.jam", "dropdownJs", &jb);
 
 	free(tmp);
 	free(tableName);
