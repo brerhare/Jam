@@ -32,19 +32,42 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 	// size=medium
 	// label=Container
 	char *tmp = (char *) calloc(1, 4096);
+	int sequence = rand() % 9999999;
+
+	char *tableName = getWordAlloc(getVarAsString("sys.control.pickfield"), 1, ".");
+	if (!tableName) {
+		logMsg(LOGERROR, "wordHtmlDropdown() requires a table to work with");
+		return(-1);
+	}
+	char *targetField = getWordAlloc(getVarAsString("sys.control.pickfield"), 1, ".");
+
 	JAMBUILDER jb;
 	jb.stream = STREAMOUTPUT_STD;
 	char *templateStr = (char *) calloc(1, 4096);
-	sprintf(templateStr, "{{@template DROPDOWN_TABLENAME stock_container}}	\
-						  {{@template DROPDOWN_TARGET_FIELD stock_container.id}}	\
-						  {{@template DROPDOWN_PICK_FIELD stock_container.name}}");
+	sprintf(templateStr, "{{@template DROPDOWN_LABEL %s}}	\
+						  {{@template DROPDOWN_TABLENAME %s}}	\
+						  {{@template DROPDOWN_TARGET_FIELD %s.id}}	\
+						  {{@template DROPDOWN_PICK_FIELD %s}}	\
+						  {{@template DROPDOWN_SIZE %s}}	\
+						  {{@template DROPDOWN_SEQ %d}}",
+							getVarAsString("sys.control.label"),
+							tableName,
+							targetField,
+							getVarAsString("sys.control.pickfield"),
+							getVarAsString("sys.control.size"),
+							sequence
+							);
 	jb.templateStr = templateStr;
-	jamBuilder("/jam/sys/run/genHtml.jam", "htmlDropdown", &jb);
+	jamBuilder("/run/sys/jamBuilder/html/dropdown.jam", "dropdownHtml", &jb);
 
 	jb.stream = STREAMOUTPUT_JS;
-	jb.templateStr = NULL;
-	jamBuilder("/jam/sys/run/genHtml.jam", "htmlDropdownJs", &jb);
+	sprintf(templateStr,"{{@template DROPDOWN_SEQ %d}}", sequence);
+	jb.templateStr = templateStr;
+	jamBuilder("/run/sys/jamBuilder/html/dropdown.jam", "dropdownJs", &jb);
+
 	free(tmp);
+	free(tableName);
+	free(targetField);
 }
 
 int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
@@ -57,7 +80,7 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	char *fieldSize = (char *) calloc(1, 4096);			// NB this is 'jam:action' for keyaction
 	char *fieldVarValue = (char *) calloc(1, 4096);
 	char *fieldSearchValue = (char *) calloc(1, 4096);
-	char *fieldPrompt = (char *) calloc(1, 4096);		// NB this is 'size' for ekyaction
+	char *fieldPrompt = (char *) calloc(1, 4096);		// NB this is 'size' for keyaction
 	char *fieldPlaceholder = (char *) calloc(1, 4096);	
 	char *disabledStr = (char *) calloc(1, 4096);
 	char *tmp = (char *) calloc(1, 4096);

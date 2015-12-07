@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdarg.h>
 #include <strings.h>
 #include <string.h>
@@ -75,6 +76,28 @@ void deleteVar(VAR *var) {
 	free(var);
 	logMsg(LOGMICRO, "Exiting deleteVar()");
 } */
+
+// Quick create a string var
+void setVarAsString(char *name, char *value) {
+	updateVar(name, value, VAR_STRING);
+}
+
+// Quick create a number var
+void setVarAsNumber(char *name, long value) {
+	char num[16];
+	sprintf(num, "%ld", value);
+	updateVar(name, num, VAR_NUMBER);
+}
+
+// Return the string value (portable value) of the named var
+// Try strict first, then non-strict
+char *getVarAsString(char *name) {
+	VAR *variable = NULL;
+	variable = findVarStrict(name);
+	if (variable)
+		return variable->portableValue;
+	return NULL;
+}
 
 VAR *findVarLenient(char *name, char *prefix) {
 	// Search using the name as supplied. Mysql fields are always stored fully qualified. Others might have no or many levels of qualifier

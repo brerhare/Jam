@@ -334,6 +334,8 @@ logMsg(LOGERROR, "Remember templates stripping is not accurate..................
 	}
 //logMsg(LOGDEBUG, "BUF2 with stripped templates after expanding = =====================> [%s] <========================", jamBuf);
 
+	if (jb)
+	logMsg(LOGMICRO, "jambuilder running ---------->\n%s\n<----------", jamBuf);
 
 
 	// Create Jam array from jamBuf
@@ -624,6 +626,7 @@ int control(int startIx, char *defaultTableName) {
 					fillVarDataTypes(listVar, p);
 					logMsg(LOGMICRO, "@each (list %s) starting recurse", listName);
 					cmdSeqnum++;		// up the unique sequence number
+					setVarAsNumber("sys.control.sequence", cmdSeqnum);
 					control((ix + 1), defaultTableName);
 					logMsg(LOGMICRO, "@each (list %s) ended recurse", listName);
 					p = (char *) listNext(listName);
@@ -645,6 +648,7 @@ int control(int startIx, char *defaultTableName) {
 					emitStd(jam[ix]->trailer);
 					logMsg(LOGMICRO, "@each (db table %s) starting recurse", givenTableName);
 					cmdSeqnum++;		// up the unique sequence number
+					setVarAsNumber("sys.control.sequence", cmdSeqnum);
 					control((ix + 1), givenTableName);
 					logMsg(LOGMICRO, "@each (db table %s) ended recurse", givenTableName);
 				}

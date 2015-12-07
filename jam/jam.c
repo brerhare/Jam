@@ -307,9 +307,9 @@ void clearControlVars() {
 	for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
 		if (!(var[i]))
 			break;
-		if ((var[i]->name) && (strlen(var[i]->name) > 9)) {
-			memcpy(tmp, var[i]->name, 9);
-			if (!strcmp(tmp, "_control.")) {
+		if ((var[i]->name) && (strlen(var[i]->name) > 12)) {
+			memcpy(tmp, var[i]->name, 12);
+			if (!strcmp(tmp, "sys.control.")) {
 				logMsg(LOGMICRO, "Found var to delete - [%s]", var[i]->name);
 				deleteVar(var[i]);
 			}
@@ -341,7 +341,7 @@ int jamArgs2ControlVars(int ix, char *args) {
 			var->portableValue = strdup(v);
 		} else {
 			var = (VAR *) calloc(1, sizeof(VAR));
-			sprintf(tmp, "_control.%s", n);
+			sprintf(tmp, "sys.control.%s", n);
 			var->name = strdup(tmp);
 			var->type = VAR_STRING;
 			var->source = strdup("arg");
