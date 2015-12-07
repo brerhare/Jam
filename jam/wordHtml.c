@@ -27,17 +27,24 @@ int breakpointAutocompleteId[MAX_BREAKPOINTS];
 // HTML <tag> generation from {{curly}}
 
 int wordHtmlDropdown(int ix, char *defaultTableName) {
+	// field=stock_supplier_order.container_id		NB might also assume current table
+	// pickfield=stock_container.name				always fully qualified
+	// size=medium
+	// label=Container
+	char *tmp = (char *) calloc(1, 4096);
 	JAMBUILDER jb;
 	jb.stream = STREAMOUTPUT_STD;
-	char *templateStr = "{{@template TABLENAME stock_container}}	\
-						 {{@template TARGET_FIELD stock_container.id}}	\
-						 {{@template PICK_FIELD stock_container.name}}";
+	char *templateStr = (char *) calloc(1, 4096);
+	sprintf(templateStr, "{{@template DROPDOWN_TABLENAME stock_container}}	\
+						  {{@template DROPDOWN_TARGET_FIELD stock_container.id}}	\
+						  {{@template DROPDOWN_PICK_FIELD stock_container.name}}");
 	jb.templateStr = templateStr;
 	jamBuilder("/jam/sys/run/genHtml.jam", "htmlDropdown", &jb);
 
 	jb.stream = STREAMOUTPUT_JS;
 	jb.templateStr = NULL;
 	jamBuilder("/jam/sys/run/genHtml.jam", "htmlDropdownJs", &jb);
+	free(tmp);
 }
 
 int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {

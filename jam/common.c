@@ -62,6 +62,20 @@ int addVar(VAR *newVar) {
 	logMsg(LOGERROR, "Cant add new var - MAX_VAR exceeded");
 }
 
+/* Not used...causes crashes elsewhere - possibly because theres no 'shiftup' to fill holes after deleting
+void deleteVar(VAR *var) {
+	logMsg(LOGMICRO, "Entering deleteVar()");
+	if (var->name)			free(var->name);
+	if (var->source)		free(var->source);
+	if (var->portableValue)	free(var->portableValue);
+	if (var->stringValue)	free(var->stringValue);
+	if (var->dateValue)		free(var->dateValue);
+	if (var->timeValue)		free(var->timeValue);
+	if (var->datetimeValue)	free(var->datetimeValue);
+	free(var);
+	logMsg(LOGMICRO, "Exiting deleteVar()");
+} */
+
 VAR *findVarLenient(char *name, char *prefix) {
 	// Search using the name as supplied. Mysql fields are always stored fully qualified. Others might have no or many levels of qualifier
 	VAR *variable = NULL;

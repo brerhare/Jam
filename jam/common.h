@@ -83,6 +83,7 @@ extern int emitScratchRemaining;
 extern char *emitScratchBuffer;
 
 int addVar(VAR *newVar);
+void deleteVar(VAR *var);
 VAR *findVarStrict(char *qualifiedName);
 VAR *findVarLenient(char *name, char *prefix);void emit(char *line);
 void die(const char *errorString);

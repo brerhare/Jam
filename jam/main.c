@@ -426,7 +426,8 @@ int control(int startIx, char *defaultTableName) {
 			jam[ix]->args = args;
 			jam[ix]->rawData = rawData;
 			logMsg(LOGMICRO, "Command loop processing command [%s] args [%s] (ix=%d)", cmd, args, ix);
-			jamArgs2Vars(ix, args);		// Create/update vars from args. 
+			//clearControlVars();					// remove any existing control vars
+			jamArgs2ControlVars(ix, args);		// create/update vars from args 
 		}
 
 		args = jam[ix]->args;

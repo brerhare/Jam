@@ -298,8 +298,29 @@ if (++sanity > 200) { emitStd("Overflow in expandCurliesInString!"); break; }
 	return (str);
 }
 
-// Create/update vars from args. 
-int jamArgs2Vars(int ix, char *args) {
+// The control loop creates nvp's from the jamword arguments (type=dropdown, pickfield=product.name etc)
+// Clear all of the old ones before creating
+/************** not used. See the comments in deleteVar() which is also not used
+void clearControlVars() {
+	logMsg(LOGMICRO, "Entering clearControlVars()");
+	char *tmp = (char *) calloc(1, 4096);
+	for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
+		if (!(var[i]))
+			break;
+		if ((var[i]->name) && (strlen(var[i]->name) > 9)) {
+			memcpy(tmp, var[i]->name, 9);
+			if (!strcmp(tmp, "_control.")) {
+				logMsg(LOGMICRO, "Found var to delete - [%s]", var[i]->name);
+				deleteVar(var[i]);
+			}
+		}
+	}
+	free(tmp);
+	logMsg(LOGMICRO, "Exiting clearControlVars()");
+} *************/
+
+// Create/update vars from the jamword arguments args (type=dropdown, pickfield=product.name etc)
+int jamArgs2ControlVars(int ix, char *args) {
 	char *tmp = (char *) calloc(1, 4096);
 	char *arg = NULL;
 	int wdNum = 1;
@@ -309,10 +330,10 @@ int jamArgs2Vars(int ix, char *args) {
 		if ((!n) || (!v)) {
 			continue;
 		}
-		strcat(tmp, n);
-		strcat(tmp, "=");
-		strcat(tmp, v);
-		strcat(tmp, " | ");
+		//strcat(tmp, n);
+		//strcat(tmp, "=");
+		//strcat(tmp, v);
+		//strcat(tmp, " | ");
 		VAR *var = findVarStrict(n);
 		if (var) {
 			if (var->portableValue)
@@ -320,7 +341,7 @@ int jamArgs2Vars(int ix, char *args) {
 			var->portableValue = strdup(v);
 		} else {
 			var = (VAR *) calloc(1, sizeof(VAR));
-			sprintf(tmp, "control.%s", n);
+			sprintf(tmp, "_control.%s", n);
 			var->name = strdup(tmp);
 			var->type = VAR_STRING;
 			var->source = strdup("arg");
@@ -332,6 +353,7 @@ int jamArgs2Vars(int ix, char *args) {
 				exit(1);
 			}
 		}
+		logMsg(LOGMICRO, "jamArgs2ControlVars() created/updated control var [%s]", var->name);
 	}
 	if (strlen(tmp))
 		logMsg(LOGDEBUG, "Arg nvp's [%s]", tmp);
