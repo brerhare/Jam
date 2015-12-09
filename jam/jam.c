@@ -327,21 +327,22 @@ int jamArgs2ControlVars(int ix, char *args) {
 	while (arg = getWordAlloc(args, wdNum++, " \t\n")) {	// eg 'a=b' or 'c = d'
 		char *n = getWordAlloc(arg, 1, "=");
 		char *v = getWordAlloc(arg, 2, "=");
-		if ((!n) || (!v)) {
+		if (!n)
 			continue;
-		}
+		if (!v)
+			v = strdup("");
 		//strcat(tmp, n);
 		//strcat(tmp, "=");
 		//strcat(tmp, v);
 		//strcat(tmp, " | ");
-		VAR *var = findVarStrict(n);
+		sprintf(tmp, "sys.control.%s", n);
+		VAR *var = findVarStrict(tmp);
 		if (var) {
 			if (var->portableValue)
 				free(var->portableValue);
 			var->portableValue = strdup(v);
 		} else {
 			var = (VAR *) calloc(1, sizeof(VAR));
-			sprintf(tmp, "sys.control.%s", n);
 			var->name = strdup(tmp);
 			var->type = VAR_STRING;
 			var->source = strdup("arg");
@@ -353,9 +354,9 @@ int jamArgs2ControlVars(int ix, char *args) {
 				exit(1);
 			}
 		}
-		logMsg(LOGMICRO, "jamArgs2ControlVars() created/updated control var [%s]", var->name);
+		free(n);
+		free(v);
+		logMsg(LOGMICRO, "jamArgs2ControlVars() created/updated control var [%s]=[%s]", var->name, var->portableValue);
 	}
-	if (strlen(tmp))
-		logMsg(LOGDEBUG, "Arg nvp's [%s]", tmp);
 	free(tmp);
 }

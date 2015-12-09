@@ -99,6 +99,14 @@ char *getVarAsString(char *name) {
 	return NULL;
 }
 
+int isVar(char *name) {
+	VAR *variable = NULL;
+	variable = findVarStrict(name);
+	if (variable)
+		return 1;
+	return 0;
+}
+
 VAR *findVarLenient(char *name, char *prefix) {
 	// Search using the name as supplied. Mysql fields are always stored fully qualified. Others might have no or many levels of qualifier
 	VAR *variable = NULL;
