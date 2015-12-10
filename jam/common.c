@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdarg.h>
 #include <strings.h>
 #include <string.h>
@@ -38,7 +39,8 @@ char *emitScratchPos = emitScratchBuffer;
 int emitScratchRemaining = MAX_EMITSCRATCH_LEN;
 
 FILE *emitStream = stdout;
-char *outputStream = NULL;	// sysJam uses this to override usual output if non null. "js" is used so far to write scripts
+
+int outputStream = 0;			// copy of the JAMBUILDER stream (eg for emitStd)
 
 int oobDataRequested = 0;		// Some ajax calls will ask for this
 
@@ -59,6 +61,50 @@ int addVar(VAR *newVar) {
 		}
 	}
 	logMsg(LOGERROR, "Cant add new var - MAX_VAR exceeded");
+}
+
+/* Not used...causes crashes elsewhere - possibly because theres no 'shiftup' to fill holes after deleting
+void deleteVar(VAR *var) {
+	logMsg(LOGMICRO, "Entering deleteVar()");
+	if (var->name)			free(var->name);
+	if (var->source)		free(var->source);
+	if (var->portableValue)	free(var->portableValue);
+	if (var->stringValue)	free(var->stringValue);
+	if (var->dateValue)		free(var->dateValue);
+	if (var->timeValue)		free(var->timeValue);
+	if (var->datetimeValue)	free(var->datetimeValue);
+	free(var);
+	logMsg(LOGMICRO, "Exiting deleteVar()");
+} */
+
+// Quick create a string var
+void setVarAsString(char *name, char *value) {
+	updateVar(name, value, VAR_STRING);
+}
+
+// Quick create a number var
+void setVarAsNumber(char *name, long value) {
+	char num[16];
+	sprintf(num, "%ld", value);
+	updateVar(name, num, VAR_NUMBER);
+}
+
+// Return the string value (portable value) of the named var
+// Try strict first, then non-strict
+char *getVarAsString(char *name) {
+	VAR *variable = NULL;
+	variable = findVarStrict(name);
+	if (variable)
+		return variable->portableValue;
+	return NULL;
+}
+
+int isVar(char *name) {
+	VAR *variable = NULL;
+	variable = findVarStrict(name);
+	if (variable)
+		return 1;
+	return 0;
 }
 
 VAR *findVarLenient(char *name, char *prefix) {
@@ -237,6 +283,7 @@ void jamDump(int which) {
 			if (var[i]->debugHighlight == 4) emitStd(" style='color:#a8c968;'");
 			if (var[i]->debugHighlight == 5) emitStd(" style='color:#e28c86;'");
 			if (var[i]->debugHighlight == 6) emitStd(" style='color:cyan;'");
+			if (var[i]->debugHighlight == 7) emitStd(" style='color:white;'");
 			emitStd(">");
 
 			*tmp = 0;
@@ -256,6 +303,7 @@ void jamDump(int which) {
 		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:#a8c968;'>variable </span>");
 		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:#e28c86;'>mysql </span>");
 		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:cyan;'>list </span>");
+		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:white;'>arg </span>");
 	}
 	emitStd("<br>");
 	emitStd("</div>");
@@ -280,6 +328,17 @@ int emitHeader(char *str, ...) {
 int emitStd(char *str, ...) {
 	va_list ap;
 	va_start(ap, str);
+
+	if (outputStream == STREAMOUTPUT_JS) {	//@@TODO This whole stream handling is messy for jamBuilder...
+		logMsg(LOGDEBUG, "jamBuilder 'STREAMOUTPUT_JS' is on so emitStd is redirected to emitJs");
+		unsigned long len = vsnprintf(emitJsPos, emitJsRemaining, str, ap);
+		emitJsPos += len;
+		*emitJsPos = '\0';
+		emitJsRemaining -= len;
+		va_end(ap);
+		return(0);
+	}
+
 // @@BUG Overflow needs checked. See http://stackoverflow.com/questions/7215921/possible-buffer-overflow-vulnerability-for-va-list-in-c and http://linux.die.net/man/3/vsnprintf for ideas
 	unsigned long len = vsnprintf(emitStdPos, emitStdRemaining, str, ap);
 	emitStdPos += len;
@@ -324,11 +383,13 @@ logMsg(LOGMICRO, "ENDDATA=[%s]", emitStdBuffer);
 
 int endJs(int urlEncodeRequired) {
 //return(0);
+	char *p = NULL;
 	if (strlen(emitJsBuffer)) {
-		char *p = emitJsBuffer;
+		p = emitJsBuffer;
+
 		char *encodedJs = NULL;
 		if (urlEncodeRequired) {
-			encodedJs = urlEncode(emitJsBuffer);
+			encodedJs = urlEncode(p);
 			p = encodedJs;
 		}
 	// @@KIM <script> tag

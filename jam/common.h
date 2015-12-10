@@ -30,6 +30,14 @@ typedef struct {
 extern JAM *jam[MAX_JAM];
 extern int jamIx;
 
+typedef struct {
+	int stream;
+	char *templateStr;
+} JAMBUILDER;
+#define STREAMOUTPUT_STD 1
+#define STREAMOUTPUT_JS  2
+extern int outputStream;	// global copy of the active JAMBUILDER stream (eg for emitStd)
+
 extern char *tableStack[MAX_JAM];
 
 #define VAR_STRING     0
@@ -75,6 +83,12 @@ extern int emitScratchRemaining;
 extern char *emitScratchBuffer;
 
 int addVar(VAR *newVar);
+void deleteVar(VAR *var);
+void setVarAsString(char *name, char *value);
+void setVarAsNumber(char *name, long value);
+char *getVarAsString(char *name);
+int isVar(char *name);
+
 VAR *findVarStrict(char *qualifiedName);
 VAR *findVarLenient(char *name, char *prefix);void emit(char *line);
 void die(const char *errorString);
@@ -91,8 +105,7 @@ char *urlEncode(char *str);
 extern int oobDataRequested;
 int oobJamData();
 
-extern char *outputStream;	// sysJam uses this to override usual output if non null
-int sysJam(char *jamName, char *jEntrypoint, char *jamOutputStream);		// process a jam file from within
+int jamBuilder(char *jamName, char *jEntrypoint, JAMBUILDER *jb);		// process a jam file from within
 
 extern int urlEncodeRequired;
 

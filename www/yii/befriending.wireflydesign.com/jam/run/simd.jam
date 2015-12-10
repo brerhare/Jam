@@ -1,0 +1,48 @@
+{{@include /jam/sys/html/header.html}}
+
+{{@database befriending_wireflydesign_com}}
+
+<!-- Template defines -->
+{{@template TABLE simd}}
+{{@template DESCRIPTION Maintain Events}}
+
+<!-- Template defines for the list component -->
+{{@template DELETEFIELD simd.datazone}}
+{{@template HEADINGS
+	<th> Data Zone </th>
+	<th> Post Code </th>
+}}
+{{@template COLUMNS
+	<td>{{datazone}}</td>
+	<td>{{simd_lookup_id}}</td>
+}}
+
+<!-- Template defines for the form input component -->
+{{@template FORMINPUT
+	{{@html input text simd.datazone medium 'Data Zone'}}
+	{{@html input dropdown simd.simd_lookup_id simd_lookup.postcode medium 'Post Code'}}
+	{{@html input text simd.local_auth_code medium 'Local Authority Code'}}
+	{{@html input text simd.local_auth_name medium 'Local Authority Name'}}
+	{{@html input text simd.population medium 'Population'}}
+	{{@html input text simd.working_population medium 'Working Population'}}
+	{{@html input text simd.score medium 'Score'}}
+	{{@html input text simd.rank medium 'Rank'}}
+	{{@html input text simd.income_score medium 'Income Score'}}
+	{{@html input text simd.income_number medium 'Income'}}
+	{{@html input text simd.employment_score medium 'Employment Score '}}
+	{{@html input text simd.employment_number medium 'Employment'}}
+	{{@html input text simd.employment_rank medium 'Employment Rank'}}
+	{{@html input text simd.health_score medium 'Health Score'}}
+	{{@html input text simd.health_rank medium 'Health Rank'}}
+	{{@html input text simd.education_rank medium 'Education Rank'}}
+	{{@html input text simd.education_score medium 'Education Score'}}
+	{{@html input text simd.housing_score medium 'Housing Score'}}
+	{{@html input text simd.housing_rank medium 'Housing Rank'}}
+	{{@html input text simd.geographic_rank medium 'Geogrphic Rank'}}
+	{{@html input text simd.geographic_score medium 'Geographic Score'}}
+}}
+
+<!-- Include the template -->
+{{@include /jam/run/sys/crud.jam}}
+
+{{@include /jam/sys/html/footer.html}}

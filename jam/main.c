@@ -49,11 +49,10 @@ char *jamEntrypoint = NULL;		// action entrypoint. Hackily global because its us
 // Common declares end
 
 JAM *initJam();
-int processJam(char *jamName, char *jamEntrypoint, int sysJamFlag);
+int processJam(char *jamName, char *jamEntrypoint, JAMBUILDER *jb);
 int control(int startIx, char *tableName);
 
 #define MAX_TEMPLATES 10000
-#define JAMSYSPATH "/jam/sys/jam/"
 
 int isASCII(const char *data, size_t size)
 {
@@ -71,7 +70,20 @@ int main(int argc, char *argv[]) {
 	char *jamName = NULL;
 
 	logMsg(LOGINFO, "--------------------------------------------------------------------------");
-	logMsg(LOGINFO, "Starting");
+	logMsg(LOGINFO, "Starting. argc is %d", argc);
+
+	if (argc == 3) {		// manual eg: /path/to/jam /path/to/documentroot /path/to/jamfile
+		setenv("REQUEST_METHOD", "GET", 1);
+		char *tmp = (char *) calloc(1, 16384);
+		//for (int i = 1; i < argc; i++) {
+			//strcat(tmp, argv[i]);
+			//strcat(tmp, " ");
+		//}
+		setenv("DOCUMENT_ROOT", argv[1], 1);
+		sprintf(tmp, "jam=jam/%s", argv[2]);
+		setenv("QUERY_STRING", tmp, 1);
+		free(tmp);
+	}
 
 	// Output headers to prevent caching
 	emitHeader("Cache-Control: no-store, must-revalidate, max-age=0");
@@ -109,7 +121,7 @@ int main(int argc, char *argv[]) {
 			}
 		}
 	}
-	return(processJam(jamName, jamEntrypoint, 0));
+	return(processJam(jamName, jamEntrypoint, NULL));
 	// Cleanup
 	free(jamEntrypoint);
 	if (conn)
@@ -118,13 +130,19 @@ int main(int argc, char *argv[]) {
 
 // This is called from within to process a jam file, instead of main() ie no cgi
 // Save the current global jam, create a new one for the jam file, then restore the original
-// Allows us to process jam files with the existing vars, useful for calling templates etc
-int sysJam(char *jamName, char *jEntrypoint, char *jamOutputStream) {
-	logMsg(LOGDEBUG, "sysJam start");
-
-	if ((jamOutputStream) && (!strcasecmp(jamOutputStream, "js")))
-		outputStream = strdup(jamOutputStream);
-
+// Allows us to process jam files with the existing vars, useful for generating html content from 'live' data
+int jamBuilder(char *jamName, char *jEntrypoint, JAMBUILDER *jb) {
+	logMsg(LOGDEBUG, "jamBuilder start");
+	if (jb == NULL) {
+		logMsg(LOGERROR, "jamBuilder requires a JAMBUILDER pointer");
+		return(-1);
+	}
+	outputStream = jb->stream;	// copy to global so emitStd etc can access it
+	if (jb->stream == STREAMOUTPUT_JS) {
+		logMsg(LOGDEBUG, "jamBuilder will append to js stream");
+	} else {
+		logMsg(LOGDEBUG, "jamBuilder will append to std stream");
+	}
 	JAM *tmpJam[MAX_JAM];
 	memcpy(tmpJam, jam, (sizeof(JAM *) * MAX_JAM));
 	memset(jam, 0, (sizeof(JAM *) * MAX_JAM));
@@ -140,12 +158,11 @@ int sysJam(char *jamName, char *jEntrypoint, char *jamOutputStream) {
 		jamEntrypoint = strdup(jEntrypoint);	
 
 	char *fullJamName = (char *) calloc(1, 4096);
-	sprintf(fullJamName, JAMSYSPATH);
-	strcat(fullJamName, jamName);
+	strcpy(fullJamName, jamName);
 	jamIx = 0;
 
-	logMsg(LOGDEBUG, "sysJam requesting jam [%s] and action [%s]", fullJamName, jamEntrypoint);
-	processJam(fullJamName, jamEntrypoint, 1);
+	logMsg(LOGDEBUG, "jamBuilder requesting jam [%s] and action [%s]", fullJamName, jamEntrypoint);
+	processJam(fullJamName, jamEntrypoint, jb);
 
 	if (jamEntrypoint) {
 		free(jamEntrypoint);
@@ -157,15 +174,12 @@ int sysJam(char *jamName, char *jEntrypoint, char *jamOutputStream) {
 	jamIx = tmpJamIx;
 	free(fullJamName);
 
-	if (outputStream) {
-		free(outputStream);
-		outputStream = NULL;
-	}
-	logMsg(LOGDEBUG, "sysJam end");
+	outputStream = 0;	// reset this
+	logMsg(LOGDEBUG, "jamBuilder end");
 }
 
-// Entrypoint of actual jam file processing. Called by main() or sysJam()
-int processJam(char *jamName, char *jamEntrypoint, int sysJamFlag) {
+// Entrypoint of actual jam file processing. Called by main() or jamBuilder()
+int processJam(char *jamName, char *jamEntrypoint, JAMBUILDER *jb) {
 	char tmpPath[PATH_MAX], binary[PATH_MAX];
 	char *tmp = (char *) calloc(1, 4096);
 	TAGINFO *tinfo[MAX_TEMPLATES];
@@ -186,6 +200,12 @@ int processJam(char *jamName, char *jamEntrypoint, int sysJamFlag) {
 		logMsg(LOGINFO, "successfully read jam %s", tmp);
 	else
 		logMsg(LOGINFO, "could not read jam %s", tmp);
+
+	// Append and jambuilder templates
+	if ((jb) && (jb->templateStr)) {
+		jamBuf = (char *) realloc(jamBuf, (strlen(jamBuf) + strlen(jb->templateStr) + 1));
+		strcat(jamBuf, jb->templateStr);
+	}
 
 int sanity = 0;
 	while (1) {
@@ -262,7 +282,59 @@ if (++sanity > 100) { emitStd("Overflow in main!"); break; }
 			free(searchFor);
 			tagIx++;
 		}
+//logMsg(LOGDEBUG, "BUF1 with expanded templates = =====================> [%s] <========================", jamBuf);
+logMsg(LOGERROR, "Remember templates stripping is not accurate...................................");
+
+
+
+		// Now strip out the templates and everything inside them
+		int s1 = 0;
+		while (1) {
+			if (s1++ > 200) {
+				logMsg(LOGDEBUG, "Overflow in stripping templates");
+				break;
+			}
+			char *startCurly = strstr(jamBuf, "{{@template");
+			if (!startCurly)
+				break;
+			char *endCurly = NULL;
+
+			// Find the matching endCurly, skipping over any embedded curlies @@TODO duplicated in getTagInfo() and one other
+			int depth = 1;	// ie the start curly we just found
+			char *inCurlyPos = (startCurly + strlen("{{@template"));
+			int sanity = 0;
+			while (depth > 0) {
+				if (++sanity > 100) { emitStd("Overflow in stripping out @template's"); break; }
+				char *sCurly = strstr(inCurlyPos, startJam);
+				char *eCurly = strstr(inCurlyPos, endJam);
+				if ((!sCurly) || (eCurly < sCurly)) {	// ie we found our match
+					if (--depth == 0) {
+						endCurly = eCurly;
+						break;
+					}
+				} else {
+					//depth++;
+					inCurlyPos = (eCurly +strlen(endJam));
+				}
+			}
+			if (!endCurly) {
+				logMsg(LOGERROR, "Unmatched jam token. An open must have a close");
+				break;
+			}
+			// Snip
+			logMsg(LOGDEBUG, "Stripping template: orig=%d 1st=%d 2nd=%d", (int) strlen(jamBuf), (startCurly - jamBuf), (endCurly));
+			char *newBuf = (char *) calloc(1, strlen(jamBuf));
+			memcpy(newBuf, jamBuf, (startCurly - jamBuf));
+			strcat(newBuf, (endCurly + strlen(endJam)));
+			free(jamBuf);
+			jamBuf = newBuf;
+		}
 	}
+//logMsg(LOGDEBUG, "BUF2 with stripped templates after expanding = =====================> [%s] <========================", jamBuf);
+
+	if (jb)
+	logMsg(LOGMICRO, "jambuilder running ---------->\n%s\n<----------", jamBuf);
+
 
 	// Create Jam array from jamBuf
 	logMsg(LOGINFO, "Creating jam array");
@@ -309,7 +381,7 @@ if (++sanity > 100) { emitStd("Overflow in main!"); break; }
 	else {
 		logMsg(LOGINFO, "Processing command loop for @action %s", jamEntrypoint);
 		control(startIx, NULL);
-		if (!sysJamFlag) {
+		if (!jb) {
 			urlEncodeRequired = 1;
 			endJs(urlEncodeRequired);	// Encode
 		}
@@ -325,7 +397,7 @@ if (++sanity > 100) { emitStd("Overflow in main!"); break; }
 		jamDump(atoi(debugVar->portableValue));
 
 	// Output the data
-	if (!sysJamFlag) {
+	if (!jb) {
 		endHeader();
 		if (oobDataRequested == 1)
 			oobJamData();
@@ -338,6 +410,7 @@ if (++sanity > 100) { emitStd("Overflow in main!"); break; }
 }
 
 int control(int startIx, char *defaultTableName) {
+//	emitStd("...ENTERING %d...", startIx);
 	int ix = startIx;
 	char *tmp = (char *) calloc(1, 4096);
 	while (jam[ix]) {
@@ -352,8 +425,9 @@ int control(int startIx, char *defaultTableName) {
 			free(jam[ix]->rawData);
 			jam[ix]->args = args;
 			jam[ix]->rawData = rawData;
-			logMsg(LOGMICRO, "Command loop processing command [%s] args [%s]", cmd, args);
-			jamArgs2Vars(ix, args);		// Create/update vars from args. 
+			logMsg(LOGMICRO, "Command loop processing command [%s] args [%s] (ix=%d)", cmd, args, ix);
+			//clearControlVars();					// remove any existing control vars
+			jamArgs2ControlVars(ix, args);		// create/update vars from args 
 		}
 
 		args = jam[ix]->args;
@@ -391,17 +465,17 @@ int control(int startIx, char *defaultTableName) {
 //		-----------------------------------------
 			emitStd(jam[ix]->trailer);
 //		-----------------------------------------
-		} else if (!(strcmp(cmd, "@sysjam"))) {
+//		} else if (!(strcmp(cmd, "@jambuilder"))) {
 //		-----------------------------------------
-			char *jamName = getWordAlloc(args, 1, "\t ");
-			char *jamAction = getWordAlloc(args, 2, "\t ");
-			char *jamOutputStream = getWordAlloc(args, 3, "\t ");
-
-			sysJam(jamName, jamAction, jamOutputStream);
-			free(jamName);
-			free(jamAction);
-			free(jamOutputStream);
-			emitStd(jam[ix]->trailer);
+//			char *jamName = getWordAlloc(args, 1, "\t ");
+//			char *jamAction = getWordAlloc(args, 2, "\t ");
+//			char *jamOutputStream = getWordAlloc(args, 3, "\t ");
+//
+//			jamBuilder(jamName, jamAction, jamOutputStream);
+//			free(jamName);
+//			free(jamAction);
+//			free(jamOutputStream);
+//			emitStd(jam[ix]->trailer);
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@template"))) {
 //		-----------------------------------------
@@ -412,7 +486,9 @@ int control(int startIx, char *defaultTableName) {
 			if (args) {
 				getWord(tmp, args, 1, " \t");
 				if (*tmp) {
-					if ( (!strcmp(tmp, "input")) || (!strcmp(tmp, "date")) )
+					if (!strcmp(tmp, "dropdown"))
+						wordHtmlDropdown(ix, defaultTableName);
+					else if ( (!strcmp(tmp, "input")) || (!strcmp(tmp, "date")) )
 						wordHtmlInput(ix, defaultTableName);
 					else if (!strcmp(tmp, "inp"))
 						wordHtmlInp(ix, defaultTableName);
@@ -548,6 +624,7 @@ int control(int startIx, char *defaultTableName) {
 					fillVarDataTypes(listVar, p);
 					logMsg(LOGMICRO, "@each (list %s) starting recurse", listName);
 					cmdSeqnum++;		// up the unique sequence number
+					setVarAsNumber("sys.control.sequence", cmdSeqnum);
 					control((ix + 1), defaultTableName);
 					logMsg(LOGMICRO, "@each (list %s) ended recurse", listName);
 					p = (char *) listNext(listName);
@@ -562,18 +639,41 @@ int control(int startIx, char *defaultTableName) {
 				logMsg(LOGDEBUG, "Its a db, not a list. do the select()");
 				char *givenTableName = (char *) calloc(1, 4096);
 				MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 999999);
+				logMsg(LOGMICRO, "Create the result set");
 				SQL_RESULT *rp = sqlCreateResult(givenTableName, res);
+				logMsg(LOGDEBUG, "Get each row from the result set");
 				while (sqlGetRow2Vars(rp) != SQL_EOF) {
 					emitStd(jam[ix]->trailer);
 					logMsg(LOGMICRO, "@each (db table %s) starting recurse", givenTableName);
 					cmdSeqnum++;		// up the unique sequence number
+					setVarAsNumber("sys.control.sequence", cmdSeqnum);
 					control((ix + 1), givenTableName);
 					logMsg(LOGMICRO, "@each (db table %s) ended recurse", givenTableName);
 				}
-				// Finished. Now emit the loops' trailer and make it current, so we will immediately advance past it
-				while (jam[ix] && (strcmp(jam[ix]->command, "@end") || (strcmp(jam[ix]->args, givenTableName)))) {
-					ix++;
+				// Finished. Now advance to the matching @end and emit its trailer
+				int depth = 0;
+				int sanity = 0;
+				while (jam[++ix]) {
+					if (++sanity > 1000) {
+						logMsg(LOGERROR, "Endless looping finding @end for @each in control()");
+						return(-1);
+					}
+					if (!strcmp(jam[ix]->command, "@end")) {
+						if (depth == 0)
+							break;
+						else
+							depth--;
+					} else if (!strcmp(jam[ix]->command, "@each")) {
+						depth++;
+					}
 				}
+
+				/*
+				while (jam[ix] && (strcmp(jam[ix]->command, "@end") || (strcmp(jam[ix]->args, givenTableName)))) {
+					logMsg(LOGDEBUG,"---skipping [%s][%s] ------", jam[ix]->command,jam[ix]->args);
+					ix++;
+				}*/
+
 				if (jam[ix])
 					emitStd(jam[ix]->trailer);
 				mysql_free_result(res);
@@ -640,7 +740,7 @@ int control(int startIx, char *defaultTableName) {
 		} else if (!(strcmp(cmd, "@end"))) {
 //		------------------------------------
 			// Return from an each-end or action-end loop
-//emitStd("RETURNING\n");
+//emitStd("...RETURNING %d...", ix);
 			free(tmp);
 			return(0);
 //		----------------------------------------
@@ -715,7 +815,9 @@ int control(int startIx, char *defaultTableName) {
 
 			// Either retrieve the data from a field or calculate
 			VAR *searchVar = findVarLenient(data, defaultTableName);
-			if (searchVar)
+			if (!strcmp(data, "''"))
+				strcpy(resultString, "");
+			else if (searchVar)
 				strcpy(resultString, searchVar->portableValue);
 			else if (isCalculation(expandedData)) {
 				char *calc = calculate(expandedData);

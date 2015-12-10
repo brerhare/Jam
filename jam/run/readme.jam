@@ -114,12 +114,12 @@
 {@html input text stock_supplier.payment_terms mini "Payment terms" days}
 {@html input date stock_supplier.date mini "Date"}
 {@html input filter stock_transaction.supplier_id stock_supplier.name mini "Supplier Name"}
-{@html input dropdown stock_transaction.supplier_id stock_supplier.name mini "Supplier Name"}
 {@html input keyaction jam:action, inputElement, outputResult, mini}	// use null for empty values
 {@html input disabled stock_supplier.payment_terms mini "Payment terms" days}}	// same as input just no editing
 {@html inp <anytype means inline input>}
 
-{@html input type=dropdown field=product.supplier_id pickfield=supplier.name size=medium label=Supplier}
+{@html dropdown stock_transaction.supplier_id stock_supplier.name mini "Supplier Name"}
+{@html dropdown field=product.supplier_id pickfield=supplier.name size=medium label=Supplier}
 
 {@html textarea stock_supplier.notes 60x5 Notes}
 
@@ -163,6 +163,8 @@ system.now 		@@TODO
 <h4>Misc</h4>
 
 {@email admin@dglink.co.uk concertgoer@horrormail.com "Your tickets" Thank you order.name for buying numberof tickets}
+{@email from to subject action:runActionNameForContent}
+
 {@type /path/file}
 {@sysjam jamscript-in-sys-jam-area optional-action}
 
@@ -211,10 +213,16 @@ system.now 		@@TODO
 
 <h3>Internal notes</h3>
 
+Running from commandline
+	- /path/to/jam documentroot path/to/jamfile
+	- ../cgi/jam ~/dev/src/www/angular/stock befriender
+
+
 @actions. All variables created as the result of actions are sent as oob to the browser.
 
 Later on the jam will need to differentiate the commandline and client-server mode to decide which oob type to use
 
 
 <h4>Autocreated Jam variables</h4>
-arg.xxxxx		// mainly for sysjam, all args processed line by line are converted to vars
+sys.control.xxxxx		// mainly for sysjam, all args processed line by line are converted to vars
+sys.control.sequence	// A unique sequence number for each iteration of an @each @end loop

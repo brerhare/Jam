@@ -165,6 +165,7 @@ function fn(obj, event) {
 		}
 	}
 	localFunc = localFunc.split('.').join('_dot_');
+console.log("fn (onChange) looking for user supplied function '" + localFunc + "'");
 	if (localFunc != '') {
 		if (typeof window[localFunc] === "function")
 			window[localFunc](obj);

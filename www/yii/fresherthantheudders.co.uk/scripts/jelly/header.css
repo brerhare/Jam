@@ -7,14 +7,14 @@
 
 html, h2, h4, body, p {	height: 100%;
 				padding: 0%;
-				margin: 0%;
+				margin: 10px 0px;
 				border: 0px;
 				line-height: 140%;}
 
 /* Global Hyperlink settings - will affect menu text colour if no text settings */ 
-a { text-decoration: none; color:#7f13eb; }
-a:visited, a:active { text-decoration: none; color:#7f13eb; }
-a:hover { text-decoration: none; color:blue; }
+a { text-decoration: none; color:#39b54a; }
+a:visited, a:active { text-decoration: none; color:#39b54a; }
+a:hover { text-decoration: none; color:#7fca24; }
 
 
 
@@ -31,6 +31,7 @@ h2 {	font-family: 'Open Sans', Verdana, sans-serif !important;
 	color: #7a7a7a;
 	font-size: 18px;
 	font-weight: 400;
+	line-height: 110%;
 	font-style: italic;}
 
 
@@ -43,7 +44,7 @@ h3 {	font-family: 'Boogaloo', Verdana, sans-serif !important;
 	font-stretch: wider;}
 
 h4 {	font-family: 'Open Sans', Verdana, sans-serif !important;
-	color: #7f13eb;
+	color: #39b54a;
 	font-size: 16px;
 	font-weight: 700;
 	font-stretch: wider;}
@@ -51,14 +52,19 @@ h4 {	font-family: 'Open Sans', Verdana, sans-serif !important;
 p  {	font-family: 'Open Sans', Verdana, sans-serif !important;
 	color: #000000;
 	font-size: 14px;
-	font-weight: normal
-	font-stretch: expanded}
+	font-weight: normal;
+	font-stretch: expanded;}
 
 blockquote {font-family: 'Open Sans', Verdana, sans-serif !important;
 	color: #5b5b5b;
 	font-size: 14px;
 	font-style: italic;
 	font-weight: 300}
+	
+li {	font-family: 'Open Sans', Verdana, sans-serif !important;
+	color: #000000;
+	font-size: 14px;
+	font-weight: normal;}
 
 
 html { font-family: 'Open Sans', Verdana, sans-serif !important;

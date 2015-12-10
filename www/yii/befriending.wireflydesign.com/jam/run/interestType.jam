@@ -1,0 +1,27 @@
+{{@include /jam/sys/html/header.html}}
+
+<style>
+	div { width:600px; }
+</style>
+
+{{@database befriending_wireflydesign_com}}
+
+<!-- Template defines -->
+{{@template TABLE interest_type}}
+{{@template DESCRIPTION List High Level Interest Types}}
+{{@template DELETEFIELD interest_type.name}}
+
+{{@template HEADINGS
+	<th> Status </th>
+}}
+
+{{@template COLUMNS
+	<td> {{@html gridinp text interest_type.name medium}} </td>
+}}
+
+{{@template EDITS name}}
+
+<!-- Include the template -->
+{{@include /jam/run/sys/crudInline.jam}}
+
+{{@include /jam/sys/html/footer.html}}

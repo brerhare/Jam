@@ -1,20 +1,405 @@
+## Wirefly Design
+## Accent colour #4142a2
+
 [defaults]
 include = default-values
 
-; Every blob inherits these before adding/overriding
 [* : defaults]
 
 [screen]
-child = contentframe
-fx.wallpaper-image = /img/background.jpg
+child = fixed, site
 css.display = block
+css.background-color = white
 
-	[contentframe]
-	css.display = block
-	css.width = 500px
-	css.margin-top = 400px
-	style.html.h1.color = yellow
-	style.html.h1.background-color = black
-	style.html.h1.padding = 10px
-	html.h1 = a jelly&#0153; site is coming soon
+	[fixed]
+	child = left-column, header-bgd
+	css.width = 100%
+	stacking = horizontal
+	
+		[left-column]
+		child = portfolio, wirefly
+		css.width = 15%
+		css.padding = 2%
+		css.z-index = 50
+		css.position = fixed
+		css.background-image = url('/img/blue_transp.png')
+		css.background-size = 100% 100%
+		
+			
+			[portfolio]
+			css.width = 100%
+			#css.background-color = blue
+			addon.adbox.basicad.picwidth = 100%
+			#addon.adbox.basicad.picheight = 100%
+			addon.adbox.basicad.picspacing = 10%
+			addon.adbox.basicad.numpics = 8
+			addon.adbox.basicad.interval = 5
+			
+			[wirefly]
+			child = wirefly-logo, admin
+			stacking = horizontal
+			css.margin-top = 20px
+			css.width = 50%
 
+				[wirefly-logo]
+				css.width = 90%
+				image.url = img/wirefly-design.png
+				image.width = 100%
+				image.height = 100%
+				image.align = left
+				clicknew = http://www.wireflydesign.com
+				
+			
+				[admin]
+				child = cog-center
+				css.height = 20px
+				css.width = 20px
+				css.background-size = 100%
+				css.background-image = url('/img/admin.png')
+				css.margin-left = -20px
+
+					[cog-center]
+					css.width = 5px
+					css.height = 5px
+					css.margin-top = 8px
+					image.url = img/cog-center.png
+					image.width = 5px
+					image.height = 5px
+					image.align = center
+					clicknew = backend.php
+
+				
+			[header-bgd]
+			child = header
+			css.background-color = white
+			css.width = 100%
+			#css.margin-left = -17%
+			css.z-index = 40
+			css.position = fixed
+		
+				[header]
+				child = home_icon, top-menu, logo
+				stacking = horizontal
+				css.width = 70%
+				css.margin-left = 20%
+						
+					[home_icon]
+					css.width = 5%
+					css.margin-top = 35px
+					image.url = img/home.png
+					image.width = 80%
+					image.height = 100%
+					image.align = center
+					click = ?layout=index&page=index
+					html.raw = <a id="TOP" name="TOP">
+
+					[top-menu]
+					css.width = 60%
+					css.margin-top = 40px
+					css.margin-left = 20px
+					addon.menu.traditional.orientation = horizontal
+					#addon.menu.traditional.width = 100%
+					addon.menu.traditional.height = 40px
+					addon.menu.traditional.align = left
+					addon.menu.traditional.item-width = variable
+					addon.menu.traditional.level = 1
+
+					#// Top level background settings
+					addon.menu.traditional.menu-rounding = 0px
+					addon.menu.traditional.menu-opacity = 100%
+					addon.menu.traditional.menu-color = transparent 
+					addon.menu.traditional.item-separator-width = 20px
+					addon.menu.traditional.item-separator-color = white
+
+					#// Top level font settings
+					addon.menu.traditional.menu-font-size = 22px
+					addon.menu.traditional.menu-font-family = "Comfortaa", Verdana, SanSerif
+					addon.menu.traditional.menu-font-weight = normal
+					addon.menu.traditional.menu-text-color = ##4142a2
+
+					#// Top level hover settings
+					addon.menu.traditional.menu-hover-text-color = red
+					addon.menu.traditional.menu-hover-background-color = transparent
+					addon.menu.traditional.menu-hover-font-size = 22px
+					addon.menu.traditional.menu-hover-font-family = "Comfortaa", Verdana, SanSerif
+					addon.menu.traditional.menu-hover-font-weight = normal
+
+					#// Top level selected settings
+					addon.menu.traditional.menu-selected-text-color = black
+					addon.menu.traditional.menu-selected-background-color = transparent
+					addon.menu.traditional.menu-selected-font-size = 22px
+					addon.menu.traditional.menu-selected-font-family = "Comfortaa", Verdana, SanSerif
+					addon.menu.traditional.menu-selected-font-weight = normal
+
+					#// Second level settings
+					addon.menu.traditional.submenu-height = 40px
+					addon.menu.traditional.submenu-width = variable
+					addon.menu.traditional.submenu-font-size = 18px
+					addon.menu.traditional.submenu-font-family = "Comfortaa", Verdana, SanSerif
+					addon.menu.traditional.submenu-font-weight = normal
+					addon.menu.traditional.submenu-text-color = white
+					addon.menu.traditional.submenu-background-color = ##4142a2
+					addon.menu.traditional.submenu-separator-width = 3px
+					addon.menu.traditional.submenu-separator-color = white
+				
+					[logo]
+					css.width = 25%
+					image.url = img/logo-300.png
+					image.width = 80%
+					image.height = 100%
+					image.align = right
+					click = https://wireflydesign.com
+
+##### Site Content ########
+
+				
+	[site]
+	child = home-page, page-graphic, pages, footer
+	css.width = 100%
+	css.margin-top = 100px
+	css.background-color = white
+	css.position = relative
+	css.z-index = 30
+	
+		[home-page]
+		condition = @PAGE=@HOMEPAGE
+		child = video, overlay
+		css.width = 100%
+		
+			[video]
+			css.background-color = #4142a2
+			addon.video.simple.thumb = /img/blue_bokeh_still.jpg
+			addon.video.simple.width = 100%
+			addon.video.simple.video = /img/bokeh_lights_small
+			#addon.video.simple.video = /img/bokeh_lights
+			addon.video.simple.loop = yes
+			addon.video.simple.poster = /img/blue_bokeh_still.jpg
+			css.z-index = 10
+			css.position = relative
+			
+			[overlay]
+			child = home-column, icons
+			css.margin-left = 25%
+			css.margin-top = -50%
+			css.margin-bottom = 100px
+			css.min-height = 400px
+			css.width = 65%
+			css.z-index = 100
+			css.position = relative
+			stacking = horizontal
+			
+				[home-column]
+				css.width = 50%
+				css.margin-bottm = 50px
+				#css.background-color = grey	
+				addon.global.column.name = home
+				addon.global.column.width = 50%
+				addon.global.column.internal-width = 100%
+				addon.global.column.content-width = 98%
+				#addon.global.column.internal-color = transparent
+				#addon.global.column.background-color = white
+
+				addon.global.column.background-image = img/home_column_bgd.png
+				#addon.global.column.top-image = img/home_top.png
+				addon.global.column.top-height = 20px
+				#addon.global.column.bottom-image = img/home_btm.png
+				addon.global.column.bottom-height = 20px
+			
+				[icons]
+				child = facebook, twitter, email, right-home
+				css.width = 35%
+				css.margin-top = 50px
+				css.margin-left = 15%
+				
+					[facebook]
+					css.width = 15%
+					image.url = /img/facebook.png
+					image.width = 100%
+					image.height = 100%
+					clicknew = https://www.facebook.com/WireflyDesign
+					
+					[twitter]
+					css.margin-top = 15px
+					css.width = 15%
+					image.url = /img/twitter.png
+					image.width = 100%
+					image.height = 100%
+					clicknew = https://twitter.com/WireflyDesign
+					
+					[email]
+					css.margin-top = 15px
+					css.width = 15%
+					image.url = /img/mail.png
+					image.width = 100%
+					image.height = 100%
+					click = ?layout=index&page=contact
+					
+					[right-home]
+					css.margin-top = 15%
+					addon.global.column.name = right-home
+					addon.global.column.width = 100%
+					addon.global.column.internal-width = 100%
+					addon.global.column.content-width = 98%
+					addon.global.column.internal-color = transparent
+					addon.global.column.background-color = transparent
+					addon.global.column.top-height = 5px
+					addon.global.column.bottom-height = 5px
+							
+				
+			
+		
+#### Main ######################	
+		
+[pages]
+child = page-content, blog, contact
+css.margin-left = 25%
+css.min-height = 400px
+css.margin-top = 30px
+css.width = 60%
+css.margin-bottom = 10px
+		
+	[page-content]
+	child = content, submenu
+	condition = @PAGE!=contact-website-design-dumfries-scotland
+	condition = @PAGE!=portfolio-website-design-dumfries-scotland
+	stacking = horizontal
+	
+			[content]
+			css.width = 70%
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find the page $_GET['page']
+			html.raw = ContentBlock.content
+			
+			[submenu]
+			css.width = 25%
+			css.margin-left = 4%
+			css.margin-top = 40px
+
+			addon.menu.traditional.orientation = vertical
+			addon.menu.traditional.height = 40px
+			addon.menu.traditional.align = left
+			addon.menu.traditional.item-width = variable
+			addon.menu.traditional.level = 2
+
+			#// Top level background settings
+			addon.menu.traditional.menu-rounding = 0px
+			addon.menu.traditional.menu-opacity = 100%
+			addon.menu.traditional.menu-color = transparent 
+			addon.menu.traditional.item-separator-width = 0px
+
+			#// Top level font settings
+			addon.menu.traditional.menu-font-size = 22px
+			addon.menu.traditional.menu-font-family = "Comfortaa", Verdana, SanSerif
+			addon.menu.traditional.menu-font-weight = normal
+			addon.menu.traditional.menu-text-color = #4142a2
+
+			#// Top level hover settings
+			addon.menu.traditional.menu-hover-text-color = red
+			addon.menu.traditional.menu-hover-background-color = transparent
+			addon.menu.traditional.menu-hover-font-size = 22px
+			addon.menu.traditional.menu-hover-font-family = "Comfortaa", Verdana, SanSerif
+			addon.menu.traditional.menu-hover-font-weight = normal
+
+			#// Top level selected settings
+			addon.menu.traditional.menu-selected-text-color = black
+			addon.menu.traditional.menu-selected-background-color = transparent
+			addon.menu.traditional.menu-selected-font-size = 22px
+			addon.menu.traditional.menu-selected-font-family = "Comfortaa", Verdana, SanSerif
+			addon.menu.traditional.menu-selected-font-weight = normal
+
+			#// Second level settings
+			addon.menu.traditional.submenu-height = 40px
+			addon.menu.traditional.submenu-width = variable
+			addon.menu.traditional.submenu-font-size = 18px
+			addon.menu.traditional.submenu-font-family = "Comfortaa", Verdana, SanSerif
+			addon.menu.traditional.submenu-font-weight = normal
+			addon.menu.traditional.submenu-text-color = white
+			addon.menu.traditional.submenu-background-color = #4142a2
+			addon.menu.traditional.submenu-separator-width = 3px
+			addon.menu.traditional.submenu-separator-color = white
+			
+		[blog]
+		css.width = 100%
+		condition = @PAGE=portfolio-website-design-dumfries-scotland
+		html.raw = {{news newstype=pinterest sidebar=right}}
+		
+		[contact]
+		child = contact-content, contact-form
+		condition = @PAGE=contact-website-design-dumfries-scotland
+		stacking = horizontal
+		
+			[contact-content]
+			css.width = 50%
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find the page $_GET['page']
+			html.raw = ContentBlock.content
+			
+			
+			[contact-form]
+			css.width = 45%
+			css.margin-left = 4%
+			html.raw = <h1><span style="font-size:24px;">Please fill in the form below</span></h1>
+			css.text-align = center
+			css.min-height = 325px
+			css.background-color = white
+			jam.iframe-height = 300px
+			jam.iframe = /run/contactForm.jam
+		
+		
+#### Footer ##################################################		
+		
+[footer]
+child = footer-content, copyright
+css.width = 100% 
+css.background-image = url('/img/blue_bokeh_still.jpg')
+css.background-size = 100%
+
+	[footer-content]
+	child = footer-left, footer-right
+	css.width = 60%
+	css.margin = 20px auto
+	stacking = horizontal
+	css.border = 4px solid white
+	fx.rounding = 20px
+	#css.background-color = grey
+	css.background-image = url('/img/blue_transp.png')
+	css.background-size = 100% 100%
+	
+	
+		[footer-left]
+		css.margin = 3%
+		css.width = 45%
+		addon.global.column.name = footer-left
+		addon.global.column.width = 100%
+		addon.global.column.internal-width = 100%
+		addon.global.column.content-width = 98%
+		addon.global.column.internal-color = transparent
+		addon.global.column.background-color = transparent
+		addon.global.column.top-height = 5px
+		addon.global.column.bottom-height = 5px
+			
+		[footer-right]
+		css.margin = 3%
+		css.width = 45%
+	
+		addon.global.column.name = footer-right
+		addon.global.column.width = 100%
+		addon.global.column.internal-width = 100%
+		addon.global.column.content-width = 98%
+		addon.global.column.internal-color = transparent
+		addon.global.column.background-color = transparent
+		addon.global.column.top-height = 5px
+		addon.global.column.bottom-height = 5px
+			
+			[copyright]
+			css.margin = 20px auto
+			css.line-height = 1em
+			html.raw = Wirefly Design Ltd &copy 2015 - All rights reserved
+			css.color = #000000
+			css.font-size = 11px
+			css.text-align = center
+		
+
+			

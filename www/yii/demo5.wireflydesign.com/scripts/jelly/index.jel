@@ -59,8 +59,7 @@ css.min-width = 600px
 
 #// Top level basic settings
 		addon.menu.traditional.orientation = horizontal
-	#	addon.menu.traditional.width = // blank or a px value. uses 100% of container width if a px isnt specified
-	#	addon.menu.traditional.height = 40px
+		#	addon.menu.traditional.height = 40px
 		addon.menu.traditional.align = center
 		addon.menu.traditional.item-margin = 30px
 		addon.menu.traditional.item-width = variable
@@ -88,7 +87,7 @@ css.min-width = 600px
 		addon.menu.traditional.menu-hover-text-color = #822626
 		addon.menu.traditional.menu-hover-background-color = white
 		addon.menu.traditional.menu-hover-font-size = 20px
-		addon.menu.traditional.menu-hover-font-family = Italiana
+		addon.menu.traditional.menu-hover-font-family = Italiana, Verdana, sans-serif
 		addon.menu.traditional.menu-hover-font-weight = bold
 
 #// Top level selected settings
@@ -99,19 +98,15 @@ css.min-width = 600px
 		addon.menu.traditional.menu-selected-font-weight = bold
 
 #// Second level settings
-addon.menu.traditional.submenu-height = 30px // centers text
-addon.menu.traditional.submenu-width = variable / px
+#addon.menu.traditional.submenu-height = 30px // centers text
+#addon.menu.traditional.submenu-width = variable / px
 addon.menu.traditional.submenu-font-size = 16px
-addon.menu.traditional.submenu-font-family = Arial
+addon.menu.traditional.submenu-font-family = Droid Sans, Verdana, sans-serif
 addon.menu.traditional.submenu-font-weight = normal
-addon.menu.traditional.submenu-text-color = blue
-addon.menu.traditional.submenu-background-color = grey
-addon.menu.traditional.submenu-background-tile = /img/menu.jpg
-addon.menu.traditional.submenu-background-stretch = /img/menu.jpg
-addon.menu.traditional.submenu-separator-width = 1px
-addon.menu.traditional.submenu-separator-color = red
-addon.menu.traditional.submenu-separator-tile = /img/menu.jpg
-addon.menu.traditional.submenu-separator-stretch = /img/menu.jpg
+addon.menu.traditional.submenu-text-color = black
+addon.menu.traditional.submenu-background-color = #ada585
+addon.menu.traditional.submenu-separator-width = 10px
+addon.menu.traditional.submenu-separator-color = white
 
 
 

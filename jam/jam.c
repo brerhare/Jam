@@ -74,12 +74,14 @@ char *curlies2JamArray(char *jamPos) {
 				break;
 			}
 		} else {
-			depth++;
+			//depth++;
 			inCurlyPos = (eCurly +strlen(endJam));
 		}
 	}
-	if (!endCurly)
-		die("Unmatched jam token, an open must have a close");
+	if (!endCurly) {
+		logMsg(LOGERROR, "Unmatched jam token. An open must have a close");
+		return(NULL);
+	}
 
 	int wdLen = (endCurly - startCurly - strlen(startJam));
 	char *wd = (char *) malloc(wdLen + 1);
@@ -136,7 +138,7 @@ char *curlies2JamArray(char *jamPos) {
 	if ( (!strcmp(jam[jamIx]->command, "@each")) || (!strcmp(jam[jamIx]->command, "@action")) ) {
 		for (int i = 0; i < MAX_JAM; i++) {
 			if (tableStack[i] == NULL) {
-				char *p = (char *) calloc(1, 4096);
+				char *p = (char *) calloc(10, 4096);
 				getWord(p, jam[jamIx]->args, 1, space);
 				tableStack[i] = p;
 //emitStd("STACK: [%s]\n", tableStack[i]);
@@ -150,8 +152,10 @@ char *curlies2JamArray(char *jamPos) {
 			if ((tableStack[i] == NULL) && (i > 0)) {
 				i--;
 //emitStd("POP: [%s]\n", tableStack[i]);
-				if (!tableStack[i])
-					die("Invalid @end tag found. I dont seem to find the tag that started this one");
+				if (!tableStack[i]) {
+					logMsg(LOGERROR, "Invalid @end tag found. I dont seem to find the tag that started this one");
+					return(NULL);
+				}
 				jam[jamIx]->args = strdup(tableStack[i]);
 				free(tableStack[i]);
 				tableStack[i] = NULL;
@@ -188,17 +192,21 @@ TAGINFO *getTagInfo(char *text, char *tagName) {
 					break;
 				}
 			} else {
-				depth++;
+				//depth++;
 				inCurlyPos = (eCurly +strlen(endJam));
 			}
 		}
-		if (!endCurly)
-			die("Unmatched jam token, an open must have a close");
+		if (!endCurly) {
+			logMsg(LOGERROR, "Unmatched jam token, an open must have a close");
+			return(NULL);
+		}
 
 		char *startContent = (tag + strlen(startJam));
 		char *endContent = (endCurly - 1);
-		if (endContent < startContent)
-			die("getTagContent: end tag before start tag");
+		if (endContent < startContent) {
+			logMsg(LOGERROR, "getTagContent: end tag before start tag");
+			return(NULL);
+		}
 		content = (char *) calloc(1, (endContent - startContent + 2));
 		memcpy(content, startContent, (endContent - startContent + 1));
 		currTag = strTrim(getWordAlloc(content, 1, " \t\n"));
@@ -254,12 +262,14 @@ if (++sanity > 200) { emitStd("Overflow in expandCurliesInString!"); break; }
 					break;
 				}
 			} else {
-				depth++;
+				//depth++;
 				inCurlyPos = (eCurly +strlen(endJam));
 			}
 		}
-		if (!endCurly)
-			die("Unmatched jam token, an open must have a close");
+		if (!endCurly) {
+			logMsg(LOGERROR, "Unmatched jam token, an open must have a close");
+			return(NULL);
+		}
 
 		// Extract the variable name
 		int wdLen = (endCurly - startCurly - strlen(startJam));
@@ -288,29 +298,52 @@ if (++sanity > 200) { emitStd("Overflow in expandCurliesInString!"); break; }
 	return (str);
 }
 
-// Create/update vars from args. 
-int jamArgs2Vars(int ix, char *args) {
+// The control loop creates nvp's from the jamword arguments (type=dropdown, pickfield=product.name etc)
+// Clear all of the old ones before creating
+/************** not used. See the comments in deleteVar() which is also not used
+void clearControlVars() {
+	logMsg(LOGMICRO, "Entering clearControlVars()");
+	char *tmp = (char *) calloc(1, 4096);
+	for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
+		if (!(var[i]))
+			break;
+		if ((var[i]->name) && (strlen(var[i]->name) > 12)) {
+			memcpy(tmp, var[i]->name, 12);
+			if (!strcmp(tmp, "sys.control.")) {
+				logMsg(LOGMICRO, "Found var to delete - [%s]", var[i]->name);
+				deleteVar(var[i]);
+			}
+		}
+	}
+	free(tmp);
+	logMsg(LOGMICRO, "Exiting clearControlVars()");
+} *************/
+
+// Create/update vars from the jamword arguments args (type=dropdown, pickfield=product.name etc)
+int jamArgs2ControlVars(int ix, char *args) {
 	char *tmp = (char *) calloc(1, 4096);
 	char *arg = NULL;
 	int wdNum = 1;
 	while (arg = getWordAlloc(args, wdNum++, " \t\n")) {	// eg 'a=b' or 'c = d'
 		char *n = getWordAlloc(arg, 1, "=");
 		char *v = getWordAlloc(arg, 2, "=");
-		if ((!n) || (!v)) {
+		if (!n)
 			continue;
-		}
-		strcat(tmp, n);
-		strcat(tmp, "=");
-		strcat(tmp, v);
-		strcat(tmp, " | ");
-		VAR *var = findVarStrict(n);
+		if (!v)
+			v = strdup("");
+		//strcat(tmp, n);
+		//strcat(tmp, "=");
+		//strcat(tmp, v);
+		//strcat(tmp, " | ");
+		sprintf(tmp, "sys.control.%s", n);
+		VAR *var = findVarStrict(tmp);
 		if (var) {
 			if (var->portableValue)
 				free(var->portableValue);
 			var->portableValue = strdup(v);
 		} else {
 			var = (VAR *) calloc(1, sizeof(VAR));
-			var->name = strdup(n);
+			var->name = strdup(tmp);
 			var->type = VAR_STRING;
 			var->source = strdup("arg");
 			var->debugHighlight = 7;
@@ -321,8 +354,9 @@ int jamArgs2Vars(int ix, char *args) {
 				exit(1);
 			}
 		}
+		free(n);
+		free(v);
+		logMsg(LOGMICRO, "jamArgs2ControlVars() created/updated control var [%s]=[%s]", var->name, var->portableValue);
 	}
-	if (strlen(tmp))
-		logMsg(LOGDEBUG, "Arg nvp's [%s]", tmp);
 	free(tmp);
 }
