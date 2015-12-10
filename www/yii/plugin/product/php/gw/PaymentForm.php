@@ -1,7 +1,10 @@
 <?php
 // @@NB: inserted until @@ENDNB tag
-if ($NewEntry != 1)
+
+if (!isset($WFH)) {
 	include("WireflyHelper.php");
+	$WFH = 1;
+}
 
 logMsg("(PaymentForm) Start dump -------------------------------");
 foreach ($_POST as $field => $value)
@@ -11,6 +14,7 @@ foreach ($_POST as $field => $value)
 }
 logMsg("(PaymentForm) End dump ---------------------------------");
 
+/*
 // Set the gateway credentials
 $dbhandle="";
 _dbinit($dbhandle);
@@ -20,6 +24,8 @@ $q = mysql_fetch_array($result, MYSQL_ASSOC);
 $MerchantID = $q['gu'];
 $Password = $q['gp'];
 _dbfin($dbhandle);
+*/
+
 //header('Location: ' . $q['return_url'] . '/index.php/product/paid?sid=' . $q['sid'] , true, 303);
 //die();
 

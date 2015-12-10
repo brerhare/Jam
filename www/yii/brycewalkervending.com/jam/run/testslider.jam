@@ -1,0 +1,17 @@
+{{@include /jam/sys/html/header.html}}
+
+{{@database test_wireflydesign_com}}
+
+{{@template OPTIONS whatever options go here}}
+{{@template SLIDER
+	{{@each jelly_slider_image}}
+		<div data-p="112.50" style="display: none;">
+			<img data-u="image" src="/userdata/jelly/sliderimage/{{image}}" />
+		</div>
+	{{@end}}
+}}
+
+<!-- Call the addon -->
+{{@include /jam/run/sys/jssorSlider.jam}}
+
+{{@include /jam/sys/html/footer.html}}
