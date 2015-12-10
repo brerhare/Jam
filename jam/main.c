@@ -644,9 +644,14 @@ int control(int startIx, char *defaultTableName) {
 				logMsg(LOGDEBUG, "Get each row from the result set");
 				while (sqlGetRow2Vars(rp) != SQL_EOF) {
 					emitStd(jam[ix]->trailer);
-					logMsg(LOGMICRO, "@each (db table %s) starting recurse", givenTableName);
-					cmdSeqnum++;		// up the unique sequence number
-					setVarAsNumber("sys.control.sequence", cmdSeqnum);
+					// Set up the unique sequence number from table.id
+					sprintf(tmp, "%s.id", givenTableName);
+					char *id = getVarAsString(tmp);
+					cmdSeqnum = 0;
+					if (id)
+						cmdSeqnum = atoi(id);
+					setVarAsNumber("sys.control._id", cmdSeqnum);
+					logMsg(LOGMICRO, "@each (db table %s) starting recurse. sys.control._id for this table is set to [%d]", givenTableName, cmdSeqnum);
 					control((ix + 1), givenTableName);
 					logMsg(LOGMICRO, "@each (db table %s) ended recurse", givenTableName);
 				}
