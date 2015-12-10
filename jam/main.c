@@ -53,7 +53,6 @@ int processJam(char *jamName, char *jamEntrypoint, JAMBUILDER *jb);
 int control(int startIx, char *tableName);
 
 #define MAX_TEMPLATES 10000
-#define JAMBUILDERPATH ""
 
 int isASCII(const char *data, size_t size)
 {
@@ -159,8 +158,7 @@ int jamBuilder(char *jamName, char *jEntrypoint, JAMBUILDER *jb) {
 		jamEntrypoint = strdup(jEntrypoint);	
 
 	char *fullJamName = (char *) calloc(1, 4096);
-	sprintf(fullJamName, JAMBUILDERPATH);
-	strcat(fullJamName, jamName);
+	strcpy(fullJamName, jamName);
 	jamIx = 0;
 
 	logMsg(LOGDEBUG, "jamBuilder requesting jam [%s] and action [%s]", fullJamName, jamEntrypoint);

@@ -87,6 +87,8 @@ void deleteVar(VAR *var);
 void setVarAsString(char *name, char *value);
 void setVarAsNumber(char *name, long value);
 char *getVarAsString(char *name);
+int isVar(char *name);
+
 VAR *findVarStrict(char *qualifiedName);
 VAR *findVarLenient(char *name, char *prefix);void emit(char *line);
 void die(const char *errorString);

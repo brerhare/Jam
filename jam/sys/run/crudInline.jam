@@ -53,7 +53,7 @@
 
 <script>
 	window.onload = function() {
-		// Create onChange functions for columns
+		// Create onChange functions for columns - will be called by fn()
 		var changeMonitors = "EDITS".split(" ");
 		for (var i = 0; i < changeMonitors.length; i++) {
 			name = "onChange_TABLE_dot_" + changeMonitors[i];
