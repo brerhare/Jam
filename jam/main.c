@@ -113,12 +113,7 @@ int main(int argc, char *argv[]) {
 //			logMsg(LOGMICRO, "Initializing startup variable %s with value %s", assignVar->name, assignVar->portableValue);
 			assignVar->source = strdup("prefill");
 			assignVar->debugHighlight = 1;
-			for (int i = 0; i < MAX_VAR; i++) {
-				if (!var[i]) {
-					var[i] = assignVar;
-					break;
-				}
-			}
+			addVar(assignVar);
 		}
 	}
 	return(processJam(jamName, jamEntrypoint, NULL));
@@ -426,7 +421,7 @@ int control(int startIx, char *defaultTableName) {
 			jam[ix]->args = args;
 			jam[ix]->rawData = rawData;
 			logMsg(LOGMICRO, "Command loop processing command [%s] args [%s] (ix=%d)", cmd, args, ix);
-			//clearControlVars();					// remove any existing control vars
+			clearControlVars();					// remove any existing control vars
 			jamArgs2ControlVars(ix, args);		// create/update vars from args 
 		}
 

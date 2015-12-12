@@ -63,6 +63,7 @@ typedef struct {
 	int debugHighlight;
 } VAR;
 #define MAX_VAR 10000
+extern int LAST_VAR;
 extern VAR *var[MAX_VAR];
 
 int control(int startIx, char *defaultTableName);
