@@ -87,6 +87,7 @@ int addVar(VAR *newVar);
 void deleteVar(VAR *var);
 void setVarAsString(char *name, char *value);
 void setVarAsNumber(char *name, long value);
+void unsetVar(char *name);
 char *getVarAsString(char *name);
 int isVar(char *name);
 

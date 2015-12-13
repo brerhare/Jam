@@ -639,15 +639,10 @@ int control(int startIx, char *defaultTableName) {
 				logMsg(LOGDEBUG, "Get each row from the result set");
 				while (sqlGetRow2Vars(rp) != SQL_EOF) {
 					emitStd(jam[ix]->trailer);
-					// Set up the unique sequence number from table.id
-					sprintf(tmp, "%s.id", givenTableName);
-					char *id = getVarAsString(tmp);
-					cmdSeqnum = 0;
-					if (id)
-						cmdSeqnum = atoi(id);
-					setVarAsNumber("sys.control._id", cmdSeqnum);
-					logMsg(LOGMICRO, "@each (db table %s) starting recurse. sys.control._id for this table is set to [%d]", givenTableName, cmdSeqnum);
-					control((ix + 1), givenTableName);
+					logMsg(LOGMICRO, "@each (db table %s) starting recurse", givenTableName);
+					sprintf(tmp, "sys.jamId.%s.id", givenTableName);
+					logMsg(LOGDEBUG, "Setting loop id var. %s=%d", tmp, cmdSeqnum);
+					control((ix + 1), givenTableName);				// recurse into the item
 					logMsg(LOGMICRO, "@each (db table %s) ended recurse", givenTableName);
 				}
 				// Finished. Now advance to the matching @end and emit its trailer

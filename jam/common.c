@@ -69,7 +69,6 @@ int addVar(VAR *newVar) {
 	return(-1);
 }
 
-/* Not used...causes crashes elsewhere - possibly because theres no 'shiftup' to fill holes after deleting */
 void deleteVar(VAR *delVar) {
 	if (delVar == NULL) {
 		logMsg(LOGERROR, "deleteVar() asked to delete NULL var");
@@ -101,6 +100,13 @@ void setVarAsNumber(char *name, long value) {
 	char num[16];
 	sprintf(num, "%ld", value);
 	updateVar(name, num, VAR_NUMBER);
+}
+
+void unsetVar(char *name) {
+	VAR *variable = NULL;
+	variable = findVarStrict(name);
+	if (variable)
+		deleteVar(variable);
 }
 
 // Return the string value (portable value) of the named var
