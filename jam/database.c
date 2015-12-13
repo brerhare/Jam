@@ -364,15 +364,13 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 				wdNum--;
 			}
 		}
-	logMsg(LOGMICRO, "1 ----------------------------- [%s]", subArg[i]);
 
 		externalFieldOrValue = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// try for the external field, containing the value to look for
-logMsg(LOGDEBUG, "[%s]", externalFieldOrValue);
+//logMsg(LOGDEBUG, "[%s]", externalFieldOrValue);
 		if (!externalFieldOrValue) {
 			logMsg(LOGERROR, "no external field given for lookup");
 			return -1;
 		}
-	logMsg(LOGMICRO, "2 -----------------------------");
 
 //sprintf(tmp, "i=%d [%s][%s][%s] fullargs=[%s] and currenttable=[%s]\n", i, selectorField, operand, externalFieldOrValue, args, currentTableName); /*die(tmp);*/
 		VAR *variable = NULL;
