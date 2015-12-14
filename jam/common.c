@@ -46,9 +46,12 @@ int oobDataRequested = 0;		// Some ajax calls will ask for this
 
 int urlEncodeRequired = 0;
 
-int cmdSeqnum = 0;	// every @jamcommand has a unique sequence number. Can be used for unique field names in grids
+int cmdSeqnum = 0;				// every @jamcommand has a unique sequence number or id. Can be used for unique field names in grids
 
 char *oobFileName = "/tmp/oobData.tmp";
+
+int LAST_VAR = -1;				// used globally to indicate the current top
+
 //-----------------------------------------------------------
 // Var related
 
@@ -57,25 +60,35 @@ int addVar(VAR *newVar) {
 	for (int i = 0; i < MAX_VAR; i++) {
 		if (!var[i]) {
 			var[i] = newVar;
+			if (i > LAST_VAR)
+				LAST_VAR = i;
 			return (0);
 		}
 	}
-	logMsg(LOGERROR, "Cant add new var - MAX_VAR exceeded");
+	logMsg(LOGFATAL, "Cant add new var - MAX_VAR exceeded");
+	return(-1);
 }
 
-/* Not used...causes crashes elsewhere - possibly because theres no 'shiftup' to fill holes after deleting
-void deleteVar(VAR *var) {
-	logMsg(LOGMICRO, "Entering deleteVar()");
-	if (var->name)			free(var->name);
-	if (var->source)		free(var->source);
-	if (var->portableValue)	free(var->portableValue);
-	if (var->stringValue)	free(var->stringValue);
-	if (var->dateValue)		free(var->dateValue);
-	if (var->timeValue)		free(var->timeValue);
-	if (var->datetimeValue)	free(var->datetimeValue);
-	free(var);
-	logMsg(LOGMICRO, "Exiting deleteVar()");
-} */
+void deleteVar(VAR *delVar) {
+	if (delVar == NULL) {
+		logMsg(LOGERROR, "deleteVar() asked to delete NULL var");
+	}
+	for (int i = 0; i <= LAST_VAR; i++) {
+		if (var[i] == delVar) {
+			if (var[i]->source)			free(var[i]->source);
+			if (var[i]->portableValue)	free(var[i]->portableValue);
+			if (var[i]->stringValue)	free(var[i]->stringValue);
+			if (var[i]->dateValue)		free(var[i]->dateValue);
+			if (var[i]->timeValue)		free(var[i]->timeValue);
+			if (var[i]->datetimeValue)	free(var[i]->datetimeValue);
+			free(var[i]);
+			var[i] = NULL;
+			//logMsg(LOGMICRO, "deleteVar() deleted var");
+			return;
+		}
+	}
+	logMsg(LOGERROR, "deleteVar() didnt find requested var to delete");
+}
 
 // Quick create a string var
 void setVarAsString(char *name, char *value) {
@@ -87,6 +100,13 @@ void setVarAsNumber(char *name, long value) {
 	char num[16];
 	sprintf(num, "%ld", value);
 	updateVar(name, num, VAR_NUMBER);
+}
+
+void unsetVar(char *name) {
+	VAR *variable = NULL;
+	variable = findVarStrict(name);
+	if (variable)
+		deleteVar(variable);
 }
 
 // Return the string value (portable value) of the named var
@@ -122,9 +142,9 @@ VAR *findVarLenient(char *name, char *prefix) {
 }
 
 VAR *findVarStrict(char *name) {
-	for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
+	for (int i = 0; (i <= LAST_VAR) && var[i]; i++) {
 		if (!(var[i]))
-			break;
+			continue;
 		if (!strcasecmp(var[i]->name, name)) {
 			return var[i];
 		}
@@ -170,16 +190,11 @@ void updateVar(char *qualifiedName, char *value, int type) {
 		clearVarValues(newVar);
 		fillVarDataTypes(newVar, safeValue);
 //emitStd("NON-TABLE-> NAME=%s TYPE=%d AVALUE=%s NVALUE=%ld DVALUE=%2.f\n", newVar->name, newVar->type, newVar->stringValue, newVar->numberValue, newVar->decimal2Value);
-		for (int i = 0; i < MAX_VAR; i++) {
-			if (!var[i]) {
-				var[i] = newVar;
-				break;
-			}
-		}
+		addVar(newVar);
 	} else {
-		for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
+		for (int i = 0; (i <= LAST_VAR); i++) {
 			if (!var[i])
-				break;
+				continue;
 			if (!strcmp(var[i]->name, qualifiedName)) {
 				fillVarDataTypes(var[i], value);
 				break;
@@ -272,9 +287,9 @@ void jamDump(int which) {
 	if (which == 3)
 		emitStd("<hr>");
 	if ((which == 1) || (which == 3)) {
-		for (int i = 0; i < MAX_VAR; i++) {
+		for (int i = 0; i <= LAST_VAR; i++) {
 			if (var[i] == NULL)
-				break;
+				continue;
 
 			emitStd("<span");
 			if (var[i]->debugHighlight == 1) emitStd(" style='color:#decde3'");

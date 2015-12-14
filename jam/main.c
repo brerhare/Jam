@@ -113,12 +113,7 @@ int main(int argc, char *argv[]) {
 //			logMsg(LOGMICRO, "Initializing startup variable %s with value %s", assignVar->name, assignVar->portableValue);
 			assignVar->source = strdup("prefill");
 			assignVar->debugHighlight = 1;
-			for (int i = 0; i < MAX_VAR; i++) {
-				if (!var[i]) {
-					var[i] = assignVar;
-					break;
-				}
-			}
+			addVar(assignVar);
 		}
 	}
 	return(processJam(jamName, jamEntrypoint, NULL));
@@ -426,7 +421,7 @@ int control(int startIx, char *defaultTableName) {
 			jam[ix]->args = args;
 			jam[ix]->rawData = rawData;
 			logMsg(LOGMICRO, "Command loop processing command [%s] args [%s] (ix=%d)", cmd, args, ix);
-			//clearControlVars();					// remove any existing control vars
+			clearControlVars();					// remove any existing control vars
 			jamArgs2ControlVars(ix, args);		// create/update vars from args 
 		}
 
@@ -645,9 +640,9 @@ int control(int startIx, char *defaultTableName) {
 				while (sqlGetRow2Vars(rp) != SQL_EOF) {
 					emitStd(jam[ix]->trailer);
 					logMsg(LOGMICRO, "@each (db table %s) starting recurse", givenTableName);
-					cmdSeqnum++;		// up the unique sequence number
-					setVarAsNumber("sys.control.sequence", cmdSeqnum);
-					control((ix + 1), givenTableName);
+					sprintf(tmp, "sys.jamId.%s.id", givenTableName);
+					logMsg(LOGDEBUG, "Setting loop id var. %s=%d", tmp, cmdSeqnum);
+					control((ix + 1), givenTableName);				// recurse into the item
 					logMsg(LOGMICRO, "@each (db table %s) ended recurse", givenTableName);
 				}
 				// Finished. Now advance to the matching @end and emit its trailer

@@ -200,16 +200,11 @@ void updateSqlVar(char *qualifiedName, enum enum_field_types mysqlType, char *va
 		newVar->debugHighlight = 5;
 		int ret = decodeMysqlType(newVar, mysqlType, value);
 //emitStd("TABLE-> NAME=%s TYPE=%d AVALUE=%s NVALUE=%ld DVALUE=%2.f\n", newVar->name, newVar->type, newVar->stringValue, newVar->numberValue, newVar->decimal2Value);
-		for (int i = 0; i < MAX_VAR; i++) {
-			if (!var[i]) {
-				var[i] = newVar;
-				return;
-			}
-		}
+		addVar(newVar);
 	} else {
-		for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
+		for (int i = 0; (i <= LAST_VAR); i++) {
 			if (!var[i])
-				break;
+				continue;
 			if (!strcmp(var[i]->name, qualifiedName)) {
 				int ret = decodeMysqlType(var[i], mysqlType, value);
 				break;
@@ -371,9 +366,11 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 		}
 
 		externalFieldOrValue = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// try for the external field, containing the value to look for
-//emitStd("\n\n[[[%s]]]\n\n", externalFieldOrValue);
-		if (!externalFieldOrValue)
-			die("no external field given for lookup");
+//logMsg(LOGDEBUG, "[%s]", externalFieldOrValue);
+		if (!externalFieldOrValue) {
+			logMsg(LOGERROR, "no external field given for lookup");
+			return -1;
+		}
 
 //sprintf(tmp, "i=%d [%s][%s][%s] fullargs=[%s] and currenttable=[%s]\n", i, selectorField, operand, externalFieldOrValue, args, currentTableName); /*die(tmp);*/
 		VAR *variable = NULL;
@@ -384,8 +381,10 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 			varValue = strdup(variable->portableValue);
 		else
 			varValue = strdup(externalFieldOrValue);
+
 		// Quote it if necessary (contains non-numeric chars and isnt already)
 		if ((!_isSqlFieldName(varValue, givenTableName)) && (varValue[0] != '\'') && (varValue[strlen(varValue)] != '\'')) {
+
 			int isNum = 1;
 			if (strlen(varValue) == 0)
 				isNum = 0;
@@ -398,6 +397,7 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 					isNum = 0;
 				p++;
 			}
+
 			if ( (1==1) || (!isNum) || (numOfMinuses > 1) ) {	// @@TODO @@FIX!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				if (!strchr(varValue, '\'')) {
 					char *newValue = (char *) calloc(1, strlen(varValue) + 3);
@@ -428,6 +428,7 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 	free(tmp);
 	for (int i = 0; i < MAX_SUBARGS; i++)
 		free(subArg[i]);
+
 	return retval;
 }
 

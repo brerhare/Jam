@@ -300,24 +300,21 @@ if (++sanity > 200) { emitStd("Overflow in expandCurliesInString!"); break; }
 
 // The control loop creates nvp's from the jamword arguments (type=dropdown, pickfield=product.name etc)
 // Clear all of the old ones before creating
-/************** not used. See the comments in deleteVar() which is also not used
 void clearControlVars() {
-	logMsg(LOGMICRO, "Entering clearControlVars()");
 	char *tmp = (char *) calloc(1, 4096);
-	for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
+	for (int i = 0; (i <= LAST_VAR) && var[i]; i++) {
 		if (!(var[i]))
-			break;
+			continue;
 		if ((var[i]->name) && (strlen(var[i]->name) > 12)) {
 			memcpy(tmp, var[i]->name, 12);
 			if (!strcmp(tmp, "sys.control.")) {
-				logMsg(LOGMICRO, "Found var to delete - [%s]", var[i]->name);
+				logMsg(LOGMICRO, "Control var clear %s", var[i]->name);
 				deleteVar(var[i]);
 			}
 		}
 	}
 	free(tmp);
-	logMsg(LOGMICRO, "Exiting clearControlVars()");
-} *************/
+}
 
 // Create/update vars from the jamword arguments args (type=dropdown, pickfield=product.name etc)
 int jamArgs2ControlVars(int ix, char *args) {
@@ -331,10 +328,6 @@ int jamArgs2ControlVars(int ix, char *args) {
 			continue;
 		if (!v)
 			v = strdup("");
-		//strcat(tmp, n);
-		//strcat(tmp, "=");
-		//strcat(tmp, v);
-		//strcat(tmp, " | ");
 		sprintf(tmp, "sys.control.%s", n);
 		VAR *var = findVarStrict(tmp);
 		if (var) {
@@ -356,7 +349,7 @@ int jamArgs2ControlVars(int ix, char *args) {
 		}
 		free(n);
 		free(v);
-		logMsg(LOGMICRO, "jamArgs2ControlVars() created/updated control var [%s]=[%s]", var->name, var->portableValue);
+		logMsg(LOGMICRO, "Control var set %s = %s", var->name, var->portableValue);
 	}
 	free(tmp);
 }
