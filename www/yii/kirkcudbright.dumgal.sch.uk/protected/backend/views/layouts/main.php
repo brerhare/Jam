@@ -50,7 +50,7 @@
 
                 array('label' => 'Plugins', 'url' => '#', 'visible' => !Yii::app()->user->isGuest,
                     'items' => array(
-                        //array('label' => 'Products', 'url' => 'https://plugin.wireflydesign.com/product/backend.php/site/demoDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+                        //array('label' => 'Products', 'url' => 'https://plugin.wireflydesign.com/product/backend.php/site/kbtacademyDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
                         array('label' => 'Blog', 'url' => 'https://plugin.wireflydesign.com/news/backend.php/site/kbtacademyDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
                         array('label' => 'Newsletters', 'url' => 'https://plugin.wireflydesign.com/mailer/backend.php/site/kbtacademyDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
 						array('label' => 'Events', 'url' => 'https://plugin.wireflydesign.com/event/backend.php/site/login2/?sid=' . Yii::app()->session['admin_user_sid'], 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
