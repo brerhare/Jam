@@ -295,6 +295,7 @@ class basic
         if ($this->default_orientation == "horizontal")
 		{
             $css = "xnav ul li~li { border-left: " . $this->default_item_separator_width . "px solid " . $this->default_item_separator_color . "}";
+            $css .= "xnav ul li ul li~li { border-left: " . /*$this->default_item_separator_width .*/ "0px solid " . $this->default_item_separator_color . "}";
         	$this->apiHtml = str_replace("<substitute-item-separator-width>", $css, $this->apiHtml);
 		}
 /*****
