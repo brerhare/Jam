@@ -1,0 +1,57 @@
+{{@action filterHtml}}
+	<div class='uk-form-row'>
+		<label class='uk-form-label' for='FILTER_TARGET_TABLE.FILTER_TARGET_FIELD'> FILTER_LABEL </label>
+		<div class='uk-form-controls'>
+
+			<div class='ui-widget'>
+				<input id='FILTER_JAMKEY' name='FILTER_TARGET_TABLE.FILTER_TARGET_FIELD' value='' XonChange='dropdown_FILTER_TARGET_TABLE_FILTER_TARGET_FIELD(this, event); fn(this, event);' class='uk-form-width-FILTER_SIZE'>
+			</div>
+
+		</div>
+	</div>
+
+{{@end}}
+
+{{@action filterJs}}
+	$(function() {
+		var exampleOfHardcodedData = [
+			{ label: "India", value: "IND" },
+			{ label: "Australia", value: "AUS" }
+		];
+		$( '#FILTER_JAMKEY' ).autocomplete({
+			//source: exampleOfHardcodedData,
+			//source: [ { label: "India", value: "IND" }, { label: "Australia", value: "AUS" } ],
+			source: "/run/sys/jamBuilder/html/filter:filterAjax?table=FILTER_PICK_TABLE&field=FILTER_PICK_FIELD",
+
+			xsource: function(request, response){
+				$.ajax({
+					type: "POST",
+					url: "/run/sys/jamBuilder/html/filter:filterAjax?table=FILTER_PICK_TABLE&field=FILTER_PICK_FIELD",
+					data: "{'Project_ID':'1'}",
+					contentType: "application/json; charset=utf-8",
+					dataType: "json",
+					success: function (msg) {
+						response($.parseJSON(msg.d).Records);
+					},
+					error: function (msg) {
+						alert(msg.status + ' ' + msg.statusText);
+					}
+				})
+			},
+
+		});
+	});
+{{@end}}
+
+{{@action filterAjax}}
+	{{@database stock}}
+	[
+	{{comma = ''}}
+	{{@each {{table}} filter {{field}} like '%{{term}}%'}}
+		{{comma}}
+		{"label":"{{ {{field}} }}","value":"{{id}}"}
+		{{comma = ,}}
+	{{@end}}
+	]
+{{@end}}
+

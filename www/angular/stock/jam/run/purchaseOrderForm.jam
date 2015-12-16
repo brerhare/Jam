@@ -35,14 +35,17 @@
 		<div class="uk-grid">
 
 			<div class="uk-width-8-10">
-				{{@html input filter stock_supplier_order.supplier_id stock_supplier.name medium Supplier}}
+{{@html filter group=grpflt field=stock_supplier_order.supplier_id pickfield=stock_supplier.name size=medium label=Supplier}}
+{{@Xhtml input filter stock_supplier_order.supplier_id stock_supplier.name medium Supplier}}
 				{{@html input date stock_supplier_order.delivery_date medium 'Delivery Date' 'require a delivery date field'}}
 			</div>
 			<div class="uk-width-4-10">
 				{{@html input filter stock_supplier_order.location_id stock_location.name medium Location}}
 			</div>
 			<div class="uk-width-4-10">
-				{{@html input filter stock_supplier_order.container_id stock_container.name medium Container}}
+{{@html dropdown group=grpdrpdn field=stock_supplier_order.container_id pickfield=stock_container.name size=medium label=Container}}
+{{@Xhtml input dropdown stock_supplier_order.container_id stock_container.name medium Container}}
+				{{@Xhtml input filter stock_supplier_order.container_id stock_container.name medium Container}}
 			</div>
 			<div class="uk-width-8-10">
 				<br>

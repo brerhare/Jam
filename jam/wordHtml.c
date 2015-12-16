@@ -40,6 +40,114 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 	char *group = NULL;
 	char *jamKey = NULL;
 
+	//char *targetFieldValue = NULL;
+	//char *pickFieldValue = NULL;
+
+	// [Table].field
+	char *p = getVarAsString("sys.control.field");
+	if (strchr(p, '.')) {		// has a named table
+		targetTable = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
+		targetField = getWordAlloc(getVarAsString("sys.control.field"), 2, ".");
+	} else {					// its just the field name
+		targetTable = strdup(defaultTableName);
+		targetField = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
+	}
+
+	//  Pick [table].field
+	p = getVarAsString("sys.control.pickfield");
+	if (strchr(p, '.')) {		// has a named table
+		pickTable = getWordAlloc(getVarAsString("sys.control.pickfield"), 1, ".");
+		pickField = getWordAlloc(getVarAsString("sys.control.pickfield"), 2, ".");
+	} else {					// its just the field name
+		pickTable = strdup(defaultTableName);
+		pickField = getWordAlloc(getVarAsString("sys.control.pickfield"), 1, ".");
+	}
+
+	// Label
+	if (isVar("sys.control.label"))
+		label = strdup(getVarAsString("sys.control.label"));
+	else
+		label = strdup("");
+
+	// Size
+	if (isVar("sys.control.size"))
+		size = strdup(getVarAsString("sys.control.size"));
+	else
+		size = strdup("");
+
+	// Group(s)
+	if (isVar("sys.control.group")) {
+		sprintf(tmp, " 'class %s' ", getVarAsString("sys.control.group"));
+		group = strdup(tmp);
+	} else
+		group = strdup("");
+
+	// Set jamKey. This is whatever table/field values are required to update the data
+	jamKey = makeJamKeyValue(targetTable, targetField);
+
+/*
+	// Get the target field value
+	sprintf(tmp, "%s.%s", targetTable, targetField);
+	variable = findVarStrict(tmp);
+	if (variable)
+		strcpy(targetFieldValue, variable->portableValue);
+	else
+		targetFieldValue = strdup("");
+	// Use it to lookup the pick field value (for its description to display)
+	sprintf(tmp, "%s.%s", pickable, pickField);
+	variable = findVarStrict(tmp);
+	if (variable)
+		strcpy(targetFieldValue, variable->portableValue);
+	else
+		targetFieldValue = strdup("");
+*/
+
+	JAMBUILDER jb;
+	jb.stream = STREAMOUTPUT_STD;
+	char *templateStr = (char *) calloc(1, 4096);
+	sprintf(templateStr, "{{@template DROPDOWN_TARGET_TABLE %s}}	\
+						  {{@template DROPDOWN_TARGET_FIELD %s}}	\
+						  {{@template DROPDOWN_PICK_TABLE %s}}	\
+						  {{@template DROPDOWN_PICK_FIELD %s}}	\
+						  {{@template DROPDOWN_LABEL %s}}	\
+						  {{@template DROPDOWN_SIZE %s}}	\
+						  {{@template DROPDOWN_GROUP %s}}	\
+						  {{@template DROPDOWN_JAMKEY %s}}",
+							targetTable,
+							targetField,
+							pickTable,
+							pickField,
+							label,
+							size,
+							group,
+							jamKey
+							);
+	jb.templateStr = templateStr;
+	jamBuilder("/jam/run/sys/jamBuilder/html/dropdown.jam", "dropdownHtml", &jb);
+
+	free(tmp);
+	free(targetTable);
+	free(targetField);
+	free(pickTable);
+	free(pickField);
+	free(size);
+	free(group);
+	free(jamKey);
+	emitStd(jam[ix]->trailer);
+}
+
+int wordHtmlFilter(int ix, char *defaultTableName) {
+	char *tmp = (char *) calloc(1, 4096);
+
+	char *targetTable = NULL;
+	char *targetField = NULL;
+	char *pickTable = NULL;
+	char *pickField = NULL;
+	char *label = NULL;
+	char *size = NULL;
+	char *group = NULL;
+	char *jamKey = NULL;
+
 	// [Table].field
 	char *p = getVarAsString("sys.control.field");
 	if (strchr(p, '.')) {		// has a named table
@@ -85,14 +193,14 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 	JAMBUILDER jb;
 	jb.stream = STREAMOUTPUT_STD;
 	char *templateStr = (char *) calloc(1, 4096);
-	sprintf(templateStr, "{{@template DROPDOWN_TARGET_TABLE %s}}	\
-						  {{@template DROPDOWN_TARGET_FIELD %s}}	\
-						  {{@template DROPDOWN_PICK_TABLE %s}}	\
-						  {{@template DROPDOWN_PICK_FIELD %s}}	\
-						  {{@template DROPDOWN_LABEL %s}}	\
-						  {{@template DROPDOWN_SIZE %s}}	\
-						  {{@template DROPDOWN_GROUP %s}}	\
-						  {{@template DROPDOWN_JAMKEY %s}}",
+	sprintf(templateStr, "{{@template FILTER_TARGET_TABLE %s}}	\
+						  {{@template FILTER_TARGET_FIELD %s}}	\
+						  {{@template FILTER_PICK_TABLE %s}}	\
+						  {{@template FILTER_PICK_FIELD %s}}	\
+						  {{@template FILTER_LABEL %s}}	\
+						  {{@template FILTER_SIZE %s}}	\
+						  {{@template FILTER_GROUP %s}}	\
+						  {{@template FILTER_JAMKEY %s}}",
 							targetTable,
 							targetField,
 							pickTable,
@@ -103,11 +211,11 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 							jamKey
 							);
 	jb.templateStr = templateStr;
-	jamBuilder("/jam/run/sys/jamBuilder/html/dropdown.jam", "dropdownHtml", &jb);
+	jamBuilder("/jam/run/sys/jamBuilder/html/filter.jam", "filterHtml", &jb);
 
 	jb.stream = STREAMOUTPUT_JS;
 	jb.templateStr = templateStr;
-	jamBuilder("/jam/run/sys/jamBuilder/html/dropdown.jam", "dropdownJs", &jb);
+	jamBuilder("/jam/run/sys/jamBuilder/html/filter.jam", "filterJs", &jb);
 	free(tmp);
 	free(targetTable);
 	free(targetField);
@@ -760,7 +868,7 @@ char *makeJamKeyValue(char *tableName, char *fieldName) {
 	sprintf(ret, "%s.%s", tableName, fieldName);
 	VAR *variable = findVarStrict(ret);
 	if (variable) {		// its a db or just a regular variable (not a list)
-		sprintf(ret, "%s.%s.%s", variable->portableValue, tableName, fieldName);
+		sprintf(ret, "ID%s___%s___%s", variable->portableValue, tableName, fieldName);
 		logMsg(LOGDEBUG, "makeJamKeyValue() [%s] created", ret);
 		return (ret);
 	}

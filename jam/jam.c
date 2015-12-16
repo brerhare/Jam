@@ -292,9 +292,10 @@ if (++sanity > 200) { emitStd("Overflow in expandCurliesInString!"); break; }
 		strcat(newStr, (endCurly + strlen(endJam)));
 		logMsg(LOGDEBUG, "Splicing replaced {{variable}} with variable->content. 1stpart=%d, variabledata=%d, 2ndpart=%d<br>", (int)strlen(str), (int)strlen(wd), (int)strlen((endCurly + strlen(endJam))));
 		free(str);
+		free(wd);
 		str = newStr;
 	}
-	logMsg(LOGDEBUG, "expandCurliesInString - expanded string is [%s]", str);
+	logMsg(LOGDEBUG, "expandCurliesInString() expanded original string [%s] to [%s]", originalStr);
 	return (str);
 }
 
@@ -321,20 +322,26 @@ int jamArgs2ControlVars(int ix, char *args) {
 	char *tmp = (char *) calloc(1, 4096);
 	char *arg = NULL;
 	int wdNum = 1;
+//logMsg(LOGMICRO, "jamArgs2ControlVars() - initial args [%s]", args);
 	while (arg = getWordAlloc(args, wdNum++, " \t\n")) {	// eg 'a=b' or 'c = d'
 		char *n = getWordAlloc(arg, 1, "=");
 		char *v = getWordAlloc(arg, 2, "=");
-		if (!n)
+		if (!n) {
+			free(arg);
 			continue;
+		}
 		if (!v)
 			v = strdup("");
 		sprintf(tmp, "sys.control.%s", n);
+//logMsg(LOGMICRO, "jamArgs2ControlVars() - lookup [%s]", tmp);
 		VAR *var = findVarStrict(tmp);
 		if (var) {
+//logMsg(LOGMICRO, "jamArgs2ControlVars() - lookup [%s] - found", tmp);
 			if (var->portableValue)
 				free(var->portableValue);
 			var->portableValue = strdup(v);
 		} else {
+//logMsg(LOGMICRO, "jamArgs2ControlVars() - lookup [%s] - not found", tmp);
 			var = (VAR *) calloc(1, sizeof(VAR));
 			var->name = strdup(tmp);
 			var->type = VAR_STRING;
@@ -347,9 +354,15 @@ int jamArgs2ControlVars(int ix, char *args) {
 				exit(1);
 			}
 		}
+//logMsg(LOGMICRO, "jamArgs2ControlVars() - Set the var ok");
+
 		free(n);
 		free(v);
+		free(arg);
+//logMsg(LOGMICRO, "jamArgs2ControlVars() - free ok", tmp);
+
 		logMsg(LOGMICRO, "Control var set %s = %s", var->name, var->portableValue);
 	}
+//logMsg(LOGMICRO, "jamArgs2ControlVars() - all done");
 	free(tmp);
 }

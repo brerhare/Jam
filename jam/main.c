@@ -412,22 +412,24 @@ int control(int startIx, char *defaultTableName) {
 		char *cmd = jam[ix]->command;
 		char *args = NULL;
 		char *rawData = NULL;
+
+		// Expand any {{values}} in the argument string with the current values
+
+		args = expandCurliesInString(jam[ix]->args, defaultTableName);
+		rawData = expandCurliesInString(jam[ix]->rawData, defaultTableName);
+		free(jam[ix]->args);
+		free(jam[ix]->rawData);
+		jam[ix]->args = args;
+		jam[ix]->rawData = rawData;
+
 		if ((strlen(cmd)) && (cmd[0] == '@')) {
-			// Expand any {{values}} in the argument string with the current values
-			args = expandCurliesInString(jam[ix]->args, defaultTableName);
-			rawData = expandCurliesInString(jam[ix]->rawData, defaultTableName);
-			free(jam[ix]->args);
-			free(jam[ix]->rawData);
-			jam[ix]->args = args;
-			jam[ix]->rawData = rawData;
 			logMsg(LOGMICRO, "Command loop processing command [%s] args [%s] (ix=%d)", cmd, args, ix);
 			clearControlVars();					// remove any existing control vars
 			jamArgs2ControlVars(ix, args);		// create/update vars from args 
 		}
-
-		args = jam[ix]->args;
-		rawData = jam[ix]->rawData;
-
+		//args = jam[ix]->args;
+		//rawData = jam[ix]->rawData;
+logMsg(LOGMICRO, "cmd=[%s]------------------", cmd);
 //		-----------------------------------------
 		if (!strcmp(cmd, "@literal")) {
 //		-----------------------------------------
@@ -483,6 +485,9 @@ int control(int startIx, char *defaultTableName) {
 				if (*tmp) {
 					if (!strcmp(tmp, "dropdown"))
 						wordHtmlDropdown(ix, defaultTableName);
+					else if (!strcmp(tmp, "filter"))
+						wordHtmlFilter(ix, defaultTableName);
+
 					else if ( (!strcmp(tmp, "input")) || (!strcmp(tmp, "date")) )
 						wordHtmlInput(ix, defaultTableName);
 					else if (!strcmp(tmp, "inp"))
@@ -781,17 +786,16 @@ int control(int startIx, char *defaultTableName) {
 				emitStd(result string)		*/
 
 			// data = LHS to start with
+
 			char *data = (char *) calloc(1, 4096);
 			strcpy(data, cmd);							// eg: [mem.group_count]
 //emitStd("{AWAY:%s and %s}",cmd, data);
-
 			char *resultString = (char *) calloc(1, 4096);
 			char *fullLine = (char *) calloc(1, 4096);
 			strcpy(fullLine, cmd);
 //emitStd("(CHK:%s and %s)", fullLine, args);
 			if (args)
 				strcpy(fullLine, rawData);
-			strTrim(fullLine);
 //emitStd("T=[%s]\n",fullLine);
 			//sprintf(fullLine, "%s%s", cmd, args);			// eg: [mem.group_count][= stock_group.count]
 			strcpy(data, fullLine);
