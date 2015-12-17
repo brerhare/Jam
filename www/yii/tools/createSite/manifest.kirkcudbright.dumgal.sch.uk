@@ -1,0 +1,18 @@
+domain = kirkcudbright.dumgal.sch.uk
+parentdomain =
+sitetitle = Kirkcudbright Academy
+sid = g9ms7p0kdmtq8vdqgb6h8mk0k3
+
+# Database
+dbname = kirkcudbright_dumgal_sch_uk
+dbuser = kirkcudbright.du
+dbpass = Drg4nacu
+
+# Shopping cart order confirmation email
+checkoutemail = None
+checkoutname = None
+checkoutpaypalemail = no@email
+
+# Backend page editor
+editorpagewidth = 700
+editorpageheight = 400

@@ -81,6 +81,104 @@ class SiteController extends Controller
     /**
      * Displays the DIRECT login page
      */
+// @@TODO: HARDCODED FOR BRYCEWALKERVENDING ---------- REMOVE
+    public function actionBryceWalkerVendingDirect()
+    {
+        Yii::app()->session['uid'] = 70;
+        $identity = new UserIdentity('bryce@brycewalkervending.com', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR Joseawright ---------- REMOVE
+    public function actionJoSeawrightDirect()
+    {
+        Yii::app()->session['uid'] = 98;
+        $identity = new UserIdentity('seawright99', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+	}
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR Kirkcudbright Academy ---------- REMOVE
+    public function actionKbtacademyDirect()
+    {
+        Yii::app()->session['uid'] = 99;
+        $identity = new UserIdentity('kbt-academy', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR Wirefly ---------- REMOVE
+    public function actionWireflyDirect()
+    {
+        Yii::app()->session['uid'] = 18;
+        $identity = new UserIdentity('info@wireflydesign.com', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR Being Business ---------- REMOVE
+    public function actionBeingDirect()
+    {
+        Yii::app()->session['uid'] = 97;
+        $identity = new UserIdentity('admin@beingbusiness.co.uk', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR Barstobrick RC ---------- REMOVE
+    public function actionBarstoDirect()
+    {
+        Yii::app()->session['uid'] = 95;
+        $identity = new UserIdentity('barstobrickrc@hotmail.co.uk', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR Fresher than the udders ---------- REMOVE
+    public function actionUddersDirect()
+    {
+        Yii::app()->session['uid'] = 94;
+        $identity = new UserIdentity('barnbarroch', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
 // @@TODO: HARDCODED FOR Susie Jamieson ---------- REMOVE
     public function actionSusiejamiesonDirect()
     {

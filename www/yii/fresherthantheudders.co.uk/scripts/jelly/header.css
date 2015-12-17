@@ -1,0 +1,74 @@
+<!-- Place your Google fonts here as a cut and paste then choose which header and fonts etc need the font families - NB if the family only come in Italic then you must state the font style as Italic too -->
+
+<link href='https://fonts.googleapis.com/css?family=Boogaloo|Open+Sans:400,300italic,700' rel='stylesheet' type='text/css'>
+
+<style type="text/css">
+
+
+html, h2, h4, body, p {	height: 100%;
+				padding: 0%;
+				margin: 10px 0px;
+				border: 0px;
+				line-height: 140%;}
+
+/* Global Hyperlink settings - will affect menu text colour if no text settings */ 
+a { text-decoration: none; color:#39b54a; }
+a:visited, a:active { text-decoration: none; color:#39b54a; }
+a:hover { text-decoration: none; color:#7fca24; }
+
+
+
+h1 {	font-family: 'Boogaloo', Verdana, sans-serif !important;
+	color: #39b54a;
+	font-size: 36px;
+	font-weight: 400;
+	font-style: italic;
+	text-shadow: 3px 3px 2px lightgrey;
+	line-height: 100%;
+	margin: 0px 0px 2px 0px;}
+
+h2 {	font-family: 'Open Sans', Verdana, sans-serif !important;
+	color: #7a7a7a;
+	font-size: 18px;
+	font-weight: 400;
+	line-height: 110%;
+	font-style: italic;}
+
+
+h3 {	font-family: 'Boogaloo', Verdana, sans-serif !important;
+	color: #39b54a;
+	font-size: 24px;
+	font-weight: 400;
+	font-style: italic;
+	text-shadow: 3px 3px 2px lightgrey;
+	font-stretch: wider;}
+
+h4 {	font-family: 'Open Sans', Verdana, sans-serif !important;
+	color: #39b54a;
+	font-size: 16px;
+	font-weight: 700;
+	font-stretch: wider;}
+
+p  {	font-family: 'Open Sans', Verdana, sans-serif !important;
+	color: #000000;
+	font-size: 14px;
+	font-weight: normal;
+	font-stretch: expanded;}
+
+blockquote {font-family: 'Open Sans', Verdana, sans-serif !important;
+	color: #5b5b5b;
+	font-size: 14px;
+	font-style: italic;
+	font-weight: 300}
+	
+li {	font-family: 'Open Sans', Verdana, sans-serif !important;
+	color: #000000;
+	font-size: 14px;
+	font-weight: normal;}
+
+
+html { font-family: 'Open Sans', Verdana, sans-serif !important;
+	font-size: 12px;
+	font-weight:normal}
+
+</style>

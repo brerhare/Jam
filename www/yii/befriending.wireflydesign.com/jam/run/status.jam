@@ -1,0 +1,27 @@
+{{@include /jam/sys/html/header.html}}
+
+<style>
+	div { width:600px; }
+</style>
+
+{{@database befriending_wireflydesign_com}}
+
+<!-- Template defines -->
+{{@template TABLE status}}
+{{@template DESCRIPTION List the Different Status of the Young Person}}
+{{@template DELETEFIELD status.name}}
+
+{{@template HEADINGS
+	<th> Status </th>
+}}
+
+{{@template COLUMNS
+	<td> {{@html gridinp text status.name medium}} </td>
+}}
+
+{{@template EDITS name}}
+
+<!-- Include the template -->
+{{@include /jam/run/sys/crudInline.jam}}
+
+{{@include /jam/sys/html/footer.html}}

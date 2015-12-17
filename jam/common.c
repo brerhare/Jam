@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdarg.h>
 #include <strings.h>
 #include <string.h>
@@ -14,8 +15,42 @@
 #include "log.h"
 #include "stringUtil.h"
 
-FILE *scratchJsStream = NULL;
-char *scratchJsFileName = "jam/sys/js/scratch.js";		// preceeded by documentroot
+CURL *curl = NULL;
+
+#define MAX_EMITHEADER_LEN 409600
+char *emitHeaderBuffer = (char *) calloc(1, MAX_EMITHEADER_LEN);
+char *emitHeaderPos = emitHeaderBuffer;
+int emitHeaderRemaining = MAX_EMITHEADER_LEN;
+
+#define MAX_EMITDATA_LEN 40960000
+char *emitStdBuffer = (char *) calloc(1, MAX_EMITDATA_LEN);
+char *emitStdPos = emitStdBuffer;
+int emitStdRemaining = MAX_EMITDATA_LEN;
+
+#define MAX_EMITJS_LEN 40960000
+char *emitJsBuffer = (char *) calloc(1, MAX_EMITJS_LEN);
+char *emitJsPos = emitJsBuffer;
+int emitJsRemaining = MAX_EMITJS_LEN;
+
+// Scratch is used as a temp buffer for email body
+#define MAX_EMITSCRATCH_LEN 40960000
+char *emitScratchBuffer = (char *) calloc(1, MAX_EMITSCRATCH_LEN);
+char *emitScratchPos = emitScratchBuffer;
+int emitScratchRemaining = MAX_EMITSCRATCH_LEN;
+
+FILE *emitStream = stdout;
+
+int outputStream = 0;			// copy of the JAMBUILDER stream (eg for emitStd)
+
+int oobDataRequested = 0;		// Some ajax calls will ask for this
+
+int urlEncodeRequired = 0;
+
+int cmdSeqnum = 0;				// every @jamcommand has a unique sequence number or id. Can be used for unique field names in grids
+
+char *oobFileName = "/tmp/oobData.tmp";
+
+int LAST_VAR = -1;				// used globally to indicate the current top
 
 //-----------------------------------------------------------
 // Var related
@@ -25,10 +60,71 @@ int addVar(VAR *newVar) {
 	for (int i = 0; i < MAX_VAR; i++) {
 		if (!var[i]) {
 			var[i] = newVar;
+			if (i > LAST_VAR)
+				LAST_VAR = i;
 			return (0);
 		}
 	}
-	logMsg(LOGERROR, "Cant add new var - MAX_VAR exceeded");
+	logMsg(LOGFATAL, "Cant add new var - MAX_VAR exceeded");
+	return(-1);
+}
+
+void deleteVar(VAR *delVar) {
+	if (delVar == NULL) {
+		logMsg(LOGERROR, "deleteVar() asked to delete NULL var");
+	}
+	for (int i = 0; i <= LAST_VAR; i++) {
+		if (var[i] == delVar) {
+			if (var[i]->source)			free(var[i]->source);
+			if (var[i]->portableValue)	free(var[i]->portableValue);
+			if (var[i]->stringValue)	free(var[i]->stringValue);
+			if (var[i]->dateValue)		free(var[i]->dateValue);
+			if (var[i]->timeValue)		free(var[i]->timeValue);
+			if (var[i]->datetimeValue)	free(var[i]->datetimeValue);
+			free(var[i]);
+			var[i] = NULL;
+			//logMsg(LOGMICRO, "deleteVar() deleted var");
+			return;
+		}
+	}
+	logMsg(LOGERROR, "deleteVar() didnt find requested var to delete");
+}
+
+// Quick create a string var
+void setVarAsString(char *name, char *value) {
+	updateVar(name, value, VAR_STRING);
+}
+
+// Quick create a number var
+void setVarAsNumber(char *name, long value) {
+	char num[16];
+	sprintf(num, "%ld", value);
+	updateVar(name, num, VAR_NUMBER);
+}
+
+void unsetVar(char *name) {
+	VAR *variable = NULL;
+	variable = findVarStrict(name);
+	if (variable)
+		deleteVar(variable);
+}
+
+// Return the string value (portable value) of the named var
+// Try strict first, then non-strict
+char *getVarAsString(char *name) {
+	VAR *variable = NULL;
+	variable = findVarStrict(name);
+	if (variable)
+		return variable->portableValue;
+	return NULL;
+}
+
+int isVar(char *name) {
+	VAR *variable = NULL;
+	variable = findVarStrict(name);
+	if (variable)
+		return 1;
+	return 0;
 }
 
 VAR *findVarLenient(char *name, char *prefix) {
@@ -46,10 +142,11 @@ VAR *findVarLenient(char *name, char *prefix) {
 }
 
 VAR *findVarStrict(char *name) {
-	for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
+	for (int i = 0; i <= LAST_VAR; i++) {
 		if (!(var[i]))
-			break;
-		if (!strcmp(var[i]->name, name)) {
+			continue;
+//logMsg(LOGMICRO, "findVarStrict() checking [%s]=[%s]", var[i]->name, name);
+		if (!strcasecmp(var[i]->name, name)) {
 			return var[i];
 		}
 	}
@@ -82,7 +179,7 @@ void fillVarDataTypes(VAR *variable, char *value) {
 
 void updateVar(char *qualifiedName, char *value, int type) {
 	if (!qualifiedName)
-		printf("NULL 'qualifiedName' passed to updateVar\n");
+		emitStd("NULL 'qualifiedName' passed to updateVar\n");
 	char *safeValue = NULL;
 	if (value)
 		safeValue = strdup(value);
@@ -93,17 +190,12 @@ void updateVar(char *qualifiedName, char *value, int type) {
 		newVar->type = type;
 		clearVarValues(newVar);
 		fillVarDataTypes(newVar, safeValue);
-//printf("NON-TABLE-> NAME=%s TYPE=%d AVALUE=%s NVALUE=%ld DVALUE=%2.f\n", newVar->name, newVar->type, newVar->stringValue, newVar->numberValue, newVar->decimal2Value);
-		for (int i = 0; i < MAX_VAR; i++) {
-			if (!var[i]) {
-				var[i] = newVar;
-				break;
-			}
-		}
+//emitStd("NON-TABLE-> NAME=%s TYPE=%d AVALUE=%s NVALUE=%ld DVALUE=%2.f\n", newVar->name, newVar->type, newVar->stringValue, newVar->numberValue, newVar->decimal2Value);
+		addVar(newVar);
 	} else {
-		for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
+		for (int i = 0; (i <= LAST_VAR); i++) {
 			if (!var[i])
-				break;
+				continue;
 			if (!strcmp(var[i]->name, qualifiedName)) {
 				fillVarDataTypes(var[i], value);
 				break;
@@ -148,20 +240,22 @@ char *expandVarsInString(char *str, char *tableName) {
 			while ((*p) && (!strchr(nonWordChars, *p)))	// isolate the word
 				*p3++ = *p++;
 			VAR *variable = NULL;
-			logMsg(LOGMICRO, "expandVarsInString looking to expand word [%s] ...", wd);
+//			logMsg(LOGMICRO, "expandVarsInString looking to expand word [%s] ...", wd);
 			variable = findVarLenient(wd, tableName);		// does it name a field?
 			if (variable) {
-				logMsg(LOGMICRO, " ... expandVarsInString expanded word [%s] to [%s]", wd, variable->portableValue);
+//				logMsg(LOGMICRO, " ... expandVarsInString expanded word [%s] to [%s]", wd, variable->portableValue);
+
 /*
 				if (char *pMinus = strchr(variable->portableValue, '-'))
 					*pMinus = ' ';	//@@TODO decimals (mult by 100)
 				if (char *pDot = strchr(variable->portableValue, '.'))
 					*pDot = '\0';	//@@TODO decimals (mult by 100)
 */
+
 				p3 = variable->portableValue;				// yes - replace the word with its value
 			}
 			else {
-				logMsg(LOGMICRO, "... expandVarsInString did not expand word [%s]", wd);
+//				logMsg(LOGMICRO, "... expandVarsInString did not expand word [%s]", wd);
 				p3 = wd;								// no - use the word
 			}
 			while (*p3)
@@ -177,11 +271,6 @@ char *expandVarsInString(char *str, char *tableName) {
 // ----------------------------------------------------------
 // General stuff
 
-// Output some content. No sugar added
-void emit(char *line) {
-	printf("%s", line);
-}
-
 void die(const char *errorString) {
 	//fprintf(stderr, "%s\n", errorString);
 	fprintf(stdout, "%s\n", errorString);
@@ -190,73 +279,177 @@ void die(const char *errorString) {
 
 void jamDump(int which) {
 	char *tmp = (char *) calloc(1, 4096);
-	printf("<br><br><div style='font-size:11px;color:#ffffff;background-color:#1b2426'>");
+	emitStd("<br><br><div style='font-size:11px;color:#ffffff;background-color:#1b2426'>");
 	if ((which == 2) || (which == 3)) {
 		for (int i = 0; i < MAX_JAM; i++) {
 			if (jam[i] == NULL)
 				break;
-			printf("%02d JAMDUMP %s : %s<br>", i, jam[i]->command, jam[i]->args);
+			emitStd("%02d JAMDUMP %s : %s<br>", i, jam[i]->command, jam[i]->args);
 		}
 	}
 	if (which == 3)
-		printf("<hr>");
+		emitStd("<hr>");
 	if ((which == 1) || (which == 3)) {
-		for (int i = 0; i < MAX_VAR; i++) {
+		for (int i = 0; i <= LAST_VAR; i++) {
 			if (var[i] == NULL)
-				break;
+				continue;
 
-			printf("<span");
-			if (var[i]->debugHighlight == 1) printf(" style='color:#decde3'");
-			if (var[i]->debugHighlight == 2) printf(" style='color:yellow;'");
-			if (var[i]->debugHighlight == 3) printf(" style='color:orange;'");
-			if (var[i]->debugHighlight == 4) printf(" style='color:#a8c968;'");
-			if (var[i]->debugHighlight == 5) printf(" style='color:#e28c86;'");
-			if (var[i]->debugHighlight == 6) printf(" style='color:cyan;'");
-			printf(">");
+			emitStd("<span");
+			if (var[i]->debugHighlight == 1) emitStd(" style='color:#decde3'");
+			if (var[i]->debugHighlight == 2) emitStd(" style='color:yellow;'");
+			if (var[i]->debugHighlight == 3) emitStd(" style='color:orange;'");
+			if (var[i]->debugHighlight == 4) emitStd(" style='color:#a8c968;'");
+			if (var[i]->debugHighlight == 5) emitStd(" style='color:#e28c86;'");
+			if (var[i]->debugHighlight == 6) emitStd(" style='color:cyan;'");
+			if (var[i]->debugHighlight == 7) emitStd(" style='color:white;'");
+			emitStd(">");
 
 			*tmp = 0;
 			if (var[i]->source)
 				sprintf(tmp, " : source %s", var[i]->source);
 			if (var[i]->type == VAR_STRING)
-				printf("%02d VARDUMP %s : VAR_STRING %s %s<br>", i, var[i]->name, var[i]->stringValue, tmp);
+				emitStd("%02d VARDUMP %s : VAR_STRING %s %s<br>", i, var[i]->name, var[i]->stringValue, tmp);
 			if (var[i]->type == VAR_NUMBER)
-				printf("%02d VARDUMP %s : VAR_NUMBER %ld %s<br>", i, var[i]->name, var[i]->numberValue, tmp);
+				emitStd("%02d VARDUMP %s : VAR_NUMBER %ld %s<br>", i, var[i]->name, var[i]->numberValue, tmp);
 			if (var[i]->type == VAR_DECIMAL2)
-				printf("%02d VARDUMP %s : VAR_DECIMAL2 %.2f %s<br>", i, var[i]->name, var[i]->decimal2Value, tmp);
-			printf("</span>");
+				emitStd("%02d VARDUMP %s : VAR_DECIMAL2 %.2f %s<br>", i, var[i]->name, var[i]->decimal2Value, tmp);
+			emitStd("</span>");
+
+			*tmp = 0;
+			if (var[i]->source)
+				sprintf(tmp, " : source %s", var[i]->source);
+			if (var[i]->type == VAR_STRING)
+				logMsg(LOGDEBUG, "%02d VARDUMP %s : VAR_STRING %s %s", i, var[i]->name, var[i]->stringValue, tmp);
+			if (var[i]->type == VAR_NUMBER)
+				logMsg(LOGDEBUG, "%02d VARDUMP %s : VAR_NUMBER %ld %s", i, var[i]->name, var[i]->numberValue, tmp);
+			if (var[i]->type == VAR_DECIMAL2)
+				logMsg(LOGDEBUG, "%02d VARDUMP %s : VAR_DECIMAL2 %.2f %s", i, var[i]->name, var[i]->decimal2Value, tmp);
 		}
-		printf("<span style='margin:3px; padding:2px; color:#000; background-color:#decde3;'>prefill </span>");
-		printf("<span style='margin:3px; padding:2px; color:#000; background-color:yellow;'>count </span>");
-		printf("<span style='margin:3px; padding:2px; color:#000; background-color:orange;'>sum </span>");
-		printf("<span style='margin:3px; padding:2px; color:#000; background-color:#a8c968;'>variable </span>");
-		printf("<span style='margin:3px; padding:2px; color:#000; background-color:#e28c86;'>mysql </span>");
-		printf("<span style='margin:3px; padding:2px; color:#000; background-color:cyan;'>list </span>");
+		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:#decde3;'>prefill </span>");
+		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:yellow;'>count </span>");
+		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:orange;'>sum </span>");
+		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:#a8c968;'>variable </span>");
+		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:#e28c86;'>mysql </span>");
+		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:cyan;'>list </span>");
+		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:white;'>arg </span>");
 	}
-	printf("<br>");
-	printf("</div>");
+	emitStd("<br>");
+	emitStd("</div>");
 	free(tmp);
 }
 
-int scratchJs(char *str, ...) {
+int emitHeader(char *str, ...) {
 	va_list ap;
-	logMsg(LOGDEBUG, "Creating scratch entry");
-	if (scratchJsStream == NULL) {
-		char *tmp = (char *) calloc(1, 4096);
-		sprintf(tmp, "%s/%s", documentRoot, scratchJsFileName);
-		logMsg(LOGDEBUG, "Opening scratch file %s", tmp);
-		if ((scratchJsStream = fopen(tmp, "w+")) == NULL) {
-			logMsg(LOGFATAL, "Cannot open scratch file %s", tmp);
-			exit(1);
-		}
-		free(tmp);
-	}
 	va_start(ap, str);
-	vfprintf(scratchJsStream, str, ap);
-	fprintf(scratchJsStream, "\n");
-	fflush(scratchJsStream);
+// @@BUG Overflow needs checked. See http://stackoverflow.com/questions/7215921/possible-buffer-overflow-vulnerability-for-va-list-in-c and http://linux.die.net/man/3/vsnprintf for ideas
+	unsigned long len = vsnprintf(emitHeaderPos, emitHeaderRemaining, str, ap);
+	emitHeaderPos += len;
+	*emitHeaderPos = '\0';
+	emitHeaderRemaining -= len;
+
+	sprintf(emitHeaderPos, "\r\n");
+	emitHeaderPos += 2;
+	emitHeaderRemaining -= 2;
 	va_end(ap);
-	return(0);
 }
+
+int emitStd(char *str, ...) {
+	va_list ap;
+	va_start(ap, str);
+
+	if (outputStream == STREAMOUTPUT_JS) {	//@@TODO This whole stream handling is messy for jamBuilder...
+		logMsg(LOGDEBUG, "jamBuilder 'STREAMOUTPUT_JS' is on so emitStd is redirected to emitJs");
+		unsigned long len = vsnprintf(emitJsPos, emitJsRemaining, str, ap);
+		emitJsPos += len;
+		*emitJsPos = '\0';
+		emitJsRemaining -= len;
+		va_end(ap);
+		return(0);
+	}
+
+// @@BUG Overflow needs checked. See http://stackoverflow.com/questions/7215921/possible-buffer-overflow-vulnerability-for-va-list-in-c and http://linux.die.net/man/3/vsnprintf for ideas
+	unsigned long len = vsnprintf(emitStdPos, emitStdRemaining, str, ap);
+	emitStdPos += len;
+	*emitStdPos = '\0';
+	emitStdRemaining -= len;
+	va_end(ap);
+}
+
+int emitJs(char *str, ...) {
+	va_list ap;
+	va_start(ap, str);
+// @@BUG Overflow needs checked. See http://stackoverflow.com/questions/7215921/possible-buffer-overflow-vulnerability-for-va-list-in-c and http://linux.die.net/man/3/vsnprintf for ideas
+	unsigned long len = vsnprintf(emitJsPos, emitJsRemaining, str, ap);
+	emitJsPos += len;
+	*emitJsPos = '\0';
+	emitJsRemaining -= len;
+	va_end(ap);
+}
+
+int endHeader() {
+	char *p = emitHeaderBuffer;
+	while (*p) {
+		putchar(*p++);
+	}
+	printf("\r\n");
+//logMsg(LOGDEBUG, "ENDHEADER=[%s]", emitHeaderBuffer);
+}
+
+int endStd(int urlEncodeRequired) {
+	char *p = emitStdBuffer;
+	char *encodedData = NULL;
+	if (urlEncodeRequired) {
+		encodedData = urlEncode(emitStdBuffer);
+		p = encodedData;
+	}
+	while (*p)
+		putchar(*p++);
+	if (encodedData)
+		free(encodedData);
+logMsg(LOGMICRO, "ENDDATA=[%s]", emitStdBuffer);
+}
+
+int endJs(int urlEncodeRequired) {
+//return(0);
+	char *p = NULL;
+	if (strlen(emitJsBuffer)) {
+		p = emitJsBuffer;
+
+		char *encodedJs = NULL;
+		if (urlEncodeRequired) {
+			encodedJs = urlEncode(p);
+			p = encodedJs;
+		}
+	// @@KIM <script> tag
+		emitStd("\n\n<script id='endJs'>\n");
+		emitStd(p);
+		logMsg(LOGDEBUG, "endJs generated <script> tags enclosing : [%s]", p);
+	// @@KIM <script> tag
+		emitStd("</script>\n");
+		if (encodedJs)
+			free(encodedJs);
+	} else {
+		logMsg(LOGDEBUG, "endJs had nothing to output");
+	}
+}
+
+char *urlEncode(char *str) {		// needs freeing
+char *p = strdup(str);
+return p;
+	char *encodedData = NULL;
+	curl = curl_easy_init();
+	if (!curl)
+		logMsg(LOGERROR, "Cant easy_init curl! Wont even try to urlencode");
+	else
+		encodedData = curl_easy_escape(curl, emitStdBuffer, 0);
+	if (!encodedData) {
+		logMsg(LOGERROR, "Cant easy_escape curl! Handing back original unencoded string");
+		encodedData = strdup(str);
+	}
+	curl_easy_cleanup(curl);
+	return (encodedData);
+}
+
 //--------------------------------------------------------------------
 // Calculations
 
@@ -300,7 +493,7 @@ char *calculate(char *str) {
 	sprintf(commandStr, "echo 'scale=%d; %s' | bc", scale, str);
 	fp = popen(commandStr, "r");
 	if (fp == NULL) {
-		printf("calculator failed (1)\n");
+		emitStd("calculator failed (1)\n");
 	} else {
 		if (fgets(result, 4096, fp) != NULL) {
 			char *p = strchr(result, '\n');
@@ -309,11 +502,45 @@ char *calculate(char *str) {
 		}
 		pclose(fp);
 	}
-//printf("\n *** [%s][%s] *** \n", str, result);
+//emitStd("\n *** [%s][%s] *** \n", str, result);
 	free(commandStr);
 	return result;
 }
 
-//--------------------------------------------------------------------
-// Jam parse extractors
+// ----------------------------------------------------------
+// Out of band vars
+
+// @action - out of band var 'dump' to a <div>
+int oobJamData() {
+//return 0; //@@KIM
+//	FILE *fp = fopen(oobFileName, "w");
+//	if (fp == NULL) {
+//		logMsg(LOGFATAL, "Cant open oob file '%s'", oobFileName);
+//		return(-1);
+//	}
+	int first = 1;
+	logMsg(LOGDEBUG, "Emitting oob jamData");
+	emitStd("{oobData}");
+	emitStd("[");
+	for (int i = 0; i < MAX_VAR; i++) {
+		if (var[i] == NULL)
+			break;
+		if (first)
+			first = 0;
+		else
+			emitStd(", ");
+
+		char *nameJSON = escapeJsonChars(var[i]->name);
+		char *valueJSON = escapeJsonChars(var[i]->portableValue);
+		// Avoid single quotes - the formal JSON spec doesnt allow them
+		emitStd("{\"name\":\"%s\", \"value\":\"%s\"}", nameJSON,  valueJSON);
+		free(nameJSON);
+		free(valueJSON);
+	}
+	emitStd("]");
+//	fclose(fp);
+	logMsg(LOGDEBUG, "Finished emitting oob jamData");
+	//fflush(stdout);
+
+}
 

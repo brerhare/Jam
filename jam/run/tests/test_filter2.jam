@@ -1,0 +1,32 @@
+<link rel="stylesheet" type="text/css" href="/jam/css/kim1.css">
+
+<style>
+span {
+  color:brown;
+}
+</style>
+
+{{@database stock}}
+
+The <span>Text</span> filter value is {{filter.text}} <br>
+
+The <span>Textarea</span> filter value is {{filter.textarea}} <br>
+
+The <span>Password</span> filter value is {{filter.password}} <br>
+
+The <span>Date</span> filter value is {{filter.date}} <br>
+
+The <span>Select</span> filter value is {{filter.select}}.
+{{@get stock_area filter id = filter.select}}
+This turns out to be {{stock_area.name}} <br>
+
+The <span>Radio</span> filter value is {{filter.radio}}.
+{{@get stock_area filter id = filter.radio}}
+This turns out to be {{stock_area.name}} <br>
+
+The <span>Checkbox</span> filter value is {{filter.checkbox}}.
+{{@get stock_area filter id = filter.checkbox}}
+This turns out to be {{stock_area.name}} <br>
+
+The <span>Color</span> filter value is {{filter.color}}
+

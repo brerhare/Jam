@@ -1,0 +1,591 @@
+#Barstobrick
+[defaults]
+include = default-values
+
+# Every blob inherits these before adding/overriding
+
+[* : defaults]
+
+[screen]
+child = site, mobile-site
+css.background-color = white
+css.display = block
+
+	[site]
+	child = main-site, left-column
+	css.width = 100%
+	stacking = horizontal
+	condition = @DEVICEWIDTH>550
+	
+	
+		[left-column]
+		child = book, menu, menu-2
+		css.width = 15%
+		css.min-width = 180px		
+		css.margin-left = -95%
+		css.margin-top = 20px
+		css.position = relative
+		css.z-index = 100
+		
+			[book]
+			css.margin-left = 1%
+			css.width = 65%
+			image.url = img/book-now.png
+			image.width = 100%
+			image.height = 55%
+			click = ?layout=index&page=contact
+		
+			[menu]
+			css.overflow = visible
+			css.position = relative
+			css.margin-top = 20px
+			css.min-height = 360px
+			addon.menu.traditional.orientation = vertical
+			addon.menu.traditional.level = 1
+			addon.menu.traditional.width = 150px
+			addon.menu.traditional.height = 50px
+			addon.menu.traditional.menu-stretch = /img/menu-button.png
+			addon.menu.traditional.menu-color = transparent
+			addon.menu.traditional.item-separator-color = transparent
+			addon.menu.traditional.item-separator-width = 5px
+			addon.menu.traditional.font-size = 14px
+			addon.menu.traditional.menu-text-color = #56bbfe
+			addon.menu.traditional.menu-text-weight = bold
+			addon.menu.traditional.menu-hover-text-color = #56bbfe
+			addon.menu.traditional.menu-hover-background-image-stretch = /img/menu-hover.png
+			addon.menu.traditional.submenu-color = transparent
+			addon.menu.traditional.subitem-separator-color = transparent
+#			addon.menu.traditional.subitem-color = transparent
+#			addon.menu.traditional.subitem-text-color = blue
+		
+		[menu-2]
+		
+		css.margin-top = 30px
+		css.margin-left = 5px		
+		
+				addon.menu.traditional.orientation = vertical
+				addon.menu.traditional.level = 2
+				addon.menu.traditional.menu-color = #56bbfe
+				addon.menu.traditional.item-separator-color = white
+				addon.menu.traditional.item-separator-width = 2px
+				addon.menu.traditional.font-size = 14px
+				addon.menu.traditional.menu-rounding = 4px
+				addon.menu.traditional.menu-opacity = 100%
+#	addon.menu.traditional.width = 150px
+				addon.menu.traditional.menu-text-color = white
+				addon.menu.traditional.submenu-color = #56bbfe
+				addon.menu.traditional.item-color = #238bfe
+				addon.menu.traditional.item-text-color = white
+			#addon.menu.traditional.subitem-color = #ff0092
+			#addon.menu.traditional.subitem-text-color = #ffffff
+			#addon.menu.traditional.subitem-seperator-color = #ffffff 
+
+			
+	
+		[main-site]
+		child = logo, slider, slider-area, slider-img, header-img, pages, footer-image, footer
+		css.width = 100%
+#		css.margin-left = -20%
+
+####  Header  #################################
+			
+		[logo]
+		css.width = 50%
+		css.margin-top = 1%
+		css.margin-left = 15%
+		image.url = img/logo.png
+		image.width = 100%
+		image.height = 23%
+		click = ?layout=index&page=index
+		css.overflow = visible
+		css.z-index = 5
+		css.position = relative
+		
+
+#### Slider ###########################################
+
+	[slider]
+	condition = @PAGE=@HOMEPAGE
+	css.width = 100%
+	css.height = 330px
+	css.margin-top = -3%
+html.raw = <style>.da-slider{z-index:0}</style>
+	css.background-color = #def2fe
+	addon.slider.parallax.width = 100%
+	addon.slider.parallax.height = 100%
+	addon.slider.parallax.background-image = /img/slider-bg.jpg
+	addon.slider.parallax.content-width = 80%
+	addon.slider.parallax.content-left = 15%
+	addon.slider.parallax.title-text-color = #0000aa
+	addon.slider.parallax.title-font-size = 30px
+	addon.slider.parallax.title-margin-top = 20px
+	addon.slider.parallax.title-shadow = 0px 0px 0px
+	addon.slider.parallax.title-shadow-opacity = 0.4
+	addon.slider.parallax.title-font = 'Nunito', Arial, sans-serif
+	addon.slider.parallax.title-weight = 600
+#	addon.slider.parallax.title-style = italic
+	addon.slider.parallax.blurb-margin-top = 105px
+	addon.slider.parallax.blurb-color = grey
+	addon.slider.parallax.blurb-size = 16px
+	addon.slider.parallax.blurb-line-height = 23px
+	addon.slider.parallax.blurb-height = 92px
+	#addon.slider.parallax.blurb-style = italic
+	addon.slider.parallax.blurb-font = 'Open Sans', Verdana, sans-serif
+	addon.slider.parallax.blurb-weight = 300
+	addon.slider.parallax.image-margin-top = 60px
+	addon.slider.parallax.imagewidth = 252
+	addon.slider.parallax.imageheight = 180
+	addon.slider.parallax.link-margin-top = 220px
+	addon.slider.parallax.link-image = /img/read-more.png
+	addon.slider.parallax.link-hover = /img/read-hover.png
+	addon.slider.parallax.dot-top = 245px
+	addon.slider.parallax.dot-alignment = left
+	addon.slider.parallax.dot-margin-left = 45%
+	addon.slider.parallax.dot-color = #36c076
+	addon.slider.parallax.nav-prev = /img/slider-left.png
+	addon.slider.parallax.nav-prev-hover = /img/slider-left-hover.png
+	addon.slider.parallax.nav-next = /img/slider-right.png
+	addon.slider.parallax.nav-next-hover = /img/slider-right-hover.png
+	addon.slider.parallax.nav-margin = 50px
+
+	addon.slider.parallax.interval = 10
+	addon.slider.parallax.source = db
+		
+	[slider-img]
+	condition = @PAGE=@HOMEPAGE
+	css.width = 100%
+	css.min-width = 800px
+	css.margin-top = -50px
+	image.url = img/slider-under.png
+	image.width = 100%
+	image.height = 11%
+#	css.overflow = visible
+	css.z-index = 50
+	css.position = relative
+	
+	[header-img]
+	condition = @PAGE!=@HOMEPAGE
+	css.width = 100%
+	css.margin-top = -5%
+	image.url = img/header-img.jpg
+	image.width = 100%
+	image.height = 11%
+#	css.overflow = visible
+	css.z-index = 1
+	css.position = relative
+
+
+######## body #######################################
+			
+
+	[pages]
+	child = content, blog-page, contact 	
+	css.width = 65%
+	css.margin-left = 25%
+	css.min-width = 700px
+	css.margin-top = 20px
+
+#		[page-margin]
+#		css.width = 15%
+#		css.min-width = 180px		
+#		css.margin-left = 10%
+			
+		[content]
+		condition = @PAGE!=contact
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
+		
+		[blog-page]
+		condition = @PAGE=news-riding-dumfries-galloway
+		html.raw = {{news newstype=traditional sidebar=right}}
+				
+		[contact]
+		condition = @PAGE=contact
+		child = contact-content, contact-form
+		stacking = horizontal
+		
+			[contact-content]
+			css.width = 60%
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find the page $_GET['page']
+			html.raw = ContentBlock.content
+			
+			[contact-form]
+			css.width = 35%
+			css.margin-left = 4%
+			css.border = 2px solid #56bbfe
+			css.border-radius = 5px
+			html.raw = <h1><span style="font-size:24px;">Contact Us</span></h1>
+			css.text-align = center
+#			css.height = 430px
+			css.background-color = white
+			#jam.embed = /run/contactForm.jam
+			jam.iframe-height = 358px
+			jam.iframe = /run/contactForm
+
+####footer####################################
+
+[footer-image]
+css.width = 15%
+css.margin-left = 75%
+image.url = img/footer-img.png
+image.width = 100%
+image.height = 62%
+
+
+[footer]
+child = footer-container
+css.background-color = #36c076
+css.margin-top = -5%
+css.width = 100%
+
+	[footer-container]
+	child = footer-form, footer-content
+	css.width = 65%
+	css.margin-left = 25%
+	
+	[footer-form]
+	child = signup-title, signup-form
+	css.margin-top = 30px
+	css.width = 370px
+	css.margin-left = 0px
+	css.background-color = white
+	css.border = 2px solid #36c076
+	css.border-radius = 15px
+
+		[signup-title]
+		css.height = 40px
+		css.margin-top = -15px
+		html.raw = <h1><span style="font-size:18px; line-height: 80%;">Stay in Touch - Sign up for our newsletter</span></h1>
+		css.text-align = center
+		
+		[signup-form]
+		css.position = relative
+		css.z-index = 2
+		css.width = 368px
+		css.height = 50px
+		#jam.embed = /run/contactForm.jam
+		jam.iframe = /run/signUp
+				
+	
+		[footer-content]
+		child = footer-social, footer-menu, footnote
+		css.margin-top = 25px
+		css.margin-bottom = 50px
+		stacking = horizontal
+		
+		[footer-social]
+		child = phone, facebook
+		css.width = 60px
+		
+			[phone]
+			css.width = 50px
+			image.url = img/phone.png
+			image.width = 100%
+			image.height = 100%
+			click = ?layout=index&page=contact
+			
+			[facebook]
+			css.width = 50px
+			css.margin-top = 15px
+			image.url = img/facebook.png
+			image.width = 100%
+			image.height = 100%
+			clicknew = https://www.facebook.com/barstobrickridingcentre
+
+		[footer-menu]
+		child = footer-phone, footer-cookies, footer-tandc, footer-contact, copyright
+		css.width = 40%
+		css.margin-left = 20px
+							
+
+			[footer-phone]
+			html.raw = 07864 092037
+			css.color = #000000
+			css.font-size = 18px
+			css.font-weight = bold
+			css.text-align = left	
+			css.margin-top = 10px			
+			
+			[footer-cookies]
+			html.raw = Cookie Policy
+			css.color = #000000
+			css.font-size = 11px
+			css.text-align = left
+			click = ?layout=index&page=cookie-policy
+
+			[footer-tandc]
+			html.raw = Terms & Conditions
+			css.color = #000000
+			css.font-size = 11px
+			css.text-align = left
+			click = ?layout=index&page=terms-conditions
+
+			[footer-contact]
+			html.raw = Contact Us
+			css.text-align = left
+			css.color = #000000
+			css.font-size = 11px
+			click = ?layout=index&page=contact
+			
+			[copyright]
+			css.margin-top = 10px
+			html.raw = Bartsobrick Riding Centre &copy 2014 All rights reserved
+			css.color = #000000
+			css.font-size = 11px
+			css.text-align = left
+
+
+		[footnote]
+		child = admin-links
+		css.width = 40%
+		stacking = horizontal
+
+
+		[admin-links]
+		child = wirefly, admin
+		css.float = right
+		css.margin-top = 50px
+		stacking = horizontal
+
+		
+			[wirefly]
+			css.height = 45px
+			css.margin-top = 5px
+			image.url = img/wirefly-design.png
+			image.width = 100px
+			image.height = 46px
+			image.align = left
+			clicknew = http://www.wireflydesign.com
+			
+		
+			[admin]
+			child = cog-center
+			css.height = 20px
+			css.width = 20px
+			css.background-size = 100%
+			css.background-image = url('/img/admin.png')
+			css.margin-left = -20px
+			
+				[cog-center]
+				css.width = 5px
+				css.height = 5px
+				css.margin-top = 8px
+				image.url = img/cog-center.png
+				image.width = 5px
+				image.height = 5px
+				image.align = center
+				clicknew = backend.php
+				
+########### Mobile Layout#############
+
+[mobile-site]
+child = mob-logo, mob-book, mob-menu, mob-sign-up, mob-header-img, mob-pages, mob-social, mob-footer
+css.width = 100%
+condition = @DEVICEWIDTH<551
+
+	[mob-logo]
+	css.width = 90%
+	css.margin-top = 1%
+	image.url = img/logo.png
+	image.width = 100%
+	image.height = 23%
+	click = ?layout=index&page=index
+	
+	[mob-book]
+	css.width = 60%
+#	image.url = img/book-now.png
+#	image.width = 100%
+#	image.height = 55%
+#	click = ?layout=index&page=contact
+		
+	[mob-menu]
+	css.width = 90%
+	css.overflow = visible
+	css.position = relative
+	css.margin-top = 20px
+	css.background-color = blue
+	css.color = white
+	css.height = 3%
+	html.raw  = menu currently disabled
+	
+	[mob-sign-up]
+	child = mob-signup-title, mob-signup-form
+	css.width = 94%
+	css.margin = 3%
+	css.margin-left = 0px
+	css.background-color = white
+	css.border = 2px solid #36c076
+	css.border-radius = 15px
+
+		[mob-signup-title]
+		css.height = 40px
+		css.margin-top = -15px
+		html.raw = <h1><span style="font-size:14px; line-height: 80%;">Stay in Touch - Sign up for our newsletter</span></h1>
+		css.text-align = center
+		
+		[mob-signup-form]
+		css.position = relative
+		css.z-index = 2
+		css.width = 368px
+		css.height = 50px
+		#jam.embed = /run/contactForm.jam
+		jam.iframe = /run/signUp
+		
+	[mob-header-img]
+	css.width = 100%
+	css.margin-top = 1px
+	image.url = img/header-img.jpg
+	image.width = 100%
+	image.height = 11%
+
+
+######## Pages #######################################
+			
+
+	[mob-pages]
+	child = mob-content, mob-blog-page, mob-contact 	
+	css.width = 90%
+	css.margin-top = 20px
+			
+		[mob-content]
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
+		
+		[mob-blog-page]
+		condition = @PAGE=news-riding-dumfries-galloway
+		html.raw = {{news newstype=traditional sidebar=right}}
+				
+		[mob-contact]
+		condition = @PAGE=contact
+		css.width = 90%
+		css.border = 2px solid #56bbfe
+		css.border-radius = 5px
+		css.margin-bottom = 20px
+		html.raw = <h1><span style="font-size:24px;">Contact Us</span></h1>
+		css.text-align = center
+		css.background-color = white
+		#jam.embed = /run/contactForm.jam
+		jam.iframe-height = 342px
+		jam.iframe = /run/contactForm
+
+			[mob-social]
+			child = mob-facebook, mob-phone
+			css.width = 50%
+			stacking = horizontal
+
+				[mob-facebook]
+				css.width = 50%
+				image.url = img/facebook.jpg
+				image.width = 80%
+				image.height = 80%
+				clicknew = https://www.facebook.com/barstobrickridingcentre
+				
+				[mob-phone]
+				css.width = 50%
+				image.url = img/phone.jpg
+				image.width = 80%
+				image.height = 80%
+				click = ?layout=index&page=contact
+
+####footer####################################
+			
+[mob-footer]
+child = mob-footer-content
+css.background-color = #36c076
+css.margin-top = 5px
+
+	[mob-footer-content]
+		child = mob-footer-menu, mob-footnote
+		css.width = 90%
+		css.margin-top = 25px
+		css.margin-bottom = 50px
+		stacking = horizontal
+
+			[mob-footer-menu]
+			child = mob-footer-phone, mob-footer-cookies, mob-footer-tandc, mob-footer-contact, mob-copyright
+#			css.height = 50px
+			css.width = 50%
+
+				[mob-footer-phone]
+				html.raw = 07864 092037
+				css.color = #000000
+				css.font-size = 18px
+				css.font-weight = bold
+				css.text-align = left				
+				
+				[mob-footer-cookies]
+				html.raw = Cookie Policy
+				css.color = #000000
+				css.font-size = 11px
+				css.text-align = left
+				click = ?layout=index&page=cookie-policy
+
+				[mob-footer-tandc]
+				html.raw = Terms & Conditions
+				css.color = #000000
+				css.font-size = 11px
+				css.text-align = left
+				click = ?layout=index&page=terms-conditions
+
+				[mob-footer-contact]
+				html.raw = Contact Us
+				css.text-align = left
+				css.color = #000000
+				css.font-size = 11px
+				click = ?layout=index&page=contact
+				
+				[mob-copyright]
+				css.margin-top = 10px
+				html.raw = Bartsobrick Riding Centre &copy 2014 All rights reserved
+				css.color = #000000
+				css.font-size = 11px
+				css.text-align = left
+
+
+		[mob-footnote]
+		child = mob-admin-links
+		css.width = 50%
+		stacking = horizontal
+
+
+		[mob-admin-links]
+		child = mob-wirefly, mob-admin
+		css.float = right
+		css.margin-top = 50px
+		stacking = horizontal
+
+		
+			[mob-wirefly]
+			css.height = 45px
+			css.margin-top = 5px
+			image.url = img/wirefly-design.png
+			image.width = 100px
+			image.height = 46px
+			image.align = left
+			clicknew = http://www.wireflydesign.com
+			
+		
+			[mob-admin]
+			child = mob-cog-center
+			css.height = 20px
+			css.width = 20px
+			css.background-size = 100%
+			css.background-image = url('/img/admin.png')
+			css.margin-left = -20px
+			
+				[mob-cog-center]
+				css.width = 5px
+				css.height = 5px
+				css.margin-top = 8px
+				image.url = img/cog-center.png
+				image.width = 5px
+				image.height = 5px
+				image.align = center
+				clicknew = backend.php
+

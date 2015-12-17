@@ -1,0 +1,90 @@
+<!-- List component -->
+
+<!-- Clear any unset templates -->
+{{@template FILTER}}
+
+<style>	/* Selected row highlighting */
+.rowHighlight:hover {
+  background-color: #ddf0ff;
+  cursor:pointer;
+}
+</style>
+
+<style> /* Inline editing of the grid */
+    .uk-form input[type=text]:disabled {
+        border:none;
+        color:#000;
+        background-color:#f6f6f6;
+    }
+    .uk-form-width-small {
+        width:90px;
+    }
+</style>
+
+<h3> DESCRIPTION </h3>
+	<div name="inlineForm" class="uk-form uk-form-horizontal">
+		<table class="uk-table uk-table-condensed" style="border:1px solid #dddddd">
+			<tr>
+				HEADINGS
+				<th> <button class="uk-button uk-button-mini uk-button-success" onClick="showNewRow()"> <i class="uk-icon-plus"></i> New</button> </th>
+				<th> </th>
+			</tr>
+			<tr id='newRow' style='display:none'>        <!-- NEW ROW --->
+				COLUMNS
+				<td>
+					<button type='button' class="uk-button uk-button-mini uk-button-primary" onClick="addNewRowButtonClick()">
+						<i class="uk-icon-save"></i>
+					</button>
+					<button type='button' class="uk-button uk-button-mini uk-button-primary" onClick="hideNewRow()">
+						<i class="uk-icon-remove"></i>
+					</button>
+				</td>
+				<td> </td>
+			</tr>
+{{@each TABLE FILTER}}
+			<tr class="rowHighlight">
+				COLUMNS
+				<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{DELETEFIELD}}')"> <i class="uk-icon-trash"></i></button> </td>
+				<td> {{@html gridinp hidden TABLE.id}} </td>
+			</tr>
+{{@end}}
+		</table>
+	</div>
+
+<script>
+	window.onload = function() {
+		// Create onChange functions for columns - will be called by fn()
+		var changeMonitors = "EDITS".split(" ");
+		for (var i = 0; i < changeMonitors.length; i++) {
+			name = "onChange_TABLE_dot_" + changeMonitors[i];
+			window[name] = function (obj) { if (obj.id.indexOf("SEQ_0_") != -1) return; document.getElementById('newRow').style.display = 'none'; runAction('change', obj.id); }
+		}
+	}
+
+	function showNewRow() {
+		document.getElementById('newRow').style.display = 'table-row';
+	}
+	function hideNewRow() {
+		document.getElementById('newRow').style.display = 'none';
+	}
+	function addNewRowButtonClick() {
+		runAction('change', 'SEQ_0_TABLE.id', '', runJam);	
+		document.getElementById('newRow').style.display = 'none';
+	}
+
+	function confirmDelete(id, displayInfo) {
+		window.event.cancelBubble = true;	// Prevent any further events
+		var result = confirm('Confirm delete of item ' + displayInfo);
+		if (result)
+			runAction('delete', 'TABLE.id='+id, '', runJam);	
+	}
+</script>
+
+{{@action change}}
+	{{@update item TABLE}}
+{{@end}}
+
+{{@action delete}}
+	{{@remove item TABLE}}
+{{@end}}
+
