@@ -295,7 +295,7 @@ if (++sanity > 200) { emitStd("Overflow in expandCurliesInString!"); break; }
 		free(wd);
 		str = newStr;
 	}
-	logMsg(LOGDEBUG, "expandCurliesInString() expanded original string [%s] to [%s]", originalStr);
+	logMsg(LOGDEBUG, "expandCurliesInString() expanded original string [%s] to [%s]", originalStr, str);
 	return (str);
 }
 
