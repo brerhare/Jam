@@ -1,10 +1,13 @@
 {{@action filterHtml}}
+	{{get FILTER_PICK_TABLE.FILTER_PICK_FIELD filter id = FILTER_TARGET_TABLE.FILTER_TARGET_FIELD}}
+
 	<div class='uk-form-row'>
 		<label class='uk-form-label' for='FILTER_TARGET_TABLE.FILTER_TARGET_FIELD'> FILTER_LABEL </label>
 		<div class='uk-form-controls'>
 
+			<input type='hidden' id='FILTER_JAMKEY' name='FILTER_TARGET_TABLE.FILTER_TARGET_FIELD' value='{{FILTER_TARGET_TABLE.FILTER_TARGET_FIELD}}'>
 			<div class='ui-widget'>
-				<input id='FILTER_JAMKEY' name='FILTER_TARGET_TABLE.FILTER_TARGET_FIELD' value='' XonChange='dropdown_FILTER_TARGET_TABLE_FILTER_TARGET_FIELD(this, event); fn(this, event);' class='uk-form-width-FILTER_SIZE'>
+				<input id='AUTOCOMPLETE_FILTER_JAMKEY' value='{{FILTER_PICK_TABLE.FILTER_PICK_FIELD}}' XonChange='dropdown_FILTER_TARGET_TABLE_FILTER_TARGET_FIELD(this, event); fn(this, event);' class='uk-form-width-FILTER_SIZE'>
 			</div>
 
 		</div>
@@ -18,26 +21,33 @@
 			{ label: "India", value: "IND" },
 			{ label: "Australia", value: "AUS" }
 		];
-		$( '#FILTER_JAMKEY' ).autocomplete({
+		$('#AUTOCOMPLETE_FILTER_JAMKEY').autocomplete({
 			//source: exampleOfHardcodedData,
 			//source: [ { label: "India", value: "IND" }, { label: "Australia", value: "AUS" } ],
 			source: "/run/sys/jamBuilder/html/filter:filterAjax?table=FILTER_PICK_TABLE&field=FILTER_PICK_FIELD",
-
-			xsource: function(request, response){
+/**********	source: function(request, response){
 				$.ajax({
-					type: "POST",
-					url: "/run/sys/jamBuilder/html/filter:filterAjax?table=FILTER_PICK_TABLE&field=FILTER_PICK_FIELD",
-					data: "{'Project_ID':'1'}",
-					contentType: "application/json; charset=utf-8",
 					dataType: "json",
-					success: function (msg) {
-						response($.parseJSON(msg.d).Records);
+					type : 'Get',
+					url: "/run/sys/jamBuilder/html/filter:filterAjax?table=FILTER_PICK_TABLE&field=FILTER_PICK_FIELD",
+					data: { term : request.term },
+					success: function(data) {
+						var dat = [];
+						for (i = 0; i < data.length; i++)
+							console.log(data[i].value);
+						//dat = JSON.parse(data);
 					},
-					error: function (msg) {
-						alert(msg.status + ' ' + msg.statusText);
+					error: function(data) {
+						alert(data.status + ' ' + data.statusText);
+						$('input.suggest-user').removeClass('ui-autocomplete-loading');  
 					}
-				})
-			},
+				});
+			}, **********/
+			select: function( event, ui ) {
+				$('#AUTOCOMPLETE_FILTER_JAMKEY').val(ui.item.label.trim());
+document.getElementsByName('FILTER_TARGET_TABLE.FILTER_TARGET_FIELD')[0].value = ui.item.value;
+				return false;
+			}
 
 		});
 	});
