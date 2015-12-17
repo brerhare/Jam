@@ -142,9 +142,10 @@ VAR *findVarLenient(char *name, char *prefix) {
 }
 
 VAR *findVarStrict(char *name) {
-	for (int i = 0; (i <= LAST_VAR) && var[i]; i++) {
+	for (int i = 0; i <= LAST_VAR; i++) {
 		if (!(var[i]))
 			continue;
+//logMsg(LOGMICRO, "findVarStrict() checking [%s]=[%s]", var[i]->name, name);
 		if (!strcasecmp(var[i]->name, name)) {
 			return var[i];
 		}
@@ -239,20 +240,22 @@ char *expandVarsInString(char *str, char *tableName) {
 			while ((*p) && (!strchr(nonWordChars, *p)))	// isolate the word
 				*p3++ = *p++;
 			VAR *variable = NULL;
-			logMsg(LOGMICRO, "expandVarsInString looking to expand word [%s] ...", wd);
+//			logMsg(LOGMICRO, "expandVarsInString looking to expand word [%s] ...", wd);
 			variable = findVarLenient(wd, tableName);		// does it name a field?
 			if (variable) {
-				logMsg(LOGMICRO, " ... expandVarsInString expanded word [%s] to [%s]", wd, variable->portableValue);
+//				logMsg(LOGMICRO, " ... expandVarsInString expanded word [%s] to [%s]", wd, variable->portableValue);
+
 /*
 				if (char *pMinus = strchr(variable->portableValue, '-'))
 					*pMinus = ' ';	//@@TODO decimals (mult by 100)
 				if (char *pDot = strchr(variable->portableValue, '.'))
 					*pDot = '\0';	//@@TODO decimals (mult by 100)
 */
+
 				p3 = variable->portableValue;				// yes - replace the word with its value
 			}
 			else {
-				logMsg(LOGMICRO, "... expandVarsInString did not expand word [%s]", wd);
+//				logMsg(LOGMICRO, "... expandVarsInString did not expand word [%s]", wd);
 				p3 = wd;								// no - use the word
 			}
 			while (*p3)
@@ -311,6 +314,16 @@ void jamDump(int which) {
 			if (var[i]->type == VAR_DECIMAL2)
 				emitStd("%02d VARDUMP %s : VAR_DECIMAL2 %.2f %s<br>", i, var[i]->name, var[i]->decimal2Value, tmp);
 			emitStd("</span>");
+
+			*tmp = 0;
+			if (var[i]->source)
+				sprintf(tmp, " : source %s", var[i]->source);
+			if (var[i]->type == VAR_STRING)
+				logMsg(LOGDEBUG, "%02d VARDUMP %s : VAR_STRING %s %s", i, var[i]->name, var[i]->stringValue, tmp);
+			if (var[i]->type == VAR_NUMBER)
+				logMsg(LOGDEBUG, "%02d VARDUMP %s : VAR_NUMBER %ld %s", i, var[i]->name, var[i]->numberValue, tmp);
+			if (var[i]->type == VAR_DECIMAL2)
+				logMsg(LOGDEBUG, "%02d VARDUMP %s : VAR_DECIMAL2 %.2f %s", i, var[i]->name, var[i]->decimal2Value, tmp);
 		}
 		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:#decde3;'>prefill </span>");
 		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:yellow;'>count </span>");

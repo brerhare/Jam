@@ -429,7 +429,6 @@ int control(int startIx, char *defaultTableName) {
 		}
 		//args = jam[ix]->args;
 		//rawData = jam[ix]->rawData;
-logMsg(LOGMICRO, "cmd=[%s]------------------", cmd);
 //		-----------------------------------------
 		if (!strcmp(cmd, "@literal")) {
 //		-----------------------------------------
