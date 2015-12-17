@@ -11,14 +11,217 @@ fx.wallpaper-color = #ffffff
 css.display = block
 
 	[contentframe]
-	css.width = 1020px
-#	css.height = 800px
-#	child = header, contact-details, body, footer
-	image.url = img/holding-page.png
-#	css.background-image = url('/img/holding-page.png')
-	image.width = 800px
-	image.height = 89%
-	image.align = center
+	css.width = 90%
+	css.min-width = 960px
+	child = header, contact-details, body, footer
 
 ###########################################
 
+		[header]
+		stacking = horizontal
+		child = header-venetian-blinds, header-logo
+
+			[header-venetian-blinds]
+			css.width = 650px
+			# The accordion needs positioning by setting a margin on the containing block
+			addon.accordion.elegant.default-width = 200px
+
+			[header-logo]
+			css.width = 45%
+			css.height = 220px
+			css.margin-top = 10px
+			css.margin-left = 600px
+			css.background-repeat = no-repeat
+			css.background-image = url(/img/dfd_logo.jpg)
+			click = http://www.dumfriesfurniture.com
+
+############################################
+
+		[contact-details]
+		child = contact-text, cart
+		css.height = 30px
+		css.width = 90%
+		css.margin-left = 0px
+		css.background-color = #ffe900
+
+			[contact-text]
+			css.width = 1020px
+			css.height = 40px
+			css.margin-left = 30px
+			css.margin-top = -22px
+			html.raw = Dumfries Furniture Direct - 01387 256544
+
+			[cart]
+			css.width = 150px
+			css.height = 40px
+			css.margin-left = 800px
+			css.margin-top = -42px
+			image.url = /img/cart.png
+			image.width = 120px
+			image.height = 18px
+			click = ?layout=index&page=checkout
+			
+
+###### body #############################################
+
+
+		[body]
+		child = left-column, homepage-content, other-content
+		css.width = 90%
+		css.min-width = 960px
+		stacking = horizontal
+
+
+########body: left column #################################
+
+	[left-column]
+	child = menu, Cookie, TCs
+	css.width = 15%
+	css.margin-top = 20px
+	
+	[menu]
+	#css.height = 34px
+	#css.width = 100px
+	css.overflow = visible
+	addon.menu.basic.orientation = vertical
+	addon.menu.basic.width = 170px
+	addon.menu.basic.font-size = 14px
+	addon.menu.basic.menu-rounding = 0px
+	addon.menu.basic.menu-opacity = 100%
+	addon.menu.basic.menu-tile = /img/menu-bkgd.jpg
+	#addon.menu.basic.menu-stretch = /img/menu-bar.jpg
+	addon.menu.basic.menu-color = blue green
+	addon.menu.basic.menu-text-color = red
+	addon.menu.basic.submenu-color = yellow red
+	addon.menu.basic.item-color = yellow orange
+	addon.menu.basic.item-text-color = green
+	addon.menu.basic.subitem-color = white yellow
+	addon.menu.basic.subitem-text-color = red
+	addon.menu.basic.subitem-separator-color = white	
+
+
+	[Cookie]
+	
+	html.raw = Cookies
+	click = http://www.dumfriesfurniture.com/?layout=index&page=dumfrie-furniture-cookies
+
+	[TCs]
+	
+	html.raw = Terms & Conditions
+	click = http://www.dumfriesfurniture.com/?layout=index&page=dumfrie-furniture-terms	
+
+
+#####body: column 2 - home page only ########################
+
+			[homepage-content]
+			child = middle, home-right
+			condition = @HOMEPAGE=1
+			stacking = horizontal
+
+				[middle]
+				child = slider, middle-content
+				#css.height = 600px
+				css.width = 600px
+				#css.background-color = orange
+
+					[slider]
+					css.margin-left = 50px
+					css.width = 500px
+					css.height = 300px
+					addon.carousel.flexslider.animation = fade
+   					addon.carousel.flexslider.source = db
+
+					[middle-content]
+					css.margin-left = 50px
+					css.width = 500px
+					db.table = ContentBlock
+					db.filter = url=$_GET['page']
+					db.error = Sorry, I could not find that page. You requested $_GET['page']
+					html.raw = ContentBlock.content
+
+			[home-right]
+			child = top, bottom
+			css.width = 200px
+			#css.height = 500px
+			css.margin-left = 30px
+			
+				[top]
+				image.url = /img/home-page-top-block.png
+				image.width = 200px
+				image.height = 180px
+
+				[bottom]
+				css.margin-top = 10px
+				css.margin-bottom = 10px
+				image.url = /img/home-page-bottom-block.png
+				image.width = 200px
+				image.height = 180px
+
+
+#####body: column 2 - other pages ########################
+
+			[other-content]
+			child = content
+			condition = @HOMEPAGE=0
+			css.width = 800px
+			#css.background-color = yellow
+
+			[content]
+			css.margin = 15px
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find that page. You requested $_GET['page']
+			html.raw = ContentBlock.content
+			
+
+
+########################################
+
+		[footer]
+		child = footer-bar, wirefly
+
+			[f-background]
+			css.height = 30px
+			css.width = 1000px
+			css.background-color = #ffe900
+			html.raw = Customer &copy 2015 All rights reserved
+			css.color = #000000
+			css.font-size = 11px
+			css.text-align = center
+
+
+
+
+		[wirefly]
+		child = wirefly-logo, admin
+		stacking = horizontal
+		css.margin-top = 20px
+
+		
+			[wirefly-logo]
+			css.height = 45px
+			css.margin-top = 5px
+			image.url = img/wirefly-design.png
+			image.width = 100px
+			image.height = 46px
+			image.align = left
+			clicknew = http://www.wireflydesign.com
+			
+		
+			[admin]
+			child = cog-center
+			css.height = 20px
+			css.width = 20px
+			css.background-size = 100%
+			css.background-image = url('/img/admin.png')
+			css.margin-left = -20px
+
+				[cog-center]
+				css.width = 5px
+				css.height = 5px
+				css.margin-top = 8px
+				image.url = img/cog-center.png
+				image.width = 5px
+				image.height = 5px
+				image.align = center
+				clicknew = backend.php
