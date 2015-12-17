@@ -40,7 +40,8 @@
 				{{@html input date stock_supplier_order.delivery_date medium 'Delivery Date' 'require a delivery date field'}}
 			</div>
 			<div class="uk-width-4-10">
-				{{@html input filter stock_supplier_order.location_id stock_location.name medium Location}}
+{{@html dropdown group=grpdrpdn field=stock_supplier_order.location_id pickfield=stock_location.name size=medium label=Container}}
+{{@Xhtml input filter stock_supplier_order.location_id stock_location.name medium Location}}
 			</div>
 			<div class="uk-width-4-10">
 {{@html dropdown group=grpdrpdn field=stock_supplier_order.container_id pickfield=stock_container.name size=medium label=Container}}
