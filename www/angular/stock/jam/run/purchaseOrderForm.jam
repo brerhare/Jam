@@ -91,11 +91,11 @@
 						<td> </td>
 						<td> {{@html text field=stock_product.code size=small}} </td>
 						<td> {{@html filter group=newlin field=stock_supplier_order_item.stock_product_id pickfield=stock_product.name size=medium}} </td>
-						<td> {{@html gridinp text stock_supplier_order_item.pack_qty small}} </td>
+						<td> {{@html text field=stock_supplier_order_item.pack_qty size=small}} </td>
 						<td id="packTD" name="packTD"> </td>
-						<td> {{@html gridinp disabled stock_product.cost small}} </td>
-						<td> {{@html gridinp disabled linetotal small}} </td>
-						<td> {{@html gridinp disabled linevolume small}} </td>
+						<td> {{@html text disabled field=stock_product.cost size=small}} </td>
+						<td> {{@Xhtml text disabled field=linetotal size=small}} </td>
+						<td> {{@Xhtml gridinp disabled linevolume small}} </td>
             			<td>
                 			<button type='button' class="uk-button uk-button-mini uk-button-primary" onClick="addNewRowButtonClick()">
                     			<i class="uk-icon-save"></i>
@@ -120,18 +120,18 @@
 		{{line.volume = stock_product.volume * stock_supplier_order_item.total_qty}}
 		{{total.volume = total.volume + line.volume}}
 					<tr>
-						<td> {{@html gridinp hidden stock_supplier_order_item.id}} </td>
-						<td> {{@html gridinp disabled stock_product.code small}} </td>
+						<td> {{@html text hidden field=stock_supplier_order_item.id}} </td>
+						<td> {{@html text disabled field=stock_product.code size=small}} </td>
 						<td>  <input type='text' class='uk-form-width-' value='{{stock_product.name}}' disabled></td>
 <!-- above line is a hack for line below because name=xxx is zeroth element in first display line not input line -->
 				<!--	<td> {{@html gridinp disabled stock_product.name}} </td> -->
-						<td> {{@html gridinp text stock_supplier_order_item.pack_qty small}} </td>
+						<td> {{@html text field=stock_supplier_order_item.pack_qty size=small}} </td>
 
-						<td> {{@html gridinp disabled stock_pack.unit small}} </td>
+						<td> {{@html text disabled field=stock_pack.unit size=small}} </td>
 
-						<td> {{@html gridinp disabled stock_product.cost small}} </td>
-						<td> {{@html gridinp disabled line.cost small}} </td>
-						<td> {{@html gridinp disabled line.volume small}} </td>
+						<td> {{@html text disabled field=stock_product.cost size=small}} </td>
+						<td> {{@html text disabled field=line.cost size=small}} </td>
+						<td> {{@html text disabled field=line.volume size=small}} </td>
             			<td>
                 			<button type='button' class="uk-button uk-button-mini uk-button-danger" onClick="deleteRow('{{stock_supplier_order_item.id}}')">
                     			<i class="uk-icon-trash"></i>

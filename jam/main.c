@@ -93,7 +93,7 @@ int main(int argc, char *argv[]) {
 	emitHeader("Content-type: text/html; charset=UTF-8");
 
 	cgivars = getcgivars() ;
-	for (int i=0; cgivars[i]; i+= 2) {
+	for (int i = 0; cgivars[i]; i+= 2) {
 		logMsg(LOGDEBUG, "Parameter [%s] = [%s]", cgivars[i], cgivars[i+1]) ;
 
 		if (!strcmp(cgivars[i], "OobDataRequested"))
@@ -116,8 +116,18 @@ int main(int argc, char *argv[]) {
 			addVar(assignVar);
 		}
 	}
-	return(processJam(jamName, jamEntrypoint, NULL));
+	processJam(jamName, jamEntrypoint, NULL);
 	// Cleanup
+	free(jamName);
+	for (int i = 0; cgivars[i]; i++)
+		free(cgivars[i]);
+	// Free var and jam arrays
+    for (int i = 0; i < MAX_VAR; i++) {
+        if (var[i]) {
+			deleteVar(var[i]);
+        }
+    }
+	freeJamArray();
 	free(jamEntrypoint);
 	if (conn)
 		closeDB();
@@ -165,6 +175,9 @@ int jamBuilder(char *jamName, char *jEntrypoint, JAMBUILDER *jb) {
 	}
 	if (savEntrypoint)
 		jamEntrypoint = strdup(savEntrypoint);	
+
+	freeJamArray();
+
 	memcpy(jam, tmpJam, (sizeof(JAM *) * MAX_JAM));
 	jamIx = tmpJamIx;
 	free(fullJamName);
@@ -223,9 +236,8 @@ if (++sanity > 100) { emitStd("Overflow in main!"); break; }
 		includeFile.seekg (0, includeFile.beg);
 		char *includeBuf = (char *) calloc(1, length+1);
 		if (!includeBuf) {
-			sprintf(tmp, "cant calloc memory to @include %s", tagInfo->content);
-			logMsg(LOGFATAL, "%s", tmp);
-			die(tmp);
+			logMsg(LOGFATAL, "cant calloc memory to @include %s", tagInfo->content);
+			return(-1);
 		}
    		includeFile.read(includeBuf, length);
    		includeBuf[length] = 0;
@@ -242,6 +254,7 @@ if (++sanity > 100) { emitStd("Overflow in main!"); break; }
 		logMsg(LOGDEBUG, "Splicing included file into jam. 1stpart=%d, include=%d, 2ndpart=%d<br>", (int)strlen(jamBuf), (int)strlen(includeBuf), (int)strlen((tagInfo->endCurlyPos + strlen(endJam))));
 		free(jamBuf);
 		jamBuf = newJam;
+		free(includeBuf);
 		free(tagInfo->name);
 		free(tagInfo->content);
 		free(tagInfo);
@@ -275,6 +288,9 @@ if (++sanity > 100) { emitStd("Overflow in main!"); break; }
 				jamBuf = newBuf;
 			}
 			free(searchFor);
+			free(tinfo[tagIx]->name);
+			free(tinfo[tagIx]->content);
+			free(tinfo[tagIx]);
 			tagIx++;
 		}
 //logMsg(LOGDEBUG, "BUF1 with expanded templates = =====================> [%s] <========================", jamBuf);
@@ -398,7 +414,7 @@ logMsg(LOGERROR, "Remember templates stripping is not accurate..................
 			oobJamData();
 		endStd(urlEncodeRequired);
 		logMsg(LOGINFO, "Normal exit");
-		exit(0);
+		//exit(0);
 	} else {
 		logMsg(LOGINFO, "Normal return");
 	}
@@ -651,6 +667,8 @@ int control(int startIx, char *defaultTableName) {
 					control((ix + 1), givenTableName);				// recurse into the item
 					logMsg(LOGMICRO, "@each (db table %s) ended recurse", givenTableName);
 				}
+				free(rp->tableName);
+				free(rp);
 				// Finished. Now advance to the matching @end and emit its trailer
 				int depth = 0;
 				int sanity = 0;
@@ -679,6 +697,7 @@ int control(int startIx, char *defaultTableName) {
 					emitStd(jam[ix]->trailer);
 				mysql_free_result(res);
 				free(givenTableName);
+				free(listName);
 			}
 //		-------------------------------------
 		} else if (!(strcmp(cmd, "@runaction"))) {

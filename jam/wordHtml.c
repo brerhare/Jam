@@ -127,6 +127,7 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 	free(group);
 	if (label) free(label);
 	free(jamKey);
+	free(templateStr);
 	emitStd(jam[ix]->trailer);
 }
 
@@ -233,6 +234,7 @@ int wordHtmlFilter(int ix, char *defaultTableName) {
 	free(group);
 	if (label) free(label);
 	free(jamKey);
+	free(templateStr);
 	emitStd(jam[ix]->trailer);
 }
 
@@ -343,8 +345,9 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	free(size);
 	free(disabled);
 	free(group);
-	if (label) free(label);
+	free(label);
 	free(jamKey);
+	free(templateStr);
 	emitStd(jam[ix]->trailer);
 }
 

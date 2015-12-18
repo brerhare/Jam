@@ -227,15 +227,21 @@ int _isSqlFieldName(char *fieldName, char *tableName) {
 	res = mysql_store_result(conn);
 	if (!res) {
 		char *tmp = (char *) calloc(1, 4096);
-		sprintf(tmp, "Couldn't get results set: %s\n", mysql_error(conn));
-		die(tmp);
+		logMsg(LOGERROR, "Couldn't get results set: %s\n", mysql_error(conn));
+		mysql_free_result(res);
+		free(query);
 	}
 	int numFields = mysql_num_fields(res);
 	MYSQL_FIELD *field;
 	for (int i = 0; (field = mysql_fetch_field(res)); i++) {
-		if (!strcmp(field->name, fieldName))
+		if (!strcmp(field->name, fieldName)) {
+			mysql_free_result(res);
+			free(query);
 			return 1;
+		}
 	}
+	mysql_free_result(res);
+	free(query);
 	return 0;
 }
 
@@ -283,6 +289,7 @@ MYSQL_RES *doSqlSelect(int ix, char *defaultTableName, char **givenTableName, in
         return(NULL);
     }
     free(query);
+	free(tmp);
     return res;
 }
 

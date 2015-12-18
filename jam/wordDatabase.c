@@ -174,6 +174,8 @@ int wordDatabaseGet(int ix, char *defaultTableName) {
 		emitStd(jam[ix]->trailer);
 	}
 	mysql_free_result(res);
+	free(rp->tableName);
+	free(rp);
 	free(givenTableName);
 }
 
@@ -192,6 +194,8 @@ int wordDatabaseSql(int ix, char *defaultTableName) {
 		SQL_RESULT *rp = sqlCreateResult(defaultTableName, res);
 		sqlGetRow2Vars(rp);
 		mysql_free_result(res);
+		free(rp->tableName);
+		free(rp);
 	} else logMsg(LOGDEBUG, "RES is null");
 	emitStd(jam[ix]->trailer);
 }
@@ -340,6 +344,8 @@ int wordDatabaseClearItem(int ix, char *defaultTableName) {
 		SQL_RESULT *rp = sqlCreateResult(tableName, res);
 		sqlClearRowVars(rp);
 		mysql_free_result(res);
+		free(rp->tableName);
+		free(rp);
 	} else logMsg(LOGDEBUG, "RES is null");
 
 	emitStd(jam[ix]->trailer);
@@ -416,6 +422,8 @@ logMsg(LOGDEBUG, "wordDatabaseNewItem setting up field: [%s]", row[0]);
 		SQL_RESULT *rp = sqlCreateResult(tableName, res);
 		sqlGetRow2Vars(rp);
 		mysql_free_result(res);
+		free(rp->tableName);
+		free(rp);
 	} else logMsg(LOGDEBUG, "RES is null");
 
 
