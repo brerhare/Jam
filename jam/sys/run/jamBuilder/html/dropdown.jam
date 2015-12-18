@@ -2,7 +2,7 @@
 	<div class='uk-form-row'>
 		<label class='uk-form-label' for='DROPDOWN_TARGET_TABLE.DROPDOWN_TARGET_FIELD'> DROPDOWN_LABEL </label>
 		<div class='uk-form-controls'>
-			<select id='DROPDOWN_JAMKEY' name='DROPDOWN_TARGET_TABLE.DROPDOWN_TARGET_FIELD' onChange='dropdown_DROPDOWN_TARGET_TABLE_DROPDOWN_TARGET_FIELD(this, event); fn(this, event);' class='uk-form-width-DROPDOWN_SIZE'>
+			<select id='DROPDOWN_JAMKEY' name='DROPDOWN_TARGET_TABLE.DROPDOWN_TARGET_FIELD' XonChange='dropdown_DROPDOWN_TARGET_TABLE_DROPDOWN_TARGET_FIELD(this, event); fn(this, event);' class='uk-form-width-DROPDOWN_SIZE'>
 
 				{{@each DROPDOWN_PICK_TABLE filter id = {{DROPDOWN_TARGET_TABLE.DROPDOWN_TARGET_FIELD}} }}
 					<option value='{{DROPDOWN_PICK_TABLE.id}}' selected> {{DROPDOWN_PICK_FIELD}} </option>
