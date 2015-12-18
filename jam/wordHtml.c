@@ -34,15 +34,15 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 	char *targetField = NULL;
 	char *pickTable = NULL;
 	char *pickField = NULL;
-	char *label = NULL;
 	char *size = NULL;
-	char *group = NULL;
 	char *disabled = NULL;
+	char *group = NULL;
+	char *label = NULL;
 	char *jamKey = NULL;
 
 	// [Table].field
 	char *p = getVarAsString("sys.control.field");
-	if (strchr(p, '.')) {		// has a named table
+	if ((p) && (strchr(p, '.'))) {		// has a named table
 		targetTable = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
 		targetField = getWordAlloc(getVarAsString("sys.control.field"), 2, ".");
 	} else {					// its just the field name
@@ -52,7 +52,7 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 
 	//  Pick [table].field
 	p = getVarAsString("sys.control.pickfield");
-	if (strchr(p, '.')) {		// has a named table
+	if ((p) && (strchr(p, '.'))) {		// has a named table
 		pickTable = getWordAlloc(getVarAsString("sys.control.pickfield"), 1, ".");
 		pickField = getWordAlloc(getVarAsString("sys.control.pickfield"), 2, ".");
 	} else {					// its just the field name
@@ -137,15 +137,15 @@ int wordHtmlFilter(int ix, char *defaultTableName) {
 	char *targetField = NULL;
 	char *pickTable = NULL;
 	char *pickField = NULL;
-	char *label = NULL;
 	char *size = NULL;
-	char *group = NULL;
 	char *disabled = NULL;
+	char *group = NULL;
+	char *label = NULL;
 	char *jamKey = NULL;
 
 	// [Table].field
 	char *p = getVarAsString("sys.control.field");
-	if (strchr(p, '.')) {		// has a named table
+	if ((p) && (strchr(p, '.'))) {		// has a named table
 		targetTable = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
 		targetField = getWordAlloc(getVarAsString("sys.control.field"), 2, ".");
 	} else {					// its just the field name
@@ -155,7 +155,7 @@ int wordHtmlFilter(int ix, char *defaultTableName) {
 
 	//  Pick [table].field
 	p = getVarAsString("sys.control.pickfield");
-	if (strchr(p, '.')) {		// has a named table
+	if ((p) && (strchr(p, '.'))) {		// has a named table
 		pickTable = getWordAlloc(getVarAsString("sys.control.pickfield"), 1, ".");
 		pickField = getWordAlloc(getVarAsString("sys.control.pickfield"), 2, ".");
 	} else {					// its just the field name
@@ -232,7 +232,7 @@ int wordHtmlFilter(int ix, char *defaultTableName) {
 	free(size);
 	free(disabled);
 	free(group);
-	if (label) free(label);
+	free(label);
 	free(jamKey);
 	free(templateStr);
 	emitStd(jam[ix]->trailer);
@@ -246,9 +246,9 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	char *field = NULL;
 	char *label = NULL;
 	char *size = NULL;
+	char *disabled = NULL;
 	char *group = NULL;
 	char *value = NULL;
-	char *disabled = NULL;
 	char *jamKey = NULL;
 
 	// Type
@@ -262,16 +262,25 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 		free(type);
 		return(-1);
 	}
-
 	// [Table].field
 	char *p = getVarAsString("sys.control.field");
-	if (strchr(p, '.')) {		// has a named table
+logMsg(LOGDEBUG, "10");
+	//if ((p) && (strchr(p, '.'))) {		// has a named table
+
+if (p) logMsg(LOGDEBUG, "p exists");
+if (p) logMsg(LOGDEBUG, "p [%s] exists", p);
+//else logMsg(LOGDEBUG, "p no exists");
+
+	if ((p) && (strchr(p, '.'))) {		// has a named table
+logMsg(LOGDEBUG, "20");
+
 		table = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
 		field = getWordAlloc(getVarAsString("sys.control.field"), 2, ".");
 	} else {					// its just the field name
 		table = strdup(defaultTableName);
 		field = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
 	}
+logMsg(LOGDEBUG, "30");
 
 	// Label
 	if (isVar("sys.control.label"))
@@ -342,10 +351,11 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	free(type);
 	free(table);
 	free(field);
+	free(label);
 	free(size);
 	free(disabled);
 	free(group);
-	free(label);
+	free(value);
 	free(jamKey);
 	free(templateStr);
 	emitStd(jam[ix]->trailer);
