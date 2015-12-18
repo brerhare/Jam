@@ -210,8 +210,12 @@ int wordHtmlFilter(int ix, char *defaultTableName) {
 							group,
 							jamKey
 							);
+
 	jb.templateStr = templateStr;
-	jamBuilder("/jam/run/sys/jamBuilder/html/filter.jam", "filterHtml", &jb);
+	if (!isVar("sys.control.multiple"))
+		jamBuilder("/jam/run/sys/jamBuilder/html/filter.jam", "filterHtml", &jb);
+	else
+		jamBuilder("/jam/run/sys/jamBuilder/html/filter.jam", "filterMultipleHtml", &jb);
 
 	jb.stream = STREAMOUTPUT_JS;
 	jb.templateStr = templateStr;
@@ -869,10 +873,10 @@ char *makeJamKeyValue(char *tableName, char *fieldName) {
 	VAR *variable = findVarStrict(ret);
 	if (variable) {		// its a db or just a regular variable (not a list)
 		sprintf(ret, "ID%s___%s___%s", variable->portableValue, tableName, fieldName);
-		logMsg(LOGDEBUG, "makeJamKeyValue() [%s] created", ret);
-		return (ret);
+		logMsg(LOGDEBUG, "makeJamKeyValue() [%s] created. Exists as a variable", ret);
+	} else {
+		sprintf(ret, "ID0___%s___%s", tableName, fieldName);
+		logMsg(LOGERROR, "makeJamKeyValue() [%s] created. Does not exist as a variable", ret);
 	}
-	logMsg(LOGERROR, "makeJamKeyValue() [%s] does not exist as a variable", ret);
-	free(ret);
-	return(NULL);
+	return(ret);
 }

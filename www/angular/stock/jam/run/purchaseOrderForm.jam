@@ -92,7 +92,8 @@
 					<tr id='newRow' style='display:none'>		 <!-- NEW ROW --->
 						<td> </td>
 						<td> {{@html gridinp text stock_product.code small}} </td>
-						<td> {{@html gridinp filter stock_supplier_order_item.stock_product_id stock_product.name}} </td>
+<td> {{@html filter multiple group=newlin field=stock_supplier_order_item.stock_product_id pickfield=stock_product.name size=medium}} </td>
+<!-- <td> {{@Xhtml gridinp filter stock_supplier_order_item.stock_product_id stock_product.name}} </td> -->
 						<td> {{@html gridinp text stock_supplier_order_item.pack_qty small}} </td>
 						<td id="packTD" name="packTD"> </td>
 						<td> {{@html gridinp disabled stock_product.cost small}} </td>
@@ -272,8 +273,8 @@
 		if ((obj.value == "") || (obj.value == "0"))
 			alert('Save header details before adding stock');
 		else {
-			document.getElementById('SEQ_0_stock_product.code').value = "";
-			document.getElementById('SEQ_0_SEARCH_VALUE').value = "";
+//@@X		document.getElementById('SEQ_0_stock_product.code').value = "";
+//@@X		document.getElementById('SEQ_0_SEARCH_VALUE').value = "";
 			document.getElementById('newRow').style.display = 'table-row';
 		}
 	}
