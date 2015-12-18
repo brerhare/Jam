@@ -1,28 +1,22 @@
-{{@action filterHtml}}
+{{@action filterLabelHtml}}
 	{{get FILTER_PICK_TABLE.FILTER_PICK_FIELD filter id = FILTER_TARGET_TABLE.FILTER_TARGET_FIELD}}
-	<div class='uk-form-row'>
-		<label class='uk-form-label' for='FILTER_TARGET_TABLE.FILTER_TARGET_FIELD'> FILTER_LABEL </label>
-		<div class='uk-form-controls'>
-			<input type='hidden' id='FILTER_JAMKEY' name='FILTER_TARGET_TABLE.FILTER_TARGET_FIELD' value='{{FILTER_TARGET_TABLE.FILTER_TARGET_FIELD}}'>
-			<div class='ui-widget'>
-				<input id='AUTOCOMPLETE_FILTER_JAMKEY' value='{{FILTER_PICK_TABLE.FILTER_PICK_FIELD}}' XonChange='dropdown_FILTER_TARGET_TABLE_FILTER_TARGET_FIELD(this, event); fn(this, event);' class='uk-form-width-FILTER_SIZE'>
-			</div>
-		</div>
-	</div>
-{{@end}}
-
-{{@action filterMultipleHtml}}
-	{{get FILTER_PICK_TABLE.FILTER_PICK_FIELD filter id = FILTER_TARGET_TABLE.FILTER_TARGET_FIELD}}
-	<div class='uk-form-row'>
+	<label class='uk-form-label' for='FILTER_TARGET_TABLE.FILTER_TARGET_FIELD'> FILTER_LABEL </label>
+	<div class='uk-form-controls'>
 		<input type='hidden' id='FILTER_JAMKEY' name='FILTER_TARGET_TABLE.FILTER_TARGET_FIELD' value='{{FILTER_TARGET_TABLE.FILTER_TARGET_FIELD}}'>
 		<div class='ui-widget'>
-			<input id='AUTOCOMPLETE_FILTER_JAMKEY' value='' XonChange='dropdown_FILTER_TARGET_TABLE_FILTER_TARGET_FIELD(this, event); fn(this, event);' class='uk-form-width-FILTER_SIZE'>
+			<input id='AUTOCOMPLETE_FILTER_JAMKEY' value='{{FILTER_PICK_TABLE.FILTER_PICK_FIELD}}' XonChange='dropdown_FILTER_TARGET_TABLE_FILTER_TARGET_FIELD(this, event); fn(this, event);' class='uk-form-width-FILTER_SIZE'>
 		</div>
 	</div>
 {{@end}}
 
-Shared by non-multiple and multiple
------------------------------------
+{{@action filterHtml}}
+	{{get FILTER_PICK_TABLE.FILTER_PICK_FIELD filter id = FILTER_TARGET_TABLE.FILTER_TARGET_FIELD}}
+	<input type='hidden' id='FILTER_JAMKEY' name='FILTER_TARGET_TABLE.FILTER_TARGET_FIELD' value='{{FILTER_TARGET_TABLE.FILTER_TARGET_FIELD}}'>
+	<div class='ui-widget'>
+		<input id='AUTOCOMPLETE_FILTER_JAMKEY' value='' XonChange='dropdown_FILTER_TARGET_TABLE_FILTER_TARGET_FIELD(this, event); fn(this, event);' class='uk-form-width-FILTER_SIZE'>
+	</div>
+{{@end}}
+
 {{@action filterJs}}
 	$(function() {
 		var exampleOfHardcodedData = [
@@ -61,8 +55,6 @@ document.getElementsByName('FILTER_TARGET_TABLE.FILTER_TARGET_FIELD')[0].value =
 	});
 {{@end}}
 
-Shared by non-multiple and multiple
------------------------------------
 {{@action filterAjax}}
 	{{@database stock}}
 	[

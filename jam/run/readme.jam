@@ -117,11 +117,11 @@
 {@html input keyaction jam:action, inputElement, outputResult, mini}	// use null for empty values
 {@html input disabled stock_supplier.payment_terms mini "Payment terms" days}}	// same as input just no editing
 {@html inp <anytype means inline input>}
-
-{@html dropdown stock_transaction.supplier_id stock_supplier.name mini "Supplier Name"}
-{@html dropdown field=product.supplier_id pickfield=supplier.name size=medium label=Supplier}
-
 {@html textarea stock_supplier.notes 60x5 Notes}
+
+{@html dropdown/filter field=product.supplier_id pickfield=supplier.name size=medium label='Line Supplier'}
+{@html dropdown/filter field=product.supplier_id pickfield=supplier.name size=medium}
+
 
 
 {@html button Save primary small

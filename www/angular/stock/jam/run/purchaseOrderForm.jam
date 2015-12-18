@@ -34,19 +34,17 @@
 
 		<div class="uk-grid">
 
-			<div class="uk-width-8-10">
-{{@html filter group=grpflt field=stock_supplier_order.supplier_id pickfield=stock_supplier.name size=medium label=Supplier}}
-{{@Xhtml input filter stock_supplier_order.supplier_id stock_supplier.name medium Supplier}}
+			<div class="uk-width-10-10">
+				{{@html filter group=grpflt field=stock_supplier_order.supplier_id pickfield=stock_supplier.name size=medium label=Supplier}}
+			</div>
+			<div class="uk-width-10-10">
 				{{@html input date stock_supplier_order.delivery_date medium 'Delivery Date' 'require a delivery date field'}}
 			</div>
 			<div class="uk-width-4-10">
-{{@html dropdown group=grpdrpdn field=stock_supplier_order.location_id pickfield=stock_location.name size=medium label=Container}}
-{{@Xhtml input filter stock_supplier_order.location_id stock_location.name medium Location}}
+				{{@html dropdown group=grpdrpdn field=stock_supplier_order.location_id pickfield=stock_location.name size=medium label=Location}}
 			</div>
 			<div class="uk-width-4-10">
-{{@html dropdown group=grpdrpdn field=stock_supplier_order.container_id pickfield=stock_container.name size=medium label=Container}}
-{{@Xhtml input dropdown stock_supplier_order.container_id stock_container.name medium Container}}
-				{{@Xhtml input filter stock_supplier_order.container_id stock_container.name medium Container}}
+				{{@html dropdown group=grpdrpdn field=stock_supplier_order.container_id pickfield=stock_container.name size=medium label=Container}}
 			</div>
 			<div class="uk-width-8-10">
 				<br>
@@ -92,7 +90,7 @@
 					<tr id='newRow' style='display:none'>		 <!-- NEW ROW --->
 						<td> </td>
 						<td> {{@html gridinp text stock_product.code small}} </td>
-<td> {{@html filter multiple group=newlin field=stock_supplier_order_item.stock_product_id pickfield=stock_product.name size=medium}} </td>
+<td> {{@html filter group=newlin field=stock_supplier_order_item.stock_product_id pickfield=stock_product.name size=medium}} </td>
 <!-- <td> {{@Xhtml gridinp filter stock_supplier_order_item.stock_product_id stock_product.name}} </td> -->
 						<td> {{@html gridinp text stock_supplier_order_item.pack_qty small}} </td>
 						<td id="packTD" name="packTD"> </td>

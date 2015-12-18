@@ -64,6 +64,7 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 	}
 
 	// Label
+
 	if (isVar("sys.control.label"))
 		label = strdup(getVarAsString("sys.control.label"));
 	else
@@ -123,7 +124,10 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 							jamKey
 							);
 	jb.templateStr = templateStr;
-	jamBuilder("/jam/run/sys/jamBuilder/html/dropdown.jam", "dropdownHtml", &jb);
+	if (isVar("sys.control.label"))
+		jamBuilder("/jam/run/sys/jamBuilder/html/dropdown.jam", "dropdownLabelHtml", &jb);
+	else
+		jamBuilder("/jam/run/sys/jamBuilder/html/dropdown.jam", "dropdownHtml", &jb);
 
 	free(tmp);
 	free(targetTable);
@@ -132,6 +136,7 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 	free(pickField);
 	free(size);
 	free(group);
+	if (label) free(label);
 	free(jamKey);
 	emitStd(jam[ix]->trailer);
 }
@@ -212,10 +217,10 @@ int wordHtmlFilter(int ix, char *defaultTableName) {
 							);
 
 	jb.templateStr = templateStr;
-	if (!isVar("sys.control.multiple"))
-		jamBuilder("/jam/run/sys/jamBuilder/html/filter.jam", "filterHtml", &jb);
+	if (isVar("sys.control.label"))
+		jamBuilder("/jam/run/sys/jamBuilder/html/filter.jam", "filterLabelHtml", &jb);
 	else
-		jamBuilder("/jam/run/sys/jamBuilder/html/filter.jam", "filterMultipleHtml", &jb);
+		jamBuilder("/jam/run/sys/jamBuilder/html/filter.jam", "filterHtml", &jb);
 
 	jb.stream = STREAMOUTPUT_JS;
 	jb.templateStr = templateStr;
@@ -227,6 +232,7 @@ int wordHtmlFilter(int ix, char *defaultTableName) {
 	free(pickField);
 	free(size);
 	free(group);
+	if (label) free(label);
 	free(jamKey);
 	emitStd(jam[ix]->trailer);
 }
