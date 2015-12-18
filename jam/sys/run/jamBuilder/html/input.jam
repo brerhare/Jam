@@ -1,11 +1,11 @@
 {{@action inputLabelHtml}}
 	<label class='uk-form-label' for='INPUT_TABLE.INPUT_FIELD'> INPUT_LABEL </label>
 	<div class='uk-form-controls'>
-		<input type='INPUT_TYPE' id='INPUT_JAMKEY' name='INPUT_TABLE.INPUT_FIELD' value='{{INPUT_TABLE.INPUT_FIELD}}' class='uk-form-width-INPUT_SIZE'>
+		<input type='INPUT_TYPE' id='INPUT_JAMKEY' name='INPUT_TABLE.INPUT_FIELD' value='INPUT_VALUE' class='uk-form-width-INPUT_SIZE'>
 	</div>
 {{@end}}
 
 {{@action inputHtml}}
-	<input type='INPUT_TYPE' id='INPUT_JAMKEY' name='INPUT_TABLE.INPUT_FIELD' value='{{INPUT_TABLE.INPUT_FIELD}} class='uk-form-width-INPUT_SIZE''>
+	<input type='INPUT_TYPE' id='INPUT_JAMKEY' name='INPUT_TABLE.INPUT_FIELD' value='INPUT_VALUE' class='uk-form-width-INPUT_SIZE'>
 {{@end}}
 

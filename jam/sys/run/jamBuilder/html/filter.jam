@@ -1,4 +1,14 @@
 {{@action filterLabelHtml}}
+	<style>
+		/* @@TODO make this common */
+		.ui-autocomplete {
+    	max-height: 300px;
+    	overflow-y: auto;   /* prevent horizontal scrollbar */
+    	overflow-x: hidden; /* add padding to account for vertical scrollbar */
+    	z-index:1000 !important;
+	}
+	</style>
+
 	{{get FILTER_PICK_TABLE.FILTER_PICK_FIELD filter id = FILTER_TARGET_TABLE.FILTER_TARGET_FIELD}}
 	<label class='uk-form-label' for='FILTER_TARGET_TABLE.FILTER_TARGET_FIELD'> FILTER_LABEL </label>
 	<div class='uk-form-controls'>

@@ -245,6 +245,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	char *label = NULL;
 	char *size = NULL;
 	char *group = NULL;
+	char *value = NULL;
 	char *disabled = NULL;
 	char *jamKey = NULL;
 
@@ -298,6 +299,14 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	// Set jamKey. This is whatever table/field values are required to update the data
 	jamKey = makeJamKeyValue(table, field);
 
+	// Value
+	sprintf(tmp, "%s.%s", table, field);
+	VAR *variable = findVarStrict(tmp);
+	if (variable)
+		value = strdup(variable->portableValue);
+	else
+		value = strdup("");
+
 	JAMBUILDER jb;
 	jb.stream = STREAMOUTPUT_STD;
 	char *templateStr = (char *) calloc(1, 4096);
@@ -306,6 +315,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 						  {{@template INPUT_FIELD %s}}	\
 						  {{@template INPUT_LABEL %s}}	\
 						  {{@template INPUT_SIZE %s}}	\
+						  {{@template INPUT_VALUE %s}}	\
 						  {{@template INPUT_DISABLED %s}}	\
 						  {{@template INPUT_GROUP %s}}	\
 						  {{@template INPUT_JAMKEY %s}}",
@@ -314,6 +324,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 							field,
 							label,
 							size,
+							value,
 							disabled,
 							group,
 							jamKey

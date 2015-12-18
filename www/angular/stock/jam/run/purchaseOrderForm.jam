@@ -89,7 +89,7 @@
 					</tr>
 					<tr id='newRow' style='display:none'>		 <!-- NEW ROW --->
 						<td> </td>
-						<td> {{@html gridinp text stock_product.code small}} </td>
+						<td> {{@html text field=stock_product.code size=small}} </td>
 						<td> {{@html filter group=newlin field=stock_supplier_order_item.stock_product_id pickfield=stock_product.name size=medium}} </td>
 						<td> {{@html gridinp text stock_supplier_order_item.pack_qty small}} </td>
 						<td id="packTD" name="packTD"> </td>
