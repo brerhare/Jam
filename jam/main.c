@@ -486,9 +486,11 @@ int control(int startIx, char *defaultTableName) {
 						wordHtmlDropdown(ix, defaultTableName);
 					else if (!strcmp(tmp, "filter"))
 						wordHtmlFilter(ix, defaultTableName);
-
-					else if ( (!strcmp(tmp, "input")) || (!strcmp(tmp, "date")) )
+					else if ( (!strcmp(tmp, "text")) || (!strcmp(tmp, "date")) )
 						wordHtmlInput(ix, defaultTableName);
+
+					else if (!strcmp(tmp, "input"))
+						wordHtmlInputOld(ix, defaultTableName);
 					else if (!strcmp(tmp, "inp"))
 						wordHtmlInp(ix, defaultTableName);
 					else if (!strcmp(tmp, "gridinp"))

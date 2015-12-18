@@ -30,7 +30,6 @@ char *makeJamKeyValue(char *tableName, char *fieldName);
 
 int wordHtmlDropdown(int ix, char *defaultTableName) {
 	char *tmp = (char *) calloc(1, 4096);
-
 	char *targetTable = NULL;
 	char *targetField = NULL;
 	char *pickTable = NULL;
@@ -38,10 +37,8 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 	char *label = NULL;
 	char *size = NULL;
 	char *group = NULL;
+	char *disabled = NULL;
 	char *jamKey = NULL;
-
-	//char *targetFieldValue = NULL;
-	//char *pickFieldValue = NULL;
 
 	// [Table].field
 	char *p = getVarAsString("sys.control.field");
@@ -64,7 +61,6 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 	}
 
 	// Label
-
 	if (isVar("sys.control.label"))
 		label = strdup(getVarAsString("sys.control.label"));
 	else
@@ -83,25 +79,14 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 	} else
 		group = strdup("");
 
+	// Disabled
+	if (isVar("sys.control.disabled"))
+		disabled = strdup(" disabled ");
+	else
+		disabled = strdup("");
+
 	// Set jamKey. This is whatever table/field values are required to update the data
 	jamKey = makeJamKeyValue(targetTable, targetField);
-
-/*
-	// Get the target field value
-	sprintf(tmp, "%s.%s", targetTable, targetField);
-	variable = findVarStrict(tmp);
-	if (variable)
-		strcpy(targetFieldValue, variable->portableValue);
-	else
-		targetFieldValue = strdup("");
-	// Use it to lookup the pick field value (for its description to display)
-	sprintf(tmp, "%s.%s", pickable, pickField);
-	variable = findVarStrict(tmp);
-	if (variable)
-		strcpy(targetFieldValue, variable->portableValue);
-	else
-		targetFieldValue = strdup("");
-*/
 
 	JAMBUILDER jb;
 	jb.stream = STREAMOUTPUT_STD;
@@ -112,6 +97,7 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 						  {{@template DROPDOWN_PICK_FIELD %s}}	\
 						  {{@template DROPDOWN_LABEL %s}}	\
 						  {{@template DROPDOWN_SIZE %s}}	\
+						  {{@template DROPDOWN_DISABLED %s}}	\
 						  {{@template DROPDOWN_GROUP %s}}	\
 						  {{@template DROPDOWN_JAMKEY %s}}",
 							targetTable,
@@ -120,9 +106,11 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 							pickField,
 							label,
 							size,
+							disabled,
 							group,
 							jamKey
 							);
+
 	jb.templateStr = templateStr;
 	if (isVar("sys.control.label"))
 		jamBuilder("/jam/run/sys/jamBuilder/html/dropdown.jam", "dropdownLabelHtml", &jb);
@@ -135,6 +123,7 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 	free(pickTable);
 	free(pickField);
 	free(size);
+	free(disabled);
 	free(group);
 	if (label) free(label);
 	free(jamKey);
@@ -143,7 +132,6 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 
 int wordHtmlFilter(int ix, char *defaultTableName) {
 	char *tmp = (char *) calloc(1, 4096);
-
 	char *targetTable = NULL;
 	char *targetField = NULL;
 	char *pickTable = NULL;
@@ -151,6 +139,7 @@ int wordHtmlFilter(int ix, char *defaultTableName) {
 	char *label = NULL;
 	char *size = NULL;
 	char *group = NULL;
+	char *disabled = NULL;
 	char *jamKey = NULL;
 
 	// [Table].field
@@ -191,6 +180,12 @@ int wordHtmlFilter(int ix, char *defaultTableName) {
 		group = strdup(tmp);
 	} else
 		group = strdup("");
+
+	// Disabled
+	if (isVar("sys.control.disabled"))
+		disabled = strdup(" disabled ");
+	else
+		disabled = strdup("");
 
 	// Set jamKey. This is whatever table/field values are required to update the data
 	jamKey = makeJamKeyValue(targetTable, targetField);
@@ -204,6 +199,7 @@ int wordHtmlFilter(int ix, char *defaultTableName) {
 						  {{@template FILTER_PICK_FIELD %s}}	\
 						  {{@template FILTER_LABEL %s}}	\
 						  {{@template FILTER_SIZE %s}}	\
+						  {{@template FILTER_DISABLED %s}}	\
 						  {{@template FILTER_GROUP %s}}	\
 						  {{@template FILTER_JAMKEY %s}}",
 							targetTable,
@@ -212,6 +208,7 @@ int wordHtmlFilter(int ix, char *defaultTableName) {
 							pickField,
 							label,
 							size,
+							disabled,
 							group,
 							jamKey
 							);
@@ -225,12 +222,115 @@ int wordHtmlFilter(int ix, char *defaultTableName) {
 	jb.stream = STREAMOUTPUT_JS;
 	jb.templateStr = templateStr;
 	jamBuilder("/jam/run/sys/jamBuilder/html/filter.jam", "filterJs", &jb);
+
 	free(tmp);
 	free(targetTable);
 	free(targetField);
 	free(pickTable);
 	free(pickField);
 	free(size);
+	free(disabled);
+	free(group);
+	if (label) free(label);
+	free(jamKey);
+	emitStd(jam[ix]->trailer);
+}
+
+// Input 'text' or 'date'
+int wordHtmlInput(int ix, char *defaultTableName) {
+	char *tmp = (char *) calloc(1, 4096);
+	char *type = NULL;
+	char *table = NULL;
+	char *field = NULL;
+	char *label = NULL;
+	char *size = NULL;
+	char *group = NULL;
+	char *disabled = NULL;
+	char *jamKey = NULL;
+
+	// Type
+	type = getWordAlloc(jam[ix]->args, 1, " \t\n");
+	if (type == NULL ) {
+		logMsg(LOGERROR, "Html input type cant be null");
+		return(-1);	
+	}
+	if ((strcmp(type, "date")) && (strcmp(type, "text"))) {
+		logMsg(LOGERROR, "Html input type unspecified. Use 'text' or 'date' etc");
+		free(type);
+		return(-1);
+	}
+
+	// [Table].field
+	char *p = getVarAsString("sys.control.field");
+	if (strchr(p, '.')) {		// has a named table
+		table = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
+		field = getWordAlloc(getVarAsString("sys.control.field"), 2, ".");
+	} else {					// its just the field name
+		table = strdup(defaultTableName);
+		field = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
+	}
+
+	// Label
+	if (isVar("sys.control.label"))
+		label = strdup(getVarAsString("sys.control.label"));
+	else
+		label = strdup("");
+
+	// Size
+	if (isVar("sys.control.size"))
+		size = strdup(getVarAsString("sys.control.size"));
+	else
+		size = strdup("");
+
+	// Group(s)
+	if (isVar("sys.control.group")) {
+		sprintf(tmp, " 'class %s' ", getVarAsString("sys.control.group"));
+		group = strdup(tmp);
+	} else
+		group = strdup("");
+
+	// Disabled
+	if (isVar("sys.control.disabled"))
+		disabled = strdup(" disabled ");
+	else
+		disabled = strdup("");
+
+	// Set jamKey. This is whatever table/field values are required to update the data
+	jamKey = makeJamKeyValue(table, field);
+
+	JAMBUILDER jb;
+	jb.stream = STREAMOUTPUT_STD;
+	char *templateStr = (char *) calloc(1, 4096);
+	sprintf(templateStr, "{{@template INPUT_TYPE %s}}	\
+						  {{@template INPUT_TABLE %s}}	\
+						  {{@template INPUT_FIELD %s}}	\
+						  {{@template INPUT_LABEL %s}}	\
+						  {{@template INPUT_SIZE %s}}	\
+						  {{@template INPUT_DISABLED %s}}	\
+						  {{@template INPUT_GROUP %s}}	\
+						  {{@template INPUT_JAMKEY %s}}",
+							type,
+							table,
+							field,
+							label,
+							size,
+							disabled,
+							group,
+							jamKey
+							);
+
+	jb.templateStr = templateStr;
+	if (isVar("sys.control.label"))
+		jamBuilder("/jam/run/sys/jamBuilder/html/input.jam", "inputLabelHtml", &jb);
+	else
+		jamBuilder("/jam/run/sys/jamBuilder/html/input.jam", "inputHtml", &jb);
+
+	free(tmp);
+	free(type);
+	free(table);
+	free(field);
+	free(size);
+	free(disabled);
 	free(group);
 	if (label) free(label);
 	free(jamKey);
@@ -444,15 +544,17 @@ filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSe
 	free(tmp);
 }
 
+
 int wordHtmlInp(int ix, char *defaultTableName) {
 	return(_wordHtmlInputInp(ix, defaultTableName, INP));
 }
-int wordHtmlInput(int ix, char *defaultTableName) {
+int wordHtmlInputOld(int ix, char *defaultTableName) {
 	return(_wordHtmlInputInp(ix, defaultTableName, INPUT));
 }
 int wordHtmlGridInp(int ix, char *defaultTableName) {
 	return(_wordHtmlInputInp(ix, defaultTableName, GRIDINP));
 }
+
 
 //	{{@html textarea stock_supplier.notes 60x5 Notes}}
 
@@ -875,7 +977,7 @@ int wordHtmlBreakpoint(int ix, char *defaultTableName) {
 // Simply look this up (strict) as a variable. Hopefully works for lists too  @@TODO check this is the case...
 char *makeJamKeyValue(char *tableName, char *fieldName) {
 	char *ret = (char *) calloc(1, 4096);
-	sprintf(ret, "%s.%s", tableName, fieldName);
+	sprintf(ret, "%s.id", tableName);
 	VAR *variable = findVarStrict(ret);
 	if (variable) {		// its a db or just a regular variable (not a list)
 		sprintf(ret, "ID%s___%s___%s", variable->portableValue, tableName, fieldName);

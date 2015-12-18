@@ -38,7 +38,7 @@
 				{{@html filter group=grpflt field=stock_supplier_order.supplier_id pickfield=stock_supplier.name size=medium label=Supplier}}
 			</div>
 			<div class="uk-width-10-10">
-				{{@html input date stock_supplier_order.delivery_date medium 'Delivery Date' 'require a delivery date field'}}
+				{{@html date field=stock_supplier_order.delivery_date size=medium label='Delivery Date'}}
 			</div>
 			<div class="uk-width-4-10">
 				{{@html dropdown group=grpdrpdn field=stock_supplier_order.location_id pickfield=stock_location.name size=medium label=Location}}
@@ -90,8 +90,7 @@
 					<tr id='newRow' style='display:none'>		 <!-- NEW ROW --->
 						<td> </td>
 						<td> {{@html gridinp text stock_product.code small}} </td>
-<td> {{@html filter group=newlin field=stock_supplier_order_item.stock_product_id pickfield=stock_product.name size=medium}} </td>
-<!-- <td> {{@Xhtml gridinp filter stock_supplier_order_item.stock_product_id stock_product.name}} </td> -->
+						<td> {{@html filter group=newlin field=stock_supplier_order_item.stock_product_id pickfield=stock_product.name size=medium}} </td>
 						<td> {{@html gridinp text stock_supplier_order_item.pack_qty small}} </td>
 						<td id="packTD" name="packTD"> </td>
 						<td> {{@html gridinp disabled stock_product.cost small}} </td>
@@ -124,7 +123,7 @@
 						<td> {{@html gridinp hidden stock_supplier_order_item.id}} </td>
 						<td> {{@html gridinp disabled stock_product.code small}} </td>
 						<td>  <input type='text' class='uk-form-width-' value='{{stock_product.name}}' disabled></td>
-<!-- above line is a hack for line below because name=xxx is zeroth element in first display line not input line
+<!-- above line is a hack for line below because name=xxx is zeroth element in first display line not input line -->
 				<!--	<td> {{@html gridinp disabled stock_product.name}} </td> -->
 						<td> {{@html gridinp text stock_supplier_order_item.pack_qty small}} </td>
 
