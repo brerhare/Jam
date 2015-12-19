@@ -222,7 +222,8 @@ int _isSqlFieldName(char *fieldName, char *tableName) {
 //die(query);
 	MYSQL_RES *res;
 	if (mysql_query(conn, query) != 0) {
-		die(mysql_error(conn));
+		logMsg(LOGERROR, "_isSqlFieldName() error - %s", mysql_error(conn));
+		return(-1);
 	}
 	res = mysql_store_result(conn);
 	if (!res) {
@@ -319,20 +320,26 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 	// Deal with each "<filter> a = b" phrase
 	for (int i = 0; i < MAX_SUBARGS; i++) {
 		if (subArg[i] == NULL) {
-			if (firstArg)
-				die("No arguments provided to @each/@get");
+			if (firstArg) {
+				logMsg(LOGERROR, "No arguments provided to @each/@get");
+				return(-1);
+			}
 			break;
 		}
 		wdNum = 0;
 
 		selectorField = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// try for the field selector (LHS)
-		if (!selectorField)
-			die("table name given for mysql lookup but no field selector");
+		if (!selectorField) {
+			logMsg(LOGERROR, "table name given for mysql lookup but no field selector");
+			return(-1);
+		}
 		if (!strcmp(selectorField, "filter")) {
 			free(selectorField);
 			selectorField = strTrim(getWordAlloc(args, ++wdNum, space));
-			if (!selectorField)
-				die("table name given for mysql lookup but no field selector after 'filter'");
+			if (!selectorField) {
+				logMsg(LOGERROR, "table name given for mysql lookup but no field selector after 'filter'");
+				return(-1);
+			}
 			if (char *p = strchr(selectorField, '.')) {	// remove any irrelevant stuff before the '.'
 				free(selectorField);
 				selectorField = strdup(p);
@@ -356,8 +363,10 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 		}
 
 		operand = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// try for the operand '=' '>' '<' 'is' 'is not' etc
-		if (!operand)
-			die("no operator given for lookup");
+		if (!operand) {
+			logMsg(LOGERROR, "no operator given for lookup");
+			return(-1);
+		}
 		if (!strcasecmp(operand, "is")) {
 			free(operand);
 			operand = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// we got 'is', the next is either 'not' or out of bounds to us
@@ -376,6 +385,8 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 //logMsg(LOGDEBUG, "[%s]", externalFieldOrValue);
 		if (!externalFieldOrValue) {
 			logMsg(LOGERROR, "no external field given for lookup");
+			free(queryBuilder);
+			free(tmp);
 			return -1;
 		}
 
@@ -435,7 +446,6 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 	free(tmp);
 	for (int i = 0; i < MAX_SUBARGS; i++)
 		free(subArg[i]);
-
 	return retval;
 }
 
