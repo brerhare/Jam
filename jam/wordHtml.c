@@ -247,40 +247,36 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	char *label = NULL;
 	char *size = NULL;
 	char *disabled = NULL;
+	char *hidden = NULL;
 	char *group = NULL;
 	char *value = NULL;
 	char *jamKey = NULL;
 
-	// Type
-	type = getWordAlloc(jam[ix]->args, 1, " \t\n");
-	if (type == NULL ) {
-		logMsg(LOGERROR, "Html input type cant be null");
-		return(-1);	
-	}
-	if ((strcmp(type, "date")) && (strcmp(type, "text"))) {
-		logMsg(LOGERROR, "Html input type unspecified. Use 'text' or 'date' etc");
-		free(type);
-		return(-1);
+	// Hidden
+	if (isVar("sys.control.hidden"))
+		type = strdup("hidden");
+	else {
+		// Type
+		type = getWordAlloc(jam[ix]->args, 1, " \t\n");
+		if (type == NULL ) {
+			logMsg(LOGERROR, "Html input type cant be null");
+			return(-1);	
+		}
+		if ((strcmp(type, "date")) && (strcmp(type, "text"))) {
+			logMsg(LOGERROR, "Html input type unspecified. Use 'text' or 'date' etc");
+			free(type);
+			return(-1);
+		}
 	}
 	// [Table].field
 	char *p = getVarAsString("sys.control.field");
-logMsg(LOGDEBUG, "10");
-	//if ((p) && (strchr(p, '.'))) {		// has a named table
-
-if (p) logMsg(LOGDEBUG, "p exists");
-if (p) logMsg(LOGDEBUG, "p [%s] exists", p);
-//else logMsg(LOGDEBUG, "p no exists");
-
 	if ((p) && (strchr(p, '.'))) {		// has a named table
-logMsg(LOGDEBUG, "20");
-
 		table = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
 		field = getWordAlloc(getVarAsString("sys.control.field"), 2, ".");
 	} else {					// its just the field name
 		table = strdup(defaultTableName);
 		field = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
 	}
-logMsg(LOGDEBUG, "30");
 
 	// Label
 	if (isVar("sys.control.label"))
