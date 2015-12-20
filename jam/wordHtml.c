@@ -1054,7 +1054,7 @@ int wordHtmlBreakpoint(int ix, char *defaultTableName) {
 char *makeJamKeyValue(char *tableName, char *fieldName, char *rawValue) {
 	char *ret = (char *) calloc(1, 4096);
 	sprintf(ret, "%s.id", tableName);
-logMsg(LOGDEBUG, "makeJamKeyValue() - received table=[%s], field=[%s], raw=[%s]", tableName, fieldName, rawValue);
+	logMsg(LOGMICRO, "makeJamKeyValue() - received table=[%s], field=[%s], raw=[%s]", tableName, fieldName, rawValue);
 	if (strlen(tableName)) {
 		if (isMysqlTable(tableName)) {
 			if (isMysqlField(fieldName, tableName)) {
@@ -1066,24 +1066,11 @@ logMsg(LOGDEBUG, "makeJamKeyValue() - received table=[%s], field=[%s], raw=[%s]"
 					sprintf(ret, "ID0___%s___%s", tableName, fieldName);
 					logMsg(LOGDEBUG, "makeJamKeyValue() [%s] created (db). Does not exist as a variable", ret);
 				}
-	
+				return(ret);	// is db field
 			}
 		}
 	}
+	// If we're still here its a variable
+	sprintf(ret, "VAR___%s", rawValue);
 	return(ret);
 }
-
-/* old ... 
-char *makeJamKeyValue(char *tableName, char *fieldName, char *rawValue) {
-	char *ret = (char *) calloc(1, 4096);
-	sprintf(ret, "%s.id", tableName);
-	VAR *variable = findVarStrict(ret);
-	if (variable) {		// its a db or just a regular variable (not a list)
-		sprintf(ret, "ID%s___%s___%s", variable->portableValue, tableName, fieldName);
-		logMsg(LOGDEBUG, "makeJamKeyValue() [%s] created. Exists as a variable", ret);
-	} else {
-		sprintf(ret, "ID0___%s___%s", tableName, fieldName);
-		logMsg(LOGERROR, "makeJamKeyValue() [%s] created. Does not exist as a variable", ret);
-	}
-	return(ret);
-}  */
