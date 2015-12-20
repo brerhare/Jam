@@ -14,7 +14,7 @@
 	<div class='uk-form-controls'>
 		<input type='hidden' id='FILTER_JAMKEY' name='FILTER_TARGET_TABLE.FILTER_TARGET_FIELD' class='FILTER_GROUP' value='{{FILTER_TARGET_TABLE.FILTER_TARGET_FIELD}}'>
 		<div class='ui-widget'>
-			<input id='AUTOCOMPLETE_FILTER_JAMKEY' value='{{FILTER_PICK_TABLE.FILTER_PICK_FIELD}}' XonChange='dropdown_FILTER_TARGET_TABLE_FILTER_TARGET_FIELD(this, event); fn(this, event);' class='uk-form-width-FILTER_SIZE' FILTER_DISABLED>
+			<input id='AUTOCOMPLETE_FILTER_JAMKEY' value='{{FILTER_PICK_TABLE.FILTER_PICK_FIELD}}' class='uk-form-width-FILTER_SIZE' FILTER_DISABLED>
 		</div>
 	</div>
 {{@end}}
@@ -23,7 +23,7 @@
 	{{get FILTER_PICK_TABLE.FILTER_PICK_FIELD filter id = FILTER_TARGET_TABLE.FILTER_TARGET_FIELD}}
 	<input type='hidden' id='FILTER_JAMKEY' name='FILTER_TARGET_TABLE.FILTER_TARGET_FIELD' class='FILTER_GROUP' value='{{FILTER_TARGET_TABLE.FILTER_TARGET_FIELD}}'>
 	<div class='ui-widget'>
-		<input id='AUTOCOMPLETE_FILTER_JAMKEY' value='' XonChange='dropdown_FILTER_TARGET_TABLE_FILTER_TARGET_FIELD(this, event); fn(this, event);' class='uk-form-width-FILTER_SIZE' FILTER_DISABLED>
+		<input id='AUTOCOMPLETE_FILTER_JAMKEY' value='' onChange='fn(this, event);' class='uk-form-width-FILTER_SIZE' FILTER_DISABLED>
 	</div>
 {{@end}}
 
@@ -57,7 +57,12 @@
 			}, **********/
 			select: function( event, ui ) {
 				$('#AUTOCOMPLETE_FILTER_JAMKEY').val(ui.item.label.trim());
-document.getElementsByName('FILTER_TARGET_TABLE.FILTER_TARGET_FIELD')[0].value = ui.item.value;
+				var obj = document.getElementsByName('FILTER_TARGET_TABLE.FILTER_TARGET_FIELD')[0];
+				// Set the hidden input's value and generate a change event for any user-defined action
+				obj.value = ui.item.value;
+				var evt = document.createEvent("HTMLEvents");
+    			evt.initEvent("change", false, true);
+				fn(obj, evt);
 				return false;
 			}
 

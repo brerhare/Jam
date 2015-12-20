@@ -158,18 +158,18 @@ function fn(obj, event) {
 	var localFunc = '';
 	if (event.type == 'change') {
 		localFunc = 'on' + event.type.charAt(0).toUpperCase() + event.type.slice(1) + '_' + obj.id;
-		if (localFunc.indexOf("_SEQ") != -1) {	// eg convert onChange_SEQ_3_customer.name to onChange_customer.name
-			var uscore = localFunc.split("_");
-			uscore.splice(1, 2);
-			localFunc = uscore.join("_");
+		// Convert ID3___stock_customer___address_1 to onChange_stockcustomer_address_1
+		if ((obj.id.substring(0, 2) == 'ID') || (obj.id.substring(0, 3) == 'VAR')) {
+			var parts = obj.id.split('___');
+			parts.splice(0, 1);	// lose the 'ID___' or 'VAR___'
+			for (i = 0; i < parts.length; i++)
+				parts[i] = parts[i].split('_').join('');
+			localFunc = 'on' + event.type.charAt(0).toUpperCase() + event.type.slice(1) + '_' + parts.join('_');
 		}
 	}
-	localFunc = localFunc.split('.').join('_dot_');
-console.log("fn (onChange) looking for user supplied function '" + localFunc + "'");
-	if (localFunc != '') {
-		if (typeof window[localFunc] === "function")
+console.log("fn (change) looking for user supplied function '" + localFunc + "'");
+	if ((localFunc != '') && (typeof window[localFunc] === "function"))
 			window[localFunc](obj);
-	}
 }
 
 // Getter/setter for DOM elements. Id preferred to name. For now name is always name[0]
