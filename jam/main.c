@@ -641,7 +641,6 @@ int control(int startIx, char *defaultTableName) {
 					fillVarDataTypes(listVar, p);
 					logMsg(LOGMICRO, "@each (list %s) starting recurse", listName);
 					cmdSeqnum++;		// up the unique sequence number
-					setVarAsNumber("sys.control.sequence", cmdSeqnum);
 					control((ix + 1), defaultTableName);
 					logMsg(LOGMICRO, "@each (list %s) ended recurse", listName);
 					p = (char *) listNext(listName);

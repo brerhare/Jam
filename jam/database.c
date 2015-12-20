@@ -23,6 +23,64 @@ MYSQL *conn = NULL;
 char *connDbName = NULL;
 
 // ----------------------------------------------------------------
+// Utility
+
+int isMysqlTable(char *tableName) {
+	int ret = 0;
+	char *query = (char *) calloc(1, 4096);
+	sprintf(query, "SHOW TABLES LIKE '%s'", tableName);
+	MYSQL_RES *res;
+	if (mysql_query(conn, query) != 0) {
+		logMsg(LOGERROR, "isMysqlTable() query error - %s. Your query was [%s]", mysql_error(conn), query);
+		return(-1);
+	}
+	res = mysql_store_result(conn);
+	if (!res) {
+		char *tmp = (char *) calloc(1, 4096);
+		logMsg(LOGERROR, "isMysqlTable() - couldn't get results set: %s\n", mysql_error(conn));
+		mysql_free_result(res);
+		free(query);
+		return(-1);
+	}
+	if (mysql_num_rows(res) != 0)
+		ret = 1;
+	mysql_free_result(res);
+	free(query);
+	return ret;
+}
+
+int isMysqlField(char *fieldName, char *tableName) {
+	char *query = (char *) calloc(1, 4096);
+	sprintf(query, "SELECT * FROM %s LIMIT 1", tableName);
+//die(query);
+	MYSQL_RES *res;
+	if (mysql_query(conn, query) != 0) {
+		logMsg(LOGERROR, "isMysqlField() query error - %s. Your query was [%s]", mysql_error(conn), query);
+		return(-1);
+	}
+	res = mysql_store_result(conn);
+	if (!res) {
+		char *tmp = (char *) calloc(1, 4096);
+		logMsg(LOGERROR, "isMysqlField() - couldn't get results set: %s\n", mysql_error(conn));
+		mysql_free_result(res);
+		free(query);
+		return(-1);
+	}
+	int numFields = mysql_num_fields(res);
+	MYSQL_FIELD *field;
+	for (int i = 0; (field = mysql_fetch_field(res)); i++) {
+		if (!strcmp(field->name, fieldName)) {
+			mysql_free_result(res);
+			free(query);
+			return 1;
+		}
+	}
+	mysql_free_result(res);
+	free(query);
+	return 0;
+}
+
+// ----------------------------------------------------------------
 // Mapping
 
 struct SQLMAP {
@@ -216,37 +274,6 @@ void updateSqlVar(char *qualifiedName, enum enum_field_types mysqlType, char *va
 // ----------------------------------------------------------------
 // General stuff
 
-int _isSqlFieldName(char *fieldName, char *tableName) {
-	char *query = (char *) calloc(1, 4096);
-	sprintf(query, "SELECT * FROM %s LIMIT 1", tableName);
-//die(query);
-	MYSQL_RES *res;
-	if (mysql_query(conn, query) != 0) {
-		logMsg(LOGERROR, "_isSqlFieldName() error - %s", mysql_error(conn));
-		return(-1);
-	}
-	res = mysql_store_result(conn);
-	if (!res) {
-		char *tmp = (char *) calloc(1, 4096);
-		logMsg(LOGERROR, "Couldn't get results set: %s\n", mysql_error(conn));
-		mysql_free_result(res);
-		free(query);
-	}
-	int numFields = mysql_num_fields(res);
-	MYSQL_FIELD *field;
-	for (int i = 0; (field = mysql_fetch_field(res)); i++) {
-		if (!strcmp(field->name, fieldName)) {
-			mysql_free_result(res);
-			free(query);
-			return 1;
-		}
-	}
-	mysql_free_result(res);
-	free(query);
-	return 0;
-}
-
-
 // This is the common code that used to be in @get and @each - now called from control() and wordDatabaseGet()
 MYSQL_RES *doSqlSelect(int ix, char *defaultTableName, char **givenTableName, int maxRows) {
     char *cmd = jam[ix]->command;
@@ -401,7 +428,7 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 			varValue = strdup(externalFieldOrValue);
 
 		// Quote it if necessary (contains non-numeric chars and isnt already)
-		if ((!_isSqlFieldName(varValue, givenTableName)) && (varValue[0] != '\'') && (varValue[strlen(varValue)] != '\'')) {
+		if ((!isMysqlField(varValue, givenTableName)) && (varValue[0] != '\'') && (varValue[strlen(varValue)] != '\'')) {
 
 			int isNum = 1;
 			if (strlen(varValue) == 0)

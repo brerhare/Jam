@@ -19,7 +19,7 @@
 // Breakpoint vars collected along the way that will now be used to generate stuff									// quite a few
 int breakpointAutocompleteId[MAX_BREAKPOINTS];
 
-char *makeJamKeyValue(char *tableName, char *fieldName);
+char *makeJamKeyValue(char *tableName, char *fieldName, char *rawValue);
 
 #define INP 0
 #define INPUT 1
@@ -32,6 +32,7 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 	char *tmp = (char *) calloc(1, 4096);
 	char *targetTable = NULL;
 	char *targetField = NULL;
+	char *targetRawValue = NULL;
 	char *pickTable = NULL;
 	char *pickField = NULL;
 	char *size = NULL;
@@ -42,11 +43,19 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 
 	// [Table].field
 	char *p = getVarAsString("sys.control.field");
-	if ((p) && (strchr(p, '.'))) {		// has a named table
+	if (!p) {
+		logMsg(LOGERROR, "Html input target cant be null");
+		return(-1);
+	}
+	targetRawValue = strdup(getVarAsString("sys.control.field"));
+	if (strchr(p, '.')) {		// has a named table
 		targetTable = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
 		targetField = getWordAlloc(getVarAsString("sys.control.field"), 2, ".");
 	} else {					// its just the field name
-		targetTable = strdup(defaultTableName);
+		if (defaultTableName)
+			targetTable = strdup(defaultTableName);
+		else
+			targetTable = strdup("");
 		targetField = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
 	}
 
@@ -56,7 +65,10 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 		pickTable = getWordAlloc(getVarAsString("sys.control.pickfield"), 1, ".");
 		pickField = getWordAlloc(getVarAsString("sys.control.pickfield"), 2, ".");
 	} else {					// its just the field name
-		pickTable = strdup(defaultTableName);
+		if (defaultTableName)
+			pickTable = strdup(defaultTableName);
+		else
+			pickTable = strdup("");
 		pickField = getWordAlloc(getVarAsString("sys.control.pickfield"), 1, ".");
 	}
 
@@ -86,7 +98,7 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 		disabled = strdup("");
 
 	// Set jamKey. This is whatever table/field values are required to update the data
-	jamKey = makeJamKeyValue(targetTable, targetField);
+	jamKey = makeJamKeyValue(targetTable, targetField, targetRawValue);
 
 	JAMBUILDER jb;
 	jb.stream = STREAMOUTPUT_STD;
@@ -120,6 +132,7 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 	free(tmp);
 	free(targetTable);
 	free(targetField);
+	free(targetRawValue);
 	free(pickTable);
 	free(pickField);
 	free(size);
@@ -135,6 +148,7 @@ int wordHtmlFilter(int ix, char *defaultTableName) {
 	char *tmp = (char *) calloc(1, 4096);
 	char *targetTable = NULL;
 	char *targetField = NULL;
+	char *targetRawValue = NULL;
 	char *pickTable = NULL;
 	char *pickField = NULL;
 	char *size = NULL;
@@ -145,11 +159,19 @@ int wordHtmlFilter(int ix, char *defaultTableName) {
 
 	// [Table].field
 	char *p = getVarAsString("sys.control.field");
-	if ((p) && (strchr(p, '.'))) {		// has a named table
+	if (!p) {
+		logMsg(LOGERROR, "Html input target cant be null");
+		return(-1);
+	}
+	targetRawValue = strdup(getVarAsString("sys.control.field"));
+	if (strchr(p, '.')) {		// has a named table
 		targetTable = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
 		targetField = getWordAlloc(getVarAsString("sys.control.field"), 2, ".");
 	} else {					// its just the field name
-		targetTable = strdup(defaultTableName);
+		if (defaultTableName)
+			targetTable = strdup(defaultTableName);
+		else
+			targetTable = strdup("");
 		targetField = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
 	}
 
@@ -159,7 +181,10 @@ int wordHtmlFilter(int ix, char *defaultTableName) {
 		pickTable = getWordAlloc(getVarAsString("sys.control.pickfield"), 1, ".");
 		pickField = getWordAlloc(getVarAsString("sys.control.pickfield"), 2, ".");
 	} else {					// its just the field name
-		pickTable = strdup(defaultTableName);
+		if (defaultTableName)
+			pickTable = strdup(defaultTableName);
+		else
+			pickTable = strdup("");
 		pickField = getWordAlloc(getVarAsString("sys.control.pickfield"), 1, ".");
 	}
 
@@ -189,7 +214,7 @@ int wordHtmlFilter(int ix, char *defaultTableName) {
 		disabled = strdup("");
 
 	// Set jamKey. This is whatever table/field values are required to update the data
-	jamKey = makeJamKeyValue(targetTable, targetField);
+	jamKey = makeJamKeyValue(targetTable, targetField, targetRawValue);
 
 	JAMBUILDER jb;
 	jb.stream = STREAMOUTPUT_STD;
@@ -227,6 +252,7 @@ int wordHtmlFilter(int ix, char *defaultTableName) {
 	free(tmp);
 	free(targetTable);
 	free(targetField);
+	free(targetRawValue);
 	free(pickTable);
 	free(pickField);
 	free(size);
@@ -244,6 +270,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	char *type = NULL;
 	char *table = NULL;
 	char *field = NULL;
+	char *tableFieldRawValue = NULL;
 	char *label = NULL;
 	char *size = NULL;
 	char *disabled = NULL;
@@ -268,13 +295,22 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 			return(-1);
 		}
 	}
+
 	// [Table].field
 	char *p = getVarAsString("sys.control.field");
-	if ((p) && (strchr(p, '.'))) {		// has a named table
+	if (!p) {
+		logMsg(LOGERROR, "Html input target cant be null");
+		return(-1);
+	}
+	tableFieldRawValue = strdup(getVarAsString("sys.control.field"));
+	if (strchr(p, '.')) {		// has a named table
 		table = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
 		field = getWordAlloc(getVarAsString("sys.control.field"), 2, ".");
 	} else {					// its just the field name
-		table = strdup(defaultTableName);
+		if (defaultTableName)
+			table = strdup(defaultTableName);
+		else
+			table = strdup("");
 		field = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
 	}
 
@@ -304,7 +340,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 		disabled = strdup("");
 
 	// Set jamKey. This is whatever table/field values are required to update the data
-	jamKey = makeJamKeyValue(table, field);
+	jamKey = makeJamKeyValue(table, field, tableFieldRawValue);
 
 	// Value
 	sprintf(tmp, "%s.%s", table, field);
@@ -347,6 +383,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	free(type);
 	free(table);
 	free(field);
+	free(tableFieldRawValue);
 	free(label);
 	free(size);
 	free(disabled);
@@ -992,10 +1029,52 @@ int wordHtmlBreakpoint(int ix, char *defaultTableName) {
 // ----------------------------------------------------------------------------------------
 // Utility stuff
 
-// Create a string in the form value.table.field in order to store the value being input
-// Each html input field's id contains the lookup key required to store the field, eg "23.customer.name"
-// Simply look this up (strict) as a variable. Hopefully works for lists too  @@TODO check this is the case...
-char *makeJamKeyValue(char *tableName, char *fieldName) {
+// 1) Create a string in the form IDnn___table___field in order to store the value being input
+//    Each html input field's id contains the lookup key required to store the field, eg "ID23___customer___name"
+// 2) If its not a db item it might be a list @@TODO
+// 3) If its neither its a var (which may or may not yet exist) in the form VAR___name
+//
+// Logic:
+//
+//if table given (either was specified or left empty and defaulted to current table)
+//    does table exist in db
+//    if istable
+//        does field exist in table
+//        if yes
+//            lookup current table >id< value in *VAR
+//            if exist in *VAR
+//                ....done ID76___table___field
+//            else
+//                ....done ID0___table___field
+//
+//if still here it must be a var
+//    ....done VAR___rawvalue
+//
+
+char *makeJamKeyValue(char *tableName, char *fieldName, char *rawValue) {
+	char *ret = (char *) calloc(1, 4096);
+	sprintf(ret, "%s.id", tableName);
+logMsg(LOGDEBUG, "makeJamKeyValue() - received table=[%s], field=[%s], raw=[%s]", tableName, fieldName, rawValue);
+	if (strlen(tableName)) {
+		if (isMysqlTable(tableName)) {
+			if (isMysqlField(fieldName, tableName)) {
+				VAR *variable = findVarStrict(ret);
+				if (variable) {
+					sprintf(ret, "ID%s___%s___%s", variable->portableValue, tableName, fieldName);
+					logMsg(LOGDEBUG, "makeJamKeyValue() [%s] created (db). Exists as a variable", ret);
+				} else {
+					sprintf(ret, "ID0___%s___%s", tableName, fieldName);
+					logMsg(LOGDEBUG, "makeJamKeyValue() [%s] created (db). Does not exist as a variable", ret);
+				}
+	
+			}
+		}
+	}
+	return(ret);
+}
+
+/* old ... 
+char *makeJamKeyValue(char *tableName, char *fieldName, char *rawValue) {
 	char *ret = (char *) calloc(1, 4096);
 	sprintf(ret, "%s.id", tableName);
 	VAR *variable = findVarStrict(ret);
@@ -1007,4 +1086,4 @@ char *makeJamKeyValue(char *tableName, char *fieldName) {
 		logMsg(LOGERROR, "makeJamKeyValue() [%s] created. Does not exist as a variable", ret);
 	}
 	return(ret);
-}
+}  */

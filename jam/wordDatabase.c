@@ -136,11 +136,15 @@ int wordDatabaseDescribe(int ix, char *defaultTableName)
 		char *query = (char *) calloc(1, MAX_SQL_QUERY_LEN);
 		char *line = (char *) calloc(1, 4096);
 		sprintf(query, "desc %s", args);
-		if (mysql_query(conn,query) != 0)
-		   die(mysql_error(conn));
+		if (mysql_query(conn,query) != 0) {
+		   logMsg(LOGERROR, (char *) mysql_error(conn));
+		   return(-1);
+		}
 		res = mysql_store_result(conn);
-		if (!res)
-			die("Cannot describe database table - returned null resultset");
+		if (!res) {
+			logMsg(LOGERROR, "Cannot describe database table - returned null resultset");
+			return(-1);
+		}
 		int numFields = mysql_num_fields(res);
 		emitStd("<table border=1 cellpadding=3 cellspacing=0 style='border: 1pt solid #abdbd7; border-Collapse: collapse'>");
 		emitStd("<tr><td> Field </td><td> Type </td><td> Empty allowed? </td><td> Key </td><td> Default value </td><td> Extra </td></tr>");
@@ -157,7 +161,8 @@ int wordDatabaseDescribe(int ix, char *defaultTableName)
 		free(query);
 		free(line);
 	} else {
-		die("describe what?");
+		logMsg(LOGERROR, "describe what?");
+		return(-1);
 	}
 	free(tmp);
 	emitStd(jam[ix]->trailer);
