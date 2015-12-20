@@ -37,8 +37,8 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 	char *pickField = NULL;
 	char *size = NULL;
 	char *disabled = NULL;
-	char *group = NULL;
 	char *label = NULL;
+	char *group = (char *) calloc(1, 4096);
 	char *jamKey = NULL;
 
 	// [Table].field
@@ -85,11 +85,9 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 		size = strdup("");
 
 	// Group(s)
-	if (isVar("sys.control.group")) {
-		sprintf(tmp, " 'class %s' ", getVarAsString("sys.control.group"));
-		group = strdup(tmp);
-	} else
-		group = strdup("");
+	sprintf(group, "ROW_%d ", cmdSeqnum);
+	if (isVar("sys.control.group"))
+		strcat(group,  getVarAsString("sys.control.group"));
 
 	// Disabled
 	if (isVar("sys.control.disabled"))
@@ -153,8 +151,8 @@ int wordHtmlFilter(int ix, char *defaultTableName) {
 	char *pickField = NULL;
 	char *size = NULL;
 	char *disabled = NULL;
-	char *group = NULL;
 	char *label = NULL;
+	char *group = (char *) calloc(1, 4096);
 	char *jamKey = NULL;
 
 	// [Table].field
@@ -201,11 +199,9 @@ int wordHtmlFilter(int ix, char *defaultTableName) {
 		size = strdup("");
 
 	// Group(s)
-	if (isVar("sys.control.group")) {
-		sprintf(tmp, " 'class %s' ", getVarAsString("sys.control.group"));
-		group = strdup(tmp);
-	} else
-		group = strdup("");
+	sprintf(group, "ROW_%d ", cmdSeqnum);
+	if (isVar("sys.control.group"))
+		strcat(group,  getVarAsString("sys.control.group"));
 
 	// Disabled
 	if (isVar("sys.control.disabled"))
@@ -275,8 +271,8 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	char *size = NULL;
 	char *disabled = NULL;
 	char *hidden = NULL;
-	char *group = NULL;
 	char *value = NULL;
+	char *group = (char *) calloc(1, 4096);
 	char *jamKey = NULL;
 
 	// Hidden
@@ -327,11 +323,9 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 		size = strdup("");
 
 	// Group(s)
-	if (isVar("sys.control.group")) {
-		sprintf(tmp, " 'class %s' ", getVarAsString("sys.control.group"));
-		group = strdup(tmp);
-	} else
-		group = strdup("");
+	sprintf(group, "ROW_%d ", cmdSeqnum);
+	if (isVar("sys.control.group"))
+		strcat(group,  getVarAsString("sys.control.group"));
 
 	// Disabled
 	if (isVar("sys.control.disabled"))

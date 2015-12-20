@@ -12,7 +12,7 @@
 	{{get FILTER_PICK_TABLE.FILTER_PICK_FIELD filter id = FILTER_TARGET_TABLE.FILTER_TARGET_FIELD}}
 	<label class='uk-form-label' for='FILTER_TARGET_TABLE.FILTER_TARGET_FIELD'> FILTER_LABEL </label>
 	<div class='uk-form-controls'>
-		<input type='hidden' id='FILTER_JAMKEY' name='FILTER_TARGET_TABLE.FILTER_TARGET_FIELD' value='{{FILTER_TARGET_TABLE.FILTER_TARGET_FIELD}}'>
+		<input type='hidden' id='FILTER_JAMKEY' name='FILTER_TARGET_TABLE.FILTER_TARGET_FIELD' class='FILTER_GROUP' value='{{FILTER_TARGET_TABLE.FILTER_TARGET_FIELD}}'>
 		<div class='ui-widget'>
 			<input id='AUTOCOMPLETE_FILTER_JAMKEY' value='{{FILTER_PICK_TABLE.FILTER_PICK_FIELD}}' XonChange='dropdown_FILTER_TARGET_TABLE_FILTER_TARGET_FIELD(this, event); fn(this, event);' class='uk-form-width-FILTER_SIZE' FILTER_DISABLED>
 		</div>
@@ -21,7 +21,7 @@
 
 {{@action filterHtml}}
 	{{get FILTER_PICK_TABLE.FILTER_PICK_FIELD filter id = FILTER_TARGET_TABLE.FILTER_TARGET_FIELD}}
-	<input type='hidden' id='FILTER_JAMKEY' name='FILTER_TARGET_TABLE.FILTER_TARGET_FIELD' value='{{FILTER_TARGET_TABLE.FILTER_TARGET_FIELD}}'>
+	<input type='hidden' id='FILTER_JAMKEY' name='FILTER_TARGET_TABLE.FILTER_TARGET_FIELD' class='FILTER_GROUP' value='{{FILTER_TARGET_TABLE.FILTER_TARGET_FIELD}}'>
 	<div class='ui-widget'>
 		<input id='AUTOCOMPLETE_FILTER_JAMKEY' value='' XonChange='dropdown_FILTER_TARGET_TABLE_FILTER_TARGET_FIELD(this, event); fn(this, event);' class='uk-form-width-FILTER_SIZE' FILTER_DISABLED>
 	</div>

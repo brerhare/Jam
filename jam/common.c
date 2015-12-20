@@ -46,7 +46,7 @@ int oobDataRequested = 0;		// Some ajax calls will ask for this
 
 int urlEncodeRequired = 0;
 
-int cmdSeqnum = 0;				// every @jamcommand has a unique sequence number or id. Can be used for unique field names in grids
+int cmdSeqnum = 0;				// every @each/@end has a unique sequence number or id. Can be used for unique field names in grids
 
 char *oobFileName = "/tmp/oobData.tmp";
 

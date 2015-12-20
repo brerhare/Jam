@@ -69,6 +69,11 @@ int main(int argc, char *argv[]) {
 	char **cgivars ;
 	char *jamName = NULL;
 
+	// Intialize random number generator and our loop sequence number
+	time_t t;
+	srand((unsigned) time(&t));
+	cmdSeqnum = (rand() % 999999);
+
 	logMsg(LOGINFO, "--------------------------------------------------------------------------");
 	logMsg(LOGINFO, "Starting. argc is %d", argc);
 
@@ -661,8 +666,7 @@ int control(int startIx, char *defaultTableName) {
 				while (sqlGetRow2Vars(rp) != SQL_EOF) {
 					emitStd(jam[ix]->trailer);
 					logMsg(LOGMICRO, "@each (db table %s) starting recurse", givenTableName);
-					sprintf(tmp, "sys.jamId.%s.id", givenTableName);
-					logMsg(LOGDEBUG, "Setting loop id var. %s=%d", tmp, cmdSeqnum);
+					cmdSeqnum++;		// up the unique sequence number
 					control((ix + 1), givenTableName);				// recurse into the item
 					logMsg(LOGMICRO, "@each (db table %s) ended recurse", givenTableName);
 				}
