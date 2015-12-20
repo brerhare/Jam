@@ -1029,12 +1029,10 @@ int wordHtmlBreakpoint(int ix, char *defaultTableName) {
 // ----------------------------------------------------------------------------------------
 // Utility stuff
 
-// 1) Create a string in the form IDnn___table___field in order to store the value being input
+// 1) Create a string in the form IDnn___table___field in order to store the value being input in its table
 //    Each html input field's id contains the lookup key required to store the field, eg "ID23___customer___name"
 // 2) If its not a db item it might be a list @@TODO
 // 3) If its neither its a var (which may or may not yet exist) in the form VAR___name
-//
-// Logic:
 //
 //if table given (either was specified or left empty and defaulted to current table)
 //    does table exist in db
@@ -1047,30 +1045,26 @@ int wordHtmlBreakpoint(int ix, char *defaultTableName) {
 //            else
 //                ....done ID0___table___field
 //
-//if still here it must be a var
+//if still here it must be a var (may or may not yet exist)
 //    ....done VAR___rawvalue
 //
-
 char *makeJamKeyValue(char *tableName, char *fieldName, char *rawValue) {
 	char *ret = (char *) calloc(1, 4096);
 	sprintf(ret, "%s.id", tableName);
 	logMsg(LOGMICRO, "makeJamKeyValue() - received table=[%s], field=[%s], raw=[%s]", tableName, fieldName, rawValue);
-	if (strlen(tableName)) {
-		if (isMysqlTable(tableName)) {
-			if (isMysqlField(fieldName, tableName)) {
-				VAR *variable = findVarStrict(ret);
-				if (variable) {
-					sprintf(ret, "ID%s___%s___%s", variable->portableValue, tableName, fieldName);
-					logMsg(LOGDEBUG, "makeJamKeyValue() [%s] created (db). Exists as a variable", ret);
-				} else {
-					sprintf(ret, "ID0___%s___%s", tableName, fieldName);
-					logMsg(LOGDEBUG, "makeJamKeyValue() [%s] created (db). Does not exist as a variable", ret);
-				}
-				return(ret);	// is db field
-			}
+	// Is is a table/field?
+	if ( (strlen(tableName)) && (isMysqlTable(tableName)) && (isMysqlField(fieldName, tableName)) ) {
+		VAR *variable = findVarStrict(ret);
+		if (variable) {
+			sprintf(ret, "ID%s___%s___%s", variable->portableValue, tableName, fieldName);
+			logMsg(LOGDEBUG, "makeJamKeyValue() [%s] created (db). Exists as a variable", ret);
+		} else {
+			sprintf(ret, "ID0___%s___%s", tableName, fieldName);
+			logMsg(LOGDEBUG, "makeJamKeyValue() [%s] created (db). Does not exist as a variable", ret);
 		}
+		return(ret);
 	}
-	// If we're still here its a variable
+	// Is it a variable?
 	sprintf(ret, "VAR___%s", rawValue);
 	return(ret);
 }
