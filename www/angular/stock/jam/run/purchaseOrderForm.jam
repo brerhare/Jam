@@ -92,7 +92,7 @@
 						<td> {{@html text field=stock_product.code size=small}} </td>
 						<td> {{@html filter group=newlin field=stock_supplier_order_item.stock_product_id pickfield=stock_product.name size=medium}} </td>
 						<td> {{@html text field=stock_supplier_order_item.pack_qty size=small}} </td>
-						<td id="packTD" name="packTD"> </td>
+						<td id="newRowPackSelect" name="newRowPackSelect"> </td>
 						<td> {{@html text disabled field=stock_product.cost size=small}} </td>
 						<td> {{@html text disabled field=linetotal size=small}} </td>
 						<td> {{@html text disabled field=linevolume size=small}} </td>
@@ -343,7 +343,7 @@
 
 	// Grid product lookup by code
 	function onChange_stockproduct_code(obj) {
-		runAction('checkOrderProductByCode', obj.name + ' stock_supplier_order.id', 'packTD', checkedOrderProductByCode);
+		runAction('checkOrderProductByCode', obj.name, 'newRowPackSelect', checkedOrderProductByCode);
 	}
 	function checkedOrderProductByCode() {
 		productObj = document.getElementsByName('stock_product.id')[0];
@@ -367,7 +367,7 @@
 
 	// Grid filter on product name
 	function onChange_stocksupplierorderitem_stockproductid(obj) {
-		runAction('checkOrderProductById', 'stock_supplier_order.id stock_supplier_order_item.stock_product_id', 'packTD', checkedOrderProductById);
+		runAction('checkOrderProductById', 'stock_supplier_order.id stock_supplier_order_item.stock_product_id', 'newRowPackSelect', checkedOrderProductById);
 	}
 	function checkedOrderProductById() {
 		orderItemObj = document.getElementsByName('stock_supplier_order_item.id')[0];
