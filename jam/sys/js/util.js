@@ -175,7 +175,7 @@ console.log("fn (change) looking for user supplied function '" + localFunc + "'"
 // Getter/setter for DOM elements. Id preferred to name. For now name is always name[0]
 // someval = data('inputid').content();		.name() .id()
 // data('inputid').content(someval);
-var data = function(element) {
+var data = function(element) {	// @@NU
 	// Self instantiate if necessary. http://programmers.stackexchange.com/questions/118798/avoiding-new-operator-in-javascript-the-better-way
 	if (Object.getPrototypeOf(this) !== data.prototype) {
 		var o = Object.create(data.prototype);
@@ -191,26 +191,26 @@ var data = function(element) {
 		}
 	}
 }
-data.prototype.content = function(val) {
+data.prototype.content = function(val) {	// @@NU
 	if (val == null)
 		return (this.obj instanceof HTMLInputElement) ? this.obj.value : this.obj.innerHTML;
 	else
 		(this.obj instanceof HTMLInputElement) ?  this.obj.value = val : this.obj.innerHTML = val;
 };
-data.prototype.id = function(val) {
+data.prototype.id = function(val) {	// @@NU
 	if (val == null)
 		return this.obj.id;
 	else
 		this.obj.id = val;
 };
-data.prototype.name = function(val) {
+data.prototype.name = function(val) {	// @@NU
 	if (val == null)
 		return this.obj.name;
 	else
 		this.obj.name = val;
 };
 
-function getElementContent(object) {
+function getElementContent(object) {	// @@NU
 	if (target[0] instanceof HTMLInputElement) {
 //		alert('is inp');
 		target[0].value = data;
@@ -225,12 +225,31 @@ function getSibling(callingObj, siblingName) {	// eg obj and 'table.field'
 	return document.getElementById(getRowPrefix(callingObj) + siblingName);
 }
 
+function getSiblingByName(callingObj, siblingName) {
+	if (obj == null) {
+		alert('Error: getSiblingByName cant work with a null object');
+		return(null);
+	}
+	var callingClassArr = callingObj.className.split(' ');
+	for (var i = 0; i < callingClassArr.length; i++) {
+		if (callingClassArr[i].substring(0, 4) == 'ROW_') {
+			var groupClassArr = document.getElementsByClassName(callingClassArr[i]);	// all the row elements
+			for (j = 0; j < groupClassArr.length; j++) {
+				if (groupClassArr[j].name.match(siblingName))
+					return(groupClassArr[j]);
+			}
+		}
+	}
+	return null;
+}
+
 // Get a non-grid element by name
-function get(name) {
+function get(name) {	// @@NU
 	return document.getElementsByName(name)[0];
 }
 
 // extract the row prefix ('SEQ_99_') from an object
+// used internally only (for now)
 function getRowPrefix(obj) {
 	if (obj == null) {
 		alert('Error: getRowPrefix cant work with a null object');

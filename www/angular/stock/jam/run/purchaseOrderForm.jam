@@ -386,7 +386,7 @@
 	function onChange_stocksupplierorderitem_packqty(obj) {
 		if (obj.id.substr(0, 6) == 'SEQ_0_')	// Only do this if NOT adding a record
 			return;
-		objId =  getSibling(obj, 'stock_supplier_order_item.id');
+		objId =  getSiblingByName(obj, 'stock_supplier_order_item.id');
 		runAction('changeQty', 'stock_supplier_order_item.id=' + objId.value + ' ' + obj.name + '='+obj.value, '', afterQtyChanged);
 	}
 	function afterQtyChanged() {
@@ -397,7 +397,7 @@
 	function onChangePack() {
 		obj = document.getElementById("SEQ_0_pack");
 		document.getElementsByName('stock_supplier_order_item.stock_pack_id')[0].value = obj.options[obj.selectedIndex].value;	// changed case selection
-		objId =  getSibling(obj, 'stock_supplier_order_item.id');
+		objId =  getSiblingByName(obj, 'stock_supplier_order_item.id');
 		runAction('changePack', 'stock_supplier_order_item.id=' + objId.value + ' ' + obj.name + '='+obj.value, '', afterQtyChanged);
 	}
 
