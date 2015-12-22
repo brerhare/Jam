@@ -152,9 +152,12 @@
 
 		<br>
 		<button type='button' class="uk-button uk-button-small uk-button-primary" onClick="print('printing')">Print</button>
+		<span id='eml'>
 		{{@html button Email primary small
 			runAction emailPurchaseOrder purchaseOrderForm
+			document.getElementById('eml').innerHTML='Email sent';
 		}}
+		</span>
 
 	</form>
 
