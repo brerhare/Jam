@@ -151,7 +151,7 @@ function dirname(path) {
 }
 
 // ----------------------------------------------------------------------------------------------------------
-// Jam helpers
+// Event handlers
 
 // Call a jam-supplied event handler
 function fn(obj, event) {
@@ -172,10 +172,13 @@ console.log("fn (change) looking for user supplied function '" + localFunc + "'"
 			window[localFunc](obj);
 }
 
+// ----------------------------------------------------------------------------------------------------------
+// Element setters and getters
+
 // Getter/setter for DOM elements. Id preferred to name. For now name is always name[0]
 // someval = data('inputid').content();		.name() .id()
 // data('inputid').content(someval);
-var data = function(element) {	// @@NU
+/* var data = function(element) {	// @@NU
 	// Self instantiate if necessary. http://programmers.stackexchange.com/questions/118798/avoiding-new-operator-in-javascript-the-better-way
 	if (Object.getPrototypeOf(this) !== data.prototype) {
 		var o = Object.create(data.prototype);
@@ -208,9 +211,9 @@ data.prototype.name = function(val) {	// @@NU
 		return this.obj.name;
 	else
 		this.obj.name = val;
-};
+}; */
 
-function getElementContent(object) {	// @@NU
+/* function getElementContent(object) {
 	if (target[0] instanceof HTMLInputElement) {
 //		alert('is inp');
 		target[0].value = data;
@@ -218,53 +221,72 @@ function getElementContent(object) {	// @@NU
 //		alert('isnt inp');
 		target[0].innerHTML = data;
 	}
-}
-
-// Get a sibling element in a grid eg we want element 'SEQ_39_table.field'
-function getSibling(callingObj, siblingName) {	// eg obj and 'table.field'
-	return document.getElementById(getRowPrefix(callingObj) + siblingName);
-}
+} */
 
 function getSiblingByName(callingObj, siblingName) {
-	if (obj == null) {
-		alert('Error: getSiblingByName cant work with a null object');
-		return(null);
-	}
-	var callingClassArr = callingObj.className.split(' ');
-	for (var i = 0; i < callingClassArr.length; i++) {
-		if (callingClassArr[i].substring(0, 4) == 'ROW_') {
-			var groupClassArr = document.getElementsByClassName(callingClassArr[i]);	// all the row elements
-			for (j = 0; j < groupClassArr.length; j++) {
-				if (groupClassArr[j].name.match(siblingName))
-					return(groupClassArr[j]);
+	if (callingObj != null) {
+		var callingClassArr = callingObj.className.split(' ');
+		for (var i = 0; i < callingClassArr.length; i++) {
+			if (callingClassArr[i].substring(0, 4) == 'ROW_') {
+				var groupClassArr = document.getElementsByClassName(callingClassArr[i]);	// all the row elements
+				for (j = 0; j < groupClassArr.length; j++) {
+					if (groupClassArr[j].name.match(siblingName))
+						return(groupClassArr[j]);
+				}
 			}
 		}
 	}
+	alert('Error: getSiblingByName failed to find ' + siblingName);
 	return null;
+}
+
+// Get an array of elements belonging to a group
+function getGroupArray(groupName) {
+	var groupArr = [];
+	groupArr = document.getElementsByClassName(groupName);
+	return groupArr;
+}
+
+// Get the row 'group' name an element belongs to (its class name that is something like 'ROW_538904')
+function getRowgroupName(callingObj) {
+	if (callingObj != null) {
+		var callingClassArr = callingObj.className.split(' ');
+		for (var i = 0; i < callingClassArr.length; i++) {
+			if (callingClassArr[i].substring(0, 4) == 'ROW_') {
+				return(callingClassArr[i]);
+			}
+		}
+	}
+	alert('Error: getRowGroupName failed to find rowgroup for ' + callingObj.name);
+	return null;
+}
+
+// Get an element by group (class) name and element name
+function getByGroupAndName(groupName, elementName) {
+	var groupClassArr = document.getElementsByClassName(groupName);
+	for (i = 0; i < groupClassArr.length; i++) {
+		if (groupClassArr[i].name.match(elementName))
+			return(groupClassArr[i]);
+	}
+	return null;
+}
+
+// Is the object in the group?
+function hasGroup(obj, groupName) {
+	if (obj != null) {
+		var classArr = obj.className.split(' ');
+		for (var i = 0; i < classArr.length; i++) {
+			if (classArr[i].match(groupName)) {
+				return 1;
+			}
+		}
+	}
+	return 0;
 }
 
 // Get a non-grid element by name
 function get(name) {	// @@NU
 	return document.getElementsByName(name)[0];
-}
-
-// extract the row prefix ('SEQ_99_') from an object
-// used internally only (for now)
-function getRowPrefix(obj) {
-	if (obj == null) {
-		alert('Error: getRowPrefix cant work with a null object');
-		return(null);
-	}
-	if (obj.id.indexOf("SEQ_") == -1) {
-		alert('Error: getRowPrefix found no SEQ_ in the passed object id');
-		return(null);
-	}
-	var idSplit = obj.id.split('_');
-	if (idSplit.length < 3) {
-		alert('Error: getRowPrefix requires at least 2 underscores in the passed object id');
-		return(null);
-	}
-	return idSplit[0] + '_' + idSplit[1] + '_';
 }
 
 // If there is any SEQ_ item create element.name's for ALL sibling grid element.id to send to server, and return the modified element array to runAction
@@ -303,15 +325,6 @@ function runActionPreProcessGrid(elArr) {
 	}
 	return newArr;
 }
-/*
-function getSibling(callingObj, siblingName) {	// eg obj and 'table.field'
-	return document.getElementById(getRowPrefix(callingObj) + siblingName);
-
-		if (localFunc.indexOf("_SEQ") != -1) {	// eg convert onChange_SEQ_3_customer.name to onChange_customer.name
-			var uscore = localFunc.split("_");
-			uscore.splice(1, 2);
-			localFunc = uscore.join("_");
-*/
 
 // ----------------------------------+-----------------------------------------------------------------------
 // Init

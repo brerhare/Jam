@@ -541,7 +541,7 @@ int oobJamData() {
 	emitStd("[");
 	for (int i = 0; i < MAX_VAR; i++) {
 		if (var[i] == NULL)
-			break;
+			continue;
 		if (first)
 			first = 0;
 		else
