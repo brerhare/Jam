@@ -178,7 +178,7 @@
 				<th style='max-width:185px;'> Product </th>
 				<th> Qty </th>
 				<th> Pack </th>
-				<th> Item Price </th>
+				<th> Item Cost </th>
 				<th> Line Total </th>
 			</tr>
 		</thead>
