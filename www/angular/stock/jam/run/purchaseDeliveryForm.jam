@@ -131,9 +131,9 @@
 				<!--	<td> {{@html text disabled field=stock_product.name}} </td> -->
 						<td> {{@html text disabled field=stock_pack.unit size=small}} </td>
 						<td> {{@html text disabled field=line.pack_qty size=small}} </td>
-						<td> {{@html text field=stock_supplier_order_item.delivered_qty size=small}} </td>
+						<td> {{@html text field=line_input.delivered_qty size=small}} </td>
 						<td> {{@html text disabled field=line.cost size=small}} </td>
-						<td> {{@html text field=stock_supplier_order_item.delivered_price size=small}} </td>
+						<td> {{@html text field=line_input.delivered_cost size=small}} </td>
 <!--
             			<td>
                 			<button type='button' class="uk-button uk-button-mini uk-button-danger" onClick="deleteRow('{{stock_supplier_order_item.id}}')">
@@ -349,17 +349,17 @@
 	}
 
 	// Quantity changed - called for new and amend row
-	function onChange_stocksupplierorderitem_deliveredqty(obj) {
+	function onChange_lineinput_deliveredqty(obj) {
 		objId =  getSiblingByName(obj, 'stock_supplier_order_item.id');	// @@is this get really nec, seeing as next runaction use it by name too?
-		runAction('updateDelivered', 'stock_supplier_order_item.id=' + objId.value + ' ' + obj.name + '=' + obj.value, '', afterQtyChanged);
+		runAction('updateDelivered', 'stock_supplier_order_item.id=' + objId.value + ' ' + 'stock_supplier_order_item.delivered_qty=' + obj.value, '', afterOrderItemUpdated);
 	}
-	function afterQtyChanged() {
+	function afterOrderItemUpdated() {
 		runAction('recalcOrder', 'stock_supplier_order.id', '', showOrderLines);
 	}
 
-	function onChange_stocksupplierorderitem_deliveredprice(obj) {
+	function onChange_lineinput_deliveredcost(obj) {
 		objId =  getSiblingByName(obj, 'stock_supplier_order_item.id');	// @@is this get really nec, seeing as next runaction use it by name too?
-		runAction('updateDelivered', 'stock_supplier_order_item.id=' + objId.value + ' ' + obj.name + '=' + obj.value, '', afterQtyChanged);
+		runAction('updateDelivered', 'stock_supplier_order_item.id=' + objId.value + ' ' + 'stock_supplier_order_item.delivered_price' + obj.value, '', afterOrderItemUpdated);
 	}
 
 	// Pack changed - called for new row only

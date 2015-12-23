@@ -164,12 +164,14 @@ function fn(obj, event) {
 			parts.splice(0, 1);	// lose the 'ID___' or 'VAR___'
 			for (i = 0; i < parts.length; i++)
 				parts[i] = parts[i].split('_').join('');
+			for (i = 0; i < parts.length; i++)
+				parts[i] = parts[i].split('.').join('_');	// VAR's with dots in their name need this
 			localFunc = 'on' + event.type.charAt(0).toUpperCase() + event.type.slice(1) + '_' + parts.join('_');
 		}
-	}
 console.log("fn (change) looking for user supplied function '" + localFunc + "'");
-	if ((localFunc != '') && (typeof window[localFunc] === "function"))
+		if ((localFunc != '') && (typeof window[localFunc] === "function"))
 			window[localFunc](obj);
+	}
 }
 
 // ----------------------------------------------------------------------------------------------------------
