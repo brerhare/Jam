@@ -234,6 +234,7 @@ function getSiblingByName(callingObj, siblingName) {
 				for (j = 0; j < groupClassArr.length; j++) {
 					if (groupClassArr[j].name.match(siblingName))
 						return(groupClassArr[j]);
+					//console.log('==> ' + groupClassArr[j].name + ' = ' + groupClassArr[j].value);
 				}
 			}
 		}

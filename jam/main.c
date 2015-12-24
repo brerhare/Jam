@@ -69,11 +69,6 @@ int main(int argc, char *argv[]) {
 	char **cgivars ;
 	char *jamName = NULL;
 
-	// Intialize random number generator and our loop sequence number
-	time_t t;
-	srand((unsigned) time(&t));
-	cmdSeqnum = (rand() % 999999);
-
 	logMsg(LOGINFO, "--------------------------------------------------------------------------");
 	logMsg(LOGINFO, "Starting. argc is %d", argc);
 
@@ -89,7 +84,7 @@ int main(int argc, char *argv[]) {
 		setenv("QUERY_STRING", tmp, 1);
 		free(tmp);
 	}
-
+ 
 	// Output headers to prevent caching
 	emitHeader("Cache-Control: no-store, must-revalidate, max-age=0");
 	emitHeader("Pragma: no-cache");
@@ -100,6 +95,8 @@ int main(int argc, char *argv[]) {
 	cgivars = getcgivars() ;
 	for (int i = 0; cgivars[i]; i+= 2) {
 		logMsg(LOGDEBUG, "Parameter [%s] = [%s]", cgivars[i], cgivars[i+1]) ;
+		cmdSeqnum += strlen(cgivars[i]);
+		cmdSeqnum += strlen(cgivars[i+1]);
 
 		if (!strcmp(cgivars[i], "OobDataRequested"))
 			oobDataRequested = 1;
@@ -121,6 +118,13 @@ int main(int argc, char *argv[]) {
 			addVar(assignVar);
 		}
 	}
+
+	// Intialize random number generator and our loop sequence number
+	time_t t;
+	srand((unsigned) (time(&t) + cmdSeqnum));
+	cmdSeqnum = (rand() % 999999);
+	logMsg(LOGINFO, "Random cmdSeqnum is %d", cmdSeqnum);
+
 	processJam(jamName, jamEntrypoint, NULL);
 	// Cleanup
 	free(jamName);

@@ -140,8 +140,8 @@ Optional for any - label, group, disabled
 <h5>Tabs</h5>
 
 {@html tabs
-	url=/run/jamfile text='Tab Text'
-	url=/run/jamfile:jamaction text=Action
+	content=/run/jamfile text='Tab Text'
+	content=/run/jamfile:jamaction text=Action
 }
 
 <h5> html control </h5>
