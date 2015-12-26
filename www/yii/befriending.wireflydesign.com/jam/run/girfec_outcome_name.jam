@@ -16,7 +16,7 @@
 }}
 
 {{@template COLUMNS
-	<td> {{@html gridinp text girfec_outcome_name.description large}} </td>
+	<td> {{@html text field=girfec_outcome_name.description size=large}} </td>
 }}
 
 {{@template EDITS description}}

@@ -16,7 +16,7 @@
 }}
 
 {{@template COLUMNS
-	<td> {{@html gridinp text medical_type.name medium Condition condition}} </td>
+	<td> {{@html text field=medical_type.name size=medium label=Condition placeholder=condition}} </td>
 }}
 
 {{@template EDITS name}}

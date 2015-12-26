@@ -16,7 +16,7 @@
 }}
 
 {{@template COLUMNS
-	<td> {{@html gridinp text training_type.name medium}} </td>
+	<td> {{@html text field=training_type.name size=medium}} </td>
 }}
 
 {{@template EDITS name}}

@@ -24,9 +24,9 @@
 <!-- Template defines for the form input component -->
 {{@template FORMINPUT
 
-	{{@html input text termination_reason.date description 'Description'}}
-	{{@html input date termination_reason.file_destroyed medium 'Date'}}
-	{{@html textarea termination_reason.notes 40x5 Notes}}
+	{{@html text field=termination_reason.date size=large label='Description'}}
+	{{@html date field=termination_reason.file_destroyed size=medium label='Date'}}
+	{{@html textarea field=termination_reason.notes size=40x5 label=Notes}}
 }}
 
 <!-- Include the template -->

@@ -16,7 +16,7 @@
 }}
 
 {{@template COLUMNS
-	<td> {{@html gridinp text need_type.description medium Special Need}} </td>
+	<td> {{@html text field=need_type.description size=medium}} </td>
 }}
 
 {{@template EDITS description}}

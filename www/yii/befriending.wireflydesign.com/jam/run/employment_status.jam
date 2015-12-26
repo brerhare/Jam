@@ -16,7 +16,7 @@
 }}
 
 {{@template COLUMNS
-	<td> {{@html gridinp text employment_status.description medium}} </td>
+	<td> {{@html text field=employment_status.description size=medium}} </td>
 }}
 
 {{@template EDITS description}}

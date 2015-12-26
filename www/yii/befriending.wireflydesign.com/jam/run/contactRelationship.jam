@@ -16,7 +16,7 @@
 }}
 
 {{@template COLUMNS
-	<td> {{@html gridinp text contact_relationship.relationship medium Description}} </td>
+	<td> {{@html text field=contact_relationship.relationship size=medium}} </td>
 }}
 
 {{@template EDITS relationship}}
