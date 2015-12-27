@@ -57,7 +57,12 @@
 		var changeMonitors = "EDITS".split(" ");
 		for (var i = 0; i < changeMonitors.length; i++) {
 			name = "onChange_" + "TABLE".replace("_", "") + "_" + changeMonitors[i];
-			window[name] = function (obj) { if (obj.id.substring(0, 4) == "ID0_") return; objId =  getSiblingByName(obj, 'TABLE.id'); document.getElementById('newRow').style.display = 'none'; runAction('change', objId.name + '=' + objId.value + ' ' + obj.name + '=' + obj.value); }
+			window[name] = function (obj) {
+				if (obj.id.substring(0, 4) == "ID0_") return;
+				objId =  getSiblingByName(obj, 'TABLE.id');
+				document.getElementById('newRow').style.display = 'none';
+				runAction('change', objId.name + '=' + objId.value + ' ' + obj.name + '=' + obj.value);
+			}
 		}
 	}
 
