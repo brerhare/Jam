@@ -30,7 +30,7 @@
 				<th> </th>
 			</tr>
 			<tr id='newRow' style='display:none'>        <!-- NEW ROW --->
-				COLUMNS
+				<form name='newRowForm'> COLUMNS </form>
 				<td>
 					<button type='button' class="uk-button uk-button-mini uk-button-primary" onClick="addNewRowButtonClick()">
 						<i class="uk-icon-save"></i>
@@ -45,7 +45,7 @@
 			<tr class="rowHighlight">
 				COLUMNS
 				<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{DELETEFIELD}}')"> <i class="uk-icon-trash"></i></button> </td>
-				<td> {{@html gridinp hidden TABLE.id}} </td>
+				<td> {{@html text hidden field=TABLE.id}}
 			</tr>
 {{@end}}
 		</table>
@@ -56,8 +56,8 @@
 		// Create onChange functions for columns - will be called by fn()
 		var changeMonitors = "EDITS".split(" ");
 		for (var i = 0; i < changeMonitors.length; i++) {
-			name = "onChange_TABLE_dot_" + changeMonitors[i];
-			window[name] = function (obj) { if (obj.id.indexOf("SEQ_0_") != -1) return; document.getElementById('newRow').style.display = 'none'; runAction('change', obj.id); }
+			name = "onChange_" + "TABLE".replace("_", "") + "_" + changeMonitors[i];
+			window[name] = function (obj) { if (obj.id.substring(0, 4) == "ID0_") return; objId =  getSiblingByName(obj, 'TABLE.id'); document.getElementById('newRow').style.display = 'none'; runAction('change', objId.name + '=' + objId.value + ' ' + obj.name + '=' + obj.value); }
 		}
 	}
 
@@ -68,7 +68,7 @@
 		document.getElementById('newRow').style.display = 'none';
 	}
 	function addNewRowButtonClick() {
-		runAction('change', 'SEQ_0_TABLE.id', '', runJam);	
+		runAction('change', 'newRowForm', '', runJam);	
 		document.getElementById('newRow').style.display = 'none';
 	}
 

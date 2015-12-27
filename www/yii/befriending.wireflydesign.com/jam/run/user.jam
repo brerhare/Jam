@@ -21,9 +21,9 @@
 
 <!-- Template defines for the form input component -->
 {{@template FORMINPUT
-	{{@html input text global.forename medium 'Forename'}}
-	{{@html input text global.surname medium 'Surname'}}
-	{{@html input dropdown user.user_groups_id user_group.name medium 'User group'}}
+	{{@html text field=global.forename size=medium label='Forename'}}
+	{{@html text field=global.surname size=medium label='Surname'}}
+	{{@html dropdown field=user.user_groups_id pickfield=user_group.name size=medium label='User group'}}
 }}
 
 <!-- This is a copy of crud.jam template ----------------------------------------- -->

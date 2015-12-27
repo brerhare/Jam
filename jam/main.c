@@ -120,8 +120,9 @@ int main(int argc, char *argv[]) {
 	}
 
 	// Intialize random number generator and our loop sequence number
-	time_t t;
-	srand((unsigned) (time(&t) + cmdSeqnum));
+	timeval t1;
+	gettimeofday(&t1, NULL);
+	srand((t1.tv_usec * t1.tv_sec) + cmdSeqnum);	// both sec and usec
 	cmdSeqnum = (rand() % 999999);
 	logMsg(LOGINFO, "Random cmdSeqnum is %d", cmdSeqnum);
 

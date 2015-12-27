@@ -268,6 +268,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	char *field = NULL;
 	char *tableFieldRawValue = NULL;
 	char *label = NULL;
+	char *placeholder = NULL;
 	char *size = NULL;
 	char *disabled = NULL;
 	char *hidden = NULL;
@@ -316,6 +317,12 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	else
 		label = strdup("");
 
+	// Placeholder
+	if (isVar("sys.control.placeholder"))
+		placeholder = strdup(getVarAsString("sys.control.placeholder"));
+	else
+		placeholder = strdup("");
+
 	// Size
 	if (isVar("sys.control.size"))
 		size = strdup(getVarAsString("sys.control.size"));
@@ -351,6 +358,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 						  {{@template INPUT_TABLE %s}}	\
 						  {{@template INPUT_FIELD %s}}	\
 						  {{@template INPUT_LABEL %s}}	\
+						  {{@template INPUT_PLACEHOLDER %s}}	\
 						  {{@template INPUT_SIZE %s}}	\
 						  {{@template INPUT_VALUE %s}}	\
 						  {{@template INPUT_DISABLED %s}}	\
@@ -360,6 +368,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 							table,
 							field,
 							label,
+							placeholder,
 							size,
 							value,
 							disabled,
@@ -379,6 +388,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	free(field);
 	free(tableFieldRawValue);
 	free(label);
+	free(placeholder);
 	free(size);
 	free(disabled);
 	free(group);
