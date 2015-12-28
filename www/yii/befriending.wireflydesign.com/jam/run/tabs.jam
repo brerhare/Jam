@@ -23,6 +23,10 @@ iframe {
   });
 </script>
 
+{{@include /jam/run/global.jam}}
+
+<br>
+
 <div class="mytabs" id="rm">
   <ul>
     <li><a href="#tab-1">Interest types</a></li>
@@ -44,7 +48,7 @@ $(function() {
 	var tabs = $( "#rm" ).tabs();
 	var ul = tabs.find( "ul" );
 	$( "<li><a href='#tab-3'>Dynamic tab</a></li>" ).appendTo( ul );
-	$( "<div id='tab-3'>blah</div>" ).appendTo( tabs );
+	$( "<div id='tab-3'>Can generate or remove tabs on the fly</div>" ).appendTo( tabs );
 	tabs.tabs( "refresh" );
 
 });
