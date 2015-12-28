@@ -21,6 +21,6 @@
 }}
 
 <!-- Call the addon -->
-{{@include /jam/run/sys/smartmenus.jam}}
+{{@include /jam/run/sys/smartMenu.jam}}
 
 {{@include /jam/sys/html/footer.html}}
