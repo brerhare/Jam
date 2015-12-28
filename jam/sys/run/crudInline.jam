@@ -61,7 +61,7 @@
 				if (obj.id.substring(0, 4) == "ID0_") return;
 				objId =  getSiblingByName(obj, 'TABLE.id');
 				document.getElementById('newRow').style.display = 'none';
-				runAction('change', objId.name + '=' + objId.value + ' ' + obj.name + '=' + obj.value);
+				runAction('change', objId.name + '=' + objId.value + '|' + obj.name + '=' + obj.value);
 			}
 		}
 	}
