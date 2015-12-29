@@ -20,12 +20,11 @@
 	</script>
 
 	<div class="jamTab" id="jamTabId">
-  	<ul>
-    	TAB_STR
-  	</ul>
-  	TAB_ACTION
+	<ul>
+		TAB_STR
+	</ul>
+	TAB_ACTION
 	</div>
-
 
 	<script>
 	$(function() {
