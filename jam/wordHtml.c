@@ -411,7 +411,7 @@ int wordHtmlTab(int ix, char *defaultTableName) {
 
 	int cnt = 2;
 	while (char *block = strTrim(getWordAlloc(args, cnt++, "\n"))) {
-		char *tabNVP = strTrim(getWordAlloc(block, 1, " \n"));
+		char *tabNVP = strTrim(getWordAlloc(block, 1, " \t"));
 		char *actionNVP = strTrim(getWordAlloc(block, 2, " \t"));
 		if ((!tabNVP) || (!actionNVP))
 			break;
