@@ -522,6 +522,9 @@ int control(int startIx, char *defaultTableName) {
 					else if (!strcmp(tmp, "gridinp"))
 						wordHtmlGridInp(ix, defaultTableName);
 
+					else if (!strcmp(tmp, "tab"))
+						wordHtmlTab(ix, defaultTableName);
+
 					else if (!strcmp(tmp, "textarea"))
 						wordHtmlTextarea(ix, defaultTableName);
 					else if (!strcmp(tmp, "button"))

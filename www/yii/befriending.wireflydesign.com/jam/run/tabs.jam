@@ -1,58 +1,11 @@
 {{@include /jam/sys/html/header.html}}
 
-<style>
-iframe {
-        width:100%;
-        height:600px;
-/*        border:0px;
-        margin:0px;
-        position:relative;
-        top:-13px;*/
-    }
-</style>
-
-<script>
-  $(function() {
-    $( ".mytabs" ).tabs({
-      beforeLoad: function( event, ui ) {
-        ui.jqXHR.fail(function() {
-          ui.panel.html( "Couldn't load this tab" );
-        });
-      }
-    });
-  });
-</script>
-
 {{@include /jam/run/global.jam}}
 
-<br>
-
-<div class="mytabs" id="rm">
-  <ul>
-    <li><a href="#tab-1">Interest types</a></li>
-    <li><a href="#tab-2">Event types</a></li>
-<!--    <li><a href="/run/interestType">Interest types</a></li> -->
-<!--    <li><a href="/run/event_type">Event types</a></li> -->
-  </ul>
-  <iframe id="tab-1" src="/run/interestType"></iframe>
-
-  <iframe id="tab-2" src="/run/event_type"></iframe>
-
-</div>
-
-
-<script>
-$(function() {
-
-	// Create a tab dynamically
-	var tabs = $( "#rm" ).tabs();
-	var ul = tabs.find( "ul" );
-	$( "<li><a href='#tab-3'>Dynamic tab</a></li>" ).appendTo( ul );
-	$( "<div id='tab-3'>Can generate or remove tabs on the fly</div>" ).appendTo( tabs );
-	tabs.tabs( "refresh" );
-
-});
-</script>
+{{@html tab
+	label='Interest types'	action=/run/interestType
+	label='Event Types'		action=/run/event_type
+}}
 
 {{@include /jam/sys/html/footer.html}}
 

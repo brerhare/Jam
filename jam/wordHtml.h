@@ -7,6 +7,7 @@ int wordHtmlBreakpoint(int ix, char *defaultTableName);
 int wordHtmlDropdown(int ix, char *defaultTableName);
 int wordHtmlFilter(int ix, char *defaultTableName);
 int wordHtmlInput(int ix, char *defaultTableName);
+int wordHtmlTab(int ix, char *defaultTableName);
 
 int wordHtmlInputOld(int ix, char *defaultTableName);
 int wordHtmlInp(int ix, char *defaultTableName);

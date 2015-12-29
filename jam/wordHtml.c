@@ -398,6 +398,55 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	emitStd(jam[ix]->trailer);
 }
 
+// Tab
+int wordHtmlTab(int ix, char *defaultTableName) {
+	char *tmp = (char *) calloc(1, 4096);
+	char *args = jam[ix]->args;
+
+	int seq = (rand() % 99999);
+	char *tabStr = (char *) calloc(1, 4096);
+	char *actionStr = (char *) calloc(1, 4096);
+
+	logMsg(LOGDEBUG, "TAB ARGS=%s", args);
+
+	int cnt = 2;
+	while (char *block = strTrim(getWordAlloc(args, cnt++, "\n"))) {
+		char *tabNVP = strTrim(getWordAlloc(block, 1, " \n"));
+		char *actionNVP = strTrim(getWordAlloc(block, 2, " \t"));
+		if ((!tabNVP) || (!actionNVP))
+			break;
+		char *tab = strTrim(getWordAlloc(tabNVP, 2, "="));
+		char *action = strTrim(getWordAlloc(actionNVP, 2, "="));
+		sprintf(tmp, "<li><a href='#tab-%d'>%s</a></li> \n", seq, tab);
+		strcat(tabStr, tmp);
+		sprintf(tmp, "<iframe id='tab-%d' src='%s'></iframe> \n", seq, action);
+		strcat(actionStr, tmp);
+		free(block);
+		free(tabNVP);
+		free(actionNVP);
+		free(tab);
+		free(action);
+		seq++;
+	}
+
+	JAMBUILDER jb;
+	jb.stream = STREAMOUTPUT_STD;
+	char *templateStr = (char *) calloc(1, 4096);
+	sprintf(templateStr, "{{@template TAB_STR %s}}	\
+						  {{@template TAB_ACTION %s}}",
+							tabStr,
+							actionStr
+							);
+
+	jb.templateStr = templateStr;
+	jamBuilder("/jam/run/sys/jamBuilder/html/tab.jam", "tabHtml", &jb);
+
+	free(tmp);
+	free(tabStr);
+	free(actionStr);
+	emitStd(jam[ix]->trailer);
+}
+
 int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
