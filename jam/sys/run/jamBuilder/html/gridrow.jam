@@ -1,0 +1,8 @@
+{{@action gridrowStartHtml}}
+	<div class="uk-grid GRIDROW_GRIDCOLS" style="GRIDROW_CSS">
+{{@end}}
+
+{{@action gridrowEndHtml}}
+	</div>
+{{@end}}
+

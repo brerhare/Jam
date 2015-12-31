@@ -508,7 +508,16 @@ int control(int startIx, char *defaultTableName) {
 			if (args) {
 				getWord(tmp, args, 1, " \t");
 				if (*tmp) {
-					if (!strcmp(tmp, "dropdown"))
+					if (!strcmp(tmp, "container"))
+						wordHtmlContainer(ix, defaultTableName);
+					if (!strcmp(tmp, "form"))
+						wordHtmlForm(ix, defaultTableName);
+					if (!strcmp(tmp, "gridrow"))
+						wordHtmlGridrow(ix, defaultTableName);
+					if (!strcmp(tmp, "gridcol"))
+						wordHtmlGridcol(ix, defaultTableName);
+
+					else if (!strcmp(tmp, "dropdown"))
 						wordHtmlDropdown(ix, defaultTableName);
 					else if (!strcmp(tmp, "filter"))
 						wordHtmlFilter(ix, defaultTableName);

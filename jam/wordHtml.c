@@ -28,6 +28,205 @@ char *makeJamKeyValue(char *tableName, char *fieldName, char *rawValue);
 //-----------------------------------------------------------------
 // HTML <tag> generation from {{curly}}
 
+int wordHtmlContainer(int ix, char *defaultTableName) {
+	char *tmp = (char *) calloc(1, 4096);
+	char *center = NULL;
+	char *css = NULL;
+
+	// Start or End
+	if (isVar("sys.control.end")) {
+		JAMBUILDER jb;
+		jb.stream = STREAMOUTPUT_STD;
+		jb.templateStr = NULL;
+		int ret = jamBuilder("/jam/run/sys/jamBuilder/html/container.jam", "containerEndHtml", &jb);
+		emitStd(jam[ix]->trailer);
+		return ret;
+	} else if (!isVar("sys.control.start")) {
+		logMsg(LOGERROR, "Html container must have 'start' or 'end'");
+		return(-1);
+	}
+
+	// Center
+	if ((isVar("sys.control.center")) || (isVar("sys.control.centre")))
+		center = strdup("uk-container-center");
+	else
+		center = strdup("");
+
+	// Css
+	if (isVar("sys.control.css"))
+		css = strdup(getVarAsString("sys.control.css"));
+	else
+		css = strdup("");
+
+	JAMBUILDER jb;
+	jb.stream = STREAMOUTPUT_STD;
+	char *templateStr = (char *) calloc(1, 4096);
+	sprintf(templateStr, "{{@template CONTAINER_CENTER %s}}	\
+						  {{@template CONTAINER_CSS %s}}",
+							center,
+							css
+							);
+
+	jb.templateStr = templateStr;
+	jamBuilder("/jam/run/sys/jamBuilder/html/container.jam", "containerStartHtml", &jb);
+
+	free(tmp);
+	free(center);
+	free(css);
+	emitStd(jam[ix]->trailer);
+}
+
+int wordHtmlForm(int ix, char *defaultTableName) {
+	char *tmp = (char *) calloc(1, 4096);
+	char *name = NULL;
+	char *css = NULL;
+
+	// Start or End
+	if (isVar("sys.control.end")) {
+		JAMBUILDER jb;
+		jb.stream = STREAMOUTPUT_STD;
+		jb.templateStr = NULL;
+		int ret = jamBuilder("/jam/run/sys/jamBuilder/html/form.jam", "formEndHtml", &jb);
+		emitStd(jam[ix]->trailer);
+		return ret;
+	} else if (!isVar("sys.control.start")) {
+		logMsg(LOGERROR, "Html form must have 'start' or 'end'");
+		return(-1);
+	}
+
+
+	// Name
+	if (isVar("sys.control.name"))
+		name = strdup("sys.control.name");
+	else {
+		logMsg(LOGERROR, "Html form must have 'name'");
+		return(-1);
+	}
+
+	// Css
+	if (isVar("sys.control.css"))
+		css = strdup(getVarAsString("sys.control.css"));
+	else
+		css = strdup("");
+
+	JAMBUILDER jb;
+	jb.stream = STREAMOUTPUT_STD;
+	char *templateStr = (char *) calloc(1, 4096);
+	sprintf(templateStr, "{{@template FORM_NAME %s}} \
+						  {{@template FORM_CSS %s}}",
+							name,
+							css
+							);
+
+	jb.templateStr = templateStr;
+	jamBuilder("/jam/run/sys/jamBuilder/html/form.jam", "formStartHtml", &jb);
+
+	free(tmp);
+	free(name);
+	free(css);
+	emitStd(jam[ix]->trailer);
+}
+
+int wordHtmlGridrow(int ix, char *defaultTableName) {
+	char *tmp = (char *) calloc(1, 4096);
+	char *gridCols = NULL;
+	char *css = NULL;
+
+	// Start or End
+	if (isVar("sys.control.end")) {
+		JAMBUILDER jb;
+		jb.stream = STREAMOUTPUT_STD;
+		jb.templateStr = NULL;
+		int ret = jamBuilder("/jam/run/sys/jamBuilder/html/gridrow.jam", "gridrowEndHtml", &jb);
+		emitStd(jam[ix]->trailer);
+		return ret;
+	} else if (!isVar("sys.control.start")) {
+		logMsg(LOGERROR, "Html gridrow must have 'start' or 'end'");
+		return(-1);
+	}
+
+	// Gridcols
+	if (isVar("sys.control.gridcols")) {
+		gridCols = (char *) calloc(1, 4096);
+		sprintf(gridCols, "uk-grid-width-1-%d", atoi(getVarAsString("sys.control.gridcols")));
+	}
+	else
+		gridCols = strdup("");
+
+	// Css
+	if (isVar("sys.control.css"))
+		css = strdup(getVarAsString("sys.control.css"));
+	else
+		css = strdup("");
+
+	JAMBUILDER jb;
+	jb.stream = STREAMOUTPUT_STD;
+	char *templateStr = (char *) calloc(1, 4096);
+	sprintf(templateStr, "{{@template GRIDROW_GRIDCOLS %s}}	\
+						  {{@template GRIDROW_CSS %s}}",
+							gridCols,
+							css
+							);
+
+	jb.templateStr = templateStr;
+	jamBuilder("/jam/run/sys/jamBuilder/html/gridrow.jam", "gridrowStartHtml", &jb);
+
+	free(tmp);
+	free(gridCols);
+	free(css);
+	emitStd(jam[ix]->trailer);
+}
+
+int wordHtmlGridcol(int ix, char *defaultTableName) {
+	char *tmp = (char *) calloc(1, 4096);
+	char *width = NULL;
+	char *css = NULL;
+
+	// Start or End
+	if (isVar("sys.control.end")) {
+		JAMBUILDER jb;
+		jb.stream = STREAMOUTPUT_STD;
+		jb.templateStr = NULL;
+		int ret = jamBuilder("/jam/run/sys/jamBuilder/html/gridcol.jam", "gridcolEndHtml", &jb);
+		emitStd(jam[ix]->trailer);
+		return ret;
+	} else if (!isVar("sys.control.start")) {
+		logMsg(LOGERROR, "Html gridcol must have 'start' or 'end'");
+		return(-1);
+	}
+
+	// Width
+	if (isVar("sys.control.width")) {
+		width = (char *) calloc(1, 4096);
+		sprintf(width, "uk-width-%s", getVarAsString("sys.control.width"));
+	}
+	else
+		width = strdup("");
+
+	// Css
+	if (isVar("sys.control.css"))
+		css = strdup(getVarAsString("sys.control.css"));
+	else
+		css = strdup("");
+
+	JAMBUILDER jb;
+	jb.stream = STREAMOUTPUT_STD;
+	char *templateStr = (char *) calloc(1, 4096);
+	sprintf(templateStr, "{{@template GRIDCOL_WIDTH %s}}	\
+						  {{@template GRIDCOL_CSS %s}}",
+							width,
+							css
+							);
+
+	jb.templateStr = templateStr;
+	jamBuilder("/jam/run/sys/jamBuilder/html/gridcol.jam", "gridcolStartHtml", &jb);
+
+	free(tmp);
+	free(width);
+	free(css);
+	emitStd(jam[ix]->trailer);
+}
+
 int wordHtmlDropdown(int ix, char *defaultTableName) {
 	char *tmp = (char *) calloc(1, 4096);
 	char *targetTable = NULL;

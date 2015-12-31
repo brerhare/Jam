@@ -108,6 +108,16 @@
 
 <h4>HTML</h4>
 
+<h5>Layout</h5>
+
+{@html container start [center] [css='blah']}
+{@html container end}
+
+{@html gridrow start [cols=4] [css='blah'] }		optional cols specifies number of equal size columns
+{@html gridrow end}
+{@html gridcol start [width=3-5]} [css='blah'] }	..or each col can specify its size
+{@html gridcol end}
+
 <h5>Inputs</h5>
 
 {@html input hidden stock_supplier._id}

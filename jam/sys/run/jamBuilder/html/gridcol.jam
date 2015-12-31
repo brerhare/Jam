@@ -1,0 +1,8 @@
+{{@action gridcolStartHtml}}
+	<div class="GRIDCOL_WIDTH" style="GRIDCOL_CSS">
+{{@end}}
+
+{{@action gridcolEndHtml}}
+	</div>
+{{@end}}
+
