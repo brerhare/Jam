@@ -134,6 +134,7 @@
 {@html dropdown/filter field=product.supplier_id pickfield=supplier.name size=medium}
 {@html text/date field=product.supplier_id pickfield=supplier.name size=medium placeholder='address line 1'}
 {@html text/date field=product.supplier_id pickfield=supplier.name size=medium hidden}
+{@html textarea field=stock_supplier.notes size=60x5 label=Notes}
 
 Optional for any - label, group, disabled
 

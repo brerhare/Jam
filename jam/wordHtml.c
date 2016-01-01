@@ -495,7 +495,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	// [Table].field
 	char *p = getVarAsString("sys.control.field");
 	if (!p) {
-		logMsg(LOGERROR, "Html input target cant be null");
+		logMsg(LOGERROR, "Html input field cant be null");
 		return(-1);
 	}
 	tableFieldRawValue = strdup(getVarAsString("sys.control.field"));
@@ -589,6 +589,147 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	free(label);
 	free(placeholder);
 	free(size);
+	free(disabled);
+	free(group);
+	free(value);
+	free(jamKey);
+	free(templateStr);
+	emitStd(jam[ix]->trailer);
+}
+
+// Input Textarea
+int wordHtmlTextarea(int ix, char *defaultTableName) {
+	char *tmp = (char *) calloc(1, 4096);
+	char *hidden = NULL;
+	char *table = NULL;
+	char *field = NULL;
+	char *tableFieldRawValue = NULL;
+	char *label = NULL;
+	char *placeholder = NULL;
+	char *size = NULL;
+	char *cols = NULL;
+	char *rows = NULL;
+	char *disabled = NULL;
+	char *value = NULL;
+	char *group = (char *) calloc(1, 4096);
+	char *jamKey = NULL;
+
+	// Hidden
+	if (isVar("sys.control.hidden"))
+		hidden = strdup("type='hidden'");
+	else
+		hidden = strdup("");
+
+	// [Table].field
+	char *p = getVarAsString("sys.control.field");
+	if (!p) {
+		logMsg(LOGERROR, "Html textarea field cant be null");
+		return(-1);
+	}
+	tableFieldRawValue = strdup(getVarAsString("sys.control.field"));
+	if (strchr(p, '.')) {		// has a named table
+		table = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
+		field = getWordAlloc(getVarAsString("sys.control.field"), 2, ".");
+	} else {					// its just the field name
+		if (defaultTableName)
+			table = strdup(defaultTableName);
+		else
+			table = strdup("");
+		field = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
+	}
+
+	// Label
+	if (isVar("sys.control.label"))
+		label = strdup(getVarAsString("sys.control.label"));
+	else
+		label = strdup("");
+
+	// Placeholder
+	if (isVar("sys.control.placeholder"))
+		placeholder = strdup(getVarAsString("sys.control.placeholder"));
+	else
+		placeholder = strdup("");
+
+	// Size
+	if (isVar("sys.control.size")) {
+		size = strdup(getVarAsString("sys.control.size"));
+		if (!strchr(size, 'x')) {
+			logMsg(LOGERROR, "Html textarea size must be in cols x rows format eg '60x5'");
+			return(-1);
+		}
+		cols = getWordAlloc(size, 1, "x");	// cols
+		rows = getWordAlloc(size, 2, "x");	// rows
+	} else {
+		size = strdup("");
+		rows = strdup("");
+		cols = strdup("");
+	}
+
+	// Group(s)
+	sprintf(group, "ROW_%d ", cmdSeqnum);
+	if (isVar("sys.control.group"))
+		strcat(group,  getVarAsString("sys.control.group"));
+
+	// Disabled
+	if (isVar("sys.control.disabled"))
+		disabled = strdup(" disabled ");
+	else
+		disabled = strdup("");
+
+	// Set jamKey. This is whatever table/field values are required to update the data
+	jamKey = makeJamKeyValue(table, field, tableFieldRawValue);
+
+	// Value
+	sprintf(tmp, "%s.%s", table, field);
+	VAR *variable = findVarStrict(tmp);
+	if (variable)
+		value = strdup(variable->portableValue);
+	else
+		value = strdup("");
+
+	JAMBUILDER jb;
+	jb.stream = STREAMOUTPUT_STD;
+	char *templateStr = (char *) calloc(1, 4096);
+	sprintf(templateStr, "{{@template TEXTAREA_HIDDEN %s}}	\
+						  {{@template TEXTAREA_TABLE %s}}	\
+						  {{@template TEXTAREA_FIELD %s}}	\
+						  {{@template TEXTAREA_LABEL %s}}	\
+						  {{@template TEXTAREA_PLACEHOLDER %s}}	\
+						  {{@template TEXTAREA_COLS %s}}	\
+						  {{@template TEXTAREA_ROWS %s}}	\
+						  {{@template TEXTAREA_VALUE %s}}	\
+						  {{@template TEXTAREA_DISABLED %s}}	\
+						  {{@template TEXTAREA_GROUP %s}}	\
+						  {{@template TEXTAREA_JAMKEY %s}}",
+							hidden,
+							table,
+							field,
+							label,
+							placeholder,
+							cols,
+							rows,
+							value,
+							disabled,
+							group,
+							jamKey
+							);
+
+	jb.templateStr = templateStr;
+	if (isVar("sys.control.label"))
+		jamBuilder("/jam/run/sys/jamBuilder/html/textarea.jam", "textareaLabelHtml", &jb);
+	else
+		jamBuilder("/jam/run/sys/jamBuilder/html/textarea.jam", "textareaHtml", &jb);
+
+	free(tmp);
+	free(hidden);
+	free(table);
+	free(field);
+	free(tableFieldRawValue);
+	free(label);
+	free(placeholder);
+	free(size);
+	free(rows);
+	free(cols);
 	free(disabled);
 	free(group);
 	free(value);
@@ -864,9 +1005,9 @@ int wordHtmlGridInp(int ix, char *defaultTableName) {
 	return(_wordHtmlInputInp(ix, defaultTableName, GRIDINP));
 }
 
+/****************************************************************************************
 
 //	{{@html textarea stock_supplier.notes 60x5 Notes}}
-
 int wordHtmlTextarea(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
@@ -920,6 +1061,7 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 	free(fieldPlaceholder);
 	free(tmp);
 }
+****************************************************************************/
 
 /*	{{@html button Save primary small
 		alert('ok')     // or any js

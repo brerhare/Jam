@@ -15,10 +15,10 @@
 		<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
 			<tr>
 				HEADINGS
-				<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('maintain_TABLE', ' ', 'content_TABLE')"> <i class="uk-icon-plus"></i> New</button> </th>
+				<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('maintain_TABLE', [], 'content_TABLE')"> <i class="uk-icon-plus"></i> New</button> </th>
 			</tr>
 {{@each TABLE FILTER}}
-			<tr class="rowHighlight" onClick="runAction('maintain_TABLE', 'TABLE.id={{id}}', 'content_TABLE')">
+			<tr class="rowHighlight" onClick="runAction('maintain_TABLE', ['TABLE.id={{id}}'], 'content_TABLE')">
 				COLUMNS
 				<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_TABLE('{{id}}','{{DELETEFIELD}}')"> <i class="uk-icon-trash"></i></button> </td>
 			</tr>
@@ -31,7 +31,7 @@ function confirmDelete_TABLE(id, displayInfo) {
 	window.event.cancelBubble = true;	// Prevent any further events
 	var result = confirm('Confirm delete of item ' + displayInfo);
 	if (result)
-		runAction('delete_TABLE', 'TABLE.id='+id, '', runJam);	
+		runAction('delete_TABLE', ['TABLE.id='+id], '', runJam);	
 }
 </script>
 
@@ -57,7 +57,7 @@ function confirmDelete_TABLE(id, displayInfo) {
 					<br>
 					<center>
 						{{@html button Save primary medium
-							runAction('update_TABLE', 'inputForm_TABLE', '', runJam)
+							runAction('update_TABLE', ['inputForm_TABLE'], '', runJam)
 						}}
 						{{@html button Cancel primary medium
 							runJam();
