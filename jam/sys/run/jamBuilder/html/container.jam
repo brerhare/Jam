@@ -6,7 +6,7 @@
 	}
 	</style>
 
-	<div class="uk-container CONTAINER_CENTER uk-margin-remove" style="CONTAINER_CSS">
+	<div class="uk-container CONTAINER_CENTER Xuk-margin-remove" style="CONTAINER_CSS">
 
 {{@end}}
 

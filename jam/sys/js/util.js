@@ -56,8 +56,9 @@ function runAction(action, element, output, callback) {
 		runJam = action;
 	}
 	// Gather all the elements to send
-	var postData = 'OobDataRequested=1';
+	var postData = 'oobDataRequested=1';
 /////////////////////////	el = runActionPreProcessGrid(el);							// expand 'SEQ_' to individual names for sending grid
+	element = runActionIncludeGroupElements(element);				// expand any group (class) names to all their element names
 	element.push("_dbname");											// always try to append this
 	element.push("_initialUrlParams");								// any url parameters this page was initially called with
 	for (i = 0; i < element.length; i++) {
@@ -288,6 +289,27 @@ function hasGroup(obj, groupName) {
 // Get a non-grid element by name
 function get(name) {	// @@NU
 	return document.getElementsByName(name)[0];
+}
+
+// If a runAction element-to-send names a group (class) instead then replace it in the array with all it's elements
+function runActionIncludeGroupElements(elArr) {
+console.log('pre-expand-----------------------------------');
+console.log(elArr);
+	var newArr = [];
+	for (i = 0; i < elArr.length; i++) {
+		var groupClassArr = document.getElementsByClassName(elArr[i]);
+		if (groupClassArr.length > 0) {
+			for (j = 0; j < groupClassArr.length; j++) {
+				newArr.push(groupClassArr[j].name);
+			}
+		} else {
+			newArr.push(elArr[i]);
+		}
+	}
+console.log('post-expand-----------------------------------');
+console.log(newArr);
+//alert('waiting');
+	return newArr;
 }
 
 // If there is any SEQ_ item create element.name's for ALL sibling grid element.id to send to server, and return the modified element array to runAction

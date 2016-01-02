@@ -98,7 +98,7 @@ int main(int argc, char *argv[]) {
 		cmdSeqnum += strlen(cgivars[i]);
 		cmdSeqnum += strlen(cgivars[i+1]);
 
-		if (!strcmp(cgivars[i], "OobDataRequested"))
+		if (!strcmp(cgivars[i], "oobDataRequested"))
 			oobDataRequested = 1;
 		if (!strcmp(cgivars[i], "jam")) {
 			logMsg(LOGDEBUG, "Found jam parameter");
