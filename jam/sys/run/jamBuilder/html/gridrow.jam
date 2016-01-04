@@ -3,7 +3,7 @@
 {{@end}}
 
 {{@action gridrowEndHtml}}
-	</div>
+	</div>	<!-- GRIDROW GRIDCOLS -->
 {{@end}}
 
 

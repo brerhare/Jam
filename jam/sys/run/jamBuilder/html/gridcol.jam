@@ -3,6 +3,6 @@
 {{@end}}
 
 {{@action gridcolEndHtml}}
-	</div>
+	</div>	<!-- GRIDCOL_WIDTH -->
 {{@end}}
 
