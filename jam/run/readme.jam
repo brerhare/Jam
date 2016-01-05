@@ -189,6 +189,10 @@ system.now 		@@TODO
 {@type /path/file}
 {@sysjam jamscript-in-sys-jam-area optional-action}
 
+{@include /path/file}
+{@include once /path/file}
+{@include standalone /path/file}	// only include if this file itself is not included
+
 <hr>
 
 
