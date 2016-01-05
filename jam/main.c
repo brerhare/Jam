@@ -48,6 +48,9 @@ char *jamEntrypoint = NULL;		// action entrypoint. Hackily global because its us
 
 // Common declares end
 
+char *includedTable[MAX_INCLUDE];
+char *fileToInclude = (char *) calloc(1, 4096);
+
 JAM *initJam();
 int processJam(char *jamName, char *jamEntrypoint, JAMBUILDER *jb);
 int control(int startIx, char *tableName);
@@ -98,7 +101,7 @@ int main(int argc, char *argv[]) {
 		cmdSeqnum += strlen(cgivars[i]);
 		cmdSeqnum += strlen(cgivars[i+1]);
 
-		if (!strcmp(cgivars[i], "OobDataRequested"))
+		if (!strcmp(cgivars[i], "oobDataRequested"))
 			oobDataRequested = 1;
 		if (!strcmp(cgivars[i], "jam")) {
 			logMsg(LOGDEBUG, "Found jam parameter");
@@ -139,6 +142,12 @@ int main(int argc, char *argv[]) {
     }
 	freeJamArray();
 	free(jamEntrypoint);
+	free(fileToInclude);
+	for (int i = 0; i < MAX_INCLUDE; i++) {
+		if (includedTable[i] == NULL)
+			break;
+		free(includedTable[i]);
+	}
 	if (conn)
 		closeDB();
 }
@@ -227,33 +236,87 @@ int processJam(char *jamName, char *jamEntrypoint, JAMBUILDER *jb) {
 
 int sanity = 0;
 	while (1) {
-if (++sanity > 100) { emitStd("Overflow in main!"); break; }
+if (++sanity > 100) { emitStd("Sanity check - overflow in processJam()!"); break; }
 		TAGINFO *tagInfo = getTagInfo(jamBuf, "@include");
 		if (tagInfo == NULL)
 			break;
-		// Read in the include file
-		sprintf(tmp, "%s/%s", documentRoot, tagInfo->content);
-		logMsg(LOGINFO, "including @INCLUDE file %s", tmp);
-		std::ifstream includeFile (tmp, std::ifstream::binary);
-		if (!includeFile) {
-			char *error = (char *) calloc(1, 4096);
-			sprintf(error, "@include : cant find file %s", tmp);
-			logMsg(LOGFATAL, "%s", error);
-			die(error);
-		}
-		includeFile.seekg (0, includeFile.end);
-		int length = includeFile.tellg();
-		includeFile.seekg (0, includeFile.beg);
-		char *includeBuf = (char *) calloc(1, length+1);
-		if (!includeBuf) {
-			logMsg(LOGFATAL, "cant calloc memory to @include %s", tagInfo->content);
+
+		char *includeType = getWordAlloc(tagInfo->content, 1, " \n");	// either 'once', 'standalone' or a filename
+		char *incl = getWordAlloc(tagInfo->content, 2, " \n");	// either the file or empty
+		int isOnce = 0;
+		int isStandalone = 0;
+		if (!includeType) {
+			logMsg(LOGFATAL, "@include : must specify a file to include");
 			return(-1);
 		}
-   		includeFile.read(includeBuf, length);
-   		includeBuf[length] = 0;
-	    includeFile.close();
-		//emitStd("[file=%s][len=%d][includeBuf=%s][1st=%c][strlen=%d]", tmp, length, includeBuf, includeBuf[0], (int) strlen(includeBuf));
-		//exit(0);
+		if ((!strcmp(includeType, "once")) || (!strcmp(includeType, "standalone"))) {
+			if (!strcmp(includeType, "standalone"))
+				isStandalone = 1;
+			if (!strcmp(includeType, "once"))
+				isOnce = 1;
+			if (incl) strcpy(fileToInclude, incl);
+			else {
+				logMsg(LOGFATAL, "@include once/standalone : must specify a file to include");
+				return(-1);
+			}
+		} else
+			strcpy(fileToInclude, includeType);
+		free(includeType);
+		if (incl) free(incl);
+		char *includeBuf = NULL;
+
+		// Check for 'once' or 'standalone' include
+		int doInclude = 1;
+		for (int i = 0; i < MAX_INCLUDE; i++) {
+			if (includedTable[i] != NULL) {
+				if (!strcmp(includedTable[i], fileToInclude)) {
+					logMsg(LOGDEBUG, "included file [%s] has been included before", fileToInclude);
+					if (isOnce) {
+						logMsg(LOGDEBUG, "once flag is SET. It will be EXcluded");
+						doInclude = 0;
+						break;
+					}
+				}
+			}
+			if (includedTable[i] == NULL) {
+				includedTable[i] = strdup(fileToInclude);
+				logMsg(LOGDEBUG, "included file [%s] has NOT been included before", fileToInclude);
+				break;
+			}
+		}
+		if (doInclude) {
+			// Read in the include file
+			sprintf(tmp, "%s/%s", documentRoot, fileToInclude);
+			logMsg(LOGINFO, "possibly including @INCLUDE file %s", tmp);
+			std::ifstream includeFile (tmp, std::ifstream::binary);
+			if (!includeFile) {
+				logMsg(LOGFATAL, "@include : cant find file %s", tmp);
+				return(-1);
+			}
+			includeFile.seekg (0, includeFile.end);
+			int length = includeFile.tellg();
+			includeFile.seekg (0, includeFile.beg);
+			includeBuf = (char *) calloc(1, length+1);
+			if (!includeBuf) {
+				logMsg(LOGFATAL, "cant calloc memory to @include %s", fileToInclude);
+				return(-1);
+			}
+			includeFile.read(includeBuf, length);
+			includeBuf[length] = 0;
+			includeFile.close();
+			// Exclude any standalones this include may have
+			logMsg(LOGDEBUG, "as this is an included file [%s] its own standalone includes (if any) must be disabled", fileToInclude);
+			char *bufPos = includeBuf;
+			while (char *p = strstr(bufPos, "@include ")) {
+				getWord(tmp, p, 2, " \t");
+				if (!strcmp(tmp, "standalone")) {
+					*(p + 1) = 'e';
+					*(p + 2) = 'x';
+				}
+				bufPos += strlen("@xxclude ");
+			}
+		} else
+			includeBuf = strdup("");
 
 		// Include the include
 		char *newJam = (char *) calloc(1, (strlen(jamBuf) + strlen(includeBuf) + 1));
@@ -268,6 +331,7 @@ if (++sanity > 100) { emitStd("Overflow in main!"); break; }
 		free(tagInfo->name);
 		free(tagInfo->content);
 		free(tagInfo);
+		logMsg(LOGDEBUG, "--------------------------------");
 	}
 
 	// Preprocess templates
@@ -391,7 +455,7 @@ logMsg(LOGERROR, "Remember templates stripping is not accurate..................
 			ix++;
 		}
 		if (!foundEntrypoint) {
-			logMsg(LOGERROR, "jam entrytpoint for requested @action [%s] was not found", jamEntrypoint);
+			logMsg(LOGERROR, "jam entrypoint for requested @action [%s] was not found", jamEntrypoint);
 			return(-1);
 		}
 	}

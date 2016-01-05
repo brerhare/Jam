@@ -3,12 +3,13 @@
 <style>
 .uk-container { 
 	Xmax-width: 100% !important;
+	Xmax-width: 600px;
 }
 </style>
 
 <div class="uk-container uk-container-center Xuk-margin-remove" style="background-color:grey; height:800px;">
 
-	<div class="uk-grid uk-grid-width-1-4" style="background-color:yellow;height:250px">
+	<div class="uk-grid uk-grid-width-1-4" style="background-color:yellow;height:60px">
 		<div class="uk-width-1-4" style="border:1px solid red; Xheight:200px">
 			A
 		</div>
@@ -50,15 +51,27 @@
 <script>
 $(function() {
 
+do1();
+
+function do1() {
+	arr = [];
+	arr.push("1");
+	arr.push("2");
+	do2(arr);
+	console.log(arr);
+}
+function do2(a) {
+	a.push("33");
+}
+
 });
 </script>
 
 {{@database plugin}}
 
 <hr>
-{{@html container start center css='background-color:red;}}
+{{@html container start center css='max-width:700px; background-color:yellow; Xpadding:0}}
 	{{@html form start name=myform}}
-
 		{{@html gridrow start gridcols=3 css='height:80px; background-color:cyan;'}}
  			{{@html gridcol start}}
 				{{@html dropdown field=some.id pickfield=admin_user.display_name size=medium}}
@@ -70,21 +83,18 @@ $(function() {
 				column three of three
 			{{@html gridcol end}}
 		{{@html gridrow end}}
-	{{@html container end}}
-<hr>
-	{{@html container start center css='background-color:red;}}
-		{{@html gridrow start css='height:80px;'}}
- 			{{@html gridcol start width=1-3 css='background-color:green; border:1px solid black'}}
-				Some content
-			{{@html gridcol end}}
- 			{{@html gridcol start width=2-3 css='background-color:pink; border:1px solid black'}}
-				Some other content
-			{{@html gridcol end}}
-		{{@html gridrow end}}
-	{{@html container end}}
-<hr>
-
 	{{@html form end}}
+{{@html container end}}
+<hr>
+{{@html container start Xcenter css='background-color:grey;}}
+	{{@html gridrow start css='height:80px;'}}
+		{{@html gridcol start width=1-3 css='background-color:#e5e4e2; border:1px solid black'}}
+			Some content
+		{{@html gridcol end}}
+			{{@html gridcol start width=2-3 css='background-color:pink; border:1px solid black'}}
+			Some other content
+		{{@html gridcol end}}
+	{{@html gridrow end}}
 {{@html container end}}
 
 {{@include /jam/sys/html/footer.html}}

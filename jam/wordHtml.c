@@ -1404,10 +1404,11 @@ int wordHtmlBreakpoint(int ix, char *defaultTableName) {
 				logMsg(LOGDEBUG, "created init js for uikit autocomplete");
 			}
 			// Embed the db name in the html for any @action calls
-			if (connDbName == NULL)
-				connDbName = strdup("");
-			emitStd("<input type='hidden' id='_dbname' name='_dbname' value='%s'>", connDbName);
-			logMsg(LOGDEBUG, "created hidden _dbname element");
+			if (connDbName != NULL) {
+				emitStd("<input type='hidden' id='_dbname' name='_dbname' value='%s'>", connDbName);
+				logMsg(LOGDEBUG, "created hidden _dbname element");
+			} else
+				logMsg(LOGDEBUG, "did NOT create hidden _dbname element (no db active)");
 
 			endJs(urlEncodeRequired);	// No encode
 
