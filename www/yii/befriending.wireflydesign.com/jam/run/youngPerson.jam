@@ -43,14 +43,7 @@
 }}
 
 {{@template FORMINPUT_TWO
-	{{@Xhtml radio field=young_person.gender label='Gender' options=0:Male,1:Female}}
-
-	<label class='uk-form-label' for='RADIO_JAMKEY'> Gender </label>
-	<div class='uk-form-controls uk-form-controls-text'>
-    	<label><input type="radio" id="RADIO_JAMKEY" name="young_person.gender" value="0">Male&nbsp&nbsp</label>
-    	<label><input type="radio" name="young_person.gender" value="1">Female</label>
-	</div>
-
+	{{@html radio field=young_person.gender label='Gender' options=0:Male,1:Female}}
 	{{@html text field=young_person.legal_status size=large label='Legal status'}}
 	{{@html text field=young_person.medication size=large label='Medication'}}
 	{{@html date field=young_person.order_date size=medium label='Order date'}}
