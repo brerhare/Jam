@@ -606,6 +606,7 @@ int wordHtmlCheckbox(int ix, char *defaultTableName) {
 	char *placeholder = NULL;
 	char *disabled = NULL;
 	char *value = NULL;
+	char *unvalue = NULL;
 	char *checked = NULL;
 	char *group = (char *) calloc(1, 4096);
 	char *jamKey = NULL;
@@ -657,10 +658,15 @@ int wordHtmlCheckbox(int ix, char *defaultTableName) {
 	// Value
 	sprintf(tmp, "%s.%s", table, field);
 	VAR *variable = findVarStrict(tmp);
-	if (variable)
+	if ((variable) && (atoi(variable->portableValue)) > 0) {
 		value = strdup(variable->portableValue);
-	else
-		value = strdup("");
+		sprintf(tmp, "<input type='hidden' name='%s.%s' value='0'>", table, field);
+		unvalue = strdup(tmp);
+	} else {
+		value = strdup("1");
+		unvalue = strdup("");
+	}
+
 	// Checked
 	if (atoi(variable->portableValue) > 0)
 		checked = strdup("checked");
@@ -675,6 +681,7 @@ int wordHtmlCheckbox(int ix, char *defaultTableName) {
 						  {{@template CHECKBOX_LABEL %s}}	\
 						  {{@template CHECKBOX_PLACEHOLDER %s}}	\
 						  {{@template CHECKBOX_VALUE %s}}	\
+						  {{@template CHECKBOX_UNVALUE %s}}	\
 						  {{@template CHECKBOX_CHECKED %s}}	\
 						  {{@template CHECKBOX_DISABLED %s}}	\
 						  {{@template CHECKBOX_GROUP %s}}	\
@@ -684,6 +691,7 @@ int wordHtmlCheckbox(int ix, char *defaultTableName) {
 							label,
 							placeholder,
 							value,
+							unvalue,
 							checked,
 							disabled,
 							group,
@@ -705,6 +713,7 @@ int wordHtmlCheckbox(int ix, char *defaultTableName) {
 	free(disabled);
 	free(group);
 	free(value);
+	free(unvalue);
 	free(checked);
 	free(jamKey);
 	free(templateStr);
