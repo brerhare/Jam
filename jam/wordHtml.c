@@ -597,6 +597,262 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	emitStd(jam[ix]->trailer);
 }
 
+int wordHtmlCheckbox(int ix, char *defaultTableName) {
+	char *tmp = (char *) calloc(1, 4096);
+	char *table = NULL;
+	char *field = NULL;
+	char *tableFieldRawValue = NULL;
+	char *label = NULL;
+	char *placeholder = NULL;
+	char *disabled = NULL;
+	char *value = NULL;
+	char *checked = NULL;
+	char *group = (char *) calloc(1, 4096);
+	char *jamKey = NULL;
+
+	// [Table].field
+	char *p = getVarAsString("sys.control.field");
+	if (!p) {
+		logMsg(LOGERROR, "Html checkbox field cant be null");
+		return(-1);
+	}
+	tableFieldRawValue = strdup(getVarAsString("sys.control.field"));
+	if (strchr(p, '.')) {		// has a named table
+		table = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
+		field = getWordAlloc(getVarAsString("sys.control.field"), 2, ".");
+	} else {					// its just the field name
+		if (defaultTableName)
+			table = strdup(defaultTableName);
+		else
+			table = strdup("");
+		field = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
+	}
+
+	// Label
+	if (isVar("sys.control.label"))
+		label = strdup(getVarAsString("sys.control.label"));
+	else
+		label = strdup("");
+
+	// Placeholder
+	if (isVar("sys.control.placeholder"))
+		placeholder = strdup(getVarAsString("sys.control.placeholder"));
+	else
+		placeholder = strdup("");
+
+	// Group(s)
+	sprintf(group, "ROW_%d ", cmdSeqnum);
+	if (isVar("sys.control.group"))
+		strcat(group,  getVarAsString("sys.control.group"));
+
+	// Disabled
+	if (isVar("sys.control.disabled"))
+		disabled = strdup(" disabled ");
+	else
+		disabled = strdup("");
+
+	// Set jamKey. This is whatever table/field values are required to update the data
+	jamKey = makeJamKeyValue(table, field, tableFieldRawValue);
+
+	// Value
+	sprintf(tmp, "%s.%s", table, field);
+	VAR *variable = findVarStrict(tmp);
+	if (variable)
+		value = strdup(variable->portableValue);
+	else
+		value = strdup("");
+	// Checked
+	if (atoi(variable->portableValue) > 0)
+		checked = strdup("checked");
+	else
+		checked = strdup("");
+
+	JAMBUILDER jb;
+	jb.stream = STREAMOUTPUT_STD;
+	char *templateStr = (char *) calloc(1, 4096);
+	sprintf(templateStr, "{{@template CHECKBOX_TABLE %s}}	\
+						  {{@template CHECKBOX_FIELD %s}}	\
+						  {{@template CHECKBOX_LABEL %s}}	\
+						  {{@template CHECKBOX_PLACEHOLDER %s}}	\
+						  {{@template CHECKBOX_VALUE %s}}	\
+						  {{@template CHECKBOX_CHECKED %s}}	\
+						  {{@template CHECKBOX_DISABLED %s}}	\
+						  {{@template CHECKBOX_GROUP %s}}	\
+						  {{@template CHECKBOX_JAMKEY %s}}",
+							table,
+							field,
+							label,
+							placeholder,
+							value,
+							checked,
+							disabled,
+							group,
+							jamKey
+							);
+
+	jb.templateStr = templateStr;
+	if (isVar("sys.control.label"))
+		jamBuilder("/jam/run/sys/jamBuilder/html/checkbox.jam", "checkboxLabelHtml", &jb);
+	else
+		jamBuilder("/jam/run/sys/jamBuilder/html/checkbox.jam", "checkboxHtml", &jb);
+
+	free(tmp);
+	free(table);
+	free(field);
+	free(tableFieldRawValue);
+	free(label);
+	free(placeholder);
+	free(disabled);
+	free(group);
+	free(value);
+	free(checked);
+	free(jamKey);
+	free(templateStr);
+	emitStd(jam[ix]->trailer);
+}
+
+int wordHtmlRadio(int ix, char *defaultTableName) {
+	char *tmp = (char *) calloc(1, 4096);
+	char *table = NULL;
+	char *field = NULL;
+	char *tableFieldRawValue = NULL;
+	char *label = NULL;
+	char *placeholder = NULL;
+	char *disabled = NULL;
+	char *value = NULL;
+	char *checked = NULL;
+	char *options = NULL;
+	char *group = (char *) calloc(1, 4096);
+	char *optionStr = (char *) calloc(1, 4096);
+	char *jamKey = NULL;
+
+	// [Table].field
+	char *p = getVarAsString("sys.control.field");
+	if (!p) {
+		logMsg(LOGERROR, "Html radio field cant be null");
+		return(-1);
+	}
+	tableFieldRawValue = strdup(getVarAsString("sys.control.field"));
+	if (strchr(p, '.')) {		// has a named table
+		table = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
+		field = getWordAlloc(getVarAsString("sys.control.field"), 2, ".");
+	} else {					// its just the field name
+		if (defaultTableName)
+			table = strdup(defaultTableName);
+		else
+			table = strdup("");
+		field = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
+	}
+
+	// Label
+	if (isVar("sys.control.label"))
+		label = strdup(getVarAsString("sys.control.label"));
+	else
+		label = strdup("");
+
+	// Placeholder
+	if (isVar("sys.control.placeholder"))
+		placeholder = strdup(getVarAsString("sys.control.placeholder"));
+	else
+		placeholder = strdup("");
+
+	// Group(s)
+	sprintf(group, "ROW_%d ", cmdSeqnum);
+	if (isVar("sys.control.group"))
+		strcat(group,  getVarAsString("sys.control.group"));
+
+	// Disabled
+	if (isVar("sys.control.disabled"))
+		disabled = strdup(" disabled ");
+	else
+		disabled = strdup("");
+
+	// Set jamKey. This is whatever table/field values are required to update the data
+	jamKey = makeJamKeyValue(table, field, tableFieldRawValue);
+
+	// Value
+	sprintf(tmp, "%s.%s", table, field);
+	VAR *variable = findVarStrict(tmp);
+	if (variable)
+		value = strdup(variable->portableValue);
+	else
+		value = strdup("");
+
+	// Options. Eg options=0:Male,1:Female
+	if (isVar("sys.control.options"))
+		options = strdup(getVarAsString("sys.control.options"));
+	else
+		options = strdup("");
+/*
+<label class='uk-form-label' for='RADIO_JAMKEY'> RADIO_LABEL </label>
+<div class='uk-form-controls uk-form-controls-text'>
+    <label><input type="radio" id="RADIO_JAMKEY" name="radio">1</label>
+    <label><input type="radio" name="radio">2</label>
+    <label><input type="radio" name="radio">3</label>
+</div>
+*/
+	int cnt = 1;
+	while (1) {
+		char *opt = getWordAlloc(options, cnt++, ",");
+		if ((!opt) || (!strlen(opt)))
+			break;
+	}
+
+
+
+
+	// Checked
+	if (atoi(variable->portableValue) > 0)
+		checked = strdup("checked='checked'");
+	else
+		checked = strdup("");
+
+	JAMBUILDER jb;
+	jb.stream = STREAMOUTPUT_STD;
+	char *templateStr = (char *) calloc(1, 4096);
+	sprintf(templateStr, "{{@template RADIO_TABLE %s}}	\
+						  {{@template RADIO_FIELD %s}}	\
+						  {{@template RADIO_LABEL %s}}	\
+						  {{@template RADIO_PLACEHOLDER %s}}	\
+						  {{@template RADIO_VALUE %s}}	\
+						  {{@template RADIO_CHECKED %s}}	\
+						  {{@template RADIO_DISABLED %s}}	\
+						  {{@template RADIO_GROUP %s}}	\
+						  {{@template RADIO_JAMKEY %s}}",
+							table,
+							field,
+							label,
+							placeholder,
+							value,
+							checked,
+							disabled,
+							group,
+							jamKey
+							);
+
+	jb.templateStr = templateStr;
+	if (isVar("sys.control.label"))
+		jamBuilder("/jam/run/sys/jamBuilder/html/radio.jam", "radioLabelHtml", &jb);
+	else
+		jamBuilder("/jam/run/sys/jamBuilder/html/radio.jam", "radioHtml", &jb);
+
+	free(tmp);
+	free(table);
+	free(field);
+	free(tableFieldRawValue);
+	free(label);
+	free(placeholder);
+	free(disabled);
+	free(group);
+	free(value);
+	free(checked);
+	free(jamKey);
+	free(templateStr);
+	free(options);
+	free(optionStr);
+	emitStd(jam[ix]->trailer);
+}
+
 // Input Textarea
 int wordHtmlTextarea(int ix, char *defaultTableName) {
 	char *tmp = (char *) calloc(1, 4096);

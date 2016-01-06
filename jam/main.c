@@ -598,6 +598,10 @@ int control(int startIx, char *defaultTableName) {
 					else if (!strcmp(tmp, "tab"))
 						wordHtmlTab(ix, defaultTableName);
 
+					else if (!strcmp(tmp, "radio"))
+						wordHtmlRadio(ix, defaultTableName);
+					else if (!strcmp(tmp, "checkbox"))
+						wordHtmlCheckbox(ix, defaultTableName);
 					else if (!strcmp(tmp, "textarea"))
 						wordHtmlTextarea(ix, defaultTableName);
 					else if (!strcmp(tmp, "button"))

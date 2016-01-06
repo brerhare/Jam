@@ -6,12 +6,12 @@
 {{@database befriending_wireflydesign_com}}
 
 <br>
-{{@html container start center css='max-width:700px; Xpadding:0}}
+{{@html container start center css='max-width:900px; Xpadding:0}}
 
 <!-- Template defines -->
-{{@template TABLE contact}}
-{{@template FILTER filter contact_relationship_id = 3}}
-{{@template DESCRIPTION Referrals}}
+{{@template TABLE young_person}}
+{{@template FILTER }}
+{{@template DESCRIPTION Young person}}
 
 <!-- Template defines for the list component -->
 {{@template DELETEFIELD global.surname}}
@@ -25,10 +25,12 @@
 }}
 
 <!-- Template defines for the form input component -->
-{{@template FORMINPUT
-
-	{{@html text field=global.forename size=medium label='Forename'}}
-	{{@html text field=global.surname size=medium label='Surname'}}
+{{@template FORMINPUT_ONE
+	<input type="hidden" name="young_person.referrer_form_id" value="999999"> <!-- @@TODO! -->
+	{{@html hidden field=young_person.referrer_form_id}}
+	{{@html date field=young_person.referral_date size=medium label='Referral date'}}
+	{{@html text field=global.forename size=large label='Forename'}}
+	{{@html text field=global.surname size=large label='Surname'}}
 	{{@html text field=global.house size=medium label='house'}}
 	{{@html text field=global.street size=medium label='Street'}}
 	{{@html text field=global.area size=medium label='Area'}}
@@ -37,23 +39,30 @@
 	{{@html text field=global.landline size=medium label='Land line'}}
 	{{@html text field=global.mobile size=medium label='Mobile'}}
 	{{@html text field=global.email size=medium label='Email'}}
+	{{@html date field=young_person.dob size=medium label='Birth date'}}
 }}
 
-<!--
-    {@html form start name=myform}
-        {@html gridrow start gridcols=3 css='height:80px; background-color:cyan;'}
-            {@html gridcol start}
-                {@Xhtml dropdown field=some.id pickfield=admin_user.display_name size=medium}
-            {@html gridcol end}
-            {@html gridcol start}
-                column two of three
-            {@html gridcol end}
-            {@html gridcol start css='border:1px solid red'}
-                column three of three
-            {@html gridcol end}
-        {@html gridrow end}
-    {@html form end}
--->
+{{@template FORMINPUT_TWO
+	{{@Xhtml radio field=young_person.gender label='Gender' options=0:Male,1:Female}}
+
+	<label class='uk-form-label' for='RADIO_JAMKEY'> Gender </label>
+	<div class='uk-form-controls uk-form-controls-text'>
+    	<label><input type="radio" id="RADIO_JAMKEY" name="young_person.gender" value="0">Male&nbsp&nbsp</label>
+    	<label><input type="radio" name="young_person.gender" value="1">Female</label>
+	</div>
+
+	{{@html text field=young_person.legal_status size=large label='Legal status'}}
+	{{@html text field=young_person.medication size=large label='Medication'}}
+	{{@html date field=young_person.order_date size=medium label='Order date'}}
+	{{@html checkbox field=young_person.discussion_confirmation label='Discussion confirmation'}}
+	{{@html checkbox field=young_person.exclusion_risk label='Exclusion risk'}}
+	{{@html checkbox field=young_person.offending_risk label='Offending risk'}}
+	{{@html checkbox field=young_person.care_risk label='Care risk'}}
+	{{@html checkbox field=young_person.child_plan label='Child plan'}}
+	{{@html checkbox field=young_person.assessment label='Assessment'}}
+	{{@html textarea field=young_person.special_needs_notes size=50x4 label='Special needs notes'}}
+
+}}
 
 <!-- COPY of crud.jam template -->
 <!-- ------------------------- -->
@@ -62,13 +71,6 @@
 
 <!-- Clear any unset templates -->
 {{@template FILTER}}
-
-<style>
-.rowHighlight:hover {
-  background-color: #ddf0ff;
-  cursor:pointer;
-}
-</style>
 
 <h3> DESCRIPTION </h3>
 <div name="content_TABLE">
@@ -111,17 +113,25 @@ function confirmDelete_TABLE(id, displayInfo) {
 	{{@get global filter id = TABLE.global_id}}
 
 	<style type="text/css">
-		label {text-align: right;}
+		label {text-align: right; width:150px !important}
+		div.uk-form-controls {margin-left: 170px !important}
 	</style>
 
 	<form name="inputForm_TABLE" class="uk-form uk-form-horizontal">
 		<input type="hidden" name="TABLE.id" value="{{TABLE.id}}">
 		<input type="hidden" name="global.id" value="{{TABLE.global_id}}">
+
 		{{@html gridrow start}}
-			{{@html gridcol start width=5-5}}
-				FORMINPUT
+			{{@html gridcol start width=5-10}}
+				FORMINPUT_ONE
+			{{@html gridcol end}}
+			{{@html gridcol start width=1-10}}
+			{{@html gridcol end}}
+			{{@html gridcol start width=4-10}}
+				FORMINPUT_TWO
 			{{@html gridcol end}}
 		{{@html gridrow end}}
+
 		{{@html gridrow start}}
 			{{@html gridcol start width=1-1}}
 				<br>
@@ -132,21 +142,16 @@ function confirmDelete_TABLE(id, displayInfo) {
 					{{@html button Cancel primary medium
 						runJam();
 					}}
-					<div id='emailButton' name='emailButton'>
-					{{@html button 'Email form' primary medium
-						runAction('email_TABLE', ['TABLE.id'], 'emailButton')
-					}}
-					</div>
 				</center>
 			{{@html gridcol end}}
 		{{@html gridrow end}}
+
 	</form>
 {{@end}}
 
 {{@action update_TABLE}}
 	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
 	{{TABLE.global_id = global.id}}
-	{{TABLE.contact_relationship_id = 3}}
 	{{@update item TABLE}}
 {{@end}}
 

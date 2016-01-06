@@ -9,6 +9,8 @@ int wordHtmlBreakpoint(int ix, char *defaultTableName);
 int wordHtmlDropdown(int ix, char *defaultTableName);
 int wordHtmlFilter(int ix, char *defaultTableName);
 int wordHtmlInput(int ix, char *defaultTableName);
+int wordHtmlCheckbox(int ix, char *defaultTableName);
+int wordHtmlRadio(int ix, char *defaultTableName);
 int wordHtmlTab(int ix, char *defaultTableName);
 
 int wordHtmlContainer(int ix, char *defaultTableName);
