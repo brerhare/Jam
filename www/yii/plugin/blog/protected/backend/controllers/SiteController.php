@@ -81,6 +81,20 @@ class SiteController extends Controller
     /**
      * Displays the DIRECT login page
      */
+// @@TODO: HARDCODED FOR Jardine Roofing ---------- REMOVE
+    public function actionJardineDirect()
+    {
+        Yii::app()->session['uid'] = 100;
+        $identity = new UserIdentity('Jardines', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+	}
+    
+    /**
+     * Displays the DIRECT login page
+     */
 // @@TODO: HARDCODED FOR Joseawright ---------- REMOVE
     public function actionJoSeawrightDirect()
     {

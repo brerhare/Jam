@@ -63,7 +63,7 @@ _dbfin($dbhandle);
 				card_address4 = '" . $_q['delivery_address4'] . "', 
 				card_city = '" . $_POST['City'] . "',
 				card_state = '" . $_POST['State'] . "',
-				card_post_code = '" . $_POST['PostCode'] . "',
+				card_post_code = '" . $_q['delivery_post_code'] . "',
 				card_country_short = '" . $_POST['CountryShort'] . "',
 				card_currency_short = '" . $_POST['CurrencyShort'] . "',
 				card_amount = '" . $_POST['Amount'] . "'
