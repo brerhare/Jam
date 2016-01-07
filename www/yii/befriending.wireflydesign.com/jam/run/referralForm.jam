@@ -1,0 +1,21 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:700px; Xpadding:0}}
+
+	<form name="inputForm_TABLE" class="uk-form uk-form-horizontal">
+		<input type="hidden" name="TABLE.id" value="{{TABLE.id}}">
+		<input type="hidden" name="global.id" value="{{TABLE.global_id}}">
+		{{@html gridrow start}}
+			{{@html gridcol start width=1-1}}
+				<h3>A valid access key is required</h3>
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+	</form>
+
+{{@html container end}}
+
+{{@include /jam/sys/html/footer.html}}

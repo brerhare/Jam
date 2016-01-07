@@ -34,14 +34,19 @@
 
 		<div class="uk-grid">
 
-			<div class="uk-width-8-10">
-				{{@html input disabled stock_supplier.name medium Supplier}}
-				{{@html input date stock_supplier_order.delivery_date medium 'Delivery Date' 'require a delivery date field'}}
+			<div class="uk-width-10-10">
+				{{@get stock_supplier filter id = stock_supplier_order.supplier_id}}
+				{{@html text disabled group=grpflt field=stock_supplier.name size=large label=Supplier}}
 			</div>
-			<div class="uk-width-8-10">
-				{{@html input filter stock_supplier_order.location_id stock_location.name medium Location}}
+			<div class="uk-width-10-10">
+				{{@html date field=stock_supplier_order.delivery_date size=medium label='Delivery Date'}}
 			</div>
-<!--
+			<div class="uk-width-4-10">
+				{{@html dropdown group=grpdrpdn field=stock_supplier_order.location_id pickfield=stock_location.name size=medium label=Location}}
+			</div>
+			<div class="uk-width-4-10">
+				{{@html dropdown group=grpdrpdn field=stock_supplier_order.container_id pickfield=stock_container.name size=medium label=Container}}
+			</div>
 			<div class="uk-width-8-10">
 				<br>
 				<button type='button' class="uk-button uk-button-small uk-button-primary" onClick="savePurchaseOrder(1)"> Save </button>
@@ -56,10 +61,6 @@
 				<br>
 				<br>
 			</div>
--->
-			<br>
-			<br>
-			<br>
 		</div>	<!-- uk-grid -->
 
 	</form>
@@ -76,63 +77,79 @@
 						<th> </th>
 						<th> Code </th>
 						<th style='max-width:185px;'> Product </th>
-						<th> Qty </th>
 						<th> Pack </th>
-						<th> Cost Price </th>
-						<th> Line Total </th>
+						<th> Qty </th>
+						<th> Received </th>
+						<th> Cost </th>
+						<th> Received Cost </th>
+<!--
             			<th style='min-width:50px;'>
                 			<button type='button' class="uk-button uk-button-mini uk-button-success" onClick="showNewRow()">
                     			<i class="uk-icon-plus"></i>
                 			</button>
             			</th>
+-->
 					</tr>
 					<tr id='newRow' style='display:none'>		 <!-- NEW ROW --->
 						<td> </td>
-						<td> {{@html gridinp text stock_product.code small}} </td>
-						<td> {{@html gridinp filter stock_supplier_order_item.stock_product_id stock_product.name}} </td>
-						<td> {{@html gridinp text stock_supplier_order_item.pack_qty small}} </td>
-						<td id="packTD" name="packTD"> </td>
-						<td> {{@html gridinp text stock_product.cost small}} </td>
-						<td> {{@html gridinp disabled linetotal small}} </td>
+						<td> {{@html text group=newrow field=stock_product.code size=small}} </td>
+						<td> {{@html filter group=newrow field=stock_supplier_order_item.stock_product_id pickfield=stock_product.name size=medium}} </td>
+						<td> {{@html text group=newrow field=stock_supplier_order_item.pack_qty size=small}} </td>
+						<td id="newRowPackSelectTD" class="newrow"  name="newRowPackSelectTD"> </td>
+						<td> {{@html text group=newrow disabled field=stock_product.cost size=small}} </td>
+						<td> {{@html text group=newrow disabled field=linetotal size=small}} </td>
+						<td> {{@html text group=newrow disabled field=linevolume size=small}} </td>
+<!--
             			<td>
-                			<button type='button' class="uk-button uk-button-mini uk-button-primary" onClick="addNewRowButtonClick()">
+                			<button type='button' class="uk-button uk-button-mini uk-button-primary" onClick="saveNewRowButtonClick()">
                     			<i class="uk-icon-save"></i>
                 			</button>
                 			<button type='button' class="uk-button uk-button-mini uk-button-primary" onClick="hideNewRow()">
                     			<i class="uk-icon-remove"></i>
                 			</button>
             			</td>
+-->
 					</tr>
 					</thead>
 					<tbody name='linebody'>
 
 {{@action showOrderLines}}
 	{{total.cost = 0}}
+	{{total.volume = 0}}
 	{{@each stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id, order by id DESC}}
 		{{@get stock_container filter id = stock_supplier_order.container_id}}
 		{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
 		{{@get stock_pack filter id = stock_supplier_order_item.stock_pack_id}}
+		{{line.pack_qty = stock_supplier_order_item.pack_qty}}
 		{{line.cost = stock_product.cost * stock_supplier_order_item.total_qty}}
 		{{total.cost = total.cost + line.cost}}
 					<tr>
-						<td> {{@html gridinp hidden stock_supplier_order_item.id}} </td>
-						<td> {{@html gridinp disabled stock_product.code small}} </td>
+						<td> {{@html text hidden field=stock_supplier_order_item.id}} </td>
+						<td> {{@html text disabled field=stock_product.code size=small}} </td>
 						<td>  <input type='text' class='uk-form-width-' value='{{stock_product.name}}' disabled></td>
-<!-- above line is a hack for line below because name=xxx is zeroth element in first display line not input line
-				<!--	<td> {{@html gridinp disabled stock_product.name}} </td> -->
-						<td> {{@html gridinp text stock_supplier_order_item.pack_qty small}} </td>
-
-						<td> {{@html gridinp disabled stock_pack.unit small}} </td>
-
-						<td> {{@html gridinp text stock_product.cost small}} </td>
-						<td> {{@html gridinp disabled line.cost small}} </td>
-            			<td> </td>
+<!-- above line is a hack for line below because name=xxx is zeroth element in first display line not input line -->
+				<!--	<td> {{@html text disabled field=stock_product.name}} </td> -->
+						<td> {{@html text disabled field=stock_pack.unit size=small}} </td>
+						<td> {{@html text disabled field=line.pack_qty size=small}} </td>
+						<td> {{@html text field=line_input.delivered_qty size=small}} </td>
+						<td> {{@html text disabled field=line.cost size=small}} </td>
+						<td> {{@html text field=line_input.delivered_cost size=small}} </td>
+<!--
+            			<td>
+                			<button type='button' class="uk-button uk-button-mini uk-button-danger" onClick="deleteRow('{{stock_supplier_order_item.id}}')">
+                    			<i class="uk-icon-trash"></i>
+                			</button>
+            			</td>
+-->
 					</tr>
 	{{@end}}
 					<tr>
 						<td colspan=6> </td>
 						<td> {{total.cost}} </td>
 						<td </td>
+<!--
+						<td </td>
+-->
 					</tr>
 {{@end}}
 					</tbody>
@@ -140,6 +157,7 @@
 
 			</div> <!-- uk-width-* -->
 		</div>	<!-- uk-grid -->
+
 	</form>
 
 </div>	<!-- uk-container -->
@@ -160,7 +178,7 @@
     {{@remove item stock_supplier_order_item}}
 {{@end}}
 
-{{@action changeQty}}
+{{@action updateDelivered}}
 	{{@amend item stock_supplier_order_item}}
 {{@end}}
 
@@ -181,7 +199,7 @@
 {{@action checkOrderProductByCode}}
 	{{@get stock_product filter code = stock_product.code}}
 	{{@get stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id, stock_product_id = stock_product.id}}
-	<select id="SEQ_0_pack" onchange="onChangePack();">
+	<select id="newRowPackSelect" onchange="onChangePack(this);">
 	{{@each stock_pack filter stock_product_id = stock_product.id}}
 		<option value="{{id}}">{{unit}}</option>
 	{{@end}}
@@ -191,7 +209,7 @@
 {{@action checkOrderProductById}}
 	{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
 	{{@get stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id, stock_product_id = stock_supplier_order_item.stock_product_id}}
-	<select id="SEQ_0_pack" onchange="onChangePack();">
+	<select id="newRowPackSelect" onchange="onChangePack(this);">
 	{{@each stock_pack filter stock_product_id = stock_product.id}}
 		<option value="{{id}}">{{unit}}</option>
 	{{@end}}
@@ -199,23 +217,35 @@
 {{@end}}
 
 <script>
+
+	var NEW_product_id = 0;
+	var NEW_pack_qty = 0;
+	var NEW_pack_id = 0;
+
 	window.onload = function() {
 		showOrderLines();
 	}
 
+	function onChange_stocksupplierorder_containerid(obj) {
+		showOrderLines();
+	}
+
 	function showNewRow() {
-		obj = document.getElementsByName('stock_supplier_order.id')[0];
+		if (document.getElementById('newRow').style.display == 'table-row')
+			return hideNewRow();					// toggle
+
+		initializeNewRow();
+
+		obj = get('stock_supplier_order.id');
 		if ((obj.value == "") || (obj.value == "0"))
 			alert('Save header details before adding stock');
-		else {
-			document.getElementById('SEQ_0_stock_product.code').value = "";
-			document.getElementById('SEQ_0_SEARCH_VALUE').value = "";
+		else
 			document.getElementById('newRow').style.display = 'table-row';
-		}
 	}
 	function hideNewRow() {
 		document.getElementById('newRow').style.display = 'none';
 	}
+
 	function deleteRow(id) {
 		window.event.cancelBubble = true;   // Prevent any further events
 		var result = confirm('Confirm delete');
@@ -239,6 +269,11 @@
 			alert('Invalid location');
 			return;
 		}
+		obj = document.getElementsByName('stock_supplier_order.container_id')[0];
+		if (obj.value == "") {
+			alert('Invalid container');
+			return;
+		}
 		if (retFlag == 0){	// apply
 			runAction('savePurchaseOrder', 'purchaseOrderForm stock_supplier_order.id');
 		}
@@ -246,99 +281,109 @@
 			runAction('savePurchaseOrder', 'purchaseOrderForm stock_supplier_order.id', '', backButton);
 	}
 
-	function addNewRowButtonClick() {
-		flt = 'SEQ_' + 0 + '_';
-		prodCodeObj = document.getElementById(flt + 'stock_product.code');
-		prodIdObj = document.getElementById(flt + 'SEARCH_RESULT');
-		prodQtyObj = document.getElementById(flt + 'stock_supplier_order_item.pack_qty');
-		if (prodIdObj.value  == '')	{
+	function saveNewRowButtonClick() {
+		productId = getByGroupAndName('newrow', 'stock_supplier_order_item.stock_product_id');
+//alert ('prodid='+NEW_product_id + ' qty='+NEW_pack_qty+'packid='+NEW_pack_id); return;
+		if (NEW_product_id  == '')	{
 			alert('No product selected');
 			return;
 		}
-		if (isNaN(prodQtyObj.value) || (Number(prodQtyObj.value) < 1)) {
+		if (isNaN(NEW_pack_qty) || (Number(NEW_pack_qty) < 1)) {
 			alert('Invalid quantity');
 			return;
 		}
-		// Validate pack is selected
-		packObj = document.getElementById("SEQ_0_pack");
-		if (packObj.selectedIndex == -1) {
-			alert('no case selection');
-			return;
-		}
-		document.getElementsByName('stock_supplier_order_item.stock_pack_id')[0].value = packObj.options[packObj.selectedIndex].value;	// case selection
-		runAction('newPurchaseOrderRow', 'stock_supplier_order.id' + ' ' + prodCodeObj.name + ' ' + prodIdObj.name + ' ' + 'stock_supplier_order_item.stock_pack_id' + ' ' + prodQtyObj.name, '', _afterNewRowAdded);
+		runAction('newPurchaseOrderRow', 'stock_supplier_order.id' + ' ' + 'stock_supplier_order_item.stock_product_id=' + NEW_product_id + ' ' + 'stock_supplier_order_item.stock_pack_id=' + NEW_pack_id + ' ' + 'stock_supplier_order_item.pack_qty=' + NEW_pack_qty, '', _afterNewRowAdded);
 	}
+
 	function _afterNewRowAdded() {
 		hideNewRow();
 		runAction('recalcOrder', 'stock_supplier_order.id', '', addedNewRow);
 	}
 	function addedNewRow() {
 		showOrderLines();
+		initializeNewRow();
 	}
 
-	// Grid product lookup by code
-	function onChange_stock_product_dot_code(obj) {
-		runAction('checkOrderProductByCode', obj.name + ' stock_supplier_order.id', 'packTD', checkedOrderProductByCode);
+	// Grid product lookup by code. See if the product exists and if its already on order
+	function onChange_stockproduct_code(obj) {
+		runAction('checkOrderProductByCode', obj.name + ' row=' + getRowgroupName(obj), 'newRowPackSelectTD', checkedOrderProductByCode);
 	}
 	function checkedOrderProductByCode() {
-		productObj = document.getElementsByName('stock_product.id')[0];
+		productObj = get('stock_product.id');						// oob
 		if ((productObj == null) || (productObj.value == '-1')) {
 			alert('No product with that code');
 			return;
 		}
-		orderItemObj = document.getElementsByName('stock_supplier_order_item.id')[0];
+		orderItemObj = get('stock_supplier_order_item.id');			// oob
 		if ((orderItemObj == null) || (orderItemObj.value != '-1')) {
 			alert('Product already on order');
 			return;
 		}
-		// Update the name-search filter content with the product name
-		searchResultObj = document.getElementById('SEQ_0_SEARCH_RESULT');
-		searchResultObj.value = productObj.value;	// store the product id in the result field
-		productNameObj = document.getElementsByName('stock_product.name')[0];
-		searchFieldObj = document.getElementById('SEQ_0_SEARCH_VALUE');
+		// Update the name-search filter content with the product name and its hidden input with the product id
+		var obj = getByGroupAndName('newrow', 'stock_supplier_order_item.stock_product_id');
+		obj.value = productObj.value;		// store the id in the hidden part
+		NEW_product_id = productObj.value;	// store for saving
+		productNameObj = get('stock_product.name');					// oob
+		searchFieldObj = get('AUTOCOMPLETE_stock_product.name');
 		searchFieldObj.value = productNameObj.value;
-		document.getElementsByName('stock_supplier_order_item.stock_pack_id')[0].value = obj.options[obj.selectedIndex].value;	// initial case selection
+		var objSelect = document.getElementById('newRowPackSelect');
+		NEW_pack_id = objSelect.options[objSelect.selectedIndex].value;
+		document.getElementsByName('stock_supplier_order_item.stock_pack_id')[0].value = NEW_pack_id;	// initial case selection
 	}
 
 	// Grid filter on product name
-	function onChange_stock_supplier_order_item_dot_stock_product_id(obj) {
-		runAction('checkOrderProductById', 'stock_supplier_order.id stock_supplier_order_item.stock_product_id', 'packTD', checkedOrderProductById);
+	function onChange_stocksupplierorderitem_stockproductid(obj) {
+		productId =  get('stock_supplier_order_item.stock_product_id');
+		NEW_product_id = productId.value;	// store for saving
+		runAction('checkOrderProductById', 'stock_supplier_order.id stock_supplier_order_item.stock_product_id', 'newRowPackSelectTD', checkedOrderProductById);
 	}
-	function checkedOrderProductById() {
+	function checkedOrderProductById() {	// note the preceding action checks exist and wipes the orderitem record, hence we store in NEW_xxx
 		orderItemObj = document.getElementsByName('stock_supplier_order_item.id')[0];
         if ((orderItemObj == null) || (orderItemObj.value != '-1')) {
             alert('Product already on order');
             return;
         }
-		// Update the name-search filter content with the product id (is checked when saving)
-		productObj = document.getElementsByName('stock_product.id')[0];
-		searchResultObj = document.getElementById('SEQ_0_SEARCH_RESULT');
-		searchResultObj.value = productObj.value;	// store the product id in the result field
-		document.getElementsByName('stock_supplier_order_item.stock_pack_id')[0].value = obj.options[obj.selectedIndex].value;	// initial case selection
+		var objSelect = document.getElementById('newRowPackSelect');
+		NEW_pack_id = objSelect.options[objSelect.selectedIndex].value;
+		document.getElementsByName('stock_supplier_order_item.stock_pack_id')[0].value = NEW_pack_id;	// initial case selection
 	}
 
-	// Quantity changed
-	function onChange_stock_supplier_order_item_dot_pack_qty(obj) {
-		if (obj.id.substr(0, 6) == 'SEQ_0_')	// Only do this if NOT adding a record
-			return;
-		objId =  getSibling(obj, 'stock_supplier_order_item.id');
-		runAction('changeQty', 'stock_supplier_order_item.id=' + objId.value + ' ' + obj.name + '='+obj.value, '', afterQtyChanged);
+	// Quantity changed - called for new and amend row
+	function onChange_lineinput_deliveredqty(obj) {
+		objId =  getSiblingByName(obj, 'stock_supplier_order_item.id');	// @@is this get really nec, seeing as next runaction use it by name too?
+		runAction('updateDelivered', 'stock_supplier_order_item.id=' + objId.value + ' ' + 'stock_supplier_order_item.delivered_qty=' + obj.value, '', afterOrderItemUpdated);
 	}
-	function afterQtyChanged() {
+	function afterOrderItemUpdated() {
 		runAction('recalcOrder', 'stock_supplier_order.id', '', showOrderLines);
 	}
 
-	// Pack changed
-	function onChangePack() {
-		obj = document.getElementById("SEQ_0_pack");
-		document.getElementsByName('stock_supplier_order_item.stock_pack_id')[0].value = obj.options[obj.selectedIndex].value;	// changed case selection
-		objId =  getSibling(obj, 'stock_supplier_order_item.id');
-		runAction('changePack', 'stock_supplier_order_item.id=' + objId.value + ' ' + obj.name + '='+obj.value, '', afterQtyChanged);
+	function onChange_lineinput_deliveredcost(obj) {
+		objId =  getSiblingByName(obj, 'stock_supplier_order_item.id');	// @@is this get really nec, seeing as next runaction use it by name too?
+		runAction('updateDelivered', 'stock_supplier_order_item.id=' + objId.value + ' ' + 'stock_supplier_order_item.delivered_price' + obj.value, '', afterOrderItemUpdated);
+	}
+
+	// Pack changed - called for new row only
+	function onChangePack(obj) {
+		NEW_pack_id = obj.value;					// store for saving
+		var objSelect = document.getElementById('newRowPackSelect');
+		document.getElementsByName('stock_supplier_order_item.stock_pack_id')[0].value = objSelect.options[objSelect.selectedIndex].value;	// case selection
 	}
 
 	function showOrderLines() {
 		runAction('showOrderLines', 'stock_supplier_order.id' + ' ' + 'stock_supplier_order.container_id', 'linebody');
-}
+	}
+
+	function initializeNewRow() {
+		var groupArr = getGroupArray('newrow');
+		for (i = 0; i < groupArr.length; i++)
+			groupArr[i].value = '';
+		searchFieldObj = get('AUTOCOMPLETE_stock_product.name');
+		searchFieldObj.value = '';
+		document.getElementById('newRowPackSelectTD').innerHTML = '';
+		NEW_product_id = 0;
+		NEW_pack_qty = 0;
+		NEW_pack_id = 0;
+	}
 
 </script>
 

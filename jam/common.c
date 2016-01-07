@@ -46,7 +46,7 @@ int oobDataRequested = 0;		// Some ajax calls will ask for this
 
 int urlEncodeRequired = 0;
 
-int cmdSeqnum = 0;				// every @jamcommand has a unique sequence number or id. Can be used for unique field names in grids
+int cmdSeqnum = 0;				// every @each/@end has a unique sequence number or id. Can be used for unique field names in grids
 
 char *oobFileName = "/tmp/oobData.tmp";
 
@@ -75,6 +75,7 @@ void deleteVar(VAR *delVar) {
 	}
 	for (int i = 0; i <= LAST_VAR; i++) {
 		if (var[i] == delVar) {
+			if (var[i]->name)			free(var[i]->name);
 			if (var[i]->source)			free(var[i]->source);
 			if (var[i]->portableValue)	free(var[i]->portableValue);
 			if (var[i]->stringValue)	free(var[i]->stringValue);
@@ -153,10 +154,28 @@ VAR *findVarStrict(char *name) {
 	return NULL;
 }
 
+/*
+typedef struct {
+    char *name;
+    int type;
+    char *source;   // mysql, count, sum etc
+    char *portableValue;
+    char *stringValue;
+    long numberValue;
+    double decimal2Value;
+    char *dateValue;
+    char *timeValue;
+    char *datetimeValue;
+    int debugHighlight;
+} VAR; */
+
 void fillVarDataTypes(VAR *variable, char *value) {
 	char *safeValue = NULL;
 	if (value)
 		safeValue = strdup(value);	//@@BUG something weird here. The 'if VAR_NUMBER' branch is taken but no value. And valgrind shows a leak
+	else
+		safeValue = strdup("");
+	variable->portableValue = strdup(safeValue);
 	if (variable->type == VAR_DATE)
 		variable->dateValue = safeValue;
 	else if (variable->type == VAR_TIME)
@@ -164,17 +183,15 @@ void fillVarDataTypes(VAR *variable, char *value) {
 	else if (variable->type == VAR_DATETIME)
 		variable->datetimeValue = safeValue;
 	else if (variable->type == VAR_DECIMAL2) {
-		if (safeValue)
-			variable->decimal2Value = atof(safeValue);
-	} else if (variable->type == VAR_NUMBER) {
-		if (safeValue)
-			variable->numberValue = atol(safeValue);
-	} else
-		variable->stringValue = safeValue;
-	if (safeValue)
-		variable->portableValue = strdup(safeValue);
+		variable->decimal2Value = atof(safeValue);
+		free(safeValue);
+	}
+	else if (variable->type == VAR_NUMBER) {
+		variable->numberValue = atol(safeValue);
+		free(safeValue);
+	}
 	else
-		variable->portableValue = strdup("");
+		variable->stringValue = safeValue;
 }
 
 void updateVar(char *qualifiedName, char *value, int type) {
@@ -524,7 +541,7 @@ int oobJamData() {
 	emitStd("[");
 	for (int i = 0; i < MAX_VAR; i++) {
 		if (var[i] == NULL)
-			break;
+			continue;
 		if (first)
 			first = 0;
 		else

@@ -108,21 +108,27 @@
 
 <h4>HTML</h4>
 
+<h5>Layout</h5>
+
+{@html container start [center] [css='blah']}
+{@html container end}
+
+{@html gridrow start [cols=4] [css='blah'] }		optional cols specifies number of equal size columns
+{@html gridrow end}
+{@html gridcol start [width=3-5]} [css='blah'] }	..or each col can specify its size
+{@html gridcol end}
+
 <h5>Inputs</h5>
 
-{@html input hidden stock_supplier._id}
-{@html input text stock_supplier.payment_terms mini "Payment terms" days}
-{@html input date stock_supplier.date mini "Date"}
-{@html input filter stock_transaction.supplier_id stock_supplier.name mini "Supplier Name"}
-{@html input keyaction jam:action, inputElement, outputResult, mini}	// use null for empty values
-{@html input disabled stock_supplier.payment_terms mini "Payment terms" days}}	// same as input just no editing
-{@html inp <anytype means inline input>}
+<h6> New </h6>
+{@html dropdown/filter field=product.supplier_id pickfield=supplier.name size=medium label='Line Supplier'}
+{@html dropdown/filter field=product.supplier_id pickfield=supplier.name size=medium group=mygroup}
+{@html dropdown/filter field=product.supplier_id pickfield=supplier.name size=medium}
+{@html text/date field=product.supplier_id pickfield=supplier.name size=medium placeholder='address line 1'}
+{@html text/date field=product.supplier_id pickfield=supplier.name size=medium hidden}
+{@html textarea field=stock_supplier.notes size=60x5 label=Notes}
 
-{@html dropdown stock_transaction.supplier_id stock_supplier.name mini "Supplier Name"}
-{@html dropdown field=product.supplier_id pickfield=supplier.name size=medium label=Supplier}
-
-{@html textarea stock_supplier.notes 60x5 Notes}
-
+Optional for any - label, group, disabled
 
 {@html button Save primary small
 	alert('ok')     // or any js
@@ -131,6 +137,23 @@
 	runAction updateSupplier, supplierForm, outputResult, alert('back from ajax')
 	runAction updateSupplier 'supplierForm _id' outputResult runJam supplierMaint.tpl 
 	runAction updateSupplier, supplierForm _id, outputResult, runJam('supplierMaint.tpl')
+}
+
+<h6> Old </h6>
+{@html input hidden stock_supplier._id}
+{@html input text stock_supplier.payment_terms mini "Payment terms" days}
+{@html input date stock_supplier.date mini "Date"}
+{@html input filter stock_transaction.supplier_id stock_supplier.name mini "Supplier Name"}
+{@html input keyaction jam:action, inputElement, outputResult, mini}	// use null for empty values
+{@html input disabled stock_supplier.payment_terms mini "Payment terms" days}}	// same as input just no editing
+{@html inp <anytype means inline input>}
+{@html textarea stock_supplier.notes 60x5 Notes}
+
+<h5>Tabs</h5>
+
+{@html tab
+	label=Customers 	action=/run/customerMaint
+	label='Tab text'	action=/path/to/jam
 }
 
 <h5> html control </h5>
@@ -167,6 +190,10 @@ system.now 		@@TODO
 
 {@type /path/file}
 {@sysjam jamscript-in-sys-jam-area optional-action}
+
+{@include /path/file}
+{@include once /path/file}
+{@include standalone /path/file}	// only include if this file itself is not included
 
 <hr>
 

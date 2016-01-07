@@ -16,7 +16,7 @@
 }}
 
 {{@template COLUMNS
-	<td> {{@html gridinp text interest_type.name medium}} </td>
+	<td> {{@html text field=interest_type.name size=medium}} </td>
 }}
 
 {{@template EDITS name}}

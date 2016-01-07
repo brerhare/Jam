@@ -48,6 +48,9 @@ char *jamEntrypoint = NULL;		// action entrypoint. Hackily global because its us
 
 // Common declares end
 
+char *includedTable[MAX_INCLUDE];
+char *fileToInclude = (char *) calloc(1, 4096);
+
 JAM *initJam();
 int processJam(char *jamName, char *jamEntrypoint, JAMBUILDER *jb);
 int control(int startIx, char *tableName);
@@ -84,7 +87,7 @@ int main(int argc, char *argv[]) {
 		setenv("QUERY_STRING", tmp, 1);
 		free(tmp);
 	}
-
+ 
 	// Output headers to prevent caching
 	emitHeader("Cache-Control: no-store, must-revalidate, max-age=0");
 	emitHeader("Pragma: no-cache");
@@ -93,10 +96,12 @@ int main(int argc, char *argv[]) {
 	emitHeader("Content-type: text/html; charset=UTF-8");
 
 	cgivars = getcgivars() ;
-	for (int i=0; cgivars[i]; i+= 2) {
+	for (int i = 0; cgivars[i]; i+= 2) {
 		logMsg(LOGDEBUG, "Parameter [%s] = [%s]", cgivars[i], cgivars[i+1]) ;
+		cmdSeqnum += strlen(cgivars[i]);
+		cmdSeqnum += strlen(cgivars[i+1]);
 
-		if (!strcmp(cgivars[i], "OobDataRequested"))
+		if (!strcmp(cgivars[i], "oobDataRequested"))
 			oobDataRequested = 1;
 		if (!strcmp(cgivars[i], "jam")) {
 			logMsg(LOGDEBUG, "Found jam parameter");
@@ -116,9 +121,33 @@ int main(int argc, char *argv[]) {
 			addVar(assignVar);
 		}
 	}
-	return(processJam(jamName, jamEntrypoint, NULL));
+
+	// Intialize random number generator and our loop sequence number
+	timeval t1;
+	gettimeofday(&t1, NULL);
+	srand((t1.tv_usec * t1.tv_sec) + cmdSeqnum);	// both sec and usec
+	cmdSeqnum = (rand() % 999999);
+	logMsg(LOGINFO, "Random cmdSeqnum is %d", cmdSeqnum);
+
+	processJam(jamName, jamEntrypoint, NULL);
 	// Cleanup
+	free(jamName);
+	for (int i = 0; cgivars[i]; i++)
+		free(cgivars[i]);
+	// Free var and jam arrays
+    for (int i = 0; i < MAX_VAR; i++) {
+        if (var[i]) {
+			deleteVar(var[i]);
+        }
+    }
+	freeJamArray();
 	free(jamEntrypoint);
+	free(fileToInclude);
+	for (int i = 0; i < MAX_INCLUDE; i++) {
+		if (includedTable[i] == NULL)
+			break;
+		free(includedTable[i]);
+	}
 	if (conn)
 		closeDB();
 }
@@ -165,6 +194,9 @@ int jamBuilder(char *jamName, char *jEntrypoint, JAMBUILDER *jb) {
 	}
 	if (savEntrypoint)
 		jamEntrypoint = strdup(savEntrypoint);	
+
+	freeJamArray();
+
 	memcpy(jam, tmpJam, (sizeof(JAM *) * MAX_JAM));
 	jamIx = tmpJamIx;
 	free(fullJamName);
@@ -204,34 +236,87 @@ int processJam(char *jamName, char *jamEntrypoint, JAMBUILDER *jb) {
 
 int sanity = 0;
 	while (1) {
-if (++sanity > 100) { emitStd("Overflow in main!"); break; }
+if (++sanity > 100) { emitStd("Sanity check - overflow in processJam()!"); break; }
 		TAGINFO *tagInfo = getTagInfo(jamBuf, "@include");
 		if (tagInfo == NULL)
 			break;
-		// Read in the include file
-		sprintf(tmp, "%s/%s", documentRoot, tagInfo->content);
-		logMsg(LOGINFO, "including @INCLUDE file %s", tmp);
-		std::ifstream includeFile (tmp, std::ifstream::binary);
-		if (!includeFile) {
-			char *error = (char *) calloc(1, 4096);
-			sprintf(error, "@include : cant find file %s", tmp);
-			logMsg(LOGFATAL, "%s", error);
-			die(error);
+
+		char *includeType = getWordAlloc(tagInfo->content, 1, " \n");	// either 'once', 'standalone' or a filename
+		char *incl = getWordAlloc(tagInfo->content, 2, " \n");	// either the file or empty
+		int isOnce = 0;
+		int isStandalone = 0;
+		if (!includeType) {
+			logMsg(LOGFATAL, "@include : must specify a file to include");
+			return(-1);
 		}
-		includeFile.seekg (0, includeFile.end);
-		int length = includeFile.tellg();
-		includeFile.seekg (0, includeFile.beg);
-		char *includeBuf = (char *) calloc(1, length+1);
-		if (!includeBuf) {
-			sprintf(tmp, "cant calloc memory to @include %s", tagInfo->content);
-			logMsg(LOGFATAL, "%s", tmp);
-			die(tmp);
+		if ((!strcmp(includeType, "once")) || (!strcmp(includeType, "standalone"))) {
+			if (!strcmp(includeType, "standalone"))
+				isStandalone = 1;
+			if (!strcmp(includeType, "once"))
+				isOnce = 1;
+			if (incl) strcpy(fileToInclude, incl);
+			else {
+				logMsg(LOGFATAL, "@include once/standalone : must specify a file to include");
+				return(-1);
+			}
+		} else
+			strcpy(fileToInclude, includeType);
+		free(includeType);
+		if (incl) free(incl);
+		char *includeBuf = NULL;
+
+		// Check for 'once' or 'standalone' include
+		int doInclude = 1;
+		for (int i = 0; i < MAX_INCLUDE; i++) {
+			if (includedTable[i] != NULL) {
+				if (!strcmp(includedTable[i], fileToInclude)) {
+					logMsg(LOGDEBUG, "included file [%s] has been included before", fileToInclude);
+					if (isOnce) {
+						logMsg(LOGDEBUG, "once flag is SET. It will be EXcluded");
+						doInclude = 0;
+						break;
+					}
+				}
+			}
+			if (includedTable[i] == NULL) {
+				includedTable[i] = strdup(fileToInclude);
+				logMsg(LOGDEBUG, "included file [%s] has NOT been included before", fileToInclude);
+				break;
+			}
 		}
-   		includeFile.read(includeBuf, length);
-   		includeBuf[length] = 0;
-	    includeFile.close();
-		//emitStd("[file=%s][len=%d][includeBuf=%s][1st=%c][strlen=%d]", tmp, length, includeBuf, includeBuf[0], (int) strlen(includeBuf));
-		//exit(0);
+		if (doInclude) {
+			// Read in the include file
+			sprintf(tmp, "%s/%s", documentRoot, fileToInclude);
+			logMsg(LOGINFO, "possibly including @INCLUDE file %s", tmp);
+			std::ifstream includeFile (tmp, std::ifstream::binary);
+			if (!includeFile) {
+				logMsg(LOGFATAL, "@include : cant find file %s", tmp);
+				return(-1);
+			}
+			includeFile.seekg (0, includeFile.end);
+			int length = includeFile.tellg();
+			includeFile.seekg (0, includeFile.beg);
+			includeBuf = (char *) calloc(1, length+1);
+			if (!includeBuf) {
+				logMsg(LOGFATAL, "cant calloc memory to @include %s", fileToInclude);
+				return(-1);
+			}
+			includeFile.read(includeBuf, length);
+			includeBuf[length] = 0;
+			includeFile.close();
+			// Exclude any standalones this include may have
+			logMsg(LOGDEBUG, "as this is an included file [%s] its own standalone includes (if any) must be disabled", fileToInclude);
+			char *bufPos = includeBuf;
+			while (char *p = strstr(bufPos, "@include ")) {
+				getWord(tmp, p, 2, " \t");
+				if (!strcmp(tmp, "standalone")) {
+					*(p + 1) = 'e';
+					*(p + 2) = 'x';
+				}
+				bufPos += strlen("@xxclude ");
+			}
+		} else
+			includeBuf = strdup("");
 
 		// Include the include
 		char *newJam = (char *) calloc(1, (strlen(jamBuf) + strlen(includeBuf) + 1));
@@ -242,9 +327,11 @@ if (++sanity > 100) { emitStd("Overflow in main!"); break; }
 		logMsg(LOGDEBUG, "Splicing included file into jam. 1stpart=%d, include=%d, 2ndpart=%d<br>", (int)strlen(jamBuf), (int)strlen(includeBuf), (int)strlen((tagInfo->endCurlyPos + strlen(endJam))));
 		free(jamBuf);
 		jamBuf = newJam;
+		free(includeBuf);
 		free(tagInfo->name);
 		free(tagInfo->content);
 		free(tagInfo);
+		logMsg(LOGDEBUG, "--------------------------------");
 	}
 
 	// Preprocess templates
@@ -275,6 +362,9 @@ if (++sanity > 100) { emitStd("Overflow in main!"); break; }
 				jamBuf = newBuf;
 			}
 			free(searchFor);
+			free(tinfo[tagIx]->name);
+			free(tinfo[tagIx]->content);
+			free(tinfo[tagIx]);
 			tagIx++;
 		}
 //logMsg(LOGDEBUG, "BUF1 with expanded templates = =====================> [%s] <========================", jamBuf);
@@ -365,7 +455,7 @@ logMsg(LOGERROR, "Remember templates stripping is not accurate..................
 			ix++;
 		}
 		if (!foundEntrypoint) {
-			logMsg(LOGERROR, "jam entrytpoint for requested @action [%s] was not found", jamEntrypoint);
+			logMsg(LOGERROR, "jam entrypoint for requested @action [%s] was not found", jamEntrypoint);
 			return(-1);
 		}
 	}
@@ -398,7 +488,7 @@ logMsg(LOGERROR, "Remember templates stripping is not accurate..................
 			oobJamData();
 		endStd(urlEncodeRequired);
 		logMsg(LOGINFO, "Normal exit");
-		exit(0);
+		//exit(0);
 	} else {
 		logMsg(LOGINFO, "Normal return");
 	}
@@ -482,18 +572,36 @@ int control(int startIx, char *defaultTableName) {
 			if (args) {
 				getWord(tmp, args, 1, " \t");
 				if (*tmp) {
-					if (!strcmp(tmp, "dropdown"))
+					if (!strcmp(tmp, "container"))
+						wordHtmlContainer(ix, defaultTableName);
+					if (!strcmp(tmp, "form"))
+						wordHtmlForm(ix, defaultTableName);
+					if (!strcmp(tmp, "gridrow"))
+						wordHtmlGridrow(ix, defaultTableName);
+					if (!strcmp(tmp, "gridcol"))
+						wordHtmlGridcol(ix, defaultTableName);
+
+					else if (!strcmp(tmp, "dropdown"))
 						wordHtmlDropdown(ix, defaultTableName);
 					else if (!strcmp(tmp, "filter"))
 						wordHtmlFilter(ix, defaultTableName);
-
-					else if ( (!strcmp(tmp, "input")) || (!strcmp(tmp, "date")) )
+					else if ( (!strcmp(tmp, "text")) || (!strcmp(tmp, "date")) )
 						wordHtmlInput(ix, defaultTableName);
+
+					else if (!strcmp(tmp, "input"))
+						wordHtmlInputOld(ix, defaultTableName);
 					else if (!strcmp(tmp, "inp"))
 						wordHtmlInp(ix, defaultTableName);
 					else if (!strcmp(tmp, "gridinp"))
 						wordHtmlGridInp(ix, defaultTableName);
 
+					else if (!strcmp(tmp, "tab"))
+						wordHtmlTab(ix, defaultTableName);
+
+					else if (!strcmp(tmp, "radio"))
+						wordHtmlRadio(ix, defaultTableName);
+					else if (!strcmp(tmp, "checkbox"))
+						wordHtmlCheckbox(ix, defaultTableName);
 					else if (!strcmp(tmp, "textarea"))
 						wordHtmlTextarea(ix, defaultTableName);
 					else if (!strcmp(tmp, "button"))
@@ -623,7 +731,6 @@ int control(int startIx, char *defaultTableName) {
 					fillVarDataTypes(listVar, p);
 					logMsg(LOGMICRO, "@each (list %s) starting recurse", listName);
 					cmdSeqnum++;		// up the unique sequence number
-					setVarAsNumber("sys.control.sequence", cmdSeqnum);
 					control((ix + 1), defaultTableName);
 					logMsg(LOGMICRO, "@each (list %s) ended recurse", listName);
 					p = (char *) listNext(listName);
@@ -644,11 +751,12 @@ int control(int startIx, char *defaultTableName) {
 				while (sqlGetRow2Vars(rp) != SQL_EOF) {
 					emitStd(jam[ix]->trailer);
 					logMsg(LOGMICRO, "@each (db table %s) starting recurse", givenTableName);
-					sprintf(tmp, "sys.jamId.%s.id", givenTableName);
-					logMsg(LOGDEBUG, "Setting loop id var. %s=%d", tmp, cmdSeqnum);
+					cmdSeqnum++;		// up the unique sequence number
 					control((ix + 1), givenTableName);				// recurse into the item
 					logMsg(LOGMICRO, "@each (db table %s) ended recurse", givenTableName);
 				}
+				free(rp->tableName);
+				free(rp);
 				// Finished. Now advance to the matching @end and emit its trailer
 				int depth = 0;
 				int sanity = 0;
@@ -677,6 +785,7 @@ int control(int startIx, char *defaultTableName) {
 					emitStd(jam[ix]->trailer);
 				mysql_free_result(res);
 				free(givenTableName);
+				free(listName);
 			}
 //		-------------------------------------
 		} else if (!(strcmp(cmd, "@runaction"))) {

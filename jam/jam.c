@@ -117,13 +117,12 @@ char *curlies2JamArray(char *jamPos) {
 	}
 */
 
-	for (char *p = buf; *p; ++p) *p = tolower(*p);
+	for (char *p = buf; *p; ++p)*p = tolower(*p);
 	jam[jamIx]->command = buf;
 
-	if (char *p = strchr(wd, ' ')) {
-		if (*(p+1))
+	char *p;
+	if ( (p = strchr(wd, ' ')) && (*(p+1)) )
 		 	jam[jamIx]->args = strdup(p+1);
-	}
 	else
 		jam[jamIx]->args = strdup("");
 //emitStd("SETTING [%s]=[%s]\n", jam[jamIx]->command, jam[jamIx]->args);
@@ -138,9 +137,7 @@ char *curlies2JamArray(char *jamPos) {
 	if ( (!strcmp(jam[jamIx]->command, "@each")) || (!strcmp(jam[jamIx]->command, "@action")) ) {
 		for (int i = 0; i < MAX_JAM; i++) {
 			if (tableStack[i] == NULL) {
-				char *p = (char *) calloc(10, 4096);
-				getWord(p, jam[jamIx]->args, 1, space);
-				tableStack[i] = p;
+				tableStack[i] = getWordAlloc(jam[jamIx]->args, 1, space);
 //emitStd("STACK: [%s]\n", tableStack[i]);
 				break;
 			}
@@ -163,6 +160,7 @@ char *curlies2JamArray(char *jamPos) {
 			}
 		}
 	}
+
 	free(trailer);
 	free(wd);
 	return (endCurly + strlen(endJam));
@@ -220,9 +218,12 @@ TAGINFO *getTagInfo(char *text, char *tagName) {
 			logMsg(LOGDEBUG, "TAGINFO created. name=[%s], content=[%s]", tagInfo->name, tagInfo->content);
 //			char *tmp = (char *) calloc(1, 4096); sprintf(tmp, "s=%d, e=%d, content=%s", (int) tagInfo->startCurlyPos, (int) tagInfo->endCurlyPos, tagInfo->content); die(tmp);
 			free(currTag);
+			free(content);
 			return tagInfo;
 		}
 		pos = (endCurly + strlen(endJam));					// advance
+		free(currTag);
+		free(content);
 	}
 	return NULL;
 }
@@ -295,7 +296,7 @@ if (++sanity > 200) { emitStd("Overflow in expandCurliesInString!"); break; }
 		free(wd);
 		str = newStr;
 	}
-	logMsg(LOGDEBUG, "expandCurliesInString() expanded original string [%s] to [%s]", originalStr);
+	logMsg(LOGDEBUG, "expandCurliesInString() expanded original string [%s] to [%s]", originalStr, str);
 	return (str);
 }
 
@@ -303,7 +304,7 @@ if (++sanity > 200) { emitStd("Overflow in expandCurliesInString!"); break; }
 // Clear all of the old ones before creating
 void clearControlVars() {
 	char *tmp = (char *) calloc(1, 4096);
-	for (int i = 0; (i <= LAST_VAR) && var[i]; i++) {
+	for (int i = 0; i <= LAST_VAR; i++) {
 		if (!(var[i]))
 			continue;
 		if ((var[i]->name) && (strlen(var[i]->name) > 12)) {
@@ -325,11 +326,11 @@ int jamArgs2ControlVars(int ix, char *args) {
 //logMsg(LOGMICRO, "jamArgs2ControlVars() - initial args [%s]", args);
 	while (arg = getWordAlloc(args, wdNum++, " \t\n")) {	// eg 'a=b' or 'c = d'
 		char *n = getWordAlloc(arg, 1, "=");
-		char *v = getWordAlloc(arg, 2, "=");
 		if (!n) {
 			free(arg);
 			continue;
 		}
+		char *v = getWordAlloc(arg, 2, "=");
 		if (!v)
 			v = strdup("");
 		sprintf(tmp, "sys.control.%s", n);
@@ -366,3 +367,16 @@ int jamArgs2ControlVars(int ix, char *args) {
 //logMsg(LOGMICRO, "jamArgs2ControlVars() - all done");
 	free(tmp);
 }
+
+void freeJamArray() {
+    for (int i = 0; i < MAX_JAM; i++) {
+        if (jam[i]) {
+			free(jam[i]->rawData);
+			free(jam[i]->command);
+			free(jam[i]->args);
+			free(jam[i]->trailer);
+			free(jam[i]);
+        }
+    }
+}
+

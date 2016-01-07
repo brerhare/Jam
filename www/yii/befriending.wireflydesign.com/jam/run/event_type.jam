@@ -16,7 +16,7 @@
 }}
 
 {{@template COLUMNS
-	<td> {{@html gridinp text event_type.name medium}} </td>
+	<td> {{@html text field=event_type.name size=medium}} </td>
 }}
 
 {{@template EDITS name}}

@@ -16,7 +16,7 @@
 }}
 
 {{@template COLUMNS
-	<td> {{@html gridinp text status.name medium}} </td>
+	<td> {{@html text field=status.name size=medium}} </td>
 }}
 
 {{@template EDITS name}}
