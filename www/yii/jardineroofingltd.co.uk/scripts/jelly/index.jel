@@ -12,7 +12,7 @@ fx.wallpaper-image-tile = /img/bgd-img.jpg
 css.display = block
 
 	[site]
-	child = header, slider, pages, footer
+	child = header, slider, pages
 	css.width = 70%
 	css.min-width = 960px
 
@@ -92,7 +92,7 @@ css.display = block
 	fx.rounding = 12px
 	css.background-color = yellow
 	condition = @PAGE=@HOMEPAGE
-	jam.embed = /run/jardineSlider.jam
+	jam.embed = /run/jardineslider.jam
 	
 	#addon.slider.flexslider.width = 952px
 	#addon.slider.flexslider.height = 310px
@@ -113,21 +113,73 @@ css.display = block
 ######## body #######################################
 			
 
-	[pages]
-	child = menu, content 	
-	css.width = 97.5%
-	css.margin-top = 3%
-	css.border-width = 10px
-	css.border-color = #365ca7
-	css.border-style = solid
-	fx.rounding = 12px
-	css.background-color = yellow
+[pages]
+child = menu, content, footer	
+css.width = 97.5%
+css.margin-top = 3%
+css.border-width = 10px
+css.border-color = #365ca7
+css.border-style = solid
+fx.rounding = 12px
+css.background-color = white
+css.margin-bottom = 50px
 	
-		[menu]
-		css.background colour = #365ca7
+	[menu]
+	css.background-color = #365ca7
+	css.width = 100%
+	css.overflow = visible
+	css.height = 3%
+
+#// Top level basic settings
+			addon.menu.traditional.orientation = horizontal
+#			addon.menu.traditional.width = // blank or a px value for 'item' width
+			addon.menu.traditional.height = 40px
+			addon.menu.traditional.align = center
+#			addon.menu.traditional.item-margin = // split equally between left and right.
+			addon.menu.traditional.item-width = variable / uniform / 80px
+
+#// Top level background settings
+			addon.menu.traditional.menu-rounding = 0px
+			addon.menu.traditional.menu-opacity = 100%
+			addon.menu.traditional.menu-color = #365ca7 
+			addon.menu.traditional.item-separator-width = 2px
+			addon.menu.traditional.item-separator-color = #365ca7
+#			addon.menu.traditional.edgepadding = 40px
+
+#// Top level font settings
+			addon.menu.traditional.menu-font-size = 16px
+			addon.menu.traditional.menu-font-family = Droid Sans
+			addon.menu.traditional.menu-font-weight = bold
+			addon.menu.traditional.menu-text-color = white
+
+#// Top level hover settings
+			addon.menu.traditional.menu-hover-text-color = #lightgrey
+			addon.menu.traditional.menu-hover-background-color = #365ca7
+			addon.menu.traditional.menu-hover-font-size = 16px
+			addon.menu.traditional.menu-hover-font-family = Droid Sans
+			addon.menu.traditional.menu-hover-font-weight = bold
+
+#// Top level selected settings
+			addon.menu.traditional.menu-selected-text-color = #94a8d0
+			addon.menu.traditional.menu-selected-background-color = #365ca7
+			addon.menu.traditional.menu-selected-font-size = 16px
+			addon.menu.traditional.menu-selected-font-family = Droid Sans
+			addon.menu.traditional.menu-selected-font-weight = bold
+
+#// Second level settings
+			addon.menu.traditional.submenu-height = 30px
+			addon.menu.traditional.submenu-width = variable
+			addon.menu.traditional.submenu-font-size = 16px
+			addon.menu.traditional.submenu-font-family = Droid Sans
+			addon.menu.traditional.submenu-font-weight = normal
+			addon.menu.traditional.submenu-text-color = #365ca7
+			addon.menu.traditional.submenu-background-color = white
+			addon.menu.traditional.submenu-separator-width = 1px
+			addon.menu.traditional.submenu-separator-color = #94a8d0
 
 			
 		[content]
+		css.background-color = white
 		css.margin-top = 30px
 		css.margin = 30px
 		db.table = ContentBlock
@@ -141,21 +193,21 @@ css.display = block
 [footer]
 child = footer-menu, footnote
 css.margin-top = 40px
-css.margin-left = 20px
-css.height = 180px
-css.width = 960px
-#css.background-color = #ffffff
-#css.background-color = #f7d9ff
-		stacking = horizontal
+css.width = 100%
+css.background-color = #365ca7
+stacking = horizontal
+css.padding = 2% 3% 0% 3%
 
 		[footer-menu]
 		child = footer-cookies, footer-tandc, footer-contact
 		css.height = 50px
-		css.width = 50%
+		css.width = 45%
+		css.color = white
+		
 
 			[footer-cookies]
 			html.raw = Cookie Policy
-			css.color = #000000
+#			css.color = #000000
 			css.font-size = 11px
 			css.text-align = left
 			click = ?layout=index&page=cookie-policy
