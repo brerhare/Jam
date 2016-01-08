@@ -26,6 +26,7 @@ $siteList = array (
 	'fresherthantheudders.co.uk'   => '/home/fresherthantheudders.co.uk/dev/src/www/yii/fresherthantheudders.co.uk',
 	'horses.wireflydesign.com'     => '/home/wireflydesign.com/domains/horses.wireflydesign.com/dev/src/www/yii/horses.wireflydesign.com',
 	'jacquiesbeauty.co.uk'         => '/home/jacquiesbeauty.co.uk/dev/src/www/yii/jacquiesbeauty.co.uk',
+	'jardineroofingltd.co.uk'      => '/home/jardineroofingltd.co.uk/dev/src/www/yii/jardineroofingltd.co.uk',
 	'joseawright.com'              => '/home/joseawright.com/dev/src/www/yii/joseawright.com',
 	'kirkcudbright.dumgal.sch.uk'  => '/home/kirkcudbright.dumgal.sch.uk/dev/src/www/yii/kirkcudbright.dumgal.sch.uk',
 	'knowledgebase.wireflydesign.com'  => '/home/wireflydesign.com/domains/knowledgebase.wireflydesign.com/dev/src/www/yii/knowledgebase.wireflydesign.com',
