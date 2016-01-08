@@ -25,15 +25,15 @@ css.display = block
 	css.width = 100%
 		
 		[logo]
-		css.width = 45%
+		css.width = 40%
 		image.url = img/logo.png
 		image.width = 100%
 		image.height = 48%
 		click = ?layout=index&page=index
 
 		[contact]
-		child = contact-spacer, contact-content
-		css.margin-top = 8%
+		child = contact-spacer, header-contact
+		css.margin-top = 7%
 		css.float = right
 		css.width = 45%
 		css.border-width = 10px
@@ -46,13 +46,13 @@ css.display = block
 			css.width = 100%
 			css.height = 1px
 						
-			[contact-content]
+			[header-contact]
 			child = contact-text, contact-icons
 			stacking = horizontal
 			
 				[contact-text]
 				css.width = 60%
-				css.margin = 3% 7%
+				css.margin = 2% 5%
 				image.url = img/contact.png
 				image.width = 100%
 				image.height = 100%
@@ -60,16 +60,16 @@ css.display = block
 					
 				[contact-icons]
 				child = facebook, email
-				css.width = 12%
+				css.width = 11%
 				css.margin-left = 5%
 				
 					[facebook]
 					css.width = 100%
-					css.margin-top = 8%
+					css.margin-top = 10%
 					image.url = img/facebook.png
 					image.width = 100%
 					image.height = 100%
-					click = ?layout=index&page=index
+					clicknew = https://www.facebook.com/Jardine-Roofing-Ltd-356783391096869
 					
 					[email]
 					css.width = 100%
@@ -85,36 +85,21 @@ css.display = block
 	[slider]
 	css.margin-top = 3%
 	css.width = 97.5%
-  	css.height = 400px
+ # 	css.height = 400px
 	css.border-width = 10px
 	css.border-color = #365ca7
 	css.border-style = solid
 	fx.rounding = 12px
-	css.background-color = yellow
+	css.background-color = white
 	condition = @PAGE=@HOMEPAGE
 	jam.embed = /run/jardineslider.jam
-	
-	#addon.slider.flexslider.width = 952px
-	#addon.slider.flexslider.height = 310px
-	#addon.slider.flexslider.mode = image
-	#addon.slider.flexslider.source = db
-
-	#addon.slider.flexslider.border-width = 0px
-	#addon.slider.flexslider.border-color = red
-	#addon.slider.flexslider.active-dotcolor = red
-	#addon.slider.flexslider.inactive-dotcolor = blue
-	#addon.slider.flexslider.dot-margin-top = -200px
-	#addon.slider.flexslider.dot-margin-bottom = 0px
-	#addon.slider.flexslider.dot-margin-left = 0px
-	#addon.slider.flexslider.dot-margin-right = 0px
-	#addon.slider.flexslider.animation = fade
 
 
 ######## body #######################################
 			
 
 [pages]
-child = menu, content, footer	
+child = menu, content-block, footer	
 css.width = 97.5%
 css.margin-top = 3%
 css.border-width = 10px
@@ -178,14 +163,40 @@ css.margin-bottom = 50px
 			addon.menu.traditional.submenu-separator-color = #94a8d0
 
 			
-		[content]
+		[content-block]
+		child = content, contact-page
 		css.background-color = white
 		css.margin-top = 30px
 		css.margin = 30px
-		db.table = ContentBlock
-		db.filter = url=$_GET['page']
-		db.error = Sorry, I could not find the page $_GET['page']
-		html.raw = ContentBlock.content
+		
+			[content]
+			condition = @PAGE!=contact-dumfries-roofers-roofing-company
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find the page $_GET['page']
+			html.raw = ContentBlock.content
+		
+		[contact-page]
+		child = contact-form, contact-content
+		stacking = horizontal
+		condition = @PAGE=contact-dumfries-roofers-roofing-company
+		
+			[contact-form]
+			css.width = 50%
+			html.raw = <h1><span style="font-size:48px;">Contact Form</span></h1>
+			css.text-align = center
+			css.min-height = 325px
+			css.background-color = white
+			jam.embed = /run/contact.jam
+			#jam.iframe = /run/contact
+
+			
+			[contact-content]
+			css.width = 50%
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find the page $_GET['page']
+			html.raw = ContentBlock.content
 
 
 ####footer####################################
@@ -200,77 +211,80 @@ css.padding = 2% 3% 0% 3%
 
 		[footer-menu]
 		child = footer-cookies, footer-tandc, footer-contact
-		css.height = 50px
 		css.width = 45%
-		css.color = white
 		
 
 			[footer-cookies]
 			html.raw = Cookie Policy
-#			css.color = #000000
+			css.color = #ffffff
 			css.font-size = 11px
 			css.text-align = left
 			click = ?layout=index&page=cookie-policy
 
 			[footer-tandc]
 			html.raw = Terms & Conditions
-			css.color = #000000
+			css.color = #ffffff
 			css.font-size = 11px
 			css.text-align = left
+			css.margin-top = 5px
 			click = ?layout=index&page=terms-conditions
 
 			[footer-contact]
 			html.raw = Contact Us
 			css.text-align = left
-			css.color = #000000
+			css.color = #ffffff
 			css.font-size = 11px
-			click = ?layout=index&page=contact
+			css.margin-top = 5px
+			click = ?layout=index&page=contact-dumfries-roofers-roofing-company
 
 
 	[footnote]
 	child = copyright, admin-links
-	css.width = 50%
-	css.height = 50px
-	stacking = horizontal
+	css.width = 45%
+#	css.background-color = grey
 
 		[copyright]
-		css.width = 50%
+		css.width = 100%
 		css.margin-top = 10px
-		html.raw = Customer &copy 2014 All rights reserved
-		css.color = #000000
-		css.font-size = 11px
-		css.text-align = left
+		html.raw = Jardine Roofing Ltd &copy 2016</br>All rights reserved
+		css.color = #ffffff
+		css.font-size = 12px
+		css.text-align = right
+#		css.float = right
 
 	[admin-links]
 	child = wirefly, admin
 	stacking = horizontal
+	css.margin-top = 7%
+	css.float = right
+	css.width = 20%
 
 	
 		[wirefly]
-		css.height = 45px
-		css.margin-top = 5px
+		css.width = 95%
+		css.margin-top = 1%
 		image.url = img/wirefly-design.png
-		image.width = 100px
-		image.height = 46px
+		image.width = 100%
+		image.height = 100%
 		image.align = left
 		clicknew = http://www.wireflydesign.com
 		
 	
 		[admin]
 		child = cog-center
-		css.height = 20px
-		css.width = 20px
+		css.width = 15%
 		css.background-size = 100%
-		css.background-image = url('/img/admin.png')
-		css.margin-left = -20px
+		css.background-image = url('/img/admin-dark.png')
+		css.margin-left = -20%
 		
 			[cog-center]
-			css.width = 5px
-			css.height = 5px
-			css.margin-top = 8px
+			css.width = 50%
+			css.height = 100%
+			css.margin-top = 25%
+			css.margin-bottom = 25%
 			image.url = img/cog-center.png
-			image.width = 5px
-			image.height = 5px
+			image.width = 100%
+			image.height = 100%
 			image.align = center
 			clicknew = backend.php
 
