@@ -1008,7 +1008,7 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 }
 
 // Tab
-int wordHtmlTab(int ix, char *defaultTableName) {
+int wordHtmlTabs(int ix, char *defaultTableName) {
 	char *tmp = (char *) calloc(1, 4096);
 	char *args = jam[ix]->args;
 

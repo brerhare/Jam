@@ -595,8 +595,8 @@ int control(int startIx, char *defaultTableName) {
 					else if (!strcmp(tmp, "gridinp"))
 						wordHtmlGridInp(ix, defaultTableName);
 
-					else if (!strcmp(tmp, "tab"))
-						wordHtmlTab(ix, defaultTableName);
+					else if (!strcmp(tmp, "tabs"))
+						wordHtmlTabs(ix, defaultTableName);
 
 					else if (!strcmp(tmp, "radio"))
 						wordHtmlRadio(ix, defaultTableName);
@@ -850,6 +850,7 @@ int control(int startIx, char *defaultTableName) {
 			// Return from an each-end or action-end loop
 //emitStd("...RETURNING %d...", ix);
 			free(tmp);
+			clearControlVars();					// remove any existing control vars
 			return(0);
 //		----------------------------------------
 		} else if (!(strcmp(cmd, "@Xinclude"))) {
