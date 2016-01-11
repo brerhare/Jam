@@ -4,7 +4,9 @@
 {{@template SLIDER
 	{{@each jelly_slider_image}}
             <div data-p="112.50" style="display: none;">
-                <img data-u="image" src="/userdata/jelly/sliderimage/{{image}}" />
+				<a href={{url}}>
+                	<img data-u="image" src="/userdata/jelly/sliderimage/{{image}}" />
+				</a>
                 <div data-u="thumb">
                     <img class="i" src="/userdata/jelly/sliderimage/{{image}}" />
                     <div class="t">{{title}}</div>
