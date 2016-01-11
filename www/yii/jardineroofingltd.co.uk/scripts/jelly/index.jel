@@ -99,7 +99,7 @@ css.display = block
 			
 
 [pages]
-child = menu, content-block, footer	
+child = menu, content-block, footer
 css.width = 97.5%
 css.margin-top = 3%
 css.border-width = 10px
@@ -211,8 +211,8 @@ stacking = horizontal
 css.padding = 2% 3% 0% 3%
 
 		[footer-menu]
-		child = footer-cookies, footer-tandc, footer-contact
-		css.width = 45%
+		child = footer-cookies, footer-tandc, footer-contact, builder-icons
+		css.width = 75%
 		
 
 			[footer-cookies]
@@ -237,12 +237,59 @@ css.padding = 2% 3% 0% 3%
 			css.font-size = 11px
 			css.margin-top = 5px
 			click = ?layout=index&page=contact-dumfries-roofers-roofing-company
+			
+[builder-icons]
+child = builder-container
+css.width = 75%
+css.background-color = pink
+
+[builder-container]
+css.width = 90%
+#css.margin = 2%
+css.padding = 2%
+#css.background-color = white
+child = construction, guild, icopal, polyroof, trustedtrader
+stacking = horizontal
+
+	[construction]
+	css.width = 17%
+	image.url = img/construction.jpg
+	image.width = 100%
+	image.height = 100%
+	
+	[guild]
+	css.width = 16%
+	css.margin-left = 1%
+	image.url = img/guild.jpg
+	image.width = 100%
+	image.height = 100%
+
+	[icopal]
+	css.width = 17%
+	css.margin-left = 1%
+	image.url = img/icopal.jpg
+	image.width = 100%
+	image.height = 100%
+	
+	[polyroof]
+	css.width = 18%
+	css.margin-left = 1%
+	image.url = img/polyroof.jpg
+	image.width = 100%
+	image.height = 100%
+	
+	[trustedtrader]
+	css.width = 26%
+	css.margin-left = 1%
+	image.url = img/trustedtrader.jpg
+	image.width = 100%
+	image.height = 100%
 
 
 	[footnote]
 	child = copyright, admin-links
-	css.width = 45%
-#	css.background-color = grey
+	css.width = 25%
+	css.background-color = yellow
 
 		[copyright]
 		css.width = 100%
@@ -251,14 +298,14 @@ css.padding = 2% 3% 0% 3%
 		css.color = #ffffff
 		css.font-size = 12px
 		css.text-align = right
-#		css.float = right
 
 	[admin-links]
 	child = wirefly, admin
 	stacking = horizontal
 	css.margin-top = 7%
 	css.float = right
-	css.width = 20%
+	css.width = 50%
+	css.background-color = grey
 
 	
 		[wirefly]
