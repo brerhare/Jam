@@ -1,11 +1,12 @@
-{{@action tabHtml}}
+{{@action tabsHtml}}
 
 	<style>
 	iframe {
 		Xwidth:100 percent;
-width:1000%26;
+Xwidth:1000%26;
+width:990px;
 		height:600px;
-background-color:red;
+Xbackground-color:red;
 	}
 	</style>
 
@@ -18,7 +19,7 @@ background-color:red;
 
 	<script>
 	$(function() {
-		window.setTimeout(ajaxTabInit,100);	// @@TODO dom insert instead of html tag so this wont be nec
+		window.setTimeout(ajaxTabInit,100);	// @@TODO dom insert instead of html tag so this apalling hack wont be nec
 	});
 
 	function ajaxTabInit() {
