@@ -12,8 +12,3 @@
 	</div>
 {{@end}}
 
-{{@action checkboxHtml}}
-		<input type='checkbox' id='RADIO_JAMKEY' name='RADIO_TABLE.RADIO_FIELD' onChange='fn(this, event);' value='RADIO_VALUE' RADIO_CHECKED RADIO_DISABLED>
-		<label for='RADIO_JAMKEY'> RADIO_PLACEHOLDER </label>
-{{@end}}
-
