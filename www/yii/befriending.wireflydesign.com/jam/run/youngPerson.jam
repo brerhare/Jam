@@ -58,6 +58,7 @@ function confirmDelete(id, displayInfo) {
 	</h3>
 	{{@html tabs
 		label=Details		action=/run/youngPersonDetails?young_person.id={{young_person.id}}
+		label=Contacts		action=/run/youngPersonContact?young_person.id={{young_person.id}}
 	}}
 {{@end}}
 
