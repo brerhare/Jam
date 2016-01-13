@@ -1,23 +1,14 @@
-{{@action tabHtml}}
+{{@action tabsHtml}}
 
 	<style>
 	iframe {
-		width:100%;
+		Xwidth:100 percent;
+Xwidth:1000%26;
+width:990px;
 		height:600px;
+Xbackground-color:red;
 	}
 	</style>
-
-	<script>
-	$(function() {
-		$( ".jamTab" ).tabs({
-			beforeLoad: function( event, ui ) {
-				ui.jqXHR.fail(function() {
-					ui.panel.html( "Couldn't load this tab" );
-				});
-			}
-		});
-	});
-	</script>
 
 	<div class="jamTab" id="jamTabId">
 	<ul>
@@ -28,6 +19,18 @@
 
 	<script>
 	$(function() {
+		window.setTimeout(ajaxTabInit,100);	// @@TODO dom insert instead of html tag so this apalling hack wont be nec
+	});
+
+	function ajaxTabInit() {
+		$( ".jamTab" ).tabs({
+			beforeLoad: function( event, ui ) {
+				ui.jqXHR.fail(function() {
+					ui.panel.html( "Couldn't load this tab" );
+				});
+			}
+		});
+
 	/*
 		// Create a tab dynamically
 		var tabs = $( "#jamTabId" ).tabs();
@@ -36,7 +39,7 @@
 		$( "<div id='tab-3'>Can generate or remove tabs on the fly</div>" ).appendTo( tabs );
 		tabs.tabs( "refresh" );
 	*/
-	});
+	}
 	</script>
 
 {{@end}}

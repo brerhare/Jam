@@ -151,7 +151,7 @@ Optional for any - label, group, disabled
 
 <h5>Tabs</h5>
 
-{@html tab
+{@html tabs
 	label=Customers 	action=/run/customerMaint
 	label='Tab text'	action=/path/to/jam
 }

@@ -1,0 +1,94 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@Xinclude /jam/run/menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:900px; Xpadding:0}}
+
+	{{@get young_person filter id = young_person.id}}
+	{{@get global filter id = young_person.global_id}}
+
+	<style type="text/css">
+		label {text-align: right; width:150px !important}
+		div.uk-form-controls {margin-left: 170px !important}
+	</style>
+
+	<form name="inputForm_young_person" class="uk-form uk-form-horizontal">
+		<input type="hidden" name="young_person.id" value="{{young_person.id}}">
+		<input type="hidden" name="global.id" value="{{young_person.global_id}}">
+
+		{{@html gridrow start}}
+			{{@html gridcol start width=5-10}}
+
+				<input type="hidden" name="young_person.referrer_form_id" value="999999"> <!-- @@TODO! -->
+				{{@html hidden field=young_person.referrer_form_id}}
+				{{@html date field=young_person.referral_date size=medium label='Referral date'}}
+				{{@html text field=global.forename size=large label='Forename'}}
+				{{@html text field=global.surname size=large label='Surname'}}
+				{{@html text field=global.house size=medium label='house'}}
+				{{@html text field=global.street size=medium label='Street'}}
+				{{@html text field=global.area size=medium label='Area'}}
+				{{@html text field=global.town size=medium label='Town'}}
+				{{@html text field=global.postcode size=medium label='Postcode'}}
+				{{@html text field=global.landline size=medium label='Land line'}}
+				{{@html text field=global.mobile size=medium label='Mobile'}}
+				{{@html text field=global.email size=medium label='Email'}}
+				{{@html date field=young_person.dob size=medium label='Birth date'}}
+
+			{{@html gridcol end}}
+			{{@html gridcol start width=1-10}}
+			{{@html gridcol end}}
+			{{@html gridcol start width=4-10}}
+
+				{{@html radio field=young_person.gender label='Gender' options=0:Male,1:Female}}
+				{{@html text field=young_person.legal_status size=large label='Legal status'}}
+				{{@html text field=young_person.medication size=large label='Medication'}}
+				{{@html date field=young_person.order_date size=medium label='Order date'}}
+				{{@html checkbox field=young_person.discussion_confirmation label='Discussion confirmation'}}
+				{{@html checkbox field=young_person.exclusion_risk label='Exclusion risk'}}
+				{{@html checkbox field=young_person.offending_risk label='Offending risk'}}
+				{{@html checkbox field=young_person.care_risk label='Care risk'}}
+				{{@html checkbox field=young_person.child_plan label='Child plan'}}
+				{{@html checkbox field=young_person.assessment label='Assessment'}}
+				{{@html textarea field=young_person.special_needs_notes size=50x4 label='Special needs notes'}}
+
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+
+		{{@html gridrow start}}
+			{{@html gridcol start width=1-1}}
+				<br>
+				<center>
+					{{@Xhtml button Save primary medium
+						runAction('update_young_person', ['inputForm_young_person'], '', runJam)
+					}}
+					<button class="uk-button uk-button-primary" onClick="runAction('update_young_person', ['inputForm_young_person'])">Save</button> </td>
+				</center>
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+
+	</form>
+
+{{@action update_young_person}}
+	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
+	{{young_person.global_id = global.id}}
+	{{@update item young_person}}
+{{@end}}
+
+{{@action email_young_person}}
+	{{@get young_person filter id = young_person.id}}
+	{{@get global filter id = young_person.global_id}}
+	{{@email k@microboot.com {{global.email}}  'Befriending referral form for {{global.forename}} {{global.surname}}' action:emailContent}}
+	Email sent
+{{@end}}
+
+{{@action emailContent}}
+	Whatever is here gets used as the mmail body content. <br>It will be a link like <a href="http://befriending.wireflydesign.com/run/referralForm.jam?accesskey=gj3x9dsmcNcj2hvgsxz3sjpOvR">this</a> to click on.
+{{@end}}
+
+{{@html container end}}
+
+{{@include /jam/sys/html/footer.html}}

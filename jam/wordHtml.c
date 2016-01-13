@@ -1008,7 +1008,7 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 }
 
 // Tab
-int wordHtmlTab(int ix, char *defaultTableName) {
+int wordHtmlTabs(int ix, char *defaultTableName) {
 	char *tmp = (char *) calloc(1, 4096);
 	char *args = jam[ix]->args;
 
@@ -1016,7 +1016,7 @@ int wordHtmlTab(int ix, char *defaultTableName) {
 	char *tabStr = (char *) calloc(1, 4096);
 	char *actionStr = (char *) calloc(1, 4096);
 
-	logMsg(LOGDEBUG, "TAB ARGS=%s", args);
+	logMsg(LOGDEBUG, "html tabs ARGS=%s", args);
 
 	int cnt = 2;
 	while (char *block = strTrim(getWordAlloc(args, cnt++, "\n"))) {
@@ -1025,7 +1025,12 @@ int wordHtmlTab(int ix, char *defaultTableName) {
 		if ((!tabNVP) || (!actionNVP))
 			break;
 		char *tab = strTrim(getWordAlloc(tabNVP, 2, "="));
-		char *action = strTrim(getWordAlloc(actionNVP, 2, "="));
+		char *action = strchr(actionNVP, '=');
+		if (!action) {
+			logMsg(LOGERROR, "Missing '=' in html tabs action");
+			return(-1);
+		}
+		action++; // Point to  whatever the action is. Equals signs in this arent our business
 		sprintf(tmp, "<li><a href='#tab-%d'>%s</a></li> \n", seq, tab);
 		strcat(tabStr, tmp);
 		sprintf(tmp, "<iframe id='tab-%d' src='%s'></iframe> \n", seq, action);
@@ -1034,7 +1039,7 @@ int wordHtmlTab(int ix, char *defaultTableName) {
 		free(tabNVP);
 		free(actionNVP);
 		free(tab);
-		free(action);
+//		free(action);
 		seq++;
 	}
 
@@ -1048,7 +1053,7 @@ int wordHtmlTab(int ix, char *defaultTableName) {
 							);
 
 	jb.templateStr = templateStr;
-	jamBuilder("/jam/run/sys/jamBuilder/html/tab.jam", "tabHtml", &jb);
+	jamBuilder("/jam/run/sys/jamBuilder/html/tabs.jam", "tabsHtml", &jb);
 
 	free(tmp);
 	free(tabStr);
