@@ -166,12 +166,12 @@ Optional for any - label, group, disabled
 
 <h5>Javascript supplied functions</h5>
 
-runJam templateName
-	runJam('name.tpl')
+runJam fileName
+	runJam('name.jam')
 	runJam
-runAction [jamName:]actionName, [formName(s)], [resultObjectName], [callback]
+runAction [jamName:]actionName, [name(s)/id(s)/class], [resultObjectName], [callback]
 	runAction('save')
-	runAction('jam2:save', 'form1 form2', 'divThatGetsTheResult'), backButton()
+	runAction('jam2:save', ['form1,form2'], 'divThatGetsTheResult', backButton )
 
 <hr>
 <h4>Utility</h4>

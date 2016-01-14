@@ -8,18 +8,6 @@
 <br>
 {{@html container start center css='max-width:700px; Xpadding:0}}
 
-
-<!-- Template defines for the list component -->
-{{@template DELETEFIELD global.surname}}
-{{@template HEADINGS
-	<th> Forename </th>
-	<th> Surname </th>
-}}
-{{@template COLUMNS
-	<td>{{global.forename}}</td>
-	<td>{{global.surname}}</td>
-}}
-
 <!-- List component -->
 
 <style>
@@ -33,14 +21,16 @@
 <div name="content_contact">
 	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
-			HEADINGS
+			<th> Forename </th>
+			<th> Surname </th>
 			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('maintain_contact', [], 'content_contact')"> <i class="uk-icon-plus"></i> New</button> </th>
 		</tr>
-{{@each contact filter young_person_id = young_person.id}}}
+{{@each contact filter young_person_id = young_person.id}}
 		{{@get global filter id = contact.global_id}}
 		<tr class="rowHighlight" onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">
-			COLUMNS
-			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_contact('{{id}}','{{DELETEFIELD}}')"> <i class="uk-icon-trash"></i></button> </td>
+			<td>{{global.forename}}</td>
+			<td>{{global.surname}}</td>
+			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_contact('{{contact.id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i></button> </td>
 		</tr>
 {{@end}}
 	</table>
@@ -53,6 +43,9 @@ function confirmDelete_contact(id, displayInfo) {
 	var result = confirm('Confirm delete of item ' + displayInfo);
 	if (result)
 		runAction('delete_contact', ['contact.id='+id], '', runJam);	
+}
+function postUpdate() {
+	runJam();
 }
 </script>
 
@@ -96,7 +89,7 @@ function confirmDelete_contact(id, displayInfo) {
 				<br>
 				<center>
 					{{@html button Save primary medium
-						runAction('update_contact', ['inputForm_contact'], '', runJam)
+						runAction('update_contact', ['inputForm_contact'], '', postUpdate)
 					}}
 					{{@html button Cancel primary medium
 						runJam();
@@ -110,7 +103,7 @@ function confirmDelete_contact(id, displayInfo) {
 {{@action update_contact}}
 	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
 	{{contact.global_id = global.id}}
-	{{contact.contact_relationship_id = 3}}
+	{{contact.young_person_id = young_person.id}}
 	{{@update item contact}}
 {{@end}}
 
