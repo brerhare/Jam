@@ -28,7 +28,7 @@
 
 	{{@html date field=event.date size=medium label='Date'}}
 	{{@html dropdown field=event.event_type_id pickfield=event_type.name size=medium label='Event Type'}}
-	{{@html textarea field=event.comments size=60x5 label=Notes}}
+	{{@html textarea field=event.comments size=30x5 label=Notes}}
 }}
 
 <!-- Include the template -->

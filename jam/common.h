@@ -13,6 +13,8 @@ extern int literal;
 
 extern CURL *curl;
 
+#define MAX_INCLUDE 512
+
 #define round(x) ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 
 #define MAX_ARGS 4096

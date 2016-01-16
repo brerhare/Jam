@@ -18,7 +18,7 @@
 
 {{@template COLUMNS
 	<td> {{@html text field=user_group.name size=medium}} </td>
-	<td> Need checkboxes....? </td>
+	<td> {{@html text field=user_group.set_permissions size=medium placeholder='Need checkboxes....?'}} </td>
 }}
 
 {{@template EDITS name set_permissions}}

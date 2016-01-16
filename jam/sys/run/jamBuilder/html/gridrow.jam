@@ -1,0 +1,16 @@
+{{@action gridrowStartHtml}}
+	<div class="uk-grid uk-grid-collapse GRIDROW_GRIDCOLS" style="GRIDROW_CSS">
+{{@end}}
+
+{{@action gridrowEndHtml}}
+	</div>	<!-- GRIDROW GRIDCOLS -->
+{{@end}}
+
+
+Notes
+----
+uk-grid-collapse (hardcoded here)
+	removes all gutters. Other options are small, medium etc. Should optionize this?
+	also note only affects column widths defined (as equals obviously) in the row, has no effect on column-level defined widths
+
+

@@ -31,7 +31,7 @@ function runJam(jamName) {
  *					- 'actionName' only - current jam
  *					- 'jamName:actionName - different jam in same directory as current jam
  *					- '/path/to/jamName:actionName - use as is
- * @param element	element(s) to send. Space-separate multiples
+ * @param element	element(s) to send. Array
 					- form elements are expanded to their child elements
 					- if it isnt an element then 'name=value' format is assumed and sent as given, eg 'stock_supplier._id=2'
  * @param output	HTML element that receives any returned content (innerHTML)
@@ -41,7 +41,7 @@ function runJam(jamName) {
  */
 function runAction(action, element, output, callback) {
 //alert('startajax');
-	if (typeof element === 'undefined') { elements = ''; }
+	if (typeof element === 'undefined') { element = []; }
 	if (typeof output === 'undefined') { output = ''; }
 	if (typeof callback === 'undefined') { callback = ''; }
 	// Where we will send the request to
@@ -56,28 +56,27 @@ function runAction(action, element, output, callback) {
 		runJam = action;
 	}
 	// Gather all the elements to send
-	var postData = 'OobDataRequested=1';
-	var el = element.split(" ");
-	el = runActionPreProcessGrid(el);							// expand 'SEQ_' to individual names for sending grid
-	el.push("_dbname");											// always try to append this
-	el.push("_initialUrlParams");								// any url parameters this page was initially called with
-	for (i = 0; i < el.length; i++) {
-		if (el[i] == '')
+	var postData = 'oobDataRequested=1';
+/////////////////////////	el = runActionPreProcessGrid(el);							// expand 'SEQ_' to individual names for sending grid
+	element = runActionIncludeGroupElements(element);				// expand any group (class) names to all their element names
+	element.push("_dbname");											// always try to append this
+	element.push("_initialUrlParams");								// any url parameters this page was initially called with
+	for (i = 0; i < element.length; i++) {
+		if (element[i] == '')
 			continue;
-		if (document.forms[el[i]]) {							// is this a form element?
-			var obj = $('form[name="' + el[i] + '"]');			// yes its a form element
+		if (document.forms[element[i]]) {							// is this a form element?
+			var obj = $('form[name="' + element[i] + '"]');			// yes its a form element
 			postData += '&' + obj.serialize();
 			if (typeof obj.attr("action") != 'undefined')		// If any form at all has an 'action' we use it
 				formURL = obj.attr("action");
 		} else {												// no its not a form element
-			var obj = document.getElementsByName(el[i]);		// try to get it
+			var obj = document.getElementsByName(element[i]);		// try to get it
 			if (!(obj))
-				obj = document.getElementById(el[i]);
+				obj = document.getElementById(element[i]);
 			if ((obj) && (obj.length > 0)) {					// got it
-				postData += '&' + el[i] + '=' + encodeURIComponent(obj[0].value);
+				postData += '&' + element[i] + '=' + encodeURIComponent(obj[0].value);
 			} else {											// not ANY kind of element, so just send as is (a=b)
-				var lit = el[i].split('=');
-				postData += '&' + lit[0] + '=' + lit[1];
+				postData += '&' + element[i];
 			}
 		}
 //alert('assembling data. So far we have : ' + postData);
@@ -290,6 +289,27 @@ function hasGroup(obj, groupName) {
 // Get a non-grid element by name
 function get(name) {	// @@NU
 	return document.getElementsByName(name)[0];
+}
+
+// If a runAction element-to-send names a group (class) instead then replace it in the array with all it's elements
+function runActionIncludeGroupElements(elArr) {
+console.log('pre-expand-----------------------------------');
+console.log(elArr);
+	var newArr = [];
+	for (i = 0; i < elArr.length; i++) {
+		var groupClassArr = document.getElementsByClassName(elArr[i]);
+		if (groupClassArr.length > 0) {
+			for (j = 0; j < groupClassArr.length; j++) {
+				newArr.push(groupClassArr[j].name);
+			}
+		} else {
+			newArr.push(elArr[i]);
+		}
+	}
+console.log('post-expand-----------------------------------');
+console.log(newArr);
+//alert('waiting');
+	return newArr;
 }
 
 // If there is any SEQ_ item create element.name's for ALL sibling grid element.id to send to server, and return the modified element array to runAction

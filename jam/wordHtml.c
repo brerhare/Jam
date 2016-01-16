@@ -28,6 +28,215 @@ char *makeJamKeyValue(char *tableName, char *fieldName, char *rawValue);
 //-----------------------------------------------------------------
 // HTML <tag> generation from {{curly}}
 
+int wordHtmlContainer(int ix, char *defaultTableName) {
+	char *tmp = (char *) calloc(1, 4096);
+	char *center = NULL;
+	char *noMargin = NULL;
+	char *css = NULL;
+
+	// Start or End
+	if (isVar("sys.control.end")) {
+		JAMBUILDER jb;
+		jb.stream = STREAMOUTPUT_STD;
+		jb.templateStr = NULL;
+		int ret = jamBuilder("/jam/run/sys/jamBuilder/html/container.jam", "containerEndHtml", &jb);
+		emitStd(jam[ix]->trailer);
+		return ret;
+	} else if (!isVar("sys.control.start")) {
+		logMsg(LOGERROR, "Html container must have 'start' or 'end'");
+		return(-1);
+	}
+
+	// Center
+	if ((isVar("sys.control.center")) || (isVar("sys.control.centre")))
+		center = strdup("uk-container-center");
+	else
+		center = strdup("");
+
+	// NoMargin
+	if ((isVar("sys.control.nomargin")) || (isVar("sys.control.nomargin")))
+		noMargin = strdup("uk-margin-remove");
+	else
+		noMargin = strdup("");
+
+	// Css
+	if (isVar("sys.control.css"))
+		css = strdup(getVarAsString("sys.control.css"));
+	else
+		css = strdup("");
+
+	JAMBUILDER jb;
+	jb.stream = STREAMOUTPUT_STD;
+	char *templateStr = (char *) calloc(1, 4096);
+	sprintf(templateStr, "{{@template CONTAINER_CENTER %s}}	\
+						  {{@template CONTAINER_MARGIN %s}} \
+						  {{@template CONTAINER_CSS %s}}",
+							center,
+							noMargin,
+							css
+							);
+
+	jb.templateStr = templateStr;
+	jamBuilder("/jam/run/sys/jamBuilder/html/container.jam", "containerStartHtml", &jb);
+
+	free(tmp);
+	free(center);
+	free(noMargin);
+	free(css);
+	emitStd(jam[ix]->trailer);
+}
+
+int wordHtmlForm(int ix, char *defaultTableName) {
+	char *tmp = (char *) calloc(1, 4096);
+	char *name = NULL;
+	char *css = NULL;
+
+	// Start or End
+	if (isVar("sys.control.end")) {
+		JAMBUILDER jb;
+		jb.stream = STREAMOUTPUT_STD;
+		jb.templateStr = NULL;
+		int ret = jamBuilder("/jam/run/sys/jamBuilder/html/form.jam", "formEndHtml", &jb);
+		emitStd(jam[ix]->trailer);
+		return ret;
+	} else if (!isVar("sys.control.start")) {
+		logMsg(LOGERROR, "Html form must have 'start' or 'end'");
+		return(-1);
+	}
+
+
+	// Name
+	if (isVar("sys.control.name"))
+		name = strdup("sys.control.name");
+	else {
+		logMsg(LOGERROR, "Html form must have 'name'");
+		return(-1);
+	}
+
+	// Css
+	if (isVar("sys.control.css"))
+		css = strdup(getVarAsString("sys.control.css"));
+	else
+		css = strdup("");
+
+	JAMBUILDER jb;
+	jb.stream = STREAMOUTPUT_STD;
+	char *templateStr = (char *) calloc(1, 4096);
+	sprintf(templateStr, "{{@template FORM_NAME %s}} \
+						  {{@template FORM_CSS %s}}",
+							name,
+							css
+							);
+
+	jb.templateStr = templateStr;
+	jamBuilder("/jam/run/sys/jamBuilder/html/form.jam", "formStartHtml", &jb);
+
+	free(tmp);
+	free(name);
+	free(css);
+	emitStd(jam[ix]->trailer);
+}
+
+int wordHtmlGridrow(int ix, char *defaultTableName) {
+	char *tmp = (char *) calloc(1, 4096);
+	char *gridCols = NULL;
+	char *css = NULL;
+
+	// Start or End
+	if (isVar("sys.control.end")) {
+		JAMBUILDER jb;
+		jb.stream = STREAMOUTPUT_STD;
+		jb.templateStr = NULL;
+		int ret = jamBuilder("/jam/run/sys/jamBuilder/html/gridrow.jam", "gridrowEndHtml", &jb);
+		emitStd(jam[ix]->trailer);
+		return ret;
+	} else if (!isVar("sys.control.start")) {
+		logMsg(LOGERROR, "Html gridrow must have 'start' or 'end'");
+		return(-1);
+	}
+
+	// Gridcols
+	if (isVar("sys.control.gridcols")) {
+		gridCols = (char *) calloc(1, 4096);
+		sprintf(gridCols, "uk-grid-width-1-%d", atoi(getVarAsString("sys.control.gridcols")));
+	}
+	else
+		gridCols = strdup("");
+
+	// Css
+	if (isVar("sys.control.css"))
+		css = strdup(getVarAsString("sys.control.css"));
+	else
+		css = strdup("");
+
+	JAMBUILDER jb;
+	jb.stream = STREAMOUTPUT_STD;
+	char *templateStr = (char *) calloc(1, 4096);
+	sprintf(templateStr, "{{@template GRIDROW_GRIDCOLS %s}}	\
+						  {{@template GRIDROW_CSS %s}}",
+							gridCols,
+							css
+							);
+
+	jb.templateStr = templateStr;
+	jamBuilder("/jam/run/sys/jamBuilder/html/gridrow.jam", "gridrowStartHtml", &jb);
+
+	free(tmp);
+	free(gridCols);
+	free(css);
+	emitStd(jam[ix]->trailer);
+}
+
+int wordHtmlGridcol(int ix, char *defaultTableName) {
+	char *tmp = (char *) calloc(1, 4096);
+	char *width = NULL;
+	char *css = NULL;
+
+	// Start or End
+	if (isVar("sys.control.end")) {
+		JAMBUILDER jb;
+		jb.stream = STREAMOUTPUT_STD;
+		jb.templateStr = NULL;
+		int ret = jamBuilder("/jam/run/sys/jamBuilder/html/gridcol.jam", "gridcolEndHtml", &jb);
+		emitStd(jam[ix]->trailer);
+		return ret;
+	} else if (!isVar("sys.control.start")) {
+		logMsg(LOGERROR, "Html gridcol must have 'start' or 'end'");
+		return(-1);
+	}
+
+	// Width
+	if (isVar("sys.control.width")) {
+		width = (char *) calloc(1, 4096);
+		sprintf(width, "uk-width-%s", getVarAsString("sys.control.width"));
+	}
+	else
+		width = strdup("");
+
+	// Css
+	if (isVar("sys.control.css"))
+		css = strdup(getVarAsString("sys.control.css"));
+	else
+		css = strdup("");
+
+	JAMBUILDER jb;
+	jb.stream = STREAMOUTPUT_STD;
+	char *templateStr = (char *) calloc(1, 4096);
+	sprintf(templateStr, "{{@template GRIDCOL_WIDTH %s}}	\
+						  {{@template GRIDCOL_CSS %s}}",
+							width,
+							css
+							);
+
+	jb.templateStr = templateStr;
+	jamBuilder("/jam/run/sys/jamBuilder/html/gridcol.jam", "gridcolStartHtml", &jb);
+
+	free(tmp);
+	free(width);
+	free(css);
+	emitStd(jam[ix]->trailer);
+}
+
 int wordHtmlDropdown(int ix, char *defaultTableName) {
 	char *tmp = (char *) calloc(1, 4096);
 	char *targetTable = NULL;
@@ -296,7 +505,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	// [Table].field
 	char *p = getVarAsString("sys.control.field");
 	if (!p) {
-		logMsg(LOGERROR, "Html input target cant be null");
+		logMsg(LOGERROR, "Html input field cant be null");
 		return(-1);
 	}
 	tableFieldRawValue = strdup(getVarAsString("sys.control.field"));
@@ -395,6 +604,470 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	free(value);
 	free(jamKey);
 	free(templateStr);
+	emitStd(jam[ix]->trailer);
+}
+
+int wordHtmlCheckbox(int ix, char *defaultTableName) {
+	char *tmp = (char *) calloc(1, 4096);
+	char *table = NULL;
+	char *field = NULL;
+	char *tableFieldRawValue = NULL;
+	char *label = NULL;
+	char *placeholder = NULL;
+	char *disabled = NULL;
+	char *value = NULL;
+	char *unvalue = NULL;
+	char *checked = NULL;
+	char *group = (char *) calloc(1, 4096);
+	char *jamKey = NULL;
+
+	// [Table].field
+	char *p = getVarAsString("sys.control.field");
+	if (!p) {
+		logMsg(LOGERROR, "Html checkbox field cant be null");
+		return(-1);
+	}
+	tableFieldRawValue = strdup(getVarAsString("sys.control.field"));
+	if (strchr(p, '.')) {		// has a named table
+		table = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
+		field = getWordAlloc(getVarAsString("sys.control.field"), 2, ".");
+	} else {					// its just the field name
+		if (defaultTableName)
+			table = strdup(defaultTableName);
+		else
+			table = strdup("");
+		field = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
+	}
+
+	// Label
+	if (isVar("sys.control.label"))
+		label = strdup(getVarAsString("sys.control.label"));
+	else
+		label = strdup("");
+
+	// Placeholder
+	if (isVar("sys.control.placeholder"))
+		placeholder = strdup(getVarAsString("sys.control.placeholder"));
+	else
+		placeholder = strdup("");
+
+	// Group(s)
+	sprintf(group, "ROW_%d ", cmdSeqnum);
+	if (isVar("sys.control.group"))
+		strcat(group,  getVarAsString("sys.control.group"));
+
+	// Disabled
+	if (isVar("sys.control.disabled"))
+		disabled = strdup(" disabled ");
+	else
+		disabled = strdup("");
+
+	// Set jamKey. This is whatever table/field values are required to update the data
+	jamKey = makeJamKeyValue(table, field, tableFieldRawValue);
+
+	// Value
+	sprintf(tmp, "%s.%s", table, field);
+	VAR *variable = findVarStrict(tmp);
+	if ((variable) && (atoi(variable->portableValue)) > 0) {
+		value = strdup(variable->portableValue);
+		sprintf(tmp, "<input type='hidden' name='%s.%s' value='0'>", table, field);
+		unvalue = strdup(tmp);
+	} else {
+		value = strdup("1");
+		unvalue = strdup("");
+	}
+
+	// Checked
+	if (atoi(variable->portableValue) > 0)
+		checked = strdup("checked");
+	else
+		checked = strdup("");
+
+	JAMBUILDER jb;
+	jb.stream = STREAMOUTPUT_STD;
+	char *templateStr = (char *) calloc(1, 4096);
+	sprintf(templateStr, "{{@template CHECKBOX_TABLE %s}}	\
+						  {{@template CHECKBOX_FIELD %s}}	\
+						  {{@template CHECKBOX_LABEL %s}}	\
+						  {{@template CHECKBOX_PLACEHOLDER %s}}	\
+						  {{@template CHECKBOX_VALUE %s}}	\
+						  {{@template CHECKBOX_UNVALUE %s}}	\
+						  {{@template CHECKBOX_CHECKED %s}}	\
+						  {{@template CHECKBOX_DISABLED %s}}	\
+						  {{@template CHECKBOX_GROUP %s}}	\
+						  {{@template CHECKBOX_JAMKEY %s}}",
+							table,
+							field,
+							label,
+							placeholder,
+							value,
+							unvalue,
+							checked,
+							disabled,
+							group,
+							jamKey
+							);
+
+	jb.templateStr = templateStr;
+	if (isVar("sys.control.label"))
+		jamBuilder("/jam/run/sys/jamBuilder/html/checkbox.jam", "checkboxLabelHtml", &jb);
+	else
+		jamBuilder("/jam/run/sys/jamBuilder/html/checkbox.jam", "checkboxHtml", &jb);
+
+	free(tmp);
+	free(table);
+	free(field);
+	free(tableFieldRawValue);
+	free(label);
+	free(placeholder);
+	free(disabled);
+	free(group);
+	free(value);
+	free(unvalue);
+	free(checked);
+	free(jamKey);
+	free(templateStr);
+	emitStd(jam[ix]->trailer);
+}
+
+int wordHtmlRadio(int ix, char *defaultTableName) {
+	char *tmp = (char *) calloc(1, 4096);
+	char *table = NULL;
+	char *field = NULL;
+	char *tableFieldRawValue = NULL;
+	char *label = NULL;
+	char *disabled = NULL;
+	char *value = NULL;
+	char *options = NULL;
+	char *group = (char *) calloc(1, 4096);
+	char *optionStr = (char *) calloc(1, 4096);
+	char *jamKey = NULL;
+
+	// [Table].field
+	char *p = getVarAsString("sys.control.field");
+	if (!p) {
+		logMsg(LOGERROR, "Html radio field cant be null");
+		return(-1);
+	}
+	tableFieldRawValue = strdup(getVarAsString("sys.control.field"));
+	if (strchr(p, '.')) {		// has a named table
+		table = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
+		field = getWordAlloc(getVarAsString("sys.control.field"), 2, ".");
+	} else {					// its just the field name
+		if (defaultTableName)
+			table = strdup(defaultTableName);
+		else
+			table = strdup("");
+		field = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
+	}
+
+	// Label
+	if (isVar("sys.control.label"))
+		label = strdup(getVarAsString("sys.control.label"));
+	else
+		label = strdup("");
+
+	// Group(s)
+	sprintf(group, "ROW_%d ", cmdSeqnum);
+	if (isVar("sys.control.group"))
+		strcat(group,  getVarAsString("sys.control.group"));
+
+	// Disabled
+	if (isVar("sys.control.disabled"))
+		disabled = strdup("disabled");
+	else
+		disabled = strdup("");
+
+	// Set jamKey. This is whatever table/field values are required to update the data
+	jamKey = makeJamKeyValue(table, field, tableFieldRawValue);
+
+	// Value
+	sprintf(tmp, "%s.%s", table, field);
+	VAR *variable = findVarStrict(tmp);
+	if (variable)
+		value = strdup(variable->portableValue);
+	else
+		value = strdup("");
+
+	// Options. Eg options=0:Male,1:Female
+	if (isVar("sys.control.options"))
+		options = strdup(getVarAsString("sys.control.options"));
+	else
+		options = strdup("");
+/*
+{{@Xhtml radio field=young_person.gender label='Gender' options=0:Male,1:Female}}
+
+<label class='uk-form-label' for='RADIO_JAMKEY'> RADIO_LABEL </label>
+<div class='uk-form-controls uk-form-controls-text'>
+    <label><input type="radio" id="RADIO_JAMKEY" name="radio">1</label>
+    <label><input type="radio" name="radio">2</label>
+    <label><input type="radio" name="radio">3</label>
+</div>
+*/
+	int cnt = 1;
+	char *firstId = (char *) calloc(1, 4096);
+	sprintf(firstId, "id='%s'", jamKey);
+	while (1) {
+		char *opt = getWordAlloc(options, cnt++, ",");
+		if ((!opt) || (!strlen(opt)))
+			break;
+		char *optA = getWordAlloc(opt, 1, ":");
+		char *optB = getWordAlloc(opt, 2, ":");
+		if ( (!optA) || (!strlen(optA)) )
+			continue;
+		if ( (!optB) || (!strlen(optB)) ) {
+			free(opt);
+			free(optA);
+			continue;
+		}
+		char *checked;
+		if (!strcmp(variable->portableValue, optA))
+			checked = strdup("checked");
+		else
+			checked = strdup("");
+		sprintf(tmp, "<label><input type='radio' %s name='%s.%s' value='%s' class='%s' onClick='fn(this, event)' %s %s>%s</label> \n", firstId, table, field, optA, group, checked, disabled, optB);
+		*firstId = '\0';
+		strcat(optionStr, tmp);
+		free(checked);
+		free(optA);
+		free(optB);
+	}
+	free(firstId);
+
+	JAMBUILDER jb;
+	jb.stream = STREAMOUTPUT_STD;
+	char *templateStr = (char *) calloc(1, 4096);
+	sprintf(templateStr, "{{@template RADIO_TABLE %s}}	\
+						  {{@template RADIO_FIELD %s}}	\
+						  {{@template RADIO_LABEL %s}}	\
+						  {{@template RADIO_OPTIONS %s}}	\
+						  {{@template RADIO_VALUE %s}}	\
+						  {{@template RADIO_DISABLED %s}}	\
+						  {{@template RADIO_GROUP %s}}	\
+						  {{@template RADIO_JAMKEY %s}}",
+							table,
+							field,
+							label,
+							optionStr,
+							value,
+							disabled,
+							group,
+							jamKey
+							);
+
+	jb.templateStr = templateStr;
+	if (isVar("sys.control.label"))
+		jamBuilder("/jam/run/sys/jamBuilder/html/radio.jam", "radioLabelHtml", &jb);
+	else
+		jamBuilder("/jam/run/sys/jamBuilder/html/radio.jam", "radioHtml", &jb);
+
+	free(tmp);
+	free(table);
+	free(field);
+	free(tableFieldRawValue);
+	free(label);
+	free(disabled);
+	free(group);
+	free(value);
+	free(jamKey);
+	free(templateStr);
+	free(options);
+	free(optionStr);
+	emitStd(jam[ix]->trailer);
+}
+
+// Input Textarea
+int wordHtmlTextarea(int ix, char *defaultTableName) {
+	char *tmp = (char *) calloc(1, 4096);
+	char *hidden = NULL;
+	char *table = NULL;
+	char *field = NULL;
+	char *tableFieldRawValue = NULL;
+	char *label = NULL;
+	char *placeholder = NULL;
+	char *size = NULL;
+	char *cols = NULL;
+	char *rows = NULL;
+	char *disabled = NULL;
+	char *value = NULL;
+	char *group = (char *) calloc(1, 4096);
+	char *jamKey = NULL;
+
+	// Hidden
+	if (isVar("sys.control.hidden"))
+		hidden = strdup("type='hidden'");
+	else
+		hidden = strdup("");
+
+	// [Table].field
+	char *p = getVarAsString("sys.control.field");
+	if (!p) {
+		logMsg(LOGERROR, "Html textarea field cant be null");
+		return(-1);
+	}
+	tableFieldRawValue = strdup(getVarAsString("sys.control.field"));
+	if (strchr(p, '.')) {		// has a named table
+		table = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
+		field = getWordAlloc(getVarAsString("sys.control.field"), 2, ".");
+	} else {					// its just the field name
+		if (defaultTableName)
+			table = strdup(defaultTableName);
+		else
+			table = strdup("");
+		field = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
+	}
+
+	// Label
+	if (isVar("sys.control.label"))
+		label = strdup(getVarAsString("sys.control.label"));
+	else
+		label = strdup("");
+
+	// Placeholder
+	if (isVar("sys.control.placeholder"))
+		placeholder = strdup(getVarAsString("sys.control.placeholder"));
+	else
+		placeholder = strdup("");
+
+	// Size
+	if (isVar("sys.control.size")) {
+		size = strdup(getVarAsString("sys.control.size"));
+		if (!strchr(size, 'x')) {
+			logMsg(LOGERROR, "Html textarea size must be in cols x rows format eg '60x5'");
+			return(-1);
+		}
+		cols = getWordAlloc(size, 1, "x");	// cols
+		rows = getWordAlloc(size, 2, "x");	// rows
+	} else {
+		size = strdup("");
+		rows = strdup("");
+		cols = strdup("");
+	}
+
+	// Group(s)
+	sprintf(group, "ROW_%d ", cmdSeqnum);
+	if (isVar("sys.control.group"))
+		strcat(group,  getVarAsString("sys.control.group"));
+
+	// Disabled
+	if (isVar("sys.control.disabled"))
+		disabled = strdup(" disabled ");
+	else
+		disabled = strdup("");
+
+	// Set jamKey. This is whatever table/field values are required to update the data
+	jamKey = makeJamKeyValue(table, field, tableFieldRawValue);
+
+	// Value
+	sprintf(tmp, "%s.%s", table, field);
+	VAR *variable = findVarStrict(tmp);
+	if (variable)
+		value = strdup(variable->portableValue);
+	else
+		value = strdup("");
+
+	JAMBUILDER jb;
+	jb.stream = STREAMOUTPUT_STD;
+	char *templateStr = (char *) calloc(1, 4096);
+	sprintf(templateStr, "{{@template TEXTAREA_HIDDEN %s}}	\
+						  {{@template TEXTAREA_TABLE %s}}	\
+						  {{@template TEXTAREA_FIELD %s}}	\
+						  {{@template TEXTAREA_LABEL %s}}	\
+						  {{@template TEXTAREA_PLACEHOLDER %s}}	\
+						  {{@template TEXTAREA_COLS %s}}	\
+						  {{@template TEXTAREA_ROWS %s}}	\
+						  {{@template TEXTAREA_VALUE %s}}	\
+						  {{@template TEXTAREA_DISABLED %s}}	\
+						  {{@template TEXTAREA_GROUP %s}}	\
+						  {{@template TEXTAREA_JAMKEY %s}}",
+							hidden,
+							table,
+							field,
+							label,
+							placeholder,
+							cols,
+							rows,
+							value,
+							disabled,
+							group,
+							jamKey
+							);
+
+	jb.templateStr = templateStr;
+	if (isVar("sys.control.label"))
+		jamBuilder("/jam/run/sys/jamBuilder/html/textarea.jam", "textareaLabelHtml", &jb);
+	else
+		jamBuilder("/jam/run/sys/jamBuilder/html/textarea.jam", "textareaHtml", &jb);
+
+	free(tmp);
+	free(hidden);
+	free(table);
+	free(field);
+	free(tableFieldRawValue);
+	free(label);
+	free(placeholder);
+	free(size);
+	free(rows);
+	free(cols);
+	free(disabled);
+	free(group);
+	free(value);
+	free(jamKey);
+	free(templateStr);
+	emitStd(jam[ix]->trailer);
+}
+
+// Tab
+int wordHtmlTabs(int ix, char *defaultTableName) {
+	char *tmp = (char *) calloc(1, 4096);
+	char *args = jam[ix]->args;
+
+	int seq = (rand() % 99999);
+	char *tabStr = (char *) calloc(1, 4096);
+	char *actionStr = (char *) calloc(1, 4096);
+
+	logMsg(LOGDEBUG, "html tabs ARGS=%s", args);
+
+	int cnt = 2;
+	while (char *block = strTrim(getWordAlloc(args, cnt++, "\n"))) {
+		char *tabNVP = strTrim(getWordAlloc(block, 1, " \t"));
+		char *actionNVP = strTrim(getWordAlloc(block, 2, " \t"));
+		if ((!tabNVP) || (!actionNVP))
+			break;
+		char *tab = strTrim(getWordAlloc(tabNVP, 2, "="));
+		char *action = strchr(actionNVP, '=');
+		if (!action) {
+			logMsg(LOGERROR, "Missing '=' in html tabs action");
+			return(-1);
+		}
+		action++; // Point to  whatever the action is. Equals signs in this arent our business
+		sprintf(tmp, "<li><a href='#tab-%d'>%s</a></li> \n", seq, tab);
+		strcat(tabStr, tmp);
+		sprintf(tmp, "<iframe id='tab-%d' src='%s'></iframe> \n", seq, action);
+		strcat(actionStr, tmp);
+		free(block);
+		free(tabNVP);
+		free(actionNVP);
+		free(tab);
+//		free(action);
+		seq++;
+	}
+
+	JAMBUILDER jb;
+	jb.stream = STREAMOUTPUT_STD;
+	char *templateStr = (char *) calloc(1, 4096);
+	sprintf(templateStr, "{{@template TAB_STR %s}}	\
+						  {{@template TAB_ACTION %s}}",
+							tabStr,
+							actionStr
+							);
+
+	jb.templateStr = templateStr;
+	jamBuilder("/jam/run/sys/jamBuilder/html/tabs.jam", "tabsHtml", &jb);
+
+	free(tmp);
+	free(tabStr);
+	free(actionStr);
 	emitStd(jam[ix]->trailer);
 }
 
@@ -616,9 +1289,9 @@ int wordHtmlGridInp(int ix, char *defaultTableName) {
 	return(_wordHtmlInputInp(ix, defaultTableName, GRIDINP));
 }
 
+/****************************************************************************************
 
 //	{{@html textarea stock_supplier.notes 60x5 Notes}}
-
 int wordHtmlTextarea(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
@@ -672,6 +1345,7 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 	free(fieldPlaceholder);
 	free(tmp);
 }
+****************************************************************************/
 
 /*	{{@html button Save primary small
 		alert('ok')     // or any js
@@ -1014,10 +1688,11 @@ int wordHtmlBreakpoint(int ix, char *defaultTableName) {
 				logMsg(LOGDEBUG, "created init js for uikit autocomplete");
 			}
 			// Embed the db name in the html for any @action calls
-			if (connDbName == NULL)
-				connDbName = strdup("");
-			emitStd("<input type='hidden' id='_dbname' name='_dbname' value='%s'>", connDbName);
-			logMsg(LOGDEBUG, "created hidden _dbname element");
+			if (connDbName != NULL) {
+				emitStd("<input type='hidden' id='_dbname' name='_dbname' value='%s'>", connDbName);
+				logMsg(LOGDEBUG, "created hidden _dbname element");
+			} else
+				logMsg(LOGDEBUG, "did NOT create hidden _dbname element (no db active)");
 
 			endJs(urlEncodeRequired);	// No encode
 

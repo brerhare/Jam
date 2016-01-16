@@ -1,31 +1,42 @@
-{{@include /jam/sys/html/header.html}}
+{{@include standalone /jam/sys/html/header.html}}
 
-<style>
-.rowHighlight:hover {
-  background-color: #ddf0ff;
-  cursor:pointer;
-}
-</style>
+<!-- Template defines for the menu -->
+{{@template MENU
+<ul id="main-menu" class="sm sm-blue collapsed">
 
-<center><h3>Jam list</h3></center>
+	<li><a href="#"> Referrals </a>
+		<ul>
+			<li> <a href="/run/referral.jam"> Referral </a></li>
+		</ul>
+	</li>
+	
+	<li><a href="/run/youngPerson.jam"> Young person </a>
+	</li>
+	
+	<li><a href="#"> Event stuff </a>
+		<ul>
+			<li> <a href="/run/event.jam" target="_blank"> Events </a> </li>
+			<li> <a href="/run/event_type.jam" target="_blank"> Event types </a> </li>
+			<li> <a href="/run/tabs.jam" target="_blank"> Tabs example </a> </li>
+		</ul>
+	</li>
+	
+	<li><a href="#"> Simd stuff </a>
+		<ul>
+			<li> <a href="/run/simd.jam" target="_blank"> Simd </a> </li>
+			<li> <a href="/run/simd_lookup.jam" target="_blank"> Simd lookup </a> </li>
+		</ul>
+	</li>
+	
+	<li> <a href="http://www.befriending.wireflydesign.com/schema/index.html" target="_blank">Schema</a> </li>
+	
+	
+	<li> <a href="/run/menu2.jam" target="_blank"> Old menu </a> </li>
+</ul>
+}}
 
-<div class="uk-overflow-container">
-	<center>
-		<table style="border:1px solid #dddddd">
-			<tr>
-				<th>Name</th>
-			</tr>
-{{@new list jamfile dir /jam/run}}
-{{@each jamfile}}
-			<tr class="rowHighlight">
-				<td> <a href="/run/{{jamfile}}" target="_blank">{{jamfile}}</a> </td>
-			</tr>
-{{@end}}
-			<tr class="rowHighlight">
-				<td> <a href="http://www.befriending.wireflydesign.com/schema/index.html" target="_blank">Schema</a> </td>
-			</tr>
-		</table>
-	</center>
-</div>  <!-- uk-overflow-container -->
+<!-- Call the addon -->
+{{@include /jam/run/sys/smartMenu.jam}}
 
-{{@include /jam/sys/html/footer.html}}
+{{@include standalone /jam/sys/html/footer.html}}
+
