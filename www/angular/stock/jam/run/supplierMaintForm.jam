@@ -63,7 +63,7 @@
 
 	<br>
 
-<!--	<button type="button" onClick="runAction('updateSupplier', 'supplierForm', 'outp', backButton)" class="uk-button uk-button-primary">Save</button>	-->
+<!--	<button type="button" onClick="runAction('updateSupplier', ['supplierForm'], 'outp', backButton)" class="uk-button uk-button-primary">Save</button>	-->
 	<button type="button" onClick="LOCALrunAction('updateSupplier', 'supplierForm', 'outp', backButton)" class="uk-button uk-button-primary">Save</button>
 
 	<button type="button" onClick="backButton()" class="uk-button uk-button-primary">Cancel</button>
@@ -92,7 +92,7 @@ function LOCALrunAction(action, pre, post, next) {
 		return;
 	}
 *****/
-	runAction('updateSupplier', 'supplierForm', 'outp', backButton);
+	runAction('updateSupplier', ['supplierForm'], 'outp', backButton);
 }
 </script>
 
