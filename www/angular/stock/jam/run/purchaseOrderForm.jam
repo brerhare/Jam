@@ -50,7 +50,7 @@
 				<br>
 				<button type='button' class="uk-button uk-button-small uk-button-primary" onClick="savePurchaseOrder(1)"> Save </button>
 				{{@Xhtml button Save primary small
-					runAction savePurchaseOrder purchaseOrderForm
+					runAction savePurchaseOrder ['purchaseOrderForm']
 					runJam purchaseOrder
 				}}
 				{{@html button Cancel primary small
@@ -142,10 +142,10 @@ $('#myTabs').tabs( "option", "active" , 1 )
 			return;
 		}
 		if (retFlag == 0){	// apply
-			runAction('savePurchaseOrder', 'purchaseOrderForm stock_supplier_order.id');
+			runAction('savePurchaseOrder', ['purchaseOrderForm stock_supplier_order.id']);
 		}
 		else				// save
-			runAction('savePurchaseOrder', 'purchaseOrderForm stock_supplier_order.id', '', backButton);
+			runAction('savePurchaseOrder', ['purchaseOrderForm stock_supplier_order.id'], '', backButton);
 	}
 
 </script>

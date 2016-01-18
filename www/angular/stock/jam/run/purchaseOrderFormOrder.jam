@@ -56,7 +56,7 @@
 		<button type='button' class="uk-button uk-button-small uk-button-primary" onClick="print('printing')">Print</button>
 		<span id='eml'>
 		{{@html button Email primary small
-			runAction emailPurchaseOrder purchaseOrderForm
+			runAction emailPurchaseOrder [purchaseOrderForm]
 			document.getElementById('eml').innerHTML='Email sent';
 		}}
 		</span>
@@ -219,7 +219,7 @@
 		window.event.cancelBubble = true;   // Prevent any further events
 		var result = confirm('Confirm delete');
 		if (result)
-			runAction('deletePurchaseOrderRow', 'stock_supplier_order_item.id='+id, '', showOrderLines);
+			runAction('deletePurchaseOrderRow', ['stock_supplier_order_item.id='+id], '', showOrderLines);
 	}
 
 	function saveNewRowButtonClick() {
@@ -233,12 +233,12 @@
 			alert('Invalid quantity');
 			return;
 		}
-		runAction('newPurchaseOrderRow', 'stock_supplier_order.id' + ' ' + 'stock_supplier_order_item.stock_product_id=' + NEW_product_id + ' ' + 'stock_supplier_order_item.stock_pack_id=' + NEW_pack_id + ' ' + 'stock_supplier_order_item.pack_qty=' + NEW_pack_qty, '', _afterNewRowAdded);
+		runAction('newPurchaseOrderRow', ['stock_supplier_order.id', 'stock_supplier_order_item.stock_product_id=' + NEW_product_id, 'stock_supplier_order_item.stock_pack_id=' + NEW_pack_id, 'stock_supplier_order_item.pack_qty=' + NEW_pack_qty], '', _afterNewRowAdded);
 	}
 
 	function _afterNewRowAdded() {
 		hideNewRow();
-		runAction('recalcOrder', 'stock_supplier_order.id', '', addedNewRow);
+		runAction('recalcOrder', ['stock_supplier_order.id'], '', addedNewRow);
 	}
 	function addedNewRow() {
 		showOrderLines();
@@ -247,7 +247,7 @@
 
 	// Grid product lookup by code. See if the product exists and if its already on order
 	function onChange_stockproduct_code(obj) {
-		runAction('checkOrderProductByCode', 'stock_product.code=' + obj.value + ' row=' + getRowgroupName(obj), 'newRowPackSelectTD', checkedOrderProductByCode);
+		runAction('checkOrderProductByCode', ['stock_product.code=' + obj.value, 'row=' + getRowgroupName(obj)], 'newRowPackSelectTD', checkedOrderProductByCode);
 	}
 	function checkedOrderProductByCode() {
 		productObj = get('stock_product.id');						// oob
@@ -276,7 +276,7 @@
 	function onChange_stocksupplierorderitem_stockproductid(obj) {
 		productId =  get('stock_supplier_order_item.stock_product_id');
 		NEW_product_id = productId.value;	// store for saving
-		runAction('checkOrderProductById', 'stock_supplier_order.id stock_supplier_order_item.stock_product_id', 'newRowPackSelectTD', checkedOrderProductById);
+		runAction('checkOrderProductById', ['stock_supplier_order.id', 'stock_supplier_order_item.stock_product_id'], 'newRowPackSelectTD', checkedOrderProductById);
 	}
 	function checkedOrderProductById() {	// note the preceding action checks exist and wipes the orderitem record, hence we store in NEW_xxx
 		orderItemObj = document.getElementsByName('stock_supplier_order_item.id')[0];
@@ -295,10 +295,10 @@
 		if (hasGroup(obj, 'newrow'))				// Only do this if NOT adding a record
 			return;
 		objId =  getSiblingByName(obj, 'stock_supplier_order_item.id');	// @@is this get really nec, seeing as next runaction use it by name too?
-		runAction('changeOrderQty', 'stock_supplier_order_item.id=' + objId.value + ' ' + 'stock_supplier_order_item.pack_qty=' + obj.value, '', afterQtyChanged);
+		runAction('changeOrderQty', ['stock_supplier_order_item.id=' + objId.value, 'stock_supplier_order_item.pack_qty=' + obj.value], '', afterQtyChanged);
 	}
 	function afterQtyChanged() {
-		runAction('recalcOrder', 'stock_supplier_order.id', '', showOrderLines);
+		runAction('recalcOrder', ['stock_supplier_order.id'], '', showOrderLines);
 	}
 
 	// Pack changed - called for new row only
@@ -309,7 +309,7 @@
 	}
 
 	function showOrderLines() {
-		runAction('showOrderLines', 'stock_supplier_order.id' + ' ' + 'stock_supplier_order.container_id', 'linebody');
+		runAction('showOrderLines', ['stock_supplier_order.id', 'stock_supplier_order.container_id'], 'linebody');
 	}
 
 	function initializeNewRow() {
