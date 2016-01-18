@@ -1,0 +1,70 @@
+{{@include /jam/sys/html/header.html}}
+<link rel="stylesheet" type="text/css" href="/jam/css/kim2.css">
+
+<div class="datagrid">
+
+{{@database stock}}
+
+<table>
+
+{{@each stock_area}}
+
+  <tr>
+    <td style='background-color:#e5ecf5'><h1>{{name}}</h1></td>
+  </tr>
+  <tr>
+    <td>
+      <table>
+      	<tr>
+          <th> Id </th>
+          <th> Code </th>
+          <th> Name </th>
+          <th> Contact </th>
+          <th> Telephone </th>
+          <th> Discount </th>
+          <th> Address 1 </th>
+          <th> Address 2 </th>
+          <th> Address 3 </th>
+          <th> Postcode </th>
+          <th> Markup Group </th>
+      	</tr>
+
+    {{@each stock_customer filter stock_area_id = stock_area.id}}	<!-- general format is 'table to lookup' 'field' = 'some value that already exists in here' -->
+
+        {{@count id as x.y.z.areatotal}}
+        {{@count id as grandtotal}}
+
+        <tr>
+<td>				{{@html dropdown group=grpflt field=stock_customer.name pickfield=stock_supplier.name size=medium label=Supplier}} </td>
+          <td> {{code}} </td>
+          <td> {{name}} </td>
+          <td> {{contact}} </td>
+          <td> {{telephone}} </td>
+          <td> {{discount_percent}} </td>
+          <td> {{address1}} </td>
+          <td> {{address2}} </td>
+          <td> {{address3}} </td>
+          <td> {{post_code}} </td>
+        {{@get stock_markup_group id = stock_customer.stock_markup_group_id}}
+          <td> {{stock_markup_group.description}} </td>			<!-- once the lookup has been done all fields are available for use -->
+        </tr>
+
+    {{@end}}
+
+        <tr>
+          <td colspan=11><h5> {{stock_area.name}} has {{x.y.z.areatotal}} customers </h5></td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+{{@end}}
+
+  <tr>
+    <td><h5> {{grandtotal}} customers in all areas </h5></td>
+  </tr>
+</table>
+
+</div>
+
+{{@include /jam/sys/html/footer.html}}

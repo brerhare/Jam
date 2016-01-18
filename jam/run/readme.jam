@@ -47,7 +47,7 @@
 {@clear item product}
 {@new item product}
 {@amend item product}
-{@update item product}
+{@update item product}		// either new or amend
 {@remove item product}
 
 {@remove index product nameindex
