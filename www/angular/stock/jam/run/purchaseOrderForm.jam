@@ -5,6 +5,17 @@
 
 {{@database stock}}
 
+<style>
+.ui-tabs .ui-tabs-nav a
+{
+   //background-color: #231f20;
+}
+.ui-tabs ui-tabs-nav ui-tabs-active.a {
+  background-color: yellow;
+  background: yellow;
+}
+</style>
+
 <style>	/* @@EG */
 	.uk-form input[type=text]:disabled {
 		border:none;
