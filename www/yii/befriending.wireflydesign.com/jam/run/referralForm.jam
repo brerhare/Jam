@@ -1,6 +1,8 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
+{{@include /jam/run/menu.jam}}
+
 {{@database befriending_wireflydesign_com}}
 
 <br>

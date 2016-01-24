@@ -1,4 +1,7 @@
 {{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/menu.jam}}
 
 <style>
 	div { width:600px; }
@@ -8,7 +11,7 @@
 
 <!-- Template defines -->
 {{@template TABLE status}}
-{{@template DESCRIPTION List the Different Status of the Young Person}}
+{{@template DESCRIPTION List the Different Status for a Young Person}}
 {{@template DELETEFIELD status.name}}
 
 {{@template HEADINGS

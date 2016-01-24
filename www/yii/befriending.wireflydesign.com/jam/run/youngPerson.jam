@@ -50,11 +50,20 @@ function confirmDelete(id, displayInfo) {
 	{{@get young_person filter id = young_person.id}}
 	{{@get global filter id = young_person.global_id}}
 	<h3>
-		{{global.forename}}
-		{{global.surname}}
-		{{@html button 'Return to list' primary medium 
+	
+	<table>
+		<tr>
+					
+		<td>{{global.forename}}</td>
+		<td>{{global.surname}}</td>
+		<td>{{@html button 'Return to list' primary medium 
 			runJam
-		}}
+		}}</td>
+			
+			
+		</tr>
+	</table>
+	
 	</h3>
 	{{@html tabs
 		label=Details		action=/run/youngPersonDetails?young_person.id={{young_person.id}}
