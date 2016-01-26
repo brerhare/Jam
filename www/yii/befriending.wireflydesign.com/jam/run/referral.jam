@@ -153,7 +153,7 @@ function postUpdate() {
 {{@end}}
 
 {{@action emailContent}}
-	Whatever is here gets used as the mail body content. <br>It will be a link like <a href="http://befriending.wireflydesign.com/run/referralForm.jam?accesskey=gj3x9dsmcNcj2hvgsxz3sjpOvR">this</a> to click on.
+	Please click on <a href="http://befriending.wireflydesign.com/run/referralFormReferrer.jam?id1=RefFormgj3x9dsmcNcj2hvgsxz3sjpOvR&refId={{TABLE.id}}">this</a> to open the referral form.
 {{@end}}
 
 {{@html container end}}
