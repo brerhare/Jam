@@ -6,14 +6,13 @@
 
 	<li><a href="/run/youngPerson.jam"> Young Person </a>
 		<ul>
-			<li> <a href="/run/referral.jam"> Referrer </a></li>
-			<li> <a href="/run/referralForm.jam"> Refferal Form </a></li>
+			<li> <a href="/run/referrers.jam"> Referrers </a></li>
 		</ul>
 	</li>
 	
 	<li><a href="/run/befriender.jam"> Befrienders </a>
 		<ul>
-			<li> <a href="/run/referral.jam"> Referrer </a></li>
+			<li> <a href="/run/referrers.jam"> Referrers </a></li>
 		</ul>
 	</li>
 

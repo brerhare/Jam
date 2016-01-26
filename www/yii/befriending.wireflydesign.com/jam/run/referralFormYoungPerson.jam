@@ -8,7 +8,7 @@
 <br>
 {{@html container start center nomargin css='max-width:900px; padding:0}}
 
-	{{@get young_person filter id = young_person.id}}
+	{{@get young_person filter id = ypId}}
 	{{@get global filter id = young_person.global_id}}
 
 	<style type="text/css">
@@ -65,8 +65,8 @@
 			{{@html gridcol start width=1-1}}
 				<br>
 				<center>
-					<button type='button' class="uk-button uk-button-primary" onClick="runJam('referralFormReferrer')"> Prev </button> </td>
-					<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="runAction('update_young_person', ['inputForm_young_person'])"> Next </button> </td>
+					<button type='button' class="uk-button uk-button-primary" onClick="backToPrev()"> Prev </button> </td>
+					<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="updateAndNext()"> Next </button> </td>
 				</center>
 			{{@html gridcol end}}
 		{{@html gridrow end}}
@@ -90,6 +90,40 @@ window.onload = function() {
 function disableButton(me) {
 //	me.disabled = true;
 }
+
+function backToPrev() {
+	objReferrer = get('refId');
+	objYP = get('young_person.id');
+//alert('r='+objReferrer.value+' and yp='+objYP.value);
+	runJam('referralFormReferrer?refId='+objReferrer.value+'&ypId='+objYP.value);
+}
+
+function updateAndNext() {
+	objGlobalForename = get('global.forename');
+	if ((objGlobalForename.value.length) < 1) {
+		alert('Forename is required');
+		return;
+	}
+	objGlobalSurname = get('global.surname');
+	if ((objGlobalSurname.value.length) < 1) {
+		alert('Surname is required');
+		return;
+	}
+	runAction('update_young_person', ['inputForm_young_person'], '', forwardToNext);
+}
+
+function forwardToNext() {
+	objReferrer = get('refId');
+	objYP = get('young_person.id');
+	if ((objYP.value == '0') || (objYP.value == '-1')) {
+		alert('Young person details not yet saved');
+		return;
+	}
+alert('going fwd. r='+objReferrer.value+' and yp='+objYP.value);
+    runJam('referralFormReferrer?refId='+objReferrer.value+'&ypId='+objYP.value);
+
+}
+
 </script>
 
 {{@action update_young_person}}

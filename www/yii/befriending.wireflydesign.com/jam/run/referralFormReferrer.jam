@@ -51,8 +51,9 @@ function localUpdate_TABLE() {
 	runAction('update_TABLE', ['inputForm_TABLE'], '', postUpdate);
 }
 function postUpdate() {
-	obj = get('TABLE.id');
-	runJam('referralFormYoungPerson?refId='+obj.value);
+	objReferrer = get('TABLE.id');
+	objYP = get('ypId');
+	runJam('referralFormYoungPerson?refId='+objReferrer.value+'&ypId='+objYP.value);
 }
 </script>
 
