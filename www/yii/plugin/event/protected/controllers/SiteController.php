@@ -372,7 +372,7 @@ $lng = $coords->results[0]->geometry->location->lng;
 					$content .= "</div>";	// pDetails.	Printing end
 	
 					// Facebook
-					$content .= "<div style='float:right;padding-left:10px;padding-top:1px' class='fb-share-button' data-href='http://www.kirkcudbright.dumgal.sch.uk' data-type='button'></div>";
+					$content .= "<div style='float:right;padding-left:10px;padding-top:1px' class='fb-share-button' data-href='http://www.kirkcudbright.dumgal.sch.uk/?layout=index&page=kirkcudbright-academy-events' data-type='button'></div>";
 	
 					// print
 					$content .= "<div style='float:right;padding-left:10px'><a href=javascript:printDiv('" . $eventId . "')><img style='margin-top:0px; margin-left:0px' title='Print' src='img/print.jpg'></a></div>";
