@@ -1,6 +1,7 @@
 {{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
 
-{{@database befriending_wireflydesign_com}}
+{{@include /jam/run/menu.jam}}
 
 <!-- Template defines -->
 {{@template DESCRIPTION Befrienders}}
