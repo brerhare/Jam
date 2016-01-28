@@ -38,6 +38,7 @@
 char *startJam = "{{";
 char *endJam = "}}";
 int literal = 0;
+int strict = 0;
 JAM *jam[MAX_JAM];
 int jamIx = 0;
 char *tableStack[MAX_JAM];
@@ -496,6 +497,7 @@ logMsg(LOGERROR, "Remember templates stripping is not accurate..................
 
 int control(int startIx, char *defaultTableName) {
 //	emitStd("...ENTERING %d...", startIx);
+	int res = 0;
 	int ix = startIx;
 	char *tmp = (char *) calloc(1, 4096);
 	while (jam[ix]) {
@@ -519,6 +521,10 @@ int control(int startIx, char *defaultTableName) {
 		}
 		//args = jam[ix]->args;
 		//rawData = jam[ix]->rawData;
+
+
+// First - check the control flag words
+
 //		-----------------------------------------
 		if (!strcmp(cmd, "@literal")) {
 //		-----------------------------------------
@@ -526,7 +532,7 @@ int control(int startIx, char *defaultTableName) {
 			if (args) {
 				getWord(tmp, args, 1, " \t");
 				if (*tmp) {
-					if ((!strcmp(tmp, "off")) || (!strcmp(tmp, "0")))
+					if ((!strcasecmp(tmp, "off")) || (!strcmp(tmp, "0")))
 						literal = 0;
 				}
 			}
@@ -545,6 +551,22 @@ int control(int startIx, char *defaultTableName) {
 			}
 			emitStd(jam[ix]->trailer);
 		}
+
+//		-----------------------------------------
+		if (!strcmp(cmd, "@strict")) {
+//		-----------------------------------------
+			strict = 1;
+			if (args) {
+				getWord(tmp, args, 1, " \t");
+				if (*tmp) {
+					if ((!strcasecmp(tmp, "off")) || (!strcmp(tmp, "0")))
+						strict = 0;
+				}
+			}
+		}
+		res = 0;
+
+//	Second - all the if-elses
 
 //		-----------------------------------------
 		if (!(strcmp(cmd, "@!begin"))) {
@@ -573,45 +595,45 @@ int control(int startIx, char *defaultTableName) {
 				getWord(tmp, args, 1, " \t");
 				if (*tmp) {
 					if (!strcmp(tmp, "container"))
-						wordHtmlContainer(ix, defaultTableName);
+						res = wordHtmlContainer(ix, defaultTableName);
 					if (!strcmp(tmp, "form"))
-						wordHtmlForm(ix, defaultTableName);
+						res = wordHtmlForm(ix, defaultTableName);
 					if (!strcmp(tmp, "gridrow"))
-						wordHtmlGridrow(ix, defaultTableName);
+						res = wordHtmlGridrow(ix, defaultTableName);
 					if (!strcmp(tmp, "gridcol"))
-						wordHtmlGridcol(ix, defaultTableName);
+						res = wordHtmlGridcol(ix, defaultTableName);
 
 					else if (!strcmp(tmp, "dropdown"))
-						wordHtmlDropdown(ix, defaultTableName);
+						res = wordHtmlDropdown(ix, defaultTableName);
 					else if (!strcmp(tmp, "filter"))
-						wordHtmlFilter(ix, defaultTableName);
+						res = wordHtmlFilter(ix, defaultTableName);
 					else if ( (!strcmp(tmp, "text")) || (!strcmp(tmp, "date")) )
-						wordHtmlInput(ix, defaultTableName);
+						res = wordHtmlInput(ix, defaultTableName);
 
 					else if (!strcmp(tmp, "input"))
-						wordHtmlInputOld(ix, defaultTableName);
+						res = wordHtmlInputOld(ix, defaultTableName);
 					else if (!strcmp(tmp, "inp"))
-						wordHtmlInp(ix, defaultTableName);
+						res = wordHtmlInp(ix, defaultTableName);
 					else if (!strcmp(tmp, "gridinp"))
-						wordHtmlGridInp(ix, defaultTableName);
+						res = wordHtmlGridInp(ix, defaultTableName);
 
 					else if (!strcmp(tmp, "tabs"))
-						wordHtmlTabs(ix, defaultTableName);
+						res = wordHtmlTabs(ix, defaultTableName);
 
 					else if (!strcmp(tmp, "radio"))
-						wordHtmlRadio(ix, defaultTableName);
+						res = wordHtmlRadio(ix, defaultTableName);
 					else if (!strcmp(tmp, "checkbox"))
-						wordHtmlCheckbox(ix, defaultTableName);
+						res = wordHtmlCheckbox(ix, defaultTableName);
 					else if (!strcmp(tmp, "textarea"))
-						wordHtmlTextarea(ix, defaultTableName);
+						res = wordHtmlTextarea(ix, defaultTableName);
 					else if (!strcmp(tmp, "button"))
-						wordHtmlButton(ix, defaultTableName);
+						res = wordHtmlButton(ix, defaultTableName);
 					else if (!strcmp(tmp, "breakpoint"))
-						wordHtmlBreakpoint(ix, defaultTableName);
+						res = wordHtmlBreakpoint(ix, defaultTableName);
 					else if (!strcmp(tmp, "sys"))
-						wordHtmlSys(ix, defaultTableName);
+						res = wordHtmlSys(ix, defaultTableName);
 					else if (!strcmp(tmp, "js"))
-						wordHtmlJs(ix, defaultTableName);
+						res = wordHtmlJs(ix, defaultTableName);
 				}
 			}
 //		-----------------------------------------
@@ -621,7 +643,7 @@ int control(int startIx, char *defaultTableName) {
 				getWord(tmp, args, 1, " \t");
 				if (*tmp) {
 					if (!strcmp(tmp, "item"))
-						wordDatabaseClearItem(ix, defaultTableName);
+						res = wordDatabaseClearItem(ix, defaultTableName);
 				}
 			}
 //		-----------------------------------------
@@ -631,15 +653,15 @@ int control(int startIx, char *defaultTableName) {
 				getWord(tmp, args, 1, " \t");
 				if (*tmp) {
 					if (!strcmp(tmp, "database"))
-						wordDatabaseNewDatabase(ix, defaultTableName);
+						res = wordDatabaseNewDatabase(ix, defaultTableName);
 					else if (!strcmp(tmp, "table"))
-						wordDatabaseNewTable(ix, defaultTableName);
+						res = wordDatabaseNewTable(ix, defaultTableName);
 					else if (!strcmp(tmp, "index"))
-						wordDatabaseNewIndex(ix, defaultTableName);
+						res = wordDatabaseNewIndex(ix, defaultTableName);
 					else if (!strcmp(tmp, "item"))
-						wordDatabaseNewItem(ix, defaultTableName);
+						res = wordDatabaseNewItem(ix, defaultTableName);
 					else if (!strcmp(tmp, "list"))
-						wordMiscNewList(ix, defaultTableName);
+						res = wordMiscNewList(ix, defaultTableName);
 				}
 			}
 //		-----------------------------------------
@@ -650,13 +672,13 @@ int control(int startIx, char *defaultTableName) {
 				if (*tmp) {
 					logMsg(LOGDEBUG, "@remove requested");
 					if (!strcmp(tmp, "database"))
-						wordDatabaseRemoveDatabase(ix, defaultTableName);
+						res = wordDatabaseRemoveDatabase(ix, defaultTableName);
 					else if (!strcmp(tmp, "table"))
-						wordDatabaseRemoveTable(ix, defaultTableName);
+						res = wordDatabaseRemoveTable(ix, defaultTableName);
 					else if (!strcmp(tmp, "index"))
-						wordDatabaseRemoveIndex(ix, defaultTableName);
+						res = wordDatabaseRemoveIndex(ix, defaultTableName);
 					else if (!strcmp(tmp, "item"))
-						wordDatabaseRemoveItem(ix, defaultTableName);
+						res = wordDatabaseRemoveItem(ix, defaultTableName);
 				}
 			}
 //		-----------------------------------------
@@ -667,7 +689,7 @@ int control(int startIx, char *defaultTableName) {
 				if (*tmp) {
 					logMsg(LOGDEBUG, "@update requested");
 					if (!strcmp(tmp, "item"))
-						wordDatabaseUpdateItem(ix, defaultTableName);
+						res = wordDatabaseUpdateItem(ix, defaultTableName);
 				}
 			}
 //		-----------------------------------------
@@ -678,7 +700,7 @@ int control(int startIx, char *defaultTableName) {
 				if (*tmp) {
 					logMsg(LOGDEBUG, "@amend requested");
 					if (!strcmp(tmp, "item"))
-						wordDatabaseAmendItem(ix, defaultTableName);
+						res = wordDatabaseAmendItem(ix, defaultTableName);
 				}
 			}
 //		-----------------------------------------
@@ -688,19 +710,19 @@ int control(int startIx, char *defaultTableName) {
 			getWord(tmp, args, 1, " \t");
 			if (*tmp) {
 				if (!strcmp(tmp, "databases"))
-					wordDatabaseListDatabases(ix, defaultTableName);
+					res = wordDatabaseListDatabases(ix, defaultTableName);
 				else if (!strcmp(tmp, "tables"))
-					wordDatabaseListTables(ix, defaultTableName);
+					res = wordDatabaseListTables(ix, defaultTableName);
 			}
 		}
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@describe"))) {
 //		-----------------------------------------
-			wordDatabaseDescribe(ix, defaultTableName);
+			res = wordDatabaseDescribe(ix, defaultTableName);
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@database"))) {
 //		-----------------------------------------
-			wordDatabaseDatabase(ix, defaultTableName);
+			res = wordDatabaseDatabase(ix, defaultTableName);
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@skip"))) {
 //		-----------------------------------------
@@ -708,11 +730,11 @@ int control(int startIx, char *defaultTableName) {
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@get"))) {
 //		------------------------------------
-			wordDatabaseGet(ix, defaultTableName);
+			res = wordDatabaseGet(ix, defaultTableName);
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@sql"))) {
 //		------------------------------------
-			wordDatabaseSql(ix, defaultTableName);
+			res = wordDatabaseSql(ix, defaultTableName);
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@each"))) {
 //		-------------------------------------
@@ -744,9 +766,9 @@ int control(int startIx, char *defaultTableName) {
 			} else {		// its a db table
 				logMsg(LOGDEBUG, "Its a db, not a list. do the select()");
 				char *givenTableName = (char *) calloc(1, 4096);
-				MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 999999);
+				MYSQL_RES *sqlres = doSqlSelect(ix, defaultTableName, &givenTableName, 999999);
 				logMsg(LOGMICRO, "Create the result set");
-				SQL_RESULT *rp = sqlCreateResult(givenTableName, res);
+				SQL_RESULT *rp = sqlCreateResult(givenTableName, sqlres);
 				logMsg(LOGDEBUG, "Get each row from the result set");
 				while (sqlGetRow2Vars(rp) != SQL_EOF) {
 					emitStd(jam[ix]->trailer);
@@ -763,7 +785,7 @@ int control(int startIx, char *defaultTableName) {
 				while (jam[++ix]) {
 					if (++sanity > 1000) {
 						logMsg(LOGERROR, "Endless looping finding @end for @each in control()");
-						return(-1);
+						res = -1;
 					}
 					if (!strcmp(jam[ix]->command, "@end")) {
 						if (depth == 0)
@@ -783,7 +805,7 @@ int control(int startIx, char *defaultTableName) {
 
 				if (jam[ix])
 					emitStd(jam[ix]->trailer);
-				mysql_free_result(res);
+				mysql_free_result(sqlres);
 				free(givenTableName);
 				free(listName);
 			}
@@ -855,23 +877,23 @@ int control(int startIx, char *defaultTableName) {
 //		----------------------------------------
 		} else if (!(strcmp(cmd, "@Xinclude"))) {
 //		----------------------------------------
-			wordMiscInclude(ix, defaultTableName);
+			res = wordMiscInclude(ix, defaultTableName);
 //		--------------------------------------
 		} else if (!(strcmp(cmd, "@count"))) {
 //		--------------------------------------
-			wordMiscCount(ix, defaultTableName);
+			res = wordMiscCount(ix, defaultTableName);
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@sum"))) {
 //		------------------------------------
-			wordMiscSum(ix, defaultTableName);
+			res = wordMiscSum(ix, defaultTableName);
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@email"))) {
 //		------------------------------------
-			wordMiscEmail(ix, defaultTableName);
+			res = wordMiscEmail(ix, defaultTableName);
 //		---------------------------
 		} else if (!(strcmp(cmd, "@type"))) {
 //		------------------------------------
-			wordMiscType(ix, defaultTableName);
+			res = wordMiscType(ix, defaultTableName);
 //		---------------------------
 
 		} else if (cmd[0] != '@') {
@@ -994,6 +1016,10 @@ int control(int startIx, char *defaultTableName) {
 //		--------
 			emitStd(jam[ix]->trailer);
 		}
+
+		// Check fail
+		if ((strict) && (res == -1))
+			return(-1);
 
 		// Next
 		ix++;
