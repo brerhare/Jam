@@ -46,22 +46,11 @@
 	{{@html text field=stock_supplier.email size=medium label='Email address' placeholder=email}}
 	{{@html text field=stock_supplier.payment_terms size=mini label='Payment terms' placeholder=day}}
 	{{@html text field=stock_supplier.tax_reference size=small label='Tax reference' placeholder=CIF}}
-	{{@html textarea stock_supplier.notes 60x5 Notes}}
+	{{@html textarea field=stock_supplier.notes size=60x5 label=Notes}}
 
 	<br>
 
-	{{@Xhtml button Save primary small
-		alert('ok')		// or any js
-		//runJam
-		//runJam supplierMaint
-		//runAction updateSupplier supplierForm outp alert('back from ajax')
-		//runAction 'updateSupplier' 'supplierForm id' 'outp' backButton
-		//runAction updateSupplier supplierForm, outp, backButton
-		//runAction updateSupplier  'supplierForm supplier2' outp  runJam('containerMaint')
-	}}
-
 	<br>
-
 	<button type="button" onClick="runAction('updateSupplier', ['supplierForm'], 'outp', backButton)" class="uk-button uk-button-primary">Save</button>
 	<button type="button" onClick="backButton()" class="uk-button uk-button-primary">Cancel</button>
 
