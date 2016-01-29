@@ -8,6 +8,13 @@
 
 {{@literal on}}
 
+<h4>Global</h4>
+
+{@strict off/0/false}	ON by default. Means any top level word return aborts or continues the process
+{@notify fail}			FAIL by default. Can change, eg 'notify fail ok someothervalue'
+						or a command can override with 'notify' or 'notify=fail' or 'notify=ok'
+						options are OK, FAIL, off/0/false
+
 <h4>List</h4>
 
 {@new list mylist dir /jam/template}
