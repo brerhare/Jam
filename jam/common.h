@@ -71,6 +71,7 @@ extern VAR *var[MAX_VAR];
 #define NOTIFY_OK   0x01
 #define NOTIFY_FAIL 0x02
 extern unsigned int notify;
+extern int notifyStatus;
 
 int control(int startIx, char *defaultTableName);
 

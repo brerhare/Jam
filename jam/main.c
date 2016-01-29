@@ -504,6 +504,7 @@ int control(int startIx, char *defaultTableName) {
 		char *cmd = jam[ix]->command;
 		char *args = NULL;
 		char *rawData = NULL;
+		res = 0;
 
 		// Expand any {{values}} in the argument string with the current values
 
@@ -589,8 +590,6 @@ int control(int startIx, char *defaultTableName) {
 		}
 
 //	Second - all the if-elses
-
-		res = 0;
 
 //		-----------------------------------------
 		if (!(strcmp(cmd, "@!begin"))) {
@@ -1041,9 +1040,21 @@ int control(int startIx, char *defaultTableName) {
 			emitStd(jam[ix]->trailer);
 		}
 
+//@@TODO HACK ALERT!
+logMsg(LOGDEBUG, "RES is %d", res);
+if (res > 20) res = 0;
+
 		// Check fail
-		if ((strict) && (res == -1))
-			return(-1);
+		if (res == 0) {								// ok
+			if (notify & NOTIFY_OK)					// we said we want to be told about ok
+				if (notifyStatus == 0)				// no other status found already
+					notifyStatus = NOTIFY_OK;		// set to ok
+		} else {
+			if (notify & NOTIFY_FAIL)				// we said we want to be told about fail
+				notifyStatus = NOTIFY_FAIL;			// set to fail
+			if (strict)
+				return(-1);
+		}
 
 		// Next
 		ix++;
