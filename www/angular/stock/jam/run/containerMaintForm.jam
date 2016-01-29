@@ -14,16 +14,16 @@
 
 <h3>Input Container</h3>
 
-<div class="uk-grid">
-<div class="uk-width-1-1">
+<div class="uk-grid uk-width-1-1">
 
 <form name="containerForm" class="uk-form uk-form-horizontal">
 <!-- html input type fieldname size prompt placeholder -->
-	{{@html input hidden stock_container.id}}
-	{{@html input text stock_container.name medium Name name}}
-	{{@html input text stock_container.volume medium Volume 3m" "volume 3m"}}
+	{{@html text hidden field=stock_container.id}}
+	{{@html text field=stock_container.name size=medium label=Name placeholder=name}}
+	{{@html text field=stock_container.volume size=medium label='Volume 3m' placeholder='volume 3m'}}
+	{{@html text field=stock_container.weight size=medium label=Weight placeholder=weight}}
 	<br>
-	<button type="button" onClick="runAction('updateContainer', 'containerForm', 'outp', LOCALrunJam)" class="uk-button uk-button-primary">Save</button>
+	<button type="button" onClick="runAction('updateContainer', ['containerForm'], 'outp', LOCALrunJam)" class="uk-button uk-button-primary">Save</button>
 	<button type="button" onClick="backButton()" class="uk-button uk-button-primary">Cancel</button>
 </form>
 
@@ -31,15 +31,13 @@
 
 <div name="outp" style="border 10px solid black; Xheight:200px; Xwidth:500px;"></div>
 
-</div>	<!-- uk-width-3-5 -->
 </div>	<!-- uk-grid -->
 
 </div>	<!-- uk-container -->
 
 {{@action updateContainer}}
-	{{@database stock}}
 	{{stock_container.uid = 1}}
-	{{@new item stock_container}}
+	{{@update item stock_container}}
 {{@end}}
 
 <script>
