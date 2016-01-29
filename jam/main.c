@@ -38,14 +38,14 @@
 char *startJam = "{{";
 char *endJam = "}}";
 int literal = 0;
-int strict = 0;
+int strict = 1;					// abort on error, or fok maar voord
 JAM *jam[MAX_JAM];
 int jamIx = 0;
 char *tableStack[MAX_JAM];
 VAR *var[MAX_VAR];
 char *documentRoot = NULL;
 
-char *jamEntrypoint = NULL;		// action entrypoint. Hackily global because its used in other .c file(s)
+char *jamEntrypoint = NULL;		// action entrypoint. Hackily global because its used in other .c file(s) (move to common.c/h)
 
 // Common declares end
 
@@ -532,7 +532,7 @@ int control(int startIx, char *defaultTableName) {
 			if (args) {
 				getWord(tmp, args, 1, " \t");
 				if (*tmp) {
-					if ((!strcasecmp(tmp, "off")) || (!strcmp(tmp, "0")))
+					if ( (!strcasecmp(tmp, "off")) || (!strcmp(tmp, "0")) || (!strcmp(tmp, "false")) )
 						literal = 0;
 				}
 			}
@@ -559,14 +559,38 @@ int control(int startIx, char *defaultTableName) {
 			if (args) {
 				getWord(tmp, args, 1, " \t");
 				if (*tmp) {
-					if ((!strcasecmp(tmp, "off")) || (!strcmp(tmp, "0")))
+					if ( (!strcasecmp(tmp, "off")) || (!strcmp(tmp, "0")) || (!strcmp(tmp, "false")) )
 						strict = 0;
 				}
 			}
+			if (strict)
+				logMsg(LOGDEBUG, "@strict set to ON");
+			else
+				logMsg(LOGDEBUG, "@strict set to OFF");
 		}
-		res = 0;
+
+//		-----------------------------------------
+		if (!strcmp(cmd, "@notify")) {
+//		-----------------------------------------
+			if (args) {
+				int cnt = 1;
+				while (1) {
+					getWord(tmp, args, cnt++, " \t");
+					if (!strlen(tmp))
+						break;
+					if ( (!strcasecmp(tmp, "off")) || (!strcmp(tmp, "0")) || (!strcmp(tmp, "false")) )
+						notify = 0;
+					else if (!strcasecmp(tmp, "fail"))
+						notify |= NOTIFY_FAIL;
+					else if (!strcasecmp(tmp, "ok"))
+						notify |= NOTIFY_OK;
+				}
+			}
+		}
 
 //	Second - all the if-elses
+
+		res = 0;
 
 //		-----------------------------------------
 		if (!(strcmp(cmd, "@!begin"))) {

@@ -68,6 +68,10 @@ typedef struct {
 extern int LAST_VAR;
 extern VAR *var[MAX_VAR];
 
+#define NOTIFY_OK   0x01
+#define NOTIFY_FAIL 0x02
+extern unsigned int notify;
+
 int control(int startIx, char *defaultTableName);
 
 // Common.c functions
