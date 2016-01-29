@@ -100,7 +100,7 @@ return array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@wireflydesign.com',
         // These are used by the shopping cart checkout process
-        'checkoutEmail'=>'bryce@brycewalkervending.com',
+        'checkoutEmail'=>'scan24@aol.com',
         'checkoutName'=>'Bryce Walker Vending',
         // Test gateway
         'checkoutGatewayUser'=>'WIREFL-5188100',
