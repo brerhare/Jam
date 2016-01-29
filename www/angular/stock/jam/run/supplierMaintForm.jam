@@ -17,14 +17,13 @@
 <div class="uk-width-3-5">
 
 <form name="supplierForm" class="uk-form uk-form-horizontal">
-	{{@html input disabled stock_supplier.id small 'Supplier Code' code}}
-	{{@html input text stock_supplier.name large Name name}}
-	{{@html input text stock_supplier.address1 large 'Address line 1' 'address 1'}}
-	{{@html input text stock_supplier.address2 large 2 'address 2'}}
-	{{@html input text stock_supplier.address3 large 3 'address 3'}}
-	{{@html input text stock_supplier.post_code small 'Post code' 'post code'}}
-	{{@html input text stock_supplier.country medium Country country}}
-	{{@html input text stock_supplier.contact large 'Contact person' contact}}
+	{{@html text field=stock_supplier.name size=large label=Name placeholder=name}}
+	{{@html text field=stock_supplier.address1 size=large label='Address line 1' placeholder='address 1'}}
+	{{@html text field=stock_supplier.address2 size=large label=2 placeholder='address 2'}}
+	{{@html text field=stock_supplier.address3 size=large label=3 placeholder='address 3'}}
+	{{@html text field=stock_supplier.post_code size=small label='Post code' placeholder='post code'}}
+	{{@html text field=stock_supplier.country size=medium label=Country placeholder=country}}
+	{{@html text field=stock_supplier.contact size=large label='Contact person' placeholder=contact}}
 
 	<div class="uk-form-row">
 		<label class="uk-form-label" for="stock_supplier.telephone">Numbers</label>
@@ -44,9 +43,9 @@
 		</div>
 	</div>
 
-	{{@html input text stock_supplier.email medium 'Email address' email}}
-	{{@html input text stock_supplier.payment_terms mini 'Payment terms' day}}
-	{{@html input text stock_supplier.tax_reference small 'Tax reference' CIF}}
+	{{@html text field=stock_supplier.email size=medium label='Email address' placeholder=email}}
+	{{@html text field=stock_supplier.payment_terms size=mini label='Payment terms' placeholder=day}}
+	{{@html text field=stock_supplier.tax_reference size=small label='Tax reference' placeholder=CIF}}
 	{{@html textarea stock_supplier.notes 60x5 Notes}}
 
 	<br>
@@ -63,9 +62,7 @@
 
 	<br>
 
-<!--	<button type="button" onClick="runAction('updateSupplier', 'supplierForm', 'outp', backButton)" class="uk-button uk-button-primary">Save</button>	-->
-	<button type="button" onClick="LOCALrunAction('updateSupplier', 'supplierForm', 'outp', backButton)" class="uk-button uk-button-primary">Save</button>
-
+	<button type="button" onClick="runAction('updateSupplier', ['supplierForm'], 'outp', backButton)" class="uk-button uk-button-primary">Save</button>
 	<button type="button" onClick="backButton()" class="uk-button uk-button-primary">Cancel</button>
 
 </form>
@@ -84,16 +81,8 @@
 {{@end}}
 
 <script>
-function LOCALrunAction(action, pre, post, next) {
-/*****
-	var x = document.forms["supplierForm"]["stock_supplier.code"].value;
-	if (x == null || x == "" || isNaN(x)) {
-		alert('code should be numeric');
-		return;
+	window.onload = function() {
 	}
-*****/
-	runAction('updateSupplier', 'supplierForm', 'outp', backButton);
-}
 </script>
 
 {{@include /jam/sys/html/footer.html}}

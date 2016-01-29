@@ -16,7 +16,7 @@
 }}
 
 {{@template COLUMNS
-	<td> {{@html gridinp text simd_lookup.postcode medium}} </td>
+	<td> {{@html text field=simd_lookup.postcode size=medium}} </td>
 }}
 
 {{@template EDITS postcode}}

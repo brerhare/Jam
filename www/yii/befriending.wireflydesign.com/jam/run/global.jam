@@ -19,17 +19,16 @@
 
 <!-- Template defines for the form input component -->
 {{@template FORMINPUT
-
-	{{@html input text global.forename medium 'forename'}}
-	{{@html input text global.surname medium 'surname'}}
-	{{@html input text global.house medium 'house'}}
-	{{@html input text global.street medium 'street'}}
-	{{@html input text global.area medium 'area'}}
-	{{@html input text global.town medium 'town'}}
-	{{@html input text global.postcode medium 'postcode'}}
-	{{@html input text global.landline medium 'landline'}}
-	{{@html input text global.mobile medium 'mobile'}}
-	{{@html input text global.email medium 'email'}}
+	{{@html text field=global.forename size=medium label='forename'}}
+	{{@html text field=global.surname size=medium label='surname'}}
+	{{@html text field=global.house size=medium label='house'}}
+	{{@html text field=global.street size=medium label='street'}}
+	{{@html text field=global.area size=medium label='area'}}
+	{{@html text field=global.town size=medium label='town'}}
+	{{@html text field=global.postcode size=medium label='postcode'}}
+	{{@html text field=global.landline size=medium label='landline'}}
+	{{@html text field=global.mobile size=medium label='mobile'}}
+	{{@html text field=global.email size=medium label='email'}}
 
 }}
 

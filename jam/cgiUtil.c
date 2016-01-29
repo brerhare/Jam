@@ -123,7 +123,7 @@ char **getcgivars() {
 	pairlist[paircount]= 0 ;    /* terminate the list with NULL */
 
 	/** Then, from the list of pairs, extract the names and values. **/
-	cgivars= (char **) malloc((paircount*2+1)*sizeof(char **)) ;
+	cgivars = (char **) malloc((paircount*2+1)*sizeof(char **)) ;
 	for (i= 0; i<paircount; i++) {
 		if (eqpos=strchr(pairlist[i], '=')) {
 			*eqpos= '\0' ;

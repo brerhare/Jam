@@ -1,4 +1,7 @@
 {{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/menu.jam}}
 
 <style>
 	div { width:600px; }
@@ -16,7 +19,7 @@
 }}
 
 {{@template COLUMNS
-	<td> {{@html gridinp text medical_type.name medium Condition condition}} </td>
+	<td> {{@html text field=medical_type.name size=medium label=Condition placeholder=condition}} </td>
 }}
 
 {{@template EDITS name}}

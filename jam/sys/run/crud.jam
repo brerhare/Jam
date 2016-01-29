@@ -11,37 +11,37 @@
 </style>
 
 <h3> DESCRIPTION </h3>
-	<div name="content" class="uk-overflow-container">
+	<div name="content_TABLE" class="uk-overflow-container">
 		<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
 			<tr>
 				HEADINGS
-				<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('maintain', ' ', 'content')"> <i class="uk-icon-plus"></i> New</button> </th>
+				<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('maintain_TABLE', [], 'content_TABLE')"> <i class="uk-icon-plus"></i> New</button> </th>
 			</tr>
 {{@each TABLE FILTER}}
-			<tr class="rowHighlight" onClick="runAction('maintain', 'TABLE.id={{id}}', 'content')">
+			<tr class="rowHighlight" onClick="runAction('maintain_TABLE', ['TABLE.id={{id}}'], 'content_TABLE')">
 				COLUMNS
-				<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{DELETEFIELD}}')"> <i class="uk-icon-trash"></i></button> </td>
+				<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_TABLE('{{id}}','{{DELETEFIELD}}')"> <i class="uk-icon-trash"></i></button> </td>
 			</tr>
 {{@end}}
 		</table>
 </div>	<!-- uk-overflow-container -->
 
 <script>
-function confirmDelete(id, displayInfo) {
+function confirmDelete_TABLE(id, displayInfo) {
 	window.event.cancelBubble = true;	// Prevent any further events
 	var result = confirm('Confirm delete of item ' + displayInfo);
 	if (result)
-		runAction('delete', 'TABLE.id='+id, '', runJam);	
+		runAction('delete_TABLE', ['TABLE.id='+id], '', runJam);	
 }
 </script>
 
-{{@action delete}}
+{{@action delete_TABLE}}
 	{{@remove item TABLE}}
 {{@end}}
 
 <!-- Form input component -->
 
-{{@action maintain}}
+{{@action maintain_TABLE}}
 	{{@get TABLE filter id = TABLE.id}}
 
 	<style type="text/css">
@@ -51,13 +51,13 @@ function confirmDelete(id, displayInfo) {
 	<div class="uk-container uk-container-center">
 		<div class="uk-grid">
 			<div class="uk-width-3-5">
-				<form name="inputForm" class="uk-form uk-form-horizontal">
+				<form name="inputForm_TABLE" class="uk-form uk-form-horizontal">
 					<input type="hidden" name="TABLE.id" value="{{TABLE.id}}">
 					FORMINPUT
 					<br>
 					<center>
 						{{@html button Save primary medium
-							runAction('update', 'inputForm', '', runJam)
+							runAction('update_TABLE', ['inputForm_TABLE'], '', runJam)
 						}}
 						{{@html button Cancel primary medium
 							runJam();
@@ -69,7 +69,7 @@ function confirmDelete(id, displayInfo) {
 	</div>
 {{@end}}
 
-{{@action update}}
+{{@action update_TABLE}}
 	{{@update item TABLE}}
 {{@end}}
 

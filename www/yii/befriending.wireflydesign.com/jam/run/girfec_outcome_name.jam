@@ -1,4 +1,7 @@
 {{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/menu.jam}}
 
 <style>
 	div { width:650px; }
@@ -16,7 +19,7 @@
 }}
 
 {{@template COLUMNS
-	<td> {{@html gridinp text girfec_outcome_name.description large}} </td>
+	<td> {{@html text field=girfec_outcome_name.description size=large}} </td>
 }}
 
 {{@template EDITS description}}

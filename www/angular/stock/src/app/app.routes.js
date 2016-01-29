@@ -26,12 +26,6 @@ angular.module('stock')
         templateUrl: 'app/home/transaction/purchaseOrder/purchaseOrder.html',
         controller: 'PurchaseOrderCtrl'
       })
-      .state('home.purchase-delivery', {
-        url: '/transaction/purchaseDelivery',
-        templateUrl: 'app/home/transaction/purchaseDelivery/purchaseDelivery.html',
-        controller: 'PurchaseDeliveryCtrl'
-      })
-
 
 // Suppliers
 // ---------

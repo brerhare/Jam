@@ -23,11 +23,10 @@
 
 <!-- Template defines for the form input component -->
 {{@template FORMINPUT
-
-	{{@html input date event.date medium 'Date'}}
-	{{@html input text event.date medium 'Date'}}
-	{{@html textarea event.comments 60x5 Notes}}
-	{{@html input dropdown event.event_type_id event_type.name medium 'Event Type'}}
+	{{@html date field=event.date size=medium label='Date'}}
+	{{@html text field=event.date size=medium label='Date'}}
+	{{@html textarea field=event.comments size=60x5 label=Notes}}
+	{{@html dropdown field=event.event_type_id pickfield=event_type.name size=medium label='Event Type'}}
 }}
 
 <!-- Include the template -->

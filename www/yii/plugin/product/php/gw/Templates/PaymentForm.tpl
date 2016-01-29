@@ -9,6 +9,7 @@
 <input type="hidden" name="Address2" value="" />
 <input type="hidden" name="Address3" value="" />
 <input type="hidden" name="Address4" value="" />
+<input type="hidden" name="PostCode" value="" />
 
 <!-- ------------------------------------------------------------- -->
 
@@ -138,13 +139,13 @@
             <input name="State" value="<?= $State ?>" class="InputTextField" MaxLength="50" />
         </div>
     </div>
--->
     <div class="FormItem">
         <div class="FormLabel">Post Code:</div>
         <div class="FormInput">
             <input name="PostCode" value="<?= $PostCode ?>" class="InputTextField" MaxLength="50" />
         </div>
     </div>
+-->
 <!--
     <div class="FormItem">
         <div class="FormLabel">

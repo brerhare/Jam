@@ -15,26 +15,13 @@
 <h3>Input Container</h3>
 
 <div class="uk-grid">
-<div class="uk-width-5-10">
+<div class="uk-width-1-1">
 
 <form name="containerForm" class="uk-form uk-form-horizontal">
 <!-- html input type fieldname size prompt placeholder -->
 	{{@html input hidden stock_container.id}}
 	{{@html input text stock_container.name medium Name name}}
-	{{@html input text stock_container.volume medium "Volume 3m" "volume 3m"}}
-	<br>
-	<button type="button" onClick="runAction('updateContainer', 'containerForm', 'outp', LOCALrunJam)" class="uk-button uk-button-primary">Save</button>
-	<button type="button" onClick="backButton()" class="uk-button uk-button-primary">Cancel</button>
-</form>
-
-</div>
-<div class="uk-width-5-10">
-
-<form name="containerForm2" class="uk-form uk-form-horizontal">
-<!-- html input type fieldname size prompt placeholder -->
-	{{@html input hidden stock_container.id}}
-	{{@html input text stock_container.volume medium "Volume 3m" "volume 3m"}}
-	{{@html input text stock_container.name medium Name name}}
+	{{@html input text stock_container.volume medium Volume 3m" "volume 3m"}}
 	<br>
 	<button type="button" onClick="runAction('updateContainer', 'containerForm', 'outp', LOCALrunJam)" class="uk-button uk-button-primary">Save</button>
 	<button type="button" onClick="backButton()" class="uk-button uk-button-primary">Cancel</button>
