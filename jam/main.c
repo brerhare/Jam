@@ -1042,7 +1042,7 @@ int control(int startIx, char *defaultTableName) {
 
 //@@TODO HACK ALERT!
 logMsg(LOGDEBUG, "RES is %d", res);
-if (res > 20) res = 0;
+if ((res != 0) && (res != -1)) res = 0;
 
 		// Check fail
 		if (res == 0) {								// ok
