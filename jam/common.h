@@ -70,6 +70,8 @@ extern VAR *var[MAX_VAR];
 
 #define NOTIFY_OK   0x01
 #define NOTIFY_FAIL 0x02
+#define NOTIFY_INFO 0x04
+#define NOTIFY_WARN 0x08
 extern unsigned int notify;
 extern int notifyStatus;
 

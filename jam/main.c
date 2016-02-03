@@ -575,6 +575,7 @@ int control(int startIx, char *defaultTableName) {
 //		-----------------------------------------
 			if (args) {
 				int cnt = 1;
+				notify = 0;
 				while (1) {
 					getWord(tmp, args, cnt++, " \t");
 					if (!strlen(tmp))
@@ -585,6 +586,10 @@ int control(int startIx, char *defaultTableName) {
 						notify |= NOTIFY_FAIL;
 					else if (!strcasecmp(tmp, "ok"))
 						notify |= NOTIFY_OK;
+					else if (!strcasecmp(tmp, "info"))
+						notify |= NOTIFY_INFO;
+					else if (!strcasecmp(tmp, "warn"))
+						notify |= NOTIFY_WARN;
 				}
 			}
 		}
@@ -1044,13 +1049,39 @@ int control(int startIx, char *defaultTableName) {
 logMsg(LOGDEBUG, "RES is %d", res);
 if ((res != 0) && (res != -1)) res = 0;
 
+		// Check if we're overriding the regular notify for just this word
+		unsigned int thisNotify = notify;
+		if (isVar("sys.control.notify")) {
+			thisNotify = 0;
+			char *pNotify = strdup(getVarAsString("sys.control.notify"));
+			int nCnt = 1;
+			while (1) {
+				char *opt = getWordAlloc(pNotify, nCnt++, ",");
+				if ((!opt) || (!strlen(opt)))
+					break;
+				logMsg(LOGDEBUG, "notify override set to [%s]", opt);
+				if (!strcasecmp(opt, "ok")) {
+					logMsg(LOGDEBUG, "notify override or equalled [%s]", opt);
+					thisNotify |= NOTIFY_OK;
+				}
+				else if (!strcasecmp(opt, "fail"))
+					thisNotify |= NOTIFY_FAIL;
+				else if (!strcasecmp(opt, "info"))
+					thisNotify |= NOTIFY_INFO;
+				else if (!strcasecmp(opt, "warn"))
+					thisNotify |= NOTIFY_WARN;
+				free(opt);
+			}
+			free(pNotify);
+		}
+
 		// Check fail
 		if (res == 0) {								// ok
-			if (notify & NOTIFY_OK)					// we said we want to be told about ok
+			if (thisNotify & NOTIFY_OK)				// we said we want to be told about ok
 				if (notifyStatus == 0)				// no other status found already
 					notifyStatus = NOTIFY_OK;		// set to ok
 		} else {
-			if (notify & NOTIFY_FAIL)				// we said we want to be told about fail
+			if (thisNotify & NOTIFY_FAIL)			// we said we want to be told about fail
 				notifyStatus = NOTIFY_FAIL;			// set to fail
 			if (strict)
 				return(-1);

@@ -52,7 +52,7 @@ char *oobFileName = "/tmp/oobData.tmp";
 
 int LAST_VAR = -1;				// used globally to indicate the current top
 
-unsigned int notify = NOTIFY_OK;		// NOTIFY_OK, NOTIFY_FAIL etc
+unsigned int notify = NOTIFY_FAIL;		// NOTIFY_OK, NOTIFY_FAIL, NOTIFY_OK | NOTIFY_FAIL etc
 int notifyStatus = 0;					// *this* status
 
 //-----------------------------------------------------------
