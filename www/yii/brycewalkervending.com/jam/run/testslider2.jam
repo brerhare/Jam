@@ -1,0 +1,24 @@
+{{@include /jam/sys/html/header.html}}
+
+{{@database test_wireflydesign_com}}
+
+{{@template OPTIONS whatever options go here}}
+{{@template SLIDER
+	{{@each jelly_slider_image}}
+
+            <div data-p="112.50" style="display: none;">
+                <img data-u="image" src="/userdata/jelly/sliderimage/{{image}}" />
+                <div data-u="thumb">
+                    <img class="i" src="/userdata/jelly/sliderimage/{{image}}" />
+                    <div class="t">{{title}}</div>
+<!--                    <div class="c">360+ touch swipe slideshow effects</div> -->
+                </div>
+            </div>
+
+	{{@end}}
+}}
+
+<!-- Call the addon -->
+{{@include /jam/run/sys/jssorSlider2.jam}}
+
+{{@include /jam/sys/html/footer.html}}
