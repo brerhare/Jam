@@ -119,7 +119,7 @@ $('#myTabs').tabs( "option", "active" , 1 )
 
 {{@action savePurchaseOrder}}
 	{{stock_supplier_order.reference = ref}}
-	{{@update item stock_supplier_order}}
+	{{@update item stock_supplier_order notify=ok}}
 {{@end}}
 
 <script>
