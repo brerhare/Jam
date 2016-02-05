@@ -8,6 +8,14 @@
 
 {{@literal on}}
 
+<h4>Global</h4>
+
+{@strict off/0/false}	ON by default. Determines whether any top level word return aborts or continues the process
+{@notify fail}			What you want to be notified about (if anything)
+						FAIL by default. Can have multiple, eg 'notify fail ok someothervalue'
+						or a command can override with 'notify=off' or 'notify=fail' or 'notify=ok,fail'
+						options are OK, FAIL, off/0/false
+
 <h4>List</h4>
 
 {@new list mylist dir /jam/template}
@@ -47,7 +55,7 @@
 {@clear item product}
 {@new item product}
 {@amend item product}
-{@update item product}
+{@update item product}		// either new or amend
 {@remove item product}
 
 {@remove index product nameindex
@@ -166,12 +174,12 @@ Optional for any - label, group, disabled
 
 <h5>Javascript supplied functions</h5>
 
-runJam templateName
-	runJam('name.tpl')
+runJam fileName
+	runJam('name.jam')
 	runJam
-runAction [jamName:]actionName, [formName(s)], [resultObjectName], [callback]
+runAction [jamName:]actionName, [name(s)/id(s)/class], [resultObjectName], [callback]
 	runAction('save')
-	runAction('jam2:save', 'form1 form2', 'divThatGetsTheResult'), backButton()
+	runAction('jam2:save', ['form1,form2'], 'divThatGetsTheResult', backButton )
 
 <hr>
 <h4>Utility</h4>

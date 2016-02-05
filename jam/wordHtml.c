@@ -31,6 +31,7 @@ char *makeJamKeyValue(char *tableName, char *fieldName, char *rawValue);
 int wordHtmlContainer(int ix, char *defaultTableName) {
 	char *tmp = (char *) calloc(1, 4096);
 	char *center = NULL;
+	char *noMargin = NULL;
 	char *css = NULL;
 
 	// Start or End
@@ -52,6 +53,12 @@ int wordHtmlContainer(int ix, char *defaultTableName) {
 	else
 		center = strdup("");
 
+	// NoMargin
+	if ((isVar("sys.control.nomargin")) || (isVar("sys.control.nomargin")))
+		noMargin = strdup("uk-margin-remove");
+	else
+		noMargin = strdup("");
+
 	// Css
 	if (isVar("sys.control.css"))
 		css = strdup(getVarAsString("sys.control.css"));
@@ -62,8 +69,10 @@ int wordHtmlContainer(int ix, char *defaultTableName) {
 	jb.stream = STREAMOUTPUT_STD;
 	char *templateStr = (char *) calloc(1, 4096);
 	sprintf(templateStr, "{{@template CONTAINER_CENTER %s}}	\
+						  {{@template CONTAINER_MARGIN %s}} \
 						  {{@template CONTAINER_CSS %s}}",
 							center,
+							noMargin,
 							css
 							);
 
@@ -72,6 +81,7 @@ int wordHtmlContainer(int ix, char *defaultTableName) {
 
 	free(tmp);
 	free(center);
+	free(noMargin);
 	free(css);
 	emitStd(jam[ix]->trailer);
 }
@@ -815,7 +825,7 @@ int wordHtmlRadio(int ix, char *defaultTableName) {
 			checked = strdup("checked");
 		else
 			checked = strdup("");
-		sprintf(tmp, "<label><input type='radio' %s name='%s.%s' value='%s' onChange='fn(this, event);' %s %s>%s</label> \n", firstId, table, field, optA, checked, disabled, optB);
+		sprintf(tmp, "<label><input type='radio' %s name='%s.%s' value='%s' class='%s' onClick='fn(this, event)' %s %s>%s</label> \n", firstId, table, field, optA, group, checked, disabled, optB);
 		*firstId = '\0';
 		strcat(optionStr, tmp);
 		free(checked);

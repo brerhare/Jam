@@ -1,4 +1,8 @@
 {{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/menu.jam}}
+
 
 <style>
 	div { width:600px; }

@@ -8,8 +8,9 @@
 <br>
 {{@html container start center nomargin css='max-width:900px; padding:0}}
 
-	{{@get young_person filter id = young_person.id}}
+	{{@get young_person filter id = ypId}}
 	{{@get global filter id = young_person.global_id}}
+	{{@get contact filter id = refId}}
 
 	<style type="text/css">
 		label {text-align: right; width:150px !important}
@@ -20,11 +21,13 @@
 		<input type="hidden" name="young_person.id" value="{{young_person.id}}">
 		<input type="hidden" name="global.id" value="{{young_person.global_id}}">
 
+<br>
+<center> <h3> Details of the young Person you are referring</h3> </center>
+
 		{{@html gridrow start}}
 			{{@html gridcol start width=5-10}}
 
-				<input type="hidden" name="young_person.referrer_form_id" value="999999"> <!-- @@TODO! -->
-				{{@html hidden field=young_person.referrer_form_id}}
+				{{@html hidden field=young_person.referrer_form_id}} <!-- @@TODO -->
 				{{@html date field=young_person.referral_date size=medium label='Referral date' group=inp}}
 				{{@html text field=global.forename size=large label='Forename' group=inp}}
 				{{@html text field=global.surname size=large label='Surname' group=inp}}
@@ -62,7 +65,8 @@
 			{{@html gridcol start width=1-1}}
 				<br>
 				<center>
-					<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="runAction('update_young_person', ['inputForm_young_person'], '', disableButton(this))">Save</button> </td>
+					<button type='button' class="uk-button uk-button-primary" onClick="backToPrev()"> Prev </button> </td>
+					<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="updateAndNext()"> Next </button> </td>
 				</center>
 			{{@html gridcol end}}
 		{{@html gridrow end}}
@@ -78,31 +82,58 @@ window.onload = function() {
 		name = name.replace(".", "_");
 		//alert(name);
 		window[name] = function (obj) {
-			document.getElementById('saveButton').disabled = false;
+//			document.getElementById('saveButton').disabled = false;
 		}
 	}
-	document.getElementById('saveButton').disabled = true;
+//	document.getElementById('saveButton').disabled = true;
 }
 function disableButton(me) {
-	me.disabled = true;
+//	me.disabled = true;
 }
+
+function backToPrev() {
+	objReferrer = get('refId');
+	objYP = get('young_person.id');
+//alert('r='+objReferrer.value+' and yp='+objYP.value);
+	runJam('referralFormReferrer?refId='+objReferrer.value+'&ypId='+objYP.value);
+}
+
+function updateAndNext() {
+	objGlobalForename = get('global.forename');
+	if ((objGlobalForename.value.length) < 1) {
+		alert('Forename is required');
+		return;
+	}
+	objGlobalSurname = get('global.surname');
+	if ((objGlobalSurname.value.length) < 1) {
+		alert('Surname is required');
+		return;
+	}
+	runAction('update_young_person', ['inputForm_young_person'], '', forwardToNext);
+}
+
+function forwardToNext() {
+	objReferrer = get('refId');
+	objYP = get('young_person.id');
+	if ((objYP.value == '0') || (objYP.value == '-1')) {
+		alert('Young person details not yet saved');
+		return;
+	}
+//alert('going fwd. r='+objReferrer.value+' and yp='+objYP.value);
+    runJam('referralFormContacts?refId='+objReferrer.value+'&ypId='+objYP.value);
+
+}
+
 </script>
 
 {{@action update_young_person}}
 	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
 	{{young_person.global_id = global.id}}
 	{{@update item young_person}}
-{{@end}}
-
-{{@action email_young_person}}
-	{{@get young_person filter id = young_person.id}}
-	{{@get global filter id = young_person.global_id}}
-	{{@email k@microboot.com {{global.email}}  'Befriending referral form for {{global.forename}} {{global.surname}}' action:emailContent}}
-	Email sent
-{{@end}}
-
-{{@action emailContent}}
-	Whatever is here gets used as the mmail body content. <br>It will be a link like <a href="http://befriending.wireflydesign.com/run/referralForm.jam?accesskey=gj3x9dsmcNcj2hvgsxz3sjpOvR">this</a> to click on.
+	{{@get contact filter id = refId}}
+	{{contact.young_person_id = young_person.id}}
+	{{contact.contact_relationship_id = 3}}
+	{{@update item contact}}
 {{@end}}
 
 {{@html container end}}

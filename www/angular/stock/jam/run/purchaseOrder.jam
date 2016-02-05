@@ -41,7 +41,7 @@ function confirmDelete(id, ref) {
 	window.event.cancelBubble = true;	// Prevent any further events
 	var result = confirm('Confirm delete of order with reference ' + ref);
 	if (result) {
-		runAction('deletePO', 'stock_supplier_order.id='+id, '', runJam);	
+		runAction('deletePO', ['stock_supplier_order.id='+id], '', runJam);	
 	}
 }
 </script>
