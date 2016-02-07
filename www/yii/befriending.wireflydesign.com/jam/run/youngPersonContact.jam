@@ -23,6 +23,7 @@
 		<tr>
 			<th> Forename </th>
 			<th> Surname </th>
+			<th> Email </th>
 			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('maintain_contact', [], 'content_contact')"> <i class="uk-icon-plus"></i> New</button> </th>
 		</tr>
 {{@each contact filter young_person_id = young_person.id}}
@@ -30,6 +31,7 @@
 		<tr class="rowHighlight" onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">
 			<td>{{global.forename}}</td>
 			<td>{{global.surname}}</td>
+			<td>{{global.email}}</td>
 			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_contact('{{contact.id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i></button> </td>
 		</tr>
 {{@end}}
