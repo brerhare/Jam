@@ -45,6 +45,16 @@
             </tr>
 {{@end}}
         </table>
+
+		<br>
+			<br>
+			Medication<br>
+			<textarea cols="80" rows="2" name="x" placeholder="Medication" class="ROW_793940 inp"></textarea>
+		<br>
+			<br>
+			Medical condition notes<br>
+			<textarea cols="80" rows="6" name="x" placeholder="Medical condition notes" class="ROW_793940 inp"></textarea>
+			<br><br>
     </div>
 
 <script>
