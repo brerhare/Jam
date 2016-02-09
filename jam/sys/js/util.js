@@ -393,18 +393,22 @@ console.log('found oob data:' + oobData + ' of length ' + oobData.length);
 		for (i = 0; i < oob.length; i++) {
 			var oobName = oob[i]['name'];
 			var oobValue = oob[i]['value'];
-			var obj = document.getElementsByName(oobName);
-			if (obj[0] == null) {
-				var input = document.createElement("input");
-				input.setAttribute("type", "hidden");
-				input.setAttribute("name", oobName);
-				input.setAttribute("id", oobName);
-				input.setAttribute("value", oobValue);
-console.log('creating ' + oobName + ' : ' + oobValue);
-				document.body.appendChild(input);
+			if (oobName == 'notifyStatus') {
+				notifyStatus(oobValue);
 			} else {
+				var obj = document.getElementsByName(oobName);
+				if (obj[0] == null) {
+					var input = document.createElement("input");
+					input.setAttribute("type", "hidden");
+					input.setAttribute("name", oobName);
+					input.setAttribute("id", oobName);
+					input.setAttribute("value", oobValue);
+console.log('creating ' + oobName + ' : ' + oobValue);
+					document.body.appendChild(input);
+				} else {
 console.log('updating ' + oobName + ' : ' + oobValue);
-				obj[0].value = oobValue;
+					obj[0].value = oobValue;
+				}
 			}
 		}
 		// Strip out oob from data
@@ -412,6 +416,34 @@ console.log('updating ' + oobName + ' : ' + oobValue);
 	}
 	console.log('----- oob data ends -----------------------------------------------------------------');
 	return data;
+}
+
+function notifyStatus(status) {
+	toastr.options = {
+		"preventDuplicates": true,
+		"timeOut": "200",
+		"closeButton": false,
+		"debug": false,
+		"newestOnTop": false,
+		"progressBar": false,
+		"positionClass": "toast-top-right",
+		"onclick": null,
+		"showDuration": "300",
+		"hideDuration": "1000",
+		"extendedTimeOut": "1000",
+		"showEasing": "swing",
+		"hideEasing": "linear",
+		"showMethod": "fadeIn",
+		"hideMethod": "fadeOut"
+	}
+	if (status == 'ok')
+		toastr.success('success');
+	else if (status == 'fail')
+		toastr.error('error');
+	else if (status == 'info')
+		toastr.error('info');
+	else if (status == 'warn')
+		toastr.error('warning');
 }
 
 // Enable any <script> tags in the returned data

@@ -6,14 +6,13 @@
 
 	<li><a href="/run/youngPerson.jam"> Young Person </a>
 		<ul>
-			<li> <a href="/run/referral.jam"> Referrer </a></li>
-			<li> <a href="/run/referralForm.jam"> Refferal Form </a></li>
+			<li> <a href="/run/referrers.jam"> Referrers </a></li>
 		</ul>
 	</li>
 	
 	<li><a href="/run/befriender.jam"> Befrienders </a>
 		<ul>
-			<li> <a href="/run/referral.jam"> Referrer </a></li>
+			<li> <a href="/run/referrers.jam"> Referrers </a></li>
 		</ul>
 	</li>
 
@@ -41,6 +40,7 @@
 			<li> <a href="/run/medicalType.jam"> Medical Conditions </a></li>
 			<li> <a href="/run/contactRelationship.jam"> Relationship Types </a></li>
 			<li><a href="/run/status.jam"> Status Types </a>
+			<li><a href="/run/questionYoungPerson.jam"> Young Person Additional Questions </a>
 		</ul>
 	</li>
 	

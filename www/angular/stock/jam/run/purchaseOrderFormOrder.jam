@@ -18,7 +18,6 @@
 						<th> Pack </th>
 						<th> Item Price </th>
 						<th> Line Total </th>
-						<th> Volume </th>
             			<th style='min-width:50px;'>
                 			<button type='button' class="uk-button uk-button-mini uk-button-success" onClick="showNewRow()">
                     			<i class="uk-icon-plus"></i>
@@ -33,7 +32,6 @@
 						<td id="newRowPackSelectTD" class="newrow"  name="newRowPackSelectTD"> </td>
 						<td> {{@html text group=newrow disabled field=stock_product.cost size=small}} </td>
 						<td> {{@html text group=newrow disabled field=linetotal size=small}} </td>
-						<td> {{@html text group=newrow disabled field=linevolume size=small}} </td>
             			<td>
                 			<button type='button' class="uk-button uk-button-mini uk-button-primary" onClick="saveNewRowButtonClick()">
                     			<i class="uk-icon-save"></i>
@@ -68,6 +66,7 @@
 {{@action showOrderLines}}
 	{{total.cost = 0}}
 	{{total.volume = 0}}
+	{{total.weight = 0}}
 	{{@each stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id, order by id DESC}}
 		{{@get stock_container filter id = stock_supplier_order.container_id}}
 		{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
@@ -76,6 +75,8 @@
 		{{total.cost = total.cost + line.cost}}
 		{{line.volume = stock_product.volume * stock_supplier_order_item.total_qty}}
 		{{total.volume = total.volume + line.volume}}
+		{{line.weight = stock_product.weight * stock_supplier_order_item.total_qty}}
+		{{total.weight = total.weight + line.weight}}
 					<tr>
 						<td> {{@html text hidden field=stock_supplier_order_item.id}} </td>
 						<td> {{@html text disabled field=stock_product.code size=small}} </td>
@@ -86,7 +87,6 @@
 						<td> {{@html text disabled field=stock_pack.unit size=small}} </td>
 						<td> {{@html text disabled field=stock_product.cost size=small}} </td>
 						<td> {{@html text disabled field=line.cost size=small}} </td>
-						<td> {{@html text disabled field=line.volume size=small}} </td>
             			<td>
                 			<button type='button' class="uk-button uk-button-mini uk-button-danger" onClick="deleteRow('{{stock_supplier_order_item.id}}')">
                     			<i class="uk-icon-trash"></i>
@@ -95,11 +95,25 @@
 					</tr>
 	{{@end}}
 					<tr>
+						<td>&nbsp</td>
+						<td colspan=2>
+							Volume {{total.volume}} ({{stock_container.volume - total.volume}} free)
+						</td>
+						<td colspan=2>
+							Weight {{total.weight}} ({{stock_container.weight - total.weight}} free)
+						</td>
+						<td>&nbsp</td>
+						<td> {{total.cost}} </td>
+						<td></td>
+					</tr>
+<!--
+					<tr>
 						<td colspan=6> </td>
 						<td> {{total.cost}} </td>
 						<td> {{total.volume}} used</td>
 						<td style='text-align:right'> <b>{{stock_container.volume - total.volume}} free</b>.</td>
 					</tr>
+-->
 {{@end}}
 
 {{@action emailContent}}
@@ -146,7 +160,7 @@
 	{{stock_supplier_order_item.uid = 1}}
 	{{stock_supplier_order_item.supplier_product_ref = TODO}}
 	{{stock_supplier_order_item.stock_supplier_order_id = stock_supplier_order.id}}
-	{{@new item stock_supplier_order_item}}
+	{{@new item stock_supplier_order_item notify=ok}}
 {{@end}}
 
 {{@action deletePurchaseOrderRow}}
@@ -154,7 +168,7 @@
 {{@end}}
 
 {{@action changeOrderQty}}
-	{{@amend item stock_supplier_order_item}}
+	{{@amend item stock_supplier_order_item notify=ok}}
 {{@end}}
 
 {{@action recalcOrder}}

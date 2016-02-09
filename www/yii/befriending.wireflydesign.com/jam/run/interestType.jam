@@ -3,7 +3,6 @@
 
 {{@include /jam/run/menu.jam}}
 
-
 <style>
 	div { width:600px; }
 </style>
