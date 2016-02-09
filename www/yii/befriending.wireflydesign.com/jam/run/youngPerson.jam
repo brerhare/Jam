@@ -1,0 +1,81 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:1080px; Xpadding:0}}
+
+<h3> Young Person </h3>
+<div name="content">
+	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+		<tr>
+			<th> Forename </th>
+			<th> Surname </th>
+			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('showTabs', [], 'content')"> <i class="uk-icon-plus"></i> New</button> </th>
+		</tr>
+{{@each young_person}}
+		{{@get global filter id = young_person.global_id}}
+		<tr class="rowHighlight" onClick="runAction('showTabs', ['young_person.id={{young_person.id}}'], 'content')">
+			<td>{{global.forename}}</td>
+			<td>{{global.surname}}</td>
+			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i></button> </td>
+		</tr>
+{{@end}}
+	</table>
+</div>
+<br>
+
+<script>
+function confirmDelete(id, displayInfo) {
+	window.event.cancelBubble = true;	// Prevent any further events
+	var result = confirm('Confirm delete of item ' + displayInfo);
+	if (result)
+		runAction('delete', ['young_person.id='+id], '', runJam);	
+}
+</script>
+
+{{@action delete}}
+	{{@get young_person filter id = young_person.id}}
+	{{global.id = young_person.global_id}}
+	{{@remove item young_person}}
+	{{@remove item global}}	@@TODO - dont remove global if it has other links
+{{@end}}
+
+<!-- Form input component -->
+
+{{@action showTabs}}
+	{{@get young_person filter id = young_person.id}}
+	{{@get global filter id = young_person.global_id}}
+	<h3>
+	
+	<table>
+		<tr>
+					
+		<td>{{global.forename}}</td>
+		<td>{{global.surname}}</td>
+		<td>{{@html button 'Return to list' primary medium 
+			runJam
+		}}</td>
+			
+			
+		</tr>
+	</table>
+	
+	</h3>
+	{{@html tabs
+		label=Contacts		action=/run/youngPersonContact?young_person.id={{young_person.id}}
+		label=Details		action=/run/youngPersonDetails?young_person.id={{young_person.id}}
+		label=Interests		action=/run/youngPersonInterest?young_person.id={{young_person.id}}
+		label=Outcomes		action=/run/youngPersonOutcomes?young_person.id={{young_person.id}}
+		label=Medical		action=/run/youngPersonMedical?young_person.id={{young_person.id}}
+		label=Additional	action=/run/youngPersonAdditional?young_person.id={{young_person.id}}
+		label=Forms			action=/run/youngPersonForms?young_person.id={{young_person.id}}
+	}}
+{{@end}}
+
+{{@html container end}}
+
+{{@include /jam/sys/html/footer.html}}

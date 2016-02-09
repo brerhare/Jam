@@ -23,6 +23,64 @@ MYSQL *conn = NULL;
 char *connDbName = NULL;
 
 // ----------------------------------------------------------------
+// Utility
+
+int isMysqlTable(char *tableName) {
+	int ret = 0;
+	char *query = (char *) calloc(1, 4096);
+	sprintf(query, "SHOW TABLES LIKE '%s'", tableName);
+	MYSQL_RES *res;
+	if (mysql_query(conn, query) != 0) {
+		logMsg(LOGERROR, "isMysqlTable() query error - %s. Your query was [%s]", mysql_error(conn), query);
+		return(-1);
+	}
+	res = mysql_store_result(conn);
+	if (!res) {
+		char *tmp = (char *) calloc(1, 4096);
+		logMsg(LOGERROR, "isMysqlTable() - couldn't get results set: %s\n", mysql_error(conn));
+		mysql_free_result(res);
+		free(query);
+		return(-1);
+	}
+	if (mysql_num_rows(res) != 0)
+		ret = 1;
+	mysql_free_result(res);
+	free(query);
+	return ret;
+}
+
+int isMysqlField(char *fieldName, char *tableName) {
+	char *query = (char *) calloc(1, 4096);
+	sprintf(query, "SELECT * FROM %s LIMIT 1", tableName);
+//die(query);
+	MYSQL_RES *res;
+	if (mysql_query(conn, query) != 0) {
+		logMsg(LOGERROR, "isMysqlField() query error - %s. Your query was [%s]", mysql_error(conn), query);
+		return(-1);
+	}
+	res = mysql_store_result(conn);
+	if (!res) {
+		char *tmp = (char *) calloc(1, 4096);
+		logMsg(LOGERROR, "isMysqlField() - couldn't get results set: %s\n", mysql_error(conn));
+		mysql_free_result(res);
+		free(query);
+		return(-1);
+	}
+	int numFields = mysql_num_fields(res);
+	MYSQL_FIELD *field;
+	for (int i = 0; (field = mysql_fetch_field(res)); i++) {
+		if (!strcmp(field->name, fieldName)) {
+			mysql_free_result(res);
+			free(query);
+			return 1;
+		}
+	}
+	mysql_free_result(res);
+	free(query);
+	return 0;
+}
+
+// ----------------------------------------------------------------
 // Mapping
 
 struct SQLMAP {
@@ -69,6 +127,14 @@ char *getSqlOption(char *jamOption) {
 // mysql result handling
 
 SQL_RESULT *sqlCreateResult(char *tableName, MYSQL_RES *res) {
+	if (tableName == NULL) {
+		logMsg(LOGERROR, "sqlCreateResult: tableName param is NULL");
+		return NULL;
+	}
+	if (res == NULL) {
+		logMsg(LOGERROR, "sqlCreateResult: res param is NULL");
+		return NULL;
+	}
     SQL_RESULT *rp = (SQL_RESULT *) calloc(1, sizeof(SQL_RESULT));
 	if (tableName)
     	rp->tableName = (char *) strdup(tableName);
@@ -86,17 +152,43 @@ SQL_RESULT *sqlCreateResult(char *tableName, MYSQL_RES *res) {
     return rp;
 }
 
-int sqlGetRow2Var(SQL_RESULT *rp) {
-	MYSQL_ROW row;
-	row = mysql_fetch_row(rp->res);
+int sqlGetRow2Vars(SQL_RESULT *rp) {
+	if (rp == NULL) {
+		logMsg(LOGERROR, "sqlGetRow2Vars: param rp is NULL");
+		return(-1);
+	}
+	MYSQL_ROW row = mysql_fetch_row(rp->res);
 	if (row) {
-		logMsg(LOGMICRO, "sqlGetRow2Var() found a sql row, copying values to jam format");
+		logMsg(LOGMICRO, "sqlGetRow2Vars() found a sql row, copying values to jam format");
 		_updateSqlFields(rp->tableName, rp->mysqlHeaders, rp->mysqlTypes, rp->numFields, &row);
 		return SQL_OK;
 	}
-	logMsg(LOGMICRO, "sqlGetRow2Var() didnt find a sql row, initialising NULL jam format values");
-	_nullifySqlFields(rp->tableName, rp->mysqlHeaders, rp->mysqlTypes, rp->numFields, &row);
+	logMsg(LOGMICRO, "sqlGetRow2Vars() didnt find a sql row, initialising NULL jam format values");
+
+	sqlClearRowVars(rp); // I replaced the next line with this, so now a 'fail' sets id to -1
+	//_nullifySqlFields(rp->tableName, rp->mysqlHeaders, rp->mysqlTypes, rp->numFields);
+
 	return SQL_EOF;
+}
+
+// Zero all vars applicable to a sql record and set id to -1
+int sqlClearRowVars(SQL_RESULT *rp) {
+// @@FIX why do we need SQL_RESULT? Look at mysql_list_fields() (see http://ropas.snu.ac.kr/n/lib/manual074.html)
+	char *tmp = (char *) calloc(1, 4096);
+	_nullifySqlFields(rp->tableName, rp->mysqlHeaders, rp->mysqlTypes, rp->numFields);
+	sprintf(tmp, "%s.id", rp->tableName);
+	VAR *seekVar = findVarStrict(tmp);
+	if (!seekVar) {
+		logMsg(LOGERROR, "Cant clear item '%s' because no id var exists", rp->tableName);
+		return (-1);
+	}
+	if (seekVar->portableValue)
+		free(seekVar->portableValue);
+//	seekVar->portableValue = strdup("-1");
+	seekVar->type = VAR_NUMBER;
+	fillVarDataTypes(seekVar, "-1");
+	free(tmp);
+	return 0;
 }
 
 // ----------------------------------------------------------------
@@ -143,22 +235,21 @@ void _updateSqlFields(char *qualifier, char **mysqlHeaders, enum enum_field_type
 		char qualifiedName[256];
 		sprintf(qualifiedName, "%s.%s", qualifier, mysqlHeaders[i]);
 		updateSqlVar(qualifiedName, mysqlTypes[i], row[i]);
-//printf("HDR=[%s.%s]:[%s]\n", qualifier, mysqlHeaders[i], row[i]);
+//emitStd("HDR=[%s.%s]:[%s]\n", qualifier, mysqlHeaders[i], row[i]);
 	}
 }
-void _nullifySqlFields(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields, MYSQL_ROW *rowP) {
-	MYSQL_ROW row = *rowP;
+void _nullifySqlFields(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields) {
 	int i = 0;
 	for (i = 0; i < numFields; i++) {
 		char qualifiedName[256];
 		sprintf(qualifiedName, "%s.%s", qualifier, mysqlHeaders[i]);
 		updateSqlVar(qualifiedName, mysqlTypes[i], NULL);
-//printf("HDR=[%s.%s]:[%s]\n", qualifier, mysqlHeaders[i], row[i]);
+		//xxkimxx
 	}
 }
 void updateSqlVar(char *qualifiedName, enum enum_field_types mysqlType, char *value) {
 	if (!qualifiedName)
-		printf("NULL 'qualifiedName' passed to updateTableVar\n");
+		emitStd("NULL 'qualifiedName' passed to updateTableVar\n");
 	VAR *seekVar = findVarStrict(qualifiedName);
 	if (!seekVar) {
 		VAR *newVar = (VAR *) calloc(1, sizeof(VAR));
@@ -166,17 +257,12 @@ void updateSqlVar(char *qualifiedName, enum enum_field_types mysqlType, char *va
 		newVar->source = strdup("mysql");
 		newVar->debugHighlight = 5;
 		int ret = decodeMysqlType(newVar, mysqlType, value);
-//printf("TABLE-> NAME=%s TYPE=%d AVALUE=%s NVALUE=%ld DVALUE=%2.f\n", newVar->name, newVar->type, newVar->stringValue, newVar->numberValue, newVar->decimal2Value);
-		for (int i = 0; i < MAX_VAR; i++) {
-			if (!var[i]) {
-				var[i] = newVar;
-				return;
-			}
-		}
+//emitStd("TABLE-> NAME=%s TYPE=%d AVALUE=%s NVALUE=%ld DVALUE=%2.f\n", newVar->name, newVar->type, newVar->stringValue, newVar->numberValue, newVar->decimal2Value);
+		addVar(newVar);
 	} else {
-		for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
+		for (int i = 0; (i <= LAST_VAR); i++) {
 			if (!var[i])
-				break;
+				continue;
 			if (!strcmp(var[i]->name, qualifiedName)) {
 				int ret = decodeMysqlType(var[i], mysqlType, value);
 				break;
@@ -187,30 +273,6 @@ void updateSqlVar(char *qualifiedName, enum enum_field_types mysqlType, char *va
 
 // ----------------------------------------------------------------
 // General stuff
-
-int _isSqlFieldName(char *fieldName, char *tableName) {
-	char *query = (char *) calloc(1, 4096);
-	sprintf(query, "SELECT * FROM %s LIMIT 1", tableName);
-//die(query);
-	MYSQL_RES *res;
-	if (mysql_query(conn, query) != 0) {
-		die(mysql_error(conn));
-	}
-	res = mysql_store_result(conn);
-	if (!res) {
-		char *tmp = (char *) calloc(1, 4096);
-		sprintf(tmp, "Couldn't get results set: %s\n", mysql_error(conn));
-		die(tmp);
-	}
-	int numFields = mysql_num_fields(res);
-	MYSQL_FIELD *field;
-	for (int i = 0; (field = mysql_fetch_field(res)); i++) {
-		if (!strcmp(field->name, fieldName))
-			return 1;
-	}
-	return 0;
-}
-
 
 // This is the common code that used to be in @get and @each - now called from control() and wordDatabaseGet()
 MYSQL_RES *doSqlSelect(int ix, char *defaultTableName, char **givenTableName, int maxRows) {
@@ -223,7 +285,7 @@ MYSQL_RES *doSqlSelect(int ix, char *defaultTableName, char **givenTableName, in
     int skipCode = 0;
 
     // Get the given table name that we want to get
-    char *ta = args;
+    char *ta = strTrim(args);
     char *tg = *givenTableName;
     while ((*ta) && (*ta != ' ') && (*ta != '.'))	// Find ' ' or '.' which terminates the tablename;
         *tg++ = *ta++;
@@ -241,19 +303,21 @@ MYSQL_RES *doSqlSelect(int ix, char *defaultTableName, char **givenTableName, in
     strcat(query, s);
     free(s);
     // Do the query
-//printf("\n\n[%s]\n\n", query);
+//emitStd("\n\n[%s]\n\n", query);
 //die("kkk");
     MYSQL_RES *res;
     MYSQL_ROW row;
     if (mysql_query(conn, query) != 0) {
-        die(mysql_error(conn));
+        logMsg(LOGERROR, "doSqlSelect: mysql_query failed with '%s', ", mysql_error(conn));
+        return NULL;
     }
     res = mysql_store_result(conn);
       if (!res) {
-        sprintf(tmp, "Couldn't get results set: %s\n", mysql_error(conn));
-        die(tmp);
+        logMsg(LOGERROR, "Couldn't get results set: %s\n", mysql_error(conn));
+        return(NULL);
     }
     free(query);
+	free(tmp);
     return res;
 }
 
@@ -283,20 +347,26 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 	// Deal with each "<filter> a = b" phrase
 	for (int i = 0; i < MAX_SUBARGS; i++) {
 		if (subArg[i] == NULL) {
-			if (firstArg)
-				die("No arguments provided to @each/@get");
+			if (firstArg) {
+				logMsg(LOGERROR, "No arguments provided to @each/@get");
+				return(-1);
+			}
 			break;
 		}
 		wdNum = 0;
 
 		selectorField = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// try for the field selector (LHS)
-		if (!selectorField)
-			die("table name given for mysql lookup but no field selector");
+		if (!selectorField) {
+			logMsg(LOGERROR, "table name given for mysql lookup but no field selector");
+			return(-1);
+		}
 		if (!strcmp(selectorField, "filter")) {
 			free(selectorField);
 			selectorField = strTrim(getWordAlloc(args, ++wdNum, space));
-			if (!selectorField)
-				die("table name given for mysql lookup but no field selector after 'filter'");
+			if (!selectorField) {
+				logMsg(LOGERROR, "table name given for mysql lookup but no field selector after 'filter'");
+				return(-1);
+			}
 			if (char *p = strchr(selectorField, '.')) {	// remove any irrelevant stuff before the '.'
 				free(selectorField);
 				selectorField = strdup(p);
@@ -320,8 +390,10 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 		}
 
 		operand = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// try for the operand '=' '>' '<' 'is' 'is not' etc
-		if (!operand)
-			die("no operator given for lookup");
+		if (!operand) {
+			logMsg(LOGERROR, "no operator given for lookup");
+			return(-1);
+		}
 		if (!strcasecmp(operand, "is")) {
 			free(operand);
 			operand = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// we got 'is', the next is either 'not' or out of bounds to us
@@ -337,21 +409,27 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 		}
 
 		externalFieldOrValue = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// try for the external field, containing the value to look for
-//printf("\n\n[[[%s]]]\n\n", externalFieldOrValue);
-		if (!externalFieldOrValue)
-			die("no external field given for lookup");
+//logMsg(LOGDEBUG, "[%s]", externalFieldOrValue);
+		if (!externalFieldOrValue) {
+			logMsg(LOGERROR, "no external field given for lookup");
+			free(queryBuilder);
+			free(tmp);
+			return -1;
+		}
 
 //sprintf(tmp, "i=%d [%s][%s][%s] fullargs=[%s] and currenttable=[%s]\n", i, selectorField, operand, externalFieldOrValue, args, currentTableName); /*die(tmp);*/
 		VAR *variable = NULL;
 		char *varValue = NULL;
 		variable = findVarLenient(externalFieldOrValue, currentTableName);
-//printf("\n[%s][%s]\n", externalFieldOrValue, currentTableName);
+//emitStd("\n[%s][%s]\n", externalFieldOrValue, currentTableName);
 		if (variable)
 			varValue = strdup(variable->portableValue);
 		else
 			varValue = strdup(externalFieldOrValue);
+
 		// Quote it if necessary (contains non-numeric chars and isnt already)
-		if ((!_isSqlFieldName(varValue, givenTableName)) && (varValue[0] != '\'') && (varValue[strlen(varValue)] != '\'')) {
+		if ((!isMysqlField(varValue, givenTableName)) && (varValue[0] != '\'') && (varValue[strlen(varValue)] != '\'')) {
+
 			int isNum = 1;
 			if (strlen(varValue) == 0)
 				isNum = 0;
@@ -364,6 +442,7 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 					isNum = 0;
 				p++;
 			}
+
 			if ( (1==1) || (!isNum) || (numOfMinuses > 1) ) {	// @@TODO @@FIX!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				if (!strchr(varValue, '\'')) {
 					char *newValue = (char *) calloc(1, strlen(varValue) + 3);
@@ -455,6 +534,7 @@ int doSqlQuery(char *qStr) {
 	int status = mysql_query(conn, qStr);
 	if (status != 0)
 		logMsg(LOGERROR, "Sql query error %s", sqlError());
+	logMsg(LOGMICRO, "Executed sql query");
 	return(status);
 }
 

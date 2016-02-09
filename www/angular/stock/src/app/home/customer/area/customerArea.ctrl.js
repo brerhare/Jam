@@ -5,6 +5,19 @@ toastr.options.positionClass = 'toast-bottom-right';
 
 angular.module('stock')
 	.controller('CustomerAreaCtrl', function ($scope, restFactory, notificationFactory) {
+
+
+//$scope.id = $scope.$parent.item.id;
+//alert('parent id is '+ $scope.id);
+
+$scope.iframeUrl="http://stock.wireflydesign.com/run/area";
+//alert('url='+$scope.iframeUrl);
+
+    });
+
+
+/****************************************
+
 		var url = 'http://stock.wireflydesign.com/server/api/stock_area/';
 		$scope.items = [];
 		$scope.addMode = false;
@@ -89,4 +102,5 @@ angular.module('stock')
 			restFactory.updateItem(url, item.id, item).success(successCallback).error(errorCallback);
 		};
 	});
+****************************************/
 

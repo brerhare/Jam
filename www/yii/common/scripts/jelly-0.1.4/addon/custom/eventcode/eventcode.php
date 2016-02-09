@@ -46,7 +46,10 @@ class eventcode
             $this->programId = (int) $_GET['programid'];
 //die('isset p='.$this->programId);
 		}
+		else
+		{
 //die('isNOTset p='.$this->programId);
+		}
 
 		// Check if a single member is required
 		$this->singleMember = 0;
@@ -199,6 +202,9 @@ class eventcode
        			$criteria->addCondition("program_id = " . $this->programId);
 				$eventHasProgram=EventHasProgram::model()->find($criteria);
 				if (!($eventHasProgram))
+					continue;
+				//if (($eventHasProgram->approved == 0) && ($this->programId != 13))
+				if ($eventHasProgram->approved == 0)
 					continue;
 			}
 			else
