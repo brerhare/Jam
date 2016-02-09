@@ -1,0 +1,10 @@
+</br><p>Contact Details</p>
+	{{@html input text global.house medium 'house'}}
+	{{@html input text global.street medium 'street'}}
+	{{@html input text global.area medium 'area'}}
+	{{@html input text global.town medium 'town'}}
+	{{@html input text global.postcode medium 'postcode'}}
+	{{@html input text global.landline medium 'landline'}}
+	{{@html input text global.mobile medium 'mobile'}}
+	{{@html input text global.email medium 'email'}}
+

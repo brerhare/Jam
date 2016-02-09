@@ -1,0 +1,35 @@
+{{@include /jam/sys/html/header.html}}
+
+<style>
+	div { width:600px; }
+</style>
+
+{{@database befriending_wireflydesign_com}}
+
+<!-- Template defines -->
+{{@template TABLE termination_reason}}
+{{@template DESCRIPTION Termination Reason}}
+
+<!-- Template defines for the list component -->
+{{@template DELETEFIELD termination_reason.description}}
+{{@template HEADINGS
+	<th> Descrition </th>
+	<th> Date Destroyed </th>
+}}
+{{@template COLUMNS
+	<td>{{description}}</td>
+	<td>{{file_destroyed}}</td>
+}}
+
+<!-- Template defines for the form input component -->
+{{@template FORMINPUT
+
+	{{@html text field=termination_reason.date size=large label='Description'}}
+	{{@html date field=termination_reason.file_destroyed size=medium label='Date'}}
+	{{@html textarea field=termination_reason.notes size=40x5 label=Notes}}
+}}
+
+<!-- Include the template -->
+{{@include /jam/run/sys/crud.jam}}
+
+{{@include /jam/sys/html/footer.html}}

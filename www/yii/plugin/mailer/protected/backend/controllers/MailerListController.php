@@ -213,13 +213,15 @@ class MailerListController extends Controller
 				{
 					if (!strstr($data[0], "@"))
 						continue;
+					if (count($data) < 2)
+						continue;
 					$member = new MailerMember;
 					$member->uid = Yii::app()->session['uid'];
 					$member->email_address = $data[0];
 					$member->first_name = $data[1];
-					$member->last_name = $data[2];
-					$member->telephone = $data[3];
-					$member->address = $data[4];
+					if (count($data) > 2) $member->last_name = $data[2];
+					if (count($data) > 3) $member->telephone = $data[3];
+					if (count($data) > 4) $member->address = $data[4];
 					$member->active = 1;
 					$member->mailer_list_id = Yii::app()->session['list_id'];
 					$member->save();

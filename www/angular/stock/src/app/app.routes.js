@@ -27,7 +27,6 @@ angular.module('stock')
         controller: 'PurchaseOrderCtrl'
       })
 
-
 // Suppliers
 // ---------
       .state('home.supplier-maintain', {
