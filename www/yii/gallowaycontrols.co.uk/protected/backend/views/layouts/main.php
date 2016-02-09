@@ -44,6 +44,7 @@
 				array('label' => 'Product Backend', 'url' => 'https://plugin.wireflydesign.com/product/backend.php/site/gcDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Contact', 'url' => array('/site/contact'), 'visible' => Yii::app()->user->isGuest),                
                 array('label' => 'About', 'url' => array('/site/page', 'view' => 'about'), 'visible' => Yii::app()->user->isGuest),  
+				array('label' => 'Help', 'url' => 'http://knowledgebase.wireflydesign.com', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
 			),
 		),
 /*****
