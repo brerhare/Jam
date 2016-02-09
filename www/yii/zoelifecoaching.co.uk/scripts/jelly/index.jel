@@ -1,20 +1,339 @@
+## Zoe Life Coaching
+## Accent colour #bca498
+
 [defaults]
 include = default-values
 
-; Every blob inherits these before adding/overriding
 [* : defaults]
 
 [screen]
-child = contentframe
-fx.wallpaper-image = /img/background.jpg
+child = site
 css.display = block
 
-	[contentframe]
-	css.display = block
-	css.width = 500px
-	css.margin-top = 400px
-	style.html.h1.color = yellow
-	style.html.h1.background-color = black
-	style.html.h1.padding = 10px
-	html.h1 = a jelly&#0153; site is coming soon
+	[site]
+	child = top-menu, home-page, page-graphic, pages, footer
+	css.width = 100%
 
+		[top-menu]
+		child = menu
+		css.height = 55px
+		css.width = 100%
+		css.overflow = visible
+		css.background-color = #bca498
+		css.padding-top = 15px
+		
+		[menu]
+		css.margin-top = 10px
+#// Top level basic settings
+		addon.menu.traditional.orientation = horizontal
+#		addon.menu.traditional.width = 100%
+		addon.menu.traditional.height = 50px
+		addon.menu.traditional.align = center
+			#addon.menu.traditional.item-margin = // split equally between left and right. @@TODO handle 1st and last
+		addon.menu.traditional.item-width = variable
+#// Top level background settings
+		addon.menu.traditional.menu-rounding = 0px
+		addon.menu.traditional.menu-opacity = 100%
+		addon.menu.traditional.menu-color = transparent 
+		addon.menu.traditional.item-separator-width = 0px
+		addon.menu.traditional.item-separator-color = transparent
+			#addon.menu.traditional.edgepadding = 40px
+#// Top level font settings
+		addon.menu.traditional.menu-font-size = 24px
+		addon.menu.traditional.menu-font-family = Poiret One
+		addon.menu.traditional.menu-font-weight = normal
+		addon.menu.traditional.menu-text-color = black
+#// Top level hover settings
+		addon.menu.traditional.menu-hover-text-color = black
+		addon.menu.traditional.menu-hover-background-color = #bca498
+		addon.menu.traditional.menu-hover-font-size = 24px
+		addon.menu.traditional.menu-hover-font-family = Poiret One
+		addon.menu.traditional.menu-hover-font-weight = normal
+#// Top level selected settings
+		addon.menu.traditional.menu-selected-text-color = white
+		addon.menu.traditional.menu-selected-background-color = transparent
+		addon.menu.traditional.menu-selected-font-size = 24px
+		addon.menu.traditional.menu-selected-font-family = Poiret One
+		addon.menu.traditional.menu-selected-font-weight = normal
+#// Second level settings
+            #addon.menu.traditional.submenu-height = 30px // centers text
+            #addon.menu.traditional.submenu-width = variable / px
+            addon.menu.traditional.submenu-font-size = 16px
+            addon.menu.traditional.submenu-font-family = Arial
+            addon.menu.traditional.submenu-font-weight = normal
+            addon.menu.traditional.submenu-text-color = blue
+            addon.menu.traditional.submenu-background-color = grey
+            addon.menu.traditional.submenu-background-tile = /img/menu.jpg
+            addon.menu.traditional.submenu-background-stretch = /img/menu.jpg
+            addon.menu.traditional.submenu-separator-width = 1px
+            addon.menu.traditional.submenu-separator-color = red
+            addon.menu.traditional.submenu-separator-tile = /img/menu.jpg
+            addon.menu.traditional.submenu-separator-stretch = /img/menu.jpg
+		
+		
+		
+		[home-page]
+		condition = @PAGE=@HOMEPAGE
+		child = video, overlay
+		css.width = 100%
+		css.height = 450px
+		
+			[video]
+			css.background-color = black
+			css.height = 500px
+			css.margin-top = -80px
+			addon.video.simple.thumb = /img/woods.jpg
+			addon.video.simple.width = 100%
+			addon.video.simple.video = /img/woods
+			addon.video.simple.loop = yes
+			addon.video.simple.poster = /img/woods.jpg
+			css.z-index = 10
+			css.position = relative
+			
+			[overlay]
+			child = icons, tag-line, logo
+			css.margin-top = -400px
+			css.z-index = 100
+			css.position = relative
+			
+				[icons]
+				child = facebook, twitter, email
+				css.width = 40px
+				css.margin-left = 90%
+				
+					[facebook]
+					css.width = 100%
+					image.url = /img/facebook.png
+					image.width = 100%
+					image.height = 100%
+					clicknew = https://www.facebook.com/
+					
+					[twitter]
+					css.margin-top = 15px
+					css.width = 100%
+					image.url = /img/twitter.png
+					image.width = 100%
+					image.height = 100%
+					clicknew = https://twitter.com/
+					
+					[email]
+					css.margin-top = 15px
+					css.width = 100%
+					image.url = /img/mail.png
+					image.width = 100%
+					image.height = 100%
+				
+				[tag-line]
+				css.margin-top = 80px 
+				css.width = 40%
+				image.url = /img/strap-line.png
+				image.width = 100%
+				image.height = 9%
+
+				
+				[logo]
+				css.margin-top = 35px
+				css.width = 40%
+				image.url = /img/web-logo.png
+				image.width = 100%
+				image.height = 16%
+				
+		
+		[page-graphic]
+		condition = @PAGE!=@HOMEPAGE
+		css.width = 100%
+		css.height = 11%
+		image.url = /img/header-photo.jpg
+		image.width = 100%
+		image.height = 11%
+		
+#### Main ######################	
+		
+[pages]
+stacking = horizontal
+child = left, main-content
+css.width = 80%
+css.overflow = visible
+
+	[left]
+	child = photo, sub-menu, sign-up, left-column
+	css.width = 25%
+	css.margin-top = -100px
+
+
+	
+		[photo]
+		css.width = 100%
+		css.height = 58%
+		image.url = /img/zoe-photo.png
+		image.width = 100%
+		image.height = 58%
+		css.z-index = 100
+		css.position = relative
+						
+		[sub-menu]
+		css.width = 80%
+		css.margin-left = 15px
+		css.margin-top = 20px
+		css.overflow = visible
+				addon.menu.basic.orientation = vertical
+				addon.menu.basic.level = 2
+				addon.menu.basic.item-separator-color = #ffffff
+				addon.menu.basic.item-separator-width = 2px
+				addon.menu.basic.font-size = 16px
+				addon.menu.basic.menu-rounding = 0px
+				addon.menu.basic.menu-opacity = 100%
+#kim commented				addon.menu.basic.width = 150px
+				addon.menu.basic.menu-color = #bca498
+				addon.menu.basic.menu-text-color = black
+				addon.menu.basic.submenu-color = transparent
+				addon.menu.basic.item-color = #bca498
+				addon.menu.basic.item-text-color = white
+			#addon.menu.basic.subitem-color = #ff0092
+			#addon.menu.basic.subitem-text-color = #ffffff
+			#addon.menu.basic.subitem-seperator-color = #ffffff 
+			
+		[sign-up]
+		css.width = 70%
+		css.margin = 20px 0px 0px 0px
+		html.raw = <h3><span style="font-size:16px; line-height:110%; margin: 0px;">Stay in Touch</span></h3>
+		html.raw = <p><span style="font-size:12px;">Sign up to my newsletter for the occasional email. I will not spam you or pass on our details</span></P>
+		jam.iframe = /run/signupForm
+		jam.iframe-height = 130px
+			
+		[left-column]
+		css.margin-top = 20px
+		addon.global.column.name = left-column
+		addon.global.column.width = 80%
+		addon.global.column.internal-width = 100%
+		addon.global.column.content-width = 98%
+		addon.global.column.internal-color = transparent
+		addon.global.column.background-color = transparent
+		addon.global.column.top-height = 5px
+		addon.global.column.bottom-height = 5px
+		
+	
+		[main-content]
+		child = content, blog, contact
+		css.margin-left = 5%
+		css.margin-top = 30px
+		css.width = 60%
+		css.margin-bottom = 10px
+		
+		
+			[content]
+			condition = @PAGE!=contact
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find the page $_GET['page']
+			html.raw = ContentBlock.content
+			
+			[blog]
+			condition = @PAGE=life-coaching-blog-zoe-dumfries
+			html.raw = {{news newstype=pinterest sidebar=right}}
+			
+			[contact]
+			child = contact-content, contact-form
+			condition = @PAGE=contact
+			stacking = horizontal
+			
+				[contact-content]
+				css.width = 50%
+				db.table = ContentBlock
+				db.filter = url=$_GET['page']
+				db.error = Sorry, I could not find the page $_GET['page']
+				html.raw = ContentBlock.content
+				
+				
+				[contact-form]
+				css.width = 45%
+				css.margin-left = 4%
+				html.raw = <h1><span style="font-size:24px;">Please fill in the form below</span></h1>
+				css.text-align = center
+				css.min-height = 325px
+				css.background-color = white
+				jam.iframe-height = 300px
+				jam.iframe = /run/contactForm.jam
+		
+		
+#### Footer ##################################################		
+		
+[footer]
+child = footer-content
+css.width = 100%
+css.background-color = #bca498
+#css.height = 15%
+#css.min-width = 800px
+
+	[footer-content]
+	child = footer-left, footer-right
+	css.width = 50%
+	css.margin-top = 20px
+	css.min-width = 600px
+	css.margin-left = 34%
+	stacking = horizontal
+
+		[footer-left]
+		child = footer-cookies, footer-tandc, footer-contact, copyright
+		css.height = 150px
+		css.width = 49%
+		css.line-height = 25px
+
+			[footer-cookies]
+			html.raw = <a style="text-decoration:none; color: black; font-size: 12px;" onmouseover="this.style.color='white'" onmouseout="this.style.color='black'" href="?layout=index&page=cookie-policy">Cookie Policy</a>
+
+			[footer-tandc]
+			html.raw = <a style="text-decoration:none; color: black; font-size: 12px;" onmouseover="this.style.color='white'" onmouseout="this.style.color='black'" href="?layout=index&page=terms-conditions">Terms & Privacy</a>
+
+			[footer-contact]
+			html.raw = <a style="text-decoration:none; color: black; font-size: 12px;" onmouseover="this.style.color='white'" onmouseout="this.style.color='black'" href="?layout=index&page=contact">Contact</a>
+			
+			[copyright]
+			css.margin-top = 20px
+			css.line-height = 1em
+			html.raw = Zoe Life Coaching &copy 2015</br>All rights reserved
+			css.color = #000000
+			css.font-size = 11px
+			css.text-align = left
+			
+		[footer-right]
+		child = wirefly
+		css.width = 49%
+		css.margin-top = 30px
+		css.line-height = 25px
+		
+
+		[wirefly]
+		child = wirefly-logo, admin
+		stacking = horizontal
+		css.margin-top = 20px
+		css.float = right
+
+		
+			[wirefly-logo]
+			css.height = 45px
+			css.margin-top = 5px
+			image.url = img/wirefly-design.png
+			image.width = 100px
+			image.height = 46px
+			image.align = left
+			clicknew = http://www.wireflydesign.com
+			
+		
+			[admin]
+			child = cog-center
+			css.height = 20px
+			css.width = 20px
+			css.background-size = 100%
+			css.background-image = url('/img/admin.png')
+			css.margin-left = -20px
+
+				[cog-center]
+				css.width = 5px
+				css.height = 5px
+				css.margin-top = 8px
+				image.url = img/cog-center.png
+				image.width = 5px
+				image.height = 5px
+				image.align = center
+				clicknew = backend.php

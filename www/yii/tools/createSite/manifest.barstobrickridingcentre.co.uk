@@ -1,0 +1,19 @@
+domain = barstobrickridingcentre.co.uk
+parentdomain =
+sitetitle = Barstobrick Riding Centre
+sid = urncem1n8arrhmv6e1aaq778h1
+
+# Database
+dbname = barstobrickridingcentre_co_uk
+dbuser = barstobrickridin
+dbpass = 4jk9gdc3
+
+# Shopping cart order confirmation email
+checkoutemail = barstobrickrc@hotmail.co.uk
+checkoutname = Barstobrick Riding Centre
+checkoutpaypalemail = no@email
+
+# Backend page editor
+editorpagewidth = 700
+editorpageheight = 400
+

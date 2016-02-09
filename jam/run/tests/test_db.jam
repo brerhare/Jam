@@ -1,0 +1,127 @@
+<link rel="stylesheet" type="text/css" href="/jam/css/kim2.css">
+
+<div style='color:#fff; background-color:#00727a; padding:10px; margin-bottom:10px'>
+	<p>
+		List the available databases <br>
+		Select a database to use <br>
+		List the tables in that database<br>
+		Describe a table <br>
+		Extract rows from a table
+	</p>
+</div>
+
+<h3> List the available databases </h3>
+{{@list databases}}
+
+<h3> Use the 'stock' database </h3>
+{{@database stock}}
+
+<h3> List the 'stock' tables </h3>
+{{@list tables}}
+
+<h3>stock_area table </h3>
+{{@describe stock_area}}
+
+<h3>stock_barcode table </h3>
+{{@describe stock_barcode}}
+
+<h3>stock_carriage table </h3>
+{{@describe stock_carriage}}
+ 
+ <h3>stock_currencies table </h3>
+{{@describe stock_currencies}}
+
+<h3>stock_customer table </h3>
+{{@describe stock_customer}} 
+ 
+<h3>stock_customer_order table </h3>
+{{@describe stock_customer_order}} 
+
+<h3>stock_customer_order_item table </h3>
+{{@describe stock_customer_order_item}} 
+
+<h3>stock_customer_transaction table </h3>
+{{@describe stock_customer_transaction}} 
+
+<h3>stock_customer_transaction_xref table </h3>
+{{@describe stock_customer_transaction_xref}} 
+
+<h3>stock_customer_transaction_item table </h3>
+{{@describe stock_customer_transaction_item}} 
+
+<h3>stock_group table </h3>
+{{@describe stock_group}}
+
+<h3>stock_image table </h3>
+{{@describe stock_image}}
+
+<h3>stock_location table </h3>
+{{@describe stock_location}}
+
+<h3>stock_markup_group table </h3>
+{{@describe stock_markup_group}}
+
+<h3>stock_menu table </h3>
+{{@describe stock_menu}}
+
+<h3>stock_pack table </h3>
+{{@describe stock_pack}}
+
+<h3>stock_product table </h3>
+{{@describe stock_product}}
+
+<h3>stock_product_has_barcode table </h3>
+{{@describe stock_product_has_barcode}}
+
+<h3>stock_product_has_location table </h3>
+{{@describe stock_product_has_location}}
+
+<h3>stock_product_price table </h3>
+{{@describe stock_product_price}}
+
+<h3>stock_product_transaction table </h3>
+{{@describe stock_product_transaction}}
+
+<h3>stock_supplier table </h3>
+{{@describe stock_supplier}}
+
+<h3>stock_supplier_order table </h3>
+{{describe stock_supplier_order}}
+
+<h3>stock_supplier_order_item table </h3>
+{{@describe stock_supplier_order_item}}
+
+<h3>stock_units table </h3>
+{{@describe stock_units}}
+
+<h3>stock_user table </h3>
+{{@describe stock_user}}
+
+<h3>stock_user_has_menu table </h3>
+{{@describe stock_user_has_menu}}
+
+<h3>stock_user_has_stock_location table </h3>
+{{@describe stock_user_has_stock_location}}
+
+<h3>stock_vat table </h3>
+{{@describe stock_vat}}
+ 
+<br>
+<hr>
+
+<h3> Go through the stock_customer table one by one </h3>
+{{@each stock_customer}}
+  {{@count id}} 
+{{@end}}
+There are {{count.id}} customers
+
+<h3> stock_customer_transaction table items filter date is between 20th and 23rd April 2015</h3>
+{{@each stock_customer_transaction filter date > '2015-04-20', date < '2015-04-23'}}
+ {{stock_customer_transaction.date}} <br>
+{{@end}}
+
+<h3> stock_area table items filter area id is > 14 and < 17 </h3>
+{{@each stock_area filter id > 14, id < 17}}
+ {{stock_area.id}} <br>
+{{@end}}
+

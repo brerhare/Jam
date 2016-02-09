@@ -1,0 +1,22 @@
+{{@include /jam/sys/html/header.html}}
+
+Doing...
+
+{{@database befriending_wireflydesign_com}}
+
+{{@remove table question_young_person}}
+{{@remove table answer_young_person}}
+
+{{@new table question_young_person
+	question				string	required
+}}
+
+{{@new table answer_young_person
+	answer					text	required
+	question_id				number	required
+	young_person_id			number	required
+}}
+
+Done
+
+{{@include /jam/sys/html/footer.html}}

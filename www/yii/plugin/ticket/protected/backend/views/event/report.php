@@ -242,17 +242,30 @@ table tr {
 		<?php if ($model)
 		{
 			echo "<tr>";
-			echo "<td colspan=10 style='padding:5px'>";
-				echo "<input type='hidden' name='uid' value='" . Yii::app()->session['uid'] . "'>";
-				echo "<input type='hidden' name='event' value='" . $model->id . "'>";
-				echo "Input an email address to get this as a mobile report&nbsp<input type='text' name='eml' id='eml' style='Xheight:16px'>";
-				echo "&nbsp&nbsp&nbsp";
-				$this->widget('bootstrap.widgets.TbButton', array(
-					'buttonType'=>'submit',
-					'type'=>'info',
-					'label'=>'Send',
-				));
-			echo "</td>";
+				echo "<td colspan=10 style='padding:5px'>";
+					echo "<input type='hidden' name='uid' value='" . Yii::app()->session['uid'] . "'>";
+					echo "<input type='hidden' name='event' value='" . $model->id . "'>";
+					echo "Input an email address to get this as a mobile report&nbsp<input type='text' name='eml' id='eml' style='Xheight:16px'>";
+					echo "&nbsp&nbsp&nbsp";
+					$this->widget('bootstrap.widgets.TbButton', array(
+						'buttonType'=>'submit',
+						'type'=>'info',
+						'label'=>'Send',
+					));
+				echo "</td>";
+			echo "</tr>";
+			echo "<tr>";
+				echo "<td colspan=10 style='padding:5px'>";
+					echo "<input type='hidden' name='uid' value='" . Yii::app()->session['uid'] . "'>";
+					echo "<input type='hidden' name='event' value='" . $model->id . "'>";
+					echo "Input an email address to get the android scanner app&nbsp<input type='text' name='android' id='android' style='Xheight:16px'>";
+					echo "&nbsp&nbsp&nbsp";
+					$this->widget('bootstrap.widgets.TbButton', array(
+						'buttonType'=>'submit',
+						'type'=>'info',
+						'label'=>'Send',
+					));
+				echo "</td>";
 			echo "</tr>";
 		}
 		?>
