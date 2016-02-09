@@ -1,0 +1,19 @@
+domain = holidayletservices.co.uk
+parentdomain =
+sitetitle = Holiday Let Services
+sid = nsf0tn0ij2mtj2a209a1tfpj50
+
+# Database
+dbname = holidayletservices_co_uk
+dbuser = holidayletservic
+dbpass = 3dmucs
+
+# Shopping cart order confirmation email
+checkoutemail = none
+checkoutname = none
+checkoutpaypalemail = none
+
+# Backend page editor
+editorpagewidth = 700
+editorpageheight = 400
+

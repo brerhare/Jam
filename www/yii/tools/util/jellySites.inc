@@ -24,6 +24,7 @@ $siteList = array (
 	'elegantoriginals.co.uk'       => '/home/elegantoriginals.co.uk/dev/src/www/yii/elegantoriginals.co.uk',
 	'fadguide.com'                 => '/home/fadguide.com/dev/src/www/yii/fadguide.com',
 	'fresherthantheudders.co.uk'   => '/home/fresherthantheudders.co.uk/dev/src/www/yii/fresherthantheudders.co.uk',
+	'holidayletservices.co.uk'     => '/home/holidayletservices.co.uk/dev/src/www/yii/holidayletservices.co.uk',
 	'horses.wireflydesign.com'     => '/home/wireflydesign.com/domains/horses.wireflydesign.com/dev/src/www/yii/horses.wireflydesign.com',
 	'jacquiesbeauty.co.uk'         => '/home/jacquiesbeauty.co.uk/dev/src/www/yii/jacquiesbeauty.co.uk',
 	'jardineroofingltd.co.uk'      => '/home/jardineroofingltd.co.uk/dev/src/www/yii/jardineroofingltd.co.uk',
