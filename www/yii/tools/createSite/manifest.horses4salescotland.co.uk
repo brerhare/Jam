@@ -1,0 +1,19 @@
+domain = horses.wireflydesign.com
+parentdomain = wireflydesign.com
+sitetitle = Horses 4 Sale Scotland
+sid = ghkb5n9v4tjf7n7qgc6c9sto82
+
+# Database
+dbname = horses4salescotland_co_uk
+dbuser = horses4salescotl
+dbpass = h4sscotland
+
+# Shopping cart order confirmation email
+checkoutemail = susan@horses4salescotland.co.uk
+checkoutname = Horses 4 Sale Scotland
+checkoutpaypalemail = 
+
+# Backend page editor
+editorpagewidth = 700
+editorpageheight = 400
+

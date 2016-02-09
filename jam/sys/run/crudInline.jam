@@ -1,0 +1,104 @@
+<!-- List component -->
+
+<!-- Clear any unset templates -->
+{{@template FILTER}}
+
+<style>	/* Selected row highlighting */
+.rowHighlight:hover {
+  background-color: #ddf0ff;
+  cursor:pointer;
+}
+</style>
+
+<style> /* Inline editing of the grid */
+    .uk-form input[type=text]:disabled {
+        border:none;
+        color:#000;
+        background-color:#f6f6f6;
+    }
+    .uk-form-width-small {
+        width:90px;
+    }
+</style>
+
+<h3> DESCRIPTION </h3>
+	<div name="inlineForm" class="uk-form uk-form-horizontal">
+		<table class="uk-table uk-table-condensed" style="border:1px solid #dddddd">
+			<tr>
+				HEADINGS
+				<th> <button class="uk-button uk-button-mini uk-button-success" onClick="showNewRow_TABLE()"> <i class="uk-icon-plus"></i> New</button> </th>
+				<th> </th>
+			</tr>
+			<tr id='newRow_TABLE' style='display:none'>        <!-- NEW ROW --->
+				<form name='newRowForm_TABLE'> COLUMNS </form>
+				<td>
+					<button type='button' class="uk-button uk-button-mini uk-button-primary" onClick="addNewRowButtonClick()">
+						<i class="uk-icon-save"></i>
+					</button>
+					<button type='button' class="uk-button uk-button-mini uk-button-primary" onClick="hideNewRow()">
+						<i class="uk-icon-remove"></i>
+					</button>
+				</td>
+				<td> </td>
+			</tr>
+{{@each TABLE FILTER}}
+			<tr class="rowHighlight">
+				COLUMNS
+				<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{DELETEFIELD}}')"> <i class="uk-icon-trash"></i></button> </td>
+				<td> {{@html text hidden field=TABLE.id}}
+			</tr>
+{{@end}}
+		</table>
+	</div>
+
+<script>
+	window.onload = function() {
+		// Create onChange functions for columns - will be called by fn()
+		var changeMonitors = "EDITS".split(" ");
+		for (var i = 0; i < changeMonitors.length; i++) {
+			name = "onChange_" + "TABLE".replace(/_/g, "") + "_" + changeMonitors[i].replace("_", "");
+console.log('Create change function ' + name);
+			window[name] = function (obj) {
+console.log('Fired change function ');
+				if (obj.id.substring(0, 4) == "ID0_") return;
+				objId =  getSiblingByName(obj, 'TABLE.id');
+				document.getElementById('newRow_TABLE').style.display = 'none';
+				runAction('change_TABLE', [objId.name + '=' + objId.value, obj.name + '=' + obj.value]);
+			}
+		}
+	}
+
+	function showNewRow_TABLE() {
+		// Clear the values
+		var edits = "EDITS".split(" ");
+		for (var i = 0; i < edits.length; i++) {
+			var elId = 'ID0' + '___' + 'TABLE' + '___' + edits[i];
+			document.getElementById(elId).value = '';
+		}
+		document.getElementById('newRow_TABLE').style.display = 'table-row';
+	}
+
+	function hideNewRow() {
+		document.getElementById('newRow_TABLE').style.display = 'none';
+	}
+	function addNewRowButtonClick() {
+		runAction('change_TABLE', ['newRowForm_TABLE'], '', runJam);	
+		document.getElementById('newRow_TABLE').style.display = 'none';
+	}
+
+	function confirmDelete(id, displayInfo) {
+		window.event.cancelBubble = true;	// Prevent any further events
+		var result = confirm('Confirm delete of item ' + displayInfo);
+		if (result)
+			runAction('delete_TABLE', ['TABLE.id='+id], '', runJam);	
+	}
+</script>
+
+{{@action change_TABLE}}
+	{{@update item TABLE notify=ok}}
+{{@end}}
+
+{{@action delete_TABLE}}
+	{{@remove item TABLE notify=ok}}
+{{@end}}
+
