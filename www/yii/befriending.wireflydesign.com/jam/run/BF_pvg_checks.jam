@@ -1,0 +1,32 @@
+{{@include /jam/sys/html/header.html}}
+
+{{@database befriending_wireflydesign_com}}
+
+<!-- Template defines -->
+{{@template TABLE pvg_check}}
+{{@template DESCRIPTION PVG Checks}}
+
+<!-- Template defines for the list component -->
+{{@template DELETEFIELD pvg_check.date}}
+{{@template HEADINGS
+	<th> Initiated </th>
+	<th> Completed </th>
+}}
+{{@template COLUMNS
+	<td>{{initiated}}</td>
+	<td>{{completed}}</td>
+}}
+
+<!-- Template defines for the form input component -->
+{{@template FORMINPUT
+
+	{{@html date field=pvg_check.initiated size=medium label='Initiated'}}
+	{{@html date field=pvg_check.completed size=medium label='Completed'}}
+	{{@html text field=pvg_check.check_number size=medium label='PVG Ref'}}
+	{{@html dropdown field=pvg_check.befriender_id pickfield=global.surname size=medium label='Befriender'}}
+}}
+
+<!-- Include the template -->
+{{@include /jam/run/sys/crud.jam}}
+
+{{@include /jam/sys/html/footer.html}}
