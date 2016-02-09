@@ -1,0 +1,27 @@
+{{@include /jam/sys/html/header.html}}
+
+<style>
+	div { width:600px; }
+</style>
+
+{{@database befriending_wireflydesign_com}}
+
+<!-- Template defines -->
+{{@template TABLE employment_status}}
+{{@template DESCRIPTION }}
+{{@template DELETEFIELD employment_status.description}}
+
+{{@template HEADINGS
+	<th> Employment Status Lookup Entries</th>
+}}
+
+{{@template COLUMNS
+	<td> {{@html text field=employment_status.description size=medium}} </td>
+}}
+
+{{@template EDITS description}}
+
+<!-- Include the template -->
+{{@include /jam/run/sys/crudInline.jam}}
+
+{{@include /jam/sys/html/footer.html}}

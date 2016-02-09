@@ -58,8 +58,8 @@ char **getcgivars() {
 	request_method= getenv("REQUEST_METHOD") ;
 
 	if (strcmp(request_method, "GET") && strcmp(request_method, "HEAD") && strcmp(request_method, "POST") ) {
-		emitData("Content-Type: text/plain\n\n") ;
-		emitData("getcgivars(): Unsupported REQUEST_METHOD.\n") ;
+		emitStd("Content-Type: text/plain\n\n") ;
+		emitStd("getcgivars(): Unsupported REQUEST_METHOD.\n") ;
 		exit(1) ;
 	}
 
@@ -73,23 +73,23 @@ char **getcgivars() {
 		/* strcasecmp() is not supported in Windows-- use strcmpi() instead */
 		if (( strcasecmp(getenv("CONTENT_TYPE"), "application/x-www-form-urlencoded"))
 		&&  ( strcasecmp(getenv("CONTENT_TYPE"), "application/x-www-form-urlencoded; charset=UTF-8")) ) {
-			emitData("Content-Type: text/plain\n\n") ;
-			emitData("getcgivars(): Unsupported Content-Type. [%s]\n", getenv("CONTENT_TYPE") ) ;
+			emitStd("Content-Type: text/plain\n\n") ;
+			emitStd("getcgivars(): Unsupported Content-Type. [%s]\n", getenv("CONTENT_TYPE") ) ;
 			exit(1) ;
 		}
 		if ( !(content_length = atoi(getenv("CONTENT_LENGTH"))) ) {
-			emitData("Content-Type: text/plain\n\n") ;
-			emitData("getcgivars(): No Content-Length was sent with the POST request.\n") ;
+			emitStd("Content-Type: text/plain\n\n") ;
+			emitStd("getcgivars(): No Content-Length was sent with the POST request.\n") ;
 			exit(1) ;
 		}
 		if ( !(cgiinputp = (char *) malloc(content_length+1)) ) {
-			emitData("Content-Type: text/plain\n\n") ;
-			emitData("getcgivars(): Couldn't malloc for cgiinput.\n") ;
+			emitStd("Content-Type: text/plain\n\n") ;
+			emitStd("getcgivars(): Couldn't malloc for cgiinput.\n") ;
 			exit(1) ;
 		}
 		if (!fread(cgiinputp, content_length, 1, stdin)) {
-			emitData("Content-Type: text/plain\n\n") ;
-			emitData("getcgivars(): Couldn't read CGI input from STDIN.\n") ;
+			emitStd("Content-Type: text/plain\n\n") ;
+			emitStd("getcgivars(): Couldn't read CGI input from STDIN.\n") ;
 			exit(1) ;
 		}
 		cgiinputp[content_length]='\0' ;
@@ -100,8 +100,8 @@ char **getcgivars() {
 
 	// Combine query string and stdin strings
 	if ( !(cgiinput = (char *) calloc(1, (strlen(cgiinputq) + strlen(cgiinputp) + 2)) ) ) {	// join the strings, inserting a '&' between the two
-		emitData("Content-Type: text/plain\n\n") ;
-		emitData("getcgivars(): Couldn't malloc for cgiinput.\n") ;
+		emitStd("Content-Type: text/plain\n\n") ;
+		emitStd("getcgivars(): Couldn't malloc for cgiinput.\n") ;
 		exit(1) ;
 	}
 	sprintf(cgiinput, "%s&%s", cgiinputq, cgiinputp);
@@ -123,7 +123,7 @@ char **getcgivars() {
 	pairlist[paircount]= 0 ;    /* terminate the list with NULL */
 
 	/** Then, from the list of pairs, extract the names and values. **/
-	cgivars= (char **) malloc((paircount*2+1)*sizeof(char **)) ;
+	cgivars = (char **) malloc((paircount*2+1)*sizeof(char **)) ;
 	for (i= 0; i<paircount; i++) {
 		if (eqpos=strchr(pairlist[i], '=')) {
 			*eqpos= '\0' ;
@@ -158,23 +158,23 @@ int main3() {
     
 	/** Print the CGI response header, required for all HTML output. **/
 	/** Note the extra \n, to send the blank line.                  **/
-	emitData("Content-type: text/html\n\n") ;
+	emitStd("Content-type: text/html\n\n") ;
     
 	/** Finally, print out the complete HTML response page.         **/
-	emitData("<html>\n") ;
-	emitData("<head><title>CGI Results</title></head>\n") ;
-	emitData("<body>\n") ;
-	emitData("<h1>Hello, world.</h1>\n") ;
-	emitData("Your CGI input variables were:\n") ;
-	emitData("<ul>\n") ;
+	emitStd("<html>\n") ;
+	emitStd("<head><title>CGI Results</title></head>\n") ;
+	emitStd("<body>\n") ;
+	emitStd("<h1>Hello, world.</h1>\n") ;
+	emitStd("Your CGI input variables were:\n") ;
+	emitStd("<ul>\n") ;
 
 	/** Print the CGI variables sent by the user.  Note the list of **/
 	/**   variables alternates names and values, and ends in NULL.  **/
 	for (i=0; cgivars[i]; i+= 2)
-		emitData("<li>[%s] = [%s]\n", cgivars[i], cgivars[i+1]) ;
-	emitData("</ul>\n") ;
-	emitData("</body>\n") ;
-	emitData("</html>\n") ;
+		emitStd("<li>[%s] = [%s]\n", cgivars[i], cgivars[i+1]) ;
+	emitStd("</ul>\n") ;
+	emitStd("</body>\n") ;
+	emitStd("</html>\n") ;
 
 	/** Free anything that needs to be freed **/
 	for (i=0; cgivars[i]; i++) free(cgivars[i]) ;

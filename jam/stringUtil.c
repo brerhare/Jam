@@ -217,3 +217,24 @@ char *str_replace (const char *string, const char *substr, const char *replaceme
 	return newstr;
 }
 
+// Do a strchr() looking for the first of _any_ of some supplied chars
+char *strAnyChr(char *string, char *chars) {
+	while (string) {
+		if (strchr(chars, *string))
+			return string;
+		string++;
+	}
+	return 0;
+}
+
+/*
+char *strchr(const char *s, int c)
+{
+    const char ch = c;
+
+    for ( ; *s != ch; s++)
+        if (*s == '\0')
+            return 0;
+    return (char *)s;
+}
+*/

@@ -6,17 +6,37 @@
 <title>Jam</title>
 <meta name="description" content="">
 <meta name="author" content="">
- 
-<script type="text/javascript" src="/jam/sys/extern/uikit/jquery.js"></script>
 
+<!-- Send no-cache headers which the browsers will all cheerfully ignore -->
+<meta http-equiv="cache-control" content="max-age=0" />
+<meta http-equiv="cache-control" content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+<meta http-equiv="pragma" content="no-cache" />
+
+ 
+<!-- include jquery -->
+<script type="text/javascript" src="/jam/sys/extern/jquery/jquery.min.js"></script>
+
+<!-- include jquery-ui (autocomplete) -->
+<link rel="stylesheet" href="/jam/sys/extern/jquery/jquery-ui/jquery-ui.min.css" type="text/css" />
+<script type="text/javascript" src="/jam/sys/extern/jquery/jquery-ui/jquery-ui.min.js"></script>
+
+<!-- include uikit -->
 <link rel="stylesheet" href="/jam/sys/extern/fa/css/font-awesome.min.css">
 <link rel="stylesheet" href="/jam/sys/extern/uikit/css/uk.css" type="text/css" />
-
 <script src="/jam/sys/extern/uikit/js/uikit.min.js"></script>
 
+<!-- include toastr -->
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+<!-- include some legacy hacks -->
 <!--[if lt IE 9]> <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script> <![endif]-->
 
-<!-- uikit overrides - move to css -->
+<!-- do some global css overrides that should really be self-managing @@TODO -->
+
+<!-- uikit overrides -->
 <style>
 .uk-form-row { margin-top: 2px !important}
 </style>

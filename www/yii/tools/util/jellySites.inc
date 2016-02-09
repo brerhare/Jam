@@ -5,6 +5,7 @@ $siteList = array (
 	'6tyshadesofbeauty.co.uk'      => '/home/sixtyshadesofbeauty.co.uk/dev/src/www/yii/6tyshadesofbeauty.co.uk',
 	'absoluteclassics.co.uk'       => '/home/absoluteclassics.co.uk/dev/src/www/yii/absoluteclassics.co.uk',
 	'barstobrickridingcentre.co.uk'      => '/home/barstobrickridingcentre.co.uk/dev/src/www/yii/barstobrickridingcentre.co.uk',
+	'beingbusiness.co.uk'          => '/home/beingbusiness.co.uk/dev/src/www/yii/beingbusiness.co.uk',
 	'beirc.co.uk'                  => '/home/beirc.co.uk/dev/src/www/yii/beirc.co.uk',
 	'breakfreecoaching.co.uk'      => '/home/breakfreecoaching.co.uk/dev/src/www/yii/breakfreecoaching.co.uk',
 	'brycewalkervending.com'       => '/home/brycewalkervending.com/dev/src/www/yii/brycewalkervending.com',
@@ -23,7 +24,11 @@ $siteList = array (
 	'elegantoriginals.co.uk'       => '/home/elegantoriginals.co.uk/dev/src/www/yii/elegantoriginals.co.uk',
 	'fadguide.com'                 => '/home/fadguide.com/dev/src/www/yii/fadguide.com',
 	'fresherthantheudders.co.uk'   => '/home/fresherthantheudders.co.uk/dev/src/www/yii/fresherthantheudders.co.uk',
+	'horses.wireflydesign.com'     => '/home/wireflydesign.com/domains/horses.wireflydesign.com/dev/src/www/yii/horses.wireflydesign.com',
 	'jacquiesbeauty.co.uk'         => '/home/jacquiesbeauty.co.uk/dev/src/www/yii/jacquiesbeauty.co.uk',
+	'jardineroofingltd.co.uk'      => '/home/jardineroofingltd.co.uk/dev/src/www/yii/jardineroofingltd.co.uk',
+	'joseawright.com'              => '/home/joseawright.com/dev/src/www/yii/joseawright.com',
+	'kirkcudbright.dumgal.sch.uk'  => '/home/kirkcudbright.dumgal.sch.uk/dev/src/www/yii/kirkcudbright.dumgal.sch.uk',
 	'knowledgebase.wireflydesign.com'  => '/home/wireflydesign.com/domains/knowledgebase.wireflydesign.com/dev/src/www/yii/knowledgebase.wireflydesign.com',
 	'mossheadpreschool.co.uk'      => '/home/mossheadpreschool.co.uk/dev/src/www/yii/mossheadpreschool.co.uk',
 	'opendoorsart.com'             => '/home/opendoorsart.com/dev/src/www/yii/opendoorsart.com',
@@ -38,6 +43,7 @@ $siteList = array (
 	'timtaylor-painter-decorator-tiler.co.uk'   => '/home/timtaylor-painter-decorator-tiler.co.uk/dev/src/www/yii/timtaylor-painter-decorator-tiler.co.uk',
 	'trade.weetarget.co.uk'         => '/home/weetarget.co.uk/domains/trade.weetarget.co.uk/dev/src/www/yii/trade.weetarget.co.uk',
 	'weetarget.co.uk'               => '/home/weetarget.co.uk/dev/src/www/yii/weetarget.co.uk',
+	'wireflydesign.com'             => '/home/wireflydesign.com/dev/src/www/yii/wireflydesign.com',
 	'zoelifecoaching.co.uk'			=> '/home/zoelifecoaching.co.uk/dev/src/www/yii/zoelifecoaching.co.uk',
 
 );
