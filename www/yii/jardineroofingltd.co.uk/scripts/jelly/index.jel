@@ -1,0 +1,338 @@
+#Jardine Roofing
+[defaults]
+include = default-values
+
+# Every blob inherits these before adding/overriding
+
+[* : defaults]
+
+[screen]
+child = site
+fx.wallpaper-image-tile = /img/bgd-img.jpg
+css.display = block
+
+	[site]
+	child = header, slider, pages
+	css.width = 70%
+	css.min-width = 960px
+
+####  Header  #################################
+
+	[header]
+	css.margin-top = 2%
+	child = logo, contact
+	stacking = horizontal
+	css.width = 100%
+		
+		[logo]
+		css.width = 40%
+		image.url = img/logo.png
+		image.width = 100%
+		image.height = 48%
+		click = ?layout=index&page=index
+
+		[contact]
+		child = contact-spacer, header-contact
+		css.margin-top = 7%
+		css.float = right
+		css.width = 45%
+		css.border-width = 10px
+		css.border-color = #365ca7
+		css.border-style = solid
+		fx.rounding = 12px
+		css.background-color = white
+		
+			[contact-spacer]
+			css.width = 100%
+			css.height = 1px
+						
+			[header-contact]
+			child = contact-text, contact-icons
+			stacking = horizontal
+			
+				[contact-text]
+				css.width = 60%
+				css.margin = 2% 5%
+				image.url = img/contact.png
+				image.width = 100%
+				image.height = 100%
+							
+					
+				[contact-icons]
+				child = facebook, email
+				css.width = 11%
+				css.margin-left = 5%
+				
+					[facebook]
+					css.width = 100%
+					css.margin-top = 10%
+					image.url = img/facebook.png
+					image.width = 100%
+					image.height = 100%
+					clicknew = https://www.facebook.com/Jardine-Roofing-Ltd-356783391096869
+					
+					[email]
+					css.width = 100%
+					css.margin-top = 8%
+					image.url = img/email.png
+					image.width = 100%
+					image.height = 100%
+					click = ?layout=index&page=contact-dumfries-roofers-roofing-company
+
+
+#### Slider ###########################################
+
+	[slider]
+	css.margin-top = 3%
+	css.width = 97.5%
+ # 	css.height = 400px
+	css.border-width = 10px
+	css.border-color = #365ca7
+	css.border-style = solid
+	fx.rounding = 12px
+	css.background-color = white
+	condition = @PAGE=@HOMEPAGE
+	jam.embed = /run/jardineslider.jam
+
+
+######## body #######################################
+			
+
+[pages]
+child = menu, content-block, footer
+css.width = 97.5%
+css.margin-top = 3%
+css.border-width = 10px
+css.border-color = #365ca7
+css.border-style = solid
+fx.rounding = 12px
+css.background-color = white
+css.margin-bottom = 50px
+	
+	[menu]
+	css.background-color = #365ca7
+	css.width = 100%
+	css.overflow = visible
+	css.height = 3%
+
+#// Top level basic settings
+			addon.menu.traditional.orientation = horizontal
+#			addon.menu.traditional.width = // blank or a px value for 'item' width
+			addon.menu.traditional.height = 40px
+			addon.menu.traditional.align = center
+#			addon.menu.traditional.item-margin = // split equally between left and right.
+			addon.menu.traditional.item-width = variable / uniform / 80px
+
+#// Top level background settings
+			addon.menu.traditional.menu-rounding = 0px
+			addon.menu.traditional.menu-opacity = 100%
+			addon.menu.traditional.menu-color = #365ca7 
+			addon.menu.traditional.item-separator-width = 2px
+			addon.menu.traditional.item-separator-color = #365ca7
+#			addon.menu.traditional.edgepadding = 40px
+
+#// Top level font settings
+			addon.menu.traditional.menu-font-size = 16px
+			addon.menu.traditional.menu-font-family = Droid Sans
+			addon.menu.traditional.menu-font-weight = bold
+			addon.menu.traditional.menu-text-color = white
+
+#// Top level hover settings
+			addon.menu.traditional.menu-hover-text-color = #lightgrey
+			addon.menu.traditional.menu-hover-background-color = #365ca7
+			addon.menu.traditional.menu-hover-font-size = 16px
+			addon.menu.traditional.menu-hover-font-family = Droid Sans
+			addon.menu.traditional.menu-hover-font-weight = bold
+
+#// Top level selected settings
+			addon.menu.traditional.menu-selected-text-color = #94a8d0
+			addon.menu.traditional.menu-selected-background-color = #365ca7
+			addon.menu.traditional.menu-selected-font-size = 16px
+			addon.menu.traditional.menu-selected-font-family = Droid Sans
+			addon.menu.traditional.menu-selected-font-weight = bold
+
+#// Second level settings
+			addon.menu.traditional.submenu-height = 30px
+			addon.menu.traditional.submenu-width = variable
+			addon.menu.traditional.submenu-font-size = 16px
+			addon.menu.traditional.submenu-font-family = Droid Sans
+			addon.menu.traditional.submenu-font-weight = normal
+			addon.menu.traditional.submenu-text-color = #365ca7
+			addon.menu.traditional.submenu-background-color = #dddddd
+			addon.menu.traditional.submenu-separator-width = 1px
+			addon.menu.traditional.submenu-separator-color = #94a8d0
+
+			
+		[content-block]
+		child = content, contact-page
+		css.background-color = white
+		css.margin-top = 30px
+		css.margin = 30px
+		
+			[content]
+			condition = @PAGE!=contact-dumfries-roofers-roofing-company
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find the page $_GET['page']
+			html.raw = ContentBlock.content
+		
+		[contact-page]
+		child = contact-form, contact-content
+		stacking = horizontal
+		condition = @PAGE=contact-dumfries-roofers-roofing-company
+		
+			[contact-form]
+			css.width = 40%
+			css.padding = 0% 5%
+			html.raw = <h1><span style="font-size:24px;">Contact Form</span></h1>
+			css.text-align = center
+			css.min-height = 325px
+			css.background-color = white
+			#jam.embed = /run/contact.jam
+			jam.iframe = /run/contact
+
+			
+			[contact-content]
+			css.width = 50%
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find the page $_GET['page']
+			html.raw = ContentBlock.content
+
+
+####footer####################################
+
+[footer]
+child = footer-menu, footnote
+css.margin-top = 40px
+css.width = 100%
+css.background-color = #365ca7
+stacking = horizontal
+css.padding = 2% 3% 0% 3%
+
+		[footer-menu]
+		child = footer-cookies, footer-tandc, footer-contact, builder-icons
+		css.width = 75%
+		
+
+			[footer-cookies]
+			html.raw = Cookie Policy
+			css.color = #ffffff
+			css.font-size = 11px
+			css.text-align = left
+			click = ?layout=index&page=cookie-policy
+
+			[footer-tandc]
+			html.raw = Terms & Conditions
+			css.color = #ffffff
+			css.font-size = 11px
+			css.text-align = left
+			css.margin-top = 5px
+			click = ?layout=index&page=terms-conditions
+
+			[footer-contact]
+			html.raw = Contact Us
+			css.text-align = left
+			css.color = #ffffff
+			css.font-size = 11px
+			css.margin-top = 5px
+			click = ?layout=index&page=contact-dumfries-roofers-roofing-company
+			
+[builder-icons]
+child = builder-container
+css.width = 75%
+css.background-color = pink
+
+[builder-container]
+css.width = 90%
+#css.margin = 2%
+css.padding = 2%
+#css.background-color = white
+child = construction, guild, icopal, polyroof, trustedtrader
+stacking = horizontal
+
+	[construction]
+	css.width = 17%
+	image.url = img/construction.jpg
+	image.width = 100%
+	image.height = 100%
+	
+	[guild]
+	css.width = 16%
+	css.margin-left = 1%
+	image.url = img/guild.jpg
+	image.width = 100%
+	image.height = 100%
+
+	[icopal]
+	css.width = 17%
+	css.margin-left = 1%
+	image.url = img/icopal.jpg
+	image.width = 100%
+	image.height = 100%
+	
+	[polyroof]
+	css.width = 18%
+	css.margin-left = 1%
+	image.url = img/polyroof.jpg
+	image.width = 100%
+	image.height = 100%
+	
+	[trustedtrader]
+	css.width = 26%
+	css.margin-left = 1%
+	image.url = img/trustedtrader.jpg
+	image.width = 100%
+	image.height = 100%
+
+
+	[footnote]
+	child = copyright, admin-links
+	css.width = 25%
+	css.background-color = yellow
+
+		[copyright]
+		css.width = 100%
+		css.margin-top = 10px
+		html.raw = Jardine Roofing Ltd &copy 2016</br>All rights reserved
+		css.color = #ffffff
+		css.font-size = 12px
+		css.text-align = right
+
+	[admin-links]
+	child = wirefly, admin
+	stacking = horizontal
+	css.margin-top = 7%
+	css.float = right
+	css.width = 50%
+	css.background-color = grey
+
+	
+		[wirefly]
+		css.width = 95%
+		css.margin-top = 1%
+		image.url = img/wirefly-design.png
+		image.width = 100%
+		image.height = 100%
+		image.align = left
+		clicknew = http://www.wireflydesign.com
+		
+	
+		[admin]
+		child = cog-center
+		css.width = 15%
+		css.background-size = 100%
+		css.background-image = url('/img/admin-dark.png')
+		css.margin-left = -20%
+		
+			[cog-center]
+			css.width = 50%
+			css.height = 100%
+			css.margin-top = 25%
+			css.margin-bottom = 25%
+			image.url = img/cog-center.png
+			image.width = 100%
+			image.height = 100%
+			image.align = center
+			clicknew = backend.php
+

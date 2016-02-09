@@ -1,0 +1,76 @@
+<html>
+<head>
+</head>
+<body>
+
+<form>
+	<input type='text' id='inputid' name='inputname' value='inputval'>
+</form>
+
+<div id='divid' name='divname'>inputhtml</div>
+
+<script>
+window.onload = function() {
+}
+
+var data = function(element) {
+	// Self instantiate if necessary. http://programmers.stackexchange.com/questions/118798/avoiding-new-operator-in-javascript-the-better-way
+	if (Object.getPrototypeOf(this) !== data.prototype) {
+		var o = Object.create(data.prototype);
+		o.constructor.apply(o, arguments);
+		return o;
+  	}
+	this.obj = document.getElementById(element);
+	if (this.obj == null) {
+		this.obj = document.getElementsByName(element)[0];
+		if (this.obj == null) {
+			console.log('data: invalid element ' + element);
+			return null;
+		}
+	}
+}
+data.prototype.content = function(val) {
+	if (val == null)
+		return (this.obj instanceof HTMLInputElement) ? this.obj.value : this.obj.innerHTML;
+	else
+		(this.obj instanceof HTMLInputElement) ?  this.obj.value = val : this.obj.innerHTML = val;
+};
+data.prototype.id = function(val) {
+	if (val == null)
+		return this.obj.id;
+	else
+		this.obj.id = val;
+};
+data.prototype.name = function(val) {
+	if (val == null)
+		return this.obj.name;
+	else
+		this.obj.name = val;
+};
+
+var myvar = data('inputid').content();		console.log('INPUTBYID got initial value ' + myvar);
+data('inputid').content('a');				console.log('INPUTBYID set value to a');
+var myvar2 = data('inputid').content();		console.log('INPUTBYID value now is ' + myvar2);
+console.log('-------------');
+var myvar = data('inputname').content();	console.log('INPUTBYNAME got initial value ' + myvar);
+data('inputname').content('b');				console.log('INPUTBYNAME set value to b');
+var myvar2 = data('inputname').content();	console.log('INPUTBYNAME value now is ' + myvar2);
+console.log('-------------');
+var myvar = data('divid').content();		console.log('DIVBYID got initial value ' + myvar);
+data('divid').content('c');					console.log('DIVBYID set value to c');
+var myvar2 = data('divid').content();		console.log('DIVBYID value now is ' + myvar2);
+console.log('-------------');
+var myvar = data('divname').content();		console.log('DIVBYNAME got initial value ' + myvar);
+data('divname').content('d');				console.log('DIVBYNAME set value to d');
+var myvar2 = data('divname').content();		console.log('DIVBYNAME value now is ' + myvar2);
+console.log('=============');
+console.log( data('inputid').name() );
+console.log( data('inputname').id() );
+console.log('=============');
+console.log( 'divs cant have a name : ' + data('divid').name() );
+console.log( data('divname').id() );
+
+</script>
+
+</body>
+</html>

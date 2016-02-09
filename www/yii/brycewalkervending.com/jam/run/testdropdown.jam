@@ -1,0 +1,9 @@
+{{@include /jam/sys/html/header.html}}
+
+{{@database stock}}
+
+<h1>DROPDOWN TEST</h1>
+
+{{@html dropdown repeat field=stock_supplier_order.container_id pickfield=stock_container.name size=medium label=Container}}
+
+{{@include /jam/sys/html/footer.html}}

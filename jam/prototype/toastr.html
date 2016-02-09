@@ -1,0 +1,52 @@
+<html>
+<head>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+<link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+</head>
+<body>
+<center> https://github.com/CodeSeven/toastr </center>
+<center> http://codeseven.github.io/toastr/demo.html </center>
+
+<script>
+(function() {
+   // your page initialization code here
+   // the DOM will be available here
+
+toastr.options = {
+  "preventDuplicates": true,
+  "timeOut": "20000",
+
+  "closeButton": false,
+  "debug": false,
+  "newestOnTop": false,
+  "progressBar": false,
+  "positionClass": "toast-bottom-right",
+  "onclick": null,
+  "showDuration": "300",
+  "hideDuration": "1000",
+  "extendedTimeOut": "1000",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut"
+}
+
+toastr.success('success')
+toastr.info('info')
+toastr.warning('warning')
+toastr.error('error')
+
+// Immediately remove current toasts without using animation
+//toastr.remove()
+
+// Remove current toasts using animation
+//toastr.clear()
+
+})()
+</script>
+
+</body>
+</html>
