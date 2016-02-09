@@ -79,7 +79,7 @@
 	{{old.qty = stock_supplier_order_item.delivered_qty}}
 	{{stock_supplier_order_item.delivered_qty = new.qty}}
 	{{stock_supplier_order_item.delivered_date = 2016-01-18}}
-	{{@amend item stock_supplier_order_item}}
+	{{@amend item stock_supplier_order_item notify=ok}}
 	// Update the stock location qty (might not yet exist)
 	{{@get stock_supplier_order filter id = stock_supplier_order.id}}
 	{{@get stock_product_has_location filter stock_location_id = stock_supplier_order.location_id, stock_product_id = stock_supplier_order_item.stock_product_id}}
@@ -89,7 +89,7 @@
 {{@end}}
 
 {{@action updateDeliveredCost}}
-	{{@amend item stock_supplier_order_item}}
+	{{@amend item stock_supplier_order_item notify=ok}}
 {{@end}}
 
 {{@action recalcOrder}}

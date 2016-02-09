@@ -16,6 +16,8 @@
 	<?php 
 	if ($model->isNewRecord)
 		echo $form->textFieldRow($model,'user_name',array('class'=>'span3','maxlength'=>255));
+	else;
+		echo $form->textFieldRow($model,'id',array('class'=>'span3','maxlength'=>255, 'readonly'=>'true'));
 	?>
 
 	<?php echo "<div style=display:none>" . $form->textFieldRow($model,'password',array('class'=>'span3','maxlength'=>255)) . "</div>"; ?>

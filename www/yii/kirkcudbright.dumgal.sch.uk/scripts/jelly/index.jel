@@ -1,4 +1,4 @@
-#Demo 5
+#Kirkcudbright Academy
 [defaults]
 include = default-values
 
@@ -13,49 +13,85 @@ css.display = block
 css.min-width = 600px
 
 	[site]
-	child = header, slider, columns, home-page-content, pages, footer
+	child = header, slider, menu, columns, home-page, pages, footer
 	css.width = 100%
-	
 	
 ####  Header  #################################
 
+	
 	[header]
-	child = logo, logo-header
-	css.margin-top = 20px
+	child = header-content, header-underline
+	css.margin-top = 10px
+	css.width = 100%
+	css.overflow = visible
+	
+	[header-content]
+	child = logo, header-title, header-img
+	css.width = 90%
+	css.max-width = 1200px
 	stacking = horizontal
-	css.width = 80%
+	css.overflow = visible
 		
 		[logo]
 		child = logo-image
 		css.width = 20%
+		css.max-width = 200px
 		image.url = img/badge-logo.png
-		image.width = 85%
+		image.width = 90%
 		image.height = 100%
 		click = ?layout=index&page=index
-		css.z-index = 100
+		css.z-index = 110
 		css.position = relative
 		css.overflow = visible
+			
+		[header-title]
+		css.width = 50%
+		image.url = img/title.png
+		image.width = 90%
+		image.height = 90%
+		image.align = right
+		click = ?layout=index&page=index
+
+		[header-img]
+		css.width = 10%
+		css.float = right
+		image.url = img/tower-img.png
+		image.width = 80%
+		image.height = 80%
+		
+	[header-underline]
+	css.width = 100%
+	css.height = 5px
+	css.background-color = #525252
+	css.margin-top = -10%
 
 			
-		[logo-header]
-		child = logo-name, menu
-		css.width = 60%
-		css.margin-right = 10%			
-			
-			[logo-name]
-			css.width = 100%
-			image.url = img/title.png
-			image.width = 100%
-			image.height = 100%
-					css.z-index = 100
-		css.position = relative
-		css.overflow = visible
-			click = ?layout=index&page=index			
+#### Slider ###########################################
 
-			[menu]
-			css.width = 100%
-			css.margin-top = 25px
-			css.overflow = visible
+	[slider]
+	css.margin-top = 5px
+	css.width = 100%
+	css.max-height = 450px
+jam.embed = /run/slider.jam
+#	addon.slider.flexslider.width = 100%
+#	addon.slider.flexslider.height = 36%
+#	addon.slider.flexslider.mode = image
+#	addon.slider.flexslider.source = db
+#
+#	addon.slider.flexslider.border-width = 0px
+#	addon.slider.flexslider.active-dotcolor = #525252
+#	addon.slider.flexslider.inactive-dotcolor = #e6ddbc
+#	addon.slider.flexslider.dot-margin-top = -80px
+#	addon.slider.flexslider.dot-margin-left = 0px
+#	addon.slider.flexslider.animation = slide
+
+
+##### Menu Area #################################
+
+	[menu]
+	css.width = 100%
+	css.background-color = #e6ddbc
+	css.overflow = visible
 
 #// Top level basic settings
 		addon.menu.traditional.orientation = horizontal
@@ -63,18 +99,13 @@ css.min-width = 600px
 		addon.menu.traditional.align = center
 		addon.menu.traditional.item-margin = 30px
 		addon.menu.traditional.item-width = variable
-		addon.menu.traditional.level = 1
+		#	addon.menu.traditional.level = 1
 		
 #// Top level background settings
 		addon.menu.traditional.menu-rounding = 0px
 		addon.menu.traditional.menu-opacity = 100%
-	#	addon.menu.traditional.menu-tile = /img/menu.jpg
-	#	addon.menu.traditional.menu-stretch = /img/menu.jpg
-		addon.menu.traditional.menu-color = white 
+		addon.menu.traditional.menu-color = transparent 
 		addon.menu.traditional.item-separator-width = 0px
-	#	addon.menu.traditional.item-separator-color = red
-	#	addon.menu.traditional.item-separator-tile = /img/menu.jpg
-	#	addon.menu.traditional.item-separator-stretch = /img/menu.jpg
 	#	addon.menu.traditional.edgepadding = 40px
 
 #// Top level font settings
@@ -99,7 +130,7 @@ css.min-width = 600px
 
 #// Second level settings
 #addon.menu.traditional.submenu-height = 30px // centers text
-#addon.menu.traditional.submenu-width = variable / px
+addon.menu.traditional.submenu-width = variable
 addon.menu.traditional.submenu-font-size = 16px
 addon.menu.traditional.submenu-font-family = Droid Sans, Verdana, sans-serif
 addon.menu.traditional.submenu-font-weight = normal
@@ -108,60 +139,29 @@ addon.menu.traditional.submenu-background-color = #ada585
 addon.menu.traditional.submenu-separator-width = 10px
 addon.menu.traditional.submenu-separator-color = white
 
-
-
-#### Slider ###########################################
-
-	[slider]	
-	css.margin-top = -10%
-	css.width = 100%
-	css.max-height = 530px
-	addon.slider.flexslider.width = 100%
-	addon.slider.flexslider.height = 36%
-	addon.slider.flexslider.mode = image
-	addon.slider.flexslider.source = db
-
-	addon.slider.flexslider.border-width = 0px
-	addon.slider.flexslider.active-dotcolor = #525252
-	addon.slider.flexslider.inactive-dotcolor = #e6ddbc
-	addon.slider.flexslider.dot-margin-top = -80px
-	addon.slider.flexslider.dot-margin-left = 0px
-	addon.slider.flexslider.animation = slide
+### Home Page #######################################
 
 		
-	[columns]
-	child = left-column, mid-column, right-column
-	css.width = 70%
-	css,margin-top = -30px
+	[home-page]
+	child = main-column, right-column
+	css.width = 90%
+	css.max-width = 1200px
+	css.margin-top = 50px
 	stacking = horizontal
 	condition = @PAGE=@HOMEPAGE
 		
-		[left-column]
-		css.width = 33%
-		addon.global.column.name = home-left
-		addon.global.column.width = 100%
-		addon.global.column.internal-width = 80%
-		addon.global.column.content-width = 100%
-		addon.global.column.internal-color = transparent
-		addon.global.column.background-color = transparent
-		addon.global.column.top-height = 0px
-		addon.global.column.bottom-height = 10px
-		
-		
-		[mid-column]
-		css.width = 33%
-		addon.global.column.name = home-mid
-		addon.global.column.width = 100%
-		addon.global.column.internal-width = 80%
-		addon.global.column.content-width = 100%
-		addon.global.column.internal-color = transparent
-		addon.global.column.background-color = transparent
-		addon.global.column.top-height = 0px
-		addon.global.column.bottom-height = 10px
+		[main-column]
+		css.width = 65%
+		css.min-width = 500px
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']. Please select something from the menu.
+		html.raw = ContentBlock.content
 		
 		
 		[right-column]
 		css.width = 33%
+		css.min-width = 200px
 		addon.global.column.name = home-right
 		addon.global.column.width = 100%
 		addon.global.column.internal-width = 80%
@@ -171,69 +171,108 @@ addon.menu.traditional.submenu-separator-color = white
 		addon.global.column.top-height = 0px
 		addon.global.column.bottom-height = 10px
 		
+		
+		
 			
 ######## body #######################################
 			
 
-	[home-page-content]	
-	condition = @PAGE=@HOMEPAGE
-	css.width = 65%
-	css.margin-top = 50px
+[pages]
+condition = @PAGE!=@HOMEPAGE
+child = page-main, page-mobile, page-column, page-column-mobile
+css.width = 90%
+css.max-width = 1200px
+stacking = horizontal
+
+	[page-main]
+	condition = @DEVICEWIDTH>759
+	css.width = 74%
+	css.min-width = 750px
+	db.table = ContentBlock
+	db.filter = url=$_GET['page']
+	db.error = Sorry, I could not find the page $_GET['page']. Please select something from the menu.
+	html.raw = ContentBlock.content
+	
+		[page-mobile]
+	condition = @DEVICEWIDTH<760
+	css.width = 95%
 	db.table = ContentBlock
 	db.filter = url=$_GET['page']
 	db.error = Sorry, I could not find the page $_GET['page']. Please select something from the menu.
 	html.raw = ContentBlock.content
 
-	[pages]
-	condition = @PAGE!=@HOMEPAGE
-	child = page-left, page-main
-	css.width = 70%
-	stacking = horizontal
+	[page-column]
+	condition = @DEVICEWIDTH>759
+	css.width = 24%
+	css.min-width = 200px
+	child = sub-menu, page-column-text
+	css.margin-top = 20px
 	
-		[page-left]
-		css.width = 20%
-		child = sub-menu, page-left-column
-		css.margin-top = 20px
+	[page-column-mobile]
+	condition = @DEVICEWIDTH<760
+	css.width = 47%
+	cs.margin-left = 2.5%
+	child = sub-menu, page-column-text
+	css.margin-top = 20px
 	
 			[sub-menu]
-			css.overflow = visible
-			addon.menu.basic.orientation = vertical
-			addon.menu.basic.height = 40px
-			addon.menu.basic.menu-font-family = "Droid Sans", Verdana, sans-serif
-			addon.menu.basic.menu-font-size = 16
-			addon.menu.basic.menu-text-color = black
-			addon.menu.basic.menu-text-weight = normal
-			addon.menu.basic.level = 2
-
-			#addon.menu.basic.width = 230px
-
-			addon.menu.basic.menu-rounding = 0
-			addon.menu.basic.menu-opacity = 100
-			addon.menu.basic.menu-color = #ada585
-			addon.menu.basic.item-separator-width = 10
-			addon.menu.basic.item-separator-color = white
-			addon.menu.basic.item-color = #b64638
+#// Top level basic settings
+		addon.menu.traditional.orientation = horizontal
+		#	addon.menu.traditional.height = 40px
+		addon.menu.traditional.align = center
+		addon.menu.traditional.item-margin = 30px
+		addon.menu.traditional.item-width = variable
+		addon.menu.traditional.level = 2
 		
-			[page-left-column]
+#// Top level background settings
+		addon.menu.traditional.menu-rounding = 0px
+		addon.menu.traditional.menu-opacity = 100%
+		addon.menu.traditional.menu-color = transparent 
+		addon.menu.traditional.item-separator-width = 0px
+	#	addon.menu.traditional.edgepadding = 40px
+
+#// Top level font settings
+		addon.menu.traditional.menu-font-size = 20px
+		addon.menu.traditional.menu-font-family = Italiana
+		addon.menu.traditional.menu-font-weight = bold
+		addon.menu.traditional.menu-text-color = black
+
+#// Top level hover settings
+		addon.menu.traditional.menu-hover-text-color = #822626
+		addon.menu.traditional.menu-hover-background-color = white
+		addon.menu.traditional.menu-hover-font-size = 20px
+		addon.menu.traditional.menu-hover-font-family = Italiana, Verdana, sans-serif
+		addon.menu.traditional.menu-hover-font-weight = bold
+
+#// Top level selected settings
+		addon.menu.traditional.menu-selected-text-color = #822626
+		addon.menu.traditional.menu-selected-background-color = white lightgrey
+		addon.menu.traditional.menu-selected-font-size = 20px
+		addon.menu.traditional.menu-selected-font-family = Italiana
+		addon.menu.traditional.menu-selected-font-weight = bold
+
+#// Second level settings
+addon.menu.traditional.submenu-height = 30px // centers text
+addon.menu.traditional.submenu-width = variable
+addon.menu.traditional.submenu-font-size = 16px
+addon.menu.traditional.submenu-font-family = Droid Sans, Verdana, sans-serif
+addon.menu.traditional.submenu-font-weight = normal
+addon.menu.traditional.submenu-text-color = black
+addon.menu.traditional.submenu-background-color = #ada585
+addon.menu.traditional.submenu-separator-width = 10px
+addon.menu.traditional.submenu-separator-color = white
+		
+			[page-column-text]
 			css.margin-top = 20px
 			css.width = 100%
-			addon.global.column.name = page-left
+			addon.global.column.name = page-column
 			addon.global.column.width = 100%
-			addon.global.column.internal-width = 70%
+			addon.global.column.internal-width = 90%
 			addon.global.column.content-width = 100%
 			addon.global.column.internal-color = transparent
 			addon.global.column.background-color = transparent
 			addon.global.column.top-height = 0px
 			addon.global.column.bottom-height = 30px
-		
-		
-		[page-main]
-		css.width = 69%
-		css.margin-left = 5%
-		db.table = ContentBlock
-		db.filter = url=$_GET['page']
-		db.error = Sorry, I could not find the page $_GET['page']. Please select something from the menu.
-		html.raw = ContentBlock.content
 	
 
 ####footer####################################
