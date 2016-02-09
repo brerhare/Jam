@@ -192,7 +192,8 @@ END_OF_FOOTER;
 
     public function expandContent($content, $jellyRoot)
     {
-		$this->deviceWidth = deviceInfo();
+		if ($this->gotDeviceWidth() == -1)
+			return;
         $this->jellyRootPath = Yii::app()->basePath . "/../" . $jellyRoot;
         $this->jellyRootUrl  = Yii::app()->baseUrl . $jellyRoot;
         $this->genInlineHtml($content, $indentLevel=0);
@@ -207,7 +208,8 @@ END_OF_FOOTER;
 
 	public function processData($jellyArray, $jellyRoot)
 	{
-		$this->deviceWidth = deviceInfo();
+		if ($this->gotDeviceWidth() == -1)
+			return;
 		$this->jellyRootPath = Yii::app()->basePath . "/../" . $jellyRoot;
 		$this->jellyRootUrl  = Yii::app()->baseUrl . $jellyRoot;
 
@@ -333,6 +335,48 @@ END_OF_FOOTER;
 		array_push($this->scriptArray, "</script>\n");
 	}
 
+	// Check we have the device width. If not, echo the html/js to get it and caller quits
+    private function gotDeviceWidth()
+    {
+		// Device width handling is only on sites Jo has fixed for mobile. @@TODO remove this 'if' completely to enable for all
+		if ( (!(stristr($_SERVER['HTTP_HOST'], "barstobrickridingcentre.co.uk")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "breakfreecoaching.co.uk")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "www.kirkcudbright.dumgal.sch.uk")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "test.wireflydesign.com")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "demo5.wireflydesign.com")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "beingbusiness.co.uk"))) )
+			return 0;
+
+		//// THE OLD (retired) METHOD ------------->    $this->deviceWidth = deviceInfo();
+
+		if (isset($_GET['devicewidth'])) {
+			if ($_GET['devicewidth'] != 0) {
+				$this->deviceWidth = $_GET['devicewidth'];
+				array_push($this->headerArray, '<meta name="viewport" content="width=device-width" />');
+			}
+			return(0);
+		}
+    	$deviceWidthHtml = <<<END_OF_GETDEVICEWIDTH
+			<html>
+			<head>
+			<script type="text/javascript">
+			var url = window.location.href;
+			if (url.indexOf('?') === -1)
+				url += '?';
+			else
+				url += '&';
+			url += 'devicewidth=' + screen.width;
+			window.location.href = url;
+			</script>
+			</head>
+			<body>
+			</body>
+			</html>
+END_OF_GETDEVICEWIDTH;
+		echo $deviceWidthHtml;
+		return (-1);
+	}
+
 	public function outputData()
 	{
 		$this->emit($this->beginHeader);
@@ -344,6 +388,12 @@ END_OF_FOOTER;
 			// Backward compatibility - it used to be called header.html
 			if (file_exists($this->jellyRootPath . 'header.html'))
 				$this->emit(file_get_contents($this->jellyRootPath . 'header.html'));
+		}
+
+		// snake oil here
+		if (stristr($_SERVER['HTTP_HOST'], "wireflydesign.com")) {
+			array_push($this->headerArray, '<script type="text/javascript" src="http://www.bae5tracker.com/js/61103.js" ></script>');
+			array_push($this->headerArray, '<noscript><img src="http://www.bae5tracker.com/61103.png" style="display:none;" /></noscript>');
 		}
 
 		foreach ($this->headerArray as $hdr)
@@ -374,86 +424,76 @@ END_OF_FOOTER;
 		// Search array for repeating fields - we'll generate an instance of this blob for each
 		$hasRepeatingField = false;
 		// Skip over 'condition' blobs that fail their condition
-		if (array_key_exists("condition", $array))
-		{
-			if ((strstr($array['condition'], "@HOMEPAGE")) && !(strstr($array['condition'], "@PAGE")))
-			{
-				// condition = @HOMEPAGE=0
-				// condition = @HOMEPAGE=1
-				// condition = @HOMEPAGE!=0
-				// condition = @HOMEPAGE!=1
-				if (strstr($array['condition'], "!=1"))
-				{
-					if ($this->homePage == "1")
-						return;
+
+		foreach ($array as $k=>$v) {
+			if ("condition" == substr($k, 0, 9)) {
+				if ((strstr($array[$k], "@HOMEPAGE")) && !(strstr($array[$k], "@PAGE"))) {
+					// condition = @HOMEPAGE=0
+					// condition = @HOMEPAGE=1
+					// condition = @HOMEPAGE!=0
+					// condition = @HOMEPAGE!=1
+					if (strstr($array[$k], "!=1")) {
+						if ($this->homePage == "1")
+							return;
+					}
+					else if (strstr($array[$k], "!=0")) {
+						if ($this->homePage == "0")
+							return;
+					}
+					else if (strstr($array[$k], "=1")) {
+						if ($this->homePage == "0")
+							return;
+					}
+					else if (strstr($array[$k], "=0")) {
+						if ($this->homePage == "1")
+							return;	
+					}
 				}
-				else if (strstr($array['condition'], "!=0"))
-				{
-					if ($this->homePage == "0")
-						return;
-				}
-				else if (strstr($array['condition'], "=1"))
-				{
-					if ($this->homePage == "0")
-						return;
-				}
-				else if (strstr($array['condition'], "=0"))
-				{
-					if ($this->homePage == "1")
-						return;	
-				}
-			}
-			else if (strstr($array['condition'], "@PAGE"))
-			{
-				// condition = @PAGE=@HOMEPAGE
-				// condition = @PAGE!=@HOMEPAGE
-				// condition = @PAGE=classical-music-series
-				// condition = @PAGE!=classical-music-series
-				if (strstr($array['condition'], "="))
-				{
-					$not = 0;
-					if (strstr($array['condition'], "!"))
-						$not = 1;
-					$first = strstr($array['condition'], "=");
-					$second = strstr($first, "=");
-					$pageForConditionArr = explode(',', ltrim($second, "="));
-					$pageForConditionArr = array_map('trim', $pageForConditionArr);
-					$pageLoading = "";
-					if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
-					{
-						$pageLoading = $_GET['page'];
-						if ($this->homePage == 1)
+				else if (strstr($array[$k], "@PAGE")) {
+					// condition = @PAGE=@HOMEPAGE
+					// condition = @PAGE!=@HOMEPAGE
+					// condition = @PAGE=classical-music-series
+					// condition = @PAGE!=classical-music-series
+					if (strstr($array[$k], "=")) {
+						$not = 0;
+						if (strstr($array[$k], "!"))
+							$not = 1;
+						$first = strstr($array[$k], "=");
+						$second = strstr($first, "=");
+						$pageForConditionArr = explode(',', ltrim($second, "="));
+						$pageForConditionArr = array_map('trim', $pageForConditionArr);
+						$pageLoading = "";
+						if ((isset($_GET['page'])) && (trim($_GET['page']) != "")) {
+							$pageLoading = $_GET['page'];
+							if ($this->homePage == 1)
+								$pageLoading = "@HOMEPAGE";
+						}
+						else
 							$pageLoading = "@HOMEPAGE";
-					}
-					else
-						$pageLoading = "@HOMEPAGE";
-//die('blobname='.$blobName. ' not='.$not.' loading='.$pageLoading.' condition='.$pageForCondition);
-					if ($not == 0)
-					{
-						if (!(in_array($pageLoading, $pageForConditionArr)))
-							return;
-					}
-					else
-					{
-						if (in_array($pageLoading, $pageForConditionArr))
-							return;
+	//die('blobname='.$blobName. ' not='.$not.' loading='.$pageLoading.' condition='.$pageForCondition);
+						if ($not == 0) {
+							if (!(in_array($pageLoading, $pageForConditionArr)))
+								return;
+						}
+						else {
+							if (in_array($pageLoading, $pageForConditionArr))
+								return;
+						}
 					}
 				}
-			}
-			else if (strstr($array['condition'], "@DEVICEWIDTH"))	// =1000, >600, <958, >=320, <=800
-			{
-        		$chrs = array('=', '>', '<');
-				foreach ($chrs as $chr) {
-					//echo $chr;	
-					$exp = explode($chr, $array['condition']);
-					if (count($exp) == 2)
-					{
-						if ($chr == "=" && $this->deviceWidth != trim($exp[1]))
-							return;
-						if ($chr == ">" && $this->deviceWidth <= trim($exp[1]))
-							return;
-						if ($chr == "<" && $this->deviceWidth >= trim($exp[1]))
-							return;
+				else if (strstr($array[$k], "@DEVICEWIDTH")) {	// =1000, >600, <958, >=320, <=800
+        			$chrs = array('=', '>', '<');
+					foreach ($chrs as $chr) {
+						//echo $chr;	
+						$exp = explode($chr, $array[$k]);
+						if (count($exp) == 2) {
+							if ($chr == "=" && $this->deviceWidth != trim($exp[1]))
+								return;
+							if ($chr == ">" && $this->deviceWidth <= trim($exp[1]))
+								return;
+							if ($chr == "<" && $this->deviceWidth >= trim($exp[1]))
+								return;
+						}
 					}
 				}
 			}
@@ -729,6 +769,7 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 	private function wordArrayHandler($blobName, $word, $value)
 	{
 		//$this->logMsg("Handling " . $word . " with value " . $value . "\n", 1);
+		$jamHeight = "0";
 		switch ($word)
 		{
 			case "jam":    // NB: DUPS ALLOWED
@@ -736,6 +777,9 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 			{
 				switch ($jamType)
 				{
+					case "iframe-height":
+						$jamHeight = $jamArg;	
+						break;
 					case "embed":
 					case "iframe":
 						// Get uid. From where depends whether site or plugin
@@ -760,13 +804,15 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 							$settingEmail = $setting->email;
 						// Create url and call curl
 						$yiiSite = str_replace("/index.php", "", Yii::app()->createAbsoluteUrl(Yii::app()->request->getPathInfo()));
-						$jamUrl = $yiiSite . "/jamcgi/jam?template=" . $jamArg . "&jelly.sid=" . $sid . "&jelly.email=" . $settingEmail;
+						//$jamUrl = $yiiSite . "/jamcgi/jam?template=" . $jamArg . "&jelly.sid=" . $sid . "&jelly.email=" . $settingEmail;
+						$jamUrl = $yiiSite . $jamArg . "?jelly.sid=" . $sid . "&jelly.email=" . $settingEmail;
 						if ($jamType == "embed") {
 							$shell_exec = "php " . Yii::app()->basePath . "/../jam/jelly2jam.php" . " " . $jamUrl;
 							$curlContent = shell_exec ($shell_exec);
 							$this->genInlineHtml($curlContent);
 						} else {
-							$iframe = "<iframe id='frm' onload='scroll(0,0);' width='100%' height='0' scrolling='no' style='overflow-x:hidden; overflow-y:auto;' src='"  .$jamUrl . "' ></iframe>";
+							// Check if iframe has a size
+							$iframe = "<iframe id='frm' onload='scroll(0,0);' width='100%' height='" .$jamHeight . "' scrolling='no' style='overflow-x:hidden; overflow-y:auto;' src='"  .$jamUrl . "' ></iframe>";
 							$this->genInlineHtml($iframe);
 						}
 						break;
@@ -897,7 +943,7 @@ if (strstr($blobName, "googlemap"))
 							$height = $val;
 							break;
 						case ("z-index"):
-							$zindex = " style='position:relative; z-index:" . $val . ';" ';
+							$zindex = ' style="position:relative; z-index:' . $val . '";';
 							break;
 						case ("align"):
 							if (($val == 'center') || ($val == 'centre'))
@@ -914,7 +960,7 @@ if (strstr($blobName, "googlemap"))
 					}
 				}
 				if ($alt == "")
-					$this->genInlineHtml('<div class="' . $val . '-container" style="border:0;padding:0;margin:0"><img ' . $fx . $zindex . $align . ' title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.style.display=\'none\'" . " width="' . $width . '" height="' . $height . '"></div>');
+					$this->genInlineHtml('<div class="' . $val . '-container" style="border:0;padding:0;margin:0"><img ' . $fx . $zindex . $align . ' title="' . $tip . '" src="' . $this->dbExpand($url) . '" width="' . $width . '" height="' . $height . '"></div>');
 				else
 					$this->genInlineHtml('<img ' . $zindex . $align . ' title="' . $tip . '" src="' . $this->dbExpand($url) . '" onerror="this.onerror=null;this.src=\'' . $this->dbExpand($alt) . '\'" width="' . $width . '" height="' . $height . '">');
 				break;
