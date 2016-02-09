@@ -342,6 +342,7 @@ END_OF_FOOTER;
 		if ( (!(stristr($_SERVER['HTTP_HOST'], "barstobrickridingcentre.co.uk")))
 		&& (!(stristr($_SERVER['HTTP_HOST'], "breakfreecoaching.co.uk")))
 		&& (!(stristr($_SERVER['HTTP_HOST'], "test.wireflydesign.com")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "demo5.wireflydesign.com")))
 		&& (!(stristr($_SERVER['HTTP_HOST'], "beingbusiness.co.uk"))) )
 			return 0;
 
