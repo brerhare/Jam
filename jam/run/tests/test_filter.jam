@@ -1,0 +1,49 @@
+<link rel="stylesheet" type="text/css" href="/jam/css/kim1.css">
+
+<style>
+h4 {
+  color:brown;
+}
+</style>
+
+{{@database stock}}
+
+<form action="?template=test_filter2.tpl" method="POST">
+
+  <h4>Text</h4>
+  <input type="text" name="{{filter.text}}"><br>
+
+  <h4>Textarea</h4>
+  <textarea name="{{filter.textarea}}" rows="4" cols="50"></textarea>
+
+  <h4>Password</h4>
+  <input type="password" name="{{filter.password}}">
+
+  <h4>Date</h4>
+  <input type="date" name="{{filter.date}}">
+
+  <h4>Select</h4>
+  <select name="{{filter.select}}">
+    {{@each stock_area}}
+      <option value="{{id}}">{{name}}</option>
+    {{@end}}
+  </select>
+  
+  <h4>Radio</h4>
+  {{@each stock_area}}
+    <input type="radio" name="{{filter.radio}}" value="{{stock_area.id}}">{{stock_area.name}}<br>
+  {{@end}}
+
+  <h4>Checkbox</h4>
+  {{@each stock_area}}
+    <input type="checkbox" name="{{filter.checkbox}}{{stock_area.id}}" value="{{stock_area.id}}">{{stock_area.name}}<br>
+  {{@end}}
+
+  <h4>Colour</h4>
+  <input type="color" name="{{filter.color}}" value="#ff0000">
+
+  <h4>Submit</h4>
+  <input type="submit" name="{{filter.yesbutton}}" value="Yes">
+  <input type="submit" name="{{filter.nobutton}}" value="No">
+
+</form>

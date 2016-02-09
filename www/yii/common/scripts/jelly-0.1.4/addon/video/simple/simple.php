@@ -13,8 +13,8 @@ require ('detectMobile.php');
 class simple
 {
 	//Defaults
-	private $width = "800";
-	private $height = "600";
+	private $width = "auto";
+	private $height = "auto";
 	private $video = "";						// Dont supply an extension. If one is supplied then remove it
 	private $loop = "";
 	private $poster = "";
@@ -33,8 +33,8 @@ class simple
 		$content = "";
 		foreach ($options as $opt => $val)
 		{
-			$val = str_replace("px", "", $val);
-			$val = str_replace("%", "", $val);
+			//$val = str_replace("px", "", $val);
+			//$val = str_replace("%", "", $val);
 			$val = trim($val);
 
 			switch ($opt)
@@ -90,7 +90,7 @@ class simple
 		$this->apiHtml = str_replace("<substitute-controls>", $playControl, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-js-video-controls>", $jsVideoControl, $this->apiHtml);
 
-		$this->apiHtml = str_replace("<substitute-video>", Yii::app()->getBaseUrl(true) . "/userdata/jelly/video/" . $this->video, $this->apiHtml);
+		$this->apiHtml = str_replace("<substitute-video>", Yii::app()->getBaseUrl(true) . $this->video, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-width>", $this->width, $this->apiHtml);
 		$this->apiHtml = str_replace("<substitute-height>", $this->height, $this->apiHtml);
 
@@ -105,8 +105,10 @@ class simple
 
 		// JS
 		$this->apiJs   = str_replace("<substitute-click-function>", $this->clickFunction, $this->apiJs);
-		if ($this->clickFunction == "playVideo")
-			$this->apiJs .= "<script> $(document).ready(function(){ playVideo(); }); </script>";
+		if ($this->clickFunction == "playVideo")	{
+			$this->apiHtml .= "<script> $(document).ready(function(){ playVideo(); }); </script>";
+			$this->apiHtml = str_replace("fancybox", "unfancybox", $this->apiHtml);
+		}
 
 		$retArr = array();
 		$retArr[0] = $this->apiHtml;
@@ -123,9 +125,10 @@ class simple
 		<script type="text/javascript" src="<substitute-path>/video-js/video.js"></script>
 
 		<div id="jelly-video-simple-container" class="fancybox">
-		<div id='displayBox' style='height:<substitute-height>px; width:<substitute-width>px;'>
+		<div id='displayBox' style='height:<substitute-height>; width:<substitute-width>; margin:0px auto'>
 				<video id="html5Vid" width=<substitute-width> height=<substitute-height> <substitute-js-video-controls> <substitute-controls> >
 					<source src='<substitute-video>.m4v' type='video/mp4'>
+					<source src='<substitute-video>.mp4' type='video/mp4'>
 					<source src='<substitute-video>.webm' type='video/webm'>
 					<source src='<substitute-video>.ogv' type='video/ogg'>
 					"Your browser does not support the video tag."

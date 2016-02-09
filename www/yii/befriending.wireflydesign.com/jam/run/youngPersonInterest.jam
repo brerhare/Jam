@@ -1,0 +1,35 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@Xinclude /jam/run/menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:700px; Xpadding:0}}
+
+<br>
+<div name="content_contact">
+	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+		<tr>
+			<th> Interest </th>
+			<th> Check </th>
+		</tr>
+{{@each interest_type}}
+			<td>{{interest_type.name}}</td>
+{{@get interest_young_person filter interest_type_id = interest_type.id, young_person_id = young_person.id}}
+			<td> {{@html checkbox field=id group=inp}} </td>
+		</tr>
+{{@end}}
+	</table>
+</div>
+<br>
+
+{{@html container end}}
+
+<script>
+window.onload = function() {
+}
+</script>
+
+{{@include /jam/sys/html/footer.html}}

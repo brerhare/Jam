@@ -1,0 +1,4 @@
+RewriteEngine On
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteRule ^run(.+)$ /jam/cgi/runjam.cgi?jam=/jam/run/$1 [L,QSA]
