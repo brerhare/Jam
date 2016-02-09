@@ -1,0 +1,29 @@
+{{@include /jam/sys/html/header.html}}
+
+<style>
+	div { width:600px; }
+</style>
+
+{{@database befriending_wireflydesign_com}}
+
+<!-- Template defines -->
+{{@template TABLE user_group}}
+{{@template DESCRIPTION }}
+{{@template DELETEFIELD user_group.name}}
+
+{{@template HEADINGS
+	<th> User groups </th>
+	<th> Permissions </th>
+}}
+
+{{@template COLUMNS
+	<td> {{@html text field=user_group.name size=medium}} </td>
+	<td> {{@html text field=user_group.set_permissions size=medium placeholder='Need checkboxes....?'}} </td>
+}}
+
+{{@template EDITS name set_permissions}}
+
+<!-- Include the template -->
+{{@include /jam/run/sys/crudInline.jam}}
+
+{{@include /jam/sys/html/footer.html}}

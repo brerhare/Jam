@@ -1,0 +1,105 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@Xinclude /jam/run/menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center nomargin css='max-width:900px; padding:0}}
+
+	{{@get young_person filter id = young_person.id}}
+	{{@get global filter id = young_person.global_id}}
+
+	<style type="text/css">
+		label {text-align: right; width:150px !important}
+		div.uk-form-controls {margin-left: 170px !important}
+	</style>
+
+
+    <div name="inlineForm" class="uk-form uk-form-horizontal">
+        <table class="uk-table uk-table-condensed" style="border:1px solid #dddddd">
+            <tr>
+				<th> Medical type </th>
+				<th colspan=3 style='text-align:center'> Young Person </th>
+				<th colspan=3 style='text-align:center'> Parent Carer </th>
+            </tr>
+            <tr>
+				<td> </td>
+				<td style='text-align:left'> Yes </td>
+				<td style='text-align:left'> No </td>
+				<td style='text-align:left'> N/A </td>
+				<td style='text-align:left'> Yes </td>
+				<td style='text-align:left'> No </td>
+				<td style='text-align:left'> N/A </td>
+			</td>
+{{@each medical_type}}
+            <tr>
+				<td> {{medical_type.name}} </td>
+				<td> <input type='radio' name='one'> </td>
+				<td> <input type='radio' name='one'> </td>
+				<td> <input type='radio' name='one'> </td>
+				<td> <input type='radio' name='two'> </td>
+				<td> <input type='radio' name='two'> </td>
+				<td> <input type='radio' name='two'> </td>
+            </tr>
+{{@end}}
+        </table>
+
+		<br>
+			<br>
+			Medication<br>
+			<textarea cols="80" rows="2" name="x" placeholder="Medication" class="ROW_793940 inp"></textarea>
+		<br>
+			<br>
+			Medical condition notes<br>
+			<textarea cols="80" rows="6" name="x" placeholder="Medical condition notes" class="ROW_793940 inp"></textarea>
+			<br><br>
+    </div>
+
+<script>
+window.onload = function() {
+	// Create onChange functions for all form inputs - will be called by fn()
+	var groupArr = getGroupArray('inp');
+	for (var i = 0; i < groupArr.length; i++) {
+		name = "onChange_" + groupArr[i].name.replace(/_/g, "");
+		name = name.replace(".", "_");
+		//alert(name);
+		window[name] = function (obj) {
+			document.getElementById('saveButton').disabled = false;
+		}
+	}
+	//document.getElementById('saveButton').disabled = true;
+}
+function disableButton(me) {
+	//me.disabled = true;
+}
+
+function sav(str) {
+	str = str + '';
+//alert(str);
+	var x = str.split('|');
+	//alert(x[0]);
+	//alert(x[1]);
+}
+
+</script>
+
+{{@action update_young_person}}
+	{{@Xupdate item answer_young_person}}         <!-- first update the link table (inserts wont have its id yet)
+{{@end}}
+
+{{@action email_young_person}}
+	{{@get young_person filter id = young_person.id}}
+	{{@get global filter id = young_person.global_id}}
+	{{@email k@microboot.com {{global.email}}  'Befriending referral form for {{global.forename}} {{global.surname}}' action:emailContent}}
+	Email sent
+{{@end}}
+
+{{@action emailContent}}
+	Whatever is here gets used as the mmail body content. <br>It will be a link like <a href="http://befriending.wireflydesign.com/run/referralForm.jam?accesskey=gj3x9dsmcNcj2hvgsxz3sjpOvR">this</a> to click on.
+{{@end}}
+
+{{@html container end}}
+
+{{@include /jam/sys/html/footer.html}}
