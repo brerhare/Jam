@@ -1,0 +1,62 @@
+<!-- Place your Google fonts here as a cut and paste then choose which header and fonts etc need the font families - NB if the family only come in Italic then you must state the font style as Italic too -->
+
+<link href='https://fonts.googleapis.com/css?family=Nunito:400,700|Open+Sans:400,400italic' rel='stylesheet' type='text/css'>
+
+<style type="text/css">
+
+html, h2, h4, body, p {	height: 100%;
+				padding: 0%;
+				margin: 0%;
+				border: 0px;
+				line-height: 140%;}
+
+/* Global Hyperlink settings - will affect menu text colour if no text settings */ 
+a { text-decoration: none; color:#288d57; }
+a:visited, a:active { text-decoration: none; color:#288d57; }
+a:hover { text-decoration: none; color:#36c076; }
+
+
+
+h1 {	font-family: 'Nunito', Arial, sans-serif !important;
+	color: #36c076;
+	font-size: 36px;
+	font-weight: 400;
+	line-height: 100%;}
+
+h2 {	font-family: 'Open Sans', Verdana, sans-serif !important;
+	color: #7a7a7a;
+	font-size: 18px;
+	font-weight: 400;
+	font-style: italic;}
+
+
+h3 {	font-family: 'Nunito', Arial, sans-serif !important;
+	color: #36c076;
+	font-size: 20px;
+	font-weight: 700;
+	font-stretch: wider;}
+
+h4 {	font-family: 'Open Sans', Verdana, sans-serif !important;
+	color: #36c076;
+	font-size: 16px;
+	font-weight: 700;
+	font-stretch: wider;}
+
+p  {	font-family: 'Open Sans', Verdana, sans-serif !important;
+	color: #000000;
+	font-size: 14px;
+	font-weight: normal
+	font-stretch: expanded}
+
+blockquote {font-family: 'Open Sans', Verdana, sans-serif !important;
+	color: #5b5b5b;
+	font-size: 14px;
+	font-style: italic;
+	font-weight: 300}
+
+
+html { font-family: 'Open Sans', Verdana, sans-serif !important;
+	font-size: 12px;
+	font-weight:normal}
+
+</style>

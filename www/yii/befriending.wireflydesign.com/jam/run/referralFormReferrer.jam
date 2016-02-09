@@ -1,0 +1,103 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@Xinclude /jam/run/menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:700px; Xpadding:0}}
+
+<!-- Template defines -->
+{{@template TABLE contact}}
+{{@template FILTER filter contact_relationship_id = 3}}
+
+<!-- Template defines for the form input component -->
+{{@template FORMINPUT
+
+	{{@html text field=global.forename size=medium label='Forename'}}
+	{{@html text field=global.surname size=medium label='Surname'}}
+	{{@html text field=global.house size=medium label='house'}}
+	{{@html text field=global.street size=medium label='Street'}}
+	{{@html text field=global.area size=medium label='Area'}}
+	{{@html text field=global.town size=medium label='Town'}}
+	{{@html text field=global.postcode size=medium label='Postcode'}}
+	{{@html text field=global.landline size=medium label='Land line'}}
+	{{@html text field=global.mobile size=medium label='Mobile'}}
+	{{@html text field=global.email size=medium label='Email'}}
+}}
+
+<!-- List component -->
+
+<!-- Clear any unset templates -->
+{{@template FILTER}}
+
+<style>
+.rowHighlight:hover {
+  background-color: #ddf0ff;
+  cursor:pointer;
+}
+</style>
+
+<br>
+<center> <h3> Please confirm the details we hold for you are correct </h3> </center>
+
+<script>
+function localUpdate_TABLE() {
+	obj = document.getElementsByName('global.email')[0];
+	if (obj.value == "") {
+		alert('Invalid email');
+		return;
+	}
+	runAction('update_TABLE', ['inputForm_TABLE'], '', postUpdate);
+}
+function postUpdate() {
+	objReferrer = get('TABLE.id');
+	objYP = get('ypId');
+	runJam('referralFormYoungPerson?refId='+objReferrer.value+'&ypId='+objYP.value);
+}
+</script>
+
+<!-- Form input component -->
+
+{{@get TABLE filter id = refId}}
+{{@get global filter id = TABLE.global_id}}
+
+<style type="text/css">
+	label {text-align: right;}
+</style>
+
+<form name="inputForm_TABLE" class="uk-form uk-form-horizontal">
+	<input type="hidden" name="TABLE.id" value="{{TABLE.id}}">
+	<input type="hidden" name="global.id" value="{{TABLE.global_id}}">
+	{{@html gridrow start}}
+		{{@html gridcol start width=5-5}}
+			FORMINPUT
+		{{@html gridcol end}}
+	{{@html gridrow end}}
+	{{@html gridrow start}}
+		{{@html gridcol start width=1-1}}
+			<br>
+			<center>
+				{{@Xhtml button Save primary medium
+					runAction('update_TABLE', ['inputForm_TABLE'], '', runJam)
+				}}
+				{{@html button Cancel primary medium
+					runJam();
+				}}
+				<button type="button" onClick="localUpdate_TABLE()" class="uk-button uk-button-primary">Next</button>
+			</center>
+		{{@html gridcol end}}
+	{{@html gridrow end}}
+</form>
+
+{{@action update_TABLE}}
+	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
+	{{TABLE.global_id = global.id}}
+	{{TABLE.contact_relationship_id = 3}}
+	{{@update item TABLE}}
+{{@end}}
+
+{{@html container end}}
+
+{{@include /jam/sys/html/footer.html}}

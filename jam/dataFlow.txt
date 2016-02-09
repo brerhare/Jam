@@ -1,0 +1,16 @@
+Init
+----
+store url params in hidden form '_initialUrlParams'
+send request to server
+
+runAction
+---------
+expand any form vars to elements
+expand any group (class) vars to elements
+send 'oobDataRequested=1' request to server
+																			emit content as per jam instructions
+																			if 'oobDataRequested=1' send all server-side vars oob
+update/add server variables from oob
+update/add server jam data
+run any server js
+
