@@ -7,7 +7,6 @@
 
 html, h2, h4, body, p {	height: 100%;
 				padding: 0%;
-				margin: 0%;
 				border: 0px;
 				line-height: 140%;}
 
@@ -22,7 +21,7 @@ h1 {	font-family: 'Italiana', Verdana, sans-serif !important;
 	color: #822626;
 	font-size: 36px;
 	font-weight: 700;
-	line-height: 100%;}
+	line-height: 120%;}
 
 h2 {	font-family: 'Droid Sans', Verdana, sans-serif !important;
 	color: #525252;
