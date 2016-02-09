@@ -1,0 +1,24 @@
+#Dumfries Furniture
+[defaults]
+include = default-values
+
+; Every blob inherits these before adding/overriding
+[* : defaults]
+
+[screen]
+child = contentframe
+fx.wallpaper-color = #ffffff
+css.display = block
+
+	[contentframe]
+	css.width = 1020px
+#	css.height = 800px
+#	child = header, contact-details, body, footer
+	image.url = img/holding-page.png
+#	css.background-image = url('/img/holding-page.png')
+	image.width = 800px
+	image.height = 89%
+	image.align = center
+
+###########################################
+

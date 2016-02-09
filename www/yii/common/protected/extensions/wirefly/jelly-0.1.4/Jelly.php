@@ -341,6 +341,9 @@ END_OF_FOOTER;
 		// Device width handling is only on sites Jo has fixed for mobile. @@TODO remove this 'if' completely to enable for all
 		if ( (!(stristr($_SERVER['HTTP_HOST'], "barstobrickridingcentre.co.uk")))
 		&& (!(stristr($_SERVER['HTTP_HOST'], "breakfreecoaching.co.uk")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "www.kirkcudbright.dumgal.sch.uk")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "test.wireflydesign.com")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "demo5.wireflydesign.com")))
 		&& (!(stristr($_SERVER['HTTP_HOST'], "beingbusiness.co.uk"))) )
 			return 0;
 
@@ -385,6 +388,12 @@ END_OF_GETDEVICEWIDTH;
 			// Backward compatibility - it used to be called header.html
 			if (file_exists($this->jellyRootPath . 'header.html'))
 				$this->emit(file_get_contents($this->jellyRootPath . 'header.html'));
+		}
+
+		// snake oil here
+		if (stristr($_SERVER['HTTP_HOST'], "wireflydesign.com")) {
+			array_push($this->headerArray, '<script type="text/javascript" src="http://www.bae5tracker.com/js/61103.js" ></script>');
+			array_push($this->headerArray, '<noscript><img src="http://www.bae5tracker.com/61103.png" style="display:none;" /></noscript>');
 		}
 
 		foreach ($this->headerArray as $hdr)

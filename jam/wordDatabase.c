@@ -27,8 +27,10 @@ int wordDatabaseListDatabases(int ix, char *defaultTableName) {
 	MYSQL_RES *res;
 	MYSQL_ROW row;
 
-	if (connectDBServer() != 0)
-		die(mysql_error(conn));
+	if (connectDBServer() != 0) {
+	   logMsg(LOGERROR, (char *) mysql_error(conn));
+	   return(-1);
+	}
 	mysql_query(conn,"show databases");
 	res = mysql_store_result(conn);
 	while (row = mysql_fetch_row(res)) {
@@ -89,6 +91,7 @@ int wordDatabaseNewDatabase(int ix, char *defaultTableName) {
 		return(-1);
 	emitStd(jam[ix]->trailer);
 	free(dbName);
+	return(0);
 }
 
 int wordDatabaseRemoveDatabase(int ix, char *defaultTableName) {
@@ -98,15 +101,20 @@ int wordDatabaseRemoveDatabase(int ix, char *defaultTableName) {
 	char *dbName = (char *) calloc(1, 4096);
 
 	getWord(dbName, args, 2, " ");
-	if (!dbName)
-	   die("missing database name to remove");
-	if (connectDBServer() != 0)
-		die(mysql_error(conn));
+	if (!dbName) {
+	   logMsg(LOGERROR, "missing database name to remove");
+	   return(-1);
+	}
+	if (connectDBServer() != 0) {
+	   logMsg(LOGERROR, (char *) mysql_error(conn));
+	   return(-1);
+	}
 	char *qStr = (char *) calloc(1, 4096);
 	sprintf(qStr,"DROP DATABASE IF EXISTS %s", dbName);
 	int status = mysql_query(conn,qStr);
 	emitStd(jam[ix]->trailer);
 	free(dbName);
+	return(0);
 }
 
 int wordDatabaseDatabase(int ix, char *defaultTableName) {
@@ -114,11 +122,16 @@ int wordDatabaseDatabase(int ix, char *defaultTableName) {
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
 
-	if (strlen(args) == 0)
-		die("missing database name");
-	if (openDB(args) != 0)
-		die(mysql_error(conn));
+	if (strlen(args) == 0) {
+	   logMsg(LOGERROR, "missing database name");
+	   return(-1);
+	}
+	if (openDB(args) != 0) {
+	   logMsg(LOGERROR, (char *) mysql_error(conn));
+	   return(-1);
+	}
 	emitStd(jam[ix]->trailer);
+	return(0);
 }
 
 int wordDatabaseDescribe(int ix, char *defaultTableName)
@@ -136,11 +149,15 @@ int wordDatabaseDescribe(int ix, char *defaultTableName)
 		char *query = (char *) calloc(1, MAX_SQL_QUERY_LEN);
 		char *line = (char *) calloc(1, 4096);
 		sprintf(query, "desc %s", args);
-		if (mysql_query(conn,query) != 0)
-		   die(mysql_error(conn));
+		if (mysql_query(conn,query) != 0) {
+		   logMsg(LOGERROR, (char *) mysql_error(conn));
+		   return(-1);
+		}
 		res = mysql_store_result(conn);
-		if (!res)
-			die("Cannot describe database table - returned null resultset");
+		if (!res) {
+			logMsg(LOGERROR, "Cannot describe database table - returned null resultset");
+			return(-1);
+		}
 		int numFields = mysql_num_fields(res);
 		emitStd("<table border=1 cellpadding=3 cellspacing=0 style='border: 1pt solid #abdbd7; border-Collapse: collapse'>");
 		emitStd("<tr><td> Field </td><td> Type </td><td> Empty allowed? </td><td> Key </td><td> Default value </td><td> Extra </td></tr>");
@@ -157,10 +174,12 @@ int wordDatabaseDescribe(int ix, char *defaultTableName)
 		free(query);
 		free(line);
 	} else {
-		die("describe what?");
+		logMsg(LOGERROR, "describe what?");
+		return(-1);
 	}
 	free(tmp);
 	emitStd(jam[ix]->trailer);
+	return(0);
 }
 
 int wordDatabaseGet(int ix, char *defaultTableName) {
@@ -174,7 +193,10 @@ int wordDatabaseGet(int ix, char *defaultTableName) {
 		emitStd(jam[ix]->trailer);
 	}
 	mysql_free_result(res);
+	free(rp->tableName);
+	free(rp);
 	free(givenTableName);
+	return(0);
 }
 
 int wordDatabaseSql(int ix, char *defaultTableName) {
@@ -192,8 +214,11 @@ int wordDatabaseSql(int ix, char *defaultTableName) {
 		SQL_RESULT *rp = sqlCreateResult(defaultTableName, res);
 		sqlGetRow2Vars(rp);
 		mysql_free_result(res);
+		free(rp->tableName);
+		free(rp);
 	} else logMsg(LOGDEBUG, "RES is null");
 	emitStd(jam[ix]->trailer);
+	return(0);
 }
 
 //-----------------------------------------------------------------
@@ -218,8 +243,10 @@ int wordDatabaseNewTable(int ix, char *defaultTableName) {
 	char *tmp = (char *) calloc(1, 4096);
 
 	getWord(tableName, args, 2, " \t");
-	if (!tableName)
-	   die("missing table name to create");
+	if (!tableName) {
+	   logMsg(LOGERROR, "missing table name to create");
+	   return(-1);
+	}
 
 	char *qStr = (char *) calloc(1, 4096);
 	char *p;
@@ -229,15 +256,17 @@ int wordDatabaseNewTable(int ix, char *defaultTableName) {
 	while (char *block = strTrim(getWordAlloc(args, cnt++, "\n"))) {
 		char *fieldName = strTrim(getWordAlloc(block, 1, " \t"));
 		char *fieldType = strTrim(getWordAlloc(block, 2, " \t"));
-		if (!(fieldName) || (!fieldType))
-			die("Missing field name or type");
+		if (!(fieldName) || (!fieldType)) {
+	   		logMsg(LOGERROR, "Missing field name or type");
+	   		return(-1);
+		}
 		// Field name to query string
 		strcat(qStr, fieldName);
 		strcat(qStr, " ");
 		// Field type to query string
 		if ((p = getSqlType(fieldType)) == NULL) {
-			sprintf(tmp, "Invalid field type '%s' in create table", fieldType);
-			die(tmp);
+			logMsg(LOGERROR, "Invalid field type '%s' in create table", fieldType);
+			return(-1);
 		}
 		strcat(qStr, p);
 		strcat(qStr, " ");
@@ -246,8 +275,8 @@ int wordDatabaseNewTable(int ix, char *defaultTableName) {
 		*tmp = '\0';
 		while (char *fieldOption = strTrim(getWordAlloc(block, optionWord++, " \t"))) {
 			if ((p = getSqlOption(fieldOption)) == NULL) {
-				sprintf(tmp, "Invalid field option '%s' in create table", p);
-				die(tmp);
+				logMsg(LOGERROR, "Invalid field option '%s' in create table", p);
+				return(-1);
 			}
 			strcat(qStr, p);
 			strcat(qStr, " ");
@@ -259,12 +288,15 @@ int wordDatabaseNewTable(int ix, char *defaultTableName) {
 		free(block);
 	}
 	strcat(qStr, "  PRIMARY KEY (id) ) ENGINE = InnoDB;");
-	if (mysql_query(conn,qStr) != 0)
-		die(mysql_error(conn));
+	if (mysql_query(conn,qStr) != 0) {
+	   logMsg(LOGERROR, (char *) mysql_error(conn));
+	   return(-1);
+	}
 	emitStd(jam[ix]->trailer);
 	free(tableName);
 	free(qStr);
 	free(tmp);
+	return(0);
 }
 
 /*  {@new index product myindex
@@ -281,11 +313,15 @@ int wordDatabaseNewIndex(int ix, char *defaultTableName) {
 	char *tmp = (char *) calloc(1, 4096);
 
 	getWord(tableName, args, 2, " \t");
-	if (!tableName)
-	   die("missing table name to create index for");
+	if (!tableName) {
+	   logMsg(LOGERROR, "missing table name to create index for");
+	   return(-1);
+	}
 	getWord(indexName, args, 3, " \t");
-	if (!indexName)
-	   die("missing index name to create");
+	if (!indexName) {
+	   logMsg(LOGERROR, "missing index name to create");
+	   return(-1);
+	}
 	char *qStr = (char *) calloc(1, 4096);
 	sprintf(qStr, "CREATE INDEX %s ON %s ( ", indexName, tableName);
 	int cnt = 2;
@@ -306,13 +342,16 @@ int wordDatabaseNewIndex(int ix, char *defaultTableName) {
 	}
 	strcat(qStr, " );");
 	//die(qStr);
-	if (mysql_query(conn,qStr) != 0)
-		die(mysql_error(conn));
+	if (mysql_query(conn,qStr) != 0) {
+	   logMsg(LOGERROR, (char *) mysql_error(conn));
+	   return(-1);
+	}
 	emitStd(jam[ix]->trailer);
 	free(tableName);
 	free(indexName);
 	free(qStr);
 	free(tmp);
+	return(0);
 }
 
 int wordDatabaseClearItem(int ix, char *defaultTableName) {
@@ -323,8 +362,10 @@ int wordDatabaseClearItem(int ix, char *defaultTableName) {
 	char *tmp = (char *) calloc(1, 4096);
 
 	getWord(tableName, args, 2, " \t");
-	if (!tableName)
-	   die("missing table name to clear item for");
+	if (!tableName) {
+	   logMsg(LOGERROR, "missing table name to clear item for");
+	   return(-1);
+	}
 
 	sprintf(tmp, "select * from %s limit 1", tableName);
 	logMsg(LOGDEBUG, "Doing dummy sql query [%s]", tmp);
@@ -340,11 +381,14 @@ int wordDatabaseClearItem(int ix, char *defaultTableName) {
 		SQL_RESULT *rp = sqlCreateResult(tableName, res);
 		sqlClearRowVars(rp);
 		mysql_free_result(res);
+		free(rp->tableName);
+		free(rp);
 	} else logMsg(LOGDEBUG, "RES is null");
 
 	emitStd(jam[ix]->trailer);
 	free(tableName);
 	free(tmp);
+	return(0);
 }
 
 int wordDatabaseNewItem(int ix, char *defaultTableName) {
@@ -416,6 +460,8 @@ logMsg(LOGDEBUG, "wordDatabaseNewItem setting up field: [%s]", row[0]);
 		SQL_RESULT *rp = sqlCreateResult(tableName, res);
 		sqlGetRow2Vars(rp);
 		mysql_free_result(res);
+		free(rp->tableName);
+		free(rp);
 	} else logMsg(LOGDEBUG, "RES is null");
 
 
@@ -441,6 +487,7 @@ logMsg(LOGDEBUG, "wordDatabaseNewItem setting up field: [%s]", row[0]);
 	free(tableName);
 	free(qStr);
 	free(tmp);
+	return(0);
 }
 
 int wordDatabaseAmendItem(int ix, char *defaultTableName) {
@@ -503,6 +550,7 @@ int wordDatabaseAmendItem(int ix, char *defaultTableName) {
 	free(qStr);
 	free(nvpStr);
 	free(tmp);
+	return(0);
 }
 
 // Create if not exist, amend if exist
@@ -546,13 +594,16 @@ int wordDatabaseRemoveTable(int ix, char *defaultTableName) {
 	char *tableName = (char *) calloc(1, 4096);
 
 	getWord(tableName, args, 2, " \t");
-	if (!tableName)
-		die("missing table name to remove");
+	if (!tableName) {
+	   logMsg(LOGERROR, "missing table name to remove");
+	   return(-1);
+	}
 	char *qStr = (char *) calloc(1, 4096);
 	sprintf(qStr,"DROP TABLE IF EXISTS %s", tableName);
 	int status = mysql_query(conn,qStr);
 	emitStd(jam[ix]->trailer);
 	free(tableName);
+	return(0);
 }
 
 int wordDatabaseRemoveIndex(int ix, char *defaultTableName) {
@@ -564,16 +615,21 @@ int wordDatabaseRemoveIndex(int ix, char *defaultTableName) {
 	char *qStr = (char *) calloc(1, 4096);
 
 	getWord(tableName, args, 2, " \t");
-	if (!tableName)
-		die("missing table name to remove index from");
+	if (!tableName) {
+	   logMsg(LOGERROR, "missing table name to remove index from");
+	   return(-1);
+	}
 	getWord(indexName, args, 3, " \t");
-	if (!indexName)
-		die("missing index name to remove");
+	if (!indexName) {
+	   logMsg(LOGERROR, "missing index name to remove");
+	   return(-1);
+	}
 	sprintf(qStr,"DROP INDEX %s ON %s", indexName, tableName);
 	int status = mysql_query(conn,qStr);
 	emitStd(jam[ix]->trailer);
 	free(tableName);
 	free(indexName);
+	return(0);
 }
 
 int wordDatabaseRemoveItem(int ix, char *defaultTableName) {
@@ -610,4 +666,5 @@ int wordDatabaseRemoveItem(int ix, char *defaultTableName) {
 	emitStd(jam[ix]->trailer);
 	free(tableName);
 	free(tmp);
+	return(0);
 }

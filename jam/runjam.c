@@ -8,7 +8,7 @@
 #include <libgen.h>
 
 #define MAXBUFLEN 1000000
-#define JAM_PATH "/home/dev/src/jam/cgi/jam"
+#define DEFAULT_JAM_PATH "/home/dev/src/jam/cgi/jam"
 
 main(int argc, char *argv[]) {
 	char *source = (char *) calloc(1, MAXBUFLEN + 1);
@@ -26,7 +26,7 @@ main(int argc, char *argv[]) {
 			*p = '\0';
 		fclose(fp);
 	} else
-		strcpy(source, JAM_PATH);
+		strcpy(source, DEFAULT_JAM_PATH);
 
 	// Only run things that end in 'jam'
 	char tmp[4];

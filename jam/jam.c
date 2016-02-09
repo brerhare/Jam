@@ -74,12 +74,14 @@ char *curlies2JamArray(char *jamPos) {
 				break;
 			}
 		} else {
-			depth++;
+			//depth++;
 			inCurlyPos = (eCurly +strlen(endJam));
 		}
 	}
-	if (!endCurly)
-		die("Unmatched jam token, an open must have a close");
+	if (!endCurly) {
+		logMsg(LOGERROR, "Unmatched jam token. An open must have a close");
+		return(NULL);
+	}
 
 	int wdLen = (endCurly - startCurly - strlen(startJam));
 	char *wd = (char *) malloc(wdLen + 1);
@@ -115,13 +117,12 @@ char *curlies2JamArray(char *jamPos) {
 	}
 */
 
-	for (char *p = buf; *p; ++p) *p = tolower(*p);
+	for (char *p = buf; *p; ++p)*p = tolower(*p);
 	jam[jamIx]->command = buf;
 
-	if (char *p = strchr(wd, ' ')) {
-		if (*(p+1))
+	char *p;
+	if ( (p = strchr(wd, ' ')) && (*(p+1)) )
 		 	jam[jamIx]->args = strdup(p+1);
-	}
 	else
 		jam[jamIx]->args = strdup("");
 //emitStd("SETTING [%s]=[%s]\n", jam[jamIx]->command, jam[jamIx]->args);
@@ -136,9 +137,7 @@ char *curlies2JamArray(char *jamPos) {
 	if ( (!strcmp(jam[jamIx]->command, "@each")) || (!strcmp(jam[jamIx]->command, "@action")) ) {
 		for (int i = 0; i < MAX_JAM; i++) {
 			if (tableStack[i] == NULL) {
-				char *p = (char *) calloc(1, 4096);
-				getWord(p, jam[jamIx]->args, 1, space);
-				tableStack[i] = p;
+				tableStack[i] = getWordAlloc(jam[jamIx]->args, 1, space);
 //emitStd("STACK: [%s]\n", tableStack[i]);
 				break;
 			}
@@ -150,8 +149,10 @@ char *curlies2JamArray(char *jamPos) {
 			if ((tableStack[i] == NULL) && (i > 0)) {
 				i--;
 //emitStd("POP: [%s]\n", tableStack[i]);
-				if (!tableStack[i])
-					die("Invalid @end tag found. I dont seem to find the tag that started this one");
+				if (!tableStack[i]) {
+					logMsg(LOGERROR, "Invalid @end tag found. I dont seem to find the tag that started this one");
+					return(NULL);
+				}
 				jam[jamIx]->args = strdup(tableStack[i]);
 				free(tableStack[i]);
 				tableStack[i] = NULL;
@@ -159,6 +160,7 @@ char *curlies2JamArray(char *jamPos) {
 			}
 		}
 	}
+
 	free(trailer);
 	free(wd);
 	return (endCurly + strlen(endJam));
@@ -188,17 +190,21 @@ TAGINFO *getTagInfo(char *text, char *tagName) {
 					break;
 				}
 			} else {
-				depth++;
+				//depth++;
 				inCurlyPos = (eCurly +strlen(endJam));
 			}
 		}
-		if (!endCurly)
-			die("Unmatched jam token, an open must have a close");
+		if (!endCurly) {
+			logMsg(LOGERROR, "Unmatched jam token, an open must have a close");
+			return(NULL);
+		}
 
 		char *startContent = (tag + strlen(startJam));
 		char *endContent = (endCurly - 1);
-		if (endContent < startContent)
-			die("getTagContent: end tag before start tag");
+		if (endContent < startContent) {
+			logMsg(LOGERROR, "getTagContent: end tag before start tag");
+			return(NULL);
+		}
 		content = (char *) calloc(1, (endContent - startContent + 2));
 		memcpy(content, startContent, (endContent - startContent + 1));
 		currTag = strTrim(getWordAlloc(content, 1, " \t\n"));
@@ -212,9 +218,12 @@ TAGINFO *getTagInfo(char *text, char *tagName) {
 			logMsg(LOGDEBUG, "TAGINFO created. name=[%s], content=[%s]", tagInfo->name, tagInfo->content);
 //			char *tmp = (char *) calloc(1, 4096); sprintf(tmp, "s=%d, e=%d, content=%s", (int) tagInfo->startCurlyPos, (int) tagInfo->endCurlyPos, tagInfo->content); die(tmp);
 			free(currTag);
+			free(content);
 			return tagInfo;
 		}
 		pos = (endCurly + strlen(endJam));					// advance
+		free(currTag);
+		free(content);
 	}
 	return NULL;
 }
@@ -254,12 +263,14 @@ if (++sanity > 200) { emitStd("Overflow in expandCurliesInString!"); break; }
 					break;
 				}
 			} else {
-				depth++;
+				//depth++;
 				inCurlyPos = (eCurly +strlen(endJam));
 			}
 		}
-		if (!endCurly)
-			die("Unmatched jam token, an open must have a close");
+		if (!endCurly) {
+			logMsg(LOGERROR, "Unmatched jam token, an open must have a close");
+			return(NULL);
+		}
 
 		// Extract the variable name
 		int wdLen = (endCurly - startCurly - strlen(startJam));
@@ -282,8 +293,90 @@ if (++sanity > 200) { emitStd("Overflow in expandCurliesInString!"); break; }
 		strcat(newStr, (endCurly + strlen(endJam)));
 		logMsg(LOGDEBUG, "Splicing replaced {{variable}} with variable->content. 1stpart=%d, variabledata=%d, 2ndpart=%d<br>", (int)strlen(str), (int)strlen(wd), (int)strlen((endCurly + strlen(endJam))));
 		free(str);
+		free(wd);
 		str = newStr;
 	}
-	logMsg(LOGDEBUG, "expandCurliesInString - expanded string is [%s]", str);
+	logMsg(LOGDEBUG, "expandCurliesInString() expanded original string [%s] to [%s]", originalStr, str);
 	return (str);
 }
+
+// The control loop creates nvp's from the jamword arguments (type=dropdown, pickfield=product.name etc)
+// Clear all of the old ones before creating
+void clearControlVars() {
+	char *tmp = (char *) calloc(1, 4096);
+	for (int i = 0; i <= LAST_VAR; i++) {
+		if (!(var[i]))
+			continue;
+		if ((var[i]->name) && (strlen(var[i]->name) > 12)) {
+			memcpy(tmp, var[i]->name, 12);
+			if (!strcmp(tmp, "sys.control.")) {
+				logMsg(LOGMICRO, "Control var clear %s", var[i]->name);
+				deleteVar(var[i]);
+			}
+		}
+	}
+	free(tmp);
+}
+
+// Create/update vars from the jamword arguments args (type=dropdown, pickfield=product.name etc)
+int jamArgs2ControlVars(int ix, char *args) {
+	char *tmp = (char *) calloc(1, 4096);
+	char *arg = NULL;
+	int wdNum = 1;
+//logMsg(LOGMICRO, "jamArgs2ControlVars() - initial args [%s]", args);
+	while (arg = getWordAlloc(args, wdNum++, " \t\n")) {	// eg 'a=b' or 'c = d'
+		char *n = getWordAlloc(arg, 1, "=");
+		if (!n) {
+			free(arg);
+			continue;
+		}
+		char *v = getWordAlloc(arg, 2, "=");
+		if (!v)
+			v = strdup("");
+		sprintf(tmp, "sys.control.%s", n);
+//logMsg(LOGMICRO, "jamArgs2ControlVars() - lookup [%s]", tmp);
+		VAR *var = findVarStrict(tmp);
+		if (var) {
+//logMsg(LOGMICRO, "jamArgs2ControlVars() - lookup [%s] - found", tmp);
+			if (var->portableValue)
+				free(var->portableValue);
+			var->portableValue = strdup(v);
+		} else {
+//logMsg(LOGMICRO, "jamArgs2ControlVars() - lookup [%s] - not found", tmp);
+			var = (VAR *) calloc(1, sizeof(VAR));
+			var->name = strdup(tmp);
+			var->type = VAR_STRING;
+			var->source = strdup("arg");
+			var->debugHighlight = 7;
+			clearVarValues(var);
+			fillVarDataTypes(var, v);
+			if (addVar(var) == -1) {
+				logMsg(LOGFATAL, "Cant create any more vars, terminating");
+				exit(1);
+			}
+		}
+//logMsg(LOGMICRO, "jamArgs2ControlVars() - Set the var ok");
+
+		free(n);
+		free(v);
+		free(arg);
+//logMsg(LOGMICRO, "jamArgs2ControlVars() - free ok", tmp);
+
+		logMsg(LOGMICRO, "Control var set %s = %s", var->name, var->portableValue);
+	}
+//logMsg(LOGMICRO, "jamArgs2ControlVars() - all done");
+	free(tmp);
+}
+
+void freeJamArray() {
+    for (int i = 0; i < MAX_JAM; i++) {
+        if (jam[i]) {
+			free(jam[i]->rawData);
+			free(jam[i]->command);
+			free(jam[i]->args);
+			free(jam[i]->trailer);
+			free(jam[i]);
+        }
+    }
+}
+

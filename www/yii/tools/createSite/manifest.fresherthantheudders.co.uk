@@ -1,0 +1,19 @@
+domain = fresherthantheudders.co.uk
+parentdomain =
+sitetitle = Fresher Than the Udders
+sid = l2epbhgatjg0uvpmfnv8naunh6
+
+# Database
+dbname = fresherthantheudders_co_uk
+dbuser = fresherthantheud
+dbpass = 5d39sb63r
+
+# Shopping cart order confirmation email
+checkoutemail = office@roansdairy.com
+checkoutname = Roans Dairy
+checkoutpaypalemail = no@email
+
+# Backend page editor
+editorpagewidth = 700
+editorpageheight = 450
+

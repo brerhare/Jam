@@ -67,8 +67,10 @@ int wordMiscCount(int ix, char *defaultTableName) {
     char *space = " ";
     getWord(tmp, args, 1, space);
     char *countFieldName = strdup(tmp);
-    if (!countFieldName)
-        die("Cant count a nonexistent field");
+    if (!countFieldName) {
+        logMsg(LOGERROR, "Cant count a nonexistent field");
+        return (-1);
+    }
     char *countFieldAs = NULL;
     getWord(tmp, args, 2, space);
     if (!(strcmp(tmp, "as"))) {
@@ -82,10 +84,15 @@ int wordMiscCount(int ix, char *defaultTableName) {
         strcpy(varToCountQualifiedName, countFieldName);
     else
         sprintf(varToCountQualifiedName, "%s.%s", defaultTableName, countFieldName);
+
+//logMsg(LOGERROR, "About to look for tableName=[%s] and countFieldName=[%s], together being [%s]", defaultTableName, countFieldName, varToCountQualifiedName);
+
+
     varToCount = findVarStrict(varToCountQualifiedName);
-    if (!varToCount) {
-        sprintf(tmp, "variable to count doesnt exist :( Was looking for tableName=[%s] and countFieldName=[%s]\n",defaultTableName, countFieldName);
-        die(tmp);
+	if (!varToCount) {
+        logMsg(LOGERROR, "variable to count doesnt exist :( Was looking for tableName=[%s] and countFieldName=[%s], together being [%s]", defaultTableName, countFieldName, varToCountQualifiedName);
+        jamDump(1);
+        exit(1); //return (-1);
     }
     // Lookup the variable we want to count as (into). If it is unnamed prepend '.count' to it
     VAR *varToCountAs = NULL;
@@ -124,8 +131,10 @@ int wordMiscSum(int ix, char *defaultTableName) {
     char *space = " ";
     getWord(tmp, args, 1, space);
     char *sumFieldName = strdup(tmp);
-    if (!sumFieldName)
-        die("Cant sum a nonexistent field");
+    if (!sumFieldName) {
+        logMsg(LOGERROR, "Cant sum a nonexistent field");
+        return(-1);
+    }
     char *sumFieldAs = NULL;
     getWord(tmp, args, 2, space);
     if (!(strcmp(tmp, "as"))) {
@@ -141,8 +150,8 @@ int wordMiscSum(int ix, char *defaultTableName) {
         sprintf(varToSumQualifiedName, "%s.%s", defaultTableName, sumFieldName);
     varToSum = findVarStrict(varToSumQualifiedName);
     if (!varToSum) {
-        sprintf(tmp, "variable to sum doesnt exist :( Was looking for tableName=[%s] and sumFieldName=[%s]\n",defaultTableName, sumFieldName);
-        die(tmp);
+        logMsg(LOGERROR, "variable to sum doesnt exist :( Was looking for tableName=[%s] and sumFieldName=[%s]\n",defaultTableName, sumFieldName);
+        return(-1);
     }
     // Lookup the variable we want to sum as (into). If it is unnamed prepend '.sum' to it
     VAR *varToSumAs = NULL;

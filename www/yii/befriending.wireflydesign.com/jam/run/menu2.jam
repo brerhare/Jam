@@ -1,0 +1,31 @@
+{{@include /jam/sys/html/header.html}}
+
+<style>
+.rowHighlight:hover {
+  background-color: #ddf0ff;
+  cursor:pointer;
+}
+</style>
+
+<center><h3>Jam list</h3></center>
+
+<div class="uk-overflow-container">
+	<center>
+		<table style="border:1px solid #dddddd">
+			<tr>
+				<th>Name</th>
+			</tr>
+{{@new list jamfile dir /jam/run}}
+{{@each jamfile}}
+			<tr class="rowHighlight">
+				<td> <a href="/run/{{jamfile}}" target="_blank">{{jamfile}}</a> </td>
+			</tr>
+{{@end}}
+			<tr class="rowHighlight">
+				<td> <a href="http://www.befriending.wireflydesign.com/schema/index.html" target="_blank">Schema</a> </td>
+			</tr>
+		</table>
+	</center>
+</div>  <!-- uk-overflow-container -->
+
+{{@include /jam/sys/html/footer.html}}

@@ -12,7 +12,7 @@ css.background-color = white
 css.display = block
 
 	[site]
-	child = header, slider, pages, tab-pages, mob-pages, footer
+	child = header, slider, home-page, pages, tab-pages, mob-pages, footer
 	css.width = 100%
 
 ####  Header  #################################
@@ -22,7 +22,8 @@ css.display = block
 	css.width = 100%
 	css.position = fixed
 	css.background-color = white
-	css.z-index = 50
+	css.z-index = 11050
+	css.box-shadow = 0px 2px 20px rgba(0,0,0,0.5)
 	
 	[header-content]
 	child = logo, menu_home, menu_1, menu_2, menu_3, menu_4
@@ -86,8 +87,9 @@ css.display = block
 #### Slider ###########################################
 
 	[slider]
+	condition = @PAGE=@HOMEPAGE
 	css.width = 100%
-	css.margin-top = 11%
+	css.margin-top = 10%
 	addon.slider.flexslider.width = 100%
 	addon.slider.flexslider.height = 100%
 	addon.slider.flexslider.mode = image
@@ -104,18 +106,33 @@ css.display = block
 	#addon.slider.flexslider.animation = fade
 
 
+#### home body ####
+
+[home-page]
+condition = @PAGE=@HOMEPAGE
+child = left-column, content, blog_content
+css.width = 80%
+css.margin-top = 20px
+stacking = horizontal
+condition = @DEVICEWIDTH>959
+	
 ######## body #######################################
 			
 
 	[pages]
-	child = sub_menu, content, right_column
+	condition = @PAGE!=@HOMEPAGE
+	child = left-column, content, blog_signup, blog_page
 	css.width = 80%
-	css.margin-top = 20px
+	css.margin-top = 13%
 	stacking = horizontal
 	condition = @DEVICEWIDTH>959
 	
-		[sub_menu]
+		[left-column]
+		child = sub-menu, sign-up
 		css.width = 15%
+		
+		[sub-menu]
+		css.width = 100%
 		css.overflow = visible
 		addon.menu.basic.orientation = vertical
 		addon.menu.basic.level = 2
@@ -135,31 +152,36 @@ css.display = block
 		#addon.menu.basic.item-margin = 1px
 		addon.menu.basic.menu-color = #ffbd3e
 
-		addon.menu.basic.item-separator-width = 2px
+		addon.menu.basic.item-separator-width = 5px
 		addon.menu.basic.item-separator-color = white
 
 		#addon.menu.basic.edgepadding = 13
 		
+		[sign-up]
+		css.width = 100%
+#		css.margin-left = 4%
+#		css.min-width = 150px
+		html.raw = <h3>Sign up for</br>regular info</h3>
+		css.text-align = center
+		css.min-height = 200px
+		css.background-color = white
+	#	jam.embed = /jam/run/signup_form.jam
+		jam.iframe = /jam/run/signup_form.jam
+		condition = @PAGE!=being-business-women-blog-news
+		
 				
 		[content]
-		child = all_content, blog_content
-		css.margin-top = 30px
 		css.margin-left = 4%
 		css.width = 60%
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
 		
-			[all_content]
-			db.table = ContentBlock
-			db.filter = url=$_GET['page']
-			db.error = Sorry, I could not find the page $_GET['page']
-			html.raw = ContentBlock.content
-			
-			[blog_content]
-			condition = @PAGE=being-business-women-blog-news
-			#html.raw = {{news newstype=pinterest sidebar=right}}
-			
-		[right_column]
+		[blog_signup]
+		condition = @PAGE=being-business-women-blog-news
 		css.width = 15%
-		css.margin-left = 4%
+		css.margin-left = -11%
 		css.min-width = 150px
 		html.raw = </br><h3>Sign up for regular info</h3>
 		css.text-align = center
@@ -167,6 +189,14 @@ css.display = block
 		css.background-color = white
 	#	jam.embed = /jam/run/signup_form.jam
 		jam.iframe = /jam/run/signup_form.jam
+		
+		[blog_page]
+		child = 
+		css.width = 75%
+		condition = @PAGE=being-business-women-blog-news
+		html.raw = {{news newstype=pinterest sidebar=left pushrecentdown = 0px pushcategoriesdown = 150px}}
+			
+		
 		
 	[tab-pages]
 	child = tab-column, tab-content

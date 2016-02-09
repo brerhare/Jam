@@ -1,0 +1,48 @@
+{{@include /jam/sys/html/header.html}}
+
+{{@database befriending_wireflydesign_com}}
+
+<!-- Template defines -->
+{{@template TABLE simd}}
+{{@template DESCRIPTION Maintain Events}}
+
+<!-- Template defines for the list component -->
+{{@template DELETEFIELD simd.datazone}}
+{{@template HEADINGS
+	<th> Data Zone </th>
+	<th> Post Code </th>
+}}
+{{@template COLUMNS
+	<td>{{datazone}}</td>
+	<td>{{simd_lookup_id}}</td>
+}}
+
+<!-- Template defines for the form input component -->
+{{@template FORMINPUT
+	{{@html text field=simd.datazone size=medium label='Data Zone'}}
+	{{@html dropdown field=simd.simd_lookup_id pickfield=simd_lookup.postcode size=medium label='Post Code'}}
+	{{@html text field=simd.local_auth_code size=medium label='Local Authority Code'}}
+	{{@html text field=simd.local_auth_name size=medium label='Local Authority Name'}}
+	{{@html text field=simd.population size=medium label='Population'}}
+	{{@html text field=simd.working_population size=medium label='Working Population'}}
+	{{@html text field=simd.score size=medium label='Score'}}
+	{{@html text field=simd.rank size=medium label='Rank'}}
+	{{@html text field=simd.income_score size=medium label='Income Score'}}
+	{{@html text field=simd.income_number size=medium label='Income'}}
+	{{@html text field=simd.employment_score size=medium label='Employment Score '}}
+	{{@html text field=simd.employment_number size=medium label='Employment'}}
+	{{@html text field=simd.employment_rank size=medium label='Employment Rank'}}
+	{{@html text field=simd.health_score size=medium label='Health Score'}}
+	{{@html text field=simd.health_rank size=medium label='Health Rank'}}
+	{{@html text field=simd.education_rank size=medium label='Education Rank'}}
+	{{@html text field=simd.education_score size=medium label='Education Score'}}
+	{{@html text field=simd.housing_score size=medium label='Housing Score'}}
+	{{@html text field=simd.housing_rank size=medium label='Housing Rank'}}
+	{{@html text field=simd.geographic_rank size=medium label='Geogrphic Rank'}}
+	{{@html text field=simd.geographic_score size=medium label='Geographic Score'}}
+}}
+
+<!-- Include the template -->
+{{@include /jam/run/sys/crud.jam}}
+
+{{@include /jam/sys/html/footer.html}}
