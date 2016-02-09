@@ -1,0 +1,13 @@
+User-agent: *
+Disallow: /backend.php
+Disallow: /README
+Disallow: /index-test.php
+Disallow: /assets/
+Disallow: /css/
+Disallow: /jam/
+Disallow: /js/
+Disallow: /protected/
+Disallow: /scripts/
+Disallow: /themes/
+Disallow: /userdata/
+Allow: /

@@ -1,0 +1,30 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/menu.jam}}
+
+<style>
+	div { width:650px; }
+</style>
+
+{{@database befriending_wireflydesign_com}}
+
+<!-- Template defines -->
+{{@template TABLE girfec_outcome_name}}
+{{@template DESCRIPTION }}
+{{@template DELETEFIELD girfec_outcome_name.description}}
+
+{{@template HEADINGS
+	<th> Girfec Outcomes </th>
+}}
+
+{{@template COLUMNS
+	<td> {{@html text field=girfec_outcome_name.description size=large}} </td>
+}}
+
+{{@template EDITS description}}
+
+<!-- Include the template -->
+{{@include /jam/run/sys/crudInline.jam}}
+
+{{@include /jam/sys/html/footer.html}}

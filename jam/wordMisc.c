@@ -40,7 +40,7 @@ int wordMiscInclude(int ix, char *defaultTableName) {
 	}
 	// Emit any pre-tags
 	if (strstr(args, ".css"))
-		emit("<style>");
+		emitStd("<style>");
 	includeFile.read (buf,length);
 	buf[length] = 0;
 	includeFile.close();
@@ -48,12 +48,12 @@ int wordMiscInclude(int ix, char *defaultTableName) {
 		sprintf(tmp, "error: not the whole of %s could be read", args);
 		die(tmp);
 	}
-	emit(buf);
+	emitStd(buf);
 	free(buf);
 	// Emit any post-tags
 	if (strstr(args, ".css"))
-	emit("</style>");
-	emit(jam[ix]->trailer);
+	emitStd("</style>");
+	emitStd(jam[ix]->trailer);
     free(tmp);
 
 }
@@ -67,8 +67,10 @@ int wordMiscCount(int ix, char *defaultTableName) {
     char *space = " ";
     getWord(tmp, args, 1, space);
     char *countFieldName = strdup(tmp);
-    if (!countFieldName)
-        die("Cant count a nonexistent field");
+    if (!countFieldName) {
+        logMsg(LOGERROR, "Cant count a nonexistent field");
+        return (-1);
+    }
     char *countFieldAs = NULL;
     getWord(tmp, args, 2, space);
     if (!(strcmp(tmp, "as"))) {
@@ -82,10 +84,15 @@ int wordMiscCount(int ix, char *defaultTableName) {
         strcpy(varToCountQualifiedName, countFieldName);
     else
         sprintf(varToCountQualifiedName, "%s.%s", defaultTableName, countFieldName);
+
+//logMsg(LOGERROR, "About to look for tableName=[%s] and countFieldName=[%s], together being [%s]", defaultTableName, countFieldName, varToCountQualifiedName);
+
+
     varToCount = findVarStrict(varToCountQualifiedName);
-    if (!varToCount) {
-        sprintf(tmp, "variable to count doesnt exist :( Was looking for tableName=[%s] and countFieldName=[%s]\n",defaultTableName, countFieldName);
-        die(tmp);
+	if (!varToCount) {
+        logMsg(LOGERROR, "variable to count doesnt exist :( Was looking for tableName=[%s] and countFieldName=[%s], together being [%s]", defaultTableName, countFieldName, varToCountQualifiedName);
+        jamDump(1);
+        exit(1); //return (-1);
     }
     // Lookup the variable we want to count as (into). If it is unnamed prepend '.count' to it
     VAR *varToCountAs = NULL;
@@ -112,7 +119,7 @@ int wordMiscCount(int ix, char *defaultTableName) {
     free(countFieldAs);
     free(varToCountQualifiedName);
     free(tmp);
-    emit(jam[ix]->trailer);
+    emitStd(jam[ix]->trailer);
 }
 
 int wordMiscSum(int ix, char *defaultTableName) {
@@ -124,8 +131,10 @@ int wordMiscSum(int ix, char *defaultTableName) {
     char *space = " ";
     getWord(tmp, args, 1, space);
     char *sumFieldName = strdup(tmp);
-    if (!sumFieldName)
-        die("Cant sum a nonexistent field");
+    if (!sumFieldName) {
+        logMsg(LOGERROR, "Cant sum a nonexistent field");
+        return(-1);
+    }
     char *sumFieldAs = NULL;
     getWord(tmp, args, 2, space);
     if (!(strcmp(tmp, "as"))) {
@@ -141,8 +150,8 @@ int wordMiscSum(int ix, char *defaultTableName) {
         sprintf(varToSumQualifiedName, "%s.%s", defaultTableName, sumFieldName);
     varToSum = findVarStrict(varToSumQualifiedName);
     if (!varToSum) {
-        sprintf(tmp, "variable to sum doesnt exist :( Was looking for tableName=[%s] and sumFieldName=[%s]\n",defaultTableName, sumFieldName);
-        die(tmp);
+        logMsg(LOGERROR, "variable to sum doesnt exist :( Was looking for tableName=[%s] and sumFieldName=[%s]\n",defaultTableName, sumFieldName);
+        return(-1);
     }
     // Lookup the variable we want to sum as (into). If it is unnamed prepend '.sum' to it
     VAR *varToSumAs = NULL;
@@ -176,7 +185,7 @@ int wordMiscSum(int ix, char *defaultTableName) {
     free(sumFieldName);
     free(sumFieldAs);
     free(varToSumQualifiedName);
-    emit(jam[ix]->trailer);
+    emitStd(jam[ix]->trailer);
     free(tmp);
 }
 
@@ -253,7 +262,39 @@ int wordMiscNewList(int ix, char *defaultTableName) {
     free(listName);
     free(listCommand);
     free(listCommandArgs);
-    emit(jam[ix]->trailer);
+    emitStd(jam[ix]->trailer);
+}
+
+int wordMiscType(int ix, char *defaultTableName) {
+	char *cmd = jam[ix]->command;
+	char *args = jam[ix]->args;
+	char *rawData = jam[ix]->rawData;
+	char *tmp = (char *) calloc(1, 4096);
+	char *fileName = (char *) calloc(1, 4096);
+
+	getWord(fileName, args, 1, " \t");
+	if (!fileName) {
+		logMsg(LOGERROR, "missing 'file name' to type");
+		return(-1);
+	}
+
+	FILE *fp = fopen(fileName, "r");
+	if (fp == NULL) {
+		logMsg(LOGERROR, "Error opening file '%s'", fileName);
+		return(-1);
+	}
+	fseek(fp, 0, SEEK_END);
+	long len = ftell(fp);
+	char *buf = (char *) malloc(len);
+	fseek(fp, 0, SEEK_SET);
+	fread(buf, 1, len, fp);
+	fclose(fp);
+	emitStd(buf);
+
+    free(tmp);
+    free(fileName);
+    free(buf);
+    emitStd(jam[ix]->trailer);
 }
 
 int wordMiscEmail(int ix, char *defaultTableName) {
@@ -266,6 +307,7 @@ int wordMiscEmail(int ix, char *defaultTableName) {
 	char *mailSubject = (char *) calloc(1, 4096);
 	char *mailBody = (char *) calloc(1, 20000000);	//@@TODO 20 mb max email body. And tmp
 	char *tmp = (char *) calloc(1, 20000000);
+	char *p = NULL;
 
 	getWord(mailFrom, args, 1, " \t");
 	if (!mailFrom) {
@@ -283,18 +325,64 @@ int wordMiscEmail(int ix, char *defaultTableName) {
 		return(-1);
 	}
 
-	int sanity = 0;
-	int cnt = 4;
-	strcpy(mailBody, "");
-	while (1) {
-		if (++sanity > 100) { printf("Overflow in mailbody!"); break; }
-		getWord(tmp, args, cnt++, " ");
-		if (strlen(tmp) == 0)
-			break;
-		strcat(mailBody, " ");
-		strcat(mailBody, tmp);
+	if (p = strstr(args, "action:")) {
+		char action[128], *p2 = action;
+		p += 7;
+		while ((*p) && (*p != ' '))
+			*p2++ = *p++;
+		*p2 = '\0';
+		logMsg(LOGDEBUG, "Email calling action [%s] for body content", action);
+		// Temporarily redirect emitStd to emitScratch and run the action
+		char *saveStdPos = emitStdPos;
+		int saveStdRemaining = emitStdRemaining;
+		emitStdPos = emitScratchPos;
+		emitStdRemaining = emitScratchRemaining;
+		// Copied @runaction block starts ------------------------------
+		int startIx = 0;
+		int aix = 0;
+		while (jam[aix]) {
+			if ((!strcmp(jam[aix]->command, "@action")) && (!strcmp(jam[aix]->args, action))) {
+				// Set startpoint
+				startIx = aix;
+				break;
+			}
+			aix++;
+		}
+		if (startIx == 0)
+			logMsg(LOGERROR, "Cant find action [%s] to run from within email handler", action);
+		else
+			logMsg(LOGINFO, "Running @action [%s] within email handler", jam[startIx]->args);
+		if (jam[startIx])
+			emitStd(jam[startIx]->trailer);
+		if (jam[startIx])
+			startIx++;
+
+		control(startIx, NULL);
+		logMsg(LOGINFO, "Finished running action [%s] within email handler", jam[startIx]->args);
+		// Copied @runaction block ends --------------------------------
+		// Restore emitStd
+		emitStdPos = saveStdPos;
+		emitStdRemaining = saveStdRemaining;
+		// Create the email body
+		p = emitScratchBuffer;
+		char *encodedData = urlEncode(emitScratchBuffer);
+		strcpy(mailBody, encodedData);
+		free(encodedData);
+	} else {
+		int sanity = 0;
+		int cnt = 4;
+		strcpy(mailBody, "");
+		while (1) {
+			if (++sanity > 100) { emitStd("Overflow in mailbody!"); break; }
+			getWord(tmp, args, cnt++, " ");
+			if (strlen(tmp) == 0)
+				break;
+			strcat(mailBody, " ");
+			strcat(mailBody, tmp);
+		}
 	}
 
+	// @@TODO SEE 20 LINES BELOW !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	while (char *p = strchr(mailBody, '\\')) {
 		*p = ' ';
 		p++;
@@ -303,6 +391,7 @@ int wordMiscEmail(int ix, char *defaultTableName) {
 	}
 
 	logMsg(LOGDEBUG, "Try to send via sendmail. From [%s] To [%s] Subject [%s] Body [%s]", mailFrom, mailTo, mailSubject, mailBody);
+//return(0);
 	FILE *mailpipe = popen("/usr/sbin/sendmail -t", "w");
 	if (mailpipe == NULL) {
 		logMsg(LOGERROR, "Failed to popen sendmail");
@@ -311,8 +400,16 @@ int wordMiscEmail(int ix, char *defaultTableName) {
 	logMsg(LOGDEBUG, "Mailpipe popen ok. Sending via sendmail");
 	fprintf(mailpipe, "From: %s\n", mailFrom);
 	fprintf(mailpipe, "To: %s\n", mailTo);
+
+	fprintf(mailpipe, "MIME-Version: 1.0\n");
+	fprintf(mailpipe, "Content-Type: text/html\n");
+
 	fprintf(mailpipe, "Subject: %s\n\n", mailSubject);
+	fprintf(mailpipe, "<!DOCTYPE HTML>");
+	fprintf(mailpipe, "<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8' /></head><body>");
+	//@@TODO convert all \n to <br> unless we're going to have a text vs html content indicator. SEE 20 lines UP!!!!
 	fwrite(mailBody, 1, strlen(mailBody), mailpipe);
+	fprintf(mailpipe, "</body></html>");
 	fwrite(".\n", 1, 2, mailpipe);
 	pclose(mailpipe);
 
@@ -322,6 +419,6 @@ int wordMiscEmail(int ix, char *defaultTableName) {
     free(mailTo);
     free(mailSubject);
     free(mailBody);
-    emit(jam[ix]->trailer);
+    emitStd(jam[ix]->trailer);
 }
 

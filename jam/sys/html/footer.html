@@ -1,14 +1,27 @@
-<!-- Includes here -->
-
-<!-- Generated support -->
-<script src="/jam/sys/js/scratch.js"></script>
-<!-- This always goes last -->
-<script src="/jam/sys/js/util.js"></script>
 
 <!-- Temp -->
 <script src="/jam/sys/js/iframeResizer.contentWindow.min.js"></script>
 
 <!-- html end generation -->
-{{@custom html endOfHtml}}
+{{@html breakpoint body end}}
+
+<!-- Refresh page in back-button -->
+<input type="hidden" id="refreshed" value="no">
+<script type="text/javascript">
+	Xonload = function() {
+alert('on');
+	var e = document.getElementById("refreshed");
+	if (e.value == "no")
+		e.value = "yes";
+	else {
+		e.value = "no";
+		location.reload();
+	}
+}
+</script>
+
+<!-- This always goes last -->
+<script src="/jam/sys/js/util.js"></script>
+
 </body>
 </html>

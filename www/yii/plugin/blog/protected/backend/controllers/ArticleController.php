@@ -78,10 +78,13 @@ class ArticleController extends Controller
 			{
 				if (strlen($model->thumbnail_path) > 0)
                 {
-                    $fname = $iDir . $model->thumbnail_path;
-                    $fthumb = $iDir . "thumb_" . $model->thumbnail_path;
+					$prefix = rand(1, 99999) . "_";
+                    $fname = $iDir . $prefix . $model->thumbnail_path;
+                    $fthumb = $iDir . "thumb_" . $prefix . $model->thumbnail_path;
                     $model->thumbnail_path->saveAs($fname);
 					ImageUtils::resize($fname, $fthumb, 500);
+					$model->thumbnail_path=$prefix . $model->thumbnail_path;
+					$model->save();
                 }
 
 				$this->redirect(array('admin'));
@@ -123,11 +126,13 @@ class ArticleController extends Controller
 					}
                 }
                 // Save new one
+				$prefix = rand(1, 99999) . "_";
                 $model->thumbnail_path = $file;
-                $fname = $iDir . $model->thumbnail_path;
-                $fthumb = $iDir . "thumb_" . $model->thumbnail_path;
+                $fname = $iDir . $prefix . $model->thumbnail_path;
+                $fthumb = $iDir . "thumb_" . $prefix . $model->thumbnail_path;
                 $model->thumbnail_path->saveAs($fname);
 				ImageUtils::resize($fname, $fthumb, 500);
+				$model->thumbnail_path=$prefix . $model->thumbnail_path;
             }
 			if($model->save())
 				$this->redirect(array('admin'));

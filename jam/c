@@ -1,6 +1,6 @@
 #!/bin/bash
-g++ main.c log.c cgiUtil.c wordCustom.c wordHtml.c wordDatabase.c wordMisc.c custom.c database.c common.c list.c linkListUtil.c stringUtil.c jam.c -g3 -o jam -fpermissive -Wno-write-strings -Wno-format-security $(mysql_config --cflags) $(mysql_config --libs)
+g++ main.c log.c cgiUtil.c wordHtml.c wordDatabase.c wordMisc.c database.c common.c list.c linkListUtil.c stringUtil.c jam.c -g3 -o jam -fpermissive -Wno-write-strings -Wno-format-security $(mysql_config --cflags) $(mysql_config --libs) -lcurl
 chown `ls -ld main.c | awk '{print $3}'` jam
 chgrp `ls -ld main.c | awk '{print $4}'` jam
 cp -a jam cgi/
-strip cgi/jam
+#strip cgi/jam

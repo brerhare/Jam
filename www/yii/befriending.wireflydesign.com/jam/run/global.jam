@@ -1,0 +1,38 @@
+{{@include /jam/sys/html/header.html}}
+
+{{@database befriending_wireflydesign_com}}
+
+<!-- Template defines -->
+{{@template TABLE global}}
+{{@template DESCRIPTION Global Details}}
+
+<!-- Template defines for the list component -->
+{{@template DELETEFIELD global.date}}
+{{@template HEADINGS
+	<th> Surname </th>
+	<th> Forename </th>
+}}
+{{@template COLUMNS
+	<td>{{surname}}</td>
+	<td>{{forename}}</td>
+}}
+
+<!-- Template defines for the form input component -->
+{{@template FORMINPUT
+	{{@html text field=global.forename size=medium label='forename'}}
+	{{@html text field=global.surname size=medium label='surname'}}
+	{{@html text field=global.house size=medium label='house'}}
+	{{@html text field=global.street size=medium label='street'}}
+	{{@html text field=global.area size=medium label='area'}}
+	{{@html text field=global.town size=medium label='town'}}
+	{{@html text field=global.postcode size=medium label='postcode'}}
+	{{@html text field=global.landline size=medium label='landline'}}
+	{{@html text field=global.mobile size=medium label='mobile'}}
+	{{@html text field=global.email size=medium label='email'}}
+
+}}
+
+<!-- Include the template -->
+{{@include /jam/run/sys/crud.jam}}
+
+{{@include /jam/sys/html/footer.html}}

@@ -1,0 +1,21 @@
+{{@database jardineroofingltd_co_uk}}
+
+{{@template OPTIONS whatever options go here}}
+{{@template SLIDER
+	{{@each jelly_slider_image}}
+            <div data-p="112.50" style="display: none;">
+				<a href={{url}}>
+                	<img data-u="image" src="/userdata/jelly/sliderimage/{{image}}" />
+				</a>
+                <div data-u="thumb">
+                    <img class="i" src="/userdata/jelly/sliderimage/{{image}}" />
+                    <div class="t">{{title}}</div>
+                    <div class="c">{{text}}</div>
+                </div>
+            </div>
+	{{@end}}
+}}
+
+<!-- Call the addon -->
+{{@include /jam/addon/slider/jssor/index.html}}
+

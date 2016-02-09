@@ -1,0 +1,8 @@
+{{@action formStartHtml}}
+	<form name="FORM_NAME" class="uk-form uk-form-horizontal" style="FORM_CSS">
+{{@end}}
+
+{{@action formEndHtml}}
+	</form>
+{{@end}}
+
