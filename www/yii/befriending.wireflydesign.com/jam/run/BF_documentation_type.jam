@@ -1,0 +1,27 @@
+{{@include /jam/sys/html/header.html}}
+
+<style>
+	div { width:600px; }
+</style>
+
+{{@database befriending_wireflydesign_com}}
+
+<!-- Template defines -->
+{{@template TABLE doc_type}}
+{{@template DESCRIPTION }}
+{{@template DELETEFIELD doc_type.name}}
+
+{{@template HEADINGS
+	<th> Befriender's Documentation </th>
+}}
+
+{{@template COLUMNS
+	<td> {{@html text field=doc_type.name size=medium}} </td>
+}}
+
+{{@template EDITS name}}
+
+<!-- Include the template -->
+{{@include /jam/run/sys/crudInline.jam}}
+
+{{@include /jam/sys/html/footer.html}}

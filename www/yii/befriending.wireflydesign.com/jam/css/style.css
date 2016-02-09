@@ -1,0 +1,13 @@
+<style>
+
+.uk-container {
+	background-color:#fff5ee;
+}
+
+.rowHighlight:hover {
+  background-color: #ddf0ff;
+  cursor:pointer;
+}
+
+</style>
+
