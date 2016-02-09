@@ -68,7 +68,7 @@
                 array('label' => 'Settings', 'url' => array('/jellySetting/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
                 array('label' => 'Logout', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),                 
-				array('label' => 'Help', 'url' => 'http://knowledgebase.wireflydesign.com', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'Help', 'url' => 'http://www.knowledgebase.wireflydesign.com/?layout=index&page=jellyshell-website-basics', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
 			),
 		),
 	),
