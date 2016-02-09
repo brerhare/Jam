@@ -23,6 +23,64 @@ MYSQL *conn = NULL;
 char *connDbName = NULL;
 
 // ----------------------------------------------------------------
+// Utility
+
+int isMysqlTable(char *tableName) {
+	int ret = 0;
+	char *query = (char *) calloc(1, 4096);
+	sprintf(query, "SHOW TABLES LIKE '%s'", tableName);
+	MYSQL_RES *res;
+	if (mysql_query(conn, query) != 0) {
+		logMsg(LOGERROR, "isMysqlTable() query error - %s. Your query was [%s]", mysql_error(conn), query);
+		return(-1);
+	}
+	res = mysql_store_result(conn);
+	if (!res) {
+		char *tmp = (char *) calloc(1, 4096);
+		logMsg(LOGERROR, "isMysqlTable() - couldn't get results set: %s\n", mysql_error(conn));
+		mysql_free_result(res);
+		free(query);
+		return(-1);
+	}
+	if (mysql_num_rows(res) != 0)
+		ret = 1;
+	mysql_free_result(res);
+	free(query);
+	return ret;
+}
+
+int isMysqlField(char *fieldName, char *tableName) {
+	char *query = (char *) calloc(1, 4096);
+	sprintf(query, "SELECT * FROM %s LIMIT 1", tableName);
+//die(query);
+	MYSQL_RES *res;
+	if (mysql_query(conn, query) != 0) {
+		logMsg(LOGERROR, "isMysqlField() query error - %s. Your query was [%s]", mysql_error(conn), query);
+		return(-1);
+	}
+	res = mysql_store_result(conn);
+	if (!res) {
+		char *tmp = (char *) calloc(1, 4096);
+		logMsg(LOGERROR, "isMysqlField() - couldn't get results set: %s\n", mysql_error(conn));
+		mysql_free_result(res);
+		free(query);
+		return(-1);
+	}
+	int numFields = mysql_num_fields(res);
+	MYSQL_FIELD *field;
+	for (int i = 0; (field = mysql_fetch_field(res)); i++) {
+		if (!strcmp(field->name, fieldName)) {
+			mysql_free_result(res);
+			free(query);
+			return 1;
+		}
+	}
+	mysql_free_result(res);
+	free(query);
+	return 0;
+}
+
+// ----------------------------------------------------------------
 // Mapping
 
 struct SQLMAP {
@@ -200,16 +258,11 @@ void updateSqlVar(char *qualifiedName, enum enum_field_types mysqlType, char *va
 		newVar->debugHighlight = 5;
 		int ret = decodeMysqlType(newVar, mysqlType, value);
 //emitStd("TABLE-> NAME=%s TYPE=%d AVALUE=%s NVALUE=%ld DVALUE=%2.f\n", newVar->name, newVar->type, newVar->stringValue, newVar->numberValue, newVar->decimal2Value);
-		for (int i = 0; i < MAX_VAR; i++) {
-			if (!var[i]) {
-				var[i] = newVar;
-				return;
-			}
-		}
+		addVar(newVar);
 	} else {
-		for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
+		for (int i = 0; (i <= LAST_VAR); i++) {
 			if (!var[i])
-				break;
+				continue;
 			if (!strcmp(var[i]->name, qualifiedName)) {
 				int ret = decodeMysqlType(var[i], mysqlType, value);
 				break;
@@ -220,30 +273,6 @@ void updateSqlVar(char *qualifiedName, enum enum_field_types mysqlType, char *va
 
 // ----------------------------------------------------------------
 // General stuff
-
-int _isSqlFieldName(char *fieldName, char *tableName) {
-	char *query = (char *) calloc(1, 4096);
-	sprintf(query, "SELECT * FROM %s LIMIT 1", tableName);
-//die(query);
-	MYSQL_RES *res;
-	if (mysql_query(conn, query) != 0) {
-		die(mysql_error(conn));
-	}
-	res = mysql_store_result(conn);
-	if (!res) {
-		char *tmp = (char *) calloc(1, 4096);
-		sprintf(tmp, "Couldn't get results set: %s\n", mysql_error(conn));
-		die(tmp);
-	}
-	int numFields = mysql_num_fields(res);
-	MYSQL_FIELD *field;
-	for (int i = 0; (field = mysql_fetch_field(res)); i++) {
-		if (!strcmp(field->name, fieldName))
-			return 1;
-	}
-	return 0;
-}
-
 
 // This is the common code that used to be in @get and @each - now called from control() and wordDatabaseGet()
 MYSQL_RES *doSqlSelect(int ix, char *defaultTableName, char **givenTableName, int maxRows) {
@@ -256,7 +285,7 @@ MYSQL_RES *doSqlSelect(int ix, char *defaultTableName, char **givenTableName, in
     int skipCode = 0;
 
     // Get the given table name that we want to get
-    char *ta = args;
+    char *ta = strTrim(args);
     char *tg = *givenTableName;
     while ((*ta) && (*ta != ' ') && (*ta != '.'))	// Find ' ' or '.' which terminates the tablename;
         *tg++ = *ta++;
@@ -288,6 +317,7 @@ MYSQL_RES *doSqlSelect(int ix, char *defaultTableName, char **givenTableName, in
         return(NULL);
     }
     free(query);
+	free(tmp);
     return res;
 }
 
@@ -317,20 +347,26 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 	// Deal with each "<filter> a = b" phrase
 	for (int i = 0; i < MAX_SUBARGS; i++) {
 		if (subArg[i] == NULL) {
-			if (firstArg)
-				die("No arguments provided to @each/@get");
+			if (firstArg) {
+				logMsg(LOGERROR, "No arguments provided to @each/@get");
+				return(-1);
+			}
 			break;
 		}
 		wdNum = 0;
 
 		selectorField = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// try for the field selector (LHS)
-		if (!selectorField)
-			die("table name given for mysql lookup but no field selector");
+		if (!selectorField) {
+			logMsg(LOGERROR, "table name given for mysql lookup but no field selector");
+			return(-1);
+		}
 		if (!strcmp(selectorField, "filter")) {
 			free(selectorField);
 			selectorField = strTrim(getWordAlloc(args, ++wdNum, space));
-			if (!selectorField)
-				die("table name given for mysql lookup but no field selector after 'filter'");
+			if (!selectorField) {
+				logMsg(LOGERROR, "table name given for mysql lookup but no field selector after 'filter'");
+				return(-1);
+			}
 			if (char *p = strchr(selectorField, '.')) {	// remove any irrelevant stuff before the '.'
 				free(selectorField);
 				selectorField = strdup(p);
@@ -354,8 +390,10 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 		}
 
 		operand = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// try for the operand '=' '>' '<' 'is' 'is not' etc
-		if (!operand)
-			die("no operator given for lookup");
+		if (!operand) {
+			logMsg(LOGERROR, "no operator given for lookup");
+			return(-1);
+		}
 		if (!strcasecmp(operand, "is")) {
 			free(operand);
 			operand = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// we got 'is', the next is either 'not' or out of bounds to us
@@ -371,9 +409,13 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 		}
 
 		externalFieldOrValue = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// try for the external field, containing the value to look for
-//emitStd("\n\n[[[%s]]]\n\n", externalFieldOrValue);
-		if (!externalFieldOrValue)
-			die("no external field given for lookup");
+//logMsg(LOGDEBUG, "[%s]", externalFieldOrValue);
+		if (!externalFieldOrValue) {
+			logMsg(LOGERROR, "no external field given for lookup");
+			free(queryBuilder);
+			free(tmp);
+			return -1;
+		}
 
 //sprintf(tmp, "i=%d [%s][%s][%s] fullargs=[%s] and currenttable=[%s]\n", i, selectorField, operand, externalFieldOrValue, args, currentTableName); /*die(tmp);*/
 		VAR *variable = NULL;
@@ -384,8 +426,10 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 			varValue = strdup(variable->portableValue);
 		else
 			varValue = strdup(externalFieldOrValue);
+
 		// Quote it if necessary (contains non-numeric chars and isnt already)
-		if ((!_isSqlFieldName(varValue, givenTableName)) && (varValue[0] != '\'') && (varValue[strlen(varValue)] != '\'')) {
+		if ((!isMysqlField(varValue, givenTableName)) && (varValue[0] != '\'') && (varValue[strlen(varValue)] != '\'')) {
+
 			int isNum = 1;
 			if (strlen(varValue) == 0)
 				isNum = 0;
@@ -398,6 +442,7 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 					isNum = 0;
 				p++;
 			}
+
 			if ( (1==1) || (!isNum) || (numOfMinuses > 1) ) {	// @@TODO @@FIX!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				if (!strchr(varValue, '\'')) {
 					char *newValue = (char *) calloc(1, strlen(varValue) + 3);

@@ -3,4 +3,4 @@ g++ main.c log.c cgiUtil.c wordHtml.c wordDatabase.c wordMisc.c database.c commo
 chown `ls -ld main.c | awk '{print $3}'` jam
 chgrp `ls -ld main.c | awk '{print $4}'` jam
 cp -a jam cgi/
-strip cgi/jam
+#strip cgi/jam

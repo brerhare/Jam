@@ -30,7 +30,7 @@
 	{{@html input text mailer_member.first_name large '' Name}}
 	{{@html input text mailer_member.email_address large '' Email}}
 	{{@html textarea message 60x5 '' Message}}
-	<p> Leave your phone number and we will get back to you as soon as posible</p>
+	<p> Leave your phone number and we will get back to you as soon as possible</p>
 	{{@html input text mailer_member.telephone large '' Phone}}
 	{{@html button SEND primary .uk-width-1-1 
 		runAction sendMessage contactForm contactForm

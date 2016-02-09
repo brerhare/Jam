@@ -31,7 +31,7 @@ function runJam(jamName) {
  *					- 'actionName' only - current jam
  *					- 'jamName:actionName - different jam in same directory as current jam
  *					- '/path/to/jamName:actionName - use as is
- * @param element	element(s) to send. Space-separate multiples
+ * @param element	element(s) to send. Array
 					- form elements are expanded to their child elements
 					- if it isnt an element then 'name=value' format is assumed and sent as given, eg 'stock_supplier._id=2'
  * @param output	HTML element that receives any returned content (innerHTML)
@@ -41,7 +41,7 @@ function runJam(jamName) {
  */
 function runAction(action, element, output, callback) {
 //alert('startajax');
-	if (typeof element === 'undefined') { elements = ''; }
+	if (typeof element === 'undefined') { element = []; }
 	if (typeof output === 'undefined') { output = ''; }
 	if (typeof callback === 'undefined') { callback = ''; }
 	// Where we will send the request to
@@ -56,26 +56,27 @@ function runAction(action, element, output, callback) {
 		runJam = action;
 	}
 	// Gather all the elements to send
-	var postData = 'OobDataRequested=1';
-	var el = element.split(" ");
-	el = runActionPreProcessGrid(el);							// expand 'SEQ_' to individual names for sending grid
-	el.push("_dbname");											// always try to append this
-	el.push("_initialUrlParams");								// any url parameters this page was initially called with
-	for (i = 0; i < el.length; i++) {
-		if (document.forms[el[i]]) {							// is this a form element?
-			var obj = $('form[name="' + el[i] + '"]');			// yes its a form element
+	var postData = 'oobDataRequested=1';
+/////////////////////////	el = runActionPreProcessGrid(el);							// expand 'SEQ_' to individual names for sending grid
+	element = runActionIncludeGroupElements(element);				// expand any group (class) names to all their element names
+	element.push("_dbname");											// always try to append this
+	element.push("_initialUrlParams");								// any url parameters this page was initially called with
+	for (i = 0; i < element.length; i++) {
+		if (element[i] == '')
+			continue;
+		if (document.forms[element[i]]) {							// is this a form element?
+			var obj = $('form[name="' + element[i] + '"]');			// yes its a form element
 			postData += '&' + obj.serialize();
 			if (typeof obj.attr("action") != 'undefined')		// If any form at all has an 'action' we use it
 				formURL = obj.attr("action");
 		} else {												// no its not a form element
-			var obj = document.getElementsByName(el[i]);		// try to get it
+			var obj = document.getElementsByName(element[i]);		// try to get it
 			if (!(obj))
-				obj = document.getElementById(el[i]);
+				obj = document.getElementById(element[i]);
 			if ((obj) && (obj.length > 0)) {					// got it
-				postData += '&' + el[i] + '=' + encodeURIComponent(obj[0].value);
+				postData += '&' + element[i] + '=' + encodeURIComponent(obj[0].value);
 			} else {											// not ANY kind of element, so just send as is (a=b)
-				var lit = el[i].split('=');
-				postData += '&' + lit[0] + '=' + lit[1];
+				postData += '&' + element[i];
 			}
 		}
 //alert('assembling data. So far we have : ' + postData);
@@ -87,9 +88,11 @@ console.log('AJAX sending to - \nurl : ' + sendURL + '\ndata : ' + postData);
 		type: "POST",
 		data : postData,
 		success:function(data, textStatus, jqXHR) {
-console.log('AJAX call returned data [' + data + '] of len ' + data.length);
+console.log('AJAX call returned raw data [' + data + '] of len ' + data.length);
 			data = processOobData(decodeURIComponent(data));
-console.log('AJAX data stripped of oob [' + data + '] of len ' + data.length);
+//console.log('AJAX data stripped of oob [' + data + '] of len ' + data.length);
+			data = processScriptData(data);
+//console.log('AJAX data stripped of script tags [' + data + '] of len ' + data.length);
 			if (output != '') {
 				var target = document.getElementsByName(output);
 				if (target[0] instanceof HTMLInputElement) {
@@ -101,43 +104,6 @@ console.log('AJAX data stripped of oob [' + data + '] of len ' + data.length);
 						target[0].innerHTML = data;
 				}
 			}
-			// Apply any JS that might have come in
-
-
-scriptArr = [];
-otherArr = [];
-curPos = 0;
-while ((startTag = data.indexOf("<script", curPos)) != -1) {
-    if (startTag != curPos)
-        otherArr.push(data.substring(curPos, startTag));
-    pos = data.indexOf(">", startTag);
-    if (pos == -1) {
-        alert('script start tag incomplete');
-    }
-    endTag = data.indexOf("</scri" + "pt>", pos+1);
-    if (endTag == -1)
-        alert('script start tag has no end tag');
-    else {
-        scriptArr.push(data.substring(pos+1, endTag));
-    }
-    curPos = endTag + 9;                                            // just after the closing ">"
-console.log("[" + data.substring(pos+1, endTag) + "]");
-}
-otherArr.push(data.substring(curPos));
-console.log("extracted script array : " + scriptArr);
-console.log("extracted other  array : " + otherArr);
-for (i = 0; i < scriptArr.length; i++)
-	window.eval(scriptArr[i]);
-
-
-/**
-			var script = data.replace("<script>", "");
-			script = script.replace("</script>", "");
-alert(script);
-			window.eval(script);
-xxx('HI!');
-**/
-
 
 			// Callback if one was given
 			if (callback != '')
@@ -184,30 +150,36 @@ function dirname(path) {
 }
 
 // ----------------------------------------------------------------------------------------------------------
-// Jam helpers
+// Event handlers
 
 // Call a jam-supplied event handler
 function fn(obj, event) {
 	var localFunc = '';
 	if (event.type == 'change') {
 		localFunc = 'on' + event.type.charAt(0).toUpperCase() + event.type.slice(1) + '_' + obj.id;
-		if (localFunc.indexOf("_SEQ") != -1) {	// eg convert onChange_SEQ_3_customer.name to onChange_customer.name
-			var uscore = localFunc.split("_");
-			uscore.splice(1, 2);
-			localFunc = uscore.join("_");
+		// Convert ID3___stock_customer___address_1 to onChange_stockcustomer_address_1
+		if ((obj.id.substring(0, 2) == 'ID') || (obj.id.substring(0, 3) == 'VAR')) {
+			var parts = obj.id.split('___');
+			parts.splice(0, 1);	// lose the 'ID___' or 'VAR___'
+			for (i = 0; i < parts.length; i++)
+				parts[i] = parts[i].split('_').join('');
+			for (i = 0; i < parts.length; i++)
+				parts[i] = parts[i].split('.').join('_');	// VAR's with dots in their name need this
+			localFunc = 'on' + event.type.charAt(0).toUpperCase() + event.type.slice(1) + '_' + parts.join('_');
 		}
-	}
-	localFunc = localFunc.split('.').join('_dot_');
-	if (localFunc != '') {
-		if (typeof window[localFunc] === "function")
+console.log("fn (change) looking for user supplied function '" + localFunc + "'");
+		if ((localFunc != '') && (typeof window[localFunc] === "function"))
 			window[localFunc](obj);
 	}
 }
 
+// ----------------------------------------------------------------------------------------------------------
+// Element setters and getters
+
 // Getter/setter for DOM elements. Id preferred to name. For now name is always name[0]
 // someval = data('inputid').content();		.name() .id()
 // data('inputid').content(someval);
-var data = function(element) {
+/* var data = function(element) {	// @@NU
 	// Self instantiate if necessary. http://programmers.stackexchange.com/questions/118798/avoiding-new-operator-in-javascript-the-better-way
 	if (Object.getPrototypeOf(this) !== data.prototype) {
 		var o = Object.create(data.prototype);
@@ -223,26 +195,26 @@ var data = function(element) {
 		}
 	}
 }
-data.prototype.content = function(val) {
+data.prototype.content = function(val) {	// @@NU
 	if (val == null)
 		return (this.obj instanceof HTMLInputElement) ? this.obj.value : this.obj.innerHTML;
 	else
 		(this.obj instanceof HTMLInputElement) ?  this.obj.value = val : this.obj.innerHTML = val;
 };
-data.prototype.id = function(val) {
+data.prototype.id = function(val) {	// @@NU
 	if (val == null)
 		return this.obj.id;
 	else
 		this.obj.id = val;
 };
-data.prototype.name = function(val) {
+data.prototype.name = function(val) {	// @@NU
 	if (val == null)
 		return this.obj.name;
 	else
 		this.obj.name = val;
-};
+}; */
 
-function getElementContent(object) {
+/* function getElementContent(object) {
 	if (target[0] instanceof HTMLInputElement) {
 //		alert('is inp');
 		target[0].value = data;
@@ -250,34 +222,94 @@ function getElementContent(object) {
 //		alert('isnt inp');
 		target[0].innerHTML = data;
 	}
+} */
+
+function getSiblingByName(callingObj, siblingName) {
+	if (callingObj != null) {
+		var callingClassArr = callingObj.className.split(' ');
+		for (var i = 0; i < callingClassArr.length; i++) {
+			if (callingClassArr[i].substring(0, 4) == 'ROW_') {
+				var groupClassArr = document.getElementsByClassName(callingClassArr[i]);	// all the row elements
+				for (j = 0; j < groupClassArr.length; j++) {
+					if (groupClassArr[j].name.match(siblingName))
+						return(groupClassArr[j]);
+					//console.log('==> ' + groupClassArr[j].name + ' = ' + groupClassArr[j].value);
+				}
+			}
+		}
+	}
+	alert('Error: getSiblingByName failed to find ' + siblingName);
+	return null;
 }
 
-// Get a sibling element in a grid eg we want element 'SEQ_39_table.field'
-function getSibling(callingObj, siblingName) {	// eg obj and 'table.field'
-	return document.getElementById(getRowPrefix(callingObj) + siblingName);
+// Get an array of elements belonging to a group
+function getGroupArray(groupName) {
+	var groupArr = [];
+	groupArr = document.getElementsByClassName(groupName);
+	return groupArr;
+}
+
+// Get the row 'group' name an element belongs to (its class name that is something like 'ROW_538904')
+function getRowgroupName(callingObj) {
+	if (callingObj != null) {
+		var callingClassArr = callingObj.className.split(' ');
+		for (var i = 0; i < callingClassArr.length; i++) {
+			if (callingClassArr[i].substring(0, 4) == 'ROW_') {
+				return(callingClassArr[i]);
+			}
+		}
+	}
+	alert('Error: getRowGroupName failed to find rowgroup for ' + callingObj.name);
+	return null;
+}
+
+// Get an element by group (class) name and element name
+function getByGroupAndName(groupName, elementName) {
+	var groupClassArr = document.getElementsByClassName(groupName);
+	for (i = 0; i < groupClassArr.length; i++) {
+		if (groupClassArr[i].name.match(elementName))
+			return(groupClassArr[i]);
+	}
+	return null;
+}
+
+// Is the object in the group?
+function hasGroup(obj, groupName) {
+	if (obj != null) {
+		var classArr = obj.className.split(' ');
+		for (var i = 0; i < classArr.length; i++) {
+			if (classArr[i].match(groupName)) {
+				return 1;
+			}
+		}
+	}
+	return 0;
 }
 
 // Get a non-grid element by name
-function get(name) {
+function get(name) {	// @@NU
 	return document.getElementsByName(name)[0];
 }
 
-// extract the row prefix ('SEQ_99_') from an object
-function getRowPrefix(obj) {
-	if (obj == null) {
-		alert('Error: getRowPrefix cant work with a null object');
-		return(null);
+// If a runAction element-to-send names a group (class) instead then replace it in the array with all it's elements
+function runActionIncludeGroupElements(elArr) {
+console.log('pre-expand-----------------------------------');
+console.log(elArr);
+	var newArr = [];
+	for (i = 0; i < elArr.length; i++) {
+		var groupClassArr = document.getElementsByClassName(elArr[i]);
+		if (groupClassArr.length > 0) {
+			for (j = 0; j < groupClassArr.length; j++) {
+				newArr.push(groupClassArr[j].name);
+			}
+		} else {
+			newArr.push(elArr[i]);
+		}
 	}
-	if (obj.id.indexOf("SEQ_") == -1) {
-		alert('Error: getRowPrefix found no SEQ_ in the passed object id');
-		return(null);
-	}
-	var idSplit = obj.id.split('_');
-	if (idSplit.length < 3) {
-		alert('Error: getRowPrefix requires at least 2 underscores in the passed object id');
-		return(null);
-	}
-	return idSplit[0] + '_' + idSplit[1] + '_';
+console.log('post-expand-----------------------------------');
+console.log(newArr);
+//alert('waiting');
+	return newArr;
 }
 
 // If there is any SEQ_ item create element.name's for ALL sibling grid element.id to send to server, and return the modified element array to runAction
@@ -316,15 +348,6 @@ function runActionPreProcessGrid(elArr) {
 	}
 	return newArr;
 }
-/*
-function getSibling(callingObj, siblingName) {	// eg obj and 'table.field'
-	return document.getElementById(getRowPrefix(callingObj) + siblingName);
-
-		if (localFunc.indexOf("_SEQ") != -1) {	// eg convert onChange_SEQ_3_customer.name to onChange_customer.name
-			var uscore = localFunc.split("_");
-			uscore.splice(1, 2);
-			localFunc = uscore.join("_");
-*/
 
 // ----------------------------------+-----------------------------------------------------------------------
 // Init
@@ -356,37 +379,106 @@ function createHiddenElementsFromUrlParams() {
 }
 
 // ----------------------------------+-----------------------------------------------------------------------
-// OOB (returning from actions)
+// Returning from ajax runAction
 
+// Process any OOB data embedded in the returned data
 function processOobData(data) {
+	console.log('----- oob data begins ---------------------------------------------------------------');
 	var spl = data.split("{oobData}");
 	if (spl.length > 1) {
-		console.log('----- oob data begins ---------------------------------------------------------------');
 		var oobData = spl[1];
-//alert('found oob data:' + oobData + ' of length ' + oobData.length);
+console.log('found oob data:' + oobData + ' of length ' + oobData.length);
 		var oob = [];
 		oob = JSON.parse(spl[1]);
 		for (i = 0; i < oob.length; i++) {
 			var oobName = oob[i]['name'];
 			var oobValue = oob[i]['value'];
-			var obj = document.getElementsByName(oobName);
-			if (obj[0] == null) {
-				var input = document.createElement("input");
-				input.setAttribute("type", "hidden");
-				input.setAttribute("name", oobName);
-				input.setAttribute("id", oobName);
-				input.setAttribute("value", oobValue);
-console.log('creating ' + oobName + ' : ' + oobValue);
-				document.body.appendChild(input);
+			if (oobName == 'notifyStatus') {
+				notifyStatus(oobValue);
 			} else {
+				var obj = document.getElementsByName(oobName);
+				if (obj[0] == null) {
+					var input = document.createElement("input");
+					input.setAttribute("type", "hidden");
+					input.setAttribute("name", oobName);
+					input.setAttribute("id", oobName);
+					input.setAttribute("value", oobValue);
+console.log('creating ' + oobName + ' : ' + oobValue);
+					document.body.appendChild(input);
+				} else {
 console.log('updating ' + oobName + ' : ' + oobValue);
-				obj[0].value = oobValue;
+					obj[0].value = oobValue;
+				}
 			}
 		}
 		// Strip out oob from data
 		data = spl[0];
-		console.log('----- oob data ends -----------------------------------------------------------------');
 	}
+	console.log('----- oob data ends -----------------------------------------------------------------');
+	return data;
+}
+
+function notifyStatus(status) {
+	toastr.options = {
+		"preventDuplicates": true,
+		"timeOut": "200",
+		"closeButton": false,
+		"debug": false,
+		"newestOnTop": false,
+		"progressBar": false,
+		"positionClass": "toast-top-right",
+		"onclick": null,
+		"showDuration": "300",
+		"hideDuration": "1000",
+		"extendedTimeOut": "1000",
+		"showEasing": "swing",
+		"hideEasing": "linear",
+		"showMethod": "fadeIn",
+		"hideMethod": "fadeOut"
+	}
+	if (status == 'ok')
+		toastr.success('success');
+	else if (status == 'fail')
+		toastr.error('error');
+	else if (status == 'info')
+		toastr.error('info');
+	else if (status == 'warn')
+		toastr.error('warning');
+}
+
+// Enable any <script> tags in the returned data
+function processScriptData(data) {
+	// Split off and apply any JS that might have come in
+	scriptArr = [];
+	htmlArr = [];
+	curPos = 0;
+	while ((startTag = data.indexOf("<script", curPos)) != -1) {
+		if (startTag != curPos)
+			htmlArr.push(data.substring(curPos, startTag));
+		pos = data.indexOf(">", startTag);
+		if (pos == -1) {
+			alert('script start tag incomplete');
+		}
+		endTag = data.indexOf("</scri" + "pt>", pos+1);
+		if (endTag == -1)
+			alert('script start tag has no end tag');
+		else {
+			scriptArr.push(data.substring(pos+1, endTag));
+		}
+		curPos = endTag + 9;                                            // just after the closing ">"
+		//console.log("[" + data.substring(pos+1, endTag) + "]");
+	}
+	htmlArr.push(data.substring(curPos));
+	console.log('----- script data begins ------------------------------------------------------------');
+	for (i = 0; i < scriptArr.length; i++) {
+		console.log(scriptArr[i]);
+		window.eval(scriptArr[i]);
+	}
+	console.log('----- script data ends --------------------------------------------------------------');
+	console.log('----- html data begins --------------------------------------------------------------');
+	console.log(htmlArr.join(''));
+	data = htmlArr.join('');
+	console.log('----- html data ends -----------------------------------------------------------------');
 	return data;
 }
 

@@ -1,0 +1,30 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/menu.jam}}
+
+<style>
+	div { width:600px; }
+</style>
+
+{{@database befriending_wireflydesign_com}}
+
+<!-- Template defines -->
+{{@template TABLE contact_relationship}}
+{{@template DESCRIPTION List Types of Relationships to the Young Person}}
+{{@template DELETEFIELD contact_relationship.relationship}}
+
+{{@template HEADINGS
+	<th> Relationship Type </th>
+}}
+
+{{@template COLUMNS
+	<td> {{@html text field=contact_relationship.relationship size=medium}} </td>
+}}
+
+{{@template EDITS relationship}}
+
+<!-- Include the template -->
+{{@include /jam/run/sys/crudInline.jam}}
+
+{{@include /jam/sys/html/footer.html}}

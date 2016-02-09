@@ -8,6 +8,14 @@
 
 {{@literal on}}
 
+<h4>Global</h4>
+
+{@strict off/0/false}	ON by default. Determines whether any top level word return aborts or continues the process
+{@notify fail}			What you want to be notified about (if anything)
+						FAIL by default. Can have multiple, eg 'notify fail ok someothervalue'
+						or a command can override with 'notify=off' or 'notify=fail' or 'notify=ok,fail'
+						options are OK, FAIL, off/0/false
+
 <h4>List</h4>
 
 {@new list mylist dir /jam/template}
@@ -47,7 +55,7 @@
 {@clear item product}
 {@new item product}
 {@amend item product}
-{@update item product}
+{@update item product}		// either new or amend
 {@remove item product}
 
 {@remove index product nameindex
@@ -108,19 +116,27 @@
 
 <h4>HTML</h4>
 
+<h5>Layout</h5>
+
+{@html container start [center] [css='blah']}
+{@html container end}
+
+{@html gridrow start [cols=4] [css='blah'] }		optional cols specifies number of equal size columns
+{@html gridrow end}
+{@html gridcol start [width=3-5]} [css='blah'] }	..or each col can specify its size
+{@html gridcol end}
+
 <h5>Inputs</h5>
 
-{@html input hidden stock_supplier._id}
-{@html input text stock_supplier.payment_terms mini "Payment terms" days}
-{@html input date stock_supplier.date mini "Date"}
-{@html input filter stock_transaction.supplier_id stock_supplier.name mini "Supplier Name"}
-{@html input dropdown stock_transaction.supplier_id stock_supplier.name mini "Supplier Name"}
-{@html input keyaction jam:action, inputElement, outputResult, mini}	// use null for empty values
-{@html input disabled stock_supplier.payment_terms mini "Payment terms" days}}	// same as input just no editing
-{@html inp <anytype means inline input>}
+<h6> New </h6>
+{@html dropdown/filter field=product.supplier_id pickfield=supplier.name size=medium label='Line Supplier'}
+{@html dropdown/filter field=product.supplier_id pickfield=supplier.name size=medium group=mygroup}
+{@html dropdown/filter field=product.supplier_id pickfield=supplier.name size=medium}
+{@html text/date field=product.supplier_id pickfield=supplier.name size=medium placeholder='address line 1'}
+{@html text/date field=product.supplier_id pickfield=supplier.name size=medium hidden}
+{@html textarea field=stock_supplier.notes size=60x5 label=Notes}
 
-{@html textarea stock_supplier.notes 60x5 Notes}
-
+Optional for any - label, group, disabled
 
 {@html button Save primary small
 	alert('ok')     // or any js
@@ -129,6 +145,23 @@
 	runAction updateSupplier, supplierForm, outputResult, alert('back from ajax')
 	runAction updateSupplier 'supplierForm _id' outputResult runJam supplierMaint.tpl 
 	runAction updateSupplier, supplierForm _id, outputResult, runJam('supplierMaint.tpl')
+}
+
+<h6> Old </h6>
+{@html input hidden stock_supplier._id}
+{@html input text stock_supplier.payment_terms mini "Payment terms" days}
+{@html input date stock_supplier.date mini "Date"}
+{@html input filter stock_transaction.supplier_id stock_supplier.name mini "Supplier Name"}
+{@html input keyaction jam:action, inputElement, outputResult, mini}	// use null for empty values
+{@html input disabled stock_supplier.payment_terms mini "Payment terms" days}}	// same as input just no editing
+{@html inp <anytype means inline input>}
+{@html textarea stock_supplier.notes 60x5 Notes}
+
+<h5>Tabs</h5>
+
+{@html tabs
+	label=Customers 	action=/run/customerMaint
+	label='Tab text'	action=/path/to/jam
 }
 
 <h5> html control </h5>
@@ -141,12 +174,12 @@
 
 <h5>Javascript supplied functions</h5>
 
-runJam templateName
-	runJam('name.tpl')
+runJam fileName
+	runJam('name.jam')
 	runJam
-runAction [jamName:]actionName, [formName(s)], [resultObjectName], [callback]
+runAction [jamName:]actionName, [name(s)/id(s)/class], [resultObjectName], [callback]
 	runAction('save')
-	runAction('jam2:save', 'form1 form2', 'divThatGetsTheResult'), backButton()
+	runAction('jam2:save', ['form1,form2'], 'divThatGetsTheResult', backButton )
 
 <hr>
 <h4>Utility</h4>
@@ -161,8 +194,14 @@ system.now 		@@TODO
 <h4>Misc</h4>
 
 {@email admin@dglink.co.uk concertgoer@horrormail.com "Your tickets" Thank you order.name for buying numberof tickets}
+{@email from to subject action:runActionNameForContent}
+
 {@type /path/file}
 {@sysjam jamscript-in-sys-jam-area optional-action}
+
+{@include /path/file}
+{@include once /path/file}
+{@include standalone /path/file}	// only include if this file itself is not included
 
 <hr>
 
@@ -209,8 +248,16 @@ system.now 		@@TODO
 
 <h3>Internal notes</h3>
 
-@actions. Emits to stdout same as 'global' jam, but we need an out of band way to harvest the variables created by the action.
-o File? Works for non-html jam
-o Embedded div at the end of output which an http ajax.onsuccess can unpack? works for html jam
+Running from commandline
+	- /path/to/jam documentroot path/to/jamfile
+	- ../cgi/jam ~/dev/src/www/angular/stock befriender
+
+
+@actions. All variables created as the result of actions are sent as oob to the browser.
 
 Later on the jam will need to differentiate the commandline and client-server mode to decide which oob type to use
+
+
+<h4>Autocreated Jam variables</h4>
+sys.control.xxxxx		// mainly for sysjam, all args processed line by line are converted to vars
+sys.control.sequence	// A unique sequence number for each iteration of an @each @end loop

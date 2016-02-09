@@ -49,7 +49,7 @@ class basic
 				case "width":
 					$val = str_replace("px", "", $val);
 					$this->apiHtml = str_replace("<substitute-width>",
-						"nav ul {width: " . $val . "px;}",
+						"xnav ul {width: " . $val . "px;}",
 						$this->apiHtml);
 					break;
 
@@ -57,14 +57,14 @@ class basic
                     $val = str_replace("px", "", $val);
                     $this->height = $val;   // Store for later
                     $this->apiHtml = str_replace("<substitute-height>",
-                        "nav ul li a {height: " . $val . "px; padding: 0px 15px;} " .
-                        "nav ul ul li a {height: " . $val . "px; padding: 0px 15px;} ",
+                        "xnav ul li a {height: " . $val . "px; padding: 0px 15px;} " .
+                        "xnav ul ul li a {height: " . $val . "px; padding: 0px 15px;} ",
                         $this->apiHtml);
                     break;
 
                 case "menu-text-weight":
                     $this->apiHtml = str_replace("<substitute-menu-text-weight>",
-                        "nav ul li a {font-weight: " . $val . " !important;}",
+                        "xnav ul li a {font-weight: " . $val . " !important;}",
                         $this->apiHtml);
                     break;
 
@@ -75,14 +75,14 @@ class basic
 				case "font-size":
 					$val = str_replace("px", "", $val);
 					$this->apiHtml = str_replace("<substitute-font-size>",
-						"nav ul li a {font-size: " . $val . "px;}",
+						"xnav ul li a {font-size: " . $val . "px;}",
 						$this->apiHtml);
 					break;
 
                 case "edgepadding":
                     $val = str_replace("px", "", $val);
                     $this->apiHtml = str_replace("<substitute-edgepadding>",
-                        "nav ul {
+                        "xnav ul {
                             padding: 0px " . $val . "px;
                         }",
                         $this->apiHtml);
@@ -91,7 +91,7 @@ class basic
 				case "menu-rounding":
 					$val = str_replace("px", "", $val);
 					$this->apiHtml = str_replace("<substitute-menu-rounding>",
-						"nav ul {
+						"xnav ul {
 							-moz-border-radius: " . $val . "px;
 							-webkit-border-radius: " . $val . "px;
 							border-radius: " . $val . "px; /* future proofing */
@@ -102,13 +102,13 @@ class basic
 
 				case "menu-opacity":
 					$this->apiHtml = str_replace("<substitute-menu-opacity>",	/* First level menu */
-						"nav ul {
+						"xnav ul {
 							zoom: 1; filter: alpha(opacity=" . $val . ");
 							opacity: " . ($val / 100) . ";
 						}",
 						$this->apiHtml);
 					$this->apiHtml = str_replace("<substitute-submenu-opacity>",	/* Second level menu */
-						"nav ul ul {
+						"xnav ul ul {
 							zoom: 1; filter: alpha(opacity='100');
 							opacity: " . (100) . ";
 						}",
@@ -117,7 +117,7 @@ class basic
 
 				case "menu-tile":
 					$this->apiHtml = str_replace("<substitute-menu-tile>",
-						"nav ul {
+						"xnav ul {
 							background: url('" . Yii::app()->baseUrl . $val . "') repeat;
 						}",
 						$this->apiHtml);
@@ -127,7 +127,7 @@ class basic
 					if ($this->default_orientation != "horizontal")
 					{
 						$this->apiHtml = str_replace("<substitute-menu-stretch>",
-							"nav ul li {
+							"xnav ul li {
 								background: url('" . Yii::app()->baseUrl . $val . "');
 								background-size: 100%;
 								background-repeat: no-repeat;
@@ -138,7 +138,7 @@ class basic
 					else
 					{
 						$this->apiHtml = str_replace("<substitute-menu-stretch>",
-							"nav ul {
+							"xnav ul {
 								background: url('" . Yii::app()->baseUrl . $val . "');
 								background-size: 100%;
 								background-repeat: no-repeat;
@@ -152,7 +152,7 @@ class basic
 					$vals = explode(" ", $val);
 					if (count($vals == 1)) array_push($vals, $vals[0]);
 					$this->apiHtml = str_replace("<substitute-menu-color>",
-						"nav ul {
+						"xnav ul {
 							background: " . $vals[0] . ";
 							background: linear-gradient(top, " . $vals[0] . " 0%, " . $vals[1] . " 100%);  
 							background: -moz-linear-gradient(top, " . $vals[0] . " 0%, " . $vals[1] . " 100%); 
@@ -164,7 +164,7 @@ class basic
 					$vals = explode(" ", $val);
 					if (count($vals == 1)) array_push($vals, $vals[0]);
 					$this->apiHtml = str_replace("<substitute-submenu-color>",
-						"nav ul ul {
+						"xnav ul ul {
 							background: " . $vals[0] . ";
 							background: linear-gradient(top, " . $vals[0] . " 0%, " . $vals[1] . " 100%);  
 							background: -moz-linear-gradient(top, " . $vals[0] . " 0%, " . $vals[1] . " 100%); 
@@ -175,7 +175,7 @@ class basic
 
 				case "Xsubmenu-opacity":
 					$this->apiHtml = str_replace("<substitute-submenu-opacity>",
-						"nav ul ul {
+						"xnav ul ul {
 							background-color: rgba(0,0,255,1.0);
 						}",
 						$this->apiHtml);
@@ -188,7 +188,7 @@ class basic
 					$vals = explode(" ", $val);
 					if (count($vals == 1)) array_push($vals, $vals[0]);
 					$this->apiHtml = str_replace("<substitute-menu-hover-background-color>",
-						"nav ul li:hover {
+						"xnav ul li:hover {
 							background: " . $vals[0] . ";
 							background: linear-gradient(top, " . $vals[0] . " 0%, " . $vals[1] . " 100%);  
 							background: -moz-linear-gradient(top, " . $vals[0] . " 0%, " . $vals[1] . " 100%); 
@@ -199,14 +199,14 @@ class basic
 				case "item-text-color":	/* old */
 				case "menu-hover-text-color":
 					$this->apiHtml = str_replace("<substitute-menu-hover-text-color>",
-						"nav ul li:hover a {color: " . $val . " !important;}",
+						"xnav ul li:hover a {color: " . $val . " !important;}",
 						$this->apiHtml);
 					break;
 				case "menu-hover-background-image-stretch":
 					if ($this->default_orientation != "horizontal")
 					{
 						$this->apiHtml = str_replace("<substitute-menu-hover-image-stretch>",
-							"nav ul li:hover {
+							"xnav ul li:hover {
 								background: url('" . Yii::app()->baseUrl . $val . "');
 								background-size: 100%;
 								background-repeat: no-repeat;
@@ -217,7 +217,7 @@ class basic
 					else
 					{
 						$this->apiHtml = str_replace("<substitute-menu-hover-image-stretch>",
-							"nav ul li:hover {
+							"xnav ul li:hover {
 								background: url('" . Yii::app()->baseUrl . $val . "');
 								Xbackground-size: 100%;
 								background-repeat: no-repeat;
@@ -232,7 +232,7 @@ class basic
 					$vals = explode(" ", $val);
 					if (count($vals == 1)) array_push($vals, $vals[0]);
 					$this->apiHtml = str_replace("<substitute-subitem-color>",
-						"nav ul ul li a:hover {
+						"xnav ul ul li a:hover {
 							background: " . $vals[0] . ";
 							background: linear-gradient(top, " . $vals[0] . " 0%, " . $vals[1] . " 100%);  
 							background: -moz-linear-gradient(top, " . $vals[0] . " 0%, " . $vals[1] . " 100%); 
@@ -243,37 +243,37 @@ class basic
 
                 case "menu-text-weight":
                     $this->apiHtml = str_replace("<substitute-menu-text-weight>",
-                        "nav ul li a {font-weight: " . $val . " !important;}",
+                        "xnav ul li a {font-weight: " . $val . " !important;}",
                         $this->apiHtml);
                     break;
 
 				case "menu-text-color":
 					$this->apiHtml = str_replace("<substitute-menu-text-color>",
-						"nav ul li a {color: " . $val . " !important;}",
+						"xnav ul li a {color: " . $val . " !important;}",
 						$this->apiHtml);
 					break;
 // NW!!!
 				case "submenu-text-color":
 					$this->apiHtml = str_replace("<substitute-submenu-text-color>",
-						"nav ul li ul li a {color: " . $val . " !important;}",
+						"xnav ul li ul li a {color: " . $val . " !important;}",
 						$this->apiHtml);
 					break;
 				case "subitem-text-color":
 					$this->apiHtml = str_replace("<substitute-subitem-text-color>",
-						"nav ul ul li a:hover {color: " . $val . " !important;}",
+						"xnav ul ul li a:hover {color: " . $val . " !important;}",
 						$this->apiHtml);
 					break;
 				case "item-separator-color":
                     $this->default_item_separator_color = $val;
 					if ($this->default_orientation != "horizontal")
 					{
-						$str = "nav ul li + li {border-top: <substitute-default-item-separator-width>px solid " . $val . ";}";
+						$str = "xnav ul li + li {border-top: <substitute-default-item-separator-width>px solid " . $val . ";}";
 						$this->apiHtml = str_replace("<substitute-item-separator-color>", $str, $this->apiHtml);
 					}
 					break;
 				case "subitem-separator-color":
 					$this->apiHtml = str_replace("<substitute-subitem-separator-color>",
-						"nav ul ul li {border-top: <substitute-default-subitem-separator-width>px solid " . $val . ";}",
+						"xnav ul ul li {border-top: <substitute-default-subitem-separator-width>px solid " . $val . ";}",
 						$this->apiHtml);
 					break;
 				case "item-separator-width":
@@ -294,14 +294,15 @@ class basic
 
         if ($this->default_orientation == "horizontal")
 		{
-            $css = "nav ul li~li { border-left: " . $this->default_item_separator_width . "px solid " . $this->default_item_separator_color . "}";
+            $css = "xnav ul li~li { border-left: " . $this->default_item_separator_width . "px solid " . $this->default_item_separator_color . "}";
+            $css .= "xnav ul li ul li~li { border-left: " . /*$this->default_item_separator_width .*/ "0px solid " . $this->default_item_separator_color . "}";
         	$this->apiHtml = str_replace("<substitute-item-separator-width>", $css, $this->apiHtml);
 		}
 /*****
         if ($this->default_orientation == "horizontal")
-            $css = "nav ul li~li { border-left: " . $this->default_item_separator_width . "px solid " . $this->default_item_separator_color . "}";
+            $css = "xnav ul li~li { border-left: " . $this->default_item_separator_width . "px solid " . $this->default_item_separator_color . "}";
         else
-            $css = "nav ul li~li { border-top: " . $this->default_item_separator_width . "px solid " . $this->default_item_separator_color . "}";
+            $css = "xnav ul li~li { border-top: " . $this->default_item_separator_width . "px solid " . $this->default_item_separator_color . "}";
         $this->apiHtml = str_replace("<substitute-item-separator-width>", $css, $this->apiHtml);
 *****/
 
@@ -355,7 +356,7 @@ class basic
 
 			if ($this->level == 2)
 			{
-				$content = "<nav>";
+				$content = "<ynav>";
 				$content .= "<ul>";
 				if (isset($_GET['page']))
 				{
@@ -367,7 +368,7 @@ $criteria->order = "sequence ASC";
 					if ($menuItems)
 					{
 						$parent = $menuItems->id;
-						$layout = $_GET['layout'];
+						if (isset($_GET['layout'])) $layout = $_GET['layout']; else $layout="index";
 						if ($menuItems->parent_id != 0)
 							$parent = $menuItems->parent_id;
 						// Now get all children
@@ -394,7 +395,7 @@ $criteria->order = "sequence ASC";
 
 
 
-		$content = "<nav>";
+		$content = "<ynav>";
 		$content .= "<ul>";
 		$menuHeaders = ContentBlock::model()->findAll(array('order'=>'sequence'));
 		foreach ($menuHeaders as $menuHeader):
@@ -440,6 +441,17 @@ $criteria->order = "sequence ASC";
 
 		}
 
+       // Personalise this nav
+        $role = rand();
+        // css
+        $cssFile =  dirname(__FILE__) . "/basic_" . $this->default_orientation . ".css";
+        $css = "<style>" . str_replace("nav", "nav[role='xnav-" . $role . "']", file_get_contents($cssFile)) . "</style>";
+        // html
+        $this->apiHtml = str_replace("xnav", "nav[role='xnav-" . $role . "']", $this->apiHtml);
+        $content       = str_replace("<ynav>", "<nav role='xnav-" . $role . "'>", $content);
+        // Prepend css to html
+        $this->apiHtml = $css . $this->apiHtml;
+
 
 		$html = str_replace("<substitute-data>", $content, $this->apiHtml);
 		$js = $this->apiJs;
@@ -455,7 +467,7 @@ $criteria->order = "sequence ASC";
 
 	<div id="jelly-basicmenu-container">
 		<!--Basic Menu includes -->
-		<link rel="stylesheet" type="text/css" href="<substitute-path>/basic_<substitute-orientation>.css" />
+<!--		<link rel="stylesheet" type="text/css" href="<substitute-path>/basic_<substitute-orientation>.css" /> -->
 
 		<style>
 		<substitute-width>

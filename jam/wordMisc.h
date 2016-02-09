@@ -7,4 +7,3 @@ int wordMiscNewList(int ix, char *defaultTableName);
 
 int wordMiscEmail(int ix, char *defaultTableName);
 int wordMiscType(int ix, char *defaultTableName);
-

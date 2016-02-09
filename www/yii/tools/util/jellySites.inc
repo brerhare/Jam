@@ -26,6 +26,9 @@ $siteList = array (
 	'fresherthantheudders.co.uk'   => '/home/fresherthantheudders.co.uk/dev/src/www/yii/fresherthantheudders.co.uk',
 	'horses.wireflydesign.com'     => '/home/wireflydesign.com/domains/horses.wireflydesign.com/dev/src/www/yii/horses.wireflydesign.com',
 	'jacquiesbeauty.co.uk'         => '/home/jacquiesbeauty.co.uk/dev/src/www/yii/jacquiesbeauty.co.uk',
+	'jardineroofingltd.co.uk'      => '/home/jardineroofingltd.co.uk/dev/src/www/yii/jardineroofingltd.co.uk',
+	'joseawright.com'              => '/home/joseawright.com/dev/src/www/yii/joseawright.com',
+	'kirkcudbright.dumgal.sch.uk'  => '/home/kirkcudbright.dumgal.sch.uk/dev/src/www/yii/kirkcudbright.dumgal.sch.uk',
 	'knowledgebase.wireflydesign.com'  => '/home/wireflydesign.com/domains/knowledgebase.wireflydesign.com/dev/src/www/yii/knowledgebase.wireflydesign.com',
 	'mossheadpreschool.co.uk'      => '/home/mossheadpreschool.co.uk/dev/src/www/yii/mossheadpreschool.co.uk',
 	'opendoorsart.com'             => '/home/opendoorsart.com/dev/src/www/yii/opendoorsart.com',
@@ -40,6 +43,7 @@ $siteList = array (
 	'timtaylor-painter-decorator-tiler.co.uk'   => '/home/timtaylor-painter-decorator-tiler.co.uk/dev/src/www/yii/timtaylor-painter-decorator-tiler.co.uk',
 	'trade.weetarget.co.uk'         => '/home/weetarget.co.uk/domains/trade.weetarget.co.uk/dev/src/www/yii/trade.weetarget.co.uk',
 	'weetarget.co.uk'               => '/home/weetarget.co.uk/dev/src/www/yii/weetarget.co.uk',
+	'wireflydesign.com'             => '/home/wireflydesign.com/dev/src/www/yii/wireflydesign.com',
 	'zoelifecoaching.co.uk'			=> '/home/zoelifecoaching.co.uk/dev/src/www/yii/zoelifecoaching.co.uk',
 
 );

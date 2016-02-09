@@ -5,7 +5,13 @@ extern char *connDbName;
 extern MYSQL *conn;
 
 // ----------------------------------------------------------------
+// Utility
+
+int isMysqlTable(char *tableName);
+int isMysqlField(char *fieldName, char *tableName);
+// ----------------------------------------------------------------
 // Mapping of Mysql to Jam types and options. Eg DECIMAL(10,1) = number.1 and NOT NULL = required
+
 char *getSqlType(char *jamType);
 char *getSqlOption(char *jamOption);
 
@@ -37,7 +43,6 @@ void updateSqlVar(char *qualifiedName, enum enum_field_types mysqlType, char *va
 
 void _updateSqlFields(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields, MYSQL_ROW *rowP);
 void _nullifySqlFields(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields);
-int _isMysqlFieldName(char *fieldName, char *tableName);
 
 // ----------------------------------------------------------------
 // Big things
