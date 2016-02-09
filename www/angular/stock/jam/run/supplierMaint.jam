@@ -35,7 +35,7 @@ td > input {
 				<th> Contact </th>
 				<th> Telephone </th>
 				<th> Email </th>
-				<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('supplierMaintForm')"> <i class="uk-icon-plus"></i> New</button> </th>
+				<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('supplierMaintForm??stock_supplier.id=0')"> <i class="uk-icon-plus"></i> New</button> </th>
 			</tr>
 			<tr>
 				<td> </td>
@@ -54,14 +54,14 @@ td > input {
 
 <script>
 	window.onload = function() {
-		runAction('searchNameAction', 'keyaction=', 'tablebody');
+		runAction('searchNameAction', ['keyaction='], 'tablebody');
 	}
 
 	function confirmDelete(id, name) {
 		window.event.cancelBubble = true;	// Prevent any further events
 		var result = confirm('Confirm delete of item ' + name);
 		if (result) {
-			runAction('deleteSupplier', 'stock_supplier.id='+id, '', runJam);	
+			runAction('deleteSupplier', ['stock_supplier.id='+id], '', runJam);	
 		}
 	}
 </script>

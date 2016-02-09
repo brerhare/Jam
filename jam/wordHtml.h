@@ -11,7 +11,7 @@ int wordHtmlFilter(int ix, char *defaultTableName);
 int wordHtmlInput(int ix, char *defaultTableName);
 int wordHtmlCheckbox(int ix, char *defaultTableName);
 int wordHtmlRadio(int ix, char *defaultTableName);
-int wordHtmlTab(int ix, char *defaultTableName);
+int wordHtmlTabs(int ix, char *defaultTableName);
 
 int wordHtmlContainer(int ix, char *defaultTableName);
 int wordHtmlForm(int ix, char *defaultTableName);

@@ -6,84 +6,22 @@
 {{@database befriending_wireflydesign_com}}
 
 <br>
-{{@html container start center css='max-width:900px; Xpadding:0}}
+{{@html container start center css='max-width:1080px; Xpadding:0}}
 
-<!-- Template defines -->
-{{@template TABLE young_person}}
-{{@template FILTER }}
-{{@template DESCRIPTION Young person}}
-
-<!-- Template defines for the list component -->
-{{@template DELETEFIELD global.surname}}
-{{@template HEADINGS
-	<th> Forename </th>
-	<th> Surname </th>
-}}
-{{@template COLUMNS
-	<td>{{global.forename}}</td>
-	<td>{{global.surname}}</td>
-}}
-
-<!-- Template defines for the form input component -->
-{{@template FORMINPUT_ONE
-	<input type="hidden" name="young_person.referrer_form_id" value="999999"> <!-- @@TODO! -->
-	{{@html hidden field=young_person.referrer_form_id}}
-	{{@html date field=young_person.referral_date size=medium label='Referral date'}}
-	{{@html text field=global.forename size=large label='Forename'}}
-	{{@html text field=global.surname size=large label='Surname'}}
-	{{@html text field=global.house size=medium label='house'}}
-	{{@html text field=global.street size=medium label='Street'}}
-	{{@html text field=global.area size=medium label='Area'}}
-	{{@html text field=global.town size=medium label='Town'}}
-	{{@html text field=global.postcode size=medium label='Postcode'}}
-	{{@html text field=global.landline size=medium label='Land line'}}
-	{{@html text field=global.mobile size=medium label='Mobile'}}
-	{{@html text field=global.email size=medium label='Email'}}
-	{{@html date field=young_person.dob size=medium label='Birth date'}}
-}}
-
-{{@template FORMINPUT_TWO
-	{{@Xhtml radio field=young_person.gender label='Gender' options=0:Male,1:Female}}
-
-	<label class='uk-form-label' for='RADIO_JAMKEY'> Gender </label>
-	<div class='uk-form-controls uk-form-controls-text'>
-    	<label><input type="radio" id="RADIO_JAMKEY" name="young_person.gender" value="0">Male&nbsp&nbsp</label>
-    	<label><input type="radio" name="young_person.gender" value="1">Female</label>
-	</div>
-
-	{{@html text field=young_person.legal_status size=large label='Legal status'}}
-	{{@html text field=young_person.medication size=large label='Medication'}}
-	{{@html date field=young_person.order_date size=medium label='Order date'}}
-	{{@html checkbox field=young_person.discussion_confirmation label='Discussion confirmation'}}
-	{{@html checkbox field=young_person.exclusion_risk label='Exclusion risk'}}
-	{{@html checkbox field=young_person.offending_risk label='Offending risk'}}
-	{{@html checkbox field=young_person.care_risk label='Care risk'}}
-	{{@html checkbox field=young_person.child_plan label='Child plan'}}
-	{{@html checkbox field=young_person.assessment label='Assessment'}}
-	{{@html textarea field=young_person.special_needs_notes size=50x4 label='Special needs notes'}}
-
-}}
-
-<!-- COPY of crud.jam template -->
-<!-- ------------------------- -->
-
-<!-- List component -->
-
-<!-- Clear any unset templates -->
-{{@template FILTER}}
-
-<h3> DESCRIPTION </h3>
-<div name="content_TABLE">
+<h3> Young Person </h3>
+<div name="content">
 	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
-			HEADINGS
-			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('maintain_TABLE', [], 'content_TABLE')"> <i class="uk-icon-plus"></i> New</button> </th>
+			<th> Forename </th>
+			<th> Surname </th>
+			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('showTabs', [], 'content')"> <i class="uk-icon-plus"></i> New</button> </th>
 		</tr>
-{{@each TABLE FILTER}}
-		{{@get global filter id = TABLE.global_id}}
-		<tr class="rowHighlight" onClick="runAction('maintain_TABLE', ['TABLE.id={{TABLE.id}}'], 'content_TABLE')">
-			COLUMNS
-			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_TABLE('{{id}}','{{DELETEFIELD}}')"> <i class="uk-icon-trash"></i></button> </td>
+{{@each young_person}}
+		{{@get global filter id = young_person.global_id}}
+		<tr class="rowHighlight" onClick="runAction('showTabs', ['young_person.id={{young_person.id}}'], 'content')">
+			<td>{{global.forename}}</td>
+			<td>{{global.surname}}</td>
+			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i></button> </td>
 		</tr>
 {{@end}}
 	</table>
@@ -91,79 +29,51 @@
 <br>
 
 <script>
-function confirmDelete_TABLE(id, displayInfo) {
+function confirmDelete(id, displayInfo) {
 	window.event.cancelBubble = true;	// Prevent any further events
 	var result = confirm('Confirm delete of item ' + displayInfo);
 	if (result)
-		runAction('delete_TABLE', ['TABLE.id='+id], '', runJam);	
+		runAction('delete', ['young_person.id='+id], '', runJam);	
 }
 </script>
 
-{{@action delete_TABLE}}
-	{{@get TABLE filter id = TABLE.id}}
-	{{global.id = TABLE.global_id}}
-	{{@remove item TABLE}}
+{{@action delete}}
+	{{@get young_person filter id = young_person.id}}
+	{{global.id = young_person.global_id}}
+	{{@remove item young_person}}
 	{{@remove item global}}	@@TODO - dont remove global if it has other links
 {{@end}}
 
 <!-- Form input component -->
 
-{{@action maintain_TABLE}}
-	{{@get TABLE filter id = TABLE.id}}
-	{{@get global filter id = TABLE.global_id}}
-
-	<style type="text/css">
-		label {text-align: right; width:150px !important}
-		div.uk-form-controls {margin-left: 170px !important}
-	</style>
-
-	<form name="inputForm_TABLE" class="uk-form uk-form-horizontal">
-		<input type="hidden" name="TABLE.id" value="{{TABLE.id}}">
-		<input type="hidden" name="global.id" value="{{TABLE.global_id}}">
-
-		{{@html gridrow start}}
-			{{@html gridcol start width=5-10}}
-				FORMINPUT_ONE
-			{{@html gridcol end}}
-			{{@html gridcol start width=1-10}}
-			{{@html gridcol end}}
-			{{@html gridcol start width=4-10}}
-				FORMINPUT_TWO
-			{{@html gridcol end}}
-		{{@html gridrow end}}
-
-		{{@html gridrow start}}
-			{{@html gridcol start width=1-1}}
-				<br>
-				<center>
-					{{@html button Save primary medium
-						runAction('update_TABLE', ['inputForm_TABLE'], '', runJam)
-					}}
-					{{@html button Cancel primary medium
-						runJam();
-					}}
-				</center>
-			{{@html gridcol end}}
-		{{@html gridrow end}}
-
-	</form>
-{{@end}}
-
-{{@action update_TABLE}}
-	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
-	{{TABLE.global_id = global.id}}
-	{{@update item TABLE}}
-{{@end}}
-
-{{@action email_TABLE}}
-	{{@get TABLE filter id = TABLE.id}}
-	{{@get global filter id = TABLE.global_id}}
-	{{@email k@microboot.com {{global.email}}  'Befriending referral form for {{global.forename}} {{global.surname}}' action:emailContent}}
-	Email sent
-{{@end}}
-
-{{@action emailContent}}
-	Whatever is here gets used as the mmail body content. <br>It will be a link like <a href="http://befriending.wireflydesign.com/run/referralForm.jam?accesskey=gj3x9dsmcNcj2hvgsxz3sjpOvR">this</a> to click on.
+{{@action showTabs}}
+	{{@get young_person filter id = young_person.id}}
+	{{@get global filter id = young_person.global_id}}
+	<h3>
+	
+	<table>
+		<tr>
+					
+		<td>{{global.forename}}</td>
+		<td>{{global.surname}}</td>
+		<td>{{@html button 'Return to list' primary medium 
+			runJam
+		}}</td>
+			
+			
+		</tr>
+	</table>
+	
+	</h3>
+	{{@html tabs
+		label=Contacts		action=/run/youngPersonContact?young_person.id={{young_person.id}}
+		label=Details		action=/run/youngPersonDetails?young_person.id={{young_person.id}}
+		label=Interests		action=/run/youngPersonInterest?young_person.id={{young_person.id}}
+		label=Outcomes		action=/run/youngPersonOutcomes?young_person.id={{young_person.id}}
+		label=Medical		action=/run/youngPersonMedical?young_person.id={{young_person.id}}
+		label=Additional	action=/run/youngPersonAdditional?young_person.id={{young_person.id}}
+		label=Forms			action=/run/youngPersonForms?young_person.id={{young_person.id}}
+	}}
 {{@end}}
 
 {{@html container end}}

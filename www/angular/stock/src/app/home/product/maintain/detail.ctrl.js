@@ -227,6 +227,7 @@ angular.module('stock')
 
         if ($scope.$parent.editMode == "add") {
 			// @@ Initialise fields
+			$scope.item.id = "";
 			$scope.item.code = "";
 			$scope.item.name = "";
 			$scope.item.description = "";

@@ -341,6 +341,7 @@ END_OF_FOOTER;
 		// Device width handling is only on sites Jo has fixed for mobile. @@TODO remove this 'if' completely to enable for all
 		if ( (!(stristr($_SERVER['HTTP_HOST'], "barstobrickridingcentre.co.uk")))
 		&& (!(stristr($_SERVER['HTTP_HOST'], "breakfreecoaching.co.uk")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "www.kirkcudbright.dumgal.sch.uk")))
 		&& (!(stristr($_SERVER['HTTP_HOST'], "test.wireflydesign.com")))
 		&& (!(stristr($_SERVER['HTTP_HOST'], "demo5.wireflydesign.com")))
 		&& (!(stristr($_SERVER['HTTP_HOST'], "beingbusiness.co.uk"))) )

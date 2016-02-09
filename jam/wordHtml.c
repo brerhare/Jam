@@ -31,6 +31,7 @@ char *makeJamKeyValue(char *tableName, char *fieldName, char *rawValue);
 int wordHtmlContainer(int ix, char *defaultTableName) {
 	char *tmp = (char *) calloc(1, 4096);
 	char *center = NULL;
+	char *noMargin = NULL;
 	char *css = NULL;
 
 	// Start or End
@@ -52,6 +53,12 @@ int wordHtmlContainer(int ix, char *defaultTableName) {
 	else
 		center = strdup("");
 
+	// NoMargin
+	if ((isVar("sys.control.nomargin")) || (isVar("sys.control.nomargin")))
+		noMargin = strdup("uk-margin-remove");
+	else
+		noMargin = strdup("");
+
 	// Css
 	if (isVar("sys.control.css"))
 		css = strdup(getVarAsString("sys.control.css"));
@@ -62,8 +69,10 @@ int wordHtmlContainer(int ix, char *defaultTableName) {
 	jb.stream = STREAMOUTPUT_STD;
 	char *templateStr = (char *) calloc(1, 4096);
 	sprintf(templateStr, "{{@template CONTAINER_CENTER %s}}	\
+						  {{@template CONTAINER_MARGIN %s}} \
 						  {{@template CONTAINER_CSS %s}}",
 							center,
+							noMargin,
 							css
 							);
 
@@ -72,6 +81,7 @@ int wordHtmlContainer(int ix, char *defaultTableName) {
 
 	free(tmp);
 	free(center);
+	free(noMargin);
 	free(css);
 	emitStd(jam[ix]->trailer);
 }
@@ -726,10 +736,8 @@ int wordHtmlRadio(int ix, char *defaultTableName) {
 	char *field = NULL;
 	char *tableFieldRawValue = NULL;
 	char *label = NULL;
-	char *placeholder = NULL;
 	char *disabled = NULL;
 	char *value = NULL;
-	char *checked = NULL;
 	char *options = NULL;
 	char *group = (char *) calloc(1, 4096);
 	char *optionStr = (char *) calloc(1, 4096);
@@ -759,12 +767,6 @@ int wordHtmlRadio(int ix, char *defaultTableName) {
 	else
 		label = strdup("");
 
-	// Placeholder
-	if (isVar("sys.control.placeholder"))
-		placeholder = strdup(getVarAsString("sys.control.placeholder"));
-	else
-		placeholder = strdup("");
-
 	// Group(s)
 	sprintf(group, "ROW_%d ", cmdSeqnum);
 	if (isVar("sys.control.group"))
@@ -772,7 +774,7 @@ int wordHtmlRadio(int ix, char *defaultTableName) {
 
 	// Disabled
 	if (isVar("sys.control.disabled"))
-		disabled = strdup(" disabled ");
+		disabled = strdup("disabled");
 	else
 		disabled = strdup("");
 
@@ -793,6 +795,8 @@ int wordHtmlRadio(int ix, char *defaultTableName) {
 	else
 		options = strdup("");
 /*
+{{@Xhtml radio field=young_person.gender label='Gender' options=0:Male,1:Female}}
+
 <label class='uk-form-label' for='RADIO_JAMKEY'> RADIO_LABEL </label>
 <div class='uk-form-controls uk-form-controls-text'>
     <label><input type="radio" id="RADIO_JAMKEY" name="radio">1</label>
@@ -801,20 +805,34 @@ int wordHtmlRadio(int ix, char *defaultTableName) {
 </div>
 */
 	int cnt = 1;
+	char *firstId = (char *) calloc(1, 4096);
+	sprintf(firstId, "id='%s'", jamKey);
 	while (1) {
 		char *opt = getWordAlloc(options, cnt++, ",");
 		if ((!opt) || (!strlen(opt)))
 			break;
+		char *optA = getWordAlloc(opt, 1, ":");
+		char *optB = getWordAlloc(opt, 2, ":");
+		if ( (!optA) || (!strlen(optA)) )
+			continue;
+		if ( (!optB) || (!strlen(optB)) ) {
+			free(opt);
+			free(optA);
+			continue;
+		}
+		char *checked;
+		if (!strcmp(variable->portableValue, optA))
+			checked = strdup("checked");
+		else
+			checked = strdup("");
+		sprintf(tmp, "<label><input type='radio' %s name='%s.%s' value='%s' class='%s' onClick='fn(this, event)' %s %s>%s</label> \n", firstId, table, field, optA, group, checked, disabled, optB);
+		*firstId = '\0';
+		strcat(optionStr, tmp);
+		free(checked);
+		free(optA);
+		free(optB);
 	}
-
-
-
-
-	// Checked
-	if (atoi(variable->portableValue) > 0)
-		checked = strdup("checked='checked'");
-	else
-		checked = strdup("");
+	free(firstId);
 
 	JAMBUILDER jb;
 	jb.stream = STREAMOUTPUT_STD;
@@ -822,18 +840,16 @@ int wordHtmlRadio(int ix, char *defaultTableName) {
 	sprintf(templateStr, "{{@template RADIO_TABLE %s}}	\
 						  {{@template RADIO_FIELD %s}}	\
 						  {{@template RADIO_LABEL %s}}	\
-						  {{@template RADIO_PLACEHOLDER %s}}	\
+						  {{@template RADIO_OPTIONS %s}}	\
 						  {{@template RADIO_VALUE %s}}	\
-						  {{@template RADIO_CHECKED %s}}	\
 						  {{@template RADIO_DISABLED %s}}	\
 						  {{@template RADIO_GROUP %s}}	\
 						  {{@template RADIO_JAMKEY %s}}",
 							table,
 							field,
 							label,
-							placeholder,
+							optionStr,
 							value,
-							checked,
 							disabled,
 							group,
 							jamKey
@@ -850,11 +866,9 @@ int wordHtmlRadio(int ix, char *defaultTableName) {
 	free(field);
 	free(tableFieldRawValue);
 	free(label);
-	free(placeholder);
 	free(disabled);
 	free(group);
 	free(value);
-	free(checked);
 	free(jamKey);
 	free(templateStr);
 	free(options);
@@ -1004,7 +1018,7 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 }
 
 // Tab
-int wordHtmlTab(int ix, char *defaultTableName) {
+int wordHtmlTabs(int ix, char *defaultTableName) {
 	char *tmp = (char *) calloc(1, 4096);
 	char *args = jam[ix]->args;
 
@@ -1012,7 +1026,7 @@ int wordHtmlTab(int ix, char *defaultTableName) {
 	char *tabStr = (char *) calloc(1, 4096);
 	char *actionStr = (char *) calloc(1, 4096);
 
-	logMsg(LOGDEBUG, "TAB ARGS=%s", args);
+	logMsg(LOGDEBUG, "html tabs ARGS=%s", args);
 
 	int cnt = 2;
 	while (char *block = strTrim(getWordAlloc(args, cnt++, "\n"))) {
@@ -1021,7 +1035,12 @@ int wordHtmlTab(int ix, char *defaultTableName) {
 		if ((!tabNVP) || (!actionNVP))
 			break;
 		char *tab = strTrim(getWordAlloc(tabNVP, 2, "="));
-		char *action = strTrim(getWordAlloc(actionNVP, 2, "="));
+		char *action = strchr(actionNVP, '=');
+		if (!action) {
+			logMsg(LOGERROR, "Missing '=' in html tabs action");
+			return(-1);
+		}
+		action++; // Point to  whatever the action is. Equals signs in this arent our business
 		sprintf(tmp, "<li><a href='#tab-%d'>%s</a></li> \n", seq, tab);
 		strcat(tabStr, tmp);
 		sprintf(tmp, "<iframe id='tab-%d' src='%s'></iframe> \n", seq, action);
@@ -1030,7 +1049,7 @@ int wordHtmlTab(int ix, char *defaultTableName) {
 		free(tabNVP);
 		free(actionNVP);
 		free(tab);
-		free(action);
+//		free(action);
 		seq++;
 	}
 
@@ -1044,7 +1063,7 @@ int wordHtmlTab(int ix, char *defaultTableName) {
 							);
 
 	jb.templateStr = templateStr;
-	jamBuilder("/jam/run/sys/jamBuilder/html/tab.jam", "tabHtml", &jb);
+	jamBuilder("/jam/run/sys/jamBuilder/html/tabs.jam", "tabsHtml", &jb);
 
 	free(tmp);
 	free(tabStr);

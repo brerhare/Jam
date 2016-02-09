@@ -52,6 +52,9 @@ char *oobFileName = "/tmp/oobData.tmp";
 
 int LAST_VAR = -1;				// used globally to indicate the current top
 
+unsigned int notify = NOTIFY_FAIL;		// NOTIFY_OK, NOTIFY_FAIL, NOTIFY_OK | NOTIFY_FAIL etc
+int notifyStatus = 0;					// *this* status
+
 //-----------------------------------------------------------
 // Var related
 
@@ -536,6 +539,7 @@ int oobJamData() {
 //		return(-1);
 //	}
 	int first = 1;
+	char *tmp = (char *) calloc(1, 4096);
 	logMsg(LOGDEBUG, "Emitting oob jamData");
 	emitStd("{oobData}");
 	emitStd("[");
@@ -554,10 +558,20 @@ int oobJamData() {
 		free(nameJSON);
 		free(valueJSON);
 	}
+	// Append notify status if applicable
+	if (notifyStatus) {
+		if (notifyStatus & NOTIFY_FAIL)
+			strcpy(tmp, "fail");
+		else if (notifyStatus & NOTIFY_OK)
+			strcpy(tmp, "ok");
+		if (!first)
+			emitStd(", ");
+		emitStd("{\"name\":\"notifyStatus\", \"value\":\"%s\"}", tmp);
+	}
 	emitStd("]");
 //	fclose(fp);
 	logMsg(LOGDEBUG, "Finished emitting oob jamData");
 	//fflush(stdout);
-
+	free(tmp);
 }
 

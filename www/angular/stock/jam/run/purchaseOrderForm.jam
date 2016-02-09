@@ -5,6 +5,17 @@
 
 {{@database stock}}
 
+<style>
+.ui-tabs .ui-tabs-nav a
+{
+   //background-color: #231f20;
+}
+.ui-tabs ui-tabs-nav ui-tabs-active.a {
+  background-color: yellow;
+  background: yellow;
+}
+</style>
+
 <style>	/* @@EG */
 	.uk-form input[type=text]:disabled {
 		border:none;
@@ -48,15 +59,11 @@
 			</div>
 			<div class="uk-width-8-10">
 				<br>
-				<button type='button' class="uk-button uk-button-small uk-button-primary" onClick="savePurchaseOrder(1)"> Save </button>
-				{{@Xhtml button Save primary small
-					runAction savePurchaseOrder purchaseOrderForm
-					runJam purchaseOrder
-				}}
+				<button type='button' class="uk-button uk-button-small uk-button-primary" onClick="savePurchaseOrder(0)"> Save </button>
 				{{@html button Cancel primary small
 					backButton()
 				}}
-				<button type='button' class="uk-button uk-button-small uk-button-primary" onClick="savePurchaseOrder(0)"> Apply </button>
+				<button type='button' class="uk-button uk-button-small uk-button-primary" onClick="savePurchaseOrder(1)"> Finished </button>
 				<br>
 				<br>
 			</div>
@@ -112,7 +119,7 @@ $('#myTabs').tabs( "option", "active" , 1 )
 
 {{@action savePurchaseOrder}}
 	{{stock_supplier_order.reference = ref}}
-	{{@update item stock_supplier_order}}
+	{{@update item stock_supplier_order notify=ok}}
 {{@end}}
 
 <script>
@@ -142,10 +149,10 @@ $('#myTabs').tabs( "option", "active" , 1 )
 			return;
 		}
 		if (retFlag == 0){	// apply
-			runAction('savePurchaseOrder', 'purchaseOrderForm stock_supplier_order.id');
+			runAction('savePurchaseOrder', ['purchaseOrderForm stock_supplier_order.id', 'purchaseOrderForm']);
 		}
 		else				// save
-			runAction('savePurchaseOrder', 'purchaseOrderForm stock_supplier_order.id', '', backButton);
+			runAction('savePurchaseOrder', ['purchaseOrderForm stock_supplier_order.id', 'purchaseOrderForm'], '', backButton);
 	}
 
 </script>

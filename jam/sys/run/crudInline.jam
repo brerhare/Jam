@@ -56,8 +56,10 @@
 		// Create onChange functions for columns - will be called by fn()
 		var changeMonitors = "EDITS".split(" ");
 		for (var i = 0; i < changeMonitors.length; i++) {
-			name = "onChange_" + "TABLE".replace("_", "") + "_" + changeMonitors[i].replace("_", "");
+			name = "onChange_" + "TABLE".replace(/_/g, "") + "_" + changeMonitors[i].replace("_", "");
+console.log('Create change function ' + name);
 			window[name] = function (obj) {
+console.log('Fired change function ');
 				if (obj.id.substring(0, 4) == "ID0_") return;
 				objId =  getSiblingByName(obj, 'TABLE.id');
 				document.getElementById('newRow_TABLE').style.display = 'none';
@@ -67,8 +69,15 @@
 	}
 
 	function showNewRow_TABLE() {
+		// Clear the values
+		var edits = "EDITS".split(" ");
+		for (var i = 0; i < edits.length; i++) {
+			var elId = 'ID0' + '___' + 'TABLE' + '___' + edits[i];
+			document.getElementById(elId).value = '';
+		}
 		document.getElementById('newRow_TABLE').style.display = 'table-row';
 	}
+
 	function hideNewRow() {
 		document.getElementById('newRow_TABLE').style.display = 'none';
 	}
@@ -86,10 +95,10 @@
 </script>
 
 {{@action change_TABLE}}
-	{{@update item TABLE}}
+	{{@update item TABLE notify=ok}}
 {{@end}}
 
 {{@action delete_TABLE}}
-	{{@remove item TABLE}}
+	{{@remove item TABLE notify=ok}}
 {{@end}}
 
