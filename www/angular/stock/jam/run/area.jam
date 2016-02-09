@@ -1,0 +1,33 @@
+{{@include /jam/sys/html/header.html}}
+
+<style>
+	div { width:600px; }
+</style>
+
+{{@database stock}}
+
+<!-- Template defines -->
+{{@template TABLE stock_area}}
+{{@template DESCRIPTION Areas}}
+{{@template DELETEFIELD area.name}}
+
+{{@template HEADINGS
+	<th> Area </th>
+}}
+
+{{@template COLUMNS
+	<td> {{@html text field=stock_area.name size=medium}} </td>
+}}
+
+{{@template EDITS name}}
+
+<!-- Include the template -->
+{{@include /jam/run/sys/crudInline.jam}}
+
+<!-- Include stock's uid filler -->
+{{@include /jam/run/crudAddUid.jam}}
+
+{{@include /jam/sys/html/footer.html}}
+
+<!-- min height hack for angular -->
+<div style="height:2000px;">&nbsp</div>

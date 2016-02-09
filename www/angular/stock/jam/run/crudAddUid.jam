@@ -1,0 +1,13 @@
+<!-- Hack to append uid for stock use of crudInline -->
+<!-- MUST be at the end -->
+
+<script>
+(function() {
+	uidEl = document.createElement("input");
+	uidEl.setAttribute("type", "hidden");
+	uidEl.setAttribute("name", "TABLE.uid");
+	uidEl.setAttribute("value", "1");
+	newRowformEl = document.getElementsByName('newRowForm_TABLE')[0];
+	newRowformEl.appendChild(uidEl);
+})()
+</script>

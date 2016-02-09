@@ -391,8 +391,8 @@ css.padding-bottom = 20px
 			fx.rounding = 10px
 			css.border = 4px solid #ec008c
 			css.background-color = white
-		#	jam.embed = /jam/template/contactForm.tpl
-			jam.iframe = /jam/template/contactForm.tpl
+		#	jam.embed = /run/contactForm
+			jam.iframe = /run/contactForm
 
 
 ####footer####################################

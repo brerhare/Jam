@@ -1,0 +1,113 @@
+{{@include /jam/sys/html/header.html}}
+
+{{@database befriending_wireflydesign_com}}
+
+<!-- Template defines -->
+{{@template DESCRIPTION Maintain users}}
+{{@template TABLE user}}
+
+<!-- Template defines for the list component -->
+{{@template DELETEFIELD user.id}}
+{{@template HEADINGS
+	<th> Surname </th>
+	<th> Forename </th>
+	<th> User group </th>
+}}
+{{@template COLUMNS
+	<td>{{@get global filter id = global_id}} {{global.surname}}</td>
+	<td>{{global.forename}}</td>
+	<td>{{@get user_group filter id = user_groups_id}} {{user_group.name}}</td>
+}}
+
+<!-- Template defines for the form input component -->
+{{@template FORMINPUT
+	{{@html text field=global.forename size=medium label='Forename'}}
+	{{@html text field=global.surname size=medium label='Surname'}}
+	{{@html dropdown field=user.user_groups_id pickfield=user_group.name size=medium label='User group'}}
+}}
+
+<!-- This is a copy of crud.jam template ----------------------------------------- -->
+
+<!-- List component -->
+
+<style>
+.rowHighlight:hover {
+  background-color: #ddf0ff;
+  cursor:pointer;
+}
+</style>
+
+<h3> DESCRIPTION </h3>
+	<div name="content" class="uk-overflow-container">
+		<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+			<tr>
+				HEADINGS
+				<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('maintain', [], 'content')"> <i class="uk-icon-plus"></i> New</button> </th>
+			</tr>
+{{@each TABLE}}
+			<tr class="rowHighlight" onClick="runAction('maintain', ['TABLE.id={{id}}'], 'content')">
+				COLUMNS
+				<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{DELETEFIELD}}')"> <i class="uk-icon-trash"></i></button> </td>
+			</tr>
+{{@end}}
+		</table>
+</div>	<!-- uk-overflow-container -->
+
+<script>
+function confirmDelete(id, displayInfo) {
+	window.event.cancelBubble = true;	// Prevent any further events
+	var result = confirm('Confirm delete of item ' + displayInfo);
+	if (result)
+		runAction('delete', ['TABLE.id='+id], '', runJam);	
+}
+</script>
+
+{{@action delete}}
+	{{@get TABLE filter id = TABLE.id}}
+	{{global.id = TABLE.global_id}}
+	{{@remove item TABLE}}
+	{{@remove item global}}
+{{@end}}
+
+<!-- Form input component -->
+
+{{@action maintain}}
+	{{@get TABLE filter id = TABLE.id}}
+	{{@get global filter id = TABLE.global_id}}
+
+	<style type="text/css">
+		label {text-align: right;}
+	</style>
+
+	<div class="uk-container uk-container-center">
+		<div class="uk-grid">
+			<div class="uk-width-3-5">
+				<form name="inputForm" class="uk-form uk-form-horizontal">
+					<input type="hidden" name="TABLE.id" value="{{TABLE.id}}">
+					<input type="hidden" name="global.id" value="{{global.id}}">
+					FORMINPUT
+{{@include /jam/run/include/global_contact.jam}}
+					<br>
+					<center>
+						{{@html button Save primary medium
+							runAction('update', ['inputForm'], '', runJam)
+						}}
+						{{@html button Cancel primary medium
+							runJam();
+						}}
+					</center>
+				</form>
+			</div>	<!-- uk-width-3-5 -->
+		</div>	<!-- uk-container -->
+	</div>
+{{@end}}
+
+{{@action update}}
+	{{@update item global}}			<!-- first update the link table (inserts wont have its id yet)
+	{{TABLE.global_id = global.id}}
+	{{@update item TABLE}}
+
+{{@end}}
+
+
+{{@include /jam/sys/html/footer.html}}

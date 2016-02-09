@@ -1,0 +1,24 @@
+{{@include /jam/sys/html/header.html}}
+
+<h1>Test sending js through an action</h1>
+
+{{@database befriending_wireflydesign_com}}
+
+{{@get global filter id = 1}}
+
+Name {{global.forename}}.
+
+<hr>
+
+<script>
+	window.onload = function() {
+		runAction('myAction', 'global.id=1');
+	}
+</script>
+
+{{@action myAction}}
+	{{@html js function xxx(wot){alert('actionscript='+wot);} // this is callable from anywhere after action returns }}
+{{@end}}
+
+{{@include /jam/sys/html/footer.html}}
+

@@ -1,7 +1,9 @@
 <?php
 
-	include("WireflyHelper.php");
-
+	if (!isset($WFH)) {
+    	include("WireflyHelper.php");
+    	$WFH = 1;
+	}
 	logMsg("Entrypoint to PaymentSense");
 
 	foreach ($_POST as $field => $value)
@@ -53,8 +55,6 @@ if (getIP() != '87.112.54.144') {
 	logMsg("Updating order number using sql [" . $sql . "]");
 	$result = mysql_query($sql) or die(mysql_error());
 
-	// Set a variable so the next form knows whether our helper is already included
-	$NewEntry=1;
 	_dbfin($dbhandle);
 include ("PaymentForm.php");
 
