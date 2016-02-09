@@ -1,0 +1,25 @@
+{{@action dropdownLabelHtml}}
+	<label class='uk-form-label' for='DROPDOWN_TARGET_TABLE.DROPDOWN_TARGET_FIELD'> DROPDOWN_LABEL </label>
+	<div class='uk-form-controls'>
+		<select id='DROPDOWN_JAMKEY' name='DROPDOWN_TARGET_TABLE.DROPDOWN_TARGET_FIELD' onChange='fn(this, event);' class='uk-form-width-DROPDOWN_SIZE DROPDOWN_GROUP' DROPDOWN_DISABLED>
+			{{@each DROPDOWN_PICK_TABLE filter id = {{DROPDOWN_TARGET_TABLE.DROPDOWN_TARGET_FIELD}} }}
+				<option value='{{DROPDOWN_PICK_TABLE.id}}' selected> {{DROPDOWN_PICK_FIELD}} </option>
+			{{@end}}
+			{{@each DROPDOWN_PICK_TABLE filter id != {{DROPDOWN_TARGET_TABLE.DROPDOWN_TARGET_FIELD}} }}
+				<option value='{{DROPDOWN_PICK_TABLE.id}}'> {{DROPDOWN_PICK_FIELD}} </option>
+			{{@end}}
+		</select>
+	</div>
+{{@end}}
+
+{{@action dropdownHtml}}
+	<select id='DROPDOWN_JAMKEY' name='DROPDOWN_TARGET_TABLE.DROPDOWN_TARGET_FIELD' onChange='fn(this, event);' class='uk-form-width-DROPDOWN_SIZE GROUP' DROPDOWN_DISABLED>
+		{{@each DROPDOWN_PICK_TABLE filter id = {{DROPDOWN_TARGET_TABLE.DROPDOWN_TARGET_FIELD}} }}
+			<option value='{{DROPDOWN_PICK_TABLE.id}}' selected> {{DROPDOWN_PICK_FIELD}} </option>
+		{{@end}}
+		{{@each DROPDOWN_PICK_TABLE filter id != {{DROPDOWN_TARGET_TABLE.DROPDOWN_TARGET_FIELD}} }}
+			<option value='{{DROPDOWN_PICK_TABLE.id}}'> {{DROPDOWN_PICK_FIELD}} </option>
+		{{@end}}
+	</select>
+{{@end}}
+

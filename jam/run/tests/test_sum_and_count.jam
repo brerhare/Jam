@@ -1,0 +1,45 @@
+<link rel="stylesheet" type="text/css" href="/jam/css/kim2.css">
+
+<div style='color:#fff; background-color:#00727a; padding:10px; margin-bottom:10px'>
+	<p>
+		Count and Sum use the same logic <br>
+		If a non-qualified name clashes with a non-qualified database field name, the database field takes preference  <br>
+		This is how to count or sum a database field <br>
+	</p>
+</div>
+
+{{@database stock}}
+
+{{@each stock_vat}}
+
+	{{@each stock_pack}}
+
+	Summing {{qty}}
+
+		{{@sum qty}}
+		{{@sum qty as partialqty}}
+		{{@sum qty as x.y.z.partialqty}}
+
+		{{@sum stock_pack.qty}}
+		{{@sum stock_pack.qty as fullqty}}
+		{{@sum stock_pack.qty as x.y.z.fullqty}}
+
+	Counting "{{unit}}" <br>
+
+		{{@count unit}}
+		{{@count unit as partialunit}}
+		{{@count unit as x.y.z.partialunit}}
+
+		{{@count stock_pack.unit}}
+		{{@count stock_pack.unit as fullunit}}
+		{{@count stock_pack.unit as x.y.z.fullunit}}
+
+	{{@end}}
+
+{{@end}}
+
+<p>
+Total sums {{sum.qty}} and {{partialqty}} and {{x.y.z.partialqty}} and {{sum.stock_pack.qty}} and {{fullqty}} and {{x.y.z.fullqty}} (should all be the same) <br>
+Total counts {{count.unit}} and {{partialunit}} and {{x.y.z.partialunit}} and {{count.stock_pack.unit}} and {{fullunit}} and {{x.y.z.fullunit}} (should all be the same) 
+</p>
+

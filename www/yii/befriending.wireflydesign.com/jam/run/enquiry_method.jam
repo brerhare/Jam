@@ -1,0 +1,27 @@
+{{@include /jam/sys/html/header.html}}
+
+<style>
+	div { width:600px; }
+</style>
+
+{{@database befriending_wireflydesign_com}}
+
+<!-- Template defines -->
+{{@template TABLE enquiry_method}}
+{{@template DESCRIPTION }}
+{{@template DELETEFIELD enquiry_method.description}}
+
+{{@template HEADINGS
+	<th> Enquiry Method Lookup Entries</th>
+}}
+
+{{@template COLUMNS
+	<td> {{@html text field=enquiry_method.description size=medium}} </td>
+}}
+
+{{@template EDITS description}}
+
+<!-- Include the template -->
+{{@include /jam/run/sys/crudInline.jam}}
+
+{{@include /jam/sys/html/footer.html}}

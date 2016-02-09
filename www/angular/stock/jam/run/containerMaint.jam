@@ -12,19 +12,21 @@
 
 <h3>Container Sizes</h3>
 
-<div class="uk-overflow-container">
+<div class="uk-container uk-container-center" style="min-height:1000px">
 	<table id="containertable" class="testgrid uk-table /*uk-table-striped*/ uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
 			<th> Name </th>
 			<th> Volume Size </th>
-			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('containerMaintForm?stock_container._id=0')"> <i class="uk-icon-plus"></i> New</button> </th>
+			<th> Weight </th>
+			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('containerMaintForm?stock_container.id=0')"> <i class="uk-icon-plus"></i> New</button> </th>
 		</tr>
 {{@each stock_container}}
 	{{rowId = (rowId + 1)}}	
-		<tr class="rowHighlight" id="R{{rowId}}" onClick="runJam('containerMaintForm?stock_container._id={{stock_container._id}}')">
+		<tr class="rowHighlight" id="R{{rowId}}" onClick="runJam('containerMaintForm?stock_container.id={{stock_container.id}}')">
 			<td>{{name}}</td>
 			<td>{{volume}}</td>
-			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{stock_container._id}}','{{stock_container.name}}')"> <i class="uk-icon-trash"></i></button> </td>
+			<td>{{weight}}</td>
+			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{stock_container.id}}','{{stock_container.name}}')"> <i class="uk-icon-trash"></i></button> </td>
 		</tr>
 {{@end}}
 	</table>
@@ -36,13 +38,12 @@ function confirmDelete(id, name) {
 	window.event.cancelBubble = true;	// Prevent any further events
 	var result = confirm('Confirm delete of item ' + name);
 	if (result) {
-		runAction('deleteContainer', 'stock_container._id='+id, '', runJam);	
+		runAction('deleteContainer', ['stock_container.id='+id], '', runJam);	
 	}
 }
 </script>
 
 {{@action deleteContainer}}
-	{{@database stock}}
 	{{@remove item stock_container}}
 {{@end}}
 

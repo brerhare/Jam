@@ -107,6 +107,9 @@ return array(
 		// Live gateway. Note this is Jacquies own account
 		'checkoutGatewayUser'=>'JACQUI-1645722',
 		'checkoutGatewayPassword'=>'WyDXP9RdCtys0L7',
+		// Paypal
+		'checkoutPaypalEmail'=>'reception@jacquiesbeauty.co.uk',
+
 		'jellyRoot' => '/scripts/jelly/',
 		'sid' => 'hrhgr5ko21gn08a3e22jeaers5',
 	),
