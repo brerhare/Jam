@@ -570,6 +570,7 @@ header($this->p3p);
 
 		// Delete all the cart info
 		Cart::model()->deleteAllByAttributes(array('ip' => $ip));
+		Yii::app()->sess->clear('cartid');
 
 		// Update all the order records we just created with the 'x' in front of the ip
 		$criteria = new CDbCriteria;

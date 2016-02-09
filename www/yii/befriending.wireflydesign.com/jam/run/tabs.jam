@@ -1,0 +1,11 @@
+{{@include /jam/sys/html/header.html}}
+
+{{@include /jam/run/global.jam}}
+
+{{@html tab
+	label='Interest types'	action=/run/interestType
+	label='Event Types'		action=/run/event_type
+}}
+
+{{@include /jam/sys/html/footer.html}}
+
