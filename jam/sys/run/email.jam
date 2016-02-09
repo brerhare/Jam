@@ -1,0 +1,21 @@
+<!-- Send email -->
+
+<!-- Clear any unset templates -->
+<!-- -->
+
+{{@email FROM TO SUBJECT BODY}}
+
+<div name='emailDiv'>
+	<button class="uk-button uk-button-mini uk-button-danger" onClick="sendEmail()"> <i class="uk-icon-envelope"></i></button> 
+</div>
+
+<script>
+function sendEmail() {
+	runAction("sendEmail", ['FROM', 'TO', 'SUBJECT', 'BODY'], emailDiv);	
+}
+</script>
+
+{{@action sendEmail}}
+Email sent
+{{@end}}
+

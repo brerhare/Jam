@@ -1,0 +1,27 @@
+{{@include /jam/sys/html/header.html}}
+
+<style>
+	div { width:600px; }
+</style>
+
+{{@database befriending_wireflydesign_com}}
+
+<!-- Template defines -->
+{{@template TABLE heardabout}}
+{{@template DESCRIPTION }}
+{{@template DELETEFIELD heardabout.from_where}}
+
+{{@template HEADINGS
+	<th> Places BF heard about Befriending </th>
+}}
+
+{{@template COLUMNS
+	<td> {{@html text field=heardabout.from_where size=medium}} </td>
+}}
+
+{{@template EDITS from_where}}
+
+<!-- Include the template -->
+{{@include /jam/run/sys/crudInline.jam}}
+
+{{@include /jam/sys/html/footer.html}}

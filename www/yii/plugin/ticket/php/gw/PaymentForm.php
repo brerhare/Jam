@@ -39,7 +39,7 @@ die();
 			_dbinit($dbhandle);
 
 			$sql = "UPDATE ticket_order set
-				card_name = '" . $_POST['CardName'] . "',
+				card_name = '" . str_replace("'", " ", $_POST['CardName']) . "',
 				card_number = '" . $_POST['CardNumber'] . "', 
 				card_expiry_month = '" . $_POST['ExpiryDateMonth'] . "',
 				card_expiry_year = '" . $_POST['ExpiryDateYear'] . "',

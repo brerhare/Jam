@@ -1,7 +1,10 @@
 <?php
 // @@NB: inserted until @@ENDNB tag
-if ($NewEntry != 1)
+
+if (!isset($WFH)) {
 	include("WireflyHelper.php");
+	$WFH = 1;
+}
 
 logMsg("(PaymentForm) Start dump -------------------------------");
 foreach ($_POST as $field => $value)
@@ -11,6 +14,7 @@ foreach ($_POST as $field => $value)
 }
 logMsg("(PaymentForm) End dump ---------------------------------");
 
+/*
 // Set the gateway credentials
 $dbhandle="";
 _dbinit($dbhandle);
@@ -20,6 +24,8 @@ $q = mysql_fetch_array($result, MYSQL_ASSOC);
 $MerchantID = $q['gu'];
 $Password = $q['gp'];
 _dbfin($dbhandle);
+*/
+
 //header('Location: ' . $q['return_url'] . '/index.php/product/paid?sid=' . $q['sid'] , true, 303);
 //die();
 
@@ -46,18 +52,18 @@ _dbfin($dbhandle);
 			$q = mysql_fetch_array($result, MYSQL_ASSOC);
 
 			$sql = "UPDATE product_order set
-				card_name = '" . $_POST['CardName'] . "',
+				card_name = '" . str_replace("'", " ", $_POST['CardName']) . "',
 				card_number = '" . $_POST['CardNumber'] . "', 
 				card_expiry_month = '" . $_POST['ExpiryDateMonth'] . "',
 				card_expiry_year = '" . $_POST['ExpiryDateYear'] . "',
 				card_cv2 = '" . $_POST['CV2'] . "',
-				card_address1 = '" . $_q['delivery_address1'] . "',
-				card_address2 = '" . $_q['delivery_address2'] . "',
-				card_address3 = '" . $_q['delivery_address3'] . "',
-				card_address4 = '" . $_q['delivery_address4'] . "', 
+				card_address1 = '" . str_replace("'", " ", $_q['delivery_address1']) . "',
+				card_address2 = '" . str_replace("'", " ", $_q['delivery_address2']) . "',
+				card_address3 = '" . str_replace("'", " ", $_q['delivery_address3']) . "',
+				card_address4 = '" . str_replace("'", " ", $_q['delivery_address4']) . "', 
 				card_city = '" . $_POST['City'] . "',
 				card_state = '" . $_POST['State'] . "',
-				card_post_code = '" . $_POST['PostCode'] . "',
+				card_post_code = '" . $_q['delivery_post_code'] . "',
 				card_country_short = '" . $_POST['CountryShort'] . "',
 				card_currency_short = '" . $_POST['CurrencyShort'] . "',
 				card_amount = '" . $_POST['Amount'] . "'

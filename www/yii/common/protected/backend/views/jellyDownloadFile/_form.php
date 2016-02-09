@@ -25,6 +25,14 @@
 
 	<?php //echo $form->textFieldRow($model,'jelly_download_collection_id',array('class'=>'span5')); ?>
 
+	<?php if (!$model->isNewRecord) {
+		echo "<div class='control-group '><label class='control-label'>Full Url </label>";
+		echo     "<div class='controls' style='margin-top:5px'>";
+		echo         "<i>" . Yii::app()->getBaseUrl(true) . "/userdata/jelly/download/" . $model->filename . "</i>";
+		echo     "</div>";
+		echo "</div>";
+	} ?>
+
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(
 			'buttonType'=>'submit',
