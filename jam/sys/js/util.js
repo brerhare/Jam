@@ -156,13 +156,13 @@ function dirname(path) {
 function fn(obj, event) {
 	console.log('fn() checking if event ' + event.type + ' is handled');
 	var localFunc = '';
-	var onType = '';
+	var callType = 'x';
 	if (event.type == 'change')
-		onType == 'onChange';
+		callType = 'onChange';
 	else if (event.type == 'keyup')
-		onType == 'onkeyup';
-	if (onType != '') {
-		localFunc =  onType + '_' + obj.id;
+		callType = 'onKeyUp';
+	if (callType != '') {
+		localFunc =  callType + '_' + obj.id;
 		// Convert ID3___stock_customer___address_1 to onChange_stockcustomer_address_1
 		if ((obj.id.substring(0, 2) == 'ID') || (obj.id.substring(0, 3) == 'VAR')) {
 			var parts = obj.id.split('___');
@@ -171,9 +171,9 @@ function fn(obj, event) {
 				parts[i] = parts[i].split('_').join('');
 			for (i = 0; i < parts.length; i++)
 				parts[i] = parts[i].split('.').join('_');	// VAR's with dots in their name need this
-			localFunc = onType + '_' + parts.join('_');
+			localFunc = callType + '_' + parts.join('_');
 		}
-console.log('fn (' + event.type + ') looking for user supplied function '" + localFunc + "'");
+console.log( 'fn (' + event.type + ') looking for user supplied function "' + localFunc + '"' );
 		if ((localFunc != '') && (typeof window[localFunc] === "function"))
 			window[localFunc](obj);
 	}
