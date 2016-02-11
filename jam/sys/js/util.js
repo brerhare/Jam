@@ -154,9 +154,15 @@ function dirname(path) {
 
 // Call a jam-supplied event handler
 function fn(obj, event) {
+	console.log('fn() checking if event ' + event.type + ' is handled');
 	var localFunc = '';
-	if (event.type == 'change') {
-		localFunc = 'on' + event.type.charAt(0).toUpperCase() + event.type.slice(1) + '_' + obj.id;
+	var callType = 'x';
+	if (event.type == 'change')
+		callType = 'onChange';
+	else if (event.type == 'keyup')
+		callType = 'onKeyUp';
+	if (callType != '') {
+		localFunc =  callType + '_' + obj.id;
 		// Convert ID3___stock_customer___address_1 to onChange_stockcustomer_address_1
 		if ((obj.id.substring(0, 2) == 'ID') || (obj.id.substring(0, 3) == 'VAR')) {
 			var parts = obj.id.split('___');
@@ -165,9 +171,9 @@ function fn(obj, event) {
 				parts[i] = parts[i].split('_').join('');
 			for (i = 0; i < parts.length; i++)
 				parts[i] = parts[i].split('.').join('_');	// VAR's with dots in their name need this
-			localFunc = 'on' + event.type.charAt(0).toUpperCase() + event.type.slice(1) + '_' + parts.join('_');
+			localFunc = callType + '_' + parts.join('_');
 		}
-console.log("fn (change) looking for user supplied function '" + localFunc + "'");
+console.log( 'fn (' + event.type + ') looking for user supplied function "' + localFunc + '"' );
 		if ((localFunc != '') && (typeof window[localFunc] === "function"))
 			window[localFunc](obj);
 	}
