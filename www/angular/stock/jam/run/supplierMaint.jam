@@ -39,8 +39,6 @@ td > input {
 			</tr>
 			<tr>
 				<td> </td>
-<!--				<td> {{@Xhtml inp keyaction searchNameAction null tablebody 'small uk-form-width-medium-small'}} </td> -->
-<!--				<td> {{@Xhtml keyaction action=searchNameAction input=null output=tablebody size=small}} </td> -->
 				<td> {{@html text field=search.name size=small }} </td>
 				<td> </td>
 				<td> </td>
@@ -48,7 +46,7 @@ td > input {
 				<td> </td>
 			</tr>
 		</thead>
-		<tbody id='tablebody' name='tablebody'>
+		<tbody name='tablebody'>
 		</tbody>
 	</table>
 
@@ -56,6 +54,7 @@ td > input {
 
 <script>
 window.onload = function() {
+	document.getElementsByName('search.name')[0].value = '';
 	runAction('searchNameAction', ['keyaction='], 'tablebody');
 }
 
