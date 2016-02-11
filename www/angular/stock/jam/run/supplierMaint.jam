@@ -39,31 +39,38 @@ td > input {
 			</tr>
 			<tr>
 				<td> </td>
-				<td> {{@html inp keyaction searchNameAction null tablebody 'small uk-form-width-medium-small'}} </td>
+<!--				<td> {{@Xhtml inp keyaction searchNameAction null tablebody 'small uk-form-width-medium-small'}} </td> -->
+<!--				<td> {{@Xhtml keyaction action=searchNameAction input=null output=tablebody size=small}} </td> -->
+				<td> {{@html text field=search.name size=small }} </td>
 				<td> </td>
 				<td> </td>
 				<td> </td>
 				<td> </td>
 			</tr>
 		</thead>
-		<tbody name='tablebody'>
+		<tbody id='tablebody' name='tablebody'>
 		</tbody>
 	</table>
 
 </div>	<!-- uk-overflow-container -->
 
 <script>
-	window.onload = function() {
-		runAction('searchNameAction', ['keyaction='], 'tablebody');
-	}
+window.onload = function() {
+	runAction('searchNameAction', ['keyaction='], 'tablebody');
+}
 
-	function confirmDelete(id, name) {
-		window.event.cancelBubble = true;	// Prevent any further events
-		var result = confirm('Confirm delete of item ' + name);
-		if (result) {
-			runAction('deleteSupplier', ['stock_supplier.id='+id], '', runJam);	
-		}
+function confirmDelete(id, name) {
+	window.event.cancelBubble = true;	// Prevent any further events
+	var result = confirm('Confirm delete of item ' + name);
+	if (result) {
+		runAction('deleteSupplier', ['stock_supplier.id='+id], '', runJam);	
 	}
+}
+
+function onKeyUp_search_name(obj) {
+	runAction('searchNameAction', ['keyaction='+obj.value], 'tablebody');
+}
+
 </script>
 
 {{@action searchNameAction}}
