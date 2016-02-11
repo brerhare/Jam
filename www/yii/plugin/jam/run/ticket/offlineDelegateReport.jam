@@ -56,7 +56,7 @@
 
 <script>
 $(document).ready(function(){
-	runAction('searchNameAction', 'keyaction=', 'tablebody');
+	runAction('searchNameAction', ['keyaction='], 'tablebody');
 });
 
 function onKeyUp_search_name(obj) {
