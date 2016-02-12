@@ -132,9 +132,9 @@
 
 <h6> New </h6>
 
-onChange is implied for all input types - user defines an appropriate onChange_table_field(this, event) function
-onSOMEOTHER can be set with jsevent=onKeyUp or whatever, which will look for the similarly calculated function to run
-	Handled are, onkeyup, (add more here)
+onChange and onKeyUp is bound to all input types - user defines an appropriate onXxxx_table_field(this, event) function
+@@TODO allow others to be bound by user, something like event=onfocus or whatever. Function name per usual naming convention
+NB onKeyUp is often used as a search filter
 
 {@html dropdown/filter field=product.supplier_id pickfield=supplier.name size=medium label='Line Supplier'}
 {@html dropdown/filter field=product.supplier_id pickfield=supplier.name size=medium group=mygroup}
@@ -142,8 +142,6 @@ onSOMEOTHER can be set with jsevent=onKeyUp or whatever, which will look for the
 {@html text/date field=product.supplier_id size=medium label='Address' placeholder='address line 1'}
 {@html text/date field=product.supplier_id size=medium hidden}
 {@html textarea field=stock_supplier.notes size=60x5 label=Notes}
-{@html keyaction action=myAction output=tableBody size=small}
-{@html keyaction action=myAction input=someMoreInputs,yetMore output=tableBody size=small}		note that the keyaction field is always sent too
 
 Optional for any - label, group, disabled
 
