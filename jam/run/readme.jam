@@ -132,9 +132,9 @@
 
 <h6> New </h6>
 
-onChange and onKeyUp is bound to all input types - user defines an appropriate onXxxx_table_field(this, event) function
+onChange and onKeyUp is bound to all input types - user defines an appropriate onXxxx_table_field(this) function
 @@TODO allow others to be bound by user, something like event=onfocus or whatever. Function name per usual naming convention
-NB onKeyUp is often used as a search filter
+NB onKeyUp is often used as a search filter in conjunction with an @action
 
 {@html dropdown/filter field=product.supplier_id pickfield=supplier.name size=medium label='Line Supplier'}
 {@html dropdown/filter field=product.supplier_id pickfield=supplier.name size=medium group=mygroup}
