@@ -9,6 +9,6 @@ $this->pageTitle=Yii::app()->name;
 <br/>
 
 <?php if (!Yii::app()->user->isGuest)
-echo '<iframe src="http://holidayletservices.co.uk:3dmucs@www.holidayletservices.co.uk/awstats/awstats.pl?framename=mainright" height=5500px width=100%></iframe>';
+echo '<iframe src="http://holidayletservice.co.uk:3dmucs@www.holidayletservice.co.uk/awstats/awstats.pl?framename=mainright" height=5500px width=100%></iframe>';
 ?>
 
