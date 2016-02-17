@@ -1,10 +1,10 @@
-domain = holidayletservices.co.uk
+domain = holidayletservice.co.uk
 parentdomain =
 sitetitle = Holiday Let Services
 sid = nsf0tn0ij2mtj2a209a1tfpj50
 
 # Database
-dbname = holidayletservices_co_uk
+dbname = holidayletservice_co_uk
 dbuser = holidayletservic
 dbpass = 3dmucs
 
