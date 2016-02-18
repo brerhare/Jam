@@ -15,6 +15,9 @@
 #include "database.h"
 #include "log.h"
 
+// User function hooks for all input types
+char *COMMON_FN = "onChange='fn(this, event);' onkeyup='fn(this, event);'";
+
 #define MAX_BREAKPOINTS 10000	
 // Breakpoint vars collected along the way that will now be used to generate stuff									// quite a few
 int breakpointAutocompleteId[MAX_BREAKPOINTS];
@@ -318,6 +321,7 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 						  {{@template DROPDOWN_SIZE %s}}	\
 						  {{@template DROPDOWN_DISABLED %s}}	\
 						  {{@template DROPDOWN_GROUP %s}}	\
+						  {{@template COMMON_FN %s}}	\
 						  {{@template DROPDOWN_JAMKEY %s}}",
 							targetTable,
 							targetField,
@@ -327,6 +331,7 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 							size,
 							disabled,
 							group,
+							COMMON_FN,
 							jamKey
 							);
 
@@ -432,6 +437,7 @@ int wordHtmlFilter(int ix, char *defaultTableName) {
 						  {{@template FILTER_SIZE %s}}	\
 						  {{@template FILTER_DISABLED %s}}	\
 						  {{@template FILTER_GROUP %s}}	\
+						  {{@template COMMON_FN %s}}	\
 						  {{@template FILTER_JAMKEY %s}}",
 							targetTable,
 							targetField,
@@ -441,6 +447,7 @@ int wordHtmlFilter(int ix, char *defaultTableName) {
 							size,
 							disabled,
 							group,
+							COMMON_FN,
 							jamKey
 							);
 
@@ -572,6 +579,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 						  {{@template INPUT_VALUE %s}}	\
 						  {{@template INPUT_DISABLED %s}}	\
 						  {{@template INPUT_GROUP %s}}	\
+						  {{@template COMMON_FN %s}}	\
 						  {{@template INPUT_JAMKEY %s}}",
 							type,
 							table,
@@ -582,6 +590,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 							value,
 							disabled,
 							group,
+							COMMON_FN,
 							jamKey
 							);
 
@@ -695,6 +704,7 @@ int wordHtmlCheckbox(int ix, char *defaultTableName) {
 						  {{@template CHECKBOX_CHECKED %s}}	\
 						  {{@template CHECKBOX_DISABLED %s}}	\
 						  {{@template CHECKBOX_GROUP %s}}	\
+						  {{@template COMMON_FN %s}}	\
 						  {{@template CHECKBOX_JAMKEY %s}}",
 							table,
 							field,
@@ -705,6 +715,7 @@ int wordHtmlCheckbox(int ix, char *defaultTableName) {
 							checked,
 							disabled,
 							group,
+							COMMON_FN,
 							jamKey
 							);
 
@@ -844,6 +855,7 @@ int wordHtmlRadio(int ix, char *defaultTableName) {
 						  {{@template RADIO_VALUE %s}}	\
 						  {{@template RADIO_DISABLED %s}}	\
 						  {{@template RADIO_GROUP %s}}	\
+						  {{@template COMMON_FN %s}}	\
 						  {{@template RADIO_JAMKEY %s}}",
 							table,
 							field,
@@ -852,6 +864,7 @@ int wordHtmlRadio(int ix, char *defaultTableName) {
 							value,
 							disabled,
 							group,
+							COMMON_FN,
 							jamKey
 							);
 
@@ -979,6 +992,7 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 						  {{@template TEXTAREA_VALUE %s}}	\
 						  {{@template TEXTAREA_DISABLED %s}}	\
 						  {{@template TEXTAREA_GROUP %s}}	\
+						  {{@template COMMON_FN %s}}	\
 						  {{@template TEXTAREA_JAMKEY %s}}",
 							hidden,
 							table,
@@ -990,6 +1004,7 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 							value,
 							disabled,
 							group,
+							COMMON_FN,
 							jamKey
 							);
 

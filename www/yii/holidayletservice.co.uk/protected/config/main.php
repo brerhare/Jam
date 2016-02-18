@@ -3,33 +3,24 @@
 // uncomment the following to define a path alias
 // Yii::setPathOfAlias('local','path/to/local-folder');
 
-// Set backend and frontend paths
-$backend=dirname(dirname(__FILE__));
-$frontend=dirname($backend);
-Yii::setPathOfAlias('backend', $backend);
-
 // This is the main Web application configuration. Any writable
 // CWebApplication properties can be configured here.
 return array(
-    // Set base of both to frontend (backend reuses frontend code), and backend c, v and r
-    'basePath'=> $frontend,
-    'controllerPath' => $backend.'/controllers',
-    'viewPath' => $backend.'/views',
-    'runtimePath' => $backend.'/runtime',
+	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
+	'name'=>'Holiday Let Services',
 
-	'name'=>'Holiday Let Services Backend',
+	// Override the default controller
+	//'defaultController'=>'contentBlock',
 
 	// preloading 'log' component
-	// preloading 'bootstrap' component
+	// preloading 'yiibooster' component
 	'preload'=>array('log', 'bootstrap'),
 
 	// autoloading model and component classes
-	// Note that the order is important - we want backend to overwrite frontend when theres a clash
 	'import'=>array(
 		'application.models.*',
 		'application.components.*',
-		'backend.models.*',
-		'backend.components.*',
+		'application.extensions.wirefly.jelly-current.*',
 		'application.extensions.PHPMailer.*',
 	),
 
@@ -75,7 +66,7 @@ return array(
 		// uncomment the following to use a MySQL database
 		/**/
 		'db'=>array(
-			'connectionString' => 'mysql:host=localhost;dbname=holidayletservices_co_uk',
+			'connectionString' => 'mysql:host=localhost;dbname=holidayletservice_co_uk',
 			'emulatePrepare' => true,
 			'username' => 'holidayletservic',
 			'password' => '3dmucs',
@@ -106,16 +97,25 @@ return array(
 	// application-level parameters that can be accessed
 	// using Yii::app()->params['paramName']
 	'params'=>array(
-        // used for login names and passwords
-        'dbHost' => 'localhost',
-        'dbName' => 'plugin',
-        'dbUser' => 'plugin',
-        'dbPass' => 'plugin,',
 		// this is used in contact page
 		'adminEmail'=>'webmaster@wireflydesign.com',
-		// CKEditor size for page content editing (910 max)
-		'editorpagewidth'=>'700',
-		'editorpageheight'=>'400',
+
+		// These are used by the shopping cart checkout process
+		'checkoutEmail'=>'none',
+		'checkoutName'=>'none',
+
+		// Test gateway
+		'checkoutGatewayUser'=>'WIREFL-5188100',
+		'checkoutGatewayPassword'=>'391F3GWBZ0',
+
+		// Live gateway
+		//'checkoutGatewayUser'=>'xxxxx',
+		//'checkoutGatewayPassword'=>'xxxxx',
+
+        // Paypal
+        //'checkoutPaypalEmail'=>'none',
+
+		'jellyRoot' => '/scripts/jelly/',
+		'sid' => 'nsf0tn0ij2mtj2a209a1tfpj50',
 	),
 );
-
