@@ -62,7 +62,7 @@ addon.menu.traditional.orientation = horizontal
 addon.menu.traditional.height = 40px
 addon.menu.traditional.align = center
 #addon.menu.traditional.item-margin = // split equally between left and right. @@TODO handle 1st and last
-addon.menu.traditional.item-width = uniform
+##########addon.menu.traditional.item-width = uniform
 
 #// Top level background settings
 addon.menu.traditional.menu-rounding = 0px
