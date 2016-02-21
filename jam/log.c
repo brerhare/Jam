@@ -35,6 +35,10 @@ void logMsg(int type, char *str, ...)
 	if (log_message_stream == NULL)
 		log_message_stream = fopen(logFileName, "a+");
 
+	// If we cant open it we bail
+	if (log_message_stream == NULL)
+		return;
+
 /*
 FILE *fp = fopen("c:/tmp/xx.log", "a");
 va_start(ap, str);
