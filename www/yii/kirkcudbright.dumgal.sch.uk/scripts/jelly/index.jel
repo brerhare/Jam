@@ -75,56 +75,59 @@ jam.embed = /run/slider.jam
 
 	[menu]
 	
-	css.width = 100%
+#	css.width = 100%
 	css.background-color = #e6ddbc
 	css.overflow = visible
 	css.margin-bottom = 15px
 
-#// Top level basic settings
-		addon.menu.traditional.orientation = horizontal
-		#	addon.menu.traditional.height = 40px
-		addon.menu.traditional.align = center
-		addon.menu.traditional.item-margin = 30px
-		addon.menu.traditional.item-width = variable
-		#	addon.menu.traditional.level = 1
-		
-#// Top level background settings
-		addon.menu.traditional.menu-rounding = 0px
-		addon.menu.traditional.menu-opacity = 100%
-		addon.menu.traditional.menu-color = transparent 
-		addon.menu.traditional.item-separator-width = 0px
-	#	addon.menu.traditional.edgepadding = 40px
+jam.embed = /run/menu.jam
 
-#// Top level font settings
-		addon.menu.traditional.menu-font-size = 20px
-		addon.menu.traditional.menu-font-family = Italiana
-		addon.menu.traditional.menu-font-weight = bold
-		addon.menu.traditional.menu-text-color = black
-
-#// Top level hover settings
-		addon.menu.traditional.menu-hover-text-color = #822626
-		addon.menu.traditional.menu-hover-background-color = white
-		addon.menu.traditional.menu-hover-font-size = 20px
-		addon.menu.traditional.menu-hover-font-family = Italiana, Verdana, sans-serif
-		addon.menu.traditional.menu-hover-font-weight = bold
-
-#// Top level selected settings
-		addon.menu.traditional.menu-selected-text-color = #822626
-		addon.menu.traditional.menu-selected-background-color = white lightgrey
-		addon.menu.traditional.menu-selected-font-size = 20px
-		addon.menu.traditional.menu-selected-font-family = Italiana
-		addon.menu.traditional.menu-selected-font-weight = bold
-
-#// Second level settings
-#addon.menu.traditional.submenu-height = 30px // centers text
-addon.menu.traditional.submenu-width = variable
-addon.menu.traditional.submenu-font-size = 16px
-addon.menu.traditional.submenu-font-family = Droid Sans, Verdana, sans-serif
-addon.menu.traditional.submenu-font-weight = normal
-addon.menu.traditional.submenu-text-color = black
-addon.menu.traditional.submenu-background-color = #ada585
-addon.menu.traditional.submenu-separator-width = 10px
-addon.menu.traditional.submenu-separator-color = white
+#	
+#	#// Top level basic settings
+#			addon.menu.traditional.orientation = horizontal
+#			#	addon.menu.traditional.height = 40px
+#			addon.menu.traditional.align = center
+#			addon.menu.traditional.item-margin = 30px
+#			addon.menu.traditional.item-width = variable
+#			#	addon.menu.traditional.level = 1
+#			
+#	#// Top level background settings
+#			addon.menu.traditional.menu-rounding = 0px
+#			addon.menu.traditional.menu-opacity = 100%
+#			addon.menu.traditional.menu-color = transparent 
+#			addon.menu.traditional.item-separator-width = 0px
+#		#	addon.menu.traditional.edgepadding = 40px
+#	
+#	#// Top level font settings
+#			addon.menu.traditional.menu-font-size = 20px
+#			addon.menu.traditional.menu-font-family = Italiana
+#			addon.menu.traditional.menu-font-weight = bold
+#			addon.menu.traditional.menu-text-color = black
+#	
+#	#// Top level hover settings
+#			addon.menu.traditional.menu-hover-text-color = #822626
+#			addon.menu.traditional.menu-hover-background-color = white
+#			addon.menu.traditional.menu-hover-font-size = 20px
+#			addon.menu.traditional.menu-hover-font-family = Italiana, Verdana, sans-serif
+#			addon.menu.traditional.menu-hover-font-weight = bold
+#	
+#	#// Top level selected settings
+#			addon.menu.traditional.menu-selected-text-color = #822626
+#			addon.menu.traditional.menu-selected-background-color = white lightgrey
+#			addon.menu.traditional.menu-selected-font-size = 20px
+#			addon.menu.traditional.menu-selected-font-family = Italiana
+#			addon.menu.traditional.menu-selected-font-weight = bold
+#	
+#	#// Second level settings
+#	#addon.menu.traditional.submenu-height = 30px // centers text
+#	addon.menu.traditional.submenu-width = variable
+#	addon.menu.traditional.submenu-font-size = 16px
+#	addon.menu.traditional.submenu-font-family = Droid Sans, Verdana, sans-serif
+#	addon.menu.traditional.submenu-font-weight = normal
+#	addon.menu.traditional.submenu-text-color = black
+#	addon.menu.traditional.submenu-background-color = #ada585
+#	addon.menu.traditional.submenu-separator-width = 10px
+#	addon.menu.traditional.submenu-separator-color = white
 
 ### Home Page #######################################
 
@@ -193,7 +196,7 @@ stacking = horizontal
 	condition = @DEVICEWIDTH>759
 	css.width = 24%
 	css.min-width = 200px
-	child = sub-menu, page-column-text
+	child = page-column-text
 	css.margin-top = 20px
 	
 	[page-column-mobile]
@@ -203,52 +206,6 @@ stacking = horizontal
 	child = sub-menu, page-column-text
 	css.margin-top = 20px
 	
-			[sub-menu]
-#// Top level basic settings
-		addon.menu.traditional.orientation = horizontal
-		#	addon.menu.traditional.height = 40px
-		addon.menu.traditional.align = left
-		addon.menu.traditional.item-margin = 30px
-		addon.menu.traditional.item-width = variable
-		addon.menu.traditional.level = 2
-		
-#// Top level background settings
-		addon.menu.traditional.menu-rounding = 0px
-		addon.menu.traditional.menu-opacity = 100%
-		addon.menu.traditional.menu-color = transparent 
-		addon.menu.traditional.item-separator-width = 0px
-	#	addon.menu.traditional.edgepadding = 40px
-
-#// Top level font settings
-		addon.menu.traditional.menu-font-size = 20px
-		addon.menu.traditional.menu-font-family = Italiana
-		addon.menu.traditional.menu-font-weight = bold
-		addon.menu.traditional.menu-text-color = black
-
-#// Top level hover settings
-		addon.menu.traditional.menu-hover-text-color = #822626
-		addon.menu.traditional.menu-hover-background-color = white
-		addon.menu.traditional.menu-hover-font-size = 20px
-		addon.menu.traditional.menu-hover-font-family = Italiana, Verdana, sans-serif
-		addon.menu.traditional.menu-hover-font-weight = bold
-
-#// Top level selected settings
-		addon.menu.traditional.menu-selected-text-color = #822626
-		addon.menu.traditional.menu-selected-background-color = white lightgrey
-		addon.menu.traditional.menu-selected-font-size = 20px
-		addon.menu.traditional.menu-selected-font-family = Italiana
-		addon.menu.traditional.menu-selected-font-weight = bold
-
-#// Second level settings
-addon.menu.traditional.submenu-height = 30px // centers text
-addon.menu.traditional.submenu-width = variable
-addon.menu.traditional.submenu-font-size = 16px
-addon.menu.traditional.submenu-font-family = Droid Sans, Verdana, sans-serif
-addon.menu.traditional.submenu-font-weight = normal
-addon.menu.traditional.submenu-text-color = black
-addon.menu.traditional.submenu-background-color = #ada585
-addon.menu.traditional.submenu-separator-width = 10px
-addon.menu.traditional.submenu-separator-color = white
 		
 			[page-column-text]
 			css.margin-top = 20px
