@@ -8,6 +8,9 @@
 {{@template ACTIVECOLOR_FROM #9dbbcb}}
 {{@template ACTIVECOLOR_TO #5c696f}}
 {{@template ARROWCOLOR #2e2e2e}}
+{{@template CORNERPIXELS 2}}
+{{@template MAINTEXTCOLOR #000000}}
+{{@template SUBTEXTCOLOR #000000}}
 
 /* @@TODO These next two dont seem to affect anything at all */
 {{@template CURRENTCOLOR_FROM #80ff80}}
@@ -15,11 +18,11 @@
 
 .sm-blue {
   background: transparent;
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
-  -ms-border-radius: 8px;
-  -o-border-radius: 8px;
-  border-radius: 8px;
+  -webkit-border-radius: CORNERPIXELSpx;
+  -moz-border-radius: CORNERPIXELSpx;
+  -ms-border-radius: CORNERPIXELSpx;
+  -o-border-radius: CORNERPIXELSpx;
+  border-radius: CORNERPIXELSpx;
   -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
@@ -78,22 +81,22 @@
   content: '-';
 }
 .sm-blue > li:first-child > a, .sm-blue > li:first-child > :not(ul) a {
-  -webkit-border-radius: 8px 8px 0 0;
-  -moz-border-radius: 8px 8px 0 0;
-  -ms-border-radius: 8px 8px 0 0;
-  -o-border-radius: 8px 8px 0 0;
-  border-radius: 8px 8px 0 0;
+  -webkit-border-radius: CORNERPIXELSpx CORNERPIXELSpx 0 0;
+  -moz-border-radius: CORNERPIXELSpx CORNERPIXELSpx 0 0;
+  -ms-border-radius: CORNERPIXELSpx CORNERPIXELSpx 0 0;
+  -o-border-radius: CORNERPIXELSpx CORNERPIXELSpx 0 0;
+  border-radius: CORNERPIXELSpx CORNERPIXELSpx 0 0;
 }
 .sm-blue > li:last-child > a, .sm-blue > li:last-child > *:not(ul) a, .sm-blue > li:last-child > ul,
 .sm-blue > li:last-child > ul > li:last-child > a, .sm-blue > li:last-child > ul > li:last-child > *:not(ul) a, .sm-blue > li:last-child > ul > li:last-child > ul,
 .sm-blue > li:last-child > ul > li:last-child > ul > li:last-child > a, .sm-blue > li:last-child > ul > li:last-child > ul > li:last-child > *:not(ul) a, .sm-blue > li:last-child > ul > li:last-child > ul > li:last-child > ul,
 .sm-blue > li:last-child > ul > li:last-child > ul > li:last-child > ul > li:last-child > a, .sm-blue > li:last-child > ul > li:last-child > ul > li:last-child > ul > li:last-child > *:not(ul) a, .sm-blue > li:last-child > ul > li:last-child > ul > li:last-child > ul > li:last-child > ul,
 .sm-blue > li:last-child > ul > li:last-child > ul > li:last-child > ul > li:last-child > ul > li:last-child > a, .sm-blue > li:last-child > ul > li:last-child > ul > li:last-child > ul > li:last-child > ul > li:last-child > *:not(ul) a, .sm-blue > li:last-child > ul > li:last-child > ul > li:last-child > ul > li:last-child > ul > li:last-child > ul {
-  -webkit-border-radius: 0 0 8px 8px;
-  -moz-border-radius: 0 0 8px 8px;
-  -ms-border-radius: 0 0 8px 8px;
-  -o-border-radius: 0 0 8px 8px;
-  border-radius: 0 0 8px 8px;
+  -webkit-border-radius: 0 0 CORNERPIXELSpx CORNERPIXELSpx;
+  -moz-border-radius: 0 0 CORNERPIXELSpx CORNERPIXELSpx;
+  -ms-border-radius: 0 0 CORNERPIXELSpx CORNERPIXELSpx;
+  -o-border-radius: 0 0 CORNERPIXELSpx CORNERPIXELSpx;
+  border-radius: 0 0 CORNERPIXELSpx CORNERPIXELSpx;
 }
 .sm-blue > li:last-child > a.highlighted, .sm-blue > li:last-child > *:not(ul) a.highlighted,
 .sm-blue > li:last-child > ul > li:last-child > a.highlighted, .sm-blue > li:last-child > ul > li:last-child > *:not(ul) a.highlighted,
@@ -117,7 +120,7 @@
   color: BACKCOLOR_TO;
   font-size: 16px;
   text-shadow: none;
-  border-left: 8px solid transparent;
+  border-left: CORNERPIXELSpx solid transparent;
 }
 .sm-blue ul a.current {
   background: #006892;
@@ -205,11 +208,11 @@
     background-image: -moz-linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
     background-image: -o-linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
     background-image: linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
-    -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
-    -ms-border-radius: 8px;
-    -o-border-radius: 8px;
-    border-radius: 8px;
+    -webkit-border-radius: CORNERPIXELSpx;
+    -moz-border-radius: CORNERPIXELSpx;
+    -ms-border-radius: CORNERPIXELSpx;
+    -o-border-radius: CORNERPIXELSpx;
+    border-radius: CORNERPIXELSpx;
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
     -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
@@ -222,7 +225,7 @@
     background-image: -moz-linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
     background-image: -o-linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
     background-image: linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
-    color: white;
+    color: MAINTEXTCOLOR;
   }
   .sm-blue a:hover, .sm-blue a:focus, .sm-blue a:active, .sm-blue a.highlighted {
     background: BACKCOLOR_TO;
@@ -273,11 +276,11 @@
     display: none;
   }
   .sm-blue > li:first-child > a, .sm-blue > li:first-child > :not(ul) a {
-    -webkit-border-radius: 8px 0 0 8px;
-    -moz-border-radius: 8px 0 0 8px;
-    -ms-border-radius: 8px 0 0 8px;
-    -o-border-radius: 8px 0 0 8px;
-    border-radius: 8px 0 0 8px;
+    -webkit-border-radius: CORNERPIXELSpx 0 0 CORNERPIXELSpx;
+    -moz-border-radius: CORNERPIXELSpx 0 0 CORNERPIXELSpx;
+    -ms-border-radius: CORNERPIXELSpx 0 0 CORNERPIXELSpx;
+    -o-border-radius: CORNERPIXELSpx 0 0 CORNERPIXELSpx;
+    border-radius: CORNERPIXELSpx 0 0 CORNERPIXELSpx;
   }
   .sm-blue > li {
     border-left: 1px solid BACKCOLOR_TO;
@@ -310,7 +313,7 @@
     border: 0 !important;
     padding: 9px 23px;
     background: transparent;
-    color: BACKCOLOR_TO;
+    color: SUBTEXTCOLOR;
   }
   .sm-blue ul a:hover, .sm-blue ul a:focus, .sm-blue ul a:active, .sm-blue ul a.highlighted {
     background: ACTIVECOLOR_FROM;
@@ -360,11 +363,11 @@
     position: absolute;
     top: -2px;
     left: 50%;
-    margin-left: -8px;
+    margin-left: -CORNERPIXELSpx; /* kim? */
     width: 0;
     height: 0;
     overflow: hidden;
-    border-width: 8px;
+    border-width: CORNERPIXELSpx; /* kim? */
     border-style: dashed dashed solid dashed;
     border-color: transparent transparent BACKCOLOR_TO transparent;
   }
@@ -380,11 +383,11 @@
     border-color: transparent ARROWCOLOR transparent transparent;
   }
   .sm-blue.sm-rtl > li:first-child > a, .sm-blue.sm-rtl > li:first-child > :not(ul) a {
-    -webkit-border-radius: 0 8px 8px 0;
-    -moz-border-radius: 0 8px 8px 0;
-    -ms-border-radius: 0 8px 8px 0;
-    -o-border-radius: 0 8px 8px 0;
-    border-radius: 0 8px 8px 0;
+    -webkit-border-radius: 0 CORNERPIXELSpx CORNERPIXELSpx 0;
+    -moz-border-radius: 0 CORNERPIXELSpx CORNERPIXELSpx 0;
+    -ms-border-radius: 0 CORNERPIXELSpx CORNERPIXELSpx 0;
+    -o-border-radius: 0 CORNERPIXELSpx CORNERPIXELSpx 0;
+    border-radius: 0 CORNERPIXELSpx CORNERPIXELSpx 0;
   }
   .sm-blue.sm-rtl > li:first-child {
     border-left: 1px solid BACKCOLOR_TO;
@@ -417,18 +420,18 @@
     border-color: transparent transparent transparent ARROWCOLOR;
   }
   .sm-blue.sm-vertical > li:first-child > a, .sm-blue.sm-vertical > li:first-child > :not(ul) a {
-    -webkit-border-radius: 8px 8px 0 0;
-    -moz-border-radius: 8px 8px 0 0;
-    -ms-border-radius: 8px 8px 0 0;
-    -o-border-radius: 8px 8px 0 0;
-    border-radius: 8px 8px 0 0;
+    -webkit-border-radius: CORNERPIXELSpx CORNERPIXELSpx 0 0;
+    -moz-border-radius: CORNERPIXELSpx CORNERPIXELSpx 0 0;
+    -ms-border-radius: CORNERPIXELSpx CORNERPIXELSpx 0 0;
+    -o-border-radius: CORNERPIXELSpx CORNERPIXELSpx 0 0;
+    border-radius: CORNERPIXELSpx CORNERPIXELSpx 0 0;
   }
   .sm-blue.sm-vertical > li:last-child > a, .sm-blue.sm-vertical > li:last-child > :not(ul) a {
-    -webkit-border-radius: 0 0 8px 8px;
-    -moz-border-radius: 0 0 8px 8px;
-    -ms-border-radius: 0 0 8px 8px;
-    -o-border-radius: 0 0 8px 8px;
-    border-radius: 0 0 8px 8px;
+    -webkit-border-radius: 0 0 CORNERPIXELSpx CORNERPIXELSpx;
+    -moz-border-radius: 0 0 CORNERPIXELSpx CORNERPIXELSpx;
+    -ms-border-radius: 0 0 CORNERPIXELSpx CORNERPIXELSpx;
+    -o-border-radius: 0 0 CORNERPIXELSpx CORNERPIXELSpx;
+    border-radius: 0 0 CORNERPIXELSpx CORNERPIXELSpx;
   }
   .sm-blue.sm-vertical > li {
     border-left: 0 !important;
