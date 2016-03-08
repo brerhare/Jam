@@ -162,6 +162,8 @@ function fn(obj, event) {
 		callType = 'onChange';
 	else if (event.type == 'keyup')
 		callType = 'onKeyUp';
+	else if (event.type == 'click')
+		callType = 'onClick';
 	if (callType != '') {
 		localFunc =  callType + '_' + obj.id;
 		// Convert ID3___stock_customer___address_1 to onChange_stockcustomer_address_1
