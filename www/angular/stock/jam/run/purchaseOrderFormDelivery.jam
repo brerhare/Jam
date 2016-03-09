@@ -80,7 +80,7 @@
 	<td colspan=9> </td>
 	<td>
 		{{@html button Apply success small
-//			alert('id='+obj.id);
+			applyButtonClick();
 		}}
 	</td>
 
@@ -124,9 +124,7 @@
 						<td> {{@html text disabled field=dline.delcost size=small group=recorded}} </td>
 						<td>
 
-{{@XXXXXhtml button Undo danger small}}
-
-
+							{{@XXXXXhtml button Undo danger small}} <!-- @@TODO can fix this now that group ROW_ has been added to button? -->
                             <button type='button' class="uk-button uk-button-small uk-button-danger" onClick="undoButtonClick({{dline.id}})">
 								Undo
                             </button>
@@ -136,6 +134,21 @@
 	{{@end}}
 
 {{@end}}
+
+{{@action updateDelivered}}
+    // Create the order delivered qty and price
+    {{@get stock_supplier_order_item filter id = stock_supplier_order_item.id}}
+    {{stock_supplier_order_item.delivered_date = date}}
+	{{stock_supplier_order_item.delivered_qty = qty}}
+	{{stock_supplier_order_item.delivered_price = price}}
+    {{@amend item stock_supplier_order_item notify=ok}}
+    // Update the stock location qty (might not yet exist)
+    {{@get stock_supplier_order filter id = stock_supplier_order.id}}
+    {{@get stock_product_has_location filter stock_location_id = stock_supplier_order.location_id, stock_product_id = stock_supplier_order_item.stock_product_id}}
+    {{stock_product_has_location.onhand = stock_product_has_location.onhand + stock_supplier_order_item.delivered_qty}}
+    {{@update item stock_product_has_location}}
+{{@end}}
+
 
 {{@action updateDeliveredQty}}
 	// Update the order, subtracting the old qty
@@ -176,9 +189,16 @@
 {{@end}}
 
 <script>
+	// On init, create this global object, used by the Apply button
+	var deliveryDirtyArr = new Array();
+</script>
+
+<script>
 
 	// Quantity changed
 	function onChange_dline_packdelqty(obj) {
+		deliveryDirtyArr.push(obj);
+		return;
 		objId =  getSiblingByName(obj, 'line.id');
 		origId = getSiblingByName(obj, 'line.orig_delqty');
 		dt = get('mem.delivery_date');
@@ -186,12 +206,11 @@
 //alert(origId.value);
 		runAction('updateDeliveredQty', ['stock_supplier_order_item.id=' + objId.value,  'stock_supplier_order_item.delivered_qty=' + obj.value, 'old.qty='+origId.value, 'delivered_date='+dt.value], '', afterOrderItemUpdated);
 	}
-	function afterOrderItemUpdated() {
-		runAction('recalcOrder', ['stock_supplier_order.id'], '', showDeliveryLines);
-	}
 
 	// Price changed
 	function onChange_dline_delcost(obj) {
+		deliveryDirtyArr.push(obj);
+		return;
 		objId =  getSiblingByName(obj, 'line.id');
 		runAction('updateDeliveredCost', ['stock_supplier_order_item.id=' + objId.value, 'stock_supplier_order_item.delivered_price=' + obj.value], '', afterOrderItemUpdated);
 	}
@@ -200,9 +219,25 @@
 		runAction('showDeliveryLines', ['stock_supplier_order.id', 'stock_supplier_order.container_id'], 'deliverylinebody');
 	}
 
+	function applyButtonClick() {
+		//alert('Applying changes. len='+deliveryDirtyArr.length);
+		for (var i = 0; i < deliveryDirtyArr.length; i++) {
+			objId =  getSiblingByName(deliveryDirtyArr[i], 'line.id');
+			//alert('linid='+objId.value);
+			dt = get('mem.delivery_date');
+			objQty = getSiblingByName(deliveryDirtyArr[i], 'dline.pack_delqty');
+			objCost = getSiblingByName(deliveryDirtyArr[i], 'dline.delcost');
+			runAction('updateDelivered', ['stock_supplier_order_item.id=' + objId.value,  'qty=' + objQty.value, 'price=' + objCost.value, 'date='+dt.value], '', afterOrderItemUpdated);
+		}
+	}
+	function afterOrderItemUpdated() {
+		deliveryDirtyArr = new Array();
+		runAction('recalcOrder', ['stock_supplier_order.id'], '', showDeliveryLines);
+	}
+
 	function undoButtonClick(id) {
 		//alert('id='+id);
-		runAction('undoDeliveredQty', ['stock_supplier_order_item.id='+id, 'stock_supplier_order_item.delivered_qty=0'], '', afterOrderItemUpdated);
+		runAction('undoDeliveredQty', ['stock_supplier_order_item.id='+id, 'stock_supplier_order_item.delivered_qty=0', 'stock_supplier_order_item.delivered_price=0'], '', afterOrderItemUpdated);
 	}
 
 </script>
