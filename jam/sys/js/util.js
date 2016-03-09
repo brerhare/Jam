@@ -521,5 +521,11 @@ function print(element) {
    // the DOM will be available here
 //alert('Popup from the anonymous function at the end of util.js');
 	createHiddenElementsFromUrlParams();
+	// User autoexec
+	// @@TODO This doesnt work?
+	var startupFunc = 'autoexec';
+	if (typeof window[startupFunc] === "function") {
+//alert('firing');
+		window[startupFunc]; }
 })()
 
