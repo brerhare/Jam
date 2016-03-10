@@ -44,7 +44,7 @@
 
 {{@action showDeliveryLines}}
 <!-- All actionable lines -->
-	{{@each stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id, total_delivered_qty < pack_qty, order by id DESC}}
+	{{@each stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id, delivered_qty < pack_qty, order by id DESC}}
 		{{@get stock_container filter id = stock_supplier_order.container_id}}
 		{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
 		{{@get stock_pack filter id = stock_supplier_order_item.stock_pack_id}}
@@ -121,7 +121,7 @@
 {{@action updateDelivered}}
     // Update the stock item qty with this qty delivered
     {{@get stock_supplier_order_item filter id = stock_supplier_order_item.id}}
-	{{stock_supplier_order_item.total_delivered_qty = stock_supplier_order_item.total_delivered_qty + qty}}
+	{{stock_supplier_order_item.delivered_qty = stock_supplier_order_item.delivered_qty + qty}}
     {{@amend item stock_supplier_order_item notify=ok}}
     // Create the order delivered qty and price record
 	{{stock_supplier_order_item_delivery.delivered_qty = qty}}
@@ -130,7 +130,6 @@
 	{{stock_supplier_order_item_delivery.stock_supplier_order_id = stock_supplier_order.id}}
 	{{stock_supplier_order_item_delivery.stock_supplier_order_item_id = stock_supplier_order_item.id}}
 	{{@new item stock_supplier_order_item_delivery notify=ok}}
-
     // Update the stock location qty (might not yet exist)
     {{@get stock_supplier_order filter id = stock_supplier_order.id}}
     {{@get stock_product_has_location filter stock_location_id = stock_supplier_order.location_id, stock_product_id = stock_supplier_order_item.stock_product_id}}
@@ -138,6 +137,21 @@
     {{@update item stock_product_has_location}}
 {{@end}}
 
+{{@action undoDelivered}}
+	// Pick up the delivery record
+	{{@get stock_supplier_order_item_delivery filter id = stock_supplier_order_item_delivery.id}}
+    // Update the stock item qty with this qty delivered
+	{{@get stock_supplier_order_item filter id = stock_supplier_order_item_delivery.stock_supplier_order_item_id}}
+	{{stock_supplier_order_item.delivered_qty = stock_supplier_order_item.delivered_qty - stock_supplier_order_item_delivery.delivered_qty}}
+	{{@amend item stock_supplier_order_item notify=ok}}
+    // Update the stock location qty
+    {{@get stock_supplier_order filter id = stock_supplier_order.id}}
+    {{@get stock_product_has_location filter stock_location_id = stock_supplier_order.location_id, stock_product_id = stock_supplier_order_item.stock_product_id}}
+    {{stock_product_has_location.onhand = stock_product_has_location.onhand + qty}}
+    {{@update item stock_product_has_location}}
+	// Remove the delivery record
+	{{@remove item stock_supplier_order_item_delivery}}
+{{@end}}
 
 {{@action updateDeliveredQty}}
 	// Update the order, subtracting the old qty
@@ -153,10 +167,6 @@
 	{{stock_product_has_location.onhand = stock_product_has_location.onhand - old.qty}}
 	{{stock_product_has_location.onhand = stock_product_has_location.onhand + new.qty}}
 	{{@update item stock_product_has_location}}
-{{@end}}
-
-{{@action undoDeliveredQty}}
-	{{@amend item stock_supplier_order_item notify=ok}}
 {{@end}}
 
 {{@action updateDeliveredCost}}
@@ -217,8 +227,7 @@
 	}
 
 	function undoButtonClick(id) {
-		alert('id='+id);
-		runAction('undoDeliveredQty', ['stock_supplier_order_item.id='+id, 'stock_supplier_order_item.delivered_qty=0', 'stock_supplier_order_item.delivered_price=0'], '', afterOrderItemUpdated);
+		runAction('undoDelivered', ['stock_supplier_order_item_delivery.id='+id], '', afterOrderItemUpdated);
 	}
 
 </script>
