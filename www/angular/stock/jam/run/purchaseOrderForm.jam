@@ -39,7 +39,7 @@
 </style>
 
 <div id='printing' class="uk-container uk-overflow-container uk-container-center">
-	<h3>Purchase Order</h3>
+	<h3>Purchase Order {{stock_supplier_order.id}}</h3>
 
 	<form name="purchaseOrderForm" class="uk-form uk-form-horizontal">
 

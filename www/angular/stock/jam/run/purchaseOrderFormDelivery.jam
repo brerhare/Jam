@@ -202,6 +202,7 @@
 
 	// Price changed
 	function onChange_dline_delcost(obj) {
+return;
 		deliveryDirtyArr.push(obj);
 		return;
 	}
