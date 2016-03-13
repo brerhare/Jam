@@ -17,7 +17,7 @@ int logLevel = LOGMICRO;
 
 int logId = rand() % 99;
 FILE *log_message_stream = NULL;
-char *logFileName = "/tmp/log.dat";
+char *logFileName = NULL;
 long logMaxBytes = 10000000L;
 
 void logMsg(int type, char *str, ...)
@@ -28,6 +28,10 @@ void logMsg(int type, char *str, ...)
 
 	if (type < logLevel)
 		return;
+
+	// Default logging to /tmp/ if nothing else specified
+	if (logFileName == NULL)
+		logFileName = strdup("/tmp/log.dat");
 
 	//if (log_message_stream == NULL)
 		//log_message_stream = stderr;
