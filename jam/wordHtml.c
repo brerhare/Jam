@@ -6,6 +6,7 @@
 #include <fstream>
 #include <vector>
 #include <cstdlib>
+#include <time.h>
 
 #include </usr/include/mysql/mysql.h>
 
@@ -564,8 +565,16 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	VAR *variable = findVarStrict(tmp);
 	if (variable)
 		value = strdup(variable->portableValue);
-	else
-		value = strdup("");
+	else {
+		if (!strcmp(type, "date")) {
+			// Default to today
+			value = (char *) calloc(1, 4096);
+			time_t now = time(NULL);
+			strftime(value, 20, "%Y-%m-%d", localtime(&now));
+		}
+		else
+			value = strdup("");
+	}
 
 	JAMBUILDER jb;
 	jb.stream = STREAMOUTPUT_STD;
@@ -1379,6 +1388,7 @@ int wordHtmlButton(int ix, char *defaultTableName) {
 	char *buttonSize = (char *) calloc(1, 4096);
 	char *buttonJS = (char *) calloc(1, 4096);
 	char *tmp = (char *) calloc(1, 4096);
+	char *group = (char *) calloc(1, 4096);
 	int buttonId = rand() % 9999999;			// @@TODO fix
 
 	getWord(buttonText, args, 2, " \t");
@@ -1397,8 +1407,12 @@ int wordHtmlButton(int ix, char *defaultTableName) {
 	   return(-1);
 	}
 
-	emitStd("<button type='button' onClick='buttonClick%d()' class='uk-button uk-button-%s uk-button-%s'>%s</button>\n", buttonId, buttonSize, buttonType, buttonText);
-	emitJs("buttonClick%d = function() {\n", buttonId);
+    // Group(s)
+    sprintf(group, "ROW_%d ", cmdSeqnum);
+    if (isVar("sys.control.group"))
+        strcat(group,  getVarAsString("sys.control.group"));
+	emitStd("<button type='button' onClick='buttonClick%d(this)' class='uk-button uk-button-%s uk-button-%s'>%s</button>\n", buttonId, buttonSize, buttonType, buttonText);
+	emitJs("buttonClick%d = function(obj) { \n", buttonId);
 	int cnt = 2;
 	while (char *block = strTrim(getWordAlloc(args, cnt++, "\n"))) {
 		char *command = strTrim(getWordAlloc(block, 1, " \t"));
@@ -1452,6 +1466,7 @@ int wordHtmlButton(int ix, char *defaultTableName) {
 	free(buttonType);
 	free(buttonSize);
 	free(buttonJS);
+	free(group);
 	free(tmp);
 }
 

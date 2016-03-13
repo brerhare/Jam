@@ -73,8 +73,7 @@ int main(int argc, char *argv[]) {
 	char **cgivars ;
 	char *jamName = NULL;
 
-	logMsg(LOGINFO, "--------------------------------------------------------------------------");
-	logMsg(LOGINFO, "Starting. argc is %d", argc);
+	// Do NOT log anything until char documentRoot is set or it will end up in /tmp/ !!!
 
 	if (argc == 3) {		// manual eg: /path/to/jam /path/to/documentroot /path/to/jamfile
 		setenv("REQUEST_METHOD", "GET", 1);
@@ -88,7 +87,16 @@ int main(int argc, char *argv[]) {
 		setenv("QUERY_STRING", tmp, 1);
 		free(tmp);
 	}
+
+	documentRoot = getenv("DOCUMENT_ROOT");
+
+	// Set up logging path
+	logFileName = (char *) calloc(1, 4096);	// defined in log.c/h
+	sprintf(logFileName, "%s/jam/log.dat", documentRoot);
  
+	logMsg(LOGINFO, "--------------------------------------------------------------------------");
+	logMsg(LOGINFO, "Starting. argc is %d", argc);
+
 	// Output headers to prevent caching
 	emitHeader("Cache-Control: no-store, must-revalidate, max-age=0");
 	emitHeader("Pragma: no-cache");
@@ -212,7 +220,6 @@ int processJam(char *jamName, char *jamEntrypoint, JAMBUILDER *jb) {
 	char *tmp = (char *) calloc(1, 4096);
 	TAGINFO *tinfo[MAX_TEMPLATES];
 
-	documentRoot = getenv("DOCUMENT_ROOT");
 	logMsg(LOGINFO, "DOCUMENT_ROOT is %s", documentRoot);
 
 	if (jamEntrypoint)

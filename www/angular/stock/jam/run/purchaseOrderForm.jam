@@ -38,8 +38,8 @@
 	.uk-form-controls {margin-left: 115px !important;}
 </style>
 
-<div id='printing' class="uk-container uk-container-center">
-	<h3>Purchase Order</h3>
+<div id='printing' class="uk-container uk-overflow-container uk-container-center">
+	<h3>Purchase Order {{stock_supplier_order.id}}</h3>
 
 	<form name="purchaseOrderForm" class="uk-form uk-form-horizontal">
 
@@ -49,7 +49,7 @@
 				{{@html filter group=grpflt field=stock_supplier_order.supplier_id pickfield=stock_supplier.name size=medium label=Supplier}}
 			</div>
 			<div class="uk-width-10-10">
-				{{@html date field=stock_supplier_order.delivery_date size=medium label='Delivery Date'}}
+				{{@html date field=stock_supplier_order.delivery_date size=medium label='Expected Date'}}
 			</div>
 			<div class="uk-width-4-10">
 				{{@html dropdown group=grpdrpdn field=stock_supplier_order.location_id pickfield=stock_location.name size=medium label=Location}}
@@ -60,9 +60,15 @@
 			<div class="uk-width-8-10">
 				<br>
 				<button type='button' class="uk-button uk-button-small uk-button-primary" onClick="savePurchaseOrder(0)"> Save </button>
-				{{@html button Cancel primary small
-					backButton()
+
+				<button type='button' class="uk-button uk-button-small uk-button-primary" onClick="backButton()"> Cancel </button>
+
+<!--
+				{{@XXhtml button Cancel primary small
+					runAction('purchaseOrderForm');
 				}}
+-->
+
 				<button type='button' class="uk-button uk-button-small uk-button-primary" onClick="savePurchaseOrder(1)"> Finished </button>
 				<br>
 				<br>
