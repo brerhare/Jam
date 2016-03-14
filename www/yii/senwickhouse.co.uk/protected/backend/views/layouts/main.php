@@ -41,20 +41,20 @@
                 array('label' => 'Addons', 'url' => '#', 'visible' => !Yii::app()->user->isGuest,
                     'items' => array(
                         array('label' => 'Galleries', 'url' => array('/jellyGallery/admin'), 'visible' => !Yii::app()->user->isGuest),
-                        array('label' => 'Tabs', 'url' => array('/tabBlock/admin'), 'visible' => !Yii::app()->user->isGuest),
+                        //array('label' => 'Tabs', 'url' => array('/tabBlock/admin'), 'visible' => !Yii::app()->user->isGuest),
 						array('label' => 'Columns', 'url' => array('/jellyColumn/admin'), 'visible' => !Yii::app()->user->isGuest),
-                        array('label' => 'Ad Blocks', 'url' => array('/jellyAdblock/admin'), 'visible' => !Yii::app()->user->isGuest),
-                        array('label' => 'Ticker', 'url' => array('/jellyTicker/admin'), 'visible' => !Yii::app()->user->isGuest),
+                        //array('label' => 'Ad Blocks', 'url' => array('/jellyAdblock/admin'), 'visible' => !Yii::app()->user->isGuest),
+                        //array('label' => 'Ticker', 'url' => array('/jellyTicker/admin'), 'visible' => !Yii::app()->user->isGuest),
                     ),
                 ),
 
                 array('label' => 'Plugins', 'url' => '#', 'visible' => !Yii::app()->user->isGuest,
                     'items' => array(
-                        array('label' => 'Products', 'url' => 'https://plugin.wireflydesign.com/product/backend.php/site/demoDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
-                        array('label' => 'Blog', 'url' => 'https://plugin.wireflydesign.com/news/backend.php/site/demoDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
-                        array('label' => 'Newsletters', 'url' => 'https://plugin.wireflydesign.com/mailer/backend.php/site/demoDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+                        //array('label' => 'Products', 'url' => 'https://plugin.wireflydesign.com/product/backend.php/site/senwickDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+                        array('label' => 'Blog', 'url' => 'https://plugin.wireflydesign.com/news/backend.php/site/senwickDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+                        array('label' => 'Newsletters', 'url' => 'https://plugin.wireflydesign.com/mailer/backend.php/site/senwickDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
 						array('label' => 'Events', 'url' => 'https://plugin.wireflydesign.com/event/backend.php/site/login2/?sid=' . Yii::app()->session['admin_user_sid'], 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
-                        //array('label' => 'Tickets', 'url' => 'https://plugin.wireflydesign.com/ticket/backend.php/site/demoDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+                        array('label' => 'Tickets', 'url' => 'https://plugin.wireflydesign.com/ticket/backend.php/site/senwickDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
                     ),
                 ),
 
