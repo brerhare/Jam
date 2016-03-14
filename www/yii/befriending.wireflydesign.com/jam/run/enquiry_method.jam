@@ -16,7 +16,7 @@
 }}
 
 {{@template COLUMNS
-	<td> {{@html gridinp text enquiry_method.description medium}} </td>
+	<td> {{@html text field=enquiry_method.description size=medium}} </td>
 }}
 
 {{@template EDITS description}}

@@ -38,22 +38,25 @@
 char *startJam = "{{";
 char *endJam = "}}";
 int literal = 0;
+int strict = 1;					// abort on error, or fok maar voord
 JAM *jam[MAX_JAM];
 int jamIx = 0;
 char *tableStack[MAX_JAM];
 VAR *var[MAX_VAR];
 char *documentRoot = NULL;
 
-char *jamEntrypoint = NULL;		// action entrypoint. Hackily global because its used in other .c file(s)
+char *jamEntrypoint = NULL;		// action entrypoint. Hackily global because its used in other .c file(s) (move to common.c/h)
 
 // Common declares end
+
+char *includedTable[MAX_INCLUDE];
+char *fileToInclude = (char *) calloc(1, 4096);
 
 JAM *initJam();
 int processJam(char *jamName, char *jamEntrypoint, JAMBUILDER *jb);
 int control(int startIx, char *tableName);
 
 #define MAX_TEMPLATES 10000
-#define JAMBUILDERPATH ""
 
 int isASCII(const char *data, size_t size)
 {
@@ -70,8 +73,7 @@ int main(int argc, char *argv[]) {
 	char **cgivars ;
 	char *jamName = NULL;
 
-	logMsg(LOGINFO, "--------------------------------------------------------------------------");
-	logMsg(LOGINFO, "Starting. argc is %d", argc);
+	// Do NOT log anything until char documentRoot is set or it will end up in /tmp/ !!!
 
 	if (argc == 3) {		// manual eg: /path/to/jam /path/to/documentroot /path/to/jamfile
 		setenv("REQUEST_METHOD", "GET", 1);
@@ -86,6 +88,15 @@ int main(int argc, char *argv[]) {
 		free(tmp);
 	}
 
+	documentRoot = getenv("DOCUMENT_ROOT");
+
+	// Set up logging path
+	logFileName = (char *) calloc(1, 4096);	// defined in log.c/h
+	sprintf(logFileName, "%s/jam/log.dat", documentRoot);
+ 
+	logMsg(LOGINFO, "--------------------------------------------------------------------------");
+	logMsg(LOGINFO, "Starting. argc is %d", argc);
+
 	// Output headers to prevent caching
 	emitHeader("Cache-Control: no-store, must-revalidate, max-age=0");
 	emitHeader("Pragma: no-cache");
@@ -94,10 +105,12 @@ int main(int argc, char *argv[]) {
 	emitHeader("Content-type: text/html; charset=UTF-8");
 
 	cgivars = getcgivars() ;
-	for (int i=0; cgivars[i]; i+= 2) {
+	for (int i = 0; cgivars[i]; i+= 2) {
 		logMsg(LOGDEBUG, "Parameter [%s] = [%s]", cgivars[i], cgivars[i+1]) ;
+		cmdSeqnum += strlen(cgivars[i]);
+		cmdSeqnum += strlen(cgivars[i+1]);
 
-		if (!strcmp(cgivars[i], "OobDataRequested"))
+		if (!strcmp(cgivars[i], "oobDataRequested"))
 			oobDataRequested = 1;
 		if (!strcmp(cgivars[i], "jam")) {
 			logMsg(LOGDEBUG, "Found jam parameter");
@@ -114,17 +127,36 @@ int main(int argc, char *argv[]) {
 //			logMsg(LOGMICRO, "Initializing startup variable %s with value %s", assignVar->name, assignVar->portableValue);
 			assignVar->source = strdup("prefill");
 			assignVar->debugHighlight = 1;
-			for (int i = 0; i < MAX_VAR; i++) {
-				if (!var[i]) {
-					var[i] = assignVar;
-					break;
-				}
-			}
+			addVar(assignVar);
 		}
 	}
-	return(processJam(jamName, jamEntrypoint, NULL));
+
+	// Intialize random number generator and our loop sequence number
+	timeval t1;
+	gettimeofday(&t1, NULL);
+	srand((t1.tv_usec * t1.tv_sec) + cmdSeqnum);	// both sec and usec
+	cmdSeqnum = (rand() % 999999);
+	logMsg(LOGINFO, "Random cmdSeqnum is %d", cmdSeqnum);
+
+	processJam(jamName, jamEntrypoint, NULL);
 	// Cleanup
+	free(jamName);
+	for (int i = 0; cgivars[i]; i++)
+		free(cgivars[i]);
+	// Free var and jam arrays
+    for (int i = 0; i < MAX_VAR; i++) {
+        if (var[i]) {
+			deleteVar(var[i]);
+        }
+    }
+	freeJamArray();
 	free(jamEntrypoint);
+	free(fileToInclude);
+	for (int i = 0; i < MAX_INCLUDE; i++) {
+		if (includedTable[i] == NULL)
+			break;
+		free(includedTable[i]);
+	}
 	if (conn)
 		closeDB();
 }
@@ -159,8 +191,7 @@ int jamBuilder(char *jamName, char *jEntrypoint, JAMBUILDER *jb) {
 		jamEntrypoint = strdup(jEntrypoint);	
 
 	char *fullJamName = (char *) calloc(1, 4096);
-	sprintf(fullJamName, JAMBUILDERPATH);
-	strcat(fullJamName, jamName);
+	strcpy(fullJamName, jamName);
 	jamIx = 0;
 
 	logMsg(LOGDEBUG, "jamBuilder requesting jam [%s] and action [%s]", fullJamName, jamEntrypoint);
@@ -172,6 +203,9 @@ int jamBuilder(char *jamName, char *jEntrypoint, JAMBUILDER *jb) {
 	}
 	if (savEntrypoint)
 		jamEntrypoint = strdup(savEntrypoint);	
+
+	freeJamArray();
+
 	memcpy(jam, tmpJam, (sizeof(JAM *) * MAX_JAM));
 	jamIx = tmpJamIx;
 	free(fullJamName);
@@ -186,7 +220,6 @@ int processJam(char *jamName, char *jamEntrypoint, JAMBUILDER *jb) {
 	char *tmp = (char *) calloc(1, 4096);
 	TAGINFO *tinfo[MAX_TEMPLATES];
 
-	documentRoot = getenv("DOCUMENT_ROOT");
 	logMsg(LOGINFO, "DOCUMENT_ROOT is %s", documentRoot);
 
 	if (jamEntrypoint)
@@ -211,34 +244,87 @@ int processJam(char *jamName, char *jamEntrypoint, JAMBUILDER *jb) {
 
 int sanity = 0;
 	while (1) {
-if (++sanity > 100) { emitStd("Overflow in main!"); break; }
+if (++sanity > 100) { emitStd("Sanity check - overflow in processJam()!"); break; }
 		TAGINFO *tagInfo = getTagInfo(jamBuf, "@include");
 		if (tagInfo == NULL)
 			break;
-		// Read in the include file
-		sprintf(tmp, "%s/%s", documentRoot, tagInfo->content);
-		logMsg(LOGINFO, "including @INCLUDE file %s", tmp);
-		std::ifstream includeFile (tmp, std::ifstream::binary);
-		if (!includeFile) {
-			char *error = (char *) calloc(1, 4096);
-			sprintf(error, "@include : cant find file %s", tmp);
-			logMsg(LOGFATAL, "%s", error);
-			die(error);
+
+		char *includeType = getWordAlloc(tagInfo->content, 1, " \n");	// either 'once', 'standalone' or a filename
+		char *incl = getWordAlloc(tagInfo->content, 2, " \n");	// either the file or empty
+		int isOnce = 0;
+		int isStandalone = 0;
+		if (!includeType) {
+			logMsg(LOGFATAL, "@include : must specify a file to include");
+			return(-1);
 		}
-		includeFile.seekg (0, includeFile.end);
-		int length = includeFile.tellg();
-		includeFile.seekg (0, includeFile.beg);
-		char *includeBuf = (char *) calloc(1, length+1);
-		if (!includeBuf) {
-			sprintf(tmp, "cant calloc memory to @include %s", tagInfo->content);
-			logMsg(LOGFATAL, "%s", tmp);
-			die(tmp);
+		if ((!strcmp(includeType, "once")) || (!strcmp(includeType, "standalone"))) {
+			if (!strcmp(includeType, "standalone"))
+				isStandalone = 1;
+			if (!strcmp(includeType, "once"))
+				isOnce = 1;
+			if (incl) strcpy(fileToInclude, incl);
+			else {
+				logMsg(LOGFATAL, "@include once/standalone : must specify a file to include");
+				return(-1);
+			}
+		} else
+			strcpy(fileToInclude, includeType);
+		free(includeType);
+		if (incl) free(incl);
+		char *includeBuf = NULL;
+
+		// Check for 'once' or 'standalone' include
+		int doInclude = 1;
+		for (int i = 0; i < MAX_INCLUDE; i++) {
+			if (includedTable[i] != NULL) {
+				if (!strcmp(includedTable[i], fileToInclude)) {
+					logMsg(LOGDEBUG, "included file [%s] has been included before", fileToInclude);
+					if (isOnce) {
+						logMsg(LOGDEBUG, "once flag is SET. It will be EXcluded");
+						doInclude = 0;
+						break;
+					}
+				}
+			}
+			if (includedTable[i] == NULL) {
+				includedTable[i] = strdup(fileToInclude);
+				logMsg(LOGDEBUG, "included file [%s] has NOT been included before", fileToInclude);
+				break;
+			}
 		}
-   		includeFile.read(includeBuf, length);
-   		includeBuf[length] = 0;
-	    includeFile.close();
-		//emitStd("[file=%s][len=%d][includeBuf=%s][1st=%c][strlen=%d]", tmp, length, includeBuf, includeBuf[0], (int) strlen(includeBuf));
-		//exit(0);
+		if (doInclude) {
+			// Read in the include file
+			sprintf(tmp, "%s/%s", documentRoot, fileToInclude);
+			logMsg(LOGINFO, "possibly including @INCLUDE file %s", tmp);
+			std::ifstream includeFile (tmp, std::ifstream::binary);
+			if (!includeFile) {
+				logMsg(LOGFATAL, "@include : cant find file %s", tmp);
+				return(-1);
+			}
+			includeFile.seekg (0, includeFile.end);
+			int length = includeFile.tellg();
+			includeFile.seekg (0, includeFile.beg);
+			includeBuf = (char *) calloc(1, length+1);
+			if (!includeBuf) {
+				logMsg(LOGFATAL, "cant calloc memory to @include %s", fileToInclude);
+				return(-1);
+			}
+			includeFile.read(includeBuf, length);
+			includeBuf[length] = 0;
+			includeFile.close();
+			// Exclude any standalones this include may have
+			logMsg(LOGDEBUG, "as this is an included file [%s] its own standalone includes (if any) must be disabled", fileToInclude);
+			char *bufPos = includeBuf;
+			while (char *p = strstr(bufPos, "@include ")) {
+				getWord(tmp, p, 2, " \t");
+				if (!strcmp(tmp, "standalone")) {
+					*(p + 1) = 'e';
+					*(p + 2) = 'x';
+				}
+				bufPos += strlen("@xxclude ");
+			}
+		} else
+			includeBuf = strdup("");
 
 		// Include the include
 		char *newJam = (char *) calloc(1, (strlen(jamBuf) + strlen(includeBuf) + 1));
@@ -249,9 +335,11 @@ if (++sanity > 100) { emitStd("Overflow in main!"); break; }
 		logMsg(LOGDEBUG, "Splicing included file into jam. 1stpart=%d, include=%d, 2ndpart=%d<br>", (int)strlen(jamBuf), (int)strlen(includeBuf), (int)strlen((tagInfo->endCurlyPos + strlen(endJam))));
 		free(jamBuf);
 		jamBuf = newJam;
+		free(includeBuf);
 		free(tagInfo->name);
 		free(tagInfo->content);
 		free(tagInfo);
+		logMsg(LOGDEBUG, "--------------------------------");
 	}
 
 	// Preprocess templates
@@ -282,6 +370,9 @@ if (++sanity > 100) { emitStd("Overflow in main!"); break; }
 				jamBuf = newBuf;
 			}
 			free(searchFor);
+			free(tinfo[tagIx]->name);
+			free(tinfo[tagIx]->content);
+			free(tinfo[tagIx]);
 			tagIx++;
 		}
 //logMsg(LOGDEBUG, "BUF1 with expanded templates = =====================> [%s] <========================", jamBuf);
@@ -372,7 +463,7 @@ logMsg(LOGERROR, "Remember templates stripping is not accurate..................
 			ix++;
 		}
 		if (!foundEntrypoint) {
-			logMsg(LOGERROR, "jam entrytpoint for requested @action [%s] was not found", jamEntrypoint);
+			logMsg(LOGERROR, "jam entrypoint for requested @action [%s] was not found", jamEntrypoint);
 			return(-1);
 		}
 	}
@@ -405,7 +496,7 @@ logMsg(LOGERROR, "Remember templates stripping is not accurate..................
 			oobJamData();
 		endStd(urlEncodeRequired);
 		logMsg(LOGINFO, "Normal exit");
-		exit(0);
+		//exit(0);
 	} else {
 		logMsg(LOGINFO, "Normal return");
 	}
@@ -413,27 +504,34 @@ logMsg(LOGERROR, "Remember templates stripping is not accurate..................
 
 int control(int startIx, char *defaultTableName) {
 //	emitStd("...ENTERING %d...", startIx);
+	int res = 0;
 	int ix = startIx;
 	char *tmp = (char *) calloc(1, 4096);
 	while (jam[ix]) {
 		char *cmd = jam[ix]->command;
 		char *args = NULL;
 		char *rawData = NULL;
+		res = 0;
+
+		// Expand any {{values}} in the argument string with the current values
+
+		args = expandCurliesInString(jam[ix]->args, defaultTableName);
+		rawData = expandCurliesInString(jam[ix]->rawData, defaultTableName);
+		free(jam[ix]->args);
+		free(jam[ix]->rawData);
+		jam[ix]->args = args;
+		jam[ix]->rawData = rawData;
+
 		if ((strlen(cmd)) && (cmd[0] == '@')) {
-			// Expand any {{values}} in the argument string with the current values
-			args = expandCurliesInString(jam[ix]->args, defaultTableName);
-			rawData = expandCurliesInString(jam[ix]->rawData, defaultTableName);
-			free(jam[ix]->args);
-			free(jam[ix]->rawData);
-			jam[ix]->args = args;
-			jam[ix]->rawData = rawData;
 			logMsg(LOGMICRO, "Command loop processing command [%s] args [%s] (ix=%d)", cmd, args, ix);
-			//clearControlVars();					// remove any existing control vars
+			clearControlVars();					// remove any existing control vars
 			jamArgs2ControlVars(ix, args);		// create/update vars from args 
 		}
+		//args = jam[ix]->args;
+		//rawData = jam[ix]->rawData;
 
-		args = jam[ix]->args;
-		rawData = jam[ix]->rawData;
+
+// First - check the control flag words
 
 //		-----------------------------------------
 		if (!strcmp(cmd, "@literal")) {
@@ -442,7 +540,7 @@ int control(int startIx, char *defaultTableName) {
 			if (args) {
 				getWord(tmp, args, 1, " \t");
 				if (*tmp) {
-					if ((!strcmp(tmp, "off")) || (!strcmp(tmp, "0")))
+					if ( (!strcasecmp(tmp, "off")) || (!strcmp(tmp, "0")) || (!strcmp(tmp, "false")) )
 						literal = 0;
 				}
 			}
@@ -461,6 +559,49 @@ int control(int startIx, char *defaultTableName) {
 			}
 			emitStd(jam[ix]->trailer);
 		}
+
+//		-----------------------------------------
+		if (!strcmp(cmd, "@strict")) {
+//		-----------------------------------------
+			strict = 1;
+			if (args) {
+				getWord(tmp, args, 1, " \t");
+				if (*tmp) {
+					if ( (!strcasecmp(tmp, "off")) || (!strcmp(tmp, "0")) || (!strcmp(tmp, "false")) )
+						strict = 0;
+				}
+			}
+			if (strict)
+				logMsg(LOGDEBUG, "@strict set to ON");
+			else
+				logMsg(LOGDEBUG, "@strict set to OFF");
+		}
+
+//		-----------------------------------------
+		if (!strcmp(cmd, "@notify")) {
+//		-----------------------------------------
+			if (args) {
+				int cnt = 1;
+				notify = 0;
+				while (1) {
+					getWord(tmp, args, cnt++, " \t");
+					if (!strlen(tmp))
+						break;
+					if ( (!strcasecmp(tmp, "off")) || (!strcmp(tmp, "0")) || (!strcmp(tmp, "false")) )
+						notify = 0;
+					else if (!strcasecmp(tmp, "fail"))
+						notify |= NOTIFY_FAIL;
+					else if (!strcasecmp(tmp, "ok"))
+						notify |= NOTIFY_OK;
+					else if (!strcasecmp(tmp, "info"))
+						notify |= NOTIFY_INFO;
+					else if (!strcasecmp(tmp, "warn"))
+						notify |= NOTIFY_WARN;
+				}
+			}
+		}
+
+//	Second - all the if-elses
 
 //		-----------------------------------------
 		if (!(strcmp(cmd, "@!begin"))) {
@@ -488,25 +629,46 @@ int control(int startIx, char *defaultTableName) {
 			if (args) {
 				getWord(tmp, args, 1, " \t");
 				if (*tmp) {
-					if (!strcmp(tmp, "dropdown"))
-						wordHtmlDropdown(ix, defaultTableName);
-					else if ( (!strcmp(tmp, "input")) || (!strcmp(tmp, "date")) )
-						wordHtmlInput(ix, defaultTableName);
-					else if (!strcmp(tmp, "inp"))
-						wordHtmlInp(ix, defaultTableName);
-					else if (!strcmp(tmp, "gridinp"))
-						wordHtmlGridInp(ix, defaultTableName);
+					if (!strcmp(tmp, "container"))
+						res = wordHtmlContainer(ix, defaultTableName);
+					if (!strcmp(tmp, "form"))
+						res = wordHtmlForm(ix, defaultTableName);
+					if (!strcmp(tmp, "gridrow"))
+						res = wordHtmlGridrow(ix, defaultTableName);
+					if (!strcmp(tmp, "gridcol"))
+						res = wordHtmlGridcol(ix, defaultTableName);
 
+					else if (!strcmp(tmp, "dropdown"))
+						res = wordHtmlDropdown(ix, defaultTableName);
+					else if (!strcmp(tmp, "filter"))
+						res = wordHtmlFilter(ix, defaultTableName);
+					else if ( (!strcmp(tmp, "text")) || (!strcmp(tmp, "date")) )
+						res = wordHtmlInput(ix, defaultTableName);
+
+					else if (!strcmp(tmp, "input"))
+						res = wordHtmlInputOld(ix, defaultTableName);
+					else if (!strcmp(tmp, "inp"))
+						res = wordHtmlInp(ix, defaultTableName);
+					else if (!strcmp(tmp, "gridinp"))
+						res = wordHtmlGridInp(ix, defaultTableName);
+
+					else if (!strcmp(tmp, "tabs"))
+						res = wordHtmlTabs(ix, defaultTableName);
+
+					else if (!strcmp(tmp, "radio"))
+						res = wordHtmlRadio(ix, defaultTableName);
+					else if (!strcmp(tmp, "checkbox"))
+						res = wordHtmlCheckbox(ix, defaultTableName);
 					else if (!strcmp(tmp, "textarea"))
-						wordHtmlTextarea(ix, defaultTableName);
+						res = wordHtmlTextarea(ix, defaultTableName);
 					else if (!strcmp(tmp, "button"))
-						wordHtmlButton(ix, defaultTableName);
+						res = wordHtmlButton(ix, defaultTableName);
 					else if (!strcmp(tmp, "breakpoint"))
-						wordHtmlBreakpoint(ix, defaultTableName);
+						res = wordHtmlBreakpoint(ix, defaultTableName);
 					else if (!strcmp(tmp, "sys"))
-						wordHtmlSys(ix, defaultTableName);
+						res = wordHtmlSys(ix, defaultTableName);
 					else if (!strcmp(tmp, "js"))
-						wordHtmlJs(ix, defaultTableName);
+						res = wordHtmlJs(ix, defaultTableName);
 				}
 			}
 //		-----------------------------------------
@@ -516,7 +678,7 @@ int control(int startIx, char *defaultTableName) {
 				getWord(tmp, args, 1, " \t");
 				if (*tmp) {
 					if (!strcmp(tmp, "item"))
-						wordDatabaseClearItem(ix, defaultTableName);
+						res = wordDatabaseClearItem(ix, defaultTableName);
 				}
 			}
 //		-----------------------------------------
@@ -526,15 +688,15 @@ int control(int startIx, char *defaultTableName) {
 				getWord(tmp, args, 1, " \t");
 				if (*tmp) {
 					if (!strcmp(tmp, "database"))
-						wordDatabaseNewDatabase(ix, defaultTableName);
+						res = wordDatabaseNewDatabase(ix, defaultTableName);
 					else if (!strcmp(tmp, "table"))
-						wordDatabaseNewTable(ix, defaultTableName);
+						res = wordDatabaseNewTable(ix, defaultTableName);
 					else if (!strcmp(tmp, "index"))
-						wordDatabaseNewIndex(ix, defaultTableName);
+						res = wordDatabaseNewIndex(ix, defaultTableName);
 					else if (!strcmp(tmp, "item"))
-						wordDatabaseNewItem(ix, defaultTableName);
+						res = wordDatabaseNewItem(ix, defaultTableName);
 					else if (!strcmp(tmp, "list"))
-						wordMiscNewList(ix, defaultTableName);
+						res = wordMiscNewList(ix, defaultTableName);
 				}
 			}
 //		-----------------------------------------
@@ -545,13 +707,13 @@ int control(int startIx, char *defaultTableName) {
 				if (*tmp) {
 					logMsg(LOGDEBUG, "@remove requested");
 					if (!strcmp(tmp, "database"))
-						wordDatabaseRemoveDatabase(ix, defaultTableName);
+						res = wordDatabaseRemoveDatabase(ix, defaultTableName);
 					else if (!strcmp(tmp, "table"))
-						wordDatabaseRemoveTable(ix, defaultTableName);
+						res = wordDatabaseRemoveTable(ix, defaultTableName);
 					else if (!strcmp(tmp, "index"))
-						wordDatabaseRemoveIndex(ix, defaultTableName);
+						res = wordDatabaseRemoveIndex(ix, defaultTableName);
 					else if (!strcmp(tmp, "item"))
-						wordDatabaseRemoveItem(ix, defaultTableName);
+						res = wordDatabaseRemoveItem(ix, defaultTableName);
 				}
 			}
 //		-----------------------------------------
@@ -562,7 +724,7 @@ int control(int startIx, char *defaultTableName) {
 				if (*tmp) {
 					logMsg(LOGDEBUG, "@update requested");
 					if (!strcmp(tmp, "item"))
-						wordDatabaseUpdateItem(ix, defaultTableName);
+						res = wordDatabaseUpdateItem(ix, defaultTableName);
 				}
 			}
 //		-----------------------------------------
@@ -573,7 +735,7 @@ int control(int startIx, char *defaultTableName) {
 				if (*tmp) {
 					logMsg(LOGDEBUG, "@amend requested");
 					if (!strcmp(tmp, "item"))
-						wordDatabaseAmendItem(ix, defaultTableName);
+						res = wordDatabaseAmendItem(ix, defaultTableName);
 				}
 			}
 //		-----------------------------------------
@@ -583,19 +745,19 @@ int control(int startIx, char *defaultTableName) {
 			getWord(tmp, args, 1, " \t");
 			if (*tmp) {
 				if (!strcmp(tmp, "databases"))
-					wordDatabaseListDatabases(ix, defaultTableName);
+					res = wordDatabaseListDatabases(ix, defaultTableName);
 				else if (!strcmp(tmp, "tables"))
-					wordDatabaseListTables(ix, defaultTableName);
+					res = wordDatabaseListTables(ix, defaultTableName);
 			}
 		}
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@describe"))) {
 //		-----------------------------------------
-			wordDatabaseDescribe(ix, defaultTableName);
+			res = wordDatabaseDescribe(ix, defaultTableName);
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@database"))) {
 //		-----------------------------------------
-			wordDatabaseDatabase(ix, defaultTableName);
+			res = wordDatabaseDatabase(ix, defaultTableName);
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@skip"))) {
 //		-----------------------------------------
@@ -603,11 +765,11 @@ int control(int startIx, char *defaultTableName) {
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@get"))) {
 //		------------------------------------
-			wordDatabaseGet(ix, defaultTableName);
+			res = wordDatabaseGet(ix, defaultTableName);
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@sql"))) {
 //		------------------------------------
-			wordDatabaseSql(ix, defaultTableName);
+			res = wordDatabaseSql(ix, defaultTableName);
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@each"))) {
 //		-------------------------------------
@@ -626,7 +788,6 @@ int control(int startIx, char *defaultTableName) {
 					fillVarDataTypes(listVar, p);
 					logMsg(LOGMICRO, "@each (list %s) starting recurse", listName);
 					cmdSeqnum++;		// up the unique sequence number
-					setVarAsNumber("sys.control.sequence", cmdSeqnum);
 					control((ix + 1), defaultTableName);
 					logMsg(LOGMICRO, "@each (list %s) ended recurse", listName);
 					p = (char *) listNext(listName);
@@ -640,25 +801,26 @@ int control(int startIx, char *defaultTableName) {
 			} else {		// its a db table
 				logMsg(LOGDEBUG, "Its a db, not a list. do the select()");
 				char *givenTableName = (char *) calloc(1, 4096);
-				MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 999999);
+				MYSQL_RES *sqlres = doSqlSelect(ix, defaultTableName, &givenTableName, 999999);
 				logMsg(LOGMICRO, "Create the result set");
-				SQL_RESULT *rp = sqlCreateResult(givenTableName, res);
+				SQL_RESULT *rp = sqlCreateResult(givenTableName, sqlres);
 				logMsg(LOGDEBUG, "Get each row from the result set");
 				while (sqlGetRow2Vars(rp) != SQL_EOF) {
 					emitStd(jam[ix]->trailer);
 					logMsg(LOGMICRO, "@each (db table %s) starting recurse", givenTableName);
 					cmdSeqnum++;		// up the unique sequence number
-					setVarAsNumber("sys.control.sequence", cmdSeqnum);
-					control((ix + 1), givenTableName);
+					control((ix + 1), givenTableName);				// recurse into the item
 					logMsg(LOGMICRO, "@each (db table %s) ended recurse", givenTableName);
 				}
+				free(rp->tableName);
+				free(rp);
 				// Finished. Now advance to the matching @end and emit its trailer
 				int depth = 0;
 				int sanity = 0;
 				while (jam[++ix]) {
 					if (++sanity > 1000) {
 						logMsg(LOGERROR, "Endless looping finding @end for @each in control()");
-						return(-1);
+						res = -1;
 					}
 					if (!strcmp(jam[ix]->command, "@end")) {
 						if (depth == 0)
@@ -678,8 +840,9 @@ int control(int startIx, char *defaultTableName) {
 
 				if (jam[ix])
 					emitStd(jam[ix]->trailer);
-				mysql_free_result(res);
+				mysql_free_result(sqlres);
 				free(givenTableName);
+				free(listName);
 			}
 //		-------------------------------------
 		} else if (!(strcmp(cmd, "@runaction"))) {
@@ -744,27 +907,28 @@ int control(int startIx, char *defaultTableName) {
 			// Return from an each-end or action-end loop
 //emitStd("...RETURNING %d...", ix);
 			free(tmp);
+			clearControlVars();					// remove any existing control vars
 			return(0);
 //		----------------------------------------
 		} else if (!(strcmp(cmd, "@Xinclude"))) {
 //		----------------------------------------
-			wordMiscInclude(ix, defaultTableName);
+			res = wordMiscInclude(ix, defaultTableName);
 //		--------------------------------------
 		} else if (!(strcmp(cmd, "@count"))) {
 //		--------------------------------------
-			wordMiscCount(ix, defaultTableName);
+			res = wordMiscCount(ix, defaultTableName);
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@sum"))) {
 //		------------------------------------
-			wordMiscSum(ix, defaultTableName);
+			res = wordMiscSum(ix, defaultTableName);
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@email"))) {
 //		------------------------------------
-			wordMiscEmail(ix, defaultTableName);
+			res = wordMiscEmail(ix, defaultTableName);
 //		---------------------------
 		} else if (!(strcmp(cmd, "@type"))) {
 //		------------------------------------
-			wordMiscType(ix, defaultTableName);
+			res = wordMiscType(ix, defaultTableName);
 //		---------------------------
 
 		} else if (cmd[0] != '@') {
@@ -788,17 +952,16 @@ int control(int startIx, char *defaultTableName) {
 				emitStd(result string)		*/
 
 			// data = LHS to start with
+
 			char *data = (char *) calloc(1, 4096);
 			strcpy(data, cmd);							// eg: [mem.group_count]
 //emitStd("{AWAY:%s and %s}",cmd, data);
-
 			char *resultString = (char *) calloc(1, 4096);
 			char *fullLine = (char *) calloc(1, 4096);
 			strcpy(fullLine, cmd);
 //emitStd("(CHK:%s and %s)", fullLine, args);
 			if (args)
 				strcpy(fullLine, rawData);
-			strTrim(fullLine);
 //emitStd("T=[%s]\n",fullLine);
 			//sprintf(fullLine, "%s%s", cmd, args);			// eg: [mem.group_count][= stock_group.count]
 			strcpy(data, fullLine);
@@ -887,6 +1050,48 @@ int control(int startIx, char *defaultTableName) {
 		} else {
 //		--------
 			emitStd(jam[ix]->trailer);
+		}
+
+//@@TODO HACK ALERT!
+logMsg(LOGDEBUG, "RES is %d", res);
+if ((res != 0) && (res != -1)) res = 0;
+
+		// Check if we're overriding the regular notify for just this word
+		unsigned int thisNotify = notify;
+		if (isVar("sys.control.notify")) {
+			thisNotify = 0;
+			char *pNotify = strdup(getVarAsString("sys.control.notify"));
+			int nCnt = 1;
+			while (1) {
+				char *opt = getWordAlloc(pNotify, nCnt++, ",");
+				if ((!opt) || (!strlen(opt)))
+					break;
+				logMsg(LOGDEBUG, "notify override set to [%s]", opt);
+				if (!strcasecmp(opt, "ok")) {
+					logMsg(LOGDEBUG, "notify override or equalled [%s]", opt);
+					thisNotify |= NOTIFY_OK;
+				}
+				else if (!strcasecmp(opt, "fail"))
+					thisNotify |= NOTIFY_FAIL;
+				else if (!strcasecmp(opt, "info"))
+					thisNotify |= NOTIFY_INFO;
+				else if (!strcasecmp(opt, "warn"))
+					thisNotify |= NOTIFY_WARN;
+				free(opt);
+			}
+			free(pNotify);
+		}
+
+		// Check fail
+		if (res == 0) {								// ok
+			if (thisNotify & NOTIFY_OK)				// we said we want to be told about ok
+				if (notifyStatus == 0)				// no other status found already
+					notifyStatus = NOTIFY_OK;		// set to ok
+		} else {
+			if (thisNotify & NOTIFY_FAIL)			// we said we want to be told about fail
+				notifyStatus = NOTIFY_FAIL;			// set to fail
+			if (strict)
+				return(-1);
 		}
 
 		// Next

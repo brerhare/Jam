@@ -1,6 +1,7 @@
 {{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
 
-{{@database befriending_wireflydesign_com}}
+{{@include /jam/run/menu.jam}}
 
 <!-- Template defines -->
 {{@template DESCRIPTION Befrienders}}
@@ -21,31 +22,31 @@
 
 <!-- Template defines for the form input component -->
 {{@template FORMINPUT
-	{{@html input text global.forename medium 'Forename'}}
-	{{@html input text global.surname medium 'Surname'}}
-	{{@html input text befriender.gender medium 'gender'}}
-	{{@html input text befriender.dob medium 'dob'}}
-	{{@html input text befriender.enquired medium 'enquired'}}
-	{{@html input text befriender.training_completed medium 'training_completed'}}
-	{{@html input text befriender.volunteer tiny 'volunteer'}}
-	{{@html input text befriender.volunteer_policy medium 'volunteer_policy'}}
-	{{@html input text befriender.match_limit medium 'match_limit'}}
-	{{@html input text befriender.driving_licence medium 'driving_licence'}}
-	{{@html input text befriender.car_insurance medium 'car_insurance'}}
-	{{@html input dropdown befriender.users_id      user.global_id medium 'Coordinator'}}
-	{{@html input text befriender.vol_status medium 'vol_status'}}
-	{{@html input text befriender.notes medium 'notes'}}
-	{{@html input text befriender.idcard medium 'idcard'}}
-	{{@html input text befriender.application_notes medium 'application_notes'}}
-	{{@html input text befriender.emergency_name medium 'emergency_name'}}
-	{{@html input text befriender.emergency_phone medium 'emergency_phone'}}
-	{{@html input text befriender.emergency_relationship medium 'emergency_relationship'}}
-	{{@html input text befriender.befriender_photo_path medium 'Upload Photo'}}
-	{{@html input text befriender.smoker medium 'smoker'}}
-	{{@html input text befriender.smoke_car medium 'smoke_car'}}
-	{{@html input text befriender.young_smoker medium 'young_smoker'}}
-	{{@html input dropdown befriender.heardabout_id  heardabout.from_where   medium  'Heard from where'}}
-	{{@html input dropdown befriender.employment_status_id   employment_status.description   medium   'Employment status' }}
+	{{@html text field=global.forename size=medium label='Forename'}}
+	{{@html text field=global.surname size=medium label='Surname'}}
+	{{@html text field=befriender.gender size=medium label='Gender'}}
+	{{@html text field=befriender.dob size=medium label='dob'}}
+	{{@html text field=befriender.enquired size=medium label='enquired'}}
+	{{@html text field=befriender.training_completed size=medium label='training_completed'}}
+	{{@html text field=befriender.volunteer size=tiny label='volunteer'}}
+	{{@html text field=befriender.volunteer_policy size=medium label='volunteer_policy'}}
+	{{@html text field=befriender.match_limit size=medium label='match_limit'}}
+	{{@html text field=befriender.driving_licence size=medium label='driving_licence'}}
+	{{@html text field=befriender.car_insurance size=medium label='car_insurance'}}
+	{{@html dropdown field=befriender.users_id pickfield=user.global_id size=medium label='Coordinator'}}
+	{{@html text field=befriender.vol_status size=medium label='vol_status'}}
+	{{@html text field=befriender.notes size=medium label='notes'}}
+	{{@html text field=befriender.idcard size=medium label='idcard'}}
+	{{@html text field=befriender.application_notes size=medium label='application_notes'}}
+	{{@html text field=befriender.emergency_name size=medium label='emergency_name'}}
+	{{@html text field=befriender.emergency_phone size=medium label='emergency_phone'}}
+	{{@html text field=befriender.emergency_relationship size=medium label='emergency_relationship'}}
+	{{@html text field=befriender.befriender_photo_path size=medium label='Upload Photo'}}
+	{{@html text field=befriender.smoker size=medium label='smoker'}}
+	{{@html text field=befriender.smoke_car size=medium label='smoke_car'}}
+	{{@html text field=befriender.young_smoker size=medium label='young_smoker'}}
+	{{@html dropdown field=befriender.heardabout_id pickfield=heardabout.from_where size=medium label='Heard from where'}}
+	{{@html dropdown field=befriender.employment_status_id pickfield=employment_status.description size=medium label='Employment status' }}
 }}
 
 
@@ -65,10 +66,10 @@
 		<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
 			<tr>
 				HEADINGS
-				<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('maintain', ' ', 'content')"> <i class="uk-icon-plus"></i> New</button> </th>
+				<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('maintain', [], 'content')"> <i class="uk-icon-plus"></i> New</button> </th>
 			</tr>
 {{@each TABLE}}
-			<tr class="rowHighlight" onClick="runAction('maintain', 'TABLE.id={{id}}', 'content')">
+			<tr class="rowHighlight" onClick="runAction('maintain', ['TABLE.id={{id}}'], 'content')">
 				COLUMNS
 				<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{DELETEFIELD}}')"> <i class="uk-icon-trash"></i></button> </td>
 			</tr>
@@ -81,7 +82,7 @@ function confirmDelete(id, displayInfo) {
 	window.event.cancelBubble = true;	// Prevent any further events
 	var result = confirm('Confirm delete of item ' + displayInfo);
 	if (result)
-		runAction('delete', 'TABLE.id='+id, '', runJam);	
+		runAction('delete', ['TABLE.id='+id], '', runJam);	
 }
 </script>
 
@@ -113,7 +114,7 @@ function confirmDelete(id, displayInfo) {
 					<br>
 					<center>
 						{{@html button Save primary medium
-							runAction('update', 'inputForm', '', runJam)
+							runAction('update', ['inputForm'], '', runJam)
 						}}
 						{{@html button Cancel primary medium
 							runJam();

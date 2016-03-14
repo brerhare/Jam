@@ -48,15 +48,15 @@
                     ),
                 ),
 
-                //array('label' => 'Plugins', 'url' => '#', 'visible' => !Yii::app()->user->isGuest,
-                    //'items' => array(
+                array('label' => 'Plugins', 'url' => '#', 'visible' => !Yii::app()->user->isGuest,
+                    'items' => array(
                         //array('label' => 'Products', 'url' => 'https://plugin.wireflydesign.com/product/backend.php/site/demo1Direct', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
-                        //array('label' => 'Blog', 'url' => 'https://plugin.wireflydesign.com/news/backend.php/site/demo1Direct', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
-                        //array('label' => 'Newsletters', 'url' => 'https://plugin.wireflydesign.com/mailer/backend.php/site/demo1Direct', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
-                        //array('label' => 'Events', 'url' => 'https://plugin.wireflydesign.com/event/backend.php/site/demo1Direct', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+                        array('label' => 'Blog', 'url' => 'https://plugin.wireflydesign.com/news/backend.php/site/beircDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+                        array('label' => 'Newsletters', 'url' => 'https://plugin.wireflydesign.com/mailer/backend.php/site/beircDirect', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
+						array('label' => 'Events', 'url' => 'https://plugin.wireflydesign.com/event/backend.php/site/login2/?sid=' . Yii::app()->session['admin_user_sid'], 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
                         //array('label' => 'Tickets', 'url' => 'https://plugin.wireflydesign.com/ticket/backend.php/site/demo1Direct', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
-                    //),
-                //),
+                    ),
+                ),
 
                 array('label' => 'Downloads', 'url' => '#', 'visible' => !Yii::app()->user->isGuest,
                     'items' => array(
@@ -70,6 +70,7 @@
                 array('label' => 'Settings', 'url' => array('/jellySetting/admin'), 'visible' => !Yii::app()->user->isGuest),
                 array('label' => 'Login', 'url' => array('/site/login'), 'visible' => Yii::app()->user->isGuest),
                 array('label' => 'Logout', 'url' => array('/site/logout'), 'visible' => !Yii::app()->user->isGuest),
+				array('label' => 'Help', 'url' => 'http://www.knowledgebase.wireflydesign.com/?layout=index&page=jellyshell-website-basics', 'linkOptions' => array("target"=>"_blank"), 'visible' => !Yii::app()->user->isGuest),
                 //array('label' => 'Contact', 'url' => array('/site/contact'), 'visible' => Yii::app()->user->isGuest),
                 //array('label' => 'About', 'url' => array('/site/page', 'view' => 'about'), 'visible' => Yii::app()->user->isGuest),
             ),

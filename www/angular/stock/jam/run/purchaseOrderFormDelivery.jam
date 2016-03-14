@@ -1,0 +1,235 @@
+{{@version 0.0.1}}
+<!-- Purchase Order Deleveries -->
+
+<div class="uk-container uk-overflow-container uk-container-center">
+	<form name="purchaseOrderDeliveryForm" class="uk-form uk-form-horizontal">
+
+		<div class="uk-grid">
+
+			<div class="uk-width-4-10">
+				{{@html date field=mem.delivery_date size=medium label='Delivered Date'}}
+			</div>
+
+			<br>
+			<br>
+
+			<div class="uk-width-10-10">
+
+				<table id="lineitemTable" class="uk-table /*uk-table-striped*/ uk-table-condensed" style="border:1px solid #dddddd">
+				<thead>
+					<tr>										<!-- HEADING ROW --->
+						<th> </th>
+						<th> </th>
+						<th> Code </th>
+						<th style='max-width:185px;'> Product </th>
+						<th> Pack </th>
+						<th> Qty </th>
+						<th> Received </th>
+						<th> Cost </th>
+						<th> Received Cost </th>
+						<th> </th>
+						<th> </th>
+					</tr>
+					</thead>
+					<tbody name='deliverylinebody'> </tbody>
+				</table>
+
+			</div> <!-- uk-width-* -->
+		</div>	<!-- uk-grid -->
+
+	</form>
+
+</div>	<!-- uk-container -->
+
+
+{{@action showDeliveryLines}}
+<!-- All actionable lines -->
+	{{@each stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id, delivered_qty < pack_qty, order by id DESC}}
+		{{@get stock_container filter id = stock_supplier_order.container_id}}
+		{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
+		{{@get stock_pack filter id = stock_supplier_order_item.stock_pack_id}}
+		{{dline.id = stock_supplier_order_item.id}}
+		{{dline.code = stock_product.code}}
+		{{dline.pack = stock_pack.unit}}
+		{{dline.pack_qty = stock_supplier_order_item.pack_qty}}
+		{{dline.cost = stock_product.cost * stock_supplier_order_item.total_qty}}
+		{{dline.delcost = }}
+			<tr>
+				<td> {{@html text hidden field=dline.id group=unrecorded}} </td>
+				<td> </td>
+				<td> {{@html text disabled field=dline.code size=small group=unrecorded}} </td>
+				<td>  <input type='text' class='uk-form-width-' value='{{stock_product.name}}' disabled></td>
+				<td> {{@html text disabled field=dline.pack size=small group=unrecorded}} </td>
+				<td> {{@html text disabled field=dline.pack_qty size=mini group=unrecorded}} </td>
+				<td> {{@html text field=dline.pack_delqty size=mini group=unrecorded}} </td>
+				<td> {{@html text disabled field=dline.cost size=small group=unrecorded}} </td>
+				<td> {{@html text field=dline.delcost size=small group=unrecorded}} </td>
+				<td> </td>
+				<td> </td>
+			</tr>
+	{{@end}}
+
+<!-- Apply button line -->
+<tr>
+	<td colspan=9> </td>
+	<td>
+		{{@html button Apply success small
+			applyButtonClick();
+		}}
+	</td>
+
+
+</tr>
+
+<!-- Separator line -->
+<tr bgcolor='#eeeeee'>
+	<td </td>
+	<td> <b> Date</b> </td>
+	<td colspan=8> </td>
+</tr>
+
+<!-- Now all non-actionable lines -->
+	{{@each stock_supplier_order_item_delivery filter stock_supplier_order_id = stock_supplier_order.id, order by delivered_date DESC}}
+		{{@get stock_supplier_order_item filter id = stock_supplier_order_item_delivery.stock_supplier_order_item_id}}
+		{{@get stock_container filter id = stock_supplier_order.container_id}}
+		{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
+		{{@get stock_pack filter id = stock_supplier_order_item.stock_pack_id}}
+		{{dline.cost = stock_product.cost * stock_supplier_order_item.total_qty}}
+			<tr>
+				<td> {{@html text hidden field=stock_supplier_order_item_delivery.id group=recorded}} </td>
+				<td> {{@html text disabled field=stock_supplier_order_item_delivery.delivered_date size=small group=recorded}} </td>
+				<td>  <input type='text' class='uk-form-width-small' value='{{stock_product.code}}' disabled></td>
+				<td>  <input type='text' class='uk-form-width-' value='{{stock_product.name}}' disabled></td>
+				<td>  <input type='text' class='uk-form-width-small' value='{{stock_pack.unit}}' disabled></td>
+				<td>  <input type='text' class='uk-form-width-mini' value='{{stock_supplier_order_item.pack_qty}}' disabled></td>
+				<td>  <input type='text' class='uk-form-width-mini' value='{{stock_supplier_order_item_delivery.delivered_qty}}' disabled></td>
+				<td> {{@html text disabled field=dline.cost size=small group=recorded}} </td>
+				<td>  <input type='text' class='uk-form-width-small' value='{{stock_supplier_order_item_delivery.delivered_price}}' disabled></td>
+				<td>
+
+					{{@XXXXXhtml button Undo danger small}} <!-- @@TODO can fix this now that group ROW_ has been added to button? -->
+						<button type='button' class="uk-button uk-button-small uk-button-danger" onClick="undoButtonClick({{stock_supplier_order_item_delivery.id}})">
+							Undo
+						</button>
+				</td>
+				<td> </td>
+			</tr>
+	{{@end}}
+
+{{@end}}
+
+{{@action updateDelivered}}
+    // Update the stock item qty with this qty delivered
+    {{@get stock_supplier_order_item filter id = stock_supplier_order_item.id}}
+	{{stock_supplier_order_item.delivered_qty = stock_supplier_order_item.delivered_qty + qty}}
+    {{@amend item stock_supplier_order_item notify=ok}}
+    // Create the order delivered qty and price record
+	{{stock_supplier_order_item_delivery.delivered_qty = qty}}
+	{{stock_supplier_order_item_delivery.delivered_date = date}}
+	{{stock_supplier_order_item_delivery.delivered_price = price}}
+	{{stock_supplier_order_item_delivery.stock_supplier_order_id = stock_supplier_order.id}}
+	{{stock_supplier_order_item_delivery.stock_supplier_order_item_id = stock_supplier_order_item.id}}
+	{{@new item stock_supplier_order_item_delivery notify=ok}}
+    // Update the stock location qty (might not yet exist)
+    {{@get stock_supplier_order filter id = stock_supplier_order.id}}
+    {{@get stock_product_has_location filter stock_location_id = stock_supplier_order.location_id, stock_product_id = stock_supplier_order_item.stock_product_id}}
+    {{stock_product_has_location.onhand = stock_product_has_location.onhand + qty}}
+    {{@update item stock_product_has_location}}
+{{@end}}
+
+{{@action undoDelivered}}
+	// Pick up the delivery record
+	{{@get stock_supplier_order_item_delivery filter id = stock_supplier_order_item_delivery.id}}
+    // Update the stock item qty with this qty delivered
+	{{@get stock_supplier_order_item filter id = stock_supplier_order_item_delivery.stock_supplier_order_item_id}}
+	{{stock_supplier_order_item.delivered_qty = stock_supplier_order_item.delivered_qty - stock_supplier_order_item_delivery.delivered_qty}}
+	{{@amend item stock_supplier_order_item notify=ok}}
+    // Update the stock location qty
+    {{@get stock_supplier_order filter id = stock_supplier_order.id}}
+    {{@get stock_product_has_location filter stock_location_id = stock_supplier_order.location_id, stock_product_id = stock_supplier_order_item.stock_product_id}}
+    {{stock_product_has_location.onhand = stock_product_has_location.onhand + qty}}
+    {{@update item stock_product_has_location}}
+	// Remove the delivery record
+	{{@remove item stock_supplier_order_item_delivery}}
+{{@end}}
+
+{{@action updateDeliveredQty}}
+	// Update the order, subtracting the old qty
+	{{new.qty = stock_supplier_order_item.delivered_qty}}
+	{{@get stock_supplier_order_item filter id = stock_supplier_order_item.id}}
+	{{old.qty = stock_supplier_order_item.delivered_qty}}
+	{{stock_supplier_order_item.delivered_qty = new.qty}}
+	{{stock_supplier_order_item.delivered_date = delivered_date}}
+	{{@amend item stock_supplier_order_item notify=ok}}
+	// Update the stock location qty (might not yet exist)
+	{{@get stock_supplier_order filter id = stock_supplier_order.id}}
+	{{@get stock_product_has_location filter stock_location_id = stock_supplier_order.location_id, stock_product_id = stock_supplier_order_item.stock_product_id}}
+	{{stock_product_has_location.onhand = stock_product_has_location.onhand - old.qty}}
+	{{stock_product_has_location.onhand = stock_product_has_location.onhand + new.qty}}
+	{{@update item stock_product_has_location}}
+{{@end}}
+
+{{@action updateDeliveredCost}}
+	{{@amend item stock_supplier_order_item notify=ok}}
+{{@end}}
+
+{{@action recalcOrder}}
+	{{total.cost = 0}}
+	{{@each stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id}}
+		{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
+		{{@get stock_pack filter id = stock_supplier_order_item.stock_pack_id}}
+		{{stock_supplier_order_item.total_qty = stock_supplier_order_item.pack_qty * stock_pack.qty}}
+		{{@amend item stock_supplier_order_item}}
+		{{total.cost = total.cost + stock_product.cost * stock_supplier_order_item.total_qty}}
+	{{@end}}
+	{{stock_supplier_order.price_total = total.cost}}
+	{{stock_supplier_order.total = total.cost}}
+	{{@amend item stock_supplier_order}}
+{{@end}}
+
+<script>
+	// On init, create this global object, used by the Apply button
+	var deliveryDirtyArr = new Array();
+</script>
+
+<script>
+
+	// Quantity changed
+	function onChange_dline_packdelqty(obj) {
+		deliveryDirtyArr.push(obj);
+		return;
+	}
+
+	// Price changed
+	function onChange_dline_delcost(obj) {
+return;
+		deliveryDirtyArr.push(obj);
+		return;
+	}
+
+	function showDeliveryLines() {
+		runAction('showDeliveryLines', ['stock_supplier_order.id', 'stock_supplier_order.container_id'], 'deliverylinebody');
+	}
+
+	function applyButtonClick() {
+		//alert('Applying changes. len='+deliveryDirtyArr.length);
+		for (var i = 0; i < deliveryDirtyArr.length; i++) {
+			objId =  getSiblingByName(deliveryDirtyArr[i], 'line.id');
+			dt = get('mem.delivery_date');
+			objQty = getSiblingByName(deliveryDirtyArr[i], 'dline.pack_delqty');
+			objCost = getSiblingByName(deliveryDirtyArr[i], 'dline.delcost');
+			//alert('dt='+dt.value + ', linid='+objId.value + ', qty='+objQty.value+', price='+objCost.value);
+			runAction('updateDelivered', ['stock_supplier_order_item.id=' + objId.value,  'qty=' + objQty.value, 'price=' + objCost.value, 'date='+dt.value], '', afterOrderItemUpdated);
+		}
+	}
+	function afterOrderItemUpdated() {
+		deliveryDirtyArr = new Array();
+		runAction('recalcOrder', ['stock_supplier_order.id'], '', showDeliveryLines);
+	}
+
+	function undoButtonClick(id) {
+		runAction('undoDelivered', ['stock_supplier_order_item_delivery.id='+id], '', afterOrderItemUpdated);
+	}
+
+</script>
+

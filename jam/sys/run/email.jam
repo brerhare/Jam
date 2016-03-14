@@ -11,7 +11,7 @@
 
 <script>
 function sendEmail() {
-	runAction("sendEmail", "FROM TO SUBJECT BODY", emailDiv);	
+	runAction("sendEmail", ['FROM', 'TO', 'SUBJECT', 'BODY'], emailDiv);	
 }
 </script>
 

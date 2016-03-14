@@ -46,9 +46,15 @@ int oobDataRequested = 0;		// Some ajax calls will ask for this
 
 int urlEncodeRequired = 0;
 
-int cmdSeqnum = 0;	// every @jamcommand has a unique sequence number. Can be used for unique field names in grids
+int cmdSeqnum = 0;				// every @each/@end has a unique sequence number or id. Can be used for unique field names in grids
 
 char *oobFileName = "/tmp/oobData.tmp";
+
+int LAST_VAR = -1;				// used globally to indicate the current top
+
+unsigned int notify = NOTIFY_FAIL;		// NOTIFY_OK, NOTIFY_FAIL, NOTIFY_OK | NOTIFY_FAIL etc
+int notifyStatus = 0;					// *this* status
+
 //-----------------------------------------------------------
 // Var related
 
@@ -57,25 +63,36 @@ int addVar(VAR *newVar) {
 	for (int i = 0; i < MAX_VAR; i++) {
 		if (!var[i]) {
 			var[i] = newVar;
+			if (i > LAST_VAR)
+				LAST_VAR = i;
 			return (0);
 		}
 	}
-	logMsg(LOGERROR, "Cant add new var - MAX_VAR exceeded");
+	logMsg(LOGFATAL, "Cant add new var - MAX_VAR exceeded");
+	return(-1);
 }
 
-/* Not used...causes crashes elsewhere - possibly because theres no 'shiftup' to fill holes after deleting
-void deleteVar(VAR *var) {
-	logMsg(LOGMICRO, "Entering deleteVar()");
-	if (var->name)			free(var->name);
-	if (var->source)		free(var->source);
-	if (var->portableValue)	free(var->portableValue);
-	if (var->stringValue)	free(var->stringValue);
-	if (var->dateValue)		free(var->dateValue);
-	if (var->timeValue)		free(var->timeValue);
-	if (var->datetimeValue)	free(var->datetimeValue);
-	free(var);
-	logMsg(LOGMICRO, "Exiting deleteVar()");
-} */
+void deleteVar(VAR *delVar) {
+	if (delVar == NULL) {
+		logMsg(LOGERROR, "deleteVar() asked to delete NULL var");
+	}
+	for (int i = 0; i <= LAST_VAR; i++) {
+		if (var[i] == delVar) {
+			if (var[i]->name)			free(var[i]->name);
+			if (var[i]->source)			free(var[i]->source);
+			if (var[i]->portableValue)	free(var[i]->portableValue);
+			if (var[i]->stringValue)	free(var[i]->stringValue);
+			if (var[i]->dateValue)		free(var[i]->dateValue);
+			if (var[i]->timeValue)		free(var[i]->timeValue);
+			if (var[i]->datetimeValue)	free(var[i]->datetimeValue);
+			free(var[i]);
+			var[i] = NULL;
+			//logMsg(LOGMICRO, "deleteVar() deleted var");
+			return;
+		}
+	}
+	logMsg(LOGERROR, "deleteVar() didnt find requested var to delete");
+}
 
 // Quick create a string var
 void setVarAsString(char *name, char *value) {
@@ -89,6 +106,13 @@ void setVarAsNumber(char *name, long value) {
 	updateVar(name, num, VAR_NUMBER);
 }
 
+void unsetVar(char *name) {
+	VAR *variable = NULL;
+	variable = findVarStrict(name);
+	if (variable)
+		deleteVar(variable);
+}
+
 // Return the string value (portable value) of the named var
 // Try strict first, then non-strict
 char *getVarAsString(char *name) {
@@ -97,6 +121,14 @@ char *getVarAsString(char *name) {
 	if (variable)
 		return variable->portableValue;
 	return NULL;
+}
+
+int isVar(char *name) {
+	VAR *variable = NULL;
+	variable = findVarStrict(name);
+	if (variable)
+		return 1;
+	return 0;
 }
 
 VAR *findVarLenient(char *name, char *prefix) {
@@ -114,9 +146,10 @@ VAR *findVarLenient(char *name, char *prefix) {
 }
 
 VAR *findVarStrict(char *name) {
-	for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
+	for (int i = 0; i <= LAST_VAR; i++) {
 		if (!(var[i]))
-			break;
+			continue;
+//logMsg(LOGMICRO, "findVarStrict() checking [%s]=[%s]", var[i]->name, name);
 		if (!strcasecmp(var[i]->name, name)) {
 			return var[i];
 		}
@@ -124,10 +157,28 @@ VAR *findVarStrict(char *name) {
 	return NULL;
 }
 
+/*
+typedef struct {
+    char *name;
+    int type;
+    char *source;   // mysql, count, sum etc
+    char *portableValue;
+    char *stringValue;
+    long numberValue;
+    double decimal2Value;
+    char *dateValue;
+    char *timeValue;
+    char *datetimeValue;
+    int debugHighlight;
+} VAR; */
+
 void fillVarDataTypes(VAR *variable, char *value) {
 	char *safeValue = NULL;
 	if (value)
 		safeValue = strdup(value);	//@@BUG something weird here. The 'if VAR_NUMBER' branch is taken but no value. And valgrind shows a leak
+	else
+		safeValue = strdup("");
+	variable->portableValue = strdup(safeValue);
 	if (variable->type == VAR_DATE)
 		variable->dateValue = safeValue;
 	else if (variable->type == VAR_TIME)
@@ -135,17 +186,15 @@ void fillVarDataTypes(VAR *variable, char *value) {
 	else if (variable->type == VAR_DATETIME)
 		variable->datetimeValue = safeValue;
 	else if (variable->type == VAR_DECIMAL2) {
-		if (safeValue)
-			variable->decimal2Value = atof(safeValue);
-	} else if (variable->type == VAR_NUMBER) {
-		if (safeValue)
-			variable->numberValue = atol(safeValue);
-	} else
-		variable->stringValue = safeValue;
-	if (safeValue)
-		variable->portableValue = strdup(safeValue);
+		variable->decimal2Value = atof(safeValue);
+		free(safeValue);
+	}
+	else if (variable->type == VAR_NUMBER) {
+		variable->numberValue = atol(safeValue);
+		free(safeValue);
+	}
 	else
-		variable->portableValue = strdup("");
+		variable->stringValue = safeValue;
 }
 
 void updateVar(char *qualifiedName, char *value, int type) {
@@ -162,16 +211,11 @@ void updateVar(char *qualifiedName, char *value, int type) {
 		clearVarValues(newVar);
 		fillVarDataTypes(newVar, safeValue);
 //emitStd("NON-TABLE-> NAME=%s TYPE=%d AVALUE=%s NVALUE=%ld DVALUE=%2.f\n", newVar->name, newVar->type, newVar->stringValue, newVar->numberValue, newVar->decimal2Value);
-		for (int i = 0; i < MAX_VAR; i++) {
-			if (!var[i]) {
-				var[i] = newVar;
-				break;
-			}
-		}
+		addVar(newVar);
 	} else {
-		for (int i = 0; (i < MAX_VAR) && var[i]; i++) {
+		for (int i = 0; (i <= LAST_VAR); i++) {
 			if (!var[i])
-				break;
+				continue;
 			if (!strcmp(var[i]->name, qualifiedName)) {
 				fillVarDataTypes(var[i], value);
 				break;
@@ -216,20 +260,22 @@ char *expandVarsInString(char *str, char *tableName) {
 			while ((*p) && (!strchr(nonWordChars, *p)))	// isolate the word
 				*p3++ = *p++;
 			VAR *variable = NULL;
-			logMsg(LOGMICRO, "expandVarsInString looking to expand word [%s] ...", wd);
+//			logMsg(LOGMICRO, "expandVarsInString looking to expand word [%s] ...", wd);
 			variable = findVarLenient(wd, tableName);		// does it name a field?
 			if (variable) {
-				logMsg(LOGMICRO, " ... expandVarsInString expanded word [%s] to [%s]", wd, variable->portableValue);
+//				logMsg(LOGMICRO, " ... expandVarsInString expanded word [%s] to [%s]", wd, variable->portableValue);
+
 /*
 				if (char *pMinus = strchr(variable->portableValue, '-'))
 					*pMinus = ' ';	//@@TODO decimals (mult by 100)
 				if (char *pDot = strchr(variable->portableValue, '.'))
 					*pDot = '\0';	//@@TODO decimals (mult by 100)
 */
+
 				p3 = variable->portableValue;				// yes - replace the word with its value
 			}
 			else {
-				logMsg(LOGMICRO, "... expandVarsInString did not expand word [%s]", wd);
+//				logMsg(LOGMICRO, "... expandVarsInString did not expand word [%s]", wd);
 				p3 = wd;								// no - use the word
 			}
 			while (*p3)
@@ -264,9 +310,9 @@ void jamDump(int which) {
 	if (which == 3)
 		emitStd("<hr>");
 	if ((which == 1) || (which == 3)) {
-		for (int i = 0; i < MAX_VAR; i++) {
+		for (int i = 0; i <= LAST_VAR; i++) {
 			if (var[i] == NULL)
-				break;
+				continue;
 
 			emitStd("<span");
 			if (var[i]->debugHighlight == 1) emitStd(" style='color:#decde3'");
@@ -288,6 +334,16 @@ void jamDump(int which) {
 			if (var[i]->type == VAR_DECIMAL2)
 				emitStd("%02d VARDUMP %s : VAR_DECIMAL2 %.2f %s<br>", i, var[i]->name, var[i]->decimal2Value, tmp);
 			emitStd("</span>");
+
+			*tmp = 0;
+			if (var[i]->source)
+				sprintf(tmp, " : source %s", var[i]->source);
+			if (var[i]->type == VAR_STRING)
+				logMsg(LOGDEBUG, "%02d VARDUMP %s : VAR_STRING %s %s", i, var[i]->name, var[i]->stringValue, tmp);
+			if (var[i]->type == VAR_NUMBER)
+				logMsg(LOGDEBUG, "%02d VARDUMP %s : VAR_NUMBER %ld %s", i, var[i]->name, var[i]->numberValue, tmp);
+			if (var[i]->type == VAR_DECIMAL2)
+				logMsg(LOGDEBUG, "%02d VARDUMP %s : VAR_DECIMAL2 %.2f %s", i, var[i]->name, var[i]->decimal2Value, tmp);
 		}
 		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:#decde3;'>prefill </span>");
 		emitStd("<span style='margin:3px; padding:2px; color:#000; background-color:yellow;'>count </span>");
@@ -483,12 +539,13 @@ int oobJamData() {
 //		return(-1);
 //	}
 	int first = 1;
+	char *tmp = (char *) calloc(1, 4096);
 	logMsg(LOGDEBUG, "Emitting oob jamData");
 	emitStd("{oobData}");
 	emitStd("[");
 	for (int i = 0; i < MAX_VAR; i++) {
 		if (var[i] == NULL)
-			break;
+			continue;
 		if (first)
 			first = 0;
 		else
@@ -501,10 +558,20 @@ int oobJamData() {
 		free(nameJSON);
 		free(valueJSON);
 	}
+	// Append notify status if applicable
+	if (notifyStatus) {
+		if (notifyStatus & NOTIFY_FAIL)
+			strcpy(tmp, "fail");
+		else if (notifyStatus & NOTIFY_OK)
+			strcpy(tmp, "ok");
+		if (!first)
+			emitStd(", ");
+		emitStd("{\"name\":\"notifyStatus\", \"value\":\"%s\"}", tmp);
+	}
 	emitStd("]");
 //	fclose(fp);
 	logMsg(LOGDEBUG, "Finished emitting oob jamData");
 	//fflush(stdout);
-
+	free(tmp);
 }
 

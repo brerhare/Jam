@@ -16,7 +16,7 @@
 }}
 
 {{@template COLUMNS
-	<td> {{@html gridinp text heardabout.from_where medium}} </td>
+	<td> {{@html text field=heardabout.from_where size=medium}} </td>
 }}
 
 {{@template EDITS from_where}}

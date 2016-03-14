@@ -8,6 +8,15 @@
 
 {{@literal on}}
 
+<h4>Global</h4>
+
+{@strict off/0/false}	ON by default. Determines whether any top level word return aborts or continues the process
+{@notify fail}			What you want to be notified about (if anything)
+						FAIL by default. Can have multiple, eg 'notify fail ok someothervalue'
+						or a command can override with 'notify=off' or 'notify=fail' or 'notify=ok,fail'
+						options are OK, FAIL, off/0/false
+						Note that setting @notify ok will issue an ok, as the set itself will be true
+
 <h4>List</h4>
 
 {@new list mylist dir /jam/template}
@@ -30,6 +39,7 @@
 {@new table product
 	code        string      unique required
 	name  		string      required
+	notes 		text
 	onhand      number
 	costprice	number.4
 	sellprice	number.2
@@ -47,7 +57,7 @@
 {@clear item product}
 {@new item product}
 {@amend item product}
-{@update item product}
+{@update item product}		// either new or amend
 {@remove item product}
 
 {@remove index product nameindex
@@ -108,7 +118,45 @@
 
 <h4>HTML</h4>
 
+<h5>Layout</h5>
+
+{@html container start [center] [css='blah']}
+{@html container end}
+
+{@html gridrow start [cols=4] [css='blah'] }		optional cols specifies number of equal size columns
+{@html gridrow end}
+{@html gridcol start [width=3-5]} [css='blah'] }	..or each col can specify its size
+{@html gridcol end}
+
 <h5>Inputs</h5>
+
+<h6> New </h6>
+
+onChange and onKeyUp is bound to all input types - user defines an appropriate onXxxx_table_field(this) function
+@@TODO allow others to be bound by user, something like event=onfocus or whatever. Function name per usual naming convention
+NB onKeyUp is often used as a search filter in conjunction with an @action
+
+{@html dropdown/filter field=product.supplier_id pickfield=supplier.name size=medium label='Line Supplier'}
+{@html dropdown/filter field=product.supplier_id pickfield=supplier.name size=medium group=mygroup}
+{@html dropdown/filter field=product.supplier_id pickfield=supplier.name size=medium}
+{@html text/date field=product.supplier_id size=medium label='Address' placeholder='address line 1'}
+{@html text/date field=product.supplier_id size=medium hidden}
+{@html textarea field=stock_supplier.notes size=60x5 label=Notes}
+
+Optional for any - label, group, disabled
+
+{@html button Save primary small
+	alert('ok')     			// or any js
+	doMyFunction(obj)			// 'obj' is the buttons 'this' object
+	newObj = getSibling(obj)	// Get a field in the same row as the button as the ROW_ class is set for us
+	runJam
+	runJam supplierMaint.tpl
+	runAction updateSupplier, supplierForm, outputResult, alert('back from ajax')
+	runAction updateSupplier 'supplierForm _id' outputResult runJam supplierMaint.tpl 
+	runAction updateSupplier, supplierForm _id, outputResult, runJam('supplierMaint.tpl')
+}
+
+<h6> Old (obselete - here just for info) </h6>
 
 {@html input hidden stock_supplier._id}
 {@html input text stock_supplier.payment_terms mini "Payment terms" days}
@@ -117,20 +165,13 @@
 {@html input keyaction jam:action, inputElement, outputResult, mini}	// use null for empty values
 {@html input disabled stock_supplier.payment_terms mini "Payment terms" days}}	// same as input just no editing
 {@html inp <anytype means inline input>}
-
-{@html dropdown stock_transaction.supplier_id stock_supplier.name mini "Supplier Name"}
-{@html dropdown field=product.supplier_id pickfield=supplier.name size=medium label=Supplier}
-
 {@html textarea stock_supplier.notes 60x5 Notes}
 
+<h5>Tabs</h5>
 
-{@html button Save primary small
-	alert('ok')     // or any js
-	runJam
-	runJam supplierMaint.tpl
-	runAction updateSupplier, supplierForm, outputResult, alert('back from ajax')
-	runAction updateSupplier 'supplierForm _id' outputResult runJam supplierMaint.tpl 
-	runAction updateSupplier, supplierForm _id, outputResult, runJam('supplierMaint.tpl')
+{@html tabs
+	label=Customers 	action=/run/customerMaint
+	label='Tab text'	action=/path/to/jam
 }
 
 <h5> html control </h5>
@@ -141,22 +182,22 @@
 
 <hr>
 
-<h5>Javascript supplied functions</h5>
+<h5>Javascript utility functions (see util.js) </h5>
 
-runJam templateName
-	runJam('name.tpl')
+runJam fileName
+	runJam('name.jam')
 	runJam
-runAction [jamName:]actionName, [formName(s)], [resultObjectName], [callback]
+runAction [jamName:]actionName, array [name(s)/id(s)/class], [resultObjectName], [callback]
 	runAction('save')
-	runAction('jam2:save', 'form1 form2', 'divThatGetsTheResult'), backButton()
+	runAction('jam2:save', ['form1,form2'], 'divThatGetsTheResult', backButton )
 
 <hr>
 <h4>Utility</h4>
 
 <h5>Variables</h5>
 
-system.today 	@@TODO
-system.now 		@@TODO
+system.date 	@@TODO
+system.time		@@TODO
 
 <hr>
 
@@ -167,6 +208,10 @@ system.now 		@@TODO
 
 {@type /path/file}
 {@sysjam jamscript-in-sys-jam-area optional-action}
+
+{@include /path/file}
+{@include once /path/file}
+{@include standalone /path/file}	// only include if this file itself is not included
 
 <hr>
 
@@ -220,7 +265,7 @@ Running from commandline
 
 @actions. All variables created as the result of actions are sent as oob to the browser.
 
-Later on the jam will need to differentiate the commandline and client-server mode to decide which oob type to use
+We should maybe have a setting whereby an ajax call can send all the browser vars to the server on an @action call. This is like having 'state'
 
 
 <h4>Autocreated Jam variables</h4>

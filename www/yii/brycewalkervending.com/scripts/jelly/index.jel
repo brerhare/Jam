@@ -56,7 +56,7 @@ css.display = block
 			css.z-index = 150
 			css.width = 20%
 			css.margin-left = 30%
-			image.url = img/vendor-bubble.png
+			image.url = img/vendor-bubble2.png
 			image.width = 100px
 			image.height = 100px
 			image.fx = fx-hover-bounce
@@ -146,7 +146,8 @@ css.background-color = white
 
 	addon.menu.basic.subitem-color = white
 	#addon.menu.basic.subitem-text-color = purple
-	addon.menu.basic.subitem-seperator-color = red 
+	addon.menu.basic.subitem-separator-color = white 
+	addon.menu.basic.subitem-separator-width = 1px 
 
 
 	[slider]
@@ -209,6 +210,14 @@ addon.slider.shopping.images = 5
 			addon.contact.contactform.backcolor = #FFFFD6
 			addon.contact.contactform.inputspacing = 10px
 			addon.contact.contactform.inputwidth = 80%
+			
+#			css.width = 60%
+#			html.raw = <h1><span style="font-size:48px;">Stay in<br/>Touch</span></h1>
+#			css.text-align = center
+#			css.min-height = 325px
+#			css.background-color = white
+#			#jam.embed = /run/contact.jam
+#			jam.iframe = /run/contact
 
 			[contact-text]
 			css.width = 35%
@@ -305,11 +314,11 @@ css.z-index = 200
 [vendor-cameo]
 css.position = fixed
 css.z-index = 150
-css.width = 25%
+css.width = 15%
 css.margin-bottom = -10px
-css.padding-left = 5%
+css.padding-left = 10%
 css.bottom = 0px
-image.url = img/vendor-cameo.png
+image.url = img/vendor-video.png
 image.width =90%
 image.height = 54%
 image.fx = fx-hover-swing

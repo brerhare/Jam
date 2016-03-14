@@ -1,38 +1,25 @@
-<h1> genHtml </h1>
-<p> Uses current db </p>
-
-{{@action dropdownHtml}}
-	<div class='uk-form-row'>
-		<label class='uk-form-label' for='DROPDOWN_LABEL_FOR'> DROPDOWN_LABEL </label>
-		<div class='uk-form-controls'>
-			<select id='seq_DROPDOWN_SEQ_select_value' value='{{noneyet}}' onChange='dropdown_DROPDOWN_SEQ(); fn(this, event);' class='uk-form-width-DROPDOWN_SIZE'>
-			{{@each DROPDOWN_TABLENAME}}
-				<option value='{{DROPDOWN_TARGET_FIELD}}'> {{DROPDOWN_PICK_FIELD}} </option>
+{{@action dropdownLabelHtml}}
+	<label class='uk-form-label' for='DROPDOWN_TARGET_TABLE.DROPDOWN_TARGET_FIELD'> DROPDOWN_LABEL </label>
+	<div class='uk-form-controls'>
+		<select id='DROPDOWN_JAMKEY' name='DROPDOWN_TARGET_TABLE.DROPDOWN_TARGET_FIELD' COMMON_FN class='uk-form-width-DROPDOWN_SIZE DROPDOWN_GROUP' DROPDOWN_DISABLED>
+			{{@each DROPDOWN_PICK_TABLE filter id = {{DROPDOWN_TARGET_TABLE.DROPDOWN_TARGET_FIELD}} }}
+				<option value='{{DROPDOWN_PICK_TABLE.id}}' selected> {{DROPDOWN_PICK_FIELD}} </option>
 			{{@end}}
-			</select>
-		</div>
+			{{@each DROPDOWN_PICK_TABLE filter id != {{DROPDOWN_TARGET_TABLE.DROPDOWN_TARGET_FIELD}} }}
+				<option value='{{DROPDOWN_PICK_TABLE.id}}'> {{DROPDOWN_PICK_FIELD}} </option>
+			{{@end}}
+		</select>
 	</div>
 {{@end}}
 
-{{@action dropdownJs}}
-	function dropdown_DROPDOWN_SEQ() {
-		$.ajax({
-			url : '/run/jamBuilder/html/dropdown:dropdownAjax', type: 'POST', data : '_filtervalue='+document.getElementById('seq_DROPDOWN_SEQ_select_value').value+'&_dbname='+document.getElementById('_dbname').value,
-			success: function(data, textStatus, jqXHR) {
-				alert('dropdown ajax succeeded');
-				//var dat = [];
-				//dat = JSON.parse(data);
-				//release(dat);
-				},
-			error: function (jqXHR, textStatus, errorThrown) {
-				alert('dropdown DROPDOWN_SEQ ajax call failed');
-			},
-		});
-	}
-{{@end}}
-
-{{@action dropdownAjax}}
-	{{X="XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"}}
-	Dropdown Ajax called OK<br>
+{{@action dropdownHtml}}
+	<select id='DROPDOWN_JAMKEY' name='DROPDOWN_TARGET_TABLE.DROPDOWN_TARGET_FIELD' COMMON_FN class='uk-form-width-DROPDOWN_SIZE GROUP' DROPDOWN_DISABLED>
+		{{@each DROPDOWN_PICK_TABLE filter id = {{DROPDOWN_TARGET_TABLE.DROPDOWN_TARGET_FIELD}} }}
+			<option value='{{DROPDOWN_PICK_TABLE.id}}' selected> {{DROPDOWN_PICK_FIELD}} </option>
+		{{@end}}
+		{{@each DROPDOWN_PICK_TABLE filter id != {{DROPDOWN_TARGET_TABLE.DROPDOWN_TARGET_FIELD}} }}
+			<option value='{{DROPDOWN_PICK_TABLE.id}}'> {{DROPDOWN_PICK_FIELD}} </option>
+		{{@end}}
+	</select>
 {{@end}}
 

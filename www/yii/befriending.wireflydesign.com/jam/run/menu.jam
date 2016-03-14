@@ -1,31 +1,68 @@
-{{@include /jam/sys/html/header.html}}
+{{@include standalone /jam/sys/html/header.html}}
 
-<style>
-.rowHighlight:hover {
-  background-color: #ddf0ff;
-  cursor:pointer;
-}
-</style>
+<!-- Template defines for the menu -->
+{{@template MENU
+<ul id="main-menu" class="sm sm-blue collapsed">
 
-<center><h3>Jam list</h3></center>
+	<li><a href="/run/youngPerson.jam"> Young Person </a>
+		<ul>
+			<li> <a href="/run/referrers.jam"> Referrers </a></li>
+		</ul>
+	</li>
+	
+	<li><a href="/run/befriender.jam"> Befrienders </a>
+		<ul>
+			<li> <a href="/run/referrers.jam"> Referrers </a></li>
+		</ul>
+	</li>
 
-<div class="uk-overflow-container">
-	<center>
-		<table style="border:1px solid #dddddd">
-			<tr>
-				<th>Name</th>
-			</tr>
-{{@new list jamfile dir /jam/run}}
-{{@each jamfile}}
-			<tr class="rowHighlight">
-				<td> <a href="/run/{{jamfile}}" target="_blank">{{jamfile}}</a> </td>
-			</tr>
-{{@end}}
-			<tr class="rowHighlight">
-				<td> <a href="http://www.befriending.wireflydesign.com/schema/index.html" target="_blank">Schema</a> </td>
-			</tr>
-		</table>
-	</center>
-</div>  <!-- uk-overflow-container -->
+	<li><a href="#"> Matches </a>
+		<ul>
+			<li> <a href="/run/event.jam" target="_blank"> Events </a> </li>
+			<li> <a href="/run/event_type.jam" target="_blank"> Event types </a> </li>
+			<li> <a href="/run/tabs.jam" target="_blank"> Tabs example </a> </li>
+		</ul>
+	</li>
+		
+	<li><a href="#"> Reports </a>
+		<ul>
 
-{{@include /jam/sys/html/footer.html}}
+		</ul>
+	</li>
+	
+		
+	<li><a href="#"> Settings </a>
+		<ul>
+
+			<li> <a href="/run/formType.jam"> Form Types </a></li>
+			<li> <a href="/run/girfec_outcome_name.jam"> Girfec Outcomes </a></li>
+			<li><a href="/run/interestType.jam"> Interest Types </a>
+			<li> <a href="/run/medicalType.jam"> Medical Conditions </a></li>
+			<li> <a href="/run/contactRelationship.jam"> Relationship Types </a></li>
+			<li><a href="/run/status.jam"> Status Types </a>
+			<li><a href="/run/questionYoungPerson.jam"> Young Person Additional Questions </a>
+		</ul>
+	</li>
+	
+	
+	<li><a href="#"> Development </a>
+		<ul>
+			<li> <a href="http://www.befriending.wireflydesign.com/schema/index.html" target="_blank">Schema</a> </li>
+			<li> <a href="/run/menu2.jam" target="_blank"> Old menu </a> </li>
+			<li> <a href="/run/simd.jam" target="_blank"> Simd </a> </li>
+			<li> <a href="/run/simd_lookup.jam" target="_blank"> Simd lookup </a> </li>
+		</ul>
+	</li>
+	
+	
+	
+	
+	
+</ul>
+}}
+
+<!-- Call the addon -->
+{{@include /jam/run/sys/smartMenu.jam}}
+
+{{@include standalone /jam/sys/html/footer.html}}
+

@@ -16,7 +16,7 @@
 }}
 
 {{@template COLUMNS
-	<td> {{@html gridinp text blank_forms.name medium}} </td>
+	<td> {{@html text field=blank_forms.name size=medium}} </td>
 	<td> Upload Button required </td>
 }}
 

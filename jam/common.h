@@ -13,6 +13,8 @@ extern int literal;
 
 extern CURL *curl;
 
+#define MAX_INCLUDE 512
+
 #define round(x) ((x)>=0?(long)((x)+0.5):(long)((x)-0.5))
 
 #define MAX_ARGS 4096
@@ -63,7 +65,15 @@ typedef struct {
 	int debugHighlight;
 } VAR;
 #define MAX_VAR 10000
+extern int LAST_VAR;
 extern VAR *var[MAX_VAR];
+
+#define NOTIFY_OK   0x01
+#define NOTIFY_FAIL 0x02
+#define NOTIFY_INFO 0x04
+#define NOTIFY_WARN 0x08
+extern unsigned int notify;
+extern int notifyStatus;
 
 int control(int startIx, char *defaultTableName);
 
@@ -86,7 +96,10 @@ int addVar(VAR *newVar);
 void deleteVar(VAR *var);
 void setVarAsString(char *name, char *value);
 void setVarAsNumber(char *name, long value);
+void unsetVar(char *name);
 char *getVarAsString(char *name);
+int isVar(char *name);
+
 VAR *findVarStrict(char *qualifiedName);
 VAR *findVarLenient(char *name, char *prefix);void emit(char *line);
 void die(const char *errorString);
