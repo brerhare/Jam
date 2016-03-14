@@ -364,6 +364,28 @@ int jamArgs2ControlVars(int ix, char *args) {
 
 		logMsg(LOGMICRO, "Control var set %s = %s", var->name, var->portableValue);
 	}
+	// Now set the sequence number
+	sprintf(tmp, "sys.control.sequence");
+	char seq[16];
+	sprintf(seq, "%d", cmdSeqnum);
+	VAR *var = findVarStrict(tmp);
+	if (var) {
+		if (var->portableValue)
+			free(var->portableValue);
+		var->portableValue = strdup(seq);
+	} else {
+		var = (VAR *) calloc(1, sizeof(VAR));
+		var->name = strdup(tmp);
+		var->type = VAR_STRING;
+		var->source = strdup("arg");
+		var->debugHighlight = 7;
+		clearVarValues(var);
+		fillVarDataTypes(var, seq);
+		if (addVar(var) == -1) {
+			logMsg(LOGFATAL, "Cant create any more vars, terminating");
+			exit(1);
+		}
+	}
 //logMsg(LOGMICRO, "jamArgs2ControlVars() - all done");
 	free(tmp);
 }
