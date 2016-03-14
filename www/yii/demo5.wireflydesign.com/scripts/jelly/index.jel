@@ -116,17 +116,18 @@ addon.menu.traditional.submenu-separator-color = white
 	css.margin-top = -10%
 	css.width = 100%
 	css.max-height = 530px
-	addon.slider.flexslider.width = 100%
-	addon.slider.flexslider.height = 36%
-	addon.slider.flexslider.mode = image
-	addon.slider.flexslider.source = db
-
-	addon.slider.flexslider.border-width = 0px
-	addon.slider.flexslider.active-dotcolor = #525252
-	addon.slider.flexslider.inactive-dotcolor = #e6ddbc
-	addon.slider.flexslider.dot-margin-top = -80px
-	addon.slider.flexslider.dot-margin-left = 0px
-	addon.slider.flexslider.animation = slide
+jam.embed = /run/testslider3.jam
+#	addon.slider.flexslider.width = 100%
+#	addon.slider.flexslider.height = 36%
+#	addon.slider.flexslider.mode = image
+#	addon.slider.flexslider.source = db
+#
+#	addon.slider.flexslider.border-width = 0px
+#	addon.slider.flexslider.active-dotcolor = #525252
+#	addon.slider.flexslider.inactive-dotcolor = #e6ddbc
+#	addon.slider.flexslider.dot-margin-top = -80px
+#	addon.slider.flexslider.dot-margin-left = 0px
+#	addon.slider.flexslider.animation = slide
 
 		
 	[columns]

@@ -1,0 +1,82 @@
+{{@database kirkcudbright_dumgal_sch_uk}}
+
+{{@template BACKCOLOR_FROM #e6ddbc}}
+{{@template BACKCOLOR_TO #d9d0b1}}
+{{@template ACTIVECOLOR_FROM white}}
+{{@template ACTIVECOLOR_TO white}}
+{{@template ARROWCOLOR #822626}}
+{{@template CORNERPIXELS 0}}
+{{@template MAINTEXTCOLOR #525252}}
+{{@template SUBTEXTCOLOR #8f795b}}
+
+{{@template MENU
+	<ul id="main-menu" class="sm sm-blue">
+	{{@each content_block filter parent_id = 0, active = 1}}
+		<li> <a href="?layout=index&page={{url}}"> {{title}} </a>
+		{{openUL2 = <ul>}}
+		{{closeUL2 = ''}}
+		{{@each content_block filter parent_id = id, active = 1}}
+			{{openUL2}}
+			{{openUL2 = ''}}
+			<li> <a href="?layout=index&page={{url}}"> {{title}} </a>
+
+			{{openUL3 = <ul>}}
+			{{closeUL3 = ''}}
+			{{@each content_block filter parent_id = id, active = 1}}
+				{{openUL3}}
+				{{openUL3 = ''}}
+				<li> <a href="?layout=index&page={{url}}"> {{title}} </a> </li>
+				{{closeUL3 = </ul>}}
+			{{@end}}
+			{{closeUL3}}
+			</li>
+
+			{{closeUL2 = </ul>}}
+		{{@end}}
+		{{closeUL2}}
+		</li>
+	{{@end}}
+	</ul>
+}}
+
+<!-- Center the menu -->
+<style>
+#main-menu {
+	text-align:center;
+}
+#main-menu ul {
+	text-align:left;
+}
+#main-menu > li {
+	float:none;
+	display:inline-block;
+	margin-right:-4px;
+}
+*:first-child+html #main-menu > li { /* for IE7 */
+	display:inline;
+	margin-right:0;
+	zoom:1;
+}
+* html #main-menu li { /* for IE6 */
+	float:none;
+	display:inline;
+	zoom:1;
+}
+/*
+ Override the above in collapsible mode.
+ Make sure the break point width is the same as the one in the theme you use.
+*/
+@media screen and (max-width: 640px) {
+	#main-menu {
+		text-align:left;
+	}
+	#main-menu > li {
+		display:block;
+		margin-right:0;
+	}
+}
+</style>
+
+<!-- Call the addon -->
+{{@include /jam/run/sys/smartMenu.jam}}
+
