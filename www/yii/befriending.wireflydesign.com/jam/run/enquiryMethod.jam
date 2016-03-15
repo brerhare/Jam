@@ -1,4 +1,7 @@
 {{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/menu.jam}}
 
 <style>
 	div { width:600px; }
@@ -7,16 +10,16 @@
 {{@database befriending_wireflydesign_com}}
 
 <!-- Template defines -->
-{{@template TABLE employment_status}}
+{{@template TABLE enquiry_method}}
 {{@template DESCRIPTION }}
-{{@template DELETEFIELD employment_status.description}}
+{{@template DELETEFIELD enquiry_method.description}}
 
 {{@template HEADINGS
-	<th> Employment Status Lookup Entries</th>
+	<th> Enquiry Method Lookup Entries</th>
 }}
 
 {{@template COLUMNS
-	<td> {{@html text field=employment_status.description size=medium}} </td>
+	<td> {{@html text field=enquiry_method.description size=medium}} </td>
 }}
 
 {{@template EDITS description}}

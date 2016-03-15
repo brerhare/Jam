@@ -37,6 +37,8 @@
 			<li> <a href="/run/formType.jam"> Form Types </a></li>
 			<li> <a href="/run/girfec_outcome_name.jam"> Girfec Outcomes </a></li>
 			<li><a href="/run/interestType.jam"> Interest Types </a>
+			<li><a href="/run/enquiryMethod.jam"> Enquiry Methods </a>
+			<li><a href="/run/employmentStatus.jam">Employment Statuses </a>
 			<li> <a href="/run/medicalType.jam"> Medical Conditions </a></li>
 			<li> <a href="/run/contactRelationship.jam"> Relationship Types </a></li>
 			<li><a href="/run/status.jam"> Status Types </a>
