@@ -365,7 +365,7 @@ int jamArgs2ControlVars(int ix, char *args) {
 		logMsg(LOGMICRO, "Control var set %s = %s", var->name, var->portableValue);
 	}
 	// Now set the sequence number
-	sprintf(tmp, "sys.control.sequence");
+	sprintf(tmp, "sys.sequence");
 	char seq[16];
 	sprintf(seq, "%d", cmdSeqnum);
 	VAR *var = findVarStrict(tmp);
@@ -386,6 +386,7 @@ int jamArgs2ControlVars(int ix, char *args) {
 			exit(1);
 		}
 	}
+	logMsg(LOGMICRO, "Control var set %s = %s", var->name, var->portableValue);
 //logMsg(LOGMICRO, "jamArgs2ControlVars() - all done");
 	free(tmp);
 }
