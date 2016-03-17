@@ -1,0 +1,113 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@Xinclude /jam/run/menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:900px; Xpadding:0}}
+
+<!-- List component -->
+
+<style>
+.rowHighlight:hover {
+  background-color: #ddf0ff;
+  cursor:pointer;
+}
+</style>
+
+
+<br>
+<div name="content_reference">
+	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+		<tr>
+			<th> Date </th>
+			<th> Forename </th>
+			<th> Surname </th>
+			<th> Email </th>
+			<th> Mobile </th>
+			<th> Landline </th>
+			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('maintain_reference', [], 'content_reference')"> <i class="uk-icon-plus"></i> New</button> </th>
+		</tr>
+{{@each reference filter befriender_id = befriender.id}}
+		<tr class="rowHighlight" onClick="runAction('maintain_reference', ['reference.id={{reference.id}}'], 'content_reference')">
+			<td>{{reference.date_obtained}}</td>
+			<td>{{reference.forename}}</td>
+			<td>{{reference.surname}}</td>
+			<td>{{reference.email}}</td>
+			<td>{{reference.mobile}}</td>
+			<td>{{reference.landline}}</td>
+			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_reference('{{reference.id}}','{{reference.surname}}')"> <i class="uk-icon-trash"></i></button> </td>
+		</tr>
+{{@end}}
+	</table>
+</div>
+<br>
+
+<script>
+function confirmDelete_reference(id, displayInfo) {
+	window.event.cancelBubble = true;	// Prevent any further events
+	var result = confirm('Confirm delete of item ' + displayInfo);
+	if (result)
+		runAction('delete_reference', ['reference.id='+id], '', runJam);	
+}
+function postUpdate() {
+	runJam();
+}
+</script>
+
+{{@action delete_reference}}
+	{{@get reference filter id = reference.id}}
+	{{@remove item reference}}
+{{@end}}
+
+<!-- Form input component -->
+
+{{@action maintain_reference}}
+	{{@get reference filter id = reference.id}}
+
+	<style type="text/css">
+		label {text-align: right;}
+	</style>
+
+	<form name="inputForm_reference" class="uk-form uk-form-horizontal">
+		<input type="hidden" name="reference.befriender_id" value="{{befriender.id}}">
+		<input type="hidden" name="reference.id" value="{{reference.id}}">
+		{{@html gridrow start}}
+			{{@html gridcol start width=5-5}}
+				{{@html text field=reference.forename size=medium label='Forename'}}
+				{{@html text field=reference.surname size=medium label='Surname'}}
+				{{@html text field=reference.house size=medium label='house'}}
+				{{@html text field=reference.street size=medium label='Street'}}
+				{{@html text field=reference.area size=medium label='Area'}}
+				{{@html text field=reference.town size=medium label='Town'}}
+				{{@html text field=reference.postcode size=medium label='Postcode'}}
+				{{@html text field=reference.landline size=medium label='Land line'}}
+				{{@html text field=reference.mobile size=medium label='Mobile'}}
+				{{@html text field=reference.email size=medium label='Email'}}
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+		{{@html gridrow start}}
+			{{@html gridcol start width=1-1}}
+				<br>
+				<center>
+					{{@html button Save primary medium
+						runAction('update_reference', ['inputForm_reference'], '', postUpdate)
+					}}
+					{{@html button Cancel primary medium
+						runJam();
+					}}
+				</center>
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+	</form>
+{{@end}}
+
+{{@action update_reference}}
+	{{@update item reference}}
+{{@end}}
+
+{{@html container end}}
+
+{{@include /jam/sys/html/footer.html}}

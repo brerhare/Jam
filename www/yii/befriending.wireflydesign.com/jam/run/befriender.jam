@@ -68,7 +68,7 @@ function confirmDelete(id, displayInfo) {
 	{{@html tabs
 		label=Matches		action=/run/befrienderMatch?befriender.id={{befriender.id}}
 		label=Details		action=/run/befrienderDetails?befriender.id={{befriender.id}}
-		label=References	action=/run/befrienderReference?befriender.id={{befriender.id}}
+		label=References	action=/run/befrienderReferences?befriender.id={{befriender.id}}
 		label=Interests		action=/run/befrienderInterest?befriender.id={{befriender.id}}
 		label=Events		action=/run/befrienderEvent?befriender.id={{befriender.id}}
 		label=Additional	action=/run/befrienderAdditional?befriender.id={{befriender.id}}

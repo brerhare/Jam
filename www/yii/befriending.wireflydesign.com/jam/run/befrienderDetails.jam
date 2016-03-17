@@ -37,13 +37,17 @@
 				{{@html text field=global.email size=medium label='Email' group=inp}}
 				{{@html radio field=befriender.gender label='Gender' options=0:Male,1:Female group=inp}}
 				{{@html date field=befriender.dob size=medium label='Birth date' group=inp}}
+				{{@html dropdown field=befriender.employment_status_id pickfield=employment_status.description size=small label='Employment Status'}}
+				{{@html dropdown field=befriender.heardabout_id pickfield=heardabout.from_where size=small label='Heard About'}}
 
 			{{@html gridcol end}}
-			{{@html gridcol start width=1-10}}
-			{{@html gridcol end}}
-			{{@html gridcol start width=4-10}}
-
-
+			{{@html gridcol start width=5-10}}
+				{{@html text field=befriender.match_limit size=mini label='Match Capacity' group=inp}}
+				<br>
+				<h4> <center>Emergency Contact Info </center></h4>
+				{{@html text field=befriender.emergency_name size=medium label='Name' group=inp}}
+				{{@html text field=befriender.emergency_phone size=medium label='Phone' group=inp}}
+				{{@html text field=befriender.emergency_relationship size=medium label='Relationship' group=inp}}
 			{{@html gridcol end}}
 		{{@html gridrow end}}
 
