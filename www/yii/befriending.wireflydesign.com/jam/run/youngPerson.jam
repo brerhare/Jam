@@ -8,8 +8,8 @@
 <br>
 {{@html container start center css='max-width:1080px; Xpadding:0}}
 
-<h3> Young Person </h3>
 <div name="content">
+	<h3> Young Person </h3>
 	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
 			<th> Forename </th>
