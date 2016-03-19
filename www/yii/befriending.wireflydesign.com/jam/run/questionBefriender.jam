@@ -10,19 +10,19 @@
 {{@database befriending_wireflydesign_com}}
 
 <!-- Template defines -->
-{{@template TABLE event_type}}
-{{@template DESCRIPTION List the Different Types of Events}}
-{{@template DELETEFIELD event_type.name}}
+{{@template TABLE question_befriender}}
+{{@template DESCRIPTION Additional Questions}}
+{{@template DELETEFIELD question_befriender.question}}
 
 {{@template HEADINGS
-	<th> Event Type </th>
+	<th> Befriender Additional Questions </th>
 }}
 
 {{@template COLUMNS
-	<td> {{@html text field=event_type.name size=medium}} </td>
+	<td> {{@html text field=question_befriender.question size=large}} </td>
 }}
 
-{{@template EDITS name}}
+{{@template EDITS question}}
 
 <!-- Include the template -->
 {{@include /jam/run/sys/crudInline.jam}}

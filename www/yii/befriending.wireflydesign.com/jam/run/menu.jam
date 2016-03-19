@@ -18,9 +18,8 @@
 
 	<li><a href="#"> Matches </a>
 		<ul>
-			<li> <a href="/run/event.jam" target="_blank"> Events </a> </li>
-			<li> <a href="/run/event_type.jam" target="_blank"> Event types </a> </li>
-			<li> <a href="/run/tabs.jam" target="_blank"> Tabs example </a> </li>
+			<li> <a href="/run/event.jam"> Events </a> </li>
+			<li> <a href="/run/event_type.jam" > Event types </a> </li>
 		</ul>
 	</li>
 		
@@ -44,6 +43,7 @@
 			<li> <a href="/run/contactRelationship.jam"> Relationship Types </a></li>
 			<li><a href="/run/status.jam"> Status Types </a>
 			<li><a href="/run/questionYoungPerson.jam"> Young Person Additional Questions </a>
+			<li><a href="/run/questionBefriender.jam"> Befriender Additional Questions </a>
 		</ul>
 	</li>
 	

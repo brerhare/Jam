@@ -48,6 +48,8 @@
 				{{@html text field=befriender.emergency_name size=medium label='Name' group=inp}}
 				{{@html text field=befriender.emergency_phone size=medium label='Phone' group=inp}}
 				{{@html text field=befriender.emergency_relationship size=medium label='Relationship' group=inp}}
+				<br>
+				{{@html textarea field=befriender.notes size=30x5 label=Notes}}
 			{{@html gridcol end}}
 		{{@html gridrow end}}
 
