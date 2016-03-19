@@ -57,7 +57,7 @@
 			{{@html gridcol start width=1-1}}
 				<br>
 				<center>
-					<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="runAction('update_befriender', ['inputForm_befriender'], 'run')">Save</button> </td>
+					<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="saveButtonClick()">Save</button> 
 				</center>
 			{{@html gridcol end}}
 		{{@html gridrow end}}
@@ -73,6 +73,16 @@ window.onload = function() {
 		name = name.replace(".", "_");
 	}
 }
+
+function saveButtonClick() {
+	runAction('update_befriender', ['inputForm_befriender'], '', updated);
+}
+
+function updated() {
+	//runJam('befriender');	// iframe within iframe :-/
+	window.top.location.href = "http://befriending.wireflydesign.com/run/befriender.jam";
+}
+
 </script>
 
 {{@action update_befriender}}
