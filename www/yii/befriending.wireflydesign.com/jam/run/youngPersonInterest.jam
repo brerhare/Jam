@@ -54,7 +54,7 @@ function addAll() {
 	var checkboxes = document.getElementsByName('interest_type');
 	for (var i = 0; i < checkboxes.length; i++) {
 		if (checkboxes[i].checked) {
-			runAction('addInterest',['young_person.id', 'interest_type.id='+checkboxes[i].value]);
+			runAction('addInterest', ['young_person.id', 'interest_type.id='+checkboxes[i].value]);
 		}
 	}
 }

@@ -23,7 +23,7 @@
 		{{@html hidden field=befriender.id}}
 
 			{{@each question_befriender}}
-			{{@get answer_befriender filter question_id = befriender.id, befriender_id = befriender.id}}
+				{{@get answer_befriender filter question_id = question_befriender.id, befriender_id = befriender.id}}
 				{{@html gridrow start}}
 				{{@html gridcol start width=1-1}}
 					{{question_befriender.question}}
@@ -33,8 +33,10 @@
 				{{@html gridrow start}}
 				{{@html gridcol start width=1-1}}
 
-<textarea cols="80" rows="2" name="answer_befriender.answer" placeholder="" class="ROW_793940 inp" onchange="sav('{{question_befriender.id}}|{{answer_befriender.id}}');"></textarea>
+				<textarea cols="80" rows="2" id='{{question_befriender.id}}' placeholder="" class="inp"> {{answer_befriender.answer}} </textarea>
+
 					{{@Xhtml textarea field=answer_befriender.answer size=80x2 group='inp'}}
+
 				{{@html gridcol end}}
 				{{@html gridrow end}}
 			{{@end}}
@@ -45,12 +47,23 @@
 			{{@html gridcol start width=1-1}}
 				<br>
 				<center>
-					<button type='button' id='saveButton' class="uk-button uk-button-primary" onXXXXClick="runAction('update_befriender', ['inputForm_befriender'], '', disableButton(this))">Save</button> </td>
+					<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="saveButtonClick(this)">Save</button> </td>
 				</center>
 			{{@html gridcol end}}
 		{{@html gridrow end}}
 
 	</form>
+
+{{@action deleteAllAnswers}}
+    {{@sql delete from answer_befriender where befriender_id = {{befriender.id}} }}
+{{@end}}
+
+{{@action addAnswer}}
+    {{answer_befriender.befriender_id = befriender.id}}
+    {{answer_befriender.question_id = question.id}}
+	{{answer_befriender.answer = answer}}
+    {{@new item answer_befriender}}
+{{@end}}
 
 <script>
 window.onload = function() {
@@ -70,19 +83,18 @@ function disableButton(me) {
 	//me.disabled = true;
 }
 
-function sav(str) {
-	str = str + '';
-//alert(str);
-	var x = str.split('|');
-	//alert(x[0]);
-	//alert(x[1]);
+function saveButtonClick(obj) {
+	runAction('deleteAllAnswers',['befriender.id'], '', addAll);
+}
+
+function addAll() {
+ 	var groupArr = getGroupArray('inp');
+	for (var i = 0; i < groupArr.length; i++) {
+		runAction('addAnswer', ['befriender.id', 'question.id='+groupArr[i].id, 'answer='+groupArr[i].value]);
+	}
 }
 
 </script>
-
-{{@action update_befriender}}
-	{{@Xupdate item answer_befriender}}         <!-- first update the link table (inserts wont have its id yet)
-{{@end}}
 
 {{@html container end}}
 
