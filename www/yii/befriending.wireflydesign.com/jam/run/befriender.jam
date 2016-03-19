@@ -14,7 +14,7 @@
 		<tr>
 			<th> Forename </th>
 			<th> Surname </th>
-			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('showTabs', [], 'content')"> <i class="uk-icon-plus"></i> New</button> </th>
+			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('showTabsNew', [], 'content')"> <i class="uk-icon-plus"></i> New</button> </th>
 		</tr>
 {{@each befriender}}
 		{{@get global filter id = befriender.global_id}}
@@ -73,6 +73,28 @@ function confirmDelete(id, displayInfo) {
 		label=Events		action=/run/befrienderEvent?befriender.id={{befriender.id}}
 		label=Additional	action=/run/befrienderAdditional?befriender.id={{befriender.id}}
 		label=Forms			action=/run/befrienderForms?befriender.id={{befriender.id}}
+	}}
+{{@end}}
+
+{{@action showTabsNew}}
+	{{@get befriender filter id = befriender.id}}
+	{{@get global filter id = befriender.global_id}}
+	<h3>
+	
+	<table>
+		<tr>
+					
+		<td> New Befriender </td>
+		<td>{{@html button 'Return to list' primary medium 
+				runJam
+			}}
+		</td>
+		</tr>
+	</table>
+	
+	</h3>
+	{{@html tabs
+		label=Details		action=/run/befrienderDetails?befriender.id={{befriender.id}}
 	}}
 {{@end}}
 
