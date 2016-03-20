@@ -1,0 +1,144 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/menu.jam}}
+
+{{@html container start center css='max-width:1080px; Xpadding:0}}
+
+{{@database befriending_wireflydesign_com}}
+
+<style>
+.rowHighlight:hover {
+  background-color: #ddf0ff;
+  cursor:pointer;
+}
+</style>
+
+	{{@get event filter id = event.id}}
+
+	<style type="text/css">
+		label {text-align: right;}
+	</style>
+
+		<div class="uk-grid">
+			<div class="uk-width-3-5">
+				<form name="inputForm_event" class="uk-form uk-form-horizontal">
+					<input type="hidden" name="event.id" value="{{event.id}}">
+
+
+					{{@Xhtml text disabled field=event.coordinator_id size=medium label='Co-ordinator'}}
+
+					<!-- @@EG: dropdown outside of the jam -->
+					<label class="uk-form-label" for="event.event_young_person_id"> Young Person </label>
+					<div class="uk-form-controls">
+						<select id="ID1___event___young_person_id" name="event.young_person_id" onchange="fn(this, event);" onkeyup="fn(this, event);" class="uk-form-width-medium ROW_{{sys.sequence}} ">
+						{{tmp.selected = }}
+						{{@get event id = event.id}}
+						{{@each young_person filter id = event.young_person_id}}
+							{{@get global filter id = young_person.global_id}}
+							<option value="{{young_person.id}}" selected> {{global.forename}} {{global.surname}} </option>
+						{{@end}}
+						{{@each young_person filter id != event.young_person_id}}
+							{{@get global filter id = young_person.global_id}}
+							<option value="{{young_person.id}}"> {{global.forename}} {{global.surname}} </option>
+						{{@end}}
+
+						</select>
+					</div>
+
+
+					{{@Xhtml filter field=event.young_person_id pickfield=event_type.name size=medium label='Event Type'}}
+
+
+					{{@html date field=event.date size=medium label='Date'}}
+					{{@html time field=event.time size=small label='Time'}}
+					{{@html dropdown field=event.event_type_id pickfield=event_type.name size=medium label='Event Type'}}
+					{{@html textarea field=event.notes size=30x5 label=Notes}}
+
+
+					<br>
+
+					<center>
+						<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="runAction('update_event', ['inputForm_event'], '', runJam('event'));">Save</button>
+						<button type='button' id='cancelButton' class="uk-button uk-button-primary" onClick="runJam('event');">Cancel</button>
+						{{@Xhtml button Cancel primary medium
+							runJam();
+						}}
+					</center>
+				</form>
+			</div>	<!-- uk-width-3-5 -->
+
+				<br>
+			<div class="uk-width-5-5">
+
+				<center><h3 style='background-color:#dadada;' >Invited Attendees</h3></center>
+					<table class="uk-table uk-table-condensed">
+						<tr>
+							<th> Type </th>
+							<th> Name </th>
+							<th> Phone </th>
+							<th> email </th>
+							<th> Add </th>
+						</tr>
+						{{@each contact filter young_person_id = event.young_person_id}}
+							{{@get contact_relationship filter id = contact_relationship_id}}
+							{{@get global filter id = contact.global_id}}
+							{{@each event_attendee filter global_id = global.id, event_id = event.id}}
+								<tr>
+									<td> {{contact_relationship.relationship}} </td>
+									<td> {{global.forename}} {{global.surname}} </td>
+									<td> {{global.mobile}} </td>
+									<td> {{global.email}} </td>
+									<td> <button type='button' id='addButton' class="uk-button uk-button-success" onClick="removeAttendee({{global.id}})">Add</button> </td>
+								</tr>
+							{{@end}}
+						{{@end}}
+					</table>
+
+			</div>
+			<div class="uk-width-5-5">
+				<center><h3 style='background-color:#dadada;' >Possible Attendees</h3></center>
+					<table class="uk-table uk-table-condensed">
+						<tr>
+							<th> Type </th>
+							<th> Name </th>
+							<th> Phone </th>
+							<th> email </th>
+							<th> Add </th>
+						</tr>
+						{{@each contact filter young_person_id = event.young_person_id}}
+							{{@get contact_relationship filter id = contact_relationship_id}}
+							{{@get global filter id = contact.global_id}}
+							{{@Xeach event_attendee filter global_id != global.id, event_id != event.id}}
+								<tr>
+									<td> {{contact_relationship.relationship}} </td>
+									<td> {{global.forename}} {{global.surname}} </td>
+									<td> {{global.mobile}} </td>
+									<td> {{global.email}} </td>
+									<td> <button type='button' id='addButton' class="uk-button uk-button-success" onClick="addAttendee('{{global.id}}')">Add</button> </td>
+								</tr>
+							{{@Xend}}
+						{{@end}}
+					</table>
+				</div>
+
+	</div>
+{{@html container end}}
+
+<script>
+function addAttendee(global_id) {
+	alert('global ' + global_id + ' will be added');
+}
+
+function removeAttendee(global_id) {
+	alert(global_id);
+}
+</script>
+
+
+
+{{@action update_event}}
+	{{@update item event}}
+{{@end}}
+
+{{@include /jam/sys/html/footer.html}}
