@@ -3,9 +3,7 @@
 
 {{@include /jam/run/menu.jam}}
 
-<style>
-	div { width:600px; }
-</style>
+{{@html container start center css='max-width:1080px; Xpadding:0}}
 
 {{@database befriending_wireflydesign_com}}
 
@@ -18,22 +16,181 @@
 {{@template DELETEFIELD event.date}}
 {{@template HEADINGS
 	<th> Date </th>
-	<th> Comments </th>
+	<th> Time </th>
+	<th> Notes </th>
 }}
 {{@template COLUMNS
 	<td>{{date}}</td>
-	<td>{{comments}}</td>
+	<td>{{time}}</td>
+	<td>{{notes}}</td>
 }}
 
 <!-- Template defines for the form input component -->
 {{@template FORMINPUT
 
+	{{@Xhtml text disabled field=event.coordinator_id size=medium label='Co-ordinator'}}
+
+	<!-- @@EG: dropdown outside of the jam -->
+	<label class="uk-form-label" for="event.event_young_person_id"> Young Person </label>
+	<div class="uk-form-controls">
+		<select id="ID1___event___young_person_id" name="event.young_person_id" onchange="fn(this, event);" onkeyup="fn(this, event);" class="uk-form-width-medium ROW_{{sys.sequence}} ">
+		{{tmp.selected = }}
+		{{@each young_person filter id = event.young_person_id}}
+			{{@get global filter id = young_person.global_id}}
+			<option value="{{young_person.id}}" selected> {{global.forename}} {{global.surname}} </option>
+		{{@end}}
+		{{@each young_person filter id != event.young_person_id}}
+			{{@get global filter id = young_person.global_id}}
+			<option value="{{young_person.id}}"> {{global.forename}} {{global.surname}} </option>
+		{{@end}}
+
+		</select>
+	</div>
+
+
+	{{@Xhtml filter field=event.young_person_id pickfield=event_type.name size=medium label='Event Type'}}
+
+
 	{{@html date field=event.date size=medium label='Date'}}
+	{{@html time field=event.time size=small label='Time'}}
 	{{@html dropdown field=event.event_type_id pickfield=event_type.name size=medium label='Event Type'}}
-	{{@html textarea field=event.comments size=30x5 label=Notes}}
+	{{@html textarea field=event.notes size=30x5 label=Notes}}
 }}
 
 <!-- Include the template -->
-{{@include /jam/run/sys/crud.jam}}
+
+<!-- List component -->
+
+<!-- Clear any unset templates -->
+{{@template FILTER}}
+
+<style>
+.rowHighlight:hover {
+  background-color: #ddf0ff;
+  cursor:pointer;
+}
+</style>
+
+<h3> DESCRIPTION </h3>
+	<div name="content_TABLE" class="uk-overflow-container">
+		<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+			<tr>
+				HEADINGS
+				<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('maintain_TABLE', [], 'content_TABLE')"> <i class="uk-icon-plus"></i> New</button> </th>
+			</tr>
+{{@each TABLE FILTER}}
+			<tr class="rowHighlight" onClick="runAction('maintain_TABLE', ['TABLE.id={{id}}'], 'content_TABLE')">
+				COLUMNS
+				<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_TABLE('{{id}}','{{DELETEFIELD}}')"> <i class="uk-icon-trash"></i></button> </td>
+			</tr>
+{{@end}}
+		</table>
+</div>	<!-- uk-overflow-container -->
+
+<script>
+
+function confirmDelete_TABLE(id, displayInfo) {
+	window.event.cancelBubble = true;	// Prevent any further events
+	var result = confirm('Confirm delete of item ' + displayInfo);
+	if (result)
+		runAction('delete_TABLE', ['TABLE.id='+id], '', runJam);	
+}
+</script>
+
+{{@action delete_TABLE}}
+	{{@remove item TABLE}}
+{{@end}}
+
+<!-- Form input component -->
+
+{{@action maintain_TABLE}}
+	{{@get TABLE filter id = TABLE.id}}
+
+	<style type="text/css">
+		label {text-align: right;}
+	</style>
+
+	<div class="uk-container uk-container-center">
+		<div class="uk-grid">
+			<div class="uk-width-3-5">
+				<form name="inputForm_TABLE" class="uk-form uk-form-horizontal">
+					<input type="hidden" name="TABLE.id" value="{{TABLE.id}}">
+					FORMINPUT
+					<br>
+
+					<center>
+						<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="runAction('update_TABLE', ['inputForm_TABLE'], '', runJam);">Save</button>
+						<button type='button' id='cancelButton' class="uk-button uk-button-primary" onClick="runJam();">Cancel</button>
+						{{@Xhtml button Cancel primary medium
+							runJam();
+						}}
+					</center>
+				</form>
+			</div>	<!-- uk-width-3-5 -->
+
+			</div>	<!-- uk-width-5-5 -->
+				<br>
+				<center><h3>Possible Attendees</h3></center>
+				<div name='contactList'></div>
+
+				<center><h3>Invited Attendees</h3></center>
+				<div name='attendeeList'></div>
+
+			</div>	<!-- uk-width-5-5 -->
+		</div>	<!-- uk-container -->
+	</div>
+
+<script>
+objId = get('TABLE.young_person_id');
+
+refreshLists();
+
+function refreshLists() {
+	runAction('contacts', ['yp_id='+objId.value], 'contactList');
+	runAction('attendees', ['yp_id='+objId.value], 'attendeeList');
+}
+
+function addContact(contact_id) {
+	refreshLists();
+	//alert(contact_id);
+}
+
+</script>
+
+{{@end}}
+
+{{@action update_TABLE}}
+	{{@update item TABLE}}
+{{@end}}
+
+{{@action contacts}}
+	<table class="uk-table uk-table-condensed">
+		<tr>
+			<th> Type </th>
+			<th> Name </th>
+			<th> Phone </th>
+			<th> email </th>
+			<th> Add </th>
+		</tr>
+		{{@each contact filter young_person_id = yp_id}}
+			{{@get contact_relationship filter id = contact_relationship_id}}
+			{{@get global filter id = contact.global_id}}
+			{{@Xeach event_attendee filter global_id = global.id}}
+			{{@each global}}
+				<tr>
+					<td> {{contact_relationship.relationship}} </td>
+					<td> {{global.forename}} {{global.surname}} </td>
+					<td> {{global.mobile}} </td>
+					<td> {{global.email}} </td>
+					<td> <button type='button' id='addButton' class="uk-button uk-button-success" onClick="addContact({{contact.id}})">Add</button> </td>
+				</tr>
+			{{@end}}
+		{{@end}}
+	</table>
+{{@end}}
+
+{{@action attendees}}
+	{{yp_id}}
+{{@end}}
 
 {{@include /jam/sys/html/footer.html}}
