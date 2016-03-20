@@ -20,6 +20,7 @@
 		label {text-align: right;}
 	</style>
 
+		<h3> Maintain Events </h3>
 		<div class="uk-grid">
 			<div class="uk-width-3-5">
 				<form name="inputForm_event" class="uk-form uk-form-horizontal">
@@ -71,8 +72,8 @@
 				<br>
 			<div class="uk-width-5-5">
 
-				<center><h3 style='background-color:#dadada;' >Invited Attendees</h3></center>
 					<table class="uk-table uk-table-condensed">
+						<tr> <td colspan=5> <center><h3 style='background-color:#dadada;' >Invited Attendees</h3></center> </td> </tr>
 						<tr>
 							<th> Type </th>
 							<th> Name </th>
@@ -89,23 +90,12 @@
 									<td> {{global.forename}} {{global.surname}} </td>
 									<td> {{global.mobile}} </td>
 									<td> {{global.email}} </td>
-									<td> <button type='button' id='addButton' class="uk-button uk-button-success" onClick="removeAttendee({{global.id}})">Add</button> </td>
+									<td> <button type='button' id='addButton' class="uk-button uk-button-danger" onClick="removeAttendee({{global.id}})">Remove</button> </td>
 								</tr>
 							{{@end}}
 						{{@end}}
-					</table>
 
-			</div>
-			<div class="uk-width-5-5">
-				<center><h3 style='background-color:#dadada;' >Possible Attendees</h3></center>
-					<table class="uk-table uk-table-condensed">
-						<tr>
-							<th> Type </th>
-							<th> Name </th>
-							<th> Phone </th>
-							<th> email </th>
-							<th> Add </th>
-						</tr>
+								<tr> <td colspan=5> <center><h3 style='background-color:#dadada;' >Possible Attendees</h3></center> </td> </tr>
 						{{@each contact filter young_person_id = event.young_person_id}}
 							{{@get contact_relationship filter id = contact_relationship_id}}
 							{{@get global filter id = contact.global_id}}
