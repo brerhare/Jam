@@ -9,7 +9,10 @@
 
 <!-- Template defines -->
 {{@template TABLE event}}
-{{@Xtemplate FILTER filter id > 2}}
+
+{{@XXXtemplate FILTER filter id > 2, id DESC}}
+{{@template FILTER filter id DESC}}
+
 {{@template DESCRIPTION Maintain Events}}
 
 <!-- Template defines for the list component -->
@@ -17,12 +20,14 @@
 {{@template HEADINGS
 	<th> Date </th>
 	<th> Time </th>
-	<th> Notes </th>
+	<th> Event </th>
+	<th> Young Person </th>
 }}
 {{@template COLUMNS
 	<td>{{date}}</td>
 	<td>{{time}}</td>
-	<td>{{notes}}</td>
+	<td>{{event_type.name}}</td>
+	<td>{{global.forename}} {{global.surname}}</td>
 }}
 
 <!-- Include the template -->
@@ -48,6 +53,9 @@
 			</tr>
 {{@each TABLE FILTER}}
 			<tr class="rowHighlight" onClick="runJam('TABLEMaintain?event.id={{TABLE.id}}');">
+				{{@get young_person filter id = event.young_person_id}}
+				{{@get global filter id = young_person.global_id}}
+				{{@get event_type filter id = TABLE.event_type_id}}
 				COLUMNS
 				<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_TABLE('{{TABLE.id}}','{{DELETEFIELD}}')"> <i class="uk-icon-trash"></i></button> </td>
 			</tr>

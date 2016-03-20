@@ -59,7 +59,7 @@ function postUpdate() {
 
 {{@action delete_reference}}
 	{{@get reference filter id = reference.id}}
-	{{@remove item reference}}
+	{{@remove item reference notify=ok}}
 {{@end}}
 
 <!-- Form input component -->
@@ -105,7 +105,7 @@ function postUpdate() {
 {{@end}}
 
 {{@action update_reference}}
-	{{@update item reference}}
+	{{@update item reference notify=ok}}
 {{@end}}
 
 {{@html container end}}

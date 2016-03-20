@@ -43,7 +43,7 @@ window.onload = function() {
 {{@action addInterest}}
 	{{interest_befriender.befriender_id = befriender.id}}
 	{{interest_befriender.interest_type_id = interest_type.id}}
-	{{@new item interest_befriender}}
+	{{@new item interest_befriender notify=ok}}
 {{@end}}
 
 function saveButtonClicked(obj) {

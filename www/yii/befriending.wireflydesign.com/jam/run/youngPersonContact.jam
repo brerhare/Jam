@@ -119,7 +119,7 @@ function postUpdate() {
 	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
 	{{contact.global_id = global.id}}
 	{{contact.young_person_id = young_person.id}}
-	{{@update item contact}}
+	{{@update item contact notify=ok}}
 {{@end}}
 
 {{@action email_contact}}

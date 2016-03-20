@@ -54,7 +54,7 @@
 					{{@html date field=event.date size=medium label='Date'}}
 					{{@html time field=event.time size=small label='Time'}}
 					{{@html dropdown field=event.event_type_id pickfield=event_type.name size=medium label='Event Type'}}
-					{{@html textarea field=event.notes size=30x5 label=Notes}}
+					{{@html textarea field=event.notes size=30x5 label='Notes'}}
 
 
 					<br>
@@ -117,11 +117,11 @@
 
 <script>
 function addAttendee(global_id, event_id) {
-	runAction('addAttendee', ['event.id='+event_id, 'global.id='+global_id], 'runJam()');
+	runAction('addAttendee', ['event.id='+event_id, 'global.id='+global_id], '', runJam());
 }
 
 function removeAttendee(global_id, event_id) {
-	runAction('removeAttendee', ['event.id='+event_id, 'global.id='+global_id], 'runJam()');
+	runAction('removeAttendee', ['event.id='+event_id, 'global.id='+global_id], '', runJam());
 }
 </script>
 

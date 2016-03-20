@@ -62,7 +62,7 @@
     {{answer_young_person.young_person_id = young_person.id}}
     {{answer_young_person.question_id = question.id}}
 	{{answer_young_person.answer = answer}}
-    {{@new item answer_young_person}}
+    {{@new item answer_young_person notify=ok}}
 {{@end}}
 
 <script>

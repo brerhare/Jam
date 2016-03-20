@@ -101,7 +101,7 @@ function updated() {
 {{@action update_young_person}}
 	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
 	{{young_person.global_id = global.id}}
-	{{@update item young_person}}
+	{{@update item young_person notify=ok}}
 {{@end}}
 
 {{@action email_young_person}}

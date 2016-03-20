@@ -88,7 +88,7 @@ function updated() {
 {{@action update_befriender}}
 	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
 	{{befriender.global_id = global.id}}
-	{{@update item befriender}}
+	{{@update item befriender notify=ok}}
 {{@end}}
 
 {{@action email_befriender}}

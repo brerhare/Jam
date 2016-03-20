@@ -62,7 +62,7 @@
     {{answer_befriender.befriender_id = befriender.id}}
     {{answer_befriender.question_id = question.id}}
 	{{answer_befriender.answer = answer}}
-    {{@new item answer_befriender}}
+    {{@new item answer_befriender notify=ok}}
 {{@end}}
 
 <script>
