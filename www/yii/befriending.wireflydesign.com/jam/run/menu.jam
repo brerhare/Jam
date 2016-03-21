@@ -11,6 +11,9 @@
 	</li>
 	
 	<li><a href="/run/befriender.jam"> Befrienders </a>
+		<ul>
+			<li> <a href="/run/befrienderWebFormDetail.jam"> Web form </a></li>
+		</ul>
 	</li>
 
 	<li><a href="#"> Matches </a>
