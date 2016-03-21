@@ -66,7 +66,6 @@ function confirmDelete(id, displayInfo) {
 	
 	</h3>
 	{{@html tabs
-		label=Matches		action=/run/befrienderMatch?befriender.id={{befriender.id}}
 		label=Details		action=/run/befrienderDetails?befriender.id={{befriender.id}}
 		label=References	action=/run/befrienderReferences?befriender.id={{befriender.id}}
 		label=Interests		action=/run/befrienderInterest?befriender.id={{befriender.id}}
