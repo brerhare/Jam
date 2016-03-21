@@ -44,14 +44,14 @@
 
 			{{@html gridcol end}}
 			{{@html gridcol start width=5-10}}
-				{{@html text field=befriender.match_limit size=mini label='Match Capacity' group=inp}}
+				{{@XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXhtml text field=befriender.match_limit size=mini label='Match Capacity' group=inp}}
 				<br>
 				<h4> <center>Emergency Contact Info </center></h4>
 				{{@html text field=befriender.emergency_name size=medium label='Name' group=inp}}
 				{{@html text field=befriender.emergency_phone size=medium label='Phone' group=inp}}
 				{{@html text field=befriender.emergency_relationship size=medium label='Relationship' group=inp}}
 				<br>
-				{{@html textarea field=befriender.notes size=30x5 label=Notes}}
+				{{@XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXhtml textarea field=befriender.notes size=30x5 label=Notes}}
 			{{@html gridcol end}}
 		{{@html gridrow end}}
 
