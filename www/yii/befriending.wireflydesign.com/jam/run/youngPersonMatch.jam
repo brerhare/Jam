@@ -44,7 +44,7 @@
 									<td> {{global.mobile}} </td>
 									<td> {{global.email}} </td>
 									<td> {{global.postcode}} </td>
-									<td> </td>
+									<td> <button type='button' id='addButton' class="uk-button uk-button-danger" onClick="deleteMatch('{{befriender.id}}', '{{young_person.id}}')">Remove</button> </td>
 								</tr>
 							{{@Xend}}
 						{{@end}}
@@ -68,8 +68,11 @@
 
 <script>
 function addMatch(befriender_id, young_person_id) {
-	//alert(befriender_id + ':' + young_person_id);
 	runAction('addMatch', ['bf_id='+befriender_id, 'yp_id='+young_person_id], '', window.setTimeout(afterMatch, 1000));
+}
+
+function deleteMatch(befriender_id, young_person_id) {
+	runAction('deleteMatch', ['bf_id='+befriender_id, 'yp_id='+young_person_id], '', window.setTimeout(afterMatch, 1000));
 }
 
 function afterMatch() {
@@ -89,9 +92,8 @@ function afterMatch() {
 	{{@new item match_yp notify=ok}}
 {{@end}}
 
-{{@action removeAttendee}}
-	{{@get event_attendee filter global_id = global.id, event_id = event.id}}
-	{{@remove item event_attendee}}
+{{@action deleteMatch}}
+	{{@sql delete from match_yp where young_person_id = {{yp_id}} }}
 {{@end}}
 
 {{@include /jam/sys/html/footer.html}}
