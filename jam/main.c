@@ -642,7 +642,7 @@ int control(int startIx, char *defaultTableName) {
 						res = wordHtmlDropdown(ix, defaultTableName);
 					else if (!strcmp(tmp, "filter"))
 						res = wordHtmlFilter(ix, defaultTableName);
-					else if ( (!strcmp(tmp, "text")) || (!strcmp(tmp, "date")) )
+					else if ( (!strcmp(tmp, "text")) || (!strcmp(tmp, "date")) || (!strcmp(tmp, "time")) )
 						res = wordHtmlInput(ix, defaultTableName);
 
 					else if (!strcmp(tmp, "input"))
