@@ -1,4 +1,7 @@
 {{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/menu.jam}}
 
 <style>
 	div { width:600px; }
@@ -7,19 +10,19 @@
 {{@database befriending_wireflydesign_com}}
 
 <!-- Template defines -->
-{{@template TABLE enquiry_method}}
+{{@template TABLE heardabout}}
 {{@template DESCRIPTION }}
-{{@template DELETEFIELD enquiry_method.description}}
+{{@template DELETEFIELD heardabout.from_where}}
 
 {{@template HEADINGS
-	<th> Enquiry Method Lookup Entries</th>
+	<th> Places BF heard about Befriending </th>
 }}
 
 {{@template COLUMNS
-	<td> {{@html text field=enquiry_method.description size=medium}} </td>
+	<td> {{@html text field=heardabout.from_where size=medium}} </td>
 }}
 
-{{@template EDITS description}}
+{{@template EDITS from_where}}
 
 <!-- Include the template -->
 {{@include /jam/run/sys/crudInline.jam}}

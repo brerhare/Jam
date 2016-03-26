@@ -12,15 +12,14 @@
 	
 	<li><a href="/run/befriender.jam"> Befrienders </a>
 		<ul>
-			<li> <a href="/run/referrers.jam"> Referrers </a></li>
+			<li> <a href="/run/befrienderWebFormDetail.jam"> Web form </a></li>
 		</ul>
 	</li>
 
 	<li><a href="#"> Matches </a>
 		<ul>
-			<li> <a href="/run/event.jam" target="_blank"> Events </a> </li>
-			<li> <a href="/run/event_type.jam" target="_blank"> Event types </a> </li>
-			<li> <a href="/run/tabs.jam" target="_blank"> Tabs example </a> </li>
+			<li> <a href="/run/event.jam"> Events </a> </li>
+			<li> <a href="/run/event_type.jam" > Event types </a> </li>
 		</ul>
 	</li>
 		
@@ -37,10 +36,14 @@
 			<li> <a href="/run/formType.jam"> Form Types </a></li>
 			<li> <a href="/run/girfec_outcome_name.jam"> Girfec Outcomes </a></li>
 			<li><a href="/run/interestType.jam"> Interest Types </a>
+			<li><a href="/run/enquiryMethod.jam"> Enquiry Methods </a>
+			<li><a href="/run/employmentStatus.jam">Employment Statuses </a>
+			<li><a href="/run/heardAbout.jam">Heard About </a>
 			<li> <a href="/run/medicalType.jam"> Medical Conditions </a></li>
 			<li> <a href="/run/contactRelationship.jam"> Relationship Types </a></li>
 			<li><a href="/run/status.jam"> Status Types </a>
 			<li><a href="/run/questionYoungPerson.jam"> Young Person Additional Questions </a>
+			<li><a href="/run/questionBefriender.jam"> Befriender Additional Questions </a>
 		</ul>
 	</li>
 	

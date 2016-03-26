@@ -63,7 +63,7 @@
 			{{@html gridcol start width=1-1}}
 				<br>
 				<center>
-					<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="runAction('update_young_person', ['inputForm_young_person'], '', disableButton(this))">Save</button> </td>
+					<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="saveButtonClick()">Save</button>
 				</center>
 			{{@html gridcol end}}
 		{{@html gridrow end}}
@@ -77,22 +77,31 @@ window.onload = function() {
 	for (var i = 0; i < groupArr.length; i++) {
 		name = "onChange_" + groupArr[i].name.replace(/_/g, "");
 		name = name.replace(".", "_");
-		//alert(name);
 		window[name] = function (obj) {
-			document.getElementById('saveButton').disabled = false;
+			//document.getElementById('saveButton').disabled = false;
 		}
 	}
-	document.getElementById('saveButton').disabled = true;
+	//document.getElementById('saveButton').disabled = true;
 }
 function disableButton(me) {
-	me.disabled = true;
+	//me.disabled = true;
 }
+
+function saveButtonClick() {
+    runAction('update_young_person', ['inputForm_young_person'], '', updated);
+}
+
+function updated() {
+    //runJam('youngPerson');
+	window.top.location.href = "http://befriending.wireflydesign.com/run/youngPerson.jam";
+}
+
 </script>
 
 {{@action update_young_person}}
 	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
 	{{young_person.global_id = global.id}}
-	{{@update item young_person}}
+	{{@update item young_person notify=ok}}
 {{@end}}
 
 {{@action email_young_person}}

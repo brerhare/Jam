@@ -8,34 +8,34 @@
 <br>
 {{@html container start center nomargin css='max-width:900px; padding:0}}
 
-	{{@get young_person filter id = young_person.id}}
-	{{@get global filter id = young_person.global_id}}
+	{{@get befriender filter id = befriender.id}}
+	{{@get global filter id = befriender.global_id}}
 
 	<style type="text/css">
 		label {text-align: right; width:150px !important}
 		div.uk-form-controls {margin-left: 170px !important}
 	</style>
 
-	<form name="inputForm_young_person" class="uk-form uk-form-horizontal">
-		<input type="hidden" name="young_person.id" value="{{young_person.id}}">
-		<input type="hidden" name="global.id" value="{{young_person.global_id}}">
+	<form name="inputForm_befriender" class="uk-form uk-form-horizontal">
+		<input type="hidden" name="befriender.id" value="{{befriender.id}}">
+		<input type="hidden" name="global.id" value="{{befriender.global_id}}">
 
-		{{@html hidden field=young_person.id}}
+		{{@html hidden field=befriender.id}}
 
-			{{@each question_young_person}}
-				{{@get answer_young_person filter question_id = question_young_person.id, young_person_id = young_person.id}}
+			{{@each question_befriender}}
+				{{@get answer_befriender filter question_id = question_befriender.id, befriender_id = befriender.id}}
 				{{@html gridrow start}}
 				{{@html gridcol start width=1-1}}
-					{{question_young_person.question}}
+					{{question_befriender.question}}
 				{{@html gridcol end}}
 				{{@html gridrow end}}
 
 				{{@html gridrow start}}
 				{{@html gridcol start width=1-1}}
 
-				<textarea cols="80" rows="2" id='{{question_young_person.id}}' placeholder="" class="inp"> {{answer_young_person.answer}} </textarea>
+				<textarea cols="80" rows="2" id='{{question_befriender.id}}' placeholder="" class="inp"> {{answer_befriender.answer}} </textarea>
 
-					{{@Xhtml textarea field=answer_young_person.answer size=80x2 group='inp'}}
+					{{@Xhtml textarea field=answer_befriender.answer size=80x2 group='inp'}}
 
 				{{@html gridcol end}}
 				{{@html gridrow end}}
@@ -55,14 +55,14 @@
 	</form>
 
 {{@action deleteAllAnswers}}
-    {{@sql delete from answer_young_person where young_person_id = {{young_person.id}} }}
+    {{@sql delete from answer_befriender where befriender_id = {{befriender.id}} }}
 {{@end}}
 
 {{@action addAnswer}}
-    {{answer_young_person.young_person_id = young_person.id}}
-    {{answer_young_person.question_id = question.id}}
-	{{answer_young_person.answer = answer}}
-    {{@new item answer_young_person notify=ok}}
+    {{answer_befriender.befriender_id = befriender.id}}
+    {{answer_befriender.question_id = question.id}}
+	{{answer_befriender.answer = answer}}
+    {{@new item answer_befriender notify=ok}}
 {{@end}}
 
 <script>
@@ -84,13 +84,13 @@ function disableButton(me) {
 }
 
 function saveButtonClick(obj) {
-	runAction('deleteAllAnswers',['young_person.id'], '', addAll);
+	runAction('deleteAllAnswers',['befriender.id'], '', addAll);
 }
 
 function addAll() {
  	var groupArr = getGroupArray('inp');
 	for (var i = 0; i < groupArr.length; i++) {
-		runAction('addAnswer', ['young_person.id', 'question.id='+groupArr[i].id, 'answer='+groupArr[i].value]);
+		runAction('addAnswer', ['befriender.id', 'question.id='+groupArr[i].id, 'answer='+groupArr[i].value]);
 	}
 }
 

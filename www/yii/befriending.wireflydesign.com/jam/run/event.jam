@@ -1,37 +1,80 @@
 {{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
 
-<style>
-	div { width:600px; }
-</style>
+{{@include /jam/run/menu.jam}}
+
+{{@html container start center css='max-width:1080px; Xpadding:0}}
 
 {{@database befriending_wireflydesign_com}}
 
-
 <!-- Template defines -->
 {{@template TABLE event}}
-{{@Xtemplate FILTER filter id > 2}}
+
+{{@XXXtemplate FILTER filter id > 2, id DESC}}
+{{@template FILTER filter id DESC}}
+
 {{@template DESCRIPTION Maintain Events}}
 
 <!-- Template defines for the list component -->
-{{@template DELETEFIELD event.date}}
+{{@template DELETEFIELD event.notes}}
 {{@template HEADINGS
 	<th> Date </th>
-	<th> Comments </th>
+	<th> Time </th>
+	<th> Event </th>
+	<th> Young Person </th>
 }}
 {{@template COLUMNS
 	<td>{{date}}</td>
-	<td>{{comments}}</td>
-}}
-
-<!-- Template defines for the form input component -->
-{{@template FORMINPUT
-
-	{{@html date field=event.date size=medium label='Date'}}
-	{{@html dropdown field=event.event_type_id pickfield=event_type.name size=medium label='Event Type'}}
-	{{@html textarea field=event.comments size=30x5 label=Notes}}
+	<td>{{time}}</td>
+	<td>{{event_type.name}}</td>
+	<td>{{global.forename}} {{global.surname}}</td>
 }}
 
 <!-- Include the template -->
-{{@include /jam/run/sys/crud.jam}}
+
+<!-- List component -->
+
+<!-- Clear any unset templates -->
+{{@template FILTER}}
+
+<style>
+.rowHighlight:hover {
+  background-color: #ddf0ff;
+  cursor:pointer;
+}
+</style>
+
+<h3> DESCRIPTION </h3>
+	<div name="content_TABLE" class="uk-overflow-container">
+		<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+			<tr>
+				HEADINGS
+				<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('TABLEMaintain?event_id=0')"> <i class="uk-icon-plus"></i> New</button> </th>
+			</tr>
+{{@each TABLE FILTER}}
+			<tr class="rowHighlight" onClick="runJam('TABLEMaintain?event.id={{TABLE.id}}');">
+				{{@get young_person filter id = event.young_person_id}}
+				{{@get global filter id = young_person.global_id}}
+				{{@get event_type filter id = TABLE.event_type_id}}
+				COLUMNS
+				<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_TABLE('{{TABLE.id}}','{{DELETEFIELD}}')"> <i class="uk-icon-trash"></i></button> </td>
+			</tr>
+{{@end}}
+		</table>
+</div>	<!-- uk-overflow-container -->
+
+<script>
+
+function confirmDelete_TABLE(eventId, displayInfo) {
+	window.event.cancelBubble = true;	// Prevent any further events
+	var result = confirm('Confirm delete of item ' + displayInfo);
+	if (result)
+		runAction('delete_TABLE', ['TABLE.id='+eventId], '', runJam);	
+}
+</script>
+
+{{@action delete_TABLE}}
+	{{@remove item TABLE}}
+{{@end}}
 
 {{@include /jam/sys/html/footer.html}}

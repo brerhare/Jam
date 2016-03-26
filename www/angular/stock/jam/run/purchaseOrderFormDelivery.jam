@@ -7,7 +7,10 @@
 		<div class="uk-grid">
 
 			<div class="uk-width-4-10">
-				{{@html date field=mem.delivery_date size=medium label='Delivered Date'}}
+				{{@html date field=mem.delivered_date size=medium label='Delivery Date'}}
+			</div>
+			<div class="uk-width-4-10">
+				{{@html text field=mem.delivered_ref size=medium label='Delivery #'}}
 			</div>
 
 			<br>
@@ -22,10 +25,10 @@
 						<th> </th>
 						<th> Code </th>
 						<th style='max-width:185px;'> Product </th>
-						<th> Pack </th>
-						<th> Qty </th>
-						<th> Received </th>
-						<th> Cost </th>
+						<th> Order Pack </th>
+						<th> Order Qty </th>
+						<th> Received Qty </th>
+						<th> Order Cost </th>
 						<th> Received Cost </th>
 						<th> </th>
 						<th> </th>
@@ -41,31 +44,36 @@
 
 </div>	<!-- uk-container -->
 
-
 {{@action showDeliveryLines}}
 <!-- All actionable lines -->
-	{{@each stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id, delivered_qty < pack_qty, order by id DESC}}
+	{{@each stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id, delivered_total_qty < total_qty, order by id DESC}}
 		{{@get stock_container filter id = stock_supplier_order.container_id}}
 		{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
 		{{@get stock_pack filter id = stock_supplier_order_item.stock_pack_id}}
 		{{dline.id = stock_supplier_order_item.id}}
 		{{dline.code = stock_product.code}}
 		{{dline.pack = stock_pack.unit}}
-		{{dline.pack_qty = stock_supplier_order_item.pack_qty}}
-		{{dline.cost = stock_product.cost * stock_supplier_order_item.total_qty}}
-		{{dline.delcost = }}
+		{{dline.pack_qty_ordered = stock_supplier_order_item.pack_qty}}
+		{{dline.cost = stock_product.cost}}
+		{{dline.delcost = stock_product.cost}}
+		{{dline.stock_pack_qty = stock_pack.qty}}
 			<tr>
 				<td> {{@html text hidden field=dline.id group=unrecorded}} </td>
 				<td> </td>
 				<td> {{@html text disabled field=dline.code size=small group=unrecorded}} </td>
 				<td>  <input type='text' class='uk-form-width-' value='{{stock_product.name}}' disabled></td>
-				<td> {{@html text disabled field=dline.pack size=small group=unrecorded}} </td>
-				<td> {{@html text disabled field=dline.pack_qty size=mini group=unrecorded}} </td>
-				<td> {{@html text field=dline.pack_delqty size=mini group=unrecorded}} </td>
+				<td>
+					<select id="VAR___dline.pack" name="selectPack" onchange="fn(this, event);" onkeyup="fn(this, event);" class="uk-form-width-small ROW_{{sys.sequence}}">
+						<option value="{{dline.pack}}"> {{dline.pack}} </option>
+						<option value="single_unit"> Unit </option>
+					</select>
+				</td>
+				<td> {{@html text disabled field=dline.pack_qty_ordered size=mini group=unrecorded}} </td>
+				<td> {{@html text field=dline.pack_delqty size=small group=unrecorded}} </td>
 				<td> {{@html text disabled field=dline.cost size=small group=unrecorded}} </td>
 				<td> {{@html text field=dline.delcost size=small group=unrecorded}} </td>
 				<td> </td>
-				<td> </td>
+				<td> {{@html text hidden field=dline.stock_pack_qty}} </td>
 			</tr>
 	{{@end}}
 
@@ -94,15 +102,15 @@
 		{{@get stock_container filter id = stock_supplier_order.container_id}}
 		{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
 		{{@get stock_pack filter id = stock_supplier_order_item.stock_pack_id}}
-		{{dline.cost = stock_product.cost * stock_supplier_order_item.total_qty}}
+		{{dline.cost = stock_product.cost}}
 			<tr>
 				<td> {{@html text hidden field=stock_supplier_order_item_delivery.id group=recorded}} </td>
 				<td> {{@html text disabled field=stock_supplier_order_item_delivery.delivered_date size=small group=recorded}} </td>
 				<td>  <input type='text' class='uk-form-width-small' value='{{stock_product.code}}' disabled></td>
 				<td>  <input type='text' class='uk-form-width-' value='{{stock_product.name}}' disabled></td>
-				<td>  <input type='text' class='uk-form-width-small' value='{{stock_pack.unit}}' disabled></td>
+				<td>  <input type='text' class='uk-form-width-small' value='{{stock_supplier_order_item_delivery.delivered_pack_desc}}' disabled></td>
 				<td>  <input type='text' class='uk-form-width-mini' value='{{stock_supplier_order_item.pack_qty}}' disabled></td>
-				<td>  <input type='text' class='uk-form-width-mini' value='{{stock_supplier_order_item_delivery.delivered_qty}}' disabled></td>
+				<td>  <input type='text' class='uk-form-width-small' value='{{stock_supplier_order_item_delivery.delivered_display_qty}}' disabled></td>
 				<td> {{@html text disabled field=dline.cost size=small group=recorded}} </td>
 				<td>  <input type='text' class='uk-form-width-small' value='{{stock_supplier_order_item_delivery.delivered_price}}' disabled></td>
 				<td>
@@ -121,19 +129,23 @@
 {{@action updateDelivered}}
     // Update the stock item qty with this qty delivered
     {{@get stock_supplier_order_item filter id = stock_supplier_order_item.id}}
-	{{stock_supplier_order_item.delivered_qty = stock_supplier_order_item.delivered_qty + qty}}
+	{{stock_supplier_order_item.delivered_total_qty = stock_supplier_order_item.delivered_total_qty + totalQty}}
     {{@amend item stock_supplier_order_item notify=ok}}
     // Create the order delivered qty and price record
-	{{stock_supplier_order_item_delivery.delivered_qty = qty}}
+	{{stock_supplier_order_item_delivery.delivered_display_qty = packQty}}
+	{{stock_supplier_order_item_delivery.delivered_total_qty = totalQty}}
+	{{stock_supplier_order_item_delivery.delivered_pack_desc = selUnit}}
+	{{stock_supplier_order_item_delivery.delivered_pack_id = selUnitId}}
 	{{stock_supplier_order_item_delivery.delivered_date = date}}
 	{{stock_supplier_order_item_delivery.delivered_price = price}}
 	{{stock_supplier_order_item_delivery.stock_supplier_order_id = stock_supplier_order.id}}
 	{{stock_supplier_order_item_delivery.stock_supplier_order_item_id = stock_supplier_order_item.id}}
+	{{stock_supplier_order_item_delivery.delivered_supplier_ref = deliveredRef}}
 	{{@new item stock_supplier_order_item_delivery notify=ok}}
     // Update the stock location qty (might not yet exist)
     {{@get stock_supplier_order filter id = stock_supplier_order.id}}
     {{@get stock_product_has_location filter stock_location_id = stock_supplier_order.location_id, stock_product_id = stock_supplier_order_item.stock_product_id}}
-    {{stock_product_has_location.onhand = stock_product_has_location.onhand + qty}}
+    {{stock_product_has_location.onhand = stock_product_has_location.onhand + totalQty}}
     {{@update item stock_product_has_location}}
 {{@end}}
 
@@ -142,35 +154,15 @@
 	{{@get stock_supplier_order_item_delivery filter id = stock_supplier_order_item_delivery.id}}
     // Update the stock item qty with this qty delivered
 	{{@get stock_supplier_order_item filter id = stock_supplier_order_item_delivery.stock_supplier_order_item_id}}
-	{{stock_supplier_order_item.delivered_qty = stock_supplier_order_item.delivered_qty - stock_supplier_order_item_delivery.delivered_qty}}
+	{{stock_supplier_order_item.delivered_total_qty = stock_supplier_order_item.delivered_total_qty - stock_supplier_order_item_delivery.delivered_total_qty}}
 	{{@amend item stock_supplier_order_item notify=ok}}
     // Update the stock location qty
     {{@get stock_supplier_order filter id = stock_supplier_order.id}}
     {{@get stock_product_has_location filter stock_location_id = stock_supplier_order.location_id, stock_product_id = stock_supplier_order_item.stock_product_id}}
-    {{stock_product_has_location.onhand = stock_product_has_location.onhand + qty}}
+    {{stock_product_has_location.onhand = stock_product_has_location.onhand - stock_supplier_order_item_delivery.delivered_total_qty}}
     {{@update item stock_product_has_location}}
 	// Remove the delivery record
 	{{@remove item stock_supplier_order_item_delivery}}
-{{@end}}
-
-{{@action updateDeliveredQty}}
-	// Update the order, subtracting the old qty
-	{{new.qty = stock_supplier_order_item.delivered_qty}}
-	{{@get stock_supplier_order_item filter id = stock_supplier_order_item.id}}
-	{{old.qty = stock_supplier_order_item.delivered_qty}}
-	{{stock_supplier_order_item.delivered_qty = new.qty}}
-	{{stock_supplier_order_item.delivered_date = delivered_date}}
-	{{@amend item stock_supplier_order_item notify=ok}}
-	// Update the stock location qty (might not yet exist)
-	{{@get stock_supplier_order filter id = stock_supplier_order.id}}
-	{{@get stock_product_has_location filter stock_location_id = stock_supplier_order.location_id, stock_product_id = stock_supplier_order_item.stock_product_id}}
-	{{stock_product_has_location.onhand = stock_product_has_location.onhand - old.qty}}
-	{{stock_product_has_location.onhand = stock_product_has_location.onhand + new.qty}}
-	{{@update item stock_product_has_location}}
-{{@end}}
-
-{{@action updateDeliveredCost}}
-	{{@amend item stock_supplier_order_item notify=ok}}
 {{@end}}
 
 {{@action recalcOrder}}
@@ -193,18 +185,12 @@
 </script>
 
 <script>
-
 	// Quantity changed
 	function onChange_dline_packdelqty(obj) {
+		objId =  getSiblingByName(obj, 'line.id');
+		objDlineId =  getSiblingByName(obj, 'dline.id');
+//alert('id='+objId.value+ ' and did='+objDlineId.value);
 		deliveryDirtyArr.push(obj);
-		return;
-	}
-
-	// Price changed
-	function onChange_dline_delcost(obj) {
-return;
-		deliveryDirtyArr.push(obj);
-		return;
 	}
 
 	function showDeliveryLines() {
@@ -214,12 +200,23 @@ return;
 	function applyButtonClick() {
 		//alert('Applying changes. len='+deliveryDirtyArr.length);
 		for (var i = 0; i < deliveryDirtyArr.length; i++) {
-			objId =  getSiblingByName(deliveryDirtyArr[i], 'line.id');
-			dt = get('mem.delivery_date');
-			objQty = getSiblingByName(deliveryDirtyArr[i], 'dline.pack_delqty');
+			objId = getSiblingByName(deliveryDirtyArr[i], 'line.id');
+			objSelect = getSiblingByName(deliveryDirtyArr[i], 'selectPack');
+			selectedOption = objSelect.options[objSelect.selectedIndex];
+			dt = get('mem.delivered_date');
+			ref = get('mem.delivered_ref');
+			objPackQty = getSiblingByName(deliveryDirtyArr[i], 'dline.pack_delqty');
+			objStockPackQty = getSiblingByName(deliveryDirtyArr[i], 'dline.stock_pack_qty');
+//@@KIM TODO we store the total qty in the <tr> too now, ie have both. Decide which was input (dropdown) and calc qty's accordingly, and send to runaction
 			objCost = getSiblingByName(deliveryDirtyArr[i], 'dline.delcost');
-			//alert('dt='+dt.value + ', linid='+objId.value + ', qty='+objQty.value+', price='+objCost.value);
-			runAction('updateDelivered', ['stock_supplier_order_item.id=' + objId.value,  'qty=' + objQty.value, 'price=' + objCost.value, 'date='+dt.value], '', afterOrderItemUpdated);
+			var tqty = objPackQty.value;
+			var selUnit = 'Unit';
+			if (selectedOption.value != 'single_unit') {
+				tqty = (objPackQty.value * objStockPackQty.value);
+				selUnit = selectedOption.value;
+			}
+			//alert('dt='+dt.value + ', linid='+objId.value + ', qty='+objPackQty.value+', price='+objCost.value + ', sel='+selectedOption.value + ', tqty='+tqty);
+			runAction('updateDelivered', ['stock_supplier_order_item.id=' + objId.value, 'totalQty=' + tqty, 'packQty=' + objPackQty.value, 'selUnit='+selUnit, 'price=' + objCost.value, 'date='+dt.value, 'deliveredRef=' + ref.value], '', afterOrderItemUpdated);
 		}
 	}
 	function afterOrderItemUpdated() {
