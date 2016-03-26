@@ -25,10 +25,10 @@
 						<th> </th>
 						<th> Code </th>
 						<th style='max-width:185px;'> Product </th>
-						<th> Pack </th>
-						<th> Qty </th>
+						<th> Order Pack </th>
+						<th> Order Qty </th>
 						<th> Received Qty </th>
-						<th> Cost </th>
+						<th> Order Cost </th>
 						<th> Received Cost </th>
 						<th> </th>
 						<th> </th>
@@ -46,7 +46,7 @@
 
 {{@action showDeliveryLines}}
 <!-- All actionable lines -->
-	{{@each stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id, delivered_pack_qty < pack_qty, order by id DESC}}
+	{{@each stock_supplier_order_item filter stock_supplier_order_id = stock_supplier_order.id, delivered_total_qty < total_qty, order by id DESC}}
 		{{@get stock_container filter id = stock_supplier_order.container_id}}
 		{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
 		{{@get stock_pack filter id = stock_supplier_order_item.stock_pack_id}}
@@ -55,8 +55,8 @@
 		{{dline.pack = stock_pack.unit}}
 		{{dline.pack_qty = stock_supplier_order_item.pack_qty}}
 		{{dline.total_qty = stock_supplier_order_item.pack_qty * stock_pack.qty}}
-		{{dline.cost = stock_product.cost * stock_supplier_order_item.total_qty}}
-		{{dline.delcost = }}
+		{{dline.cost = stock_product.cost}}
+		{{dline.delcost = stock_product.cost}}
 			<tr>
 				<td> {{@html text hidden field=dline.id group=unrecorded}} </td>
 				<td> </td>
@@ -64,8 +64,8 @@
 				<td>  <input type='text' class='uk-form-width-' value='{{stock_product.name}}' disabled></td>
 				<td>
 					<select id="VAR___dline.pack" name="selectPack" onchange="fn(this, event);" onkeyup="fn(this, event);" class="uk-form-width-small ROW_{{sys.sequence}}">
-						<option value="pack"> {{dline.pack}} </option>
-						<option value="unit"> Unit </option>
+						<option value="{{dline.pack}}"> {{dline.pack}} </option>
+						<option value="single_unit"> Unit </option>
 					</select>
 				</td>
 				<td> {{@html text disabled field=dline.pack_qty size=mini group=unrecorded}} </td>
@@ -102,7 +102,7 @@
 		{{@get stock_container filter id = stock_supplier_order.container_id}}
 		{{@get stock_product filter id = stock_supplier_order_item.stock_product_id}}
 		{{@get stock_pack filter id = stock_supplier_order_item.stock_pack_id}}
-		{{dline.cost = stock_product.cost * stock_supplier_order_item.total_qty}}
+		{{dline.cost = stock_product.cost}}
 			<tr>
 				<td> {{@html text hidden field=stock_supplier_order_item_delivery.id group=recorded}} </td>
 				<td> {{@html text disabled field=stock_supplier_order_item_delivery.delivered_date size=small group=recorded}} </td>
