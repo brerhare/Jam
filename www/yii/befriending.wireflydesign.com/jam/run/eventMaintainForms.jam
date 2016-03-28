@@ -1,11 +1,14 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@XXXinclude /jam/run/menu.jam}}
-
-{{@html container start center css='max-width:1080px; Xpadding:0}}
+{{@Xinclude /jam/run/menu.jam}}
 
 {{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:900px; Xpadding:0}}
+
+<!-- List component -->
 
 <style>
 .rowHighlight:hover {
@@ -14,132 +17,97 @@
 }
 </style>
 
-	{{@get event filter id = event.id}}
+{{@get event filter id = event.id}}
+{{@get young_person filter id = event.young_person_id}}
+{{@get global filter id = young_person.global_id}}
+
+<br>
+<div name="event_forms">
+	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+		<tr>
+			<th> Form </th>
+			<th> Date Uploaded </th>
+			<th> File Name </th>
+			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('maintain_reference', [], 'event_forms')"> <i class="uk-icon-plus"></i> New</button> </th>
+		</tr>
+{{@each reference filter befriender_id = befriender.id}}
+		<tr class="rowHighlight" onClick="runAction('maintain_reference', ['reference.id={{reference.id}}'], 'event_forms')">
+			<td>{{reference.date_obtained}}</td>
+			<td>{{reference.forename}}</td>
+			<td>{{reference.surname}}</td>
+			<td>{{reference.email}}</td>
+			<td>{{reference.mobile}}</td>
+			<td>{{reference.landline}}</td>
+			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_reference('{{reference.id}}','{{reference.surname}}')"> <i class="uk-icon-trash"></i></button> </td>
+		</tr>
+{{@end}}
+	</table>
+</div>
+<br>
+
+<script>
+function confirmDelete_reference(id, displayInfo) {
+	window.event.cancelBubble = true;	// Prevent any further events
+	var result = confirm('Confirm delete of item ' + displayInfo);
+	if (result)
+		runAction('delete_reference', ['reference.id='+id], '', runJam);	
+}
+function postUpdate() {
+	runJam();
+}
+</script>
+
+{{@action delete_reference}}
+	{{@get reference filter id = reference.id}}
+	{{@remove item reference notify=ok}}
+{{@end}}
+
+<!-- Form input component -->
+
+{{@action maintain_reference}}
+	{{@get reference filter id = reference.id}}
 
 	<style type="text/css">
 		label {text-align: right;}
 	</style>
 
-		<h3> Maintain Events </h3>
-		<div class="uk-grid">
-			<div class="uk-width-3-5">
-				<form name="inputForm_event" class="uk-form uk-form-horizontal">
-					<input type="hidden" name="event.id" value="{{event.id}}">
-
-
-					{{@Xhtml text disabled field=event.coordinator_id size=medium label='Co-ordinator'}}
-
-					<!-- @@EG: dropdown outside of the jam -->
-					<label class="uk-form-label" for="event.event_young_person_id"> Young Person </label>
-					<div class="uk-form-controls">
-						<select id="ID1___event___young_person_id" name="event.young_person_id" onchange="fn(this, event);" onkeyup="fn(this, event);" class="uk-form-width-medium ROW_{{sys.sequence}} ">
-						{{tmp.selected = }}
-						{{@get event id = event.id}}
-						{{@each young_person filter id = event.young_person_id}}
-							{{@get global filter id = young_person.global_id}}
-							<option value="{{young_person.id}}" selected> {{global.forename}} {{global.surname}} </option>
-						{{@end}}
-						{{@each young_person filter id != event.young_person_id}}
-							{{@get global filter id = young_person.global_id}}
-							<option value="{{young_person.id}}"> {{global.forename}} {{global.surname}} </option>
-						{{@end}}
-
-						</select>
-					</div>
-
-
-					{{@Xhtml filter field=event.young_person_id pickfield=event_type.name size=medium label='Event Type'}}
-
-
-					{{@html date field=event.date size=medium label='Date'}}
-					{{@html time field=event.time size=small label='Time'}}
-					{{@html dropdown field=event.event_type_id pickfield=event_type.name size=medium label='Event Type'}}
-					{{@html textarea field=event.notes size=30x5 label='Notes'}}
-
-
-					<br>
-
-					<center>
-						<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="runAction('update_event', ['inputForm_event'], '', runJam('event'));">Save</button>
-						<button type='button' id='cancelButton' class="uk-button uk-button-primary" onClick="runJam('event');">Cancel</button>
-						{{@Xhtml button Cancel primary medium
-							runJam();
-						}}
-					</center>
-				</form>
-			</div>	<!-- uk-width-3-5 -->
-
-			<div class="uk-width-5-5">
-
+	<form name="inputForm_reference" class="uk-form uk-form-horizontal">
+		<input type="hidden" name="reference.befriender_id" value="{{befriender.id}}">
+		<input type="hidden" name="reference.id" value="{{reference.id}}">
+		{{@html gridrow start}}
+			{{@html gridcol start width=5-5}}
+				{{@html text field=reference.forename size=medium label='Forename'}}
+				{{@html text field=reference.surname size=medium label='Surname'}}
+				{{@html text field=reference.house size=medium label='house'}}
+				{{@html text field=reference.street size=medium label='Street'}}
+				{{@html text field=reference.area size=medium label='Area'}}
+				{{@html text field=reference.town size=medium label='Town'}}
+				{{@html text field=reference.postcode size=medium label='Postcode'}}
+				{{@html text field=reference.landline size=medium label='Land line'}}
+				{{@html text field=reference.mobile size=medium label='Mobile'}}
+				{{@html text field=reference.email size=medium label='Email'}}
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+		{{@html gridrow start}}
+			{{@html gridcol start width=1-1}}
 				<br>
-					<table class="uk-table uk-table-condensed">
-						<tr> <td colspan=5> <center><h3 style='background-color:#dadada;' >Invited Attendees</h3></center> </td> </tr>
-						<tr>
-							<th> Type </th>
-							<th> Name </th>
-							<th> Phone </th>
-							<th> email </th>
-							<th> Add </th>
-						</tr>
-						{{@each contact filter young_person_id = event.young_person_id}}
-							{{@get contact_relationship filter id = contact_relationship_id}}
-							{{@get global filter id = contact.global_id}}
-							{{@each event_attendee filter global_id = global.id, event_id = event.id}}
-								<tr>
-									<td> {{contact_relationship.relationship}} </td>
-									<td> {{global.forename}} {{global.surname}} </td>
-									<td> {{global.mobile}} </td>
-									<td> {{global.email}} </td>
-									<td> <button type='button' id='addButton' class="uk-button uk-button-danger" onClick="removeAttendee('{{global.id}}', '{{event.id}}')">Remove</button> </td>
-								</tr>
-							{{@end}}
-						{{@end}}
+				<center>
+					{{@html button Save primary medium
+						runAction('update_reference', ['inputForm_reference'], '', postUpdate)
+					}}
+					{{@html button Cancel primary medium
+						runJam();
+					}}
+				</center>
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+	</form>
+{{@end}}
 
-								<tr> <td colspan=5> <center><h3 style='background-color:#dadada;' >All Possible Attendees</h3></center> </td> </tr>
-						{{@each contact filter young_person_id = event.young_person_id}}
-							{{@get contact_relationship filter id = contact_relationship_id}}
-							{{@get global filter id = contact.global_id}}
-							{{@Xeach event_attendee filter global_id != global.id, event_id != event.id}}
-								<tr>
-									<td> {{contact_relationship.relationship}} </td>
-									<td> {{global.forename}} {{global.surname}} </td>
-									<td> {{global.mobile}} </td>
-									<td> {{global.email}} </td>
-									<td> <button type='button' id='addButton' class="uk-button uk-button-success" onClick="addAttendee('{{global.id}}', '{{event.id}}')">Add</button> </td>
-								</tr>
-							{{@Xend}}
-						{{@end}}
-					</table>
-				</div>
+{{@action update_reference}}
+	{{@update item reference notify=ok}}
+{{@end}}
 
-	</div>
 {{@html container end}}
-
-<script>
-function addAttendee(global_id, event_id) {
-	runAction('addAttendee', ['event.id='+event_id, 'global.id='+global_id], '', runJam());
-}
-
-function removeAttendee(global_id, event_id) {
-	runAction('removeAttendee', ['event.id='+event_id, 'global.id='+global_id], '', runJam());
-}
-</script>
-
-{{@action update_event}}
-	{{@update item event}}
-{{@end}}
-
-{{@action addAttendee}}
-	{{@get event_attendee filter global_id = global.id, event_id = event.id}}
-	{{event_attendee.present = 0}}
-	{{event_attendee.global_id = global.id}}
-	{{event_attendee.event_id = event.id}}
-	{{@update item event_attendee}}
-{{@end}}
-
-{{@action removeAttendee}}
-	{{@get event_attendee filter global_id = global.id, event_id = event.id}}
-	{{@remove item event_attendee}}
-{{@end}}
 
 {{@include /jam/sys/html/footer.html}}
