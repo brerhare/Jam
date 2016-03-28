@@ -25,8 +25,9 @@
 						<th> </th>
 						<th> Code </th>
 						<th style='max-width:185px;'> Product </th>
-						<th> Order Pack </th>
 						<th> Order Qty </th>
+						<th> Order Units </th>
+						<th> Received Pack </th>
 						<th> Received Qty </th>
 						<th> Order Cost </th>
 						<th> Received Cost </th>
@@ -57,18 +58,20 @@
 		{{dline.cost = stock_product.cost}}
 		{{dline.delcost = stock_product.cost}}
 		{{dline.stock_pack_qty = stock_pack.qty}}
+		{{dline.order_total_qty = stock_supplier_order_item.total_qty}}
 			<tr>
 				<td> {{@html text hidden field=dline.id group=unrecorded}} </td>
 				<td> </td>
 				<td> {{@html text disabled field=dline.code size=small group=unrecorded}} </td>
 				<td>  <input type='text' class='uk-form-width-' value='{{stock_product.name}}' disabled></td>
+				<td> {{@html text disabled field=dline.pack_qty_ordered size=mini group=unrecorded}} </td>
+				<td> {{@html text disabled field=dline.order_total_qty size=small group=unrecorded}} </td>
 				<td>
 					<select id="VAR___dline.pack" name="selectPack" onchange="fn(this, event);" onkeyup="fn(this, event);" class="uk-form-width-small ROW_{{sys.sequence}}">
 						<option value="{{dline.pack}}"> {{dline.pack}} </option>
 						<option value="single_unit"> Unit </option>
 					</select>
 				</td>
-				<td> {{@html text disabled field=dline.pack_qty_ordered size=mini group=unrecorded}} </td>
 				<td> {{@html text field=dline.pack_delqty size=small group=unrecorded}} </td>
 				<td> {{@html text disabled field=dline.cost size=small group=unrecorded}} </td>
 				<td> {{@html text field=dline.delcost size=small group=unrecorded}} </td>
@@ -108,8 +111,9 @@
 				<td> {{@html text disabled field=stock_supplier_order_item_delivery.delivered_date size=small group=recorded}} </td>
 				<td>  <input type='text' class='uk-form-width-small' value='{{stock_product.code}}' disabled></td>
 				<td>  <input type='text' class='uk-form-width-' value='{{stock_product.name}}' disabled></td>
-				<td>  <input type='text' class='uk-form-width-small' value='{{stock_supplier_order_item_delivery.delivered_pack_desc}}' disabled></td>
 				<td>  <input type='text' class='uk-form-width-mini' value='{{stock_supplier_order_item.pack_qty}}' disabled></td>
+				<td>  <input type='text' class='uk-form-width-small' value='{{stock_supplier_order_item.total_qty}}' disabled></td>
+				<td>  <input type='text' class='uk-form-width-small' value='{{stock_supplier_order_item_delivery.delivered_pack_desc}}' disabled></td>
 				<td>  <input type='text' class='uk-form-width-small' value='{{stock_supplier_order_item_delivery.delivered_display_qty}}' disabled></td>
 				<td> {{@html text disabled field=dline.cost size=small group=recorded}} </td>
 				<td>  <input type='text' class='uk-form-width-small' value='{{stock_supplier_order_item_delivery.delivered_price}}' disabled></td>
