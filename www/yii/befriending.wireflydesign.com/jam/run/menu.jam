@@ -16,9 +16,8 @@
 		</ul>
 	</li>
 
-	<li><a href="#"> Matches </a>
+	<li><a href="/run/event.jam"> Events </a>
 		<ul>
-			<li> <a href="/run/event.jam"> Events </a> </li>
 			<li> <a href="/run/event_type.jam" > Event types </a> </li>
 		</ul>
 	</li>

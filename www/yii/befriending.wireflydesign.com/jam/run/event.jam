@@ -74,7 +74,7 @@ function confirmDelete_TABLE(eventId, displayInfo) {
 </script>
 
 {{@action delete_TABLE}}
-	{{@remove item TABLE}}
+	{{@remove item TABLE notify=ok}}
 {{@end}}
 
 {{@include /jam/sys/html/footer.html}}
