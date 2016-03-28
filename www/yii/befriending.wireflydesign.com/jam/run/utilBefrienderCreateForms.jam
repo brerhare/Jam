@@ -1,0 +1,36 @@
+{{@include /jam/sys/html/header.html}}
+
+Doing...
+
+{{@database befriending_wireflydesign_com}}
+
+{{@remove table form_upload_other}}
+{{@remove table form_upload_girfec}}
+{{@remove table form_upload_girfec_score}}
+
+
+<!-- non-girfec form -->
+{{@new table form_upload_other
+	event_id				number required
+	form_type_id			number required
+	notes					text
+	file					string
+}}
+
+<!-- girfec form header record -->
+{{@new table form_upload_girfec
+	event_id				number required
+	file					string
+}}
+
+<!-- girfec form outcomes record -->
+{{@new table form_upload_girfec_score
+	event_id				number required
+	girfec_outcome_name_id	number required
+	score					number
+	comment					text
+}}
+
+Done
+
+{{@include /jam/sys/html/footer.html}}

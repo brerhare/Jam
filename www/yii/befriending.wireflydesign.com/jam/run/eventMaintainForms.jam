@@ -28,16 +28,16 @@
 			<th> Form </th>
 			<th> Date Uploaded </th>
 			<th> File Name </th>
-			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('maintain_reference', [], 'event_forms')"> <i class="uk-icon-plus"></i> New</button> </th>
+			<th>
+				<button class="uk-button uk-button-mini uk-button-success" onClick="runAction(eventMaintainFormsAddGirfec'', [], 'event_forms')"> <i class="uk-icon-plus"></i>  Girfec</button> 
+				<button class="uk-button uk-button-mini uk-button-success" onClick="runAction(eventMaintainFormsAddOther'', [], 'event_forms')"> <i class="uk-icon-plus"></i> Other </button>
+			</th>
 		</tr>
 {{@each reference filter befriender_id = befriender.id}}
 		<tr class="rowHighlight" onClick="runAction('maintain_reference', ['reference.id={{reference.id}}'], 'event_forms')">
-			<td>{{reference.date_obtained}}</td>
 			<td>{{reference.forename}}</td>
 			<td>{{reference.surname}}</td>
 			<td>{{reference.email}}</td>
-			<td>{{reference.mobile}}</td>
-			<td>{{reference.landline}}</td>
 			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_reference('{{reference.id}}','{{reference.surname}}')"> <i class="uk-icon-trash"></i></button> </td>
 		</tr>
 {{@end}}
