@@ -131,6 +131,31 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
+	// Set up some basic sys. variables
+	char buff[20];
+	time_t now = time(NULL);
+	// Today
+	strftime(buff, 20, "%Y-%m-%d", localtime(&now));
+	VAR *todayVar = (VAR *) calloc(1, sizeof(VAR));
+	todayVar->name = strdup("sys.today");
+	todayVar->type = VAR_DATE;	// @@FIX!!!!!!
+	clearVarValues(todayVar);
+	fillVarDataTypes(todayVar, buff);
+	todayVar->source = strdup("prefill");
+	todayVar->debugHighlight = 1;
+	addVar(todayVar);
+	// Now
+	strftime(buff, 20, "%H:%M:%S", localtime(&now));
+	VAR *nowVar = (VAR *) calloc(1, sizeof(VAR));
+	nowVar->name = strdup("sys.now");
+	nowVar->type = VAR_TIME;	// @@FIX!!!!!!
+	clearVarValues(nowVar);
+	fillVarDataTypes(nowVar, buff);
+	nowVar->source = strdup("prefill");
+	nowVar->debugHighlight = 1;
+	addVar(nowVar);
+
+
 	// Intialize random number generator and our loop sequence number
 	timeval t1;
 	gettimeofday(&t1, NULL);
