@@ -29,11 +29,11 @@
 			<th> Date Uploaded </th>
 			<th> File Name </th>
 			<th>
-				<button class="uk-button uk-button-mini uk-button-success" onClick="runAction(eventMaintainFormsAddGirfec'', [], 'event_forms')"> <i class="uk-icon-plus"></i>  Girfec</button> 
-				<button class="uk-button uk-button-mini uk-button-success" onClick="runAction(eventMaintainFormsAddOther'', [], 'event_forms')"> <i class="uk-icon-plus"></i> Other </button>
+				<button class="uk-button uk-button-mini uk-button-success" onClick="runAction('eventMaintainFormsAddGirfec', [], 'event_forms')"> <i class="uk-icon-plus"></i>  Girfec</button> 
+				<button class="uk-button uk-button-mini uk-button-success" onClick="runAction('eventMaintainFormsAddOther', [], 'event_forms')"> <i class="uk-icon-plus"></i> Other </button>
 			</th>
 		</tr>
-{{@each reference filter befriender_id = befriender.id}}
+{{@each form_upload_other filter event_id = event.id}}
 		<tr class="rowHighlight" onClick="runAction('maintain_reference', ['reference.id={{reference.id}}'], 'event_forms')">
 			<td>{{reference.forename}}</td>
 			<td>{{reference.surname}}</td>
