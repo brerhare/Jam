@@ -21,23 +21,23 @@
 
 <br>
 
-<div name="event_forms_other">
+<div name="event_forms_girfec">
 	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
 			<th> Form </th>
 			<th> Date Uploaded </th>
 			<th> File Name </th>
 			<th>
-				<button class="uk-button uk-button-mini uk-button-success" onClick="runAction('eventMaintainFormsOtherEdit?event.id={{event.id}}', [], 'event_forms_other')"> <i class="uk-icon-plus"></i> New </button>
+				<button class="uk-button uk-button-mini uk-button-success" onClick="runAction('eventMaintainFormsGirfecEdit?event.id={{event.id}}', [], 'event_forms_girfec')"> <i class="uk-icon-plus"></i> New </button>
 			</th>
 		</tr>
-{{@each form_upload_other filter event_id = event.id}}
-	{{@get form_type filter id = form_upload_other.form_type_id}}
-		<tr class="rowHighlight" onClick="runAction('eventMaintainFormsOtherEdit?event.id={{event.id}}', ['form_upload_other.id={{form_upload_other.id}}'], 'event_forms_other')">
+{{@each form_upload_girfec filter event_id = event.id}}
+	{{@get form_type filter id = form_upload_girfec.form_type_id}}
+		<tr class="rowHighlight" onClick="runAction('eventMaintainFormsGirfecEdit?event.id={{event.id}}', ['form_upload_girfec.id={{form_upload_girfec.id}}'], 'event_forms_girfec')">
 			<td>{{form_type.name}}</td>
-			<td>{{form_upload_other.date}}</td>
-			<td>{{form_upload_other.file}}</td>
-			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_formOther('{{form_upload_other.id}}','{{form_type.name}}')"> <i class="uk-icon-trash"></i></button> </td>
+			<td>{{form_upload_girfec.date}}</td>
+			<td>{{form_upload_girfec.file}}</td>
+			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_formGirfec('{{form_upload_girfec.id}}','{{form_type.name}}')"> <i class="uk-icon-trash"></i></button> </td>
 		</tr>
 {{@end}}
 	</table>
@@ -45,37 +45,37 @@
 <br>
 
 <script>
-function confirmDelete_formOther(id, displayInfo) {
+function confirmDelete_formGirfec(id, displayInfo) {
 	window.event.cancelBubble = true;	// Prevent any further events
 	var result = confirm('Confirm delete of item ' + id + ' ' + displayInfo);
 	if (result)
-		runAction('delete_form_other', ['id='+id], '', postUpdate);
+		runAction('delete_form_girfec', ['id='+id], '', postUpdate);
 }
 function postUpdate() {
 	runJam();
 }
 </script>
 
-{{@action delete_form_other}}
-	{{@get form_upload_other filter id = id}}
-	{{@remove item form_upload_other notify=ok}}
+{{@action delete_form_girfec}}
+	{{@get form_upload_girfec filter id = id}}
+	{{@remove item form_upload_girfec notify=ok}}
 {{@end}}
 
 <!-- Form input component -->
 
-{{@action eventMaintainFormsOtherEdit}}
-	{{@get form_upload_other filter id = form_upload_other.id}}
-	{{form_upload_other.event_id = event.id}}
-	{{@get event id = form_upload_other.event_id}}
+{{@action eventMaintainFormsGirfecEdit}}
+	{{@get form_upload_girfec filter id = form_upload_girfec.id}}
+	{{form_upload_girfec.event_id = event.id}}
+	{{@get event id = form_upload_girfec.event_id}}
 
 	<style type="text/css">
 		label {text-align: right;}
 	</style>
 
-	<form name="inputForm_form_upload_other" class="uk-form uk-form-horizontal">
-		<input type="hidden" name="form_upload_other.id" value="{{form_upload_other.id}}">
-		<input type="hidden" name="form_upload_other.event_id" value="{{event.id}}">
-		<input type="hidden" name="form_upload_other.date" value="{{sys.today}}">
+	<form name="inputForm_form_upload_girfec" class="uk-form uk-form-horizontal">
+		<input type="hidden" name="form_upload_girfec.id" value="{{form_upload_girfec.id}}">
+		<input type="hidden" name="form_upload_girfec.event_id" value="{{event.id}}">
+		<input type="hidden" name="form_upload_girfec.date" value="{{sys.today}}">
 
 		{{@html gridrow start}}
 			{{@html gridcol start width=5-5}}
@@ -83,7 +83,7 @@ function postUpdate() {
                     <label class="uk-form-label" for="mem.upload"> File </label>
                     <div class="uk-form-controls">
 					{{@html button Upload primary small
-						runAction('update_form_other', ['inputForm_form_upload_file'], '', postUpdate)
+						runAction('update_form_girfec', ['inputForm_form_upload_file'], '', postUpdate)
 					}}
 						
                     </div>
@@ -94,14 +94,14 @@ function postUpdate() {
 		{{@html gridrow start}}
 			{{@html gridcol start width=5-5}}
                     <!-- @@EG: dropdown outside of the jam -->
-                    <label class="uk-form-label" for="form_upload_other.form_type_id"> Type </label>
+                    <label class="uk-form-label" for="form_upload_girfec.form_type_id"> Type </label>
                     <div class="uk-form-controls">
-                        <select id="ID1___form_upload_other___form_type_id" name="form_upload_other.form_type_id" onchange="fn(this, event);" onkeyup="fn(this, event);" class="uk-form-width-medium ROW_{{sys.sequence}} ">
+                        <select id="ID1___form_upload_girfec" name="form_upload_girfec.form_type_id" onchange="fn(this, event);" onkeyup="fn(this, event);" class="uk-form-width-medium ROW_{{sys.sequence}} ">
                         {{tmp.selected = }}
-                        {{@each form_type filter id = form_upload_other.form_type_id}}
+                        {{@each form_type filter id = form_upload_girfec.form_type_id}}
                             <option value="{{form_type.id}}" selected> {{form_type.name}} </option>
                         {{@end}}
-                        {{@each form_type filter id != form_upload_other.form_type_id}}
+                        {{@each form_type filter id != form_upload_girfec.form_type_id}}
                             <option value="{{form_type.id}}"> {{form_type.name}} </option>
                         {{@end}}
                         </select>
@@ -112,7 +112,7 @@ function postUpdate() {
 
 		{{@html gridrow start}}
 			{{@html gridcol start width=5-5}}
-				{{@html textarea field=form_upload_other.notes size=40x5 label='Notes'}}
+				{{@html textarea field=form_upload_girfec.notes size=40x5 label='Notes'}}
 			{{@html gridcol end}}
 		{{@html gridrow end}}
 		{{@html gridrow start}}
@@ -120,7 +120,7 @@ function postUpdate() {
 				<br>
 				<center>
 					{{@html button Save primary medium
-						runAction('update_form_other', ['inputForm_form_upload_other'], '', postUpdate)
+						runAction('update_form_girfec', ['inputForm_form_upload_girfec'], '', postUpdate)
 					}}
 					{{@html button Cancel primary medium
 						runJam();
@@ -131,8 +131,8 @@ function postUpdate() {
 	</form>
 {{@end}}
 
-{{@action update_form_other}}
-	{{@update item form_upload_other notify=ok}}
+{{@action update_form_girfec}}
+	{{@update item form_upload_girfec notify=ok}}
 {{@end}}
 
 {{@html container end}}
