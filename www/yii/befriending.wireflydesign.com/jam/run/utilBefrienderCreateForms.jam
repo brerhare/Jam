@@ -15,12 +15,14 @@ Doing...
 	form_type_id			number required
 	notes					text
 	file					string
+	date					date
 }}
 
 <!-- girfec form header record -->
 {{@new table form_upload_girfec
 	event_id				number required
 	file					string
+	date					date
 }}
 
 <!-- girfec form outcomes record -->

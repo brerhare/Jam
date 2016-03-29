@@ -72,8 +72,9 @@
 			<div class="uk-width-5-5">
 				<br>
 				{{@html tabs 
-					label=Attendees		action=/run/eventMaintainAttendees?event.id={{event.id}}
-					label=Forms			action=/run/eventMaintainForms?event.id={{event.id}}
+					label=Attendees					action=/run/eventMaintainAttendees?event.id={{event.id}}
+					label='Girfec Forms'			action=/run/eventMaintainFormsGirfec?event.id={{event.id}}
+					label='Other Forms'				action=/run/eventMaintainFormsOther?event.id={{event.id}}
 				}}
 			</div>
 		</div>
