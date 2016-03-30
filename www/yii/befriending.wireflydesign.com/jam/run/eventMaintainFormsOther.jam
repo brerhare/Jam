@@ -76,6 +76,7 @@ function postUpdate() {
 		<input type="hidden" name="form_upload_other.id" value="{{form_upload_other.id}}">
 		<input type="hidden" name="form_upload_other.event_id" value="{{event.id}}">
 		<input type="hidden" name="form_upload_other.date" value="{{sys.today}}">
+		<input type="hidden" name="form_upload_other.file" value="{{form_upload_other.file}}">
 
 		{{@html gridrow start}}
 			{{@html gridcol start width=5-5}}
@@ -83,7 +84,7 @@ function postUpdate() {
                     <label class="uk-form-label" for="mem.upload"> File </label>
                     <div class="uk-form-controls">
 
-					<div class="uk-form-file"> <input type="file"></div>
+					<div class="uk-form-file"> <input type="file" onChange="fileUploadOther(this)"></div>
 
 					{{@Xhtml button Upload primary small
 						runAction('update_form_other', ['inputForm_form_upload_file'], '', postUpdate)
@@ -139,5 +140,30 @@ function postUpdate() {
 {{@end}}
 
 {{@html container end}}
+
+<script>
+function fileUploadOther(obj) {
+	var file = obj.files[0];
+	var evObj = get('form_upload_other.event_id');
+    console.log("name : " + file.name);
+    console.log("size : " + file.size);
+    console.log("type : " + file.type);
+    console.log("date : " + file.lastModified)
+	var url = 'http://befriending.wireflydesign.com:/jam/uploads/uploadFormOther.php?event=' + evObj.value;
+	var xhr = new XMLHttpRequest();
+	var fd = new FormData();
+	xhr.open("POST", url, true);
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			console.log(xhr.responseText); // handle response.
+			fileObj = get('form_upload_other.file');
+			fileObj.value = file.name;
+		}
+	};
+	fd.append("upload_file", file);
+	xhr.send(fd);
+}
+
+</script>
 
 {{@include /jam/sys/html/footer.html}}
