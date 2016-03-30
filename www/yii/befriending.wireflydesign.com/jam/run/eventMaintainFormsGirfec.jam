@@ -74,37 +74,46 @@ function postUpdate() {
 		<input type="hidden" name="form_upload_girfec.event_id" value="{{event.id}}">
 		<input type="hidden" name="form_upload_girfec.date" value="{{sys.today}}">
 
-		{{@html gridrow start}}
-			{{@html gridcol start width=5-5}}
+			{{@html gridcol start width=3-10}}
+			{{@html gridcol end}}
+			{{@html gridcol start width=4-10}}
 
-                    <label class="uk-form-label" for="mem.upload"> File </label>
-                    <div class="uk-form-controls">
-					{{@html button Upload primary small
+
+			<div class="uk-form-file"> <input type="file"></div>
+
+					{{@Xhtml button Upload primary small
 						runAction('update_form_girfec', ['inputForm_form_upload_file'], '', postUpdate)
 					}}
 						
                     </div>
 
 			{{@html gridcol end}}
+			{{@html gridcol start width=3-10}}
+			{{@html gridcol end}}
 		{{@html gridrow end}}
 
 
 {{@get form_upload_girfec filter event_id = event.id}}
 
+<table class="uk-table uk-table-condensed" style="border:1px solid #dddddd">
+
+	<tr>
+		<th> Outcome </th>
+		<th> Score </th>
+		<th> Comment </th>
+	<tr>
+
 {{@each girfec_outcome_name}}
     {{@get form_upload_girfec_score filter girfec_outcome_name_id = girfec_outcome_name.id}}
-		{{@html gridrow start}}
-			{{@html gridcol start width=2-5}}
-				{{@html textarea field=form_upload_girfec.notes size=40x5 label='Comment'}}
-			{{@html gridcol end}}
-			{{@html gridcol start width=1-5}}
-				{{@html textarea field=form_upload_girfec.notes size=40x5 label='Comment'}}
-			{{@html gridcol end}}
-			{{@html gridcol start width=2-5}}
-				{{@html textarea field=form_upload_girfec.notes size=40x5 label='Comment'}}
-			{{@html gridcol end}}
-		{{@html gridrow end}}
+
+	<tr>
+		<td> {{girfec_outcome_name.description}} </td>
+		<td> {{@html text field=form_upload_girfec_score.score size=mini}} </td>
+		<td> {{@html textarea field=form_upload_girfec.notes size=60x5}} </td>
+	</tr>
 {{@end}}
+
+</table>
 
 		{{@html gridrow start}}
 			{{@html gridcol start width=1-1}}
