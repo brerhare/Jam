@@ -24,7 +24,6 @@
 <div name="event_forms_girfec">
 	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
-			<th> Form </th>
 			<th> Date Uploaded </th>
 			<th> File Name </th>
 			<th>
@@ -32,9 +31,7 @@
 			</th>
 		</tr>
 {{@each form_upload_girfec filter event_id = event.id}}
-	{{@get form_type filter id = form_upload_girfec.form_type_id}}
 		<tr class="rowHighlight" onClick="runAction('eventMaintainFormsGirfecEdit?event.id={{event.id}}', ['form_upload_girfec.id={{form_upload_girfec.id}}'], 'event_forms_girfec')">
-			<td>{{form_type.name}}</td>
 			<td>{{form_upload_girfec.date}}</td>
 			<td>{{form_upload_girfec.file}}</td>
 			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_formGirfec('{{form_upload_girfec.id}}','{{form_type.name}}')"> <i class="uk-icon-trash"></i></button> </td>
@@ -91,30 +88,24 @@ function postUpdate() {
 			{{@html gridcol end}}
 		{{@html gridrow end}}
 
+
+{{@get form_upload_girfec filter event_id = event.id}}
+
+{{@each girfec_outcome_name}}
+    {{@get form_upload_girfec_score filter girfec_outcome_name_id = girfec_outcome_name.id}}
 		{{@html gridrow start}}
-			{{@html gridcol start width=5-5}}
-                    <!-- @@EG: dropdown outside of the jam -->
-                    <label class="uk-form-label" for="form_upload_girfec.form_type_id"> Type </label>
-                    <div class="uk-form-controls">
-                        <select id="ID1___form_upload_girfec" name="form_upload_girfec.form_type_id" onchange="fn(this, event);" onkeyup="fn(this, event);" class="uk-form-width-medium ROW_{{sys.sequence}} ">
-                        {{tmp.selected = }}
-                        {{@each form_type filter id = form_upload_girfec.form_type_id}}
-                            <option value="{{form_type.id}}" selected> {{form_type.name}} </option>
-                        {{@end}}
-                        {{@each form_type filter id != form_upload_girfec.form_type_id}}
-                            <option value="{{form_type.id}}"> {{form_type.name}} </option>
-                        {{@end}}
-                        </select>
-                    </div>
+			{{@html gridcol start width=2-5}}
+				{{@html textarea field=form_upload_girfec.notes size=40x5 label='Comment'}}
+			{{@html gridcol end}}
+			{{@html gridcol start width=1-5}}
+				{{@html textarea field=form_upload_girfec.notes size=40x5 label='Comment'}}
+			{{@html gridcol end}}
+			{{@html gridcol start width=2-5}}
+				{{@html textarea field=form_upload_girfec.notes size=40x5 label='Comment'}}
 			{{@html gridcol end}}
 		{{@html gridrow end}}
+{{@end}}
 
-
-		{{@html gridrow start}}
-			{{@html gridcol start width=5-5}}
-				{{@html textarea field=form_upload_girfec.notes size=40x5 label='Notes'}}
-			{{@html gridcol end}}
-		{{@html gridrow end}}
 		{{@html gridrow start}}
 			{{@html gridcol start width=1-1}}
 				<br>
