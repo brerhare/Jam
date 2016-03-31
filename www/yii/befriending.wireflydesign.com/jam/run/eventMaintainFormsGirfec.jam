@@ -106,11 +106,10 @@ function postUpdate() {
 
 {{@each girfec_outcome_name}}
     {{@get form_upload_girfec_score filter girfec_outcome_name_id = girfec_outcome_name.id}}
-
 	<tr>
 		<td> {{girfec_outcome_name.description}} </td>
-		<td> {{@html text field=form_upload_girfec_score.score size=mini}} </td>
-		<td> {{@html textarea field=form_upload_girfec.notes size=60x5}} </td>
+		<td> {{@html text field=form_upload_girfec_score.score group=inp size=mini}} </td>
+		<td> {{@html textarea field=form_upload_girfec_score.comment group=inp size=60x5}} </td>
 	</tr>
 {{@end}}
 
@@ -121,7 +120,7 @@ function postUpdate() {
 				<br>
 				<center>
 					{{@html button Save primary medium
-						runAction('update_form_girfec', ['inputForm_form_upload_girfec'], '', postUpdate)
+						saveButtonClick();
 					}}
 					{{@html button Cancel primary medium
 						runJam();
@@ -132,13 +131,45 @@ function postUpdate() {
 	</form>
 {{@end}}
 
+{{@html container end}}
+
 {{@action update_form_girfec}}
 	{{@update item form_upload_girfec notify=ok}}
 {{@end}}
 
-{{@html container end}}
+{{@action deleteAllGirfecScore}}
+    {{@sql delete from form_upload_girfec_score where form_upload_girfec_id = {{form_upload_girfec.id}} }}
+{{@end}}
+
+{{@action addGirfecScore}}
+    {{form_upload_girfec_score.girfec_outcome_name_id = befriender.id}}
+    {{answer_befriender.question_id = question.id}}
+    {{answer_befriender.answer = answer}}
+    {{@new item form_upload_girfec_score notify=ok}}
+{{@end}}
 
 <script>
+
+function onChange_formuploadgirfecscore_score(obj) {
+	if ((obj.value < '1') || (obj.value > '5')) {
+		alert('Valid range is 1-5');
+		obj.value = '';
+	}
+}
+
+function saveButtonClick(obj) {
+	runAction('update_form_girfec', ['inputForm_form_upload_file'], '');
+    runAction('deleteAllGirfecScore',['form_upload_girfec.id'], '', addAllGirfecScore);
+}
+
+function addAllGirfecScore() {
+    var groupArr = getGroupArray('inp');
+    for (var i = 0; i < groupArr.length; i++) {
+		alert(groupArr[i].id + ':' + groupArr[i].value);
+        //runAction('addGirfecScore', ['form_upload_girfec.id', 'question.id='+groupArr[i].id, 'answer='+groupArr[i].value]);
+    }
+}
+
 function fileUploadGirfec(obj) {
     $.blockUI();
     var file = obj.files[0];

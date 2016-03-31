@@ -27,10 +27,11 @@ Doing...
 
 <!-- girfec form outcomes record -->
 {{@new table form_upload_girfec_score
-	event_id				number required
-	girfec_outcome_name_id	number required
 	score					number
 	comment					text
+	event_id				number required
+	form_upload_girfec_id	number required
+	girfec_outcome_name_id	number required
 }}
 
 Done
