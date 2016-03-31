@@ -83,7 +83,7 @@ function postUpdate() {
 			<div class="uk-form-file"> <input type="file" onChange="fileUploadGirfec(this)"></div>
 
 					{{@Xhtml button Upload primary small
-						runAction('update_form_girfec', ['inputForm_form_upload_file'], '', postUpdate)
+						runAction('update_form_girfec', ['inputForm_form_upload_girfec'], '', postUpdate)
 					}}
 						
                     </div>
@@ -102,6 +102,7 @@ function postUpdate() {
 		<th> Outcome </th>
 		<th> Score </th>
 		<th> Comment </th>
+		<th> </th>
 	<tr>
 
 {{@each girfec_outcome_name}}
@@ -109,7 +110,8 @@ function postUpdate() {
 	<tr>
 		<td> {{girfec_outcome_name.description}} </td>
 		<td> {{@html text field=form_upload_girfec_score.score group=inp size=mini}} </td>
-		<td> {{@html textarea field=form_upload_girfec_score.comment group=inp size=60x5}} </td>
+		<td> {{@html textarea field=form_upload_girfec_score.comment size=60x5}} </td>
+		<td> {{@html text hidden field=girfec_outcome_name.id}} </td>
 	</tr>
 {{@end}}
 
@@ -142,9 +144,11 @@ function postUpdate() {
 {{@end}}
 
 {{@action addGirfecScore}}
-    {{form_upload_girfec_score.girfec_outcome_name_id = befriender.id}}
-    {{answer_befriender.question_id = question.id}}
-    {{answer_befriender.answer = answer}}
+    {{form_upload_girfec_score.girfec_outcome_name_id = nameid}}
+	{{form_upload_girfec_score.event_id = event.id}}
+	{{form_upload_girfec_score.form_upload_girfec_id = girfecid}}
+	{{form_upload_girfec_score.score = score}}
+	{{form_upload_girfec_score.comment = comment}}
     {{@new item form_upload_girfec_score notify=ok}}
 {{@end}}
 
@@ -158,16 +162,24 @@ function onChange_formuploadgirfecscore_score(obj) {
 }
 
 function saveButtonClick(obj) {
-	runAction('update_form_girfec', ['inputForm_form_upload_file'], '');
-    runAction('deleteAllGirfecScore',['form_upload_girfec.id'], '', addAllGirfecScore);
+	runAction('update_form_girfec', ['inputForm_form_upload_girfec'], '', saveGirfecScores);
+}
+
+function saveGirfecScores() {
+    runAction('deleteAllGirfecScore',['inputForm_form_upload_girfec'], '', addAllGirfecScore);
 }
 
 function addAllGirfecScore() {
     var groupArr = getGroupArray('inp');
     for (var i = 0; i < groupArr.length; i++) {
-		alert(groupArr[i].id + ':' + groupArr[i].value);
-        //runAction('addGirfecScore', ['form_upload_girfec.id', 'question.id='+groupArr[i].id, 'answer='+groupArr[i].value]);
+		eventObj = get('event.id');
+		girfecObj = get('form_upload_girfec.id');
+		commentObj = getSiblingByName(groupArr[i], 'form_upload_girfec_score.comment');
+		nameObj = getSiblingByName(groupArr[i], 'girfec_outcome_name.id');
+		delete groupArr[i];
+        runAction('addGirfecScore', ['event='+eventObj.value, 'girfecid='+girfecObj.value, 'nameid='+nameObj.value, 'score='+groupArr[i].value, 'comment='+commentObj.value], '', addAllGirfecScore);
     }
+	runJam();
 }
 
 function fileUploadGirfec(obj) {
