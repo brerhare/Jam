@@ -22,8 +22,7 @@
 	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
 			<th> Relationship </th>
-			<th> Forename </th>
-			<th> Surname </th>
+			<th> Name </th>
 			<th> Email </th>
 			<th> Mobile </th>
 			<th> Landline </th>
@@ -34,12 +33,18 @@
 		{{@get contact_relationship filter id = contact.contact_relationship_id}}
 		<tr class="rowHighlight" onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">
 			<td>{{contact_relationship.relationship}}</td>
-			<td>{{global.forename}}</td>
-			<td>{{global.surname}}</td>
+			<td>{{global.forename}} {{global.surname}}</td>
 			<td>{{global.email}}</td>
 			<td>{{global.mobile}}</td>
 			<td>{{global.landline}}</td>
-			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_contact('{{contact.id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i></button> </td>
+			<td>
+				<span id='emailButton' name='emailButton'>
+					{{@html button 'Email form' primary small
+						runAction('email_contact', ['contact.id={{contact.id}}'], 'emailButton');
+					}}
+				</span>
+				<button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_contact('{{contact.id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i></button>
+			</td>
 		</tr>
 {{@end}}
 	</table>
@@ -103,12 +108,6 @@ function postUpdate() {
 					{{@html button Cancel primary medium
 						runJam();
 					}}
-					<div id='emailButton' name='emailButton'>
-						{{@html button 'Email form' primary medium
-							runAction('email_contact', ['contact.id'], 'emailButton')
-						}}
-					</div>
-
 				</center>
 			{{@html gridcol end}}
 		{{@html gridrow end}}
