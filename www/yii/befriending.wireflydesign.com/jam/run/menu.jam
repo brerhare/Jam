@@ -35,7 +35,6 @@
 		
 	<li><a href="#"> Settings </a>
 		<ul>
-
 			<li> <a href="/run/formType.jam"> Form Types </a></li>
 			<li> <a href="/run/girfec_outcome_name.jam"> Girfec Outcomes </a></li>
 			<li><a href="/run/interestType.jam"> Interest Types </a>
@@ -65,6 +64,10 @@
 	
 	
 </ul>
+
+<!-- Because the menu is position:fixed we must push down any content below it to avoid overlap -->
+<div style=min-height:50px></div>
+
 }}
 
 <!-- Call the addon -->
