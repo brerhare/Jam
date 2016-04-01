@@ -54,7 +54,7 @@ function confirmDelete(id, displayInfo) {
 	<table>
 		<tr>
 					
-		<td>{{global.forename}}</td>
+		<td>Young Person {{global.forename}}</td>
 		<td>{{global.surname}}</td>
 		<td>{{@html button 'Return to list' primary medium 
 			runJam
