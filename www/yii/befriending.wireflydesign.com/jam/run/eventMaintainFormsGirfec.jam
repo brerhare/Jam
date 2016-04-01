@@ -31,7 +31,7 @@
 			</th>
 		</tr>
 {{@each form_upload_girfec filter event_id = event.id}}
-		<tr class="rowHighlight" onClick="runAction('eventMaintainFormsGirfecEdit?event.id={{event.id}}', ['form_upload_girfec.id={{form_upload_girfec.id}}'], 'event_forms_girfec')">
+		<tr class="rowHighlight" onClick="runAction('eventMaintainFormsGirfecEdit?event.id={{event.id}}&form_upload_girfec.id={{form_upload_girfec.id}}', [], 'event_forms_girfec')">
 			<td>{{form_upload_girfec.date}}</td>
 			<td> <a href="http://befriending.wireflydesign.com:/jam/uploads/forms/events/girfec/{{event.id}}_{{form_upload_girfec.file}}" target="_blank">{{form_upload_girfec.file}}</a> </td>
 			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_formGirfec('{{form_upload_girfec.id}}','{{form_type.name}}')"> <i class="uk-icon-trash"></i></button> </td>
@@ -94,8 +94,6 @@ function postUpdate() {
 		{{@html gridrow end}}
 
 
-{{@get form_upload_girfec filter event_id = event.id}} <!-- @@kim only eventid? -->
-
 <table class="uk-table uk-table-condensed" style="border:1px solid #dddddd">
 
 	<tr>
@@ -106,7 +104,6 @@ function postUpdate() {
 	<tr>
 
 {{@each girfec_outcome_name}}
-	{{@get form_upload_girfec id = form_upload_girfec.id}}
     {{@get form_upload_girfec_score filter girfec_outcome_name_id = girfec_outcome_name.id, form_upload_girfec_id = form_upload_girfec.id}}
 	<tr>
 		<td> {{girfec_outcome_name.description}} </td>
