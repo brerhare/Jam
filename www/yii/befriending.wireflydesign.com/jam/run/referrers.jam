@@ -111,11 +111,6 @@ function postUpdate() {
 					{{@html button Cancel primary medium
 						runJam();
 					}}
-					<div id='emailButton' name='emailButton'>
-					{{@html button 'Email form' primary medium
-						runAction('email_contact', ['contact.id'], 'emailButton')
-					}}
-					</div>
 				</center>
 			{{@html gridcol end}}
 		{{@html gridrow end}}
