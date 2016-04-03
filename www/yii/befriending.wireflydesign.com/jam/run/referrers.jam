@@ -8,41 +8,7 @@
 <br>
 {{@html container start center css='max-width:700px; Xpadding:0}}
 
-<!-- Template defines -->
-{{@template TABLE contact}}
-{{@template FILTER filter contact_relationship_id = 3}}
-{{@template DESCRIPTION Referrers}}
-
-<!-- Template defines for the list component -->
-{{@template DELETEFIELD global.surname}}
-{{@template HEADINGS
-	<th> Forename </th>
-	<th> Surname </th>
-}}
-{{@template COLUMNS
-	<td>{{global.forename}}</td>
-	<td>{{global.surname}}</td>
-}}
-
-<!-- Template defines for the form input component -->
-{{@template FORMINPUT
-
-	{{@html text field=global.forename size=medium label='Forename'}}
-	{{@html text field=global.surname size=medium label='Surname'}}
-	{{@html text field=global.house size=medium label='house'}}
-	{{@html text field=global.street size=medium label='Street'}}
-	{{@html text field=global.area size=medium label='Area'}}
-	{{@html text field=global.town size=medium label='Town'}}
-	{{@html text field=global.postcode size=medium label='Postcode'}}
-	{{@html text field=global.landline size=medium label='Land line'}}
-	{{@html text field=global.mobile size=medium label='Mobile'}}
-	{{@html text field=global.email size=medium label='Email'}}
-}}
-
 <!-- List component -->
-
-<!-- Clear any unset templates -->
-{{@template FILTER}}
 
 <style>
 .rowHighlight:hover {
@@ -51,18 +17,27 @@
 }
 </style>
 
-<h3> DESCRIPTION </h3>
-<div name="content_TABLE">
+<h3> Referrers </h3>
+<div name="content_contact">
 	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
-			HEADINGS
-			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('maintain_TABLE', [], 'content_TABLE')"> <i class="uk-icon-plus"></i> New</button> </th>
+			<th> Forename </th>
+			<th> Surname </th>
+			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('maintain_contact', [], 'content_contact')"> <i class="uk-icon-plus"></i> New</button> </th>
 		</tr>
-{{@each TABLE FILTER}}
-		{{@get global filter id = TABLE.global_id}}
-		<tr class="rowHighlight" onClick="runAction('maintain_TABLE', ['TABLE.id={{TABLE.id}}'], 'content_TABLE')">
-			COLUMNS
-			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_TABLE('{{id}}','{{DELETEFIELD}}')"> <i class="uk-icon-trash"></i></button> </td>
+{{@each contact filter contact_relationship_id = 3}}
+		{{@get global filter id = contact.global_id}}
+		<tr class="rowHighlight" onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">
+			<td>{{global.forename}}</td>
+			<td>{{global.surname}}</td>
+			<td>
+				<span id='emailButton' name='emailButton'>
+					{{@html button 'Email form' primary small
+					runAction('email_contact', ['contact.id={{contact.id}}'], 'emailButton');
+					}}
+				</span>
+				<button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_contact('{{id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i></button>
+			</td>
 		</tr>
 {{@end}}
 	</table>
@@ -70,20 +45,20 @@
 <br>
 
 <script>
-function confirmDelete_TABLE(id, displayInfo) {
+function confirmDelete_contact(id, displayInfo) {
 	window.event.cancelBubble = true;	// Prevent any further events
 	var result = confirm('Confirm delete of item ' + displayInfo);
 	if (result)
-		runAction('delete_TABLE', ['TABLE.id='+id], '', runJam);	
+		runAction('delete_contact', ['contact.id='+id], '', runJam);	
 }
 
-function localUpdate_TABLE() {
+function localUpdate_contact() {
 	obj = document.getElementsByName('global.email')[0];
 	if (obj.value == "") {
 		alert('Invalid email');
 		return;
 	}
-	runAction('update_TABLE', ['inputForm_TABLE'], '', postUpdate);
+	runAction('update_contact', ['inputForm_contact'], '', postUpdate);
 }
 function postUpdate() {
 	runJam();
@@ -91,29 +66,38 @@ function postUpdate() {
 
 </script>
 
-{{@action delete_TABLE}}
-	{{@get TABLE filter id = TABLE.id}}
-	{{global.id = TABLE.global_id}}
-	{{@remove item TABLE}}
+{{@action delete_contact}}
+	{{@get contact filter id = contact.id}}
+	{{global.id = contact.global_id}}
+	{{@remove item contact}}
 	{{@remove item global}}	@@TODO - dont remove global if it has other links
 {{@end}}
 
 <!-- Form input component -->
 
-{{@action maintain_TABLE}}
-	{{@get TABLE filter id = TABLE.id}}
-	{{@get global filter id = TABLE.global_id}}
+{{@action maintain_contact}}
+	{{@get contact filter id = contact.id}}
+	{{@get global filter id = contact.global_id}}
 
 	<style type="text/css">
 		label {text-align: right;}
 	</style>
 
-	<form name="inputForm_TABLE" class="uk-form uk-form-horizontal">
-		<input type="hidden" name="TABLE.id" value="{{TABLE.id}}">
-		<input type="hidden" name="global.id" value="{{TABLE.global_id}}">
+	<form name="inputForm_contact" class="uk-form uk-form-horizontal">
+		<input type="hidden" name="contact.id" value="{{contact.id}}">
+		<input type="hidden" name="global.id" value="{{contact.global_id}}">
 		{{@html gridrow start}}
 			{{@html gridcol start width=5-5}}
-				FORMINPUT
+				{{@html text field=global.forename size=medium label='Forename'}}
+				{{@html text field=global.surname size=medium label='Surname'}}
+				{{@html text field=global.house size=medium label='house'}}
+				{{@html text field=global.street size=medium label='Street'}}
+				{{@html text field=global.area size=medium label='Area'}}
+				{{@html text field=global.town size=medium label='Town'}}
+				{{@html text field=global.postcode size=medium label='Postcode'}}
+				{{@html text field=global.landline size=medium label='Land line'}}
+				{{@html text field=global.mobile size=medium label='Mobile'}}
+				{{@html text field=global.email size=medium label='Email'}}
 			{{@html gridcol end}}
 		{{@html gridrow end}}
 		{{@html gridrow start}}
@@ -121,15 +105,15 @@ function postUpdate() {
 				<br>
 				<center>
 					{{@Xhtml button Save primary medium
-						runAction('update_TABLE', ['inputForm_TABLE'], '', runJam)
+						runAction('update_contact', ['inputForm_contact'], '', runJam)
 					}}
-					<button type="button" onClick="localUpdate_TABLE()" class="uk-button uk-button-primary">Save</button>
+					<button type="button" onClick="localUpdate_contact()" class="uk-button uk-button-primary">Save</button>
 					{{@html button Cancel primary medium
 						runJam();
 					}}
 					<div id='emailButton' name='emailButton'>
 					{{@html button 'Email form' primary medium
-						runAction('email_TABLE', ['TABLE.id'], 'emailButton')
+						runAction('email_contact', ['contact.id'], 'emailButton')
 					}}
 					</div>
 				</center>
@@ -138,22 +122,22 @@ function postUpdate() {
 	</form>
 {{@end}}
 
-{{@action update_TABLE}}
+{{@action update_contact}}
 	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
-	{{TABLE.global_id = global.id}}
-	{{TABLE.contact_relationship_id = 3}}
-	{{@update item TABLE}}
+	{{contact.global_id = global.id}}
+	{{contact.contact_relationship_id = 3}}
+	{{@update item contact}}
 {{@end}}
 
-{{@action email_TABLE}}
-	{{@get TABLE filter id = TABLE.id}}
-	{{@get global filter id = TABLE.global_id}}
+{{@action email_contact}}
+	{{@get contact filter id = contact.id}}
+	{{@get global filter id = contact.global_id}}
 	{{@email info@wireflydesign.com {{global.email}} 'Befriending referral form for {{global.forename}} {{global.surname}}' action:emailContent}}
 	Email sent
 {{@end}}
 
 {{@action emailContent}}
-	Please click on <a href="http://befriending.wireflydesign.com/run/referralFormReferrer.jam?id1=RefFormgj3x9dsmcNcj2hvgsxz3sjpOvR&refId={{TABLE.id}}&ypId=0">this</a> to open the referral form.
+	Please click on <a href="http://befriending.wireflydesign.com/run/referralFormReferrer.jam?id1=RefFormgj3x9dsmcNcj2hvgsxz3sjpOvR&refId={{contact.id}}&ypId=0">this</a> to open the referral form.
 {{@end}}
 
 {{@html container end}}
