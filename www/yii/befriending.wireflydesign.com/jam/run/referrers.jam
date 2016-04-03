@@ -23,6 +23,7 @@
 		<tr>
 			<th> Forename </th>
 			<th> Surname </th>
+			<th> Send Form </th>
 			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('maintain_contact', [], 'content_contact')"> <i class="uk-icon-plus"></i> New</button> </th>
 		</tr>
 {{@each contact filter contact_relationship_id = 3}}
@@ -36,6 +37,8 @@
 					runAction('email_contact', ['contact.id={{contact.id}}'], 'emailButton');
 					}}
 				</span>
+			</td>
+			<td>
 				<button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_contact('{{id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i></button>
 			</td>
 		</tr>
