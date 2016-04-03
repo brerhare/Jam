@@ -38,7 +38,7 @@
 			<td>{{global.mobile}}</td>
 			<td>{{global.landline}}</td>
 			<td>
-<!--- @@TODO cant use this for now as iframe cant load mailto:? -->
+<!--- @@TODO cant use this for now as iframe cant load mailto:?
 				<span id='emailButton' name='emailButton'>
 					{{@Xhtml button 'Email' primary small
 						sendContactEmail({{contact.id}});
