@@ -43,8 +43,8 @@
 			{{@html gridcol end}}
 			{{@html gridcol start width=4-10}}
 
-				{{@html radio field=young_person.gender label='Gender' options=0:Male,1:Female group=inp}}
 				{{@html dropdown field=young_person.status_id pickfield=status.name size=small label='Status'}}
+				{{@html radio field=young_person.gender label='Gender' options=0:Male,1:Female group=inp}}
 				{{@html text field=young_person.legal_status size=large label='Legal status' group=inp}}
 				{{@html text field=young_person.medication size=large label='Medication' group=inp}}
 				{{@html date field=young_person.order_date size=medium label='Order date' group=inp}}
@@ -54,8 +54,13 @@
 				{{@html checkbox field=young_person.care_risk label='Care risk' group=inp}}
 				{{@html checkbox field=young_person.child_plan label='Child plan' group=inp}}
 				{{@html checkbox field=young_person.assessment label='Assessment' group=inp}}
-				{{@html textarea field=young_person.special_needs_notes size=50x4 label='Special needs notes' group=inp}}
 
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+
+		{{@html gridrow start}}
+			{{@html gridcol start width=1-1}}
+				{{@html textarea field=young_person.special_needs_notes size=90x7 label='Notes' group=inp}}
 			{{@html gridcol end}}
 		{{@html gridrow end}}
 
