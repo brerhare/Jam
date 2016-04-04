@@ -93,7 +93,7 @@ function saveButtonClick() {
 
 function updated() {
     //runJam('youngPerson');
-	window.top.location.href = "http://befriending.wireflydesign.com/run/youngPerson.jam";
+	//window.top.location.href = "http://befriending.wireflydesign.com/run/youngPerson.jam";
 }
 
 </script>
