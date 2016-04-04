@@ -54,9 +54,9 @@ function confirmDelete(id, displayInfo) {
 	<table>
 		<tr>
 					
-		<td>Young Person {{global.forename}}</td>
-		<td>{{global.surname}}</td>
-		<td>{{@html button 'Return to list' primary medium 
+		<td>Young Person: <span style='font-weight:bold'> {{global.forename}} </span> </td>
+		<td> <span style='font-weight:bold'> {{global.surname}} </span> </td>
+		<td style='width:200px; text-align:right'>{{@html button 'Return to list' primary medium 
 			runJam
 		}}</td>
 			
@@ -68,7 +68,7 @@ function confirmDelete(id, displayInfo) {
 	{{@html tabs
 		label=Matches		action=/run/youngPersonMatch?young_person.id={{young_person.id}}
 		label=Contacts		action=/run/youngPersonContact?young_person.id={{young_person.id}}
-		label=Details		action=/run/youngPersonDetails?young_person.id={{young_person.id}}
+		label=Details		action=/run/youngPersonDetails?young_person.id={{young_person.id}}&newRec=0
 		label=Interests		action=/run/youngPersonInterest?young_person.id={{young_person.id}}
 		label=Outcomes		action=/run/youngPersonOutcomes?young_person.id={{young_person.id}}
 		label=Medical		action=/run/youngPersonMedical?young_person.id={{young_person.id}}
@@ -95,7 +95,7 @@ function confirmDelete(id, displayInfo) {
 	
 	</h3>
 	{{@html tabs
-		label=Details		action=/run/youngPersonDetails?young_person.id={{young_person.id}}
+		label=Details		action=/run/youngPersonDetails?young_person.id={{young_person.id}}&newRec=1
 	}}
 {{@end}}
 
