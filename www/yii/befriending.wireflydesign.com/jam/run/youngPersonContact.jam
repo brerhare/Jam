@@ -38,11 +38,13 @@
 			<td>{{global.mobile}}</td>
 			<td>{{global.landline}}</td>
 			<td>
+<!--- @@TODO cant use this for now as iframe cant load mailto:? -->
 				<span id='emailButton' name='emailButton'>
-					{{@html button 'Email form' primary small
-						runAction('email_contact', ['contact.id={{contact.id}}'], 'emailButton');
+					{{@html button 'Email' primary small
+						sendContactEmail('{{global.email}}');
 					}}
 				</span>
+<!-- -->
 				<button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_contact('{{contact.id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i></button>
 			</td>
 		</tr>
@@ -60,6 +62,10 @@ function confirmDelete_contact(id, displayInfo) {
 }
 function postUpdate() {
 	runJam();
+}
+function sendContactEmail(contactEmail) {
+//alert('ss' + contactId);
+	window.location.href = "mailto:"+contactEmail;
 }
 </script>
 

@@ -43,7 +43,7 @@ window.onload = function() {
 {{@action addInterest}}
 	{{interest_young_person.young_person_id = young_person.id}}
 	{{interest_young_person.interest_type_id = interest_type.id}}
-	{{@new item interest_young_person}}
+	{{@new item interest_young_person notify=ok}}
 {{@end}}
 
 function saveButtonClicked(obj) {
