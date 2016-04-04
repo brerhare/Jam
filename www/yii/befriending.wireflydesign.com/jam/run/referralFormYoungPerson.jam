@@ -56,8 +56,14 @@
 				{{@html checkbox field=young_person.care_risk label='Care risk' group=inp}}
 				{{@html checkbox field=young_person.child_plan label='Child plan' group=inp}}
 				{{@html checkbox field=young_person.assessment label='Assessment' group=inp}}
-				{{@html textarea field=young_person.special_needs_notes size=50x4 label='Special needs notes' group=inp}}
 
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+
+<br>
+		{{@html gridrow start}}
+			{{@html gridcol start width=1-1}}
+				{{@html textarea field=young_person.special_needs_notes size=80x10 label='Special needs notes' group=inp}}
 			{{@html gridcol end}}
 		{{@html gridrow end}}
 
