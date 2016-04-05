@@ -3,3 +3,8 @@ RewriteCond %{SCRIPT_FILENAME} !-d
 RewriteCond %{SCRIPT_FILENAME} !-f
 RewriteRule ^run(.+)$ /jam/cgi/runjam.cgi?jam=/jam/run/$1 [L,QSA]
 RewriteRule ^jam/run(.+)$ /jam/cgi/runjam.cgi?jam=/jam/run/$1 [L,QSA]
+
+AuthUserFile /home/beingbusiness.co.uk/domains/members.beingbusiness.co.uk/dev/src/www/yii/members.beingbusiness.co.uk/.htpass
+AuthType Basic
+AuthName "Being Business Members"
+Require valid-user
