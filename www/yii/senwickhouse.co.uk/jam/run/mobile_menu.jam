@@ -8,9 +8,9 @@
 {{@template CORNERPIXELS 0}}
 {{@template MAINTEXTCOLOR #5fa360}}
 {{@template SUBTEXTCOLOR #5fa360}}
-{{@template FONTDOWNLOAD PT+Sans+Narrow:400,700}}
-{{@template FONTFAMILY "PT Sans Narrow", "Arial Narrow", Arial, Helvetica, sans-serif}}
-{{@template FONTSIZE 18}}
+{{@template FONTDOWNLOAD Open+Sans:400}}
+{{@template FONTFAMILY "Open Sans", Arial, sans-serif}}
+{{@template FONTSIZE 16}}
 
 
 {{@template MENU

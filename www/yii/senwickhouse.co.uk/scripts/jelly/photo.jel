@@ -26,7 +26,7 @@ css.width = 100%
 	[logo]
 	css.width = 50%
 	css.min-width = 270px
-	image.url = img/senwick_logo.png
+	image.url = img/photo_logo.png
 	image.width = 100%
 	image.height = 100%
 	click = ?layout=index&page=index
