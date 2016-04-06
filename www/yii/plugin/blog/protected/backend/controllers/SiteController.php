@@ -96,10 +96,10 @@ class SiteController extends Controller
      * Displays the DIRECT login page
      */
 // @@TODO: HARDCODED FOR BEIRC ---------- REMOVE
-    public function actionBeircdirect()
+    public function actionBeircDirect()
     {
         Yii::app()->session['uid'] = 20;
-        $identity = new UserIdentity('fran@microboot.com', 'site2plugin');
+        $identity = new UserIdentity('beirc', 'site2plugin');
         $identity->authenticate();
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);
