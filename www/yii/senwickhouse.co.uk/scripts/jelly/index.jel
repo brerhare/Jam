@@ -1,20 +1,228 @@
+#Senwick House
 [defaults]
 include = default-values
 
-; Every blob inherits these before adding/overriding
+# Every blob inherits these before adding/overriding
+
 [* : defaults]
 
 [screen]
-child = contentframe
-fx.wallpaper-image = /img/background.jpg
+child = site, footer
+css.background-color = white
 css.display = block
 
-	[contentframe]
-	css.display = block
-	css.width = 500px
-	css.margin-top = 400px
-	style.html.h1.color = yellow
-	style.html.h1.background-color = black
-	style.html.h1.padding = 10px
-	html.h1 = a jelly&#0153; site is coming soon
+	[site]
+	child = header, menu, slider, pages
+	css.width = 100%
+	css.max-width = 1200px
+	css.background-color = white
 
+####  Header  #################################
+
+[header]
+child = logo
+css.width = 100%
+
+	[logo]
+	css.width = 50%
+	css.min-width = 270px
+	image.url = img/senwick_logo.png
+	image.width = 100%
+	image.height = 100%
+	click = ?layout=index&page=index
+		
+
+
+[menu]
+css.height = 40px
+css.margin-top = 5px
+css.width = 100%
+css.background-color = transparent
+css.overflow = visible
+css.position = relative
+css.z-index = 100
+jam.embed = /run/mobile_menu.jam
+
+
+
+
+#### Slider ###########################################
+
+	[slider]
+	css.width = 100%
+  	css.height = 32%
+	css.margin-top = 8px
+	jam.embed = /run/plain_slider.jam
+
+	
+######## body #######################################
+			
+
+	[pages]
+	child = home-page, pages-content, contact-page
+	css.width = 90%
+	css.max-width = 900px
+	css.margin-top = 20px
+	
+		[home-page]
+		condition = @PAGE=@HOMEPAGE
+		child = home-left, home-center, home-right
+		stacking = horizontal
+		css.width = 90%
+		
+			[home-left]
+			css.width = 33%
+			css.min-width = 150px
+			addon.global.column.name = home-left
+			addon.global.column.width = 100%
+			addon.global.column.internal-width = 100%
+			addon.global.column.content-width = 80%
+			addon.global.column.internal-color = transparent
+			addon.global.column.background-color = transparent
+			addon.global.column.top-height = 10px
+			addon.global.column.bottom-height = 0px
+			
+			[home-center]
+			css.width = 33%
+			css.min-width = 150px
+			addon.global.column.name = home-centre
+			addon.global.column.width = 100%
+			addon.global.column.internal-width = 100%
+			addon.global.column.content-width = 80%
+			addon.global.column.internal-color = transparent
+			addon.global.column.background-color = transparent
+			addon.global.column.top-height = 10px
+			addon.global.column.bottom-height = 10px
+			
+			[home-right]
+			css.width = 33%
+			css.min-width = 150px
+			addon.global.column.name = home-right
+			addon.global.column.width = 100%
+			addon.global.column.internal-width = 100%
+			addon.global.column.content-width = 80%
+			addon.global.column.internal-color = transparent
+			addon.global.column.background-color = transparent
+			addon.global.column.top-height = 10px
+			addon.global.column.bottom-height = 10px
+		
+		[pages-content]
+		condition = @PAGE!=contact
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
+		
+		[contact-page]
+		child = contact, contact-content
+		condition = @PAGE=contact
+		stacking = horizontal
+		
+			[contact]
+			css.width = 45%
+			css.margin-top = 100px
+			#jam.embed = /run/contact.jam
+			jam.iframe = /run/contact
+			
+			
+			[contact-content]
+			css.width = 45%
+			css.margin-left = 9%
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find the page $_GET['page']
+			html.raw = ContentBlock.content
+		
+
+
+####footer####################################
+
+[footer]
+child = flourish, footer-tag, footer-background
+css.margin-top = 40px
+
+	[flourish]
+	css.width = 50%
+	css.max-width = 100px
+	image.url = img/flourish.png
+	image.width = 100%
+	image.height = 100%
+	image.align = center
+	
+	[footer-tag]
+	css.width = 100%
+	css.max-width = 300px
+	css.text-align = center
+	html.raw = <h4>Peace, Tranquility and Care</h4>
+
+	[footer-background]
+	child = footer-content
+	css.margin-top = 50px
+	css.width = 100%
+	css.background-color = #bdd9bd
+	
+	[footer-content]
+	child = footer-left, footer-right
+	css.width = 90%
+	css.max-width = 900px
+	stacking = horizontal
+	
+		[footer-left]
+		css.width = 45%
+		css.min-width = 300px
+		addon.global.column.name = footer-left
+		addon.global.column.width = 100%
+		addon.global.column.internal-width = 100%
+		addon.global.column.content-width = 80%
+		addon.global.column.internal-color = transparent
+		addon.global.column.background-color = transparent
+		addon.global.column.top-height = 10px
+		addon.global.column.bottom-height = 10px
+		
+		[footer-right]
+		child = copyright, wirefly
+		css.margin-top = 20px
+		css.width = 150px
+		css.float = right
+
+			[copyright]
+			css.margin-top = 10px
+			html.raw = Senwick House &copy 2016<br/>All rights reserved
+			css.color = #000000
+			css.font-size = 12px
+			css.margin-top = 40px
+
+			[wirefly]
+			child = wirefly-logo, admin
+			stacking = horizontal
+			css.margin-top = 100px
+			css.width = 150px
+			css.margin-bottom = 30px
+			
+				[wirefly-logo]
+				css.width = 80%
+				css.margin-top = 1%
+				image.url = img/wirefly-design.png
+				image.width = 100%
+				image.height = 100%
+				image.align = right
+				clicknew = http://www.wireflydesign.com
+						
+					
+				[admin]
+				child = cog-center
+				css.width = 15%
+				css.background-size = 100%
+				css.background-image = url('/img/admin.png')
+				css.margin-left = -20%
+						
+					[cog-center]
+					css.width = 50%
+					css.height = 100%
+					css.margin-top = 25%
+					css.margin-bottom = 25%
+					image.url = img/cog-center.png
+					image.width = 100%
+					image.height = 100%
+					image.align = center
+					clicknew = backend.php

@@ -17,6 +17,9 @@
 </style>
 
 <style>	/* @@EG */
+	/* remove uikit's insane amount of padding around each td element */
+	.uk-table-condensed td {padding:1px}
+
 	.uk-form input[type=text]:disabled {
 		border:none;
 		color:#000;

@@ -477,7 +477,7 @@ int wordHtmlFilter(int ix, char *defaultTableName) {
 	emitStd(jam[ix]->trailer);
 }
 
-// Input 'text' or 'date'
+// Input 'text' or 'date' or 'time'
 int wordHtmlInput(int ix, char *defaultTableName) {
 	char *tmp = (char *) calloc(1, 4096);
 	char *type = NULL;
@@ -503,7 +503,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 			logMsg(LOGERROR, "Html input type cant be null");
 			return(-1);	
 		}
-		if ((strcmp(type, "date")) && (strcmp(type, "text"))) {
+		if ((strcmp(type, "date")) && (strcmp(type, "time")) && (strcmp(type, "text"))) {
 			logMsg(LOGERROR, "Html input type unspecified. Use 'text' or 'date' etc");
 			free(type);
 			return(-1);
