@@ -1,4 +1,4 @@
-#Demo 4
+#Senwick House
 [defaults]
 include = default-values
 
@@ -7,12 +7,12 @@ include = default-values
 [* : defaults]
 
 [screen]
-child = site
+child = site, footer
 css.background-color = white
 css.display = block
 
 	[site]
-	child = header, menu, slider, social-media, pages, page-underline, footer, wirefly
+	child = header, menu, slider, pages
 	css.width = 100%
 	css.max-width = 1200px
 	css.background-color = white
@@ -54,125 +54,175 @@ jam.embed = /run/mobile_menu.jam
 	css.margin-top = 8px
 	jam.embed = /run/plain_slider.jam
 
-	[social-media]
-	css.margin-top = -60px
-	css.width = 20%
-	css.min-width = 300px
-	css.float = right
-			
-	addon.global.column.name = social
-	addon.global.column.width = 100%
-	addon.global.column.internal-width = 100%
-	addon.global.column.content-width = 98%
-	addon.global.column.internal-color = transparent
-	addon.global.column.background-color = transparent
-
 	
 ######## body #######################################
 			
 
 	[pages]
-	child = pages-content, slider-testamonials
+	child = home-page, pages-content, contact-page
 	css.width = 90%
+	css.max-width = 900px
 	css.margin-top = 20px
 	
+		[home-page]
+		condition = @PAGE=@HOMEPAGE
+		child = home-left, home-center, home-right
+		stacking = horizontal
+		css.width = 90%
+		
+			[home-left]
+			css.width = 33%
+			css.min-width = 150px
+			addon.global.column.name = home-left
+			addon.global.column.width = 100%
+			addon.global.column.internal-width = 100%
+			addon.global.column.content-width = 80%
+			addon.global.column.internal-color = transparent
+			addon.global.column.background-color = transparent
+			addon.global.column.top-height = 10px
+			addon.global.column.bottom-height = 0px
+			
+			[home-center]
+			css.width = 33%
+			css.min-width = 150px
+			addon.global.column.name = home-centre
+			addon.global.column.width = 100%
+			addon.global.column.internal-width = 100%
+			addon.global.column.content-width = 80%
+			addon.global.column.internal-color = transparent
+			addon.global.column.background-color = transparent
+			addon.global.column.top-height = 10px
+			addon.global.column.bottom-height = 10px
+			
+			[home-right]
+			css.width = 33%
+			css.min-width = 150px
+			addon.global.column.name = home-right
+			addon.global.column.width = 100%
+			addon.global.column.internal-width = 100%
+			addon.global.column.content-width = 80%
+			addon.global.column.internal-color = transparent
+			addon.global.column.background-color = transparent
+			addon.global.column.top-height = 10px
+			addon.global.column.bottom-height = 10px
+		
 		[pages-content]
+		condition = @PAGE!=contact
 		db.table = ContentBlock
 		db.filter = url=$_GET['page']
 		db.error = Sorry, I could not find the page $_GET['page']
 		html.raw = ContentBlock.content
 		
-		[slider-testamonials]
-		css.width = 90%
-		css.height = 32%
-		css.margin-top = 8px
-		addon.slider.flexslider.width = 100%
-		addon.slider.flexslider.height = 32%
-		addon.slider.flexslider.mode = HTML
-		addon.slider.flexslider.source = db
-
-		addon.slider.flexslider.border-width = 0px
-		#addon.slider.flexslider.border-color = transparent
-		addon.slider.flexslider.active-dotcolor = #045184
-		addon.slider.flexslider.inactive-dotcolor = #f0ebdd
-		addon.slider.flexslider.dot-margin-top = -60px
-		addon.slider.flexslider.animation = slide
-		addon.slider.flexslider.slider = 2
-	
-	[page-underline]
-	css.width = 90%
-	css.height = 3px
-	css.margin-top = 50px
-	css.background-color = #002E5D
+		[contact-page]
+		child = contact, contact-content
+		condition = @PAGE=contact
+		stacking = horizontal
+		
+			[contact]
+			css.width = 45%
+			css.margin-top = 100px
+			#jam.embed = /run/contact.jam
+			jam.iframe = /run/contact
+			
+			
+			[contact-content]
+			css.width = 45%
+			css.margin-left = 9%
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find the page $_GET['page']
+			html.raw = ContentBlock.content
+		
 
 
 ####footer####################################
 
 [footer]
-child = footer-menu
+child = flourish, footer-tag, footer-background
 css.margin-top = 40px
-css.width = 90%
-#stacking = horizontal
 
-		[footer-menu]
-		child = footer-tandc, footer-cookies, footer-contact, copyright
-		css.width = 50%
+	[flourish]
+	css.width = 50%
+	css.max-width = 100px
+	image.url = img/flourish.png
+	image.width = 100%
+	image.height = 100%
+	image.align = center
+	
+	[footer-tag]
+	css.width = 100%
+	css.max-width = 300px
+	css.text-align = center
+	html.raw = <h4>Peace, Tranquility and Care</h4>
 
-			[footer-cookies]
-			html.raw = <footer-links>Cookie Policy
-			click = ?layout=index&page=cookie-policy
-
-			[footer-tandc]
-			html.raw = <footer-links>Terms
-			click = ?layout=index&page=terms-conditions
-
-			[footer-contact]
-			html.raw = <footer-links>Contact Us
-			click = ?layout=index&page=contact
-
+	[footer-background]
+	child = footer-content
+	css.margin-top = 50px
+	css.width = 100%
+	css.background-color = #bdd9bd
+	
+	[footer-content]
+	child = footer-left, footer-right
+	css.width = 90%
+	css.max-width = 900px
+	stacking = horizontal
+	
+		[footer-left]
+		css.width = 45%
+		css.min-width = 300px
+		addon.global.column.name = footer-left
+		addon.global.column.width = 100%
+		addon.global.column.internal-width = 100%
+		addon.global.column.content-width = 80%
+		addon.global.column.internal-color = transparent
+		addon.global.column.background-color = transparent
+		addon.global.column.top-height = 10px
+		addon.global.column.bottom-height = 10px
+		
+		[footer-right]
+		child = copyright, wirefly
+		css.margin-top = 20px
+		css.width = 150px
+		css.float = right
 
 			[copyright]
 			css.margin-top = 10px
-			html.raw = Holiday Let Services &copy 2016 All rights reserved
+			html.raw = Senwick House &copy 2016<br/>All rights reserved
 			css.color = #000000
-			css.font-size = 11px
+			css.font-size = 12px
 			css.margin-top = 40px
-			
 
-[wirefly]
-child = wirefly-logo, admin
-stacking = horizontal
-css.margin-top = 50px
-css.width = 150px
-#css.min-width = 110px
-css.margin-left = 5%
-css.margin-bottom = 30px
-
-
-	[wirefly-logo]
-	css.width = 80%
-	css.margin-top = 1%
-	image.url = img/wirefly-design.png
-	image.width = 100%
-	image.height = 100%
-	image.align = left
-	clicknew = http://www.wireflydesign.com
+			[wirefly]
+			child = wirefly-logo, admin
+			stacking = horizontal
+			css.margin-top = 100px
+			css.width = 150px
+			css.margin-bottom = 30px
 			
-		
-	[admin]
-	child = cog-center
-	css.width = 15%
-	css.background-size = 100%
-	css.background-image = url('/img/admin.png')
-	css.margin-left = -20%
-			
-		[cog-center]
-		css.width = 50%
-		css.height = 100%
-		css.margin-top = 25%
-		css.margin-bottom = 25%
-		image.url = img/cog-center.png
-		image.width = 100%
-		image.height = 100%
-		image.align = center
-		clicknew = backend.php
+				[wirefly-logo]
+				css.width = 80%
+				css.margin-top = 1%
+				image.url = img/wirefly-design.png
+				image.width = 100%
+				image.height = 100%
+				image.align = right
+				clicknew = http://www.wireflydesign.com
+						
+					
+				[admin]
+				child = cog-center
+				css.width = 15%
+				css.background-size = 100%
+				css.background-image = url('/img/admin.png')
+				css.margin-left = -20%
+						
+					[cog-center]
+					css.width = 50%
+					css.height = 100%
+					css.margin-top = 25%
+					css.margin-bottom = 25%
+					image.url = img/cog-center.png
+					image.width = 100%
+					image.height = 100%
+					image.align = center
+					clicknew = backend.php

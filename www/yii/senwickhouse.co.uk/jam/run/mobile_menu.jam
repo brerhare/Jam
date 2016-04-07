@@ -1,5 +1,3 @@
-{{@Xinclude /jam/sys/html/header.html}}
-
 {{@database senwickhouse_co_uk}}
 
 {{@template BACKCOLOR_FROM white}}
@@ -10,6 +8,10 @@
 {{@template CORNERPIXELS 0}}
 {{@template MAINTEXTCOLOR #5fa360}}
 {{@template SUBTEXTCOLOR #5fa360}}
+{{@template FONTDOWNLOAD Open+Sans:400}}
+{{@template FONTFAMILY "Open Sans", Arial, sans-serif}}
+{{@template FONTSIZE 16}}
+
 
 {{@template MENU
 	<ul id="main-menu" class="sm sm-blue">
@@ -44,4 +46,3 @@
 <!-- Call the addon -->
 {{@include /jam/run/sys/smartMenu.jam}}
 
-{{@Xinclude /jam/sys/html/footer.html}}

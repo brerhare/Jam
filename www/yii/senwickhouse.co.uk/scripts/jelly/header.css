@@ -12,10 +12,10 @@ html, body {	height: 100%;
 		line-height:150%;}
 
 /* Global Hyperlink settings - will affect menu text colour if no text settings */ 
-a { text-decoration: none; color:#00ad44; }
-a:visited { text-decoration: none; color:#00ad44; }
-a:hover { text-decoration: none; color:#00adc9; }
-a:active { text-decoration: none; color:#00adc9 }
+a { text-decoration: none; color:#187232; }
+a:visited { text-decoration: none; color:#187232; }
+a:hover { text-decoration: none; color:#5fa360; }
+a:active { text-decoration: none; color:#187232 }
 
 
 
@@ -25,7 +25,7 @@ h1 {	font-family: 'Great Vibes', Georgia, serif !important;
 	font-weight: 400;}
 
 h2 {	font-family: 'Open Sans', Verdana, sans-serif !important;
-	color: teal;
+	color: grey;
 	font-size: 20px;
 	font-weight: 400;
 	line-height:150%;}
@@ -44,8 +44,8 @@ h4 {	font-family: 'Great Vibes', Georgia, serif !important;
 	font-stretch: wider;}
 
 p  {	font-family: 'Open Sans', Verdana, sans-serif !important;
-	color: teal;
-	font-size: 18px;
+	color: #000000;
+	font-size: 16px;
 	font-weight: normal;
 	font-stretch: expanded;
 	line-height:150%;}

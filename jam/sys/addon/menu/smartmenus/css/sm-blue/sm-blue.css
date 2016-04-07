@@ -1,4 +1,5 @@
-@import url(http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700);
+@XXXimport url(http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700);
+@import url(http://fonts.googleapis.com/css?family=FONTDOWNLOAD);
 
 /* original colors BACKCOLOR_FROM #3b9fce, BACKCOLOR_TO #2b82ac */
 /* CURRENTCOLOR_FROM #005678, CURRENTCOLOR_TO  #007aab */
@@ -38,8 +39,9 @@
   background-image: -o-linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
   background-image: linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
   color: white;
-  font-family: "PT Sans Narrow", "Arial Narrow", Arial, Helvetica, sans-serif;
-  font-size: 18px;
+  XXXfont-family: "PT Sans Narrow", "Arial Narrow", Arial, Helvetica, sans-serif;
+  font-family: FONTFAMILY;
+  font-size: FONTSIZEpx;
   font-weight: bold;
   line-height: 23px;
   text-decoration: none;
@@ -118,7 +120,7 @@
 .sm-blue ul a, .sm-blue ul a:hover, .sm-blue ul a:focus, .sm-blue ul a:active {
   background: transparent;
   color: BACKCOLOR_TO;
-  font-size: 16px;
+  font-size: FONTSIZEpx;
   text-shadow: none;
   border-left: CORNERPIXELSpx solid transparent;
 }
