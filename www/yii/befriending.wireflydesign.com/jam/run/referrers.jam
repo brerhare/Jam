@@ -28,14 +28,12 @@
 		</tr>
 {{@each contact filter contact_relationship_id = 3}}
 		{{@get global filter id = contact.global_id}}
-		<tr class="rowHighlight" onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">
-			<td>{{global.forename}}</td>
-			<td>{{global.surname}}</td>
+		<tr class="rowHighlight">
+			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.forename}}</td>
+			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.surname}}</td>
 			<td>
-				<span id='emailButton' name='emailButton'>
-					{{@html button 'Email form' primary small
-					runAction('email_contact', ['contact.id={{contact.id}}'], 'emailButton');
-					}}
+				<span id='emailButton{{contact.id}}' name='emailButton{{contact.id}}'>
+					<button class="uk-button uk-button-small uk-button-primary" onClick="runAction('email_contact', ['contact.id={{contact.id}}'], 'emailButton{{contact.id}}')"> Email form </button>
 				</span>
 			</td>
 			<td>
