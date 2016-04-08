@@ -7,7 +7,7 @@ include = default-values
 [* : defaults]
 
 [screen]
-child = site, footer
+child = site, footer, testing
 css.background-color = white
 css.display = block
 
@@ -226,3 +226,9 @@ css.margin-top = 40px
 					image.height = 100%
 					image.align = center
 					clicknew = backend.php
+
+#[testing]
+# problem: this needs uikit. header/footer includes uikit so iframe works but not embed. Not all jam embeds need uikit (slider, menu) but this one does
+#jam.iframe = /run/grid.jam?contentid=footer-left
+
+
