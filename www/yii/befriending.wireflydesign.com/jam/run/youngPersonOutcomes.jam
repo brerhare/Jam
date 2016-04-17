@@ -1,0 +1,85 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@Xinclude /jam/run/menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center nomargin css='max-width:900px; padding:0}}
+
+	{{@get young_person filter id = young_person.id}}
+	{{@get global filter id = young_person.global_id}}
+
+	<style type="text/css">
+		label {text-align: right; width:150px !important}
+		div.uk-form-controls {margin-left: 170px !important}
+	</style>
+
+{{@remove table temp_young_person_outcomes}}
+{{@remove table temp_young_person_outcomes}}
+{{@new table temp_young_person_outcomes
+	girfec_outcome_name_id	number		required
+	form_date				date
+	girfec_score			number
+	girfec_link				string
+}}
+
+{{@each event filter young_person_id = young_person.id}}
+	{{@each form_upload_girfec filter event_id = event.id}}
+		{{@each form_upload_girfec_score filter form_upload_girfec_id = form_upload_girfec.id}}
+			{{temp_young_person_outcomes.girfec_outcome_name_id = form_upload_girfec_score.girfec_outcome_name_id}}
+			{{temp_young_person_outcomes.form_date = form_upload_girfec.date}}
+			{{temp_young_person_outcomes.girfec_score = form_upload_girfec_score.score}}
+			{{temp_young_person_outcomes.girfec_link = form_upload_girfec_score.comment}}
+			{{@new item temp_young_person_outcomes}}
+		{{@end}}
+	{{@end}}
+{{@end}}
+
+
+
+    <div name="inlineForm" class="uk-form uk-form-horizontal">
+        <table class="uk-table uk-table-condensed" style="border:1px solid #dddddd">
+
+<!-- pre-loop (dates) -->
+
+{{@each girfec_outcome_name}}
+		{{openTR = <tr> <td> girfec_outcome_name.description </td>}}
+		{{closeTR = ''}}
+{{@each temp_young_person_outcomes filter girfec_outcome_name_id = girfec_outcome_name.id}}
+			{{openTR}}
+			{{openTR = ''}}
+			{{closeTR = </tr>}}
+				<td> {{temp_young_person_outcomes.girfec_score}} </td>
+{{@end}}
+			{{closeTR}}
+			{{closeTR = ''}}
+{{@end}}
+
+<!-- main loop (scores) -->
+
+{{@each girfec_outcome_name}}
+		{{openTR = <tr> <td> girfec_outcome_name.description </td>}}
+		{{closeTR = ''}}
+{{@each temp_young_person_outcomes filter girfec_outcome_name_id = girfec_outcome_name.id}}
+			{{openTR}}
+			{{openTR = ''}}
+			{{closeTR = </tr>}}
+				<td> {{temp_young_person_outcomes.girfec_score}} </td>
+{{@end}}
+			{{closeTR}}
+			{{closeTR = ''}}
+{{@end}}
+
+        </table>
+    </div>
+
+<script>
+window.onload = function() {
+}
+</script>
+
+{{@html container end}}
+
+{{@include /jam/sys/html/footer.html}}
