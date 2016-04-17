@@ -28,10 +28,10 @@
 				<td> </td>
 				<td style='text-align:left'> Yes </td>
 				<td style='text-align:left'> No </td>
-				<td style='text-align:left'> N/A </td>
+				<td style='text-align:left'> Dont Know </td>
 				<td style='text-align:left'> Yes </td>
 				<td style='text-align:left'> No </td>
-				<td style='text-align:left'> N/A </td>
+				<td style='text-align:left'> Dont Know </td>
 			</td>
 {{@each medical_type}}
             <tr>

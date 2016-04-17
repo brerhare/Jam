@@ -69,7 +69,6 @@ function confirmDelete(id, displayInfo) {
 	
 	</h3>
 	{{@html tabs
-		label=Matches		action=/run/youngPersonMatch?young_person.id={{young_person.id}}
 		label=Contacts		action=/run/youngPersonContact?young_person.id={{young_person.id}}
 		label=Details		action=/run/youngPersonDetails?young_person.id={{young_person.id}}&newRec=0
 		label=Interests		action=/run/youngPersonInterest?young_person.id={{young_person.id}}
@@ -77,6 +76,7 @@ function confirmDelete(id, displayInfo) {
 		label=Medical		action=/run/youngPersonMedical?young_person.id={{young_person.id}}
 		label=Additional	action=/run/youngPersonAdditional?young_person.id={{young_person.id}}
 		label=Forms			action=/run/youngPersonForms?young_person.id={{young_person.id}}
+		label=Matches		action=/run/youngPersonMatch?young_person.id={{young_person.id}}
 	}}
 {{@end}}
 

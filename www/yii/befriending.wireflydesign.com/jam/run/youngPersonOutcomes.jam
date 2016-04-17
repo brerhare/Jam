@@ -24,15 +24,26 @@
 	girfec_score			number
 	girfec_link				string
 }}
+{{@remove table temp_young_person_outcomes_date}}
+{{@remove table temp_young_person_outcomes_date}}
+{{@new table temp_young_person_outcomes_date
+	girfec_id				number		required unique
+	form_date				date
+}}
 
 {{@each event filter young_person_id = young_person.id}}
 	{{@each form_upload_girfec filter event_id = event.id}}
 		{{@each form_upload_girfec_score filter form_upload_girfec_id = form_upload_girfec.id}}
+			{{@get form_upload_girfec filter id = form_upload_girfec_score.form_upload_girfec_id}}
 			{{temp_young_person_outcomes.girfec_outcome_name_id = form_upload_girfec_score.girfec_outcome_name_id}}
 			{{temp_young_person_outcomes.form_date = form_upload_girfec.date}}
 			{{temp_young_person_outcomes.girfec_score = form_upload_girfec_score.score}}
 			{{temp_young_person_outcomes.girfec_link = form_upload_girfec_score.comment}}
 			{{@new item temp_young_person_outcomes}}
+			{{@get temp_young_person_outcomes_date filter girfec_id = form_upload_girfec.id}}
+			{{temp_young_person_outcomes_date.girfec_id = form_upload_girfec.id}}
+			{{temp_young_person_outcomes_date.form_date = form_upload_girfec.date}}
+			{{@update item temp_young_person_outcomes_date}}
 		{{@end}}
 	{{@end}}
 {{@end}}
@@ -44,17 +55,14 @@
 
 <!-- pre-loop (dates) -->
 
-{{@each girfec_outcome_name}}
-		{{openTR = <tr> <td> girfec_outcome_name.description </td>}}
+		{{openTR = <tr> <td> </td>}}
 		{{closeTR = ''}}
-{{@each temp_young_person_outcomes filter girfec_outcome_name_id = girfec_outcome_name.id}}
+{{@each temp_young_person_outcomes_date}}
 			{{openTR}}
 			{{openTR = ''}}
 			{{closeTR = </tr>}}
-				<td> {{temp_young_person_outcomes.girfec_score}} </td>
-{{@end}}
-			{{closeTR}}
-			{{closeTR = ''}}
+<!--				<td> {{XXXtemp_young_person_outcomes_date.form_date}} </td> -->
+				<td> {{temp_young_person_outcomes_date.girfec_id}} </td>
 {{@end}}
 
 <!-- main loop (scores) -->
