@@ -36,32 +36,84 @@
 {{@each medical_type}}
             <tr>
 				<td> {{medical_type.name}} </td>
-				<td> <input type='radio' name={{medical_type.id}}'_yp' value='1' class='inp'> </td>
-				<td> <input type='radio' name={{medical_type.id}}'_yp' value='2' class='inp'> </td>
-				<td> <input type='radio' name={{medical_type.id}}'_yp' value='3' class='inp'> </td>
-				<td> <input type='radio' name={{medical_type.id}}'_pc' value='1' class='inp'> </td>
-				<td> <input type='radio' name={{medical_type.id}}'_pc' value='2' class='inp'> </td>
-				<td> <input type='radio' name={{medical_type.id}}'_pc' value='3' class='inp'> </td>
+	{{@get medical filter young_person_id = young_person.id, medical_type_id = medical_type.id}}
+				<td> <input type='radio' name='{{medical_type.id}}_yp' id='{{medical_type.id}}_yp_1' class='inp'> </td>
+				<td> <input type='radio' name='{{medical_type.id}}_yp' id='{{medical_type.id}}_yp_2' class='noinp'> </td>
+				<td> <input type='radio' name='{{medical_type.id}}_yp' id='{{medical_type.id}}_yp_3' class='noinp'> </td>
+				<td> <input type='radio' name='{{medical_type.id}}_pc' id='{{medical_type.id}}_pc_1' class='noinp'> </td>
+				<td> <input type='radio' name='{{medical_type.id}}_pc' id='{{medical_type.id}}_pc_2' class='noinp'> </td>
+				<td> <input type='radio' name='{{medical_type.id}}_pc' id='{{medical_type.id}}_pc_3' class='noinp'> </td>
             </tr>
 {{@end}}
         </table>
 
 {{@get medical_notes filter young_person_id = young_person.id}}
-			{{@html textarea field=medical.medication size=80x3 label=Medication}}
-			{{@html textarea field=medical.notes size=80x5 label=Notes}}
-			<br><br>
+			{{@html textarea field=medical_notes.medication size=80x3 label=Medication}}
+			{{@html textarea field=medical_notes.notes size=80x5 label=Notes}}
+	<br>
+	<center>
+		<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="saveButtonClicked(this)">Save</button> </td>
+	</center>
     </div>
 
 <script>
 window.onload = function() {
 }
 
+function saveButtonClicked(obj) {
+    runAction('deleteAllMedical',['young_person.id'], '', addNotes);
+}
+
+function addNotes() {
+	notesObj = get('medical_notes.notes');
+	medicationObj = get('medical_notes.medication');
+	runAction('addNotes', ['young_person.id', 'notes='+notesObj.value, 'medication='+medicationObj.value], '', addAll);
+}
+
+function addAll() {
+	var groupArr = getGroupArray('inp');
+	for (var i = 0; i < groupArr.length; i++) {
+		var medical_id_arr = groupArr[i].name.split('_');
+
+		ypVal = 0;
+		pcVal = 0;
+		for (var j = 1; j < 4; j++) {
+			ypId = medical_id_arr[0] + '_' + 'yp_'+j;
+			pcId = medical_id_arr[0] + '_' + 'pc_'+j;
+			if (document.getElementById(ypId).checked)
+				ypVal = j;
+			if (document.getElementById(pcId).checked)
+				pcVal = j;
+		}
+		if ((ypVal != 0) || (pcVal != 0))
+			runAction('addMedical', ['young_person.id', 'medical_type_id='+medical_id_arr[0], 'ypval='+ypVal, 'pcval='+pcVal]);
+		//alert('medical_type='+medical_id_arr[0]+' and yp='+ypVal+' and pc='+pcVal);
+	}
+}
+
 </script>
 
-{{@action update_medical}}
-	{{@Xupdate item answer_young_person}}         <!-- first update the link table (inserts wont have its id yet)
+{{@html container end}}
+
+{{@action deleteAllMedical}}
+    {{@sql delete from medical where young_person_id = {{young_person.id}} }}
 {{@end}}
 
-{{@html container end}}
+{{@action addMedical}}
+    {{medical.young_person_id = young_person.id}}
+    {{medical.medical_type_id = medical_type_id}}
+	{{medical.yp_radio = ypval}}
+	{{medical.pc_radio = pcval}}
+    {{@new item medical notify=ok}}
+{{@end}}
+
+{{@action addNotes}}
+    {{@get medical_notes filter young_person_id = young_person.id}}
+    {{@remove item medical_notes}}
+    {{medical_notes.young_person_id = young_person.id}}
+    {{medical_notes.notes = notes}}
+    {{medical_notes.medication = medication}}
+    {{@new item medical_notes notify=ok}}
+{{@end}}
 
 {{@include /jam/sys/html/footer.html}}
