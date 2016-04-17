@@ -31,20 +31,18 @@
 {{@each contact filter young_person_id = young_person.id}}
 		{{@get global filter id = contact.global_id}}
 		{{@get contact_relationship filter id = contact.contact_relationship_id}}
-		<tr class="rowHighlight" onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">
-			<td>{{contact_relationship.relationship}}</td>
-			<td>{{global.forename}} {{global.surname}}</td>
-			<td>{{global.email}}</td>
-			<td>{{global.mobile}}</td>
-			<td>{{global.landline}}</td>
+		<tr class="rowHighlight" XXonClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">
+			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{contact_relationship.relationship}}</td>
+			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.forename}} {{global.surname}}</td>
+			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.email}}</td>
+			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.mobile}}</td>
+			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.landline}}</td>
 			<td>
-<!--- @@TODO cant use this for now as iframe cant load mailto:? -->
 				<span id='emailButton' name='emailButton'>
 					{{@html button 'Email' primary small
 						sendContactEmail('{{global.email}}');
 					}}
 				</span>
-<!-- -->
 				<button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_contact('{{contact.id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i></button>
 			</td>
 		</tr>
