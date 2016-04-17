@@ -36,13 +36,47 @@
 {{@each medical_type}}
             <tr>
 				<td> {{medical_type.name}} </td>
-	{{@get medical filter young_person_id = young_person.id, medical_type_id = medical_type.id}}
-				<td> <input type='radio' name='{{medical_type.id}}_yp' id='{{medical_type.id}}_yp_1' class='inp'> </td>
-				<td> <input type='radio' name='{{medical_type.id}}_yp' id='{{medical_type.id}}_yp_2' class='noinp'> </td>
-				<td> <input type='radio' name='{{medical_type.id}}_yp' id='{{medical_type.id}}_yp_3' class='noinp'> </td>
-				<td> <input type='radio' name='{{medical_type.id}}_pc' id='{{medical_type.id}}_pc_1' class='noinp'> </td>
-				<td> <input type='radio' name='{{medical_type.id}}_pc' id='{{medical_type.id}}_pc_2' class='noinp'> </td>
-				<td> <input type='radio' name='{{medical_type.id}}_pc' id='{{medical_type.id}}_pc_3' class='noinp'> </td>
+
+	<!-- Young person buttons -->
+
+	{{tmp.checked = ''}}
+	{{@each medical filter young_person_id = young_person.id, medical_type_id = medical_type.id, yp_radio = 1}}
+		{{tmp.checked = checked}}
+	{{@end}}
+				<td> <input type='radio' name='{{medical_type.id}}_yp' id='{{medical_type.id}}_yp_1' {{tmp.checked}}  class='inp'> </td>
+
+	{{tmp.checked = ''}}
+	{{@each medical filter young_person_id = young_person.id, medical_type_id = medical_type.id, yp_radio = 2}}
+		{{tmp.checked = checked}}
+	{{@end}}
+				<td> <input type='radio' name='{{medical_type.id}}_yp' id='{{medical_type.id}}_yp_2' {{tmp.checked}}  class='inp'> </td>
+
+	{{tmp.checked = ''}}
+	{{@each medical filter young_person_id = young_person.id, medical_type_id = medical_type.id, yp_radio = 3}}
+		{{tmp.checked = checked}}
+	{{@end}}
+				<td> <input type='radio' name='{{medical_type.id}}_yp' id='{{medical_type.id}}_yp_3' {{tmp.checked}}  class='inp'> </td>
+
+	<!-- Parent carer buttons -->
+
+	{{tmp.checked = ''}}
+	{{@each medical filter young_person_id = young_person.id, medical_type_id = medical_type.id, pc_radio = 1}}
+		{{tmp.checked = checked}}
+	{{@end}}
+				<td> <input type='radio' name='{{medical_type.id}}_pc' id='{{medical_type.id}}_pc_1' {{tmp.checked}}  class='inp'> </td>
+
+	{{tmp.checked = ''}}
+	{{@each medical filter young_person_id = young_person.id, medical_type_id = medical_type.id, pc_radio = 2}}
+		{{tmp.checked = checked}}
+	{{@end}}
+				<td> <input type='radio' name='{{medical_type.id}}_pc' id='{{medical_type.id}}_pc_2' {{tmp.checked}}  class='inp'> </td>
+
+	{{tmp.checked = ''}}
+	{{@each medical filter young_person_id = young_person.id, medical_type_id = medical_type.id, pc_radio = 3}}
+		{{tmp.checked = checked}}
+	{{@end}}
+				<td> <input type='radio' name='{{medical_type.id}}_pc' id='{{medical_type.id}}_pc_3' {{tmp.checked}}  class='inp'> </td>
+
             </tr>
 {{@end}}
         </table>
