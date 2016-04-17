@@ -14,6 +14,15 @@
 	<style type="text/css">
 		label {text-align: right; width:150px !important}
 		div.uk-form-controls {margin-left: 170px !important}
+
+		.sideways {
+			transform: rotate(90deg);
+			transform-origin: left top 0;
+			height: 75px;
+			margin-left:17px;
+			padding:5px;
+		}
+
 	</style>
 
 {{@remove table temp_young_person_outcomes}}
@@ -61,8 +70,8 @@
 			{{openTR}}
 			{{openTR = ''}}
 			{{closeTR = </tr>}}
-<!--				<td> {{XXXtemp_young_person_outcomes_date.form_date}} </td> -->
-				<td> {{temp_young_person_outcomes_date.girfec_id}} </td>
+				<td><div class='sideways'> {{temp_young_person_outcomes_date.form_date}} </div></td>
+<!--			<td> {{XXXtemp_young_person_outcomes_date.girfec_id}} </td>	-->
 {{@end}}
 
 <!-- main loop (scores) -->

@@ -36,7 +36,12 @@
 				{{@html text field=global.landline size=medium label='Land line' group=inp}}
 				{{@html text field=global.mobile size=medium label='Mobile' group=inp}}
 				{{@html text field=global.email size=medium label='Email' group=inp}}
-				{{@html date field=young_person.dob size=medium label='Birth date' group=inp}}
+				<table>
+					<tr>
+						<td> {{@html date field=young_person.dob size=medium label='Birth date' group=inp}} </td>
+						<td> <span id='age'> </span> </td>
+					</tr>
+				</table>
 			{{@html gridcol end}}
 			{{@html gridcol start width=1-10}}
 			{{@html gridcol end}}
@@ -76,6 +81,7 @@
 
 <script>
 window.onload = function() {
+/******************************************* not necessary anymore as we dont disable the save button ********
 	// Create onChange functions for all form inputs - will be called by fn()
 	var groupArr = getGroupArray('inp');
 	for (var i = 0; i < groupArr.length; i++) {
@@ -86,6 +92,7 @@ window.onload = function() {
 		}
 	}
 	//document.getElementById('saveButton').disabled = true;
+**************************************************************************************************************/
 }
 function disableButton(me) {
 	//me.disabled = true;
@@ -116,6 +123,10 @@ function updated() {
 	window.top.location.href = "http://befriending.wireflydesign.com/run/youngPerson.jam";
 }
 
+function onChange_youngperson_dob(obj) {
+    calcAge();
+}
+
 </script>
 
 {{@action update_young_person}}
@@ -127,3 +138,22 @@ function updated() {
 {{@html container end}}
 
 {{@include /jam/sys/html/footer.html}}
+
+<script>
+
+(function() {
+	calcAge();
+})()
+
+function calcAge() {
+	var objDob = get('young_person.dob');
+	var year=Number(objDob.value.substr(0,4));
+	var month=Number(objDob.value.substr(5,2))-1;
+	var day=Number(objDob.value.substr(7,2));
+	var today=new Date();
+	var age=today.getFullYear()-year;
+	if (today.getMonth()<month || (today.getMonth()==month && today.getDate()<day)){age--;}
+//alert(age);
+	document.getElementById('age').innerHTML = 'age '+age;
+}
+</script>
