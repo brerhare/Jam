@@ -1,0 +1,101 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@Xinclude /jam/run/menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center nomargin css='max-width:900px; padding:0}}
+
+	{{@get befriender filter id = befriender.id}}
+	{{@get global filter id = befriender.global_id}}
+
+	<style type="text/css">
+		label {text-align: right; width:150px !important}
+		div.uk-form-controls {margin-left: 170px !important}
+	</style>
+
+	<form name="inputForm_befriender" class="uk-form uk-form-horizontal">
+		<input type="hidden" name="befriender.id" value="{{befriender.id}}">
+		<input type="hidden" name="global.id" value="{{befriender.global_id}}">
+
+		{{@html hidden field=befriender.id}}
+
+			{{@each question_befriender}}
+				{{@get answer_befriender filter question_id = question_befriender.id, befriender_id = befriender.id}}
+				{{@html gridrow start}}
+				{{@html gridcol start width=1-1}}
+					{{question_befriender.question}}
+				{{@html gridcol end}}
+				{{@html gridrow end}}
+
+				{{@html gridrow start}}
+				{{@html gridcol start width=1-1}}
+
+				<textarea cols="80" rows="2" id='{{question_befriender.id}}' placeholder="" class="inp"> {{answer_befriender.answer}} </textarea>
+
+					{{@Xhtml textarea field=answer_befriender.answer size=80x2 group='inp'}}
+
+				{{@html gridcol end}}
+				{{@html gridrow end}}
+			{{@end}}
+
+		{{@html gridrow end}}
+
+		{{@html gridrow start}}
+			{{@html gridcol start width=1-1}}
+				<br>
+				<center>
+					<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="saveButtonClick(this)">Save</button> </td>
+				</center>
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+
+	</form>
+
+{{@action deleteAllAnswers}}
+    {{@sql delete from answer_befriender where befriender_id = {{befriender.id}} }}
+{{@end}}
+
+{{@action addAnswer}}
+    {{answer_befriender.befriender_id = befriender.id}}
+    {{answer_befriender.question_id = question.id}}
+	{{answer_befriender.answer = answer}}
+    {{@new item answer_befriender notify=ok}}
+{{@end}}
+
+<script>
+window.onload = function() {
+	// Create onChange functions for all form inputs - will be called by fn()
+	var groupArr = getGroupArray('inp');
+	for (var i = 0; i < groupArr.length; i++) {
+		name = "onChange_" + groupArr[i].name.replace(/_/g, "");
+		name = name.replace(".", "_");
+		//alert(name);
+		window[name] = function (obj) {
+			document.getElementById('saveButton').disabled = false;
+		}
+	}
+	//document.getElementById('saveButton').disabled = true;
+}
+function disableButton(me) {
+	//me.disabled = true;
+}
+
+function saveButtonClick(obj) {
+	runAction('deleteAllAnswers',['befriender.id'], '', addAll);
+}
+
+function addAll() {
+ 	var groupArr = getGroupArray('inp');
+	for (var i = 0; i < groupArr.length; i++) {
+		runAction('addAnswer', ['befriender.id', 'question.id='+groupArr[i].id, 'answer='+groupArr[i].value]);
+	}
+}
+
+</script>
+
+{{@html container end}}
+
+{{@include /jam/sys/html/footer.html}}
