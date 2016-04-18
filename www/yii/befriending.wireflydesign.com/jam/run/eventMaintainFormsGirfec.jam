@@ -1,0 +1,213 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@Xinclude /jam/run/menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:900px; Xpadding:0}}
+
+<!-- List component -->
+
+<style>
+.rowHighlight:hover {
+  background-color: #ddf0ff;
+  cursor:pointer;
+}
+</style>
+
+{{@get event filter id = event.id}}
+
+<br>
+
+<div name="event_forms_girfec">
+	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+		<tr>
+			<th> Date Uploaded </th>
+			<th> File Name </th>
+			<th>
+				<button class="uk-button uk-button-mini uk-button-success" onClick="runAction('eventMaintainFormsGirfecEdit?event.id={{event.id}}&form_upload_girfec.id=-1', [], 'event_forms_girfec')"> <i class="uk-icon-plus"></i> New </button>
+			</th>
+		</tr>
+{{@each form_upload_girfec filter event_id = event.id}}
+		<tr class="rowHighlight" onClick="runAction('eventMaintainFormsGirfecEdit?event.id={{event.id}}&form_upload_girfec.id={{form_upload_girfec.id}}', [], 'event_forms_girfec')">
+			<td>{{form_upload_girfec.date}}</td>
+			<td> <a href="http://befriending.wireflydesign.com:/jam/uploads/forms/events/girfec/{{event.id}}_{{form_upload_girfec.file}}" target="_blank">{{form_upload_girfec.file}}</a> </td>
+			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_formGirfec('{{form_upload_girfec.id}}','{{form_type.name}}')"> <i class="uk-icon-trash"></i></button> </td>
+		</tr>
+{{@end}}
+	</table>
+</div>
+<br>
+
+<script>
+function confirmDelete_formGirfec(id, displayInfo) {
+	window.event.cancelBubble = true;	// Prevent any further events
+	var result = confirm('Confirm delete of item ' + id + ' ' + displayInfo);
+	if (result)
+		runAction('delete_form_girfec', ['id='+id], '', postUpdate);
+}
+function postUpdate() {
+	runJam();
+}
+</script>
+
+{{@action delete_form_girfec}}
+	{{@get form_upload_girfec filter id = id}}
+	{{@remove item form_upload_girfec notify=ok}}
+{{@end}}
+
+<!-- Form input component -->
+
+{{@action eventMaintainFormsGirfecEdit}}
+	{{@get form_upload_girfec filter id = form_upload_girfec.id}}
+	{{form_upload_girfec.event_id = event.id}}
+	{{@get event id = form_upload_girfec.event_id}}
+
+	<style type="text/css">
+		label {text-align: right;}
+	</style>
+
+	<form name="inputForm_form_upload_girfec" class="uk-form uk-form-horizontal">
+		<input type="hidden" name="form_upload_girfec.id" value="{{form_upload_girfec.id}}">
+		<input type="hidden" name="form_upload_girfec.event_id" value="{{event.id}}">
+		<input type="hidden" name="form_upload_girfec.date" value="{{sys.today}}">
+		<input type="hidden" name="form_upload_girfec.file" value="{{form_upload_girfec.file}}">
+
+			{{@html gridcol start width=3-10}}
+			{{@html gridcol end}}
+			{{@html gridcol start width=4-10}}
+
+
+			<div class="uk-form-file"> <input type="file" onChange="fileUploadGirfec(this)"></div>
+
+					{{@Xhtml button Upload primary small
+						runAction('update_form_girfec', ['inputForm_form_upload_girfec'], '', postUpdate)
+					}}
+						
+                    </div>
+
+			{{@html gridcol end}}
+			{{@html gridcol start width=3-10}}
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+
+
+<table class="uk-table uk-table-condensed" style="border:1px solid #dddddd">
+
+	<tr>
+		<th> Outcome </th>
+		<th> Score </th>
+		<th> Comment </th>
+		<th> </th>
+	<tr>
+
+{{@each girfec_outcome_name}}
+    {{@get form_upload_girfec_score filter girfec_outcome_name_id = girfec_outcome_name.id, form_upload_girfec_id = form_upload_girfec.id}}
+	<tr>
+		<td> {{girfec_outcome_name.description}} </td>
+		<td> {{@html text field=form_upload_girfec_score.score group=inp size=mini}} </td>
+		<td> {{@html textarea field=form_upload_girfec_score.comment size=60x5}} </td>
+		<td> {{@html text hidden field=girfec_outcome_name.id}} </td>
+	</tr>
+{{@end}}
+
+</table>
+
+		{{@html gridrow start}}
+			{{@html gridcol start width=1-1}}
+				<br>
+				<center>
+					{{@html button Save primary medium
+						saveButtonClick();
+					}}
+					{{@html button Cancel primary medium
+						runJam();
+					}}
+				</center>
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+	</form>
+{{@end}}
+
+{{@html container end}}
+
+{{@action update_form_girfec}}
+	{{@update item form_upload_girfec notify=ok}}
+{{@end}}
+
+{{@action deleteAllGirfecScore}}
+    {{@sql delete from form_upload_girfec_score where form_upload_girfec_id = {{form_upload_girfec.id}} }}
+{{@end}}
+
+{{@action addGirfecScore}}
+    {{form_upload_girfec_score.girfec_outcome_name_id = nameid}}
+	{{form_upload_girfec_score.event_id = event.id}}
+	{{form_upload_girfec_score.form_upload_girfec_id = girfecid}}
+	{{form_upload_girfec_score.score = score}}
+	{{form_upload_girfec_score.comment = comment}}
+    {{@new item form_upload_girfec_score notify=ok}}
+{{@end}}
+
+<script>
+
+function onChange_formuploadgirfecscore_score(obj) {
+	if ((obj.value < '1') || (obj.value > '5')) {
+		alert('Valid range is 1-5');
+		obj.value = '';
+	}
+}
+
+function saveButtonClick(obj) {
+	runAction('update_form_girfec', ['form_upload_girfec.id', 'form_upload_girfec.event_id', 'form_upload_girfec.file', 'form_upload_girfec.date'], '', saveGirfecScores);
+}
+
+function saveGirfecScores() {
+	gfObj = get('form_upload_girfec.id');
+    runAction('deleteAllGirfecScore',['form_upload_girfec.id='+gfObj.value], '', addAllGirfecScore);
+}
+
+function addAllGirfecScore() {
+    var groupArr = getGroupArray('inp');
+    for (var i = 0; i < groupArr.length; i++) {
+		eventObj = get('event.id');
+		girfecObj = get('form_upload_girfec.id');
+		commentObj = getSiblingByName(groupArr[i], 'form_upload_girfec_score.comment');
+		nameObj = getSiblingByName(groupArr[i], 'girfec_outcome_name.id');
+        //alert('event='+eventObj.value+ ' girfecid='+girfecObj.value+ ' nameid='+nameObj.value+ ' score='+groupArr[i].value+ ' comment='+commentObj.value);
+        runAction('addGirfecScore', ['event='+eventObj.value, 'girfecid='+girfecObj.value, 'nameid='+nameObj.value, 'score='+groupArr[i].value, 'comment='+commentObj.value], '');
+    }
+	setTimeout(runJam, 1000);
+}
+
+function fileUploadGirfec(obj) {
+    $.blockUI();
+    var file = obj.files[0];
+    var evObj = get('form_upload_girfec.event_id');
+    console.log("name : " + file.name);
+    console.log("size : " + file.size);
+    console.log("type : " + file.type);
+    console.log("date : " + file.lastModified)
+    var url = 'http://befriending.wireflydesign.com:/jam/uploads/uploadFormGirfec.php?event=' + evObj.value;
+    var xhr = new XMLHttpRequest();
+    var fd = new FormData();
+    xhr.open("POST", url, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            console.log(xhr.responseText); // handle response.
+            fileObj = get('form_upload_girfec.file');
+            fileObj.value = file.name;
+            $.unblockUI();
+        }
+        else {
+            $.unblockUI();
+        }
+    };
+    fd.append("upload_file", file);
+    xhr.send(fd);
+}
+
+</script>
+
+{{@include /jam/sys/html/footer.html}}

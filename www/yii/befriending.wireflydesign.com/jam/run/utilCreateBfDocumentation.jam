@@ -1,0 +1,25 @@
+{{@include /jam/sys/html/header.html}}
+
+Doing...
+
+{{@database befriending_wireflydesign_com}}
+
+{{@remove table befriender_documentation_type}}
+{{@remove table befriender_documentation}}
+
+{{@new table befriender_documentation_type
+	name								string	required
+}}
+
+{{@new table befriender_documentation
+	expiry_date							date
+	reference							string
+	file								string
+	na									number
+	befriender_documentation_type_id	number	required
+	befriender_id						number	required
+}}
+
+Done
+
+{{@include /jam/sys/html/footer.html}}

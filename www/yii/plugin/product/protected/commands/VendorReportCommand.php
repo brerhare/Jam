@@ -37,6 +37,8 @@ class VendorReportCommand extends CConsoleCommand
 		// All users
 		foreach ($users as $user)
 		{
+			if ($user->id == 19)	// ignore Jacquies Beauty, they have their own merchant account
+				continue;
 			$criteria = new CDbCriteria;
 			$criteria->addCondition("sid = '" . $user->sid . "'");
 			$criteria->addCondition("payment_type = " . 0);
