@@ -67,20 +67,6 @@
 
 <script>
 window.onload = function() {
-	// Create onChange functions for all form inputs - will be called by fn()
-	var groupArr = getGroupArray('inp');
-	for (var i = 0; i < groupArr.length; i++) {
-		name = "onChange_" + groupArr[i].name.replace(/_/g, "");
-		name = name.replace(".", "_");
-		//alert(name);
-		window[name] = function (obj) {
-			document.getElementById('saveButton').disabled = false;
-		}
-	}
-	//document.getElementById('saveButton').disabled = true;
-}
-function disableButton(me) {
-	//me.disabled = true;
 }
 
 function saveButtonClick(obj) {

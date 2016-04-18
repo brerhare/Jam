@@ -36,6 +36,7 @@
 {{@remove table temp_young_person_outcomes_date}}
 {{@remove table temp_young_person_outcomes_date}}
 {{@new table temp_young_person_outcomes_date
+	event_id				number		required
 	girfec_id				number		required unique
 	form_date				date
 }}
@@ -47,9 +48,10 @@
 			{{temp_young_person_outcomes.girfec_outcome_name_id = form_upload_girfec_score.girfec_outcome_name_id}}
 			{{temp_young_person_outcomes.form_date = form_upload_girfec.date}}
 			{{temp_young_person_outcomes.girfec_score = form_upload_girfec_score.score}}
-			{{temp_young_person_outcomes.girfec_link = form_upload_girfec_score.comment}}
+			
 			{{@new item temp_young_person_outcomes}}
 			{{@get temp_young_person_outcomes_date filter girfec_id = form_upload_girfec.id}}
+			{{temp_young_person_outcomes_date.event_id = event.id}}
 			{{temp_young_person_outcomes_date.girfec_id = form_upload_girfec.id}}
 			{{temp_young_person_outcomes_date.form_date = form_upload_girfec.date}}
 			{{@update item temp_young_person_outcomes_date}}
@@ -70,7 +72,7 @@
 			{{openTR}}
 			{{openTR = ''}}
 			{{closeTR = </tr>}}
-				<td><div class='sideways'> {{temp_young_person_outcomes_date.form_date}} </div></td>
+				<td><div class='sideways'> <a href="http://befriending.wireflydesign.com/run/eventMaintain?event.id={{temp_young_person_outcomes_date.event_id}}" target="_blank">{{temp_young_person_outcomes_date.form_date}}</a> </div></td>
 <!--			<td> {{XXXtemp_young_person_outcomes_date.girfec_id}} </td>	-->
 {{@end}}
 
