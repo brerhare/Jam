@@ -1,0 +1,21 @@
+{{@include /jam/sys/html/hdr.html}}
+
+{{contentid = footer-left}}
+
+{{@database senwickhouse_co_uk}}
+
+    <div style="margin-top:20px;" class="uk-container uk-container-center">
+      <div data-uk-sortable={handleClass:'uk-sortable-handle'} data-uk-grid-margin class="uk-grid uk-grid-small uk-sortable">
+{{@each jelly_column filter column_name = '{{contentid}}', order by sequence}}
+        <div class="uk-width-large-1-5 uk-width-medium-1-3 uk-width-1-1">
+          <div class="uk-panel uk-panel-box">
+            <p>
+				{{jelly_column.content}}
+            </p>
+          </div>
+        </div>
+{{@end}}
+      </div>
+    </div>
+
+{{@include /jam/sys/html/ftr.html}}

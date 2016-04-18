@@ -8,19 +8,22 @@
 <br>
 {{@html container start center css='max-width:1080px; Xpadding:0}}
 
-<h3> Young Person </h3>
 <div name="content">
+	<h3> Young Person </h3>
 	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
 			<th> Forename </th>
 			<th> Surname </th>
-			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('showTabs', [], 'content')"> <i class="uk-icon-plus"></i> New</button> </th>
+			<th> Status </th>
+			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('showTabsNew', [], 'content')"> <i class="uk-icon-plus"></i> New</button> </th>
 		</tr>
 {{@each young_person}}
 		{{@get global filter id = young_person.global_id}}
+		{{@get status filter id = young_person.status_id}}
 		<tr class="rowHighlight" onClick="runAction('showTabs', ['young_person.id={{young_person.id}}'], 'content')">
 			<td>{{global.forename}}</td>
 			<td>{{global.surname}}</td>
+			<td>{{status.name}}</td>
 			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i></button> </td>
 		</tr>
 {{@end}}
@@ -54,9 +57,9 @@ function confirmDelete(id, displayInfo) {
 	<table>
 		<tr>
 					
-		<td>{{global.forename}}</td>
-		<td>{{global.surname}}</td>
-		<td>{{@html button 'Return to list' primary medium 
+		<td>Young Person: <span style='font-weight:bold'> {{global.forename}} </span> </td>
+		<td> <span style='font-weight:bold'> {{global.surname}} </span> </td>
+		<td style='width:200px; text-align:right'>{{@html button 'Return to list' primary medium 
 			runJam
 		}}</td>
 			
@@ -67,12 +70,35 @@ function confirmDelete(id, displayInfo) {
 	</h3>
 	{{@html tabs
 		label=Contacts		action=/run/youngPersonContact?young_person.id={{young_person.id}}
-		label=Details		action=/run/youngPersonDetails?young_person.id={{young_person.id}}
+		label=Details		action=/run/youngPersonDetails?young_person.id={{young_person.id}}&newRec=0
 		label=Interests		action=/run/youngPersonInterest?young_person.id={{young_person.id}}
 		label=Outcomes		action=/run/youngPersonOutcomes?young_person.id={{young_person.id}}
 		label=Medical		action=/run/youngPersonMedical?young_person.id={{young_person.id}}
 		label=Additional	action=/run/youngPersonAdditional?young_person.id={{young_person.id}}
 		label=Forms			action=/run/youngPersonForms?young_person.id={{young_person.id}}
+		label=Matches		action=/run/youngPersonMatch?young_person.id={{young_person.id}}
+	}}
+{{@end}}
+
+{{@action showTabsNew}}
+	{{@get young_person filter id = young_person.id}}
+	{{@get global filter id = young_person.global_id}}
+	<h3>
+	
+	<table>
+		<tr>
+					
+		<td> New Young Person </td>
+		<td> {{@html button 'Return to list' primary medium 
+				runJam
+			}}
+		</td>
+		</tr>
+	</table>
+	
+	</h3>
+	{{@html tabs
+		label=Details		action=/run/youngPersonDetails?young_person.id={{young_person.id}}&newRec=1
 	}}
 {{@end}}
 

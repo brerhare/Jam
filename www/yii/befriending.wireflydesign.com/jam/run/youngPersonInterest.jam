@@ -17,19 +17,63 @@
 		</tr>
 {{@each interest_type}}
 			<td>{{interest_type.name}}</td>
-{{@get interest_young_person filter interest_type_id = interest_type.id, young_person_id = young_person.id}}
-			<td> {{@html checkbox field=id group=inp}} </td>
+			{{tmp.checked = }}
+	{{@each interest_young_person filter interest_type_id = interest_type.id, young_person_id = young_person.id}}
+			{{tmp.checked = checked}}
+	{{@end}}
+			<td> <input type="checkbox" name="interest_type" value="{{interest_type.id}}" {{tmp.checked}} class='inp'> </td>
 		</tr>
 {{@end}}
 	</table>
+	{{@get interest_young_person_notes filter young_person_id = young_person.id}}
+	{{@html textarea field=interest_young_person_notes.notes size=80x10 label='Notes'}}
 </div>
-<br>
+<center>
+	<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="saveButtonClicked(this)">Save</button> </td>
+</center>
 
 {{@html container end}}
 
 <script>
 window.onload = function() {
 }
+
+{{@action deleteAllInterests}}
+	{{@sql delete from interest_young_person where young_person_id = {{young_person.id}} }}
+{{@end}}
+
+{{@action addInterest}}
+	{{interest_young_person.young_person_id = young_person.id}}
+	{{interest_young_person.interest_type_id = interest_type.id}}
+	{{@new item interest_young_person notify=ok}}
+{{@end}}
+
+{{@action addNotes}}
+	{{@get interest_young_person_notes filter young_person_id = young_person.id}}
+	{{@remove item interest_young_person_notes}}
+	{{interest_young_person_notes.young_person_id = young_person.id}}
+	{{interest_young_person_notes.notes = notes}}
+	{{@new item interest_young_person_notes notify=ok}}
+{{@end}}
+
+function saveButtonClicked(obj) {
+	runAction('deleteAllInterests',['young_person.id'], '', addNotes);
+}
+
+function addNotes(obj) {
+	notesObj = get('interest_young_person_notes.notes');
+	runAction('addNotes', ['young_person.id', 'notes='+notesObj.value], '', addAll);
+}
+
+function addAll() {
+	var checkboxes = document.getElementsByName('interest_type');
+	for (var i = 0; i < checkboxes.length; i++) {
+		if (checkboxes[i].checked) {
+			runAction('addInterest', ['young_person.id', 'interest_type.id='+checkboxes[i].value]);
+		}
+	}
+}
+
 </script>
 
 {{@include /jam/sys/html/footer.html}}
