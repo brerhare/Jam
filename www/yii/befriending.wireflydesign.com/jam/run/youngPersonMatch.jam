@@ -1,0 +1,99 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@Xinclude /jam/run/menu.jam}}
+
+{{@html container start center css='max-width:1080px; Xpadding:0}}
+
+{{@database befriending_wireflydesign_com}}
+
+<style>
+.rowHighlight:hover {
+  background-color: #ddf0ff;
+  cursor:pointer;
+}
+</style>
+
+	{{@get young_person filter id = young_person.id}}
+	{{@get global filter id = young_person.global_id}}
+
+	<style type="text/css">
+		label {text-align: right;}
+	</style>
+
+		<h3> Befriender match for {{global.forename}} {{global.surname}}  </h3>
+		<div class="uk-grid">
+
+			<div class="uk-width-5-5">
+
+					<table class="uk-table uk-table-condensed">
+						<tr> <td colspan=5> <center><h3 style='background-color:#dadada;' >Matched Befriender</h3></center> </td> </tr>
+						<tr>
+							<th> Name </th>
+							<th> Phone </th>
+							<th> Email </th>
+							<th> Postcode </th>
+							<th> </th>
+						</tr>
+						{{@each match_yp filter young_person_id = young_person.id}}
+							{{@get befriender filter id = match_yp.befriender_id}}
+							{{@get global filter id = befriender.global_id}}
+							{{@Xeach event_attendee filter global_id = global.id, event_id = event.id}}
+								<tr>
+									<td> {{global.forename}} {{global.surname}} </td>
+									<td> {{global.mobile}} </td>
+									<td> {{global.email}} </td>
+									<td> {{global.postcode}} </td>
+									<td> <button type='button' id='addButton' class="uk-button uk-button-danger" onClick="deleteMatch('{{befriender.id}}', '{{young_person.id}}')">Remove</button> </td>
+								</tr>
+							{{@Xend}}
+						{{@end}}
+
+								<tr> <td colspan=5> <center><h3 style='background-color:#dadada;' >All Possible Befrienders</h3></center> </td> </tr>
+						{{@each befriender}}
+							{{@get global filter id = befriender.global_id}}
+								<tr>
+									<td> {{global.forename}} {{global.surname}} </td>
+									<td> {{global.mobile}} </td>
+									<td> {{global.email}} </td>
+									<td> {{global.postcode}} </td>
+									<td> <button type='button' id='addButton' class="uk-button uk-button-success" onClick="addMatch('{{befriender.id}}', '{{young_person.id}}')">Add</button> </td>
+								</tr>
+						{{@end}}
+					</table>
+				</div>
+
+	</div>
+{{@html container end}}
+
+<script>
+function addMatch(befriender_id, young_person_id) {
+	runAction('addMatch', ['bf_id='+befriender_id, 'yp_id='+young_person_id], '', window.setTimeout(afterMatch, 1000));
+}
+
+function deleteMatch(befriender_id, young_person_id) {
+	runAction('deleteMatch', ['bf_id='+befriender_id, 'yp_id='+young_person_id], '', window.setTimeout(afterMatch, 1000));
+}
+
+function afterMatch() {
+	runJam();
+}
+
+</script>
+
+{{@action update_event}}
+	{{@update item event}}
+{{@end}}
+
+{{@action addMatch}}
+	{{@sql delete from match_yp where young_person_id = {{yp_id}} }}
+	{{match_yp.young_person_id = {{yp_id}} }}
+	{{match_yp.befriender_id = {{bf_id}} }}
+	{{@new item match_yp notify=ok}}
+{{@end}}
+
+{{@action deleteMatch}}
+	{{@sql delete from match_yp where young_person_id = {{yp_id}} }}
+{{@end}}
+
+{{@include /jam/sys/html/footer.html}}

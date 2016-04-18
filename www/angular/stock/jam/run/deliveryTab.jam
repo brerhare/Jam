@@ -1,3 +1,5 @@
+<!-- Used by the stock maintenance program -->
+
 {{@include /jam/sys/html/header.html}}
 
 {{@database stock}}
@@ -11,14 +13,14 @@
 			<th>Qty</th>
 			<th>Cost</th>
 		</tr>
-{{@each stock_supplier_order_item filter stock_product_id = id, delivered_qty > 0}}
+{{@each stock_supplier_order_item filter stock_product_id = id, delivered_pack_qty > 0}}
 {{@get stock_supplier_order filter id = stock_supplier_order_id}}
 {{@get stock_supplier filter id = stock_supplier_order.supplier_id}}
 		<tr>
 			<td>{{delivered_date}}</td>
 			<td>{{stock_supplier.name}}</td>
 			<td>{{stock_supplier_order.id}}</td>
-			<td>{{delivered_qty}}</td>
+			<td>{{delivered_pack_qty}}</td>
 			<td>{{delivered_price}}</td>
 		</tr>
 {{@end}}

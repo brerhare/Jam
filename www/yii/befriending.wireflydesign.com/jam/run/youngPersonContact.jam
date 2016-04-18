@@ -6,7 +6,7 @@
 {{@database befriending_wireflydesign_com}}
 
 <br>
-{{@html container start center css='max-width:700px; Xpadding:0}}
+{{@html container start center css='max-width:900px; Xpadding:0}}
 
 <!-- List component -->
 
@@ -22,8 +22,7 @@
 	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
 			<th> Relationship </th>
-			<th> Forename </th>
-			<th> Surname </th>
+			<th> Name </th>
 			<th> Email </th>
 			<th> Mobile </th>
 			<th> Landline </th>
@@ -32,14 +31,20 @@
 {{@each contact filter young_person_id = young_person.id}}
 		{{@get global filter id = contact.global_id}}
 		{{@get contact_relationship filter id = contact.contact_relationship_id}}
-		<tr class="rowHighlight" onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">
-			<td>{{contact_relationship.relationship}}</td>
-			<td>{{global.forename}}</td>
-			<td>{{global.surname}}</td>
-			<td>{{global.email}}</td>
-			<td>{{global.mobile}}</td>
-			<td>{{global.landline}}</td>
-			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_contact('{{contact.id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i></button> </td>
+		<tr class="rowHighlight" XXonClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">
+			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{contact_relationship.relationship}}</td>
+			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.forename}} {{global.surname}}</td>
+			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.email}}</td>
+			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.mobile}}</td>
+			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.landline}}</td>
+			<td>
+				<span id='emailButton' name='emailButton'>
+					{{@html button 'Email' primary small
+						sendContactEmail('{{global.email}}');
+					}}
+				</span>
+				<button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_contact('{{contact.id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i></button>
+			</td>
 		</tr>
 {{@end}}
 	</table>
@@ -55,6 +60,10 @@ function confirmDelete_contact(id, displayInfo) {
 }
 function postUpdate() {
 	runJam();
+}
+function sendContactEmail(contactEmail) {
+//alert('ss' + contactId);
+	window.location.href = "mailto:"+contactEmail;
 }
 </script>
 
@@ -103,12 +112,6 @@ function postUpdate() {
 					{{@html button Cancel primary medium
 						runJam();
 					}}
-					<div id='emailButton' name='emailButton'>
-						{{@html button 'Email form' primary medium
-							runAction('email_contact', ['contact.id'], 'emailButton')
-						}}
-					</div>
-
 				</center>
 			{{@html gridcol end}}
 		{{@html gridrow end}}
@@ -119,7 +122,7 @@ function postUpdate() {
 	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
 	{{contact.global_id = global.id}}
 	{{contact.young_person_id = young_person.id}}
-	{{@update item contact}}
+	{{@update item contact notify=ok}}
 {{@end}}
 
 {{@action email_contact}}
