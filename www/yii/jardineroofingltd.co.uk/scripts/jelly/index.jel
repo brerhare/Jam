@@ -203,45 +203,97 @@ css.margin-bottom = 50px
 ####footer####################################
 
 [footer]
-child = footer-menu, footnote
+child = footer-menu, builder-icons
 css.margin-top = 40px
 css.width = 100%
 css.background-color = #365ca7
 stacking = horizontal
 css.padding = 2% 3% 0% 3%
 
-		[footer-menu]
-		child = footer-cookies, footer-tandc, footer-contact, builder-icons
-		css.width = 75%
+	[footer-menu]
+	child = footer-cookies, footer-tandc, footer-contact, copyright, admin-links
+	css.width = 25%
+	
+
+		[footer-cookies]
+		html.raw = Cookie Policy
+		css.color = #ffffff
+		css.font-size = 11px
+		css.text-align = left
+		click = ?layout=index&page=cookie-policy
+
+		[footer-tandc]
+		html.raw = Terms & Conditions
+		css.color = #ffffff
+		css.font-size = 11px
+		css.text-align = left
+		css.margin-top = 5px
+		click = ?layout=index&page=terms-conditions
+
+		[footer-contact]
+		html.raw = Contact Us
+		css.text-align = left
+		css.color = #ffffff
+		css.font-size = 11px
+		css.margin-top = 5px
+		click = ?layout=index&page=contact-dumfries-roofers-roofing-company
 		
+		[copyright]
+		css.width = 100%
+		css.margin-top = 10%
+		html.raw = Jardine Roofing Ltd &copy 2016</br>All rights reserved
+		css.color = #ffffff
+		css.font-size = 12px
+		css.text-align = left
 
-			[footer-cookies]
-			html.raw = Cookie Policy
-			css.color = #ffffff
-			css.font-size = 11px
-			css.text-align = left
-			click = ?layout=index&page=cookie-policy
+		[admin-links]
+		child = wirefly, admin
+		stacking = horizontal
+		css.margin-top = 10%
+		css.margin-left = 0px
+		css.width = 50%
 
-			[footer-tandc]
-			html.raw = Terms & Conditions
-			css.color = #ffffff
-			css.font-size = 11px
-			css.text-align = left
-			css.margin-top = 5px
-			click = ?layout=index&page=terms-conditions
-
-			[footer-contact]
-			html.raw = Contact Us
-			css.text-align = left
-			css.color = #ffffff
-			css.font-size = 11px
-			css.margin-top = 5px
-			click = ?layout=index&page=contact-dumfries-roofers-roofing-company
+		
+			[wirefly]
+			css.width = 80%
+			css.margin-top = 1%
+			image.url = img/wirefly-design.png
+			image.width = 100%
+			image.height = 100%
+			image.align = left
+			clicknew = http://www.wireflydesign.com
+			
+		
+			[admin]
+			child = cog-center
+			css.width = 15%
+			css.background-size = 100%
+			css.background-image = url('/img/admin-dark.png')
+			css.margin-left = -20%
+			
+				[cog-center]
+				css.width = 50%
+				css.height = 100%
+				css.margin-top = 25%
+				css.margin-bottom = 25%
+				image.url = img/cog-center.png
+				image.width = 100%
+				image.height = 100%
+				image.align = center
+				clicknew = backend.php
+			
+#	[footnote]
+#	child = builder-icons
+#	css.width = 75%
+#	css.background-color = yellow			
+			
 			
 [builder-icons]
 child = builder-container
-css.width = 75%
-css.background-color = pink
+css.width = 65%
+css.margin-top = 2%
+css.background-color = white
+fx.rounding = 12px
 
 [builder-container]
 css.width = 90%
@@ -252,87 +304,41 @@ child = construction, guild, icopal, polyroof, trustedtrader
 stacking = horizontal
 
 	[construction]
-	css.width = 17%
+	css.width = 16%
 	image.url = img/construction.jpg
 	image.width = 100%
 	image.height = 100%
 	
 	[guild]
-	css.width = 16%
-	css.margin-left = 1%
+	css.width = 15%
+	css.margin-left = 2%
 	image.url = img/guild.jpg
 	image.width = 100%
 	image.height = 100%
 
 	[icopal]
-	css.width = 17%
-	css.margin-left = 1%
+	css.width = 16%
+	css.margin-left = 2%
 	image.url = img/icopal.jpg
 	image.width = 100%
 	image.height = 100%
 	
 	[polyroof]
-	css.width = 18%
-	css.margin-left = 1%
+	css.width = 17%
+	css.margin-left = 2%
 	image.url = img/polyroof.jpg
 	image.width = 100%
 	image.height = 100%
 	
 	[trustedtrader]
-	css.width = 26%
-	css.margin-left = 1%
+	css.width = 28%
+	css.margin-left = 2%
 	image.url = img/trustedtrader.jpg
 	image.width = 100%
 	image.height = 100%
 
 
-	[footnote]
-	child = copyright, admin-links
-	css.width = 25%
-	css.background-color = yellow
 
-		[copyright]
-		css.width = 100%
-		css.margin-top = 10px
-		html.raw = Jardine Roofing Ltd &copy 2016</br>All rights reserved
-		css.color = #ffffff
-		css.font-size = 12px
-		css.text-align = right
 
-	[admin-links]
-	child = wirefly, admin
-	stacking = horizontal
-	css.margin-top = 7%
-	css.float = right
-	css.width = 50%
-	css.background-color = grey
 
-	
-		[wirefly]
-		css.width = 95%
-		css.margin-top = 1%
-		image.url = img/wirefly-design.png
-		image.width = 100%
-		image.height = 100%
-		image.align = left
-		clicknew = http://www.wireflydesign.com
-		
-	
-		[admin]
-		child = cog-center
-		css.width = 15%
-		css.background-size = 100%
-		css.background-image = url('/img/admin-dark.png')
-		css.margin-left = -20%
-		
-			[cog-center]
-			css.width = 50%
-			css.height = 100%
-			css.margin-top = 25%
-			css.margin-bottom = 25%
-			image.url = img/cog-center.png
-			image.width = 100%
-			image.height = 100%
-			image.align = center
-			clicknew = backend.php
 
