@@ -24,7 +24,7 @@
 			<td>{{global.forename}}</td>
 			<td>{{global.surname}}</td>
 			<td>{{status.name}}</td>
-			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i></button> </td>
+			<td> <!-- Cant simply delete form here... <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i></button> --> </td>
 		</tr>
 {{@end}}
 	</table>
