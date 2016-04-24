@@ -123,10 +123,18 @@ END_OF_BEGINHEADER;
 <!-- <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" /> -->
 <!-- <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script> -->
 
-	<body ng-app>\n
+	<body ng-app onload="checkDeviceWidth()">\n
 END_OF_ENDHEADER;
 
 	private $stdFooter = <<<END_OF_FOOTER
+
+<script>
+var deviceWidth = 0;
+function checkDeviceWidth() {
+	if (deviceWidth == 0) {
+	}
+}
+</script>
 
 <script type="text/javascript" src="/js/iframeResizer.contentWindow.min.js"></script>
 	<!-- Iframe resizer -->
