@@ -17,14 +17,15 @@
 			<th> Status </th>
 			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('showTabsNew', [], 'content')"> <i class="uk-icon-plus"></i> New</button> </th>
 		</tr>
-{{@each young_person}}
+<!-- @@TODO fix this with a proper delete / archive procedure -->
+{{@each young_person filter id != 7, id != 18, id != 19, id != 20, id != 30, id != 31, id != 38, id != 39, id != 40, id != 41, id != 42}}
 		{{@get global filter id = young_person.global_id}}
 		{{@get status filter id = young_person.status_id}}
 		<tr class="rowHighlight" onClick="runAction('showTabs', ['young_person.id={{young_person.id}}'], 'content')">
 			<td>{{global.forename}}</td>
 			<td>{{global.surname}}</td>
 			<td>{{status.name}}</td>
-			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i></button> </td>
+			<td> <!-- Cant simply delete form here... <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i></button> --> </td>
 		</tr>
 {{@end}}
 	</table>
