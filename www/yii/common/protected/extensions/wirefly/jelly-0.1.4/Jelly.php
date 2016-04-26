@@ -123,10 +123,18 @@ END_OF_BEGINHEADER;
 <!-- <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" /> -->
 <!-- <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script> -->
 
-	<body ng-app>\n
+	<body ng-app onload="checkDeviceWidth()">\n
 END_OF_ENDHEADER;
 
 	private $stdFooter = <<<END_OF_FOOTER
+
+<script>
+var deviceWidth = 0;
+function checkDeviceWidth() {
+	if (deviceWidth == 0) {
+	}
+}
+</script>
 
 <script type="text/javascript" src="/js/iframeResizer.contentWindow.min.js"></script>
 	<!-- Iframe resizer -->
@@ -343,6 +351,11 @@ END_OF_FOOTER;
 		&& (!(stristr($_SERVER['HTTP_HOST'], "breakfreecoaching.co.uk")))
 		&& (!(stristr($_SERVER['HTTP_HOST'], "www.kirkcudbright.dumgal.sch.uk")))
 		&& (!(stristr($_SERVER['HTTP_HOST'], "test.wireflydesign.com")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "demo.wireflydesign.com")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "demo1.wireflydesign.com")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "demo2.wireflydesign.com")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "demo3.wireflydesign.com")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "demo4.wireflydesign.com")))
 		&& (!(stristr($_SERVER['HTTP_HOST'], "demo5.wireflydesign.com")))
 		&& (!(stristr($_SERVER['HTTP_HOST'], "beingbusiness.co.uk"))) )
 			return 0;
@@ -805,7 +818,10 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 						// Create url and call curl
 						$yiiSite = str_replace("/index.php", "", Yii::app()->createAbsoluteUrl(Yii::app()->request->getPathInfo()));
 						//$jamUrl = $yiiSite . "/jamcgi/jam?template=" . $jamArg . "&jelly.sid=" . $sid . "&jelly.email=" . $settingEmail;
-						$jamUrl = $yiiSite . $jamArg . "?jelly.sid=" . $sid . "&jelly.email=" . $settingEmail;
+						$argChar = "?";
+						if (strstr($jamArg, "?") == true)
+							$argChar = "&";
+						$jamUrl = $yiiSite . $jamArg . $argChar . "jelly.sid=" . $sid . "&jelly.email=" . $settingEmail;
 						if ($jamType == "embed") {
 							$shell_exec = "php " . Yii::app()->basePath . "/../jam/jelly2jam.php" . " " . $jamUrl;
 							$curlContent = shell_exec ($shell_exec);
