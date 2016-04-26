@@ -153,8 +153,8 @@ function postUpdate() {
 <script>
 
 function onChange_formuploadgirfecscore_score(obj) {
-	if ((obj.value < '1') || (obj.value > '5')) {
-		alert('Valid range is 1-5');
+	if ((obj.value < '0') || (obj.value > '5')) {
+		alert('Valid range is 0-5');
 		obj.value = '';
 	}
 }
