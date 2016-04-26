@@ -39,7 +39,8 @@
 			<td>{{befriender_documentation_type.name}}</td>
 			<td>{{befriender_documentation.expiry_date}}</td>
 			<td>{{befriender_documentation.reference}}</td>
-			<td> <a href="http://befriending.wireflydesign.com:/jam/uploads/forms/befriender/documentation/{{befriender_documentation.id}}_{{befriender_documentation.file}}" target="_blank">{{befriender_documentation.file}}</a> </td>
+			<td> <a href="http://befriending.wireflydesign.com:/jam/uploads/forms/befriender/documentation/{{befriender.id}}_{{befriender_documentation.file}}" target="_blank">{{befriender_documentation.file}}</a> </td>
+			<td>{{befriender_documentation.na}}</td>
 			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_befrienderDocumentation('{{befriender_documentation.id}}','{{befriender_documentation_type.name}}')"> <i class="uk-icon-trash"></i></button> </td>
 		</tr>
 {{@end}}
@@ -102,7 +103,7 @@ function postUpdate() {
                     <!-- @@EG: dropdown outside of the jam -->
                     <label class="uk-form-label" for="befriender_documentation.form_type_id"> Type </label>
                     <div class="uk-form-controls">
-                        <select id="ID1___befriender_documentation" name="befriender_documentation.form_type_id" onchange="fn(this, event);" onkeyup="fn(this, event);" class="uk-form-width-medium ROW_{{sys.sequence}} ">
+                        <select id="ID1___befriender_documentation" name="befriender_documentation.befriender_documentation_type_id" onchange="fn(this, event);" onkeyup="fn(this, event);" class="uk-form-width-medium ROW_{{sys.sequence}} ">
                         {{tmp.selected = }}
                         {{@each befriender_documentation_type filter id = befriender_documentation.befriender_documentation_type_id}}
                             <option value="{{befriender_documentation_type.id}}" selected> {{befriender_documentation_type.name}} </option>
@@ -157,13 +158,13 @@ function postUpdate() {
 function fileUploadDocumentation(obj) {
 	$.blockUI();
 	var file = obj.files[0];
-	var evObj = get('befriender_documentation.id');
+	var evObj = get('befriender.id');
 //alert(evObj.value);
     console.log("name : " + file.name);
     console.log("size : " + file.size);
     console.log("type : " + file.type);
     console.log("date : " + file.lastModified)
-	var url = 'http://befriending.wireflydesign.com:/jam/uploads/uploadBefrienderDocumentation.php?befrienderDocumentationId=' + evObj.value;
+	var url = 'http://befriending.wireflydesign.com:/jam/uploads/uploadBefrienderDocumentation.php?befrienderId=' + evObj.value;
 	var xhr = new XMLHttpRequest();
 	var fd = new FormData();
 	xhr.open("POST", url, true);
