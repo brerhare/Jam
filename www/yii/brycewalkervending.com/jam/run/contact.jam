@@ -33,9 +33,13 @@
 	{{@html text field=mailer_member.email_address size=large placeholder=Email}}
 	{{@html text field=mailer_member.telephone size=large placeholder='Phone (optional)'}}
 	{{@html textarea field=var.message size=60x5 placeholder=Message}}
-	{{@html button SUBMIT primary .uk-width-1-2 
-		runAction('sendMessage', ['contactForm'], 'contactForm')
-	}}
+	<center>
+		<div style="width:30%">
+			{{@html button SUBMIT primary .uk-width-1-2 
+				runAction('sendMessage', ['contactForm'], 'contactForm')
+			}}
+		</div>
+	</center>
 </form>
 
 <script>
