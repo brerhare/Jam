@@ -27,8 +27,8 @@
 			<th> Document Type </th>
 			<th> Expiry Date </th>
 			<th> Reference </th>
-			<th> File Name </th>
 			<th> Not Applicable </th>
+			<th> File Name </th>
 			<th>
 				<button class="uk-button uk-button-mini uk-button-success" onClick="runAction('befrienderDocumentationEdit?befriender_documentation.id=0&befriender.id={{befriender.id}}', [], 'befriender_documentation_form')"> <i class="uk-icon-plus"></i> New </button>
 			</th>
@@ -39,8 +39,8 @@
 			<td>{{befriender_documentation_type.name}}</td>
 			<td>{{befriender_documentation.expiry_date}}</td>
 			<td>{{befriender_documentation.reference}}</td>
-			<td> <a href="http://befriending.wireflydesign.com:/jam/uploads/forms/befriender/documentation/{{befriender.id}}_{{befriender_documentation.file}}" target="_blank">{{befriender_documentation.file}}</a> </td>
 			<td>{{befriender_documentation.na}}</td>
+			<td> <a href="http://befriending.wireflydesign.com:/jam/uploads/forms/befriender/documentation/{{befriender.id}}_{{befriender_documentation.file}}" target="_blank">{{befriender_documentation.file}}</a> </td>
 			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_befrienderDocumentation('{{befriender_documentation.id}}','{{befriender_documentation_type.name}}')"> <i class="uk-icon-trash"></i></button> </td>
 		</tr>
 {{@end}}
