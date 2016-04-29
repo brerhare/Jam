@@ -1,0 +1,104 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@Xinclude /jam/run/menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center nomargin css='max-width:900px; padding:0}}
+
+	{{@get young_person filter id = young_person.id}}
+	{{@get global filter id = young_person.global_id}}
+
+	<style type="text/css">
+		label {text-align: right; width:150px !important}
+		div.uk-form-controls {margin-left: 170px !important}
+
+		.sideways {
+			transform: rotate(90deg);
+			transform-origin: left top 0;
+			height: 75px;
+			margin-left:17px;
+			padding:5px;
+		}
+
+	</style>
+
+{{@remove table temp_young_person_outcomes}}
+{{@remove table temp_young_person_outcomes}}
+{{@new table temp_young_person_outcomes
+	girfec_outcome_name_id	number		required
+	form_date				date
+	girfec_score			number
+	girfec_link				string
+}}
+{{@remove table temp_young_person_outcomes_date}}
+{{@remove table temp_young_person_outcomes_date}}
+{{@new table temp_young_person_outcomes_date
+	event_id				number		required
+	girfec_id				number		required unique
+	form_date				date
+}}
+
+{{@each event filter young_person_id = young_person.id}}
+	{{@each form_upload_girfec filter event_id = event.id}}
+		{{@each form_upload_girfec_score filter form_upload_girfec_id = form_upload_girfec.id}}
+			{{@get form_upload_girfec filter id = form_upload_girfec_score.form_upload_girfec_id}}
+			{{temp_young_person_outcomes.girfec_outcome_name_id = form_upload_girfec_score.girfec_outcome_name_id}}
+			{{temp_young_person_outcomes.form_date = form_upload_girfec.date}}
+			{{temp_young_person_outcomes.girfec_score = form_upload_girfec_score.score}}
+			
+			{{@new item temp_young_person_outcomes}}
+			{{@get temp_young_person_outcomes_date filter girfec_id = form_upload_girfec.id}}
+			{{temp_young_person_outcomes_date.event_id = event.id}}
+			{{temp_young_person_outcomes_date.girfec_id = form_upload_girfec.id}}
+			{{temp_young_person_outcomes_date.form_date = form_upload_girfec.date}}
+			{{@update item temp_young_person_outcomes_date}}
+		{{@end}}
+	{{@end}}
+{{@end}}
+
+
+
+    <div name="inlineForm" class="uk-form uk-form-horizontal">
+        <table class="uk-table uk-table-condensed" style="border:1px solid #dddddd">
+
+<!-- pre-loop (dates) -->
+
+		{{openTR = <tr> <td> </td>}}
+		{{closeTR = ''}}
+{{@each temp_young_person_outcomes_date}}
+			{{openTR}}
+			{{openTR = ''}}
+			{{closeTR = </tr>}}
+				<td><div class='sideways'> <a href="http://befriending.wireflydesign.com/run/eventMaintain?event.id={{temp_young_person_outcomes_date.event_id}}" target="_blank">{{temp_young_person_outcomes_date.form_date}}</a> </div></td>
+<!--			<td> {{XXXtemp_young_person_outcomes_date.girfec_id}} </td>	-->
+{{@end}}
+
+<!-- main loop (scores) -->
+
+{{@each girfec_outcome_name}}
+		{{openTR = <tr> <td> girfec_outcome_name.description </td>}}
+		{{closeTR = ''}}
+{{@each temp_young_person_outcomes filter girfec_outcome_name_id = girfec_outcome_name.id}}
+			{{openTR}}
+			{{openTR = ''}}
+			{{closeTR = </tr>}}
+				<td> {{temp_young_person_outcomes.girfec_score}} </td>
+{{@end}}
+			{{closeTR}}
+			{{closeTR = ''}}
+{{@end}}
+
+        </table>
+    </div>
+
+<script>
+window.onload = function() {
+}
+</script>
+
+{{@html container end}}
+
+{{@include /jam/sys/html/footer.html}}

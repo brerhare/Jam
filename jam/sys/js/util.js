@@ -82,6 +82,7 @@ function runAction(action, element, output, callback) {
 //alert('assembling data. So far we have : ' + postData);
 	}
 	var sendURL = runURL + '/' + runJam;
+//alert('runURL='+runURL+' runJam='+runJam+' sendURL='+sendURL);
 console.log('AJAX sending to - \nurl : ' + sendURL + '\ndata : ' + postData);
 	$.ajax( {
 		url : sendURL,
@@ -161,6 +162,8 @@ function fn(obj, event) {
 		callType = 'onChange';
 	else if (event.type == 'keyup')
 		callType = 'onKeyUp';
+	else if (event.type == 'click')
+		callType = 'onClick';
 	if (callType != '') {
 		localFunc =  callType + '_' + obj.id;
 		// Convert ID3___stock_customer___address_1 to onChange_stockcustomer_address_1
@@ -518,5 +521,11 @@ function print(element) {
    // the DOM will be available here
 //alert('Popup from the anonymous function at the end of util.js');
 	createHiddenElementsFromUrlParams();
+	// User autoexec
+	// @@TODO This doesnt work?
+	var startupFunc = 'autoexec';
+	if (typeof window[startupFunc] === "function") {
+//alert('firing');
+		window[startupFunc]; }
 })()
 
