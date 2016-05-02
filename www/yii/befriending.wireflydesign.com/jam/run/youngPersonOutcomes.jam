@@ -16,6 +16,17 @@
 		div.uk-form-controls {margin-left: 170px !important}
 	</style>
 
+<style>
+        #Xscrolly{
+            width: 1000px;
+            height: 190px;
+            overflow: auto;
+            overflow-y: hidden;
+            margin: 0 auto;
+            white-space: nowrap
+        }
+</style>
+
 {{@remove table temp_young_person_outcomes}}
 {{@remove table temp_young_person_outcomes}}
 {{@new table temp_young_person_outcomes
@@ -52,8 +63,9 @@
 
 
 
-    <div name="inlineForm" class="uk-form uk-form-horizontal">
-        <table class="uk-table uk-table-condensed" style="border:1px solid #dddddd">
+<div id="scrolly" class="uk-container uk-overflow-container uk-container-center">
+
+		<table class="uk-table uk-table-condensed" style="border:1px solid #dddddd">
 
 <!-- pre-loop (dates) -->
 
