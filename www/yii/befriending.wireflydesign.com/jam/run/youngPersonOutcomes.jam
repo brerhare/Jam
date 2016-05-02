@@ -14,16 +14,18 @@
 	<style type="text/css">
 		label {text-align: right; width:150px !important}
 		div.uk-form-controls {margin-left: 170px !important}
-
-		.sideways {
-			transform: rotate(90deg);
-			transform-origin: left top 0;
-			height: 75px;
-			margin-left:17px;
-			padding:5px;
-		}
-
 	</style>
+
+<style>
+        #Xscrolly{
+            width: 1000px;
+            height: 190px;
+            overflow: auto;
+            overflow-y: hidden;
+            margin: 0 auto;
+            white-space: nowrap
+        }
+</style>
 
 {{@remove table temp_young_person_outcomes}}
 {{@remove table temp_young_person_outcomes}}
@@ -61,8 +63,9 @@
 
 
 
-    <div name="inlineForm" class="uk-form uk-form-horizontal">
-        <table class="uk-table uk-table-condensed" style="border:1px solid #dddddd">
+<div id="scrolly" class="uk-container uk-overflow-container uk-container-center">
+
+		<table class="uk-table uk-table-condensed" style="border:1px solid #dddddd">
 
 <!-- pre-loop (dates) -->
 
@@ -72,7 +75,7 @@
 			{{openTR}}
 			{{openTR = ''}}
 			{{closeTR = </tr>}}
-				<td><div class='sideways'> <a href="http://befriending.wireflydesign.com/run/eventMaintain?event.id={{temp_young_person_outcomes_date.event_id}}" target="_blank">{{temp_young_person_outcomes_date.form_date}}</a> </div></td>
+				<td width="40px"><div> <a href="http://befriending.wireflydesign.com/run/eventMaintain?event.id={{temp_young_person_outcomes_date.event_id}}" target="_blank">{{temp_young_person_outcomes_date.form_date}}</a> </div></td>
 <!--			<td> {{XXXtemp_young_person_outcomes_date.girfec_id}} </td>	-->
 {{@end}}
 
