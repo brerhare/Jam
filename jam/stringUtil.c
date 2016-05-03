@@ -10,7 +10,6 @@
 // Escape some chars that JSON doesnt like
 char *escapeJsonChars(char *src)
 {
-int fnd = 0;
 	char *ret = (char *) calloc(2, (strlen(src) + 1));
 	char *p = src;
 	char *p2 = ret;
@@ -24,6 +23,21 @@ int fnd = 0;
 		else if (*p == '\n') { *p2++ = '\\'; *p2++ = 'n';  p++; }
 		else if (*p == '\r') { *p2++ = '\\'; *p2++ = 'r';  p++; }
 		else if (*p == '\t') { *p2++ = '\\'; *p2++ = 't';  p++; }
+		else
+			*p2++ = *p++;
+	}
+	return(ret);
+}
+
+// Escape single quotes that conflict with our own singleQuoting (<input value='abc'def'> etc)
+char *escapeSingleQuote(char *src)
+{
+	char *ret = (char *) calloc(2, (strlen(src) + 1));
+	char *p = src;
+	char *p2 = ret;
+	char *sp = NULL;
+	while (*p) {
+		if (*p == '\'') { *p2++ = '&'; *p2++ = '#'; *p2++ = '3'; *p2++ = '9'; p++; }	// '
 		else
 			*p2++ = *p++;
 	}
