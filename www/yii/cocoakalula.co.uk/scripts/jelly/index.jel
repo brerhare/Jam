@@ -1,119 +1,253 @@
-#cocoakalula
-[defaults]
-include = default-values
+#Cocoa Kalula
 
-; Every blob inherits these before adding/overriding
+[defaults]
+#include = default-values
+css.display = block
+css.overflow = hidden
+css.margin = 0px auto
+css.position = relative
+
 [* : defaults]
 
 [screen]
-child = slider, site
-#fx.wallpaper-image = /img/background.jpg
-css.display = block
-css.background-color = #42290f
+child = site
+fx.wallpaper-image-tile = /img/blue_background.jpg
+#css.background-color = white
 
-
-	[slider]
-	css.width = 100%
-	css.height = 100%
-	css.position = fixed
-	addon.slider.flexslider.width = 100%
-	addon.slider.flexslider.height = 100%
-	addon.slider.flexslider.border-width = 0px
-	addon.slider.flexslider.border-color = transparent
-	addon.slider.flexslider.active-dotcolor = transparent
-	addon.slider.flexslider.inactive-dotcolor = transparent
-	addon.slider.flexslider.dot-margin-top = 0px
-	addon.slider.flexslider.dot-margin-bottom = 0px
-	addon.slider.flexslider.dot-margin-left = 0px
-	addon.slider.flexslider.dot-margin-right = 0px
-	addon.slider.flexslider.animation = fade
-	addon.slider.flexslider.mode = image
-	addon.slider.flexslider.source = db
 
 	[site]
-	child = logo, content, contact, footer
-	css.margin-left = 10%
-	css.width = 25%
-	css.min-width = 350px
-	css.height = 100%
-	css.background-color = #42290f
-	css.opacity = 0.80
-	
-		[logo]
-		css.width = 90%
-		css.margin-top = 50px
-		image.url = img/logo.png
-		image.width = 100%
-		image.height = 18%
-		image.align = center
-		image.z-index = 100
-		
-		[content]
-		css.width = 80%
-		css.margin-top = 50px
-		db.table = ContentBlock
-		db.filter = url=$_GET['page']
-		db.error = Sorry, I could not find the page $_GET['page']
-		html.raw = ContentBlock.content
-	
-		[contact]
-		css.width = 80%
-		css.margin-top = 50px
-		css.background-color = transparent
-		addon.contact.contactform.edgepadding = 0px
-		addon.contact.contactform.buttoncolor = white
-		addon.contact.contactform.buttontextcolor = #42290f
-		addon.contact.contactform.buttontext = [&nbsp;&nbsp;Submit&nbsp;&nbsp;]
-		addon.contact.contactform.successtextcolor = white
-		addon.contact.contactform.failuretextcolor = red
-		addon.contact.contactform.textcolor = grey
-		addon.contact.contactform.backcolor = white
-		addon.contact.contactform.inputspacing = 10px
-		addon.contact.contactform.inputwidth = 98%
-	
-		[footer]
-		child = copyright, wirefly
-		css.margin-top = 40px
-		css.width = 49%
-		css.height =150px
-		
-		[copyright]
-		html.raw = Cocoa Kalula &copy 2015 </br>All rights reserved
-		css.font-size = 11px
-		css.text-align = center
-		css.color = white
+	child = header, pages, footer
+	css.width = 100%
 
+	
+### Header ###
+
+[header]
+child = slider, header-content
+css.width = 100%
+css.overflow = visible
+
+	[slider]
+	css.background-color = d2ffff
+	css.min-width = 550px
+	jam.embed = /run/slider.jam
+	
+	[header-content]
+	child = menu-block, shadow, header-links
+	css.width = 90%
+	css.max-width = 1200px
+	css.margin-left = 5%
+	css.position = absolute
+	css.top = 4%
+	css.overflow = visible
+	css.z-index = 100
+
+		[menu-block]
+		child = menu-background
+		css.background-color = #d2ffff
+		css.overflow = visible
+		
+			[menu-background]
+			child = logo, menu-container
+			stacking = horizontal
+			css.overflow = visible
+
+				[logo]
+				css.width = 25%
+				css.min-width = 200px
+				image.url = img/logo.png
+				image.width = 90%
+				image.height = 100%
+				image.align = center
+				click = ?layout=index
+				
+				[menu-container]
+				child = menu
+				css.width = 75%
+				css.overflow = visible
+				
+					[menu]
+					css.width = 90%
+					css.margin-top = 5px
+					css.overflow = visible
+					jam.embed = /run/menu.jam
+
+		[shadow]
+		image.url = img/shadow.png
+		image.width = 100%
+		image.height = 100%
+		image.align = center
+		
+		[header-links]
+		child = facebook, mail, market
+		css.width = 5%
+		css.margin-left = 0px
+		css.min-width = 30px
+		
+			[facebook]
+			css.width = 100%
+			css.margin-top = 50%
+			image.url = img/facebook.png
+			image.width = 100%
+			image.height = 100%
+			clicknew = https://www.facebook.com
+			
+			[mail]
+			css.width = 100%
+			css.margin-top = 20%
+			image.url = img/mail.png
+			image.width = 100%
+			image.height = 100%
+			click = ?layout=contact
+			
+			[market]
+			css.width = 100%
+			css.margin-top = 20%
+			image.url = img/market.png
+			image.width = 100%
+			image.height = 100%
+			click = ?layout=contact
+		
+			
+
+### Pages ###	
+
+[pages]
+child = page-margin, page-main, page-main-mobile, page-left
+css.width = 90%
+css.max-width = 1200px
+stacking = horizontal
+
+[page-margin]
+css.width = 40%
+css.min-width = 240px
+css.max-width = 300px
+css.height = 1px
+condition = @DEVICEWIDTH>700
+
+
+[page-main]
+css.width = 60%
+css.min-width = 240px
+css.margin-top = 20px
+css.margin-bottom = 100px
+db.table = ContentBlock
+db.filter = url=$_GET['page']
+db.error = Sorry, I could not find the page $_GET['page']
+html.raw = ContentBlock.content
+condition = @DEVICEWIDTH>700
+
+[page-main-mobile]
+css.width = 90%
+css.margin-top = 20px
+css.margin-bottom = 100px
+db.table = ContentBlock
+db.filter = url=$_GET['page']
+db.error = Sorry, I could not find the page $_GET['page']
+html.raw = ContentBlock.content
+condition = @DEVICEWIDTH<701
+
+
+[page-left]
+child = left-column
+css.width = 15%
+css.min-width = 240px
+css.height = 100%
+#css.bottom = 10px
+css.position = absolute
+condition = @DEVICEWIDTH>700
+
+	[left-column]
+	child = left-column-content
+	css.background-color = #d2ffff
+	css.z-index = 10
+	css.height = 100%
+	
+	[left-column-content]
+	child = contact-text, contact-form, column-content, wirefly
+	css.width = 90%
+	css.margin-top = 50px
+
+		[contact-text]
+		addon.global.column.name = contact-form-text
+		addon.global.column.width = 100%
+		addon.global.column.internal-width = 100%
+		addon.global.column.content-width = 80%
+		addon.global.column.internal-color = transparent
+		addon.global.column.background-color = transparent
+		addon.global.column.top-height = 0px
+		addon.global.column.bottom-height = 5px
+		
+		[contact-form]
+		css.border-radius = 5px
+		css.min-height = 270px
+		css.background-color = white
+		css.border = 2px solid #6f4619
+		css.width = 95%
+		jam.iframe = /run/contact
+		
+		[column-content]
+		css.margin-top = 50px
+		addon.global.column.name = left-column
+		addon.global.column.width = 100%
+		addon.global.column.internal-width = 100%
+		addon.global.column.content-width = 98%
+		addon.global.column.internal-color = transparent
+		addon.global.column.background-color = transparent
+		addon.global.column.top-height = 0px
+		addon.global.column.bottom-height = 5px
+	
 		[wirefly]
 		child = wirefly-logo, admin
 		stacking = horizontal
-		css.margin-top = 20px
-		css.margin = 20%
+		css.margin-top = 100px
+		css.width = 50%
+		css.max-width = 120px
+		css.float = left
+		css.bottom = 10px
 
-		
+
 			[wirefly-logo]
-			css.height = 45px
-			css.margin-top = 5px
+			css.width = 80%
+			css.margin-top = 1%
 			image.url = img/wirefly-design.png
-			image.width = 100px
-			image.height = 46px
+			image.width = 100%
+			image.height = 100%
 			image.align = left
 			clicknew = http://www.wireflydesign.com
-			
-		
+					
+				
 			[admin]
 			child = cog-center
-			css.height = 20px
-			css.width = 20px
+			css.width = 15%
 			css.background-size = 100%
 			css.background-image = url('/img/admin.png')
-			css.margin-left = -20px
-
+			css.margin-left = -20%
+					
 				[cog-center]
-				css.width = 5px
-				css.height = 5px
-				css.margin-top = 8px
+				css.width = 50%
+				css.height = 100%
+				css.margin-top = 25%
+				css.margin-bottom = 25%
 				image.url = img/cog-center.png
-				image.width = 5px
-				image.height = 5px
+				image.width = 100%
+				image.height = 100%
 				image.align = center
 				clicknew = backend.php
+	
+
+
+	
+	
+
+### Footer ###
+
+[footer]
+css.width = 100%
+child = footer-content
+css.background-color = #d2ffff
+condition = @DEVICEWIDTH<701
+
+	[footer-content]
+	child = left-column-content
+	css.width = 300px
