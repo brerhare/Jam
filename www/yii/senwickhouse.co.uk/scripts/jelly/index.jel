@@ -226,3 +226,9 @@ css.margin-top = 40px
 					image.height = 100%
 					image.align = center
 					clicknew = backend.php
+
+#[testing]
+# @@FIXED... problem: this needs uikit. header/footer includes uikit so iframe works but not embed. Not all jam embeds need uikit (slider, menu) but this one does
+#jam.embed = /run/grid.jam?contentid=footer-left
+
+

@@ -18,7 +18,30 @@
 </style>
 
 <br>
+
 <div name="content_contact">
+
+    <div class="uk-width-5-5">
+        <table class="uk-table uk-table-condensed" style='background-color:#dadada;'>
+            <tr>
+                <th> Matched Befriender </th>
+                <th> Phone </th>
+                <th> Email </th>
+                <th> Postcode </th>
+            </tr>
+            {{@each match_yp filter young_person_id = young_person.id}}
+                {{@get befriender filter id = match_yp.befriender_id}}
+                {{@get global filter id = befriender.global_id}}
+                    <tr>
+                        <td> {{global.forename}} {{global.surname}} </td>
+                        <td> {{global.mobile}} </td>
+                        <td> {{global.email}} </td>
+                        <td> {{global.postcode}} </td>
+                    </tr>
+            {{@end}}
+        </table>
+    </div>
+
 	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
 			<th> Relationship </th>
@@ -31,20 +54,18 @@
 {{@each contact filter young_person_id = young_person.id}}
 		{{@get global filter id = contact.global_id}}
 		{{@get contact_relationship filter id = contact.contact_relationship_id}}
-		<tr class="rowHighlight" onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">
-			<td>{{contact_relationship.relationship}}</td>
-			<td>{{global.forename}} {{global.surname}}</td>
-			<td>{{global.email}}</td>
-			<td>{{global.mobile}}</td>
-			<td>{{global.landline}}</td>
+		<tr class="rowHighlight" XXonClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">
+			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{contact_relationship.relationship}}</td>
+			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.forename}} {{global.surname}}</td>
+			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.email}}</td>
+			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.mobile}}</td>
+			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.landline}}</td>
 			<td>
-<!--- @@TODO cant use this for now as iframe cant load mailto:? -->
 				<span id='emailButton' name='emailButton'>
 					{{@html button 'Email' primary small
 						sendContactEmail('{{global.email}}');
 					}}
 				</span>
-<!-- -->
 				<button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_contact('{{contact.id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i></button>
 			</td>
 		</tr>
@@ -102,6 +123,7 @@ function sendContactEmail(contactEmail) {
 				{{@html text field=global.landline size=medium label='Land line'}}
 				{{@html text field=global.mobile size=medium label='Mobile'}}
 				{{@html text field=global.email size=medium label='Email'}}
+				{{@html text field=global.job_title size=medium label='Job Title'}}
 			{{@html gridcol end}}
 		{{@html gridrow end}}
 		{{@html gridrow start}}

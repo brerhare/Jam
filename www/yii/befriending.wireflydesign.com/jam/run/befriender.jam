@@ -70,6 +70,7 @@ function confirmDelete(id, displayInfo) {
 		label=References	action=/run/befrienderReferences?befriender.id={{befriender.id}}
 		label=Interests		action=/run/befrienderInterest?befriender.id={{befriender.id}}
 		label=Additional	action=/run/befrienderAdditional?befriender.id={{befriender.id}}
+		label=Documentation	action=/run/befrienderDocumentation?befriender.id={{befriender.id}}
 	}}
 <!--		label=Events		action=/run/befrienderEvent?befriender.id={{befriender.id}} -->
 {{@end}}

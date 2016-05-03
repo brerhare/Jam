@@ -25,7 +25,7 @@
 
 				<input type="hidden" name="young_person.referrer_form_id" value="999999"> <!-- @@TODO! -->
 				{{@html hidden field=young_person.referrer_form_id}}
-				{{@XXXhtml date field=young_person.referral_date size=medium label='Referral date' group=inp}}
+				{{@html date disabled field=young_person.referral_date size=medium label='Referral date' group=inp}}
 				{{@html text field=global.forename size=large label='Forename' group=inp}}
 				{{@html text field=global.surname size=large label='Surname' group=inp}}
 				{{@html text field=global.house size=medium label='house' group=inp}}
@@ -36,8 +36,12 @@
 				{{@html text field=global.landline size=medium label='Land line' group=inp}}
 				{{@html text field=global.mobile size=medium label='Mobile' group=inp}}
 				{{@html text field=global.email size=medium label='Email' group=inp}}
-				{{@html date field=young_person.dob size=medium label='Birth date' group=inp}}
-
+				<table>
+					<tr>
+						<td> {{@html date field=young_person.dob size=medium label='Birth date' group=inp}} </td>
+						<td> <span id='age'> </span> </td>
+					</tr>
+				</table>
 			{{@html gridcol end}}
 			{{@html gridcol start width=1-10}}
 			{{@html gridcol end}}
@@ -77,23 +81,10 @@
 
 <script>
 window.onload = function() {
-	// Create onChange functions for all form inputs - will be called by fn()
-	var groupArr = getGroupArray('inp');
-	for (var i = 0; i < groupArr.length; i++) {
-		name = "onChange_" + groupArr[i].name.replace(/_/g, "");
-		name = name.replace(".", "_");
-		window[name] = function (obj) {
-			//document.getElementById('saveButton').disabled = false;
-		}
-	}
-	//document.getElementById('saveButton').disabled = true;
-}
-function disableButton(me) {
-	//me.disabled = true;
 }
 
 function saveButtonClick() {
-	newObj = get('newRec');
+	var newObj = get('newRec');
 	if (newObj.value == '0')
     	runAction('update_young_person', ['inputForm_young_person'], '');
 	else {
@@ -117,6 +108,10 @@ function updated() {
 	window.top.location.href = "http://befriending.wireflydesign.com/run/youngPerson.jam";
 }
 
+function onChange_youngperson_dob(obj) {
+    calcAge();
+}
+
 </script>
 
 {{@action update_young_person}}
@@ -125,17 +120,25 @@ function updated() {
 	{{@update item young_person notify=ok}}
 {{@end}}
 
-{{@action email_young_person}}
-	{{@get young_person filter id = young_person.id}}
-	{{@get global filter id = young_person.global_id}}
-	{{@email k@microboot.com {{global.email}}  'Befriending referral form for {{global.forename}} {{global.surname}}' action:emailContent}}
-	Email sent
-{{@end}}
-
-{{@action emailContent}}
-	Whatever is here gets used as the mmail body content. <br>It will be a link like <a href="http://befriending.wireflydesign.com/run/referralForm.jam?accesskey=gj3x9dsmcNcj2hvgsxz3sjpOvR">this</a> to click on.
-{{@end}}
-
 {{@html container end}}
 
 {{@include /jam/sys/html/footer.html}}
+
+<script>
+
+(function() {
+	calcAge();
+})()
+
+function calcAge() {
+	var objDob = get('young_person.dob');
+	var year=Number(objDob.value.substr(0,4));
+	var month=Number(objDob.value.substr(5,2))-1;
+	var day=Number(objDob.value.substr(7,2));
+	var today=new Date();
+	var age=today.getFullYear()-year;
+	if (today.getMonth()<month || (today.getMonth()==month && today.getDate()<day)){age--;}
+//alert(age);
+	document.getElementById('age').innerHTML = 'age '+age;
+}
+</script>

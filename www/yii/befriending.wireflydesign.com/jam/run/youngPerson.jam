@@ -14,14 +14,18 @@
 		<tr>
 			<th> Forename </th>
 			<th> Surname </th>
+			<th> Status </th>
 			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('showTabsNew', [], 'content')"> <i class="uk-icon-plus"></i> New</button> </th>
 		</tr>
-{{@each young_person}}
+<!-- @@TODO fix this with a proper delete / archive procedure -->
+{{@each young_person filter id != 7, id != 18, id != 19, id != 20, id != 30, id != 31, id != 38, id != 39, id != 40, id != 41, id != 42, id != 49}}
 		{{@get global filter id = young_person.global_id}}
+		{{@get status filter id = young_person.status_id}}
 		<tr class="rowHighlight" onClick="runAction('showTabs', ['young_person.id={{young_person.id}}'], 'content')">
 			<td>{{global.forename}}</td>
 			<td>{{global.surname}}</td>
-			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i></button> </td>
+			<td>{{status.name}}</td>
+			<td> <!-- Cant simply delete form here... <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i></button> --> </td>
 		</tr>
 {{@end}}
 	</table>
@@ -66,7 +70,6 @@ function confirmDelete(id, displayInfo) {
 	
 	</h3>
 	{{@html tabs
-		label=Matches		action=/run/youngPersonMatch?young_person.id={{young_person.id}}
 		label=Contacts		action=/run/youngPersonContact?young_person.id={{young_person.id}}
 		label=Details		action=/run/youngPersonDetails?young_person.id={{young_person.id}}&newRec=0
 		label=Interests		action=/run/youngPersonInterest?young_person.id={{young_person.id}}
@@ -74,6 +77,7 @@ function confirmDelete(id, displayInfo) {
 		label=Medical		action=/run/youngPersonMedical?young_person.id={{young_person.id}}
 		label=Additional	action=/run/youngPersonAdditional?young_person.id={{young_person.id}}
 		label=Forms			action=/run/youngPersonForms?young_person.id={{young_person.id}}
+		label=Matches		action=/run/youngPersonMatch?young_person.id={{young_person.id}}
 	}}
 {{@end}}
 

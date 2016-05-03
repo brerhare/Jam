@@ -11,6 +11,7 @@
 {{@template FONTDOWNLOAD Open+Sans:400}}
 {{@template FONTFAMILY "Open Sans", Arial, sans-serif}}
 {{@template FONTSIZE 16}}
+{{@template FONTWEIGHT bold}}
 
 
 {{@template MENU

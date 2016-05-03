@@ -46,6 +46,7 @@
 			<li><a href="/run/status.jam"> Status Types </a>
 			<li><a href="/run/questionYoungPerson.jam"> Young Person Additional Questions </a>
 			<li><a href="/run/questionBefriender.jam"> Befriender Additional Questions </a>
+			<li> <a href="/run/befrienderDocumentationType.jam"> Befriender Documentation Types </a></li>
 		</ul>
 	</li>
 	

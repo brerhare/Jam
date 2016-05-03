@@ -6,7 +6,7 @@ protected/runtime/*
 protected/backend/runtime/*
 !protected/backend/runtime/.gitignore
 userdata/*
-!userdata/download/.gitignore
+!userdata/download
 !userdata/image
 userdata/image/*
 !userdata/image/.gitignore
@@ -18,15 +18,17 @@ userdata/tab/*
 !userdata/tab/.gitignore
 
 !userdata/jelly
-userdata/jelly/*
 !userdata/jelly/.gitignore
-userdata/jelly/sliderhtml/*
 !userdata/jelly/sliderhtml/.gitignore
-userdata/jelly/sliderimage/*
 !userdata/jelly/sliderimage/.gitignore
-userdata/jelly/gallery/*
 !userdata/jelly/gallery/.gitignore
-userdata/jelly/download/*
+!userdata/jelly/adblock/.gitignore
 !userdata/jelly/download/.gitignore
+userdata/jelly/*
+userdata/jelly/sliderhtml/*
+userdata/jelly/sliderimage/*
+userdata/jelly/gallery/*
+userdata/jelly/adblock/*
+userdata/jelly/download/*
 
 *.bak
