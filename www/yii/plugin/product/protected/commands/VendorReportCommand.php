@@ -164,10 +164,10 @@ class VendorReportCommand extends CConsoleCommand
 				$mail->AddAttachment($att_filename);
 				$mail->Subject = $subject;
 				$mail->MsgHTML($message);
-//				if (!$mail->Send())
-//					Yii::log("WEEKLY REPORT COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
-//				else
-//					Yii::log("WEEKLY SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+				if (!$mail->Send())
+					Yii::log("WEEKLY REPORT COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
+				else
+					Yii::log("WEEKLY SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
 			}
 			// Accumulate to global
 			$gmsg .= $umsg;
