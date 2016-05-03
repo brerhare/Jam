@@ -1,0 +1,155 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@Xinclude /jam/run/menu.jam}}
+
+{{@html container start center css='max-width:1080px; Xpadding:0}}
+
+{{@database befriending_wireflydesign_com}}
+
+<style>
+.rowHighlight:hover {
+  background-color: #ddf0ff;
+  cursor:pointer;
+}
+</style>
+
+	{{@get young_person filter id = young_person.id}}
+	{{@get global filter id = young_person.global_id}}
+
+	<style type="text/css">
+		label {text-align: right;}
+	</style>
+
+		<div class="uk-grid" name="page_content">
+		<br><br>
+		<h3> Befriender match for {{global.forename}} {{global.surname}}  </h3>
+
+			<div class="uk-width-5-5">
+
+					<table class="uk-table uk-table-condensed">
+						<tr> <td colspan=6> <center><h3 style='background-color:#dadada;' >Matched Befriender</h3></center> </td> </tr>
+						<tr>
+							<th> Name </th>
+							<th> Phone </th>
+							<th> Email </th>
+							<th> Postcode </th>
+							<th> </th>
+						</tr>
+						{{@each match_yp filter young_person_id = young_person.id}}
+							{{@get befriender filter id = match_yp.befriender_id}}
+							{{@get global filter id = befriender.global_id}}
+							{{@Xeach event_attendee filter global_id = global.id, event_id = event.id}}
+								<tr>
+									<td> {{global.forename}} {{global.surname}} </td>
+									<td> {{global.mobile}} </td>
+									<td> {{global.email}} </td>
+									<td> {{global.postcode}} </td>
+									<td>
+										<button type='button' id='dateButton' class="uk-button uk-button-primary uk-button-small" onClick="dateMatch('{{match_yp.id}}', '{{global.id}}')">Dates</button>
+										<button type='button' id='removeButton' class="uk-button uk-button-danger uk-button-small" onClick="deleteMatch('{{befriender.id}}', '{{young_person.id}}')">Remove</button>
+									</td>
+								</tr>
+							{{@Xend}}
+						{{@end}}
+
+								<tr> <td colspan=6> <center><h3 style='background-color:#dadada;' >All Possible Befrienders</h3></center> </td> </tr>
+						{{@each befriender}}
+							{{@get global filter id = befriender.global_id}}
+								<tr>
+									<td> {{global.forename}} {{global.surname}} </td>
+									<td> {{global.mobile}} </td>
+									<td> {{global.email}} </td>
+									<td> {{global.postcode}} </td>
+									<td> <button type='button' id='addButton' class="uk-button uk-button-success uk-button-small" onClick="addMatch('{{befriender.id}}', '{{young_person.id}}')">Add</button> </td>
+								</tr>
+						{{@end}}
+					</table>
+				</div>
+
+	</div>
+{{@html container end}}
+
+<script>
+function addMatch(befriender_id, young_person_id) {
+	runAction('addMatch', ['bf_id='+befriender_id, 'yp_id='+young_person_id], '', window.setTimeout(afterMatch, 1000));
+}
+
+function deleteMatch(befriender_id, young_person_id) {
+	runAction('deleteMatch', ['bf_id='+befriender_id, 'yp_id='+young_person_id], '', window.setTimeout(afterMatch, 1000));
+}
+
+function dateMatch(match_id, global_id) {
+	runAction('dateMatch', ['match_id='+match_id, 'global_id='+global_id], 'page_content');
+}
+
+function afterMatch() {
+	runJam();
+}
+
+function afterMatchDates() {
+	runJam();
+}
+
+</script>
+
+{{@action dateMatch}}
+    {{@get match_yp filter id = match_id}}
+    {{@get global filter id = global_id}}
+
+    <style type="text/css">
+        label {text-align: right;}
+    </style>
+
+	{{@get befriender filter id = befriender_id}}
+
+    <form name="match_form" class="uk-form uk-form-horizontal">
+		<br><br>
+        <input type="hidden" name="match_yp.id" value="{{match_id}}">
+        {{@html gridrow start}}
+			<h3> Dates for matched befriender {{global.forename}} {{global.surname}} </h3>
+        {{@html gridrow end}}
+        {{@html gridrow start}}
+            {{@html gridcol start width=5-5}}
+				{{@html date field=match_yp.match_started size=medium label='Match start date' group=inp}}
+				{{@html date field=match_yp.match_end size=medium label='Match end date' group=inp}}
+            {{@html gridcol end}}
+        {{@html gridrow end}}
+        {{@html gridrow start}}
+            {{@html gridcol start width=1-1}}
+                <br>
+                <center>
+                    {{@html button Save primary medium
+                        runAction('updateMatchDates', ['match_form'], '', afterMatchDates);
+                    }}
+                    {{@html button Cancel primary medium
+                        runJam();
+                    }}
+                </center>
+            {{@html gridcol end}}
+        {{@html gridrow end}}
+    </form>
+{{@end}}
+
+{{@action updateMatchDates}}
+	{{@update item match_yp}}
+{{@end}}
+
+{{@action update_event}}
+	{{@update item event}}
+{{@end}}
+
+{{@action addMatch}}
+	{{@sql delete from match_yp where young_person_id = {{yp_id}} }}
+	{{match_yp.young_person_id = {{yp_id}} }}
+	{{match_yp.befriender_id = {{bf_id}} }}
+	{{match_yp.match_started = {{sys.today}} }}
+	{{match_yp.match_end = 0000-00-00}}
+	{{@new item match_yp notify=ok}}
+{{@end}}
+
+{{@action deleteMatch}}
+	{{@sql delete from match_yp where young_person_id = {{yp_id}} }}
+{{@end}}
+
+{{@include /jam/sys/html/footer.html}}

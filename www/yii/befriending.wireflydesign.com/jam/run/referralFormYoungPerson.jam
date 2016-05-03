@@ -28,7 +28,6 @@
 			{{@html gridcol start width=5-10}}
 
 				{{@html hidden field=young_person.referrer_form_id}} <!-- @@TODO -->
-				{{@html date field=young_person.referral_date size=medium label='Referral date' group=inp}}
 				{{@html text field=global.forename size=large label='Forename' group=inp}}
 				{{@html text field=global.surname size=large label='Surname' group=inp}}
 				{{@html text field=global.house size=medium label='house' group=inp}}
@@ -56,8 +55,14 @@
 				{{@html checkbox field=young_person.care_risk label='Care risk' group=inp}}
 				{{@html checkbox field=young_person.child_plan label='Child plan' group=inp}}
 				{{@html checkbox field=young_person.assessment label='Assessment' group=inp}}
-				{{@html textarea field=young_person.special_needs_notes size=50x4 label='Special needs notes' group=inp}}
 
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+
+<br>
+		{{@html gridrow start}}
+			{{@html gridcol start width=1-1}}
+				{{@html textarea field=young_person.special_needs_notes size=80x10 label='Special needs notes' group=inp}}
 			{{@html gridcol end}}
 		{{@html gridrow end}}
 
@@ -66,7 +71,7 @@
 				<br>
 				<center>
 					<button type='button' class="uk-button uk-button-primary" onClick="backToPrev()"> Prev </button> </td>
-					<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="updateAndNext()"> Next </button> </td>
+					<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="updateAndNext()"> Submit </button> </td>
 				</center>
 			{{@html gridcol end}}
 		{{@html gridrow end}}
@@ -120,6 +125,7 @@ function forwardToNext() {
 		return;
 	}
 //alert('going fwd. r='+objReferrer.value+' and yp='+objYP.value);
+alert('Your submission was successful');
     runJam('referralFormContacts?refId='+objReferrer.value+'&ypId='+objYP.value);
 
 }
@@ -129,6 +135,7 @@ function forwardToNext() {
 {{@action update_young_person}}
 	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
 	{{young_person.global_id = global.id}}
+	{{young_person.referral_date = sys.today}}
 	{{@update item young_person}}
 	{{@get contact filter id = refId}}
 	{{contact.young_person_id = young_person.id}}

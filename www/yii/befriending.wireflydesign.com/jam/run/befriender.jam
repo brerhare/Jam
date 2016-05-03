@@ -3,135 +3,100 @@
 
 {{@include /jam/run/menu.jam}}
 
-<!-- Template defines -->
-{{@template DESCRIPTION Befrienders}}
-{{@template TABLE befriender}}
+{{@database befriending_wireflydesign_com}}
 
-<!-- Template defines for the list component -->
-{{@template DELETEFIELD befriender.id}}
-{{@template HEADINGS
-	<th> Surname </th>
-	<th> Forename </th>
-	<th> Matched </th>
-}}
-{{@template COLUMNS
-	<td>{{@get global filter id = global_id}} {{global.surname}}</td>
-	<td>{{global.forename}}</td>
-	<td>match indicator</td>
-}}
+<br>
+{{@html container start center css='max-width:1080px; Xpadding:0}}
 
-<!-- Template defines for the form input component -->
-{{@template FORMINPUT
-	{{@html text field=global.forename size=medium label='Forename'}}
-	{{@html text field=global.surname size=medium label='Surname'}}
-	{{@html text field=befriender.gender size=medium label='Gender'}}
-	{{@html text field=befriender.dob size=medium label='dob'}}
-	{{@html text field=befriender.enquired size=medium label='enquired'}}
-	{{@html text field=befriender.training_completed size=medium label='training_completed'}}
-	{{@html text field=befriender.volunteer size=tiny label='volunteer'}}
-	{{@html text field=befriender.volunteer_policy size=medium label='volunteer_policy'}}
-	{{@html text field=befriender.match_limit size=medium label='match_limit'}}
-	{{@html text field=befriender.driving_licence size=medium label='driving_licence'}}
-	{{@html text field=befriender.car_insurance size=medium label='car_insurance'}}
-	{{@html dropdown field=befriender.users_id pickfield=user.global_id size=medium label='Coordinator'}}
-	{{@html text field=befriender.vol_status size=medium label='vol_status'}}
-	{{@html text field=befriender.notes size=medium label='notes'}}
-	{{@html text field=befriender.idcard size=medium label='idcard'}}
-	{{@html text field=befriender.application_notes size=medium label='application_notes'}}
-	{{@html text field=befriender.emergency_name size=medium label='emergency_name'}}
-	{{@html text field=befriender.emergency_phone size=medium label='emergency_phone'}}
-	{{@html text field=befriender.emergency_relationship size=medium label='emergency_relationship'}}
-	{{@html text field=befriender.befriender_photo_path size=medium label='Upload Photo'}}
-	{{@html text field=befriender.smoker size=medium label='smoker'}}
-	{{@html text field=befriender.smoke_car size=medium label='smoke_car'}}
-	{{@html text field=befriender.young_smoker size=medium label='young_smoker'}}
-	{{@html dropdown field=befriender.heardabout_id pickfield=heardabout.from_where size=medium label='Heard from where'}}
-	{{@html dropdown field=befriender.employment_status_id pickfield=employment_status.description size=medium label='Employment status' }}
-}}
-
-
-<!-- This is a copy of crud.jam template ----------------------------------------- -->
-
-<!-- List component -->
-
-<style>
-.rowHighlight:hover {
-  background-color: #ddf0ff;
-  cursor:pointer;
-}
-</style>
-
-<h3> DESCRIPTION </h3>
-	<div name="content" class="uk-overflow-container">
-		<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
-			<tr>
-				HEADINGS
-				<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('maintain', [], 'content')"> <i class="uk-icon-plus"></i> New</button> </th>
-			</tr>
-{{@each TABLE}}
-			<tr class="rowHighlight" onClick="runAction('maintain', ['TABLE.id={{id}}'], 'content')">
-				COLUMNS
-				<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{DELETEFIELD}}')"> <i class="uk-icon-trash"></i></button> </td>
-			</tr>
+<div name="content">
+	<h3> Befriender </h3>
+	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+		<tr>
+			<th> Forename </th>
+			<th> Surname </th>
+			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('showTabsNew', [], 'content')"> <i class="uk-icon-plus"></i> New</button> </th>
+		</tr>
+{{@each befriender}}
+		{{@get global filter id = befriender.global_id}}
+		<tr class="rowHighlight" onClick="runAction('showTabs', ['befriender.id={{befriender.id}}'], 'content')">
+			<td>{{global.forename}}</td>
+			<td>{{global.surname}}</td>
+			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i></button> </td>
+		</tr>
 {{@end}}
-		</table>
-</div>	<!-- uk-overflow-container -->
+	</table>
+</div>
+<br>
 
 <script>
 function confirmDelete(id, displayInfo) {
 	window.event.cancelBubble = true;	// Prevent any further events
 	var result = confirm('Confirm delete of item ' + displayInfo);
 	if (result)
-		runAction('delete', ['TABLE.id='+id], '', runJam);	
+		runAction('delete', ['befriender.id='+id], '', runJam);	
 }
 </script>
 
 {{@action delete}}
-	{{@get TABLE filter id = TABLE.id}}
-	{{global.id = TABLE.global_id}}
-	{{@remove item TABLE}}
-	{{@remove item global}}
+	{{@get befriender filter id = befriender.id}}
+	{{global.id = befriender.global_id}}
+	{{@remove item befriender}}
+	{{@remove item global}}	@@TODO - dont remove global if it has other links
 {{@end}}
 
 <!-- Form input component -->
 
-{{@action maintain}}
-	{{@get TABLE filter id = TABLE.id}}
-	{{@get global filter id = TABLE.global_id}}
-
-	<style type="text/css">
-		label {text-align: right;}
-	</style>
-
-	<div class="uk-container uk-container-center">
-		<div class="uk-grid">
-			<div class="uk-width-3-5">
-				<form name="inputForm" class="uk-form uk-form-horizontal">
-					<input type="hidden" name="TABLE.id" value="{{TABLE.id}}">
-					<input type="hidden" name="global.id" value="{{global.id}}">
-					FORMINPUT
-{{@include /jam/run/include/global_contact.jam}}
-					<br>
-					<center>
-						{{@html button Save primary medium
-							runAction('update', ['inputForm'], '', runJam)
-						}}
-						{{@html button Cancel primary medium
-							runJam();
-						}}
-					</center>
-				</form>
-			</div>	<!-- uk-width-3-5 -->
-		</div>	<!-- uk-container -->
-	</div>
+{{@action showTabs}}
+	{{@get befriender filter id = befriender.id}}
+	{{@get global filter id = befriender.global_id}}
+	<h3>
+	
+	<table>
+		<tr>
+					
+		<td>Befriender {{global.forename}}</td>
+		<td>{{global.surname}}</td>
+		<td>{{@html button 'Return to list' primary medium 
+			runJam
+		}}</td>
+			
+			
+		</tr>
+	</table>
+	
+	</h3>
+	{{@html tabs
+		label=Details		action=/run/befrienderDetails?befriender.id={{befriender.id}}
+		label=References	action=/run/befrienderReferences?befriender.id={{befriender.id}}
+		label=Interests		action=/run/befrienderInterest?befriender.id={{befriender.id}}
+		label=Additional	action=/run/befrienderAdditional?befriender.id={{befriender.id}}
+		label=Documentation	action=/run/befrienderDocumentation?befriender.id={{befriender.id}}
+	}}
+<!--		label=Events		action=/run/befrienderEvent?befriender.id={{befriender.id}} -->
 {{@end}}
 
-{{@action update}}
-	{{@update item global}}			<!-- first update the link table (inserts wont have its id yet)
-	{{TABLE.global_id = global.id}}
-	{{@update item TABLE}}
-
+{{@action showTabsNew}}
+	{{@get befriender filter id = befriender.id}}
+	{{@get global filter id = befriender.global_id}}
+	<h3>
+	
+	<table>
+		<tr>
+					
+		<td> New Befriender </td>
+		<td>{{@html button 'Return to list' primary medium 
+				runJam
+			}}
+		</td>
+		</tr>
+	</table>
+	
+	</h3>
+	{{@html tabs
+		label=Details		action=/run/befrienderDetails?befriender.id={{befriender.id}}
+	}}
 {{@end}}
 
+{{@html container end}}
 
 {{@include /jam/sys/html/footer.html}}
