@@ -1,20 +1,281 @@
+#Original You
 [defaults]
 include = default-values
 
-; Every blob inherits these before adding/overriding
 [* : defaults]
 
 [screen]
-child = contentframe
-fx.wallpaper-image = /img/background.jpg
+child = site
 css.display = block
+fx.wallpaper-image-tile = /img/blue_background.jpg
 
-	[contentframe]
-	css.display = block
-	css.width = 500px
-	css.margin-top = 400px
-	style.html.h1.color = yellow
-	style.html.h1.background-color = black
-	style.html.h1.padding = 10px
-	html.h1 = a jelly&#0153; site is coming soon
+	[site]
+	child = home-page, main, footer
+	css.width = 100%
+		
+		[home-page]
+#		condition = @PAGE=@HOMEPAGE
+		child = video, overlay
+		css.width = 100%
+		css.height = 450px
+		
+			[video]
+#			css.background-color = #cda66f
+			css.width = 100%
+			css.min-width = 600px
+#			css.min-height = 400px
+			addon.video.simple.thumb = /img/chandelier.jpg
+			addon.video.simple.width = 100%
+			addon.video.simple.video = /img/chandelier
+			#addon.video.simple.video = /img/zoe
+			addon.video.simple.loop = yes
+			addon.video.simple.poster = /img/chandelier.jpg
+			css.background-image = url('/img/chandelier.jpg')
+			css.z-index = -10
+			css.position = fixed
+			css.margin-top = 0px
+			
+			[overlay]
+			child = menu, header
+			css.z-index = 100
+			css.position = relative
+			
+				[menu]
+				child = smart-menu
+				css.padding = 30px 0px 0px 0px
+				css.background-image = url('/img/menubg.png')
+				css.background-size = 100% 100%
+#				css.background-color = lightgrey
+				css.overflow = visible
+						
+				
+					[smart-menu]
+					css.width = 95%
+#					css.background-color = pink
+					css.max-width = 1100px
+					jam.embed = /run/menu.jam
+					css.overflow = visible
+			
 
+				
+			[header]
+			child = logo, icons
+			css.width = 90%
+			css.min-width = 240px
+			stacking = horizontal
+				
+				[logo]
+				css.width = 80%
+				css.max-width = 800px
+				image.url = /img/logo.png
+				image.width = 100%
+				image.height = 100%
+				
+				[icons]
+				child = facebook, twitter, email
+				css.width = 4%
+				css.minwidth = 20px
+				css.margin-top = 50px
+				
+					[facebook]
+					css.width = 100%
+					image.url = /img/facebook.png
+					image.width = 100%
+					image.height = 100%
+					clicknew = https://www.facebook.com/
+					
+					[twitter]
+					css.margin-top = 15px
+					css.width = 100%
+					image.url = /img/pinterest.png
+					image.width = 100%
+					image.height = 100%
+					clicknew = https://pinterest.com/
+					
+					[email]
+					css.margin-top = 15px
+					css.width = 100%
+					image.url = /img/mail.png
+					image.width = 100%
+					image.height = 100%
+					click = ?layout=index&page=contact
+			
+		
+#### Main ######################	
+		
+[main]
+child = pages
+css.width = 100%
+css.background-color = white
+css.z-index = 100
+		
+	[pages]	
+	child = main-content, right-column
+	css.width = 95%
+	css.max-width = 1100px
+	stacking = horizontal
+
+		[main-content]
+		child = content, blog, contact
+		css.margin-top = 30px
+		css.width = 60%
+		css.margin-bottom = 10px
+		
+		
+			[content]
+			condition = @PAGE!=contact
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find the page $_GET['page']
+			html.raw = ContentBlock.content
+			
+			[blog]
+			condition = @PAGE=blog
+			html.raw = {{news newstype=pinterest sidebar=right}}
+			
+			[contact]
+			child = contact-content, contact-container
+			condition = @PAGE=contact
+			stacking = horizontal
+			
+				[contact-content]
+				css.width = 50%
+				db.table = ContentBlock
+				db.filter = url=$_GET['page']
+				db.error = Sorry, I could not find the page $_GET['page']
+				html.raw = ContentBlock.content
+				
+				[contact-container]
+				child = contact-text, contact-form
+				css.width = 45%
+				css.margin-left = 4%
+				
+					[contact-text]
+					addon.global.column.name = contact-text
+					addon.global.column.width = 100%
+					addon.global.column.internal-width = 100%
+					addon.global.column.content-width = 100%
+					addon.global.column.internal-color = transparent
+					addon.global.column.background-color = transparent
+					addon.global.column.top-height = 0px
+					addon.global.column.bottom-height = 5px
+				
+					[contact-form]
+					css.text-align = center
+					css.min-height = 325px
+					css.background-color = white
+					jam.iframe-height = 300px
+					jam.iframe = /run/contactForm.jam
+				
+		[right-column]
+		css.width = 25%
+		css.min-width = 200px
+		css.margin-left = 14%
+		css.margin-top = 20px
+		css.border = 2px solid #563310
+		fx.rounding = 10px
+		addon.global.column.name = right-global
+		addon.global.column.width = 100%
+		addon.global.column.internal-width = 100%
+		addon.global.column.content-width = 90%
+		addon.global.column.internal-color = transparent
+		addon.global.column.background-color = transparent
+		addon.global.column.top-height = 0px
+		addon.global.column.bottom-height = 5px
+		
+		
+#### Footer ##################################################		
+		
+[footer]
+child = footer-content
+css.width = 100%
+				css.background-image = url('/img/footer-bgd.png')
+				css.background-size = 100% 100%
+#css.background-color = #cda66f
+#css.height = 15%
+#css.min-width = 800px
+
+	[footer-content]
+	child = footer-left, footer-right
+	css.width = 80%
+	css.margin-top = 20px
+	css.min-width = 600px
+	stacking = horizontal
+	
+		[footer-left]
+		child = footer-logo, footer-column
+		css.margin-top = 10px
+		css.width = 49%
+	
+			[footer-logo]
+			css.width = 30%
+			css.margin-left = 0%
+			css.min-width = 200px
+			image.url = /img/eye.png
+			image.width = 100%
+			image.height = 100%
+			click = ?layout=index&page=index
+
+			[footer-column]
+			css.width = 70%
+			css.margin = 20px 0px 0px 0px
+			addon.global.column.name = footer
+			addon.global.column.width = 100%
+			addon.global.column.internal-width = 100%
+			addon.global.column.content-width = 98%
+			addon.global.column.internal-color = transparent
+			addon.global.column.background-color = transparent
+			addon.global.column.top-height = 5px
+			addon.global.column.bottom-height = 5px
+			
+		[footer-right]
+		child = standard-links, wirefly
+		css.width = 49%
+		css.margin-top = 30px
+		css.line-height = 25px
+		
+			[standard-links]
+			addon.global.column.name = footer-right
+			addon.global.column.width = 100%
+			addon.global.column.internal-width = 100%
+			addon.global.column.content-width = 100%
+			addon.global.column.internal-color = transparent
+			addon.global.column.background-color = transparent
+			addon.global.column.top-height = 0px
+			addon.global.column.bottom-height = 5px
+		
+
+			[wirefly]
+			child = wirefly-logo, admin
+			stacking = horizontal
+			css.margin-top = 20px
+			css.float = right
+
+			
+				[wirefly-logo]
+				css.height = 45px
+				css.margin-top = 5px
+				image.url = img/wirefly-design.png
+				image.width = 100px
+				image.height = 46px
+				image.align = left
+				clicknew = http://www.wireflydesign.com
+				
+			
+				[admin]
+				child = cog-center
+				css.height = 20px
+				css.width = 20px
+				css.background-size = 100%
+				css.background-image = url('/img/admin.png')
+				css.margin-left = -20px
+
+					[cog-center]
+					css.width = 5px
+					css.height = 5px
+					css.margin-top = 8px
+					image.url = img/cog-center.png
+					image.width = 5px
+					image.height = 5px
+					image.align = center
+					clicknew = backend.php
