@@ -81,8 +81,22 @@ class SiteController extends Controller
     /**
      * Displays the DIRECT login page
      */
+// @@TODO: HARDCODED FOR ORIGINALYOU ---------- REMOVE
+    public function actionOriginalYouDirect()
+    {
+        Yii::app()->session['uid'] = 92;
+        $identity = new UserIdentity('LifeEditor', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
 // @@TODO: HARDCODED FOR SENWICK ---------- REMOVE
-    public function actionSenwickdirect()
+    public function actionSenwickDirect()
     {
         Yii::app()->session['uid'] = 102;
         $identity = new UserIdentity('Kerry', 'site2plugin');
