@@ -1,6 +1,6 @@
 <?php
 
-require ('deviceInfo.php');
+//require ('deviceInfo.php');
 
 /*********************/
 ini_set('display_errors',1);
@@ -27,6 +27,7 @@ class Jelly
 	private $deviceWidth = 0;
 
 	private $blobUniqueId = 0;
+	private $isSettingDeviceWidth = 0;
 
 	private $jellyRootPath = "/";
 	private $jellyRootUrl = "/";
@@ -194,6 +195,7 @@ END_OF_FOOTER;
     {
 		if ($this->gotDeviceWidth() == -1)
 			return;
+//echo "XXXXXXXXXXXXXXXXXX " . $this->deviceWidth;
         $this->jellyRootPath = Yii::app()->basePath . "/../" . $jellyRoot;
         $this->jellyRootUrl  = Yii::app()->baseUrl . $jellyRoot;
         $this->genInlineHtml($content, $indentLevel=0);
@@ -210,6 +212,7 @@ END_OF_FOOTER;
 	{
 		if ($this->gotDeviceWidth() == -1)
 			return;
+//echo "XXXXXXXXXXXXXXXXXX " . $this->deviceWidth;
 		$this->jellyRootPath = Yii::app()->basePath . "/../" . $jellyRoot;
 		$this->jellyRootUrl  = Yii::app()->baseUrl . $jellyRoot;
 
@@ -342,30 +345,33 @@ END_OF_FOOTER;
 		if ( (!(stristr($_SERVER['HTTP_HOST'], "barstobrickridingcentre.co.uk")))
 		&& (!(stristr($_SERVER['HTTP_HOST'], "breakfreecoaching.co.uk")))
 		&& (!(stristr($_SERVER['HTTP_HOST'], "www.kirkcudbright.dumgal.sch.uk")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "www.theoriginalyoucompany.co.uk")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "www.cocoakalula.co.uk")))
 		&& (!(stristr($_SERVER['HTTP_HOST'], "test.wireflydesign.com")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "demo.wireflydesign.com")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "demo1.wireflydesign.com")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "demo2.wireflydesign.com")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "demo3.wireflydesign.com")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "demo4.wireflydesign.com")))
 		&& (!(stristr($_SERVER['HTTP_HOST'], "demo5.wireflydesign.com")))
 		&& (!(stristr($_SERVER['HTTP_HOST'], "beingbusiness.co.uk"))) )
 			return 0;
 
 		//// THE OLD (retired) METHOD ------------->    $this->deviceWidth = deviceInfo();
 
-		if (isset($_GET['devicewidth'])) {
-			if ($_GET['devicewidth'] != 0) {
-				$this->deviceWidth = $_GET['devicewidth'];
-				array_push($this->headerArray, '<meta name="viewport" content="width=device-width" />');
-			}
+		$cookie_name = "deviceWidth";
+		if (isset($_COOKIE[$cookie_name])) {
+			$this->deviceWidth = $_COOKIE[$cookie_name];
+			array_push($this->headerArray, '<meta name="viewport" content="width=device-width" />');
 			return(0);
 		}
     	$deviceWidthHtml = <<<END_OF_GETDEVICEWIDTH
 			<html>
 			<head>
 			<script type="text/javascript">
+			var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
+			document.cookie = "deviceWidth=" + w;
 			var url = window.location.href;
-			if (url.indexOf('?') === -1)
-				url += '?';
-			else
-				url += '&';
-			url += 'devicewidth=' + screen.width;
 			window.location.href = url;
 			</script>
 			</head>
@@ -374,11 +380,15 @@ END_OF_FOOTER;
 			</html>
 END_OF_GETDEVICEWIDTH;
 		echo $deviceWidthHtml;
+		$this->isSettingDeviceWidth = 1;
 		return (-1);
 	}
 
 	public function outputData()
 	{
+		if ($this->isSettingDeviceWidth == 1)	// ie we've already sent the minimal html to set cookie and then retry
+			return;
+
 		$this->emit($this->beginHeader);
 
 		if (file_exists($this->jellyRootPath . 'header.css'))
@@ -406,6 +416,22 @@ END_OF_GETDEVICEWIDTH;
 			$this->emit($css);
 		$this->emit("</style>\n<!-- CSS end -->\n");
 		$this->emit($this->endHeader);
+
+		// JS to reset the devicewidth cookie
+		$deviceChangeWidthHtml = <<<END_OF_CHANGEDEVICEWIDTH
+            <script type="text/javascript">
+				$(window).on('resize orientationChange', function(event) {
+					setTimeout(function(){
+						var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
+						document.cookie = "deviceWidth=" + w;
+						var url = window.location.href;
+						window.location.href = url;
+						//alert('width='+w);
+					}, 300);
+				});
+            </script>
+END_OF_CHANGEDEVICEWIDTH;
+		$this->emit($deviceChangeWidthHtml);
 
 		foreach ($this->bodyArray as $body)
 			$this->emit($body);
@@ -805,7 +831,10 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 						// Create url and call curl
 						$yiiSite = str_replace("/index.php", "", Yii::app()->createAbsoluteUrl(Yii::app()->request->getPathInfo()));
 						//$jamUrl = $yiiSite . "/jamcgi/jam?template=" . $jamArg . "&jelly.sid=" . $sid . "&jelly.email=" . $settingEmail;
-						$jamUrl = $yiiSite . $jamArg . "?jelly.sid=" . $sid . "&jelly.email=" . $settingEmail;
+						$argChar = "?";
+						if (strstr($jamArg, "?") == true)
+							$argChar = "&";
+						$jamUrl = $yiiSite . $jamArg . $argChar . "jelly.sid=" . $sid . "&jelly.email=" . $settingEmail;
 						if ($jamType == "embed") {
 							$shell_exec = "php " . Yii::app()->basePath . "/../jam/jelly2jam.php" . " " . $jamUrl;
 							$curlContent = shell_exec ($shell_exec);
