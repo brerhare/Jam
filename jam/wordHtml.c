@@ -490,6 +490,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	char *disabled = NULL;
 	char *hidden = NULL;
 	char *value = NULL;
+	char *value2 = NULL;
 	char *group = (char *) calloc(1, 4096);
 	char *jamKey = NULL;
 
@@ -563,17 +564,21 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	// Value
 	sprintf(tmp, "%s.%s", table, field);
 	VAR *variable = findVarStrict(tmp);
-	if (variable)
-		value = strdup(variable->portableValue);
-	else {
+	if (variable) {
+		value = strdup(escapeJsonChars(variable->portableValue));
+		value2 = strdup(escapeSingleQuote(value));
+	} else {
 		if (!strcmp(type, "date")) {
 			// Default to today
 			value = (char *) calloc(1, 4096);
+			value2 = strdup("");
 			time_t now = time(NULL);
 			strftime(value, 20, "%Y-%m-%d", localtime(&now));
 		}
-		else
+		else {
 			value = strdup("");
+			value2 = strdup("");
+		}
 	}
 
 	JAMBUILDER jb;
@@ -596,7 +601,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 							label,
 							placeholder,
 							size,
-							value,
+							value2,
 							disabled,
 							group,
 							COMMON_FN,
@@ -620,6 +625,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	free(disabled);
 	free(group);
 	free(value);
+	free(value2);
 	free(jamKey);
 	free(templateStr);
 	emitStd(jam[ix]->trailer);
@@ -912,6 +918,7 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 	char *rows = NULL;
 	char *disabled = NULL;
 	char *value = NULL;
+	char *value2 = NULL;
 	char *group = (char *) calloc(1, 4096);
 	char *jamKey = NULL;
 
@@ -983,10 +990,13 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 	// Value
 	sprintf(tmp, "%s.%s", table, field);
 	VAR *variable = findVarStrict(tmp);
-	if (variable)
+	if (variable) {
 		value = strdup(variable->portableValue);
-	else
+		value2 = strdup(escapeSingleQuote(value));
+	} else {
 		value = strdup("");
+		value2 = strdup("");
+	}
 
 	JAMBUILDER jb;
 	jb.stream = STREAMOUTPUT_STD;
@@ -1010,7 +1020,7 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 							placeholder,
 							cols,
 							rows,
-							value,
+							value2,
 							disabled,
 							group,
 							COMMON_FN,
@@ -1036,6 +1046,7 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 	free(disabled);
 	free(group);
 	free(value);
+	free(value2);
 	free(jamKey);
 	free(templateStr);
 	emitStd(jam[ix]->trailer);

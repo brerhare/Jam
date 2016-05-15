@@ -24,9 +24,9 @@
   -ms-border-radius: CORNERPIXELSpx;
   -o-border-radius: CORNERPIXELSpx;
   border-radius: CORNERPIXELSpx;
-  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  -XXXwebkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  -XXXmoz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  XXXbox-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 .sm-blue a, .sm-blue a:hover, .sm-blue a:focus, .sm-blue a:active {
   padding: 10px 20px;
@@ -38,14 +38,14 @@
   background-image: -moz-linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
   background-image: -o-linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
   background-image: linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
-  color: white;
+  color: SUBTEXTCOLOR;
   XXXfont-family: "PT Sans Narrow", "Arial Narrow", Arial, Helvetica, sans-serif;
   font-family: FONTFAMILY;
   font-size: FONTSIZEpx;
   font-weight: bold;
   line-height: 23px;
   text-decoration: none;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+  XXXtext-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
 }
 .sm-blue a.current {
   background: #006892;
@@ -70,7 +70,7 @@
   overflow: hidden;
   font: bold 16px/34px monospace !important;
   text-align: center;
-  text-shadow: none;
+  XXXtext-shadow: none;
   background: rgba(0, 0, 0, 0.1);
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -121,7 +121,7 @@
   background: transparent;
   color: BACKCOLOR_TO;
   font-size: FONTSIZEpx;
-  text-shadow: none;
+  XXXtext-shadow: none;
   border-left: CORNERPIXELSpx solid transparent;
 }
 .sm-blue ul a.current {
@@ -215,9 +215,9 @@
     -ms-border-radius: CORNERPIXELSpx;
     -o-border-radius: CORNERPIXELSpx;
     border-radius: CORNERPIXELSpx;
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    -XXXwebkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    -XXXmoz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    XXXbox-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
   }
   .sm-blue a, .sm-blue a:hover, .sm-blue a:focus, .sm-blue a:active, .sm-blue a.highlighted {
     padding: 13px 24px;
@@ -299,9 +299,9 @@
     -ms-border-radius: 0 0 4px 4px;
     -o-border-radius: 0 0 4px 4px;
     border-radius: 0 0 4px 4px;
-    -webkit-box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
-    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+    -XXXwebkit-box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+    -XXXmoz-box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+    XXXbox-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
   }
   .sm-blue ul ul {
     -webkit-border-radius: 4px;
@@ -324,7 +324,7 @@
     background-image: -moz-linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
     background-image: -o-linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
     background-image: linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
-    color: white;
+    color: SUBTEXTCOLOR;
   }
   .sm-blue ul a.current {
     background: #006892;
@@ -404,9 +404,9 @@
     border-color: transparent ARROWCOLOR transparent transparent;
   }
   .sm-blue.sm-vertical {
-    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    -XXXwebkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    -XXXmoz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    XXXbox-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   }
   .sm-blue.sm-vertical a {
     padding: 9px 23px;

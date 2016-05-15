@@ -42,6 +42,7 @@ $siteList = array (
 	'susiejamieson.com'            => '/home/susiejamieson.com/dev/src/www/yii/susiejamieson.com',
 	'test.wireflydesign.com'       => '/home/wireflydesign.com/domains/test.wireflydesign.com/dev/src/www/yii/test.wireflydesign.com',
 	'the-art-room.co.uk'           => '/home/the-art-room.co.uk/dev/src/www/yii/the-art-room.co.uk',
+	'theoriginalyoucompany.co.uk'			=> '/home/theoriginalyoucompany.co.uk/dev/src/www/yii/theoriginalyoucompany.co.uk',
 	'timtaylor-painter-decorator-tiler.co.uk'   => '/home/timtaylor-painter-decorator-tiler.co.uk/dev/src/www/yii/timtaylor-painter-decorator-tiler.co.uk',
 	'trade.weetarget.co.uk'         => '/home/weetarget.co.uk/domains/trade.weetarget.co.uk/dev/src/www/yii/trade.weetarget.co.uk',
 	'weetarget.co.uk'               => '/home/weetarget.co.uk/dev/src/www/yii/weetarget.co.uk',

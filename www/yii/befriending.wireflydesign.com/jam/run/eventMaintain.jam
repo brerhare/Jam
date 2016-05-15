@@ -32,14 +32,15 @@
 					<!-- @@EG: dropdown outside of the jam -->
 					<label class="uk-form-label" for="event.event_young_person_id"> Young Person </label>
 					<div class="uk-form-controls">
+<!-- @@TODO delete/archive -->
 						<select id="ID1___event___young_person_id" name="event.young_person_id" onchange="fn(this, event);" onkeyup="fn(this, event);" class="uk-form-width-medium ROW_{{sys.sequence}} ">
 						{{tmp.selected = }}
 						{{@get event id = event.id}}
-						{{@each young_person filter id = event.young_person_id}}
+						{{@each young_person filter id = event.young_person_id, id != 7, id != 18, id != 19, id != 20, id != 30, id != 31, id != 38, id != 39, id != 40, id != 41, id != 42, id != 49}}
 							{{@get global filter id = young_person.global_id}}
 							<option value="{{young_person.id}}" selected> {{global.forename}} {{global.surname}} </option>
 						{{@end}}
-						{{@each young_person filter id != event.young_person_id}}
+						{{@each young_person filter id != event.young_person_id, id != 7, id != 18, id != 19, id != 20, id != 30, id != 31, id != 38, id != 39, id != 40, id != 41, id != 42, id != 49}}
 							{{@get global filter id = young_person.global_id}}
 							<option value="{{young_person.id}}"> {{global.forename}} {{global.surname}} </option>
 						{{@end}}

@@ -99,6 +99,7 @@ function postUpdate() {
 				{{@html text field=global.landline size=medium label='Land line'}}
 				{{@html text field=global.mobile size=medium label='Mobile'}}
 				{{@html text field=global.email size=medium label='Email'}}
+				{{@html text field=global.job_title size=medium label='Job Title'}}
 			{{@html gridcol end}}
 		{{@html gridrow end}}
 		{{@html gridrow start}}
