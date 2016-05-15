@@ -1,0 +1,48 @@
+{{@database theoriginalyoucompany_co_uk}}
+
+{{@template BACKCOLOR_FROM transparent}}
+{{@template BACKCOLOR_TO transparent}}
+{{@template ACTIVECOLOR_FROM transparent}}
+{{@template ACTIVECOLOR_TO #cda66f}}
+{{@template ARROWCOLOR white}}
+{{@template CORNERPIXELS 0}}
+{{@template MAINTEXTCOLOR white}}
+{{@template SUBTEXTCOLOR white}}
+{{@template FONTDOWNLOAD Open+Sans:400}}
+{{@template FONTFAMILY "Times New Roman", Times, serif}}
+{{@template FONTSIZE 18}}
+{{@template FONTWEIGHT 400}}
+
+
+{{@template MENU
+	<ul id="main-menu" class="sm sm-blue">
+	{{@each content_block filter parent_id = 0, active = 1}}
+		<li> <a href="?layout=index&page={{url}}"> {{title}} </a>
+		{{openUL2 = <ul>}}
+		{{closeUL2 = ''}}
+		{{@each content_block filter parent_id = id, active = 1}}
+			{{openUL2}}
+			{{openUL2 = ''}}
+			<li> <a href="?layout=index&page={{url}}"> {{title}} </a>
+
+			{{openUL3 = <ul>}}
+			{{closeUL3 = ''}}
+			{{@each content_block filter parent_id = id, active = 1}}
+				{{openUL3}}
+				{{openUL3 = ''}}
+				<li> <a href="?layout=index&page={{url}}"> {{title}} </a> </li>
+				{{closeUL3 = </ul>}}
+			{{@end}}
+			{{closeUL3}}
+			</li>
+
+			{{closeUL2 = </ul>}}
+		{{@end}}
+		{{closeUL2}}
+		</li>
+	{{@end}}
+	</ul>
+}}
+
+<!-- Call the addon -->
+{{@include /jam/run/sys/smartMenu.jam}}

@@ -1,0 +1,37 @@
+h1, h2, h3, h4, p {font-family: Arial;
+			color: grey; 
+			}
+
+h1 {font-size: 20px; font-weight: normal;}
+h2 {font-size: 18px; font-weight: normal;}
+h3 {font-size: 16px; font-weight: normal;}
+h4 {font-size: 14px; font-weight: bold;}
+p {font-size: 14px; font-weight: normal;}
+	
+table {
+	margin:0px;
+	padding:0px;
+	width:90%;
+	border:1px solid white;
+    border-collapse: collapse;
+    border-spacing: 0;
+	vertical-align:middle; 
+	font-family:arial;
+	text-align:left;}
+	
+table th{ background-color: lightgrey;
+		border:1px solid white;
+		padding:1px 5px;
+		font-weight: normal;}
+
+	
+table td{
+	background-color:#ffffff;
+	padding:1px 5px;
+	font-size:14px;
+	font-family:Arial;
+	font-weight:normal;
+	color:#000000; }
+	
+table tr:hover {
+	background-color:#ff0000; }

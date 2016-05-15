@@ -102,7 +102,7 @@ css.display = block
 [site-content]
 child = menu-bar, slider, pages, footer
 css.margin-top = -30px
-css.margin-bottom = 120px
+css.margin-bottom = 240px
 css.width = 100%
 css.max-width = 960px
 css.background-color = white
@@ -168,7 +168,7 @@ addon.slider.shopping.images = 5
 			
 
 	[pages]
-	child = tabs, content, contact	
+	child = tabs, content, contact, competitions
 	css.width = 90%
 	css.min-width = 900px
 	
@@ -183,6 +183,8 @@ addon.slider.shopping.images = 5
 
 			
 		[content]
+		condition = !@PAGE=contact
+		condition = !@PAGE=dumfries-curries-kola-competitions
 		css.margin = 10px 8%
 		db.table = ContentBlock
 		db.filter = url=$_GET['page']
@@ -192,39 +194,50 @@ addon.slider.shopping.images = 5
 		[contact]
 		child = contact-form, contact-text
 		condition = @PAGE=contact
-		css.height = 300px
 		stacking = horizontal
 	
 			[contact-form]
-			css.width = 60%
-			css.margin = 0px
-			#css.margin-bottom = 30px
-			css.background-color = white
-			addon.contact.contactform.edgepadding = 0px
-			addon.contact.contactform.buttoncolor = #fafafa
-			addon.contact.contactform.buttontextcolor = #b23640
-			addon.contact.contactform.buttontext = [&nbsp;&nbsp; Submit &nbsp;&nbsp;]
-			addon.contact.contactform.successtextcolor = green
-			addon.contact.contactform.failuretextcolor = red
-			addon.contact.contactform.textcolor = grey
-			addon.contact.contactform.backcolor = #FFFFD6
-			addon.contact.contactform.inputspacing = 10px
-			addon.contact.contactform.inputwidth = 80%
-			
-#			css.width = 60%
-#			html.raw = <h1><span style="font-size:48px;">Stay in<br/>Touch</span></h1>
-#			css.text-align = center
-#			css.min-height = 325px
-#			css.background-color = white
-#			#jam.embed = /run/contact.jam
-#			jam.iframe = /run/contact
+			css.width = 40%
+			css.margin = 0% 2%
+			css.text-align = center
+			html.raw = <h1>Contact Us</h1>
+			#jam.embed = /run/contact.jam
+			jam.iframe = /run/contact
 
 			[contact-text]
-			css.width = 35%
-			css.margin-top = 80px
-			css.font = 12px
-			html.raw = Please fill in the form and someone will get back to you as soon as possible.
+			css.width = 55%
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find the page $_GET['page']
+			html.raw = ContentBlock.content
+		
+		[competitions]
+		child = comp-form, comp-text
+		condition = @PAGE=dumfries-curries-kola-competitions
+		stacking = horizontal
+	
+			[comp-form]
+			css.width = 30%
+			css.margin = 100px 2%
+			css.text-align = center
+			html.raw = <h3>Enter our Competition</h3>
+			#jam.embed = /run/competition.jam
+			jam.iframe = /run/competition
 
+			[comp-text]
+			css.width = 60%
+			css.margin = 0px 2%
+			child = comp-content, comp-fbfeed
+			
+				[comp-content]
+				db.table = ContentBlock
+				db.filter = url=$_GET['page']
+				db.error = Sorry, I could not find the page $_GET['page']
+				html.raw = ContentBlock.content
+
+				[comp-fbfeed]
+				css.width = 400px
+				jam.embed = /run/facebook.jam
 
 
 ####footer####################################
@@ -243,7 +256,7 @@ css.background-color = #9cdede
 
 [footer-content]
 child = footer-menu, footnote
-css.width = 80%
+css.width = 75%
 css.margin-top = 30px
 stacking = horizontal
 css.z-index = 200
