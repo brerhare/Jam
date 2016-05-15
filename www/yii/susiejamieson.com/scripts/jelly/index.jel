@@ -1,4 +1,4 @@
-#Demo 3
+#Susie Jamieson
 [defaults]
 include = default-values
 
@@ -25,8 +25,8 @@ css.display = block
 	
 		[header-content]
 		child = logo, slider
-		css.width = 80%
-		css.min-width = 900px
+		css.width = 95%
+		css.max-width = 1200px
 		css.margin-top = 25px
 		stacking = horizontal
 		
@@ -39,7 +39,7 @@ css.display = block
 			click = ?layout=index&page=index
 			
 			[slider]
-			addon.slider.flexslider.slider = 2
+			addon.slider.flexslider.slider = 1
 			css.width = 70%
 			css.margin-left = 10%
 			css.margin-bottom = -40px
@@ -65,17 +65,18 @@ css.display = block
 [site-content]
 child = left-column, pages
 stacking = horizontal
-css.width = 80%
-css.min-width = 900px
+css.width = 95%
+css.max-width = 1200px
 
 	[left-column]
 	child = menu
 	css.width = 24%
 	css.margin-top = 20px
-	
+	css.overflow = visible
 	
 		[menu]
-		css.width = 250px
+		css.width = 90%
+		css.margin-left = 0%
 		css.overflow = visible
 
 #// Top level basic settings
@@ -172,13 +173,30 @@ css.min-width = 900px
 
 			
 		[content]
+		condition = @PAGE!=contact
 		db.table = ContentBlock
 		db.filter = url=$_GET['page']
-		db.error = Sorry, I could not find the page $_GET['page']
+		db.error = Oops! that link does not exist. I could not find the page $_GET['page']. Please choose an option from the menu
 		html.raw = ContentBlock.content
 		
 		[contact]
 		condition = @PAGE=contact
+		child = contact-text, contact-form
+		stacking = horizontal
+		
+			[contact-text]
+			css.width = 40%
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Oops! that link does not exist. I could not find the page $_GET['page']. Please choose an option from the menu.
+			html.raw = ContentBlock.content
+			
+			[contact-form]
+			css.width = 50%
+			css.margin left = 5%	
+			html.raw = <h3> Contact Form</h3>
+			#jam.embed = /run/contact.jam
+			jam.iframe = /run/contact
 
 
 ####footer####################################
@@ -186,7 +204,7 @@ css.min-width = 900px
 [footer]
 child = footer-content
 css.margin-top = 40px
-css.margin-left = 20px
+#css.margin-left = 20px
 css.padding-bottom = 50px
 css.width = 100%
 css.background-color = #a7877f

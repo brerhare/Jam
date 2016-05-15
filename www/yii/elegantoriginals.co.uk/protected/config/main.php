@@ -113,7 +113,7 @@ return array(
 		//'checkoutGatewayPassword'=>'xxxxx',
 
         // Paypal
-        //'checkoutPaypalEmail'=>'caroline@elegantoriginals.co.uk',
+        'checkoutPaypalEmail'=>'caroline@elegantoriginals.co.uk',
 
 		'jellyRoot' => '/scripts/jelly/',
 		'sid' => 'huf28g7ckbj45e1d8vc6ivutq1',

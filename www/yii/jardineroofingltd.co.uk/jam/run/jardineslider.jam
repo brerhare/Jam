@@ -2,7 +2,7 @@
 
 {{@template OPTIONS whatever options go here}}
 {{@template SLIDER
-	{{@each jelly_slider_image}}
+	{{@each jelly_slider_image order by sequence}}
             <div data-p="112.50" style="display: none;">
 				<a href={{url}}>
                 	<img data-u="image" src="/userdata/jelly/sliderimage/{{image}}" />

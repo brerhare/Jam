@@ -1,7 +1,7 @@
 {{@version 0.0.1}}
 <!-- Purchase Order items -->
 
-<div class="uk-container uk-container-center">
+<div class="uk-container uk-overflow-container uk-container-center">
 	<form name="purchaseOrderItemForm" class="uk-form uk-form-horizontal">
 
 		<div class="uk-grid">
