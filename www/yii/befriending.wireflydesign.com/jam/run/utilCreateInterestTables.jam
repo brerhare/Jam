@@ -4,11 +4,19 @@ Doing...
 
 {{@database befriending_wireflydesign_com}}
 
-{{@remove table interest_young_person}}
+{{@XXXXXremove table interest_young_person}}
 
-{{@new table interest_young_person
+{{@nXXXXXew table interest_young_person
 	notes					text
 	young_person_id			number		required
+	interest_type_id		number		required
+}}
+
+{{@remove table befriender}}
+
+{{@new table interest_befriender
+	notes					text
+	befriender_id			number		required
 	interest_type_id		number		required
 }}
 

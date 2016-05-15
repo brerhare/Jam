@@ -410,11 +410,9 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 
 		externalFieldOrValue = strTrim(getWordAlloc(subArg[i], ++wdNum, space));	// try for the external field, containing the value to look for
 //logMsg(LOGDEBUG, "[%s]", externalFieldOrValue);
+
 		if (!externalFieldOrValue) {
-			logMsg(LOGERROR, "no external field given for lookup");
-			free(queryBuilder);
-			free(tmp);
-			return -1;
+			externalFieldOrValue = strdup("0");		// cover the the possibility (new db inserts perhaps? where this might be empty)
 		}
 
 //sprintf(tmp, "i=%d [%s][%s][%s] fullargs=[%s] and currenttable=[%s]\n", i, selectorField, operand, externalFieldOrValue, args, currentTableName); /*die(tmp);*/
