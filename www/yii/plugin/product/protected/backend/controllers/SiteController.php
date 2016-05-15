@@ -90,6 +90,17 @@ class SiteController extends Controller
 		$this->render('contact',array('model'=>$model));
 	}
 
+// @@TODO: HARDCODED FOR ORIGINALYOU ---------- REMOVE
+    public function actionOriginalYouDirect()
+    {
+        Yii::app()->session['uid'] = 92;
+        $identity = new UserIdentity('LifeEditor', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
     /**
      * Displays the DIRECT login page
      */

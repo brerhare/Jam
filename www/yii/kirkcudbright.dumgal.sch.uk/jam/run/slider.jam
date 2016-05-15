@@ -5,7 +5,7 @@
 {{@template OPTIONS whatever options go here}}
 {{@template SHOWTIME 10000}}
 {{@template SLIDER
-	{{@each jelly_slider_image}}
+	{{@each jelly_slider_image order by sequence}}
             <div data-p="274.375" style="display: none;">
                 <img data-u="image" src="/userdata/jelly/sliderimage/{{image}}" />
 
