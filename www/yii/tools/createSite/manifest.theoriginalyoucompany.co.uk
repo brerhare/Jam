@@ -1,0 +1,19 @@
+domain = theoriginalyoucompany.co.uk
+parentdomain =
+sitetitle = The Original You Company
+sid = kn8uamr0de52lp609up96ig3k4
+
+# Database
+dbname = theoriginalyoucompany_co_uk
+dbuser = theoriginalyouco
+dbpass = 36gh7wh8
+
+# Shopping cart order confirmation email
+checkoutemail = yvonne@theoriginalyoucompany.co.uk
+checkoutname = The Original You Company
+checkoutpaypalemail = none
+
+# Backend page editor
+editorpagewidth = 700
+editorpageheight = 400
+

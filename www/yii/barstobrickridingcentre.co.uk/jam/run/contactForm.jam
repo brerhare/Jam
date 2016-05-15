@@ -41,18 +41,6 @@
 $(window).load(function() {
 	$("body").show();
 	//$("body").fadeIn("slow");
-/*
-	document.getElementById("mailer_member.first_name").addEventListener("change", function() {
-		val = document.getElementById("mailer_member.first_name").value;
-alert('['+val+']');
-			if ((val == null) || (val == "")) {
-			alert("Name is required");
-			return false;
-		}
-	});
-*/
-
-
 });
 </script>
 
