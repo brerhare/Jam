@@ -1,20 +1,291 @@
+#Susie Jamieson
 [defaults]
 include = default-values
 
-; Every blob inherits these before adding/overriding
+# Every blob inherits these before adding/overriding
+
 [* : defaults]
 
 [screen]
-child = contentframe
-fx.wallpaper-image = /img/background.jpg
+child = site
+css.background-color = white
 css.display = block
 
-	[contentframe]
-	css.display = block
-	css.width = 500px
-	css.margin-top = 400px
-	style.html.h1.color = yellow
-	style.html.h1.background-color = black
-	style.html.h1.padding = 10px
-	html.h1 = a jelly&#0153; site is coming soon
+	[site]
+	child = header, site-content
+	css.width = 100%
 
+####  Header  #################################
+
+	[header]
+	child = header-content
+#	css.height = 200px
+	css.background-color = #a7877f
+
+	
+		[header-content]
+		child = logo, slider
+		css.width = 95%
+		css.max-width = 1200px
+		css.margin-top = 25px
+		stacking = horizontal
+		
+			[logo]
+			css.width = 15%
+			css.margin-top = 20px
+			image.url = img/logo-2.png
+			image.width = 100%
+			image.height = 78%
+			click = ?layout=index&page=index
+			
+			[slider]
+			addon.slider.flexslider.slider = 1
+			css.width = 70%
+			css.margin-left = 10%
+			css.margin-bottom = -40px
+			addon.slider.flexslider.width = 100%
+			addon.slider.flexslider.height = 10%
+			addon.slider.flexslider.mode = image
+			addon.slider.flexslider.source = db
+
+			addon.slider.flexslider.border-width = 0px
+			addon.slider.flexslider.border-color = red
+			#addon.slider.flexslider.active-dotcolor = red
+			#addon.slider.flexslider.inactive-dotcolor = blue
+			#addon.slider.flexslider.dot-margin-top = -200px
+			#addon.slider.flexslider.dot-margin-bottom = 0px
+			#addon.slider.flexslider.dot-margin-left = 0px
+			#addon.slider.flexslider.dot-margin-right = 0px
+			#addon.slider.flexslider.animation = fade
+			#addon.slider.flexslider.mode = HTML
+
+			
+#### Site Content ##############################
+
+[site-content]
+child = left-column, pages
+stacking = horizontal
+css.width = 95%
+css.max-width = 1200px
+
+	[left-column]
+	child = menu
+	css.width = 24%
+	css.margin-top = 20px
+	css.overflow = visible
+	
+		[menu]
+		css.width = 90%
+		css.margin-left = 0%
+		css.overflow = visible
+
+#// Top level basic settings
+		addon.menu.traditional.orientation = vertical
+#		addon.menu.traditional.width = // blank or a px value. uses 100% of container width if a px isnt specified
+#		addon.menu.traditional.height = 40px
+		addon.menu.traditional.align = left
+		addon.menu.traditional.item-margin = 0px
+		addon.menu.traditional.item-width = uniform
+#// Top level background settings
+#		addon.menu.traditional.menu-rounding = 4px
+#		addon.menu.traditional.menu-opacity = 0%
+		addon.menu.traditional.menu-color = transparent 
+		addon.menu.traditional.item-separator-width = 0px
+		addon.menu.traditional.item-separator-color = white
+		addon.menu.traditional.item-separator-tile = /img/menu.jpg
+		addon.menu.traditional.item-separator-stretch = /img/menu.jpg
+		addon.menu.traditional.edgepadding = 0px
+		
+#// Top level font settings
+		addon.menu.traditional.menu-font-size = 14px
+		addon.menu.traditional.menu-font-family = Open Sans
+		addon.menu.traditional.menu-font-weight = bold
+		addon.menu.traditional.menu-text-color = #795f56
+
+#// Top level hover settings
+		addon.menu.traditional.menu-hover-text-color = #ea6f9d
+		addon.menu.traditional.menu-hover-background-color = white
+		addon.menu.traditional.menu-hover-font-size = 14px
+		addon.menu.traditional.menu-hover-font-family = Open Sans
+		addon.menu.traditional.menu-hover-font-weight = normal
+
+#// Top level selected settings
+		addon.menu.traditional.menu-selected-text-color = #f9dbe6
+		addon.menu.traditional.menu-selected-background-color = white
+		addon.menu.traditional.menu-selected-font-size = 14px
+		addon.menu.traditional.menu-selected-font-family = Open Sans
+		addon.menu.traditional.menu-selected-font-weight = normal
+
+#// Second level settings
+		addon.menu.traditional.submenu-height = 30px
+		addon.menu.traditional.submenu-width = variable
+		addon.menu.traditional.submenu-font-size = 12px
+		addon.menu.traditional.submenu-font-family = Open Sans
+		addon.menu.traditional.submenu-font-weight = normal
+		addon.menu.traditional.submenu-text-color = #795f56
+		addon.menu.traditional.submenu-background-color = #f9dbe6
+#		addon.menu.traditional.submenu-background-tile = /img/menu.jpg
+#		addon.menu.traditional.submenu-background-stretch = /img/menu.jpg
+		addon.menu.traditional.submenu-separator-width = 1px
+		addon.menu.traditional.submenu-separator-color = #795f56
+
+
+######## body #######################################
+			
+
+	[pages]
+	child = home-page, content, contact	
+	css.width = 72%
+	css.margin-top = 30px
+	
+		[home-page]
+		condition = @PAGE=@HOMEPAGE
+		child = home-left, home-mid, home-right
+		css.width = 100%
+		stacking = horizontal
+		
+			[home-left]
+			css.width = 33%
+			addon.global.column.name = home-left
+			addon.global.column.width = 100%
+			addon.global.column.internal-width = 100%
+			addon.global.column.content-width = 95%
+			addon.global.column.internal-color = transparent
+			addon.global.column.background-color = transparent
+			
+			[home-mid]
+			css.width = 33%
+			addon.global.column.name = home-mid
+			addon.global.column.width = 100%
+			addon.global.column.internal-width = 100%
+			addon.global.column.content-width = 95%
+			addon.global.column.internal-color = transparent
+			addon.global.column.background-color = transparent
+			
+			[home-right]
+			css.width = 33%
+			addon.global.column.name = home-right
+			addon.global.column.width = 100%
+			addon.global.column.internal-width = 100%
+			addon.global.column.content-width = 95%
+			addon.global.column.internal-color = transparent
+			addon.global.column.background-color = transparent
+
+			
+		[content]
+		condition = @PAGE!=contact
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Oops! that link does not exist. I could not find the page $_GET['page']. Please choose an option from the menu
+		html.raw = ContentBlock.content
+		
+		[contact]
+		condition = @PAGE=contact
+		child = contact-text, contact-form
+		stacking = horizontal
+		
+			[contact-text]
+			css.width = 40%
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Oops! that link does not exist. I could not find the page $_GET['page']. Please choose an option from the menu.
+			html.raw = ContentBlock.content
+			
+			[contact-form]
+			css.width = 50%
+			css.margin left = 5%	
+			html.raw = <h3> Contact Form</h3>
+			#jam.embed = /run/contact.jam
+			jam.iframe = /run/contact
+
+
+####footer####################################
+
+[footer]
+child = footer-content
+css.margin-top = 40px
+#css.margin-left = 20px
+css.padding-bottom = 50px
+css.width = 100%
+css.background-color = #a7877f
+
+
+	[footer-content]
+	child = footer-left, footer-right
+	css.width = 80%
+	css.margin-top = 20px
+	css.min-width = 600px
+	stacking = horizontal
+
+		[footer-left]
+		child = footer-cookies, footer-tandc, footer-contact, copyright
+		css.height = 150px
+		css.width = 49%
+		css.line-height = 25px
+
+			[footer-cookies]
+			html.raw = Cookie Policy
+			css.color = #000000
+			css.font-size = 11px
+			click = ?layout=index&page=cookie-policy
+
+			[footer-tandc]
+			html.raw = Terms & Privacy
+			css.color = #000000
+			css.font-size = 11px
+			click = ?layout=index&page=terms-conditions
+
+			[footer-contact]
+			html.raw = Contact
+			css.color = #000000
+			click = ?layout=index&page=contact
+			
+			[copyright]
+			css.margin-top = 20px
+			css.line-height = 1em
+			html.raw = Susie Jamieson</br>Creative Therapies &copy 2015</br>All rights reserved
+			css.color = #000000
+			css.font-size = 11px
+			css.text-align = left
+			
+		[footer-right]
+		child = wirefly
+		css.width = 49%
+		css.margin-top = 30px
+		css.line-height = 25px
+		
+
+		[wirefly]
+		child = wirefly-logo, admin
+		stacking = horizontal
+		css.margin-top = 20px
+		css.float = right
+
+		
+			[wirefly-logo]
+			css.height = 45px
+			css.margin-top = 5px
+			image.url = img/wirefly-design.png
+			image.width = 100px
+			image.height = 46px
+			image.align = left
+			clicknew = http://www.wireflydesign.com
+			
+		
+			[admin]
+			child = cog-center
+			css.height = 20px
+			css.width = 20px
+			css.background-size = 100%
+			css.background-image = url('/img/admin.png')
+			css.margin-left = -20px
+
+				[cog-center]
+				css.width = 5px
+				css.height = 5px
+				css.margin-top = 8px
+				image.url = img/cog-center.png
+				image.width = 5px
+				image.height = 5px
+				image.align = center
+				clicknew = backend.php

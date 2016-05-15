@@ -1,0 +1,166 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@Xinclude /jam/run/menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:900px; Xpadding:0}}
+
+<!-- List component -->
+
+<style>
+.rowHighlight:hover {
+  background-color: #ddf0ff;
+  cursor:pointer;
+}
+</style>
+
+<br>
+
+<div name="content_contact">
+
+    <div class="uk-width-5-5">
+        <table class="uk-table uk-table-condensed" style='background-color:#dadada;'>
+            <tr>
+                <th> Matched Befriender </th>
+                <th> Phone </th>
+                <th> Email </th>
+                <th> Postcode </th>
+            </tr>
+            {{@each match_yp filter young_person_id = young_person.id}}
+                {{@get befriender filter id = match_yp.befriender_id}}
+                {{@get global filter id = befriender.global_id}}
+                    <tr>
+                        <td> {{global.forename}} {{global.surname}} </td>
+                        <td> {{global.mobile}} </td>
+                        <td> {{global.email}} </td>
+                        <td> {{global.postcode}} </td>
+                    </tr>
+            {{@end}}
+        </table>
+    </div>
+
+	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+		<tr>
+			<th> Relationship </th>
+			<th> Name </th>
+			<th> Email </th>
+			<th> Mobile </th>
+			<th> Landline </th>
+			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('maintain_contact', [], 'content_contact')"> <i class="uk-icon-plus"></i> New</button> </th>
+		</tr>
+{{@each contact filter young_person_id = young_person.id}}
+		{{@get global filter id = contact.global_id}}
+		{{@get contact_relationship filter id = contact.contact_relationship_id}}
+		<tr class="rowHighlight" XXonClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">
+			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{contact_relationship.relationship}}</td>
+			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.forename}} {{global.surname}}</td>
+			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.email}}</td>
+			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.mobile}}</td>
+			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.landline}}</td>
+			<td>
+				<span id='emailButton' name='emailButton'>
+					{{@html button 'Email' primary small
+						sendContactEmail('{{global.email}}');
+					}}
+				</span>
+				<button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_contact('{{contact.id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i></button>
+			</td>
+		</tr>
+{{@end}}
+	</table>
+</div>
+<br>
+
+<script>
+function confirmDelete_contact(id, displayInfo) {
+	window.event.cancelBubble = true;	// Prevent any further events
+	var result = confirm('Confirm delete of item ' + displayInfo);
+	if (result)
+		runAction('delete_contact', ['contact.id='+id], '', runJam);	
+}
+function postUpdate() {
+	runJam();
+}
+function sendContactEmail(contactEmail) {
+//alert('ss' + contactId);
+	window.location.href = "mailto:"+contactEmail;
+}
+</script>
+
+{{@action delete_contact}}
+	{{@get contact filter id = contact.id}}
+	{{global.id = contact.global_id}}
+	{{@remove item contact}}
+	{{@remove item global}}	@@TODO - dont remove global if it has other links
+{{@end}}
+
+<!-- Form input component -->
+
+{{@action maintain_contact}}
+	{{@get contact filter id = contact.id}}
+	{{@get global filter id = contact.global_id}}
+
+	<style type="text/css">
+		label {text-align: right;}
+	</style>
+
+	<form name="inputForm_contact" class="uk-form uk-form-horizontal">
+		<input type="hidden" name="contact.id" value="{{contact.id}}">
+		<input type="hidden" name="global.id" value="{{contact.global_id}}">
+		{{@html gridrow start}}
+			{{@html gridcol start width=5-5}}
+				{{@html dropdown field=contact.contact_relationship_id pickfield=contact_relationship.relationship size=medium label='Relationship'}}
+				{{@html text field=global.forename size=medium label='Forename'}}
+				{{@html text field=global.surname size=medium label='Surname'}}
+				{{@html text field=global.house size=medium label='house'}}
+				{{@html text field=global.street size=medium label='Street'}}
+				{{@html text field=global.area size=medium label='Area'}}
+				{{@html text field=global.town size=medium label='Town'}}
+				{{@html text field=global.postcode size=medium label='Postcode'}}
+				{{@html text field=global.landline size=medium label='Land line'}}
+				{{@html text field=global.mobile size=medium label='Mobile'}}
+				{{@html text field=global.email size=medium label='Email'}}
+				{{@html text field=global.job_title size=medium label='Job Title'}}
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+		{{@html gridrow start}}
+			{{@html gridcol start width=1-1}}
+				<br>
+				<center>
+					{{@html button Save primary medium
+						runAction('update_contact', ['inputForm_contact'], '', postUpdate)
+					}}
+					{{@html button Cancel primary medium
+						runJam();
+					}}
+				</center>
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+	</form>
+{{@end}}
+
+{{@action update_contact}}
+	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
+	{{contact.global_id = global.id}}
+	{{contact.young_person_id = young_person.id}}
+	{{@update item contact notify=ok}}
+{{@end}}
+
+{{@action email_contact}}
+	{{@get contact filter id = contact.id}}
+	{{@get global filter id = contact.global_id}}
+	{{@email info@wireflydesign.com {{global.email}} 'Befriending referral form for {{global.forename}} {{global.surname}}' action:emailContent}}
+	Email sent
+{{@end}}
+
+{{@action emailContent}}
+	Please click on <a href="http://befriending.wireflydesign.com/run/referralFormReferrer.jam?id1=RefFormgj3x9dsmcNcj2hvgsxz3sjpOvR&refId={{contact.id}}&ypId=0">this</a> to open the referral form.
+{{@end}}
+
+
+{{@html container end}}
+
+{{@include /jam/sys/html/footer.html}}

@@ -7,6 +7,43 @@
 
 #include "log.h"
 
+// Escape some chars that JSON doesnt like
+char *escapeJsonChars(char *src)
+{
+	char *ret = (char *) calloc(2, (strlen(src) + 1));
+	char *p = src;
+	char *p2 = ret;
+	char *sp = NULL;
+	while (*p) {
+		if      (*p == '\"') { *p2++ = '\\'; *p2++ = '\"'; p++; }
+		else if (*p == '\\') { *p2++ = '\\'; *p2++ = '\\'; p++; }
+		else if (*p == '/')  { *p2++ = '\\'; *p2++ = '/';  p++; }
+		else if (*p == '\b') { *p2++ = '\\'; *p2++ = 'b';  p++; }
+		else if (*p == '\f') { *p2++ = '\\'; *p2++ = 'f';  p++; }
+		else if (*p == '\n') { *p2++ = '\\'; *p2++ = 'n';  p++; }
+		else if (*p == '\r') { *p2++ = '\\'; *p2++ = 'r';  p++; }
+		else if (*p == '\t') { *p2++ = '\\'; *p2++ = 't';  p++; }
+		else
+			*p2++ = *p++;
+	}
+	return(ret);
+}
+
+// Escape single quotes that conflict with our own singleQuoting (<input value='abc'def'> etc)
+char *escapeSingleQuote(char *src)
+{
+	char *ret = (char *) calloc(2, (strlen(src) + 1));
+	char *p = src;
+	char *p2 = ret;
+	char *sp = NULL;
+	while (*p) {
+		if (*p == '\'') { *p2++ = '&'; *p2++ = '#'; *p2++ = '3'; *p2++ = '9'; p++; }	// '
+		else
+			*p2++ = *p++;
+	}
+	return(ret);
+}
+
 /* Trims a sting in place. No memory adjustment is done */
 char *strTrim(char *str)
 {
@@ -194,3 +231,24 @@ char *str_replace (const char *string, const char *substr, const char *replaceme
 	return newstr;
 }
 
+// Do a strchr() looking for the first of _any_ of some supplied chars
+char *strAnyChr(char *string, char *chars) {
+	while (string) {
+		if (strchr(chars, *string))
+			return string;
+		string++;
+	}
+	return 0;
+}
+
+/*
+char *strchr(const char *s, int c)
+{
+    const char ch = c;
+
+    for ( ; *s != ch; s++)
+        if (*s == '\0')
+            return 0;
+    return (char *)s;
+}
+*/

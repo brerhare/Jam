@@ -1,0 +1,148 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@Xinclude /jam/run/menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center nomargin css='max-width:900px; padding:0}}
+
+	{{@get young_person filter id = ypId}}
+	{{@get global filter id = young_person.global_id}}
+	{{@get contact filter id = refId}}
+
+	<style type="text/css">
+		label {text-align: right; width:150px !important}
+		div.uk-form-controls {margin-left: 170px !important}
+	</style>
+
+	<form name="inputForm_young_person" class="uk-form uk-form-horizontal">
+		<input type="hidden" name="young_person.id" value="{{young_person.id}}">
+		<input type="hidden" name="global.id" value="{{young_person.global_id}}">
+
+<br>
+<center> <h3> Details of the young Person you are referring</h3> </center>
+
+		{{@html gridrow start}}
+			{{@html gridcol start width=5-10}}
+
+				{{@html hidden field=young_person.referrer_form_id}} <!-- @@TODO -->
+				{{@html text field=global.forename size=large label='Forename' group=inp}}
+				{{@html text field=global.surname size=large label='Surname' group=inp}}
+				{{@html text field=global.house size=medium label='house' group=inp}}
+				{{@html text field=global.street size=medium label='Street' group=inp}}
+				{{@html text field=global.area size=medium label='Area' group=inp}}
+				{{@html text field=global.town size=medium label='Town' group=inp}}
+				{{@html text field=global.postcode size=medium label='Postcode' group=inp}}
+				{{@html text field=global.landline size=medium label='Land line' group=inp}}
+				{{@html text field=global.mobile size=medium label='Mobile' group=inp}}
+				{{@html text field=global.email size=medium label='Email' group=inp}}
+				{{@html date field=young_person.dob size=medium label='Birth date' group=inp}}
+
+			{{@html gridcol end}}
+			{{@html gridcol start width=1-10}}
+			{{@html gridcol end}}
+			{{@html gridcol start width=4-10}}
+
+				{{@html radio field=young_person.gender label='Gender' options=0:Male,1:Female group=inp}}
+				{{@html text field=young_person.legal_status size=large label='Legal status' group=inp}}
+				{{@html text field=young_person.medication size=large label='Medication' group=inp}}
+				{{@html date field=young_person.order_date size=medium label='Order date' group=inp}}
+				{{@html checkbox field=young_person.discussion_confirmation label='Discussion confirmation' group=inp}}
+				{{@html checkbox field=young_person.exclusion_risk label='Exclusion risk' group=inp}}
+				{{@html checkbox field=young_person.offending_risk label='Offending risk' group=inp}}
+				{{@html checkbox field=young_person.care_risk label='Care risk' group=inp}}
+				{{@html checkbox field=young_person.child_plan label='Child plan' group=inp}}
+				{{@html checkbox field=young_person.assessment label='Assessment' group=inp}}
+
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+
+<br>
+		{{@html gridrow start}}
+			{{@html gridcol start width=1-1}}
+				{{@html textarea field=young_person.special_needs_notes size=80x10 label='Special needs notes' group=inp}}
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+
+		{{@html gridrow start}}
+			{{@html gridcol start width=1-1}}
+				<br>
+				<center>
+					<button type='button' class="uk-button uk-button-primary" onClick="backToPrev()"> Prev </button> </td>
+					<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="updateAndNext()"> Submit </button> </td>
+				</center>
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+
+	</form>
+
+<script>
+window.onload = function() {
+	// Create onChange functions for all form inputs - will be called by fn()
+	var groupArr = getGroupArray('inp');
+	for (var i = 0; i < groupArr.length; i++) {
+		name = "onChange_" + groupArr[i].name.replace(/_/g, "");
+		name = name.replace(".", "_");
+		//alert(name);
+		window[name] = function (obj) {
+//			document.getElementById('saveButton').disabled = false;
+		}
+	}
+//	document.getElementById('saveButton').disabled = true;
+}
+function disableButton(me) {
+//	me.disabled = true;
+}
+
+function backToPrev() {
+	objReferrer = get('refId');
+	objYP = get('young_person.id');
+//alert('r='+objReferrer.value+' and yp='+objYP.value);
+	runJam('referralFormReferrer?refId='+objReferrer.value+'&ypId='+objYP.value);
+}
+
+function updateAndNext() {
+	objGlobalForename = get('global.forename');
+	if ((objGlobalForename.value.length) < 1) {
+		alert('Forename is required');
+		return;
+	}
+	objGlobalSurname = get('global.surname');
+	if ((objGlobalSurname.value.length) < 1) {
+		alert('Surname is required');
+		return;
+	}
+	runAction('update_young_person', ['inputForm_young_person'], '', forwardToNext);
+}
+
+function forwardToNext() {
+	objReferrer = get('refId');
+	objYP = get('young_person.id');
+	if ((objYP.value == '0') || (objYP.value == '-1')) {
+		alert('Young person details not yet saved');
+		return;
+	}
+//alert('going fwd. r='+objReferrer.value+' and yp='+objYP.value);
+alert('Your submission was successful');
+    runJam('referralFormContacts?refId='+objReferrer.value+'&ypId='+objYP.value);
+
+}
+
+</script>
+
+{{@action update_young_person}}
+	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
+	{{young_person.global_id = global.id}}
+	{{young_person.referral_date = sys.today}}
+	{{@update item young_person}}
+	{{@get contact filter id = refId}}
+	{{contact.young_person_id = young_person.id}}
+	{{contact.contact_relationship_id = 3}}
+	{{@update item contact}}
+{{@end}}
+
+{{@html container end}}
+
+{{@include /jam/sys/html/footer.html}}

@@ -46,7 +46,10 @@ class eventcode
             $this->programId = (int) $_GET['programid'];
 //die('isset p='.$this->programId);
 		}
+		else
+		{
 //die('isNOTset p='.$this->programId);
+		}
 
 		// Check if a single member is required
 		$this->singleMember = 0;
@@ -199,6 +202,9 @@ class eventcode
        			$criteria->addCondition("program_id = " . $this->programId);
 				$eventHasProgram=EventHasProgram::model()->find($criteria);
 				if (!($eventHasProgram))
+					continue;
+				//if (($eventHasProgram->approved == 0) && ($this->programId != 13))
+				if ($eventHasProgram->approved == 0)
 					continue;
 			}
 			else
@@ -447,7 +453,7 @@ if (isset($_GET['test']))
 }
 
 					$content .= "<script>function goBook(where){window.open(where, '_blank');}</script>";
-					$content .= "<div style='float:right'><a target='_blank' href='" . $ticketUrl . "'><img style='margin-top:0px; margin-left:0px' onClick=goBook('" . $ticketUrl . "') title='Click to book' src='img/book-s.jpg'></a></div><br/>";
+					$content .= "<div style='float:left; margin-left:-5px; margin-right:5px'><a target='_blank' href='" . $ticketUrl . "'><img style='margin-top:0px; margin-left:0px' onClick=goBook('" . $ticketUrl . "') title='Click to book' src='img/book-s.jpg'></a></div><br/>";
 				}
 				else	// Ticket event hasn't tickets set up
 				{

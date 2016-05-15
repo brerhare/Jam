@@ -33,4 +33,19 @@
 		)); ?>
 	</div>
 
+<div class="row" class="span8">
+        <?php $urlEmbed = "";
+        if (!($model->isNewRecord))
+        {
+            $urlEmbed .= "<b>Example code to provide a direct link to this file</b><br/>";
+            $urlEmbed .= "<i>" . Yii::app()->getBaseUrl(true) . "/userdata/jelly/download/" . $model->filename . "</i>";
+			$urlEmbed .= "<br>";
+            $urlEmbed .= "<b>Example code to embed this downloadable file in your pages</b><br/>";
+            $urlEmbed .= "<i>{{download file " . $model->description . "}}</i>";
+            echo $urlEmbed;
+        }
+        ?>
+    </div>
+
+
 <?php $this->endWidget(); ?>

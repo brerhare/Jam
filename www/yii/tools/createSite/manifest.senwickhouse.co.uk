@@ -1,0 +1,19 @@
+domain = senwickhouse.co.uk
+parentdomain =
+sitetitle = Senwick House
+sid = l6jnufj9fm0jql8ulhia1nv741
+
+# Database
+dbname = senwickhouse_co_uk
+dbuser = senwickhouse.co.
+dbpass = rj49bvf
+
+# Shopping cart order confirmation email
+checkoutemail = none
+checkoutname = none
+checkoutpaypalemail = none
+
+# Backend page editor
+editorpagewidth = 700
+editorpageheight = 400
+

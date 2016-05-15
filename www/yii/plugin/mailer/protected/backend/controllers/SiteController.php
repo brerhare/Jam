@@ -78,6 +78,171 @@ class SiteController extends Controller
 		$this->render('contact',array('model'=>$model));
 	}
 
+// @@TODO: HARDCODED FOR ORIGINALYOU ---------- REMOVE
+    public function actionOriginalYouDirect()
+    {
+        Yii::app()->session['uid'] = 92;
+        $identity = new UserIdentity('LifeEditor', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR SENWICK ---------- REMOVE
+    public function actionSenwickDirect()
+    {
+        Yii::app()->session['uid'] = 102;
+        $identity = new UserIdentity('Kerry', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR BEIRC ---------- REMOVE
+    public function actionBeircDirect()
+    {
+        Yii::app()->session['uid'] = 20;
+        $identity = new UserIdentity('beirc', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR Holiday Let Services ---------- REMOVE
+    public function actionHolidayDirect()
+    {
+        Yii::app()->session['uid'] = 101;
+        $identity = new UserIdentity('lindaMB', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR Jardine Roofing ---------- REMOVE
+    public function actionJardineDirect()
+    {
+        Yii::app()->session['uid'] = 100;
+        $identity = new UserIdentity('Jardines', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR BRYCEWALKERVENDING ---------- REMOVE
+    public function actionBryceWalkerVendingDirect()
+    {
+        Yii::app()->session['uid'] = 70;
+        $identity = new UserIdentity('bryce@brycewalkervending.com', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR Joseawright ---------- REMOVE
+    public function actionJoSeawrightDirect()
+    {
+        Yii::app()->session['uid'] = 98;
+        $identity = new UserIdentity('seawright99', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+	}
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR Kirkcudbright Academy ---------- REMOVE
+    public function actionKbtacademyDirect()
+    {
+        Yii::app()->session['uid'] = 99;
+        $identity = new UserIdentity('kbt-academy', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR Wirefly ---------- REMOVE
+    public function actionWireflyDirect()
+    {
+        Yii::app()->session['uid'] = 18;
+        $identity = new UserIdentity('info@wireflydesign.com', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR Being Business ---------- REMOVE
+    public function actionBeingDirect()
+    {
+        Yii::app()->session['uid'] = 97;
+        $identity = new UserIdentity('admin@beingbusiness.co.uk', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR Barstobrick RC ---------- REMOVE
+    public function actionBarstoDirect()
+    {
+        Yii::app()->session['uid'] = 95;
+        $identity = new UserIdentity('barstobrickrc@hotmail.co.uk', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR Fresher than the udders ---------- REMOVE
+    public function actionUddersDirect()
+    {
+        Yii::app()->session['uid'] = 94;
+        $identity = new UserIdentity('barnbarroch', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
     /**
      * Displays the DIRECT login page
      */
@@ -99,7 +264,7 @@ class SiteController extends Controller
     public function actionCocoaDirect()
     {
         Yii::app()->session['uid'] = 91;
-        $identity = new UserIdentity('s.dawson984@btinternet.com', 'site2plugin');
+        $identity = new UserIdentity('SDawson', 'site2plugin');
         $identity->authenticate();
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);

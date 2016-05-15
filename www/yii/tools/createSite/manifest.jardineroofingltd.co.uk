@@ -1,0 +1,19 @@
+domain = jardineroofingltd.co.uk
+parentdomain =
+sitetitle = Jardine Roofing Ltd
+sid = kebh9jm5m4bcg3o8q49vdqqm01
+
+# Database
+dbname = jardineroofingltd_co_uk
+dbuser = jardineroofinglt
+dbpass = 5bd85f
+
+# Shopping cart order confirmation email
+checkoutemail = none
+checkoutname = none
+checkoutpaypalemail = none
+
+# Backend page editor
+editorpagewidth = 700
+editorpageheight = 400
+

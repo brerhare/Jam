@@ -1,0 +1,45 @@
+<!-- Set defaults for items which were not specifically templated  -->
+{{@template FONTDOWNLOAD PT+Sans+Narrow:400,700}}
+{{@template FONTFAMILY "PT Sans Narrow", "Arial Narrow", Arial, Helvetica, sans-serif}}
+{{@template FONTSIZE 18}}
+
+<!-- Call the addon -->
+{{@include /jam/sys/addon/menu/smartmenus/index.html}}
+
+<!-- Center the menu -->
+<style>
+#main-menu {
+    text-align:center;
+}
+#main-menu ul {
+    text-align:left;
+}
+#main-menu > li {
+    float:none;
+    display:inline-block;
+    margin-right:-4px;
+}
+*:first-child+html #main-menu > li { /* for IE7 */
+    display:inline;
+    margin-right:0;
+    zoom:1;
+}
+* html #main-menu li { /* for IE6 */
+    float:none;
+    display:inline;
+    zoom:1;
+}
+/*
+ Override the above in collapsible mode.
+ Make sure the break point width is the same as the one in the theme you use.
+*/
+@media screen and (max-width: 640px) {
+    #main-menu {
+        text-align:left;
+    }
+    #main-menu > li {
+        display:block;
+        margin-right:0;
+    }
+}
+</style>

@@ -1,0 +1,10 @@
+RewriteEngine On
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteRule ^run(.+)$ /jam/cgi/runjam.cgi?jam=/jam/run/$1 [L,QSA]
+RewriteRule ^jam/run(.+)$ /jam/cgi/runjam.cgi?jam=/jam/run/$1 [L,QSA]
+
+# Redirect www to befriending.wireflydesign.com
+RewriteCond %{HTTP_HOST} ^www\.befriending\.wireflydesign\.com$ [NC]
+RewriteRule ^(.*)$ http://befriending.wireflydesign.com/$1 [R=301,L]
+

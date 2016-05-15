@@ -1,0 +1,318 @@
+#Kirkcudbright Academy
+[defaults]
+include = default-values
+
+# Every blob inherits these before adding/overriding
+
+[* : defaults]
+
+[screen]
+child = site
+css.background-color = white
+css.display = block
+css.min-width = 600px
+
+	[site]
+	child = header, slider, menu, columns, home-page, pages, footer
+	css.width = 100%
+	
+####  Header  #################################
+
+	
+	[header]
+	child = logo, header-title
+	css.margin-top = 20px
+	css.width = 90%
+	css.max-width = 1200px
+	css.min-width = 700px
+	stacking = horizontal
+		
+		[logo]
+		child = logo-image
+		css.width = 30%
+		css.max-width = 150px
+		image.url = img/badge-logo.png
+		image.width = 95%
+		image.height = 100%
+		click = ?layout=index&page=index
+		css.z-index = 110
+		css.position = relative
+			
+		[header-title]
+		css.width = 50%
+		css.max-width = 450px
+		css.height = 200px
+		image.url = img/title.png
+		image.width = 90%
+		image.height = 100%
+		image.align = right
+		css.z-index = 100
+		css.position = relative
+		click = ?layout=index&page=index			
+
+			
+#### Slider ###########################################
+
+	[slider]	
+	css.margin-top = -150px
+	css.width = 100%
+	css.max-height = 450px
+jam.embed = /run/slider.jam
+#	addon.slider.flexslider.width = 100%
+#	addon.slider.flexslider.height = 36%
+#	addon.slider.flexslider.mode = image
+#	addon.slider.flexslider.source = db
+#
+#	addon.slider.flexslider.border-width = 0px
+#	addon.slider.flexslider.active-dotcolor = #525252
+#	addon.slider.flexslider.inactive-dotcolor = #e6ddbc
+#	addon.slider.flexslider.dot-margin-top = -80px
+#	addon.slider.flexslider.dot-margin-left = 0px
+#	addon.slider.flexslider.animation = slide
+
+
+##### Menu Area #################################
+
+	[menu]
+	
+#	css.width = 100%
+	css.background-color = #e6ddbc
+	css.overflow = visible
+	css.margin-bottom = 15px
+
+jam.embed = /run/menu.jam
+
+#	
+#	#// Top level basic settings
+#			addon.menu.traditional.orientation = horizontal
+#			#	addon.menu.traditional.height = 40px
+#			addon.menu.traditional.align = center
+#			addon.menu.traditional.item-margin = 30px
+#			addon.menu.traditional.item-width = variable
+#			#	addon.menu.traditional.level = 1
+#			
+#	#// Top level background settings
+#			addon.menu.traditional.menu-rounding = 0px
+#			addon.menu.traditional.menu-opacity = 100%
+#			addon.menu.traditional.menu-color = transparent 
+#			addon.menu.traditional.item-separator-width = 0px
+#		#	addon.menu.traditional.edgepadding = 40px
+#	
+#	#// Top level font settings
+#			addon.menu.traditional.menu-font-size = 20px
+#			addon.menu.traditional.menu-font-family = Italiana
+#			addon.menu.traditional.menu-font-weight = bold
+#			addon.menu.traditional.menu-text-color = black
+#	
+#	#// Top level hover settings
+#			addon.menu.traditional.menu-hover-text-color = #822626
+#			addon.menu.traditional.menu-hover-background-color = white
+#			addon.menu.traditional.menu-hover-font-size = 20px
+#			addon.menu.traditional.menu-hover-font-family = Italiana, Verdana, sans-serif
+#			addon.menu.traditional.menu-hover-font-weight = bold
+#	
+#	#// Top level selected settings
+#			addon.menu.traditional.menu-selected-text-color = #822626
+#			addon.menu.traditional.menu-selected-background-color = white lightgrey
+#			addon.menu.traditional.menu-selected-font-size = 20px
+#			addon.menu.traditional.menu-selected-font-family = Italiana
+#			addon.menu.traditional.menu-selected-font-weight = bold
+#	
+#	#// Second level settings
+#	#addon.menu.traditional.submenu-height = 30px // centers text
+#	addon.menu.traditional.submenu-width = variable
+#	addon.menu.traditional.submenu-font-size = 16px
+#	addon.menu.traditional.submenu-font-family = Droid Sans, Verdana, sans-serif
+#	addon.menu.traditional.submenu-font-weight = normal
+#	addon.menu.traditional.submenu-text-color = black
+#	addon.menu.traditional.submenu-background-color = #ada585
+#	addon.menu.traditional.submenu-separator-width = 10px
+#	addon.menu.traditional.submenu-separator-color = white
+
+### Home Page #######################################
+
+		
+	[home-page]
+	child = main-column, right-column
+	css.width = 90%
+	css.max-width = 1200px
+	css.margin-top = 50px
+	stacking = horizontal
+	condition = @PAGE=@HOMEPAGE
+		
+		[main-column]
+		css.width = 65%
+		css.min-width = 500px
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']. Please select something from the menu.
+		html.raw = ContentBlock.content
+		
+		
+		[right-column]
+		css.width = 33%
+		css.min-width = 200px
+		addon.global.column.name = home-right
+		addon.global.column.width = 100%
+		addon.global.column.internal-width = 80%
+		addon.global.column.content-width = 100%
+		addon.global.column.internal-color = transparent
+		addon.global.column.background-color = transparent
+		addon.global.column.top-height = 0px
+		addon.global.column.bottom-height = 10px
+		
+		
+		
+			
+######## body #######################################
+			
+
+[pages]
+condition = @PAGE!=@HOMEPAGE
+child = page-main, page-mobile, page-column, page-column-mobile
+css.width = 90%
+css.max-width = 1200px
+stacking = horizontal
+
+	[page-main]
+	condition = @DEVICEWIDTH>759
+	css.width = 74%
+	css.min-width = 750px
+	db.table = ContentBlock
+	db.filter = url=$_GET['page']
+	db.error = Sorry, I could not find the page $_GET['page']. Please select something from the menu.
+	html.raw = ContentBlock.content
+	
+		[page-mobile]
+	condition = @DEVICEWIDTH<760
+	css.width = 95%
+#	css.min-width = 750px
+	db.table = ContentBlock
+	db.filter = url=$_GET['page']
+	db.error = Sorry, I could not find the page $_GET['page']. Please select something from the menu.
+	html.raw = ContentBlock.content
+
+	[page-column]
+	condition = @DEVICEWIDTH>759
+	css.width = 24%
+	css.min-width = 200px
+	child = page-column-text
+	css.margin-top = 20px
+	
+	[page-column-mobile]
+	condition = @DEVICEWIDTH<760
+	css.width = 47%
+	cs.margin-left = 2.5%
+	child = sub-menu, page-column-text
+	css.margin-top = 20px
+	
+		
+			[page-column-text]
+			css.margin-top = 20px
+			css.width = 100%
+			css.z-index = 0
+			addon.global.column.name = page-column
+			addon.global.column.width = 100%
+			addon.global.column.internal-width = 90%
+			addon.global.column.content-width = 100%
+			addon.global.column.internal-color = transparent
+			addon.global.column.background-color = transparent
+			addon.global.column.top-height = 0px
+			addon.global.column.bottom-height = 30px
+	
+
+####footer####################################
+
+[footer]
+child = footer-graphic, footer-block
+
+
+	[footer-graphic]
+	css.width = 15%
+	css.margin-left = 8%
+	css.height = 10%
+	image.url = img/tower-img.png
+	image.width = 100%
+	image.height = 100%
+	#css.z-index = 10
+	css.position = relative
+	css.margin-bottom = -0.5%
+	css.z-index = 50
+	css.align = left
+	
+	[footer-block]
+	child = footer-content
+	css.width = 100%
+	css.background-color = #525252
+	
+	[footer-content]
+	child = footer-left, footer-right
+	css.width = 65%
+	css.margin-top = 20px
+	css.min-width = 600px
+	stacking = horizontal
+
+		[footer-left]
+		child = footer-cookies, footer-tandc, footer-contact, copyright
+		css.height = 150px
+		css.width = 49%
+		css.line-height = 25px
+
+			[footer-cookies]
+			html.raw = <a style="text-decoration:none; color: white; font-size: 14px;" onmouseover="this.style.color='#5a5a5a'" onmouseout="this.style.color='white'" href="?layout=index&page=cookie-policy">Cookie Policy</a>
+
+			[footer-tandc]
+			html.raw = <a style="text-decoration:none; color: white; font-size: 14px;" onmouseover="this.style.color='#5a5a5a'" onmouseout="this.style.color='white'" href="?layout=index&page=terms-conditions">Terms & Privacy</a>
+
+			[footer-contact]
+			html.raw = <a style="text-decoration:none; color: white; font-size: 14px;" onmouseover="this.style.color='#5a5a5a'" onmouseout="this.style.color='white'" href="?layout=index&page=contact">Contact</a>
+			
+			[copyright]
+			css.margin-top = 20px
+			css.line-height = 1em
+			html.raw = Kirkcudbright Academy &copy 2015</br>All rights reserved
+			css.color = #ffffff
+			css.font-size = 11px
+			css.text-align = left
+			
+		[footer-right]
+		child = wirefly
+		css.width = 49%
+		css.margin-top = 30px
+		css.line-height = 25px
+		
+
+		[wirefly]
+		child = wirefly-logo, admin
+		stacking = horizontal
+		css.margin-top = 20px
+		css.float = right
+
+		
+			[wirefly-logo]
+			css.height = 45px
+			css.margin-top = 5px
+			image.url = img/wirefly-design.png
+			image.width = 100px
+			image.height = 46px
+			image.align = left
+			clicknew = http://www.wireflydesign.com
+			
+		
+			[admin]
+			child = cog-center
+			css.height = 20px
+			css.width = 20px
+			css.background-size = 100%
+			css.background-image = url('/img/admin-dark.png')
+			css.margin-left = -20px
+
+				[cog-center]
+				css.width = 5px
+				css.height = 5px
+				css.margin-top = 8px
+				image.url = img/cog-center.png
+				image.width = 5px
+				image.height = 5px
+				image.align = center
+				clicknew = backend.php

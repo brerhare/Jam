@@ -1,0 +1,25 @@
+{{@include /jam/sys/html/header.html}}
+
+Doing...
+
+{{@database befriending_wireflydesign_com}}
+
+{{@remove table medical}}
+{{@remove table medical_notes}}
+
+{{@new table medical
+	medical_type_id		number	required
+	young_person_id		number	required
+	yp_radio			number
+	pc_radio			number
+}}
+
+{{@new table medical_notes
+	medication			text
+	notes				text
+	young_person_id		number	required
+}}
+
+Done
+
+{{@include /jam/sys/html/footer.html}}

@@ -1,0 +1,16 @@
+{{@action containerStartHtml}}
+
+	<style>
+	.uk-container {
+    	Xmax-width: 100% !important; /* fill entire width of outer container */
+	}
+	</style>
+
+	<div class="uk-container uk-overflow-container CONTAINER_CENTER CONTAINER_MARGIN" style="CONTAINER_CSS">
+
+{{@end}}
+
+{{@action containerEndHtml}}
+	</div>	<!-- uk-container -->
+{{@end}}
+

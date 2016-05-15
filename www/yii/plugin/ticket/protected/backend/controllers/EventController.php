@@ -443,9 +443,32 @@ class EventController extends Controller
 				$subject = "Link to the report for " . $model->title;
 				$linkPath = Yii::app()->basePath . "/../../tmp/ticketeventreport-" . Yii::app()->session['sid'] . "-" . $_POST['event'] . ".html";
 				$linkUrl = "http://plugin.wireflydesign.com/tmp/ticketeventreport-" . Yii::app()->session['sid'] . "-" . $_POST['event'] . ".html";
-				$htmlContent = "<html><head><meta http-equiv='refresh' content='0; url=http://plugin.wireflydesign.com/run/ticket/offlineDelegateReport?uid=" . $_POST['uid'] . "&event=" .  $_POST['event'] . "' /></head><body></body></html>";
+				$htmlContent = "<html><head><meta name='viewport' content='initial-scale=1, maximum-scale=1'><meta http-equiv='refresh' content='0; url=http://plugin.wireflydesign.com/run/ticket/offlineDelegateReport?uid=" . $_POST['uid'] . "&event=" .  $_POST['event'] . "' /></head><body></body></html>";
 				file_put_contents($linkPath, $htmlContent);
 				$message = "<b>" . $model->title . "</b><br><br>Please click on the link below to access the report<br>This will be valid for 90 days<br><br><a href='" . $linkUrl . "'>Click here</a><br>";
+				// phpmailer
+				$mail = new PHPMailer();
+				$mail->AddAddress($to);
+				$mail->SetFrom($from, $fromName);
+				$mail->AddReplyTo($from, $fromName);
+				$mail->Subject = $subject;
+				$mail->MsgHTML($message);
+				if (!$mail->Send())
+				{
+					Yii::log("REPORT PAGE COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
+					echo "<div id=\"mailerrors\">Mailer Error: " . $mail->ErrorInfo . "</div>";
+				}
+				else
+					Yii::log("REPORT RESEND PAGE SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+				$this->redirect(array('admin'));
+			} else if ((isset($_POST['android'])) && (trim($_POST['android']) != "") && (isset($_POST['uid'])) && (trim($_POST['uid']))) {
+				$model=$this->loadModel($_POST['event']);
+				$to = $_POST['android'];
+				$from = "no-reply@wireflydesign.com";
+				$fromName = "Ticket scanner app download";
+				$subject = "Link to the android scanner app for " . $model->title;
+				$linkUrl = "http://plugin.wireflydesign.com/ticket/app/scanner.html?appdata=" . Yii::app()->session['sid'] . "-" . $_POST['event'];
+				$message = "<html><head><meta name='viewport' content='initial-scale=1, maximum-scale=1'></head><body><b>" . $model->title . "</b><br><br>Please click on the link below to go to the download area for the android app<br>This will be valid for 90 days<br><br><a href='" . $linkUrl . "'>Click here</a><br></body></html>";
 				// phpmailer
 				$mail = new PHPMailer();
 				$mail->AddAddress($to);

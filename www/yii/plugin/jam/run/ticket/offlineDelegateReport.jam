@@ -41,8 +41,10 @@
 					<th> Tickets </th>
 				</tr>
 				<tr>
-					<td> {{@html inp keyaction searchNameAction null tablebody 'small uk-form-width-medium-small'}} </td>
-					<td> {{@html inp keyaction searchPostcodeAction null tablebody 'small uk-form-width-small-small}} </td>
+					<td> {{@html text field=search.name size=small }} </td>
+					<td> {{@html text field=search.postcode size=small }} </td>
+<!--				<td> {{@html inp keyaction searchNameAction null tablebody 'small uk-form-width-medium-small'}} </td> -->
+<!--				<td> {{@html inp keyaction searchPostcodeAction null tablebody 'small uk-form-width-small-small}} </td> -->
 					<td> </td>
 				</tr>
 			</thead>
@@ -54,8 +56,15 @@
 
 <script>
 $(document).ready(function(){
-	runAction('searchNameAction', 'keyaction=', 'tablebody');
+	runAction('searchNameAction', ['keyaction='], 'tablebody');
 });
+
+function onKeyUp_search_name(obj) {
+    runAction('searchNameAction', ['keyaction='+obj.value], 'tablebody');
+}
+function onKeyUp_search_postcode(obj) {
+    runAction('searchPostcodeAction', ['keyaction='+obj.value], 'tablebody');
+}
 </script>
 
 {{@action searchNameAction}}

@@ -60,9 +60,7 @@ angular.module('stock')
 
 		var validInput = function() {
 			$scope.errorMsg = '';
-			if ($scope.item.code === '')
-				$scope.errorMsg = 'Code cant be blank';
-			else if ($scope.item.name === '')
+			if ($scope.item.name === '')
 				$scope.errorMsg = 'Name cant be blank';
 
 			if ($scope.errorMsg) {
@@ -114,7 +112,6 @@ angular.module('stock')
 
 		if ($scope.$parent.editMode == "add") {
 			initCustomerEditing();
-			$scope.item.code = "";
 			$scope.item.name = "";
 			$scope.item.address1 = "";
 			$scope.item.address2 = "";
