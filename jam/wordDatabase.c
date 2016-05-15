@@ -430,8 +430,10 @@ logMsg(LOGDEBUG, "wordDatabaseNewItem setting up field: [%s]", row[0]);
 		if ((!seekVar) || (!strcasecmp(row[0], "id")))
 			strcat(valueStr, "NULL");
 		else {
-			sprintf(tmp, "'%s'", seekVar->portableValue);
+			char *quoted =  escapeSingleQuote(seekVar->portableValue);
+			sprintf(tmp, "'%s'", quoted);
 			strcat(valueStr, tmp);
+			free(quoted);
 		}
 	}
 	sprintf(qStr,"INSERT INTO %s (", tableName);
@@ -534,8 +536,10 @@ int wordDatabaseAmendItem(int ix, char *defaultTableName) {
 			continue;
 		if (strlen(nvpStr) != 0)
 			strcat(nvpStr, ", ");
-		sprintf(tmp, "%s = '%s'", row[0], seekVar->portableValue);
+		char *quoted =  escapeSingleQuote(seekVar->portableValue);
+		sprintf(tmp, "%s = '%s'", row[0], quoted);
 		strcat(nvpStr, tmp);
+		free(quoted);
 	}
 	sprintf(qStr,"UPDATE %s SET %s WHERE id = '%s'", tableName, nvpStr, idVar->portableValue);
 	logMsg(LOGDEBUG, "item amend about to issue query [%s]", qStr);

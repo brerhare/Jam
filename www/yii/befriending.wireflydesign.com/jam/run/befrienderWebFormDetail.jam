@@ -1,0 +1,115 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@Xinclude /jam/run/menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center nomargin css='max-width:900px; padding:0}}
+
+	{{@get befriender filter id = befriender.id}}
+	{{@get global filter id = befriender.global_id}}
+
+	<style type="text/css">
+		label {text-align: right; width:150px !important}
+		div.uk-form-controls {margin-left: 170px !important}
+	</style>
+
+	<center> <h3> Befriender Web enquiry form - Initial details </h3> </center>
+
+	<form name="inputForm_befriender" class="uk-form uk-form-horizontal">
+		<input type="hidden" name="befriender.id" value="{{befriender.id}}">
+		<input type="hidden" name="global.id" value="{{befriender.global_id}}">
+
+		{{@html gridrow start}}
+			{{@html gridcol start width=5-10}}
+
+				{{@html date field=befriender.enquired size=medium label='Enquiry Date' group=inp}}
+				{{@html dropdown field=befriender.enquiry_method_id pickfield=enquiry_method.description size=small label='Enquiry method'}}
+				{{@html text field=global.forename size=large label='Forename' group=inp}}
+				{{@html text field=global.surname size=large label='Surname' group=inp}}
+				{{@html text field=global.house size=medium label='house' group=inp}}
+				{{@html text field=global.street size=medium label='Street' group=inp}}
+				{{@html text field=global.area size=medium label='Area' group=inp}}
+				{{@html text field=global.town size=medium label='Town' group=inp}}
+				{{@html text field=global.postcode size=medium label='Postcode' group=inp}}
+				{{@html text field=global.landline size=medium label='Land line' group=inp}}
+				{{@html text field=global.mobile size=medium label='Mobile' group=inp}}
+				{{@html text field=global.email size=medium label='Email' group=inp}}
+				{{@html radio field=befriender.gender label='Gender' options=0:Male,1:Female group=inp}}
+				{{@html date field=befriender.dob size=medium label='Birth date' group=inp}}
+				{{@html dropdown field=befriender.employment_status_id pickfield=employment_status.description size=small label='Employment Status'}}
+				{{@html dropdown field=befriender.heardabout_id pickfield=heardabout.from_where size=small label='Heard About'}}
+
+			{{@html gridcol end}}
+			{{@html gridcol start width=5-10}}
+				{{@XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXhtml text field=befriender.match_limit size=mini label='Match Capacity' group=inp}}
+				<br>
+				<h4> <center>Emergency Contact Info </center></h4>
+				{{@html text field=befriender.emergency_name size=medium label='Name' group=inp}}
+				{{@html text field=befriender.emergency_phone size=medium label='Phone' group=inp}}
+				{{@html text field=befriender.emergency_relationship size=medium label='Relationship' group=inp}}
+				<br>
+				{{@XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXhtml textarea field=befriender.notes size=30x5 label=Notes}}
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+
+		{{@html gridrow start}}
+			{{@html gridcol start width=1-1}}
+				<br>
+				<center>
+					<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="saveButtonClick()">Next</button> 
+					<button type='button' id='cancelButton' class="uk-button uk-button-primary" onClick="cancelButtonClick()">Cancel</button> 
+				</center>
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+
+	</form>
+
+<script>
+window.onload = function() {
+	// Create onChange functions for all form inputs - will be called by fn()
+	var groupArr = getGroupArray('inp');
+	for (var i = 0; i < groupArr.length; i++) {
+		name = "onChange_" + groupArr[i].name.replace(/_/g, "");
+		name = name.replace(".", "_");
+	}
+}
+
+function saveButtonClick() {
+	objName = get('global.forename');
+	if (objName.value == "") {
+		alert('Name cannot be blank');
+		return;
+	}
+	objName = get('global.surname');
+	if (objName.value == "") {
+		alert('Name cannot be blank');
+		return;
+	}
+	runAction('update_befriender', ['inputForm_befriender'], '', updated);
+}
+
+function cancelButtonClick() {
+	window.top.location.href = "http://befriending.wireflydesign.com/run/menu.jam";
+	//runAction('update_befriender', ['inputForm_befriender'], '', updated);
+}
+
+function updated() {
+	objId = get('befriender.id');
+	//alert(objId.value);
+	window.top.location.href = "http://befriending.wireflydesign.com/run/befrienderWebFormAdditional.jam?befriender.id="+objId.value;
+}
+
+</script>
+
+{{@action update_befriender}}
+	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
+	{{befriender.global_id = global.id}}
+	{{@update item befriender notify=ok}}
+{{@end}}
+
+{{@html container end}}
+
+{{@include /jam/sys/html/footer.html}}

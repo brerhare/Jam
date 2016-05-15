@@ -1,63 +1,42 @@
-<!-- Place your Google fonts here as a cut and paste then choose which header and fonts etc need the font families - NB if the family only come in Italic then you must state the font style as Italic too -->
-
-<link href='https://fonts.googleapis.com/css?family=Droid+Sans|Italiana' rel='stylesheet' type='text/css'>
+<!-- Google fonts
+<link href='//fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+-->
 
 <style type="text/css">
 
+html, body {
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
 
-html, h2, h4, body, p {	height: 100%;
-				padding: 0%;
-				margin: 0%;
-				border: 0px;
-				line-height: 140%;}
+html * {
+   /*font-size: 1em !important;*/
+   /*font-family: Arial !important;*/
+	font-family: 'Raleway', sans-serif !important;
+	/*color:#00ff00 !important;*/
+}
 
-/* Global Hyperlink settings - will affect menu text colour if no text settings */ 
-a { text-decoration: none; color:#af2626; }
-a:visited, a:active { text-decoration: none; color:#af2626; }
-a:hover { text-decoration: none; color:#525252; }
+a { color:#000000 } /* Globally */
+a:visited { text-decoration: none; color:#000000; }
+a:hover { text-decoration: none; color:#000000; }
+a:focus { text-decoration: none; color:#000000; }
+a:hover, a:active { text-decoration: none; color:0###000 }
 
-
-
-h1 {	font-family: 'Italiana', Verdana, sans-serif !important;
-	color: #822626;
-	font-size: 36px;
-	font-weight: 700;
-	line-height: 100%;}
-
-h2 {	font-family: 'Droid Sans', Verdana, sans-serif !important;
-	color: #525252;
-	font-size: 18px;
-	font-weight: 400;
-	font-style: italic;}
-
-
-h3 {	font-family: 'Italiana', Verdana, sans-serif !important;
-	color: #822626;
-	font-size: 20px;
-	font-weight: 700;
-	font-stretch: wider;}
-
-h4 {	font-family: 'Italiana', Verdana, sans-serif !important;
-	color: #822626;
-	font-size: 16px;
-	font-weight: 700;
-	font-stretch: wider;}
-
-p  {	font-family: 'Droid Sans', Verdana, sans-serif !important;
+h1 {color: #000000; }
+h2 {color: #000000; }
+h3 {
 	color: #000000;
-	font-size: 14px;
-	font-weight: normal
-	font-stretch: expanded}
+	margin-top:5px;
+	margin-bottom:5px
+}
+h4 {
+	color: #000000;
+	margin-top:0px;
+	margin-bottom:0px
+}
 
-blockquote {font-family: 'Droid Sans', Verdana, sans-serif !important;
-	color: #5b5b5b;
-	font-size: 14px;
-	font-style: italic;
-	font-weight: 300}
-
-
-html { font-family: 'Droid Sans', Verdana, sans-serif !important;
-	font-size: 12px;
-	font-weight:normal}
+html { font-size: 14px;}
 
 </style>
