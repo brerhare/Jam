@@ -1,0 +1,17 @@
+domain = members.beingbusiness.co.uk
+parentdomain = beingbusiness.co.uk
+sitetitle = Being Business Members
+sid = members
+
+# Database
+dbname = members_beingbusiness_co_uk
+dbuser = beingbusiness.co
+dbpass = 4ffvj7gbv
+
+# Shopping cart order confirmation email
+checkoutemail = info@wireflydesign.com
+checkoutname = Being Business Members
+
+# Backend page editor
+editorpagewidth = 800
+editorpageheight = 500

@@ -1,0 +1,188 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@Xinclude /jam/run/menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:900px; Xpadding:0}}
+
+<!-- List component -->
+
+<style>
+.rowHighlight:hover {
+  background-color: #ddf0ff;
+  cursor:pointer;
+}
+</style>
+
+{{@get befriender filter id = befriender.id}}
+
+<br>
+
+<div name="befriender_documentation_form">
+	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+		<tr>
+			<th> Document Type </th>
+			<th> Expiry Date </th>
+			<th> Reference </th>
+			<th> Not Applicable </th>
+			<th> File Name </th>
+			<th>
+				<button class="uk-button uk-button-mini uk-button-success" onClick="runAction('befrienderDocumentationEdit?befriender_documentation.id=0&befriender.id={{befriender.id}}', [], 'befriender_documentation_form')"> <i class="uk-icon-plus"></i> New </button>
+			</th>
+		</tr>
+{{@each befriender_documentation filter befriender_id = befriender.id}}
+	{{@get befriender_documentation_type filter id = befriender_documentation.befriender_documentation_type_id}}
+		<tr class="rowHighlight" onClick="runAction('befrienderDocumentationEdit?befriender_documentation.id={{befriender_documentation.id}}&befriender.id={{befriender.id}}', [], 'befriender_documentation_form')">
+			<td>{{befriender_documentation_type.name}}</td>
+			<td>{{befriender_documentation.expiry_date}}</td>
+			<td>{{befriender_documentation.reference}}</td>
+			<td>{{befriender_documentation.na}}</td>
+			<td> <a href="http://befriending.wireflydesign.com:/jam/uploads/forms/befriender/documentation/{{befriender.id}}_{{befriender_documentation.file}}" target="_blank">{{befriender_documentation.file}}</a> </td>
+			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_befrienderDocumentation('{{befriender_documentation.id}}','{{befriender_documentation_type.name}}')"> <i class="uk-icon-trash"></i></button> </td>
+		</tr>
+{{@end}}
+	</table>
+</div>
+<br>
+
+<script>
+function confirmDelete_befrienderDocumentation(id, displayInfo) {
+	window.event.cancelBubble = true;	// Prevent any further events
+	var result = confirm('Confirm delete of item ' + id + ' ' + displayInfo);
+	if (result)
+		runAction('delete_befriender_documentation', ['id='+id], '', postUpdate);
+}
+function postUpdate() {
+	runJam();
+}
+</script>
+
+{{@action delete_befriender_documentation}}
+	{{@get befriender_documentation filter id = id}}
+	{{@remove item befriender_documentation notify=ok}}
+{{@end}}
+
+<!-- Form input component -->
+
+{{@action befrienderDocumentationEdit}}
+	{{@get befriender filter id = befriender.id}}
+	{{@get befriender_documentation filter id = befriender_documentation.id}}
+	{{befriender_documentation.befriender_id = befriender.id}}
+
+	<style type="text/css">
+		label {text-align: right;}
+	</style>
+
+	<form name="inputForm_befriender_documentation" class="uk-form uk-form-horizontal">
+		<input type="hidden" name="befriender_documentation.id" value="{{befriender_documentation.id}}">
+		<input type="hidden" name="befriender_documentation.befriender_id" value="{{befriender.id}}">
+		<input type="hidden" name="befriender_documentation.file" value="{{befriender_documentation.file}}">
+
+		{{@html gridrow start}}
+			{{@html gridcol start width=5-5}}
+
+                    <label class="uk-form-label" for="mem.upload"> File </label>
+                    <div class="uk-form-controls">
+
+					<div class="uk-form-file"> <input type="file" onChange="fileUploadDocumentation(this)"></div>
+
+					{{@Xhtml button Upload primary small
+						runAction('update_befriender_documentation', ['inputForm_form_upload_file'], '', postUpdate)
+					}}
+						
+                    </div>
+
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+
+		{{@html gridrow start}}
+			{{@html gridcol start width=5-5}}
+                    <!-- @@EG: dropdown outside of the jam -->
+                    <label class="uk-form-label" for="befriender_documentation.form_type_id"> Type </label>
+                    <div class="uk-form-controls">
+                        <select id="ID1___befriender_documentation" name="befriender_documentation.befriender_documentation_type_id" onchange="fn(this, event);" onkeyup="fn(this, event);" class="uk-form-width-medium ROW_{{sys.sequence}} ">
+                        {{tmp.selected = }}
+                        {{@each befriender_documentation_type filter id = befriender_documentation.befriender_documentation_type_id}}
+                            <option value="{{befriender_documentation_type.id}}" selected> {{befriender_documentation_type.name}} </option>
+                        {{@end}}
+                        {{@each befriender_documentation_type filter id != befriender_documentation.befriender_documentation_type_id}}
+                            <option value="{{befriender_documentation_type.id}}"> {{befriender_documentation_type.name}} </option>
+                        {{@end}}
+                        </select>
+                    </div>
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+
+
+		{{@html gridrow start}}
+			{{@html gridcol start width=5-5}}
+				{{@html text field=befriender_documentation.reference size=large label='Reference'}}
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+		{{@html gridrow start}}
+			{{@html gridcol start width=5-5}}
+				{{@html date field=befriender_documentation.expiry_date size=medium label='Expiry Date'}}
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+		{{@html gridrow start}}
+			{{@html gridcol start width=5-5}}
+				{{@html checkbox field=befriender_documentation.na label='N/A'}}
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+		{{@html gridrow start}}
+			{{@html gridcol start width=1-1}}
+				<br>
+				<center>
+					{{@html button Save primary medium
+						runAction('update_befriender_documentation', ['inputForm_befriender_documentation'], '', postUpdate)
+					}}
+					{{@html button Cancel primary medium
+						runJam();
+					}}
+				</center>
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+	</form>
+{{@end}}
+
+{{@action update_befriender_documentation}}
+	{{@update item befriender_documentation notify=ok}}
+{{@end}}
+
+{{@html container end}}
+
+<script>
+function fileUploadDocumentation(obj) {
+	$.blockUI();
+	var file = obj.files[0];
+	var evObj = get('befriender.id');
+//alert(evObj.value);
+    console.log("name : " + file.name);
+    console.log("size : " + file.size);
+    console.log("type : " + file.type);
+    console.log("date : " + file.lastModified)
+	var url = 'http://befriending.wireflydesign.com:/jam/uploads/uploadBefrienderDocumentation.php?befrienderId=' + evObj.value;
+	var xhr = new XMLHttpRequest();
+	var fd = new FormData();
+	xhr.open("POST", url, true);
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			console.log(xhr.responseText); // handle response.
+			fileObj = get('befriender_documentation.file');
+			fileObj.value = file.name;
+			$.unblockUI();
+		}
+		else {
+			$.unblockUI();
+		}
+	};
+	fd.append("upload_file", file);
+	xhr.send(fd);
+}
+
+</script>
+
+{{@include /jam/sys/html/footer.html}}

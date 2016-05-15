@@ -78,6 +78,45 @@ class SiteController extends Controller
 		$this->render('contact',array('model'=>$model));
 	}
 
+// @@TODO: HARDCODED FOR ORIGINALYOU ---------- REMOVE
+    public function actionOriginalYouDirect()
+    {
+        Yii::app()->session['uid'] = 92;
+        $identity = new UserIdentity('LifeEditor', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR SENWICK ---------- REMOVE
+    public function actionSenwickDirect()
+    {
+        Yii::app()->session['uid'] = 102;
+        $identity = new UserIdentity('Kerry', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
+    /**
+     * Displays the DIRECT login page
+     */
+// @@TODO: HARDCODED FOR BEIRC ---------- REMOVE
+    public function actionBeircDirect()
+    {
+        Yii::app()->session['uid'] = 20;
+        $identity = new UserIdentity('beirc', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
     /**
      * Displays the DIRECT login page
      */
@@ -225,7 +264,7 @@ class SiteController extends Controller
     public function actionCocoaDirect()
     {
         Yii::app()->session['uid'] = 91;
-        $identity = new UserIdentity('s.dawson984@btinternet.com', 'site2plugin');
+        $identity = new UserIdentity('SDawson', 'site2plugin');
         $identity->authenticate();
         $duration = 3600*24*14; // 14 days
         Yii::app()->user->login($identity, $duration);

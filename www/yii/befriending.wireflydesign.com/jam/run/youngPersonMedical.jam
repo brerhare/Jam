@@ -28,78 +28,126 @@
 				<td> </td>
 				<td style='text-align:left'> Yes </td>
 				<td style='text-align:left'> No </td>
-				<td style='text-align:left'> N/A </td>
+				<td style='text-align:left'> Dont Know </td>
 				<td style='text-align:left'> Yes </td>
 				<td style='text-align:left'> No </td>
-				<td style='text-align:left'> N/A </td>
+				<td style='text-align:left'> Dont Know </td>
 			</td>
 {{@each medical_type}}
             <tr>
 				<td> {{medical_type.name}} </td>
-				<td> <input type='radio' name='one'> </td>
-				<td> <input type='radio' name='one'> </td>
-				<td> <input type='radio' name='one'> </td>
-				<td> <input type='radio' name='two'> </td>
-				<td> <input type='radio' name='two'> </td>
-				<td> <input type='radio' name='two'> </td>
+
+	<!-- Young person buttons -->
+
+	{{tmp.checked = ''}}
+	{{@each medical filter young_person_id = young_person.id, medical_type_id = medical_type.id, yp_radio = 1}}
+		{{tmp.checked = checked}}
+	{{@end}}
+				<td> <input type='radio' name='{{medical_type.id}}_yp' id='{{medical_type.id}}_yp_1' {{tmp.checked}}  class='inp'> </td>
+
+	{{tmp.checked = ''}}
+	{{@each medical filter young_person_id = young_person.id, medical_type_id = medical_type.id, yp_radio = 2}}
+		{{tmp.checked = checked}}
+	{{@end}}
+				<td> <input type='radio' name='{{medical_type.id}}_yp' id='{{medical_type.id}}_yp_2' {{tmp.checked}}  class='inp'> </td>
+
+	{{tmp.checked = ''}}
+	{{@each medical filter young_person_id = young_person.id, medical_type_id = medical_type.id, yp_radio = 3}}
+		{{tmp.checked = checked}}
+	{{@end}}
+				<td> <input type='radio' name='{{medical_type.id}}_yp' id='{{medical_type.id}}_yp_3' {{tmp.checked}}  class='inp'> </td>
+
+	<!-- Parent carer buttons -->
+
+	{{tmp.checked = ''}}
+	{{@each medical filter young_person_id = young_person.id, medical_type_id = medical_type.id, pc_radio = 1}}
+		{{tmp.checked = checked}}
+	{{@end}}
+				<td> <input type='radio' name='{{medical_type.id}}_pc' id='{{medical_type.id}}_pc_1' {{tmp.checked}}  class='inp'> </td>
+
+	{{tmp.checked = ''}}
+	{{@each medical filter young_person_id = young_person.id, medical_type_id = medical_type.id, pc_radio = 2}}
+		{{tmp.checked = checked}}
+	{{@end}}
+				<td> <input type='radio' name='{{medical_type.id}}_pc' id='{{medical_type.id}}_pc_2' {{tmp.checked}}  class='inp'> </td>
+
+	{{tmp.checked = ''}}
+	{{@each medical filter young_person_id = young_person.id, medical_type_id = medical_type.id, pc_radio = 3}}
+		{{tmp.checked = checked}}
+	{{@end}}
+				<td> <input type='radio' name='{{medical_type.id}}_pc' id='{{medical_type.id}}_pc_3' {{tmp.checked}}  class='inp'> </td>
+
             </tr>
 {{@end}}
         </table>
 
-		<br>
-			<br>
-			Medication<br>
-			<textarea cols="80" rows="2" name="x" placeholder="Medication" class="ROW_793940 inp"></textarea>
-		<br>
-			<br>
-			Medical condition notes<br>
-			<textarea cols="80" rows="6" name="x" placeholder="Medical condition notes" class="ROW_793940 inp"></textarea>
-			<br><br>
+{{@get medical_notes filter young_person_id = young_person.id}}
+			{{@html textarea field=medical_notes.medication size=80x3 label=Medication}}
+			{{@html textarea field=medical_notes.notes size=80x5 label=Notes}}
+	<br>
+	<center>
+		<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="saveButtonClicked(this)">Save</button> </td>
+	</center>
     </div>
 
 <script>
 window.onload = function() {
-	// Create onChange functions for all form inputs - will be called by fn()
-	var groupArr = getGroupArray('inp');
-	for (var i = 0; i < groupArr.length; i++) {
-		name = "onChange_" + groupArr[i].name.replace(/_/g, "");
-		name = name.replace(".", "_");
-		//alert(name);
-		window[name] = function (obj) {
-			document.getElementById('saveButton').disabled = false;
-		}
-	}
-	//document.getElementById('saveButton').disabled = true;
-}
-function disableButton(me) {
-	//me.disabled = true;
 }
 
-function sav(str) {
-	str = str + '';
-//alert(str);
-	var x = str.split('|');
-	//alert(x[0]);
-	//alert(x[1]);
+function saveButtonClicked(obj) {
+    runAction('deleteAllMedical',['young_person.id'], '', addNotes);
+}
+
+function addNotes() {
+	notesObj = get('medical_notes.notes');
+	medicationObj = get('medical_notes.medication');
+	runAction('addNotes', ['young_person.id', 'notes='+notesObj.value, 'medication='+medicationObj.value], '', addAll);
+}
+
+function addAll() {
+	var groupArr = getGroupArray('inp');
+	for (var i = 0; i < groupArr.length; i++) {
+		var medical_id_arr = groupArr[i].name.split('_');
+
+		ypVal = 0;
+		pcVal = 0;
+		for (var j = 1; j < 4; j++) {
+			ypId = medical_id_arr[0] + '_' + 'yp_'+j;
+			pcId = medical_id_arr[0] + '_' + 'pc_'+j;
+			if (document.getElementById(ypId).checked)
+				ypVal = j;
+			if (document.getElementById(pcId).checked)
+				pcVal = j;
+		}
+		if ((ypVal != 0) || (pcVal != 0))
+			runAction('addMedical', ['young_person.id', 'medical_type_id='+medical_id_arr[0], 'ypval='+ypVal, 'pcval='+pcVal]);
+		//alert('medical_type='+medical_id_arr[0]+' and yp='+ypVal+' and pc='+pcVal);
+	}
 }
 
 </script>
 
-{{@action update_young_person}}
-	{{@Xupdate item answer_young_person}}         <!-- first update the link table (inserts wont have its id yet)
-{{@end}}
-
-{{@action email_young_person}}
-	{{@get young_person filter id = young_person.id}}
-	{{@get global filter id = young_person.global_id}}
-	{{@email k@microboot.com {{global.email}}  'Befriending referral form for {{global.forename}} {{global.surname}}' action:emailContent}}
-	Email sent
-{{@end}}
-
-{{@action emailContent}}
-	Whatever is here gets used as the mmail body content. <br>It will be a link like <a href="http://befriending.wireflydesign.com/run/referralForm.jam?accesskey=gj3x9dsmcNcj2hvgsxz3sjpOvR">this</a> to click on.
-{{@end}}
-
 {{@html container end}}
+
+{{@action deleteAllMedical}}
+    {{@sql delete from medical where young_person_id = {{young_person.id}} }}
+{{@end}}
+
+{{@action addMedical}}
+    {{medical.young_person_id = young_person.id}}
+    {{medical.medical_type_id = medical_type_id}}
+	{{medical.yp_radio = ypval}}
+	{{medical.pc_radio = pcval}}
+    {{@new item medical notify=ok}}
+{{@end}}
+
+{{@action addNotes}}
+    {{@get medical_notes filter young_person_id = young_person.id}}
+    {{@remove item medical_notes}}
+    {{medical_notes.young_person_id = young_person.id}}
+    {{medical_notes.notes = notes}}
+    {{medical_notes.medication = medication}}
+    {{@new item medical_notes notify=ok}}
+{{@end}}
 
 {{@include /jam/sys/html/footer.html}}
