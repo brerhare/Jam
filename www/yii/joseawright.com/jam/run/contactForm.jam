@@ -1,0 +1,73 @@
+{{@include /jam/sys/html/header.html}}
+
+	{{@database plugin}}
+
+<style>
+	body {
+		display:none
+	}
+	.uk-form * {
+		font-family: 'Pontano Sans', Arial, sans-serif !important;
+		color: #25519c !important;
+	}
+	.uk-form input, textarea {
+		border-radius: 5px !important;
+		margin-bottom:3px !important;
+		border: 2px solid #ef7f18 !important;
+	}
+	.uk-form button {
+		margin-top:3px !important;
+		Xmargin-bottom:8px !important;
+		color: #ffffff !important;
+		background: #f0801e !important;
+	}
+	.uk-form button:hover {
+		background: #f28d15 !important;
+	}
+</style>
+
+<form name="contactForm" class="uk-form">
+	{{@html hidden field=jelly.sid}}
+	{{@html hidden field=jelly.email}}
+	{{@html text field=mailer_member.first_name size=large placeholder=Name}}
+	{{@html text field=mailer_member.email_address size=large placeholder=Email}}
+	{{@html textarea field=var.message size=60x5 placeholder=Message}}
+	{{@html text field=mailer_member.telephone size=large placeholder=Phone}}
+	{{@html button SUBMIT primary .uk-width-1-1 
+		runAction('sendMessage', ['contactForm'], 'contactForm')
+	}}
+</form>
+
+<script>
+$(window).load(function() {
+	$("body").show();
+	//$("body").fadeIn("slow");
+/*
+	document.getElementById("mailer_member.first_name").addEventListener("change", function() {
+		val = document.getElementById("mailer_member.first_name").value;
+alert('['+val+']');
+			if ((val == null) || (val == "")) {
+			alert("Name is required");
+			return false;
+		}
+	});
+*/
+
+
+});
+</script>
+
+{{@action sendMessage}}
+	{{@get admin_user filter sid = jelly.sid}}
+	{{@get mailer_list filter uid = admin_user.id}}
+	{{mailer_member.uid = admin_user.id}}
+	{{mailer_member.active = 1}}
+	{{mailer_member.mailer_list_id = mailer_list.id}}
+	{{@new item mailer_member}}
+
+	{{@email {{jelly.email}} {{jelly.email}} 'Website enquiry: Jo Seawright.com' You have a new enquiry from your website joseawright.com. The contact details for this message will be stored in your website newsletter mailing list. The message is  below.<br><br><div style='background-color:#70bbd9; color:#153643'><b> Name: {{mailer_member.first_name}} <br>Email: {{mailer_member.email_address}} <br>Message: {{var.message}} <br>Telephone: {{mailer_member.telephone}}<br></b></div>  }}
+
+	<center><p><br><br><br><b>Thank you {{mailer_member.first_name}}!</b><br>We will get back to you shortly</p></center>
+{{@end}}
+
+{{@include /jam/sys/html/footer.html}}
