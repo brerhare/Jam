@@ -23,7 +23,7 @@
 		{{@html hidden field=young_person.id}}
 
 			{{@each question_young_person}}
-			{{@get answer_young_person filter question_id = question_young_person.id, young_person_id = young_person.id}}
+				{{@get answer_young_person filter question_id = question_young_person.id, young_person_id = young_person.id}}
 				{{@html gridrow start}}
 				{{@html gridcol start width=1-1}}
 					{{question_young_person.question}}
@@ -33,8 +33,10 @@
 				{{@html gridrow start}}
 				{{@html gridcol start width=1-1}}
 
-<textarea cols="80" rows="2" name="answer_young_person.answer" placeholder="" class="ROW_793940 inp" onchange="sav('{{question_young_person.id}}|{{answer_young_person.id}}');"></textarea>
+				<textarea cols="80" rows="2" id='{{question_young_person.id}}' placeholder="" class="inp"> {{answer_young_person.answer}} </textarea>
+
 					{{@Xhtml textarea field=answer_young_person.answer size=80x2 group='inp'}}
+
 				{{@html gridcol end}}
 				{{@html gridrow end}}
 			{{@end}}
@@ -45,55 +47,40 @@
 			{{@html gridcol start width=1-1}}
 				<br>
 				<center>
-					<button type='button' id='saveButton' class="uk-button uk-button-primary" onXXXXClick="runAction('update_young_person', ['inputForm_young_person'], '', disableButton(this))">Save</button> </td>
+					<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="saveButtonClick(this)">Save</button> </td>
 				</center>
 			{{@html gridcol end}}
 		{{@html gridrow end}}
 
 	</form>
 
+{{@action deleteAllAnswers}}
+    {{@sql delete from answer_young_person where young_person_id = {{young_person.id}} }}
+{{@end}}
+
+{{@action addAnswer}}
+    {{answer_young_person.young_person_id = young_person.id}}
+    {{answer_young_person.question_id = question.id}}
+	{{answer_young_person.answer = answer}}
+    {{@new item answer_young_person notify=ok}}
+{{@end}}
+
 <script>
 window.onload = function() {
-	// Create onChange functions for all form inputs - will be called by fn()
-	var groupArr = getGroupArray('inp');
-	for (var i = 0; i < groupArr.length; i++) {
-		name = "onChange_" + groupArr[i].name.replace(/_/g, "");
-		name = name.replace(".", "_");
-		//alert(name);
-		window[name] = function (obj) {
-			document.getElementById('saveButton').disabled = false;
-		}
-	}
-	//document.getElementById('saveButton').disabled = true;
-}
-function disableButton(me) {
-	//me.disabled = true;
 }
 
-function sav(str) {
-	str = str + '';
-//alert(str);
-	var x = str.split('|');
-	//alert(x[0]);
-	//alert(x[1]);
+function saveButtonClick(obj) {
+	runAction('deleteAllAnswers',['young_person.id'], '', addAll);
+}
+
+function addAll() {
+ 	var groupArr = getGroupArray('inp');
+	for (var i = 0; i < groupArr.length; i++) {
+		runAction('addAnswer', ['young_person.id', 'question.id='+groupArr[i].id, 'answer='+groupArr[i].value]);
+	}
 }
 
 </script>
-
-{{@action update_young_person}}
-	{{@Xupdate item answer_young_person}}         <!-- first update the link table (inserts wont have its id yet)
-{{@end}}
-
-{{@action email_young_person}}
-	{{@get young_person filter id = young_person.id}}
-	{{@get global filter id = young_person.global_id}}
-	{{@email k@microboot.com {{global.email}}  'Befriending referral form for {{global.forename}} {{global.surname}}' action:emailContent}}
-	Email sent
-{{@end}}
-
-{{@action emailContent}}
-	Whatever is here gets used as the mmail body content. <br>It will be a link like <a href="http://befriending.wireflydesign.com/run/referralForm.jam?accesskey=gj3x9dsmcNcj2hvgsxz3sjpOvR">this</a> to click on.
-{{@end}}
 
 {{@html container end}}
 

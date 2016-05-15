@@ -1,0 +1,30 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/menu.jam}}
+
+<style>
+	div { width:600px; }
+</style>
+
+{{@database befriending_wireflydesign_com}}
+
+<!-- Template defines -->
+{{@template TABLE question_befriender}}
+{{@template DESCRIPTION Additional Questions}}
+{{@template DELETEFIELD question_befriender.question}}
+
+{{@template HEADINGS
+	<th> Befriender Additional Questions </th>
+}}
+
+{{@template COLUMNS
+	<td> {{@html text field=question_befriender.question size=large}} </td>
+}}
+
+{{@template EDITS question}}
+
+<!-- Include the template -->
+{{@include /jam/run/sys/crudInline.jam}}
+
+{{@include /jam/sys/html/footer.html}}

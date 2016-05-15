@@ -99,6 +99,6 @@ return array(
 		// this is used in contact page
 		'adminEmail'=>'webmaster@wireflydesign.com',
 		'jellyRoot' => '/scripts/jelly/',
-		'sid' => '',
+		'sid' => '7c8tvscb5t0dba4v484fbaqmn1',
 	),
 );

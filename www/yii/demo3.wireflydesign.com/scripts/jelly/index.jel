@@ -1,273 +1,262 @@
 #Demo 3
+#Original You
 [defaults]
 include = default-values
-
-# Every blob inherits these before adding/overriding
 
 [* : defaults]
 
 [screen]
 child = site
-css.background-color = white
 css.display = block
 
 	[site]
-	child = header, site-content
+	child = home-page, main, footer
 	css.width = 100%
-
-####  Header  #################################
-
-	[header]
-	child = header-content
-#	css.height = 200px
-	css.background-color = #a7877f
-
-	
-		[header-content]
-		child = logo, slider
-		css.width = 80%
-		css.min-width = 900px
-		css.margin-top = 25px
-		stacking = horizontal
 		
-			[logo]
-			css.width = 15%
-			css.margin-top = 20px
-			image.url = img/logo-2.png
-			image.width = 100%
-			image.height = 78%
-			click = ?layout=index&page=index
-			
-			[slider]
-			addon.slider.flexslider.slider = 2
-			css.width = 70%
-			css.margin-left = 10%
-			css.margin-bottom = -40px
-			addon.slider.flexslider.width = 100%
-			addon.slider.flexslider.height = 10%
-			addon.slider.flexslider.mode = image
-			addon.slider.flexslider.source = db
-
-			addon.slider.flexslider.border-width = 0px
-			addon.slider.flexslider.border-color = red
-			#addon.slider.flexslider.active-dotcolor = red
-			#addon.slider.flexslider.inactive-dotcolor = blue
-			#addon.slider.flexslider.dot-margin-top = -200px
-			#addon.slider.flexslider.dot-margin-bottom = 0px
-			#addon.slider.flexslider.dot-margin-left = 0px
-			#addon.slider.flexslider.dot-margin-right = 0px
-			#addon.slider.flexslider.animation = fade
-			#addon.slider.flexslider.mode = HTML
-
-			
-#### Site Content ##############################
-
-[site-content]
-child = left-column, pages
-stacking = horizontal
-css.width = 80%
-css.min-width = 900px
-
-	[left-column]
-	child = menu
-	css.width = 24%
-	css.margin-top = 20px
-	
-	
-		[menu]
-		css.width = 250px
-		css.overflow = visible
-
-#// Top level basic settings
-		addon.menu.traditional.orientation = vertical
-#		addon.menu.traditional.width = // blank or a px value. uses 100% of container width if a px isnt specified
-#		addon.menu.traditional.height = 40px
-		addon.menu.traditional.align = left
-		addon.menu.traditional.item-margin = 0px
-		addon.menu.traditional.item-width = uniform
-#// Top level background settings
-#		addon.menu.traditional.menu-rounding = 4px
-#		addon.menu.traditional.menu-opacity = 0%
-		addon.menu.traditional.menu-color = transparent 
-		addon.menu.traditional.item-separator-width = 0px
-		addon.menu.traditional.item-separator-color = white
-		addon.menu.traditional.item-separator-tile = /img/menu.jpg
-		addon.menu.traditional.item-separator-stretch = /img/menu.jpg
-		addon.menu.traditional.edgepadding = 0px
-		
-#// Top level font settings
-		addon.menu.traditional.menu-font-size = 14px
-		addon.menu.traditional.menu-font-family = Open Sans
-		addon.menu.traditional.menu-font-weight = bold
-		addon.menu.traditional.menu-text-color = #795f56
-
-#// Top level hover settings
-		addon.menu.traditional.menu-hover-text-color = #ea6f9d
-		addon.menu.traditional.menu-hover-background-color = white
-		addon.menu.traditional.menu-hover-font-size = 14px
-		addon.menu.traditional.menu-hover-font-family = Open Sans
-		addon.menu.traditional.menu-hover-font-weight = normal
-
-#// Top level selected settings
-		addon.menu.traditional.menu-selected-text-color = #f9dbe6
-		addon.menu.traditional.menu-selected-background-color = white
-		addon.menu.traditional.menu-selected-font-size = 14px
-		addon.menu.traditional.menu-selected-font-family = Open Sans
-		addon.menu.traditional.menu-selected-font-weight = normal
-
-#// Second level settings
-		addon.menu.traditional.submenu-height = 30px
-		addon.menu.traditional.submenu-width = variable
-		addon.menu.traditional.submenu-font-size = 12px
-		addon.menu.traditional.submenu-font-family = Open Sans
-		addon.menu.traditional.submenu-font-weight = normal
-		addon.menu.traditional.submenu-text-color = #795f56
-		addon.menu.traditional.submenu-background-color = #f9dbe6
-#		addon.menu.traditional.submenu-background-tile = /img/menu.jpg
-#		addon.menu.traditional.submenu-background-stretch = /img/menu.jpg
-		addon.menu.traditional.submenu-separator-width = 1px
-		addon.menu.traditional.submenu-separator-color = #795f56
-
-
-######## body #######################################
-			
-
-	[pages]
-	child = home-page, content, contact	
-	css.width = 72%
-	css.margin-top = 30px
-	
 		[home-page]
 		condition = @PAGE=@HOMEPAGE
-		child = home-left, home-mid, home-right
+		child = video, overlay
 		css.width = 100%
-		stacking = horizontal
+		css.height = 450px
 		
-			[home-left]
-			css.width = 33%
-			addon.global.column.name = home-left
-			addon.global.column.width = 100%
-			addon.global.column.internal-width = 100%
-			addon.global.column.content-width = 95%
-			addon.global.column.internal-color = transparent
-			addon.global.column.background-color = transparent
+			[video]
+#			css.background-color = #cda66f
+			css.width = 100%
+			css.height = 400px
+#			addon.video.simple.thumb = /img/chandelier.jpg
+#			addon.video.simple.width = 100%
+#			addon.video.simple.video = /img/chandelier
+#			addon.video.simple.loop = yes
+#			addon.video.simple.poster = /img/chandelier.jpg
+css.background-image = url('/img/chandelier.jpg')
+			css.z-index = -10
+			css.position = fixed
+			css.margin-top = 0px
 			
-			[home-mid]
-			css.width = 33%
-			addon.global.column.name = home-mid
-			addon.global.column.width = 100%
-			addon.global.column.internal-width = 100%
-			addon.global.column.content-width = 95%
-			addon.global.column.internal-color = transparent
-			addon.global.column.background-color = transparent
+			[overlay]
+			child = menu, logo
+			css.z-index = 100
+			css.position = relative
 			
-			[home-right]
-			css.width = 33%
-			addon.global.column.name = home-right
-			addon.global.column.width = 100%
-			addon.global.column.internal-width = 100%
-			addon.global.column.content-width = 95%
-			addon.global.column.internal-color = transparent
-			addon.global.column.background-color = transparent
+				[menu]
+				child = smart-menu, icons
+				css.width = 100%
+				css.height = 100px
+				css.background-image = url('/img/menubg.png')
+				css.background-size = 100% 100%
+				
+					[smart-menu]
+					css.width = 95%
+					css.max-width = 1100px
+				
+			
+					[icons]
+					child = facebook, twitter, email
+					css.width = 40px
+					css.margin-left = 90%
+					
+						[facebook]
+						css.width = 100%
+						image.url = /img/facebook.png
+						image.width = 100%
+						image.height = 100%
+						clicknew = https://www.facebook.com/
+						
+						[twitter]
+						css.margin-top = 15px
+						css.width = 100%
+						image.url = /img/pinterest.png
+						image.width = 100%
+						image.height = 100%
+						clicknew = https://pinterest.com/
+						
+						[email]
+						css.margin-top = 15px
+						css.width = 100%
+						image.url = /img/mail.png
+						image.width = 100%
+						image.height = 100%
+						click = ?layout=index&page=contact
+				
 
+
+				
+				[logo]
+				css.margin-top = 35px
+				css.width = 40%
+				image.url = /img/logo.png
+				image.width = 100%
+				image.height = 100%
 			
-		[content]
-		db.table = ContentBlock
-		db.filter = url=$_GET['page']
-		db.error = Sorry, I could not find the page $_GET['page']
-		html.raw = ContentBlock.content
 		
-		[contact]
-		condition = @PAGE=contact
+#### Main ######################	
+		
+[main]
+child = pages
+css.width = 100%
+css.background-color = white
+css.z-index = 100
+		
+	[pages]	
+	child = main-content, right-column
+	css.width = 95%
+	css.max-width = 1100px
+	stacking = horizontal
 
-
-####footer####################################
-
+		[main-content]
+		child = content, blog, contact
+		css.margin-top = 30px
+		css.width = 60%
+		css.margin-bottom = 10px
+		
+		
+			[content]
+			condition = @PAGE!=contact
+			db.table = ContentBlock
+			db.filter = url=$_GET['page']
+			db.error = Sorry, I could not find the page $_GET['page']
+			html.raw = ContentBlock.content
+			
+			[blog]
+			condition = @PAGE=blog
+			html.raw = {{news newstype=pinterest sidebar=right}}
+			
+			[contact]
+			child = contact-content, contact-container
+			condition = @PAGE=contact
+			stacking = horizontal
+			
+				[contact-content]
+				css.width = 50%
+				db.table = ContentBlock
+				db.filter = url=$_GET['page']
+				db.error = Sorry, I could not find the page $_GET['page']
+				html.raw = ContentBlock.content
+				
+				[contact-container]
+				child = contact-text, contact-form
+				css.width = 45%
+				css.margin-left = 4%
+				
+					[contact-text]
+					addon.global.column.name = contact-text
+					addon.global.column.width = 100%
+					addon.global.column.internal-width = 100%
+					addon.global.column.content-width = 100%
+					addon.global.column.internal-color = transparent
+					addon.global.column.background-color = transparent
+					addon.global.column.top-height = 0px
+					addon.global.column.bottom-height = 5px
+				
+					[contact-form]
+					css.text-align = center
+					css.min-height = 325px
+					css.background-color = white
+					jam.iframe-height = 300px
+					jam.iframe = /run/contactForm.jam
+				
+		[right-column]
+		css.width = 25%
+		css.min-width = 200px
+		css.margin-left = 14%
+		css.margin-top = 20px
+		addon.global.column.name = right-global
+		addon.global.column.width = 100%
+		addon.global.column.internal-width = 100%
+		addon.global.column.content-width = 100%
+		addon.global.column.internal-color = transparent
+		addon.global.column.background-color = transparent
+		addon.global.column.top-height = 0px
+		addon.global.column.bottom-height = 5px
+		
+		
+#### Footer ##################################################		
+		
 [footer]
 child = footer-content
-css.margin-top = 40px
-css.margin-left = 20px
-css.padding-bottom = 50px
 css.width = 100%
-css.background-color = #a7877f
+css.background-color = #bca498
+#css.height = 15%
+#css.min-width = 800px
 
-
-		[footer-content]
+	[footer-content]
 	child = footer-left, footer-right
 	css.width = 80%
 	css.margin-top = 20px
 	css.min-width = 600px
 	stacking = horizontal
-
+	
 		[footer-left]
-		child = footer-cookies, footer-tandc, footer-contact, copyright
-		css.height = 150px
+		child = footer-logo, footer-column
+		css.margin-top = 10px
 		css.width = 49%
-		css.line-height = 25px
+	
+			[footer-logo]
+			image.url = /img/web-logo.png
+			image.width = 100%
+			image.height = 16%
+			click = ?layout=index&page=index
 
-			[footer-cookies]
-			html.raw = Cookie Policy
-			css.color = #000000
-			css.font-size = 11px
-			click = ?layout=index&page=cookie-policy
-
-			[footer-tandc]
-			html.raw = Terms & Privacy
-			css.color = #000000
-			css.font-size = 11px
-			click = ?layout=index&page=terms-conditions
-
-			[footer-contact]
-			html.raw = Contact
-			css.color = #000000
-			click = ?layout=index&page=contact
-			
-			[copyright]
-			css.margin-top = 20px
-			css.line-height = 1em
-			html.raw = Susie Jamieson</br>Creative Therapies &copy 2015</br>All rights reserved
-			css.color = #000000
-			css.font-size = 11px
-			css.text-align = left
+			[footer-column]
+			css.width = 70%
+			css.margin = 20px 0px 0px 0px
+			addon.global.column.name = footer
+			addon.global.column.width = 100%
+			addon.global.column.internal-width = 100%
+			addon.global.column.content-width = 98%
+			addon.global.column.internal-color = transparent
+			addon.global.column.background-color = transparent
+			addon.global.column.top-height = 5px
+			addon.global.column.bottom-height = 5px
 			
 		[footer-right]
-		child = wirefly
+		child = standard-links, wirefly
 		css.width = 49%
 		css.margin-top = 30px
 		css.line-height = 25px
 		
-
-		[wirefly]
-		child = wirefly-logo, admin
-		stacking = horizontal
-		css.margin-top = 20px
-		css.float = right
-
+			[standard-links]
+			addon.global.column.name = footer-right
+			addon.global.column.width = 100%
+			addon.global.column.internal-width = 100%
+			addon.global.column.content-width = 100%
+			addon.global.column.internal-color = transparent
+			addon.global.column.background-color = transparent
+			addon.global.column.top-height = 0px
+			addon.global.column.bottom-height = 5px
 		
-			[wirefly-logo]
-			css.height = 45px
-			css.margin-top = 5px
-			image.url = img/wirefly-design.png
-			image.width = 100px
-			image.height = 46px
-			image.align = left
-			clicknew = http://www.wireflydesign.com
+
+			[wirefly]
+			child = wirefly-logo, admin
+			stacking = horizontal
+			css.margin-top = 20px
+			css.float = right
+
 			
-		
-			[admin]
-			child = cog-center
-			css.height = 20px
-			css.width = 20px
-			css.background-size = 100%
-			css.background-image = url('/img/admin.png')
-			css.margin-left = -20px
+				[wirefly-logo]
+				css.height = 45px
+				css.margin-top = 5px
+				image.url = img/wirefly-design.png
+				image.width = 100px
+				image.height = 46px
+				image.align = left
+				clicknew = http://www.wireflydesign.com
+				
+			
+				[admin]
+				child = cog-center
+				css.height = 20px
+				css.width = 20px
+				css.background-size = 100%
+				css.background-image = url('/img/admin.png')
+				css.margin-left = -20px
 
-				[cog-center]
-				css.width = 5px
-				css.height = 5px
-				css.margin-top = 8px
-				image.url = img/cog-center.png
-				image.width = 5px
-				image.height = 5px
-				image.align = center
-				clicknew = backend.php
+					[cog-center]
+					css.width = 5px
+					css.height = 5px
+					css.margin-top = 8px
+					image.url = img/cog-center.png
+					image.width = 5px
+					image.height = 5px
+					image.align = center
+					clicknew = backend.php

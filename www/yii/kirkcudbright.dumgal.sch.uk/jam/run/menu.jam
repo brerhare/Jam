@@ -1,0 +1,44 @@
+{{@database kirkcudbright_dumgal_sch_uk}}
+
+{{@template BACKCOLOR_FROM #e6ddbc}}
+{{@template BACKCOLOR_TO #d9d0b1}}
+{{@template ACTIVECOLOR_FROM white}}
+{{@template ACTIVECOLOR_TO white}}
+{{@template ARROWCOLOR #822626}}
+{{@template CORNERPIXELS 0}}
+{{@template MAINTEXTCOLOR #525252}}
+{{@template SUBTEXTCOLOR #8f795b}}
+
+{{@template MENU
+	<ul id="main-menu" class="sm sm-blue">
+	{{@each content_block filter parent_id = 0, active = 1}}
+		<li> <a href="?layout=index&page={{url}}"> {{title}} </a>
+		{{openUL2 = <ul>}}
+		{{closeUL2 = ''}}
+		{{@each content_block filter parent_id = id, active = 1}}
+			{{openUL2}}
+			{{openUL2 = ''}}
+			<li> <a href="?layout=index&page={{url}}"> {{title}} </a>
+
+			{{openUL3 = <ul>}}
+			{{closeUL3 = ''}}
+			{{@each content_block filter parent_id = id, active = 1}}
+				{{openUL3}}
+				{{openUL3 = ''}}
+				<li> <a href="?layout=index&page={{url}}"> {{title}} </a> </li>
+				{{closeUL3 = </ul>}}
+			{{@end}}
+			{{closeUL3}}
+			</li>
+
+			{{closeUL2 = </ul>}}
+		{{@end}}
+		{{closeUL2}}
+		</li>
+	{{@end}}
+	</ul>
+}}
+
+<!-- Call the addon -->
+{{@include /jam/run/sys/smartMenu.jam}}
+

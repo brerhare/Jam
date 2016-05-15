@@ -66,9 +66,9 @@ class JellyColumn extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'column_name' => 'Column Name',
+			'column_name' => 'Content ID',
 			'sequence' => 'Sequence',
-			'title' => 'Title',
+			'title' => 'Description',
 			'content' => 'Content',
 		);
 	}
