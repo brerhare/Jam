@@ -1,4 +1,5 @@
-@import url(http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700);
+@XXXimport url(http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700);
+@import url(http://fonts.googleapis.com/css?family=FONTDOWNLOAD);
 
 /* original colors BACKCOLOR_FROM #3b9fce, BACKCOLOR_TO #2b82ac */
 /* CURRENTCOLOR_FROM #005678, CURRENTCOLOR_TO  #007aab */
@@ -8,6 +9,9 @@
 {{@template ACTIVECOLOR_FROM #9dbbcb}}
 {{@template ACTIVECOLOR_TO #5c696f}}
 {{@template ARROWCOLOR #2e2e2e}}
+{{@template CORNERPIXELS 2}}
+{{@template MAINTEXTCOLOR #000000}}
+{{@template SUBTEXTCOLOR #000000}}
 
 /* @@TODO These next two dont seem to affect anything at all */
 {{@template CURRENTCOLOR_FROM #80ff80}}
@@ -15,14 +19,14 @@
 
 .sm-blue {
   background: transparent;
-  -webkit-border-radius: 8px;
-  -moz-border-radius: 8px;
-  -ms-border-radius: 8px;
-  -o-border-radius: 8px;
-  border-radius: 8px;
-  -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  -webkit-border-radius: CORNERPIXELSpx;
+  -moz-border-radius: CORNERPIXELSpx;
+  -ms-border-radius: CORNERPIXELSpx;
+  -o-border-radius: CORNERPIXELSpx;
+  border-radius: CORNERPIXELSpx;
+  -XXXwebkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  -XXXmoz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  XXXbox-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 }
 .sm-blue a, .sm-blue a:hover, .sm-blue a:focus, .sm-blue a:active {
   padding: 10px 20px;
@@ -34,13 +38,14 @@
   background-image: -moz-linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
   background-image: -o-linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
   background-image: linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
-  color: white;
-  font-family: "PT Sans Narrow", "Arial Narrow", Arial, Helvetica, sans-serif;
-  font-size: 18px;
+  color: SUBTEXTCOLOR;
+  XXXfont-family: "PT Sans Narrow", "Arial Narrow", Arial, Helvetica, sans-serif;
+  font-family: FONTFAMILY;
+  font-size: FONTSIZEpx;
   font-weight: bold;
   line-height: 23px;
   text-decoration: none;
-  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
+  XXXtext-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
 }
 .sm-blue a.current {
   background: #006892;
@@ -65,7 +70,7 @@
   overflow: hidden;
   font: bold 16px/34px monospace !important;
   text-align: center;
-  text-shadow: none;
+  XXXtext-shadow: none;
   background: rgba(0, 0, 0, 0.1);
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -78,22 +83,22 @@
   content: '-';
 }
 .sm-blue > li:first-child > a, .sm-blue > li:first-child > :not(ul) a {
-  -webkit-border-radius: 8px 8px 0 0;
-  -moz-border-radius: 8px 8px 0 0;
-  -ms-border-radius: 8px 8px 0 0;
-  -o-border-radius: 8px 8px 0 0;
-  border-radius: 8px 8px 0 0;
+  -webkit-border-radius: CORNERPIXELSpx CORNERPIXELSpx 0 0;
+  -moz-border-radius: CORNERPIXELSpx CORNERPIXELSpx 0 0;
+  -ms-border-radius: CORNERPIXELSpx CORNERPIXELSpx 0 0;
+  -o-border-radius: CORNERPIXELSpx CORNERPIXELSpx 0 0;
+  border-radius: CORNERPIXELSpx CORNERPIXELSpx 0 0;
 }
 .sm-blue > li:last-child > a, .sm-blue > li:last-child > *:not(ul) a, .sm-blue > li:last-child > ul,
 .sm-blue > li:last-child > ul > li:last-child > a, .sm-blue > li:last-child > ul > li:last-child > *:not(ul) a, .sm-blue > li:last-child > ul > li:last-child > ul,
 .sm-blue > li:last-child > ul > li:last-child > ul > li:last-child > a, .sm-blue > li:last-child > ul > li:last-child > ul > li:last-child > *:not(ul) a, .sm-blue > li:last-child > ul > li:last-child > ul > li:last-child > ul,
 .sm-blue > li:last-child > ul > li:last-child > ul > li:last-child > ul > li:last-child > a, .sm-blue > li:last-child > ul > li:last-child > ul > li:last-child > ul > li:last-child > *:not(ul) a, .sm-blue > li:last-child > ul > li:last-child > ul > li:last-child > ul > li:last-child > ul,
 .sm-blue > li:last-child > ul > li:last-child > ul > li:last-child > ul > li:last-child > ul > li:last-child > a, .sm-blue > li:last-child > ul > li:last-child > ul > li:last-child > ul > li:last-child > ul > li:last-child > *:not(ul) a, .sm-blue > li:last-child > ul > li:last-child > ul > li:last-child > ul > li:last-child > ul > li:last-child > ul {
-  -webkit-border-radius: 0 0 8px 8px;
-  -moz-border-radius: 0 0 8px 8px;
-  -ms-border-radius: 0 0 8px 8px;
-  -o-border-radius: 0 0 8px 8px;
-  border-radius: 0 0 8px 8px;
+  -webkit-border-radius: 0 0 CORNERPIXELSpx CORNERPIXELSpx;
+  -moz-border-radius: 0 0 CORNERPIXELSpx CORNERPIXELSpx;
+  -ms-border-radius: 0 0 CORNERPIXELSpx CORNERPIXELSpx;
+  -o-border-radius: 0 0 CORNERPIXELSpx CORNERPIXELSpx;
+  border-radius: 0 0 CORNERPIXELSpx CORNERPIXELSpx;
 }
 .sm-blue > li:last-child > a.highlighted, .sm-blue > li:last-child > *:not(ul) a.highlighted,
 .sm-blue > li:last-child > ul > li:last-child > a.highlighted, .sm-blue > li:last-child > ul > li:last-child > *:not(ul) a.highlighted,
@@ -115,9 +120,9 @@
 .sm-blue ul a, .sm-blue ul a:hover, .sm-blue ul a:focus, .sm-blue ul a:active {
   background: transparent;
   color: BACKCOLOR_TO;
-  font-size: 16px;
-  text-shadow: none;
-  border-left: 8px solid transparent;
+  font-size: FONTSIZEpx;
+  XXXtext-shadow: none;
+  border-left: CORNERPIXELSpx solid transparent;
 }
 .sm-blue ul a.current {
   background: #006892;
@@ -205,14 +210,14 @@
     background-image: -moz-linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
     background-image: -o-linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
     background-image: linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
-    -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
-    -ms-border-radius: 8px;
-    -o-border-radius: 8px;
-    border-radius: 8px;
-    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    -webkit-border-radius: CORNERPIXELSpx;
+    -moz-border-radius: CORNERPIXELSpx;
+    -ms-border-radius: CORNERPIXELSpx;
+    -o-border-radius: CORNERPIXELSpx;
+    border-radius: CORNERPIXELSpx;
+    -XXXwebkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    -XXXmoz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    XXXbox-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
   }
   .sm-blue a, .sm-blue a:hover, .sm-blue a:focus, .sm-blue a:active, .sm-blue a.highlighted {
     padding: 13px 24px;
@@ -222,7 +227,7 @@
     background-image: -moz-linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
     background-image: -o-linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
     background-image: linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
-    color: white;
+    color: MAINTEXTCOLOR;
   }
   .sm-blue a:hover, .sm-blue a:focus, .sm-blue a:active, .sm-blue a.highlighted {
     background: BACKCOLOR_TO;
@@ -273,11 +278,11 @@
     display: none;
   }
   .sm-blue > li:first-child > a, .sm-blue > li:first-child > :not(ul) a {
-    -webkit-border-radius: 8px 0 0 8px;
-    -moz-border-radius: 8px 0 0 8px;
-    -ms-border-radius: 8px 0 0 8px;
-    -o-border-radius: 8px 0 0 8px;
-    border-radius: 8px 0 0 8px;
+    -webkit-border-radius: CORNERPIXELSpx 0 0 CORNERPIXELSpx;
+    -moz-border-radius: CORNERPIXELSpx 0 0 CORNERPIXELSpx;
+    -ms-border-radius: CORNERPIXELSpx 0 0 CORNERPIXELSpx;
+    -o-border-radius: CORNERPIXELSpx 0 0 CORNERPIXELSpx;
+    border-radius: CORNERPIXELSpx 0 0 CORNERPIXELSpx;
   }
   .sm-blue > li {
     border-left: 1px solid BACKCOLOR_TO;
@@ -294,9 +299,9 @@
     -ms-border-radius: 0 0 4px 4px;
     -o-border-radius: 0 0 4px 4px;
     border-radius: 0 0 4px 4px;
-    -webkit-box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
-    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+    -XXXwebkit-box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+    -XXXmoz-box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+    XXXbox-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
   }
   .sm-blue ul ul {
     -webkit-border-radius: 4px;
@@ -310,7 +315,7 @@
     border: 0 !important;
     padding: 9px 23px;
     background: transparent;
-    color: BACKCOLOR_TO;
+    color: SUBTEXTCOLOR;
   }
   .sm-blue ul a:hover, .sm-blue ul a:focus, .sm-blue ul a:active, .sm-blue ul a.highlighted {
     background: ACTIVECOLOR_FROM;
@@ -319,7 +324,7 @@
     background-image: -moz-linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
     background-image: -o-linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
     background-image: linear-gradient(to bottom, BACKCOLOR_FROM, BACKCOLOR_TO);
-    color: white;
+    color: SUBTEXTCOLOR;
   }
   .sm-blue ul a.current {
     background: #006892;
@@ -360,11 +365,11 @@
     position: absolute;
     top: -2px;
     left: 50%;
-    margin-left: -8px;
+    margin-left: -CORNERPIXELSpx; /* kim? */
     width: 0;
     height: 0;
     overflow: hidden;
-    border-width: 8px;
+    border-width: CORNERPIXELSpx; /* kim? */
     border-style: dashed dashed solid dashed;
     border-color: transparent transparent BACKCOLOR_TO transparent;
   }
@@ -380,11 +385,11 @@
     border-color: transparent ARROWCOLOR transparent transparent;
   }
   .sm-blue.sm-rtl > li:first-child > a, .sm-blue.sm-rtl > li:first-child > :not(ul) a {
-    -webkit-border-radius: 0 8px 8px 0;
-    -moz-border-radius: 0 8px 8px 0;
-    -ms-border-radius: 0 8px 8px 0;
-    -o-border-radius: 0 8px 8px 0;
-    border-radius: 0 8px 8px 0;
+    -webkit-border-radius: 0 CORNERPIXELSpx CORNERPIXELSpx 0;
+    -moz-border-radius: 0 CORNERPIXELSpx CORNERPIXELSpx 0;
+    -ms-border-radius: 0 CORNERPIXELSpx CORNERPIXELSpx 0;
+    -o-border-radius: 0 CORNERPIXELSpx CORNERPIXELSpx 0;
+    border-radius: 0 CORNERPIXELSpx CORNERPIXELSpx 0;
   }
   .sm-blue.sm-rtl > li:first-child {
     border-left: 1px solid BACKCOLOR_TO;
@@ -399,9 +404,9 @@
     border-color: transparent ARROWCOLOR transparent transparent;
   }
   .sm-blue.sm-vertical {
-    -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    -XXXwebkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    -XXXmoz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+    XXXbox-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   }
   .sm-blue.sm-vertical a {
     padding: 9px 23px;
@@ -417,18 +422,18 @@
     border-color: transparent transparent transparent ARROWCOLOR;
   }
   .sm-blue.sm-vertical > li:first-child > a, .sm-blue.sm-vertical > li:first-child > :not(ul) a {
-    -webkit-border-radius: 8px 8px 0 0;
-    -moz-border-radius: 8px 8px 0 0;
-    -ms-border-radius: 8px 8px 0 0;
-    -o-border-radius: 8px 8px 0 0;
-    border-radius: 8px 8px 0 0;
+    -webkit-border-radius: CORNERPIXELSpx CORNERPIXELSpx 0 0;
+    -moz-border-radius: CORNERPIXELSpx CORNERPIXELSpx 0 0;
+    -ms-border-radius: CORNERPIXELSpx CORNERPIXELSpx 0 0;
+    -o-border-radius: CORNERPIXELSpx CORNERPIXELSpx 0 0;
+    border-radius: CORNERPIXELSpx CORNERPIXELSpx 0 0;
   }
   .sm-blue.sm-vertical > li:last-child > a, .sm-blue.sm-vertical > li:last-child > :not(ul) a {
-    -webkit-border-radius: 0 0 8px 8px;
-    -moz-border-radius: 0 0 8px 8px;
-    -ms-border-radius: 0 0 8px 8px;
-    -o-border-radius: 0 0 8px 8px;
-    border-radius: 0 0 8px 8px;
+    -webkit-border-radius: 0 0 CORNERPIXELSpx CORNERPIXELSpx;
+    -moz-border-radius: 0 0 CORNERPIXELSpx CORNERPIXELSpx;
+    -ms-border-radius: 0 0 CORNERPIXELSpx CORNERPIXELSpx;
+    -o-border-radius: 0 0 CORNERPIXELSpx CORNERPIXELSpx;
+    border-radius: 0 0 CORNERPIXELSpx CORNERPIXELSpx;
   }
   .sm-blue.sm-vertical > li {
     border-left: 0 !important;
