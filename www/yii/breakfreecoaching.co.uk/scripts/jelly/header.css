@@ -12,15 +12,15 @@ html, body, p {	height: 100%;
 				line-height: 110%;}
 
 /* Global Hyperlink settings - will affect menu text colour if no text settings */ 
-a { text-decoration: underline; color:#8d3559; }
-a:visited { text-decoration: none; color:#8d3559; }
+a { text-decoration: underline; color:#86c753; }
+a:visited { text-decoration: none; color:#86c753; }
 a:hover { text-decoration: none; color:#000000; }
-a:active { text-decoration: none; color:#8d3559 }
+a:active { text-decoration: none; color:#86c753 }
 
 
 
-h1 {	font-family: 'Quicksand', Verdana, sans-serif !important;
-	color: #8d3559;
+h1 {	font-family: 'Open Sans', Verdana, sans-serif !important;
+	color: #86c753;
 	font-size: 34px;
 	font-weight: 700;
 	line-height: 110%;}
@@ -33,8 +33,8 @@ h2 {	font-family: 'Open Sans', Verdana, sans-serif !important;
 	line-height: 140%;}
 
 
-h3 {	font-family: 'Quicksand', Verdana, sans-serif !important;
-	color: #8d3559;
+h3 {	font-family: 'Open Sans', Verdana, sans-serif !important;
+	color: #86c753;
 	font-size: 20px;
 	font-weight: 700;
 	line-height: 110%;}
@@ -46,7 +46,7 @@ p  {	font-family: 'Open Sans', Verdana, sans-serif !important;
 	line-height: 150%;
 	font-stretch: expanded}
 	
-	li { font-family: 'Quicksand', Verdana, sans-serif !important;
+	li { font-family: 'Open Sans', Verdana, sans-serif !important;
 	color: #5b5b5b;
 	font-size: 16px;
 	font-weight: normal;
@@ -60,7 +60,7 @@ blockquote {font-family: 'Open Sans', Verdana, sans-serif !important;
 	font-weight: 300;
 	line-height: 140%;}
 
-html { font-family: 'Quicksand', Verdana, sans-serif !important;
+html { font-family: 'Open Sans', Verdana, sans-serif !important;
 	font-size: 16px;
 	font-weight:normal;
 	line-height: 140%;}

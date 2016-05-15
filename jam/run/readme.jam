@@ -146,7 +146,9 @@ NB onKeyUp is often used as a search filter in conjunction with an @action
 Optional for any - label, group, disabled
 
 {@html button Save primary small
-	alert('ok')     // or any js
+	alert('ok')     			// or any js
+	doMyFunction(obj)			// 'obj' is the buttons 'this' object
+	newObj = getSibling(obj)	// Get a field in the same row as the button as the ROW_ class is set for us
 	runJam
 	runJam supplierMaint.tpl
 	runAction updateSupplier, supplierForm, outputResult, alert('back from ajax')

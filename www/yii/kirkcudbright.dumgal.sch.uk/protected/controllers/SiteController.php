@@ -103,7 +103,7 @@ class SiteController extends Controller
             $ip = getenv("HTTP_X_FORWARDED_FOR");
         else if (getenv("REMOTE_ADDR"))
             $ip = getenv("REMOTE_ADDR");
-		$fileName = "/tmp/news_plugin_" . $ip . ".html";
+		$fileName = "/tmp/kbtnews_plugin_" . $ip . ".html";
 		
         file_put_contents($fileName, $content);
 
