@@ -325,45 +325,64 @@ css.padding-bottom = 20px
 #### Plug-in Pages ###########################
 
 		[page-plugins]
-		condition = @PAGE=products, news-6tyshades-beauty
-		child = plugin-top, plugin-mid, plugin-bottom
+		condition = @PAGE=products, news-6tyshades-beauty, checkout
+		child = plugin-skyline, plugin-top, plugin-mid, plugin-bottom
 		css.background-color = black
-		css.width = 70%
+		css.width = 66%
+		css.margin-left = 10px
 		css.min-width = 750px
+
+			[plugin-skyline]
+			css.width = 100%
+			css.height = 10%
+			image.url = img/skyline.png
+			image.width = 100%
+			image.height = 10%
 
 			[plugin-top]
 			css.width = 100%
 			css.height = 10%
-			image.url = img/whitebg-top.png
+			image.url = img/skyline-reflect.jpg
 			image.width = 100%
-			image.height = 10%			
+			image.height = 10%
 			
 			[plugin-mid]
 			child = product-content, news-content
 			css.width = 100%
-			css.background-size = 100%
-			css.background-image = url('/img/whitebg-mid.png')
-			css.background-repeat = repeat-y
+			css.margin-top = -50px
+			css.background-color = white
+#			css.background-size = 100%
+#			css.background-image = url('/img/skyline-reflect.png')
+#			css.background-repeat = no-repeat
 			
 				[product-content]
-				condition = @PAGE!=news-6tyshades-beauty
-				css.width = 95%
+				condition = @PAGE=products
+				css.width = 99%
 				html.raw = {{shop}}
 				css.overflow = visible
 				css.margin-top = -50px
 				
 				[news-content]
-				condition = @PAGE!=products
-				css.width = 95%
+				condition = @PAGE=news-6tyshades-beauty
+				css.width = 99%
 				html.raw = {{blog newstype=pinterest sidebar=right}}
+				css.overflow = visible
+				
+				[checkout]
+				condition = @PAGE=checkout
+				css.width = 99%
+				html.raw = {{checkout}}
 				css.overflow = visible
 			
 			[plugin-bottom]
 			css.width = 100%
 			css.height = 12%
-			image.url = img/whitebg-bottom.png
-			image.width = 100%
+			css.margin-top = -200px
+#			css.background-color = white
+			image.url = img/liberty.png
+			image.width = 10%
 			image.height = 12%
+			image.align = right
 
 		#### Contact Page ############################
 

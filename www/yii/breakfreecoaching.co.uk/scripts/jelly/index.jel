@@ -13,109 +13,78 @@ css.display = block
 
 	[site]
 	child = header, slider-area, pages, footer
-	css.max-width = 1200px
-	css.min-width = 800px
+	css.width = 80%
+	css.max-width = 1100px
 
 ####  Header  #################################
 
 	[header]
-	child = logo, menu-block
-	css.height = 230px
-	css.margin-top = 20px
-		css.max-width = 1200px
-		css.min-width = 800px
+	child = logo, menu
+	stacking = horizontal
 	
 		[logo]
-		#css.height = 120px
-		#css.max-width = 1200px
-		#css.min-width = 800px
-		#image.url = img/logo.png
-		#image.width = 1000px
-		#image.height = 113px
-		
-		css.width = 100%
-		css.background-size = 100%
-		css.background-image = url('/img/logo.png')
-		css.padding-top = 11.3%
-		css.background-repeat = no-repeat
-		#divide the height by the width for the proportional padding height
-		
+		css.width = 30%
+		css.min-width = 200px
+		image.url = img/green-logo.jpg
+		image.width = 100%
+		image.height = 36%
 		click = http://www.breakfreecoaching.co.uk
-			
 		
-		[menu-block]
-		child = menu-margin, menu
-		stacking = horizontal
+		
+		[menu]
+#		css.height = 50px
+		css.width = 60%
+		css.margin = 3% 0px 0px 5%
+		css.overflow = visible
 		css.z-index = 100
-		css.margin-top = -25px
+		css.position = relative
 		
-				[menu-margin]
-				css.max-width = 180px
-				css.min-width = 10%
-				css.height = 25px
-		
-		
-				[menu]
-				css.height = 50px
-				css.width = 750px
-				css.margin-left = 12%
-				css.overflow = visible
-				css.z-index = 100
-				#css.position = absolute
-				css.position = relative
+		addon.menu.basic.height = 30px
+####### Top level background settings (first colour is the top gradiation) ####
+		addon.menu.basic.menu-color = white
+		addon.menu.basic.item-separator-color = #ffffff
+		addon.menu.basic.item-separator-width = 0px
 
-				addon.menu.basic.height = 30px
+####### Top level font settings ####
+		addon.menu.basic.font-size = 24px
+		addon.menu.basic.menu-text-color = #86c753
+		addon.menu.basic.menu-text-weight = bold
 
-		####### Top level background settings (first colour is the top gradiation) ####
-				addon.menu.basic.menu-color = white
-				addon.menu.basic.item-separator-color = #ffffff
-				addon.menu.basic.item-separator-width = 0px
+####### Top level hover settings ####
+		addon.menu.basic.item-color = white
+		addon.menu.basic.item-text-color = black
 
-		####### Top level font settings ####
-				addon.menu.basic.font-size = 24px
-				addon.menu.basic.menu-text-color = #8d3559
-				addon.menu.basic.menu-text-weight = bold
+####### Second level background settings ####
+		addon.menu.basic.submenu-color = white
+		addon.menu.basic.subitem-separator-color = #86c753
 
-		####### Top level hover settings ####
-				addon.menu.basic.item-color = white
-				addon.menu.basic.item-text-color = black
-
-		####### Second level background settings ####
-				addon.menu.basic.submenu-color = white
-				addon.menu.basic.subitem-separator-color = #8d3559
-
-		####### Second level hover settings ####
-				addon.menu.basic.subitem-color = #f6f6f6
-				addon.menu.basic.subitem-text-color = #8d3559
+####### Second level hover settings ####
+		addon.menu.basic.subitem-color = #f6f6f6
+		addon.menu.basic.subitem-text-color = #86c753
 
 
 #### Slider ###########################################
 
 	[slider-area]
-	child = slider
 	condition = @PAGE=@HOMEPAGE
-	css.height = 550px
-	css.margin-top = -20px
+	css.width = 100%
+#	css.margin-top = -20px
+#	css.box-shadow = 10px 15px 10px rgba(0,0,0,0.2)
+	addon.slider.flexslider.width = 100%
+	addon.slider.flexslider.height = 100%
+	addon.slider.flexslider.mode = image
+	addon.slider.flexslider.source = db
 
-		[slider]
-		css.width = 800px
-		css.height = 510px
-		css.box-shadow = 10px 15px 10px rgba(0,0,0,0.2)
-		addon.slider.flexslider.width = 800px
-		addon.slider.flexslider.height = 510px
-		addon.slider.flexslider.mode = image
-		addon.slider.flexslider.source = db
-
-		#addon.slider.flexslider.border-width = 0px
-		#addon.slider.flexslider.border-color = red
-		#addon.slider.flexslider.active-dotcolor = red
-		#addon.slider.flexslider.inactive-dotcolor = blue
-		#addon.slider.flexslider.dot-margin-top = -200px
-		#addon.slider.flexslider.dot-margin-bottom = 0px
-		#addon.slider.flexslider.dot-margin-left = 0px
-		#addon.slider.flexslider.dot-margin-right = 0px
-		#addon.slider.flexslider.animation = fade
-		#addon.slider.flexslider.mode = HTML
+	addon.slider.flexslider.border-width = 0px
+	#addon.slider.flexslider.border-color = red
+	addon.slider.flexslider.active-dotcolor = #86c753
+	#addon.slider.flexslider.inactive-dotcolor = blue
+	#addon.slider.flexslider.dot-margin-top = -200px
+	#addon.slider.flexslider.dot-margin-bottom = 0px
+	#addon.slider.flexslider.dot-margin-left = 0px
+	#addon.slider.flexslider.dot-margin-right = 0px
+	#addon.slider.flexslider.animation = fade
+	#addon.slider.flexslider.mode = HTML
 
 
 ######## body #######################################
@@ -123,9 +92,7 @@ css.display = block
 
 	[pages]
 	child = contact 	
-	css.width = 780px
-	#css.margin-top = 40px
-	css.background-color = white
+	css.width = 100%
 	db.table = ContentBlock
 	db.filter = url=$_GET['page']
 	db.error = Sorry, I could not find the page $_GET['page']
@@ -159,85 +126,109 @@ css.display = block
 ####footer####################################
 
 [footer]
-child = social, footer-menu, copyright, wirefly
-css.height = 200px
-css.margin-top = 80px
-css.width = 800px
-css.color = #8d3559
+child = social, social-mob, footer-menu, copyright, wirefly
+css.width = 75%
 css.font-weight = bold
 css.font-size = 14px
 
 	[social]
 	child = social-left, fb-icon, twitter-icon, linkedin-icon, social-right
-	css.height = 50px
-	css.margin-top = 10px
+	css.margin-top = 30px
 	stacking = horizontal
+	css.margin-bottom = 30px
+	condition = @DEVICEWIDTH>401
 	
 		[social-left]
-		css,height = 50px
-		css.width = 40%
+		css.width = 41%
 		image.url = img/grey-line.jpg
-		image.width = 90%
-		image.height = 40px
+		image.width = 80%
+		image.height = 100%
 		image.align = center
 		
 		[fb-icon]
-		css,height = 50px
-		css.width = 50px
-		image.url = img/grey-fb.png
-		image.width = 40px
-		image.height = 40px
+		css.width = 6%
+		#image.url = img/grey-fb.png
+		image.width = 80%
+		image.height = 100%
 		image.align = center
-		clicknew = https://www.facebook.com/breakfreecoaching
+		#clicknew = https://www.facebook.com/breakfreecoaching
 		
 		[twitter-icon]
-		css,height = 50px
-		css.width = 50px
-		image.url = img/grey-twit.png
-		image.width = 40px
-		image.height = 40px
+		css.width = 6%
+		#image.url = img/grey-twit.png
+		image.width = 80%
+		image.height = 100%
 		image.align = center
-		clicknew = https://twitter.com/Breakfree_coach
+		#clicknew = https://twitter.com/Breakfree_coach
 		
 		[linkedin-icon]
-		css,height = 50px
-		css.width = 50px
-		image.url = img/grey-in.png
-		image.width = 40px
-		image.height = 40px
+		css.width = 6%
+		#image.url = img/grey-in.png
+		image.width = 80%
+		image.height = 100%
 		image.align = center
-		clicknew = https://www.linkedin.com/in/jacqulinebrown
+		#clicknew = https://www.linkedin.com/in/jacqulinebrown
 		
 		[social-right]
-		css,height = 50px
-		css.width = 40%
+		css.width = 41%
 		image.url = img/grey-line.jpg
-		image.width = 90%
-		image.height = 40px
+		image.width = 80%
+		image.height = 100%
 		image.align = center
+		
+	[social-mob]
+	child = fb-mob, twitter-mob, linkedin-mob
+	css.margin-top = 30px
+	css.width = 50%
+	stacking = horizontal
+	css.margin-bottom = 30px
+	condition = @DEVICEWIDTH<400
+		
+		[fb-mob]
+		css.width = 33%
+		#image.url = img/grey-fb.png
+		image.width = 80%
+		image.height = 100%
+		image.align = center
+		#clicknew = https://www.facebook.com/breakfreecoaching
+		
+		[twitter-mob]
+		css.width = 33%
+		#image.url = img/grey-twit.png
+		image.width = 80%
+		image.height = 100%
+		image.align = center
+		#clicknew = https://twitter.com/Breakfree_coach
+		
+		[linkedin-mob]
+		css.width = 33%
+		#image.url = img/grey-in.png
+		image.width = 80%
+		image.height = 100%
+		image.align = center
+		#clicknew = https://www.linkedin.com/in/jacqulinebrown
+		
 
 	[footer-menu]
 	child = footer-contact, footer-cookies, footer-tandc
 	condition = @PAGE!=@HOMEPAGE
-	css.height = 40px
-	css.width = 600px
-	css.margin-top = 10px
-	stacking = horizontal
+	css.width = 80%
+	stacking = horizontal	
 	
 		[footer-contact]
 		css.text-align = left
-		css.width = 33%
+		css.width = 35%
 		html.raw = <a style="text-decoration:none" href="?layout=index&page=contact">Contact</span>
 
 		[footer-cookies]
 		css.text-align = center
-		css.width = 33%
-		html.raw = <a style="text-decoration:none" href="?layout=index&page=cookie-policy">Cookie Policy</span>
+		css.width = 35%
+		html.raw = <a style="text-decoration:none" href="?layout=index&page=cookie-policy">Cookies</span>
 
 		[footer-tandc]
 		css.text-align = right
-		css.width = 33%
-		html.raw = <a style="text-decoration:none" href="?layout=index&page=terms-conditions">Terms & Conditions</span>
+		css.width = 30%
+		html.raw = <a style="text-decoration:none" href="?layout=index&page=terms-conditions">Terms</span>
 
 	
 	[copyright]
@@ -249,11 +240,39 @@ css.font-size = 14px
 	css.margin-top = 20px
 	
 	[wirefly]
-	css.height = 45px
 	condition = @PAGE!=@HOMEPAGE
-	image.url = img/wirefly-weblink.png
-	image.width = 150px
-	image.height = 40px
-	image.align = center
-	clicknew = http://www.wireflydesign.com
+	child = wirefly-logo, admin
+	stacking = horizontal
+	css.margin-top = 40px
+	css.margin-bottom = 20px
+
+		
+			[wirefly-logo]
+			css.width = 150px
+			css.margin-top = 5px
+			css.margin-left = 45%
+			image.url = img/wirefly-build.png
+			image.width = 100%
+			image.height = 46%
+			clicknew = http://www.wireflydesign.com
+			
+		
+			[admin]
+			child = cog-center
+			css.height = 20px
+			css.width = 20px
+			css.background-size = 100%
+			css.background-image = url('/img/admin.png')
+			css.margin-left = -20px
+			css.margin-top = 10px
+
+				[cog-center]
+				css.width = 5px
+				css.height = 5px
+				css.margin-top = 8px
+				#image.url = img/cog-center.png
+				image.width = 5px
+				image.height = 5px
+				image.align = center
+				clicknew = backend.php
 

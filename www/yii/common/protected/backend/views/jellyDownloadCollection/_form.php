@@ -24,4 +24,15 @@
 		)); ?>
 	</div>
 
+<div class="row" class="span8">
+        <?php $urlEmbed = "";
+        if (!($model->isNewRecord))
+        {
+            $urlEmbed .= "<b>Example code to embed this download collection in your pages</b><br/>";
+            $urlEmbed .= "<i>{{download collection " . $model->name . "}}</i>";
+            echo $urlEmbed;
+        }
+        ?>
+    </div>
+
 <?php $this->endWidget(); ?>

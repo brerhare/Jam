@@ -1,0 +1,30 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/menu.jam}}
+
+<style>
+	div { width:600px; }
+</style>
+
+{{@database befriending_wireflydesign_com}}
+
+<!-- Template defines -->
+{{@template TABLE befriender_documentation_type}}
+{{@template DESCRIPTION List the Different Types of Befriender Documentation}}
+{{@template DELETEFIELD befriender_documentation_type.name}}
+
+{{@template HEADINGS
+	<th> Documentation Types </th>
+}}
+
+{{@template COLUMNS
+	<td> {{@html text field=befriender_documentation_type.name size=medium}} </td>
+}}
+
+{{@template EDITS name}}
+
+<!-- Include the template -->
+{{@include /jam/run/sys/crudInline.jam}}
+
+{{@include /jam/sys/html/footer.html}}
