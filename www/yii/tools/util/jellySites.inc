@@ -40,6 +40,7 @@ $siteList = array (
 	'southwest-arb.co.uk'          => '/home/southwest-arb.co.uk/dev/src/www/yii/southwest-arb.co.uk',
 	'styleyourvenue.co.uk'         => '/home/styleyourvenue.co.uk/dev/src/www/yii/styleyourvenue.co.uk',
 	'susiejamieson.com'            => '/home/susiejamieson.com/dev/src/www/yii/susiejamieson.com',
+	'susanmckay.co.uk'             => '/home/susanmckay.co.uk/dev/src/www/yii/susanmckay.co.uk',
 	'test.wireflydesign.com'       => '/home/wireflydesign.com/domains/test.wireflydesign.com/dev/src/www/yii/test.wireflydesign.com',
 	'the-art-room.co.uk'           => '/home/the-art-room.co.uk/dev/src/www/yii/the-art-room.co.uk',
 	'theoriginalyoucompany.co.uk'			=> '/home/theoriginalyoucompany.co.uk/dev/src/www/yii/theoriginalyoucompany.co.uk',
