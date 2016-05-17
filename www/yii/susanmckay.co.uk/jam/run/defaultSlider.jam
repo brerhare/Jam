@@ -1,6 +1,7 @@
 {{@database susanmckay_co_uk}}
 
 {{@template OPTIONS - the default slider has none}}
+{{@template SHOWTIME 10000}}
 {{@template SLIDER
     {{@each jelly_slider_image order by sequence}}
             <div data-p="112.50" style="display: none;">
@@ -17,4 +18,4 @@
 }}
 
 <!-- Call the addon -->
-{{@include /jam/sys/addon/slider/jssor/index.html}}
+{{@include /jam/addon/slider/jssor/index.html}}
