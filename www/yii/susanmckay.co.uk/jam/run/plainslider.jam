@@ -1,0 +1,28 @@
+{{@database susanmckay_co_uk}}
+
+{{@template OPTIONS whatever options go here}}
+{{@template SHOWTIME 10000}}
+{{@template SLIDER
+	{{@each jelly_slider_image order by sequence}}
+            <div data-p="274.375" style="display: none;">
+                <img data-u="image" src="/userdata/jelly/sliderimage/{{image}}" />
+
+<!--
+                <div data-u="caption" data-t="0" style="position: absolute; top: 300px; left: 1700px; Xwidth: 250px; height: 40px; background-color: rgba(255,255,255,0.5); border-radius: 10px; font-family: Droid Sans; font-size: 24px; color: #000000; line-height: 30px; text-align: left; padding: 5px; box-sizing: border-box;">{{title}}</div>
+-->
+
+
+<!--
+					<a href="{{url}}">
+                	<img src="/jam/addon/slider/jssor/img/read-more.jpg" class="url-link" data-u="caption" data-t="1" style="position: absolute; top: 400px; left: 1700px; width: 150px; height: 75px;" />
+				</a>
+-->
+
+            </div>
+	{{@end}}
+}}
+
+<!-- Call the addon -->
+{{@include /jam/addon/slider/jssor/index.html}}
+
+{{@XXXXXinclude /jam/sys/html/footer.html}}

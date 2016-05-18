@@ -195,7 +195,6 @@ END_OF_FOOTER;
     {
 		if ($this->gotDeviceWidth() == -1)
 			return;
-//echo "XXXXXXXXXXXXXXXXXX " . $this->deviceWidth;
         $this->jellyRootPath = Yii::app()->basePath . "/../" . $jellyRoot;
         $this->jellyRootUrl  = Yii::app()->baseUrl . $jellyRoot;
         $this->genInlineHtml($content, $indentLevel=0);
@@ -342,40 +341,40 @@ END_OF_FOOTER;
 
     private function gotDeviceWidth()
     {
-		if ( (!(stristr($_SERVER['HTTP_HOST'], "1staid4u.co.uk")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "6tyshadesofbeauty.co.uk")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "absoluteclassics.co.uk")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "beirc.co.uk")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "brycewalkervending.com")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "craigieknowesgolfandteeroom.co.uk")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "dgbloodbikes.org.uk")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "dglink.co.uk")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "dgnews-sport.co.uk")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "dumfriesfurniture.com")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "elegantoriginals.co.uk")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "fadguide.com")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "fresherthantheudders.co.uk")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "holidayletservice.co.uk")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "horses.wireflydesign.com")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "jacquiesbeauty.co.uk")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "jardineroofingltd.co.uk")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "joseawright.com")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "knowledgebase.wireflydesign.com")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "mossheadpreschool.co.uk")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "opendoorsart.com")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "outlooksolutions.com.au")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "roselandcarehome.co.uk")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "rotarypeaceproject.com")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "senwickhouse.co.uk")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "southwest-arb.co.uk")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "styleyourvenue.co.uk")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "susiejamieson.com")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "the-art-room.co.uk")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "timtaylor-painter-decorator-tiler.co.uk")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "trade.weetarget.co.uk")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "weetarget.co.uk")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "wireflydesign.com")))
-			|| (!(stristr($_SERVER['HTTP_HOST'], "zoelifecoaching.co.uk"))) )
+		if ( ((stristr($_SERVER['HTTP_HOST'], "1staid4u.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "6tyshadesofbeauty.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "absoluteclassics.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "beirc.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "brycewalkervending.com")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "craigieknowesgolfandteeroom.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "dgbloodbikes.org.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "dglink.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "dgnews-sport.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "dumfriesfurniture.com")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "elegantoriginals.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "fadguide.com")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "fresherthantheudders.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "holidayletservice.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "horses.wireflydesign.com")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "jacquiesbeauty.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "jardineroofingltd.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "joseawright.com")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "knowledgebase.wireflydesign.com")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "mossheadpreschool.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "opendoorsart.com")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "outlooksolutions.com.au")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "roselandcarehome.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "rotarypeaceproject.com")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "senwickhouse.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "southwest-arb.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "styleyourvenue.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "susiejamieson.com")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "the-art-room.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "timtaylor-painter-decorator-tiler.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "trade.weetarget.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "weetarget.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "wireflydesign.com")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "zoelifecoaching.co.uk"))) )
 				return(0);
 
 /**
@@ -411,6 +410,7 @@ END_OF_FOOTER;
 			var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
 			document.cookie = "deviceWidth=" + w;
 			var url = window.location.href;
+//alert('w='+w);
 			window.location.href = url;
 			</script>
 			</head>
