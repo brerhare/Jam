@@ -8,7 +8,8 @@
 html, body {	height: 100%;
 		padding: 0;
 		margin: 20;
-		border: 0;}
+		border: 0;
+		line-height:150%;}
 
 /* Global Hyperlink settings - will affect menu text colour if no text settings */ 
 a { text-decoration: none; color:#00ad44; }
@@ -24,14 +25,15 @@ h1 {	font-family: 'Enriqueta', Verdana, sans-serif !important;
 	font-weight: 400;}
 
 h2 {	font-family: 'Open Sans', Verdana, sans-serif !important;
-	color: #000000;
+	color: teal;
 	font-size: 20px;
-	font-weight: 400;}
+	font-weight: 400;
+	line-height:150%;}
 
 
 h3 {	font-family: 'Enriqueta', Verdana, sans-serif !important;
 	color: #2b6ca3;
-	font-size: 20px;
+	font-size: 26px;
 	font-weight: 700;
 	font-stretch: wider;}
 
@@ -42,10 +44,11 @@ h4 {	font-family: 'Enriqueta', Verdana, sans-serif !important;
 	font-stretch: wider;}
 
 p  {	font-family: 'Open Sans', Verdana, sans-serif !important;
-	color: #000000;
+	color: teal;
 	font-size: 18px;
 	font-weight: normal;
-	font-stretch: expanded}
+	font-stretch: expanded;
+	line-height:150%;}
 
 blockquote {font-family: 'Open Sans', Verdana, sans-serif !important;
 	color: #5b5b5b;
