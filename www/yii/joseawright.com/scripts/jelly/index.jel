@@ -87,7 +87,7 @@ condition = @PAGE!=@HOMEPAGE
 		html.raw = ContentBlock.content
 		
 		[contact-block]
-		css.width = 50%
+		css.width = 70%
 		condition = @PAGE=contact
 		css.min-height = 325px
 		css.margin-left = 0px
@@ -96,7 +96,7 @@ condition = @PAGE!=@HOMEPAGE
 		#jam.iframe = /run/contactForm
 	
 	[main-right]
-	child = right-column, signup, wirefly
+	child = right-column, wirefly
 	css.width = 25%
 	css.margin-left = 4%
 	css.min-height = 200px

@@ -1,6 +1,6 @@
 <?php
 
-require ('deviceInfo.php');
+//require ('deviceInfo.php');
 
 /*********************/
 ini_set('display_errors',1);
@@ -27,6 +27,7 @@ class Jelly
 	private $deviceWidth = 0;
 
 	private $blobUniqueId = 0;
+	private $isSettingDeviceWidth = 0;
 
 	private $jellyRootPath = "/";
 	private $jellyRootUrl = "/";
@@ -123,18 +124,10 @@ END_OF_BEGINHEADER;
 <!-- <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" /> -->
 <!-- <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script> -->
 
-	<body ng-app onload="checkDeviceWidth()">\n
+	<body ng-app>\n
 END_OF_ENDHEADER;
 
 	private $stdFooter = <<<END_OF_FOOTER
-
-<script>
-var deviceWidth = 0;
-function checkDeviceWidth() {
-	if (deviceWidth == 0) {
-	}
-}
-</script>
 
 <script type="text/javascript" src="/js/iframeResizer.contentWindow.min.js"></script>
 	<!-- Iframe resizer -->
@@ -218,6 +211,7 @@ END_OF_FOOTER;
 	{
 		if ($this->gotDeviceWidth() == -1)
 			return;
+//echo "XXXXXXXXXXXXXXXXXX " . $this->deviceWidth;
 		$this->jellyRootPath = Yii::app()->basePath . "/../" . $jellyRoot;
 		$this->jellyRootUrl  = Yii::app()->baseUrl . $jellyRoot;
 
@@ -344,12 +338,52 @@ END_OF_FOOTER;
 	}
 
 	// Check we have the device width. If not, echo the html/js to get it and caller quits
+
     private function gotDeviceWidth()
     {
+		if ( ((stristr($_SERVER['HTTP_HOST'], "1staid4u.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "6tyshadesofbeauty.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "absoluteclassics.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "beirc.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "brycewalkervending.com")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "craigieknowesgolfandteeroom.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "dgbloodbikes.org.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "dglink.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "dgnews-sport.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "dumfriesfurniture.com")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "elegantoriginals.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "fadguide.com")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "fresherthantheudders.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "holidayletservice.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "horses.wireflydesign.com")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "jacquiesbeauty.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "jardineroofingltd.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "joseawright.com")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "knowledgebase.wireflydesign.com")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "mossheadpreschool.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "opendoorsart.com")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "outlooksolutions.com.au")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "roselandcarehome.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "rotarypeaceproject.com")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "senwickhouse.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "southwest-arb.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "styleyourvenue.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "susiejamieson.com")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "the-art-room.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "timtaylor-painter-decorator-tiler.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "trade.weetarget.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "weetarget.co.uk")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "wireflydesign.com")))
+			|| ((stristr($_SERVER['HTTP_HOST'], "zoelifecoaching.co.uk"))) )
+				return(0);
+
+/**
 		// Device width handling is only on sites Jo has fixed for mobile. @@TODO remove this 'if' completely to enable for all
 		if ( (!(stristr($_SERVER['HTTP_HOST'], "barstobrickridingcentre.co.uk")))
 		&& (!(stristr($_SERVER['HTTP_HOST'], "breakfreecoaching.co.uk")))
 		&& (!(stristr($_SERVER['HTTP_HOST'], "www.kirkcudbright.dumgal.sch.uk")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "www.theoriginalyoucompany.co.uk")))
+		&& (!(stristr($_SERVER['HTTP_HOST'], "www.cocoakalula.co.uk")))
 		&& (!(stristr($_SERVER['HTTP_HOST'], "test.wireflydesign.com")))
 		&& (!(stristr($_SERVER['HTTP_HOST'], "demo.wireflydesign.com")))
 		&& (!(stristr($_SERVER['HTTP_HOST'], "demo1.wireflydesign.com")))
@@ -359,26 +393,24 @@ END_OF_FOOTER;
 		&& (!(stristr($_SERVER['HTTP_HOST'], "demo5.wireflydesign.com")))
 		&& (!(stristr($_SERVER['HTTP_HOST'], "beingbusiness.co.uk"))) )
 			return 0;
+**/
 
 		//// THE OLD (retired) METHOD ------------->    $this->deviceWidth = deviceInfo();
 
-		if (isset($_GET['devicewidth'])) {
-			if ($_GET['devicewidth'] != 0) {
-				$this->deviceWidth = $_GET['devicewidth'];
-				array_push($this->headerArray, '<meta name="viewport" content="width=device-width" />');
-			}
+		$cookie_name = "deviceWidth";
+		if (isset($_COOKIE[$cookie_name])) {
+			$this->deviceWidth = $_COOKIE[$cookie_name];
+			array_push($this->headerArray, '<meta name="viewport" content="width=device-width" />');
 			return(0);
 		}
     	$deviceWidthHtml = <<<END_OF_GETDEVICEWIDTH
 			<html>
 			<head>
 			<script type="text/javascript">
+			var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
+			document.cookie = "deviceWidth=" + w;
 			var url = window.location.href;
-			if (url.indexOf('?') === -1)
-				url += '?';
-			else
-				url += '&';
-			url += 'devicewidth=' + screen.width;
+//alert('w='+w);
 			window.location.href = url;
 			</script>
 			</head>
@@ -387,11 +419,15 @@ END_OF_FOOTER;
 			</html>
 END_OF_GETDEVICEWIDTH;
 		echo $deviceWidthHtml;
+		$this->isSettingDeviceWidth = 1;
 		return (-1);
 	}
 
 	public function outputData()
 	{
+		if ($this->isSettingDeviceWidth == 1)	// ie we've already sent the minimal html to set cookie and then retry
+			return;
+
 		$this->emit($this->beginHeader);
 
 		if (file_exists($this->jellyRootPath . 'header.css'))
@@ -419,6 +455,22 @@ END_OF_GETDEVICEWIDTH;
 			$this->emit($css);
 		$this->emit("</style>\n<!-- CSS end -->\n");
 		$this->emit($this->endHeader);
+
+		// JS to reset the devicewidth cookie
+		$deviceChangeWidthHtml = <<<END_OF_CHANGEDEVICEWIDTH
+            <script type="text/javascript">
+				$(window).on('resize orientationChange', function(event) {
+					setTimeout(function(){
+						var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
+						document.cookie = "deviceWidth=" + w;
+						var url = window.location.href;
+						window.location.href = url;
+						//alert('width='+w);
+					}, 300);
+				});
+            </script>
+END_OF_CHANGEDEVICEWIDTH;
+		$this->emit($deviceChangeWidthHtml);
 
 		foreach ($this->bodyArray as $body)
 			$this->emit($body);
