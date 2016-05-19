@@ -1,0 +1,23 @@
+{{@include /jam/sys/html/hdr.html}}
+
+{{@template COLUMNNAME }}
+{{@template MARGIN 5px}}
+{{@template BORDERWIDTH 1px}}
+{{@template BORDERCOLOR black}}
+{{@template BACKCOLOR #d5d5d5}}
+
+	<div style="Xmargin:20px;padding:0" class="uk-container Xuk-container-center">
+		<div data-uk-sortable={handleClass:'uk-sortable-handle'} data-uk-grid-margin class="uk-grid uk-grid-small uk-sortable" style='background-color:BACKCOLOR'>
+{{@each jelly_column filter column_name = 'COLUMNNAME', order by sequence}}
+			<div class="uk-width-large-1-5 uk-width-medium-1-3 uk-width-1-1" style='padding-left:0px'>
+				<div class="uk-panel uk-panel-box" style='margin:MARGIN; border:BORDERWIDTH solid BORDERCOLOR'>
+					<p>
+{{jelly_column.content}}
+					</p>
+				</div>
+			</div>
+{{@end}}
+		</div>
+	</div>
+
+{{@include /jam/sys/html/ftr.html}}
