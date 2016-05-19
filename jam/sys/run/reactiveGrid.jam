@@ -9,7 +9,7 @@
 {{@template BORDERCOLOR black}}
 {{@template BACKCOLOR #d5d5d5}}
 
-	<div style="Xmargin:20px;padding:0" class="uk-container Xuk-container-center">
+	<div style="Xmargin:20px;padding:0" class="Xuk-container Xuk-container-center">
 		<div data-uk-sortable={handleClass:'uk-sortable-handle'} data-uk-grid-margin class="uk-grid uk-grid-match uk-grid-small uk-sortable" style='background-color:BACKCOLOR'>
 {{@each jelly_column filter column_name = 'COLUMNNAME', order by sequence}}
 			<div class="uk-width-large-1-LARGEVIEWBLOCKS  uk-width-medium-1-MEDIUMVIEWBLOCKS  uk-width-1-SMALLVIEWBLOCKS" style='Xpadding-left:0px'>
