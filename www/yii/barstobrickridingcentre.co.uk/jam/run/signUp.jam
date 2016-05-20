@@ -1,5 +1,7 @@
 {{@include /jam/sys/html/header.html}}
 
+	{{@database plugin}}
+
 <style>
 	body {
 		display:none
@@ -26,14 +28,14 @@
 </style>
 
 <form name="contactForm" class="uk-form">
-	{{@html input hidden jelly.sid}}
-	{{@html input hidden jelly.email}}
+	<input type="hidden" name="jelly.sid" value={{jelly.sid}}>
+	<input type="hidden" name="jelly.email" value={{jelly.email}}>
 	<div class="uk-form-row">
 		<div class="uk-form-controls">
 			<input type="text" name="mailer_member.first_name" placeholder="Name" class="uk-form-width-small">
 			<input type="text" name="mailer_member.email_address" placeholder="Email" class="uk-form-width-small">
 			{{@html button SUBMIT primary medium
-				runAction sendMessage contactForm contactForm
+				runAction('sendMessage', ['contactForm'], 'contactForm')
 			}}
 		</div>
 	</div>
@@ -59,7 +61,6 @@ alert('['+val+']');
 </script>
 
 {{@action sendMessage}}
-	{{@database plugin}}
 	{{@get admin_user filter sid = jelly.sid}}
 	{{@get mailer_list filter uid = admin_user.id}}
 	{{mailer_member.uid = admin_user.id}}
