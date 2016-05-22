@@ -1,6 +1,11 @@
 <?php
 	//$jamUrl = "http://www.outlooksolutions.com.au/jamcgi/jam?template=/jam/template/contactForm.tpl&jelly_setting.email=kim@wireflydesign.com";
+//echo "<hr>";
+//var_dump($argv);
+//die;
+
 	$jamUrl = $argv[1];
+
 	$options = array(
 		CURLOPT_RETURNTRANSFER => true,   // return web page
 		CURLOPT_HEADER         => false,  // don't return headers
@@ -12,11 +17,13 @@
 		CURLOPT_CONNECTTIMEOUT => 120,    // time-out on connect
 		CURLOPT_TIMEOUT        => 120,    // time-out on response
 	);
+//echo "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" . $jamUrl;
 	$curl = curl_init($jamUrl);
 	curl_setopt_array($curl, $options);
 	$content = curl_exec ($curl);
 	echo $content;
 file_put_contents("/tmp/jellyjam", $content);
+//file_put_contents("/tmp/jellyjam", $jamUrl);
 	curl_close ($curl);
 ?>
 

@@ -1,0 +1,27 @@
+{{@include /jam/sys/html/hdr.html}}
+
+{{@template COLUMNNAME }}
+{{@template LARGEVIEWBLOCKS 6}}
+{{@template MEDIUMVIEWBLOCKS 3}}
+{{@template SMALLVIEWBLOCKS 1}}
+{{@template BORDERWIDTH 1px}}
+{{@template BORDERRADIUS 1px}}
+{{@template BORDERCOLOR black}}
+{{@template BACKCOLOR #d5d5d5}}
+
+	<div style="Xmargin:20px;padding:0" class="Xuk-container Xuk-container-center">
+		<div data-uk-sortable={handleClass:'uk-sortable-handle'} data-uk-grid-margin class="uk-grid uk-grid-match uk-grid-small uk-sortable" style='background-color:BACKCOLOR'>
+{{@each jelly_column filter column_name = 'COLUMNNAME', order by sequence}}
+			<div class="uk-width-large-1-LARGEVIEWBLOCKS  uk-width-medium-1-MEDIUMVIEWBLOCKS  uk-width-1-SMALLVIEWBLOCKS" style='Xpadding-left:0px'>
+				<div class="uk-panel uk-panel-box" style='border-radius: BORDERRADIUS; border:BORDERWIDTH solid BORDERCOLOR'>
+					<p>
+{{jelly_column.content}}
+					</p>
+				</div>
+			</div>
+{{@end}}
+		</div>
+	</div>
+
+{{@include /jam/sys/html/ftr.html}}
+
