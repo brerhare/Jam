@@ -1,4 +1,4 @@
-{{@include /jam/sys/html/header.html}}
+{{@include /jam/sys/html/hdr.html}}
 
 {{@template COLUMNNAME }}
 {{@template LARGEVIEWBLOCKS 6}}
@@ -23,5 +23,5 @@
 		</div>
 	</div>
 
-{{@include /jam/sys/html/footer.html}}
+{{@include /jam/sys/html/ftr.html}}
 
