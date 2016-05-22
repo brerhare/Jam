@@ -29,6 +29,8 @@ class Jelly
 	private $blobUniqueId = 0;
 	private $isSettingDeviceWidth = 0;
 
+	private $jamTemplateArr = array();
+
 	private $jellyRootPath = "/";
 	private $jellyRootUrl = "/";
 
@@ -201,7 +203,6 @@ END_OF_FOOTER;
 		$retString = "";
 		foreach ($this->bodyArray as $body)
 			$retString .= $body;	
-//$retString = "OK";
 		return($retString);
     }
 
@@ -211,7 +212,6 @@ END_OF_FOOTER;
 	{
 		if ($this->gotDeviceWidth() == -1)
 			return;
-//echo "XXXXXXXXXXXXXXXXXX " . $this->deviceWidth;
 		$this->jellyRootPath = Yii::app()->basePath . "/../" . $jellyRoot;
 		$this->jellyRootUrl  = Yii::app()->baseUrl . $jellyRoot;
 
@@ -337,10 +337,9 @@ END_OF_FOOTER;
 		array_push($this->scriptArray, "</script>\n");
 	}
 
-	// Check we have the device width. If not, echo the html/js to get it and caller quits
-
-    private function gotDeviceWidth()
-    {
+	private function isExcludedsite()
+	{
+		// Exclusion list - sites ignored for devicewidth
 		if ( ((stristr($_SERVER['HTTP_HOST'], "1staid4u.co.uk")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "6tyshadesofbeauty.co.uk")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "absoluteclassics.co.uk")))
@@ -373,29 +372,20 @@ END_OF_FOOTER;
 			|| ((stristr($_SERVER['HTTP_HOST'], "timtaylor-painter-decorator-tiler.co.uk")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "trade.weetarget.co.uk")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "weetarget.co.uk")))
-			|| ((stristr($_SERVER['HTTP_HOST'], "wireflydesign.com")))
+			//|| ((stristr($_SERVER['HTTP_HOST'], "wireflydesign.com")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "zoelifecoaching.co.uk"))) )
-				return(0);
+				return(1);
+			return(0);
+	}
 
-/**
-		// Device width handling is only on sites Jo has fixed for mobile. @@TODO remove this 'if' completely to enable for all
-		if ( (!(stristr($_SERVER['HTTP_HOST'], "barstobrickridingcentre.co.uk")))
-		&& (!(stristr($_SERVER['HTTP_HOST'], "breakfreecoaching.co.uk")))
-		&& (!(stristr($_SERVER['HTTP_HOST'], "www.kirkcudbright.dumgal.sch.uk")))
-		&& (!(stristr($_SERVER['HTTP_HOST'], "www.theoriginalyoucompany.co.uk")))
-		&& (!(stristr($_SERVER['HTTP_HOST'], "www.cocoakalula.co.uk")))
-		&& (!(stristr($_SERVER['HTTP_HOST'], "test.wireflydesign.com")))
-		&& (!(stristr($_SERVER['HTTP_HOST'], "demo.wireflydesign.com")))
-		&& (!(stristr($_SERVER['HTTP_HOST'], "demo1.wireflydesign.com")))
-		&& (!(stristr($_SERVER['HTTP_HOST'], "demo2.wireflydesign.com")))
-		&& (!(stristr($_SERVER['HTTP_HOST'], "demo3.wireflydesign.com")))
-		&& (!(stristr($_SERVER['HTTP_HOST'], "demo4.wireflydesign.com")))
-		&& (!(stristr($_SERVER['HTTP_HOST'], "demo5.wireflydesign.com")))
-		&& (!(stristr($_SERVER['HTTP_HOST'], "beingbusiness.co.uk"))) )
-			return 0;
-**/
+	// Check we have the device width. If not, echo the html/js to get it and caller quits
 
-		//// THE OLD (retired) METHOD ------------->    $this->deviceWidth = deviceInfo();
+    private function gotDeviceWidth()
+    {
+		if ($this->isExcludedSite()) {
+//echo $_SERVER['HTTP_HOST'] . ":" . "ISEXCL"; die;
+			return(0);
+		}
 
 		$cookie_name = "deviceWidth";
 		if (isset($_COOKIE[$cookie_name])) {
@@ -410,7 +400,7 @@ END_OF_FOOTER;
 			var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
 			document.cookie = "deviceWidth=" + w;
 			var url = window.location.href;
-//alert('w='+w);
+alert('w='+w);
 			window.location.href = url;
 			</script>
 			</head>
@@ -466,11 +456,12 @@ END_OF_GETDEVICEWIDTH;
 						var url = window.location.href;
 						window.location.href = url;
 						//alert('width='+w);
-					}, 300);
+					}, 50);
 				});
             </script>
 END_OF_CHANGEDEVICEWIDTH;
-		$this->emit($deviceChangeWidthHtml);
+		if (!($this->isExcludedSite()))
+			$this->emit($deviceChangeWidthHtml);
 
 		foreach ($this->bodyArray as $body)
 			$this->emit($body);
@@ -730,6 +721,9 @@ END_OF_CHANGEDEVICEWIDTH;
 	{
 		$blobName .= $this->blobUniqueId++;
 
+		$this->jamTemplateArr = array();	// clear this for each jelly block (is this the right place?
+
+
 // @@TODO: remove this hardcoding
 /*****************************************************************/
 if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
@@ -837,6 +831,12 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 		$jamHeight = "0";
 		switch ($word)
 		{
+			case "jamtemplate":
+			foreach ($value as $jamTemplateName => $jamTemplateVal)
+			{
+				$this->jamTemplateArr[$jamTemplateName] = $jamTemplateVal;
+//echo "XXXXXXXXXXXXXXXXXXXXXXX " . $this->jamTemplateArr[$jamTemplateName] . "   ";
+			}
 			case "jam":    // NB: DUPS ALLOWED
 			foreach ($value as $jamType => $jamArg)
 			{
@@ -872,10 +872,17 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 						//$jamUrl = $yiiSite . "/jamcgi/jam?template=" . $jamArg . "&jelly.sid=" . $sid . "&jelly.email=" . $settingEmail;
 						$argChar = "?";
 						if (strstr($jamArg, "?") == true)
-							$argChar = "&";
-						$jamUrl = $yiiSite . $jamArg . $argChar . "jelly.sid=" . $sid . "&jelly.email=" . $settingEmail;
+							$argChar = "\&";
+						$jamUrl = $yiiSite . $jamArg . $argChar . "jelly.sid=" . $sid . "\&jelly.email=" . $settingEmail;
+						//$jamUrl = $yiiSite . $jamArg . $argChar . "jelly.email=" . $settingEmail .  "jelly.sid=" . $sid;
+						// Add in any possible templates
+						foreach ($this->jamTemplateArr as $n => $v)
+						{
+							$jamUrl .= "\&template." . $n . "=" . $v;
+						}
 						if ($jamType == "embed") {
 							$shell_exec = "php " . Yii::app()->basePath . "/../jam/jelly2jam.php" . " " . $jamUrl;
+//echo "YYYYYYYYYYYYYYYYYYYYYYY " . $shell_exec;
 							$curlContent = shell_exec ($shell_exec);
 							$this->genInlineHtml($curlContent);
 						} else {
