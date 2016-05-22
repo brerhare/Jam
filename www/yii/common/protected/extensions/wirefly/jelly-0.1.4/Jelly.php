@@ -372,7 +372,7 @@ END_OF_FOOTER;
 			|| ((stristr($_SERVER['HTTP_HOST'], "timtaylor-painter-decorator-tiler.co.uk")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "trade.weetarget.co.uk")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "weetarget.co.uk")))
-			|| ((stristr($_SERVER['HTTP_HOST'], "wireflydesign.com")))
+			//|| ((stristr($_SERVER['HTTP_HOST'], "wireflydesign.com")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "zoelifecoaching.co.uk"))) )
 				return(1);
 			return(0);
@@ -382,8 +382,10 @@ END_OF_FOOTER;
 
     private function gotDeviceWidth()
     {
-		if ($this->isExcludedSite())
+		if ($this->isExcludedSite()) {
+//echo $_SERVER['HTTP_HOST'] . ":" . "ISEXCL"; die;
 			return(0);
+		}
 
 		$cookie_name = "deviceWidth";
 		if (isset($_COOKIE[$cookie_name])) {
@@ -398,7 +400,7 @@ END_OF_FOOTER;
 			var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
 			document.cookie = "deviceWidth=" + w;
 			var url = window.location.href;
-//alert('w='+w);
+alert('w='+w);
 			window.location.href = url;
 			</script>
 			</head>
