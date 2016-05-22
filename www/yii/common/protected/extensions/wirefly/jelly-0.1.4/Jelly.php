@@ -400,7 +400,7 @@ END_OF_FOOTER;
 			var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
 			document.cookie = "deviceWidth=" + w;
 			var url = window.location.href;
-alert('w='+w);
+//alert('w='+w);
 			window.location.href = url;
 			</script>
 			</head>
