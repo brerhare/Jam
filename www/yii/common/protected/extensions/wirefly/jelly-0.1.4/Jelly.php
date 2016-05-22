@@ -203,7 +203,6 @@ END_OF_FOOTER;
 		$retString = "";
 		foreach ($this->bodyArray as $body)
 			$retString .= $body;	
-//$retString = "OK";
 		return($retString);
     }
 
@@ -213,7 +212,6 @@ END_OF_FOOTER;
 	{
 		if ($this->gotDeviceWidth() == -1)
 			return;
-//echo "XXXXXXXXXXXXXXXXXX " . $this->deviceWidth;
 		$this->jellyRootPath = Yii::app()->basePath . "/../" . $jellyRoot;
 		$this->jellyRootUrl  = Yii::app()->baseUrl . $jellyRoot;
 
@@ -339,10 +337,9 @@ END_OF_FOOTER;
 		array_push($this->scriptArray, "</script>\n");
 	}
 
-	// Check we have the device width. If not, echo the html/js to get it and caller quits
-
-    private function gotDeviceWidth()
-    {
+	private function isExcludedsite()
+	{
+		// Exclusion list - sites ignored for devicewidth
 		if ( ((stristr($_SERVER['HTTP_HOST'], "1staid4u.co.uk")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "6tyshadesofbeauty.co.uk")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "absoluteclassics.co.uk")))
@@ -377,27 +374,16 @@ END_OF_FOOTER;
 			|| ((stristr($_SERVER['HTTP_HOST'], "weetarget.co.uk")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "wireflydesign.com")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "zoelifecoaching.co.uk"))) )
-				return(0);
+				return(1);
+			return(0);
+	}
 
-/**
-		// Device width handling is only on sites Jo has fixed for mobile. @@TODO remove this 'if' completely to enable for all
-		if ( (!(stristr($_SERVER['HTTP_HOST'], "barstobrickridingcentre.co.uk")))
-		&& (!(stristr($_SERVER['HTTP_HOST'], "breakfreecoaching.co.uk")))
-		&& (!(stristr($_SERVER['HTTP_HOST'], "www.kirkcudbright.dumgal.sch.uk")))
-		&& (!(stristr($_SERVER['HTTP_HOST'], "www.theoriginalyoucompany.co.uk")))
-		&& (!(stristr($_SERVER['HTTP_HOST'], "www.cocoakalula.co.uk")))
-		&& (!(stristr($_SERVER['HTTP_HOST'], "test.wireflydesign.com")))
-		&& (!(stristr($_SERVER['HTTP_HOST'], "demo.wireflydesign.com")))
-		&& (!(stristr($_SERVER['HTTP_HOST'], "demo1.wireflydesign.com")))
-		&& (!(stristr($_SERVER['HTTP_HOST'], "demo2.wireflydesign.com")))
-		&& (!(stristr($_SERVER['HTTP_HOST'], "demo3.wireflydesign.com")))
-		&& (!(stristr($_SERVER['HTTP_HOST'], "demo4.wireflydesign.com")))
-		&& (!(stristr($_SERVER['HTTP_HOST'], "demo5.wireflydesign.com")))
-		&& (!(stristr($_SERVER['HTTP_HOST'], "beingbusiness.co.uk"))) )
-			return 0;
-**/
+	// Check we have the device width. If not, echo the html/js to get it and caller quits
 
-		//// THE OLD (retired) METHOD ------------->    $this->deviceWidth = deviceInfo();
+    private function gotDeviceWidth()
+    {
+		if ($this->isExcludedSite())
+			return(0);
 
 		$cookie_name = "deviceWidth";
 		if (isset($_COOKIE[$cookie_name])) {
@@ -472,7 +458,8 @@ END_OF_GETDEVICEWIDTH;
 				});
             </script>
 END_OF_CHANGEDEVICEWIDTH;
-		$this->emit($deviceChangeWidthHtml);
+		if (!($this->isExcludedSite()))
+			$this->emit($deviceChangeWidthHtml);
 
 		foreach ($this->bodyArray as $body)
 			$this->emit($body);
