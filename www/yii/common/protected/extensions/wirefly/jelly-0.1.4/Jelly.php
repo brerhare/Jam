@@ -29,6 +29,8 @@ class Jelly
 	private $blobUniqueId = 0;
 	private $isSettingDeviceWidth = 0;
 
+	private $jamTemplateArr = array();
+
 	private $jellyRootPath = "/";
 	private $jellyRootUrl = "/";
 
@@ -466,7 +468,7 @@ END_OF_GETDEVICEWIDTH;
 						var url = window.location.href;
 						window.location.href = url;
 						//alert('width='+w);
-					}, 300);
+					}, 50);
 				});
             </script>
 END_OF_CHANGEDEVICEWIDTH;
@@ -730,6 +732,9 @@ END_OF_CHANGEDEVICEWIDTH;
 	{
 		$blobName .= $this->blobUniqueId++;
 
+		$this->jamTemplateArr = array();	// clear this for each jelly block (is this the right place?
+
+
 // @@TODO: remove this hardcoding
 /*****************************************************************/
 if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
@@ -837,6 +842,12 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 		$jamHeight = "0";
 		switch ($word)
 		{
+			case "jamtemplate":
+			foreach ($value as $jamTemplateName => $jamTemplateVal)
+			{
+				$this->jamTemplateArr[$jamTemplateName] = $jamTemplateVal;
+//echo "XXXXXXXXXXXXXXXXXXXXXXX " . $this->jamTemplateArr[$jamTemplateName] . "   ";
+			}
 			case "jam":    // NB: DUPS ALLOWED
 			foreach ($value as $jamType => $jamArg)
 			{
@@ -872,10 +883,17 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 						//$jamUrl = $yiiSite . "/jamcgi/jam?template=" . $jamArg . "&jelly.sid=" . $sid . "&jelly.email=" . $settingEmail;
 						$argChar = "?";
 						if (strstr($jamArg, "?") == true)
-							$argChar = "&";
-						$jamUrl = $yiiSite . $jamArg . $argChar . "jelly.sid=" . $sid . "&jelly.email=" . $settingEmail;
+							$argChar = "\&";
+						$jamUrl = $yiiSite . $jamArg . $argChar . "jelly.sid=" . $sid . "\&jelly.email=" . $settingEmail;
+						//$jamUrl = $yiiSite . $jamArg . $argChar . "jelly.email=" . $settingEmail .  "jelly.sid=" . $sid;
+						// Add in any possible templates
+						foreach ($this->jamTemplateArr as $n => $v)
+						{
+							$jamUrl .= "\&template." . $n . "=" . $v;
+						}
 						if ($jamType == "embed") {
 							$shell_exec = "php " . Yii::app()->basePath . "/../jam/jelly2jam.php" . " " . $jamUrl;
+//echo "YYYYYYYYYYYYYYYYYYYYYYY " . $shell_exec;
 							$curlContent = shell_exec ($shell_exec);
 							$this->genInlineHtml($curlContent);
 						} else {
