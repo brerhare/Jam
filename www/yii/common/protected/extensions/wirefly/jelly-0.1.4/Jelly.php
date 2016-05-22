@@ -450,14 +450,27 @@ END_OF_GETDEVICEWIDTH;
 		$deviceChangeWidthHtml = <<<END_OF_CHANGEDEVICEWIDTH
             <script type="text/javascript">
 				$(window).on('resize orientationChange', function(event) {
-					setTimeout(function(){
-						var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
-						document.cookie = "deviceWidth=" + w;
-						var url = window.location.href;
-						window.location.href = url;
-						//alert('width='+w);
-					}, 50);
-				});
+				// Android screws up so we check first
+				cookieWidth = getCookie('deviceWidth');
+				var deviceWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+				if (deviceWidth == cookieWidth)
+					return;
+				// Changed
+				setTimeout(function(){
+					var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
+					document.cookie = "deviceWidth=" + w;
+					var url = window.location.href;
+					//alert('refreshing width='+w);
+					window.location.href = url;
+				}, 50);
+			});
+
+function getCookie(name) {
+  var value = "; " + document.cookie;
+  var parts = value.split("; " + name + "=");
+  if (parts.length == 2) return parts.pop().split(";").shift();
+}
+
             </script>
 END_OF_CHANGEDEVICEWIDTH;
 		if (!($this->isExcludedSite()))
