@@ -49,6 +49,11 @@ char *jamEntrypoint = NULL;		// action entrypoint. Hackily global because its us
 
 // Common declares end
 
+#define MAX_JELLY_TEMPLATE 100
+char *jellyTemplateName[MAX_JELLY_TEMPLATE];
+char *jellyTemplateValue[MAX_JELLY_TEMPLATE];
+int jellyTemplateIx = 0;
+
 char *includedTable[MAX_INCLUDE];
 char *fileToInclude = (char *) calloc(1, 4096);
 
@@ -107,6 +112,19 @@ int main(int argc, char *argv[]) {
 	cgivars = getcgivars() ;
 	for (int i = 0; cgivars[i]; i+= 2) {
 		logMsg(LOGDEBUG, "Parameter [%s] = [%s]", cgivars[i], cgivars[i+1]) ;
+
+		// Check for jelly-passed template
+		if (strcasestr(cgivars[i], "jamtemplate.")) {
+			char *p = (cgivars[i] + 12);
+			jellyTemplateName[jellyTemplateIx] = strdup(p);
+			jellyTemplateValue[jellyTemplateIx] = strdup(cgivars[i+1]);
+			logMsg(LOGDEBUG, "Jelly gave us a template. [%s]=[%s]", jellyTemplateName[jellyTemplateIx], jellyTemplateValue[jellyTemplateIx]);
+			jellyTemplateIx++;
+			if (jellyTemplateIx == MAX_JELLY_TEMPLATE) {
+				logMsg(LOGFATAL, "Max jelly templates reached");
+			}
+		}
+
 		cmdSeqnum += strlen(cgivars[i]);
 		cmdSeqnum += strlen(cgivars[i+1]);
 
@@ -367,6 +385,24 @@ if (++sanity > 100) { emitStd("Sanity check - overflow in processJam()!"); break
 		logMsg(LOGDEBUG, "--------------------------------");
 	}
 
+
+	// Inject Jelly templates
+	char *tplInject = (char *) calloc(1, 16000);
+	char *beginStr = strdup("{{@!begin}}");
+	for (int tp = 0; tp < jellyTemplateIx; tp++) {
+		logMsg(LOGDEBUG, "Injecting jelly template [%s] = [%s]", jellyTemplateName[tp], jellyTemplateValue[tp]);
+		// Prepare the template to inject
+		sprintf(tplInject, "%s\n{{@template %s %s}}", beginStr, jellyTemplateName[tp], jellyTemplateValue[tp]);
+		// Replace
+				char *newBuf = strReplaceAlloc(jamBuf, beginStr, tplInject);
+//logMsg(LOGINFO, "\n\nBBBBB[%s]\n\n", jamBuf);
+//logMsg(LOGINFO, "\n\nAAAAA[%s]\n\n", newBuf);
+				free(jamBuf);
+				jamBuf = newBuf;
+	}
+	free(tplInject);
+	free(beginStr);
+
 	// Preprocess templates
 	int tagIx = 0;
 	char *pBuf = jamBuf;
@@ -400,6 +436,7 @@ if (++sanity > 100) { emitStd("Sanity check - overflow in processJam()!"); break
 			free(tinfo[tagIx]);
 			tagIx++;
 		}
+
 //logMsg(LOGDEBUG, "BUF1 with expanded templates = =====================> [%s] <========================", jamBuf);
 logMsg(LOGERROR, "Remember templates stripping is not accurate...................................");
 
