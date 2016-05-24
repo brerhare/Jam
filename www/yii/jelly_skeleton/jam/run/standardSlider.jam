@@ -1,5 +1,4 @@
-<!-- Dont forget to set the database to your own -->
-
+<!-- Set the database you want to use -->
 {{@database your_co_uk}}
 
 {{@template OPTIONS - the default slider has none}}
