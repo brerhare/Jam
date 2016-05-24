@@ -1,0 +1,9 @@
+<!-- Set the database you want to use -->
+
+{{@database kirkcudbright_dumgal_sch_uk}}
+
+<!-- Set your templates either here or in the jelly. Look at the included file at the bottom for a list of all possible templates, and their default values -->
+
+<!-- Call the addon -->
+{{@include /jam/run/sys/reactiveGrid.jam}}
+
