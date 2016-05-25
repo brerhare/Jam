@@ -6,8 +6,8 @@
 {{@template ACTIVECOLOR_TO transparent}}
 {{@template ARROWCOLOR grey}}
 {{@template CORNERPIXELS 0}}
-{{@template MAINTEXTCOLOR #5fa360}}
-{{@template SUBTEXTCOLOR #5fa360}}
+{{@template MAINTEXTCOLOR #3d3d3d}}
+{{@template SUBTEXTCOLOR #3d3d3d}}
 {{@template FONTDOWNLOAD Open+Sans:400}}
 {{@template FONTFAMILY "Open Sans", Arial, sans-serif}}
 {{@template FONTSIZE 18}}
