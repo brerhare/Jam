@@ -48,10 +48,7 @@ css.background-color = #000000
 
 		[contact-text]
 		css.margin-top = 30px
-		#css.margin-left = 5px
 		css.height = 104px
-		#html.p = Wedding & Event Decor for Hire
-		#html.p = 07868 840894 
 		html.raw = Wedding & Event Decor for Hire<br><br>
 		html.raw = 07868 840894 
 
@@ -64,8 +61,7 @@ css.background-color = #000000
 		child = cart-pic, cart-text
 		stacking = horizontal
 		css.margin-top = 20px
-		css.height = 18px
-		
+		css.height = 18px		
 		click = http://www.styleyourvenue.co.uk/?layout=index&page=checkout
 
 			[cart-pic]

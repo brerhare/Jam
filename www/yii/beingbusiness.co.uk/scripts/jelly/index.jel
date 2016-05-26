@@ -12,7 +12,7 @@ css.background-color = white
 css.display = block
 
 	[site]
-	child = header, slider, home-page, pages, tab-pages, mob-pages, footer
+	child = header, slider, home-page, pages, blog_page, tab-pages, mob-pages, footer
 	css.width = 100%
 
 ####  Header  #################################
@@ -82,7 +82,7 @@ css.display = block
 		image.url = img/menu_4.png
 		image.width = 100%
 		image.height = 100%
-		click = ?layout=index&page=business-club-dumfries-membership
+		click = ?layout=index&page=dumfries-womens-business-club-members
 
 #### Slider ###########################################
 
@@ -121,14 +121,14 @@ condition = @DEVICEWIDTH>959
 
 	[pages]
 	condition = @PAGE!=@HOMEPAGE
-	child = left-column, content, blog_signup, blog_page
+	child = left-column, content
 	css.width = 80%
 	css.margin-top = 13%
 	stacking = horizontal
 	condition = @DEVICEWIDTH>959
 	
 		[left-column]
-		child = sub-menu, sign-up
+		child = sign-up, sub-menu
 		css.width = 15%
 		
 		[sub-menu]
@@ -167,7 +167,7 @@ condition = @DEVICEWIDTH>959
 		css.background-color = white
 	#	jam.embed = /jam/run/signup_form.jam
 		jam.iframe = /jam/run/signup_form.jam
-		condition = @PAGE!=being-business-women-blog-news
+#		condition = @PAGE!=being-business-women-blog-news
 		
 				
 		[content]
@@ -178,24 +178,12 @@ condition = @DEVICEWIDTH>959
 		db.error = Sorry, I could not find the page $_GET['page']
 		html.raw = ContentBlock.content
 		
-		[blog_signup]
-		condition = @PAGE=being-business-women-blog-news
-		css.width = 15%
-		css.margin-left = -11%
-		css.min-width = 150px
-		html.raw = </br><h3>Sign up for regular info</h3>
-		css.text-align = center
-		css.min-height = 200px
-		css.background-color = white
-	#	jam.embed = /jam/run/signup_form.jam
-		jam.iframe = /jam/run/signup_form.jam
 		
-		[blog_page]
-		child = 
-		css.width = 75%
-		condition = @PAGE=being-business-women-blog-news
-		html.raw = {{news newstype=pinterest sidebar=left pushrecentdown = 0px pushcategoriesdown = 150px}}
-			
+[blog_page]
+css.width = 80%
+condition = @PAGE=being-business-women-blog-news
+html.raw = {{news newstype=pinterest sidebar=left pushrecentdown=50px pushcategoriesdown=0px}}
+condition = @DEVICEWIDTH>959			
 		
 		
 	[tab-pages]
@@ -220,7 +208,7 @@ condition = @DEVICEWIDTH>959
 		html.raw = ContentBlock.content
 		
 	[mob-pages]
-	child = sub-menu, mob-content, right_column
+	child = sub-menu, mob-content, mob-blog, right_column
 	css.width = 90%
 	css.margin-top = 20px
 	condition = @DEVICEWIDTH<520
@@ -232,7 +220,11 @@ condition = @DEVICEWIDTH>959
 		db.filter = url=$_GET['page']
 		db.error = Sorry, I could not find the page $_GET['page']
 		html.raw = ContentBlock.content
-
+		
+		[mob-blog]
+		css.width = 100%
+		condition = @PAGE=being-business-women-blog-news
+		html.raw = {{news newstype=pinterest sidebar=left pushrecentdown=0px pushcategoriesdown=0px}}
 
 
 ####footer####################################

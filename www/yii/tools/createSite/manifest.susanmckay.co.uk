@@ -1,0 +1,19 @@
+domain = susanmckay.co.uk
+parentdomain =
+sitetitle = Susan McKay
+sid = 63ttr8so54tog4phclet7lnuo0
+
+# Database
+dbname = susanmckay_co_uk
+dbuser = susanmckay.co.uk
+dbpass = 6sn9f4hj
+
+# Shopping cart order confirmation email
+checkoutemail = studio@susanmckay.co.uk
+checkoutname = Susan McKay Glass & Ceramics
+checkoutpaypalemail = 
+
+# Backend page editor
+editorpagewidth = 700
+editorpageheight = 400
+

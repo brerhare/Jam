@@ -1,3 +1,4 @@
+#Demo 2
 #Cocoa Kalula
 
 [defaults]
@@ -90,7 +91,7 @@ css.overflow = visible
 			image.url = img/facebook.png
 			image.width = 100%
 			image.height = 100%
-			clicknew = https://www.facebook.com
+			clicknew = https://www.facebook.com/Cocoa-Kalula-1443233205980163
 			
 			[mail]
 			css.width = 100%
@@ -98,7 +99,7 @@ css.overflow = visible
 			image.url = img/mail.png
 			image.width = 100%
 			image.height = 100%
-			click = ?layout=contact
+			click = ?layout=index&page=contact
 			
 			[market]
 			css.width = 100%
@@ -106,7 +107,7 @@ css.overflow = visible
 			image.url = img/market.png
 			image.width = 100%
 			image.height = 100%
-			click = ?layout=contact
+			click = ?layout=index&page=chocolate-outlets-food-markets-dumfries-galloway
 		
 			
 
@@ -128,6 +129,7 @@ condition = @DEVICEWIDTH>700
 
 [page-main]
 css.width = 60%
+css.min-height = 900px
 css.min-width = 240px
 css.margin-top = 20px
 css.margin-bottom = 100px
@@ -251,3 +253,4 @@ condition = @DEVICEWIDTH<701
 	[footer-content]
 	child = left-column-content
 	css.width = 300px
+	

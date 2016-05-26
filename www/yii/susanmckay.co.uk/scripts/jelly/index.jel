@@ -1,0 +1,199 @@
+#Susan McKay
+
+[defaults]
+#include = default-values
+css.display = block
+css.overflow = hidden
+css.margin = 0px auto
+css.position = relative
+
+[* : defaults]
+
+[screen]
+child = site, footer
+#css.background-color = #f0ebdd
+#fx.wallpaper-image = /img/background-img.jpg
+fx.wallpaper-image-tile = /img/site-bgd.jpg
+css.display = block
+
+	[site]
+	child = site-container, background-logo
+	css.width = 95%
+	css.max-width = 1200px
+	stacking = horizontal
+	
+	[site-container]
+	child = header, main-container
+	css.width = 95%
+	css.margin-left = 0%
+	
+		[header]
+		child = contact, logo
+		stacking = horizontal
+		css.width = 100%
+		css.margin-top = 50px
+		
+		
+			[contact]
+			css.width = 50%
+			addon.global.column.name = header
+			addon.global.column.width = 100%
+			addon.global.column.internal-width = 100%
+			addon.global.column.content-width = 98%
+			addon.global.column.internal-color = transparent
+			addon.global.column.background-color = transparent
+			addon.global.column.top-height = 0px
+			addon.global.column.bottom-height = 5px
+			
+			
+			[logo]
+			css.width = 50%
+			image.url = img/logo.png
+			image.width = 100%
+			image.height = 100%
+			image.align = left			
+		
+		[main-container]
+		child = slider, menu, content, footer-logo
+		css.width = 92%
+		css.margin = 0%
+		css.overflow = visible
+		
+			[slider]
+			css.margin-top = 20px
+			child = jssor-slider
+			css.padding = 15px
+			css.margin-left = 0%
+			css.border-radius = 10px
+			css.background-image = url('/img/block-bgd.jpg')
+			css.box-shadow = 12px 8px 8px rgba(0,0,0,0.5)
+			
+				[jssor-slider]
+				css.width = 100%
+				#jam.embed = /run/slider.jam
+				jam.embed = /run/defaultSlider.jam
+			
+			[menu]
+			child = jam-menu
+			css.background-image = url('/img/menu-bgd.jpg')
+			css.background-repeat = repeat-x
+			css.background-size = 100% 100%
+			css.min-height = 20px
+			css.border-radius = 5px
+			css.margin-top = 25px
+			
+				[jam-menu]
+				jam.embed = /run/menu.jam
+			
+			[content]
+			child = page-content, right-column
+			stacking = horizontal
+			css.margin-top = 50px
+			
+				[page-content]
+				css.width = 70%
+				css.min-width = 750px
+				db.table = ContentBlock
+				db.filter = url=$_GET['page']
+				db.error = Sorry, I could not find the page $_GET['page']
+				html.raw = ContentBlock.content
+				
+				[right-column]
+				child = column-content
+				css.width = 20%
+				css.padding = 10px
+				css.margin-left = 5%
+				css.margin-bottom = 20px
+				css.min-width = 200px
+				css.border-radius = 10px
+				css.background-image = url('/img/block-bgd.jpg')
+				css.box-shadow = 12px 8px 8px rgba(0,0,0,0.5)
+				
+					[column-content]
+					css.margin = 10px 0px
+					addon.global.column.name = right
+					addon.global.column.width = 100%
+					addon.global.column.internal-width = 100%
+					addon.global.column.content-width = 98%
+					addon.global.column.internal-color = transparent
+					addon.global.column.background-color = transparent
+					addon.global.column.top-height = 0px
+					addon.global.column.bottom-height = 5px
+
+
+[background-logo]
+css.width = 22%
+css.margin-left = -20%
+css.z-index = -10
+css.margin-top = 2%
+image.url = img/logo-bgd.png
+image.width = 100%
+image.height = 100%
+image.align = center
+#css.overflow = visible				
+				
+		[footer-logo]
+		css.width = 100%
+		image.url = img/footer.png
+		image.width = 50%
+		image.height = 100%
+		image.align = left					
+		
+		[footer]
+		child = footer-container
+		css.background-color = black
+		css.width = 100%
+		css.margin-top = 50px
+		
+			[footer-container]
+			child = footer-grid, wirefly
+			css.width = 95%
+			css.max-width = 1200px
+			css.margin-bottom = 50px
+			
+				[footer-grid]
+				jamtemplate.COLUMNNAME = footer
+				jamtemplate.LARGEVIEWBLOCKS = 6
+				jamtemplate.MEDIUMVIEWBLOCKS = 2
+				jamtemplate.SMALLVIEWBLOCKS = 1
+				jamtemplate.BACKCOLOR = purple
+				jamtemplate.BORDERWIDTH = 1px
+				jamtemplate.BORDERCOLOR = lightgrey
+				jamtemplate.BORDERRADIUS = 5px
+				jam.embed = /run/grid
+			
+				[wirefly]
+				child = wirefly-logo, admin
+				stacking = horizontal
+				css.margin-top = 10%
+				css.margin-left = 0px
+				css.width = 50%
+				css.max-width = 150px
+
+					[wirefly-logo]
+					css.width = 80%
+					css.margin-top = 1%
+					image.url = img/wirefly-design.png
+					image.width = 100%
+					image.height = 100%
+					image.align = left
+					clicknew = http://www.wireflydesign.com
+							
+						
+					[admin]
+					child = cog-center
+					css.width = 15%
+					css.background-size = 100%
+					css.background-image = url('/img/admin-dark.png')
+					css.margin-left = -20%
+							
+						[cog-center]
+						css.width = 50%
+						css.height = 100%
+						css.margin-top = 25%
+						css.margin-bottom = 25%
+						image.url = img/cog-center.png
+						image.width = 100%
+						image.height = 100%
+						image.align = center
+						clicknew = backend.php

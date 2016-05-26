@@ -12,7 +12,7 @@ css.background-color = #f0ebdd
 css.display = block
 
 	[site]
-	child = header, header-underline, menu, slider, pages, page-underline, footer, wirefly
+	child = header, header-underline, menu, slider, social-media, pages, page-underline, footer, wirefly
 	css.width = 100%
 	css.max-width = 1200px
 	css.background-color = white
@@ -27,7 +27,7 @@ stacking = horizontal
 	[logo]
 	css.width = 50%
 	css.min-width = 270px
-	html.raw = <h1><span style="font-size:48px;">Holiday Let Services</h1>
+	html.raw = <h1><span style="font-size:48px;">HolidayLet Services</h1>
 	click = ?layout=index&page=index
 	css.text-align = left
 	
@@ -123,17 +123,50 @@ addon.menu.traditional.submenu-separator-color = white
 	addon.slider.flexslider.animation = slide
 	addon.slider.flexslider.slider = 1
 
+	[social-media]
+	css.margin-top = -60px
+	css.width = 20%
+	css.min-width = 300px
+	css.float = right
+			
+	addon.global.column.name = social
+	addon.global.column.width = 100%
+	addon.global.column.internal-width = 100%
+	addon.global.column.content-width = 98%
+	addon.global.column.internal-color = transparent
+	addon.global.column.background-color = transparent
 
+	
 ######## body #######################################
 			
 
 	[pages]
+	child = pages-content, slider-testamonials
 	css.width = 90%
 	css.margin-top = 20px
-	db.table = ContentBlock
-	db.filter = url=$_GET['page']
-	db.error = Sorry, I could not find the page $_GET['page']
-	html.raw = ContentBlock.content
+	
+		[pages-content]
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
+		
+		[slider-testamonials]
+		css.width = 90%
+		css.height = 32%
+		css.margin-top = 8px
+		addon.slider.flexslider.width = 100%
+		addon.slider.flexslider.height = 32%
+		addon.slider.flexslider.mode = HTML
+		addon.slider.flexslider.source = db
+
+		addon.slider.flexslider.border-width = 0px
+		#addon.slider.flexslider.border-color = transparent
+		addon.slider.flexslider.active-dotcolor = #045184
+		addon.slider.flexslider.inactive-dotcolor = #f0ebdd
+		addon.slider.flexslider.dot-margin-top = -60px
+		addon.slider.flexslider.animation = slide
+		addon.slider.flexslider.slider = 2
 	
 	[page-underline]
 	css.width = 90%
@@ -145,10 +178,10 @@ addon.menu.traditional.submenu-separator-color = white
 ####footer####################################
 
 [footer]
-child = footer-menu, social-media
+child = footer-menu
 css.margin-top = 40px
 css.width = 90%
-stacking = horizontal
+#stacking = horizontal
 
 		[footer-menu]
 		child = footer-tandc, footer-cookies, footer-contact, copyright
@@ -174,18 +207,6 @@ stacking = horizontal
 			css.font-size = 11px
 			css.margin-top = 40px
 			
-		[social-media]
-#		child = footer-facebook
-		css.width = 40%
-		css.float = right
-		
-#			[footer-facebook]
-#			css.width = 10%
-#			css.float = right
-#			image.url = img/facebook.png
-#			image.width = 100%
-#			image.height = 100%
-#			clicknew = http://www.facebook.com
 
 [wirefly]
 child = wirefly-logo, admin

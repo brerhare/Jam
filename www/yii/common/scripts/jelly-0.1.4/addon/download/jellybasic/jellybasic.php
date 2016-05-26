@@ -59,7 +59,7 @@ class jellybasic
 		else if ($this->optionMode == "collection")
 		{
 			$criteria = new CDbCriteria;
-			$criteria->addCondition("name = '" . $this->optionValue . "'");
+			$criteria->addCondition("name = '" . trim($this->optionValue) . "'");
 			$jellyDownloadCollection = JellyDownloadCollection::model()->find($criteria);
 			if ($jellyDownloadCollection)
 			{
@@ -77,7 +77,7 @@ class jellybasic
 					$content .= "Missing link - " . $this->optionValue;
 			}
 			else
-				$content .= "Missing collection - " . $this->optionValue;
+				$content .= "Missing collection - '" . $this->optionValue . "'";
 		}
 
 		// Apply all substitutions
