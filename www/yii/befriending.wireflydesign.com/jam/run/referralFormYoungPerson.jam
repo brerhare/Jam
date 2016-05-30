@@ -71,7 +71,7 @@
 				<br>
 				<center>
 					<button type='button' class="uk-button uk-button-primary" onClick="backToPrev()"> Prev </button> </td>
-					<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="updateAndNext()"> Submit </button> </td>
+					<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="updateAndNext()"> Next </button> </td>
 				</center>
 			{{@html gridcol end}}
 		{{@html gridrow end}}
@@ -124,8 +124,7 @@ function forwardToNext() {
 		alert('Young person details not yet saved');
 		return;
 	}
-//alert('going fwd. r='+objReferrer.value+' and yp='+objYP.value);
-alert('Your submission was successful');
+//alert('Your submission was successful');
     runJam('referralFormContacts?refId='+objReferrer.value+'&ypId='+objYP.value);
 
 }

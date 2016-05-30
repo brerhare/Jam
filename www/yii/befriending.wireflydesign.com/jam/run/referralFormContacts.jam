@@ -42,8 +42,7 @@
             {{@html gridcol start width=1-1}}
                 <center>
                     <button type='button' class="uk-button uk-button-primary" onClick="backToPrev()"> Prev </button> 
-<!--                    <button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="finishAndClose()"> Finish and Close </button> -->
-				Close the window to end
+ 					<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="finishAndClose()"> Finished </button>
                 </center>
             {{@html gridcol end}}
         {{@html gridrow end}}
@@ -134,7 +133,7 @@ function backToPrev() {
     runJam('referralFormYoungPerson?refId='+objReferrer.value+'&ypId='+objYP.value);
 }
 function finishAndClose() {
-	close();
+	runJam('referralFormFinished');
 }
 </script>
 
