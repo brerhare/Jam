@@ -1,0 +1,23 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+
+{{@html container start center css='max-width:700px; Xpadding:0}}
+
+
+<br><br><br>
+
+<center> <h3> Thank you. Your input has been recorded </h3> </center>
+
+<center> You may now close this window. </center>
+
+<br><br><br>
+
+</center>
+
+<script>
+</script>
+
+{{@html contain end}}
+
+{{@include /jam/sys/html/footer.html}}
