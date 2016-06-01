@@ -107,23 +107,12 @@ $(".export").on('click', function (event) {
 });
 
 // Search
-var $rows = $('.searchTable tr');
+var $rows = $('.searchTable tr:has(td)');
 $('#searchInput').keyup(function() {
-
 	var val = '^(?=.*\\b' + $.trim($(this).val()).split(/\s+/).join('\\b)(?=.*\\b') + ').*$',
 		reg = RegExp(val, 'i'),
 		text;
 	$rows.show().filter(function() {
-
-
-	console.log(this)
-	var child = this.firstChild;
-	console.log(child);
-	var type = this.tagName
-	console.log("Type="+type);
-	console.log('--------------------------');
-
-
 		text = $(this).text().replace(/\s+/g, ' ');
 		return !reg.test(text);
 	}).hide();
