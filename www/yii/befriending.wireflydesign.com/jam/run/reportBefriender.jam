@@ -31,29 +31,27 @@
 		<input type="text" id="searchInput" placeholder="Type to search">
 	</form>
 
-	<div id="dvData">
-		<table id='printTable' class="searchTable testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
-			<tr style='font-weight:bold'>
-				<th> Name </th>
-				<th style='min-width:80px'> DoB </th>
-				<th> Address </th>
-				<th> Landline </th>
-				<th> Mobile </th>
-				<th> Email </th>
-			</tr>
+	<table id='printTable' class="searchTable testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+		<tr style='font-weight:bold'>
+			<th> Name </th>
+			<th style='min-width:80px'> DoB </th>
+			<th> Address </th>
+			<th> Landline </th>
+			<th> Mobile </th>
+			<th> Email </th>
+		</tr>
 {{@each befriender}}
 		{{@get global filter id = befriender.global_id}}
-			<tr class="rowHighlight" onClick="runAction('showTabs', ['befriender.id={{befriender.id}}'], 'content')">
-				<td>{{global.forename}} {{global.surname}}</td>
-				<td>{{befriender.dob}}</td>
-				<td>{{global.house}} {{global.street}} {{global.area}} {{global.town}} {{global.postcode}}</td>
-				<td>{{global.landline}} </td>
-				<td>{{global.mobile}} </td>
-				<td>{{global.email}} </td>
-			</tr>
+		<tr class="rowHighlight" onClick="runAction('showTabs', ['befriender.id={{befriender.id}}'], 'content')">
+			<td>{{global.forename}} {{global.surname}}</td>
+			<td>{{befriender.dob}}</td>
+			<td>{{global.house}} {{global.street}} {{global.area}} {{global.town}} {{global.postcode}}</td>
+			<td>{{global.landline}} </td>
+			<td>{{global.mobile}} </td>
+			<td>{{global.email}} </td>
+		</tr>
 {{@end}}
-		</table>
-	</div>
+	</table>
 </div>
 <br>
 <button class="uk-button uk-button-medium uk-button-primary" onClick="printData('printTable')"> Print </button>
@@ -101,7 +99,7 @@ function exportTableToCSV($table, filename) {
 // This must be a hyperlink
 $(".export").on('click', function (event) {
 	// CSV
-	exportTableToCSV.apply(this, [$('#dvData>table'), 'export.csv']);
+	exportTableToCSV.apply(this, [$('#printTable'), 'export.csv']);
 	// IF CSV, don't do event.preventDefault() or return false
 	// We actually need this to be a typical hyperlink
 });
