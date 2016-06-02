@@ -15,7 +15,7 @@
         <input type="text" id="searchInput" placeholder="Type to search">
     </form>
 
-	<table class="testgrid searchTable uk-table uk-table-condensed" style="border:1px solid #dddddd">
+	<table id="printTable" class="testgrid searchTable uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
 			<th> Forename </th>
 			<th> Surname </th>
@@ -34,8 +34,17 @@
 		</tr>
 {{@end}}
 	</table>
+	<br>
+
+	<button class="uk-button uk-button-medium uk-button-primary" onClick="printData('printTable')"> Print </button>
+
+	<span class='exportButton'>
+    	<a href="#" class="export" table='{"id":"printTable"}'>Export spreadsheet</a>
+	</span>
+
+	<br><br/>
+
 </div>
-<br>
 
 <script>
 function confirmDelete(id, displayInfo) {

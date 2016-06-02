@@ -45,6 +45,7 @@
 	<a href="#" class="export" table='{"id":"printTable"}'>Export spreadsheet</a>
 </span>
 
+<br><br/>
 
 {{@html container end}}
 
