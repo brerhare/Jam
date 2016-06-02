@@ -46,7 +46,12 @@
 
 <h3> DESCRIPTION </h3>
 	<div name="content_TABLE" class="uk-overflow-container">
-		<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+
+    	<form class="uk-form">
+        	<input type="text" id="searchInput" placeholder="Type to search">
+    	</form>
+
+		<table class="testgrid searchTable uk-table uk-table-condensed" style="border:1px solid #dddddd">
 			<tr>
 				HEADINGS
 				<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('TABLEMaintain?event_id=0')"> <i class="uk-icon-plus"></i> New</button> </th>
@@ -76,5 +81,7 @@ function confirmDelete_TABLE(eventId, displayInfo) {
 {{@action delete_TABLE}}
 	{{@remove item TABLE notify=ok}}
 {{@end}}
+
+{{@include /jam/sys/js/searchPrintExport.js}}
 
 {{@include /jam/sys/html/footer.html}}
