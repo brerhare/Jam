@@ -88,6 +88,10 @@ $(".export").on('click', function (event) {
 // ------
 
 /* EXAMPLE:
+    <form class="uk-form">
+        <input type="text" id="searchInput" placeholder="Type to search">
+    </form>
+
 	<table class="searchTable>
 */
 
