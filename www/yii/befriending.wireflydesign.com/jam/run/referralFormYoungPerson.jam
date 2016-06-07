@@ -134,7 +134,6 @@ function forwardToNext() {
 {{@action update_young_person}}
 	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
 	{{young_person.global_id = global.id}}
-	{{young_person.referral_date = sys.today}}
 	{{@update item young_person}}
 	{{@get contact filter id = refId}}
 	{{contact.young_person_id = young_person.id}}

@@ -125,6 +125,12 @@ function postUpdate() {
 
 {{@html container end}}
 
+{{@action update_young_person}}
+	{{young_person.id = ypID}}
+    {{young_person.referral_date = sys.today}}
+    {{@update item young_person}}
+{{@end}}
+
 <script>
 function backToPrev() {
     objReferrer = get('refId');
@@ -133,6 +139,9 @@ function backToPrev() {
     runJam('referralFormYoungPerson?refId='+objReferrer.value+'&ypId='+objYP.value);
 }
 function finishAndClose() {
+	runAction('update_young_person', [], '', finishNotify);
+}
+function finishNotify() {
 	runJam('referralFormFinished');
 }
 </script>
