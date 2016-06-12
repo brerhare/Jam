@@ -1,0 +1,67 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:700px; Xpadding:0}}
+
+<div name="finish">
+    {{@get young_person filter id = ypId}}
+    {{@get global filter id = young_person.global_id}}
+
+<br><br>
+
+	<center><h4>Have you added all contacts?</h4></center>
+
+        {{@html gridrow start}}
+            {{@html gridcol start width=1-1}}
+                <center>
+                    <button type='button' class="uk-button uk-button-primary" onClick="backToPrev()"> Back </button>
+                </center>
+            {{@html gridcol end}}
+        {{@html gridrow end}}
+
+<br><br><br>
+
+	<center><h4>If you are happy with the information in this form please press Submit</h4></center>
+
+        {{@html gridrow start}}
+            {{@html gridcol start width=1-1}}
+                <center>
+                    <button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="finishAndClose()"> Submit </button>
+                </center>
+            {{@html gridcol end}}
+        {{@html gridrow end}}
+
+<br><br>
+
+</div>
+
+
+{{@html container end}}
+
+{{@action update_young_person}}
+    {{young_person.id = ypID}}
+    {{young_person.referral_date = sys.today}}
+
+	<br><br><br>
+	<center> <h3> Thank you. Your input has been recorded </h3> </center>
+	<center> You may now close this window. </center>
+	<br><br><br>
+
+    {{@update item young_person}}
+{{@end}}
+
+<script>
+function backToPrev() {
+    objReferrer = get('refId');
+    objYP = get('ypId');
+    runJam('referralFormContacts?refId='+objReferrer.value+'&ypId='+objYP.value);
+}
+function finishAndClose() {
+    runAction('update_young_person', [], 'finish');
+}
+</script>
+
+{{@include /jam/sys/html/footer.html}}

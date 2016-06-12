@@ -342,7 +342,7 @@ END_OF_FOOTER;
 		// Exclusion list - sites ignored for devicewidth
 		if ( ((stristr($_SERVER['HTTP_HOST'], "1staid4u.co.uk")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "6tyshadesofbeauty.co.uk")))
-			|| ((stristr($_SERVER['HTTP_HOST'], "absoluteclassics.co.uk")))
+//			|| ((stristr($_SERVER['HTTP_HOST'], "absoluteclassics.co.uk")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "beirc.co.uk")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "brycewalkervending.com")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "craigieknowesgolfandteeroom.co.uk")))
