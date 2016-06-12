@@ -1,8 +1,6 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@Xinclude /jam/run/menu.jam}}
-
 {{@database befriending_wireflydesign_com}}
 
 <br>
@@ -21,7 +19,7 @@
 <div name="content_contact">
 	{{@get young_person filter id = ypId}}
 	{{@get global filter id = young_person.global_id}}
-	<center> <h3> Any other contacts regarding to young person {{global.forename}} {{global.surname}}</h3> </center>
+	<center> <h3> Please add all other additional contacts for {{global.forename}} {{global.surname}} you are aware of</h3> </center>
 	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
 			<th> Forename </th>
@@ -42,8 +40,7 @@
             {{@html gridcol start width=1-1}}
                 <center>
                     <button type='button' class="uk-button uk-button-primary" onClick="backToPrev()"> Prev </button> 
-<!--                    <button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="finishAndClose()"> Finish and Close </button> -->
-				Close the window to end
+ 					<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="toConfirmScreen()"> Next </button>
                 </center>
             {{@html gridcol end}}
         {{@html gridrow end}}
@@ -126,6 +123,12 @@ function postUpdate() {
 
 {{@html container end}}
 
+{{@action update_young_person}}
+	{{young_person.id = ypID}}
+    {{young_person.referral_date = sys.today}}
+    {{@update item young_person}}
+{{@end}}
+
 <script>
 function backToPrev() {
     objReferrer = get('refId');
@@ -133,8 +136,10 @@ function backToPrev() {
 //alert('r='+objReferrer.value+' and yp='+objYP.value);
     runJam('referralFormYoungPerson?refId='+objReferrer.value+'&ypId='+objYP.value);
 }
-function finishAndClose() {
-	close();
+function toConfirmScreen() {
+    objReferrer = get('refId');
+    objYP = get('ypId');
+    runJam('referralFormFinish?refId='+objReferrer.value+'&ypId='+objYP.value);
 }
 </script>
 

@@ -10,7 +10,12 @@
 
 <div name="content">
 	<h3> Young Person </h3>
-	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+
+    <form class="uk-form">
+        <input type="text" id="searchInput" placeholder="Type to search">
+    </form>
+
+	<table id="printTable" class="testgrid searchTable uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
 			<th> Forename </th>
 			<th> Surname </th>
@@ -29,8 +34,17 @@
 		</tr>
 {{@end}}
 	</table>
+	<br>
+
+	<button class="uk-button uk-button-medium uk-button-primary" onClick="printData('printTable')"> Print </button>
+
+	<span class='exportButton'>
+    	<a href="#" class="export" table='{"id":"printTable"}'>Export spreadsheet</a>
+	</span>
+
+	<br><br/>
+
 </div>
-<br>
 
 <script>
 function confirmDelete(id, displayInfo) {
@@ -104,5 +118,7 @@ function confirmDelete(id, displayInfo) {
 {{@end}}
 
 {{@html container end}}
+
+{{@include /jam/sys/js/searchPrintExport.js}}
 
 {{@include /jam/sys/html/footer.html}}
