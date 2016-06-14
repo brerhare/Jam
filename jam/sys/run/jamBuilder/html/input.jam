@@ -1,11 +1,15 @@
 {{@action inputLabelHtml}}
-	<label class='uk-form-label' for='INPUT_JAMKEY'> INPUT_LABEL </label>
-	<div class='uk-form-controls'>
-		<input type='INPUT_TYPE' id='INPUT_JAMKEY' name='INPUT_TABLE.INPUT_FIELD' value='INPUT_VALUE' placeholder='INPUT_PLACEHOLDER' class='uk-form-width-INPUT_SIZE INPUT_GROUP' COMMON_FN INPUT_DISABLED>
-	</div>
+	<span INPUT_HOVER>
+		<label class='uk-form-label' for='INPUT_JAMKEY'> INPUT_LABEL </label>
+		<div class='uk-form-controls'>
+			<input type='INPUT_TYPE' id='INPUT_JAMKEY' name='INPUT_TABLE.INPUT_FIELD' value='INPUT_VALUE' placeholder='INPUT_PLACEHOLDER' class='uk-form-width-INPUT_SIZE INPUT_GROUP' COMMON_FN INPUT_DISABLED>
+		</div>
+	</span>
 {{@end}}
 
 {{@action inputHtml}}
-	<input type='INPUT_TYPE' id='INPUT_JAMKEY' name='INPUT_TABLE.INPUT_FIELD' value='INPUT_VALUE' placeholder='INPUT_PLACEHOLDER' class='uk-form-width-INPUT_SIZE INPUT_GROUP' COMMON_FN INPUT_DISABLED>
+	<span INPUT_HOVER>
+		<input type='INPUT_TYPE' id='INPUT_JAMKEY' name='INPUT_TABLE.INPUT_FIELD' value='INPUT_VALUE' placeholder='INPUT_PLACEHOLDER' class='uk-form-width-INPUT_SIZE INPUT_GROUP' COMMON_FN INPUT_DISABLED>
+	</span>
 {{@end}}
 
