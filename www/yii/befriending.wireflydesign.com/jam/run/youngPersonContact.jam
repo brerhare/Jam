@@ -124,6 +124,8 @@ function sendContactEmail(contactEmail) {
 				{{@html text field=global.mobile size=medium label='Mobile'}}
 				{{@html text field=global.email size=medium label='Email'}}
 				{{@html text field=global.job_title size=medium label='Job Title'}}
+				{{@html text field=contact.agency size=medium label='Agency'}}
+				{{@html text field=contact.position size=medium label='Position'}}
 			{{@html gridcol end}}
 		{{@html gridrow end}}
 		{{@html gridrow start}}
@@ -152,7 +154,8 @@ function sendContactEmail(contactEmail) {
 {{@action email_contact}}
 	{{@get contact filter id = contact.id}}
 	{{@get global filter id = contact.global_id}}
-	{{@email info@wireflydesign.com {{global.email}} 'Befriending referral form for {{global.forename}} {{global.surname}}' action:emailContent}}
+	{{@get settings filter id = 1}}
+	{{@email {{settings.email}} {{global.email}} 'Befriending referral form for {{global.forename}} {{global.surname}}' action:emailContent}}
 	Email sent
 {{@end}}
 

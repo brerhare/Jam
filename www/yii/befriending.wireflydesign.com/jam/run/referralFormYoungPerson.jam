@@ -6,7 +6,7 @@
 {{@database befriending_wireflydesign_com}}
 
 <br>
-{{@html container start center nomargin css='max-width:900px; padding:0}}
+{{@html container start center css='max-width:900px; Xpadding:0}}
 
 	{{@get young_person filter id = ypId}}
 	{{@get global filter id = young_person.global_id}}
@@ -44,18 +44,15 @@
 			{{@html gridcol start width=1-10}}
 			{{@html gridcol end}}
 			{{@html gridcol start width=4-10}}
-
 				{{@html radio field=young_person.gender label='Gender' options=0:Male,1:Female group=inp}}
-				{{@html text field=young_person.legal_status size=large label='Legal status' group=inp}}
-				{{@html text field=young_person.medication size=large label='Medication' group=inp}}
-				{{@html date field=young_person.order_date size=medium label='Order date' group=inp}}
-				{{@html checkbox field=young_person.discussion_confirmation label='Discussion confirmation' group=inp}}
-				{{@html checkbox field=young_person.exclusion_risk label='Exclusion risk' group=inp}}
-				{{@html checkbox field=young_person.offending_risk label='Offending risk' group=inp}}
-				{{@html checkbox field=young_person.care_risk label='Care risk' group=inp}}
-				{{@html checkbox field=young_person.child_plan label='Child plan' group=inp}}
-				{{@html checkbox field=young_person.assessment label='Assessment' group=inp}}
-
+				{{@html radio field=young_person.legal_status label='Legal status' options=0:None,1:Other group=inp}}
+				{{@html date field=young_person.order_date size=medium label='Date of Order' group=inp}}
+				{{@html checkbox field=young_person.exclusion_risk label='Exclusion risk' tip='At risk of Exclusion?' group=inp}}
+				{{@html checkbox field=young_person.offending_risk label='Offending risk' tip='At risk of Offending?' group=inp}}
+				{{@html checkbox field=young_person.care_risk label='Care risk' tip='At risk of Statutory Care?' group=inp}}
+				{{@html checkbox field=young_person.child_plan label='Child plan' tip='Is this part of a Childs Plan?' group=inp}}
+				{{@html checkbox field=young_person.assessment label='Assessment' tip='Has a Childs Assessment been carried out?' group=inp}}
+				{{@html checkbox field=young_person.named_person label='Named Person' tip='Is there a Named Person? Please ensure you enter this person in the Contacts section' group=inp}}
 			{{@html gridcol end}}
 		{{@html gridrow end}}
 
