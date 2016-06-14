@@ -486,6 +486,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	char *tableFieldRawValue = NULL;
 	char *label = NULL;
 	char *placeholder = NULL;
+	char *tip = NULL;
 	char *size = NULL;
 	char *disabled = NULL;
 	char *hidden = NULL;
@@ -541,6 +542,16 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	else
 		placeholder = strdup("");
 
+	// Hover
+	if (isVar("sys.control.tip")) {
+		char *hoverTip = strdup(getVarAsString("sys.control.tip"));
+		sprintf(tmp, "data-uk-tooltip title='%s'", hoverTip);
+		tip = strdup(tmp);
+		if (hoverTip)
+			free(hoverTip);
+	} else
+		tip = strdup("");
+
 	// Size
 	if (isVar("sys.control.size"))
 		size = strdup(getVarAsString("sys.control.size"));
@@ -589,6 +600,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 						  {{@template INPUT_FIELD %s}}	\
 						  {{@template INPUT_LABEL %s}}	\
 						  {{@template INPUT_PLACEHOLDER %s}}	\
+						  {{@template INPUT_HOVER %s}}	\
 						  {{@template INPUT_SIZE %s}}	\
 						  {{@template INPUT_VALUE %s}}	\
 						  {{@template INPUT_DISABLED %s}}	\
@@ -600,6 +612,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 							field,
 							label,
 							placeholder,
+							tip,
 							size,
 							value2,
 							disabled,
@@ -621,6 +634,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	free(tableFieldRawValue);
 	free(label);
 	free(placeholder);
+	free(tip);
 	free(size);
 	free(disabled);
 	free(group);
@@ -642,6 +656,7 @@ int wordHtmlCheckbox(int ix, char *defaultTableName) {
 	char *value = NULL;
 	char *unvalue = NULL;
 	char *checked = NULL;
+	char *tip = NULL;
 	char *group = (char *) calloc(1, 4096);
 	char *jamKey = NULL;
 
@@ -707,6 +722,16 @@ int wordHtmlCheckbox(int ix, char *defaultTableName) {
 	else
 		checked = strdup("");
 
+	// Hover
+	if (isVar("sys.control.tip")) {
+		char *hoverTip = strdup(getVarAsString("sys.control.tip"));
+		sprintf(tmp, "data-uk-tooltip title='%s'", hoverTip);
+		tip = strdup(tmp);
+		if (hoverTip)
+			free(hoverTip);
+	} else
+		tip = strdup("");
+
 	JAMBUILDER jb;
 	jb.stream = STREAMOUTPUT_STD;
 	char *templateStr = (char *) calloc(1, 4096);
@@ -717,6 +742,7 @@ int wordHtmlCheckbox(int ix, char *defaultTableName) {
 						  {{@template CHECKBOX_VALUE %s}}	\
 						  {{@template CHECKBOX_UNVALUE %s}}	\
 						  {{@template CHECKBOX_CHECKED %s}}	\
+						  {{@template CHECKBOX_HOVER %s}}	\
 						  {{@template CHECKBOX_DISABLED %s}}	\
 						  {{@template CHECKBOX_GROUP %s}}	\
 						  {{@template COMMON_FN %s}}	\
@@ -728,6 +754,7 @@ int wordHtmlCheckbox(int ix, char *defaultTableName) {
 							value,
 							unvalue,
 							checked,
+							tip,
 							disabled,
 							group,
 							COMMON_FN,
@@ -751,6 +778,7 @@ int wordHtmlCheckbox(int ix, char *defaultTableName) {
 	free(value);
 	free(unvalue);
 	free(checked);
+	free(tip);
 	free(jamKey);
 	free(templateStr);
 	emitStd(jam[ix]->trailer);
@@ -763,6 +791,7 @@ int wordHtmlRadio(int ix, char *defaultTableName) {
 	char *tableFieldRawValue = NULL;
 	char *label = NULL;
 	char *disabled = NULL;
+	char *tip = NULL;
 	char *value = NULL;
 	char *options = NULL;
 	char *group = (char *) calloc(1, 4096);
@@ -820,6 +849,17 @@ int wordHtmlRadio(int ix, char *defaultTableName) {
 		options = strdup(getVarAsString("sys.control.options"));
 	else
 		options = strdup("");
+
+	// Hover
+	if (isVar("sys.control.tip")) {
+		char *hoverTip = strdup(getVarAsString("sys.control.tip"));
+		sprintf(tmp, "data-uk-tooltip title='%s'", hoverTip);
+		tip = strdup(tmp);
+		if (hoverTip)
+			free(hoverTip);
+	} else
+		tip = strdup("");
+
 /*
 {{@Xhtml radio field=young_person.gender label='Gender' options=0:Male,1:Female}}
 
@@ -869,6 +909,7 @@ int wordHtmlRadio(int ix, char *defaultTableName) {
 						  {{@template RADIO_OPTIONS %s}}	\
 						  {{@template RADIO_VALUE %s}}	\
 						  {{@template RADIO_DISABLED %s}}	\
+						  {{@template RADIO_HOVER %s}}	\
 						  {{@template RADIO_GROUP %s}}	\
 						  {{@template COMMON_FN %s}}	\
 						  {{@template RADIO_JAMKEY %s}}",
@@ -878,6 +919,7 @@ int wordHtmlRadio(int ix, char *defaultTableName) {
 							optionStr,
 							value,
 							disabled,
+							tip,
 							group,
 							COMMON_FN,
 							jamKey
@@ -895,6 +937,7 @@ int wordHtmlRadio(int ix, char *defaultTableName) {
 	free(tableFieldRawValue);
 	free(label);
 	free(disabled);
+	free(tip);
 	free(group);
 	free(value);
 	free(jamKey);
@@ -913,6 +956,7 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 	char *tableFieldRawValue = NULL;
 	char *label = NULL;
 	char *placeholder = NULL;
+	char *tip = NULL;
 	char *size = NULL;
 	char *cols = NULL;
 	char *rows = NULL;
@@ -957,6 +1001,16 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 		placeholder = strdup(getVarAsString("sys.control.placeholder"));
 	else
 		placeholder = strdup("");
+
+	// Hover
+	if (isVar("sys.control.tip")) {
+		char *hoverTip = strdup(getVarAsString("sys.control.tip"));
+		sprintf(tmp, "data-uk-tooltip title='%s'", hoverTip);
+		tip = strdup(tmp);
+		if (hoverTip)
+			free(hoverTip);
+	} else
+		tip = strdup("");
 
 	// Size
 	if (isVar("sys.control.size")) {
@@ -1006,6 +1060,7 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 						  {{@template TEXTAREA_FIELD %s}}	\
 						  {{@template TEXTAREA_LABEL %s}}	\
 						  {{@template TEXTAREA_PLACEHOLDER %s}}	\
+						  {{@template TEXTAREA_HOVER %s}}	\
 						  {{@template TEXTAREA_COLS %s}}	\
 						  {{@template TEXTAREA_ROWS %s}}	\
 						  {{@template TEXTAREA_VALUE %s}}	\
@@ -1018,6 +1073,7 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 							field,
 							label,
 							placeholder,
+							tip,
 							cols,
 							rows,
 							value2,
@@ -1040,6 +1096,7 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 	free(tableFieldRawValue);
 	free(label);
 	free(placeholder);
+	free(tip);
 	free(size);
 	free(rows);
 	free(cols);
