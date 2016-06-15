@@ -51,7 +51,6 @@
 
 				{{@html radio field=young_person.gender label='Gender' options=0:Male,1:Female group=inp}}
 				{{@html radio field=young_person.legal_status label='Legal status' options=0:None,1:Other group=inp}}
-				{{@html text field=young_person.legal_status size=large label='Legal status' group=inp}}
 				{{@html date field=young_person.order_date size=medium label='Date of Order' group=inp}}
 				{{@html checkbox field=young_person.exclusion_risk label='Exclusion risk' tip='At risk of Exclusion?' group=inp}}
 				{{@html checkbox field=young_person.offending_risk label='Offending risk' tip='At risk of Offending?' group=inp}}

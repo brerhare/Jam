@@ -134,7 +134,7 @@ function backToPrev() {
     objReferrer = get('refId');
     objYP = get('ypId');
 //alert('r='+objReferrer.value+' and yp='+objYP.value);
-    runJam('referralFormYoungPerson?refId='+objReferrer.value+'&ypId='+objYP.value);
+    runJam('referralFormMedical?refId='+objReferrer.value+'&ypId='+objYP.value);
 }
 function toConfirmScreen() {
     objReferrer = get('refId');
