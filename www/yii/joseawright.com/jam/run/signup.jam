@@ -13,16 +13,16 @@
 	.uk-form input, textarea {
 		border-radius: 5px !important;
 		margin-bottom:3px !important;
-		border: 2px solid #ef7f18 !important;
+		border: 2px solid #13dbd3 !important;
 	}
 	.uk-form button {
 		margin-top:3px !important;
 		Xmargin-bottom:8px !important;
 		color: #ffffff !important;
-		background: #f0801e !important;
+		background: #13dbd3 !important;
 	}
 	.uk-form button:hover {
-		background: #f28d15 !important;
+		background: #50e4de !important;
 	}
 </style>
 
