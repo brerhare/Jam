@@ -108,13 +108,27 @@ function addNotes() {
 	runAction('addNotes', ['young_person.id='+objYP.value, 'notes='+notesObj.value, 'medication='+medicationObj.value], '', addAll);
 }
 
-function addAll() {
-	var groupArr = getGroupArray('inp');
-	for (var i = 0; i < groupArr.length; i++) {
-		var medical_id_arr = groupArr[i].name.split('_');
+var sanity;
+var groupMedArr = [];
+var dups = [];
 
-		ypVal = 0;
-		pcVal = 0;
+function addAll() {
+	sanity = 200;
+	groupMedArr = getGroupArray('inp');
+	addEachFromArray();
+}
+
+function addEachFromArray() {
+	if (--sanity == 0) {
+		alert('Internal error updating medical flags');
+		return;
+	}
+	for (var i = 0; i < groupMedArr.length; i++) {
+		if (groupMedArr[i].name == "")
+			continue;
+		var medical_id_arr = groupMedArr[i].name.split('_');
+		var ypVal = 0;
+		var pcVal = 0;
 		for (var j = 1; j < 4; j++) {
 			ypId = medical_id_arr[0] + '_' + 'yp_'+j;
 			pcId = medical_id_arr[0] + '_' + 'pc_'+j;
@@ -123,10 +137,27 @@ function addAll() {
 			if (document.getElementById(pcId).checked)
 				pcVal = j;
 		}
-		if ((ypVal != 0) || (pcVal != 0))
-			runAction('addMedical', ['young_person.id='+objYP.value, 'medical_type_id='+medical_id_arr[0], 'ypval='+ypVal, 'pcval='+pcVal], toNextScreen);
-		//alert('medical_type='+medical_id_arr[0]+' and yp='+ypVal+' and pc='+pcVal);
+
+		if ((ypVal != 0) || (pcVal != 0)) {
+			// Invalidate this
+			groupMedArr[i].name = "";
+			// Strip dups
+			dup = medical_id_arr[0] + '|' + ypVal + '|' + pcVal;
+			if (dups.indexOf(dup) != -1)
+				continue;
+			dups.push(dup);
+			// Update on server
+			runAction('addMedical', ['young_person.id='+objYP.value, 'medical_type_id='+medical_id_arr[0], 'ypval='+ypVal, 'pcval='+pcVal], '', addEachFromArray);
+//console.log('------------------dups--------------');
+//console.log(dups);
+//console.log('------------------------------------');
+			//alert('medical_type='+medical_id_arr[0]+' and yp='+ypVal+' and pc='+pcVal);
+			return;
+		}
+		// No update - continue to next document element in groupMedArr
 	}
+	// Found nothing actionable in groupMedArr - finished
+	toNextScreen();
 }
 
 </script>
@@ -142,7 +173,7 @@ function addAll() {
     {{medical.medical_type_id = medical_type_id}}
 	{{medical.yp_radio = ypval}}
 	{{medical.pc_radio = pcval}}
-    {{@new item medical notify=ok}}
+    {{@new item medical}}
 {{@end}}
 
 {{@action addNotes}}
@@ -162,7 +193,6 @@ function backToPrev() {
     runJam('referralFormYoungPerson?refId='+objReferrer.value+'&ypId='+objYP.value);
 }
 function toNextScreen() {
-alert('x');
     objReferrer = get('refId');
     objYP = get('ypId');
     runJam('referralFormContacts?refId='+objReferrer.value+'&ypId='+objYP.value);

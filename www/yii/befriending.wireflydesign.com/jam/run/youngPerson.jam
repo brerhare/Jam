@@ -77,6 +77,8 @@ function confirmDelete(id, displayInfo) {
 		<td style='width:200px; text-align:right'>{{@html button 'Return to list' primary medium 
 			runJam
 		}}</td>
+		<td style='width:200px; text-align:right'>{{@html button 'Forms report' primary medium 
+		}}</td>
 			
 			
 		</tr>
@@ -86,7 +88,7 @@ function confirmDelete(id, displayInfo) {
 	{{@html tabs
 		label=Contacts		action=/run/youngPersonContact?young_person.id={{young_person.id}}
 		label=Details		action=/run/youngPersonDetails?young_person.id={{young_person.id}}&newRec=0
-		label=Interests		action=/run/youngPersonInterest?young_person.id={{young_person.id}}
+		label=Anticipated		action=/run/youngPersonInterest?young_person.id={{young_person.id}}
 		label=Outcomes		action=/run/youngPersonOutcomes?young_person.id={{young_person.id}}
 		label=Medical		action=/run/youngPersonMedical?young_person.id={{young_person.id}}
 		label=Additional	action=/run/youngPersonAdditional?young_person.id={{young_person.id}}

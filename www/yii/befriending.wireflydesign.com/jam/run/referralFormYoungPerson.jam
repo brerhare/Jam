@@ -59,7 +59,7 @@
 <br>
 		{{@html gridrow start}}
 			{{@html gridcol start width=1-1}}
-				{{@html textarea field=young_person.special_needs_notes size=80x10 label='Special needs notes' group=inp}}
+				{{@html textarea field=young_person.special_needs_notes size=80x10 label='Reason for referral' group=inp}}
 			{{@html gridcol end}}
 		{{@html gridrow end}}
 
