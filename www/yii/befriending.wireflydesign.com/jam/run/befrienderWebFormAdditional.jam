@@ -1,12 +1,12 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@Xinclude /jam/run/menu.jam}}
+{{@include /jam/run/menu.jam}}
 
 {{@database befriending_wireflydesign_com}}
 
 <br>
-{{@html container start center nomargin css='max-width:900px; padding:0}}
+{{@html container start center css='max-width:1080px; Xpadding:0}}
 
 	{{@get befriender filter id = befriender.id}}
 	{{@get global filter id = befriender.global_id}}
