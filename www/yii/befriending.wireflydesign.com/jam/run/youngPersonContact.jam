@@ -144,7 +144,6 @@ function sendContactEmail(contactEmail) {
 				{{@html text field=global.email size=medium label='Email'}}
 				{{@html text field=global.job_title size=medium label='Job Title'}}
 				{{@html text field=contact.agency size=medium label='Agency'}}
-				{{@html text field=contact.position size=medium label='Position'}}
 			{{@html gridcol end}}
 		{{@html gridrow end}}
 		{{@html gridrow start}}

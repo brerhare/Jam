@@ -19,7 +19,7 @@
 		<tr style='font-weight:bold'>
 			<th> Referral date </th>
 			<th> Referrer Name </th>
-			<th> Position </td>
+			<th> Job title </td>
 			<th> Agency </td>
 			<th> YP Name </th>
 			<th style='min-width:80px'> DoB </th>
@@ -33,7 +33,7 @@
 	{{@get contact filter young_person_id = young_person.id, contact_relationship_id = 3}}
 	{{@get global filter id = contact.global_id}}
 			<td>{{global.forename}} {{global.surname}}</td>
-			<td>{{contact.position}} </td>
+			<td>{{global.job_title}} </td>
 			<td>{{contact.agency}} </td>
 	{{@get global filter id = young_person.global_id}}
 			<td>{{global.forename}} {{global.surname}}</td>
