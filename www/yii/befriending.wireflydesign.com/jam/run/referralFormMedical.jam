@@ -18,6 +18,9 @@
 
 
     <div name="inlineForm" class="uk-form uk-form-horizontal">
+<br>
+<center> <h3> Medical </h3> </center>
+
         <table class="uk-table uk-table-condensed" style="border:1px solid #dddddd">
             <tr>
 				<th> Medical type </th>
@@ -81,9 +84,11 @@
 {{@end}}
         </table>
 
+<center><h4 style='color:#ff0000'>If you checked 'yes' for any please provide details below</h4></center>
+
 {{@get medical_notes filter young_person_id = young_person.id}}
 			{{@html textarea field=medical_notes.medication size=80x3 label=Medication}}
-			{{@html textarea field=medical_notes.notes size=80x5 label=Notes}}
+			{{@html textarea field=medical_notes.notes size=80x5 label='Additional Medical Details'}}
 	<br>
 
 	<center>
@@ -190,7 +195,7 @@ function backToPrev() {
     objReferrer = get('refId');
     objYP = get('ypId');
 //alert('r='+objReferrer.value+' and yp='+objYP.value);
-    runJam('referralFormYoungPerson?refId='+objReferrer.value+'&ypId='+objYP.value);
+    runJam('referralFormInterest?refId='+objReferrer.value+'&ypId='+objYP.value);
 }
 function toNextScreen() {
     objReferrer = get('refId');
