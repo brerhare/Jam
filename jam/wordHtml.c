@@ -487,6 +487,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	char *label = NULL;
 	char *placeholder = NULL;
 	char *tip = NULL;
+	char *defaultValue = NULL;
 	char *size = NULL;
 	char *disabled = NULL;
 	char *hidden = NULL;
@@ -572,12 +573,33 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	// Set jamKey. This is whatever table/field values are required to update the data
 	jamKey = makeJamKeyValue(table, field, tableFieldRawValue);
 
+	// Default value (id = -1)
+	if (isVar("sys.control.default")) {
+		logMsg(LOGDEBUG, "Found a default value");
+		VAR *variableDefault = findVarStrict("sys.control.default");
+		if (variableDefault) {
+			sprintf(tmp, "%s.%s", table, "id");
+			VAR *variableId = findVarStrict(tmp);
+			if ((variableId) && (!strcmp(variableId->portableValue, "-1"))) {
+				defaultValue = strdup(escapeJsonChars(variableDefault->portableValue));
+			}
+		}
+	}
+
+		logMsg(LOGDEBUG, "Foundi a default value");
 	// Value
 	sprintf(tmp, "%s.%s", table, field);
 	VAR *variable = findVarStrict(tmp);
 	if (variable) {
-		value = strdup(escapeJsonChars(variable->portableValue));
-		value2 = strdup(escapeSingleQuote(value));
+		if (!defaultValue) {
+logMsg(LOGDEBUG, "3");
+			value = strdup(escapeJsonChars(variable->portableValue));
+			value2 = strdup(escapeSingleQuote(value));
+		} else {
+logMsg(LOGDEBUG, "4");
+			value = strdup(escapeJsonChars(defaultValue));
+			value2 = strdup(escapeJsonChars(defaultValue));
+		}
 	} else {
 		if (!strcmp(type, "date")) {
 			// Default to today
@@ -592,6 +614,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 		}
 	}
 
+logMsg(LOGDEBUG, "5");
 	JAMBUILDER jb;
 	jb.stream = STREAMOUTPUT_STD;
 	char *templateStr = (char *) calloc(1, 4096);
@@ -627,6 +650,8 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	else
 		jamBuilder("/jam/run/sys/jamBuilder/html/input.jam", "inputHtml", &jb);
 
+	if (defaultValue)
+		free(defaultValue);
 	free(tmp);
 	free(type);
 	free(table);
