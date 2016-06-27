@@ -53,6 +53,20 @@
 							{{@Xend}}
 						{{@end}}
 
+						<tr> <td colspan=6> <center><h3 style='background-color:#dadada;' >Previous Matches</h3></center> </td> </tr>
+						{{@each match_history filter young_person_id = young_person.id}}
+							{{@get befriender filter id = match_history.befriender_id}}
+							{{@get global filter id = befriender.global_id}}
+								<tr>
+									<td> {{global.forename}} {{global.surname}} </td>
+									<td> {{global.mobile}} </td>
+									<td> {{global.email}} </td>
+									<td> {{global.postcode}} </td>
+									<td>
+									</td>
+								</tr>
+						{{@end}}
+
 								<tr> <td colspan=6> <center><h3 style='background-color:#dadada;' >All Possible Befrienders</h3></center> </td> </tr>
 						{{@each befriender}}
 							{{@get global filter id = befriender.global_id}}
@@ -140,6 +154,13 @@ function afterMatchDates() {
 {{@end}}
 
 {{@action addMatch}}
+	{{@get match_yp filter young_person_id = yp_id}}
+	{{match_history.match_date = match_yp.match_date}}
+	{{match_history.match_started = match_yp.match_started}}
+	{{match_history.match_end = sys.today}}
+	{{match_history.young_person_id = match_yp.young_person_id}}
+	{{match_history.befriender_id = match_yp.befriender_id}}
+	{{@new item match_history}}
 	{{@sql delete from match_yp where young_person_id = {{yp_id}} }}
 	{{match_yp.young_person_id = {{yp_id}} }}
 	{{match_yp.befriender_id = {{bf_id}} }}

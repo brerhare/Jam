@@ -40,6 +40,25 @@
                     </tr>
             {{@end}}
         </table>
+
+        <table class="uk-table uk-table-condensed" style='background-color:#e9e9e9;'>
+            <tr>
+                <th> Previous Matches </th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+            </tr>
+            {{@each match_history filter young_person_id = young_person.id}}
+                {{@get befriender filter id = match_history.befriender_id}}
+                {{@get global filter id = befriender.global_id}}
+                    <tr>
+                        <td> {{global.forename}} {{global.surname}} </td>
+                        <td> {{global.mobile}} </td>
+                        <td> {{global.email}} </td>
+                        <td> {{global.postcode}} </td>
+                    </tr>
+            {{@end}}
+        </table>
     </div>
 
 	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
