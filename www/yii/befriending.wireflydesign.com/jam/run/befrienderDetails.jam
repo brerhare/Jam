@@ -41,6 +41,7 @@
 				{{@html dropdown field=befriender.heardabout_id pickfield=heardabout.from_where size=small label='Heard About'}}
 			{{@html gridcol end}}
 			{{@html gridcol start width=5-10}}
+				{{@html dropdown field=befriender.status_id pickfield=status_bf.name size=small label='Status'}}
 				{{@html text field=befriender.match_limit size=mini label='Match Capacity' default=1 group=inp}}
 				<br>
 				<h4> <center>Emergency Contact Info </center></h4>
