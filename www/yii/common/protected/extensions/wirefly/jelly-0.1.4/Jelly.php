@@ -53,6 +53,7 @@ class Jelly
 	<substitute-meta-title>
 	<substitute-meta-description>
 	<substitute-meta-keywords>
+	<substitute-meta-special>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
 
 	<style>		/* This style block is for the CSS reset */
@@ -272,8 +273,13 @@ END_OF_FOOTER;
 					}
 				}
 				$this->beginHeader = str_replace("<substitute-meta-title>", "<title>" . $this->metaTitle . "</title>", $this->beginHeader);;
-				$this->beginHeader = str_replace("<substitute-meta-description>", "<meta name='description' content='" . $this->metaDescription . "'/>", $this->beginHeader);;
-				$this->beginHeader = str_replace("<substitute-meta-keywords>", "<meta name='keywords' content='" . $this->metaKeywords . "'/>", $this->beginHeader);;
+				$this->beginHeader = str_replace("<substitute-meta-description>", "<meta name='description' content='" . $this->metaDescription . "'/>", $this->beginHeader);
+				$this->beginHeader = str_replace("<substitute-meta-keywords>", "<meta name='keywords' content='" . $this->metaKeywords . "'/>", $this->beginHeader);
+
+				// Any site specific headers?
+				if (stristr($_SERVER['HTTP_HOST'], "dgbloodbikes.org.uk"))
+					$this->beginHeader = str_replace("<substitute-meta-special>",'<meta name="google-site-verification" content="jEoBpHaqvy5MD6UJQZjM5uuVTs_YTfzwF_h0OefxRFs" />', $this->beginHeader);
+				$this->beginHeader = str_replace("<substitute-meta-special>", "", $this->beginHeader);
 			}	
 
 
