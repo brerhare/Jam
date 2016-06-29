@@ -24,6 +24,8 @@
 	{{@html gridrow start}}
 		{{@html gridcol start width=5-5}}
 			{{@html text field=settings.email size=large label='Email address'}}
+			{{@html text field=settings.reminder_documentation_lead_days size=mini label='Reminder documentation days' default=3}}
+			{{@html text field=settings.reminder_events_lead_days size=mini label='Reminder event days' default=3}}
 		{{@html gridcol end}}
 	{{@html gridrow end}}
 	{{@html gridrow start}}
