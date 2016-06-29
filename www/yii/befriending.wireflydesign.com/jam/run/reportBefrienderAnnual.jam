@@ -24,6 +24,9 @@
 		</tr>
 {{@each befriender}}
 		{{@count id}}
+
+{{lineGender = befriender.gender?0:Male,1:Female}}
+
 		{{@get global filter id = befriender.global_id}}
 		<tr class="rowHighlight" onClick="runAction('showTabs', ['befriender.id={{befriender.id}}'], 'content')">
 			<td>{{global.forename}} {{global.surname}}</td>

@@ -35,7 +35,7 @@
 				{{@html gridrow start}}
 				{{@html gridcol start width=1-1}}
 
-				<textarea cols="80" rows="2" id='{{question_befriender.id}}' placeholder="" class="inp"> {{answer_befriender.answer}} </textarea>
+				<textarea cols="80" rows="2" id='{{question_befriender.id}}' placeholder="" class="inp">{{answer_befriender.answer}}</textarea>
 
 					{{@Xhtml textarea field=answer_befriender.answer size=80x2 group='inp'}}
 
