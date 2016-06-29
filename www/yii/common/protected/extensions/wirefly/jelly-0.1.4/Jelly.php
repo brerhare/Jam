@@ -357,7 +357,7 @@ END_OF_FOOTER;
 			|| ((stristr($_SERVER['HTTP_HOST'], "horses.wireflydesign.com")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "jacquiesbeauty.co.uk")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "jardineroofingltd.co.uk")))
-			|| ((stristr($_SERVER['HTTP_HOST'], "joseawright.com")))
+//			|| ((stristr($_SERVER['HTTP_HOST'], "joseawright.com")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "knowledgebase.wireflydesign.com")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "mossheadpreschool.co.uk")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "opendoorsart.com")))

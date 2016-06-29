@@ -39,10 +39,10 @@
 				{{@html date field=befriender.dob size=medium label='Birth date' group=inp}}
 				{{@html dropdown field=befriender.employment_status_id pickfield=employment_status.description size=small label='Employment Status'}}
 				{{@html dropdown field=befriender.heardabout_id pickfield=heardabout.from_where size=small label='Heard About'}}
-
 			{{@html gridcol end}}
 			{{@html gridcol start width=5-10}}
-				{{@html text field=befriender.match_limit size=mini label='Match Capacity' group=inp}}
+				{{@html dropdown field=befriender.status_id pickfield=status_bf.name size=small label='Status'}}
+				{{@html text field=befriender.match_limit size=mini label='Match Capacity' default=1 group=inp}}
 				<br>
 				<h4> <center>Emergency Contact Info </center></h4>
 				{{@html text field=befriender.emergency_name size=medium label='Name' group=inp}}
@@ -75,6 +75,17 @@ window.onload = function() {
 }
 
 function saveButtonClick() {
+    objName = get('global.forename');
+    if (objName.value == "") {
+        alert('Name cannot be blank');
+        return;
+    }
+    objName = get('global.surname');
+    if (objName.value == "") {
+        alert('Name cannot be blank');
+        return;
+    }
+
 	runAction('update_befriender', ['inputForm_befriender'], '', updated);
 }
 

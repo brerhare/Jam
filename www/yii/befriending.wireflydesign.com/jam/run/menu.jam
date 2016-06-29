@@ -29,6 +29,9 @@
 	<li><a href="#"> Reports </a>
 		<ul>
 			<li> <a href="/run/reportBefriender.jam" > Volunteer process - joining </a> </li>
+			<li> <a href="/run/reportBefrienderAnnual.jam" > Befriender - annual report </a> </li>
+			<li> <a href="/run/reportYoungPersonAnnualMatch.jam" > Young Person - annual match report </a> </li>
+			<li> <a href="/run/reportReferral.jam" > Young Person - referral report </a> </li>
 		</ul>
 	</li>
 	
@@ -43,10 +46,12 @@
 			<li><a href="/run/heardAbout.jam">Heard About </a>
 			<li> <a href="/run/medicalType.jam"> Medical Conditions </a></li>
 			<li> <a href="/run/contactRelationship.jam"> Relationship Types </a></li>
-			<li><a href="/run/status.jam"> Status Types </a>
+			<li><a href="/run/status.jam"> Young Person Status Types </a>
 			<li><a href="/run/questionYoungPerson.jam"> Young Person Additional Questions </a>
+			<li><a href="/run/status_bf.jam"> Befriender Status Types </a>
 			<li><a href="/run/questionBefriender.jam"> Befriender Additional Questions </a>
 			<li> <a href="/run/befrienderDocumentationType.jam"> Befriender Documentation Types </a></li>
+			<li> <a href="/run/settings.jam"> System Settings </a></li>
 		</ul>
 	</li>
 	

@@ -1,0 +1,30 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/menu.jam}}
+
+<style>
+	div { width:600px; }
+</style>
+
+{{@database befriending_wireflydesign_com}}
+
+<!-- Template defines -->
+{{@template TABLE status_bf}}
+{{@template DESCRIPTION List the Different Status for a Befriender}}
+{{@template DELETEFIELD status_bf.name}}
+
+{{@template HEADINGS
+	<th> Status </th>
+}}
+
+{{@template COLUMNS
+	<td> {{@html text field=status_bf.name size=medium}} </td>
+}}
+
+{{@template EDITS name}}
+
+<!-- Include the template -->
+{{@include /jam/run/sys/crudInline.jam}}
+
+{{@include /jam/sys/html/footer.html}}

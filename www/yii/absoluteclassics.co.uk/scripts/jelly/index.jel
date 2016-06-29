@@ -1,105 +1,76 @@
 #AbsoluteClassics
-## - Remember this site has 4 layouts!!!
 
 [defaults]
-include = default-values
+#include = default-values
+css.display = block
+css.overflow = hidden
+css.margin = 0px auto
+css.position = relative
 
 [* : defaults]
-# Every blob inherits these before adding/overriding
 
 [screen]
 child = site
-#css.background-color = #000000
-fx.wallpaper-image-tile = /img/black.jpg
-css.display = block
+css.width = 100%
+css.background-color = #000000
 
 	[site]
 	child = header, all-content, footer
 	css.display = block
-	css.width = 100%
+	css.width = 90%
+	css.max-width = 1200px
 
 
 ####### Header #########################
 
 [header]
 child = logo, menu
-#css.background-color = #000000
-# When changing the height, also need to change it in css (adding 10px there)
-css.height = 250px
-css.width = 1200px
+css.width = 100%
 
 [logo]
-css.width = 1200px
+css.width = 100%
+css.max-width = 300px
 css.margin-top = 20px
 image.url = img/ac-logo.png
-image.width = 250px
-image.height = 46%
+image.width = 100%
+image.height = 100%
 image.align = center
 click = http://www.absoluteclassics.co.uk/
 
 [menu]
-child = margin, menu1, menu2, menu3
 css.margin-top = 20px
-css.margin-left = 100px
-css.height = 55px
-css.width = 1000px
-#css.width = 80%
-#css.minwidth = 800px
-stacking = horizontal
-css.margin-left = 0px auto
-css.margin-right= 0px auto 
-
-	[margin]
-	css.width = 120px
-	css.height = 20px
-
-	[menu1]
-	css.width = 260px
-	css.margin-top = 15px
-	image.url = img/menu/concert-white.png
-	image.width = 151px
-	image.height = 35px
-	image.align = centre
-	click = http://www.absoluteclassics.co.uk/?layout=series&page=classical-music-series
-
-	[menu2]
-	css.width = 250px
-	image.url = img/menu/im-platform-white.png
-	image.width = 218px
-	image.height = 50px
-	image.align = centre
-	click = http://www.absoluteclassics.co.uk/?layout=festival&page=international-music-platform-festival
-
-	[menu3]
-	css.width = 250px
-	css.margin-top = 15px
-	image.url = img/menu/tickets-white.png
-	image.width = 100px
-	image.height = 35px
-	image.align = centre
-	click = http://www.absoluteclassics.co.uk/?layout=tickets&page=classical-music-dumfries-live-performance
+css.width = 100%
+jamtemplate.COLUMNNAME = home-menu
+jamtemplate.LARGEVIEWBLOCKS = 3
+jamtemplate.MEDIUMVIEWBLOCKS = 3
+jamtemplate.SMALLVIEWBLOCKS = 1
+jamtemplate.BACKCOLOR = transparent
+jamtemplate.BORDERWIDTH = 20px
+jamtemplate.BORDERCOLOR = black
+jamtemplate.BORDERRADIUS = 0px
+jam.embed = /run/grid.jam
 	
 
 ######## Page Content ###############################
 
 [all-content]
-child = home-content, other-content
-css.width = 1200px
+child = home-content, main-content, blog-content
+css.width = 100%
 
 [home-content]
 child = home-content-block
-condition = @HOMEPAGE=1
-css.width = 960px
-#css.height = 500px
-#css.margin-top = 30px
-css.background-color = black
-	image.url = img/centre-background.jpg
-	image.width = 90%
-	image.height = 53%
-	image.align = center
+condition = @PAGE=@HOMEPAGE
+jamtemplate.COLUMNNAME = home-image
+jamtemplate.LARGEVIEWBLOCKS = 1
+jamtemplate.MEDIUMVIEWBLOCKS = 1
+jamtemplate.SMALLVIEWBLOCKS = 1
+jamtemplate.BACKCOLOR = transparent
+jamtemplate.BORDERWIDTH = 20px
+jamtemplate.BORDERCOLOR = black
+jamtemplate.BORDERRADIUS = 0px
+jam.embed = /run/grid.jam
 	
 	[home-content-block]
-	#css.margin-top = 40px
 	css.width = 80%
 	fx.opacity = 100%
 	db.table = ContentBlock
@@ -107,16 +78,17 @@ css.background-color = black
 	db.error = Sorry, I could not find the page $_GET['page']
 	html.raw = ContentBlock.content
 
-[other-content]
-child = second-menu, content-block
-condition = @HOMEPAGE=0
+#### Main Content #######
+
+[main-content]
+child = second-menu, main-content-block
+condition = @PAGE!=@HOMEPAGE
+condition = @PAGE!=latest-news-classical-music-dumfries-galloway
 stacking = horizontal
+css.margin-top = 20px
 
 	[second-menu]
-	css.height = 400px
-	#css.width = 100px
-	css.margin-left = 0px
-	css.margin-top = 80px
+	css.width = 20%
 	css.overflow = visible
 	addon.menu.basic.orientation = vertical
 	addon.menu.basic.level = 2
@@ -125,7 +97,7 @@ stacking = horizontal
 	addon.menu.basic.font-size = 14px
 	addon.menu.basic.menu-rounding = 0px
 	addon.menu.basic.menu-opacity = 100%
-	addon.menu.basic.width = 150px
+	addon.menu.basic.width = 100%
 	addon.menu.basic.menu-color = #000000
 	addon.menu.basic.menu-text-color = white
 	addon.menu.basic.submenu-color = #b5b5b5
@@ -134,183 +106,121 @@ stacking = horizontal
 		#addon.menu.basic.subitem-color = #ff0092
 		#addon.menu.basic.subitem-text-color = #ffffff
 		#addon.menu.basic.subitem-seperator-color = #ffffff 
-### Need to specify the height and width of the items.
 
-	[content-block]
-#image, 
-	child = blog-page, content
-	css.width = 800px
-	css.margin-left = 60px
-	css.margin-top = 30px
-	fx.rounding = 4px
-	css.background-image = url('/img/white-background.jpg')
+
+	[main-content-block]
+	child = content
+	css.width = 76%
 	css.background-color = white
-	css.background-repeat = no-repeat
-		
-			[blog-page]
-			child = signup-box, blog-content
-			css.width = 100%
-			condition = @PAGE=latest-news-classical-music-dumfries-galloway
+	css.margin-left = 4%
+	fx.rounding = 4px
+	
+		[content]
+#kim added next line
+#condition = @PAGE!=latest-news-classical-music-dumfries-galloway
+		css.margin = 20px
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
 
-				[signup-box]
-				child = signup
-				css.width = 150px
-				css.height = 120px
-				css.background-color = white
-				css.margin-left = 20px
-				css.position = absolute
-				css.margin-top = 160px
-				css.padding = 10px
-				html.raw = Keep in touch with Absolute Classics, we will never share your email address with anyone else.
-				css.color = black
-				css.font-size = 10px
-				css.font-weight = 400
-				css.color = white
-				css.text-align = center
-				css.box-shadow = 3px 5px 8px rgba(0,0,0,0.5)
+#### Blog #######################
+
+[blog-content]
+child = signup-box, blog-content-block
+css.width = 100%
+css.background-color = white
+fx.rounding = 4px
+condition = @PAGE=latest-news-classical-music-dumfries-galloway
+
+	[signup-box]
+	child = signup
+	css.width = 150px
+	css.height = 120px
+	css.background-color = white
+	css.margin-left = 20px
+	css.position = absolute
+	css.margin-top = 160px
+	css.padding = 10px
+	html.raw = Keep in touch with Absolute Classics, we will never share your email address with anyone else.
+	css.color = black
+	css.font-size = 10px
+	css.font-weight = 400
+	css.color = white
+	css.text-align = center
+	css.box-shadow = 3px 5px 8px rgba(0,0,0,0.5)
+	
 				
-							
-					[signup]
-					css.margin-top = 5px
-					addon.mailer.signup.orientation = vertical
-					addon.mailer.signup.buttoncolor = #ebebeb
-					addon.mailer.signup.buttontextcolor = black
-					addon.mailer.signup.buttontext = sign up
-					addon.mailer.signup.inputspacing = 5px
-					addon.mailer.signup.successtextcolor = white
-					addon.mailer.signup.failuretextcolor = black
-					addon.mailer.signup.inputwidth = 140px
-				
-			
-				[blog-content]
-				css.display = block
-				css.width = 100%
-				html.raw = {{news newstype=traditional sidebar=left pushcategoriesdown=140px pushrecentdown=0px}}
-			
-			[content]
-			css.margin-left = 25px
-			css.width = 750px
-			fx.opacity = 100%
-			db.table = ContentBlock
-			db.filter = url=$_GET['page']
-			db.error = Sorry, I could not find the page $_GET['page']
-			html.raw = ContentBlock.content
+		[signup]
+		css.margin-top = 5px
+		addon.mailer.signup.orientation = vertical
+		addon.mailer.signup.buttoncolor = #ebebeb
+		addon.mailer.signup.buttontextcolor = black
+		addon.mailer.signup.buttontext = sign up
+		addon.mailer.signup.inputspacing = 5px
+		addon.mailer.signup.successtextcolor = white
+		addon.mailer.signup.failuretextcolor = black
+		addon.mailer.signup.inputwidth = 140px
+	
+
+	[blog-content-block]
+	css.margin-top = 10px
+	css.width = 100%
+	html.raw = {{news newstype=traditional sidebar=left pushcategoriesdown=140px pushrecentdown=0px}}
 
 
 ########## Footer #################################
 
 
 	[footer]
-	child = footer-menus, footer-image
+	child = grid, wirefly
 	css.margin-top = 40px
-	css.width = 1200px
-	css.background-color = #000000
+	css.width = 100%
+	
+		[grid]
+		css.width = 60%
+		jamtemplate.COLUMNNAME = footer-grid
+		jamtemplate.LARGEVIEWBLOCKS = 3
+		jamtemplate.MEDIUMVIEWBLOCKS = 1
+		jamtemplate.SMALLVIEWBLOCKS = 1
+		jamtemplate.BACKCOLOR = transparent
+		jamtemplate.BORDERWIDTH = 1px
+		jamtemplate.BORDERCOLOR = black
+		jamtemplate.BORDERRADIUS = 0px
+		jam.embed = /run/grid.jam
 
-		[footer-menus]
-		child = fmenu1, fmenu2, fmenu3
+		[wirefly]
+		child = wirefly-logo, admin
 		stacking = horizontal
-		css.width = 1000px
-		css.height = 125px
-		#css.margin-left = 100px
+		css.margin-top = 50px
+		css.margin-bottom = 100px
+		css.float = right
+		css.width = 150px
 
-			[fmenu1]
-			child = education, masterclasses, support
-			#css.height = 200px
-			css.width = 200px
-			css.margin-left = 200px
-
-
-				[education]
-				html.raw = Education
-				css.margin-top = 8px
-				css.text-align = left
-				css.color = #ffffff
-				click = ?layout=index&page=education-classical-music
-
-				[masterclasses]
-				html.raw = Master Classes
-				css.margin-top = 8px
-				css.text-align = left
-				css.color = #ffffff
-				click = ?layout=index&page=education-classical-music
+			[wirefly-logo]
+			css.width = 80%
+			css.margin-top = 1%
+			image.url = img/wirefly-design.png
+			image.width = 100%
+			image.height = 100%
+			image.align = left
+			clicknew = http://www.wireflydesign.com
+					
 				
-				[support]
-				html.raw = Sponsors
-				css.margin-top = 8px
-				css.text-align = left
-				css.color = #ffffff
-				click = ?layout=index&page=support-classical-music
-
-			[fmenu2]
-			child = about, footer-contact, footer-cookies, footer-tandc,
-			#css.height = 200px
-			css.width = 200px
-
-				[about]
-				html.raw = About Us
-				css.margin-top = 8px
-				css.text-align = center
-				css.color = #ffffff
-				click = ?layout=index&page=about-absolute-classics
-				
-				[footer-contact]
-				html.raw = Contact Us
-				css.text-align = center
-				css.margin-top = 8px
-				css.color = #ffffff
-				click = ?layout=index&page=contact-live-classical-music-dumfries
-				
-				[footer-cookies]
-				html.raw = Cookie Policy
-				css.margin-top = 8px
-				css.text-align = center
-				css.color = #ffffff
-				click = ?layout=index&page=cookie-policy
-				
-				[footer-tandc]
-				html.raw = Site T&Cs
-				css.margin-top = 8px
-				css.text-align = center
-				css.color = #ffffff
-				click = ?layout=index&page=terms-conditions
-
-
-
-
-			[fmenu3]
-			child = news, facebook, twitter
-			#css.height = 200px
-			css.width = 200px
-			#css.margin-left = 200px
-
-				[news]
-				html.raw = Blog
-				css.margin-top = 8px
-				css.text-align = right
-				css.color = #ffffff
-				click = ?layout=index&page=latest-news-classical-music-dumfries-galloway
-				
-				[facebook]
-				html.raw = Facebook
-				css.margin-top = 8px
-				css.text-align = right
-				css.color = #ffffff
-				clicknew = https://www.facebook.com/absoluteclassicsconcerts
-				
-				[twitter]
-				html.raw = Twitter
-				css.margin-top = 8px
-				css.text-align = right
-				css.color = #ffffff
-				clicknew = https://twitter.com/ABClassics
-
-
-		[footer-image]
-		css.margin-top = 40px
-		css.height = 60px
-		css.width = 20%
-		image.url = img/wirefly-link-white.png
-		image.width = 161px
-		image.height = 40px
-		image.align = center
-		clicknew = http://www.wireflydesign.com
+			[admin]
+			child = cog-center
+			css.width = 15%
+			css.background-size = 100%
+			css.background-image = url('/img/admin-dark.png')
+			css.margin-left = -20%
+					
+				[cog-center]
+				css.width = 50%
+				css.height = 100%
+				css.margin-top = 25%
+				css.margin-bottom = 25%
+				image.url = img/cog-center.png
+				image.width = 100%
+				image.height = 100%
+				image.align = center
+				clicknew = backend.php

@@ -253,8 +253,10 @@ function getSiblingByName(callingObj, siblingName) {
 
 // Get an array of elements belonging to a group
 function getGroupArray(groupName) {
-	var groupArr = [];
-	groupArr = document.getElementsByClassName(groupName);
+	var groupCollection = [];
+	//groupArr = document.getElementsByClassName(groupName);
+	groupCollection = document.getElementsByClassName(groupName);
+	var groupArr = Array.prototype.slice.call(groupCollection)
 	return groupArr;
 }
 

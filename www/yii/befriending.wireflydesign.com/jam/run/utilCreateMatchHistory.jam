@@ -1,0 +1,19 @@
+{{@include /jam/sys/html/header.html}}
+
+Doing...
+
+{{@database befriending_wireflydesign_com}}
+
+{{@remove table match_history}}
+
+{{@new table match_history
+	match_date			date
+	match_started		date
+	match_end			date
+	young_person_id		number	required
+	befriender_id		number	required
+}}
+
+Done
+
+{{@include /jam/sys/html/footer.html}}

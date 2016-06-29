@@ -1,0 +1,64 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:1080px; Xpadding:0}}
+
+<div name="content">
+	<center><h3> Referral Report </h3></center>
+
+	<form class="uk-form">
+		<input type="text" id="searchInput" placeholder="Type to search">
+	</form>
+
+	<table id='printTable' class="searchTable testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+		<tr style='font-weight:bold'>
+			<th> Referral date </th>
+			<th> Referrer Name </th>
+			<th> Job title </td>
+			<th> Agency </td>
+			<th> YP Name </th>
+			<th style='min-width:80px'> DoB </th>
+			<th> First Match </th>
+			<th> Days </th>
+		</tr>
+{{@each young_person filter referral_date > '0000-00-00'}}
+	{{@count id}}
+		<tr>
+			<td>{{young_person.referral_date}}</td>
+	{{@get contact filter young_person_id = young_person.id, contact_relationship_id = 3}}
+	{{@get global filter id = contact.global_id}}
+			<td>{{global.forename}} {{global.surname}}</td>
+			<td>{{global.job_title}} </td>
+			<td>{{contact.agency}} </td>
+	{{@get global filter id = young_person.global_id}}
+			<td>{{global.forename}} {{global.surname}}</td>
+			<td>{{young_person.dob}}</td>
+	{{@get match_yp filter young_person_id = young_person.id}}
+			<td>{{match_yp.match_started}}</td>
+			<td> calculate </td>
+		</tr>
+{{@end}}
+		<tr>
+			<td> <b> Total Referrals : {{count.id}} </b> </td>
+		</tr>
+	</table>
+</div>
+<br>
+
+<button class="uk-button uk-button-medium uk-button-primary" onClick="printData('printTable')"> Print </button>
+
+<span class='exportButton'>
+	<a href="#" class="export" table='{"id":"printTable"}'>Export spreadsheet</a>
+</span>
+
+<br><br/>
+
+{{@html container end}}
+
+{{@include /jam/sys/js/searchPrintExport.js}}
+{{@include /jam/sys/html/footer.html}}

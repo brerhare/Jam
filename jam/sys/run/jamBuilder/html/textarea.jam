@@ -1,11 +1,15 @@
 {{@action textareaLabelHtml}}
-	<label class='uk-form-label' for='TEXTAREA_TABLE.TEXTAREA_FIELD'> TEXTAREA_LABEL </label>
-	<div class='uk-form-controls'>
-		<textarea TEXTAREA_HIDDEN cols='TEXTAREA_COLS' rows='TEXTAREA_ROWS' id='TEXTAREA_JAMKEY' name='TEXTAREA_TABLE.TEXTAREA_FIELD' placeholder='TEXTAREA_PLACEHOLDER' class='TEXTAREA_GROUP' COMMON_FN TEXTAREA_DISABLED>TEXTAREA_VALUE</textarea>
-	</div>
+	<span TEXTAREA_HOVER>
+		<label class='uk-form-label' for='TEXTAREA_TABLE.TEXTAREA_FIELD'> TEXTAREA_LABEL </label>
+		<div class='uk-form-controls'>
+			<textarea TEXTAREA_HIDDEN cols='TEXTAREA_COLS' rows='TEXTAREA_ROWS' id='TEXTAREA_JAMKEY' name='TEXTAREA_TABLE.TEXTAREA_FIELD' placeholder='TEXTAREA_PLACEHOLDER' class='TEXTAREA_GROUP' COMMON_FN TEXTAREA_DISABLED>TEXTAREA_VALUE</textarea>
+		</div>
+	</span>
 {{@end}}
 
 {{@action textareaHtml}}
-	<textarea TEXTAREA_HIDDEN cols='TEXTAREA_COLS' rows='TEXTAREA_ROWS' id='TEXTAREA_JAMKEY' name='TEXTAREA_TABLE.TEXTAREA_FIELD' placeholder='TEXTAREA_PLACEHOLDER' class='TEXTAREA_GROUP' COMMON_FN TEXTAREA_DISABLED>TEXTAREA_VALUE</textarea>
+	<span TEXTAREA_HOVER>
+		<textarea TEXTAREA_HIDDEN cols='TEXTAREA_COLS' rows='TEXTAREA_ROWS' id='TEXTAREA_JAMKEY' name='TEXTAREA_TABLE.TEXTAREA_FIELD' placeholder='TEXTAREA_PLACEHOLDER' class='TEXTAREA_GROUP' COMMON_FN TEXTAREA_DISABLED>TEXTAREA_VALUE</textarea>
+	</span>
 {{@end}}
 
