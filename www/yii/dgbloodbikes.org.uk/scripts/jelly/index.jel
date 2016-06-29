@@ -10,6 +10,7 @@ include = default-values
 child = site
 fx.wallpaper-image-tile = /img/black-tile.jpg
 css.display = block
+html.raw = <meta name="google-site-verification" content="jEoBpHaqvy5MD6UJQZjM5uuVTs_YTfzwF_h0OefxRFs" />
 
 	[site]
 	child = header, home-image, main-image, body, footer
