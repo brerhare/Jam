@@ -880,12 +880,14 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 							$this->genInlineHtml("jam component requires a sid");
 							break;
 						}
-						$settingEmail = "Not set in settings";
+						$settingEmail = "Email is not set in backend settings";
 						$criteria = new CDbCriteria;
 						$criteria->addCondition("id = 1");
 						$setting = JellySetting::model()->find($criteria);
 						if ($setting)
 							$settingEmail = $setting->email;
+						else
+							die($settingEmail);
 						// Create url and call curl
 						$yiiSite = str_replace("/index.php", "", Yii::app()->createAbsoluteUrl(Yii::app()->request->getPathInfo()));
 						//$jamUrl = $yiiSite . "/jamcgi/jam?jamtemplate=" . $jamArg . "&jelly.sid=" . $sid . "&jelly.email=" . $settingEmail;
