@@ -1,60 +1,51 @@
 <!-- Place your Google fonts here as a cut and paste then choose which header and fonts etc need the font families - NB if the family only come in Italic then you must state the font style as Italic too -->
 
-<link href='http://fonts.googleapis.com/css?family=Lobster|Comfortaa:400,300,700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Comfortaa:400,700,300' rel='stylesheet' type='text/css'>
 
 <style type="text/css">
 
 
 html, h2, h4, body, p {	height: 100%;
-				padding: 0%;
-				margin: 0%;
+				padding: 0%;				
 				border: 0px;
 				line-height: 140%;}
 
-/* Global Hyperlink settings - will affect menu text colour if no text settings */ 
-a { text-decoration: none; color:#7f13eb; }
-a:visited, a:active { text-decoration: none; color:#7f13eb; }
-a:hover { text-decoration: none; color:blue; }
+a { text-decoration: none; color:#863c81; font-weight: bold; }
+a:visited { text-decoration: none; color:#863c81; font-weight: bold; }
+a:hover { text-decoration: none; color:#955691; font-weight: bold; text-shadow: 1px 1px #b7b7b7 }
+a:active { text-decoration: none; color:#863c81; font-weight: bold; text-shadow: 1px 1px #b7b7b7 }
 
-
-
-h1 {	font-family: 'Lobster', Verdana, sans-serif !important;
-	color: #7f13eb;
-	font-size: 36px;
-	font-weight: 400;
-	font-style: italic;
-	text-shadow: 3px 3px 2px lightgrey;
+h1 {	font-family: 'Comfortaa', Verdana, sans-serif !important;
+	color: #6f4619;
+	font-size: 20px;
+	font-weight: 700;
 	line-height: 100%;}
 
 h2 {	font-family: 'Comfortaa', Verdana, sans-serif !important;
 	color: #7a7a7a;
 	font-size: 18px;
-	font-weight: 400;
-	font-style: italic;}
+	font-weight: 400;}
 
 
-h3 {	font-family: 'Lobster', Verdana, sans-serif !important;
-	color: #7f13eb;
+h3 {	font-family: 'Comfortaa', Verdana, sans-serif !important;
+	color: #6f4619;
 	font-size: 20px;
 	font-weight: 700;
-	font-stretch: wider;}
+	line-height: 100%;}
 
 h4 {	font-family: 'Comfortaa', Verdana, sans-serif !important;
-	color: #7f13eb;
+	color: #6f4619;
 	font-size: 16px;
-	font-weight: 700;
-	font-stretch: wider;}
+	font-weight: 700;}
 
 p  {	font-family: 'Comfortaa', Verdana, sans-serif !important;
-	color: #000000;
+	color: #6f4619;
 	font-size: 14px;
-	font-weight: normal
-	font-stretch: expanded}
+	font-weight: normal}
 
 blockquote {font-family: 'Comfortaa', Verdana, sans-serif !important;
 	color: #5b5b5b;
 	font-size: 14px;
-	font-style: italic;
 	font-weight: 300}
 
 

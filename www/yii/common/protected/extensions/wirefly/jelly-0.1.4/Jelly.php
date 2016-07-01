@@ -426,6 +426,7 @@ END_OF_GETDEVICEWIDTH;
 
 		$this->emit($this->beginHeader);
 
+/*	@@NB1 These 8 lines commented out and moved to the bottom of this function so header.css gets applied LAST
 		if (file_exists($this->jellyRootPath . 'header.css'))
 			$this->emit(file_get_contents($this->jellyRootPath . 'header.css'));
 		else
@@ -434,6 +435,7 @@ END_OF_GETDEVICEWIDTH;
 			if (file_exists($this->jellyRootPath . 'header.html'))
 				$this->emit(file_get_contents($this->jellyRootPath . 'header.html'));
 		}
+*/
 
 		// snake oil here
 		if (stristr($_SERVER['HTTP_HOST'], "wireflydesign.com")) {
@@ -487,6 +489,18 @@ END_OF_CHANGEDEVICEWIDTH;
 
 		foreach ($this->scriptArray as $script)
 			$this->emit($script);
+
+
+/* @@NB1 These 8 lines were moved (see same commented out above, so header.css is applied LAST */
+		if (file_exists($this->jellyRootPath . 'header.css'))
+			$this->emit(file_get_contents($this->jellyRootPath . 'header.css'));
+		else
+		{
+			// Backward compatibility - it used to be called header.html
+			if (file_exists($this->jellyRootPath . 'header.html'))
+				$this->emit(file_get_contents($this->jellyRootPath . 'header.html'));
+		}
+
 
 		$this->emit($this->stdFooter);
 	}
