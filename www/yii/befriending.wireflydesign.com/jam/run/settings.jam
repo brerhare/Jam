@@ -1,0 +1,59 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:900px; Xpadding:0}}
+
+<!-- Form input component -->
+
+{{@get settings filter id = 1}}
+
+<style type="text/css">
+	label {text-align: right;}
+</style>
+
+<form name="settings_form" class="uk-form uk-form-horizontal">
+<br>
+<center><h3> System Settings </h3></center>
+
+	<input type="hidden" name="settings.id" value={{settings.id}}>
+	{{@html gridrow start}}
+		{{@html gridcol start width=5-5}}
+			{{@html text field=settings.email size=large label='Email address'}}
+			{{@html text field=settings.reminder_documentation_lead_days size=mini label='Reminder documentation days' default=3}}
+			{{@html text field=settings.reminder_events_lead_days size=mini label='Reminder event days' default=3}}
+		{{@html gridcol end}}
+	{{@html gridrow end}}
+	{{@html gridrow start}}
+		{{@html gridcol start width=1-1}}
+			<br>
+			<center>
+				{{@html button Save primary medium
+					runAction('update_settings', ['settings_form'], '', postUpdate)
+				}}
+				{{@html button Cancel primary medium
+					runJam();
+				}}
+			</center>
+		{{@html gridcol end}}
+	{{@html gridrow end}}
+<br>
+</form>
+
+{{@action update_settings}}
+	{{@update item settings notify=ok}}
+{{@end}}
+
+<script>
+function postUpdate() {
+	runJam();
+}
+</script>
+
+{{@html container end}}
+
+{{@include /jam/sys/html/footer.html}}

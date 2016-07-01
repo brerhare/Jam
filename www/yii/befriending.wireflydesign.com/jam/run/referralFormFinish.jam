@@ -24,6 +24,19 @@
 
 <br><br><br>
 
+	The Befriending Project has been discussed with the Young Person and the family, written information has been given, and they have understood what it is about
+
+<br><br/>
+
+	<center><div>
+		<label class="uk-form-label" for="confirm"> Please confirm </label>
+		<span class="uk-form-controls uk-form-controls-text">
+			<input type="checkbox" id="confirmBox">
+		</span>
+	</div></center>
+
+<br><br><br>
+
 	<center><h4>If you are happy with the information in this form please press Submit</h4></center>
 
         {{@html gridrow start}}
@@ -44,6 +57,7 @@
 {{@action update_young_person}}
     {{young_person.id = ypID}}
     {{young_person.referral_date = sys.today}}
+	{{young_person.discussion_confirmation = 1}}
 
 	<br><br><br>
 	<center> <h3> Thank you. Your input has been recorded </h3> </center>
@@ -60,6 +74,12 @@ function backToPrev() {
     runJam('referralFormContacts?refId='+objReferrer.value+'&ypId='+objYP.value);
 }
 function finishAndClose() {
+	var input = document.getElementById ("confirmBox");
+	var isChecked = confirmBox.checked;
+	if (!isChecked) {
+		alert('Please check the Confirm box');
+		return;
+	}
     runAction('update_young_person', [], 'finish');
 }
 </script>

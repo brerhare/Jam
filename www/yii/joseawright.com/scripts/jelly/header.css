@@ -12,13 +12,13 @@ html, h2, h4, body, p {	height: 100%;
 
 /* Global Hyperlink settings - will affect menu text colour if no text settings */ 
 a { text-decoration: none; color:#00ad44; }
-a:visited, a:active { text-decoration: none; color:#fc8d3d; }
-a:hover { text-decoration: none; color:#00adc9; text-shadow: 2px 2px 2px grey; }
+a:visited, a:active { text-decoration: none; color:#13dbd3; }
+a:hover { text-decoration: none; color:#50e4de; text-shadow: 2px 2px 2px grey; }
 
 
 
 h1 {	font-family: 'Satisfy', Verdana, sans-serif !important;
-	color: #00ad44;
+	color: #13dbd3;
 	font-size: 36px;
 	font-weight: 400;
 	font-style: italic;
@@ -33,20 +33,23 @@ h2 {	font-family: 'Comfortaa', Verdana, sans-serif !important;
 
 
 h3 {	font-family: 'Satisfy', Verdana, sans-serif !important;
-	color: #00ad44;
-	font-size: 24px;
-	font-weight: 700;
-	font-stretch: wider;}
+	color: #13dbd3;
+	font-size: 28px;
+	font-weight: 400;
+	font-style: italic;
+	text-shadow: 3px 3px 2px lightgrey;
+	line-height: 100%;}
 
 h4 {	font-family: 'Comfortaa', Verdana, sans-serif !important;
 	color: #00ad44;
-	font-size: 16px;
-	font-weight: 700;
-	font-stretch: wider;}
+	font-size: 18px;
+	font-weight: 400;
+	font-style: italic;
+	line-height: 100%;}
 
 p  {	font-family: 'Comfortaa', Verdana, sans-serif !important;
 	color: #000000;
-	font-size: 14px;
+	font-size: 16px;
 	font-weight: normal
 	font-stretch: expanded}
 
@@ -58,7 +61,7 @@ blockquote {font-family: 'Comfortaa', Verdana, sans-serif !important;
 
 
 html { font-family: 'Comfortaa', Verdana, sans-serif !important;
-	font-size: 12px;
+	font-size: 14px;
 	font-weight:normal}
 
 </style>

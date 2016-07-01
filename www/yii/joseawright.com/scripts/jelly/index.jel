@@ -1,5 +1,12 @@
+###JoSeawright.com
+
 [defaults]
-include = default-values
+css.display = block 
+css.overflow = hidden /* (or any type of overflow) avoids position shift on no-margin containers */
+css.margin = 0px auto
+css.border-width = 0px
+css.border-style = solid
+css.padding = 0px
 
 ; Every blob inherits these before adding/overriding
 [* : defaults]
@@ -11,83 +18,79 @@ css.width = 100%
 css.display = block
 
 	[site]
-	child = header, home-page, main, footer
-	css.width = 90%
-	css.max-width = 1000px
+	child = header, avatar, pages
+	css.width = 100%
 	
 ##### Header ################################################	
 
 [header]
-css.width = 100%
-css.margin-top = 20px
-css.text-align = center
-html.raw = <h1><span style="font-size:48px; line-height:1.5em;">Jo Seawright .com</span></h1>
-click = ?layout=index&page=index
-css.margin-bottom = 20px
+child = logo, menu-block
+css.background-size = 100%
+css.background-image = url('/img/background.jpg')
+css.overflow = visible
+css.padding-bottom = 30px
+
+	[logo]
+	css.margin-top = 10px
+	css.width = 40%
+	css.min-width = 300px
+	image.url = img/logo.png
+	image.width = 100%
+	image.height = 100%
+	click = ?layout=index&page=index
+	
+	[menu-block]
+	css.margin-top = -20px
+	css.background-color = #13dbd3
+	child = menu
+#	css.margin-bottom = 30px
+	css.overflow = visible
+	
+		[menu]
+		css.width = 50%
+		jam.embed = /run/menu.jam
+		css.overflow = visible
+
+		
+[avatar]
+css.margin-top = -100px
+css.width = 80%
+css.min-width = 600px
+image.url = img/avatar.png
+image.width = 13%
+image.height = 100%
+image.align = left
+
 
 ##### Main ################################################
-
-[home-page]
-child = home-left, home-content-block
-stacking = horizontal
+[pages]
+child = main-column, right-column
 css.width = 90%
-css.max-width = 1200px
-condition = @PAGE=@HOMEPAGE
-
-
-	[home-left]
-	child = home-img, signup, wirefly
-	css.width = 25%
-	css.border = 1px solid lightgrey
-	fx.rounding = 5px
-	css.padding = 1%
-	css.box-shadow = 4px 8px 8px rgba(0,0,0,0.5)
-
-		[home-img]
-		css.margin-left = 0%
-		addon.global.column.name = home
-		addon.global.column.width = 100%
-		addon.global.column.internal-width = 100%
-		addon.global.column.content-width = 100%
-		addon.global.column.internal-color = transparent
-		addon.global.column.background-color = transparent
-		addon.global.column.top-height = 0px
-		#addon.global.column.bottom-height = 20px
-	
-	[home-content-block]
-	css.margin-left = 8%
-	css.margin-top = 28px
-	css.width = 60%
-	css.max-width = 500px
-	db.table = ContentBlock
-	db.filter = url=$_GET['page']
-	db.error = Sorry, I could not find the page $_GET['page']
-	html.raw = ContentBlock.content
-
-####Other Pages ######################################################
-	
-[main]
-css.width = 90%
-css.max-width = 1200px
-child = main-column, main-right
+css.max-width = 1000px
+css.margin-top = 50px
+css.margin-bottom = 50px
 stacking = horizontal
-condition = @PAGE!=@HOMEPAGE
 
 	[main-column]
-	child = main-content-block, contact-block
-	css.width = 60%
+	child = home-content, main-content, contact-block
+	css.width = 70%
+
+		[home-content]
+		condition = @PAGE=@HOMEPAGE
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
 	
-		[main-content-block]
-#		css.width = 75%
-#		css.min-width = 500px
-		css.margin-top = 28px
+	
+		[main-content]
+		condition = @PAGE!=@HOMEPAGE
 		db.table = ContentBlock
 		db.filter = url=$_GET['page']
 		db.error = Sorry, I could not find the page $_GET['page']
 		html.raw = ContentBlock.content
 		
 		[contact-block]
-		css.width = 70%
 		condition = @PAGE=contact
 		css.min-height = 325px
 		css.margin-left = 0px
@@ -95,20 +98,17 @@ condition = @PAGE!=@HOMEPAGE
 		#jam.iframe-height = 358px
 		#jam.iframe = /run/contactForm
 	
-	[main-right]
-	child = right-column, wirefly
-	css.width = 25%
-	css.margin-left = 4%
+	[right-column]
+	child = right-column-top, signup, right-column-bottom, wirefly
+	css.width = 20%
+	css.margin-left = 5%
+	css.padding = 0% 2%
 	css.min-height = 200px
-	css.border = 1px solid lightgrey
-	fx.rounding = 5px
-	css.padding = 1%
-	css.box-shadow = 4px 8px 8px rgba(0,0,0,0.5)
+	css.border-width = 0px 1px
+	css.border-color = #13dbd3
 
-		[right-column]
-		css.width = 85%
-		css.margin-left = 0%
-		addon.global.column.name = pages
+		[right-column-top]
+		addon.global.column.name = column-top
 		addon.global.column.width = 90%
 		addon.global.column.internal-width = 100%
 		addon.global.column.content-width = 98%
@@ -118,49 +118,64 @@ condition = @PAGE!=@HOMEPAGE
 		#addon.global.column.bottom-height = 20px
 	
 		[signup]
-		html.raw = <h1><span style="font-size:24px;">Request a call</span></h1>
-		css.text-align = center
 		css.min-height = 325px
 		jam.iframe = /run/signup.jam
 		#jam.iframe-height = 358px
 		#jam.iframe = /run/signup
 		
-[wirefly]
-child = wirefly-logo, admin
-stacking = horizontal
-css.margin-top = 10%
-css.margin-left = 0px
-css.width = 50%
-css.margin-left = 0%
-
-	[wirefly-logo]
-	css.width = 80%
-	css.margin-top = 1%
-	image.url = img/wirefly-design.png
-	image.width = 100%
-	image.height = 100%
-	image.align = left
-	clicknew = http://www.wireflydesign.com
-			
+		[right-column-bottom]
+		addon.global.column.name = column-bottom
+		addon.global.column.width = 90%
+		addon.global.column.internal-width = 100%
+		addon.global.column.content-width = 98%
+		addon.global.column.internal-color = transparent
+		addon.global.column.background-color = transparent
+		addon.global.column.top-height = 0px
+		#addon.global.column.bottom-height = 20px
 		
-	[admin]
-	child = cog-center
-	css.width = 15%
-	css.background-size = 100%
-	css.background-image = url('/img/admin.png')
-	css.margin-left = -20%
-			
-		[cog-center]
+		[wirefly]
+		child = wirefly-logo, admin
+		stacking = horizontal
+		css.margin-top = 10%
+		css.margin-left = 0px
 		css.width = 50%
-		css.height = 100%
-		css.margin-top = 25%
-		css.margin-bottom = 25%
-		image.url = img/cog-center.png
-		image.width = 100%
-		image.height = 100%
-		image.align = center
-		clicknew = backend.php
+		css.margin-left = 0%
+
+			[wirefly-logo]
+			css.width = 80%
+			css.margin-top = 1%
+			image.url = img/wirefly-design.png
+			image.width = 100%
+			image.height = 100%
+			image.align = left
+			clicknew = http://www.wireflydesign.com
+					
+				
+			[admin]
+			child = cog-center
+			css.width = 15%
+			css.background-size = 100%
+			css.background-image = url('/img/admin.png')
+			css.margin-left = -20%
+					
+				[cog-center]
+				css.width = 50%
+				css.height = 100%
+				css.margin-top = 25%
+				css.margin-bottom = 25%
+				image.url = img/cog-center.png
+				image.width = 100%
+				image.height = 100%
+				image.align = center
+				clicknew = backend.php
+
+
+####Other Pages ######################################################
+	
+
 		
 ##### Footer ################################################	
 [footer]
 css.width = 100%
+css.background-color = #13dbd3
+css.min-height = 25px

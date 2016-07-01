@@ -53,6 +53,7 @@ class Jelly
 	<substitute-meta-title>
 	<substitute-meta-description>
 	<substitute-meta-keywords>
+	<substitute-meta-special>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
 
 	<style>		/* This style block is for the CSS reset */
@@ -272,8 +273,13 @@ END_OF_FOOTER;
 					}
 				}
 				$this->beginHeader = str_replace("<substitute-meta-title>", "<title>" . $this->metaTitle . "</title>", $this->beginHeader);;
-				$this->beginHeader = str_replace("<substitute-meta-description>", "<meta name='description' content='" . $this->metaDescription . "'/>", $this->beginHeader);;
-				$this->beginHeader = str_replace("<substitute-meta-keywords>", "<meta name='keywords' content='" . $this->metaKeywords . "'/>", $this->beginHeader);;
+				$this->beginHeader = str_replace("<substitute-meta-description>", "<meta name='description' content='" . $this->metaDescription . "'/>", $this->beginHeader);
+				$this->beginHeader = str_replace("<substitute-meta-keywords>", "<meta name='keywords' content='" . $this->metaKeywords . "'/>", $this->beginHeader);
+
+				// Any site specific headers?
+				if (stristr($_SERVER['HTTP_HOST'], "dgbloodbikes.org.uk"))
+					$this->beginHeader = str_replace("<substitute-meta-special>",'<meta name="google-site-verification" content="jEoBpHaqvy5MD6UJQZjM5uuVTs_YTfzwF_h0OefxRFs" />', $this->beginHeader);
+				$this->beginHeader = str_replace("<substitute-meta-special>", "", $this->beginHeader);
 			}	
 
 
@@ -357,7 +363,7 @@ END_OF_FOOTER;
 			|| ((stristr($_SERVER['HTTP_HOST'], "horses.wireflydesign.com")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "jacquiesbeauty.co.uk")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "jardineroofingltd.co.uk")))
-			|| ((stristr($_SERVER['HTTP_HOST'], "joseawright.com")))
+//			|| ((stristr($_SERVER['HTTP_HOST'], "joseawright.com")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "knowledgebase.wireflydesign.com")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "mossheadpreschool.co.uk")))
 			|| ((stristr($_SERVER['HTTP_HOST'], "opendoorsart.com")))
@@ -420,6 +426,7 @@ END_OF_GETDEVICEWIDTH;
 
 		$this->emit($this->beginHeader);
 
+/*	@@NB1 These 8 lines commented out and moved to the bottom of this function so header.css gets applied LAST
 		if (file_exists($this->jellyRootPath . 'header.css'))
 			$this->emit(file_get_contents($this->jellyRootPath . 'header.css'));
 		else
@@ -428,6 +435,7 @@ END_OF_GETDEVICEWIDTH;
 			if (file_exists($this->jellyRootPath . 'header.html'))
 				$this->emit(file_get_contents($this->jellyRootPath . 'header.html'));
 		}
+*/
 
 		// snake oil here
 		if (stristr($_SERVER['HTTP_HOST'], "wireflydesign.com")) {
@@ -481,6 +489,18 @@ END_OF_CHANGEDEVICEWIDTH;
 
 		foreach ($this->scriptArray as $script)
 			$this->emit($script);
+
+
+/* @@NB1 These 8 lines were moved (see same commented out above, so header.css is applied LAST */
+		if (file_exists($this->jellyRootPath . 'header.css'))
+			$this->emit(file_get_contents($this->jellyRootPath . 'header.css'));
+		else
+		{
+			// Backward compatibility - it used to be called header.html
+			if (file_exists($this->jellyRootPath . 'header.html'))
+				$this->emit(file_get_contents($this->jellyRootPath . 'header.html'));
+		}
+
 
 		$this->emit($this->stdFooter);
 	}
@@ -874,12 +894,14 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 							$this->genInlineHtml("jam component requires a sid");
 							break;
 						}
-						$settingEmail = "Not set in settings";
+						$settingEmail = "Email is not set in backend settings";
 						$criteria = new CDbCriteria;
 						$criteria->addCondition("id = 1");
 						$setting = JellySetting::model()->find($criteria);
 						if ($setting)
 							$settingEmail = $setting->email;
+						else
+							die($settingEmail);
 						// Create url and call curl
 						$yiiSite = str_replace("/index.php", "", Yii::app()->createAbsoluteUrl(Yii::app()->request->getPathInfo()));
 						//$jamUrl = $yiiSite . "/jamcgi/jam?jamtemplate=" . $jamArg . "&jelly.sid=" . $sid . "&jelly.email=" . $settingEmail;

@@ -22,8 +22,8 @@
 <div name="content_contact">
 
     <div class="uk-width-5-5">
-        <table class="uk-table uk-table-condensed" style='background-color:#dadada;'>
-            <tr>
+        <table class="uk-table uk-table-condensed"'>
+            <tr bgcolor='#dadada'>
                 <th> Matched Befriender </th>
                 <th> Phone </th>
                 <th> Email </th>
@@ -32,7 +32,24 @@
             {{@each match_yp filter young_person_id = young_person.id}}
                 {{@get befriender filter id = match_yp.befriender_id}}
                 {{@get global filter id = befriender.global_id}}
-                    <tr>
+                    <tr bgcolor='#dadada'>
+                        <td> {{global.forename}} {{global.surname}} </td>
+                        <td> {{global.mobile}} </td>
+                        <td> {{global.email}} </td>
+                        <td> {{global.postcode}} </td>
+                    </tr>
+            {{@end}}
+
+            <tr bgcolor='#e9e9e9'>
+                <th> Previous Matches </th>
+                <th> </th>
+                <th> </th>
+                <th> </th>
+            </tr>
+            {{@each match_history filter young_person_id = young_person.id}}
+                {{@get befriender filter id = match_history.befriender_id}}
+                {{@get global filter id = befriender.global_id}}
+                    <tr bgcolor='#e9e9e9'>
                         <td> {{global.forename}} {{global.surname}} </td>
                         <td> {{global.mobile}} </td>
                         <td> {{global.email}} </td>
@@ -124,6 +141,7 @@ function sendContactEmail(contactEmail) {
 				{{@html text field=global.mobile size=medium label='Mobile'}}
 				{{@html text field=global.email size=medium label='Email'}}
 				{{@html text field=global.job_title size=medium label='Job Title'}}
+				{{@html text field=contact.agency size=medium label='Agency'}}
 			{{@html gridcol end}}
 		{{@html gridrow end}}
 		{{@html gridrow start}}
@@ -152,7 +170,8 @@ function sendContactEmail(contactEmail) {
 {{@action email_contact}}
 	{{@get contact filter id = contact.id}}
 	{{@get global filter id = contact.global_id}}
-	{{@email info@wireflydesign.com {{global.email}} 'Befriending referral form for {{global.forename}} {{global.surname}}' action:emailContent}}
+	{{@get settings filter id = 1}}
+	{{@email {{settings.email}} {{global.email}} 'Befriending referral form for {{global.forename}} {{global.surname}}' action:emailContent}}
 	Email sent
 {{@end}}
 

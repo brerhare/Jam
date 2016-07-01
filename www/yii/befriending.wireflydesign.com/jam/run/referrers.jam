@@ -23,6 +23,7 @@
 		<tr>
 			<th> Forename </th>
 			<th> Surname </th>
+			<th> Email </th>
 			<th> Send Form </th>
 			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('maintain_contact', [], 'content_contact')"> <i class="uk-icon-plus"></i> New</button> </th>
 		</tr>
@@ -31,6 +32,7 @@
 		<tr class="rowHighlight">
 			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.forename}}</td>
 			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.surname}}</td>
+			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.email}}</td>
 			<td>
 				<span id='emailButton{{contact.id}}' name='emailButton{{contact.id}}'>
 					<button class="uk-button uk-button-small uk-button-primary" onClick="runAction('email_contact', ['contact.id={{contact.id}}'], 'emailButton{{contact.id}}')"> Email form </button>
@@ -100,6 +102,7 @@ function postUpdate() {
 				{{@html text field=global.mobile size=medium label='Mobile'}}
 				{{@html text field=global.email size=medium label='Email'}}
 				{{@html text field=global.job_title size=medium label='Job Title'}}
+				{{@html text field=contact.agency size=medium label='Agency'}}
 			{{@html gridcol end}}
 		{{@html gridrow end}}
 		{{@html gridrow start}}
@@ -129,7 +132,11 @@ function postUpdate() {
 {{@action email_contact}}
 	{{@get contact filter id = contact.id}}
 	{{@get global filter id = contact.global_id}}
-	{{@email info@wireflydesign.com {{global.email}} 'Befriending referral form for {{global.forename}} {{global.surname}}' action:emailContent}}
+	{{@get settings filter id = 1}}
+	{{@email {{settings.email}} {{global.email}} 'Befriending referral form for {{global.forename}} {{global.surname}}' action:emailContent}}
+	<script>
+	alert('Email sent');
+	</script>
 	Email sent
 {{@end}}
 

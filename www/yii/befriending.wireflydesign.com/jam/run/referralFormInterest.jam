@@ -1,0 +1,112 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@Xinclude /jam/run/menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center Xnomargin css='max-width:900px; padding:0}}
+
+    <style type="text/css">
+        label {text-align: right; width:150px !important}
+        div.uk-form-controls {margin-left: 170px !important}
+    </style>
+
+    {{@get young_person filter id = ypId}}
+    {{@get global filter id = young_person.global_id}}
+
+		
+<div name="content_contact">
+<br>
+<center> <h3> Anticipated </h3> </center>
+
+
+	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+		<tr>
+			<th> Interest </th>
+			<th> Check </th>
+		</tr>
+{{@each interest_type}}
+			<td>{{interest_type.name}}</td>
+			{{tmp.checked = }}
+	{{@each interest_young_person filter interest_type_id = interest_type.id, young_person_id = young_person.id}}
+			{{tmp.checked = checked}}
+	{{@end}}
+			<td> <input type="checkbox" name="interest_type" value="{{interest_type.id}}" {{tmp.checked}} class='inp'> </td>
+		</tr>
+{{@end}}
+	</table>
+	{{@get interest_young_person_notes filter young_person_id = young_person.id}}
+	{{@html textarea field=interest_young_person_notes.notes size=80x10 label='Notes'}}
+</div>
+
+    <center>
+        <button type='button' class="uk-button uk-button-primary" onClick="backToPrev()"> Prev </button> </td>
+        <button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="toNextScreen()"> Next </button> </td>
+    </center>
+
+
+{{@html container end}}
+
+<script>
+window.onload = function() {
+}
+
+{{@action deleteAllInterests}}
+	{{@sql delete from interest_young_person where young_person_id = {{young_person.id}} }}
+{{@end}}
+
+{{@action addInterest}}
+	{{interest_young_person.young_person_id = young_person.id}}
+	{{interest_young_person.interest_type_id = interest_type.id}}
+	{{@new item interest_young_person notify=ok}}
+{{@end}}
+
+{{@action addNotes}}
+	{{@get interest_young_person_notes filter young_person_id = young_person.id}}
+	{{@remove item interest_young_person_notes}}
+	{{interest_young_person_notes.young_person_id = young_person.id}}
+	{{interest_young_person_notes.notes = notes}}
+	{{@new item interest_young_person_notes notify=ok}}
+{{@end}}
+
+function backToPrev() {
+    objReferrer = get('refId');
+    objYP = get('ypId');
+//alert('r='+objReferrer.value+' and yp='+objYP.value);
+    runJam('referralFormYoungPerson?refId='+objReferrer.value+'&ypId='+objYP.value);
+}
+function toNextScreen() {
+	document.body.style.cursor  = 'wait';
+	objYP = get('ypId');
+    runAction('deleteAllInterests', ['young_person.id='+objYP.value], '', addNotes);
+}
+
+function goForward() {
+    objReferrer = get('refId');
+    objYP = get('ypId');
+	document.body.style.cursor  = 'default';
+	runJam('referralFormMedical?refId='+objReferrer.value+'&ypId='+objYP.value);
+}
+
+function addNotes() {
+    objYP = get('ypId');
+	notesObj = get('interest_young_person_notes.notes');
+    medicationObj = get('medical_notes.medication');
+    runAction('addNotes', ['young_person.id='+objYP.value, 'notes='+notesObj.value], '', addAll);
+}
+
+function addAll() {
+	var checkboxes = document.getElementsByName('interest_type');
+	for (var i = 0; i < checkboxes.length; i++) {
+		if (checkboxes[i].checked) {
+			runAction('addInterest', ['young_person.id', 'interest_type.id='+checkboxes[i].value]);
+		}
+	}
+window.setTimeout(goForward,1000);
+}
+
+</script>
+
+{{@include /jam/sys/html/footer.html}}

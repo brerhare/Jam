@@ -1,12 +1,12 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@Xinclude /jam/run/menu.jam}}
+{{@include /jam/run/menu.jam}}
 
 {{@database befriending_wireflydesign_com}}
 
 <br>
-{{@html container start center nomargin css='max-width:900px; padding:0}}
+{{@html container start center css='max-width:1080px; Xpadding:0}}
 
 	{{@get befriender filter id = befriender.id}}
 	{{@get global filter id = befriender.global_id}}
@@ -25,8 +25,8 @@
 		{{@html gridrow start}}
 			{{@html gridcol start width=5-10}}
 
-				{{@html date field=befriender.enquired size=medium label='Enquiry Date' group=inp}}
-				{{@html dropdown field=befriender.enquiry_method_id pickfield=enquiry_method.description size=small label='Enquiry method'}}
+				{{@XXXhtml date field=befriender.enquired size=medium label='Enquiry Date' group=inp}}
+				{{@XXXhtml dropdown field=befriender.enquiry_method_id pickfield=enquiry_method.description size=small label='Enquiry method'}}
 				{{@html text field=global.forename size=large label='Forename' group=inp}}
 				{{@html text field=global.surname size=large label='Surname' group=inp}}
 				{{@html text field=global.house size=medium label='house' group=inp}}
@@ -59,8 +59,8 @@
 			{{@html gridcol start width=1-1}}
 				<br>
 				<center>
-					<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="saveButtonClick()">Next</button> 
 					<button type='button' id='cancelButton' class="uk-button uk-button-primary" onClick="cancelButtonClick()">Cancel</button> 
+					<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="saveButtonClick()">Next</button> 
 				</center>
 			{{@html gridcol end}}
 		{{@html gridrow end}}
@@ -107,6 +107,7 @@ function updated() {
 {{@action update_befriender}}
 	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
 	{{befriender.global_id = global.id}}
+	{{befriender.enquired = sys.today}}
 	{{@update item befriender notify=ok}}
 {{@end}}
 

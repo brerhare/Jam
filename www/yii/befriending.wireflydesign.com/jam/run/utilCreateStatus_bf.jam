@@ -1,0 +1,15 @@
+{{@include /jam/sys/html/header.html}}
+
+Doing...
+
+{{@database befriending_wireflydesign_com}}
+
+{{@remove table status_bf}}
+
+{{@new table status_bf
+	name		string
+}}
+
+Done
+
+{{@include /jam/sys/html/footer.html}}

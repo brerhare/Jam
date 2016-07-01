@@ -1,0 +1,61 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@Xinclude /jam/run/menu.jam}}
+
+{{@html container start center css='max-width:1080px; Xpadding:0}}
+
+{{@database befriending_wireflydesign_com}}
+
+	{{@get befriender filter id = befriender.id}}
+	{{@get global filter id = befriender.global_id}}
+
+	<style type="text/css">
+		label {text-align: right;}
+	</style>
+
+		<div class="uk-grid" name="page_content">
+		<br><br>
+		<h3> Young Person match for {{global.forename}} {{global.surname}}  </h3>
+
+			<div class="uk-width-5-5">
+
+					<table class="uk-table uk-table-condensed">
+						<tr bgcolor='#dadada'>
+							<th> Matched Befriender </th>
+							<th> Phone </th>
+							<th> Email </th>
+							<th> Postcode </th>
+						</tr>
+						{{@each match_yp filter befriender_id = befriender.id}}
+							{{@get young_person filter id = match_yp.young_person_id}}
+							{{@get global filter id = young_person.global_id}}
+							{{@Xeach event_attendee filter global_id = global.id, event_id = event.id}}
+								<tr bgcolor='#dadada'>
+									<td> {{global.forename}} {{global.surname}} </td>
+									<td> {{global.mobile}} </td>
+									<td> {{global.email}} </td>
+									<td> {{global.postcode}} </td>
+								</tr>
+							{{@Xend}}
+						{{@end}}
+
+						<tr bgcolor='#e9e9e9'> <th colspan=6>Previous Matches</th> </tr>
+						{{@each match_history filter befriender_id = befriender.id}}
+							{{@get young_person filter id = match_history.young_person_id}}
+							{{@get global filter id = young_person.global_id}}
+								<tr bgcolor='#e9e9e9'>
+									<td> {{global.forename}} {{global.surname}} </td>
+									<td> {{global.mobile}} </td>
+									<td> {{global.email}} </td>
+									<td> {{global.postcode}} </td>
+								</tr>
+						{{@end}}
+
+					</table>
+				</div>
+
+	</div>
+{{@html container end}}
+
+{{@include /jam/sys/html/footer.html}}
