@@ -40,6 +40,7 @@
 							{{@get global filter id = young_person.global_id}}
 							<option value="{{young_person.id}}" selected> {{global.forename}} {{global.surname}} </option>
 						{{@end}}
+							<option value="0">None</option>
 						{{@each young_person filter id != event.young_person_id, id != 7, id != 18, id != 19, id != 20, id != 30, id != 31, id != 38, id != 39, id != 40, id != 41, id != 42, id != 49}}
 							{{@get global filter id = young_person.global_id}}
 							<option value="{{young_person.id}}"> {{global.forename}} {{global.surname}} </option>
@@ -49,7 +50,29 @@
 					</div>
 
 
-					{{@Xhtml filter field=event.young_person_id pickfield=event_type.name size=medium label='Event Type'}}
+					<!-- @@EG: dropdown outside of the jam -->
+					<label class="uk-form-label" for="event.event_befriender_id"> Befriender </label>
+					<div class="uk-form-controls">
+<!-- @@TODO delete/archive -->
+						<select id="ID1___event___befriender_id" name="event.befriender_id" onchange="fn(this, event);" onkeyup="fn(this, event);" class="uk-form-width-medium ROW_{{sys.sequence}} ">
+						{{tmp.selected = }}
+						{{@get event id = event.id}}
+						{{@each befriender id = event.befriender_id}}
+							{{@get global filter id = befriender.global_id}}
+							<option value="{{befriender.id}}" selected> {{global.forename}} {{global.surname}} </option>
+						{{@end}}
+							<option value="0">None</option>
+						{{@each befriender filter id != event.befriender_id}}
+							{{@get global filter id = befriender.global_id}}
+							<option value="{{befriender.id}}"> {{global.forename}} {{global.surname}} </option>
+						{{@end}}
+
+						</select>
+					</div>
+
+
+
+					{{@Xhtml filter field=event.befriender_id pickfield=event_type.name size=medium label='Event Type'}}
 
 
 					{{@html date field=event.date size=medium label='Date' default={{sys.today}} }}
