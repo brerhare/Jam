@@ -9,7 +9,7 @@
 
                     <img data-u="image" src="/userdata/jelly/sliderimage/{{image}}" />
 
-                    <div class="content" data-u="caption" data-t="0" data-to="0% 100%" style="position: absolute; top: 400px; left: 1220px; width: 300px; height: 150px; background-color: #ebeb65; font-family: Open Sans; font-size: 20px; color: #000000; text-align: left; padding: 20px; box-sizing: border-box; overflow: hidden;">Title
+                    <div class="content" data-u="caption" data-t="0" data-to="0% 100%" style="position: absolute; top: 400px; left: 1220px; width: 300px; height: 150px; background-color: #ebeb65; font-family: Open Sans; font-size: 20px; color: #000000; text-align: left; padding: 20px; box-sizing: border-box; overflow: hidden;"><h3>{{jelly_slider_image.title}}</h3><p> {{jelly_slider_image.text}} </p>
 
 
 
@@ -20,7 +20,7 @@
 
                     <img data-u="caption" data-t="1" style="position: absolute; top: 373px; left: 1342px; width: 200px; height: 80px;" src="/img/sliderlogo.png" />
 
-                    <img data-u="caption" data-t="2" style="position: absolute; top: 512px; left: 1451px; width: 100px; height: 56px;" src="/img/readmore.png" />
+                    <a href="{{jelly_slider_image.url}}"> <img data-u="caption" data-t="2" style="position: absolute; top: 512px; left: 1451px; width: 100px; height: 56px;" src="/img/readmore.png" /> </a>
 
                 </div>
 
