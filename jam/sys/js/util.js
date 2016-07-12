@@ -48,6 +48,8 @@ function runAction(action, element, output, callback) {
 	var runURL = dirname(getURLBase());
 	// Prepare the 'jam' parameter: 'somejam' or 'somejam:actionName'
 	var urlSplit = basename(location.href).split("?");
+console.log('location.href='+location.href);
+console.log('basename location.href='+basename(location.href).split("?") );
 	var runJam = urlSplit[0];
 
 	if (action.indexOf(':') == -1) {						// actionName only - current jam
@@ -82,7 +84,7 @@ function runAction(action, element, output, callback) {
 //alert('assembling data. So far we have : ' + postData);
 	}
 	var sendURL = runURL + '/' + runJam;
-//alert('runURL='+runURL+' runJam='+runJam+' sendURL='+sendURL);
+console.log('runURL='+runURL+' runJam='+runJam+' sendURL='+sendURL);
 console.log('AJAX sending to - \nurl : ' + sendURL + '\ndata : ' + postData);
 	$.ajax( {
 		url : sendURL,

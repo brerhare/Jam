@@ -908,7 +908,7 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 						$argChar = "?";
 						if (strstr($jamArg, "?") == true)
 							$argChar = "\&";
-						$jamUrl = $yiiSite . $jamArg . $argChar . "jelly.sid=" . $sid . "\&jelly.email=" . $settingEmail;
+						$jamUrl = $yiiSite . $jamArg . $argChar . "jelly.sid=" . $sid . "&jelly.email=" . $settingEmail;
 						//$jamUrl = $yiiSite . $jamArg . $argChar . "jelly.email=" . $settingEmail .  "jelly.sid=" . $sid;
 						// Add in any possible templates
 						foreach ($this->jamTemplateArr as $n => $v)

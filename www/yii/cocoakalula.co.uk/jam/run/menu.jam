@@ -1,7 +1,7 @@
 {{@database cocoakalula_co_uk}}
 
-{{@template BACKCOLOR_FROM transparent}}
-{{@template BACKCOLOR_TO transparent}}
+{{@template BACKCOLOR_FROM #d2ffff}}
+{{@template BACKCOLOR_TO #d2ffff}}
 {{@template ACTIVECOLOR_FROM #d2ffff}}
 {{@template ACTIVECOLOR_TO #d2ffff}}
 {{@template ARROWCOLOR #6f4619}}

@@ -16,7 +16,13 @@
 
  
 <!-- include jquery -->
-<script type="text/javascript" src="/jam/sys/extern/jquery/jquery.min.js"></script>
+<script>
+if (typeof jQuery == 'undefined') {
+	document.write('<script type="text/javascript" src="/jam/sys/extern/jquery/jquery.min.js"></'+'script>');
+}
+</script>
+
+<!-- <script type="text/javascript" src="/jam/sys/extern/jquery/jquery.min.js"></script> -->
 
 <!--include the Block UI thang -->
 <script type="text/javascript" src="/jam/sys/js/jquery.blockUI.js"></script>
