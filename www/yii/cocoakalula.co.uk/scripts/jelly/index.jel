@@ -186,7 +186,7 @@ condition = @DEVICEWIDTH>700
 		css.background-color = white
 		css.border = 2px solid #6f4619
 		css.width = 95%
-		jam.iframe = /run/contact
+		jam.iframe = /run/contact.jam
 		
 		[column-content]
 		css.margin-top = 50px

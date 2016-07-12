@@ -1,17 +1,16 @@
-{{@database cocoakalula_co_uk}}
+{{@database befriending_org}}
 
-{{@template BACKCOLOR_FROM #d2ffff}}
-{{@template BACKCOLOR_TO #d2ffff}}
-{{@template ACTIVECOLOR_FROM #d2ffff}}
-{{@template ACTIVECOLOR_TO #d2ffff}}
-{{@template ARROWCOLOR #6f4619}}
+{{@template BACKCOLOR_FROM #ebeb65}}
+{{@template BACKCOLOR_TO #ebeb65}}
+{{@template ACTIVECOLOR_FROM white}}
+{{@template ACTIVECOLOR_TO white}}
+{{@template ARROWCOLOR #258c39}}
 {{@template CORNERPIXELS 0}}
-{{@template MAINTEXTCOLOR #6f4619}}
-{{@template SUBTEXTCOLOR #6f4619}}
+{{@template MAINTEXTCOLOR #5fa360}}
+{{@template SUBTEXTCOLOR #5fa360}}
 {{@template FONTDOWNLOAD Open+Sans:400}}
 {{@template FONTFAMILY "Open Sans", Arial, sans-serif}}
 {{@template FONTSIZE 18}}
-{{@template FONTWEIGHT bold}}
 
 
 {{@template MENU
