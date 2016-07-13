@@ -1,224 +1,271 @@
-#Demo 1
-[defaults]
-include = default-values
+#fresherthantheudders.co.uk
 
-# Every blob inherits these before adding/overriding
+[defaults]
+#include = default-values
+css.display = block
+css.overflow = hidden
+css.margin = 0px auto
+css.position = relative
 
 [* : defaults]
 
 [screen]
 child = site
-css.background-color = black
-css.display = block
+css.background-color = #7eb075
 
 	[site]
 	child = header, pages, footer
 	css.width = 100%
-
-####  Header  #################################
-
-	[header]
-	child = logo, cow, churn
-	css.width = 100%
-#	css.height = auto
-	css.background-image = url('/img/background-header.jpg')
-#	css.background = url('/img/background-header.jpg')
-	css.background-size = 100% 100%
+	css.background-image = url('/img/background.jpg')
+	css.background-size = 100%
 	css.background-repeat = no-repeat
-	stacking = horizontal
+
 
 	
-			[logo]
-			css.margin-top = 2%
-			css.margin-left = 15%
-			css.width = 25%
-			image.url = img/logo.png
-			image.width = 80%
-			image.height = 113%
-			click = ?layout=index&page=index
+### Header ###
 
-			[cow]
-			css.margin-top = 5%
-			css.width = 25%
-			image.url = img/cow.png
-			image.width = 68%
-			image.height = 84%
-			click = ?layout=index&page=index
+[header]
+child = social, menu-block, logo, wall
 
-			
-			[churn]
-			css.margin-top = 2%
-			css.width = 20%
-			image.url = img/churn-link.png
-			image.width = 68%
-			image.height = 140%
-			click = ?layout=index&page=free-range-milk-dumfries-galloway-stockists
-
-
-
-
-######## body #######################################
-			
-
-	[pages]
-	child = content-block, form 	
-	css.width = 80%
+	[social]
+	child = pinterest, twitter, facebook
+	css.width = 20%
+	css.min-width = 150px
+	css.margin = 2% 5%
+	css.float = right
 	stacking = horizontal
+		
+		[pinterest]
+		css.width = 33%
+		image.url = img/instagram.png
+		image.width = 80%
+		image.height = 100%
+		clicknew = https://www.instagram.com/roansdairy/
+		
+		[twitter]
+		css.width = 33%
+		image.url = img/twitter.png
+		image.width = 80%
+		image.height = 100%
+		clicknew = https://twitter.com/roansdairy
+		
+		[facebook]
+		css.width = 33%
+		image.url = img/facebook.png
+		image.width = 80%
+		image.height = 100%
+		clicknew = https://www.facebook.com/roansdairy/
+		
 	
-		[content-block]
-		child = content-top, content, content-bottom
-		css.width = 60%
-		css.min-width = 400px
-		css.background-color = white
-		
-			[content-top]
-			css.width = 100%
-			image.url = img/content-top.jpg
-			image.width = 100%
-			image.height = auto
-			
-			[content]
-			css.width = 90%
-			db.table = ContentBlock
-			db.filter = url=$_GET['page']
-			db.error = Sorry, I could not find the page $_GET['page']
-			html.raw = ContentBlock.content
-			
-			[content-bottom]
-			css.width = 100%
-			image.url = img/content-bottom.jpg
-			image.width = 100%
-			image.height = auto
-		
-		[form]
-		child = form-top, contact-form, twitter, facebook, form-bottom
-		css.width = 30%
-		css.min-width = 180px
-		css.margin-left = 5%
-		css.background-color = white
-		
-			[form-top]
-			css.width = 100%
-			image.url = img/form-top.jpg
-			image.width = 100%
-			image.height = auto
-			
-			[contact-form]
-			css.width = 80%
-			html.raw = <h1><span style="font-size:48px;">Stay in<br/>Touch</span></h1>
-			css.text-align = center
-			css.min-height = 325px
-			css.background-color = white
-			#jam.embed = /jam/template/contactForm.jam
-			jam.iframe = /run/contactForm
-			
-			[twitter]
-			css.margin-top = 5px
-			css.margin-left = 20%
-			image.url = img/twitter.jpg
-			image.width = 55%
-			image.height = auto
-			clicknew = https://twitter.com/RoansDairy
-			
-			[facebook]
-			css.margin-top = 5px
-			css.margin-left = 30%
-			image.url = img/facebook.jpg
-			image.width = 60%
-			image.height = auto
-			clicknew = https://www.facebook.com/roansdairy
-			
-			[form-bottom]
-			css.width = 100%
-			image.url = img/form-bottom.jpg
-			image.width = 100%
-			image.height = auto
-		
+	[menu-block]
+	child = menu
+	css.background-color = #f9629f
+	css.min-height = 40px
+	css.overflow = visible
+	css.z-index = 10
+	
+		[menu]
+		jam.embed = /run/menu.jam
+		css.overflow = visible
+	
+	[logo]
+	css.max-width = 1200px
+	css.margin-left = 4%
+	css.margin-top = -8%
+	image.url = img/logo.png
+	image.width = 25%
+	image.height = 100%
+	image.align = left
+	click = ?layout=index
+	css.z-index = 100
+	
+	[wall]
+	css.margin-top = -8%
+	image.url = img/wall.png
+	image.width = 100%
+	image.height = 100%
 
 
-####footer####################################
+### Pages ###
+
+[pages]
+child = home-page, page-block
+css.width = 90%
+css.max-width = 1000px
+css.margin-top = -8%
+
+	[home-page]
+	child = home-crates, home-block
+	condition = @PAGE=@HOMEPAGE
+	
+		[home-crates]
+		child = story-img, family-img, latest-img, wholesale-img
+		stacking = horizontal
+		
+			[story-img]
+			css.width = 25%
+			image.url = img/story.png
+			image.width = 100%
+			image.height = 100%
+			click = ?layout=index&page=font-test-temp
+			
+			[family-img]
+			css.width = 25%
+			image.url = img/family.png
+			image.width = 100%
+			image.height = 100%
+			click = ?layout=index&page=roans-dairy-farm-family
+						
+			[latest-img]
+			css.width = 25%
+			image.url = img/latest.png
+			image.width = 100%
+			image.height = 100%
+						
+			[wholesale-img]
+			css.width = 25%
+			image.url = img/wholesale.png
+			image.width = 100%
+			image.height = 100%
+			
+			
+		
+		[home-block]
+		child = home-background, slider
+		stacking = horizontal
+		
+			[home-background]
+			child = home-top, home-center, home-btm
+			css.width = 47%
+			
+				[home-top]
+				css.height = 30px
+				css.background-image = url('/img/content-top.png')
+				css.background-size = 100% 100%
+				css.background-repeat = repeat-x
+				
+				[home-center]
+				child = home-content
+				css.padding = 0px 10px
+				css.border = solid
+				css.border-width = 0px 1px
+				css.border-color = white
+				css.background-image = url('/img/content-bgd.png')
+				
+					[home-content]
+					css.margin-top = 20px
+					db.table = ContentBlock
+					db.filter = url=$_GET['page']
+					db.error = Sorry, I could not find the page $_GET['page']
+					html.raw = ContentBlock.content
+				
+				[home-btm]
+				css.height = 30px
+				css.background-image = url('/img/content-btm.png')
+				css.background-size = 100% 100%
+				css.background-repeat = repeat-x
+			
+			[slider]
+			child = slider-content, home-links
+			css.width = 48%
+			css.margin-left = 4%
+			
+				[slider-content]
+				#jam.embed = /run/slider.jam
+				css.width = 100%
+				css.height = 100%
+				#addon.slider.flexslider.slider = 1
+				addon.slider.flexslider.width = 99%
+				addon.slider.flexslider.height = 96%
+				addon.slider.flexslider.border-width = 2%
+				addon.slider.flexslider.border-color = white
+				addon.slider.flexslider.active-dotcolor = #f9629f
+				addon.slider.flexslider.inactive-dotcolor = white
+				addon.slider.flexslider.dot-margin-top = -200px
+				#addon.slider.flexslider.dot-margin-bottom = 0px
+				#addon.slider.flexslider.dot-margin-left = 0px
+				#addon.slider.flexslider.dot-margin-right = 0px
+				addon.slider.flexslider.animation = slide
+				addon.slider.flexslider.mode = image
+				addon.slider.flexslider.source = db
+
+				
+			[home-links]
+			jamtemplate.COLUMNNAME = page-links
+			jamtemplate.LARGEVIEWBLOCKS = 2
+			jamtemplate.MEDIUMVIEWBLOCKS = 1
+			jamtemplate.SMALLVIEWBLOCKS = 1
+			jamtemplate.BACKCOLOR = transparent
+			jamtemplate.BORDERWIDTH = 0px
+			jamtemplate.BORDERCOLOR = lightgrey
+			jamtemplate.BORDERRADIUS = 0px
+			jam.embed = /run/standardGrid
+	
+	
+	[page-block]
+	css.min-height = 50px
+	condition = @PAGE!=@HOMEPAGE
+
+
+### Footer ####
 
 [footer]
-child = footer-menu, admin-links
-css.background-image = url('/img/grass-tile.jpg')
-css.bacground-repeat = repeat
-css.padding = 50px 15%
-stacking = horizontal
+child = footer-container
+css.background-color = #7eb075
+css.margin-bottom = 50px
 
-		[footer-menu]
-		child = footer-cookies, footer-tandc, footer-contact, copyright
-		css.width = 35%
+[footer-container]
+child = footer-grid, wirefly
+css.width = 90%
 
-
-			[footer-cookies]
-			html.raw = Cookie Policy
-			css.color = #ffffff
-			css.font-size = 12px
-			css.text-align = left
-			css.font-weight = bold
-			click = ?layout=index&page=cookie-policy
-
-			[footer-tandc]
-			html.raw = Terms & Conditions
-			css.color = #ffffff
-			css.font-size = 12px
-			css.text-align = left
-			css.font-weight = bold
-			click = ?layout=index&page=terms-conditions
-
-			[footer-contact]
-			html.raw = Contact Us
-			css.text-align = left
-			css.color = #ffffff
-			css.font-size = 12px
-			css.text-align = left
-			css.font-weight = bold
-			click = ?layout=index&page=contact
-			
-			[copyright]
-			css.margin-top = 10px
-			html.raw = Roan's Dairy &copy 2015 All rights reserved
-			css.color = #ffffff
-			css.font-size = 12px
-			css.text-align = left
-			css.font-weight = bold
-			css.text-align = left
+	[footer-grid]
+	jamtemplate.COLUMNNAME = footer
+	jamtemplate.LARGEVIEWBLOCKS = 2
+	jamtemplate.MEDIUMVIEWBLOCKS = 2
+	jamtemplate.SMALLVIEWBLOCKS = 1
+	jamtemplate.BACKCOLOR = transparent
+	jamtemplate.BORDERWIDTH = 0px
+	jamtemplate.BORDERCOLOR = lightgrey
+	jamtemplate.BORDERRADIUS = 0px
+	jam.embed = /run/standardGrid
 
 
-	[admin-links]
-	child = wirefly, admin
-	css.width = 100px
-	css.height = 50px
+	[wirefly]
+	child = wirefly-logo, admin
 	stacking = horizontal
-	css.float = right
-	css.margin-top = 40px
+	css.margin-top = 100px
+	css.width = 50%
+	css.max-width = 120px
+	css.float = left
+	css.bottom = 10px
 
-	
-		[wirefly]
-		css.height = 45px
-		css.margin-top = 5px
+
+		[wirefly-logo]
+		css.width = 80%
+		css.margin-top = 1%
 		image.url = img/wirefly-design.png
-		image.width = 100px
-		image.height = 46px
+		image.width = 100%
+		image.height = 100%
 		image.align = left
 		clicknew = http://www.wireflydesign.com
-		
-	
+				
+			
 		[admin]
 		child = cog-center
-		css.height = 20px
-		css.width = 20px
+		css.width = 15%
 		css.background-size = 100%
-		css.background-image = url('/img/admin-dark.png')
-		css.margin-left = -20px
-		
+		css.background-image = url('/img/admin.png')
+		css.margin-left = -20%
+				
 			[cog-center]
-			css.width = 5px
-			css.height = 5px
-			css.margin-top = 8px
+			css.width = 50%
+			css.height = 100%
+			css.margin-top = 25%
+			css.margin-bottom = 25%
 			image.url = img/cog-center.png
-			image.width = 5px
-			image.height = 5px
+			image.width = 100%
+			image.height = 100%
 			image.align = center
 			clicknew = backend.php
+
 
