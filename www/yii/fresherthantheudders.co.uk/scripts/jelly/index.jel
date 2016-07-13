@@ -26,6 +26,7 @@ css.background-color = #7eb075
 
 [header]
 child = social, menu-block, logo, wall
+css.width = 100%
 
 	[social]
 	child = pinterest, twitter, facebook
@@ -69,17 +70,18 @@ child = social, menu-block, logo, wall
 		css.overflow = visible
 	
 	[logo]
-	css.max-width = 1200px
+	css.max-width = 300px
+	css.width = 15%
 	css.margin-left = 4%
 	css.margin-top = -8%
 	image.url = img/logo.png
-	image.width = 25%
+	image.width = 100%
 	image.height = 100%
-	image.align = left
 	click = ?layout=index
 	css.z-index = 100
 	
 	[wall]
+	css.width = 100%
 	css.margin-top = -8%
 	image.url = img/wall.png
 	image.width = 100%
@@ -131,39 +133,14 @@ css.margin-top = -8%
 			
 		
 		[home-block]
-		child = home-background, slider
+		child = home-content, slider
 		stacking = horizontal
 		
-			[home-background]
-			child = home-top, home-center, home-btm
+			[home-content]
+			child = content-container
 			css.width = 47%
 			
-				[home-top]
-				css.height = 30px
-				css.background-image = url('/img/content-top.png')
-				css.background-size = 100% 100%
-				css.background-repeat = repeat-x
 				
-				[home-center]
-				child = home-content
-				css.padding = 0px 10px
-				css.border = solid
-				css.border-width = 0px 1px
-				css.border-color = white
-				css.background-image = url('/img/content-bgd.png')
-				
-					[home-content]
-					css.margin-top = 20px
-					db.table = ContentBlock
-					db.filter = url=$_GET['page']
-					db.error = Sorry, I could not find the page $_GET['page']
-					html.raw = ContentBlock.content
-				
-				[home-btm]
-				css.height = 30px
-				css.background-image = url('/img/content-btm.png')
-				css.background-size = 100% 100%
-				css.background-repeat = repeat-x
 			
 			[slider]
 			child = slider-content, home-links
@@ -195,17 +172,71 @@ css.margin-top = -8%
 			jamtemplate.LARGEVIEWBLOCKS = 2
 			jamtemplate.MEDIUMVIEWBLOCKS = 1
 			jamtemplate.SMALLVIEWBLOCKS = 1
-			jamtemplate.BACKCOLOR = transparent
-			jamtemplate.BORDERWIDTH = 0px
-			jamtemplate.BORDERCOLOR = lightgrey
+			jamtemplate.BACKCOLOR = #94bc70
+			jamtemplate.BORDERWIDTH = 1px
+			jamtemplate.BORDERCOLOR = white
 			jamtemplate.BORDERRADIUS = 0px
 			jam.embed = /run/standardGrid
 	
 	
 	[page-block]
-	css.min-height = 50px
+	child = page-content, page-links
 	condition = @PAGE!=@HOMEPAGE
-
+	stacking = horizontal
+	
+		[page-content]
+		child = content-container
+		css.width = 70%
+		css.margin-top = 3%
+		
+		[content-container]
+				child = content-top, content-bgd, content-btm
+				
+					[content-top]
+					css.height = 30px
+					css.background-image = url('/img/content-top.png')
+					css.background-size = 100% 100%
+					css.background-repeat = repeat-x
+					
+					[content-bgd]
+					child = content
+					css.padding = 0px 10px
+					css.border = solid
+					css.border-width = 0px 1px
+					css.border-color = white
+					css.background-image = url('/img/content-bgd.png')
+					
+						[content]
+						css.margin-top = 20px
+						db.table = ContentBlock
+						db.filter = url=$_GET['page']
+						db.error = Sorry, I could not find the page $_GET['page']
+						html.raw = ContentBlock.content
+					
+					[content-btm]
+					css.height = 30px
+					css.background-image = url('/img/content-btm.png')
+					css.background-size = 100% 100%
+					css.background-repeat = repeat-x
+					
+		[page-links]
+		css.width = 25%
+		css.margin-left = 4%
+		css.border = solid
+		css.border-width = 1px
+		css.border-color = white
+		css.background-image = url('/img/content-bgd.png')
+		
+		jamtemplate.COLUMNNAME = page-links
+		jamtemplate.LARGEVIEWBLOCKS = 1
+		jamtemplate.MEDIUMVIEWBLOCKS = 2
+		jamtemplate.SMALLVIEWBLOCKS = 1
+		jamtemplate.BACKCOLOR = transparent
+		jamtemplate.BORDERWIDTH = 0px
+		jamtemplate.BORDERCOLOR = lightgrey
+		jamtemplate.BORDERRADIUS = 0px
+		jam.embed = /run/standardGrid
+		
 
 ### Footer ####
 
@@ -215,9 +246,16 @@ css.background-color = #7eb075
 css.margin-bottom = 50px
 
 [footer-container]
-child = footer-grid, wirefly
+child = footer-left, footer-right
 css.width = 90%
+css.max-width = 1000px
+stacking = horizontal
+css.margin-top = 50px
 
+	[footer-left]
+	child = footer-grid
+	css.width = 60%
+	
 	[footer-grid]
 	jamtemplate.COLUMNNAME = footer
 	jamtemplate.LARGEVIEWBLOCKS = 2
@@ -228,44 +266,63 @@ css.width = 90%
 	jamtemplate.BORDERCOLOR = lightgrey
 	jamtemplate.BORDERRADIUS = 0px
 	jam.embed = /run/standardGrid
+	
+	
+	[footer-right]
+	child = contact-text, contact-form, wirefly
+	css.width = 35%
+	
+		[contact-text]
+		addon.global.column.name = contact-text
+		addon.global.column.width = 100%
+		addon.global.column.internal-width = 100%
+		addon.global.column.content-width = 98%
+		addon.global.column.internal-color = transparent
+		addon.global.column.background-color = transparent
+		addon.global.column.top-height = 0px
+		addon.global.column.bottom-height = 5px
+
+		
+		[contact-form]
+		jam.embed = /run/contactForm.jam
 
 
-	[wirefly]
-	child = wirefly-logo, admin
-	stacking = horizontal
-	css.margin-top = 100px
-	css.width = 50%
-	css.max-width = 120px
-	css.float = left
-	css.bottom = 10px
+		[wirefly]
+		child = wirefly-logo, admin
+		stacking = horizontal
+		css.margin-top = 100px
+		css.width = 50%
+		css.max-width = 120px
+		css.float = left
+		css.bottom = 10px
 
 
-		[wirefly-logo]
-		css.width = 80%
-		css.margin-top = 1%
-		image.url = img/wirefly-design.png
-		image.width = 100%
-		image.height = 100%
-		image.align = left
-		clicknew = http://www.wireflydesign.com
-				
-			
-		[admin]
-		child = cog-center
-		css.width = 15%
-		css.background-size = 100%
-		css.background-image = url('/img/admin.png')
-		css.margin-left = -20%
-				
-			[cog-center]
-			css.width = 50%
-			css.height = 100%
-			css.margin-top = 25%
-			css.margin-bottom = 25%
-			image.url = img/cog-center.png
+			[wirefly-logo]
+			css.width = 80%
+			css.margin-top = 1%
+			image.url = img/wirefly-design.png
 			image.width = 100%
 			image.height = 100%
-			image.align = center
-			clicknew = backend.php
+			image.align = left
+			clicknew = http://www.wireflydesign.com
+					
+				
+			[admin]
+			child = cog-center
+			css.width = 15%
+			css.background-size = 100%
+			css.background-image = url('/img/admin.png')
+			css.margin-left = -20%
+					
+				[cog-center]
+				css.width = 50%
+				css.height = 100%
+				css.margin-top = 25%
+				css.margin-bottom = 25%
+				image.url = img/cog-center.png
+				image.width = 100%
+				image.height = 100%
+				image.align = center
+				clicknew = backend.php
 
 
