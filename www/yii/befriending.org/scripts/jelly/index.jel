@@ -34,20 +34,21 @@ css.width = 100%
 		
 		[slider-block]
 		child = logo, slider
+		css.max-width = 1200px
 			
 			[logo]
+			css.position = absolute
 			css.width = 90%
+			css.min-width = 400px
 			css.margin-top = 11%
 			image.url = img/logo.png
-			image.width = 40%
+			image.width = 50%
 			image.height = 50%
 			image.align = left
-			css.z-index = 100
+			css.z-index = 50
 			
 			[slider]
 			css.width = 100%
-			css.position = relative
-			css.margin-top = -18%
 			jam.embed = /run/befriendingSlider.jam
 			
 
