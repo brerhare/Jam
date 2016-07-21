@@ -11,9 +11,9 @@ html, h2, h4, body, p {	height: 100%;
 				line-height: 140%;}
 
 /* Global Hyperlink settings - will affect menu text colour if no text settings */ 
-a { text-decoration: none; color:#00ad44; }
+a { text-decoration: none; color:#13dbd3; }
 a:visited, a:active { text-decoration: none; color:#13dbd3; }
-a:hover { text-decoration: none; color:#50e4de; text-shadow: 2px 2px 2px grey; }
+a:hover { text-decoration: none; color:#13b5eb; text-shadow: 2px 2px 2px grey; }
 
 
 
@@ -40,11 +40,10 @@ h3 {	font-family: 'Satisfy', Verdana, sans-serif !important;
 	text-shadow: 3px 3px 2px lightgrey;
 	line-height: 100%;}
 
-h4 {	font-family: 'Comfortaa', Verdana, sans-serif !important;
-	color: #00ad44;
-	font-size: 18px;
+h4 {	font-family: 'Satisfy', Verdana, sans-serif !important;
+	color: #13dbd3;
+	font-size: 24px;
 	font-weight: 400;
-	font-style: italic;
 	line-height: 100%;}
 
 p  {	font-family: 'Comfortaa', Verdana, sans-serif !important;

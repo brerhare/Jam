@@ -922,7 +922,8 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 							$this->genInlineHtml($curlContent);
 						} else {
 							// Check if iframe has a size
-							$iframe = "<iframe id='frm' onload='scroll(0,0);' width='100%' height='" .$jamHeight . "' scrolling='no' style='overflow-x:hidden; overflow-y:auto;' src='"  .$jamUrl . "' ></iframe>";
+							$idNo = mt_rand();
+							$iframe = "<iframe id='frm-" . $idNo . "' onload='scroll(0,0);' width='100%' height='" .$jamHeight . "' scrolling='no' style='overflow-x:hidden; overflow-y:auto;' src='"  .$jamUrl . "' ></iframe>";
 							$this->genInlineHtml($iframe);
 						}
 						break;

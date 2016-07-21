@@ -1,6 +1,6 @@
 <!-- Set the database you want to use -->
 
-{{@database your_db_co_uk}}
+{{@database joseawright_com}}
 
 <!-- Set your templates either here or in the jelly. Look at the included file at the bottom for a list of all possible templates, and their default values -->
 
