@@ -81,6 +81,18 @@ class SiteController extends Controller
     /**
      * Displays the DIRECT login page
      */
+
+// @@TODO: HARDCODED FOR BFproject ---------- REMOVE
+    public function actionBfDirect()
+    {
+        Yii::app()->session['uid'] = 105;
+        $identity = new UserIdentity('BFproject', 'site2plugin');
+        $identity->authenticate();
+        $duration = 3600*24*14; // 14 days
+        Yii::app()->user->login($identity, $duration);
+        $this->redirect(array('site/index'));
+    }
+
 // @@TODO: HARDCODED FOR SUSANMCKAY ---------- REMOVE
     public function actionSusanmckayDirect()
     {

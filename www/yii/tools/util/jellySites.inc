@@ -9,6 +9,7 @@ $siteList = array (
 	'beirc.co.uk'                  => '/home/beirc.co.uk/dev/src/www/yii/beirc.co.uk',
 	'breakfreecoaching.co.uk'      => '/home/breakfreecoaching.co.uk/dev/src/www/yii/breakfreecoaching.co.uk',
 	'brycewalkervending.com'       => '/home/brycewalkervending.com/dev/src/www/yii/brycewalkervending.com',
+	'befriending.org'			   => '/home/befriending.org/dev/src/www/yii/befriending.org',
 	'craigieknowesgolfandteeroom.co.uk' => '/home/craigieknowesgolfandteeroom.co.uk/dev/src/www/yii/craigieknowesgolfandteeroom.co.uk',
 	'cocoakalula.co.uk'				=> '/home/cocoakalula.co.uk/dev/src/www/yii/cocoakalula.co.uk',
 	'demo1.wireflydesign.com'      => '/home/wireflydesign.com/domains/demo1.wireflydesign.com/dev/src/www/yii/demo1.wireflydesign.com',

@@ -13,136 +13,258 @@ css.padding = 0px
 
 [screen]
 child = site
-css.background-color = white
+css.background-color = transparent
 css.width = 100%
 css.display = block
 
 	[site]
-	child = header, avatar, pages
+	child = header, home-page, page, footer-trasparency, footer
 	css.width = 100%
+	
 	
 ##### Header ################################################	
 
 [header]
-child = logo, menu-block
-css.background-size = 100%
-css.background-image = url('/img/background.jpg')
+child = headercontent, avatar
+css.position = fixed
+css.background-color = transparent
+css.width = 100%
+css.z-index = 100
 css.overflow = visible
-css.padding-bottom = 30px
 
-	[logo]
-	css.margin-top = 10px
-	css.width = 40%
-	css.min-width = 300px
-	image.url = img/logo.png
-	image.width = 100%
-	image.height = 100%
-	click = ?layout=index&page=index
-	
-	[menu-block]
-	css.margin-top = -20px
-	css.background-color = #13dbd3
-	child = menu
-#	css.margin-bottom = 30px
+	[headercontent]
+	child = logo, menu-block
+	css.width = 100%
+	css.background-size = 100%
+	css.background-image = url('/img/background.jpg')
 	css.overflow = visible
-	
-		[menu]
-		css.width = 50%
-		jam.embed = /run/menu.jam
-		css.overflow = visible
+	css.padding-bottom = 30px
 
+
+		[logo]
+		css.width = 40%
+		css.min-width = 300px
+		image.url = img/logo.png
+		image.width = 100%
+		image.height = 100%
+		click = ?layout=index&page=index
 		
-[avatar]
-css.margin-top = -100px
-css.width = 80%
-css.min-width = 600px
-image.url = img/avatar.png
-image.width = 13%
-image.height = 100%
-image.align = left
+		[menu-block]
+		css.margin-top = -20px
+		css.background-color = #13dbd3
+		child = menu
+		css.overflow = visible
+		
+			[menu]
+			css.width = 50%
+			jam.embed = /run/menu.jam
+			css.overflow = visible
+
+	[avatar]
+	css.margin-top = -100px
+	css.width = 80%
+	css.min-width = 600px
+	image.url = img/avatar.png
+	image.width = 13%
+	image.height = 100%
+	image.align = left
+	click = http://joseawright.com/?layout=index&page=about
 
 
 ##### Main ################################################
-[pages]
-child = main-column, right-column
-css.width = 90%
-css.max-width = 1000px
-css.margin-top = 50px
+[home-page]
+child = video-container, video-block, home-content-background
+condition = @PAGE=@HOMEPAGE
+css.margin-top = 18%
 css.margin-bottom = 50px
 stacking = horizontal
 
-	[main-column]
-	child = home-content, main-content, contact-block
-	css.width = 70%
+	[video-container]
+	child = video
+	css.width = 100%
+	css.z-index = -10
+	css.position = fixed
+	
+		[video]
+		css.background-color = #13dbd3
+		css.width = 90%
+		css.max-width = 1000px
+		addon.video.simple.thumb = /img/autumnleaves.jpg
+		addon.video.simple.width = 100%
+		addon.video.simple.video = /img/autumn_leaves1
+		addon.video.simple.loop = yes
+		addon.video.simple.poster = /img/autumnleaves.jpg
+		
 
+	[video-block]
+	child = overlay-container
+	css.background-color = transparent
+	css.width = 100%
+		
+		[overlay-container]
+		child = overlay-text, book-button
+		stacking = horizontal
+		css.background-size = 100%
+		css.background-image = url('/img/overlaybgd.png')
+		#css.background-color = transparent
+		#css.height = 50%
+		css.width = 90%
+		css.max-width = 1000px
+		css.margin-bottom = 5%
+		css.margin-top = 25%
+		
+			[overlay-text]
+			css.width = 50%
+			image.url = img/overlay.png
+			image.width = 90%
+			image.height = 100%
+			image.align = centre
+			css.margin-bottom = 1%
+			
+			[book-button]
+			css.width = 30%
+			css.float = right
+			css.margin-top = 3.8%
+			css.min-width = 150px
+			image.url = img/booknow.png
+			image.width = 80%
+			image.height = 100%
+			image.align = centre
+			clicknew = https://calendly.com/jo-seawright/free-coaching-session
+
+	[home-content-background]
+	child = home-content
+	css.width = 100%
+	css.background-color = white
+	
 		[home-content]
-		condition = @PAGE=@HOMEPAGE
-		db.table = ContentBlock
-		db.filter = url=$_GET['page']
-		db.error = Sorry, I could not find the page $_GET['page']
-		html.raw = ContentBlock.content
+		child = do_what_grid, content
+		css.width = 90%
+		css.max-width = 1200px
 	
-	
-		[main-content]
-		condition = @PAGE!=@HOMEPAGE
-		db.table = ContentBlock
-		db.filter = url=$_GET['page']
-		db.error = Sorry, I could not find the page $_GET['page']
-		html.raw = ContentBlock.content
-		
-		[contact-block]
-		condition = @PAGE=contact
-		css.min-height = 325px
-		css.margin-left = 0px
-		jam.iframe = /run/contactForm
-		#jam.iframe-height = 358px
-		#jam.iframe = /run/contactForm
-	
-	[right-column]
-	child = right-column-top, signup, right-column-bottom, wirefly
-	css.width = 20%
-	css.margin-left = 5%
-	css.padding = 0% 2%
-	css.min-height = 200px
-	css.border-width = 0px 1px
-	css.border-color = #13dbd3
+		[do_what_grid]
+		css.margin-top = 2%
+		css.width = 80%
+		css.max-width = 1000px
+		css.background-color = white
+		jamtemplate.COLUMNNAME = do_what
+		jamtemplate.LARGEVIEWBLOCKS = 3
+		jamtemplate.MEDIUMVIEWBLOCKS = 3
+		jamtemplate.SMALLVIEWBLOCKS = 1
+		jamtemplate.BACKCOLOR = transparent
+		jamtemplate.BORDERWIDTH = 15px
+		jamtemplate.BORDERCOLOR = white
+		jamtemplate.BORDERRADIUS = 0px
+		jam.embed = /run/standardGrid
 
-		[right-column-top]
-		addon.global.column.name = column-top
-		addon.global.column.width = 90%
-		addon.global.column.internal-width = 100%
-		addon.global.column.content-width = 98%
-		addon.global.column.internal-color = transparent
-		addon.global.column.background-color = transparent
-		addon.global.column.top-height = 0px
-		#addon.global.column.bottom-height = 20px
-	
-		[signup]
-		css.min-height = 325px
-		jam.iframe = /run/signup.jam
-		#jam.iframe-height = 358px
-		#jam.iframe = /run/signup
+		[content]
+		css.max-width = 900px
+		css.margin-top = 2%
+		db.table = ContentBlock
+		db.filter = url=$_GET['page']
+		db.error = Sorry, I could not find the page $_GET['page']
+		html.raw = ContentBlock.content
+		css.margin-bottom = 50px
 		
-		[right-column-bottom]
-		addon.global.column.name = column-bottom
-		addon.global.column.width = 90%
+
+
+####Other Pages ######################################################
+
+[page]
+condition = @PAGE!=@HOMEPAGE
+child = page-background, page-content
+css.width = 100%
+css.margin-top = 18%	
+
+	[page-background]
+	image.url = img/autumnleaves.jpg
+	image.width = 100%
+	image.height = 100%
+	image.align = centre
+	css.z-index = -10
+	css.position = fixed
+	
+	[page-content]
+	child = content
+	css.background-color = white
+	
+		
+##### Footer ################################################	
+[footer-trasparency]
+css.width = 100%
+css.height = 20%
+css.min-height = 100px
+
+[footer]
+child = footer-container
+css.width = 100%
+css.background-color = #13dbd3
+css.padding = 50px
+css.margin-bottom = 500px
+
+[footer-container]
+child = footer-left, footer-right
+css.max-width = 900px
+stacking = horizontal
+
+	[footer-left]
+	child = left-content, signup
+	css.width = 45%
+#	css.float = left
+	css.min-width = 200px
+	
+		[left-content]
+		addon.global.column.name = footer-left
+		addon.global.column.width = 100%
 		addon.global.column.internal-width = 100%
-		addon.global.column.content-width = 98%
+		addon.global.column.content-width = 90%
 		addon.global.column.internal-color = transparent
 		addon.global.column.background-color = transparent
 		addon.global.column.top-height = 0px
-		#addon.global.column.bottom-height = 20px
+		addon.global.column.bottom-height = 5px
+		
+		[signup]
+		css.max-width = 200px
+		css.width = 90%
+		#css.min-height = 325px
+		#jam.embed = /run/signup.jam
+		jam.iframe = /run/signup.jam
+	
+	[footer-right]
+	child = right-content, contact-form, wirefly
+	css.width = 50%
+	css.min-width = 200px
+	css.border-style = solid
+	css.border-width = 0px 0px 0px 1px
+	css.border-color = white
+	css.padding-left = 1%
+	
+		[right-content]
+		addon.global.column.name = footer-right
+		addon.global.column.width = 100%
+		addon.global.column.internal-width = 100%
+		addon.global.column.content-width = 80%
+		addon.global.column.internal-color = transparent
+		addon.global.column.background-color = transparent
+		addon.global.column.top-height = 0px
+		addon.global.column.bottom-height = 5px
+		
+		[contact-form]
+		css.width = 80%
+		css.min-height = 325px
+		#jam.embed = /run/contactForm
+		jam.iframe = /run/contactForm
+			
 		
 		[wirefly]
 		child = wirefly-logo, admin
 		stacking = horizontal
+		css.float = right
 		css.margin-top = 10%
-		css.margin-left = 0px
 		css.width = 50%
-		css.margin-left = 0%
 
 			[wirefly-logo]
-			css.width = 80%
+			css.width = 150px
 			css.margin-top = 1%
 			image.url = img/wirefly-design.png
 			image.width = 100%
@@ -168,14 +290,5 @@ stacking = horizontal
 				image.height = 100%
 				image.align = center
 				clicknew = backend.php
-
-
-####Other Pages ######################################################
 	
-
 		
-##### Footer ################################################	
-[footer]
-css.width = 100%
-css.background-color = #13dbd3
-css.min-height = 25px
