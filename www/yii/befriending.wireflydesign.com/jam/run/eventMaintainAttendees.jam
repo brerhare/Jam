@@ -16,6 +16,16 @@
 
 	{{@get event filter id = event.id}}
 	{{@get young_person filter id = event.young_person_id}}
+
+	<!-- Get matched befriender -->
+	{{@each match_yp filter young_person_id = young_person.id}}
+	{{@get befriender filter id = match_yp.befriender_id}}
+	{{@get global filter id = befriender.global_id}}
+	{{bef_forename = global.forename}}
+	{{bef_surname = global.surname}}
+	{{@end}}
+
+	<!-- YP defails -->
 	{{@get global filter id = young_person.global_id}}
 
 	<style type="text/css">
@@ -26,6 +36,7 @@
 
 				<br>
 					<table class="uk-table uk-table-condensed">
+						<tr> <td colspan=5> <center><h3 style='background-color:#dadada;' >Matched Befriender: {{bef_forename}} {{bef_surname}}</h3></center> </td> </tr>
 						<tr> <td colspan=5> <center><h3 style='background-color:#dadada;' >Invited Attendees</h3></center> </td> </tr>
 						<tr>
 							<th> Type </th>
