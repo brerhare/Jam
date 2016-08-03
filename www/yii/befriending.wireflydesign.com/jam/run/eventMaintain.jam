@@ -84,8 +84,8 @@
 					<br>
 
 					<center>
-						<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="runAction('update_event', ['inputForm_event'], '');">Apply</button>
-						<button type='button' id='cancelButton' class="uk-button uk-button-primary" onClick="runJam('event');">Finished</button>
+						<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="runAction('update_event', ['inputForm_event'], '', window.setTimeout(runJam,1000));">Apply</button>
+						<button type='button' id='cancelButton' class="uk-button uk-button-primary" onClick="runAction('update_event', ['inputForm_event'], '', window.setTimeout(runJam('event'),1000));">Finished</button>
 						{{@html button Cancel primary medium
 							runJam('event');
 						}}
@@ -108,5 +108,12 @@
 {{@action update_event}}
 	{{@update item event notify=ok}}
 {{@end}}
+
+<script>
+
+function onChange_event_youngpersonid() {
+}
+
+</script>
 
 {{@include /jam/sys/html/footer.html}}
