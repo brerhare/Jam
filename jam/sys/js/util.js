@@ -48,6 +48,8 @@ function runAction(action, element, output, callback) {
 	var runURL = dirname(getURLBase());
 	// Prepare the 'jam' parameter: 'somejam' or 'somejam:actionName'
 	var urlSplit = basename(location.href).split("?");
+console.log('URLSPLIT='+urlSplit);
+console.log('RUNJAM='+runJam);
 console.log('location.href='+location.href);
 console.log('basename location.href='+basename(location.href).split("?") );
 	var runJam = urlSplit[0];
@@ -57,6 +59,15 @@ console.log('basename location.href='+basename(location.href).split("?") );
 	} else {
 		runJam = action;
 	}
+
+
+
+/* kludge @@TODO @@BUG @@FIXME */
+	if (runJam == ":sendMessage")
+		runJam = "/run/contactForm:sendMessage";
+
+
+
 	// Gather all the elements to send
 	var postData = 'oobDataRequested=1';
 /////////////////////////	el = runActionPreProcessGrid(el);							// expand 'SEQ_' to individual names for sending grid
