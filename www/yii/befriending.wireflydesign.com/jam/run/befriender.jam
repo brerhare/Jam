@@ -78,6 +78,9 @@ function confirmDelete(id, displayInfo) {
 		<td>{{@html button 'Return to list' primary medium 
 			runJam
 		}}</td>
+        <td style='width:200px; text-align:right'>{{@html button 'Forms report' primary medium
+            runJam('reportFormsBef?bf_id={{befriender.id}}');
+        }}</td>
 			
 			
 		</tr>
@@ -110,7 +113,7 @@ function confirmDelete(id, displayInfo) {
 		</td>
 		</tr>
 	</table>
-	
+
 	</h3>
 	{{@html tabs
 		label=Details		action=/run/befrienderDetails?befriender.id={{befriender.id}}
