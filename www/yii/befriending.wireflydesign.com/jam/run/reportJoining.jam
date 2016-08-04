@@ -8,35 +8,38 @@
 <br>
 {{@html container start center css='max-width:1080px; Xpadding:0}}
 
-<div name="content">
 	<center><h3> Volunteer Process - Joining </h3></center>
 
 	<form class="uk-form">
 		<input type="text" id="searchInput" placeholder="Type to search">
 	</form>
 
-	<table id='printTable' class="searchTable testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
-		<tr style='font-weight:bold'>
-			<th> Name </th>
-			<th style='min-width:80px'> DoB </th>
-			<th> Address </th>
-			<th> Landline </th>
-			<th> Mobile </th>
-			<th> Email </th>
-		</tr>
-{{@each befriender}}
-		{{@get global filter id = befriender.global_id}}
-		<tr class="rowHighlight" onClick="runAction('showTabs', ['befriender.id={{befriender.id}}'], 'content')">
-			<td>{{global.forename}} {{global.surname}}</td>
-			<td>{{befriender.dob}}</td>
-			<td>{{global.house}} {{global.street}} {{global.area}} {{global.town}} {{global.postcode}}</td>
-			<td>{{global.landline}} </td>
-			<td>{{global.mobile}} </td>
-			<td>{{global.email}} </td>
-		</tr>
-{{@end}}
-	</table>
+<!-- @@NB TODO sticky -->
+<div Xdata-uk-sticky="{top:90}">
 </div>
+
+
+<table id='printTable' class="searchTable testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+	<tr style='xposition:fixed; font-weight:bold'>
+		<th> Name </th>
+		<th style='min-width:80px'> DoB </th>
+		<th> Address </th>
+		<th> Landline </th>
+		<th> Mobile </th>
+		<th> Email </th>
+	</tr>
+{{@each befriender}}
+	{{@get global filter id = befriender.global_id}}
+	<tr>
+		<td>{{global.forename}} {{global.surname}}</td>
+		<td>{{befriender.dob}}</td>
+		<td>{{global.house}} {{global.street}} {{global.area}} {{global.town}} {{global.postcode}}</td>
+		<td>{{global.landline}} </td>
+		<td>{{global.mobile}} </td>
+		<td>{{global.email}} </td>
+	</tr>
+{{@end}}
+</table>
 <br>
 
 <button class="uk-button uk-button-medium uk-button-primary" onClick="printData('printTable')"> Print </button>
@@ -51,3 +54,9 @@
 
 {{@include /jam/sys/js/searchPrintExport.js}}
 {{@include /jam/sys/html/footer.html}}
+
+<script>
+//elem = document.getElementById('xx');
+//var sticky = UIkit.sticky(elem, { /* options */ });
+</script>
+

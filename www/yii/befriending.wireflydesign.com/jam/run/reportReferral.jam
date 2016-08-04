@@ -40,7 +40,7 @@
 			<td>{{young_person.dob}}</td>
 	{{@get match_yp filter young_person_id = young_person.id}}
 			<td>{{match_yp.match_started}}</td>
-			<td> calculate </td>
+			<td>{{@daycount young_person.referral_date match_yp.match_started}}</td>
 		</tr>
 {{@end}}
 		<tr>
