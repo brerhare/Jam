@@ -988,6 +988,10 @@ int control(int startIx, char *defaultTableName) {
 //		------------------------------------
 			res = wordMiscEmail(ix, defaultTableName);
 //		---------------------------
+		} else if (!(strcmp(cmd, "@daycount"))) {
+//		------------------------------------
+			res = wordMiscDayCount(ix, defaultTableName);
+//		---------------------------
 		} else if (!(strcmp(cmd, "@type"))) {
 //		------------------------------------
 			res = wordMiscType(ix, defaultTableName);

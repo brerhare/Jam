@@ -265,6 +265,71 @@ int wordMiscNewList(int ix, char *defaultTableName) {
     emitStd(jam[ix]->trailer);
 }
 
+int wordMiscDayCount(int ix, char *defaultTableName) {
+	char *cmd = jam[ix]->command;
+	char *args = jam[ix]->args;
+	char *rawData = jam[ix]->rawData;
+	char *tmp = (char *) calloc(1, 4096);
+	char *dateFromField = (char *) calloc(1, 4096);
+	char *dateToField = (char *) calloc(1, 4096);
+	char *dateFrom = (char *) calloc(1, 4096);
+	char *dateTo = (char *) calloc(1, 4096);
+	char wd[256];
+
+	getWord(dateFromField, args, 1, " \t");
+	if (!dateFromField) {
+		logMsg(LOGERROR, "missing 'date from");
+		return(-1);
+	}
+
+	getWord(dateToField, args, 2, " \t");
+	if (!dateToField) {
+		logMsg(LOGERROR, "missing 'date to");
+		return(-1);
+	}
+
+	dateFrom = strdup(getVarAsString(dateFromField));
+	dateTo = strdup(getVarAsString(dateToField));
+
+	getWord(wd, dateFrom, 3, "-");
+	struct tm a = {0,0,0,0,0,0};
+	a.tm_mday = atoi(wd);
+	getWord(wd, dateFrom, 2, "-");
+	a.tm_mon = (atoi(wd) - 1);
+	getWord(wd, dateFrom, 1, "-");
+	a.tm_year = (atoi(wd) - 1900);
+
+	struct tm b = {0,0,0,0,0,0};
+	getWord(wd, dateTo, 3, "-");
+	b.tm_mday = atoi(wd);
+	getWord(wd, dateTo, 2, "-");
+	b.tm_mon = (atoi(wd) - 1);
+	getWord(wd, dateTo, 1, "-");
+	b.tm_year = (atoi(wd) - 1900);
+
+	time_t x = mktime(&a);
+	time_t y = mktime(&b);
+	if ( x != (time_t)(-1) && y != (time_t)(-1) ) {
+		if ( (a.tm_year > 0) && (a.tm_year < 200) && (b.tm_year > 0) && (b.tm_year < 200) && (a.tm_year <= b.tm_year) ) {
+			double difference = difftime(y, x) / (60 * 60 * 24);
+			if (difference > 0) {
+				sprintf(tmp, "%ld", (long) difference);
+				emitStd(tmp);
+			}
+		}
+	}
+
+//sprintf(tmp, "[%s %s]", dateFrom, dateTo);
+//emitStd(tmp);
+
+    free(tmp);
+    free(dateFromField);
+    free(dateToField);
+    free(dateFrom);
+    free(dateTo);
+    emitStd(jam[ix]->trailer);
+}
+
 int wordMiscType(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
