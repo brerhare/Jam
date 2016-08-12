@@ -47,7 +47,8 @@ css.display = block
 			css.margin-left = 383px
 			html.h5 = Log-In
 #			click = http://217.41.65.149:8080/clients/login.asp target="_blank"
-			clicknew = http://217.41.65.149:5080/onlinebooking/
+#			clicknew = http://217.41.65.149:5080/onlinebooking/
+			clicknew = http://92.26.82.71:5080/OnlineBooking/Mobile/
 
 			[salon]
 			css.display = block
