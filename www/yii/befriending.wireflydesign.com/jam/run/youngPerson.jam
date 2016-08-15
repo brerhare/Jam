@@ -30,7 +30,7 @@
 			<td>{{global.forename}}</td>
 			<td>{{global.surname}}</td>
 			<td>{{status.name}}</td>
-			<td><button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i></button></td>
+			<td><button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{global.surname}}')"> Archive </button></td>
 		</tr>
 {{@end}}
 	</table>
@@ -59,6 +59,7 @@ function confirmDelete(id, displayInfo) {
 	{{@get young_person filter id = young_person.id}}
 	{{global.id = young_person.global_id}}
 	{{young_person.archive_flag = 1}}
+	{{young_person.archive_date = sys.today}}
 	{{@amend item young_person}}
 	{{@XXXXXremove item young_person}}
 	{{@XXXXXremove item global}}	@@TODO - dont remove global if it has other links

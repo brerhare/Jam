@@ -26,6 +26,7 @@
 			{{@html text field=settings.email size=large label='Email address'}}
 			{{@html text field=settings.reminder_documentation_lead_days size=mini label='Reminder documentation days' default=3}}
 			{{@html text field=settings.reminder_events_lead_days size=mini label='Reminder event days' default=3}}
+			{{@html text field=settings.archive_days size=mini label='Archive delay days' tip='Number of day from marking an item for archive and the archive occuring' default=3}}
 		{{@html gridcol end}}
 	{{@html gridrow end}}
 	{{@html gridrow start}}
@@ -50,7 +51,8 @@
 
 <script>
 function postUpdate() {
-	runJam();
+//window.setTimeout(runJam, 1000)
+//	runJam();
 }
 </script>
 

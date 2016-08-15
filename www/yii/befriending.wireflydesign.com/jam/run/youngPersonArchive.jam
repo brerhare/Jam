@@ -10,7 +10,7 @@
 
 <div name="content">
 	<h3> Young Person Archive Management</h3>
-	<h4> These entries have been moved to trash-can by others, making them unavailable for general use. You may either reinstate them with the 'Restore' button or confirm their Archival</h4>
+	<h4> These entries have been moved to trash-can by others, making them unavailable for general use. You may reinstate them with the 'Restore' button </h4>
 
     <form class="uk-form">
         <input type="text" id="searchInput" placeholder="Type to search">
@@ -35,7 +35,7 @@
 			<td>{{status.name}}</td>
 			<td>{{young_person.archive_date}}</td>
 			<td><button class="uk-button uk-button-mini uk-button-danger" onClick="confirmUnDelete('{{id}}','{{global.surname}}')">Restore</button></td>
-			<td><button class="uk-button uk-button-mini uk-button-danger" onClick="confirmArchive('{{id}}','{{global.surname}}')">Archive</button></td>
+<!--			<td><button class="uk-button uk-button-mini uk-button-danger" onClick="confirmArchive('{{id}}','{{global.surname}}')">Archive</button></td> -->
 		</tr>
 {{@end}}
 	</table>
@@ -69,7 +69,7 @@ function confirmArchive(id, displayInfo) {
 {{@action undelete}}
 	{{@get young_person filter id = young_person.id}}
 	{{young_person.archive_flag = 0}}
-	{{young_person.archive_date = ''}}
+	{{young_person.archive_date = '0000-00-00'}}
 	{{@amend item young_person}}
 {{@end}}
 
