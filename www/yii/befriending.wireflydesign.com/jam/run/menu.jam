@@ -52,6 +52,7 @@
 			<li><a href="/run/questionBefriender.jam"> Befriender Additional Questions </a>
 			<li> <a href="/run/befrienderDocumentationType.jam"> Befriender Documentation Types </a></li>
 			<li> <a href="/run/settings.jam"> System Settings </a></li>
+			<li> <a href="/run/youngPersonArchive.jam">Archive Management</a></li>
 		</ul>
 	</li>
 	

@@ -117,6 +117,8 @@ function onChange_youngperson_dob(obj) {
 
 {{@action update_young_person}}
 	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
+	{{young_person.archive_flag = 0}}
+	{{young_parson.archive_date = '0000-00-00'}}
 	{{young_person.global_id = global.id}}
 	{{@update item young_person notify=ok}}
 {{@end}}

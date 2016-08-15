@@ -1,0 +1,88 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:1080px; Xpadding:0}}
+
+<div name="content">
+	<h3> Young Person Archive Management</h3>
+	<h4> These entries have been moved to trash-can by others, making them unavailable for general use. You may either reinstate them with the 'Restore' button or confirm their Archival</h4>
+
+    <form class="uk-form">
+        <input type="text" id="searchInput" placeholder="Type to search">
+    </form>
+
+	<table id="printTable" class="testgrid searchTable uk-table uk-table-condensed" style="border:1px solid #dddddd">
+		<tr>
+			<th> Forename </th>
+			<th> Surname </th>
+			<th> Status </th>
+			<th> Date Marked </th>
+			<th> </th>
+			<th> </th>
+		</tr>
+<!-- @@TODO fix this with a proper delete / archive procedure -->
+{{@each young_person filter archive_flag = 1, id != 7, id != 18, id != 19, id != 20, id != 30, id != 31, id != 38, id != 39, id != 40, id != 41, id != 42, id != 49}}
+		{{@get global filter id = young_person.global_id}}
+		{{@get status filter id = young_person.status_id}}
+		<tr class="rowHighlight" onClick="runAction('showTabs', ['young_person.id={{young_person.id}}'], 'content')">
+			<td>{{global.forename}}</td>
+			<td>{{global.surname}}</td>
+			<td>{{status.name}}</td>
+			<td>{{young_person.archive_date}}</td>
+			<td><button class="uk-button uk-button-mini uk-button-danger" onClick="confirmUnDelete('{{id}}','{{global.surname}}')">Restore</button></td>
+			<td><button class="uk-button uk-button-mini uk-button-danger" onClick="confirmArchive('{{id}}','{{global.surname}}')">Archive</button></td>
+		</tr>
+{{@end}}
+	</table>
+	<br>
+
+	<button class="uk-button uk-button-medium uk-button-primary" onClick="printData('printTable')"> Print </button>
+
+	<span class='exportButton'>
+    	<a href="#" class="export" table='{"id":"printTable"}'>Export spreadsheet</a>
+	</span>
+
+	<br><br/>
+
+</div>
+
+<script>
+function confirmUnDelete(id, displayInfo) {
+	window.event.cancelBubble = true;	// Prevent any further events
+	var result = confirm('Confirm RESTORE of item ' + displayInfo);
+	if (result)
+		runAction('undelete', ['young_person.id='+id], '', runJam);	
+}
+function confirmArchive(id, displayInfo) {
+	window.event.cancelBubble = true;	// Prevent any further events
+	var result = confirm('Confirm ARCHIVE of item ' + displayInfo);
+	if (result)
+		runAction('archive', ['young_person.id='+id], '', runJam);	
+}
+</script>
+
+{{@action undelete}}
+	{{@get young_person filter id = young_person.id}}
+	{{young_person.archive_flag = 0}}
+	{{young_person.archive_date = ''}}
+	{{@amend item young_person}}
+{{@end}}
+
+{{@action archive}}
+	{{@get young_person filter id = young_person.id}}
+	{{young_person.archive_date = {{sys.today}} }}
+	{{@amend item young_person}}
+{{@end}}
+
+<!-- Form input component -->
+
+{{@html container end}}
+
+{{@include /jam/sys/js/searchPrintExport.js}}
+
+{{@include /jam/sys/html/footer.html}}

@@ -49,7 +49,7 @@
 <script>
 function confirmDelete(id, displayInfo) {
 	window.event.cancelBubble = true;	// Prevent any further events
-	var result = confirm('Confirm archival of item ' + displayInfo);
+	var result = confirm('Confirm archival request for item ' + displayInfo);
 	if (result)
 		runAction('delete', ['young_person.id='+id], '', runJam);	
 }
