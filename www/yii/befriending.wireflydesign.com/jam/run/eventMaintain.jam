@@ -1,7 +1,7 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@include /jam/run/menu.jam}}
+{{@include /jam/run/new_menu.jam}}
 
 {{@html container start center css='max-width:1080px; Xpadding:0}}
 
@@ -22,7 +22,7 @@
 
 		<h3> Maintain Events </h3>
 		<div class="uk-grid">
-			<div class="uk-width-3-5">
+			<div class="uk-width-5-5">
 				<form name="inputForm_event" class="uk-form uk-form-horizontal">
 					<input type="hidden" name="event.id" value="{{event.id}}">
 
@@ -78,7 +78,7 @@
 					{{@html date field=event.date size=medium label='Date' default={{sys.today}} }}
 					{{@html time field=event.time size=small label='Time' default={{sys.now}} }}
 					{{@html dropdown field=event.event_type_id pickfield=event_type.name size=medium label='Event Type'}}
-					{{@html textarea field=event.notes size=30x5 label='Notes'}}
+					{{@html textarea field=event.notes size=90x10 label='Notes'}}
 
 
 					<br>

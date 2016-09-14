@@ -1,20 +1,15 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@Xinclude /jam/run/new_menu.jam}}
+{{@include /jam/run/new_menu.jam}}
 
 {{@database befriending_wireflydesign_com}}
 
-<br>
-{{@html container start center css='max-width:1080px; Xpadding:0}}
+<div name='content_block'>
+</div>
 
-<div name="content">
-	<center><h3> Notes Report </h3></center>
-
-	<form class="uk-form">
-		<input type="text" id="searchInput" placeholder="Type to search">
-	</form>
-
+{{@action runReport}}
+AAAAAAAAAAAAAAAAAAA<br>
 	<table id='printTable' class="searchTable testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr style='font-weight:bold'>
 			<th> Date </th>
@@ -23,38 +18,20 @@
 			<th> Files </th>
 			<th> Notes </th>
 		</tr>
-{{@get young_person filter id = yp_id}}
+{{@get young_person filter id = 93}}
 {{@each event filter young_person_id = young_person.id}}
 		{{@get global filter id = young_person.global_id}}
-		<tr>
+		<tr class="rowHighlight" onClick="runAction('showTabs', ['befriender.id={{befriender.id}}'], 'content')">
 			<td>{{event.date}}</td>
 		{{@get event_type filter id = event.event_type_id}}
 			<td>{{event_type.name}}</td>
 			<td>
 		{{@each event_attendee filter event_id = event.id}}
 			{{@get global filter id = event_attendee.global_id}}
-			{{global.forename}} {{global.surname}}<br>
+			{{global.forename}} {{global.surname}}<br/>
 		{{@end}}
 			</td>
-
-
-
-			<td>
-
-
-		{{@each form_upload_other filter event_id = event.id}}
-			{{@get form_type filter id = form_upload_other.form_type_id}}
-			<a href="http://befriending.wireflydesign.com:/jam/uploads/forms/events/other/{{event.id}}_{{form_upload_other.file}}" target="_blank">{{form_upload_other.file}}</a><br/>
-		{{@end}}
-		{{@each form_upload_girfec filter event_id = event.id}}
-			<a href="http://befriending.wireflydesign.com:/jam/uploads/forms/events/girfec/{{event.id}}_{{form_upload_girfec.file}}" target="_blank">{{form_upload_girfec.file}}</a><br/>
-		{{@end}}
-
-
-			</td>
-
-
-
+			<td> </td>
 			<td width='300px' >{{event.notes}}</td>
 		</tr>
 {{@end}}
@@ -68,9 +45,17 @@
 </span>
 
 <br><br/>
-
-{{@html container end}}
+ZZZZZZZZZZZZZZZZZZZZ<br>
+{{@end}}
 
 {{@include /jam/sys/js/searchPrintExport.js}}
+
+
 {{@include /jam/sys/html/footer.html}}
+
+<script>
+alert('x');
+    runAction('runReport', ['yp_id=93'], 'content_block');
+</script>
+
 

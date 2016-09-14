@@ -1,7 +1,7 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@include /jam/run/menu.jam}}
+{{@include /jam/run/new_menu.jam}}
 
 {{@database befriending_wireflydesign_com}}
 
@@ -57,12 +57,16 @@ function confirmDelete(id, displayInfo) {
 
 {{@action delete}}
 	{{@get young_person filter id = young_person.id}}
-	{{global.id = young_person.global_id}}
+	{{@get global filter id = young_person.global_id}}
 	{{young_person.archive_flag = 1}}
 	{{young_person.archive_date = sys.today}}
 	{{@amend item young_person}}
-	{{@XXXXXremove item young_person}}
-	{{@XXXXXremove item global}}	@@TODO - dont remove global if it has other links
+	{{@get settings filter id = 1}}
+	{{@email {{settings.email}} {{settings.email}} 'Archive request - Young Person {{global.forename}} {{global.surname}} to be archived' action:emailContent}}
+{{@end}}
+
+{{@action emailContent}}
+	If no further action is taken all records for this young person are due to be archived in {{settings.archive_days}} days.<br> This will result in permanent loss of data.
 {{@end}}
 
 <!-- Form input component -->

@@ -1,0 +1,39 @@
+{{@include standalone /jam/sys/html/header.html}}
+
+{{@database befriending_wireflydesign_com}}
+
+{{@template MENU
+    <ul id="main-menu" class="sm sm-blue collapsed">
+    {{@each menu filter parent_id = 0}}
+        <li> <a href="{{href}}"> {{text}} </a>
+        {{openUL2 = <ul>}}
+        {{closeUL2 = ''}}
+        {{@each menu filter parent_id = id}}
+            {{openUL2}}
+            {{openUL2 = ''}}
+            <li> <a href="{{href}}"> {{text}} </a>
+
+            {{openUL3 = <ul>}}
+            {{closeUL3 = ''}}
+            {{@each menu filter parent_id = id}}
+                {{openUL3}}
+                {{openUL3 = ''}}
+                <li> <a href="{{href}}"> {{text}} </a> </li>
+                {{closeUL3 = </ul>}}
+            {{@end}}
+            {{closeUL3}}
+            </li>
+
+            {{closeUL2 = </ul>}}
+        {{@end}}
+        {{closeUL2}}
+        </li>
+    {{@end}}
+    </ul>
+}}
+
+<!-- Call the addon -->
+{{@include /jam/run/sys/smartMenu.jam}}
+
+{{@include standalone /jam/sys/html/footer.html}}
+
