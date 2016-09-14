@@ -15,18 +15,22 @@
 
 
 {{@database befriending_wireflydesign_com}}
-
 <br>
+
 {{@html container start center css='max-width:700px; Xpadding:0}}
 
-<br>
 <div name="content_contact">
+
+<h3><center> Assign menu permissions for users </center></h3>
+
 	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
 			<th> Menu item </th>
-			<th> Visible </th>
+			<th> Access </th>
 		</tr>
-{{@each menu}}
+
+<!-- parent level -->
+{{@each menu filter parent_id = 0}}
 			<td>{{menu.text}}</td>
 			{{tmp.checked = }}
 	{{@each user_menu filter menu_id = menu.id, user_id = user.id}}
@@ -34,6 +38,23 @@
 	{{@end}}
 			<td> <input type="checkbox" name="menu" value="{{menu.id}}" {{tmp.checked}} class='inp'> </td>
 		</tr>
+
+<!-- child level -->
+{{@each menu filter parent_id = menu.id}}
+			<td> &nbsp&nbsp&nbsp&nbsp {{menu.text}}</td>
+			{{tmp2.checked = }}
+	{{@each user_menu filter menu_id = menu.id, user_id = user.id}}
+			{{tmp2.checked = checked}}
+	{{@end}}
+			<td> <input type="checkbox" name="menu" value="{{menu.id}}" {{tmp2.checked}} class='inp'> </td>
+		</tr>
+{{@end}}
+
+
+
+
+
+
 {{@end}}
 	</table>
 </div>
