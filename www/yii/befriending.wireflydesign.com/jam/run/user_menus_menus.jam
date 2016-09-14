@@ -4,24 +4,20 @@
 {{@include /jam/run/new_menu.jam}}
 
 
-
-
-
-{{user.id = 1}}
-
-
-
-
-
-
 {{@database befriending_wireflydesign_com}}
 <br>
+
+{{@get user filter id = user.id}}
 
 {{@html container start center css='max-width:700px; Xpadding:0}}
 
 <div name="content_contact">
 
-<h3><center> Assign menu permissions for users </center></h3>
+<form name='content_form'>
+
+<h3><center> Assign menu permissions for <b>{{user.first_name}} {{user.last_name}}</b> &nbsp&nbsp&nbsp&nbsp {{@html button 'Return to list' primary medium
+            runJam('user_menus_users');
+        }} </center></h3>
 
 	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
@@ -57,9 +53,15 @@
 
 {{@end}}
 	</table>
+
+</form>
+
 </div>
 <center>
 	<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="saveButtonClicked(this)">Save</button> </td>
+	&nbsp&nbsp&nbsp&nbsp
+	<button type='button' id='allButton' class="uk-button uk-button-ok" onClick="allButtonClicked(this)">Select All</button> </td>
+	<button type='button' id='noneButton' class="uk-button uk-button-ok" onClick="noneButtonClicked(this)">Select None</button> </td>
 </center>
 
 {{@html container end}}
@@ -89,6 +91,32 @@ function addAll() {
 			runAction('addInterest', ['user.id', 'menu.id='+checkboxes[i].value]);
 		}
 	}
+}
+
+function allButtonClicked(obj) {
+var objCheckBoxes = document.forms['content_form'].elements['menu'];
+	if(!objCheckBoxes)
+		return;
+	var countCheckBoxes = objCheckBoxes.length;
+	if(!countCheckBoxes)
+		objCheckBoxes.checked = 1;
+	else
+		// set the check value for all check boxes
+		for(var i = 0; i < countCheckBoxes; i++)
+			objCheckBoxes[i].checked = 1;
+}
+
+function noneButtonClicked(obj) {
+var objCheckBoxes = document.forms['content_form'].elements['menu'];
+	if(!objCheckBoxes)
+		return;
+	var countCheckBoxes = objCheckBoxes.length;
+	if(!countCheckBoxes)
+		objCheckBoxes.checked = 0;
+	else
+		// set the check value for all check boxes
+		for(var i = 0; i < countCheckBoxes; i++)
+			objCheckBoxes[i].checked = 0;
 }
 
 </script>

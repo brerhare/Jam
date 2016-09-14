@@ -4,9 +4,9 @@ Doing...<br>
 
 {{@database befriending_wireflydesign_com}}
 
-{{@remove table menu}}
-{{@remove table user}}
-{{@remove table user_menu}}
+{{@XXXXXremove table menu}}
+{{@XXXXXremove table user}}
+{{@XXXXXremove table user_menu}}
 
 {{@new table menu
 	text								string	required
@@ -59,7 +59,7 @@ Doing...<br>
 {{menu.text = System}}  {{menu.href = /run/settings.jam}} {{menu.parent_id = 0}}       {{@new item menu}}
 	{{pid = menu.id}}
 	{{menu.text = Users}}  {{menu.href = /run/user.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
-	{{menu.text = User menus}}  {{menu.href = /run/user_menus.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = User menus}}  {{menu.href = /run/user_menus_users.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
 
 
 Done
