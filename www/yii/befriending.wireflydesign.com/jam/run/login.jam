@@ -1,0 +1,97 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@Xinclude /jam/run/new_menu.jam}}
+
+<style>
+.mydiv {
+	margin: auto;
+    border-style: solid;
+    border-width: 1px;
+	height:100px;
+	width:300px;
+}
+</style>
+
+    <style type="text/css">
+        label {text-align: right; width:150px !important}
+        div.uk-form-controls {margin-left: 170px !important}
+    </style>
+
+
+<br>
+
+{{@html container start center css='max-width:1080px; Xpadding:0}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br> <center><h2>Befriending Project login</h2></center>
+<br><br>
+
+<form name="inputForm_user" class="uk-form uk-form-horizontal">
+
+        {{@html gridrow start}}
+            {{@html gridcol start width=3-10}}
+			{{@html gridcol end}}
+
+            {{@html gridcol start width=6-10}}
+				{{@html text field=user.handle label='User name' size=small}}
+			{{@html gridcol end}}
+
+            {{@html gridcol start width=3-10}}
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+
+        {{@html gridrow start}}
+            {{@html gridcol start width=3-10}}
+			{{@html gridcol end}}
+
+            {{@html gridcol start width=5-10}}
+				{{@html text field=user.password label='password' size=small}}
+			{{@html gridcol end}}
+
+            {{@html gridcol start width=3-10}}
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+
+        {{@html gridrow start}}
+            {{@html gridcol start width=1-1}}
+                <br>
+                <center>
+                    <button type='button' id='loginButton' class="uk-button uk-button-primary" onClick="loginButtonClick()">Login</button>
+                </center>
+            {{@html gridcol end}}
+        {{@html gridrow end}}
+
+
+</form>
+
+<br><br><br><br>
+{{@html container end}}
+
+<script>
+function loginButtonClick() {
+        runAction('login', ['inputForm_user'], '', createCookie);
+}
+
+function createCookie() {
+	obj = document.getElementById('cookie');
+	document.cookie = "bf_user=obj.value";
+	if (obj.value != 'null') {
+		runJam('http://befriending.wireflydesign.com/run/welcome');
+	} else {
+		alert('Incorrect user name or password');
+	}
+}
+
+</script>
+
+{{@action login}}
+	{{cookie = null}}
+	{{@each user filter handle = user.handle, password = user.password}}
+		{{cookie = user.id}}
+	{{@end}}
+{{@end}}
+
+
+{{@include /jam/sys/html/footer.html}}

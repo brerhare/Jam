@@ -1,33 +1,8 @@
-{{@include /jam/sys/html/header.html}}
-{{@include /jam/css/style.css}}
-
-{{@include /jam/run/new_menu.jam}}
+{{@include /jam/sys/html/hdr.html}}
 
 {{@database befriending_wireflydesign_com}}
 
-<br>
-{{@html container start center css='max-width:1080px; Xpadding:0}}
-
-<!-- List component -->
-
-<style>
-.rowHighlight:hover {
-  background-color: #ddf0ff;
-  cursor:pointer;
-}
-</style>
-
-<h3> Referrers </h3>
-<div name="content_contact">
-	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
-		<tr>
-			<th> Forename </th>
-			<th> Surname </th>
-			<th> Email </th>
-			<th> Send Form </th>
-			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('maintain_contact', [], 'content_contact')"> <i class="uk-icon-plus"></i> New</button> </th>
-		</tr>
-{{@each contact filter contact_relationship_id = 3}}
+{{@each event}}
 		{{@get global filter id = contact.global_id}}
 		<tr class="rowHighlight">
 			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.forename}}</td>
@@ -91,18 +66,18 @@ function postUpdate() {
 		<input type="hidden" name="global.id" value="{{contact.global_id}}">
 		{{@html gridrow start}}
 			{{@html gridcol start width=5-5}}
-				{{@html text field=global.forename size=large label='Forename'}}
-				{{@html text field=global.surname size=large label='Surname'}}
-				{{@html text field=global.house size=large label='house'}}
-				{{@html text field=global.street size=large label='Street'}}
-				{{@html text field=global.area size=large label='Area'}}
-				{{@html text field=global.town size=large label='Town'}}
+				{{@html text field=global.forename size=medium label='Forename'}}
+				{{@html text field=global.surname size=medium label='Surname'}}
+				{{@html text field=global.house size=medium label='house'}}
+				{{@html text field=global.street size=medium label='Street'}}
+				{{@html text field=global.area size=medium label='Area'}}
+				{{@html text field=global.town size=medium label='Town'}}
 				{{@html text field=global.postcode size=medium label='Postcode'}}
 				{{@html text field=global.landline size=medium label='Land line'}}
 				{{@html text field=global.mobile size=medium label='Mobile'}}
-				{{@html text field=global.email size=large label='Email'}}
-				{{@html text field=global.job_title size=large label='Job Title'}}
-				{{@html text field=contact.agency size=large label='Agency'}}
+				{{@html text field=global.email size=medium label='Email'}}
+				{{@html text field=global.job_title size=medium label='Job Title'}}
+				{{@html text field=contact.agency size=medium label='Agency'}}
 			{{@html gridcol end}}
 		{{@html gridrow end}}
 		{{@html gridrow start}}
@@ -146,4 +121,4 @@ function postUpdate() {
 
 {{@html container end}}
 
-{{@include /jam/sys/html/footer.html}}
+{{@include /jam/sys/html/ftr.html}}

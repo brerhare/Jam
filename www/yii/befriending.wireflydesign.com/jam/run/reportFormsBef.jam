@@ -1,7 +1,7 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@Xinclude /jam/run/menu.jam}}
+{{@Xinclude /jam/run/new_menu.jam}}
 
 {{@database befriending_wireflydesign_com}}
 

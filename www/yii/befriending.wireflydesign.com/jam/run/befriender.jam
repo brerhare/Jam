@@ -1,7 +1,7 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@include /jam/run/menu.jam}}
+{{@include /jam/run/new_menu.jam}}
 
 {{@database befriending_wireflydesign_com}}
 
@@ -78,7 +78,7 @@ function confirmDelete(id, displayInfo) {
 		<td>{{@html button 'Return to list' primary medium 
 			runJam
 		}}</td>
-        <td style='width:200px; text-align:right'>{{@html button 'Forms report' primary medium
+        <td style='width:200px; text-align:right'>{{@html button 'Notes report' primary medium
             runJam('reportFormsBef?bf_id={{befriender.id}}');
         }}</td>
 			
