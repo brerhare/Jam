@@ -12,7 +12,7 @@
 <div name="content_contact">
 	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
-			<th> Interest </th>
+			<th> Anticipated </th>
 			<th> Check </th>
 		</tr>
 {{@each interest_type}}

@@ -4,7 +4,7 @@ Doing...<br>
 
 {{@database befriending_wireflydesign_com}}
 
-{{@XXXXXremove table menu}}
+{{@remove table menu}}
 {{@XXXXXremove table user}}
 {{@XXXXXremove table user_menu}}
 
@@ -25,6 +25,7 @@ Doing...<br>
 {{@XXXXXnew table user_menu
 	user_id								number
 	menu_id								number
+	rand								number
 }}
 
 {{menu.text = Young Person}} {{menu.href = /run/youngPerson.jam}} {{menu.parent_id = 0}}       {{@new item menu}}
@@ -60,6 +61,7 @@ Doing...<br>
 	{{pid = menu.id}}
 	{{menu.text = Users}}  {{menu.href = /run/user.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
 	{{menu.text = User menus}}  {{menu.href = /run/user_menus_users.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+{{menu.text = Logout}}  {{menu.href = /run/logout.jam}} {{menu.parent_id = 0}}       {{@new item menu}}
 
 
 Done
