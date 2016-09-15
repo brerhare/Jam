@@ -109,6 +109,37 @@ int main(int argc, char *argv[]) {
 	// Always need this header
 	emitHeader("Content-type: text/html; charset=UTF-8");
 
+	// Dissect and store cookies
+	char *cookie = getenv("HTTP_COOKIE") ;
+	if (cookie) {
+		logMsg(LOGDEBUG, "Cookie (raw) [%s]", cookie);
+		char *cookieNVP = strTrim(getWordAlloc(cookie, 1, ";"));
+		if (cookieNVP) {
+			char *cookieName = strTrim(getWordAlloc(cookieNVP, 1, "="));
+			char *cookieValue = strTrim(getWordAlloc(cookieNVP, 2, "="));
+	
+			if ((cookieName) && (cookieValue)) {
+				logMsg(LOGDEBUG, "Cookie (nvp) [%s] [%s]", cookieName, cookieValue);
+				// Store the NVP as a 'sys.cookie.' variable
+				VAR *cookieVar = (VAR *) calloc(1, sizeof(VAR));
+				char *tmp = (char *) calloc(1, 4000);
+				sprintf(tmp, "sys.cookie.%s", cookieName);
+				cookieVar->name = strdup(tmp);
+				cookieVar->type = VAR_STRING;
+				clearVarValues(cookieVar);
+				fillVarDataTypes(cookieVar, cookieValue);
+				cookieVar->source = strdup("prefill");
+				cookieVar->debugHighlight = 1;
+				addVar(cookieVar);
+				free(tmp);
+			}
+
+			free(cookieNVP);
+			if (cookieName) free(cookieName);
+			if (cookieValue) free(cookieValue);
+		}
+	}
+
 	cgivars = getcgivars() ;
 	for (int i = 0; cgivars[i]; i+= 2) {
 		logMsg(LOGDEBUG, "Parameter [%s] = [%s]", cgivars[i], cgivars[i+1]) ;
