@@ -9,7 +9,7 @@
 {{@html container start center css='max-width:1080px; Xpadding:0}}
 
 <div name="content">
-	<center><h3> Notes Report </h3></center>
+	<center><h3> Forms Report </h3></center>
 
 	<form class="uk-form">
 		<input type="text" id="searchInput" placeholder="Type to search">
