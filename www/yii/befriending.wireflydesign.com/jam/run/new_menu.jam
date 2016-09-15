@@ -2,12 +2,22 @@
 
 {{@database befriending_wireflydesign_com}}
 
+<!-- kick non-logged ins -->
+{{userId = 0}}
+{{userId = {{sys.cookie.bf_user}} }}
+<h1>User is {{userId}}</h1>
+{{@each user filter id = userId}}
+	runJam('http://befriending.wireflydesign.com/run/login');
+{{@end}}
+
+{{get user filter id = sys.cookie.bf_user}}
+
 {{@template MENU
     <ul id="main-menu" class="sm sm-blue collapsed">
 
     {{@each menu filter parent_id = 0}}
 
-		{{@each user_menu filter user_id = 1, menu_id = menu.id}}
+		{{@each user_menu filter user_id = userId, menu_id = menu.id}}
 
         	<li> <a href="{{menu.href}}"> {{menu.text}} </a>
         	{{openUL2 = <ul>}}
