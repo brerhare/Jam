@@ -66,7 +66,7 @@
 								</tr>
 						{{@end}}
 
-								<tr> <td colspan=6> <center><h3></h3><h3>All Possible Befrienders</h3></center> </td> </tr>
+								<tr> <td colspan=6> <h3></h3><h3>All Possible Befrienders</h3> </td> </tr>
 						{{@each befriender}}
 							{{@get global filter id = befriender.global_id}}
 								<tr>
