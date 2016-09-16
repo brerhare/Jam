@@ -2,10 +2,6 @@
 
 {{@database befriending_wireflydesign_com}}
 
-
-<!-- sys.cookie.bf_user -->
-
-
 <!-- Save the user.id because we'll change it here which will break menu assignments (which pass the user.id as a parameter) -->
 {{uid = user.id}}
 
@@ -14,11 +10,7 @@
 
 <script>
 function kick() {
-	//alert('kicking');
  	window.top.location.href = "http://befriending.wireflydesign.com/run/login.jam";
-}
-function nokick() {
-	//alert('no kick');
 }
 </script>
 
@@ -30,8 +22,6 @@ function nokick() {
 <script>
 if (kickuser == 1)
 	kick();
-else
-	nokick();
 </script>
 
 
@@ -50,25 +40,27 @@ else
         	{{closeUL2 = ''}}
 
         	{{@each menu filter parent_id = menu.id}}
-            	{{openUL2}}
-            	{{openUL2 = ''}}
-            	<li> <a href="{{menu.href}}"> {{menu.text}} </a>
+				{{@each user_menu filter user_id = userId, menu_id = menu.id}}
+            		{{openUL2}}
+            		{{openUL2 = ''}}
+            		<li> <a href="{{menu.href}}"> {{menu.text}} </a>
 
-            	{{openUL3 = <ul>}}
-            	{{closeUL3 = ''}}
+            		{{openUL3 = <ul>}}
+            		{{closeUL3 = ''}}
 
-            	{{@each menu filter parent_id = menu.id}}
-                	{{openUL3}}
-                	{{openUL3 = ''}}
-                	<li> <a href="{{menu.href}}"> {{menu.text}} </a> </li>
-                	{{closeUL3 = </ul>}}
-            	{{@end}}
+            		{{@each menu filter parent_id = menu.id}}
+                		{{openUL3}}
+                		{{openUL3 = ''}}
+                		<li> <a href="{{menu.href}}"> {{menu.text}} </a> </li>
+                		{{closeUL3 = </ul>}}
+            		{{@end}}
 
-            	{{closeUL3}}
-            	</li>
+            		{{closeUL3}}
+            		</li>
 
-            	{{closeUL2 = </ul>}}
+            		{{closeUL2 = </ul>}}
 
+        		{{@end}}
         	{{@end}}
 
         	{{closeUL2}}
