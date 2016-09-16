@@ -78,7 +78,7 @@ function createCookie() {
 	obj = document.getElementById('cookie');
 	document.cookie = "bf_user="+obj.value;
 	if (obj.value != 'null') {
-alert('ok');
+//alert('ok');
 		runJam('http://befriending.wireflydesign.com/run/welcome');
 	} else {
 		alert('Incorrect user name or password');

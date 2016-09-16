@@ -2,13 +2,39 @@
 
 {{@database befriending_wireflydesign_com}}
 
-<!-- kick non-logged ins -->
-{{userId = 0}}
-{{userId = {{sys.cookie.bf_user}} }}
-<h1>User is {{userId}}</h1>
+
+<!-- sys.cookie.bf_user -->
+
+
+<!-- Save the user.id because we'll change it here which will break menu assignments (which pass the user.id as a parameter) -->
+{{uid = user.id}}
+
+
+{{userId = sys.cookie.bf_user}}
+
+<script>
+function kick() {
+	//alert('kicking');
+ 	window.top.location.href = "http://befriending.wireflydesign.com/run/login.jam";
+}
+function nokick() {
+	//alert('no kick');
+}
+</script>
+
+<script> var kickuser = 1; </script>
 {{@each user filter id = userId}}
-	runJam('http://befriending.wireflydesign.com/run/login');
+	<script>kickuser = 0;</script>
 {{@end}}
+
+<script>
+if (kickuser == 1)
+	kick();
+else
+	nokick();
+</script>
+
+
 
 {{get user filter id = sys.cookie.bf_user}}
 
@@ -54,6 +80,11 @@
 
     </ul>
 }}
+
+
+<!-- Restore the user.id  so menu assignments are unaffected by what we just did -->
+{{user.id = uid}}
+
 
 <!-- Call the addon -->
 {{@include /jam/run/sys/smartMenu.jam}}
