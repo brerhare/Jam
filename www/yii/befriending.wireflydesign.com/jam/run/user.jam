@@ -1,7 +1,7 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@include /jam/run/new_menu.jam}}
+{{@XXinclude /jam/run/new_menu.jam}}
 
 {{@html container start center css='max-width:1080px; Xpadding:0}}
 
@@ -29,13 +29,23 @@
 }}
 
 <!-- @@TODO this appears to be unused for the inline editor but is nonetheless required -->
-{{@template EDITS handle password}}
+{{@template EDITS handle password first_name last_name email_address}}
 
 <!-- Include the template -->
 {{@include /jam/run/sys/crudInline.jam}}
 
+<br>
+
+<center> <button class="uk-button uk-button-medium uk-button-primary" onClick="finished()"> </i>Finished</button> </center>
 
 <br>
 {{@html container end}}
+
+<script>
+function finished() {
+	runJam('http://befriending.wireflydesign.com/run/welcome');
+}
+
+</script>
 
 {{@include /jam/sys/html/footer.html}}
