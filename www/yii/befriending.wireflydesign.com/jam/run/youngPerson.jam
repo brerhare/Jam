@@ -84,7 +84,7 @@ function confirmDelete(id, displayInfo) {
 		<td style='width:200px; text-align:right'>{{@html button 'Return to list' primary medium 
 			runJam
 		}}</td>
-		<td style='width:200px; text-align:right'>{{@html button 'Forms report' primary medium 
+		<td style='width:200px; text-align:right'>{{@html button 'Notes report' primary medium 
 			runJam('reportFormsYp?yp_id={{young_person.id}}');
 		}}</td>
 			
