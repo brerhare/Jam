@@ -76,6 +76,7 @@ if (kickuser == 1)
 
 <!-- Restore the user.id  so menu assignments are unaffected by what we just did -->
 {{user.id = uid}}
+{{@get user filter id = user.id}}
 
 
 <!-- Call the addon -->
