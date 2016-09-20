@@ -33,7 +33,9 @@ Doing...<br>
 	{{menu.text = Referrers}}    {{menu.href = /run/referrers.jam}}   {{menu.parent_id = pid}} {{@new item menu}}
 	{{menu.text = Archive management}}  {{menu.href = /run/youngPersonArchive.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
 {{menu.text = Befrienders}}  {{menu.href = /run/befriender.jam}} {{menu.parent_id = 0}}       {{@new item menu}}
-	{{menu.text = Web Form}}  {{menu.href = /run/befrienderWebFormDetail.jam}} {{menu.parent_id = menu.id}}       {{@new item menu}}
+	{{pid = menu.id}}
+	{{menu.text = Web Form}}  {{menu.href = /run/befrienderWebFormDetail.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Archive management}}  {{menu.href = /run/befrienderArchive.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
 {{menu.text = Events}}  {{menu.href = /run/event.jam}} {{menu.parent_id = 0}}       {{@new item menu}}
 	{{menu.text = Event Types}}  {{menu.href = /run/event_type.jam}} {{menu.parent_id = menu.id}}       {{@new item menu}}
 {{menu.text = Reports}}  {{menu.href = #}} {{menu.parent_id = 0}}       {{@new item menu}}
@@ -61,6 +63,7 @@ Doing...<br>
 	{{pid = menu.id}}
 	{{menu.text = Users}}  {{menu.href = /run/user.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
 	{{menu.text = User menus}}  {{menu.href = /run/user_menus_users.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Kims upload notes}}  {{menu.href = /run/uploads.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
 {{menu.text = Logout}}  {{menu.href = /run/logout.jam}} {{menu.parent_id = 0}}       {{@new item menu}}
 
 

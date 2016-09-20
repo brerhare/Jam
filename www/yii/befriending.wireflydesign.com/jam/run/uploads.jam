@@ -1,0 +1,43 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/new_menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:1080px; Xpadding:0}}
+
+<div name="content">
+	<h3><center> Program uploads to the Befriending Project </center></h3>
+    <form class="uk-form">
+
+<!-- Insert here -->
+
+<p>
+<h4><b> September 19 2016 </b></h4>
+</p>
+Befrienders now also have an archive facility, works the same as YP
+</p>
+
+
+<p>
+<h4><b> September 18 2016 </b></h4>
+Ability to add users and assign passwords into the system (see under 'system' menu)
+<br>
+Designate access to menu items per user (see under 'system' menu)
+<br>
+Login and logout
+<br>
+Fixed the Form tab on the YP screen
+<br>
+More space between matched and possible befrienders (YP match tab)
+<br>
+Befriender web form ends with a thank you screen instead of a blank screen
+</p>
+
+    </form>
+
+{{@html container end}}
+
+{{@include /jam/sys/html/footer.html}}

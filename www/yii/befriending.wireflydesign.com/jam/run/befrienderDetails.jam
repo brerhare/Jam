@@ -98,6 +98,8 @@ function updated() {
 
 {{@action update_befriender}}
 	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
+    {{befriender.archive_flag = 0}}
+    {{befriender.archive_date = '0000-00-00'}}
 	{{befriender.global_id = global.id}}
 	{{@update item befriender notify=ok}}
 {{@end}}
