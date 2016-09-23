@@ -51,7 +51,7 @@
         	<input type="text" id="searchInput" placeholder="Type to search">
     	</form>
 
-		<table id="printTable" class="testgrid searchTable uk-table uk-table-condensed" style="border:1px solid #dddddd">
+		<table id="printTable" class="testgrid sortable searchTable uk-table uk-table-condensed" style="border:1px solid #dddddd">
 			<tr>
 				HEADINGS
 				<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('TABLEMaintain?event_id=0')"> <i class="uk-icon-plus"></i> New</button> </th>
