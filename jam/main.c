@@ -113,8 +113,11 @@ int main(int argc, char *argv[]) {
 	char *cookie = getenv("HTTP_COOKIE") ;
 	if (cookie) {
 		logMsg(LOGDEBUG, "Cookie (raw) [%s]", cookie);
-		char *cookieNVP = strTrim(getWordAlloc(cookie, 1, ";"));
-		if (cookieNVP) {
+		int cookieCount = 0;
+		while (1) {
+			char *cookieNVP = strTrim(getWordAlloc(cookie, ++cookieCount, ";"));
+			if (!cookieNVP)
+				break;
 			char *cookieName = strTrim(getWordAlloc(cookieNVP, 1, "="));
 			char *cookieValue = strTrim(getWordAlloc(cookieNVP, 2, "="));
 	
