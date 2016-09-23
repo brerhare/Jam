@@ -19,6 +19,7 @@
 	</style>
 
 	<form name="inputForm_befriender_profile" class="uk-form uk-form-horizontal">
+		<input type="hidden" name="befriender_profile.picture" value="{{befriender_documentation.file}}">
 
 		{{@get befriender filter id = befriender.id}}
 		{{@get global filter id = befriender.global_id}}
@@ -26,9 +27,11 @@
 		{{@html gridrow start}}
 			{{@html gridcol start width=5-5}}
 
-                    <label class="uk-form-label" for="mem.upload"> File </label>
+                    <label class="uk-form-label" for="mem.upload"> Picture </label>
                     <div class="uk-form-controls">
+				<img id="img" src="/jam/uploads/befriender/profile/{{befriender.id}}" alt="No picture uploaded yet" height="100" width="100" style="padding-bottom:10px">
 
+<br/>
 					<div class="uk-form-file"> <input type="file" onChange="fileUploadProfile(this)"></div>
 
                     </div>
@@ -80,6 +83,8 @@ function fileUploadProfile(obj) {
 			fileObj = get('befriender_profile.picture');
 			fileObj.value = file.name;
 			$.unblockUI();
+d = new Date();
+$("#img").attr("src", "/jam/uploads/befriender/profile/" + evObj.value + "?"+d.getTime());
 		}
 		else {
 			$.unblockUI();
@@ -87,6 +92,7 @@ function fileUploadProfile(obj) {
 	};
 	fd.append("upload_file", file);
 	xhr.send(fd);
+
 }
 
 </script>
