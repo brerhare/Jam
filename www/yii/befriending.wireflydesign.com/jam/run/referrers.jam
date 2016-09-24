@@ -19,7 +19,7 @@
 
 <h3> Referrers </h3>
 <div name="content_contact">
-	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+	<table class="testgrid sortable uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
 			<th> Forename </th>
 			<th> Surname </th>

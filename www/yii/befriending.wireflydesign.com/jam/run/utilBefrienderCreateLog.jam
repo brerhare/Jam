@@ -1,0 +1,24 @@
+{{@include /jam/sys/html/header.html}}
+
+Doing...
+
+{{@database befriending_wireflydesign_com}}
+
+{{@remove table log}}
+{{@remove index log dateindex}}
+
+{{@new table log
+	date					date	required
+	time					time	required
+	user_id					number	required
+	text					string
+}}
+
+{{@new index log dateindex
+	date
+	time
+}}
+
+Done
+
+{{@include /jam/sys/html/footer.html}}
