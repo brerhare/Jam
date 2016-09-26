@@ -76,6 +76,7 @@ function postUpdate() {
 		<input type="hidden" name="reference.id" value="{{reference.id}}">
 		{{@html gridrow start}}
 			{{@html gridcol start width=5-5}}
+				{{@html date field=reference.date_obtained size=medium label='Reference date'}}
 				{{@html text field=reference.forename size=medium label='Forename'}}
 				{{@html text field=reference.surname size=medium label='Surname'}}
 				{{@html text field=reference.house size=medium label='house'}}
