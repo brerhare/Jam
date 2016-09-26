@@ -15,11 +15,21 @@
 <!-- Insert here -->
 
 <p>
+<h4><b> September 25 2016 </b></h4>
+</p>
+Reports - gender 0/1 replaced with proper male/female annotation
+<br>
+Reports - matched annual report shows number of days for completed matches
+(what about currently active matches ie no end date - should those days be shown too?)
+</p>
+
+
+<p>
 <h4><b> September 23 2016 </b></h4>
 </p>
 Befrienders, YP and event lists are column-sortable and have range filters
 <br>
-Notes report (YP and befriender) layout change
+Notes report (YP and befriender) layout changed as requested
 </p>
 
 

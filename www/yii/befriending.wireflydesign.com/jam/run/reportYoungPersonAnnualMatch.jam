@@ -24,6 +24,7 @@
 			<th> Agency </th>
 			<th> Match Start </th>
 			<th> Match End </th>
+			<th> Days </th>
 			<th> Befriender Name </th>
 		</tr>
 {{@each young_person}}
@@ -32,7 +33,7 @@
 		<tr class="rowHighlight" onClick="runAction('showTabs', ['befriender.id={{befriender.id}}'], 'content')">
 			<td>{{global.forename}} {{global.surname}}</td>
 			<td>{{young_person.dob}}</td>
-			<td>{{young_person.gender}}</td>
+			<td>{{@replacevalue field=young_person.gender values=0:male,1:female}}</td>
 			<td>{{global.postcode}}</td>
 	{{@get contact filter young_person_id = young_person.id, contact_relationship_id = 3}}
 			<td>{{contact.agency}}</td>
@@ -41,11 +42,12 @@
 	{{@get global filter id = befriender.global_id}}
 			<td>{{match_yp.match_started}}</td>
 			<td>{{match_yp.match_end}}</td>
+			<td>{{@daycount match_yp.match_started match_yp.match_end}}</td>
 			<td>{{global.forename}} {{global.surname}}</td>
 		</tr>
 {{@end}}
 		<tr>
-			<td> <b> Total Young Persons : {{count.id}} </b> </td>
+			<td colspan=9> <b> Total Young Persons : {{count.id}} </b> </td>
 		</tr>
 	</table>
 </div>

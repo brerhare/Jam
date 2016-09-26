@@ -6,7 +6,7 @@
 {{@database befriending_wireflydesign_com}}
 
 <br>
-{{@html container start center css='max-width:1080px; Xpadding:0}}
+{{@html container start center css='max-width:1180px; Xpadding:0}}
 
 <div name="content">
 	<center><h3> Referral Report </h3></center>

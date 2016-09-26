@@ -25,13 +25,11 @@
 {{@each befriender}}
 		{{@count id}}
 
-{{lineGender = befriender.gender?0:Male,1:Female}}
-
 		{{@get global filter id = befriender.global_id}}
 		<tr class="rowHighlight" onClick="runAction('showTabs', ['befriender.id={{befriender.id}}'], 'content')">
 			<td>{{global.forename}} {{global.surname}}</td>
 			<td>{{befriender.dob}}</td>
-			<td>{{befriender.gender}}</td>
+			<td>{{@replacevalue field=befriender.gender values=0:male,1:female}}</td>
 			<td>{{global.postcode}}</td>
 		</tr>
 {{@end}}
