@@ -16,6 +16,94 @@
 #include "list.h"
 #include "log.h"
 
+int wordMiscReplaceValue(int ix, char *defaultTableName) {
+    char *cmd = jam[ix]->command;
+    char *args = jam[ix]->args;
+    char *rawData = jam[ix]->rawData;
+    char *tmp = (char *) calloc(1, 4096);
+	char *values = NULL;
+	char *fieldVar = NULL;
+	char *fieldValue = NULL;
+
+	char *table = NULL;
+	char *field = NULL;
+	char *tableFieldRawValue = NULL;
+
+    // [Table].field
+    char *p = getVarAsString("sys.control.field");
+    if (!p) {
+        logMsg(LOGERROR, "Misc replacevalue cant be null");
+        return(-1);
+    }
+    tableFieldRawValue = strdup(getVarAsString("sys.control.field"));
+    if (strchr(p, '.')) {       // has a named table
+        table = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
+        field = getWordAlloc(getVarAsString("sys.control.field"), 2, ".");
+    } else {                    // its just the field name
+        if (defaultTableName)
+            table = strdup(defaultTableName);
+        else
+            table = strdup("");
+        field = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
+		fieldVar = strdup(getVarAsString(field));
+    }
+
+    // Value (can be multiple choices). Eg value=0:Male,1:Female
+    if (isVar("sys.control.values"))
+        values = strdup(getVarAsString("sys.control.values"));
+    else
+        values = strdup("");
+
+
+	// Get the actual field value we want to replace with something else
+    sprintf(tmp, "%s.%s", table, field);
+    VAR *variable = findVarStrict(tmp);
+    if (variable) {
+        fieldValue = strdup(variable->portableValue);
+	}
+	if (!variable) {
+        logMsg(LOGERROR, "Misc replacevalue cant get field's actual value, so cant replace");
+        return(-1);
+	}
+
+	int cnt = 1;
+	while (1) {
+		char *opt = getWordAlloc(values, cnt++, ",");
+		if ((!opt) || (!strlen(opt)))
+			break;
+		char *optA = strTrim(getWordAlloc(opt, 1, ":"));
+		char *optB = strTrim(getWordAlloc(opt, 2, ":"));
+		if ( (!optA) || (!strlen(optA)) )
+			continue;
+		if ( (!optB) || (!strlen(optB)) ) {
+			free(opt);
+			free(optA);
+			continue;
+		}
+		if ((fieldValue) && (strlen(fieldValue))) {
+			if (!strcmp(optA, fieldValue)) {
+				//sprintf(tmp, "[%d] : [%s][%s]", (int) strlen(fieldValue), fieldValue, optB);
+				emitStd(optB);
+				break;
+			}
+		}
+		//sprintf(tmp, "X:(%s):%s=%s", fieldValue, optA, optB);	
+		//emitStd(tmp);
+		free(optA);
+		free(optB);
+	}
+
+	emitStd(jam[ix]->trailer);
+
+	free(tmp);
+    free(table);
+    free(field);
+	free(values);
+	if (fieldVar) free(fieldVar);
+	if (fieldValue) free(fieldValue);
+    free(tableFieldRawValue);
+}
+
 int wordMiscInclude(int ix, char *defaultTableName) {
     char *cmd = jam[ix]->command;
     char *args = jam[ix]->args;

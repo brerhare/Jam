@@ -1018,6 +1018,10 @@ int control(int startIx, char *defaultTableName) {
 //		------------------------------------
 			res = wordMiscSum(ix, defaultTableName);
 //		------------------------------------
+		} else if (!(strcmp(cmd, "@replacevalue"))) {
+//		------------------------------------
+			res = wordMiscReplaceValue(ix, defaultTableName);
+//		---------------------------
 		} else if (!(strcmp(cmd, "@email"))) {
 //		------------------------------------
 			res = wordMiscEmail(ix, defaultTableName);
