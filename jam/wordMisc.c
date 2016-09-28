@@ -565,6 +565,7 @@ int wordMiscEmail(int ix, char *defaultTableName) {
 	fprintf(mailpipe, "</body></html>");
 	fwrite(".\n", 1, 2, mailpipe);
 	pclose(mailpipe);
+	sleep(3);
 
 	// Wrap up
     free(tmp);
