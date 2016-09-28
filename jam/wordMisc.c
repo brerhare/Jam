@@ -16,6 +16,38 @@
 #include "list.h"
 #include "log.h"
 
+
+// {@postcodeextract type=areadistrict postcode='DG6 4TP'}
+int wordMiscWordSplit(int ix, char *defaultTableName) {
+    char *cmd = jam[ix]->command;
+    char *args = jam[ix]->args;
+    char *rawData = jam[ix]->rawData;
+    char *tmp = (char *) calloc(1, 4096);
+    char *wordField = NULL;
+    char *word = NULL;
+    char *wordNum = NULL;
+    char *split = (char *) calloc(1, 4096);
+
+	wordField = strdup(getVarAsString("sys.control.field"));
+	wordNum = strdup(getVarAsString("sys.control.segment"));
+	logMsg(LOGDEBUG, "wordMiscWordSplit field required is [%s] and segment required is [%s]", wordField, wordNum);
+
+	word = strdup(getVarAsString(wordField));
+
+	getWord(split, word, atoi(wordNum), " ");
+	emitStd(split);
+
+	logMsg(LOGDEBUG, "wordMiscWordSplit field value is [%s] and segment value is [%s]", word, split);
+
+	emitStd(jam[ix]->trailer);
+
+	free(tmp);
+	free(wordField);
+	free(word);
+	free(wordNum);
+	free(split);
+}
+
 int wordMiscReplaceValue(int ix, char *defaultTableName) {
     char *cmd = jam[ix]->command;
     char *args = jam[ix]->args;
@@ -360,8 +392,8 @@ int wordMiscDayCount(int ix, char *defaultTableName) {
 	char *tmp = (char *) calloc(1, 4096);
 	char *dateFromField = (char *) calloc(1, 4096);
 	char *dateToField = (char *) calloc(1, 4096);
-	char *dateFrom = (char *) calloc(1, 4096);
-	char *dateTo = (char *) calloc(1, 4096);
+	char *dateFrom = NULL;
+	char *dateTo = NULL;
 	char wd[256];
 
 	getWord(dateFromField, args, 1, " \t");

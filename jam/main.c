@@ -1029,6 +1029,9 @@ int control(int startIx, char *defaultTableName) {
 		} else if (!(strcmp(cmd, "@daycount"))) {
 //		------------------------------------
 			res = wordMiscDayCount(ix, defaultTableName);
+		} else if (!(strcmp(cmd, "@wordsplit"))) {
+//		------------------------------------
+			res = wordMiscWordSplit(ix, defaultTableName);
 //		---------------------------
 		} else if (!(strcmp(cmd, "@type"))) {
 //		------------------------------------
