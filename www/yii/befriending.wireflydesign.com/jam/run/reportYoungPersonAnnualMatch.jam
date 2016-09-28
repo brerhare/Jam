@@ -27,7 +27,7 @@
 			<th> Days </th>
 			<th> Befriender Name </th>
 		</tr>
-{{@each young_person}}
+{{@each young_person filter archive_flag = 0}}
 	{{@count id}}
 	{{@get global filter id = young_person.global_id}}
 		<tr class="rowHighlight" onClick="runAction('showTabs', ['befriender.id={{befriender.id}}'], 'content')">
