@@ -31,7 +31,7 @@
 			<td>{{global.forename}} {{global.surname}}</td>
 			<td>{{befriender.dob}}</td>
 			<td>{{@replacevalue field=befriender.gender values=0:male,1:female}}</td>
-			<td>{{global.postcode}}</td>
+			<td>{{global.postcode}} {{@XXXXXwordsplit field=global.postcode segment=1}}</td>
 		{{@get heardabout filter id = befriender.heardabout_id}}
 			<td>{{heardabout.from_where}}</td>
 		</tr>
