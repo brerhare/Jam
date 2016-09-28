@@ -15,6 +15,17 @@
 <!-- Insert here -->
 
 <p>
+<h4><b> September 28 2016 </b></h4>
+</p>
+- Reworked menus to be more consistent. Top line is headings, everything clickable is in the dropdowns.
+<br>
+- System Configuration - the name of any previously uploaded referral attachment is now shown.
+<br>
+- Login password is now not displayed on screen
+</p>
+
+
+<p>
 <h4><b> September 26 2016 </b></h4>
 </p>
 - Referral forms have the option of an attachment. This is specified in the menu option 'system'.

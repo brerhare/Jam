@@ -31,6 +31,7 @@
 
 			<label class="uk-form-label" for="mem.upload">Referral form attachment</label>
 			<div class="uk-form-controls">
+				<span style='display:inline-block;margin-top:5px'>{{settings.referral_attachment}}</span>
 				<input type="button" value="Clear" onclick="clearAttachment()">
 				<span class="uk-form-file"> <input type="file" onChange="fileUpload(this)"></span>
 			</div>
