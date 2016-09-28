@@ -21,8 +21,9 @@
 			<th style='min-width:80px'> DoB </th>
 			<th> Gender </th>
 			<th> Postcode </th>
+			<th> How Heard </th>
 		</tr>
-{{@each befriender}}
+{{@each befriender filter archive_flag = 0}}
 		{{@count id}}
 
 		{{@get global filter id = befriender.global_id}}
@@ -31,6 +32,8 @@
 			<td>{{befriender.dob}}</td>
 			<td>{{@replacevalue field=befriender.gender values=0:male,1:female}}</td>
 			<td>{{global.postcode}}</td>
+		{{@get heardabout filter id = befriender.heardabout_id}}
+			<td>{{heardabout.from_where}}</td>
 		</tr>
 {{@end}}
 		<tr>
