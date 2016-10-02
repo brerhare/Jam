@@ -287,6 +287,7 @@ int wordDatabaseNewTable(int ix, char *defaultTableName) {
 		free(fieldType);
 		free(block);
 	}
+	logMsg(LOGDEBUG, "wordDatabaseNewTable creating table using this string: [%s]", qStr);
 	strcat(qStr, "  PRIMARY KEY (id) ) ENGINE = InnoDB;");
 	if (mysql_query(conn,qStr) != 0) {
 	   logMsg(LOGERROR, (char *) mysql_error(conn));
