@@ -55,7 +55,9 @@
 			<td colspan="5">&nbsp</td>
 		</tr>
 		<tr>
-			<td colspan="5"> <b> Area / district Summary </b> </td>
+			<td> <b> Area / district Summary </b> </td>
+			<td> <b> Befrienders </b> </td>
+			<td colspan="3"> </td>
 		</tr>
 {{@each temp_report_befriender_annual_summary filter id > 0, order by befrienders DESC}}
 		<tr>
