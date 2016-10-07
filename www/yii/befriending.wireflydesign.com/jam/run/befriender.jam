@@ -8,6 +8,61 @@
 <br>
 {{@html container start center css='max-width:1080px; Xpadding:0}}
 
+<!-- Overlay (modal) starts -->
+<!-- https://raventools.com/blog/create-a-modal-dialog-using-css-and-javascript/ -->
+
+<style>
+#overlay div {
+background-color: #fff5ee;
+     width:500px;
+     margin: 200px auto;
+     background-color: #fff;
+     border:1px solid #000;
+     padding:15px;
+     text-align:center;
+}
+#overlay {
+     visibility: hidden;
+     position: absolute;
+     left: 0px;
+     top: 0px;
+     width:100%;
+     height:100%;
+     text-align:center;
+     z-index: 1000;
+     Xbackground-image:url(background-trans.png);
+
+  background:rgba(255,255,255,0.6);
+}
+
+}
+</style>
+
+<div id="overlay">
+	<div style="background-color:#fff5ee">
+		<form name="overlay_form" class="uk-form" style="background-color:#fff5ee">
+			<input type=hidden name="ovId" id = "ovId">
+			<p>Input a termination reason for <span id="ovName" name="ovName"></span> </p>
+			{{@html textarea field=form.termination_reason size=60x5}}
+			<br>
+			<br>
+			<center>
+				<button class="uk-button uk-button-medium uk-button-primary" onClick="doArchive()"> Save </button>
+				<button class="uk-button uk-button-medium uk-button-primary" onClick="overlay()"> Cancel</button>
+			</center>
+		</form>
+	</div>
+</div>
+
+<script>
+function overlay() {
+	el = document.getElementById("overlay");
+	el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+}
+</script>
+
+<!-- Overlay (modal) ends -->
+
 <div name="content">
 	<h3> Befriender </h3>
 
@@ -31,7 +86,7 @@
 			<td>{{global.surname}}</td>
 			<td>{{global.postcode}}</td>
 			<td>{{status_bf.name}}</td>
-			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{global.surname}}')"> Archive </button> </td>
+			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{global.forename}} {{global.surname}}')"> Archive </button> </td>
 		</tr>
 {{@end}}
 	</table>
@@ -50,9 +105,19 @@
 <script>
 function confirmDelete(id, displayInfo) {
 	window.event.cancelBubble = true;	// Prevent any further events
-	var result = confirm('Confirm archive request for item ' + displayInfo);
-	if (result)
-		runAction('delete', ['befriender.id='+id], '', window.setTimeout(runJam, 1000)) ;	
+	ovIdObj = get("ovId");
+	ovIdObj.value = id;
+	ovNameObj = get("ovName");
+	ovNameObj.innerHTML = displayInfo;
+	overlay();
+}
+
+function doArchive() {
+	ovIdObj = get("ovId");
+	ovReasonObj = get("ovId");
+	overlay();
+	//runAction('delete', ['befriender.id='+ovIdObj.value, 'overlay_form'], '', window.setTimeout(runJam, 1000)) ;	
+	runAction('delete', ['befriender.id='+ovIdObj.value, 'overlay_form'], '');
 }
 </script>
 
@@ -61,9 +126,14 @@ function confirmDelete(id, displayInfo) {
     {{@get global filter id = befriender.global_id}}
     {{befriender.archive_flag = 1}}
     {{befriender.archive_date = sys.today}}
+	{{befriender.termination_reason = form.termination_reason}}
     {{@amend item befriender}}
     {{@get settings filter id = 1}}
     {{@email {{settings.email}} {{settings.email}} 'Archive request - Befriender {{global.forename}} {{global.surname}} to be archived' action:emailContent}}
+{{@end}}
+
+{{@action emailContent}}
+    If no further action is taken all records for this Befriender are due to be archived in {{settings.archive_days}} days.<br> This will result in permanent loss of data.
 {{@end}}
 
 <!-- Form input component -->

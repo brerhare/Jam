@@ -28,7 +28,7 @@
 	{{@get global filter id = befriender.global_id}}
 			<td>{{global.forename}} {{global.surname}}</td>
 			<td>{{befriender.archive_date}}</td>
-			<td> Reason </td>
+			<td>{{befriender.termination_reason}}</td>
 			<td>{{@replacevalue field=young_person.gender values=0:male,1:female}}</td>
 			<td>{{befriender.archive_destruction_date}}</td>
 {{@end}}

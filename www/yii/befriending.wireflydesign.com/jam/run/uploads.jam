@@ -14,7 +14,14 @@
 
 <!-- Insert here -->
 
+<h4><b> September 29 2016 </b></h4>
 <p>
+- When archiving a befriender a termination reason may be specified.
+<br>
+- Befriender Leaving report
+</p>
+
+
 <h4><b> September 28 2016 </b></h4>
 </p>
 - Reworked menus to be more consistent. Top line is headings, everything clickable is in the dropdowns.
@@ -56,7 +63,7 @@ There is also a 'clear' button to remove attachments, in which case none will be
 <p>
 <h4><b> September 23 2016 </b></h4>
 </p>
-- Befrienders, YP and event lists are column-sortable and have range filters. It's simple to add this to any other lists, please just let me know which ones.
+- Befrienders, YP and event lists are column-sortable (click on headings) and have range filters. It's simple to add this to any other lists, please just let me know which ones.
 <br>
 - Notes report (YP and befriender) layout changed as requested
 </p>
