@@ -5,6 +5,13 @@
 
 {{@database befriending_wireflydesign_com}}
 
+{{@remove table temp_report_befriender_annual_summary}}
+
+{{@new table temp_report_befriender_annual_summary
+	postAD		string
+	befrienders	number
+}}
+
 <br>
 {{@html container start center css='max-width:1080px; Xpadding:0}}
 
@@ -21,8 +28,9 @@
 			<th style='min-width:80px'> DoB </th>
 			<th> Gender </th>
 			<th> Postcode </th>
+			<th> How Heard </th>
 		</tr>
-{{@each befriender}}
+{{@each befriender filter archive_flag = 0}}
 		{{@count id}}
 
 		{{@get global filter id = befriender.global_id}}
@@ -30,12 +38,36 @@
 			<td>{{global.forename}} {{global.surname}}</td>
 			<td>{{befriender.dob}}</td>
 			<td>{{@replacevalue field=befriender.gender values=0:male,1:female}}</td>
-			<td>{{global.postcode}}</td>
+			<td>{{global.postcode}} {{@wordsplit field=global.postcode segment=1 newfield=PA}} {{PA}}</td>
+		{{@get heardabout filter id = befriender.heardabout_id}}
+			<td>{{heardabout.from_where}}</td>
 		</tr>
+		{{@get temp_report_befriender_annual_summary filter postAD = PA}}
+		{{temp_report_befriender_annual_summary.postAD = PA}}
+		{{temp_report_befriender_annual_summary.befrienders = (temp_report_befriender_annual_summary.befrienders + 1)}}
+		{{@update item temp_report_befriender_annual_summary}}
+{{@new}}
 {{@end}}
 		<tr>
 			<td> <b> Total befrienders : {{count.id}} </b> </td>
 		</tr>
+		<tr>
+			<td colspan="5">&nbsp</td>
+		</tr>
+		<tr>
+			<td> <b> Area / district Summary </b> </td>
+			<td> <b> Befrienders </b> </td>
+			<td colspan="3"> </td>
+		</tr>
+{{@each temp_report_befriender_annual_summary filter id > 0, order by befrienders DESC}}
+		<tr>
+			<td>{{temp_report_befriender_annual_summary.postAD}}</td>
+			<td>{{temp_report_befriender_annual_summary.befrienders + 1}}</td>
+			<td></td>
+			<td></td>
+			<td></td>
+		</tr>
+{{@end}}
 	</table>
 </div>
 <br>

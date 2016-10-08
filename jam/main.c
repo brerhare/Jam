@@ -738,7 +738,7 @@ int control(int startIx, char *defaultTableName) {
 						res = wordHtmlDropdown(ix, defaultTableName);
 					else if (!strcmp(tmp, "filter"))
 						res = wordHtmlFilter(ix, defaultTableName);
-					else if ( (!strcmp(tmp, "text")) || (!strcmp(tmp, "date")) || (!strcmp(tmp, "time")) )
+					else if ( (!strcmp(tmp, "text")) || (!strcmp(tmp, "date")) || (!strcmp(tmp, "time")) || (!strcmp(tmp, "password") ) )
 						res = wordHtmlInput(ix, defaultTableName);
 
 					else if (!strcmp(tmp, "input"))
@@ -1029,6 +1029,9 @@ int control(int startIx, char *defaultTableName) {
 		} else if (!(strcmp(cmd, "@daycount"))) {
 //		------------------------------------
 			res = wordMiscDayCount(ix, defaultTableName);
+		} else if (!(strcmp(cmd, "@wordsplit"))) {
+//		------------------------------------
+			res = wordMiscWordSplit(ix, defaultTableName);
 //		---------------------------
 		} else if (!(strcmp(cmd, "@type"))) {
 //		------------------------------------

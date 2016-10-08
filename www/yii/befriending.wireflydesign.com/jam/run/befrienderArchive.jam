@@ -63,6 +63,7 @@ function confirmUnDelete(id, displayInfo) {
 	{{@get befriender filter id = befriender.id}}
 	{{befriender.archive_flag = 0}}
 	{{befriender.archive_date = '0000-00-00'}}
+	{{befriender.termination_reason = ''}}
 	{{@amend item befriender}}
 {{@end}}
 

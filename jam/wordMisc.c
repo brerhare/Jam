@@ -16,6 +16,71 @@
 #include "list.h"
 #include "log.h"
 
+
+// @wordsplit field=global.postcode segment=1 newfield=myNewField			IF 'newfield' exists that var will be created/updated otherwise the result will simply be emitted
+int wordMiscWordSplit(int ix, char *defaultTableName) {
+    char *cmd = jam[ix]->command;
+    char *args = jam[ix]->args;
+    char *rawData = jam[ix]->rawData;
+    char *tmp = (char *) calloc(1, 4096);
+    char *wordField = NULL;
+    char *wordNewField = NULL;
+    char *word = NULL;
+    char *wordNum = NULL;
+    char *split = (char *) calloc(1, 4096);
+
+	logMsg(LOGDEBUG, "wordMiscWordSplit started");
+	if (isVar("sys.control.field")) 
+		wordField = strdup(getVarAsString("sys.control.field"));
+logMsg(LOGDEBUG, "wordMiscWordSplit 1");
+	if (isVar("sys.control.newfield")) 
+		wordNewField = strdup(getVarAsString("sys.control.newfield"));
+logMsg(LOGDEBUG, "wordMiscWordSplit 2");
+	if (isVar("sys.control.segment"))
+		wordNum = strdup(getVarAsString("sys.control.segment"));
+	logMsg(LOGDEBUG, "wordMiscWordSplit field required is [%s] and segment required is [%s]", wordField, wordNum);
+
+	word = strdup(getVarAsString(wordField));
+
+	getWord(split, word, atoi(wordNum), " ");
+
+	// Do we store this in a field or simply emit it?
+	if (wordNewField) {
+        VAR *var = findVarStrict(wordNewField);
+        if (var) {
+            if (var->portableValue)
+                free(var->portableValue);
+            var->portableValue = strdup(split);
+        } else {
+            var = (VAR *) calloc(1, sizeof(VAR));
+            var->name = strdup(wordNewField);
+            var->type = VAR_STRING;
+            var->source = strdup("variable");
+            var->debugHighlight = 4;
+            clearVarValues(var);
+            fillVarDataTypes(var, split);
+            if (addVar(var) == -1) {
+                logMsg(LOGFATAL, "Cant create any more vars, terminating");
+                exit(1);
+            }
+        }
+
+	} else {
+		emitStd(split);
+	}
+
+	logMsg(LOGDEBUG, "wordMiscWordSplit field value is [%s] and segment value is [%s]", word, split);
+
+	emitStd(jam[ix]->trailer);
+
+	free(tmp);
+	if (wordField) free(wordField);
+	if (wordNewField) free(wordNewField);
+	if (word) free(word);
+	if (wordNum) free(wordNum);
+	free(split);
+}
+
 int wordMiscReplaceValue(int ix, char *defaultTableName) {
     char *cmd = jam[ix]->command;
     char *args = jam[ix]->args;
@@ -360,8 +425,8 @@ int wordMiscDayCount(int ix, char *defaultTableName) {
 	char *tmp = (char *) calloc(1, 4096);
 	char *dateFromField = (char *) calloc(1, 4096);
 	char *dateToField = (char *) calloc(1, 4096);
-	char *dateFrom = (char *) calloc(1, 4096);
-	char *dateTo = (char *) calloc(1, 4096);
+	char *dateFrom = NULL;
+	char *dateTo = NULL;
 	char wd[256];
 
 	getWord(dateFromField, args, 1, " \t");

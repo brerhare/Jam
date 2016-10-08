@@ -47,7 +47,7 @@
 			{{@html gridcol end}}
 
             {{@html gridcol start width=5-10}}
-				{{@html text field=user.password label='password' size=small}}
+				{{@html password field=user.password label='password' size=small}}
 			{{@html gridcol end}}
 
             {{@html gridcol start width=3-10}}

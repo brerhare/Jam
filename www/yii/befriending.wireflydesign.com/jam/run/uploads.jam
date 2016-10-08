@@ -14,12 +14,48 @@
 
 <!-- Insert here -->
 
+<h4><b> September 29 2016 </b></h4>
+<p>
+- When archiving a befriender a termination reason may be specified.
+<br>
+- Befriender Leaving report
+</p>
+
+
+<h4><b> September 28 2016 </b></h4>
+</p>
+- Reworked menus to be more consistent. Top line is headings, everything clickable is in the dropdowns.
+<br>
+- System Configuration - the name of any previously uploaded referral attachment is now shown.
+<br>
+- Login password displays as asterisks.
+<br>
+- Befriender annual report has new column 'how heard'.
+<br>
+- Events :  matched befriender for the YP now also appears in the 'all possible attendees' list so can be invited.
+<br>
+- Befriender annual report now has an area summary at the end.
+</p>
+
+
+<p>
+<h4><b> September 26 2016 </b></h4>
+</p>
+- Referral forms have the option of an attachment. This is specified in the menu option 'system'.
+Attachment file may be uploaded here via the 'choose file' button, and if any is specified will be sent with the referral email.
+Attachment file may be updated at any time.
+There is also a 'clear' button to remove attachments, in which case none will be sent with the referral email.
+<br>
+- Befriender reference date added as an input field
+</p>
+
+
 <p>
 <h4><b> September 25 2016 </b></h4>
 </p>
-Reports - gender 0/1 replaced with proper male/female annotation
+- Reports - gender 0/1 replaced with proper male/female annotation
 <br>
-Reports - matched annual report shows number of days for completed matches
+- Reports - matched annual report shows number of days for completed matches
 (what about currently active matches ie no end date - should those days be shown too?)
 </p>
 
@@ -27,39 +63,39 @@ Reports - matched annual report shows number of days for completed matches
 <p>
 <h4><b> September 23 2016 </b></h4>
 </p>
-Befrienders, YP and event lists are column-sortable and have range filters
+- Befrienders, YP and event lists are column-sortable (click on headings) and have range filters. It's simple to add this to any other lists, please just let me know which ones.
 <br>
-Notes report (YP and befriender) layout changed as requested
+- Notes report (YP and befriender) layout changed as requested
 </p>
 
 
 <p>
 <h4><b> September 21 2016 </b></h4>
 </p>
-Befrienders have a Profile tab, can upload a picture and notes
+- Befrienders have a Profile tab, can upload a picture and notes
 </p>
 
 
 <p>
 <h4><b> September 19 2016 </b></h4>
 </p>
-Befrienders now also have an archive facility, works the same as YP
+- Befrienders now also have an archive facility, works the same as YP
 </p>
 
 
 <p>
 <h4><b> September 18 2016 </b></h4>
-Ability to add users and assign passwords into the system (see under 'system' menu)
+- Ability to add users and assign passwords into the system (see under 'system' menu)
 <br>
-Designate access to menu items per user (see under 'system' menu)
+- Designate access to menu items per user (see under 'system' menu)
 <br>
-Login and logout
+- Login and logout
 <br>
-Fixed the Form tab on the YP screen
+- Fixed the Form tab on the YP screen
 <br>
-More space between matched and possible befrienders (YP match tab)
+- More space between matched and possible befrienders (YP match tab)
 <br>
-Befriender web form ends with a thank you screen instead of a blank screen
+- Befriender web form ends with a thank you screen instead of a blank screen
 </p>
 
     </form>
