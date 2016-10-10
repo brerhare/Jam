@@ -128,6 +128,7 @@ function postUpdate() {
     {{young_person.referral_date = sys.today}}
     {{young_person.archive_flag = 0}}
     {{young_person.archive_date = '0000-00-00'}}
+    {{young_person.archive_destruction_date = '0000-00-00'}}
     {{@update item young_person}}
 {{@end}}
 

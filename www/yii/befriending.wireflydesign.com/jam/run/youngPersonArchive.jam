@@ -63,6 +63,7 @@ function confirmUnDelete(id, displayInfo) {
 	{{@get young_person filter id = young_person.id}}
 	{{young_person.archive_flag = 0}}
 	{{young_person.archive_date = '0000-00-00'}}
+	{{young_person.archive_destruction_date = '0000-00-00'}}
 	{{@amend item young_person}}
 {{@end}}
 

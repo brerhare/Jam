@@ -60,6 +60,7 @@ function confirmDelete(id, displayInfo) {
 	{{@get global filter id = young_person.global_id}}
 	{{young_person.archive_flag = 1}}
 	{{young_person.archive_date = sys.today}}
+	{{young_person.archive_destruction_date = '0000-00-00'}}
 	{{@amend item young_person}}
 	{{@get settings filter id = 1}}
 	{{@email {{settings.email}} {{settings.email}} 'Archive request - Young Person {{global.forename}} {{global.surname}} to be archived' action:emailContent}}
