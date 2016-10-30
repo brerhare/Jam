@@ -18,7 +18,7 @@
 
 <form name="settings_form" class="uk-form uk-form-horizontal">
 <br>
-<center><h3> System Settings </h3></center>
+<center><h3> System Configuration </h3></center>
 
 	<input type="hidden" name="settings.id" value={{settings.id}}>
 	<input type="hidden" name="settings.referral_attachment" value={{settings.referral_attachment}}>

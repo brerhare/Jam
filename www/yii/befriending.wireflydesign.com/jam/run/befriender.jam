@@ -163,13 +163,12 @@ function doArchive() {
 	{{@html tabs
 		label=Details		action=/run/befrienderDetails?befriender.id={{befriender.id}}
 		label=References	action=/run/befrienderReferences?befriender.id={{befriender.id}}
-		label=Anticipated		action=/run/befrienderInterest?befriender.id={{befriender.id}}
 		label=Additional	action=/run/befrienderAdditional?befriender.id={{befriender.id}}
 		label=Documentation	action=/run/befrienderDocumentation?befriender.id={{befriender.id}}
 		label=Matches	action=/run/befrienderMatch?befriender.id={{befriender.id}}
 		label=Profile	action=/run/befrienderProfile?befriender.id={{befriender.id}}
 	}}
-<!--		label=Events		action=/run/befrienderEvent?befriender.id={{befriender.id}} -->
+<!--		label=Anticipated		action=/run/befrienderInterest?befriender.id={{befriender.id}} -->
 {{@end}}
 
 {{@action showTabsNew}}
