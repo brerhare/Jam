@@ -27,7 +27,7 @@ char *connDbName = NULL;
 
 int isMysqlTable(char *tableName) {
 	int ret = 0;
-	char *query = (char *) calloc(1, 4096);
+	char *query = (char *) calloc(1, 64096);
 	sprintf(query, "SHOW TABLES LIKE '%s'", tableName);
 	MYSQL_RES *res;
 	if (mysql_query(conn, query) != 0) {
@@ -36,7 +36,7 @@ int isMysqlTable(char *tableName) {
 	}
 	res = mysql_store_result(conn);
 	if (!res) {
-		char *tmp = (char *) calloc(1, 4096);
+		char *tmp = (char *) calloc(1, 64096);
 		logMsg(LOGERROR, "isMysqlTable() - couldn't get results set: %s\n", mysql_error(conn));
 		mysql_free_result(res);
 		free(query);
@@ -50,7 +50,7 @@ int isMysqlTable(char *tableName) {
 }
 
 int isMysqlField(char *fieldName, char *tableName) {
-	char *query = (char *) calloc(1, 4096);
+	char *query = (char *) calloc(1, 64096);
 	sprintf(query, "SELECT * FROM %s LIMIT 1", tableName);
 //die(query);
 	MYSQL_RES *res;
@@ -60,7 +60,7 @@ int isMysqlField(char *fieldName, char *tableName) {
 	}
 	res = mysql_store_result(conn);
 	if (!res) {
-		char *tmp = (char *) calloc(1, 4096);
+		char *tmp = (char *) calloc(1, 64096);
 		logMsg(LOGERROR, "isMysqlField() - couldn't get results set: %s\n", mysql_error(conn));
 		mysql_free_result(res);
 		free(query);
@@ -174,7 +174,7 @@ int sqlGetRow2Vars(SQL_RESULT *rp) {
 // Zero all vars applicable to a sql record and set id to -1
 int sqlClearRowVars(SQL_RESULT *rp) {
 // @@FIX why do we need SQL_RESULT? Look at mysql_list_fields() (see http://ropas.snu.ac.kr/n/lib/manual074.html)
-	char *tmp = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 64096);
 	_nullifySqlFields(rp->tableName, rp->mysqlHeaders, rp->mysqlTypes, rp->numFields);
 	sprintf(tmp, "%s.id", rp->tableName);
 	VAR *seekVar = findVarStrict(tmp);
@@ -279,7 +279,7 @@ MYSQL_RES *doSqlSelect(int ix, char *defaultTableName, char **givenTableName, in
     char *cmd = jam[ix]->command;
     char *args = jam[ix]->args;
     char *rawData = jam[ix]->rawData;
-    char *tmp = (char *) calloc(1, 4096);
+    char *tmp = (char *) calloc(1, 64096);
 
     // @@TODO refactor this because it shares 90% of its code with @each
     int skipCode = 0;
@@ -298,7 +298,7 @@ MYSQL_RES *doSqlSelect(int ix, char *defaultTableName, char **givenTableName, in
     }
 
     // Append 'limit n'
-    char *s = (char *) calloc(1, 4096);
+    char *s = (char *) calloc(1, 64096);
     sprintf(s, " LIMIT %d", maxRows);
     strcat(query, s);
     free(s);
@@ -327,8 +327,8 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 	char *selectorField = NULL;
 	char *operand = NULL;
 	char *externalFieldOrValue = NULL;
-	char *tmp = (char *) calloc(1, 4096);
-	char *queryBuilder = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 64096);
+	char *queryBuilder = (char *) calloc(1, 64096);
 	char *space = " ";
 	int wdNum = 0;
 	int firstArg = 1;
