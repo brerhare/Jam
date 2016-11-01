@@ -34,7 +34,7 @@
 		{{@count id}}
 
 		{{@get global filter id = befriender.global_id}}
-		<tr class="rowHighlight" onClick="runAction('showTabs', ['befriender.id={{befriender.id}}'], 'content')">
+		<tr class="rowHighlight">
 			<td>{{global.forename}} {{global.surname}}</td>
 			<td>{{befriender.dob}}</td>
 			<td>{{@replacevalue field=befriender.gender values=0:male,1:female}}</td>

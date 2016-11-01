@@ -15,14 +15,14 @@
 		<input type="text" id="searchInput" placeholder="Type to search">
 	</form>
 
-	<table id='printTable' class="searchTable testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+	<table id='printTable' class="searchTable testgrid sortable uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr style='font-weight:bold'>
 			<th> Young Person Name </th>
 			<th width=80px> Date </th>
 			<th> Notes </th>
 		</tr>
 {{@each event filter date >= from, date <= to, order by date}}
-		<tr>
+		<tr class="rowHighlight">
 	{{@count id}}
 	{{@get young_person filter id = event.young_person_id}}
 	{{@get global filter id = young_person.global_id}}
@@ -30,10 +30,8 @@
 			<td>{{event.date}}</td>
 			<td>{{event.notes}}</td>
 {{@end}}
-		<tr>
-			<td colspan=9> <b> Total Befrienders : {{count.id}} </b> </td>
-		</tr>
 	</table>
+  <b> Total Young Persons : <span id="searchTotal">{{count.id}}</span> </b>
 </div>
 <br>
 

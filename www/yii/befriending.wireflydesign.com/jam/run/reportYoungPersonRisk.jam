@@ -9,7 +9,7 @@
 {{@html container start center css='max-width:1080px; Xpadding:0}}
 
 <div name="content">
-	<center><h3> Young Person Annual Match Report </h3></center>
+	<center><h3> Young Person Risk Report </h3></center>
 
 	<form class="uk-form">
 		<input type="text" id="searchInput" placeholder="Type to search">
@@ -18,32 +18,22 @@
 	<table id='printTable' class="searchTable testgrid sortable uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr style='font-weight:bold'>
 			<th> YP Name </th>
-			<th style='min-width:80px'> DoB </th>
-			<th> Gender </th>
-			<th> Postcode </th>
-			<th> Agency </th>
-			<th> Match Start </th>
-			<th> Match End </th>
-			<th> Days </th>
-			<th> Befriender Name </th>
+			<th> Exclusion </th>
+			<th> Offending </th>
+			<th> Care </th>
+			<th> Child Plan </th>
+			<th> Assessment </th>
 		</tr>
 {{@each young_person filter archive_flag = 0}}
 	{{@count id}}
 	{{@get global filter id = young_person.global_id}}
 		<tr class="rowHighlight">
 			<td>{{global.forename}} {{global.surname}}</td>
-			<td>{{young_person.dob}}</td>
-			<td>{{@replacevalue field=young_person.gender values=0:male,1:female}}</td>
-			<td>{{global.postcode}}</td>
-	{{@get contact filter young_person_id = young_person.id, contact_relationship_id = 3}}
-			<td>{{contact.agency}}</td>
-	{{@get match_yp filter young_person_id = young_person.id}}
-	{{@get befriender filter id = match_yp.befriender_id}}
-	{{@get global filter id = befriender.global_id}}
-			<td>{{match_yp.match_started}}</td>
-			<td>{{match_yp.match_end}}</td>
-			<td>{{@daycount match_yp.match_started match_yp.match_end}}</td>
-			<td>{{global.forename}} {{global.surname}}</td>
+			<td>{{@replacevalue field=young_person.exclusion_risk values=0:,1:yes}}</td>
+			<td>{{@replacevalue field=young_person.offending_risk values=0:,1:yes}}</td>
+			<td>{{@replacevalue field=young_person.care_risk values=0:,1:yes}}</td>
+			<td>{{@replacevalue field=young_person.child_plan values=0:,1:yes}}</td>
+			<td>{{@replacevalue field=young_person.assessment values=0:,1:yes}}</td>
 		</tr>
 {{@end}}
 	</table>
