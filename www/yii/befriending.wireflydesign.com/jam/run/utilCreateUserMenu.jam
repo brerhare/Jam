@@ -45,11 +45,14 @@ Doing...<br>
 {{menu.text = Reports}}  {{menu.href = #}} {{menu.parent_id = 0}}       {{@new item menu}}
 	{{pid = menu.id}}
 	{{menu.text = Volunteer process joining}}  {{menu.href = /run/reportJoining.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
-	{{menu.text = Befriender annual report}}  {{menu.href = /run/reportBefrienderAnnual.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
 	{{menu.text = Young Person annual match report}}  {{menu.href = /run/reportYoungPersonAnnualMatch.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
 	{{menu.text = Young Person referral report}}  {{menu.href = /run/reportReferral.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Young Person leaving report}}  {{menu.href = /run/reportYoungPersonLeaving.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Young Person risk report}}  {{menu.href = /run/reportYoungPersonRisk.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
 	{{menu.text = Annual GIRFEC report}}  {{menu.href = /run/reportGirfec.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
-	{{menu.text = Befriender Leaving report}}  {{menu.href = /run/reportBefrienderLeaving.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Befriender annual report}}  {{menu.href = /run/reportBefrienderAnnual.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Befriender leaving report}}  {{menu.href = /run/reportBefrienderLeaving.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Event notes report}}  {{menu.href = /run/reportEventNotes.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
 {{menu.text = Settings}}  {{menu.href = #}} {{menu.parent_id = 0}}       {{@new item menu}}
 	{{pid = menu.id}}
 	{{menu.text = Form types}}  {{menu.href = /run/formType.jam}} {{menu.parent_id = pid}}       {{@new item menu}}

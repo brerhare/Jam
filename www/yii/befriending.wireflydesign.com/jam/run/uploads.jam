@@ -19,6 +19,14 @@
 - Referral email - you can specify the text that will be sent out with the email. This is in menu option 'system -> configuration' (same place as the attachment is specified)
 <br>
 - Fixed problem when copy/pasting large befriender profile notes
+<br>
+- New report - event notes (search all events)
+<br>
+- New report - Young Person leaving. Looks a bit bare, should we have more columns?
+<br>
+- New report - Young Person risk report.
+<br>
+- All reports now update the total item count when filtering is applied, and dont give error on clicking a line
 </p>
 
 
