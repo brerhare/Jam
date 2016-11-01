@@ -22,7 +22,7 @@ int wordDatabaseListDatabases(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
-	char *tmp = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 64096);
 
 	MYSQL_RES *res;
 	MYSQL_ROW row;
@@ -50,7 +50,7 @@ int wordDatabaseListTables(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
-	char *tmp = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 64096);
 
 	MYSQL_RES *res;
 	MYSQL_ROW row;
@@ -72,7 +72,7 @@ int wordDatabaseNewDatabase(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
-	char *dbName = (char *) calloc(1, 4096);
+	char *dbName = (char *) calloc(1, 64096);
 
 	getWord(dbName, args, 2, " ");
 	if (!dbName) {
@@ -81,7 +81,7 @@ int wordDatabaseNewDatabase(int ix, char *defaultTableName) {
 	}
 	if (connectDBServer() != 0)
 		return(-1);
-	char *qStr = (char *) calloc(1, 4096);
+	char *qStr = (char *) calloc(1, 64096);
 	//sprintf(qStr,"DROP DATABASE IF EXISTS %s", dbName);
 	//int status = mysql_query(conn,qStr);
 	sprintf(qStr,"CREATE DATABASE %s", dbName);
@@ -98,7 +98,7 @@ int wordDatabaseRemoveDatabase(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
-	char *dbName = (char *) calloc(1, 4096);
+	char *dbName = (char *) calloc(1, 64096);
 
 	getWord(dbName, args, 2, " ");
 	if (!dbName) {
@@ -109,7 +109,7 @@ int wordDatabaseRemoveDatabase(int ix, char *defaultTableName) {
 	   logMsg(LOGERROR, (char *) mysql_error(conn));
 	   return(-1);
 	}
-	char *qStr = (char *) calloc(1, 4096);
+	char *qStr = (char *) calloc(1, 64096);
 	sprintf(qStr,"DROP DATABASE IF EXISTS %s", dbName);
 	int status = mysql_query(conn,qStr);
 	emitStd(jam[ix]->trailer);
@@ -139,7 +139,7 @@ int wordDatabaseDescribe(int ix, char *defaultTableName)
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
-	char *tmp = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 64096);
 
 	MYSQL_RES *res;
 	MYSQL_ROW row;
@@ -147,7 +147,7 @@ int wordDatabaseDescribe(int ix, char *defaultTableName)
 	getWord(tmp, args, 1, space);
 	if (*tmp) {
 		char *query = (char *) calloc(1, MAX_SQL_QUERY_LEN);
-		char *line = (char *) calloc(1, 4096);
+		char *line = (char *) calloc(1, 64096);
 		sprintf(query, "desc %s", args);
 		if (mysql_query(conn,query) != 0) {
 		   logMsg(LOGERROR, (char *) mysql_error(conn));
@@ -183,7 +183,7 @@ int wordDatabaseDescribe(int ix, char *defaultTableName)
 }
 
 int wordDatabaseGet(int ix, char *defaultTableName) {
-	char *givenTableName = (char *) calloc(1, 4096);
+	char *givenTableName = (char *) calloc(1, 64096);
 	MYSQL_RES *res = doSqlSelect(ix, defaultTableName, &givenTableName, 1);
 	SQL_RESULT *rp = sqlCreateResult(givenTableName, res);
 
@@ -239,8 +239,8 @@ int wordDatabaseNewTable(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
-	char *tableName = (char *) calloc(1, 4096);
-	char *tmp = (char *) calloc(1, 4096);
+	char *tableName = (char *) calloc(1, 64096);
+	char *tmp = (char *) calloc(1, 64096);
 
 	getWord(tableName, args, 2, " \t");
 	if (!tableName) {
@@ -248,7 +248,7 @@ int wordDatabaseNewTable(int ix, char *defaultTableName) {
 	   return(-1);
 	}
 
-	char *qStr = (char *) calloc(1, 4096);
+	char *qStr = (char *) calloc(1, 64096);
 	char *p;
 	sprintf(qStr, "CREATE TABLE IF NOT EXISTS %s ( id INT NOT NULL AUTO_INCREMENT , ", tableName);
 	int cnt = 2;
@@ -309,9 +309,9 @@ int wordDatabaseNewIndex(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
-	char *tableName = (char *) calloc(1, 4096);
-	char *indexName = (char *) calloc(1, 4096);
-	char *tmp = (char *) calloc(1, 4096);
+	char *tableName = (char *) calloc(1, 64096);
+	char *indexName = (char *) calloc(1, 64096);
+	char *tmp = (char *) calloc(1, 64096);
 
 	getWord(tableName, args, 2, " \t");
 	if (!tableName) {
@@ -323,7 +323,7 @@ int wordDatabaseNewIndex(int ix, char *defaultTableName) {
 	   logMsg(LOGERROR, "missing index name to create");
 	   return(-1);
 	}
-	char *qStr = (char *) calloc(1, 4096);
+	char *qStr = (char *) calloc(1, 64096);
 	sprintf(qStr, "CREATE INDEX %s ON %s ( ", indexName, tableName);
 	int cnt = 2;
 	while (char *block = strTrim(getWordAlloc(args, cnt++, "\n"))) {
@@ -359,8 +359,8 @@ int wordDatabaseClearItem(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
-	char *tableName = (char *) calloc(1, 4096);
-	char *tmp = (char *) calloc(1, 4096);
+	char *tableName = (char *) calloc(1, 64096);
+	char *tmp = (char *) calloc(1, 64096);
 
 	getWord(tableName, args, 2, " \t");
 	if (!tableName) {
@@ -396,11 +396,11 @@ int wordDatabaseNewItem(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
-	char *tableName = (char *) calloc(1, 4096);
-	char *tmp = (char *) calloc(1, 4096);
-	char *qStr = (char *) calloc(1, 4096);
-	char *nameStr = (char *) calloc(1, 4096);
-	char *valueStr = (char *) calloc(1, 4096);
+	char *tableName = (char *) calloc(1, 64096);
+	char *tmp = (char *) calloc(1, 64096);
+	char *qStr = (char *) calloc(1, 64096);
+	char *nameStr = (char *) calloc(1, 64096);
+	char *valueStr = (char *) calloc(1, 64096);
 
 	getWord(tableName, args, 2, " \t");
 	if (!tableName) {
@@ -497,10 +497,10 @@ int wordDatabaseAmendItem(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
-	char *tableName = (char *) calloc(1, 4096);
-	char *tmp = (char *) calloc(1, 4096);
-	char *qStr = (char *) calloc(1, 4096);
-	char *nvpStr = (char *) calloc(1, 4096);
+	char *tableName = (char *) calloc(1, 64096);
+	char *tmp = (char *) calloc(1, 64096);
+	char *qStr = (char *) calloc(1, 64096);
+	char *nvpStr = (char *) calloc(1, 64096);
 
 	getWord(tableName, args, 2, " \t");
 	if (!tableName) {
@@ -563,8 +563,8 @@ int wordDatabaseUpdateItem(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
-	char *tableName = (char *) calloc(1, 4096);
-	char *tmp = (char *) calloc(1, 4096);
+	char *tableName = (char *) calloc(1, 64096);
+	char *tmp = (char *) calloc(1, 64096);
 	int res = 0;
 
 	getWord(tableName, args, 2, " \t");
@@ -596,14 +596,14 @@ int wordDatabaseRemoveTable(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
-	char *tableName = (char *) calloc(1, 4096);
+	char *tableName = (char *) calloc(1, 64096);
 
 	getWord(tableName, args, 2, " \t");
 	if (!tableName) {
 	   logMsg(LOGERROR, "missing table name to remove");
 	   return(-1);
 	}
-	char *qStr = (char *) calloc(1, 4096);
+	char *qStr = (char *) calloc(1, 64096);
 	sprintf(qStr,"DROP TABLE IF EXISTS %s", tableName);
 	int status = mysql_query(conn,qStr);
 	emitStd(jam[ix]->trailer);
@@ -615,9 +615,9 @@ int wordDatabaseRemoveIndex(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
-	char *tableName = (char *) calloc(1, 4096);
-	char *indexName = (char *) calloc(1, 4096);
-	char *qStr = (char *) calloc(1, 4096);
+	char *tableName = (char *) calloc(1, 64096);
+	char *indexName = (char *) calloc(1, 64096);
+	char *qStr = (char *) calloc(1, 64096);
 
 	getWord(tableName, args, 2, " \t");
 	if (!tableName) {
@@ -641,9 +641,9 @@ int wordDatabaseRemoveItem(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
-	char *tableName = (char *) calloc(1, 4096);
-	char *tmp = (char *) calloc(1, 4096);
-	char *qStr = (char *) calloc(1, 4096);
+	char *tableName = (char *) calloc(1, 64096);
+	char *tmp = (char *) calloc(1, 64096);
+	char *qStr = (char *) calloc(1, 64096);
 	VAR *variable = NULL;
 
 	getWord(tableName, args, 2, " \t");
