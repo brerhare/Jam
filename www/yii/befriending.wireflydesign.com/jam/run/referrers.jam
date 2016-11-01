@@ -144,6 +144,7 @@ function postUpdate() {
 	Please click on <a href="http://befriending.wireflydesign.com/run/referralFormReferrer.jam?id1=RefFormgj3x9dsmcNcj2hvgsxz3sjpOvR&refId={{contact.id}}&ypId=0">this</a> to open the referral form.
 	{{@each settings filter referral_attachment > ''}}
 		<br><br>There is a form attachment also. Please click <a href="http://befriending.wireflydesign.com/jam/uploads/forms/referral/{{settings.referral_attachment}}">here</a> to download the attachment to your computer.
+		<br><br>{{settings.referral_text}}<br>
 	{{@end}}
 {{@end}}
 
