@@ -38,6 +38,7 @@
 
 
 		{{@html gridcol end}}
+			{{@html textarea field=settings.referral_text size=60x10 label='Referral form text'}}
 	{{@html gridrow end}}
 	{{@html gridrow start}}
 		{{@html gridcol start width=1-1}}
