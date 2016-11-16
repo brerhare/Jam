@@ -1,12 +1,12 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@include /jam/run/menu.jam}}
+{{@include /jam/run/new_menu.jam}}
 
 {{@database befriending_wireflydesign_com}}
 
 <br>
-{{@html container start center css='max-width:1080px; Xpadding:0}}
+{{@html container start center css='max-width:1180px; Xpadding:0}}
 
 <div name="content">
 	<center><h3> Referral Report </h3></center>
@@ -15,7 +15,7 @@
 		<input type="text" id="searchInput" placeholder="Type to search">
 	</form>
 
-	<table id='printTable' class="searchTable testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+	<table id='printTable' class="searchTable testgrid sortable uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr style='font-weight:bold'>
 			<th> Referral date </th>
 			<th> Referrer Name </th>
@@ -26,9 +26,9 @@
 			<th> First Match </th>
 			<th> Days </th>
 		</tr>
-{{@each young_person filter referral_date > '0000-00-00'}}
+{{@each young_person filter archive_flag = 0, referral_date > '0000-00-00'}}
 	{{@count id}}
-		<tr>
+		<tr class="rowHighlight">
 			<td>{{young_person.referral_date}}</td>
 	{{@get contact filter young_person_id = young_person.id, contact_relationship_id = 3}}
 	{{@get global filter id = contact.global_id}}
@@ -43,10 +43,8 @@
 			<td>{{@daycount young_person.referral_date match_yp.match_started}}</td>
 		</tr>
 {{@end}}
-		<tr>
-			<td> <b> Total Referrals : {{count.id}} </b> </td>
-		</tr>
 	</table>
+  <b> Total Referrals : <span id="searchTotal">{{count.id}}</span> </b>
 </div>
 <br>
 

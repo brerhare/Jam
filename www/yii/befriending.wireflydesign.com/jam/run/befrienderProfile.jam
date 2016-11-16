@@ -1,0 +1,100 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@Xinclude /jam/run/new_menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:900px; Xpadding:0}}
+
+<!-- Form input component -->
+
+	{{@get befriender filter id = befriender.id}}
+	{{@get befriender_documentation filter id = befriender_documentation.id}}
+	{{befriender_documentation.befriender_id = befriender.id}}
+
+	<style type="text/css">
+		label {text-align: right;}
+	</style>
+
+	<form name="inputForm_befriender_profile" class="uk-form uk-form-horizontal">
+		<input type="hidden" name="befriender_profile.picture" value="{{befriender_documentation.file}}">
+
+		{{@get befriender filter id = befriender.id}}
+		{{@get global filter id = befriender.global_id}}
+
+		{{@html gridrow start}}
+			{{@html gridcol start width=5-5}}
+
+                    <label class="uk-form-label" for="mem.upload"> Picture </label>
+                    <div class="uk-form-controls">
+				<img id="img" src="/jam/uploads/befriender/profile/{{befriender.id}}" alt="No picture uploaded yet" height="100" width="100" style="padding-bottom:10px">
+
+<br/>
+					<div class="uk-form-file"> <input type="file" onChange="fileUploadProfile(this)"></div>
+
+                    </div>
+
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+
+
+		{{@html gridrow start}}
+			{{@html gridcol start width=5-5}}
+				{{@html textarea field=befriender.profile_notes size=80x10 label=Notes}}
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+		{{@html gridrow start}}
+			{{@html gridcol start width=1-1}}
+				<br>
+				<center>
+					{{@html button Save primary medium
+						runAction('update_befriender_profile', ['inputForm_befriender_profile'], '')
+					}}
+				</center>
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+	</form>
+
+{{@action update_befriender_profile}}
+	{{@update item befriender notify=ok}}
+{{@end}}
+
+{{@html container end}}
+
+<script>
+function fileUploadProfile(obj) {
+	$.blockUI();
+	var file = obj.files[0];
+	var evObj = get('befriender.id');
+//alert(evObj.value);
+    console.log("name : " + file.name);
+    console.log("size : " + file.size);
+    console.log("type : " + file.type);
+    console.log("date : " + file.lastModified)
+	var url = 'http://befriending.wireflydesign.com:/jam/uploads/uploadBefrienderProfile.php?befrienderId=' + evObj.value;
+	var xhr = new XMLHttpRequest();
+	var fd = new FormData();
+	xhr.open("POST", url, true);
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4 && xhr.status == 200) {
+			console.log(xhr.responseText); // handle response.
+			fileObj = get('befriender_profile.picture');
+			fileObj.value = file.name;
+			$.unblockUI();
+d = new Date();
+$("#img").attr("src", "/jam/uploads/befriender/profile/" + evObj.value + "?"+d.getTime());
+		}
+		else {
+			$.unblockUI();
+		}
+	};
+	fd.append("upload_file", file);
+	xhr.send(fd);
+
+}
+
+</script>
+
+{{@include /jam/sys/html/footer.html}}

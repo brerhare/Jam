@@ -136,14 +136,14 @@ onChange and onKeyUp is bound to all input types - user defines an appropriate o
 @@TODO allow others to be bound by user, something like event=onfocus or whatever. Function name per usual naming convention
 NB onKeyUp is often used as a search filter in conjunction with an @action
 
-{@html dropdown/filter field=product.supplier_id pickfield=supplier.name size=medium label='Line Supplier'}
+{@html dropdown/filter field=product.supplier_id pickfield=supplier.name size=medium label='Line Supplier' tip='hover on me'}
 {@html dropdown/filter field=product.supplier_id pickfield=supplier.name size=medium group=mygroup}
 {@html dropdown/filter field=product.supplier_id pickfield=supplier.name size=medium}
-{@html text/date field=product.supplier_id size=medium label='Address' placeholder='address line 1'}
-{@html text/date field=product.supplier_id size=medium hidden}
+{@html text/date/password field=product.supplier_id size=medium label='Address' placeholder='address line 1'}
+{@html text/date/password field=product.supplier_id size=medium hidden default=1}
 {@html textarea field=stock_supplier.notes size=60x5 label=Notes}
 
-Optional for any - label, group, disabled
+Optional for any - label, group, disabled, tip, default
 
 {@html button Save primary small
 	alert('ok')     			// or any js
@@ -166,6 +166,8 @@ Optional for any - label, group, disabled
 {@html input disabled stock_supplier.payment_terms mini "Payment terms" days}}	// same as input just no editing
 {@html inp <anytype means inline input>}
 {@html textarea stock_supplier.notes 60x5 Notes}
+{@html checkbox field=young_person.exclusion_risk label='Exclusion risk' tip='At risk of Exclusion?'}
+{@html radio field=befriender.gender label='Gender' options=0:Male,1:Female}
 
 <h5>Tabs</h5>
 
@@ -192,12 +194,16 @@ runAction [jamName:]actionName, array [name(s)/id(s)/class], [resultObjectName],
 	runAction('jam2:save', ['form1,form2'], 'divThatGetsTheResult', backButton )
 
 <hr>
+
 <h4>Utility</h4>
 
-<h5>Variables</h5>
+<h5>System Variables</h5>
 
-system.date 	@@TODO
-system.time		@@TODO
+sys.control.xxxxx	// mainly for sysjam, all args processed line by line are converted to vars eg 'group=mygroup size=small'
+sys.sequence		// The unique sequence number for each iteration of an @each @end loop. Useful for getSibling() js calls from direct html <button>s etc
+sys.today			// Date
+sys.now 			// Time
+
 
 <hr>
 
@@ -212,6 +218,12 @@ system.time		@@TODO
 {@include /path/file}
 {@include once /path/file}
 {@include standalone /path/file}	// only include if this file itself is not included
+
+{@daycount fromdate todate}
+
+{@replacevalue field=befriender.gender value=0:male,1:female}
+{@postcodeextract type=areadistrict postcode='DG6 4TP'}		// returns 'DG6'
+
 
 <hr>
 
@@ -267,7 +279,3 @@ Running from commandline
 
 We should maybe have a setting whereby an ajax call can send all the browser vars to the server on an @action call. This is like having 'state'
 
-
-<h4>Autocreated Jam variables</h4>
-sys.control.xxxxx		// mainly for sysjam, all args processed line by line are converted to vars
-sys.control.sequence	// A unique sequence number for each iteration of an @each @end loop

@@ -1,0 +1,44 @@
+{{@database befriending_wireflydesign_com}}
+
+{{@get settings filter id = 1}}
+
+{{@each event}}
+	{{@get global filter id = contact.global_id}}
+	Event Id: {{event.id}}.  Event Date: {{event.date}}.  Lead Days: {{settings.reminder_events_lead_days}}.  Trigger Date: {{@adddays event.date settings.reminder_events_lead_days mem.date}}
+	{{@runaction xxxxx}}
+	{{@ifaction aaaaa event.date == mem.date}}
+{{@end}}
+
+{{@action xxxxx}}
+	{{@each user}}
+		OH AH
+		{{@runaction yyyyy}}
+	{{@end}}
+{{@end}}
+
+{{@action yyyyy}}
+		oh ah
+{{@end}}
+
+{{@action update_contact}}
+	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
+	{{contact.global_id = global.id}}
+	{{contact.contact_relationship_id = 3}}
+	{{@update item contact}}
+{{@end}}
+
+{{@action email_contact}}
+	{{@get contact filter id = contact.id}}
+	{{@get global filter id = contact.global_id}}
+	{{@get settings filter id = 1}}
+	{{@email {{settings.email}} {{global.email}} 'Befriending referral form for {{global.forename}} {{global.surname}}' action:emailContent}}
+	<script>
+	alert('Email sent');
+	</script>
+	Email sent
+{{@end}}
+
+{{@action emailContent}}
+	Please click on <a href="http://befriending.wireflydesign.com/run/referralFormReferrer.jam?id1=RefFormgj3x9dsmcNcj2hvgsxz3sjpOvR&refId={{contact.id}}&ypId=0">this</a> to open the referral form.
+{{@end}}
+

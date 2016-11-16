@@ -1,7 +1,7 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@Xinclude /jam/run/menu.jam}}
+{{@Xinclude /jam/run/new_menu.jam}}
 
 {{@database befriending_wireflydesign_com}}
 
@@ -131,6 +131,9 @@ function forwardToNext() {
 {{@action update_young_person}}
 	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
 	{{young_person.global_id = global.id}}
+    {{young_person.archive_flag = 0}}
+    {{young_person.archive_date = '0000-00-00'}}
+    {{young_person.archive_destruction_date = '0000-00-00'}}
 	{{@update item young_person}}
 	{{@get contact filter id = refId}}
 	{{contact.young_person_id = young_person.id}}

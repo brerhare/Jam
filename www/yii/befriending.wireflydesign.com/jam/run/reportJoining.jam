@@ -1,7 +1,7 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@include /jam/run/menu.jam}}
+{{@include /jam/run/new_menu.jam}}
 
 {{@database befriending_wireflydesign_com}}
 
@@ -19,7 +19,7 @@
 </div>
 
 
-<table id='printTable' class="searchTable testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+<table id='printTable' class="searchTable testgrid sortable uk-table uk-table-condensed" style="border:1px solid #dddddd">
 	<tr style='xposition:fixed; font-weight:bold'>
 		<th> Name </th>
 		<th style='min-width:80px'> DoB </th>
@@ -28,9 +28,10 @@
 		<th> Mobile </th>
 		<th> Email </th>
 	</tr>
-{{@each befriender}}
+{{@each befriender filter archive_flag = 0}}
+	{{@count id}}
 	{{@get global filter id = befriender.global_id}}
-	<tr>
+	<tr class="rowHighlight">
 		<td>{{global.forename}} {{global.surname}}</td>
 		<td>{{befriender.dob}}</td>
 		<td>{{global.house}} {{global.street}} {{global.area}} {{global.town}} {{global.postcode}}</td>
@@ -40,6 +41,8 @@
 	</tr>
 {{@end}}
 </table>
+  <b> Total items : <span id="searchTotal">{{count.id}}</span> </b>
+<br>
 <br>
 
 <button class="uk-button uk-button-medium uk-button-primary" onClick="printData('printTable')"> Print </button>

@@ -1,7 +1,7 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@include /jam/run/menu.jam}}
+{{@include /jam/run/new_menu.jam}}
 
 {{@database befriending_wireflydesign_com}}
 
@@ -18,15 +18,27 @@
 
 <form name="settings_form" class="uk-form uk-form-horizontal">
 <br>
-<center><h3> System Settings </h3></center>
+<center><h3> System Configuration </h3></center>
 
 	<input type="hidden" name="settings.id" value={{settings.id}}>
+	<input type="hidden" name="settings.referral_attachment" value={{settings.referral_attachment}}>
 	{{@html gridrow start}}
 		{{@html gridcol start width=5-5}}
 			{{@html text field=settings.email size=large label='Email address'}}
 			{{@html text field=settings.reminder_documentation_lead_days size=mini label='Reminder documentation days' default=3}}
 			{{@html text field=settings.reminder_events_lead_days size=mini label='Reminder event days' default=3}}
+			{{@html text field=settings.archive_days size=mini label='Archive delay days' tip='Number of day from marking an item for archive and the archive occuring' default=3}}
+
+			<label class="uk-form-label" for="mem.upload">Referral form attachment</label>
+			<div class="uk-form-controls">
+				<span style='display:inline-block;margin-top:5px'>{{settings.referral_attachment}}</span>
+				<input type="button" value="Clear" onclick="clearAttachment()">
+				<span class="uk-form-file"> <input type="file" onChange="fileUpload(this)"></span>
+			</div>
+
+
 		{{@html gridcol end}}
+			{{@html textarea field=settings.referral_text size=60x10 label='Referral form text'}}
 	{{@html gridrow end}}
 	{{@html gridrow start}}
 		{{@html gridcol start width=1-1}}
@@ -49,9 +61,44 @@
 {{@end}}
 
 <script>
-function postUpdate() {
-	runJam();
+function clearAttachment() {
+	var evObj = get('settings.referral_attachment');
+	evObj.value = '';
 }
+
+function postUpdate() {
+//window.setTimeout(runJam, 1000)
+//	runJam();
+}
+
+function fileUpload(obj) {
+    $.blockUI();
+    var file = obj.files[0];
+    var evObj = get('settings.referral_attachment');
+	evObj.value = file.name;
+//alert(evObj.value);
+    console.log("name : " + file.name);
+    console.log("size : " + file.size);
+    console.log("type : " + file.type);
+    console.log("date : " + file.lastModified)
+    var url = 'http://befriending.wireflydesign.com:/jam/uploads/uploadReferralAttachment.php';
+    var xhr = new XMLHttpRequest();
+    var fd = new FormData();
+    xhr.open("POST", url, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            console.log(xhr.responseText); // handle response.
+            $.unblockUI();
+        }
+        else {
+            $.unblockUI();
+        }
+    };
+    fd.append("upload_file", file);
+    xhr.send(fd);
+
+}
+
 </script>
 
 {{@html container end}}

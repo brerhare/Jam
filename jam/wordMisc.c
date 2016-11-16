@@ -16,6 +16,159 @@
 #include "list.h"
 #include "log.h"
 
+
+// @wordsplit field=global.postcode segment=1 newfield=myNewField			IF 'newfield' exists that var will be created/updated otherwise the result will simply be emitted
+int wordMiscWordSplit(int ix, char *defaultTableName) {
+    char *cmd = jam[ix]->command;
+    char *args = jam[ix]->args;
+    char *rawData = jam[ix]->rawData;
+    char *tmp = (char *) calloc(1, 4096);
+    char *wordField = NULL;
+    char *wordNewField = NULL;
+    char *word = NULL;
+    char *wordNum = NULL;
+    char *split = (char *) calloc(1, 4096);
+
+	logMsg(LOGDEBUG, "wordMiscWordSplit started");
+	if (isVar("sys.control.field")) 
+		wordField = strdup(getVarAsString("sys.control.field"));
+logMsg(LOGDEBUG, "wordMiscWordSplit 1");
+	if (isVar("sys.control.newfield")) 
+		wordNewField = strdup(getVarAsString("sys.control.newfield"));
+logMsg(LOGDEBUG, "wordMiscWordSplit 2");
+	if (isVar("sys.control.segment"))
+		wordNum = strdup(getVarAsString("sys.control.segment"));
+	logMsg(LOGDEBUG, "wordMiscWordSplit field required is [%s] and segment required is [%s]", wordField, wordNum);
+
+	word = strdup(getVarAsString(wordField));
+
+	getWord(split, word, atoi(wordNum), " ");
+
+	// Do we store this in a field or simply emit it?
+	if (wordNewField) {
+        VAR *var = findVarStrict(wordNewField);
+        if (var) {
+            if (var->portableValue)
+                free(var->portableValue);
+            var->portableValue = strdup(split);
+        } else {
+            var = (VAR *) calloc(1, sizeof(VAR));
+            var->name = strdup(wordNewField);
+            var->type = VAR_STRING;
+            var->source = strdup("variable");
+            var->debugHighlight = 4;
+            clearVarValues(var);
+            fillVarDataTypes(var, split);
+            if (addVar(var) == -1) {
+                logMsg(LOGFATAL, "Cant create any more vars, terminating");
+                exit(1);
+            }
+        }
+
+	} else {
+		emitStd(split);
+	}
+
+	logMsg(LOGDEBUG, "wordMiscWordSplit field value is [%s] and segment value is [%s]", word, split);
+
+	emitStd(jam[ix]->trailer);
+
+	free(tmp);
+	if (wordField) free(wordField);
+	if (wordNewField) free(wordNewField);
+	if (word) free(word);
+	if (wordNum) free(wordNum);
+	free(split);
+}
+
+int wordMiscReplaceValue(int ix, char *defaultTableName) {
+    char *cmd = jam[ix]->command;
+    char *args = jam[ix]->args;
+    char *rawData = jam[ix]->rawData;
+    char *tmp = (char *) calloc(1, 4096);
+	char *values = NULL;
+	char *fieldVar = NULL;
+	char *fieldValue = NULL;
+
+	char *table = NULL;
+	char *field = NULL;
+	char *tableFieldRawValue = NULL;
+
+    // [Table].field
+    char *p = getVarAsString("sys.control.field");
+    if (!p) {
+        logMsg(LOGERROR, "Misc replacevalue cant be null");
+        return(-1);
+    }
+    tableFieldRawValue = strdup(getVarAsString("sys.control.field"));
+    if (strchr(p, '.')) {       // has a named table
+        table = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
+        field = getWordAlloc(getVarAsString("sys.control.field"), 2, ".");
+    } else {                    // its just the field name
+        if (defaultTableName)
+            table = strdup(defaultTableName);
+        else
+            table = strdup("");
+        field = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
+		fieldVar = strdup(getVarAsString(field));
+    }
+
+    // Value (can be multiple choices). Eg value=0:Male,1:Female
+    if (isVar("sys.control.values"))
+        values = strdup(getVarAsString("sys.control.values"));
+    else
+        values = strdup("");
+
+
+	// Get the actual field value we want to replace with something else
+    sprintf(tmp, "%s.%s", table, field);
+    VAR *variable = findVarStrict(tmp);
+    if (variable) {
+        fieldValue = strdup(variable->portableValue);
+	}
+	if (!variable) {
+        logMsg(LOGERROR, "Misc replacevalue cant get field's actual value, so cant replace");
+        return(-1);
+	}
+
+	int cnt = 1;
+	while (1) {
+		char *opt = getWordAlloc(values, cnt++, ",");
+		if ((!opt) || (!strlen(opt)))
+			break;
+		char *optA = strTrim(getWordAlloc(opt, 1, ":"));
+		char *optB = strTrim(getWordAlloc(opt, 2, ":"));
+		if ( (!optA) || (!strlen(optA)) )
+			continue;
+		if ( (!optB) || (!strlen(optB)) ) {
+			free(opt);
+			free(optA);
+			continue;
+		}
+		if ((fieldValue) && (strlen(fieldValue))) {
+			if (!strcmp(optA, fieldValue)) {
+				//sprintf(tmp, "[%d] : [%s][%s]", (int) strlen(fieldValue), fieldValue, optB);
+				emitStd(optB);
+				break;
+			}
+		}
+		//sprintf(tmp, "X:(%s):%s=%s", fieldValue, optA, optB);	
+		//emitStd(tmp);
+		free(optA);
+		free(optB);
+	}
+
+	emitStd(jam[ix]->trailer);
+
+	free(tmp);
+    free(table);
+    free(field);
+	free(values);
+	if (fieldVar) free(fieldVar);
+	if (fieldValue) free(fieldValue);
+    free(tableFieldRawValue);
+}
+
 int wordMiscInclude(int ix, char *defaultTableName) {
     char *cmd = jam[ix]->command;
     char *args = jam[ix]->args;
@@ -265,6 +418,57 @@ int wordMiscNewList(int ix, char *defaultTableName) {
     emitStd(jam[ix]->trailer);
 }
 
+int wordMiscAddDays(int ix, char *defaultTableName) {
+	char *cmd = jam[ix]->command;
+	char *args = jam[ix]->args;
+	char *rawData = jam[ix]->rawData;
+	char *tmp = (char *) calloc(1, 4096);
+	char *dateFromField = (char *) calloc(1, 4096);
+	char *daysField = (char *) calloc(1, 4096);
+	char *dateFrom = NULL;
+	char *days = NULL;
+	char wd[256];
+
+	getWord(dateFromField, args, 1, " \t");
+	if (!dateFromField) {
+		logMsg(LOGERROR, "wordMiscAddDays: missing 'date from'");
+		return(-1);
+	}
+	dateFrom = strdup(getVarAsString(dateFromField));
+
+	getWord(daysField, args, 1, " \t");
+	if (!daysField) {
+		logMsg(LOGERROR, "wordMiscAddDays: missing 'days'");
+		return(-1);
+	}
+	days = strdup(getVarAsString(daysField));
+
+	getWord(wd, dateFrom, 3, "-");
+	struct tm a = {0,0,0,0,0,0};
+	a.tm_mday = atoi(wd);
+	getWord(wd, dateFrom, 2, "-");
+	a.tm_mon = (atoi(wd) - 1);
+	getWord(wd, dateFrom, 1, "-");
+	a.tm_year = (atoi(wd) - 1900);
+
+	// Add days
+	a.tm_mday += (atoi(days));
+	time_t x = mktime(&a);
+	if (x != (time_t)(-1)) {
+		strftime(tmp, 4095, "%Y-%m-%d", &a);
+		emitStd(tmp);
+	} else
+		emitStd(" date error ");
+
+
+    free(tmp);
+    free(dateFromField);
+    free(daysField);
+    free(dateFrom);
+    free(days);
+    emitStd(jam[ix]->trailer);
+}
+
 int wordMiscDayCount(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
@@ -272,19 +476,19 @@ int wordMiscDayCount(int ix, char *defaultTableName) {
 	char *tmp = (char *) calloc(1, 4096);
 	char *dateFromField = (char *) calloc(1, 4096);
 	char *dateToField = (char *) calloc(1, 4096);
-	char *dateFrom = (char *) calloc(1, 4096);
-	char *dateTo = (char *) calloc(1, 4096);
+	char *dateFrom = NULL;
+	char *dateTo = NULL;
 	char wd[256];
 
 	getWord(dateFromField, args, 1, " \t");
 	if (!dateFromField) {
-		logMsg(LOGERROR, "missing 'date from");
+		logMsg(LOGERROR, "wordMiscDayCount: missing 'date from'");
 		return(-1);
 	}
 
 	getWord(dateToField, args, 2, " \t");
 	if (!dateToField) {
-		logMsg(LOGERROR, "missing 'date to");
+		logMsg(LOGERROR, "wordMiscDayCount: missing 'date to'");
 		return(-1);
 	}
 
@@ -477,6 +681,7 @@ int wordMiscEmail(int ix, char *defaultTableName) {
 	fprintf(mailpipe, "</body></html>");
 	fwrite(".\n", 1, 2, mailpipe);
 	pclose(mailpipe);
+	sleep(3);
 
 	// Wrap up
     free(tmp);

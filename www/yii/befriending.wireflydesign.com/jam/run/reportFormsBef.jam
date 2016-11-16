@@ -1,7 +1,7 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@Xinclude /jam/run/menu.jam}}
+{{@Xinclude /jam/run/new_menu.jam}}
 
 {{@database befriending_wireflydesign_com}}
 
@@ -15,45 +15,27 @@
 		<input type="text" id="searchInput" placeholder="Type to search">
 	</form>
 
-	<table id='printTable' class="searchTable testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+	<table id='printTable' class="searchTable testgrid sortable uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr style='font-weight:bold'>
 			<th> Date </th>
 			<th> Meeting Type </th>
-			<th> Attendees </th>
-			<th> Files </th>
-			<th> Notes </th>
+			<th style='width:60%'> Notes </th>
 		</tr>
 {{@get befriender filter id = bf_id}}
 {{@each event filter befriender_id = befriender.id}}
-		{{@get global filter id = befriender.global_id}}
+		{{@get global filter id = young_person.global_id}}
 		<tr>
-			<td>{{event.date}}</td>
 		{{@get event_type filter id = event.event_type_id}}
-			<td>{{event_type.name}}</td>
+			<td> <a href='http://befriending.wireflydesign.com/run/eventMaintain?event.id={{event.id}}'>{{event.date}}</a> </td>
 			<td>
-		{{@each event_attendee filter event_id = event.id}}
-			{{@get global filter id = event_attendee.global_id}}
-			{{global.forename}} {{global.surname}}<br>
-		{{@end}}
+				{{event_type.name}}
+				<br>
+				{{@each event_attendee filter event_id = event.id}}
+					{{@get global filter id = event_attendee.global_id}}
+					{{global.forename}} {{global.surname}}
+					<br>
+				{{@end}}
 			</td>
-
-
-
-			<td>
-
-
-		{{@each form_upload_other filter event_id = event.id}}
-			{{@get form_type filter id = form_upload_other.form_type_id}}
-			<a href="http://befriending.wireflydesign.com:/jam/uploads/forms/events/other/{{event.id}}_{{form_upload_other.file}}" target="_blank">{{form_upload_other.file}}</a><br/>
-		{{@end}}
-		{{@each form_upload_girfec filter event_id = event.id}}
-			<a href="http://befriending.wireflydesign.com:/jam/uploads/forms/events/girfec/{{event.id}}_{{form_upload_girfec.file}}" target="_blank">{{form_upload_girfec.file}}</a><br/>
-		{{@end}}
-
-
-			</td>
-
-
 
 			<td width='300px' >{{event.notes}}</td>
 		</tr>
