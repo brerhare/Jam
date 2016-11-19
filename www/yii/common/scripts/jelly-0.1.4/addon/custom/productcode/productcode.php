@@ -452,7 +452,11 @@ $content .= "<style> * { color: grey;} </style>";
 				$content .= "Notes<br>";
 				$content .= "<textarea id='message' name='message' rows='7' cols='38'> </textarea> <br><br><br/>";
 				$content .= "<span>Got a promotion code? </span><input id='promo_code' name='promo_code' type='text' value='' size='15'/> <br /><br/>";
-				$content .= "<a href='#' onClick=\"proceed(0)\"	>" . "<img src=/product/img/paymentsense-checkout.png></a>";
+
+				// Paymentsense is ONLY for Jacquies
+				if ($this->sid == 'hrhgr5ko21gn08a3e22jeaers5')
+					$content .= "<a href='#' onClick=\"proceed(0)\"	>" . "<img src=/product/img/paymentsense-checkout.png></a>";
+
 				if ((Yii::app()->sess->exists('checkoutPaypalEmail')) && (trim(Yii::app()->sess->get('checkoutPaypalEmail')) != ""))
 					$content .= "<br><br><a href='#' onClick=\"proceed(1)\"	>" . "<img src=/product/img/paypal-checkout.png></a>";
 				$content .= "</td></tr></tbody>";
