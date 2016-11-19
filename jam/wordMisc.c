@@ -651,15 +651,35 @@ int wordMiscEmail(int ix, char *defaultTableName) {
 		}
 	}
 
-	// @@TODO SEE 20 LINES BELOW !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	char *mailBodyHtml = (char *) calloc(2, strlen(mailBody));
+	p = mailBody;
+	char *p2 = mailBodyHtml;
+	while (*p) {
+		if (*p == 10) {
+			p++;
+			*p2++ = '<';
+			*p2++ = 'B';
+			*p2++ = 'R';
+			*p2++ = '>';
+			*p2++ = '\n';
+		} else {
+			*p2++ = *p++;
+		}
+	}
+	logMsg(LOGDEBUG, "mailBody=[%s]", mailBody);
+	logMsg(LOGDEBUG, "mailBodyHtml=[%s]", mailBodyHtml);
+
+
+/*
 	while (char *p = strchr(mailBody, '\\')) {
 		*p = ' ';
 		p++;
 		if ((*p) && (*p == 'n'))
 			*p = 10;
 	}
+*/
 
-	logMsg(LOGDEBUG, "Try to send via sendmail. From [%s] To [%s] Subject [%s] Body [%s]", mailFrom, mailTo, mailSubject, mailBody);
+	logMsg(LOGDEBUG, "Try to send via sendmail. From [%s] To [%s] Subject [%s] Body [%s]", mailFrom, mailTo, mailSubject, mailBodyHtml);
 //return(0);
 	FILE *mailpipe = popen("/usr/sbin/sendmail -t", "w");
 	if (mailpipe == NULL) {
@@ -667,21 +687,24 @@ int wordMiscEmail(int ix, char *defaultTableName) {
 		return(-1);
 	}
 	logMsg(LOGDEBUG, "Mailpipe popen ok. Sending via sendmail");
-	fprintf(mailpipe, "From: %s\n", mailFrom);
-	fprintf(mailpipe, "To: %s\n", mailTo);
 
-	fprintf(mailpipe, "MIME-Version: 1.0\n");
-	fprintf(mailpipe, "Content-Type: text/html\n");
+	fprintf(mailpipe, "From: %s\r\n", mailFrom);
+	fprintf(mailpipe, "To: %s\r\n", mailTo);
 
-	fprintf(mailpipe, "Subject: %s\n\n", mailSubject);
-	fprintf(mailpipe, "<!DOCTYPE HTML>");
-	fprintf(mailpipe, "<html><head><meta http-equiv='Content-Type' content='text/html; charset=UTF-8' /></head><body>");
-	//@@TODO convert all \n to <br> unless we're going to have a text vs html content indicator. SEE 20 lines UP!!!!
-	fwrite(mailBody, 1, strlen(mailBody), mailpipe);
+	fprintf(mailpipe, "MIME-Version: 1.0\r\n");
+	fprintf(mailpipe, "Content-Type: text/html; charset=iso-8859-1\r\n");
+	fprintf(mailpipe, "Content-Transfer-Encoding: 8bit\r\n");
+
+	fprintf(mailpipe, "Subject: %s\r\n\r\n", mailSubject);
+
+	fprintf(mailpipe, "<html><head><style>html, table, div, tr, td, * { font-size: small !important; color: #150e00 !important; background-color: #fff5ee !important; font-family: Calibri, Verdana, Arial, Serif !important; font-size:1em !important} table td { border-left:solid 10px transparent; } table td:first-child { border-left:0; }</style><meta http-equiv='Content-Type' content='text/html; charset=UTF-8' /></head><body>");
+
+	fwrite(mailBodyHtml, 1, strlen(mailBodyHtml), mailpipe);
 	fprintf(mailpipe, "</body></html>");
-	fwrite(".\n", 1, 2, mailpipe);
+	fprintf(mailpipe, "\r\n");
+	//fwrite("\r\n", 1, 2, mailpipe);
 	pclose(mailpipe);
-	sleep(3);
+	//sleep(3);
 
 	// Wrap up
     free(tmp);
@@ -689,6 +712,7 @@ int wordMiscEmail(int ix, char *defaultTableName) {
     free(mailTo);
     free(mailSubject);
     free(mailBody);
+	free(mailBodyHtml);
     emitStd(jam[ix]->trailer);
 }
 
