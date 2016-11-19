@@ -59,7 +59,7 @@
 <br>
 		{{@html gridrow start}}
 			{{@html gridcol start width=1-1}}
-				{{@html textarea field=young_person.special_needs_notes size=80x10 label='Reason for referral' group=inp}}
+				{{@html textarea field=young_person.special_needs_notes size=80x10 label='Reasons for referral' group=inp}}
 			{{@html gridcol end}}
 		{{@html gridrow end}}
 
@@ -111,6 +111,12 @@ function updateAndNext() {
 		alert('Surname is required');
 		return;
 	}
+	objReason = get('young_person.special_needs_notes');
+	if ((objReason.value.length) < 1) {
+		alert('ReferralReason is required');
+		return;
+	}
+
 	runAction('update_young_person', ['inputForm_young_person'], '', forwardToNext);
 }
 

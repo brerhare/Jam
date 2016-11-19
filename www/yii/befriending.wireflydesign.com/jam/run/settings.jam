@@ -21,7 +21,7 @@
 <center><h3> System Configuration </h3></center>
 
 	<input type="hidden" name="settings.id" value={{settings.id}}>
-	<input type="hidden" name="settings.referral_attachment" value={{settings.referral_attachment}}>
+	<input type="hidden" name="settings.referral_attachment" value="{{settings.referral_attachment}}">
 	{{@html gridrow start}}
 		{{@html gridcol start width=5-5}}
 			{{@html text field=settings.email size=large label='Email address'}}
@@ -89,8 +89,9 @@ function fileUpload(obj) {
         if (xhr.readyState == 4 && xhr.status == 200) {
             console.log(xhr.responseText); // handle response.
             $.unblockUI();
-        }
-        else {
+			objAttachment = get('settings.referral_attachment');
+			objAttachment.value = file.name;
+        } else {
             $.unblockUI();
         }
     };
