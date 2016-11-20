@@ -1,7 +1,7 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@include /jam/run/menu.jam}}
+{{@include /jam/run/new_menu.jam}}
 
 {{@html container start center css='max-width:1080px; Xpadding:0}}
 
@@ -11,7 +11,7 @@
 {{@template TABLE event}}
 
 {{@XXXtemplate FILTER filter id > 2, id DESC}}
-{{@template FILTER filter id > 2 DESC}}
+{{@template FILTER filter id > 2, order by date DESC}}
 
 {{@template DESCRIPTION Maintain Events}}
 
@@ -51,7 +51,7 @@
         	<input type="text" id="searchInput" placeholder="Type to search">
     	</form>
 
-		<table id="printTable" class="testgrid searchTable uk-table uk-table-condensed" style="border:1px solid #dddddd">
+		<table id="printTable" class="testgrid sortable searchTable uk-table uk-table-condensed" style="border:1px solid #dddddd">
 			<tr>
 				HEADINGS
 				<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('TABLEMaintain?event_id=0')"> <i class="uk-icon-plus"></i> New</button> </th>

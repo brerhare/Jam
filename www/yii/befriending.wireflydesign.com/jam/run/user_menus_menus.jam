@@ -1,0 +1,120 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/new_menu.jam}}
+
+
+{{@database befriending_wireflydesign_com}}
+<br>
+
+{{@get user filter id = user.id}}
+
+{{@html container start center css='max-width:700px; Xpadding:0}}
+
+<div name="content_contact">
+
+<form name='content_form'>
+
+<h3><center> Assign menu permissions for <b>{{user.first_name}} {{user.last_name}}</b> &nbsp&nbsp&nbsp&nbsp {{@html button 'Return to list' primary medium
+            runJam('user_menus_users');
+        }} </center></h3>
+
+	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+		<tr>
+			<th> Menu item </th>
+			<th> Access </th>
+		</tr>
+
+<!-- parent level -->
+{{@each menu filter parent_id = 0}}
+			<td>{{menu.text}}</td>
+			{{tmp.checked = }}
+	{{@each user_menu filter menu_id = menu.id, user_id = user.id}}
+			{{tmp.checked = checked}}
+	{{@end}}
+			<td> <input type="checkbox" name="menu" value="{{menu.id}}" {{tmp.checked}} class='inp'> </td>
+		</tr>
+
+<!-- child level -->
+{{@each menu filter parent_id = menu.id}}
+			<td> &nbsp&nbsp&nbsp&nbsp {{menu.text}}</td>
+			{{tmp2.checked = }}
+	{{@each user_menu filter menu_id = menu.id, user_id = user.id}}
+			{{tmp2.checked = checked}}
+	{{@end}}
+			<td> <input type="checkbox" name="menu" value="{{menu.id}}" {{tmp2.checked}} class='inp'> </td>
+		</tr>
+{{@end}}
+
+
+{{@end}}
+	</table>
+
+</form>
+
+</div>
+<center>
+	<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="saveButtonClicked(this)">Save</button> </td>
+	&nbsp&nbsp&nbsp&nbsp
+	<button type='button' id='allButton' class="uk-button uk-button-ok" onClick="allButtonClicked(this)">Select All</button> </td>
+	<button type='button' id='noneButton' class="uk-button uk-button-ok" onClick="noneButtonClicked(this)">Select None</button> </td>
+</center>
+
+{{@html container end}}
+
+<script>
+window.onload = function() {
+}
+
+{{@action deleteAllInterests}}
+	{{@sql delete from user_menu where user_id = {{user.id}} }}
+{{@end}}
+
+{{@action addInterest}}
+	{{user_menu.user_id = user.id}}
+	{{user_menu.menu_id = menu.id}}
+	{{@new item user_menu notify=ok}}
+{{@end}}
+
+function saveButtonClicked(obj) {
+	runAction('deleteAllInterests',['user.id'], '', addAll);
+}
+
+function addAll() {
+	var checkboxes = document.getElementsByName('menu');
+	for (var i = 0; i < checkboxes.length; i++) {
+		if (checkboxes[i].checked) {
+			runAction('addInterest', ['user.id', 'menu.id='+checkboxes[i].value]);
+		}
+	}
+}
+
+function allButtonClicked(obj) {
+var objCheckBoxes = document.forms['content_form'].elements['menu'];
+	if(!objCheckBoxes)
+		return;
+	var countCheckBoxes = objCheckBoxes.length;
+	if(!countCheckBoxes)
+		objCheckBoxes.checked = 1;
+	else
+		// set the check value for all check boxes
+		for(var i = 0; i < countCheckBoxes; i++)
+			objCheckBoxes[i].checked = 1;
+}
+
+function noneButtonClicked(obj) {
+var objCheckBoxes = document.forms['content_form'].elements['menu'];
+	if(!objCheckBoxes)
+		return;
+	var countCheckBoxes = objCheckBoxes.length;
+	if(!countCheckBoxes)
+		objCheckBoxes.checked = 0;
+	else
+		// set the check value for all check boxes
+		for(var i = 0; i < countCheckBoxes; i++)
+			objCheckBoxes[i].checked = 0;
+}
+
+</script>
+
+{{@include /jam/sys/html/footer.html}}

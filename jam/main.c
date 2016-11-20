@@ -55,7 +55,7 @@ char *jellyTemplateValue[MAX_JELLY_TEMPLATE];
 int jellyTemplateIx = 0;
 
 char *includedTable[MAX_INCLUDE];
-char *fileToInclude = (char *) calloc(1, 4096);
+char *fileToInclude = (char *) calloc(1, 64096);
 
 JAM *initJam();
 int processJam(char *jamName, char *jamEntrypoint, JAMBUILDER *jb);
@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
 	documentRoot = getenv("DOCUMENT_ROOT");
 
 	// Set up logging path
-	logFileName = (char *) calloc(1, 4096);	// defined in log.c/h
+	logFileName = (char *) calloc(1, 64096);	// defined in log.c/h
 	sprintf(logFileName, "%s/jam/log.dat", documentRoot);
  
 	logMsg(LOGINFO, "--------------------------------------------------------------------------");
@@ -108,6 +108,40 @@ int main(int argc, char *argv[]) {
 	emitHeader("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 	// Always need this header
 	emitHeader("Content-type: text/html; charset=UTF-8");
+
+	// Dissect and store cookies
+	char *cookie = getenv("HTTP_COOKIE") ;
+	if (cookie) {
+		logMsg(LOGDEBUG, "Cookie (raw) [%s]", cookie);
+		int cookieCount = 0;
+		while (1) {
+			char *cookieNVP = strTrim(getWordAlloc(cookie, ++cookieCount, ";"));
+			if (!cookieNVP)
+				break;
+			char *cookieName = strTrim(getWordAlloc(cookieNVP, 1, "="));
+			char *cookieValue = strTrim(getWordAlloc(cookieNVP, 2, "="));
+	
+			if ((cookieName) && (cookieValue)) {
+				logMsg(LOGDEBUG, "Cookie (nvp) [%s] [%s]", cookieName, cookieValue);
+				// Store the NVP as a 'sys.cookie.' variable
+				VAR *cookieVar = (VAR *) calloc(1, sizeof(VAR));
+				char *tmp = (char *) calloc(1, 4000);
+				sprintf(tmp, "sys.cookie.%s", cookieName);
+				cookieVar->name = strdup(tmp);
+				cookieVar->type = VAR_STRING;
+				clearVarValues(cookieVar);
+				fillVarDataTypes(cookieVar, cookieValue);
+				cookieVar->source = strdup("prefill");
+				cookieVar->debugHighlight = 1;
+				addVar(cookieVar);
+				free(tmp);
+			}
+
+			free(cookieNVP);
+			if (cookieName) free(cookieName);
+			if (cookieValue) free(cookieValue);
+		}
+	}
 
 	cgivars = getcgivars() ;
 	for (int i = 0; cgivars[i]; i+= 2) {
@@ -233,7 +267,7 @@ int jamBuilder(char *jamName, char *jEntrypoint, JAMBUILDER *jb) {
 	if (jEntrypoint)
 		jamEntrypoint = strdup(jEntrypoint);	
 
-	char *fullJamName = (char *) calloc(1, 4096);
+	char *fullJamName = (char *) calloc(1, 64096);
 	strcpy(fullJamName, jamName);
 	jamIx = 0;
 
@@ -260,7 +294,7 @@ int jamBuilder(char *jamName, char *jEntrypoint, JAMBUILDER *jb) {
 // Entrypoint of actual jam file processing. Called by main() or jamBuilder()
 int processJam(char *jamName, char *jamEntrypoint, JAMBUILDER *jb) {
 	char tmpPath[PATH_MAX], binary[PATH_MAX];
-	char *tmp = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 64096);
 	TAGINFO *tinfo[MAX_TEMPLATES];
 
 	logMsg(LOGINFO, "DOCUMENT_ROOT is %s", documentRoot);
@@ -568,7 +602,7 @@ int control(int startIx, char *defaultTableName) {
 //	emitStd("...ENTERING %d...", startIx);
 	int res = 0;
 	int ix = startIx;
-	char *tmp = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 64096);
 	while (jam[ix]) {
 		char *cmd = jam[ix]->command;
 		char *args = NULL;
@@ -704,7 +738,7 @@ int control(int startIx, char *defaultTableName) {
 						res = wordHtmlDropdown(ix, defaultTableName);
 					else if (!strcmp(tmp, "filter"))
 						res = wordHtmlFilter(ix, defaultTableName);
-					else if ( (!strcmp(tmp, "text")) || (!strcmp(tmp, "date")) || (!strcmp(tmp, "time")) )
+					else if ( (!strcmp(tmp, "text")) || (!strcmp(tmp, "date")) || (!strcmp(tmp, "time")) || (!strcmp(tmp, "password") ) )
 						res = wordHtmlInput(ix, defaultTableName);
 
 					else if (!strcmp(tmp, "input"))
@@ -836,7 +870,7 @@ int control(int startIx, char *defaultTableName) {
 		} else if (!(strcmp(cmd, "@each"))) {
 //		-------------------------------------
 			// This is either a list or a db table
-			char *listName = (char *) calloc(1, 4096);
+			char *listName = (char *) calloc(1, 64096);
 			getWord(listName, args, 1, " \t");
 			logMsg(LOGDEBUG, "@each - looking to see if [%s] is a list (exists as a variable)", listName);
 			VAR *listVar = findVarStrict(listName);
@@ -862,7 +896,7 @@ int control(int startIx, char *defaultTableName) {
 				}
 			} else {		// its a db table
 				logMsg(LOGDEBUG, "Its a db, not a list. do the select()");
-				char *givenTableName = (char *) calloc(1, 4096);
+				char *givenTableName = (char *) calloc(1, 64096);
 				MYSQL_RES *sqlres = doSqlSelect(ix, defaultTableName, &givenTableName, 999999);
 				logMsg(LOGMICRO, "Create the result set");
 				SQL_RESULT *rp = sqlCreateResult(givenTableName, sqlres);
@@ -984,9 +1018,25 @@ int control(int startIx, char *defaultTableName) {
 //		------------------------------------
 			res = wordMiscSum(ix, defaultTableName);
 //		------------------------------------
+		} else if (!(strcmp(cmd, "@replacevalue"))) {
+//		------------------------------------
+			res = wordMiscReplaceValue(ix, defaultTableName);
+//		---------------------------
 		} else if (!(strcmp(cmd, "@email"))) {
 //		------------------------------------
 			res = wordMiscEmail(ix, defaultTableName);
+//		---------------------------
+		} else if (!(strcmp(cmd, "@daycount"))) {
+//		------------------------------------
+			res = wordMiscDayCount(ix, defaultTableName);
+//		---------------------------
+		} else if (!(strcmp(cmd, "@adddays"))) {
+//		------------------------------------
+			res = wordMiscAddDays(ix, defaultTableName);
+//		------------------------------------
+		} else if (!(strcmp(cmd, "@wordsplit"))) {
+//		------------------------------------
+			res = wordMiscWordSplit(ix, defaultTableName);
 //		---------------------------
 		} else if (!(strcmp(cmd, "@type"))) {
 //		------------------------------------
@@ -1015,11 +1065,11 @@ int control(int startIx, char *defaultTableName) {
 
 			// data = LHS to start with
 
-			char *data = (char *) calloc(1, 4096);
+			char *data = (char *) calloc(1, 64096);
 			strcpy(data, cmd);							// eg: [mem.group_count]
 //emitStd("{AWAY:%s and %s}",cmd, data);
-			char *resultString = (char *) calloc(1, 4096);
-			char *fullLine = (char *) calloc(1, 4096);
+			char *resultString = (char *) calloc(1, 64096);
+			char *fullLine = (char *) calloc(1, 64096);
 			strcpy(fullLine, cmd);
 //emitStd("(CHK:%s and %s)", fullLine, args);
 			if (args)

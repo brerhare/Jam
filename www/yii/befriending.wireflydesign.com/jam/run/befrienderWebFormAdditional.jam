@@ -1,12 +1,14 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@include /jam/run/menu.jam}}
+{{@include /jam/run/new_menu.jam}}
 
 {{@database befriending_wireflydesign_com}}
 
 <br>
+
 {{@html container start center css='max-width:1080px; Xpadding:0}}
+<div id='containerDiv'>
 
 	{{@get befriender filter id = befriender.id}}
 	{{@get global filter id = befriender.global_id}}
@@ -100,11 +102,15 @@ function addAll() {
 	for (var i = 0; i < groupArr.length; i++) {
 		runAction('addAnswer', ['befriender.id', 'question.id='+groupArr[i].id, 'answer='+groupArr[i].value]);
 	}
-	window.top.location.href = "http://befriending.wireflydesign.com/run/menu.jam";
+	document.getElementById("prevButton").style.display = "none";
+	document.getElementById("saveButton").style.display = "none";
+	document.getElementById('containerDiv').innerHTML = '<center><br><br><h3>Thank you. Your form was submitted.</h3><br><br></center>';
+	//window.top.location.href = "http://befriending.wireflydesign.com/run/menu.jam";
 }
 
 </script>
 
+	</div>
 {{@html container end}}
 
 {{@include /jam/sys/html/footer.html}}

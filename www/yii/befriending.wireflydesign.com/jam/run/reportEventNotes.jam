@@ -1,0 +1,58 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/new_menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:1080px; Xpadding:0}}
+
+	<center><h3> Event Notes </h3></center>
+
+	<form class="uk-form">
+		<input type="text" id="searchInput" placeholder="Type to search">
+	</form>
+
+<!-- @@NB TODO sticky -->
+<div Xdata-uk-sticky="{top:90}">
+</div>
+
+
+<table id='printTable' class="searchTable testgrid sortable uk-table uk-table-condensed" style="border:1px solid #dddddd">
+	<tr style='xposition:fixed; font-weight:bold'>
+		<th width=200px> Event </th>
+		<th width=100px> Date </th>
+		<th> Notes </th>
+	</tr>
+{{@each event order by date}}
+	{{@count id}}
+	{{@get event_type filter id = event.event_type_id}}
+	<tr class="rowHighlight">
+		<td>{{event_type.name}}</td>
+		<td>{{event.date}}</td>
+		<td>{{event.notes}} </td>
+	</tr>
+{{@end}}
+</table>
+<b> Total Events : <span id="searchTotal">{{count.id}}</span> </b>
+<br><br>
+
+<button class="uk-button uk-button-medium uk-button-primary" onClick="printData('printTable')"> Print </button>
+
+<span class='exportButton'>
+	<a href="#" class="export" table='{"id":"printTable"}'>Export spreadsheet</a>
+</span>
+
+<br><br/>
+
+{{@html container end}}
+
+{{@include /jam/sys/js/searchPrintExport.js}}
+{{@include /jam/sys/html/footer.html}}
+
+<script>
+//elem = document.getElementById('xx');
+//var sticky = UIkit.sticky(elem, { /* options */ });
+</script>
+

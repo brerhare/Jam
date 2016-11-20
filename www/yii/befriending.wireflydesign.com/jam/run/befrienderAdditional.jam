@@ -1,7 +1,7 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@Xinclude /jam/run/menu.jam}}
+{{@Xinclude /jam/run/new_menu.jam}}
 
 {{@database befriending_wireflydesign_com}}
 
@@ -33,7 +33,7 @@
 				{{@html gridrow start}}
 				{{@html gridcol start width=1-1}}
 
-				<textarea cols="80" rows="2" id='{{question_befriender.id}}' placeholder="" class="inp"> {{answer_befriender.answer}} </textarea>
+				<textarea cols="80" rows="2" id='{{question_befriender.id}}' placeholder="" class="inp">{{answer_befriender.answer}}</textarea>
 
 					{{@Xhtml textarea field=answer_befriender.answer size=80x2 group='inp'}}
 
