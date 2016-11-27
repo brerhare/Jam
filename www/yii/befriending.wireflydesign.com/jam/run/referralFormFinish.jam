@@ -73,7 +73,7 @@
 function backToPrev() {
     objReferrer = get('refId');
     objYP = get('ypId');
-    runJam('referralFormContacts?refId='+objReferrer.value+'&ypId='+objYP.value);
+    runJam('referralFormAdditional?refId='+objReferrer.value+'&ypId='+objYP.value);
 }
 function finishAndClose() {
 	var input = document.getElementById ("confirmBox");

@@ -142,7 +142,7 @@ function backToPrev() {
 function toConfirmScreen() {
     objReferrer = get('refId');
     objYP = get('ypId');
-    runJam('referralFormFinish?refId='+objReferrer.value+'&ypId='+objYP.value);
+    runJam('referralFormAdditional?refId='+objReferrer.value+'&ypId='+objYP.value);
 }
 </script>
 

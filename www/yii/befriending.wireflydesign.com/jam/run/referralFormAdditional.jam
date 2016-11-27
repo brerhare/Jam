@@ -1,20 +1,20 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@Xinclude /jam/run/new_menu.jam}}
-
 {{@database befriending_wireflydesign_com}}
 
 <br>
-{{@html container start center nomargin css='max-width:900px; padding:0}}
+{{@html container start center css='max-width:900px; Xpadding:0}}
 
-	{{@get young_person filter id = young_person.id}}
+	{{@get young_person filter id = ypId}}
 	{{@get global filter id = young_person.global_id}}
 
 	<style type="text/css">
 		label {text-align: right; width:150px !important}
 		div.uk-form-controls {margin-left: 170px !important}
 	</style>
+<br>
+<center> <h3> Additional Information</h3> </center>
 
 	<form name="inputForm_young_person" class="uk-form uk-form-horizontal">
 		<input type="hidden" name="young_person.id" value="{{young_person.id}}">
@@ -40,17 +40,19 @@
 				{{@html gridcol end}}
 				{{@html gridrow end}}
 			{{@end}}
-
-		{{@html gridrow start}}
-			{{@html gridcol start width=1-1}}
-				<br>
-				<center>
-					<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="saveButtonClick(this)">Save</button> </td>
-				</center>
-			{{@html gridcol end}}
-		{{@html gridrow end}}
-
+<br>
+        {{@html gridrow start}}
+            {{@html gridcol start width=1-1}}
+                <br>
+                <center>
+                    <button type='button' class="uk-button uk-button-primary" onClick="backToPrev()"> Prev </button> </td>
+                    <button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="updateAndNext()"> Next </button> </td>
+                </center>
+            {{@html gridcol end}}
+        {{@html gridrow end}}
 	</form>
+
+{{@html container end}}
 
 {{@action deleteAllAnswers}}
     {{@sql delete from answer_young_person where young_person_id = {{young_person.id}} }}
@@ -64,6 +66,7 @@
 {{@end}}
 
 <script>
+
 window.onload = function() {
 }
 
@@ -76,10 +79,27 @@ function addAll() {
 	for (var i = 0; i < groupArr.length; i++) {
 		runAction('addAnswer', ['young_person.id', 'question.id='+groupArr[i].id, 'answer='+groupArr[i].value]);
 	}
+// @BUG: dont SLEEP!
+	window.setTimeout(forwardToNext,1000);
+}
+
+function backToPrev() {
+    objReferrer = get('refId');
+    objYP = get('young_person.id');
+    runJam('referralFormContacts?refId='+objReferrer.value+'&ypId='+objYP.value);
+}
+
+function updateAndNext() {
+	runAction('deleteAllAnswers',['young_person.id'], '', addAll);
+}
+
+function forwardToNext() {
+    objReferrer = get('refId');
+    objYP = get('young_person.id');
+    runJam('referralFormFinish?refId='+objReferrer.value+'&ypId='+objYP.value);
+
 }
 
 </script>
-
-{{@html container end}}
 
 {{@include /jam/sys/html/footer.html}}
