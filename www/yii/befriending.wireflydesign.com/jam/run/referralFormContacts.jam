@@ -126,6 +126,9 @@ function postUpdate() {
 {{@action update_young_person}}
 	{{young_person.id = ypID}}
     {{young_person.referral_date = sys.today}}
+    {{young_person.archive_flag = 0}}
+    {{young_person.archive_date = '0000-00-00'}}
+    {{young_person.archive_destruction_date = '0000-00-00'}}
     {{@update item young_person}}
 {{@end}}
 
@@ -139,7 +142,7 @@ function backToPrev() {
 function toConfirmScreen() {
     objReferrer = get('refId');
     objYP = get('ypId');
-    runJam('referralFormFinish?refId='+objReferrer.value+'&ypId='+objYP.value);
+    runJam('referralFormAdditional?refId='+objReferrer.value+'&ypId='+objYP.value);
 }
 </script>
 

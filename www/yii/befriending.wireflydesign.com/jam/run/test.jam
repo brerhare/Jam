@@ -1,0 +1,61 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/new_menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<div name='content_block'>
+</div>
+
+{{@action runReport}}
+AAAAAAAAAAAAAAAAAAA<br>
+	<table id='printTable' class="searchTable testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+		<tr style='font-weight:bold'>
+			<th> Date </th>
+			<th> Meeting Type </th>
+			<th> Attendees </th>
+			<th> Files </th>
+			<th> Notes </th>
+		</tr>
+{{@get young_person filter id = 93}}
+{{@each event filter young_person_id = young_person.id}}
+		{{@get global filter id = young_person.global_id}}
+		<tr class="rowHighlight" onClick="runAction('showTabs', ['befriender.id={{befriender.id}}'], 'content')">
+			<td>{{event.date}}</td>
+		{{@get event_type filter id = event.event_type_id}}
+			<td>{{event_type.name}}</td>
+			<td>
+		{{@each event_attendee filter event_id = event.id}}
+			{{@get global filter id = event_attendee.global_id}}
+			{{global.forename}} {{global.surname}}<br/>
+		{{@end}}
+			</td>
+			<td> </td>
+			<td width='300px' >{{event.notes}}</td>
+		</tr>
+{{@end}}
+	</table>
+<br>
+
+<button class="uk-button uk-button-medium uk-button-primary" onClick="printData('printTable')"> Print </button>
+
+<span class='exportButton'>
+	<a href="#" class="export" table='{"id":"printTable"}'>Export spreadsheet</a>
+</span>
+
+<br><br/>
+ZZZZZZZZZZZZZZZZZZZZ<br>
+{{@end}}
+
+{{@include /jam/sys/js/searchPrintExport.js}}
+
+
+{{@include /jam/sys/html/footer.html}}
+
+<script>
+alert('x');
+    runAction('runReport', ['yp_id=93'], 'content_block');
+</script>
+
+

@@ -33,7 +33,7 @@ char *makeJamKeyValue(char *tableName, char *fieldName, char *rawValue);
 // HTML <tag> generation from {{curly}}
 
 int wordHtmlContainer(int ix, char *defaultTableName) {
-	char *tmp = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 64096);
 	char *center = NULL;
 	char *noMargin = NULL;
 	char *css = NULL;
@@ -71,7 +71,7 @@ int wordHtmlContainer(int ix, char *defaultTableName) {
 
 	JAMBUILDER jb;
 	jb.stream = STREAMOUTPUT_STD;
-	char *templateStr = (char *) calloc(1, 4096);
+	char *templateStr = (char *) calloc(1, 64096);
 	sprintf(templateStr, "{{@template CONTAINER_CENTER %s}}	\
 						  {{@template CONTAINER_MARGIN %s}} \
 						  {{@template CONTAINER_CSS %s}}",
@@ -91,7 +91,7 @@ int wordHtmlContainer(int ix, char *defaultTableName) {
 }
 
 int wordHtmlForm(int ix, char *defaultTableName) {
-	char *tmp = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 64096);
 	char *name = NULL;
 	char *css = NULL;
 
@@ -125,7 +125,7 @@ int wordHtmlForm(int ix, char *defaultTableName) {
 
 	JAMBUILDER jb;
 	jb.stream = STREAMOUTPUT_STD;
-	char *templateStr = (char *) calloc(1, 4096);
+	char *templateStr = (char *) calloc(1, 64096);
 	sprintf(templateStr, "{{@template FORM_NAME %s}} \
 						  {{@template FORM_CSS %s}}",
 							name,
@@ -142,7 +142,7 @@ int wordHtmlForm(int ix, char *defaultTableName) {
 }
 
 int wordHtmlGridrow(int ix, char *defaultTableName) {
-	char *tmp = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 64096);
 	char *gridCols = NULL;
 	char *css = NULL;
 
@@ -161,7 +161,7 @@ int wordHtmlGridrow(int ix, char *defaultTableName) {
 
 	// Gridcols
 	if (isVar("sys.control.gridcols")) {
-		gridCols = (char *) calloc(1, 4096);
+		gridCols = (char *) calloc(1, 64096);
 		sprintf(gridCols, "uk-grid-width-1-%d", atoi(getVarAsString("sys.control.gridcols")));
 	}
 	else
@@ -175,7 +175,7 @@ int wordHtmlGridrow(int ix, char *defaultTableName) {
 
 	JAMBUILDER jb;
 	jb.stream = STREAMOUTPUT_STD;
-	char *templateStr = (char *) calloc(1, 4096);
+	char *templateStr = (char *) calloc(1, 64096);
 	sprintf(templateStr, "{{@template GRIDROW_GRIDCOLS %s}}	\
 						  {{@template GRIDROW_CSS %s}}",
 							gridCols,
@@ -192,7 +192,7 @@ int wordHtmlGridrow(int ix, char *defaultTableName) {
 }
 
 int wordHtmlGridcol(int ix, char *defaultTableName) {
-	char *tmp = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 64096);
 	char *width = NULL;
 	char *css = NULL;
 
@@ -211,7 +211,7 @@ int wordHtmlGridcol(int ix, char *defaultTableName) {
 
 	// Width
 	if (isVar("sys.control.width")) {
-		width = (char *) calloc(1, 4096);
+		width = (char *) calloc(1, 64096);
 		sprintf(width, "uk-width-%s", getVarAsString("sys.control.width"));
 	}
 	else
@@ -225,7 +225,7 @@ int wordHtmlGridcol(int ix, char *defaultTableName) {
 
 	JAMBUILDER jb;
 	jb.stream = STREAMOUTPUT_STD;
-	char *templateStr = (char *) calloc(1, 4096);
+	char *templateStr = (char *) calloc(1, 64096);
 	sprintf(templateStr, "{{@template GRIDCOL_WIDTH %s}}	\
 						  {{@template GRIDCOL_CSS %s}}",
 							width,
@@ -242,7 +242,7 @@ int wordHtmlGridcol(int ix, char *defaultTableName) {
 }
 
 int wordHtmlDropdown(int ix, char *defaultTableName) {
-	char *tmp = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 64096);
 	char *targetTable = NULL;
 	char *targetField = NULL;
 	char *targetRawValue = NULL;
@@ -251,7 +251,7 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 	char *size = NULL;
 	char *disabled = NULL;
 	char *label = NULL;
-	char *group = (char *) calloc(1, 4096);
+	char *group = (char *) calloc(1, 64096);
 	char *jamKey = NULL;
 
 	// [Table].field
@@ -313,7 +313,7 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 
 	JAMBUILDER jb;
 	jb.stream = STREAMOUTPUT_STD;
-	char *templateStr = (char *) calloc(1, 4096);
+	char *templateStr = (char *) calloc(1, 64096);
 	sprintf(templateStr, "{{@template DROPDOWN_TARGET_TABLE %s}}	\
 						  {{@template DROPDOWN_TARGET_FIELD %s}}	\
 						  {{@template DROPDOWN_PICK_TABLE %s}}	\
@@ -358,7 +358,7 @@ int wordHtmlDropdown(int ix, char *defaultTableName) {
 }
 
 int wordHtmlFilter(int ix, char *defaultTableName) {
-	char *tmp = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 64096);
 	char *targetTable = NULL;
 	char *targetField = NULL;
 	char *targetRawValue = NULL;
@@ -367,7 +367,7 @@ int wordHtmlFilter(int ix, char *defaultTableName) {
 	char *size = NULL;
 	char *disabled = NULL;
 	char *label = NULL;
-	char *group = (char *) calloc(1, 4096);
+	char *group = (char *) calloc(1, 64096);
 	char *jamKey = NULL;
 
 	// [Table].field
@@ -429,7 +429,7 @@ int wordHtmlFilter(int ix, char *defaultTableName) {
 
 	JAMBUILDER jb;
 	jb.stream = STREAMOUTPUT_STD;
-	char *templateStr = (char *) calloc(1, 4096);
+	char *templateStr = (char *) calloc(1, 64096);
 	sprintf(templateStr, "{{@template FILTER_TARGET_TABLE %s}}	\
 						  {{@template FILTER_TARGET_FIELD %s}}	\
 						  {{@template FILTER_PICK_TABLE %s}}	\
@@ -479,7 +479,7 @@ int wordHtmlFilter(int ix, char *defaultTableName) {
 
 // Input 'text' or 'date' or 'time'
 int wordHtmlInput(int ix, char *defaultTableName) {
-	char *tmp = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 64096);
 	char *type = NULL;
 	char *table = NULL;
 	char *field = NULL;
@@ -493,7 +493,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 	char *hidden = NULL;
 	char *value = NULL;
 	char *value2 = NULL;
-	char *group = (char *) calloc(1, 4096);
+	char *group = (char *) calloc(1, 64096);
 	char *jamKey = NULL;
 
 	// Hidden
@@ -506,7 +506,7 @@ int wordHtmlInput(int ix, char *defaultTableName) {
 			logMsg(LOGERROR, "Html input type cant be null");
 			return(-1);	
 		}
-		if ((strcmp(type, "date")) && (strcmp(type, "time")) && (strcmp(type, "text"))) {
+		if ((strcmp(type, "date")) && (strcmp(type, "time")) && (strcmp(type, "password")) && (strcmp(type, "text"))) {
 			logMsg(LOGERROR, "Html input type unspecified. Use 'text' or 'date' etc");
 			free(type);
 			return(-1);
@@ -603,7 +603,7 @@ logMsg(LOGDEBUG, "4");
 	} else {
 		if (!strcmp(type, "date")) {
 			// Default to today
-			value = (char *) calloc(1, 4096);
+			value = (char *) calloc(1, 64096);
 			value2 = strdup("");
 			time_t now = time(NULL);
 			strftime(value, 20, "%Y-%m-%d", localtime(&now));
@@ -617,7 +617,7 @@ logMsg(LOGDEBUG, "4");
 logMsg(LOGDEBUG, "5");
 	JAMBUILDER jb;
 	jb.stream = STREAMOUTPUT_STD;
-	char *templateStr = (char *) calloc(1, 4096);
+	char *templateStr = (char *) calloc(1, 64096);
 	sprintf(templateStr, "{{@template INPUT_TYPE %s}}	\
 						  {{@template INPUT_TABLE %s}}	\
 						  {{@template INPUT_FIELD %s}}	\
@@ -671,7 +671,7 @@ logMsg(LOGDEBUG, "5");
 }
 
 int wordHtmlCheckbox(int ix, char *defaultTableName) {
-	char *tmp = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 64096);
 	char *table = NULL;
 	char *field = NULL;
 	char *tableFieldRawValue = NULL;
@@ -682,7 +682,7 @@ int wordHtmlCheckbox(int ix, char *defaultTableName) {
 	char *unvalue = NULL;
 	char *checked = NULL;
 	char *tip = NULL;
-	char *group = (char *) calloc(1, 4096);
+	char *group = (char *) calloc(1, 64096);
 	char *jamKey = NULL;
 
 	// [Table].field
@@ -759,7 +759,7 @@ int wordHtmlCheckbox(int ix, char *defaultTableName) {
 
 	JAMBUILDER jb;
 	jb.stream = STREAMOUTPUT_STD;
-	char *templateStr = (char *) calloc(1, 4096);
+	char *templateStr = (char *) calloc(1, 64096);
 	sprintf(templateStr, "{{@template CHECKBOX_TABLE %s}}	\
 						  {{@template CHECKBOX_FIELD %s}}	\
 						  {{@template CHECKBOX_LABEL %s}}	\
@@ -810,7 +810,7 @@ int wordHtmlCheckbox(int ix, char *defaultTableName) {
 }
 
 int wordHtmlRadio(int ix, char *defaultTableName) {
-	char *tmp = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 64096);
 	char *table = NULL;
 	char *field = NULL;
 	char *tableFieldRawValue = NULL;
@@ -819,8 +819,8 @@ int wordHtmlRadio(int ix, char *defaultTableName) {
 	char *tip = NULL;
 	char *value = NULL;
 	char *options = NULL;
-	char *group = (char *) calloc(1, 4096);
-	char *optionStr = (char *) calloc(1, 4096);
+	char *group = (char *) calloc(1, 64096);
+	char *optionStr = (char *) calloc(1, 64096);
 	char *jamKey = NULL;
 
 	// [Table].field
@@ -896,7 +896,7 @@ int wordHtmlRadio(int ix, char *defaultTableName) {
 </div>
 */
 	int cnt = 1;
-	char *firstId = (char *) calloc(1, 4096);
+	char *firstId = (char *) calloc(1, 64096);
 	sprintf(firstId, "id='%s'", jamKey);
 	while (1) {
 		char *opt = getWordAlloc(options, cnt++, ",");
@@ -927,7 +927,7 @@ int wordHtmlRadio(int ix, char *defaultTableName) {
 
 	JAMBUILDER jb;
 	jb.stream = STREAMOUTPUT_STD;
-	char *templateStr = (char *) calloc(1, 4096);
+	char *templateStr = (char *) calloc(1, 64096);
 	sprintf(templateStr, "{{@template RADIO_TABLE %s}}	\
 						  {{@template RADIO_FIELD %s}}	\
 						  {{@template RADIO_LABEL %s}}	\
@@ -974,7 +974,7 @@ int wordHtmlRadio(int ix, char *defaultTableName) {
 
 // Input Textarea
 int wordHtmlTextarea(int ix, char *defaultTableName) {
-	char *tmp = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 64096);
 	char *hidden = NULL;
 	char *table = NULL;
 	char *field = NULL;
@@ -988,7 +988,7 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 	char *disabled = NULL;
 	char *value = NULL;
 	char *value2 = NULL;
-	char *group = (char *) calloc(1, 4096);
+	char *group = (char *) calloc(1, 64096);
 	char *jamKey = NULL;
 
 	// Hidden
@@ -1079,7 +1079,7 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 
 	JAMBUILDER jb;
 	jb.stream = STREAMOUTPUT_STD;
-	char *templateStr = (char *) calloc(1, 4096);
+	char *templateStr = (char *) calloc(1, 64096);
 	sprintf(templateStr, "{{@template TEXTAREA_HIDDEN %s}}	\
 						  {{@template TEXTAREA_TABLE %s}}	\
 						  {{@template TEXTAREA_FIELD %s}}	\
@@ -1136,12 +1136,12 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 
 // Tab
 int wordHtmlTabs(int ix, char *defaultTableName) {
-	char *tmp = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 64096);
 	char *args = jam[ix]->args;
 
 	int seq = (rand() % 99999);
-	char *tabStr = (char *) calloc(1, 4096);
-	char *actionStr = (char *) calloc(1, 4096);
+	char *tabStr = (char *) calloc(1, 64096);
+	char *actionStr = (char *) calloc(1, 64096);
 
 	logMsg(LOGDEBUG, "html tabs ARGS=%s", args);
 
@@ -1172,7 +1172,7 @@ int wordHtmlTabs(int ix, char *defaultTableName) {
 
 	JAMBUILDER jb;
 	jb.stream = STREAMOUTPUT_STD;
-	char *templateStr = (char *) calloc(1, 4096);
+	char *templateStr = (char *) calloc(1, 64096);
 	sprintf(templateStr, "{{@template TAB_STR %s}}	\
 						  {{@template TAB_ACTION %s}}",
 							tabStr,
@@ -1192,16 +1192,16 @@ int _wordHtmlInputInp(int ix, char *defaultTableName, int inputType) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
-	char *fieldName = (char *) calloc(1, 4096);
-	char *fieldType = (char *) calloc(1, 4096);
-	char *fieldVar = (char *) calloc(1, 4096);
-	char *fieldSize = (char *) calloc(1, 4096);			// NB this is 'jam:action' for keyaction
-	char *fieldVarValue = (char *) calloc(1, 4096);
-	char *fieldSearchValue = (char *) calloc(1, 4096);
-	char *fieldPrompt = (char *) calloc(1, 4096);		// NB this is 'size' for keyaction
-	char *fieldPlaceholder = (char *) calloc(1, 4096);	
-	char *disabledStr = (char *) calloc(1, 4096);
-	char *tmp = (char *) calloc(1, 4096);
+	char *fieldName = (char *) calloc(1, 64096);
+	char *fieldType = (char *) calloc(1, 64096);
+	char *fieldVar = (char *) calloc(1, 64096);
+	char *fieldSize = (char *) calloc(1, 64096);			// NB this is 'jam:action' for keyaction
+	char *fieldVarValue = (char *) calloc(1, 64096);
+	char *fieldSearchValue = (char *) calloc(1, 64096);
+	char *fieldPrompt = (char *) calloc(1, 64096);		// NB this is 'size' for keyaction
+	char *fieldPlaceholder = (char *) calloc(1, 64096);	
+	char *disabledStr = (char *) calloc(1, 64096);
+	char *tmp = (char *) calloc(1, 64096);
 	int randId = rand() % 9999999;	// default to non-grid
 	VAR *variable = NULL;
 	VAR *variableSearch = NULL;
@@ -1313,7 +1313,7 @@ filter:       fieldType  fieldVar->fieldVarValue              fieldSize->fieldSe
 		logMsg(LOGDEBUG, "Select: fieldVarValue=[%s] and fieldSize=[%s]", fieldVarValue, fieldSize);
 		emitStd("	<select id='SEQ_%d_SELECT_VALUE' name='%s' value='%s' onchange='//alert(this.value);' class='uk-form-width-%s'> \n", randId, fieldVar, fieldVarValue, fieldPrompt);
 		// Construct all the <option> tags from content
-		char tmp2[4096];
+		char tmp2[64096];
 		sprintf(tmp2, fieldSize);
 		char *p = strchr(tmp2, '.');
 		if (p)
@@ -1476,12 +1476,12 @@ int wordHtmlButton(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
-	char *buttonText = (char *) calloc(1, 4096);
-	char *buttonType = (char *) calloc(1, 4096);
-	char *buttonSize = (char *) calloc(1, 4096);
-	char *buttonJS = (char *) calloc(1, 4096);
-	char *tmp = (char *) calloc(1, 4096);
-	char *group = (char *) calloc(1, 4096);
+	char *buttonText = (char *) calloc(1, 64096);
+	char *buttonType = (char *) calloc(1, 64096);
+	char *buttonSize = (char *) calloc(1, 64096);
+	char *buttonJS = (char *) calloc(1, 64096);
+	char *tmp = (char *) calloc(1, 64096);
+	char *group = (char *) calloc(1, 64096);
 	int buttonId = rand() % 9999999;			// @@TODO fix
 
 	getWord(buttonText, args, 2, " \t");
@@ -1569,12 +1569,12 @@ int wordHtmlSelect(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
-	char *fieldVarName = (char *) calloc(1, 4096);
-	char *fieldVarValue = (char *) calloc(1, 4096);
-	char *fieldSize = (char *) calloc(1, 4096);
-	char *fieldPrompt = (char *) calloc(1, 4096);
-	char *fieldVarSelected = (char *) calloc(1, 4096);
-	char *tmp = (char *) calloc(1, 4096);
+	char *fieldVarName = (char *) calloc(1, 64096);
+	char *fieldVarValue = (char *) calloc(1, 64096);
+	char *fieldSize = (char *) calloc(1, 64096);
+	char *fieldPrompt = (char *) calloc(1, 64096);
+	char *fieldVarSelected = (char *) calloc(1, 64096);
+	char *tmp = (char *) calloc(1, 64096);
 	VAR *variable = NULL;
 /*
 	getWord(fieldVarName, args, 2, " \t");
@@ -1638,7 +1638,7 @@ int wordHtmlJs(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
-	char *tmp = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 64096);
  
 	char *p = args;
 	while ((*p) && (*p != ' '))
@@ -1656,8 +1656,8 @@ int wordHtmlSys(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
-	char *sysName = (char *) calloc(1, 4096);
-	char *tmp = (char *) calloc(1, 4096);
+	char *sysName = (char *) calloc(1, 64096);
+	char *tmp = (char *) calloc(1, 64096);
 
 	getWord(sysName, args, 2, " \t");
 	if (!sysName)
@@ -1667,11 +1667,11 @@ int wordHtmlSys(int ix, char *defaultTableName) {
 
 	if (!strcasecmp(sysName, "filterAutocomplete")) {
 // Autocomplete <input type=filter> cant produce json (yet) or db handle '%like%' (needs embedded curlies to work) so we have this custom operation temporarily - a @@TODO
-		char *q = (char *) calloc(1, 4096);
-		char *customField = (char *) calloc(1, 4096);
-		char *customValue = (char *) calloc(1, 4096);
-		char *tableName = (char *) calloc(1, 4096);
-		char *fieldName = (char *) calloc(1, 4096);
+		char *q = (char *) calloc(1, 64096);
+		char *customField = (char *) calloc(1, 64096);
+		char *customValue = (char *) calloc(1, 64096);
+		char *tableName = (char *) calloc(1, 64096);
+		char *fieldName = (char *) calloc(1, 64096);
 		getWord(customField, args, 3, " \t");
 		if (!customField) {
 			logMsg(LOGERROR, "missing field '_filterfield'");
@@ -1756,8 +1756,8 @@ int wordHtmlBreakpoint(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
-	char *breakpointName = (char *) calloc(1, 4096);
-	char *tmp = (char *) calloc(1, 4096);
+	char *breakpointName = (char *) calloc(1, 64096);
+	char *tmp = (char *) calloc(1, 64096);
 
 	getWord(breakpointName, args, 2, " \t");
 	if (!breakpointName)
@@ -1766,7 +1766,7 @@ int wordHtmlBreakpoint(int ix, char *defaultTableName) {
 	logMsg(LOGDEBUG, "html breakpoint %s activated", breakpointName);
 
 	if (!strcasecmp(breakpointName, "body")) {
-		char *breakpointBodyArg = (char *) calloc(1, 4096);
+		char *breakpointBodyArg = (char *) calloc(1, 64096);
 		getWord(breakpointBodyArg, args, 3, " \t");
 		if (!breakpointBodyArg)
 		   die("missing HTML breakpoint body arg");
@@ -1851,7 +1851,7 @@ int wordHtmlBreakpoint(int ix, char *defaultTableName) {
 //    ....done VAR___rawvalue
 //
 char *makeJamKeyValue(char *tableName, char *fieldName, char *rawValue) {
-	char *ret = (char *) calloc(1, 4096);
+	char *ret = (char *) calloc(1, 64096);
 	sprintf(ret, "%s.id", tableName);
 	logMsg(LOGMICRO, "makeJamKeyValue() - received table=[%s], field=[%s], raw=[%s]", tableName, fieldName, rawValue);
 	// Is is a table/field?

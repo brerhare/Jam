@@ -63,7 +63,9 @@
 	<center> <h3> Thank you. Your input has been recorded </h3> </center>
 	<center> You may now close this window. </center>
 	<br><br><br>
-
+    {{young_person.archive_flag = 0}}
+    {{young_person.archive_date = '0000-00-00'}}
+    {{young_person.archive_destruction_date = '0000-00-00'}}
     {{@update item young_person}}
 {{@end}}
 
@@ -71,7 +73,7 @@
 function backToPrev() {
     objReferrer = get('refId');
     objYP = get('ypId');
-    runJam('referralFormContacts?refId='+objReferrer.value+'&ypId='+objYP.value);
+    runJam('referralFormAdditional?refId='+objReferrer.value+'&ypId='+objYP.value);
 }
 function finishAndClose() {
 	var input = document.getElementById ("confirmBox");

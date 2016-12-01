@@ -1,12 +1,67 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@include /jam/run/menu.jam}}
+{{@include /jam/run/new_menu.jam}}
 
 {{@database befriending_wireflydesign_com}}
 
 <br>
 {{@html container start center css='max-width:1080px; Xpadding:0}}
+
+<!-- Overlay (modal) starts -->
+<!-- https://raventools.com/blog/create-a-modal-dialog-using-css-and-javascript/ -->
+
+<style>
+#overlay div {
+background-color: #fff5ee;
+     width:500px;
+     margin: 200px auto;
+     background-color: #fff;
+     border:1px solid #000;
+     padding:15px;
+     text-align:center;
+}
+#overlay {
+     visibility: hidden;
+     position: absolute;
+     left: 0px;
+     top: 0px;
+     width:100%;
+     height:100%;
+     text-align:center;
+     z-index: 1000;
+     Xbackground-image:url(background-trans.png);
+
+  background:rgba(255,255,255,0.6);
+}
+
+}
+</style>
+
+<div id="overlay">
+	<div style="background-color:#fff5ee">
+		<form name="overlay_form" class="uk-form" style="background-color:#fff5ee">
+			<input type=hidden name="ovId" id = "ovId">
+			<p>Input a termination reason for <span id="ovName" name="ovName"></span> </p>
+			{{@html textarea field=form.termination_reason size=60x5}}
+			<br>
+			<br>
+			<center>
+				<button class="uk-button uk-button-medium uk-button-primary" onClick="doArchive()"> Save </button>
+				<button class="uk-button uk-button-medium uk-button-primary" onClick="overlay()"> Cancel</button>
+			</center>
+		</form>
+	</div>
+</div>
+
+<script>
+function overlay() {
+	el = document.getElementById("overlay");
+	el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+}
+</script>
+
+<!-- Overlay (modal) ends -->
 
 <div name="content">
 	<h3> Befriender </h3>
@@ -15,7 +70,7 @@
         <input type="text" id="searchInput" placeholder="Type to search">
     </form>
 
-	<table id="printTable" class="testgrid searchTable uk-table uk-table-condensed" style="border:1px solid #dddddd">
+	<table id="printTable" class="testgrid sortable searchTable uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
 			<th> Forename </th>
 			<th> Surname </th>
@@ -23,7 +78,7 @@
 			<th> Status </th>
 			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('showTabsNew', [], 'content')"> <i class="uk-icon-plus"></i> New</button> </th>
 		</tr>
-{{@each befriender}}
+{{@each befriender filter archive_flag = 0}}
 		{{@get global filter id = befriender.global_id}}
 		{{@get status_bf filter id = befriender.status_id}}
 		<tr class="rowHighlight" onClick="runAction('showTabs', ['befriender.id={{befriender.id}}'], 'content')">
@@ -31,7 +86,7 @@
 			<td>{{global.surname}}</td>
 			<td>{{global.postcode}}</td>
 			<td>{{status_bf.name}}</td>
-			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i></button> </td>
+			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{global.forename}} {{global.surname}}')"> Archive </button> </td>
 		</tr>
 {{@end}}
 	</table>
@@ -50,17 +105,35 @@
 <script>
 function confirmDelete(id, displayInfo) {
 	window.event.cancelBubble = true;	// Prevent any further events
-	var result = confirm('Confirm delete of item ' + displayInfo);
-	if (result)
-		runAction('delete', ['befriender.id='+id], '', runJam);	
+	ovIdObj = get("ovId");
+	ovIdObj.value = id;
+	ovNameObj = get("ovName");
+	ovNameObj.innerHTML = displayInfo;
+	overlay();
+}
+
+function doArchive() {
+	ovIdObj = get("ovId");
+	ovReasonObj = get("ovId");
+	overlay();
+	//runAction('delete', ['befriender.id='+ovIdObj.value, 'overlay_form'], '', window.setTimeout(runJam, 1000)) ;	
+	runAction('delete', ['befriender.id='+ovIdObj.value, 'overlay_form'], '');
 }
 </script>
 
 {{@action delete}}
-	{{@get befriender filter id = befriender.id}}
-	{{global.id = befriender.global_id}}
-	{{@remove item befriender}}
-	{{@remove item global}}	@@TODO - dont remove global if it has other links
+    {{@get befriender filter id = befriender.id}}
+    {{@get global filter id = befriender.global_id}}
+    {{befriender.archive_flag = 1}}
+    {{befriender.archive_date = sys.today}}
+	{{befriender.termination_reason = form.termination_reason}}
+    {{@amend item befriender}}
+    {{@get settings filter id = 1}}
+    {{@email {{settings.email}} {{settings.email}} 'Archive request - Befriender {{global.forename}} {{global.surname}} to be archived' action:emailContent}}
+{{@end}}
+
+{{@action emailContent}}
+    If no further action is taken all records for this Befriender are due to be archived in {{settings.archive_days}} days.<br> This will result in permanent loss of data.
 {{@end}}
 
 <!-- Form input component -->
@@ -78,6 +151,9 @@ function confirmDelete(id, displayInfo) {
 		<td>{{@html button 'Return to list' primary medium 
 			runJam
 		}}</td>
+        <td style='width:200px; text-align:right'>{{@html button 'Notes report' primary medium
+            runJam('reportFormsBef?bf_id={{befriender.id}}');
+        }}</td>
 			
 			
 		</tr>
@@ -87,12 +163,12 @@ function confirmDelete(id, displayInfo) {
 	{{@html tabs
 		label=Details		action=/run/befrienderDetails?befriender.id={{befriender.id}}
 		label=References	action=/run/befrienderReferences?befriender.id={{befriender.id}}
-		label=Anticipated		action=/run/befrienderInterest?befriender.id={{befriender.id}}
 		label=Additional	action=/run/befrienderAdditional?befriender.id={{befriender.id}}
 		label=Documentation	action=/run/befrienderDocumentation?befriender.id={{befriender.id}}
 		label=Matches	action=/run/befrienderMatch?befriender.id={{befriender.id}}
+		label=Profile	action=/run/befrienderProfile?befriender.id={{befriender.id}}
 	}}
-<!--		label=Events		action=/run/befrienderEvent?befriender.id={{befriender.id}} -->
+<!--		label=Anticipated		action=/run/befrienderInterest?befriender.id={{befriender.id}} -->
 {{@end}}
 
 {{@action showTabsNew}}
@@ -110,7 +186,7 @@ function confirmDelete(id, displayInfo) {
 		</td>
 		</tr>
 	</table>
-	
+
 	</h3>
 	{{@html tabs
 		label=Details		action=/run/befrienderDetails?befriender.id={{befriender.id}}

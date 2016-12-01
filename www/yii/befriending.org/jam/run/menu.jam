@@ -15,7 +15,7 @@
 
 {{@template MENU
 	<ul id="main-menu" class="sm sm-blue">
-	{{@each content_block filter parent_id = 0, active = 1}}
+	{{@each content_block filter parent_id = 0, active = 1 order by sequence}}
 		<li> <a href="?layout=index&page={{url}}"> {{title}} </a>
 		{{openUL2 = <ul>}}
 		{{closeUL2 = ''}}
