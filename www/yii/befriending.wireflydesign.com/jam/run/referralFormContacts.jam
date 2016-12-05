@@ -137,12 +137,12 @@ function backToPrev() {
     objReferrer = get('refId');
     objYP = get('ypId');
 //alert('r='+objReferrer.value+' and yp='+objYP.value);
-    runJam('referralFormMedical?refId='+objReferrer.value+'&ypId='+objYP.value);
+    runJam('referralFormAdditional?refId='+objReferrer.value+'&ypId='+objYP.value);
 }
 function toConfirmScreen() {
     objReferrer = get('refId');
     objYP = get('ypId');
-    runJam('referralFormAdditional?refId='+objReferrer.value+'&ypId='+objYP.value);
+    runJam('referralFormFinish?refId='+objReferrer.value+'&ypId='+objYP.value);
 }
 </script>
 

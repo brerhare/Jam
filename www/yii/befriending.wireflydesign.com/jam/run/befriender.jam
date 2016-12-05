@@ -34,8 +34,6 @@ background-color: #fff5ee;
 
   background:rgba(255,255,255,0.6);
 }
-
-}
 </style>
 
 <div id="overlay">
@@ -64,7 +62,7 @@ function overlay() {
 <!-- Overlay (modal) ends -->
 
 <div name="content">
-	<h3> Befriender </h3>
+	<center><h3> Befriender </h3></center>
 
     <form class="uk-form">
         <input type="text" id="searchInput" placeholder="Type to search">

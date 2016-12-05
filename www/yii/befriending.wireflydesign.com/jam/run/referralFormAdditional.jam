@@ -86,7 +86,7 @@ function addAll() {
 function backToPrev() {
     objReferrer = get('refId');
     objYP = get('young_person.id');
-    runJam('referralFormContacts?refId='+objReferrer.value+'&ypId='+objYP.value);
+    runJam('referralFormMedical?refId='+objReferrer.value+'&ypId='+objYP.value);
 }
 
 function updateAndNext() {
@@ -96,7 +96,7 @@ function updateAndNext() {
 function forwardToNext() {
     objReferrer = get('refId');
     objYP = get('young_person.id');
-    runJam('referralFormFinish?refId='+objReferrer.value+'&ypId='+objYP.value);
+    runJam('referralFormContacts?refId='+objReferrer.value+'&ypId='+objYP.value);
 
 }
 
