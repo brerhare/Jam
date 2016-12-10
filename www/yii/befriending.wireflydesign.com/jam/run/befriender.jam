@@ -76,10 +76,14 @@ function overlay() {
 			<th> Status </th>
 			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('showTabsNew', [], 'content')"> <i class="uk-icon-plus"></i> New</button> </th>
 		</tr>
-{{@each befriender filter archive_flag = 0}}
-		{{@get global filter id = befriender.global_id}}
-		{{@get status_bf filter id = befriender.status_id}}
-		<tr class="rowHighlight" onClick="runAction('showTabs', ['befriender.id={{befriender.id}}'], 'content')">
+
+{{@Xeach befriender filter archive_flag = 0}}
+{{@eachsql yippee select befriender.id, befriender.global_id, befriender.status_id, global.forename, global.surname from befriender inner join global on befriender.global_id = global.id where archive_flag = 0 order by global.surname}}
+
+        {{@get global filter id = yippee.global_id}}
+        {{@get status_bf filter id = yippee.status_id}}
+
+		<tr class="rowHighlight" onClick="runAction('showTabs', ['befriender.id={{yippee.id}}'], 'content')">
 			<td>{{global.forename}}</td>
 			<td>{{global.surname}}</td>
 			<td>{{global.postcode}}</td>

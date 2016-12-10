@@ -17,9 +17,15 @@
 }
 </style>
 
-<h3> Referrers </h3>
 <div name="content_contact">
-	<table class="testgrid sortable uk-table uk-table-condensed" style="border:1px solid #dddddd">
+
+	<center><h3> Referrers </h3></center>
+
+    <form class="uk-form">
+        <input type="text" id="searchInput" placeholder="Type to search">
+    </form>
+
+	<table class="testgrid sortable searchTable uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
 			<th> Forename </th>
 			<th> Surname </th>
@@ -27,15 +33,19 @@
 			<th> Send Form </th>
 			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('maintain_contact', [], 'content_contact')"> <i class="uk-icon-plus"></i> New</button> </th>
 		</tr>
-{{@each contact filter contact_relationship_id = 3}}
-		{{@get global filter id = contact.global_id}}
+
+{{@Xeach contact filter contact_relationship_id = 3}}
+{{@eachsql yippee select contact.id, contact.global_id, global.forename, global.surname from contact inner join global on contact.global_id = global.id where contact_relationship_id = 3 order by global.surname}}
+            
+        {{@get global filter id = yippee.global_id}}
+
 		<tr class="rowHighlight">
-			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.forename}}</td>
-			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.surname}}</td>
-			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.email}}</td>
+			<td onClick="runAction('maintain_contact', ['contact.id={{yippee.id}}'], 'content_contact')">{{global.forename}}</td>
+			<td onClick="runAction('maintain_contact', ['contact.id={{yippee.id}}'], 'content_contact')">{{global.surname}}</td>
+			<td onClick="runAction('maintain_contact', ['contact.id={{yippee.id}}'], 'content_contact')">{{global.email}}</td>
 			<td>
-				<span id='emailButton{{contact.id}}' name='emailButton{{contact.id}}'>
-					<button class="uk-button uk-button-small uk-button-primary" onClick="runAction('email_contact', ['contact.id={{contact.id}}'], 'emailButton{{contact.id}}')"> Email form </button>
+				<span id='emailButton{{yippee.id}}' name='emailButton{{yippee.id}}'>
+					<button class="uk-button uk-button-small uk-button-primary" onClick="runAction('email_contact', ['contact.id={{yippee.id}}'], 'emailButton{{yippee.id}}')"> Email form </button>
 				</span>
 			</td>
 			<td>
@@ -152,5 +162,7 @@ function postUpdate() {
 {{@end}}
 
 {{@html container end}}
+
+{{@include /jam/sys/js/searchPrintExport.js}}
 
 {{@include /jam/sys/html/footer.html}}
