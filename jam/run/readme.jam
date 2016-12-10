@@ -70,10 +70,14 @@
 {@each stock_customer_transaction filter date > '2015-04-20', date < '2015-04-23'}
 {@each stock_area filter id > 14, id < 17}
 {@each stock_customer filter stock_area_id = id, order by name}
+{@each stock_customer filter stock_area_id = id, order by name DESC}
 {@each stock_customer_transaction filter stock_user_id = stock_user.id}
 {@each stock_customer_transaction filter date < mem.duedate, type = 'inv', balance > 0, order by date}
 {@each stock_product_has_location filter stock_location_id = filter.location, onhand < min_level}
 {@each ticket_temp_delegate_report filter name like '%{{keyaction}}%', order by name}
+{@eachsql stock_customer select * from stock_customer}		// 1st arg is table prefix (or var prefix) to prepend to table fields, followed by a literal sql command}
+{@eachsql stock_customer somequery}
+
 
 {@skip stock_product_has_location.stock_location_id = null}
 {@skip stock_product_has_location.onhand < stock_product_has_location.min_level}
@@ -203,6 +207,7 @@ sys.control.xxxxx	// mainly for sysjam, all args processed line by line are conv
 sys.sequence		// The unique sequence number for each iteration of an @each @end loop. Useful for getSibling() js calls from direct html <button>s etc
 sys.today			// Date
 sys.now 			// Time
+sys.cookie.xxxxx 	// Cookies ('bf_user' etc)
 
 
 <hr>
@@ -219,11 +224,11 @@ sys.now 			// Time
 {@include once /path/file}
 {@include standalone /path/file}	// only include if this file itself is not included
 
-{@daycount fromdate todate}
+{@daycount fromdate todate}			// eg 14
+{@adddays fromdate days}			// eg 2016-12-20
 
 {@replacevalue field=befriender.gender value=0:male,1:female}
-{@postcodeextract type=areadistrict postcode='DG6 4TP'}		// returns 'DG6'
-
+{@wordsplit field=global.postcode segment=1 newfield=myNewField}	// IF newfield is specified it will be created/updated otherwise simply emitted
 
 <hr>
 
