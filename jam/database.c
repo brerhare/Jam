@@ -274,25 +274,42 @@ void updateSqlVar(char *qualifiedName, enum enum_field_types mysqlType, char *va
 // ----------------------------------------------------------------
 // General stuff
 
-// This is the common code that used to be in @get and @each - now called from control() and wordDatabaseGet()
+// This is the common code that used to be in @get and @each<> - now called from control() and wordDatabaseGet()
 MYSQL_RES *doSqlSelect(int ix, char *defaultTableName, char **givenTableName, int maxRows) {
     char *cmd = jam[ix]->command;
     char *args = jam[ix]->args;
     char *rawData = jam[ix]->rawData;
     char *tmp = (char *) calloc(1, 64096);
 
-    // @@TODO refactor this because it shares 90% of its code with @each
+    // @@TODO refactor this because it shares 90% of its code with @each<>
     int skipCode = 0;
 
     // Get the given table name that we want to get
     char *ta = strTrim(args);
     char *tg = *givenTableName;
+
+	logMsg(LOGDEBUG, "doSqlSelect:  cmd='%s' ta='%s', ", cmd, ta);
+
     while ((*ta) && (*ta != ' ') && (*ta != '.'))	// Find ' ' or '.' which terminates the tablename;
         *tg++ = *ta++;
     char *query = (char *) calloc(1, MAX_SQL_QUERY_LEN);
     sprintf(query, "select * from %s",  *givenTableName);				// set a default query
-    // Is there more than just the table name?
-    if (*ta) {
+
+
+	// Is this a @eachsql command?
+	if (!strcmp(cmd, "@eachsql")) {
+		if (*ta) {
+			char *p = ta;
+			while ((*p) && (*p != ' '))
+				*p;
+			if (*p == ' ') {
+				p++;
+				if (*p) {
+					strcpy(query, p);
+				}
+			}
+		}
+	} else if (*ta) {	// Is there more than just the table name?
         ta++;
         skipCode = appendSqlSelectOptions(query, ta, defaultTableName, *givenTableName);		// build a complex query
     }
@@ -348,7 +365,7 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 	for (int i = 0; i < MAX_SUBARGS; i++) {
 		if (subArg[i] == NULL) {
 			if (firstArg) {
-				logMsg(LOGERROR, "No arguments provided to @each/@get");
+				logMsg(LOGERROR, "No arguments provided to @each<>/@get");
 				return(-1);
 			}
 			break;

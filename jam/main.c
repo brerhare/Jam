@@ -857,7 +857,7 @@ int control(int startIx, char *defaultTableName) {
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@skip"))) {
 //		-----------------------------------------
-			;	// @@TODO!	// @@TODO also any other skips, in @each etc
+			;	// @@TODO!	// @@TODO also any other skips, in @each<> etc
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@get"))) {
 //		------------------------------------
@@ -867,12 +867,12 @@ int control(int startIx, char *defaultTableName) {
 //		------------------------------------
 			res = wordDatabaseSql(ix, defaultTableName);
 //		------------------------------------
-		} else if (!(strcmp(cmd, "@each"))) {
+		} else if (strcasestr(cmd, "@each")) {
 //		-------------------------------------
 			// This is either a list or a db table
 			char *listName = (char *) calloc(1, 64096);
 			getWord(listName, args, 1, " \t");
-			logMsg(LOGDEBUG, "@each - looking to see if [%s] is a list (exists as a variable)", listName);
+			logMsg(LOGDEBUG, "@each<> - looking to see if [%s] is a list (exists as a variable)", listName);
 			VAR *listVar = findVarStrict(listName);
 			if (listVar) {	// its a list
 				logMsg(LOGDEBUG, "Its a list. Do listfirst() for list [%s]", listName);
@@ -882,10 +882,10 @@ int control(int startIx, char *defaultTableName) {
 					logMsg(LOGMICRO, "setting list variable [%s] to value [%s]", listName, p);
 					clearVarValues(listVar);
 					fillVarDataTypes(listVar, p);
-					logMsg(LOGMICRO, "@each (list %s) starting recurse", listName);
+					logMsg(LOGMICRO, "@each<> (list %s) starting recurse", listName);
 					cmdSeqnum++;		// up the unique sequence number
 					control((ix + 1), defaultTableName);
-					logMsg(LOGMICRO, "@each (list %s) ended recurse", listName);
+					logMsg(LOGMICRO, "@each<> (list %s) ended recurse", listName);
 					p = (char *) listNext(listName);
 				}
 				while (jam[ix] && (strcmp(jam[ix]->command, "@end"))) {
@@ -903,10 +903,10 @@ int control(int startIx, char *defaultTableName) {
 				logMsg(LOGDEBUG, "Get each row from the result set");
 				while (sqlGetRow2Vars(rp) != SQL_EOF) {
 					emitStd(jam[ix]->trailer);
-					logMsg(LOGMICRO, "@each (db table %s) starting recurse", givenTableName);
+					logMsg(LOGMICRO, "@each<> (db table %s) starting recurse", givenTableName);
 					cmdSeqnum++;		// up the unique sequence number
 					control((ix + 1), givenTableName);				// recurse into the item
-					logMsg(LOGMICRO, "@each (db table %s) ended recurse", givenTableName);
+					logMsg(LOGMICRO, "@each<> (db table %s) ended recurse", givenTableName);
 				}
 				free(rp->tableName);
 				free(rp);
@@ -915,7 +915,7 @@ int control(int startIx, char *defaultTableName) {
 				int sanity = 0;
 				while (jam[++ix]) {
 					if (++sanity > 1000) {
-						logMsg(LOGERROR, "Endless looping finding @end for @each in control()");
+						logMsg(LOGERROR, "Endless looping finding @end for @each<> in control()");
 						res = -1;
 					}
 					if (!strcmp(jam[ix]->command, "@end")) {
@@ -923,7 +923,7 @@ int control(int startIx, char *defaultTableName) {
 							break;
 						else
 							depth--;
-					} else if (!strcmp(jam[ix]->command, "@each")) {
+					} else if (strcasestr(jam[ix]->command, "@each")) {
 						depth++;
 					}
 				}
