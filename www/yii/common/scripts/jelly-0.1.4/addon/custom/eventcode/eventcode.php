@@ -443,6 +443,7 @@ class eventcode
             		if ($ticketTypes)
 						$eventHasTickets = 1;
 				endforeach;
+/**
 				if (($eventHasTickets) && ($event->ticket_event_id != 1))  // Ticket event has tickets set up and its not Test Event 1 (BUG - ppl can generate ticket events without a SID. @@FIX!)
 				{
 					$ticketUrl = "https://plugin.wireflydesign.com/ticket/index.php/ticket/book/" . $event->ticket_event_id . "?sid=" . $member->sid . "&ref=event";
@@ -459,6 +460,7 @@ if (isset($_GET['test']))
 				{
 					$content .= "<div style='float:right'><a target='_blank' href='#'><img style='opacity:0.4; filter: alpha(opacity=40); margin-top:0px; margin-left:0px' title='Booking not yet available for this event.\nVendor has still to set up ticketing.\nPlease check back later.' src='img/book-s.jpg'></a></div><br/>";
 				}
+**/
 			}
 
 			$content .= "    </div>";

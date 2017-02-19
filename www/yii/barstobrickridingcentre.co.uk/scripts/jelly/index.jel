@@ -270,7 +270,6 @@ css.width = 100%
 		css.height = 50px
 		#jam.embed = /run/contactForm.jam
 		jam.iframe = /run/signUp
-				
 	
 		[footer-content]
 		child = footer-social, footer-menu, footnote
