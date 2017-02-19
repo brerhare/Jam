@@ -36,7 +36,7 @@
 			<td>{{global.surname}}</td>
 			<td>{{status.name}}</td>
 			<td><button class="uk-button uk-button-mini uk-button-Xsecondary" style='background: #ea9448; color:#ffffff' onClick="confirmArchive('{{id}}','{{global.surname}}')"> Archive </button></td>
-			<td><button class="uk-button uk-button-mini uk-button-danger" onClick="confirmHide('{{id}}','{{global.surname}}')"> Delete </button></td>
+			<td><button class="uk-button uk-button-mini uk-button-danger" onClick="confirmHide('{{id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i> </button></td>
 		</tr>
 {{@end}}
 	</table>

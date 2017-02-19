@@ -90,7 +90,7 @@ function overlay() {
 			<td>{{global.postcode}}</td>
 			<td>{{status_bf.name}}</td>
 			<td> <button class="uk-button uk-button-mini uk-button-Xsecondary" style='background: #ea9448; color:#ffffff'  onClick="confirmArchive('{{id}}','{{global.forename}} {{global.surname}}')"> Archive </button> </td>
-            <td><button class="uk-button uk-button-mini uk-button-danger" onClick="confirmHide('{{id}}','{{global.forename}} {{global.surname}}')"> Delete </button></td>
+            <td><button class="uk-button uk-button-mini uk-button-danger" onClick="confirmHide('{{id}}','{{global.forename}} {{global.surname}}')"> <i class="uk-icon-trash"></i> </button></td>
 
 		</tr>
 {{@end}}
