@@ -74,7 +74,8 @@ function overlay() {
 			<th> Surname </th>
 			<th> Postcode </th>
 			<th> Status </th>
-			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('showTabsNew', [], 'content')"> <i class="uk-icon-plus"></i> New</button> </th>
+			<th width=40px> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('showTabsNew', [], 'content')"> <i class="uk-icon-plus"></i> New</button> </th>
+			<th> </th>
 		</tr>
 
 {{@Xeach befriender filter archive_flag = 0}}
@@ -88,7 +89,9 @@ function overlay() {
 			<td>{{global.surname}}</td>
 			<td>{{global.postcode}}</td>
 			<td>{{status_bf.name}}</td>
-			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{global.forename}} {{global.surname}}')"> Archive </button> </td>
+			<td> <button class="uk-button uk-button-mini uk-button-Xsecondary" style='background: #ea9448; color:#ffffff'  onClick="confirmArchive('{{id}}','{{global.forename}} {{global.surname}}')"> Archive </button> </td>
+            <td><button class="uk-button uk-button-mini uk-button-danger" onClick="confirmHide('{{id}}','{{global.forename}} {{global.surname}}')"> Delete </button></td>
+
 		</tr>
 {{@end}}
 	</table>
@@ -105,7 +108,7 @@ function overlay() {
 </div>
 
 <script>
-function confirmDelete(id, displayInfo) {
+function confirmArchive(id, displayInfo) {
 	window.event.cancelBubble = true;	// Prevent any further events
 	ovIdObj = get("ovId");
 	ovIdObj.value = id;
@@ -114,16 +117,23 @@ function confirmDelete(id, displayInfo) {
 	overlay();
 }
 
+function confirmHide(id, displayInfo) {
+	window.event.cancelBubble = true;   // Prevent any further events
+	var result = confirm('Confirm DELETION of item ' + displayInfo + '(' + id + ')');
+	if (result)
+		runAction('delete', ['befriender.id='+id], '', runJam);
+}
+
 function doArchive() {
 	ovIdObj = get("ovId");
 	ovReasonObj = get("ovId");
 	overlay();
-	//runAction('delete', ['befriender.id='+ovIdObj.value, 'overlay_form'], '', window.setTimeout(runJam, 1000)) ;	
-	runAction('delete', ['befriender.id='+ovIdObj.value, 'overlay_form'], '');
+	//runAction('archive', ['befriender.id='+ovIdObj.value, 'overlay_form'], '', window.setTimeout(runJam, 1000)) ;	
+	runAction('archive', ['befriender.id='+ovIdObj.value, 'overlay_form'], '');
 }
 </script>
 
-{{@action delete}}
+{{@action archive}}
     {{@get befriender filter id = befriender.id}}
     {{@get global filter id = befriender.global_id}}
     {{befriender.archive_flag = 1}}
@@ -132,6 +142,14 @@ function doArchive() {
     {{@amend item befriender}}
     {{@get settings filter id = 1}}
     {{@email {{settings.email}} {{settings.email}} 'Archive request - Befriender {{global.forename}} {{global.surname}} to be archived' action:emailContent}}
+{{@end}}
+
+{{@action delete}}
+    {{@get befriender filter id = befriender.id}}
+    {{@get global filter id = befriender.global_id}}
+    {{befriender.archive_flag = 9}}
+    {{befriender.archive_date = sys.today}}
+    {{@amend item befriender}}
 {{@end}}
 
 {{@action emailContent}}

@@ -34,7 +34,7 @@
 			<td>{{global.surname}}</td>
 			<td>{{status.name}}</td>
 			<td>{{young_person.archive_date}}</td>
-			<td><button class="uk-button uk-button-mini uk-button-danger" onClick="confirmUnDelete('{{id}}','{{global.surname}}')">Restore</button></td>
+			<td><button class="uk-button uk-button-mini uk-button-Xdanger" style='background: #ea9448; color:#ffffff' onClick="confirmUnDelete('{{id}}','{{global.surname}}')">Restore</button></td>
 		</tr>
 {{@end}}
 	</table>
