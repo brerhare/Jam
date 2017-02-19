@@ -9,5 +9,5 @@ YP and befriender archive flag values
 	0 = active
 	1 = counting down to archive by cron job
 	2 = archived
-	9 = referral form started but not finalised (completing the referral will set archive to 0)
+	9 = hidden. eg: referral form started but not finalised (completing the referral will set archive to 0), or YP delete button pressed on maintain screen
 

@@ -135,7 +135,7 @@ function forwardToNext() {
 {{@action update_young_person}}
 	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
 	{{young_person.global_id = global.id}}
-    {{young_person.archive_flag = 0}}
+    {{young_person.archive_flag = 9}}
     {{young_person.archive_date = '0000-00-00'}}
     {{young_person.archive_destruction_date = '0000-00-00'}}
 	{{@update item young_person}}
