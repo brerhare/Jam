@@ -1,0 +1,159 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@Xinclude /jam/run/new_menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:900px; Xpadding:0}}
+
+	{{@get young_person filter id = young_person.id}}
+	{{@get global filter id = young_person.global_id}}
+
+	<style type="text/css">
+		label {text-align: right; width:150px !important}
+		div.uk-form-controls {margin-left: 170px !important}
+	</style>
+
+	<center><h3> Young Person Medical Report </h3></center>
+
+
+    <div name="inlineForm" class="uk-form uk-form-horizontal">
+
+        <table class="uk-table uk-table-condensed" style="border:1px solid #dddddd">
+            <tr>
+				<th> Medical type </th>
+				<th colspan=3 style='text-align:center'> Young Person </th>
+				<th colspan=3 style='text-align:center'> Parent Carer </th>
+            </tr>
+            <tr>
+				<td> </td>
+				<td style='text-align:left'> Yes </td>
+				<td style='text-align:left'> No </td>
+				<td style='text-align:left'> Dont Know </td>
+				<td style='text-align:left'> Yes </td>
+				<td style='text-align:left'> No </td>
+				<td style='text-align:left'> Dont Know </td>
+			</td>
+{{@each medical_type}}
+            <tr>
+				<td> {{medical_type.name}} </td>
+
+	<!-- Young person -->
+
+	{{tmp.count = 0}}
+	{{@each medical filter medical_type_id = medical_type.id, yp_radio = 1}}
+		{{@each young_person filter id = medical.young_person_id, archive_flag = 0}}
+			{{tmp.count = tmp.count + 1}}
+		{{@end}}
+	{{@end}}
+				<td> {{tmp.count}} </td>
+
+	{{tmp.count = 0}}
+	{{@each medical filter medical_type_id = medical_type.id, yp_radio = 2}}
+		{{@each young_person filter id = medical.young_person_id, archive_flag = 0}}
+			{{tmp.count = tmp.count + 1}}
+		{{@end}}
+	{{@end}}
+				<td> {{tmp.count}} </td>
+
+	{{tmp.count = 0}}
+	{{@each medical filter medical_type_id = medical_type.id, yp_radio = 3}}
+		{{@each young_person filter id = medical.young_person_id, archive_flag = 0}}
+			{{tmp.count = tmp.count + 1}}
+		{{@end}}
+	{{@end}}
+				<td> {{tmp.count}} </td>
+
+	<!-- Parent carer -->
+
+	{{tmp.count = 0}}
+	{{@each medical filter medical_type_id = medical_type.id, pc_radio = 1}}
+		{{@each young_person filter id = medical.young_person_id, archive_flag = 0}}
+			{{tmp.count = tmp.count + 1}}
+		{{@end}}
+	{{@end}}
+				<td> {{tmp.count}} </td>
+
+	{{tmp.count = 0}}
+	{{@each medical filter medical_type_id = medical_type.id, pc_radio = 2}}
+		{{@each young_person filter id = medical.young_person_id, archive_flag = 0}}
+			{{tmp.count = tmp.count + 1}}
+		{{@end}}
+	{{@end}}
+				<td> {{tmp.count}} </td>
+
+	{{tmp.count = 0}}
+	{{@each medical filter medical_type_id = medical_type.id, pc_radio = 3}}
+		{{@each young_person filter id = medical.young_person_id, archive_flag = 0}}
+			{{tmp.count = tmp.count + 1}}
+		{{@end}}
+	{{@end}}
+				<td> {{tmp.count}} </td>
+
+            </tr>
+{{@end}}
+        </table>
+
+<script>
+window.onload = function() {
+}
+
+function saveButtonClicked(obj) {
+    runAction('deleteAllMedical',['young_person.id'], '', addNotes);
+}
+
+function addNotes() {
+	notesObj = get('medical_notes.notes');
+	medicationObj = get('medical_notes.medication');
+	runAction('addNotes', ['young_person.id', 'notes='+notesObj.value, 'medication='+medicationObj.value], '', addAll);
+}
+
+function addAll() {
+	var groupArr = getGroupArray('inp');
+	for (var i = 0; i < groupArr.length; i++) {
+		var medical_id_arr = groupArr[i].name.split('_');
+
+		ypVal = 0;
+		pcVal = 0;
+		for (var j = 1; j < 4; j++) {
+			ypId = medical_id_arr[0] + '_' + 'yp_'+j;
+			pcId = medical_id_arr[0] + '_' + 'pc_'+j;
+			if (document.getElementById(ypId).checked)
+				ypVal = j;
+			if (document.getElementById(pcId).checked)
+				pcVal = j;
+		}
+		if ((ypVal != 0) || (pcVal != 0))
+			runAction('addMedical', ['young_person.id', 'medical_type_id='+medical_id_arr[0], 'ypval='+ypVal, 'pcval='+pcVal]);
+		//alert('medical_type='+medical_id_arr[0]+' and yp='+ypVal+' and pc='+pcVal);
+	}
+}
+
+</script>
+
+{{@html container end}}
+
+{{@action deleteAllMedical}}
+    {{@sql delete from medical where young_person_id = {{young_person.id}} }}
+{{@end}}
+
+{{@action addMedical}}
+    {{medical.young_person_id = young_person.id}}
+    {{medical.medical_type_id = medical_type_id}}
+	{{medical.yp_radio = ypval}}
+	{{medical.pc_radio = pcval}}
+    {{@new item medical notify=ok}}
+{{@end}}
+
+{{@action addNotes}}
+    {{@get medical_notes filter young_person_id = young_person.id}}
+    {{@remove item medical_notes}}
+    {{medical_notes.young_person_id = young_person.id}}
+    {{medical_notes.notes = notes}}
+    {{medical_notes.medication = medication}}
+    {{@new item medical_notes notify=ok}}
+{{@end}}
+
+{{@include /jam/sys/html/footer.html}}
