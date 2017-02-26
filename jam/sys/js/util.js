@@ -15,7 +15,8 @@ function runUrl(url, newTab) {
 /*
  * @param jamName		either empty (rerun this jam), just a 'something[.jam]' or a '/url/to/something[.jam]'
  */
-function runJam(jamName) {
+function runJam(jamName, newTab) {
+	if (typeof newTab === 'undefined') { newTab = 0; }
 	var newLocation = jamName;				// Default is to assume a full url, ie use as supplied
 	if (typeof jamName === 'undefined')
 		newLocation = location.href;		// If empty grab the current url
@@ -23,7 +24,11 @@ function runJam(jamName) {
 		// If just a 'something[.jam]' build a url using the full url base, the path to the current jamfile, and the new jamfile name
 		newLocation = location.href.substring(0, location.href.lastIndexOf("/") + 1) + jamName;
 	}
-	window.location.href = newLocation;
+	//window.location.href = newLocation;
+	if (newTab == 1)
+		window.open(newLocation, '_blank');
+	else
+		window.open(newLocation);
 }
 
 /*
