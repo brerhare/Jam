@@ -20,9 +20,17 @@
 	<form name='dateSel' class="uk-form uk-form-horizontal">
 
         {{@html gridrow start}}
-            <center>
-                <button type='button' id='goButton' class="uk-button uk-button-primary" onClick="goButtonClick()">Go</button>
-            </center>
+			{{@html gridcol start width=1-1}}
+            	<center>
+                	<button type='button' id='goButton' class="uk-button uk-button-primary" onClick="goButtonClick()">Go</button>
+            	</center>
+			{{@html gridcol end}}
+			<br><br>
+			{{@html gridcol start width=1-1}}
+				<div id='pleaseWait'>
+				</div>
+			{{@html gridcol end}}
+
 	</form>
 
 </div>
@@ -37,8 +45,8 @@ window.onload = function() {
 }
 
 function goButtonClick() {
-	fromObj = get('filter.date_from');
-	toObj = get('filter.date_to');
+	document.body.style.cursor = 'wait'
+	document.getElementById('pleaseWait').innerHTML = '<center><h4>Please wait, preparing report...</h4></center>';
 	runJam('reportYoungPersonMedical2');
 }
 </script>

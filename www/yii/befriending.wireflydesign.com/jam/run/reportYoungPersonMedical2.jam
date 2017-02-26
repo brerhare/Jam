@@ -1,7 +1,7 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@Xinclude /jam/run/new_menu.jam}}
+{{@include /jam/run/new_menu.jam}}
 
 {{@database befriending_wireflydesign_com}}
 
@@ -90,6 +90,7 @@
 			{{tmp.count = tmp.count + 1}}
 		{{@end}}
 	{{@end}}
+
 				<td> {{tmp.count}} </td>
 
             </tr>
