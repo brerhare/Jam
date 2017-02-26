@@ -74,7 +74,7 @@
 {@each stock_customer_transaction filter stock_user_id = stock_user.id}
 {@each stock_customer_transaction filter date < mem.duedate, type = 'inv', balance > 0, order by date}
 {@each stock_product_has_location filter stock_location_id = filter.location, onhand < min_level}
-{@each ticket_temp_delegate_report filter name like '%{{keyaction}}%', order by name}
+{@each ticket_temp_delegate_report filter name litke '%{{keyaction}}%', order by name}
 {@eachsql stock_customer select * from stock_customer}		// 1st arg is table prefix (or var prefix) to prepend to table fields, followed by a literal sql command}
 {@eachsql stock_customer somequery}
 

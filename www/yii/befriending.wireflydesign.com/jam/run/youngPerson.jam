@@ -20,7 +20,8 @@
 			<th> Forename </th>
 			<th> Surname </th>
 			<th> Status </th>
-			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('showTabsNew', [], 'content')"> <i class="uk-icon-plus"></i> New</button> </th>
+			<th width=40px> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('showTabsNew', [], 'content')"> <i class="uk-icon-plus"></i> New</button> </th>
+			<th> </th>
 		</tr>
 <!-- @@TODO fix this with a proper delete / archive procedure -->
 
@@ -34,7 +35,8 @@
 			<td>{{global.forename}}</td>
 			<td>{{global.surname}}</td>
 			<td>{{status.name}}</td>
-			<td><button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{global.surname}}')"> Archive </button></td>
+			<td><button class="uk-button uk-button-mini uk-button-Xsecondary" style='background: #ea9448; color:#ffffff' onClick="confirmArchive('{{id}}','{{global.surname}}')"> Archive </button></td>
+			<td><button class="uk-button uk-button-mini uk-button-danger" onClick="confirmHide('{{id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i> </button></td>
 		</tr>
 {{@end}}
 	</table>
@@ -51,15 +53,21 @@
 </div>
 
 <script>
-function confirmDelete(id, displayInfo) {
+function confirmArchive(id, displayInfo) {
 	window.event.cancelBubble = true;	// Prevent any further events
 	var result = confirm('Confirm archival request for item ' + displayInfo);
+	if (result)
+		runAction('archive', ['young_person.id='+id], '', runJam);	
+}
+function confirmHide(id, displayInfo) {
+	window.event.cancelBubble = true;	// Prevent any further events
+	var result = confirm('Confirm DELETION of item ' + displayInfo + '(' + id + ')');
 	if (result)
 		runAction('delete', ['young_person.id='+id], '', runJam);	
 }
 </script>
 
-{{@action delete}}
+{{@action archive}}
 	{{@get young_person filter id = young_person.id}}
 	{{@get global filter id = young_person.global_id}}
 	{{young_person.archive_flag = 1}}
@@ -68,6 +76,17 @@ function confirmDelete(id, displayInfo) {
 	{{@amend item young_person}}
 	{{@get settings filter id = 1}}
 	{{@email {{settings.email}} {{settings.email}} 'Archive request - Young Person {{global.forename}} {{global.surname}} to be archived' action:emailContent}}
+{{@end}}
+
+{{@action delete}}
+	{{@get young_person filter id = young_person.id}}
+	{{@get global filter id = young_person.global_id}}
+	{{young_person.archive_flag = 9}}
+	{{young_person.archive_date = sys.today}}
+	{{young_person.archive_destruction_date = '0000-00-00'}}
+	{{@get status id > 0}}
+	{{young_person.status_id = status.id}}
+	{{@amend item young_person}}
 {{@end}}
 
 {{@action emailContent}}
@@ -90,7 +109,7 @@ function confirmDelete(id, displayInfo) {
 			runJam
 		}}</td>
 		<td style='width:200px; text-align:right'>{{@html button 'Notes report' primary medium 
-			runJam('reportFormsYp?yp_id={{young_person.id}}');
+			runJam('reportFormsYp?yp_id={{young_person.id}}', 1);
 		}}</td>
 			
 			
