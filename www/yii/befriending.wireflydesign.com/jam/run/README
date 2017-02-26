@@ -11,3 +11,5 @@ YP and befriender archive flag values
 	2 = archived
 	9 = hidden. eg: referral form started but not finalised (completing the referral will set archive to 0), or YP delete button pressed on maintain screen
 
+BUG
+	the last part of the action is included in the initial run. Should not be run until called - see bugs/report.jam
