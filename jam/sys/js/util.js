@@ -24,11 +24,10 @@ function runJam(jamName, newTab) {
 		// If just a 'something[.jam]' build a url using the full url base, the path to the current jamfile, and the new jamfile name
 		newLocation = location.href.substring(0, location.href.lastIndexOf("/") + 1) + jamName;
 	}
-	//window.location.href = newLocation;
 	if (newTab == 1)
 		window.open(newLocation, '_blank');
 	else
-		window.open(newLocation);
+		window.location.href = newLocation;
 }
 
 /*
