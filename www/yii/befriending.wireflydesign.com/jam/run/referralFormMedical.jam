@@ -19,7 +19,7 @@
 
     <div name="inlineForm" class="uk-form uk-form-horizontal">
 <br>
-<center> <h3> Medical </h3> </center>
+<center> <h3> Medical information </h3> </center>
 
         <table class="uk-table uk-table-condensed" style="border:1px solid #dddddd">
             <tr>

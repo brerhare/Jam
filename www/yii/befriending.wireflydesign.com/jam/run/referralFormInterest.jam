@@ -19,12 +19,12 @@
 		
 <div name="content_contact">
 <br>
-<center> <h3> Anticipated </h3> </center>
+<center> <h3> Anticipated outcomes </h3> </center>
 
 
 	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
-			<th> Interest </th>
+			<th> Interest outcomes </th>
 			<th> Check </th>
 		</tr>
 {{@each interest_type}}

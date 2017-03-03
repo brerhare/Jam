@@ -19,7 +19,7 @@
 <div name="content_contact">
 	{{@get young_person filter id = ypId}}
 	{{@get global filter id = young_person.global_id}}
-	<center> <h3> Please add all other additional contacts for {{global.forename}} {{global.surname}} you are aware of</h3> </center>
+	<center> <h3> Please add all other additional contacts that you are aware of</h3> </center>
 	<center> <h4 style='color:#ff0000'> Remember to add their parent/carer </h4> </center>
 	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
