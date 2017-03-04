@@ -18,6 +18,7 @@
 	<table id='printTable' class="searchTable testgrid sortable uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr style='font-weight:bold'>
 			<th> Young Person Name </th>
+			<th> Date Leaving </th>
 			<th> File Destruction Date </th>
 		</tr>
 {{@each young_person filter archive_flag > 0, archive_flag < 3, archive_date >= from, archive_date <= to}}
@@ -25,6 +26,7 @@
 	{{@count id}}
 	{{@get global filter id = young_person.global_id}}
 			<td>{{global.forename}} {{global.surname}}</td>
+			<td>{{young_person.archive_date}}</td>
 			<td>{{young_person.archive_destruction_date}}</td>
 {{@end}}
 	</table>
