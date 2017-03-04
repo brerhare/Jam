@@ -88,7 +88,7 @@ va_end(ap);
 		if ((log_message_stream = fopen(logFileName, "a")) == NULL)
 		{
 			log_message_stream = stderr;
-			logMsg(LOGERROR, "Cant open log file - aborting");
+			logMsg(LOGFATAL, "Cant open log file - aborting");
 			exit(-1);
 		}
 		free(buf);
