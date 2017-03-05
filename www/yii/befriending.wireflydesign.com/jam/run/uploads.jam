@@ -22,6 +22,7 @@
 <br>
 - YP leaving report columns same as befriender leaving report except 'reason' column (YP has no leaving-reason)
 <br>
+- YP legal status (and date) moved from Details tab to its own tab. Each legal status has its own applicable date
 
 </p>
 

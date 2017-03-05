@@ -126,7 +126,7 @@ function confirmHide(id, displayInfo) {
 		label=Additional	action=/run/youngPersonAdditional?young_person.id={{young_person.id}}
 		label=Forms			action=/run/youngPersonForms?young_person.id={{young_person.id}}
 		label=Matches		action=/run/youngPersonMatch?young_person.id={{young_person.id}}
-		label=Legal			action=/run/youngPersonLegal?young_person.id={{young_person.id}}
+		label='Legal status'			action=/run/youngPersonLegal?young_person.id={{young_person.id}}
 	}}
 {{@end}}
 
