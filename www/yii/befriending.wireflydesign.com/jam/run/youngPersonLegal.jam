@@ -1,0 +1,74 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@Xinclude /jam/run/new_menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:700px; Xpadding:0}}
+
+<br>
+<div name="content_contact">
+	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+		<tr>
+			<th> Legal Status </th>
+			<th> Check </th>
+			<th> Date </th>
+		</tr>
+{{@each legalstatus}}
+			<td>{{legalstatus.name}}</td>
+			{{tmp.checked = }}
+			{{tmp.date = }}
+	{{@each legalstatus_yp filter legal_status_id = legalstatus.id, young_person_id = young_person.id}}
+			{{tmp.checked = checked}}
+	{{@end}}
+			<td> <input type="checkbox" name="legalstatus" value="{{legalstatus.id}}" {{tmp.checked}} class='inp'> </td>
+			<td> <input type="date"     name="legalstatus_date_{{legalstatus.id}}" value="{{legalstatus_yp.date}}" class='inp'> </td>
+		</tr>
+{{@end}}
+	</table>
+</div>
+<center>
+	<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="saveButtonClicked(this)">Save</button> </td>
+</center>
+
+{{@html container end}}
+
+<script>
+window.onload = function() {
+}
+
+{{@action deleteAllLegalstatus}}
+	{{@sql delete from legalstatus_yp where young_person_id = {{young_person.id}} }}
+{{@end}}
+
+{{@action addLegalstatus}}
+	{{legalstatus_yp.young_person_id = young_person.id}}
+	{{legalstatus_yp.legal_status_id = legalstatus.id}}
+	{{@new item legalstatus_yp notify=ok}}
+{{@end}}
+
+function saveButtonClicked(obj) {
+	runAction('deleteAllLegalstatus',['young_person.id'], '', addAll);
+}
+
+function addAll() {
+    var checkboxes = document.getElementsByName('legalstatus');
+    for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+
+
+/**
+get('legalstatus_date_'
+**/
+
+
+            runAction('addLegalstatus', ['young_person.id', 'legalstatus.id='+checkboxes[i].value]);
+        }
+    }
+}
+
+</script>
+
+{{@include /jam/sys/html/footer.html}}
