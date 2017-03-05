@@ -19,18 +19,18 @@
 
 	<form name='dateSel' class="uk-form uk-form-horizontal">
 
-        {{@html gridrow start}}
-            {{@html gridcol start width=3-10}}
-			{{@html gridcol end}}
+	<center>
 
-            {{@html gridcol start width=4-10}}
-				{{@html date field=filter.date_from size=medium label='From date'}}
-				{{@html date field=filter.date_to size=medium label='To date'}}
-			{{@html gridcol end}}
+		</table>
+			{{@each legalstatus}}
+			<tr>
+				<td> {{legalstatus.name}} </td>
+				<td>  </td>
+			</tr>
+			{{@end}}
+		</table>
 
-            {{@html gridcol start width=3-10}}
-			{{@html gridcol end}}
-        {{@html gridrow end}}
+	</center>
 
 <br>
                 <center>
@@ -53,7 +53,7 @@ window.onload = function() {
 function goButtonClick() {
 	fromObj = get('filter.date_from');
 	toObj = get('filter.date_to');
-	runJam('reportGirfec2?from=' + fromObj.value + '&to=' + toObj.value);
+	runJam('reportLegalstatus?from=' + fromObj.value + '&to=' + toObj.value);
 }
 </script>
 
