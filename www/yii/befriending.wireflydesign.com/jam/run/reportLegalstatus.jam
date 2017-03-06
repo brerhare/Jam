@@ -13,29 +13,32 @@
 <br>
 {{@html container start center css='max-width:1080px; Xpadding:0}}
 
-	<center><h3> Annual Girfec Report </h3></center>
+	<center><h3> Young Person Legal Status Report </h3></center>
 
 <div name='content'>
 
-	<form name='dateSel' class="uk-form uk-form-horizontal">
+	<form name='sel' class="uk-form uk-form-horizontal">
 
-	<center>
+		<center>
 
-		</table>
-			{{@each legalstatus}}
-			<tr>
-				<td> {{legalstatus.name}} </td>
-				<td>  </td>
-			</tr>
-			{{@end}}
-		</table>
+			<table>
+				<tr>
+					<td>
+						<div id='statuses'>
+							{{@each legalstatus}}
+								<input type="radio" name="status" value="{{legalstatus.id}}"> {{legalstatus.name}} <br>
+							{{@end}}
+						</div>
+					</td>
+				</tr>
+			</table>
 
-	</center>
+		</center>
 
 <br>
-                <center>
-                    <button type='button' id='goButton' class="uk-button uk-button-primary" onClick="goButtonClick()">Go</button>
-                </center>
+		<center>
+			<button type='button' id='goButton' class="uk-button uk-button-primary" onClick="goButtonClick()">Go</button>
+		</center>
 
 	</form>
 
@@ -51,11 +54,18 @@ window.onload = function() {
 }
 
 function goButtonClick() {
-	fromObj = get('filter.date_from');
-	toObj = get('filter.date_to');
-	runJam('reportLegalstatus?from=' + fromObj.value + '&to=' + toObj.value);
+	var statuses = document.getElementsByName('status');
+	var status_value;
+	for (var i = 0; i < statuses.length; i++) {
+    	if (statuses[i].checked) {
+        	status_value = statuses[i].value;
+			break;
+    	}
+	}
+	runJam('reportLegalstatus2?status=' + status_value);
 }
 </script>
 
 
 {{@include /jam/sys/html/footer.html}}
+
