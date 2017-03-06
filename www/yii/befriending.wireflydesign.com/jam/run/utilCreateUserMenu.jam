@@ -32,7 +32,7 @@ Doing...<br>
 	{{pid = menu.id}}
 	{{menu.text = Maintain}}    {{menu.href = /run/youngPerson.jam}}   {{menu.parent_id = pid}} {{@new item menu}}
 	{{menu.text = Referrers}}    {{menu.href = /run/referrers.jam}}   {{menu.parent_id = pid}} {{@new item menu}}
-	{{menu.text = Coordinators}}    {{menu.href = /run/coordinators.jam}}   {{menu.parent_id = pid}} {{@new item menu}}
+	{{menu.text = Coordinators}}    {{menu.href = /run/coordinator.jam}}   {{menu.parent_id = pid}} {{@new item menu}}
 	{{menu.text = Archive management}}  {{menu.href = /run/youngPersonArchive.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
 {{menu.text = Befrienders}}  {{menu.href = #}} {{menu.parent_id = 0}}       {{@new item menu}}
 	{{pid = menu.id}}
@@ -46,6 +46,7 @@ Doing...<br>
 {{menu.text = Reports}}  {{menu.href = #}} {{menu.parent_id = 0}}       {{@new item menu}}
 	{{pid = menu.id}}
 	{{menu.text = Volunteer process joining}}  {{menu.href = /run/reportJoining.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Co-ordinator report}}  {{menu.href = /run/reportCoordinator.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
 	{{menu.text = Young Person annual match report}}  {{menu.href = /run/reportYoungPersonAnnualMatch.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
 	{{menu.text = Young Person referral report}}  {{menu.href = /run/reportReferral.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
 	{{menu.text = Young Person leaving report}}  {{menu.href = /run/reportYoungPersonLeaving.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
