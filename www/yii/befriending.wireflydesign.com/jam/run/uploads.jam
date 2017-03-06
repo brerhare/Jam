@@ -27,6 +27,8 @@
 - YP legal status (and date) moved from Details tab to its own tab. Each legal status has its own applicable date
 <br>
 - YP legal status report, selectable by status
+<br>
+- Event maintenance screen now has an event 'milestone' dropdown. Start-6mth-12mth-finish. Use this for the GIRFEC report
 </p>
 
 

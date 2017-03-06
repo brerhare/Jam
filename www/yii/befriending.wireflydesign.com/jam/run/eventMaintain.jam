@@ -78,6 +78,7 @@
 					{{@html date field=event.date size=medium label='Date' default={{sys.today}} }}
 					{{@html time field=event.time size=small label='Time' default={{sys.now}} }}
 					{{@html dropdown field=event.event_type_id pickfield=event_type.name size=medium label='Event Type'}}
+					{{@html dropdown field=event.event_milestone_id pickfield=event_milestone.name size=medium label='GIRFEC Milestone'}}
 					{{@html textarea field=event.notes size=90x10 label='Notes'}}
 
 
