@@ -31,12 +31,14 @@
 			<td></td>
 		</tr>
 	{{@each young_person filter coordinator_id = yippee.id, archive_flag = 0}}
-		<tr>
+		{{@each match_yp filter young_person_id = young_person.id, match_started >= from, match_started <= to}}
 			{{@get global filter id = young_person.global_id}}
-			<td></td>
-			<td>{{global.forename}} {{global.surname}}<td>
-			<td></td>
-		</tr>
+			<tr>
+				<td></td>
+				<td>{{global.forename}} {{global.surname}}</td>
+				<td>{{match_yp.match_started}}</td>
+			</tr>
+		{{@end}}
 	{{@end}}
 	<tr><td></td><td>&nbsp</td><td></td></tr>
 {{@end}}

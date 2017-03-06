@@ -18,6 +18,8 @@
 <h4><b>March 01 2017 </b></h4>
 - YP details tab has coordinator dropdown, and menu option under Young Person has coordinators maintenance (is this the right place for it?)
 <br>
+- YP coordinator / YP match report, selectable by date
+<br>
 - Headings changed on referral form (anticipated -> anticipated outcomes, interest -> interest outcomes, medical -> medical information)
 <br>
 - YP leaving report columns same as befriender leaving report except 'reason' column (YP has no leaving-reason)
