@@ -1,0 +1,63 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/new_menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:1080px; Xpadding:0}}
+
+<div name="content">
+	<center><h3> Coordinator Report </h3></center>
+
+	<form class="uk-form">
+		<input type="text" id="searchInput" placeholder="Type to search">
+	</form>
+
+	<table id='printTable' class="searchTable testgrid sortable uk-table uk-table-condensed" style="border:1px solid #dddddd">
+		<tr style='font-weight:bold'>
+			<th> Coordinator </th>
+			<th> Young Person </th>
+			<th> Match Date </th>
+		</tr>
+
+{{@eachsql yippee select coordinator.id, coordinator.global_id, global.forename, global.surname from coordinator inner join global on coordinator.global_id = global.id order by global.surname}}
+		<tr>
+	{{@get coordinator filter id = yippee.id}}
+	{{@get global filter id = yippee.global_id}}
+			<td>{{forename}} {{surname}}</td>
+			<td></td>
+			<td></td>
+		</tr>
+	{{@each young_person filter coordinator_id = yippee.id, archive_flag = 0}}
+		{{@each match_yp filter young_person_id = young_person.id, match_started >= from, match_started <= to}}
+			{{@get global filter id = young_person.global_id}}
+			<tr>
+				<td></td>
+				<td>{{global.forename}} {{global.surname}}</td>
+				<td>{{match_yp.match_started}}</td>
+			</tr>
+		{{@end}}
+	{{@end}}
+	<tr><td></td><td>&nbsp</td><td></td></tr>
+{{@end}}
+	</table>
+</div>
+<br>
+
+<button class="uk-button uk-button-medium uk-button-primary" onClick="printData('printTable')"> Print </button>
+
+<span class='exportButton'>
+	<a href="#" class="export" table='{"id":"printTable"}'>Export spreadsheet</a>
+</span>
+
+<br><br/>
+
+{{@html container end}}
+
+{{@include /jam/sys/js/searchPrintExport.js}}
+{{@include /jam/sys/html/footer.html}}
+
+{{@Xeachsql yippee select befriender.id, befriender.global_id, befriender.status_id, global.forename, global.surname from befriender inner join global on befriender.global_id = global.id where archive_flag = 0 order by global.surname}}
+

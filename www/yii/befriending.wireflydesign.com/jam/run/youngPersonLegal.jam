@@ -1,0 +1,75 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@Xinclude /jam/run/new_menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:700px; Xpadding:0}}
+
+<br>
+<div name="content_contact">
+	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+		<tr>
+			<th> Legal Status </th>
+			<th> Check </th>
+			<th> Date </th>
+		</tr>
+{{grp = 1}}
+{{@each legalstatus}}
+			<td>{{legalstatus.name}}</td>
+			{{tmp.checked = }}
+			{{tmp.date = }}
+	{{@each legalstatus_yp filter legal_status_id = legalstatus.id, young_person_id = young_person.id}}
+			{{tmp.checked = checked}}
+			{{tmp.date = legalstatus_yp.date}}
+	{{@end}}
+			<td> <input type="checkbox" name="legalstatus" value="{{legalstatus.id}}" {{tmp.checked}}> </td>
+			<td> <form class='uk-form'> <input type="date"     id="legalstatus_date_{{legalstatus.id}}" value="{{tmp.date}}" id='group_{{grp}}' class='uk-form-width-medium'> </form> </td>
+		</tr>
+	{{grp = grp + 1}}
+{{@end}}
+	</table>
+</div>
+<center>
+	<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="saveButtonClicked(this)">Save</button> </td>
+</center>
+
+{{@html container end}}
+
+<script>
+window.onload = function() {
+}
+
+{{@action deleteAllLegalstatus}}
+	{{@sql delete from legalstatus_yp where young_person_id = {{young_person.id}} }}
+{{@end}}
+
+{{@action addLegalstatus}}
+	{{legalstatus_yp.young_person_id = young_person.id}}
+	{{legalstatus_yp.legal_status_id = legalstatus.id}}
+	{{legalstatus_yp.date = legalstatus.date}}
+	{{@new item legalstatus_yp notify=ok}}
+{{@end}}
+
+function saveButtonClicked(obj) {
+	runAction('deleteAllLegalstatus',['young_person.id'], '', addAll);
+}
+
+function addAll() {
+    var checkboxes = document.getElementsByName('legalstatus');
+    for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+			var obj =  document.getElementById('legalstatus_date_'+(i+1)); 
+//alert('looking for obj for legalstatus_date_'+(i+1));
+//alert('date='+obj.value);
+            //runAction('addLegalstatus', ['young_person.id='+young_person.id, 'legalstatus.id='+checkboxes[i].value, 'legalstatus.date='+obj.value]);
+            runAction('addLegalstatus', ['young_person.id='+{{young_person.id}}, 'legalstatus.id='+checkboxes[i].value, 'legalstatus.date='+obj.value]);
+        }
+    }
+}
+
+</script>
+
+{{@include /jam/sys/html/footer.html}}

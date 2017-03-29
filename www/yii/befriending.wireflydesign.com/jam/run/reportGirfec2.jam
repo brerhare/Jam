@@ -9,7 +9,9 @@
 {{@html container start center css='max-width:1080px; Xpadding:0}}
 
 <div name="content">
-	<center><h3> Annual Girfec Report </h3></center>
+	{{@get event_milestone filter id = milestone}}
+	<center><h3> Girfec Report {{event_milestone.name}} </h3></center>
+	<center><h4> {{from}} - {{to}} </h4></center>
 
 	<form class="uk-form">
 		<input type="text" id="searchInput" placeholder="Type to search">
@@ -18,20 +20,37 @@
 	<table id='printTable' class="searchTable testgrid sortable uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr style='font-weight:bold'>
 			<th> Young Person Name </th>
-			<th width=80px> Date </th>
-			<th> Notes </th>
+			<th> Base line fixed </th>
+			<th> Final fixed </th>
 		</tr>
-{{@each event filter date >= from, date <= to, order by date}}
-		<tr class="rowHighlight">
-	{{@count id}}
-	{{@get young_person filter id = event.young_person_id}}
-	{{@get global filter id = young_person.global_id}}
+{{@each event filter date >= from, date <= to, event_milestone_id = 5, order by date}}
+	{{@get form_upload_girfec_score filter event_id = event.id, girfec_outcome_name_id = outcome}}
+	{{end_score = form_upload_girfec_score.score}}
+	{{@get event filter date >= from, date <= to, event_milestone_id = 2, order by date}}
+	{{@get form_upload_girfec_score filter event_id = event.id, girfec_outcome_name_id = outcome}}
+	{{start_score = form_upload_girfec_score.score}}
+		<tr>
+		{{@get young_person filter id = event.young_person_id}}
+		{{@get global filter id = young_person.global_id}}
 			<td>{{global.forename}} {{global.surname}}</td>
-			<td>{{event.date}}</td>
-			<td>{{event.notes}}</td>
+			<td>{{start_score}}</td>
+			<td>{{end_score}}</td>
+		</tr>
 {{@end}}
+		<tr>
+			<td colspan = 3>&nbsp</td>
+		</tr>
+		<tr>
+			<td> <b>Total Average </td>
+			<td></td>
+			<td> </b></td>
+		</tr>
+		<tr>
+			<td> <b>Percent Change </td>
+			<td></td>
+			<td> </b></td>
+		</tr>
 	</table>
-  <b> Total Young Persons : <span id="searchTotal">{{count.id}}</span> </b>
 </div>
 <br>
 

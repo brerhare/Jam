@@ -13,7 +13,7 @@
 <br>
 {{@html container start center css='max-width:1080px; Xpadding:0}}
 
-	<center><h3> Girfec Report </h3></center>
+	<center><h3> Coorinator Report </h3></center>
 
 <div name='content'>
 
@@ -22,18 +22,12 @@
         {{@html gridrow start}}
             {{@html gridcol start width=3-10}}
 			{{@html gridcol end}}
+
             {{@html gridcol start width=4-10}}
 				{{@html date field=filter.date_from size=medium label='From date'}}
 				{{@html date field=filter.date_to size=medium label='To date'}}
 			{{@html gridcol end}}
-        {{@html gridrow end}}
 
-        {{@html gridrow start}}
-            {{@html gridcol start width=3-10}}
-			{{@html gridcol end}}
-            {{@html gridcol start width=4-10}}
-				{{@html dropdown field=filter.pickfield=girfec_outcome_name.id pickfield=girfec_outcome_name.description size=large label='Outcome'}}
-			{{@html gridcol end}}
             {{@html gridcol start width=3-10}}
 			{{@html gridcol end}}
         {{@html gridrow end}}
@@ -59,11 +53,7 @@ window.onload = function() {
 function goButtonClick() {
 	fromObj = get('filter.date_from');
 	toObj = get('filter.date_to');
-
-	var e = document.getElementById("VAR___filter.pickfield");
-	var outcome = e.options[e.selectedIndex].value;
-
-	runJam('reportGirfec2?from=' + fromObj.value + '&to=' + toObj.value + '&outcome=' + outcome);
+	runJam('reportCoordinator2?from=' + fromObj.value + '&to=' + toObj.value);
 }
 </script>
 

@@ -198,7 +198,11 @@ class MailerContentController extends Controller
 							continue;
 						// phpmailer
 						$from = "no-reply@dglink.co.uk";
+
 						$fromName = "DG Link mailer";
+						if (isset(Yii::app()->session['display_name']))
+							$fromName = Yii::app()->session['display_name'];
+
 						$subject = $model->title;
 						$mail = new PHPMailer();
 						$url = Yii::app()->getRequest()->getBaseUrl(true);
