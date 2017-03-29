@@ -1065,11 +1065,11 @@ int control(int startIx, char *defaultTableName) {
 
 			// data = LHS to start with
 
-			char *data = (char *) calloc(1, 64096);
+			char *data = (char *) calloc(5, 64096);
 			strcpy(data, cmd);							// eg: [mem.group_count]
 //emitStd("{AWAY:%s and %s}",cmd, data);
-			char *resultString = (char *) calloc(1, 64096);
-			char *fullLine = (char *) calloc(1, 64096);
+			char *resultString = (char *) calloc(5, 64096);
+			char *fullLine = (char *) calloc(5, 64096);
 			strcpy(fullLine, cmd);
 //emitStd("(CHK:%s and %s)", fullLine, args);
 			if (args)
@@ -1126,6 +1126,9 @@ int control(int startIx, char *defaultTableName) {
 					}
 				}
 			} else {		// Not an assignment - just emit variable
+
+				// vsnprintf doesnt like '%' in the string...
+				for (int xx = 0; xx < strlen(resultString); xx++) if (resultString[xx] == '%') resultString[xx] = ' ';
 				emitStd(resultString);
 				// Clear if necessary
 				VAR *variable = findVarLenient(cmd, defaultTableName);

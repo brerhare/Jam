@@ -137,7 +137,7 @@ VAR *findVarLenient(char *name, char *prefix) {
 	variable = findVarStrict(name);
 	if ((!variable) && (prefix)) {
 		// If not found, it might be a non-qualified variable. Stick the current table name (if any) in front of it and try again
-		char *tmp = (char *) calloc(1, 4096);
+		char *tmp = (char *) calloc(1, 64096);
 		sprintf(tmp, "%s.%s", prefix, name);
 			variable = findVarStrict(tmp);
 		free(tmp);
@@ -249,13 +249,13 @@ void clearVarValues(VAR *varStruct) {
 // NEEDS FREEING
 char *expandVarsInString(char *str, char *tableName) {
 	char *p = str;
-	char *newStr = (char *) calloc(1, 4096);
+	char *newStr = (char *) calloc(1, 64096);
 	char *p2 = newStr;
     char *nonWordChars = " +-*/^%()";
 
 	while (*p) {
 		if (!strchr(nonWordChars, *p)) {	// found a word
-			char *wd = (char *) calloc(1, 4096);
+			char *wd = (char *) calloc(1, 64096);
 			char *p3 = wd;
 			while ((*p) && (!strchr(nonWordChars, *p)))	// isolate the word
 				*p3++ = *p++;
@@ -298,7 +298,7 @@ void die(const char *errorString) {
 }
 
 void jamDump(int which) {
-	char *tmp = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 64096);
 	emitStd("<br><br><div style='font-size:11px;color:#ffffff;background-color:#1b2426'>");
 	if ((which == 2) || (which == 3)) {
 		for (int i = 0; i < MAX_JAM; i++) {
@@ -388,7 +388,8 @@ int emitStd(char *str, ...) {
 	}
 
 // @@BUG Overflow needs checked. See http://stackoverflow.com/questions/7215921/possible-buffer-overflow-vulnerability-for-va-list-in-c and http://linux.die.net/man/3/vsnprintf for ideas
-	unsigned long len = vsnprintf(emitStdPos, emitStdRemaining, str, ap);
+	logMsg(LOGDEBUG, "emitStd emitStdPos=%d, emitStdRemaining=%d, strlen=%d, str=[%s]", emitStdPos, emitStdRemaining, strlen(str), str);
+	unsigned long len = vsnprintf(emitStdPos, emitStdRemaining, str, ap);	// crash right here...
 	emitStdPos += len;
 	*emitStdPos = '\0';
 	emitStdRemaining -= len;
@@ -507,15 +508,15 @@ char *calculate(char *str) {
 
 	int scale = 2;
 	FILE *fp;
-	char *result = (char *) calloc(1, 4096);
+	char *result = (char *) calloc(1, 64096);
 	strcpy(result, "0");
-	char *commandStr = (char *) calloc(1, 4096);
+	char *commandStr = (char *) calloc(1, 64096);
 	sprintf(commandStr, "echo 'scale=%d; %s' | bc", scale, str);
 	fp = popen(commandStr, "r");
 	if (fp == NULL) {
 		emitStd("calculator failed (1)\n");
 	} else {
-		if (fgets(result, 4096, fp) != NULL) {
+		if (fgets(result, 64096, fp) != NULL) {
 			char *p = strchr(result, '\n');
 			if (*p)
 				*p = '\0';
@@ -539,7 +540,7 @@ int oobJamData() {
 //		return(-1);
 //	}
 	int first = 1;
-	char *tmp = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 64096);
 	logMsg(LOGDEBUG, "Emitting oob jamData");
 	emitStd("{oobData}");
 	emitStd("[");
