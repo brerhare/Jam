@@ -425,9 +425,12 @@ int wordMiscAddDays(int ix, char *defaultTableName) {
 	char *tmp = (char *) calloc(1, 4096);
 	char *dateFromField = (char *) calloc(1, 4096);
 	char *daysField = (char *) calloc(1, 4096);
+	char *resultDateVar = (char *) calloc(1, 4096);
 	char *dateFrom = NULL;
-	char *days = NULL;
 	char wd[256];
+	VAR *var;
+
+logMsg(LOGDEBUG, "wordMiscAddDays: ENTRY. args = [%s]", args);
 
 	getWord(dateFromField, args, 1, " \t");
 	if (!dateFromField) {
@@ -435,13 +438,21 @@ int wordMiscAddDays(int ix, char *defaultTableName) {
 		return(-1);
 	}
 	dateFrom = strdup(getVarAsString(dateFromField));
+	logMsg(LOGDEBUG, "wordMiscAddDays: dateFrom = '%s'", dateFrom);
 
-	getWord(daysField, args, 1, " \t");
+	getWord(daysField, args, 2, " \t");
 	if (!daysField) {
 		logMsg(LOGERROR, "wordMiscAddDays: missing 'days'");
 		return(-1);
 	}
-	days = strdup(getVarAsString(daysField));
+	logMsg(LOGDEBUG, "wordMiscAddDays: days (given) = '%s'", daysField);
+	if (daysField = getVarAsString(daysField)) {
+		logMsg(LOGDEBUG, "wordMiscAddDays: days (turns out to be a variable) = '%s'", daysField);
+	}
+
+	// This is optional. Might only want to emit the result not create a var out of it
+	getWord(resultDateVar, args, 3, " \t");
+	logMsg(LOGDEBUG, "wordMiscAddDays: resultDateVar = '%s'", resultDateVar);
 
 	getWord(wd, dateFrom, 3, "-");
 	struct tm a = {0,0,0,0,0,0};
@@ -452,11 +463,29 @@ int wordMiscAddDays(int ix, char *defaultTableName) {
 	a.tm_year = (atoi(wd) - 1900);
 
 	// Add days
-	a.tm_mday += (atoi(days));
+	a.tm_mday += (atoi(daysField));
 	time_t x = mktime(&a);
 	if (x != (time_t)(-1)) {
 		strftime(tmp, 4095, "%Y-%m-%d", &a);
-		emitStd(tmp);
+		if (resultDateVar) {
+			logMsg(LOGDEBUG, "wordMiscAddDays: result date (%s) will be stored in variable '%s'", tmp, resultDateVar);
+			unsetVar(resultDateVar);	// remove if exists
+			var = (VAR *) calloc(1, sizeof(VAR));
+			var->name = strdup(resultDateVar);
+			var->type = VAR_STRING;
+			var->source = strdup("variable");
+			var->debugHighlight = 4;
+			clearVarValues(var);
+			fillVarDataTypes(var, tmp);
+			if (addVar(var) == -1) {
+				logMsg(LOGFATAL, "Cant create any more vars, terminating");
+				exit(1);
+			}
+		} else {
+			logMsg(LOGDEBUG, "wordMiscAddDays: result date (%s) will be emitted, not stored in variable", tmp);
+			emitStd(tmp);
+		}
+		//resultDateVar = strdup(tmp);
 	} else
 		emitStd(" date error ");
 
@@ -465,8 +494,10 @@ int wordMiscAddDays(int ix, char *defaultTableName) {
     free(dateFromField);
     free(daysField);
     free(dateFrom);
-    free(days);
+	if (resultDateVar)
+		free(resultDateVar);
     emitStd(jam[ix]->trailer);
+	logMsg(LOGDEBUG, "wordMiscAddDays: NORMAL exit");
 }
 
 int wordMiscDayCount(int ix, char *defaultTableName) {
