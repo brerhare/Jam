@@ -15,6 +15,15 @@
 <!-- Insert here -->
 
 <p>
+<h4><b>March 29 2017 </b></h4>
+- Fixed Notes report not displaying anything
+<br>
+- Fixed unable to delete an event if it has attendees attached
+<br>
+- Fixed event 'apply' so you dont have to save, then find the event again
+</p>
+
+<p>
 <h4><b>March 20 2017 </b></h4>
 - Reminders for documentation working and active. Office cc'd
 <br>
