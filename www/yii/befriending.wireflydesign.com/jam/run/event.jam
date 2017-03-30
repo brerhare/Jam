@@ -44,7 +44,7 @@
 			<td>{{event.time}}</td>
 			<td>{{event_type.name}}</td>
 			<td>{{yp_forename}} {{yp_surname}}</td>
-			<td>{{bf_forename}} {{yp_surname}}</td>
+			<td>{{bf_forename}} {{bf_surname}}</td>
 			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{event_type.name}}')"> <i class="uk-icon-trash"></i> </button> </td>
 		</tr>
 {{@end}}

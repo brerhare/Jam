@@ -1,0 +1,49 @@
+{{@Xinclude /jam/sys/html/header.html}}
+{{@Xinclude /jam/css/style.css}}
+
+{{@Xinclude /jam/run/new_menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+{{@Xhtml container start center css='max-width:900px; Xpadding:0}}
+
+{{@get settings filter id = 1}}
+
+{{settings.reminder_documentation_lead_days}}<br>
+
+{{@adddays sys.today settings.reminder_documentation_lead_days myDate}}
+Befriender Documentation : {{sys.today}} {{myDate}}<br>
+{{@each befriender_documentation filter expiry_date = mydate, order by expiry_date}}
+	{{@get befriender_documentation_type filter id = befriender_documentation.befriender_documentation_type_id}}
+	{{@get befriender filter id = befriender_documentation.befriender_id}}
+	{{@get global filter id = befriender.global_id}}
+	-> {{global.email}} {{global.forename}} {{global.surname}} {{befriender_documentation.reference}}<br>
+	{{@XXXXXemail {{settings.email}} {{global.email}} 'REMINDER - Befriender {{global.forename}} {{global.surname}} Documentation' action:emailContentDocumentation}}
+	{{@email {{settings.email}} {{settings.email}} 'REMINDER - Befriender {{global.forename}} {{global.surname}} Documentation due' action:emailContentDocumentation}}
+{{@end}}
+
+<br>
+
+{{settings.reminder_events_lead_days}}<br>
+
+{{@adddays sys.today settings.reminder_events_lead_days myDate}}
+Events : {{sys.today}} {{myDate}}<br>
+{{@each event filter date = mydate, order by date}}
+	{{@XXXXXemail {{settings.email}} {{settings.email}} 'REMINDER - Event {{event.date}}' action:emailContentEvent}}
+	{{@each event_attendee filter event_id = event.id}}
+		{{@get global filter id = event_attendee.global_id}}
+		-> Event {{event.date}} attendee : {{global.forename}} {{global.surname}} {{global.email}}<br>
+		{{@XXXXXemail {{settings.email}} {{global.email}} 'REMINDER - Event {{event.date}}' action:emailContentEvent}}
+	{{@end}}
+{{@end}}
+
+{{@action emailContentDocumentation}}
+    Befriender documentation will expire on {{befriender_documentation.expiry_date}}.<br>-{{befriender_documentation.reference}}
+{{@end}}
+
+{{@action emailContentEvent}}
+    A scheduled event occurs on {{event.date}}.<br>{{event.notes}}
+{{@end}}
+
+
+{{@Xinclude /jam/sys/html/footer.html}}

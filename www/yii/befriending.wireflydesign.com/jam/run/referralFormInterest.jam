@@ -24,7 +24,7 @@
 
 	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
-			<th> Interest outcomes </th>
+			<th> Anticipated outcomes </th>
 			<th> Check </th>
 		</tr>
 {{@each interest_type}}

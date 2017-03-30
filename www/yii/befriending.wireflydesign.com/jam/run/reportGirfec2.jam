@@ -23,32 +23,38 @@
 			<th> Base line fixed </th>
 			<th> Final fixed </th>
 		</tr>
+{{cnt = 0}}
+{{totalStart = 0}}
+{{totalEnd = 0}}
 {{@each event filter date >= from, date <= to, event_milestone_id = 5, order by date}}
 	{{@get form_upload_girfec_score filter event_id = event.id, girfec_outcome_name_id = outcome}}
 	{{end_score = form_upload_girfec_score.score}}
 	{{@get event filter date >= from, date <= to, event_milestone_id = 2, order by date}}
 	{{@get form_upload_girfec_score filter event_id = event.id, girfec_outcome_name_id = outcome}}
 	{{start_score = form_upload_girfec_score.score}}
+	{{cnt = cnt + 1}}
 		<tr>
 		{{@get young_person filter id = event.young_person_id}}
 		{{@get global filter id = young_person.global_id}}
 			<td>{{global.forename}} {{global.surname}}</td>
 			<td>{{start_score}}</td>
 			<td>{{end_score}}</td>
+			{{totalStart = totalStart + start_score}}
+			{{totalEnd = totalEnd + end_score}}
 		</tr>
 {{@end}}
 		<tr>
 			<td colspan = 3>&nbsp</td>
 		</tr>
 		<tr>
-			<td> <b>Total Average </td>
-			<td></td>
-			<td> </b></td>
+			<td> <b>Total Average</b></td>
+			<td> <b>{{totalStart / cnt}}</b></td>
+			<td> <b>{{totalEnd / cnt}}</b></td>
 		</tr>
 		<tr>
-			<td> <b>Percent Change </td>
-			<td></td>
-			<td> </b></td>
+			<td><b>Percent Change</b></td>
+			<td><b></b></td>
+			<td><b>{{totalEnd / totalStart * 100}}</b></td>
 		</tr>
 	</table>
 </div>
