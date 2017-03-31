@@ -21,7 +21,24 @@
 - Fixed unable to delete an event if it has attendees attached
 <br>
 - Fixed event 'apply' so you dont have to save, then find the event again
+<br>
+- All references to Medical Type changed to Medical and Related Issues
+<br>
+- Can set the sequence of medical types on forms and reports
+<br>
+- Legal Status page added to referral form
+<br>
+- Dont know -> Don't know typo in various places
+<br>
+- Referral form named person reminder in red
+<br>
+- Reminder for documents (MOT etc) go to office only
+<br>
+- Befrienders can be allocated a coordinator (details tab)
+<br>
+- YP date referred can be changed in details tab.
 </p>
+
 
 <p>
 <h4><b>March 20 2017 </b></h4>

@@ -25,7 +25,7 @@
 
 				<input type="hidden" name="young_person.referrer_form_id" value="999999"> <!-- @@TODO! -->
 				{{@html hidden field=young_person.referrer_form_id}}
-				{{@html date disabled field=young_person.referral_date size=medium label='Referral date' group=inp}}
+				{{@html date field=young_person.referral_date size=medium label='Referral date' group=inp}}
 				{{@html text field=global.forename size=large label='Forename' group=inp}}
 				{{@html text field=global.surname size=large label='Surname' group=inp}}
 				{{@html text field=global.house size=medium label='house' group=inp}}
