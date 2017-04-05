@@ -16,6 +16,16 @@
 #include "list.h"
 #include "log.h"
 
+int wordMiscStop(int ix, char *defaultTableName) {
+	char *cmd = jam[ix]->command;
+	char *args = jam[ix]->args;
+	char *rawData = jam[ix]->rawData;
+
+	stopping = 1;
+	logMsg(LOGDEBUG, "wordMiscStop: STOPPING");
+    emitStd(jam[ix]->trailer);
+}
+
 
 // optional arg myVar which if present will be created/updated. Otherwise the number is simply emitted
 int wordMiscRandomNumber(int ix, char *defaultTableName) {
