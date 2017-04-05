@@ -44,6 +44,7 @@ int jamIx = 0;
 char *tableStack[MAX_JAM];
 VAR *var[MAX_VAR];
 char *documentRoot = NULL;
+int stopping;
 
 char *jamEntrypoint = NULL;		// action entrypoint. Hackily global because its used in other .c file(s) (move to common.c/h)
 
@@ -77,6 +78,8 @@ int isASCII(const char *data, size_t size)
 int main(int argc, char *argv[]) {
 	char **cgivars ;
 	char *jamName = NULL;
+
+stopping = 0;
 
 	// Do NOT log anything until char documentRoot is set or it will end up in /tmp/ !!!
 
@@ -609,6 +612,9 @@ int control(int startIx, char *defaultTableName) {
 		char *rawData = NULL;
 		res = 0;
 
+if (stopping)
+	return(0);
+
 		// Expand any {{values}} in the argument string with the current values
 
 		args = expandCurliesInString(jam[ix]->args, defaultTableName);
@@ -1034,6 +1040,10 @@ int control(int startIx, char *defaultTableName) {
 //		------------------------------------
 			res = wordMiscAddDays(ix, defaultTableName);
 //		------------------------------------
+		} else if (!(strcmp(cmd, "@randomnumber"))) {
+//		------------------------------------
+			res = wordMiscRandomNumber(ix, defaultTableName);
+//		------------------------------------
 		} else if (!(strcmp(cmd, "@wordsplit"))) {
 //		------------------------------------
 			res = wordMiscWordSplit(ix, defaultTableName);
@@ -1041,6 +1051,11 @@ int control(int startIx, char *defaultTableName) {
 		} else if (!(strcmp(cmd, "@type"))) {
 //		------------------------------------
 			res = wordMiscType(ix, defaultTableName);
+//		---------------------------
+		} else if (!(strcmp(cmd, "@stop"))) {
+//		------------------------------------
+			res = wordMiscStop(ix, defaultTableName);
+			return(0);
 //		---------------------------
 
 		} else if (cmd[0] != '@') {
