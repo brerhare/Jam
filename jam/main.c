@@ -1034,6 +1034,10 @@ int control(int startIx, char *defaultTableName) {
 //		------------------------------------
 			res = wordMiscAddDays(ix, defaultTableName);
 //		------------------------------------
+		} else if (!(strcmp(cmd, "@randomnumber"))) {
+//		------------------------------------
+			res = wordMiscRandomNumber(ix, defaultTableName);
+//		------------------------------------
 		} else if (!(strcmp(cmd, "@wordsplit"))) {
 //		------------------------------------
 			res = wordMiscWordSplit(ix, defaultTableName);

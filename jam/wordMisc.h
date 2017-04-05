@@ -11,3 +11,4 @@ int wordMiscAddDays(int ix, char *defaultTableName);
 int wordMiscType(int ix, char *defaultTableName);
 int wordMiscReplaceValue(int ix, char *defaultTableName);
 int wordMiscWordSplit(int ix, char *defaultTableName);
+int wordMiscRandomNumber(int ix, char *defaultTableName);

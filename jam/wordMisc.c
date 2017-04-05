@@ -17,6 +17,54 @@
 #include "log.h"
 
 
+// optional arg myVar which if present will be created/updated. Otherwise the number is simply emitted
+int wordMiscRandomNumber(int ix, char *defaultTableName) {
+	char *cmd = jam[ix]->command;
+	char *args = jam[ix]->args;
+	char *rawData = jam[ix]->rawData;
+	char *tmp = (char *) calloc(1, 4096);
+	char *resultVar = (char *) calloc(1, 4096);
+	char wd[256];
+	time_t t;
+	VAR *var;
+
+	// This is optional. Might only want to emit the result not create a var out of it
+	getWord(resultVar, args, 1, " \t");
+	logMsg(LOGDEBUG, "wordMiscRandomNumber: resultVar = '%s'", resultVar);
+
+	// Generate random number
+//usleep(10000);
+	//time(&t);
+	//t += cmdSeqnum;
+	//srand((unsigned) t);
+	sprintf(tmp, "%d", rand() % 99999999);
+
+	if ((resultVar) && (strlen(resultVar))) {
+		logMsg(LOGDEBUG, "wordMiscRandomNumber: result var (%s) will be stored in variable '%s'", tmp, resultVar);
+		unsetVar(resultVar);	// remove if exists
+		var = (VAR *) calloc(1, sizeof(VAR));
+		var->name = strdup(resultVar);
+		var->type = VAR_STRING;
+		var->source = strdup("variable");
+		var->debugHighlight = 4;
+		clearVarValues(var);
+		fillVarDataTypes(var, tmp);
+		if (addVar(var) == -1) {
+			logMsg(LOGFATAL, "Cant create any more vars, terminating");
+			exit(1);
+		}
+	} else {
+		logMsg(LOGDEBUG, "wordMiscRandomNumber: result number (%s) will be emitted, not stored in variable", tmp);
+		emitStd(tmp);
+	}
+
+    free(tmp);
+	if (resultVar)
+		free(resultVar);
+    emitStd(jam[ix]->trailer);
+	logMsg(LOGDEBUG, "wordMiscRandomNumber: NORMAL exit");
+}
+
 // @wordsplit field=global.postcode segment=1 newfield=myNewField			IF 'newfield' exists that var will be created/updated otherwise the result will simply be emitted
 int wordMiscWordSplit(int ix, char *defaultTableName) {
     char *cmd = jam[ix]->command;
@@ -418,6 +466,7 @@ int wordMiscNewList(int ix, char *defaultTableName) {
     emitStd(jam[ix]->trailer);
 }
 
+// args - date, number of days to add, and optional myVar which if present will store the output. Otherwise simply emitted
 int wordMiscAddDays(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
