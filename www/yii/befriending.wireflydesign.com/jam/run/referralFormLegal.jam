@@ -75,7 +75,8 @@ window.onload = function() {
 function backToPrev() {
     objReferrer = get('refId');
     objYP = get('ypId');
-    runJam('referralFormAdditional?refId='+objReferrer.value+'&ypId='+objYP.value);
+	objLinkNumber = get('linkNumber');
+    runJam('referralFormAdditional?refId='+objReferrer.value+'&ypId='+objYP.value+'&linkNumber='+objLinkNumber.value);
 }
 
 function updateAndNext() {
@@ -99,7 +100,8 @@ function addAll() {
 function forwardToNext() {
     objReferrer = get('refId');
     objYP = get('ypId');
-	runJam('referralFormContacts?refId='+objReferrer.value+'&ypId='+objYP.value);
+	objLinkNumber = get('linkNumber');
+	runJam('referralFormContacts?refId='+objReferrer.value+'&ypId='+objYP.value+'&linkNumber='+objLinkNumber.value);
 }
 
 </script>

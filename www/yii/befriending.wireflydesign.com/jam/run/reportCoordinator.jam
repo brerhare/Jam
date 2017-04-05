@@ -13,7 +13,7 @@
 <br>
 {{@html container start center css='max-width:1080px; Xpadding:0}}
 
-	<center><h3> Coorinator Report </h3></center>
+	<center><h3> Coordinator Report </h3></center>
 
 <div name='content'>
 
@@ -32,6 +32,21 @@
 			{{@html gridcol end}}
         {{@html gridrow end}}
 
+        {{@html gridrow start}}
+            {{@html gridcol start width=4-10}}
+			{{@html gridcol end}}
+
+            {{@html gridcol start width=5-10}}
+
+			<br>
+<form>
+			<input type="radio" name="reportType" checked value="1">Young Person<br>
+			<input type="radio" name="reportType" value="2">Befriender<br>
+</form>
+
+            {{@html gridcol start width=1-10}}
+			{{@html gridcol end}}
+        {{@html gridrow end}}
 <br>
                 <center>
                     <button type='button' id='goButton' class="uk-button uk-button-primary" onClick="goButtonClick()">Go</button>
@@ -53,7 +68,11 @@ window.onload = function() {
 function goButtonClick() {
 	fromObj = get('filter.date_from');
 	toObj = get('filter.date_to');
-	runJam('reportCoordinator2?from=' + fromObj.value + '&to=' + toObj.value);
+	reportT = document.querySelector('input[name = "reportType"]:checked').value;
+	if (reportT == 1)
+		runJam('reportCoordinator2?from=' + fromObj.value + '&to=' + toObj.value);
+	else
+		runJam('reportCoordinator3?from=' + fromObj.value + '&to=' + toObj.value);
 }
 </script>
 

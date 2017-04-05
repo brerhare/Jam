@@ -17,4 +17,7 @@ YP and befriender archive flag values
 
 BUG
 	the last part of the @action is included in the initial run. Should not be run until called - see bugs/report.jam
+	@randomnumber is only random once for the duration of the script
 
+ORPHANS
+	deleting medical_types succeeds but all the info in other table(s) relating to that item is simply orphaned

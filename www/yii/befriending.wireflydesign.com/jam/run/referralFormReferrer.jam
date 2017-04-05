@@ -5,6 +5,22 @@
 
 {{@database befriending_wireflydesign_com}}
 
+<script>
+// Check validity
+var objLinkNumber = get('linkNumber');
+</script>
+
+{{@each referral_form_link filter link_number = {{linkNumber}}, used = 1}}
+	<br><br><br><br><br><center><h3>This link is no longer valid</h3></center>
+	{{@stop}}
+{{@end}}
+
+
+
+{{@each referral_form_link filter link_number = {{linkNumber}}, used = 0}}
+
+
+
 <br>
 {{@html container start center css='max-width:700px; Xpadding:0}}
 
@@ -60,7 +76,8 @@ function localUpdate_TABLE() {
 function postUpdate() {
 	objReferrer = get('TABLE.id');
 	objYP = get('ypId');
-	runJam('referralFormYoungPerson?refId='+objReferrer.value+'&ypId='+objYP.value);
+	objLinkNumber= get('linkNumber');
+	runJam('referralFormYoungPerson?refId='+objReferrer.value+'&ypId='+objYP.value+'&linkNumber='+objLinkNumber.value);
 }
 </script>
 
@@ -100,6 +117,10 @@ function postUpdate() {
 
 </td></tr></table>
 <center> <button class="uk-button uk-button-medium uk-button-primary" onClick="printData('printTable')"> Print </button> </center>
+
+
+{{@end}}
+
 
 
 {{@action update_TABLE}}

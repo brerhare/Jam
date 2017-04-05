@@ -1,0 +1,17 @@
+{{@include /jam/sys/html/header.html}}
+
+Doing...
+
+{{@database befriending_wireflydesign_com}}
+
+{{@remove table referral_form_link}}
+
+{{@new table referral_form_link
+	link_number				string	required
+	date					date	required
+	used					number
+}}
+
+Done
+
+{{@include /jam/sys/html/footer.html}}

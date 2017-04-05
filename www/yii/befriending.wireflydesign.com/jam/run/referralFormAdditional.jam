@@ -98,7 +98,8 @@ function addAll() {
 function backToPrev() {
     objReferrer = get('refId');
     objYP = get('young_person.id');
-    runJam('referralFormMedical?refId='+objReferrer.value+'&ypId='+objYP.value);
+	objLinkNumber = get('linkNumber');
+    runJam('referralFormMedical?refId='+objReferrer.value+'&ypId='+objYP.value+'&linkNumber='+objLinkNumber.value);
 }
 
 function updateAndNext() {
@@ -108,8 +109,9 @@ function updateAndNext() {
 function forwardToNext() {
     objReferrer = get('refId');
     objYP = get('young_person.id');
+	objLinkNumber = get('linkNumber');
     //X runJam('referralFormContacts?refId='+objReferrer.value+'&ypId='+objYP.value);
-    runJam('referralFormLegal?refId='+objReferrer.value+'&ypId='+objYP.value);
+    runJam('referralFormLegal?refId='+objReferrer.value+'&ypId='+objYP.value+'&linkNumber='+objLinkNumber.value);
 
 }
 

@@ -206,13 +206,15 @@ function addEachFromArray() {
 function backToPrev() {
     objReferrer = get('refId');
     objYP = get('ypId');
+	objLinkNumber = get('linkNumber');
 //alert('r='+objReferrer.value+' and yp='+objYP.value);
-    runJam('referralFormInterest?refId='+objReferrer.value+'&ypId='+objYP.value);
+    runJam('referralFormInterest?refId='+objReferrer.value+'&ypId='+objYP.value+'&linkNumber='+objLinkNumber.value);
 }
 function toNextScreen() {
     objReferrer = get('refId');
     objYP = get('ypId');
-    runJam('referralFormAdditional?refId='+objReferrer.value+'&ypId='+objYP.value);
+	objLinkNumber = get('linkNumber');
+    runJam('referralFormAdditional?refId='+objReferrer.value+'&ypId='+objYP.value+'&linkNumber='+objLinkNumber.value);
 }
 </script>
 

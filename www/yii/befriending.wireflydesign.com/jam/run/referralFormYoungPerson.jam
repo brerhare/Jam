@@ -110,8 +110,9 @@ function disableButton(me) {
 function backToPrev() {
 	objReferrer = get('refId');
 	objYP = get('young_person.id');
+	objLinkNumber= get('linkNumber');
 //alert('r='+objReferrer.value+' and yp='+objYP.value);
-	runJam('referralFormReferrer?refId='+objReferrer.value+'&ypId='+objYP.value);
+	runJam('referralFormReferrer?refId='+objReferrer.value+'&ypId='+objYP.value+'&linkNumber='+objLinkNumber.value);
 }
 
 function updateAndNext() {
@@ -137,12 +138,13 @@ function updateAndNext() {
 function forwardToNext() {
 	objReferrer = get('refId');
 	objYP = get('young_person.id');
+	objLinkNumber = get('linkNumber');
 	if ((objYP.value == '0') || (objYP.value == '-1')) {
 		alert('Young person details not yet saved');
 		return;
 	}
 //alert('Your submission was successful');
-    runJam('referralFormInterest?refId='+objReferrer.value+'&ypId='+objYP.value);
+    runJam('referralFormInterest?refId='+objReferrer.value+'&ypId='+objYP.value+'&linkNumber='+objLinkNumber.value);
 
 }
 

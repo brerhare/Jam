@@ -25,7 +25,7 @@
 	{{@get young_person filter id = ypId}}
 	{{@get global filter id = young_person.global_id}}
 	<center> <h3> Please add all other additional contacts that you are aware of</h3> </center>
-	<center> <h4 style='color:#ff0000'> Remember to add their parent/carer and named person </h4> </center>
+	<center> <h4 style='color:#ff0000'> Remember to add their parent/carer, named person and GP</h4> </center>
 	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
 			<th> Forename </th>
@@ -147,14 +147,16 @@ function postUpdate() {
 function backToPrev() {
     objReferrer = get('refId');
     objYP = get('ypId');
+	objLinkNumber = get('linkNumber');
 //alert('r='+objReferrer.value+' and yp='+objYP.value);
     //X runJam('referralFormAdditional?refId='+objReferrer.value+'&ypId='+objYP.value);
-    runJam('referralFormLegal?refId='+objReferrer.value+'&ypId='+objYP.value);
+    runJam('referralFormLegal?refId='+objReferrer.value+'&ypId='+objYP.value+'&linkNumber='+objLinkNumber.value);
 }
 function toConfirmScreen() {
     objReferrer = get('refId');
     objYP = get('ypId');
-    runJam('referralFormFinish?refId='+objReferrer.value+'&ypId='+objYP.value);
+	objLinkNumber = get('linkNumber');
+    runJam('referralFormFinish?refId='+objReferrer.value+'&ypId='+objYP.value+'&linkNumber='+objLinkNumber.value);
 }
 </script>
 

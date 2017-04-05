@@ -86,8 +86,9 @@ window.onload = function() {
 function backToPrev() {
     objReferrer = get('refId');
     objYP = get('ypId');
+	objLinkNumber = get('linkNumber');
 //alert('r='+objReferrer.value+' and yp='+objYP.value);
-    runJam('referralFormYoungPerson?refId='+objReferrer.value+'&ypId='+objYP.value);
+    runJam('referralFormYoungPerson?refId='+objReferrer.value+'&ypId='+objYP.value+'&linkNumber='+objLinkNumber.value);
 }
 function toNextScreen() {
 	document.body.style.cursor  = 'wait';
@@ -99,7 +100,8 @@ function goForward() {
     objReferrer = get('refId');
     objYP = get('ypId');
 	document.body.style.cursor  = 'default';
-	runJam('referralFormMedical?refId='+objReferrer.value+'&ypId='+objYP.value);
+	objLinkNumber = get('linkNumber');
+	runJam('referralFormMedical?refId='+objReferrer.value+'&ypId='+objYP.value+'&linkNumber='+objLinkNumber.value);
 }
 
 function addNotes() {
