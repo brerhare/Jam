@@ -71,6 +71,9 @@ function confirmDelete(id, displayInfo) {
 </script>
 
 {{@action delete}}
+	{{@each event_attendee filter event_id = event.id}}
+		{{@remove item event_attendee}}
+	{{@end}}
     {{@get event filter id = event.id}}
 	{{@remove item event notify=ok}}
 {{@end}}

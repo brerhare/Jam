@@ -19,6 +19,12 @@
 		
 <div name="content_contact">
 <br>
+
+
+<table id="printTable" class="testgrid sortable searchTable uk-table uk-table-condensed" style="border:0px solid #dddddd">
+<tr><td>
+
+
 <center> <h3> Anticipated outcomes </h3> </center>
 
 
@@ -42,9 +48,15 @@
 </div>
 
     <center>
-        <button type='button' class="uk-button uk-button-primary" onClick="backToPrev()"> Prev </button> </td>
-        <button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="toNextScreen()"> Next </button> </td>
+        <button type='button' class="uk-button uk-button-primary" onClick="backToPrev()"> Prev </button> 
+        <button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="toNextScreen()"> Next </button> 
     </center>
+
+
+
+</td></tr></table>
+<center> <button class="uk-button uk-button-medium uk-button-primary" onClick="printData('printTable')"> Print </button> </center>
+
 
 
 {{@html container end}}
@@ -108,5 +120,8 @@ window.setTimeout(goForward,1000);
 }
 
 </script>
+
+{{@include /jam/sys/js/searchPrintExport.js}}
+
 
 {{@include /jam/sys/html/footer.html}}
