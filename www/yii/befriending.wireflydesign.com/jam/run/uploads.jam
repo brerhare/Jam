@@ -15,6 +15,30 @@
 <!-- Insert here -->
 
 <p>
+<h4><b>April 06 2017 </b></h4>
+- Fixed duplicated event (befriender christine boyle)
+<br>
+- Risk report totals per column
+</p>
+
+
+<p>
+<h4><b>April 05 2017 </b></h4>
+- Fixed one-time use of referrer links, instead of waiting 24 hours to expire it immediately expires
+<br>
+- Previous match information shown on befrienders now shows match/previous properly
+</p>
+
+
+<p>
+<h4><b>April 04 2017 </b></h4>
+- GP and named person reminder message on referral form
+<br>
+- One-time use of links for referrer, and expires after 30 days if unused
+</p>
+
+
+<p>
 <h4><b>March 29 2017 </b></h4>
 - Fixed Notes report not displaying anything
 <br>
@@ -36,7 +60,11 @@
 <br>
 - Befrienders can be allocated a coordinator (details tab)
 <br>
+- Coordinator report allows choice of YP or befriender
+<br>
 - YP date referred can be changed in details tab.
+<br>
+- Medical and Related Issues can now be deleted. Be careful, this will also remove any associated data relating to them
 </p>
 
 

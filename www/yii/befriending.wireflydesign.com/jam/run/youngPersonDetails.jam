@@ -67,7 +67,6 @@
                         </select>
                     </div>
 
-
 				{{@html dropdown field=young_person.status_id pickfield=status.name size=small label='Status'}}
 
 				{{@html radio field=young_person.gender label='Gender' options=0:Male,1:Female group=inp}}
@@ -167,3 +166,5 @@ function calcAge() {
 	document.getElementById('age').innerHTML = 'age '+age;
 }
 </script>
+
+{{@include /jam/sys/html/footer.html}}
