@@ -36,7 +36,7 @@
 			<tr>
 				<td></td>
 				<td>{{global.forename}} {{global.surname}}</td>
-				<td>{{match_yp.match_started}}</td>
+				<td>{{@datedmy match_yp.match_started}}</td>
 			</tr>
 		{{@end}}
 	{{@end}}

@@ -30,7 +30,7 @@
 	{{@get event_type filter id = event.event_type_id}}
 	<tr class="rowHighlight">
 		<td>{{event_type.name}}</td>
-		<td>{{event.date}}</td>
+		<td>{{@datedmy event.date}}</td>
 		<td>{{event.notes}}</td>
 	</tr>
 {{@end}}

@@ -26,7 +26,7 @@
 		{{@get global filter id = young_person.global_id}}
 		<tr>
 		{{@get event_type filter id = event.event_type_id}}
-			<td> <a href='http://befriending.wireflydesign.com/run/eventMaintain?event.id={{event.id}}'>{{event.date}}</a> </td>
+			<td> <a href='http://befriending.wireflydesign.com/run/eventMaintain?event.id={{event.id}}'>{{@datedmy event.date}}</a> </td>
 			<td>
 				{{event_type.name}}
 				<br>

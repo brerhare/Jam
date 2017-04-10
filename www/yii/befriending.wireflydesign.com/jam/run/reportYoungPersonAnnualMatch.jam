@@ -32,7 +32,7 @@
 	{{@get global filter id = young_person.global_id}}
 		<tr class="rowHighlight">
 			<td>{{global.forename}} {{global.surname}}</td>
-			<td>{{young_person.dob}}</td>
+			<td>{{@datedmy young_person.dob}}</td>
 			<td>{{@replacevalue field=young_person.gender values=0:male,1:female}}</td>
 			<td>{{global.postcode}}</td>
 	{{@get contact filter young_person_id = young_person.id, contact_relationship_id = 3}}
@@ -40,8 +40,8 @@
 	{{@get match_yp filter young_person_id = young_person.id}}
 	{{@get befriender filter id = match_yp.befriender_id}}
 	{{@get global filter id = befriender.global_id}}
-			<td>{{match_yp.match_started}}</td>
-			<td>{{match_yp.match_end}}</td>
+			<td>{{@datedmy match_yp.match_started}}</td>
+			<td>{{@datedmy match_yp.match_end}}</td>
 			<td>{{@daycount match_yp.match_started match_yp.match_end}}</td>
 			<td>{{global.forename}} {{global.surname}}</td>
 		</tr>

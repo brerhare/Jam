@@ -27,9 +27,9 @@
 	{{@count id}}
 	{{@get global filter id = befriender.global_id}}
 			<td>{{global.forename}} {{global.surname}}</td>
-			<td>{{befriender.archive_date}}</td>
+			<td>{{@datedmy befriender.archive_date}}</td>
 			<td>{{befriender.termination_reason}}</td>
-			<td>{{befriender.archive_destruction_date}}</td>
+			<td>{{@datedmy befriender.archive_destruction_date}}</td>
 {{@end}}
 	</table>
   <b> Total Befrienders : <span id="searchTotal">{{count.id}}</span> </b>

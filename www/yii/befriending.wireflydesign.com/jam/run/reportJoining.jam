@@ -33,7 +33,7 @@
 	{{@get global filter id = befriender.global_id}}
 	<tr class="rowHighlight">
 		<td>{{global.forename}} {{global.surname}}</td>
-		<td>{{befriender.dob}}</td>
+		<td>{{@datedmy befriender.dob}}</td>
 		<td>{{global.house}} {{global.street}} {{global.area}} {{global.town}} {{global.postcode}}</td>
 		<td>{{global.landline}} </td>
 		<td>{{global.mobile}} </td>

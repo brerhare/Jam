@@ -27,7 +27,7 @@
 	{{@get young_person filter id = event.young_person_id}}
 	{{@get global filter id = young_person.global_id}}
 			<td>{{global.forename}} {{global.surname}}</td>
-			<td>{{event.date}}</td>
+			<td>{{@datedmy event.date}}</td>
 			<td>{{event.notes}}</td>
 {{@end}}
 	</table>

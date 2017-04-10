@@ -28,7 +28,7 @@
 	{{@get young_person filter id = legalstatus_yp.young_person_id}}
 	{{@get global filter id = young_person.global_id}}
 			<td>{{global.forename}} {{global.surname}}</td>
-			<td>{{legalstatus_yp.date}}</td>
+			<td>{{@datedmy legalstatus_yp.date}}</td>
 		</tr>
 {{@end}}
 	</table>

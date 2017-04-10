@@ -15,6 +15,13 @@
 <!-- Insert here -->
 
 <p>
+<h4><b>April 08 2017 </b></h4>
+- Dates DD/MM/YYYY format. I have gone through all the screens/reports, believe I have changed them all. Let me know if I missed any. Also this removes the ability to date sort (which is why they were YYYY/MM/DD)
+<br>
+</p>
+
+
+<p>
 <h4><b>April 06 2017 </b></h4>
 - Fixed duplicated event (befriender christine boyle)
 <br>

@@ -36,7 +36,7 @@
 		{{@get global filter id = befriender.global_id}}
 		<tr class="rowHighlight">
 			<td>{{global.forename}} {{global.surname}}</td>
-			<td>{{befriender.dob}}</td>
+			<td>{{@datedmy befriender.dob}}</td>
 			<td>{{@replacevalue field=befriender.gender values=0:male,1:female}}</td>
 			<td>{{global.postcode}} {{@wordsplit field=global.postcode segment=1 newfield=PA}} {{PA}}</td>
 		{{@get heardabout filter id = befriender.heardabout_id}}

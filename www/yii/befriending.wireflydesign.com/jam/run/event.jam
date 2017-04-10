@@ -40,7 +40,7 @@
 
 		<tr class="rowHighlight" onClick="runAction('showTabs', ['befriender.id={{befriender.id}}'], 'content')">
 		<tr class="rowHighlight" onClick="runJam('eventMaintain?event.id={{event.id}}');">
-			<td>{{event.date}}</td>
+			<td>{{@datedmy event.date}}</td>
 			<td>{{event.time}}</td>
 			<td>{{event_type.name}}</td>
 			<td>{{yp_forename}} {{yp_surname}}</td>

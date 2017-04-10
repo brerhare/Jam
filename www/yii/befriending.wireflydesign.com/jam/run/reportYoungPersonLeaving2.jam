@@ -26,8 +26,8 @@
 	{{@count id}}
 	{{@get global filter id = young_person.global_id}}
 			<td>{{global.forename}} {{global.surname}}</td>
-			<td>{{young_person.archive_date}}</td>
-			<td>{{young_person.archive_destruction_date}}</td>
+			<td>{{@datedmy young_person.archive_date}}</td>
+			<td>{{@datedmy young_person.archive_destruction_date}}</td>
 {{@end}}
 	</table>
   <b> Total Young Persons : <span id="searchTotal">{{count.id}}</span> </b>
