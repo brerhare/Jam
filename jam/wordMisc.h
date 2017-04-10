@@ -6,6 +6,7 @@ int wordMiscSum(int ix, char *defaultTableName);
 int wordMiscNewList(int ix, char *defaultTableName);
 
 int wordMiscEmail(int ix, char *defaultTableName);
+int wordMiscDateDMY(int ix, char *defaultTableName);
 int wordMiscDayCount(int ix, char *defaultTableName);
 int wordMiscAddDays(int ix, char *defaultTableName);
 int wordMiscType(int ix, char *defaultTableName);

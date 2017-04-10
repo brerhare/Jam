@@ -1040,6 +1040,10 @@ if (stopping)
 //		------------------------------------
 			res = wordMiscAddDays(ix, defaultTableName);
 //		------------------------------------
+		} else if (!(strcmp(cmd, "@datedmy"))) {
+//		------------------------------------
+			res = wordMiscDateDMY(ix, defaultTableName);
+//		------------------------------------
 		} else if (!(strcmp(cmd, "@randomnumber"))) {
 //		------------------------------------
 			res = wordMiscRandomNumber(ix, defaultTableName);

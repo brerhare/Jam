@@ -476,6 +476,78 @@ int wordMiscNewList(int ix, char *defaultTableName) {
     emitStd(jam[ix]->trailer);
 }
 
+// args - date, and optional myVar which if present will store the output. Otherwise simply emitted
+int wordMiscDateDMY(int ix, char *defaultTableName) {
+	char *cmd = jam[ix]->command;
+	char *args = jam[ix]->args;
+	char *rawData = jam[ix]->rawData;
+	char *tmp = (char *) calloc(1, 4096);
+	char *dateFromField = (char *) calloc(1, 4096);
+	char *resultDateVar = (char *) calloc(1, 4096);
+	char *dateFrom = NULL;
+	char wd[256];
+	VAR *var;
+
+logMsg(LOGDEBUG, "wordMiscDateDMY: ENTRY. args = [%s]", args);
+
+	getWord(dateFromField, args, 1, " \t");
+	if (!dateFromField) {
+		logMsg(LOGERROR, "wordMiscDateDMY: missing 'date from'");
+		return(-1);
+	}
+	dateFrom = strdup(getVarAsString(dateFromField));
+	logMsg(LOGDEBUG, "wordMiscDateDMY: dateFrom = '%s'", dateFrom);
+
+	// This is optional. Might only want to emit the result not create a var out of it
+	getWord(resultDateVar, args, 2, " \t");
+	logMsg(LOGDEBUG, "wordMiscDateDMY: resultDateVar = '%s'", resultDateVar);
+
+	getWord(wd, dateFrom, 3, "-");
+	struct tm a = {0,0,0,0,0,0};
+	a.tm_mday = atoi(wd);
+	getWord(wd, dateFrom, 2, "-");
+	a.tm_mon = (atoi(wd) - 1);
+	getWord(wd, dateFrom, 1, "-");
+	a.tm_year = (atoi(wd) - 1900);
+
+	time_t x = mktime(&a);
+	if (x != (time_t)(-1)) {
+		if ((strcmp(dateFrom, "0000-00-00")) && (strlen(dateFrom)))
+			strftime(tmp, 4095, "%d-%m-%Y", &a);
+		else
+			sprintf(tmp, "          ");
+		if ((resultDateVar) && (strlen(resultDateVar))) {
+			logMsg(LOGDEBUG, "wordMiscDateDMY: result date (%s) will be stored in variable '%s'", tmp, resultDateVar);
+			unsetVar(resultDateVar);	// remove if exists
+			var = (VAR *) calloc(1, sizeof(VAR));
+			var->name = strdup(resultDateVar);
+			var->type = VAR_STRING;
+			var->source = strdup("variable");
+			var->debugHighlight = 4;
+			clearVarValues(var);
+			fillVarDataTypes(var, tmp);
+			if (addVar(var) == -1) {
+				logMsg(LOGFATAL, "Cant create any more vars, terminating");
+				exit(1);
+			}
+		} else {
+			logMsg(LOGDEBUG, "wordMiscDateDMY: result date (%s) will be emitted, not stored in variable", tmp);
+			emitStd(tmp);
+		}
+		//resultDateVar = strdup(tmp);
+	} else
+		emitStd(" date error ");
+
+
+    free(tmp);
+    free(dateFromField);
+    free(dateFrom);
+	if (resultDateVar)
+		free(resultDateVar);
+    emitStd(jam[ix]->trailer);
+	logMsg(LOGDEBUG, "wordMiscDateDMY: NORMAL exit");
+}
+
 // args - date, number of days to add, and optional myVar which if present will store the output. Otherwise simply emitted
 int wordMiscAddDays(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
