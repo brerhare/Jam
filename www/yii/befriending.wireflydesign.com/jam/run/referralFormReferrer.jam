@@ -11,7 +11,13 @@ var objLinkNumber = get('linkNumber');
 </script>
 
 {{@each referral_form_link filter link_number = {{linkNumber}}, used = 1}}
+	{{@get settings filter id = 1}}
+
 	<br><br><br><br><br><center><h3>This link is no longer valid</h3></center>
+	<br><br><center>If you wish to refer another Young Person to D&G Befriending Project please contact our office on</center>
+	<br><center>Tel: 01387 247812 or email: <a href="mailto:{{settings.email}}?Subject=" target="_top">{{settings.email}}</a> <center>
+	<br><center>Thank you</center>
+
 	{{@stop}}
 {{@end}}
 

@@ -8,6 +8,60 @@
 <br>
 {{@html container start center css='max-width:1080px; Xpadding:0}}
 
+<!-- Overlay (modal) starts -->
+<!-- https://raventools.com/blog/create-a-modal-dialog-using-css-and-javascript/ -->
+
+<style>
+#overlay div {
+background-color: #fff5ee;
+     width:500px;
+     margin: 200px auto;
+     background-color: #fff;
+     border:1px solid #000;
+     padding:15px;
+     text-align:center;
+}
+#overlay {
+     visibility: hidden;
+     position: absolute;
+     left: 0px;
+     top: 0px;
+     width:100%;
+     height:100%;
+     text-align:center;
+     z-index: 1000;
+     Xbackground-image:url(background-trans.png);
+
+  background:rgba(255,255,255,0.6);
+}
+</style>
+
+<div id="overlay">
+    <div style="background-color:#fff5ee">
+        <form name="overlay_form" class="uk-form" style="background-color:#fff5ee">
+            <input type=hidden name="ovId" id = "ovId">
+            <p>Input a termination reason for <span id="ovName" name="ovName"></span> </p>
+            {{@html textarea field=form.termination_reason size=60x5}}
+            <br>
+            <br>
+            <center>
+                <button class="uk-button uk-button-medium uk-button-primary" onClick="doArchive()"> Save </button>
+                <button class="uk-button uk-button-medium uk-button-primary" onClick="overlay()"> Cancel</button>
+            </center>
+        </form>
+    </div>
+</div>
+
+<script>
+function overlay() {
+    el = document.getElementById("overlay");
+    el.style.visibility = (el.style.visibility == "visible") ? "hidden" : "visible";
+	window.scrollTo(0,0);
+}
+</script>
+
+<!-- Overlay (modal) ends -->
+
 <div name="content">
 	<h3><center> Young Person </center></h3>
 
@@ -55,9 +109,12 @@
 <script>
 function confirmArchive(id, displayInfo) {
 	window.event.cancelBubble = true;	// Prevent any further events
-	var result = confirm('Confirm archival request for item ' + displayInfo);
-	if (result)
-		runAction('archive', ['young_person.id='+id], '', runJam);	
+
+    ovIdObj = get("ovId");
+    ovIdObj.value = id;
+    ovNameObj = get("ovName");
+    ovNameObj.innerHTML = displayInfo;
+    overlay();
 }
 function confirmHide(id, displayInfo) {
 	window.event.cancelBubble = true;	// Prevent any further events
@@ -65,6 +122,15 @@ function confirmHide(id, displayInfo) {
 	if (result)
 		runAction('delete', ['young_person.id='+id], '', runJam);	
 }
+
+function doArchive() {
+    ovIdObj = get("ovId");
+    ovReasonObj = get("ovId");
+    overlay();
+    //runAction('archive', ['befriender.id='+ovIdObj.value, 'overlay_form'], '', window.setTimeout(runJam, 1000)) ;
+    runAction('archive', ['young_person.id='+ovIdObj.value, 'overlay_form'], '');
+}
+
 </script>
 
 {{@action archive}}
@@ -72,6 +138,7 @@ function confirmHide(id, displayInfo) {
 	{{@get global filter id = young_person.global_id}}
 	{{young_person.archive_flag = 1}}
 	{{young_person.archive_date = sys.today}}
+    {{young_person.termination_reason = form.termination_reason}}
 	{{young_person.archive_destruction_date = '0000-00-00'}}
 	{{@amend item young_person}}
 	{{@get settings filter id = 1}}
