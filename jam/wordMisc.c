@@ -27,33 +27,88 @@ int wordMiscStop(int ix, char *defaultTableName) {
 }
 
 
+// @dateoverlap start1=s1 end1=e1 start2=s2 end2=e2 [newfield=myVar]
+// Date overlap if (s1 <= e2) and (s2 <= e1)
+// Result newfield is required to store 0 or 1 (overwritten if exists)
+// All dates supplied in yyyy-mm-dd format.
+int wordMiscDateOverlap(int ix, char *defaultTableName) {
+	char *cmd = jam[ix]->command;
+	char *args = jam[ix]->args;
+	char *rawData = jam[ix]->rawData;
+	char *tmp = (char *) calloc(1, 4096);
+	char *start1 = NULL;
+	char *end1 = NULL;
+	char *start2 = NULL;
+	char *end2 = NULL;
+	char *newField = NULL;
+	VAR *var;
+	char wd[256];
+	time_t t;
+	char *p, *p2;
+	int i;
+
+	if (isVar("sys.control.start1"))
+		start1 = strdup(getVarAsString("sys.control.start1"));
+	if (isVar("sys.control.end1"))
+		end1 = strdup(getVarAsString("sys.control.end1"));
+	if (isVar("sys.control.start2"))
+		start2 = strdup(getVarAsString("sys.control.start2"));
+	if (isVar("sys.control.end2"))
+		end2 = strdup(getVarAsString("sys.control.end2"));
+	if (isVar("sys.control.newfield"))
+		newField = strdup(getVarAsString("sys.control.newfield"));
+
+	if ((start1) && (end1) && (start2) && (end2) && (newField)) {
+		logMsg(LOGDEBUG, "wordMiscDateOverlap before transform: start1='%s', end1='%s', start2='%s', end2='%s', newField='%s'", start1, end1, start2, end2, newField);
+		for (p = start1, p2 = tmp, i = 0; i < 10; i++) { if ((i != 4) && (i != 7)) *p2++ = *p;  p++; } *p2 = 0;	strcpy(start1, tmp);
+		for (p = end1,   p2 = tmp, i = 0; i < 10; i++) { if ((i != 4) && (i != 7)) *p2++ = *p;  p++; } *p2 = 0;	strcpy(end1,   tmp);
+		for (p = start2, p2 = tmp, i = 0; i < 10; i++) { if ((i != 4) && (i != 7)) *p2++ = *p;  p++; } *p2 = 0;	strcpy(start2, tmp);
+		for (p = end2,   p2 = tmp, i = 0; i < 10; i++) { if ((i != 4) && (i != 7)) *p2++ = *p;  p++; } *p2 = 0;	strcpy(end2,   tmp);
+		logMsg(LOGDEBUG, "wordMiscDateOverlap after transform: start1=[%s] end1=[%s] start2=[%s] end2=[%s]", start1, end1, start2, end2);
+		//struct tm tm;
+		//char buf[255];
+		//memset(&tm, 0, sizeof(struct tm));
+		//strptime("2001-11-12 18:31:01", "%Y-%m-%d %H:%M:%S", &tm);
+		//strftime(buf, sizeof(buf), "%d %b %Y %H:%M", &tm);
+           //puts(buf);
+	} else {
+			logMsg(LOGERROR, "wordMiscDateOverlap: not all args supplied");
+	}
+
+    free(tmp);
+    if (start1) free(start1);
+    if (end1) free(end1);
+    if (start2) free(start2);
+    if (end2) free(end2);
+	if (newField) free(newField);
+    emitStd(jam[ix]->trailer);
+	logMsg(LOGDEBUG, "wordMiscDateOverlap: exit");
+}
+
+
 // optional arg myVar which if present will be created/updated. Otherwise the number is simply emitted
 int wordMiscRandomNumber(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
 	char *tmp = (char *) calloc(1, 4096);
-	char *resultVar = (char *) calloc(1, 4096);
+	char *newField = NULL;
 	char wd[256];
 	time_t t;
 	VAR *var;
 
 	// This is optional. Might only want to emit the result not create a var out of it
-	getWord(resultVar, args, 1, " \t");
-	logMsg(LOGDEBUG, "wordMiscRandomNumber: resultVar = '%s'", resultVar);
+	if (isVar("sys.control.newfield"))
+		newField = strdup(getVarAsString("sys.control.newfield"));
 
 	// Generate random number
-//usleep(10000);
-	//time(&t);
-	//t += cmdSeqnum;
-	//srand((unsigned) t);
 	sprintf(tmp, "%d", rand() % 99999999);
 
-	if ((resultVar) && (strlen(resultVar))) {
-		logMsg(LOGDEBUG, "wordMiscRandomNumber: result var (%s) will be stored in variable '%s'", tmp, resultVar);
-		unsetVar(resultVar);	// remove if exists
+	if (newField) {
+		logMsg(LOGDEBUG, "wordMiscRandomNumber: result var (%s) will be stored in variable '%s'", tmp, newField);
+		unsetVar(newField);	// remove if exists
 		var = (VAR *) calloc(1, sizeof(VAR));
-		var->name = strdup(resultVar);
+		var->name = strdup(newField);
 		var->type = VAR_STRING;
 		var->source = strdup("variable");
 		var->debugHighlight = 4;
@@ -69,10 +124,10 @@ int wordMiscRandomNumber(int ix, char *defaultTableName) {
 	}
 
     free(tmp);
-	if (resultVar)
-		free(resultVar);
+	if (newField)
+		free(newField);
     emitStd(jam[ix]->trailer);
-	logMsg(LOGDEBUG, "wordMiscRandomNumber: NORMAL exit");
+	logMsg(LOGDEBUG, "wordMiscRandomNumber: normal exit");
 }
 
 // @wordsplit field=global.postcode segment=1 newfield=myNewField			IF 'newfield' exists that var will be created/updated otherwise the result will simply be emitted

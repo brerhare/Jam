@@ -1044,6 +1044,10 @@ if (stopping)
 //		------------------------------------
 			res = wordMiscDateDMY(ix, defaultTableName);
 //		------------------------------------
+		} else if (!(strcmp(cmd, "@dateoverlap"))) {
+//		------------------------------------
+			res = wordMiscDateOverlap(ix, defaultTableName);
+//		------------------------------------
 		} else if (!(strcmp(cmd, "@randomnumber"))) {
 //		------------------------------------
 			res = wordMiscRandomNumber(ix, defaultTableName);
