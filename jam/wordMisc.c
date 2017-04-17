@@ -16,6 +16,20 @@
 #include "list.h"
 #include "log.h"
 
+int wordMiscSkip(int ix, char *defaultTableName) {
+	char *cmd = jam[ix]->command;
+	char *args = jam[ix]->args;
+	char *rawData = jam[ix]->rawData;
+	char *tmp = (char *) calloc(1, 4096);
+
+	skipping = 1;
+	logMsg(LOGDEBUG, "wordMiscSkip: Skipping");
+
+    free(tmp);
+    emitStd(jam[ix]->trailer);
+}
+
+
 int wordMiscStop(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
@@ -58,15 +72,11 @@ int wordMiscDateOverlap(int ix, char *defaultTableName) {
 		newField = strdup(getVarAsString("sys.control.newfield"));
 
 	if ((start1) && (end1) && (start2) && (end2) && (newField)) {
- logMsg(LOGDEBUG, "wordMiscDateOverlap going for start1=[%s] end1=[%s] start2=[%s] end2=[%s]", start1, end1, start2, end2);
+ 		logMsg(LOGDEBUG, "wordMiscDateOverlap going for start1=[%s] end1=[%s] start2=[%s] end2=[%s]", start1, end1, start2, end2);
 		s1 = strdup(getVarAsString(start1));
- logMsg(LOGDEBUG, "wordMiscDateOverlap A");
 		e1 = strdup(getVarAsString(end1));
- logMsg(LOGDEBUG, "wordMiscDateOverlap B");
 		s2 = strdup(getVarAsString(start2));
- logMsg(LOGDEBUG, "wordMiscDateOverlap C");
 		e2 = strdup(getVarAsString(end2));
- logMsg(LOGDEBUG, "wordMiscDateOverlap D");
 		// Strip dashes
 		logMsg(LOGDEBUG, "wordMiscDateOverlap before transform: s1='%s', e1='%s', s2='%s', e2='%s', newField='%s'", s1, e1, s2, e2, newField);
 		for (p = s1, p2 = tmp, i = 0; i < 10; i++) { if ((i != 4) && (i != 7)) *p2++ = *p;  p++; } *p2 = 0;	strcpy(s1, tmp);

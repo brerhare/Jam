@@ -6,7 +6,7 @@
 
 using namespace std;
 
-extern int stopping;
+extern int stopping, skipping;
 
 extern char *startJam;
 extern char *endJam;

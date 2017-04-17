@@ -44,7 +44,7 @@ int jamIx = 0;
 char *tableStack[MAX_JAM];
 VAR *var[MAX_VAR];
 char *documentRoot = NULL;
-int stopping;
+int stopping, skipping;
 
 char *jamEntrypoint = NULL;		// action entrypoint. Hackily global because its used in other .c file(s) (move to common.c/h)
 
@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
 	char **cgivars ;
 	char *jamName = NULL;
 
-stopping = 0;
+	stopping = skipping = 0;
 
 	// Do NOT log anything until char documentRoot is set or it will end up in /tmp/ !!!
 
@@ -606,14 +606,15 @@ int control(int startIx, char *defaultTableName) {
 	int res = 0;
 	int ix = startIx;
 	char *tmp = (char *) calloc(1, 64096);
+	skipping = 0;
 	while (jam[ix]) {
 		char *cmd = jam[ix]->command;
 		char *args = NULL;
 		char *rawData = NULL;
 		res = 0;
 
-if (stopping)
-	return(0);
+		if (stopping)
+			return(0);
 
 		// Expand any {{values}} in the argument string with the current values
 
@@ -863,7 +864,14 @@ if (stopping)
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@skip"))) {
 //		-----------------------------------------
-			;	// @@TODO!	// @@TODO also any other skips, in @each<> etc
+			// Return from an each-end or action-end loop
+			res = wordMiscSkip(ix, defaultTableName);
+			if (skipping) {
+				free(tmp);
+				clearControlVars();					// remove any existing control vars
+				return(0);
+				// @@TODO!	// @@TODO also any other skips, in @each<> etc
+			}
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@get"))) {
 //		------------------------------------
