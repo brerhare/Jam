@@ -16,17 +16,61 @@
 #include "list.h"
 #include "log.h"
 
+// @skip [myVar = 1]
 int wordMiscSkip(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
 	char *tmp = (char *) calloc(1, 4096);
+	char *lhs = NULL;
+	char *rhs = NULL;
+	char *op = NULL;
+	VAR *lhsVar = NULL;
+	VAR *rhsVar = NULL;
 
-	skipping = 1;
-	logMsg(LOGDEBUG, "wordMiscSkip: Skipping");
+	if (strstr(args, "!="))
+		op = strdup("!=");
+	else if (strstr(args, "="))
+		op = strdup("=");
+	if (op) {
+        lhs = strTrim(getWordAlloc(args, 1, op));
+        rhs = strTrim(getWordAlloc(args, 2, op));
+		logMsg(LOGDEBUG, "wordMiscSkip raw values: op=[%s] lhs=[%s] rhs=[%s]", op, lhs, rhs);
+		// Use var values if they exist, else assume literal values
+		lhsVar = findVarStrict(lhs);
+		if (lhsVar) {
+			free(lhs);
+			lhs = strdup(lhsVar->portableValue);
+		}
+		rhsVar = findVarStrict(rhs);
+		if (rhsVar) {
+			free(rhs);
+			rhs = strdup(rhsVar->portableValue);
+		}
+		logMsg(LOGDEBUG, "wordMiscSkip final values: op=[%s] lhs=[%s] rhs=[%s]", op, lhs, rhs);
+		// Do the thang
+		if (!strcmp(op, "!=")) {
+			if (strcmp(lhs, rhs))
+				skipping = 1;
+		} else if (!strcmp(op, "=")) {
+			if (!strcmp(lhs, rhs))
+				skipping = 1;
+		}
+	} else
+		skipping = 1;
 
-    free(tmp);
-    emitStd(jam[ix]->trailer);
+	if (skipping)
+		logMsg(LOGDEBUG, "wordMiscSkip: skipping");
+	else
+		logMsg(LOGDEBUG, "wordMiscSkip: not skipping");
+
+	free(tmp);
+	if (lhs) free(lhs);
+	if (rhs) free(rhs);
+	if (lhsVar) deleteVar(lhsVar);
+	if (rhsVar) deleteVar(rhsVar);
+	if (!skipping)
+    	emitStd(jam[ix]->trailer);
 }
 
 
@@ -37,7 +81,7 @@ int wordMiscStop(int ix, char *defaultTableName) {
 
 	stopping = 1;
 	logMsg(LOGDEBUG, "wordMiscStop: STOPPING");
-    emitStd(jam[ix]->trailer);
+    //emitStd(jam[ix]->trailer);
 }
 
 
