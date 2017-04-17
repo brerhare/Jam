@@ -10,6 +10,7 @@
 
 <div name="content">
 	<center><h3> Befriender Leaving Report </h3></center>
+	<center><h5> {{@datedmy from}} to {{@datedmy to}} </h5></center>
 
 	<form class="uk-form">
 		<input type="text" id="searchInput" placeholder="Type to search">

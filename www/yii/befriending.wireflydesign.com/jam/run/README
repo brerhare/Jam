@@ -2,7 +2,6 @@
 To run manually
 	/home/dev/src/jam/jam /home/wireflydesign.com/domains/befriending.wireflydesign.com/dev/src/www/yii/befriending.wireflydesign.com run/reportFix.jam
 
-reminder_emails.jam -> also must cc to office (everything)
 NB... adding menu items breaks user defined menus. Need to hang on to existing id's already allocated
 
 ../cgi/runjam.cgi /home/wireflydesign.com/domains/befriending.wireflydesign.com/dev/src/www/yii/befriending.wireflydesign.com/ run/cron

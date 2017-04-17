@@ -15,6 +15,18 @@
 <!-- Insert here -->
 
 <p>
+<h4><b>April 17 2017 </b></h4>
+- YP leaving report (and others) shows selected date range in heading
+<br>
+- Referral report caters for two date-pairs overlap (report date from-to and referred-matched dates)
+<br>
+- YP annual match report caters for two date-pairs overlap
+<br>
+- (Question) Befriender annual report also now asks date from-to - what should this apply to?
+</p>
+
+
+<p>
 <h4><b>April 10 2017 </b></h4>
 - Made referral form "already used" message a bit more informative
 <br>
