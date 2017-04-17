@@ -36,11 +36,10 @@ int wordMiscDateOverlap(int ix, char *defaultTableName) {
 	char *args = jam[ix]->args;
 	char *rawData = jam[ix]->rawData;
 	char *tmp = (char *) calloc(1, 4096);
-	char *start1 = NULL;
-	char *end1 = NULL;
-	char *start2 = NULL;
-	char *end2 = NULL;
+	char *s1 = NULL, *e1 = NULL, *s2 = NULL, *e2 = NULL;
+	char *start1 = NULL, *end1 = NULL, *start2 = NULL, *end2 = NULL;
 	char *newField = NULL;
+	char *result = NULL;
 	VAR *var;
 	char wd[256];
 	time_t t;
@@ -59,28 +58,62 @@ int wordMiscDateOverlap(int ix, char *defaultTableName) {
 		newField = strdup(getVarAsString("sys.control.newfield"));
 
 	if ((start1) && (end1) && (start2) && (end2) && (newField)) {
-		logMsg(LOGDEBUG, "wordMiscDateOverlap before transform: start1='%s', end1='%s', start2='%s', end2='%s', newField='%s'", start1, end1, start2, end2, newField);
-		for (p = start1, p2 = tmp, i = 0; i < 10; i++) { if ((i != 4) && (i != 7)) *p2++ = *p;  p++; } *p2 = 0;	strcpy(start1, tmp);
-		for (p = end1,   p2 = tmp, i = 0; i < 10; i++) { if ((i != 4) && (i != 7)) *p2++ = *p;  p++; } *p2 = 0;	strcpy(end1,   tmp);
-		for (p = start2, p2 = tmp, i = 0; i < 10; i++) { if ((i != 4) && (i != 7)) *p2++ = *p;  p++; } *p2 = 0;	strcpy(start2, tmp);
-		for (p = end2,   p2 = tmp, i = 0; i < 10; i++) { if ((i != 4) && (i != 7)) *p2++ = *p;  p++; } *p2 = 0;	strcpy(end2,   tmp);
-		logMsg(LOGDEBUG, "wordMiscDateOverlap after transform: start1=[%s] end1=[%s] start2=[%s] end2=[%s]", start1, end1, start2, end2);
-		//struct tm tm;
-		//char buf[255];
-		//memset(&tm, 0, sizeof(struct tm));
-		//strptime("2001-11-12 18:31:01", "%Y-%m-%d %H:%M:%S", &tm);
-		//strftime(buf, sizeof(buf), "%d %b %Y %H:%M", &tm);
-           //puts(buf);
+ logMsg(LOGDEBUG, "wordMiscDateOverlap going for start1=[%s] end1=[%s] start2=[%s] end2=[%s]", start1, end1, start2, end2);
+		s1 = strdup(getVarAsString(start1));
+ logMsg(LOGDEBUG, "wordMiscDateOverlap A");
+		e1 = strdup(getVarAsString(end1));
+ logMsg(LOGDEBUG, "wordMiscDateOverlap B");
+		s2 = strdup(getVarAsString(start2));
+ logMsg(LOGDEBUG, "wordMiscDateOverlap C");
+		e2 = strdup(getVarAsString(end2));
+ logMsg(LOGDEBUG, "wordMiscDateOverlap D");
+		// Strip dashes
+		logMsg(LOGDEBUG, "wordMiscDateOverlap before transform: s1='%s', e1='%s', s2='%s', e2='%s', newField='%s'", s1, e1, s2, e2, newField);
+		for (p = s1, p2 = tmp, i = 0; i < 10; i++) { if ((i != 4) && (i != 7)) *p2++ = *p;  p++; } *p2 = 0;	strcpy(s1, tmp);
+		for (p = e1, p2 = tmp, i = 0; i < 10; i++) { if ((i != 4) && (i != 7)) *p2++ = *p;  p++; } *p2 = 0;	strcpy(e1, tmp);
+		for (p = s2, p2 = tmp, i = 0; i < 10; i++) { if ((i != 4) && (i != 7)) *p2++ = *p;  p++; } *p2 = 0;	strcpy(s2, tmp);
+		for (p = e2, p2 = tmp, i = 0; i < 10; i++) { if ((i != 4) && (i != 7)) *p2++ = *p;  p++; } *p2 = 0;	strcpy(e2, tmp);
+		logMsg(LOGDEBUG, "wordMiscDateOverlap after transform: s1=[%s] e1=[%s] s2=[%s] e2=[%s]", s1, e1, s2, e2);
+		// Overlap?
+		if ( (atoi(s1) <= atoi(e2)) && (atoi(s2) <= atoi(e1)) )
+			result = strdup("1");
+		else
+			result = strdup("0");
+		logMsg(LOGDEBUG, "wordMiscDateOverlap: result=[%s]", result);
+		// Update/create result var
+       	VAR *var = findVarStrict(newField);
+       	if (var) {
+           	if (var->portableValue)
+               	free(var->portableValue);
+           	var->portableValue = strdup(result);
+       	} else {
+           	var = (VAR *) calloc(1, sizeof(VAR));
+           	var->name = strdup(newField);
+           	var->type = VAR_STRING;
+           	var->source = strdup("variable");
+           	var->debugHighlight = 4;
+           	clearVarValues(var);
+           	fillVarDataTypes(var, result);
+           	if (addVar(var) == -1) {
+               	logMsg(LOGFATAL, "Cant create any more vars, terminating");
+               	exit(1);
+           	}
+       	}
 	} else {
 			logMsg(LOGERROR, "wordMiscDateOverlap: not all args supplied");
 	}
 
     free(tmp);
+    if (s1) free(s1);
+    if (e1) free(e1);
+    if (s2) free(s2);
+    if (e2) free(e2);
     if (start1) free(start1);
     if (end1) free(end1);
     if (start2) free(start2);
     if (end2) free(end2);
 	if (newField) free(newField);
+	if (result) free(result);
     emitStd(jam[ix]->trailer);
 	logMsg(LOGDEBUG, "wordMiscDateOverlap: exit");
 }
