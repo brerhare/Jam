@@ -230,14 +230,14 @@ sys.randomnumber	// 8 digit rand
 {@daycount fromdate todate}			// eg 14
 {@adddays fromdate days [mydate]}			// eg 2016-12-20 20 [var-to-create]
 {@datedmy date [myvar]}	convert yyyy-mm-dd to dd-mm-yyyy format, and either store in myvar or simply emit
-{@dateoverlap fromdate1 todate1 fromdate2 todate2 myvar}	// is there any overlap between the ranges? 0 or 1 stored in myvar
+{@dateoverlap start1=date end1=date start2=date end2=date newfield=myvar}	// is there any overlap between the ranges? 0 or 1 stored in newfield
 
 {@replacevalue field=befriender.gender value=0:male,1:female}
 {@wordsplit field=global.postcode segment=1 newfield=myNewField}	// IF newfield is specified it will be created/updated otherwise simply emitted
 
-{@randomnumber [myvar]	// emit or store a random number in myvar
-
+{@randomnumber [newfield=myvar]	// emit or store a random number in newfield
 {@stop}		gracefully stop processing jamfile at this point
+{@skip [condition]}		// where condition is something like myVar=1, myVar != 1
 
 <hr>
 
