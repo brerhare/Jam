@@ -1,12 +1,11 @@
-{{@include /jam/sys/html/header.html}}
-{{@include /jam/css/style.css}}
+{{@include /jam/sys/html/header.html}} {{@include /jam/css/style.css}}
 
 {{@Xinclude /jam/run/new_menu.jam}}
 
 {{@database befriending_wireflydesign_com}}
 
 <br>
-{{@Xhtml container start center nomargin css='max-width:900px; padding:0}}
+{{@html container start center nomargin css='max-width:900px; padding:0}}
 
 	{{@get young_person filter id = young_person.id}}
 	{{@get global filter id = young_person.global_id}}
@@ -20,9 +19,9 @@
 .score-td { min-width: 50px; }
 </style>
 
-<div class="uk-container uk-overflow-container uk-container-center">
+<div class="uk-container uk-container-center">
 
-	<div id='girfec-table-outer' class="uk-overflow-container">
+	<div id='girfec-table-outer' class="Xuk-overflow-container" style="Xoverflow-x: scroll">
 
 		<table class="uk-table uk-table-condensed" style="border:1px solid #dddddd">
 
@@ -32,7 +31,7 @@
 				<td> </td>
 {{@each event filter young_person_id = young_person.id}}
 	{{@each form_upload_girfec filter event_id = event.id}}
-				<td width="40px"><div> <a href="http://befriending.wireflydesign.com/run/eventMaintain?event.id={{event.id}}" target="_blank">{{@datedmy event.date}}</a> </div></td>	<!-- @@FIXED: was form_upload_girfec.date -->
+				<td style='min-width:80px'><div> <a href="http://befriending.wireflydesign.com/run/eventMaintain?event.id={{event.id}}" target="_blank">{{@datedmy event.date}}</a> </div></td>	<!-- @@FIXED: was form_upload_girfec.date -->
 	{{@end}}
 {{@end}}
 			</tr>
@@ -41,7 +40,7 @@
 
 {{@each girfec_outcome_name}}
 			<tr>
-				<td class='desc-td'> {{girfec_outcome_name.description}} </td>
+				<td style='min-width:500px' class='desc-td'> {{girfec_outcome_name.description}} </td>
 	{{@each event filter young_person_id = young_person.id}}
 		{{@each form_upload_girfec filter event_id = event.id}}
 			{{@get form_upload_girfec_score filter event_id = event.id, girfec_outcome_name_id = girfec_outcome_name.id, form_upload_girfec_id = form_upload_girfec.id}}
@@ -61,6 +60,6 @@ window.onload = function() {
 }
 </script>
 
-{{@Xhtml container end}}
+{{@html container end}}
 
 {{@include /jam/sys/html/footer.html}}
