@@ -13,6 +13,21 @@
     <form class="uk-form">
 
 <!-- Insert here -->
+<p>
+<h4><b>April 18 2017 </b></h4>
+- GIRFEC on YP Outcomes tab events sideways accross the page and show a horizontal scrollbar should there be too many dates/scores to display
+<br>
+- GIRFEC report duplicate Logan where 2nd line should have read Bailey
+<br>
+- GIRFEC report averages not to include zero scores
+<br>
+- Deletion of befrienders/YP's was failing when name had an apostrophe in it
+<br>
+- Referral form no longer asks for 'status'. All referred YP's are allocated a status of 'referred' which can only be changed by office staff
+<br>
+- Fixed 'invalid link' problem with referrals
+</p>
+
 
 <p>
 <h4><b>April 17 2017 </b></h4>

@@ -140,7 +140,7 @@ function postUpdate() {
 {{@end}}
 
 {{@action email_contact}}
-	{{@randomnumber myRand}}
+	{{@randomnumber newfield=myRand}}
     {{referral_form_link.link_number = myRand}}
     {{referral_form_link.date = sys.today}}
     {{referral_form_link.used = 0}}

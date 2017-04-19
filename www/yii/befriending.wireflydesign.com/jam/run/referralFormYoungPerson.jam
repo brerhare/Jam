@@ -50,7 +50,8 @@
 			{{@html gridcol start width=4-10}}
 				{{@html radio field=young_person.gender label='Gender' options=0:Male,1:Female group=inp}}
 
-{{@html dropdown field=young_person.status_id pickfield=status.name size=small label='Status'}}
+{{@Xhtml dropdown field=young_person.status_id pickfield=status.name size=small label='Status'}}
+
 
 				{{@XXXXXhtml radio field=young_person.legal_status label='Legal status' options=0:None,1:Other group=inp}}
 				{{@XXXXXhtml date field=young_person.order_date size=medium label='Date of Order' group=inp}}
@@ -156,6 +157,7 @@ function forwardToNext() {
     {{young_person.archive_flag = 9}}
     {{young_person.archive_date = '0000-00-00'}}
     {{young_person.archive_destruction_date = '0000-00-00'}}
+	{{young_person.status_id = 1}}
 	{{@update item young_person}}
 	{{@get contact filter id = refId}}
 	{{contact.young_person_id = young_person.id}}

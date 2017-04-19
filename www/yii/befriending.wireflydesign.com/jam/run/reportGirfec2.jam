@@ -11,7 +11,7 @@
 <div name="content">
 	{{@get event_milestone filter id = milestone}}
 	<center><h3> Girfec Report {{event_milestone.name}} </h3></center>
-	<center><h4> {{from}} - {{to}} </h4></center>
+	<center><h5> {{@datedmy from}} to {{@datedmy to}} </h5></center>
 
 	<form class="uk-form">
 		<input type="text" id="searchInput" placeholder="Type to search">
@@ -27,12 +27,10 @@
 {{totalStart = 0}}
 {{totalEnd = 0}}
 {{@each event filter date >= from, date <= to, event_milestone_id = 5, order by date}}
-	{{@get form_upload_girfec_score filter event_id = event.id, girfec_outcome_name_id = outcome}}
+	{{@get form_upload_girfec_score filter event_id = event.id, girfec_outcome_name_id = {{outcome}} }}
 	{{end_score = form_upload_girfec_score.score}}
-	{{@get event filter date >= from, date <= to, event_milestone_id = 2, order by date}}
-	{{@get form_upload_girfec_score filter event_id = event.id, girfec_outcome_name_id = outcome}}
+	{{@get form_upload_girfec_score filter event_id = event.id, girfec_outcome_name_id = {{outcome}} }}
 	{{start_score = form_upload_girfec_score.score}}
-	{{cnt = cnt + 1}}
 		<tr>
 		{{@get young_person filter id = event.young_person_id}}
 		{{@get global filter id = young_person.global_id}}
@@ -42,6 +40,8 @@
 			{{totalStart = totalStart + start_score}}
 			{{totalEnd = totalEnd + end_score}}
 		</tr>
+	{{@skip end_score = 0}}
+	{{cnt = cnt + 1}}
 {{@end}}
 		<tr>
 			<td colspan = 3>&nbsp</td>
