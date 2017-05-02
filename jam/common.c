@@ -455,8 +455,18 @@ int endJs(int urlEncodeRequired) {
 }
 
 char *urlEncode(char *str) {		// needs freeing
+
+	// Replace %
+	char find = '%';
+	char replace = ' ';
+	char *current_pos = strchr(str, find);
+	while (current_pos) {
+		*current_pos = replace;
+		current_pos = strchr(current_pos,find);
+	}
 char *p = strdup(str);
 return p;
+
 	char *encodedData = NULL;
 	curl = curl_easy_init();
 	if (!curl)
@@ -468,6 +478,9 @@ return p;
 		encodedData = strdup(str);
 	}
 	curl_easy_cleanup(curl);
+
+
+
 	return (encodedData);
 }
 
