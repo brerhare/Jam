@@ -67,7 +67,7 @@
 						{{@end}}
 
 								<tr> <td colspan=6> <h3></h3><h3>All Possible Befrienders</h3> </td> </tr>
-						{{@each befriender}}
+						{{@each befriender filter archive_flag = 0}}
 							{{@get global filter id = befriender.global_id}}
 								<tr>
 									<td> {{global.forename}} {{global.surname}} </td>
