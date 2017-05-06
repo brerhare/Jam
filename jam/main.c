@@ -983,16 +983,27 @@ int control(int startIx, char *defaultTableName) {
 		} else if (!(strcmp(cmd, "@action"))) {
 //		-------------------------------------
 			if (!jamEntrypoint) {		// not for us - ignore completely
-				while (jam[ix] && (strcmp(jam[ix]->command, "@end")) ) {
+				int level = 1;
+				logMsg(LOGMICRO, "@action being skipped at ix=%d (level starts at 1 and continues until 0)", ix);
+				while ((level > 0) && (jam[ix])) {
 					if (!strcmp(jam[ix]->command, "@each")) {
-						while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
-							ix++;
+						level++;
+						logMsg(LOGMICRO, "@action being skipped at ix=%d - found @each (level=%d)", ix, level);
+					} else if (!strcmp(jam[ix]->command, "@eachsql")) {
+						level++;
+						logMsg(LOGMICRO, "@action being skipped at ix=%d - found @eachsql (level=%d)", ix, level);
+					} else if (!strcmp(jam[ix]->command, "@end")) {
+						level--;
+						logMsg(LOGMICRO, "@action being skipped at ix=%d - found @end (level=%d)", ix, level);
 					}
-					if (jam[ix])
+					if (level == 0)
+						emitStd(jam[ix]->trailer);
+					else
 						ix++;
 				}
-				if (jam[ix])
-					emitStd(jam[ix]->trailer);
+				logMsg(LOGMICRO, "@action fully skipped at ix=%d (level=%d)", ix, level);
+				//if (jam[ix])
+					//emitStd(jam[ix]->trailer);
 			} else {					// for us - run and stop
 				emitStd(jam[ix]->trailer);
 				VAR *v = findVarStrict("_dbname");
