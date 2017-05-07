@@ -1,0 +1,19 @@
+domain = befriending.org
+parentdomain =
+sitetitle = Befriending
+sid = tfs87uao920l0mbuaahrl0k472
+
+# Database
+dbname = befriending_org
+dbuser = befriending.org
+dbpass = Gn2aDy9g
+
+# Shopping cart order confirmation email
+checkoutemail = none
+checkoutname = none
+checkoutpaypalemail = 
+
+# Backend page editor
+editorpagewidth = 700
+editorpageheight = 400
+
