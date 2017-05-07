@@ -11,22 +11,14 @@ css.display = block
 
 	[contentframe]
 	child = list, detail
-    css.margin-top = 2%
     stacking = horizontal
     css.width = 100%
 
 		[list]
 		condition = @PAGE=@HOMEPAGE
+    	css.margin = 30px
 	    jam.embed = /run/list.jam
 		
 		[detail]
 		condition != @PAGE=@HOMEPAGE
 		
-	css.display = block
-	css.width = 500px
-	css.margin-top = 400px
-	style.html.h1.color = yellow
-	style.html.h1.background-color = black
-	style.html.h1.padding = 10px
-	html.h1 = a jelly&#0153; site is coming soon
-

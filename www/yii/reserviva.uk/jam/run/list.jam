@@ -14,13 +14,25 @@
 
 	<div style="Xmargin:20px;padding:0" class="Xuk-container Xuk-container-center">
 
-		<div class="uk-grid uk-grid-match" data-uk-grid-match="{target:'.uk-panel'}" data-uk-grid-margin style="margin-left:1px; margin-right:30px; margin-top:35px; margin-bottom:0px">
+		<div class="uk-grid uk-grid-match" data-uk-grid-match="{target:'.uk-panel'}" data-uk-grid-margin>
 {{@each blog_article filter uid = UID, id < 5550, order by date ASC}}
-			<div style="padding-bottom:35px;" class="uk-width-large-1-LARGEVIEWBLOCKS  uk-width-medium-1-MEDIUMVIEWBLOCKS  uk-width-1-SMALLVIEWBLOCKS">
+			<div style="Xpadding-bottom:35px;" class="uk-width-large-1-LARGEVIEWBLOCKS  uk-width-medium-1-MEDIUMVIEWBLOCKS  uk-width-1-SMALLVIEWBLOCKS">
+
+<!--
 				<div class="uk-panel uk-panel-box" style='Xbackground-color:transparent; Xborder-radius:BORDERRADIUS; Xborder:BORDERWIDTH solid BORDERCOLOR'>
 					<a href="myfile.htm"><img src="http://plugin.wireflydesign.com/news/userdata/UID/{{blog_article.thumbnail_path}}"></a> 
 					<p>{{blog_article.title}}</p>
 				</div>
+-->
+
+				<div class="uk-panel uk-panel-box" style='Xbackground-color:transparent; Xborder-radius:BORDERRADIUS; Xborder:BORDERWIDTH solid BORDERCOLOR'>
+					<div class="uk-panel-teaser">
+						<center><a href="myfile.htm"><img src="http://plugin.wireflydesign.com/news/userdata/UID/{{blog_article.thumbnail_path}}"></a> </center>
+						<p>{{blog_article.title}}</p>
+					</div>
+				</div>
+
+
 			</div>
 {{@end}}
 		</div>
