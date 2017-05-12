@@ -9,6 +9,7 @@ Doing...
 {{@new table event
 	uid						number	required
 	seller_id				number	required
+	event_template_id		number	required
 	headline				string	required
 	date					date	required
 	time					time
@@ -22,6 +23,10 @@ Doing...
 	address3				string
 	post_code				string
 	image					string
+}}
+
+{{@new index event sellerindex
+    seller_id
 }}
 
 Done
