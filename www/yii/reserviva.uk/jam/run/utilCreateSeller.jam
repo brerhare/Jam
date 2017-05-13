@@ -11,10 +11,9 @@ Doing...
 	name					string	required
 	landline                string
 	mobile                  string
-	address1				string
-	address2				string
-	address3				string
+	address					string
 	post_code				string
+	email					string
 	image					string
 }}
 

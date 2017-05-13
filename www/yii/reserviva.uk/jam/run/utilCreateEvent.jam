@@ -18,11 +18,10 @@ Doing...
 	contact					string
 	landline				string
 	mobile					string
-	address1				string
-	address2				string
-	address3				string
+	address					string
 	post_code				string
 	image					string
+	tandc					text
 }}
 
 {{@new index event sellerindex
