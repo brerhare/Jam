@@ -1,80 +1,85 @@
 {{@include /jam/sys/html/header.html}}
 
-{{@include /jam/css/reserviva.css}}
-
 {{@database reserviva_uk}}
 
 {{@get sid filter sid = sid}}
 {{uid = sid.uid}}
 {{@get seller filter uid = uid}}
 
-<br><br>
+{{@template TABLE template_beirc}}
+{{@template HEADING Competition Entry}}
+
+<style type="text/css">
+	label {text-align: right;}
+</style>
 
 {{@html container start center css='max-width:900px; Xpadding:0}}
 
 <form name="seller_form" class="uk-form uk-form-horizontal">
-<center><h3> Seller Information </h3></center>
+	<br>
+	<center><h3> {{seller.name}} HEADING </h3></center>
 
-	<input type="hidden" name="seller.id" value={{seller.id}}>
-	<input type="hidden" name="seller.image" value="{{seller.image}}">
+	<input type="hidden" name="sid" value={{sid.sid}}>
 	{{@html gridrow start}}
 		{{@html gridcol start width=5-5}}
-			{{@html text field=seller.name size=large label='Name'}}
-			{{@html text field=seller.landline size=medium label='Telephone number'}}
-			{{@html text field=seller.mobile size=medium label='Mobile number'}}
-			{{@html text field=seller.email size=medium label='Email address'}}
-			{{@html textarea field=seller.address size=50x5 label=Address}}
-			{{@html text field=seller.post_code size=small label='Post code'}}
-			<br>
-			<label class="uk-form-label" for="mem.upload">Uploaded picture</label>
+			{{@html text field=settings.email size=large label='Email address'}}
+			{{@html text field=settings.reminder_documentation_lead_days size=mini label='Reminder documentation days' default=3}}
+			{{@html text field=settings.reminder_events_lead_days size=mini label='Reminder event days' default=3}}
+			{{@html text field=settings.archive_days size=mini label='Archive delay days' tip='Number of day from marking an item for archive and the archive occuring' default=3}}
+
+			<label class="uk-form-label" for="mem.upload">Referral form attachment</label>
 			<div class="uk-form-controls">
-				<span style='display:inline-block;margin-top:5px'>{{seller.image}}</span>
-				<input type="button" value="Clear" onclick="clearFile()">
+				<span style='display:inline-block;margin-top:5px'>{{settings.referral_attachment}}</span>
+				<input type="button" value="Clear" onclick="clearAttachment()">
 				<span class="uk-form-file"> <input type="file" onChange="fileUpload(this)"></span>
 			</div>
 
+
 		{{@html gridcol end}}
+			{{@html textarea field=settings.referral_text size=60x10 label='Referral form text'}}
 	{{@html gridrow end}}
 	{{@html gridrow start}}
 		{{@html gridcol start width=1-1}}
 			<br>
 			<center>
 				{{@html button Save primary medium
-					runAction('update_seller', ['seller_form'], '', postUpdate)
+					runAction('update_settings', ['seller_form'], '', postUpdate)
 				}}
 				{{@html button Cancel primary medium
-					runJam('menu.jam');
+					runJam();
 				}}
 			</center>
 		{{@html gridcol end}}
 	{{@html gridrow end}}
+<br>
 </form>
 
-{{@action update_seller}}
-	{{@update item seller notify=ok}}
+{{@action update_settings}}
+	{{@update item settings notify=ok}}
 {{@end}}
 
 <script>
-function clearFile() {
-	var evObj = get('seller.image');
+function clearAttachment() {
+	var evObj = get('settings.referral_attachment');
 	evObj.value = '';
 }
 
 function postUpdate() {
-	window.setTimeout(runJam('menu.jam', 1000));
+//window.setTimeout(runJam, 1000)
+//	runJam();
 }
 
 function fileUpload(obj) {
     $.blockUI();
     var file = obj.files[0];
-    var evObj = get('seller.image');
+    var evObj = get('settings.referral_attachment');
 	evObj.value = file.name;
 //alert(evObj.value);
     console.log("name : " + file.name);
     console.log("size : " + file.size);
     console.log("type : " + file.type);
     console.log("date : " + file.lastModified)
-    var url = 'http://www.reserviva.uk:/jam/upload/uploadSellerImage.php';
+    var url = 'http://befriending.wireflydesign.com:/jam/uploads/uploadReferralAttachment.php';
     var xhr = new XMLHttpRequest();
     var fd = new FormData();
     xhr.open("POST", url, true);
@@ -82,7 +87,7 @@ function fileUpload(obj) {
         if (xhr.readyState == 4 && xhr.status == 200) {
             console.log(xhr.responseText); // handle response.
             $.unblockUI();
-			objAttachment = get('seller.image');
+			objAttachment = get('settings.referral_attachment');
 			objAttachment.value = file.name;
         } else {
             $.unblockUI();

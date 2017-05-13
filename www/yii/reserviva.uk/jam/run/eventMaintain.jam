@@ -1,0 +1,125 @@
+{{@include /jam/sys/html/header.html}}
+
+{{@include /jam/css/reserviva.css}}
+
+{{@database reserviva_uk}}
+
+{{@get seller filter uid = uid}}
+
+{{@get event filter id = event.id}}
+
+<br><br>
+
+{{@html container start center css='max-width:900px; Xpadding:0}}
+
+<form name="event_form" class="uk-form uk-form-horizontal">
+<center><h3> {{seller.name}} Event </h3></center>
+
+	<input type="hidden" name="seller.id" value={{seller.id}}>
+	<input type="hidden" name="event.uid" value="{{seller.uid}}">
+	<input type="hidden" name="event.seller_id" value="{{seller.id}}">
+	<input type="hidden" name="event.image" value="{{event.image}}">
+	{{@html gridrow start}}
+		{{@html gridcol start width=5-5}}
+			{{@html text field=event.headline size=large label='Headline'}}
+			{{@html date field=event.date size=medium label='Date'}}
+			{{@html text field=event.time size=medium label='Time (hh:mm:ss)'}}
+			{{@html checkbox field=event.active label='Active' tip='Check this box if event is to be publicly visible' group=inp}}
+			{{@html textarea field=event.description size=60x5 label='Event description'}}
+			<label class="uk-form-label" for="mem.upload">Uploaded picture</label>
+			<div class="uk-form-controls">
+				<span style='display:inline-block;margin-top:5px'>{{event.image}}</span>
+				<input type="button" value="Clear" onclick="clearFile()">
+				<span class="uk-form-file"> <input type="file" onChange="fileUpload(this)"></span>
+			</div>
+<hr>
+			{{@html text field=event.contact size=large label='Contact person'}}
+			{{@html text field=event.landline size=medium label='Telephone number'}}
+			{{@html text field=event.mobile size=medium label='Mobile number'}}
+			{{@html text field=event.email size=medium label='Email address'}}
+			{{@html textarea field=event.address size=60x5 label=Address}}
+			{{@html text field=event.post_code size=small label='Post code'}}
+<hr>
+			{{@html textarea field=event.tandc size=60x5 label='Additional info (T&Cs etc)'}}
+<hr>
+			<!-- @@EG: dropdown outside of the jam -->
+			<label class="uk-form-label" for="event.event_template_id"> Template </label>
+			<div class="uk-form-controls">
+				<select id="ID1___event____event_template_id" name="event.event_template_id" onchange="fn(this, event);" onkeyup="fn(this, event);" class="uk-form-width-medium">
+				{{tmp.selected = }}
+				{{@each event_template filter uid = uid, id = event.event_template_id}}
+					<option value="{{event_template.id}}" selected> {{event_template.file}} </option>
+				{{@end}}
+					<option value="0">None</option>
+				{{@each event_template filter uid = uid, id != event.event_template_id}}
+					<option value="{{event_template.id}}"> {{event_template.file}} </option>
+				{{@end}}
+				</select>
+			</div>
+
+		{{@html gridcol end}}
+	{{@html gridrow end}}
+	{{@html gridrow start}}
+		{{@html gridcol start width=1-1}}
+			<br>
+			<center>
+				{{@html button Save primary medium
+					runAction('update_event', ['event_form'], '', postUpdate)
+				}}
+				{{@html button Cancel primary medium
+					runJam('event.jam');
+				}}
+			</center>
+		{{@html gridcol end}}
+	{{@html gridrow end}}
+
+</form>
+
+{{@action update_event}}
+	{{@update item event notify=ok}}
+{{@end}}
+
+<script>
+function clearFile() {
+	var evObj = get('event.image');
+	evObj.value = '';
+}
+
+function postUpdate() {
+	window.setTimeout(runJam('event.jam', 1000));
+}
+
+function fileUpload(obj) {
+    $.blockUI();
+    var file = obj.files[0];
+    var evObj = get('event.image');
+	evObj.value = file.name;
+//alert(evObj.value);
+    console.log("name : " + file.name);
+    console.log("size : " + file.size);
+    console.log("type : " + file.type);
+    console.log("date : " + file.lastModified)
+    var url = 'http://www.reserviva.uk:/jam/upload/uploadEventImage.php';
+    var xhr = new XMLHttpRequest();
+    var fd = new FormData();
+    xhr.open("POST", url, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            console.log(xhr.responseText); // handle response.
+            $.unblockUI();
+			objAttachment = get('event.image');
+			objAttachment.value = file.name;
+        } else {
+            $.unblockUI();
+        }
+    };
+    fd.append("upload_file", file);
+    xhr.send(fd);
+
+}
+
+</script>
+
+{{@html container end}}
+
+{{@include /jam/sys/html/footer.html}}
