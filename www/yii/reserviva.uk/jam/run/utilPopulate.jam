@@ -11,6 +11,7 @@ Doing...
 {{@sql delete from event_template where id >= 1 and id <= 99999}}
 {{@sql delete from event_default where id >= 1 and id <= 99999}}
 {{@sql delete from event where id >= 1 and id <= 99999}}
+{{@sql delete from entry where id >= 1 and id <= 99999}}
 
 {{@sql insert into sid values('1', 'sagvfdjigf39ij2jio42kfa9gv', '1')}}
 
