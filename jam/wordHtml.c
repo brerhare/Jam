@@ -702,7 +702,6 @@ int wordHtmlCheckbox(int ix, char *defaultTableName) {
 			table = strdup("");
 		field = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
 	}
-
 	// Label
 	if (isVar("sys.control.label"))
 		label = strdup(getVarAsString("sys.control.label"));
@@ -729,6 +728,7 @@ int wordHtmlCheckbox(int ix, char *defaultTableName) {
 	// Set jamKey. This is whatever table/field values are required to update the data
 	jamKey = makeJamKeyValue(table, field, tableFieldRawValue);
 
+	// Set jamKey. This is whatever table/field values are required to update the data
 	// Value
 	sprintf(tmp, "%s.%s", table, field);
 	VAR *variable = findVarStrict(tmp);
@@ -742,7 +742,7 @@ int wordHtmlCheckbox(int ix, char *defaultTableName) {
 	}
 
 	// Checked
-	if (atoi(variable->portableValue) > 0)
+	if ((variable) && (atoi(variable->portableValue)) > 0)
 		checked = strdup("checked");
 	else
 		checked = strdup("");
@@ -1864,9 +1864,11 @@ char *makeJamKeyValue(char *tableName, char *fieldName, char *rawValue) {
 			sprintf(ret, "ID0___%s___%s", tableName, fieldName);
 			logMsg(LOGDEBUG, "makeJamKeyValue() [%s] created (db). Does not exist as a variable", ret);
 		}
+		logMsg(LOGDEBUG, "makeJamKeyValue() normal exit");
 		return(ret);
 	}
 	// Is it a variable?
 	sprintf(ret, "VAR___%s", rawValue);
+	logMsg(LOGDEBUG, "makeJamKeyValue() normal exit");
 	return(ret);
 }

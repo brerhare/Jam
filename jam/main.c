@@ -618,6 +618,7 @@ int control(int startIx, char *defaultTableName) {
 
 		// Expand any {{values}} in the argument string with the current values
 
+		char *p = 
 		args = expandCurliesInString(jam[ix]->args, defaultTableName);
 		rawData = expandCurliesInString(jam[ix]->rawData, defaultTableName);
 		free(jam[ix]->args);
