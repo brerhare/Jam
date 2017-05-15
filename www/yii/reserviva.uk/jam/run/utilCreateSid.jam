@@ -1,0 +1,22 @@
+{{@include /jam/sys/html/header.html}}
+
+Doing...
+
+{{@database reserviva_uk}}
+
+{{@remove table sid}}
+
+{{@remove index sid sidindex}}
+
+{{@new table sid
+	sid						string	required
+	uid						number	required
+}}
+
+{{@new index sid sidindex
+    sid
+}}
+
+Done
+
+{{@include /jam/sys/html/footer.html}}
