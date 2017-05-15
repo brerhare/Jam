@@ -8,33 +8,18 @@ Doing...
 
 {{@sql delete from sid where id >= 1 and id <= 99999}}
 {{@sql delete from seller where id >= 1 and id <= 99999}}
-{{@sql delete from event_template where id >= 1 and id <= 99999}}
 {{@sql delete from event_default where id >= 1 and id <= 99999}}
+{{@sql delete from event_template_file where id >= 1 and id <= 99999}}
 {{@sql delete from event where id >= 1 and id <= 99999}}
-{{@sql delete from entry where id >= 1 and id <= 99999}}
 
 {{@sql insert into sid values('1', 'sagvfdjigf39ij2jio42kfa9gv', '1')}}
 
 {{@sql insert into seller values('1', '1', 'B.E.I.R.C.', '01557 870337', '07899 75 2030', 'The Old Stable House, Senwick, Borgue, Kirkcudbright', 'DG6 4TP', 'fran@microboot.com', 'a.jpg')}}
 
-{{@sql insert into event_template values('1', '1', '1', 'templateBeirc')}}
-{{@sql insert into event_template values('2', '1', '1', 'templateBeircDogAgility')}}
-
-{{@new table event_default
-    uid                     number      required
-    seller_id               number      required
-    contact                 string
-    landline                string
-    mobile                  string
-    address                 string
-    post_code               string
-    email                   string
-    image                   string
-    tandc                   text
-}}
-
-
 {{@sql insert into event_default values('1', '1', '1', 'Fran Milne', '01557 870337', '079002 45850', 'The Old Stable House, Senwick, Borgue, Kirkcudbright', 'DG6 4TP', 'fran@microboot.com', '01.jpg', 'Some standard T&C here')}}
+
+{{@sql insert into event_template_file values('1', '1', '1', 'templateBeirc')}}
+{{@sql insert into event_template_file values('2', '1', '1', 'templateBeircDogAgility')}}
 
 {{@sql insert into event values('1', '1', '1', '1', 'Event 1 headline', '2017-06-01', '10:30:00', '1', 'long desc of horse event 1, multiline', 'Fran or Isla', '01557 870337', '079002 45850', 'The Old Stable House, Senwick, Borgue, Kirkcudbright', 'DG6 4TP', 'fran@microboot.com', '01.jpg', 'Some standard T&C here')}}
 {{@sql insert into event values('2', '1', '1', '1', 'Event 2 headline', '2017-06-10', '11:30:00', '1', 'long desc of horse event 2, multiline', 'Some contact person', '01556 423890', '079433 49293', 'Someones House, Twynholm, D & G', 'DG6 3GN', 'fran@microboot.com', '02.jpg', 'Some standard T&C here')}}
@@ -64,22 +49,23 @@ mysql> select * from event_default;
 |  1 |   1 |         1 | Fran Milne | 01557 870337 | 079002 45850 | The Old Stable House, Senwick, Borgue, Kirkcudbright | DG6 4TP   | fran@microboot.com | 01.jpg | Some standard T&C here |
 +----+-----+-----------+------------+--------------+--------------+------------------------------------------------------+-----------+--------------------+--------+------------------------+
 
-mysql> select * from event;
-+----+-----+-----------+-------------------+------------------+------------+----------+--------+---------------------------------------+---------------------+--------------+--------------+------------------------------------------------------+-----------+--------------------+--------+------------------------+
-| id | uid | seller_id | event_template_id | headline         | date       | time     | active | description                           | contact             | landline     | mobile       | address                                              | post_code | email              | image  | tandc                  |
-+----+-----+-----------+-------------------+------------------+------------+----------+--------+---------------------------------------+---------------------+--------------+--------------+------------------------------------------------------+-----------+--------------------+--------+------------------------+
-|  2 |   1 |         1 |                 1 | Event 2 headline | 2017-06-10 | 11:30:00 |      1 | long desc of horse event 2, multiline | Some contact person | 01556 423890 | 079433 49293 | Someones House, Twynholm, D & G                      | DG6 3GN   | fran@microboot.com | 02.jpg | Some standard T&C here |
-|  3 |   1 |         1 |                 2 | Event 3 headline | 2017-06-02 | 18:30:00 |      1 | long desc of dog event 3, multiline   | Majik or Jack       | 01557 870337 | 079002 45850 | The Old Stable House, Senwick, Borgue, Kirkcudbright | DG6 4TP   | fran@microboot.com | 03.jpg | Some standard T&C here |
-|  4 |   1 |         1 |                 2 | Event 4 headline | 2017-06-11 | 19:30:00 |      1 | long desc of dog event 4, multiline   | Some contact dog    | 01556 423890 | 079433 49293 | Someones House, Twynholm, D & G                      | DG6 3GN   | fran@microboot.com | 04.jpg | Some standard T&C here |
-+----+-----+-----------+-------------------+------------------+------------+----------+--------+---------------------------------------+---------------------+--------------+--------------+------------------------------------------------------+-----------+--------------------+--------+------------------------+
-
-mysql> select * from event_template;
+mysql> select * from event_template_file;
 +----+-----+-----------+-------------------------+
 | id | uid | seller_id | file                    |
 +----+-----+-----------+-------------------------+
 |  1 |   1 |         1 | templateBeirc           |
 |  2 |   1 |         1 | templateBeircDogAgility |
 +----+-----+-----------+-------------------------+
+
+mysql> select * from event;
++----+-----+-----------+-------------------+------------------+------------+----------+--------+---------------------------------------+---------------------+--------------+--------------+------------------------------------------------------+-----------+--------------------+--------+------------------------+
+| id | uid | seller_id | event_template_id | headline         | date       | time     | active | description                           | contact             | landline     | mobile       | address                                              | post_code | email              | image  | tandc                  |
++----+-----+-----------+-------------------+------------------+------------+----------+--------+---------------------------------------+---------------------+--------------+--------------+------------------------------------------------------+-----------+--------------------+--------+------------------------+
+|  1 |   1 |         1 |                 1 | Event 1 headline | 2017-06-01 | 10:30:00 |      1 | long desc of horse event 1, multiline | Fran or Isla        | 01557 870337 | 079002 45850 | The Old Stable House, Senwick, Borgue, Kirkcudbright | DG6 4TP   | fran@microboot.com | 01.jpg | Some standard T&C here |
+|  2 |   1 |         1 |                 1 | Event 2 headline | 2017-06-10 | 11:30:00 |      1 | long desc of horse event 2, multiline | Some contact person | 01556 423890 | 079433 49293 | Someones House, Twynholm, D & G                      | DG6 3GN   | fran@microboot.com | 02.jpg | Some standard T&C here |
+|  3 |   1 |         1 |                 2 | Event 3 headline | 2017-06-02 | 18:30:00 |      1 | long desc of dog event 3, multiline   | Majik or Jack       | 01557 870337 | 079002 45850 | The Old Stable House, Senwick, Borgue, Kirkcudbright | DG6 4TP   | fran@microboot.com | 03.jpg | Some standard T&C here |
+|  4 |   1 |         1 |                 2 | Event 4 headline | 2017-06-11 | 19:30:00 |      1 | long desc of dog event 4, multiline   | Some contact dog    | 01556 423890 | 079433 49293 | Someones House, Twynholm, D & G                      | DG6 3GN   | fran@microboot.com | 04.jpg | Some standard T&C here |
++----+-----+-----------+-------------------+------------------+------------+----------+--------+---------------------------------------+---------------------+--------------+--------------+------------------------------------------------------+-----------+--------------------+--------+------------------------+
 
 {{@include /jam/sys/html/footer.html}}
 

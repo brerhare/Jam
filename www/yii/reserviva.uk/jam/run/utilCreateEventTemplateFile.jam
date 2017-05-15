@@ -4,9 +4,9 @@ Doing...
 
 {{@database reserviva_uk}}
 
-{{@remove table event_template}}
+{{@remove table event_template_file}}
 
-{{@new table event_template
+{{@new table event_template_file
 	uid						number	required
 	seller_id				number	required
 	file					string	required

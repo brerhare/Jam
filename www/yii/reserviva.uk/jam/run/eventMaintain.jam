@@ -43,16 +43,16 @@
 			{{@html textarea field=event.tandc size=60x5 label='Additional info (T&Cs etc)'}}
 <hr>
 			<!-- @@EG: dropdown outside of the jam -->
-			<label class="uk-form-label" for="event.event_template_id"> Template </label>
+			<label class="uk-form-label" for="event.event_template_file_id"> Template </label>
 			<div class="uk-form-controls">
-				<select id="ID1___event____event_template_id" name="event.event_template_id" onchange="fn(this, event);" onkeyup="fn(this, event);" class="uk-form-width-medium">
+				<select id="ID1___event____event_template_file_id" name="event.event_template_file_id" onchange="fn(this, event);" onkeyup="fn(this, event);" class="uk-form-width-medium">
 				{{tmp.selected = }}
-				{{@each event_template filter uid = uid, id = event.event_template_id}}
-					<option value="{{event_template.id}}" selected> {{event_template.file}} </option>
+				{{@each event_template_file filter uid = uid, id = event.event_template_file_id}}
+					<option value="{{event_template_file.id}}" selected> {{event_template_file.file}} </option>
 				{{@end}}
 					<option value="0">None</option>
-				{{@each event_template filter uid = uid, id != event.event_template_id}}
-					<option value="{{event_template.id}}"> {{event_template.file}} </option>
+				{{@each event_template_file filter uid = uid, id != event.event_template_file_id}}
+					<option value="{{event_template_file.id}}"> {{event_template_file.file}} </option>
 				{{@end}}
 				</select>
 			</div>

@@ -8,18 +8,17 @@
 
 <!-- --------------------------------------------------------------------------------------- -->
 
-{{@remove table entry}}
+{{@remove table TABLE}}
 
-{{@new table entry
+{{@new table TABLE
     uid                     number  required
     seller_id               number  required
     event_id                number  required
-    event_template_id       number  required
+    event_template_file_id       number  required
     rider_name              string  required
     rider_age               number
     horse_name              string  required
     club_name               string
-
     class1_description      string
     class1_ticked           number
     class2_description      string
@@ -36,7 +35,6 @@
     class7_ticked           number
     class8_description      string
     class8_ticked           number
-
     is_member               number
     name                    string  required
     landline                string
@@ -45,17 +43,16 @@
     post_code               string
     email                   string
     notes                   text
-
     date_reserved           date    required
     time_reserved           time
 }}
 
-{{@new index entry sellerindex
+{{@new index TABLE sellerindex
     seller_id
     event_id
 }}
 
-{{@new index entry eventindex
+{{@new index TABLE eventindex
     event_id
 }}
 
@@ -73,42 +70,41 @@
 <form name="event_form" class="uk-form uk-form-horizontal">
 <center><h2> {{seller.name}} HEADING </h2></center>
 <center><h3> {{@datedmy event.date}} {{event.headline}} </h3></center>
-
 	<input type="hidden" name="seller.id" value={{seller.id}}>
 	<input type="hidden" name="event.id" value={{event.id}}>
 	<input type="hidden" name="event.uid" value="{{seller.uid}}">
 	{{@html gridrow start}}
 		{{@html gridcol start width=5-10}}
-			{{@html text field=entry.rider size=medium label='Rider name'}}
+			{{@html text field=TABLE.rider size=medium label='Rider name'}}
 		{{@html gridcol end}}
 		{{@html gridcol start width=5-10}}
-			{{@html text field=entry.age size=small label='Age if junior'}}
+			{{@html text field=TABLE.age size=small label='Age if junior'}}
 		{{@html gridcol end}}
 	{{@html gridrow end}}
 
 	{{@html gridrow start}}
 		{{@html gridcol start width=5-10}}
-			{{@html text field=entry.horse size=large label='Horse name'}}
+			{{@html text field=TABLE.horse size=large label='Horse name'}}
 		{{@html gridcol end}}
 		{{@html gridcol start width=5-10}}
-			{{@html text field=entry.club size=medium label='Club'}}
+			{{@html text field=TABLE.club size=medium label='Club'}}
 		{{@html gridcol end}}
 	{{@html gridrow end}}
 <hr>
 
 <hr>
-	{{@html gridrow start}}
-		{{@html gridcol start width=5-10}}
-			{{@html text field=entry.class1 size=medium label='Class 1'}}
-		{{@html gridcol end}}
-		{{@html gridcol start width=5-10}}
-			{{@Xhtml checkbox field=entry.tickeid}}
-		{{@html gridcol end}}
-	{{@html gridrow end}}
-
-
-
-
+	<center>
+		<table>
+			<tr>
+				<td> Class 1 {{@html text field=TABLE.class1_description size=large}} </td>
+				<td> {{@html checkbox field=TABLE.class1_ticked}} </td>
+			<tr>
+			<tr>
+				<td> {{@html text field=TABLE.class2_description size=medium label='Class 2'}} </td>
+				<td> {{@html checkbox field=TABLE.class2_ticked}} </td>
+			<tr>
+		</table>
+	</center>
 
 ENTRY
 -----
@@ -137,16 +133,16 @@ rider
 			{{@html textarea field=event.tandc size=60x5 label='Additional info (T&Cs etc)'}}
 <hr>
 			<!-- @@EG: dropdown outside of the jam -->
-			<label class="uk-form-label" for="event.event_template_id"> Template </label>
+			<label class="uk-form-label" for="event.event_template_file_id"> Template </label>
 			<div class="uk-form-controls">
-				<select id="ID1___event____event_template_id" name="event.event_template_id" onchange="fn(this, event);" onkeyup="fn(this, event);" class="uk-form-width-medium">
+				<select id="ID1___event___event_template_file_id" name="event.event_template_file_id" onchange="fn(this, event);" onkeyup="fn(this, event);" class="uk-form-width-medium">
 				{{tmp.selected = }}
-				{{@each event_template filter uid = uid, id = event.event_template_id}}
-					<option value="{{event_template.id}}" selected> {{event_template.file}} </option>
+				{{@each event_template_file filter uid = uid, id = event.event_template_file_id}}
+					<option value="{{event_template_file.id}}" selected> {{event_template_file.file}} </option>
 				{{@end}}
 					<option value="0">None</option>
-				{{@each event_template filter uid = uid, id != event.event_template_id}}
-					<option value="{{event_template.id}}"> {{event_template.file}} </option>
+				{{@each event_template_file filter uid = uid, id != event.event_template_file_id}}
+					<option value="{{event_template_file.id}}"> {{event_template_file.file}} </option>
 				{{@end}}
 				</select>
 			</div>
