@@ -1173,6 +1173,8 @@ int wordHtmlTabs(int ix, char *defaultTableName) {
 	JAMBUILDER jb;
 	jb.stream = STREAMOUTPUT_STD;
 	char *templateStr = (char *) calloc(1, 64096);
+	logMsg(LOGDEBUG, "html tabs : running jambuilder with tabStr=[%s]", tabStr);
+	logMsg(LOGDEBUG, "html tabs : running jambuilder with actionStr=[%s]", actionStr);
 	sprintf(templateStr, "{{@template TAB_STR %s}}	\
 						  {{@template TAB_ACTION %s}}",
 							tabStr,
