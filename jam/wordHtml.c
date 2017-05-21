@@ -1139,7 +1139,7 @@ int wordHtmlTabs(int ix, char *defaultTableName) {
 	char *tmp = (char *) calloc(1, 64096);
 	char *args = jam[ix]->args;
 	char *tabType = (char *) calloc(1, 64096);
-	int cnt = 3;
+	int cnt = 2;
 
 	int seq = (rand() % 99999);
 	char *tabStr = (char *) calloc(1, 64096);
@@ -1147,11 +1147,10 @@ int wordHtmlTabs(int ix, char *defaultTableName) {
 
 	logMsg(LOGDEBUG, "html tabs ARGS=[%s]", args);
 
-	getWord(tabType, args, 2, " \t");
+	getWord(tabType, args, 2, " \n\t");
 	if ((strcmp(tabType, "iframe")) && (strcmp(tabType, "embed"))) {
 	   logMsg(LOGDEBUG, "missing tab type - assuming 'iframe'");
 	   strcpy(tabType, "iframe");
-		cnt = 2;
 	}
 
 	logMsg(LOGDEBUG, "html tabs TAB TYPE=[%s]", tabType);
@@ -1174,12 +1173,12 @@ int wordHtmlTabs(int ix, char *defaultTableName) {
 			sprintf(tmp, "<iframe id='tab-%d' src='%s'></iframe> \n", seq, action);
 		else {
 			// Only do this once for divs
-			if (action == strchr(actionNVP, '=')) {
+			/*if (action == strchr(actionNVP, '='))*/ {
 				char *urlPart = strTrim(getWordAlloc(action, 1, "?"));
 				char replaceString[6] = "/run/";
 				char replaceWith[10] = "/jam/run/";
-				char *prefixAdded = strReplaceAlloc(action, replaceString, replaceWith);
-				sprintf(tmp, "<div id='tab-%d'> %s </div> \n", seq, prefixAdded);
+				char *prefixAdded = strReplaceAlloc(urlPart, replaceString, replaceWith);
+				sprintf(tmp, "<div id='tab-%d'> {{@include %s.jam}} </div> \n", seq, prefixAdded);
 				if (urlPart) free(urlPart);
 				if (prefixAdded) free(prefixAdded);
 			}
