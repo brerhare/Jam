@@ -31,7 +31,7 @@ SELLER={{seller.name}}<br>
     {{@get event filter id = event.id}}
 EVENT={{event.headline}}<br>
     
-    {{@html tabs iframe
+    {{@html tabs embed
         label=Details		action=/run/eventMaintainDetail?event.id={{event.id}}&sid={{sid.sid}}
         label=Items			action=/run/eventMaintainItem?event.id={{event.id}}&sid={{sid.sid}}
     }}
