@@ -1138,14 +1138,23 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 int wordHtmlTabs(int ix, char *defaultTableName) {
 	char *tmp = (char *) calloc(1, 64096);
 	char *args = jam[ix]->args;
+	char *tabType = (char *) calloc(1, 64096);
+	int cnt = 2;
 
 	int seq = (rand() % 99999);
 	char *tabStr = (char *) calloc(1, 64096);
 	char *actionStr = (char *) calloc(1, 64096);
 
-	logMsg(LOGDEBUG, "html tabs ARGS=%s", args);
+	logMsg(LOGDEBUG, "html tabs ARGS=[%s]", args);
 
-	int cnt = 2;
+	getWord(tabType, args, 2, " \n\t");
+	if ((strcmp(tabType, "iframe")) && (strcmp(tabType, "embed"))) {
+	   logMsg(LOGDEBUG, "missing tab type - assuming 'iframe'");
+	   strcpy(tabType, "iframe");
+	}
+
+	logMsg(LOGDEBUG, "html tabs TAB TYPE=[%s]", tabType);
+
 	while (char *block = strTrim(getWordAlloc(args, cnt++, "\n"))) {
 		char *tabNVP = strTrim(getWordAlloc(block, 1, " \t"));
 		char *actionNVP = strTrim(getWordAlloc(block, 2, " \t"));
@@ -1160,7 +1169,20 @@ int wordHtmlTabs(int ix, char *defaultTableName) {
 		action++; // Point to  whatever the action is. Equals signs in this arent our business
 		sprintf(tmp, "<li><a href='#tab-%d'>%s</a></li> \n", seq, tab);
 		strcat(tabStr, tmp);
-		sprintf(tmp, "<iframe id='tab-%d' src='%s'></iframe> \n", seq, action);
+		if (!strcmp(tabType, "iframe"))
+			sprintf(tmp, "<iframe id='tab-%d' src='%s'></iframe> \n", seq, action);
+		else {
+			// Only do this once for divs
+			/*if (action == strchr(actionNVP, '='))*/ {
+				char *urlPart = strTrim(getWordAlloc(action, 1, "?"));
+				char replaceString[6] = "/run/";
+				char replaceWith[10] = "/jam/run/";
+				char *prefixAdded = strReplaceAlloc(urlPart, replaceString, replaceWith);
+				sprintf(tmp, "<div id='tab-%d'> {{@include %s.jam}} </div> \n", seq, prefixAdded);
+				if (urlPart) free(urlPart);
+				if (prefixAdded) free(prefixAdded);
+			}
+		}
 		strcat(actionStr, tmp);
 		free(block);
 		free(tabNVP);
@@ -1187,6 +1209,7 @@ int wordHtmlTabs(int ix, char *defaultTableName) {
 	free(tmp);
 	free(tabStr);
 	free(actionStr);
+	free(tabType);
 	emitStd(jam[ix]->trailer);
 }
 
