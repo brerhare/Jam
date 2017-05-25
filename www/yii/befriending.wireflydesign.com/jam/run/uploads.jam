@@ -13,7 +13,15 @@
     <form class="uk-form">
 
 <!-- Insert here -->
+<!-- Insert here -->
 <p>
+<h4><b>May 25 2017 </b></h4>
+- GIRFEC on YP Outcomes tab date sequence fixed
+<br>
+- GIRFEC report fix
+</p>
+
+
 <h4><b>April 18 2017 </b></h4>
 - GIRFEC on YP Outcomes tab events sideways accross the page and show a horizontal scrollbar should there be too many dates/scores to display
 <br>
