@@ -1,8 +1,8 @@
-{{@include /jam/sys/html/header.html}}
+{{@XXXinclude /jam/sys/html/header.html}}
 
-{{@include /jam/css/reserviva.css}}
+{{@XXXinclude /jam/css/reserviva.css}}
 
-{{@database reserviva_uk}}
+{{@XXXdatabase reserviva_uk}}
 
 {{@get seller filter uid = uid}}
 
@@ -122,4 +122,4 @@ function fileUpload(obj) {
 
 {{@html container end}}
 
-{{@include /jam/sys/html/footer.html}}
+{{@XXXinclude /jam/sys/html/footer.html}}
