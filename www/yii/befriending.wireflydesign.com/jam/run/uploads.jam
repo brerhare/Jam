@@ -13,7 +13,13 @@
     <form class="uk-form">
 
 <!-- Insert here -->
-<!-- Insert here -->
+
+<p>
+<h4><b>June 6 2017 </b></h4>
+- Fixed match tab of befriender, was not listing previous matches
+</p>
+
+
 <p>
 <h4><b>May 25 2017 </b></h4>
 - GIRFEC on YP Outcomes tab date sequence fixed
