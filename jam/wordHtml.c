@@ -1143,7 +1143,7 @@ int wordHtmlTabs(int ix, char *defaultTableName) {
 
 	int seq = (rand() % 99999);
 	char *tabStr = (char *) calloc(1, 64096);
-	char *actionStr = (char *) calloc(1, 64096);
+	char *actionStr = NULL;
 
 	logMsg(LOGDEBUG, "html tabs ARGS=[%s]", args);
 
@@ -1152,6 +1152,8 @@ int wordHtmlTabs(int ix, char *defaultTableName) {
 	   logMsg(LOGDEBUG, "missing tab type - assuming 'iframe'");
 	   strcpy(tabType, "iframe");
 	}
+	if (!strcmp(tabType, "iframe"))
+		actionStr = (char *) calloc(1, 64096);
 
 	logMsg(LOGDEBUG, "html tabs TAB TYPE=[%s]", tabType);
 
@@ -1169,21 +1171,53 @@ int wordHtmlTabs(int ix, char *defaultTableName) {
 		action++; // Point to  whatever the action is. Equals signs in this arent our business
 		sprintf(tmp, "<li><a href='#tab-%d'>%s</a></li> \n", seq, tab);
 		strcat(tabStr, tmp);
-		if (!strcmp(tabType, "iframe"))
+		if (!strcmp(tabType, "iframe")) {
 			sprintf(tmp, "<iframe id='tab-%d' src='%s'></iframe> \n", seq, action);
-		else {
+			strcat(actionStr, tmp);
+		} else {
 			// Only do this once for divs
 			/*if (action == strchr(actionNVP, '='))*/ {
+
+				// Append the opening div
+				sprintf(tmp, "<div id='tab-%d'>", seq);
+				if (actionStr == NULL)
+					actionStr = strdup(tmp);
+				else {
+					actionStr = (char *) realloc(actionStr, ( strlen(actionStr) + 1 + strlen(tmp) ) );
+					strcat(actionStr, tmp);
+				}
+
+				// Append the file to include
 				char *urlPart = strTrim(getWordAlloc(action, 1, "?"));
 				char replaceString[6] = "/run/";
 				char replaceWith[10] = "/jam/run/";
 				char *prefixAdded = strReplaceAlloc(urlPart, replaceString, replaceWith);
-				sprintf(tmp, "<div id='tab-%d'> {{@include %s.jam}} </div> \n", seq, prefixAdded);
+
+/**/
+		// Temporarily redirect emitStd to emitScratch and include the file by jambuilding it
+		char *saveStdPos = emitStdPos;
+		int saveStdRemaining = emitStdRemaining;
+		emitStdPos = emitScratchPos;
+		emitStdRemaining = emitScratchRemaining;
+				JAMBUILDER jb;
+				jb.stream = STREAMOUTPUT_STD;
+				jb.templateStr = NULL;
+				jamBuilder(prefixAdded, NULL, &jb);
+		// Create the email body
+		p = emitScratchBuffer;
+		char *encodedData = urlEncode(emitScratchBuffer);
+		strcpy(mailBody, encodedData);
+		free(encodedData);
+/**/
+				// Append the closing div
+				sprintf(tmp, "Contents-%d</div>", seq);
+				actionStr = (char *) realloc(actionStr, ( strlen(actionStr) + 1 + strlen(tmp) ) );
+				strcat(actionStr, tmp);
+
 				if (urlPart) free(urlPart);
 				if (prefixAdded) free(prefixAdded);
 			}
 		}
-		strcat(actionStr, tmp);
 		free(block);
 		free(tabNVP);
 		free(actionNVP);
@@ -1203,13 +1237,17 @@ int wordHtmlTabs(int ix, char *defaultTableName) {
 							actionStr
 							);
 
+logMsg(LOGERROR, "000000000000000000000000000");
 	jb.templateStr = templateStr;
 	jamBuilder("/jam/run/sys/jamBuilder/html/tabs.jam", "tabsHtml", &jb);
+logMsg(LOGERROR, "111111111111111111111111111");
 
 	free(tmp);
-	free(tabStr);
 	free(actionStr);
+logMsg(LOGERROR, "222222222222222222222222222");
+	free(tabStr);
 	free(tabType);
+logMsg(LOGERROR, "333333333333333333333333333");
 	emitStd(jam[ix]->trailer);
 }
 
