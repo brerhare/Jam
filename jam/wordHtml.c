@@ -1179,7 +1179,7 @@ int wordHtmlTabs(int ix, char *defaultTableName) {
 			/*if (action == strchr(actionNVP, '='))*/ {
 
 				// Append the opening div
-				sprintf(tmp, "<div id='tab-%d'>", seq);
+				sprintf(tmp, "<div id='tab-%d'>\n", seq);
 				if (actionStr == NULL)
 					actionStr = strdup(tmp);
 				else {
@@ -1187,30 +1187,50 @@ int wordHtmlTabs(int ix, char *defaultTableName) {
 					strcat(actionStr, tmp);
 				}
 
-				// Append the file to include
+				// work out the path to the include file
 				char *urlPart = strTrim(getWordAlloc(action, 1, "?"));
 				char replaceString[6] = "/run/";
 				char replaceWith[10] = "/jam/run/";
 				char *prefixAdded = strReplaceAlloc(urlPart, replaceString, replaceWith);
+				logMsg(LOGERROR, "include '%s' to scratch buffer", prefixAdded);
 
-/**/
-		// Temporarily redirect emitStd to emitScratch and include the file by jambuilding it
-		char *saveStdPos = emitStdPos;
-		int saveStdRemaining = emitStdRemaining;
-		emitStdPos = emitScratchPos;
-		emitStdRemaining = emitScratchRemaining;
-				JAMBUILDER jb;
-				jb.stream = STREAMOUTPUT_STD;
-				jb.templateStr = NULL;
-				jamBuilder(prefixAdded, NULL, &jb);
-		// Create the email body
-		p = emitScratchBuffer;
-		char *encodedData = urlEncode(emitScratchBuffer);
-		strcpy(mailBody, encodedData);
-		free(encodedData);
-/**/
+        		// Run jambuilder to scratch (actual tab content)
+
+        		JAMBUILDER jb;
+				emitScratchPos = emitScratchBuffer;
+				emitScratchRemaining = MAX_EMITSCRATCH_LEN;
+        		jb.stream = STREAMOUTPUT_STD;
+        		jb.templateStr = NULL;
+
+char *savBuffer = emitStdBuffer;
+char *savPos = emitStdPos;
+int savRemaining = emitStdRemaining;
+
+emitStdBuffer = emitScratchBuffer;
+emitStdPos = emitScratchBuffer;
+emitStdRemaining = MAX_EMITSCRATCH_LEN;
+
+        		jamBuilder(prefixAdded, NULL, &jb);
+				
+				char *includeContent = urlEncode(emitScratchBuffer);
+				if (includeContent ) {
+					actionStr = (char *) realloc(actionStr, ( strlen(actionStr) + 1 + strlen(includeContent) ) );
+					strcat(actionStr, includeContent);
+					logMsg(LOGDEBUG, "include '%s' length=%d successfully retrieved from scratch buffer", prefixAdded, strlen(includeContent));
+					free(includeContent);
+				}
+
+emitStdBuffer = savBuffer;
+emitStdPos = savPos;
+emitStdRemaining = savRemaining;
+
+				emitScratchPos = emitScratchBuffer;
+				emitScratchRemaining = MAX_EMITSCRATCH_LEN;
+
+
+
 				// Append the closing div
-				sprintf(tmp, "Contents-%d</div>", seq);
+				sprintf(tmp, "</div>\n");
 				actionStr = (char *) realloc(actionStr, ( strlen(actionStr) + 1 + strlen(tmp) ) );
 				strcat(actionStr, tmp);
 
