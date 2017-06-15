@@ -8,12 +8,16 @@
 
 {{@get event filter id = event.id}}
 
-<br><br>
+<style>
+.Xuk-container { border-radius: 5px; padding:5px; background-color: #dee6f1; }
+.override-uk-container { border-radius: 5px; padding:0px; background-color: #dee6f1; }
+</style>
 
-{{@html container start center css='max-width:900px; Xpadding:0}}
+{{@XXXhtml container start center css='max-width:900px; Xpadding:0}}
+<div class="uk-container override-uk-container uk-overflow-container uk-container-center " style="max-width:900px; Xpadding:0">
 
 <form name="event_detail_form" class="uk-form uk-form-horizontal">
-<center><h3> {{seller.name}} Event </h3></center>
+<center><h3> {{seller.name}} Event details </h3></center>
 
 	<input type="hidden" name="seller.id" value={{seller.id}}>
 	<input type="hidden" name="event.uid" value="{{seller.uid}}">
@@ -120,6 +124,8 @@ function fileUpload(obj) {
 
 </script>
 
-{{@html container end}}
+{{@XXXhtml container end}}
+</div>
+
 
 {{@XXXinclude /jam/sys/html/footer.html}}
