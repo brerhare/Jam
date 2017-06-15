@@ -40,7 +40,18 @@ typedef struct {
 } JAMBUILDER;
 #define STREAMOUTPUT_STD 1
 #define STREAMOUTPUT_JS  2
+#define STREAMOUTPUT_SCRATCH 3
 extern int outputStream;	// global copy of the active JAMBUILDER stream (eg for emitStd)
+
+extern char *emitStdBuffer;
+extern char *emitStdPos;
+extern int emitStdRemaining;
+
+#define MAX_EMITHEADER_LEN 409600
+#define MAX_EMITDATA_LEN 40960000
+#define MAX_EMITJS_LEN 40960000
+// Scratch is used as a temp buffer for email body
+#define MAX_EMITSCRATCH_LEN 40960000
 
 extern char *tableStack[MAX_JAM];
 
