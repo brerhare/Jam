@@ -1200,8 +1200,15 @@ int wordHtmlTabs(int ix, char *defaultTableName) {
 				emitScratchPos = emitScratchBuffer;
 				emitScratchRemaining = MAX_EMITSCRATCH_LEN;
         		jb.stream = STREAMOUTPUT_STD;
+
+/*
+		jb.stream = STREAMOUTPUT_SCRATCH;
+		emitScratchPos = emitScratchBuffer;
+		emitScratchRemaining = MAX_EMITSCRATCH_LEN;
+*/
         		jb.templateStr = NULL;
 
+/**/
 char *savBuffer = emitStdBuffer;
 char *savPos = emitStdPos;
 int savRemaining = emitStdRemaining;
@@ -1209,6 +1216,7 @@ int savRemaining = emitStdRemaining;
 emitStdBuffer = emitScratchBuffer;
 emitStdPos = emitScratchBuffer;
 emitStdRemaining = MAX_EMITSCRATCH_LEN;
+/**/
 
         		jamBuilder(prefixAdded, NULL, &jb);
 				
@@ -1220,9 +1228,11 @@ emitStdRemaining = MAX_EMITSCRATCH_LEN;
 					free(includeContent);
 				}
 
+/**/
 emitStdBuffer = savBuffer;
 emitStdPos = savPos;
 emitStdRemaining = savRemaining;
+/**/
 
 				emitScratchPos = emitScratchBuffer;
 				emitScratchRemaining = MAX_EMITSCRATCH_LEN;
