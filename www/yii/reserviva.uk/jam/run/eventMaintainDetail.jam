@@ -8,13 +8,13 @@
 
 {{@get event filter id = event.id}}
 
-<style>
-.Xuk-container { border-radius: 5px; padding:5px; background-color: #dee6f1; }
-.override-uk-container { border-radius: 5px; padding:0px; background-color: #dee6f1; }
+<style>	/* For this embedded content within a tab */
+.embed-uk-container { border-radius: 3px; padding:0px; background-color: #dee6f1; }
+.ui-tabs .ui-tabs-panel { padding:0px; padding-top: 3px; }
 </style>
 
 {{@XXXhtml container start center css='max-width:900px; Xpadding:0}}
-<div class="uk-container override-uk-container uk-overflow-container uk-container-center " style="max-width:900px; Xpadding:0">
+<div class="uk-container embed-uk-container uk-overflow-container uk-container-center " style="max-width:900px; Xpadding:0">
 
 <form name="event_detail_form" class="uk-form uk-form-horizontal">
 <center><h3> {{seller.name}} Event details </h3></center>

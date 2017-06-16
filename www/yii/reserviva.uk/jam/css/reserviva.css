@@ -13,7 +13,7 @@ html {
 }
 
 
-.uk-container { border-radius: 25px; padding:50px; background-color: #dee6f1; }
+.uk-container { border-radius: 10px; padding:50px; background-color: #dee6f1; }
 
 .rowHighlight:hover {
 	background-color: #ddf0ff;
