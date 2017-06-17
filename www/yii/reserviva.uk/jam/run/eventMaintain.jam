@@ -15,8 +15,8 @@
 
 <div name="content">
 
-	<form name="event_container" class="uk-form uk-form-horizontal">
-		<center><h3> {{seller.name}} Event </h3></center>
+	<Xform name="event_container" class="uk-form uk-form-horizontal">
+		<center><h3> {{seller.name}} {{event.headline}}</h3></center>
 
 		<input type="hidden" name="seller.id" value={{seller.id}}>
 		<input type="hidden" name="event.uid" value="{{seller.uid}}">
@@ -26,17 +26,14 @@
 		<hr>            
     {{@get sid filter sid = sid}}
     {{@get seller filter uid = sid.uid}}
-SID={{sid.sid}}<br>
-SELLER={{seller.name}}<br>
     {{@get event filter id = event.id}}
-EVENT={{event.headline}}<br>
     
     {{@html tabs embed
         label=Details		action=/run/eventMaintainDetail?event.id={{event.id}}&sid={{sid.sid}}
         label=Items			action=/run/eventMaintainItem?event.id={{event.id}}&sid={{sid.sid}}
     }}
 
-	</form>
+	</Xform>
 
 </div>
 

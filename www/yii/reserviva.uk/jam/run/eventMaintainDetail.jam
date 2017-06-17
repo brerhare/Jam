@@ -17,8 +17,7 @@
 <div class="uk-container embed-uk-container uk-overflow-container uk-container-center " style="max-width:900px; Xpadding:0">
 
 <form name="event_detail_form" class="uk-form uk-form-horizontal">
-<center><h3> {{seller.name}} Event details </h3></center>
-
+<br>
 	<input type="hidden" name="seller.id" value={{seller.id}}>
 	<input type="hidden" name="event.uid" value="{{seller.uid}}">
 	<input type="hidden" name="event.seller_id" value="{{seller.id}}">
@@ -68,12 +67,13 @@
 			<br>
 			<center>
 				{{@html button Save primary medium
-					runAction('update_event', ['event_detail_form'], '', postUpdate)
+					runAction('eventMaintainDetail:update_event', ['event_detail_form'], '', postUpdate)
 				}}
 				{{@html button Cancel primary medium
 					runJam('event.jam');
 				}}
 			</center>
+<br>
 		{{@html gridcol end}}
 	{{@html gridrow end}}
 
