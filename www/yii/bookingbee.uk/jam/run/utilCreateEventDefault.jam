@@ -1,0 +1,24 @@
+{{@include /jam/sys/html/header.html}}
+
+Doing...
+
+{{@database reserviva_uk}}
+
+{{@remove table event_default}}
+
+{{@new table event_default
+	uid						number		required
+	seller_id				number		required
+	contact					string
+	landline 				string
+	mobile	  				string
+	address 				string
+	post_code 				string
+	email					string
+	image	 				string
+	tandc					text
+}}
+
+Done
+
+{{@include /jam/sys/html/footer.html}}

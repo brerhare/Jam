@@ -1,0 +1,45 @@
+{{@include /jam/sys/html/header.html}}
+
+{{@include /jam/css/reserviva.css}}
+{{@include /jam/run/menu.jam}}
+
+{{@database reserviva_uk}}
+
+{{@get sid filter sid = sid}}
+{{uid = sid.uid}}
+{{@get seller filter uid = uid}}
+{{@get event filter id = event.id}}
+
+<br><br>
+
+{{@html container start center css='max-width:900px; Xpadding:0}}
+
+<div name="content">
+
+	<Xform name="event_container" class="uk-form uk-form-horizontal">
+		<center><h3> {{seller.name}} {{event.headline}}</h3></center>
+
+		<input type="hidden" name="seller.id" value={{seller.id}}>
+		<input type="hidden" name="event.uid" value="{{seller.uid}}">
+		<input type="hidden" name="event.seller_id" value="{{seller.id}}">
+		<input type="hidden" name="event.image" value="{{event.image}}">
+
+		<hr>            
+    {{@get sid filter sid = sid}}
+    {{@get seller filter uid = sid.uid}}
+    {{@get event filter id = event.id}}
+    
+    {{@html tabs embed
+        label=Details		action=/run/eventMaintainDetail?event.id={{event.id}}&sid={{sid.sid}}
+        label=Items			action=/run/eventMaintainItem?event.id={{event.id}}&sid={{sid.sid}}
+    }}
+
+	</Xform>
+
+</div>
+
+{{@html container end}}
+
+<br><br>
+
+{{@include /jam/sys/html/footer.html}}

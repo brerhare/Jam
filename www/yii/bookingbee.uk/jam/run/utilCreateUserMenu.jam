@@ -1,0 +1,69 @@
+{{@include /jam/sys/html/header.html}}
+
+Doing...<br>
+
+{{@database reserviva_uk}}
+
+{{@remove table menu}}
+{{@remove table user}}
+{{@remove table user_menu}}
+
+{{@new table menu
+	text								string	required
+	href								string	required
+	parent_id							number
+}}
+
+{{@new table user
+	cookie								number	required
+	handle								string	required
+	password							string
+	first_name							string
+	last_name							string
+	email_address						string
+}}
+
+{{@new table user_menu
+	user_id								number
+	menu_id								number
+}}
+
+{{menu.text = Setup}} {{menu.href = /run/seller.jam}}   {{menu.parent_id = 0}}   {{@new item menu}}
+	{{pid = menu.id}}
+	{{menu.text = Your details}}    {{menu.href = /run/seller.jam}}   {{menu.parent_id = pid}} {{@new item menu}}
+	{{menu.text = Events}}    {{menu.href = /run/event.jam}}   {{menu.parent_id = pid}} {{@new item menu}}
+{{menu.text = Logout}}  {{menu.href = /run/logout.jam}} {{menu.parent_id = 0}}       {{@new item menu}}
+
+make a user <br>
+
+{{@randomnumber newfield=myRand}}
+{{user.cookie = myRand}}}
+{{user.handle = kim}}
+{{user.first_name = kim}}
+{{user.last_name = hancock}}
+{{user.password = kimlo,}}
+{{@new item user}}
+
+{{@randomnumber newfield=myRand}}
+{{user.cookie = myRand}}}
+{{user.handle = hg}}
+{{user.first_name = hamish}}
+{{user.last_name = guthrie}}
+{{user.password = }}
+{{@new item user}}
+
+now loop <br>
+
+{{@each user filter id > 0}}
+	Populating menus for {{user.first_name}} {{user.last_name}} <br>
+	{{@each menu}}
+		{{user_menu.user_id = user.id}}
+		{{user_menu.menu_id = menu.id}}
+		{{@new item user_menu}}
+		&nbsp &nbsp Created {{menu.text}} <br>
+{{@end}}
+
+Done
+
+{{@include /jam/sys/html/footer.html}}
+

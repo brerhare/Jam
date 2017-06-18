@@ -1,0 +1,15 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/reserviva.css}}
+
+<script>
+
+window.onload = function() {
+	document.cookie = "reserviva_user=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+	runJam('http://reserviva.uk/run/event');
+}
+
+</script>
+
+
+
+{{@include /jam/sys/html/footer.html}}
