@@ -1,0 +1,19 @@
+domain = bookingbee.uk
+parentdomain =
+sitetitle = Booking Bee
+sid = vfrgt59xsclh63jc94fi5jfhsp
+
+# Database
+dbname = bookingbee_uk
+dbuser = bookingbee.uk
+dbpass = Xik3nac0-
+
+# Shopping cart order confirmation email
+checkoutemail = info@wireflydesign.com
+checkoutname = Booking Bee checkout
+checkoutpaypalemail = info@wireflydesign.com
+
+# Backend page editor
+editorpagewidth = 700
+editorpageheight = 400
+
