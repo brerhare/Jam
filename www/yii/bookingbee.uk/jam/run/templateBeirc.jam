@@ -1,10 +1,10 @@
 {{@include /jam/sys/html/header.html}}
-{{@include /jam/css/reserviva.css}}
+{{@include /jam/css/site.css}}
 
 {{@template TABLE template_beirc}}
 {{@template HEADING Competition Entry}}
 
-{{@database reserviva_uk}}
+{{@database bookingbee_uk}}
 
 <!-- --------------------------------------------------------------------------------------- -->
 
@@ -189,7 +189,7 @@ function fileUpload(obj) {
     console.log("size : " + file.size);
     console.log("type : " + file.type);
     console.log("date : " + file.lastModified)
-    var url = 'http://www.reserviva.uk:/jam/upload/uploadEventImage.php';
+    var url = 'http://www.bookingbee.uk:/jam/upload/uploadEventImage.php';
     var xhr = new XMLHttpRequest();
     var fd = new FormData();
     xhr.open("POST", url, true);

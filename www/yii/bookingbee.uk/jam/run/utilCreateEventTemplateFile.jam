@@ -2,7 +2,7 @@
 
 Doing...
 
-{{@database reserviva_uk}}
+{{@database bookingbee_uk}}
 
 {{@remove table event_template_file}}
 

@@ -1,6 +1,6 @@
 {{@include /jam/sys/html/hdr.html}}
 
-{{@Xinclude /jam/css/reserviva.css}}
+{{@Xinclude /jam/css/site.css}}
 
 <!-- These are all the possible template options. Override the ones you need in your jam script that includes this file -->
 {{@template UID 74}}

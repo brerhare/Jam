@@ -2,7 +2,7 @@
 
 Doing...<br>
 
-{{@database reserviva_uk}}
+{{@database bookingbee_uk}}
 
 {{@remove table menu}}
 {{@remove table user}}
@@ -37,7 +37,7 @@ Doing...<br>
 make a user <br>
 
 {{@randomnumber newfield=myRand}}
-{{user.cookie = myRand}}}
+{{user.cookie = myRand}}
 {{user.handle = kim}}
 {{user.first_name = kim}}
 {{user.last_name = hancock}}
@@ -45,7 +45,7 @@ make a user <br>
 {{@new item user}}
 
 {{@randomnumber newfield=myRand}}
-{{user.cookie = myRand}}}
+{{user.cookie = myRand}}
 {{user.handle = hg}}
 {{user.first_name = hamish}}
 {{user.last_name = guthrie}}

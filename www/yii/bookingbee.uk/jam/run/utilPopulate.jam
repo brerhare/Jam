@@ -1,10 +1,10 @@
 {{@include /jam/sys/html/header.html}}
 
-http://reserviva.uk/run/templateBeirc?sid=sagvfdjigf39ij2jio42kfa9gv&ev=1 <br>
+http://bookingbee.uk/run/templateBeirc?sid=sagvfdjigf39ij2jio42kfa9gv&ev=1 <br>
 
 Doing...
 
-{{@database reserviva_uk}}
+{{@database bookingbee_uk}}
 
 {{@sql delete from sid where id >= 1 and id <= 99999}}
 {{@sql delete from seller where id >= 1 and id <= 99999}}

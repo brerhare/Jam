@@ -1,16 +1,16 @@
 {{@include standalone /jam/sys/html/header.html}}
 
-{{@database reserviva_uk}}
+{{@database bookingbee_uk}}
 
 <!-- Save the user.id because we'll change it here which will break menu assignments (which pass the user.id as a parameter) -->
 {{uid = user.id}}
 
 
-{{userRand = sys.cookie.reserviva_user}}
+{{userRand = sys.cookie.bookingbee_user}}
 
 <script>
 function kick() {
- 	window.top.location.href = "http://reserviva.uk/run/login.jam";
+ 	window.top.location.href = "http://bookingbee.uk/run/login.jam";
 }
 </script>
 
@@ -28,7 +28,7 @@ if (kickuser == 1)
 
 
 
-{{get user filter id = sys.cookie.reserviva_user}}
+{{get user filter id = sys.cookie.bookingbee_user}}
 
 {{@template MENU
     <ul id="main-menu" class="sm sm-blue collapsed">

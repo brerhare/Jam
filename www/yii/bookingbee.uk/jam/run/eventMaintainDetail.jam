@@ -1,8 +1,8 @@
 {{@XXXinclude /jam/sys/html/header.html}}
 
-{{@XXXinclude /jam/css/reserviva.css}}
+{{@XXXinclude /jam/css/site.css}}
 
-{{@XXXdatabase reserviva_uk}}
+{{@XXXdatabase bookingbee_uk}}
 
 {{@get seller filter uid = uid}}
 
@@ -103,7 +103,7 @@ function fileUpload(obj) {
     console.log("size : " + file.size);
     console.log("type : " + file.type);
     console.log("date : " + file.lastModified)
-    var url = 'http://www.reserviva.uk:/jam/upload/uploadEventImage.php';
+    var url = 'http://www.bookingbee.uk:/jam/upload/uploadEventImage.php';
     var xhr = new XMLHttpRequest();
     var fd = new FormData();
     xhr.open("POST", url, true);

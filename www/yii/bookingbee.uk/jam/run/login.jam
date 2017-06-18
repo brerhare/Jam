@@ -1,5 +1,5 @@
 {{@include /jam/sys/html/header.html}}
-{{@include /jam/css/reserviva.css}}
+{{@include /jam/css/site.css}}
 
 {{@Xinclude /jam/run/new_menu.jam}}
 
@@ -23,9 +23,9 @@
 
 {{@html container start center css='max-width:1080px; Xpadding:0}}
 
-{{@database reserviva_uk}}
+{{@database bookingbee_uk}}
 
-<br> <center><h2>Reserviva login</h2></center>
+<br> <center><h2>Booking Bee login</h2></center>
 <br><br>
 
 <form name="inputForm_user" class="uk-form uk-form-horizontal">
@@ -76,9 +76,9 @@ function loginButtonClick() {
 
 function createCookie() {
 	obj = document.getElementById('cookie');
-	document.cookie = "reserviva_user="+obj.value;
+	document.cookie = "bookingbee_user="+obj.value;
 	if (obj.value != 'null') {
-		runJam('http://reserviva.uk/run/loggedIn');
+		runJam('http://bookingbee.uk/run/loggedIn');
 	} else {
 		alert('Incorrect user name or password');
 	}

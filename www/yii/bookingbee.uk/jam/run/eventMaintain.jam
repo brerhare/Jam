@@ -1,9 +1,9 @@
 {{@include /jam/sys/html/header.html}}
 
-{{@include /jam/css/reserviva.css}}
+{{@include /jam/css/site.css}}
 {{@include /jam/run/menu.jam}}
 
-{{@database reserviva_uk}}
+{{@database bookingbee_uk}}
 
 {{@get sid filter sid = sid}}
 {{uid = sid.uid}}

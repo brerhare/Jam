@@ -1,9 +1,9 @@
 {{@include /jam/sys/html/header.html}}
 
-{{@include /jam/css/reserviva.css}}
+{{@include /jam/css/site.css}}
 {{@include /jam/run/menu.jam}}
 
-{{@database reserviva_uk}}
+{{@database bookingbee_uk}}
 
 {{@get sid filter sid = sid}}
 {{uid = sid.uid}}
@@ -75,7 +75,7 @@ function fileUpload(obj) {
     console.log("size : " + file.size);
     console.log("type : " + file.type);
     console.log("date : " + file.lastModified)
-    var url = 'http://www.reserviva.uk:/jam/upload/uploadSellerImage.php';
+    var url = 'http://www.bookingbee.uk:/jam/upload/uploadSellerImage.php';
     var xhr = new XMLHttpRequest();
     var fd = new FormData();
     xhr.open("POST", url, true);
