@@ -1,20 +1,23 @@
-{{@include /jam/sys/html/header.html}}
+{{@XXXinclude /jam/sys/html/header.html}}
 
-{{@include /jam/css/reserviva.css}}
+{{@XXXinclude /jam/css/reserviva.css}}
 
-{{@database reserviva_uk}}
+{{@XXXdatabase reserviva_uk}}
 
 {{@get seller filter uid = uid}}
 
 {{@get event filter id = event.id}}
 
-<br><br>
+<style>	/* For this embedded content within a tab */
+.embed-uk-container { border-radius: 3px; padding:0px; background-color: #dee6f1; }
+.ui-tabs .ui-tabs-panel { padding:0px; padding-top: 3px; }
+</style>
 
-{{@html container start center css='max-width:900px; Xpadding:0}}
+{{@XXXhtml container start center css='max-width:900px; Xpadding:0}}
+<div class="uk-container embed-uk-container uk-overflow-container uk-container-center " style="max-width:900px; Xpadding:0">
 
 <form name="event_detail_form" class="uk-form uk-form-horizontal">
-<center><h3> {{seller.name}} Event </h3></center>
-
+<br>
 	<input type="hidden" name="seller.id" value={{seller.id}}>
 	<input type="hidden" name="event.uid" value="{{seller.uid}}">
 	<input type="hidden" name="event.seller_id" value="{{seller.id}}">
@@ -64,12 +67,13 @@
 			<br>
 			<center>
 				{{@html button Save primary medium
-					runAction('update_event', ['event_detail_form'], '', postUpdate)
+					runAction('eventMaintainDetail:update_event', ['event_detail_form'], '', postUpdate)
 				}}
 				{{@html button Cancel primary medium
 					runJam('event.jam');
 				}}
 			</center>
+<br>
 		{{@html gridcol end}}
 	{{@html gridrow end}}
 
@@ -120,6 +124,8 @@ function fileUpload(obj) {
 
 </script>
 
-{{@html container end}}
+{{@XXXhtml container end}}
+</div>
 
-{{@include /jam/sys/html/footer.html}}
+
+{{@XXXinclude /jam/sys/html/footer.html}}

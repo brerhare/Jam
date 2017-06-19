@@ -1,0 +1,17 @@
+{{@include /jam/sys/html/header.html}}
+
+Doing...
+
+{{@database bookingbee_uk}}
+
+{{@remove table event_template_file}}
+
+{{@new table event_template_file
+	uid						number	required
+	seller_id				number	required
+	file					string	required
+}}
+
+Done
+
+{{@include /jam/sys/html/footer.html}}

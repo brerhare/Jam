@@ -1,0 +1,74 @@
+{{@include /jam/sys/html/header.html}}
+
+{{@include /jam/css/site.css}}
+{{@include /jam/run/menu.jam}}
+
+{{@database bookingbee_uk}}
+
+{{sid = sagvfdjigf39ij2jio42kfa9gv}}
+{{@get sid filter sid = sid}}
+{{uid = sid.uid}}
+{{@get seller filter uid = uid}}
+
+<br><br>
+
+{{@html container start center css='max-width:900px; Xpadding:0}}
+
+<center><h3> {{seller.name}} Events </h3></center>
+
+	<table id="printTable" class="testgrid sortable searchTable uk-table uk-table-condensed" style="border:1px solid #dddddd">
+		<tr>
+			<th> Headline </th>
+			<th> Date </th>
+			<th> Time </th>
+			<th> Active </th>
+			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('eventMaintain?uid={{uid}}&event.id=0')"> <i class="uk-icon-plus"></i> New</button> </th>
+		</tr>
+{{@each event filter seller_id = seller.id, order by date ASC}}
+		<tr class="rowHighlight" onClick="runJam('eventMaintain?event.id={{event.id}}&uid={{uid}}');">
+			<td>{{event.headline}}</td>
+			<td>{{@datedmy event.date}}</td>
+			<td>{{event.time}}</td>
+			<td>{{event.active}}</td>
+			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{event.headline}}')"> <i class="uk-icon-trash"></i> </button> </td>
+		</tr>
+{{@end}}
+	</table>
+	<br>
+
+<!--
+	<button class="uk-button uk-button-medium uk-button-primary" onClick="printData('printTable')"> Print </button>
+
+	<span class='exportButton'>
+    	<a href="#" class="export" table='{"id":"printTable"}'>Export spreadsheet</a>
+	</span>
+-->
+
+	<center>
+	{{@html button Finished primary medium
+		runJam('menu.jam');
+	}}
+	</center>
+
+</div>
+
+<script>
+function confirmDelete(id, displayInfo) {
+    window.event.cancelBubble = true;   // Prevent any further events
+    var result = confirm('Confirm delete of item ' + displayInfo);
+    if (result)
+        runAction('delete', ['event.id='+id], '', runJam)
+}
+</script>
+
+{{@action delete}}
+    {{@get event filter id = event.id}}
+	{{@remove item event notify=ok}}
+{{@end}}
+
+{{@html container end}}
+
+{{@include /jam/sys/js/searchPrintExport.js}}
+
+{{@include /jam/sys/html/footer.html}}
+

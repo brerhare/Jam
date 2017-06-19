@@ -1,0 +1,37 @@
+{{@XXXinclude /jam/sys/html/header.html}}
+
+{{@XXXinclude /jam/css/site.css}}
+
+{{@XXXdatabase bookingbee_uk}}
+
+{{@get seller filter uid = uid}}
+
+{{@get event filter id = event.id}}
+
+<style> /* For this embedded content within a tab */
+.embed-uk-container { border-radius: 3px; padding:0px; background-color: #dee6f1; }
+.ui-tabs .ui-tabs-panel { padding:0px; padding-top: 3px; }
+</style>
+
+{{@XXXhtml container start center css='max-width:900px; Xpadding:0}}
+<div class="uk-container embed-uk-container uk-overflow-container uk-container-center " style="max-width:900px; Xpadding:0"
+
+<form name="event_item_form" class="uk-form uk-form-horizontal">
+<center><h3> {{seller.name}} Event items </h3></center>
+
+	<input type="hidden" name="seller.id" value={{seller.id}}>
+	<input type="hidden" name="event.uid" value="{{seller.uid}}">
+	<input type="hidden" name="event.seller_id" value="{{seller.id}}">
+	<input type="hidden" name="event.image" value="{{event.image}}">
+	{{@html gridrow start}}
+		{{@html gridcol start width=5-5}}
+			XXXX
+		{{@html gridcol end}}
+	{{@html gridrow end}}
+
+</form>
+
+{{@XXXhtml container end}}
+</div>
+
+{{@include /jam/sys/html/footer.html}}

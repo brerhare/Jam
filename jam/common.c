@@ -17,23 +17,18 @@
 
 CURL *curl = NULL;
 
-#define MAX_EMITHEADER_LEN 409600
 char *emitHeaderBuffer = (char *) calloc(1, MAX_EMITHEADER_LEN);
 char *emitHeaderPos = emitHeaderBuffer;
 int emitHeaderRemaining = MAX_EMITHEADER_LEN;
 
-#define MAX_EMITDATA_LEN 40960000
 char *emitStdBuffer = (char *) calloc(1, MAX_EMITDATA_LEN);
 char *emitStdPos = emitStdBuffer;
 int emitStdRemaining = MAX_EMITDATA_LEN;
 
-#define MAX_EMITJS_LEN 40960000
 char *emitJsBuffer = (char *) calloc(1, MAX_EMITJS_LEN);
 char *emitJsPos = emitJsBuffer;
 int emitJsRemaining = MAX_EMITJS_LEN;
 
-// Scratch is used as a temp buffer for email body
-#define MAX_EMITSCRATCH_LEN 40960000
 char *emitScratchBuffer = (char *) calloc(1, MAX_EMITSCRATCH_LEN);
 char *emitScratchPos = emitScratchBuffer;
 int emitScratchRemaining = MAX_EMITSCRATCH_LEN;
@@ -383,6 +378,15 @@ int emitStd(char *str, ...) {
 		emitJsPos += len;
 		*emitJsPos = '\0';
 		emitJsRemaining -= len;
+		va_end(ap);
+		return(0);
+	}
+	if (outputStream == STREAMOUTPUT_SCRATCH) {	//@@TODO This whole stream handling is messy for jamBuilder...
+		logMsg(LOGDEBUG, "jamBuilder 'STREAMOUTPUT_SCRATCH' is on so emitStd is redirected to emitScratch");
+		unsigned long len = vsnprintf(emitScratchPos, emitScratchRemaining, str, ap);
+		emitScratchPos += len;
+		*emitScratchPos = '\0';
+		emitScratchRemaining -= len;
 		va_end(ap);
 		return(0);
 	}

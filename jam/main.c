@@ -253,6 +253,8 @@ int jamBuilder(char *jamName, char *jEntrypoint, JAMBUILDER *jb) {
 	outputStream = jb->stream;	// copy to global so emitStd etc can access it
 	if (jb->stream == STREAMOUTPUT_JS) {
 		logMsg(LOGDEBUG, "jamBuilder will append to js stream");
+	} else if (jb->stream == STREAMOUTPUT_SCRATCH) {
+		logMsg(LOGDEBUG, "jamBuilder will append to scratch stream");
 	} else {
 		logMsg(LOGDEBUG, "jamBuilder will append to std stream");
 	}
