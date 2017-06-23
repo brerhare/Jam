@@ -55,6 +55,8 @@ char *jellyTemplateName[MAX_JELLY_TEMPLATE];
 char *jellyTemplateValue[MAX_JELLY_TEMPLATE];
 int jellyTemplateIx = 0;
 
+char *globalJamName = NULL;
+
 char *includedTable[MAX_INCLUDE];
 char *fileToInclude = (char *) calloc(1, 64096);
 
@@ -101,7 +103,11 @@ int main(int argc, char *argv[]) {
 	// Set up logging path
 	logFileName = (char *) calloc(1, 64096);	// defined in log.c/h
 	sprintf(logFileName, "%s/jam/log.dat", documentRoot);
- 
+
+	// Set up default dumpStream path
+	dumpStreamPath = (char *) calloc(1, 64096);    // defined in common.h
+	sprintf(dumpStreamPath, "%s/jam/run/html", documentRoot);
+
 	logMsg(LOGINFO, "--------------------------------------------------------------------------");
 	logMsg(LOGINFO, "Starting. argc is %d", argc);
 
@@ -229,6 +235,10 @@ int main(int argc, char *argv[]) {
 			deleteVar(var[i]);
         }
     }
+
+	free(logFileName);
+	free(dumpStreamPath);
+
 	freeJamArray();
 	free(jamEntrypoint);
 	free(fileToInclude);
@@ -303,6 +313,15 @@ int processJam(char *jamName, char *jamEntrypoint, JAMBUILDER *jb) {
 	TAGINFO *tinfo[MAX_TEMPLATES];
 
 	logMsg(LOGINFO, "DOCUMENT_ROOT is %s", documentRoot);
+
+	if (!globalJamName)
+		globalJamName = (char *) calloc(1, 64096);
+	strcpy(globalJamName, jamName);
+	if (jamEntrypoint) {
+		strcat(globalJamName, ":");
+		strcat(globalJamName, jamEntrypoint);
+	}
+	logMsg(LOGINFO, "GLOBAL JAM NAME is %s", globalJamName);
 
 	if (jamEntrypoint)
 		logMsg(LOGDEBUG, "Jam parameter contains an action to run: [%s]", jamEntrypoint);
@@ -585,6 +604,11 @@ logMsg(LOGERROR, "Remember templates stripping is not accurate..................
 
 	free(tmp);
 	free(jamBuf);
+
+	if (globalJamName) {
+		free(globalJamName);
+		globalJamName = NULL;
+	}
 
 	VAR *debugVar = findVarStrict("debug");
 	if ((debugVar) && (atoi(debugVar->portableValue) > 0))

@@ -8,6 +8,7 @@
 #include <fstream>
 #include <vector>
 #include <cstdlib>
+#include <dirent.h>
 
 #include </usr/include/mysql/mysql.h>
 
@@ -34,6 +35,8 @@ char *emitScratchPos = emitScratchBuffer;
 int emitScratchRemaining = MAX_EMITSCRATCH_LEN;
 
 FILE *emitStream = stdout;
+
+char *dumpStreamPath = NULL;
 
 int outputStream = 0;			// copy of the JAMBUILDER stream (eg for emitStd)
 
@@ -427,8 +430,10 @@ int endStd(int urlEncodeRequired) {
 		encodedData = urlEncode(emitStdBuffer);
 		p = encodedData;
 	}
-	while (*p)
-		putchar(*p++);
+	char *pOut = p;
+	while (*pOut)
+		putchar(*pOut++);
+	dumpStream(p);
 	if (encodedData)
 		free(encodedData);
 logMsg(LOGMICRO, "ENDDATA=[%s]", emitStdBuffer);
@@ -456,6 +461,42 @@ int endJs(int urlEncodeRequired) {
 	} else {
 		logMsg(LOGDEBUG, "endJs had nothing to output");
 	}
+}
+
+int dumpStream(char *str) {
+	static int init = 1;
+	FILE *fpStream = NULL;
+	char *streamName = NULL;
+	logMsg(LOGDEBUG, "checking whether to dumpstream()");
+	if (!dumpStreamPath)
+		return(0);
+	if (!(*str))
+		return(0);
+	logMsg(LOGDEBUG, "dumpstream() to dump");
+	streamName = (char *) calloc(1, 64096);
+	sprintf(streamName, "%s/%s.html", dumpStreamPath, globalJamName);
+	logMsg(LOGDEBUG, "dumpstream() streamName is '%s'", streamName);
+	DIR *dir = opendir(dumpStreamPath);
+	if (!dir) {		// only do this if someone has created a dir for it
+		free(streamName);
+		logMsg(LOGDEBUG, "no dir found for use by dumpstream()");
+		return(0);
+	}
+	if (init) {
+		remove(streamName);
+		init = 0;
+	}
+	
+	if ((fpStream = fopen(streamName, "a")) == NULL)
+		;
+	int bytes = fwrite(str, strlen(str), 1, fpStream);
+	if (bytes)
+		logMsg(LOGDEBUG, "dumpstream() wrote to %s", streamName);
+	else
+		logMsg(LOGERROR, "dumpstream() failed to write to %s", streamName);
+	fclose(fpStream);
+	free(streamName);
+	logMsg(LOGDEBUG, "dumpstream() normal exit");
 }
 
 char *urlEncode(char *str) {		// needs freeing
