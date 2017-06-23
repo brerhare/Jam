@@ -702,7 +702,6 @@ int wordHtmlCheckbox(int ix, char *defaultTableName) {
 			table = strdup("");
 		field = getWordAlloc(getVarAsString("sys.control.field"), 1, ".");
 	}
-
 	// Label
 	if (isVar("sys.control.label"))
 		label = strdup(getVarAsString("sys.control.label"));
@@ -729,6 +728,7 @@ int wordHtmlCheckbox(int ix, char *defaultTableName) {
 	// Set jamKey. This is whatever table/field values are required to update the data
 	jamKey = makeJamKeyValue(table, field, tableFieldRawValue);
 
+	// Set jamKey. This is whatever table/field values are required to update the data
 	// Value
 	sprintf(tmp, "%s.%s", table, field);
 	VAR *variable = findVarStrict(tmp);
@@ -742,7 +742,7 @@ int wordHtmlCheckbox(int ix, char *defaultTableName) {
 	}
 
 	// Checked
-	if (atoi(variable->portableValue) > 0)
+	if ((variable) && (atoi(variable->portableValue)) > 0)
 		checked = strdup("checked");
 	else
 		checked = strdup("");
@@ -1138,14 +1138,25 @@ int wordHtmlTextarea(int ix, char *defaultTableName) {
 int wordHtmlTabs(int ix, char *defaultTableName) {
 	char *tmp = (char *) calloc(1, 64096);
 	char *args = jam[ix]->args;
+	char *tabType = (char *) calloc(1, 64096);
+	int cnt = 2;
 
 	int seq = (rand() % 99999);
 	char *tabStr = (char *) calloc(1, 64096);
-	char *actionStr = (char *) calloc(1, 64096);
+	char *actionStr = NULL;
 
-	logMsg(LOGDEBUG, "html tabs ARGS=%s", args);
+	logMsg(LOGDEBUG, "html tabs ARGS=[%s]", args);
 
-	int cnt = 2;
+	getWord(tabType, args, 2, " \n\t");
+	if ((strcmp(tabType, "iframe")) && (strcmp(tabType, "embed"))) {
+	   logMsg(LOGDEBUG, "missing tab type - assuming 'iframe'");
+	   strcpy(tabType, "iframe");
+	}
+	if (!strcmp(tabType, "iframe"))
+		actionStr = (char *) calloc(1, 64096);
+
+	logMsg(LOGDEBUG, "html tabs TAB TYPE=[%s]", tabType);
+
 	while (char *block = strTrim(getWordAlloc(args, cnt++, "\n"))) {
 		char *tabNVP = strTrim(getWordAlloc(block, 1, " \t"));
 		char *actionNVP = strTrim(getWordAlloc(block, 2, " \t"));
@@ -1160,8 +1171,83 @@ int wordHtmlTabs(int ix, char *defaultTableName) {
 		action++; // Point to  whatever the action is. Equals signs in this arent our business
 		sprintf(tmp, "<li><a href='#tab-%d'>%s</a></li> \n", seq, tab);
 		strcat(tabStr, tmp);
-		sprintf(tmp, "<iframe id='tab-%d' src='%s'></iframe> \n", seq, action);
-		strcat(actionStr, tmp);
+		if (!strcmp(tabType, "iframe")) {
+			sprintf(tmp, "<iframe id='tab-%d' src='%s'></iframe> \n", seq, action);
+			strcat(actionStr, tmp);
+		} else {
+			// Only do this once for divs
+			/*if (action == strchr(actionNVP, '='))*/ {
+
+				// Append the opening div
+				sprintf(tmp, "<div id='tab-%d'>\n", seq);
+				if (actionStr == NULL)
+					actionStr = strdup(tmp);
+				else {
+					actionStr = (char *) realloc(actionStr, ( strlen(actionStr) + 1 + strlen(tmp) ) );
+					strcat(actionStr, tmp);
+				}
+
+				// work out the path to the include file
+				char *urlPart = strTrim(getWordAlloc(action, 1, "?"));
+				char replaceString[6] = "/run/";
+				char replaceWith[10] = "/jam/run/";
+				char *prefixAdded = strReplaceAlloc(urlPart, replaceString, replaceWith);
+				logMsg(LOGERROR, "include '%s' to scratch buffer", prefixAdded);
+
+        		// Run jambuilder to scratch (actual tab content)
+
+        		JAMBUILDER jb;
+				emitScratchPos = emitScratchBuffer;
+				emitScratchRemaining = MAX_EMITSCRATCH_LEN;
+        		jb.stream = STREAMOUTPUT_STD;
+
+/*
+		jb.stream = STREAMOUTPUT_SCRATCH;
+		emitScratchPos = emitScratchBuffer;
+		emitScratchRemaining = MAX_EMITSCRATCH_LEN;
+*/
+        		jb.templateStr = NULL;
+
+/**/
+char *savBuffer = emitStdBuffer;
+char *savPos = emitStdPos;
+int savRemaining = emitStdRemaining;
+
+emitStdBuffer = emitScratchBuffer;
+emitStdPos = emitScratchBuffer;
+emitStdRemaining = MAX_EMITSCRATCH_LEN;
+/**/
+
+        		jamBuilder(prefixAdded, NULL, &jb);
+				
+				char *includeContent = urlEncode(emitScratchBuffer);
+				if (includeContent ) {
+					actionStr = (char *) realloc(actionStr, ( strlen(actionStr) + 1 + strlen(includeContent) ) );
+					strcat(actionStr, includeContent);
+					logMsg(LOGDEBUG, "include '%s' length=%d successfully retrieved from scratch buffer", prefixAdded, strlen(includeContent));
+					free(includeContent);
+				}
+
+/**/
+emitStdBuffer = savBuffer;
+emitStdPos = savPos;
+emitStdRemaining = savRemaining;
+/**/
+
+				emitScratchPos = emitScratchBuffer;
+				emitScratchRemaining = MAX_EMITSCRATCH_LEN;
+
+
+
+				// Append the closing div
+				sprintf(tmp, "</div>\n");
+				actionStr = (char *) realloc(actionStr, ( strlen(actionStr) + 1 + strlen(tmp) ) );
+				strcat(actionStr, tmp);
+
+				if (urlPart) free(urlPart);
+				if (prefixAdded) free(prefixAdded);
+			}
+		}
 		free(block);
 		free(tabNVP);
 		free(actionNVP);
@@ -1173,18 +1259,25 @@ int wordHtmlTabs(int ix, char *defaultTableName) {
 	JAMBUILDER jb;
 	jb.stream = STREAMOUTPUT_STD;
 	char *templateStr = (char *) calloc(1, 64096);
+	logMsg(LOGDEBUG, "html tabs : running jambuilder with tabStr=[%s]", tabStr);
+	logMsg(LOGDEBUG, "html tabs : running jambuilder with actionStr=[%s]", actionStr);
 	sprintf(templateStr, "{{@template TAB_STR %s}}	\
 						  {{@template TAB_ACTION %s}}",
 							tabStr,
 							actionStr
 							);
 
+logMsg(LOGERROR, "000000000000000000000000000");
 	jb.templateStr = templateStr;
 	jamBuilder("/jam/run/sys/jamBuilder/html/tabs.jam", "tabsHtml", &jb);
+logMsg(LOGERROR, "111111111111111111111111111");
 
 	free(tmp);
-	free(tabStr);
 	free(actionStr);
+logMsg(LOGERROR, "222222222222222222222222222");
+	free(tabStr);
+	free(tabType);
+logMsg(LOGERROR, "333333333333333333333333333");
 	emitStd(jam[ix]->trailer);
 }
 
@@ -1864,9 +1957,11 @@ char *makeJamKeyValue(char *tableName, char *fieldName, char *rawValue) {
 			sprintf(ret, "ID0___%s___%s", tableName, fieldName);
 			logMsg(LOGDEBUG, "makeJamKeyValue() [%s] created (db). Does not exist as a variable", ret);
 		}
+		logMsg(LOGDEBUG, "makeJamKeyValue() normal exit");
 		return(ret);
 	}
 	// Is it a variable?
 	sprintf(ret, "VAR___%s", rawValue);
+	logMsg(LOGDEBUG, "makeJamKeyValue() normal exit");
 	return(ret);
 }

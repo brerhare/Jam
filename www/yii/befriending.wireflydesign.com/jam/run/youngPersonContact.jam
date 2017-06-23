@@ -29,7 +29,7 @@
                 <th> Email </th>
                 <th> Postcode </th>
             </tr>
-            {{@each match_yp filter young_person_id = young_person.id}}
+			{{@each match_yp filter young_person_id = young_person.id, match_end = 0000-00-00}}
                 {{@get befriender filter id = match_yp.befriender_id}}
                 {{@get global filter id = befriender.global_id}}
                     <tr bgcolor='#dadada'>
@@ -46,8 +46,8 @@
                 <th> </th>
                 <th> </th>
             </tr>
-            {{@each match_history filter young_person_id = young_person.id}}
-                {{@get befriender filter id = match_history.befriender_id}}
+			{{@each match_yp filter young_person_id = young_person.id, match_end != 0000-00-00}}
+                {{@get befriender filter id = match_yp.befriender_id}}
                 {{@get global filter id = befriender.global_id}}
                     <tr bgcolor='#e9e9e9'>
                         <td> {{global.forename}} {{global.surname}} </td>

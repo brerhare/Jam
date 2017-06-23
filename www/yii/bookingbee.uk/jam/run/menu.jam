@@ -1,0 +1,88 @@
+{{@include standalone /jam/sys/html/header.html}}
+
+{{@database bookingbee_uk}}
+
+<!-- Save the user.id because we'll change it here which will break menu assignments (which pass the user.id as a parameter) -->
+{{uid = user.id}}
+
+
+{{userRand = sys.cookie.bookingbee_user}}
+
+<script>
+function kick() {
+ 	window.top.location.href = "http://bookingbee.uk/run/login.jam";
+}
+</script>
+
+
+<script> var kickuser = 1; </script>
+{{@each user filter cookie = userRand}}
+	{{userId = 1}}
+	<script>kickuser = 0;</script>
+{{@end}}
+
+<script>
+if (kickuser == 1)
+	kick();
+</script>
+
+
+
+{{get user filter id = sys.cookie.bookingbee_user}}
+
+{{@template MENU
+    <ul id="main-menu" class="sm sm-blue collapsed">
+
+    {{@each menu filter parent_id = 0}}
+
+		{{@each user_menu filter user_id = userId, menu_id = menu.id}}
+
+        	<li> <a href="{{menu.href}}"> {{menu.text}} </a>
+        	{{openUL2 = <ul>}}
+        	{{closeUL2 = ''}}
+
+        	{{@each menu filter parent_id = menu.id}}
+				{{@each user_menu filter user_id = userId, menu_id = menu.id}}
+            		{{openUL2}}
+            		{{openUL2 = ''}}
+            		<li> <a href="{{menu.href}}"> {{menu.text}} </a>
+
+            		{{openUL3 = <ul>}}
+            		{{closeUL3 = ''}}
+
+            		{{@each menu filter parent_id = menu.id}}
+                		{{openUL3}}
+                		{{openUL3 = ''}}
+                		<li> <a href="{{menu.href}}"> {{menu.text}} </a> </li>
+                		{{closeUL3 = </ul>}}
+            		{{@end}}
+
+            		{{closeUL3}}
+            		</li>
+
+            		{{closeUL2 = </ul>}}
+
+        		{{@end}}
+        	{{@end}}
+
+        	{{closeUL2}}
+        	</li>
+
+		{{@end}}
+
+    {{@end}}
+
+    </ul>
+}}
+
+
+<!-- Restore the user.id  so menu assignments are unaffected by what we just did -->
+{{user.id = uid}}
+{{@get user filter id = user.id}}
+
+
+<!-- Call the addon -->
+{{@include /jam/run/sys/smartMenu.jam}}
+
+{{@include standalone /jam/sys/html/footer.html}}
+

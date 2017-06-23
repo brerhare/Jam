@@ -1,0 +1,15 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/site.css}}
+
+<script>
+
+window.onload = function() {
+	document.cookie = "bookingbee_user=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+	runJam('http://bookingbee.uk/run/login');
+}
+
+</script>
+
+
+
+{{@include /jam/sys/html/footer.html}}

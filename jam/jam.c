@@ -49,7 +49,10 @@ char *readJam(char *fname){
 		die("");
 	}
 //	emitStd("\n[%d][%d]\n-->%s<--\n", jamLen, length, buf);
-	return buf;
+	// Strip off DOS eol markers ^M
+	char *strippedBuf = strReplaceAlloc(buf, "\r", " ");
+	free(buf);
+	return strippedBuf;
 }
 
 char *curlies2JamArray(char *jamPos) {
