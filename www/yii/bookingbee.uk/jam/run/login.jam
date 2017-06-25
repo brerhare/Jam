@@ -1,7 +1,16 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/site.css}}
 
-{{@Xinclude /jam/run/new_menu.jam}}
+{{@template TITLE Booking Bee}}
+{{@template DATABASE bookingbee_uk}}
+{{@template SENDTO testpage}}
+
+{{@database DATABASE}}
+
+{{@each user filter cookie = sys.cookie.bookingbee_uk}}
+	{{logged_in = 0}}
+	{{@update item user}}
+{{@end}}
 
 <style>
 .mydiv {
@@ -23,12 +32,15 @@
 
 {{@html container start center css='max-width:1080px; Xpadding:0}}
 
-{{@database bookingbee_uk}}
+<br><br>
 
-<br> <center><h2>Booking Bee login</h2></center>
+<center><h2>TITLE login</h2></center>
+
 <br><br>
 
 <form name="inputForm_user" class="uk-form uk-form-horizontal">
+
+		<input type="hidden" name="sendTo" value="SENDTO">
 
         {{@html gridrow start}}
             {{@html gridcol start width=3-10}}
@@ -77,8 +89,8 @@ function loginButtonClick() {
 function createCookie() {
 	obj = document.getElementById('cookie');
 	if (obj.value != '0') {
-		setCookie("bookingbee_uk", obj.value);
-		runJam('http://bookingbee.uk/run/loggedIn');
+		setCookie("DATABASE", obj.value);
+		runJam('SENDTO');
 	} else {
 		alert('Incorrect user name or password');
 	}
@@ -96,6 +108,14 @@ function createCookie() {
 		{{logged_in = 1}}
 		{{@update item user}}
 		{{cookie = user.cookie}}
+	{{@end}}
+	{{@get user filter id = -1}}
+{{@end}}
+
+{{@action checkLogin}}
+	{{dest = login.jam}}
+	{{@each user filter cookie = cookie, logged_in = '1'}}
+		{{dest = url}}
 	{{@end}}
 	{{@get user filter id = -1}}
 {{@end}}
