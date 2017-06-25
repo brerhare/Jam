@@ -15,7 +15,8 @@ Doing...<br>
 }}
 
 {{@new table user
-	cookie								number	required
+	cookie								string	required
+	logged_in							number
 	handle								string	required
 	password							string
 	first_name							string
@@ -36,16 +37,16 @@ Doing...<br>
 
 make a user <br>
 
-{{@randomnumber newfield=myRand}}
-{{user.cookie = myRand}}
+{{user.cookie = sagvfdjigf39ij2jio42kfa9gv}}
+{{user.logged_in = 0}}
 {{user.handle = kim}}
 {{user.first_name = kim}}
 {{user.last_name = hancock}}
 {{user.password = kimlo,}}
 {{@new item user}}
 
-{{@randomnumber newfield=myRand}}
-{{user.cookie = myRand}}
+{{user.cookie = hamishes_seller_sid_perhaps}}
+{{user.logged_in = 0}}
 {{user.handle = hg}}
 {{user.first_name = hamish}}
 {{user.last_name = guthrie}}

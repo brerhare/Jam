@@ -35,7 +35,7 @@
 			{{@html gridcol end}}
 
             {{@html gridcol start width=6-10}}
-				{{@html text field=user.handle label='User name' size=small}}
+				{{@html text field=form.handle label='User name' size=small}}
 			{{@html gridcol end}}
 
             {{@html gridcol start width=3-10}}
@@ -47,7 +47,7 @@
 			{{@html gridcol end}}
 
             {{@html gridcol start width=5-10}}
-				{{@html password field=user.password label='password' size=small}}
+				{{@html password field=form.password label='password' size=small}}
 			{{@html gridcol end}}
 
             {{@html gridcol start width=3-10}}
@@ -76,8 +76,8 @@ function loginButtonClick() {
 
 function createCookie() {
 	obj = document.getElementById('cookie');
-	document.cookie = "bookingbee_user="+obj.value;
-	if (obj.value != 'null') {
+	if (obj.value != '0') {
+		setCookie("bookingbee_uk", obj.value);
 		runJam('http://bookingbee.uk/run/loggedIn');
 	} else {
 		alert('Incorrect user name or password');
@@ -87,15 +87,18 @@ function createCookie() {
 </script>
 
 {{@action login}}
-	{{cookie = null}}
-	{{@each user filter handle = user.handle, password = user.password}}
+	{{cookie = 0}}
+	{{@each user filter handle = form.handle}}
+		{{logged_in = 0}}
+		{{@update item user}}
+	{{@end}}
+	{{@each user filter handle = form.handle, password = form.password}}
+		{{logged_in = 1}}
+		{{@update item user}}
 		{{cookie = user.cookie}}
 	{{@end}}
-{{@end}}
-
-{{@action loginCheck}}
-	{{@each user filter cookie = user.cookie}}
-	{{@end}}
+	{{@get user filter id = -1}}
 {{@end}}
 
 {{@include /jam/sys/html/footer.html}}
+
