@@ -17,6 +17,7 @@ Doing...<br>
 {{@new table user
 	cookie								string	required
 	logged_in							number
+	user_data							string
 	handle								string	required
 	password							string
 	first_name							string
@@ -33,20 +34,24 @@ Doing...<br>
 	{{pid = menu.id}}
 	{{menu.text = Your details}}    {{menu.href = /run/seller.jam}}   {{menu.parent_id = pid}} {{@new item menu}}
 	{{menu.text = Events}}    {{menu.href = /run/event.jam}}   {{menu.parent_id = pid}} {{@new item menu}}
-{{menu.text = Logout}}  {{menu.href = /run/logout.jam}} {{menu.parent_id = 0}}       {{@new item menu}}
+{{menu.text = Logout}}  {{menu.href = /run/login.jam}} {{menu.parent_id = 0}}       {{@new item menu}}
 
 make a user <br>
 
-{{user.cookie = sagvfdjigf39ij2jio42kfa9gv}}
+{{@randomnumber newfield=myRand}}
+{{user.cookie = myRand}}
 {{user.logged_in = 0}}
+{{user.user_data = sagvfdjigf39ij2jio42kfa9gv}}
 {{user.handle = kim}}
 {{user.first_name = kim}}
 {{user.last_name = hancock}}
 {{user.password = kimlo,}}
 {{@new item user}}
 
-{{user.cookie = hamishes_seller_sid_perhaps}}
+{{@randomnumber newfield=myRand}}
+{{user.cookie = myRand}}
 {{user.logged_in = 0}}
+{{user.user_data = hamishes_seller_sid_perhaps}}
 {{user.handle = hg}}
 {{user.first_name = hamish}}
 {{user.last_name = guthrie}}

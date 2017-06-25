@@ -15,32 +15,30 @@
 <style>
 .mydiv {
 	margin: auto;
-    border-style: solid;
-    border-width: 1px;
+   	border-style: solid;
+   	border-width: 1px;
 	height:100px;
 	width:300px;
 }
 </style>
 
-    <style type="text/css">
-        label {text-align: right; width:150px !important}
-        div.uk-form-controls {margin-left: 170px !important}
-    </style>
+<style type="text/css">
+label {text-align: right; width:150px !important}
+div.uk-form-controls {margin-left: 170px !important}
+</style>
 
-
-<br>
+<br><br>
 
 {{@html container start center css='max-width:1080px; Xpadding:0}}
 
-<br><br>
-
 <center><h2>TITLE login</h2></center>
-
-<br><br>
-
+<br>
 <form name="inputForm_user" class="uk-form uk-form-horizontal">
+	<div style="position:relative">
 
 		<input type="hidden" name="sendTo" value="SENDTO">
+
+		<img src="/img/bookingBee.png" style="position:absolute; top:0px" width=60px>
 
         {{@html gridrow start}}
             {{@html gridcol start width=3-10}}
@@ -75,10 +73,9 @@
             {{@html gridcol end}}
         {{@html gridrow end}}
 
-
+	</div>
 </form>
 
-<br><br><br><br>
 {{@html container end}}
 
 <script>
@@ -95,7 +92,6 @@ function createCookie() {
 		alert('Incorrect user name or password');
 	}
 }
-
 </script>
 
 {{@action login}}
@@ -114,8 +110,8 @@ function createCookie() {
 
 {{@action checkLogin}}
 	{{dest = login.jam}}
-	{{@each user filter cookie = cookie, logged_in = '1'}}
-		{{dest = url}}
+	{{@each user filter cookie = cookie, logged_in = '0'}}
+		{{dest = login}}
 	{{@end}}
 	{{@get user filter id = -1}}
 {{@end}}
