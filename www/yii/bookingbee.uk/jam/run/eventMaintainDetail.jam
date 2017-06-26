@@ -11,6 +11,7 @@
 <style>	/* For this embedded content within a tab */
 .embed-uk-container { border-radius: 3px; padding:0px; background-color: #dee6f1; }
 .ui-tabs .ui-tabs-panel { padding:0px; padding-top: 3px; }
+.ui-tabs-nav {background-color: #c7d1e4; }
 </style>
 
 {{@XXXhtml container start center css='max-width:900px; Xpadding:0}}

@@ -34,7 +34,6 @@
 		</tr>
 {{@end}}
 	</table>
-	<br>
 
 <!--
 	<button class="uk-button uk-button-medium uk-button-primary" onClick="printData('printTable')"> Print </button>
@@ -44,11 +43,11 @@
 	</span>
 -->
 
-	<center>
+<!--	<center>
 	{{@html button Finished primary medium
 		runJam('menu.jam');
 	}}
-	</center>
+	</center> -->
 
 </div>
 

@@ -8,7 +8,11 @@
 
 {{@get user filter cookie = sys.cookie.bookingbee_uk }}
 
+<div style="position:relative">
+<img src="/img/bookingBee.png" style="position:absolute; top:7px; left:7px; z-index:10000" width=30px>
+
 {{@template MENU
+
     <ul id="main-menu" class="sm sm-blue collapsed">
 
     {{@each menu filter parent_id = 0}}
@@ -54,6 +58,8 @@
 }}
 
 MENU
+
+</div>
 
 <!-- Restore the user.id  so menu assignments are unaffected by what we just did -->
 {{user.id = uid}}

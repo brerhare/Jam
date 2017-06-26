@@ -3,7 +3,7 @@
 
 {{@template TITLE Booking Bee}}
 {{@template DATABASE bookingbee_uk}}
-{{@template SENDTO testpage}}
+{{@template SENDTO event}}
 
 {{@database DATABASE}}
 
@@ -29,7 +29,7 @@ div.uk-form-controls {margin-left: 170px !important}
 
 <br><br>
 
-{{@html container start center css='max-width:1080px; Xpadding:0}}
+{{@html container start center css='max-width:900px; Xpadding:0}}
 
 <center><h2>TITLE login</h2></center>
 <br>

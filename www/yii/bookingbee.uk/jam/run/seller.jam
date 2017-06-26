@@ -44,7 +44,7 @@
 					runAction('update_seller', ['seller_form'], '', postUpdate)
 				}}
 				{{@html button Cancel primary medium
-					runJam('menu.jam');
+					runJam('event');
 				}}
 			</center>
 		{{@html gridcol end}}
@@ -62,7 +62,7 @@ function clearFile() {
 }
 
 function postUpdate() {
-	window.setTimeout(runJam('menu.jam', 1000));
+	window.setTimeout(runJam('event', 1000));
 }
 
 function fileUpload(obj) {

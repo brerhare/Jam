@@ -11,6 +11,7 @@
 <style> /* For this embedded content within a tab */
 .embed-uk-container { border-radius: 3px; padding:0px; background-color: #dee6f1; }
 .ui-tabs .ui-tabs-panel { padding:0px; padding-top: 3px; }
+.ui-tabs-nav {background-color: #c7d1e4; }
 </style>
 
 {{@XXXhtml container start center css='max-width:900px; Xpadding:0}}
@@ -23,6 +24,37 @@
 	<input type="hidden" name="event.uid" value="{{seller.uid}}">
 	<input type="hidden" name="event.seller_id" value="{{seller.id}}">
 	<input type="hidden" name="event.image" value="{{event.image}}">
+
+
+                      <ul class="uk-nestable" data-uk-nestable="{handleClass:'uk-nestable-handle'}">
+                            
+                            <li class="uk-nestable-item">
+                                <div class="uk-nestable-panel">
+                                    <i class="uk-nestable-handle uk-icon uk-icon-bars uk-margin-small-right"></i>
+                                    Item 1
+                                </div>
+                            </li><li class="uk-nestable-item">
+                                <div class="uk-nestable-panel">
+                                    <i class="uk-nestable-handle uk-icon uk-icon-bars uk-margin-small-right"></i>
+                                    Item 2
+                                </div>
+                            </li>
+                            <li class="uk-nestable-item">
+                                <div class="uk-nestable-panel">
+                                    <i class="uk-nestable-handle uk-icon uk-icon-bars uk-margin-small-right"></i>
+                                    Item 3
+                                </div>
+                            </li>
+                            <li class="uk-nestable-item">
+                                <div class="uk-nestable-panel">
+                                    <i class="uk-nestable-handle uk-icon uk-icon-bars uk-margin-small-right"></i>
+                                    Item 4
+                                </div>
+                            </li>
+                        </ul>
+
+
+
 	{{@html gridrow start}}
 		{{@html gridcol start width=5-5}}
 			XXXX
