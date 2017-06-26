@@ -475,8 +475,13 @@ int dumpStream(char *str) {
 		return(0);
 	logMsg(LOGDEBUG, "dumpstream() to dump");
 	streamName = (char *) calloc(1, 64096);
-	sprintf(streamName, "%s/%s.html", dumpStreamPath, basename(globalJamName));
+
+char *strReplaceAlloc(char *orig, char *rep, char *with);
+
+	char *stripJam = strReplaceAlloc(basename(globalJamName), ".jam", "");
+	sprintf(streamName, "%s/%s.html", dumpStreamPath, stripJam);
 	logMsg(LOGDEBUG, "dumpstream() streamName is '%s'", streamName);
+	free(stripJam);
 	DIR *dir = opendir(dumpStreamPath);
 	if (!dir) {		// only do this if someone has created a dir for it
 		free(streamName);
@@ -488,8 +493,11 @@ int dumpStream(char *str) {
 		init = 0;
 	}
 	
-	if ((fpStream = fopen(streamName, "a")) == NULL)
-		;
+	if ((fpStream = fopen(streamName, "a")) == NULL) {
+		free(streamName);
+		logMsg(LOGDEBUG, "dumpstream() cant open a new file in dir");
+		return(0);
+	}
 	int bytes = fwrite(str, strlen(str), 1, fpStream);
 	if (bytes)
 		logMsg(LOGDEBUG, "dumpstream() wrote to %s", streamName);
