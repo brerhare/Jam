@@ -6,43 +6,21 @@
 {{uid = user.id}}
 
 
-{{userRand = sys.cookie.bookingbee_user}}
-
-<script>
-function kick() {
- 	window.top.location.href = "http://bookingbee.uk/run/login.jam";
-}
-</script>
-
-
-<script> var kickuser = 1; </script>
-{{@each user filter cookie = userRand}}
-	{{userId = 1}}
-	<script>kickuser = 0;</script>
-{{@end}}
-
-<script>
-if (kickuser == 1)
-	kick();
-</script>
-
-
-
-{{get user filter id = sys.cookie.bookingbee_user}}
+{{@get user filter cookie = sys.cookie.bookingbee_uk }}
 
 {{@template MENU
     <ul id="main-menu" class="sm sm-blue collapsed">
 
     {{@each menu filter parent_id = 0}}
 
-		{{@each user_menu filter user_id = userId, menu_id = menu.id}}
+		{{@each user_menu filter user_id = user.id, menu_id = menu.id}}
 
         	<li> <a href="{{menu.href}}"> {{menu.text}} </a>
         	{{openUL2 = <ul>}}
         	{{closeUL2 = ''}}
 
         	{{@each menu filter parent_id = menu.id}}
-				{{@each user_menu filter user_id = userId, menu_id = menu.id}}
+				{{@each user_menu filter user_id = user.id, menu_id = menu.id}}
             		{{openUL2}}
             		{{openUL2 = ''}}
             		<li> <a href="{{menu.href}}"> {{menu.text}} </a>
@@ -75,6 +53,7 @@ if (kickuser == 1)
     </ul>
 }}
 
+MENU
 
 <!-- Restore the user.id  so menu assignments are unaffected by what we just did -->
 {{user.id = uid}}
