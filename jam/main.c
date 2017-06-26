@@ -82,6 +82,7 @@ int main(int argc, char *argv[]) {
 	char *jamName = NULL;
 
 	stopping = skipping = 0;
+	globalJamName = (char *) calloc(1, 64096);
 
 	// Do NOT log anything until char documentRoot is set or it will end up in /tmp/ !!!
 
@@ -177,6 +178,14 @@ int main(int argc, char *argv[]) {
 			logMsg(LOGDEBUG, "Found jam parameter");
 			jamName = strTrim(getWordAlloc(cgivars[i+1], 1, ":"));
 			jamEntrypoint = strTrim(getWordAlloc(cgivars[i+1], 2, ":"));
+
+			strcpy(globalJamName, jamName);
+			if (jamEntrypoint) {
+				strcat(globalJamName, ":");
+				strcat(globalJamName, jamEntrypoint);
+			}
+			logMsg(LOGINFO, "GLOBAL JAM NAME is %s", globalJamName);
+
 //emitStd("[%s][%s]<br>", jamName, jamEntrypoint);
 // @@KIM! remove next if
 		} else /* if (!jamEntrypoint) */ {
@@ -242,6 +251,12 @@ int main(int argc, char *argv[]) {
 	freeJamArray();
 	free(jamEntrypoint);
 	free(fileToInclude);
+
+	if (globalJamName) {
+		free(globalJamName);
+		globalJamName = NULL;
+	}
+
 	for (int i = 0; i < MAX_INCLUDE; i++) {
 		if (includedTable[i] == NULL)
 			break;
@@ -313,15 +328,6 @@ int processJam(char *jamName, char *jamEntrypoint, JAMBUILDER *jb) {
 	TAGINFO *tinfo[MAX_TEMPLATES];
 
 	logMsg(LOGINFO, "DOCUMENT_ROOT is %s", documentRoot);
-
-	if (!globalJamName)
-		globalJamName = (char *) calloc(1, 64096);
-	strcpy(globalJamName, jamName);
-	if (jamEntrypoint) {
-		strcat(globalJamName, ":");
-		strcat(globalJamName, jamEntrypoint);
-	}
-	logMsg(LOGINFO, "GLOBAL JAM NAME is %s", globalJamName);
 
 	if (jamEntrypoint)
 		logMsg(LOGDEBUG, "Jam parameter contains an action to run: [%s]", jamEntrypoint);
@@ -604,11 +610,6 @@ logMsg(LOGERROR, "Remember templates stripping is not accurate..................
 
 	free(tmp);
 	free(jamBuf);
-
-	if (globalJamName) {
-		free(globalJamName);
-		globalJamName = NULL;
-	}
 
 	VAR *debugVar = findVarStrict("debug");
 	if ((debugVar) && (atoi(debugVar->portableValue) > 0))

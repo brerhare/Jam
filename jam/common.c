@@ -464,6 +464,7 @@ int endJs(int urlEncodeRequired) {
 }
 
 int dumpStream(char *str) {
+//return(0);
 	static int init = 1;
 	FILE *fpStream = NULL;
 	char *streamName = NULL;
@@ -474,7 +475,7 @@ int dumpStream(char *str) {
 		return(0);
 	logMsg(LOGDEBUG, "dumpstream() to dump");
 	streamName = (char *) calloc(1, 64096);
-	sprintf(streamName, "%s/%s.html", dumpStreamPath, globalJamName);
+	sprintf(streamName, "%s/%s.html", dumpStreamPath, basename(globalJamName));
 	logMsg(LOGDEBUG, "dumpstream() streamName is '%s'", streamName);
 	DIR *dir = opendir(dumpStreamPath);
 	if (!dir) {		// only do this if someone has created a dir for it
