@@ -30,11 +30,23 @@ Doing...<br>
 	menu_id								number
 }}
 
+{{menu.text = Events}}    {{menu.href = /run/event.jam}}   {{menu.parent_id = 0}} {{@new item menu}}
+{{menu.text = Your details}}    {{menu.href = /run/seller.jam}}   {{menu.parent_id = 0}} {{@new item menu}}
+{{menu.text = Logout}}  {{menu.href = /run/login.jam}} {{menu.parent_id = 0}}       {{@new item menu}}
+
+
+
+{{@action DUMMY_TO_PREVENT_NEXT_MENU_DISPLAYING}}
+
 {{menu.text = Setup}} {{menu.href = /run/seller.jam}}   {{menu.parent_id = 0}}   {{@new item menu}}
 	{{pid = menu.id}}
 	{{menu.text = Your details}}    {{menu.href = /run/seller.jam}}   {{menu.parent_id = pid}} {{@new item menu}}
 	{{menu.text = Events}}    {{menu.href = /run/event.jam}}   {{menu.parent_id = pid}} {{@new item menu}}
 {{menu.text = Logout}}  {{menu.href = /run/login.jam}} {{menu.parent_id = 0}}       {{@new item menu}}
+
+{{@end}}
+
+
 
 make a user <br>
 
