@@ -26,6 +26,14 @@
     background-image: linear-gradient(to bottom,#fff,#eee);
     text-shadow: 0 1px 0 #fff;
 }
+.nestable-parent {
+    -moz-column-count: 2;
+    -moz-column-gap: 10px;
+    -webkit-column-count: 2;
+    -webkit-column-gap: 10px;
+    column-count: 2;
+    column-gap: 10px;
+}
 </style>
 
 {{@XXXhtml container start center css='max-width:900px; Xpadding:0}}
@@ -47,13 +55,15 @@
 
 <ul class="uk-nestable" data-uk-nestable="">
                                 <li class="uk-nestable-item">
-                                    <div class="uk-nestable-panel">
-									<span style="font-weight:bold">Class 1</span>
-									<span style="padding-left:10px;">Pony Club Open</span>
-									<span style="width:80%; align:right"> 
-									<input type="checkbox"></input>
-									</span>
-                                    </div>
+                                    <div class="uk-nestable-panel nestable-parent">
+										<div>
+											<input class="uk-nestable-nodrag"></input>
+										</div>
+										<div style="float:right; clear:both">
+											<span> Remaining # </span>
+											<input style="margin-left:10px; width:50px" float:right; clear:both" class="uk-nestable-nodrag"></input>
+										</div>
+									</div>
                                 </li>
                                 <li class="uk-nestable-item">
                                     <div class="uk-nestable-panel">
