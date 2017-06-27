@@ -26,7 +26,7 @@
     background-image: linear-gradient(to bottom,#fff,#eee);
     text-shadow: 0 1px 0 #fff;
 }
-.nestable-parent {
+.Xnestable-parent {
     -moz-column-count: 2;
     -moz-column-gap: 10px;
     -webkit-column-count: 2;
@@ -53,16 +53,18 @@
 		{{@html gridcol end}}
 		{{@html gridcol start width=8-10}}
 
-<ul class="uk-nestable" data-uk-nestable="">
+<ul class="uk-nestable" data-uk-nestable="{maxDepth:1}">
                                 <li class="uk-nestable-item">
                                     <div class="uk-nestable-panel nestable-parent">
-										<div>
-											<input class="uk-nestable-nodrag"></input>
-										</div>
-										<div style="float:right; clear:both">
-											<span> Remaining # </span>
-											<input style="margin-left:10px; width:50px" float:right; clear:both" class="uk-nestable-nodrag"></input>
-										</div>
+										<span>
+											<input placeholder="Describe this item" style="width:420px" class="uk-nestable-nodrag"></input>
+										<span style="float:right; ">
+											<input placeholder="Unlimited" style="width:75px" float:right; clear:both" class="uk-nestable-nodrag"></input>
+											<span> remaining </span>
+											&nbsp
+ 											<button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{event.headline}}')"> <i class="uk-icon-trash"></i> </button>
+										</span>
+
 									</div>
                                 </li>
                                 <li class="uk-nestable-item">
