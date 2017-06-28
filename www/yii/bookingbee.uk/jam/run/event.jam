@@ -30,7 +30,14 @@
 			<td>{{@datedmy event.date}}</td>
 			<td>{{event.time}}</td>
 			<td>{{event.active}}</td>
-			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{event.headline}}')"> <i class="uk-icon-trash"></i> </button> </td>
+			<td>
+				<span data-uk-tooltip="" title="Make a copy of this event">
+					<button class="uk-button uk-button-mini uk-button-primary" onClick="confirmDelete('{{id}}','{{event.headline}}')"> <i class="uk-icon-copy"></i> </button>
+				</span>
+				<span data-uk-tooltip="" title="Delete this event">
+					<button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{event.headline}}')"> <i class="uk-icon-trash"></i> </button>
+				</span>
+			</td>
 		</tr>
 {{@end}}
 	</table>

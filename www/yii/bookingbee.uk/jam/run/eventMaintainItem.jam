@@ -38,12 +38,22 @@
 	<input type="hidden" name="event.seller_id" value="{{seller.id}}">
 	<input type="hidden" name="event.image" value="{{event.image}}">
 
-<br><br>
-
 	{{@html gridrow start}}
 		{{@html gridcol start width=1-10}}
 		{{@html gridcol end}}
 		{{@html gridcol start width=8-10}}
+
+<div style="height:12px"></div>
+
+<table style="width:100&#37">
+	<td width="80&#37">
+	</td>
+	<td width="20&#37">
+		<span style="float:right;margin-right:6px">
+			<button class="uk-button uk-button-mini uk-button-success" onClick="runJam('eventMaintain?uid={{uid}}&event.id=0')"> <i class="uk-icon-plus"></i> New</button>
+		</span>
+	</td>
+</table>
 
 <ul class="uk-nestable" data-uk-nestable="{maxDepth:1}">
 
@@ -54,11 +64,12 @@
 		<div class="uk-nestable-panel" style="padding:5px">
 			<table style="width:100&#37">
 				<tr>
-					<td width="95&#37">
+					<td width="90&#37">
 						<input placeholder="Describe this item" style="width:100&#37" class="uk-nestable-nodrag"></input>
 					</td>
-					<td width="5&#37">
+					<td width="10&#37">
 						<span style="float:right;">
+							<button class="uk-button uk-button-mini uk-button-primary" onClick="confirmDelete('{{id}}','{{event.headline}}')"> <i class="uk-icon-copy"></i> </button>
 							<button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{event.headline}}')"> <i class="uk-icon-trash"></i> </button>
 						</span>
 					</td>
@@ -66,27 +77,21 @@
 			</table>
 			<table style="background-color:#eeeeee; width:100&#37">
 				<tr>
-					<td width="50&#37">
-						<span style="float:right;"> Price </span>
+					<td width="25&#37">
+						<span style="float:left;">
+							<span> Price </span>
+							<input placeholder="" style="width:75px" class="uk-nestable-nodrag"></input>
+						</span>
 					</td>
-					<td width="50&#37">
-						<input placeholder="" style="width:75px" class="uk-nestable-nodrag"></input>
+					<td width="65&#37">
+						<span style="float:right;">
+							<span> Qty remaining </span>
+							<input placeholder="Unlimited" style="width:75px" class="uk-nestable-nodrag"></input>
+							&nbsp&nbsp&nbsp&nbsp&nbsp
+							<span> Max qty per order </span>
+							<input placeholder="" style="width:75px" class="uk-nestable-nodrag"></input>
 					</td>
-				</tr>
-				<tr>
-					<td width="50&#37">
-						<span style="float:right;"> Qty remaining </span>
-					</td>
-					<td width="50&#37">
-						<input placeholder="" style="width:75px" class="uk-nestable-nodrag"></input>
-					</td>
-				</tr>
-				<tr>
-					<td width="50&#37">
-						<span style="float:right;"> Max per order </span>
-					</td>
-					<td width="50&#37">
-						<input placeholder="" style="width:75px" class="uk-nestable-nodrag"></input>
+					<td width="10&#37">
 					</td>
 				</tr>
 			</table>
