@@ -11,6 +11,8 @@ extern int stopping, skipping;
 extern char *startJam;
 extern char *endJam;
 
+extern char *globalJamName;
+
 extern int literal;
 
 extern CURL *curl;
@@ -104,6 +106,9 @@ extern int emitJsRemaining;
 extern char *emitScratchPos;
 extern int emitScratchRemaining;
 extern char *emitScratchBuffer;
+
+extern char *dumpStreamPath;
+int dumpStream(char *str);
 
 int addVar(VAR *newVar);
 void deleteVar(VAR *var);

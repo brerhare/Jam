@@ -292,4 +292,3 @@ Running from commandline
 @actions. All variables created as the result of actions are sent as oob to the browser.
 
 We should maybe have a setting whereby an ajax call can send all the browser vars to the server on an @action call. This is like having 'state'
-
