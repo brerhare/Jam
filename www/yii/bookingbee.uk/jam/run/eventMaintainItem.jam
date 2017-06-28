@@ -26,14 +26,6 @@
     background-image: linear-gradient(to bottom,#fff,#eee);
     text-shadow: 0 1px 0 #fff;
 }
-.Xnestable-parent {
-    -moz-column-count: 2;
-    -moz-column-gap: 10px;
-    -webkit-column-count: 2;
-    -webkit-column-gap: 10px;
-    column-count: 2;
-    column-gap: 10px;
-}
 </style>
 
 {{@XXXhtml container start center css='max-width:900px; Xpadding:0}}
@@ -54,75 +46,57 @@
 		{{@html gridcol start width=8-10}}
 
 <ul class="uk-nestable" data-uk-nestable="{maxDepth:1}">
-                                <li class="uk-nestable-item">
-                                    <div class="uk-nestable-panel nestable-parent">
-										<span>
-											<input placeholder="Describe this item" style="width:420px" class="uk-nestable-nodrag"></input>
-										<span style="float:right; ">
-											<input placeholder="Unlimited" style="width:75px" float:right; clear:both" class="uk-nestable-nodrag"></input>
-											<span> remaining </span>
-											&nbsp
- 											<button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{event.headline}}')"> <i class="uk-icon-trash"></i> </button>
-										</span>
 
-									</div>
-                                </li>
-                                <li class="uk-nestable-item">
-                                    <div class="uk-nestable-panel">
-                                        Item 2
-                                    </div>
-                                </li>
-                                <li class="uk-nestable-item">
-                                    <div class="uk-nestable-panel">
-                                        Item 3
-                                    </div>
-                                </li>
-                                <li class="uk-nestable-item">
-                                    <div class="uk-nestable-panel">
-                                        Item 4
-                                    </div>
-                                </li>
-                            </ul>
+{{@each event}}
 
-		{{@html gridcol end}}
-		{{@html gridcol start width=1-10}}
-		{{@html gridcol end}}
-	{{@html gridrow end}}
+	<li class="uk-nestable-item">
 
+		<div class="uk-nestable-panel" style="padding:5px">
+			<table style="width:100&#37">
+				<tr>
+					<td width="95&#37">
+						<input placeholder="Describe this item" style="width:100&#37" class="uk-nestable-nodrag"></input>
+					</td>
+					<td width="5&#37">
+						<span style="float:right;">
+							<button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{event.headline}}')"> <i class="uk-icon-trash"></i> </button>
+						</span>
+					</td>
+				</tr>
+			</table>
+			<table style="background-color:#eeeeee; width:100&#37">
+				<tr>
+					<td width="50&#37">
+						<span style="float:right;"> Price </span>
+					</td>
+					<td width="50&#37">
+						<input placeholder="" style="width:75px" class="uk-nestable-nodrag"></input>
+					</td>
+				</tr>
+				<tr>
+					<td width="50&#37">
+						<span style="float:right;"> Qty remaining </span>
+					</td>
+					<td width="50&#37">
+						<input placeholder="" style="width:75px" class="uk-nestable-nodrag"></input>
+					</td>
+				</tr>
+				<tr>
+					<td width="50&#37">
+						<span style="float:right;"> Max per order </span>
+					</td>
+					<td width="50&#37">
+						<input placeholder="" style="width:75px" class="uk-nestable-nodrag"></input>
+					</td>
+				</tr>
+			</table>
+		</div>
 
-<br><br>
+	</li>
 
-	{{@html gridrow start}}
-		{{@html gridcol start width=1-10}}
-		{{@html gridcol end}}
-		{{@html gridcol start width=8-10}}
+{{@end}}
 
-                      <ul class="uk-nestable" data-uk-nestable="{handleClass:'uk-nestable-handle'}">
-                            
-                            <li class="uk-nestable-item">
-                                <div class="uk-nestable-panel">
-                                    <i class="uk-nestable-handle uk-icon uk-icon-bars uk-margin-small-right"></i>
-                                    Item 1
-                                </div>
-                            </li><li class="uk-nestable-item">
-                                <div class="uk-nestable-panel">
-                                    <i class="uk-nestable-handle uk-icon uk-icon-bars uk-margin-small-right"></i>
-                                    Item 2
-                                </div>
-                            </li>
-                            <li class="uk-nestable-item">
-                                <div class="uk-nestable-panel">
-                                    <i class="uk-nestable-handle uk-icon uk-icon-bars uk-margin-small-right"></i>
-                                    Item 3
-                                </div>
-                            </li>
-                            <li class="uk-nestable-item">
-                                <div class="uk-nestable-panel">
-                                    <i class="uk-nestable-handle uk-icon uk-icon-bars uk-margin-small-right"></i>
-                                    Item 4
-                                </div>
-                            </li>
-                        </ul>
+</ul>
 
 		{{@html gridcol end}}
 		{{@html gridcol start width=1-10}}
