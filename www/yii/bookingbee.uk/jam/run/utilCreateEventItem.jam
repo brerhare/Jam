@@ -7,8 +7,8 @@ Doing...
 {{@remove table event_item}}
 
 {{@new table event_item
-	uid						number	required
-	event_id				number	required
+	sid						string		required
+	event_id				number		required
 	description				string
 	price					number.2
 	qty_order_max			number

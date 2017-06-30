@@ -7,7 +7,7 @@ Doing...
 {{@remove table event_template_file}}
 
 {{@new table event_template_file
-	uid						number	required
+	sid						string		required
 	seller_id				number	required
 	file					string	required
 }}

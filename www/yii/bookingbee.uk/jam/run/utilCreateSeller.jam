@@ -7,8 +7,8 @@ Doing...
 {{@remove table seller}}
 
 {{@new table seller
-	uid						number	required
-	name					string	required
+	sid						string		required
+	name					string		required
 	landline                string
 	mobile                  string
 	address					string

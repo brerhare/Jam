@@ -7,7 +7,7 @@ Doing...
 {{@remove table event}}
 
 {{@new table event
-	uid						number	required
+	sid						string		required
 	seller_id				number	required
 	event_template_file_id	number	required
 	headline				string	required
