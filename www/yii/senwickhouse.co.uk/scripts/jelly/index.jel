@@ -49,6 +49,7 @@ jam.embed = /run/mobile_menu.jam
 #### Slider ###########################################
 
 	[slider]
+	condition = @PAGE=@HOMEPAGE
 	css.width = 100%
   	css.height = 32%
 	css.margin-top = 8px
