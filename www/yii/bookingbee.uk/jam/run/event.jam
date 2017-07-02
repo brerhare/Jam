@@ -7,7 +7,7 @@
 
 {{sid = sagvfdjigf39ij2jio42kfa9gv}}
 
-{{@HHHHHrunaction login:loggedIn}}
+{{@runaction checkLogin}}
 
 {{@XXXXXget seller filter sid = sid}}
 
