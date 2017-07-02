@@ -1,0 +1,13 @@
+{{@database bookingbee_uk}}
+
+{{@action checkLogin}}
+    {{@each user filter cookie = sys.cookie.bookingbee_uk, logged_in = 1}}
+        {{@runaction loginSetUserData}}
+    {{@end}}
+    {{@runjam login}}
+{{@end}}
+
+{{@action etUserData}}
+lll
+{{@end}}
+

@@ -3,12 +3,13 @@
 {{@include /jam/css/site.css}}
 {{@include /jam/run/menu.jam}}
 
-{{@database bookingbee_uk}}
+{{@include /jam/run/include.jam}}
 
 {{sid = sagvfdjigf39ij2jio42kfa9gv}}
-{{@get sid filter sid = sid}}
-{{uid = sid.uid}}
-{{@get seller filter uid = uid}}
+
+{{@HHHHHrunaction login:loggedIn}}
+
+{{@XXXXXget seller filter sid = sid}}
 
 <br><br>
 
