@@ -3,11 +3,11 @@
 {{@include /jam/css/site.css}}
 {{@include /jam/run/menu.jam}}
 
-{{@include /jam/run/include.jam}}
+{{@include /jam/run/login.inc}}
 
 {{sid = sagvfdjigf39ij2jio42kfa9gv}}
 
-{{@runaction checkLogin}}
+{{@XXXrunaction checkLogin}}
 
 {{@XXXXXget seller filter sid = sid}}
 

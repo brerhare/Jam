@@ -1,16 +1,2 @@
 {{@database bookingbee_uk}}
 
-{{@action checkLogin}}
-	validUser = 0
-    {{@each user filter cookie = sys.cookie.bookingbee_uk, logged_in = 1}}
-		validUser = 1
-    {{@end}}
-	{{@skip validUser = 1}}
-{{@include /jam/run/test.jam}}
-	<script>runJam('login');</script>
-{{@end}}
-
-{{@action etUserData}}
-lll
-{{@end}}
-
