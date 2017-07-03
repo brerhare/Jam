@@ -1,6 +1,6 @@
 {{@include standalone /jam/sys/html/header.html}}
 
-{{@database bookingbee_uk}}
+{{@include /jam/run/login.inc}}
 
 <!-- Save the user.id because we'll change it here which will break menu assignments (which pass the user.id as a parameter) -->
 {{uid = user.id}}

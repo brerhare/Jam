@@ -7,10 +7,7 @@
 
 {{@database DATABASE}}
 
-{{@each user filter cookie = sys.cookie.bookingbee_uk}}
-	{{logged_in = 0}}
-	{{@update item user}}
-{{@end}}
+{{@runaction logout}}
 
 <style>
 .mydiv {
@@ -19,6 +16,14 @@
    	border-width: 1px;
 	height:100px;
 	width:300px;
+}
+.flip {
+	-moz-transform: scaleX(-1);
+	-o-transform: scaleX(-1);
+	-webkit-transform: scaleX(-1);
+	transform: scaleX(-1);
+	filter: FlipH;
+	-ms-filter: "FlipH";
 }
 </style>
 
@@ -71,6 +76,7 @@ div.uk-form-controls {margin-left: 170px !important}
                     <button type='button' id='loginButton' class="uk-button uk-button-primary" onClick="loginButtonClick()">Login</button>
                 </center>
             {{@html gridcol end}}
+		<img src="/img/bookingBee.png" style="position:absolute; right:0px; bottom:0px;" class="flip" width=60px>
         {{@html gridrow end}}
 
 	</div>
@@ -95,11 +101,8 @@ function createCookie() {
 </script>
 
 {{@action login}}
+	{{@runaction logout}}
 	{{cookie = 0}}
-	{{@each user filter handle = form.handle}}
-		{{logged_in = 0}}
-		{{@update item user}}
-	{{@end}}
 	{{@each user filter handle = form.handle, password = form.password}}
 		{{logged_in = 1}}
 		{{@update item user}}
@@ -108,10 +111,10 @@ function createCookie() {
 	{{@get user filter id = -1}}
 {{@end}}
 
-{{@action checkLogin}}
-	{{dest = login.jam}}
-	{{@each user filter cookie = cookie, logged_in = '0'}}
-		{{dest = login}}
+{{@action logout}}
+	{{@each user filter cookie = sys.cookie.bookingbee_uk}}
+		{{logged_in = 0}}
+		{{@update item user}}
 	{{@end}}
 	{{@get user filter id = -1}}
 {{@end}}

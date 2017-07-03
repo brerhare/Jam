@@ -3,7 +3,7 @@
 {{@include /jam/css/site.css}}
 {{@include /jam/run/menu.jam}}
 
-{{@database bookingbee_uk}}
+{{@include /jam/run/login.inc}}
 
 {{@get sid filter sid = sid}}
 {{uid = sid.uid}}

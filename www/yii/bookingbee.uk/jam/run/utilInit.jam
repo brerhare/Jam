@@ -1,0 +1,30 @@
+{{@include /jam/sys/html/header.html}}
+
+Doing...<br>
+
+{{@database bookingbee_uk}}
+
+<br> Creating user+menu tables <br><br>
+{{@include /jam/run/utilCreateUserMenu.jam}}
+
+<br>Creating bb tables<br><br>
+{{@include /jam/run/utilCreateSeller.jam}}
+{{@include /jam/run/utilCreateEventTemplateFile.jam}}
+{{@include /jam/run/utilCreateEvent.jam}}
+
+<br> Populating...<br>
+{{@sql insert into seller values('1', 'sagvfdjigf39ij2jio42kfa9gv', 'B.E.I.R.C.', '01557 870337', '07899 75 2030', 'The Old Stable House, Senwick, Borgue, Kirkcudbright', 'DG6 4TP', 'fran@microboot.com', 'a.jpg')}}
+
+{{@sql insert into event_template_file values('1', 'sagvfdjigf39ij2jio42kfa9gv', '1', 'templateBeirc')}}
+{{@sql insert into event_template_file values('2', 'sagvfdjigf39ij2jio42kfa9gv', '1', 'templateBeircDogAgility')}}
+
+{{@sql insert into event values('1', 'sagvfdjigf39ij2jio42kfa9gv', '1', '1', 'Event 1 headline', '2017-06-01', '10:30:00', '1', 'long desc of horse event 1, multiline', 'Fran or Isla', '01557 870337', '079002 45850', 'The Old Stable House, Senwick, Borgue, Kirkcudbright', 'DG6 4TP', 'fran@microboot.com', '01.jpg', 'Some standard T&C here')}}
+{{@sql insert into event values('2', 'sagvfdjigf39ij2jio42kfa9gv', '1', '1', 'Event 2 headline', '2017-06-10', '11:30:00', '1', 'long desc of horse event 2, multiline', 'Some contact person', '01556 423890', '079433 49293', 'Someones House, Twynholm, D & G', 'DG6 3GN', 'fran@microboot.com', '02.jpg', 'Some standard T&C here')}}
+{{@sql insert into event values('3', 'sagvfdjigf39ij2jio42kfa9gv', '1', '2', 'Event 3 headline', '2017-06-02', '18:30:00', '1', 'long desc of dog event 3, multiline', 'Majik or Jack', '01557 870337', '079002 45850', 'The Old Stable House, Senwick, Borgue, Kirkcudbright', 'DG6 4TP', 'fran@microboot.com', '03.jpg', 'Some standard T&C here')}}
+{{@sql insert into event values('4', 'sagvfdjigf39ij2jio42kfa9gv', '1', '2', 'Event 4 headline', '2017-06-11', '19:30:00', '1', 'long desc of dog event 4, multiline', 'Some contact dog', '01556 423890', '079433 49293', 'Someones House, Twynholm, D & G', 'DG6 3GN', 'fran@microboot.com', '04.jpg', 'Some standard T&C here')}}
+
+<br>...done
+
+{{@include /jam/sys/html/footer.html}}
+
+
