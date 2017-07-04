@@ -332,6 +332,11 @@ class SiteController extends Controller
 			}
 
 			// Validate max slots (only if new)
+			if (($inserting) && ($this->checkRemainingSlots($member->id) == 0)) {
+				$retArr['error'] = "No more bookable slots for this member type";
+				echo CJSON::encode($retArr);
+				return;
+			}
 
 			// Validate 2 week ahead rule
 
@@ -399,9 +404,8 @@ Yii::log("EVENT AJAX CALL: " . $event->end, CLogger::LEVEL_WARNING, 'system.test
 	}
 
 	/* 0 = none, n = howmany, -1 = error */
-	public function getRemainingSlots($memberId)
+	public function checkRemainingSlots($memberId)
 	{
-/*
 		// Pick up the member
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("id = " . $memberId);
@@ -417,25 +421,26 @@ Yii::log("EVENT AJAX CALL: " . $event->end, CLogger::LEVEL_WARNING, 'system.test
 			return -1;
 
 		// Get starting Sunday and ending Saturday for week-based members
-		var $start = "";
-		var $end = "";
-		if ($memberType->week_month = 1)
-		{
-			// Weekly
-			$timestamp = time();
-			$weekDay = date( "w", $timestamp);
-			$date=date("Y-m-d");
-			if ($weekDay == 0)
-				$start = $date;
-			else
-				$start = date('Y-m-d', strtotime($date.'last sunday'));
-			$end = date('Y-m-d', strtotime($start.'next saturday'));
-		}
-		// Get first and last days of month for month-based members
-		if ($memberType->week_month = 2)
-		{
-		}
-*/
+		$start = "";
+		$timestamp = time();
+		$today = date("Y-m-d");
+
+		if ($memberType->week_month == 1)		// weekly
+			$start = date('Y-m-d', strtotime($today.'last sunday'));
+		else // if ($memberType->week_month == 2)	// monthly
+			$start = date('Y-m-d', strtotime($today.'last sunday -21 days'));
+
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("password = " . $member->password);
+		$criteria->addCondition("start >= " . "'" . $start . "'");
+		$events = Event::model()->findAll($criteria);
+		$usedSlots = 0;
+		foreach ($events as $event)
+			$usedSlots++;
+		Yii::log("  checkRemainingSlots start =[" . $start . "] and used [" . $usedSlots . "] of [" . $memberType->slots . "]", CLogger::LEVEL_WARNING, 'system.test.kim');
+		if ($usedSlots >= $memberType->slots)
+			return 0;
+		return 1;
 	}
 
 }
