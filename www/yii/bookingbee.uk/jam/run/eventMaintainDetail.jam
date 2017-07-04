@@ -2,10 +2,6 @@
 
 {{@XXXinclude /jam/css/site.css}}
 
-{{@XXXdatabase bookingbee_uk}}
-
-{{@get seller filter uid = uid}}
-
 {{@get event filter id = event.id}}
 
 <style>	/* For this embedded content within a tab */
@@ -20,7 +16,7 @@
 <form name="event_detail_form" class="uk-form uk-form-horizontal">
 <br>
 	<input type="hidden" name="seller.id" value={{seller.id}}>
-	<input type="hidden" name="event.uid" value="{{seller.uid}}">
+	<input type="hidden" name="event.sid" value="{{seller.sid}}">
 	<input type="hidden" name="event.seller_id" value="{{seller.id}}">
 	<input type="hidden" name="event.image" value="{{event.image}}">
 	{{@html gridrow start}}
@@ -51,11 +47,11 @@
 			<div class="uk-form-controls">
 				<select id="ID1___event____event_template_file_id" name="event.event_template_file_id" onchange="fn(this, event);" onkeyup="fn(this, event);" class="uk-form-width-medium">
 				{{tmp.selected = }}
-				{{@each event_template_file filter uid = uid, id = event.event_template_file_id}}
+				{{@each event_template_file filter sid = seller.sid, id = event.event_template_file_id}}
 					<option value="{{event_template_file.id}}" selected> {{event_template_file.file}} </option>
 				{{@end}}
 					<option value="0">None</option>
-				{{@each event_template_file filter uid = uid, id != event.event_template_file_id}}
+				{{@each event_template_file filter sid = seller.sid, id != event.event_template_file_id}}
 					<option value="{{event_template_file.id}}"> {{event_template_file.file}} </option>
 				{{@end}}
 				</select>

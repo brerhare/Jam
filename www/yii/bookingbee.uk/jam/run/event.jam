@@ -5,12 +5,6 @@
 
 {{@include /jam/run/login.inc}}
 
-{{sid = sagvfdjigf39ij2jio42kfa9gv}}
-
-{{@XXXrunaction checkLogin}}
-
-{{@XXXXXget seller filter sid = sid}}
-
 <br><br>
 
 {{@html container start center css='max-width:900px; Xpadding:0}}
@@ -23,10 +17,10 @@
 			<th> Date </th>
 			<th> Time </th>
 			<th> Active </th>
-			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('eventMaintain?uid={{uid}}&event.id=0')"> <i class="uk-icon-plus"></i> New</button> </th>
+			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('eventMaintain?event.id=0')"> <i class="uk-icon-plus"></i> New</button> </th>
 		</tr>
 {{@each event filter seller_id = seller.id, order by date ASC}}
-		<tr class="rowHighlight" onClick="runJam('eventMaintain?event.id={{event.id}}&uid={{uid}}');">
+		<tr class="rowHighlight" onClick="runJam('eventMaintain?event.id={{event.id}}');">
 			<td>{{event.headline}}</td>
 			<td>{{@datedmy event.date}}</td>
 			<td>{{event.time}}</td>
