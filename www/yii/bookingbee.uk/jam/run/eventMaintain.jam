@@ -5,9 +5,6 @@
 
 {{@include /jam/run/login.inc}}
 
-{{@get sid filter sid = sid}}
-{{uid = sid.uid}}
-{{@get seller filter uid = uid}}
 {{@get event filter id = event.id}}
 
 <br><br>
@@ -25,13 +22,12 @@
 		<input type="hidden" name="event.image" value="{{event.image}}">
 
 		<hr>            
-    {{@get sid filter sid = sid}}
-    {{@get seller filter uid = sid.uid}}
+    {{@get seller filter sid = seller.sid}}
     {{@get event filter id = event.id}}
     
     {{@html tabs embed
-        label=Details		action=/run/eventMaintainDetail?event.id={{event.id}}&sid={{sid.sid}}
-        label=Items			action=/run/eventMaintainItem?event.id={{event.id}}&sid={{sid.sid}}
+        label=Details		action=/run/eventMaintainDetail?event.id={{event.id}}
+        label=Items			action=/run/eventMaintainItem?event.id={{event.id}}
     }}
 
 	</Xform>
