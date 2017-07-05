@@ -38,4 +38,16 @@
 
 <br><br>
 
+{{@action newEventItem}}
+	{{dummyNull = }}
+	{{@get event_item filter sid = sid, event_id = event.id, description = dummyNull , price = 0}}
+	{{event_item.sid = sid}}
+	{{event_item.event_id = event.id}}
+	{{event_item.description = }}
+	{{event_item.price = 0}}
+	{{event_item.qty_order_max = 1}}
+	{{event_item.qty_remaining = 0}}
+	{{@update item event_item}}
+{{@end}}
+
 {{@include /jam/sys/html/footer.html}}
