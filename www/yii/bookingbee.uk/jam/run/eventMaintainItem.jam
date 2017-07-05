@@ -49,14 +49,14 @@
 	</td>
 	<td width="20&#37">
 		<span style="float:right;margin-right:6px">
-			<button class="uk-button uk-button-mini uk-button-success" onClick="runAction('newEventItem', ['sid={{seller.sid}}','event.id={{event.id}}'], '')"> <i class="uk-icon-plus"></i> New</button>
+			<button class="uk-button uk-button-mini uk-button-success" onClick="runAction('eventMaintainItem:newEventItem', ['sid={{seller.sid}}','event.id={{event.id}}'], '', updateEventItemList)"> <i class="uk-icon-plus"></i> New</button>
 		</span>
 	</td>
 </table>
 
 <ul class="uk-nestable" data-uk-nestable="{maxDepth:1}">
 
-{{@each event_item}}
+{{@each event_item filter id > 1, order by sequence}}
 
 	<li class="uk-nestable-item">
 
@@ -64,6 +64,7 @@
 			<table style="width:100&#37">
 				<tr>
 					<td width="90&#37">
+<!--					<textarea cols="20" rows="2" id="ID189___young_person___special_needs_notes" name="young_person.special_needs_notes" placeholder="Describe this item" Xonchange="fn(this, event);" Xonkeyup="fn(this, event);"></textarea>	-->
 						<input placeholder="Describe this item" style="width:100&#37" class="uk-nestable-nodrag" value="{{event_item.description}}"></input>
 					</td>
 					<td width="10&#37">
@@ -113,5 +114,28 @@
 
 {{@XXXhtml container end}}
 </div>
+
+<script>
+function updateEventItemList() {
+alert('xxx');return;
+	runAction('eventMaintainItem:showEventItemList', [], 'items');
+}
+</script>
+
+
+{{@action newEventItem}}
+	{{dummyNull = }}
+	{{@get event_item filter sid = sid, event_id = event.id, description = dummyNull , price = 0}}
+	{{event_item.sid = sid}}
+	{{event_item.event_id = event.id}}
+	{{event_item.sequence = 0}}
+	{{event_item.description = }}
+	{{event_item.price = 0}}
+	{{event_item.qty_order_max = 1}}
+	{{event_item.qty_remaining = 0}}
+	{{@Xupdate item event_item}}
+	{{@new item event_item}}
+{{@end}}
+
 
 {{@include /jam/sys/html/footer.html}}

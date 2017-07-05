@@ -9,7 +9,8 @@ Doing...
 {{@new table event_item
 	sid						string		required
 	event_id				number		required
-	description				string
+	sequence				number
+	description				text
 	price					number.2
 	qty_order_max			number
 	qty_remaining			number
@@ -17,6 +18,10 @@ Doing...
 
 {{@new index event_item eventindex
     event_id
+}}
+
+{{@new index event_item sequenceindex
+    sequence
 }}
 
 Done

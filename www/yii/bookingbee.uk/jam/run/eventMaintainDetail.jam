@@ -87,6 +87,7 @@ function clearFile() {
 }
 
 function postUpdate() {
+alert('ss');
 	window.setTimeout(runJam('event.jam', 1000));
 }
 
