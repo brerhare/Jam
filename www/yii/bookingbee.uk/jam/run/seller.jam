@@ -5,10 +5,6 @@
 
 {{@include /jam/run/login.inc}}
 
-{{@get sid filter sid = sid}}
-{{uid = sid.uid}}
-{{@get seller filter uid = uid}}
-
 <br><br>
 
 {{@html container start center css='max-width:900px; Xpadding:0}}

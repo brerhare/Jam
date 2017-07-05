@@ -27,6 +27,7 @@
 </style>
 
 {{@XXXhtml container start center css='max-width:900px; Xpadding:0}}
+
 <div class="uk-container embed-uk-container uk-overflow-container uk-container-center " style="max-width:900px; Xpadding:0"
 
 <form name="event_item_form" class="uk-form uk-form-horizontal">
@@ -48,14 +49,14 @@
 	</td>
 	<td width="20&#37">
 		<span style="float:right;margin-right:6px">
-			<button class="uk-button uk-button-mini uk-button-success" onClick="runJam('eventMaintain?event.id=0')"> <i class="uk-icon-plus"></i> New</button>
+			<button class="uk-button uk-button-mini uk-button-success" onClick="runAction('newEventItem', ['sid={{seller.sid}}','event.id={{event.id}}'], '')"> <i class="uk-icon-plus"></i> New</button>
 		</span>
 	</td>
 </table>
 
 <ul class="uk-nestable" data-uk-nestable="{maxDepth:1}">
 
-{{@each event}}
+{{@each event_item}}
 
 	<li class="uk-nestable-item">
 
@@ -63,7 +64,7 @@
 			<table style="width:100&#37">
 				<tr>
 					<td width="90&#37">
-						<input placeholder="Describe this item" style="width:100&#37" class="uk-nestable-nodrag"></input>
+						<input placeholder="Describe this item" style="width:100&#37" class="uk-nestable-nodrag" value="{{event_item.description}}"></input>
 					</td>
 					<td width="10&#37">
 						<span style="float:right;">
@@ -78,16 +79,16 @@
 					<td width="25&#37">
 						<span style="float:left;">
 							<span> Price </span>
-							<input placeholder="" style="width:75px" class="uk-nestable-nodrag"></input>
+							<input placeholder="" style="width:75px" class="uk-nestable-nodrag" value="{{event_item.price}}"></input>
 						</span>
 					</td>
 					<td width="65&#37">
 						<span style="float:right;">
 							<span> Qty remaining </span>
-							<input placeholder="Unlimited" style="width:75px" class="uk-nestable-nodrag"></input>
+							<input placeholder="" style="width:75px" class="uk-nestable-nodrag" value="{{event_item.qty_remaining}}"></input>
 							&nbsp&nbsp&nbsp&nbsp&nbsp
 							<span> Max qty per order </span>
-							<input placeholder="" style="width:75px" class="uk-nestable-nodrag"></input>
+							<input placeholder="" style="width:75px" class="uk-nestable-nodrag" value="{{event_item.qty_order_max}}"></input>
 					</td>
 					<td width="10&#37">
 					</td>
