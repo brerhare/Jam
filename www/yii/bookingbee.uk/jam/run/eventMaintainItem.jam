@@ -27,6 +27,7 @@
 </style>
 
 {{@XXXhtml container start center css='max-width:900px; Xpadding:0}}
+
 <div class="uk-container embed-uk-container uk-overflow-container uk-container-center " style="max-width:900px; Xpadding:0"
 
 <form name="event_item_form" class="uk-form uk-form-horizontal">
@@ -48,57 +49,12 @@
 	</td>
 	<td width="20&#37">
 		<span style="float:right;margin-right:6px">
-			<button class="uk-button uk-button-mini uk-button-success" onClick="runJam('eventMaintain?event.id=0')"> <i class="uk-icon-plus"></i> New</button>
+			<button class="uk-button uk-button-mini uk-button-success" onClick="runAction('eventMaintainItem:newEventItem', ['sid={{seller.sid}}','event.id={{event.id}}', 'seq='+nextSequence], '', newEventItem)"> <i class="uk-icon-plus"></i> New</button>
 		</span>
 	</td>
 </table>
 
-<ul class="uk-nestable" data-uk-nestable="{maxDepth:1}">
-
-{{@each event}}
-
-	<li class="uk-nestable-item">
-
-		<div class="uk-nestable-panel" style="padding:5px">
-			<table style="width:100&#37">
-				<tr>
-					<td width="90&#37">
-						<input placeholder="Describe this item" style="width:100&#37" class="uk-nestable-nodrag"></input>
-					</td>
-					<td width="10&#37">
-						<span style="float:right;">
-							<button class="uk-button uk-button-mini uk-button-primary" onClick="confirmDelete('{{id}}','{{event.headline}}')"> <i class="uk-icon-copy"></i> </button>
-							<button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{event.headline}}')"> <i class="uk-icon-trash"></i> </button>
-						</span>
-					</td>
-				</tr>
-			</table>
-			<table style="background-color:#eeeeee; width:100&#37">
-				<tr>
-					<td width="25&#37">
-						<span style="float:left;">
-							<span> Price </span>
-							<input placeholder="" style="width:75px" class="uk-nestable-nodrag"></input>
-						</span>
-					</td>
-					<td width="65&#37">
-						<span style="float:right;">
-							<span> Qty remaining </span>
-							<input placeholder="Unlimited" style="width:75px" class="uk-nestable-nodrag"></input>
-							&nbsp&nbsp&nbsp&nbsp&nbsp
-							<span> Max qty per order </span>
-							<input placeholder="" style="width:75px" class="uk-nestable-nodrag"></input>
-					</td>
-					<td width="10&#37">
-					</td>
-				</tr>
-			</table>
-		</div>
-
-	</li>
-
-{{@end}}
-
+<ul id="eventItemList" class="uk-nestable" data-uk-nestable="{maxDepth:1}">
 </ul>
 
 		{{@html gridcol end}}
@@ -112,5 +68,97 @@
 
 {{@XXXhtml container end}}
 </div>
+
+<script>
+var nextSequence = 0;
+{{newSequence = 0}}
+window.onload = function() {
+	{{@each event_item filter id > 0, order by sequence}}
+		{{newSequence = newSequence + 1}}
+		{{event_item.sequence = newSequence}}
+		{{@amend item event_item}}
+		appendEventItemList({{event_item.id}});
+	{{@end}}
+	nextSequence = {{newSequence + 1}};
+}
+
+function confirmDelete(id, displayInfo) {
+//	window.event.cancelBubble = true;   // Prevent any further events
+//	var result = confirm('Confirm delete of item ' + displayInfo);
+//	if (result)
+//		runAction('delete', ['event_item.id='+id], '', runJam);
+}
+
+function newEventItem() {
+	nextSequence++;
+	appendEventItemList(lastCreatedId);
+}
+
+function appendEventItemList(id) {
+	var eiList = $('#eventItemList');
+	var eiObj = null;
+	var htmlUser = "<li class='uk-nestable-item'>" + "<div class='uk-nestable-panel'> ... </div>" + "</li>";
+
+	var htmlUser = '' +
+	'<li id="ei_{{event_item.id}}" name="ei_{{event_item.id}}" class="uk-nestable-item">' +
+	'	<div class="uk-nestable-panel" style="padding:5px">' +
+	'		<table style="width:100&#37">' +
+	'			<tr>' +
+	'				<td width="90&#37">' +
+'<!--					<textarea cols="20" rows="2" id="ID189___young_person___special_needs_notes" name="young_person.special_needs_notes" placeholder="Describe this item" Xonchange="fn(this, event);" Xonkeyup="fn(this, event);"></textarea>	-->' +
+	'					<input placeholder="Describe this item" style="width:100&#37" class="uk-nestable-nodrag" value="{{event_item.description}}"></input>' +
+	'				</td>' +
+	'				<td width="10&#37">' +
+	'					<span style="float:right;">' +
+	'						<button class="uk-button uk-button-mini uk-button-primary" onClick="confirmClone(' + "'" + {{event_item.id}} + "'," + "'" + '{{event.headline}}' + "'" + ')"> <i class="uk-icon-copy"></i> </button>' +
+	'						<button class="uk-button uk-button-mini uk-button-danger"  onClick="confirmDelete(' + "'" + {{event_item.id}} + "'," + "'" + '{{event.headline}}' + "'"  + ')"> <i class="uk-icon-trash"></i> </button>' +
+	'					</span>' +
+	'				</td>' +
+	'			</tr>' +
+	'		</table>' +
+	'		<table style="background-color:#eeeeee; width:100&#37">' +
+	'			<tr>' +
+	'				<td width="25&#37">' +
+	'					<span style="float:left;">' +
+	'						<span> Price </span>' +
+	'						<input placeholder="" style="width:75px" class="uk-nestable-nodrag" value="{{event_item.price}}"></input>' +
+	'					</span>' +
+	'				</td>' +
+	'				<td width="65&#37">' +
+	'					<span style="float:right;">' +
+	'						<span> Qty remaining </span>' +
+	'						<input placeholder="" style="width:75px" class="uk-nestable-nodrag" value="{{event_item.qty_remaining}}"></input>' +
+	'						&nbsp&nbsp&nbsp&nbsp&nbsp' +
+	'						<span> Max qty per order </span>' +
+	'						<input placeholder="" style="width:75px" class="uk-nestable-nodrag" value="{{event_item.qty_order_max}}"></input>' +
+	'				</td>' +
+	'				<td width="10&#37">' +
+	'				</td>' +
+	'			</tr>' +
+	'		</table>' +
+	'	</div>' +
+	'</li>' +
+	'';
+
+	$(htmlUser).appendTo($(eiList));
+}
+</script>
+
+
+{{@action newEventItem}}
+	{{dummyNull = }}
+	{{@get event_item filter sid = sid, event_id = event.id, description = dummyNull , price = 0}}
+	{{event_item.sid = sid}}
+	{{event_item.event_id = event.id}}
+	{{event_item.sequence = seq}}
+	{{event_item.description = }}
+	{{event_item.price = 0}}
+	{{event_item.qty_order_max = 1}}
+	{{event_item.qty_remaining = 0}}
+	{{@Xupdate item event_item}}
+	{{@new item event_item}}
+	<script> lastCreatedId = {{event_item.id}}; </script>
+{{@end}}
+
 
 {{@include /jam/sys/html/footer.html}}
