@@ -997,15 +997,17 @@ int control(int startIx, char *defaultTableName) {
 			}
 			if (startIx == 0)
 				logMsg(LOGERROR, "Cant find action [%s] to run from within jam script", jam[ix]->args);
-			else
+			else {
 				logMsg(LOGINFO, "Running @action [%s] within jam script", jam[startIx]->args);
-			if (jam[startIx])
-				emitStd(jam[startIx]->trailer);
-			if (jam[startIx])
-				startIx++;
-
-			control(startIx, NULL);
-			logMsg(LOGINFO, "Finished running action [%s] within jam script", jam[startIx]->args);
+				if (jam[startIx])
+					emitStd(jam[startIx]->trailer);
+				if (jam[startIx])
+					startIx++;
+				if (startIx != 0) {
+					control(startIx, NULL);
+					logMsg(LOGINFO, "Finished running action [%s] within jam script", jam[startIx]->args);
+				}
+			}
 			emitStd(jam[ix]->trailer);
 //		-------------------------------------
 		} else if (!(strcmp(cmd, "@action"))) {
