@@ -35,7 +35,6 @@ Doing...<br>
 {{menu.text = Logout}}  {{menu.href = /run/login.jam}} {{menu.parent_id = 0}}       {{@new item menu}}
 
 
-
 {{@action DUMMY_TO_PREVENT_NEXT_MENU_DISPLAYING}}
 
 {{menu.text = Setup}} {{menu.href = /run/seller.jam}}   {{menu.parent_id = 0}}   {{@new item menu}}
@@ -58,6 +57,16 @@ make a user <br>
 {{user.first_name = kim}}
 {{user.last_name = hancock}}
 {{user.password = kimlo,}}
+{{@new item user}}
+
+{{@randomnumber newfield=myRand}}
+{{user.cookie = myRand}}
+{{user.logged_in = 0}}
+{{user.user_data = sagvfdjigf39ij2jio42kfa9gv}}
+{{user.handle = fran}}
+{{user.first_name = fran}}
+{{user.last_name = hancock}}
+{{user.password = scrappy9}}
 {{@new item user}}
 
 {{@randomnumber newfield=myRand}}
