@@ -1,3 +1,5 @@
+<?php header("Location: http://www.bookingbee.uk/run/menu"); ?>
+
 <?php
 
 // change the following paths if necessary
