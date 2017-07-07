@@ -77,7 +77,7 @@ var typingInterval = 1000;	// msec
 
 {{newSequence = 0}}
 window.onload = function() {
-	{{@each event_item filter id > 0, order by sequence}}
+	{{@each event_item filter id > 0, sid = seller.sid, event_id = event.id, order by sequence}}
 		{{newSequence = newSequence + 1}}
 		{{event_item.sequence = newSequence}}
 		{{@amend item event_item}}
