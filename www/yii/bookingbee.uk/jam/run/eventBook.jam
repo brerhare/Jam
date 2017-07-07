@@ -1,7 +1,7 @@
 {{@include /jam/sys/html/header.html}}
 
 {{@include /jam/css/site.css}}
-{{@include /jam/run/menu.jam}}
+{{@XXXinclude /jam/run/menu.jam}}
 
 {{@include /jam/run/login.inc}}
 
@@ -14,6 +14,7 @@
 <div name="content">
 
 	<Xform name="event_container" class="uk-form uk-form-horizontal">
+		<center><h3> Booking </h3></center>
 		<center><h3> {{seller.name}} {{event.headline}}</h3></center>
 
 		<input type="hidden" name="seller.id" value={{seller.id}}>
@@ -22,11 +23,6 @@
 		<input type="hidden" name="event.image" value="{{event.image}}">
 
 		<hr>            
-
-    {{@html tabs embed
-        label=Details		action=/run/eventMaintainDetail?event.id={{event.id}}
-        label=Items			action=/run/eventMaintainItem?event.id={{event.id}}
-    }}
 
 	</Xform>
 
