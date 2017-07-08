@@ -38,6 +38,7 @@
 
 <script>
 addLoadEvent(function() {
+	// Equal height jquery ui tabs
 	$("#jamTabId").tabs({heightStyle:"auto"});
 });
 </script>

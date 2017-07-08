@@ -4,11 +4,12 @@
 
 label {text-align: right;}
 
-html, body {
+html, body, .ui-widget-content {
 	margin: 0;
 	padding: 0;
 	height: 100%;
 	width: 100%;
+	color: #000000;
 }
 html {
 	background: #2c333b;
@@ -18,6 +19,23 @@ html {
 	background-color: #ddf0ff;
 	cursor:pointer;
 }
+
+/* Smartmenu templates In quotes
+{{@template FONTDOWNLOAD PT+Sans+Narrow:400,700}}
+{{@template FONTFAMILY "PT Sans Narrow", "Arial Narrow", Arial, Helvetica, sans-serif}}
+{{@template FONTSIZE 18}}
+{{@template BACKCOLOR_FROM #c7d1e4}}
+{{@template BACKCOLOR_TO #2c333b}}
+{{@template ACTIVECOLOR_FROM #9dbbcb}}
+{{@template ACTIVECOLOR_TO #5c696f}}
+{{@template ARROWCOLOR #2e2e2e}}
+{{@template CORNERPIXELS 2}}
+{{@template MAINTEXTCOLOR #f6f6f6}}
+{{@template SUBTEXTCOLOR #000000}}
+// @@TODO These next two dont seem to affect anything at all
+{{@template CURRENTCOLOR_FROM #80ff80}}
+{{@template CURRENTCOLOR_TO #00cc00}}
+*/
 
 /* Uikit */
 

@@ -66,6 +66,9 @@ MENU
 {{@get user filter id = user.id}}
 
 
+<!-- Menu templating in here -->
+{{@include /jam/css/site.css}}
+
 <!-- Call the addon -->
 {{@include /jam/run/sys/smartMenu.jam}}
 
