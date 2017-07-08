@@ -1,19 +1,24 @@
+<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+
 <style>
 
 /* General stuff */
 
-label {text-align: right;}
-
 html, body, .ui-widget-content {
+	font-family: "Open Sans", "Raleway", "sans-serif";
+	font-weight: 500;
 	margin: 0;
 	padding: 0;
 	height: 100%;
 	width: 100%;
 	color: #000000;
 }
+
 html {
 	background: #2c333b;
 }
+
+label {text-align: right;}
 
 .rowHighlight:hover {
 	background-color: #ddf0ff;
@@ -21,8 +26,11 @@ html {
 }
 
 /* Smartmenu templates In quotes
-{{@template FONTDOWNLOAD PT+Sans+Narrow:400,700}}
-{{@template FONTFAMILY "PT Sans Narrow", "Arial Narrow", Arial, Helvetica, sans-serif}}
+{{@XXXtemplate FONTDOWNLOAD PT+Sans+Narrow:400,700}}
+{{@XXXtemplate FONTFAMILY "PT Sans Narrow", "Arial Narrow", Arial, Helvetica, sans-serif}}
+{{@template FONTDOWNLOAD Raleway:300,400,500,600,700}}
+{{@template FONTFAMILY "Raleway", "sans-serif"}}
+{{@template FONTWEIGHT normal}}
 {{@template FONTSIZE 18}}
 {{@template BACKCOLOR_FROM #c7d1e4}}
 {{@template BACKCOLOR_TO #2c333b}}
@@ -42,6 +50,14 @@ html {
 .uk-container { border-radius: 10px; padding:50px; background-color: #dee6f1; }
 
 /* Jquery tabs */
+
+.ui-tabs, .ui-tabs-nav {
+	padding:3px;
+}
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-active {
+	padding-bottom:2px;
+}
 
 .ui-tabs-panel {
 	background-color: #dee6f1 !important;
