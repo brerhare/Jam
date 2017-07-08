@@ -33,6 +33,7 @@ Doing...<br>
 {{menu.text = Events}}    {{menu.href = /run/event.jam}}   {{menu.parent_id = 0}} {{@new item menu}}
 {{menu.text = Your details}}    {{menu.href = /run/seller.jam}}   {{menu.parent_id = 0}} {{@new item menu}}
 {{menu.text = Logout}}  {{menu.href = /run/login.jam}} {{menu.parent_id = 0}}       {{@new item menu}}
+{{menu.text = What?}}  {{menu.href = #}} {{menu.parent_id = 0}}       {{@new item menu}}
 
 
 {{@action DUMMY_TO_PREVENT_NEXT_MENU_DISPLAYING}}

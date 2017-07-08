@@ -76,7 +76,7 @@ var typingTimer;
 var typingInterval = 1000;	// msec
 
 {{newSequence = 0}}
-window.onload = function() {
+addLoadEvent(function() {
 	{{@each event_item filter id > 0, sid = seller.sid, event_id = event.id, order by sequence}}
 		{{newSequence = newSequence + 1}}
 		{{event_item.sequence = newSequence}}
@@ -84,7 +84,7 @@ window.onload = function() {
 		{{@runaction prepareItemFields}}
 	{{@end}}
 	nextSequence = {{newSequence + 1}};
-}
+});
 
 function confirmDelete(id) {
 	window.event.cancelBubble = true;   // Prevent any further events
