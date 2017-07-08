@@ -36,4 +36,10 @@
 
 <br><br>
 
+<script>
+addLoadEvent(function() {
+	$("#jamTabId").tabs({heightStyle:"auto"});
+});
+</script>
+
 {{@include /jam/sys/html/footer.html}}

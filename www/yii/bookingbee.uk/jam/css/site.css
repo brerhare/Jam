@@ -1,5 +1,7 @@
 <style>
 
+/* General stuff */
+
 label {text-align: right;}
 
 html, body {
@@ -12,12 +14,32 @@ html {
 	background: #2c333b;
 }
 
-
-.uk-container { border-radius: 10px; padding:50px; background-color: #dee6f1; }
-
 .rowHighlight:hover {
 	background-color: #ddf0ff;
 	cursor:pointer;
 }
+
+/* Uikit */
+
+.uk-container { border-radius: 10px; padding:50px; background-color: #dee6f1; }
+
+/* Jquery tabs */
+
+.ui-tabs-panel {
+	background-color: #dee6f1 !important;
+}
+.ui-state-active {
+	background: #dee6f1 !important;
+	border: #ff0000 !important;
+}
+.ui-state-active a {
+	color: #000000 !important;
+}
+/* .xui-tabs .xui-tabs-nav { */
+
+/*
+.ui-state-default, .ui-widget-content .ui-state-default, .ui-widget-header .ui-state-default {
+	background: #007fff !important;
+} */
 
 </style>

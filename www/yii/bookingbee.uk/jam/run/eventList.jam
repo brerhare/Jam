@@ -25,7 +25,7 @@
 			<div style="Xpadding-bottom:35px;" class="uk-width-large-1-LARGEVIEWBLOCKS  uk-width-medium-1-MEDIUMVIEWBLOCKS  uk-width-1-SMALLVIEWBLOCKS">
 
 				<div class="uk-panel uk-panel-box" style='Xbackground-color:transparent; Xborder-radius:BORDERRADIUS; Xborder:BORDERWIDTH solid BORDERCOLOR'>
-					<div class="uk-panel-teaser" onClick="sendTo('http://bookingbee.uk/run/eventBook?event={{event.id}}')">
+					<div class="uk-panel-teaser" onClick="sendTo('http://bookingbee.uk/run/eventBook?eventId={{event.id}}')">
 						<center><a href="#"><img src="http://bookingbee.uk/jam/upload/event/image/{{event.image}}"></a> </center>
 						<p>{{event.headline}}</p>
 					</div>

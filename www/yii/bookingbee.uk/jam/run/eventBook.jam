@@ -3,9 +3,10 @@
 {{@include /jam/css/site.css}}
 {{@XXXinclude /jam/run/menu.jam}}
 
-{{@include /jam/run/login.inc}}
+{{@database bookingbee_uk}}
 
-{{@get event filter id = event.id}}
+{{@get event filter id = eventId}}
+{{@get seller filter id = event.seller_id}}
 
 <br><br>
 
@@ -14,16 +15,18 @@
 <div name="content">
 
 	<Xform name="event_container" class="uk-form uk-form-horizontal">
-		<center><h3> Booking </h3></center>
-		<center><h3> {{seller.name}} {{event.headline}}</h3></center>
-
-		<input type="hidden" name="seller.id" value={{seller.id}}>
-		<input type="hidden" name="event.uid" value="{{seller.uid}}">
-		<input type="hidden" name="event.seller_id" value="{{seller.id}}">
-		<input type="hidden" name="event.image" value="{{event.image}}">
-
+		<center><p> <img src="http://bookingbee.uk/jam/upload/seller/image/{{seller.image}}" style="height:100px"> {{seller.name}} </p></center>
+		<center><h3> {{event.headline}}</h3></center>
+		<center><p> When {{event.date}} {{event.time}} </p></center>
+		<center><p> Tel {{event.landline}} {{event.mobile}} </p></center>
+		<center><img src="http://bookingbee.uk/jam/upload/event/image/{{event.image}}" style="height:100px"></center>
+{{@each event_item filter event_id = event.id}}
+		<div>
+			<span>{{event_item.description}}</span>
+			<span>{{event_item_qty_order_max}}</span>
+		</div>
+{{@end}}
 		<hr>            
-
 	</Xform>
 
 </div>
