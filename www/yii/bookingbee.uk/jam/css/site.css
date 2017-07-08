@@ -34,9 +34,9 @@ label {text-align: right;}
 {{@template FONTSIZE 18}}
 {{@template BACKCOLOR_FROM #c7d1e4}}
 {{@template BACKCOLOR_TO #2c333b}}
-{{@template ACTIVECOLOR_FROM #9dbbcb}}
-{{@template ACTIVECOLOR_TO #5c696f}}
-{{@template ARROWCOLOR #2e2e2e}}
+{{@template ACTIVECOLOR_FROM #505863}}
+{{@template ACTIVECOLOR_TO #2c333b}}
+{{@template ARROWCOLOR #2c333b}}
 {{@template CORNERPIXELS 2}}
 {{@template MAINTEXTCOLOR #f6f6f6}}
 {{@template SUBTEXTCOLOR #000000}}
