@@ -17,7 +17,7 @@
 			<th> Date </th>
 			<th> Time </th>
 			<th> Active </th>
-			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('eventMaintain?event.id=0')"> <i class="uk-icon-plus"></i> New</button> </th>
+			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('eventMaintain?event.id=0')" data-intro="Click here to start a new event" data-position="right"> <i class="uk-icon-plus"></i> New</button> </th>
 		</tr>
 {{@each event filter seller_id = seller.id, order by date ASC}}
 		<tr class="rowHighlight" onClick="runJam('eventMaintain?event.id={{event.id}}');">
