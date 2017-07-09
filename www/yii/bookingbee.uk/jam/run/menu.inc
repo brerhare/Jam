@@ -19,11 +19,15 @@
 
 <!-- Define any js:hooks here -->
 
+<!-- Include chardinjs (see https://github.com/heelhook/chardin.js) -->
 <link href="/jam/sys/extern/chardinjs/chardinjs.css" rel="stylesheet">
 <script src="/jam/sys/extern/chardinjs/chardinjs.js"></script>
 
 <script>
 function callChardinJs() {
+	// Add the following to your elements
+	// data-intro="Text to show with the instructions"
+	// data-position="left, top, right, bottom" (where to place the text with respect to the element)
 	$('body').chardinJs('start');
 }
 </script>

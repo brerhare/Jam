@@ -11,15 +11,20 @@
 
 <center><h3> {{seller.name}} Events </h3></center>
 
-	<table id="printTable" class="testgrid sortable searchTable uk-table uk-table-condensed" style="border:1px solid #dddddd">
+<table id="printTable" class="testgrid sortable searchTable uk-table uk-table-condensed" style="border:1px solid #dddddd">
+	<thead>
 		<tr>
 			<th> Headline </th>
 			<th> Date </th>
 			<th> Time </th>
 			<th> Active </th>
-			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('eventMaintain?event.id=0')" data-intro="Click here to start a new event" data-position="right"> <i class="uk-icon-plus"></i> New</button> </th>
+			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('eventMaintain?event.id=0')" help-id="newButton"> <i class="uk-icon-plus"></i> New</button> </th>
 		</tr>
+	</thead>
+	<tbody help-id="eventList">
+{{helpId = 0}}
 {{@each event filter seller_id = seller.id, order by date ASC}}
+	{{helpId = helpId + 1}}
 		<tr class="rowHighlight" onClick="runJam('eventMaintain?event.id={{event.id}}');">
 			<td>{{event.headline}}</td>
 			<td>{{@datedmy event.date}}</td>
@@ -27,14 +32,15 @@
 			<td>{{event.active}}</td>
 			<td>
 				<span data-uk-tooltip="" title="Make a copy of this event">
-					<button class="uk-button uk-button-mini uk-button-primary" onClick="confirmCopy('{{id}}','{{event.headline}}')"> <i class="uk-icon-copy"></i> </button>
+					<button class="uk-button uk-button-mini uk-button-primary" onClick="confirmCopy('{{id}}','{{event.headline}}')" help-id="cloneButton{{helpId}}"> <i class="uk-icon-copy"></i> </button>
 				</span>
 				<span data-uk-tooltip="" title="Delete this event">
-					<button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{event.headline}}')"> <i class="uk-icon-trash"></i> </button>
+					<button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{event.headline}}')" help-id="deleteButton{{helpId}}"> <i class="uk-icon-trash"></i> </button>
 				</span>
 			</td>
 		</tr>
 {{@end}}
+	</tbody>
 	</table>
 
 <!--
@@ -54,6 +60,13 @@
 </div>
 
 <script>
+
+// Init help
+helpAdd("newButton",     "Click here to start a new event",        "right");
+helpAdd("cloneButton1",  "Make an exact copy of an event",         "right");
+helpAdd("deleteButton2", "Delete an event",                        "right");
+helpAdd("eventList",     "Your events. Click one to work with it", "left");
+
 function confirmDelete(id, displayInfo) {
     window.event.cancelBubble = true;   // Prevent any further events
     var result = confirm('Confirm delete of item ' + displayInfo);
