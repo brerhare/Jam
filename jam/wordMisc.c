@@ -67,8 +67,8 @@ int wordMiscSkip(int ix, char *defaultTableName) {
 	free(tmp);
 	if (lhs) free(lhs);
 	if (rhs) free(rhs);
-	if (lhsVar) deleteVar(lhsVar);
-	if (rhsVar) deleteVar(rhsVar);
+	///// if (lhsVar) deleteVar(lhsVar);
+	///// if (rhsVar) deleteVar(rhsVar);
 	if (!skipping)
     	emitStd(jam[ix]->trailer);
 }

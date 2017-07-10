@@ -16,18 +16,18 @@
 
 {{@template MENU
 	<ul id="main-menu" class="sm sm-blue">
-	{{@each content_block filter parent_id = 0, active = 1}}
+	{{@each content_block filter parent_id = 0, active = 1, order by sequence}}
 		<li> <a href="?layout=index&page={{url}}"> {{title}} </a>
 		{{openUL2 = <ul>}}
 		{{closeUL2 = ''}}
-		{{@each content_block filter parent_id = id, active = 1}}
+		{{@each content_block filter parent_id = id, active = 1, order by sequence}}
 			{{openUL2}}
 			{{openUL2 = ''}}
 			<li> <a href="?layout=index&page={{url}}"> {{title}} </a>
 
 			{{openUL3 = <ul>}}
 			{{closeUL3 = ''}}
-			{{@each content_block filter parent_id = id, active = 1}}
+			{{@each content_block filter parent_id = id, active = 1, order by sequence}}
 				{{openUL3}}
 				{{openUL3 = ''}}
 				<li> <a href="?layout=index&page={{url}}"> {{title}} </a> </li>

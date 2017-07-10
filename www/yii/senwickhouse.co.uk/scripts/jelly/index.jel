@@ -49,6 +49,7 @@ jam.embed = /run/mobile_menu.jam
 #### Slider ###########################################
 
 	[slider]
+	condition = @PAGE=@HOMEPAGE
 	css.width = 100%
   	css.height = 32%
 	css.margin-top = 8px
@@ -73,43 +74,44 @@ jam.embed = /run/mobile_menu.jam
 			[home-left]
 			css.width = 33%
 			css.min-width = 150px
-			addon.global.column.name = home-left
-			addon.global.column.width = 100%
-			addon.global.column.internal-width = 100%
-			addon.global.column.content-width = 80%
-			addon.global.column.internal-color = transparent
-			addon.global.column.background-color = transparent
-			addon.global.column.top-height = 10px
-			addon.global.column.bottom-height = 0px
+			#addon.global.column.name = home-left
+			#addon.global.column.width = 100%
+			#addon.global.column.internal-width = 100%
+			#addon.global.column.content-width = 80%
+			#addon.global.column.internal-color = transparent
+			#addon.global.column.background-color = transparent
+			#addon.global.column.top-height = 10px
+			#addon.global.column.bottom-height = 0px
 			
 			[home-center]
 			css.width = 33%
 			css.min-width = 150px
-			addon.global.column.name = home-centre
-			addon.global.column.width = 100%
-			addon.global.column.internal-width = 100%
-			addon.global.column.content-width = 80%
-			addon.global.column.internal-color = transparent
-			addon.global.column.background-color = transparent
-			addon.global.column.top-height = 10px
-			addon.global.column.bottom-height = 10px
+			#addon.global.column.name = home-centre
+			#addon.global.column.width = 100%
+			#addon.global.column.internal-width = 100%
+			#addon.global.column.content-width = 80%
+			#addon.global.column.internal-color = transparent
+			#addon.global.column.background-color = transparent
+			#addon.global.column.top-height = 10px
+			#addon.global.column.bottom-height = 10px
 			
 			[home-right]
 			css.width = 33%
 			css.min-width = 150px
-			addon.global.column.name = home-right
-			addon.global.column.width = 100%
-			addon.global.column.internal-width = 100%
-			addon.global.column.content-width = 80%
-			addon.global.column.internal-color = transparent
-			addon.global.column.background-color = transparent
-			addon.global.column.top-height = 10px
-			addon.global.column.bottom-height = 10px
+			#addon.global.column.name = home-right
+			#addon.global.column.width = 100%
+			#addon.global.column.internal-width = 100%
+			#addon.global.column.content-width = 80%
+			#addon.global.column.internal-color = transparent
+			#addon.global.column.background-color = transparent
+			#addon.global.column.top-height = 10px
+			#addon.global.column.bottom-height = 10px
 		
 		[pages-content]
 		condition = @PAGE!=contact
 		db.table = ContentBlock
 		db.filter = url=$_GET['page']
+		db.order = sequence
 		db.error = Sorry, I could not find the page $_GET['page']
 		html.raw = ContentBlock.content
 		

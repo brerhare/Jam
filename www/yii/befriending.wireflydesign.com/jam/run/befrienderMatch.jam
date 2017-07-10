@@ -41,10 +41,10 @@
 						{{@end}}
 
 						<tr bgcolor='#e9e9e9'> <th colspan=6>Previous Matches</th> </tr>
-						{{@each match_history filter befriender_id = befriender.id}}
-						{{@XXeach match_yp filter befriender_id = befriender.id, match_end != 0000-00-00}}
-							{{@get young_person filter id = match_history.young_person_id}}
-							{{@XXget young_person filter id = match_yp.young_person_id}}
+						{{@XXeach match_history filter befriender_id = befriender.id}}
+						{{@each match_yp filter befriender_id = befriender.id, match_end != 0000-00-00}}
+							{{@XXget young_person filter id = match_history.young_person_id}}
+							{{@get young_person filter id = match_yp.young_person_id}}
 							{{@get global filter id = young_person.global_id}}
 								<tr bgcolor='#e9e9e9'>
 									<td> {{global.forename}} {{global.surname}} </td>
