@@ -22,7 +22,7 @@
           return false;
         }
         this._add_overlay_layer();
-        _ref = this.$el.find('*[data-intro]:visible');
+        _ref = this.$el.find('*[help-text]:visible');
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           el = _ref[_i];
           this._show_element(el);
@@ -42,7 +42,7 @@
         var el, _i, _len, _ref, _results;
 
         if (this._overlay_visible()) {
-          _ref = this.$el.find('*[data-intro]:visible');
+          _ref = this.$el.find('*[help-text]:visible');
           _results = [];
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             el = _ref[_i];
@@ -100,13 +100,13 @@
           return _this.stop();
         };
         return setTimeout(function() {
-          styleText += "opacity: .8;opacity: .8;-ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=80)';filter: alpha(opacity=80);";
+          styleText += "opacity: .5;opacity: .5;-ms-filter: 'progid:DXImageTransform.Microsoft.Alpha(Opacity=50)';filter: alpha(opacity=50);";
           return overlay_layer.setAttribute("style", styleText);
         }, 10);
       };
 
       chardinJs.prototype._get_position = function(element) {
-        return element.getAttribute('data-position') || 'bottom';
+        return element.getAttribute('help-pos') || 'bottom';
       };
 
       chardinJs.prototype._place_tooltip = function(element) {
@@ -161,13 +161,13 @@
         tooltip_layer = document.createElement("div");
         $(element).data('helper_layer', helper_layer).data('tooltip_layer', tooltip_layer);
         if (element.id) {
-          helper_layer.setAttribute("data-id", element.id);
+          helper_layer.setAttribute("help-id", element.id);
         }
         helper_layer.className = "chardinjs-helper-layer chardinjs-" + (this._get_position(element));
         this._position_helper_layer(element);
         this.$el.get()[0].appendChild(helper_layer);
         tooltip_layer.className = "chardinjs-tooltip chardinjs-" + (this._get_position(element));
-        tooltip_layer.innerHTML = "<div class='chardinjs-tooltiptext'>" + (element.getAttribute('data-intro')) + "</div>";
+        tooltip_layer.innerHTML = "<div class='chardinjs-tooltiptext'>" + (element.getAttribute('help-text')) + "</div>";
         helper_layer.appendChild(tooltip_layer);
         this._place_tooltip(element);
         element.className += " chardinjs-show-element";
