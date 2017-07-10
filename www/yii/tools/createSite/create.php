@@ -97,7 +97,7 @@ if (!($dbInit = file_get_contents($siteDir . "/protected/data/dbinit.sh")))
 	die("Failed to read dbinit.sh file - aborting\n");
 $dbInit = str_replace("<username>", $manifest['dbuser'], $dbInit);
 $dbInit = str_replace("<dbname>", $manifest['dbname'], $dbInit);
-$dbInit = str_replace("<password>", $manifest['dbpass'], $dbInit);
+$dbInit = str_replace("<dbpass>", $manifest['dbpass'], $dbInit);
 if (!(file_put_contents($siteDir . "/protected/data/dbinit.sh", $dbInit)))
     die("Failed to update dbinit.sh - aborting\n");
 $temp = getcwd();
