@@ -19,6 +19,8 @@
 
 <!-- Define any js:hooks here -->
 
+<!-- ----------------------------------------------------------------------------------------------------------- -->
+
 <!-- Include chardinjs (see https://github.com/heelhook/chardin.js) -->
 <link href="/jam/sys/extern/chardinjs/chardinjs.css" rel="stylesheet">
 <script src="/jam/sys/extern/chardinjs/chardinjs.js"></script>
@@ -26,8 +28,83 @@
 <script>
 function callChardinJs() {
 	// Add the following to your elements
-	// data-intro="Text to show with the instructions"
-	// data-position="left, top, right, bottom" (where to place the text with respect to the element)
-	$('body').chardinJs('start');
+	// help-id="myHelpId"
+	// then attach with: helpAdd("myHelpId", "Click here to start a new event", "right", "toggle"/blank);
+	 $('body').chardinJs('start');
+}
+
+/*function helpAdd(id, text, pos, toggle) {
+    if (toggle !== 'undefined') {
+        $("[help-id='" + id + "']").attr("help-toggle", "chardinJS");
+    }
+    $("[help-id='" + id + "']").attr("help-text", text);
+    $("[help-id='" + id + "']").attr("help-pos", pos);
+} */
+</script>
+
+<!-- ----------------------------------------------------------------------------------------------------------- -->
+
+<!-- Include IntroJs (see http://introjs.com/) -->
+<link href="//cdnjs.cloudflare.com/ajax/libs/intro.js/2.5.0/introjs.min.css" rel="stylesheet" />
+<script src="//cdnjs.cloudflare.com/ajax/libs/intro.js/2.5.0/intro.min.js"></script>
+
+<script>
+function callIntroJs() {
+	introJs().start();
 }
 </script>
+
+<!-- ----------------------------------------------------------------------------------------------------------- -->
+
+<!-- Include jQuery Popup Overlay (see http://dev.vast.com/jquery-popup-overlay/) -->
+<script src="https://cdn.rawgit.com/vast-engineering/jquery-popup-overlay/1.7.13/jquery.popupoverlay.js"></script>
+
+<script>
+function callJqueryPopup() {
+	$('.kpopup').popup();
+}
+</script>
+
+<!-- ----------------------------------------------------------------------------------------------------------- -->
+
+<!-- include Protip (see http://protip.rocks/) -->
+<link rel="stylesheet" href="//min.gitcdn.xyz/repo/DoclerLabs/Protip/master/protip.min.css">
+<script src="//min.gitcdn.xyz/repo/DoclerLabs/Protip/master/protip.min.js"></script>
+
+<script>
+function callProtip() {
+	$.protip();
+	var el = $('.protip');
+	el.protipToggle();
+
+/*	el.protipSet({
+    	trigger: 'hover'
+	}); */
+
+}
+</script>
+
+<!-- ----------------------------------------------------------------------------------------------------------- -->
+
+<!-- include Tipso (see http://tipso.object505.com/) -->
+<link href="/jam/sys/extern/tipso/tipso.css" rel="stylesheet">
+<script src="/jam/sys/extern/tipso/tipso.js"></script>
+<link href="/jam/sys/extern/tipso/animate.css" rel="stylesheet">
+
+<script>
+var tipsoOnOff = 0;
+function callTipso() {
+	$('.tipso').tipso();
+	if (tipsoOnOff)
+		jQuery('.tipso_style').tipso('hide');
+	else
+		jQuery('.tipso_style').tipso('show');
+	tipsoOnOff = !tipsoOnOff;
+}
+function helpAdd(id, text, pos) {
+	$("[help-id='" + id + "']").addClass(pos);
+	$("[help-id='" + id + "']").addClass("tipso_style");
+	$("[help-id='" + id + "']").attr("data-tipso", text);
+}
+</script>
+

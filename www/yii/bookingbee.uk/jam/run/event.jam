@@ -9,7 +9,7 @@
 
 {{@html container start center css='max-width:900px; Xpadding:0}}
 
-<center><h3> {{seller.name}} Events </h3></center>
+<center><h3 help-id="heading"> {{seller.name}} Events </h3></center>
 
 <table id="printTable" class="testgrid sortable searchTable uk-table uk-table-condensed" style="border:1px solid #dddddd">
 	<thead>
@@ -31,10 +31,10 @@
 			<td>{{event.time}}</td>
 			<td>{{event.active}}</td>
 			<td>
-				<span data-uk-tooltip="" title="Make a copy of this event">
+				<span help-id="testSpan">
 					<button class="uk-button uk-button-mini uk-button-primary" onClick="confirmCopy('{{id}}','{{event.headline}}')" help-id="cloneButton{{helpId}}"> <i class="uk-icon-copy"></i> </button>
 				</span>
-				<span data-uk-tooltip="" title="Delete this event">
+				<span">
 					<button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{event.headline}}')" help-id="deleteButton{{helpId}}"> <i class="uk-icon-trash"></i> </button>
 				</span>
 			</td>
@@ -62,10 +62,12 @@
 <script>
 
 // Init help
-helpAdd("newButton",     "Click here to start a new event",        "right");
-helpAdd("cloneButton1",  "Make an exact copy of an event",         "right");
-helpAdd("deleteButton2", "Delete an event",                        "right");
+helpAdd("heading",       "Heading",                            "top");
+helpAdd("newButton",     "Start a new event",                      "top");
+helpAdd("cloneButton1",  "Make an exact copy of an event",         "left");
+helpAdd("deleteButton1", "Delete an event",                        "right");
 helpAdd("eventList",     "Your events. Click one to work with it", "left");
+helpAdd("testSpan",     "SPN", "left");
 
 function confirmDelete(id, displayInfo) {
     window.event.cancelBubble = true;   // Prevent any further events
