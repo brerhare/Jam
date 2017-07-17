@@ -1,0 +1,20 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/new_menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+{{@html container start center css='max-width:1080px; Xpadding:0}}
+
+<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
+
+<div name="content">
+	<center><h3> Please click <a href="http://befriending.wireflydesign.com/jam/doc/Befriending_Database_User_Guide.pdf">here</a> to download the document as a .pdf file </h3></center>
+</div>
+
+<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
+
+{{@html container end}}
+
+{{@include /jam/sys/html/footer.html}}
