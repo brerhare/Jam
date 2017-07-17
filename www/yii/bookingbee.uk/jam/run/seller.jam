@@ -3,11 +3,7 @@
 {{@include /jam/css/site.css}}
 {{@include /jam/run/menu.jam}}
 
-{{@database bookingbee_uk}}
-
-{{@get sid filter sid = sid}}
-{{uid = sid.uid}}
-{{@get seller filter uid = uid}}
+{{@include /jam/run/login.inc}}
 
 <br><br>
 
@@ -44,7 +40,7 @@
 					runAction('update_seller', ['seller_form'], '', postUpdate)
 				}}
 				{{@html button Cancel primary medium
-					runJam('menu.jam');
+					runJam('event');
 				}}
 			</center>
 		{{@html gridcol end}}
@@ -62,7 +58,7 @@ function clearFile() {
 }
 
 function postUpdate() {
-	window.setTimeout(runJam('menu.jam', 1000));
+	window.setTimeout(runJam('event', 1000));
 }
 
 function fileUpload(obj) {

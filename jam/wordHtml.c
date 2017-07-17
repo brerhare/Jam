@@ -1267,17 +1267,13 @@ emitStdRemaining = savRemaining;
 							actionStr
 							);
 
-logMsg(LOGERROR, "000000000000000000000000000");
 	jb.templateStr = templateStr;
 	jamBuilder("/jam/run/sys/jamBuilder/html/tabs.jam", "tabsHtml", &jb);
-logMsg(LOGERROR, "111111111111111111111111111");
 
 	free(tmp);
 	free(actionStr);
-logMsg(LOGERROR, "222222222222222222222222222");
 	free(tabStr);
 	free(tabType);
-logMsg(LOGERROR, "333333333333333333333333333");
 	emitStd(jam[ix]->trailer);
 }
 

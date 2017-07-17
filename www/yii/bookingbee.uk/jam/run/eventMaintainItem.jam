@@ -4,34 +4,206 @@
 
 {{@XXXdatabase bookingbee_uk}}
 
-{{@get seller filter uid = uid}}
-
 {{@get event filter id = event.id}}
 
 <style> /* For this embedded content within a tab */
 .embed-uk-container { border-radius: 3px; padding:0px; background-color: #dee6f1; }
 .ui-tabs .ui-tabs-panel { padding:0px; padding-top: 3px; }
+.ui-tabs-nav {background-color: #c7d1e4; }
+</style>
+
+<style>
+.uk-nestable-panel {
+    padding: 5px;
+    background: #f7f7f7;
+    border-radius: 4px;
+    border: 1px solid rgba(0,0,0,.2);
+    border-bottom-color: rgba(0,0,0,.3);
+    background-origin: border-box;
+    background-image: -webkit-linear-gradient(top,#fff,#eee);
+    background-image: linear-gradient(to bottom,#fff,#eee);
+    text-shadow: 0 1px 0 #fff;
+}
 </style>
 
 {{@XXXhtml container start center css='max-width:900px; Xpadding:0}}
+
 <div class="uk-container embed-uk-container uk-overflow-container uk-container-center " style="max-width:900px; Xpadding:0"
 
 <form name="event_item_form" class="uk-form uk-form-horizontal">
-<center><h3> {{seller.name}} Event items </h3></center>
 
 	<input type="hidden" name="seller.id" value={{seller.id}}>
-	<input type="hidden" name="event.uid" value="{{seller.uid}}">
+	<input type="hidden" name="event.sid" value="{{seller.sid}}">
 	<input type="hidden" name="event.seller_id" value="{{seller.id}}">
 	<input type="hidden" name="event.image" value="{{event.image}}">
+
 	{{@html gridrow start}}
-		{{@html gridcol start width=5-5}}
-			XXXX
+		{{@html gridcol start width=1-10}}
+		{{@html gridcol end}}
+		{{@html gridcol start width=8-10}}
+
+<div style="height:12px"></div>
+
+<table style="width:100&#37">
+	<td width="80&#37">
+	</td>
+	<td width="20&#37">
+		<span style="float:right;margin-right:6px">
+			<button class="uk-button uk-button-mini uk-button-success" onClick="runAction('eventMaintainItem:newEventItem', ['sid={{seller.sid}}','eventId={{event.id}}', 'seq='+nextSequence], '')"> <i class="uk-icon-plus"></i> New</button>
+		</span>
+	</td>
+</table>
+
+<ul id="eventItemList" class="uk-nestable" data-uk-nestable="{maxDepth:1}">
+</ul>
+
+		{{@html gridcol end}}
+		{{@html gridcol start width=1-10}}
 		{{@html gridcol end}}
 	{{@html gridrow end}}
+
+<br><br>
 
 </form>
 
 {{@XXXhtml container end}}
 </div>
+
+<script>
+var nextSequence = 0;
+var idArr = [];
+var typingTimer;
+var typingInterval = 1000;	// msec
+
+{{newSequence = 0}}
+addLoadEvent(function() {
+	{{@each event_item filter id > 0, sid = seller.sid, event_id = event.id, order by sequence}}
+		{{newSequence = newSequence + 1}}
+		{{event_item.sequence = newSequence}}
+		{{@amend item event_item}}
+		{{@runaction prepareItemFields}}
+	{{@end}}
+	nextSequence = {{newSequence + 1}};
+});
+
+function confirmDelete(id) {
+	window.event.cancelBubble = true;   // Prevent any further events
+	var result = confirm('Confirm delete of item ' + id);
+	if (result) {
+		runAction('eventMaintainItem:deleteEventItem', ['id='+id], '');
+		var elem = document.getElementById('ei_'+id);
+		elem.parentNode.removeChild(elem);
+	}
+}
+
+function dirtyCheck(id) {
+	clearTimeout(typingTimer);
+	descriptionObj = get(id+'_description');
+	priceObj = get(id+'_price');
+	qty_remainingObj = get(id+'_qty_remaining');
+	qty_order_maxObj = get(id+'_qty_order_max');
+	typingTimer = setTimeout(runAction('eventMaintainItem:updateEventItem', ['id='+id,'description='+descriptionObj.value, 'price='+priceObj.value, 'qty_remaining='+qty_remainingObj.value, 'qty_order_max='+qty_order_maxObj.value], ''), typingInterval);
+}
+
+// On drag-drop
+$('.uk-nestable').on('stop.uk.nestable', function(e) {
+	//runAction('eventMaintainItem:resequenceEventItem', [], '');
+	var listItems = $("#eventItemList li");
+	seq = 0;
+	listItems.each(function(idx, li) {
+		seq++;
+		var idStr = $(li).attr('id');
+		var id = idStr.split("_");
+		runAction('eventMaintainItem:resequenceEventItem', ['id='+id[1], 'seq='+seq], '');
+	});
+});
+
+</script>
+
+{{@action prepareItemFields}}
+	var eiList = $('#eventItemList');
+	var htmlUser = '' +
+	'<li id="ei_{{event_item.id}}" name="ei_{{event_item.id}}" class="uk-nestable-item">' +
+	'	<div class="uk-nestable-panel" style="padding:5px">' +
+	'		<table style="width:100&#37">' +
+	'			<tr>' +
+	'				<td width="95&#37">' +
+'<!--					<textarea cols="20" rows="2" id="ID189___young_person___special_needs_notes" name="young_person.special_needs_notes" placeholder="Describe this item" Xonchange="fn(this, event);" onkeyup="dirtyCheck(' + "'" + {{event_item.id}} + "'" + ')"></textarea>	-->' +
+	'					<input name="{{event_item.id}}_description" placeholder="Describe this item" style="width:100&#37" class="uk-nestable-nodrag" value="{{event_item.description}}" onkeyup="dirtyCheck(' + "'" + {{event_item.id}} + "'" + ')"></input>' +
+	'				</td>' +
+	'				<td width="05&#37">' +
+	'					<span style="float:right;">' +
+	'						<button class="uk-button uk-button-mini uk-button-danger"  onClick="confirmDelete(' + "'" + {{event_item.id}} + "'" + ')"> <i class="uk-icon-trash"></i> </button>' +
+	'					</span>' +
+	'				</td>' +
+	'			</tr>' +
+	'		</table>' +
+	'		<table style="background-color:#eeeeee; width:100&#37">' +
+	'			<tr>' +
+	'				<td width="25&#37">' +
+	'					<span style="float:left;">' +
+	'						<span> Price </span>' +
+	'						<input name="{{event_item.id}}_price" placeholder="" style="width:75px" class="uk-nestable-nodrag" value="{{event_item.price}}" onkeyup="dirtyCheck(' + "'" + {{event_item.id}} + "'" + ')"></input>' +
+	'					</span>' +
+	'				</td>' +
+	'				<td width="70&#37">' +
+	'					<span style="float:right;">' +
+	'						<span> Qty remaining </span>' +
+	'						<input name="{{event_item.id}}_qty_remaining" placeholder="" style="width:75px" class="uk-nestable-nodrag" value="{{event_item.qty_remaining}}" onkeyup="dirtyCheck(' + "'" + {{event_item.id}} + "'" + ')"></input>' +
+	'						&nbsp&nbsp&nbsp&nbsp&nbsp' +
+	'						<span> Max qty per order </span>' +
+	'						<input name="{{event_item.id}}_qty_order_max" placeholder="" style="width:75px" class="uk-nestable-nodrag" value="{{event_item.qty_order_max}}" onkeyup="dirtyCheck(' + "'" + {{event_item.id}} + "'" + ')"></input>' +
+	'				</td>' +
+	'				<td width="05&#37">' +
+	'				</td>' +
+	'			</tr>' +
+	'		</table>' +
+	'	</div>' +
+	'</li>' +
+	'';
+	$(htmlUser).appendTo($(eiList));
+	idArr.push({{event_item.id}});	// newEventItem @action checks user doesnt insert multiple blanks
+{{@end}}
+
+{{@action newEventItem}}
+	{{dummyNull = }}
+	{{@get event_item filter sid = sid, event_id = event.id, description = dummyNull , price = 0}}
+	{{event_item.sid = sid}}
+	{{event_item.event_id = eventId}}
+	{{event_item.sequence = seq}}
+	{{event_item.description = }}
+	{{event_item.price = 0}}
+	{{event_item.qty_order_max = 1}}
+	{{event_item.qty_remaining = 0}}
+	{{@update item event_item}}
+	{{@Xnew item event_item}}
+
+	<script>
+	if (idArr.indexOf({{event_item.id}}) == -1) {
+		{{@runaction prepareItemFields}}
+	}
+	nextSequence++;
+	</script>
+{{@end}}
+
+{{@action updateEventItem}}
+	{{@get event_item filter id = id}}
+	{{event_item.description = description}}
+	{{event_item.price = price}}
+	{{event_item.qty_remaining = qty_remaining}}
+	{{event_item.qty_order_max = qty_order_max}}
+	{{@update item event_item}}
+{{@end}}
+
+{{@action deleteEventItem}}
+	{{@get event_item filter id = id}}
+	{{@remove item event_item}}
+{{@end}}
+
+{{@action resequenceEventItem}}
+	{{@get event_item filter id = id}}
+	{{event_item.sequence = seq}}
+	{{@update item event_item}}
+{{@end}}
 
 {{@include /jam/sys/html/footer.html}}

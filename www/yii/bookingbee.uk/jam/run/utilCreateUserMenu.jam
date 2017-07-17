@@ -15,7 +15,9 @@ Doing...<br>
 }}
 
 {{@new table user
-	cookie								number	required
+	cookie								string	required
+	logged_in							number
+	user_data							string
 	handle								string	required
 	password							string
 	first_name							string
@@ -28,16 +30,30 @@ Doing...<br>
 	menu_id								number
 }}
 
+{{menu.text = Events}}    {{menu.href = /run/event.jam}}   {{menu.parent_id = 0}} {{@new item menu}}
+{{menu.text = Your details}}    {{menu.href = /run/seller.jam}}   {{menu.parent_id = 0}} {{@new item menu}}
+{{menu.text = Logout}}  {{menu.href = /run/login.jam}} {{menu.parent_id = 0}}       {{@new item menu}}
+{{menu.text = What?}}  {{menu.href = js:callTipso}} {{menu.parent_id = 0}}       {{@new item menu}}
+
+
+{{@action DUMMY_TO_PREVENT_NEXT_MENU_DISPLAYING}}
+
 {{menu.text = Setup}} {{menu.href = /run/seller.jam}}   {{menu.parent_id = 0}}   {{@new item menu}}
 	{{pid = menu.id}}
 	{{menu.text = Your details}}    {{menu.href = /run/seller.jam}}   {{menu.parent_id = pid}} {{@new item menu}}
 	{{menu.text = Events}}    {{menu.href = /run/event.jam}}   {{menu.parent_id = pid}} {{@new item menu}}
-{{menu.text = Logout}}  {{menu.href = /run/logout.jam}} {{menu.parent_id = 0}}       {{@new item menu}}
+{{menu.text = Logout}}  {{menu.href = /run/login.jam}} {{menu.parent_id = 0}}       {{@new item menu}}
+
+{{@end}}
+
+
 
 make a user <br>
 
 {{@randomnumber newfield=myRand}}
 {{user.cookie = myRand}}
+{{user.logged_in = 0}}
+{{user.user_data = sagvfdjigf39ij2jio42kfa9gv}}
 {{user.handle = kim}}
 {{user.first_name = kim}}
 {{user.last_name = hancock}}
@@ -46,6 +62,18 @@ make a user <br>
 
 {{@randomnumber newfield=myRand}}
 {{user.cookie = myRand}}
+{{user.logged_in = 0}}
+{{user.user_data = sagvfdjigf39ij2jio42kfa9gv}}
+{{user.handle = fran}}
+{{user.first_name = fran}}
+{{user.last_name = hancock}}
+{{user.password = scrappy9}}
+{{@new item user}}
+
+{{@randomnumber newfield=myRand}}
+{{user.cookie = myRand}}
+{{user.logged_in = 0}}
+{{user.user_data = hamishes_seller_sid_perhaps}}
 {{user.handle = hg}}
 {{user.first_name = hamish}}
 {{user.last_name = guthrie}}

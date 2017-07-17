@@ -1,51 +1,36 @@
 {{@include standalone /jam/sys/html/header.html}}
 
-{{@database bookingbee_uk}}
+{{@include /jam/run/login.inc}}
+
+<!-- Include site specific menu styles and js:hooks -->
+{{@include /jam/run/menu.inc}}
 
 <!-- Save the user.id because we'll change it here which will break menu assignments (which pass the user.id as a parameter) -->
 {{uid = user.id}}
 
 
-{{userRand = sys.cookie.bookingbee_user}}
+{{@get user filter cookie = sys.cookie.bookingbee_uk }}
 
-<script>
-function kick() {
- 	window.top.location.href = "http://bookingbee.uk/run/login.jam";
-}
-</script>
-
-
-<script> var kickuser = 1; </script>
-{{@each user filter cookie = userRand}}
-	{{userId = 1}}
-	<script>kickuser = 0;</script>
-{{@end}}
-
-<script>
-if (kickuser == 1)
-	kick();
-</script>
-
-
-
-{{get user filter id = sys.cookie.bookingbee_user}}
+<div style="position:relative">
+<img src="/img/bookingBee.png" style="position:absolute; top:7px; left:7px; z-index:10000" width=30px>
 
 {{@template MENU
+
     <ul id="main-menu" class="sm sm-blue collapsed">
 
     {{@each menu filter parent_id = 0}}
 
-		{{@each user_menu filter user_id = userId, menu_id = menu.id}}
+		{{@each user_menu filter user_id = user.id, menu_id = menu.id}}
 
-        	<li> <a href="{{menu.href}}"> {{menu.text}} </a>
+        	<li> <a href="#" onClick="handleHref('{{menu.href}}')"> {{menu.text}} </a>
         	{{openUL2 = <ul>}}
         	{{closeUL2 = ''}}
 
         	{{@each menu filter parent_id = menu.id}}
-				{{@each user_menu filter user_id = userId, menu_id = menu.id}}
+				{{@each user_menu filter user_id = user.id, menu_id = menu.id}}
             		{{openUL2}}
             		{{openUL2 = ''}}
-            		<li> <a href="{{menu.href}}"> {{menu.text}} </a>
+            		<li> <a href="#" onClick="handleHref('{{menu.href}}')"> {{menu.text}} </a>
 
             		{{openUL3 = <ul>}}
             		{{closeUL3 = ''}}
@@ -53,7 +38,7 @@ if (kickuser == 1)
             		{{@each menu filter parent_id = menu.id}}
                 		{{openUL3}}
                 		{{openUL3 = ''}}
-                		<li> <a href="{{menu.href}}"> {{menu.text}} </a> </li>
+                		<li> <a href="#" onClick="handleHref('{{menu.href}}')"> {{menu.text}} </a> </li>
                 		{{closeUL3 = </ul>}}
             		{{@end}}
 
@@ -75,14 +60,37 @@ if (kickuser == 1)
     </ul>
 }}
 
+MENU
+
+</div>
 
 <!-- Restore the user.id  so menu assignments are unaffected by what we just did -->
 {{user.id = uid}}
 {{@get user filter id = user.id}}
 
 
+<!-- Menu templating in here -->
+{{@include /jam/css/site.css}}
+
 <!-- Call the addon -->
 {{@include /jam/run/sys/smartMenu.jam}}
 
+<script>
+function handleHref(href) {
+	var arr = href.split(":");
+	if (arr.length == 0)										// handle invalid
+		return;
+	if (arr.length == 1) {										// handle most common case, '/run/jam/blah.jam'
+		window.location.replace(href);
+	}
+	if (arr[0] == 'js') {										// handle js
+		if (typeof window[ arr[1] ] === "function") {			// this must be defined somewhere
+			window[ arr[1] ]();
+		}
+	}
+}
+</script>
+
 {{@include standalone /jam/sys/html/footer.html}}
+
 

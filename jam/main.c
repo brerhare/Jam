@@ -55,6 +55,8 @@ char *jellyTemplateName[MAX_JELLY_TEMPLATE];
 char *jellyTemplateValue[MAX_JELLY_TEMPLATE];
 int jellyTemplateIx = 0;
 
+char *globalJamName = NULL;
+
 char *includedTable[MAX_INCLUDE];
 char *fileToInclude = (char *) calloc(1, 64096);
 
@@ -80,6 +82,7 @@ int main(int argc, char *argv[]) {
 	char *jamName = NULL;
 
 	stopping = skipping = 0;
+	globalJamName = (char *) calloc(1, 64096);
 
 	// Do NOT log anything until char documentRoot is set or it will end up in /tmp/ !!!
 
@@ -101,7 +104,11 @@ int main(int argc, char *argv[]) {
 	// Set up logging path
 	logFileName = (char *) calloc(1, 64096);	// defined in log.c/h
 	sprintf(logFileName, "%s/jam/log.dat", documentRoot);
- 
+
+	// Set up default dumpStream path
+	dumpStreamPath = (char *) calloc(1, 64096);    // defined in common.h
+	sprintf(dumpStreamPath, "%s/jam/run/html", documentRoot);
+
 	logMsg(LOGINFO, "--------------------------------------------------------------------------");
 	logMsg(LOGINFO, "Starting. argc is %d", argc);
 
@@ -171,6 +178,14 @@ int main(int argc, char *argv[]) {
 			logMsg(LOGDEBUG, "Found jam parameter");
 			jamName = strTrim(getWordAlloc(cgivars[i+1], 1, ":"));
 			jamEntrypoint = strTrim(getWordAlloc(cgivars[i+1], 2, ":"));
+
+			strcpy(globalJamName, jamName);
+			if (jamEntrypoint) {
+				strcat(globalJamName, ":");
+				strcat(globalJamName, jamEntrypoint);
+			}
+			logMsg(LOGINFO, "GLOBAL JAM NAME is %s", globalJamName);
+
 //emitStd("[%s][%s]<br>", jamName, jamEntrypoint);
 // @@KIM! remove next if
 		} else /* if (!jamEntrypoint) */ {
@@ -229,9 +244,19 @@ int main(int argc, char *argv[]) {
 			deleteVar(var[i]);
         }
     }
+
+	free(logFileName);
+	free(dumpStreamPath);
+
 	freeJamArray();
 	free(jamEntrypoint);
 	free(fileToInclude);
+
+	if (globalJamName) {
+		free(globalJamName);
+		globalJamName = NULL;
+	}
+
 	for (int i = 0; i < MAX_INCLUDE; i++) {
 		if (includedTable[i] == NULL)
 			break;
@@ -972,15 +997,17 @@ int control(int startIx, char *defaultTableName) {
 			}
 			if (startIx == 0)
 				logMsg(LOGERROR, "Cant find action [%s] to run from within jam script", jam[ix]->args);
-			else
+			else {
 				logMsg(LOGINFO, "Running @action [%s] within jam script", jam[startIx]->args);
-			if (jam[startIx])
-				emitStd(jam[startIx]->trailer);
-			if (jam[startIx])
-				startIx++;
-
-			control(startIx, NULL);
-			logMsg(LOGINFO, "Finished running action [%s] within jam script", jam[startIx]->args);
+				if (jam[startIx])
+					emitStd(jam[startIx]->trailer);
+				if (jam[startIx])
+					startIx++;
+				if (startIx != 0) {
+					control(startIx, NULL);
+					logMsg(LOGINFO, "Finished running action [%s] within jam script", jam[startIx]->args);
+				}
+			}
 			emitStd(jam[ix]->trailer);
 //		-------------------------------------
 		} else if (!(strcmp(cmd, "@action"))) {

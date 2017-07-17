@@ -1,41 +1,56 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/site.css}}
 
-{{@Xinclude /jam/run/new_menu.jam}}
+{{@template TITLE Booking Bee}}
+{{@template DATABASE bookingbee_uk}}
+{{@template SENDTO event}}
+
+{{@database DATABASE}}
+
+{{@runaction logout}}
 
 <style>
 .mydiv {
 	margin: auto;
-    border-style: solid;
-    border-width: 1px;
+   	border-style: solid;
+   	border-width: 1px;
 	height:100px;
 	width:300px;
 }
+.flip {
+	-moz-transform: scaleX(-1);
+	-o-transform: scaleX(-1);
+	-webkit-transform: scaleX(-1);
+	transform: scaleX(-1);
+	filter: FlipH;
+	-ms-filter: "FlipH";
+}
 </style>
 
-    <style type="text/css">
-        label {text-align: right; width:150px !important}
-        div.uk-form-controls {margin-left: 170px !important}
-    </style>
+<style type="text/css">
+label {text-align: right; width:150px !important}
+div.uk-form-controls {margin-left: 170px !important}
+</style>
 
-
-<br>
-
-{{@html container start center css='max-width:1080px; Xpadding:0}}
-
-{{@database bookingbee_uk}}
-
-<br> <center><h2>Booking Bee login</h2></center>
 <br><br>
 
+{{@html container start center css='max-width:900px; Xpadding:0}}
+
+<center><h2>TITLE login</h2></center>
+<br>
 <form name="inputForm_user" class="uk-form uk-form-horizontal">
+	<div style="position:relative">
+
+		<input type="hidden" name="sendTo" value="SENDTO">
+
+		<img src="/img/bookingBee.png" style="position:absolute; top:0px" width=60px>
 
         {{@html gridrow start}}
             {{@html gridcol start width=3-10}}
 			{{@html gridcol end}}
 
             {{@html gridcol start width=6-10}}
-				{{@html text field=user.handle label='User name' size=small}}
+				{{@html text field=form.handle label='User name' size=small}}
 			{{@html gridcol end}}
 
             {{@html gridcol start width=3-10}}
@@ -47,7 +62,7 @@
 			{{@html gridcol end}}
 
             {{@html gridcol start width=5-10}}
-				{{@html password field=user.password label='password' size=small}}
+				{{@html password field=form.password label='password' size=small}}
 			{{@html gridcol end}}
 
             {{@html gridcol start width=3-10}}
@@ -61,12 +76,12 @@
                     <button type='button' id='loginButton' class="uk-button uk-button-primary" onClick="loginButtonClick()">Login</button>
                 </center>
             {{@html gridcol end}}
+		<img src="/img/bookingBee.png" style="position:absolute; right:0px; bottom:0px;" class="flip" width=60px>
         {{@html gridrow end}}
 
-
+	</div>
 </form>
 
-<br><br><br><br>
 {{@html container end}}
 
 <script>
@@ -76,26 +91,33 @@ function loginButtonClick() {
 
 function createCookie() {
 	obj = document.getElementById('cookie');
-	document.cookie = "bookingbee_user="+obj.value;
-	if (obj.value != 'null') {
-		runJam('http://bookingbee.uk/run/loggedIn');
+	if (obj.value != '0') {
+		setCookie("DATABASE", obj.value);
+		runJam('SENDTO');
 	} else {
 		alert('Incorrect user name or password');
 	}
 }
-
 </script>
 
 {{@action login}}
-	{{cookie = null}}
-	{{@each user filter handle = user.handle, password = user.password}}
+	{{@runaction logout}}
+	{{cookie = 0}}
+	{{@each user filter handle = form.handle, password = form.password}}
+		{{logged_in = 1}}
+		{{@update item user}}
 		{{cookie = user.cookie}}
 	{{@end}}
+	{{@get user filter id = -1}}
 {{@end}}
 
-{{@action loginCheck}}
-	{{@each user filter cookie = user.cookie}}
+{{@action logout}}
+	{{@each user filter cookie = sys.cookie.bookingbee_uk}}
+		{{logged_in = 0}}
+		{{@update item user}}
 	{{@end}}
+	{{@get user filter id = -1}}
 {{@end}}
 
 {{@include /jam/sys/html/footer.html}}
+

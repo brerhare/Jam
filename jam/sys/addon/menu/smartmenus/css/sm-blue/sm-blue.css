@@ -1,9 +1,11 @@
 @XXXimport url(http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700);
 @import url(http://fonts.googleapis.com/css?family=FONTDOWNLOAD);
 
-/* original colors BACKCOLOR_FROM #3b9fce, BACKCOLOR_TO #2b82ac */
-/* CURRENTCOLOR_FROM #005678, CURRENTCOLOR_TO  #007aab */
-
+/* Set defaults for items which were not specifically templated */
+{{@template FONTDOWNLOAD PT+Sans+Narrow:400,700}}
+{{@template FONTFAMILY "PT Sans Narrow", "Arial Narrow", Arial, Helvetica, sans-serif}}
+{{@template FONTWEIGHT bold}}
+{{@template FONTSIZE 18}}
 {{@template BACKCOLOR_FROM #b9dff2}}
 {{@template BACKCOLOR_TO #5c696f}}
 {{@template ACTIVECOLOR_FROM #9dbbcb}}
@@ -12,7 +14,6 @@
 {{@template CORNERPIXELS 2}}
 {{@template MAINTEXTCOLOR #000000}}
 {{@template SUBTEXTCOLOR #000000}}
-
 /* @@TODO These next two dont seem to affect anything at all */
 {{@template CURRENTCOLOR_FROM #80ff80}}
 {{@template CURRENTCOLOR_TO #00cc00}}
@@ -42,7 +43,7 @@
   XXXfont-family: "PT Sans Narrow", "Arial Narrow", Arial, Helvetica, sans-serif;
   font-family: FONTFAMILY;
   font-size: FONTSIZEpx;
-  font-weight: bold;
+  font-weight: FONTWEIGHT;
   line-height: 23px;
   text-decoration: none;
   XXXtext-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
@@ -68,7 +69,7 @@
   width: 34px;
   height: 34px;
   overflow: hidden;
-  font: bold 16px/34px monospace !important;
+  font: FONTWEIGHT 16px/34px monospace !important;
   text-align: center;
   XXXtext-shadow: none;
   background: rgba(0, 0, 0, 0.1);
