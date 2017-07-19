@@ -22,7 +22,7 @@
 
 		{{@each user_menu filter user_id = user.id, menu_id = menu.id}}
 
-        	<li> <a href="#" onClick="handleHref('{{menu.href}}')"> {{menu.text}} </a>
+        	<li menu-tag="{{menu.href}}"> <a href="#" onClick="handleHref('{{menu.href}}')"> {{menu.text}} </a>
         	{{openUL2 = <ul>}}
         	{{closeUL2 = ''}}
 
@@ -30,7 +30,7 @@
 				{{@each user_menu filter user_id = user.id, menu_id = menu.id}}
             		{{openUL2}}
             		{{openUL2 = ''}}
-            		<li> <a href="#" onClick="handleHref('{{menu.href}}')"> {{menu.text}} </a>
+            		<li menu-tag="{{menu.href}}"> <a href="#" onClick="handleHref('{{menu.href}}')"> {{menu.text}} </a>
 
             		{{openUL3 = <ul>}}
             		{{closeUL3 = ''}}
@@ -38,7 +38,7 @@
             		{{@each menu filter parent_id = menu.id}}
                 		{{openUL3}}
                 		{{openUL3 = ''}}
-                		<li> <a href="#" onClick="handleHref('{{menu.href}}')"> {{menu.text}} </a> </li>
+                		<li menu-tag="{{menu.href}}"> <a href="#" onClick="handleHref('{{menu.href}}')"> {{menu.text}} </a> </li>
                 		{{closeUL3 = </ul>}}
             		{{@end}}
 
