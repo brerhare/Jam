@@ -19,12 +19,17 @@
 
 <!-- Define any js:hooks here -->
 
+
+
 <!-- include hint (see https://github.com/chinchang/hint.css ) -->
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.5.0/hint.css"/>
 
 <script>
 var helpArr = new Array;
 var helpToggle = 0;
+/*
+ * Whatever you call your function, it must be mentioned as a 'js:'. See utilCreateUserMenu.jam
+*/
 function callHint() {
 	//console.log('in callHint, helpToggle='+helpToggle);
 	for (var i = 0; i < helpArr.length; i ++) {
@@ -53,7 +58,7 @@ function helpAdd(id, text, pos) {
 }
 
 $(document).on('click', function (e) {
-console.log(e);
+	//console.log(e);
 	if (helpToggle == 2) {
 		helpToggle = 1;
 		//console.log("EV toggle downed from 2 to 1");
@@ -63,8 +68,6 @@ console.log(e);
 	}
 	// Do whatever you want; the event that'd fire if the "special" element has been clicked on has been cancelled.
 });
-
-
 </script>
 
 <!-- ----------------------------------------------------------------------------------------------------------- -->
