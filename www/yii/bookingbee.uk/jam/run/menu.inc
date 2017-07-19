@@ -22,6 +22,7 @@
 
 
 <!-- include hint (see https://github.com/chinchang/hint.css ) -->
+<!-- Demo here: https://kushagragour.in/lab/hint/ -->
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.5.0/hint.css"/>
 
 <script>
@@ -33,12 +34,28 @@ var helpToggle = 0;
 function callHint() {
 	//console.log('in callHint, helpToggle='+helpToggle);
 	for (var i = 0; i < helpArr.length; i ++) {
+
+/* classes -
+Colors - hint--error, hint--info, hint--warning, hint--success
+Sizes - hint--small, hint--medium, hint--large
+hint--always
+hint--rounded
+hint--no-animate
+hint--bounce
+*/
+var hColor = "hint--info";
+var hRound = "hint--rounded";
+
 		if (!helpToggle) {
 			$("[help-id='" + helpArr[i].id + "']").addClass("hint--" + helpArr[i].pos);
+			$("[help-id='" + helpArr[i].id + "']").addClass(hColor);
+			$("[help-id='" + helpArr[i].id + "']").addClass(hRound);
 			$("[help-id='" + helpArr[i].id + "']").addClass("hint--always");
 			$("[help-id='" + helpArr[i].id + "']").attr("aria-label", helpArr[i].text);
 		} else {
 			$("[help-id='" + helpArr[i].id + "']").removeClass("hint--" + helpArr[i].pos);
+			$("[help-id='" + helpArr[i].id + "']").removeClass(hColor);
+			$("[help-id='" + helpArr[i].id + "']").removeClass(hRound);
 			$("[help-id='" + helpArr[i].id + "']").removeClass("hint--always");
 			$("[help-id='" + helpArr[i].id + "']").removeAttr("aria-label");
 		}
