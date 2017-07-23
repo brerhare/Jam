@@ -19,92 +19,72 @@
 
 <!-- Define any js:hooks here -->
 
-<!-- ----------------------------------------------------------------------------------------------------------- -->
 
-<!-- Include chardinjs (see https://github.com/heelhook/chardin.js) -->
-<link href="/jam/sys/extern/chardinjs/chardinjs.css" rel="stylesheet">
-<script src="/jam/sys/extern/chardinjs/chardinjs.js"></script>
 
-<script>
-function callChardinJs() {
-	// Add the following to your elements
-	// help-id="myHelpId"
-	// then attach with: helpAdd("myHelpId", "Click here to start a new event", "right", "toggle"/blank);
-	 $('body').chardinJs('start');
-}
-
-/*function helpAdd(id, text, pos, toggle) {
-    if (toggle !== 'undefined') {
-        $("[help-id='" + id + "']").attr("help-toggle", "chardinJS");
-    }
-    $("[help-id='" + id + "']").attr("help-text", text);
-    $("[help-id='" + id + "']").attr("help-pos", pos);
-} */
-</script>
-
-<!-- ----------------------------------------------------------------------------------------------------------- -->
-
-<!-- Include IntroJs (see http://introjs.com/) -->
-<link href="//cdnjs.cloudflare.com/ajax/libs/intro.js/2.5.0/introjs.min.css" rel="stylesheet" />
-<script src="//cdnjs.cloudflare.com/ajax/libs/intro.js/2.5.0/intro.min.js"></script>
+<!-- include hint (see https://github.com/chinchang/hint.css ) -->
+<!-- Demo here: https://kushagragour.in/lab/hint/ -->
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/hint.css/2.5.0/hint.css"/>
 
 <script>
-function callIntroJs() {
-	introJs().start();
+var helpArr = new Array;
+var helpToggle = 0;
+/*
+ * Whatever you call your function, it must be mentioned as a 'js:'. See utilCreateUserMenu.jam
+*/
+function callHint() {
+	//console.log('in callHint, helpToggle='+helpToggle);
+	for (var i = 0; i < helpArr.length; i ++) {
+
+/* classes -
+Colors - hint--error, hint--info, hint--warning, hint--success
+Sizes - hint--small, hint--medium, hint--large
+hint--always
+hint--rounded
+hint--no-animate
+hint--bounce
+*/
+var hColor = "hint--info";
+var hRound = "hint--rounded";
+
+		if (!helpToggle) {
+			$("[help-id='" + helpArr[i].id + "']").addClass("hint--" + helpArr[i].pos);
+			$("[help-id='" + helpArr[i].id + "']").addClass(hColor);
+			$("[help-id='" + helpArr[i].id + "']").addClass(hRound);
+			$("[help-id='" + helpArr[i].id + "']").addClass("hint--always");
+			$("[help-id='" + helpArr[i].id + "']").attr("aria-label", helpArr[i].text);
+		} else {
+			$("[help-id='" + helpArr[i].id + "']").removeClass("hint--" + helpArr[i].pos);
+			$("[help-id='" + helpArr[i].id + "']").removeClass(hColor);
+			$("[help-id='" + helpArr[i].id + "']").removeClass(hRound);
+			$("[help-id='" + helpArr[i].id + "']").removeClass("hint--always");
+			$("[help-id='" + helpArr[i].id + "']").removeAttr("aria-label");
+		}
+	}
+	if (!helpToggle)
+		helpToggle = 2;
+	else helpToggle = 0;
+	//console.log('out callHint, helpToggle='+helpToggle);
 }
-</script>
 
-<!-- ----------------------------------------------------------------------------------------------------------- -->
-
-<!-- Include jQuery Popup Overlay (see http://dev.vast.com/jquery-popup-overlay/) -->
-<script src="https://cdn.rawgit.com/vast-engineering/jquery-popup-overlay/1.7.13/jquery.popupoverlay.js"></script>
-
-<script>
-function callJqueryPopup() {
-	$('.kpopup').popup();
-}
-</script>
-
-<!-- ----------------------------------------------------------------------------------------------------------- -->
-
-<!-- include Protip (see http://protip.rocks/) -->
-<link rel="stylesheet" href="//min.gitcdn.xyz/repo/DoclerLabs/Protip/master/protip.min.css">
-<script src="//min.gitcdn.xyz/repo/DoclerLabs/Protip/master/protip.min.js"></script>
-
-<script>
-function callProtip() {
-	$.protip();
-	var el = $('.protip');
-	el.protipToggle();
-
-/*	el.protipSet({
-    	trigger: 'hover'
-	}); */
-
-}
-</script>
-
-<!-- ----------------------------------------------------------------------------------------------------------- -->
-
-<!-- include Tipso (see http://tipso.object505.com/) -->
-<link href="/jam/sys/extern/tipso/tipso.css" rel="stylesheet">
-<script src="/jam/sys/extern/tipso/tipso.js"></script>
-<link href="/jam/sys/extern/tipso/animate.css" rel="stylesheet">
-
-<script>
-var tipsoOnOff = 0;
-function callTipso() {
-	$('.tipso').tipso();
-	if (tipsoOnOff)
-		jQuery('.tipso_style').tipso('hide');
-	else
-		jQuery('.tipso_style').tipso('show');
-	tipsoOnOff = !tipsoOnOff;
-}
 function helpAdd(id, text, pos) {
-	$("[help-id='" + id + "']").addClass(pos);
-	$("[help-id='" + id + "']").addClass("tipso_style");
-	$("[help-id='" + id + "']").attr("data-tipso", text);
+	obj = new Object();
+	obj.id = id;
+	obj.text = text;
+	obj.pos = pos;
+	helpArr.push(obj);
 }
+
+$(document).on('click', function (e) {
+	//console.log(e);
+	if (helpToggle == 2) {
+		helpToggle = 1;
+		//console.log("EV toggle downed from 2 to 1");
+	} else if (helpToggle) {
+		//console.log("EV toggle s 1");
+		callHint();
+	}
+	// Do whatever you want; the event that'd fire if the "special" element has been clicked on has been cancelled.
+});
 </script>
 
+<!-- ----------------------------------------------------------------------------------------------------------- -->

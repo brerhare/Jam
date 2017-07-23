@@ -21,7 +21,7 @@
 			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('eventMaintain?event.id=0')" help-id="newButton"> <i class="uk-icon-plus"></i> New</button> </th>
 		</tr>
 	</thead>
-	<tbody help-id="eventList">
+	<tbody>
 {{helpId = 0}}
 {{@each event filter seller_id = seller.id, order by date ASC}}
 	{{helpId = helpId + 1}}
@@ -31,7 +31,7 @@
 			<td>{{event.time}}</td>
 			<td>{{event.active}}</td>
 			<td>
-				<span help-id="testSpan">
+				<span>
 					<button class="uk-button uk-button-mini uk-button-primary" onClick="confirmCopy('{{id}}','{{event.headline}}')" help-id="cloneButton{{helpId}}"> <i class="uk-icon-copy"></i> </button>
 				</span>
 				<span">
@@ -62,12 +62,10 @@
 <script>
 
 // Init help
-helpAdd("heading",       "Heading",                            "top");
+helpAdd("heading",       "Heading",                         	   "top");
 helpAdd("newButton",     "Start a new event",                      "top");
 helpAdd("cloneButton1",  "Make an exact copy of an event",         "left");
 helpAdd("deleteButton1", "Delete an event",                        "right");
-helpAdd("eventList",     "Your events. Click one to work with it", "left");
-helpAdd("testSpan",     "SPN", "left");
 
 function confirmDelete(id, displayInfo) {
     window.event.cancelBubble = true;   // Prevent any further events
