@@ -79,6 +79,7 @@ Doing...<br>
 	{{menu.text = Users}}  {{menu.href = /run/user.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
 	{{menu.text = User menus}}  {{menu.href = /run/user_menus_users.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
 	{{menu.text = Kims upload notes}}  {{menu.href = /run/uploads.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = User guide}}  {{menu.href = /run/guide.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
 {{menu.text = Logout}}  {{menu.href = /run/logout.jam}} {{menu.parent_id = 0}}       {{@new item menu}}
 
 
