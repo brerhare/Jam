@@ -7,10 +7,13 @@
 
 {{@html container start center css='max-width:1080px; Xpadding:0}}
 
-<br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
+<br> <br> <br> <br> <br> <br> <br> <br> <br>
 
 <div name="content">
-	<center><h3> Please click <a href="http://befriending.wireflydesign.com/jam/doc/Befriending_Database_User_Guide.pdf">here</a> to download the document as a .pdf file </h3></center>
+	<center><h3> Befriending database documentation </h3></center>
+	<center><h4> <a href="http://befriending.wireflydesign.com/jam/doc/Befriending_Database_User_Guide.pdf"> User guide </a> </h4></center>
+	<center><h4> <a href="http://befriending.wireflydesign.com/jam/doc/Befriending_Database_Tech_Guide.pdf"> Technical info </a> </h4></center>
+	<center><h4> <a href="http://befriending.wireflydesign.com/jam/doc/schema.png">Database table map </a></h4></center>
 </div>
 
 <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
