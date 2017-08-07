@@ -26,6 +26,8 @@
 							<th> Phone </th>
 							<th> Email </th>
 							<th> Postcode </th>
+							<th> Start </th>
+							<th> End </th>
 						</tr>
 						{{@each match_yp filter befriender_id = befriender.id, match_end = 0000-00-00}}
 							{{@get young_person filter id = match_yp.young_person_id}}
@@ -36,6 +38,8 @@
 									<td> {{global.mobile}} </td>
 									<td> {{global.email}} </td>
 									<td> {{global.postcode}} </td>
+									<td> {{@datedmy match_yp.match_started}} </td>
+									<td>  </td>
 								</tr>
 							{{@Xend}}
 						{{@end}}
@@ -51,6 +55,8 @@
 									<td> {{global.mobile}} </td>
 									<td> {{global.email}} </td>
 									<td> {{global.postcode}} </td>
+									<td> {{@datedmy match_yp.match_started}} </td>
+									<td> {{@datedmy match_yp.match_end}} </td>
 								</tr>
 						{{@end}}
 
