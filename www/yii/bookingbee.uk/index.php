@@ -1,4 +1,4 @@
-<?php header("Location: http://www.bookingbee.uk/run/menu"); ?>
+<?php header("Location: http://www.bookingbee.uk/run/eventList"); ?>
 
 <?php
 
