@@ -8,8 +8,13 @@
 {{@get event filter id = eventId}}
 {{@get seller filter id = event.seller_id}}
 
-<style type="text/css">
 
+<style type="text/css">
+	label {text-align: right; width:150px !important}
+	div.uk-form-controls {margin-left: 170px !important}
+</style>
+
+<style type="text/css">
 html {
 	background: url("/jam/upload/event/image/{{event.image}}") no-repeat center center fixed;
 	-webkit-background-size: cover;
@@ -31,19 +36,50 @@ div#formContainer {
 	padding:20px;
 	width:500px;
 	-moz-box-shadow: 0 0 20px black; -webkit-box-shadow: 0 0 20px black; box-shadow: 0 0 20px black;
+	background-color:white;
 }
-
 </style>
 
-{{@XXXXhtml container start center css='max-width:800px; padding:0}}
+{{@XXXhtml container start center css='max-width:800px; padding:0'}}
 
 
 <div class='midHeight'>
 	<div id='formContainer'>
-		<form name="event_container" class="uk-form uk-form-horizontal">
+
+		<form name="event_order" class="XmidHeight uk-form uk-form-horizontal">
+			<input type="hidden" name="order.seller_id" value="{{seller.id}}">
+			<input type="hidden" name="order.event_id" value="{{event.id}}">
+
 			<center><h3> {{event.headline}}</h3></center>
 			<center><p> When {{event.date}} {{event.time}} </p></center>
 			<center><p> Tel {{event.landline}} {{event.mobile}} </p></center>
+
+        {{@html gridrow start}}
+            {{@html gridcol start width=5-10}}
+
+                <input type="hidden" name="young_person.referrer_form_id" value="999999"> <!-- @@TODO! -->
+                {{@html hidden field=young_person.referrer_form_id}}
+                {{@html date field=young_person.referral_date size=medium label='Referral date' group=inp}}
+                {{@html text field=global.forename size=large label='Forename' group=inp}}
+                {{@html text field=global.surname size=large label='Surname' group=inp}}
+                {{@html text field=global.house size=medium label='house' group=inp}}
+                {{@html text field=global.street size=medium label='Street' group=inp}}
+                {{@html text field=global.area size=medium label='Area' group=inp}}
+                {{@html text field=global.town size=medium label='Town' group=inp}}
+                {{@html text field=global.postcode size=medium label='Postcode' group=inp}}
+                {{@html text field=global.landline size=medium label='Land line' group=inp}}
+                {{@html text field=global.mobile size=medium label='Mobile' group=inp}}
+                {{@html text field=global.email size=medium label='Email' group=inp}}
+                <table>
+                    <tr>
+                        <td> {{@html date field=young_person.dob size=medium label='Birth date' group=inp}} </td>
+                        <td> <span id='age'> </span> </td>
+                    </tr>
+                </table>
+            {{@html gridcol end}}
+
+
+
 {{@each event_item filter event_id = event.id}}
 			<div>
 				<span>{{event_item.description}}</span>
@@ -56,6 +92,6 @@ div#formContainer {
 </div>
 
 
-{{@XXXXhtml container end}}
+{{@XXXhtml container end}}
 
 {{@include /jam/sys/html/footer.html}}
