@@ -1,215 +1,127 @@
 {{@include /jam/sys/html/header.html}}
-{{@include /jam/css/site.css}}
 
-{{@template TABLE template_beirc}}
-{{@template HEADING Competition Entry}}
+{{@include /jam/css/site.css}}
 
 {{@database bookingbee_uk}}
 
-<!-- --------------------------------------------------------------------------------------- -->
-
-{{@remove table TABLE}}
-
-{{@new table TABLE
-    uid                     number  required
-    seller_id               number  required
-    event_id                number  required
-    event_template_file_id       number  required
-    rider_name              string  required
-    rider_age               number
-    horse_name              string  required
-    club_name               string
-    class1_description      string
-    class1_ticked           number
-    class2_description      string
-    class2_ticked           number
-    class3_description      string
-    class3_ticked           number
-    class4_description      string
-    class4_ticked           number
-    class5_description      string
-    class5_ticked           number
-    class6_description      string
-    class6_ticked           number
-    class7_description      string
-    class7_ticked           number
-    class8_description      string
-    class8_ticked           number
-    is_member               number
-    name                    string  required
-    landline                string
-    mobile                  string
-    address                 string
-    post_code               string
-    email                   string
-    notes                   text
-    date_reserved           date    required
-    time_reserved           time
-}}
-
-{{@new index TABLE sellerindex
-    seller_id
-    event_id
-}}
-
-{{@new index TABLE eventindex
-    event_id
-}}
-
-<!-- --------------------------------------------------------------------------------------- -->
-
-{{@get sid filter sid = sid}}
-{{uid = sid.uid}}
-{{@get seller filter uid = uid}}
-{{@get event filter id = event}}
-
-<br><br>
-
-{{@html container start center css='max-width:900px; Xpadding:0}}
-
-<form name="event_form" class="uk-form uk-form-horizontal">
-<center><h2> {{seller.name}} HEADING </h2></center>
-<center><h3> {{@datedmy event.date}} {{event.headline}} </h3></center>
-	<input type="hidden" name="seller.id" value={{seller.id}}>
-	<input type="hidden" name="event.id" value={{event.id}}>
-	<input type="hidden" name="event.uid" value="{{seller.uid}}">
-	{{@html gridrow start}}
-		{{@html gridcol start width=5-10}}
-			{{@html text field=TABLE.rider size=medium label='Rider name'}}
-		{{@html gridcol end}}
-		{{@html gridcol start width=5-10}}
-			{{@html text field=TABLE.age size=small label='Age if junior'}}
-		{{@html gridcol end}}
-	{{@html gridrow end}}
-
-	{{@html gridrow start}}
-		{{@html gridcol start width=5-10}}
-			{{@html text field=TABLE.horse size=large label='Horse name'}}
-		{{@html gridcol end}}
-		{{@html gridcol start width=5-10}}
-			{{@html text field=TABLE.club size=medium label='Club'}}
-		{{@html gridcol end}}
-	{{@html gridrow end}}
-<hr>
-
-<hr>
-	<center>
-		<table>
-			<tr>
-				<td> Class 1 {{@html text field=TABLE.class1_description size=large}} </td>
-				<td> {{@html checkbox field=TABLE.class1_ticked}} </td>
-			<tr>
-			<tr>
-				<td> {{@html text field=TABLE.class2_description size=medium label='Class 2'}} </td>
-				<td> {{@html checkbox field=TABLE.class2_ticked}} </td>
-			<tr>
-		</table>
-	</center>
-
-ENTRY
------
-rider
+{{@get event filter id = eventId}}
+{{@get seller filter id = event.seller_id}}
 
 
-			{{@html text field=event.headline size=large label='Headline'}}
-			{{@html date field=event.date size=medium label='Date'}}
-			{{@html text field=event.time size=medium label='Time (hh:mm:ss)'}}
-			{{@html checkbox field=event.active label='Active' tip='Check this box if event is to be publicly visible' group=inp}}
-			{{@html textarea field=event.description size=60x5 label='Event description'}}
-			<label class="uk-form-label" for="mem.upload">Uploaded picture</label>
-			<div class="uk-form-controls">
-				<span style='display:inline-block;margin-top:5px'>{{event.image}}</span>
-				<input type="button" value="Clear" onclick="clearFile()">
-				<span class="uk-form-file"> <input type="file" onChange="fileUpload(this)"></span>
-			</div>
-<hr>
-			{{@html text field=event.contact size=large label='Contact person'}}
-			{{@html text field=event.landline size=medium label='Telephone number'}}
-			{{@html text field=event.mobile size=medium label='Mobile number'}}
-			{{@html text field=event.email size=medium label='Email address'}}
-			{{@html textarea field=event.address size=60x5 label=Address}}
-			{{@html text field=event.post_code size=small label='Post code'}}
-<hr>
-			{{@html textarea field=event.tandc size=60x5 label='Additional info (T&Cs etc)'}}
-<hr>
-			<!-- @@EG: dropdown outside of the jam -->
-			<label class="uk-form-label" for="event.event_template_file_id"> Template </label>
-			<div class="uk-form-controls">
-				<select id="ID1___event___event_template_file_id" name="event.event_template_file_id" onchange="fn(this, event);" onkeyup="fn(this, event);" class="uk-form-width-medium">
-				{{tmp.selected = }}
-				{{@each event_template_file filter uid = uid, id = event.event_template_file_id}}
-					<option value="{{event_template_file.id}}" selected> {{event_template_file.file}} </option>
-				{{@end}}
-					<option value="0">None</option>
-				{{@each event_template_file filter uid = uid, id != event.event_template_file_id}}
-					<option value="{{event_template_file.id}}"> {{event_template_file.file}} </option>
-				{{@end}}
-				</select>
-			</div>
+<style type="text/css">
+	label {text-align: right; width:150px !important}
+	div.uk-form-controls {margin-left: 170px !important}
+</style>
 
-		{{@html gridcol end}}
-	{{@html gridrow end}}
-	{{@html gridrow start}}
-		{{@html gridcol start width=1-1}}
+<style type="text/css">
+html {
+	background: url("/jam/upload/event/image/{{event.image}}") no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;			
+}
+
+.midHeight {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+div#formContainer {
+	display:block;
+	margin:0px auto;
+	background-color:white;
+	padding:20px;
+	width:800px;
+	-moz-box-shadow: 0 0 20px black; -webkit-box-shadow: 0 0 20px black; box-shadow: 0 0 20px black;
+	background-color:#ececec;
+}
+</style>
+
+{{@XXXhtml container start center css='max-width:800px; padding:0'}}
+
+
+<div class='midHeight'>
+	<div id='formContainer'>
+
+		<form name="event_order" class="XmidHeight uk-form uk-form-horizontal">
+			<input type="hidden" name="event_order.seller_id" value="{{seller.id}}">
+			<input type="hidden" name="event_order.event_id" value="{{event.id}}">
+			<input type="hidden" name="event_order.event_item_id" value="12345">
+			<input type="hidden" name="event_order.date" value="{{sys.today}}">
+			<input type="hidden" name="event_order.time" value="{{sys.now}}">
+<br>
+			<center><h3> {{event.headline}} {{event.date}} {{event.time}} </h3></center>
+
+        {{@html gridrow start}}
+            {{@html gridcol start width=1-1}}
+
 			<br>
 			<center>
-				{{@html button Save primary medium
-					runAction('update_event', ['event_form'], '', postUpdate)
-				}}
-				{{@html button Cancel primary medium
-					runJam('event.jam');
-				}}
-			</center>
-		{{@html gridcol end}}
-	{{@html gridrow end}}
-
-</form>
-
-{{@action update_event}}
-	{{@update item event notify=ok}}
+				<table class="uk-table" style="width:50%; background-color:#bed0de">
+{{@each event_item filter event_id = event.id}}
+					<tr style="padding:20px">
+						<td>{{event_item.description}}</td>
+						<td> {{@html checkbox field=iii group=inp}}</td>
+					</tr>
 {{@end}}
+				</table>
+			</center>
+
+{{@html checkbox field=iiiii label='Member?' tip='Check this if you are a member' group=inp}}
+			<br>
+
+<hr>
+<center> <h4> Rider details </h4> </center>
+
+			{{@html text field=event_order.rider_name size=medium label='Rider name' group=inp}}
+			{{@html text field=event_order.rider_age size=small label='Rider age' group=inp}}
+			{{@html text field=event_order.horse_name size=medium label='Horse name' group=inp}}
+			{{@html text field=event_order.club_name size=medium label='Club name' group=inp}}
+
+<hr>
+<center> <h4> Payment details </h4> </center>
+
+			{{@html text field=event_order.name size=medium label='Name' group=inp}}
+			{{@html text field=event_order.landline size=medium label='Telephone number'}}
+			{{@html text field=event_order.mobile size=medium label='Mobile number'}}
+			{{@html text field=event_order.email size=medium label='Email address'}}
+			{{@html text field=check.email size=medium label='Email again'}}
+			{{@html textarea field=event_order.address size=30x5 label=Address}}
+			{{@html text field=event_order.post_code size=small label='Post code'}}
+			{{@html textarea field=event_order.notes size=30x5 label='Notes'}}
+
+			<input type="hidden" name="event_order.qty" value="111">
+			<input type="hidden" name="event_order.price" value="222">
+
+            {{@html gridcol end}}
+
+        {{@html gridrow end}}
+
+		<br>
+
+<center> <input type="image" src="/img/paypal-checkout.png" onClick="return sendOrder()"/>  &nbsp&nbsp Tel {{event.landline}} or {{event.mobile}} </center>
+
+
+		</form>
+	</div>
+</div>
+
+
+{{@XXXhtml container end}}
 
 <script>
-function clearFile() {
-	var evObj = get('event.image');
-	evObj.value = '';
-}
 
-function postUpdate() {
-	window.setTimeout(runJam('event.jam', 1000));
-}
+function sendOrder() {
+    var obj = get('event_order.name'); if (obj.value == "") { alert('Invalid Name'); return(false) }
+    obj = get('event_order.email'); if (obj.value == "") { alert('Invalid Email address'); return(false) }
+    obj2 = get('check.email'); if (obj2.value != obj.value) { alert('Email addresses do not match'); return(false) }
 
-function fileUpload(obj) {
-    $.blockUI();
-    var file = obj.files[0];
-    var evObj = get('event.image');
-	evObj.value = file.name;
-//alert(evObj.value);
-    console.log("name : " + file.name);
-    console.log("size : " + file.size);
-    console.log("type : " + file.type);
-    console.log("date : " + file.lastModified)
-    var url = 'http://www.bookingbee.uk:/jam/upload/uploadEventImage.php';
-    var xhr = new XMLHttpRequest();
-    var fd = new FormData();
-    xhr.open("POST", url, true);
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            console.log(xhr.responseText); // handle response.
-            $.unblockUI();
-			objAttachment = get('event.image');
-			objAttachment.value = file.name;
-        } else {
-            $.unblockUI();
-        }
-    };
-    fd.append("upload_file", file);
-    xhr.send(fd);
-
+alert('ok');
+return(false);
 }
 
 </script>
-
-{{@html container end}}
 
 {{@include /jam/sys/html/footer.html}}

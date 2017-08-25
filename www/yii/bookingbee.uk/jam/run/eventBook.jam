@@ -1,126 +1,15 @@
 {{@include /jam/sys/html/header.html}}
 
-{{@include /jam/css/site.css}}
-{{@XXXinclude /jam/run/menu.jam}}
-
 {{@database bookingbee_uk}}
 
 {{@get event filter id = eventId}}
+{{@get event_template_file filter id = event.event_template_file_id}}
 {{@get seller filter id = event.seller_id}}
-
-
-<style type="text/css">
-	label {text-align: right; width:150px !important}
-	div.uk-form-controls {margin-left: 170px !important}
-</style>
-
-<style type="text/css">
-html {
-	background: url("/jam/upload/event/image/{{event.image}}") no-repeat center center fixed;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;			
-}
-
-.midHeight {
-  position: relative;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-div#formContainer {
-	display:block;
-	margin:0px auto;
-	background-color:white;
-	padding:20px;
-	width:800px;
-	-moz-box-shadow: 0 0 20px black; -webkit-box-shadow: 0 0 20px black; box-shadow: 0 0 20px black;
-	background-color:#ececec;
-}
-</style>
-
-{{@XXXhtml container start center css='max-width:800px; padding:0'}}
-
-
-<div class='midHeight'>
-	<div id='formContainer'>
-
-		<form name="event_order" class="XmidHeight uk-form uk-form-horizontal">
-			<input type="hidden" name="event_order.seller_id" value="{{seller.id}}">
-			<input type="hidden" name="event_order.event_id" value="{{event.id}}">
-			<input type="hidden" name="event_order.event_item_id" value="12345">
-			<input type="hidden" name="event_order.date" value="{{sys.today}}">
-			<input type="hidden" name="event_order.time" value="{{sys.now}}">
-<br>
-			<center><h3> {{event.headline}} {{event.date}} {{event.time}} </h3></center>
-
-        {{@html gridrow start}}
-            {{@html gridcol start width=1-1}}
-
-			<br>
-			<center>
-				<table class="uk-table" style="width:50%; background-color:#bed0de">
-{{@each event_item filter event_id = event.id}}
-					<tr style="padding:20px">
-						<td>{{event_item.description}}</td>
-						<td> {{@html checkbox field=iii group=inp}}</td>
-					</tr>
-{{@end}}
-				</table>
-			</center>
-
-{{@html checkbox field=iiiii label='Member?' tip='Check this if you are a member' group=inp}}
-			<br>
-
-<hr>
-<center> <h4> Rider details </h4> </center>
-
-			{{@html text field=event_order.rider_name size=medium label='Rider name' group=inp}}
-			{{@html text field=event_order.rider_age size=small label='Rider age' group=inp}}
-			{{@html text field=event_order.horse_name size=medium label='Horse name' group=inp}}
-			{{@html text field=event_order.club_name size=medium label='Club name' group=inp}}
-
-<hr>
-<center> <h4> Payment details </h4> </center>
-
-			{{@html text field=event_order.name size=medium label='Name' group=inp}}
-			{{@html text field=event_order.landline size=medium label='Telephone number'}}
-			{{@html text field=event_order.mobile size=medium label='Mobile number'}}
-			{{@html text field=event_order.email size=medium label='Email address'}}
-			{{@html text field=check.email size=medium label='Email again'}}
-			{{@html textarea field=event_order.address size=30x5 label=Address}}
-			{{@html text field=event_order.post_code size=small label='Post code'}}
-			{{@html textarea field=event_order.notes size=30x5 label='Notes'}}
-
-			<input type="hidden" name="event_order.qty" value="111">
-			<input type="hidden" name="event_order.price" value="222">
-
-            {{@html gridcol end}}
-
-        {{@html gridrow end}}
-
-		<br>
-
-<center> <input type="image" src="/img/paypal-checkout.png" onClick="return sendOrder()"/>  &nbsp&nbsp Tel {{event.landline}} or {{event.mobile}} </center>
-
-
-		</form>
-	</div>
-</div>
-
-
-{{@XXXhtml container end}}
 
 <script>
 
-function sendOrder() {
-    var obj = get('event_order.name'); if (obj.value == "") { alert('Invalid Name'); return(false) }
-    obj = get('event_order.email'); if (obj.value == "") { alert('Invalid Email address'); return(false) }
-    obj2 = get('check.email'); if (obj2.value != obj.value) { alert('Email addresses do not match'); return(false) }
-
-alert('ok');
-return(false);
+window.onload = function() {
+	runJam('{{event_template_file.file}}?eventId={{event.id}}');
 }
 
 </script>
