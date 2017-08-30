@@ -41,8 +41,8 @@ html {
 
 .midHeight {
   position: relative;
-  top: 50%;
-  transform: translateY(-50%);
+  Xtop: 50%;
+  Xtransform: translateY(-50%);
 }
 
 div#formContainer {
@@ -85,6 +85,7 @@ div#formContainer {
 {{@each event_item filter event_id = event.id}}
 					<tr style="padding:20px">
 						<td>{{event_item.description}}</td>
+						<td>£ {{event_item.price}}</td>
 						<td> {{@html checkbox field=iii group=inp}}</td>
 					</tr>
 {{@end}}
@@ -126,8 +127,9 @@ div#formContainer {
 <center> <input type="image" src="/img/paypal-checkout.png" onClick="return sendOrder()"/>  &nbsp&nbsp Tel {{event.landline}} or {{event.mobile}} </center>
 
 <hr>
-<center> <h4> Terms and Conditions </h4> </center>
+<p style="font-size: 75%;"> 
 	{{event.tandc}}
+</p>
 
 		</form>
 	</div>
@@ -145,10 +147,13 @@ function sendOrder() {
     obj = get('template_beirc.is_member'); if (obj.value == "") { alert('Please indicate whether rider is a BEIRC member'); return(false) }
 
 	runAction('update_order', ['event_order'], '', updated);
+	return(false);
 }
 
 function updated() {
-
+	obj = get('event_order.id');
+	//alert('back. new order id = '+ obj.value);
+	runJam('paypal?orderId='+obj.value);
 }
 
 </script>
