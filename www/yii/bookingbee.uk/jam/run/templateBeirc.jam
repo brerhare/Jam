@@ -15,8 +15,8 @@
 	rider_name              string  required
 	rider_age               number
 	horse_name              string  required
-	club_name               string
 	is_member               number
+	member_number           string
 }}
 
 <!-- --------------------------------------------------------------------------------------- -->
@@ -86,7 +86,7 @@ div#formContainer {
 					<tr style="padding:20px">
 						<td>{{event_item.description}}</td>
 						<td>£ {{event_item.price}}</td>
-						<td> {{@html checkbox field=iii group=inp}}</td>
+						<td> <input type="checkbox" name="order_item" value="{{event_item.id}}" class='inp'> </td>
 					</tr>
 {{@end}}
 				</table>
@@ -94,14 +94,14 @@ div#formContainer {
 
 
 <hr>
-<center> <h4> Rider details </h4> </center>
+<center> <h4> Rider details. <span style="color:grey"> (BEIRC members receive £2 off each class) </span> </h4> </center>
 
 			{{@html checkbox field=template_beirc.is_member label='BEIRC Member?' tip='Check this if you are a member' group=inp}}
+			{{@html text field=template_beirc.member_number size=small label='Member number' group=inp}}
 			{{@XXXXXhtml radio field=template_beirc.is_member label='B.E.I.R.C' options=1:Member,0:'Non member' group=inp}}
 			{{@html text field=template_beirc.rider_name size=medium label='Rider name' group=inp}}
 			{{@html text field=template_beirc.rider_age size=small label='Rider age' group=inp}}
 			{{@html text field=template_beirc.horse_name size=medium label='Horse name' group=inp}}
-			{{@html text field=template_beirc.club_name size=medium label='Club name' group=inp}}
 
 <hr>
 <center> <h4> Payment details </h4> </center>
@@ -130,6 +130,7 @@ div#formContainer {
 <p style="font-size: 75%;"> 
 	{{event.tandc}}
 </p>
+<button type='button' class="uk-button uk-button-primary" onClick="window.open('http://www.beirc.co.uk/?layout=index&page=rules-entry-competitions')">See our Rules and Regulations</button> </td>
 
 		</form>
 	</div>
@@ -146,13 +147,34 @@ function sendOrder() {
     obj2 = get('check.email'); if (obj2.value != obj.value) { alert('Email addresses do not match'); return(false) }
     obj = get('template_beirc.is_member'); if (obj.value == "") { alert('Please indicate whether rider is a BEIRC member'); return(false) }
 
-	runAction('update_order', ['event_order'], '', updated);
+	$("body").css("cursor", "progress");
+
+	runAction('update_order', ['event_order'], '', updated_order);
 	return(false);
 }
 
-function updated() {
+var outstandingPlacements = 0;
+
+function updated_order() {
+    var checkboxes = document.getElementsByName('order_item');
+    for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+			outstandingPlacements++;
+            runAction('update_order_item', ['event_order.id', 'event_item.id='+checkboxes[i].value], '', checkOutstandingPlacements);
+        }
+    }
+}
+
+function checkOutstandingPlacements() {
+	outstandingPlacements--;
+	if (outstandingPlacements == 0)
+		updated_all();
+}
+
+function updated_all() {
+	$("body").css("cursor", "default");
 	obj = get('event_order.id');
-	//alert('back. new order id = '+ obj.value);
+//	alert('back. new order id = '+ obj.value);
 	runJam('paypal?orderId='+obj.value);
 }
 
@@ -160,7 +182,23 @@ function updated() {
 
 {{@action update_order}}
 	{{@new item template_beirc notify=ok}}
+	{{event_order.paid = 0}}
 	{{@new item event_order}}
+{{@end}}
+
+{{@action update_order_item}}
+	{{@get event_order filter id = event_order.id}}
+	{{@get event_item filter id = event_item.id}}
+
+	{{event_order_item.sid = event_order.sid}}
+	{{event_order_item.seller_id = event_order.seller_id}}
+	{{event_order_item.event_id = event_order.event_id}}
+	{{event_order_item.event_item_id = event_item.id}}
+
+	{{event_order_item.qty = 1}}
+	{{event_order_item.price = event_item.price}}
+
+	{{@new item event_order_item notify=ok}}
 {{@end}}
 
 {{@include /jam/sys/html/footer.html}}

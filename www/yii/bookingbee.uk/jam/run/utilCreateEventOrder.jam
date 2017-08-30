@@ -19,6 +19,7 @@ Doing...
     address                 string
     post_code               string
 	notes					text
+	paid					number
 }}
 
 {{@new index event_order sellerindex
