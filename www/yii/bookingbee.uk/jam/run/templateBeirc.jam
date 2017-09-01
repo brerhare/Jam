@@ -74,7 +74,7 @@ div#formContainer {
 			<input type="hidden" name="template_beirc.sid" value="{{seller.sid}}">
 			<input type="hidden" name="template_beirc.event_id" value="{{event.id}}">
 <br>
-			<center><h3> {{event.headline}} {{event.date}} {{event.time}} </h3></center>
+			<center><h3> {{event.headline}} {{@datedmy event.date}} {{event.time}} </h3></center>
 
         {{@html gridrow start}}
             {{@html gridcol start width=1-1}}
@@ -86,7 +86,7 @@ div#formContainer {
 					<tr style="padding:20px">
 						<td>{{event_item.description}}</td>
 						<td>£ {{event_item.price}}</td>
-						<td> <input type="checkbox" name="order_item" value="{{event_item.id}}" class='inp'> </td>
+						<td> <input type="checkbox" name="order_item" onclick="handleOrderItem(this)" value="{{event_item.id}}" class="inp"> </td>
 					</tr>
 {{@end}}
 				</table>
@@ -96,7 +96,7 @@ div#formContainer {
 <hr>
 <center> <h4> Rider details. <span style="color:grey"> (BEIRC members receive £2 off each class) </span> </h4> </center>
 
-			{{@html checkbox field=template_beirc.is_member label='BEIRC Member?' tip='Check this if you are a member' group=inp}}
+			{{@html checkbox field=template_beirc.is_member label='BEIRC Member?' tip='Check this if you are a member' group=inpcb}}
 			{{@html text field=template_beirc.member_number size=small label='Member number' group=inp}}
 			{{@XXXXXhtml radio field=template_beirc.is_member label='B.E.I.R.C' options=1:Member,0:'Non member' group=inp}}
 			{{@html text field=template_beirc.rider_name size=medium label='Rider name' group=inp}}
@@ -141,6 +141,12 @@ div#formContainer {
 
 <script>
 
+
+function handleOrderItem(obj) {
+	//var checkedValue = document.querySelector('.inpcb:checked').value;
+	//console.log(checkedValue);
+}
+
 function sendOrder() {
     var obj = get('event_order.name'); if (obj.value == "") { alert('Invalid Name'); return(false) }
     obj = get('event_order.email'); if (obj.value == "") { alert('Invalid Email address'); return(false) }
@@ -154,6 +160,7 @@ function sendOrder() {
 }
 
 var outstandingPlacements = 0;
+var payable = 0;
 
 function updated_order() {
     var checkboxes = document.getElementsByName('order_item');
@@ -175,7 +182,7 @@ function updated_all() {
 	$("body").css("cursor", "default");
 	obj = get('event_order.id');
 //	alert('back. new order id = '+ obj.value);
-	runJam('paypal?orderId='+obj.value);
+/////////////////////////////////////	runJam('paypal?orderId='+obj.value);
 }
 
 </script>
