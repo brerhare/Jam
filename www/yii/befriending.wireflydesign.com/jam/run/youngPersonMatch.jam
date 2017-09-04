@@ -146,19 +146,21 @@ function afterMatchDates() {
 	{{@update item match_yp}}
 {{@end}}
 
-{{@action update_event}}
-	{{@update item event}}
-{{@end}}
-
 {{@action addMatch}}
-	{{@get match_yp filter young_person_id = yp_id}}
-	{{match_history.match_date = match_yp.match_date}}
-	{{match_history.match_started = match_yp.match_started}}
-	{{match_history.match_end = sys.today}}
-	{{match_history.young_person_id = match_yp.young_person_id}}
-	{{match_history.befriender_id = match_yp.befriender_id}}
-	{{@new item match_history}}
-	{{@sql delete from match_yp where young_person_id = {{yp_id}} }}
+	{{@each match_yp filter young_person_id = yp_id, match_end = 0000-00-00}}
+		{{match_history.match_date = match_yp.match_date}}
+		{{match_history.match_started = match_yp.match_started}}
+		{{match_history.match_end = sys.today}}
+		{{match_history.young_person_id = match_yp.young_person_id}}
+		{{match_history.befriender_id = match_yp.befriender_id}}
+		{{@new item match_history}}
+
+		{{match_yp.match_end = sys.today}}
+		{{@update item match_yp notify=ok}}
+	{{@end}}
+
+	{{@XXXXXsql delete from match_yp where young_person_id = {{yp_id}} }}
+
 	{{match_yp.young_person_id = {{yp_id}} }}
 	{{match_yp.befriender_id = {{bf_id}} }}
 	{{match_yp.match_started = {{sys.today}} }}
@@ -167,7 +169,7 @@ function afterMatchDates() {
 {{@end}}
 
 {{@action deleteMatch}}
-	{{@sql delete from match_yp where young_person_id = {{yp_id}} }}
+	{{@sql delete from match_yp where young_person_id = {{yp_id}} and befriender_id = {{bf_id}} }}
 {{@end}}
 
 {{@include /jam/sys/html/footer.html}}
