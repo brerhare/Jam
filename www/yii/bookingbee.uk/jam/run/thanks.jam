@@ -1,0 +1,24 @@
+{{@include /jam/sys/html/header.html}}
+
+{{@include /jam/css/site.css}}
+
+{{@database bookingbee_uk}}
+
+<style>
+
+html, body {background-color: #ffffff; }
+
+</style>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<center><h1> Thank you! Check your email for confirmation </h1> </center>
+<center><h3> You may close this window </h3></center>
+
+{{@include /jam/sys/html/footer.html}}

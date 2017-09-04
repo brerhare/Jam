@@ -1,61 +1,17 @@
 {{@include /jam/sys/html/header.html}}
 
-{{@include /jam/css/site.css}}
-{{@XXXinclude /jam/run/menu.jam}}
-
 {{@database bookingbee_uk}}
 
 {{@get event filter id = eventId}}
+{{@get event_template_file filter id = event.event_template_file_id}}
 {{@get seller filter id = event.seller_id}}
 
-<style>
-#content {
-	position: relative;
-	z-index: 1;
+<script>
+
+window.onload = function() {
+	runJam('{{event_template_file.file}}?eventId={{event.id}}');
 }
 
-.content_img {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    opacity: 0.4;
-}
-
-.uk-overflow-container {
-	overflow: hidden;
-}
-
-</style> 
-
-<br><br>
-
-{{@html container start center css='max-width:900px; padding:0}}
-
-<div id="content" name="content">
-
-	<form name="event_container" class="uk-form uk-form-horizontal">
-		<center><p> <img src="http://bookingbee.uk/jam/upload/seller/image/{{seller.image}}" style="height:100px"> {{seller.name}} </p></center>
-		<center><h3> {{event.headline}}</h3></center>
-		<center><p> When {{event.date}} {{event.time}} </p></center>
-		<center><p> Tel {{event.landline}} {{event.mobile}} </p></center>
-		<center><img class="content_img" src="/jam/upload/event/image/{{event.image}}" Xstyle="height:100px"></center>
-{{@each event_item filter event_id = event.id}}
-		<div>
-			<span>{{event_item.description}}</span>
-			<span>{{event_item_qty_order_max}}</span>
-		</div>
-{{@end}}
-		<hr>            
-	</form>
-
-</div>
-
-<div id = "icontent_img"></div>
-
-
-{{@html container end}}
-
-<br><br>
+</script>
 
 {{@include /jam/sys/html/footer.html}}
