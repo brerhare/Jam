@@ -60,6 +60,8 @@
 							<td> {{global.email}} </td>
 							<td> {{global.postcode}} </td>
 							<td>
+								<button type='button' id='dateButton' class="uk-button uk-button-primary uk-button-small" onClick="dateMatch('{{match_yp.id}}', '{{global.id}}')">Dates</button>
+								<button type='button' id='removeButton' class="uk-button uk-button-danger uk-button-small" onClick="deleteMatch('{{befriender.id}}', '{{young_person.id}}')">Remove</button>
 							</td>
 						</tr>
 	{{@end}}
