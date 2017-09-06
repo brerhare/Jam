@@ -1,0 +1,40 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/new_menu.jam}}
+
+<style>
+.mydiv {
+	margin: auto;
+    border-style: solid;
+    border-width: 1px;
+	height:100px;
+	width:300px;
+}
+</style>
+
+    <style type="text/css">
+        label {text-align: right; width:150px !important}
+        div.uk-form-controls {margin-left: 170px !important}
+    </style>
+
+
+<br>
+
+{{@html container start center css='max-width:1080px; Xpadding:0}}
+
+{{@database befriending_wireflydesign_com}}
+
+<!-- <br> <center><h2> Welcome </h2></center> -->
+<br><br><br>
+
+<form name="inputForm_user" class="uk-form uk-form-horizontal">
+
+		<center><h3> You are logged in </h3></center>
+		<center><h3> The menu options available to you are shown above </h3></center>
+</form>
+
+<br><br><br><br>
+{{@html container end}}
+
+{{@include /jam/sys/html/footer.html}}

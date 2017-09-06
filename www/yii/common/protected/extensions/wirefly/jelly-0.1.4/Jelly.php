@@ -907,22 +907,23 @@ if ((isset($_GET['page'])) && (trim($_GET['page']) != ""))
 						//$jamUrl = $yiiSite . "/jamcgi/jam?jamtemplate=" . $jamArg . "&jelly.sid=" . $sid . "&jelly.email=" . $settingEmail;
 						$argChar = "?";
 						if (strstr($jamArg, "?") == true)
-							$argChar = "\&";
-						$jamUrl = $yiiSite . $jamArg . $argChar . "jelly.sid=" . $sid . "\&/jelly.email=" . $settingEmail;
+							$argChar = "&";
+						$jamUrl = $yiiSite . $jamArg . $argChar . "jelly.sid=" . $sid . "&jelly.email=" . $settingEmail;
 						//$jamUrl = $yiiSite . $jamArg . $argChar . "jelly.email=" . $settingEmail .  "jelly.sid=" . $sid;
 						// Add in any possible templates
 						foreach ($this->jamTemplateArr as $n => $v)
 						{
-							$jamUrl .= "\&jamtemplate." . $n . "=" . $v;
+							$jamUrl .= "&jamtemplate." . $n . "=" . $v;
 						}
 						if ($jamType == "embed") {
-							$shell_exec = "php " . Yii::app()->basePath . "/../jam/jelly2jam.php" . " " . $jamUrl;
-//echo "YYYYYYYYYYYYYYYYYYYYYYY " . $shell_exec;
+							$shell_exec = "php " . Yii::app()->basePath . "/../jam/jelly2jam.php" . " '" . $jamUrl . "'";
+//echo "YYYYYYYYYYYYYYYYYYYYYYY " . $shell_exec . "<br>";
 							$curlContent = shell_exec ($shell_exec);
 							$this->genInlineHtml($curlContent);
 						} else {
 							// Check if iframe has a size
-							$iframe = "<iframe id='frm' onload='scroll(0,0);' width='100%' height='" .$jamHeight . "' scrolling='no' style='overflow-x:hidden; overflow-y:auto;' src='"  .$jamUrl . "' ></iframe>";
+							$idNo = mt_rand();
+							$iframe = "<iframe id='frm-" . $idNo . "' onload='scroll(0,0);' width='100%' height='" .$jamHeight . "' scrolling='no' style='overflow-x:hidden; overflow-y:auto;' src='"  .$jamUrl . "' ></iframe>";
 							$this->genInlineHtml($iframe);
 						}
 						break;

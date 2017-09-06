@@ -1,0 +1,12 @@
+<style>
+
+label {text-align: right;}
+
+.uk-container { border-radius: 25px; padding:50px; background-color: #dee6f1; }
+
+.rowHighlight:hover {
+	background-color: #ddf0ff;
+	cursor:pointer;
+}
+
+</style>

@@ -33,21 +33,23 @@ css.width = 100%
 		css.overflow = visible
 		
 		[slider-block]
-		child = logo, slider
+		child = home-logo, slider
+		css.max-width = 1200px
+		condition = @PAGE=@HOMEPAGE
 			
-			[logo]
+			[home-logo]
+			css.position = absolute
 			css.width = 90%
+			css.min-width = 400px
 			css.margin-top = 11%
 			image.url = img/logo.png
-			image.width = 40%
+			image.width = 50%
 			image.height = 50%
 			image.align = left
-			css.z-index = 100
+			css.z-index = 50
 			
 			[slider]
 			css.width = 100%
-			css.position = relative
-			css.margin-top = -18%
 			jam.embed = /run/befriendingSlider.jam
 			
 
@@ -55,20 +57,33 @@ css.width = 100%
 		[main-block]
 		child = left, right
 		stacking = horizontal
-		css.margin-top = 20px
+		css.margin-top = 40px
 		css.max-width = 1000px
 		
 			[left]
-			child = main-content, footer, wirefly
+			child = logo, main-content, blog-page, footer, wirefly
 			css.width = 70%
 			
+				[logo]
+				css.width = 100%
+				css.min-width = 400px
+				css.margin-top = 30px
+				image.url = img/logo.png
+				image.width = 40%
+				image.height = 40%
+				image.align = left
+				
 				[main-content]
 				css.width = 100%
-				css.min-height = 25px
+				css.margin-top = 50px
 				db.table = ContentBlock
 				db.filter = url=$_GET['page']
 				db.error = Sorry, I could not find the page $_GET['page']
 				html.raw = ContentBlock.content
+				
+				[blog-page]
+				condition = @PAGE=dumfries-befriending-young-people-news
+				html.raw = {{news newstype=pinterest sidebar=right pushrecentdown = 0px pushcategoriesdown = 0px}}
 
 								
 				[footer]
@@ -116,7 +131,8 @@ css.width = 100%
 						
 						[contact-form]
 						css.width = 45%
-						jam.embed = /run/contact.jam
+						#jam.embed = /run/contact.jam
+						jam.iframe = /run/contact
 						css.margin-bottom = 20px
 						
 		[wirefly]
@@ -160,6 +176,7 @@ css.width = 100%
 			css.width = 25%
 			css.min-height = 100px
 			css.margin-left = 3%
+			css.margin-top = 20px
 			
 				[column-title]
 				css.text-align = center

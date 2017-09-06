@@ -1,0 +1,89 @@
+{{@include /jam/sys/html/header.html}}
+
+Doing...<br>
+
+{{@database befriending_wireflydesign_com}}
+
+{{@remove table menu}}
+{{@XXXXXremove table user}}
+{{@XXXXXremove table user_menu}}
+
+{{@new table menu
+	text								string	required
+	href								string	required
+	parent_id							number
+}}
+
+{{@XXXXXnew table user
+	handle								string	required
+	password							string
+	first_name							string
+	last_name							string
+	email_address						string
+}}
+
+{{@XXXXXnew table user_menu
+	user_id								number
+	menu_id								number
+	rand								number
+}}
+
+{{menu.text = Young Person}} {{menu.href = #}} {{menu.parent_id = 0}}       {{@new item menu}}
+	{{pid = menu.id}}
+	{{menu.text = Maintain}}    {{menu.href = /run/youngPerson.jam}}   {{menu.parent_id = pid}} {{@new item menu}}
+	{{menu.text = Referrers}}    {{menu.href = /run/referrers.jam}}   {{menu.parent_id = pid}} {{@new item menu}}
+	{{menu.text = Coordinators}}    {{menu.href = /run/coordinator.jam}}   {{menu.parent_id = pid}} {{@new item menu}}
+	{{menu.text = Archive management}}  {{menu.href = /run/youngPersonArchive.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+{{menu.text = Befrienders}}  {{menu.href = #}} {{menu.parent_id = 0}}       {{@new item menu}}
+	{{pid = menu.id}}
+	{{menu.text = Maintain}}    {{menu.href = /run/befriender.jam}}   {{menu.parent_id = pid}} {{@new item menu}}
+	{{menu.text = Web Form}}  {{menu.href = /run/befrienderWebFormDetail.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Archive management}}  {{menu.href = /run/befrienderArchive.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+{{menu.text = Events}}  {{menu.href = #}} {{menu.parent_id = 0}}       {{@new item menu}}
+	{{pid = menu.id}}
+	{{menu.text = Maintain}}    {{menu.href = /run/event.jam}}   {{menu.parent_id = pid}} {{@new item menu}}
+	{{menu.text = Event Types}}  {{menu.href = /run/event_type.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+{{menu.text = Reports}}  {{menu.href = #}} {{menu.parent_id = 0}}       {{@new item menu}}
+	{{pid = menu.id}}
+	{{menu.text = Volunteer process joining}}  {{menu.href = /run/reportJoining.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Co-ordinator report}}  {{menu.href = /run/reportCoordinator.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Young Person annual match report}}  {{menu.href = /run/reportYoungPersonAnnualMatch.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Young Person referral report}}  {{menu.href = /run/reportReferral.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Young Person leaving report}}  {{menu.href = /run/reportYoungPersonLeaving.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Young Person risk report}}  {{menu.href = /run/reportYoungPersonRisk.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Young Person medical report}}  {{menu.href = /run/reportYoungPersonMedical.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Young Person legal status report}}  {{menu.href = /run/reportLegalstatus.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = GIRFEC report}}  {{menu.href = /run/reportGirfec.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Annual GIRFEC report}}  {{menu.href = /run/reportAnnualGirfec.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Befriender annual report}}  {{menu.href = /run/reportBefrienderAnnual.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Befriender leaving report}}  {{menu.href = /run/reportBefrienderLeaving.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Event notes report}}  {{menu.href = /run/reportEventNotes.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+{{menu.text = Settings}}  {{menu.href = #}} {{menu.parent_id = 0}}       {{@new item menu}}
+	{{pid = menu.id}}
+	{{menu.text = Form types}}  {{menu.href = /run/formType.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Girfec outcomes}}  {{menu.href = /run/girfec_outcome_name.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Interest types}}  {{menu.href = /run/interestType.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Enquiry methods}}  {{menu.href = /run/enquiryMethod.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Employment statuses}}  {{menu.href = /run/employmentStatus.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Heard about}}  {{menu.href = /run/heardAbout.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Medical conditions}}  {{menu.href = /run/medicalType.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Relationship types}}  {{menu.href = /run/contactRelationship.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Young person status types}}  {{menu.href = /run/status.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Young person additional questions}}  {{menu.href = /run/questionYoungPerson.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Befriender status types}}  {{menu.href = /run/status_bf.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Befriender additional questions}}  {{menu.href = /run/questionBefriender.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Befriender documentation types}}  {{menu.href = /run/befrienderDocumentationType.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+{{menu.text = System}}  {{menu.href = #}} {{menu.parent_id = 0}}       {{@new item menu}}
+	{{pid = menu.id}}
+	{{menu.text = Configuration}}  {{menu.href = /run/settings.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Users}}  {{menu.href = /run/user.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = User menus}}  {{menu.href = /run/user_menus_users.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = Kims upload notes}}  {{menu.href = /run/uploads.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+	{{menu.text = User guide}}  {{menu.href = /run/guide.jam}} {{menu.parent_id = pid}}       {{@new item menu}}
+{{menu.text = Logout}}  {{menu.href = /run/logout.jam}} {{menu.parent_id = 0}}       {{@new item menu}}
+
+
+Done
+
+{{@include /jam/sys/html/footer.html}}
+

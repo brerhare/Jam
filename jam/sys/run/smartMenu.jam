@@ -1,7 +1,4 @@
-<!-- Set defaults for items which were not specifically templated  -->
-{{@template FONTDOWNLOAD PT+Sans+Narrow:400,700}}
-{{@template FONTFAMILY "PT Sans Narrow", "Arial Narrow", Arial, Helvetica, sans-serif}}
-{{@template FONTSIZE 18}}
+<!-- See /jam/sys/addon/menu/smartmenus/css/sm-blue/sm-blue.css for full list of templates -->
 
 <!-- Call the addon -->
 {{@include /jam/sys/addon/menu/smartmenus/index.html}}

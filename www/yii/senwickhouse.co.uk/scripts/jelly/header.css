@@ -1,6 +1,6 @@
 <!-- Place your Google fonts here as a cut and paste then choose which header and fonts etc need the font families - NB if the family only come in Italic then you must state the font style as Italic too -->
 
-<link href='https://fonts.googleapis.com/css?family=Great+Vibes|Open+Sans:400,400italic,700' rel='stylesheet' type='text/css'>
+<link href="https://fonts.googleapis.com/css?family=Italianno|Open+Sans" rel="stylesheet">
 
 <style type="text/css">
 
@@ -19,25 +19,28 @@ a:active { text-decoration: none; color:#187232 }
 
 
 
-h1 {	font-family: 'Great Vibes', Georgia, serif !important;
+h1 {	font-family: 'Italianno', Georgia, serif !important;
 	color: #5fa360;
 	font-size: 42px;
-	font-weight: 400;}
+	font-weight: 400;
+line-height: 1.0;
+}
 
 h2 {	font-family: 'Open Sans', Verdana, sans-serif !important;
-	color: grey;
+	color: #5fa360;
+	XXXcolor: grey;
 	font-size: 20px;
 	font-weight: 400;
 	line-height:150%;}
 
 
-h3 {	font-family: 'Great Vibes', Georgia, serif !important;
+h3 {	font-family: 'Italianno', Georgia, serif !important;
 	color: #5fa360;
 	font-size: 36px;
 	font-weight: 400;
 	font-stretch: wider;}
 
-h4 {	font-family: 'Great Vibes', Georgia, serif !important;
+h4 {	font-family: 'Italianno', Georgia, serif !important;
 	color: #5fa360;
 	font-size: 28px;
 	font-weight: 400;

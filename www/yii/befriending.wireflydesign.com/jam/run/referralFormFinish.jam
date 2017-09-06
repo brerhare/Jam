@@ -56,6 +56,7 @@
 
 {{@action update_young_person}}
     {{young_person.id = ypID}}
+	{{young_person.archive_flag = 1}}
     {{young_person.referral_date = sys.today}}
 	{{young_person.discussion_confirmation = 1}}
 
@@ -64,14 +65,32 @@
 	<center> You may now close this window. </center>
 	<br><br><br>
 
+    {{young_person.archive_flag = 0}}
+    {{young_person.archive_date = '0000-00-00'}}
+    {{young_person.archive_destruction_date = '0000-00-00'}}
     {{@update item young_person}}
+
+    {{@get young_person filter id = young_person.id}}
+    {{@get global filter id = young_person.global_id}}
+
+	{{@get settings filter id = 1}}
+	{{@email {{settings.email}} {{settings.email}} 'Referral completed - Young Person {{global.forename}} {{global.surname}}' action:emailContent}}
+
+	{{@get referral_form_link filter link_number = linkNumber}}
+	{{referral_form_link.used = 1}}
+	{{@update item referral_form_link}}
+{{@end}}
+
+{{@action emailContent}}
+	The referral form was submitted on {{sys.today}} at {{sys.now}}.
 {{@end}}
 
 <script>
 function backToPrev() {
     objReferrer = get('refId');
     objYP = get('ypId');
-    runJam('referralFormContacts?refId='+objReferrer.value+'&ypId='+objYP.value);
+	objLinkNumber = get('linkNumber');
+    runJam('referralFormContacts?refId='+objReferrer.value+'&ypId='+objYP.value+'&linkNumber='+objLinkNumber.value);
 }
 function finishAndClose() {
 	var input = document.getElementById ("confirmBox");

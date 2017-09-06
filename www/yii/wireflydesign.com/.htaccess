@@ -4,5 +4,6 @@ RewriteCond %{SCRIPT_FILENAME} !-f
 RewriteRule ^run(.+)$ /jam/cgi/runjam.cgi?jam=/jam/run/$1 [L,QSA]
 RewriteRule ^jam/run(.+)$ /jam/cgi/runjam.cgi?jam=/jam/run/$1 [L,QSA]
 
+# Redirect https to http
 RewriteCond %{HTTPS} on
 RewriteRule (.*) http://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]

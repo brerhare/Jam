@@ -1,0 +1,22 @@
+{{@include /jam/sys/html/header.html}}
+
+Doing...
+
+{{@database befriending_wireflydesign_com}}
+
+{{@remove table event_milestone}}
+
+{{@new table event_milestone
+	name				string		required
+}}
+
+{{event_milestone.name = None}}											{{@new item event_milestone}}
+{{event_milestone.name = Start}}										{{@new item event_milestone}}
+{{event_milestone.name = 6 Month}}										{{@new item event_milestone}}
+{{event_milestone.name = 12 Month}}										{{@new item event_milestone}}
+{{event_milestone.name = Finish}}										{{@new item event_milestone}}
+
+Done
+
+{{@include /jam/sys/html/footer.html}}
+

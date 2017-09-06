@@ -1,7 +1,7 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@include /jam/run/menu.jam}}
+{{@include /jam/run/new_menu.jam}}
 
 <style>
 	div { width:600px; }
@@ -11,18 +11,20 @@
 
 <!-- Template defines -->
 {{@template TABLE medical_type}}
-{{@template DESCRIPTION List the Type of Medical Conditions}}
+{{@template DESCRIPTION List the Medical and Related Issues}}
 {{@template DELETEFIELD medical_type.name}}
 
 {{@template HEADINGS
-	<th> Condition </th>
+	<th> Medical and Related Issue </th>
+	<th> Sequence </th>
 }}
 
 {{@template COLUMNS
-	<td> {{@html text field=medical_type.name size=medium label=Condition placeholder=condition}} </td>
+	<td> {{@html text field=medical_type.name size=medium xlabel=Issue placeholder=issue}} </td>
+	<td> {{@html text field=medical_type.sequence size=small xlabel=Sequence placeholder=sequence}} </td>
 }}
 
-{{@template EDITS name}}
+{{@template EDITS name sequence}}
 
 <!-- Include the template -->
 {{@include /jam/run/sys/crudInline.jam}}

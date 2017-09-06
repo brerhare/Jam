@@ -1,1 +1,1 @@
-mysql -u <username> <dbname> -p"<password>" < jelly.sql
+mysql -u <username> <dbname> -p"<dbpass>" < jelly.sql

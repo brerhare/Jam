@@ -44,6 +44,7 @@ int jamIx = 0;
 char *tableStack[MAX_JAM];
 VAR *var[MAX_VAR];
 char *documentRoot = NULL;
+int stopping, skipping;
 
 char *jamEntrypoint = NULL;		// action entrypoint. Hackily global because its used in other .c file(s) (move to common.c/h)
 
@@ -54,8 +55,10 @@ char *jellyTemplateName[MAX_JELLY_TEMPLATE];
 char *jellyTemplateValue[MAX_JELLY_TEMPLATE];
 int jellyTemplateIx = 0;
 
+char *globalJamName = NULL;
+
 char *includedTable[MAX_INCLUDE];
-char *fileToInclude = (char *) calloc(1, 4096);
+char *fileToInclude = (char *) calloc(1, 64096);
 
 JAM *initJam();
 int processJam(char *jamName, char *jamEntrypoint, JAMBUILDER *jb);
@@ -78,6 +81,9 @@ int main(int argc, char *argv[]) {
 	char **cgivars ;
 	char *jamName = NULL;
 
+	stopping = skipping = 0;
+	globalJamName = (char *) calloc(1, 64096);
+
 	// Do NOT log anything until char documentRoot is set or it will end up in /tmp/ !!!
 
 	if (argc == 3) {		// manual eg: /path/to/jam /path/to/documentroot /path/to/jamfile
@@ -96,9 +102,13 @@ int main(int argc, char *argv[]) {
 	documentRoot = getenv("DOCUMENT_ROOT");
 
 	// Set up logging path
-	logFileName = (char *) calloc(1, 4096);	// defined in log.c/h
+	logFileName = (char *) calloc(1, 64096);	// defined in log.c/h
 	sprintf(logFileName, "%s/jam/log.dat", documentRoot);
- 
+
+	// Set up default dumpStream path
+	dumpStreamPath = (char *) calloc(1, 64096);    // defined in common.h
+	sprintf(dumpStreamPath, "%s/jam/run/html", documentRoot);
+
 	logMsg(LOGINFO, "--------------------------------------------------------------------------");
 	logMsg(LOGINFO, "Starting. argc is %d", argc);
 
@@ -108,6 +118,40 @@ int main(int argc, char *argv[]) {
 	emitHeader("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 	// Always need this header
 	emitHeader("Content-type: text/html; charset=UTF-8");
+
+	// Dissect and store cookies
+	char *cookie = getenv("HTTP_COOKIE") ;
+	if (cookie) {
+		logMsg(LOGDEBUG, "Cookie (raw) [%s]", cookie);
+		int cookieCount = 0;
+		while (1) {
+			char *cookieNVP = strTrim(getWordAlloc(cookie, ++cookieCount, ";"));
+			if (!cookieNVP)
+				break;
+			char *cookieName = strTrim(getWordAlloc(cookieNVP, 1, "="));
+			char *cookieValue = strTrim(getWordAlloc(cookieNVP, 2, "="));
+	
+			if ((cookieName) && (cookieValue)) {
+				logMsg(LOGDEBUG, "Cookie (nvp) [%s] [%s]", cookieName, cookieValue);
+				// Store the NVP as a 'sys.cookie.' variable
+				VAR *cookieVar = (VAR *) calloc(1, sizeof(VAR));
+				char *tmp = (char *) calloc(1, 4000);
+				sprintf(tmp, "sys.cookie.%s", cookieName);
+				cookieVar->name = strdup(tmp);
+				cookieVar->type = VAR_STRING;
+				clearVarValues(cookieVar);
+				fillVarDataTypes(cookieVar, cookieValue);
+				cookieVar->source = strdup("prefill");
+				cookieVar->debugHighlight = 1;
+				addVar(cookieVar);
+				free(tmp);
+			}
+
+			free(cookieNVP);
+			if (cookieName) free(cookieName);
+			if (cookieValue) free(cookieValue);
+		}
+	}
 
 	cgivars = getcgivars() ;
 	for (int i = 0; cgivars[i]; i+= 2) {
@@ -134,6 +178,14 @@ int main(int argc, char *argv[]) {
 			logMsg(LOGDEBUG, "Found jam parameter");
 			jamName = strTrim(getWordAlloc(cgivars[i+1], 1, ":"));
 			jamEntrypoint = strTrim(getWordAlloc(cgivars[i+1], 2, ":"));
+
+			strcpy(globalJamName, jamName);
+			if (jamEntrypoint) {
+				strcat(globalJamName, ":");
+				strcat(globalJamName, jamEntrypoint);
+			}
+			logMsg(LOGINFO, "GLOBAL JAM NAME is %s", globalJamName);
+
 //emitStd("[%s][%s]<br>", jamName, jamEntrypoint);
 // @@KIM! remove next if
 		} else /* if (!jamEntrypoint) */ {
@@ -192,9 +244,19 @@ int main(int argc, char *argv[]) {
 			deleteVar(var[i]);
         }
     }
+
+	free(logFileName);
+	free(dumpStreamPath);
+
 	freeJamArray();
 	free(jamEntrypoint);
 	free(fileToInclude);
+
+	if (globalJamName) {
+		free(globalJamName);
+		globalJamName = NULL;
+	}
+
 	for (int i = 0; i < MAX_INCLUDE; i++) {
 		if (includedTable[i] == NULL)
 			break;
@@ -216,6 +278,8 @@ int jamBuilder(char *jamName, char *jEntrypoint, JAMBUILDER *jb) {
 	outputStream = jb->stream;	// copy to global so emitStd etc can access it
 	if (jb->stream == STREAMOUTPUT_JS) {
 		logMsg(LOGDEBUG, "jamBuilder will append to js stream");
+	} else if (jb->stream == STREAMOUTPUT_SCRATCH) {
+		logMsg(LOGDEBUG, "jamBuilder will append to scratch stream");
 	} else {
 		logMsg(LOGDEBUG, "jamBuilder will append to std stream");
 	}
@@ -233,7 +297,7 @@ int jamBuilder(char *jamName, char *jEntrypoint, JAMBUILDER *jb) {
 	if (jEntrypoint)
 		jamEntrypoint = strdup(jEntrypoint);	
 
-	char *fullJamName = (char *) calloc(1, 4096);
+	char *fullJamName = (char *) calloc(1, 64096);
 	strcpy(fullJamName, jamName);
 	jamIx = 0;
 
@@ -260,7 +324,7 @@ int jamBuilder(char *jamName, char *jEntrypoint, JAMBUILDER *jb) {
 // Entrypoint of actual jam file processing. Called by main() or jamBuilder()
 int processJam(char *jamName, char *jamEntrypoint, JAMBUILDER *jb) {
 	char tmpPath[PATH_MAX], binary[PATH_MAX];
-	char *tmp = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 64096);
 	TAGINFO *tinfo[MAX_TEMPLATES];
 
 	logMsg(LOGINFO, "DOCUMENT_ROOT is %s", documentRoot);
@@ -568,15 +632,20 @@ int control(int startIx, char *defaultTableName) {
 //	emitStd("...ENTERING %d...", startIx);
 	int res = 0;
 	int ix = startIx;
-	char *tmp = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 64096);
+	skipping = 0;
 	while (jam[ix]) {
 		char *cmd = jam[ix]->command;
 		char *args = NULL;
 		char *rawData = NULL;
 		res = 0;
 
+		if (stopping)
+			return(0);
+
 		// Expand any {{values}} in the argument string with the current values
 
+		char *p = 
 		args = expandCurliesInString(jam[ix]->args, defaultTableName);
 		rawData = expandCurliesInString(jam[ix]->rawData, defaultTableName);
 		free(jam[ix]->args);
@@ -704,7 +773,7 @@ int control(int startIx, char *defaultTableName) {
 						res = wordHtmlDropdown(ix, defaultTableName);
 					else if (!strcmp(tmp, "filter"))
 						res = wordHtmlFilter(ix, defaultTableName);
-					else if ( (!strcmp(tmp, "text")) || (!strcmp(tmp, "date")) || (!strcmp(tmp, "time")) )
+					else if ( (!strcmp(tmp, "text")) || (!strcmp(tmp, "date")) || (!strcmp(tmp, "time")) || (!strcmp(tmp, "password") ) )
 						res = wordHtmlInput(ix, defaultTableName);
 
 					else if (!strcmp(tmp, "input"))
@@ -823,7 +892,14 @@ int control(int startIx, char *defaultTableName) {
 //		-----------------------------------------
 		} else if (!(strcmp(cmd, "@skip"))) {
 //		-----------------------------------------
-			;	// @@TODO!	// @@TODO also any other skips, in @each etc
+			// Return from an each-end or action-end loop
+			res = wordMiscSkip(ix, defaultTableName);
+			if (skipping) {
+				free(tmp);
+				clearControlVars();					// remove any existing control vars
+				return(0);
+				// @@TODO!	// @@TODO also any other skips, in @each<> etc
+			}
 //		------------------------------------
 		} else if (!(strcmp(cmd, "@get"))) {
 //		------------------------------------
@@ -833,12 +909,12 @@ int control(int startIx, char *defaultTableName) {
 //		------------------------------------
 			res = wordDatabaseSql(ix, defaultTableName);
 //		------------------------------------
-		} else if (!(strcmp(cmd, "@each"))) {
+		} else if (strcasestr(cmd, "@each")) {
 //		-------------------------------------
 			// This is either a list or a db table
-			char *listName = (char *) calloc(1, 4096);
+			char *listName = (char *) calloc(1, 64096);
 			getWord(listName, args, 1, " \t");
-			logMsg(LOGDEBUG, "@each - looking to see if [%s] is a list (exists as a variable)", listName);
+			logMsg(LOGDEBUG, "@each<> - looking to see if [%s] is a list (exists as a variable)", listName);
 			VAR *listVar = findVarStrict(listName);
 			if (listVar) {	// its a list
 				logMsg(LOGDEBUG, "Its a list. Do listfirst() for list [%s]", listName);
@@ -848,10 +924,10 @@ int control(int startIx, char *defaultTableName) {
 					logMsg(LOGMICRO, "setting list variable [%s] to value [%s]", listName, p);
 					clearVarValues(listVar);
 					fillVarDataTypes(listVar, p);
-					logMsg(LOGMICRO, "@each (list %s) starting recurse", listName);
+					logMsg(LOGMICRO, "@each<> (list %s) starting recurse", listName);
 					cmdSeqnum++;		// up the unique sequence number
 					control((ix + 1), defaultTableName);
-					logMsg(LOGMICRO, "@each (list %s) ended recurse", listName);
+					logMsg(LOGMICRO, "@each<> (list %s) ended recurse", listName);
 					p = (char *) listNext(listName);
 				}
 				while (jam[ix] && (strcmp(jam[ix]->command, "@end"))) {
@@ -862,17 +938,17 @@ int control(int startIx, char *defaultTableName) {
 				}
 			} else {		// its a db table
 				logMsg(LOGDEBUG, "Its a db, not a list. do the select()");
-				char *givenTableName = (char *) calloc(1, 4096);
+				char *givenTableName = (char *) calloc(1, 64096);
 				MYSQL_RES *sqlres = doSqlSelect(ix, defaultTableName, &givenTableName, 999999);
 				logMsg(LOGMICRO, "Create the result set");
 				SQL_RESULT *rp = sqlCreateResult(givenTableName, sqlres);
 				logMsg(LOGDEBUG, "Get each row from the result set");
 				while (sqlGetRow2Vars(rp) != SQL_EOF) {
 					emitStd(jam[ix]->trailer);
-					logMsg(LOGMICRO, "@each (db table %s) starting recurse", givenTableName);
+					logMsg(LOGMICRO, "@each<> (db table %s) starting recurse", givenTableName);
 					cmdSeqnum++;		// up the unique sequence number
 					control((ix + 1), givenTableName);				// recurse into the item
-					logMsg(LOGMICRO, "@each (db table %s) ended recurse", givenTableName);
+					logMsg(LOGMICRO, "@each<> (db table %s) ended recurse", givenTableName);
 				}
 				free(rp->tableName);
 				free(rp);
@@ -881,7 +957,7 @@ int control(int startIx, char *defaultTableName) {
 				int sanity = 0;
 				while (jam[++ix]) {
 					if (++sanity > 1000) {
-						logMsg(LOGERROR, "Endless looping finding @end for @each in control()");
+						logMsg(LOGERROR, "Endless looping finding @end for @each<> in control()");
 						res = -1;
 					}
 					if (!strcmp(jam[ix]->command, "@end")) {
@@ -889,7 +965,7 @@ int control(int startIx, char *defaultTableName) {
 							break;
 						else
 							depth--;
-					} else if (!strcmp(jam[ix]->command, "@each")) {
+					} else if (strcasestr(jam[ix]->command, "@each")) {
 						depth++;
 					}
 				}
@@ -921,30 +997,43 @@ int control(int startIx, char *defaultTableName) {
 			}
 			if (startIx == 0)
 				logMsg(LOGERROR, "Cant find action [%s] to run from within jam script", jam[ix]->args);
-			else
+			else {
 				logMsg(LOGINFO, "Running @action [%s] within jam script", jam[startIx]->args);
-			if (jam[startIx])
-				emitStd(jam[startIx]->trailer);
-			if (jam[startIx])
-				startIx++;
-
-			control(startIx, NULL);
-			logMsg(LOGINFO, "Finished running action [%s] within jam script", jam[startIx]->args);
+				if (jam[startIx])
+					emitStd(jam[startIx]->trailer);
+				if (jam[startIx])
+					startIx++;
+				if (startIx != 0) {
+					control(startIx, NULL);
+					logMsg(LOGINFO, "Finished running action [%s] within jam script", jam[startIx]->args);
+				}
+			}
 			emitStd(jam[ix]->trailer);
 //		-------------------------------------
 		} else if (!(strcmp(cmd, "@action"))) {
 //		-------------------------------------
 			if (!jamEntrypoint) {		// not for us - ignore completely
-				while (jam[ix] && (strcmp(jam[ix]->command, "@end")) ) {
+				int level = 1;
+				logMsg(LOGMICRO, "@action being skipped at ix=%d (level starts at 1 and continues until 0)", ix);
+				while ((level > 0) && (jam[ix])) {
 					if (!strcmp(jam[ix]->command, "@each")) {
-						while (jam[ix] && (strcmp(jam[ix]->command, "@end")) )
-							ix++;
+						level++;
+						logMsg(LOGMICRO, "@action being skipped at ix=%d - found @each (level=%d)", ix, level);
+					} else if (!strcmp(jam[ix]->command, "@eachsql")) {
+						level++;
+						logMsg(LOGMICRO, "@action being skipped at ix=%d - found @eachsql (level=%d)", ix, level);
+					} else if (!strcmp(jam[ix]->command, "@end")) {
+						level--;
+						logMsg(LOGMICRO, "@action being skipped at ix=%d - found @end (level=%d)", ix, level);
 					}
-					if (jam[ix])
+					if (level == 0)
+						emitStd(jam[ix]->trailer);
+					else
 						ix++;
 				}
-				if (jam[ix])
-					emitStd(jam[ix]->trailer);
+				logMsg(LOGMICRO, "@action fully skipped at ix=%d (level=%d)", ix, level);
+				//if (jam[ix])
+					//emitStd(jam[ix]->trailer);
 			} else {					// for us - run and stop
 				emitStd(jam[ix]->trailer);
 				VAR *v = findVarStrict("_dbname");
@@ -984,13 +1073,46 @@ int control(int startIx, char *defaultTableName) {
 //		------------------------------------
 			res = wordMiscSum(ix, defaultTableName);
 //		------------------------------------
+		} else if (!(strcmp(cmd, "@replacevalue"))) {
+//		------------------------------------
+			res = wordMiscReplaceValue(ix, defaultTableName);
+//		---------------------------
 		} else if (!(strcmp(cmd, "@email"))) {
 //		------------------------------------
 			res = wordMiscEmail(ix, defaultTableName);
 //		---------------------------
+		} else if (!(strcmp(cmd, "@daycount"))) {
+//		------------------------------------
+			res = wordMiscDayCount(ix, defaultTableName);
+//		---------------------------
+		} else if (!(strcmp(cmd, "@adddays"))) {
+//		------------------------------------
+			res = wordMiscAddDays(ix, defaultTableName);
+//		------------------------------------
+		} else if (!(strcmp(cmd, "@datedmy"))) {
+//		------------------------------------
+			res = wordMiscDateDMY(ix, defaultTableName);
+//		------------------------------------
+		} else if (!(strcmp(cmd, "@dateoverlap"))) {
+//		------------------------------------
+			res = wordMiscDateOverlap(ix, defaultTableName);
+//		------------------------------------
+		} else if (!(strcmp(cmd, "@randomnumber"))) {
+//		------------------------------------
+			res = wordMiscRandomNumber(ix, defaultTableName);
+//		------------------------------------
+		} else if (!(strcmp(cmd, "@wordsplit"))) {
+//		------------------------------------
+			res = wordMiscWordSplit(ix, defaultTableName);
+//		---------------------------
 		} else if (!(strcmp(cmd, "@type"))) {
 //		------------------------------------
 			res = wordMiscType(ix, defaultTableName);
+//		---------------------------
+		} else if (!(strcmp(cmd, "@stop"))) {
+//		------------------------------------
+			res = wordMiscStop(ix, defaultTableName);
+			return(0);
 //		---------------------------
 
 		} else if (cmd[0] != '@') {
@@ -1015,11 +1137,11 @@ int control(int startIx, char *defaultTableName) {
 
 			// data = LHS to start with
 
-			char *data = (char *) calloc(1, 4096);
+			char *data = (char *) calloc(5, 64096);
 			strcpy(data, cmd);							// eg: [mem.group_count]
 //emitStd("{AWAY:%s and %s}",cmd, data);
-			char *resultString = (char *) calloc(1, 4096);
-			char *fullLine = (char *) calloc(1, 4096);
+			char *resultString = (char *) calloc(5, 64096);
+			char *fullLine = (char *) calloc(5, 64096);
 			strcpy(fullLine, cmd);
 //emitStd("(CHK:%s and %s)", fullLine, args);
 			if (args)
@@ -1076,6 +1198,9 @@ int control(int startIx, char *defaultTableName) {
 					}
 				}
 			} else {		// Not an assignment - just emit variable
+
+				// vsnprintf doesnt like '%' in the string...
+				for (int xx = 0; xx < strlen(resultString); xx++) if (resultString[xx] == '%') resultString[xx] = ' ';
 				emitStd(resultString);
 				// Clear if necessary
 				VAR *variable = findVarLenient(cmd, defaultTableName);

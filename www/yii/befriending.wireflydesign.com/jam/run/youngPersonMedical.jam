@@ -1,7 +1,7 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@Xinclude /jam/run/menu.jam}}
+{{@Xinclude /jam/run/new_menu.jam}}
 
 {{@database befriending_wireflydesign_com}}
 
@@ -20,7 +20,7 @@
     <div name="inlineForm" class="uk-form uk-form-horizontal">
         <table class="uk-table uk-table-condensed" style="border:1px solid #dddddd">
             <tr>
-				<th> Medical type </th>
+				<th> Medical and Related Issues </th>
 				<th colspan=3 style='text-align:center'> Young Person </th>
 				<th colspan=3 style='text-align:center'> Parent Carer </th>
             </tr>
@@ -28,12 +28,12 @@
 				<td> </td>
 				<td style='text-align:left'> Yes </td>
 				<td style='text-align:left'> No </td>
-				<td style='text-align:left'> Dont Know </td>
+				<td style='text-align:left'> Don't Know </td>
 				<td style='text-align:left'> Yes </td>
 				<td style='text-align:left'> No </td>
-				<td style='text-align:left'> Dont Know </td>
+				<td style='text-align:left'> Don't Know </td>
 			</td>
-{{@each medical_type}}
+{{@each medical_type order by sequence}}
             <tr>
 				<td> {{medical_type.name}} </td>
 

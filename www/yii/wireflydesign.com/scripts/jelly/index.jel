@@ -288,9 +288,9 @@ css.margin-bottom = 10px
 		
 	[page-content]
 	child = content, submenu
-	condition = @PAGE!=contact-website-design-dumfries-scotland
-	condition = @PAGE!=portfolio-website-design-dumfries-scotland
 	stacking = horizontal
+	condition = @PAGE!=portfolio-website-design-dumfries-scotland
+	condition = @PAGE!=contact-website-design-dumfries-scotland
 	
 			[content]
 			css.width = 70%
@@ -300,6 +300,7 @@ css.margin-bottom = 10px
 			html.raw = ContentBlock.content
 			
 			[submenu]
+			child = menu-contact
 			css.width = 25%
 			css.margin-left = 4%
 			css.margin-top = 40px
@@ -347,6 +348,15 @@ css.margin-bottom = 10px
 			addon.menu.traditional.submenu-separator-width = 3px
 			addon.menu.traditional.submenu-separator-color = white
 			
+			[menu-contact]
+			css.margin-top = 40px
+			image.url = img/contact.png
+			image.width = 80%
+			image.height = 100%
+			image.align = left
+			click = ?layout=index&page=contact-website-design-dumfries-scotland
+			
+			
 		[blog]
 		css.width = 100%
 		condition = @PAGE=portfolio-website-design-dumfries-scotland
@@ -359,17 +369,23 @@ css.margin-bottom = 10px
 		
 			[contact-content]
 			css.width = 50%
-			db.table = ContentBlock
-			db.filter = url=$_GET['page']
-			db.error = Sorry, I could not find the page $_GET['page']
-			html.raw = ContentBlock.content
+			addon.global.column.name = contact
+			addon.global.column.width = 100%
+			addon.global.column.internal-width = 100%
+			addon.global.column.content-width = 90%
+			addon.global.column.internal-color = transparent
+			addon.global.column.background-color = transparent
+
+			#addon.global.column.background-image = img/home_column_bgd.png
+			#addon.global.column.top-image = img/home_top.png
+			addon.global.column.top-height = 20px
+			#addon.global.column.bottom-image = img/home_btm.png
+			addon.global.column.bottom-height = 20px
 			
 			
 			[contact-form]
 			css.width = 45%
 			css.margin-left = 4%
-			html.raw = <h1><span style="font-size:24px;">Please fill in the form below</span></h1>
-			css.text-align = center
 			css.min-height = 325px
 			css.background-color = white
 			jam.iframe-height = 300px

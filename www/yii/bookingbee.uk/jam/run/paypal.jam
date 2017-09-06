@@ -1,0 +1,69 @@
+{{@include /jam/sys/html/header.html}}
+
+{{@include /jam/css/site.css}}
+
+{{@database bookingbee_uk}}
+
+<!-- --------------------------------------------------------------------------------------- -->
+
+{{@XXXXXremove table template_beirc}}
+
+{{@XXXXXnew table template_beirc
+	sid                     string  required
+	seller_id               number  required
+	event_id                number  required
+	rider_name              string  required
+	rider_age               number
+	horse_name              string  required
+	club_name               string
+	is_member               number
+}}
+
+<!-- --------------------------------------------------------------------------------------- -->
+
+{{@template BUSINESS beirc1@gmail.com}}
+
+<br/><br/><br/><br/><br/> <center> <h5 style="color:grey">Please wait, redirecting to Paypal...</h5> </center>
+
+<div style="Xdisplay:none;">
+    <form id="pp" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+
+   <input type="hidden" name="cmd" value="_xclick">
+   <input type="hidden" name="business" value="BUSINESS">
+   <input type="hidden" name="item_name" value="BEIRC event">
+   <input type="hidden" name="amount" value="0.01">
+   <input type="hidden" name="currency_code" value="GBP">
+<!--   <input type="submit" value="Old PayPal checkout"> -->
+   <input type="hidden" name="return" value="http://bookingbee.uk/run/thanks.jam?orderId={{orderId}}">
+ 
+
+
+<!--
+		<input type="hidden" name="cmd" value="_xclick">
+        <input type="hidden" name="business" value="BUSINESS">
+
+        <input type="hidden" name="charset" value="utf-8"> This gets rid of the weird A before the £
+        <input type="hidden" name="cmd" value="_cart">
+        <input type="hidden" name="upload" value="1">
+   <input type="hidden" name="currency_code" value="GBP">
+
+				<input type='hidden' name='item_name' value='Horse Event'>
+				<input type='hidden' name='amount' value='0.01'>
+
+		<input type="hidden" name="return" value="http://bookingbee.uk/run/thanks.jam?orderId={{orderId}}">
+        <input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHostedGuest">
+-->
+
+
+<!--		<input type="image" src="http://www.paypalobjects.com/en_US/i/btn/btn_buynow_LG.gif" border="0" name="submit" alt="Make payments with PayPal - it's fast, free and secure!"> -->
+		<input type="hidden" name="currency_code" value="GBP">
+
+	</form>
+</div>
+
+<script type="text/javascript">
+document.getElementById("pp").submit();
+</script>
+
+
+{{@include /jam/sys/html/footer.html}}

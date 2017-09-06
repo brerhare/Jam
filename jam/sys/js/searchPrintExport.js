@@ -84,6 +84,7 @@ $(".export").on('click', function (event) {
     // We actually need this to be a typical hyperlink
 });
 
+
 // Search
 // ------
 
@@ -95,6 +96,10 @@ $(".export").on('click', function (event) {
 	<table class="searchTable>
 */
 
+// Inline initial count display
+var showRows = $('.searchTable tr:has(td):visible');
+$('#searchTotal').html(showRows.length);
+
 var $rows = $('.searchTable tr:has(td)');
 $('#searchInput').keyup(function() {
     var val = '^(?=.*\\b' + $.trim($(this).val()).split(/\s+/).join('\\b)(?=.*\\b') + ').*$',
@@ -104,6 +109,9 @@ $('#searchInput').keyup(function() {
         text = $(this).text().replace(/\s+/g, ' ');
         return !reg.test(text);
     }).hide();
+	// Update the on keyup count display
+	var showRows = $('.searchTable tr:has(td):visible');
+	$('#searchTotal').html(showRows.length);
 });
 
 

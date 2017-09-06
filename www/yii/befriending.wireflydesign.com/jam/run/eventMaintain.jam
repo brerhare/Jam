@@ -1,7 +1,7 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@include /jam/run/menu.jam}}
+{{@include /jam/run/new_menu.jam}}
 
 {{@html container start center css='max-width:1080px; Xpadding:0}}
 
@@ -22,7 +22,7 @@
 
 		<h3> Maintain Events </h3>
 		<div class="uk-grid">
-			<div class="uk-width-3-5">
+			<div class="uk-width-5-5">
 				<form name="inputForm_event" class="uk-form uk-form-horizontal">
 					<input type="hidden" name="event.id" value="{{event.id}}">
 
@@ -36,12 +36,12 @@
 						<select id="ID1___event___young_person_id" name="event.young_person_id" onchange="fn(this, event);" onkeyup="fn(this, event);" class="uk-form-width-medium ROW_{{sys.sequence}} ">
 						{{tmp.selected = }}
 						{{@get event id = event.id}}
-						{{@each young_person filter id = event.young_person_id, id != 7, id != 18, id != 19, id != 20, id != 30, id != 31, id != 38, id != 39, id != 40, id != 41, id != 42, id != 49}}
+						{{@each young_person filter id = event.young_person_id, archive_flag = 0}}
 							{{@get global filter id = young_person.global_id}}
 							<option value="{{young_person.id}}" selected> {{global.forename}} {{global.surname}} </option>
 						{{@end}}
 							<option value="0">None</option>
-						{{@each young_person filter id != event.young_person_id, id != 7, id != 18, id != 19, id != 20, id != 30, id != 31, id != 38, id != 39, id != 40, id != 41, id != 42, id != 49}}
+						{{@each young_person filter id != event.young_person_id, archive_flag = 0}}
 							{{@get global filter id = young_person.global_id}}
 							<option value="{{young_person.id}}"> {{global.forename}} {{global.surname}} </option>
 						{{@end}}
@@ -57,12 +57,12 @@
 						<select id="ID1___event___befriender_id" name="event.befriender_id" onchange="fn(this, event);" onkeyup="fn(this, event);" class="uk-form-width-medium ROW_{{sys.sequence}} ">
 						{{tmp.selected = }}
 						{{@get event id = event.id}}
-						{{@each befriender id = event.befriender_id}}
+						{{@each befriender filter id = event.befriender_id, archive_flag = 0}}
 							{{@get global filter id = befriender.global_id}}
 							<option value="{{befriender.id}}" selected> {{global.forename}} {{global.surname}} </option>
 						{{@end}}
 							<option value="0">None</option>
-						{{@each befriender filter id != event.befriender_id}}
+						{{@each befriender filter id != event.befriender_id, archive_flag = 0}}
 							{{@get global filter id = befriender.global_id}}
 							<option value="{{befriender.id}}"> {{global.forename}} {{global.surname}} </option>
 						{{@end}}
@@ -78,14 +78,15 @@
 					{{@html date field=event.date size=medium label='Date' default={{sys.today}} }}
 					{{@html time field=event.time size=small label='Time' default={{sys.now}} }}
 					{{@html dropdown field=event.event_type_id pickfield=event_type.name size=medium label='Event Type'}}
-					{{@html textarea field=event.notes size=30x5 label='Notes'}}
+					{{@html dropdown field=event.event_milestone_id pickfield=event_milestone.name size=medium label='GIRFEC Milestone'}}
+					{{@html textarea field=event.notes size=90x10 label='Notes'}}
 
 
 					<br>
 
 					<center>
-						<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="runAction('update_event', ['inputForm_event'], '');">Apply</button>
-						<button type='button' id='cancelButton' class="uk-button uk-button-primary" onClick="runJam('event');">Finished</button>
+						<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="runAction('update_event', ['inputForm_event'], '', doReload)">Apply</button>
+						<button type='button' id='cancelButton' class="uk-button uk-button-primary" onClick="runAction('update_event', ['inputForm_event'], '', window.setTimeout(runJam('event'),1000));">Finished</button>
 						{{@html button Cancel primary medium
 							runJam('event');
 						}}
@@ -108,5 +109,19 @@
 {{@action update_event}}
 	{{@update item event notify=ok}}
 {{@end}}
+
+<script>
+
+function doReload() {
+	obj = get('event.id');
+	//alert(obj.value);
+	console.log('doReload : event id = ' + obj.value);
+	runJam('eventMaintain?event.id='+obj.value);
+}
+
+function onChange_event_youngpersonid() {
+}
+
+</script>
 
 {{@include /jam/sys/html/footer.html}}

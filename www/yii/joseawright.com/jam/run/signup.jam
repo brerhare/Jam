@@ -4,37 +4,37 @@
 
 <style>
 	body {
-		display:none
+		display:none;
+		margin: 0px !important;
+		background-color: #13dbd3;
 	}
-	.uk-form * {
-		font-family: 'Pontano Sans', Arial, sans-serif !important;
-		color: #25519c !important;
+	.uk-form-signup * {
+		font-family: 'Comfortaa', Arial, sans-serif !important;
+		color: grey !important;
 	}
-	.uk-form input, textarea {
+	.uk-form-signup input, textarea {
 		border-radius: 5px !important;
 		margin-bottom:3px !important;
-		border: 2px solid #13dbd3 !important;
+		border: 2px solid grey !important;
 	}
-	.uk-form button {
+	.uk-form-signup button {
 		margin-top:3px !important;
 		Xmargin-bottom:8px !important;
 		color: #ffffff !important;
-		background: #13dbd3 !important;
+		background: grey !important;
 	}
-	.uk-form button:hover {
-		background: #50e4de !important;
+	.uk-form-signup button:hover {
+		background: lightgrey !important;
 	}
 </style>
 
-<form name="contactForm" class="uk-form">
+<form name="signupForm" class="uk-form uk-form-signup">
 	{{@html hidden field=jelly.sid}}
 	{{@html hidden field=jelly.email}}
-	{{@html text field=mailer_member.first_name size=large placeholder=Forname}}
-	{{@html text field=mailer_member.second_name size=large placeholder=Surname}}
-	{{@html text field=mailer_member.telephone size=large placeholder=Phone}}
-	<p>Please note I can only return calls in the UK.</br>If you are outside the UK please use the contact form or email me</p>
+	{{@html text field=mailer_member.first_name size=large placeholder=Name}}
+	{{@html text field=mailer_member.email_address size=large placeholder=Email}}
 	{{@html button SUBMIT primary .uk-width-1-1 
-		runAction('sendMessage', ['contactForm'], 'contactForm')
+		runAction('sendMessage', ['signupForm'], 'signupForm')
 	}}
 </form>
 
@@ -63,11 +63,11 @@ alert('['+val+']');
 	{{mailer_member.uid = admin_user.id}}
 	{{mailer_member.active = 1}}
 	{{mailer_member.mailer_list_id = mailer_list.id}}
-	{{@XXXXXXXXXXnew item mailer_member}}
+	{{@new item mailer_member}}
 
-	{{@email {{jelly.email}} {{jelly.email}} 'Call Request: Jo Seawright.com' You have a new request from joseawright.com. The contact details for this message will be stored in your website newsletter mailing list. The message is  below.<br><br><div style='background-color:#70bbd9; color:#153643'><b> Name: {{mailer_member.first_name}} <br>Surname: {{mailer_member.second_name}} <br>Telephone: {{mailer_member.telephone}}<br></b></div>  }}
+	{{@email {{jelly.email}} {{jelly.email}} 'Newsletter Signup: Jo Seawright.com' You have a new sign-up<br><br>Name: {{mailer_member.first_name}} <br>Email: {{mailer_member.email_address}} }}
 
-	<center><p><br><br><br><b>Thank you {{mailer_member.first_name}}!</b><br>I will call you as soon as possible</p></center>
+	<center><p><br><br><br><b>Thank you {{mailer_member.first_name}}!</b><br>I shall email you soon</p></center>
 {{@end}}
 
 {{@include /jam/sys/html/footer.html}}

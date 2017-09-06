@@ -93,8 +93,7 @@ css.display = block
 		db.table = ContentBlock
 		db.filter = url=$_GET['page']
 		db.error = Sorry, I could not find that page. You requested $_GET['page']
-	html.raw = ContentBlock.content
-
+		html.raw = ContentBlock.content
 
 		[footer]
 		child = footer-graphic, footer-block, footer-menu, wirefly

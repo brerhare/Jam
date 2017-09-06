@@ -1,0 +1,33 @@
+{{@include /jam/sys/html/header.html}}
+
+Doing...
+
+{{@database befriending_wireflydesign_com}}
+
+{{@remove table legalstatus}}
+
+{{@new table legalstatus
+	name				string		required
+}}
+
+{{legalstatus.name = None}}												{{@new item legalstatus}}
+{{legalstatus.name = Child in need NO legal order}}						{{@new item legalstatus}}
+{{legalstatus.name = Local Authority Accommodation. Voluntary}}		{{@new item legalstatus}}
+{{legalstatus.name = Local Authority Accommodation. Compulsory}}		{{@new item legalstatus}}
+{{legalstatus.name = Staying with parents. Under Supervision Order}}	{{@new item legalstatus}}
+{{legalstatus.name = Kinship Care}}										{{@new item legalstatus}}
+{{legalstatus.name = Fostered}}											{{@new item legalstatus}}
+
+
+{{@remove table legalstatus_yp}}
+
+{{@new table legalstatus_yp
+	date				date
+	legal_status_id		number		required
+	young_person_id		number		required
+}}
+
+Done
+
+{{@include /jam/sys/html/footer.html}}
+

@@ -1,0 +1,17 @@
+{{@include /jam/sys/html/header.html}}
+
+{{@database bookingbee_uk}}
+
+{{@get event filter id = eventId}}
+{{@get event_template_file filter id = event.event_template_file_id}}
+{{@get seller filter id = event.seller_id}}
+
+<script>
+
+window.onload = function() {
+	runJam('{{event_template_file.file}}?eventId={{event.id}}');
+}
+
+</script>
+
+{{@include /jam/sys/html/footer.html}}

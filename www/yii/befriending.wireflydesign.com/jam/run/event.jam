@@ -1,72 +1,54 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@include /jam/run/menu.jam}}
-
-{{@html container start center css='max-width:1080px; Xpadding:0}}
+{{@include /jam/run/new_menu.jam}}
 
 {{@database befriending_wireflydesign_com}}
 
-<!-- Template defines -->
-{{@template TABLE event}}
+<br>
+{{@html container start center css='max-width:1080px; Xpadding:0}}
 
-{{@XXXtemplate FILTER filter id > 2, id DESC}}
-{{@template FILTER filter id > 2 DESC}}
+<div name="content">
+	<center><h3> Events </h3></center>
 
-{{@template DESCRIPTION Maintain Events}}
+    <form class="uk-form">
+        <input type="text" id="searchInput" placeholder="Type to search">
+    </form>
 
-<!-- Template defines for the list component -->
-{{@template DELETEFIELD event.notes}}
-{{@template HEADINGS
-	<th> Date </th>
-	<th> Time </th>
-	<th> Event </th>
-	<th> Young Person </th>
-}}
-{{@template COLUMNS
-	<td>{{date}}</td>
-	<td>{{time}}</td>
-	<td>{{event_type.name}}</td>
-	<td>{{global.forename}} {{global.surname}}</td>
-}}
+	<table id="printTable" class="testgrid sortable searchTable uk-table uk-table-condensed" style="border:1px solid #dddddd">
+		<tr>
+			<th> Date </th>
+			<th> Time </th>
+			<th> Event </th>
+			<th> Young Person </th>
+			<th> Befriender </th>
+			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('eventMaintain?event_id=0')"> <i class="uk-icon-plus"></i> New</button> </th>
+		</tr>
+{{@each event filter id > 0, order by date DESC}}
 
-<!-- Include the template -->
+	{{@get event_type filter id = event.event_type_id}}
 
-<!-- List component -->
+	{{@get young_person filter id = event.young_person_id}}
+	{{@get global filter id = young_person.global_id}}
+	{{yp_forename = global.forename}}
+	{{yp_surname = global.surname}}
 
-<!-- Clear any unset templates -->
-{{@template FILTER}}
+	{{@get befriender filter id = event.befriender_id}}
+	{{@get global filter id = befriender.global_id}}
+	{{bf_forename = global.forename}}
+	{{bf_surname = global.surname}}
 
-<style>
-.rowHighlight:hover {
-  background-color: #ddf0ff;
-  cursor:pointer;
-}
-</style>
-
-<h3> DESCRIPTION </h3>
-	<div name="content_TABLE" class="uk-overflow-container">
-
-    	<form class="uk-form">
-        	<input type="text" id="searchInput" placeholder="Type to search">
-    	</form>
-
-		<table id="printTable" class="testgrid searchTable uk-table uk-table-condensed" style="border:1px solid #dddddd">
-			<tr>
-				HEADINGS
-				<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('TABLEMaintain?event_id=0')"> <i class="uk-icon-plus"></i> New</button> </th>
-			</tr>
-{{@each TABLE FILTER}}
-			<tr class="rowHighlight" onClick="runJam('TABLEMaintain?event.id={{TABLE.id}}');">
-				{{@get young_person filter id = event.young_person_id}}
-				{{@get global filter id = young_person.global_id}}
-				{{@get event_type filter id = TABLE.event_type_id}}
-				COLUMNS
-				<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_TABLE('{{TABLE.id}}','{{DELETEFIELD}}')"> <i class="uk-icon-trash"></i></button> </td>
-			</tr>
+		<tr class="rowHighlight" onClick="runAction('showTabs', ['befriender.id={{befriender.id}}'], 'content')">
+		<tr class="rowHighlight" onClick="runJam('eventMaintain?event.id={{event.id}}');">
+			<td>{{@datedmy event.date}}</td>
+			<td>{{event.time}}</td>
+			<td>{{event_type.name}}</td>
+			<td>{{yp_forename}} {{yp_surname}}</td>
+			<td>{{bf_forename}} {{bf_surname}}</td>
+			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{event_type.name}}')"> <i class="uk-icon-trash"></i> </button> </td>
+		</tr>
 {{@end}}
-		</table>
-
+	</table>
 	<br>
 
 	<button class="uk-button uk-button-medium uk-button-primary" onClick="printData('printTable')"> Print </button>
@@ -77,22 +59,28 @@
 
 	<br><br/>
 
-</div>	<!-- uk-overflow-container -->
+</div>
 
 <script>
-
-function confirmDelete_TABLE(eventId, displayInfo) {
-	window.event.cancelBubble = true;	// Prevent any further events
-	var result = confirm('Confirm delete of item ' + displayInfo);
-	if (result)
-		runAction('delete_TABLE', ['TABLE.id='+eventId], '', runJam);	
+function confirmDelete(id, displayInfo) {
+    window.event.cancelBubble = true;   // Prevent any further events
+    var result = confirm('Confirm delete of item ' + displayInfo);
+    if (result)
+        runAction('delete', ['event.id='+id], '', runJam)
 }
 </script>
 
-{{@action delete_TABLE}}
-	{{@remove item TABLE notify=ok}}
+{{@action delete}}
+	{{@each event_attendee filter event_id = event.id}}
+		{{@remove item event_attendee}}
+	{{@end}}
+    {{@get event filter id = event.id}}
+	{{@remove item event notify=ok}}
 {{@end}}
+
+{{@html container end}}
 
 {{@include /jam/sys/js/searchPrintExport.js}}
 
 {{@include /jam/sys/html/footer.html}}
+

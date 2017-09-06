@@ -1,12 +1,12 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@include /jam/run/menu.jam}}
+{{@include /jam/run/new_menu.jam}}
 
 {{@database befriending_wireflydesign_com}}
 
 <br>
-{{@html container start center css='max-width:700px; Xpadding:0}}
+{{@html container start center css='max-width:1080px; Xpadding:0}}
 
 <!-- List component -->
 
@@ -17,9 +17,15 @@
 }
 </style>
 
-<h3> Referrers </h3>
 <div name="content_contact">
-	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+
+	<center><h3> Referrers </h3></center>
+
+    <form class="uk-form">
+        <input type="text" id="searchInput" placeholder="Type to search">
+    </form>
+
+	<table class="testgrid sortable searchTable uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
 			<th> Forename </th>
 			<th> Surname </th>
@@ -27,15 +33,19 @@
 			<th> Send Form </th>
 			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('maintain_contact', [], 'content_contact')"> <i class="uk-icon-plus"></i> New</button> </th>
 		</tr>
-{{@each contact filter contact_relationship_id = 3}}
-		{{@get global filter id = contact.global_id}}
+
+{{@Xeach contact filter contact_relationship_id = 3}}
+{{@eachsql yippee select contact.id, contact.global_id, global.forename, global.surname from contact inner join global on contact.global_id = global.id where contact_relationship_id = 3 order by global.surname}}
+            
+        {{@get global filter id = yippee.global_id}}
+
 		<tr class="rowHighlight">
-			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.forename}}</td>
-			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.surname}}</td>
-			<td onClick="runAction('maintain_contact', ['contact.id={{contact.id}}'], 'content_contact')">{{global.email}}</td>
+			<td onClick="runAction('maintain_contact', ['contact.id={{yippee.id}}'], 'content_contact')">{{global.forename}}</td>
+			<td onClick="runAction('maintain_contact', ['contact.id={{yippee.id}}'], 'content_contact')">{{global.surname}}</td>
+			<td onClick="runAction('maintain_contact', ['contact.id={{yippee.id}}'], 'content_contact')">{{global.email}}</td>
 			<td>
-				<span id='emailButton{{contact.id}}' name='emailButton{{contact.id}}'>
-					<button class="uk-button uk-button-small uk-button-primary" onClick="runAction('email_contact', ['contact.id={{contact.id}}'], 'emailButton{{contact.id}}')"> Email form </button>
+				<span id='emailButton{{yippee.id}}' name='emailButton{{yippee.id}}'>
+					<button class="uk-button uk-button-small uk-button-primary" onClick="runAction('email_contact', ['contact.id={{yippee.id}}'], 'emailButton{{yippee.id}}')"> Email form </button>
 				</span>
 			</td>
 			<td>
@@ -91,18 +101,18 @@ function postUpdate() {
 		<input type="hidden" name="global.id" value="{{contact.global_id}}">
 		{{@html gridrow start}}
 			{{@html gridcol start width=5-5}}
-				{{@html text field=global.forename size=medium label='Forename'}}
-				{{@html text field=global.surname size=medium label='Surname'}}
-				{{@html text field=global.house size=medium label='house'}}
-				{{@html text field=global.street size=medium label='Street'}}
-				{{@html text field=global.area size=medium label='Area'}}
-				{{@html text field=global.town size=medium label='Town'}}
+				{{@html text field=global.forename size=large label='Forename'}}
+				{{@html text field=global.surname size=large label='Surname'}}
+				{{@html text field=global.house size=large label='house'}}
+				{{@html text field=global.street size=large label='Street'}}
+				{{@html text field=global.area size=large label='Area'}}
+				{{@html text field=global.town size=large label='Town'}}
 				{{@html text field=global.postcode size=medium label='Postcode'}}
 				{{@html text field=global.landline size=medium label='Land line'}}
 				{{@html text field=global.mobile size=medium label='Mobile'}}
-				{{@html text field=global.email size=medium label='Email'}}
-				{{@html text field=global.job_title size=medium label='Job Title'}}
-				{{@html text field=contact.agency size=medium label='Agency'}}
+				{{@html text field=global.email size=large label='Email'}}
+				{{@html text field=global.job_title size=large label='Job Title'}}
+				{{@html text field=contact.agency size=large label='Agency'}}
 			{{@html gridcol end}}
 		{{@html gridrow end}}
 		{{@html gridrow start}}
@@ -130,6 +140,12 @@ function postUpdate() {
 {{@end}}
 
 {{@action email_contact}}
+	{{@randomnumber newfield=myRand}}
+    {{referral_form_link.link_number = myRand}}
+    {{referral_form_link.date = sys.today}}
+    {{referral_form_link.used = 0}}
+    {{@new item referral_form_link}}
+
 	{{@get contact filter id = contact.id}}
 	{{@get global filter id = contact.global_id}}
 	{{@get settings filter id = 1}}
@@ -141,9 +157,18 @@ function postUpdate() {
 {{@end}}
 
 {{@action emailContent}}
-	Please click on <a href="http://befriending.wireflydesign.com/run/referralFormReferrer.jam?id1=RefFormgj3x9dsmcNcj2hvgsxz3sjpOvR&refId={{contact.id}}&ypId=0">this</a> to open the referral form.
+	Please click on <a href="http://befriending.wireflydesign.com/run/referralFormReferrer.jam?id1=RefFormgj3x9dsmcNcj2hvgsxz3sjpOvR&refId={{contact.id}}&ypId=0&linkNumber={{myRand}}">this</a> to open the referral form.
+	{{@each settings filter referral_attachment > ''}}
+		<br>There is a form attachment also. Please click <a href="http://befriending.wireflydesign.com/jam/uploads/forms/referral/{{settings.referral_attachment}}">here</a> to download the attachment to your computer.
+		<br><br>{{settings.referral_text}}
+		{{@get user filter id = {{sys.cookie.bf_user}} }}
+		<br>{{user.first_name}} {{user.last_name}}<br>
+		<a href="mailto:{{user.email_address}}?Subject=" target="_top">{{user.email_address}}</a> <br>
+	{{@end}}
 {{@end}}
 
 {{@html container end}}
+
+{{@include /jam/sys/js/searchPrintExport.js}}
 
 {{@include /jam/sys/html/footer.html}}

@@ -32,7 +32,7 @@
     {{@html text field=mailer_member.first_name size=large placeholder=Name}}
     {{@html text field=mailer_member.email_address size=large placeholder=Email}}
     {{@html textarea field=var.message size=60x5 placeholder=Message}}
-    <p> Leave your phone number and we will get back to you within minutes </p>
+    <p> Leave your phone number and we will get back to you shortly </p>
     {{@html text field=mailer_member.telephone size=large placeholder=Phone}}
     {{@html button SUBMIT primary .uk-width-1-1
         runAction('sendMessage', ['contactForm'], 'contactForm')

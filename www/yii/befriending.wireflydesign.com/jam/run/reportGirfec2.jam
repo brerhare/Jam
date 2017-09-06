@@ -1,0 +1,75 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/new_menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:1080px; Xpadding:0}}
+
+<div name="content">
+	{{@get girfec_outcome_name filter id = outcome}}
+	<center><h3> Girfec Report </h3></center>
+	<center><h5> {{girfec_outcome_name.description}} &nbsp&nbsp&nbsp&nbsp&nbsp {{@datedmy from}} to {{@datedmy to}} </h5></center>
+
+	<form class="uk-form">
+		<input type="text" id="searchInput" placeholder="Type to search">
+	</form>
+
+	<table id='printTable' class="searchTable testgrid sortable uk-table uk-table-condensed" style="border:1px solid #dddddd">
+		<tr style='font-weight:bold'>
+			<th> Young Person Name </th>
+			<th> Base line fixed </th>
+			<th> Final fixed </th>
+		</tr>
+{{cnt = 0}}
+{{totalStart = 0}}
+{{totalEnd = 0}}
+
+{{@eachsql yippee select * from event inner join form_upload_girfec_score on event.id = form_upload_girfec_score.event_id and girfec_outcome_name_id  = {{outcome}} where event.date >= '{{from}}' and event.date <= '{{to}}' and event.event_milestone_id = 5 and form_upload_girfec_score.score > 0 order by event.date}}
+	{{end_score = yippee.score}}
+	{{@get event filter event_milestone_id = 2, young_person_id = yippee.young_person_id order by date DESC}}
+    {{@get form_upload_girfec_score filter event_id = event.id, girfec_outcome_name_id = {{outcome}} }}
+	{{start_score = form_upload_girfec_score.score}}
+		<tr>
+		{{@get young_person filter id = event.young_person_id}}
+		{{@get global filter id = young_person.global_id}}
+			<td>{{global.forename}} {{global.surname}}</td>
+			<td>{{start_score}}</td>
+			<td>{{end_score}}</td>
+			{{totalStart = totalStart + start_score}}
+			{{totalEnd = totalEnd + end_score}}
+		</tr>
+	{{@skip end_score = 0}}
+	{{cnt = cnt + 1}}
+{{@end}}
+		<tr>
+			<td colspan = 3>&nbsp</td>
+		</tr>
+		<tr>
+			<td> <b>Total Average</b></td>
+			<td> <b>{{totalStart / cnt}}</b></td>
+			<td> <b>{{totalEnd / cnt}}</b></td>
+		</tr>
+		<tr>
+			<td><b>Percent Change</b></td>
+			<td><b></b></td>
+			<td><b>{{totalEnd / totalStart * 100}}</b></td>
+		</tr>
+	</table>
+</div>
+<br>
+
+<button class="uk-button uk-button-medium uk-button-primary" onClick="printData('printTable')"> Print </button>
+
+<span class='exportButton'>
+	<a href="#" class="export" table='{"id":"printTable"}'>Export spreadsheet</a>
+</span>
+
+<br><br/>
+
+{{@html container end}}
+
+{{@include /jam/sys/js/searchPrintExport.js}}
+{{@include /jam/sys/html/footer.html}}

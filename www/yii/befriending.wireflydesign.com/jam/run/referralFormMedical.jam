@@ -1,7 +1,7 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@Xinclude /jam/run/menu.jam}}
+{{@Xinclude /jam/run/new_menu.jam}}
 
 {{@database befriending_wireflydesign_com}}
 
@@ -19,11 +19,17 @@
 
     <div name="inlineForm" class="uk-form uk-form-horizontal">
 <br>
-<center> <h3> Medical </h3> </center>
+
+
+<table id="printTable" class="testgrid sortable searchTable uk-table uk-table-condensed" style="border:0px solid #dddddd">
+<tr><td>
+
+
+<center> <h3> Medical information </h3> </center>
 
         <table class="uk-table uk-table-condensed" style="border:1px solid #dddddd">
             <tr>
-				<th> Medical type </th>
+				<th> Medical and Related Issues </th>
 				<th colspan=3 style='text-align:center'> Young Person </th>
 				<th colspan=3 style='text-align:center'> Parent Carer </th>
             </tr>
@@ -31,12 +37,12 @@
 				<td> </td>
 				<td style='text-align:left'> Yes </td>
 				<td style='text-align:left'> No </td>
-				<td style='text-align:left'> Dont Know </td>
+				<td style='text-align:left'> Don't Know </td>
 				<td style='text-align:left'> Yes </td>
 				<td style='text-align:left'> No </td>
-				<td style='text-align:left'> Dont Know </td>
+				<td style='text-align:left'> Don't Know </td>
 			</td>
-{{@each medical_type}}
+{{@each medical_type order by sequence}}
             <tr>
 				<td> {{medical_type.name}} </td>
 
@@ -92,10 +98,16 @@
 	<br>
 
 	<center>
-		<button type='button' class="uk-button uk-button-primary" onClick="backToPrev()"> Prev </button> </td>
-		<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="updateAndNext()"> Next </button> </td>
+		<button type='button' class="uk-button uk-button-primary" onClick="backToPrev()"> Prev </button> 
+		<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="updateAndNext()"> Next </button> 
 	</center>
     </div>
+
+
+</td></tr></table>
+<center> <button class="uk-button uk-button-medium uk-button-primary" onClick="printData('printTable')"> Print </button> </center>
+
+
 
 <script>
 window.onload = function() {
@@ -194,15 +206,19 @@ function addEachFromArray() {
 function backToPrev() {
     objReferrer = get('refId');
     objYP = get('ypId');
+	objLinkNumber = get('linkNumber');
 //alert('r='+objReferrer.value+' and yp='+objYP.value);
-    runJam('referralFormInterest?refId='+objReferrer.value+'&ypId='+objYP.value);
+    runJam('referralFormInterest?refId='+objReferrer.value+'&ypId='+objYP.value+'&linkNumber='+objLinkNumber.value);
 }
 function toNextScreen() {
     objReferrer = get('refId');
     objYP = get('ypId');
-    runJam('referralFormContacts?refId='+objReferrer.value+'&ypId='+objYP.value);
+	objLinkNumber = get('linkNumber');
+    runJam('referralFormAdditional?refId='+objReferrer.value+'&ypId='+objYP.value+'&linkNumber='+objLinkNumber.value);
 }
 </script>
+
+{{@include /jam/sys/js/searchPrintExport.js}}
 
 
 {{@include /jam/sys/html/footer.html}}

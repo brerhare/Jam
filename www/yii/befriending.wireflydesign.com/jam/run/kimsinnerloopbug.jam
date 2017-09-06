@@ -17,6 +17,6 @@
 	</ul>
 }}
 
-{{@include /jam/run/sys/menu.jam}}
+{{@include /jam/run/sys/new_menu.jam}}
 
 {{@include /jam/sys/html/footer.html}}

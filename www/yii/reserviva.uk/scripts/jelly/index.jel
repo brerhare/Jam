@@ -1,0 +1,24 @@
+[defaults]
+include = default-values
+
+; Every blob inherits these before adding/overriding
+[* : defaults]
+
+[screen]
+child = contentframe
+fx.wallpaper-image = /img/background.jpg
+css.display = block
+
+	[contentframe]
+	child = list, detail
+    stacking = horizontal
+    css.width = 100%
+
+		[list]
+		condition = @PAGE=@HOMEPAGE
+    	css.margin = 30px
+	    jam.embed = /run/list.jam
+		
+		[detail]
+		condition != @PAGE=@HOMEPAGE
+		
