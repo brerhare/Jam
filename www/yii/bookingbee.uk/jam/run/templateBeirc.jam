@@ -6,16 +6,15 @@
 
 <!-- --------------------------------------------------------------------------------------- -->
 
-{{@XXXXXremove table template_beirc}}
+{{@remove table template_beirc}}
 
-{{@XXXXXnew table template_beirc
+{{@new table template_beirc
 	sid                     string  required
 	seller_id               number  required
 	event_id                number  required
 	rider_name              string  required
 	rider_age               number
 	horse_name              string  required
-	is_member               number
 	member_number           string
 }}
 
@@ -94,10 +93,11 @@ div#formContainer {
 
 
 <hr>
-<center> <h4> Rider details. <span style="color:grey"> (BEIRC members receive £2 off each class) </span> </h4> </center>
+<center> <h4> Rider details. <span style="color:grey"> (BEIRC and BCC members receive £2 off each class) </span> </h4> </center>
 
-			{{@html checkbox field=template_beirc.is_member label='BEIRC Member?' tip='Check this if you are a member' group=inpcb}}
-			{{@html text field=template_beirc.member_number size=small label='Member number' group=inp}}
+			{{@XXXXXhtml checkbox field=template_beirc.is_member label='BEIRC Member?' tip='Check this if you are a member' group=inpcb}}
+			{{@html text field=template_beirc.member_number size=small label='BEIRC/BCC number' group=inp}}
+			{{@XXXXXhtml text field=template_beirc.coupon_code size=small label='BCC code' group=inp}}
 			{{@XXXXXhtml radio field=template_beirc.is_member label='B.E.I.R.C' options=1:Member,0:'Non member' group=inp}}
 			{{@html text field=template_beirc.rider_name size=medium label='Rider name' group=inp}}
 			{{@html text field=template_beirc.rider_age size=small label='Rider age' group=inp}}
@@ -124,7 +124,7 @@ div#formContainer {
 
 		<br>
 
-<center> <input type="image" src="/img/paypal-checkout.png" onClick="return sendOrder()"/>  &nbsp&nbsp Tel {{event.landline}} or {{event.mobile}} </center>
+<center> <input type="image" src="/img/paypal-checkout.png" onClick="return sendOrder()"/>  &nbsp&nbsp&nbsp&nbsp {{event.landline}} &nbsp&nbsp&nbsp&nbsp {{event.mobile}} </center>
 
 <hr>
 <p style="font-size: 75%;"> 
