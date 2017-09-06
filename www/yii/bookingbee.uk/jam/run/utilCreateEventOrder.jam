@@ -19,6 +19,7 @@ Doing...
     address                 string
     post_code               string
 	notes					text
+	total					number.2
 	paid					number
 }}
 

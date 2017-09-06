@@ -6,6 +6,19 @@
 
 <!-- --------------------------------------------------------------------------------------- -->
 
+
+
+
+
+
+{{@sql delete from event_order}}
+{{@sql delete from event_order_item}}
+
+
+
+
+
+
 {{@remove table template_beirc}}
 
 {{@new table template_beirc
@@ -151,7 +164,7 @@ function sendOrder() {
     var obj = get('event_order.name'); if (obj.value == "") { alert('Invalid Name'); return(false) }
     obj = get('event_order.email'); if (obj.value == "") { alert('Invalid Email address'); return(false) }
     obj2 = get('check.email'); if (obj2.value != obj.value) { alert('Email addresses do not match'); return(false) }
-    obj = get('template_beirc.is_member'); if (obj.value == "") { alert('Please indicate whether rider is a BEIRC member'); return(false) }
+    //obj = get('template_beirc.is_member'); if (obj.value == "") { alert('Please indicate whether rider is a BEIRC member'); return(false) }
 
 	$("body").css("cursor", "progress");
 
@@ -181,7 +194,7 @@ function checkOutstandingPlacements() {
 function updated_all() {
 	$("body").css("cursor", "default");
 	obj = get('event_order.id');
-//	alert('back. new order id = '+ obj.value);
+	alert('back. new order id = '+ obj.value + ' and price = ' + order.price);
 /////////////////////////////////////	runJam('paypal?orderId='+obj.value);
 }
 
@@ -190,6 +203,7 @@ function updated_all() {
 {{@action update_order}}
 	{{@new item template_beirc notify=ok}}
 	{{event_order.paid = 0}}
+	{{event_order.total = 0}}
 	{{@new item event_order}}
 {{@end}}
 
