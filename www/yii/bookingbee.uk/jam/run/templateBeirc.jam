@@ -11,17 +11,17 @@
 
 
 
-{{@sql delete from event_order}}
-{{@sql delete from event_order_item}}
+{{@XXXXXsql delete from event_order}}
+{{@XXXXXsql delete from event_order_item}}
 
 
 
 
 
 
-{{@remove table template_beirc}}
+{{@XXXXXremove table template_beirc}}
 
-{{@new table template_beirc
+{{@XXXXXnew table template_beirc
 	sid                     string  required
 	seller_id               number  required
 	event_id                number  required
@@ -78,9 +78,10 @@ div#formContainer {
 			<input type="hidden" name="event_order.seller_id" value="{{seller.id}}">
 			<input type="hidden" name="event_order.sid" value="{{seller.sid}}">
 			<input type="hidden" name="event_order.event_id" value="{{event.id}}">
-			<input type="hidden" name="event_order.event_item_id" value="12345">
+			<input type="hidden" name="event_order.event_item_id" "12345">
 			<input type="hidden" name="event_order.date" value="{{sys.today}}">
 			<input type="hidden" name="event_order.time" value="{{sys.now}}">
+			<input type="hidden" name="event_order.total" value="0">
 
 			<input type="hidden" name="template_beirc.seller_id" value="{{seller.id}}">
 			<input type="hidden" name="template_beirc.sid" value="{{seller.sid}}">
@@ -97,8 +98,8 @@ div#formContainer {
 {{@each event_item filter event_id = event.id}}
 					<tr style="padding:20px">
 						<td>{{event_item.description}}</td>
-						<td>£ {{event_item.price}}</td>
-						<td> <input type="checkbox" name="order_item" onclick="handleOrderItem(this)" value="{{event_item.id}}" class="inp"> </td>
+						<td id="inp_{{event_item.id}}">£ {{event_item.price}}</td>
+						<td> <input type="checkbox" name="order_item" onclick="handleOrderItem(this)" value="{{event_item.id}}" class="inp_{{event_item.id}}"> </td>
 					</tr>
 {{@end}}
 				</table>
@@ -164,13 +165,47 @@ function sendOrder() {
     var obj = get('event_order.name'); if (obj.value == "") { alert('Invalid Name'); return(false) }
     obj = get('event_order.email'); if (obj.value == "") { alert('Invalid Email address'); return(false) }
     obj2 = get('check.email'); if (obj2.value != obj.value) { alert('Email addresses do not match'); return(false) }
+
+	// work out pricing
+	var beirc_member = get('template_beirc.member_number');
+	var mbr = beirc_member.value.trim();
+console.log("MBR="+mbr);
+
+	var ototal = 0;
+    var checkboxes = document.getElementsByName('order_item');
+
+    for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+//			alert('lookup based on cbvalue='+'inp_'+checkboxes[i].value);
+			var objItem = document.getElementById('inp_'+checkboxes[i].value);
+console.log("PPPPP="+objItem);
+			//alert('price='+objItem.innerHTML);
+			var number = Number( objItem.innerHTML.replace(/[^0-9\.]+/g,""));
+			if (mbr != "")
+				number -= 2;
+			ototal += number;
+        }
+    }
+
+
     //obj = get('template_beirc.is_member'); if (obj.value == "") { alert('Please indicate whether rider is a BEIRC member'); return(false) }
 
 	$("body").css("cursor", "progress");
 
-	runAction('update_order', ['event_order'], '', updated_order);
+	objTotal = get('event_order.total');
+	objTotal.value = ototal;
+
+//alert('ototal='+ototal);
+	runAction('validate_order', ['event_order'], '', order_validated);
+
+
 	return(false);
 }
+
+function order_validated() {
+	runAction('update_order', ['event_order'], '', updated_order);
+}
+
 
 var outstandingPlacements = 0;
 var payable = 0;
@@ -189,21 +224,25 @@ function checkOutstandingPlacements() {
 	outstandingPlacements--;
 	if (outstandingPlacements == 0)
 		updated_all();
+//alert('all done');
 }
 
 function updated_all() {
 	$("body").css("cursor", "default");
 	obj = get('event_order.id');
-	alert('back. new order id = '+ obj.value + ' and price = ' + order.price);
-/////////////////////////////////////	runJam('paypal?orderId='+obj.value);
+	//alert('back. new order id = '+ obj.value + ' and total = ' + event_order.total);
+	runJam('paypal?orderId='+obj.value);
 }
 
 </script>
 
+{{@action validate_order}}
+<!-- validate code against beirc member or coupon code -->
+{{@end}}
+
 {{@action update_order}}
 	{{@new item template_beirc notify=ok}}
 	{{event_order.paid = 0}}
-	{{event_order.total = 0}}
 	{{@new item event_order}}
 {{@end}}
 

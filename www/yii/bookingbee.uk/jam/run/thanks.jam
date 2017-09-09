@@ -4,6 +4,11 @@
 
 {{@database bookingbee_uk}}
 
+{{@get event_order filter id = {{orderId}} }}
+{{event_order.paid = 1}}
+{{@update item event_order}}
+
+
 <style>
 
 html, body {background-color: #ffffff; }

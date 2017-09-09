@@ -6,20 +6,8 @@
 
 <!-- --------------------------------------------------------------------------------------- -->
 
-{{@XXXXXremove table template_beirc}}
+{{@get event_order filter id = {{orderId}} }}
 
-{{@XXXXXnew table template_beirc
-	sid                     string  required
-	seller_id               number  required
-	event_id                number  required
-	rider_name              string  required
-	rider_age               number
-	horse_name              string  required
-	club_name               string
-	is_member               number
-}}
-
-<!-- --------------------------------------------------------------------------------------- -->
 
 {{@template BUSINESS beirc1@gmail.com}}
 
@@ -31,7 +19,7 @@
    <input type="hidden" name="cmd" value="_xclick">
    <input type="hidden" name="business" value="BUSINESS">
    <input type="hidden" name="item_name" value="BEIRC event">
-   <input type="hidden" name="amount" value="0.01">
+   <input type="hidden" name="amount" value="{{event_order.total}}">
    <input type="hidden" name="currency_code" value="GBP">
 <!--   <input type="submit" value="Old PayPal checkout"> -->
    <input type="hidden" name="return" value="http://bookingbee.uk/run/thanks.jam?orderId={{orderId}}">
