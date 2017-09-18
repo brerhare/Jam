@@ -73,6 +73,16 @@ make a user <br>
 {{@randomnumber newfield=myRand}}
 {{user.cookie = myRand}}
 {{user.logged_in = 0}}
+{{user.user_data = sagvfdjigf39ij2jio42kfa9gv}}
+{{user.handle = kelly}}
+{{user.first_name = Kelly}}
+{{user.last_name = Telfer}}
+{{user.password = chance123}}
+{{@new item user}}
+
+{{@randomnumber newfield=myRand}}
+{{user.cookie = myRand}}
+{{user.logged_in = 0}}
 {{user.user_data = hamishes_seller_sid_perhaps}}
 {{user.handle = hg}}
 {{user.first_name = hamish}}

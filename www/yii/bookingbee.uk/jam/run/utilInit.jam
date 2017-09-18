@@ -12,6 +12,8 @@ Doing...<br>
 {{@include /jam/run/utilCreateEventTemplateFile.jam}}
 {{@include /jam/run/utilCreateEvent.jam}}
 {{@include /jam/run/utilCreateEventItem.jam}}
+{{@include /jam/run/utilCreateOrder.jam}}
+{{@include /jam/run/utilCreateOrderItem.jam}}
 
 <br> Populating...<br>
 {{@sql insert into seller values('1', 'sagvfdjigf39ij2jio42kfa9gv', 'B.E.I.R.C.', '01557 870337', '07899 75 2030', 'The Old Stable House, Senwick, Borgue, Kirkcudbright', 'DG6 4TP', 'fran@microboot.com', 'a.jpg')}}
