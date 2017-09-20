@@ -11,6 +11,7 @@ Doing...
 	seller_id				number	required
 	event_id				number	required
 	event_item_id			number	required
+	event_order_id			number	required
 
 	qty						number
     price                   number.2

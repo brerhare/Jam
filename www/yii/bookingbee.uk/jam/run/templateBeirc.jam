@@ -14,13 +14,7 @@
 {{@XXXXXsql delete from event_order}}
 {{@XXXXXsql delete from event_order_item}}
 
-
-
-
-
-
 {{@XXXXXremove table template_beirc}}
-
 {{@XXXXXnew table template_beirc
 	sid                     string  required
 	seller_id               number  required
@@ -114,7 +108,7 @@ div#formContainer {
 			{{@XXXXXhtml text field=template_beirc.coupon_code size=small label='BCC code' group=inp}}
 			{{@XXXXXhtml radio field=template_beirc.is_member label='B.E.I.R.C' options=1:Member,0:'Non member' group=inp}}
 			{{@html text field=template_beirc.rider_name size=medium label='Rider name' group=inp}}
-			{{@html text field=template_beirc.rider_age size=small label='Rider age' group=inp}}
+			{{@html text field=template_beirc.rider_age size=small label='Rider age (optional)' group=inp}}
 			{{@html text field=template_beirc.horse_name size=medium label='Horse name' group=inp}}
 
 <hr>
@@ -138,13 +132,13 @@ div#formContainer {
 
 		<br>
 
-<center> <input type="image" src="/img/paypal-checkout.png" onClick="return sendOrder()"/>  &nbsp&nbsp&nbsp&nbsp {{event.landline}} &nbsp&nbsp&nbsp&nbsp {{event.mobile}} </center>
+<center> <input type="image" src="/img/paypal-checkout.png" onClick="return sendOrder()"/> </center>
 
 <hr>
+<button type='button' class="uk-button uk-button-primary" onClick="window.open('http://www.beirc.co.uk/?layout=index&page=rules-entry-competitions')">See our Rules and Regulations</button> </td>
 <p style="font-size: 75%;"> 
 	{{event.tandc}}
 </p>
-<button type='button' class="uk-button uk-button-primary" onClick="window.open('http://www.beirc.co.uk/?layout=index&page=rules-entry-competitions')">See our Rules and Regulations</button> </td>
 
 		</form>
 	</div>
@@ -227,11 +221,15 @@ function checkOutstandingPlacements() {
 //alert('all done');
 }
 
+var paypalRun = 0;
+
 function updated_all() {
 	$("body").css("cursor", "default");
 	obj = get('event_order.id');
 	//alert('back. new order id = '+ obj.value + ' and total = ' + event_order.total);
-	runJam('paypal?orderId='+obj.value);
+	if (paypalRun == 0)
+		runJam('paypal?orderId='+obj.value);
+	paypalRun = 1;
 }
 
 </script>
@@ -241,9 +239,10 @@ function updated_all() {
 {{@end}}
 
 {{@action update_order}}
-	{{@new item template_beirc notify=ok}}
 	{{event_order.paid = 0}}
-	{{@new item event_order}}
+	{{@new item event_order notify=ok}}
+	{{template_beirc.event_order_id = event_order.id}}
+	{{@new item template_beirc}}
 {{@end}}
 
 {{@action update_order_item}}
@@ -253,6 +252,7 @@ function updated_all() {
 	{{event_order_item.sid = event_order.sid}}
 	{{event_order_item.seller_id = event_order.seller_id}}
 	{{event_order_item.event_id = event_order.event_id}}
+	{{event_order_item.event_order_id = event_order.id}}
 	{{event_order_item.event_item_id = event_item.id}}
 
 	{{event_order_item.qty = 1}}

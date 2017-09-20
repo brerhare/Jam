@@ -22,6 +22,7 @@
 			{{@html text field=seller.email size=medium label='Email address'}}
 			{{@html textarea field=seller.address size=50x5 label=Address}}
 			{{@html text field=seller.post_code size=small label='Post code'}}
+			{{@html text field=seller.paypal_email size=medium label='Paypal email address'}}
 			<br>
 			<label class="uk-form-label" for="mem.upload">Uploaded picture</label>
 			<div class="uk-form-controls">

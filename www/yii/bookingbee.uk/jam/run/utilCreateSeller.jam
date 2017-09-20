@@ -15,6 +15,7 @@ Doing...
 	post_code				string
 	email					string
 	image					string
+	paypal_email			string
 }}
 
 Done

@@ -4,17 +4,12 @@
 
 {{@database bookingbee_uk}}
 
-{{@get event_order filter id = {{orderId}} }}
-{{event_order.paid = 1}}
-{{@update item event_order}}
-
-
 <style>
-
 html, body {background-color: #ffffff; }
-
 </style>
 
+{{@html container start center css='max-width:900px; Xpadding:0}}
+
 <br>
 <br>
 <br>
@@ -23,7 +18,29 @@ html, body {background-color: #ffffff; }
 <br>
 <br>
 <br>
-<center><h1> Thank you! Check your email for confirmation </h1> </center>
+
+{{@each event_order filter id = orderId }}
+	{{event_order.paid = 1}}
+	{{@update item event_order}}
+
+{{@end}}
+
+	<center><h1> Thank you for your payment </h1></center>
+	<center><h3> Your transaction has been completed and a receipt for your purchase has been emailed to you </h3></center>
+	<center><h3> Details of this transaction are available to view at your account at www.paypal.com </h3></center>
+
+	<br>
 <center><h3> You may close this window </h3></center>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+{{@html container end}}
 
 {{@include /jam/sys/html/footer.html}}
