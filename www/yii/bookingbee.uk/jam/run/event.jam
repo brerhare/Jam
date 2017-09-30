@@ -29,7 +29,7 @@
 			<td>{{event.headline}}</td>
 			<td>{{@datedmy event.date}}</td>
 			<td>{{event.time}}</td>
-			<td>{{event.active}}</td>
+			<td>{{@replacevalue field=event.active values=0:no,1:yes}}
 			<td>
 				<span>
 					<button class="uk-button uk-button-mini uk-button-primary" onClick="confirmCopy('{{id}}','{{event.headline}}')" help-id="cloneButton{{helpId}}"> <i class="uk-icon-copy"></i> </button>

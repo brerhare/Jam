@@ -89,7 +89,7 @@ div#formContainer {
 			<br>
 			<center>
 				<table class="uk-table" style="width:50%; background-color:#bed0de">
-{{@each event_item filter event_id = event.id}}
+{{@each event_item filter event_id = event.id, id != 131}}
 					<tr style="padding:20px">
 						<td>{{event_item.description}}</td>
 						<td id="inp_{{event_item.id}}">£ {{event_item.price}}</td>
