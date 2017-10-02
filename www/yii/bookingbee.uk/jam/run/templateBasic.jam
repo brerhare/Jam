@@ -1,0 +1,239 @@
+{{@include /jam/sys/html/header.html}}
+
+{{@include /jam/css/site.css}}
+
+{{@database bookingbee_uk}}
+
+{{@get event filter id = eventId}}
+{{@get seller filter id = event.seller_id}}
+
+<style type="text/css">
+	label {text-align: right; width:150px !important}
+	div.uk-form-controls {margin-left: 170px !important}
+</style>
+
+<style type="text/css">
+html {
+	background: url("/jam/upload/event/image/{{event.image}}") no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;			
+}
+
+.midHeight {
+  position: relative;
+  Xtop: 50%;
+  Xtransform: translateY(-50%);
+}
+
+div#formContainer {
+	display:block;
+	margin:0px auto;
+	background-color:white;
+	padding:20px;
+	width:800px;
+	-moz-box-shadow: 0 0 20px black; -webkit-box-shadow: 0 0 20px black; box-shadow: 0 0 20px black;
+	background-color:#ececec;
+}
+</style>
+
+{{@XXXhtml container start center css='max-width:800px; padding:0'}}
+
+
+<div class='midHeight'>
+	<div id='formContainer'>
+
+		<form name="event_order" class="XmidHeight uk-form uk-form-horizontal">
+			<input type="hidden" name="event_order.seller_id" value="{{seller.id}}">
+			<input type="hidden" name="event_order.sid" value="{{seller.sid}}">
+			<input type="hidden" name="event_order.event_id" value="{{event.id}}">
+			<input type="hidden" name="event_order.event_item_id" "12345">
+			<input type="hidden" name="event_order.date" value="{{sys.today}}">
+			<input type="hidden" name="event_order.time" value="{{sys.now}}">
+			<input type="hidden" name="event_order.total" value="0">
+
+			<input type="hidden" name="template_beirc.seller_id" value="{{seller.id}}">
+			<input type="hidden" name="template_beirc.sid" value="{{seller.sid}}">
+			<input type="hidden" name="template_beirc.event_id" value="{{event.id}}">
+<br>
+			<center><h3> {{event.headline}} {{@datedmy event.date}} {{event.time}} </h3></center>
+
+        {{@html gridrow start}}
+            {{@html gridcol start width=1-1}}
+
+			<br>
+			<center>
+				<table class="uk-table" style="width:50%; background-color:#bed0de">
+{{@each event_item filter event_id = event.id, id != 131}}
+					<tr style="padding:20px">
+						<td>{{event_item.description}}</td>
+						<td id="inp_{{event_item.id}}">£ {{event_item.price}}</td>
+						<td> <input type="checkbox" name="order_item" onclick="handleOrderItem(this)" value="{{event_item.id}}" class="inp_{{event_item.id}}"> </td>
+					</tr>
+{{@end}}
+				</table>
+			</center>
+
+
+<hr>
+<center> <h4> Rider details. <span style="color:grey"> (BEIRC and BCC members receive £2 off each class) </span> </h4> </center>
+
+			{{@XXXXXhtml checkbox field=template_beirc.is_member label='BEIRC Member?' tip='Check this if you are a member' group=inpcb}}
+			{{@html text field=template_beirc.member_number size=small label='BEIRC/BCC number' group=inp}}
+			{{@XXXXXhtml text field=template_beirc.coupon_code size=small label='BCC code' group=inp}}
+			{{@XXXXXhtml radio field=template_beirc.is_member label='B.E.I.R.C' options=1:Member,0:'Non member' group=inp}}
+			{{@html text field=template_beirc.rider_name size=medium label='Rider name' group=inp}}
+			{{@html text field=template_beirc.rider_age size=small label='Rider age (optional)' group=inp}}
+			{{@html text field=template_beirc.horse_name size=medium label='Horse name' group=inp}}
+
+<hr>
+<center> <h4> Payment details </h4> </center>
+
+			{{@html text field=event_order.name size=medium label='Name' group=inp}}
+			{{@html text field=event_order.landline size=medium label='Telephone number'}}
+			{{@html text field=event_order.mobile size=medium label='Mobile number'}}
+			{{@html text field=event_order.email size=medium label='Email address'}}
+			{{@html text field=check.email size=medium label='Email again'}}
+			{{@html textarea field=event_order.address size=30x5 label=Address}}
+			{{@html text field=event_order.post_code size=small label='Post code'}}
+			{{@html textarea field=event_order.notes size=30x5 label='Notes'}}
+
+			<input type="hidden" name="event_order.qty" value="111">
+			<input type="hidden" name="event_order.price" value="222">
+
+            {{@html gridcol end}}
+
+        {{@html gridrow end}}
+
+		<br>
+
+<center> <input type="image" src="/img/paypal-checkout.png" onClick="return sendOrder()"/> </center>
+
+<hr>
+<p style="font-size: 75%;"> 
+	{{event.tandc}}
+</p>
+
+		</form>
+	</div>
+</div>
+
+
+{{@XXXhtml container end}}
+
+<script>
+
+
+function handleOrderItem(obj) {
+	//var checkedValue = document.querySelector('.inpcb:checked').value;
+	//console.log(checkedValue);
+}
+
+function sendOrder() {
+    var obj = get('event_order.name'); if (obj.value == "") { alert('Invalid Name'); return(false) }
+    obj = get('event_order.email'); if (obj.value == "") { alert('Invalid Email address'); return(false) }
+    obj2 = get('check.email'); if (obj2.value != obj.value) { alert('Email addresses do not match'); return(false) }
+
+	// work out pricing
+	var beirc_member = get('template_beirc.member_number');
+	var mbr = beirc_member.value.trim();
+console.log("MBR="+mbr);
+
+	var ototal = 0;
+    var checkboxes = document.getElementsByName('order_item');
+
+    for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+//			alert('lookup based on cbvalue='+'inp_'+checkboxes[i].value);
+			var objItem = document.getElementById('inp_'+checkboxes[i].value);
+console.log("PPPPP="+objItem);
+			//alert('price='+objItem.innerHTML);
+			var number = Number( objItem.innerHTML.replace(/[^0-9\.]+/g,""));
+			if (mbr != "")
+				number -= 2;
+			ototal += number;
+        }
+    }
+
+
+    //obj = get('template_beirc.is_member'); if (obj.value == "") { alert('Please indicate whether rider is a BEIRC member'); return(false) }
+
+	$("body").css("cursor", "progress");
+
+	objTotal = get('event_order.total');
+	objTotal.value = ototal;
+
+//alert('ototal='+ototal);
+	runAction('validate_order', ['event_order'], '', order_validated);
+
+
+	return(false);
+}
+
+function order_validated() {
+	runAction('update_order', ['event_order'], '', updated_order);
+}
+
+
+var outstandingPlacements = 0;
+var payable = 0;
+
+function updated_order() {
+    var checkboxes = document.getElementsByName('order_item');
+    for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+			outstandingPlacements++;
+            runAction('update_order_item', ['event_order.id', 'event_item.id='+checkboxes[i].value], '', checkOutstandingPlacements);
+        }
+    }
+}
+
+function checkOutstandingPlacements() {
+	outstandingPlacements--;
+	if (outstandingPlacements == 0)
+		updated_all();
+//alert('all done');
+}
+
+var paypalRun = 0;
+
+function updated_all() {
+	$("body").css("cursor", "default");
+	obj = get('event_order.id');
+	//alert('back. new order id = '+ obj.value + ' and total = ' + event_order.total);
+	if (paypalRun == 0)
+		runJam('paypal?orderId='+obj.value);
+	paypalRun = 1;
+}
+
+</script>
+
+{{@action validate_order}}
+<!-- validate code against beirc member or coupon code -->
+{{@end}}
+
+{{@action update_order}}
+	{{event_order.paid = 0}}
+	{{@new item event_order notify=ok}}
+	{{template_beirc.event_order_id = event_order.id}}
+	{{@new item template_beirc}}
+{{@end}}
+
+{{@action update_order_item}}
+	{{@get event_order filter id = event_order.id}}
+	{{@get event_item filter id = event_item.id}}
+
+	{{event_order_item.sid = event_order.sid}}
+	{{event_order_item.seller_id = event_order.seller_id}}
+	{{event_order_item.event_id = event_order.event_id}}
+	{{event_order_item.event_order_id = event_order.id}}
+	{{event_order_item.event_item_id = event_item.id}}
+
+	{{event_order_item.qty = 1}}
+	{{event_order_item.price = event_item.price}}
+
+	{{@new item event_order_item notify=ok}}
+{{@end}}
+
+{{@include /jam/sys/html/footer.html}}
