@@ -4,30 +4,6 @@
 
 {{@database bookingbee_uk}}
 
-<!-- --------------------------------------------------------------------------------------- -->
-
-
-
-
-
-
-{{@XXXXXsql delete from event_order}}
-{{@XXXXXsql delete from event_order_item}}
-
-{{@XXXXXremove table template_beirc}}
-{{@XXXXXnew table template_beirc
-	sid                     string  required
-	seller_id               number  required
-	event_id                number  required
-	rider_name              string  required
-	rider_age               number
-	horse_name              string  required
-	member_number           string
-}}
-
-<!-- --------------------------------------------------------------------------------------- -->
-
-
 {{@get event filter id = eventId}}
 {{@get seller filter id = event.seller_id}}
 
@@ -135,7 +111,6 @@ div#formContainer {
 <center> <input type="image" src="/img/paypal-checkout.png" onClick="return sendOrder()"/> </center>
 
 <hr>
-<button type='button' class="uk-button uk-button-primary" onClick="window.open('http://www.beirc.co.uk/?layout=index&page=rules-entry-competitions')">See our Rules and Regulations</button> </td>
 <p style="font-size: 75%;"> 
 	{{event.tandc}}
 </p>

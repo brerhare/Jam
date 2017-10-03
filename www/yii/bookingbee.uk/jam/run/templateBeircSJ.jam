@@ -82,14 +82,16 @@ div#formContainer {
 			<input type="hidden" name="template_beirc.event_id" value="{{event.id}}">
 <br>
 			<center><h3> {{event.headline}} {{@datedmy event.date}} {{event.time}} </h3></center>
+			<center><h4> Book 3 or more classes and get the 3rd class half price</h4></center>
 
         {{@html gridrow start}}
             {{@html gridcol start width=1-1}}
 
 			<br>
 			<center>
-				<table class="uk-table" style="width:50%; background-color:#bed0de">
-{{@each event_item filter event_id = event.id, id != 131}}
+				<table class="uk-table" style="width:70%; background-color:#bed0de">
+{{@XXXeach event_item filter event_id = event.id, id != 131}}
+{{@each event_item filter event_id = event.id}}
 					<tr style="padding:20px">
 						<td>{{event_item.description}}</td>
 						<td id="inp_{{event_item.id}}">£ {{event_item.price}}</td>
@@ -168,6 +170,9 @@ console.log("MBR="+mbr);
 	var ototal = 0;
     var checkboxes = document.getElementsByName('order_item');
 
+	var thirdHalfPrice = 0;
+	var numberOfItemsBooked = 0;
+
     for (var i = 0; i < checkboxes.length; i++) {
         if (checkboxes[i].checked) {
 //			alert('lookup based on cbvalue='+'inp_'+checkboxes[i].value);
@@ -178,8 +183,21 @@ console.log("PPPPP="+objItem);
 			if (mbr != "")
 				number -= 2;
 			ototal += number;
+			if (thirdHalfPrice == 0)
+				thirdHalfPrice = (number / 2);
+			numberOfItemsBooked += 1;
+console.log("ThirdHalfPrice WOULD be = " + thirdHalfPrice);
         }
     }
+	// Apply 3rd item = half price
+	if (numberOfItemsBooked > 2) {
+		ototal -= thirdHalfPrice;
+console.log("ThirdHalfPrice number of items booked = " + numberOfItemsBooked);
+console.log("ThirdHalfPrice APPLIED = " + ototal);
+	} else {
+console.log("Too few items - no ThirdHalfPrice APPLIED");
+	}
+
 
 
     //obj = get('template_beirc.is_member'); if (obj.value == "") { alert('Please indicate whether rider is a BEIRC member'); return(false) }

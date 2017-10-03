@@ -90,6 +90,16 @@ make a user <br>
 {{user.password = }}
 {{@new item user}}
 
+{{@randomnumber newfield=myRand}}
+{{user.cookie = myRand}}
+{{user.logged_in = 0}}
+{{user.user_data = testgvjslgh0djxvn4n6njdhgs}}
+{{user.handle = test}}
+{{user.first_name = test}}
+{{user.last_name = test}}
+{{user.password = test}}
+{{@new item user}}
+
 now loop <br>
 
 {{@each user filter id > 0}}

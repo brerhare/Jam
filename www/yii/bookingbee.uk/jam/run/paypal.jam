@@ -7,9 +7,7 @@
 <!-- --------------------------------------------------------------------------------------- -->
 
 {{@get event_order filter id = {{orderId}} }}
-
-
-{{@template BUSINESS beirc1@gmail.com}}
+{{@get seller filter id = {{event_order.seller_id}} }}
 
 <br/><br/><br/><br/><br/> <center> <h5 style="color:grey">Please wait, redirecting to Paypal...</h5> </center>
 
@@ -17,7 +15,7 @@
     <form id="pp" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 
    <input type="hidden" name="cmd" value="_xclick">
-   <input type="hidden" name="business" value="BUSINESS">
+   <input type="hidden" name="business" value="{{seller.paypal_email}}">
    <input type="hidden" name="item_name" value="BEIRC event">
    <input type="hidden" name="amount" value="{{event_order.total}}">
    <input type="hidden" name="currency_code" value="GBP">
@@ -28,7 +26,7 @@
 
 <!--
 		<input type="hidden" name="cmd" value="_xclick">
-        <input type="hidden" name="business" value="BUSINESS">
+        <input type="hidden" name="business" value="{{seller.paypal_email}}">
 
         <input type="hidden" name="charset" value="utf-8"> This gets rid of the weird A before the £
         <input type="hidden" name="cmd" value="_cart">

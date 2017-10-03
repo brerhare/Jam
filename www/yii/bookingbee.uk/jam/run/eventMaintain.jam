@@ -26,6 +26,9 @@
     {{@html tabs embed
         label=Details		action=/run/eventMaintainDetail?event.id={{event.id}}
         label=Items			action=/run/eventMaintainItem?event.id={{event.id}}
+        label=Bookings		action=/run/eventMaintainBooking?event.id={{event.id}}
+        label='Group Report'	action=/run/eventMaintainGroupReport?event.id={{event.id}}
+
     }}
 
 	</Xform>
@@ -42,5 +45,7 @@ addLoadEvent(function() {
 	$("#jamTabId").tabs({heightStyle:"auto"});
 });
 </script>
+
+{{@include /jam/sys/js/searchPrintExport.js}}
 
 {{@include /jam/sys/html/footer.html}}
