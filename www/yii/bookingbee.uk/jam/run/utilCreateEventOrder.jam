@@ -21,6 +21,8 @@ Doing...
 	notes					text
 	total					number.2
 	paid					number
+	paid_paypal_return		number
+	paid_paypal_IPN			number
 }}
 
 {{@new index event_order sellerindex

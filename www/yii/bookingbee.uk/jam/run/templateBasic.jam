@@ -215,6 +215,8 @@ function updated_all() {
 
 {{@action update_order}}
 	{{event_order.paid = 0}}
+	{{event_order.paid_paypal_IPN = 0}}
+	{{event_order.paid_paypal_return = 0}}
 	{{@new item event_order notify=ok}}
 	{{template_beirc.event_order_id = event_order.id}}
 	{{@new item template_beirc}}

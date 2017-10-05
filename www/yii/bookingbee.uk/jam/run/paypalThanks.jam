@@ -22,6 +22,7 @@ html, body {background-color: #ffffff; }
 
 {{@each event_order filter id = orderId }}
 	{{event_order.paid = 1}}
+	{{event_order.paid_paypal_return = 1}}
 	{{@update item event_order}}
 
 	{{@get seller filter id = event_order.seller_id}}
