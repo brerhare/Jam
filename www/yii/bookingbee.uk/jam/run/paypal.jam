@@ -20,7 +20,6 @@
    <input type="hidden" name="amount" value="{{event_order.total}}">
    <input type="hidden" name="currency_code" value="GBP">
 <!--   <input type="submit" value="Old PayPal checkout"> -->
-   <input type="hidden" name="return" value="http://bookingbee.uk/run/thanks.jam?orderId={{orderId}}">
  
 
 
@@ -36,7 +35,7 @@
 				<input type='hidden' name='item_name' value='Horse Event'>
 				<input type='hidden' name='amount' value='0.01'>
 
-		<input type="hidden" name="return" value="http://bookingbee.uk/run/thanks.jam?orderId={{orderId}}">
+		<input type="hidden" name="return" value="http://bookingbee.uk/run/paypalThanks.jam?orderId={{orderId}}">
         <input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHostedGuest">
 -->
 
