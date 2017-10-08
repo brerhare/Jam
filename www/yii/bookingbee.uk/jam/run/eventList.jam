@@ -21,7 +21,7 @@
 	<div style="Xmargin:20px;padding:0" class="Xuk-container Xuk-container-center">
 
 		<div class="uk-grid uk-grid-match" data-uk-grid-match="{target:'.uk-panel'}" data-uk-grid-margin>
-{{@each event filter id < 5550, order by date ASC}}
+{{@each event filter active = 1, order by date ASC}}
 			<div style="Xpadding-bottom:35px;" class="uk-width-large-1-LARGEVIEWBLOCKS  uk-width-medium-1-MEDIUMVIEWBLOCKS  uk-width-1-SMALLVIEWBLOCKS">
 
 				<div class="uk-panel uk-panel-box" style='Xbackground-color:transparent; Xborder-radius:BORDERRADIUS; Xborder:BORDERWIDTH solid BORDERCOLOR'>
