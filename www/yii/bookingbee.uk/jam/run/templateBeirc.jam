@@ -132,7 +132,9 @@ div#formContainer {
 
 		<br>
 
+<div name="buttonDiv">
 <center> <input type="image" src="/img/paypal-checkout.png" onClick="return sendOrder()"/> </center>
+</div>
 
 <hr>
 <button type='button' class="uk-button uk-button-primary" onClick="window.open('http://www.beirc.co.uk/?layout=index&page=rules-entry-competitions')">See our Rules and Regulations</button> </td>
@@ -185,6 +187,8 @@ console.log("PPPPP="+objItem);
     //obj = get('template_beirc.is_member'); if (obj.value == "") { alert('Please indicate whether rider is a BEIRC member'); return(false) }
 
 	$("body").css("cursor", "progress");
+	objBtn = get("buttonDiv");
+	objBtn.innerHTML = "Sending order...";	
 
 	objTotal = get('event_order.total');
 	objTotal.value = ototal;
@@ -205,11 +209,13 @@ var outstandingPlacements = 0;
 var payable = 0;
 
 function updated_order() {
+	var delay = 1;
     var checkboxes = document.getElementsByName('order_item');
     for (var i = 0; i < checkboxes.length; i++) {
         if (checkboxes[i].checked) {
 			outstandingPlacements++;
-            runAction('update_order_item', ['event_order.id', 'event_item.id='+checkboxes[i].value], '', checkOutstandingPlacements);
+            setTimeout(runAction('update_order_item', ['event_order.id', 'event_item.id='+checkboxes[i].value], '', checkOutstandingPlacements), delay);
+			delay += 1000;
         }
     }
 }
