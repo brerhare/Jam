@@ -7,24 +7,6 @@
 <!-- --------------------------------------------------------------------------------------- -->
 
 
-
-
-
-
-{{@XXXXXsql delete from event_order}}
-{{@XXXXXsql delete from event_order_item}}
-
-{{@XXXXXremove table template_beirc}}
-{{@XXXXXnew table template_beirc
-	sid                     string  required
-	seller_id               number  required
-	event_id                number  required
-	rider_name              string  required
-	rider_age               number
-	horse_name              string  required
-	member_number           string
-}}
-
 <!-- --------------------------------------------------------------------------------------- -->
 
 
@@ -93,7 +75,7 @@ div#formContainer {
 					<tr style="padding:20px">
 						<td>{{event_item.description}}</td>
 						<td id="inp_{{event_item.id}}">£ {{event_item.price}}</td>
-						<td> <input type="checkbox" name="order_item" onclick="handleOrderItem(this)" value="{{event_item.id}}" class="inp_{{event_item.id}}"> </td>
+						<td> <input type="checkbox" name="order_item_cb" onclick="handleOrderItem(this)" value="{{event_item.id}}" class="inp_{{event_item.id}}"> </td>
 					</tr>
 {{@end}}
 				</table>
@@ -121,7 +103,7 @@ div#formContainer {
 			{{@html text field=check.email size=medium label='Email again'}}
 			{{@html textarea field=event_order.address size=30x5 label=Address}}
 			{{@html text field=event_order.post_code size=small label='Post code'}}
-			{{@html textarea field=event_order.notes size=30x5 label='Notes'}}
+			{{@html textarea field=event_order.notes size=30x5 label='Comments'}}
 
 			<input type="hidden" name="event_order.qty" value="111">
 			<input type="hidden" name="event_order.price" value="222">
@@ -157,6 +139,10 @@ function handleOrderItem(obj) {
 	//console.log(checkedValue);
 }
 
+var outstandingPlacements = 0;
+var payable = 0;
+var cbArr = [];
+
 function sendOrder() {
     var obj = get('event_order.name'); if (obj.value == "") { alert('Invalid Name'); return(false) }
     obj = get('event_order.email'); if (obj.value == "") { alert('Invalid Email address'); return(false) }
@@ -165,26 +151,21 @@ function sendOrder() {
 	// work out pricing
 	var beirc_member = get('template_beirc.member_number');
 	var mbr = beirc_member.value.trim();
-console.log("MBR="+mbr);
 
 	var ototal = 0;
-    var checkboxes = document.getElementsByName('order_item');
+    var checkboxes = document.getElementsByName('order_item_cb');
 
     for (var i = 0; i < checkboxes.length; i++) {
         if (checkboxes[i].checked) {
-//			alert('lookup based on cbvalue='+'inp_'+checkboxes[i].value);
+			cbArr.push(checkboxes[i].value);
+			outstandingPlacements++;
 			var objItem = document.getElementById('inp_'+checkboxes[i].value);
-console.log("PPPPP="+objItem);
-			//alert('price='+objItem.innerHTML);
 			var number = Number( objItem.innerHTML.replace(/[^0-9\.]+/g,""));
 			if (mbr != "")
 				number -= 2;
 			ototal += number;
         }
     }
-
-
-    //obj = get('template_beirc.is_member'); if (obj.value == "") { alert('Please indicate whether rider is a BEIRC member'); return(false) }
 
 	$("body").css("cursor", "progress");
 	objBtn = get("buttonDiv");
@@ -193,43 +174,32 @@ console.log("PPPPP="+objItem);
 	objTotal = get('event_order.total');
 	objTotal.value = ototal;
 
-//alert('ototal='+ototal);
 	runAction('validate_order', ['event_order'], '', order_validated);
-
-
 	return(false);
 }
 
 function order_validated() {
-	runAction('update_order', ['event_order'], '', updated_order);
+	runAction('update_order', ['event_order'], '', update_order_items);
 }
 
-
-var outstandingPlacements = 0;
-var payable = 0;
-
-function updated_order() {
-	var delay = 1;
-    var checkboxes = document.getElementsByName('order_item');
-    for (var i = 0; i < checkboxes.length; i++) {
-        if (checkboxes[i].checked) {
-			outstandingPlacements++;
-            setTimeout(runAction('update_order_item', ['event_order.id', 'event_item.id='+checkboxes[i].value], '', checkOutstandingPlacements), delay);
-			delay += 1000;
-        }
-    }
+function update_order_items() {
+	for (var i = 0; i < cbArr.length; i++) {
+//alert('CHECK2! update_order_item : item='+cbArr[i]);
+		runAction('update_order_item', ['event_order.id', 'event_item.id='+cbArr[i] ], '', checkOutstandingPlacements);
+	}
 }
 
 function checkOutstandingPlacements() {
 	outstandingPlacements--;
 	if (outstandingPlacements == 0)
 		updated_all();
-//alert('all done');
 }
 
 var paypalRun = 0;
 
 function updated_all() {
+//alert('done.');
+//return;
 	$("body").css("cursor", "default");
 	obj = get('event_order.id');
 	//alert('back. new order id = '+ obj.value + ' and total = ' + event_order.total);

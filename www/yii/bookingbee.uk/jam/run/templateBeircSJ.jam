@@ -122,7 +122,7 @@ div#formContainer {
 			{{@html text field=check.email size=medium label='Email again'}}
 			{{@html textarea field=event_order.address size=30x5 label=Address}}
 			{{@html text field=event_order.post_code size=small label='Post code'}}
-			{{@html textarea field=event_order.notes size=30x5 label='Notes'}}
+			{{@html textarea field=event_order.notes size=30x5 label='Comments'}}
 
 			<input type="hidden" name="event_order.qty" value="111">
 			<input type="hidden" name="event_order.price" value="222">
@@ -133,7 +133,9 @@ div#formContainer {
 
 		<br>
 
+<div name="buttonDiv">
 <center> <input type="image" src="/img/paypal-checkout.png" onClick="return sendOrder()"/> </center>
+</div>
 
 <hr>
 <button type='button' class="uk-button uk-button-primary" onClick="window.open('http://www.beirc.co.uk/?layout=index&page=rules-entry-competitions')">See our Rules and Regulations</button> </td>
@@ -202,6 +204,8 @@ console.log("Too few items - no ThirdHalfPrice APPLIED");
     //obj = get('template_beirc.is_member'); if (obj.value == "") { alert('Please indicate whether rider is a BEIRC member'); return(false) }
 
 	$("body").css("cursor", "progress");
+	objBtn = get("buttonDiv");
+	objBtn.innerHTML = "Sending order...";	
 
 	objTotal = get('event_order.total');
 	objTotal.value = ototal;

@@ -28,6 +28,7 @@ html, body {background-color: #ffffff; }
 	{{@get seller filter id = event_order.seller_id}}
 	{{@get event filter id = event_order.event_id}}
 	{{@email {{seller.email}} {{event_order.email}} 'Confirmation of B.E.I.R.C booking for {{event.headline}}' action:emailContent}}
+	{{@email {{seller.email}} k@microboot.com '--- Copy of --- Confirmation of B.E.I.R.C booking for {{event.headline}}' action:emailContent}}
 
 {{@end}}
 
@@ -50,7 +51,7 @@ html, body {background-color: #ffffff; }
 {{@html container end}}
 
 {{@action emailContent}}
-	<p>Hello! Your booking made by {{event_order.name}} has been successfully placed<br>
+	<p>Hello! Your booking made by {{event_order.name}} with email address {{event_order.email}} has been successfully placed<br>
     Please check your booking details below and contact us on {{seller.landline}} or {{seller.email}} in the event of any problems<br>
 	{{@each event_order_item filter event_order_id = event_order.id}}
 		{{@get event_item filter id = event_item_id}}
