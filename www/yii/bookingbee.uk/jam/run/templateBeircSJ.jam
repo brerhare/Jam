@@ -94,7 +94,7 @@ div#formContainer {
 					<tr style="padding:20px">
 						<td>{{event_item.description}}</td>
 						<td id="inp_{{event_item.id}}">£ {{event_item.price}}</td>
-						<td> <input type="checkbox" name="order_item" onclick="handleOrderItem(this)" value="{{event_item.id}}" class="inp_{{event_item.id}}"> </td>
+						<td> <input type="checkbox" name="order_item_cb" onclick="handleOrderItem(this)" value="{{event_item.id}}" class="inp_{{event_item.id}}"> </td>
 					</tr>
 {{@end}}
 				</table>
@@ -217,7 +217,7 @@ console.log("Too few items - no ThirdHalfPrice APPLIED");
 }
 
 function order_validated() {
-	runAction('update_order', ['event_order'], '', updated_order_items);
+	runAction('update_order', ['event_order'], '', update_order_items);
 }
 
 function update_order_items() {
