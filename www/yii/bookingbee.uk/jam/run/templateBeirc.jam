@@ -198,8 +198,6 @@ function checkOutstandingPlacements() {
 var paypalRun = 0;
 
 function updated_all() {
-//alert('done.');
-//return;
 	$("body").css("cursor", "default");
 	obj = get('event_order.id');
 	//alert('back. new order id = '+ obj.value + ' and total = ' + event_order.total);
