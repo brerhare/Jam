@@ -25,7 +25,7 @@
 
 {{@each event_order filter event_id = {{event.id}}, paid = 1, order by date desc }}
         <tr class="rowHighlight" onClick="runAction('showEventItems', ['order.id={{order.id}}'], 'content_{{order.id}}')">
-            <td>{{event_order.date}}</td>
+            <td>{{@datedmy event_order.date}}</td>
             <td>{{event_order.time}}</td>
             <td>{{event_order.name}}</td>
             <td>{{event_order.landline}}</td>

@@ -52,7 +52,7 @@ html, body {background-color: #ffffff; }
 
 {{@action emailContent}}
 	<p>Hello! Your booking made by {{event_order.name}} with email address {{event_order.email}} has been successfully placed<br>
-    Please check your booking details below and contact us on {{seller.landline}} or {{seller.email}} in the event of any problems<br>
+    Please check your booking details below and contact us on {{seller.landline}} {{seller.mobile}} or {{seller.email}} in the event of any problems<br>
 	{{@each event_order_item filter event_order_id = event_order.id}}
 		{{@get event_item filter id = event_item_id}}
 		<b>Item booked: {{event_item.description}}</b><br>
