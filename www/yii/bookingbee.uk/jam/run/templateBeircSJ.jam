@@ -274,6 +274,9 @@ function updated_all() {
 	{{event_order_item.price = event_item.price}}
 
 	{{@new item event_order_item notify=ok}}
+
+	{{event_item.qty_remaining = event_item.qty_remaining - 1}}
+	{{@amend item event_item}}
 {{@end}}
 
 {{@include /jam/sys/html/footer.html}}

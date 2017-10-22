@@ -29,6 +29,8 @@ html, body {background-color: #ffffff; }
 	{{@get event filter id = event_order.event_id}}
 	{{@email {{seller.email}} {{event_order.email}} 'Confirmation of B.E.I.R.C booking for {{event.headline}}' action:emailContent}}
 	{{@email {{seller.email}} k@microboot.com '--- Copy of --- Confirmation of B.E.I.R.C booking for {{event.headline}}' action:emailContent}}
+	{{@email {{seller.email}} fran@microboot.com '--- Copy of --- Confirmation of B.E.I.R.C booking for {{event.headline}}' action:emailContent}}
+	{{@email {{seller.email}} {{seller.email}} '--- Copy of --- Confirmation of B.E.I.R.C booking for {{event.headline}}' action:emailContent}}
 
 {{@end}}
 
