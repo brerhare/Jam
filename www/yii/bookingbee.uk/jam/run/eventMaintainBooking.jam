@@ -18,19 +18,17 @@
 			<th> Date </th>
             <th> Time </th>
             <th> Name </th>
-            <th> Landline </th>
-            <th> Mobile </th>
+            <th> Phone </th>
             <th> Email </th>
             <th> £ Paid </th>
         </tr>
 
 {{@each event_order filter event_id = {{event.id}}, paid = 1, order by date desc, time desc }}
-        <tr class="rowHighlight" onClick="runAction('showEventItems', ['order.id={{order.id}}'], 'content_{{order.id}}')">
+        <tr class="rowHighlight" style="background-color: #c7d1e4" onClick="runAction('showEventItems', ['order.id={{order.id}}'], 'content_{{order.id}}')">
             <td>{{@datedmy event_order.date}}</td>
             <td>{{event_order.time}}</td>
             <td>{{event_order.name}}</td>
-            <td>{{event_order.landline}}</td>
-            <td>{{event_order.mobile}}</td>
+            <td>{{event_order.landline}} <br> {{event_order.mobile}}</td>
             <td>{{event_order.email}}</td>
             <td>{{event_order.total}}</td>
         </tr>

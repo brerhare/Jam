@@ -11,13 +11,15 @@ Doing...<br>
 
 {{@database bookingbee_uk}}
 
-{{event.id = 17}}
+{{eventId = 23}}
 
-{{@get event filter id = event.id}}
+{{@get event filter id = eventId}}
 
+<h1>{{event.headline}}</h1>
 
 {{@remove table temp_export_group_report}} 
 {{@new table temp_export_group_report
+event_id					number
 	event_headline			string
 	class_description		string
 	rider					string
@@ -26,18 +28,21 @@ Doing...<br>
     mobile                  string
 }}      
 
-{{@each event_item filter event_id = {{event.id}}, order by sequence }}
-	{{@each event_order_item filter event_item_id = event_item.id, event_item_id = event_item.id}}
+{{@each event_item filter event_id = eventId, order by sequence}}
+Item {{event_item.description}}<br>
+	{{@each event_order_item filter event_item_id = event_item.id}}
 		{{temp_export_group_report.event_headline = event.headline}}
 		{{temp_export_group_report.class_description = event_item.description}}
 		{{@get event_order filter id = event_order_item.event_order_id}}
 		{{@skip event_order.paid = 0}}
 		{{@get template_beirc filter event_order_id = event_order.id}}
+		{{temp_export_group_report.event_id = event_order.event_id}}
 		{{temp_export_group_report.rider = template_beirc.rider_name}}
 		{{temp_export_group_report.horse = template_beirc.horse_name}}
 		{{temp_export_group_report.landline = event_order.landline}}
 		{{temp_export_group_report.mobile = event_order.mobile}}
 		{{@new item temp_export_group_report}}
+--> Order item {{template_beirc.rider_name}} <br>
 	{{@end}}
 {{@end}}
 
