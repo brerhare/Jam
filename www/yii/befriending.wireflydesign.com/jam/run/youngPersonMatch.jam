@@ -35,48 +35,48 @@
 							<th> Postcode </th>
 							<th> </th>
 						</tr>
-						{{@each match_yp filter young_person_id = young_person.id}}
-							{{@get befriender filter id = match_yp.befriender_id}}
-							{{@get global filter id = befriender.global_id}}
-							{{@Xeach event_attendee filter global_id = global.id, event_id = event.id}}
-								<tr bgcolor='#dadada'>
-									<td> {{global.forename}} {{global.surname}} </td>
-									<td> {{global.mobile}} </td>
-									<td> {{global.email}} </td>
-									<td> {{global.postcode}} </td>
-									<td>
-										<button type='button' id='dateButton' class="uk-button uk-button-primary uk-button-small" onClick="dateMatch('{{match_yp.id}}', '{{global.id}}')">Dates</button>
-										<button type='button' id='removeButton' class="uk-button uk-button-danger uk-button-small" onClick="deleteMatch('{{befriender.id}}', '{{young_person.id}}')">Remove</button>
-									</td>
-								</tr>
-							{{@Xend}}
-						{{@end}}
+	{{@each match_yp filter young_person_id = young_person.id, match_end = 0000-00-00}}
+		{{@get befriender filter id = match_yp.befriender_id}}
+		{{@get global filter id = befriender.global_id}}
+						<tr bgcolor='#dadada'>
+							<td> {{global.forename}} {{global.surname}} </td>
+							<td> {{global.mobile}} </td>
+							<td> {{global.email}} </td>
+							<td> {{global.postcode}} </td>
+							<td>
+								<button type='button' id='dateButton' class="uk-button uk-button-primary uk-button-small" onClick="dateMatch('{{match_yp.id}}', '{{global.id}}')">Dates</button>
+								<button type='button' id='removeButton' class="uk-button uk-button-danger uk-button-small" onClick="deleteMatch('{{befriender.id}}', '{{young_person.id}}')">Remove</button>
+							</td>
+						</tr>
+	{{@end}}
 
 						<tr bgcolor='#e9e9e9'> <th colspan=6>Previous Matches</th> </tr>
-						{{@each match_history filter young_person_id = young_person.id}}
-							{{@get befriender filter id = match_history.befriender_id}}
-							{{@get global filter id = befriender.global_id}}
-								<tr bgcolor='#e9e9e9'>
-									<td> {{global.forename}} {{global.surname}} </td>
-									<td> {{global.mobile}} </td>
-									<td> {{global.email}} </td>
-									<td> {{global.postcode}} </td>
-									<td>
-									</td>
-								</tr>
-						{{@end}}
+	{{@each match_yp filter young_person_id = young_person.id, match_end != 0000-00-00}}
+		{{@get befriender filter id = match_yp.befriender_id}}
+		{{@get global filter id = befriender.global_id}}
+						<tr bgcolor='#e9e9e9'>
+							<td> {{global.forename}} {{global.surname}} </td>
+							<td> {{global.mobile}} </td>
+							<td> {{global.email}} </td>
+							<td> {{global.postcode}} </td>
+							<td>
+								<button type='button' id='dateButton' class="uk-button uk-button-primary uk-button-small" onClick="dateMatch('{{match_yp.id}}', '{{global.id}}')">Dates</button>
+								<button type='button' id='removeButton' class="uk-button uk-button-danger uk-button-small" onClick="deleteMatch('{{befriender.id}}', '{{young_person.id}}')">Remove</button>
+							</td>
+						</tr>
+	{{@end}}
 
-								<tr> <td colspan=6> <h3></h3><h3>All Possible Befrienders</h3> </td> </tr>
-						{{@each befriender}}
-							{{@get global filter id = befriender.global_id}}
-								<tr>
-									<td> {{global.forename}} {{global.surname}} </td>
-									<td> {{global.mobile}} </td>
-									<td> {{global.email}} </td>
-									<td> {{global.postcode}} </td>
-									<td> <button type='button' id='addButton' class="uk-button uk-button-success uk-button-small" onClick="addMatch('{{befriender.id}}', '{{young_person.id}}')">Add</button> </td>
-								</tr>
-						{{@end}}
+						<tr> <td colspan=6> <h3></h3><h3>All Possible Befrienders</h3> </td> </tr>
+	{{@each befriender filter archive_flag = 0}}
+		{{@get global filter id = befriender.global_id}}
+						<tr>
+							<td> {{global.forename}} {{global.surname}} </td>
+							<td> {{global.mobile}} </td>
+							<td> {{global.email}} </td>
+							<td> {{global.postcode}} </td>
+							<td> <button type='button' id='addButton' class="uk-button uk-button-success uk-button-small" onClick="addMatch('{{befriender.id}}', '{{young_person.id}}')">Add</button> </td>
+						</tr>
+	{{@end}}
 					</table>
 				</div>
 
@@ -148,19 +148,21 @@ function afterMatchDates() {
 	{{@update item match_yp}}
 {{@end}}
 
-{{@action update_event}}
-	{{@update item event}}
-{{@end}}
-
 {{@action addMatch}}
-	{{@get match_yp filter young_person_id = yp_id}}
-	{{match_history.match_date = match_yp.match_date}}
-	{{match_history.match_started = match_yp.match_started}}
-	{{match_history.match_end = sys.today}}
-	{{match_history.young_person_id = match_yp.young_person_id}}
-	{{match_history.befriender_id = match_yp.befriender_id}}
-	{{@new item match_history}}
-	{{@sql delete from match_yp where young_person_id = {{yp_id}} }}
+	{{@each match_yp filter young_person_id = yp_id, match_end = 0000-00-00}}
+		{{match_history.match_date = match_yp.match_date}}
+		{{match_history.match_started = match_yp.match_started}}
+		{{match_history.match_end = sys.today}}
+		{{match_history.young_person_id = match_yp.young_person_id}}
+		{{match_history.befriender_id = match_yp.befriender_id}}
+		{{@new item match_history}}
+
+		{{match_yp.match_end = sys.today}}
+		{{@update item match_yp notify=ok}}
+	{{@end}}
+
+	{{@XXXXXsql delete from match_yp where young_person_id = {{yp_id}} }}
+
 	{{match_yp.young_person_id = {{yp_id}} }}
 	{{match_yp.befriender_id = {{bf_id}} }}
 	{{match_yp.match_started = {{sys.today}} }}
@@ -169,7 +171,7 @@ function afterMatchDates() {
 {{@end}}
 
 {{@action deleteMatch}}
-	{{@sql delete from match_yp where young_person_id = {{yp_id}} }}
+	{{@sql delete from match_yp where young_person_id = {{yp_id}} and befriender_id = {{bf_id}} }}
 {{@end}}
 
 {{@include /jam/sys/html/footer.html}}

@@ -15,7 +15,8 @@ function runUrl(url, newTab) {
 /*
  * @param jamName		either empty (rerun this jam), just a 'something[.jam]' or a '/url/to/something[.jam]'
  */
-function runJam(jamName) {
+function runJam(jamName, newTab) {
+	if (typeof newTab === 'undefined') { newTab = 0; }
 	var newLocation = jamName;				// Default is to assume a full url, ie use as supplied
 	if (typeof jamName === 'undefined')
 		newLocation = location.href;		// If empty grab the current url
@@ -23,7 +24,10 @@ function runJam(jamName) {
 		// If just a 'something[.jam]' build a url using the full url base, the path to the current jamfile, and the new jamfile name
 		newLocation = location.href.substring(0, location.href.lastIndexOf("/") + 1) + jamName;
 	}
-	window.location.href = newLocation;
+	if (newTab == 1)
+		window.open(newLocation, '_blank');
+	else
+		window.location.href = newLocation;
 }
 
 /*
@@ -510,6 +514,32 @@ function jsonEscapeChars(str) {
 	return str.replace(/\\n/g, "\\n").replace(/\\"/g, '\\"').replace(/\\r/g, "\\r").replace(/\\t/g, "\\t").replace(/\\b/g, "\\b").replace(/\\f/g, "\\f").replace(/\\/g, "\\\\");
 }
 
+// --------------------------------------------------------+-----------------------------------------------------
+// Cookies
+
+function setCookie(cname, cvalue, exdays) {
+	if (typeof exdays === 'undefined') { exdays = 30; }
+	var d = new Date();
+	d.setTime(d.getTime() + (exdays*24*60*60*1000));
+	var expires = "expires="+ d.toUTCString();
+	document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+	var name = cname + "=";
+	var decodedCookie = decodeURIComponent(document.cookie);
+	var ca = decodedCookie.split(';');
+	for(var i = 0; i <ca.length; i++) {
+		var c = ca[i];
+		while (c.charAt(0) == ' ') {
+			c = c.substring(1);
+		}
+		if (c.indexOf(name) == 0) {
+			return c.substring(name.length, c.length);
+		}
+	}
+	return "";
+}
 
 // --------------------------------------------------------+-----------------------------------------------------
 // Printing

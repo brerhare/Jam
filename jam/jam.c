@@ -49,7 +49,10 @@ char *readJam(char *fname){
 		die("");
 	}
 //	emitStd("\n[%d][%d]\n-->%s<--\n", jamLen, length, buf);
-	return buf;
+	// Strip off DOS eol markers ^M
+	char *strippedBuf = strReplaceAlloc(buf, "\r", " ");
+	free(buf);
+	return strippedBuf;
 }
 
 char *curlies2JamArray(char *jamPos) {
@@ -134,7 +137,7 @@ char *curlies2JamArray(char *jamPos) {
 	jam[jamIx]->trailer = strdup(trailer);
 
 	// Push the table onto the stack at every start of loop
-	if ( (strcasestr(jam[jamIx]->command, "@each")) || (!strcmp(jam[jamIx]->command, "@action")) ) {
+	if ( (strcasestr(jam[jamIx]->command, "@each")) || (strcasestr(jam[jamIx]->command, "@eachsql")) || (!strcmp(jam[jamIx]->command, "@action")) ) {
 		for (int i = 0; i < MAX_JAM; i++) {
 			if (tableStack[i] == NULL) {
 				tableStack[i] = getWordAlloc(jam[jamIx]->args, 1, space);

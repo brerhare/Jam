@@ -293,12 +293,14 @@ $lng = $coords->results[0]->geometry->location->lng;
 						$content .= "<div style='float:right;padding-left:10px'><a href=javascript:printDiv('" . $eventId . "')><img style='margin-top:0px; margin-left:0px' title='Print' src='img/print.jpg'></a></div>";
 	
 						// Ticketing info (if applicable)
+/***** remove booking
 						if (($event->ticket_event_id != 0) && ($member))
 						{
 							$ticketUrl = "https://plugin.wireflydesign.com/ticket/index.php/ticket/book/" . $event->ticket_event_id . "?sid=" . $member->sid . "&ref=event";
 							$content .= "<div style='float:right'><a target='_blank' href='" . $ticketUrl . "'><img style='margin-top:0px; margin-left:0px' title='Book' src='img/book-s.jpg'></a></div><br/>";
 							$content .= "<div style='clear:both'></div>";
 						}
+*****/
 						$content .= "<br><br>";
 					}
 					else 
@@ -378,12 +380,14 @@ $lng = $coords->results[0]->geometry->location->lng;
 					$content .= "<div style='float:right;padding-left:10px'><a href=javascript:printDiv('" . $eventId . "')><img style='margin-top:0px; margin-left:0px' title='Print' src='img/print.jpg'></a></div>";
 	
 					// Ticketing info (if applicable)
+/*****
 					if (($event->ticket_event_id != 0) && ($member))
 					{
 						$ticketUrl = "https://plugin.wireflydesign.com/ticket/index.php/ticket/book/" . $event->ticket_event_id . "?sid=" . $member->sid . "&ref=event";
 						$content .= "<div style='float:right'><a target='_blank' href='" . $ticketUrl . "'><img style='margin-top:0px; margin-left:0px' title='Book' src='img/book-s.jpg'></a></div><br/>";
 						$content .= "<div style='clear:both'></div>";
 					}
+*****/
 					$content .= "<br><br>";
 				}
 			}

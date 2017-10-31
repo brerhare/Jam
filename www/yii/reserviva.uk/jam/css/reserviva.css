@@ -1,0 +1,23 @@
+<style>
+
+label {text-align: right;}
+
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	width: 100%;
+}
+html {
+	background: #2c333b;
+}
+
+
+.uk-container { border-radius: 10px; padding:50px; background-color: #dee6f1; }
+
+.rowHighlight:hover {
+	background-color: #ddf0ff;
+	cursor:pointer;
+}
+
+</style>

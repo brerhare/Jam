@@ -74,7 +74,7 @@
 {@each stock_customer_transaction filter stock_user_id = stock_user.id}
 {@each stock_customer_transaction filter date < mem.duedate, type = 'inv', balance > 0, order by date}
 {@each stock_product_has_location filter stock_location_id = filter.location, onhand < min_level}
-{@each ticket_temp_delegate_report filter name like '%{{keyaction}}%', order by name}
+{@each ticket_temp_delegate_report filter name litke '%{{keyaction}}%', order by name}
 {@eachsql stock_customer select * from stock_customer}		// 1st arg is table prefix (or var prefix) to prepend to table fields, followed by a literal sql command}
 {@eachsql stock_customer somequery}
 
@@ -208,6 +208,9 @@ sys.sequence		// The unique sequence number for each iteration of an @each @end 
 sys.today			// Date
 sys.now 			// Time
 sys.cookie.xxxxx 	// Cookies ('bf_user' etc)
+sys.hash			// 26 character random string   <------ still todo
+sys.randomnumber	// 8 digit rand
+
 
 
 <hr>
@@ -225,10 +228,16 @@ sys.cookie.xxxxx 	// Cookies ('bf_user' etc)
 {@include standalone /path/file}	// only include if this file itself is not included
 
 {@daycount fromdate todate}			// eg 14
-{@adddays fromdate days}			// eg 2016-12-20
+{@adddays fromdate days [mydate]}			// eg 2016-12-20 20 [var-to-create]
+{@datedmy date [myvar]}	convert yyyy-mm-dd to dd-mm-yyyy format, and either store in myvar or simply emit
+{@dateoverlap start1=date end1=date start2=date end2=date newfield=myvar}	// is there any overlap between the ranges? 0 or 1 stored in newfield
 
 {@replacevalue field=befriender.gender value=0:male,1:female}
 {@wordsplit field=global.postcode segment=1 newfield=myNewField}	// IF newfield is specified it will be created/updated otherwise simply emitted
+
+{@randomnumber [newfield=myvar]	// emit or store a random number in newfield
+{@stop}		gracefully stop processing jamfile at this point
+{@skip [condition]}		// where condition is something like myVar=1, myVar != 1
 
 <hr>
 
@@ -283,4 +292,3 @@ Running from commandline
 @actions. All variables created as the result of actions are sent as oob to the browser.
 
 We should maybe have a setting whereby an ajax call can send all the browser vars to the server on an @action call. This is like having 'state'
-

@@ -36,7 +36,7 @@
 	{{@get befriender_documentation_type filter id = befriender_documentation.befriender_documentation_type_id}}
 		<tr class="rowHighlight" onClick="runAction('befrienderDocumentationEdit?befriender_documentation.id={{befriender_documentation.id}}&befriender.id={{befriender.id}}', [], 'befriender_documentation_form')">
 			<td>{{befriender_documentation_type.name}}</td>
-			<td>{{befriender_documentation.expiry_date}}</td>
+			<td>{{@datedmy befriender_documentation.expiry_date}}</td>
 			<td>{{befriender_documentation.reference}}</td>
 			<td> <a href="http://befriending.wireflydesign.com:/jam/uploads/forms/befriender/documentation/{{befriender.id}}_{{befriender_documentation.file}}" target="_blank">{{befriender_documentation.file}}</a> </td>
 			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_befrienderDocumentation('{{befriender_documentation.id}}','{{befriender_documentation_type.name}}')"> <i class="uk-icon-trash"></i></button> </td>

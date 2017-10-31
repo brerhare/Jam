@@ -40,11 +40,11 @@
 
 		<tr class="rowHighlight" onClick="runAction('showTabs', ['befriender.id={{befriender.id}}'], 'content')">
 		<tr class="rowHighlight" onClick="runJam('eventMaintain?event.id={{event.id}}');">
-			<td>{{event.date}}</td>
+			<td>{{@datedmy event.date}}</td>
 			<td>{{event.time}}</td>
 			<td>{{event_type.name}}</td>
 			<td>{{yp_forename}} {{yp_surname}}</td>
-			<td>{{bf_forename}} {{yp_surname}}</td>
+			<td>{{bf_forename}} {{bf_surname}}</td>
 			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{event_type.name}}')"> <i class="uk-icon-trash"></i> </button> </td>
 		</tr>
 {{@end}}
@@ -71,6 +71,9 @@ function confirmDelete(id, displayInfo) {
 </script>
 
 {{@action delete}}
+	{{@each event_attendee filter event_id = event.id}}
+		{{@remove item event_attendee}}
+	{{@end}}
     {{@get event filter id = event.id}}
 	{{@remove item event notify=ok}}
 {{@end}}

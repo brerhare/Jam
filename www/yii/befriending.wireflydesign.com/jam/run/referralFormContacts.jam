@@ -16,10 +16,16 @@
 </style>
 
 <br>
+
+<table id="printTable" class="testgrid sortable searchTable uk-table uk-table-condensed" style="border:0px solid #dddddd">
+<tr><td>
+
+
 <div name="content_contact">
 	{{@get young_person filter id = ypId}}
 	{{@get global filter id = young_person.global_id}}
-	<center> <h3> Please add all other additional contacts for {{global.forename}} {{global.surname}} you are aware of</h3> </center>
+	<center> <h3> Please add all other additional contacts that you are aware of</h3> </center>
+	<center> <h4 style='color:#ff0000'> Remember to add their parent/carer, named person and GP</h4> </center>
 	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
 			<th> Forename </th>
@@ -46,6 +52,11 @@
         {{@html gridrow end}}
 
 </div>
+
+
+</td></tr></table>
+<center> <button class="uk-button uk-button-medium uk-button-primary" onClick="printData('printTable')"> Print </button> </center>
+
 
 
 
@@ -136,14 +147,19 @@ function postUpdate() {
 function backToPrev() {
     objReferrer = get('refId');
     objYP = get('ypId');
+	objLinkNumber = get('linkNumber');
 //alert('r='+objReferrer.value+' and yp='+objYP.value);
-    runJam('referralFormAdditional?refId='+objReferrer.value+'&ypId='+objYP.value);
+    //X runJam('referralFormAdditional?refId='+objReferrer.value+'&ypId='+objYP.value);
+    runJam('referralFormLegal?refId='+objReferrer.value+'&ypId='+objYP.value+'&linkNumber='+objLinkNumber.value);
 }
 function toConfirmScreen() {
     objReferrer = get('refId');
     objYP = get('ypId');
-    runJam('referralFormFinish?refId='+objReferrer.value+'&ypId='+objYP.value);
+	objLinkNumber = get('linkNumber');
+    runJam('referralFormFinish?refId='+objReferrer.value+'&ypId='+objYP.value+'&linkNumber='+objLinkNumber.value);
 }
 </script>
+
+{{@include /jam/sys/js/searchPrintExport.js}}
 
 {{@include /jam/sys/html/footer.html}}

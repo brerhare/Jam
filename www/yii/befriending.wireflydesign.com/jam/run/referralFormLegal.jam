@@ -1,0 +1,109 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:700px; Xpadding:0}}
+
+    {{@get young_person filter id = ypId}}
+    {{@get global filter id = young_person.global_id}}
+
+<br>
+<div name="content_contact">
+
+<br>
+<center> <h3> Legal Status </h3> </center>
+
+	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
+		<tr>
+			<th> Legal Status </th>
+			<th> Check </th>
+			<th> Date </th>
+		</tr>
+{{grp = 1}}
+{{@each legalstatus}}
+			<td>{{legalstatus.name}}</td>
+			{{tmp.checked = }}
+			{{tmp.date = }}
+	{{@each legalstatus_yp filter legal_status_id = legalstatus.id, young_person_id = young_person.id}}
+			{{tmp.checked = checked}}
+			{{tmp.date = legalstatus_yp.date}}
+	{{@end}}
+			<td> <input type="checkbox" name="legalstatus" value="{{legalstatus.id}}" {{tmp.checked}}> </td>
+			<td> <form class='uk-form'> <input type="date"     id="legalstatus_date_{{legalstatus.id}}" value="{{tmp.date}}" id='group_{{grp}}' class='uk-form-width-medium'> </form> </td>
+		</tr>
+	{{grp = grp + 1}}
+{{@end}}
+	</table>
+</div>
+<center>
+
+        {{@html gridrow start}}
+            {{@html gridcol start width=1-1}}
+                <br>
+                <center>
+                    <button type='button' class="uk-button uk-button-primary" onClick="backToPrev()"> Prev </button>
+                    <button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="updateAndNext()"> Next </button>
+                </center>
+            {{@html gridcol end}}
+        {{@html gridrow end}}
+
+<hr>
+
+<center> <button class="uk-button uk-button-medium uk-button-primary" onClick="printData('printTable')"> Print </button> </center>
+
+</center>
+
+{{@html container end}}
+
+<script>
+window.onload = function() {
+}
+
+{{@action deleteAllLegalstatus}}
+	{{@sql delete from legalstatus_yp where young_person_id = {{young_person.id}} }}
+{{@end}}
+
+{{@action addLegalstatus}}
+	{{legalstatus_yp.young_person_id = young_person.id}}
+	{{legalstatus_yp.legal_status_id = legalstatus.id}}
+	{{legalstatus_yp.date = legalstatus.date}}
+	{{@new item legalstatus_yp notify=ok}}
+{{@end}}
+
+function backToPrev() {
+    objReferrer = get('refId');
+    objYP = get('ypId');
+	objLinkNumber = get('linkNumber');
+    runJam('referralFormAdditional?refId='+objReferrer.value+'&ypId='+objYP.value+'&linkNumber='+objLinkNumber.value);
+}
+
+function updateAndNext() {
+    objYP = get('ypId');
+	runAction('deleteAllLegalstatus',['young_person.id='+objYP.value], '', addAll);
+}
+
+function addAll() {
+    objYP = get('ypId');
+    var checkboxes = document.getElementsByName('legalstatus');
+    for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+			var obj =  document.getElementById('legalstatus_date_'+(i+1)); 
+//alert('young_person.id='+objYP.value + ' : ' + 'legalstatus.id='+checkboxes[i].value + ' : ' + 'legalstatus.date='+obj.value);
+            runAction('addLegalstatus', ['young_person.id='+objYP.value, 'legalstatus.id='+checkboxes[i].value, 'legalstatus.date='+obj.value]);
+        }
+    }
+	window.setTimeout(forwardToNext,1000);
+}
+
+function forwardToNext() {
+    objReferrer = get('refId');
+    objYP = get('ypId');
+	objLinkNumber = get('linkNumber');
+	runJam('referralFormContacts?refId='+objReferrer.value+'&ypId='+objYP.value+'&linkNumber='+objLinkNumber.value);
+}
+
+</script>
+
+{{@include /jam/sys/html/footer.html}}

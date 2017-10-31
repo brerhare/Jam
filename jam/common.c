@@ -8,6 +8,7 @@
 #include <fstream>
 #include <vector>
 #include <cstdlib>
+#include <dirent.h>
 
 #include </usr/include/mysql/mysql.h>
 
@@ -17,28 +18,25 @@
 
 CURL *curl = NULL;
 
-#define MAX_EMITHEADER_LEN 409600
 char *emitHeaderBuffer = (char *) calloc(1, MAX_EMITHEADER_LEN);
 char *emitHeaderPos = emitHeaderBuffer;
 int emitHeaderRemaining = MAX_EMITHEADER_LEN;
 
-#define MAX_EMITDATA_LEN 40960000
 char *emitStdBuffer = (char *) calloc(1, MAX_EMITDATA_LEN);
 char *emitStdPos = emitStdBuffer;
 int emitStdRemaining = MAX_EMITDATA_LEN;
 
-#define MAX_EMITJS_LEN 40960000
 char *emitJsBuffer = (char *) calloc(1, MAX_EMITJS_LEN);
 char *emitJsPos = emitJsBuffer;
 int emitJsRemaining = MAX_EMITJS_LEN;
 
-// Scratch is used as a temp buffer for email body
-#define MAX_EMITSCRATCH_LEN 40960000
 char *emitScratchBuffer = (char *) calloc(1, MAX_EMITSCRATCH_LEN);
 char *emitScratchPos = emitScratchBuffer;
 int emitScratchRemaining = MAX_EMITSCRATCH_LEN;
 
 FILE *emitStream = stdout;
+
+char *dumpStreamPath = NULL;
 
 int outputStream = 0;			// copy of the JAMBUILDER stream (eg for emitStd)
 
@@ -137,7 +135,7 @@ VAR *findVarLenient(char *name, char *prefix) {
 	variable = findVarStrict(name);
 	if ((!variable) && (prefix)) {
 		// If not found, it might be a non-qualified variable. Stick the current table name (if any) in front of it and try again
-		char *tmp = (char *) calloc(1, 4096);
+		char *tmp = (char *) calloc(1, 64096);
 		sprintf(tmp, "%s.%s", prefix, name);
 			variable = findVarStrict(tmp);
 		free(tmp);
@@ -249,13 +247,13 @@ void clearVarValues(VAR *varStruct) {
 // NEEDS FREEING
 char *expandVarsInString(char *str, char *tableName) {
 	char *p = str;
-	char *newStr = (char *) calloc(1, 4096);
+	char *newStr = (char *) calloc(1, 64096);
 	char *p2 = newStr;
     char *nonWordChars = " +-*/^%()";
 
 	while (*p) {
 		if (!strchr(nonWordChars, *p)) {	// found a word
-			char *wd = (char *) calloc(1, 4096);
+			char *wd = (char *) calloc(1, 64096);
 			char *p3 = wd;
 			while ((*p) && (!strchr(nonWordChars, *p)))	// isolate the word
 				*p3++ = *p++;
@@ -298,7 +296,7 @@ void die(const char *errorString) {
 }
 
 void jamDump(int which) {
-	char *tmp = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 64096);
 	emitStd("<br><br><div style='font-size:11px;color:#ffffff;background-color:#1b2426'>");
 	if ((which == 2) || (which == 3)) {
 		for (int i = 0; i < MAX_JAM; i++) {
@@ -386,9 +384,19 @@ int emitStd(char *str, ...) {
 		va_end(ap);
 		return(0);
 	}
+	if (outputStream == STREAMOUTPUT_SCRATCH) {	//@@TODO This whole stream handling is messy for jamBuilder...
+		logMsg(LOGDEBUG, "jamBuilder 'STREAMOUTPUT_SCRATCH' is on so emitStd is redirected to emitScratch");
+		unsigned long len = vsnprintf(emitScratchPos, emitScratchRemaining, str, ap);
+		emitScratchPos += len;
+		*emitScratchPos = '\0';
+		emitScratchRemaining -= len;
+		va_end(ap);
+		return(0);
+	}
 
 // @@BUG Overflow needs checked. See http://stackoverflow.com/questions/7215921/possible-buffer-overflow-vulnerability-for-va-list-in-c and http://linux.die.net/man/3/vsnprintf for ideas
-	unsigned long len = vsnprintf(emitStdPos, emitStdRemaining, str, ap);
+	logMsg(LOGDEBUG, "emitStd emitStdPos=%d, emitStdRemaining=%d, strlen=%d, str=[%s]", emitStdPos, emitStdRemaining, strlen(str), str);
+	unsigned long len = vsnprintf(emitStdPos, emitStdRemaining, str, ap);	// crash right here...
 	emitStdPos += len;
 	*emitStdPos = '\0';
 	emitStdRemaining -= len;
@@ -422,8 +430,10 @@ int endStd(int urlEncodeRequired) {
 		encodedData = urlEncode(emitStdBuffer);
 		p = encodedData;
 	}
-	while (*p)
-		putchar(*p++);
+	char *pOut = p;
+	while (*pOut)
+		putchar(*pOut++);
+	dumpStream(p);
 	if (encodedData)
 		free(encodedData);
 logMsg(LOGMICRO, "ENDDATA=[%s]", emitStdBuffer);
@@ -453,9 +463,64 @@ int endJs(int urlEncodeRequired) {
 	}
 }
 
+int dumpStream(char *str) {
+//return(0);
+	static int init = 1;
+	FILE *fpStream = NULL;
+	char *streamName = NULL;
+	logMsg(LOGDEBUG, "checking whether to dumpstream()");
+	if (!dumpStreamPath)
+		return(0);
+	if (!(*str))
+		return(0);
+	logMsg(LOGDEBUG, "dumpstream() to dump");
+	streamName = (char *) calloc(1, 64096);
+
+char *strReplaceAlloc(char *orig, char *rep, char *with);
+
+	char *stripJam = strReplaceAlloc(basename(globalJamName), ".jam", "");
+	sprintf(streamName, "%s/%s.html", dumpStreamPath, stripJam);
+	logMsg(LOGDEBUG, "dumpstream() streamName is '%s'", streamName);
+	free(stripJam);
+	DIR *dir = opendir(dumpStreamPath);
+	if (!dir) {		// only do this if someone has created a dir for it
+		free(streamName);
+		logMsg(LOGDEBUG, "no dir found for use by dumpstream()");
+		return(0);
+	}
+	if (init) {
+		remove(streamName);
+		init = 0;
+	}
+	
+	if ((fpStream = fopen(streamName, "a")) == NULL) {
+		free(streamName);
+		logMsg(LOGDEBUG, "dumpstream() cant open a new file in dir");
+		return(0);
+	}
+	int bytes = fwrite(str, strlen(str), 1, fpStream);
+	if (bytes)
+		logMsg(LOGDEBUG, "dumpstream() wrote to %s", streamName);
+	else
+		logMsg(LOGERROR, "dumpstream() failed to write to %s", streamName);
+	fclose(fpStream);
+	free(streamName);
+	logMsg(LOGDEBUG, "dumpstream() normal exit");
+}
+
 char *urlEncode(char *str) {		// needs freeing
+
+	// Replace %
+	char find = '%';
+	char replace = ' ';
+	char *current_pos = strchr(str, find);
+	while (current_pos) {
+		*current_pos = replace;
+		current_pos = strchr(current_pos,find);
+	}
 char *p = strdup(str);
 return p;
+
 	char *encodedData = NULL;
 	curl = curl_easy_init();
 	if (!curl)
@@ -467,6 +532,9 @@ return p;
 		encodedData = strdup(str);
 	}
 	curl_easy_cleanup(curl);
+
+
+
 	return (encodedData);
 }
 
@@ -507,15 +575,15 @@ char *calculate(char *str) {
 
 	int scale = 2;
 	FILE *fp;
-	char *result = (char *) calloc(1, 4096);
+	char *result = (char *) calloc(1, 64096);
 	strcpy(result, "0");
-	char *commandStr = (char *) calloc(1, 4096);
+	char *commandStr = (char *) calloc(1, 64096);
 	sprintf(commandStr, "echo 'scale=%d; %s' | bc", scale, str);
 	fp = popen(commandStr, "r");
 	if (fp == NULL) {
 		emitStd("calculator failed (1)\n");
 	} else {
-		if (fgets(result, 4096, fp) != NULL) {
+		if (fgets(result, 64096, fp) != NULL) {
 			char *p = strchr(result, '\n');
 			if (*p)
 				*p = '\0';
@@ -539,7 +607,7 @@ int oobJamData() {
 //		return(-1);
 //	}
 	int first = 1;
-	char *tmp = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(1, 64096);
 	logMsg(LOGDEBUG, "Emitting oob jamData");
 	emitStd("{oobData}");
 	emitStd("[");

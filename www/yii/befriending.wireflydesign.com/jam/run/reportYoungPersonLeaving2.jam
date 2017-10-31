@@ -10,6 +10,7 @@
 
 <div name="content">
 	<center><h3> Young Person Leaving Report </h3></center>
+	<center><h5> {{@datedmy from}} to {{@datedmy to}} </h5></center>
 
 	<form class="uk-form">
 		<input type="text" id="searchInput" placeholder="Type to search">
@@ -18,14 +19,18 @@
 	<table id='printTable' class="searchTable testgrid sortable uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr style='font-weight:bold'>
 			<th> Young Person Name </th>
+			<th> Date Leaving </th>
+			<th> Reason </th>
 			<th> File Destruction Date </th>
 		</tr>
-{{@each young_person filter archive_flag > 0, archive_date >= from, archive_date <= to}}
+{{@each young_person filter archive_flag > 0, archive_flag < 3, archive_date >= from, archive_date <= to}}
 		<tr class="rowHighlight">
 	{{@count id}}
 	{{@get global filter id = young_person.global_id}}
 			<td>{{global.forename}} {{global.surname}}</td>
-			<td>{{young_person.archive_destruction_date}}</td>
+			<td>{{@datedmy young_person.archive_date}}</td>
+			<td>{{young_person.termination_reason}}</td>
+			<td>{{@datedmy young_person.archive_destruction_date}}</td>
 {{@end}}
 	</table>
   <b> Total Young Persons : <span id="searchTotal">{{count.id}}</span> </b>

@@ -1,0 +1,22 @@
+{{@include /jam/sys/html/header.html}}
+
+Doing...
+
+{{@database bookingbee_uk}}
+
+{{@remove table event_order_item}}
+
+{{@new table event_order_item
+	sid						string		required
+	seller_id				number	required
+	event_id				number	required
+	event_item_id			number	required
+	event_order_id			number	required
+
+	qty						number
+    price                   number.2
+}}
+
+Done
+
+{{@include /jam/sys/html/footer.html}}

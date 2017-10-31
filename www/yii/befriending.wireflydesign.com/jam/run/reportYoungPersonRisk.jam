@@ -27,6 +27,13 @@
 {{@each young_person filter archive_flag = 0}}
 	{{@count id}}
 	{{@get global filter id = young_person.global_id}}
+
+	{{@sum young_person.exclusion_risk}}
+	{{@sum young_person.offending_risk}}
+	{{@sum young_person.care_risk}}
+	{{@sum young_person.child_plan}}
+	{{@sum young_person.assessment}}
+
 		<tr class="rowHighlight">
 			<td>{{global.forename}} {{global.surname}}</td>
 			<td>{{@replacevalue field=young_person.exclusion_risk values=0:,1:yes}}</td>
@@ -36,6 +43,14 @@
 			<td>{{@replacevalue field=young_person.assessment values=0:,1:yes}}</td>
 		</tr>
 {{@end}}
+		<tr>
+			<td>Totals</td>
+			<td> {{sum.young_person.exclusion_risk}}</td>
+			<td> {{sum.young_person.offending_risk}}</td>
+			<td> {{sum.young_person.care_risk}}</td>
+			<td> {{sum.young_person.child_plan}}</td>
+			<td> {{sum.young_person.assessment}}</td>
+		</tr>
 	</table>
   <b> Total Young Persons : <span id="searchTotal">{{count.id}}</span> </b>
 </div>

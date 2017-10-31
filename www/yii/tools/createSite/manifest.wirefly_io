@@ -1,0 +1,19 @@
+domain = wirefly.io
+parentdomain =
+sitetitle = Wirefly home
+sid = 45jdgp2dwfvoptf4s98akpvn2a
+
+# Database
+dbname = wirefly_io
+dbuser = wirefly.io
+dbpass = Xik3nac0-
+
+# Shopping cart order confirmation email
+checkoutemail = info@wirefly.io
+checkoutname = Wirefly checkout
+checkoutpaypalemail = info@wirefly.io
+
+# Backend page editor
+editorpagewidth = 700
+editorpageheight = 400
+

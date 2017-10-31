@@ -1,0 +1,59 @@
+{{@XXXinclude /jam/sys/html/header.html}}
+
+{{@XXXinclude /jam/css/site.css}}
+
+{{@get event filter id = event.id}}
+
+<style>	/* For this embedded content within a tab */
+.embed-uk-container { border-radius: 3px; padding:0px; background-color: #dee6f1; }
+.ui-tabs .ui-tabs-panel { padding:0px; padding-top: 3px; }
+.ui-tabs-nav {background-color: #c7d1e4; }
+</style>
+
+{{@XXXhtml container start center css='max-width:900px; Xpadding:0}}
+
+<div class="uk-container embed-uk-container uk-overflow-container uk-container-center " style="max-width:900px; Xpadding:0">
+
+    <table id="printTable" class="testgrid Xsortable searchTable uk-table uk-table-condensed" style="border:1px solid #dddddd">
+        <tr>
+            <th> Rider </th>
+            <th> Horse </th>
+            <th> Landline </th>
+            <th> Mobile </th>
+        </tr>
+
+{{@each event_item filter event_id = {{event.id}}, order by sequence }}
+
+	<tr>
+		<td colwidth=4 style='color:red;font-weight:bold'> {{event_item.description}} </td>
+	</tr>
+
+	{{@each event_order_item filter event_item_id = event_item.id, event_item_id = event_item.id}}
+		{{@get event_order filter id = event_order_item.event_order_id}}
+		{{@skip event_order.paid = 0}}
+		{{@get template_beirc filter event_order_id = event_order.id}}
+
+        <tr>
+            <td>{{template_beirc.rider_name}}</td>
+            <td>{{template_beirc.horse_name}}</td>
+            <td>{{event_order.landline}}</td>
+            <td>{{event_order.mobile}}</td>
+        </tr>
+
+	{{@end}}
+
+{{@end}}
+
+    </table>
+    <br>
+
+
+
+<script>
+</script>
+
+{{@XXXhtml container end}}
+</div>
+
+
+{{@XXXinclude /jam/sys/html/footer.html}}

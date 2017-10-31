@@ -1,0 +1,117 @@
+{{@include /jam/sys/html/header.html}}
+
+Doing...<br>
+
+{{@database bookingbee_uk}}
+
+{{@remove table menu}}
+{{@remove table user}}
+{{@remove table user_menu}}
+
+{{@new table menu
+	text								string	required
+	href								string	required
+	parent_id							number
+}}
+
+{{@new table user
+	cookie								string	required
+	logged_in							number
+	user_data							string
+	handle								string	required
+	password							string
+	first_name							string
+	last_name							string
+	email_address						string
+}}
+
+{{@new table user_menu
+	user_id								number
+	menu_id								number
+}}
+
+{{menu.text = Events}}    {{menu.href = /run/event.jam}}   {{menu.parent_id = 0}} {{@new item menu}}
+{{menu.text = Your details}}    {{menu.href = /run/seller.jam}}   {{menu.parent_id = 0}} {{@new item menu}}
+{{menu.text = Logout}}  {{menu.href = /run/login.jam}} {{menu.parent_id = 0}}       {{@new item menu}}
+{{menu.text = What?}}  {{menu.href = js:callHint}} {{menu.parent_id = 0}}       {{@new item menu}}
+
+
+{{@action DUMMY_TO_PREVENT_NEXT_MENU_DISPLAYING}}
+
+{{menu.text = Setup}} {{menu.href = /run/seller.jam}}   {{menu.parent_id = 0}}   {{@new item menu}}
+	{{pid = menu.id}}
+	{{menu.text = Your details}}    {{menu.href = /run/seller.jam}}   {{menu.parent_id = pid}} {{@new item menu}}
+	{{menu.text = Events}}    {{menu.href = /run/event.jam}}   {{menu.parent_id = pid}} {{@new item menu}}
+{{menu.text = Logout}}  {{menu.href = /run/login.jam}} {{menu.parent_id = 0}}       {{@new item menu}}
+
+{{@end}}
+
+
+
+make a user <br>
+
+{{@randomnumber newfield=myRand}}
+{{user.cookie = myRand}}
+{{user.logged_in = 0}}
+{{user.user_data = sagvfdjigf39ij2jio42kfa9gv}}
+{{user.handle = kim}}
+{{user.first_name = kim}}
+{{user.last_name = hancock}}
+{{user.password = kimlo,}}
+{{@new item user}}
+
+{{@randomnumber newfield=myRand}}
+{{user.cookie = myRand}}
+{{user.logged_in = 0}}
+{{user.user_data = sagvfdjigf39ij2jio42kfa9gv}}
+{{user.handle = fran}}
+{{user.first_name = fran}}
+{{user.last_name = hancock}}
+{{user.password = scrappy9}}
+{{@new item user}}
+
+{{@randomnumber newfield=myRand}}
+{{user.cookie = myRand}}
+{{user.logged_in = 0}}
+{{user.user_data = sagvfdjigf39ij2jio42kfa9gv}}
+{{user.handle = kelly}}
+{{user.first_name = Kelly}}
+{{user.last_name = Telfer}}
+{{user.password = chance123}}
+{{@new item user}}
+
+{{@randomnumber newfield=myRand}}
+{{user.cookie = myRand}}
+{{user.logged_in = 0}}
+{{user.user_data = hamishes_seller_sid_perhaps}}
+{{user.handle = hg}}
+{{user.first_name = hamish}}
+{{user.last_name = guthrie}}
+{{user.password = }}
+{{@new item user}}
+
+{{@randomnumber newfield=myRand}}
+{{user.cookie = myRand}}
+{{user.logged_in = 0}}
+{{user.user_data = testgvjslgh0djxvn4n6njdhgs}}
+{{user.handle = test}}
+{{user.first_name = test}}
+{{user.last_name = test}}
+{{user.password = test}}
+{{@new item user}}
+
+now loop <br>
+
+{{@each user filter id > 0}}
+	Populating menus for {{user.first_name}} {{user.last_name}} <br>
+	{{@each menu}}
+		{{user_menu.user_id = user.id}}
+		{{user_menu.menu_id = menu.id}}
+		{{@new item user_menu}}
+		&nbsp &nbsp Created {{menu.text}} <br>
+{{@end}}
+
+Done
+
+{{@include /jam/sys/html/footer.html}}
+

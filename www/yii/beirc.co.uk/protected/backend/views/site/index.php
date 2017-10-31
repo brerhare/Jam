@@ -1,4 +1,4 @@
-<?php   
+<?php       
 /* @var $this SiteController */
             
 $this->pageTitle=Yii::app()->name;
@@ -9,5 +9,6 @@ $this->pageTitle=Yii::app()->name;
 <br/>       
             
 <?php if (!Yii::app()->user->isGuest)
-echo '<iframe src="http://beirc.co.uk:beirc,@www.beirc.co.uk/awstats/awstats.pl?framename=mainright" height=5500px width=100%></iframe>';
+echo '<iframe src="http://beirc.co.uk:kimlo,@www.beirc.co.uk/awstats/awstats.pl?framename=mainright" height=5500px width=100%></iframe>';
 ?>
+

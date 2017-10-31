@@ -1,0 +1,29 @@
+{{@include /jam/sys/html/header.html}}
+
+Doing...
+
+{{@database plugin}}
+
+{{@remove table blog_article_archive}}
+
+{{@new table blog_article_archive
+	uid						number	required
+	date					date	required
+	title					string	required
+	intro					text
+	content					text
+	thumbnail_path			string
+	blog_category_id		number	required
+}}
+
+{{@new index blog_article_archive uidindex
+    uid
+}}
+
+{{@new index blog_article_archive categoryindex
+    blog_category_id
+}}
+
+Done
+
+{{@include /jam/sys/html/footer.html}}

@@ -19,12 +19,18 @@
 		
 <div name="content_contact">
 <br>
-<center> <h3> Anticipated </h3> </center>
+
+
+<table id="printTable" class="testgrid sortable searchTable uk-table uk-table-condensed" style="border:0px solid #dddddd">
+<tr><td>
+
+
+<center> <h3> Anticipated outcomes </h3> </center>
 
 
 	<table class="testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
 		<tr>
-			<th> Interest </th>
+			<th> Anticipated outcomes </th>
 			<th> Check </th>
 		</tr>
 {{@each interest_type}}
@@ -42,9 +48,15 @@
 </div>
 
     <center>
-        <button type='button' class="uk-button uk-button-primary" onClick="backToPrev()"> Prev </button> </td>
-        <button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="toNextScreen()"> Next </button> </td>
+        <button type='button' class="uk-button uk-button-primary" onClick="backToPrev()"> Prev </button> 
+        <button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="toNextScreen()"> Next </button> 
     </center>
+
+
+
+</td></tr></table>
+<center> <button class="uk-button uk-button-medium uk-button-primary" onClick="printData('printTable')"> Print </button> </center>
+
 
 
 {{@html container end}}
@@ -74,8 +86,9 @@ window.onload = function() {
 function backToPrev() {
     objReferrer = get('refId');
     objYP = get('ypId');
+	objLinkNumber = get('linkNumber');
 //alert('r='+objReferrer.value+' and yp='+objYP.value);
-    runJam('referralFormYoungPerson?refId='+objReferrer.value+'&ypId='+objYP.value);
+    runJam('referralFormYoungPerson?refId='+objReferrer.value+'&ypId='+objYP.value+'&linkNumber='+objLinkNumber.value);
 }
 function toNextScreen() {
 	document.body.style.cursor  = 'wait';
@@ -87,7 +100,8 @@ function goForward() {
     objReferrer = get('refId');
     objYP = get('ypId');
 	document.body.style.cursor  = 'default';
-	runJam('referralFormMedical?refId='+objReferrer.value+'&ypId='+objYP.value);
+	objLinkNumber = get('linkNumber');
+	runJam('referralFormMedical?refId='+objReferrer.value+'&ypId='+objYP.value+'&linkNumber='+objLinkNumber.value);
 }
 
 function addNotes() {
@@ -108,5 +122,8 @@ window.setTimeout(goForward,1000);
 }
 
 </script>
+
+{{@include /jam/sys/js/searchPrintExport.js}}
+
 
 {{@include /jam/sys/html/footer.html}}

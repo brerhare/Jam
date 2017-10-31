@@ -140,6 +140,12 @@ function postUpdate() {
 {{@end}}
 
 {{@action email_contact}}
+	{{@randomnumber newfield=myRand}}
+    {{referral_form_link.link_number = myRand}}
+    {{referral_form_link.date = sys.today}}
+    {{referral_form_link.used = 0}}
+    {{@new item referral_form_link}}
+
 	{{@get contact filter id = contact.id}}
 	{{@get global filter id = contact.global_id}}
 	{{@get settings filter id = 1}}
@@ -151,7 +157,7 @@ function postUpdate() {
 {{@end}}
 
 {{@action emailContent}}
-	Please click on <a href="http://befriending.wireflydesign.com/run/referralFormReferrer.jam?id1=RefFormgj3x9dsmcNcj2hvgsxz3sjpOvR&refId={{contact.id}}&ypId=0">this</a> to open the referral form.
+	Please click on <a href="http://befriending.wireflydesign.com/run/referralFormReferrer.jam?id1=RefFormgj3x9dsmcNcj2hvgsxz3sjpOvR&refId={{contact.id}}&ypId=0&linkNumber={{myRand}}">this</a> to open the referral form.
 	{{@each settings filter referral_attachment > ''}}
 		<br>There is a form attachment also. Please click <a href="http://befriending.wireflydesign.com/jam/uploads/forms/referral/{{settings.referral_attachment}}">here</a> to download the attachment to your computer.
 		<br><br>{{settings.referral_text}}

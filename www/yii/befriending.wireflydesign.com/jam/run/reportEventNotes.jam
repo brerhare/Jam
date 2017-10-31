@@ -21,17 +21,17 @@
 
 <table id='printTable' class="searchTable testgrid sortable uk-table uk-table-condensed" style="border:1px solid #dddddd">
 	<tr style='xposition:fixed; font-weight:bold'>
-		<th width=200px> Event </th>
-		<th width=100px> Date </th>
-		<th> Notes </th>
+		<th> Event </th>
+		<th> Date </th>
+		<th style='width:60%'> Notes </th>
 	</tr>
 {{@each event order by date}}
 	{{@count id}}
 	{{@get event_type filter id = event.event_type_id}}
 	<tr class="rowHighlight">
 		<td>{{event_type.name}}</td>
-		<td>{{event.date}}</td>
-		<td>{{event.notes}} </td>
+		<td>{{@datedmy event.date}}</td>
+		<td>{{event.notes}}</td>
 	</tr>
 {{@end}}
 </table>

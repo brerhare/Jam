@@ -16,6 +16,206 @@
 #include "list.h"
 #include "log.h"
 
+// @skip [myVar = 1]
+int wordMiscSkip(int ix, char *defaultTableName) {
+	char *cmd = jam[ix]->command;
+	char *args = jam[ix]->args;
+	char *rawData = jam[ix]->rawData;
+	char *tmp = (char *) calloc(1, 4096);
+	char *lhs = NULL;
+	char *rhs = NULL;
+	char *op = NULL;
+	VAR *lhsVar = NULL;
+	VAR *rhsVar = NULL;
+
+	if (strstr(args, "!="))
+		op = strdup("!=");
+	else if (strstr(args, "="))
+		op = strdup("=");
+	if (op) {
+        lhs = strTrim(getWordAlloc(args, 1, op));
+        rhs = strTrim(getWordAlloc(args, 2, op));
+		logMsg(LOGDEBUG, "wordMiscSkip raw values: op=[%s] lhs=[%s] rhs=[%s]", op, lhs, rhs);
+		// Use var values if they exist, else assume literal values
+		lhsVar = findVarStrict(lhs);
+		if (lhsVar) {
+			free(lhs);
+			lhs = strdup(lhsVar->portableValue);
+		}
+		rhsVar = findVarStrict(rhs);
+		if (rhsVar) {
+			free(rhs);
+			rhs = strdup(rhsVar->portableValue);
+		}
+		logMsg(LOGDEBUG, "wordMiscSkip final values: op=[%s] lhs=[%s] rhs=[%s]", op, lhs, rhs);
+		// Do the thang
+		if (!strcmp(op, "!=")) {
+			if (strcmp(lhs, rhs))
+				skipping = 1;
+		} else if (!strcmp(op, "=")) {
+			if (!strcmp(lhs, rhs))
+				skipping = 1;
+		}
+	} else
+		skipping = 1;
+
+	if (skipping)
+		logMsg(LOGDEBUG, "wordMiscSkip: skipping");
+	else
+		logMsg(LOGDEBUG, "wordMiscSkip: not skipping");
+
+	free(tmp);
+	if (lhs) free(lhs);
+	if (rhs) free(rhs);
+	///// if (lhsVar) deleteVar(lhsVar);
+	///// if (rhsVar) deleteVar(rhsVar);
+	if (!skipping)
+    	emitStd(jam[ix]->trailer);
+}
+
+
+int wordMiscStop(int ix, char *defaultTableName) {
+	char *cmd = jam[ix]->command;
+	char *args = jam[ix]->args;
+	char *rawData = jam[ix]->rawData;
+
+	stopping = 1;
+	logMsg(LOGDEBUG, "wordMiscStop: STOPPING");
+    //emitStd(jam[ix]->trailer);
+}
+
+
+// @dateoverlap start1=s1 end1=e1 start2=s2 end2=e2 [newfield=myVar]
+// Date overlap if (s1 <= e2) and (s2 <= e1)
+// Result newfield is required to store 0 or 1 (overwritten if exists)
+// All dates supplied in yyyy-mm-dd format.
+int wordMiscDateOverlap(int ix, char *defaultTableName) {
+	char *cmd = jam[ix]->command;
+	char *args = jam[ix]->args;
+	char *rawData = jam[ix]->rawData;
+	char *tmp = (char *) calloc(1, 4096);
+	char *s1 = NULL, *e1 = NULL, *s2 = NULL, *e2 = NULL;
+	char *start1 = NULL, *end1 = NULL, *start2 = NULL, *end2 = NULL;
+	char *newField = NULL;
+	char *result = NULL;
+	VAR *var;
+	char wd[256];
+	time_t t;
+	char *p, *p2;
+	int i;
+
+	if (isVar("sys.control.start1"))
+		start1 = strdup(getVarAsString("sys.control.start1"));
+	if (isVar("sys.control.end1"))
+		end1 = strdup(getVarAsString("sys.control.end1"));
+	if (isVar("sys.control.start2"))
+		start2 = strdup(getVarAsString("sys.control.start2"));
+	if (isVar("sys.control.end2"))
+		end2 = strdup(getVarAsString("sys.control.end2"));
+	if (isVar("sys.control.newfield"))
+		newField = strdup(getVarAsString("sys.control.newfield"));
+
+	if ((start1) && (end1) && (start2) && (end2) && (newField)) {
+ 		logMsg(LOGDEBUG, "wordMiscDateOverlap going for start1=[%s] end1=[%s] start2=[%s] end2=[%s]", start1, end1, start2, end2);
+		s1 = strdup(getVarAsString(start1));
+		e1 = strdup(getVarAsString(end1));
+		s2 = strdup(getVarAsString(start2));
+		e2 = strdup(getVarAsString(end2));
+		// Strip dashes
+		logMsg(LOGDEBUG, "wordMiscDateOverlap before transform: s1='%s', e1='%s', s2='%s', e2='%s', newField='%s'", s1, e1, s2, e2, newField);
+		for (p = s1, p2 = tmp, i = 0; i < 10; i++) { if ((i != 4) && (i != 7)) *p2++ = *p;  p++; } *p2 = 0;	strcpy(s1, tmp);
+		for (p = e1, p2 = tmp, i = 0; i < 10; i++) { if ((i != 4) && (i != 7)) *p2++ = *p;  p++; } *p2 = 0;	strcpy(e1, tmp);
+		for (p = s2, p2 = tmp, i = 0; i < 10; i++) { if ((i != 4) && (i != 7)) *p2++ = *p;  p++; } *p2 = 0;	strcpy(s2, tmp);
+		for (p = e2, p2 = tmp, i = 0; i < 10; i++) { if ((i != 4) && (i != 7)) *p2++ = *p;  p++; } *p2 = 0;	strcpy(e2, tmp);
+		logMsg(LOGDEBUG, "wordMiscDateOverlap after transform: s1=[%s] e1=[%s] s2=[%s] e2=[%s]", s1, e1, s2, e2);
+		// Overlap?
+		if ( (atoi(s1) <= atoi(e2)) && (atoi(s2) <= atoi(e1)) )
+			result = strdup("1");
+		else
+			result = strdup("0");
+		logMsg(LOGDEBUG, "wordMiscDateOverlap: result=[%s]", result);
+		// Update/create result var
+       	VAR *var = findVarStrict(newField);
+       	if (var) {
+           	if (var->portableValue)
+               	free(var->portableValue);
+           	var->portableValue = strdup(result);
+       	} else {
+           	var = (VAR *) calloc(1, sizeof(VAR));
+           	var->name = strdup(newField);
+           	var->type = VAR_STRING;
+           	var->source = strdup("variable");
+           	var->debugHighlight = 4;
+           	clearVarValues(var);
+           	fillVarDataTypes(var, result);
+           	if (addVar(var) == -1) {
+               	logMsg(LOGFATAL, "Cant create any more vars, terminating");
+               	exit(1);
+           	}
+       	}
+	} else {
+			logMsg(LOGERROR, "wordMiscDateOverlap: not all args supplied");
+	}
+
+    free(tmp);
+    if (s1) free(s1);
+    if (e1) free(e1);
+    if (s2) free(s2);
+    if (e2) free(e2);
+    if (start1) free(start1);
+    if (end1) free(end1);
+    if (start2) free(start2);
+    if (end2) free(end2);
+	if (newField) free(newField);
+	if (result) free(result);
+    emitStd(jam[ix]->trailer);
+	logMsg(LOGDEBUG, "wordMiscDateOverlap: exit");
+}
+
+
+// optional arg myVar which if present will be created/updated. Otherwise the number is simply emitted
+int wordMiscRandomNumber(int ix, char *defaultTableName) {
+	char *cmd = jam[ix]->command;
+	char *args = jam[ix]->args;
+	char *rawData = jam[ix]->rawData;
+	char *tmp = (char *) calloc(1, 4096);
+	char *newField = NULL;
+	char wd[256];
+	time_t t;
+	VAR *var;
+
+	// This is optional. Might only want to emit the result not create a var out of it
+	if (isVar("sys.control.newfield"))
+		newField = strdup(getVarAsString("sys.control.newfield"));
+
+	// Generate random number
+	sprintf(tmp, "%d", rand() % 99999999);
+
+	if (newField) {
+		logMsg(LOGDEBUG, "wordMiscRandomNumber: result var (%s) will be stored in variable '%s'", tmp, newField);
+		unsetVar(newField);	// remove if exists
+		var = (VAR *) calloc(1, sizeof(VAR));
+		var->name = strdup(newField);
+		var->type = VAR_STRING;
+		var->source = strdup("variable");
+		var->debugHighlight = 4;
+		clearVarValues(var);
+		fillVarDataTypes(var, tmp);
+		if (addVar(var) == -1) {
+			logMsg(LOGFATAL, "Cant create any more vars, terminating");
+			exit(1);
+		}
+	} else {
+		logMsg(LOGDEBUG, "wordMiscRandomNumber: result number (%s) will be emitted, not stored in variable", tmp);
+		emitStd(tmp);
+	}
+
+    free(tmp);
+	if (newField)
+		free(newField);
+    emitStd(jam[ix]->trailer);
+	logMsg(LOGDEBUG, "wordMiscRandomNumber: normal exit");
+}
 
 // @wordsplit field=global.postcode segment=1 newfield=myNewField			IF 'newfield' exists that var will be created/updated otherwise the result will simply be emitted
 int wordMiscWordSplit(int ix, char *defaultTableName) {
@@ -418,6 +618,79 @@ int wordMiscNewList(int ix, char *defaultTableName) {
     emitStd(jam[ix]->trailer);
 }
 
+// args - date, and optional myVar which if present will store the output. Otherwise simply emitted
+int wordMiscDateDMY(int ix, char *defaultTableName) {
+	char *cmd = jam[ix]->command;
+	char *args = jam[ix]->args;
+	char *rawData = jam[ix]->rawData;
+	char *tmp = (char *) calloc(1, 4096);
+	char *dateFromField = (char *) calloc(1, 4096);
+	char *resultDateVar = (char *) calloc(1, 4096);
+	char *dateFrom = NULL;
+	char wd[256];
+	VAR *var;
+
+logMsg(LOGDEBUG, "wordMiscDateDMY: ENTRY. args = [%s]", args);
+
+	getWord(dateFromField, args, 1, " \t");
+	if (!dateFromField) {
+		logMsg(LOGERROR, "wordMiscDateDMY: missing 'date from'");
+		return(-1);
+	}
+	dateFrom = strdup(getVarAsString(dateFromField));
+	logMsg(LOGDEBUG, "wordMiscDateDMY: dateFrom = '%s'", dateFrom);
+
+	// This is optional. Might only want to emit the result not create a var out of it
+	getWord(resultDateVar, args, 2, " \t");
+	logMsg(LOGDEBUG, "wordMiscDateDMY: resultDateVar = '%s'", resultDateVar);
+
+	getWord(wd, dateFrom, 3, "-");
+	struct tm a = {0,0,0,0,0,0};
+	a.tm_mday = atoi(wd);
+	getWord(wd, dateFrom, 2, "-");
+	a.tm_mon = (atoi(wd) - 1);
+	getWord(wd, dateFrom, 1, "-");
+	a.tm_year = (atoi(wd) - 1900);
+
+	time_t x = mktime(&a);
+	if (x != (time_t)(-1)) {
+		if ((strcmp(dateFrom, "0000-00-00")) && (strlen(dateFrom)))
+			strftime(tmp, 4095, "%d-%m-%Y", &a);
+		else
+			sprintf(tmp, "          ");
+		if ((resultDateVar) && (strlen(resultDateVar))) {
+			logMsg(LOGDEBUG, "wordMiscDateDMY: result date (%s) will be stored in variable '%s'", tmp, resultDateVar);
+			unsetVar(resultDateVar);	// remove if exists
+			var = (VAR *) calloc(1, sizeof(VAR));
+			var->name = strdup(resultDateVar);
+			var->type = VAR_STRING;
+			var->source = strdup("variable");
+			var->debugHighlight = 4;
+			clearVarValues(var);
+			fillVarDataTypes(var, tmp);
+			if (addVar(var) == -1) {
+				logMsg(LOGFATAL, "Cant create any more vars, terminating");
+				exit(1);
+			}
+		} else {
+			logMsg(LOGDEBUG, "wordMiscDateDMY: result date (%s) will be emitted, not stored in variable", tmp);
+			emitStd(tmp);
+		}
+		//resultDateVar = strdup(tmp);
+	} else
+		emitStd(" date error ");
+
+
+    free(tmp);
+    free(dateFromField);
+    free(dateFrom);
+	if (resultDateVar)
+		free(resultDateVar);
+    emitStd(jam[ix]->trailer);
+	logMsg(LOGDEBUG, "wordMiscDateDMY: NORMAL exit");
+}
+
+// args - date, number of days to add, and optional myVar which if present will store the output. Otherwise simply emitted
 int wordMiscAddDays(int ix, char *defaultTableName) {
 	char *cmd = jam[ix]->command;
 	char *args = jam[ix]->args;
@@ -425,9 +698,12 @@ int wordMiscAddDays(int ix, char *defaultTableName) {
 	char *tmp = (char *) calloc(1, 4096);
 	char *dateFromField = (char *) calloc(1, 4096);
 	char *daysField = (char *) calloc(1, 4096);
+	char *resultDateVar = (char *) calloc(1, 4096);
 	char *dateFrom = NULL;
-	char *days = NULL;
 	char wd[256];
+	VAR *var;
+
+logMsg(LOGDEBUG, "wordMiscAddDays: ENTRY. args = [%s]", args);
 
 	getWord(dateFromField, args, 1, " \t");
 	if (!dateFromField) {
@@ -435,13 +711,21 @@ int wordMiscAddDays(int ix, char *defaultTableName) {
 		return(-1);
 	}
 	dateFrom = strdup(getVarAsString(dateFromField));
+	logMsg(LOGDEBUG, "wordMiscAddDays: dateFrom = '%s'", dateFrom);
 
-	getWord(daysField, args, 1, " \t");
+	getWord(daysField, args, 2, " \t");
 	if (!daysField) {
 		logMsg(LOGERROR, "wordMiscAddDays: missing 'days'");
 		return(-1);
 	}
-	days = strdup(getVarAsString(daysField));
+	logMsg(LOGDEBUG, "wordMiscAddDays: days (given) = '%s'", daysField);
+	if (daysField = getVarAsString(daysField)) {
+		logMsg(LOGDEBUG, "wordMiscAddDays: days (turns out to be a variable) = '%s'", daysField);
+	}
+
+	// This is optional. Might only want to emit the result not create a var out of it
+	getWord(resultDateVar, args, 3, " \t");
+	logMsg(LOGDEBUG, "wordMiscAddDays: resultDateVar = '%s'", resultDateVar);
 
 	getWord(wd, dateFrom, 3, "-");
 	struct tm a = {0,0,0,0,0,0};
@@ -452,11 +736,29 @@ int wordMiscAddDays(int ix, char *defaultTableName) {
 	a.tm_year = (atoi(wd) - 1900);
 
 	// Add days
-	a.tm_mday += (atoi(days));
+	a.tm_mday += (atoi(daysField));
 	time_t x = mktime(&a);
 	if (x != (time_t)(-1)) {
 		strftime(tmp, 4095, "%Y-%m-%d", &a);
-		emitStd(tmp);
+		if (resultDateVar) {
+			logMsg(LOGDEBUG, "wordMiscAddDays: result date (%s) will be stored in variable '%s'", tmp, resultDateVar);
+			unsetVar(resultDateVar);	// remove if exists
+			var = (VAR *) calloc(1, sizeof(VAR));
+			var->name = strdup(resultDateVar);
+			var->type = VAR_STRING;
+			var->source = strdup("variable");
+			var->debugHighlight = 4;
+			clearVarValues(var);
+			fillVarDataTypes(var, tmp);
+			if (addVar(var) == -1) {
+				logMsg(LOGFATAL, "Cant create any more vars, terminating");
+				exit(1);
+			}
+		} else {
+			logMsg(LOGDEBUG, "wordMiscAddDays: result date (%s) will be emitted, not stored in variable", tmp);
+			emitStd(tmp);
+		}
+		//resultDateVar = strdup(tmp);
 	} else
 		emitStd(" date error ");
 
@@ -465,8 +767,10 @@ int wordMiscAddDays(int ix, char *defaultTableName) {
     free(dateFromField);
     free(daysField);
     free(dateFrom);
-    free(days);
+	if (resultDateVar)
+		free(resultDateVar);
     emitStd(jam[ix]->trailer);
+	logMsg(LOGDEBUG, "wordMiscAddDays: NORMAL exit");
 }
 
 int wordMiscDayCount(int ix, char *defaultTableName) {

@@ -25,7 +25,7 @@
 
 				<input type="hidden" name="young_person.referrer_form_id" value="999999"> <!-- @@TODO! -->
 				{{@html hidden field=young_person.referrer_form_id}}
-				{{@html date disabled field=young_person.referral_date size=medium label='Referral date' group=inp}}
+				{{@html date field=young_person.referral_date size=medium label='Referral date' group=inp}}
 				{{@html text field=global.forename size=large label='Forename' group=inp}}
 				{{@html text field=global.surname size=large label='Surname' group=inp}}
 				{{@html text field=global.house size=medium label='house' group=inp}}
@@ -47,11 +47,31 @@
 			{{@html gridcol end}}
 			{{@html gridcol start width=4-10}}
 
+
+                    <!-- @@EG: dropdown outside of the jam -->
+                    <label class="uk-form-label" for="young_person.coordinator_id"> Coordinator </label>
+                    <div class="uk-form-controls">
+<!-- @@TODO delete/archive -->
+                        <select id="ID1___young_person___coordinator_id" name="young_person.coordinator_id" onchange="fn(this, event);" onkeyup="fn(this, event);" class="uk-form-width-medium ROW_{{sys.sequence}} ">
+                        {{tmp.selected = }}
+                        {{@each coordinator filter id = young_person.coordinator_id}}
+                            {{@get global filter id = coordinator.global_id}}
+                            <option value="{{coordinator.id}}" selected> {{global.forename}} {{global.surname}} </option>
+                        {{@end}}
+                            <option value="0">None</option>
+                        {{@each coordinator filter id != young_person.coordinator_id}}
+                            {{@get global filter id = coordinator.global_id}}
+                            <option value="{{coordinator.id}}"> {{global.forename}} {{global.surname}} </option>
+                        {{@end}}
+
+                        </select>
+                    </div>
+
 				{{@html dropdown field=young_person.status_id pickfield=status.name size=small label='Status'}}
 
 				{{@html radio field=young_person.gender label='Gender' options=0:Male,1:Female group=inp}}
-				{{@html radio field=young_person.legal_status label='Legal status' options=0:None,1:Other group=inp}}
-				{{@html date field=young_person.order_date size=medium label='Date of Order' group=inp}}
+				{{@Xhtml radio field=young_person.legal_status label='Legal status' options=0:None,1:Other group=inp}}
+				{{@Xhtml date field=young_person.order_date size=medium label='Date of Order' group=inp}}
 				{{@html checkbox field=young_person.exclusion_risk label='Exclusion risk' tip='At risk of Exclusion?' group=inp}}
 				{{@html checkbox field=young_person.offending_risk label='Offending risk' tip='At risk of Offending?' group=inp}}
 				{{@html checkbox field=young_person.care_risk label='Care risk' tip='At risk of Statutory Care?' group=inp}}
@@ -146,3 +166,5 @@ function calcAge() {
 	document.getElementById('age').innerHTML = 'age '+age;
 }
 </script>
+
+{{@include /jam/sys/html/footer.html}}

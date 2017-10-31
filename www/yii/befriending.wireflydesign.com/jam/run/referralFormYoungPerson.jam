@@ -4,7 +4,7 @@
 {{@database befriending_wireflydesign_com}}
 
 <br>
-{{@html container start center css='max-width:900px; Xpadding:0}}
+{{@html container start center css='max-width:940px; Xpadding:0}}
 
 	{{@get young_person filter id = ypId}}
 	{{@get global filter id = young_person.global_id}}
@@ -20,6 +20,12 @@
 		<input type="hidden" name="global.id" value="{{young_person.global_id}}">
 
 <br>
+
+
+<table id="printTable" class="testgrid sortable searchTable uk-table uk-table-condensed" style="border:0px solid #dddddd">
+<tr><td>
+
+
 <center> <h3> Details of the young Person you are referring</h3> </center>
 
 		{{@html gridrow start}}
@@ -43,8 +49,12 @@
 			{{@html gridcol end}}
 			{{@html gridcol start width=4-10}}
 				{{@html radio field=young_person.gender label='Gender' options=0:Male,1:Female group=inp}}
-				{{@html radio field=young_person.legal_status label='Legal status' options=0:None,1:Other group=inp}}
-				{{@html date field=young_person.order_date size=medium label='Date of Order' group=inp}}
+
+{{@Xhtml dropdown field=young_person.status_id pickfield=status.name size=small label='Status'}}
+
+
+				{{@XXXXXhtml radio field=young_person.legal_status label='Legal status' options=0:None,1:Other group=inp}}
+				{{@XXXXXhtml date field=young_person.order_date size=medium label='Date of Order' group=inp}}
 				{{@html checkbox field=young_person.exclusion_risk label='Exclusion risk' tip='At risk of Exclusion?' group=inp}}
 				{{@html checkbox field=young_person.offending_risk label='Offending risk' tip='At risk of Offending?' group=inp}}
 				{{@html checkbox field=young_person.care_risk label='Care risk' tip='At risk of Statutory Care?' group=inp}}
@@ -65,13 +75,20 @@
 			{{@html gridcol start width=1-1}}
 				<br>
 				<center>
-					<button type='button' class="uk-button uk-button-primary" onClick="backToPrev()"> Prev </button> </td>
-					<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="updateAndNext()"> Next </button> </td>
+					<button type='button' class="uk-button uk-button-primary" onClick="backToPrev()"> Prev </button> 
+					<button type='button' id='saveButton' class="uk-button uk-button-primary" onClick="updateAndNext()"> Next </button>
 				</center>
 			{{@html gridcol end}}
 		{{@html gridrow end}}
 
 	</form>
+
+
+</td></tr></table>
+<center> <button class="uk-button uk-button-medium uk-button-primary" onClick="printData('printTable')"> Print </button> </center>
+
+
+
 
 <script>
 window.onload = function() {
@@ -94,8 +111,9 @@ function disableButton(me) {
 function backToPrev() {
 	objReferrer = get('refId');
 	objYP = get('young_person.id');
+	objLinkNumber= get('linkNumber');
 //alert('r='+objReferrer.value+' and yp='+objYP.value);
-	runJam('referralFormReferrer?refId='+objReferrer.value+'&ypId='+objYP.value);
+	runJam('referralFormReferrer?refId='+objReferrer.value+'&ypId='+objYP.value+'&linkNumber='+objLinkNumber.value);
 }
 
 function updateAndNext() {
@@ -121,12 +139,13 @@ function updateAndNext() {
 function forwardToNext() {
 	objReferrer = get('refId');
 	objYP = get('young_person.id');
+	objLinkNumber = get('linkNumber');
 	if ((objYP.value == '0') || (objYP.value == '-1')) {
 		alert('Young person details not yet saved');
 		return;
 	}
 //alert('Your submission was successful');
-    runJam('referralFormInterest?refId='+objReferrer.value+'&ypId='+objYP.value);
+    runJam('referralFormInterest?refId='+objReferrer.value+'&ypId='+objYP.value+'&linkNumber='+objLinkNumber.value);
 
 }
 
@@ -135,9 +154,10 @@ function forwardToNext() {
 {{@action update_young_person}}
 	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
 	{{young_person.global_id = global.id}}
-    {{young_person.archive_flag = 0}}
+    {{young_person.archive_flag = 9}}
     {{young_person.archive_date = '0000-00-00'}}
     {{young_person.archive_destruction_date = '0000-00-00'}}
+	{{young_person.status_id = 1}}
 	{{@update item young_person}}
 	{{@get contact filter id = refId}}
 	{{contact.young_person_id = young_person.id}}
@@ -146,5 +166,8 @@ function forwardToNext() {
 {{@end}}
 
 {{@html container end}}
+
+{{@include /jam/sys/js/searchPrintExport.js}}
+
 
 {{@include /jam/sys/html/footer.html}}

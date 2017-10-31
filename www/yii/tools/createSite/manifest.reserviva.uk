@@ -1,0 +1,19 @@
+domain = reserviva.uk
+parentdomain =
+sitetitle = Reserviva
+sid = gsbfkfjt8u58qqhshh0istbsb3
+
+# Database
+dbname = reserviva_uk
+dbuser = reserviva.uk
+dbpass = Xik3nac0-
+
+# Shopping cart order confirmation email
+checkoutemail = info@wireflydesign.com
+checkoutname = Reserviva checkout
+checkoutpaypalemail = info@wireflydesign.com
+
+# Backend page editor
+editorpagewidth = 700
+editorpageheight = 400
+

@@ -5,6 +5,28 @@
 
 {{@database befriending_wireflydesign_com}}
 
+<script>
+// Check validity
+var objLinkNumber = get('linkNumber');
+</script>
+
+{{@each referral_form_link filter link_number = {{linkNumber}}, used = 1}}
+	{{@get settings filter id = 1}}
+
+	<br><br><br><br><br><center><h3>This link is no longer valid</h3></center>
+	<br><br><center>If you wish to refer another Young Person to D&G Befriending Project please contact our office on</center>
+	<br><center>Tel: 01387 247812 or email: <a href="mailto:{{settings.email}}?Subject=" target="_top">{{settings.email}}</a> <center>
+	<br><center>Thank you</center>
+
+	{{@stop}}
+{{@end}}
+
+
+
+{{@each referral_form_link filter link_number = {{linkNumber}}, used = 0}}
+
+
+
 <br>
 {{@html container start center css='max-width:700px; Xpadding:0}}
 
@@ -40,6 +62,12 @@
 </style>
 
 <br>
+
+
+<table id="printTable" class="testgrid sortable searchTable uk-table uk-table-condensed" style="border:0px solid #dddddd">
+<tr><td>
+
+
 <center> <h3> Please confirm the details we hold for you are correct </h3> </center>
 
 <script>
@@ -54,7 +82,8 @@ function localUpdate_TABLE() {
 function postUpdate() {
 	objReferrer = get('TABLE.id');
 	objYP = get('ypId');
-	runJam('referralFormYoungPerson?refId='+objReferrer.value+'&ypId='+objYP.value);
+	objLinkNumber= get('linkNumber');
+	runJam('referralFormYoungPerson?refId='+objReferrer.value+'&ypId='+objYP.value+'&linkNumber='+objLinkNumber.value);
 }
 </script>
 
@@ -91,6 +120,15 @@ function postUpdate() {
 	{{@html gridrow end}}
 </form>
 
+
+</td></tr></table>
+<center> <button class="uk-button uk-button-medium uk-button-primary" onClick="printData('printTable')"> Print </button> </center>
+
+
+{{@end}}
+
+
+
 {{@action update_TABLE}}
 	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
 	{{TABLE.global_id = global.id}}
@@ -99,5 +137,8 @@ function postUpdate() {
 {{@end}}
 
 {{@html container end}}
+
+{{@include /jam/sys/js/searchPrintExport.js}}
+
 
 {{@include /jam/sys/html/footer.html}}
