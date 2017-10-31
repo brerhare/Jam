@@ -270,7 +270,7 @@ css.background-color = white
 			css.width = 300px
 			css.margin-top = 80px
 			css.font = 12px
-			html.raw = Please fill in the form and someone from the Rotary Peace Project will get back to you as soon as possible.
+			html.raw = Please fill in the form and someone from the Peace Advocate Project will get back to you as soon as possible.
 			
 		[blog]
 		condition = @PAGE=rotary-peace-project-latest-articles
@@ -393,7 +393,7 @@ css.width = 100%
 		[copyright]
 		css.width = 50%
 		css.margin-top = 20px
-		html.raw = Rotary Peace Project &copy 2014 All rights reserved
+		html.raw = Peace Advocate Project &copy 2014-2017 All rights reserved
 		css.color = #ffffff
 		css.font-size = 12px
 		css.text-align = left
