@@ -434,8 +434,10 @@ Yii::log("EVENT AJAX CALL: " . $event->end, CLogger::LEVEL_WARNING, 'system.test
 			$weekStart = date('Y-m-d', strtotime($date. '-'.$weekDay.' days'));
 			$weekEnd = date('Y-m-d', strtotime($date. '+'.(6-$weekDay).' days'));
 		} else { // if ($memberType->week_month == 2)	// monthly
-			$weekStart = date('Y-m-d', strtotime($today.'last sunday -21 days'));
-			$weekEnd = date('Y-m-d', strtotime($today.'last sunday +7 days'));
+			//$weekStart = date('Y-m-d', strtotime($today.'last sunday -21 days'));
+			//$weekEnd = date('Y-m-d', strtotime($today.'last sunday +7 days'));
+			$weekStart = date('Y-m-01', strtotime($today));
+			$weekEnd = date('Y-m-t', strtotime($today));
 		}
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("password = " . $member->password);
