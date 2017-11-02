@@ -222,11 +222,11 @@ class MailerContentController extends Controller
 						$mail->MsgHTML($css . $msg . $uns);
 						if (!$mail->Send())
 						{
-    						Yii::log("MAILER COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
+    						Yii::log("MAILER COULD NOT SEND MAIL to " . $mailerMember->email_address . " " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
     						echo "<div id=\"mailerrors\">Mailer Error: " . $mail->ErrorInfo . "</div>";
 						}
 						else
-    						Yii::log("MAILER SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+    						Yii::log("MAILER SENT MAIL SUCCESSFULLY to " . $mailerMember->email_address . " " , CLogger::LEVEL_WARNING, 'system.test.kim');
 
 					}
 				}
