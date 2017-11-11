@@ -8,12 +8,14 @@ include = default-values
 
 [screen]
 child = site
-css.background-color = #f0ebdd
+css.background-color = #dee6f1
 css.display = block
+css.height = 100%
 
 	[site]
-	child = header, menu, mobile-menu, footer, wirefly
+	child = header, menu, mobile-menu, pages, footer, wirefly
 	css.width = 100%
+	css.height = 100%
 	# css.max-width = 1200px
 	css.background-color = white
 
@@ -23,13 +25,17 @@ css.display = block
 css.width = 100%
 css.height = 150px
 css.margin-top = 0px
-css.background-color = #2b6ca3
+css.background-color = #2c333b
+css.font-size = 80px
+css.color = #dee6f1
+html.raw = <span> <img src="/img/bookingBee.png" style="position:absolute; top:20px; left:7px; z-index:10000"; width="90px" /> </span>
+html.raw = <span> <center> <img src="/img/bookingBeeLogo.png" style="position:absolute; Xtop:20px; left:140px; z-index:10000"; Xwidth="90px" / > </center>  </span>
 
 [menu]
 css.height = 40px
-css.margin-top = 5px
+#css.margin-top = 5px
 css.width = 100%
-css.background-color = #2b6ca3
+css.background-color = #dee6f1
 css.overflow = visible
 css.position = relative
 css.z-index = 100
@@ -90,20 +96,34 @@ condition = @DEVICEWIDTH<521
 jam.embed = /run/menu.jam
 
 
-	[pages]
-	css.width = 90%
-	css.margin-top = 20px
+[pages]
+#css.position = relative
+css.height = 100%
+child = mainpage, nonmainpage
+
+[mainpage]
+	css.height = 100%
+css.width = 90%
+condition = @PAGE=@HOMEPAGE
+#css.position = relative
+jam.embed = /run/eventListWeb.jam
+
+[nonmainpage]
+condition = @PAGE!=@HOMEPAGE
+css.width = 90%
+css.margin-top = 20px
 	
-		db.table = ContentBlock
-		db.filter = url=$_GET['page']
-		db.error = Sorry, I could not find the page $_GET['page']
-		html.raw = ContentBlock.content
+db.table = ContentBlock
+db.filter = url=$_GET['page']
+db.error = Sorry, I could not find the page $_GET['page']
+html.raw = ContentBlock.content
 		
 [footer]
 child = footer-menu
 css.margin-top = 40px
 css.width = 90%
 #stacking = horizontal
+css.background-color = #2c333b
 
 		[footer-menu]
 		child = footer-tandc, footer-cookies, footer-contact, copyright
