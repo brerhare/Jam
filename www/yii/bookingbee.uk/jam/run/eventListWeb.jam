@@ -4,6 +4,18 @@
 
 <style>
 .uk-panel { cursor: pointer; }
+
+.picbox {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  Xbackground: url(../img/elements/playbutton.png) no-repeat center center;
+}
+
 </style>
 
 <!-- These are all the possible template options. Override the ones you need in your jam script that includes this file -->
@@ -30,7 +42,7 @@
 				<div class="uk-panel uk-panel-box" style='Xbackground-color:transparent; Xborder-radius:BORDERRADIUS; Xborder:BORDERWIDTH solid BORDERCOLOR'>
 					<div class="uk-panel-teaser" onClick="sendTo('http://bookingbee.uk/run/eventBook?eventId={{event.id}}')">
 						<center><a href="#"><img src="http://bookingbee.uk/jam/upload/event/image/{{event.image}}"></a> </center>
-<a href="#"><img src="http://bookingbee.uk/jam/upload/seller/image/{{seller.image}}"></a>
+<a href="#"><img src="http://bookingbee.uk/jam/upload/seller/image/{{seller.image}}" class="picbox"></a>
 						<p style="margin:3px" >{{event.headline}}</p>
 					</div>
 				</div>
