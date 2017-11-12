@@ -28,8 +28,7 @@ css.margin-top = 0px
 css.background-color = #2c333b
 css.font-size = 80px
 css.color = #dee6f1
-html.raw = <span> <img src="/img/bookingBee.png" style="position:absolute; top:20px; left:7px; z-index:10000"; width="90px" /> </span>
-html.raw = <span> <center> <img src="/img/bookingBeeLogo.png" style="position:absolute; Xtop:20px; left:140px; z-index:10000"; Xwidth="90px" / > </center>  </span>
+html.raw = <span> <img src="/img/bookingBee.png" style="Xposition:absolute; top:20px; left:7px; z-index:10000; width:90px" /> </span> <span> <img src="/img/bookingBeeLogo.png" style="Xposition:absolute; top:20px; Xleft:140px; z-index:10000"; Xwidth="90px" / > </span> <span style="font-size:25px"> event reservations </span>
 
 [menu]
 css.height = 40px
