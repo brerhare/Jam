@@ -30,9 +30,20 @@
 
 {{@database bookingbee_uk}}
 
-<div style="position:relative; Xheight:200px;Xwidth:600px">
+<div style="position:relative; Xheight:200px;Xwidth:600px; Xbackground-color:#2c333b">
 
-	<div style="position:absolute; top:30px; margin:20px;padding:0" class="Xuk-container Xuk-container-center">
+	<div style="Xposition:absolute; Xtop:3px; margin:20px;padding:0" class="Xuk-container Xuk-container-center">
+		<span style="font-size:20px"> Event organiser </span>
+		<span>
+			<select name="select">
+    			{{@each seller}}
+      				<option value="{{id}}">{{name}}</option>
+    			{{@end}}
+			</select>
+ 		</span>
+	</div>
+
+	<div style="Xposition:absolute; top:60px; margin:20px;padding:0" class="Xuk-container Xuk-container-center">
 
 		<div class="uk-grid uk-grid-match" data-uk-grid-match="{target:'.uk-panel'}" data-uk-grid-margin>
 {{@each event filter active = 1, order by date ASC}}
@@ -53,6 +64,9 @@
 </div>
 
 </div>
+
+<br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
+<br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
 
 <script>
 function sendTo(where) {

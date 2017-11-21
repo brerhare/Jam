@@ -68,13 +68,14 @@ div#formContainer {
 			<input type="hidden" name="template_beirc.event_id" value="{{event.id}}">
 <br>
 			<center><h3> {{event.headline}} {{@datedmy event.date}} {{event.time}} </h3></center>
+			<center> {{event.description}}</center>
 
         {{@html gridrow start}}
             {{@html gridcol start width=1-1}}
 
 			<br>
 			<center>
-				<table class="uk-table" style="width:50%; background-color:#bed0de">
+				<table class="uk-table" style="width:70%; background-color:#bed0de">
 {{@each event_item filter event_id = event.id, qty_remaining > 0}}
 					<tr style="padding:20px">
 						<td>{{event_item.description}}</td>
