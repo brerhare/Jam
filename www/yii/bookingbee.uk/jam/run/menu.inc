@@ -13,7 +13,7 @@
 {{@template CORNERPIXELS 2}}
 {{@template MAINTEXTCOLOR #f6f6f6}}
 {{@template SUBTEXTCOLOR #000000}}
-// @@TODO These next two dont seem to affect anything at all
+
 {{@template CURRENTCOLOR_FROM #80ff80}}
 {{@template CURRENTCOLOR_TO #00cc00}}
 

@@ -32,6 +32,7 @@
 
 <div style="position:relative; Xheight:200px;Xwidth:600px; Xbackground-color:#2c333b">
 
+<!--
 	<div style="Xposition:absolute; Xtop:3px; margin:20px;padding:0" class="Xuk-container Xuk-container-center">
 		<span style="font-size:20px"> Event organiser </span>
 		<span>
@@ -42,6 +43,7 @@
 			</select>
  		</span>
 	</div>
+-->
 
 	<div style="Xposition:absolute; top:60px; margin:20px;padding:0" class="Xuk-container Xuk-container-center">
 
