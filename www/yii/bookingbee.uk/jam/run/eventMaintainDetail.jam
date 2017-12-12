@@ -13,6 +13,8 @@
 {{@XXXhtml container start center css='max-width:900px; Xpadding:0}}
 <div class="uk-container embed-uk-container uk-overflow-container uk-container-center " style="max-width:900px; Xpadding:0">
 
+<input type="hidden" name="event_image" id="event_image" value="{{event.image}}">
+
 <form name="event_detail_form" class="uk-form uk-form-horizontal">
 <br>
 	<input type="hidden" name="seller.id" value={{seller.id}}>
@@ -51,7 +53,6 @@
 				{{@each event_template_file filter sid = seller.sid, id = event.event_template_file_id}}
 					<option value="{{event_template_file.id}}" selected> {{event_template_file.file}} </option>
 				{{@end}}
-					<option value="0">None</option>
 				{{@each event_template_file filter sid = seller.sid, id != event.event_template_file_id}}
 					<option value="{{event_template_file.id}}"> {{event_template_file.file}} </option>
 				{{@end}}
@@ -65,7 +66,7 @@
 			<br>
 			<center>
 				{{@html button Save primary medium
-					runAction('eventMaintainDetail:update_event', ['event_detail_form'], '', postUpdate)
+					runAction('eventMaintainDetail:update_event', ['event_detail_form', 'event_image'], '', postUpdate)
 				}}
 				{{@html button Cancel primary medium
 					runJam('event.jam');
@@ -79,7 +80,7 @@
 
 {{@action update_event}}
 	{{@update item event notify=ok}}
-{{@end}}
+{{@eNd}}
 
 <script>
 function clearFile() {
@@ -96,11 +97,12 @@ function fileUpload(obj) {
     var file = obj.files[0];
     var evObj = get('event.image');
 	evObj.value = file.name;
-//alert(evObj.value);
+//alert('1:' + evObj.value);
     console.log("name : " + file.name);
     console.log("size : " + file.size);
     console.log("type : " + file.type);
     console.log("date : " + file.lastModified)
+	document.getElementById('event_image').value = file.name;
     var url = 'http://www.bookingbee.uk:/jam/upload/uploadEventImage.php';
     var xhr = new XMLHttpRequest();
     var fd = new FormData();
@@ -111,6 +113,7 @@ function fileUpload(obj) {
             $.unblockUI();
 			objAttachment = get('event.image');
 			objAttachment.value = file.name;
+			document.getElementById('event_image').value = file.name;
         } else {
             $.unblockUI();
         }

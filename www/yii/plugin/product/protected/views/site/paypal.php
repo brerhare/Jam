@@ -2,6 +2,10 @@
 // +----------------+
 // | Good reference | https://developer.paypal.com/docs/classic/paypal-payments-standard/integration-guide/formbasics/
 // +----------------+
+
+//////// $this->test = 1;
+
+
 if ($this->test == 1)
 {
 	$business = "jo.seawright@hotmail.com";

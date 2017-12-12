@@ -95,7 +95,7 @@ function confirmCopy(id, displayInfo) {
 {{@action copy}}
     {{@get event filter id = eventId}}
 	{{event.id = }}
-	{{event.headline = {{event.headline}}-copy}}
+	{{event.headline = {{event.headline}}_copy}}
 	{{@new item event notify=ok}}
 	{{@each event_item filter event_id = eventId}}
 		{{dummyNull = }}
