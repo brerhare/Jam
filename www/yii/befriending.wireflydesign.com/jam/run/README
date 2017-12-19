@@ -1,0 +1,18 @@
+
+To run manually
+	/home/dev/src/jam/jam /home/wireflydesign.com/domains/befriending.wireflydesign.com/dev/src/www/yii/befriending.wireflydesign.com run/reportFix.jam
+
+NB... adding menu items breaks user defined menus. Need to hang on to existing id's already allocated
+
+../cgi/runjam.cgi /home/wireflydesign.com/domains/befriending.wireflydesign.com/dev/src/www/yii/befriending.wireflydesign.com/ run/cron
+
+Referrer email to include date for 30 day expiry
+
+YP and befriender archive flag values
+	0 = active
+	1 = counting down to archive by cron job
+	2 = archived
+	9 = hidden. eg: referral form started but not finalised (completing the referral will set archive to 0), or YP delete button pressed on maintain screen
+
+ORPHANS
+	deleting medical_types succeeds but all the info in other table(s) relating to that item is simply orphaned

@@ -1,65 +1,61 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@include /jam/run/menu.jam}}
+{{@include /jam/run/new_menu.jam}}
 
 {{@database befriending_wireflydesign_com}}
+
+    <style type="text/css">
+        label {text-align: right; width:150px !important}
+        div.uk-form-controls {margin-left: 170px !important}
+    </style>
 
 <br>
 {{@html container start center css='max-width:1080px; Xpadding:0}}
 
-<div name="content">
 	<center><h3> Young Person Annual Match Report </h3></center>
 
-	<form class="uk-form">
-		<input type="text" id="searchInput" placeholder="Type to search">
+<div name='content'>
+
+	<form name='dateSel' class="uk-form uk-form-horizontal">
+
+        {{@html gridrow start}}
+            {{@html gridcol start width=3-10}}
+			{{@html gridcol end}}
+
+            {{@html gridcol start width=4-10}}
+				{{@html date field=filter.date_from size=medium label='From date'}}
+				{{@html date field=filter.date_to size=medium label='To date'}}
+			{{@html gridcol end}}
+
+            {{@html gridcol start width=3-10}}
+			{{@html gridcol end}}
+        {{@html gridrow end}}
+
+<br>
+                <center>
+                    <button type='button' id='goButton' class="uk-button uk-button-primary" onClick="goButtonClick()">Go</button>
+                </center>
+
 	</form>
 
-	<table id='printTable' class="searchTable testgrid uk-table uk-table-condensed" style="border:1px solid #dddddd">
-		<tr style='font-weight:bold'>
-			<th> YP Name </th>
-			<th style='min-width:80px'> DoB </th>
-			<th> Gender </th>
-			<th> Postcode </th>
-			<th> Agency </th>
-			<th> Match Start </th>
-			<th> Match End </th>
-			<th> Befriender Name </th>
-		</tr>
-{{@each young_person}}
-	{{@count id}}
-	{{@get global filter id = young_person.global_id}}
-		<tr class="rowHighlight" onClick="runAction('showTabs', ['befriender.id={{befriender.id}}'], 'content')">
-			<td>{{global.forename}} {{global.surname}}</td>
-			<td>{{young_person.dob}}</td>
-			<td>{{young_person.gender}}</td>
-			<td>{{global.postcode}}</td>
-	{{@get contact filter young_person_id = young_person.id, contact_relationship_id = 3}}
-			<td>{{contact.agency}}</td>
-	{{@get match_yp filter young_person_id = young_person.id}}
-	{{@get befriender filter id = match_yp.befriender_id}}
-	{{@get global filter id = befriender.global_id}}
-			<td>{{match_yp.match_started}}</td>
-			<td>{{match_yp.match_end}}</td>
-			<td>{{global.forename}} {{global.surname}}</td>
-		</tr>
-{{@end}}
-		<tr>
-			<td> <b> Total Young Persons : {{count.id}} </b> </td>
-		</tr>
-	</table>
 </div>
-<br>
 
-<button class="uk-button uk-button-medium uk-button-primary" onClick="printData('printTable')"> Print </button>
-
-<span class='exportButton'>
-	<a href="#" class="export" table='{"id":"printTable"}'>Export spreadsheet</a>
-</span>
-
-<br><br/>
+<br/>
 
 {{@html container end}}
 
-{{@include /jam/sys/js/searchPrintExport.js}}
+
+<script>
+window.onload = function() {
+}
+
+function goButtonClick() {
+	fromObj = get('filter.date_from');
+	toObj = get('filter.date_to');
+	runJam('reportYoungPersonAnnualMatch2?from=' + fromObj.value + '&to=' + toObj.value);
+}
+</script>
+
+
 {{@include /jam/sys/html/footer.html}}

@@ -1,7 +1,7 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@XXXinclude /jam/run/menu.jam}}
+{{@XXXinclude /jam/run/new_menu.jam}}
 
 {{@html container start center css='max-width:1080px; Xpadding:0}}
 
@@ -16,6 +16,16 @@
 
 	{{@get event filter id = event.id}}
 	{{@get young_person filter id = event.young_person_id}}
+
+	<!-- Get matched befriender -->
+	{{@each match_yp filter young_person_id = young_person.id}}
+		{{@get befriender filter id = match_yp.befriender_id}}
+		{{@get global filter id = befriender.global_id}}
+		{{bef_forename = global.forename}}
+		{{bef_surname = global.surname}}
+	{{@end}}
+
+	<!-- YP defails -->
 	{{@get global filter id = young_person.global_id}}
 
 	<style type="text/css">
@@ -26,6 +36,7 @@
 
 				<br>
 					<table class="uk-table uk-table-condensed">
+						<tr> <td colspan=5> <center><h3 style='background-color:#dadada;' >Matched Befriender: {{bef_forename}} {{bef_surname}}</h3></center> </td> </tr>
 						<tr> <td colspan=5> <center><h3 style='background-color:#dadada;' >Invited Attendees</h3></center> </td> </tr>
 						<tr>
 							<th> Type </th>
@@ -48,6 +59,20 @@
 							{{@end}}
 						{{@end}}
 
+						<!-- Now do something special to get the befriender if invited -->
+						{{@each event_attendee filter event_id = event.id, global_id = befriender.global_id}}
+							{{@get global filter id = befriender.global_id}}
+							{{@each event_attendee filter global_id = global.id, event_id = event.id}}
+								<tr>
+									<td> Befriender </td>
+									<td> {{global.forename}} {{global.surname}} </td>
+									<td> {{global.mobile}} </td>
+									<td> {{global.email}} </td>
+									<td> <button type='button' id='addButton' class="uk-button uk-button-danger" onClick="removeAttendee('{{global.id}}', '{{event.id}}')">Remove</button> </td>
+								</tr>
+							{{@end}}
+						{{@end}}
+
 								<tr> <td colspan=5> <center><h3 style='background-color:#dadada;' >All Possible Attendees</h3></center> </td> </tr>
 						{{@each contact filter young_person_id = event.young_person_id}}
 							{{@get contact_relationship filter id = contact_relationship_id}}
@@ -62,6 +87,14 @@
 								</tr>
 							{{@Xend}}
 						{{@end}}
+						{{@get global filter id = befriender.global_id}}
+								<tr>
+									<td> Befriender </td>
+									<td> {{global.forename}} {{global.surname}} </td>
+									<td> {{global.mobile}} </td>
+									<td> {{global.email}} </td>
+									<td> <button type='button' id='addButton' class="uk-button uk-button-success" onClick="addAttendee('{{global.id}}', '{{event.id}}')">Add</button> </td>
+								</tr>
 					</table>
 				</div>
 

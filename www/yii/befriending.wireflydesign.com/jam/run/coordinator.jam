@@ -1,0 +1,140 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/new_menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:1080px; Xpadding:0}}
+
+<!-- List component -->
+
+<style>
+.rowHighlight:hover {
+  background-color: #ddf0ff;
+  cursor:pointer;
+}
+</style>
+
+<div name="content_coordinator">
+
+	<center><h3> Coordinators </h3></center>
+
+    <form class="uk-form">
+        <input type="text" id="searchInput" placeholder="Type to search">
+    </form>
+
+	<table class="testgrid sortable searchTable uk-table uk-table-condensed" style="border:1px solid #dddddd">
+		<tr>
+			<th> Forename </th>
+			<th> Surname </th>
+			<th> Email </th>
+			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runAction('maintain_coordinator', [], 'content_coordinator')"> <i class="uk-icon-plus"></i> New</button> </th>
+		</tr>
+
+{{@Xeach coordinator}}
+{{@eachsql yippee select coordinator.id, coordinator.global_id, global.forename, global.surname from coordinator inner join global on coordinator.global_id = global.id order by global.surname}}
+            
+        {{@get global filter id = yippee.global_id}}
+
+		<tr class="rowHighlight">
+			<td onClick="runAction('maintain_coordinator', ['coordinator.id={{yippee.id}}'], 'content_coordinator')">{{global.forename}}</td>
+			<td onClick="runAction('maintain_coordinator', ['coordinator.id={{yippee.id}}'], 'content_coordinator')">{{global.surname}}</td>
+			<td onClick="runAction('maintain_coordinator', ['coordinator.id={{yippee.id}}'], 'content_coordinator')">{{global.email}}</td>
+			<td>
+				<button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_coordinator('{{id}}','{{global.surname}}')"> <i class="uk-icon-trash"></i></button>
+			</td>
+		</tr>
+{{@end}}
+	</table>
+</div>
+<br>
+
+<script>
+function confirmDelete_coordinator(id, displayInfo) {
+	window.event.cancelBubble = true;	// Prevent any further events
+	var result = confirm('Confirm delete of item ' + displayInfo);
+	if (result)
+		runAction('delete_coordinator', ['coordinator.id='+id], '', runJam);	
+}
+
+function localUpdate_coordinator() {
+/***
+	obj = document.getElementsByName('global.email')[0];
+	if (obj.value == "") {
+		alert('Invalid email');
+		return;
+	}
+***/
+	runAction('update_coordinator', ['inputForm_coordinator'], '', postUpdate);
+}
+function postUpdate() {
+	runJam();
+}
+
+</script>
+
+{{@action delete_coordinator}}
+	{{@get coordinator filter id = coordinator.id}}
+	{{global.id = coordinator.global_id}}
+	{{@remove item coordinator}}
+	{{@remove item global}}	@@TODO - dont remove global if it has other links
+{{@end}}
+
+<!-- Form input component -->
+
+{{@action maintain_coordinator}}
+	{{@get coordinator filter id = coordinator.id}}
+	{{@get global filter id = coordinator.global_id}}
+
+	<style type="text/css">
+		label {text-align: right;}
+	</style>
+
+	<form name="inputForm_coordinator" class="uk-form uk-form-horizontal">
+		<input type="hidden" name="coordinator.id" value="{{coordinator.id}}">
+		<input type="hidden" name="global.id" value="{{coordinator.global_id}}">
+		{{@html gridrow start}}
+			{{@html gridcol start width=5-5}}
+				{{@html text field=global.forename size=large label='Forename'}}
+				{{@html text field=global.surname size=large label='Surname'}}
+				{{@html text field=global.house size=large label='house'}}
+				{{@html text field=global.street size=large label='Street'}}
+				{{@html text field=global.area size=large label='Area'}}
+				{{@html text field=global.town size=large label='Town'}}
+				{{@html text field=global.postcode size=medium label='Postcode'}}
+				{{@html text field=global.landline size=medium label='Land line'}}
+				{{@html text field=global.mobile size=medium label='Mobile'}}
+				{{@html text field=global.email size=large label='Email'}}
+				{{@html text field=global.job_title size=large label='Job Title'}}
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+		{{@html gridrow start}}
+			{{@html gridcol start width=1-1}}
+				<br>
+				<center>
+					{{@Xhtml button Save primary medium
+						runAction('update_coordinator', ['inputForm_coordinator'], '', runJam)
+					}}
+					<button type="button" onClick="localUpdate_coordinator()" class="uk-button uk-button-primary">Save</button>
+					{{@html button Cancel primary medium
+						runJam();
+					}}
+				</center>
+			{{@html gridcol end}}
+		{{@html gridrow end}}
+	</form>
+{{@end}}
+
+{{@action update_coordinator}}
+	{{@update item global}}         <!-- first update the link table (inserts wont have its id yet)
+	{{coordinator.global_id = global.id}}
+	{{@update item coordinator}}
+{{@end}}
+
+{{@html container end}}
+
+{{@include /jam/sys/js/searchPrintExport.js}}
+
+{{@include /jam/sys/html/footer.html}}

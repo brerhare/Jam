@@ -1,0 +1,36 @@
+{{@include /jam/sys/html/header.html}}
+
+{{@include /jam/css/site.css}}
+
+{{@database bookingbee_uk}}
+
+<!-- --------------------------------------------------------------------------------------- -->
+
+{{@get event_order filter id = {{orderId}} }}
+{{@get seller filter id = {{event_order.seller_id}} }}
+
+<br/><br/><br/><br/><br/> <center> <h5 style="color:grey">Please wait, redirecting to Paypal...</h5> </center>
+
+<div style="Xdisplay:none;">
+    <form id="pp" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+
+   <input type="hidden" name="cmd" value="_xclick">
+   <input type="hidden" name="business" value="{{seller.paypal_email}}">
+   <input type="hidden" name="item_name" value="BEIRC event">
+   <input type="hidden" name="amount" value="{{event_order.total}}">
+   <input type="hidden" name="currency_code" value="GBP">
+   <input type="hidden" name="customNOTWORKING" value="[{{orderId}}]"/> 
+   <input type="hidden" name="return" value="http://bookingbee.uk/run/paypalThanks?orderId={{orderId}}">
+
+
+		<input type="hidden" name="currency_code" value="GBP">
+
+	</form>
+</div>
+
+<script type="text/javascript">
+document.getElementById("pp").submit();
+</script>
+
+
+{{@include /jam/sys/html/footer.html}}

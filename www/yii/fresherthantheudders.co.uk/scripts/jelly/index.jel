@@ -16,7 +16,7 @@ css.background-color = #7eb075
 	[site]
 	child = header, pages, footer
 	css.width = 100%
-	css.background-image = url('/img/background.jpg')
+	css.background-image = url('/img/background2.jpg')
 	css.background-size = 100%
 	css.background-repeat = no-repeat
 
@@ -25,7 +25,8 @@ css.background-color = #7eb075
 ### Header ###
 
 [header]
-child = social, menu-block, logo, wall
+child = social, menu-block, logo
+#, wall
 css.width = 100%
 
 	[social]
@@ -65,7 +66,13 @@ css.width = 100%
 	css.overflow = visible
 	css.z-index = 10
 	
+#		[menu-margin]
+#		css.width = 15%
+#		css.height = 1px
+		
 		[menu]
+		css.width = 80%
+		css.margin-left = 18%
 		jam.embed = /run/menu.jam
 		css.overflow = visible
 	
@@ -80,55 +87,67 @@ css.width = 100%
 	click = ?layout=index
 	css.z-index = 100
 	
-	[wall]
-	css.width = 100%
-	css.margin-top = -8%
-	image.url = img/wall.png
-	image.width = 100%
-	image.height = 100%
+#	[wall]
+#	css.width = 100%
+#	css.margin-top = -8%
+#	image.url = img/wall.png
+#	image.width = 100%
+#	image.height = 100%
 
 
 ### Pages ###
 
 [pages]
-child = home-page, page-block
+child = home-page, page-block, page-blog
 css.width = 90%
 css.max-width = 1000px
-css.margin-top = -8%
+css.margin-top = 4%
 
 	[home-page]
 	child = home-crates, home-block
 	condition = @PAGE=@HOMEPAGE
 	
 		[home-crates]
-		child = story-img, family-img, latest-img, wholesale-img
+		child = deliveries-img, story-img, girls-img, wholesale-img, udderbar-img
 		stacking = horizontal
+		css.margin-top = 4%
+		css.width = 100%
+		css.max-width = 900px
 		
 			[story-img]
-			css.width = 25%
+			css.width = 20%
 			image.url = img/story.png
 			image.width = 100%
 			image.height = 100%
-			click = ?layout=index&page=font-test-temp
-			
-			[family-img]
-			css.width = 25%
-			image.url = img/family.png
-			image.width = 100%
-			image.height = 100%
 			click = ?layout=index&page=roans-dairy-farm-family
-						
-			[latest-img]
-			css.width = 25%
-			image.url = img/latest.png
+			
+			[udderbar-img]
+			css.width = 20%
+			image.url = img/udderbar.png
 			image.width = 100%
 			image.height = 100%
+			click = ?layout=index&page=udder-milk-bar-milkshake-dumfries-galloway
+			
+			[deliveries-img]
+			css.width = 20%
+			image.url = img/deliveries.png
+			image.width = 100%
+			image.height = 100%
+			click = ?layout=index&page=dumfries-milk-deliveries-free-range-milk
+						
+			[girls-img]
+			css.width = 20%
+			image.url = img/girls.png
+			image.width = 100%
+			image.height = 100%
+			click = ?layout=index&page=meet-the-herd
 						
 			[wholesale-img]
-			css.width = 25%
+			css.width = 20%
 			image.url = img/wholesale.png
 			image.width = 100%
 			image.height = 100%
+			click = ?layout=index&page=dumfries-galloway-milk-free-range-wholesale
 			
 			
 		
@@ -153,28 +172,33 @@ css.margin-top = -8%
 				css.height = 100%
 				#addon.slider.flexslider.slider = 1
 				addon.slider.flexslider.width = 99%
-				addon.slider.flexslider.height = 96%
+				addon.slider.flexslider.height = 60%
 				addon.slider.flexslider.border-width = 2%
 				addon.slider.flexslider.border-color = white
 				addon.slider.flexslider.active-dotcolor = #f9629f
 				addon.slider.flexslider.inactive-dotcolor = white
-				addon.slider.flexslider.dot-margin-top = -200px
+				addon.slider.flexslider.dot-margin-top = -30px
 				#addon.slider.flexslider.dot-margin-bottom = 0px
 				#addon.slider.flexslider.dot-margin-left = 0px
 				#addon.slider.flexslider.dot-margin-right = 0px
-				addon.slider.flexslider.animation = slide
+				addon.slider.flexslider.animation = fade
 				addon.slider.flexslider.mode = image
 				addon.slider.flexslider.source = db
 
 				
 			[home-links]
+			css.border = solid
+			css.border-width = 1px
+			css.border-color = white
+			css.background-image = url('/img/content-bgd.png')
+		
 			jamtemplate.COLUMNNAME = page-links
 			jamtemplate.LARGEVIEWBLOCKS = 2
 			jamtemplate.MEDIUMVIEWBLOCKS = 1
 			jamtemplate.SMALLVIEWBLOCKS = 1
-			jamtemplate.BACKCOLOR = #94bc70
-			jamtemplate.BORDERWIDTH = 1px
-			jamtemplate.BORDERCOLOR = white
+			jamtemplate.BACKCOLOR = transparent
+			jamtemplate.BORDERWIDTH = 0px
+			jamtemplate.BORDERCOLOR = lightgrey
 			jamtemplate.BORDERRADIUS = 0px
 			jam.embed = /run/standardGrid
 	
@@ -182,6 +206,7 @@ css.margin-top = -8%
 	[page-block]
 	child = page-content, page-links
 	condition = @PAGE!=@HOMEPAGE
+	condition = @PAGE!=free-range-milk-dumfries-dalbeattie-news
 	stacking = horizontal
 	
 		[page-content]
@@ -189,8 +214,9 @@ css.margin-top = -8%
 		css.width = 70%
 		css.margin-top = 3%
 		
-		[content-container]
-				child = content-top, content-bgd, content-btm
+			[content-container]
+			child = content-top, content-bgd, content-btm
+			css.width = 100%
 				
 					[content-top]
 					css.height = 30px
@@ -199,7 +225,7 @@ css.margin-top = -8%
 					css.background-repeat = repeat-x
 					
 					[content-bgd]
-					child = content
+					child = content, blog, gallery
 					css.padding = 0px 10px
 					css.border = solid
 					css.border-width = 0px 1px
@@ -212,6 +238,15 @@ css.margin-top = -8%
 						db.filter = url=$_GET['page']
 						db.error = Sorry, I could not find the page $_GET['page']
 						html.raw = ContentBlock.content
+						
+						[blog]
+						condition = @PAGE=free-range-milk-dumfries-dalbeattie-news
+						html.raw = {{news newstype=pinterest sidebar=right pushrecentdown = 0px pushcategoriesdown = 0px}}
+						
+						[gallery]
+						condition = @PAGE=free-range-milk-dalbeattie-dumfries-gallery
+						html.raw = {{gallery}}
+		
 					
 					[content-btm]
 					css.height = 30px
@@ -219,6 +254,7 @@ css.margin-top = -8%
 					css.background-size = 100% 100%
 					css.background-repeat = repeat-x
 					
+			
 		[page-links]
 		css.width = 25%
 		css.margin-left = 4%
@@ -236,6 +272,12 @@ css.margin-top = -8%
 		jamtemplate.BORDERCOLOR = lightgrey
 		jamtemplate.BORDERRADIUS = 0px
 		jam.embed = /run/standardGrid
+		
+		[page-blog]
+		child = content-container
+		css.width = 100%
+		css.margin-top = 3%
+		condition = @PAGE=free-range-milk-dumfries-dalbeattie-news
 		
 
 ### Footer ####
@@ -284,7 +326,7 @@ css.margin-top = 50px
 
 		
 		[contact-form]
-		jam.embed = /run/contactForm.jam
+		jam.iframe = /run/contactForm.jam
 
 
 		[wirefly]

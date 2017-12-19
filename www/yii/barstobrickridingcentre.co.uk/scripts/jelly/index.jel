@@ -270,7 +270,6 @@ css.width = 100%
 		css.height = 50px
 		#jam.embed = /run/contactForm.jam
 		jam.iframe = /run/signUp
-				
 	
 		[footer-content]
 		child = footer-social, footer-menu, footnote
@@ -384,7 +383,7 @@ css.width = 100%
 ########### Mobile Layout#############
 
 [mobile-site]
-child = mob-logo, mob-book, mob-menu, mob-sign-up, mob-header-img, mob-pages, mob-social, mob-footer
+child = mob-logo, mob-book, mob-header-img, mob-menu, mob-pages, mob-social, mob-footer, mob-sign-up
 css.width = 100%
 condition = @DEVICEWIDTH<551
 
@@ -408,13 +407,15 @@ condition = @DEVICEWIDTH<551
 	css.overflow = visible
 	css.position = relative
 	css.margin-top = 20px
-	css.background-color = blue
+	css.background-color = #b9e9cd
 	css.color = white
 	css.height = 3%
-	html.raw  = menu currently disabled
+jam.embed = /run/menu.jam
+
 	
 	[mob-sign-up]
 	child = mob-signup-title, mob-signup-form
+css.margin-left = 10px
 	css.width = 94%
 	css.margin = 3%
 	css.margin-left = 0px

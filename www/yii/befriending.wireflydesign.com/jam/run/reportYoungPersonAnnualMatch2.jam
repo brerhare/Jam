@@ -1,0 +1,73 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/new_menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:1080px; Xpadding:0}}
+
+<div name="content">
+	<center><h3> Young Person Annual Match Report </h3></center>
+	<center><h5> {{@datedmy from}} to {{@datedmy to}} </h5></center>
+
+	<form class="uk-form">
+		<input type="text" id="searchInput" placeholder="Type to search">
+	</form>
+
+	<table id='printTable' class="searchTable testgrid sortable uk-table uk-table-condensed" style="border:1px solid #dddddd">
+		<tr style='font-weight:bold'>
+			<th> YP Name </th>
+			<th style='min-width:80px'> DoB </th>
+			<th> Gender </th>
+			<th> Postcode </th>
+			<th> Agency </th>
+			<th> Match Start </th>
+			<th> Match End </th>
+			<th> Days </th>
+			<th> Befriender Name </th>
+		</tr>
+{{@each young_person filter archive_flag = 0}}
+	{{@count id}}
+	{{@get global filter id = young_person.global_id}}
+	{{yp_forename = global.forename}}
+	{{yp_surname = global.surname}}
+	{{yp_postcode = global.postcode}}
+	{{@get contact filter young_person_id = young_person.id, contact_relationship_id = 3}}
+	{{@get match_yp filter young_person_id = young_person.id}}
+	{{@get befriender filter id = match_yp.befriender_id}}
+	{{@get global filter id = befriender.global_id}}
+	{{bf_forename = global.forename}}
+	{{bf_surname = global.surname}}
+	{{@dateoverlap start1=from end1=to start2=match_yp.match_started end2=match_yp.match_end newfield=myOverlap }}
+	{{@skip myOverlap=0}}
+		<tr class="rowHighlight">
+			<td>{{yp_forename}} {{yp_surname}}</td>
+			<td>{{@datedmy young_person.dob}}</td>
+			<td>{{@replacevalue field=young_person.gender values=0:male,1:female}}</td>
+			<td>{{yp_postcode}}</td>
+			<td>{{contact.agency}}</td>
+			<td>{{@datedmy match_yp.match_started}}</td>
+			<td>{{@datedmy match_yp.match_end}}</td>
+			<td>{{@daycount match_yp.match_started match_yp.match_end}}</td>
+			<td>{{bf_forename}} {{bf_surname}}</td>
+		</tr>
+{{@end}}
+	</table>
+  <b> Total Young Persons : <span id="searchTotal">{{count.id}}</span> </b>
+</div>
+<br>
+
+<button class="uk-button uk-button-medium uk-button-primary" onClick="printData('printTable')"> Print </button>
+
+<span class='exportButton'>
+	<a href="#" class="export" table='{"id":"printTable"}'>Export spreadsheet</a>
+</span>
+
+<br><br/>
+
+{{@html container end}}
+
+{{@include /jam/sys/js/searchPrintExport.js}}
+{{@include /jam/sys/html/footer.html}}

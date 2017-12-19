@@ -70,10 +70,14 @@
 {@each stock_customer_transaction filter date > '2015-04-20', date < '2015-04-23'}
 {@each stock_area filter id > 14, id < 17}
 {@each stock_customer filter stock_area_id = id, order by name}
+{@each stock_customer filter stock_area_id = id, order by name DESC}
 {@each stock_customer_transaction filter stock_user_id = stock_user.id}
 {@each stock_customer_transaction filter date < mem.duedate, type = 'inv', balance > 0, order by date}
 {@each stock_product_has_location filter stock_location_id = filter.location, onhand < min_level}
-{@each ticket_temp_delegate_report filter name like '%{{keyaction}}%', order by name}
+{@each ticket_temp_delegate_report filter name litke '%{{keyaction}}%', order by name}
+{@eachsql stock_customer select * from stock_customer}		// 1st arg is table prefix (or var prefix) to prepend to table fields, followed by a literal sql command}
+{@eachsql stock_customer somequery}
+
 
 {@skip stock_product_has_location.stock_location_id = null}
 {@skip stock_product_has_location.onhand < stock_product_has_location.min_level}
@@ -136,14 +140,14 @@ onChange and onKeyUp is bound to all input types - user defines an appropriate o
 @@TODO allow others to be bound by user, something like event=onfocus or whatever. Function name per usual naming convention
 NB onKeyUp is often used as a search filter in conjunction with an @action
 
-{@html dropdown/filter field=product.supplier_id pickfield=supplier.name size=medium label='Line Supplier'}
+{@html dropdown/filter field=product.supplier_id pickfield=supplier.name size=medium label='Line Supplier' tip='hover on me'}
 {@html dropdown/filter field=product.supplier_id pickfield=supplier.name size=medium group=mygroup}
 {@html dropdown/filter field=product.supplier_id pickfield=supplier.name size=medium}
-{@html text/date field=product.supplier_id size=medium label='Address' placeholder='address line 1'}
-{@html text/date field=product.supplier_id size=medium hidden}
+{@html text/date/password field=product.supplier_id size=medium label='Address' placeholder='address line 1'}
+{@html text/date/password field=product.supplier_id size=medium hidden default=1}
 {@html textarea field=stock_supplier.notes size=60x5 label=Notes}
 
-Optional for any - label, group, disabled
+Optional for any - label, group, disabled, tip, default
 
 {@html button Save primary small
 	alert('ok')     			// or any js
@@ -166,6 +170,8 @@ Optional for any - label, group, disabled
 {@html input disabled stock_supplier.payment_terms mini "Payment terms" days}}	// same as input just no editing
 {@html inp <anytype means inline input>}
 {@html textarea stock_supplier.notes 60x5 Notes}
+{@html checkbox field=young_person.exclusion_risk label='Exclusion risk' tip='At risk of Exclusion?'}
+{@html radio field=befriender.gender label='Gender' options=0:Male,1:Female}
 
 <h5>Tabs</h5>
 
@@ -192,12 +198,20 @@ runAction [jamName:]actionName, array [name(s)/id(s)/class], [resultObjectName],
 	runAction('jam2:save', ['form1,form2'], 'divThatGetsTheResult', backButton )
 
 <hr>
+
 <h4>Utility</h4>
 
-<h5>Variables</h5>
+<h5>System Variables</h5>
 
-system.date 	@@TODO
-system.time		@@TODO
+sys.control.xxxxx	// mainly for sysjam, all args processed line by line are converted to vars eg 'group=mygroup size=small'
+sys.sequence		// The unique sequence number for each iteration of an @each @end loop. Useful for getSibling() js calls from direct html <button>s etc
+sys.today			// Date
+sys.now 			// Time
+sys.cookie.xxxxx 	// Cookies ('bf_user' etc)
+sys.hash			// 26 character random string   <------ still todo
+sys.randomnumber	// 8 digit rand
+
+
 
 <hr>
 
@@ -212,6 +226,18 @@ system.time		@@TODO
 {@include /path/file}
 {@include once /path/file}
 {@include standalone /path/file}	// only include if this file itself is not included
+
+{@daycount fromdate todate}			// eg 14
+{@adddays fromdate days [mydate]}			// eg 2016-12-20 20 [var-to-create]
+{@datedmy date [myvar]}	convert yyyy-mm-dd to dd-mm-yyyy format, and either store in myvar or simply emit
+{@dateoverlap start1=date end1=date start2=date end2=date newfield=myvar}	// is there any overlap between the ranges? 0 or 1 stored in newfield
+
+{@replacevalue field=befriender.gender value=0:male,1:female}
+{@wordsplit field=global.postcode segment=1 newfield=myNewField}	// IF newfield is specified it will be created/updated otherwise simply emitted
+
+{@randomnumber [newfield=myvar]	// emit or store a random number in newfield
+{@stop}		gracefully stop processing jamfile at this point
+{@skip [condition]}		// where condition is something like myVar=1, myVar != 1
 
 <hr>
 
@@ -266,8 +292,3 @@ Running from commandline
 @actions. All variables created as the result of actions are sent as oob to the browser.
 
 We should maybe have a setting whereby an ajax call can send all the browser vars to the server on an @action call. This is like having 'state'
-
-
-<h4>Autocreated Jam variables</h4>
-sys.control.xxxxx		// mainly for sysjam, all args processed line by line are converted to vars
-sys.control.sequence	// A unique sequence number for each iteration of an @each @end loop

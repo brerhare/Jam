@@ -1,7 +1,7 @@
 {{@include /jam/sys/html/header.html}}
 {{@include /jam/css/style.css}}
 
-{{@Xinclude /jam/run/menu.jam}}
+{{@Xinclude /jam/run/new_menu.jam}}
 
 {{@database befriending_wireflydesign_com}}
 
@@ -35,7 +35,7 @@
 	{{@get form_type filter id = form_upload_other.form_type_id}}
 		<tr class="rowHighlight" onClick="runAction('eventMaintainFormsOtherEdit?event.id={{event.id}}', ['form_upload_other.id={{form_upload_other.id}}'], 'event_forms_other')">
 			<td>{{form_type.name}}</td>
-			<td>{{form_upload_other.date}}</td>
+			<td>{{@datedmy form_upload_other.date}}</td>
 			<td> <a href="http://befriending.wireflydesign.com:/jam/uploads/forms/events/other/{{event.id}}_{{form_upload_other.file}}" target="_blank">{{form_upload_other.file}}</a> </td>
 			<td> <button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete_formOther('{{form_upload_other.id}}','{{form_type.name}}')"> <i class="uk-icon-trash"></i></button> </td>
 		</tr>

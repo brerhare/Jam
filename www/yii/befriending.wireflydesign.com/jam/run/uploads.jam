@@ -1,0 +1,344 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/new_menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+<br>
+{{@html container start center css='max-width:1080px; Xpadding:0}}
+
+<div name="content">
+	<h3><center> Program uploads to the Befriending Project </center></h3>
+    <form class="uk-form">
+
+<!-- Insert here -->
+
+<p>
+<h4><b>June 6 2017 </b></h4>
+- Fixed match tab of befriender, was not listing previous matches
+</p>
+
+
+<p>
+<h4><b>May 25 2017 </b></h4>
+- GIRFEC on YP Outcomes tab date sequence fixed
+<br>
+- GIRFEC report fix
+</p>
+
+
+<h4><b>April 18 2017 </b></h4>
+- GIRFEC on YP Outcomes tab events sideways accross the page and show a horizontal scrollbar should there be too many dates/scores to display
+<br>
+- GIRFEC report duplicate Logan where 2nd line should have read Bailey
+<br>
+- GIRFEC report averages not to include zero scores
+<br>
+- Deletion of befrienders/YP's was failing when name had an apostrophe in it
+<br>
+- Referral form no longer asks for 'status'. All referred YP's are allocated a status of 'referred' which can only be changed by office staff
+<br>
+- Fixed 'invalid link' problem with referrals
+</p>
+
+
+<p>
+<h4><b>April 17 2017 </b></h4>
+- YP leaving report (and others) shows selected date range in heading
+<br>
+- Referral report caters for two date-pairs overlap (report date from-to and referred-matched dates)
+<br>
+- YP annual match report caters for two date-pairs overlap
+<br>
+- GIRFEC date on Outcomes tab shows event date not upload date
+</p>
+
+
+<p>
+<h4><b>April 10 2017 </b></h4>
+- Made referral form "already used" message a bit more informative
+<br>
+</p>
+
+
+<p>
+<h4><b>April 08 2017 </b></h4>
+- Dates DD/MM/YYYY format. I have gone through all the screens/reports, believe I have changed them all. Let me know if I missed any. Also this removes the ability to date sort (which is why they were YYYY/MM/DD)
+<br>
+- Young person archive process now asks for a reason, and this is reflected on the leaving report (ie same as befriender)
+<br>
+- YP and befriender reason popup now shows properly on screen
+</p>
+
+
+<p>
+<h4><b>April 06 2017 </b></h4>
+- Fixed duplicated event (befriender christine boyle)
+<br>
+- Risk report totals per column
+</p>
+
+
+<p>
+<h4><b>April 05 2017 </b></h4>
+- Fixed one-time use of referrer links, instead of waiting 24 hours to expire it immediately expires
+<br>
+- Previous match information shown on befrienders now shows match/previous properly
+</p>
+
+
+<p>
+<h4><b>April 04 2017 </b></h4>
+- GP and named person reminder message on referral form
+<br>
+- One-time use of links for referrer, and expires after 30 days if unused
+</p>
+
+
+<p>
+<h4><b>March 29 2017 </b></h4>
+- Fixed Notes report not displaying anything
+<br>
+- Fixed unable to delete an event if it has attendees attached
+<br>
+- Fixed event 'apply' so you dont have to save, then find the event again
+<br>
+- All references to Medical Type changed to Medical and Related Issues
+<br>
+- Can set the sequence of medical types on forms and reports
+<br>
+- Legal Status page added to referral form
+<br>
+- Dont know -> Don't know typo in various places
+<br>
+- Referral form named person reminder in red
+<br>
+- Reminder for documents (MOT etc) go to office only
+<br>
+- Befrienders can be allocated a coordinator (details tab)
+<br>
+- Coordinator report allows choice of YP or befriender
+<br>
+- YP date referred can be changed in details tab.
+<br>
+- Medical and Related Issues can now be deleted. Be careful, this will also remove any associated data relating to them
+</p>
+
+
+<p>
+<h4><b>March 20 2017 </b></h4>
+- Reminders for documentation working and active. Office cc'd
+<br>
+- Reminders for events (all attendees) working and active. Office cc'd
+<br>
+- Legal status and date of order removed from referral form
+<br>
+- Referral forms print buttons
+<br>
+- User Guide updated
+<br>
+- Fixed bug in Event Maintain screen showing wrong befriender surname
+</p>
+
+
+<p>
+<h4><b>March 01 2017 </b></h4>
+- YP details tab has coordinator dropdown, and menu option under Young Person has coordinators maintenance (is this the right place for it?)
+<br>
+- YP coordinator / YP match report, selectable by date
+<br>
+- Headings changed on referral form (anticipated -> anticipated outcomes, interest -> interest outcomes, medical -> medical information)
+<br>
+- YP leaving report columns same as befriender leaving report except 'reason' column (YP has no leaving-reason)
+<br>
+- YP legal status (and date) moved from Details tab to its own tab. Each legal status has its own applicable date
+<br>
+- YP legal status report, selectable by status
+<br>
+- Event maintenance screen now has an event 'milestone' dropdown. Start-6mth-12mth-finish. Use this for the GIRFEC report
+<br>
+- GIRFEC report
+</p>
+
+
+<p>
+<h4><b> February 21 2017 </b></h4>
+- (xls 23) Notes report (YP and befriender) opens in new tab
+<br>
+- (xls 27) YP coordinators can be input to the system
+<br>
+- (xls 38) Show a 'please wait' message while the medical report is being prepared
+</p>
+
+
+<p>
+<h4><b> February 17 2017 </b></h4>
+- (xls 9) Prompt for parent/carer details to be filled in on referral form
+<br>
+- (xls 10) Office receives an email when a referral is submitted
+<br>
+- (xls 24) Can now delete YPs from the main screen. Can also delete befrienders from the main screen
+<br>
+- (xls 38) New YP medical report
+</p>
+
+
+<p>
+<h4><b> February 7 2017 </b></h4>
+- (xls 4) Referral form heading change to Anticipated Outcomes and Interest changed to Outcomes
+<br>
+- (xls 7) Family dynamic page
+<br>
+- (xls 17) Befrienders name on events front page
+<br>
+- (xls 18) Event filter
+<br>
+- (xls 19) Event date now displays on GIRFEC
+<br>
+- (xls 30) YP leaving report (same as befrienders)
+<br>
+- (xls 39) GIRFEC report overwritten. Replaced
+</p>
+
+
+<h4><b> November 17 2016 </b></h4>
+<p>
+- Insert 'dynamics' page into referral form process
+<br>
+- Events front page shows the befriender too
+<br>
+- YP, befriender and referral names appear alphabetically
+</p>
+
+
+<h4><b> November 7 2016 </b></h4>
+<p>
+- Referral email formatting fixed, better font applied
+<br>
+- Referral email now has logged in user's signature at bottom (name + email address)
+<br>
+- Referral YP details page - changed Referral Reason to Referral Reasons
+<br>
+- Referral YP details page now requires the Referral Reasons to be non-empty
+<br>
+- Referral form attachment now attaches properly for the email sending
+</p>
+
+
+<h4><b> October 31 2016 </b></h4>
+<p>
+- Referral email - you can specify the text that will be sent out with the email. This is in menu option 'system -> configuration' (same place as the attachment is specified)
+<br>
+- Fixed problem when copy/pasting large befriender profile notes
+<br>
+- New report - event notes (search all events)
+<br>
+- New report - Young Person leaving. Looks a bit bare, should we have more columns?
+<br>
+- New report - Young Person risk report.
+<br>
+- All reports now update the total item count when filtering is applied, and dont give error on clicking a line
+</p>
+
+
+<h4><b> October 28 2016 </b></h4>
+<p>
+- Heading 'Not applicable' removed from befriender 'Documentation' tab
+<br>
+- 'Anticipated' tab removed from befriender screen
+</p>
+
+
+<h4><b> September 29 2016 </b></h4>
+<p>
+- When archiving a befriender a termination reason may be specified.
+<br>
+- Befriender Leaving report
+<br>
+- Annual Girfec report
+</p>
+
+
+<h4><b> September 28 2016 </b></h4>
+</p>
+- Reworked menus to be more consistent. Top line is headings, everything clickable is in the dropdowns.
+<br>
+- System Configuration - the name of any previously uploaded referral attachment is now shown.
+<br>
+- Login password displays as asterisks.
+<br>
+- Befriender annual report has new column 'how heard'.
+<br>
+- Events :  matched befriender for the YP now also appears in the 'all possible attendees' list so can be invited.
+<br>
+- Befriender annual report now has an area summary at the end.
+</p>
+
+
+<p>
+<h4><b> September 26 2016 </b></h4>
+</p>
+- Referral forms have the option of an attachment. This is specified in the menu option 'system -> configuration'.
+Attachment file may be uploaded here via the 'choose file' button, and if any is specified will be sent with the referral email.
+Attachment file may be updated at any time.
+There is also a 'clear' button to remove attachments, in which case none will be sent with the referral email.
+<br>
+- Befriender reference date added as an input field
+</p>
+
+
+<p>
+<h4><b> September 25 2016 </b></h4>
+</p>
+- Reports - gender 0/1 replaced with proper male/female annotation
+<br>
+- Reports - matched annual report shows number of days for completed matches
+(what about currently active matches ie no end date - should those days be shown too?)
+</p>
+
+
+<p>
+<h4><b> September 23 2016 </b></h4>
+</p>
+- Befrienders, YP and event lists are column-sortable (click on headings) and have range filters. It's simple to add this to any other lists, please just let me know which ones.
+<br>
+- Notes report (YP and befriender) layout changed as requested
+</p>
+
+
+<p>
+<h4><b> September 21 2016 </b></h4>
+</p>
+- Befrienders have a Profile tab, can upload a picture and notes
+</p>
+
+
+<p>
+<h4><b> September 19 2016 </b></h4>
+</p>
+- Befrienders now also have an archive facility, works the same as YP
+</p>
+
+
+<p>
+<h4><b> September 18 2016 </b></h4>
+- Ability to add users and assign passwords into the system (see under 'system' menu)
+<br>
+- Designate access to menu items per user (see under 'system' menu)
+<br>
+- Login and logout
+<br>
+- Fixed the Form tab on the YP screen
+<br>
+- More space between matched and possible befrienders (YP match tab)
+<br>
+- Befriender web form ends with a thank you screen instead of a blank screen
+</p>
+
+
+    </form>
+
+{{@html container end}}
+
+{{@include /jam/sys/html/footer.html}}

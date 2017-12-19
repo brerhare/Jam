@@ -198,7 +198,11 @@ class MailerContentController extends Controller
 							continue;
 						// phpmailer
 						$from = "no-reply@dglink.co.uk";
+
 						$fromName = "DG Link mailer";
+						if (isset(Yii::app()->session['display_name']))
+							$fromName = Yii::app()->session['display_name'];
+
 						$subject = $model->title;
 						$mail = new PHPMailer();
 						$url = Yii::app()->getRequest()->getBaseUrl(true);
@@ -218,11 +222,11 @@ class MailerContentController extends Controller
 						$mail->MsgHTML($css . $msg . $uns);
 						if (!$mail->Send())
 						{
-    						Yii::log("MAILER COULD NOT SEND MAIL " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
+    						Yii::log("MAILER COULD NOT SEND MAIL to " . $mailerMember->email_address . " " . $mail->ErrorInfo, CLogger::LEVEL_WARNING, 'system.test.kim');
     						echo "<div id=\"mailerrors\">Mailer Error: " . $mail->ErrorInfo . "</div>";
 						}
 						else
-    						Yii::log("MAILER SENT MAIL SUCCESSFULLY" , CLogger::LEVEL_WARNING, 'system.test.kim');
+    						Yii::log("MAILER SENT MAIL SUCCESSFULLY to " . $mailerMember->email_address . " " , CLogger::LEVEL_WARNING, 'system.test.kim');
 
 					}
 				}

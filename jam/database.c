@@ -27,7 +27,7 @@ char *connDbName = NULL;
 
 int isMysqlTable(char *tableName) {
 	int ret = 0;
-	char *query = (char *) calloc(1, 4096);
+	char *query = (char *) calloc(5, 64096);
 	sprintf(query, "SHOW TABLES LIKE '%s'", tableName);
 	MYSQL_RES *res;
 	if (mysql_query(conn, query) != 0) {
@@ -36,7 +36,7 @@ int isMysqlTable(char *tableName) {
 	}
 	res = mysql_store_result(conn);
 	if (!res) {
-		char *tmp = (char *) calloc(1, 4096);
+		char *tmp = (char *) calloc(5, 64096);
 		logMsg(LOGERROR, "isMysqlTable() - couldn't get results set: %s\n", mysql_error(conn));
 		mysql_free_result(res);
 		free(query);
@@ -50,7 +50,7 @@ int isMysqlTable(char *tableName) {
 }
 
 int isMysqlField(char *fieldName, char *tableName) {
-	char *query = (char *) calloc(1, 4096);
+	char *query = (char *) calloc(5, 64096);
 	sprintf(query, "SELECT * FROM %s LIMIT 1", tableName);
 //die(query);
 	MYSQL_RES *res;
@@ -60,7 +60,7 @@ int isMysqlField(char *fieldName, char *tableName) {
 	}
 	res = mysql_store_result(conn);
 	if (!res) {
-		char *tmp = (char *) calloc(1, 4096);
+		char *tmp = (char *) calloc(5, 64096);
 		logMsg(LOGERROR, "isMysqlField() - couldn't get results set: %s\n", mysql_error(conn));
 		mysql_free_result(res);
 		free(query);
@@ -90,12 +90,12 @@ struct SQLMAP {
 SQLMAP sqlTypeMap[] = {
     "string",       "VARCHAR(255)",
     "text",			"TEXT",
-	"number", 	    "INT",
-	"number.0",	    "INT",
-    "number.1",     "DECIMAL(10,1)",
-    "number.2",     "DECIMAL(10,2)",
-    "number.3",     "DECIMAL(10,3)",
-    "number.4",     "DECIMAL(10,4)",
+	"number", 	    "INT DEFAULT 0",
+	"number.0",	    "INT DEFAULT 0",
+    "number.1",     "DECIMAL(10,1) DEFAULT 0",
+    "number.2",     "DECIMAL(10,2) DEFAULT 0",
+    "number.3",     "DECIMAL(10,3) DEFAULT 0",
+    "number.4",     "DECIMAL(10,4) DEFAULT 0",
     "date",         "DATE",
     "time",         "TIME",
     "datetime",     "DATETIME",
@@ -174,7 +174,7 @@ int sqlGetRow2Vars(SQL_RESULT *rp) {
 // Zero all vars applicable to a sql record and set id to -1
 int sqlClearRowVars(SQL_RESULT *rp) {
 // @@FIX why do we need SQL_RESULT? Look at mysql_list_fields() (see http://ropas.snu.ac.kr/n/lib/manual074.html)
-	char *tmp = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(5, 64096);
 	_nullifySqlFields(rp->tableName, rp->mysqlHeaders, rp->mysqlTypes, rp->numFields);
 	sprintf(tmp, "%s.id", rp->tableName);
 	VAR *seekVar = findVarStrict(tmp);
@@ -235,7 +235,23 @@ void _updateSqlFields(char *qualifier, char **mysqlHeaders, enum enum_field_type
 		char qualifiedName[256];
 		sprintf(qualifiedName, "%s.%s", qualifier, mysqlHeaders[i]);
 		updateSqlVar(qualifiedName, mysqlTypes[i], row[i]);
-//emitStd("HDR=[%s.%s]:[%s]\n", qualifier, mysqlHeaders[i], row[i]);
+
+logMsg(LOGMICRO, "fillVarDataTypes START");
+/*****
+unsigned char *p = (unsigned char *) row[i];
+if (row[i]) {
+while (*p) {
+    if ((*p == 145) || (*p == 146) || (*p == 148) || (*p == 151) || (*p == 39) || (*p == 180) || (*p > 127) || (*p == '(') || (*p == ')') || (*p == '%') || (*p < 31) || (*p == '!') || (*p != 'a') )  {
+        logMsg(LOGMICRO, "fillVarDataTypes found a WORD char [%c] ...", *p);
+        *p = ' ';
+    }
+    p++;
+}
+}
+*****/
+logMsg(LOGMICRO, "fillVarDataTypes END");
+
+logMsg(LOGDEBUG, "HDR=[%s.%s]:[%s]\n", qualifier, mysqlHeaders[i], row[i]);
 	}
 }
 void _nullifySqlFields(char *qualifier, char **mysqlHeaders, enum enum_field_types mysqlTypes[], int numFields) {
@@ -274,31 +290,48 @@ void updateSqlVar(char *qualifiedName, enum enum_field_types mysqlType, char *va
 // ----------------------------------------------------------------
 // General stuff
 
-// This is the common code that used to be in @get and @each - now called from control() and wordDatabaseGet()
+// This is the common code that used to be in @get and @each<> - now called from control() and wordDatabaseGet()
 MYSQL_RES *doSqlSelect(int ix, char *defaultTableName, char **givenTableName, int maxRows) {
     char *cmd = jam[ix]->command;
     char *args = jam[ix]->args;
     char *rawData = jam[ix]->rawData;
-    char *tmp = (char *) calloc(1, 4096);
+    char *tmp = (char *) calloc(5, 64096);
 
-    // @@TODO refactor this because it shares 90% of its code with @each
+    // @@TODO refactor this because it shares 90% of its code with @each<>
     int skipCode = 0;
 
     // Get the given table name that we want to get
     char *ta = strTrim(args);
     char *tg = *givenTableName;
+
+	logMsg(LOGDEBUG, "doSqlSelect:  cmd='%s' ta='%s', ", cmd, ta);
+
     while ((*ta) && (*ta != ' ') && (*ta != '.'))	// Find ' ' or '.' which terminates the tablename;
         *tg++ = *ta++;
     char *query = (char *) calloc(1, MAX_SQL_QUERY_LEN);
     sprintf(query, "select * from %s",  *givenTableName);				// set a default query
-    // Is there more than just the table name?
-    if (*ta) {
+
+
+	// Is this a @eachsql command?
+	if (!strcmp(cmd, "@eachsql")) {
+		if (*ta) {
+			char *p = ta;
+			while ((*p) && (*p != ' '))
+				*p;
+			if (*p == ' ') {
+				p++;
+				if (*p) {
+					strcpy(query, p);
+				}
+			}
+		}
+	} else if (*ta) {	// Is there more than just the table name?
         ta++;
         skipCode = appendSqlSelectOptions(query, ta, defaultTableName, *givenTableName);		// build a complex query
     }
 
     // Append 'limit n'
-    char *s = (char *) calloc(1, 4096);
+    char *s = (char *) calloc(5, 64096);
     sprintf(s, " LIMIT %d", maxRows);
     strcat(query, s);
     free(s);
@@ -327,8 +360,8 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 	char *selectorField = NULL;
 	char *operand = NULL;
 	char *externalFieldOrValue = NULL;
-	char *tmp = (char *) calloc(1, 4096);
-	char *queryBuilder = (char *) calloc(1, 4096);
+	char *tmp = (char *) calloc(5, 64096);
+	char *queryBuilder = (char *) calloc(5, 64096);
 	char *space = " ";
 	int wdNum = 0;
 	int firstArg = 1;
@@ -348,7 +381,7 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 	for (int i = 0; i < MAX_SUBARGS; i++) {
 		if (subArg[i] == NULL) {
 			if (firstArg) {
-				logMsg(LOGERROR, "No arguments provided to @each/@get");
+				logMsg(LOGERROR, "No arguments provided to @each<>/@get");
 				return(-1);
 			}
 			break;
@@ -381,6 +414,7 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 				free(selectorField);
 			}
 			strcat(queryBuilder, tmp);
+			logMsg(LOGDEBUG, "ORDER BY statement resulted in  : %s", tmp);
 			break;
 		}
 
@@ -443,7 +477,7 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 
 			if ( (1==1) || (!isNum) || (numOfMinuses > 1) ) {	// @@TODO @@FIX!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				if (!strchr(varValue, '\'')) {
-					char *newValue = (char *) calloc(1, strlen(varValue) + 3);
+					char *newValue = (char *) calloc(5, strlen(varValue) + 3);
 					strcpy(newValue, "'");
 					strcat(newValue, varValue);
 					strcat(newValue, "'");

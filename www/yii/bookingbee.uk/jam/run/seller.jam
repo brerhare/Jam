@@ -1,0 +1,98 @@
+{{@include /jam/sys/html/header.html}}
+
+{{@include /jam/css/site.css}}
+{{@include /jam/run/menu.jam}}
+
+{{@include /jam/run/login.inc}}
+
+<br><br>
+
+{{@html container start center css='max-width:900px; Xpadding:0}}
+
+<form name="seller_form" class="uk-form uk-form-horizontal">
+<center><h3> Seller Information </h3></center>
+
+	<input type="hidden" name="seller.id" value={{seller.id}}>
+	<input type="hidden" name="seller.image" value="{{seller.image}}">
+	{{@html gridrow start}}
+		{{@html gridcol start width=5-5}}
+			{{@html text field=seller.name size=large label='Name'}}
+			{{@html text field=seller.landline size=medium label='Telephone number'}}
+			{{@html text field=seller.mobile size=medium label='Mobile number'}}
+			{{@html text field=seller.email size=medium label='Email address'}}
+			{{@html textarea field=seller.address size=50x5 label=Address}}
+			{{@html text field=seller.post_code size=small label='Post code'}}
+			{{@html text field=seller.paypal_email size=medium label='Paypal email address'}}
+			<br>
+			<label class="uk-form-label" for="mem.upload">Uploaded logo</label>
+			<div class="uk-form-controls">
+				<span style='display:inline-block;margin-top:5px'>{{seller.image}}</span>
+				<input type="button" value="Clear" onclick="clearFile()">
+				<span class="uk-form-file"> <input type="file" onChange="fileUpload(this)"></span>
+			</div>
+
+		{{@html gridcol end}}
+	{{@html gridrow end}}
+	{{@html gridrow start}}
+		{{@html gridcol start width=1-1}}
+			<br>
+			<center>
+				{{@html button Save primary medium
+					runAction('update_seller', ['seller_form'], '', postUpdate)
+				}}
+				{{@html button Cancel primary medium
+					runJam('event');
+				}}
+			</center>
+		{{@html gridcol end}}
+	{{@html gridrow end}}
+</form>
+
+{{@action update_seller}}
+	{{@update item seller notify=ok}}
+{{@end}}
+
+<script>
+function clearFile() {
+	var evObj = get('seller.image');
+	evObj.value = '';
+}
+
+function postUpdate() {
+	window.setTimeout(runJam('event', 1000));
+}
+
+function fileUpload(obj) {
+    $.blockUI();
+    var file = obj.files[0];
+    var evObj = get('seller.image');
+	evObj.value = file.name;
+//alert(evObj.value);
+    console.log("name : " + file.name);
+    console.log("size : " + file.size);
+    console.log("type : " + file.type);
+    console.log("date : " + file.lastModified)
+    var url = 'http://www.bookingbee.uk:/jam/upload/uploadSellerImage.php';
+    var xhr = new XMLHttpRequest();
+    var fd = new FormData();
+    xhr.open("POST", url, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            console.log(xhr.responseText); // handle response.
+            $.unblockUI();
+			objAttachment = get('seller.image');
+			objAttachment.value = file.name;
+        } else {
+            $.unblockUI();
+        }
+    };
+    fd.append("upload_file", file);
+    xhr.send(fd);
+
+}
+
+</script>
+
+{{@html container end}}
+
+{{@include /jam/sys/html/footer.html}}

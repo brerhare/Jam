@@ -8,6 +8,10 @@ Generally lookup actions (eg autocomplete) should return all fields. Either upda
 
 ------------- todo ------------------------------------
 
+********************************************************************************************************************************************************************************************************************************************************************
+*************************************************************** Some words still use the old format where args must be in order (getword1, 2, 3 etc) instead of the new something=whatever format for args *********************************************************
+********************************************************************************************************************************************************************************************************************************************************************
+
 * {{@runaction <actionname>}} - to have access to all existing state, unlike js:runAction. What happens after?
 
 * emit trailer from the process loop, not from each call. If a call is missed that @'s trailer isnt emitted. Emit from each 'if @xxx' block after handling whatever words. Default catchall there already does an emit

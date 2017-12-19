@@ -1,8 +1,12 @@
 {{@include /jam/sys/html/header.html}}
 
+	{{@database plugin}}
+
 <style>
 	body {
-		display:none
+		display:none;
+		margin: 0px !important;
+		background-color: #ffffff;
 	}
 	.uk-form * {
 		font-family: 'Pontano Sans', Arial, sans-serif !important;
@@ -11,29 +15,28 @@
 	.uk-form input, textarea {
 		border-radius: 5px !important;
 		margin-bottom:3px !important;
-		border: 2px solid #5651b7 !important;
+		border: 2px solid #4142a2 !important;
 	}
 	.uk-form button {
 		margin-top:3px !important;
 		Xmargin-bottom:8px !important;
-		color: #ffffff !important;
-		background: #5651b7 !important;
+		color: white !important;
+		background: #4142a2 !important;
 	}
 	.uk-form button:hover {
-		background: #7672c4 !important;
+		background: #2f77ce !important;
 	}
 </style>
 
 <form name="contactForm" class="uk-form">
-	{{@html input hidden jelly.sid}}
-	{{@html input hidden jelly.email}}
-	{{@html input text mailer_member.first_name large '' Name}}
-	{{@html input text mailer_member.email_address large '' Email}}
-	{{@html textarea message 60x5 '' Message}}
-	<p> Leave your phone number and we will get back to you within minutes </p>
-	{{@html input text mailer_member.telephone large '' Phone}}
-	{{@html button SUBMIT primary .uk-width-1-1 
-		runAction sendMessage contactForm contactForm
+	{{@html hidden field=jelly.sid}}
+	{{@html hidden field=jelly.email}}
+	{{@html text field=mailer_member.first_name size=large placeholder=Name}}
+	{{@html text field=mailer_member.email_address size=large placeholder=Email}}
+	{{@html text field=mailer_member.telephone size=large placeholder='Phone (optional)'}}
+	{{@html textarea field=var.message size=60x5 placeholder=Message}}
+	{{@html button SUBMIT primary .uk-width-1-2 
+		runAction('sendMessage', ['contactForm'], 'contactForm')
 	}}
 </form>
 
@@ -57,7 +60,6 @@ alert('['+val+']');
 </script>
 
 {{@action sendMessage}}
-	{{@database plugin}}
 	{{@get admin_user filter sid = jelly.sid}}
 	{{@get mailer_list filter uid = admin_user.id}}
 	{{mailer_member.uid = admin_user.id}}
@@ -65,10 +67,9 @@ alert('['+val+']');
 	{{mailer_member.mailer_list_id = mailer_list.id}}
 	{{@new item mailer_member}}
 
-	{{@email jelly.email jelly.email 'Website enquiry' You have a new enquiry. The contact details for this message will be stored in your website newsletter mailing list. The message is  below.\n\nName: mailer_member.first_name \nEmail: mailer_member.email_address \nMessage: message \nTelephone: mailer_member.telephone \n  }}
+	{{@email {{jelly.email}} {{jelly.email}} 'Website enquiry (wireflydesign.com)' You have a new enquiry. The contact details for this message will be stored in your website newsletter mailing list. The message is  below.<br><br><div style='background-color:#bbe9dc; color:#2e2575'><b> Name:</b> {{mailer_member.first_name}} <br><b>Email:</b> {{mailer_member.email_address}} <br><b>Telephone:</b> {{mailer_member.telephone}}</div><br><b>Message: {{var.message}} <br></b>  }}
 
-	<center><p><br><br><br><b>Thank you {{mailer_member.first_name}}!</b><br>We will get back to you shortly</p></center>
+	<center><p><br><br><br><b>Thank you {{mailer_member.first_name}}!</b><br>We will get back to you as soon as possible</p></center>
 {{@end}}
 
 {{@include /jam/sys/html/footer.html}}
-

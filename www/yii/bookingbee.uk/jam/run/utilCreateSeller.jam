@@ -1,0 +1,23 @@
+{{@include /jam/sys/html/header.html}}
+
+Doing...
+
+{{@database bookingbee_uk}}
+
+{{@remove table seller}}
+
+{{@new table seller
+	sid						string		required
+	name					string		required
+	landline                string
+	mobile                  string
+	address					string
+	post_code				string
+	email					string
+	image					string
+	paypal_email			string
+}}
+
+Done
+
+{{@include /jam/sys/html/footer.html}}

@@ -1,0 +1,113 @@
+{{@include /jam/sys/html/header.html}}
+
+{{@include /jam/css/site.css}}
+{{@include /jam/run/menu.jam}}
+
+{{@include /jam/run/login.inc}}
+
+<br><br>
+
+{{@html container start center css='max-width:1024px; overflow-x: visible; Xpadding:0}}
+
+<center><h3 {{seller.name}} Events </h3></center>
+
+<table id="printTable" class="testgrid sortable searchTable uk-table uk-table-condensed" style="border:1px solid #dddddd">
+	<thead>
+		<tr>
+			<th> Headline </th>
+			<th> Date </th>
+			<th> Time </th>
+			<th> Active </th>
+			<th help-id="private"> Private </th>
+			<th> <button class="uk-button uk-button-mini uk-button-success" onClick="runJam('eventMaintain?event.id=0')" help-id="newButton"> <i class="uk-icon-plus"></i> New</button> </th>
+		</tr>
+	</thead>
+	<tbody>
+{{helpId = 0}}
+{{@each event filter seller_id = seller.id, order by date ASC}}
+	{{helpId = helpId + 1}}
+		<tr class="rowHighlight" onClick="runJam('eventMaintain?event.id={{event.id}}');">
+			<td>{{event.headline}}</td>
+			<td>{{@datedmy event.date}}</td>
+			<td>{{event.time}}</td>
+			<td>{{@replacevalue field=event.active values=0:no,1:yes}}
+			<td>{{@replacevalue field=event.private values=0:no,1:yes}}
+			<td>
+				<span>
+					<button class="uk-button uk-button-mini uk-button-primary" onClick="confirmCopy('{{id}}','{{event.headline}}')" help-id="cloneButton{{helpId}}"> <i class="uk-icon-copy"></i> </button>
+				</span>
+				<span">
+					<button class="uk-button uk-button-mini uk-button-danger" onClick="confirmDelete('{{id}}','{{event.headline}}')" help-id="deleteButton{{helpId}}"> <i class="uk-icon-trash"></i> </button>
+				</span>
+			</td>
+		</tr>
+{{@end}}
+	</tbody>
+	</table>
+
+<!--
+	<button class="uk-button uk-button-medium uk-button-primary" onClick="printData('printTable')"> Print </button>
+
+	<span class='exportButton'>
+    	<a href="#" class="export" table='{"id":"printTable"}'>Export spreadsheet</a>
+	</span>
+-->
+
+<!--	<center>
+	{{@html button Finished primary medium
+		runJam('menu.jam');
+	}}
+	</center> -->
+
+</div>
+
+<script>
+
+// Init help
+helpAdd("private",		"Should this event be listed on public listings?",                      "top");
+helpAdd("newButton",    "Start a new event",                      "right");
+helpAdd("cloneButton1",  "Make an exact copy of an event",         "left");
+helpAdd("deleteButton1", "Delete an event",                        "right");
+
+function confirmDelete(id, displayInfo) {
+    window.event.cancelBubble = true;   // Prevent any further events
+    var result = confirm('Confirm delete of item ' + displayInfo);
+    if (result)
+        runAction('delete', ['eventId='+id], '', runJam)
+}
+
+function confirmCopy(id, displayInfo) {
+    window.event.cancelBubble = true;   // Prevent any further events
+    var result = confirm('Confirm that you want to make a new copy of item ' + displayInfo);
+    if (result)
+        runAction('copy', ['eventId='+id], '', runJam)
+}
+</script>
+
+{{@action delete}}
+    {{@get event filter id = eventId}}
+	{{@each event_item filter event_id = eventId}}
+		{{@remove item event_item}}
+	{{@end}}
+	{{@remove item event notify=ok}}
+{{@end}}
+
+{{@action copy}}
+    {{@get event filter id = eventId}}
+	{{event.id = }}
+	{{event.headline = {{event.headline}}_copy}}
+	{{@new item event notify=ok}}
+	{{@each event_item filter event_id = eventId}}
+		{{dummyNull = }}
+		{{event_item.id = dummyNull}}
+		{{event_item.event_id = event.id}}
+    	{{@new item event_item}}
+	{{@end}}
+{{@end}}
+
+{{@html container end}}
+
+{{@include /jam/sys/js/searchPrintExport.js}}
+
+{{@include /jam/sys/html/footer.html}}
+

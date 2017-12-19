@@ -1,0 +1,71 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/style.css}}
+
+{{@include /jam/run/new_menu.jam}}
+
+{{@database befriending_wireflydesign_com}}
+
+    <style type="text/css">
+        label {text-align: right; width:150px !important}
+        div.uk-form-controls {margin-left: 170px !important}
+    </style>
+
+<br>
+{{@html container start center css='max-width:1080px; Xpadding:0}}
+
+	<center><h3> Girfec Report </h3></center>
+
+<div name='content'>
+
+	<form name='dateSel' class="uk-form uk-form-horizontal">
+
+        {{@html gridrow start}}
+            {{@html gridcol start width=3-10}}
+			{{@html gridcol end}}
+            {{@html gridcol start width=4-10}}
+				{{@html date field=filter.date_from size=medium label='From date'}}
+				{{@html date field=filter.date_to size=medium label='To date'}}
+			{{@html gridcol end}}
+        {{@html gridrow end}}
+
+        {{@html gridrow start}}
+            {{@html gridcol start width=3-10}}
+			{{@html gridcol end}}
+            {{@html gridcol start width=4-10}}
+				{{@html dropdown field=filter.pickfield=girfec_outcome_name.id pickfield=girfec_outcome_name.description size=large label='Outcome'}}
+			{{@html gridcol end}}
+            {{@html gridcol start width=3-10}}
+			{{@html gridcol end}}
+        {{@html gridrow end}}
+
+<br>
+                <center>
+                    <button type='button' id='goButton' class="uk-button uk-button-primary" onClick="goButtonClick()">Go</button>
+                </center>
+
+	</form>
+
+</div>
+
+<br/>
+
+{{@html container end}}
+
+
+<script>
+window.onload = function() {
+}
+
+function goButtonClick() {
+	fromObj = get('filter.date_from');
+	toObj = get('filter.date_to');
+
+	var e = document.getElementById("VAR___filter.pickfield");
+	var outcome = e.options[e.selectedIndex].value;
+
+	runJam('reportGirfec2?from=' + fromObj.value + '&to=' + toObj.value + '&outcome=' + outcome);
+}
+</script>
+
+
+{{@include /jam/sys/html/footer.html}}

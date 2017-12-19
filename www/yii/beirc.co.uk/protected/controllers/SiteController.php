@@ -332,6 +332,11 @@ class SiteController extends Controller
 			}
 
 			// Validate max slots (only if new)
+			if (($inserting) && ($this->checkRemainingSlots($member->id, $startChk) == 0)) {
+				$retArr['error'] = "No more bookable slots for this member type";
+				echo CJSON::encode($retArr);
+				return;
+			}
 
 			// Validate 2 week ahead rule
 
@@ -399,9 +404,9 @@ Yii::log("EVENT AJAX CALL: " . $event->end, CLogger::LEVEL_WARNING, 'system.test
 	}
 
 	/* 0 = none, n = howmany, -1 = error */
-	public function getRemainingSlots($memberId)
+	public function checkRemainingSlots($memberId, $bookDate)
 	{
-/*
+		Yii::log("checkRemainingSlots member=[" . $memberId . "], date=[" . $bookDate . "]", CLogger::LEVEL_WARNING, 'system.test.kim');
 		// Pick up the member
 		$criteria = new CDbCriteria;
 		$criteria->addCondition("id = " . $memberId);
@@ -417,25 +422,36 @@ Yii::log("EVENT AJAX CALL: " . $event->end, CLogger::LEVEL_WARNING, 'system.test
 			return -1;
 
 		// Get starting Sunday and ending Saturday for week-based members
-		var $start = "";
-		var $end = "";
-		if ($memberType->week_month = 1)
-		{
-			// Weekly
-			$timestamp = time();
-			$weekDay = date( "w", $timestamp);
-			$date=date("Y-m-d");
-			if ($weekDay == 0)
-				$start = $date;
-			else
-				$start = date('Y-m-d', strtotime($date.'last sunday'));
-			$end = date('Y-m-d', strtotime($start.'next saturday'));
+		$start = "";
+		$today = date("Y-m-d");
+
+
+		$date = substr($bookDate, 0, 10);	// 2017-07-13
+		$dateBook = strtotime($bookDate);
+		$weekDay = date('w', $dateBook);
+
+		if ($memberType->week_month == 1) {		// weekly
+			$weekStart = date('Y-m-d', strtotime($date. '-'.$weekDay.' days'));
+			$weekEnd = date('Y-m-d', strtotime($date. '+'.(6-$weekDay).' days'));
+		} else { // if ($memberType->week_month == 2)	// monthly
+			//$weekStart = date('Y-m-d', strtotime($today.'last sunday -21 days'));
+			//$weekEnd = date('Y-m-d', strtotime($today.'last sunday +7 days'));
+			$weekStart = date('Y-m-01', strtotime($today));
+			$weekEnd = date('Y-m-t', strtotime($today));
 		}
-		// Get first and last days of month for month-based members
-		if ($memberType->week_month = 2)
-		{
-		}
-*/
+		$criteria = new CDbCriteria;
+		$criteria->addCondition("password = " . $member->password);
+		$criteria->addCondition("start >= " . "'" . $weekStart . "'");
+		$criteria->addCondition("end <= " . "'" . $weekEnd . "'");
+		$events = Event::model()->findAll($criteria);
+		$usedSlots = 0;
+		foreach ($events as $event)
+			$usedSlots++;
+		Yii::log("checkRemainingSlots dateBook=[" . $dateBook . "], weekDay=[" . $weekDay . "], weekStart=[" . $weekStart . "], weekEnd=[" . $weekEnd . "]", CLogger::LEVEL_WARNING, 'system.test.kim');
+		Yii::log("checkRemainingSlots used [" . $usedSlots . "] of [" . $memberType->slots . "]", CLogger::LEVEL_WARNING, 'system.test.kim');
+		if ($usedSlots >= $memberType->slots)
+			return 0;
+		return 1;
 	}
 
 }

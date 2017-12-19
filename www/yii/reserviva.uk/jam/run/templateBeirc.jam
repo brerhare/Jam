@@ -1,0 +1,215 @@
+{{@include /jam/sys/html/header.html}}
+{{@include /jam/css/reserviva.css}}
+
+{{@template TABLE template_beirc}}
+{{@template HEADING Competition Entry}}
+
+{{@database reserviva_uk}}
+
+<!-- --------------------------------------------------------------------------------------- -->
+
+{{@remove table TABLE}}
+
+{{@new table TABLE
+    uid                     number  required
+    seller_id               number  required
+    event_id                number  required
+    event_template_file_id       number  required
+    rider_name              string  required
+    rider_age               number
+    horse_name              string  required
+    club_name               string
+    class1_description      string
+    class1_ticked           number
+    class2_description      string
+    class2_ticked           number
+    class3_description      string
+    class3_ticked           number
+    class4_description      string
+    class4_ticked           number
+    class5_description      string
+    class5_ticked           number
+    class6_description      string
+    class6_ticked           number
+    class7_description      string
+    class7_ticked           number
+    class8_description      string
+    class8_ticked           number
+    is_member               number
+    name                    string  required
+    landline                string
+    mobile                  string
+    address                 string
+    post_code               string
+    email                   string
+    notes                   text
+    date_reserved           date    required
+    time_reserved           time
+}}
+
+{{@new index TABLE sellerindex
+    seller_id
+    event_id
+}}
+
+{{@new index TABLE eventindex
+    event_id
+}}
+
+<!-- --------------------------------------------------------------------------------------- -->
+
+{{@get sid filter sid = sid}}
+{{uid = sid.uid}}
+{{@get seller filter uid = uid}}
+{{@get event filter id = event}}
+
+<br><br>
+
+{{@html container start center css='max-width:900px; Xpadding:0}}
+
+<form name="event_form" class="uk-form uk-form-horizontal">
+<center><h2> {{seller.name}} HEADING </h2></center>
+<center><h3> {{@datedmy event.date}} {{event.headline}} </h3></center>
+	<input type="hidden" name="seller.id" value={{seller.id}}>
+	<input type="hidden" name="event.id" value={{event.id}}>
+	<input type="hidden" name="event.uid" value="{{seller.uid}}">
+	{{@html gridrow start}}
+		{{@html gridcol start width=5-10}}
+			{{@html text field=TABLE.rider size=medium label='Rider name'}}
+		{{@html gridcol end}}
+		{{@html gridcol start width=5-10}}
+			{{@html text field=TABLE.age size=small label='Age if junior'}}
+		{{@html gridcol end}}
+	{{@html gridrow end}}
+
+	{{@html gridrow start}}
+		{{@html gridcol start width=5-10}}
+			{{@html text field=TABLE.horse size=large label='Horse name'}}
+		{{@html gridcol end}}
+		{{@html gridcol start width=5-10}}
+			{{@html text field=TABLE.club size=medium label='Club'}}
+		{{@html gridcol end}}
+	{{@html gridrow end}}
+<hr>
+
+<hr>
+	<center>
+		<table>
+			<tr>
+				<td> Class 1 {{@html text field=TABLE.class1_description size=large}} </td>
+				<td> {{@html checkbox field=TABLE.class1_ticked}} </td>
+			<tr>
+			<tr>
+				<td> {{@html text field=TABLE.class2_description size=medium label='Class 2'}} </td>
+				<td> {{@html checkbox field=TABLE.class2_ticked}} </td>
+			<tr>
+		</table>
+	</center>
+
+ENTRY
+-----
+rider
+
+
+			{{@html text field=event.headline size=large label='Headline'}}
+			{{@html date field=event.date size=medium label='Date'}}
+			{{@html text field=event.time size=medium label='Time (hh:mm:ss)'}}
+			{{@html checkbox field=event.active label='Active' tip='Check this box if event is to be publicly visible' group=inp}}
+			{{@html textarea field=event.description size=60x5 label='Event description'}}
+			<label class="uk-form-label" for="mem.upload">Uploaded picture</label>
+			<div class="uk-form-controls">
+				<span style='display:inline-block;margin-top:5px'>{{event.image}}</span>
+				<input type="button" value="Clear" onclick="clearFile()">
+				<span class="uk-form-file"> <input type="file" onChange="fileUpload(this)"></span>
+			</div>
+<hr>
+			{{@html text field=event.contact size=large label='Contact person'}}
+			{{@html text field=event.landline size=medium label='Telephone number'}}
+			{{@html text field=event.mobile size=medium label='Mobile number'}}
+			{{@html text field=event.email size=medium label='Email address'}}
+			{{@html textarea field=event.address size=60x5 label=Address}}
+			{{@html text field=event.post_code size=small label='Post code'}}
+<hr>
+			{{@html textarea field=event.tandc size=60x5 label='Additional info (T&Cs etc)'}}
+<hr>
+			<!-- @@EG: dropdown outside of the jam -->
+			<label class="uk-form-label" for="event.event_template_file_id"> Template </label>
+			<div class="uk-form-controls">
+				<select id="ID1___event___event_template_file_id" name="event.event_template_file_id" onchange="fn(this, event);" onkeyup="fn(this, event);" class="uk-form-width-medium">
+				{{tmp.selected = }}
+				{{@each event_template_file filter uid = uid, id = event.event_template_file_id}}
+					<option value="{{event_template_file.id}}" selected> {{event_template_file.file}} </option>
+				{{@end}}
+					<option value="0">None</option>
+				{{@each event_template_file filter uid = uid, id != event.event_template_file_id}}
+					<option value="{{event_template_file.id}}"> {{event_template_file.file}} </option>
+				{{@end}}
+				</select>
+			</div>
+
+		{{@html gridcol end}}
+	{{@html gridrow end}}
+	{{@html gridrow start}}
+		{{@html gridcol start width=1-1}}
+			<br>
+			<center>
+				{{@html button Save primary medium
+					runAction('update_event', ['event_form'], '', postUpdate)
+				}}
+				{{@html button Cancel primary medium
+					runJam('event.jam');
+				}}
+			</center>
+		{{@html gridcol end}}
+	{{@html gridrow end}}
+
+</form>
+
+{{@action update_event}}
+	{{@update item event notify=ok}}
+{{@end}}
+
+<script>
+function clearFile() {
+	var evObj = get('event.image');
+	evObj.value = '';
+}
+
+function postUpdate() {
+	window.setTimeout(runJam('event.jam', 1000));
+}
+
+function fileUpload(obj) {
+    $.blockUI();
+    var file = obj.files[0];
+    var evObj = get('event.image');
+	evObj.value = file.name;
+//alert(evObj.value);
+    console.log("name : " + file.name);
+    console.log("size : " + file.size);
+    console.log("type : " + file.type);
+    console.log("date : " + file.lastModified)
+    var url = 'http://www.reserviva.uk:/jam/upload/uploadEventImage.php';
+    var xhr = new XMLHttpRequest();
+    var fd = new FormData();
+    xhr.open("POST", url, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            console.log(xhr.responseText); // handle response.
+            $.unblockUI();
+			objAttachment = get('event.image');
+			objAttachment.value = file.name;
+        } else {
+            $.unblockUI();
+        }
+    };
+    fd.append("upload_file", file);
+    xhr.send(fd);
+
+}
+
+</script>
+
+{{@html container end}}
+
+{{@include /jam/sys/html/footer.html}}

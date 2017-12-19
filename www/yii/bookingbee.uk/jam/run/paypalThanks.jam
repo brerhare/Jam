@@ -1,0 +1,65 @@
+{{@include /jam/sys/html/header.html}}
+
+{{@include /jam/css/site.css}}
+
+{{@database bookingbee_uk}}
+
+<style>
+html, body {background-color: #ffffff; }
+</style>
+
+{{@html container start center css='max-width:900px; Xpadding:0}}
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+{{@each event_order filter id = orderId }}
+	{{event_order.paid = 1}}
+	{{event_order.paid_paypal_return = 1}}
+	{{@update item event_order}}
+
+	{{@get seller filter id = event_order.seller_id}}
+	{{@get event filter id = event_order.event_id}}
+	{{@email {{seller.email}} {{event_order.email}} 'Confirmation of B.E.I.R.C booking for {{event.headline}}' action:emailContent}}
+	{{@email {{seller.email}} k@microboot.com '--- Copy of --- Confirmation of B.E.I.R.C booking for {{event.headline}}' action:emailContent}}
+	{{@email {{seller.email}} fran@microboot.com '--- Copy of --- Confirmation of B.E.I.R.C booking for {{event.headline}}' action:emailContent}}
+	{{@email {{seller.email}} {{seller.email}} '--- Copy of --- Confirmation of B.E.I.R.C booking for {{event.headline}}' action:emailContent}}
+
+{{@end}}
+
+	<center><h1> Thank you for your payment </h1></center>
+	<center><h3> Your transaction has been completed and a receipt for your purchase has been emailed to you </h3></center>
+	<center><h3> Details of this transaction are available to view at your account at www.paypal.com </h3></center>
+
+	<br>
+<center><h3> You may close this window </h3></center>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+{{@html container end}}
+
+{{@action emailContent}}
+	<p>Hello! Your booking made by {{event_order.name}} with email address {{event_order.email}} has been successfully placed<br>
+    Please check your booking details below and contact us on {{seller.landline}} {{seller.mobile}} or {{seller.email}} in the event of any problems<br>
+	{{@each event_order_item filter event_order_id = event_order.id}}
+		{{@get event_item filter id = event_item_id}}
+		<b>Item booked: {{event_item.description}}</b><br>
+	{{@end}}
+	You will receive a separate payment confirmation email from Paypal. Many thanks for your booking</p>
+{{@end}}
+
+{{@include /jam/sys/html/footer.html}}

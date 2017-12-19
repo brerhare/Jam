@@ -1,0 +1,27 @@
+{{@include /jam/sys/html/header.html}}
+
+<div style='color:#fff; background-color:#00727a; padding:10px; margin-bottom:10px'>
+	<p>
+		Test Misc words
+	</p>
+</div>
+
+
+
+<h4>Date overlap</h4>
+
+{{s1 = 2017-06-01}}
+{{e1 = 2017-06-31}}
+
+{{s2 = 2017-01-01}}
+{{e2 = sys.today}}
+
+{{@dateoverlap start1=s1 end1=e1 start2=s2 end2=e2 newfield=myVar}}
+
+s1={{s1}} and e1={{e1}} <br>
+s2={{s2}} and e2={{e2}} <br>
+overlap={{myVar}}
+
+
+
+{{@include /jam/sys/html/footer.html}}
