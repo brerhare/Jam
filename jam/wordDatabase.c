@@ -485,6 +485,10 @@ logMsg(LOGDEBUG, "wordDatabaseNewItem setting up field: [%s]", row[0]);
 		exit(1);
 	}
 */
+
+	sprintf(tmp, "%s.id", tableName);
+	setVarAsNumber(tmp, newId);
+
 	logMsg(LOGDEBUG, "Created new item in table '%s' with id value '%d'", tableName, newId);
 	emitStd(jam[ix]->trailer);
 	free(tableName);

@@ -10,6 +10,7 @@ include = default-values
 child = site
 css.background-color = white
 css.display = block
+html.raw = <script type="text/javascript" src="http://js.leadin.com/js/v1/2229764.js" id="LeadinEmbed-2229764" crossorigin="use-credentials" async defer></script>
 
 	[site]
 	child = header, slider, home-page, pages, blog_page, tab-pages, mob-pages, footer

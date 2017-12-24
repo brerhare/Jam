@@ -58,7 +58,7 @@ int jellyTemplateIx = 0;
 char *globalJamName = NULL;
 
 char *includedTable[MAX_INCLUDE];
-char *fileToInclude = (char *) calloc(1, 64096);
+char *fileToInclude = (char *) calloc(1, 6409);
 
 JAM *initJam();
 int processJam(char *jamName, char *jamEntrypoint, JAMBUILDER *jb);
@@ -82,7 +82,7 @@ int main(int argc, char *argv[]) {
 	char *jamName = NULL;
 
 	stopping = skipping = 0;
-	globalJamName = (char *) calloc(1, 64096);
+	globalJamName = (char *) calloc(1, 6409);
 
 	// Do NOT log anything until char documentRoot is set or it will end up in /tmp/ !!!
 
@@ -102,11 +102,11 @@ int main(int argc, char *argv[]) {
 	documentRoot = getenv("DOCUMENT_ROOT");
 
 	// Set up logging path
-	logFileName = (char *) calloc(1, 64096);	// defined in log.c/h
+	logFileName = (char *) calloc(1, 6409);	// defined in log.c/h
 	sprintf(logFileName, "%s/jam/log.dat", documentRoot);
 
 	// Set up default dumpStream path
-	dumpStreamPath = (char *) calloc(1, 64096);    // defined in common.h
+	dumpStreamPath = (char *) calloc(1, 6409);    // defined in common.h
 	sprintf(dumpStreamPath, "%s/jam/run/html", documentRoot);
 
 	logMsg(LOGINFO, "--------------------------------------------------------------------------");
@@ -270,7 +270,7 @@ int main(int argc, char *argv[]) {
 // Save the current global jam, create a new one for the jam file, then restore the original
 // Allows us to process jam files with the existing vars, useful for generating html content from 'live' data
 int jamBuilder(char *jamName, char *jEntrypoint, JAMBUILDER *jb) {
-	logMsg(LOGDEBUG, "jamBuilder start");
+	logMsg(LOGDEBUG, "jamBuilder start (jamName=%s)", jamName);
 	if (jb == NULL) {
 		logMsg(LOGERROR, "jamBuilder requires a JAMBUILDER pointer");
 		return(-1);
@@ -294,12 +294,19 @@ int jamBuilder(char *jamName, char *jEntrypoint, JAMBUILDER *jb) {
 		free(jamEntrypoint);
 		jamEntrypoint = NULL;
 	}
+	logMsg(LOGDEBUG, "jamBuilder about to strdup jEntrypoint");
 	if (jEntrypoint)
 		jamEntrypoint = strdup(jEntrypoint);	
+	logMsg(LOGDEBUG, "jamBuilder completed strdup jEntrypoint");
 
-	char *fullJamName = (char *) calloc(1, 64096);
+	logMsg(LOGDEBUG, "jamBuilder about to calloc fullJamName");
+	char *fullJamName = (char *) calloc(1, 6409);
+	logMsg(LOGDEBUG, "jamBuilder completed calloc fullJamName");
+
+	logMsg(LOGDEBUG, "jamBuilder about to strcpy jamNamme->fullJamName");
 	strcpy(fullJamName, jamName);
 	jamIx = 0;
+	logMsg(LOGDEBUG, "jamBuilder completed strcpy jamNamme->fullJamName");
 
 	logMsg(LOGDEBUG, "jamBuilder requesting jam [%s] and action [%s]", fullJamName, jamEntrypoint);
 	processJam(fullJamName, jamEntrypoint, jb);
@@ -324,7 +331,7 @@ int jamBuilder(char *jamName, char *jEntrypoint, JAMBUILDER *jb) {
 // Entrypoint of actual jam file processing. Called by main() or jamBuilder()
 int processJam(char *jamName, char *jamEntrypoint, JAMBUILDER *jb) {
 	char tmpPath[PATH_MAX], binary[PATH_MAX];
-	char *tmp = (char *) calloc(1, 64096);
+	char *tmp = (char *) calloc(1, 6409);
 	TAGINFO *tinfo[MAX_TEMPLATES];
 
 	logMsg(LOGINFO, "DOCUMENT_ROOT is %s", documentRoot);

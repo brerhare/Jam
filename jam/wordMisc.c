@@ -121,6 +121,8 @@ int wordMiscDateOverlap(int ix, char *defaultTableName) {
 		e1 = strdup(getVarAsString(end1));
 		s2 = strdup(getVarAsString(start2));
 		e2 = strdup(getVarAsString(end2));
+        if (!strcmp(e2, "0000-00-00"))
+            strcpy(e2, "2099-01-01");
 		// Strip dashes
 		logMsg(LOGDEBUG, "wordMiscDateOverlap before transform: s1='%s', e1='%s', s2='%s', e2='%s', newField='%s'", s1, e1, s2, e2, newField);
 		for (p = s1, p2 = tmp, i = 0; i < 10; i++) { if ((i != 4) && (i != 7)) *p2++ = *p;  p++; } *p2 = 0;	strcpy(s1, tmp);

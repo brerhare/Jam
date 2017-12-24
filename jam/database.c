@@ -414,6 +414,7 @@ int appendSqlSelectOptions(char *query, char *args, char *currentTableName, char
 				free(selectorField);
 			}
 			strcat(queryBuilder, tmp);
+			logMsg(LOGDEBUG, "ORDER BY statement resulted in  : %s", tmp);
 			break;
 		}
 
