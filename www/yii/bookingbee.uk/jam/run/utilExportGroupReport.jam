@@ -46,9 +46,11 @@ Item {{event_item.description}}<br>
 	{{@end}}
 {{@end}}
 
-{{@sql select * from temp_export_group_report INTO OUTFILE '/tmp/export.csv' FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n';}}
+{{file = /tmp/{{sys.today}}_{{sys.now}}.csv }}
 
-File is /tmp/export.csv<br>
+{{@sql select * from temp_export_group_report INTO OUTFILE '{{file}}' FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n';}}
+
+File is {{file}}<br>
 
 ...Done<br>
 
