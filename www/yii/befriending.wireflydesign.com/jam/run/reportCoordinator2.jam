@@ -10,6 +10,7 @@
 
 <div name="content">
 	<center><h3> Coordinator Report </h3></center>
+    <center><h4> From {{@datedmy from}} to {{@datedmy to}}</h4></center>
 
 	<form class="uk-form">
 		<input type="text" id="searchInput" placeholder="Type to search">
@@ -31,7 +32,12 @@
 			<td></td>
 		</tr>
 	{{@each young_person filter coordinator_id = yippee.id, archive_flag = 0}}
-		{{@each match_yp filter young_person_id = young_person.id, match_started >= from, match_started <= to}}
+		{{@XXXXeach match_yp filter young_person_id = young_person.id, match_started >= from, match_started <= to}}
+		{{@each match_yp filter young_person_id = young_person.id}}
+
+{{@dateoverlap start1=from end1=to start2=match_yp.match_started end2=match_yp.match_end newfield=myOverlap }}
+{{@skip myOverlap=0}}
+
 			{{@get global filter id = young_person.global_id}}
 			<tr>
 				<td></td>
