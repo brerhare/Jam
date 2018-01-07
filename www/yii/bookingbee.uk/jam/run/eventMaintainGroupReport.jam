@@ -14,6 +14,10 @@
 
 <div class="uk-container embed-uk-container uk-overflow-container uk-container-center " style="max-width:900px; Xpadding:0">
 
+	<div name="buttonDiv" style="padding:5px; color:red; font-weight:bold;"">
+		<button class="uk-button uk-button-medium uk-button-success" onClick="exportCall()">Export CSV</button>
+	</div>
+
     <table id="printTable" class="testgrid Xsortable searchTable uk-table uk-table-condensed" style="border:1px solid #dddddd">
         <tr>
             <th> Rider </th>
@@ -50,10 +54,54 @@
 
 
 <script>
+
+function exportCall() {
+	var objBtn = get("buttonDiv");
+	objBtn.innerHTML = "Please wait...";
+	runAction('eventMaintainGroupReport:exportGroupReport', ['event_id={{event.id}}'], 'buttonDiv');
+}
 </script>
 
 {{@XXXhtml container end}}
 </div>
 
+{{@action exportGroupReport}}
+
+    {{@get event filter id = event.id}}
+
+    {{@remove table temp_export_group_report}}
+    {{@new table temp_export_group_report
+        event_id                    number
+        event_headline          string
+        class_description       string
+        rider                   string
+        horse                   string
+        landline                string
+        mobile                  string
+    }}
+
+    {{@each event_item filter event_id = event.id, order by sequence}}
+        {{@each event_order_item filter event_item_id = event_item.id}}
+           {{temp_export_group_report.event_headline = event.headline}}
+           {{temp_export_group_report.class_description = event_item.description}}
+           {{@get event_order filter id = event_order_item.event_order_id}}
+           {{@skip event_order.paid = 0}}
+           {{@get template_beirc filter event_order_id = event_order.id}}
+           {{temp_export_group_report.event_id = event_order.event_id}}
+           {{temp_export_group_report.rider = template_beirc.rider_name}}
+           {{temp_export_group_report.horse = template_beirc.horse_name}}
+           {{temp_export_group_report.landline = event_order.landline}}
+           {{temp_export_group_report.mobile = event_order.mobile}}
+           {{@new item temp_export_group_report}}
+        {{@end}}
+    {{@end}}
+
+    {{file = /tmp/{{sys.today}}_{{sys.now}}.csv }}
+
+    {{@sql select * from temp_export_group_report INTO OUTFILE '{{file}}' FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n';}}
+
+    <a style='text-decoration:none; font-weight:bold; color:red' href='/jam/{{file}}' target='_blank'>Click HERE to download CSV ({{event.id}})</a>
+
+{{@end}}
 
 {{@XXXinclude /jam/sys/html/footer.html}}
