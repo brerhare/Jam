@@ -14,7 +14,7 @@
 
 <div class="uk-container embed-uk-container uk-overflow-container uk-container-center " style="max-width:900px; Xpadding:0">
 
-	<div name="buttonDiv" style="padding:5px; color:red; font-weight:bold;"">
+	<div name="buttonDiv" style="padding:5px; color:blue; font-weight:bold;"">
 		<button class="uk-button uk-button-medium uk-button-success" onClick="exportCall()">Export CSV</button>
 	</div>
 
@@ -98,9 +98,9 @@ function exportCall() {
 
     {{file = /tmp/{{sys.today}}_{{sys.now}}.csv }}
 
-    {{@sql select * from temp_export_group_report INTO OUTFILE '{{file}}' FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n';}}
+    {{@sql select event_headline, class_description, rider, horse from temp_export_group_report INTO OUTFILE '{{file}}' FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n';}}
 
-    <a style='text-decoration:none; font-weight:bold; color:red' href='/jam/{{file}}' target='_blank'>Click HERE to download CSV ({{event.id}})</a>
+    <a style='text-decoration:none; font-weight:bold; color:blue' href='/jam/{{file}}' target='_blank'>Click HERE to download CSV ({{event.id}})</a>
 
 {{@end}}
 
