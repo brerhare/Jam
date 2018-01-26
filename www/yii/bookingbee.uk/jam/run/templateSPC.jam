@@ -20,6 +20,7 @@
 <style type="text/css">
 	label {text-align: right; width:150px !important}
 	div.uk-form-controls {margin-left: 170px !important}
+	.uk-table td, .uk-table th {padding : 6px 8px }
 </style>
 
 <style type="text/css">
@@ -75,10 +76,10 @@ div#formContainer {
 
 			<br>
 			<center>
-				<table class="uk-table" style="width:50%; background-color:#bed0de">
+				<table class="uk-table" style="width:70%; background-color:#bed0de">
 {{@each event_item filter event_id = event.id, qty_remaining > 0}}
 					<tr style="padding:20px">
-						<td>{{event_item.description}}</td>
+						<td padding 6px 8px>{{event_item.description}}</td>
 						<td id="inp_{{event_item.id}}">£ {{event_item.price}}</td>
 						<td> <input type="checkbox" name="order_item_cb" onclick="handleOrderItem(this)" value="{{event_item.id}}" class="inp_{{event_item.id}}"> </td>
 					</tr>
@@ -203,8 +204,6 @@ function checkOutstandingPlacements() {
 var paypalRun = 0;
 
 function updated_all() {
-//alert('done.');
-//return;
 	$("body").css("cursor", "default");
 	obj = get('event_order.id');
 	//alert('back. new order id = '+ obj.value + ' and total = ' + event_order.total);
@@ -243,6 +242,9 @@ function updated_all() {
 	{{event_order_item.price = event_item.price}}
 
 	{{@new item event_order_item notify=ok}}
+
+	{{event_item.qty_remaining = event_item.qty_remaining - 1}}
+	{{@amend item event_item}}
 {{@end}}
 
 {{@include /jam/sys/html/footer.html}}

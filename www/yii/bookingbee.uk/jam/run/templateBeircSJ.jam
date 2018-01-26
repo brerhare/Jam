@@ -33,6 +33,7 @@
 <style type="text/css">
 	label {text-align: right; width:150px !important}
 	div.uk-form-controls {margin-left: 170px !important}
+	.uk-table td, .uk-table th {padding : 6px 8px }
 </style>
 
 <style type="text/css">
