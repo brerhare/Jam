@@ -106,6 +106,10 @@ div#formContainer {
 			{{@html text field=template_dumfries_dressage.rider_age size=small label='Rider age (optional)' group=inp}}
 			{{@html text field=template_dumfries_dressage.horse_name size=medium label='Horse name' group=inp}}
 
+<!-- future adds here -->
+            {{@html text field=vent_order.emergency_contact size=medium label='Emergency Contact' group=inp}}
+
+
 <hr>
 <center> <h4> Payment details </h4> </center>
 
