@@ -26,6 +26,12 @@
             <th> Mobile </th>
         </tr>
 
+
+
+<!-- BEIRC start -->
+{{@each seller filter sid = event.sid, sid = sagvfdjigf39ij2jio42kfa9gv}}
+
+
 {{@each event_item filter event_id = {{event.id}}, order by sequence }}
 
 	<tr>
@@ -47,6 +53,46 @@
 	{{@end}}
 
 {{@end}}
+
+<!-- BEIRC end -->
+{{@end}}
+
+
+
+
+
+
+<!-- SPC start -->
+{{@each seller filter sid = event.sid, sid = grfjio5jhyiotdhjfhdfxzddhd}}
+
+
+{{@each event_item filter event_id = {{event.id}}, order by sequence }}
+
+	<tr>
+		<td colwidth=4 style='color:red;font-weight:bold'> {{event_item.description}} </td>
+	</tr>
+
+
+	{{@each event_order_item filter event_item_id = event_item.id, event_item_id = event_item.id}}
+		{{@get event_order filter id = event_order_item.event_order_id}}
+		{{@skip event_order.paid = 0}}
+		{{@get template_spc filter event_order_id = event_order.id}}
+
+        <tr>
+            <td>{{template_spc.rider_name}}</td>
+            <td>{{template_spc.horse_name}}</td>
+            <td>{{event_order.landline}}</td>
+            <td>{{event_order.mobile}}</td>
+        </tr>
+
+	{{@end}}
+{{@end}}
+
+<!-- SPC end -->
+{{@end}}
+
+
+
 
     </table>
     <br>
@@ -80,6 +126,10 @@ function exportCall() {
         mobile                  string
     }}
 
+
+<!-- BEIRC start -->
+{{@each seller filter sid = event.sid, sid = sagvfdjigf39ij2jio42kfa9gv}}
+
     {{@each event_item filter event_id = event.id, order by sequence}}
         {{@each event_order_item filter event_item_id = event_item.id}}
            {{temp_export_group_report.event_headline = event.headline}}
@@ -95,6 +145,33 @@ function exportCall() {
            {{@new item temp_export_group_report}}
         {{@end}}
     {{@end}}
+
+<!-- BEIRC end -->
+{{@end}}
+
+
+<!-- SPC start -->
+{{@each seller filter sid = event.sid, sid = grfjio5jhyiotdhjfhdfxzddhd}}
+
+    {{@each event_item filter event_id = event.id, order by sequence}}
+        {{@each event_order_item filter event_item_id = event_item.id}}
+           {{temp_export_group_report.event_headline = event.headline}}
+           {{temp_export_group_report.class_description = event_item.description}}
+           {{@get event_order filter id = event_order_item.event_order_id}}
+           {{@skip event_order.paid = 0}}
+           {{@get template_spc filter event_order_id = event_order.id}}
+           {{temp_export_group_report.event_id = event_order.event_id}}
+           {{temp_export_group_report.rider = template_spc.rider_name}}
+           {{temp_export_group_report.horse = template_spc.horse_name}}
+           {{temp_export_group_report.landline = event_order.landline}}
+           {{temp_export_group_report.mobile = event_order.mobile}}
+           {{@new item temp_export_group_report}}
+        {{@end}}
+    {{@end}}
+
+<!-- SPC end -->
+{{@end}}
+
 
     {{file = /tmp/{{sys.today}}_{{sys.now}}.csv }}
 
