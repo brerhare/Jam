@@ -1,0 +1,284 @@
+{{@include /jam/sys/html/header.html}}
+
+{{@include /jam/css/site.css}}
+
+{{@database bookingbee_uk}}
+
+<!-- --------------------------------------------------------------------------------------- -->
+
+{{@remove table template_spc_team}}
+{{@new table template_spc_team
+    sid                     string  required
+    seller_id               number  required
+    event_id                number  required
+    team_name               string  required
+    rider1_name             string  required
+    rider1_age              number
+    horse1_name             string  required
+    rider2_name             string
+    rider2_age              number
+    horse2_name             string
+    rider3_name             string
+    rider3_age              number
+    horse3_name             string
+    rider4_name             string
+    rider4_age              number
+    horse4_name             string
+}}
+
+<!-- --------------------------------------------------------------------------------------- -->
+
+{{@each event filter id = eventId, active = 0}}
+	<br><br><br><br><br><br><center><h1 style="color:white">Sorry, bookings for this event are currently unavailable</h1></center><br>
+	{{@stop}}
+{{@end}}
+
+{{@get event filter id = eventId}}
+{{@get seller filter id = event.seller_id}}
+
+<style type="text/css">
+	label {text-align: right; width:150px !important}
+	div.uk-form-controls {margin-left: 170px !important}
+	.uk-table td, .uk-table th {padding : 6px 8px }
+</style>
+
+<style type="text/css">
+html {
+	background: url("/jam/upload/event/image/{{event.image}}") no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;			
+}
+
+.midHeight {
+  position: relative;
+  Xtop: 50%;
+  Xtransform: translateY(-50%);
+}
+
+div#formContainer {
+	display:block;
+	margin:0px auto;
+	background-color:white;
+	padding:20px;
+	width:800px;
+	-moz-box-shadow: 0 0 20px black; -webkit-box-shadow: 0 0 20px black; box-shadow: 0 0 20px black;
+	background-color:#ececec;
+}
+</style>
+
+{{@XXXhtml container start center css='max-width:800px; padding:0'}}
+
+
+<div class='midHeight'>
+	<div id='formContainer'>
+
+		<form name="event_order" class="XmidHeight uk-form uk-form-horizontal">
+			<input type="hidden" name="event_order.seller_id" value="{{seller.id}}">
+			<input type="hidden" name="event_order.sid" value="{{seller.sid}}">
+			<input type="hidden" name="event_order.event_id" value="{{event.id}}">
+			<input type="hidden" name="event_order.event_item_id" "12345">
+			<input type="hidden" name="event_order.date" value="{{sys.today}}">
+			<input type="hidden" name="event_order.time" value="{{sys.now}}">
+			<input type="hidden" name="event_order.total" value="0">
+
+			<input type="hidden" name="template_spc_team.seller_id" value="{{seller.id}}">
+			<input type="hidden" name="template_spc_team.sid" value="{{seller.sid}}">
+			<input type="hidden" name="template_spc_team.event_id" value="{{event.id}}">
+<br>
+			<center><h3> {{event.headline}} {{@datedmy event.date}} {{event.time}} </h3></center>
+			<center> {{event.description}}</center>
+
+        {{@html gridrow start}}
+            {{@html gridcol start width=1-1}}
+
+			<br>
+			<center>
+				<table class="uk-table" style="width:70%; background-color:#bed0de">
+{{@each event_item filter event_id = event.id, qty_remaining > 0}}
+					<tr style="padding:20px">
+						<td padding 6px 8px>{{event_item.description}}</td>
+						<td id="inp_{{event_item.id}}">£ {{event_item.price}}</td>
+						<td> <input type="checkbox" name="order_item_cb" onclick="handleOrderItem(this)" value="{{event_item.id}}" class="inp_{{event_item.id}}"> </td>
+					</tr>
+{{@end}}
+				</table>
+			</center>
+
+
+<hr>
+<center> <h4> Rider details </h4> </center>
+
+			{{@html text field=template_spc_team.team_name size=medium label='Team name' group=inp}}
+<br>
+			{{@html text field=template_spc_team.rider1_name size=medium label='Rider 1 name' group=inp}}
+			{{@html text field=template_spc_team.rider1_age size=small label='Rider 1 age (optional)' group=inp}}
+			{{@html text field=template_spc_team.horse1_name size=medium label='Horse 1 name' group=inp}}
+<br>
+			{{@html text field=template_spc_team.rider2_name size=medium label='Rider 2 name' group=inp}}
+			{{@html text field=template_spc_team.rider2_age size=small label='Rider 2 age (optional)' group=inp}}
+			{{@html text field=template_spc_team.horse2_name size=medium label='Horse 2 name' group=inp}}
+<br>
+			{{@html text field=template_spc_team.rider3_name size=medium label='Rider 3 name' group=inp}}
+			{{@html text field=template_spc_team.rider3_age size=small label='Rider 3 age (optional)' group=inp}}
+			{{@html text field=template_spc_team.horse3_name size=medium label='Horse 3 name' group=inp}}
+<br>
+			{{@html text field=template_spc_team.rider4_name size=medium label='Rider 4 name' group=inp}}
+			{{@html text field=template_spc_team.rider4_age size=small label='Rider 4 age (optional)' group=inp}}
+			{{@html text field=template_spc_team.horse4_name size=medium label='Horse 4 name' group=inp}}
+<br>
+
+<!-- future adds here -->
+            {{@html text field=vent_order.emergency_contact size=medium label='Emergency Contact' group=inp}}
+
+
+<hr>
+<center> <h4> Payment details </h4> </center>
+
+			{{@html text field=event_order.name size=medium label='Name' group=inp}}
+			{{@html text field=event_order.landline size=medium label='Telephone number'}}
+			{{@html text field=event_order.mobile size=medium label='Mobile number'}}
+			{{@html text field=event_order.email size=medium label='Email address'}}
+			{{@html text field=check.email size=medium label='Email again'}}
+			{{@html textarea field=event_order.address size=30x5 label=Address}}
+			{{@html text field=event_order.post_code size=small label='Post code'}}
+			{{@html textarea field=event_order.notes size=30x5 label='Comments'}}
+
+			<input type="hidden" name="event_order.qty" value="111">
+			<input type="hidden" name="event_order.price" value="222">
+
+            {{@html gridcol end}}
+
+        {{@html gridrow end}}
+
+		<br>
+
+<div name="buttonDiv">
+<center> <input type="image" src="/img/paypal-checkout.png" onClick="return sendOrder()"/> </center>
+</div>
+
+<hr>
+
+<center> <h4> Terms and conditions </h4> </center>
+
+
+<!--
+<button type='button' class="uk-button uk-button-primary" onClick="window.open('http://www.yoursitehere.co.uk/?layout=index&page=rules-entry-competitions')">See our Rules and Regulations</button> </td>
+-->
+<p style="font-size: 75%;"> 
+	{{event.tandc}}
+</p>
+
+		</form>
+	</div>
+</div>
+
+
+{{@XXXhtml container end}}
+
+<script>
+
+
+function handleOrderItem(obj) {
+	//var checkedValue = document.querySelector('.inpcb:checked').value;
+	//console.log(checkedValue);
+}
+
+var outstandingPlacements = 0;
+var payable = 0;
+var cbArr = [];
+
+function sendOrder() {
+    var obj = get('event_order.name'); if (obj.value == "") { alert('Invalid Name'); return(false) }
+    obj = get('event_order.email'); if (obj.value == "") { alert('Invalid Email address'); return(false) }
+    obj2 = get('check.email'); if (obj2.value != obj.value) { alert('Email addresses do not match'); return(false) }
+
+	var ototal = 0;
+    var checkboxes = document.getElementsByName('order_item_cb');
+
+    for (var i = 0; i < checkboxes.length; i++) {
+        if (checkboxes[i].checked) {
+			cbArr.push(checkboxes[i].value);
+			outstandingPlacements++;
+			var objItem = document.getElementById('inp_'+checkboxes[i].value);
+			var number = Number( objItem.innerHTML.replace(/[^0-9\.]+/g,""));
+			ototal += number;
+        }
+    }
+
+	$("body").css("cursor", "progress");
+	objBtn = get("buttonDiv");
+	objBtn.innerHTML = "Sending order...";	
+
+	objTotal = get('event_order.total');
+	objTotal.value = ototal;
+
+	runAction('validate_order', ['event_order'], '', order_validated);
+	return(false);
+}
+
+function order_validated() {
+	runAction('update_order', ['event_order'], '', update_order_items);
+}
+
+function update_order_items() {
+	for (var i = 0; i < cbArr.length; i++) {
+//alert('CHECK2! update_order_item : item='+cbArr[i]);
+		runAction('update_order_item', ['event_order.id', 'event_item.id='+cbArr[i] ], '', checkOutstandingPlacements);
+	}
+}
+
+function checkOutstandingPlacements() {
+	outstandingPlacements--;
+	if (outstandingPlacements == 0)
+		updated_all();
+}
+
+var paypalRun = 0;
+
+function updated_all() {
+	$("body").css("cursor", "default");
+	obj = get('event_order.id');
+	//alert('back. new order id = '+ obj.value + ' and total = ' + event_order.total);
+	if (paypalRun == 0)
+		runJam('paypal?orderId='+obj.value);
+	paypalRun = 1;
+}
+
+</script>
+
+{{@action validate_order}}
+<!-- validate code against site owners member or coupon code -->
+{{@end}}
+
+{{@action update_order}}
+	{{event_order.paid = 0}}
+	{{event_order.paid_paypal_return = 0}}
+	{{event_order.paid_paypal_IPN = 0}}
+
+	{{@new item event_order notify=ok}}
+	{{template_spc_team.event_order_id = event_order.id}}
+	{{@new item template_spc_team}}
+{{@end}}
+
+{{@action update_order_item}}
+	{{@get event_order filter id = event_order.id}}
+	{{@get event_item filter id = event_item.id}}
+
+	{{event_order_item.sid = event_order.sid}}
+	{{event_order_item.seller_id = event_order.seller_id}}
+	{{event_order_item.event_id = event_order.event_id}}
+	{{event_order_item.event_order_id = event_order.id}}
+	{{event_order_item.event_item_id = event_item.id}}
+
+	{{event_order_item.qty = 1}}
+	{{event_order_item.price = event_item.price}}
+
+	{{@new item event_order_item notify=ok}}
+
+	{{event_item.qty_remaining = event_item.qty_remaining - 1}}
+	{{@amend item event_item}}
+{{@end}}
+
+{{@include /jam/sys/html/footer.html}}

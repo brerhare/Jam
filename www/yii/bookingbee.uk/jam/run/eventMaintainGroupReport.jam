@@ -62,9 +62,10 @@
 
 
 
-<!-- SPC start -->
+<!-- SPC INDIVIDUAL start -->
 {{@each seller filter sid = event.sid, sid = grfjio5jhyiotdhjfhdfxzddhd}}
 
+{{@each event_template_file filter id = event.event_template_file_id, file = templateSPC}}
 
 {{@each event_item filter event_id = {{event.id}}, order by sequence }}
 
@@ -87,8 +88,49 @@
 
 	{{@end}}
 {{@end}}
+{{@end}}
 
-<!-- SPC end -->
+<!-- SPC INDIVIDUAL end -->
+{{@end}}
+
+
+
+
+
+
+
+<!-- SPC TEAM start -->
+{{@each seller filter sid = event.sid, sid = grfjio5jhyiotdhjfhdfxzddhd}}
+
+{{@each event_template_file filter id = event.event_template_file_id, file = templateSPCTeam}}
+
+{{@each event_item filter event_id = {{event.id}}, order by sequence }}
+
+	<tr>
+		<td colwidth=4 style='color:red;font-weight:bold'> {{event_item.description}} </td>
+	</tr>
+
+
+	{{@each event_order_item filter event_item_id = event_item.id, event_item_id = event_item.id}}
+		{{@get event_order filter id = event_order_item.event_order_id}}
+		{{@skip event_order.paid = 0}}
+		{{@get template_spc filter event_order_id = event_order.id}}
+
+        <tr>
+			<td colspan = 4>{{template_spc.team_name}}</td>
+        </tr>
+        <tr>
+            <td>{{template_spc.rider1_name}}</td>
+            <td>{{template_spc.horse1_name}}</td>
+            <td>{{event_order.landline}}</td>
+            <td>{{event_order.mobile}}</td>
+        </tr>
+
+	{{@end}}
+{{@end}}
+{{@end}}
+
+<!-- SPC TEAM end -->
 {{@end}}
 
 
