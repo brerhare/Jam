@@ -38,7 +38,7 @@
 	{{yp_forename = global.forename}}
 	{{yp_surname = global.surname}}
 	{{@get match_yp filter young_person_id = young_person.id}}
-	{{@dateoverlap start1=from end1=to start2=young_person.referral_date end2=match_yp.match_started newfield=myOverlap }}
+	{{@dateoverlap start1=from end1=to start2=young_person.referral_date end2=match_yp.match_end newfield=myOverlap }}
 	{{@skip myOverlap=0}}
 		<tr class="rowHighlight">
 			<td>{{@datedmy young_person.referral_date}}</td>

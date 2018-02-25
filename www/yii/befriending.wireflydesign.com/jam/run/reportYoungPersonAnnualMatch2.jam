@@ -35,24 +35,25 @@
 	{{yp_surname = global.surname}}
 	{{yp_postcode = global.postcode}}
 	{{@get contact filter young_person_id = young_person.id, contact_relationship_id = 3}}
-	{{@get match_yp filter young_person_id = young_person.id}}
-	{{@get befriender filter id = match_yp.befriender_id}}
-	{{@get global filter id = befriender.global_id}}
-	{{bf_forename = global.forename}}
-	{{bf_surname = global.surname}}
-	{{@dateoverlap start1=from end1=to start2=match_yp.match_started end2=match_yp.match_end newfield=myOverlap }}
-	{{@skip myOverlap=0}}
-		<tr class="rowHighlight">
-			<td>{{yp_forename}} {{yp_surname}}</td>
-			<td>{{@datedmy young_person.dob}}</td>
-			<td>{{@replacevalue field=young_person.gender values=0:male,1:female}}</td>
-			<td>{{yp_postcode}}</td>
-			<td>{{contact.agency}}</td>
-			<td>{{@datedmy match_yp.match_started}}</td>
-			<td>{{@datedmy match_yp.match_end}}</td>
-			<td>{{@daycount match_yp.match_started match_yp.match_end}}</td>
-			<td>{{bf_forename}} {{bf_surname}}</td>
-		</tr>
+	{{@each match_yp filter young_person_id = young_person.id}}
+		{{@get befriender filter id = match_yp.befriender_id}}
+		{{@get global filter id = befriender.global_id}}
+		{{bf_forename = global.forename}}
+		{{bf_surname = global.surname}}
+		{{@dateoverlap start1=from end1=to start2=match_yp.match_started end2=match_yp.match_end newfield=myOverlap }}
+		{{@skip myOverlap=0}}
+			<tr class="rowHighlight">
+				<td>{{yp_forename}} {{yp_surname}}</td>
+				<td>{{@datedmy young_person.dob}}</td>
+				<td>{{@replacevalue field=young_person.gender values=0:male,1:female}}</td>
+				<td>{{yp_postcode}}</td>
+				<td>{{contact.agency}}</td>
+				<td>{{@datedmy match_yp.match_started}}</td>
+				<td>{{@datedmy match_yp.match_end}}</td>
+				<td>{{@daycount match_yp.match_started match_yp.match_end}}</td>
+				<td>{{bf_forename}} {{bf_surname}}</td>
+			</tr>
+	{{@end}}
 {{@end}}
 	</table>
   <b> Total Young Persons : <span id="searchTotal">{{count.id}}</span> </b>
