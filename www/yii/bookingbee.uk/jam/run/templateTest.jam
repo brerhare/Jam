@@ -10,8 +10,8 @@
 <!-- --------------------------------------------------------------------------------------- -->
 
 {{@each event filter id = eventId, active = 0}}
-	<br><br><br><br><br><br><center><h1 style="color:white">Sorry, bookings for this event are currently unavailable</h1></center><br>
-	{{@stop}}
+<br><br><br><br><br><br><center><h1 style="color:white">Sorry, bookings for this event are currently unavailable</h1></center><br>
+{{@stop}}
 {{@end}}
 
 {{@get event filter id = eventId}}
@@ -20,6 +20,7 @@
 <style type="text/css">
 	label {text-align: right; width:150px !important}
 	div.uk-form-controls {margin-left: 170px !important}
+	.uk-table td, .uk-table th {padding : 6px 8px }
 </style>
 
 <style type="text/css">
@@ -97,6 +98,10 @@ div#formContainer {
 			{{@html text field=template_beirc.rider_name size=medium label='Rider name' group=inp}}
 			{{@html text field=template_beirc.rider_age size=small label='Rider age (optional)' group=inp}}
 			{{@html text field=template_beirc.horse_name size=medium label='Horse name' group=inp}}
+
+<!-- future adds here -->
+            {{@html text field=vent_order.emergency_contact size=medium label='Emergency Contact' group=inp}}
+
 
 <hr>
 <center> <h4> Payment details </h4> </center>
@@ -203,8 +208,6 @@ function checkOutstandingPlacements() {
 var paypalRun = 0;
 
 function updated_all() {
-//alert('done.');
-//return;
 	$("body").css("cursor", "default");
 	obj = get('event_order.id');
 	//alert('back. new order id = '+ obj.value + ' and total = ' + event_order.total);
@@ -243,6 +246,9 @@ function updated_all() {
 	{{event_order_item.price = event_item.price}}
 
 	{{@new item event_order_item notify=ok}}
+
+	{{event_item.qty_remaining = event_item.qty_remaining - 1}}
+	{{@amend item event_item}}
 {{@end}}
 
 {{@include /jam/sys/html/footer.html}}

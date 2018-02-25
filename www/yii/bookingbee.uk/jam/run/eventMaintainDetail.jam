@@ -13,8 +13,6 @@
 {{@XXXhtml container start center css='max-width:900px; Xpadding:0}}
 <div class="uk-container embed-uk-container uk-overflow-container uk-container-center " style="max-width:900px; Xpadding:0">
 
-<input type="hidden" name="event_image" id="event_image" value="{{event.image}}">
-
 <form name="event_detail_form" class="uk-form uk-form-horizontal">
 <br>
 	<input type="hidden" name="seller.id" value={{seller.id}}>
@@ -66,7 +64,10 @@
 			<br>
 			<center>
 				{{@html button Save primary medium
-					runAction('eventMaintainDetail:update_event', ['event_detail_form', 'event_image'], '', postUpdate)
+var xxx = get('event.image');
+//alert('xxx='+xxx.value);
+					//alert('x');
+					runAction('eventMaintainDetail:update_event', ['event_detail_form', 'img='+xxx.value], '', postUpdate)
 				}}
 				{{@html button Cancel primary medium
 					runJam('event.jam');
@@ -79,8 +80,9 @@
 </form>
 
 {{@action update_event}}
+{{event.image = img}}
 	{{@update item event notify=ok}}
-{{@eNd}}
+{{@end}}
 
 <script>
 function clearFile() {
@@ -102,8 +104,7 @@ function fileUpload(obj) {
     console.log("size : " + file.size);
     console.log("type : " + file.type);
     console.log("date : " + file.lastModified)
-	document.getElementById('event_image').value = file.name;
-    var url = 'http://www.bookingbee.uk:/jam/upload/uploadEventImage.php';
+    var url = 'http://www.bookingbee.uk/jam/upload/uploadEventImage.php';
     var xhr = new XMLHttpRequest();
     var fd = new FormData();
     xhr.open("POST", url, true);
@@ -111,9 +112,12 @@ function fileUpload(obj) {
         if (xhr.readyState == 4 && xhr.status == 200) {
             console.log(xhr.responseText); // handle response.
             $.unblockUI();
-			objAttachment = get('event.image');
+			var objAttachment = get('event.image');
 			objAttachment.value = file.name;
-			document.getElementById('event_image').value = file.name;
+//alert('f='+file.name);
+//var ttt = get('event.image');
+//alert('ttt='+ttt.value);
+
         } else {
             $.unblockUI();
         }

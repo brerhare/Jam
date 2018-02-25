@@ -23,6 +23,7 @@
             <th> £ Paid </th>
         </tr>
 
+{{invoice = 0}}
 {{@each event_order filter event_id = {{event.id}}, paid = 1, order by date desc, time desc }}
         <tr class="rowHighlight" style="background-color: #c7d1e4" onClick="runAction('showEventItems', ['order.id={{order.id}}'], 'content_{{order.id}}')">
             <td>{{@datedmy event_order.date}}</td>
@@ -32,6 +33,7 @@
             <td>{{event_order.email}}</td>
             <td>{{event_order.total}}</td>
         </tr>
+	{{invoice = invoice + event_order.total}}
 	{{@each event_order_item filter event_order_id = event_order.id}}
 		{{@get event_item filter id = event_order_item.event_item_id}}
 		<tr style='color:darkred; font-size:30%'>
@@ -45,8 +47,12 @@
 		</tr>
 {{@end}}
     </table>
-    <br>
-
+<p style='color:red; background-color:lightgrey'>
+	Total taken <b>£ {{invoice}}</b>
+	<br>
+	Fee payable @ 4 percent £ {{invoice * 4 / 100}}
+	<br>
+</p>
 
 
 {{@action showEventItems}}

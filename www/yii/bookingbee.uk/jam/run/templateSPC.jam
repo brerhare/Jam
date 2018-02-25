@@ -6,18 +6,14 @@
 
 <!-- --------------------------------------------------------------------------------------- -->
 
-{{@XXXXXsql delete from event_order}}
-{{@XXXXXsql delete from event_order_item}}
-
-{{@XXXXXremove table template_beirc}}
-{{@XXXXXnew table template_beirc
-	sid                     string  required
-	seller_id               number  required
-	event_id                number  required
-	rider_name              string  required
-	rider_age               number
-	horse_name              string  required
-	member_number           string
+{{@XXXXXremove table template_spc}}
+{{@XXXXXnew table template_spc
+    sid                     string  required
+    seller_id               number  required
+    event_id                number  required
+    rider_name              string  required
+    rider_age               number
+    horse_name              string  required
 }}
 
 <!-- --------------------------------------------------------------------------------------- -->
@@ -77,13 +73,12 @@ div#formContainer {
 			<input type="hidden" name="event_order.time" value="{{sys.now}}">
 			<input type="hidden" name="event_order.total" value="0">
 
-			<input type="hidden" name="template_beirc.seller_id" value="{{seller.id}}">
-			<input type="hidden" name="template_beirc.sid" value="{{seller.sid}}">
-			<input type="hidden" name="template_beirc.event_id" value="{{event.id}}">
+			<input type="hidden" name="template_spc.seller_id" value="{{seller.id}}">
+			<input type="hidden" name="template_spc.sid" value="{{seller.sid}}">
+			<input type="hidden" name="template_spc.event_id" value="{{event.id}}">
 <br>
 			<center><h3> {{event.headline}} {{@datedmy event.date}} {{event.time}} </h3></center>
 			<center> {{event.description}}</center>
-			<center><h4> Book 3 or more classes and get the 3rd class half price</h4></center>
 
         {{@html gridrow start}}
             {{@html gridcol start width=1-1}}
@@ -93,7 +88,7 @@ div#formContainer {
 				<table class="uk-table" style="width:70%; background-color:#bed0de">
 {{@each event_item filter event_id = event.id, qty_remaining > 0}}
 					<tr style="padding:20px">
-						<td>{{event_item.description}}</td>
+						<td padding 6px 8px>{{event_item.description}}</td>
 						<td id="inp_{{event_item.id}}">£ {{event_item.price}}</td>
 						<td> <input type="checkbox" name="order_item_cb" onclick="handleOrderItem(this)" value="{{event_item.id}}" class="inp_{{event_item.id}}"> </td>
 					</tr>
@@ -103,15 +98,11 @@ div#formContainer {
 
 
 <hr>
-<center> <h4> Rider details. <span style="color:grey"> (BEIRC and BCC members receive £2 off each class) </span> </h4> </center>
+<center> <h4> Rider details </h4> </center>
 
-			{{@XXXXXhtml checkbox field=template_beirc.is_member label='BEIRC Member?' tip='Check this if you are a member' group=inpcb}}
-			{{@html text field=template_beirc.member_number size=small label='BEIRC/BCC number' group=inp}}
-			{{@XXXXXhtml text field=template_beirc.coupon_code size=small label='BCC code' group=inp}}
-			{{@XXXXXhtml radio field=template_beirc.is_member label='B.E.I.R.C' options=1:Member,0:'Non member' group=inp}}
-			{{@html text field=template_beirc.rider_name size=medium label='Rider name' group=inp}}
-			{{@html text field=template_beirc.rider_age size=small label='Rider age (optional)' group=inp}}
-			{{@html text field=template_beirc.horse_name size=medium label='Horse name' group=inp}}
+			{{@html text field=template_spc.rider_name size=medium label='Rider name' group=inp}}
+			{{@html text field=template_spc.rider_age size=small label='Rider age (optional)' group=inp}}
+			{{@html text field=template_spc.horse_name size=medium label='Horse name' group=inp}}
 
 <!-- future adds here -->
             {{@html text field=vent_order.emergency_contact size=medium label='Emergency Contact' group=inp}}
@@ -143,7 +134,13 @@ div#formContainer {
 </div>
 
 <hr>
-<button type='button' class="uk-button uk-button-primary" onClick="window.open('http://www.beirc.co.uk/?layout=index&page=rules-entry-competitions')">See our Rules and Regulations</button> </td>
+
+<center> <h4> Terms and conditions </h4> </center>
+
+
+<!--
+<button type='button' class="uk-button uk-button-primary" onClick="window.open('http://www.yoursitehere.co.uk/?layout=index&page=rules-entry-competitions')">See our Rules and Regulations</button> </td>
+-->
 <p style="font-size: 75%;"> 
 	{{event.tandc}}
 </p>
@@ -172,43 +169,18 @@ function sendOrder() {
     obj = get('event_order.email'); if (obj.value == "") { alert('Invalid Email address'); return(false) }
     obj2 = get('check.email'); if (obj2.value != obj.value) { alert('Email addresses do not match'); return(false) }
 
-	// work out pricing
-	var beirc_member = get('template_beirc.member_number');
-	var mbr = beirc_member.value.trim();
-
 	var ototal = 0;
     var checkboxes = document.getElementsByName('order_item_cb');
 
-	var thirdHalfPrice = 0;
-	var numberOfItemsBooked = 0;
-
     for (var i = 0; i < checkboxes.length; i++) {
         if (checkboxes[i].checked) {
-            cbArr.push(checkboxes[i].value);
-            outstandingPlacements++;
+			cbArr.push(checkboxes[i].value);
+			outstandingPlacements++;
 			var objItem = document.getElementById('inp_'+checkboxes[i].value);
 			var number = Number( objItem.innerHTML.replace(/[^0-9\.]+/g,""));
-			if (mbr != "")
-				number -= 2;
 			ototal += number;
-			if (thirdHalfPrice == 0)
-				thirdHalfPrice = (number / 2);
-			numberOfItemsBooked += 1;
-console.log("ThirdHalfPrice WOULD be = " + thirdHalfPrice);
         }
     }
-	// Apply 3rd item = half price
-	if (numberOfItemsBooked > 2) {
-		ototal -= thirdHalfPrice;
-console.log("ThirdHalfPrice number of items booked = " + numberOfItemsBooked);
-console.log("ThirdHalfPrice APPLIED = " + ototal);
-	} else {
-console.log("Too few items - no ThirdHalfPrice APPLIED");
-	}
-
-
-
-    //obj = get('template_beirc.is_member'); if (obj.value == "") { alert('Please indicate whether rider is a BEIRC member'); return(false) }
 
 	$("body").css("cursor", "progress");
 	objBtn = get("buttonDiv");
@@ -252,7 +224,7 @@ function updated_all() {
 </script>
 
 {{@action validate_order}}
-<!-- validate code against beirc member or coupon code -->
+<!-- validate code against site owners member or coupon code -->
 {{@end}}
 
 {{@action update_order}}
@@ -261,8 +233,8 @@ function updated_all() {
 	{{event_order.paid_paypal_IPN = 0}}
 
 	{{@new item event_order notify=ok}}
-	{{template_beirc.event_order_id = event_order.id}}
-	{{@new item template_beirc}}
+	{{template_spc.event_order_id = event_order.id}}
+	{{@new item template_spc}}
 {{@end}}
 
 {{@action update_order_item}}

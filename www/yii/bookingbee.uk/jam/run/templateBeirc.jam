@@ -20,6 +20,7 @@
 <style type="text/css">
 	label {text-align: right; width:150px !important}
 	div.uk-form-controls {margin-left: 170px !important}
+	.uk-table td, .uk-table th {padding : 6px 8px }
 </style>
 
 <style type="text/css">
@@ -97,6 +98,9 @@ div#formContainer {
 			{{@html text field=template_beirc.rider_name size=medium label='Rider name' group=inp}}
 			{{@html text field=template_beirc.rider_age size=small label='Rider age (optional)' group=inp}}
 			{{@html text field=template_beirc.horse_name size=medium label='Horse name' group=inp}}
+
+<!-- future adds here -->
+			{{@html text field=vent_order.emergency_contact size=medium label='Emergency Contact' group=inp}}
 
 <hr>
 <center> <h4> Payment details </h4> </center>
